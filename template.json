@@ -1,0 +1,206 @@
+{
+"Actor": {
+	"types": ["Player Character","NPC"],
+	"templates":{
+		"common":{
+			"abilities":{
+				"str":{
+					"value": 10
+				},
+				"con":{
+					"value": 10
+				},
+				"dex":{
+					"value": 10
+				},
+				"int":{
+					"value": 10
+				},
+				"wis":{
+					"value": 10
+				},
+				"cha":{
+					"value": 10
+				}
+			},
+			"biography": "",
+			"health": {
+				"value": 10,
+				"min": 0,
+				"max": 10
+			},
+			"init": {
+				"value": 0,
+				"ability": "dex",
+				"bonus": 0
+			},
+			"details": {
+				"level": 1,
+				"exp": 0,
+				"class": "",
+				"paragon": "",
+				"epic": "",
+				"race": "",
+				"size": "",
+				"age": "",
+				"gender": "",
+				"height": "",
+				"weight": "",
+				"alignment": "",
+				"deity": ""
+			},
+			"skills": {
+				"acr": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "dex"
+				},
+				"arc": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "int"
+				},
+				"ath": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "str"
+				},
+				"blu": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "cha"
+				},
+				"dip": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "cha"
+				},
+				"dun": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "wis"
+				},
+				"end": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "con"
+				},
+				"eng": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "int"
+				},
+				"hea": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "wis"
+				},
+				"his": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "int"
+				},
+				"ins": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "wis"
+				},
+				"itm": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "cha"
+				},
+				"nat": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "int"
+				},
+				"prc": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "wis"
+				},
+				"pra": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "wis"
+				},
+				"rel": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "int"
+				},
+				"ste": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "dex"
+				},
+				"stw": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "cha"
+				},
+				"thi": {
+					"value": 0,
+					"expt": 0,
+					"armor": 0,
+					"misc": 0,
+					"ability": "dex"
+				}
+			},			
+			"attributes": {}			
+		}
+	},
+	"Player Character": {
+		"templates": ["common"]
+	},
+	"NPC": {
+		"templates": ["common"]
+	}	
+},
+"Item": {
+	"types": ["item"],
+	"item": {
+		"description": "",
+		"quantity": 1,
+		"weight": 0,
+		"attributes": {}
+	}
+}
+}
