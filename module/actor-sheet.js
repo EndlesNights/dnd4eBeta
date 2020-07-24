@@ -23,6 +23,16 @@ export class SimpleActorSheet extends ActorSheet {
 	/** @override */
 	getData() {
 		const data = super.getData();
+		// const data = {
+			// owner: isOwner,
+			// limited: this.entity.limited,
+			// options: this.options,
+			// editable: this.isEditable,
+			// cssClass: isOwner ? "editable" : "locked",
+			// isCharacter: this.entity.data.type === "character",
+			// isNPC: this.entity.data.type === "npc",
+			// config: CONFIG.DND4EALTUSE,
+		// };		
 		// data.dtypes = ["String", "Number", "Boolean"];
 		// for ( let attr of Object.values(data.data.attributes) ) {
 			// attr.isCheckbox = attr.dtype === "Boolean";
@@ -91,6 +101,15 @@ export class SimpleActorSheet extends ActorSheet {
 
     // Add or Remove Attribute
     html.find(".attributes").on("click", ".attribute-control", this._onClickAttributeControl.bind(this));
+
+
+    if ( this.actor.owner ) {	
+		// Roll Skill Checks
+		html.find('.skill-name').click(this._onRollSkillCheck.bind(this));
+		
+		//roll Abillity Checks
+		html.find('.ability-name').click(this._onRollAbilityCheck.bind(this));
+	}
   }
 
   _onCycleSkillProficiency(event) {
@@ -156,6 +175,32 @@ export class SimpleActorSheet extends ActorSheet {
   }
 
   /* -------------------------------------------- */
+
+  /**
+   * Handle rolling a Skill check
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  _onRollSkillCheck(event) {
+    event.preventDefault();
+    const skill = event.currentTarget.parentElement.dataset.skill;
+    this.actor.rollSkill(skill, {event: event});
+  }
+
+  /* -------------------------------------------- */
+  
+  /**
+   * Handle rolling a ability check
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  _onRollAbilityCheck(event) {
+    event.preventDefault();
+    let ability = event.currentTarget.parentElement.dataset.ability;
+    this.actor.rollAbility(ability, {event: event});
+  }
+
+  /* -------------------------------------------- */  
 
   /** @override */
   _updateObject(event, formData) {

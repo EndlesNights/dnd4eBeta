@@ -32,6 +32,11 @@
   flex: 4;
 }
 
+.dnd4eAltus.sheet input {
+	background: none;
+	border: 1px solid transparent;
+}
+
 .dnd4eAltus .window-content {
   height: 100%;
   padding: 5px;
@@ -43,14 +48,6 @@
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
 	font-size: 20px;
 	align-items: center;
-	
-  /* height: 400px; */
-  /* overflow: hidden; */
-  /* display: flex; */
-  /* flex-direction: row; */
-  /* flex-wrap: wrap; */
-  /* justify-content: flex-start; */
-  /* margin-bottom: 10px; */
 }
 
 .sheet .sheet-header img {
@@ -69,11 +66,6 @@
 .dnd4eAltus .sheet-header .charname {
 	padding: 0;
 	margin: 0;
-  /* height: 50px; */
-  /* padding: 0px; */
-  /* margin: 5px 0; */
-  /* border-bottom: 0; */
-  /* display:inline-block */
 }
 .dnd4eAltus .sheet-header .charname input {
 	padding: 0;
@@ -83,11 +75,6 @@
 	width: 95%;
 	background: none;
 	border: 1px solid transparent;
-  /* width: 100%; */
-  /* height: 100%; */
-  /* margin: 0; */
-  /* font-size: 24px; */
-  /* text-align: center; */
 }
 
 .dnd4eAltus .sheet-header .charlevel {
@@ -118,7 +105,7 @@
   width: 100px;
   height: 20px;
   font-size: 16px;
-  display:inline
+  display: inline;
 }
 
 .dnd4eAltus .sheet-header .charlevel .experience input {
@@ -245,7 +232,11 @@
 	font-size: 20px;
 	align-items: center;
 }
-
+.dnd4eAltus.sheet .editable .rollable:hover {
+  color: #000;
+  text-shadow: 0 0 10px red;
+  cursor: pointer;
+}
 .dnd4eAltus.sheet.actor .ability-scores {
   flex: 0 0 100px;
   height: 460px;
@@ -258,7 +249,7 @@
   border-radius: 3px;
 }
 .dnd4eAltus.sheet.actor .ability-scores .ability {
-  height: 70px;
+  height: 72px;
   text-align: center;
   border-bottom: 2px groove #eeede0;
 }
@@ -359,21 +350,305 @@
   cursor: default;
 }
 
+.dnd4eAltus.sheet.actor .center-pane {
+	height: 100%;
+	padding: 0 5px 0 3px;
+	overflow-y: auto;
+	scrollbar-width: thin;
+}
+
+.dnd4eAltus.sheet.actor .attributes input.temphp {
+  width: 48%;
+}
+.dnd4eAltus.sheet.actor h4.box-title {
+  height: 18px;
+  line-height: 16px;
+  margin: 4px 8px 2px;
+  font-size: 18px;
+  color: #4b4a44;
+  border-bottom: 1px solid #c9c7b8;
+}
+.dnd4eAltus.sheet.actor .tab.attributes {
+  overflow: hidden;
+}
+.dnd4eAltus.sheet.actor ul.attributes {
+  /* flex: 0 0 60px; */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 20%;
+  /* display: inline-flex; */
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-health {
+  height: 80px;
+  margin: 0 0 0 0;
+  border: 2px groove #eeede0;
+  border-radius: 4px;
+  font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
+  font-size: 20px;
+  text-align: center;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-health:last-child {
+  margin: 0;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-health .attribute-value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 28px;
+  line-height: 28px;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-health .attribute-value > * {
+  font-size: 24px;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-health .attribute-value.multiple input {
+  flex: 0 0 33%;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-health .attribute-footer {
+  flex: 0 0 18px;
+  margin-top: -1px;
+  line-height: 18px;
+  font-family: "Signika", "Palatino Linotype", serif;
+  font-size: 12px;
+}
+
+.dnd4eAltus .resource-half {
+  width: 50%;
+  height: 40px;
+  margin-top: 10px;
+  float: left;
+  /* text-align: center; */
+}
+.dnd4eAltus .resource-half input {
+  width: 100px;
+  height: 28px;
+}
+.dnd4eAltus .resource-half input::placeholder {
+	font-size: 12px;
+	color: #7a7971;
+}
+
+.dnd4eAltus .resource-half .attribute-footer span{
+	position: relative;
+	top: 5px;
+}
+.dnd4eAltus.sheet.actor .hitpoints {
+	/* display: flex; */
+	/* flex-direction: row; */
+	/* flex-wrap: wrap; */
+	/* justify-content: flex-start; */
+}
+
+
+/* .dnd4eAltus.sheet.actor h4.box-title { */
+	/* text-align: center; */
+	/* height: 18px; */
+	/* line-height: 16px; */
+	/* margin: 4px 8px 2px; */
+	/* font-size: 18px; */
+	/* color: #4b4a44; */
+	/* border-bottom: 1px solid #c9c7b8; */
+/* } */
+
+.dnd4eAltus.sheet.actor .box-title-hit {
+	text-align: center;
+	height: 18px;
+	line-height: 16px;
+	margin: 4px 8px 2px;
+	font-size: 18px;
+	color: #4b4a44;
+	border-bottom: 1px solid #c9c7b8;
+	
+
+	
+	display: inline;
+	/* width: 50%; */
+	/* text-align: center; */
+	/* height: 18px; */
+	/* float: left; */
+	/* line-height: 16px; */
+	
+	/* padding: 0 3px; */
+	/* border-bottom: 1px solid #c9c7b8; */
+	
+	/* line-height: 24px; */
+	/* color: #4b4a44;	 */
+}
+
+
+
+.dnd4eAltus.sheet.actor .hitdata {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 28px;
+	line-height: 28px;
+	
+	flex: 0 0 100%;
+	width: 50%;
+	/* height: 60px; */
+	/* margin: 0; */
+	/* padding: 0; */
+	/* list-style: none; */
+	/* border-top: 2px groove #eeede0; */
+	/* border-bottom: none; */
+	/* position: relative; */
+	/* top: 16px; */
+}
+
+.dnd4eAltus.sheet.actor .hitdata input{
+	text-align: center;
+	font-size: 24px
+}
+
+.dnd4eAltus.sheet.actor .hitdata .left input{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 28px;
+	line-height: 28px;
+	
+	text-align: right;
+	font-size: 24px
+}
+
+.dnd4eAltus.sheet.actor .hitdata .right input{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 28px;
+	line-height: 28px;
+	
+	text-align: left;
+	font-size: 24px
+	
+}
+
+.dnd4eAltus.sheet.actor .hitdata input::placeholder {
+	font-size: 16px;
+	color: #7a7971;
+}
+.dnd4eAltus.sheet.actor .hitdata .slash{
+	font-size: 28px;
+	color: #7a7971;
+}
+.dnd4eAltus.sheet.actor .half{
+	width: 50%;
+}
 
 
 
 
+.dnd4eAltus.sheet .sheet-header .hitdata input {
+	vertical-align: top;
+	background: none;
+	border: 1px solid transparent;
+}
+
+.dnd4eAltus.sheet .sheet-header .hitdata .left {
+	width: 30%;
+	float: left;
+	height: 24px;
+	padding: 0 3px;
+	/* border-left: 2px groove #eeede0; */
+	border-right: 2px groove #eeede0;
+	border-bottom: 2px groove #eeede0;
+	line-height: 24px;
+	color: #4b4a44;
+}
+
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-rest {
+  height: 80px;
+  margin: 0 0 0 0;
+  border: 2px groove #eeede0;
+  border-radius: 4px;
+  font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
+  font-size: 20px;
+  text-align: center;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-rest:last-child {
+  margin: 0;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-rest .attribute-value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 28px;
+  line-height: 28px;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-rest .attribute-value > * {
+  font-size: 24px;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-rest .attribute-value.multiple input {
+  flex: 0 0 33%;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-rest .attribute-footer {
+  flex: 0 0 18px;
+  margin-top: -1px;
+  line-height: 18px;
+  font-family: "Signika", "Palatino Linotype", serif;
+  font-size: 12px;
+}
+
+.dnd4eAltus .resource-full {
+  width: 100%;
+  height: 40px;
+  margin-top: 10px;
+  float: left;
+  /* text-align: center; */
+}
+.dnd4eAltus .resource-full input {
+  width: 10px;
+  height: 28px;
+}
+.dnd4eAltus .resource-full input::placeholder {
+	font-size: 12px;
+	color: #7a7971;
+}
+
+.dnd4eAltus .resource-full .attribute-footer span{
+	position: relative;
+	top: 5px;
+}
+
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-rest a.rest {
+	border: 1px solid #b5b3a4;
+	border-radius: 2px;
+	background: rgba(0, 0, 0, 0.05);
+	padding: 0 3px;
+	margin: 0 3px;
+	font-size: 12px;
+	text-align: left;
+}
 
 
+.dnd4eAltus.sheet.actor ul.attributes li.attribute-rest input[type="checkbox"] {
+	height: 14px;
+	width: 14px;
+	margin: 0;
+	top: 2px;
+  	position: relative;
+	/* left: 1%; */
+}
 
+/* .dnd4eAltus.sheet.actor ul.attributes li.attribute-rest a.second-wind { */
+	/* position: relative; */
+	/* left: -2%; */
+/* } */
 
+/* .dnd4eAltus.sheet.actor ul.attributes li.attribute-rest a.short-rest { */
+	/* position: relative; */
+	/* left: 9%; */
+/* } */
 
+/* .dnd4eAltus.sheet.actor ul.attributes li.attribute-rest a.long-rest { */
+	/* position: relative; */
+	/* left: 8%; */
+/* } */
 
-
-
-
-
-
+.dnd5e.sheet.actor.character .resource .attribute-value input {
+  flex: 0 0 25%;
+}
 
 
 
@@ -401,7 +676,7 @@
   margin: 5px 0;
   border-bottom: 0;
   font-size: 16px;
-  display:inline-block
+  display:inline-block;
 }
 .dnd4eAltus .sheet-header .char-details-level input {
   width: 50px;
@@ -444,17 +719,7 @@
   text-align: center;
 }
 
-.dnd4eAltus .resource {
-  width: 50%;
-  height: 40px;
-  margin-top: 10px;
-  float: left;
-  text-align: center;
-}
-.dnd4eAltus .resource input {
-  width: 100px;
-  height: 28px;
-}
+
 .dnd4eAltus .tabs {
   height: 40px;
   border-top: 1px solid #AAA;
@@ -537,7 +802,7 @@
   border: none;
 }
 .dnd4eAltus.sheet.actor {
-  min-width: 600px;
+  min-width: 680px;
   min-height: 420px;
 }
 .dnd4eAltus.sheet.item {

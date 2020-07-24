@@ -1,3 +1,4 @@
+import { d20Roll, damageRoll } from "./dice.js";
 import { DND4EALTUS } from "./config.js";
 
 /**
@@ -93,13 +94,15 @@ export class SimpleActor extends Actor {
 			}
 		}
 		
+		data.health.bloodied = Math.floor(data.health.max / 2);
+		data.health.surgeValue = Math.floor(data.health.bloodied / 2) + data.health.surgeBon;
+		
 		// Skill modifiers
 		// const feats = DND4E.characterFlags;
 		// const athlete = flags.remarkableAthlete;
 		// const joat = flags.jackOfAllTrades;
 		// const observant = flags.observantFeat;
 		// const skillBonus = Number.isNumeric(bonuses.skill) ? parseInt(bonuses.skill) :  0;		
-		console.log(Object.entries(data.skills));
 		for (let [id, skl] of Object.entries(data.skills)) {
 
 			skl.value = parseFloat(skl.value || 0);
@@ -117,7 +120,91 @@ export class SimpleActor extends Actor {
 			// skl.hover = CONFIG.DND4E.proficiencyLevels[skl.value];
 			// skl.label = CONFIG.DND4E.skills[id];
 		}
-		
-		
 	}  
+	
+  /**
+   * Roll a Skill Check
+   * Prompt the user for input regarding Advantage/Disadvantage and any Situational Bonus
+   * @param {string} skillId      The skill id (e.g. "ins")
+   * @param {Object} options      Options which configure how the skill check is rolled
+   * @return {Promise.<Roll>}   A Promise which resolves to the created Roll instance
+   */
+	rollSkill(skillId, options={}) {
+		const skl = this.data.data.skills[skillId];
+		const bonuses = getProperty(this.data.data, "bonuses.abilities") || {};
+
+		// Compose roll parts and data
+		const parts = ["@mod"];
+		const data = {mod: skl.total};
+
+		// Ability test bonus
+		if ( bonuses.check ) {
+			data["checkBonus"] = bonuses.check;
+			parts.push("@checkBonus");
+		}
+
+		// Skill check bonus
+		if ( bonuses.skill ) {
+			data["skillBonus"] = bonuses.skill;
+			parts.push("@skillBonus");
+		}
+
+		// Reliable Talent applies to any skill check we have full or better proficiency in
+		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd5e", "reliableTalent"));
+
+		// Roll and return
+		return d20Roll(mergeObject(options, {
+			parts: parts,
+			data: data,
+			//title: game.i18n.format("DND4EALTUS.SkillPromptTitle", {skill: CONFIG.DND5E.skills[skillId]}),
+			title: "Test Name",
+			speaker: ChatMessage.getSpeaker({actor: this}),
+			//halflingLucky: this.getFlag("dnd5e", "halflingLucky"),
+			//reliableTalent: reliableTalent
+		}));
+	}	
+  
+  
+  /**
+   * Roll a Ability Check
+   * Prompt the user for input regarding Advantage/Disadvantage and any Situational Bonus
+   * @param {String} abilityId    The ability ID (e.g. "str")
+   * @param {Object} options      Options which configure how ability tests are rolled
+   * @return {Promise<Roll>}      A Promise which resolves to the created Roll instance
+   */
+	rollAbility(abilityId, options={}) {
+		const label = abilityId; //CONFIG.DND5E.abilities[abilityId];
+		const abl = this.data.data.abilities[abilityId];
+
+		// Construct parts
+		const parts = ["@mod"];
+		const data = {mod: abl.mod};
+
+		// Add feat-related proficiency bonuses
+		const feats = this.data.flags.dnd5e || {};
+		if ( feats.remarkableAthlete && DND5E.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
+			parts.push("@proficiency");
+			data.proficiency = Math.ceil(0.5 * this.data.data.attributes.prof);
+		}
+		else if ( feats.jackOfAllTrades ) {
+			parts.push("@proficiency");
+			data.proficiency = Math.floor(0.5 * this.data.data.attributes.prof);
+		}
+
+		// Add global actor bonus
+		const bonuses = getProperty(this.data.data, "bonuses.abilities") || {};
+		if ( bonuses.check ) {
+			parts.push("@checkBonus");
+			data.checkBonus = bonuses.check;
+		}
+
+		// Roll and return
+		return d20Roll(mergeObject(options, {
+			parts: parts,
+			data: data,
+			title: game.i18n.format("DND5E.AbilityPromptTitle", {ability: label}),
+			speaker: ChatMessage.getSpeaker({actor: this}),
+			halflingLucky: feats.halflingLucky
+		}));
+	}
 }

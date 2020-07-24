@@ -27,7 +27,18 @@
 			"health": {
 				"value": 10,
 				"min": 0,
-				"max": 10
+				"max": 10,
+				"temp": 0,
+				"secondwind": "false",
+				"deathsaves": 3,
+				"deathsavefail": 0,
+				"deathsavebon": 0,
+				"bloodied": 0,
+				"surgeValue": 0,
+				"surgeBon": 0,
+				"surgeCur": 0,
+				"surgeDay": 0,
+				"surgeEnv": 0
 			},
 			"init": {
 				"value": 0,

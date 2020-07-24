@@ -1,14 +1,14 @@
-<form class="{{cssClass}}" autocomplete="off">
-
-    {{!-- Sheet Header --}}
-    <header class="sheet-header flexrow">
-        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+<form class="{{cssClass}}" autocomplete="off">				
+			
+	{{!-- Sheet Header --}}
+	<header class="sheet-header flexrow">
+		<img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
 		
 		
-        <div class="header-fields flexcol">
+		<div class="header-fields flexcol">
 			<div class="flexrow">
 				<h1 class="charname">
-					<input name="name" type="text" value="{{actor.name}}" title="{{localize "DND4EALTUS.Name"}}" placeholder="{{localize "DND4EALTUS.Name"}}" onClick="this.select();"/>			
+					<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EALTUS.Name'}}" placeholder="{{localize 'DND4EALTUS.Name'}}" onClick="this.select();"/>			
 				</h1>
 				
 				<div class="charlevel">
@@ -52,8 +52,8 @@
 					</div>
 				</div>
 			</div>
-        </div>
-    </header>
+		</div>
+	</header>
 	{{!-- Character Class Info --}}
 	<div class="header-fields flexcol">
 		<div class="class-summary">
@@ -71,42 +71,42 @@
 	
 
 
-    {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="description">Bio & Info</a>
+	{{!-- Sheet Tab Navigation --}}
+	<nav class="sheet-tabs tabs" data-group="primary">
+		<a class="item" data-tab="description">Bio & Info</a>
 		<a class="item" data-tab="attributes">Attributes</a>
-        <a class="item" data-tab="items">Inventory</a>
-    </nav>
+		<a class="item" data-tab="items">Inventory</a>
+	</nav>
 
-    {{!-- Sheet Body --}}
-    <section class="sheet-body">
+	{{!-- Sheet Body --}}
+	<section class="sheet-body">
 
-        {{!-- Biography Tab --}}
-        <div class="tab biography" data-group="primary" data-tab="description">
-            {{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
-        </div>
+		{{!-- Biography Tab --}}
+		<div class="tab biography" data-group="primary" data-tab="description">
+			{{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
+		</div>
 
-        {{!-- Owned Items Tab --}}
-        <div class="tab items" data-group="primary" data-tab="items">
-            <ol class="item-list">
-            {{#each actor.items as |item id|}}
-                <li class="item flexrow" data-item-id="{{item._id}}">
-                    <img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
-                    <h4 class="item-name">{{item.name}}</h4>
-                    <div class="item-controls">
-                        <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                        <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-                    </div>
-                </li>
-            {{/each}}
-            </ol>
-        </div>
+		{{!-- Owned Items Tab --}}
+		<div class="tab items" data-group="primary" data-tab="items">
+			<ol class="item-list">
+			{{#each actor.items as |item id|}}
+				<li class="item flexrow" data-item-id="{{item._id}}">
+					<img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/>
+					<h4 class="item-name">{{item.name}}</h4>
+					<div class="item-controls">
+						<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+						<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+					</div>
+				</li>
+			{{/each}}
+			</ol>
+		</div>
 
 		{{!-- Attributes Tab --}}
 		<div class="tab attributes flexrow" data-group="primary" data-tab="attributes">
 		
 			{{!-- Ability Scores --}}
-			<ul class="ability-scores flexrow">
+			<ul class="ability-scores">
 			{{#each data.abilities as |ability id|}}
 				<li class="ability" data-ability="{{id}}">
 					<h4 class="ability-name box-title rollable">{{ability.label}}</h4>
@@ -117,26 +117,68 @@
 			</ul>
 
 
-            {{!-- Skills --}}
-            <ul class="skills-list">
-            {{#each data.skills as |skill s|}}
-                <li class="skill flexrow {{#if skill.value}}proficient{{/if}}" data-skill="{{s}}">
-                    <input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number"/>
-                    <span class="skill-mod">{{numberFormat skill.total decimals=0 sign=true }}</span>
-                    <h4 class="skill-name rollable">{{skill.label}}</h4>
-                    <span class="skill-ability">{{skill.ability}}</span>
+			{{!-- Skills --}}
+			<ul class="skills-list">
+			{{#each data.skills as |skill s|}}
+				<li class="skill flexrow {{#if skill.value}}proficient{{/if}}" data-skill="{{s}}">
+					<input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number"/>
+					<span class="skill-mod">{{numberFormat skill.total decimals=0 sign=true }}</span>
+					<h4 class="skill-name rollable">{{skill.label}}</h4>
+					<span class="skill-ability">{{skill.ability}}</span>
 					<a class="training-toggle skill-training" title="{{skill.hover}}">{{{skill.icon}}}</a>
 					<input type="text" class="skill-mod" name="data.skills.{{s}}.expt" value="{{skill.expt}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Expertise"> </input>
 					<input type="text" class="skill-mod" name="data.skills.{{s}}.armor" value="{{skill.armor}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour"> </input>
 					<input type="text" class="skill-mod" name="data.skills.{{s}}.misc" value="{{skill.misc}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Misc"> </input>
-                </li>
-            {{/each}}
-            </ul>
+				</li>
+			{{/each}}
+			</ul>
 			
+			{{!-- Attributes --}}
+			<ul class="attributes">
+				{{!-- Health --}}
+				<li class="attribute-health resource-half">
+					<h4 class="attribute-name box-title">Health</h4>
+					<div class="attribute-value">
+						<input type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EALTUS.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<span class="sep"> / </span>
+						<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EALTUS.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+					</div>
+					<footer class="attribute-footer flexrow">					
+						<input type="text" name="data.health.temp" value="{{data.health.temp}}" title="{{localize 'DND4EALTUS.Temp'}}"  placeholder="{{localize 'DND4EALTUS.Temp'}}" data-dtype="Number" onClick="this.select();"/>
+						<span title="{{localize 'DND4EALTUS.HPBloodied'}}">{{localize 'DND4EALTUS.HPBloodied'}}: {{data.health.bloodied}}</span>
+					</footer>						
+				</li>
+				<li class="attribute-health resource-half">
+					<h4 class="attribute-name box-title">Surge</h4>
+					<div class="attribute-value">
+						<input type="text" name="data.health.surgeValue" value="{{data.health.surgeValue}}" title="{{localize 'DND4EALTUS.SurgeValue'}}"  placeholder="{{localize 'DND4EALTUS.SurgeValue'}}" data-dtype="Number" onClick="this.select();"/>
+						<span class="sep">|</span>
+						<input type="text" name="data.health.surgeCur" value="{{data.health.surgeCur}}" title="{{localize 'DND4EALTUS.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<span class="sep">/</span>
+						<input type="text" name="data.health.surgeDay" value="{{data.health.surgeDay}}" title="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+					</div>
+					<footer class="attribute-footer flexrow">	
+						<input type="text" name="data.health.surgeBon" value="{{data.health.surgeBon}}" title="{{localize 'DND4EALTUS.SurgeBon'}}"  placeholder="Surge Bonus" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.health.surgeEnv" value="{{data.health.surgeEnv}}" title="{{localize 'DND4EALTUS.SurgeEnv'}}"  placeholder="Envir Losses" data-dtype="Number" onClick="this.select();"/>					
+					</footer>
+				</li>
+				<li class="attribute-rest resource-full">
+					<div>
+						
+						<a class="rest second-wind">Second Wind</a>
+						<input type="checkbox" name="data.health.secondwind" data-dtype="Boolean" {{checked data.health.secondwind}} title="Second Wind Used"/>
+						<a class="rest short-rest">{{ localize "DND4EALTUS.RestS" }}</a>
+						<a class="rest long-rest">{{ localize "DND4EALTUS.RestL" }}</a>
+						<a class="rest death-save">Death Save</a>
+						<input type="text" name="data.health.deathsavebon" value="{{data.health.deathsavebon}}" title="Death Save Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</li>
+				
+			</ul>
 
 		</div>
 
-    </section>
+	</section>
 </form>
 
 <!-- text-shadow style.css:1056 -->
