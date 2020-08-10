@@ -1,4 +1,9 @@
 import { DND4EALTUS } from "./config.js";
+import HPOptions from "./apps/hp-options.js";
+import SecondWindDialog from "./apps/second-wind.js";
+// import ShortRestDialog from "./apps/short-rest.js";
+// import LongRestDialog from "./apps/long-rest.js";
+
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -12,7 +17,7 @@ export class SimpleActorSheet extends ActorSheet {
   	  classes: ["dnd4eAltus", "sheet", "actor"],
   	  template: "systems/dnd4eAltus/templates/actor-sheet.html",
       width: 700,
-      height: 720,
+      height: 690,
       tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "attributes"}],
       dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}]
     });
@@ -43,7 +48,7 @@ export class SimpleActorSheet extends ActorSheet {
 			skl.hover = game.i18n.localize(DND4EALTUS.trainingLevels[skl.value]);
 			skl.label = game.i18n.localize(DND4EALTUS.skills[s]);
 		}
-	return data;
+		return data;
 	}
 
 	_getTrainingIcon(level) {
@@ -109,8 +114,72 @@ export class SimpleActorSheet extends ActorSheet {
 		
 		//roll Abillity Checks
 		html.find('.ability-name').click(this._onRollAbilityCheck.bind(this));
+		
+		//Open HP-Options
+		html.find('.health-option').click(this._onHPOptions.bind(this));
+		
+		
+		//second wind
+		html.find('.second-wind').click(this._onSecondWind.bind(this));
+		
+		//short rest
+		html.find('.short-rest').click(this._onShortRest.bind(this));
+		
+		//long rest
+		html.find('.short-rest').click(this._onLongRest.bind(this));
 	}
   }
+
+
+
+	/* -------------------------------------------- */
+  
+	/**
+	*Opens HP options config window, turns on/off auto calculation of HP based on class stats
+	*/
+	_onHPOptions(event) {
+		event.preventDefault();
+
+		new HPOptions(this.actor).render(true)
+	}
+
+	/* -------------------------------------------- */
+  
+	/**
+	* Opens dialog window to spend Second Wind
+	*/
+	_onSecondWind(event) {
+		// event.preventDefault();
+		// this._onSubmit(event);
+		return this.actor.secondWind();
+		//new SecondWindDialog(this.actor).render(true)
+	}
+	
+	/* -------------------------------------------- */
+  
+	/**
+	*Opens dialog window to short rest.
+	*Spend n number of healin surges,
+	*reset encounter powers, action point ussage, second wind ussage.
+	*/
+	_onShortRest(event) {
+		event.preventDefault();
+
+		// new ShortRestDialog(this.actor).render(true)
+	}
+	
+	/* -------------------------------------------- */
+  
+	/**
+	*Opens dialog window to long rest.
+	*reset HP, surges, encounter powers, daily powers, magic item use, actions points set to default.
+	*/
+	_onLongRest(event) {
+		event.preventDefault();
+
+		// new LongRestDialog(this.actor).render(true)
+	}
+
 
   _onCycleSkillProficiency(event) {
     event.preventDefault();

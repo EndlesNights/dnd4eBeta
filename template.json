@@ -28,22 +28,65 @@
 				"value": 10,
 				"min": 0,
 				"max": 10,
-				"temp": 0,
-				"secondwind": "false",
-				"deathsaves": 3,
-				"deathsavefail": 0,
-				"deathsavebon": 0,
-				"bloodied": 0,
-				"surgeValue": 0,
-				"surgeBon": 0,
-				"surgeCur": 0,
-				"surgeDay": 0,
-				"surgeEnv": 0
-			},
+				"starting": 10,
+				"perlevel": 5,
+				"feat": 0,
+				"misc": 0,
+				"autototal": false
+			},		
 			"init": {
 				"value": 0,
 				"ability": "dex",
 				"bonus": 0
+			},
+			"actionpoints":	{
+				"value": 1,
+				"encounteruse": false,
+				"effects": ""
+			},
+			"defences": {
+				"ac": {
+					"value": 10,
+					"ability": "",
+					"armor": 0,
+					"class": 0,
+					"feat": 0,
+					"enhance": 0,
+					"misc": 0,
+					"temp": 0,
+					"heavy": false,
+					"altability": ""
+				},
+				"fort": {
+					"value": 10,
+					"ability": "",
+					"armor": 0,
+					"class": 0,
+					"feat": 0,
+					"enhance": 0,
+					"misc": 0,
+					"temp": 0
+				},
+				"ref": {
+					"value": 10,
+					"ability": "",
+					"armor": 0,
+					"class": 0,
+					"feat": 0,
+					"enhance": 0,
+					"misc": 0,
+					"temp": 0
+				},
+				"wil": {
+					"value": 10,
+					"ability": "",
+					"armor": 0,
+					"class": 0,
+					"feat": 0,
+					"enhance": 0,
+					"misc": 0,
+					"temp": 0
+				}	
 			},
 			"details": {
 				"level": 1,
@@ -58,7 +101,47 @@
 				"height": "",
 				"weight": "",
 				"alignment": "",
-				"deity": ""
+				"deity": "",
+				
+				"temp": 0,
+				"secondwind": false,
+				"deathsaves": 3,
+				"deathsavefail": 0,
+				"deathsavebon": 0,
+				"bloodied": 0,
+				"surgeValue": 0,
+				"surgeBon": 0,
+				"surgeCur": 0,
+				"surgeDay": 0,
+				"surgeEnv": 0,
+				"secondwindbon": 0
+			},
+			"languages": {
+				"value": [],
+				"custom": ""
+			},
+			"senses": "",
+			"movement": {
+				"basic": {
+					"value": 0,
+					"base": 6,
+					"armor": 0,
+					"misc": 0,
+					"temp": 0
+				},
+				"charge": {
+					"value": 0,
+					"armor": 0,
+					"misc": 0,
+					"temp": 0
+				},
+				"run": {
+					"value": 0,
+					"armor": 0,
+					"misc": 0,
+					"temp": 0
+				},
+				"special": ""
 			},
 			"skills": {
 				"acr": {
@@ -194,7 +277,141 @@
 					"misc": 0,
 					"ability": "dex"
 				}
-			},			
+			},
+			"passive": {
+				"pasprc": {
+					"value": 0,
+					"skill": "prc",
+					"bonus": 0
+				},
+				"pasins": {
+					"value": 0,
+					"skill": "ins",
+					"bonus": 0
+				}
+			},
+			"resistences": {
+				"damage": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"physical": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"slash": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"pierce": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"bludgeon": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"acid": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},"cold": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"fire": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"force": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"lightning": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"necrotic": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"poison": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"psychic": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"radiant": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				},
+				"thunder": {
+					"value": 0,
+					"enchant": 0,
+					"race": 0,
+					"misc": 0,
+					"half": false,
+					"immune": false
+				}
+				
+			},
 			"attributes": {}			
 		}
 	},

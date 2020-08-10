@@ -21,10 +21,10 @@ Hooks.once("init", async function() {
 	 * Set an initiative formula for the system
 	 * @type {String}
 	 */
-	CONFIG.Combat.initiative = {
-	  formula: "1d20",
-    decimals: 2
-  };
+	// CONFIG.Combat.initiative = {
+		// formula: "1d20",
+		// decimals: 2
+  // };
 
 	// Define custom Entity classes
   CONFIG.Actor.entityClass = SimpleActor;

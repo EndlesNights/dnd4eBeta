@@ -241,19 +241,44 @@ DND4EALTUS.currencies = {
 
 // Damage Types
 DND4EALTUS.damageTypes = {
+	
+  "damage": "DND4EALTUS.Damage",
   "acid": "DND4EALTUS.DamageAcid",
   "bludgeoning": "DND4EALTUS.DamageBludgeoning",
+  "bludgeon": "DND4EALTUS.DamageBludgeoning",
   "cold": "DND4EALTUS.DamageCold",
   "fire": "DND4EALTUS.DamageFire",
   "force": "DND4EALTUS.DamageForce",
   "lightning": "DND4EALTUS.DamageLightning",
   "necrotic": "DND4EALTUS.DamageNecrotic",
+  "pierce": "DND4EALTUS.DamagePiercing",
   "piercing": "DND4EALTUS.DamagePiercing",
+  "physical": "DND4EALTUS.Damagephysical",
   "poison": "DND4EALTUS.DamagePoison",
   "psychic": "DND4EALTUS.DamagePsychic",
   "radiant": "DND4EALTUS.DamageRadiant",
   "slashing": "DND4EALTUS.DamageSlashing",
+  "slash": "DND4EALTUS.DamageSlashing",
   "thunder": "DND4EALTUS.DamageThunder"
+};
+
+/* -------------------------------------------- */
+
+// Def
+DND4EALTUS.def = {
+  "ac": "DND4EALTUS.DefAC",
+  "fort": "DND4EALTUS.DefFort",
+  "ref": "DND4EALTUS.DefRef",
+  "wil": "DND4EALTUS.DefWil"
+};/* -------------------------------------------- */
+
+
+// Defensives
+DND4EALTUS.defensives = {
+  "ac": "DND4EALTUS.DefenceAC",
+  "fort": "DND4EALTUS.DefenceFort",
+  "ref": "DND4EALTUS.DefenceRef",
+  "wil": "DND4EALTUS.DefenceWil"
 };
 
 /* -------------------------------------------- */
@@ -361,7 +386,7 @@ DND4EALTUS.senses = {
 /* -------------------------------------------- */
 
 /**
- * The set of skill which can be trained in D&D5e
+ * The set of skill which can be trained in D&D4eAltus
  * @type {Object}
  */
 DND4EALTUS.skills = {

@@ -1,0 +1,35 @@
+<form autocomplete="off" onsubmit="event.preventDefault();">
+	<div>
+		<span>Automatically calculate total HP:</span>
+		<input type="checkbox" name="data.health.autototal" data-dtype="Boolean" {{checked data.health.autototal}} title="Auto Cal HP"/>
+	</div>
+	<div>
+		<span>Hit Points at 1st Level:</span>
+		<input type="text" name="data.health.starting" value="{{data.health.starting}}" title="HP at 1st Level"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+		<span>+ {{data.abilities.con.value}} (Constitution score)</span>
+	</div>
+	<div>
+		<span>Hit Points per level gain:</span>
+		<input type="text" name="data.health.perlevel" value="{{data.health.perlevel}}" title="HP per Level"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+	</div>
+	<div>
+		<span>Misc bonus Hit Points:</span>
+		<input type="text" name="data.health.misc" value="{{data.health.misc}}" title="Misc HP"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+	</div>
+	
+	
+	
+	<!-- <span>Auto Calculate Total Hit Points:</span> -->
+	<!-- <span>{{data.details.bloodied}}</span> -->
+	
+	<!-- <span>Class Hitpoints at level 1:</span> -->
+	<!-- <span>Hitpoints per level:</span> -->
+	
+	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
+
+</form>
+
+<!-- <div> -->
+	
+
+<!-- </div> -->

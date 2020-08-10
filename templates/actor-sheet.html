@@ -50,24 +50,22 @@
 					<div class="list-alig">	
 						<input type="text" name="data.details.deity" value="{{data.details.deity}}" title="{{localize "DND4EALTUS.Deity"}}"  placeholder="{{localize "DND4EALTUS.Deity"}}" data-dtype="Text" onClick="this.select();"/>						
 					</div>
+					<div class="list-class">	
+						<input type="text" name="data.details.class" value="{{data.details.class}}" title="{{localize "DND4EALTUS.ClassName"}}"placeholder="{{localize "DND4EALTUS.ClassName"}}" data-dtype="Text" onClick="this.select();"/>
+					</div>
+					<div class="list-class">	
+						<input type="text" name="data.details.paragon" value="{{data.details.paragon}}" title="{{localize "DND4EALTUS.Paragon"}}"placeholder="{{localize "DND4EALTUS.Paragon"}}" data-dtype="Text" onClick="this.select();"/>
+					</div>
+					<div class="list-end">	
+						<input type="text" name="data.details.epic" value="{{data.details.epic}}" title="{{localize "DND4EALTUS.Epic"}}"placeholder="{{localize "DND4EALTUS.Epic"}}" data-dtype="Text" onClick="this.select();"/>
+					</div>
+					
 				</div>
 			</div>
 		</div>
 	</header>
-	{{!-- Character Class Info --}}
-	<div class="header-fields flexcol">
-		<div class="class-summary">
-			<li class="class-base">
-				<input type="text" name="data.details.class" value="{{data.details.class}}" title="{{localize "DND4EALTUS.ClassName"}}"  placeholder="{{localize "DND4EALTUS.ClassName"}}" data-dtype="Text" onClick="this.select();"/>
-			</li>
-			<li>
-				<input type="text" name="data.details.paragon" value="{{data.details.paragon}}" title="{{localize "DND4EALTUS.Paragon"}}"  placeholder="{{localize "DND4EALTUS.Paragon"}}" data-dtype="Text" onClick="this.select();"/>
-			</li>
-			<li>
-				<input type="text" name="data.details.epic" value="{{data.details.epic}}" title="{{localize "DND4EALTUS.Epic"}}"  placeholder="{{localize "DND4EALTUS.Epic"}}" data-dtype="Text" onClick="this.select();"/>
-			</li>
-		</div>
-	</div>
+	
+
 	
 
 
@@ -76,6 +74,8 @@
 		<a class="item" data-tab="description">Bio & Info</a>
 		<a class="item" data-tab="attributes">Attributes</a>
 		<a class="item" data-tab="items">Inventory</a>
+		<a class="item" data-tab="feats">Feats</a>
+		<a class="item" data-tab="powers">Powers</a>
 	</nav>
 
 	{{!-- Sheet Body --}}
@@ -134,7 +134,7 @@
 			</ul>
 			
 			{{!-- Attributes --}}
-			<ul class="attributes">
+			<ul class="attributes scrollbar">
 				{{!-- Health --}}
 				<li class="attribute-health resource-half">
 					<h4 class="attribute-name box-title">Health</h4>
@@ -143,39 +143,223 @@
 						<span class="sep"> / </span>
 						<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EALTUS.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
-					<footer class="attribute-footer flexrow">					
-						<input type="text" name="data.health.temp" value="{{data.health.temp}}" title="{{localize 'DND4EALTUS.Temp'}}"  placeholder="{{localize 'DND4EALTUS.Temp'}}" data-dtype="Number" onClick="this.select();"/>
-						<span title="{{localize 'DND4EALTUS.HPBloodied'}}">{{localize 'DND4EALTUS.HPBloodied'}}: {{data.health.bloodied}}</span>
+					<footer class="attribute-footer">					
+						<input type="text" name="data.details.temp" value="{{data.details.temp}}" title="{{localize 'DND4EALTUS.Temp'}}"  placeholder="{{localize 'DND4EALTUS.Temp'}}" data-dtype="Number" onClick="this.select();"/>
+						<span title="{{localize 'DND4EALTUS.HPBloodied'}}">{{localize 'DND4EALTUS.HPBloodied'}}: {{data.details.bloodied}}</span>
+						<a class="health-option" data-options="damageTypes" data-target="data.details" style="position: relative; left: -5px; top: 4px;">
+							<i class="fas fa-cog"></i>
+						</a>						
 					</footer>						
 				</li>
 				<li class="attribute-health resource-half">
 					<h4 class="attribute-name box-title">Surge</h4>
 					<div class="attribute-value">
-						<input type="text" name="data.health.surgeValue" value="{{data.health.surgeValue}}" title="{{localize 'DND4EALTUS.SurgeValue'}}"  placeholder="{{localize 'DND4EALTUS.SurgeValue'}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.surgeValue" value="{{data.details.surgeValue}}" title="{{localize 'DND4EALTUS.SurgeValue'}}"  placeholder="{{localize 'DND4EALTUS.SurgeValue'}}" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">|</span>
-						<input type="text" name="data.health.surgeCur" value="{{data.health.surgeCur}}" title="{{localize 'DND4EALTUS.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.surgeCur" value="{{data.details.surgeCur}}" title="{{localize 'DND4EALTUS.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">/</span>
-						<input type="text" name="data.health.surgeDay" value="{{data.health.surgeDay}}" title="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.surgeDay" value="{{data.details.surgeDay}}" title="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
-					<footer class="attribute-footer flexrow">	
-						<input type="text" name="data.health.surgeBon" value="{{data.health.surgeBon}}" title="{{localize 'DND4EALTUS.SurgeBon'}}"  placeholder="Surge Bonus" data-dtype="Number" onClick="this.select();"/>
-						<input type="text" name="data.health.surgeEnv" value="{{data.health.surgeEnv}}" title="{{localize 'DND4EALTUS.SurgeEnv'}}"  placeholder="Envir Losses" data-dtype="Number" onClick="this.select();"/>					
+					<footer class="attribute-footer flexrow">
+						<input type="text" name="data.details.surgeBon" value="{{data.details.surgeBon}}" title="{{localize 'DND4EALTUS.SurgeBon'}}"  placeholder="Surge Bonus" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.surgeEnv" value="{{data.details.surgeEnv}}" title="{{localize 'DND4EALTUS.SurgeEnv'}}"  placeholder="Envir Losses" data-dtype="Number" onClick="this.select();"/>					
 					</footer>
 				</li>
+				{{!-- Rest and Death --}}
 				<li class="attribute-rest resource-full">
 					<div>
-						
 						<a class="rest second-wind">Second Wind</a>
-						<input type="checkbox" name="data.health.secondwind" data-dtype="Boolean" {{checked data.health.secondwind}} title="Second Wind Used"/>
+						<input type="checkbox" name="data.details.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="Second Wind Used"/>
+						<span>Bonus:</span>
+						<input type="text" name="data.details.secondwindbon" value="{{data.details.secondwindbon}}" title="Second Wind Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						
 						<a class="rest short-rest">{{ localize "DND4EALTUS.RestS" }}</a>
 						<a class="rest long-rest">{{ localize "DND4EALTUS.RestL" }}</a>
-						<a class="rest death-save">Death Save</a>
-						<input type="text" name="data.health.deathsavebon" value="{{data.health.deathsavebon}}" title="Death Save Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</div>	
+					<div >	
+						<a class="death death-save">Death Saving Throw</a>
+						<span>Bonus:</span>
+						<input type="text" name="data.details.deathsavebon" value="{{data.details.deathsavebon}}" title="Death Save Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<span>Failures:</span>
+						<input type="text" name="data.details.deathsavefail" value="{{data.details.deathsavefail}}" title="Death Save Failures"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<i class="fas fa-skull"></i>
+
 					</div>
 				</li>
+				{{!-- Defences --}}
+				<div class="attribute-def resource-full">
+					<h4 class="attribute-name box-title">Defences</h4>
+					<li class="flexrow">
+							<span class="def-value">{{numberFormat data.defences.ac.value decimals=0 sign=true }}</span>
+							<span class="def-name" title="Armour Class">AC</span>
+							
+							<input type="text" name="data.defences.ac.armor" value="{{data.defences.ac.armor}}" title="AC Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="data.defences.ac.class" value="{{data.defences.ac.class}}" title="AC Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="data.defences.ac.feat" value="{{data.defences.ac.feat}}" title="AC Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="data.defences.ac.enhance" value="{{data.defences.ac.enhance}}" title="AC Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="data.defences.ac.misc" value="{{data.defences.ac.misc}}" title="AC Misc"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="data.defences.ac.temp" value="{{data.defences.ac.temp}}" title="AC Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</li>
+					<li class="attribute-ac">
+							<footer style="text-align: center;">
+								<span>Heavy Armour: </span>
+								<input type="checkbox" name="data.defences.ac.heavy" data-dtype="Boolean" {{checked data.defences.ac.heavy}} title="Heavy Armour Check"/>
+								<span>Alternative Mod: </span>
+								<select name="data.defences.ac.altability">
+									{{#select data.defences.ac.altability}}
+									<option value="" >Default</option>
+									<option value="str" >Strength</option>
+									<option value="con" >Constitution</option>
+									<option value="wis" >Wisdom</option>
+									<option value="cha" >Charisma</option>
+									{{/select}}
+								</select>
+							</footer>						
+					</li>
+					<li class="flexrow">
+					
+						<span class="def-value">{{numberFormat data.defences.fort.value decimals=0 sign=true }}</span>
+						<span class="def-name">Fort</span>
+						
+						<input type="text" name="data.defences.fort.armor" value="{{data.defences.fort.armor}}" title="Fort Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.fort.class" value="{{data.defences.fort.class}}" title="Fort Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.fort.feat" value="{{data.defences.fort.feat}}" title="Fort Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.fort.enhance" value="{{data.defences.fort.enhance}}" title="Fort Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.fort.misc" value="{{data.defences.fort.misc}}" title="Fort Misc"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.fort.temp" value="{{data.defences.fort.temp}}" title="Fort Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>						
+					</li>
+					<li class="flexrow">
+						<span class="def-value">{{numberFormat data.defences.ref.value decimals=0 sign=true }}</span>
+						<span class="def-name">Ref</span>
+						
+						<input type="text" name="data.defences.ref.armor" value="{{data.defences.ref.armor}}" title="Ref Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.ref.class" value="{{data.defences.ref.class}}" title="Ref Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.ref.feat" value="{{data.defences.ref.feat}}" title="Ref Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.ref.enhance" value="{{data.defences.ref.enhance}}" title="Ref Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.ref.misc" value="{{data.defences.ref.misc}}" title="Ref Misc"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.ref.temp" value="{{data.defences.ref.temp}}" title="Ref Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</li>
+					<li class="flexrow">
+						<span class="def-value">{{numberFormat data.defences.wil.value decimals=0 sign=true }}</span>
+						<span class="def-name">Will</span>
+						
+						<input type="text" name="data.defences.wil.armor" value="{{data.defences.wil.armor}}" title="Will Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.wil.class" value="{{data.defences.wil.class}}" title="Will Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.wil.feat" value="{{data.defences.wil.feat}}" title="Will Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.wil.enhance" value="{{data.defences.wil.enhance}}" title="Will Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.wil.misc" value="{{data.defences.wil.misc}}" title="Will Misc"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.defences.wil.temp" value="{{data.defences.wil.temp}}" title="Will Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</li>
+				</div>	
+				
+				<div class="attribute-init resource-full">
+					{{!-- Initiative --}}
+					<h4 class="attribute-name box-title">Initiative</h4>
+					<span title="Initiative Score">Initiative:</span>
+					<span title="Initiative Score">{{numberFormat data.init.value decimals=0 sign=true }}</span>
+					<span title="Initiative Score">Bonus:</span>
+					<input class="init-bonus" type="text" name="data.init.bonus" value="{{data.init.bonus}}" title="Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+					<span title="Initiative Score">Mod:</span>
+						<select name="data.init.ability">
+							{{#select data.init.ability}}
+							<option value="str" >Strength</option>
+							<option value="con" >Constitution</option>
+							<option value="dex" >Dexterity</option>
+							<option value="int" >Intelligence</option>
+							<option value="wis" >Wisdom</option>
+							<option value="cha" >Charisma</option>
+							{{/select}}
+						</select>				
+				</div>
+				
+				{{!-- Action Point --}}
+				
+				<div class="attribute-init resource-full">
+					<h4 class="attribute-name box-title">Action Points</h4>
+					<span title="Action Points">Action Points:</span>
+					<input type="text" name="data.actionpoints.vale" value="{{data.actionpoints.vale}}" title="Number of Action Points" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+					<span title="Action Points">Bonus Action Taken:</span>
+					<input class="action-box" type="checkbox" name="data.actionpoints.encounteruse" data-dtype="Boolean" {{checked data.actionpoints.encounteruse}} title="AP used this encounter?"/>
+				</div>
+					
+				{{!-- Movement --}}
+				<div class="attribute-init resource-full movement">
+					<h4 class="attribute-name box-title">Movement</h4>
+					<span title="Movement Speed">Movement:</span>
+					<span title="Movement Speed" style="margin-right: 4px;">{{data.movement.basic.value}}</span>
+
+					<span>Base:</span>
+					<input type="text" name="data.movement.basic.base" value="{{data.movement.basic.base}}" title="Base Movement Speed" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+					<span>Armour:</span>
+					<input type="text" name="data.movement.basic.armor" value="{{data.movement.basic.armor}}" title="Armour Effect" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+					<span>Bonus:</span>
+					<input type="text" name="data.movement.basic.misc" value="{{data.movement.basic.misc}}" title="Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+					
+					<span title="Movement Speed">Charge:</span>
+					<span title="Movement Speed" style="margin-right: 4px;">{{data.movement.charge.value}}</span>
+					<span>Bonus:</span>
+					<input type="text" name="data.movement.charge.misc" value="{{data.movement.charge.misc}}" title="Charge Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+
+					<span title="Movement Speed">Run:</span>
+					<span title="Movement Speed" style="margin-right: 4px;">{{data.movement.run.value}}</span>
+					<span>Bonus:</span>
+					<input type="text" name="data.movement.run.misc" value="{{data.movement.run.misc}}" title="Run Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+				</div>	
+				
+				{{!-- Senses --}}
+				<div class="attribute-init resource-full movement">
+					<h4 class="attribute-name box-title">Special Senses</h4>
+					<div>
+						<span>Passive Perception:</span>
+						<span style="margin-right: 4px;">{{data.passive.pasprc.value}}</span>
+						<span>Bonus:</span>
+						<input type="text" name="data.passive.pasprc.bonus" value="{{data.passive.pasprc.bonus}}" title="Passive Perception Bonus" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+					</div>
+					<div>
+						<span>Passive Insight:</span>
+						<span style="margin-right: 4px;">{{data.passive.pasins.value}}</span>
+						<span>Bonus:</span>
+						<input type="text" name="data.passive.pasins.bonus" value="{{data.passive.pasins.bonus}}" title="Passive Insight Bonus" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+					</div>
+					<div style="text-align: left;">
+						<span>Senses:</span>
+						<input type="text" name="data.senses" value="{{data.senses}}" title="senses" data-dtype="Number" placeholder="None." style="width: 83%;"/>
+					</div>
+				</div>
+				
+				{{!-- Languages --}}
+				<div class="attribute-init resource-full movement">
+					<h4 class="attribute-name box-title">Languages</h4>
+					<a class="trait-selector" data-options="damageTypes" data-target="data.traits.di">
+						<i class="fas fa-edit"></i>
+					</a>
+				</div>
+				
+				{{!-- Resistences --}}
+				<div class="attribute-init resource-full movement">
+					<h4 class="attribute-name box-title">Resistences & Weaknesses</h4>
+					{{#each data.resistences as |res r|}}
+						<li class="skill flexrow" data-skill="{{r}}">
+							<h4 class="skill-name">{{res.label}}</h4>
+							<span class="skill-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
+							<input type="text" class="skill-mod" name="data.resistences.{{r}}.enchant" value="{{res.enchant}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Enchantment"> </input>
+							<input type="text" class="skill-mod" name="data.resistences.{{r}}.race" value="{{res.race}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Race"> </input>
+							<input type="text" class="skill-mod" name="data.resistences.{{r}}.misc" value="{{res.misc}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Misc"> </input>
+							<input type="checkbox" name="data.resistences.{{r}}.half" data-dtype="Boolean" {{checked res.half}} title="Resistences"/>
+							<input type="checkbox" name="data.resistences.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
+						</li>
+					{{/each}}					
+					<!-- <span>Resistences:</span> -->
+					<!-- <a class="trait-selector" data-options="damageTypes" data-target="data.traits.di"> -->
+						<!-- <i class="fas fa-edit"></i> -->
+					<!-- </a> -->
+				</div>
+				<div>test</div>
+				<div>test</div>
+				
 				
 			</ul>
-
+			
 		</div>
 
 	</section>
