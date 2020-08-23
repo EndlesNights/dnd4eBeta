@@ -12,7 +12,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 	}
 	
 	get title() {
-		return `${this.object.name} - Second Wind`;
+		return `${this.object.name} - Short Rest`;
 	}
 
 	/** @override */
@@ -22,35 +22,47 @@ export class ShortRestDialog extends BaseEntitySheet {
 	}
 	async _updateObject(event, formData) {
 		
-		let r = new Roll("0");
-		if(formData.bonus != "" ){
-			r = new Roll(formData.bonus);
-			try{
-				r.roll();
-
-			}catch (error){
-				
-				console.log("Invalid roll input into healing surge bonus.");
-				r.roll();
-			}
-		}
-		
 		const updateData = {};
-		updateData[`data.health.value`] = Math.min(
-			(this.object.data.data.health.value + this.object.data.data.details.secondWindValue + r.total),
-			this.object.data.data.health.max
-		);
 		
-		updateData[`data.details.secondwind`] = true;
+		if(Number.isInteger(formData.surge) && formData.surge > 0)
+		{
+			let r = new Roll("0");
+			let healamount = 0;
+			for(let i = 0; i > formData.surge; i++){
+				
+				if(formData.bonus != "" ){
+					r = new Roll(formData.bonus);
+					try{
+						r.roll();
+
+					}catch (error){
+						
+						console.log("Invalid roll input into healing surge bonus.");
+						r.roll();
+					}
+				}
+				
+				healamount += this.object.data.data.details.surgeValue + r.total;
+			}
+
+			updateData[`data.health.value`] = Math.min(
+				(this.object.data.data.health.value + healamount),
+				this.object.data.data.health.max
+			);
 		
-		if(this.object.data.data.details.surgeCur > 0)
-			updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeCur - 1;
+			if(this.object.data.data.details.surgeCur > 0)
+				updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeCur - formData.surge;
+			
+		}
+
+		updateData[`data.details.secondwind`] = false;
+		updateData[`data.actionpoints.encounteruse`] = false;
 		
 		ChatMessage.create({
 			user: game.user._id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
-			content: this.object.data.name + " uses Second Wind, healing for " + (updateData[`data.health.value`] - this.object.data.data.health.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
+			content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.health.value`] - this.object.data.data.health.value) + " HP."
 			//game.i18n.format("DND5E.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 		});		
 		
