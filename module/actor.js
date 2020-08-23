@@ -1,6 +1,5 @@
 import { d20Roll, damageRoll } from "./dice.js";
 import { DND4EALTUS } from "./config.js";
-import SecondWindDialog from "./apps/second-wind.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -100,10 +99,14 @@ export class SimpleActor extends Actor {
 				abl.save = Math.max(abl.save, originalSaves[id].save);
 			}
 		}
+		
+		//Set Health related values
 		data.details.bloodied = Math.floor(data.health.max / 2);
 		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon;
 		data.health.min = -data.details.bloodied;
 		
+		//set Second Wind Value.
+		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon;
 		
 		// const feats = DND4E.characterFlags;
 		// const athlete = flags.remarkableAthlete;
@@ -348,25 +351,5 @@ export class SimpleActor extends Actor {
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			halflingLucky: feats.halflingLucky
 		}));
-	}
-	
-	secondWind({dialog=true, chat=true}={}){
-		
-    const data = this.data.data;
-
-    // Take note of the initial hit points and number of hit dice the Actor has
-	const hp0 = this.data.data.health.value;
-    const hd0 = this.data.data.details.surgeCur;
-    
-
-    // Display a Dialog for rolling hit dice
-    let newDay = false;
-    if ( dialog ) {
-      try {
-        newDay = SecondWindDialog.SecondWindDialog({actor: this});
-      } catch(err) {
-        return;
-      }
-    }
 	}
 }

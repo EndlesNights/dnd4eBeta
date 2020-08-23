@@ -1,6 +1,8 @@
 import { DND4EALTUS } from "./config.js";
+import { SecondWindDialog } from "./apps/second-wind.js";
+import { ShortRestDialog } from "./apps/short-rest.js";
+
 import HPOptions from "./apps/hp-options.js";
-import SecondWindDialog from "./apps/second-wind.js";
 // import ShortRestDialog from "./apps/short-rest.js";
 // import LongRestDialog from "./apps/long-rest.js";
 
@@ -149,10 +151,9 @@ export class SimpleActorSheet extends ActorSheet {
 	* Opens dialog window to spend Second Wind
 	*/
 	_onSecondWind(event) {
-		// event.preventDefault();
-		// this._onSubmit(event);
-		return this.actor.secondWind();
-		//new SecondWindDialog(this.actor).render(true)
+		event.preventDefault();
+		new SecondWindDialog(this.actor).render(true);		
+
 	}
 	
 	/* -------------------------------------------- */
@@ -165,7 +166,7 @@ export class SimpleActorSheet extends ActorSheet {
 	_onShortRest(event) {
 		event.preventDefault();
 
-		// new ShortRestDialog(this.actor).render(true)
+		new ShortRestDialog(this.actor).render(true)
 	}
 	
 	/* -------------------------------------------- */
