@@ -1,10 +1,10 @@
 import { DND4EALTUS } from "./config.js";
 import { SecondWindDialog } from "./apps/second-wind.js";
 import { ShortRestDialog } from "./apps/short-rest.js";
+import { LongRestDialog } from "./apps/long-rest.js";
 
 import HPOptions from "./apps/hp-options.js";
-// import ShortRestDialog from "./apps/short-rest.js";
-// import LongRestDialog from "./apps/long-rest.js";
+
 
 
 /**
@@ -128,7 +128,7 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find('.short-rest').click(this._onShortRest.bind(this));
 		
 		//long rest
-		html.find('.short-rest').click(this._onLongRest.bind(this));
+		html.find('.long-rest').click(this._onLongRest.bind(this));
 	}
   }
 
@@ -165,7 +165,6 @@ export class SimpleActorSheet extends ActorSheet {
 	*/
 	_onShortRest(event) {
 		event.preventDefault();
-
 		new ShortRestDialog(this.actor).render(true)
 	}
 	
@@ -177,8 +176,7 @@ export class SimpleActorSheet extends ActorSheet {
 	*/
 	_onLongRest(event) {
 		event.preventDefault();
-
-		// new LongRestDialog(this.actor).render(true)
+		new LongRestDialog(this.actor).render(true)
 	}
 
 

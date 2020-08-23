@@ -23,12 +23,16 @@ export class ShortRestDialog extends BaseEntitySheet {
 	async _updateObject(event, formData) {
 		
 		const updateData = {};
+		updateData[`data.health.value`] = this.object.data.data.health.value;
 		
-		if(Number.isInteger(formData.surge) && formData.surge > 0)
+		if(formData.surge > 0)
 		{
+			if(formData.surge > this.object.data.data.details.surgeCur)
+				formData.surge = this.object.data.data.details.surgeCur;
+			
 			let r = new Roll("0");
 			let healamount = 0;
-			for(let i = 0; i > formData.surge; i++){
+			for(let i = 0; i < formData.surge; i++){
 				
 				if(formData.bonus != "" ){
 					r = new Roll(formData.bonus);
@@ -54,9 +58,14 @@ export class ShortRestDialog extends BaseEntitySheet {
 				updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeCur - formData.surge;
 			
 		}
-
+		
+		
+		updateData[`data.details.temp`] = "";
+		
 		updateData[`data.details.secondwind`] = false;
 		updateData[`data.actionpoints.encounteruse`] = false;
+		
+		// *** TODO For Each reset encounter power HERE
 		
 		ChatMessage.create({
 			user: game.user._id,
