@@ -20,6 +20,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 		
 		return {data: this.object.data.data}
 	}
+	
 	async _updateObject(event, formData) {
 		
 		const updateData = {};
@@ -58,9 +59,13 @@ export class ShortRestDialog extends BaseEntitySheet {
 				updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeCur - formData.surge;
 			
 		}
+		else if(formData.surge == 0 && this.object.data.data.health.value <= 0)
+		{
+			updateData[`data.health.value`] = 1;
+		}
 		
-		
-		updateData[`data.details.temp`] = "";
+		if(!this.object.data.data.health.temprest)
+			updateData[`data.details.temp`] = "";
 		
 		updateData[`data.details.secondwind`] = false;
 		updateData[`data.actionpoints.encounteruse`] = false;

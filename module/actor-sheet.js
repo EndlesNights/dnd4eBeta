@@ -2,6 +2,8 @@ import { DND4EALTUS } from "./config.js";
 import { SecondWindDialog } from "./apps/second-wind.js";
 import { ShortRestDialog } from "./apps/short-rest.js";
 import { LongRestDialog } from "./apps/long-rest.js";
+import { DeathSaveDialog } from "./apps/death-save.js";
+import TraitSelector from "./apps/trait-selector.js";
 
 import HPOptions from "./apps/hp-options.js";
 
@@ -15,21 +17,28 @@ export class SimpleActorSheet extends ActorSheet {
 
   /** @override */
 	static get defaultOptions() {
-	  return mergeObject(super.defaultOptions, {
-  	  classes: ["dnd4eAltus", "sheet", "actor"],
-  	  template: "systems/dnd4eAltus/templates/actor-sheet.html",
-      width: 700,
-      height: 690,
-      tabs: [{navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "attributes"}],
-      dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}]
-    });
+		return mergeObject(super.defaultOptions, {
+			classes: ["dnd4eAltus", "sheet", "actor"],
+			template: "systems/dnd4eAltus/templates/actor-sheet.html",
+			width: 700,
+			height: 690,
+			tabs: [{
+				navSelector: ".sheet-tabs",
+				contentSelector: ".sheet-body",
+				initial: "attributes"
+			}],
+			dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}],
+			scrollY: [".desk__content"]
+		});
   }
 
   /* -------------------------------------------- */
 
 	/** @override */
 	getData() {
-		const data = super.getData();
+
+		let data = super.getData();
+		data.config = CONFIG.DND4EALTUS;
 		// const data = {
 			// owner: isOwner,
 			// limited: this.entity.limited,
@@ -38,21 +47,65 @@ export class SimpleActorSheet extends ActorSheet {
 			// cssClass: isOwner ? "editable" : "locked",
 			// isCharacter: this.entity.data.type === "character",
 			// isNPC: this.entity.data.type === "npc",
-			// config: CONFIG.DND4EALTUSE,
+			// config: CONFIG.DND4EALTUS,
 		// };		
 		// data.dtypes = ["String", "Number", "Boolean"];
 		// for ( let attr of Object.values(data.data.attributes) ) {
 			// attr.isCheckbox = attr.dtype === "Boolean";
 		// }
+		data.actor.data.size = DND4EALTUS.actorSizes;
+		
 		for ( let [s, skl] of Object.entries(data.actor.data.skills)) {
 			skl.ability = data.actor.data.abilities[skl.ability].label.substring(0, 3);
 			skl.icon = this._getTrainingIcon(skl.value);
 			skl.hover = game.i18n.localize(DND4EALTUS.trainingLevels[skl.value]);
 			skl.label = game.i18n.localize(DND4EALTUS.skills[s]);
 		}
+		
+		this._prepareLang(data.actor.data.languages);
+			
 		return data;
 	}
+	
+	_prepareLang(lang) {
+		const map = {
+			"spoken": CONFIG.DND4EALTUS.spoken,
+			"script": CONFIG.DND4EALTUS.script
+		}
+		for ( let [l, choices] of Object.entries(map) ) {
+			const trait = lang[l];
+			if ( !trait ) continue;
+			let values = [];
+			if ( trait.value ) {
+				values = trait.value instanceof Array ? trait.value : [trait.value];
+			}
+			trait.selected = values.reduce((obj, l) => {
+				obj[l] = choices[l];
+				return obj;
+			}, {});
 
+			// Add custom entry
+			if ( trait.custom ) {
+				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
+			}
+			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
+		}
+	}
+	/** @override */
+	async update(data, options={}) {
+		
+		// Apply changes in Actor size to Token width/height
+		const newSize = data["data.traits.size"];
+		if ( newSize && (newSize !== getProperty(this.data, "data.traits.size")) ) {
+			let size = CONFIG.DND4EALTUS.tokenSizes[newSize];
+			if ( this.isToken ) this.token.update({height: size, width: size});
+			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
+				data["token.height"] = size;
+				data["token.width"] = size;
+			}
+		}
+		return super.update(data, options);
+	}
 	_getTrainingIcon(level) {
 		const icons = {
 			0: '<i class="far fa-circle"></i>',
@@ -120,7 +173,6 @@ export class SimpleActorSheet extends ActorSheet {
 		//Open HP-Options
 		html.find('.health-option').click(this._onHPOptions.bind(this));
 		
-		
 		//second wind
 		html.find('.second-wind').click(this._onSecondWind.bind(this));
 		
@@ -128,11 +180,15 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find('.short-rest').click(this._onShortRest.bind(this));
 		
 		//long rest
-		html.find('.long-rest').click(this._onLongRest.bind(this));
+		html.find('.long-rest').click(this._onLongRest.bind(this));		
+		
+		//death save
+		html.find('.death-save').click(this._onDeathSave.bind(this));
+		
+		// Trait Selector
+		html.find('.trait-selector').click(this._onTraitSelector.bind(this));
 	}
   }
-
-
 
 	/* -------------------------------------------- */
   
@@ -179,6 +235,11 @@ export class SimpleActorSheet extends ActorSheet {
 		new LongRestDialog(this.actor).render(true)
 	}
 
+	_onDeathSave(event) {
+		event.preventDefault();
+		new DeathSaveDialog(this.actor).render(true)
+	}
+
 
   _onCycleSkillProficiency(event) {
     event.preventDefault();
@@ -199,6 +260,25 @@ export class SimpleActorSheet extends ActorSheet {
     // Update the field value and save the form
     this._onSubmit(event);
   }
+  
+  
+  /* -------------------------------------------- */
+
+  /**
+   * Handle spawning the TraitSelector application which allows a checkbox of multiple trait options
+   * @param {Event} event   The click event which originated the selection
+   * @private
+   */
+	_onTraitSelector(event) {
+		event.preventDefault();
+		const a = event.currentTarget;
+		const label = a.parentElement.querySelector("h4");
+		console.log(label);
+		const choices = CONFIG.DND4EALTUS[a.dataset.options];
+		const options = { name: a.dataset.target, title: label.innerText, choices };
+		new TraitSelector(this.actor, options).render(true)
+	}
+
   /* -------------------------------------------- */
 
   /** @override */
@@ -294,6 +374,7 @@ export class SimpleActorSheet extends ActorSheet {
       return obj;
     }, {_id: this.object._id, "data.attributes": attributes});
     
+	console.log(formData);
     // Update the Actor
     return this.object.update(formData);
   }

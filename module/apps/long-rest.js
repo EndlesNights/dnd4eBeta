@@ -20,21 +20,33 @@ export class LongRestDialog extends BaseEntitySheet {
 		
 		return {data: this.object.data.data}
 	}
+	
 	async _updateObject(event, formData) {
 		
 		const updateData = {};
 		
-		if(this.object.data.data.details.surgeEnv > this.object.data.data.details.surgeDay)
+		if(formData.envi == "false")
 		{
-			updateData[`data.details.surgeCur`] = 0;
-			updateData[`data.health.value`] = this.object.data.data.health.max + (this.object.data.data.details.surgeDay - this.object.data.data.details.surgeEnv) *  Math.floor(this.object.data.data.details.bloodied / 2);
+			if(this.object.data.data.details.surgeEnv > this.object.data.data.details.surgeDay)
+			{
+				updateData[`data.details.surgeCur`] = 0;
+				updateData[`data.health.value`] = this.object.data.data.health.max + (this.object.data.data.details.surgeDay - this.object.data.data.details.surgeEnv) *  Math.floor(this.object.data.data.details.bloodied / 2);
+			}
+			else{
+				updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeDay - this.object.data.data.details.surgeEnv;
+				updateData[`data.health.value`] = this.object.data.data.health.max;
+			}
 		}
-		else{
-			updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeDay - this.object.data.data.details.surgeEnv;
+		else
+		{
+			updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeDay;
 			updateData[`data.health.value`] = this.object.data.data.health.max;
+			
+			updateData[`data.details.surgeEnv`] = "";
 		}
 
 		updateData[`data.details.temp`] = "";
+		updateData[`data.details.deathsavefail`] = 0;
 		updateData[`data.actionpoints.value`] = 1;
 		
 		updateData[`data.details.secondwind`] = false;

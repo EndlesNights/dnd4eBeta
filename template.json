@@ -32,7 +32,8 @@
 				"perlevel": 5,
 				"feat": 0,
 				"misc": 0,
-				"autototal": false
+				"autototal": false,
+				"temprest": false
 			},		
 			"init": {
 				"value": 0,
@@ -95,7 +96,7 @@
 				"paragon": "",
 				"epic": "",
 				"race": "",
-				"size": "",
+				"size": "med",
 				"age": "",
 				"gender": "",
 				"height": "",
@@ -117,8 +118,14 @@
 				"secondwindbon": 0
 			},
 			"languages": {
-				"value": [],
-				"custom": ""
+				"spoken": {
+					"value": [],
+					"custom": ""
+				},
+				"script": {
+					"value": [],
+					"custom": ""
+				}
 			},
 			"senses": "",
 			"movement": {

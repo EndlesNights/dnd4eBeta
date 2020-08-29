@@ -85,6 +85,21 @@
 	padding: 2px;
 	text-align: right;
 }
+.dnd4eAltus .traits-list {
+	margin: 0 0 0 0;
+	padding: 0 0 0 2px;
+}
+
+.dnd4eAltus .tag {
+	display: inline-block;
+	margin: 0 2px 0 0;
+	padding: 0 3px;
+	font-size: 10px;
+	line-height: 16px;
+	border: 1px solid #999;
+	border-radius: 3px;
+	background: rgba(0, 0, 0, 0.05);
+}
 
 .dnd4eAltus .sheet-header .charlevel .level {
 	width: 100%;
@@ -180,7 +195,24 @@
 	border-bottom: 2px groove #eeede0;
 	line-height: 24px;
 	color: #4b4a44;
+
 }
+
+.dnd4eAltus.sheet .sheet-header .summary .list-size label{
+	position:relative;
+	top: -3px;
+}
+
+.dnd4eAltus.sheet .sheet-header .summary .list-size .actor-size {
+	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
+	font-size: 15px;
+	height: 20px;
+	padding: 0px;
+	border: transparent;
+	background: transparent;
+	position:relative;
+}
+
 .dnd4eAltus.sheet .sheet-header .summary .list-alig {
 	width: 37.5%;
 	float: left;
@@ -400,7 +432,7 @@
 }
 .dnd4eAltus.sheet.actor .attributes .scrollbar {
 	height: 100%;
-	overflow-y: auto;
+	overflow-y: scroll;
 	scrollbar-width: thin;
 
 }
@@ -815,7 +847,7 @@ font-size: 12px;
 	/* height: 120px; */
 		/* margin-top: 10px; */
 	float: left;
-		/* text-align: center; */
+	text-align: center;
 	line-height:32px;
 }
 
@@ -851,7 +883,9 @@ font-size: 12px;
 	text-align: center;
 }
 
-
+.dnd4eAltus .languages {
+	text-align: left;
+}
 
 
 
@@ -1001,6 +1035,24 @@ font-size: 12px;
   min-height: 400px;
 }
 
+
+
+
+
+
+/* ----------------------------------------- */
+/* Trait Selector
+/* ----------------------------------------- */
+
+#trait-selector .trait-list {
+  /* list-style: none; */
+  /* margin: 0; */
+  /* padding: 0; */
+}
+#trait-selector input[type="text"] {
+  /* height: 18px; */
+  /* margin: 2px; */
+}
 
 /* Tooltip text */
 .tooltip .tooltipcontent {

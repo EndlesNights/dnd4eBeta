@@ -244,21 +244,21 @@ DND4EALTUS.damageTypes = {
 	
   "damage": "DND4EALTUS.Damage",
   "acid": "DND4EALTUS.DamageAcid",
-  "bludgeoning": "DND4EALTUS.DamageBludgeoning",
-  "bludgeon": "DND4EALTUS.DamageBludgeoning",
+  // "bludgeoning": "DND4EALTUS.DamageBludgeoning",
+  // "bludgeon": "DND4EALTUS.DamageBludgeoning",
   "cold": "DND4EALTUS.DamageCold",
   "fire": "DND4EALTUS.DamageFire",
   "force": "DND4EALTUS.DamageForce",
   "lightning": "DND4EALTUS.DamageLightning",
   "necrotic": "DND4EALTUS.DamageNecrotic",
-  "pierce": "DND4EALTUS.DamagePiercing",
-  "piercing": "DND4EALTUS.DamagePiercing",
+  // "pierce": "DND4EALTUS.DamagePiercing",
+  // "piercing": "DND4EALTUS.DamagePiercing",
   "physical": "DND4EALTUS.Damagephysical",
   "poison": "DND4EALTUS.DamagePoison",
   "psychic": "DND4EALTUS.DamagePsychic",
   "radiant": "DND4EALTUS.DamageRadiant",
-  "slashing": "DND4EALTUS.DamageSlashing",
-  "slash": "DND4EALTUS.DamageSlashing",
+  // "slashing": "DND4EALTUS.DamageSlashing",
+  // "slash": "DND4EALTUS.DamageSlashing",
   "thunder": "DND4EALTUS.DamageThunder"
 };
 
@@ -621,32 +621,21 @@ DND4EALTUS.conditionTypes = {
 };
 
 // Languages
-DND4EALTUS.languages = {
-  "common": "DND4EALTUS.LanguagesCommon",
-  "aarakocra": "DND4EALTUS.LanguagesAarakocra",
-  "abyssal": "DND4EALTUS.LanguagesAbyssal",
-  "aquan": "DND4EALTUS.LanguagesAquan",
-  "auran": "DND4EALTUS.LanguagesAuran",
-  "celestial": "DND4EALTUS.LanguagesCelestial",
-  "deep": "DND4EALTUS.LanguagesDeepSpeech",
-  "draconic": "DND4EALTUS.LanguagesDraconic",
-  "druidic": "DND4EALTUS.LanguagesDruidic",
-  "dwarvish": "DND4EALTUS.LanguagesDwarvish",
-  "elvish": "DND4EALTUS.LanguagesElvish",
-  "giant": "DND4EALTUS.LanguagesGiant",
-  "gith": "DND4EALTUS.LanguagesGith",
-  "gnomish": "DND4EALTUS.LanguagesGnomish",
-  "goblin": "DND4EALTUS.LanguagesGoblin",
-  "gnoll": "DND4EALTUS.LanguagesGnoll",
-  "halfling": "DND4EALTUS.LanguagesHalfling",
-  "ignan": "DND4EALTUS.LanguagesIgnan",
-  "infernal": "DND4EALTUS.LanguagesInfernal",
-  "orc": "DND4EALTUS.LanguagesOrc",
-  "primordial": "DND4EALTUS.LanguagesPrimordial",
-  "sylvan": "DND4EALTUS.LanguagesSylvan",
-  "terran": "DND4EALTUS.LanguagesTerran",
-  "cant": "DND4EALTUS.LanguagesThievesCant",
-  "undercommon": "DND4EALTUS.LanguagesUndercommon"
+DND4EALTUS.spoken = {
+  "Alti": "DND4EALTUS.SpokenAlti",
+  "Cellian": "DND4EALTUS.SpokenCellian",
+  "Ghido": "DND4EALTUS.SpokenGhido",
+  "Jarissian": "DND4EALTUS.SpokenJarissian",
+  "Luxen": "DND4EALTUS.SpokenLuxen",
+  "Saeven": "DND4EALTUS.SpokenSaeven",
+  "Token": "DND4EALTUS.SpokenToken",
+  "Vasten": "DND4EALTUS.SpokenVasten"
+};
+DND4EALTUS.script = {
+  "Alti": "DND4EALTUS.ScriptAlti",
+  "Cellian": "DND4EALTUS.ScriptCellian",
+  "Ghido": "DND4EALTUS.ScriptGhido",
+  "Token": "DND4EALTUS.ScriptToken"
 };
 
 // Character Level XP Requirements

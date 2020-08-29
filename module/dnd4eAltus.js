@@ -16,7 +16,7 @@ import { SimpleActorSheet } from "./actor-sheet.js";
 
 Hooks.once("init", async function() {
 	console.log(`D&D4eAltus | Initializing Dungeons & Dragons 4th Edition System\n${DND4EALTUS.ASCII}`);
-
+	
 	/**
 	 * Set an initiative formula for the system
 	 * @type {String}
@@ -25,9 +25,14 @@ Hooks.once("init", async function() {
 		// formula: "1d20",
 		// decimals: 2
   // };
-
+  
+	game.dnd4eAltus = {
+		config: DND4EALTUS
+	};
+	
 	// Define custom Entity classes
-  CONFIG.Actor.entityClass = SimpleActor;
+	CONFIG.DND4EALTUS = DND4EALTUS;
+	CONFIG.Actor.entityClass = SimpleActor;
 
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);
@@ -44,4 +49,23 @@ Hooks.once("init", async function() {
     default: true,
     config: true
   });
+});
+
+Hooks.once("setup", function() {
+
+  // Localize CONFIG objects once up-front
+  const toLocalize = [
+	"actorSizes", "spoken", "script"
+  ];
+
+  const doLocalize = function(obj) {
+    return Object.entries(obj).reduce((obj, e) => {
+      if (typeof e[1] === "string") obj[e[0]] = game.i18n.localize(e[1]);
+      else if (typeof e[1] === "object") obj[e[0]] = doLocalize(e[1]);
+      return obj;
+    }, {});
+  };
+  for ( let o of toLocalize ) {
+    CONFIG.DND4EALTUS[o] = doLocalize(CONFIG.DND4EALTUS[o]);
+  }
 });

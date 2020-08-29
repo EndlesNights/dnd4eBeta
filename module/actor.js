@@ -206,7 +206,7 @@ export class SimpleActor extends Actor {
 				// abl.save = Math.max(abl.save, originalSaves[id].save);
 			// }
 		}
-	}  
+	}
 
 
   /**
