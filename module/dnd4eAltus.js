@@ -55,7 +55,7 @@ Hooks.once("setup", function() {
 
   // Localize CONFIG objects once up-front
   const toLocalize = [
-	"actorSizes", "spoken", "script"
+	"actorSizes", "spoken", "script", "vision", "special"
   ];
 
   const doLocalize = function(obj) {

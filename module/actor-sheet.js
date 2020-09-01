@@ -4,6 +4,7 @@ import { ShortRestDialog } from "./apps/short-rest.js";
 import { LongRestDialog } from "./apps/long-rest.js";
 import { DeathSaveDialog } from "./apps/death-save.js";
 import TraitSelector from "./apps/trait-selector.js";
+import TraitSelectorSense from "./apps/trait-selector-sense.js";
 
 import HPOptions from "./apps/hp-options.js";
 
@@ -62,18 +63,28 @@ export class SimpleActorSheet extends ActorSheet {
 			skl.label = game.i18n.localize(DND4EALTUS.skills[s]);
 		}
 		
-		this._prepareLang(data.actor.data.languages);
+		this._prepareData(data.actor.data.languages, 
+		{"spoken": CONFIG.DND4EALTUS.spoken, "script": CONFIG.DND4EALTUS.script}
+		);
+		
+		this._prepareData(data.actor.data.senses, 
+		{"vision": CONFIG.DND4EALTUS.vision, "special": CONFIG.DND4EALTUS.special}
+		);			
 			
 		return data;
 	}
 	
-	_prepareLang(lang) {
-		const map = {
-			"spoken": CONFIG.DND4EALTUS.spoken,
-			"script": CONFIG.DND4EALTUS.script
-		}
+	_prepareData(data, map) {
+		console.log(data);
+		// const map = {
+			// "spoken": CONFIG.DND4EALTUS.spoken,
+			// "script": CONFIG.DND4EALTUS.script,
+			// "vision": CONFIG.DND4EALTUS.vision,
+			// "special": CONFIG.DND4EALTUS.special
+		// }
+		
 		for ( let [l, choices] of Object.entries(map) ) {
-			const trait = lang[l];
+			const trait = data[l];
 			if ( !trait ) continue;
 			let values = [];
 			if ( trait.value ) {
@@ -187,6 +198,8 @@ export class SimpleActorSheet extends ActorSheet {
 		
 		// Trait Selector
 		html.find('.trait-selector').click(this._onTraitSelector.bind(this));
+		
+		html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
 	}
   }
 
@@ -273,10 +286,18 @@ export class SimpleActorSheet extends ActorSheet {
 		event.preventDefault();
 		const a = event.currentTarget;
 		const label = a.parentElement.querySelector("h4");
-		console.log(label);
 		const choices = CONFIG.DND4EALTUS[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
 		new TraitSelector(this.actor, options).render(true)
+	}
+
+	_onTraitSelectorSense(event) {
+		event.preventDefault();
+		const a = event.currentTarget;
+		const label = a.parentElement.querySelector("h4");
+		const choices = CONFIG.DND4EALTUS[a.dataset.options];
+		const options = { name: a.dataset.target, title: label.innerText, choices };
+		new TraitSelectorSense(this.actor, options).render(true)
 	}
 
   /* -------------------------------------------- */

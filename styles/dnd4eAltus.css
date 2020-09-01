@@ -1045,13 +1045,13 @@ font-size: 12px;
 /* ----------------------------------------- */
 
 #trait-selector .trait-list {
-  /* list-style: none; */
-  /* margin: 0; */
-  /* padding: 0; */
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 #trait-selector input[type="text"] {
-  /* height: 18px; */
-  /* margin: 2px; */
+  height: 18px;
+  margin: 2px;
 }
 
 /* Tooltip text */

@@ -375,13 +375,19 @@ DND4EALTUS.hitDieTypes = ["d6", "d8", "d10", "d12"];
  * Character senses options
  * @type {Object}
  */
-DND4EALTUS.senses = {
-  "bs": "DND4EALTUS.SenseBS",
-  "dv": "DND4EALTUS.SenseDV",
-  "ts": "DND4EALTUS.SenseTS",
-  "tr": "DND4EALTUS.SenseTR"
+DND4EALTUS.special = {
+  "aa": "DND4EALTUS.SpecialSensesAA",
+  "bs": "DND4EALTUS.SpecialSensesBS",
+  "dv": "DND4EALTUS.SpecialSensesDV",
+  "ts": "DND4EALTUS.SpecialSensesTS",
+  "tr": "DND4EALTUS.SpecialSensesTR"
 };
 
+DND4EALTUS.vision = {
+	"nv": "DND4EALTUS.VisionNormal",
+	"lv": "DND4EALTUS.VisionLowLight",
+	"bv": "DND4EALTUS.VisionBlind"
+};
 
 /* -------------------------------------------- */
 

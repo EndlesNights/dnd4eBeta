@@ -10,7 +10,7 @@ export default class TraitSelector extends FormApplication {
 	    id: "trait-selector",
       classes: ["dnd4ealtus"],
       title: "Actor Trait Selection",
-      template: "systems/dnd4eAltus/templates/apps/trait-selector.html",
+      template: "systems/dnd4eAltus/templates/apps/trait-selector-sense.html",
       width: 320,
       height: "auto",
       choices: {},

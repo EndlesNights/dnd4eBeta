@@ -127,7 +127,17 @@
 					"custom": ""
 				}
 			},
-			"senses": "",
+			"senses": {
+				"vision": {
+					"value": [],
+					"custom": ""
+				},
+				"special": {
+					"value": [],
+					"custom": ""
+				},
+				"notes": ""
+			},
 			"movement": {
 				"basic": {
 					"value": 0,
