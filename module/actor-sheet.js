@@ -67,22 +67,22 @@ export class SimpleActorSheet extends ActorSheet {
 		{"spoken": CONFIG.DND4EALTUS.spoken, "script": CONFIG.DND4EALTUS.script}
 		);
 		
-		this._prepareData(data.actor.data.senses, 
+		this._prepareDataSense(data.actor.data.senses, 
 		{"vision": CONFIG.DND4EALTUS.vision, "special": CONFIG.DND4EALTUS.special}
 		);			
-			
+		
+		// console.log(data.actor.data.senses.vision.value[1][0]);
+		
 		return data;
 	}
 	
 	_prepareData(data, map) {
-		console.log(data);
 		// const map = {
 			// "spoken": CONFIG.DND4EALTUS.spoken,
 			// "script": CONFIG.DND4EALTUS.script,
 			// "vision": CONFIG.DND4EALTUS.vision,
 			// "special": CONFIG.DND4EALTUS.special
 		// }
-		
 		for ( let [l, choices] of Object.entries(map) ) {
 			const trait = data[l];
 			if ( !trait ) continue;
@@ -100,6 +100,34 @@ export class SimpleActorSheet extends ActorSheet {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
 			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
+		}
+	}	
+	_prepareDataSense(data, map) {
+		// const map = {
+			// "spoken": CONFIG.DND4EALTUS.spoken,
+			// "script": CONFIG.DND4EALTUS.script,
+			// "vision": CONFIG.DND4EALTUS.vision,
+			// "special": CONFIG.DND4EALTUS.special
+		// }
+		
+		for ( let [l, choices] of Object.entries(map) ) {
+			const trait = data[l];
+			if ( !trait ) continue;
+			let values = [];
+			if ( trait.value ) {
+				values = trait.value instanceof Array ? trait.value : [trait.value];
+			}
+			trait.selected = values.reduce((obj, l) => {
+				// obj[l] = l[1] != "" ? choices[l[0]] + " " + l[1] + " sq" : choices[l[0]];
+				obj[l] = l[1] != "" ? `${choices[l[0]]} ${l[1]} sq` : choices[l[0]];
+				return obj;
+			}, {});
+			// Add custom entry
+			if ( trait.custom ) {
+				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
+			}
+			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
+			
 		}
 	}
 	/** @override */
@@ -200,6 +228,11 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find('.trait-selector').click(this._onTraitSelector.bind(this));
 		
 		html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
+		
+		//Inventory
+		
+		//convert currency to it's largest form to save weight.
+		html.find(".currency-convert").click(this._onConvertCurrency.bind(this));
 	}
   }
 
@@ -274,6 +307,39 @@ export class SimpleActorSheet extends ActorSheet {
     this._onSubmit(event);
   }
   
+  /* -------------------------------------------- */
+
+  /**
+   * Handle mouse click events to convert currency to the highest possible denomination
+   * @param {MouseEvent} event    The originating click event
+   * @private
+   */
+  async _onConvertCurrency(event) {
+    event.preventDefault();
+    return Dialog.confirm({
+      title: `${game.i18n.localize("DND4EALTUS.CurrencyConvert")}`,
+      content: `<p>${game.i18n.localize("DND4EALTUS.CurrencyConvertHint")}</p>`,
+      yes: () => this.convertCurrency()
+    });
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Convert all carried currency to the highest possible denomination to reduce the number of raw coins being
+   * carried by an Actor.
+   * @return {Promise<Actor5e>}
+   */
+  convertCurrency() {
+    const curr = duplicate(this.actor.data.data.currency);
+    const convert = CONFIG.DND4EALTUS.currencyConversion;
+    for ( let [c, t] of Object.entries(convert) ) {
+      let change = Math.floor(curr[c] / t.each);
+      curr[c] -= (change * t.each);
+      curr[t.into] += change;
+    }
+    return this.object.update({"data.currency": curr});
+  }
   
   /* -------------------------------------------- */
 
@@ -395,7 +461,6 @@ export class SimpleActorSheet extends ActorSheet {
       return obj;
     }, {_id: this.object._id, "data.attributes": attributes});
     
-	console.log(formData);
     // Update the Actor
     return this.object.update(formData);
   }

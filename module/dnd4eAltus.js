@@ -58,14 +58,29 @@ Hooks.once("setup", function() {
 	"actorSizes", "spoken", "script", "vision", "special"
   ];
 
-  const doLocalize = function(obj) {
-    return Object.entries(obj).reduce((obj, e) => {
-      if (typeof e[1] === "string") obj[e[0]] = game.i18n.localize(e[1]);
-      else if (typeof e[1] === "object") obj[e[0]] = doLocalize(e[1]);
+  const noSort = [
+    "currencies"
+  ];
+  
+  // const doLocalize = function(obj) {
+    // return Object.entries(obj).reduce((obj, e) => {
+      // if (typeof e[1] === "string") obj[e[0]] = game.i18n.localize(e[1]);
+      // else if (typeof e[1] === "object") obj[e[0]] = doLocalize(e[1]);
+      // return obj;
+    // }, {});
+  // };
+  // for ( let o of toLocalize ) {
+    // CONFIG.DND4EALTUS[o] = doLocalize(CONFIG.DND4EALTUS[o]);
+  // }
+// });
+  for ( let o of toLocalize ) {
+    const localized = Object.entries(CONFIG.DND4EALTUS[o]).map(e => {
+      return [e[0], game.i18n.localize(e[1])];
+    });
+    if ( !noSort.includes(o) ) localized.sort((a, b) => a[1].localeCompare(b[1]));
+    CONFIG.DND4EALTUS[o] = localized.reduce((obj, e) => {
+      obj[e[0]] = e[1];
       return obj;
     }, {});
-  };
-  for ( let o of toLocalize ) {
-    CONFIG.DND4EALTUS[o] = doLocalize(CONFIG.DND4EALTUS[o]);
   }
 });

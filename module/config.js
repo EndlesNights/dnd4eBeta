@@ -231,13 +231,31 @@ DND4EALTUS.consumableTypes = {
 DND4EALTUS.currencies = {
   "pp": "DND4EALTUS.CurrencyPP",
   "gp": "DND4EALTUS.CurrencyGP",
-  "ep": "DND4EALTUS.CurrencyEP",
   "sp": "DND4EALTUS.CurrencySP",
-  "cp": "DND4EALTUS.CurrencyCP",
+  "cp": "DND4EALTUS.CurrencyCP"
+};
+
+/**
+ * Define the upwards-conversion rules for registered currency types
+ * @type {{string, object}}
+ */
+DND4EALTUS.currencyConversion = {
+  cp: {into: "sp", each: 10},
+  sp: {into: "gp", each: 10 },
+  gp: {into: "pp", each: 10}
 };
 
 /* -------------------------------------------- */
 
+DND4EALTUS.ritualcomponents = {
+	"ad": "DND4EALTUS.RitualCompAD",
+	"rh": "DND4EALTUS.RitualCompRH",
+	"si": "DND4EALTUS.RitualCompSI",
+	"mc": "DND4EALTUS.RitualCompMC"
+};
+
+
+/* -------------------------------------------- */
 
 // Damage Types
 DND4EALTUS.damageTypes = {

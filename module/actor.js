@@ -73,12 +73,6 @@ export class SimpleActor extends Actor {
 			}
 		}		
 		
-		//HP auto calc
-		if(data.health.autototal)
-		{
-			data.health.max = data.health.perlevel * (data.details.level - 1) + data.health.starting + data.health.feat + data.health.misc + data.abilities.con.value;
-		}
-		
 		// Ability modifiers and saves
 		// Character All Ability Check" and All Ability Save bonuses added when rolled since not a fixed value.		
 		const saveBonus = Number.isNumeric(bonuses.save) ? parseInt(bonuses.save) : 0;
@@ -100,6 +94,12 @@ export class SimpleActor extends Actor {
 			}
 		}
 		
+		//HP auto calc
+		if(data.health.autototal)
+		{
+			data.health.max = data.health.perlevel * (data.details.level - 1) + data.health.starting + data.health.feat + data.health.misc + data.abilities.con.value;
+		}
+		
 		//Set Health related values
 		data.details.bloodied = Math.floor(data.health.max / 2);
 		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon;
@@ -108,6 +108,12 @@ export class SimpleActor extends Actor {
 		//set Second Wind Value.
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon;
 		
+		//Weight & Encumbrance
+		data.encumbrance.max = data.abilities.str.value * 10;
+		//set ppc Percentage Carry Capasity
+		data.encumbrance.pcc =  Math.clamped(data.encumbrance.value / data.encumbrance.max * 100, 0, 100);
+		data.encumbrance.encumBar = data.encumbrance.value < data.encumbrance.max? "#6c8aa5" : "#b72b2b";
+				
 		// const feats = DND4E.characterFlags;
 		// const athlete = flags.remarkableAthlete;
 		// const joat = flags.jackOfAllTrades;
@@ -133,6 +139,8 @@ export class SimpleActor extends Actor {
 			// skl.label = CONFIG.DND4E.skills[id];
 		}
 		
+		if (data.details.temphp <= 0 )
+			data.details.temphp = null;
 		
 		//AC mod check, check if heavy armour (or somthing else that negates adding mod)
 		if(!data.defences.ac.heavy)
@@ -225,7 +233,7 @@ export class SimpleActor extends Actor {
 				if(attribute === 'health')
 				{
 					let newHealth = this.setConditions(value);				
-					this.update({[`data.details.temp`]: newHealth[1] });
+					this.update({[`data.details.temphp`]: newHealth[1] });
 					this.update({[`data.health.value`]: newHealth[0] });
 				}
 
@@ -234,26 +242,27 @@ export class SimpleActor extends Actor {
 	}	
 	setConditions(newValue) {
 		
-		let newTemp = this.data.data.details.temp;
+		let newTemp = this.data.data.details.temphp;
 
 		if(newValue < this.data.data.health.value)
 		{
 			let damage = this.data.data.health.value - newValue;
 			
-			if(this.data.data.details.temp > 0)
+			if(this.data.data.details.temphp > 0)
 			{
-				newTemp -= damage;
+				newTemp -= damage;5
 				if(newTemp < 0)
 				{
 					newValue = this.data.data.health.value + newTemp;
-					newTemp = 0;
+					newTemp = null;
 				}
 				else
 				{
 					newValue = this.data.data.health.value;
 				}
 				console.log(newTemp);
-				this.update({[`data.details.temp`]:newTemp});
+				
+				this.update({[`data.details.temphp`]:newTemp});
 			}
 		}
 		else if(newValue > this.data.data.health.value)

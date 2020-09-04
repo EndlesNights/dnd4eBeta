@@ -38,19 +38,32 @@ export default class TraitSelector extends FormApplication {
 
   /** @override */
   getData() {
-
+	
     // Get current values
     let attr = getProperty(this.object.data, this.attribute) || {};
     attr.value = attr.value || [];
-
-	  // Populate choices
-    const choices = duplicate(this.options.choices);
+	
+	// Populate choices
+    let choices = duplicate(this.options.choices);
+		
     for ( let [k, v] of Object.entries(choices) ) {
+		console.log(k);
+		let i = -1;
+		
+		for(let index = 0; index < attr.value.length; index++)
+		{
+			if(attr.value[index][0].includes(k))
+				i = index;
+		}
+		
       choices[k] = {
         label: v,
-        chosen: attr ? attr.value.includes(k) : false
+		chosen: attr && i != -1 ? true : false,
+		value: attr && i != -1 ? attr.value[i][1] : null 
       }
     }
+	
+	console.log(choices);
 
     // Return data
 	  return {
@@ -64,12 +77,16 @@ export default class TraitSelector extends FormApplication {
 
   /** @override */
   _updateObject(event, formData) {
+	  console.log(formData);
+	  
+	  
+
     const updateData = {};
 
     // Obtain choices
     const chosen = [];
     for ( let [k, v] of Object.entries(formData) ) {
-      if ( (k !== "custom") && v ) chosen.push(k);
+      if ( (k !== "custom") && v[0] ) chosen.push([k,v[1]]);
     }
     updateData[`${this.attribute}.value`] = chosen;
 
