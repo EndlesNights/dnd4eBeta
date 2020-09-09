@@ -109,11 +109,8 @@ export class SimpleActor extends Actor {
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon;
 		
 		//Weight & Encumbrance
-		data.encumbrance.max = data.abilities.str.value * 10;
-		//set ppc Percentage Carry Capasity
-		data.encumbrance.pcc =  Math.clamped(data.encumbrance.value / data.encumbrance.max * 100, 0, 100);
-		data.encumbrance.encumBar = data.encumbrance.value < data.encumbrance.max? "#6c8aa5" : "#b72b2b";
-				
+		data.encumbrance = this._computeEncumbrance(actorData);
+			
 		// const feats = DND4E.characterFlags;
 		// const athlete = flags.remarkableAthlete;
 		// const joat = flags.jackOfAllTrades;
@@ -360,5 +357,54 @@ export class SimpleActor extends Actor {
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			halflingLucky: feats.halflingLucky
 		}));
+	}
+	
+  /** @override */
+  async createOwnedItem(itemData, options) {
+
+    // Assume NPCs are always proficient with weapons and always have spells prepared
+    if ( !this.isPC ) {
+      let t = itemData.type;
+      let initial = {};
+      if ( t === "weapon" ) initial["data.proficient"] = true;
+      if ( ["weapon", "equipment"].includes(t) ) initial["data.equipped"] = true;
+      if ( t === "spell" ) initial["data.prepared"] = true;
+      mergeObject(itemData, initial);
+    }
+	
+    return super.createOwnedItem(itemData, options);
+  }	
+	_computeEncumbrance(actorData) {
+		
+		let weight = 0;
+		
+		//Weight Currency
+		for (let [e, v] of Object.entries(actorData.data.currency)) {
+			weight += v/50;
+		}
+		
+		//Weight Ritual Components
+		for (let [e, v] of Object.entries(actorData.data.ritualcomp)) {
+			weight += v/100 * 2.205;
+		}
+		
+		//round to nearest 100th.
+		weight = Math.round(weight * 1000) / 1000;
+		
+		const max = actorData.data.abilities.str.value * 10;
+		//set ppc Percentage Base Carry-Capasity
+		const pbc = Math.clamped(weight / actorData.data.encumbrance.max * 100, 0, 99.7);
+		//set ppc Percentage Encumbranced Capasity
+		const pec =	Math.clamped(weight / (actorData.data.encumbrance.max ) * 100 - 100, 1, 99.7);
+		const encumBar = weight > max ? "#b72b2b" : "#6c8aa5";	
+
+		return {
+			value: weight,
+			max,
+			pbc,
+			pec,
+			encumBar,
+			encumbered: weight > max
+		};
 	}
 }

@@ -1,0 +1,137 @@
+<div class="inventory-filters flexrow flexcol">
+	<ol class="currency flexrow">
+		<h3>
+			{{localize "DND4EALTUS.Currency"}}
+			<a class="currency-convert" title="Convert Currency"><i class="fas fa-coins"></i></a>
+		</h3>
+		{{#each data.currency as |v k|}}
+		<label class="denomination {{k}}">{{ localize (lookup ../config.currencies k )}}</label>
+		<input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number"/>
+		{{/each}}
+	</ol>
+
+	<ol class="currency flexrow">
+		<h3>
+			Ritual Components
+		</h3>
+		{{#each data.ritualcomp as |v k|}}
+		<label class="denomination {{k}}">{{ localize (lookup ../config.ritualcomponents k )}}</label>
+		<input type="text" name="data.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number"/>
+		{{/each}}
+	</ol>
+</div>
+
+
+<ol class="inventory-list scrollbar desk__content">
+{{#each sections as |section sid|}}
+    <li class="inventory-header flexrow">
+        <h3 class="item-name flexrow">{{localize section.label}}</h3>
+
+        {{#if section.columns}}
+            {{#each section.columns}}
+                <div class="item-detail {{css}}">{{label}}</div>
+            {{/each}}
+        {{else}}
+            {{#if ../isCharacter}}
+                <div class="item-detail item-weight">{{localize "DND4EALTUS.Weight"}}</div>
+            {{/if}}
+
+            <div class="item-detail item-uses">{{localize "DND4EALTUS.Charges"}}</div>
+            <div class="item-detail item-action">{{localize "DND4EALTUS.Usage"}}</div>
+        {{/if}}
+
+        {{#if ../owner}}
+        <div class="item-controls">
+            <a class="item-control item-create" title='{{localize "DND4EALTUS.ItemCreate"}}'
+               {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+                <i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
+            </a>
+        </div>
+        {{/if}}
+    </li>
+
+    <ol class="item-list">
+    {{#each section.items as |item iid|}}
+        <li class="item flexrow {{section.css}}"
+            data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
+            <div class="item-name flexrow rollable">
+                {{#if section.editableName}}
+                <input type="text" value="{{item.name}}">
+                {{else}}
+                <div class="item-image" style="background-image: url({{item.img}})"></div>
+                <h4>
+                    {{item.name~}}
+                    {{~#if item.isStack}} ({{item.data.quantity}}){{/if}}
+                    {{~#if item.data.attuned}} <i class="fas fa-sun attuned" title={{localize "DND4EALTUS.Attuned"}}></i>{{/if}}
+                </h4>
+                {{/if}}
+            </div>
+
+            {{#if section.columns}}
+                {{#each section.columns}}
+                    <div class="item-detail {{css}}">
+                        {{#with (getProperty item property)}}
+                            {{#if ../editable}}
+                                <input type="text" value="{{this}}" placeholder="&mdash;"
+                                       data-dtype="{{../editable}}" data-property="{{../property}}">
+                            {{else}}
+                                {{this}}
+                            {{/if}}
+                        {{/with}}
+                    </div>
+                {{/each}}
+            {{else}}
+                {{#if ../../isCharacter}}
+                    <div class="item-detail item-weight">
+                        {{#if item.totalWeight}}
+                            <div class="item-detail">
+                                {{ item.totalWeight }} {{localize "DND4EALTUS.AbbreviationLbs"}}
+                            </div>
+                        {{/if}}
+                    </div>
+                {{/if}}
+
+                <div class="item-detail item-uses">
+                    {{#if item.hasUses }}
+                        <input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
+                        / {{item.data.uses.max}}
+                    {{/if}}
+                </div>
+
+                <div class="item-detail item-action">
+                    {{#if item.data.activation.type }}
+                        {{item.labels.activation}}
+                    {{/if}}
+                </div>
+            {{/if}}
+
+            {{#if ../../owner}}
+            <div class="item-controls">
+                {{#unless @root.isVehicle}}
+                <a class="item-control item-toggle {{item.toggleClass}}" title='{{item.toggleTitle}}'><i class="fas fa-shield-alt"></i></a>
+                {{/unless}}
+                {{#unless section.editableName}}
+                <a class="item-control item-edit" title='{{localize "DND4EALTUS.ItemEdit"}}'><i class="fas fa-edit"></i></a>
+                {{/unless}}
+                <a class="item-control item-delete" title='{{localize "DND4EALTUS.ItemDelete"}}'><i class="fas fa-trash"></i></a>
+            </div>
+            {{/if}}
+        </li>
+    {{/each}}
+    </ol>
+{{/each}}
+</ol>
+
+{{#with data.encumbrance}}
+<div class="encumbrance {{#if encumbered}}encumbered{{/if}}" style="height: 12px;">
+	<span class="encumbrance-bar" style="width:{{pbc}}%; background: #6c8aa5;"></span>
+	{{#if encumbered}}
+		<span class="encumbrance-bar" style="width:{{pec}}%; background: #b72b2b;"></span>
+	{{/if}}
+	<span class="encumbrance-label">{{value}} / {{max}}</span>
+	<i class="encumbrance-breakpoint encumbrance-33 arrow-up"></i>
+	<i class="encumbrance-breakpoint encumbrance-33 arrow-down"></i>
+	<i class="encumbrance-breakpoint encumbrance-66 arrow-up"></i>
+	<i class="encumbrance-breakpoint encumbrance-66 arrow-down"></i>
+</div>
+{{/with}}

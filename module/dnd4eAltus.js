@@ -9,6 +9,7 @@ import { DND4EALTUS } from "./config.js";
 import { SimpleActor } from "./actor.js";
 import { SimpleItemSheet } from "./item-sheet.js";
 import { SimpleActorSheet } from "./actor-sheet.js";
+import { preloadHandlebarsTemplates } from "./templates.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -49,6 +50,9 @@ Hooks.once("init", async function() {
     default: true,
     config: true
   });
+  
+  // Preload Handlebars Templates
+  preloadHandlebarsTemplates();
 });
 
 Hooks.once("setup", function() {

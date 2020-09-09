@@ -71,8 +71,8 @@ export class SimpleActorSheet extends ActorSheet {
 		{"vision": CONFIG.DND4EALTUS.vision, "special": CONFIG.DND4EALTUS.special}
 		);			
 		
-		// console.log(data.actor.data.senses.vision.value[1][0]);
-		
+		this._prepareItems(data);
+		console.log(data);
 		return data;
 	}
 	
@@ -102,6 +102,19 @@ export class SimpleActorSheet extends ActorSheet {
 			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
 		}
 	}	
+	
+	_prepareItems(data) {
+		const inventory = {
+			weapon: { label: "DND4EALTUS.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
+			equipment: { label: "DND4EALTUS.ItemTypeEquipmentPl", items: [], dataset: {type: "equipment"} },
+			consumable: { label: "DND4EALTUS.ItemTypeConsumablePl", items: [], dataset: {type: "consumable"} },
+			tool: { label: "DND4EALTUS.ItemTypeToolPl", items: [], dataset: {type: "tool"} },
+			backpack: { label: "DND4EALTUS.ItemTypeContainerPl", items: [], dataset: {type: "backpack"} },
+			loot: { label: "DND4EALTUS.ItemTypeLootPl", items: [], dataset: {type: "loot"} }
+		};
+		
+		 data.inventory = Object.values(inventory);
+	}
 	_prepareDataSense(data, map) {
 		// const map = {
 			// "spoken": CONFIG.DND4EALTUS.spoken,
@@ -229,13 +242,79 @@ export class SimpleActorSheet extends ActorSheet {
 		
 		html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
 		
-		//Inventory
+		//Inventory & Item management
+		html.find('.item-create').click(this._onItemCreate.bind(this));
+		html.find('.item-edit').click(this._onItemEdit.bind(this));
+		html.find('.item-delete').click(this._onItemDelete.bind(this));
+		html.find('.item-uses input').click(ev => ev.target.select()).change(this._onUsesChange.bind(this));
 		
 		//convert currency to it's largest form to save weight.
 		html.find(".currency-convert").click(this._onConvertCurrency.bind(this));
 	}
   }
+  /* -------------------------------------------- */
 
+  /**
+   * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
+   * @param {Event} event   The originating click event
+   * @private
+   */
+	_onItemCreate(event) {
+		event.preventDefault();
+		const header = event.currentTarget;
+		const type = header.dataset.type;
+		const itemData = {
+			name: game.i18n.format("DND4EALTUS.ItemNew", {type: type.capitalize()}),
+			type: type,
+			data: duplicate(header.dataset)
+		};
+		delete itemData.data["type"];
+		return this.actor.createOwnedItem(itemData);
+	}
+
+  /* -------------------------------------------- */
+
+  /**
+   * Handle editing an existing Owned Item for the Actor
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  _onItemEdit(event) {
+    event.preventDefault();
+    const li = event.currentTarget.closest(".item");
+    const item = this.actor.getOwnedItem(li.dataset.itemId);
+    item.sheet.render(true);
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Handle deleting an existing Owned Item for the Actor
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  _onItemDelete(event) {
+    event.preventDefault();
+    const li = event.currentTarget.closest(".item");
+    this.actor.deleteOwnedItem(li.dataset.itemId);
+  }
+  
+  /* -------------------------------------------- */
+
+  /**
+   * Change the uses amount of an Owned Item within the Actor
+   * @param {Event} event   The triggering click event
+   * @private
+   */
+  async _onUsesChange(event) {
+      event.preventDefault();
+      const itemId = event.currentTarget.closest(".item").dataset.itemId;
+      const item = this.actor.getOwnedItem(itemId);
+      const uses = Math.clamped(0, parseInt(event.target.value), item.data.data.uses.max);
+      event.target.value = uses;
+      return item.update({ 'data.uses.value': uses });
+  }
+  
 	/* -------------------------------------------- */
   
 	/**
