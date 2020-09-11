@@ -16,6 +16,20 @@ import HPOptions from "./apps/hp-options.js";
  */
 export class SimpleActorSheet extends ActorSheet {
 
+  constructor(...args) {
+    super(...args);
+
+    /**
+     * Track the set of item filters which are applied
+     * @type {Set}
+     */
+    this._filters = {
+      inventory: new Set(),
+      spellbook: new Set(),
+      features: new Set()
+    };
+  }
+  
   /** @override */
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
@@ -113,8 +127,89 @@ export class SimpleActorSheet extends ActorSheet {
 			loot: { label: "DND4EALTUS.ItemTypeLootPl", items: [], dataset: {type: "loot"} }
 		};
 		
-		 data.inventory = Object.values(inventory);
+    // Partition items by category
+    let [items, spells, feats, classes] = data.items.reduce((arr, item) => {
+
+      // Item details
+      item.img = item.img || DEFAULT_TOKEN;
+      item.isStack = Number.isNumeric(item.data.quantity) && (item.data.quantity !== 1);
+
+      // Item usage
+      item.hasUses = item.data.uses && (item.data.uses.max > 0);
+      item.isOnCooldown = item.data.recharge && !!item.data.recharge.value && (item.data.recharge.charged === false);
+      item.isDepleted = item.isOnCooldown && (item.data.uses.per && (item.data.uses.value > 0));
+      item.hasTarget = !!item.data.target && !(["none",""].includes(item.data.target.type));
+
+      // Item toggle state
+      this._prepareItemToggleState(item);
+
+      // Classify items into types
+      if ( item.type === "spell" ) arr[1].push(item);
+      else if ( item.type === "feat" ) arr[2].push(item);
+      else if ( item.type === "class" ) arr[3].push(item);
+      else if ( Object.keys(inventory).includes(item.type ) ) arr[0].push(item);
+      return arr;
+    }, [[], [], [], []]);
+
+    // Apply active item filters
+    items = this._filterItems(items, this._filters.inventory);
+    spells = this._filterItems(spells, this._filters.spellbook);
+    feats = this._filterItems(feats, this._filters.features);
+
+    // Organize items
+    for ( let i of items ) {
+      i.data.quantity = i.data.quantity || 0;
+      i.data.weight = i.data.weight || 0;
+      i.totalWeight = Math.round(i.data.quantity * i.data.weight * 10) / 10;
+      inventory[i.type].items.push(i);
+    }
+
+    // Organize Spellbook and count the number of prepared spells (excluding always, at will, etc...)
+    // const spellbook = this._prepareSpellbook(data, spells);
+    const nPrepared = spells.filter(s => {
+      return (s.data.level > 0) && (s.data.preparation.mode === "prepared") && s.data.preparation.prepared;
+    }).length;
+
+    // Organize Features
+    const features = {
+      classes: { label: "DND4EALTUS.ItemTypeClassPl", items: [], hasActions: false, dataset: {type: "class"}, isClass: true },
+      active: { label: "DND4EALTUS.FeatureActive", items: [], hasActions: true, dataset: {type: "feat", "activation.type": "action"} },
+      passive: { label: "DND4EALTUS.FeaturePassive", items: [], hasActions: false, dataset: {type: "feat"} }
+    };
+    for ( let f of feats ) {
+      if ( f.data.activation.type ) features.active.items.push(f);
+      else features.passive.items.push(f);
+    }
+    classes.sort((a, b) => b.levels - a.levels);
+    features.classes.items = classes;
+
+    // Assign and return
+		data.inventory = Object.values(inventory);
 	}
+	
+  /* -------------------------------------------- */
+
+  /**
+   * A helper method to establish the displayed preparation state for an item
+   * @param {Item} item
+   * @private
+   */
+  _prepareItemToggleState(item) {
+    if (item.type === "spell") {
+      const isAlways = getProperty(item.data, "preparation.mode") === "always";
+      const isPrepared =  getProperty(item.data, "preparation.prepared");
+      item.toggleClass = isPrepared ? "active" : "";
+      if ( isAlways ) item.toggleClass = "fixed";
+      if ( isAlways ) item.toggleTitle = CONFIG.DND4EALTUS.spellPreparationModes.always;
+      else if ( isPrepared ) item.toggleTitle = CONFIG.DND4EALTUS.spellPreparationModes.prepared;
+      else item.toggleTitle = game.i18n.localize("DND4EALTUS.SpellUnprepared");
+    }
+    else {
+      const isActive = getProperty(item.data, "equipped");
+      item.toggleClass = isActive ? "active" : "";
+      item.toggleTitle = game.i18n.localize(isActive ? "DND4EALTUS.Equipped" : "DND4EALTUS.Unequipped");
+    }
+  }
 	_prepareDataSense(data, map) {
 		// const map = {
 			// "spoken": CONFIG.DND4EALTUS.spoken,
@@ -143,6 +238,46 @@ export class SimpleActorSheet extends ActorSheet {
 			
 		}
 	}
+	
+  /* -------------------------------------------- */
+
+  /**
+   * Determine whether an Owned Item will be shown based on the current set of filters
+   * @return {boolean}
+   * @private
+   */
+  _filterItems(items, filters) {
+    return items.filter(item => {
+      const data = item.data;
+
+      // Action usage
+      for ( let f of ["action", "bonus", "reaction"] ) {
+        if ( filters.has(f) ) {
+          if ((data.activation && (data.activation.type !== f))) return false;
+        }
+      }
+
+      // Spell-specific filters
+      if ( filters.has("ritual") ) {
+        if (data.components.ritual !== true) return false;
+      }
+      if ( filters.has("concentration") ) {
+        if (data.components.concentration !== true) return false;
+      }
+      if ( filters.has("prepared") ) {
+        if ( data.level === 0 || ["innate", "always"].includes(data.preparation.mode) ) return true;
+        if ( this.actor.data.type === "npc" ) return true;
+        return data.preparation.prepared;
+      }
+
+      // Equipment-specific filters
+      if ( filters.has("equipped") ) {
+        if ( data.equipped !== true ) return false;
+      }
+      return true;
+    });
+  }	
+	
 	/** @override */
 	async update(data, options={}) {
 		

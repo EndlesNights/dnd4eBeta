@@ -93,7 +93,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
     // If reliable talent was applied, add it to the flavor text
     if ( reliableTalent && roll.dice[0].total < 10 ) {
-      flavor += ` (${game.i18n.localize("DND5E.FlagsReliableTalent")})`;
+      flavor += ` (${game.i18n.localize("DND4EALTUS.FlagsReliableTalent")})`;
     }
 
     // Convert the roll to a chat message and return the roll
@@ -125,7 +125,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
     data: data,
     rollMode: rollMode,
     rollModes: CONFIG.Dice.rollModes,
-    config: CONFIG.DND5E
+    config: CONFIG.DND4EALTUS
   };
   const html = await renderTemplate(template, dialogData);
 
@@ -199,7 +199,7 @@ export async function damageRoll({parts, actor, data, event={}, rollMode=null, t
 
     // Modify the damage formula for critical hits
     if ( crit === true ) {
-      let add = (actor && actor.getFlag("dnd5e", "savageAttacks")) ? 1 : 0;
+      let add = (actor && actor.getFlag("dnd4eAltus", "savageAttacks")) ? 1 : 0;
       let mult = 2;
       roll.alter(add, mult);
       flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Critical")})`;

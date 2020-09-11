@@ -51,7 +51,7 @@ export class SecondWindDialog extends BaseEntitySheet {
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
 			content: this.object.data.name + " uses Second Wind, healing for " + (updateData[`data.health.value`] - this.object.data.data.health.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
-			//game.i18n.format("DND5E.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+			//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 		});		
 		
 		this.object.update(updateData);

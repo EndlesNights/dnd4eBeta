@@ -19,6 +19,7 @@
 		<input type="text" name="data.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number"/>
 		{{/each}}
 	</ol>
+
 </div>
 
 
@@ -32,16 +33,13 @@
                 <div class="item-detail {{css}}">{{label}}</div>
             {{/each}}
         {{else}}
-            {{#if ../isCharacter}}
-                <div class="item-detail item-weight">{{localize "DND4EALTUS.Weight"}}</div>
-            {{/if}}
-
+            <div class="item-detail item-weight">{{localize "DND4EALTUS.Weight"}}</div>
             <div class="item-detail item-uses">{{localize "DND4EALTUS.Charges"}}</div>
             <div class="item-detail item-action">{{localize "DND4EALTUS.Usage"}}</div>
         {{/if}}
 
         {{#if ../owner}}
-        <div class="item-controls">
+        <div class="item-controls" style="width: 90px;">
             <a class="item-control item-create" title='{{localize "DND4EALTUS.ItemCreate"}}'
                {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
                 <i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
@@ -81,15 +79,13 @@
                     </div>
                 {{/each}}
             {{else}}
-                {{#if ../../isCharacter}}
-                    <div class="item-detail item-weight">
-                        {{#if item.totalWeight}}
-                            <div class="item-detail">
-                                {{ item.totalWeight }} {{localize "DND4EALTUS.AbbreviationLbs"}}
-                            </div>
-                        {{/if}}
-                    </div>
-                {{/if}}
+				<div class="item-detail item-weight">
+					{{#if item.totalWeight}}
+						<div class="item-detail">
+							{{ item.totalWeight }} {{localize "DND4EALTUS.AbbreviationLbs"}}
+						</div>
+					{{/if}}
+				</div>
 
                 <div class="item-detail item-uses">
                     {{#if item.hasUses }}

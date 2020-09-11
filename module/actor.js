@@ -301,16 +301,16 @@ export class SimpleActor extends Actor {
 		}
 
 		// Reliable Talent applies to any skill check we have full or better proficiency in
-		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd5e", "reliableTalent"));
+		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4eAltus", "reliableTalent"));
 
 		// Roll and return
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
-			//title: game.i18n.format("DND4EALTUS.SkillPromptTitle", {skill: CONFIG.DND5E.skills[skillId]}),
+			//title: game.i18n.format("DND4EALTUS.SkillPromptTitle", {skill: CONFIG.DND4EALTUS.skills[skillId]}),
 			title: "Test Name",
 			speaker: ChatMessage.getSpeaker({actor: this}),
-			//halflingLucky: this.getFlag("dnd5e", "halflingLucky"),
+			//halflingLucky: this.getFlag("dnd4eAltus", "halflingLucky"),
 			//reliableTalent: reliableTalent
 		}));
 	}	
@@ -324,7 +324,7 @@ export class SimpleActor extends Actor {
    * @return {Promise<Roll>}      A Promise which resolves to the created Roll instance
    */
 	rollAbility(abilityId, options={}) {
-		const label = abilityId; //CONFIG.DND5E.abilities[abilityId];
+		const label = abilityId; //CONFIG.DND4EALTUS.abilities[abilityId];
 		const abl = this.data.data.abilities[abilityId];
 
 		// Construct parts
@@ -332,8 +332,8 @@ export class SimpleActor extends Actor {
 		const data = {mod: abl.mod};
 
 		// Add feat-related proficiency bonuses
-		const feats = this.data.flags.dnd5e || {};
-		if ( feats.remarkableAthlete && DND5E.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
+		const feats = this.data.flags.dnd4eAltus || {};
+		if ( feats.remarkableAthlete && DND4EALTUS.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
 			parts.push("@proficiency");
 			data.proficiency = Math.ceil(0.5 * this.data.data.attributes.prof);
 		}
@@ -353,7 +353,7 @@ export class SimpleActor extends Actor {
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND5E.AbilityPromptTitle", {ability: label}),
+			title: game.i18n.format("DND4EALTUS.AbilityPromptTitle", {ability: label}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			halflingLucky: feats.halflingLucky
 		}));

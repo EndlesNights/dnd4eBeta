@@ -4,7 +4,7 @@ import TraitSelector from "../apps/trait-selector.js";
  * Override and extend the core ItemSheet implementation to handle specific item types
  * @extends {ItemSheet}
  */
-export default class ItemSheet5e extends ItemSheet {
+export default class ItemSheet4e extends ItemSheet {
   constructor(...args) {
     super(...args);
     if ( this.object.data.type === "class" ) {
@@ -21,7 +21,7 @@ export default class ItemSheet5e extends ItemSheet {
 	  return mergeObject(super.defaultOptions, {
       width: 560,
       height: 420,
-      classes: ["dnd5e", "sheet", "item"],
+      classes: ["dnd4eAltus", "sheet", "item"],
       resizable: true,
       scrollY: [".tab.details"],
       tabs: [{navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description"}]
@@ -32,7 +32,7 @@ export default class ItemSheet5e extends ItemSheet {
 
   /** @override */
   get template() {
-    const path = "systems/dnd5e/templates/items/";
+    const path = "systems/dnd4eAltus/templates/items/";
     return `${path}/${this.item.data.type}.html`;
   }
 
@@ -44,7 +44,7 @@ export default class ItemSheet5e extends ItemSheet {
     data.labels = this.item.labels;
 
     // Include CONFIG values
-    data.config = CONFIG.DND5E;
+    data.config = CONFIG.dnd4eAltus;
 
     // Item Type, Status, and Details
     data.itemType = data.item.type.titleCase();
@@ -115,8 +115,8 @@ export default class ItemSheet5e extends ItemSheet {
         const uses = i.data.data.uses || {};
         if ( uses.per && uses.max ) {
           const label = uses.per === "charges" ?
-            ` (${game.i18n.format("DND5E.AbilityUseChargesLabel", {value: uses.value})})` :
-            ` (${game.i18n.format("DND5E.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
+            ` (${game.i18n.format("dnd4eAltus.AbilityUseChargesLabel", {value: uses.value})})` :
+            ` (${game.i18n.format("dnd4eAltus.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
           obj[i.id] = i.name + label;
         }
         return obj;
@@ -134,13 +134,13 @@ export default class ItemSheet5e extends ItemSheet {
    */
   _getItemStatus(item) {
     if ( item.type === "spell" ) {
-      return CONFIG.DND5E.spellPreparationModes[item.data.preparation];
+      return CONFIG.dnd4eAltus.spellPreparationModes[item.data.preparation];
     }
     else if ( ["weapon", "equipment"].includes(item.type) ) {
-      return game.i18n.localize(item.data.equipped ? "DND5E.Equipped" : "DND5E.Unequipped");
+      return game.i18n.localize(item.data.equipped ? "dnd4eAltus.Equipped" : "dnd4eAltus.Unequipped");
     }
     else if ( item.type === "tool" ) {
-      return game.i18n.localize(item.data.proficient ? "DND5E.Proficient" : "DND5E.NotProficient");
+      return game.i18n.localize(item.data.proficient ? "dnd4eAltus.Proficient" : "dnd4eAltus.NotProficient");
     }
   }
 
@@ -158,20 +158,20 @@ export default class ItemSheet5e extends ItemSheet {
     if ( item.type === "weapon" ) {
       props.push(...Object.entries(item.data.properties)
         .filter(e => e[1] === true)
-        .map(e => CONFIG.DND5E.weaponProperties[e[0]]));
+        .map(e => CONFIG.dnd4eAltus.weaponProperties[e[0]]));
     }
 
     else if ( item.type === "spell" ) {
       props.push(
         labels.components,
         labels.materials,
-        item.data.components.concentration ? game.i18n.localize("DND5E.Concentration") : null,
-        item.data.components.ritual ? game.i18n.localize("DND5E.Ritual") : null
+        item.data.components.concentration ? game.i18n.localize("dnd4eAltus.Concentration") : null,
+        item.data.components.ritual ? game.i18n.localize("dnd4eAltus.Ritual") : null
       )
     }
 
     else if ( item.type === "equipment" ) {
-      props.push(CONFIG.DND5E.equipmentTypes[item.data.armor.type]);
+      props.push(CONFIG.dnd4eAltus.equipmentTypes[item.data.armor.type]);
       props.push(labels.armor);
     }
 
@@ -181,7 +181,7 @@ export default class ItemSheet5e extends ItemSheet {
 
     // Action type
     if ( item.data.actionType ) {
-      props.push(CONFIG.DND5E.itemActionTypes[item.data.actionType]);
+      props.push(CONFIG.dnd4eAltus.itemActionTypes[item.data.actionType]);
     }
 
     // Action usage
@@ -286,7 +286,7 @@ export default class ItemSheet5e extends ItemSheet {
   _onConfigureClassSkills(event) {
     event.preventDefault();
     const skills = this.item.data.data.skills;
-    const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.DND5E.skills);
+    const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.dnd4eAltus.skills);
     const a = event.currentTarget;
     const label = a.parentElement;
 
@@ -294,7 +294,7 @@ export default class ItemSheet5e extends ItemSheet {
     new TraitSelector(this.item, {
       name: a.dataset.edit,
       title: label.innerText,
-      choices: Object.entries(CONFIG.DND5E.skills).reduce((obj, e) => {
+      choices: Object.entries(CONFIG.dnd4eAltus.skills).reduce((obj, e) => {
         if ( choices.includes(e[0] ) ) obj[e[0]] = e[1];
         return obj;
       }, {}),

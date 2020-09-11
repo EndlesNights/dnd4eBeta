@@ -7,7 +7,10 @@
 // Import Modules
 import { DND4EALTUS } from "./config.js";
 import { SimpleActor } from "./actor.js";
-import { SimpleItemSheet } from "./item-sheet.js";
+
+// import { SimpleItemSheet } from "./item-sheet.js";
+import ItemSheet4e from "./item/sheet.js";
+
 import { SimpleActorSheet } from "./actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
@@ -39,7 +42,8 @@ Hooks.once("init", async function() {
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("dnd4eAltus", SimpleActorSheet, { makeDefault: true });
   Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("dnd4eAltus", SimpleItemSheet, {makeDefault: true});
+  // Items.registerSheet("dnd4eAltus", SimpleItemSheet, {makeDefault: true});
+  Items.registerSheet("dnd4eAltus", ItemSheet4e, {makeDefault: true});
 
   // Register system settings
   game.settings.register("dnd4eAltus", "macroShorthand", {

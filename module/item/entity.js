@@ -5,7 +5,7 @@ import AbilityTemplate from "../pixi/ability-template.js";
 /**
  * Override and extend the basic :class:`Item` implementation
  */
-export default class Item5e extends Item {
+export default class Item4e extends Item {
 
   /* -------------------------------------------- */
   /*  Item Properties                             */
@@ -123,7 +123,7 @@ export default class Item5e extends Item {
    */
   get hasAreaTarget() {
     const target = this.data.data.target;
-    return target && (target.type in CONFIG.DND5E.areaTargetTypes);
+    return target && (target.type in CONFIG.DND4EALTUS.areaTargetTypes);
   }
 
   /* -------------------------------------------- */
@@ -152,7 +152,7 @@ export default class Item5e extends Item {
     const itemData = this.data;
     const actorData = this.actor ? this.actor.data : {};
     const data = itemData.data;
-    const C = CONFIG.DND5E;
+    const C = CONFIG.DND4EALTUS;
     const labels = {};
 
     // Classes
@@ -175,15 +175,15 @@ export default class Item5e extends Item {
     // Feat Items
     else if ( itemData.type === "feat" ) {
       const act = data.activation;
-      if ( act && (act.type === C.abilityActivationTypes.legendary) ) labels.featType = game.i18n.localize("DND5E.LegendaryActionLabel");
-      else if ( act && (act.type === C.abilityActivationTypes.lair) ) labels.featType = game.i18n.localize("DND5E.LairActionLabel");
-      else if ( act && act.type ) labels.featType = game.i18n.localize(data.damage.length ? "DND5E.Attack" : "DND5E.Action");
-      else labels.featType = game.i18n.localize("DND5E.Passive");
+      if ( act && (act.type === C.abilityActivationTypes.legendary) ) labels.featType = game.i18n.localize("DND4EALTUS.LegendaryActionLabel");
+      else if ( act && (act.type === C.abilityActivationTypes.lair) ) labels.featType = game.i18n.localize("DND4EALTUS.LairActionLabel");
+      else if ( act && act.type ) labels.featType = game.i18n.localize(data.damage.length ? "DND4EALTUS.Attack" : "DND4EALTUS.Action");
+      else labels.featType = game.i18n.localize("DND4EALTUS.Passive");
     }
 
     // Equipment Items
     else if ( itemData.type === "equipment" ) {
-      labels.armor = data.armor.value ? `${data.armor.value} ${game.i18n.localize("DND5E.AC")}` : "";
+      labels.armor = data.armor.value ? `${data.armor.value} ${game.i18n.localize("DND4EALTUS.AC")}` : "";
     }
 
     // Activated Items
@@ -217,7 +217,7 @@ export default class Item5e extends Item {
 
       // Recharge Label
       let chg = data.recharge || {};
-      labels.recharge = `${game.i18n.localize("DND5E.Recharge")} [${chg.value}${parseInt(chg.value) < 6 ? "+" : ""}]`;
+      labels.recharge = `${game.i18n.localize("DND4EALTUS.Recharge")} [${chg.value}${parseInt(chg.value) < 6 ? "+" : ""}]`;
     }
 
     // Item Actions
@@ -232,7 +232,7 @@ export default class Item5e extends Item {
       } else { // Un-owned items
         if ( save.scaling !== "flat" ) save.dc = null;
       }
-      labels.save = save.ability ? `${game.i18n.localize("DND5E.AbbreviationDC")} ${save.dc || ""} ${C.abilities[save.ability]}` : "";
+      labels.save = save.ability ? `${game.i18n.localize("DND4EALTUS.AbbreviationDC")} ${save.dc || ""} ${C.abilities[save.ability]}` : "";
 
       // Damage
       let dam = data.damage || {};
@@ -290,7 +290,7 @@ export default class Item5e extends Item {
 
     // Render the chat card template
     const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
-    const template = `systems/dnd5e/templates/chat/${templateType}-card.html`;
+    const template = `systems/dnd4eAltus/templates/chat/${templateType}-card.html`;
     const html = await renderTemplate(template, templateData);
 
     // Basic chat message data
@@ -335,7 +335,7 @@ export default class Item5e extends Item {
     const consume = itemData.consume || {};
     if ( !consume.type ) return true;
     const actor = this.actor;
-    const typeLabel = CONFIG.DND5E.abilityConsumptionTypes[consume.type];
+    const typeLabel = CONFIG.DND4EALTUS.abilityConsumptionTypes[consume.type];
     const amount = parseInt(consume.amount || 1);
 
     // Only handle certain types for certain actions
@@ -343,7 +343,7 @@ export default class Item5e extends Item {
 
     // No consumed target set
     if ( !consume.target ) {
-      ui.notifications.warn(game.i18n.format("DND5E.ConsumeWarningNoResource", {name: this.name, type: typeLabel}));
+      ui.notifications.warn(game.i18n.format("DND4EALTUS.ConsumeWarningNoResource", {name: this.name, type: typeLabel}));
       return false;
     }
 
@@ -368,12 +368,12 @@ export default class Item5e extends Item {
 
     // Verify that the consumed resource is available
     if ( [null, undefined].includes(consumed) ) {
-      ui.notifications.warn(game.i18n.format("DND5E.ConsumeWarningNoSource", {name: this.name, type: typeLabel}));
+      ui.notifications.warn(game.i18n.format("DND4EALTUS.ConsumeWarningNoSource", {name: this.name, type: typeLabel}));
       return false;
     }
     let remaining = quantity - amount;
     if ( remaining < 0) {
-      ui.notifications.warn(game.i18n.format("DND5E.ConsumeWarningNoQuantity", {name: this.name, type: typeLabel}));
+      ui.notifications.warn(game.i18n.format("DND4EALTUS.ConsumeWarningNoQuantity", {name: this.name, type: typeLabel}));
       return false;
     }
 
@@ -422,14 +422,14 @@ export default class Item5e extends Item {
     const current = getProperty(this.data, "data.uses.value") || 0;
     if ( consume && charge.value ) {
       if ( !charge.charged ) {
-        ui.notifications.warn(game.i18n.format("DND5E.ItemNoUses", {name: this.name}));
+        ui.notifications.warn(game.i18n.format("DND4EALTUS.ItemNoUses", {name: this.name}));
         return false;
       }
       else await this.update({"data.recharge.charged": false});
     }
     else if ( consume && usesCharges ) {
       if ( uses.value <= 0 ) {
-        ui.notifications.warn(game.i18n.format("DND5E.ItemNoUses", {name: this.name}));
+        ui.notifications.warn(game.i18n.format("DND4EALTUS.ItemNoUses", {name: this.name}));
         return false;
       }
       await this.update({"data.uses.value": Math.max(current - 1, 0)});
@@ -468,8 +468,8 @@ export default class Item5e extends Item {
     // General equipment properties
     if ( data.hasOwnProperty("equipped") && !["loot", "tool"].includes(this.data.type) ) {
       props.push(
-        game.i18n.localize(data.equipped ? "DND5E.Equipped" : "DND5E.Unequipped"),
-        game.i18n.localize(data.proficient ? "DND5E.Proficient" : "DND5E.NotProficient"),
+        game.i18n.localize(data.equipped ? "DND4EALTUS.Equipped" : "DND4EALTUS.Unequipped"),
+        game.i18n.localize(data.proficient ? "DND4EALTUS.Proficient" : "DND4EALTUS.NotProficient"),
       );
     }
 
@@ -496,9 +496,9 @@ export default class Item5e extends Item {
    */
   _equipmentChatData(data, labels, props) {
     props.push(
-      CONFIG.DND5E.equipmentTypes[data.armor.type],
+      CONFIG.DND4EALTUS.equipmentTypes[data.armor.type],
       labels.armor || null,
-      data.stealth.value ? game.i18n.localize("DND5E.StealthDisadvantage") : null
+      data.stealth.value ? game.i18n.localize("DND4EALTUS.StealthDisadvantage") : null
     );
   }
 
@@ -510,7 +510,7 @@ export default class Item5e extends Item {
    */
   _weaponChatData(data, labels, props) {
     props.push(
-      CONFIG.DND5E.weaponTypes[data.weaponType],
+      CONFIG.DND4EALTUS.weaponTypes[data.weaponType],
     );
   }
 
@@ -522,8 +522,8 @@ export default class Item5e extends Item {
    */
   _consumableChatData(data, labels, props) {
     props.push(
-      CONFIG.DND5E.consumableTypes[data.consumableType],
-      data.uses.value + "/" + data.uses.max + " " + game.i18n.localize("DND5E.Charges")
+      CONFIG.DND4EALTUS.consumableTypes[data.consumableType],
+      data.uses.value + "/" + data.uses.max + " " + game.i18n.localize("DND4EALTUS.Charges")
     );
     data.hasCharges = data.uses.value >= 0;
   }
@@ -536,8 +536,8 @@ export default class Item5e extends Item {
    */
   _toolChatData(data, labels, props) {
     props.push(
-      CONFIG.DND5E.abilities[data.ability] || null,
-      CONFIG.DND5E.proficiencyLevels[data.proficient || 0]
+      CONFIG.DND4EALTUS.abilities[data.ability] || null,
+      CONFIG.DND4EALTUS.proficiencyLevels[data.proficient || 0]
     );
   }
 
@@ -549,8 +549,8 @@ export default class Item5e extends Item {
    */
   _lootChatData(data, labels, props) {
     props.push(
-      game.i18n.localize("DND5E.ItemTypeLoot"),
-      data.weight ? data.weight + " " + game.i18n.localize("DND5E.AbbreviationLbs") : null
+      game.i18n.localize("DND4EALTUS.ItemTypeLoot"),
+      data.weight ? data.weight + " " + game.i18n.localize("DND4EALTUS.AbbreviationLbs") : null
     );
   }
 
@@ -592,11 +592,11 @@ export default class Item5e extends Item {
   async rollAttack(options={}) {
     const itemData = this.data.data;
     const actorData = this.actor.data.data;
-    const flags = this.actor.data.flags.dnd5e || {};
+    const flags = this.actor.data.flags.dnd4eAltus || {};
     if ( !this.hasAttack ) {
       throw new Error("You may not place an Attack Roll with this Item.");
     }
-    let title = `${this.name} - ${game.i18n.localize("DND5E.AttackRoll")}`;
+    let title = `${this.name} - ${game.i18n.localize("DND4EALTUS.AttackRoll")}`;
     const rollData = this.getRollData();
 
     // Define Roll bonuses
@@ -641,7 +641,7 @@ export default class Item5e extends Item {
         top: options.event ? options.event.clientY - 80 : null,
         left: window.innerWidth - 710
       },
-      messageData: {"flags.dnd5e.roll": {type: "attack", itemId: this.id }}
+      messageData: {"flags.dnd4eAltus.roll": {type: "attack", itemId: this.id }}
     }, options);
     rollConfig.event = options.event;
 
@@ -684,14 +684,14 @@ export default class Item5e extends Item {
     if ( !this.hasDamage ) {
       throw new Error("You may not make a Damage Roll with this Item.");
     }
-    const messageData = {"flags.dnd5e.roll": {type: "damage", itemId: this.id }};
+    const messageData = {"flags.dnd4eAltus.roll": {type: "damage", itemId: this.id }};
 
     // Get roll data
     const rollData = this.getRollData();
     if ( spellLevel ) rollData.item.level = spellLevel;
 
     // Get message labels
-    const title = `${this.name} - ${game.i18n.localize("DND5E.DamageRoll")}`;
+    const title = `${this.name} - ${game.i18n.localize("DND4EALTUS.DamageRoll")}`;
     let flavor = this.labels.damageTypes.length ? `${title} (${this.labels.damageTypes})` : title;
 
     // Define Roll parts
@@ -700,7 +700,7 @@ export default class Item5e extends Item {
     // Adjust damage from versatile usage
     if ( versatile && itemData.damage.versatile ) {
       parts[0] = itemData.damage.versatile;
-      messageData["flags.dnd5e.roll"].versatile = true;
+      messageData["flags.dnd4eAltus.roll"].versatile = true;
     }
 
     // Scale damage from up-casting spells
@@ -857,7 +857,7 @@ export default class Item5e extends Item {
     // Define Roll Data
     const rollData = this.getRollData();
     if ( options.spellLevel ) rollData.item.level = options.spellLevel;
-    const title = `${this.name} - ${game.i18n.localize("DND5E.OtherFormula")}`;
+    const title = `${this.name} - ${game.i18n.localize("DND4EALTUS.OtherFormula")}`;
 
     // Invoke the roll and submit it to chat
     const roll = new Roll(rollData.item.formula, rollData).roll();
@@ -865,7 +865,7 @@ export default class Item5e extends Item {
       speaker: ChatMessage.getSpeaker({actor: this.actor}),
       flavor: this.data.data.chatFlavor || title,
       rollMode: game.settings.get("core", "rollMode"),
-      messageData: {"flags.dnd5e.roll": {type: "other", itemId: this.id }}
+      messageData: {"flags.dnd4eAltus.roll": {type: "other", itemId: this.id }}
     });
     return roll;
   }
@@ -924,7 +924,7 @@ export default class Item5e extends Item {
         }
         // Case 5, item unusable, display warning and do nothing
         else {
-          ui.notifications.warn(game.i18n.format("DND5E.ItemNoUses", {name: this.name}));
+          ui.notifications.warn(game.i18n.format("DND4EALTUS.ItemNoUses", {name: this.name}));
         }
       }
     }
@@ -954,7 +954,7 @@ export default class Item5e extends Item {
 
     // Display a Chat Message
     const promises = [roll.toMessage({
-      flavor: `${game.i18n.format("DND5E.ItemRechargeCheck", {name: this.name})} - ${game.i18n.localize(success ? "DND5E.ItemRechargeSuccess" : "DND5E.ItemRechargeFailure")}`,
+      flavor: `${game.i18n.format("DND4EALTUS.ItemRechargeCheck", {name: this.name})} - ${game.i18n.localize(success ? "DND4EALTUS.ItemRechargeSuccess" : "DND4EALTUS.ItemRechargeFailure")}`,
       speaker: ChatMessage.getSpeaker({actor: this.actor, token: this.actor.token})
     })];
 
@@ -976,23 +976,23 @@ export default class Item5e extends Item {
     // Prepare roll data
     let rollData = this.getRollData();
     const parts = [`@mod`, "@prof"];
-    const title = `${this.name} - ${game.i18n.localize("DND5E.ToolCheck")}`;
+    const title = `${this.name} - ${game.i18n.localize("DND4EALTUS.ToolCheck")}`;
 
     // Compose the roll data
     const rollConfig = mergeObject({
       parts: parts,
       data: rollData,
-      template: "systems/dnd5e/templates/chat/tool-roll-dialog.html",
+      template: "systems/dnd4eAltus/templates/chat/tool-roll-dialog.html",
       title: title,
       speaker: ChatMessage.getSpeaker({actor: this.actor}),
-      flavor: `${this.name} - ${game.i18n.localize("DND5E.ToolCheck")}`,
+      flavor: `${this.name} - ${game.i18n.localize("DND4EALTUS.ToolCheck")}`,
       dialogOptions: {
         width: 400,
         top: options.event ? options.event.clientY - 80 : null,
         left: window.innerWidth - 710,
       },
-      halflingLucky: this.actor.getFlag("dnd5e", "halflingLucky" ) || false,
-      messageData: {"flags.dnd5e.roll": {type: "tool", itemId: this.id }}
+      halflingLucky: this.actor.getFlag("dnd4eAltus", "halflingLucky" ) || false,
+      messageData: {"flags.dnd4eAltus.roll": {type: "tool", itemId: this.id }}
     }, options);
     rollConfig.event = options.event;
 
@@ -1063,7 +1063,7 @@ export default class Item5e extends Item {
     // Get the Item
     const item = actor.getOwnedItem(card.dataset.itemId);
     if ( !item ) {
-      return ui.notifications.error(game.i18n.format("DND5E.ActionWarningNoItem", {item: card.dataset.itemId, name: actor.name}))
+      return ui.notifications.error(game.i18n.format("DND4EALTUS.ActionWarningNoItem", {item: card.dataset.itemId, name: actor.name}))
     }
     const spellLevel = parseInt(card.dataset.spellLevel) || null;
 
@@ -1072,7 +1072,7 @@ export default class Item5e extends Item {
     if ( isTargetted ) {
       targets = this._getChatCardTargets(card);
       if ( !targets.length ) {
-        ui.notifications.warn(game.i18n.localize("DND5E.ActionWarningNoToken"));
+        ui.notifications.warn(game.i18n.localize("DND4EALTUS.ActionWarningNoToken"));
         return button.disabled = false;
       }
     }
@@ -1168,18 +1168,18 @@ export default class Item5e extends Item {
 
   /**
    * Create a consumable spell scroll Item from a spell Item.
-   * @param {Item5e} spell      The spell to be made into a scroll
-   * @return {Item5e}           The created scroll consumable item
+   * @param {item4e} spell      The spell to be made into a scroll
+   * @return {item4e}           The created scroll consumable item
    * @private
    */
   static async createScrollFromSpell(spell) {
 
     // Get spell data
-    const itemData = spell instanceof Item5e ? spell.data : spell;
+    const itemData = spell instanceof item4e ? spell.data : spell;
     const {actionType, description, source, activation, duration, target, range, damage, save, level} = itemData.data;
 
     // Get scroll data
-    const scrollUuid = CONFIG.DND5E.spellScrollIds[level];
+    const scrollUuid = CONFIG.DND4EALTUS.spellScrollIds[level];
     const scrollItem = await fromUuid(scrollUuid);
     const scrollData = scrollItem.data;
     delete scrollData._id;
@@ -1196,7 +1196,7 @@ export default class Item5e extends Item {
 
     // Create the spell scroll data
     const spellScrollData = mergeObject(scrollData, {
-      name: `${game.i18n.localize("DND5E.SpellScroll")}: ${itemData.name}`,
+      name: `${game.i18n.localize("DND4EALTUS.SpellScroll")}: ${itemData.name}`,
       img: itemData.img,
       data: {
         "description.value": desc.trim(),

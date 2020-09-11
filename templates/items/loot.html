@@ -6,7 +6,7 @@
 
         <div class="header-details flexrow">
             <h1 class="charname">
-                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND5E.ItemName' }}"/>
+                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
             </h1>
 
             <div class="item-subtitle">
@@ -16,10 +16,10 @@
 
             <ul class="summary flexrow">
                 <li>
-                    <input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND5E.Rarity' }}"/>
+                    <input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
                 </li>
                 <li>
-                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND5E.Source' }}"/>
+                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
                 </li>
             </ul>
         </div>
@@ -27,6 +27,6 @@
 
     {{!-- Item Sheet Body --}}
     <section class="sheet-body">
-        {{> "systems/dnd5e/templates/items/parts/item-description.html"}}
+        {{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
     </section>
 </form>

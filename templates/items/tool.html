@@ -6,7 +6,7 @@
 
         <div class="header-details flexrow">
             <h1 class="charname">
-                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND5E.ItemName' }}"/>
+                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
             </h1>
 
             <div class="item-subtitle">
@@ -16,10 +16,10 @@
 
             <ul class="summary flexrow">
                 <li>
-                    <input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND5E.Rarity' }}"/>
+                    <input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
                 </li>
                 <li>
-                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND5E.Source' }}"/>
+                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
                 </li>
             </ul>
         </div>
@@ -27,22 +27,22 @@
 
     {{!-- Item Sheet Navigation --}}
     <nav class="sheet-navigation tabs" data-group="primary">
-        <a class="item active" data-tab="description">{{ localize "DND5E.Description" }}</a>
-        <a class="item" data-tab="details">{{ localize "DND5E.Details" }}</a>
+        <a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
+        <a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
     </nav>
 
     {{!-- Item Sheet Body --}}
     <section class="sheet-body">
 
         {{!-- Description Tab --}}
-        {{> "systems/dnd5e/templates/items/parts/item-description.html"}}
+        {{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
 
         {{!-- Details Tab --}}
         <div class="tab details" data-group="primary" data-tab="details">
 
             {{!-- Tool Proficiency --}}
             <div class="form-group">
-                <label>{{ localize "DND5E.ItemToolProficiency" }}</label>
+                <label>{{ localize "DND4EALTUS.ItemToolProficiency" }}</label>
                  <select name="data.proficient" data-dtype="Number">
                      {{#select data.proficient}}
                      {{#each config.proficiencyLevels as |label p|}}
@@ -54,7 +54,7 @@
 
             {{!-- Ability Check --}}
             <div class="form-group">
-                <label>{{ localize "DND5E.DefaultAbilityCheck" }}</label>
+                <label>{{ localize "DND4EALTUS.DefaultAbilityCheck" }}</label>
                 <select name="data.ability">
                     {{#select data.ability}}
                     {{#each config.abilities as |name a|}}
@@ -66,7 +66,7 @@
 
             {{!-- Chat Message Flavor --}}
             <div class="form-group stacked">
-                <label>{{ localize "DND5E.ChatFlavor" }}</label>
+                <label>{{ localize "DND4EALTUS.ChatFlavor" }}</label>
                 <input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/>
             </div>
         </div>
