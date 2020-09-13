@@ -382,6 +382,9 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find('.item-delete').click(this._onItemDelete.bind(this));
 		html.find('.item-uses input').click(ev => ev.target.select()).change(this._onUsesChange.bind(this));
 		
+		// Item summaries
+		html.find('.item .item-name h4').click(event => this._onItemSummary(event));		
+		
 		// Item State Toggling
 		html.find('.item-toggle').click(this._onToggleItem.bind(this));
 	
@@ -389,9 +392,37 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find(".currency-convert").click(this._onConvertCurrency.bind(this));
 	}
   }
-  
+
   /* -------------------------------------------- */
 
+  /**
+   * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
+   * @private
+   */
+  _onItemSummary(event) {
+    event.preventDefault();
+    let li = $(event.currentTarget).parents(".item"),
+        item = this.actor.getOwnedItem(li.data("item-id"));//,
+        //chatData = item.getChatData({secrets: this.actor.owner});
+	console.log(item.getChatData({secrets: this.actor.owner}));
+	return;
+
+    // Toggle summary
+    if ( li.hasClass("expanded") ) {
+      let summary = li.children(".item-summary");
+      summary.slideUp(200, () => summary.remove());
+    } else {
+      let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
+      let props = $(`<div class="item-properties"></div>`);
+      chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
+      div.append(props);
+      li.append(div.hide());
+      div.slideDown(200);
+    }
+    li.toggleClass("expanded");
+  }
+  
+  /* -------------------------------------------- */
 
   /**
    * Handle toggling the state of an Owned Item within the Actor
