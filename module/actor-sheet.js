@@ -82,11 +82,10 @@ export class SimpleActorSheet extends ActorSheet {
 		);
 		
 		this._prepareDataSense(data.actor.data.senses, 
-		{"vision": CONFIG.DND4EALTUS.vision, "special": CONFIG.DND4EALTUS.special}
+			{"vision": CONFIG.DND4EALTUS.vision, "special": CONFIG.DND4EALTUS.special}
 		);			
 		
 		this._prepareItems(data);
-		console.log(data);
 		return data;
 	}
 	
@@ -383,9 +382,28 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find('.item-delete').click(this._onItemDelete.bind(this));
 		html.find('.item-uses input').click(ev => ev.target.select()).change(this._onUsesChange.bind(this));
 		
+		// Item State Toggling
+		html.find('.item-toggle').click(this._onToggleItem.bind(this));
+	
 		//convert currency to it's largest form to save weight.
 		html.find(".currency-convert").click(this._onConvertCurrency.bind(this));
 	}
+  }
+  
+  /* -------------------------------------------- */
+
+
+  /**
+   * Handle toggling the state of an Owned Item within the Actor
+   * @param {Event} event   The triggering click event
+   * @private
+   */
+  _onToggleItem(event) {
+    event.preventDefault();
+    const itemId = event.currentTarget.closest(".item").dataset.itemId;
+    const item = this.actor.getOwnedItem(itemId);
+    const attr = item.data.type === "spell" ? "data.preparation.prepared" : "data.equipped";
+    return item.update({[attr]: !getProperty(item.data, attr)});
   }
   /* -------------------------------------------- */
 

@@ -137,10 +137,10 @@ export default class ItemSheet4e extends ItemSheet {
       return CONFIG.dnd4eAltus.spellPreparationModes[item.data.preparation];
     }
     else if ( ["weapon", "equipment"].includes(item.type) ) {
-      return game.i18n.localize(item.data.equipped ? "dnd4eAltus.Equipped" : "dnd4eAltus.Unequipped");
+      return game.i18n.localize(item.data.equipped ? "DND4EALTUS.Equipped" : "DND4EALTUS.Unequipped");
     }
     else if ( item.type === "tool" ) {
-      return game.i18n.localize(item.data.proficient ? "dnd4eAltus.Proficient" : "dnd4eAltus.NotProficient");
+      return game.i18n.localize(item.data.proficient ? "DND4EALTUS.Proficient" : "DND4EALTUS.NotProficient");
     }
   }
 
@@ -158,15 +158,15 @@ export default class ItemSheet4e extends ItemSheet {
     if ( item.type === "weapon" ) {
       props.push(...Object.entries(item.data.properties)
         .filter(e => e[1] === true)
-        .map(e => CONFIG.dnd4eAltus.weaponProperties[e[0]]));
+        .map(e => CONFIG.DND4EALTUS.weaponProperties[e[0]]));
     }
 
     else if ( item.type === "spell" ) {
       props.push(
         labels.components,
         labels.materials,
-        item.data.components.concentration ? game.i18n.localize("dnd4eAltus.Concentration") : null,
-        item.data.components.ritual ? game.i18n.localize("dnd4eAltus.Ritual") : null
+        item.data.components.concentration ? game.i18n.localize("DND4EALTUS.Concentration") : null,
+        item.data.components.ritual ? game.i18n.localize("DND4EALTUS.Ritual") : null
       )
     }
 
