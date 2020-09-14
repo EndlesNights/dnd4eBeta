@@ -7,7 +7,7 @@ import TraitSelector from "./apps/trait-selector.js";
 import TraitSelectorSense from "./apps/trait-selector-sense.js";
 
 import HPOptions from "./apps/hp-options.js";
-
+import Item4e from "./item/entity.js";
 
 
 /**
@@ -402,11 +402,10 @@ export class SimpleActorSheet extends ActorSheet {
   _onItemSummary(event) {
     event.preventDefault();
     let li = $(event.currentTarget).parents(".item"),
-        item = this.actor.getOwnedItem(li.data("item-id"));//,
-        //chatData = item.getChatData({secrets: this.actor.owner});
-	console.log(item.getChatData({secrets: this.actor.owner}));
-	return;
+        item = this.actor.getOwnedItem(li.data("item-id")),
+		chatData = item.getChatData({secrets: this.actor.owner});
 
+	
     // Toggle summary
     if ( li.hasClass("expanded") ) {
       let summary = li.children(".item-summary");

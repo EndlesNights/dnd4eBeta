@@ -470,7 +470,7 @@
 .dnd4eAltus.sheet.actor .center-pane {
 	height: 100%;
 	padding: 0 5px 0 3px;
-	/* overflow-y: scroll; */
+	/* overflow-y: auto; */
 	/* scrollbar-width: thin; */
 }
 
@@ -1072,14 +1072,14 @@ font-size: 12px;
   list-style: none;
   margin: 7px 0;
   padding: 0;
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
-.dnd4eAltus .item-list .item {
-  height: 30px;
-  line-height: 24px;
-  padding: 3px 0;
-  border-bottom: 1px solid #BBB;
-}
+/* .dnd4eAltus .item-list .item { */
+  /* height: 30px; */
+  /* line-height: 24px; */
+  /* padding: 3px 0; */
+  /* border-bottom: 1px solid #BBB; */
+/* } */
 .dnd4eAltus .item-list .item img {
   flex: 0 0 24px;
   margin-right: 5px;

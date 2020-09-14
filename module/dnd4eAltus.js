@@ -14,6 +14,9 @@ import ItemSheet4e from "./item/sheet.js";
 import { SimpleActorSheet } from "./actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
+// Import Entities
+import Item4e from "./item/entity.js";
+
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
 /* -------------------------------------------- */
@@ -31,12 +34,16 @@ Hooks.once("init", async function() {
   // };
   
 	game.dnd4eAltus = {
-		config: DND4EALTUS
+		config: DND4EALTUS,
+		entities: {
+			Item4e,
+		}
 	};
 	
 	// Define custom Entity classes
 	CONFIG.DND4EALTUS = DND4EALTUS;
 	CONFIG.Actor.entityClass = SimpleActor;
+	CONFIG.Item.entityClass = Item4e;
 
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);
@@ -92,3 +99,5 @@ Hooks.once("setup", function() {
     }, {});
   }
 });
+
+Hooks.on("renderChatLog", (app, html, data) => Item4e.chatListeners(html));

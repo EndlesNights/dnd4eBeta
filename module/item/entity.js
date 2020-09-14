@@ -290,7 +290,7 @@ export default class Item4e extends Item {
 
     // Render the chat card template
     const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
-    const template = `systems/dnd4eAltus/templates/chat/${templateType}-card.html`;
+    const template = `systems/dnd4ealtus/templates/chat/${templateType}-card.html`;
     const html = await renderTemplate(template, templateData);
 
     // Basic chat message data
@@ -592,7 +592,7 @@ export default class Item4e extends Item {
   async rollAttack(options={}) {
     const itemData = this.data.data;
     const actorData = this.actor.data.data;
-    const flags = this.actor.data.flags.dnd4eAltus || {};
+    const flags = this.actor.data.flags.dnd4ealtus || {};
     if ( !this.hasAttack ) {
       throw new Error("You may not place an Attack Roll with this Item.");
     }
@@ -641,7 +641,7 @@ export default class Item4e extends Item {
         top: options.event ? options.event.clientY - 80 : null,
         left: window.innerWidth - 710
       },
-      messageData: {"flags.dnd4eAltus.roll": {type: "attack", itemId: this.id }}
+      messageData: {"flags.dnd4ealtus.roll": {type: "attack", itemId: this.id }}
     }, options);
     rollConfig.event = options.event;
 
@@ -684,7 +684,7 @@ export default class Item4e extends Item {
     if ( !this.hasDamage ) {
       throw new Error("You may not make a Damage Roll with this Item.");
     }
-    const messageData = {"flags.dnd4eAltus.roll": {type: "damage", itemId: this.id }};
+    const messageData = {"flags.dnd4ealtus.roll": {type: "damage", itemId: this.id }};
 
     // Get roll data
     const rollData = this.getRollData();
@@ -700,7 +700,7 @@ export default class Item4e extends Item {
     // Adjust damage from versatile usage
     if ( versatile && itemData.damage.versatile ) {
       parts[0] = itemData.damage.versatile;
-      messageData["flags.dnd4eAltus.roll"].versatile = true;
+      messageData["flags.dnd4ealtus.roll"].versatile = true;
     }
 
     // Scale damage from up-casting spells
@@ -865,7 +865,7 @@ export default class Item4e extends Item {
       speaker: ChatMessage.getSpeaker({actor: this.actor}),
       flavor: this.data.data.chatFlavor || title,
       rollMode: game.settings.get("core", "rollMode"),
-      messageData: {"flags.dnd4eAltus.roll": {type: "other", itemId: this.id }}
+      messageData: {"flags.dnd4ealtus.roll": {type: "other", itemId: this.id }}
     });
     return roll;
   }
@@ -982,7 +982,7 @@ export default class Item4e extends Item {
     const rollConfig = mergeObject({
       parts: parts,
       data: rollData,
-      template: "systems/dnd4eAltus/templates/chat/tool-roll-dialog.html",
+      template: "systems/dnd4ealtus/templates/chat/tool-roll-dialog.html",
       title: title,
       speaker: ChatMessage.getSpeaker({actor: this.actor}),
       flavor: `${this.name} - ${game.i18n.localize("DND4EALTUS.ToolCheck")}`,
@@ -991,8 +991,8 @@ export default class Item4e extends Item {
         top: options.event ? options.event.clientY - 80 : null,
         left: window.innerWidth - 710,
       },
-      halflingLucky: this.actor.getFlag("dnd4eAltus", "halflingLucky" ) || false,
-      messageData: {"flags.dnd4eAltus.roll": {type: "tool", itemId: this.id }}
+      halflingLucky: this.actor.getFlag("dnd4ealtus", "halflingLucky" ) || false,
+      messageData: {"flags.dnd4ealtus.roll": {type: "tool", itemId: this.id }}
     }, options);
     rollConfig.event = options.event;
 
@@ -1168,14 +1168,14 @@ export default class Item4e extends Item {
 
   /**
    * Create a consumable spell scroll Item from a spell Item.
-   * @param {item4e} spell      The spell to be made into a scroll
-   * @return {item4e}           The created scroll consumable item
+   * @param {Item4e} spell      The spell to be made into a scroll
+   * @return {Item4e}           The created scroll consumable item
    * @private
    */
   static async createScrollFromSpell(spell) {
 
     // Get spell data
-    const itemData = spell instanceof item4e ? spell.data : spell;
+    const itemData = spell instanceof Item4e ? spell.data : spell;
     const {actionType, description, source, activation, duration, target, range, damage, save, level} = itemData.data;
 
     // Get scroll data
