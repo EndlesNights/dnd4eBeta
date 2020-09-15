@@ -388,6 +388,10 @@ export class SimpleActor extends Actor {
 			weight += v/100 * 2.205;
 		}
 		
+		for (let [e, v] of Object.entries(actorData.items)) {
+			weight += v.data.weight * v.data.quantity;
+		}
+		
 		//round to nearest 100th.
 		weight = Math.round(weight * 1000) / 1000;
 		

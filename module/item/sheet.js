@@ -171,7 +171,7 @@ export default class ItemSheet4e extends ItemSheet {
     }
 
     else if ( item.type === "equipment" ) {
-      props.push(CONFIG.dnd4eAltus.equipmentTypes[item.data.armor.type]);
+      props.push(CONFIG.DND4EALTUS.equipmentTypes[item.data.armor.type]);
       props.push(labels.armor);
     }
 
@@ -181,7 +181,7 @@ export default class ItemSheet4e extends ItemSheet {
 
     // Action type
     if ( item.data.actionType ) {
-      props.push(CONFIG.dnd4eAltus.itemActionTypes[item.data.actionType]);
+      props.push(CONFIG.DND4EALTUS.itemActionTypes[item.data.actionType]);
     }
 
     // Action usage
@@ -286,7 +286,7 @@ export default class ItemSheet4e extends ItemSheet {
   _onConfigureClassSkills(event) {
     event.preventDefault();
     const skills = this.item.data.data.skills;
-    const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.dnd4eAltus.skills);
+    const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.DND4EALTUS.skills);
     const a = event.currentTarget;
     const label = a.parentElement;
 
@@ -294,7 +294,7 @@ export default class ItemSheet4e extends ItemSheet {
     new TraitSelector(this.item, {
       name: a.dataset.edit,
       title: label.innerText,
-      choices: Object.entries(CONFIG.dnd4eAltus.skills).reduce((obj, e) => {
+      choices: Object.entries(CONFIG.DND4EALTUS.skills).reduce((obj, e) => {
         if ( choices.includes(e[0] ) ) obj[e[0]] = e[1];
         return obj;
       }, {}),
