@@ -6,7 +6,7 @@
   "minimumCoreVersion": "0.5.6",
   "compatibleCoreVersion": "0.6.5",
   "templateVersion": 2,
-  "author": "Atropos",
+  "author": "EndlesNights",
   "esmodules": ["module/dnd4eAltus.js"],
   "styles": ["styles/dnd4eAltus.css"],
   "packs": [],
