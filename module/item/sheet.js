@@ -44,7 +44,7 @@ export default class ItemSheet4e extends ItemSheet {
     data.labels = this.item.labels;
 
     // Include CONFIG values
-    data.config = CONFIG.dnd4eAltus;
+    data.config = CONFIG.DND4EALTUS;
 
     // Item Type, Status, and Details
     data.itemType = data.item.type.titleCase();
@@ -115,8 +115,8 @@ export default class ItemSheet4e extends ItemSheet {
         const uses = i.data.data.uses || {};
         if ( uses.per && uses.max ) {
           const label = uses.per === "charges" ?
-            ` (${game.i18n.format("dnd4eAltus.AbilityUseChargesLabel", {value: uses.value})})` :
-            ` (${game.i18n.format("dnd4eAltus.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
+            ` (${game.i18n.format("DND4EALTUS.AbilityUseChargesLabel", {value: uses.value})})` :
+            ` (${game.i18n.format("DND4EALTUS.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
           obj[i.id] = i.name + label;
         }
         return obj;
@@ -134,7 +134,7 @@ export default class ItemSheet4e extends ItemSheet {
    */
   _getItemStatus(item) {
     if ( item.type === "spell" ) {
-      return CONFIG.dnd4eAltus.spellPreparationModes[item.data.preparation];
+      return CONFIG.DND4EALTUS.spellPreparationModes[item.data.preparation];
     }
     else if ( ["weapon", "equipment"].includes(item.type) ) {
       return game.i18n.localize(item.data.equipped ? "DND4EALTUS.Equipped" : "DND4EALTUS.Unequipped");
