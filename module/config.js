@@ -483,7 +483,8 @@ DND4EALTUS.weaponTypes = {
   "martialM": "DND4EALTUS.WeaponMartialM",
   "martialR": "DND4EALTUS.WeaponMartialR",
   "natural": "DND4EALTUS.WeaponNatural",
-  "improv": "DND4EALTUS.WeaponImprov"
+  "improv": "DND4EALTUS.WeaponImprov",
+  "siege": "DND4EALTUS.WeaponSiege"
 };
 
 
