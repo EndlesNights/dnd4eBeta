@@ -74,7 +74,7 @@ Hooks.once("setup", function() {
   ];
 
   const noSort = [
-    "currencies"
+    "currencies", "weaponTypes"
   ];
   
   // const doLocalize = function(obj) {
