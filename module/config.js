@@ -496,17 +496,19 @@ DND4EALTUS.weaponTypes = {
  */
 DND4EALTUS.weaponProperties = {
   "amm": "DND4EALTUS.WeaponPropertiesAmm",
-  "hvy": "DND4EALTUS.WeaponPropertiesHvy",
-  "fin": "DND4EALTUS.WeaponPropertiesFin",
-  "fir": "DND4EALTUS.WeaponPropertiesFir",
-  "foc": "DND4EALTUS.WeaponPropertiesFoc",
-  "lgt": "DND4EALTUS.WeaponPropertiesLgt",
-  "lod": "DND4EALTUS.WeaponPropertiesLod",
+  "bru": "DND4EALTUS.WeaponPropertiesBru",
+  "def": "DND4EALTUS.WeaponPropertiesDef",
+  "hic": "DND4EALTUS.WeaponPropertiesHic",
+  "imp": "DND4EALTUS.WeaponPropertiesImp",
+  "lof": "DND4EALTUS.WeaponPropertiesLof",
+  "lom": "DND4EALTUS.WeaponPropertiesLom",
+  "off": "DND4EALTUS.WeaponPropertiesOff",
   "rch": "DND4EALTUS.WeaponPropertiesRch",
   "rel": "DND4EALTUS.WeaponPropertiesRel",
-  "ret": "DND4EALTUS.WeaponPropertiesRet",
+  "sml": "DND4EALTUS.WeaponPropertiesSml",
   "spc": "DND4EALTUS.WeaponPropertiesSpc",
-  "thr": "DND4EALTUS.WeaponPropertiesThr",
+  "thv": "DND4EALTUS.WeaponPropertiesThv",
+  "tlg": "DND4EALTUS.WeaponPropertiesTlg",
   "two": "DND4EALTUS.WeaponPropertiesTwo",
   "ver": "DND4EALTUS.WeaponPropertiesVer"
 };
