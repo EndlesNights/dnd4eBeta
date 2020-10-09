@@ -390,6 +390,10 @@ export class SimpleActorSheet extends ActorSheet {
 	
 		//convert currency to it's largest form to save weight.
 		html.find(".currency-convert").click(this._onConvertCurrency.bind(this));
+		
+		// Item Rolling
+		html.find('.item .item-image').click(event => this._onItemRoll(event));
+		// html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
 	}
   }
 
@@ -567,6 +571,30 @@ export class SimpleActorSheet extends ActorSheet {
 
     // Update the field value and save the form
     this._onSubmit(event);
+  }
+  
+  /* -------------------------------------------- */
+
+  /**
+   * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
+   * @private
+   */
+  _onItemRoll(event) {
+    event.preventDefault();
+    const itemId = event.currentTarget.closest(".item").dataset.itemId;
+    const item = this.actor.getOwnedItem(itemId);
+	
+	console.log(itemId);
+	console.log(item);
+	
+    // Roll spells through the actor
+    // if ( item.data.type === "spell" ) {
+      // return this.actor.useSpell(item, {configureDialog: !event.shiftKey});
+    // }
+
+    // Otherwise roll the Item directly
+    // else return item.roll();
+	item.roll();
   }
   
   /* -------------------------------------------- */
