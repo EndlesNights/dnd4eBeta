@@ -479,12 +479,17 @@ DND4EALTUS.spellScalingModes = {
  */
 DND4EALTUS.weaponTypes = {
   "simpleM": "DND4EALTUS.WeaponSimpleM",
-  "simpleR": "DND4EALTUS.WeaponSimpleR",
-  "martialM": "DND4EALTUS.WeaponMartialM",
-  "martialR": "DND4EALTUS.WeaponMartialR",
+  "militaryM": "DND4EALTUS.WeaponMilitaryM",
+  "superiorM": "DND4EALTUS.WeaponSuperiorM",
+  "improvM": "DND4EALTUS.WeaponImprovisedM",
+  "simpleR": "DND4EALTUS.WeaponSimpleR",  
+  "militaryR": "DND4EALTUS.WeaponMilitaryR",
+  "superiorR": "DND4EALTUS.WeaponSuperiorR",
+  "improvR": "DND4EALTUS.WeaponImprovisedR",
+  "siege": "DND4EALTUS.WeaponSiege",
   "natural": "DND4EALTUS.WeaponNatural",
   "improv": "DND4EALTUS.WeaponImprov",
-  "siege": "DND4EALTUS.WeaponSiege"
+
 };
 
 
