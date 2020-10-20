@@ -1,3 +1,3 @@
-# Simple Worldbuilding System
+# D&D 4e - Altus
 
-A simple game system for Foundry VTT which allows for flexible definition of Actors and Items to assist with worldbuilding or for running games which do not have a more complete system implementation available.# dnd4eAltus
+A modified version of D&D4e for the play setting of Altus to be played on the Foundry VTT.
