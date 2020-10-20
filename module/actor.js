@@ -21,18 +21,22 @@ export class SimpleActor extends Actor {
     }
 
     // Map all items data using their slugified names
-    data.items = this.data.items.reduce((obj, i) => {
-      let key = i.name.slugify({strict: true});
-      let itemData = duplicate(i.data);
-      if ( !!shorthand ) {
-        for ( let [k, v] of Object.entries(itemData.attributes) ) {
-          if ( !(k in itemData) ) itemData[k] = v.value;
-        }
-        delete itemData["attributes"];
-      }
-      obj[key] = itemData;
-      return obj;
-    }, {});
+    // data.items = this.data.items.reduce((obj, i) => {
+      // let key = i.name.slugify({strict: true});
+      // let itemData = duplicate(i.data);
+      // if ( !!shorthand ) {
+		  // console.log( Object);
+		  // console.log( itemData);
+		  
+        // for ( let [k, v] of Object.entries(itemData.attributes) ) {
+          // if ( !(k in itemData) ) itemData[k] = v.value;
+        // }
+        // delete itemData["attributes"];
+      // }
+      // obj[key] = itemData;
+      // return obj;
+    // }, {});
+	
     return data;
   }
   
@@ -302,13 +306,11 @@ export class SimpleActor extends Actor {
 
 		// Reliable Talent applies to any skill check we have full or better proficiency in
 		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4eAltus", "reliableTalent"));
-
 		// Roll and return
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
-			//title: game.i18n.format("DND4EALTUS.SkillPromptTitle", {skill: CONFIG.DND4EALTUS.skills[skillId]}),
-			title: "Test Name",
+			title: game.i18n.format("DND4EALTUS.SkillPromptTitle", {skill: CONFIG.DND4EALTUS.skills[skillId]}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			//halflingLucky: this.getFlag("dnd4eAltus", "halflingLucky"),
 			//reliableTalent: reliableTalent
@@ -397,10 +399,11 @@ export class SimpleActor extends Actor {
 		
 		const max = actorData.data.abilities.str.value * 10;
 		//set ppc Percentage Base Carry-Capasity
-		const pbc = Math.clamped(weight / actorData.data.encumbrance.max * 100, 0, 99.7);
+		const pbc = Math.clamped(weight / max * 100, 0, 99.7);
 		//set ppc Percentage Encumbranced Capasity
-		const pec =	Math.clamped(weight / (actorData.data.encumbrance.max ) * 100 - 100, 1, 99.7);
-		const encumBar = weight > max ? "#b72b2b" : "#6c8aa5";	
+		const pec =	Math.clamped(weight / (max ) * 100 - 100, 1, 99.7);
+		const encumBar = weight > max ? "#b72b2b" : "#6c8aa5";
+		const actdatadat = actorData.data;
 
 		return {
 			value: weight,

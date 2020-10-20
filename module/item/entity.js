@@ -304,12 +304,16 @@ export default class Item4e extends Item {
         alias: this.actor.name
       }
     };
-
+	console.log(this.actor);
+	
+	console.log(this.actor._id);
+	console.log(this.actor.token);
+	console.log(this.actor.name);
     // Toggle default roll mode
     rollMode = rollMode || game.settings.get("core", "rollMode");
     if ( ["gmroll", "blindroll"].includes(rollMode) ) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
     if ( rollMode === "blindroll" ) chatData["blind"] = true;
-
+	console.log(chatData);
     // Create the chat message
     if ( createMessage ) return ChatMessage.create(chatData);
     else return chatData;

@@ -107,15 +107,15 @@
 				"temphp": "",
 				"secondwind": false,
 				"deathsaves": 3,
-				"deathsavefail": 0,
-				"deathsavebon": 0,
+				"deathsavefail": null,
+				"deathsavebon": null,
 				"bloodied": 0,
 				"surgeValue": 0,
-				"surgeBon": 0,
-				"surgeCur": 0,
-				"surgeDay": 0,
-				"surgeEnv": 0,
-				"secondwindbon": 0
+				"surgeBon": null,
+				"surgeCur": null,
+				"surgeDay": null,
+				"surgeEnv": null,
+				"secondwindbon": null
 			},
 			"languages": {
 				"spoken": {

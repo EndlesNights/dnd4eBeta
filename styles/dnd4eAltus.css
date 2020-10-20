@@ -38,9 +38,22 @@
 }
 
 .dnd4eAltus .window-content {
+	overflow-y: hidden;
+	padding: 5px;
+	/* height: 100%; */
+}
+.dnd4eAltus.sheet .window-content form {
   height: 100%;
-  padding: 5px;
-  overflow-y: hidden;
+  overflow: hidden;
+}
+.dnd4eAltus.sheet.actor .tab.attributes {
+  overflow: hidden;
+}
+.dnd4eAltus.sheet .window-content .tab {
+  height: 100%;
+  /* height: calc(100% - 22px); */
+  overflow-y: auto;
+  align-content: flex-start;
 }
 .dnd4eAltus .sheet-header {
 	flex: 0 0 100%;
@@ -207,13 +220,15 @@
 	border-top: 2px groove #eeede0;
 	border-bottom: none;
 	position: relative;
-	top: -9px;
+	top: -8px;
 }
 
 .dnd4eAltus.sheet .sheet-header .summary input {
 	vertical-align: top;
 	background: none;
 	border: 1px solid transparent;
+	position:relative;
+	top: -3px;
 }
 
 .dnd4eAltus.sheet .sheet-header .summary .list-race {
@@ -263,6 +278,7 @@
 .dnd4eAltus.sheet .sheet-header .summary .list-size label{
 	position:relative;
 	top: -3px;
+	right: -3px;
 }
 
 .dnd4eAltus.sheet .sheet-header .summary .list-size .actor-size {
@@ -273,6 +289,7 @@
 	border: transparent;
 	background: transparent;
 	position:relative;
+	top: -3px;
 }
 
 .dnd4eAltus.sheet .sheet-header .summary .list-alig {
@@ -400,20 +417,6 @@
 .dnd4eAltus.sheet.actor .ability-scores .ability .ability-modifiers span.ability-save {
   border-left: 2px groove #eeede0;
 }
-
-
-.dnd4eAltus.sheet.actor .tab.attributes {
-  overflow: hidden;
-}
-.dnd4eAltus.sheet .window-content .tab {
-  /* height: 100%; */
-  height: calc(100% - 22px);
-
-  /* overflow-y: auto; */
-  align-content: flex-start;
-}
-
-
 .dnd4eAltus.sheet.actor ul.skills-list {
   flex: 0 0 240px;
   height: 460px;
@@ -1251,26 +1254,12 @@ font-size: 12px;
 }
 
 .dnd4eAltus.sheet.actor .inventory-list {
-  list-style: none;
-  margin: 0;
-  padding: 0 5px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  
-	flex: 1;
-	
-	height: calc(100% - 114px);
-  
-	/* box-sizing: border-box; */
-	/* user-select: none; */
-	/* display: block; */
-	/* margin-block-start: 1em; */
-    /* margin-block-end: 1em; */
-    /* margin-inline-start: 0px; */
-    /* margin-inline-end: 0px; */
-    /* padding-inline-start: 40px; */
-	/* font-size: 13px; */
-    /* color: #191813; */
+	list-style: none;
+	margin: 0;
+	padding: 0 5px;
+	overflow-y: auto;
+	scrollbar-width: thin;
+	height: calc(100% - 128px);
 }
 .dnd4eAltus.sheet.actor .inventory-list .item {
   line-height: 30px;
@@ -1608,6 +1597,99 @@ font-size: 12px;
 }
 .dnd4eAltus.sheet.item .weapon-properties label.checkbox {
   flex: 0 0 98px;
+}
+
+/* ----------------------------------------- */
+/*  Chat Cards
+/* ----------------------------------------- */
+.dnd4eAltus.chat-card {
+  font-style: normal;
+  font-size: 12px;
+}
+.dnd4eAltus.chat-card .card-header {
+  padding: 3px 0;
+  border-top: 2px groove #FFF;
+  border-bottom: 2px groove #FFF;
+}
+.dnd4eAltus.chat-card .card-header img {
+  flex: 0 0 36px;
+  margin-right: 5px;
+  
+    display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.dnd4eAltus.chat-card .card-header h3 {
+  flex: 1;
+  margin: 0;
+  line-height: 36px;
+  font-family: "Modesto Condensed", "Palatino Linotype", serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #4b4a44;
+}
+.dnd4eAltus.chat-card .card-header h3:hover {
+  color: #111;
+  text-shadow: 0 0 10px red;
+}
+.dnd4eAltus.chat-card .card-content {
+  margin: 5px 0;
+}
+.dnd4eAltus.chat-card .card-content h3 {
+  font-size: 12px;
+  margin: 0;
+  font-weight: bold;
+}
+.dnd4eAltus.chat-card .card-content > * {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+.dnd4eAltus.chat-card .card-buttons {
+  margin: 5px 0;
+}
+.dnd4eAltus.chat-card .card-buttons span {
+  display: block;
+  line-height: 28px;
+  text-align: center;
+  border: 1px solid #CCC;
+}
+.dnd4eAltus.chat-card .card-buttons button {
+  font-size: 12px;
+  height: 24px;
+  line-height: 20px;
+  margin: 2px 0;
+}
+.dnd4eAltus.chat-card .card-footer {
+  padding: 3px 0 0;
+  border-top: 2px groove #FFF;
+}
+.dnd4eAltus.chat-card .card-footer span {
+  border-right: 2px groove #FFF;
+  padding: 0 5px 0 0;
+  font-size: 10px;
+}
+.dnd4eAltus.chat-card .card-footer span:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+.dice-roll .dice-total.success {
+  color: inherit;
+  background: #c7d0c0;
+  border: 1px solid #006c00;
+}
+.dice-roll .dice-total.failure {
+  color: inherit;
+  background: #ffdddd;
+  border: 1px solid #6e0000;
+}
+.dice-roll .dice-total.critical {
+  color: green;
+}
+.dice-roll .dice-total.fumble {
+  color: red;
 }
 
 /* ----------------------------------------- */
