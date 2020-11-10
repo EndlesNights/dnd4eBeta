@@ -228,7 +228,7 @@
 	background: none;
 	border: 1px solid transparent;
 	position:relative;
-	top: -3px;
+	/* top: -3px; */
 }
 
 .dnd4eAltus.sheet .sheet-header .summary .list-race {

@@ -56,7 +56,19 @@
                 </select>
             </div>
 
-            {{#unless isMountable}}
+            {{!-- Weapon Hand --}}
+            <div class="form-group">
+                <label>{{ localize "DND4EALTUS.ItemWeaponHand" }}</label>
+                <select name="data.weaponHand">
+                    {{#select data.weaponHand}}
+                    {{#each config.weaponHands as |name hand|}}
+                    <option value="{{hand}}">{{name}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+
+            <!-- {{#unless isMountable}} -->
             {{!-- Weapon Status --}}
             <div class="form-group stacked">
                 <label>{{ localize "DND4EALTUS.ItemWeaponStatus" }}</label>
@@ -75,19 +87,93 @@
                     </label>
                 </div>
             </div>
-            {{/unless}}
+            <!-- {{/unless}} -->
 
             {{!-- Weapon Properties --}}
             <div class="form-group stacked weapon-properties">
-                <label>{{ localize "DND4EALTUS.ItemWeaponProperties" }}</label>
+                <label>Weapon Stats</label>
+                <div>
+                    <span title="Proficiency Bonus">Proficiency Bonus:</span>
+                    <input type="text" name="data.profBonus" value="{{data.profBonus}}" title="Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+                    
+                    <span title="Enhancement Bonus">Enhancement Bonus:</span>
+                    <input type="text" name="data.enhance" value="{{data.enhance}}" title="Enhancement Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+
+                    <span title="Is this a Ranged Weapon?">Is Ranged Weapon?</span>
+                    <input type="checkbox" name="data.isRanged" data-dtype="Boolean" {{checked data.isRanged}}/>
+                    <div>
+                        {{#if data.isRanged}}
+                            <span title="The distance in squares a weapon can attack without incurring a long range penalty.">Short Range:</span>
+                            <input type="text" name="data.range.short" value="{{data.range.short}}" title="The distance in squares a weapon can attack without incurring a long range penalty." placeholder="Melee Weapon" data-dtype="Number" onClick="this.select();"/>
+                        
+                            <span title="The maximume range this weapon can be used to make an attack.">Long Range:</span>
+                            <input type="text" name="data.range.long" value="{{data.range.long}}" title="The maximume range this weapon can be used to make an attack." placeholder="Melee Weapon" data-dtype="Number" onClick="this.select();"/>
+                            
+                        {{/if}}
+                    </div>
+                    
+                    <span title="Number of Dice in damage roll">Damage Dice Num:</span>
+                    <input type="text" name="data.diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" data-dtype="Number" onClick="this.select();"/>
+                    <span title="Size of Dice in damage roll.">Damage Dice Size:</span>
+                    <input type="text" name="data.diceDamage" value="{{data.diceDamage}}" title="Size of Dice in damage roll." placeholder="8" data-dtype="Number" onClick="this.select();"/>
+                
+                    <span title="Bonus to Attack Roll.">Attack Bonus:</span>
+                    <input type="text" name="data.bonusAttack" value="{{data.bonusAttack}}" title="Bonus to Attack Roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
+                    <span title="Bonus to Damage Roll.">Damage Bonus:</span>
+                    <input type="text" name="data.bonusDamage" value="{{data.bonusDamage}}" title="Size of Dice in damage roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
+
+                    <span title="Bonus Damage from Critical Hit.">Critical Damage Bonus:</span>
+                    <input type="text" name="data.bonusDamage" value="{{data.bonusDamage}}" title="Size of Dice in damage roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
+
+                    <span title="Ability Mod used for attack.">Attack Mod:</span>
+                    <select name="data.abilityModAttack">
+                        {{#select data.abilityModAttack}}
+                        <option value="str" >Strength</option>
+                        <option value="con" >Constitution</option>
+                        <option value="dex" >Dexterity</option>
+                        <option value="int" >Intelligence</option>
+                        <option value="wis" >Wisdom</option>
+                        <option value="cha" >Charisma</option>
+                        <option value=null >None</option>
+                        {{/select}}
+                    </select>
+                    <span title="Ability Mod used for damage.">Damage Mod:</span>
+                    <select name="data.abilityModDamage">
+                        {{#select data.abilityModDamage}}
+                        <option value="str" >Strength</option>
+                        <option value="con" >Constitution</option>
+                        <option value="dex" >Dexterity</option>
+                        <option value="int" >Intelligence</option>
+                        <option value="wis" >Wisdom</option>
+                        <option value="cha" >Charisma</option>
+                        <option value=null >None</option>
+                        {{/select}}
+                    </select>
+                    <div>
+                        <span title="Formula used for Attack Rolls.">Attack Formula:</span>
+                        <input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String" onClick="this.select();"/>
+    
+                        <span title="Formula used for Damage Rolls.">Damage Formula:</span>
+                        <input type="text" name="data.damageForm" value="{{data.damageForm}}" title="Formula used for Damage Rolls." data-dtype="String" onClick="this.select();"/>
+                    </div>
+                </div>
+                
+                <label title="Type of Damage Dealt.">Damage Type:</label>
+                {{#each config.damageTypes as |name type|}}
+                <label class="checkbox">
+                    <input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
+                </label>
+                {{/each}}
+
+                <label>{{ localize "DND4EALTUS.ItemWeaponProperties" }}:</label>
                 {{#each config.weaponProperties as |name prop|}}
                 <label class="checkbox">
                     <input type="checkbox" name="data.properties.{{prop}}" {{checked (lookup ../data.properties prop)}}/> {{ name }}
                 </label>
                 {{/each}}
             </div>
-
-            {{#if isMountable}}
+            
+            <!-- {{#if isMountable}}
             <div class="form-group">
                 <label>{{localize 'DND4EALTUS.ArmorClass'}}</label>
                 <div class="form-fields">
@@ -97,9 +183,9 @@
             </div>
 
             {{> 'systems/dnd4eAltus/templates/items/parts/item-mountable.html'}}
-            {{/if}}
+            {{/if}} -->
 
-            <h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponUsage" }}</h3>
+            <!-- <h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponUsage" }}</h3>
 
             {{!-- Item Activation Template --}}
             {{> "systems/dnd4eAltus/templates/items/parts/item-activation.html"}}
@@ -107,7 +193,7 @@
             <h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponAttack" }}</h3>
 
             {{!-- Item Action Template --}}
-            {{> "systems/dnd4eAltus/templates/items/parts/item-action.html"}}
+            {{> "systems/dnd4eAltus/templates/items/parts/item-action.html"}} -->
         </div>
     </section>
 </form>

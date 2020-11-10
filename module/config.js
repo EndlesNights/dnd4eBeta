@@ -492,6 +492,19 @@ DND4EALTUS.weaponTypes = {
 
 };
 
+/* -------------------------------------------- */
+
+
+/**
+ * Define the set of hands configurations which a weapon item cantake
+ * @type {Object}
+ */
+DND4EALTUS.weaponHands = {
+  "hMain": "DND4EALTUS.HMain",
+  "hTwo": "DND4EALTUS.HTwo",
+  "hOff": "DND4EALTUS.HOff",
+};
+
 
 /* -------------------------------------------- */
 

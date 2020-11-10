@@ -136,18 +136,12 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
       title: title,
       content: html,
       buttons: {
-        advantage: {
-          label: game.i18n.localize("DND4EALTUS.Advantage"),
-          callback: html => roll = _roll(parts, 1, html[0].querySelector("form"))
-        },
+
         normal: {
           label: game.i18n.localize("DND4EALTUS.Normal"),
           callback: html => roll = _roll(parts, 0, html[0].querySelector("form"))
-        },
-        disadvantage: {
-          label: game.i18n.localize("DND4EALTUS.Disadvantage"),
-          callback: html => roll = _roll(parts, -1, html[0].querySelector("form"))
         }
+
       },
       default: "normal",
       close: html => {

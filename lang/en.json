@@ -265,6 +265,11 @@
 "DND4EALTUS.Formula": "Formula",
 "DND4EALTUS.FocusTrained": "Focus Trained",
 "DND4EALTUS.GrantedAbilities": "Granted Abilities",
+
+"DND4EALTUS.HMain": "One Hand Main",
+"DND4EALTUS.HTwo": "Two Handed",
+"DND4EALTUS.HOff": "Off-Hand",
+
 "DND4EALTUS.HalfProficient": "Half Proficient",
 "DND4EALTUS.Healing": "Healing",
 "DND4EALTUS.HealingTemp": "Healing (Temporary)",
@@ -321,6 +326,7 @@
 "DND4EALTUS.ItemWeaponDetails": "Weapon Details",
 "DND4EALTUS.ItemWeaponProperties": "Weapon Properties",
 
+"DND4EALTUS.ItemWeaponHand": "Weapon Hand",
 "DND4EALTUS.ItemWeaponStatus": "Weapon Status",
 "DND4EALTUS.ItemWeaponType": "Weapon Type",
 "DND4EALTUS.ItemWeaponUsage": "Weapon Usage",

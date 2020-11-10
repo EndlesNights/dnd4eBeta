@@ -307,6 +307,7 @@ export class SimpleActor extends Actor {
 		// Reliable Talent applies to any skill check we have full or better proficiency in
 		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4eAltus", "reliableTalent"));
 		// Roll and return
+		
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
@@ -350,14 +351,13 @@ export class SimpleActor extends Actor {
 			parts.push("@checkBonus");
 			data.checkBonus = bonuses.check;
 		}
-
 		// Roll and return
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND4EALTUS.AbilityPromptTitle", {ability: label}),
+			title: game.i18n.format("DND4EALTUS.AbilityPromptTitle", {ability: CONFIG.DND4EALTUS.abilities[label]}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
-			halflingLucky: feats.halflingLucky
+			// halflingLucky: feats.halflingLucky
 		}));
 	}
 	

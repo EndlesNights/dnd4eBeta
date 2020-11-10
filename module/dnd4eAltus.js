@@ -70,13 +70,13 @@ Hooks.once("setup", function() {
 
   // Localize CONFIG objects once up-front
   const toLocalize = [
-	"abilities", "abilityActivationTypes", "abilityConsumptionTypes", "actorSizes", "distanceUnits", "itemActionTypes", "limitedUsePeriods", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision",  "weaponProperties", "weaponTypes",
+	"abilities", "abilityActivationTypes", "abilityConsumptionTypes", "actorSizes", "damageTypes", "distanceUnits", "itemActionTypes", "limitedUsePeriods", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision",  "weaponProperties", "weaponTypes", "weaponHands"
 	
 
   ];
 
   const noSort = [
-    "abilities", "currencies", "distanceUnits", "itemActionTypes", "limitedUsePeriods", "weaponTypes"
+    "abilities", "currencies", "distanceUnits", "damageTypes", "itemActionTypes", "limitedUsePeriods", "weaponTypes", "weaponHands"
   ];
   
   // const doLocalize = function(obj) {
