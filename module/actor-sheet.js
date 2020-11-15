@@ -3,6 +3,7 @@ import { SecondWindDialog } from "./apps/second-wind.js";
 import { ShortRestDialog } from "./apps/short-rest.js";
 import { LongRestDialog } from "./apps/long-rest.js";
 import { DeathSaveDialog } from "./apps/death-save.js";
+import { SkillBonusDialog } from "./apps/skill-bonuses.js";
 import TraitSelector from "./apps/trait-selector.js";
 import TraitSelectorSense from "./apps/trait-selector-sense.js";
 
@@ -359,6 +360,9 @@ export class SimpleActorSheet extends ActorSheet {
 		//Open HP-Options
 		html.find('.health-option').click(this._onHPOptions.bind(this));
 		
+		//Open Skill-Bonus
+		html.find('.skill-bonus').click(this._onSkillBonus.bind(this));
+		
 		//second wind
 		html.find('.second-wind').click(this._onSecondWind.bind(this));
 		
@@ -372,7 +376,7 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find('.death-save').click(this._onDeathSave.bind(this));
 		
 		// Trait Selector
-		html.find('.trait-selector').click(this._onTraitSelector.bind(this));
+		html.find('.trait-selector').click(this._onTraitSelectorLang.bind(this));
 		
 		html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
 		
@@ -505,14 +509,27 @@ export class SimpleActorSheet extends ActorSheet {
 	/* -------------------------------------------- */
   
 	/**
-	*Opens HP options config window, turns on/off auto calculation of HP based on class stats
+	*Opens dialog config window for HP options 
+	*turns on/off auto calculation of HP based on class stats
+	*keep or reset tempHP on short rest.
 	*/
 	_onHPOptions(event) {
 		event.preventDefault();
 
 		new HPOptions(this.actor).render(true)
 	}
-
+	
+	/* -------------------------------------------- */
+	/**
+	* Opens dialog config window for selected SKills
+	*/
+	
+	_onSkillBonus(event) {
+		event.preventDefault();
+		const skill = event.currentTarget.parentElement.dataset.skill;
+		const options = { name: skill };
+		new SkillBonusDialog(this.actor, options).render(true);
+	}
 	/* -------------------------------------------- */
   
 	/**
@@ -521,7 +538,6 @@ export class SimpleActorSheet extends ActorSheet {
 	_onSecondWind(event) {
 		event.preventDefault();
 		new SecondWindDialog(this.actor).render(true);		
-
 	}
 	
 	/* -------------------------------------------- */
@@ -638,13 +654,13 @@ export class SimpleActorSheet extends ActorSheet {
    * @param {Event} event   The click event which originated the selection
    * @private
    */
-	_onTraitSelector(event) {
+	_onTraitSelectorLang(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
 		const label = a.parentElement.querySelector("h4");
 		const choices = CONFIG.DND4EALTUS[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
-		new TraitSelector(this.actor, options).render(true)
+		new TraitSelector(this.actor, options).render(true);
 	}
 
 	_onTraitSelectorSense(event) {
@@ -653,7 +669,7 @@ export class SimpleActorSheet extends ActorSheet {
 		const label = a.parentElement.querySelector("h4");
 		const choices = CONFIG.DND4EALTUS[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
-		new TraitSelectorSense(this.actor, options).render(true)
+		new TraitSelectorSense(this.actor, options).render(true);
 	}
 
   /* -------------------------------------------- */

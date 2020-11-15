@@ -163,135 +163,97 @@
 			"skills": {
 				"acr": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "dex"
 				},
 				"arc": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "int"
 				},
 				"ath": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "str"
 				},
 				"blu": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "cha"
 				},
 				"dip": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "cha"
 				},
 				"dun": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "wis"
 				},
 				"end": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "con"
 				},
 				"eng": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "int"
 				},
 				"hea": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "wis"
 				},
 				"his": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "int"
 				},
 				"ins": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "wis"
 				},
 				"itm": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "cha"
 				},
 				"nat": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "int"
 				},
 				"prc": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "wis"
 				},
 				"pra": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "wis"
 				},
 				"rel": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "int"
 				},
 				"ste": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "dex"
 				},
 				"stw": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "cha"
 				},
 				"thi": {
 					"value": 0,
-					"expt": 0,
-					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"ability": "dex"
 				}
 			},
@@ -625,7 +587,7 @@
 	  "damageType": {"physical":true},
 	  "attackForm": "1d20+@{profBonus}+@{abilityModAttack}+@{bonusAttack}+@{enhance}",
 	  "damageForm": "@{diceNum}d@{diceDamage}+@{abilityModDamage}+@{bonusDamage}+@{enhance}",
-	  "critDamageForm": "@{diceNum}*@{diceDamage}+@{abilityModDamage}+@{bonusDamage}+@{enhance}+(@{enhance}d6",
+	  "critDamageForm": "@{diceNum}*@{diceDamage}+@{abilityModDamage}+@{bonusDamage}+@{enhance}+(@{enhance}d6)",
 	  "critRange": 20
     }
   }

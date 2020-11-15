@@ -126,11 +126,27 @@ export class SimpleActor extends Actor {
 
 			skl.value = parseFloat(skl.value || 0);
 			
+			let bonusValue = 0;
+			
+			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0])))
+			{
+				for( const b of skl.bonus) {
+					if(b.active)
+					{
+						bonusValue += b.value;
+					}
+				}
+			}
+
+			
+			skl.bonusValue = bonusValue;
+			
 			// Compute modifier
-			skl.bonus = 0;// checkBonus + skillBonus;
+			// skl.bonus = 0;// checkBonus + skillBonus;
 			skl.mod = data.abilities[skl.ability].mod;
 			skl.prof = 0;//round(multi * data.attributes.prof);
-			skl.total = skl.value + skl.mod + skl.prof + skl.bonus + skl.expt + skl.armor + skl.misc;		
+			skl.total = skl.value + skl.mod + skl.prof + bonusValue;
+			// skl.total = skl.value + skl.mod + skl.prof + skl.bonus + skl.expt + skl.armor + skl.misc;
 
 			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
 

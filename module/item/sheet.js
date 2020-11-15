@@ -291,15 +291,15 @@ export default class ItemSheet4e extends ItemSheet {
     const label = a.parentElement;
 
     // Render the Trait Selector dialog
-    new TraitSelector(this.item, {
-      name: a.dataset.edit,
-      title: label.innerText,
-      choices: Object.entries(CONFIG.DND4EALTUS.skills).reduce((obj, e) => {
-        if ( choices.includes(e[0] ) ) obj[e[0]] = e[1];
-        return obj;
-      }, {}),
-      minimum: skills.number,
-      maximum: skills.number
-    }).render(true)
+    // new TraitSelector(this.item, {
+      // name: a.dataset.edit,
+      // title: label.innerText,
+      // choices: Object.entries(CONFIG.DND4EALTUS.skills).reduce((obj, e) => {
+        // if ( choices.includes(e[0] ) ) obj[e[0]] = e[1];
+        // return obj;
+      // }, {}),
+      // minimum: skills.number,
+      // maximum: skills.number
+    // }).render(true)
   }
 }

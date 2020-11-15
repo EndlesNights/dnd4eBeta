@@ -122,8 +122,8 @@
                     <span title="Bonus to Damage Roll.">Damage Bonus:</span>
                     <input type="text" name="data.bonusDamage" value="{{data.bonusDamage}}" title="Size of Dice in damage roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
 
-                    <span title="Bonus Damage from Critical Hit.">Critical Damage Bonus:</span>
-                    <input type="text" name="data.bonusDamage" value="{{data.bonusDamage}}" title="Size of Dice in damage roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
+                    <span title="Natural D20 Dice roll required for a hit to be considered a critical hit.">Critical Hit:</span>
+                    <input type="text" name ="data.critRange" value="{{data.critRange}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
 
                     <span title="Ability Mod used for attack.">Attack Mod:</span>
                     <select name="data.abilityModAttack">
@@ -155,6 +155,9 @@
     
                         <span title="Formula used for Damage Rolls.">Damage Formula:</span>
                         <input type="text" name="data.damageForm" value="{{data.damageForm}}" title="Formula used for Damage Rolls." data-dtype="String" onClick="this.select();"/>
+
+                        <span title="Formula used for Critical Damage Rolls.">Critical Damage Formula:</span>
+                        <input type="text" name="data.critDamageForm" value="{{data.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String" onClick="this.select();"/>
                     </div>
                 </div>
                 

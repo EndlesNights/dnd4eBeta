@@ -81,6 +81,9 @@ export class ShortRestDialog extends BaseEntitySheet {
 		});		
 		
 		this.object.update(updateData);
+		
+				console.log(formData);
+		console.log(updateData)
 	}	  
 }
 
