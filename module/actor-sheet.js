@@ -44,7 +44,8 @@ export class SimpleActorSheet extends ActorSheet {
 				initial: "attributes"
 			}],
 			dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}],
-			scrollY: [".desk__content"]
+			// scrollY: [".desk__content"]
+			scrollY: [".attributes", ".inventory-list", ".desk__content", ".scrollbar "]
 		});
   }
 

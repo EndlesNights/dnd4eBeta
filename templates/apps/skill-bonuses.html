@@ -1,8 +1,8 @@
 <form id="skill-bonuses" class="dialog-content" onsubmit="event.preventDefault();">
-	<span>Total Bonus to {{skill}}: SOMENUM</span>
+	<!-- <span>Total Bonus to {{skill}}: SOMENUM</span> -->
 	<!-- <a>+ Add New Bonus Button</a> -->	
 	{{#each data as |bonus b|}}
-	<div>
+	<div class="bonus-part" data-bonus-part="{{b}}">
 		<span>Name of Bonus:</span>
 		<input type="text" name="{{b}}.name" value="{{bonus.name}}" data-dtype="String" style="width: 125px;"/>
 		<span>Value:</span>
@@ -10,7 +10,7 @@
 		<span>Active: </span>
 		<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} title="Activate Bonus">
 		<!-- <a class="bonus-control bonus-toggle active" title="Equipped" style="margin: 0 5px;" ><i class="fas fa-shield-alt"></i></a> -->
-		<a class="bonus-control bonus-delete" title="delete-bonus" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
+		<a class="bonus-control bonus-delete" title="Delete Bonus" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
 		<textarea type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none;" placeholder="Notes:" contentEditable>{{bonus.note}}</textarea>
 	</div>
 	{{/each}}
