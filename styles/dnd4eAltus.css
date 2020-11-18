@@ -808,7 +808,7 @@ font-size: 12px;
 	margin: 0;
 	top: 2px;
   	position: relative;
-	left: 1%;
+	/* left: 1%; */
 }
 
 /* .dnd4eAltus.sheet.actor ul.attributes li.attribute-rest a.second-wind { */

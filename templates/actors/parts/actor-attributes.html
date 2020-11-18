@@ -22,7 +22,7 @@
 					<!-- <input type="text" class="skill-mod" name="data.skills.{{s}}.expt" value="{{skill.expt}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Expertise"> </input> -->
 					<!-- <input type="text" class="skill-mod" name="data.skills.{{s}}.armor" value="{{skill.armor}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour"> </input> -->
 					<!-- <input type="text" class="skill-mod" name="data.skills.{{s}}.misc" value="{{skill.misc}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Misc"> </input> -->
-					<a class="skill-mod skill-bonus" data-options="damageTypes" data-target="data.details" title="Skill Bonus">{{skill.bonusValue}}</a>
+					<a class="skill-mod skill-bonus" data-target="data.details" title="Skill Bonus">{{skill.sklBonusValue}}</a>
 				</li>
 			{{/each}}
 			</ul>
@@ -40,7 +40,7 @@
 					<footer class="attribute-footer">					
 						<input type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder="{{localize 'DND4EALTUS.TempHP'}}" data-dtype="Number" onClick="this.select();"/>
 						<span title="{{localize 'DND4EALTUS.HPBloodied'}}">{{localize 'DND4EALTUS.HPBloodied'}}: {{data.details.bloodied}}</span>
-						<a class="health-option" data-options="damageTypes" data-target="data.details" style="position: relative; left: -5px; top: 4px;">
+						<a class="health-option" data-target="data.details" style="position: relative; left: -5px; top: 4px;">
 							<i class="fas fa-cog"></i>
 						</a>						
 					</footer>						
@@ -55,8 +55,10 @@
 						<input type="text" name="data.details.surgeDay" value="{{data.details.surgeDay}}" title="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					<footer class="attribute-footer flexrow">
-						<input type="text" name="data.details.surgeBon" value="{{data.details.surgeBon}}" title="{{localize 'DND4EALTUS.SurgeBon'}}"  placeholder="Surge Bonus" data-dtype="Number" onClick="this.select();"/>
-						<input type="text" name="data.details.surgeEnv" value="{{data.details.surgeEnv}}" title="{{localize 'DND4EALTUS.SurgeEnv'}}"  placeholder="Envir Losses" data-dtype="Number" onClick="this.select();"/>					
+						<a class="surge-bonus" data-target="data.details" title="{{localize 'DND4EALTUS.SurgeBon'}}">Surge Bonus: {{data.details.surgeBon.value}}</a>
+						<a class="envimental-loss-bonus" data-target="data.details" title="{{localize 'DND4EALTUS.surgeEnv'}}">Envir Losses: {{data.details.surgeEnv.value}}</a>
+						<!-- <input type="text" name="data.details.surgeBon" value="{{data.details.surgeBon}}" title="{{localize 'DND4EALTUS.SurgeBon'}}"  placeholder="Surge Bonus" data-dtype="Number" onClick="this.select();"/> -->
+						<!-- <input type="text" name="data.details.surgeEnv" value="{{data.details.surgeEnv}}" title="{{localize 'DND4EALTUS.SurgeEnv'}}"  placeholder="Envir Losses" data-dtype="Number" onClick="this.select();"/>					 -->
 					</footer>
 				</li>
 				{{!-- Rest and Death --}}
@@ -64,16 +66,18 @@
 					<div>
 						<a class="rest second-wind">Second Wind</a>
 						<input type="checkbox" name="data.details.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="Second Wind Used"/>
-						<span>Bonus:</span>
-						<input type="text" name="data.details.secondwindbon" value="{{data.details.secondwindbon}}" title="Second Wind Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<a class="secondwind-bonus" data-target="data.details" title="Second Wind Bonus">Bonus: {{data.details.secondwindbon.value}}</a>
+						<!-- <span>Bonus:</span> -->
+						<!-- <input type="text" name="data.details.secondwindbon" value="{{data.details.secondwindbon}}" title="Second Wind Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						
 						<a class="rest short-rest">{{ localize "DND4EALTUS.RestS" }}</a>
 						<a class="rest long-rest">{{ localize "DND4EALTUS.RestL" }}</a>
 					</div>	
 					<div >	
 						<a class="death death-save">Death Saving Throw</a>
-						<span>Bonus:</span>
-						<input type="text" name="data.details.deathsavebon" value="{{data.details.deathsavebon}}" title="Death Save Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<a class="death-save-bonus" data-target="data.details" title="Death Save Bonus">Bonus: {{data.details.deathsavebon.value}}</a>
+						<!-- <span>Bonus:</span> -->
+						<!-- <input type="text" name="data.details.deathsavebon" value="{{data.details.deathsavebon}}" title="Death Save Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<span>Failures:</span>
 						<input type="text" name="data.details.deathsavefail" value="{{data.details.deathsavefail}}" title="Death Save Failures"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 						<i class="fas fa-skull"></i>
@@ -273,7 +277,7 @@
 				</div>
 				
 				{{!-- Resistences --}}
-				<div class="attribute-init resource-full movement">
+				<div class="attribute-init resource-full">
 					<h4 class="attribute-name box-title">Resistences & Weaknesses</h4>
 					{{#each data.resistences as |res r|}}
 						<li class="skill flexrow" data-skill="{{r}}">
@@ -290,5 +294,7 @@
 					<!-- <a class="trait-selector" data-options="damageTypes" data-target="data.traits.di"> -->
 						<!-- <i class="fas fa-edit"></i> -->
 					<!-- </a> -->
-				</div>				
+				</div>
+				
+				<div class="attribute-init resource-full" style="height: 20px;"></div>
 			</ul>

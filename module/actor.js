@@ -105,12 +105,42 @@ export class SimpleActor extends Actor {
 		}
 		
 		//Set Health related values
-		data.details.bloodied = Math.floor(data.health.max / 2);
-		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon;
-		data.health.min = -data.details.bloodied;
+		if(!(data.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(data.details.surgeBon.bonus[0]))) {
+			for( const b of data.details.surgeBon.bonus) {
+				if(b.active) {
+					data.details.surgeBon.value += b.value;
+				}
+			}
+		}
 		
-		//set Second Wind Value.
-		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon;
+		if(!(data.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(data.details.secondwindbon.bonus[0]))) {
+			for( const b of data.details.secondwindbon.bonus) {
+				if(b.active) {
+					data.details.secondwindbon.value += b.value;
+				}
+			}
+		}
+		
+		data.details.bloodied = Math.floor(data.health.max / 2);
+		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
+		data.health.min = -data.details.bloodied;
+		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
+
+		if(!(data.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(data.details.surgeEnv.bonus[0]))) {
+			for( const b of data.details.surgeEnv.bonus) {
+				if(b.active) {
+					data.details.surgeEnv.value += b.value;
+				}
+			}
+		}
+
+		if(!(data.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(data.details.deathsavebon.bonus[0]))) {
+			for( const b of data.details.deathsavebon.bonus) {
+				if(b.active) {
+					data.details.deathsavebon.value += b.value;
+				}
+			}
+		}
 		
 		//Weight & Encumbrance
 		data.encumbrance = this._computeEncumbrance(actorData);
@@ -126,26 +156,23 @@ export class SimpleActor extends Actor {
 
 			skl.value = parseFloat(skl.value || 0);
 			
-			let bonusValue = 0;
+			let sklBonusValue = 0;
 			
-			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0])))
-			{
+			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
 				for( const b of skl.bonus) {
-					if(b.active)
-					{
-						bonusValue += b.value;
+					if(b.active) {
+						sklBonusValue += b.value;
 					}
 				}
 			}
-
 			
-			skl.bonusValue = bonusValue;
+			skl.sklBonusValue = sklBonusValue;
 			
 			// Compute modifier
 			// skl.bonus = 0;// checkBonus + skillBonus;
 			skl.mod = data.abilities[skl.ability].mod;
 			skl.prof = 0;//round(multi * data.attributes.prof);
-			skl.total = skl.value + skl.mod + skl.prof + bonusValue;
+			skl.total = skl.value + skl.mod + skl.prof + sklBonusValue;
 			// skl.total = skl.value + skl.mod + skl.prof + skl.bonus + skl.expt + skl.armor + skl.misc;
 
 			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);

@@ -23,7 +23,7 @@ export class DeathSaveDialog extends BaseEntitySheet {
 		
 		const updateData = {};
 		
-		let r = formData.save == "" ? new Roll("1d20 + " + this.object.data.data.details.deathsavebon) : new Roll("1d20 +" + this.object.data.data.details.deathsavebon + "+"+ formData.save);
+		let r = formData.save == "" ? new Roll("1d20 + " + this.object.data.data.details.deathsavebon.value) : new Roll("1d20 +" + this.object.data.data.details.deathsavebon.value + "+"+ formData.save);
 		
 		try{
 			r.roll();
@@ -46,7 +46,7 @@ export class DeathSaveDialog extends BaseEntitySheet {
 				ChatMessage.create({
 					user: game.user._id,
 					speaker: ChatMessage.getSpeaker(),
-					content: this.object.data.name + "has failed their last death saving throw and has died!"
+					content: this.object.data.name + " has failed their last death saving throw and has died!"
 				});					
 			}
 		}

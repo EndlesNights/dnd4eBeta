@@ -3,7 +3,7 @@ import { SecondWindDialog } from "./apps/second-wind.js";
 import { ShortRestDialog } from "./apps/short-rest.js";
 import { LongRestDialog } from "./apps/long-rest.js";
 import { DeathSaveDialog } from "./apps/death-save.js";
-import { SkillBonusDialog } from "./apps/skill-bonuses.js";
+import { AttributeBonusDialog } from "./apps/attribute-bonuses.js";
 import TraitSelector from "./apps/trait-selector.js";
 import TraitSelectorSense from "./apps/trait-selector-sense.js";
 
@@ -364,6 +364,11 @@ export class SimpleActorSheet extends ActorSheet {
 		//Open Skill-Bonus
 		html.find('.skill-bonus').click(this._onSkillBonus.bind(this));
 		
+		html.find('.death-save-bonus').click(this._onDeathSaveBonus.bind(this));
+		html.find('.surge-bonus').click(this._onSurgeBonus.bind(this));
+		html.find('.envimental-loss-bonus').click(this._onSurgeEnv.bind(this));
+		html.find('.secondwind-bonus').click(this._onSecondWindBonus.bind(this));
+
 		//second wind
 		html.find('.second-wind').click(this._onSecondWind.bind(this));
 		
@@ -522,17 +527,41 @@ export class SimpleActorSheet extends ActorSheet {
 	
 	/* -------------------------------------------- */
 	/**
-	* Opens dialog config window for selected SKills
+	* Opens bonuses dialog config window for selected Skills
 	*/
 	
 	_onSkillBonus(event) {
 		event.preventDefault();
-		const skill = event.currentTarget.parentElement.dataset.skill;
-		const options = { name: skill };
-		new SkillBonusDialog(this.actor, options).render(true);
+		const skillName = event.currentTarget.parentElement.dataset.skill;
+		const target = `data.skills.${skillName}`;
+		const options = {target: target, label: `${this.actor.data.data.skills[skillName].label} Skill Bonues` };
+		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	/* -------------------------------------------- */
-  
+
+	_onDeathSaveBonus(event) {
+		event.preventDefault();
+		const options = {target: `data.details.deathsavebon`, label: "Death Savingthrow Bonues" };
+		new AttributeBonusDialog(this.actor, options).render(true);		
+	}
+	
+	_onSurgeBonus(event) {
+		event.preventDefault();
+		const options = {target: `data.details.surgeBon`, label: "Healing Surge Bonues" };
+		new AttributeBonusDialog(this.actor, options).render(true);		
+	}
+	
+	_onSurgeEnv(event) {
+		event.preventDefault();
+		const options = {target: `data.details.surgeEnv`, label: "Healing Surges Environmental Losses" };
+		new AttributeBonusDialog(this.actor, options).render(true);		
+	}
+
+	_onSecondWindBonus(event) {
+		event.preventDefault();
+		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonues" };
+		new AttributeBonusDialog(this.actor, options).render(true);		
+	}	
 	/**
 	* Opens dialog window to spend Second Wind
 	*/

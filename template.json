@@ -108,14 +108,26 @@
 				"secondwind": false,
 				"deathsaves": 3,
 				"deathsavefail": null,
-				"deathsavebon": null,
+				"deathsavebon": {
+					"bonus": [{}],
+					"value": 0
+				},
 				"bloodied": 0,
 				"surgeValue": 0,
-				"surgeBon": null,
+				"surgeBon": {
+					"bonus": [{}],
+					"value": 0
+				},
 				"surgeCur": null,
 				"surgeDay": null,
-				"surgeEnv": null,
-				"secondwindbon": null
+				"surgeEnv": {
+					"bonus": [{}],
+					"value": 0
+				},
+				"secondwindbon": {
+					"bonus": [{}],
+					"value": 0
+				}
 			},
 			"languages": {
 				"spoken": {
