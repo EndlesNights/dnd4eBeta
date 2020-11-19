@@ -38,7 +38,7 @@
 			"init": {
 				"value": 0,
 				"ability": "dex",
-				"bonus": 0
+				"bonus": [{}]
 			},
 			"actionpoints":	{
 				"value": 1,
@@ -53,9 +53,9 @@
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"temp": 0,
-					"heavy": false,
+					"light": true,
 					"altability": ""
 				},
 				"fort": {
@@ -65,7 +65,7 @@
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"temp": 0
 				},
 				"ref": {
@@ -75,7 +75,7 @@
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"temp": 0
 				},
 				"wil": {
@@ -85,7 +85,7 @@
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"temp": 0
 				}	
 			},
@@ -155,18 +155,19 @@
 					"value": 0,
 					"base": 6,
 					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"temp": 0
 				},
 				"charge": {
 					"value": 0,
 					"armor": 0,
-					"misc": 0,
+					"bonus": [{}],
 					"temp": 0
 				},
 				"run": {
 					"value": 0,
 					"armor": 0,
+					"bonus": [{}],
 					"misc": 0,
 					"temp": 0
 				},
@@ -273,109 +274,86 @@
 				"pasprc": {
 					"value": 0,
 					"skill": "prc",
-					"bonus": 0
+					"bonus": [{}]
 				},
 				"pasins": {
 					"value": 0,
 					"skill": "ins",
-					"bonus": 0
+					"bonus": [{}]
 				}
 			},
 			"resistences": {
 				"damage": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				},
 				"physical": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				},
 				"acid": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
-				},"cold": {
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
+				},
+				"cold": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				},
 				"fire": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				},
 				"force": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				},
 				"lightning": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				},
 				"necrotic": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				},
 				"poison": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				},
 				"psychic": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				},
 				"radiant": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				},
 				"thunder": {
 					"value": 0,
-					"enchant": 0,
-					"race": 0,
-					"misc": 0,
-					"half": false,
-					"immune": false
+					"armour": 0,
+					"immune": false,
+					"bonus": [{}]
 				}
 				
 			},

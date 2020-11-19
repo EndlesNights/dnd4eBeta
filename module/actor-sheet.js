@@ -368,7 +368,13 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find('.surge-bonus').click(this._onSurgeBonus.bind(this));
 		html.find('.envimental-loss-bonus').click(this._onSurgeEnv.bind(this));
 		html.find('.secondwind-bonus').click(this._onSecondWindBonus.bind(this));
-
+		
+		html.find('.defense-bonus').click(this._onDefencesBonus.bind(this));
+		html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
+		html.find('.move-bonus').click(this._onMovementBonus.bind(this));
+		html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
+		
+		
 		//second wind
 		html.find('.second-wind').click(this._onSecondWind.bind(this));
 		
@@ -561,7 +567,39 @@ export class SimpleActorSheet extends ActorSheet {
 		event.preventDefault();
 		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonues" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
+	}
+	
+	_onDefencesBonus(event) {
+		event.preventDefault();
+		const defName = event.currentTarget.parentElement.dataset.defense;
+		const target = `data.defences.${defName}`;
+		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonues` };
+		new AttributeBonusDialog(this.actor, options).render(true);		
+	}
+	
+	_onInitiativeBonus(event) {
+		event.preventDefault();
+		const options = {target: `data.init`, label: "Initiative Bonues" };
+		new AttributeBonusDialog(this.actor, options).render(true);		
+	}
+	
+	_onMovementBonus(event) {
+		event.preventDefault();
+		const moveName = event.currentTarget.parentElement.dataset.movement;
+		const target = `data.movement.${moveName}`;
+		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonues` };
+		new AttributeBonusDialog(this.actor, options).render(true);		
+	}
+	
+	_onPassiveBonus(event) {
+		event.preventDefault();
+		const passName = event.currentTarget.parentElement.dataset.passive;
+		const skillName = this.actor.data.data.passive[passName].skill;
+		const target = `data.passive.${passName}`;
+		const options = {target: target, label: `Passive ${this.actor.data.data.skills[skillName].label} Bonues` };
+		new AttributeBonusDialog(this.actor, options).render(true);		
 	}	
+	
 	/**
 	* Opens dialog window to spend Second Wind
 	*/

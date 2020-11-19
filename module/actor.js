@@ -157,7 +157,6 @@ export class SimpleActor extends Actor {
 			skl.value = parseFloat(skl.value || 0);
 			
 			let sklBonusValue = 0;
-			
 			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
 				for( const b of skl.bonus) {
 					if(b.active) {
@@ -165,7 +164,6 @@ export class SimpleActor extends Actor {
 					}
 				}
 			}
-			
 			skl.sklBonusValue = sklBonusValue;
 			
 			// Compute modifier
@@ -186,8 +184,8 @@ export class SimpleActor extends Actor {
 		if (data.details.temphp <= 0 )
 			data.details.temphp = null;
 		
-		//AC mod check, check if heavy armour (or somthing else that negates adding mod)
-		if(!data.defences.ac.heavy)
+		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
+		if(data.defences.ac.light)
 		{
 			data.defences.ac.ability = (data.abilities.dex.value >= data.abilities.int.value) ? "dex" : "int";
 			if(data.defences.ac.altability != "")
@@ -209,40 +207,100 @@ export class SimpleActor extends Actor {
 		data.defences.wil.ability = (data.abilities.wis.value >= data.abilities.cha.value) ? "wis" : "char";
 
 		//Calc defence stats
-		for (let [id, def] of Object.entries(data.defences)){
+		for (let [id, def] of Object.entries(data.defences)) {
 			def.label = game.i18n.localize(DND4EALTUS.def[id]);
 			def.title = game.i18n.localize(DND4EALTUS.defensives[id]);
+						
+			let defBonusValue = 0;
+			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
+				for( const b of def.bonus) {
+					if(b.active) {
+						defBonusValue += b.value;
+					}
+				}
+			}
+			def.bonusValue = defBonusValue;
 			
 			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			def.value = 10 + modBonus + def.armor + def.class + def.feat + def.enhance + def.misc + def.temp;			
+			def.value = 10 + modBonus + def.armor + def.class + def.feat + def.enhance + def.temp + defBonusValue;			
 		}
 		
 		//calc init
-		data.init.value = (data.abilities[data.init.ability].mod + data.init.bonus);
+		let initBonusValue = 0;
+		if(!(data.init.bonus.length === 1 && jQuery.isEmptyObject(data.init.bonus[0]))) {
+			for( const b of data.init.bonus) {
+				if(b.active) {
+					initBonusValue += b.value;
+				}
+			}
+		}
+		data.init.bonusValue = initBonusValue;
+		data.init.value = (data.abilities[data.init.ability].mod + initBonusValue);
 		if(data.init.value > 999)
 			data.init.value = 999;
 		
 		//calc movespeed
-		data.movement.basic.value = + data.movement.basic.base + data.movement.basic.armor + data.movement.basic.misc + data.movement.basic.temp;
+		let basicBonusValue = 0;
+		if(!(data.movement.basic.bonus.length === 1 && jQuery.isEmptyObject(data.movement.basic.bonus[0]))) {
+			for( const b of data.movement.basic.bonus) {
+				if(b.active) {
+					basicBonusValue += b.value;
+				}
+			}
+		}
+		data.movement.basic.bonusValue = basicBonusValue;
+		
+		let chargeBonusValue = 0;
+		if(!(data.movement.charge.bonus.length === 1 && jQuery.isEmptyObject(data.movement.charge.bonus[0]))) {
+			for( const b of data.movement.charge.bonus) {
+				if(b.active) {
+					chargeBonusValue += b.value;
+				}
+			}
+		}
+		data.movement.charge.bonusValue = chargeBonusValue;	
+		
+		let runBonusValue = 0;
+		if(!(data.movement.run.bonus.length === 1 && jQuery.isEmptyObject(data.movement.run.bonus[0]))) {
+			for( const b of data.movement.run.bonus) {
+				if(b.active) {
+					runBonusValue += b.value;
+				}
+			}
+		}
+		data.movement.run.bonusValue = runBonusValue;
+		
+	
+		data.movement.basic.value = + data.movement.basic.base + data.movement.basic.armor + basicBonusValue + data.movement.basic.temp;
 		
 		if (data.movement.basic.value < 0)
 			data.movement.basic.value = 0;
 		
-		data.movement.charge.value = data.movement.basic.value + data.movement.charge.armor + data.movement.charge.misc + data.movement.charge.temp;
+		data.movement.charge.value = data.movement.basic.value + data.movement.charge.armor + chargeBonusValue + data.movement.charge.temp;
 		
 		if (data.movement.charge.value < 0)
 			data.movement.charge.value = 0;
 		
-		data.movement.run.value = data.movement.basic.value + 2 + data.movement.run.armor + data.movement.run.misc + data.movement.run.temp;
+		data.movement.run.value = data.movement.basic.value + 2 + data.movement.run.armor + runBonusValue + data.movement.run.temp;
 		
 		if (data.movement.run.value < 0)
 			data.movement.run.value = 0;
 		
-		//Resistences & Weaknesses
+		//Passive Skills
 		for (let [id, pas] of Object.entries(data.passive)) {
-			pas.value = 10 + data.skills[pas.skill].total + pas.bonus;
+			let passiveBonusValue = 0;
+			if(!(pas.bonus.length === 1 && jQuery.isEmptyObject(pas.bonus[0]))) {
+				for( const b of pas.bonus) {
+					if(b.active) {
+						passiveBonusValue += b.value;
+					}
+				}
+			}
+			pas.bonusValue = passiveBonusValue;
+			pas.value = 10 + data.skills[pas.skill].total + passiveBonusValue;
 		}
 		
+		//Resistences & Weaknesses
 		for (let [id, res] of Object.entries(data.resistences)) {
 
 			// abl.mod = Math.floor((abl.value - 10) / 2);
