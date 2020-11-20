@@ -33,17 +33,18 @@
 				<li class="attribute-health resource-half">
 					<h4 class="attribute-name box-title">Health</h4>
 					<div class="attribute-value">
-						<input type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EALTUS.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<input style="width: 100%; text-align: right; padding-right: 4px;" type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EALTUS.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep"> / </span>
-						<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EALTUS.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						<input style="width: 100%; text-align: left; padding-left: 4px;" type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EALTUS.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
-					<footer class="attribute-footer">					
-						<input type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder="{{localize 'DND4EALTUS.TempHP'}}" data-dtype="Number" onClick="this.select();"/>
+					<footer class="attribute-footer">
+						<Span>Temp HP:</Span>
+						<input style="width: 32px; padding: 0px;" type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
 						<span title="{{localize 'DND4EALTUS.HPBloodied'}}">{{localize 'DND4EALTUS.HPBloodied'}}: {{data.details.bloodied}}</span>
 						<a class="health-option" data-target="data.details" style="position: relative; left: -5px; top: 4px;">
 							<i class="fas fa-cog"></i>
-						</a>						
-					</footer>						
+						</a>
+					</footer>
 				</li>
 				<li class="attribute-health resource-half">
 					<h4 class="attribute-name box-title">Surge</h4>
@@ -66,7 +67,7 @@
 					<div>
 						<a class="rest second-wind">Second Wind</a>
 						<input type="checkbox" name="data.details.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="Second Wind Used"/>
-						<a class="secondwind-bonus" data-target="data.details" title="Second Wind Bonus">Bonus: {{data.details.secondwindbon.value}}</a>
+						<a class="secondwind-bonus" style="font-size: 12px;" data-target="data.details" title="Second Wind Bonus">Bonus: {{data.details.secondwindbon.value}}</a>
 						<!-- <span>Bonus:</span> -->
 						<!-- <input type="text" name="data.details.secondwindbon" value="{{data.details.secondwindbon}}" title="Second Wind Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						
@@ -75,7 +76,7 @@
 					</div>	
 					<div >	
 						<a class="death death-save">Death Saving Throw</a>
-						<a class="death-save-bonus" data-target="data.details" title="Death Save Bonus">Bonus: {{data.details.deathsavebon.value}}</a>
+						<a class="death-save-bonus" style="font-size: 12px;" data-target="data.details" title="Death Save Bonus">Bonus: {{data.details.deathsavebon.value}}</a>
 						<!-- <span>Bonus:</span> -->
 						<!-- <input type="text" name="data.details.deathsavebon" value="{{data.details.deathsavebon}}" title="Death Save Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<span>Failures:</span>
