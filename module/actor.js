@@ -303,18 +303,31 @@ export class SimpleActor extends Actor {
 		//Resistences & Weaknesses
 		for (let [id, res] of Object.entries(data.resistences)) {
 
+			let resBonusValue = 0;
+			if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
+				for( const b of res.bonus) {
+					if(b.active) {
+						resBonusValue += b.value;
+					}
+				}
+			}
+			res.resBonusValue = resBonusValue;
+			
 			// abl.mod = Math.floor((abl.value - 10) / 2);
 			// abl.prof = (abl.proficient || 0) * data.attributes.prof;
 			// abl.saveBonus = saveBonus;
 			// abl.checkBonus = checkBonus;
 			// abl.save = abl.mod + abl.prof + abl.saveBonus;
-			res.value = res.enchant + res.race + res.misc;
+			res.value = res.armour + resBonusValue;
 			res.label = game.i18n.localize(DND4EALTUS.damageTypes[id]); //.localize("");
 			
 			// If we merged saves when transforming, take the highest bonus here.
 			// if (originalSaves && abl.proficient) {
 				// abl.save = Math.max(abl.save, originalSaves[id].save);
 			// }
+			
+			
+		
 		}
 	}
 

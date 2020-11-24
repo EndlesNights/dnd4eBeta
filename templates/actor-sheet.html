@@ -84,8 +84,9 @@
 		<a class="item" data-tab="description">Bio & Info</a>
 		<a class="item" data-tab="attributes">Attributes</a>
 		<a class="item" data-tab="inventory">Inventory</a>
-		<a class="item" data-tab="feats">Feats</a>
+		<a class="item" data-tab="features">Features</a>
 		<a class="item" data-tab="powers">Powers</a>
+		<a class="item" data-tab="effects">Effects</a>
 	</nav>
 
 	{{!-- Sheet Body --}}
@@ -96,16 +97,24 @@
 			{{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
 		</div>
 
+		{{!-- Attributes Tab --}}
+		<div class="tab attributes flexrow" data-group="primary" data-tab="attributes">
+			{{> "systems/dnd4eAltus/templates/actors/parts/actor-attributes.html" sections=inventory}}
+		</div>
+
 		{{!-- Owned Inventory Tab --}}
 		<div class="tab inventory" data-group="primary" data-tab="inventory">
 			{{> "systems/dnd4eAltus/templates/actors/parts/actor-inventory.html" sections=inventory}}
 		</div>
 
-		{{!-- Attributes Tab --}}
-		<div class="tab attributes flexrow" data-group="primary" data-tab="attributes">
-			{{> "systems/dnd4eAltus/templates/actors/parts/actor-attributes.html" sections=inventory}}
-
-			
+		{{!-- Feat Tab --}}
+		<div class="tab features" data-group="primary" data-tab="features">
+			{{> "systems/dnd4eAltus/templates/actors/parts/actor-features.html" sections=features}}
+		</div>
+		
+		{{!-- Powers Tab --}}
+		<div class="tab features" data-group="primary" data-tab="powers">
+			{{> "systems/dnd4eAltus/templates/actors/parts/actor-powers.html" sections=powers}}
 		</div>
 
 	</section>

@@ -26,7 +26,7 @@ export class SimpleActorSheet extends ActorSheet {
      */
     this._filters = {
       inventory: new Set(),
-      spellbook: new Set(),
+      powers: new Set(),
       features: new Set()
     };
   }
@@ -116,8 +116,8 @@ export class SimpleActorSheet extends ActorSheet {
 			}
 			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
 		}
-	}	
-	
+	}
+
 	_prepareItems(data) {
 		const inventory = {
 			weapon: { label: "DND4EALTUS.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
@@ -127,65 +127,85 @@ export class SimpleActorSheet extends ActorSheet {
 			backpack: { label: "DND4EALTUS.ItemTypeContainerPl", items: [], dataset: {type: "backpack"} },
 			loot: { label: "DND4EALTUS.ItemTypeLootPl", items: [], dataset: {type: "loot"} }
 		};
+		const powers = {
+			atwill: { label: "DND4EALTUS.PowerAt", items: [], dataset: {type: "atwill"} },
+			encounter: { label: "DND4EALTUS.PowerEnc", items: [], dataset: {type: "encounter"} },
+			daily: { label: "DND4EALTUS.PowerDaily", items: [], dataset: {type: "daily"} },
+			utility: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} }
+		};
+		const features = {
+			raceFeats: { label: "DND4EALTUS.FeatRace", items: [], dataset: {type: "raceFeats"} },
+			classFeats: { label: "DND4EALTUS.FeatClass", items: [], dataset: {type: "classFeats"} },
+			pathFeats: { label: "DND4EALTUS.FeatPath", items: [], dataset: {type: "pathFeats"} },
+			destinyFeats: { label: "DND4EALTUS.FeatDestiny", items: [], dataset: {type: "destinyFeats"} },
+			feat: { label: "DND4EALTUS.FeatLevel", items: [], dataset: {type: "feat"} },
+			ritual: { label: "DND4EALTUS.FeatRitual", items: [], dataset: {type: "ritual"} }
+		};
 		
-    // Partition items by category
-    let [items, spells, feats, classes] = data.items.reduce((arr, item) => {
+		// Partition items by category
+		let [items, pow, feats] = data.items.reduce((arr, item) => {
+			// Item details
+			item.img = item.img || DEFAULT_TOKEN;
+			item.isStack = Number.isNumeric(item.data.quantity) && (item.data.quantity !== 1);
 
-      // Item details
-      item.img = item.img || DEFAULT_TOKEN;
-      item.isStack = Number.isNumeric(item.data.quantity) && (item.data.quantity !== 1);
+			// Item usage
+			item.hasUses = item.data.uses && (item.data.uses.max > 0);
+			item.isOnCooldown = item.data.recharge && !!item.data.recharge.value && (item.data.recharge.charged === false);
+			item.isDepleted = item.isOnCooldown && (item.data.uses.per && (item.data.uses.value > 0));
+			item.hasTarget = !!item.data.target && !(["none",""].includes(item.data.target.type));
 
-      // Item usage
-      item.hasUses = item.data.uses && (item.data.uses.max > 0);
-      item.isOnCooldown = item.data.recharge && !!item.data.recharge.value && (item.data.recharge.charged === false);
-      item.isDepleted = item.isOnCooldown && (item.data.uses.per && (item.data.uses.value > 0));
-      item.hasTarget = !!item.data.target && !(["none",""].includes(item.data.target.type));
+			// Item toggle state
+			this._prepareItemToggleState(item);
 
-      // Item toggle state
-      this._prepareItemToggleState(item);
+			// Classify items into types
+			if ( Object.keys(inventory).includes(item.type ) ) arr[0].push(item);
+			else if ( Object.keys(powers).includes(item.type ) ) arr[1].push(item);
+			else if ( Object.keys(features).includes(item.type ) ) arr[2].push(item);
+			return arr;
+		}, [[], [], [], []]);
+		// Apply active item filters
+		items = this._filterItems(items, this._filters.inventory);
+		pow = this._filterItems(pow, this._filters.powers);
+		feats = this._filterItems(feats, this._filters.features);
 
-      // Classify items into types
-      if ( item.type === "spell" ) arr[1].push(item);
-      else if ( item.type === "feat" ) arr[2].push(item);
-      else if ( item.type === "class" ) arr[3].push(item);
-      else if ( Object.keys(inventory).includes(item.type ) ) arr[0].push(item);
-      return arr;
-    }, [[], [], [], []]);
+		// Organize items
+		for ( let i of items ) {
+			i.data.quantity = i.data.quantity || 0;
+			i.data.weight = i.data.weight || 0;
+			i.totalWeight = Math.round(i.data.quantity * i.data.weight * 10) / 10;
+			inventory[i.type].items.push(i);
+		}
 
-    // Apply active item filters
-    items = this._filterItems(items, this._filters.inventory);
-    spells = this._filterItems(spells, this._filters.spellbook);
-    feats = this._filterItems(feats, this._filters.features);
+		// Organize Spellbook and count the number of prepared spells (excluding always, at will, etc...)
+		// const spellbook = this._prepareSpellbook(data, spells);
+		// const nPrepared = spells.filter(s => {
+		  // return (s.data.level > 0) && (s.data.preparation.mode === "prepared") && s.data.preparation.prepared;
+		// }).length;
+		
 
-    // Organize items
-    for ( let i of items ) {
-      i.data.quantity = i.data.quantity || 0;
-      i.data.weight = i.data.weight || 0;
-      i.totalWeight = Math.round(i.data.quantity * i.data.weight * 10) / 10;
-      inventory[i.type].items.push(i);
-    }
+	
+		// Organize Features
+		// const features = {
+		  // classes: { label: "DND4EALTUS.ItemTypeClassPl", items: [], hasActions: false, dataset: {type: "class"}, isClass: true },
+		  // active: { label: "DND4EALTUS.FeatureActive", items: [], hasActions: true, dataset: {type: "feat", "activation.type": "action"} },
+		  // passive: { label: "DND4EALTUS.FeaturePassive", items: [], hasActions: false, dataset: {type: "feat"} }
+		// };
 
-    // Organize Spellbook and count the number of prepared spells (excluding always, at will, etc...)
-    // const spellbook = this._prepareSpellbook(data, spells);
-    const nPrepared = spells.filter(s => {
-      return (s.data.level > 0) && (s.data.preparation.mode === "prepared") && s.data.preparation.prepared;
-    }).length;
-
-    // Organize Features
-    const features = {
-      classes: { label: "DND4EALTUS.ItemTypeClassPl", items: [], hasActions: false, dataset: {type: "class"}, isClass: true },
-      active: { label: "DND4EALTUS.FeatureActive", items: [], hasActions: true, dataset: {type: "feat", "activation.type": "action"} },
-      passive: { label: "DND4EALTUS.FeaturePassive", items: [], hasActions: false, dataset: {type: "feat"} }
-    };
-    for ( let f of feats ) {
-      if ( f.data.activation.type ) features.active.items.push(f);
-      else features.passive.items.push(f);
-    }
-    classes.sort((a, b) => b.levels - a.levels);
-    features.classes.items = classes;
-
-    // Assign and return
+		
+		for ( let f of feats ) {
+			features[f.type].items.push(f);
+		  // if ( f.data.activation.type ) features.active.items.push(f);
+		  // else features.passive.items.push(f);
+		}
+		for ( let p of pow ) {
+			powers[p.type].items.push(p);
+		}			
+		// classes.sort((a, b) => b.levels - a.levels);
+		// features.classes.items = classes;
+		// Assign and return
 		data.inventory = Object.values(inventory);
+		data.powers = Object.values(powers);
+		data.features = Object.values(features);
 	}
 	
   /* -------------------------------------------- */
@@ -259,17 +279,17 @@ export class SimpleActorSheet extends ActorSheet {
       }
 
       // Spell-specific filters
-      if ( filters.has("ritual") ) {
-        if (data.components.ritual !== true) return false;
-      }
-      if ( filters.has("concentration") ) {
-        if (data.components.concentration !== true) return false;
-      }
-      if ( filters.has("prepared") ) {
-        if ( data.level === 0 || ["innate", "always"].includes(data.preparation.mode) ) return true;
-        if ( this.actor.data.type === "npc" ) return true;
-        return data.preparation.prepared;
-      }
+      // if ( filters.has("ritual") ) {
+        // if (data.components.ritual !== true) return false;
+      // }
+      // if ( filters.has("concentration") ) {
+        // if (data.components.concentration !== true) return false;
+      // }
+      // if ( filters.has("prepared") ) {
+        // if ( data.level === 0 || ["innate", "always"].includes(data.preparation.mode) ) return true;
+        // if ( this.actor.data.type === "npc" ) return true;
+        // return data.preparation.prepared;
+      // }
 
       // Equipment-specific filters
       if ( filters.has("equipped") ) {
@@ -373,6 +393,7 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
 		html.find('.move-bonus').click(this._onMovementBonus.bind(this));
 		html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
+		html.find('.resistence-bonus').click(this._onResistencesBonus.bind(this));
 		
 		
 		//second wind
@@ -466,6 +487,7 @@ export class SimpleActorSheet extends ActorSheet {
 		event.preventDefault();
 		const header = event.currentTarget;
 		const type = header.dataset.type;
+		console.log(type);
 		const itemData = {
 			name: game.i18n.format("DND4EALTUS.ItemNew", {type: type.capitalize()}),
 			type: type,
@@ -599,7 +621,14 @@ export class SimpleActorSheet extends ActorSheet {
 		const options = {target: target, label: `Passive ${this.actor.data.data.skills[skillName].label} Bonues` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}	
-	
+
+	_onResistencesBonus(event) {
+		event.preventDefault();
+		const resName = event.currentTarget.parentElement.dataset.res;
+		const target = `data.resistences.${resName}`;
+		const options = {target: target, label: `${this.actor.data.data.resistences[resName].label} Damage Resistences Bonues` };
+		new AttributeBonusDialog(this.actor, options).render(true);
+	}
 	/**
 	* Opens dialog window to spend Second Wind
 	*/

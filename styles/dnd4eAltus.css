@@ -134,6 +134,8 @@
   height: 20px;
   font-size: 16px;
   display: inline;
+  	position: relative;
+	top: -2px;
 }
 
 .dnd4eAltus .sheet-header .charlevel .experience input {
@@ -141,7 +143,6 @@
 	width: 96px;
 	font-size: 24px;
 	text-align: right;
-
 }
 
 .dnd4eAltus textarea {
@@ -220,7 +221,7 @@
 	border-top: 2px groove #eeede0;
 	border-bottom: none;
 	position: relative;
-	top: -8px;
+	top: -9px;
 }
 
 .dnd4eAltus.sheet .sheet-header .summary input {
@@ -811,21 +812,36 @@ font-size: 12px;
 	/* left: 1%; */
 }
 
-/* .dnd4eAltus.sheet.actor ul.attributes li.attribute-rest a.second-wind { */
-	/* position: relative; */
-	/* left: -2%; */
-/* } */
+.dnd4eAltus .attribute-res {
+	margin: 0 0 0 0;
+	border: 2px groove #eeede0;
+	border-radius: 4px;
+	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
 
-/* .dnd4eAltus.sheet.actor ul.attributes li.attribute-rest a.short-rest { */
-	/* position: relative; */
-	/* left: 5%; */
-/* } */
+	width: 100%;
+	float: left;
+}
 
-/* .dnd4eAltus.sheet.actor ul.attributes li.attribute-rest a.long-rest { */
-	/* position: relative; */
-	/* left: 7%; */
-/* } */
+.dnd4eAltus.sheet.actor ul.attributes .attribute-res .res-name {
+	flex: 0.9;
+}
+.dnd4eAltus.sheet.actor ul.attributes .attribute-res .res-mod {
+	flex: 0.6;
+}
+.dnd4eAltus.sheet.actor ul.attributes .attribute-res .res-armour {
+	flex: 0.8;
+}
+.dnd4eAltus.sheet.actor ul.attributes .attribute-res .res-immune {
+	flex: 0.8;
+}
 
+.dnd4eAltus.sheet.actor ul.attributes .attribute-res input[type="text"] {
+	flex: 0.3;
+}
+.dnd4eAltus.sheet.actor ul.attributes .attribute-res input{
+	position: relative;
+	top: -6px;
+}
 .dnd4eAltus.sheet.actor.character .resource .attribute-value input {
   flex: 0 0 25%;
 }
@@ -895,7 +911,17 @@ font-size: 12px;
 .dnd4eAltus.sheet.actor ul.attributes .attribute-def input[type="text"] {
 	position: relative;
 	top: -6px;
-	text-align: center;
+	flex: 0.5;
+}
+
+.dnd4eAltus.sheet.actor ul.attributes .attribute-def .def-name {
+	flex: 0.6;
+}
+.dnd4eAltus.sheet.actor ul.attributes .attribute-def .def-armour {
+	flex: 0.6;
+}
+.dnd4eAltus.sheet.actor ul.attributes .attribute-def .def-temp {
+	flex: 0.4;
 }
 
 .dnd4eAltus .attribute-init {
@@ -1313,7 +1339,7 @@ font-size: 12px;
   color: #7a7971;
   white-space: nowrap;
 }
-.dnd4eAltus.sheet.actor .inventory-list .inventory-header {
+.dnd4eAltus.sheet.actor .inventory-list .items-header {
   margin: 2px 0;
   padding: 0;
   background: rgba(0, 0, 0, 0.05);
@@ -1321,7 +1347,7 @@ font-size: 12px;
   font-weight: bold;
   line-height: 24px;
 }
-.dnd4eAltus.sheet.actor .inventory-list .inventory-header h3 {
+.dnd4eAltus.sheet.actor .inventory-list .items-header h3 {
   margin: 0 -5px 0 0;
   padding-left: 5px;
   font-family: "Modesto Condensed", "Palatino Linotype", serif;
@@ -1329,7 +1355,7 @@ font-size: 12px;
   font-weight: 700;
   font-size: 16px;
 }
-.dnd4eAltus.sheet.actor .inventory-list .inventory-header .item-controls a.item-create {
+.dnd4eAltus.sheet.actor .inventory-list .items-header .item-controls a.item-create {
   flex: 0 0 100%;
 }
 .dnd4eAltus.sheet.actor .inventory-list .item-detail {

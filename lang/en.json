@@ -206,7 +206,6 @@
 "DND4EALTUS.Gender": "Gender",
 
 "DND4EALTUS.ItemTypeClass": "Class",
-"DND4EALTUS.ItemTypeClassPl": "Class Levels",
 "DND4EALTUS.ItemTypeConsumable": "Consumable",
 "DND4EALTUS.ItemTypeConsumablePl": "Consumables",
 "DND4EALTUS.ItemTypeContainer": "Container",
@@ -222,6 +221,16 @@
 "DND4EALTUS.ItemTypeWeapon": "Weapon",
 "DND4EALTUS.ItemTypeWeaponPl": "Weapons",
 "DND4EALTUS.ItemNoUses": "{name} has no available uses remaining.",
+
+
+"DND4EALTUS.FeatRace": "Race Features",
+"DND4EALTUS.FeatClass": "Class Features",
+"DND4EALTUS.FeatPath": "Paragon Path Features",
+"DND4EALTUS.FeatDestiny": "Epic Destiny Features",
+"DND4EALTUS.FeatLevel": "Feats",
+"DND4EALTUS.FeatRitual": "Rituals Mastered",
+
+
 
 "DND4EALTUS.FeatureActive": "Active Abilities",
 "DND4EALTUS.FeatureAdd": "Create Feature",
@@ -407,6 +416,12 @@
 "DND4EALTUS.PolymorphTokens": "Transform all linked tokens?",
 "DND4EALTUS.PolymorphWarn": "You are not allowed to polymorph this actor!",
 "DND4EALTUS.PolymorphWildShape": "Wild Shape",
+
+"DND4EALTUS.PowerAt": "atwill Power",
+"DND4EALTUS.PowerDaily": "Daily Power",
+"DND4EALTUS.PowerEnc": "Encounter Power",
+"DND4EALTUS.PowerUtil": "Utility Power",
+
 "DND4EALTUS.Prepared": "Prepared",
 "DND4EALTUS.Price": "Price",
 "DND4EALTUS.Proficiency": "Proficiency",
