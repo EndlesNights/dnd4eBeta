@@ -19,7 +19,19 @@
 		<input type="text" name="data.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number"/>
 		{{/each}}
 	</ol>
-
+    
+    <div>
+        <div style="display: inline;">
+            <span>Daily magical Item Powers use Per Day:</span> 
+            <input style="width: 25px; text-align: right;" type="text" name="data.magicItemUse.dailyuse" value="{{data.magicItemUse.dailyuse}}" title="Daily Magic Items used Today"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
+            <span>/ {{data.magicItemUse.perDay}}</span>
+        </div>
+        <div style="float:right;">
+            <span >Daily Magical Item Used In encounter?</span>
+            <input type="checkbox" name="data.magicItemUse.encounteruse" data-dtype="Boolean" {{checked data.magicItemUse.encounteruse}} title="Daily Magical Item Used In encounter"  style="height: 14px; position: relative; top: 2px;">
+        </div>
+        
+    </div>
 </div>
 
 

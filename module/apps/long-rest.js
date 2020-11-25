@@ -49,9 +49,12 @@ export class LongRestDialog extends BaseEntitySheet {
 		updateData[`data.details.temp`] = "";
 		updateData[`data.details.deathsavefail`] = 0;
 		updateData[`data.actionpoints.value`] = 1;
+		updateData[`data.magicItemUse.milestone`] = 0;
+		updateData[`data.magicItemUse.dailyuse`] = 0;
 		
 		updateData[`data.details.secondwind`] = false;
 		updateData[`data.actionpoints.encounteruse`] = false;
+		updateData[`data.magicItemUse.encounteruse`] = false;
 		
 		// *** TODO For Each reset encounter & daily power HERE
 		

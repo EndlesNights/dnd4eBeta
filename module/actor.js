@@ -325,10 +325,13 @@ export class SimpleActor extends Actor {
 			// if (originalSaves && abl.proficient) {
 				// abl.save = Math.max(abl.save, originalSaves[id].save);
 			// }
-			
-			
-		
 		}
+		
+		//Magic Items
+		console.log(data.magicItemUse);
+		//Sets the base number of magic item uses per day.
+		data.magicItemUse.perDay = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3) + data.magicItemUse.bonusValue + data.magicItemUse.milestone;
+
 	}
 
 

@@ -2,7 +2,7 @@
  * A specialized form used to select from a checklist of attributes, traits, or properties
  * @extends {FormApplication}
  */
-export default class TraitSelector extends FormApplication {
+export default class TraitSelectorSave extends FormApplication {
 
   /** @override */
 	static get defaultOptions() {
@@ -10,7 +10,7 @@ export default class TraitSelector extends FormApplication {
 	    id: "trait-selector",
       classes: ["dnd4ealtus"],
       title: "Actor Trait Selection",
-      template: "systems/dnd4eAltus/templates/apps/trait-selector-sense.html",
+      template: "systems/dnd4eAltus/templates/apps/trait-selector-save.html",
       width: 320,
       height: "auto",
       choices: {},
@@ -31,8 +31,7 @@ export default class TraitSelector extends FormApplication {
   }
 
 	get title() {
-		// const name = this.options.name.substring(this.options.name.lastIndexOf(".") + 1);
-		// return `${this.object.name} - ${super.title} - ${name}`;
+
 		return `${this.object.name} - ${super.title}`;
 	}
   /* -------------------------------------------- */
@@ -88,7 +87,7 @@ export default class TraitSelector extends FormApplication {
     // Obtain choices
     const chosen = [];
     for ( let [k, v] of Object.entries(formData) ) {
-      if ( (k !== "custom") && v[0] ) chosen.push([k,v[1]]);
+      if ( (k !== "custom") && v) chosen.push([k,v]	);
     }
     updateData[`${this.attribute}.value`] = chosen;
 

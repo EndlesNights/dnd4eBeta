@@ -41,7 +41,7 @@
 						<Span>Temp HP:</Span>
 						<input style="width: 32px; padding: 0px; position: relative; top: -1px;" type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
 						<span title="{{localize 'DND4EALTUS.HPBloodied'}}">{{localize 'DND4EALTUS.HPBloodied'}}: {{data.details.bloodied}}</span>
-						<a class="health-option" data-target="data.details" style="position: relative; left: -5px; top: 4px;">
+						<a class="health-option" data-target="data.details" title="Health & Surge Options" style="position: relative; left: -5px; top: 4px;">
 							<i class="fas fa-cog"></i>
 						</a>
 					</footer>
@@ -158,6 +158,19 @@
 						<span class="def-temp">Temp:</span>
 						<input type="text" name="data.defences.wil.temp" value="{{data.defences.wil.temp}}" title="Will Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</li>
+
+					<div style="text-align: left;">
+						<a class="trait-selector-save" data-options="saves" data-target="data.details.saves" >
+							<span>Saving Throw Mods:</span>
+							<i class="fas fa-edit" style="font-size: 12px;"></i>
+						</a>
+						<ul class="traits-list" style="list-style-type: none;">
+						{{#each data.details.saves.selected as |v k|}}
+							<li class="tag {{k}}">{{v}}</li>
+						{{/each}}
+						</ul>
+					</div>
+
 				</div>	
 				
 				<div class="attribute-init resource-full">
@@ -236,7 +249,7 @@
 					</div>					
 					
 					<div style="text-align: left;">
-						<a class="trait-selector-senses" data-options="vision" data-target="data.senses.vision" style="text-align: left;">
+						<a class="trait-selector-senses" data-options="vision" data-target="data.senses.vision">
 							<span>Vision</span>
 							<i class="fas fa-edit"></i>
 						</a>
@@ -246,7 +259,7 @@
 						{{/each}}
 						</ul>
 						
-						<a class="trait-selector-senses" data-options="special" data-target="data.senses.special" style="text-align: left;">
+						<a class="trait-selector-senses" data-options="special" data-target="data.senses.special">
 							<span>special Senses</span>
 							<i class="fas fa-edit"></i>
 						</a>

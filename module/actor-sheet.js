@@ -6,6 +6,7 @@ import { DeathSaveDialog } from "./apps/death-save.js";
 import { AttributeBonusDialog } from "./apps/attribute-bonuses.js";
 import TraitSelector from "./apps/trait-selector.js";
 import TraitSelectorSense from "./apps/trait-selector-sense.js";
+import TraitSelectorSave from "./apps/trait-selector-save.js";
 
 import HPOptions from "./apps/hp-options.js";
 import Item4e from "./item/entity.js";
@@ -80,12 +81,16 @@ export class SimpleActorSheet extends ActorSheet {
 		}
 		
 		this._prepareData(data.actor.data.languages, 
-		{"spoken": CONFIG.DND4EALTUS.spoken, "script": CONFIG.DND4EALTUS.script}
+			{"spoken": CONFIG.DND4EALTUS.spoken, "script": CONFIG.DND4EALTUS.script}
 		);
 		
-		this._prepareDataSense(data.actor.data.senses, 
+		this._prepareDataSense(data.actor.data.senses,
 			{"vision": CONFIG.DND4EALTUS.vision, "special": CONFIG.DND4EALTUS.special}
-		);			
+		);
+		
+		this._prepareDataSave(data.actor.data.details,
+			{"saves": CONFIG.DND4EALTUS.saves}
+		);
 		
 		this._prepareItems(data);
 		return data;
@@ -232,12 +237,6 @@ export class SimpleActorSheet extends ActorSheet {
     }
   }
 	_prepareDataSense(data, map) {
-		// const map = {
-			// "spoken": CONFIG.DND4EALTUS.spoken,
-			// "script": CONFIG.DND4EALTUS.script,
-			// "vision": CONFIG.DND4EALTUS.vision,
-			// "special": CONFIG.DND4EALTUS.special
-		// }
 		
 		for ( let [l, choices] of Object.entries(map) ) {
 			const trait = data[l];
@@ -247,7 +246,6 @@ export class SimpleActorSheet extends ActorSheet {
 				values = trait.value instanceof Array ? trait.value : [trait.value];
 			}
 			trait.selected = values.reduce((obj, l) => {
-				// obj[l] = l[1] != "" ? choices[l[0]] + " " + l[1] + " sq" : choices[l[0]];
 				obj[l] = l[1] != "" ? `${choices[l[0]]} ${l[1]} sq` : choices[l[0]];
 				return obj;
 			}, {});
@@ -259,7 +257,28 @@ export class SimpleActorSheet extends ActorSheet {
 			
 		}
 	}
-	
+	_prepareDataSave(data, map) {
+		
+		for ( let [l, choices] of Object.entries(map) ) {
+			const trait = data[l];
+			if ( !trait ) continue;
+			let values = [];
+			if ( trait.value ) {
+				values = trait.value instanceof Array ? trait.value : [trait.value];
+			}
+			trait.selected = values.reduce((obj, l) => {
+				obj[l] = l[1] > 0 ? `${choices[l[0]]} +${l[1]}` : l[1] != "" ? `${choices[l[0]]} ${l[1]}` : choices[l[0]];
+				// obj[l] = l[1] != "" ? `${choices[l[0]]} ${l[1]}` : choices[l[0]];
+				return obj;
+			}, {});
+			// Add custom entry
+			if ( trait.custom ) {
+				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
+			}
+			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
+			
+		}
+	}	
   /* -------------------------------------------- */
 
   /**
@@ -410,8 +429,10 @@ export class SimpleActorSheet extends ActorSheet {
 		
 		// Trait Selector
 		html.find('.trait-selector').click(this._onTraitSelectorLang.bind(this));
-		
 		html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
+		
+		//save throw bonus
+		html.find(`.trait-selector-save`).click(this._onTraitSelectorSaveThrow.bind(this));
 		
 		//Inventory & Item management
 		html.find('.item-create').click(this._onItemCreate.bind(this));
@@ -763,10 +784,20 @@ export class SimpleActorSheet extends ActorSheet {
 	_onTraitSelectorSense(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.parentElement.querySelector("h4");
+		const label = a.parentElement.parentElement.querySelector("h4");
 		const choices = CONFIG.DND4EALTUS[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
+		console.log(options);
 		new TraitSelectorSense(this.actor, options).render(true);
+	}
+	
+	_onTraitSelectorSaveThrow(event) {
+		event.preventDefault();
+		const a = event.currentTarget;
+		const choices = CONFIG.DND4EALTUS[a.dataset.options];
+		const options = { name: a.dataset.target, title: "Saving Throw Mods", choices };
+		console.log(options);
+		new TraitSelectorSave(this.actor, options).render(true);
 	}
 
   /* -------------------------------------------- */

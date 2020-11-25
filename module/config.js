@@ -407,6 +407,38 @@ DND4EALTUS.vision = {
 	"bv": "DND4EALTUS.VisionBlind"
 };
 
+DND4EALTUS.saves = {
+	"Arcane": "DND4EALTUS.Arcane",
+	"Divine": "DND4EALTUS.Divine",
+	"Martial": "DND4EALTUS.Martial",
+	"Elemental": "DND4EALTUS.Elemental",
+	"Ki": "DND4EALTUS.Ki",
+	"Primal": "DND4EALTUS.Primal",
+	"Psionic": "DND4EALTUS.Psionic",
+	"Shadow": "DND4EALTUS.Shadow",
+
+	"Acid": "DND4EALTUS.DamageAcid",
+	"Cold": "DND4EALTUS.DamageCold",
+	"Fire": "DND4EALTUS.DamageFire",
+	"Force": "DND4EALTUS.DamageForce",
+	"Lighting": "DND4EALTUS.DamageLightning",
+	"Necrotic": "DND4EALTUS.DamageNecrotic",
+	"Poison": "DND4EALTUS.DamagePoison",
+	"Psychic": "DND4EALTUS.DamagePsychic",
+	"Radiant": "DND4EALTUS.DamageRadiant",
+	"Thunder ": "DND4EALTUS.DamageThunder",
+
+	"Charm": "DND4EALTUS.Charm",
+	"Fear": "DND4EALTUS.Fear",
+	"Healing": "DND4EALTUS.Healing",
+	"Illusion": "DND4EALTUS.Illusion",
+	"Invigorating": "DND4EALTUS.Invigorating",
+	"Polymorph": "DND4EALTUS.Polymorph",
+	"Rage": "DND4EALTUS.Rage",
+	"Sleep": "DND4EALTUS.Sleep",
+	"Spirit": "DND4EALTUS.Spirit",
+	"Teleportation": "DND4EALTUS.Teleportation"
+};
 /* -------------------------------------------- */
 
 /**

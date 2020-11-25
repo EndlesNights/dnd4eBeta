@@ -69,7 +69,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 		
 		updateData[`data.details.secondwind`] = false;
 		updateData[`data.actionpoints.encounteruse`] = false;
-		
+		updateData[`data.magicItemUse.encounteruse`] = false;
 		// *** TODO For Each reset encounter power HERE
 		
 		ChatMessage.create({

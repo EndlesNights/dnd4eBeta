@@ -45,6 +45,13 @@
 				"encounteruse": false,
 				"effects": ""
 			},
+			"magicItemUse": {
+				"perDay": 1,
+				"bonusValue": 0,
+				"milestone": 0,
+				"dailyuse": 0,
+				"encounteruse": false
+			},
 			"defences": {
 				"ac": {
 					"value": 10,
@@ -127,6 +134,10 @@
 				"secondwindbon": {
 					"bonus": [{}],
 					"value": 0
+				},
+				"saves": {
+					"value": [],
+					"custom": ""
 				}
 			},
 			"languages": {
