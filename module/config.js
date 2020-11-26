@@ -1,4 +1,4 @@
-// Namespace D&D5e Configuration Values
+// Namespace D&D4e Configuration Values
 export const DND4EALTUS = {};
 
 // ASCII Artwork
@@ -66,7 +66,7 @@ DND4EALTUS.toolProficiencies = {
 /* -------------------------------------------- */
 
 /**
- * This Object defines the various lengths of time which can occur in D&D5e
+ * This Object defines the various lengths of time which can occur in D&D4e
  * @type {Object}
  */
 DND4EALTUS.timePeriods = {
@@ -225,10 +225,11 @@ DND4EALTUS.consumableTypes = {
 /* -------------------------------------------- */
 
 /**
- * The valid currency denominations supported by the 5e system
+ * The valid currency denominations supported by the 4e system
  * @type {Object}
  */
 DND4EALTUS.currencies = {
+  "ad": "DND4EALTUS.CurrencyAD",
   "pp": "DND4EALTUS.CurrencyPP",
   "gp": "DND4EALTUS.CurrencyGP",
   "sp": "DND4EALTUS.CurrencySP",
@@ -242,17 +243,26 @@ DND4EALTUS.currencies = {
 DND4EALTUS.currencyConversion = {
   cp: {into: "sp", each: 10},
   sp: {into: "gp", each: 10 },
-  gp: {into: "pp", each: 10}
+  gp: {into: "pp", each: 100},
+  pp: {into: "ad", each: 100}
 };
 
 /* -------------------------------------------- */
 
 DND4EALTUS.ritualcomponents = {
-	"ad": "DND4EALTUS.RitualCompAD",
+	"ar": "DND4EALTUS.RitualCompAR",
+	"ms": "DND4EALTUS.RitualCompMS",
 	"rh": "DND4EALTUS.RitualCompRH",
 	"si": "DND4EALTUS.RitualCompSI",
-	"mc": "DND4EALTUS.RitualCompMC"
+	"rs": "DND4EALTUS.RitualCompRS"
 };
+
+// DND4EALTUS.ritualcomponents = {
+	// "ad": "DND4EALTUS.RitualCompAD",
+	// "rh": "DND4EALTUS.RitualCompRH",
+	// "si": "DND4EALTUS.RitualCompSI",
+	// "mc": "DND4EALTUS.RitualCompMC"
+// };
 
 
 /* -------------------------------------------- */
@@ -326,7 +336,7 @@ DND4EALTUS.encumbrance = {
 /* -------------------------------------------- */
 
 /**
- * This Object defines the types of single or area targets which can be applied in D&D5e
+ * This Object defines the types of single or area targets which can be applied in D&D4e
  * @type {Object}
  */
 DND4EALTUS.targetTypes = {

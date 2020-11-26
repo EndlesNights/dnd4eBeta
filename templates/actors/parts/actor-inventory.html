@@ -11,9 +11,7 @@
 	</ol>
 
 	<ol class="currency flexrow">
-		<h3>
-			Ritual Components
-		</h3>
+		<h3 title="Ritual Components">Ritual Comp.</h3>
 		{{#each data.ritualcomp as |v k|}}
 		<label class="denomination {{k}}">{{ localize (lookup ../config.ritualcomponents k )}}</label>
 		<input type="text" name="data.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number"/>
@@ -22,7 +20,7 @@
     
     <div>
         <div style="display: inline;">
-            <span>Daily magical Item Powers use Per Day:</span> 
+            <span>Daily Magical Item Powers use Per Day:</span> 
             <input style="width: 25px; text-align: right;" type="text" name="data.magicItemUse.dailyuse" value="{{data.magicItemUse.dailyuse}}" title="Daily Magic Items used Today"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
             <span>/ {{data.magicItemUse.perDay}}</span>
         </div>
@@ -136,10 +134,10 @@
 	{{#if encumbered}}
 		<span class="encumbrance-bar" style="width:{{pec}}%; background: #b72b2b;"></span>
 	{{/if}}
-	<span class="encumbrance-label">{{value}} / {{max}}</span>
-	<i class="encumbrance-breakpoint encumbrance-33 arrow-up"></i>
+	<span class="encumbrance-label">{{value}} / {{max}} lbs.</span>
+	<!-- <i class="encumbrance-breakpoint encumbrance-33 arrow-up"></i>
 	<i class="encumbrance-breakpoint encumbrance-33 arrow-down"></i>
 	<i class="encumbrance-breakpoint encumbrance-66 arrow-up"></i>
-	<i class="encumbrance-breakpoint encumbrance-66 arrow-down"></i>
+	<i class="encumbrance-breakpoint encumbrance-66 arrow-down"></i> -->
 </div>
 {{/with}}

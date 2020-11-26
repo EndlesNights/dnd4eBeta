@@ -8,6 +8,8 @@ export const preloadHandlebarsTemplates = async function() {
   // Define template paths to load
   const templatePaths = [
 
+    // Shared Partials
+    "systems/dnd4eAltus/templates/actors/parts/active-effects.html",
     // Actor Sheet Partials
     "systems/dnd4eAltus/templates/actors/parts/actor-attributes.html",
     "systems/dnd4eAltus/templates/actors/parts/actor-inventory.html",

@@ -74,10 +74,6 @@
 			</div>
 		</div>
 	</header>
-	
-
-	
-
 
 	{{!-- Sheet Tab Navigation --}}
 	<nav class="sheet-tabs tabs" data-group="primary">
@@ -117,6 +113,10 @@
 			{{> "systems/dnd4eAltus/templates/actors/parts/actor-powers.html" sections=powers}}
 		</div>
 
+        {{!-- Effects Tab --}}
+        <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+            {{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
+        </div>
 	</section>
 </form>
 

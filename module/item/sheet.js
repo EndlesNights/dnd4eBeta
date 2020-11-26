@@ -1,4 +1,5 @@
 import TraitSelector from "../apps/trait-selector.js";
+import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 
 /**
  * Override and extend the core ItemSheet implementation to handle specific item types
@@ -63,6 +64,9 @@ export default class ItemSheet4e extends ItemSheet {
     // Vehicles
     data.isCrewed = data.item.data.activation?.type === 'crew';
     data.isMountable = this._isItemMountable(data.item);
+	
+	// Prepare Active Effects
+	data.effects = prepareActiveEffectCategories(this.entity.effects);
     return data;
   }
 
@@ -243,8 +247,15 @@ export default class ItemSheet4e extends ItemSheet {
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
-    html.find(".damage-control").click(this._onDamageControl.bind(this));
-    html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
+	if ( this.isEditable ) {
+		html.find(".damage-control").click(this._onDamageControl.bind(this));
+		html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
+		html.find(".effect-control").click(ev => {
+		if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
+		onManageActiveEffect(ev, this.item)
+	});
+	}
+
   }
 
   /* -------------------------------------------- */

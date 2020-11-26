@@ -7,7 +7,7 @@ import { AttributeBonusDialog } from "./apps/attribute-bonuses.js";
 import TraitSelector from "./apps/trait-selector.js";
 import TraitSelectorSense from "./apps/trait-selector-sense.js";
 import TraitSelectorSave from "./apps/trait-selector-save.js";
-
+import {onManageActiveEffect, prepareActiveEffectCategories} from "./effects.js";
 import HPOptions from "./apps/hp-options.js";
 import Item4e from "./item/entity.js";
 
@@ -92,7 +92,12 @@ export class SimpleActorSheet extends ActorSheet {
 			{"saves": CONFIG.DND4EALTUS.saves}
 		);
 		
+		// Prepare owned items
 		this._prepareItems(data);
+		
+		// Prepare active effects
+		data.effects = prepareActiveEffectCategories(this.entity.effects);
+		
 		return data;
 	}
 	
@@ -439,7 +444,10 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find('.item-edit').click(this._onItemEdit.bind(this));
 		html.find('.item-delete').click(this._onItemDelete.bind(this));
 		html.find('.item-uses input').click(ev => ev.target.select()).change(this._onUsesChange.bind(this));
-		
+
+		// Active Effect management
+		html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.entity));
+	  
 		// Item summaries
 		html.find('.item .item-name h4').click(event => this._onItemSummary(event));		
 		
@@ -752,7 +760,7 @@ export class SimpleActorSheet extends ActorSheet {
   /**
    * Convert all carried currency to the highest possible denomination to reduce the number of raw coins being
    * carried by an Actor.
-   * @return {Promise<Actor5e>}
+   * @return {Promise<Actor4e>}
    */
   convertCurrency() {
     const curr = duplicate(this.actor.data.data.currency);

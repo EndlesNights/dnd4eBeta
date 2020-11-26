@@ -1,14 +1,14 @@
 import { DND4EALTUS } from "../config.js";
 
 /**
- * A helper class for building MeasuredTemplates for 5e spells and abilities
+ * A helper class for building MeasuredTemplates for 4e spells and abilities
  * @extends {MeasuredTemplate}
  */
 export default class AbilityTemplate extends MeasuredTemplate {
 
   /**
-   * A factory method to create an AbilityTemplate instance using provided data from an Item5e instance
-   * @param {Item5e} item               The Item object for which to construct the template
+   * A factory method to create an AbilityTemplate instance using provided data from an Item4e instance
+   * @param {Item4e} item               The Item object for which to construct the template
    * @return {AbilityTemplate|null}     The template object, or null if the item does not produce a template
    */
   static fromItem(item) {
@@ -29,15 +29,15 @@ export default class AbilityTemplate extends MeasuredTemplate {
 
     // Additional type-specific data
     switch ( templateShape ) {
-      case "cone": // 5e cone RAW should be 53.13 degrees
+      case "cone": // 4e cone RAW should be 53.13 degrees
         templateData.angle = 53.13;
         break;
-      case "rect": // 5e rectangular AoEs are always cubes
+      case "rect": // 4e rectangular AoEs are always cubes
         templateData.distance = Math.hypot(target.value, target.value);
         templateData.width = target.value;
         templateData.direction = 45;
         break;
-      case "ray": // 5e rays are most commonly 1 square (5 ft) in width
+      case "ray": // 4e rays are most commonly 1 square (5 ft) in width
         templateData.width = canvas.dimensions.distance;
         break;
       default:

@@ -1211,7 +1211,7 @@ font-size: 12px;
 .dnd4eAltus.sheet.actor .inventory .currency label {
   flex: 0;
   white-space:nowrap;
-  margin-left: 8px;
+  margin-left: 0px;
   text-align: right;
   line-height: 20px;
   color: #7a7971;
@@ -1219,7 +1219,7 @@ font-size: 12px;
 .dnd4eAltus.sheet.actor .inventory .currency input[type="text"] {
   flex: 0 0 48px;
   text-align: center;
-  margin-left: 8px;
+  margin-left: 0px;
   border-bottom: 2px groove #eeede0;
 }
 

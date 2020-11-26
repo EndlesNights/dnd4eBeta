@@ -6,15 +6,17 @@
 
 // Import Modules
 import { DND4EALTUS } from "./config.js";
-import { SimpleActor } from "./actor.js";
+import { registerSystemSettings } from "./settings.js";
 
 // import { SimpleItemSheet } from "./item-sheet.js";
 import ItemSheet4e from "./item/sheet.js";
+import { measureDistances, getBarAttribute } from "./canvas.js";
 
 import { SimpleActorSheet } from "./actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
+import { SimpleActor } from "./actor.js";
 import Item4e from "./item/entity.js";
 
 /* -------------------------------------------- */
@@ -44,7 +46,8 @@ Hooks.once("init", async function() {
 	CONFIG.DND4EALTUS = DND4EALTUS;
 	CONFIG.Actor.entityClass = SimpleActor;
 	CONFIG.Item.entityClass = Item4e;
-
+	
+	registerSystemSettings();
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("dnd4eAltus", SimpleActorSheet, { makeDefault: true });
@@ -71,8 +74,6 @@ Hooks.once("setup", function() {
   // Localize CONFIG objects once up-front
   const toLocalize = [
 	"abilities", "abilityActivationTypes", "abilityConsumptionTypes", "actorSizes", "damageTypes", "distanceUnits", "itemActionTypes", "limitedUsePeriods", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision",  "weaponProperties", "weaponTypes", "weaponHands"
-	
-
   ];
 
   const noSort = [
@@ -103,3 +104,13 @@ Hooks.once("setup", function() {
 });
 
 Hooks.on("renderChatLog", (app, html, data) => Item4e.chatListeners(html));
+
+Hooks.on("canvasInit", function() {
+
+  // Extend Diagonal Measurement
+  canvas.grid.diagonalRule = game.settings.get("dnd4eAltus", "diagonalMovement");
+  SquareGrid.prototype.measureDistances = measureDistances;
+
+  // Extend Token Resource Bars
+  Token.prototype.getBarAttribute = getBarAttribute;
+});

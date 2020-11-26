@@ -1,5 +1,5 @@
 /**
- * A standardized helper function for managing core 5e "d20 rolls"
+ * A standardized helper function for managing core 4e "d20 rolls"
  *
  * Holding SHIFT, ALT, or CTRL when the attack is rolled will "fast-forward".
  * This chooses the default options of a normal attack with no bonus, Advantage, or Disadvantage respectively

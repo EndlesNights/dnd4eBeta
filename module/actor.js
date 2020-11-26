@@ -328,8 +328,6 @@ export class SimpleActor extends Actor {
 		}
 		
 		//Magic Items
-		console.log(data.magicItemUse);
-		//Sets the base number of magic item uses per day.
 		data.magicItemUse.perDay = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3) + data.magicItemUse.bonusValue + data.magicItemUse.milestone;
 
 	}
@@ -498,14 +496,18 @@ export class SimpleActor extends Actor {
 		let weight = 0;
 		
 		//Weight Currency
-		for (let [e, v] of Object.entries(actorData.data.currency)) {
-			weight += v/50;
+		if ( game.settings.get("dnd4eAltus", "currencyWeight") ) {
+			for (let [e, v] of Object.entries(actorData.data.currency)) {
+				weight += (e == "ad" ? v/500 : v/50);
+			}
 		}
 		
 		//Weight Ritual Components
 		for (let [e, v] of Object.entries(actorData.data.ritualcomp)) {
-			weight += v/100 * 2.205;
+			// weight += v/100 * 2.205;
+			weight += v * 0.000002;
 		}
+		//4e 1gp or residuum weights 0.000002
 		
 		for (let [e, v] of Object.entries(actorData.items)) {
 			weight += v.data.weight * v.data.quantity;

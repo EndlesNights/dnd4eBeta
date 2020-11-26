@@ -190,7 +190,9 @@
 							<option value="wis" >Wisdom</option>
 							<option value="cha" >Charisma</option>
 							{{/select}}
-						</select>				
+						</select>
+					<input type="text" name="data.init.notes" value="{{data.init.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%; text-align: left;"/>
+
 				</div>
 				
 				{{!-- Action Point --}}
@@ -201,6 +203,7 @@
 					<input type="text" name="data.actionpoints.value" value="{{data.actionpoints.value}}" title="Number of Action Points" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 					<span title="Action Points">Bonus Action Taken:</span>
 					<input class="action-box" type="checkbox" name="data.actionpoints.encounteruse" data-dtype="Boolean" {{checked data.actionpoints.encounteruse}} title="Action Point used this encounter?"/>
+					<input type="text" name="data.actionpoints.notes" value="{{data.actionpoints.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;  text-align: left;"/>
 				</div>
 					
 				{{!-- Movement --}}
@@ -219,7 +222,7 @@
 					<div class="charge" style="display: inline" data-movement="charge">
 						<span title="Charge Movement Speed">Charge Speed:</span>
 						<span title="Charge Movement Speed" style="margin-right: 4px;">{{data.movement.charge.value}}</span>
-						<a class="move-bonus" data-target="data.details" title="Charge Bonus">Bonus: {{data.movement.charge.bonusValue}}</a>
+						<a class="move-bonus" data-target="data.details" title="Charge Bonus" style="margin-right: 6px;">Bonus: {{data.movement.charge.bonusValue}}</a>
 						<!-- <input type="text" name="data.movement.charge.misc" value="{{data.movement.charge.misc}}" title="Charge Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
 					</div>
 					<div class="run" style="display: inline" data-movement="run">
@@ -228,6 +231,7 @@
 						<a class="move-bonus" data-target="data.details" title="Running Bonus">Bonus: {{data.movement.run.bonusValue}}</a>
 						<!-- <input type="text" name="data.movement.run.misc" value="{{data.movement.run.misc}}" title="Run Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
 					</div>
+					<input type="text" name="data.movement.notes" value="{{data.movement.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
 				</div>
 				
 				{{!-- Senses --}}
@@ -269,8 +273,8 @@
 						{{/each}}
 						</ul>
 
-						<span>Other:</span>
-						<input type="text" name="data.senses.notes" value="{{data.senses.notes}}" title="notes" data-dtype="Number" placeholder="None." style="width: 83%;"/>
+						<!-- <span>Other:</span> -->
+						<input type="text" name="data.senses.notes" value="{{data.senses.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
 					</div>
 					
 					
