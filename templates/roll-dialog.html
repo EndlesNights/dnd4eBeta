@@ -7,6 +7,7 @@
         <label>{{ localize "DND4EALTUS.RollSituationalBonus" }}</label>
         <input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EALTUS.RollExample' }}"/>
     </div>
+
     <div class="form-group">
         <label>{{ localize "DND4EALTUS.RollMode" }}</label>
         <select name="rollMode">
@@ -16,5 +17,9 @@
         {{/each}}
         {{/select}}
         </select>
+    </div>
+    <div class="form-group">
+        <!-- <label>Situational Flavour Text</label> -->
+        <input type="text" name="flavor" value="{{flavor}}" placeholder="Situational Flavour Text."/>
     </div>
 </form>

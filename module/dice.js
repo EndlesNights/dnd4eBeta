@@ -32,12 +32,12 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
   elvenAccuracy=false, halflingLucky=false, reliableTalent=false}={}) {
 
   // Handle input arguments
+  // flavor = flavor || title;
   flavor = flavor || title;
   speaker = speaker || ChatMessage.getSpeaker();
   parts = parts.concat(["@bonus"]);
   rollMode = rollMode || game.settings.get("core", "rollMode");
   let rolled = false;
-
   // Define inner roll function
   const _roll = function(parts, adv, form=null) {
 
@@ -61,13 +61,16 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
     // Prepend the d20 roll
     let formula = `${nd}d20${mods}`;
+	let flavorTemp = `Test Data`;
     if (reliableTalent) formula = `{${nd}d20${mods},10}kh`;
     parts.unshift(formula);
 
     // Optionally include a situational bonus
     if ( form !== null ) data['bonus'] = form.bonus.value;
     if ( !data["bonus"] ) parts.pop();
-
+	
+	flavor = form.flavor.value || flavor;
+	
     // Optionally include an ability score selection (used for tool checks)
     const ability = form ? form.ability : null;
     if ( ability && ability.value ) {
@@ -125,7 +128,8 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
     data: data,
     rollMode: rollMode,
     rollModes: CONFIG.Dice.rollModes,
-    config: CONFIG.DND4EALTUS
+    config: CONFIG.DND4EALTUS,
+	flavor: flavor
   };
   const html = await renderTemplate(template, dialogData);
 

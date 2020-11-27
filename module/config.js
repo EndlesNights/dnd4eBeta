@@ -472,7 +472,7 @@ DND4EALTUS.skills = {
   "prc": "DND4EALTUS.SkillPrc",
   "pra": "DND4EALTUS.SkillPra",
   "rel": "DND4EALTUS.SkillRel",
-  "ste": "DND4EALTUS.SkillSte",
+  "stl": "DND4EALTUS.SkillStl",
   "stw": "DND4EALTUS.SkillStw",
   "thi": "DND4EALTUS.SkillThi"
 };

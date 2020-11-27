@@ -418,7 +418,7 @@ export class SimpleActor extends Actor {
 			data["skillBonus"] = bonuses.skill;
 			parts.push("@skillBonus");
 		}
-
+		let flavText = this.data.data.skills[skillId].chat.replace("@name", this.data.name);
 		// Reliable Talent applies to any skill check we have full or better proficiency in
 		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4eAltus", "reliableTalent"));
 		// Roll and return
@@ -428,6 +428,7 @@ export class SimpleActor extends Actor {
 			data: data,
 			title: game.i18n.format("DND4EALTUS.SkillPromptTitle", {skill: CONFIG.DND4EALTUS.skills[skillId]}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
+			flavor: flavText,
 			//halflingLucky: this.getFlag("dnd4eAltus", "halflingLucky"),
 			//reliableTalent: reliableTalent
 		}));
@@ -450,15 +451,15 @@ export class SimpleActor extends Actor {
 		const data = {mod: abl.mod};
 
 		// Add feat-related proficiency bonuses
-		const feats = this.data.flags.dnd4eAltus || {};
-		if ( feats.remarkableAthlete && DND4EALTUS.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
-			parts.push("@proficiency");
-			data.proficiency = Math.ceil(0.5 * this.data.data.attributes.prof);
-		}
-		else if ( feats.jackOfAllTrades ) {
-			parts.push("@proficiency");
-			data.proficiency = Math.floor(0.5 * this.data.data.attributes.prof);
-		}
+		// const feats = this.data.flags.dnd4eAltus || {};
+		// if ( feats.remarkableAthlete && DND4EALTUS.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
+			// parts.push("@proficiency");
+			// data.proficiency = Math.ceil(0.5 * this.data.data.attributes.prof);
+		// }
+		// else if ( feats.jackOfAllTrades ) {
+			// parts.push("@proficiency");
+			// data.proficiency = Math.floor(0.5 * this.data.data.attributes.prof);
+		// }
 
 		// Add global actor bonus
 		const bonuses = getProperty(this.data.data, "bonuses.abilities") || {};
@@ -466,12 +467,16 @@ export class SimpleActor extends Actor {
 			parts.push("@checkBonus");
 			data.checkBonus = bonuses.check;
 		}
+		let flavText = this.data.data.abilities[abilityId].chat.replace("@name", this.data.name);
+		
 		// Roll and return
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
 			title: game.i18n.format("DND4EALTUS.AbilityPromptTitle", {ability: CONFIG.DND4EALTUS.abilities[label]}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
+			flavor: flavText,
+			// flavor: "Flowery Text Here. MORE AND MORE AND \r\n MORE S MORE " + game.i18n.format("DND4EALTUS.AbilityPromptTitle", {ability: CONFIG.DND4EALTUS.abilities[label]}),
 			// halflingLucky: feats.halflingLucky
 		}));
 	}
