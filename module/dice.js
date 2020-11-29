@@ -32,7 +32,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
   elvenAccuracy=false, halflingLucky=false, reliableTalent=false}={}) {
 
   // Handle input arguments
-  // flavor = flavor || title;
   flavor = flavor || title;
   speaker = speaker || ChatMessage.getSpeaker();
   parts = parts.concat(["@bonus"]);
@@ -122,6 +121,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
   }
 
   // Render modal dialog
+  let newFlavor = "";
   template = template || "systems/dnd4eAltus/templates/roll-dialog.html";
   let dialogData = {
     formula: parts.join(" + "),
@@ -129,7 +129,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
     rollMode: rollMode,
     rollModes: CONFIG.Dice.rollModes,
     config: CONFIG.DND4EALTUS,
-	flavor: flavor
+	flavor: newFlavor || flavor
   };
   const html = await renderTemplate(template, dialogData);
 

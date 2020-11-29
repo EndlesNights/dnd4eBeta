@@ -1,0 +1,28 @@
+<form id="custom-roll-descriptions" class="dialog-content" onsubmit="event.preventDefault();">
+
+    {{!-- Ability --}}
+    {{#each data.abilities as |ability a|}}
+    <div>
+        <span>{{ability.label}} Ability</span>
+        <input class="stat-chat" name="data.abilities.{{a}}.chat" type="text" value="{{ability.chat}}" onClick="this.select();"/>
+    </div>
+    {{/each}}
+
+    {{!-- Skills --}}
+    {{#each data.skills as |skills s|}}
+    <div>
+        <span>{{skills.label}} Skill</span>
+        <input class="stat-chat" name="data.skills.{{s}}.chat" type="text" value="{{skills.chat}}" onClick="this.select();"/>
+    </div>
+    {{/each}}
+    
+    {{!-- Defences --}}
+    {{#each data.defences as |defences d|}}
+    <div>
+        <span>{{defences.label}} Defence</span>
+        <input class="stat-chat" name="data.defences.{{d}}.chat" type="text" value="{{defences.chat}}" onClick="this.select();"/>
+    </div>
+    {{/each}}
+
+    <button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
+</form>

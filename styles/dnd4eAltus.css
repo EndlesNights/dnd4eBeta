@@ -353,7 +353,7 @@
 }
 .dnd4eAltus.sheet.actor .ability-scores {
   flex: 0 0 100px;
-  height: 460px;
+  height: 477px;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -363,7 +363,7 @@
   border-radius: 3px;
 }
 .dnd4eAltus.sheet.actor .ability-scores .ability {
-  height: 72px;
+  height: 75px;
   text-align: center;
   border-bottom: 2px groove #eeede0;
 }
@@ -1513,8 +1513,10 @@ font-size: 12px;
 .dnd4eAltus.sheet.item .details input[type="text"],
 .dnd4eAltus.sheet.item .details select {
   height: 24px;
+  /* width: 6%; */
   border: 1px solid #7a7971;
   background: rgba(0, 0, 0, 0.05);
+  /* float:right; */
 }
 .dnd4eAltus.sheet.item .details .form-group span {
   text-align: center;

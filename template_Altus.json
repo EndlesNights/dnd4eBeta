@@ -5,22 +5,28 @@
 		"common":{
 			"abilities":{
 				"str":{
-					"value": 10
+					"value": 10,
+					"chat": "@name uses @label."
 				},
 				"con":{
-					"value": 10
+					"value": 10,
+					"chat": "@name uses @label."
 				},
 				"dex":{
-					"value": 10
+					"value": 10,
+					"chat": "@name uses @label."
 				},
 				"int":{
-					"value": 10
+					"value": 10,
+					"chat": "@name uses @label."
 				},
 				"wis":{
-					"value": 10
+					"value": 10,
+					"chat": "@name uses @label."
 				},
 				"cha":{
-					"value": 10
+					"value": 10,
+					"chat": "@name uses @label."
 				}
 			},
 			"biography": "",
@@ -65,7 +71,9 @@
 					"bonus": [{}],
 					"temp": 0,
 					"light": true,
-					"altability": ""
+					"altability": "",
+					"condition": "Conditional Bonuses.",
+					"chat": "@name defends with armour."
 				},
 				"fort": {
 					"value": 10,
@@ -75,7 +83,9 @@
 					"feat": 0,
 					"enhance": 0,
 					"bonus": [{}],
-					"temp": 0
+					"temp": 0,
+					"condition": "Conditional Bonuses.",
+					"chat": "@name defends with fortitude."
 				},
 				"ref": {
 					"value": 10,
@@ -85,7 +95,9 @@
 					"feat": 0,
 					"enhance": 0,
 					"bonus": [{}],
-					"temp": 0
+					"temp": 0,
+					"condition": "Conditional Bonuses.",
+					"chat": "@name defends with reflexes."
 				},
 				"wil": {
 					"value": 10,
@@ -95,7 +107,9 @@
 					"feat": 0,
 					"enhance": 0,
 					"bonus": [{}],
-					"temp": 0
+					"temp": 0,
+					"condition": "Conditional Bonuses.",
+					"chat": "@name defends with willpower."
 				}	
 			},
 			"details": {
@@ -190,97 +204,116 @@
 				"acr": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "dex"
+					"ability": "dex",
+					"chat": "@name uses @label."
 				},
 				"arc": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "int"
+					"ability": "int",
+					"chat": "@name uses @label."
 				},
 				"ath": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "str"
+					"ability": "str",
+					"chat": "@name uses @label."
 				},
 				"blu": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "cha"
+					"ability": "cha",
+					"chat": "@name uses @label."
 				},
 				"dip": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "cha"
+					"ability": "cha",
+					"chat": "@name uses @label."
 				},
 				"dun": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "wis"
+					"ability": "wis",
+					"chat": "@name uses @label."
 				},
 				"end": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "con"
+					"ability": "con",
+					"chat": "@name uses @label."
 				},
 				"eng": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "int"
+					"ability": "int",
+					"chat": "@name uses @label."
 				},
 				"hea": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "wis"
+					"ability": "wis",
+					"chat": "@name uses @label."
 				},
 				"his": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "int"
+					"ability": "int",
+					"chat": "@name uses @label."
 				},
 				"ins": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "wis"
+					"ability": "wis",
+					"chat": "@name uses @label."
 				},
 				"itm": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "cha"
+					"ability": "cha",
+					"chat": "@name uses @label."
 				},
 				"nat": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "int"
+					"ability": "int",
+					"chat": "@name uses @label."
 				},
 				"prc": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "wis"
+					"ability": "wis",
+					"chat": "@name uses @label."
 				},
 				"pra": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "wis"
+					"ability": "wis",
+					"chat": "@name uses @label."
 				},
 				"rel": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "int"
+					"ability": "int",
+					"chat": "@name uses @label."
 				},
-				"ste": {
+				"stl": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "dex"
+					"ability": "dex",
+					"chat": "@name uses @label."
 				},
 				"stw": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "cha"
+					"ability": "cha",
+					"chat": "@name uses @label."
 				},
 				"thi": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "dex"
+					"ability": "dex",
+					"chat": "@name uses @label."
 				}
 			},
 			"passive": {

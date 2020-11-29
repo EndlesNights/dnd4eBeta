@@ -6,27 +6,27 @@
 			"abilities":{
 				"str":{
 					"value": 10,
-					"chat": "@name uses strength."
+					"chat": "@name uses @label."
 				},
 				"con":{
 					"value": 10,
-					"chat": "@name uses constitution."
+					"chat": "@name uses @label."
 				},
 				"dex":{
 					"value": 10,
-					"chat": "@name uses dextarity."
+					"chat": "@name uses @label."
 				},
 				"int":{
 					"value": 10,
-					"chat": "@name uses intelegences."
+					"chat": "@name uses @label."
 				},
 				"wis":{
 					"value": 10,
-					"chat": "@name uses wisdom."
+					"chat": "@name uses @label."
 				},
 				"cha":{
 					"value": 10,
-					"chat": "@name uses charasma."
+					"chat": "@name uses @label."
 				}
 			},
 			"biography": "",
@@ -72,7 +72,8 @@
 					"temp": 0,
 					"light": true,
 					"altability": "",
-					"chat": "@name defends with AC."
+					"condition": "Conditional Bonuses.",
+					"chat": "@name defends with armour."
 				},
 				"fort": {
 					"value": 10,
@@ -83,7 +84,8 @@
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
-					"chat": "@name defends with fortatude."
+					"condition": "Conditional Bonuses.",
+					"chat": "@name defends with fortitude."
 				},
 				"ref": {
 					"value": 10,
@@ -94,6 +96,7 @@
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
+					"condition": "Conditional Bonuses.",
 					"chat": "@name defends with reflexes."
 				},
 				"wil": {
@@ -105,6 +108,7 @@
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
+					"condition": "Conditional Bonuses.",
 					"chat": "@name defends with willpower."
 				}	
 			},
@@ -201,115 +205,115 @@
 					"value": 0,
 					"bonus": [{}],
 					"ability": "dex",
-					"chat": "@name uses acrobatics."
+					"chat": "@name uses @label."
 				},
 				"arc": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
-					"chat": "@name uses arcana."
+					"chat": "@name uses @label."
 				},
 				"ath": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "str",
-					"chat": "@name uses athletics."
+					"chat": "@name uses @label."
 				},
 				"blu": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "cha",
-					"chat": "@name uses bluff."
+					"chat": "@name uses @label."
 				},
 				"dip": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "cha",
-					"chat": "@name uses diplomasy."
+					"chat": "@name uses @label."
 				},
 				"dun": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
-					"chat": "@name uses dungeonering."
+					"chat": "@name uses @label."
 				},
 				"end": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "con",
-					"chat": "@name uses endurance."
+					"chat": "@name uses @label."
 				},
 				"eng": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
-					"chat": "@name uses engenering."
+					"chat": "@name uses @label."
 				},
 				"hea": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
-					"chat": "@name uses healing."
+					"chat": "@name uses @label."
 				},
 				"his": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
-					"chat": "@name uses history."
+					"chat": "@name uses @label."
 				},
 				"ins": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
-					"chat": "@name uses insight."
+					"chat": "@name uses @label."
 				},
 				"itm": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "cha",
-					"chat": "@name uses intimadate."
+					"chat": "@name uses @label."
 				},
 				"nat": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
-					"chat": "@name uses nature."
+					"chat": "@name uses @label."
 				},
 				"prc": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
-					"chat": "@name uses perseption."
+					"chat": "@name uses @label."
 				},
 				"pra": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
-					"chat": "@name uses prayer."
+					"chat": "@name uses @label."
 				},
 				"rel": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
-					"chat": "@name uses religion."
+					"chat": "@name uses @label."
 				},
 				"stl": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "dex",
-					"chat": "@name uses stealth."
+					"chat": "@name uses @label."
 				},
 				"stw": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "cha",
-					"chat": "@name uses streetwise."
+					"chat": "@name uses @label."
 				},
 				"thi": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "dex",
-					"chat": "@name uses theivery."
+					"chat": "@name uses @label."
 				}
 			},
 			"passive": {

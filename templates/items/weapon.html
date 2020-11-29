@@ -1,208 +1,237 @@
 <form class="{{cssClass}} flexcol item-sheet" autocomplete="off">
 
-    {{!-- Item Sheet Header --}}
-    <header class="sheet-header flexrow">
-        <img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
+	{{!-- Item Sheet Header --}}
+	<header class="sheet-header flexrow">
+		<img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
 
-        <div class="header-details flexrow">
-            <h1 class="charname">
-                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
-            </h1>
+		<div class="header-details flexrow">
+			<h1 class="charname">
+				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
+			</h1>
 
-            <div class="item-subtitle">
-                <h4 class="item-type">{{itemType}}</h4>
-                <span class="item-status">{{itemStatus}}</span>
-            </div>
+			<div class="item-subtitle">
+				<h4 class="item-type">{{itemType}}</h4>
+				<span class="item-status">{{itemStatus}}</span>
+			</div>
 
-            <ul class="summary flexrow">
-                <li>
-                    {{lookup config.weaponTypes data.weaponType }}
-                </li>
-                <li>
-                    <input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
-                </li>
-                <li>
-                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
-                </li>
-            </ul>
-        </div>
-    </header>
+			<ul class="summary flexrow">
+				<li>
+					{{lookup config.weaponTypes data.weaponType }}
+				</li>
+				<li>
+					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
+				</li>
+				<li>
+					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
+				</li>
+			</ul>
+		</div>
+	</header>
 
-    {{!-- Item Sheet Navigation --}}
-    <nav class="sheet-navigation tabs" data-group="primary">
-        <a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
-        <a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
-        <a class="item" data-tab="effects">{{ localize "DND4EALTUS.Effects" }}</a>
-    </nav>
+	{{!-- Item Sheet Navigation --}}
+	<nav class="sheet-navigation tabs" data-group="primary">
+		<a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
+		<a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
+		<a class="item" data-tab="effects">{{ localize "DND4EALTUS.Effects" }}</a>
+	</nav>
 
-    {{!-- Item Sheet Body --}}
-    <section class="sheet-body">
+	{{!-- Item Sheet Body --}}
+	<section class="sheet-body">
 
-        {{!-- Description Tab --}}
-        {{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
+		{{!-- Description Tab --}}
+		{{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
 
-        {{!-- Details Tab --}}
-        <div class="tab details" data-group="primary" data-tab="details">
-            <h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponDetails" }}</h3>
+		{{!-- Details Tab --}}
+		<div class="tab details" data-group="primary" data-tab="details">
+			<h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponDetails" }}</h3>
 
-            {{!-- Weapon Type --}}
-            <div class="form-group">
-                <label>{{ localize "DND4EALTUS.ItemWeaponType" }}</label>
-                <select name="data.weaponType">
-                    {{#select data.weaponType}}
-                    {{#each config.weaponTypes as |name type|}}
-                    <option value="{{type}}">{{name}}</option>
-                    {{/each}}
-                    {{/select}}
-                </select>
-            </div>
+			{{!-- Weapon Type --}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.ItemWeaponType" }}</label>
+				<select name="data.weaponType">
+					{{#select data.weaponType}}
+					{{#each config.weaponTypes as |name type|}}
+					<option value="{{type}}">{{name}}</option>
+					{{/each}}
+					{{/select}}
+				</select>
+			</div>
 
-            {{!-- Weapon Hand --}}
-            <div class="form-group">
-                <label>{{ localize "DND4EALTUS.ItemWeaponHand" }}</label>
-                <select name="data.weaponHand">
-                    {{#select data.weaponHand}}
-                    {{#each config.weaponHands as |name hand|}}
-                    <option value="{{hand}}">{{name}}</option>
-                    {{/each}}
-                    {{/select}}
-                </select>
-            </div>
+			{{!-- Weapon Hand --}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.ItemWeaponHand" }}</label>
+				<select name="data.weaponHand">
+					{{#select data.weaponHand}}
+					{{#each config.weaponHands as |name hand|}}
+					<option value="{{hand}}">{{name}}</option>
+					{{/each}}
+					{{/select}}
+				</select>
+			</div>
 
-            <!-- {{#unless isMountable}} -->
-            {{!-- Weapon Status --}}
-            <div class="form-group stacked">
-                <label>{{ localize "DND4EALTUS.ItemWeaponStatus" }}</label>
-                <div class="form-fields">
-                    <label class="checkbox">
-                        <input type="checkbox" name="data.proficient" {{checked data.proficient}}/> {{ localize "DND4EALTUS.Proficient" }}
-                    </label>
-                    <label class="checkbox">
-                        <input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "DND4EALTUS.Equipped" }}
-                    </label>
-                    <label class="checkbox">
-                        <input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "DND4EALTUS.Identified" }}
-                    </label>
-                    <label class="checkbox">
-                        <input type="checkbox" name="data.attuned" {{checked data.attuned}}/> {{ localize "DND4EALTUS.Attuned" }}
-                    </label>
-                </div>
-            </div>
-            <!-- {{/unless}} -->
+			<!-- {{#unless isMountable}} -->
+			{{!-- Weapon Status --}}
+			<div class="form-group stacked">
+				<label>{{ localize "DND4EALTUS.ItemWeaponStatus" }}</label>
+				<div class="form-fields">
+					<label class="checkbox">
+						<input type="checkbox" name="data.proficient" {{checked data.proficient}}/> {{ localize "DND4EALTUS.Proficient" }}
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "DND4EALTUS.Equipped" }}
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "DND4EALTUS.Identified" }}
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" name="data.attuned" {{checked data.attuned}}/> {{ localize "DND4EALTUS.Attuned" }}
+					</label>
+				</div>
+			</div>
+			<!-- {{/unless}} -->
 
-            {{!-- Weapon Properties --}}
-            <div class="form-group stacked weapon-properties">
-                <label>Weapon Stats</label>
-                <div>
-                    <span title="Proficiency Bonus">Proficiency Bonus:</span>
-                    <input type="text" name="data.profBonus" value="{{data.profBonus}}" title="Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
-                    
-                    <span title="Enhancement Bonus">Enhancement Bonus:</span>
-                    <input type="text" name="data.enhance" value="{{data.enhance}}" title="Enhancement Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+			{{!-- Weapon Properties --}}
+			<div class="">
+				<h3 class="form-header">Weapon Stats</h3>
+				<div class="form-group">
+					<label title="Proficiency Bonus">Proficiency Bonus:</label>
+					<div class="form-fields">
+						<input type="text" name="data.profBonus" value="{{data.profBonus}}" title="Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
+				<div class="form-group">    
+					<label title="Enhancement Bonus">Enhancement Bonus:</label>
+					<div class="form-fields">
+						<input type="text" name="data.enhance" value="{{data.enhance}}" title="Enhancement Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label title="Is this a Ranged Weapon?">Is Ranged Weapon?</label>
+					<input type="checkbox" name="data.isRanged" data-dtype="Boolean" {{checked data.isRanged}}/>
+					<div>
+						{{#if data.isRanged}}
+						<div class="form-fields">
+							<span title="The distance in squares a weapon can attack.">Wepon Range:</span>
+							<input type="text" name="data.range.short" value="{{data.range.short}}" title="The distance in squares a weapon can attack without incurring a long range penalty." placeholder="Short Range" data-dtype="Number" onClick="this.select();"/>
+							<span class="sep">/</span>
+							<input type="text" name="data.range.long" value="{{data.range.long}}" title="The maximume range this weapon can be used to make an attack." placeholder="Long Range" data-dtype="Number" onClick="this.select();"/>
+						</div>
+						{{/if}}
+					</div>
+				</div>
+				<div class="form-group">
+					<label title="Number of Dice in damage roll" for="diceNum">Damage Dice Num:</label>
+					<div class="form-fields">
+						<input type="text" name="data.diceNum" id="diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label title="Size of Dice in damage roll." for="diceDamage">Damage Dice Size:</label>
+					<div class="form-fields">
+						<input type="text" name="data.diceDamage" id="diceDamage" value="{{data.diceDamage}}" title="Size of Dice in damage roll." placeholder="8" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label title="Bonus to Attack Roll.">Attack Bonus:</label>
+					<div class="form-fields">
+						<input type="text" name="data.bonusAttack" value="{{data.bonusAttack}}" title="Bonus to Attack Roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label title="Bonus to Damage Roll.">Damage Bonus:</label>
+					<div class="form-fields">
+						<input type="text" name="data.bonusDamage" value="{{data.bonusDamage}}" title="Size of Dice in damage roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label title="Natural D20 Dice roll required for a hit to be considered a critical hit.">Critical Hit:</label>
+					<div class="form-fields">
+						<input type="text" name ="data.critRange" value="{{data.critRange}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label title="Ability Mod used for attack.">Attack Mod:</label>
+					<div></div>
+					<select name="data.abilityModAttack">
+						{{#select data.abilityModAttack}}
+						<option value="str" >Strength</option>
+						<option value="con" >Constitution</option>
+						<option value="dex" >Dexterity</option>
+						<option value="int" >Intelligence</option>
+						<option value="wis" >Wisdom</option>
+						<option value="cha" >Charisma</option>
+						<option value=null >None</option>
+						{{/select}}
+					</select>
+					
+				</div>
+				<div class="form-group">
+					<label title="Ability Mod used for damage.">Damage Mod:</label>
+					<div></div>
+					<select name="data.abilityModDamage">
+						{{#select data.abilityModDamage}}
+						<option value="str" >Strength</option>
+						<option value="con" >Constitution</option>
+						<option value="dex" >Dexterity</option>
+						<option value="int" >Intelligence</option>
+						<option value="wis" >Wisdom</option>
+						<option value="cha" >Charisma</option>
+						<option value=null >None</option>
+						{{/select}}
+					</select>
+				</div>
+				<div class="form-group stacked">
+					<label title="Formula used for Attack Rolls.">Attack Formula:</label>
+					<input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String" onClick="this.select();"/>
+				</div>
+				<div class="form-group stacked">
+					<label title="Formula used for Damage Rolls.">Damage Formula:</label>
+					<input type="text" name="data.damageForm" value="{{data.damageForm}}" title="Formula used for Damage Rolls." data-dtype="String" onClick="this.select();"/>
+				</div>
+				<div class="form-group stacked">
+					<label title="Formula used for Critical Damage Rolls.">Critical Damage Formula:</label>
+					<input type="text" name="data.critDamageForm" value="{{data.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String" onClick="this.select();"/>
+				</div>
+				<div class="form-group stacked weapon-properties">
+					<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:</label>
+					{{#each config.damageTypes as |name type|}}
+					<label class="checkbox">
+						<input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
+					</label>
+					{{/each}}
+	
+					<label>{{ localize "DND4EALTUS.ItemWeaponProperties" }}:</label>
+					{{#each config.weaponProperties as |name prop|}}
+					<label class="checkbox">
+						<input type="checkbox" name="data.properties.{{prop}}" {{checked (lookup ../data.properties prop)}}/> {{ name }}
+					</label>
+					{{/each}}
+				</div>
 
-                    <span title="Is this a Ranged Weapon?">Is Ranged Weapon?</span>
-                    <input type="checkbox" name="data.isRanged" data-dtype="Boolean" {{checked data.isRanged}}/>
-                    <div>
-                        {{#if data.isRanged}}
-                            <span title="The distance in squares a weapon can attack without incurring a long range penalty.">Short Range:</span>
-                            <input type="text" name="data.range.short" value="{{data.range.short}}" title="The distance in squares a weapon can attack without incurring a long range penalty." placeholder="Melee Weapon" data-dtype="Number" onClick="this.select();"/>
-                        
-                            <span title="The maximume range this weapon can be used to make an attack.">Long Range:</span>
-                            <input type="text" name="data.range.long" value="{{data.range.long}}" title="The maximume range this weapon can be used to make an attack." placeholder="Melee Weapon" data-dtype="Number" onClick="this.select();"/>
-                            
-                        {{/if}}
-                    </div>
-                    
-                    <span title="Number of Dice in damage roll">Damage Dice Num:</span>
-                    <input type="text" name="data.diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" data-dtype="Number" onClick="this.select();"/>
-                    <span title="Size of Dice in damage roll.">Damage Dice Size:</span>
-                    <input type="text" name="data.diceDamage" value="{{data.diceDamage}}" title="Size of Dice in damage roll." placeholder="8" data-dtype="Number" onClick="this.select();"/>
-                
-                    <span title="Bonus to Attack Roll.">Attack Bonus:</span>
-                    <input type="text" name="data.bonusAttack" value="{{data.bonusAttack}}" title="Bonus to Attack Roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
-                    <span title="Bonus to Damage Roll.">Damage Bonus:</span>
-                    <input type="text" name="data.bonusDamage" value="{{data.bonusDamage}}" title="Size of Dice in damage roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
+			</div>
+			
+			<!-- {{#if isMountable}}
+			<div class="form-group">
+				<label>{{localize 'DND4EALTUS.ArmorClass'}}</label>
+				<div class="form-fields">
+					<input type="text" name="data.armor.value" value="{{data.armor.value}}"
+						   data-dtype="Number">
+				</div>
+			</div>
+			{{> 'systems/dnd4eAltus/templates/items/parts/item-mountable.html'}}
+			{{/if}} -->
 
-                    <span title="Natural D20 Dice roll required for a hit to be considered a critical hit.">Critical Hit:</span>
-                    <input type="text" name ="data.critRange" value="{{data.critRange}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
+			<!-- <h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponUsage" }}</h3>
+			{{!-- Item Activation Template --}}
+			{{> "systems/dnd4eAltus/templates/items/parts/item-activation.html"}}
+			<h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponAttack" }}</h3>
+			{{!-- Item Action Template --}}
+			{{> "systems/dnd4eAltus/templates/items/parts/item-action.html"}} -->
+		</div>
 
-                    <span title="Ability Mod used for attack.">Attack Mod:</span>
-                    <select name="data.abilityModAttack">
-                        {{#select data.abilityModAttack}}
-                        <option value="str" >Strength</option>
-                        <option value="con" >Constitution</option>
-                        <option value="dex" >Dexterity</option>
-                        <option value="int" >Intelligence</option>
-                        <option value="wis" >Wisdom</option>
-                        <option value="cha" >Charisma</option>
-                        <option value=null >None</option>
-                        {{/select}}
-                    </select>
-                    <span title="Ability Mod used for damage.">Damage Mod:</span>
-                    <select name="data.abilityModDamage">
-                        {{#select data.abilityModDamage}}
-                        <option value="str" >Strength</option>
-                        <option value="con" >Constitution</option>
-                        <option value="dex" >Dexterity</option>
-                        <option value="int" >Intelligence</option>
-                        <option value="wis" >Wisdom</option>
-                        <option value="cha" >Charisma</option>
-                        <option value=null >None</option>
-                        {{/select}}
-                    </select>
-                    <div>
-                        <span title="Formula used for Attack Rolls.">Attack Formula:</span>
-                        <input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String" onClick="this.select();"/>
-    
-                        <span title="Formula used for Damage Rolls.">Damage Formula:</span>
-                        <input type="text" name="data.damageForm" value="{{data.damageForm}}" title="Formula used for Damage Rolls." data-dtype="String" onClick="this.select();"/>
-
-                        <span title="Formula used for Critical Damage Rolls.">Critical Damage Formula:</span>
-                        <input type="text" name="data.critDamageForm" value="{{data.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String" onClick="this.select();"/>
-                    </div>
-                </div>
-                
-                <label title="Type of Damage Dealt.">Damage Type:</label>
-                {{#each config.damageTypes as |name type|}}
-                <label class="checkbox">
-                    <input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
-                </label>
-                {{/each}}
-
-                <label>{{ localize "DND4EALTUS.ItemWeaponProperties" }}:</label>
-                {{#each config.weaponProperties as |name prop|}}
-                <label class="checkbox">
-                    <input type="checkbox" name="data.properties.{{prop}}" {{checked (lookup ../data.properties prop)}}/> {{ name }}
-                </label>
-                {{/each}}
-            </div>
-            
-            <!-- {{#if isMountable}}
-            <div class="form-group">
-                <label>{{localize 'DND4EALTUS.ArmorClass'}}</label>
-                <div class="form-fields">
-                    <input type="text" name="data.armor.value" value="{{data.armor.value}}"
-                           data-dtype="Number">
-                </div>
-            </div>
-
-            {{> 'systems/dnd4eAltus/templates/items/parts/item-mountable.html'}}
-            {{/if}} -->
-
-            <!-- <h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponUsage" }}</h3>
-
-            {{!-- Item Activation Template --}}
-            {{> "systems/dnd4eAltus/templates/items/parts/item-activation.html"}}
-
-            <h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponAttack" }}</h3>
-
-            {{!-- Item Action Template --}}
-            {{> "systems/dnd4eAltus/templates/items/parts/item-action.html"}} -->
-        </div>
-
-        {{!-- Effects Tab --}}
-        <div class="tab effects flexcol" data-group="primary" data-tab="effects">
-            {{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
-        </div>        
-    </section>
+		{{!-- Effects Tab --}}
+		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
+			{{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
+		</div>        
+	</section>
 </form>

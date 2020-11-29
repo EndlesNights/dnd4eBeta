@@ -406,7 +406,9 @@ export class SimpleActor extends Actor {
 		// Compose roll parts and data
 		const parts = ["@mod"];
 		const data = {mod: skl.total};
-
+		console.log(parts);
+		console.log(data);
+		
 		// Ability test bonus
 		if ( bonuses.check ) {
 			data["checkBonus"] = bonuses.check;
@@ -418,7 +420,10 @@ export class SimpleActor extends Actor {
 			data["skillBonus"] = bonuses.skill;
 			parts.push("@skillBonus");
 		}
+
 		let flavText = this.data.data.skills[skillId].chat.replace("@name", this.data.name);
+		flavText = flavText.replace("@label", this.data.data.skills[skillId].label);
+		
 		// Reliable Talent applies to any skill check we have full or better proficiency in
 		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4eAltus", "reliableTalent"));
 		// Roll and return
@@ -467,7 +472,9 @@ export class SimpleActor extends Actor {
 			parts.push("@checkBonus");
 			data.checkBonus = bonuses.check;
 		}
+		
 		let flavText = this.data.data.abilities[abilityId].chat.replace("@name", this.data.name);
+		flavText = flavText.replace("@label", this.data.data.abilities[abilityId].label);
 		
 		// Roll and return
 		return d20Roll(mergeObject(options, {
@@ -479,6 +486,36 @@ export class SimpleActor extends Actor {
 			// flavor: "Flowery Text Here. MORE AND MORE AND \r\n MORE S MORE " + game.i18n.format("DND4EALTUS.AbilityPromptTitle", {ability: CONFIG.DND4EALTUS.abilities[label]}),
 			// halflingLucky: feats.halflingLucky
 		}));
+	}
+	
+	rollDef(defId, options={}) {
+		const label = defId;
+		const def = this.data.data.defences[defId];
+		
+		// Construct parts
+		const parts = ["@mod"];
+		const data = {mod: def.value - 10};
+		
+		// Add global actor bonus
+		const bonuses = getProperty(this.data.data, "bonuses.defences") || {};
+		if ( bonuses.check ) {
+			parts.push("@checkBonus");
+			data.checkBonus = bonuses.check;
+		}
+		
+		let flavText = this.data.data.defences[defId].chat.replace("@name", this.data.name);
+		flavText = flavText.replace("@label", this.data.data.defences[defId].label);
+		flavText = flavText.replace("@title", this.data.data.defences[defId].title);
+		
+		// Roll and return
+		return d20Roll(mergeObject(options, {
+			parts: parts,
+			data: data,
+			title: game.i18n.format("DND4EALTUS.DefencePromptTitle", {defences: CONFIG.DND4EALTUS.defensives[label]}),
+			// title: "TITLE",
+			speaker: ChatMessage.getSpeaker({actor: this}),
+			flavor: flavText,
+		}));		
 	}
 	
   /** @override */

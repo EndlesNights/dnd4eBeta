@@ -1,9 +1,9 @@
 			{{!-- Ability Scores --}}
 			<ul class="ability-scores">
-			{{#each data.abilities as |ability id|}}
-				<li class="ability" data-ability="{{id}}">
+			{{#each data.abilities as |ability a|}}
+				<li class="ability" data-ability="{{a}}">
 					<h4 class="ability-name box-title rollable">{{ability.label}}</h4>
-					<input class="ability-score" name="data.abilities.{{id}}.value" type="text" value="{{ability.value}}" data-dtype="Number" onClick="this.select();" placeholder="10"/>
+					<input class="ability-score" name="data.abilities.{{a}}.value" type="text" value="{{ability.value}}" data-dtype="Number" onClick="this.select();" placeholder="10"/>
 					<span class="ability-mod" title="Modifier">{{numberFormat ability.mod decimals=0 sign=true}}</span>
 				</li>
 			{{/each}}
@@ -25,6 +25,7 @@
 					<a class="skill-mod skill-bonus" data-target="data.details" title="Skill Bonus">{{skill.sklBonusValue}}</a>
 				</li>
 			{{/each}}
+				<a class="custom-roll-descriptions" style="font-size: 11.5px;" title="Change custom descriptions for Skill and Ability roll checks.">Edit Skill & Ability Custom Descriptions.</a>
 			</ul>
 			
 			{{!-- Attributes --}}
@@ -88,16 +89,16 @@
 				{{!-- Defences --}}
 				<div class="attribute-def resource-full">
 					<h4 class="attribute-name box-title">Defences</h4>
-					<li class="flexrow" data-defense="ac">
+					<li class="flexrow" data-defence="ac">
 							<span class="def-value">{{numberFormat data.defences.ac.value decimals=0 sign=true }}</span>
-							<span class="def-name" title="Armour Class">AC</span>
+							<span class="def-name rollable" title="{{data.defences.ac.title}}">{{data.defences.ac.label}}</span>
 							<span class="def-armour">Armour:</span>
 							<input type="text" name="data.defences.ac.armor" value="{{data.defences.ac.armor}}" title="AC Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 							<!-- <span>Class:</span> -->
 							<!-- <input type="text" name="data.defences.ac.class" value="{{data.defences.ac.class}}" title="AC Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 							<!-- <input type="text" name="data.defences.ac.feat" value="{{data.defences.ac.feat}}" title="AC Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 							<!-- <input type="text" name="data.defences.ac.enhance" value="{{data.defences.ac.enhance}}" title="AC Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
-							<a class="defense-bonus" data-target="data.defences" title="AC Bonus">Bonus: {{data.defences.ac.bonusValue}}</a>
+							<a class="defence-bonus" data-target="data.defences" title="AC Bonus">Bonus: {{data.defences.ac.bonusValue}}</a>
 							<!-- <input type="text" name="data.defences.ac.misc" value="{{data.defences.ac.misc}}" title="AC Misc"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 							<span class="def-temp">Temp:</span>
 							<input type="text" name="data.defences.ac.temp" value="{{data.defences.ac.temp}}" title="AC Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
@@ -118,42 +119,42 @@
 								</select>
 							</footer>						
 					</li>
-					<li class="flexrow def-fort" data-defense="fort">
+					<li class="flexrow def-fort" data-defence="fort">
 					
 						<span class="def-value">{{numberFormat data.defences.fort.value decimals=0 sign=true }}</span>
-						<span class="def-name">Fort</span>
+						<span class="def-name rollable" title="{{data.defences.fort.title}}">{{data.defences.fort.label}}</span>
 						<span class="def-armour">Armour:</span>
 						<input type="text" name="data.defences.fort.armor" value="{{data.defences.fort.armor}}" title="Fort Armour"  placeholder="0" data-dtype="Number" onClick="this.select();">
 						<!-- <input type="text" name="data.defences.fort.class" value="{{data.defences.fort.class}}" title="Fort Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.fort.feat" value="{{data.defences.fort.feat}}" title="Fort Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.fort.enhance" value="{{data.defences.fort.enhance}}" title="Fort Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
-						<a class="defense-bonus" data-target="data.defences" title="Fort Bonus">Bonus: {{data.defences.fort.bonusValue}}</a>
+						<a class="defence-bonus" data-target="data.defences" title="Fort Bonus">Bonus: {{data.defences.fort.bonusValue}}</a>
 						<!-- <input type="text" name="data.defences.fort.misc" value="{{data.defences.fort.misc}}" title="Fort Misc"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<span class="def-temp">Temp:</span>
 						<input type="text" name="data.defences.fort.temp" value="{{data.defences.fort.temp}}" title="Fort Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>						
 					</li>
-					<li class="flexrow def-ref" data-defense="ref">
+					<li class="flexrow def-ref" data-defence="ref">
 						<span class="def-value">{{numberFormat data.defences.ref.value decimals=0 sign=true }}</span>
-						<span class="def-name">Ref</span>
+						<span class="def-name rollable" title="{{data.defences.ref.title}}">{{data.defences.ref.label}}</span>
 						<span class="def-armour">Armour:</span>
 						<input type="text" name="data.defences.ref.armor" value="{{data.defences.ref.armor}}" title="Ref Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 						<!-- <input type="text" name="data.defences.ref.class" value="{{data.defences.ref.class}}" title="Ref Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.ref.feat" value="{{data.defences.ref.feat}}" title="Ref Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.ref.enhance" value="{{data.defences.ref.enhance}}" title="Ref Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
-						<a class="defense-bonus" data-target="data.defences" title="Ref Bonus">Bonus: {{data.defences.ref.bonusValue}}</a>
+						<a class="defence-bonus" data-target="data.defences" title="Ref Bonus">Bonus: {{data.defences.ref.bonusValue}}</a>
 						<!-- <input type="text" name="data.defences.ref.misc" value="{{data.defences.ref.misc}}" title="Ref Misc"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<span class="def-temp">Temp:</span>
 						<input type="text" name="data.defences.ref.temp" value="{{data.defences.ref.temp}}" title="Ref Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</li>
-					<li class="flexrow def-will" data-defense="wil">
+					<li class="flexrow def-will" data-defence="wil">
 						<span class="def-value">{{numberFormat data.defences.wil.value decimals=0 sign=true }}</span>
-						<span class="def-name">Will</span>
+						<span class="def-name rollable" title="{{data.defences.wil.title}}">{{data.defences.wil.label}}</span>
 						<span class="def-armour">Armour:</span>
 						<input type="text" name="data.defences.wil.armor" value="{{data.defences.wil.armor}}" title="Will Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 						<!-- <input type="text" name="data.defences.wil.class" value="{{data.defences.wil.class}}" title="Will Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.wil.feat" value="{{data.defences.wil.feat}}" title="Will Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.wil.enhance" value="{{data.defences.wil.enhance}}" title="Will Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
-						<a class="defense-bonus" data-target="data.defences" title="Will Bonus">Bonus: {{data.defences.wil.bonusValue}}</a>
+						<a class="defence-bonus" data-target="data.defences" title="Will Bonus">Bonus: {{data.defences.wil.bonusValue}}</a>
 						<!-- <input type="text" name="data.defences.wil.misc" value="{{data.defences.wil.misc}}" title="Will Misc"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<span class="def-temp">Temp:</span>
 						<input type="text" name="data.defences.wil.temp" value="{{data.defences.wil.temp}}" title="Will Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
@@ -201,8 +202,8 @@
 					<h4 class="attribute-name box-title">Action Points</h4>
 					<span title="Action Points">Action Points:</span>
 					<input type="text" name="data.actionpoints.value" value="{{data.actionpoints.value}}" title="Number of Action Points" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-					<span title="Action Points">Bonus Action Taken:</span>
-					<input class="action-box" type="checkbox" name="data.actionpoints.encounteruse" data-dtype="Boolean" {{checked data.actionpoints.encounteruse}} title="Action Point used this encounter?"/>
+					<label for="bonusAction" title="Action Points">Bonus Action Taken:</label>
+					<input class="action-box" id="bonusAction" type="checkbox" name="data.actionpoints.encounteruse" data-dtype="Boolean" {{checked data.actionpoints.encounteruse}} title="Action Point used this encounter?"/>
 					<input type="text" name="data.actionpoints.notes" value="{{data.actionpoints.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;  text-align: left;"/>
 				</div>
 					

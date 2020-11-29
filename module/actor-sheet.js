@@ -4,6 +4,7 @@ import { ShortRestDialog } from "./apps/short-rest.js";
 import { LongRestDialog } from "./apps/long-rest.js";
 import { DeathSaveDialog } from "./apps/death-save.js";
 import { AttributeBonusDialog } from "./apps/attribute-bonuses.js";
+import { CustomRolldDescriptions } from "./apps/custom-roll-descriptions.js";
 import TraitSelector from "./apps/trait-selector.js";
 import TraitSelectorSense from "./apps/trait-selector-sense.js";
 import TraitSelectorSave from "./apps/trait-selector-save.js";
@@ -38,7 +39,7 @@ export class SimpleActorSheet extends ActorSheet {
 			classes: ["dnd4eAltus", "sheet", "actor"],
 			template: "systems/dnd4eAltus/templates/actor-sheet.html",
 			width: 700,
-			height: 690,
+			height: 707,
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",
@@ -97,7 +98,6 @@ export class SimpleActorSheet extends ActorSheet {
 		
 		// Prepare active effects
 		data.effects = prepareActiveEffectCategories(this.entity.effects);
-		
 		return data;
 	}
 	
@@ -399,26 +399,29 @@ export class SimpleActorSheet extends ActorSheet {
 		// Roll Skill Checks
 		html.find('.skill-name').click(this._onRollSkillCheck.bind(this));
 		
-		//roll Abillity Checks
+		//Roll Abillity Checks
 		html.find('.ability-name').click(this._onRollAbilityCheck.bind(this));
+		
+		//Roll Defence Checks
+		html.find('.def-name').click(this._onRollDefenceCheck.bind(this));
 		
 		//Open HP-Options
 		html.find('.health-option').click(this._onHPOptions.bind(this));
 		
 		//Open Skill-Bonus
 		html.find('.skill-bonus').click(this._onSkillBonus.bind(this));
-		
 		html.find('.death-save-bonus').click(this._onDeathSaveBonus.bind(this));
 		html.find('.surge-bonus').click(this._onSurgeBonus.bind(this));
 		html.find('.envimental-loss-bonus').click(this._onSurgeEnv.bind(this));
 		html.find('.secondwind-bonus').click(this._onSecondWindBonus.bind(this));
-		
-		html.find('.defense-bonus').click(this._onDefencesBonus.bind(this));
+		html.find('.defence-bonus').click(this._onDefencesBonus.bind(this));
 		html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
 		html.find('.move-bonus').click(this._onMovementBonus.bind(this));
 		html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
 		html.find('.resistence-bonus').click(this._onResistencesBonus.bind(this));
 		
+		
+		html.find('.custom-roll-descriptions').click(this._onCustomRolldDescriptions.bind(this));
 		
 		//second wind
 		html.find('.second-wind').click(this._onSecondWind.bind(this));
@@ -622,7 +625,7 @@ export class SimpleActorSheet extends ActorSheet {
 	
 	_onDefencesBonus(event) {
 		event.preventDefault();
-		const defName = event.currentTarget.parentElement.dataset.defense;
+		const defName = event.currentTarget.parentElement.dataset.defence;
 		const target = `data.defences.${defName}`;
 		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonues` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
@@ -657,6 +660,12 @@ export class SimpleActorSheet extends ActorSheet {
 		const target = `data.resistences.${resName}`;
 		const options = {target: target, label: `${this.actor.data.data.resistences[resName].label} Damage Resistences Bonues` };
 		new AttributeBonusDialog(this.actor, options).render(true);
+	}
+	
+	_onCustomRolldDescriptions(event) {
+		event.preventDefault();
+		const options = {data: this.actor.data};
+		new CustomRolldDescriptions(this.actor).render(true, options);
 	}
 	/**
 	* Opens dialog window to spend Second Wind
@@ -874,8 +883,24 @@ export class SimpleActorSheet extends ActorSheet {
   _onRollAbilityCheck(event) {
     event.preventDefault();
     let ability = event.currentTarget.parentElement.dataset.ability;
+	console.log(ability);
     this.actor.rollAbility(ability, {event: event});
   }
+  
+  /* -------------------------------------------- */
+
+  /**
+   * Handle rolling a defences check
+   * @param {Event} event   The originating click event
+   * @private
+   */
+	_onRollDefenceCheck(event) {
+		event.preventDefault();
+		const def = event.currentTarget.parentElement.dataset.defence;
+		console.log(def);
+		this.actor.rollDef(def, {event: event});
+	}
+
 
   /* -------------------------------------------- */  
 

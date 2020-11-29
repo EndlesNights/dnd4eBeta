@@ -47,8 +47,7 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 
 		let newBonus = [{}];
 		let count = 0;
-		for(let i = 0; i < Object.entries(formData).length/4; i++)
-		{
+		for(let i = 0; i < Object.entries(formData).length/4; i++) {
 			if(formData[`${i}.name`] || formData[`${i}.note`] || formData[`${i}.value`] ) {
 				newBonus[count] = {name: formData[`${i}.name`], value: formData[`${i}.value`], active: formData[`${i}.active`], note: formData[`${i}.note`]};
 				count++;

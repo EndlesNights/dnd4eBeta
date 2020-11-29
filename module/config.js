@@ -91,15 +91,18 @@ DND4EALTUS.timePeriods = {
  */
 DND4EALTUS.abilityActivationTypes = {
   "none": "DND4EALTUS.None",
-  "action": "DND4EALTUS.Action",
-  "bonus": "DND4EALTUS.BonusAction",
-  "reaction": "DND4EALTUS.Reaction",
+  "actionstand": "DND4EALTUS.ActionStandard",
+  "actionmove": "DND4EALTUS.ActionMove",
+  "actionminor": "DND4EALTUS.ActionMinor",
+  "actionfree": "DND4EALTUS.ActionFree",
+  "actionreaction": "DND4EALTUS.ActionReaction",
+  "actioninterrupt": "DND4EALTUS.ActionInterrupt",
+  "actionopportunity": "DND4EALTUS.ActionOpportunity",
+
   "minute": DND4EALTUS.timePeriods.minute,
   "hour": DND4EALTUS.timePeriods.hour,
   "day": DND4EALTUS.timePeriods.day,
-  "special": DND4EALTUS.timePeriods.spec,
-  "legendary": "DND4EALTUS.LegAct",
-  "lair": "DND4EALTUS.LairAct"
+  "special": DND4EALTUS.timePeriods.spec
 };
 
 /* -------------------------------------------- */
