@@ -505,6 +505,10 @@
           "parts": [],
           "versatile": ""
         },
+        "damageCrit": {
+          "parts": [],
+          "versatile": ""
+        },
         "formula": "",
         "save": {
           "ability": "",
@@ -618,6 +622,7 @@
 	  "abilityModAttack": "str",
 	  "abilityModDamage": "str",
 	  "damageType": {"physical":true},
+	  "weaponGroup": {},
 	  "attackForm": "1d20+@{profBonus}+@{abilityModAttack}+@{bonusAttack}+@{enhance}",
 	  "damageForm": "@{diceNum}d@{diceDamage}+@{abilityModDamage}+@{bonusDamage}+@{enhance}",
 	  "critDamageForm": "@{diceNum}*@{diceDamage}+@{abilityModDamage}+@{bonusDamage}+@{enhance}+(@{enhance}d6)",

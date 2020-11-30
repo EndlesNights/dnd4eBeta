@@ -47,7 +47,7 @@ export class SimpleActorSheet extends ActorSheet {
 			}],
 			dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}],
 			// scrollY: [".desk__content"]
-			scrollY: [".attributes", ".inventory-list", ".desk__content", ".scrollbar "]
+			scrollY: [".attributes", ".inventory-list", ".desk__content", ".scrollbar"]
 		});
   }
 
@@ -883,7 +883,6 @@ export class SimpleActorSheet extends ActorSheet {
   _onRollAbilityCheck(event) {
     event.preventDefault();
     let ability = event.currentTarget.parentElement.dataset.ability;
-	console.log(ability);
     this.actor.rollAbility(ability, {event: event});
   }
   
@@ -897,7 +896,6 @@ export class SimpleActorSheet extends ActorSheet {
 	_onRollDefenceCheck(event) {
 		event.preventDefault();
 		const def = event.currentTarget.parentElement.dataset.defence;
-		console.log(def);
 		this.actor.rollDef(def, {event: event});
 	}
 

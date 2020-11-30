@@ -24,7 +24,7 @@ export default class ItemSheet4e extends ItemSheet {
       height: 420,
       classes: ["dnd4eAltus", "sheet", "item"],
       resizable: true,
-      scrollY: [".tab.details"],
+      scrollY: [".tab.details", ".desk__content", ".scrollbar"],
       tabs: [{navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description"}]
     });
   }
@@ -237,6 +237,8 @@ export default class ItemSheet4e extends ItemSheet {
     // Handle Damage Array
     const damage = formData.data?.damage;
     if ( damage ) damage.parts = Object.values(damage?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+    const damageCrit = formData.data?.damageCrit;
+    if ( damageCrit ) damageCrit.parts = Object.values(damageCrit?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 
     // Update the Item
     super._updateObject(event, formData);
@@ -284,6 +286,22 @@ export default class ItemSheet4e extends ItemSheet {
       const damage = duplicate(this.item.data.data.damage);
       damage.parts.splice(Number(li.dataset.damagePart), 1);
       return this.item.update({"data.damage.parts": damage.parts});
+    }
+	
+    // Add new critical damage component
+    if ( a.classList.contains("add-criticalDamage") ) {
+      await this._onSubmit(event);  // Submit any unsaved changes
+      const damageCrit = this.item.data.data.damageCrit;
+      return this.item.update({"data.damageCrit.parts": damageCrit.parts.concat([["", ""]])});
+    }
+
+    // Remove a critical damage component
+    if ( a.classList.contains("delete-criticalDamage") ) {
+      await this._onSubmit(event);  // Submit any unsaved changes
+      const li = a.closest(".damage-part");
+      const damageCrit = duplicate(this.item.data.data.damageCrit);
+      damageCrit.parts.splice(Number(li.dataset.damagePart), 1);
+      return this.item.update({"data.damageCrit.parts": damageCrit.parts});
     }
   }
 

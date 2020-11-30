@@ -45,18 +45,18 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
     let mods = halflingLucky ? "r=1" : "";
 
     // Handle advantage
-    if ( adv === 1 ) {
-      nd = elvenAccuracy ? 3 : 2;
-      flavor += ` (${game.i18n.localize("DND4EALTUS.Advantage")})`;
-      mods += "kh";
-    }
+    // if ( adv === 1 ) {
+      // nd = elvenAccuracy ? 3 : 2;
+      // flavor += ` (${game.i18n.localize("DND4EALTUS.Advantage")})`;
+      // mods += "kh";
+    // }
 
     // Handle disadvantage
-    else if ( adv === -1 ) {
-      nd = 2;
-      flavor += ` (${game.i18n.localize("DND4EALTUS.Disadvantage")})`;
-      mods += "kl";
-    }
+    // else if ( adv === -1 ) {
+      // nd = 2;
+      // flavor += ` (${game.i18n.localize("DND4EALTUS.Disadvantage")})`;
+      // mods += "kl";
+    // }
 
     // Prepend the d20 roll
     let formula = `${nd}d20${mods}`;
@@ -68,7 +68,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
     if ( form !== null ) data['bonus'] = form.bonus.value;
     if ( !data["bonus"] ) parts.pop();
 	
-	flavor = form.flavor.value || flavor;
+	// flavor = form.flavor.value || flavor;
 	
     // Optionally include an ability score selection (used for tool checks)
     const ability = form ? form.ability : null;

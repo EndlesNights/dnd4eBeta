@@ -153,9 +153,8 @@ export class SimpleActor extends Actor {
 
 		// Skill modifiers
 		for (let [id, skl] of Object.entries(data.skills)) {
-
 			skl.value = parseFloat(skl.value || 0);
-			
+
 			let sklBonusValue = 0;
 			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
 				for( const b of skl.bonus) {
@@ -167,12 +166,8 @@ export class SimpleActor extends Actor {
 			skl.sklBonusValue = sklBonusValue;
 			
 			// Compute modifier
-			// skl.bonus = 0;// checkBonus + skillBonus;
-			skl.mod = data.abilities[skl.ability].mod;
-			skl.prof = 0;//round(multi * data.attributes.prof);
-			skl.total = skl.value + skl.mod + skl.prof + sklBonusValue;
-			// skl.total = skl.value + skl.mod + skl.prof + skl.bonus + skl.expt + skl.armor + skl.misc;
-
+			skl.mod = data.abilities[skl.ability].mod;			
+			skl.total = skl.value + skl.mod + sklBonusValue;
 			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
 
 			// skl.ability = data.actor.data.abilities[skl.ability].label.substring(0, 3);
@@ -342,48 +337,36 @@ export class SimpleActor extends Actor {
    * @param {boolean} isBar       Whether the new value is part of an attribute bar, or just a direct value
    * @return {Promise}
    */
-	async modifyTokenAttribute(attribute, value, isDelta=false, isBar=true) {
-		const current = getProperty(this.data.data, attribute);
-		if ( isBar ) {
+	async modifyTokenAttribute(attribute, value, isDelta=false, isBar=true) {		
+		if (!isNaN(value) && isBar ) {
+			const current = getProperty(this.data.data, attribute);
 			if (isDelta) value = Math.clamped(current.min, Number(current.value) + value, current.max);
-				if(attribute === 'health')
-				{
-					let newHealth = this.setConditions(value);				
-					this.update({[`data.details.temphp`]: newHealth[1] });
-					this.update({[`data.health.value`]: newHealth[0] });
-				}
-
-
+			if(attribute === 'health')
+			{
+				let newHealth = this.setConditions(value);			
+				this.update({[`data.details.temphp`]: newHealth[1] });
+				this.update({[`data.health.value`]: newHealth[0] });
+			}
 		}
 	}	
 	setConditions(newValue) {
 		
 		let newTemp = this.data.data.details.temphp;
-
-		if(newValue < this.data.data.health.value)
-		{
+		if(newValue < this.data.data.health.value) {
 			let damage = this.data.data.health.value - newValue;
 			
-			if(this.data.data.details.temphp > 0)
-			{
-				newTemp -= damage;5
-				if(newTemp < 0)
-				{
+			if(this.data.data.details.temphp > 0) {
+				newTemp -= damage;
+				if(newTemp < 0) {
 					newValue = this.data.data.health.value + newTemp;
 					newTemp = null;
 				}
-				else
-				{
+				else {
 					newValue = this.data.data.health.value;
 				}
-				console.log(newTemp);
 				
 				this.update({[`data.details.temphp`]:newTemp});
 			}
-		}
-		else if(newValue > this.data.data.health.value)
-		{
-		
 		}
 		
 		if(newValue > this.data.data.health.max) newValue =  this.data.data.health.max;
@@ -406,8 +389,6 @@ export class SimpleActor extends Actor {
 		// Compose roll parts and data
 		const parts = ["@mod"];
 		const data = {mod: skl.total};
-		console.log(parts);
-		console.log(data);
 		
 		// Ability test bonus
 		if ( bonuses.check ) {
@@ -491,7 +472,7 @@ export class SimpleActor extends Actor {
 	rollDef(defId, options={}) {
 		const label = defId;
 		const def = this.data.data.defences[defId];
-		
+
 		// Construct parts
 		const parts = ["@mod"];
 		const data = {mod: def.value - 10};

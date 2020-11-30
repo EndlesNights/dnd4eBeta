@@ -169,8 +169,7 @@ DND4EALTUS.itemCapacityTypes = {
  * @type {Object}
  */
 DND4EALTUS.limitedUsePeriods = {
-  "sr": "DND4EALTUS.ShortRest",
-  "lr": "DND4EALTUS.LongRest",
+  "enc": "DND4EALTUS.Encounter",
   "day": "DND4EALTUS.Day",
   "charges": "DND4EALTUS.Charges"
 };
@@ -576,6 +575,22 @@ DND4EALTUS.weaponProperties = {
   "ver": "DND4EALTUS.WeaponPropertiesVer"
 };
 
+DND4EALTUS.weaponGroup = {
+	"axe": "DND4EALTUS.WeaponGroupAxe",
+	"bladeH": "DND4EALTUS.WeaponGroupBladeH",
+	"bladeL": "DND4EALTUS.WeaponGroupBladeL",
+	"bow": "DND4EALTUS.WeaponGroupBow",
+	"cbow": "DND4EALTUS.WeaponGroupCBow",
+	"flail": "DND4EALTUS.WeaponGroupFlail",
+	"ham": "DND4EALTUS.WeaponGroupHam",
+	"mace": "DND4EALTUS.WeaponGroupMace",
+	"pik": "DND4EALTUS.WeaponGroupPik",
+	"pole": "DND4EALTUS.WeaponGroupPole",
+	"sling": "DND4EALTUS.WeaponGroupSling",
+	"spear": "DND4EALTUS.WeaponGroupSpear",
+	"staff": "DND4EALTUS.WeaponGroupStaff",
+	"unarm": "DND4EALTUS.WeaponGroupUnarm"
+};
 
 // Spell Components
 DND4EALTUS.spellComponents = {

@@ -62,7 +62,7 @@
 	margin-right: 0px;
 }
 .dnd4eAltus .sheet-header .profile-img {
-	flex: 0 0 100px;
+	flex: 0 0 150px;
 	height: 150px;
 	margin-right: 0px;
 }
@@ -149,7 +149,7 @@
 .dnd4eAltus .form-group label {
   flex: 2;
   color: #4b4a44;
-  /* font-weight: bold; */
+  font-weight: bold;
 }
 .dnd4eAltus .form-group .form-fields {
   display: flex;
@@ -250,7 +250,7 @@
 	color: #4b4a44;
 }
 .dnd4eAltus.sheet .sheet-header .summary .list-size {
-	width: 25%;
+	width: 30%;
 	float: left;
 	height: 24px;
 	padding: 0 3px;
@@ -277,7 +277,7 @@
 	top: -3px;
 }
 .dnd4eAltus.sheet .sheet-header .summary .list-alig {
-	width: 37.5%;
+	width: 35%;
 	float: left;
 	height: 24px;
 	padding: 0 3px;
@@ -1563,6 +1563,38 @@ font-size: 12px;
 }
 .dnd4eAltus.sheet.item .weapon-properties label.checkbox {
   flex: 0 0 98px;
+}
+
+.dnd4eAltus.sheet.item h4.damage-header {
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  line-height: 24px;
+  color: #4b4a44;
+}
+.dnd4eAltus.sheet.item .damage-parts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.dnd4eAltus.sheet.item .damage-parts .damage-part {
+  flex: 0 0 100%;
+  padding: 0;
+}
+.dnd4eAltus.sheet.item .damage-parts .damage-part input {
+  flex: 3;
+}
+.dnd4eAltus.sheet.item .damage-parts .damage-part select {
+  margin-left: 5px;
+  flex: 1;
+}
+.dnd4eAltus.sheet.item .damage-control {
+  width: 18px;
+  flex: 0 0 18px;
+  line-height: 24px;
+  float: right;
+  text-align: right;
+  color: #7a7971;
 }
 /* ----------------------------------------- */
 /*  Chat Cards
