@@ -25,8 +25,11 @@
 "DND4EALTUS.AbilityUseConsumableChargeHint": "Using this {type} will consume 1 charge of {value} remaining.",
 "DND4EALTUS.AbilityUseConsumableQuantityHint": "Using this {type} will consume 1 quantity of {quantity} remaining",
 "DND4EALTUS.AbilityUseConsumableDestroyHint": "Using this {type} will consume it's final charge and it will be destroyed.",
+"DND4EALTUS.AbilityUseConsumableLabel": "{max} per {per}",
+
 "DND4EALTUS.AbilityUseConsume": "Consume Available Usage?",
 "DND4EALTUS.AbilityWis": "Wisdom",
+"DND4EALTUS.AC": "AC",
 "DND4EALTUS.ActionStandard": "Standard Action",
 "DND4EALTUS.ActionMove": "Move Action",
 "DND4EALTUS.ActionMinor": "Minor Action",
@@ -202,6 +205,45 @@
 "DND4EALTUS.Effects": "Effects",
 "DND4EALTUS.Encounter": "Encounter",
 "DND4EALTUS.Epic": "Epic Destiny",
+
+"DND4EALTUS.EquipmentTypeArmourCloth": "Clothing",
+"DND4EALTUS.EquipmentTypeArmourLight": "Light Armour",
+"DND4EALTUS.EquipmentTypeArmourHeavy": "Heavy Armour",
+"DND4EALTUS.EquipmentTypeArmourNatural": ""Natural Armour,
+
+"DND4EALTUS.EquipmentTypeArmsBracers": "Bracers",
+"DND4EALTUS.EquipmentTypeArmsBracelet": "Bracelets",
+"DND4EALTUS.EquipmentTypeArmsLight": "Light Shield",
+"DND4EALTUS.EquipmentTypeArmsHeavy": "Heavy Shield",
+
+"DND4EALTUS.EquipmentTypeFeetShoe": "Shoes",
+"DND4EALTUS.EquipmentTypeFeetBoot": "Boots",
+"DND4EALTUS.EquipmentTypeFeetGreave": "Greaves",
+
+"DND4EALTUS.EquipmentTypeHandsGloves": "Gloves",
+"DND4EALTUS.EquipmentTypeHandsGauntlets": "Gauntlets",
+
+"DND4EALTUS.EquipmentTypeHeadHat": "Hat",
+"DND4EALTUS.EquipmentTypeHeadHelmet": "Helmet",
+"DND4EALTUS.EquipmentTypeHeadEyewear": "Eyewear",
+
+"DND4EALTUS.EquipmentTypeNeckNecklace": "Necklace",
+"DND4EALTUS.EquipmentTypeNeckAmulet": "Amulet",
+"DND4EALTUS.EquipmentTypeNeckCloack": "Cloack",
+
+"DND4EALTUS.EquipmentTypeWaistBelt": "Belt",
+
+"DND4EALTUS.EquipmentTypeArmour": "Armour / Body",
+"DND4EALTUS.EquipmentTypeArms": "Arms",
+"DND4EALTUS.EquipmentTypeFeet": "Feet",
+"DND4EALTUS.EquipmentTypeHands": "Hands",
+"DND4EALTUS.EquipmentTypeHead": "Head",
+"DND4EALTUS.EquipmentTypeNeck": "Neck",
+"DND4EALTUS.EquipmentTypeRing": "Ring",
+"DND4EALTUS.EquipmentTypeWaist": "Waist",
+"DND4EALTUS.EquipmentTypeNatural": "Natural",
+"DND4EALTUS.EquipmentTypeOther": "Other",
+
 "DND4EALTUS.EquipmentBonus": "Magical Bonus",
 "DND4EALTUS.EquipmentClothing": "Clothing",
 "DND4EALTUS.EquipmentHeavy": "Heavy Armor",

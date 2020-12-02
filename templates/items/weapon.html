@@ -309,29 +309,16 @@
 					{{/each}}
 				</div>
 			</div>
-			
-			<!-- {{#if isMountable}}
-			<div class="form-group">
-				<label>{{localize 'DND4EALTUS.ArmorClass'}}</label>
-				<div class="form-fields">
-					<input type="text" name="data.armor.value" value="{{data.armor.value}}"
-						   data-dtype="Number">
-				</div>
+			{{!-- Chat Message Flavor --}}
+			<div class="form-group stacked">
+				<label>{{ localize "DND4EALTUS.ChatFlavor" }}</label>
+				<input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/>
 			</div>
-			{{> 'systems/dnd4eAltus/templates/items/parts/item-mountable.html'}}
-			{{/if}} -->
-
-			<!-- <h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponUsage" }}</h3>
-			{{!-- Item Activation Template --}}
-			{{> "systems/dnd4eAltus/templates/items/parts/item-activation.html"}}
-			<h3 class="form-header">{{ localize "DND4EALTUS.ItemWeaponAttack" }}</h3>
-			{{!-- Item Action Template --}}
-			{{> "systems/dnd4eAltus/templates/items/parts/item-action.html"}} -->
 		</div>
 
 		{{!-- Effects Tab --}}
 		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
 			{{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
-		</div>        
+		</div>
 	</section>
 </form>

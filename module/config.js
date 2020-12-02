@@ -182,16 +182,61 @@ DND4EALTUS.limitedUsePeriods = {
  * @type {Object}
  */
 DND4EALTUS.equipmentTypes = {
-  "light": "DND4EALTUS.EquipmentLight",
-  "medium": "DND4EALTUS.EquipmentMedium",
-  "heavy": "DND4EALTUS.EquipmentHeavy",
-  "bonus": "DND4EALTUS.EquipmentBonus",
-  "natural": "DND4EALTUS.EquipmentNatural",
-  "shield": "DND4EALTUS.EquipmentShield",
-  "clothing": "DND4EALTUS.EquipmentClothing",
-  "trinket": "DND4EALTUS.EquipmentTrinket"
+  // "light": "DND4EALTUS.EquipmentLight",
+  // "medium": "DND4EALTUS.EquipmentMedium",
+  // "heavy": "DND4EALTUS.EquipmentHeavy",
+  // "bonus": "DND4EALTUS.EquipmentBonus",
+  // "natural": "DND4EALTUS.EquipmentNatural",
+  // "shield": "DND4EALTUS.EquipmentShield",
+  // "clothing": "DND4EALTUS.EquipmentClothing",
+  // "trinket": "DND4EALTUS.EquipmentTrinket"
+	"armour": "DND4EALTUS.EquipmentTypeArmour",
+	"arms": "DND4EALTUS.EquipmentTypeArms",
+	"feet": "DND4EALTUS.EquipmentTypeFeet",
+	"hands": "DND4EALTUS.EquipmentTypeHands",
+	"head": "DND4EALTUS.EquipmentTypeHead",
+	"neck": "DND4EALTUS.EquipmentTypeNeck",
+	"ring": "DND4EALTUS.EquipmentTypeRing",
+	"waist": "DND4EALTUS.EquipmentTypeWaist",
+	"natural": "DND4EALTUS.EquipmentTypeNatural",
+	"other": "DND4EALTUS.EquipmentTypeOther",
 };
 
+DND4EALTUS.equipmentTypesArmour = {
+	"cloth": "DND4EALTUS.EquipmentArmourCloth",
+	"light": "DND4EALTUS.EquipmentArmourLight",
+	"heavy": "DND4EALTUS.EquipmentArmourHeavy",
+	"natural": "DND4EALTUS.EquipmentArmourNatural",
+};
+DND4EALTUS.equipmentTypesArms = {
+	"light": "DND4EALTUS.EquipmentArmsLight",
+	"heavy": "DND4EALTUS.EquipmentArmsHeavy",
+	"bracers": "DND4EALTUS.EquipmentArmsBracers",
+	"bracelet": "DND4EALTUS.EquipmentArmsBracelet",
+};
+DND4EALTUS.equipmentTypesFeet = {
+	"shoe": "DND4EALTUS.EquipmentFeetShoe",
+	"boot": "DND4EALTUS.EquipmentFeetBoot",
+	"greave": "DND4EALTUS.EquipmentFeetGreave",
+};
+DND4EALTUS.equipmentTypesHands = {
+	"gloves": "DND4EALTUS.EquipmentHandsGloves",
+	"gauntlets": "DND4EALTUS.EquipmentHandsGauntlets",
+};
+DND4EALTUS.equipmentTypesHead = {
+	"hat": "DND4EALTUS.EquipmentHeadHat",
+	"helmet": "DND4EALTUS.EquipmentHeadHelmet",
+	"eyewear": "DND4EALTUS.EquipmentHeadEyewear",
+
+};
+DND4EALTUS.equipmentTypesNeck = {
+	"necklace": "DND4EALTUS.EquipmentNeckNecklace",
+	"amulet": "DND4EALTUS.EquipmentNeckAmulet",
+	"cloack": "DND4EALTUS.EquipmentCloack",
+};
+DND4EALTUS.equipmentTypesWaist = {
+	"belt": "DND4EALTUS.EquipmentWaistBelt",
+};
 
 /* -------------------------------------------- */
 
