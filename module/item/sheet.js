@@ -55,6 +55,9 @@ export default class ItemSheet4e extends ItemSheet {
 
     // Potential consumption targets
     data.abilityConsumptionTargets = this._getItemConsumptionTargets(data.item);
+	if(data.item.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(data.item, data.config);
+	
+	
 
     // Action Details
     data.hasAttackRoll = this.item.hasAttack;
@@ -70,6 +73,22 @@ export default class ItemSheet4e extends ItemSheet {
     return data;
   }
 
+
+	_getItemEquipmentSubTypeTargets(item, config) {
+
+		if(item.data.armour.type == "armour") { return config.equipmentTypesArmour; }
+		else if (item.data.armour.type == "arms") { return config.equipmentTypesArms; }
+		else if (item.data.armour.type == "feet") { return config.equipmentTypesFeet; }
+		else if (item.data.armour.type == "hands") { return config.equipmentTypesHands; }
+		else if (item.data.armour.type == "head") { return config.equipmentTypesHead; }
+		else if (item.data.armour.type == "neck") { return config.equipmentTypesNeck; }
+		else if (item.data.armour.type == "ring") { return null; }
+		else if (item.data.armour.type == "waist") { return config.equipmentTypesWaist; }
+		else if (item.data.armour.type == "natural") { return null; }
+		else if (item.data.armour.type == "other") { return null; }
+		
+		return null;
+	}
   /* -------------------------------------------- */
 
   /**
@@ -128,6 +147,8 @@ export default class ItemSheet4e extends ItemSheet {
     }
     else return {};
   }
+  
+
 
   /* -------------------------------------------- */
 
@@ -175,8 +196,8 @@ export default class ItemSheet4e extends ItemSheet {
     }
 
     else if ( item.type === "equipment" ) {
-      props.push(CONFIG.DND4EALTUS.equipmentTypes[item.data.armor.type]);
-      props.push(labels.armor);
+      props.push(CONFIG.DND4EALTUS.equipmentTypes[item.data.armour.type]);
+      props.push(labels.armour);
     }
 
     else if ( item.type === "feat" ) {
@@ -213,7 +234,7 @@ export default class ItemSheet4e extends ItemSheet {
   _isItemMountable(item) {
     const data = item.data;
     return (item.type === 'weapon' && data.weaponType === 'siege')
-      || (item.type === 'equipment' && data.armor.type === 'vehicle');
+      || (item.type === 'equipment' && data.armour.type === 'vehicle');
   }
 
   /* -------------------------------------------- */
@@ -239,7 +260,10 @@ export default class ItemSheet4e extends ItemSheet {
     if ( damage ) damage.parts = Object.values(damage?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
     const damageCrit = formData.data?.damageCrit;
     if ( damageCrit ) damageCrit.parts = Object.values(damageCrit?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
-
+	
+    const damageRes = formData.data.armour?.damageRes;
+    if ( damageRes ) damageRes.parts = Object.values(damageRes?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+	
     // Update the Item
     super._updateObject(event, formData);
   }
@@ -302,6 +326,22 @@ export default class ItemSheet4e extends ItemSheet {
       const damageCrit = duplicate(this.item.data.data.damageCrit);
       damageCrit.parts.splice(Number(li.dataset.damagePart), 1);
       return this.item.update({"data.damageCrit.parts": damageCrit.parts});
+    }
+	
+    // Add new damage res
+    if ( a.classList.contains("add-damageRes") ) {
+      await this._onSubmit(event);  // Submit any unsaved changes
+      const damageRes = this.item.data.data.armour.damageRes;
+      return this.item.update({"data.armour.damageRes.parts": damageRes.parts.concat([["", ""]])});
+    }
+
+    // Remove a damage res
+    if ( a.classList.contains("delete-damageRes") ) {
+      await this._onSubmit(event);  // Submit any unsaved changes
+      const li = a.closest(".damage-part");
+      const damageRes = duplicate(this.item.data.data.armour.damageRes);
+      damageRes.parts.splice(Number(li.dataset.damagePart), 1);
+      return this.item.update({"data.armour.damageRes.parts": damageRes.parts});
     }
   }
 

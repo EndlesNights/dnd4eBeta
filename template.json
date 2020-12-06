@@ -64,7 +64,7 @@
 				"ac": {
 					"value": 10,
 					"ability": "",
-					"armor": 0,
+					"armour": 0,
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
@@ -78,7 +78,7 @@
 				"fort": {
 					"value": 10,
 					"ability": "",
-					"armor": 0,
+					"armour": 0,
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
@@ -90,7 +90,7 @@
 				"ref": {
 					"value": 10,
 					"ability": "",
-					"armor": 0,
+					"armour": 0,
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
@@ -102,7 +102,7 @@
 				"wil": {
 					"value": 10,
 					"ability": "",
-					"armor": 0,
+					"armour": 0,
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
@@ -181,19 +181,19 @@
 				"basic": {
 					"value": 0,
 					"base": 6,
-					"armor": 0,
+					"armour": 0,
 					"bonus": [{}],
 					"temp": 0
 				},
 				"charge": {
 					"value": 0,
-					"armor": 0,
+					"armour": 0,
 					"bonus": [{}],
 					"temp": 0
 				},
 				"run": {
 					"value": 0,
-					"armor": 0,
+					"armour": 0,
 					"bonus": [{}],
 					"misc": 0,
 					"temp": 0
@@ -205,114 +205,133 @@
 					"value": 0,
 					"bonus": [{}],
 					"ability": "dex",
+					"armourCheck": true,
 					"chat": "@name uses @label."
 				},
 				"arc": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"ath": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "str",
+					"armourCheck": true,
 					"chat": "@name uses @label."
 				},
 				"blu": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "cha",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"dip": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "cha",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"dun": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"end": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "con",
+					"armourCheck": true,
 					"chat": "@name uses @label."
 				},
 				"eng": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"hea": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"his": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"ins": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"itm": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "cha",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"nat": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"prc": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"pra": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"rel": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"stl": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "dex",
+					"armourCheck": true,
 					"chat": "@name uses @label."
 				},
 				"stw": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "cha",
+					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"thi": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "dex",
+					"armourCheck": true,
 					"chat": "@name uses @label."
 				}
 			},
@@ -517,7 +536,7 @@
         }
       },
       "mountable": {
-        "armor": {
+        "armour": {
           "value": 10
         },
         "hp": {
@@ -574,10 +593,21 @@
     },
     "equipment": {
       "templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable"],
-      "armor": {
-        "type": "light",
-        "value": 10,
-        "dex": null
+      "armour": {
+        "type": "armour",
+		"subType": "cloth",
+        "ac": 0,
+		"fort": 0,
+		"ref": 0,
+		"wil": 0,
+        "dex": null,
+		"movePen": false,
+		"movePenValue": 0,
+		"skillCheck": false,
+		"skillCheckValue": 0,
+        "damageRes": {
+          "parts": []
+        }		
       },
       "speed": {
         "value": null,

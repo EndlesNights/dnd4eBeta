@@ -20,7 +20,7 @@
 					<span class="skill-ability">{{skill.ability}}</span>
 					<a class="training-toggle skill-training" title="{{skill.hover}}">{{{skill.icon}}}</a>
 					<!-- <input type="text" class="skill-mod" name="data.skills.{{s}}.expt" value="{{skill.expt}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Expertise"> </input> -->
-					<!-- <input type="text" class="skill-mod" name="data.skills.{{s}}.armor" value="{{skill.armor}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour"> </input> -->
+					<!-- <input type="text" class="skill-mod" name="data.skills.{{s}}.armour" value="{{skill.armour}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour"> </input> -->
 					<!-- <input type="text" class="skill-mod" name="data.skills.{{s}}.misc" value="{{skill.misc}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Misc"> </input> -->
 					<a class="skill-mod skill-bonus" data-target="data.details" title="Skill Bonus">{{skill.sklBonusValue}}</a>
 				</li>
@@ -92,8 +92,8 @@
 					<li class="flexrow" data-defence="ac">
 							<span class="def-value">{{numberFormat data.defences.ac.value decimals=0 sign=true }}</span>
 							<span class="def-name rollable" title="{{data.defences.ac.title}}">{{data.defences.ac.label}}</span>
-							<span class="def-armour">Armour:</span>
-							<input type="text" name="data.defences.ac.armor" value="{{data.defences.ac.armor}}" title="AC Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+							<span class="def-armour">Armour: {{data.defences.ac.armour}}</span>
+							<!-- <input type="text" name="data.defences.ac.armour" value="{{data.defences.ac.armour}}" title="AC Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 							<!-- <span>Class:</span> -->
 							<!-- <input type="text" name="data.defences.ac.class" value="{{data.defences.ac.class}}" title="AC Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 							<!-- <input type="text" name="data.defences.ac.feat" value="{{data.defences.ac.feat}}" title="AC Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
@@ -123,8 +123,8 @@
 					
 						<span class="def-value">{{numberFormat data.defences.fort.value decimals=0 sign=true }}</span>
 						<span class="def-name rollable" title="{{data.defences.fort.title}}">{{data.defences.fort.label}}</span>
-						<span class="def-armour">Armour:</span>
-						<input type="text" name="data.defences.fort.armor" value="{{data.defences.fort.armor}}" title="Fort Armour"  placeholder="0" data-dtype="Number" onClick="this.select();">
+						<span class="def-armour">Armour: {{data.defences.fort.armour}}</span>
+						<!-- <input type="text" name="data.defences.fort.armour" value="{{data.defences.fort.armour}}" title="Fort Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"> -->
 						<!-- <input type="text" name="data.defences.fort.class" value="{{data.defences.fort.class}}" title="Fort Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.fort.feat" value="{{data.defences.fort.feat}}" title="Fort Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.fort.enhance" value="{{data.defences.fort.enhance}}" title="Fort Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
@@ -136,8 +136,8 @@
 					<li class="flexrow def-ref" data-defence="ref">
 						<span class="def-value">{{numberFormat data.defences.ref.value decimals=0 sign=true }}</span>
 						<span class="def-name rollable" title="{{data.defences.ref.title}}">{{data.defences.ref.label}}</span>
-						<span class="def-armour">Armour:</span>
-						<input type="text" name="data.defences.ref.armor" value="{{data.defences.ref.armor}}" title="Ref Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<span class="def-armour">Armour: {{data.defences.ref.armour}}</span>
+						<!-- <input type="text" name="data.defences.ref.armour" value="{{data.defences.ref.armour}}" title="Ref Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.ref.class" value="{{data.defences.ref.class}}" title="Ref Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.ref.feat" value="{{data.defences.ref.feat}}" title="Ref Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.ref.enhance" value="{{data.defences.ref.enhance}}" title="Ref Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
@@ -149,8 +149,8 @@
 					<li class="flexrow def-will" data-defence="wil">
 						<span class="def-value">{{numberFormat data.defences.wil.value decimals=0 sign=true }}</span>
 						<span class="def-name rollable" title="{{data.defences.wil.title}}">{{data.defences.wil.label}}</span>
-						<span class="def-armour">Armour:</span>
-						<input type="text" name="data.defences.wil.armor" value="{{data.defences.wil.armor}}" title="Will Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<span class="def-armour">Armour: {{data.defences.wil.armour}}</span>
+						<!-- <input type="text" name="data.defences.wil.armour" value="{{data.defences.wil.armour}}" title="Will Armour"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.wil.class" value="{{data.defences.wil.class}}" title="Will Class"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.wil.feat" value="{{data.defences.wil.feat}}" title="Will Feat"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<!-- <input type="text" name="data.defences.wil.enhance" value="{{data.defences.wil.enhance}}" title="Will Enhancement"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
@@ -215,8 +215,8 @@
 						<span title="Movement Speed" style="margin-right: 4px;">{{data.movement.basic.value}}</span>
 						<span title="Base Speed">Base:</span> 
 						<input type="text" name="data.movement.basic.base" value="{{data.movement.basic.base}}" title="Base Movement Speed!" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-						<span>Armour:</span>
-						<input type="text" name="data.movement.basic.armor" value="{{data.movement.basic.armor}}" title="Armour Effect" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+						<span>Armour: {{data.movement.basic.armour}}</span>
+						<!-- <input type="text" name="data.movement.basic.armour" value="{{data.movement.basic.armour}}" title="Armour Effect" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
 						<a class="move-bonus" data-target="data.details" title="Movement Bonus">Bonus: {{data.movement.basic.bonusValue}}</a>
 						<!-- <input type="text" name="data.movement.basic.misc" value="{{data.movement.basic.misc}}" title="Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
 					</div>
@@ -312,8 +312,8 @@
 						<li class="skill flexrow" data-res="{{r}}">
 							<h4 class="res-name">{{res.label}}</h4>
 							<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
-							<span class="res-armour">Armour:</span>
-							<input type="text" class="skill-mod" name="data.resistences.{{r}}.armour" value="{{res.armour}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour Bonus"> </input>
+							<span class="res-armour">Armour: {{res.armour}} </span>
+							<!-- <input type="text" class="skill-mod" name="data.resistences.{{r}}.armour" value="{{res.armour}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour Bonus"> </input> -->
 							<a class="resistence-bonus" data-target="data.resistences" title="Resistence Bonus">Bonus: {{res.resBonusValue}}</a>
 							<!-- <input type="text" class="skill-mod" name="data.resistences.{{r}}.race" value="{{res.race}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Race"> </input> -->
 							<!-- <input type="text" class="skill-mod" name="data.resistences.{{r}}.misc" value="{{res.misc}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Misc"> </input> -->

@@ -46,7 +46,6 @@ export class SimpleActor extends Actor {
 	prepareData() {
 		super.prepareData();
 		
-		
 		// Get the Actor's data object
 		const actorData = this.data;
 		const data = actorData.data;
@@ -163,6 +162,13 @@ export class SimpleActor extends Actor {
 					}
 				}
 			}
+			if (skl.armourCheck) {
+				//Get Skill Check Penalty stats from armour
+				for ( let i of this.items) {
+					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
+					sklBonusValue += i.data.data.armour.skillCheckValue;
+				}
+			}
 			skl.sklBonusValue = sklBonusValue;
 			
 			// Compute modifier
@@ -170,10 +176,6 @@ export class SimpleActor extends Actor {
 			skl.total = skl.value + skl.mod + sklBonusValue;
 			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
 
-			// skl.ability = data.actor.data.abilities[skl.ability].label.substring(0, 3);
-			// skl.icon = this._getProficiencyIcon(skl.value);
-			// skl.hover = CONFIG.DND4E.proficiencyLevels[skl.value];
-			// skl.label = CONFIG.DND4E.skills[id];
 		}
 		
 		if (data.details.temphp <= 0 )
@@ -203,6 +205,7 @@ export class SimpleActor extends Actor {
 
 		//Calc defence stats
 		for (let [id, def] of Object.entries(data.defences)) {
+			
 			def.label = game.i18n.localize(DND4EALTUS.def[id]);
 			def.title = game.i18n.localize(DND4EALTUS.defensives[id]);
 						
@@ -216,10 +219,16 @@ export class SimpleActor extends Actor {
 			}
 			def.bonusValue = defBonusValue;
 			
+			//Get Deff stats from items
+			for ( let i of this.items) {
+				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
+				def.armour += i.data.data.armour[id];
+			}
+
 			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			def.value = 10 + modBonus + def.armor + def.class + def.feat + def.enhance + def.temp + defBonusValue;			
+			def.value = 10 + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;			
 		}
-		
+
 		//calc init
 		let initBonusValue = 0;
 		if(!(data.init.bonus.length === 1 && jQuery.isEmptyObject(data.init.bonus[0]))) {
@@ -242,6 +251,10 @@ export class SimpleActor extends Actor {
 					basicBonusValue += b.value;
 				}
 			}
+		}
+		for ( let i of this.items) {
+			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
+			data.movement.basic.armour += i.data.data.armour.movePenValue;
 		}
 		data.movement.basic.bonusValue = basicBonusValue;
 		
@@ -266,17 +279,17 @@ export class SimpleActor extends Actor {
 		data.movement.run.bonusValue = runBonusValue;
 		
 	
-		data.movement.basic.value = + data.movement.basic.base + data.movement.basic.armor + basicBonusValue + data.movement.basic.temp;
+		data.movement.basic.value = + data.movement.basic.base + data.movement.basic.armour + basicBonusValue + data.movement.basic.temp;
 		
 		if (data.movement.basic.value < 0)
 			data.movement.basic.value = 0;
 		
-		data.movement.charge.value = data.movement.basic.value + data.movement.charge.armor + chargeBonusValue + data.movement.charge.temp;
+		data.movement.charge.value = data.movement.basic.value + data.movement.charge.armour + chargeBonusValue + data.movement.charge.temp;
 		
 		if (data.movement.charge.value < 0)
 			data.movement.charge.value = 0;
 		
-		data.movement.run.value = data.movement.basic.value + 2 + data.movement.run.armor + runBonusValue + data.movement.run.temp;
+		data.movement.run.value = data.movement.basic.value + 2 + data.movement.run.armour + runBonusValue + data.movement.run.temp;
 		
 		if (data.movement.run.value < 0)
 			data.movement.run.value = 0;
@@ -306,20 +319,16 @@ export class SimpleActor extends Actor {
 					}
 				}
 			}
+			for ( let i of this.items) {
+				if(i.data.type !="equipment" || !i.data.data.equipped || i.data.data.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
+				console.log(id);
+				console.log(i.data.data.armour.damageRes.parts.filter(p => p[1] === id).length);
+				res.armour += i.data.data.armour.damageRes.parts.filter(p => p[1] === id)[0][0];
+				break;
+			}
 			res.resBonusValue = resBonusValue;
-			
-			// abl.mod = Math.floor((abl.value - 10) / 2);
-			// abl.prof = (abl.proficient || 0) * data.attributes.prof;
-			// abl.saveBonus = saveBonus;
-			// abl.checkBonus = checkBonus;
-			// abl.save = abl.mod + abl.prof + abl.saveBonus;
 			res.value = res.armour + resBonusValue;
 			res.label = game.i18n.localize(DND4EALTUS.damageTypes[id]); //.localize("");
-			
-			// If we merged saves when transforming, take the highest bonus here.
-			// if (originalSaves && abl.proficient) {
-				// abl.save = Math.max(abl.save, originalSaves[id].save);
-			// }
 		}
 		
 		//Magic Items

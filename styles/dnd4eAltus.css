@@ -784,7 +784,7 @@ font-size: 12px;
 	flex: 0.6;
 }
 .dnd4eAltus.sheet.actor ul.attributes .attribute-res .res-armour {
-	flex: 0.8;
+	flex: 1;
 }
 .dnd4eAltus.sheet.actor ul.attributes .attribute-res .res-immune {
 	flex: 0.8;
@@ -861,10 +861,13 @@ font-size: 12px;
 	flex: 0.5;
 }
 .dnd4eAltus.sheet.actor ul.attributes .attribute-def .def-name {
-	flex: 0.6;
+	flex: 0.4;
 }
 .dnd4eAltus.sheet.actor ul.attributes .attribute-def .def-armour {
-	flex: 0.6;
+	flex: 0.8;
+}
+.dnd4eAltus.sheet.actor ul.attributes .attribute-def .defence-bonus {
+	flex: 0.8;
 }
 .dnd4eAltus.sheet.actor ul.attributes .attribute-def .def-temp {
 	flex: 0.4;
@@ -1511,6 +1514,7 @@ font-size: 12px;
   border-bottom: 3px solid #44191A;
 }
 .dnd4eAltus.sheet.item .details input[type="text"],
+.dnd4eAltus.sheet.item .details .damage-res,
 .dnd4eAltus.sheet.item .details select {
   height: 24px;
   /* width: 6%; */
@@ -1581,9 +1585,14 @@ font-size: 12px;
   flex: 0 0 100%;
   padding: 0;
 }
+.dnd4eAltus.sheet.item .res-group {
+  width: 60%;
+  float: right;
+}
 .dnd4eAltus.sheet.item .damage-parts .damage-part input {
   flex: 3;
 }
+
 .dnd4eAltus.sheet.item .damage-parts .damage-part select {
   margin-left: 5px;
   flex: 1;

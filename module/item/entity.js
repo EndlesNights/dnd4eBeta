@@ -183,7 +183,10 @@ export default class Item4e extends Item {
 
     // Equipment Items
     else if ( itemData.type === "equipment" ) {
-      labels.armor = data.armor.value ? `${data.armor.value} ${game.i18n.localize("DND4EALTUS.AC")}` : "";
+      labels.armour = data.armour.ac ? `${data.armour.ac} ${game.i18n.localize("DND4EALTUS.AC")}` : "";
+      labels.fort = data.armour.fort ? `${data.armour.fort} ${game.i18n.localize("DND4EALTUS.FORT")}` : "";
+      labels.ref = data.armour.ref ? `${data.armour.ref} ${game.i18n.localize("DND4EALTUS.REF")}` : "";
+      labels.wil = data.armour.wil ? `${data.armour.WIL} ${game.i18n.localize("DND4EALTUS.WIL")}` : "";
     }
 
     // Activated Items
@@ -500,8 +503,8 @@ export default class Item4e extends Item {
    */
   _equipmentChatData(data, labels, props) {
     props.push(
-      CONFIG.DND4EALTUS.equipmentTypes[data.armor.type],
-      labels.armor || null,
+      CONFIG.DND4EALTUS.equipmentTypes[data.armour.type],
+      labels.armour || null,
       data.stealth.value ? game.i18n.localize("DND4EALTUS.StealthDisadvantage") : null
     );
   }

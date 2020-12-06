@@ -178,7 +178,7 @@ DND4EALTUS.limitedUsePeriods = {
 /* -------------------------------------------- */
 
 /**
- * The set of equipment types for armor, clothing, and other objects which can ber worn by the character
+ * The set of equipment types for armour, clothing, and other objects which can ber worn by the character
  * @type {Object}
  */
 DND4EALTUS.equipmentTypes = {
@@ -241,10 +241,10 @@ DND4EALTUS.equipmentTypesWaist = {
 /* -------------------------------------------- */
 
 /**
- * The set of Armor Proficiencies which a character may have
+ * The set of armour Proficiencies which a character may have
  * @type {Object}
  */
-DND4EALTUS.armorProficiencies = {
+DND4EALTUS.armourProficiencies = {
   "lgt": DND4EALTUS.equipmentTypes.light,
   "med": DND4EALTUS.equipmentTypes.medium,
   "hvy": DND4EALTUS.equipmentTypes.heavy,

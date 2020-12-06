@@ -22,7 +22,6 @@ export class CustomRolldDescriptions extends BaseEntitySheet {
 	}
 	
 	async _updateObject(event, formData) {
-		console.log(formData);
 		const updateData = {};
 		const data = Object.entries(formData);
 		for(let i = 0; i < data.length; i++) {

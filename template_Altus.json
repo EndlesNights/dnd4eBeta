@@ -64,7 +64,7 @@
 				"ac": {
 					"value": 10,
 					"ability": "",
-					"armor": 0,
+					"armour": 0,
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
@@ -78,7 +78,7 @@
 				"fort": {
 					"value": 10,
 					"ability": "",
-					"armor": 0,
+					"armour": 0,
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
@@ -90,7 +90,7 @@
 				"ref": {
 					"value": 10,
 					"ability": "",
-					"armor": 0,
+					"armour": 0,
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
@@ -102,7 +102,7 @@
 				"wil": {
 					"value": 10,
 					"ability": "",
-					"armor": 0,
+					"armour": 0,
 					"class": 0,
 					"feat": 0,
 					"enhance": 0,
@@ -181,19 +181,19 @@
 				"basic": {
 					"value": 0,
 					"base": 6,
-					"armor": 0,
+					"armour": 0,
 					"bonus": [{}],
 					"temp": 0
 				},
 				"charge": {
 					"value": 0,
-					"armor": 0,
+					"armour": 0,
 					"bonus": [{}],
 					"temp": 0
 				},
 				"run": {
 					"value": 0,
-					"armor": 0,
+					"armour": 0,
 					"bonus": [{}],
 					"misc": 0,
 					"temp": 0
@@ -512,7 +512,7 @@
         }
       },
       "mountable": {
-        "armor": {
+        "armour": {
           "value": 10
         },
         "hp": {
@@ -569,7 +569,7 @@
     },
     "equipment": {
       "templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable"],
-      "armor": {
+      "armour": {
         "type": "light",
         "value": 10,
         "dex": null

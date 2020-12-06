@@ -1,90 +1,179 @@
 <form class="{{cssClass}} flexcol item-sheet" autocomplete="off">
 
-    {{!-- Item Sheet Header --}}
-    <header class="sheet-header flexrow">
-        <img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
+	{{!-- Item Sheet Header --}}
+	<header class="sheet-header flexrow">
+		<img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
 
-        <div class="header-details flexrow">
-            <h1 class="charname">
-                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
-            </h1>
+		<div class="header-details flexrow">
+			<h1 class="charname">
+				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
+			</h1>
 
-            <div class="item-subtitle">
-                <h4 class="item-type">{{itemType}}</h4>
-                <span class="item-status">{{itemStatus}}</span>
-            </div>
+			<div class="item-subtitle">
+				<h4 class="item-type">{{itemType}}</h4>
+				<span class="item-status">{{itemStatus}}</span>
+			</div>
 
-            <ul class="summary flexrow">
-                <li>
-                    {{lookup config.consumableTypes data.consumableType }}
-                </li>
-                <li>
-                    <input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
-                </li>
-                <li>
-                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
-                </li>
-            </ul>
-        </div>
-    </header>
+			<ul class="summary flexrow">
+				<li>
+					{{lookup config.consumableTypes data.consumableType }}
+				</li>
+				<li>
+					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
+				</li>
+				<li>
+					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
+				</li>
+			</ul>
+		</div>
+	</header>
 
-    {{!-- Item Sheet Navigation --}}
-    <nav class="sheet-navigation tabs" data-group="primary">
-        <a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
-        <a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
-    </nav>
+	{{!-- Item Sheet Navigation --}}
+	<nav class="sheet-navigation tabs" data-group="primary">
+		<a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
+		<a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
+		<a class="item" data-tab="effects">{{ localize "DND4EALTUS.Effects" }}</a>
+	</nav>
 
-    {{!-- Item Sheet Body --}}
-    <section class="sheet-body">
+	{{!-- Item Sheet Body --}}
+	<section class="sheet-body">
 
-        {{!-- Description Tab --}}
-        {{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
+		{{!-- Description Tab --}}
+		{{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
 
-        {{!-- Details Tab --}}
-        <div class="tab details" data-group="primary" data-tab="details">
-            <h3 class="form-header">{{ localize "DND4EALTUS.ItemConsumableDetails" }}</h3>
+		{{!-- Details Tab --}}
+		<div class="tab details" data-group="primary" data-tab="details">
+			<h3 class="form-header">{{ localize "DND4EALTUS.ItemConsumableDetails" }}</h3>
 
-            {{!-- Consumable Type --}}
-            <div class="form-group">
-                <label>{{ localize "DND4EALTUS.ItemConsumableType" }}</label>
-                <select name="data.consumableType">
-                    {{#select data.consumableType}}
-                    {{#each config.consumableTypes as |name type|}}
-                    <option value="{{type}}">{{name}}</option>
-                    {{/each}}
-                    {{/select}}
-                </select>
-            </div>
+			{{!-- Consumable Type --}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.ItemConsumableType" }}</label>
+				<select name="data.consumableType">
+					{{#select data.consumableType}}
+					{{#each config.consumableTypes as |name type|}}
+					<option value="{{type}}">{{name}}</option>
+					{{/each}}
+					{{/select}}
+				</select>
+			</div>
 
-            <div class="form-group stacked">
-                <label>{{ localize "DND4EALTUS.ItemConsumableStatus" }}</label>
-                <label class="checkbox">
-                    <input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "DND4EALTUS.Equipped" }}
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "DND4EALTUS.Identified" }}
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" name="data.attuned" {{checked data.attuned}}/> {{ localize "DND4EALTUS.Attuned" }}
-                </label>
-            </div>
+			<div class="form-group stacked">
+				<label>{{ localize "DND4EALTUS.ItemConsumableStatus" }}</label>
+				<label class="checkbox">
+					<input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "DND4EALTUS.Equipped" }}
+				</label>
+				<label class="checkbox">
+					<input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "DND4EALTUS.Identified" }}
+				</label>
+				<label class="checkbox">
+					<input type="checkbox" name="data.attuned" {{checked data.attuned}}/> {{ localize "DND4EALTUS.Attuned" }}
+				</label>
+			</div>
 
-            <h3 class="form-header">{{ localize "DND4EALTUS.ItemConsumableUsage" }}</h3>
+			<h3 class="form-header">{{ localize "DND4EALTUS.ItemConsumableUsage" }}</h3>
 
-            {{!-- Item Activation Template --}}
-            {{> "systems/dnd4eAltus/templates/items/parts/item-activation.html"}}
-            {{#if data.activation.type}}
-            <div class="form-group">
-                <label class="checkbox">
-                    <input type="checkbox" name="data.uses.autoDestroy" {{checked data.uses.autoDestroy}}/> {{ localize "DND4EALTUS.ItemDestroyEmpty" }}
-                </label>
-            </div>
-            {{/if}}
+			{{!-- Item Activation Template --}}
+			<!-- {{> "systems/dnd4eAltus/templates/items/parts/item-activation.html"}} -->
+			{{!-- Limited Uses --}}
+			<div class="form-group uses-per">
+				<label>{{ localize "DND4EALTUS.LimitedUses" }}</label>
+				<div class="form-fields">
+					<input type="text" name="data.uses.value" value="{{data.uses.value}}" data-dtype="Number"/>
+					<span class="sep"> {{ localize "DND4EALTUS.of" }} </span>
+					<input type="text" name="data.uses.max" value="{{data.uses.max}}" data-dtype="Number"/>
+					<select name="data.uses.per">
+						{{#select data.uses.per}}
+						<option value=""></option>
+						{{#each config.limitedUsePeriods as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				</div>
+			</div>
+			
+			{{!-- Consumption --}}
+			<div class="form-group uses-per">
+				<label>{{ localize "DND4EALTUS.ConsumeTitle" }}</label>
+				<div class="form-fields">
+					<select name="data.consume.type">
+						{{#select data.consume.type}}
+						<option value=""></option>
+						{{#each config.abilityConsumptionTypes as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+					<select name="data.consume.target">
+						{{#select data.consume.target}}
+						<option value=""></option>
+						{{#each abilityConsumptionTargets as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+					<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
+				</div>
+			</div>
 
-            <h3 class="form-header">{{ localize "DND4EALTUS.ItemConsumableActivation" }}</h3>
 
-            {{!-- Item Action Template --}}
-            {{> "systems/dnd4eAltus/templates/items/parts/item-action.html"}}
-        </div>
-    </section>
+			{{#if data.activation.type}}
+			<div class="form-group">
+				<label class="checkbox">
+					<input type="checkbox" name="data.uses.autoDestroy" {{checked data.uses.autoDestroy}}/> {{ localize "DND4EALTUS.ItemDestroyEmpty" }}
+				</label>
+			</div>
+			{{/if}}
+
+			<h3 class="form-header">{{ localize "DND4EALTUS.ItemConsumableActivation" }}</h3>
+
+			{{!-- Item Action Template --}}
+			<!-- {{> "systems/dnd4eAltus/templates/items/parts/item-action.html"}} -->
+			{{!-- Attack Roll Bonus --}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.ItemAttackBonus" }}</label>
+				<div class="form-fields">
+					<input type="text" name="data.attackBonus" value="{{data.attackBonus}}" data-dtype="Number"/>
+				</div>
+			</div>
+
+			{{!-- Damage Formula --}}
+			<h4 class="damage-header">
+				{{#unless isHealing }}{{ localize "DND4EALTUS.Damage" }}{{ else }}{{ localize "DND4EALTUS.Healing" }}{{/unless}} {{ localize "DND4EALTUS.Formula" }}
+				<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
+			</h4>
+			<ol class="damage-parts form-group">
+				{{#each data.damage.parts as |part i| }}
+				<li class="damage-part flexrow" data-damage-part="{{i}}">
+					<input type="text" name="data.damage.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+					<select name="data.damage.parts.{{i}}.1">
+						{{#select (lookup this "1") }}
+						<option value="">{{ localize "DND4EALTUS.None" }}</option>
+						{{#each ../config.damageTypes as |name type|}}
+						<option value="{{type}}">{{name}}</option>
+						{{/each}}
+						{{#each ../config.healingTypes as |name type|}}
+						<option value="{{type}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+					<a class="damage-control delete-damage"><i class="fas fa-minus"></i></a>
+				</li>
+				{{/each}}
+			</ol>
+
+			{{!-- Other Formula --}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.OtherFormula" }}</label>
+				<div class="form-fields">
+					<input type="text" name="data.formula" value="{{data.formula}}" placeholder="{{ localize 'DND4EALTUS.Formula' }}"/>
+				</div>
+			</div>
+		</div>
+		
+		{{!-- Effects Tab --}}
+		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
+			{{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
+		</div>
+	</section>
 </form>

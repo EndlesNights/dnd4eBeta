@@ -12,7 +12,6 @@ import {onManageActiveEffect, prepareActiveEffectCategories} from "./effects.js"
 import HPOptions from "./apps/hp-options.js";
 import Item4e from "./item/entity.js";
 
-
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -47,7 +46,7 @@ export class SimpleActorSheet extends ActorSheet {
 			}],
 			dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}],
 			// scrollY: [".desk__content"]
-			scrollY: [".attributes", ".inventory-list", ".desk__content", ".scrollbar"]
+			scrollY: [".attributes", ".inventory .inventory-list", ".desk__content", ".scrollbar"]
 		});
   }
 
