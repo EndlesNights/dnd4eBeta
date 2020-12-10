@@ -463,7 +463,7 @@
 	}	
 },
 "Item": {
-    "types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "atwill", "encounter", "daily", "utility"],
+    "types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power", "atwill", "encounter", "daily", "utility"],
     "templates": {
       "itemDescription": {
         "description": {
@@ -545,10 +545,47 @@
           "dt": null,
           "conditions": ""
         }
-      }
+      },
+		"power": {
+			"keyWords": [""],
+			"powersource": "martial",
+			"subName": "",
+			"useType": "power",
+			"actionType": "standard",
+			"requirements": "",
+			"weaponType": "melee",
+			"rangeType": "weapon",
+			"rangePower": "",
+			"area": 0,
+			"weaponUse": "default",
+			"target": {
+				"type": "creature",
+				"num": "One"
+			},
+			"attack": {
+				"isAttack": true,
+				"ability": "str",
+				"abilityBonus": 0,
+				"def": "ac",
+				"defBonus": 0,
+				"formula": "1d20+@{weaponAttackBonus}+@{bonusAttack}+@{attackMod}",
+				"damageType": {},
+				"effectType": {}
+			},
+			"hit": {
+				"detail": "1[W] + Strength modifier damage.",
+				"formula": "1*@{wepDiceNum}d@{wepDiceDamage}+@{attackMod}+@{weaponDamageBonus}",
+				"critFormula": "1*@{wepDiceNum}*@{wepDiceDamage}+@{attackMod}+@{weaponCritBonus}"
+			},
+			"effect": "",
+			"miss": "",
+			"trigger": "",
+			"requirement": "",
+			"special": ""
+		}	  
     },
     "backpack": {
-      "templates": ["itemDescription", "physicalItem"],
+      "templates": ["itemDescription", "physicalItem", "activatedEffect"],
       "capacity": {
         "type": "weight",
         "value": 0,
@@ -626,16 +663,17 @@
       }
     },
     "loot": {
-      "templates": ["itemDescription", "physicalItem"]
+      "templates": ["itemDescription", "physicalItem", "activatedEffect"]
     },
     "tool": {
-      "templates": ["itemDescription", "physicalItem"],
+      "templates": ["itemDescription", "physicalItem", "activatedEffect"],
       "ability": "int",
       "chatFlavor": "",
-      "proficient": 0
+      "roll": "",
+      "bonus": 0
     },
     "weapon": {
-      "templates": ["itemDescription", "physicalItem" ,"activatedEffect", "action", "mountable"],
+      "templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable"],
       "weaponType": "simpleM",
 	  "Hand": "HMain",
       "properties": {},
@@ -647,15 +685,11 @@
 	  "range": {"short": 5, "long": 10},
 	  "diceNum": 0,
 	  "diceDamage": 0,
-	  "bonusAttack": 0,
-	  "bonusDamage": 0,
-	  "abilityModAttack": "str",
-	  "abilityModDamage": "str",
 	  "damageType": {"physical":true},
 	  "weaponGroup": {},
-	  "attackForm": "1d20+@{profBonus}+@{abilityModAttack}+@{bonusAttack}+@{enhance}",
-	  "damageForm": "@{diceNum}d@{diceDamage}+@{abilityModDamage}+@{bonusDamage}+@{enhance}",
-	  "critDamageForm": "@{diceNum}*@{diceDamage}+@{abilityModDamage}+@{bonusDamage}+@{enhance}+(@{enhance}d6)",
+	  "attackForm": "@{profBonus}+@{enhance}",
+	  "damageForm": "@{enhance}",
+	  "critDamageForm": "@{enhance}+(@{enhance}d6)",
 	  "critRange": 20
     },
     "pathFeats": {
@@ -683,52 +717,24 @@
       }
     },
 	"atwill": {
-		"templates": ["itemDescription", "physicalItem"],
+		"templates": ["power", "itemDescription", "activatedEffect", "action"],
 		"keyWords": ["At-Will"],
-		"actionType": "standard",
-		"range": "melee",
-		"target": "One Creature",
-		"attack": ["str", "ac"],
-		"hit": "",
-		"effect": "",
-		"miss": "",
-		"special": ""
+		"useType": "atw"
 	},
 	"encounter": {
-		"templates": ["itemDescription", "physicalItem"],
+		"templates": ["power", "itemDescription", "activatedEffect", "action"],
 		"keyWords": ["Encounter"],
-		"actionType": "standard",
-		"range": "melee",
-		"target": "One Creature",
-		"attack": ["str", "ac"],
-		"hit": "",
-		"effect": "",
-		"miss": "",
-		"special": ""
+		"useType": "enc"
 	},
 	"daily": {
-		"templates": ["itemDescription", "physicalItem"],
+		"templates": ["power", "itemDescription", "activatedEffect", "action"],
 		"keyWords": ["Daily"],
-		"actionType": "standard",
-		"range": "melee",
-		"target": "One Creature",
-		"attack": ["str", "ac"],
-		"hit": "",
-		"effect": "",
-		"miss": "",
-		"special": ""
+		"useType": "day"
 	},
 	"utility": {
-		"templates": ["itemDescription", "physicalItem"],
+		"templates": ["power", "itemDescription", "activatedEffect", "action"],
 		"keyWords": ["Encounter"],
-		"actionType": "standard",
-		"range": "melee",
-		"target": "One Creature",
-		"attack": ["str", "ac"],
-		"hit": "",
-		"effect": "",
-		"miss": "",
-		"special": ""
+		"useType": "enc"
 	}
   }
 }

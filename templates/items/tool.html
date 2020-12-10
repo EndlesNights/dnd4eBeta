@@ -1,74 +1,81 @@
 <form class="{{cssClass}} flexcol item-sheet" autocomplete="off">
 
-    {{!-- Item Sheet Header --}}
-    <header class="sheet-header flexrow">
-        <img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
+	{{!-- Item Sheet Header --}}
+	<header class="sheet-header flexrow">
+		<img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
 
-        <div class="header-details flexrow">
-            <h1 class="charname">
-                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
-            </h1>
+		<div class="header-details flexrow">
+			<h1 class="charname">
+				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
+			</h1>
 
-            <div class="item-subtitle">
-                <h4 class="item-type">{{itemType}}</h4>
-                <span class="item-status">{{itemStatus}}</span>
-            </div>
+			<div class="item-subtitle">
+				<h4 class="item-type">{{itemType}}</h4>
+				<span class="item-status">{{itemStatus}}</span>
+			</div>
 
-            <ul class="summary flexrow">
-                <li>
-                    <input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
-                </li>
-                <li>
-                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
-                </li>
-            </ul>
-        </div>
-    </header>
+			<ul class="summary flexrow">
+				<li>
+					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
+				</li>
+				<li>
+					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
+				</li>
+			</ul>
+		</div>
+	</header>
 
-    {{!-- Item Sheet Navigation --}}
-    <nav class="sheet-navigation tabs" data-group="primary">
-        <a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
-        <a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
-    </nav>
+	{{!-- Item Sheet Navigation --}}
+	<nav class="sheet-navigation tabs" data-group="primary">
+		<a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
+		<a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
+		<a class="item" data-tab="effects">{{ localize "DND4EALTUS.Effects" }}</a>
+	</nav>
 
-    {{!-- Item Sheet Body --}}
-    <section class="sheet-body">
+	{{!-- Item Sheet Body --}}
+	<section class="sheet-body">
 
-        {{!-- Description Tab --}}
-        {{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
+		{{!-- Description Tab --}}
+		{{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
 
-        {{!-- Details Tab --}}
-        <div class="tab details" data-group="primary" data-tab="details">
+		{{!-- Details Tab --}}
+		<div class="tab details" data-group="primary" data-tab="details">
 
-            {{!-- Tool Proficiency --}}
-            <div class="form-group">
-                <label>{{ localize "DND4EALTUS.ItemToolProficiency" }}</label>
-                 <select name="data.proficient" data-dtype="Number">
-                     {{#select data.proficient}}
-                     {{#each config.proficiencyLevels as |label p|}}
-                     <option value="{{p}}">{{label}}</option>
-                     {{/each}}
-                     {{/select}}
-                 </select>
-            </div>
+			{{!-- Tool Proficiency --}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.RollFormula" }}</label>
+				<input type="text" name="data.roll" value="{{data.roll}}" placeholder="{{ localize "DND4EALTUS.RollPlaceholderTool"}}"/>
+			</div>
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.RollBonus" }}</label>
+				<input type="text" name="data.bonus" value="{{data.bonus}}"/>
+			</div>
 
-            {{!-- Ability Check --}}
-            <div class="form-group">
-                <label>{{ localize "DND4EALTUS.DefaultAbilityCheck" }}</label>
-                <select name="data.ability">
-                    {{#select data.ability}}
-                    {{#each config.abilities as |name a|}}
-                    <option value="{{a}}">{{name}}</option>
-                    {{/each}}
-                    {{/select}}
-                </select>
-            </div>
+			{{!-- Ability Check --}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.DefaultAbilitySkillCheck" }}</label>
+				<select name="data.ability">
+					{{#select data.ability}}
+					{{#each config.abilities as |name a|}}
+					<option value="{{a}}">{{name}}</option>
+					{{/each}}
+					{{#each config.skills as |name s|}}
+					<option value="{{s}}">{{name}}</option>
+					{{/each}}
+					{{/select}}
+				</select>
+			</div>
 
-            {{!-- Chat Message Flavor --}}
-            <div class="form-group stacked">
-                <label>{{ localize "DND4EALTUS.ChatFlavor" }}</label>
-                <input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/>
-            </div>
-        </div>
-    </section>
+			{{!-- Chat Message Flavor --}}
+			<div class="form-group stacked">
+				<label>{{ localize "DND4EALTUS.ChatFlavor" }}</label>
+				<input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/>
+			</div>
+		</div>
+		
+		{{!-- Effects Tab --}}
+		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
+			{{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
+		</div>
+	</section>
 </form>

@@ -91,18 +91,18 @@ DND4EALTUS.timePeriods = {
  */
 DND4EALTUS.abilityActivationTypes = {
   "none": "DND4EALTUS.None",
-  "actionstand": "DND4EALTUS.ActionStandard",
-  "actionmove": "DND4EALTUS.ActionMove",
-  "actionminor": "DND4EALTUS.ActionMinor",
-  "actionfree": "DND4EALTUS.ActionFree",
-  "actionreaction": "DND4EALTUS.ActionReaction",
-  "actioninterrupt": "DND4EALTUS.ActionInterrupt",
-  "actionopportunity": "DND4EALTUS.ActionOpportunity",
+  "standard": "DND4EALTUS.ActionStandard",
+  "move": "DND4EALTUS.ActionMove",
+  "minor": "DND4EALTUS.ActionMinor",
+  "free": "DND4EALTUS.ActionFree",
+  "reaction": "DND4EALTUS.ActionReaction",
+  "interrupt": "DND4EALTUS.ActionInterrupt",
+  "opportunity": "DND4EALTUS.ActionOpportunity",
 
-  "minute": DND4EALTUS.timePeriods.minute,
-  "hour": DND4EALTUS.timePeriods.hour,
-  "day": DND4EALTUS.timePeriods.day,
-  "special": DND4EALTUS.timePeriods.spec
+  // "minute": DND4EALTUS.timePeriods.minute,
+  // "hour": DND4EALTUS.timePeriods.hour,
+  // "day": DND4EALTUS.timePeriods.day,
+  // "special": DND4EALTUS.timePeriods.spec
 };
 
 /* -------------------------------------------- */
@@ -388,19 +388,12 @@ DND4EALTUS.encumbrance = {
  */
 DND4EALTUS.targetTypes = {
   "none": "DND4EALTUS.None",
-  "self": "DND4EALTUS.TargetSelf",
+  "Personal": "DND4EALTUS.TargetPersonal",
   "creature": "DND4EALTUS.TargetCreature",
   "ally": "DND4EALTUS.TargetAlly",
   "enemy": "DND4EALTUS.TargetEnemy",
   "object": "DND4EALTUS.TargetObject",
-  "space": "DND4EALTUS.TargetSpace",
-  "radius": "DND4EALTUS.TargetRadius",
-  "sphere": "DND4EALTUS.TargetSphere",
-  "cylinder": "DND4EALTUS.TargetCylinder",
-  "cone": "DND4EALTUS.TargetCone",
   "square": "DND4EALTUS.TargetSquare",
-  "cube": "DND4EALTUS.TargetCube",
-  "line": "DND4EALTUS.TargetLine",
   "wall": "DND4EALTUS.TargetWall"
 };
 
@@ -446,6 +439,18 @@ DND4EALTUS.hitDieTypes = ["d6", "d8", "d10", "d12"];
 
 /* -------------------------------------------- */
 
+DND4EALTUS.powerSource = {
+	"arcane": "DND4EALTUS.Arcane",
+	"divine": "DND4EALTUS.Divine",
+	"martial": "DND4EALTUS.Martial",
+	"Elemental": "DND4EALTUS.Elemental",
+	"ki": "DND4EALTUS.Ki",
+	"primal": "DND4EALTUS.Primal",
+	"psionic": "DND4EALTUS.Psionic",
+	"shadow": "DND4EALTUS.Shadow",
+};
+
+/* -------------------------------------------- */
 /**
  * Character senses options
  * @type {Object}
@@ -462,6 +467,49 @@ DND4EALTUS.vision = {
 	"nv": "DND4EALTUS.VisionNormal",
 	"lv": "DND4EALTUS.VisionLowLight",
 	"bv": "DND4EALTUS.VisionBlind"
+};
+
+DND4EALTUS.weaponType = {
+	"melee": "DND4EALTUS.WeaponMelee",
+	"meleeRanged": "DND4EALTUS.WeaponMeleeRanged",
+	"ranged": "DND4EALTUS.WeaponRanged",
+	"implementA": "DND4EALTUS.WeaponImplementA",
+	"implementD": "DND4EALTUS.WeaponImplementD",
+	"none": "DND4EALTUS.None",
+};
+
+DND4EALTUS.rangeType = {
+	"weapon": "DND4EALTUS.rangeWeapon",
+	"range" : "DND4EALTUS.rangeRanged",
+	"closeBust": "DND4EALTUS.rangeCloseBurst",
+	"closeBlast": "DND4EALTUS.rangeCloseBlast",
+	"rangeBurst": "DND4EALTUS.rangeBurst",
+	"rangeBlast": "DND4EALTUS.rangeBlast",
+	"wall": "DND4EALTUS.rangeWall",
+	"personal": "DND4EALTUS.rangePersonal",
+	
+};
+
+DND4EALTUS.effectTypes = {
+	"beast": "DND4EALTUS.Beast",
+	"beastForm": "DND4EALTUS.BeastForm",
+	"charm": "DND4EALTUS.Charm",
+	"conjuration": "DND4EALTUS.Conjuration",
+	"fear": "DND4EALTUS.Fear",
+	"healing": "DND4EALTUS.Healing",
+	"illusion": "DND4EALTUS.Illusion",
+	"invigorating": "DND4EALTUS.Invigorating",
+	"poison": "DND4EALTUS.DamagePoison",
+	"polymorph": "DND4EALTUS.Polymorph",
+	"rage": "DND4EALTUS.Rage",
+	"rattling": "DND4EALTUS.Rattling",
+	"reliable": "DND4EALTUS.Reliable",
+	"sleep": "DND4EALTUS.Sleep",
+	"spirit": "DND4EALTUS.Spirit",
+	"stance": "DND4EALTUS.Stance",
+	"summoning": "DND4EALTUS.Summoning",
+	"teleportation": "DND4EALTUS.Teleportation",
+	"zone": "DND4EALTUS.Zone",
 };
 
 DND4EALTUS.saves = {
@@ -753,21 +801,22 @@ DND4EALTUS.trainingLevels = {
 // Condition Types
 DND4EALTUS.conditionTypes = {
   "blinded": "DND4EALTUS.ConBlinded",
-  "charmed": "DND4EALTUS.ConCharmed",
+  "dazed": "DND4EALTUS.ConDazed",
   "deafened": "DND4EALTUS.ConDeafened",
-  "diseased": "DND4EALTUS.ConDiseased",
-  "exhaustion": "DND4EALTUS.ConExhaustion",
-  "frightened": "DND4EALTUS.ConFrightened",
-  "grappled": "DND4EALTUS.ConGrappled",
-  "incapacitated": "DND4EALTUS.ConIncapacitated",
+  "dominated": "DND4EALTUS.ConDominated",
+  "dying": "DND4EALTUS.ConDying",
+  "helpless": "DND4EALTUS.ConHelpless",
+  "immobilized": "DND4EALTUS.Immobilized",
   "invisible": "DND4EALTUS.ConInvisible",
-  "paralyzed": "DND4EALTUS.ConParalyzed",
+  "marked": "DND4EALTUS.ConMarked",
   "petrified": "DND4EALTUS.ConPetrified",
-  "poisoned": "DND4EALTUS.ConPoisoned",
   "prone": "DND4EALTUS.ConProne",
   "restrained": "DND4EALTUS.ConRestrained",
+  "slowed": "DND4EALTUS.ConSlower",
   "stunned": "DND4EALTUS.ConStunned",
-  "unconscious": "DND4EALTUS.ConUnconscious"
+  "surprised": "DND4EALTUS.ConSurprised",
+  "unconscious": "DND4EALTUS.ConUnconscious",
+  "weakened": "DND4EALTUS.ConWeakened",
 };
 
 // Languages

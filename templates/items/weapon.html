@@ -161,16 +161,16 @@
 				<div class="form-group">
 					<label title="Number of Dice in damage roll" for="diceNum">Damage Dice Num:</label>
 					<div class="form-fields">
-						<input type="text" name="data.diceNum" id="diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.diceNum" id="diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" onClick="this.select();"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<label title="Size of Dice in damage roll." for="diceDamage">Damage Dice Size:</label>
 					<div class="form-fields">
-						<input type="text" name="data.diceDamage" id="diceDamage" value="{{data.diceDamage}}" title="Size of Dice in damage roll." placeholder="8" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.diceDamage" id="diceDamage" value="{{data.diceDamage}}" title="Size of Dice in damage roll." placeholder="8" onClick="this.select();"/>
 					</div>
 				</div>
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label title="Bonus to Attack Roll.">Attack Roll Bonus:</label>
 					<div class="form-fields">
 						<input type="text" name="data.bonusAttack" value="{{data.bonusAttack}}" title="Bonus to Attack Roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
@@ -181,14 +181,14 @@
 					<div class="form-fields">
 						<input type="text" name="data.bonusDamage" value="{{data.bonusDamage}}" title="Size of Dice in damage roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
-				</div>
+				</div> -->
 				<div class="form-group">
 					<label title="Natural D20 Dice roll required for a hit to be considered a critical hit.">Critical Hit:</label>
 					<div class="form-fields">
 						<input type="text" name ="data.critRange" value="{{data.critRange}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label title="Ability Mod used for attack.">Attack Roll Mod:</label>
 					<div></div>
 					<select name="data.abilityModAttack">
@@ -218,15 +218,15 @@
 						<option value=null >None</option>
 						{{/select}}
 					</select>
-				</div>
+				</div> -->
 
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="Formula used for Attack Rolls.">Attack {{ localize "DND4EALTUS.Formula" }}:</h4>
+					<h4 class="damage-header" title="Formula used for Attack Rolls.">Bonus to Attack {{ localize "DND4EALTUS.Formula" }}:</h4>
 					<input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String" onClick="this.select();"/>
 				</div>
 				{{!-- Damage Formula --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="Formula used for Damage Rolls.">Primary Damage {{ localize "DND4EALTUS.Formula" }}:</h4>
+					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Primary Damage {{ localize "DND4EALTUS.Formula" }}:</h4>
 					<input type="text" name="data.damageForm" value="{{data.damageForm}}" title="Formula used for Damage Rolls." data-dtype="String" onClick="this.select();"/>
 				</div>				
 				<h4 class="damage-header">
@@ -255,7 +255,7 @@
 
 				{{!-- Critical Damage Formula --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Critical Damage {{ localize "DND4EALTUS.Formula" }}:</h4>
+					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Critical Damage {{ localize "DND4EALTUS.Formula" }}:</h4>
 					<input type="text" name="data.critDamageForm" value="{{data.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String" onClick="this.select();"/>
 				</div>				
 				<h4 class="damage-header">

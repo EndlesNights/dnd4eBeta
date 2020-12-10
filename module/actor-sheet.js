@@ -46,7 +46,13 @@ export class SimpleActorSheet extends ActorSheet {
 			}],
 			dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}],
 			// scrollY: [".desk__content"]
-			scrollY: [".attributes", ".inventory .inventory-list", ".desk__content", ".scrollbar"]
+			scrollY: [
+				".attributes",
+				".desk__content", ".scrollbar",
+				".inventory .inventory-list",
+				".features .inventory-list",
+				".powers .inventory-list"
+			]
 		});
   }
 
@@ -518,7 +524,6 @@ export class SimpleActorSheet extends ActorSheet {
 		event.preventDefault();
 		const header = event.currentTarget;
 		const type = header.dataset.type;
-		console.log(type);
 		const itemData = {
 			name: game.i18n.format("DND4EALTUS.ItemNew", {type: type.capitalize()}),
 			type: type,

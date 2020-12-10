@@ -30,6 +30,7 @@
 	<nav class="sheet-navigation tabs" data-group="primary">
 		<a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
 		<a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
+		<a class="item" data-tab="effects">{{ localize "DND4EALTUS.Effects" }}</a>
 	</nav>
 
 	{{!-- Item Sheet Body --}}
@@ -46,7 +47,7 @@
 				<label>{{localize 'DND4EALTUS.ItemContainerCapacity'}}</label>
 				<div class="form-fields">
 					<input type="text" name="data.capacity.value" value="{{data.capacity.value}}"
-					       data-dtype="Number" placeholder="-">
+						   data-dtype="Number" placeholder="-">
 				</div>
 			</div>
 
@@ -68,5 +69,10 @@
 					{{localize 'DND4EALTUS.ItemContainerWeightless'}}
 				</label>
 			</div>
+		</div>
+		{{!-- Effects Tab --}}
+		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
+			{{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
+		</div>
 	</section>
 </form>
