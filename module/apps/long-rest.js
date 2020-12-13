@@ -57,7 +57,14 @@ export class LongRestDialog extends BaseEntitySheet {
 		updateData[`data.magicItemUse.encounteruse`] = false;
 		
 		// *** TODO For Each reset encounter & daily power HERE
-		
+				const items = this.object.items.filter(item => item.data.data.uses.per === "day");
+		const updateItems = items.map( item => {
+			return {
+				_id: item._id,
+				"data.uses.value": item.data.data.uses.max
+			};
+		});
+		await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
 		ChatMessage.create({
 			user: game.user._id,
 			speaker: {actor: this.object, alias: this.object.data.name},

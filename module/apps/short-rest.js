@@ -23,6 +23,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 	
 	async _updateObject(event, formData) {
 		
+		
 		const updateData = {};
 		updateData[`data.health.value`] = this.object.data.data.health.value;
 		
@@ -70,7 +71,17 @@ export class ShortRestDialog extends BaseEntitySheet {
 		updateData[`data.details.secondwind`] = false;
 		updateData[`data.actionpoints.encounteruse`] = false;
 		updateData[`data.magicItemUse.encounteruse`] = false;
+		
 		// *** TODO For Each reset encounter power HERE
+		//get all encounter rechage items/powers
+		const items = this.object.items.filter(item => item.data.data.uses.per === "enc");
+		const updateItems = items.map( item => {
+			return {
+				_id: item._id,
+				"data.uses.value": item.data.data.uses.max
+			};
+		});
+		await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
 		
 		ChatMessage.create({
 			user: game.user._id,
@@ -81,9 +92,6 @@ export class ShortRestDialog extends BaseEntitySheet {
 		});		
 		
 		this.object.update(updateData);
-		
-				console.log(formData);
-		console.log(updateData)
 	}	  
 }
 
