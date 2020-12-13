@@ -1361,23 +1361,23 @@ font-size: 12px;
   border-top: 1px solid #c9c7b8;
 }
 .dnd4eAltus.sheet.actor .inventory .item-controls,
-.dnd4eAltus.sheet.actor .spellbook .item-controls {
+.dnd4eAltus.sheet.actor .powers .item-controls {
   flex: 0 0 68px;
 }
 .dnd4eAltus.sheet.actor .inventory .item-controls .item-toggle,
-.dnd4eAltus.sheet.actor .spellbook .item-controls .item-toggle {
+.dnd4eAltus.sheet.actor .powers .item-controls .item-toggle {
   color: #b5b3a4;
 }
 .dnd4eAltus.sheet.actor .inventory .item-controls .item-toggle.active,
-.dnd4eAltus.sheet.actor .spellbook .item-controls .item-toggle.active {
+.dnd4eAltus.sheet.actor .powers .item-controls .item-toggle.active {
   color: #4b4a44;
 }
 .dnd4eAltus.sheet.actor .inventory .item-controls .item-toggle.fixed,
-.dnd4eAltus.sheet.actor .spellbook .item-controls .item-toggle.fixed {
+.dnd4eAltus.sheet.actor .powers .item-controls .item-toggle.fixed {
   color: #44191A;
 }
 .dnd4eAltus.sheet.actor .inventory .item-controls .item-toggle.fixed:hover,
-.dnd4eAltus.sheet.actor .spellbook .item-controls .item-toggle.fixed:hover {
+.dnd4eAltus.sheet.actor .powers .item-controls .item-toggle.fixed:hover {
   text-shadow: none;
 }
 .dnd4eAltus.sheet .filter-list {

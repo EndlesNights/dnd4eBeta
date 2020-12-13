@@ -231,14 +231,16 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   _prepareItemToggleState(item) {
-    if (item.type === "spell") {
-      const isAlways = getProperty(item.data, "preparation.mode") === "always";
-      const isPrepared =  getProperty(item.data, "preparation.prepared");
+	  const power = ["power","atwill","encounter","daily","utility"];
+    if (power.includes(item.type)) {
+      // const isAlways = getProperty(item.data, "preparation.mode") === "always";
+      const isPrepared =  getProperty(item.data, "prepared");
       item.toggleClass = isPrepared ? "active" : "";
-      if ( isAlways ) item.toggleClass = "fixed";
-      if ( isAlways ) item.toggleTitle = CONFIG.DND4EALTUS.spellPreparationModes.always;
-      else if ( isPrepared ) item.toggleTitle = CONFIG.DND4EALTUS.spellPreparationModes.prepared;
-      else item.toggleTitle = game.i18n.localize("DND4EALTUS.SpellUnprepared");
+      // if ( isAlways ) item.toggleClass = "fixed";
+      // if ( isAlways ) item.toggleTitle = CONFIG.DND4EALTUS.spellPreparationModes.always;
+      // else if ( isPrepared ) item.toggleTitle = CONFIG.DND4EALTUS.spellPreparationModes.prepared;
+	  if ( isPrepared ) item.toggleTitle = game.i18n.localize("DND4EALTUS.PowerPrepared");
+      else item.toggleTitle = game.i18n.localize("DND4EALTUS.PowerUnPrepared");
     }
     else {
       const isActive = getProperty(item.data, "equipped");
@@ -510,7 +512,10 @@ export class SimpleActorSheet extends ActorSheet {
     event.preventDefault();
     const itemId = event.currentTarget.closest(".item").dataset.itemId;
     const item = this.actor.getOwnedItem(itemId);
-    const attr = item.data.type === "spell" ? "data.preparation.prepared" : "data.equipped";
+	const power = ["power","atwill","encounter","daily","utility"];
+	console.log(power.includes(item.data.type));
+    const attr = power.includes(item.data.type) ? "data.prepared" : "data.equipped";
+	console.log(attr);
     return item.update({[attr]: !getProperty(item.data, attr)});
   }
   /* -------------------------------------------- */

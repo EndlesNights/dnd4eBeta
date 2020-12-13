@@ -86,7 +86,7 @@ export class Helper {
 		if(weaponData) {
 			newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1));
 			newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1));
-			newFormula = newFormula.replace("@weaponCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1));
+			newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1));
 			newFormula = this.replaceData (newFormula, weaponData);
 			
 			newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);

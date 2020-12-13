@@ -246,8 +246,10 @@ export default class Item4e extends Item {
         labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
 
 		if(this.type === "atwill") {
-			for (let [id, data] of Object.entries(this.data.data.damageType)) {
-				if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EALTUS.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EALTUS.damageTypes[id]}`;
+			if(this.data.data.damageType) {
+				for (let [id, data] of Object.entries(this.data.data.damageType)) {
+					if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EALTUS.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EALTUS.damageTypes[id]}`;
+				}
 			}
 		}
       }

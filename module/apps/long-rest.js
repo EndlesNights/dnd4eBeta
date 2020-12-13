@@ -50,7 +50,7 @@ export class LongRestDialog extends BaseEntitySheet {
 		updateData[`data.details.deathsavefail`] = 0;
 		updateData[`data.actionpoints.value`] = 1;
 		updateData[`data.magicItemUse.milestone`] = 0;
-		updateData[`data.magicItemUse.dailyuse`] = 0;
+		updateData[`data.magicItemUse.dailyuse`] = this.object.data.data.magicItemUse.perDay;
 		
 		updateData[`data.details.secondwind`] = false;
 		updateData[`data.actionpoints.encounteruse`] = false;

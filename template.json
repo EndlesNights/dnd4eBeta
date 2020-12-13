@@ -57,7 +57,7 @@
 				"perDay": 1,
 				"bonusValue": 0,
 				"milestone": 0,
-				"dailyuse": 0,
+				"dailyuse": 1,
 				"encounteruse": false
 			},
 			"defences": {
@@ -550,6 +550,7 @@
 			"keyWords": [""],
 			"powersource": "martial",
 			"subName": "",
+			"prepared": true,
 			"useType": "power",
 			"actionType": "standard",
 			"requirements": "",
@@ -568,14 +569,14 @@
 				"abilityBonus": 0,
 				"def": "ac",
 				"defBonus": 0,
-				"formula": "1d20+@weaponAttackBonus+@attackBonus+@attackMod",
+				"formula": "1d20+@wepAttack+@powerMod+@attackBonus",
 				"damageType": {},
 				"effectType": {}
 			},
 			"hit": {
 				"detail": "1[W] + Strength modifier damage.",
-				"formula": "1*@weapDiceNumd@wepDiceDamage+@attackMod+@weaponDamageBonus",
-				"critFormula": "1*@wepDiceNum*@wepDiceDamage+@attackMod+@weaponCritBonus"
+				"formula": "(1*@wepDiceNum) d@wepDiceDamage + @powerMod + @wepDamage",
+				"critFormula": "1*@wepDiceNum*@wepDiceDamage+@powerMod+@wepCritBonus"
 			},
 			"miss": {
 				"detail": "Half Damage.",
@@ -694,7 +695,7 @@
 	  "weaponGroup": {},
 	  "attackForm": "@profBonus+@enhance",
 	  "damageForm": "@enhance",
-	  "critDamageForm": "@enhance+(@enhanced6)",
+	  "critDamageForm": "@enhance+@enhance d6",
 	  "critRange": 20
     },
     "pathFeats": {

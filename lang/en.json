@@ -499,6 +499,9 @@
 "DND4EALTUS.PowerDaily": "Daily Power",
 "DND4EALTUS.PowerEnc": "Encounter Power",
 "DND4EALTUS.PowerUtil": "Utility Power",
+"DND4EALTUS.PowerUnPrepared": "Unprepared",
+"DND4EALTUS.PowerPrepared": "Prepared",
+
 
 "DND4EALTUS.Prepared": "Prepared",
 "DND4EALTUS.Price": "Price",
