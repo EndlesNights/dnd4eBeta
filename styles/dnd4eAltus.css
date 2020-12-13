@@ -1319,6 +1319,11 @@ font-size: 12px;
   border-left: 1px solid #c9c7b8;
   border-right: 1px solid #c9c7b8;
 }
+.dnd4eAltus.sheet .items-list .power-target {
+  flex: 0 0 86px;
+  border-left: 1px solid #c9c7b8;
+  border-right: 1px solid #c9c7b8;
+}
 .dnd4eAltus.sheet .items-list .item-list {
   list-style: none;
   margin: 0;

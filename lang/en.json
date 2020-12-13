@@ -30,6 +30,7 @@
 "DND4EALTUS.AbilityUseConsume": "Consume Available Usage?",
 "DND4EALTUS.AbilityWis": "Wisdom",
 "DND4EALTUS.AC": "AC",
+"DND4EALTUS.Action": "Action",
 "DND4EALTUS.ActionStandard": "Standard Action",
 "DND4EALTUS.ActionMove": "Move Action",
 "DND4EALTUS.ActionMinor": "Minor Action",
@@ -501,6 +502,7 @@
 "DND4EALTUS.PowerUtil": "Utility Power",
 "DND4EALTUS.PowerUnPrepared": "Unprepared",
 "DND4EALTUS.PowerPrepared": "Prepared",
+"DND4EALTUS.PowerTarget": "Power Target",
 
 
 "DND4EALTUS.Prepared": "Prepared",

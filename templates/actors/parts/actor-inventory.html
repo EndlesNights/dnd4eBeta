@@ -17,78 +17,78 @@
 		<input type="text" name="data.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number"/>
 		{{/each}}
 	</ol>
-    
-    <div>
-        <div style="display: inline;">
-            <span>Daily Magical Item Powers use Per Day Remaining:</span> 
-            <input style="width: 25px; text-align: right;" type="text" name="data.magicItemUse.dailyuse" value="{{data.magicItemUse.dailyuse}}" title="Daily Magic Items used Today"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
-            <span>/ {{data.magicItemUse.perDay}}</span>
-        </div>
-        <div style="float:right;">
-            <span >Daily Magical Item Used In encounter?</span>
-            <input type="checkbox" name="data.magicItemUse.encounteruse" data-dtype="Boolean" {{checked data.magicItemUse.encounteruse}} title="Daily Magical Item Used In encounter"  style="height: 14px; position: relative; top: 2px;">
-        </div>
-        
-    </div>
+	
+	<div>
+		<div style="display: inline;">
+			<span>Daily Magical Item Powers use Per Day Remaining:</span> 
+			<input style="width: 25px; text-align: right;" type="text" name="data.magicItemUse.dailyuse" value="{{data.magicItemUse.dailyuse}}" title="Daily Magic Items used Today"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
+			<span>/ {{data.magicItemUse.perDay}}</span>
+		</div>
+		<div style="float:right;">
+			<span >Daily Magical Item Used In encounter?</span>
+			<input type="checkbox" name="data.magicItemUse.encounteruse" data-dtype="Boolean" {{checked data.magicItemUse.encounteruse}} title="Daily Magical Item Used In encounter"  style="height: 14px; position: relative; top: 2px;">
+		</div>
+		
+	</div>
 </div>
 
 
 <ol class="items-list inventory-list">
 {{#each sections as |section sid|}}
-    <li class="items-header flexrow">
-        <h3 class="item-name flexrow">{{localize section.label}}</h3>
+	<li class="items-header flexrow">
+		<h3 class="item-name flexrow">{{localize section.label}}</h3>
 
-        {{#if section.columns}}
-            {{#each section.columns}}
-                <div class="item-detail {{css}}">{{label}}</div>
-            {{/each}}
-        {{else}}
-            <div class="item-detail item-weight">{{localize "DND4EALTUS.Weight"}}</div>
-            <div class="item-detail item-uses">{{localize "DND4EALTUS.Charges"}}</div>
-            <div class="item-detail item-action">{{localize "DND4EALTUS.Usage"}}</div>
-        {{/if}}
+		{{#if section.columns}}
+			{{#each section.columns}}
+				<div class="item-detail {{css}}">{{label}}</div>
+			{{/each}}
+		{{else}}
+			<div class="item-detail item-weight">{{localize "DND4EALTUS.Weight"}}</div>
+			<div class="item-detail item-uses">{{localize "DND4EALTUS.Charges"}}</div>
+			<div class="item-detail item-action">{{localize "DND4EALTUS.Usage"}}</div>
+		{{/if}}
 
-        {{#if ../owner}}
-        <div class="item-controls" style="width: 90px;">
-            <a class="item-control item-create" title='{{localize "DND4EALTUS.ItemCreate"}}'
-               {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-                <i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
-            </a>
-        </div>
-        {{/if}}
-    </li>
+		{{#if ../owner}}
+		<div class="item-controls" style="width: 90px;">
+			<a class="item-control item-create" title='{{localize "DND4EALTUS.ItemCreate"}}'
+			   {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+				<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
+			</a>
+		</div>
+		{{/if}}
+	</li>
 
-    <ol class="item-list">
-    {{#each section.items as |item iid|}}
-        <li class="item flexrow {{section.css}}"
-            data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
-            <div class="item-name flexrow rollable">
-                {{#if section.editableName}}
-                <input type="text" value="{{item.name}}">
-                {{else}}
-                <div class="item-image" style="background-image: url({{item.img}})"></div>
-                <h4>
-                    {{item.name~}}
-                    {{~#if item.isStack}} ({{item.data.quantity}}){{/if}}
-                    {{~#if item.data.attuned}} <i class="fas fa-sun attuned" title={{localize "DND4EALTUS.Attuned"}}></i>{{/if}}
-                </h4>
-                {{/if}}
-            </div>
+	<ol class="item-list">
+	{{#each section.items as |item iid|}}
+		<li class="item flexrow {{section.css}}"
+			data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
+			<div class="item-name flexrow rollable">
+				{{#if section.editableName}}
+				<input type="text" value="{{item.name}}">
+				{{else}}
+				<div class="item-image" style="background-image: url({{item.img}})"></div>
+				<h4>
+					{{item.name~}}
+					{{~#if item.isStack}} ({{item.data.quantity}}){{/if}}
+					{{~#if item.data.attuned}} <i class="fas fa-sun attuned" title={{localize "DND4EALTUS.Attuned"}}></i>{{/if}}
+				</h4>
+				{{/if}}
+			</div>
 
-            {{#if section.columns}}
-                {{#each section.columns}}
-                    <div class="item-detail {{css}}">
-                        {{#with (getProperty item property)}}
-                            {{#if ../editable}}
-                                <input type="text" value="{{this}}" placeholder="&mdash;"
-                                       data-dtype="{{../editable}}" data-property="{{../property}}">
-                            {{else}}
-                                {{this}}
-                            {{/if}}
-                        {{/with}}
-                    </div>
-                {{/each}}
-            {{else}}
+			{{#if section.columns}}
+				{{#each section.columns}}
+					<div class="item-detail {{css}}">
+						{{#with (getProperty item property)}}
+							{{#if ../editable}}
+								<input type="text" value="{{this}}" placeholder="&mdash;"
+									   data-dtype="{{../editable}}" data-property="{{../property}}">
+							{{else}}
+								{{this}}
+							{{/if}}
+						{{/with}}
+					</div>
+				{{/each}}
+			{{else}}
 				<div class="item-detail item-weight">
 					{{#if item.totalWeight}}
 						<div class="item-detail">
@@ -97,34 +97,34 @@
 					{{/if}}
 				</div>
 
-                <div class="item-detail item-uses">
-                    {{#if item.hasUses }}
-                        <input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
-                        / {{item.data.uses.max}}
-                    {{/if}}
-                </div>
+				<div class="item-detail item-uses">
+					{{#if item.hasUses }}
+						<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
+						/ {{item.data.uses.max}}
+					{{/if}}
+				</div>
 
-                <div class="item-detail item-action">
-                    {{#if item.data.activation.type }}
-                        {{item.labels.activation}}
-                    {{/if}}
-                </div>
-            {{/if}}
+				<div class="item-detail item-action">
+					{{#if item.data.activation.type }}
+						{{item.labels.activation}}
+					{{/if}}
+				</div>
+			{{/if}}
 
-            {{#if ../../owner}}
-            <div class="item-controls">
-                {{#unless @root.isVehicle}}
-                <a class="item-control item-toggle {{item.toggleClass}}" title='{{item.toggleTitle}}'><i class="fas fa-shield-alt"></i></a>
-                {{/unless}}
-                {{#unless section.editableName}}
-                <a class="item-control item-edit" title='{{localize "DND4EALTUS.ItemEdit"}}'><i class="fas fa-edit"></i></a>
-                {{/unless}}
-                <a class="item-control item-delete" title='{{localize "DND4EALTUS.ItemDelete"}}'><i class="fas fa-trash"></i></a>
-            </div>
-            {{/if}}
-        </li>
-    {{/each}}
-    </ol>
+			{{#if ../../owner}}
+			<div class="item-controls">
+				{{#unless @root.isVehicle}}
+				<a class="item-control item-toggle {{item.toggleClass}}" title='{{item.toggleTitle}}'><i class="fas fa-shield-alt"></i></a>
+				{{/unless}}
+				{{#unless section.editableName}}
+				<a class="item-control item-edit" title='{{localize "DND4EALTUS.ItemEdit"}}'><i class="fas fa-edit"></i></a>
+				{{/unless}}
+				<a class="item-control item-delete" title='{{localize "DND4EALTUS.ItemDelete"}}'><i class="fas fa-trash"></i></a>
+			</div>
+			{{/if}}
+		</li>
+	{{/each}}
+	</ol>
 {{/each}}
 </ol>
 

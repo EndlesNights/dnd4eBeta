@@ -3,20 +3,19 @@
 		<li class="items-header flexrow">
 			<h3 class="item-name flexrow">{{localize section.label}}</h3>
 	
-			{{#if section.hasActions}}
-			<div class="item-detail item-uses">{{localize "DND4EALTUS.Uses"}}</div>
-			<div class="item-detail item-action">{{localize "DND4EALTUS.Usage"}}</div>
-			{{/if}}
-	
 			{{#if section.columns}}
 				{{#each section.columns}}
 					<div class="item-detail {{css}}">{{label}}</div>
 				{{/each}}
+			{{else}}
+				<div class="item-detail item-uses">{{localize "DND4EALTUS.Charges"}}</div>
+				<div class="item-detail item-action">{{localize "DND4EALTUS.Action"}}</div>
+				<div class="item-detail power-target">{{localize "DND4EALTUS.PowerTarget"}}</div>
 			{{/if}}
-	
 			{{#if ../owner}}
-			<div class="item-controls flexrow">
-				<a class="item-control item-create" title="{{localize 'DND4EALTUS.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+			<div class="item-controls" style="width: 90px;">
+				<a class="item-control item-create" title='{{localize "DND4EALTUS.ItemCreate"}}'
+				   {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
 					<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
 				</a>
 			</div>
@@ -30,7 +29,49 @@
 					<div class="item-image" style="background-image: url('{{item.img}}')"></div>
 					<h4>{{item.name}}</h4>
 				</div>
-	
+				
+				{{#if section.columns}}
+					{{#each section.columns}}
+					<div class="item-detail {{css}}">
+						{{#with (getProperty item property)}}
+							{{#if ../editable}}
+								<input type="text" value="{{this}}" placeholder="&mdash;"
+									data-dtype="{{../editable}}" data-property="{{../property}}">
+							{{else}}
+								{{this}}
+							{{/if}}
+						{{/with}}
+					</div>
+					{{/each}}
+				{{else}}
+					<div class="item-detail item-uses">
+						{{#if item.hasUses }}
+							<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
+							/ {{item.data.uses.max}}
+						{{/if}}
+					</div>
+					<div class="item-detail item-action">
+						{{#if item.data.actionType }}
+							{{item.data.actionType}}
+						{{/if}}
+					</div>
+					<div class="item-detail power-target">
+						{{#if item.data.target.type}}
+							<div class="item-detail">
+								{{item.data.target.num}} {{ item.data.target.type }}
+							</div>
+						{{/if}}
+					</div>
+				{{/if}}
+		
+				{{#if ../owner}}
+				<div class="item-controls flexrow">
+					<a class="item-control item-create" title="{{localize 'DND4EALTUS.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+						<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
+					</a>
+				</div>
+				{{/if}}
+
 				{{#if section.hasActions}}
 				<div class="item-detail item-uses">
 					{{#if item.isOnCooldown}}
