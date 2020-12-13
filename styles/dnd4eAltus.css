@@ -1533,13 +1533,13 @@ font-size: 12px;
   flex: 1.5;
 }
 .dnd4eAltus.sheet.item .details .form-group.uses-per input {
-  flex: 1;
+  flex: 0 0 32px;
 }
 .dnd4eAltus.sheet.item .details .form-group.uses-per span {
   flex: 0 0 16px;
 }
 .dnd4eAltus.sheet.item .details .form-group.uses-per select {
-  flex: 3;
+  flex: 1;
 }
 .dnd4eAltus.sheet.item .details span.sep {
   flex: 0 0 8px;
@@ -1566,7 +1566,7 @@ font-size: 12px;
   margin-right: 10px;
 }
 .dnd4eAltus.sheet.item .weapon-properties label.checkbox {
-  flex: 0 0 98px;
+  flex: 0 0 118px;
 }
 
 .dnd4eAltus.sheet.item h4.damage-header {

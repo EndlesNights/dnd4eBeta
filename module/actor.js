@@ -1,4 +1,6 @@
 import { d20Roll, damageRoll } from "./dice.js";
+import AbilityUseDialog from "./apps/ability-use-dialog.js";
+import AbilityTemplate from "./pixi/ability-template.js"
 import { DND4EALTUS } from "./config.js";
 
 /**
@@ -522,7 +524,52 @@ export class SimpleActor extends Actor {
     }
 	
     return super.createOwnedItem(itemData, options);
-  }	
+  }
+
+	/* -------------------------------------------- */
+
+	/**
+	* Use a Power, consume that abilities use, and resources
+	* @param {Item4e} item   The power being used by the actor
+	* @param {Event} event   The originating user interaction which triggered the cast
+	*/
+	async usePower(item, {configureDialog=true}={}) {
+		if ( item.data.type !== "atwill" ) throw new Error("Wrong Item type");
+		const itemData = item.data.data;
+		console.log(item);
+		//configure Powers data
+		const limitedUses = !!itemData.uses.per;
+		let consumeUse = false;
+		let placeTemplate = false;
+		
+		if( configureDialog && limitedUses) {
+			// const usage = await AbilityUseDialog.create(item);
+			// if ( usage === null ) return;
+			
+			// consumeUse = Boolean(usage.get("consumeUse"));
+			consumeUse = true;
+			// placeTemplate = Boolean(usage.get("placeTemplate"));
+			placeTemplate = true;
+		}
+		// Update Item data
+		if ( limitedUses && consumeUse ) {
+			const uses = parseInt(itemData.uses.value || 0);
+			if ( uses <= 0 ) ui.notifications.warn(game.i18n.format("DND4EALTUS.ItemNoUses", {name: item.name}));
+			
+			await item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
+			// item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
+		}
+		
+		// Initiate ability template placement workflow if selected
+		if ( placeTemplate && item.hasAreaTarget ) {
+			const template = AbilityTemplate.fromItem(item);
+			if ( template ) template.drawPreview();
+			if ( this.sheet.rendered ) this.sheet.minimize();
+		}		
+		// Invoke the Item roll
+		return item.roll();		
+	}
+	
 	_computeEncumbrance(actorData) {
 		
 		let weight = 0;

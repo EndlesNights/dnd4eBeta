@@ -19,6 +19,10 @@ import { preloadHandlebarsTemplates } from "./templates.js";
 import { SimpleActor } from "./actor.js";
 import Item4e from "./item/entity.js";
 
+// Import Helpers
+import * as chat from "./chat.js";
+import * as dice from "./dice.js";
+
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
 /* -------------------------------------------- */
@@ -73,7 +77,7 @@ Hooks.once("setup", function() {
 
   // Localize CONFIG objects once up-front
   const toLocalize = [
-	"abilities", "abilityActivationTypes", "abilityConsumptionTypes", "actorSizes", "damageTypes", "consumableTypes", "distanceUnits", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerSource", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
+	"abilities", "abilityActivationTypes", "abilityConsumptionTypes", "actorSizes", "damageTypes", "conditionTypes", "consumableTypes", "distanceUnits", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerSource", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
   ];
 
   const noSort = [
@@ -103,6 +107,23 @@ Hooks.once("setup", function() {
   }
 });
 
+
+/* -------------------------------------------- */
+/*  Other Hooks                                 */
+/* -------------------------------------------- */
+
+Hooks.on("renderChatMessage", (app, html, data) => {
+
+  // Display action buttons
+  chat.displayChatActionButtons(app, html, data);
+
+  // Highlight critical success or failure die
+  chat.highlightCriticalSuccessFailure(app, html, data);
+
+  // Optionally collapse the content
+  if (game.settings.get("dnd4eAltus", "autoCollapseItemCards")) html.find(".card-content").hide();
+});
+Hooks.on("getChatLogEntryContext", chat.addChatMessageContextOptions);
 Hooks.on("renderChatLog", (app, html, data) => Item4e.chatListeners(html));
 
 Hooks.on("canvasInit", function() {

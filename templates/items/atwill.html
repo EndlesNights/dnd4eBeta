@@ -75,7 +75,7 @@
 			</div>
 
 			{{!-- Weapon Range and AoE--}}
-			<div class="form-group select">
+			<div class="form-group uses-per">
 				<label>{{ localize "DND4EALTUS.WeaponTypeRequired" }}</label>
 				<select name="data.weaponType">
 					{{#select data.weaponType}}
@@ -85,7 +85,23 @@
 					{{/each}}
 					{{/select}}
 				</select>
+
+				{{#if data.weaponType}}
+					<!-- <span>Weapon</span> -->
+					<select name="data.weaponUse">
+						{{#select data.weaponUse}}
+						<option value="default">Default</option>
+						<option value="defaultOH">Default Off-Hand</option>
+						<option value="">None</option>
+						{{#each powerWeaponUseTargets as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				{{/if}}
 			</div>
+
+			
 
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EALTUS.RangePower" }}</label>
@@ -121,11 +137,11 @@
 						{{/each}}
 						{{/select}}
 					</select>
-					<input type="text" name="data.target.num" value="{{data.target.num}}"/>
+					<input type="text" name="data.target.num" value="{{data.target.num}}" data-dtype="Number"/>
 				</div>
 			</div>
 
-			<div class="form-group">
+			<div class="form-group uses-per">
 				<label>{{ localize "DND4EALTUS.LimitedUses"}}</label>
 				<div class="form-fields">
 					<input type="text" name="data.uses.value" value="{{data.uses.value}}" data-dtype="Number"/>
@@ -145,7 +161,7 @@
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EALTUS.ConsumeTitle" }}</label>
 				<div class="form-fields">
-					<select name="data.consume.type">
+					<select name="data.consume.type" style="flex: 0.55;">
 						{{#select data.consume.type}}
 						<option value=""></option>
 						{{#each config.abilityConsumptionTypes as |name key|}}
@@ -153,7 +169,7 @@
 						{{/each}}
 						{{/select}}
 					</select>
-					<select name="data.consume.target">
+					<select name="data.consume.target" style="width: 80%">
 						{{#select data.consume.target}}
 						<option value=""></option>
 						{{#each abilityConsumptionTargets as |name key|}}
@@ -178,7 +194,7 @@
 				<input type="text" name="data.special" value="{{data.special}}"/>
 			</div>
 
-
+			{{!-- Attack Details--}}
 			<h3 class="form-header">{{ localize "DND4EALTUS.AttackDetails" }}</h3>
 			<div class="form-group">
 				<label>{{ localize "DND4EALTUS.IsAttack" }}</label>
@@ -200,7 +216,7 @@
 					</select>
 					{{#if data.attack.ability}}
 						<span>+</span>
-						<input type="text" name="data.attack.abilityBonus" value="{{data.attack.abilityBonus }}" data-dtype="Number"/>
+						<input type="text" name="data.attackBonus" value="{{data.attackBonus }}" data-dtype="Number"/>
 					{{/if}}
 
 					<span>{{ localize "DND4EALTUS.VS" }}</span>
@@ -212,10 +228,10 @@
 						{{/each}}
 						{{/select}}
 					</select>
-					{{#if data.attack.def}}
+					<!-- {{#if data.attack.def}}
 						<span>+</span>
 						<input type="text" name="data.attack.defBonus" value="{{data.attack.defBonus }}" data-dtype="Number"/>
-					{{/if}}
+					{{/if}} -->
 				</div>
 			</div>
 
@@ -223,6 +239,8 @@
 				<label>Attack {{ localize "DND4EALTUS.Formula" }}</label>
 				<input type="text" name="data.attack.formula" value="{{data.attack.formula}}"/>
 			</div>
+
+			{{!-- Hit Details --}}
 			{{!-- Damage --}}
 			<div class="form-group stacked">
 				<label>Damage {{ localize "DND4EALTUS.Formula" }}</label>
@@ -280,10 +298,26 @@
 				</li>
 				{{/each}}
 			</ol>
-			{{!-- Hit Details --}}	
+			{{!-- Hit Details --}}
 			<div class="form-group stacked">
-				<label>{{ localize "DND4EALTUS.HitDetails" }}</label>
+				<!-- <label>{{ localize "DND4EALTUS.HitEffects" }}</label> -->
+			</div>
+			<div class="form-group stacked">
+				<label>{{ localize "DND4EALTUS.HitDetailsText" }}</label>
 				<input type="text" name="data.hit.detail" value="{{data.hit.detail}}"/>
+			</div>
+
+			{{!-- Miss --}}
+			<div class="form-group stacked">
+				<label>Miss Damage {{ localize "DND4EALTUS.Formula" }}</label>
+				<input type="text" name="data.miss.formula" value="{{data.miss.formula}}"/>
+			</div>
+			<div class="form-group stacked">
+				<!-- <label>{{ localize "DND4EALTUS.MissEffects" }}</label> -->
+			</div>
+			<div class="form-group stacked">
+				<label>{{ localize "DND4EALTUS.MissDetailsText" }}</label>
+				<input type="text" name="data.miss.detail" value="{{data.miss.detail}}"/>
 			</div>
 
 			<div class="form-group stacked weapon-properties">
@@ -295,6 +329,20 @@
 				{{/each}}
 			</div>
 
+			{{/if}}
+
+			{{!-- Effect Details --}}
+			<h3 class="form-header">{{ localize "DND4EALTUS.EffectDetails" }}</h3>
+			<div class="form-group stacked">
+				<!-- <label>{{ localize "DND4EALTUS.Effects" }}</label> -->
+			</div>
+			<div class="form-group stacked">
+				<label>{{ localize "DND4EALTUS.EffectDetails" }}</label>
+				<input type="text" name="data.effect.detail" value="{{data.effect.detail}}"/>
+			</div>
+
+
+
 			<div class="form-group stacked weapon-properties">
 				<label title="Type of Damage Dealt by primary attack.">Effect Types & Keywords:</label>
 				{{#each config.effectTypes as |name type|}}
@@ -303,9 +351,6 @@
 				</label>
 				{{/each}}
 			</div>
-			{{/if}}
-
-			
 
 
 			<!-- <label>Type:{{ data.useType }}</label>

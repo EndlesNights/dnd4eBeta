@@ -6,14 +6,15 @@ import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js
  * @extends {ItemSheet}
  */
 export default class ItemSheet4e extends ItemSheet {
-  constructor(...args) {
-    super(...args);
-    if ( this.object.data.type === "class" ) {
-      this.options.resizable = true;
-      this.options.width =  600;
-      this.options.height = 640;
-    }
-  }
+	constructor(...args) {
+		super(...args);
+		// Expand the default size of the class sheet
+		if ( this.object.data.type === "class" ) {
+			this.options.resizable = true;
+			this.options.width =  600;
+			this.options.height = 680;
+		}
+	}
 
   /* -------------------------------------------- */
 
@@ -40,11 +41,9 @@ export default class ItemSheet4e extends ItemSheet {
   /* -------------------------------------------- */
 
   /** @override */
-  getData() {
-    const data = super.getData();
+  async getData(options) {
+    const data = super.getData(options);
     data.labels = this.item.labels;
-
-    // Include CONFIG values
     data.config = CONFIG.DND4EALTUS;
 
     // Item Type, Status, and Details
@@ -55,6 +54,12 @@ export default class ItemSheet4e extends ItemSheet {
 
     // Potential consumption targets
     data.abilityConsumptionTargets = this._getItemConsumptionTargets(data.item);
+	
+	if(data.item.type === "atwill" ||
+		data.item.type === "encounter" ||
+		data.item.type === "daily" ||
+		data.item.type === "utility" ) data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(data.item);
+	
 	if(data.item.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(data.item, data.config);
 	
 	if(data.data?.useType) {
@@ -107,7 +112,7 @@ export default class ItemSheet4e extends ItemSheet {
     if ( !consume.type ) return [];
     const actor = this.item.actor;
     if ( !actor ) return {};
-
+	
     // Ammunition
     if ( consume.type === "ammo" ) {
       return actor.itemTypes.consumable.reduce((ammo, i) =>  {
@@ -130,7 +135,7 @@ export default class ItemSheet4e extends ItemSheet {
     // Materials
     else if ( consume.type === "material" ) {
       return actor.items.reduce((obj, i) => {
-        if ( ["consumable", "loot"].includes(i.data.type) && !i.data.data.activation ) {
+        if ( ["consumable", "loot"].includes(i.data.type) ) {
           obj[i.id] = `${i.name} (${i.data.data.quantity})`;
         }
         return obj;
@@ -153,7 +158,79 @@ export default class ItemSheet4e extends ItemSheet {
     else return {};
   }
   
+    /* -------------------------------------------- */
+	
+	/**
+	* Get the valid weapons targets which exist on the actor
+	* @param {Object} weapon         weapon data for the weapon items being displayed
+	* @return {{string: string}}   An object of potential consumption targets
+	* @private
+	*/
+	_getItemsWeaponUseTargets(weapon) {
+		const weaponType = weapon.data.weaponType || {};
+		if ( !weaponType ) return [];
+		const actor = this.item.actor;
+		if ( !actor ) return {};
 
+		let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
+		let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
+		
+		if ( weaponType === "melee" ) {
+			return actor.itemTypes.weapon.reduce((obj, i) =>  {
+				if (setMelee.includes(i.data.data.weaponType) ) {
+					obj[i.id] = `${i.name}`;
+				}
+				return obj;
+			}, {});
+		}
+		
+		if ( weaponType === "ranged" ) {
+			return actor.itemTypes.weapon.reduce((obj, i) =>  {
+				if (setRanged.includes(i.data.data.weaponType) ) {
+					obj[i.id] = `${i.name}`;
+				}
+				return obj;
+			}, {});
+		}
+
+		if ( weaponType === "meleeRanged" ) {
+			return actor.itemTypes.weapon.reduce((obj, i) =>  {
+				if (setMelee.includes(i.data.data.weaponType) || setRanged.includes(i.data.data.weaponType) ) {
+					obj[i.id] = `${i.name}`;
+				}
+				return obj;
+			}, {});
+		}
+		
+		if ( weaponType === "implement" ) {
+			return actor.itemTypes.weapon.reduce((obj, i) =>  {
+				if (i.data.data.properties.imp ) {
+					obj[i.id] = `${i.name}`;
+				}
+				return obj;
+			}, {});			
+		}
+				
+		if ( weaponType === "implementA" ) {
+			return actor.itemTypes.weapon.reduce((obj, i) =>  {
+				if (i.data.data.properties.impA || i.data.data.properties.imp ) {
+					obj[i.id] = `${i.name}`;
+				}
+				return obj;
+			}, {});			
+		}
+		
+		if ( weaponType === "implementD" ) {
+			return actor.itemTypes.weapon.reduce((obj, i) =>  {
+				if (i.data.data.properties.impD || i.data.data.properties.imp ) {
+					obj[i.id] = `${i.name}`;
+				}
+				return obj;
+			}, {});			
+		}
+		
+		return {};
+	}
 
   /* -------------------------------------------- */
 

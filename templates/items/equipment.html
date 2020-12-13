@@ -84,30 +84,8 @@
 					<input type="checkbox" name="data.attuned" {{checked data.attuned}}/> {{ localize "DND4EALTUS.Attuned" }}
 				</label>
 			</div>
-			<div class="form-group uses-per">
-				<label>{{ localize "DND4EALTUS.ConsumeTitle" }}</label>
-				<div class="form-fields">
-					<select name="data.consume.type">
-						{{#select data.consume.type}}
-						<option value=""></option>
-						{{#each config.abilityConsumptionTypes as |name key|}}
-						<option value="{{key}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
-					</select>
-					<select name="data.consume.target">
-						{{#select data.consume.target}}
-						<option value=""></option>
-						{{#each abilityConsumptionTargets as |name key|}}
-						<option value="{{key}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
-					</select>
-					<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
-				</div>
-			</div>
 
-			<div class="form-group">
+			<div class="form-group uses-per">
 				<label>{{ localize "DND4EALTUS.LimitedUses"}}</label>
 				<div class="form-fields">
 					<input type="text" name="data.uses.value" value="{{data.uses.value}}" data-dtype="Number"/>
@@ -124,6 +102,30 @@
 					</select>
 				</div>
 			</div>
+			<div class="form-group uses-per">
+				<label>{{ localize "DND4EALTUS.ConsumeTitle" }}</label>
+				<div class="form-fields">
+					<select name="data.consume.type" style="flex: 0.55;">
+						{{#select data.consume.type}}
+						<option value=""></option>
+						{{#each config.abilityConsumptionTypes as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+					<select name="data.consume.target" style="width: 80%">
+						{{#select data.consume.target}}
+						<option value=""></option>
+						{{#each abilityConsumptionTargets as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+					<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
+				</div>
+			</div>
+
+
 
 			{{!-- armour Class --}}
 			<div class="form-group">

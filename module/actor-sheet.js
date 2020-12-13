@@ -739,13 +739,11 @@ export class SimpleActorSheet extends ActorSheet {
     const itemId = event.currentTarget.closest(".item").dataset.itemId;
     const item = this.actor.getOwnedItem(itemId);
 	
-	console.log(itemId);
-	console.log(item);
-	
-    // Roll spells through the actor
-    // if ( item.data.type === "spell" ) {
-      // return this.actor.useSpell(item, {configureDialog: !event.shiftKey});
-    // }
+    // Roll powers through the actor
+	console.log(item.data.type);
+    if ( item.data.type === "atwill" ) {
+		return this.actor.usePower(item, {configureDialog: !event.shiftKey});
+    }
 
     // Otherwise roll the Item directly
     // else return item.roll();

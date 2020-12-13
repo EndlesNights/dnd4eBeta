@@ -554,13 +554,13 @@
 			"actionType": "standard",
 			"requirements": "",
 			"weaponType": "melee",
+			"weaponUse": "default",
 			"rangeType": "weapon",
 			"rangePower": "",
 			"area": 0,
-			"weaponUse": "default",
 			"target": {
 				"type": "creature",
-				"num": "One"
+				"num": 1
 			},
 			"attack": {
 				"isAttack": true,
@@ -568,17 +568,22 @@
 				"abilityBonus": 0,
 				"def": "ac",
 				"defBonus": 0,
-				"formula": "1d20+@{weaponAttackBonus}+@{bonusAttack}+@{attackMod}",
+				"formula": "1d20+@weaponAttackBonus+@attackBonus+@attackMod",
 				"damageType": {},
 				"effectType": {}
 			},
 			"hit": {
 				"detail": "1[W] + Strength modifier damage.",
-				"formula": "1*@{wepDiceNum}d@{wepDiceDamage}+@{attackMod}+@{weaponDamageBonus}",
-				"critFormula": "1*@{wepDiceNum}*@{wepDiceDamage}+@{attackMod}+@{weaponCritBonus}"
+				"formula": "1*@weapDiceNumd@wepDiceDamage+@attackMod+@weaponDamageBonus",
+				"critFormula": "1*@wepDiceNum*@wepDiceDamage+@attackMod+@weaponCritBonus"
 			},
-			"effect": "",
-			"miss": "",
+			"miss": {
+				"detail": "Half Damage.",
+				"formula": "@{damageFormula}/2"
+			},
+			"effect": {
+				"detail": ""
+			},
 			"trigger": "",
 			"requirement": "",
 			"special": ""
@@ -675,7 +680,7 @@
     "weapon": {
       "templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable"],
       "weaponType": "simpleM",
-	  "Hand": "HMain",
+	  "weaponHand": "HMain",
       "properties": {},
       "proficient": true,
 	  
@@ -687,9 +692,9 @@
 	  "diceDamage": 0,
 	  "damageType": {"physical":true},
 	  "weaponGroup": {},
-	  "attackForm": "@{profBonus}+@{enhance}",
-	  "damageForm": "@{enhance}",
-	  "critDamageForm": "@{enhance}+(@{enhance}d6)",
+	  "attackForm": "@profBonus+@enhance",
+	  "damageForm": "@enhance",
+	  "critDamageForm": "@enhance+(@enhanced6)",
 	  "critRange": 20
     },
     "pathFeats": {

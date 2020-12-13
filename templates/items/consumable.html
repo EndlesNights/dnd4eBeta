@@ -96,7 +96,7 @@
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EALTUS.ConsumeTitle" }}</label>
 				<div class="form-fields">
-					<select name="data.consume.type">
+					<select name="data.consume.type" style="flex: 0.55;">
 						{{#select data.consume.type}}
 						<option value=""></option>
 						{{#each config.abilityConsumptionTypes as |name key|}}
@@ -104,7 +104,7 @@
 						{{/each}}
 						{{/select}}
 					</select>
-					<select name="data.consume.target">
+					<select name="data.consume.target" style="width: 80%">
 						{{#select data.consume.target}}
 						<option value=""></option>
 						{{#each abilityConsumptionTargets as |name key|}}

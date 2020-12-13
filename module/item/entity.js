@@ -1,6 +1,8 @@
 import {d20Roll, damageRoll} from "../dice.js";
 import AbilityUseDialog from "../apps/ability-use-dialog.js";
 import AbilityTemplate from "../pixi/ability-template.js";
+import { Helper } from "../helper.js"
+import { DND4EALTUS } from "../config.js";
 
 /**
  * Override and extend the basic :class:`Item` implementation
@@ -61,7 +63,8 @@ export default class Item4e extends Item {
    * @type {boolean}
    */
   get hasAttack() {
-    return ["mwak", "rwak", "msak", "rsak"].includes(this.data.data.actionType);
+	  return this.data.data.attack?.isAttack;
+    // return ["mwak", "rwak", "msak", "rsak"].includes(this.data.data.actionType);
   }
 
   /* -------------------------------------------- */
@@ -71,7 +74,7 @@ export default class Item4e extends Item {
    * @type {boolean}
    */
   get hasDamage() {
-    return !!(this.data.data.damage && this.data.data.damage.parts.length);
+    return !!this.data.data.hit.formula || !!(this.data.data.damage && this.data.data.damage.parts.length);
   }
 
   /* -------------------------------------------- */
@@ -122,8 +125,7 @@ export default class Item4e extends Item {
    * @type {boolean}
    */
   get hasAreaTarget() {
-    const target = this.data.data.target;
-    return target && (target.type in CONFIG.DND4EALTUS.areaTargetTypes);
+    return ["closeBust", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.data.data.rangeType);
   }
 
   /* -------------------------------------------- */
@@ -288,7 +290,7 @@ export default class Item4e extends Item {
     }
 
     // For items which consume a resource, handle that here
-    const allowed = await this._handleResourceConsumption({isCard: true, isAttack: false});
+    const allowed = await this._handleResourceConsumption({isCard: true, isAttack: false},this.data.data);
     if ( allowed === false ) return;
 
     // Render the chat card template
@@ -307,16 +309,13 @@ export default class Item4e extends Item {
         alias: this.actor.name
       }
     };
-	console.log(this.actor);
-	
-	console.log(this.actor._id);
-	console.log(this.actor.token);
-	console.log(this.actor.name);
+
     // Toggle default roll mode
     rollMode = rollMode || game.settings.get("core", "rollMode");
     if ( ["gmroll", "blindroll"].includes(rollMode) ) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
     if ( rollMode === "blindroll" ) chatData["blind"] = true;
 	console.log(chatData);
+	console.trace();
     // Create the chat message
     if ( createMessage ) return ChatMessage.create(chatData);
     else return chatData;
@@ -337,9 +336,11 @@ export default class Item4e extends Item {
    * @return {Promise<boolean>}   Can the item card or attack roll be allowed to proceed?
    * @private
    */
-  async _handleResourceConsumption({isCard=false, isAttack=false}={}) {
-    const itemData = this.data.data;
+  async _handleResourceConsumption({isCard=false, isAttack=false}={}, itemData) {
+    // const itemData = this.data.data;
+	
     const consume = itemData.consume || {};
+	console.log(itemData);
     if ( !consume.type ) return true;
     const actor = this.actor;
     const typeLabel = CONFIG.DND4EALTUS.abilityConsumptionTypes[consume.type];
@@ -598,20 +599,55 @@ export default class Item4e extends Item {
    */
   async rollAttack(options={}) {
     const itemData = this.data.data;
-    const actorData = this.actor.data.data;
+    const actorData = this.actor.data.data;	
+	const weaponUse = Helper.getWeaponUse(itemData, this.actor);
+	
     const flags = this.actor.data.flags.dnd4ealtus || {};
     if ( !this.hasAttack ) {
       throw new Error("You may not place an Attack Roll with this Item.");
     }
     let title = `${this.name} - ${game.i18n.localize("DND4EALTUS.AttackRoll")}`;
+	let flavor = title;
+	
+	if(itemData.chatFlavor) flavor += `<br>${itemData.chatFlavor}`;
+	if(itemData.target.type && !["none","personal"].includes(itemData.target.type)) {
+		if(itemData.target.num) {
+			flavor += `<br>Target: ${itemData.target.num} ${itemData.target.type}`;
+		} else {
+			flavor += `<br>Target: Each ${itemData.target.type} `;
+		}
+		//Determin weapon range and AoE type here from rangeType && rangePower.
+		if(itemData.rangeType) {
+			if(itemData.rangeType === "weapon") {
+				flavor += `, ${CONFIG.DND4EALTUS.weaponType[itemData.weaponType]}`;
+			} 
+			else if (itemData.rangeType !== "range") {
+				flavor += `, ${CONFIG.DND4EALTUS.rangeType[itemData.rangeType]}`;
+			}
+		}
+		if(["closeBust","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
+			flavor += ` ${itemData.area}`
+		}
+		if(itemData.rangePower && !["closeBust","closeBlast"].includes(itemData.rangeType) ) {
+			flavor += ` within range of ${itemData.rangePower} squares.`
+		}
+	} else if (itemData.target.type) {
+		flavor += `<br>Target: ${itemData.target.type} `;
+	}
+	flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
     const rollData = this.getRollData();
-
+	
     // Define Roll bonuses
-    const parts = [`@mod`];
-    if ( (this.data.type !== "weapon") || itemData.proficient ) {
-      parts.push("@prof");
-    }
-
+    const parts = !!itemData.attack.formula? [`@power`] : [`@mod`];
+    // if ( (this.data.type !== "weapon") || itemData.proficient ) {
+      // parts.push("@prof");
+    // }
+	
+	//pack the powers formal and send it to the dice.
+	if(!!itemData.attack.formula) {		
+		rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse.data.data);
+	}
+	
     // Attack Bonus
     const actorBonus = actorData?.bonuses?.[itemData.actionType] || {};
     if ( itemData.attackBonus || actorBonus.attack ) {
@@ -619,7 +655,7 @@ export default class Item4e extends Item {
       rollData["atk"] = [itemData.attackBonus, actorBonus.attack].filterJoin(" + ");
     }
 
-    // Ammunition Bonus
+    // Ammunition Bonus from power.
     delete this._ammo;
     const consume = itemData.consume;
     if ( consume?.type === "ammo" ) {
@@ -635,13 +671,34 @@ export default class Item4e extends Item {
         }
       }
     }
+	
+	// Ammunition Bonus from weapon.
+	if(weaponUse) {
+		delete weaponUse._ammo;
+		const consume = weaponUse.data.data.consume;
+		if ( consume?.type === "ammo" ) {
+			const ammo = weaponUse.actor.items.get(consume.target);
+			const q = ammo.data.data.quantity;
+			if ( q && (q - consume.amount >= 0) ) {
+				let ammoBonus = ammo.data.data.attackBonus;
+				if ( ammoBonus ) {
+					if (parts[parts.length-1] !== "@ammo" ) parts.push("@ammo");
+					rollData["ammo"]? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
+					title += ` [${ammo.name}]`;
+					weaponUse._ammo = ammo;
+				}
+			}
+		}
+	}
 
+console.log("Parts:" + parts);
     // Compose roll options
     const rollConfig = mergeObject({
       parts: parts,
       actor: this.actor,
       data: rollData,
       title: title,
+	  flavor: flavor,
       speaker: ChatMessage.getSpeaker({actor: this.actor}),
       dialogOptions: {
         width: 400,
@@ -653,27 +710,24 @@ export default class Item4e extends Item {
     rollConfig.event = options.event;
 
     // Expanded weapon critical threshold
-    if (( this.data.type === "weapon" ) && flags.weaponCriticalThreshold) {
-      rollConfig.critical = parseInt(flags.weaponCriticalThreshold);
+    if (weaponUse) {
+      rollConfig.critical = weaponUse.data.data.critRange;
     }
-
-    // Elven Accuracy
-    if ( ["weapon", "spell"].includes(this.data.type) ) {
-      if (flags.elvenAccuracy && ["dex", "int", "wis", "cha"].includes(this.abilityMod)) {
-        rollConfig.elvenAccuracy = true;
-      }
-    }
-
-    // Apply Halfling Lucky
-    if ( flags.halflingLucky ) rollConfig.halflingLucky = true;
-
+	
     // Invoke the d20 roll helper
     const roll = await d20Roll(rollConfig);
     if ( roll === false ) return null;
 
     // Handle resource consumption if the attack roll was made
-    const allowed = await this._handleResourceConsumption({isCard: false, isAttack: true});
+    const allowed = await (
+		this._handleResourceConsumption({isCard: false, isAttack: true},this.data.data),
+		weaponUse? this._handleResourceConsumption({isCard: false, isAttack: true},this.actor.items.get(weaponUse.id).data.data) : true
+		// itemData.weaponUse? this.actor.items.get(itemData.weaponUse)
+	);
+	
+	
     if ( allowed === false ) return null;
+	
     return roll;
   }
 
@@ -688,6 +742,8 @@ export default class Item4e extends Item {
   rollDamage({event, spellLevel=null, versatile=false}={}) {
     const itemData = this.data.data;
     const actorData = this.actor.data.data;
+	const weaponUse = Helper.getWeaponUse(itemData, this.actor);
+	
     if ( !this.hasDamage ) {
       throw new Error("You may not make a Damage Roll with this Item.");
     }
@@ -703,25 +759,22 @@ export default class Item4e extends Item {
 
     // Define Roll parts
     const parts = itemData.damage.parts.map(d => d[0]);
-
-    // Adjust damage from versatile usage
-    if ( versatile && itemData.damage.versatile ) {
-      parts[0] = itemData.damage.versatile;
-      messageData["flags.dnd4ealtus.roll"].versatile = true;
-    }
-
-    // Scale damage from up-casting spells
-    if ( (this.data.type === "spell") ) {
-      if ( (itemData.scaling.mode === "cantrip") ) {
-        const level = this.actor.data.type === "character" ? actorData.details.level : actorData.details.spellLevel;
-        this._scaleCantripDamage(parts, itemData.scaling.formula, level, rollData);
-      }
-      else if ( spellLevel && (itemData.scaling.mode === "level") && itemData.scaling.formula ) {
-        const scaling = itemData.scaling.formula;
-        this._scaleSpellDamage(parts, itemData.level, spellLevel, scaling, rollData);
-      }
-    }
-
+	//Add power and weapons damage into parts
+	if(!!itemData.hit.formula) {
+		parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
+		parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse.data.data));
+	}
+	
+	// Adjust damage from versatile usage
+	if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
+		parts.push("1");
+		messageData["flags.dnd4ealtus.roll"].versatile = true;
+	}
+    // if ( versatile && itemData.damage.versatile ) {
+      // parts[0] = itemData.damage.versatile;
+      // messageData["flags.dnd4ealtus.roll"].versatile = true;
+    // }	
+	
     // Define Roll Data
     const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
     if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
@@ -729,14 +782,29 @@ export default class Item4e extends Item {
       rollData["dmg"] = actorBonus.damage;
     }
 
-    // Ammunition Damage
+    // Ammunition Damage from power
     if ( this._ammo ) {
       parts.push("@ammo");
       rollData["ammo"] = this._ammo.data.data.damage.parts.map(p => p[0]).join("+");
       flavor += ` [${this._ammo.name}]`;
       delete this._ammo;
     }
-
+	
+	// Ammunition Damage from weapon
+	if(weaponUse) {
+		if ( weaponUse._ammo ) {
+			parts.push("@ammoW");
+			rollData["ammoW"] = weaponUse._ammo.data.data.damage.parts.map(p => p[0]).join("+");
+			flavor += ` [${weaponUse._ammo.name}]`;
+			delete weaponUse._ammo;
+		}
+	}
+	console.log(title);
+	console.log(flavor);
+	
+	//Add powers text to message.
+	if(itemData.hit.detail) flavor += '<br>Hit: ' + itemData.hit.detail
+	if(itemData.effect.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
     // Call the roll helper utility
     return damageRoll({
       event: event,

@@ -30,7 +30,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
   flavor=null, fastForward=null, onClose, dialogOptions,
   advantage=null, disadvantage=null, critical=20, fumble=1, targetValue=null,
   elvenAccuracy=false, halflingLucky=false, reliableTalent=false}={}) {
-
   // Handle input arguments
   flavor = flavor || title;
   speaker = speaker || ChatMessage.getSpeaker();
@@ -60,9 +59,8 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
     // Prepend the d20 roll
     let formula = `${nd}d20${mods}`;
-	let flavorTemp = `Test Data`;
     if (reliableTalent) formula = `{${nd}d20${mods},10}kh`;
-    parts.unshift(formula);
+	if(!parts.includes("@power")) parts.unshift(`1d20`);
 
     // Optionally include a situational bonus
     if ( form !== null ) data['bonus'] = form.bonus.value;
@@ -82,6 +80,8 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
     }
 
     // Execute the roll and flag critical thresholds on the d20
+	console.log(parts.join(" + "));
+	console.log(data);
     let roll = new Roll(parts.join(" + "), data).roll();
 
     // Flag d20 options for any 20-sided dice in the roll
@@ -122,7 +122,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
   // Render modal dialog
   let newFlavor = "";
-  template = template || "systems/dnd4eAltus/templates/roll-dialog.html";
+  template = template || "systems/dnd4eAltus/templates/chat/roll-dialog.html";
   let dialogData = {
     formula: parts.join(" + "),
     data: data,
@@ -142,7 +142,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
       buttons: {
 
         normal: {
-          label: game.i18n.localize("DND4EALTUS.Normal"),
+          label: game.i18n.localize("DND4EALTUS.Roll"),
           callback: html => roll = _roll(parts, 0, html[0].querySelector("form"))
         }
 
@@ -223,7 +223,7 @@ export async function damageRoll({parts, actor, data, event={}, rollMode=null, t
   else parts = parts.concat(["@bonus"]);
 
   // Render modal dialog
-  template = template || "systems/dnd4eAltus/templates/roll-dialog.html";
+  template = template || "systems/dnd4eAltus/templates/chat/roll-dialog.html";
   let dialogData = {
     formula: parts.join(" + "),
     data: data,
