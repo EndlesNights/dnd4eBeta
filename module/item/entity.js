@@ -125,7 +125,7 @@ export default class Item4e extends Item {
    * @type {boolean}
    */
   get hasAreaTarget() {
-    return ["closeBust", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.data.data.rangeType);
+    return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.data.data.rangeType);
   }
 
   /* -------------------------------------------- */
@@ -244,7 +244,14 @@ export default class Item4e extends Item {
       if ( dam.parts ) {
         labels.damage = dam.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
         labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
+
+		if(this.type === "atwill") {
+			for (let [id, data] of Object.entries(this.data.data.damageType)) {
+				if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EALTUS.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EALTUS.damageTypes[id]}`;
+			}
+		}
       }
+
     }
 
     // Assign labels
@@ -279,7 +286,6 @@ export default class Item4e extends Item {
       hasSave: this.hasSave,
       hasAreaTarget: this.hasAreaTarget
     };
-
     // For feature items, optionally show an ability usage dialog
     if (this.data.type === "feat") {
       let configured = await this._rollFeat(configureDialog);
@@ -625,10 +631,10 @@ export default class Item4e extends Item {
 				flavor += `, ${CONFIG.DND4EALTUS.rangeType[itemData.rangeType]}`;
 			}
 		}
-		if(["closeBust","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
+		if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
 			flavor += ` ${itemData.area}`
 		}
-		if(itemData.rangePower && !["closeBust","closeBlast"].includes(itemData.rangeType) ) {
+		if(itemData.rangePower && !["closeBurst","closeBlast"].includes(itemData.rangeType) ) {
 			flavor += ` within range of ${itemData.rangePower} squares.`
 		}
 	} else if (itemData.target.type) {
@@ -759,15 +765,20 @@ console.log("Parts:" + parts);
 
     // Define Roll parts
     const parts = itemData.damage.parts.map(d => d[0]);
+	const partsCrit = itemData.damage.parts.map(d => d[0]);
 	//Add power and weapons damage into parts
 	if(!!itemData.hit.formula) {
 		parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
 		parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse.data.data));
+
+		partsCrit.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
+		partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula,actorData, this.data.data, weaponUse.data.data));
 	}
 	
 	// Adjust damage from versatile usage
 	if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
 		parts.push("1");
+		partsCrit.push("1");
 		messageData["flags.dnd4ealtus.roll"].versatile = true;
 	}
     // if ( versatile && itemData.damage.versatile ) {
@@ -779,12 +790,14 @@ console.log("Parts:" + parts);
     const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
     if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
       parts.push("@dmg");
+      partsCrit.push("@dmg");
       rollData["dmg"] = actorBonus.damage;
     }
 
     // Ammunition Damage from power
     if ( this._ammo ) {
       parts.push("@ammo");
+      partsCrit.push("@ammo");
       rollData["ammo"] = this._ammo.data.data.damage.parts.map(p => p[0]).join("+");
       flavor += ` [${this._ammo.name}]`;
       delete this._ammo;
@@ -794,21 +807,22 @@ console.log("Parts:" + parts);
 	if(weaponUse) {
 		if ( weaponUse._ammo ) {
 			parts.push("@ammoW");
+			partsCrit.push("@ammoW");
 			rollData["ammoW"] = weaponUse._ammo.data.data.damage.parts.map(p => p[0]).join("+");
 			flavor += ` [${weaponUse._ammo.name}]`;
 			delete weaponUse._ammo;
 		}
 	}
-	console.log(title);
-	console.log(flavor);
 	
 	//Add powers text to message.
 	if(itemData.hit.detail) flavor += '<br>Hit: ' + itemData.hit.detail
+	if(itemData.miss.detail) flavor += '<br>Hit: ' + itemData.miss.detail
 	if(itemData.effect.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
     // Call the roll helper utility
     return damageRoll({
       event: event,
       parts: parts,
+	  partsCrit: partsCrit,
       actor: this.actor,
       data: rollData,
       title: title,

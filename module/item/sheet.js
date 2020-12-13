@@ -63,9 +63,9 @@ export default class ItemSheet4e extends ItemSheet {
 	if(data.item.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(data.item, data.config);
 	
 	if(data.data?.useType) {
-		if(!(data.data.rangeType === "personal" || data.data.rangeType === "closeBust" || data.data.rangeType === "closeBlast" || data.data.rangeType === ""))
+		if(!(data.data.rangeType === "personal" || data.data.rangeType === "closeBurst" || data.data.rangeType === "closeBlast" || data.data.rangeType === ""))
 			data.data.isRange = true;
-		if(data.data.rangeType === "closeBust" || data.data.rangeType === "closeBlast" || data.data.rangeType === "rangeBurst" || data.data.rangeType === "rangeBlast" || data.data.rangeType === "wall" ) 
+		if(data.data.rangeType === "closeBurst" || data.data.rangeType === "closeBlast" || data.data.rangeType === "rangeBurst" || data.data.rangeType === "rangeBlast" || data.data.rangeType === "wall" ) 
 			data.data.isArea = true;
 	}
 

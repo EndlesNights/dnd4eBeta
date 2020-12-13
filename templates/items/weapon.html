@@ -222,12 +222,12 @@
 
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Attack Rolls.">Bonus to Attack {{ localize "DND4EALTUS.Formula" }}:</h4>
-					<input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String" onClick="this.select();"/>
+					<input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
 				{{!-- Damage Formula --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Primary Damage {{ localize "DND4EALTUS.Formula" }}:</h4>
-					<input type="text" name="data.damageForm" value="{{data.damageForm}}" title="Formula used for Damage Rolls." data-dtype="String" onClick="this.select();"/>
+					<input type="text" name="data.damageForm" value="{{data.damageForm}}" title="Formula used for Damage Rolls." data-dtype="String"/>
 				</div>				
 				<h4 class="damage-header">
 					{{#unless isHealing }}Secondary {{ localize "DND4EALTUS.Damage" }}{{ else }}{{ localize "DND4EALTUS.Healing" }}{{/unless}} {{ localize "DND4EALTUS.Formula" }}:
@@ -256,7 +256,7 @@
 				{{!-- Critical Damage Formula --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Critical Damage {{ localize "DND4EALTUS.Formula" }}:</h4>
-					<input type="text" name="data.critDamageForm" value="{{data.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String" onClick="this.select();"/>
+					<input type="text" name="data.critDamageForm" value="{{data.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
 				</div>				
 				<h4 class="damage-header">
 					Secondary Critical Damage {{ localize "DND4EALTUS.Formula" }}:

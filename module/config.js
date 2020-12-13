@@ -414,7 +414,11 @@ DND4EALTUS.areaTargetTypes = {
   radius: "circle",
   sphere: "circle",
   square: "rect",
-  wall: "ray"
+  wall: "ray",
+  closeBlast: "rect",
+  closeBurst: "rect",
+  rangeBlast: "rect",
+  rangeBurst: "rect",
 };
 
 
@@ -482,7 +486,7 @@ DND4EALTUS.weaponType = {
 DND4EALTUS.rangeType = {
 	"weapon": "DND4EALTUS.rangeWeapon",
 	"range" : "DND4EALTUS.rangeRanged",
-	"closeBust": "DND4EALTUS.rangeCloseBurst",
+	"closeBurst": "DND4EALTUS.rangeCloseBurst",
 	"closeBlast": "DND4EALTUS.rangeCloseBlast",
 	"rangeBurst": "DND4EALTUS.rangeBurst",
 	"rangeBlast": "DND4EALTUS.rangeBlast",

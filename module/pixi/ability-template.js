@@ -12,15 +12,21 @@ export default class AbilityTemplate extends MeasuredTemplate {
    * @return {AbilityTemplate|null}     The template object, or null if the item does not produce a template
    */
   static fromItem(item) {
-    const target = getProperty(item.data, "data.target") || {};
-    const templateShape = DND4EALTUS.areaTargetTypes[target.type];
+    // const target = getProperty(item.data, "data.target") || {};
+    // const templateShape = DND4EALTUS.areaTargetTypes[target.type];
+    const templateShape = DND4EALTUS.areaTargetTypes[item.data.data.rangeType];
+	
+	let distance = item.data.data.area;
+	if(item.data.data.rangeType === "closeBlast" || item.data.data.rangeType === "rangeBlast") distance *= Math.sqrt(2);
+	if(item.data.data.rangeType === "closeBurst" || item.data.data.rangeType === "rangeBurst") distance = Math.sqrt(2) * ( 1 + 2*distance);
+	
     if ( !templateShape ) return null;
 
     // Prepare template data
     const templateData = {
       t: templateShape,
       user: game.user._id,
-      distance: target.value,
+      distance: distance,
       direction: 0,
       x: 0,
       y: 0,
@@ -33,8 +39,8 @@ export default class AbilityTemplate extends MeasuredTemplate {
         templateData.angle = 53.13;
         break;
       case "rect": // 4e rectangular AoEs are always cubes
-        templateData.distance = Math.hypot(target.value, target.value);
-        templateData.width = target.value;
+        // templateData.distance = Math.hypot(target.value, target.value);
+        // templateData.width = target.value;
         templateData.direction = 45;
         break;
       case "ray": // 4e rays are most commonly 1 square (5 ft) in width

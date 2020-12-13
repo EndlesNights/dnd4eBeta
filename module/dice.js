@@ -165,6 +165,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
  * This chooses the default options of a normal attack with no bonus, Critical, or no bonus respectively
  *
  * @param {Array} parts           The dice roll component parts, excluding the initial d20
+ * @param {Array} partsCrit       The dice roll component parts for a criticalhit
  * @param {Actor} actor           The Actor making the damage roll
  * @param {Object} data           Actor or item data against which to parse the roll
  * @param {Event|object}[event    The triggering event which initiated the roll
@@ -181,7 +182,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
  *
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
-export async function damageRoll({parts, actor, data, event={}, rollMode=null, template, title, speaker, flavor,
+export async function damageRoll({parts, partsCrit, actor, data, event={}, rollMode=null, template, title, speaker, flavor,
   allowCritical=true, critical=false, fastForward=null, onClose, dialogOptions}) {
 
   // Handle input arguments
@@ -189,17 +190,17 @@ export async function damageRoll({parts, actor, data, event={}, rollMode=null, t
   speaker = speaker || ChatMessage.getSpeaker();
   rollMode = game.settings.get("core", "rollMode");
   let rolled = false;
-
+	console.log(parts);
+	console.log(partsCrit);
   // Define inner roll function
-  const _roll = function(parts, crit, form) {
+  const _roll = function(parts, partsCrit, crit, form) {
     data['bonus'] = form ? form.bonus.value : 0;
-    let roll = new Roll(parts.join("+"), data);
-
+    let roll = crit? new Roll(partsCrit.join("+"), data) : new Roll(parts.join("+"), data);
     // Modify the damage formula for critical hits
     if ( crit === true ) {
-      let add = (actor && actor.getFlag("dnd4eAltus", "savageAttacks")) ? 1 : 0;
-      let mult = 2;
-      roll.alter(add, mult);
+      // let add = (actor && actor.getFlag("dnd4eAltus", "savageAttacks")) ? 1 : 0;
+      // let mult = 2;
+      // roll.alter(add, mult);
       flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Critical")})`;
     }
 
@@ -219,8 +220,8 @@ export async function damageRoll({parts, actor, data, event={}, rollMode=null, t
   }
 
   // Modify the roll and handle fast-forwarding
-  if ( fastForward ) return _roll(parts, critical || event.altKey);
-  else parts = parts.concat(["@bonus"]);
+  if ( fastForward ) return _roll(parts, partsCrit, critical || event.altKey);
+  else parts = critical? partsCrit.concat(["@bonus"]) : parts.concat(["@bonus"]);
 
   // Render modal dialog
   template = template || "systems/dnd4eAltus/templates/chat/roll-dialog.html";
@@ -242,11 +243,11 @@ export async function damageRoll({parts, actor, data, event={}, rollMode=null, t
         critical: {
           condition: allowCritical,
           label: game.i18n.localize("DND4EALTUS.CriticalHit"),
-          callback: html => roll = _roll(parts, true, html[0].querySelector("form"))
+          callback: html => roll = _roll(parts, partsCrit, true, html[0].querySelector("form"))
         },
         normal: {
           label: game.i18n.localize(allowCritical ? "DND4EALTUS.Normal" : "DND4EALTUS.Roll"),
-          callback: html => roll = _roll(parts, false, html[0].querySelector("form"))
+          callback: html => roll = _roll(parts, partsCrit, false, html[0].querySelector("form"))
         },
       },
       default: "normal",
