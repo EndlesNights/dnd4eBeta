@@ -443,6 +443,12 @@ DND4EALTUS.hitDieTypes = ["d6", "d8", "d10", "d12"];
 
 /* -------------------------------------------- */
 
+DND4EALTUS.powerUseType = {
+	"atwill": "DND4EALTUS.PowerAt",
+	"encounter": "DND4EALTUS.PowerEnc",
+	"daily": "DND4EALTUS.PowerDaily",
+	"utility": "DND4EALTUS.PowerUtil"
+};
 DND4EALTUS.powerSource = {
 	"arcane": "DND4EALTUS.Arcane",
 	"divine": "DND4EALTUS.Divine",

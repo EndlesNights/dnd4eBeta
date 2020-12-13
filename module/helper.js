@@ -65,7 +65,7 @@ export class Helper {
 		let newFormula = formula;
 		
 		if(actorData) {
-			if(powerData) newFormula = newFormula.replace("@powerMod", actorData.abilities[powerData.attack.ability].mod);
+			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
 			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);
 			newFormula = newFormula.replace("@conMod", actorData.abilities["con"].mod);
@@ -120,6 +120,7 @@ export class Helper {
       }
       // Otherwise, return either the missing replacement value, or the original @attr string for later replacement.
       else {
+		  console.log("missing");
         return missing != null ? missing : `@${term}`;
       }
     });

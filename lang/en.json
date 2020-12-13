@@ -422,6 +422,7 @@
 "DND4EALTUS.ItemWeaponType": "Weapon Type",
 "DND4EALTUS.ItemWeaponUsage": "Weapon Usage",
 "DND4EALTUS.IsAttack": "Attack Roll Required?",
+"DND4EALTUS.IsDamage": "Damage Roll or Effect Line Required?",
 
 "DND4EALTUS.JackOfAllTrades": "Jack of all Trades",
 "DND4EALTUS.LairAct": "Uses Lair Action",

@@ -534,7 +534,9 @@ export class SimpleActor extends Actor {
 	* @param {Event} event   The originating user interaction which triggered the cast
 	*/
 	async usePower(item, {configureDialog=true}={}) {
-		if ( item.data.type !== "atwill" ) throw new Error("Wrong Item type");
+		//if not a valid type of item to use
+		console.log(item.data.type);
+		if ( !DND4EALTUS.powerUseType[item.data.type] ) throw new Error("Wrong Item type");
 		const itemData = item.data.data;
 		console.log(item);
 		//configure Powers data

@@ -20,7 +20,9 @@ export const preloadHandlebarsTemplates = async function() {
 	"systems/dnd4eAltus/templates/items/parts/item-action.html",
 	"systems/dnd4eAltus/templates/items/parts/item-activation.html",
 	"systems/dnd4eAltus/templates/items/parts/item-description.html",
-	"systems/dnd4eAltus/templates/items/parts/item-mountable.html"
+	"systems/dnd4eAltus/templates/items/parts/item-mountable.html",
+	
+	"systems/dnd4eAltus/templates/items/parts/item-power-template.html"
   ];
 
   // Load the template parts

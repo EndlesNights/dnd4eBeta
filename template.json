@@ -569,11 +569,12 @@
 				"abilityBonus": 0,
 				"def": "ac",
 				"defBonus": 0,
-				"formula": "1d20+@wepAttack+@powerMod+@attackBonus",
+				"formula": "1d20+@wepAttack+@powerMod",
 				"damageType": {},
 				"effectType": {}
 			},
 			"hit": {
+				"isDamage": true,
 				"detail": "1[W] + Strength modifier damage.",
 				"formula": "(1*@wepDiceNum) d@wepDiceDamage + @powerMod + @wepDamage",
 				"critFormula": "1*@wepDiceNum*@wepDiceDamage+@powerMod+@wepCritBonus"
@@ -730,17 +731,32 @@
 	"encounter": {
 		"templates": ["power", "itemDescription", "activatedEffect", "action"],
 		"keyWords": ["Encounter"],
-		"useType": "enc"
+		"useType": "enc",
+		"uses": {
+          "value": 1,
+          "max": 1,
+          "per": "enc"
+        }
 	},
 	"daily": {
 		"templates": ["power", "itemDescription", "activatedEffect", "action"],
 		"keyWords": ["Daily"],
-		"useType": "day"
+		"useType": "day",
+		"uses": {
+          "value": 1,
+          "max": 1,
+          "per": "day"
+        }
 	},
 	"utility": {
 		"templates": ["power", "itemDescription", "activatedEffect", "action"],
 		"keyWords": ["Encounter"],
-		"useType": "enc"
+		"useType": "enc",
+		"uses": {
+          "value": 1,
+          "max": 1,
+          "per": "enc"
+        }
 	}
   }
 }

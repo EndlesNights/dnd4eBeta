@@ -654,14 +654,17 @@ export default class Item4e extends Item {
 	//pack the powers formal and send it to the dice.
 	if(!!itemData.attack.formula) {		
 		rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse.data.data);
+		
+		console.log(itemData.attack.formula);
+		console.log(Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse.data.data));
 	}
 	
     // Attack Bonus
-    const actorBonus = actorData?.bonuses?.[itemData.actionType] || {};
-    if ( itemData.attackBonus || actorBonus.attack ) {
-      parts.push("@atk");
-      rollData["atk"] = [itemData.attackBonus, actorBonus.attack].filterJoin(" + ");
-    }
+    // const actorBonus = actorData?.bonuses?.[itemData.actionType] || {};
+    // if ( itemData.attackBonus || actorBonus.attack ) {
+      // parts.push("@atk");
+      // rollData["atk"] = [itemData.attackBonus, actorBonus.attack].filterJoin(" + ");
+    // }
 
     // Ammunition Bonus from power.
     delete this._ammo;
@@ -772,7 +775,7 @@ console.log("Parts:" + parts);
 	if(!!itemData.hit.formula) {
 		parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
 		parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse.data.data));
-
+		
 		partsCrit.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
 		partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula,actorData, this.data.data, weaponUse.data.data));
 	}
