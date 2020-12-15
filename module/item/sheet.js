@@ -288,7 +288,7 @@ export default class ItemSheet4e extends ItemSheet {
         .map(e => CONFIG.DND4EALTUS.weaponProperties[e[0]]));
     }
 
-    else if ( item.type === "spell" ) {
+    else if ( item.type === "power" ) {
       props.push(
         labels.components,
         labels.materials,

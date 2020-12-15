@@ -689,7 +689,7 @@
 	  "profBonus": 0,
 	  "enhance": 0,
 	  "isRanged": false,
-	  "range": {"short": 5, "long": 10},
+	  "range": {"value": 5, "long": 10},
 	  "diceNum": 0,
 	  "diceDamage": 0,
 	  "damageType": {"physical":true},
@@ -698,6 +698,14 @@
 	  "damageForm": "@enhance",
 	  "critDamageForm": "@enhance+@enhance d6",
 	  "critRange": 20
+    },
+    "raceFeats": {
+      "templates": ["itemDescription", "activatedEffect", "action"],
+      "requirements": "",
+      "recharge": {
+        "value": null,
+        "charged": false
+      }
     },
     "pathFeats": {
       "templates": ["itemDescription", "activatedEffect", "action"],

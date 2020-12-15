@@ -88,6 +88,5 @@ export default class TraitSelector extends FormApplication {
 
     // Update the object
     this.object.update(updateData);
-	console.log(updateData);
   }
 }

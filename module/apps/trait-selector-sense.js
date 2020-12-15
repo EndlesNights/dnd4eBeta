@@ -44,12 +44,10 @@ export default class TraitSelector extends FormApplication {
     let attr = getProperty(this.object.data, this.attribute) || {};
     attr.value = attr.value || [];
 	
-	console.log(this.options.choices);
 	// Populate choices
     let choices = duplicate(this.options.choices);
 		
     for ( let [k, v] of Object.entries(choices) ) {
-		console.log(k);
 		let i = -1;
 		
 		for(let index = 0; index < attr.value.length; index++)
@@ -65,8 +63,6 @@ export default class TraitSelector extends FormApplication {
       }
     }
 	
-	console.log(choices);
-
     // Return data
 	  return {
       allowCustom: this.options.allowCustom,
@@ -78,11 +74,7 @@ export default class TraitSelector extends FormApplication {
   /* -------------------------------------------- */
 
   /** @override */
-  _updateObject(event, formData) {
-	  console.log(formData);
-	  
-	  
-
+  _updateObject(event, formData) {	  
     const updateData = {};
 
     // Obtain choices
@@ -107,6 +99,5 @@ export default class TraitSelector extends FormApplication {
 
     // Update the object
     this.object.update(updateData);
-	console.log(updateData);
   }
 }

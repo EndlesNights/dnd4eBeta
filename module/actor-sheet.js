@@ -513,9 +513,7 @@ export class SimpleActorSheet extends ActorSheet {
     const itemId = event.currentTarget.closest(".item").dataset.itemId;
     const item = this.actor.getOwnedItem(itemId);
 	const power = ["power","atwill","encounter","daily","utility"];
-	console.log(power.includes(item.data.type));
     const attr = power.includes(item.data.type) ? "data.prepared" : "data.equipped";
-	console.log(attr);
     return item.update({[attr]: !getProperty(item.data, attr)});
   }
   /* -------------------------------------------- */
@@ -808,7 +806,6 @@ export class SimpleActorSheet extends ActorSheet {
 		const label = a.parentElement.parentElement.querySelector("h4");
 		const choices = CONFIG.DND4EALTUS[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
-		console.log(options);
 		new TraitSelectorSense(this.actor, options).render(true);
 	}
 	
@@ -817,7 +814,6 @@ export class SimpleActorSheet extends ActorSheet {
 		const a = event.currentTarget;
 		const choices = CONFIG.DND4EALTUS[a.dataset.options];
 		const options = { name: a.dataset.target, title: "Saving Throw Mods", choices };
-		console.log(options);
 		new TraitSelectorSave(this.actor, options).render(true);
 	}
 

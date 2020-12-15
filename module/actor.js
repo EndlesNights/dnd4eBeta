@@ -323,8 +323,6 @@ export class SimpleActor extends Actor {
 			}
 			for ( let i of this.items) {
 				if(i.data.type !="equipment" || !i.data.data.equipped || i.data.data.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
-				console.log(id);
-				console.log(i.data.data.armour.damageRes.parts.filter(p => p[1] === id).length);
 				res.armour += i.data.data.armour.damageRes.parts.filter(p => p[1] === id)[0][0];
 				break;
 			}

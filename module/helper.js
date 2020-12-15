@@ -27,7 +27,7 @@ export class Helper {
 		let weaponUse = itemData.weaponUse? actor.items.get(itemData.weaponUse) : null;
 		//If default weapon is in use, find a sutable weapon
 		if(itemData.weaponUse === "default" || itemData.weaponUse === "defaultOH") {
-			console.log("default Weapon in use, seach for weapon type from power: " + itemData.weaponType);
+			// console.log("default Weapon in use, seach for weapon type from power: " + itemData.weaponType);
 			
 			let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 			let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];

@@ -62,8 +62,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
     if (reliableTalent) formula = `{${nd}d20${mods},10}kh`;
 	// if(!parts.includes("@power")) parts.unshift(`1d20`);
 	
-	console.log(parts);
-
     // Optionally include a situational bonus
     if ( form !== null ) data['bonus'] = form.bonus.value;
     if ( !data["bonus"] ) parts.pop();
@@ -82,9 +80,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
     }
 
     // Execute the roll and flag critical thresholds on the d20
-	console.trace();
-	console.log(parts.join(" + "));
-	console.log(data);
     let roll = new Roll(parts.join(" + "), data).roll();
 
     // Flag d20 options for any 20-sided dice in the roll
@@ -193,8 +188,6 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
   speaker = speaker || ChatMessage.getSpeaker();
   rollMode = game.settings.get("core", "rollMode");
   let rolled = false;
-	console.log(parts);
-	console.log(partsCrit);
   // Define inner roll function
   const _roll = function(parts, partsCrit, crit, form) {
     data['bonus'] = form ? form.bonus.value : 0;

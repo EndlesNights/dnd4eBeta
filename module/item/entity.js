@@ -290,7 +290,6 @@ export default class Item4e extends Item {
       hasSave: this.hasSave,
       hasAreaTarget: this.hasAreaTarget
     };
-	console.log(this.data.type);
     // For feature items, optionally show an ability usage dialog
     if (this.data.type === "feat") {
       let configured = await this._rollFeat(configureDialog);
@@ -474,7 +473,6 @@ export default class Item4e extends Item {
   getChatData(htmlOptions={}) {
     const data = duplicate(this.data.data);
     const labels = this.labels;
-
     // Rich text description
     data.description.value = TextEditor.enrichHTML(data.description.value, htmlOptions);
 
@@ -500,7 +498,6 @@ export default class Item4e extends Item {
         labels.duration
       );
     }
-
     // Filter properties and return
     data.properties = props.filter(p => !!p);
     return data;
@@ -657,9 +654,6 @@ export default class Item4e extends Item {
 	//pack the powers formal and send it to the dice.
 	if(!!itemData.attack.formula) {		
 		rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse.data.data);
-		
-		console.log(itemData.attack.formula);
-		console.log(Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse.data.data));
 	}
 	
     // Attack Bonus
@@ -705,7 +699,6 @@ export default class Item4e extends Item {
 		}
 	}
 
-console.log("Parts:" + parts);
     // Compose roll options
     const rollConfig = mergeObject({
       parts: parts,
