@@ -535,10 +535,8 @@ export class SimpleActor extends Actor {
 	*/
 	async usePower(item, {configureDialog=true}={}) {
 		//if not a valid type of item to use
-		console.log(item.data.type);
 		if ( !DND4EALTUS.powerUseType[item.data.type] ) throw new Error("Wrong Item type");
 		const itemData = item.data.data;
-		console.log(item);
 		//configure Powers data
 		const limitedUses = !!itemData.uses.per;
 		let consumeUse = false;
@@ -563,11 +561,11 @@ export class SimpleActor extends Actor {
 		}
 		
 		// Initiate ability template placement workflow if selected
-		if ( placeTemplate && item.hasAreaTarget ) {
-			const template = AbilityTemplate.fromItem(item);
-			if ( template ) template.drawPreview();
-			if ( this.sheet.rendered ) this.sheet.minimize();
-		}		
+		// if ( placeTemplate && item.hasAreaTarget ) {
+			// const template = AbilityTemplate.fromItem(item);
+			// if ( template ) template.drawPreview();
+			// if ( this.sheet.rendered ) this.sheet.minimize();
+		// }		
 		// Invoke the Item roll
 		return item.roll();		
 	}

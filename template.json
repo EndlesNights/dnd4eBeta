@@ -674,10 +674,10 @@
     },
     "tool": {
       "templates": ["itemDescription", "physicalItem", "activatedEffect"],
-      "ability": "int",
+      "attribute": "abilities.int.mod",
       "chatFlavor": "",
-      "roll": "",
-      "bonus": 0
+      "formula": "",
+      "bonus": 2
     },
     "weapon": {
       "templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable"],

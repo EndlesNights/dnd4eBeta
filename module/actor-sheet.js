@@ -743,13 +743,11 @@ export class SimpleActorSheet extends ActorSheet {
     event.preventDefault();
     const itemId = event.currentTarget.closest(".item").dataset.itemId;
     const item = this.actor.getOwnedItem(itemId);
-	console.log(item.data.typ);
     // Roll powers through the actor
 	const power = ["atwill","encounter","daily","utility"];
     if ( power.includes(item.data.type)) {
 		return this.actor.usePower(item, {configureDialog: !event.shiftKey});
     }
-
     // Otherwise roll the Item directly
     return item.roll();
   }

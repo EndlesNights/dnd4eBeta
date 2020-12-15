@@ -32,7 +32,7 @@ export default class Item4e extends Item {
       if (this.data.type === "spell") return actorData.attributes.spellcasting || "int";
 
       // Tools - default to Intelligence
-      else if (this.data.type === "tool") return "int";
+      // else if (this.data.type === "tool") return "int";
 
       // Weapons
       else if (this.data.type === "weapon") {
@@ -74,7 +74,8 @@ export default class Item4e extends Item {
    * @type {boolean}
    */
   get hasDamage() {
-    return !!this.data.data.hit.formula || !!(this.data.data.damage && this.data.data.damage.parts.length);
+	  if(!DND4EALTUS.powerUseType[this.type]) return false; //curently only powers will deal damage or make attacks
+    return !!this.data.data.hit?.formula || !!(this.data.data.damage && this.data.data.damage.parts.length);
   }
 
   /* -------------------------------------------- */
@@ -84,6 +85,7 @@ export default class Item4e extends Item {
    * @type {boolean}
    */
   get isVersatile() {
+	  return false;
     return !!(this.hasDamage && this.data.data.damage.versatile);
   }
 
@@ -245,7 +247,7 @@ export default class Item4e extends Item {
         labels.damage = dam.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
         labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
 
-		if(this.type === "atwill") {
+		if(DND4EALTUS.powerUseType[this.type]) {
 			if(this.data.data.damageType) {
 				for (let [id, data] of Object.entries(this.data.data.damageType)) {
 					if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EALTUS.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EALTUS.damageTypes[id]}`;
@@ -288,14 +290,16 @@ export default class Item4e extends Item {
       hasSave: this.hasSave,
       hasAreaTarget: this.hasAreaTarget
     };
+	console.log(this.data.type);
     // For feature items, optionally show an ability usage dialog
     if (this.data.type === "feat") {
       let configured = await this._rollFeat(configureDialog);
       if ( configured === false ) return;
-    } else if ( this.data.type === "consumable" ) {
-      let configured = await this._rollConsumable(configureDialog);
-      if ( configured === false ) return;
     }
+	// else if ( this.data.type === "consumable" ) {
+      // let configured = await this._rollConsumable(configureDialog);
+      // if ( configured === false ) return;
+    // }
 
     // For items which consume a resource, handle that here
     const allowed = await this._handleResourceConsumption({isCard: true, isAttack: false},this.data.data);
@@ -322,8 +326,7 @@ export default class Item4e extends Item {
     rollMode = rollMode || game.settings.get("core", "rollMode");
     if ( ["gmroll", "blindroll"].includes(rollMode) ) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
     if ( rollMode === "blindroll" ) chatData["blind"] = true;
-	console.log(chatData);
-	console.trace();
+
     // Create the chat message
     if ( createMessage ) return ChatMessage.create(chatData);
     else return chatData;
@@ -348,7 +351,6 @@ export default class Item4e extends Item {
     // const itemData = this.data.data;
 	
     const consume = itemData.consume || {};
-	console.log(itemData);
     if ( !consume.type ) return true;
     const actor = this.actor;
     const typeLabel = CONFIG.DND4EALTUS.abilityConsumptionTypes[consume.type];
@@ -485,7 +487,7 @@ export default class Item4e extends Item {
     if ( data.hasOwnProperty("equipped") && !["loot", "tool"].includes(this.data.type) ) {
       props.push(
         game.i18n.localize(data.equipped ? "DND4EALTUS.Equipped" : "DND4EALTUS.Unequipped"),
-        game.i18n.localize(data.proficient ? "DND4EALTUS.Proficient" : "DND4EALTUS.NotProficient"),
+        // game.i18n.localize(data.proficient ? "DND4EALTUS.Proficient" : "DND4EALTUS.NotProficient"),
       );
     }
 
@@ -553,7 +555,8 @@ export default class Item4e extends Item {
   _toolChatData(data, labels, props) {
     props.push(
       CONFIG.DND4EALTUS.abilities[data.ability] || null,
-      CONFIG.DND4EALTUS.proficiencyLevels[data.proficient || 0]
+      CONFIG.DND4EALTUS.skills[data.ability] || null
+      // CONFIG.DND4EALTUS.proficiencyLevels[data.proficient || 0]
     );
   }
 
@@ -754,7 +757,7 @@ console.log("Parts:" + parts);
     const itemData = this.data.data;
     const actorData = this.actor.data.data;
 	const weaponUse = Helper.getWeaponUse(itemData, this.actor);
-	
+
     if ( !this.hasDamage ) {
       throw new Error("You may not make a Damage Roll with this Item.");
     }
@@ -772,7 +775,7 @@ console.log("Parts:" + parts);
     const parts = itemData.damage.parts.map(d => d[0]);
 	const partsCrit = itemData.damage.parts.map(d => d[0]);
 	//Add power and weapons damage into parts
-	if(!!itemData.hit.formula) {
+	if(!!itemData.hit?.formula) {
 		parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
 		parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse.data.data));
 		
@@ -781,10 +784,12 @@ console.log("Parts:" + parts);
 	}
 	
 	// Adjust damage from versatile usage
-	if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
-		parts.push("1");
-		partsCrit.push("1");
-		messageData["flags.dnd4ealtus.roll"].versatile = true;
+	if(weaponUse) {
+		if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
+			parts.push("1");
+			partsCrit.push("1");
+			messageData["flags.dnd4ealtus.roll"].versatile = true;
+		}
 	}
     // if ( versatile && itemData.damage.versatile ) {
       // parts[0] = itemData.damage.versatile;
@@ -820,9 +825,9 @@ console.log("Parts:" + parts);
 	}
 	
 	//Add powers text to message.
-	if(itemData.hit.detail) flavor += '<br>Hit: ' + itemData.hit.detail
-	if(itemData.miss.detail) flavor += '<br>Hit: ' + itemData.miss.detail
-	if(itemData.effect.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
+	if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
+	if(itemData.miss?.detail) flavor += '<br>Hit: ' + itemData.miss.detail
+	if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
     // Call the roll helper utility
     return damageRoll({
       event: event,
@@ -1066,30 +1071,34 @@ console.log("Parts:" + parts);
    */
   rollToolCheck(options={}) {
     if ( this.type !== "tool" ) throw "Wrong item type!";
-
     // Prepare roll data
     let rollData = this.getRollData();
-    const parts = [`@mod`, "@prof"];
-    const title = `${this.name} - ${game.i18n.localize("DND4EALTUS.ToolCheck")}`;
+    const parts = ["@tool"];
 
+	rollData["tool"] = this.data.data.formula? Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data.data, this.data.data) : `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)} + ${this.data.data.bonus}`;
+    const title = `${this.name} - ${game.i18n.localize("DND4EALTUS.ToolCheck")}`;
+	
+	const label = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
+
+	const flavor = this.data.data.chatFlavor + ` (${label} check)` || `${this.name} - ${game.i18n.localize("DND4EALTUS.ToolCheck")}  (${label} check)`;
     // Compose the roll data
     const rollConfig = mergeObject({
       parts: parts,
       data: rollData,
-      template: "systems/dnd4ealtus/templates/chat/tool-roll-dialog.html",
+      // template: "systems/dnd4ealtus/templates/chat/tool-roll-dialog.html",
       title: title,
       speaker: ChatMessage.getSpeaker({actor: this.actor}),
-      flavor: `${this.name} - ${game.i18n.localize("DND4EALTUS.ToolCheck")}`,
+      flavor: flavor,
       dialogOptions: {
         width: 400,
         top: options.event ? options.event.clientY - 80 : null,
         left: window.innerWidth - 710,
       },
-      halflingLucky: this.actor.getFlag("dnd4ealtus", "halflingLucky" ) || false,
+      // halflingLucky: this.actor.getFlag("dnd4ealtus", "halflingLucky" ) || false,
       messageData: {"flags.dnd4ealtus.roll": {type: "tool", itemId: this.id }}
     }, options);
+	
     rollConfig.event = options.event;
-
     // Call the roll helper utility
     return d20Roll(rollConfig);
   }
@@ -1113,8 +1122,8 @@ console.log("Parts:" + parts);
     }
 
     // Include a proficiency score
-    const prof = "proficient" in rollData.item ? (rollData.item.proficient || 0) : 1;
-    rollData["prof"] = Math.floor(prof * rollData.attributes.prof);
+    // const prof = "proficient" in rollData.item ? (rollData.item.proficient || 0) : 1;
+    // rollData["prof"] = Math.floor(prof * rollData.attributes.prof);
     return rollData;
   }
 

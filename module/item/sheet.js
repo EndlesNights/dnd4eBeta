@@ -123,14 +123,34 @@ export default class ItemSheet4e extends ItemSheet {
       }, {});
     }
 
-    // Attributes
-    else if ( consume.type === "attribute" ) {
-      const attributes = Object.values(CombatTrackerConfig.prototype.getAttributeChoices())[0]; // Bit of a hack
-      return attributes.reduce((obj, a) => {
-        obj[a] = a;
-        return obj;
-      }, {});
-    }
+	// Attributes
+	else if ( consume.type === "attribute" ) {
+		const attributes = Object.values(CombatTrackerConfig.prototype.getAttributeChoices())[0]; // Bit of a hack
+		//manualy adding values like a smuck
+		attributes.push(
+			"actionpoints.value",
+			"magicItemUse.dailyuse",
+			"details.exp",
+			"details.age",
+			"details.temphp",
+			"details.surgeCur",
+			"currency.ad",
+			"currency.pp",
+			"currency.gp",
+			"currency.sp",
+			"currency.cp",
+			"ritualcomp.ar",
+			"ritualcomp.ms",
+			"ritualcomp.rh",
+			"ritualcomp.si",
+			"ritualcomp.rs"
+		);
+
+		return attributes.reduce((obj, a) => {
+			obj[a] = a;
+			return obj;
+		}, {});
+	}
 
     // Materials
     else if ( consume.type === "material" ) {

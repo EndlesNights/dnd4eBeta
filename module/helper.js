@@ -1,6 +1,28 @@
 
 export class Helper {
-	
+
+	/* -------------------------------------------- */
+	/**
+	* Refrence a nested object by string.
+	* s is the string that holds the targeted nested adress
+	* o is the root objet, defaulting to this.object.data
+	*/
+	static byString(s, o) {
+		s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+		s = s.replace(/^\./, '');           // strip a leading dot
+		var a = s.split('.');
+		for (var i = 0, n = a.length; i < n; ++i) {
+			var k = a[i];
+			if (k in o) {
+				o = o[k];
+			} else {
+				return;
+			}
+		}
+		return o;
+	}	
+
+
 	static getWeaponUse(itemData, actor) {
 		let weaponUse = itemData.weaponUse? actor.items.get(itemData.weaponUse) : null;
 		//If default weapon is in use, find a sutable weapon
@@ -60,12 +82,12 @@ export class Helper {
 		return weaponUse;
 	}
 	
-	static commonReplace (formula, actorData, powerData, weaponData, depth = 1) {
+	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula;
 		
 		if(actorData) {
-			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack.ability)? actorData.abilities[powerData.attack.ability].mod : "");
+			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
 			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);
 			newFormula = newFormula.replace("@conMod", actorData.abilities["con"].mod);
@@ -79,7 +101,7 @@ export class Helper {
 		}
 		
 		if(powerData) {
-			newFormula = newFormula.replace("@damageFormula", this.commonReplace(powerData.hit.formula, actorData, powerData, weaponData, depth-1));
+			newFormula = newFormula.replace("@damageFormula", this.commonReplace(formula, actorData, powerData, weaponData, depth-1));
 			newFormula = this.replaceData (newFormula, powerData);
 		}
 
@@ -120,7 +142,6 @@ export class Helper {
       }
       // Otherwise, return either the missing replacement value, or the original @attr string for later replacement.
       else {
-		  console.log("missing");
         return missing != null ? missing : `@${term}`;
       }
     });

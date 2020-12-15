@@ -60,7 +60,9 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
     // Prepend the d20 roll
     let formula = `${nd}d20${mods}`;
     if (reliableTalent) formula = `{${nd}d20${mods},10}kh`;
-	if(!parts.includes("@power")) parts.unshift(`1d20`);
+	// if(!parts.includes("@power")) parts.unshift(`1d20`);
+	
+	console.log(parts);
 
     // Optionally include a situational bonus
     if ( form !== null ) data['bonus'] = form.bonus.value;
@@ -80,6 +82,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
     }
 
     // Execute the roll and flag critical thresholds on the d20
+	console.trace();
 	console.log(parts.join(" + "));
 	console.log(data);
     let roll = new Roll(parts.join(" + "), data).roll();

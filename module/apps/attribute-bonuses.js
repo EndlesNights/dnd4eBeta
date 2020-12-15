@@ -1,3 +1,5 @@
+import { Helper } from "../helper.js"
+
 export class AttributeBonusDialog extends BaseEntitySheet {
 	
 	static get defaultOptions() {
@@ -11,35 +13,15 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 			submitOnClose: true
 		});
 	}
-	/* -------------------------------------------- */
-	/**
-	* Refrence a nested object by string.
-	* s is the string that holds the targeted nested adress
-	* o is the root objet, defaulting to this.object.data
-	*/
-	byString(s, o=this.object.data) {
-		s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-		s = s.replace(/^\./, '');           // strip a leading dot
-		var a = s.split('.');
-		for (var i = 0, n = a.length; i < n; ++i) {
-			var k = a[i];
-			if (k in o) {
-				o = o[k];
-			} else {
-				return;
-			}
-		}
-		return o;
-	}	
 	
 	get title() {		
 		return `${this.object.name} - ${this.options.label}`;
-		// return `${this.object.name} - ${this.byString(this.options.target + ".label")} ${this.options.label}`;
+		// return `${this.object.name} - ${Helper.byString(this.options.target + ".label", this.object.data)} ${this.options.label}`;
 	}
 	
 	/** @override */
 	getData() {
-		return {data: this.byString(this.options.target).bonus}
+		return {data: Helper.byString(this.options.target, this.object.data).bonus}
 	}
 	
 	async _updateObject(event, formData) {	
@@ -69,7 +51,7 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 	
 	_onBonusAdd(event) {
 		event.preventDefault();
-		const bonusData = this.byString(this.options.target).bonus;
+		const bonusData = Helper.byString(this.options.target, this.object.data).bonus;
 		const newBonus =[{}];
 		this.position.height += 76;
 		return this.object.update({[`${this.options.target}.bonus`]: bonusData.concat(newBonus)});
@@ -78,7 +60,7 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 	_onBonusDelete(event) {
 		event.preventDefault();
 		const div = event.currentTarget.closest(".bonus-part");
-		const bonus = duplicate(this.byString(this.options.target).bonus);
+		const bonus = duplicate(Helper.byString(this.options.target, this.object.data).bonus);
 		bonus.splice(Number(div.dataset.bonusPart), 1);
 		this.position.height -= 76;
 		return this.object.update({[`${this.options.target}.bonus`]: bonus});
