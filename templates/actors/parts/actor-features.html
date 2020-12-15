@@ -4,8 +4,8 @@
 			<h3 class="item-name flexrow">{{localize section.label}}</h3>
 	
 			{{#if section.hasActions}}
-			<div class="item-detail item-uses">{{localize "DND4EALTUS.Uses"}}</div>
-			<div class="item-detail item-action">{{localize "DND4EALTUS.Usage"}}</div>
+			<div class="item-detail item-uses">{{localize "DND4EBETA.Uses"}}</div>
+			<div class="item-detail item-action">{{localize "DND4EBETA.Usage"}}</div>
 			{{/if}}
 	
 			{{#if section.columns}}
@@ -16,8 +16,8 @@
 	
 			{{#if ../owner}}
 			<div class="item-controls flexrow">
-				<a class="item-control item-create" title="{{localize 'DND4EALTUS.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-					<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
+				<a class="item-control item-create" title="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+					<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 				</a>
 			</div>
 			{{/if}}
@@ -36,7 +36,7 @@
 					{{#if item.isOnCooldown}}
 					<a class="item-recharge rollable">{{item.labels.recharge}}</a>
 					{{else if item.data.recharge.value}}
-					{{localize "DND4EALTUS.Charged"}}
+					{{localize "DND4EBETA.Charged"}}
 	
 					{{else if item.hasUses}}
 					<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}

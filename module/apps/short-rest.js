@@ -88,7 +88,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
 			content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.health.value`] - this.object.data.data.health.value) + " HP."
-			//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+			//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 		});		
 		
 		this.object.update(updateData);

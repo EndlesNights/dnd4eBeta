@@ -6,7 +6,7 @@
 
 		<div class="header-details flexrow">
 			<h1 class="charname">
-				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
+				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EBETA.ItemName' }}"/>
 			</h1>
 
 			<div class="item-subtitle">
@@ -16,10 +16,10 @@
 
 			<ul class="summary flexrow">
 				<li>
-					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
+					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EBETA.Rarity' }}"/>
 				</li>
 				<li>
-					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
+					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
 				</li>
 			</ul>
 		</div>
@@ -27,18 +27,18 @@
 
 	{{!-- Item Sheet Navigation --}}
 	<nav class="sheet-navigation tabs" data-group="primary">
-		<a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
-		<a class="item" data-tab="effects">{{ localize "DND4EALTUS.Effects" }}</a>
+		<a class="item active" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
+		<a class="item" data-tab="effects">{{ localize "DND4EBETA.Effects" }}</a>
 	</nav>
 	
 	{{!-- Item Sheet Body --}}
 	<section class="sheet-body">
 		{{!-- Description Tab --}}
-		{{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
+		{{> "systems/dnd4eBeta/templates/items/parts/item-description.html"}}
 
 		{{!-- Effects Tab --}}
 		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
-			{{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
+			{{> "systems/dnd4eBeta/templates/actors/parts/active-effects.html"}}
 		</div>  
 	</section>
 </form>

@@ -34,14 +34,14 @@
 				<li class="attribute-health resource-half">
 					<h4 class="attribute-name box-title">Health</h4>
 					<div class="attribute-value">
-						<input style="width: 100%; text-align: right; padding-right: 4px;" type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EALTUS.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<input style="width: 100%; text-align: right; padding-right: 4px;" type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep"> / </span>
-						<input style="width: 100%; text-align: left; padding-left: 4px;" type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EALTUS.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						<input style="width: 100%; text-align: left; padding-left: 4px;" type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EBETA.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					<footer class="attribute-footer">
 						<Span>Temp HP:</Span>
-						<input style="width: 32px; padding: 0px; position: relative; top: -1px;" type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
-						<span title="{{localize 'DND4EALTUS.HPBloodied'}}">{{localize 'DND4EALTUS.HPBloodied'}}: {{data.details.bloodied}}</span>
+						<input style="width: 32px; padding: 0px; position: relative; top: -1px;" type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EBETA.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
+						<span title="{{localize 'DND4EBETA.HPBloodied'}}">{{localize 'DND4EBETA.HPBloodied'}}: {{data.details.bloodied}}</span>
 						<a class="health-option" data-target="data.details" title="Health & Surge Options" style="position: relative; left: -5px; top: 4px;">
 							<i class="fas fa-cog"></i>
 						</a>
@@ -50,17 +50,17 @@
 				<li class="attribute-health resource-half">
 					<h4 class="attribute-name box-title">Surge</h4>
 					<div class="attribute-value">
-						<input type="text" name="data.details.surgeValue" value="{{data.details.surgeValue}}" title="{{localize 'DND4EALTUS.SurgeValue'}}"  placeholder="{{localize 'DND4EALTUS.SurgeValue'}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.surgeValue" value="{{data.details.surgeValue}}" title="{{localize 'DND4EBETA.SurgeValue'}}"  placeholder="{{localize 'DND4EBETA.SurgeValue'}}" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">|</span>
-						<input type="text" name="data.details.surgeCur" value="{{data.details.surgeCur}}" title="{{localize 'DND4EALTUS.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.surgeCur" value="{{data.details.surgeCur}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">/</span>
-						<input type="text" name="data.details.surgeDay" value="{{data.details.surgeDay}}" title="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.surgeDay" value="{{data.details.surgeDay}}" title="{{localize 'DND4EBETA.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					<footer class="attribute-footer flexrow ">
-						<a class="surge-bonus" style="position: relative; top: 4px;" data-target="data.details" title="{{localize 'DND4EALTUS.SurgeBon'}}">Surge Bonus: {{data.details.surgeBon.value}}</a>
-						<a class="envimental-loss-bonus" style="position: relative; top: 4px;" data-target="data.details" title="{{localize 'DND4EALTUS.SurgeEnv'}}">Envir Losses: {{data.details.surgeEnv.value}}</a>
-						<!-- <input type="text" name="data.details.surgeBon" value="{{data.details.surgeBon}}" title="{{localize 'DND4EALTUS.SurgeBon'}}"  placeholder="Surge Bonus" data-dtype="Number" onClick="this.select();"/> -->
-						<!-- <input type="text" name="data.details.surgeEnv" value="{{data.details.surgeEnv}}" title="{{localize 'DND4EALTUS.SurgeEnv'}}"  placeholder="Envir Losses" data-dtype="Number" onClick="this.select();"/>					 -->
+						<a class="surge-bonus" style="position: relative; top: 4px;" data-target="data.details" title="{{localize 'DND4EBETA.SurgeBon'}}">Surge Bonus: {{data.details.surgeBon.value}}</a>
+						<a class="envimental-loss-bonus" style="position: relative; top: 4px;" data-target="data.details" title="{{localize 'DND4EBETA.SurgeEnv'}}">Envir Losses: {{data.details.surgeEnv.value}}</a>
+						<!-- <input type="text" name="data.details.surgeBon" value="{{data.details.surgeBon}}" title="{{localize 'DND4EBETA.SurgeBon'}}"  placeholder="Surge Bonus" data-dtype="Number" onClick="this.select();"/> -->
+						<!-- <input type="text" name="data.details.surgeEnv" value="{{data.details.surgeEnv}}" title="{{localize 'DND4EBETA.SurgeEnv'}}"  placeholder="Envir Losses" data-dtype="Number" onClick="this.select();"/>					 -->
 					</footer>
 				</li>
 				{{!-- Rest and Death --}}
@@ -72,8 +72,8 @@
 						<!-- <span>Bonus:</span> -->
 						<!-- <input type="text" name="data.details.secondwindbon" value="{{data.details.secondwindbon}}" title="Second Wind Bonus"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						
-						<a class="rest short-rest">{{ localize "DND4EALTUS.RestS" }}</a>
-						<a class="rest long-rest">{{ localize "DND4EALTUS.RestL" }}</a>
+						<a class="rest short-rest">{{ localize "DND4EBETA.RestS" }}</a>
+						<a class="rest long-rest">{{ localize "DND4EBETA.RestL" }}</a>
 					</div>	
 					<div >	
 						<a class="death death-save">Death Saving Throw</a>

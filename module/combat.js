@@ -10,7 +10,7 @@ export const _getInitiativeFormula = function(combatant) {
   if ( !actor ) return "1d20";
   const init = actor.data.data.attributes.init;
   const parts = ["1d20", init.mod, (init.prof !== 0) ? init.prof : null, (init.bonus !== 0) ? init.bonus : null];
-  if ( actor.getFlag("dnd4eAltus", "initiativeAdv") ) parts[0] = "2d20kh";
+  if ( actor.getFlag("dnd4eBeta", "initiativeAdv") ) parts[0] = "2d20kh";
   if ( CONFIG.Combat.initiative.tiebreaker ) parts.push(actor.data.data.abilities.dex.value / 100);
   return parts.filter(p => p !== null).join(" + ");
 };

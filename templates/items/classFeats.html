@@ -6,7 +6,7 @@
 
 		<div class="header-details flexrow">
 			<h1 class="charname">
-				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ClassName' }}"/>
+				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EBETA.ClassName' }}"/>
 			</h1>
 
 			<div class="item-subtitle">
@@ -16,7 +16,7 @@
 
 			<ul class="summary flexrow">
 				<li>
-					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
+					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
 				</li>
 			</ul>
 		</div>
@@ -24,9 +24,9 @@
 
 	{{!-- Item Sheet Navigation --}}
 	<nav class="sheet-navigation tabs" data-group="primary">
-		<a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
-		<a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
-		<a class="item" data-tab="effects">{{ localize "DND4EALTUS.Effects" }}</a>
+		<a class="item active" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
+		<a class="item" data-tab="details">{{ localize "DND4EBETA.Details" }}</a>
+		<a class="item" data-tab="effects">{{ localize "DND4EBETA.Effects" }}</a>
 	</nav>
 
 	{{!-- Item Sheet Body --}}
@@ -42,7 +42,7 @@
 
 			<!-- {{!-- Class Levels --}}
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.ClassLevels" }}</label>
+				<label>{{ localize "DND4EBETA.ClassLevels" }}</label>
 				<div class="form-fields">
 					<input type="text" name="data.levels" value="{{data.levels}}" data-dtype="Number"/>
 				</div>
@@ -50,26 +50,26 @@
 
 			{{!-- Hit Points --}}
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.HPFirst" }}</label>
+				<label>{{ localize "DND4EBETA.HPFirst" }}</label>
 				<div class="form-fields">
 					<input type="text" name="data.hitFistLevel" value="{{data.hitFistLevel}}" data-dtype="Number"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.HPPer" }}</label>
+				<label>{{ localize "DND4EBETA.HPPer" }}</label>
 				<div class="form-fields">
 					<input type="text" name="data.hitPerLevel" value="{{data.hitPerLevel}}" data-dtype="Number"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.HealSurgePer" }}</label>
+				<label>{{ localize "DND4EBETA.HealSurgePer" }}</label>
 				<div class="form-fields">
 					<input type="text" name="data.surgePerDay" value="{{data.surgePerDay}}" data-dtype="Number"/>
 				</div>
 			</div>
 			{{!-- Level 1 skills --}}
 			<div class="form-group">
-				<label>{{localize "DND4EALTUS.ClassSkillsNumber"}}</label>
+				<label>{{localize "DND4EBETA.ClassSkillsNumber"}}</label>
 				<div class="form-fields">
 					<input type="text" placeholder="0" name="data.skills.number" value="{{data.skills.number}}" data-dtype="Number"/>
 				</div>
@@ -77,7 +77,7 @@
 
 			<div class="form-group">
 				<label>
-					{{localize "DND4EALTUS.ClassSkillsChosen"}}
+					{{localize "DND4EBETA.ClassSkillsChosen"}}
 					{{#if editable }}
 					<a class="trait-selector class-skills" data-edit="data.skills" data-options="skills">
 						<i class="fas fa-edit"></i></a>
@@ -94,7 +94,7 @@
 		</div>
 		{{!-- Effects Tab --}}
 		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
-			{{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
+			{{> "systems/dnd4eBeta/templates/actors/parts/active-effects.html"}}
 		</div>
 	</section>
 </form>

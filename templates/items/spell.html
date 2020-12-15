@@ -6,7 +6,7 @@
 
         <div class="header-details flexrow">
             <h1 class="charname">
-                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.SpellName' }}"/>
+                <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EBETA.SpellName' }}"/>
             </h1>
 
             <div class="item-subtitle">
@@ -22,7 +22,7 @@
                     {{labels.school}}
                 </li>
                 <li>
-                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
+                    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
                 </li>
             </ul>
         </div>
@@ -30,23 +30,23 @@
 
     {{!-- Item Sheet Navigation --}}
     <nav class="sheet-navigation tabs" data-group="primary">
-        <a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
-        <a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
+        <a class="item active" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
+        <a class="item" data-tab="details">{{ localize "DND4EBETA.Details" }}</a>
     </nav>
 
     {{!-- Item Sheet Body --}}
     <section class="sheet-body">
 
         {{!-- Description Tab --}}
-        {{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
+        {{> "systems/dnd4eBeta/templates/items/parts/item-description.html"}}
 
         {{!-- Details Tab --}}
         <div class="tab details" data-group="primary" data-tab="details">
-            <h3 class="form-header">{{ localize "DND4EALTUS.SpellDetails" }}</h3>
+            <h3 class="form-header">{{ localize "DND4EBETA.SpellDetails" }}</h3>
 
             {{!-- Spell Level --}}
             <div class="form-group">
-                <label>{{ localize "DND4EALTUS.SpellLevel" }}</label>
+                <label>{{ localize "DND4EBETA.SpellLevel" }}</label>
                 <select name="data.level" data-dtype="Number">
                     {{#select data.level}}
                     {{#each config.spellLevels as |name lvl|}}
@@ -58,7 +58,7 @@
 
             {{!-- Spell School --}}
             <div class="form-group">
-                <label>{{ localize "DND4EALTUS.SpellSchool" }}</label>
+                <label>{{ localize "DND4EBETA.SpellSchool" }}</label>
                 <select name="data.school">
                     {{#select data.school}}
                     {{#each config.spellSchools as |name sch|}}
@@ -70,35 +70,35 @@
 
             {{!-- Spell Components --}}
             <div class="spell-components form-group stacked">
-                <label>{{ localize "DND4EALTUS.SpellComponents" }}</label>
+                <label>{{ localize "DND4EBETA.SpellComponents" }}</label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.components.vocal" {{checked data.components.vocal}}/> {{ localize "DND4EALTUS.ComponentVerbal" }}
+                    <input type="checkbox" name="data.components.vocal" {{checked data.components.vocal}}/> {{ localize "DND4EBETA.ComponentVerbal" }}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.components.somatic" {{checked data.components.somatic}}/> {{ localize "DND4EALTUS.ComponentSomatic" }}
+                    <input type="checkbox" name="data.components.somatic" {{checked data.components.somatic}}/> {{ localize "DND4EBETA.ComponentSomatic" }}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.components.material" {{checked data.components.material}}/> {{ localize "DND4EALTUS.ComponentMaterial" }}
+                    <input type="checkbox" name="data.components.material" {{checked data.components.material}}/> {{ localize "DND4EBETA.ComponentMaterial" }}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.components.concentration" {{checked data.components.concentration}}/> {{ localize "DND4EALTUS.Concentration" }}
+                    <input type="checkbox" name="data.components.concentration" {{checked data.components.concentration}}/> {{ localize "DND4EBETA.Concentration" }}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="data.components.ritual" {{checked data.components.ritual}}/> {{ localize "DND4EALTUS.Ritual" }}
+                    <input type="checkbox" name="data.components.ritual" {{checked data.components.ritual}}/> {{ localize "DND4EBETA.Ritual" }}
                 </label>
             </div>
 
             {{!-- Material Components --}}
             <div class="form-group stacked">
-                <label>{{ localize "DND4EALTUS.SpellMaterials" }}</label>
+                <label>{{ localize "DND4EBETA.SpellMaterials" }}</label>
                 <input class="materials" type="text" name="data.materials.value" value="{{data.materials.value}}"/>
                 {{#if data.materials.value}}
                 <div class="spell-materials flexrow">
-                    <label>{{ localize "DND4EALTUS.Supply" }}</label>
+                    <label>{{ localize "DND4EBETA.Supply" }}</label>
                     <input type="text" name="data.materials.supply" value="{{data.materials.supply}}" data-dtype="Number" Placeholder="0"/>
-                    <label>{{ localize "DND4EALTUS.CostGP" }}</label>
+                    <label>{{ localize "DND4EBETA.CostGP" }}</label>
                     <input type="text" name="data.materials.cost" value="{{data.materials.cost}}" data-dtype="Number" Placeholder="-"/>
-                    <label>{{ localize "DND4EALTUS.Consumed" }}</label>
+                    <label>{{ localize "DND4EBETA.Consumed" }}</label>
                     <input type="checkbox" name="data.materials.consumed" {{checked data.materials.consumed}}/>
                 </div>
                 {{/if}}
@@ -106,10 +106,10 @@
 
             {{!-- Preparation Mode --}}
             <div class="form-group input-select">
-                <label>{{ localize "DND4EALTUS.SpellPreparationMode" }}</label>
+                <label>{{ localize "DND4EBETA.SpellPreparationMode" }}</label>
                 <div class="form-fields">
                     <label class="checkbox prepared">
-                        {{ localize "DND4EALTUS.SpellPrepared" }} <input type="checkbox" name="data.preparation.prepared" {{checked data.preparation.prepared}}/>
+                        {{ localize "DND4EBETA.SpellPrepared" }} <input type="checkbox" name="data.preparation.prepared" {{checked data.preparation.prepared}}/>
                     </label>
                     <select name="data.preparation.mode">
                         {{#select data.preparation.mode}}
@@ -122,19 +122,19 @@
                 </div>
             </div>
 
-            <h3 class="form-header">{{ localize "DND4EALTUS.SpellCastingHeader" }}</h3>
+            <h3 class="form-header">{{ localize "DND4EBETA.SpellCastingHeader" }}</h3>
 
             {{!-- Item Activation Template --}}
-            {{> "systems/dnd4eAltus/templates/items/parts/item-activation.html"}}
+            {{> "systems/dnd4eBeta/templates/items/parts/item-activation.html"}}
 
-            <h3 class="form-header">{{ localize "DND4EALTUS.SpellEffects" }}</h3>
+            <h3 class="form-header">{{ localize "DND4EBETA.SpellEffects" }}</h3>
 
             {{!-- Item Action Template --}}
-            {{> "systems/dnd4eAltus/templates/items/parts/item-action.html"}}
+            {{> "systems/dnd4eBeta/templates/items/parts/item-action.html"}}
 
             {{!-- Spell Level Scaling --}}
             <div class="form-group">
-                <label>{{ localize "DND4EALTUS.LevelScaling" }}</label>
+                <label>{{ localize "DND4EBETA.LevelScaling" }}</label>
                 <div class="form-fields">
                     <select name="data.scaling.mode">
                         {{#select data.scaling.mode}}
@@ -143,7 +143,7 @@
                         {{/each}}
                         {{/select}}
                     </select>
-                    <input type="text" name="data.scaling.formula" value="{{data.scaling.formula}}" placeholder="{{ localize 'DND4EALTUS.ScalingFormula' }}"/>
+                    <input type="text" name="data.scaling.formula" value="{{data.scaling.formula}}" placeholder="{{ localize 'DND4EBETA.ScalingFormula' }}"/>
                 </div>
             </div>
         </div>

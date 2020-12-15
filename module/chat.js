@@ -33,7 +33,7 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
  * Optionally hide the display of chat card action buttons which cannot be performed by the user
  */
 export const displayChatActionButtons = function(message, html, data) {
-  const chatCard = html.find(".DND4EALTUS.chat-card");
+  const chatCard = html.find(".DND4EBETA.chat-card");
   if ( chatCard.length > 0 ) {
     const flavor = html.find(".flavor-text");
     if ( flavor.text() === html.find(".item-name").text() ) flavor.remove();
@@ -70,25 +70,25 @@ export const addChatMessageContextOptions = function(html, options) {
   };
   options.push(
     {
-      name: game.i18n.localize("DND4EALTUS.ChatContextDamage"),
+      name: game.i18n.localize("DND4EBETA.ChatContextDamage"),
       icon: '<i class="fas fa-user-minus"></i>',
       condition: canApply,
       callback: li => applyChatCardDamage(li, 1)
     },
     {
-      name: game.i18n.localize("DND4EALTUS.ChatContextHealing"),
+      name: game.i18n.localize("DND4EBETA.ChatContextHealing"),
       icon: '<i class="fas fa-user-plus"></i>',
       condition: canApply,
       callback: li => applyChatCardDamage(li, -1)
     },
     {
-      name: game.i18n.localize("DND4EALTUS.ChatContextDoubleDamage"),
+      name: game.i18n.localize("DND4EBETA.ChatContextDoubleDamage"),
       icon: '<i class="fas fa-user-injured"></i>',
       condition: canApply,
       callback: li => applyChatCardDamage(li, 2)
     },
     {
-      name: game.i18n.localize("DND4EALTUS.ChatContextHalfDamage"),
+      name: game.i18n.localize("DND4EBETA.ChatContextHalfDamage"),
       icon: '<i class="fas fa-user-shield"></i>',
       condition: canApply,
       callback: li => applyChatCardDamage(li, 0.5)

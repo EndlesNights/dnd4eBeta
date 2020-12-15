@@ -8,15 +8,15 @@
 					<div class="item-detail {{css}}">{{label}}</div>
 				{{/each}}
 			{{else}}
-				<div class="item-detail item-uses">{{localize "DND4EALTUS.Charges"}}</div>
-				<div class="item-detail item-action">{{localize "DND4EALTUS.Action"}}</div>
-				<div class="item-detail power-target">{{localize "DND4EALTUS.PowerTarget"}}</div>
+				<div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div>
+				<div class="item-detail item-action">{{localize "DND4EBETA.Action"}}</div>
+				<div class="item-detail power-target">{{localize "DND4EBETA.PowerTarget"}}</div>
 			{{/if}}
 			{{#if ../owner}}
 			<div class="item-controls" style="width: 90px;">
-				<a class="item-control item-create" title='{{localize "DND4EALTUS.ItemCreate"}}'
+				<a class="item-control item-create" title='{{localize "DND4EBETA.ItemCreate"}}'
 				   {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-					<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
+					<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 				</a>
 			</div>
 			{{/if}}
@@ -66,8 +66,8 @@
 		
 				{{#if ../owner}}
 				<div class="item-controls flexrow">
-					<a class="item-control item-create" title="{{localize 'DND4EALTUS.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-						<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
+					<a class="item-control item-create" title="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+						<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 					</a>
 				</div>
 				{{/if}}
@@ -77,7 +77,7 @@
 					{{#if item.isOnCooldown}}
 					<a class="item-recharge rollable">{{item.labels.recharge}}</a>
 					{{else if item.data.recharge.value}}
-					{{localize "DND4EALTUS.Charged"}}
+					{{localize "DND4EBETA.Charged"}}
 	
 					{{else if item.hasUses}}
 					<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}

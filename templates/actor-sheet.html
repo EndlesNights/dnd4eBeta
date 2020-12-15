@@ -8,17 +8,17 @@
 		<div class="header-fields flexcol">
 			<div class="flexrow">
 				<h1 class="charname">
-					<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EALTUS.Name'}}" placeholder="{{localize 'DND4EALTUS.Name'}}" onClick="this.select();"/>			
+					<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EBETA.Name'}}" placeholder="{{localize 'DND4EBETA.Name'}}" onClick="this.select();"/>			
 				</h1>
 				
 				<div class="charlevel">
 					<div class= "level">
 						<span>Level:</span>
-						<input type="text" name="data.details.level" value="{{data.details.level}}" title="{{localize "DND4EALTUS.Level"}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.level" value="{{data.details.level}}" title="{{localize "DND4EBETA.Level"}}" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					<div class="experience">
 						<span>Total Exp:</span>
-						<input type="text" name="data.details.exp" value="{{data.details.exp}}" title="{{localize "DND4EALTUS.Exp"}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.exp" value="{{data.details.exp}}" title="{{localize "DND4EBETA.Exp"}}" data-dtype="Number" onClick="this.select();"/>
 					</div>					
 				</div>
 			</div>
@@ -26,24 +26,24 @@
 			<div class="flexcol">
 				<div class="summary">
 					<div class="list-race">
-						<input type="text" name="data.details.race" value="{{data.details.race}}" title="{{localize "DND4EALTUS.Race"}}" placeholder="{{localize "DND4EALTUS.Race"}}" onClick="this.select();"/>
+						<input type="text" name="data.details.race" value="{{data.details.race}}" title="{{localize "DND4EBETA.Race"}}" placeholder="{{localize "DND4EBETA.Race"}}" onClick="this.select();"/>
 					</div>
 					<div class="list-gen">
-						<input type="text" name="data.details.gender" value="{{data.details.gender}}" title="{{localize "DND4EALTUS.Gender"}}"  placeholder="{{localize "DND4EALTUS.Gender"}}" onClick="this.select();"/>
+						<input type="text" name="data.details.gender" value="{{data.details.gender}}" title="{{localize "DND4EBETA.Gender"}}"  placeholder="{{localize "DND4EBETA.Gender"}}" onClick="this.select();"/>
 					</div>
 					<div class="list-age">
-						<input type="text" name="data.details.age" value="{{data.details.age}}" title="{{localize "DND4EALTUS.Age"}}"  placeholder="{{localize "DND4EALTUS.Age"}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.age" value="{{data.details.age}}" title="{{localize "DND4EBETA.Age"}}"  placeholder="{{localize "DND4EBETA.Age"}}" data-dtype="Number" onClick="this.select();"/>
 					</div>					
 					<div class="list-age">	
-						<input type="text" name="data.details.height" value="{{data.details.height}}" title="{{localize "DND4EALTUS.Height"}}"  placeholder="{{localize "DND4EALTUS.Height"}}" onClick="this.select();"/>
+						<input type="text" name="data.details.height" value="{{data.details.height}}" title="{{localize "DND4EBETA.Height"}}"  placeholder="{{localize "DND4EBETA.Height"}}" onClick="this.select();"/>
 					</div>
 					<div class="list-age">	
-						<input type="text" name="data.details.weight" value="{{data.details.weight}}" title="{{localize "DND4EALTUS.Weight"}}"  placeholder="{{localize "DND4EALTUS.Weight"}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.weight" value="{{data.details.weight}}" title="{{localize "DND4EBETA.Weight"}}"  placeholder="{{localize "DND4EBETA.Weight"}}" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					
 					<div class="list-size">
 						<div class="form-group">
-							<label style="font-weight: normal;">{{localize "DND4EALTUS.Size"}}:</label>
+							<label style="font-weight: normal;">{{localize "DND4EBETA.Size"}}:</label>
 							<select class="actor-size" name="data.details.size">
 								{{#select data.details.size}}
 								{{#each config.actorSizes as |label size|}}
@@ -54,19 +54,19 @@
 						</div>							
 					</div>					
 					<div class="list-alig">	
-						<input type="text" name="data.details.alignment" value="{{data.details.alignment}}" title="{{localize "DND4EALTUS.Alignment"}}"  placeholder="{{localize "DND4EALTUS.Alignment"}}" onClick="this.select();"/>
+						<input type="text" name="data.details.alignment" value="{{data.details.alignment}}" title="{{localize "DND4EBETA.Alignment"}}"  placeholder="{{localize "DND4EBETA.Alignment"}}" onClick="this.select();"/>
 					</div>
 					<div class="list-alig">	
-						<input type="text" name="data.details.deity" value="{{data.details.deity}}" title="{{localize "DND4EALTUS.Deity"}}"  placeholder="{{localize "DND4EALTUS.Deity"}}" onClick="this.select();"/>						
+						<input type="text" name="data.details.deity" value="{{data.details.deity}}" title="{{localize "DND4EBETA.Deity"}}"  placeholder="{{localize "DND4EBETA.Deity"}}" onClick="this.select();"/>						
 					</div>
 					<div class="list-class">	
-						<input type="text" name="data.details.class" value="{{data.details.class}}" title="{{localize "DND4EALTUS.ClassName"}}"placeholder="{{localize "DND4EALTUS.ClassName"}}" onClick="this.select();"/>
+						<input type="text" name="data.details.class" value="{{data.details.class}}" title="{{localize "DND4EBETA.ClassName"}}"placeholder="{{localize "DND4EBETA.ClassName"}}" onClick="this.select();"/>
 					</div>
 					<div class="list-class">	
-						<input type="text" name="data.details.paragon" value="{{data.details.paragon}}" title="{{localize "DND4EALTUS.Paragon"}}"placeholder="{{localize "DND4EALTUS.Paragon"}}" onClick="this.select();"/>
+						<input type="text" name="data.details.paragon" value="{{data.details.paragon}}" title="{{localize "DND4EBETA.Paragon"}}"placeholder="{{localize "DND4EBETA.Paragon"}}" onClick="this.select();"/>
 					</div>
 					<div class="list-end">	
-						<input type="text" name="data.details.epic" value="{{data.details.epic}}" title="{{localize "DND4EALTUS.Epic"}}"placeholder="{{localize "DND4EALTUS.Epic"}}" onClick="this.select();"/>
+						<input type="text" name="data.details.epic" value="{{data.details.epic}}" title="{{localize "DND4EBETA.Epic"}}"placeholder="{{localize "DND4EBETA.Epic"}}" onClick="this.select();"/>
 					</div>
 					
 				</div>
@@ -94,27 +94,27 @@
 
 		{{!-- Attributes Tab --}}
 		<div class="tab attributes flexrow" data-group="primary" data-tab="attributes">
-			{{> "systems/dnd4eAltus/templates/actors/parts/actor-attributes.html" sections=inventory}}
+			{{> "systems/dnd4eBeta/templates/actors/parts/actor-attributes.html" sections=inventory}}
 		</div>
 
 		{{!-- Owned Inventory Tab --}}
 		<div class="tab inventory" data-group="primary" data-tab="inventory">
-			{{> "systems/dnd4eAltus/templates/actors/parts/actor-inventory.html" sections=inventory}}
+			{{> "systems/dnd4eBeta/templates/actors/parts/actor-inventory.html" sections=inventory}}
 		</div>
 
 		{{!-- Feat Tab --}}
 		<div class="tab features" data-group="primary" data-tab="features">
-			{{> "systems/dnd4eAltus/templates/actors/parts/actor-features.html" sections=features}}
+			{{> "systems/dnd4eBeta/templates/actors/parts/actor-features.html" sections=features}}
 		</div>
 		
 		{{!-- Powers Tab --}}
 		<div class="tab powers" data-group="primary" data-tab="powers">
-			{{> "systems/dnd4eAltus/templates/actors/parts/actor-powers.html" sections=powers}}
+			{{> "systems/dnd4eBeta/templates/actors/parts/actor-powers.html" sections=powers}}
 		</div>
 
         {{!-- Effects Tab --}}
         <div class="tab effects flexcol" data-group="primary" data-tab="effects">
-            {{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
+            {{> "systems/dnd4eBeta/templates/actors/parts/active-effects.html"}}
         </div>
 	</section>
 </form>

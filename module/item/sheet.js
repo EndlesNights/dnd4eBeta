@@ -23,7 +23,7 @@ export default class ItemSheet4e extends ItemSheet {
 	  return mergeObject(super.defaultOptions, {
       width: 560,
       height: 420,
-      classes: ["dnd4eAltus", "sheet", "item"],
+      classes: ["dnd4eBeta", "sheet", "item"],
       resizable: true,
       scrollY: [".tab.details", ".desk__content", ".scrollbar"],
       tabs: [{navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description"}]
@@ -34,7 +34,7 @@ export default class ItemSheet4e extends ItemSheet {
 
   /** @override */
   get template() {
-    const path = "systems/dnd4eAltus/templates/items/";
+    const path = "systems/dnd4eBeta/templates/items/";
     return `${path}/${this.item.data.type}.html`;
   }
 
@@ -44,7 +44,7 @@ export default class ItemSheet4e extends ItemSheet {
   async getData(options) {
     const data = super.getData(options);
     data.labels = this.item.labels;
-    data.config = CONFIG.DND4EALTUS;
+    data.config = CONFIG.DND4EBETA;
 
     // Item Type, Status, and Details
     data.itemType = data.item.type.titleCase();
@@ -168,8 +168,8 @@ export default class ItemSheet4e extends ItemSheet {
         const uses = i.data.data.uses || {};
         if ( uses.per && uses.max ) {
           const label = uses.per === "charges" ?
-            ` (${game.i18n.format("DND4EALTUS.AbilityUseChargesLabel", {value: uses.value})})` :
-            ` (${game.i18n.format("DND4EALTUS.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
+            ` (${game.i18n.format("DND4EBETA.AbilityUseChargesLabel", {value: uses.value})})` :
+            ` (${game.i18n.format("DND4EBETA.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
           obj[i.id] = i.name + label;
         }
         return obj;
@@ -261,13 +261,13 @@ export default class ItemSheet4e extends ItemSheet {
    */
   _getItemStatus(item) {
     if ( item.type === "spell" ) {
-      return CONFIG.DND4EALTUS.spellPreparationModes[item.data.preparation];
+      return CONFIG.DND4EBETA.spellPreparationModes[item.data.preparation];
     }
     else if ( ["weapon", "equipment"].includes(item.type) ) {
-      return game.i18n.localize(item.data.equipped ? "DND4EALTUS.Equipped" : "DND4EALTUS.Unequipped");
+      return game.i18n.localize(item.data.equipped ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped");
     }
     else if ( item.type === "tool" ) {
-      return game.i18n.localize(item.data.proficient ? "DND4EALTUS.Proficient" : "DND4EALTUS.NotProficient");
+      return game.i18n.localize(item.data.proficient ? "DND4EBETA.Proficient" : "DND4EBETA.NotProficient");
     }
   }
 
@@ -285,20 +285,20 @@ export default class ItemSheet4e extends ItemSheet {
     if ( item.type === "weapon" ) {
       props.push(...Object.entries(item.data.properties)
         .filter(e => e[1] === true)
-        .map(e => CONFIG.DND4EALTUS.weaponProperties[e[0]]));
+        .map(e => CONFIG.DND4EBETA.weaponProperties[e[0]]));
     }
 
     else if ( item.type === "power" ) {
       props.push(
         labels.components,
         labels.materials,
-        item.data.components.concentration ? game.i18n.localize("DND4EALTUS.Concentration") : null,
-        item.data.components.ritual ? game.i18n.localize("DND4EALTUS.Ritual") : null
+        item.data.components.concentration ? game.i18n.localize("DND4EBETA.Concentration") : null,
+        item.data.components.ritual ? game.i18n.localize("DND4EBETA.Ritual") : null
       )
     }
 
     else if ( item.type === "equipment" ) {
-      props.push(CONFIG.DND4EALTUS.equipmentTypes[item.data.armour.type]);
+      props.push(CONFIG.DND4EBETA.equipmentTypes[item.data.armour.type]);
       props.push(labels.armour);
     }
 
@@ -308,7 +308,7 @@ export default class ItemSheet4e extends ItemSheet {
 
     // Action type
     if ( item.data.actionType ) {
-      props.push(CONFIG.DND4EALTUS.itemActionTypes[item.data.actionType]);
+      props.push(CONFIG.DND4EBETA.itemActionTypes[item.data.actionType]);
     }
 
     // Action usage
@@ -457,7 +457,7 @@ export default class ItemSheet4e extends ItemSheet {
   _onConfigureClassSkills(event) {
     event.preventDefault();
     const skills = this.item.data.data.skills;
-    const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.DND4EALTUS.skills);
+    const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.DND4EBETA.skills);
     const a = event.currentTarget;
     const label = a.parentElement;
 
@@ -465,7 +465,7 @@ export default class ItemSheet4e extends ItemSheet {
     // new TraitSelector(this.item, {
       // name: a.dataset.edit,
       // title: label.innerText,
-      // choices: Object.entries(CONFIG.DND4EALTUS.skills).reduce((obj, e) => {
+      // choices: Object.entries(CONFIG.DND4EBETA.skills).reduce((obj, e) => {
         // if ( choices.includes(e[0] ) ) obj[e[0]] = e[1];
         // return obj;
       // }, {}),

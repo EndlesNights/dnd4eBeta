@@ -1,4 +1,4 @@
-<div class="dnd4eAltus chat-card item-card" data-actor-id="{{actor._id}}" data-item-id="{{item._id}}"
+<div class="dnd4eBeta chat-card item-card" data-actor-id="{{actor._id}}" data-item-id="{{item._id}}"
      {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
     <header class="card-header flexrow">
         <img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
@@ -8,36 +8,36 @@
     <div class="card-content" style="display: block;">
         {{{data.description.value}}}
         {{#if data.materials.value}}
-        <p><strong>{{ localize "DND4EALTUS.RequiredMaterials" }}.</strong> {{data.materials.value}}</p>
+        <p><strong>{{ localize "DND4EBETA.RequiredMaterials" }}.</strong> {{data.materials.value}}</p>
         {{/if}}
     </div>
 
     <div class="card-buttons">
-        {{#if hasAttack}}<button data-action="attack">{{ localize "DND4EALTUS.Attack" }}</button>{{/if}}
+        {{#if hasAttack}}<button data-action="attack">{{ localize "DND4EBETA.Attack" }}</button>{{/if}}
 
         {{#if hasDamage}}
         <button data-action="damage">
-            {{#if isHealing}}{{ localize "DND4EALTUS.Healing" }}
-            {{else}}{{localize "DND4EALTUS.Damage" }}{{/if}}
+            {{#if isHealing}}{{ localize "DND4EBETA.Healing" }}
+            {{else}}{{localize "DND4EBETA.Damage" }}{{/if}}
         </button>
         {{/if}}
 
         {{#if isVersatile}}
-        <button data-action="versatile">{{ localize "DND4EALTUS.Versatile" }}</button>
+        <button data-action="versatile">{{ localize "DND4EBETA.Versatile" }}</button>
         {{/if}}
 
         {{#if hasSave}}
         <button data-action="save" data-ability="{{data.save.ability}}" disabled>
-            {{ localize "DND4EALTUS.SavingThrow" }} {{labels.save}}
+            {{ localize "DND4EBETA.SavingThrow" }} {{labels.save}}
         </button>
         {{/if}}
 
         {{#if data.formula}}
-        <button data-action="formula">{{ localize "DND4EALTUS.OtherFormula"}}</button>
+        <button data-action="formula">{{ localize "DND4EBETA.OtherFormula"}}</button>
         {{/if}}
 
         {{#if hasAreaTarget}}
-        <button data-action="placeTemplate">{{ localize "DND4EALTUS.PlaceTemplate" }}</button>
+        <button data-action="placeTemplate">{{ localize "DND4EBETA.PlaceTemplate" }}</button>
         {{/if}}
     </div>
 

@@ -55,7 +55,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
       const abl = data.abilities[data.ability];
       if ( abl ) {
         data.mod = abl.mod;
-        flavor += ` (${CONFIG.DND4EALTUS.abilities[data.ability]})`;
+        flavor += ` (${CONFIG.DND4EBETA.abilities[data.ability]})`;
       }
     }
 
@@ -73,7 +73,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
     // If reliable talent was applied, add it to the flavor text
     if ( reliableTalent && roll.dice[0].total < 10 ) {
-      flavor += ` (${game.i18n.localize("DND4EALTUS.FlagsReliableTalent")})`;
+      flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`;
     }
 
     // Convert the roll to a chat message and return the roll
@@ -100,13 +100,13 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
   // Render modal dialog
   let newFlavor = "";
-  template = template || "systems/dnd4eAltus/templates/chat/roll-dialog.html";
+  template = template || "systems/dnd4eBeta/templates/chat/roll-dialog.html";
   let dialogData = {
     formula: parts.join(" + "),
     data: data,
     rollMode: rollMode,
     rollModes: CONFIG.Dice.rollModes,
-    config: CONFIG.DND4EALTUS,
+    config: CONFIG.DND4EBETA,
 	flavor: newFlavor || flavor
   };
   const html = await renderTemplate(template, dialogData);
@@ -120,7 +120,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
       buttons: {
 
         normal: {
-          label: game.i18n.localize("DND4EALTUS.Roll"),
+          label: game.i18n.localize("DND4EBETA.Roll"),
           callback: html => roll = _roll(parts, 0, html[0].querySelector("form"))
         }
 
@@ -174,10 +174,10 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
     let roll = crit? new Roll(partsCrit.join("+"), data) : new Roll(parts.join("+"), data);
     // Modify the damage formula for critical hits
     if ( crit === true ) {
-      // let add = (actor && actor.getFlag("dnd4eAltus", "savageAttacks")) ? 1 : 0;
+      // let add = (actor && actor.getFlag("dnd4eBeta", "savageAttacks")) ? 1 : 0;
       // let mult = 2;
       // roll.alter(add, mult);
-      flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Critical")})`;
+      flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
     }
 
     // Convert the roll to a chat message
@@ -200,7 +200,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
   else parts = critical? partsCrit.concat(["@bonus"]) : parts.concat(["@bonus"]);
 
   // Render modal dialog
-  template = template || "systems/dnd4eAltus/templates/chat/roll-dialog.html";
+  template = template || "systems/dnd4eBeta/templates/chat/roll-dialog.html";
   let dialogData = {
     formula: parts.join(" + "),
     data: data,
@@ -218,11 +218,11 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
       buttons: {
         critical: {
           condition: allowCritical,
-          label: game.i18n.localize("DND4EALTUS.CriticalHit"),
+          label: game.i18n.localize("DND4EBETA.CriticalHit"),
           callback: html => roll = _roll(parts, partsCrit, true, html[0].querySelector("form"))
         },
         normal: {
-          label: game.i18n.localize(allowCritical ? "DND4EALTUS.Normal" : "DND4EALTUS.Roll"),
+          label: game.i18n.localize(allowCritical ? "DND4EBETA.Normal" : "DND4EBETA.Roll"),
           callback: html => roll = _roll(parts, partsCrit, false, html[0].querySelector("form"))
         },
       },

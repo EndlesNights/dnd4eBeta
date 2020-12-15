@@ -3,7 +3,7 @@ export const registerSystemSettings = function() {
   /**
    * Track the system version upon which point a migration was last applied
    */
-  game.settings.register("dnd4eAltus", "systemMigrationVersion", {
+  game.settings.register("dnd4eBeta", "systemMigrationVersion", {
     name: "System Migration Version",
     scope: "world",
     config: false,
@@ -14,7 +14,7 @@ export const registerSystemSettings = function() {
   /**
    * Register resting variants
    */
-  game.settings.register("dnd4eAltus", "restVariant", {
+  game.settings.register("dnd4eBeta", "restVariant", {
     name: "SETTINGS.4eRestN",
     hint: "SETTINGS.4eRestL",
     scope: "world",
@@ -31,7 +31,7 @@ export const registerSystemSettings = function() {
   /**
    * Register diagonal movement rule setting
    */
-  game.settings.register("dnd4eAltus", "diagonalMovement", {
+  game.settings.register("dnd4eBeta", "diagonalMovement", {
     name: "SETTINGS.4eDiagN",
     hint: "SETTINGS.4eDiagL",
     scope: "world",
@@ -49,7 +49,7 @@ export const registerSystemSettings = function() {
   /**
    * Register Initiative formula setting
    */
-  game.settings.register("dnd4eAltus", "initiativeDexTiebreaker", {
+  game.settings.register("dnd4eBeta", "initiativeDexTiebreaker", {
     name: "SETTINGS.4eInitTBN",
     hint: "SETTINGS.4eInitTBL",
     scope: "world",
@@ -61,7 +61,7 @@ export const registerSystemSettings = function() {
   /**
    * Require Currency Carrying Weight
    */
-  game.settings.register("dnd4eAltus", "currencyWeight", {
+  game.settings.register("dnd4eBeta", "currencyWeight", {
     name: "SETTINGS.4eCurWtN",
     hint: "SETTINGS.4eCurWtL",
     scope: "world",
@@ -73,7 +73,7 @@ export const registerSystemSettings = function() {
   /**
    * Option to disable XP bar for session-based or story-based advancement.
    */
-  game.settings.register("dnd4eAltus", "disableExperienceTracking", {
+  game.settings.register("dnd4eBeta", "disableExperienceTracking", {
     name: "SETTINGS.4eNoExpN",
     hint: "SETTINGS.4eNoExpL",
     scope: "world",
@@ -85,7 +85,7 @@ export const registerSystemSettings = function() {
   /**
    * Option to automatically collapse Item Card descriptions
    */
-  game.settings.register("dnd4eAltus", "autoCollapseItemCards", {
+  game.settings.register("dnd4eBeta", "autoCollapseItemCards", {
     name: "SETTINGS.4eAutoCollapseCardN",
     hint: "SETTINGS.4eAutoCollapseCardL",
     scope: "client",
@@ -100,7 +100,7 @@ export const registerSystemSettings = function() {
   /**
    * Option to allow GMs to restrict polymorphing to GMs only.
    */
-  game.settings.register('dnd4eAltus', 'allowPolymorphing', {
+  game.settings.register('dnd4eBeta', 'allowPolymorphing', {
     name: 'SETTINGS.4eAllowPolymorphingN',
     hint: 'SETTINGS.4eAllowPolymorphingL',
     scope: 'world',
@@ -112,7 +112,7 @@ export const registerSystemSettings = function() {
   /**
    * Remember last-used polymorph settings.
    */
-  game.settings.register('dnd4eAltus', 'polymorphSettings', {
+  game.settings.register('dnd4eBeta', 'polymorphSettings', {
     scope: 'client',
     default: {
       keepPhysical: false,

@@ -1,14 +1,14 @@
 {
-  "name": "dnd4eAltus",
-  "title": "4th Edition Altus",
+  "name": "dnd4eBeta",
+  "title": "4th Edition Beta",
   "description": "A minimalist custom test build of 4th Ed.",
   "version": 0.0,
   "minimumCoreVersion": "0.6.6",
   "compatibleCoreVersion": "0.7.8",
   "templateVersion": 2,
   "author": "EndlesNights",
-  "esmodules": ["module/dnd4eAltus.js"],
-  "styles": ["styles/dnd4eAltus.css"],
+  "esmodules": ["module/dnd4eBeta.js"],
+  "styles": ["styles/dnd4eBeta.css"],
   "packs": [],
   "languages": [
     {

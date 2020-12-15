@@ -250,13 +250,6 @@
 					"armourCheck": true,
 					"chat": "@name uses @label."
 				},
-				"eng": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "int",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
 				"hea": {
 					"value": 0,
 					"bonus": [{}],
@@ -293,13 +286,6 @@
 					"chat": "@name uses @label."
 				},
 				"prc": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "wis",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"pra": {
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
@@ -569,7 +555,7 @@
 				"abilityBonus": 0,
 				"def": "ac",
 				"defBonus": 0,
-				"formula": "1d20+@wepAttack+@powerMod",
+				"formula": "1d20+@wepAttack+@powerMod+@lvhalf",
 				"damageType": {},
 				"effectType": {}
 			},

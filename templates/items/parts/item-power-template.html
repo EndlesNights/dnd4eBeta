@@ -1,9 +1,9 @@
 <div class="tab details" data-group="primary" data-tab="details">
-    <h3 class="form-header">{{ localize "DND4EALTUS.PowerDetails" }}</h3>
+    <h3 class="form-header">{{ localize "DND4EBETA.PowerDetails" }}</h3>
 
     {{!-- Power Source & Keywords --}}
     <div class="form-group select">
-        <label>{{ localize "DND4EALTUS.PowerSource" }}</label>
+        <label>{{ localize "DND4EBETA.PowerSource" }}</label>
         <select name="data.powersource">
             {{#select data.powersource}}
             <option value=""></option>
@@ -14,13 +14,13 @@
         </select>
     </div>
     <div class="form-group stacked">
-        <label>{{ localize "DND4EALTUS.Keywords" }}</label>
+        <label>{{ localize "DND4EBETA.Keywords" }}</label>
         <!-- <input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/> -->
     </div>
 
     {{!-- Action Type --}}
     <div class="form-group select">
-        <label>{{ localize "DND4EALTUS.ItemActionType" }}</label>
+        <label>{{ localize "DND4EBETA.ItemActionType" }}</label>
         <select name="data.actionType">
             {{#select data.actionType}}
             <option value=""></option>
@@ -33,7 +33,7 @@
 
     {{!-- Weapon Range and AoE--}}
     <div class="form-group uses-per">
-        <label>{{ localize "DND4EALTUS.WeaponTypeRequired" }}</label>
+        <label>{{ localize "DND4EBETA.WeaponTypeRequired" }}</label>
         <select name="data.weaponType">
             {{#select data.weaponType}}
             <option value=""></option>
@@ -61,7 +61,7 @@
     
 
     <div class="form-group uses-per">
-        <label>{{ localize "DND4EALTUS.RangePower" }}</label>
+        <label>{{ localize "DND4EBETA.RangePower" }}</label>
         <div class="form-fields">
             <select name="data.rangeType">
                 {{#select data.rangeType}}
@@ -72,19 +72,19 @@
                 {{/select}}
             </select>
             {{#if data.isArea}}
-                <span>{{ localize "DND4EALTUS.AreaOf" }}</span>
+                <span>{{ localize "DND4EBETA.AreaOf" }}</span>
                 <input type="text" name="data.area" value="{{data.area}}" data-dtype="Number"/>
             {{/if}}
             {{#if data.isRange}}
-                {{#if data.isArea}}<span style="flex: 2.8 0 16px">{{ localize "DND4EALTUS.RangeWithinOf" }}</span>{{/if}}
-                {{#unless data.isArea}}<span style="flex: 0.6 0 16px">{{ localize "DND4EALTUS.RangeOf" }}</span>{{/unless}}
+                {{#if data.isArea}}<span style="flex: 2.8 0 16px">{{ localize "DND4EBETA.RangeWithinOf" }}</span>{{/if}}
+                {{#unless data.isArea}}<span style="flex: 0.6 0 16px">{{ localize "DND4EBETA.RangeOf" }}</span>{{/unless}}
                 <input type="text" name="data.rangePower" value="{{data.rangePower}}" data-dtype="Number"/>
             {{/if}}
         </div>
     </div>
 
     <div class="form-group uses-per">
-        <label>{{ localize "DND4EALTUS.Target" }}</label>
+        <label>{{ localize "DND4EBETA.Target" }}</label>
         <div class="form-fields">
             <select name="data.target.type">
                 {{#select data.target.type}}
@@ -99,12 +99,12 @@
     </div>
 
     <div class="form-group uses-per">
-        <label>{{ localize "DND4EALTUS.LimitedUses"}}</label>
+        <label>{{ localize "DND4EBETA.LimitedUses"}}</label>
         <div class="form-fields">
             <input type="text" name="data.uses.value" value="{{data.uses.value}}" data-dtype="Number"/>
-            <span class="sep">{{ localize "DND4EALTUS.of" }}</span>
+            <span class="sep">{{ localize "DND4EBETA.of" }}</span>
             <input type="text" name="data.uses.max" value="{{data.uses.max}}" data-dtype="Number"/>
-            <span class="sep">{{ localize "DND4EALTUS.per" }}</span>
+            <span class="sep">{{ localize "DND4EBETA.per" }}</span>
             <select name="data.uses.per">
                 {{#select data.uses.per}}
                 <option value=""></option>
@@ -116,7 +116,7 @@
         </div>
     </div>
     <div class="form-group uses-per">
-        <label>{{ localize "DND4EALTUS.ConsumeTitle" }}</label>
+        <label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
         <div class="form-fields">
             <select name="data.consume.type" style="flex: 0.55;">
                 {{#select data.consume.type}}
@@ -139,29 +139,29 @@
     </div>	
 
     <div class="form-group">
-        <label>{{ localize "DND4EALTUS.Trigger" }}</label>
+        <label>{{ localize "DND4EBETA.Trigger" }}</label>
         <input type="text" name="data.trigger" value="{{data.trigger}}"/>
     </div>
     <div class="form-group">
-        <label>{{ localize "DND4EALTUS.Requirements" }}</label>
+        <label>{{ localize "DND4EBETA.Requirements" }}</label>
         <input type="text" name="data.requirement" value="{{data.requirement}}"/>
     </div>
     <div class="form-group">
-        <label>{{ localize "DND4EALTUS.Special" }}</label>
+        <label>{{ localize "DND4EBETA.Special" }}</label>
         <input type="text" name="data.special" value="{{data.special}}"/>
     </div>
 
     {{!-- Attack Details--}}
-    <h3 class="form-header">{{ localize "DND4EALTUS.AttackDetails" }}</h3>
+    <h3 class="form-header">{{ localize "DND4EBETA.AttackDetails" }}</h3>
     <div class="form-group">
-        <label>{{ localize "DND4EALTUS.IsAttack" }}</label>
+        <label>{{ localize "DND4EBETA.IsAttack" }}</label>
         <input type="checkbox" name="data.attack.isAttack" data-dtype="Boolean" {{checked data.attack.isAttack}}/>
     </div>
     
     {{#if data.attack.isAttack}}
     {{!-- Attack--}}
     <div class="form-group uses-per">
-        <label>{{ localize "DND4EALTUS.Attack" }}</label>
+        <label>{{ localize "DND4EBETA.Attack" }}</label>
         <div class="form-fields">
             <select name="data.attack.ability">
                 {{#select data.attack.ability}}
@@ -175,7 +175,7 @@
                 <span>+</span>
                 <input type="text" name="data.attackBonus" value="{{data.attackBonus }}" data-dtype="Number"/>
             {{/if}} -->
-            <span>{{ localize "DND4EALTUS.VS" }}</span>
+            <span>{{ localize "DND4EBETA.VS" }}</span>
             <select name="data.attack.def">
                 {{#select data.attack.def}}
                 <option value=""></option>
@@ -192,23 +192,23 @@
     </div>
 
     <div class="form-group stacked">
-        <label>Attack {{ localize "DND4EALTUS.Formula" }}</label>
+        <label>Attack {{ localize "DND4EBETA.Formula" }}</label>
         <input type="text" name="data.attack.formula" value="{{data.attack.formula}}"/>
     </div>
     {{/if}}
     <div class="form-group">
-        <label>{{ localize "DND4EALTUS.IsDamage" }}</label>
+        <label>{{ localize "DND4EBETA.IsDamage" }}</label>
         <input type="checkbox" name="data.hit.isDamage" data-dtype="Boolean" {{checked data.hit.isDamage}}/>
     </div>
     {{#if data.hit.isDamage}}
     {{!-- Hit Details --}}
     {{!-- Damage --}}
     <div class="form-group stacked">
-        <label>Damage {{ localize "DND4EALTUS.Formula" }}</label>
+        <label>Damage {{ localize "DND4EBETA.Formula" }}</label>
         <input type="text" name="data.hit.formula" value="{{data.hit.formula}}"/>
     </div>
     <h4 class="damage-header">
-        {{#unless isHealing }}Secondary {{ localize "DND4EALTUS.Damage" }}{{ else }}{{ localize "DND4EALTUS.Healing" }}{{/unless}} {{ localize "DND4EALTUS.Formula" }}:
+        {{#unless isHealing }}Secondary {{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
         <a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
     </h4>
     <ol class="damage-parts form-group">
@@ -217,7 +217,7 @@
             <input type="text" name="data.damage.parts.{{i}}.0" value="{{lookup this "0"}}"/>
             <select name="data.damage.parts.{{i}}.1">
                 {{#select (lookup this "1") }}
-                <option value="">{{ localize "DND4EALTUS.None" }}</option>
+                <option value="">{{ localize "DND4EBETA.None" }}</option>
                 {{#each ../config.damageTypes as |name type|}}
                 <option value="{{type}}">{{name}}</option>
                 {{/each}}
@@ -233,11 +233,11 @@
     
     {{!-- Critial --}}
     <div class="form-group stacked">
-        <label>Critial Damage {{ localize "DND4EALTUS.Formula" }}</label>
+        <label>Critial Damage {{ localize "DND4EBETA.Formula" }}</label>
         <input type="text" name="data.hit.critFormula" value="{{data.hit.critFormula}}"/>
     </div>
     <h4 class="damage-header">
-        {{#unless isHealing }}Secondary Critial{{ localize "DND4EALTUS.Damage" }}{{ else }}{{ localize "DND4EALTUS.Healing" }}{{/unless}} {{ localize "DND4EALTUS.Formula" }}:
+        {{#unless isHealing }}Secondary Critial{{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
         <a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
     </h4>
     <ol class="damage-parts form-group">
@@ -246,7 +246,7 @@
             <input type="text" name="data.damageCrit.parts.{{i}}.0" value="{{lookup this "0"}}"/>
             <select name="data.damageCrit.parts.{{i}}.1">
                 {{#select (lookup this "1") }}
-                <option value="">{{ localize "DND4EALTUS.None" }}</option>
+                <option value="">{{ localize "DND4EBETA.None" }}</option>
                 {{#each ../config.damageTypes as |name type|}}
                 <option value="{{type}}">{{name}}</option>
                 {{/each}}
@@ -261,23 +261,23 @@
     </ol>
     {{!-- Hit Details --}}
     <div class="form-group stacked">
-        <!-- <label>{{ localize "DND4EALTUS.HitEffects" }}</label> -->
+        <!-- <label>{{ localize "DND4EBETA.HitEffects" }}</label> -->
     </div>
     <div class="form-group stacked">
-        <label>{{ localize "DND4EALTUS.HitDetailsText" }}</label>
+        <label>{{ localize "DND4EBETA.HitDetailsText" }}</label>
         <input type="text" name="data.hit.detail" value="{{data.hit.detail}}"/>
     </div>
 
     {{!-- Miss --}}
     <div class="form-group stacked">
-        <label>Miss Damage {{ localize "DND4EALTUS.Formula" }}</label>
+        <label>Miss Damage {{ localize "DND4EBETA.Formula" }}</label>
         <input type="text" name="data.miss.formula" value="{{data.miss.formula}}"/>
     </div>
     <div class="form-group stacked">
-        <!-- <label>{{ localize "DND4EALTUS.MissEffects" }}</label> -->
+        <!-- <label>{{ localize "DND4EBETA.MissEffects" }}</label> -->
     </div>
     <div class="form-group stacked">
-        <label>{{ localize "DND4EALTUS.MissDetailsText" }}</label>
+        <label>{{ localize "DND4EBETA.MissDetailsText" }}</label>
         <input type="text" name="data.miss.detail" value="{{data.miss.detail}}"/>
     </div>
 
@@ -293,12 +293,12 @@
     {{/if}}
 
     {{!-- Effect Details --}}
-    <h3 class="form-header">{{ localize "DND4EALTUS.EffectDetails" }}</h3>
+    <h3 class="form-header">{{ localize "DND4EBETA.EffectDetails" }}</h3>
     <div class="form-group stacked">
-        <!-- <label>{{ localize "DND4EALTUS.Effects" }}</label> -->
+        <!-- <label>{{ localize "DND4EBETA.Effects" }}</label> -->
     </div>
     <div class="form-group stacked">
-        <label>{{ localize "DND4EALTUS.EffectDetails" }}</label>
+        <label>{{ localize "DND4EBETA.EffectDetails" }}</label>
         <input type="text" name="data.effect.detail" value="{{data.effect.detail}}"/>
     </div>
 
@@ -317,7 +317,7 @@
     <label>Range:{{ data.range }}</label> -->
     {{!-- Chat Message Flavor --}}
     <div class="form-group stacked">
-        <label>{{ localize "DND4EALTUS.ChatFlavor" }}</label>
+        <label>{{ localize "DND4EBETA.ChatFlavor" }}</label>
         <input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/>
     </div>
 

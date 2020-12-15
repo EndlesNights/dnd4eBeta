@@ -1,7 +1,7 @@
 import { d20Roll, damageRoll } from "./dice.js";
 import AbilityUseDialog from "./apps/ability-use-dialog.js";
 import AbilityTemplate from "./pixi/ability-template.js"
-import { DND4EALTUS } from "./config.js";
+import { DND4EBETA } from "./config.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -12,7 +12,7 @@ export class SimpleActor extends Actor {
   /** @override */
   getRollData() {
     const data = super.getRollData();
-    const shorthand = game.settings.get("dnd4eAltus", "macroShorthand");
+    const shorthand = game.settings.get("dnd4eBeta", "macroShorthand");
 
     // Re-map all attributes onto the base roll data
     if ( !!shorthand ) {
@@ -51,7 +51,7 @@ export class SimpleActor extends Actor {
 		// Get the Actor's data object
 		const actorData = this.data;
 		const data = actorData.data;
-		const flags = actorData.flags.dnd4eAltus || {};
+		const flags = actorData.flags.dnd4eBeta || {};
 		const bonuses = getProperty(data, "bonuses.abilities") || {};
 
 		// Prepare Character data
@@ -64,8 +64,8 @@ export class SimpleActor extends Actor {
 		// If we are a polymorphed actor, retrieve the skills and saves data from
 		// the original actor for later merging.
 		if (this.isPolymorphed) {
-			const transformOptions = this.getFlag('dnd4eAltus', 'transformOptions');
-			const original = game.actors?.get(this.getFlag('dnd4eAltus', 'originalActor'));
+			const transformOptions = this.getFlag('dnd4eBeta', 'transformOptions');
+			const original = game.actors?.get(this.getFlag('dnd4eBeta', 'originalActor'));
 
 			if (original) {
 				if (transformOptions.mergeSaves) {
@@ -87,11 +87,11 @@ export class SimpleActor extends Actor {
 
 			abl.mod = Math.floor((abl.value - 10) / 2);
 			abl.prof = (abl.proficient || 0) * data.attributes.prof;
-			abl.saveBonus = saveBonus;
-			abl.checkBonus = checkBonus;
+			abl.saveBonus = saveBonus + Math.floor(data.details.level / 2);
+			abl.checkBonus = checkBonus + Math.floor(data.details.level / 2);
 			abl.save = abl.mod + abl.prof + abl.saveBonus;
 			
-			abl.label = game.i18n.localize(DND4EALTUS.abilities[id]); //.localize("");
+			abl.label = game.i18n.localize(DND4EBETA.abilities[id]); //.localize("");
 			
 			// If we merged saves when transforming, take the highest bonus here.
 			if (originalSaves && abl.proficient) {
@@ -175,8 +175,8 @@ export class SimpleActor extends Actor {
 			
 			// Compute modifier
 			skl.mod = data.abilities[skl.ability].mod;			
-			skl.total = skl.value + skl.mod + sklBonusValue;
-			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
+			skl.total = skl.value + skl.mod + sklBonusValue + Math.floor(data.details.level / 2);
+			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
 
 		}
 		
@@ -208,8 +208,8 @@ export class SimpleActor extends Actor {
 		//Calc defence stats
 		for (let [id, def] of Object.entries(data.defences)) {
 			
-			def.label = game.i18n.localize(DND4EALTUS.def[id]);
-			def.title = game.i18n.localize(DND4EALTUS.defensives[id]);
+			def.label = game.i18n.localize(DND4EBETA.def[id]);
+			def.title = game.i18n.localize(DND4EBETA.defensives[id]);
 						
 			let defBonusValue = 0;
 			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
@@ -228,11 +228,11 @@ export class SimpleActor extends Actor {
 			}
 
 			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			def.value = 10 + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;			
+			def.value = 10 + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);			
 		}
 
 		//calc init
-		let initBonusValue = 0;
+		let initBonusValue = 0 + Math.floor(data.details.level / 2);
 		if(!(data.init.bonus.length === 1 && jQuery.isEmptyObject(data.init.bonus[0]))) {
 			for( const b of data.init.bonus) {
 				if(b.active) {
@@ -328,7 +328,7 @@ export class SimpleActor extends Actor {
 			}
 			res.resBonusValue = resBonusValue;
 			res.value = res.armour + resBonusValue;
-			res.label = game.i18n.localize(DND4EALTUS.damageTypes[id]); //.localize("");
+			res.label = game.i18n.localize(DND4EBETA.damageTypes[id]); //.localize("");
 		}
 		
 		//Magic Items
@@ -415,16 +415,16 @@ export class SimpleActor extends Actor {
 		flavText = flavText.replace("@label", this.data.data.skills[skillId].label);
 		
 		// Reliable Talent applies to any skill check we have full or better proficiency in
-		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4eAltus", "reliableTalent"));
+		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4eBeta", "reliableTalent"));
 		// Roll and return
 		
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND4EALTUS.SkillPromptTitle", {skill: CONFIG.DND4EALTUS.skills[skillId]}),
+			title: game.i18n.format("DND4EBETA.SkillPromptTitle", {skill: CONFIG.DND4EBETA.skills[skillId]}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
-			//halflingLucky: this.getFlag("dnd4eAltus", "halflingLucky"),
+			//halflingLucky: this.getFlag("dnd4eBeta", "halflingLucky"),
 			//reliableTalent: reliableTalent
 		}));
 	}	
@@ -438,7 +438,7 @@ export class SimpleActor extends Actor {
    * @return {Promise<Roll>}      A Promise which resolves to the created Roll instance
    */
 	rollAbility(abilityId, options={}) {
-		const label = abilityId; //CONFIG.DND4EALTUS.abilities[abilityId];
+		const label = abilityId; //CONFIG.DND4EBETA.abilities[abilityId];
 		const abl = this.data.data.abilities[abilityId];
 
 		// Construct parts
@@ -446,8 +446,8 @@ export class SimpleActor extends Actor {
 		const data = {mod: abl.mod};
 
 		// Add feat-related proficiency bonuses
-		// const feats = this.data.flags.dnd4eAltus || {};
-		// if ( feats.remarkableAthlete && DND4EALTUS.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
+		// const feats = this.data.flags.dnd4eBeta || {};
+		// if ( feats.remarkableAthlete && DND4EBETA.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
 			// parts.push("@proficiency");
 			// data.proficiency = Math.ceil(0.5 * this.data.data.attributes.prof);
 		// }
@@ -470,10 +470,10 @@ export class SimpleActor extends Actor {
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND4EALTUS.AbilityPromptTitle", {ability: CONFIG.DND4EALTUS.abilities[label]}),
+			title: game.i18n.format("DND4EBETA.AbilityPromptTitle", {ability: CONFIG.DND4EBETA.abilities[label]}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
-			// flavor: "Flowery Text Here. MORE AND MORE AND \r\n MORE S MORE " + game.i18n.format("DND4EALTUS.AbilityPromptTitle", {ability: CONFIG.DND4EALTUS.abilities[label]}),
+			// flavor: "Flowery Text Here. MORE AND MORE AND \r\n MORE S MORE " + game.i18n.format("DND4EBETA.AbilityPromptTitle", {ability: CONFIG.DND4EBETA.abilities[label]}),
 			// halflingLucky: feats.halflingLucky
 		}));
 	}
@@ -501,7 +501,7 @@ export class SimpleActor extends Actor {
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND4EALTUS.DefencePromptTitle", {defences: CONFIG.DND4EALTUS.defensives[label]}),
+			title: game.i18n.format("DND4EBETA.DefencePromptTitle", {defences: CONFIG.DND4EBETA.defensives[label]}),
 			// title: "TITLE",
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
@@ -533,7 +533,7 @@ export class SimpleActor extends Actor {
 	*/
 	async usePower(item, {configureDialog=true}={}) {
 		//if not a valid type of item to use
-		if ( !DND4EALTUS.powerUseType[item.data.type] ) throw new Error("Wrong Item type");
+		if ( !DND4EBETA.powerUseType[item.data.type] ) throw new Error("Wrong Item type");
 		const itemData = item.data.data;
 		//configure Powers data
 		const limitedUses = !!itemData.uses.per;
@@ -552,7 +552,7 @@ export class SimpleActor extends Actor {
 		// Update Item data
 		if ( limitedUses && consumeUse ) {
 			const uses = parseInt(itemData.uses.value || 0);
-			if ( uses <= 0 ) ui.notifications.warn(game.i18n.format("DND4EALTUS.ItemNoUses", {name: item.name}));
+			if ( uses <= 0 ) ui.notifications.warn(game.i18n.format("DND4EBETA.ItemNoUses", {name: item.name}));
 			
 			await item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
 			// item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
@@ -573,7 +573,7 @@ export class SimpleActor extends Actor {
 		let weight = 0;
 		
 		//Weight Currency
-		if ( game.settings.get("dnd4eAltus", "currencyWeight") ) {
+		if ( game.settings.get("dnd4eBeta", "currencyWeight") ) {
 			for (let [e, v] of Object.entries(actorData.data.currency)) {
 				weight += (e == "ad" ? v/500 : v/50);
 			}
