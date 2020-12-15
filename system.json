@@ -1,25 +1,26 @@
 {
-  "name": "dnd4eAltus",
-  "title": "4th Edition Altus",
-  "description": "A minimalist custom test build of 4th Ed.",
-  "version": 0.0,
-  "minimumCoreVersion": "0.6.6",
-  "compatibleCoreVersion": "0.7.8",
-  "templateVersion": 2,
-  "author": "EndlesNights",
-  "esmodules": ["module/dnd4eAltus.js"],
-  "styles": ["styles/dnd4eAltus.css"],
-  "packs": [],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    }
-  ],
-  "initiative": "1d20 + @init.value + (@init.value / 100)",
-  "gridDistance": 5,
-  "gridUnits": "ft",
-  "primaryTokenAttribute": "health",
-  "secondaryTokenAttribute": "power"
+	"name": "dnd4eAltus",
+	"title": "4th Edition Altus",
+	"description": "A minimalist custom test build of 4th Ed.",
+	"version": "0.0.0",
+	"minimumCoreVersion": "0.7.5",
+	"compatibleCoreVersion": "0.7.8",
+	"templateVersion": 2,
+	"author": "EndlesNights",
+	"esmodules": ["module/dnd4eAltus.js"],
+	"styles": ["styles/dnd4eAltus.css"],
+	"packs": [],
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "lang/en.json"
+		}
+	],
+	"socket": true,
+	"initiative": "1d20 + @init.value + (@init.value / 100)",
+	"gridDistance": 1,
+	"gridUnits": "sq",
+	"primaryTokenAttribute": "health",
+	"secondaryTokenAttribute": "power"
 }
