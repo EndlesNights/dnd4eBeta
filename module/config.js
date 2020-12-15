@@ -296,20 +296,20 @@ DND4EALTUS.currencyConversion = {
 
 /* -------------------------------------------- */
 
-DND4EALTUS.ritualcomponents = {
-	"ar": "DND4EALTUS.RitualCompAR",
-	"ms": "DND4EALTUS.RitualCompMS",
-	"rh": "DND4EALTUS.RitualCompRH",
-	"si": "DND4EALTUS.RitualCompSI",
-	"rs": "DND4EALTUS.RitualCompRS"
-};
-
 // DND4EALTUS.ritualcomponents = {
-	// "ad": "DND4EALTUS.RitualCompAD",
+	// "ar": "DND4EALTUS.RitualCompAR",
+	// "ms": "DND4EALTUS.RitualCompMS",
 	// "rh": "DND4EALTUS.RitualCompRH",
 	// "si": "DND4EALTUS.RitualCompSI",
-	// "mc": "DND4EALTUS.RitualCompMC"
+	// "rs": "DND4EALTUS.RitualCompRS"
 // };
+
+DND4EALTUS.ritualcomponents = {
+	"ad": "DND4EALTUS.RitualCompAD",
+	"rh": "DND4EALTUS.RitualCompRH",
+	"si": "DND4EALTUS.RitualCompSI",
+	"mc": "DND4EALTUS.RitualCompMC"
+};
 
 
 /* -------------------------------------------- */

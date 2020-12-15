@@ -446,11 +446,10 @@
 				"cp": 0
 			},
 			"ritualcomp": {
-				"ar" : 0,
-				"ms" : 0,
+				"ad" : 0,
 				"rh" : 0,
 				"si" : 0,
-				"rs" : 0
+				"mc" : 0
 			},
 			"attributes": {}			
 		}
