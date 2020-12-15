@@ -4,8 +4,8 @@ export class DeathSaveDialog extends BaseEntitySheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "actor-flags",
-			classes: ["dnd4ealtus", "actor-death-save"],
-			template: "systems/dnd4ealtus/templates/apps/death-save.html",
+			classes: ["dnd4eBeta", "actor-death-save"],
+			template: "systems/dnd4eBeta/templates/apps/death-save.html",
 			width: 500,
 			closeOnSubmit: true
 		});

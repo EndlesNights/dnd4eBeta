@@ -4,8 +4,8 @@ export class LongRestDialog extends BaseEntitySheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "actor-flags",
-			classes: ["dnd4ealtus", "actor-rest"],
-			template: "systems/dnd4ealtus/templates/apps/long-rest.html",
+			classes: ["dnd4eBeta", "actor-rest"],
+			template: "systems/dnd4eBeta/templates/apps/long-rest.html",
 			width: 500,
 			closeOnSubmit: true
 		});

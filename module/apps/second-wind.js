@@ -4,8 +4,8 @@ export class SecondWindDialog extends BaseEntitySheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "actor-flags",
-			classes: ["dnd4ealtus", "second-wind"],
-			template: "systems/dnd4ealtus/templates/apps/second-wind.html",
+			classes: ["dnd4eBeta", "second-wind"],
+			template: "systems/dnd4eBeta/templates/apps/second-wind.html",
 			width: 500,
 			closeOnSubmit: true
 		});
