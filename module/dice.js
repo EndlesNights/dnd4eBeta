@@ -40,27 +40,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
   const _roll = function(parts, adv, form=null) {
 
     // Determine the d20 roll and modifiers
-    let nd = 1;
-    let mods = halflingLucky ? "r=1" : "";
-
-    // Handle advantage
-    // if ( adv === 1 ) {
-      // nd = elvenAccuracy ? 3 : 2;
-      // flavor += ` (${game.i18n.localize("DND4EALTUS.Advantage")})`;
-      // mods += "kh";
-    // }
-
-    // Handle disadvantage
-    // else if ( adv === -1 ) {
-      // nd = 2;
-      // flavor += ` (${game.i18n.localize("DND4EALTUS.Disadvantage")})`;
-      // mods += "kl";
-    // }
-
-    // Prepend the d20 roll
-    let formula = `${nd}d20${mods}`;
-    if (reliableTalent) formula = `{${nd}d20${mods},10}kh`;
-	// if(!parts.includes("@power")) parts.unshift(`1d20`);
+	if(!parts.includes("@power") && !parts.includes("@tool")) parts.unshift(`1d20`);
 	
     // Optionally include a situational bonus
     if ( form !== null ) data['bonus'] = form.bonus.value;

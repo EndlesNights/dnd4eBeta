@@ -653,7 +653,7 @@ export default class Item4e extends Item {
 	
 	//pack the powers formal and send it to the dice.
 	if(!!itemData.attack.formula) {		
-		rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse.data.data);
+		rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null);
 	}
 	
     // Attack Bonus
@@ -768,7 +768,7 @@ export default class Item4e extends Item {
     const parts = itemData.damage.parts.map(d => d[0]);
 	const partsCrit = itemData.damage.parts.map(d => d[0]);
 	//Add power and weapons damage into parts
-	if(!!itemData.hit?.formula) {
+	if(!!itemData.hit?.formula && weaponUse) {
 		parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
 		parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse.data.data));
 		
