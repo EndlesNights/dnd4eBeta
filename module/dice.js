@@ -78,6 +78,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
     // Convert the roll to a chat message and return the roll
     rollMode = form ? form.rollMode.value : rollMode;
+
     roll.toMessage({
       speaker: speaker,
       flavor: flavor

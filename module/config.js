@@ -626,19 +626,20 @@ DND4EBETA.spellScalingModes = {
  * @type {Object}
  */
 DND4EBETA.weaponTypes = {
-  "simpleM": "DND4EBETA.WeaponSimpleM",
-  "militaryM": "DND4EBETA.WeaponMilitaryM",
-  "superiorM": "DND4EBETA.WeaponSuperiorM",
-  "improvM": "DND4EBETA.WeaponImprovisedM",
-  "simpleR": "DND4EBETA.WeaponSimpleR",  
-  "militaryR": "DND4EBETA.WeaponMilitaryR",
-  "superiorR": "DND4EBETA.WeaponSuperiorR",
-  "improvR": "DND4EBETA.WeaponImprovisedR",
-  "siegeM": "DND4EBETA.WeaponSiegeM",
-  "siegeR": "DND4EBETA.WeaponSiegeR",
-  "naturalM": "DND4EBETA.WeaponNaturalM",
-  "naturalR": "DND4EBETA.WeaponNaturalR",
-  "improv": "DND4EBETA.WeaponImprov",
+	"simpleM": "DND4EBETA.WeaponSimpleM",
+	"militaryM": "DND4EBETA.WeaponMilitaryM",
+	"superiorM": "DND4EBETA.WeaponSuperiorM",
+	"improvM": "DND4EBETA.WeaponImprovisedM",
+	"simpleR": "DND4EBETA.WeaponSimpleR",  
+	"militaryR": "DND4EBETA.WeaponMilitaryR",
+	"superiorR": "DND4EBETA.WeaponSuperiorR",
+	"improvR": "DND4EBETA.WeaponImprovisedR",
+	"siegeM": "DND4EBETA.WeaponSiegeM",
+	"siegeR": "DND4EBETA.WeaponSiegeR",
+	"naturalM": "DND4EBETA.WeaponNaturalM",
+	"naturalR": "DND4EBETA.WeaponNaturalR",
+	"improv": "DND4EBETA.WeaponImprov",
+	"other": "DND4EALTUS.EquipmentTypeOther",
 
 };
 

@@ -96,8 +96,8 @@ export class Helper {
 			newFormula = newFormula.replace("@wisMod", actorData.abilities["wis"].mod);
 			newFormula = newFormula.replace("@chaMod", actorData.abilities["cha"].mod);
 			
-			newFormula = newFormula.replace("@lv", actorData.details.level);
 			newFormula = newFormula.replace("@lvhalf", Math.floor(actorData.details.level));
+			newFormula = newFormula.replace("@lv", actorData.details.level);
 		}
 		
 		if(powerData) {
