@@ -587,7 +587,7 @@ export class SimpleActor extends Actor {
 		//4e 1gp or residuum weights 0.000002
 		
 		for (let [e, v] of Object.entries(actorData.items)) {
-			weight += v.data.weight * v.data.quantity;
+			if(!!v.data.weight && !!v.data.quantity) weight += v.data.weight * v.data.quantity;
 		}
 		
 		//round to nearest 100th.
