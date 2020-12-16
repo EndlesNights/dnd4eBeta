@@ -626,19 +626,20 @@ DND4EALTUS.spellScalingModes = {
  * @type {Object}
  */
 DND4EALTUS.weaponTypes = {
-  "simpleM": "DND4EALTUS.WeaponSimpleM",
-  "militaryM": "DND4EALTUS.WeaponMilitaryM",
-  "superiorM": "DND4EALTUS.WeaponSuperiorM",
-  "improvM": "DND4EALTUS.WeaponImprovisedM",
-  "simpleR": "DND4EALTUS.WeaponSimpleR",  
-  "militaryR": "DND4EALTUS.WeaponMilitaryR",
-  "superiorR": "DND4EALTUS.WeaponSuperiorR",
-  "improvR": "DND4EALTUS.WeaponImprovisedR",
-  "siegeM": "DND4EALTUS.WeaponSiegeM",
-  "siegeR": "DND4EALTUS.WeaponSiegeR",
-  "naturalM": "DND4EALTUS.WeaponNaturalM",
-  "naturalR": "DND4EALTUS.WeaponNaturalR",
-  "improv": "DND4EALTUS.WeaponImprov",
+	"simpleM": "DND4EALTUS.WeaponSimpleM",
+	"militaryM": "DND4EALTUS.WeaponMilitaryM",
+	"superiorM": "DND4EALTUS.WeaponSuperiorM",
+	"improvM": "DND4EALTUS.WeaponImprovisedM",
+	"simpleR": "DND4EALTUS.WeaponSimpleR",  
+	"militaryR": "DND4EALTUS.WeaponMilitaryR",
+	"superiorR": "DND4EALTUS.WeaponSuperiorR",
+	"improvR": "DND4EALTUS.WeaponImprovisedR",
+	"siegeM": "DND4EALTUS.WeaponSiegeM",
+	"siegeR": "DND4EALTUS.WeaponSiegeR",
+	"naturalM": "DND4EALTUS.WeaponNaturalM",
+	"naturalR": "DND4EALTUS.WeaponNaturalR",
+	"improv": "DND4EALTUS.WeaponImprov",
+	"other": "DND4EALTUS.EquipmentTypeOther",
 
 };
 

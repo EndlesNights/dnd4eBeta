@@ -769,11 +769,12 @@ export default class Item4e extends Item {
 	const partsCrit = itemData.damage.parts.map(d => d[0]);
 	//Add power and weapons damage into parts
 	if(!!itemData.hit?.formula && weaponUse) {
-		parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
 		parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse.data.data));
-		
-		partsCrit.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
 		partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula,actorData, this.data.data, weaponUse.data.data));
+		if(weaponUse.data.data.damage.parts.length > 0) {
+			parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
+			partsCrit.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
+		}
 	}
 	
 	// Adjust damage from versatile usage
