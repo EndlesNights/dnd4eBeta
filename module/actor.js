@@ -157,6 +157,7 @@ export class SimpleActor extends Actor {
 			skl.value = parseFloat(skl.value || 0);
 
 			let sklBonusValue = 0;
+			let sklArmourPenalty = 0;
 			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
 				for( const b of skl.bonus) {
 					if(b.active) {
@@ -168,10 +169,11 @@ export class SimpleActor extends Actor {
 				//Get Skill Check Penalty stats from armour
 				for ( let i of this.items) {
 					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
-					sklBonusValue += i.data.data.armour.skillCheckValue;
+					sklArmourPenalty += i.data.data.armour.skillCheckValue;
 				}
 			}
-			skl.sklBonusValue = sklBonusValue;
+			skl.armourPen = sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
 			
 			// Compute modifier
 			skl.mod = data.abilities[skl.ability].mod;			
@@ -256,7 +258,7 @@ export class SimpleActor extends Actor {
 		}
 		for ( let i of this.items) {
 			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
-			data.movement.basic.armour += i.data.data.armour.movePenValue;
+			data.movement.basic.armour -= i.data.data.armour.movePenValue;
 		}
 		data.movement.basic.bonusValue = basicBonusValue;
 		

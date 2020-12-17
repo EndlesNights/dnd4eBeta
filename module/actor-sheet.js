@@ -601,7 +601,7 @@ export class SimpleActorSheet extends ActorSheet {
 		event.preventDefault();
 		const skillName = event.currentTarget.parentElement.dataset.skill;
 		const target = `data.skills.${skillName}`;
-		const options = {target: target, label: `${this.actor.data.data.skills[skillName].label} Skill Bonues` };
+		const options = {target: target, label: `${this.actor.data.data.skills[skillName].label} Skill Bonues`, skill: true };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	/* -------------------------------------------- */

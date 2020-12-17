@@ -1,7 +1,16 @@
 <form id="attribute-bonuses" class="dialog-content" onsubmit="event.preventDefault();">
 	<!-- <span>Total Bonus to {{skill}}: SOMENUM</span> -->
-	<!-- <a>+ Add New Bonus Button</a> -->	
-	{{#each data as |bonus b|}}
+	<!-- <a>+ Add New Bonus Button</a> -->
+	{{#if options.skill}}
+		<div>
+			<span>Skill Penalty from armour:</span>
+			<span>{{data.armourPen}}</span>	
+			<span>Skill Effected by Armour Penalty?</span>
+			<input type="checkbox" name="data.armourCheck" data-dtype="Boolean" {{checked data.armourCheck}} title="Armour Penalty">
+		</div>
+	{{/if}}
+	
+	{{#each bonusData as |bonus b|}}
 	<div class="bonus-part" data-bonus-part="{{b}}">
 		<span>Name of Bonus:</span>
 		<input type="text" name="{{b}}.name" value="{{bonus.name}}" data-dtype="String" style="width: 125px;"/>

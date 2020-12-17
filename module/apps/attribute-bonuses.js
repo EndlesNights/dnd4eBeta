@@ -21,10 +21,11 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 	
 	/** @override */
 	getData() {
-		return {data: Helper.byString(this.options.target, this.object.data).bonus}
+		const data = Helper.byString(this.options.target, this.object.data);
+		return {bonusData: data.bonus, data: data, options: this.options};
 	}
 	
-	async _updateObject(event, formData) {	
+	async _updateObject(event, formData) {
 		const updateData = {};
 
 		let newBonus = [{}];
@@ -36,8 +37,14 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 			}
 		}
 		updateData[`${this.options.target}.bonus`] = newBonus;
+		if(this.options?.skill) {
+			updateData[`${this.options.target}.armourCheck`] = formData["data.armourCheck"];
+			this.position.height = Math.max(1, count) * 76 + 118;
+		} else {
+			this.position.height = Math.max(1, count) * 76 + 91;
+		}
+
 		this.object.update(updateData);
-		this.position.height = Math.max(1, count) * 76 + 98;
 	}
 
   /** @override */

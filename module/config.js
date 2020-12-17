@@ -639,7 +639,7 @@ DND4EBETA.weaponTypes = {
 	"naturalM": "DND4EBETA.WeaponNaturalM",
 	"naturalR": "DND4EBETA.WeaponNaturalR",
 	"improv": "DND4EBETA.WeaponImprov",
-	"other": "DND4EALTUS.EquipmentTypeOther",
+	"other": "DND4EBETA.EquipmentTypeOther",
 
 };
 
@@ -816,23 +816,24 @@ DND4EBETA.trainingLevels = {
 
 // Condition Types
 DND4EBETA.conditionTypes = {
-  "blinded": "DND4EBETA.ConBlinded",
-  "dazed": "DND4EBETA.ConDazed",
-  "deafened": "DND4EBETA.ConDeafened",
-  "dominated": "DND4EBETA.ConDominated",
-  "dying": "DND4EBETA.ConDying",
-  "helpless": "DND4EBETA.ConHelpless",
-  "immobilized": "DND4EBETA.Immobilized",
-  "invisible": "DND4EBETA.ConInvisible",
-  "marked": "DND4EBETA.ConMarked",
-  "petrified": "DND4EBETA.ConPetrified",
-  "prone": "DND4EBETA.ConProne",
-  "restrained": "DND4EBETA.ConRestrained",
-  "slowed": "DND4EBETA.ConSlower",
-  "stunned": "DND4EBETA.ConStunned",
-  "surprised": "DND4EBETA.ConSurprised",
-  "unconscious": "DND4EBETA.ConUnconscious",
-  "weakened": "DND4EBETA.ConWeakened",
+	"blinded": "DND4EBETA.ConBlinded",
+	"bloodied": "DND4EBETA.ConBlood",
+	"dazed": "DND4EBETA.ConDazed",
+	"deafened": "DND4EBETA.ConDeafened",
+	"dominated": "DND4EBETA.ConDominated",
+	"dying": "DND4EBETA.ConDying",
+	"helpless": "DND4EBETA.ConHelpless",
+	"immobilized": "DND4EBETA.Immobilized",
+	"invisible": "DND4EBETA.ConInvisible",
+	"marked": "DND4EBETA.ConMarked",
+	"petrified": "DND4EBETA.ConPetrified",
+	"prone": "DND4EBETA.ConProne",
+	"restrained": "DND4EBETA.ConRestrained",
+	"slowed": "DND4EBETA.ConSlower",
+	"stunned": "DND4EBETA.ConStunned",
+	"surprised": "DND4EBETA.ConSurprised",
+	"unconscious": "DND4EBETA.ConUnconscious",
+	"weakened": "DND4EBETA.ConWeakened",
 };
 
 // Languages
