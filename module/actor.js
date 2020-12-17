@@ -177,7 +177,7 @@ export class SimpleActor extends Actor {
 			
 			// Compute modifier
 			skl.mod = data.abilities[skl.ability].mod;			
-			skl.total = skl.value + skl.mod + sklBonusValue + Math.floor(data.details.level / 2);
+			skl.total = skl.value + skl.mod + sklBonusValue - sklArmourPenalty + Math.floor(data.details.level / 2);
 			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
 
 		}
