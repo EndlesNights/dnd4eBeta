@@ -1,6 +1,6 @@
 /**
- * A simple and flexible system for world-building using an arbitrary collection of character and item attributes
- * Author: Atropos
+ * A simple Beta build of D&D4e game system for the Foundry VTT.
+ * Author: EndlesNights
  * Software License: GNU GPLv3
  */
 
@@ -22,6 +22,7 @@ import Item4e from "./item/entity.js";
 // Import Helpers
 import * as chat from "./chat.js";
 import * as dice from "./dice.js";
+import * as macros from "./macros.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -30,20 +31,13 @@ import * as dice from "./dice.js";
 Hooks.once("init", async function() {
 	console.log(`D&D4eBeta | Initializing Dungeons & Dragons 4th Edition System\n${DND4EBETA.ASCII}`);
 	
-	/**
-	 * Set an initiative formula for the system
-	 * @type {String}
-	 */
-	// CONFIG.Combat.initiative = {
-		// formula: "1d20",
-		// decimals: 2
-  // };
-  
 	game.dnd4eBeta = {
 		config: DND4EBETA,
 		entities: {
 			Item4e,
-		}
+		},
+		macros: macros,
+		rollItemMacro: macros.rollItemMacro
 	};
 	
 	// Define custom Entity classes
@@ -106,7 +100,10 @@ Hooks.once("setup", function() {
     }, {});
   }
 });
-
+Hooks.once("ready", function() {
+	// Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
+	Hooks.on("hotbarDrop", (bar, data, slot) => macros.create4eMacro(data, slot));
+});
 
 /* -------------------------------------------- */
 /*  Other Hooks                                 */

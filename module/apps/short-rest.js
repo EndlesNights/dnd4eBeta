@@ -74,7 +74,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 		
 		// *** TODO For Each reset encounter power HERE
 		//get all encounter rechage items/powers
-		const items = this.object.items.filter(item => item.data.data.uses.per === "enc");
+		const items = this.object.items.filter(item => item.data.data.uses?.per === "enc");
 		const updateItems = items.map( item => {
 			return {
 				_id: item._id,
