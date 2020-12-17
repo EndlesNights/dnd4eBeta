@@ -57,7 +57,7 @@ export class LongRestDialog extends BaseEntitySheet {
 		updateData[`data.magicItemUse.encounteruse`] = false;
 		
 		// *** TODO For Each reset encounter & daily power HERE
-				const items = this.object.items.filter(item => ["enc", "day"].includes(item.data.data.uses.per));
+		const items = this.object.items.filter(item => ["enc", "day"].includes(item.data.data.uses?.per));
 		const updateItems = items.map( item => {
 			return {
 				_id: item._id,
