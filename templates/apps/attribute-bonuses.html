@@ -3,10 +3,12 @@
 	<!-- <a>+ Add New Bonus Button</a> -->
 	{{#if options.skill}}
 		<div>
-			<span>Skill Penalty from armour:</span>
-			<span>{{data.armourPen}}</span>	
 			<span>Skill Effected by Armour Penalty?</span>
 			<input type="checkbox" name="data.armourCheck" data-dtype="Boolean" {{checked data.armourCheck}} title="Armour Penalty">
+			{{#if data.armourCheck}}
+			<span>Skill Penalty from armour:</span>
+			<span>{{data.armourPen}}</span>	
+			{{/if}}
 		</div>
 	{{/if}}
 	
