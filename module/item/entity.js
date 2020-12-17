@@ -767,11 +767,12 @@ export default class Item4e extends Item {
     // Define Roll parts
     const parts = itemData.damage.parts.map(d => d[0]);
 	const partsCrit = itemData.damage.parts.map(d => d[0]);
-	//Add power and weapons damage into parts
-	if(!!itemData.hit?.formula && weaponUse) {
-		parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse.data.data));
-		partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula,actorData, this.data.data, weaponUse.data.data));
-		if(weaponUse.data.data.damage.parts.length > 0) {
+	//Add power damage into parts
+	if(!!itemData.hit?.formula) {
+		parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse?.data.data));
+		partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula,actorData, this.data.data, weaponUse?.data.data));
+		//Add weapons damage into parts
+		if(weaponUse && weaponUse.data.data.damage.parts.length > 0) {
 			parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
 			partsCrit.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
 		}

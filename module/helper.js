@@ -24,15 +24,14 @@ export class Helper {
 
 
 	static getWeaponUse(itemData, actor) {
+		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length == 0)) return null;
 		let weaponUse = itemData.weaponUse? actor.items.get(itemData.weaponUse) : null;
 		//If default weapon is in use, find a sutable weapon
 		if(itemData.weaponUse === "default" || itemData.weaponUse === "defaultOH") {
-			// console.log("default Weapon in use, seach for weapon type from power: " + itemData.weaponType);
-			
 			let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 			let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
 			
-			return actor.itemTypes.weapon.reduce((obj, i) =>  {
+			return actor.itemTypes.weapon.find((i) =>  {
 				if(i.data.data.equipped) {
 					if(itemData.weaponType === "meleeRanged") {
 						if(setMelee.includes(i.data.data.weaponType) || setRanged.includes(i.data.data.weaponType) )
@@ -45,7 +44,7 @@ export class Helper {
 						if(setMelee.includes(i.data.data.weaponType) )
 							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
 								return i;
-							else if(itemData.weaponUse === "default")
+							else if(itemData.weaponUse === "default") 
 								return i;
 					}
 					else if(itemData.weaponType === "ranged") {
@@ -77,15 +76,14 @@ export class Helper {
 								return i;
 					}
 				}
-			}, {}) || null;
-		}		
+			}, {});
+		}
 		return weaponUse;
 	}
 	
 	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula;
-		
 		if(actorData) {
 			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
@@ -113,6 +111,14 @@ export class Helper {
 			
 			newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
 			newFormula = newFormula.replace("@wepDiceDamage", weaponData.diceDamage);
+		} else {
+			//if no weapon is in use replace the weapon keys with nothing.
+			newFormula = newFormula.replace("@wepAttack", "");
+			newFormula = newFormula.replace("@wepDamage", "");
+			newFormula = newFormula.replace("@wepCritBonus", "");
+			
+			newFormula = newFormula.replace("@wepDiceNum", "0");
+			newFormula = newFormula.replace("@wepDiceDamage", "0");			
 		}
 
 		return newFormula;
@@ -137,7 +143,7 @@ export class Helper {
     let rollFormula = formula.replace(dataRgx, (match, term) => {
       let value = getProperty(data, term);
       // If there was a value returned, trim and return it.
-      if ( value ) {
+      if ( value || value == 0) {
         return String(value).trim();
       }
       // Otherwise, return either the missing replacement value, or the original @attr string for later replacement.
