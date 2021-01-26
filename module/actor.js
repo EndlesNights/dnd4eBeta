@@ -205,7 +205,7 @@ export class SimpleActor extends Actor {
 		//set mods for defences
 		data.defences.fort.ability = (data.abilities.str.value >= data.abilities.con.value) ? "str" : "con";
 		data.defences.ref.ability = (data.abilities.dex.value >= data.abilities.int.value) ? "dex" : "int";
-		data.defences.wil.ability = (data.abilities.wis.value >= data.abilities.cha.value) ? "wis" : "char";
+		data.defences.wil.ability = (data.abilities.wis.value >= data.abilities.cha.value) ? "wis" : "cha";
 
 		//Calc defence stats
 		for (let [id, def] of Object.entries(data.defences)) {
