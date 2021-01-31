@@ -679,6 +679,7 @@
 	  "diceNum": 0,
 	  "diceDamage": 0,
 	  "damageType": {"physical":true},
+	  "brutalNum": 1,
 	  "weaponGroup": {},
 	  "attackForm": "@profBonus+@enhance",
 	  "damageForm": "@enhance",

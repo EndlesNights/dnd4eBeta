@@ -749,7 +749,7 @@ export default class Item4e extends Item {
   rollDamage({event, spellLevel=null, versatile=false}={}) {
     const itemData = this.data.data;
     const actorData = this.actor.data.data;
-	const weaponUse = Helper.getWeaponUse(itemData, this.actor);
+    const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
     if ( !this.hasDamage ) {
       throw new Error("You may not make a Damage Roll with this Item.");
@@ -766,26 +766,29 @@ export default class Item4e extends Item {
 
     // Define Roll parts
     const parts = itemData.damage.parts.map(d => d[0]);
-	const partsCrit = itemData.damage.parts.map(d => d[0]);
-	//Add power damage into parts
-	if(!!itemData.hit?.formula) {
-		parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse?.data.data));
-		partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula,actorData, this.data.data, weaponUse?.data.data));
-		//Add weapons damage into parts
-		if(weaponUse && weaponUse.data.data.damage.parts.length > 0) {
-			parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
-			partsCrit.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
-		}
-	}
+    console.log(parts);
+	  const partsCrit = itemData.damage.parts.map(d => d[0]);
+	  //Add power damage into parts
+    if(!!itemData.hit?.formula) {
+      parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse?.data.data));
+      partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula,actorData, this.data.data, weaponUse?.data.data));
+      console.log(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse?.data.data));
+      //Add weapons damage into parts
+      if(weaponUse && weaponUse.data.data.damage.parts.length > 0) {
+        parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
+        partsCrit.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
+        console.log(weaponUse.data.data.damage.parts.map(d => d[0]));
+      }
+    }
 	
-	// Adjust damage from versatile usage
-	if(weaponUse) {
-		if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
-			parts.push("1");
-			partsCrit.push("1");
-			messageData["flags.dnd4eBeta.roll"].versatile = true;
-		}
-	}
+    // Adjust damage from versatile usage
+    if(weaponUse) {
+      if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
+        parts.push("1");
+        partsCrit.push("1");
+        messageData["flags.dnd4eBeta.roll"].versatile = true;
+      }
+    }
     // if ( versatile && itemData.damage.versatile ) {
       // parts[0] = itemData.damage.versatile;
       // messageData["flags.dnd4eBeta.roll"].versatile = true;
@@ -808,27 +811,27 @@ export default class Item4e extends Item {
       delete this._ammo;
     }
 	
-	// Ammunition Damage from weapon
-	if(weaponUse) {
-		if ( weaponUse._ammo ) {
-			parts.push("@ammoW");
-			partsCrit.push("@ammoW");
-			rollData["ammoW"] = weaponUse._ammo.data.data.damage.parts.map(p => p[0]).join("+");
-			flavor += ` [${weaponUse._ammo.name}]`;
-			delete weaponUse._ammo;
-		}
-	}
-	console.log(parts);
-	console.log(rollData);
-	//Add powers text to message.
-	if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
-	if(itemData.miss?.detail) flavor += '<br>Hit: ' + itemData.miss.detail
-	if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
+    // Ammunition Damage from weapon
+    if(weaponUse) {
+      if ( weaponUse._ammo ) {
+        parts.push("@ammoW");
+        partsCrit.push("@ammoW");
+        rollData["ammoW"] = weaponUse._ammo.data.data.damage.parts.map(p => p[0]).join("+");
+        flavor += ` [${weaponUse._ammo.name}]`;
+        delete weaponUse._ammo;
+      }
+    }
+    console.log(parts);
+    console.log(rollData);
+    //Add powers text to message.
+    if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
+    if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
+    if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
     // Call the roll helper utility
     return damageRoll({
       event: event,
       parts: parts,
-	  partsCrit: partsCrit,
+	    partsCrit: partsCrit,
       actor: this.actor,
       data: rollData,
       title: title,

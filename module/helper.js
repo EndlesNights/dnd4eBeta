@@ -20,8 +20,7 @@ export class Helper {
 			}
 		}
 		return o;
-	}	
-
+	}
 
 	static getWeaponUse(itemData, actor) {
 		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length == 0)) return null;
@@ -109,8 +108,22 @@ export class Helper {
 			newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1));
 			newFormula = this.replaceData (newFormula, weaponData);
 			
-			newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
-			newFormula = newFormula.replace("@wepDiceDamage", weaponData.diceDamage);
+			if(weaponData.properties.bru) {
+				let index = formula.trim().indexOf("*@wepDiceNum");
+				let wDice = 1;
+				if(index > 0 ) {
+					let check = formula.trim().substring(0,index).match(/\d+$/);
+					wDice = check? check[0] : 1;
+				}
+				newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
+				newFormula = newFormula.replace("@wepDiceDamage", '(' + weaponData.diceDamage + '-'+ weaponData.brutal +') + '+ weaponData.brutal +' * ' + weaponData.diceNum * wDice);
+				
+			}
+			else {
+				newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
+				newFormula = newFormula.replace("@wepDiceDamage", weaponData.diceDamage);
+			}
+
 		} else {
 			//if no weapon is in use replace the weapon keys with nothing.
 			newFormula = newFormula.replace("@wepAttack", "");

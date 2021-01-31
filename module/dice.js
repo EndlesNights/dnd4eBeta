@@ -173,6 +173,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
   const _roll = function(parts, partsCrit, crit, form) {
     data['bonus'] = form ? form.bonus.value : 0;
     let roll = crit? new Roll(partsCrit.join("+"), data) : new Roll(parts.join("+"), data);
+    console.log(roll);
     // Modify the damage formula for critical hits
     if ( crit === true ) {
       // let add = (actor && actor.getFlag("dnd4eBeta", "savageAttacks")) ? 1 : 0;
@@ -180,7 +181,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
       // roll.alter(add, mult);
       flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
     }
-
+    console.log(flavor);
     // Convert the roll to a chat message
     rollMode = form ? form.rollMode.value : rollMode;
     roll.toMessage({

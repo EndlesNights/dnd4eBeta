@@ -161,15 +161,25 @@
 				<div class="form-group">
 					<label title="Number of Dice in damage roll" for="diceNum">Damage Dice Num:</label>
 					<div class="form-fields">
-						<input type="text" name="data.diceNum" id="diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" onClick="this.select();"/>
+						<input type="text" name="data.diceNum" id="diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" onClick="this.select();" data-dtype="Number"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<label title="Size of Dice in damage roll." for="diceDamage">Damage Dice Size:</label>
 					<div class="form-fields">
-						<input type="text" name="data.diceDamage" id="diceDamage" value="{{data.diceDamage}}" title="Size of Dice in damage roll." placeholder="8" onClick="this.select();"/>
+						<input type="text" name="data.diceDamage" id="diceDamage" value="{{data.diceDamage}}" title="Rerollthreshhold for brutal dice." placeholder="8" onClick="this.select();" data-dtype="Number"/>
 					</div>
 				</div>
+
+				{{#if data.properties.bru}}
+				<div class="form-group">
+					<label title="Brutal Dice Value." for="brutal">Brutal Dice Value:</label>
+					<div class="form-fields">
+						<input type="text" name="data.brutal" id="brutal" value="{{data.brutal}}" title="Size of Dice in damage roll." placeholder="1" onClick="this.select();" data-dtype="Number"/>
+					</div>
+				</div>
+				{{/if}}
+
 				<!-- <div class="form-group">
 					<label title="Bonus to Attack Roll.">Attack Roll Bonus:</label>
 					<div class="form-fields">
