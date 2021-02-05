@@ -6,5 +6,5 @@
 - Brutal Dice will now do the mathematical equivalent of infinite  re-rolling. As the current FVVT does roll modifiers only support a single re-roll per dice, a solution stop gap solution was made where the die total size is decreased by n number equal to the brutal re-roll threshold, and the value is then added back to the dicer as a bonus term.
 - Fixed a typeo where the line for "MISS" instead said "HIT"
 
-### Version 0.0.6
+## Version 0.0.6
 - Fixed issues where the value for WilL Defence was trying to check the "char" abilities score instead of "cha"

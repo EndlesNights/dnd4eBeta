@@ -836,6 +836,150 @@ DND4EBETA.conditionTypes = {
 	"weakened": "DND4EBETA.ConWeakened",
 };
 
+
+DND4EBETA.statusEffect = [
+	{
+		id: "blinded",
+		label: "EFFECT.statusBlind",
+		icon: "systems/dnd4eBeta/icons/statusEffects/blinded.svg"
+	},
+	{
+		id: "bloodied",
+		label: "EFFECT.statusBloodied",
+		icon: "systems/dnd4eBeta/icons/statusEffects/bloodied.svg"
+	},
+	{
+		id: "dazed",
+		label: "EFFECT.statusDazed",
+		icon: "systems/dnd4eBeta/icons/statusEffects/dazed.svg"
+	},
+	{
+		id: "dead",
+		label: "EFFECT.statusDead",
+		icon: "systems/dnd4eBeta/icons/statusEffects/dead.svg"
+	},
+
+	{
+		id: "defDown",
+		label: "EFFECT.statusDefDown",
+		icon: "systems/dnd4eBeta/icons/statusEffects/def_down.svg"
+	},
+	{
+		id: "defUp",
+		label: "EFFECT.statusDefUp",
+		icon: "systems/dnd4eBeta/icons/statusEffects/def_up.svg"
+	},
+	{
+		id: "deafened",
+		label: "EFFECT.statusDeafened",
+		icon: "systems/dnd4eBeta/icons/statusEffects/deafened.svg"
+	},
+	{
+		id: "disarmed",
+		label: "EFFECT.statusDisarmed",
+		icon: "systems/dnd4eBeta/icons/statusEffects/disarmed.svg"
+	},
+	{
+		id: "dominated",
+		label: "EFFECT.statusDominated",
+		icon: "systems/dnd4eBeta/icons/statusEffects/dominated.svg"
+	},
+	{
+		id: "drunk",
+		label: "EFFECT.statusDrunk",
+		icon: "systems/dnd4eBeta/icons/statusEffects/drunk.svg"
+	},
+	{
+		id: "dying",
+		label: "EFFECT.statusDying",
+		icon: "systems/dnd4eBeta/icons/statusEffects/dying.svg"
+	},
+	{
+		id: "flying",
+		label: "EFFECT.statusFlying",
+		icon: "systems/dnd4eBeta/icons/statusEffects/flying.svg"
+	},
+	{
+		id: "helpless",
+		label: "EFFECT.statusHelpless",
+		icon: "systems/dnd4eBeta/icons/statusEffects/helpless.svg"
+	},
+	{
+		id: "immobilized",
+		label: "EFFECT.statusImmobilized",
+		icon: "systems/dnd4eBeta/icons/statusEffects/immobilized.svg"
+	},
+	{
+		id: "insubstantial",
+		label: "EFFECT.statusInsubstantial",
+		icon: "systems/dnd4eBeta/icons/statusEffects/insubstantial.svg"
+	},
+	{
+		id: "invisible",
+		label: "EFFECT.statusInvisible",
+		icon: "systems/dnd4eBeta/icons/statusEffects/invisible.svg"
+	},
+	{
+		id: "petrified",
+		label: "EFFECT.statusPetrified",
+		icon: "systems/dnd4eBeta/icons/statusEffects/Petrified.svg"
+	},
+	{
+		id: "prone",
+		label: "EFFECT.statusProne",
+		icon: "systems/dnd4eBeta/icons/statusEffects/prone.svg"
+	},
+	{
+		id: "restrained",
+		label: "EFFECT.statusRestrained",
+		icon: "systems/dnd4eBeta/icons/statusEffects/restrained.svg"
+	},
+	{
+		id: "sleeping",
+		label: "EFFECT.statusSleeping",
+		icon: "systems/dnd4eBeta/icons/statusEffects/Sleeping.svg"
+	},
+	{
+		id: "slowed",
+		label: "EFFECT.statusSlowed",
+		icon: "systems/dnd4eBeta/icons/statusEffects/slowed.svg"
+	},
+	{
+		id: "sneaking",
+		label: "EFFECT.statusSneaking",
+		icon: "systems/dnd4eBeta/icons/statusEffects/sneaking.svg"
+	},
+	{
+		id: "stunned",
+		label: "EFFECT.statusStunned",
+		icon: "systems/dnd4eBeta/icons/statusEffects/stunned.svg"
+	},
+	{
+		id: "surprised",
+		label: "EFFECT.statusSurprised",
+		icon: "systems/dnd4eBeta/icons/statusEffects/surprised.svg"
+	},
+	{
+		id: "torch",
+		label: "EFFECT.statusTorch",
+		icon: "systems/dnd4eBeta/icons/statusEffects/torch.svg"
+	},
+	{
+		id: "unconscious",
+		label: "EFFECT.statusUnconscios",
+		icon: "systems/dnd4eBeta/icons/statusEffects/unconscious.svg"
+	},
+	{
+		id: "weakened",
+		label: "EFFECT.statusWeakend",
+		icon: "systems/dnd4eBeta/icons/statusEffects/weakend.svg"
+	},
+	{
+		id: "mark_1",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eBeta/icons/statusEffects/mark_1.svg"
+	}
+];
 // Languages
 DND4EBETA.spoken = {
   "Abyssal": "DND4EBETA.SpokenAbyssal",
