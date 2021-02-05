@@ -134,6 +134,16 @@ export class Helper {
 			newFormula = newFormula.replace("@wepDiceDamage", "0");			
 		}
 
+		//check for actor values in formula
+		for(let i = 0; i < (newFormula.match(/@/g) || []).length; i++) {
+			let indexStart = newFormula.indexOf('@');
+			let indexEnd = newFormula.substring(indexStart).search(/[ /*+-]/);
+
+			let val = typeof this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) === 'number' ?
+				this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) : '';
+
+			newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
+		}
 		return newFormula;
 	}
   /**

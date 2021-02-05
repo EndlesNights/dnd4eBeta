@@ -839,6 +839,41 @@ DND4EBETA.conditionTypes = {
 
 DND4EBETA.statusEffect = [
 	{
+		id: "mark_1",
+		label: "EFFECT.statusMark 1",
+		icon: "systems/dnd4eBeta/icons/statusEffects/mark_1.svg"
+	},
+	{
+		id: "mark_2",
+		label: "EFFECT.statusMark 2",
+		icon: "systems/dnd4eBeta/icons/statusEffects/mark_2.svg"
+	},
+	{
+		id: "mark_3",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eBeta/icons/statusEffects/mark_3.svg"
+	},
+	{
+		id: "mark_4",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eBeta/icons/statusEffects/mark_4.svg"
+	},
+	{
+		id: "mark_5",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eBeta/icons/statusEffects/mark_5.svg"
+	},
+	{
+		id: "mark_6",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eBeta/icons/statusEffects/mark_6.svg"
+	},
+	{
+		id: "mark_7",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eBeta/icons/statusEffects/mark_7.svg"
+	},
+	{
 		id: "blinded",
 		label: "EFFECT.statusBlind",
 		icon: "systems/dnd4eBeta/icons/statusEffects/blinded.svg"
@@ -973,11 +1008,6 @@ DND4EBETA.statusEffect = [
 		id: "weakened",
 		label: "EFFECT.statusWeakend",
 		icon: "systems/dnd4eBeta/icons/statusEffects/weakend.svg"
-	},
-	{
-		id: "mark_1",
-		label: "EFFECT.statusMark",
-		icon: "systems/dnd4eBeta/icons/statusEffects/mark_1.svg"
 	}
 ];
 // Languages

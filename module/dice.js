@@ -40,13 +40,13 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
   const _roll = function(parts, adv, form=null) {
 
     // Determine the d20 roll and modifiers
-	if(!parts.includes("@power") && !parts.includes("@tool")) parts.unshift(`1d20`);
+    if(!parts.includes("@power") && !parts.includes("@tool")) parts.unshift(`1d20`);
 	
     // Optionally include a situational bonus
     if ( form !== null ) data['bonus'] = form.bonus.value;
     if ( !data["bonus"] ) parts.pop();
 	
-	// flavor = form.flavor.value || flavor;
+	  // flavor = form.flavor.value || flavor;
 	
     // Optionally include an ability score selection (used for tool checks)
     const ability = form ? form.ability : null;
@@ -61,7 +61,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
     // Execute the roll and flag critical thresholds on the d20
     let roll = new Roll(parts.join(" + "), data).roll();
-
     // Flag d20 options for any 20-sided dice in the roll
     for ( let d of roll.dice ) {
       if (d.faces === 20 ) {
@@ -173,7 +172,6 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
   const _roll = function(parts, partsCrit, crit, form) {
     data['bonus'] = form ? form.bonus.value : 0;
     let roll = crit? new Roll(partsCrit.join("+"), data) : new Roll(parts.join("+"), data);
-    console.log(roll);
     // Modify the damage formula for critical hits
     if ( crit === true ) {
       // let add = (actor && actor.getFlag("dnd4eBeta", "savageAttacks")) ? 1 : 0;
@@ -181,7 +179,6 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
       // roll.alter(add, mult);
       flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
     }
-    console.log(flavor);
     // Convert the roll to a chat message
     rollMode = form ? form.rollMode.value : rollMode;
     roll.toMessage({

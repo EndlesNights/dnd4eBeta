@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.0.8
+- Added number of status icons for varaity of cases(Work in progress) 
+- Actor data path values should now be accesable to formulas when writen as "@the.path.to.data"
+
 ## Version 0.0.7
 - Work on item weapons
 - Added a field when brutal weapon properties is selected, can now input the brutal value for dice "re-rolling"
