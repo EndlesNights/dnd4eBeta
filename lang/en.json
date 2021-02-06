@@ -838,6 +838,7 @@
 "EFFECT.statusImmobilized": "Immobilized",
 "EFFECT.statusInsubstantial": "Insubstantial",
 "EFFECT.statusInvisible": "Invisible",
+"EFFECT.statusMark": "Marked",
 "EFFECT.statusPetrified": "Petrified",
 "EFFECT.statusProne": "Prone",
 "EFFECT.statusRestrained": "Restrained",

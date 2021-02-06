@@ -874,6 +874,71 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4eBeta/icons/statusEffects/mark_7.svg"
 	},
 	{
+		id: "mounted",
+		label: "EFFECT.statusMouted",
+		icon: "systems/dnd4eBeta/icons/statusEffects/mounted.svg"
+	},
+	{
+		id: "removed",
+		label: "EFFECT.statusRemoved",
+		icon: "systems/dnd4eBeta/icons/statusEffects/removed.svg"
+	},
+	{
+		id: "attack_down",
+		label: "EFFECT.statusAttackDown",
+		icon: "systems/dnd4eBeta/icons/statusEffects/attack_down.svg"
+	},
+	{
+		id: "attack_up",
+		label: "EFFECT.statusAttackUp",
+		icon: "systems/dnd4eBeta/icons/statusEffects/attack_up.svg"
+	},
+	{
+		id: "ammo_count",
+		label: "EFFECT.statusAmmoCount",
+		icon: "systems/dnd4eBeta/icons/statusEffects/ammo_count.svg"
+	},
+	{
+		id: "curse",
+		label: "EFFECT.statusCurse",
+		icon: "systems/dnd4eBeta/icons/statusEffects/curse.svg"
+	},
+	{
+		id: "oath",
+		label: "EFFECT.statusOath",
+		icon: "systems/dnd4eBeta/icons/statusEffects/oath.svg"
+	},
+	{
+		id: "hunter_mark",
+		label: "EFFECT.statusHunterMark",
+		icon: "systems/dnd4eBeta/icons/statusEffects/hunter_mark.svg"
+	},
+	{
+		id: "regen",
+		label: "EFFECT.statusRegen",
+		icon: "systems/dnd4eBeta/icons/statusEffects/regen.svg"
+	},
+	{
+		id: "target",
+		label: "EFFECT.statusTarget",
+		icon: "systems/dnd4eBeta/icons/statusEffects/target.svg"
+	},
+	{
+		id: "ongoing_1",
+		label: "EFFECT.statusOngoing1",
+		icon: "systems/dnd4eBeta/icons/statusEffects/ongoing_1.svg"
+	},
+	{
+		id: "ongoing_2",
+		label: "EFFECT.statusOngoing2",
+		icon: "systems/dnd4eBeta/icons/statusEffects/ongoing_2.svg"
+	},
+	{
+		id: "ongoing_3",
+		label: "EFFECT.statusOngoing3",
+		icon: "systems/dnd4eBeta/icons/statusEffects/ongoing_3.svg"
+	},
+	{
 		id: "blinded",
 		label: "EFFECT.statusBlind",
 		icon: "systems/dnd4eBeta/icons/statusEffects/blinded.svg"
@@ -935,9 +1000,9 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4eBeta/icons/statusEffects/flying.svg"
 	},
 	{
-		id: "helpless",
-		label: "EFFECT.statusHelpless",
-		icon: "systems/dnd4eBeta/icons/statusEffects/helpless.svg"
+		id: "restrained",
+		label: "EFFECT.statusRestrained",
+		icon: "systems/dnd4eBeta/icons/statusEffects/restrained.svg"
 	},
 	{
 		id: "immobilized",
@@ -965,9 +1030,9 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4eBeta/icons/statusEffects/prone.svg"
 	},
 	{
-		id: "restrained",
-		label: "EFFECT.statusRestrained",
-		icon: "systems/dnd4eBeta/icons/statusEffects/restrained.svg"
+		id: "grabbed",
+		label: "EFFECT.statusGrabbed",
+		icon: "systems/dnd4eBeta/icons/statusEffects/grabbed.svg"
 	},
 	{
 		id: "sleeping",
