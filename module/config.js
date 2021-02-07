@@ -838,14 +838,15 @@ DND4EBETA.conditionTypes = {
 
 
 DND4EBETA.statusEffect = [
+	//row 1
 	{
 		id: "mark_1",
-		label: "EFFECT.statusMark 1",
+		label: "EFFECT.statusMark",
 		icon: "systems/dnd4eBeta/icons/statusEffects/mark_1.svg"
 	},
 	{
 		id: "mark_2",
-		label: "EFFECT.statusMark 2",
+		label: "EFFECT.statusMark",
 		icon: "systems/dnd4eBeta/icons/statusEffects/mark_2.svg"
 	},
 	{
@@ -873,20 +874,11 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusMark",
 		icon: "systems/dnd4eBeta/icons/statusEffects/mark_7.svg"
 	},
+	//row 2
 	{
-		id: "mounted",
-		label: "EFFECT.statusMouted",
-		icon: "systems/dnd4eBeta/icons/statusEffects/mounted.svg"
-	},
-	{
-		id: "removed",
-		label: "EFFECT.statusRemoved",
-		icon: "systems/dnd4eBeta/icons/statusEffects/removed.svg"
-	},
-	{
-		id: "attack_down",
-		label: "EFFECT.statusAttackDown",
-		icon: "systems/dnd4eBeta/icons/statusEffects/attack_down.svg"
+		id: "bloodied",
+		label: "EFFECT.statusBloodied",
+		icon: "systems/dnd4eBeta/icons/statusEffects/bloodied.svg"
 	},
 	{
 		id: "attack_up",
@@ -894,10 +886,31 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4eBeta/icons/statusEffects/attack_up.svg"
 	},
 	{
+		id: "attack_down",
+		label: "EFFECT.statusAttackDown",
+		icon: "systems/dnd4eBeta/icons/statusEffects/attack_down.svg"
+	},
+	{
+		id: "defUp",
+		label: "EFFECT.statusDefUp",
+		icon: "systems/dnd4eBeta/icons/statusEffects/def_up.svg"
+	},
+	{
+		id: "defDown",
+		label: "EFFECT.statusDefDown",
+		icon: "systems/dnd4eBeta/icons/statusEffects/def_down.svg"
+	},
+	{
+		id: "regen",
+		label: "EFFECT.statusRegen",
+		icon: "systems/dnd4eBeta/icons/statusEffects/regen.svg"
+	},
+	{
 		id: "ammo_count",
 		label: "EFFECT.statusAmmoCount",
 		icon: "systems/dnd4eBeta/icons/statusEffects/ammo_count.svg"
 	},
+	//row 3
 	{
 		id: "curse",
 		label: "EFFECT.statusCurse",
@@ -912,11 +925,6 @@ DND4EBETA.statusEffect = [
 		id: "hunter_mark",
 		label: "EFFECT.statusHunterMark",
 		icon: "systems/dnd4eBeta/icons/statusEffects/hunter_mark.svg"
-	},
-	{
-		id: "regen",
-		label: "EFFECT.statusRegen",
-		icon: "systems/dnd4eBeta/icons/statusEffects/regen.svg"
 	},
 	{
 		id: "target",
@@ -938,15 +946,21 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusOngoing3",
 		icon: "systems/dnd4eBeta/icons/statusEffects/ongoing_3.svg"
 	},
+	//row 4
+	{
+		id: "mounted",
+		label: "EFFECT.statusMounted",
+		icon: "systems/dnd4eBeta/icons/statusEffects/mounted.svg"
+	},
+	{
+		id: "removed",
+		label: "EFFECT.statusRemoved",
+		icon: "systems/dnd4eBeta/icons/statusEffects/removed.svg"
+	},
 	{
 		id: "blinded",
 		label: "EFFECT.statusBlind",
 		icon: "systems/dnd4eBeta/icons/statusEffects/blinded.svg"
-	},
-	{
-		id: "bloodied",
-		label: "EFFECT.statusBloodied",
-		icon: "systems/dnd4eBeta/icons/statusEffects/bloodied.svg"
 	},
 	{
 		id: "dazed",
@@ -958,17 +972,6 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusDead",
 		icon: "systems/dnd4eBeta/icons/statusEffects/dead.svg"
 	},
-
-	{
-		id: "defDown",
-		label: "EFFECT.statusDefDown",
-		icon: "systems/dnd4eBeta/icons/statusEffects/def_down.svg"
-	},
-	{
-		id: "defUp",
-		label: "EFFECT.statusDefUp",
-		icon: "systems/dnd4eBeta/icons/statusEffects/def_up.svg"
-	},
 	{
 		id: "deafened",
 		label: "EFFECT.statusDeafened",
@@ -979,6 +982,7 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusDisarmed",
 		icon: "systems/dnd4eBeta/icons/statusEffects/disarmed.svg"
 	},
+	//row 5
 	{
 		id: "dominated",
 		label: "EFFECT.statusDominated",
@@ -1014,6 +1018,7 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusInsubstantial",
 		icon: "systems/dnd4eBeta/icons/statusEffects/insubstantial.svg"
 	},
+	//row 6
 	{
 		id: "invisible",
 		label: "EFFECT.statusInvisible",
@@ -1049,6 +1054,7 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusSneaking",
 		icon: "systems/dnd4eBeta/icons/statusEffects/sneaking.svg"
 	},
+	//row 7
 	{
 		id: "stunned",
 		label: "EFFECT.statusStunned",
@@ -1066,12 +1072,12 @@ DND4EBETA.statusEffect = [
 	},
 	{
 		id: "unconscious",
-		label: "EFFECT.statusUnconscios",
+		label: "EFFECT.statusUnconscious",
 		icon: "systems/dnd4eBeta/icons/statusEffects/unconscious.svg"
 	},
 	{
 		id: "weakened",
-		label: "EFFECT.statusWeakend",
+		label: "EFFECT.statusWeakened",
 		icon: "systems/dnd4eBeta/icons/statusEffects/weakend.svg"
 	}
 ];
