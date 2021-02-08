@@ -22,7 +22,8 @@ export const preloadHandlebarsTemplates = async function() {
 	"systems/dnd4eBeta/templates/items/parts/item-description.html",
 	"systems/dnd4eBeta/templates/items/parts/item-mountable.html",
 	
-	"systems/dnd4eBeta/templates/items/parts/item-power-template.html"
+	"systems/dnd4eBeta/templates/items/parts/item-power-template.html",
+	"systems/dnd4eBeta/templates/items/parts/item-macro.html",
   ];
 
   // Load the template parts

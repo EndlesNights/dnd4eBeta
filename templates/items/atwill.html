@@ -29,6 +29,7 @@
     <nav class="sheet-navigation tabs" data-group="primary">
         <a class="item active" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
         <a class="item" data-tab="details">{{ localize "DND4EBETA.Details" }}</a>
+        <!-- <a class="item" data-tab="macros">{{ localize "DND4EBETA.Macros" }}</a> -->
 	</nav>
 	
 	{{!-- Item Sheet Body --}}
@@ -39,5 +40,8 @@
 
 		{{!-- Details Tab --}}
 		{{> "systems/dnd4eBeta/templates/items/parts/item-power-template.html"}}
+
+		{{!-- Macros Tab --}}
+		<!-- {{> "systems/dnd4eBeta/templates/items/parts/item-macro.html"}} -->
 	</section>
 </form>

@@ -1,0 +1,40 @@
+<div class="tab details" data-group="primary" data-tab="macros">
+    <form class="{{cssClass}} flexcol" autocomplete="off">
+        <header class="sheet-header">
+            <img src="{{entity.img}}" data-edit="img" title="{{entity.name}}" height="64" width="64"/>
+            <h1><input name="name" type="text" value="{{entity.name}}" placeholder="Name"/></h1>
+        </header>
+
+        <div class="form-group">
+            <label>Scope</label>
+            <select name="scope" disabled>
+                {{#select entity.scope}}
+                {{#each macroScopes}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Type</label>
+            <select name="type">
+                {{#select entity.type}}
+                {{#each macroTypes}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+        </div>
+
+        <div class="form-group stacked command">
+            <label>Command</label>
+            <textarea name="command">{{entity.command}}</textarea>
+        </div>
+
+        <footer class="sheet-footer flexrow">
+            <button type="submit"><i class="fas fa-save"></i> {{ localize "MACRO.Save" }}</button>
+            <button class="execute" type="button"><i class="fas fa-dice-d20"></i> {{ localize "MACRO.Execute" }}</button>
+        </footer>
+    </form>
+</div>
