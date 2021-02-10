@@ -1,40 +1,46 @@
 <div class="tab details" data-group="primary" data-tab="macros">
-    <form class="{{cssClass}} flexcol" autocomplete="off">
-        <header class="sheet-header">
-            <img src="{{entity.img}}" data-edit="img" title="{{entity.name}}" height="64" width="64"/>
-            <h1><input name="name" type="text" value="{{entity.name}}" placeholder="Name"/></h1>
-        </header>
 
-        <div class="form-group">
-            <label>Scope</label>
-            <select name="scope" disabled>
-                {{#select entity.scope}}
-                {{#each macroScopes}}
-                <option value="{{this}}">{{this}}</option>
-                {{/each}}
-                {{/select}}
-            </select>
-        </div>
+	<div class="form-group">
+		<label>Scope</label>
+		<select name="data.macro.scope" disabled>
+			{{#select data.macro.scope}}
+			<option value="global">global</option>
+			<option value="actors">actors</option>
+			<option value="actor">actor</option>
+			{{/select}}
+		</select>
+	</div>
 
-        <div class="form-group">
-            <label>Type</label>
-            <select name="type">
-                {{#select entity.type}}
-                {{#each macroTypes}}
-                <option value="{{this}}">{{this}}</option>
-                {{/each}}
-                {{/select}}
-            </select>
-        </div>
+	<div class="form-group">
+		<label>Type</label>
+		<select name="data.macro.type">
+			{{#select data.macro.type}}
+				<option value="script">Script</option>
+				<option value="chat">Chat</option>
+				<!-- <option value="{{this}}">{{this}}</option> -->
+			{{/select}}
+		</select>
+	</div>
 
-        <div class="form-group stacked command">
-            <label>Command</label>
-            <textarea name="command">{{entity.command}}</textarea>
-        </div>
+	<div class="form-group">
+		<label>Launch Order</label>
+		<select name="data.macro.launchOrder">
+			{{#select data.macro.launchOrder}}
+			{{#each config.launchOrder as |name type|}}
+			<option value="{{type}}">{{name}}</option>
+			{{/each}}
+			{{/select}}
+		</select>
+	</div>
 
-        <footer class="sheet-footer flexrow">
-            <button type="submit"><i class="fas fa-save"></i> {{ localize "MACRO.Save" }}</button>
-            <button class="execute" type="button"><i class="fas fa-dice-d20"></i> {{ localize "MACRO.Execute" }}</button>
-        </footer>
-    </form>
+	<div class="form-group stacked command">
+		<label>Command</label>
+		<textarea name="data.macro.command">{{data.macro.command}}</textarea>
+	</div>
+
+	<footer class="sheet-footer flexrow">
+		<button type="submit"><i class="fas fa-save"></i> {{ localize "MACRO.Save" }}</button>
+		<button class="execute" type="button"><i class="fas fa-dice-d20"></i> {{ localize "MACRO.Execute" }}</button>
+	</footer>
+
 </div>

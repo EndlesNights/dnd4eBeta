@@ -449,89 +449,89 @@
 	}	
 },
 "Item": {
-    "types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power", "atwill", "encounter", "daily", "utility"],
-    "templates": {
-      "itemDescription": {
-        "description": {
-          "value": "",
-          "chat": "",
-          "unidentified": ""
-        },
-        "source": ""
-      },
-      "physicalItem": {
-        "quantity": 1,
-        "weight": 0,
-        "price": 0,
-        "attuned": false,
-        "equipped": false,
-        "rarity": "",
-        "identified": true
-      },
-      "activatedEffect": {
-        "activation": {
-          "type": "",
-          "cost": 0,
-          "condition": ""
-        },
-        "duration": {
-          "value": null,
-          "units": ""
-        },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
-        "range": {
-          "value": null,
-          "long": null,
-          "units": ""
-        },
-        "uses": {
-          "value": 0,
-          "max": 0,
-          "per": null
-        },
-        "consume": {
-          "type": "",
-          "target": null,
-          "amount": null
-        }
-      },
-      "action": {
-        "ability": null,
-        "actionType": null,
-        "attackBonus": 0,
-        "chatFlavor": "",
-        "critical": null,
-        "damage": {
-          "parts": [],
-          "versatile": ""
-        },
-        "damageCrit": {
-          "parts": [],
-          "versatile": ""
-        },
-        "formula": "",
-        "save": {
-          "ability": "",
-          "dc": null,
-          "scaling": "spell"
-        }
-      },
-      "mountable": {
-        "armour": {
-          "value": 10
-        },
-        "hp": {
-          "value": 0,
-          "max": 0,
-          "dt": null,
-          "conditions": ""
-        }
-      },
+	"types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power", "atwill", "encounter", "daily", "utility"],
+	"templates": {
+		"itemDescription": {
+			"description": {
+				"value": "",
+				"chat": "",
+				"unidentified": ""
+			},
+			"source": ""
+		},
+		"physicalItem": {
+			"quantity": 1,
+			"weight": 0,
+			"price": 0,
+			"attuned": false,
+			"equipped": false,
+			"rarity": "",
+			"identified": true
+		},
+		"activatedEffect": {
+			"activation": {
+				"type": "",
+				"cost": 0,
+				"condition": ""
+			},
+			"duration": {
+				"value": null,
+				"units": ""
+			},
+			"target": {
+				"value": null,
+				"width": null,
+				"units": "",
+				"type": ""
+			},
+			"range": {
+				"value": null,
+				"long": null,
+				"units": ""
+			},
+			"uses": {
+				"value": 0,
+				"max": 0,
+				"per": null
+			},
+			"consume": {
+				"type": "",
+				"target": null,
+				"amount": null
+			}
+		},
+		"action": {
+			"ability": null,
+			"actionType": null,
+			"attackBonus": 0,
+			"chatFlavor": "",
+			"critical": null,
+			"damage": {
+				"parts": [],
+				"versatile": ""
+			},
+			"damageCrit": {
+				"parts": [],
+				"versatile": ""
+			},
+			"formula": "",
+			"save": {
+				"ability": "",
+				"dc": null,
+				"scaling": "spell"
+			}
+		},
+		"mountable": {
+			"armour": {
+				"value": 10
+			},
+			"hp": {
+				"value": 0,
+				"max": 0,
+				"dt": null,
+				"conditions": ""
+			}
+		},
 		"power": {
 			"keyWords": [""],
 			"powersource": "martial",
@@ -575,151 +575,160 @@
 			"trigger": "",
 			"requirement": "",
 			"special": ""
-		}	  
-    },
-    "backpack": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect"],
-      "capacity": {
-        "type": "weight",
-        "value": 0,
-        "weightless": false
-      },
-      "currency": {
-        "cp": 0,
-        "sp": 0,
-        "ep": 0,
-        "gp": 0,
-        "pp": 0
-      }
-    },
-    "classFeats": {
-      "templates": ["itemDescription"],
-	  "class": "",
-      "hitFistLevel": 10,
-      "hitPerLevel": 5,
-      "surgePerDay": 5,
-      "skills": {
-        "number": 2,
-        "choices": [],
-        "value": []
-      },
-	  "def": {
+		},
+		"itemMacro": {
+			"macro": {
+				"type": "script",
+				"scope": "global",
+				"launchOrder": "post",
+				"command": "",
+				"author": ""
+			}
+		}
+	},
+	"backpack": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect"],
+		"capacity": {
+		"type": "weight",
+		"value": 0,
+		"weightless": false
+		},
+		"currency": {
+		"cp": 0,
+		"sp": 0,
+		"ep": 0,
+		"gp": 0,
+		"pp": 0
+		}
+	},
+	"classFeats": {
+		"templates": ["itemDescription"],
+		"class": "",
+		"hitFistLevel": 10,
+		"hitPerLevel": 5,
+		"surgePerDay": 5,
+		"skills": {
+		"number": 2,
+		"choices": [],
+		"value": []
+		},
+		"def": {
 		"ac": 0,
 		"fort": 0,
 		"ref": 0,
 		"wil": 0
-	  },
-	  "proficiencies": {
+		},
+		"proficiencies": {
 		"weapons": [],
 		"armour": []
-	  }
-    },
-    "consumable": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect", "action"],
-      "consumableType": "potion",
-      "uses": {
-        "autoDestroy": false
-      }
-    },
-    "equipment": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable"],
-      "armour": {
-        "type": "armour",
+		}
+	},
+	"consumable": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action"],
+		"consumableType": "potion",
+		"uses": {
+		"autoDestroy": false
+		}
+	},
+	"equipment": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable"],
+		"armour": {
+		"type": "armour",
 		"subType": "cloth",
-        "ac": 0,
+		"ac": 0,
 		"fort": 0,
 		"ref": 0,
 		"wil": 0,
-        "dex": null,
+		"dex": null,
 		"movePen": false,
 		"movePenValue": 0,
 		"skillCheck": false,
 		"skillCheckValue": 0,
-        "damageRes": {
-          "parts": []
-        }		
-      },
-      "speed": {
-        "value": null,
-        "conditions": ""
-      },
-      "strength": 0,
-      "stealth": false,
-      "proficient": true
-    },
-    "feat": {
-      "templates": ["itemDescription", "activatedEffect", "action"],
-      "requirements": "",
-      "recharge": {
-        "value": null,
-        "charged": false
-      }
-    },
-    "loot": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect"]
-    },
-    "tool": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect"],
-      "attribute": "abilities.int.mod",
-      "chatFlavor": "",
-      "formula": "",
-      "bonus": 2
-    },
-    "weapon": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable"],
-      "weaponType": "simpleM",
-	  "weaponHand": "HMain",
-      "properties": {},
-      "proficient": true,
-	  
-	  "profBonus": 0,
-	  "enhance": 0,
-	  "isRanged": false,
-	  "range": {"value": 5, "long": 10},
-	  "diceNum": 0,
-	  "diceDamage": 0,
-	  "damageType": {"physical":true},
-	  "brutalNum": 1,
-	  "weaponGroup": {},
-	  "attackForm": "@profBonus+@enhance",
-	  "damageForm": "@enhance",
-	  "critDamageForm": "@enhance+@enhance d6",
-	  "critRange": 20
-    },
-    "raceFeats": {
-      "templates": ["itemDescription", "activatedEffect", "action"],
-      "requirements": "",
-      "recharge": {
-        "value": null,
-        "charged": false
-      }
-    },
-    "pathFeats": {
-      "templates": ["itemDescription", "activatedEffect", "action"],
-      "requirements": "",
-      "recharge": {
-        "value": null,
-        "charged": false
-      }
-    },
-    "destinyFeats": {
-      "templates": ["itemDescription", "activatedEffect", "action"],
-      "requirements": "",
-      "recharge": {
-        "value": null,
-        "charged": false
-      }
-    },
-    "ritual": {
-      "templates": ["itemDescription", "activatedEffect", "action"],
-      "requirements": "",
-      "recharge": {
-        "value": null,
-        "charged": false
-      }
-    },
+		"damageRes": {
+			"parts": []
+		}		
+		},
+		"speed": {
+		"value": null,
+		"conditions": ""
+		},
+		"strength": 0,
+		"stealth": false,
+		"proficient": true
+	},
+	"feat": {
+		"templates": ["itemDescription", "activatedEffect", "action"],
+		"requirements": "",
+		"recharge": {
+		"value": null,
+		"charged": false
+		}
+	},
+	"loot": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect"]
+	},
+	"tool": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect"],
+		"attribute": "abilities.int.mod",
+		"chatFlavor": "",
+		"formula": "",
+		"bonus": 2
+	},
+	"weapon": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable"],
+		"weaponType": "simpleM",
+		"weaponHand": "HMain",
+		"properties": {},
+		"proficient": true,
+		
+		"profBonus": 0,
+		"enhance": 0,
+		"isRanged": false,
+		"range": {"value": 5, "long": 10},
+		"diceNum": 0,
+		"diceDamage": 0,
+		"damageType": {"physical":true},
+		"brutalNum": 1,
+		"weaponGroup": {},
+		"attackForm": "@profBonus+@enhance",
+		"damageForm": "@enhance",
+		"critDamageForm": "@enhance+@enhance d6",
+		"critRange": 20
+	},
+	"raceFeats": {
+		"templates": ["itemDescription", "activatedEffect", "action"],
+		"requirements": "",
+		"recharge": {
+		"value": null,
+		"charged": false
+		}
+	},
+	"pathFeats": {
+		"templates": ["itemDescription", "activatedEffect", "action"],
+		"requirements": "",
+		"recharge": {
+		"value": null,
+		"charged": false
+		}
+	},
+	"destinyFeats": {
+		"templates": ["itemDescription", "activatedEffect", "action"],
+		"requirements": "",
+		"recharge": {
+		"value": null,
+		"charged": false
+		}
+	},
+	"ritual": {
+		"templates": ["itemDescription", "activatedEffect", "action"],
+		"requirements": "",
+		"recharge": {
+		"value": null,
+		"charged": false
+		}
+	},
 	"atwill": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action"],
+		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
 		"keyWords": ["At-Will"],
 		"useType": "atw"
 	},
@@ -728,30 +737,30 @@
 		"keyWords": ["Encounter"],
 		"useType": "enc",
 		"uses": {
-          "value": 1,
-          "max": 1,
-          "per": "enc"
-        }
+			"value": 1,
+			"max": 1,
+			"per": "enc"
+		}
 	},
 	"daily": {
 		"templates": ["power", "itemDescription", "activatedEffect", "action"],
 		"keyWords": ["Daily"],
 		"useType": "day",
 		"uses": {
-          "value": 1,
-          "max": 1,
-          "per": "day"
-        }
+			"value": 1,
+			"max": 1,
+			"per": "day"
+		}
 	},
 	"utility": {
 		"templates": ["power", "itemDescription", "activatedEffect", "action"],
 		"keyWords": ["Encounter"],
 		"useType": "enc",
 		"uses": {
-          "value": 1,
-          "max": 1,
-          "per": "enc"
-        }
+			"value": 1,
+			"max": 1,
+			"per": "enc"
+		}
 	}
-  }
+	}
 }

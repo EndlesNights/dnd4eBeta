@@ -174,6 +174,15 @@ DND4EBETA.limitedUsePeriods = {
   "charges": "DND4EBETA.Charges"
 };
 
+/* -------------------------------------------- */
+
+DND4EBETA.launchOrder = {
+	"both": "DND4EBETA.LaunchOrderBoth",
+	"off": "DND4EBETA.LaunchOrderOff",
+	"pre": "DND4EBETA.LaunchOrderPre",
+	"post": "DND4EBETA.LaunchOrderPost",
+	"sub": "DND4EBETA.LaunchOrderSub"
+}
 
 /* -------------------------------------------- */
 
@@ -439,7 +448,6 @@ DND4EBETA.healingTypes = {
  * @type {Array.<string>}
  */
 DND4EBETA.hitDieTypes = ["d6", "d8", "d10", "d12"];
-
 
 /* -------------------------------------------- */
 
