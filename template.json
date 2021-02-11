@@ -580,7 +580,7 @@
 			"macro": {
 				"type": "script",
 				"scope": "global",
-				"launchOrder": "post",
+				"launchOrder": "off",
 				"command": "",
 				"author": ""
 			}

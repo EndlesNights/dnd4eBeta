@@ -38,6 +38,7 @@ export default class ItemSheet4e extends ItemSheet {
 		return `${path}/${this.item.data.type}.html`;
 	}
 
+
 	/* -------------------------------------------- */
 
 	/** @override */
@@ -344,6 +345,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	setPosition(position={}) {
+		if(this._tabs[0].active === "macros") return super.setPosition(position);
 		position.height = this._tabs[0].active === "details" ? "auto" : this.options.height;
 		return super.setPosition(position);
 	}
@@ -376,17 +378,27 @@ export default class ItemSheet4e extends ItemSheet {
 	/** @override */
 	activateListeners(html) {
 		super.activateListeners(html);
-	if ( this.isEditable ) {
-		html.find(".damage-control").click(this._onDamageControl.bind(this));
-		html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
-		html.find(".effect-control").click(ev => {
-		if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
-		onManageActiveEffect(ev, this.item)
-	});
+		if ( this.isEditable ) {
+			html.find("button.execute").click(this._onExecute.bind(this));
+
+			html.find(".damage-control").click(this._onDamageControl.bind(this));
+			html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
+			html.find(".effect-control").click(ev => {
+			if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
+			onManageActiveEffect(ev, this.item)
+		});
 	}
 
 	}
-
+	/* -------------------------------------------- */
+	
+	async _onExecute(event) {
+		console.log("_onExecute");
+		event.preventDefault();
+        await this._onSubmit(event, {preventClose: true}); 
+        executeMacro(this.entity); 
+	}
+	
 	/* -------------------------------------------- */
 
 	/**
@@ -474,4 +486,40 @@ export default class ItemSheet4e extends ItemSheet {
 			// maximum: skills.number
 		// }).render(true)
 	}
+}
+
+
+// undefined and "" are both falsey, so if either the flag is undefined or the command is empty, this equates to false
+// and setting flag the check means you don't need to run the getFlag command more than once.
+// export function hasMacro(item) {
+//     let flag = item.data.flags.itemacro?.macro;
+//     return flag && flag?.data.command;
+// }
+// function checkMacro(item)
+// {
+//     return hasMacro(item) ? item.getFlag('itemacro', 'macro.data.command') : "";
+// }
+function executeMacro(item)
+{
+    // let actorID = item.actor.id;
+    // let itemID = item.id;
+	// console.log(item);
+	// console.log(checkMacro(item));
+    // let cmd = ``;
+
+    // if(item.actor.isToken)
+    // {
+    //     cmd += `const item = game.actors.tokens["${actorID}"].items.get("${itemID}"); ${item.data.data.macro.command}`;
+    // }else{
+    //     cmd += `const item = game.actors.get("${actorID}").items.get("${itemID}"); ${item.data.data.macro.command}`;
+    // }
+
+    new Macro ({ 
+        name : item.name,
+        type : item.data.data.macro.type,
+        scope : item.data.data.macro.scope,
+        command : item.data.data.macro.command, //cmd,
+		author : game.user.id,
+		item: item.data.data
+    }).execute();
 }
