@@ -691,6 +691,7 @@
 		"brutalNum": 1,
 		"weaponGroup": {},
 		"attackForm": "@profBonus+@enhance",
+		"attackFormI": "@enhance",
 		"damageForm": "@enhance",
 		"critDamageForm": "@enhance+@enhance d6",
 		"critRange": 20

@@ -32,6 +32,11 @@ export class Helper {
 			
 			return actor.itemTypes.weapon.find((i) =>  {
 				if(i.data.data.equipped) {
+
+					if(itemData.weaponType === "any") {
+						return i;
+					}
+					
 					if(itemData.weaponType === "meleeRanged") {
 						if(setMelee.includes(i.data.data.weaponType) || setRanged.includes(i.data.data.weaponType) )
 							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
@@ -104,6 +109,7 @@ export class Helper {
 
 		if(weaponData) {
 			newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1));
+			newFormula = newFormula.replace("@wepAttackImp", this.commonReplace(weaponData.attackFormI, actorData, powerData, weaponData, depth-1));
 			newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1));
 			newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1));
 			newFormula = this.replaceData (newFormula, weaponData);

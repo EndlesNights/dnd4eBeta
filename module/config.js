@@ -495,6 +495,7 @@ DND4EBETA.weaponType = {
 	"implementA": "DND4EBETA.WeaponImplementA",
 	"implementD": "DND4EBETA.WeaponImplementD",
 	"none": "DND4EBETA.None",
+	"any": "DND4EBETA.AnyW",
 };
 
 DND4EBETA.rangeType = {

@@ -194,6 +194,13 @@ export default class ItemSheet4e extends ItemSheet {
 		const actor = this.item.actor;
 		if ( !actor ) return {};
 
+		if (weaponType === "any") {
+			return actor.itemTypes.weapon.reduce((obj, i) =>  {
+				obj[i.id] = `${i.name}`;
+				return obj;
+			}, {});		
+		}
+
 		let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 		let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
 		
