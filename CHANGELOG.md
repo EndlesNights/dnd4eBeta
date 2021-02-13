@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.0.9
+- Fix issue with actor data path value
+- Changes to Implement Weapons seperating how attack bonus work between using phyiscal attacks and damage bonus, and Implement attack and damage bonus.
+- Adding macros that can be embeded onto items/powesr. Works comparibly to Foundry Macros, but with a number of difrent options such as, replacing the item's basic roll funcation, launching before the items roll, after the items roll, and before & after the items roll. Maybe more funcationaly to follow.
+
 ## Version 0.0.8
 - Added number of status icons for varaity of cases(Work in progress) 
 - Actor data path values should now be accesable to formulas when writen as "@the.path.to.data"
