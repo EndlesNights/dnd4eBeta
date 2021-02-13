@@ -90,7 +90,6 @@ export class Helper {
 		let newFormula = formula;
 		
 		if(actorData) {
-			console.log(newFormula);
 			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
 			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);
@@ -110,8 +109,6 @@ export class Helper {
 		}
 
 		if(weaponData) {
-			console.log(newFormula);
-
 			newFormula = newFormula.replace("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1));
 			newFormula = newFormula.replace("@impDamageO", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1));
 
@@ -145,7 +142,6 @@ export class Helper {
 				newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
 				newFormula = newFormula.replace("@wepDiceDamage", weaponData.diceDamage);
 			}
-			console.log(newFormula);
 		} else {
 			//if no weapon is in use replace the weapon keys with nothing.
 			newFormula = newFormula.replace("@wepAttack", "");
@@ -166,7 +162,6 @@ export class Helper {
 
 			newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
 		}
-		console.log(newFormula);
 		return newFormula;
 	}
   /**
