@@ -492,8 +492,6 @@ DND4EBETA.weaponType = {
 	"meleeRanged": "DND4EBETA.WeaponMeleeRanged",
 	"ranged": "DND4EBETA.WeaponRanged",
 	"implement": "DND4EBETA.WeaponPropertiesImp",
-	"implementA": "DND4EBETA.WeaponImplementA",
-	"implementD": "DND4EBETA.WeaponImplementD",
 	"none": "DND4EBETA.None",
 	"any": "DND4EBETA.AnyW",
 };
@@ -678,8 +676,6 @@ DND4EBETA.weaponProperties = {
   "def": "DND4EBETA.WeaponPropertiesDef",
   "hic": "DND4EBETA.WeaponPropertiesHic",
   "imp": "DND4EBETA.WeaponPropertiesImp",
-  "impA": "DND4EBETA.WeaponPropertiesImpA",
-  "impD": "DND4EBETA.WeaponPropertiesImpD",
   "lof": "DND4EBETA.WeaponPropertiesLof",
   "lom": "DND4EBETA.WeaponPropertiesLom",
   "off": "DND4EBETA.WeaponPropertiesOff",

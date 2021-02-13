@@ -545,6 +545,7 @@
 			"rangeType": "weapon",
 			"rangePower": "",
 			"area": 0,
+			"damageShare": false,
 			"target": {
 				"type": "creature",
 				"num": 1
@@ -680,21 +681,25 @@
 		"weaponHand": "HMain",
 		"properties": {},
 		"proficient": true,
-		
+		"proficientI": false,
 		"profBonus": 0,
+		"profImpBonus": 0,
 		"enhance": 0,
 		"isRanged": false,
 		"range": {"value": 5, "long": 10},
-		"diceNum": 0,
-		"diceDamage": 0,
+		"diceNum": 1,
+		"diceDamage": 4,
 		"damageType": {"physical":true},
 		"brutalNum": 1,
 		"weaponGroup": {},
 		"attackForm": "@profBonus+@enhance",
-		"attackFormI": "@enhance",
+		"attackFormImp": "",
 		"damageForm": "@enhance",
+		"damageFormImp": "",
 		"critDamageForm": "@enhance+@enhance d6",
-		"critRange": 20
+		"critDamageFormImp", ""
+		"critRange": 20,
+		"critRangeImp": 20
 	},
 	"raceFeats": {
 		"templates": ["itemDescription", "activatedEffect", "action"],

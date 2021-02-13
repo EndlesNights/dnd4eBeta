@@ -756,7 +756,7 @@ export default class Item4e extends Item {
 
 		// Expanded weapon critical threshold
 		if (weaponUse) {
-			rollConfig.critical = weaponUse.data.data.critRange;
+			rollConfig.critical = itemData.weaponType === "implement" ? weaponUse.data.data.critRangeImp : weaponUse.data.data.critRange;
 		}
 	
 		// Invoke the d20 roll helper

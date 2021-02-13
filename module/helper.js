@@ -65,20 +65,20 @@ export class Helper {
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
-					else if(itemData.weaponType === "implementA") {
-						if(i.data.data.properties.imp || i.data.data.properties.impA )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
-								return i;
-							else if(itemData.weaponUse === "default")
-								return i;
-					}
-					else if(itemData.weaponType === "implementD") {
-						if(i.data.data.properties.imp || i.data.data.properties.impD )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
-								return i;
-							else if(itemData.weaponUse === "default")
-								return i;
-					}
+					// else if(itemData.weaponType === "implementA") {
+						// if(i.data.data.properties.imp || i.data.data.properties.impA )
+							// if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
+								// return i;
+							// else if(itemData.weaponUse === "default")
+								// return i;
+					// }
+					// else if(itemData.weaponType === "implementD") {
+						// if(i.data.data.properties.imp || i.data.data.properties.impD )
+							// if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
+								// return i;
+							// else if(itemData.weaponUse === "default")
+								// return i;
+					// }
 				}
 			}, {});
 		}
@@ -88,7 +88,9 @@ export class Helper {
 	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula;
+		
 		if(actorData) {
+			console.log(newFormula);
 			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
 			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);
@@ -108,10 +110,24 @@ export class Helper {
 		}
 
 		if(weaponData) {
+			console.log(newFormula);
+
+			newFormula = newFormula.replace("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1));
+			newFormula = newFormula.replace("@impDamageO", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1));
+
+			newFormula = newFormula.replace("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) : 0);
+			newFormula = newFormula.replace("@impDamage", weaponData.proficientI ? this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) : 0);
 			newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1));
-			newFormula = newFormula.replace("@wepAttackImp", this.commonReplace(weaponData.attackFormI, actorData, powerData, weaponData, depth-1));
 			newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1));
 			newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1));
+
+			newFormula = newFormula.replace("@profBonusO",weaponData.profBonus);
+			newFormula = newFormula.replace("@profImpBonusO", weaponData.profImpBonus);
+
+			newFormula = newFormula.replace("@profBonus", weaponData.proficient ? weaponData.profBonus : 0);
+			newFormula = newFormula.replace("@profImpBonus", weaponData.proficientI ? weaponData.profImpBonus : 0);
+			newFormula = newFormula.replace("@enhance", weaponData.enhance);
+
 			newFormula = this.replaceData (newFormula, weaponData);
 			
 			if(weaponData.properties.bru) {
@@ -129,7 +145,7 @@ export class Helper {
 				newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
 				newFormula = newFormula.replace("@wepDiceDamage", weaponData.diceDamage);
 			}
-
+			console.log(newFormula);
 		} else {
 			//if no weapon is in use replace the weapon keys with nothing.
 			newFormula = newFormula.replace("@wepAttack", "");
@@ -150,6 +166,7 @@ export class Helper {
 
 			newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
 		}
+		console.log(newFormula);
 		return newFormula;
 	}
   /**

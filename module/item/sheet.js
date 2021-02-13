@@ -240,23 +240,23 @@ export default class ItemSheet4e extends ItemSheet {
 			}, {});			
 		}
 				
-		if ( weaponType === "implementA" ) {
-			return actor.itemTypes.weapon.reduce((obj, i) =>  {
-				if (i.data.data.properties.impA || i.data.data.properties.imp ) {
-					obj[i.id] = `${i.name}`;
-				}
-				return obj;
-			}, {});			
-		}
+		// if ( weaponType === "implementA" ) {
+			// return actor.itemTypes.weapon.reduce((obj, i) =>  {
+				// if (i.data.data.properties.impA || i.data.data.properties.imp ) {
+					// obj[i.id] = `${i.name}`;
+				// }
+				// return obj;
+			// }, {});			
+		// }
 		
-		if ( weaponType === "implementD" ) {
-			return actor.itemTypes.weapon.reduce((obj, i) =>  {
-				if (i.data.data.properties.impD || i.data.data.properties.imp ) {
-					obj[i.id] = `${i.name}`;
-				}
-				return obj;
-			}, {});			
-		}
+		// if ( weaponType === "implementD" ) {
+			// return actor.itemTypes.weapon.reduce((obj, i) =>  {
+				// if (i.data.data.properties.impD || i.data.data.properties.imp ) {
+					// obj[i.id] = `${i.name}`;
+				// }
+				// return obj;
+			// }, {});			
+		// }
 		
 		return {};
 	}

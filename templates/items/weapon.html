@@ -75,7 +75,10 @@
 				<label>{{ localize "DND4EBETA.ItemWeaponStatus" }}</label>
 				<div class="form-fields">
 					<label class="checkbox">
-						<input type="checkbox" name="data.proficient" {{checked data.proficient}}/> {{ localize "DND4EBETA.Proficient" }}
+						<input type="checkbox" name="data.proficient" {{checked data.proficient}}/> Weapon {{ localize "DND4EBETA.Proficient" }}
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" name="data.proficientI" {{checked data.proficientI}}/> Implement {{ localize "DND4EBETA.Proficient" }}
 					</label>
 					<label class="checkbox">
 						<input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "DND4EBETA.Equipped" }}
@@ -97,6 +100,12 @@
 					<label title="Proficiency Bonus">Proficiency Bonus:</label>
 					<div class="form-fields">
 						<input type="text" name="data.profBonus" value="{{data.profBonus}}" title="Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label title="Implement Proficiency Bonus">Implement Proficiency Bonus:</label>
+					<div class="form-fields">
+						<input type="text" name="data.profImpBonus" value="{{data.profImpBonus}}" title="Implement Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				<div class="form-group">    
@@ -198,6 +207,15 @@
 						<input type="text" name ="data.critRange" value="{{data.critRange}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
+
+				{{#if data.properties.imp}}
+				<div class="form-group">
+					<label title="Natural D20 Dice roll required for a hit to be considered a critical hit with an Implement.">Implement Critical Hit:</label>
+					<div class="form-fields">
+						<input type="text" name ="data.critRangeImp" value="{{data.critRangeImp}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
+				{{/if}}
 				<!-- <div class="form-group">
 					<label title="Ability Mod used for attack.">Attack Roll Mod:</label>
 					<div></div>
@@ -230,10 +248,12 @@
 					</select>
 				</div> -->
 
+				{{!-- Attack  Formula--}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Attack Rolls.">Bonus to Attack {{ localize "DND4EBETA.Formula" }}:</h4>
 					<input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
+					
 				{{!-- Damage Formula --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Primary Damage {{ localize "DND4EBETA.Formula" }}:</h4>
@@ -291,6 +311,29 @@
 					</li>
 					{{/each}}
 				</ol>
+
+				{{!-- Attack Formula for Weapon & Implement--}}
+				{{#if data.properties.imp}}
+				<div class="form-group stacked">
+					<h4 class="damage-header" title="Formula used for Attack Rolls.">Implement Attack {{ localize "DND4EBETA.Formula" }}:</h4>
+					<input type="text" name="data.attackFormI" value="{{data.attackFormI}}" title="Formula used for Attack Rolls." data-dtype="String"/>
+				</div>
+				{{/if}}
+				
+				{{!-- Damage Formula for Weapon & Implement--}}
+				{{#if data.properties.imp}}
+				<div class="form-group stacked">
+					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Implement Damage {{ localize "DND4EBETA.Formula" }}:</h4>
+					<input type="text" name="data.damageFormI" value="{{data.damageFormI}}" title="Formula used for Damage Rolls." data-dtype="String"/>
+				</div>	
+				
+				
+				<div class="form-group stacked">
+					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Implement Critical Damage {{ localize "DND4EBETA.Formula" }}:</h4>
+					<input type="text" name="data.critDamageFormImp" value="{{data.critDamageFormImp}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
+				</div>	
+				{{/if}}
+
 				<!-- <div class="form-group stacked">
 					<label title="Formula used for Critical Damage Rolls.">Critical Damage Formula:</label>
 					<input type="text" name="data.critDamageForm" value="{{data.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String" onClick="this.select();"/>
