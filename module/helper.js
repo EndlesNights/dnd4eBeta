@@ -88,7 +88,7 @@ export class Helper {
 	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula;
-		
+
 		if(actorData) {
 			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
@@ -153,13 +153,15 @@ export class Helper {
 		}
 
 		//check for actor values in formula
+		
 		for(let i = 0; i < (newFormula.match(/@/g) || []).length; i++) {
 			let indexStart = newFormula.indexOf('@');
-			let indexEnd = newFormula.substring(indexStart).search(/[ /*+-]/);
+			let indexEnd = (newFormula + ' ').substring(indexStart).search(/[ /*+-]/);
+			//FIX the regex, get rid of the ' ' and just tell it to search to up to end of string
 
 			let val = typeof this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) === 'number' ?
 				this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) : '';
-
+			console.log(val);
 			newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
 		}
 		return newFormula;
