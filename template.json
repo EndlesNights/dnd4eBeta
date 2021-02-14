@@ -564,7 +564,7 @@
 				"isDamage": true,
 				"detail": "1[W] + Strength modifier damage.",
 				"formula": "(1*@wepDiceNum) d@wepDiceDamage + @powerMod + @wepDamage",
-				"critFormula": "1*@wepDiceNum*@wepDiceDamage+@powerMod+@wepCritBonus"
+				"critFormula": "1*@wepDiceNum*@wepDiceDamage + @powerMod + @wepDamage + @wepCritBonus"
 			},
 			"miss": {
 				"detail": "Half Damage.",

@@ -372,7 +372,12 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( damage ) damage.parts = Object.values(damage?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 		const damageCrit = formData.data?.damageCrit;
 		if ( damageCrit ) damageCrit.parts = Object.values(damageCrit?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
-	
+
+		const damageImp = formData.data?.damageImp;
+		if ( damageImp ) damageImp.parts = Object.values(damageImp?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+		const damageImpCrit = formData.data?.damageImpCrit;
+		if ( damageImpCrit ) damageImpCrit.parts = Object.values(damageImpCrit?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+		
 		const damageRes = formData.data.armour?.damageRes;
 		if ( damageRes ) damageRes.parts = Object.values(damageRes?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 	
@@ -449,7 +454,38 @@ export default class ItemSheet4e extends ItemSheet {
 			damageCrit.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"data.damageCrit.parts": damageCrit.parts});
 		}
+
+				// Add new implement damage component
+		if ( a.classList.contains("add-damage-imp") ) {
+			await this._onSubmit(event);  // Submit any unsaved changes
+			const damageImp = this.item.data.data.damageImp;
+			return this.item.update({"data.damageImp.parts": damageImp.parts.concat([["", ""]])});
+		}
+
+		// Remove a implement damage component
+		if ( a.classList.contains("delete-damage-imp") ) {
+			await this._onSubmit(event);  // Submit any unsaved changes
+			const li = a.closest(".damage-part");
+			const damageImp = duplicate(this.item.data.data.damageImp);
+			damageImp.parts.splice(Number(li.dataset.damagePart), 1);
+			return this.item.update({"data.damageImp.parts": damageImp.parts});
+		}
 	
+		// Add new implement critical damage component
+		if ( a.classList.contains("add-criticalDamage-imp") ) {
+			await this._onSubmit(event);  // Submit any unsaved changes
+			const damageCritImp = this.item.data.data.damageCritImp;
+			return this.item.update({"data.damageCritImp.parts": damageCritImp.parts.concat([["", ""]])});
+		}
+
+		// Remove a implement critical damage component
+		if ( a.classList.contains("delete-criticalDamage-imp") ) {
+			await this._onSubmit(event);  // Submit any unsaved changes
+			const li = a.closest(".damage-part");
+			const damageCritImp = duplicate(this.item.data.data.damageCritImp);
+			damageCritImp.parts.splice(Number(li.dataset.damagePart), 1);
+			return this.item.update({"data.damageCritImp.parts": damageCritImp.parts});
+		}
 		// Add new damage res
 		if ( a.classList.contains("add-damageRes") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
