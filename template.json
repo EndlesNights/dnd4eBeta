@@ -514,6 +514,14 @@
 				"parts": [],
 				"versatile": ""
 			},
+			"damageImp": {
+				"parts": [],
+				"versatile": ""
+			},
+			"damageCritImp": {
+				"parts": [],
+				"versatile": ""
+			},
 			"formula": "",
 			"save": {
 				"ability": "",

@@ -455,7 +455,7 @@ export default class ItemSheet4e extends ItemSheet {
 			return this.item.update({"data.damageCrit.parts": damageCrit.parts});
 		}
 
-				// Add new implement damage component
+		// Add new implement damage component
 		if ( a.classList.contains("add-damage-imp") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const damageImp = this.item.data.data.damageImp;

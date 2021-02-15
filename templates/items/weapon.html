@@ -346,7 +346,7 @@
 							{{/each}}
 							{{/select}}
 						</select>
-						<a class="damage-control delete-damage"><i class="fas fa-minus"></i></a>
+						<a class="damage-control delete-damage-imp"><i class="fas fa-minus"></i></a>
 					</li>
 					{{/each}}
 				</ol>
@@ -357,7 +357,7 @@
 				</div>	
 				<h4 class="damage-header">
 					Secondary Implement Critical Damage {{ localize "DND4EBETA.Formula" }}:
-					<a class="damage-control add-criticalDamage-Imp"><i class="fas fa-plus"></i></a>
+					<a class="damage-control add-criticalDamage-imp"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
 					{{#each data.damageCritImp.parts as |part i| }}
@@ -374,15 +374,11 @@
 							{{/each}}
 							{{/select}}
 						</select>
-						<a class="damage-control delete-criticalDamage"><i class="fas fa-minus"></i></a>
+						<a class="damage-control delete-criticalDamage-imp"><i class="fas fa-minus"></i></a>
 					</li>
 					{{/each}}
 				</ol>
 
-				<div class="form-group stacked">
-					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Implement Critical Damage {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="data.critDamageFormImp" value="{{data.critDamageFormImp}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
-				</div>	
 				{{/if}}
 
 				<!-- <div class="form-group stacked">

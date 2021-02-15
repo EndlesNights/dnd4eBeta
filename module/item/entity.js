@@ -804,20 +804,26 @@ export default class Item4e extends Item {
 
 		// Define Roll parts
 		const parts = itemData.damage.parts.map(d => d[0]);
-		console.log(parts);
 		const partsCrit = itemData.damage.parts.map(d => d[0]);
+
 		//Add power damage into parts
 		if(!!itemData.hit?.formula) {
-			parts.unshift(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse?.data.data));
-			partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula,actorData, this.data.data, weaponUse?.data.data));
-			console.log(Helper.commonReplace(itemData.hit.formula,actorData, this.data.data, weaponUse?.data.data));
+			parts.unshift(Helper.commonReplace(itemData.hit.formula, actorData, this.data.data, weaponUse?.data.data));
+			partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula, actorData, this.data.data, weaponUse?.data.data));
 			//Add seconadary weapons damage into parts
 			if(weaponUse) {
-				if(itemData.hit.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0)	parts.unshift(weaponUse.data.data.damage.parts.map(d => d[0]));
-				if(itemData.hit.formula.includes("@wepCritBonus") && weaponUse.data.data.damageCrit.parts.length > 0) partsCrit.unshift(weaponUse.data.data.damageCrit.parts.map(d => d[0]));
-
-				if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) parts.unshift(weaponUse.data.data.damageImp.parts.map(d => d[0]));
-				if(itemData.hit.formula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImpCrit.parts.length > 0) partsCrit.unshift(weaponUse.data.data.damageImpCrit.parts.map(d => d[0]));
+				if(itemData.hit.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
+					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+				if(itemData.hit.formula.includes("@wepCritBonus") && weaponUse.data.data.damageCrit.parts.length > 0) {
+					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+				if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
+					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+				if(itemData.hit.formula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImpCrit.parts.length > 0) {
+					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageImpCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
 			}
 		}
 	
