@@ -166,8 +166,9 @@
 						</select>
 						<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
 					</div>
-				</div>				
-				<div class="form-group">
+				</div>
+
+				<!-- <div class="form-group">
 					<label title="Number of Dice in damage roll" for="diceNum">Damage Dice Num:</label>
 					<div class="form-fields">
 						<input type="text" name="data.diceNum" id="diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" onClick="this.select();" data-dtype="Number"/>
@@ -178,7 +179,26 @@
 					<div class="form-fields">
 						<input type="text" name="data.diceDamage" id="diceDamage" value="{{data.diceDamage}}" title="Rerollthreshhold for brutal dice." placeholder="8" onClick="this.select();" data-dtype="Number"/>
 					</div>
+				</div> -->
+
+				<div class="form-group">
+					<label title="Base number of dice rolled for weapon attacks." for="damageDice">Weapon Damage Dice:</label>
+					<!-- <div class="form-fields">
+						<input type="text" name="data.damageDice" id="damageDice" value="{{data.damageDice}}" title="Rerollthreshhold for brutal dice." onClick="this.select();"/>
+					</div> -->
+					<a class="damage-control add-dice"><i class="fas fa-plus"></i></a>
 				</div>
+				<ol class="damage-parts form-group">
+					{{#each data.damageDice.parts as |part i| }}
+					<li class="damage-part flexrow" data-damage-part="{{i}}">
+						<label>Dice Number:</label>
+						<input type="text" name="data.damageDice.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+						<label>Dice Size:</label>
+						<input type="text" name="data.damageDice.parts.{{i}}.1" value="{{lookup this "1"}}"/>
+						<a class="damage-control delete-dice"><i class="fas fa-minus"></i></a>
+					</li>
+					{{/each}}
+				</ol>
 
 				{{#if data.properties.bru}}
 				<div class="form-group">

@@ -274,7 +274,7 @@ export default class Item4e extends Item {
 	 */
 	async roll({configureDialog=true, rollMode=null, createMessage=true}={}) {
 
-		if(["both", "pre", "sub"].includes(this.data.data.macro.launchOrder)) {
+		if(["both", "pre", "sub"].includes(this.data.data.macro?.launchOrder)) {
 
 			new Macro ({ 
 				name : this.name,
@@ -352,7 +352,7 @@ export default class Item4e extends Item {
 
 			ChatMessage.create(chatData);
 
-			if(["both", "post"].includes(this.data.data.macro.launchOrder)) {
+			if(["both", "post"].includes(this.data.data.macro?.launchOrder)) {
 
 				new Macro ({ 
 					name : this.name,

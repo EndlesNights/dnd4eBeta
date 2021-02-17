@@ -381,6 +381,9 @@ export default class ItemSheet4e extends ItemSheet {
 		const damageRes = formData.data.armour?.damageRes;
 		if ( damageRes ) damageRes.parts = Object.values(damageRes?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 	
+		const damageDice = formData.data?.damageDice;
+		if(damageDice) damageDice.parts = Object.values(damageDice?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+
 		// Update the Item
 		super._updateObject(event, formData);
 	}
@@ -500,6 +503,21 @@ export default class ItemSheet4e extends ItemSheet {
 			const damageRes = duplicate(this.item.data.data.armour.damageRes);
 			damageRes.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"data.armour.damageRes.parts": damageRes.parts});
+		}
+
+		if(a.classList.contains("add-dice")) {
+			await this._onSubmit(event); // Submit any unsaved changes
+			const damageDice = duplicate(this.item.data.data.damageDice);
+			console.log(damageDice)
+			return this.item.update({"data.damageDice.parts": damageDice.parts.concat([["",""]])});
+		}
+
+		if ( a.classList.contains("delete-dice") ) {
+			await this._onSubmit(event);  // Submit any unsaved changes
+			const li = a.closest(".damage-part");
+			const damageDice = duplicate(this.item.data.data.damageDice);
+			damageDice.parts.splice(Number(li.dataset.damagePart), 1);
+			return this.item.update({"data.damageDice.parts": damageDice.parts});
 		}
 	}
 

@@ -109,8 +109,8 @@ export class Helper {
 		}
 
 		if(weaponData) {
-			newFormula = newFormula.replace("@impAttackO", this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1));
-			newFormula = newFormula.replace("@impDamageO", this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1));
+			newFormula = newFormula.replace("@impAttackO", weaponData.proficientI ? this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1) : 0);
+			newFormula = newFormula.replace("@impDamageO", weaponData.proficientI ? this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1) : 0);
 
 			newFormula = newFormula.replace("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1) : 0);
 			newFormula = newFormula.replace("@impDamage", weaponData.proficientI ? this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1) : 0);
@@ -127,21 +127,60 @@ export class Helper {
 
 			newFormula = this.replaceData (newFormula, weaponData);
 			
-			if(weaponData.properties.bru) {
-				let index = formula.trim().indexOf("*@wepDiceNum");
-				let wDice = 1;
-				if(index > 0 ) {
-					let check = formula.trim().substring(0,index).match(/\d+$/);
-					wDice = check? check[0] : 1;
+			
+
+			if(newFormula.includes("@wepDice")) {
+				let parts = weaponData.damageDice.parts;
+				let indexStart = newFormula.indexOf("@wepDice")+8;
+				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
+
+				let weaponNum = newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
+				weaponNum = eval(weaponNum.replace(/[a-z]/gi, ''));
+
+				if(typeof(weaponNum) !== "number") weaponNum = 1;
+
+				let dice = "";
+				for(let i = 0; i< parts.length; i++) {
+					if(!parts[i][0] || !parts[i][1]) continue;
+					if(weaponData.properties.bru) {
+						dice += ` + (${parts[i][0]}*${weaponNum})d(${parts[i][1] - weaponData.brutal}) + (${weaponData.brutal}*${parts[i][0]}*${weaponNum})`;
+					}
+					else{
+						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}`;
+					}
 				}
-				newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
-				newFormula = newFormula.replace("@wepDiceDamage", '(' + weaponData.diceDamage + '-'+ weaponData.brutal +') + '+ weaponData.brutal +' * ' + weaponData.diceNum * wDice);
+				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
+				newFormula = newFormula.replace("@wepDice", dice);
+			}
+
+			if(newFormula.includes("@wepMax")) {
+				let parts = weaponData.damageDice.parts;
+				let dice = "";
+				for(let i = 0; i< parts.length; i++) {
+					if(!parts[i][0] || !parts[i][1]) continue;
+					dice += ` + (${parts[i][0]} * ${parts[i][1]})`
+				}
+				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				newFormula = newFormula.replace("@wepMax", dice);
+			}
+			// if(weaponData.properties.bru) {
+			// 	let index = formula.trim().indexOf("*@wepDiceNum");
+			// 	let wDice = 1;
+			// 	if(index > 0 ) {
+			// 		let check = formula.trim().substring(0,index).match(/\d+$/);
+			// 		wDice = check? check[0] : 1;
+			// 	}
+			// 	newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
+			// 	newFormula = newFormula.replace("@wepDiceDamage", '(' + weaponData.diceDamage + '-'+ weaponData.brutal +') + '+ weaponData.brutal +' * ' + weaponData.diceNum * wDice);
 				
-			}
-			else {
-				newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
-				newFormula = newFormula.replace("@wepDiceDamage", weaponData.diceDamage);
-			}
+			// }
+			// else {
+			// 	// newFormula = newFormula.replace("@wepDice", weaponData.damageDice);
+			// 	newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
+			// 	newFormula = newFormula.replace("@wepDiceDamage", weaponData.diceDamage);
+			// }
+
 		} else {
 			//if no weapon is in use replace the weapon keys with nothing.
 			newFormula = newFormula.replace("@wepAttack", "");

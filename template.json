@@ -571,8 +571,8 @@
 			"hit": {
 				"isDamage": true,
 				"detail": "1[W] + Strength modifier damage.",
-				"formula": "(1*@wepDiceNum) d@wepDiceDamage + @powerMod + @wepDamage",
-				"critFormula": "1*@wepDiceNum*@wepDiceDamage + @powerMod + @wepDamage + @wepCritBonus"
+				"formula": "@wepDice(1) + @powerMod + @wepDamage",
+				"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"
 			},
 			"miss": {
 				"detail": "Half Damage.",
@@ -695,8 +695,9 @@
 		"enhance": 0,
 		"isRanged": false,
 		"range": {"value": 5, "long": 10},
-		"diceNum": 1,
-		"diceDamage": 4,
+		"damageDice": {
+			"parts": [["1","8"]]
+		},
 		"damageType": {"physical":true},
 		"brutalNum": 1,
 		"weaponGroup": {},
