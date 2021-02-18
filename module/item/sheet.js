@@ -81,7 +81,7 @@ export default class ItemSheet4e extends ItemSheet {
 	
 		// Prepare Active Effects
 		data.effects = prepareActiveEffectCategories(this.entity.effects);
-
+		console.log(data.labels)
 		return data;
 	}
 

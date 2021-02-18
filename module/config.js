@@ -397,13 +397,16 @@ DND4EBETA.encumbrance = {
  */
 DND4EBETA.targetTypes = {
   "none": "DND4EBETA.None",
-  "Personal": "DND4EBETA.TargetPersonal",
-  "creature": "DND4EBETA.TargetCreature",
   "ally": "DND4EBETA.TargetAlly",
+  "creature": "DND4EBETA.TargetCreature",
   "enemy": "DND4EBETA.TargetEnemy",
+  "personal": "DND4EBETA.TargetPersonal",
   "object": "DND4EBETA.TargetObject",
   "square": "DND4EBETA.TargetSquare",
-  "wall": "DND4EBETA.TargetWall"
+  "wall": "DND4EBETA.TargetWall",
+  "allyA": "DND4EBETA.TargetAllyAdjacent",
+  "creatureA": "DND4EBETA.TargetCreatureAdjacent",
+  "enemyA": "DND4EBETA.TargetEnemyAdjacent",
 };
 
 

@@ -109,10 +109,10 @@ export class Helper {
 		}
 
 		if(weaponData) {
-			newFormula = newFormula.replace("@impAttackO", weaponData.proficientI ? this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1) : 0);
-			newFormula = newFormula.replace("@impDamageO", weaponData.proficientI ? this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1) : 0);
+			newFormula = newFormula.replace("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) );
+			newFormula = newFormula.replace("@impDamageO", this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1) );
 
-			newFormula = newFormula.replace("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1) : 0);
+			newFormula = newFormula.replace("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) : 0);
 			newFormula = newFormula.replace("@impDamage", weaponData.proficientI ? this.commonReplace(weaponData.damageFormI, actorData, powerData, weaponData, depth-1) : 0);
 			newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1));
 			newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1));

@@ -1,49 +1,56 @@
 <div class="dnd4eBeta chat-card item-card" data-actor-id="{{actor._id}}" data-item-id="{{item._id}}"
-     {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
-    <header class="card-header flexrow">
-        <img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
-        <h3 class="item-name">{{item.name}}</h3>
-    </header>
+	 {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
+	<header class="card-header flexrow">
+		<img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
+		<h3 class="item-name">{{item.name}}</h3>
+	</header>
 
-    <div class="card-content" style="display: block;">
-        {{{data.description.value}}}
-        {{#if data.materials.value}}
-        <p><strong>{{ localize "DND4EBETA.RequiredMaterials" }}.</strong> {{data.materials.value}}</p>
-        {{/if}}
-    </div>
+	<div class="card-content" style="display: block;">
+		{{{data.description.value}}}
+		{{#if data.materials.value}}
+		<p><strong>{{ localize "DND4EBETA.RequiredMaterials" }}.</strong> {{data.materials.value}}</p>
+		{{/if}}
+	</div>
 
-    <div class="card-buttons">
-        {{#if hasAttack}}<button data-action="attack">{{ localize "DND4EBETA.Attack" }}</button>{{/if}}
+	<div class="card-buttons">
+		{{#if hasAttack}}<button data-action="attack">{{ localize "DND4EBETA.Attack" }}</button>{{/if}}
 
-        {{#if hasDamage}}
-        <button data-action="damage">
-            {{#if isHealing}}{{ localize "DND4EBETA.Healing" }}
-            {{else}}{{localize "DND4EBETA.Damage" }}{{/if}}
-        </button>
-        {{/if}}
+		{{#if hasDamage}}
+		<button data-action="damage">
+			{{#if isHealing}}{{ localize "DND4EBETA.Healing" }}
+			{{else}}{{localize "DND4EBETA.Damage" }}{{/if}}
+		</button>
+		{{/if}}
 
-        {{#if isVersatile}}
-        <button data-action="versatile">{{ localize "DND4EBETA.Versatile" }}</button>
-        {{/if}}
+		{{#if hasEffect}}
+		<div class="card-content" style="display: block;">
+			{{localize "DND4EBETA.Effect" }}: {{{data.effect.detail}}}
+		</div>
+		{{/if}}
+		<!-- {{#if hasEffect}}<button data-action="effect">{{ localize "DND4EBETA.Effect" }}</button>{{/if}} -->
 
-        {{#if hasSave}}
-        <button data-action="save" data-ability="{{data.save.ability}}" disabled>
-            {{ localize "DND4EBETA.SavingThrow" }} {{labels.save}}
-        </button>
-        {{/if}}
+		{{#if isVersatile}}
+		<button data-action="versatile">{{ localize "DND4EBETA.Versatile" }}</button>
+		{{/if}}
 
-        {{#if data.formula}}
-        <button data-action="formula">{{ localize "DND4EBETA.OtherFormula"}}</button>
-        {{/if}}
+		{{#if hasSave}}
+		<button data-action="save" data-ability="{{data.save.ability}}" disabled>
+			{{ localize "DND4EBETA.SavingThrow" }} {{labels.save}}
+		</button>
+		{{/if}}
 
-        {{#if hasAreaTarget}}
-        <button data-action="placeTemplate">{{ localize "DND4EBETA.PlaceTemplate" }}</button>
-        {{/if}}
-    </div>
+		{{#if data.formula}}
+		<button data-action="formula">{{ localize "DND4EBETA.OtherFormula"}}</button>
+		{{/if}}
 
-    <footer class="card-footer">
-        {{#each data.properties}}
-        <span>{{this}}</span>
-        {{/each}}
-    </footer>
+		{{#if hasAreaTarget}}
+		<button data-action="placeTemplate">{{ localize "DND4EBETA.PlaceTemplate" }}</button>
+		{{/if}}
+	</div>
+
+	<footer class="card-footer">
+		{{#each data.properties}}
+		<span>{{this}}</span>
+		{{/each}}
+	</footer>
 </div>

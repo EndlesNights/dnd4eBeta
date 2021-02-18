@@ -596,7 +596,7 @@
 		}
 	},
 	"backpack": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
 		"capacity": {
 		"type": "weight",
 		"value": 0,
@@ -611,7 +611,7 @@
 		}
 	},
 	"classFeats": {
-		"templates": ["itemDescription"],
+		"templates": ["itemDescription", "itemMacro"],
 		"class": "",
 		"hitFistLevel": 10,
 		"hitPerLevel": 5,
@@ -633,14 +633,14 @@
 		}
 	},
 	"consumable": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "itemMacro"],
 		"consumableType": "potion",
 		"uses": {
 		"autoDestroy": false
 		}
 	},
 	"equipment": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable", "itemMacro"],
 		"armour": {
 		"type": "armour",
 		"subType": "cloth",
@@ -666,7 +666,7 @@
 		"proficient": true
 	},
 	"feat": {
-		"templates": ["itemDescription", "activatedEffect", "action"],
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -674,17 +674,17 @@
 		}
 	},
 	"loot": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect"]
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"]
 	},
 	"tool": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
 		"attribute": "abilities.int.mod",
 		"chatFlavor": "",
 		"formula": "",
 		"bonus": 2
 	},
 	"weapon": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable", "itemMacro"],
 		"weaponType": "simpleM",
 		"weaponHand": "HMain",
 		"properties": {},
@@ -711,7 +711,7 @@
 		"critRangeImp": 20
 	},
 	"raceFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action"],
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -719,7 +719,7 @@
 		}
 	},
 	"pathFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action"],
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -727,7 +727,7 @@
 		}
 	},
 	"destinyFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action"],
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -735,7 +735,7 @@
 		}
 	},
 	"ritual": {
-		"templates": ["itemDescription", "activatedEffect", "action"],
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -748,7 +748,7 @@
 		"useType": "atw"
 	},
 	"encounter": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action"],
+		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
 		"keyWords": ["Encounter"],
 		"useType": "enc",
 		"uses": {
@@ -758,7 +758,7 @@
 		}
 	},
 	"daily": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action"],
+		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
 		"keyWords": ["Daily"],
 		"useType": "day",
 		"uses": {
@@ -768,7 +768,7 @@
 		}
 	},
 	"utility": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action"],
+		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
 		"keyWords": ["Encounter"],
 		"useType": "enc",
 		"uses": {
@@ -777,5 +777,5 @@
 			"per": "enc"
 		}
 	}
-	}
+}
 }

@@ -75,9 +75,22 @@ export default class Item4e extends Item {
 	 */
 	get hasDamage() {
 		if(!DND4EBETA.powerUseType[this.type]) return false; //curently only powers will deal damage or make attacks
+		return this.data.data.hit?.isDamage;
 		return !!this.data.data.hit?.formula || !!(this.data.data.damage && this.data.data.damage.parts.length);
 	}
 
+	/* -------------------------------------------- */
+
+	/**
+	 * Does the Item have an effect line as part of its usage
+	 * @type {boolean}
+	 */
+	get hasEffect() {
+		if(!DND4EBETA.powerUseType[this.type]) return false; //curently only powers have effects
+		console.log(this.data.data.effect?.detail)
+		return !!this.data.data.effect?.detail;
+	}
+	
 	/* -------------------------------------------- */
 
 	/**
@@ -241,21 +254,20 @@ export default class Item4e extends Item {
 			}
 			labels.save = save.ability ? `${game.i18n.localize("DND4EBETA.AbbreviationDC")} ${save.dc || ""} ${C.abilities[save.ability]}` : "";
 
-			// Damage
+			// DamageTypes
 			let dam = data.damage || {};
 			if ( dam.parts ) {
 				labels.damage = dam.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
 				labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
 
-		if(DND4EBETA.powerUseType[this.type]) {
-			if(this.data.data.damageType) {
-				for (let [id, data] of Object.entries(this.data.data.damageType)) {
-					if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
+				if(DND4EBETA.powerUseType[this.type]) {
+					if(this.data.data.damageType) {
+						for (let [id, data] of Object.entries(this.data.data.damageType)) {
+							if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
+						}
+					}
 				}
 			}
-		}
-			}
-
 		}
 
 		// Assign labels
@@ -293,6 +305,8 @@ export default class Item4e extends Item {
 			// let x = func();
 			// console.log(x)
 		}
+		this.labels.range = "Test"
+		console.log(this.labels)
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
@@ -304,6 +318,7 @@ export default class Item4e extends Item {
 			hasAttack: this.hasAttack,
 			isHealing: this.isHealing,
 			hasDamage: this.hasDamage,
+			hasEffect: this.hasEffect,
 			isVersatile: this.isVersatile,
 			isSpell: this.data.type === "spell",
 			hasSave: this.hasSave,
@@ -327,7 +342,7 @@ export default class Item4e extends Item {
 		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
 		const template = `systems/dnd4eBeta/templates/chat/${templateType}-card.html`;
 		const html = await renderTemplate(template, templateData);
-
+console.log(template)
 		// Basic chat message data
 		const chatData = {
 			user: game.user._id,
@@ -344,8 +359,6 @@ export default class Item4e extends Item {
 		rollMode = rollMode || game.settings.get("core", "rollMode");
 		if ( ["gmroll", "blindroll"].includes(rollMode) ) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
 		if ( rollMode === "blindroll" ) chatData["blind"] = true;
-
-
 
 		// Create the chat message
 		if ( createMessage ) {
@@ -366,7 +379,6 @@ export default class Item4e extends Item {
 			}
 		}
 		else return chatData;
-
 	}
 
 	/* -------------------------------------------- */
@@ -533,7 +545,9 @@ export default class Item4e extends Item {
 				labels.activation + (data.activation?.condition ? ` (${data.activation.condition})` : ""),
 				labels.target,
 				labels.range,
-				labels.duration
+				labels.duration,
+				labels.damageTypes,
+				labels.effectType,
 			);
 		}
 		// Filter properties and return
@@ -655,32 +669,33 @@ export default class Item4e extends Item {
 		let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
 	let flavor = title;
 	
-	if(itemData.chatFlavor) flavor += `<br>${itemData.chatFlavor}`;
-	if(itemData.target.type && !["none","personal"].includes(itemData.target.type)) {
-		if(itemData.target.num) {
-			flavor += `<br>Target: ${itemData.target.num} ${itemData.target.type}`;
-		} else {
-			flavor += `<br>Target: Each ${itemData.target.type} `;
-		}
-		//Determin weapon range and AoE type here from rangeType && rangePower.
-		if(itemData.rangeType) {
-			if(itemData.rangeType === "weapon") {
-				flavor += `, ${CONFIG.DND4EBETA.weaponType[itemData.weaponType]}`;
-			} 
-			else if (itemData.rangeType !== "range") {
-				flavor += `, ${CONFIG.DND4EBETA.rangeType[itemData.rangeType]}`;
-			}
-		}
-		if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
-			flavor += ` ${itemData.area}`
-		}
-		if(itemData.rangePower && !["closeBurst","closeBlast"].includes(itemData.rangeType) ) {
-			flavor += ` within range of ${itemData.rangePower} squares.`
-		}
-	} else if (itemData.target.type) {
-		flavor += `<br>Target: ${itemData.target.type} `;
-	}
-	flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
+	// if(itemData.chatFlavor) flavor += `<br>${itemData.chatFlavor}`;
+	// if(itemData.target.type && !["none","personal"].includes(itemData.target.type)) {
+	// 	if(itemData.target.num) {
+	// 		flavor += `<br>Target: ${itemData.target.num} ${itemData.target.type}`;
+	// 	} else {
+	// 		flavor += `<br>Target: Each ${itemData.target.type} `;
+	// 	}
+	// 	//Determin weapon range and AoE type here from rangeType && rangePower.
+	// 	if(itemData.rangeType) {
+	// 		if(itemData.rangeType === "weapon") {
+	// 			flavor += `, ${CONFIG.DND4EBETA.weaponType[itemData.weaponType]}`;
+	// 		} 
+	// 		else if (itemData.rangeType !== "range") {
+	// 			flavor += `, ${CONFIG.DND4EBETA.rangeType[itemData.rangeType]}`;
+	// 		}
+	// 	}
+	// 	if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
+	// 		flavor += ` ${itemData.area}`
+	// 	}
+	// 	if(itemData.rangePower && !["closeBurst","closeBlast"].includes(itemData.rangeType) ) {
+	// 		flavor += ` within range of ${itemData.rangePower} squares.`
+	// 	}
+	// } else if (itemData.target.type) {
+	// 	flavor += `<br>Target: ${itemData.target.type} `;
+	// }
+	// flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
+	flavor += ` VS <b>${itemData.attack.def.toUpperCase() }<b>`;
 		const rollData = this.getRollData();
 	
 		// Define Roll bonuses
