@@ -290,14 +290,34 @@ export default class ItemSheet4e extends ItemSheet {
 	_getItemProperties(item) {
 		const props = [];
 		const labels = this.item.labels;
-
+		console.log(item.type)
 		if ( item.type === "weapon" ) {
+
+			props.push(CONFIG.DND4EBETA.weaponTypes[item.data.weaponType])
+
 			props.push(...Object.entries(item.data.properties)
 				.filter(e => e[1] === true)
-				.map(e => CONFIG.DND4EBETA.weaponProperties[e[0]]));
+				.map(e => {
+					if(e[0] === "bru") return `${CONFIG.DND4EBETA.weaponProperties[e[0]]} ${item.data.brutalNum}`;
+					return CONFIG.DND4EBETA.weaponProperties[e[0]]
+				})
+			);
+
+			props.push(...Object.entries(item.data.damageType)
+				.filter(e => e[1] === true)
+				.map(e => CONFIG.DND4EBETA.damageTypes[e[0]])
+			);
+
+			props.push(...Object.entries(item.data.weaponGroup)
+				.filter(e => e[1] === true)
+				.map(e => CONFIG.DND4EBETA.weaponGroup[e[0]])
+			);
+
+			if(item.data.isRanged)
+				props.push(`${game.i18n.localize("DND4EBETA.Range")}: ${item.data.range.value} / ${item.data.range.long}`);
 		}
 
-		else if ( item.type === "power" ) {
+		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility"].includes(item.data.type)) {
 			props.push(
 				labels.components,
 				labels.materials,
@@ -329,6 +349,7 @@ export default class ItemSheet4e extends ItemSheet {
 				labels.duration
 			)
 		}
+		console.log(props.filter(p => !!p))
 		return props.filter(p => !!p);
 	}
 
