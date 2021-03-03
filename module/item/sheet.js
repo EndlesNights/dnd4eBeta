@@ -307,6 +307,7 @@ export default class ItemSheet4e extends ItemSheet {
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4EBETA.damageTypes[e[0]])
 			);
+			console.log(props)
 
 			props.push(...Object.entries(item.data.weaponGroup)
 				.filter(e => e[1] === true)
@@ -329,6 +330,9 @@ export default class ItemSheet4e extends ItemSheet {
 		else if ( item.type === "equipment" ) {
 			props.push(CONFIG.DND4EBETA.equipmentTypes[item.data.armour.type]);
 			props.push(labels.armour);
+			props.push(labels.fort);
+			props.push(labels.ref);
+			props.push(labels.wil);
 		}
 
 		else if ( item.type === "feat" ) {

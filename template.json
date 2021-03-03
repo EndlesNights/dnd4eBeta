@@ -642,20 +642,20 @@
 	"equipment": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable", "itemMacro"],
 		"armour": {
-		"type": "armour",
-		"subType": "cloth",
-		"ac": 0,
-		"fort": 0,
-		"ref": 0,
-		"wil": 0,
-		"dex": null,
-		"movePen": false,
-		"movePenValue": 0,
-		"skillCheck": false,
-		"skillCheckValue": 0,
-		"damageRes": {
-			"parts": []
-		}		
+			"type": "armour",
+			"subType": "cloth",
+			"ac": 0,
+			"fort": 0,
+			"ref": 0,
+			"wil": 0,
+			"dex": null,
+			"movePen": false,
+			"movePenValue": 0,
+			"skillCheck": false,
+			"skillCheckValue": 0,
+			"damageRes": {
+				"parts": []
+			}		
 		},
 		"speed": {
 		"value": null,

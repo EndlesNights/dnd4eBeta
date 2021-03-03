@@ -3,7 +3,7 @@
 			{{#each data.abilities as |ability a|}}
 				<li class="ability" data-ability="{{a}}">
 					<h4 class="ability-name box-title rollable">{{ability.label}}</h4>
-					<input class="ability-score" name="data.abilities.{{a}}.value" type="text" value="{{ability.value}}" data-dtype="Number" onClick="this.select();" placeholder="10"/>
+					<input class="ability-score" name="data.abilities.{{a}}.value" type="Number" value="{{ability.value}}" onClick="this.select();" placeholder="10"/>
 					<span class="ability-mod" title="Modifier">{{numberFormat ability.mod decimals=0 sign=true}}</span>
 				</li>
 			{{/each}}

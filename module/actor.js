@@ -580,7 +580,7 @@ export class SimpleActor extends Actor {
 				weight += (e == "ad" ? v/500 : v/50);
 			}
 		}
-		
+		console.log(game.settings.get("dnd4eBeta", "currencyWeight"))
 		//Weight Ritual Components
 		for (let [e, v] of Object.entries(actorData.data.ritualcomp)) {
 			// weight += v/100 * 2.205;

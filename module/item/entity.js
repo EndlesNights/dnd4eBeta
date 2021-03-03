@@ -173,33 +173,34 @@ export default class Item4e extends Item {
 		const labels = {};
 
 		// Classes
-		if ( itemData.type === "class" ) {
-			data.levels = Math.clamped(data.levels, 1, 20);
-		}
+		// if ( itemData.type === "class" ) {
+		// 	data.levels = Math.clamped(data.levels, 1, 20);
+		// }
 
 		// Spell Level,  School, and Components
-		if ( itemData.type === "spell" ) {
-			labels.level = C.spellLevels[data.level];
-			labels.school = C.spellSchools[data.school];
-			labels.components = Object.entries(data.components).reduce((arr, c) => {
-				if ( c[1] !== true ) return arr;
-				arr.push(c[0].titleCase().slice(0, 1));
-				return arr;
-			}, []);
-			labels.materials = data?.materials?.value ?? null;
-		}
+		// if ( itemData.type === "spell" ) {
+		// 	labels.level = C.spellLevels[data.level];
+		// 	labels.school = C.spellSchools[data.school];
+		// 	labels.components = Object.entries(data.components).reduce((arr, c) => {
+		// 		if ( c[1] !== true ) return arr;
+		// 		arr.push(c[0].titleCase().slice(0, 1));
+		// 		return arr;
+		// 	}, []);
+		// 	labels.materials = data?.materials?.value ?? null;
+		// }
 
 		// Feat Items
-		else if ( itemData.type === "feat" ) {
-			const act = data.activation;
-			if ( act && (act.type === C.abilityActivationTypes.legendary) ) labels.featType = game.i18n.localize("DND4EBETA.LegendaryActionLabel");
-			else if ( act && (act.type === C.abilityActivationTypes.lair) ) labels.featType = game.i18n.localize("DND4EBETA.LairActionLabel");
-			else if ( act && act.type ) labels.featType = game.i18n.localize(data.damage.length ? "DND4EBETA.Attack" : "DND4EBETA.Action");
-			else labels.featType = game.i18n.localize("DND4EBETA.Passive");
-		}
+		// else if ( itemData.type === "feat" ) {
+		// 	const act = data.activation;
+		// 	if ( act && (act.type === C.abilityActivationTypes.legendary) ) labels.featType = game.i18n.localize("DND4EBETA.LegendaryActionLabel");
+		// 	else if ( act && (act.type === C.abilityActivationTypes.lair) ) labels.featType = game.i18n.localize("DND4EBETA.LairActionLabel");
+		// 	else if ( act && act.type ) labels.featType = game.i18n.localize(data.damage.length ? "DND4EBETA.Attack" : "DND4EBETA.Action");
+		// 	else labels.featType = game.i18n.localize("DND4EBETA.Passive");
+		// }
 
 		// Equipment Items
-		else if ( itemData.type === "equipment" ) {
+		if ( itemData.type === "equipment" ) {
+			console.log(data.armour.ref)
 			labels.armour = data.armour.ac ? `${data.armour.ac} ${game.i18n.localize("DND4EBETA.AC")}` : "";
 			labels.fort = data.armour.fort ? `${data.armour.fort} ${game.i18n.localize("DND4EBETA.FORT")}` : "";
 			labels.ref = data.armour.ref ? `${data.armour.ref} ${game.i18n.localize("DND4EBETA.REF")}` : "";
@@ -260,7 +261,7 @@ export default class Item4e extends Item {
 				labels.damage = dam.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
 				labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
 
-				if(DND4EBETA.powerUseType[this.type]) {
+				if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon") {
 					if(this.data.data.damageType) {
 						for (let [id, data] of Object.entries(this.data.data.damageType)) {
 							if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
@@ -305,8 +306,6 @@ export default class Item4e extends Item {
 			// let x = func();
 			// console.log(x)
 		}
-		this.labels.range = "Test"
-		console.log(this.labels)
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
@@ -523,6 +522,7 @@ console.log(template)
 	getChatData(htmlOptions={}) {
 		const data = duplicate(this.data.data);
 		const labels = this.labels;
+		console.log(labels)
 		// Rich text description
 		data.description.value = TextEditor.enrichHTML(data.description.value, htmlOptions);
 
@@ -535,7 +535,8 @@ console.log(template)
 		if ( data.hasOwnProperty("equipped") && !["loot", "tool"].includes(this.data.type) ) {
 			props.push(
 				game.i18n.localize(data.equipped ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped"),
-				// game.i18n.localize(data.proficient ? "DND4EBETA.Proficient" : "DND4EBETA.NotProficient"),
+				game.i18n.localize(data.proficient ? "DND4EBETA.Proficient" : "DND4EBETA.NotProficient"),
+				game.i18n.localize(data.proficientI ? "DND4EBETA.ProficientI" : ""),
 			);
 		}
 
@@ -544,11 +545,12 @@ console.log(template)
 			props.push(
 				labels.activation + (data.activation?.condition ? ` (${data.activation.condition})` : ""),
 				labels.target,
-				labels.range,
+				data.isRanged && labels.range ? `${game.i18n.localize("DND4EBETA.Range")}: ${labels.range}` : "",
 				labels.duration,
 				labels.damageTypes,
 				labels.effectType,
 			);
+			console.log(labels.damageTypes)
 		}
 		// Filter properties and return
 		data.properties = props.filter(p => !!p);
@@ -565,6 +567,9 @@ console.log(template)
 		props.push(
 			CONFIG.DND4EBETA.equipmentTypes[data.armour.type],
 			labels.armour || null,
+			labels.fort || null,
+			labels.ref || null,
+			labels.wil || null,
 			data.stealth.value ? game.i18n.localize("DND4EBETA.StealthDisadvantage") : null
 		);
 	}
