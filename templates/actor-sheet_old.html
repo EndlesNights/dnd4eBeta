@@ -1,59 +1,7 @@
 <form class="{{cssClass}}" autocomplete="off">				
 			
 	{{!-- Sheet Header --}}
-	<header class="sheet-header">
-		<ul class="summary">
-			<li class="summary-name">
-				<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EBETA.Name'}}" placeholder="{{localize 'DND4EBETA.Name'}}" onClick="this.select();"/>
-			</li>
-			<li class="summary-race placeholder" data-placeholder="{{localize 'DND4EBETA.Race'}}">
-				<input type="text" name="data.details.race" value="{{data.details.race}}" title="{{localize 'DND4EBETA.Race'}}" placeholder="{{localize 'DND4EBETA.Race'}}" onClick="this.select();"/>
-			</li>
-			<li class="summary-class placeholder" data-placeholder="{{localize 'DND4EBETA.Class'}}">
-				<input type="text" name="data.details.class" value="{{data.details.class}}" title="{{localize 'DND4EBETA.ClassName'}}"placeholder="{{localize 'DND4EBETA.ClassName'}}" onClick="this.select();"/>
-			</li>
-			<li class="summary-level">
-				<label>{{localize 'DND4EBETA.Level'}}</label>
-				<input type="text" name="data.details.level" value="{{data.details.level}}" title="{{localize 'DND4EBETA.Level'}}" data-dtype="Number" onClick="this.select();"/>
-			</li>
-		</ul>
-		<div>
-		</div>
-		<ul class="summary">
-			<li class="summary-path placeholder" data-placeholder="{{localize 'DND4EBETA.Paragon'}}">
-				<input type="text" name="data.details.paragon" value="{{data.details.paragon}}" title="{{localize 'DND4EBETA.Paragon'}}"placeholder="{{localize 'DND4EBETA.Paragon'}}" onClick="this.select();"/>
-			</li>
-			<li class="summary-path placeholder" data-placeholder="{{localize 'DND4EBETA.Epic'}}">
-				<input type="text" name="data.details.epic" value="{{data.details.epic}}" title="{{localize 'DND4EBETA.Epic'}}"placeholder="{{localize 'DND4EBETA.Epic'}}" onClick="this.select();"/>
-			</li>
-			<li class="summary-exp">
-				<label>{{localize 'DND4EBETA.Exp'}}</label>
-				<input type="text" name="data.details.exp" value="{{data.details.exp}}" title="{{localize 'DND4EBETA.Exp'}}" data-dtype="Number" onClick="this.select();"/>
-			</li>
-		</ul>
-	</header>
-
-	<section>
-		<img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
-		<ul class="attributes flexrow">
-			<li>
-				<span>Test</span>
-			</li>
-			<li>
-				<span>Test</span>
-			</li>
-			<li>
-				<span>Test</span>
-			</li>
-			<li>
-				<span>Test</span>
-			</li>
-			
-		</ul>
-	</section>
-		
-
-	<!-- <header class="sheet-header flexrow">
+	<header class="sheet-header flexrow">
 		<img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
 		
 		
@@ -78,7 +26,7 @@
 			<div class="flexcol">
 				<div class="summary">
 					<div class="list-race">
-						<input type="text" name="data.details.race" value="{{data.details.race}}" title="{{localize 'DND4EBETA.Race'}}" placeholder="{{localize 'DND4EBETA.Race'}}" onClick="this.select();"/>
+						<input type="text" name="data.details.race" value="{{data.details.race}}" title="{{localize "DND4EBETA.Race"}}" placeholder="{{localize "DND4EBETA.Race"}}" onClick="this.select();"/>
 					</div>
 					<div class="list-gen">
 						<input type="text" name="data.details.gender" value="{{data.details.gender}}" title="{{localize "DND4EBETA.Gender"}}"  placeholder="{{localize "DND4EBETA.Gender"}}" onClick="this.select();"/>
@@ -112,7 +60,7 @@
 						<input type="text" name="data.details.deity" value="{{data.details.deity}}" title="{{localize "DND4EBETA.Deity"}}"  placeholder="{{localize "DND4EBETA.Deity"}}" onClick="this.select();"/>						
 					</div>
 					<div class="list-class">	
-						<input type="text" name="data.details.class" value="{{data.details.class}}" title="{{localize 'DND4EBETA.ClassName'}}"placeholder="{{localize 'DND4EBETA.ClassName'}}" onClick="this.select();"/>
+						<input type="text" name="data.details.class" value="{{data.details.class}}" title="{{localize "DND4EBETA.ClassName"}}"placeholder="{{localize "DND4EBETA.ClassName"}}" onClick="this.select();"/>
 					</div>
 					<div class="list-class">	
 						<input type="text" name="data.details.paragon" value="{{data.details.paragon}}" title="{{localize "DND4EBETA.Paragon"}}"placeholder="{{localize "DND4EBETA.Paragon"}}" onClick="this.select();"/>
@@ -124,17 +72,17 @@
 				</div>
 			</div>
 		</div>
-	</header> -->
+	</header>
 
 	{{!-- Sheet Tab Navigation --}}
-	<!-- <nav class="sheet-tabs tabs" data-group="primary">
+	<nav class="sheet-tabs tabs" data-group="primary">
 		<a class="item" data-tab="description">Bio & Info</a>
 		<a class="item" data-tab="attributes">Attributes</a>
 		<a class="item" data-tab="inventory">Inventory</a>
 		<a class="item" data-tab="features">Features</a>
 		<a class="item" data-tab="powers">Powers</a>
 		<a class="item" data-tab="effects">Effects</a>
-	</nav> -->
+	</nav>
 
 	{{!-- Sheet Body --}}
 	<section class="sheet-body">
