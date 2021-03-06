@@ -17,8 +17,7 @@
 				<input type="text" name="data.details.level" value="{{data.details.level}}" title="{{localize 'DND4EBETA.Level'}}" data-dtype="Number" onClick="this.select();"/>
 			</li>
 		</ul>
-		<div>
-		</div>
+
 		<ul class="summary">
 			<li class="summary-path placeholder" data-placeholder="{{localize 'DND4EBETA.Paragon'}}">
 				<input type="text" name="data.details.paragon" value="{{data.details.paragon}}" title="{{localize 'DND4EBETA.Paragon'}}"placeholder="{{localize 'DND4EBETA.Paragon'}}" onClick="this.select();"/>
@@ -33,23 +32,56 @@
 		</ul>
 	</header>
 
+
 	<section>
 		<img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
-		<ul class="attributes flexrow">
-			<li>
+		{{!-- Attributes --}}
+		<div class="attributes">
+			{{!-- Hit Points --}}
+			<div class ="attribute attribute-health">
+				<h4 class="attribute-name">{{localize 'DND4EBETA.HP'}}</h4>
+				<div class="attribute-value"> 
+					<input type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+					<span class="sep"> / </span>
+					<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EBETA.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+				</div>
+				<footer class="attribute-footer attribute-footer--temp-hp">
+					<span class="attribute-subname">{{localize 'DND4EBETA.TempHP'}}</span>
+					<input type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EBETA.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
+				</footer>
+			</div>
+			{{!-- Defences --}}
+			<div class ="attribute attribute-defenses">
+				<h4 class="attribute-name">{{localize 'DND4EBETA.Defences'}}</h4>
+				<div class="attribute-value">
+					<div class="attribute-sub">
+						<strong class="attribute-name">{{localize 'DND4EBETA.DefAC'}}</strong>
+						<div class="attribute-display">{{data.defences.ac.value}}</div>
+					</div>
+					<div class="attribute-sub">
+						<strong class="attribute-name">{{localize 'DND4EBETA.DefFort'}}</strong>
+						<div class="attribute-display">{{data.defences.fort.value}}</div>
+					</div>
+					<div class="attribute-sub">
+						<strong class="attribute-name">{{localize 'DND4EBETA.DefRef'}}</strong>
+						<div class="attribute-display">{{data.defences.ref.value}}</div>
+					</div>
+					<div class="attribute-sub">
+						<strong class="attribute-name">{{localize 'DND4EBETA.DefWil'}}</strong>
+						<div class="attribute-display">{{data.defences.wil.value}}</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div>
 				<span>Test</span>
-			</li>
-			<li>
+			</div>
+			<div>
 				<span>Test</span>
-			</li>
-			<li>
-				<span>Test</span>
-			</li>
-			<li>
-				<span>Test</span>
-			</li>
+			</div>
 			
-		</ul>
+		</div>
 	</section>
 		
 
@@ -136,39 +168,7 @@
 		<a class="item" data-tab="effects">Effects</a>
 	</nav> -->
 
-	{{!-- Sheet Body --}}
-	<section class="sheet-body">
 
-		{{!-- Biography Tab --}}
-		<div class="tab biography" data-group="primary" data-tab="description">
-			{{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}
-		</div>
-
-		{{!-- Attributes Tab --}}
-		<div class="tab attributes flexrow" data-group="primary" data-tab="attributes">
-			{{> "systems/dnd4eBeta/templates/actors/parts/actor-attributes.html" sections=inventory}}
-		</div>
-
-		{{!-- Owned Inventory Tab --}}
-		<div class="tab inventory" data-group="primary" data-tab="inventory">
-			{{> "systems/dnd4eBeta/templates/actors/parts/actor-inventory.html" sections=inventory}}
-		</div>
-
-		{{!-- Feat Tab --}}
-		<div class="tab features" data-group="primary" data-tab="features">
-			{{> "systems/dnd4eBeta/templates/actors/parts/actor-features.html" sections=features}}
-		</div>
-		
-		{{!-- Powers Tab --}}
-		<div class="tab powers" data-group="primary" data-tab="powers">
-			{{> "systems/dnd4eBeta/templates/actors/parts/actor-powers.html" sections=powers}}
-		</div>
-
-        {{!-- Effects Tab --}}
-        <div class="tab effects flexcol" data-group="primary" data-tab="effects">
-            {{> "systems/dnd4eBeta/templates/actors/parts/active-effects.html"}}
-        </div>
-	</section>
 </form>
 
 <!-- text-shadow style.css:1056 -->
