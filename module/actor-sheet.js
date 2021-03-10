@@ -103,6 +103,7 @@ export class SimpleActorSheet extends ActorSheet {
 		
 		// Prepare active effects
 		data.effects = prepareActiveEffectCategories(this.entity.effects);
+		console.log(data)
 		return data;
 	}
 	

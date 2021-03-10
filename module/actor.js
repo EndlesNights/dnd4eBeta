@@ -86,6 +86,7 @@ export class SimpleActor extends Actor {
 		for (let [id, abl] of Object.entries(data.abilities)) {
 
 			abl.mod = Math.floor((abl.value - 10) / 2);
+			abl.modHalf = abl.mod + Math.floor(data.details.level / 2);
 			abl.prof = (abl.proficient || 0) * data.attributes.prof;
 			abl.saveBonus = saveBonus + Math.floor(data.details.level / 2);
 			abl.checkBonus = checkBonus + Math.floor(data.details.level / 2);

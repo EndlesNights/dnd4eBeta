@@ -167,8 +167,7 @@
 	margin-right: 0px;
 }
 
-.dnd4eBeta.sheet.actor .attributes {
-	/* overflow: hidden; */
+/* .dnd4eBeta.sheet.actor .attributes {
 	border-bottom: 1px solid #ccc;
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -185,7 +184,7 @@
 	-webkit-box-pack: start;
 	-ms-flex-pack: start;
 	justify-content: flex-start;
-}
+} */
 
 .dnd4eBeta.sheet.actor .attributes .attribute{
 	border-right: 1px solid #ccc;
@@ -196,20 +195,38 @@
 	margin: 4px 0;
 	padding: 0 4px;
 }
-.dnd4eBeta.sheet.actor .attributes .attribute-health {
+.dnd4eBeta.sheet.actor .attribute-health {
 	-webkit-box-flex: 0;
 	-ms-flex: 0 0 27%;
 	flex: 0 0 27%; }
-.dnd4eBeta.sheet.actor .attributes .attribute .attribute-name {
-		border-bottom: 1px solid #ccc;
-		color: #444;
-		font-family: "mason-serif", "Nodesto", "Signika", "Palatino Linotype", serif;
-		font-size: 18px;
-		height: 22px;
-		line-height: 22px;
-		margin: 0 0 2px;
-		position: relative;
-		text-align: center; }
+.dnd4eBeta.sheet.actor .attribute-name {
+	border-bottom: 1px solid #ccc;
+	color: #444;
+	font-family: "mason-serif", "Nodesto", "Signika", "Palatino Linotype", serif;
+	font-size: 18px;
+	height: 22px;
+	line-height: 22px;
+	margin: 0 0 2px;
+	position: relative;
+	text-align: center;
+}
+
+.dnd4eBeta .attributes {
+	padding: 2px;
+	margin: 2px;
+	border: 2px solid rgba(0, 0, 0, 0.75); }
+.dnd4eBeta .section,
+.dnd4eBeta .header {
+	border-color: rgba(0, 0, 0, 0.5); }
+.dnd4eBeta .attributes {
+	border: 2px solid rgba(0, 0, 0, 0.25); }
+.dnd4eBeta .attributes .attribute-value {
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	text-align: center;
+}
+
 
 
 
