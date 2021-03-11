@@ -32,79 +32,82 @@
 			</ul>
 		</header>
 
-		{{!-- Attributes --}}
+		
 		<section class="flexrow">
 			<!-- <div class="attributes" style="max-width: 120px;"> -->
-				<img class="profile-img" style="max-width: 100px;" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+				<img class="profile-img" style="max-width: 100px; margin-left: 15px;" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
 			<!-- </div> -->
-			
-			{{!-- Hit Points --}}
-			<div class="attributes attribute-health">
-				<h4 class="attribute-name">{{localize 'DND4EBETA.HP'}}</h4>
-				<div class="attribute-value flexrow"> 
-					<input type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
-					<span class="sep"> / </span>
-					<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EBETA.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
-				</div>
-				<footer class="attribute-footer attribute-footer--temp-hp flexrow">
-					<span class="attribute-subname">{{localize 'DND4EBETA.TempHP'}}</span>
-					<input type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EBETA.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
-				</footer>
-			</div>
 
-			{{!-- Defences --}}
-			<div class="attributes attribute-defenses">
-				<h4 class="attribute-name">{{localize 'DND4EBETA.Defences'}}</h4>
-				<div class="attribute-value flexrow">
-					{{#each data.defences as | def d|}}
-					<div class="attribute-sub">
-						<strong class="attribute-name">{{def.value}}</strong>
-						<div class="attribute-display" title="{{def.title }}">{{def.label}}</div>
+			{{!-- Attributes --}}
+			<section class="flexrow section--attributes">
+				{{!-- Hit Points --}}
+				<div class="attributes attribute-health">
+					<h4 class="attribute-name">{{localize 'DND4EBETA.HP'}}</h4>
+					<div class="attribute-value flexrow"> 
+						<input type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<span class="sep"> / </span>
+						<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EBETA.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
-					{{/each}}
+					<footer class="attribute-footer attribute-footer--temp-hp flexrow">
+						<span class="attribute-subname">{{localize 'DND4EBETA.TempHP'}}</span>
+						<input type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EBETA.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
+					</footer>
 				</div>
-			</div>
 
-			{{!-- Surges --}}
-			<div class="attributes attribute-surge">
-				<h4 class="attribute-name">{{localize 'DND4EBETA.HealingSurges'}}</h4>
-				<div class="attribute-value flexrow">
-					<div class="attribute-sub">
-						<strong class="attribute-name" title="{{localize 'DND4EBETA.SurgeValue'}}">{{data.details.surgeValue}}</strong>
-						<div class="attribute-display" title="{{localize 'DND4EBETA.SurgeValue'}}">{{localize 'DND4EBETA.Surge'}}</div>
-					</div>
-					<div class="attribute-sub">
-						<input type="text" name="data.details.surgeCur" value="{{data.details.surgeCur}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
-						<div class="attribute-display" title="{{localize 'DND4EBETA.SurgeCur'}}">{{localize 'DND4EBETA.Uses'}}</div>
-					</div>
-					<span>/</span>
-					<div class="attribute-sub">
-						<input type="text" name="data.details.surgeDay" value="{{data.details.surgeDay}}" title="{{localize 'DND4EBETA.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
-						<!-- <strong class="attribute-name" title="{{localize 'DND4EBETA.SurgeDay'}}">{{data.details.surgeDay}}</strong> -->
-						<div class="attribute-display" title="{{localize 'DND4EBETA.SurgeDay'}}">{{localize 'DND4EBETA.Day'}}</div>
-					</div>
-					<div class="attribute-sub">
-						<input type="checkbox" name="data.details.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="{{localize 'DND4EBETA.SecondWindUsed'}}"/>
-						<div class="attribute-display" title="{{localize 'DND4EBETA.SecondWind'}}">{{localize 'DND4EBETA.SW'}}</div>
+				{{!-- Defences --}}
+				<div class="attributes attribute-defenses">
+					<h4 class="attribute-name">{{localize 'DND4EBETA.Defences'}}</h4>
+					<div class="attribute-value flexrow">
+						{{#each data.defences as | def d|}}
+						<div class="attribute-sub">
+							<strong class="attribute-name">{{def.value}}</strong>
+							<div class="attribute-display" title="{{def.title }}">{{def.label}}</div>
+						</div>
+						{{/each}}
 					</div>
 				</div>
-			</div>
 
-			{{!-- Action Points --}}
-			<div class="attributes attribute-action">
-				<h4 class="attribute-name">{{localize 'DND4EBETA.ActionPoints'}}</h4>
-				<div class="attribute-value flexrow">
-					<div class="attribute-sub">
-						<input type="text" name="data.actionpoints.value" value="{{data.actionpoints.value}}" title="{{localize 'DND4EBETA.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-						<div class="attribute-display" title="{{localize 'DND4EBETA.ActionPointsRemain'}}">{{localize 'DND4EBETA.Remaining'}}</div>
-					</div>
-					<div class="attribute-sub">
-						<!-- <input type="checkbox" name="data.actionpoints.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="{{localize 'DND4EBETA.SecondWindUsed'}}"/> -->
-						<input type="checkbox" type="checkbox" name="data.actionpoints.encounteruse" data-dtype="Boolean" {{checked data.actionpoints.encounteruse}} title="Action Point used this encounter?"/>
-						<div class="attribute-display" title="{{localize 'DND4EBETA.ActionPointUsed'}}">{{localize 'DND4EBETA.Used'}}</div>
+				{{!-- Surges --}}
+				<div class="attributes attribute-surge">
+					<h4 class="attribute-name">{{localize 'DND4EBETA.HealingSurges'}}</h4>
+					<div class="attribute-value flexrow">
+						<div class="attribute-sub">
+							<strong class="attribute-name" title="{{localize 'DND4EBETA.SurgeValue'}}">{{data.details.surgeValue}}</strong>
+							<div class="attribute-display" title="{{localize 'DND4EBETA.SurgeValue'}}">{{localize 'DND4EBETA.Surge'}}</div>
+						</div>
+						<div class="attribute-sub">
+							<input type="text" name="data.details.surgeCur" value="{{data.details.surgeCur}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+							<div class="attribute-display" title="{{localize 'DND4EBETA.SurgeCur'}}">{{localize 'DND4EBETA.Uses'}}</div>
+						</div>
+						<span>/</span>
+						<div class="attribute-sub">
+							<input type="text" name="data.details.surgeDay" value="{{data.details.surgeDay}}" title="{{localize 'DND4EBETA.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+							<!-- <strong class="attribute-name" title="{{localize 'DND4EBETA.SurgeDay'}}">{{data.details.surgeDay}}</strong> -->
+							<div class="attribute-display" title="{{localize 'DND4EBETA.SurgeDay'}}">{{localize 'DND4EBETA.Day'}}</div>
+						</div>
+						<div class="attribute-sub">
+							<input type="checkbox" name="data.details.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="{{localize 'DND4EBETA.SecondWindUsed'}}"/>
+							<div class="attribute-display" title="{{localize 'DND4EBETA.SecondWind'}}">{{localize 'DND4EBETA.SW'}}</div>
+						</div>
 					</div>
 				</div>
-			</div>
+
+				{{!-- Action Points --}}
+				<div class="attributes attribute-action">
+					<h4 class="attribute-name">{{localize 'DND4EBETA.ActionPoints'}}</h4>
+					<div class="attribute-value flexrow">
+						<div class="attribute-sub">
+							<input type="text" name="data.actionpoints.value" value="{{data.actionpoints.value}}" title="{{localize 'DND4EBETA.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+							<div class="attribute-display" title="{{localize 'DND4EBETA.ActionPointsRemain'}}">{{localize 'DND4EBETA.Remaining'}}</div>
+						</div>
+						<div class="attribute-sub">
+							<!-- <input type="checkbox" name="data.actionpoints.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="{{localize 'DND4EBETA.SecondWindUsed'}}"/> -->
+							<input type="checkbox" type="checkbox" name="data.actionpoints.encounteruse" data-dtype="Boolean" {{checked data.actionpoints.encounteruse}} title="Action Point used this encounter?"/>
+							<div class="attribute-display" title="{{localize 'DND4EBETA.ActionPointUsed'}}">{{localize 'DND4EBETA.Used'}}</div>
+						</div>
+					</div>
+				</div>
+			</section>
 		</section>
 	</section>
 
@@ -114,7 +117,7 @@
 			<section class="section section--abilities flexcol">
 				<div class="ability-header">
 					<label>{{localize 'DND4EBETA.MOD'}}</label>
-					<label>{{localize 'DND4EBETA.HalfLVL'}}</label>
+					<label>+{{localize 'DND4EBETA.HalfLVL'}}</label>
 				</div>
 					{{#each data.abilities as | ability a|}}
 					<div class="ability--score flexrow">
@@ -131,7 +134,7 @@
 				<div class="skill--block flexrow">
 					<a class="training-toggle skill-training" title="{{skill.hover}}">{{{skill.icon}}}</a>
 					<h4 class="skill-name rollable">{{skill.label}}</h4>
-					<!-- <input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number"/> -->
+					<input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number">
 					<label class="skill-mod">{{numberFormat skill.total decimals=0 sign=true }}</label>
 					<!-- <a class="skill-mod skill-bonus" data-target="data.details" title="Skill Bonus">{{skill.sklBonusValue}}</a> -->
 				</div>
@@ -140,18 +143,38 @@
 		</section>
 
 		<section class="section section--main flexcol">
-			<section class="section section--details flexrow">
-				<div>
-					SAVING THROW
-					DEATH
-				</div>
-				<div>
-					Passive
-				</div>
-				<div>
-					Speed
-					Init
-				</div>
+			<section class="section section--utilities flexrow">
+				<section class="section section--saves flexcol">
+					<div>
+						<img class="" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20"/>
+						<label>{{localize 'DND4EBETA.ActionSave'}}</label>
+					</div>
+					<div class="">
+						<img class="" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20"/>
+						<label>{{localize 'DND4EBETA.Death'}}</label>
+						<input style="width:40%" type="text" name="data.details.deathsavefail" value="{{data.details.deathsavefail}}" title="Death Save Failures"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</section>
+				<section class="section section--passives flexcol">
+					<div>
+						<strong>{{data.passive.pasprc.value}}</strong>
+						<label>{{localize 'DND4EBETA.PasPer'}}</label>
+					</div>
+					<div>
+						<strong>{{data.passive.pasins.value}}</strong>
+						<label>{{localize 'DND4EBETA.PasIns'}}</label>
+					</div>
+				</section>
+				<section class="section section--movement flexcol">
+					<div>
+						<strong>{{numberFormat data.movement.basic.value sign=true}}</strong>
+						<label>{{localize 'DND4EBETA.Speed'}}</label>
+					</div>
+					<div>
+						<strong title="Initiative Score">{{numberFormat data.init.value decimals=0 sign=true }}</strong>
+						<label>{{localize 'DND4EBETA.Initiative'}}</label>
+					</div>
+				</section>
 			</section>
 
 			<section class="section section--tabs flexshrink">
