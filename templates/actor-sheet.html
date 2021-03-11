@@ -110,24 +110,29 @@
 
 	<section class="container container--bottom flexrow">
 		<section class="section section--sidebar flexcol">
+			{{!-- Ability --}}
 			<section class="section section--abilities flexcol">
+				<div class="ability-header">
+					<label>{{localize 'DND4EBETA.MOD'}}</label>
+					<label>{{localize 'DND4EBETA.HalfLVL'}}</label>
+				</div>
 					{{#each data.abilities as | ability a|}}
-					<div class="attribute-value flexrow">
-						<input class="ability-score" name="data.abilities.{{a}}.value" type="Number" value="{{ability.value}}" onClick="this.select();" placeholder="10"/>
-						<div class="attribute-display" title="{{ability.label }}">{{ability.label}}</div>
-						<div class="attribute-display" title="{{ability.label }}">{{numberFormat ability.mod decimals=0 sign=true}}</div>
-						<div class="attribute-display" title="{{ability.label }}">{{numberFormat ability.modHalf decimals=0 sign=true}}</div>
+					<div class="ability--score flexrow">
+						<input class="ability-score" name="data.abilities.{{a}}.value" type="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
+						<label class="ability-name" title="{{ability.label }}">{{ability.label}}</label>
+						<label class="attribute-display ability-mod" title="{{ability.label}}">{{numberFormat ability.mod decimals=0 sign=true}}</label>
+						<label class="attribute-display ability-mod-half" title="{{ability.label }}">{{numberFormat ability.modHalf decimals=0 sign=true}}</label>
 					</div>
 					{{/each}}
 			</section>
-
+			{{!-- Skills --}}
 			<section class="section section--skills flexcol">
 				{{#each data.skills as |skill s|}}
-				<div class="attribute-value flexrow">
+				<div class="skill--block flexrow">
 					<a class="training-toggle skill-training" title="{{skill.hover}}">{{{skill.icon}}}</a>
 					<h4 class="skill-name rollable">{{skill.label}}</h4>
-					<input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number"/>
-					<span class="skill-mod">{{numberFormat skill.total decimals=0 sign=true }}</span>
+					<!-- <input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number"/> -->
+					<label class="skill-mod">{{numberFormat skill.total decimals=0 sign=true }}</label>
 					<!-- <a class="skill-mod skill-bonus" data-target="data.details" title="Skill Bonus">{{skill.sklBonusValue}}</a> -->
 				</div>
 				{{/each}}
@@ -135,12 +140,26 @@
 		</section>
 
 		<section class="section section--main flexcol">
-			<section class="section section--details flexcol">
-				
+			<section class="section section--details flexrow">
+				<div>
+					SAVING THROW
+					DEATH
+				</div>
+				<div>
+					Passive
+				</div>
+				<div>
+					Speed
+					Init
+				</div>
 			</section>
 
 			<section class="section section--tabs flexshrink">
-
+				DETAILS
+				POWERS
+				INVENTORY
+				FEATS
+				EFFECTS
 			</section>
 
 			<section class="section section--tabs-content flexcol">
