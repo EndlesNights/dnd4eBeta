@@ -42,10 +42,10 @@
 			<section class="flexrow section--attributes">
 				{{!-- Hit Points --}}
 				<div class="attributes attribute-health">
-					<h4 class="attribute-name">{{localize 'DND4EBETA.HP'}}</h4>
+					<h4 class="attribute-name health-option">{{localize 'DND4EBETA.HP'}}</h4>
 					<div class="attribute-value flexrow"> 
 						<input type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
-						<span class="sep"> / </span>
+						<span class="sep">/</span>
 						<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EBETA.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					<footer class="attribute-footer attribute-footer--temp-hp flexrow">
@@ -72,24 +72,28 @@
 					<h4 class="attribute-name">{{localize 'DND4EBETA.HealingSurges'}}</h4>
 					<div class="attribute-value flexrow">
 						<div class="attribute-sub">
-							<strong class="attribute-name" title="{{localize 'DND4EBETA.SurgeValue'}}">{{data.details.surgeValue}}</strong>
-							<div class="attribute-display" title="{{localize 'DND4EBETA.SurgeValue'}}">{{localize 'DND4EBETA.Surge'}}</div>
+							<strong class="attribute-name surge-bonus" title="{{localize 'DND4EBETA.SurgeValue'}}">{{data.details.surgeValue}}</strong>
+							<div class="attribute-display surge-bonus" title="{{localize 'DND4EBETA.SurgeValue'}}">{{localize 'DND4EBETA.Surge'}}</div>
 						</div>
-						<div class="attribute-sub">
+						<div class="attribute-sub attribute-input">
 							<input type="text" name="data.details.surgeCur" value="{{data.details.surgeCur}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
-							<div class="attribute-display" title="{{localize 'DND4EBETA.SurgeCur'}}">{{localize 'DND4EBETA.Uses'}}</div>
+							<div class="attribute-display envimental-loss-bonus" title="{{localize 'DND4EBETA.SurgeCur'}}">{{localize 'DND4EBETA.Uses'}}</div>
 						</div>
-						<span>/</span>
-						<div class="attribute-sub">
+						<span class="sep">/</span>
+						<div class="attribute-sub attribute-input">
 							<input type="text" name="data.details.surgeDay" value="{{data.details.surgeDay}}" title="{{localize 'DND4EBETA.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 							<!-- <strong class="attribute-name" title="{{localize 'DND4EBETA.SurgeDay'}}">{{data.details.surgeDay}}</strong> -->
 							<div class="attribute-display" title="{{localize 'DND4EBETA.SurgeDay'}}">{{localize 'DND4EBETA.Day'}}</div>
 						</div>
 						<div class="attribute-sub">
 							<input type="checkbox" name="data.details.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="{{localize 'DND4EBETA.SecondWindUsed'}}"/>
-							<div class="attribute-display" title="{{localize 'DND4EBETA.SecondWind'}}">{{localize 'DND4EBETA.SW'}}</div>
+							<div class="attribute-display-check secondwind-bonus" title="{{localize 'DND4EBETA.SecondWind'}}">{{localize 'DND4EBETA.SW'}}</div>
 						</div>
 					</div>
+					<footer>
+						<a class="rest short-rest">{{ localize "DND4EBETA.RestS" }}</a>
+						<a class="rest long-rest">{{ localize "DND4EBETA.RestL" }}</a>
+					</footer>
 				</div>
 
 				{{!-- Action Points --}}
@@ -103,7 +107,7 @@
 						<div class="attribute-sub">
 							<!-- <input type="checkbox" name="data.actionpoints.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="{{localize 'DND4EBETA.SecondWindUsed'}}"/> -->
 							<input type="checkbox" type="checkbox" name="data.actionpoints.encounteruse" data-dtype="Boolean" {{checked data.actionpoints.encounteruse}} title="Action Point used this encounter?"/>
-							<div class="attribute-display" title="{{localize 'DND4EBETA.ActionPointUsed'}}">{{localize 'DND4EBETA.Used'}}</div>
+							<div class="attribute-display-check" title="{{localize 'DND4EBETA.ActionPointUsed'}}">{{localize 'DND4EBETA.Used'}}</div>
 						</div>
 					</div>
 				</div>
@@ -112,9 +116,9 @@
 	</section>
 
 	<section class="container container--bottom flexrow">
-		<section class="section section--sidebar flexcol">
+		<section class="section section--sidebar">
 			{{!-- Ability --}}
-			<section class="section section--abilities flexcol">
+			<section class="section section--abilities">
 				<div class="ability-header">
 					<label>{{localize 'DND4EBETA.MOD'}}</label>
 					<label>+{{localize 'DND4EBETA.HalfLVL'}}</label>
@@ -129,7 +133,7 @@
 					{{/each}}
 			</section>
 			{{!-- Skills --}}
-			<section class="section section--skills flexcol">
+			<section class="section section--skills">
 				{{#each data.skills as |skill s|}}
 				<div class="skill--block flexrow">
 					<a class="training-toggle skill-training" title="{{skill.hover}}">{{{skill.icon}}}</a>
@@ -145,7 +149,7 @@
 		<section class="section section--main flexcol">
 			<section class="section section--utilities flexrow">
 				<section class="section section--saves flexcol">
-					<div>
+					<div >
 						<img class="" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20"/>
 						<label>{{localize 'DND4EBETA.ActionSave'}}</label>
 					</div>
@@ -178,15 +182,47 @@
 			</section>
 
 			<section class="section section--tabs flexshrink">
-				DETAILS
-				POWERS
-				INVENTORY
-				FEATS
-				EFFECTS
+
+				{{!-- Sheet Tab Navigation --}}
+				<nav class="sheet-tabs tabs" data-group="primary">
+					<a class="item" data-tab="details">{{localize 'DND4EBETA.Details'}}</a>
+					<a class="item" data-tab="powers">{{localize 'DND4EBETA.Powers'}}</a>
+					<a class="item" data-tab="inventory">{{localize 'DND4EBETA.Inventory'}}</a>
+					<a class="item" data-tab="features">{{localize 'DND4EBETA.Feats'}}</a>
+					<a class="item" data-tab="effects">{{localize 'DND4EBETA.Effects'}}</a>
+				</nav>
 			</section>
 
-			<section class="section section--tabs-content flexcol">
+			<!-- <section class="section section--tabs-content flexcol">
+			</section> -->
 
+			{{!-- Sheet Body --}}
+			<section class="sheet-body section--tabs-content">
+		
+				{{!-- Biography Tab --}}
+				<div class="tab biography" data-group="primary" data-tab="details">
+					{{> "systems/dnd4eBeta/templates/actors/parts/actor-details.html" sections=biography}}
+				</div>
+		
+				{{!-- Owned Inventory Tab --}}
+				<div class="tab inventory" data-group="primary" data-tab="inventory">
+					{{> "systems/dnd4eBeta/templates/actors/parts/actor-inventory.html" sections=inventory}}
+				</div>
+		
+				{{!-- Feat Tab --}}
+				<div class="tab features" data-group="primary" data-tab="features">
+					{{> "systems/dnd4eBeta/templates/actors/parts/actor-features.html" sections=features}}
+				</div>
+				
+				{{!-- Powers Tab --}}
+				<div class="tab powers" data-group="primary" data-tab="powers">
+					{{> "systems/dnd4eBeta/templates/actors/parts/actor-powers.html" sections=powers}}
+				</div>
+		
+				{{!-- Effects Tab --}}
+				<div class="tab effects flexcol" data-group="primary" data-tab="effects">
+					{{> "systems/dnd4eBeta/templates/actors/parts/active-effects.html"}}
+				</div>
 			</section>
 		</section>
 	</section>

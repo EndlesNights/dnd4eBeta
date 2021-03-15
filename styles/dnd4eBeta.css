@@ -192,6 +192,12 @@
 	-ms-flex-pack: start;
 	justify-content: flex-start;
 } */
+.dnd4eBeta.sheet.actor .attributes span.sep {
+	max-width: 20px;
+	font-size: 22px;
+	font-weight: normal;
+}
+
 
 .dnd4eBeta.sheet.actor .attributes .attribute{
 	border-right: 1px solid #ccc;
@@ -202,13 +208,46 @@
 	margin: 4px 0;
 	padding: 0 4px;
 }
-/* .dnd4eBeta.sheet.actor .attribute-health {
-	-webkit-box-flex: 0;
+.dnd4eBeta.sheet.actor .attribute-health {
+	text-align: center;
+	/* font-size: 18px; */
+	/* -webkit-box-flex: 0;
 	-ms-flex: 0 0 27%;
-	flex: 0 0 27%;
-} */
+	flex: 0 0 27%; */
+}
+.dnd4eBeta.sheet.actor .section--attributes .attribute-health input {
+	border-bottom: 1px solid black;
+	border-radius: 0px;
+	font-size: 18px;
+	color: #444;
+	font-weight:bold;
+}
+.dnd4eBeta.sheet.actor .attribute-value input {
+	font-size: 18px;
+	color: #444;
+	/* border-bottom: 1px solid black; */
+	border-radius: 0px;
+	font-weight:bold;
+}
+
+.dnd4eBeta.sheet.actor .attribute-value input[type="checkbox"] {
+	margin: 2px;
+}
+
+.dnd4eBeta.sheet.actor .attribute-input {
+	min-width: 32px;
+}
+.dnd4eBeta.sheet.actor .attribute-sub strong{
+	display: inline-block;
+	margin-top:  2px;
+}
+.dnd4eBeta.sheet.actor .attributes .attribute-display {
+	border-top: 1px solid;
+	margin-left: 2px;
+	margin-right: 2px;
+}
 .dnd4eBeta.sheet.actor .attribute-name {
-	border-bottom: 1px solid #ccc;
+	/* border-bottom: 1px solid black; */
 	color: #444;
 	font-family: "mason-serif", "Nodesto", "Signika", "Palatino Linotype", serif;
 	font-size: 18px;
@@ -235,16 +274,36 @@
 	text-align: center;
 }
 
+.dnd4eBeta .attribute-footer--temp-hp {
+	margin: auto;
+	text-align: center;
+	align-items: center;
+	display: inline;
+}
+
+.dnd4eBeta .attribute-footer--temp-hp span,
+.dnd4eBeta .attribute-footer--temp-hp input {
+	/* flex: .4; */
+	max-width: 40%;
+	text-align: center;
+}
+
+.dnd4eBeta .container--bottom {
+	/* height: 100%; */
+}
+
 .dnd4eBeta .section--sidebar {
 	max-width: 260px;
 	margin-left: 15px;
 	border-right: 5px solid;
+	min-height: 100%;
 }
 
 .dnd4eBeta .section--abilities {
 	margin-right: 15px;
 	padding-bottom: 10px;
 	border-bottom: 5px solid;
+	/* max-height: 187px; */
 }
 
 .dnd4eBeta .section--abilities .ability-header {
@@ -318,15 +377,20 @@
 	padding-top: 5px;
 }
 
-.dnd4eBeta .section--utilities {
+.dnd4eBeta .section--main {
 	margin-left: 15px;
 	margin-right: 15px;
-	border-bottom: 5px solid;
+}
 
+.dnd4eBeta .section--utilities {
+	border-bottom: 5px solid;
 	max-height: 80px;
 	text-transform: uppercase;
 	font-size: 16px;
+}
 
+.dnd4eBeta .denomination {
+	text-transform: uppercase;
 }
 
 .dnd4eBeta .section--utilities section {
@@ -343,13 +407,18 @@
 	margin-left: 5px;
 	margin-right: 5px;
 	padding-top: 5px;
-
 }
 
 .dnd4eBeta .section--utilities .section--saves div+div,
 .dnd4eBeta .section--utilities .section--passives div+div,
 .dnd4eBeta .section--utilities .section--movement div+div {
 	border-top: 1px solid;
+}
+
+.dnd4eBeta .section--utilities .section--saves div label,
+.dnd4eBeta .section--utilities .section--saves div input{
+	position: relative;
+	top: -5px;
 }
 
 .dnd4eBeta .section--utilities .section--saves {
@@ -360,7 +429,17 @@
 }
 .dnd4eBeta .section--utilities .section--movement {
 	min-width: 105px;
-}		
+}
+
+.dnd4eBeta .section--tabs {
+	flex: 0;
+}
+
+.dnd4eBeta .section--tabs nav.sheet-tabs {
+	border-top: 0px;
+	border-bottom: 1px solid #000;
+}
+
 .dnd4eBeta.sheet.actor .tab.attributes {
 	overflow: hidden;
 }
@@ -429,7 +508,7 @@
 	height: 20px;
 	font-size: 16px;
 	display: inline;
-		position: relative;
+	position: relative;
 	top: -2px;
 }
 .dnd4eBeta .sheet-header .charlevel .experience input {
@@ -1400,7 +1479,7 @@ font-size: 12px;
 	border: none;
 }
 .dnd4eBeta.sheet.actor {
-	min-width: 746px;
+	min-width: 774px;
 	min-height: 420px;
 }
 .dnd4eBeta.sheet.item {
@@ -1409,7 +1488,7 @@ font-size: 12px;
 }
 
 .dnd4eBeta.sheet.actor .inventory-filters {
-	margin: 0 8px;
+	margin: 0 2px;
 	flex: 0 0 20px;
 	justify-content: flex-end;
 }
@@ -1434,7 +1513,7 @@ font-size: 12px;
 	border-bottom: 2px groove #eeede0;
 }
 .dnd4eBeta.sheet.actor .inventory {
-	margin: 0 8px;
+	margin: 0 2px;
 	flex: 0 0 20px;
 	justify-content: flex-end;
 }
@@ -1526,7 +1605,7 @@ font-size: 12px;
 	padding: 0 5px;
 	overflow-y: auto;
 	scrollbar-width: thin;
-	height: calc(100% - 155px);
+	height: calc(100% - 116px) 
 }
 .dnd4eBeta.sheet .items-list {
 	list-style: none;

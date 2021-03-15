@@ -12,6 +12,7 @@ export const preloadHandlebarsTemplates = async function() {
     "systems/dnd4eBeta/templates/actors/parts/active-effects.html",
     // Actor Sheet Partials
     "systems/dnd4eBeta/templates/actors/parts/actor-attributes.html",
+    "systems/dnd4eBeta/templates/actors/parts/actor-details.html",
     "systems/dnd4eBeta/templates/actors/parts/actor-inventory.html",
     "systems/dnd4eBeta/templates/actors/parts/actor-features.html",
     "systems/dnd4eBeta/templates/actors/parts/actor-powers.html",

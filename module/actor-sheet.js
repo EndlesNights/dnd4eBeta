@@ -38,7 +38,7 @@ export class SimpleActorSheet extends ActorSheet {
 			classes: ["dnd4eBeta", "sheet", "actor"],
 			template: "systems/dnd4eBeta/templates/actor-sheet.html",
 			width: 800,
-			height: 960,
+			height: 885,
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",
@@ -824,7 +824,7 @@ export class SimpleActorSheet extends ActorSheet {
   setPosition(options={}) {
     const position = super.setPosition(options);
     const sheetBody = this.element.find(".sheet-body");
-    const bodyHeight = position.height - 192;
+    const bodyHeight = position.height - 345;
     sheetBody.css("height", bodyHeight);
     return position;
   }
