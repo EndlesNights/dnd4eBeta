@@ -38,7 +38,7 @@ export class SimpleActorSheet extends ActorSheet {
 			classes: ["dnd4eBeta", "sheet", "actor"],
 			template: "systems/dnd4eBeta/templates/actor-sheet.html",
 			width: 800,
-			height: 885,
+			height: 894,
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",
@@ -897,6 +897,7 @@ export class SimpleActorSheet extends ActorSheet {
 	_onRollDefenceCheck(event) {
 		event.preventDefault();
 		const def = event.currentTarget.parentElement.dataset.defence;
+		console.log(event.currentTarget.parentElement)
 		this.actor.rollDef(def, {event: event});
 	}
 

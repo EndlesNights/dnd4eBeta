@@ -42,11 +42,11 @@
 			<section class="flexrow section--attributes">
 				{{!-- Hit Points --}}
 				<div class="attributes attribute-health">
-					<h4 class="attribute-name health-option">{{localize 'DND4EBETA.HP'}}</h4>
+					<h4 class="attribute-name health-option rollable">{{localize 'DND4EBETA.HP'}}</h4>
 					<div class="attribute-value flexrow"> 
-						<input type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">/</span>
-						<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EBETA.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EBETA.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					<footer class="attribute-footer attribute-footer--temp-hp flexrow">
 						<span class="attribute-subname">{{localize 'DND4EBETA.TempHP'}}</span>
@@ -59,25 +59,25 @@
 					<h4 class="attribute-name">{{localize 'DND4EBETA.Defences'}}</h4>
 					<div class="attribute-value flexrow">
 						{{#each data.defences as | def d|}}
-						<div class="attribute-sub">
-							<strong class="attribute-name">{{def.value}}</strong>
-							<div class="attribute-display" title="{{def.title }}">{{def.label}}</div>
+						<div class="attribute-sub" data-defence="{{d}}">
+							<strong class="attribute-name defence-bonus rollable">{{def.value}}</strong>
+							<div class="attribute-display def-name rollable" title="{{def.title }}">{{def.label}}</div>
 						</div>
 						{{/each}}
 					</div>
 				</div>
 
 				{{!-- Surges --}}
-				<div class="attributes attribute-surge">
+				<div class="attributes attribute-surge" style="min-width: 187px;">
 					<h4 class="attribute-name">{{localize 'DND4EBETA.HealingSurges'}}</h4>
 					<div class="attribute-value flexrow">
 						<div class="attribute-sub">
-							<strong class="attribute-name surge-bonus" title="{{localize 'DND4EBETA.SurgeValue'}}">{{data.details.surgeValue}}</strong>
-							<div class="attribute-display surge-bonus" title="{{localize 'DND4EBETA.SurgeValue'}}">{{localize 'DND4EBETA.Surge'}}</div>
+							<strong class="attribute-name surge-bonus rollable" title="{{localize 'DND4EBETA.SurgeValue'}}">{{data.details.surgeValue}}</strong>
+							<div class="attribute-display surge-bonus rollable" title="{{localize 'DND4EBETA.SurgeValue'}}">{{localize 'DND4EBETA.Surge'}}</div>
 						</div>
 						<div class="attribute-sub attribute-input">
 							<input type="text" name="data.details.surgeCur" value="{{data.details.surgeCur}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
-							<div class="attribute-display envimental-loss-bonus" title="{{localize 'DND4EBETA.SurgeCur'}}">{{localize 'DND4EBETA.Uses'}}</div>
+							<div class="attribute-display envimental-loss-bonus rollable" title="{{localize 'DND4EBETA.SurgeCur'}}">{{localize 'DND4EBETA.Uses'}}</div>
 						</div>
 						<span class="sep">/</span>
 						<div class="attribute-sub attribute-input">
@@ -87,12 +87,13 @@
 						</div>
 						<div class="attribute-sub">
 							<input type="checkbox" name="data.details.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="{{localize 'DND4EBETA.SecondWindUsed'}}"/>
-							<div class="attribute-display-check secondwind-bonus" title="{{localize 'DND4EBETA.SecondWind'}}">{{localize 'DND4EBETA.SW'}}</div>
+							<div class="attribute-display-check secondwind-bonus rollable" title="{{localize 'DND4EBETA.SecondWind'}}">{{localize 'DND4EBETA.SW'}}</div>
 						</div>
 					</div>
-					<footer>
-						<a class="rest short-rest">{{ localize "DND4EBETA.RestS" }}</a>
-						<a class="rest long-rest">{{ localize "DND4EBETA.RestL" }}</a>
+					<footer class="attribute-footer attribute-footer--surge flexrow">
+						<a class="rest short-rest" title="{{localize 'DND4EBETA.RestShort'}}">{{ localize "DND4EBETA.RestS" }}</a>
+						<a class="rest second-wind" title="{{localize 'DND4EBETA.SecondWind'}}" style="min-width: 78px;">{{localize "DND4EBETA.SecondWind"}}</a>
+						<a class="rest long-rest" title="{{localize 'DND4EBETA.RestLong'}}">{{ localize "DND4EBETA.RestL" }}</a>
 					</footer>
 				</div>
 
@@ -124,9 +125,9 @@
 					<label>+{{localize 'DND4EBETA.HalfLVL'}}</label>
 				</div>
 					{{#each data.abilities as | ability a|}}
-					<div class="ability--score flexrow">
+					<div class="ability--score flexrow" data-ability="{{a}}">
 						<input class="ability-score" name="data.abilities.{{a}}.value" type="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
-						<label class="ability-name" title="{{ability.label }}">{{ability.label}}</label>
+						<label class="ability-name rollable" title="{{ability.label }}">{{ability.label}}</label>
 						<label class="attribute-display ability-mod" title="{{ability.label}}">{{numberFormat ability.mod decimals=0 sign=true}}</label>
 						<label class="attribute-display ability-mod-half" title="{{ability.label }}">{{numberFormat ability.modHalf decimals=0 sign=true}}</label>
 					</div>
@@ -135,11 +136,11 @@
 			{{!-- Skills --}}
 			<section class="section section--skills">
 				{{#each data.skills as |skill s|}}
-				<div class="skill--block flexrow">
+				<div class="skill--block flexrow" data-skill="{{s}}">
 					<a class="training-toggle skill-training" title="{{skill.hover}}">{{{skill.icon}}}</a>
 					<h4 class="skill-name rollable">{{skill.label}}</h4>
 					<input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number">
-					<label class="skill-mod">{{numberFormat skill.total decimals=0 sign=true }}</label>
+					<label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
 					<!-- <a class="skill-mod skill-bonus" data-target="data.details" title="Skill Bonus">{{skill.sklBonusValue}}</a> -->
 				</div>
 				{{/each}}
