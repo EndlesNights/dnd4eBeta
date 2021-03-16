@@ -151,23 +151,23 @@
 			<section class="section section--utilities flexrow">
 				<section class="section section--saves flexcol">
 					<div >
-						<img class="" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20"/>
-						<label>{{localize 'DND4EBETA.ActionSave'}}</label>
+						<img class="roll-save rollable" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20" title="{{localize 'DND4EBETA.SavingThrow'}}"/>
+						<label class="roll-save-bonus rollable" title="{{localize 'DND4EBETA.SavingThrowBonus'}}">{{localize 'DND4EBETA.ActionSave'}}</label>
 					</div>
 					<div class="">
-						<img class="" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20"/>
-						<label>{{localize 'DND4EBETA.Death'}}</label>
+						<img class="death-save rollable" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20" title="{{localize 'DND4EBETA.DeathSavingThrow'}}"/>
+						<label class="death-save-bonus rollable" title="{{localize 'DND4EBETA.DeathSavingThrowBonus'}}" >{{localize 'DND4EBETA.Death'}}</label>
 						<input style="width:40%" type="text" name="data.details.deathsavefail" value="{{data.details.deathsavefail}}" title="Death Save Failures"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</section>
 				<section class="section section--passives flexcol">
-					<div>
-						<strong>{{data.passive.pasprc.value}}</strong>
-						<label>{{localize 'DND4EBETA.PasPer'}}</label>
+					<div data-passive="pasprc">
+						<strong class="passive-bonus rollable">{{data.passive.pasprc.value}}</strong>
+						<label class="rollable">{{localize 'DND4EBETA.PasPer'}}</label>
 					</div>
-					<div>
-						<strong>{{data.passive.pasins.value}}</strong>
-						<label>{{localize 'DND4EBETA.PasIns'}}</label>
+					<div data-passive="pasins">
+						<strong class="passive-bonus rollable">{{data.passive.pasins.value}}</strong>
+						<label class="rollable">{{localize 'DND4EBETA.PasIns'}}</label>
 					</div>
 				</section>
 				<section class="section section--movement flexcol">
@@ -176,7 +176,7 @@
 						<label>{{localize 'DND4EBETA.Speed'}}</label>
 					</div>
 					<div>
-						<strong title="Initiative Score">{{numberFormat data.init.value decimals=0 sign=true }}</strong>
+						<strong class="init-bonus rollable" title="{{localize 'DND4EBETA.InitiativeScore'}}">{{numberFormat data.init.value decimals=0 sign=true }}</strong>
 						<label>{{localize 'DND4EBETA.Initiative'}}</label>
 					</div>
 				</section>
