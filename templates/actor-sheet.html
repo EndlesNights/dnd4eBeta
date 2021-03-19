@@ -43,8 +43,12 @@
 				{{!-- Hit Points --}}
 				<div class="attributes attribute-health">
 					<h4 class="attribute-name health-option rollable">{{localize 'DND4EBETA.HP'}}</h4>
-					<div class="attribute-value flexrow"> 
-						<input type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+					<div class="attribute-value flexrow">
+						{{#if data.details.isBloodied}}
+
+
+						{{/if}}
+						<input {{#if data.details.isBloodied}} class="bloodied" {{/if}} type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">/</span>
 						<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EBETA.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
@@ -60,8 +64,9 @@
 					<div class="attribute-value flexrow">
 						{{#each data.defences as | def d|}}
 						<div class="attribute-sub" data-defence="{{d}}">
-							<strong class="attribute-name defence-bonus rollable">{{def.value}}</strong>
-							<div class="attribute-display def-name rollable" title="{{def.title }}">{{def.label}}</div>
+							<strong class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{def.title}}">{{def.value}}</strong>
+							<div class="attribute-display def-name rollable" title="{{localize 'DND4EBETA.Roll'}} {{def.title}} {{localize 'DND4EBETA.Save'}}">{{def.label}}</div>
+							<!-- <div class="attribute-display def-name rollable" title="{{def.title }}">{{def.label}}</div> -->
 						</div>
 						{{/each}}
 					</div>
@@ -145,6 +150,8 @@
 				</div>
 				{{/each}}
 			</section>
+
+			<a class="custom-roll-descriptions" style="font-size: 11.5px;" title="Change custom descriptions for Skill and Ability roll checks.">Edit Skill & Ability Custom Descriptions.</a>
 		</section>
 
 		<section class="section section--main flexcol">
@@ -157,22 +164,23 @@
 					<div class="">
 						<img class="death-save rollable" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20" title="{{localize 'DND4EBETA.DeathSavingThrow'}}"/>
 						<label class="death-save-bonus rollable" title="{{localize 'DND4EBETA.DeathSavingThrowBonus'}}" >{{localize 'DND4EBETA.Death'}}</label>
-						<input style="width:40%" type="text" name="data.details.deathsavefail" value="{{data.details.deathsavefail}}" title="Death Save Failures"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input style="width:40%; border-bottom: 1px solid; border-radius: 0px; text-align: center;" type="text" name="data.details.deathsavefail" value="{{data.details.deathsavefail}}" title="Death Save Failures"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</section>
 				<section class="section section--passives flexcol">
 					<div data-passive="pasprc">
 						<strong class="passive-bonus rollable">{{data.passive.pasprc.value}}</strong>
-						<label class="rollable">{{localize 'DND4EBETA.PasPer'}}</label>
+						<label class="passive-message rollable">{{localize 'DND4EBETA.PasPer'}}</label>
 					</div>
 					<div data-passive="pasins">
 						<strong class="passive-bonus rollable">{{data.passive.pasins.value}}</strong>
-						<label class="rollable">{{localize 'DND4EBETA.PasIns'}}</label>
+						<label class="passive-message rollable">{{localize 'DND4EBETA.PasIns'}}</label>
 					</div>
 				</section>
 				<section class="section section--movement flexcol">
 					<div>
-						<strong>{{numberFormat data.movement.basic.value sign=true}}</strong>
+						<!-- <input style="width:40%; border-bottom: 1px solid; border-radius: 0px; text-align: center;" type="text" name="data.movement.basic.base" value="{{data.movement.basic.base}}" title="Basic Movement Speed"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
+						<strong style="text-transform:initial;">{{numberFormat data.movement.basic.value}} sq.</strong>
 						<label>{{localize 'DND4EBETA.Speed'}}</label>
 					</div>
 					<div>

@@ -3,6 +3,7 @@ import { SecondWindDialog } from "./apps/second-wind.js";
 import { ShortRestDialog } from "./apps/short-rest.js";
 import { LongRestDialog } from "./apps/long-rest.js";
 import { DeathSaveDialog } from "./apps/death-save.js";
+import { SaveThrowDialog } from "./apps/save-throw.js";
 import { AttributeBonusDialog } from "./apps/attribute-bonuses.js";
 import { CustomRolldDescriptions } from "./apps/custom-roll-descriptions.js";
 import TraitSelector from "./apps/trait-selector.js";
@@ -19,17 +20,17 @@ import Item4e from "./item/entity.js";
 export class SimpleActorSheet extends ActorSheet {
 
   constructor(...args) {
-    super(...args);
+	super(...args);
 
-    /**
-     * Track the set of item filters which are applied
-     * @type {Set}
-     */
-    this._filters = {
-      inventory: new Set(),
-      powers: new Set(),
-      features: new Set()
-    };
+	/**
+	 * Track the set of item filters which are applied
+	 * @type {Set}
+	 */
+	this._filters = {
+	  inventory: new Set(),
+	  powers: new Set(),
+	  features: new Set()
+	};
   }
   
   /** @override */
@@ -38,7 +39,7 @@ export class SimpleActorSheet extends ActorSheet {
 			classes: ["dnd4eBeta", "sheet", "actor"],
 			template: "systems/dnd4eBeta/templates/actor-sheet.html",
 			width: 800,
-			height: 894,
+			height: 905,
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",
@@ -97,13 +98,14 @@ export class SimpleActorSheet extends ActorSheet {
 		this._prepareDataSave(data.actor.data.details,
 			{"saves": CONFIG.DND4EBETA.saves}
 		);
-		
+
 		// Prepare owned items
 		this._prepareItems(data);
 		
 		// Prepare active effects
 		data.effects = prepareActiveEffectCategories(this.entity.effects);
-		console.log(data)
+
+		// data.actor.data.details.isBloodied = (data.actor.data.health.value <= data.actor.data.health.max/2);
 		return data;
 	}
 	
@@ -233,21 +235,21 @@ export class SimpleActorSheet extends ActorSheet {
    */
   _prepareItemToggleState(item) {
 	  const power = ["power","atwill","encounter","daily","utility"];
-    if (power.includes(item.type)) {
-      // const isAlways = getProperty(item.data, "preparation.mode") === "always";
-      const isPrepared =  getProperty(item.data, "prepared");
-      item.toggleClass = isPrepared ? "active" : "";
-      // if ( isAlways ) item.toggleClass = "fixed";
-      // if ( isAlways ) item.toggleTitle = CONFIG.DND4EBETA.spellPreparationModes.always;
-      // else if ( isPrepared ) item.toggleTitle = CONFIG.DND4EBETA.spellPreparationModes.prepared;
+	if (power.includes(item.type)) {
+	  // const isAlways = getProperty(item.data, "preparation.mode") === "always";
+	  const isPrepared =  getProperty(item.data, "prepared");
+	  item.toggleClass = isPrepared ? "active" : "";
+	  // if ( isAlways ) item.toggleClass = "fixed";
+	  // if ( isAlways ) item.toggleTitle = CONFIG.DND4EBETA.spellPreparationModes.always;
+	  // else if ( isPrepared ) item.toggleTitle = CONFIG.DND4EBETA.spellPreparationModes.prepared;
 	  if ( isPrepared ) item.toggleTitle = game.i18n.localize("DND4EBETA.PowerPrepared");
-      else item.toggleTitle = game.i18n.localize("DND4EBETA.PowerUnPrepared");
-    }
-    else {
-      const isActive = getProperty(item.data, "equipped");
-      item.toggleClass = isActive ? "active" : "";
-      item.toggleTitle = game.i18n.localize(isActive ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped");
-    }
+	  else item.toggleTitle = game.i18n.localize("DND4EBETA.PowerUnPrepared");
+	}
+	else {
+	  const isActive = getProperty(item.data, "equipped");
+	  item.toggleClass = isActive ? "active" : "";
+	  item.toggleTitle = game.i18n.localize(isActive ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped");
+	}
   }
 	_prepareDataSense(data, map) {
 		
@@ -291,7 +293,8 @@ export class SimpleActorSheet extends ActorSheet {
 			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
 			
 		}
-	}	
+	}
+
   /* -------------------------------------------- */
 
   /**
@@ -300,35 +303,35 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   _filterItems(items, filters) {
-    return items.filter(item => {
-      const data = item.data;
+	return items.filter(item => {
+	  const data = item.data;
 
-      // Action usage
-      for ( let f of ["action", "bonus", "reaction"] ) {
-        if ( filters.has(f) ) {
-          if ((data.activation && (data.activation.type !== f))) return false;
-        }
-      }
+	  // Action usage
+	  for ( let f of ["action", "bonus", "reaction"] ) {
+		if ( filters.has(f) ) {
+		  if ((data.activation && (data.activation.type !== f))) return false;
+		}
+	  }
 
-      // Spell-specific filters
-      // if ( filters.has("ritual") ) {
-        // if (data.components.ritual !== true) return false;
-      // }
-      // if ( filters.has("concentration") ) {
-        // if (data.components.concentration !== true) return false;
-      // }
-      // if ( filters.has("prepared") ) {
-        // if ( data.level === 0 || ["innate", "always"].includes(data.preparation.mode) ) return true;
-        // if ( this.actor.data.type === "npc" ) return true;
-        // return data.preparation.prepared;
-      // }
+	  // Spell-specific filters
+	  // if ( filters.has("ritual") ) {
+		// if (data.components.ritual !== true) return false;
+	  // }
+	  // if ( filters.has("concentration") ) {
+		// if (data.components.concentration !== true) return false;
+	  // }
+	  // if ( filters.has("prepared") ) {
+		// if ( data.level === 0 || ["innate", "always"].includes(data.preparation.mode) ) return true;
+		// if ( this.actor.data.type === "npc" ) return true;
+		// return data.preparation.prepared;
+	  // }
 
-      // Equipment-specific filters
-      if ( filters.has("equipped") ) {
-        if ( data.equipped !== true ) return false;
-      }
-      return true;
-    });
+	  // Equipment-specific filters
+	  if ( filters.has("equipped") ) {
+		if ( data.equipped !== true ) return false;
+	  }
+	  return true;
+	});
   }	
 	
 	/** @override */
@@ -378,34 +381,36 @@ export class SimpleActorSheet extends ActorSheet {
 
   /** @override */
 	activateListeners(html) {
-    super.activateListeners(html);
+	super.activateListeners(html);
 
-    // Everything below here is only needed if the sheet is editable
-    if (!this.options.editable) return;
+	// Everything below here is only needed if the sheet is editable
+	if (!this.options.editable) return;
 
 	html.find('.skill-training').on("click contextmenu", this._onCycleSkillProficiency.bind(this));
 
-    // Update Inventory Item
-    html.find('.item-edit').click(ev => {
-      const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.getOwnedItem(li.data("itemId"));
-      item.sheet.render(true);
-    });
+	// Update Inventory Item
+	html.find('.item-edit').click(ev => {
+	  const li = $(ev.currentTarget).parents(".item");
+	  const item = this.actor.getOwnedItem(li.data("itemId"));
+	  item.sheet.render(true);
+	});
 
-    // Delete Inventory Item
-    html.find('.item-delete').click(ev => {
-      const li = $(ev.currentTarget).parents(".item");
-      this.actor.deleteOwnedItem(li.data("itemId"));
-      li.slideUp(200, () => this.render(false));
-    });
+	// Delete Inventory Item
+	html.find('.item-delete').click(ev => {
+	  const li = $(ev.currentTarget).parents(".item");
+	  this.actor.deleteOwnedItem(li.data("itemId"));
+	  li.slideUp(200, () => this.render(false));
+	});
 
-    // Add or Remove Attribute
-    html.find(".attributes").on("click", ".attribute-control", this._onClickAttributeControl.bind(this));
+	// Add or Remove Attribute
+	html.find(".attributes").on("click", ".attribute-control", this._onClickAttributeControl.bind(this));
 
 
-    if ( this.actor.owner ) {	
+	if ( this.actor.owner ) {	
 		// Roll Skill Checks
 		html.find('.skill-name').click(this._onRollSkillCheck.bind(this));
+
+		html.find('.passive-message').click(this._onRollPassiveCheck.bind(this));
 		
 		//Roll Abillity Checks
 		html.find('.ability-name').click(this._onRollAbilityCheck.bind(this));
@@ -419,6 +424,7 @@ export class SimpleActorSheet extends ActorSheet {
 		//Open Skill-Bonus
 		html.find('.skill-bonus').click(this._onSkillBonus.bind(this));
 		html.find('.death-save-bonus').click(this._onDeathSaveBonus.bind(this));
+		html.find('.roll-save-bonus').click(this._onSavingThrowBonus.bind(this));
 		html.find('.surge-bonus').click(this._onSurgeBonus.bind(this));
 		html.find('.envimental-loss-bonus').click(this._onSurgeEnv.bind(this));
 		html.find('.secondwind-bonus').click(this._onSecondWindBonus.bind(this));
@@ -426,8 +432,7 @@ export class SimpleActorSheet extends ActorSheet {
 		html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
 		html.find('.move-bonus').click(this._onMovementBonus.bind(this));
 		html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
-		html.find('.resistence-bonus').click(this._onResistencesBonus.bind(this));
-		
+		html.find('.resistence-bonus').click(this._onResistencesBonus.bind(this));		
 		
 		html.find('.custom-roll-descriptions').click(this._onCustomRolldDescriptions.bind(this));
 		
@@ -442,6 +447,7 @@ export class SimpleActorSheet extends ActorSheet {
 		
 		//death save
 		html.find('.death-save').click(this._onDeathSave.bind(this));
+		html.find('.roll-save').click(this._onSavingThrow.bind(this));
 		
 		// Trait Selector
 		html.find('.trait-selector').click(this._onTraitSelectorLang.bind(this));
@@ -481,25 +487,25 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   _onItemSummary(event) {
-    event.preventDefault();
-    let li = $(event.currentTarget).parents(".item"),
-        item = this.actor.getOwnedItem(li.data("item-id")),
+	event.preventDefault();
+	let li = $(event.currentTarget).parents(".item"),
+		item = this.actor.getOwnedItem(li.data("item-id")),
 		chatData = item.getChatData({secrets: this.actor.owner});
 
 	
-    // Toggle summary
-    if ( li.hasClass("expanded") ) {
-      let summary = li.children(".item-summary");
-      summary.slideUp(200, () => summary.remove());
-    } else {
-      let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
-      let props = $(`<div class="item-properties"></div>`);
-      chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
-      div.append(props);
-      li.append(div.hide());
-      div.slideDown(200);
-    }
-    li.toggleClass("expanded");
+	// Toggle summary
+	if ( li.hasClass("expanded") ) {
+	  let summary = li.children(".item-summary");
+	  summary.slideUp(200, () => summary.remove());
+	} else {
+	  let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
+	  let props = $(`<div class="item-properties"></div>`);
+	  chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
+	  div.append(props);
+	  li.append(div.hide());
+	  div.slideDown(200);
+	}
+	li.toggleClass("expanded");
   }
   
   /* -------------------------------------------- */
@@ -510,12 +516,12 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   _onToggleItem(event) {
-    event.preventDefault();
-    const itemId = event.currentTarget.closest(".item").dataset.itemId;
-    const item = this.actor.getOwnedItem(itemId);
+	event.preventDefault();
+	const itemId = event.currentTarget.closest(".item").dataset.itemId;
+	const item = this.actor.getOwnedItem(itemId);
 	const power = ["power","atwill","encounter","daily","utility"];
-    const attr = power.includes(item.data.type) ? "data.prepared" : "data.equipped";
-    return item.update({[attr]: !getProperty(item.data, attr)});
+	const attr = power.includes(item.data.type) ? "data.prepared" : "data.equipped";
+	return item.update({[attr]: !getProperty(item.data, attr)});
   }
   /* -------------------------------------------- */
 
@@ -545,10 +551,10 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   _onItemEdit(event) {
-    event.preventDefault();
-    const li = event.currentTarget.closest(".item");
-    const item = this.actor.getOwnedItem(li.dataset.itemId);
-    item.sheet.render(true);
+	event.preventDefault();
+	const li = event.currentTarget.closest(".item");
+	const item = this.actor.getOwnedItem(li.dataset.itemId);
+	item.sheet.render(true);
   }
 
   /* -------------------------------------------- */
@@ -559,9 +565,9 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   _onItemDelete(event) {
-    event.preventDefault();
-    const li = event.currentTarget.closest(".item");
-    this.actor.deleteOwnedItem(li.dataset.itemId);
+	event.preventDefault();
+	const li = event.currentTarget.closest(".item");
+	this.actor.deleteOwnedItem(li.dataset.itemId);
   }
   
   /* -------------------------------------------- */
@@ -572,12 +578,12 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   async _onUsesChange(event) {
-      event.preventDefault();
-      const itemId = event.currentTarget.closest(".item").dataset.itemId;
-      const item = this.actor.getOwnedItem(itemId);
-      const uses = Math.clamped(0, parseInt(event.target.value), item.data.data.uses.max);
-      event.target.value = uses;
-      return item.update({ 'data.uses.value': uses });
+	  event.preventDefault();
+	  const itemId = event.currentTarget.closest(".item").dataset.itemId;
+	  const item = this.actor.getOwnedItem(itemId);
+	  const uses = Math.clamped(0, parseInt(event.target.value), item.data.data.uses.max);
+	  event.target.value = uses;
+	  return item.update({ 'data.uses.value': uses });
   }
   
 	/* -------------------------------------------- */
@@ -635,7 +641,7 @@ export class SimpleActorSheet extends ActorSheet {
 		event.preventDefault();
 		const defName = event.currentTarget.parentElement.dataset.defence;
 		const target = `data.defences.${defName}`;
-		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonues` };
+		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonues`, ac: (defName ==="ac")  };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -708,28 +714,38 @@ export class SimpleActorSheet extends ActorSheet {
 
 	_onDeathSave(event) {
 		event.preventDefault();
-		new DeathSaveDialog(this.actor).render(true)
+		new DeathSaveDialog(this.actor).render(true);
 	}
 
+	_onSavingThrow(event) {
+		event.preventDefault();
+		new SaveThrowDialog(this.actor).render(true);
+	}
+
+	_onSavingThrowBonus(event) {
+		event.preventDefault();
+		const options = {target: `data.details.saves`, label: "Savingthrow Bonues" };
+		new AttributeBonusDialog(this.actor, options).render(true);	
+	}
 
   _onCycleSkillProficiency(event) {
-    event.preventDefault();
-    const field = $(event.currentTarget).siblings('input[type="hidden"]');
+	event.preventDefault();
+	const field = $(event.currentTarget).siblings('input[type="hidden"]');
 
-    // Get the current level and the array of levels
-    const level = parseFloat(field.val());
-    const levels = [0, 5, 8];
-    let idx = levels.indexOf(level);
+	// Get the current level and the array of levels
+	const level = parseFloat(field.val());
+	const levels = [0, 5, 8];
+	let idx = levels.indexOf(level);
 
-    // Toggle next level - forward on click, backwards on right
-    if ( event.type === "click" ) {
-      field.val(levels[(idx === levels.length - 1) ? 0 : idx + 1]);
-    } else if ( event.type === "contextmenu" ) {
-      field.val(levels[(idx === 0) ? levels.length - 1 : idx - 1]);
-    }
+	// Toggle next level - forward on click, backwards on right
+	if ( event.type === "click" ) {
+	  field.val(levels[(idx === levels.length - 1) ? 0 : idx + 1]);
+	} else if ( event.type === "contextmenu" ) {
+	  field.val(levels[(idx === 0) ? levels.length - 1 : idx - 1]);
+	}
 
-    // Update the field value and save the form
-    this._onSubmit(event);
+	// Update the field value and save the form
+	this._onSubmit(event);
   }
   
   /* -------------------------------------------- */
@@ -739,16 +755,16 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   _onItemRoll(event) {
-    event.preventDefault();
-    const itemId = event.currentTarget.closest(".item").dataset.itemId;
-    const item = this.actor.getOwnedItem(itemId);
-    // Roll powers through the actor
+	event.preventDefault();
+	const itemId = event.currentTarget.closest(".item").dataset.itemId;
+	const item = this.actor.getOwnedItem(itemId);
+	// Roll powers through the actor
 	const power = ["atwill","encounter","daily","utility"];
-    if ( power.includes(item.data.type)) {
+	if ( power.includes(item.data.type)) {
 		return this.actor.usePower(item, {configureDialog: !event.shiftKey});
-    }
-    // Otherwise roll the Item directly
-    return item.roll();
+	}
+	// Otherwise roll the Item directly
+	return item.roll();
   }
   
   /* -------------------------------------------- */
@@ -759,12 +775,12 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   async _onConvertCurrency(event) {
-    event.preventDefault();
-    return Dialog.confirm({
-      title: `${game.i18n.localize("DND4EBETA.CurrencyConvert")}`,
-      content: `<p>${game.i18n.localize("DND4EBETA.CurrencyConvertHint")}</p>`,
-      yes: () => this.convertCurrency()
-    });
+	event.preventDefault();
+	return Dialog.confirm({
+	  title: `${game.i18n.localize("DND4EBETA.CurrencyConvert")}`,
+	  content: `<p>${game.i18n.localize("DND4EBETA.CurrencyConvertHint")}</p>`,
+	  yes: () => this.convertCurrency()
+	});
   }
 
   /* -------------------------------------------- */
@@ -775,14 +791,14 @@ export class SimpleActorSheet extends ActorSheet {
    * @return {Promise<Actor4e>}
    */
   convertCurrency() {
-    const curr = duplicate(this.actor.data.data.currency);
-    const convert = CONFIG.DND4EBETA.currencyConversion;
-    for ( let [c, t] of Object.entries(convert) ) {
-      let change = Math.floor(curr[c] / t.each);
-      curr[c] -= (change * t.each);
-      curr[t.into] += change;
-    }
-    return this.object.update({"data.currency": curr});
+	const curr = duplicate(this.actor.data.data.currency);
+	const convert = CONFIG.DND4EBETA.currencyConversion;
+	for ( let [c, t] of Object.entries(convert) ) {
+	  let change = Math.floor(curr[c] / t.each);
+	  curr[c] -= (change * t.each);
+	  curr[t.into] += change;
+	}
+	return this.object.update({"data.currency": curr});
   }
   
   /* -------------------------------------------- */
@@ -822,11 +838,11 @@ export class SimpleActorSheet extends ActorSheet {
 
   /** @override */
   setPosition(options={}) {
-    const position = super.setPosition(options);
-    const sheetBody = this.element.find(".sheet-body");
-    const bodyHeight = position.height - 345;
-    sheetBody.css("height", bodyHeight);
-    return position;
+	const position = super.setPosition(options);
+	const sheetBody = this.element.find(".sheet-body");
+	const bodyHeight = position.height - 345;
+	sheetBody.css("height", bodyHeight);
+	return position;
   }
 
   /* -------------------------------------------- */
@@ -837,42 +853,60 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   async _onClickAttributeControl(event) {
-    event.preventDefault();
-    const a = event.currentTarget;
-    const action = a.dataset.action;
-    const attrs = this.object.data.data.attributes;
-    const form = this.form;
+	event.preventDefault();
+	const a = event.currentTarget;
+	const action = a.dataset.action;
+	const attrs = this.object.data.data.attributes;
+	const form = this.form;
 
-    // Add new attribute
-    if ( action === "create" ) {
-      const nk = Object.keys(attrs).length + 1;
-      let newKey = document.createElement("div");
-      newKey.innerHTML = `<input type="text" name="data.attributes.attr${nk}.key" value="attr${nk}"/>`;
-      newKey = newKey.children[0];
-      form.appendChild(newKey);
-      await this._onSubmit(event);
-    }
+	// Add new attribute
+	if ( action === "create" ) {
+	  const nk = Object.keys(attrs).length + 1;
+	  let newKey = document.createElement("div");
+	  newKey.innerHTML = `<input type="text" name="data.attributes.attr${nk}.key" value="attr${nk}"/>`;
+	  newKey = newKey.children[0];
+	  form.appendChild(newKey);
+	  await this._onSubmit(event);
+	}
 
-    // Remove existing attribute
-    else if ( action === "delete" ) {
-      const li = a.closest(".attribute");
-      li.parentElement.removeChild(li);
-      await this._onSubmit(event);
-    }
+	// Remove existing attribute
+	else if ( action === "delete" ) {
+	  const li = a.closest(".attribute");
+	  li.parentElement.removeChild(li);
+	  await this._onSubmit(event);
+	}
   }
 
-  /* -------------------------------------------- */
+	/* -------------------------------------------- */
 
+	/**
+	 * Handle rolling a Skill check
+	 * @param {Event} event   The originating click event
+	 * @private
+	 */
+	_onRollSkillCheck(event) {
+		event.preventDefault();
+		const skill = event.currentTarget.parentElement.dataset.skill;
+		this.actor.rollSkill(skill, {event: event});
+	}
+  /* -------------------------------------------- */
+  
   /**
-   * Handle rolling a Skill check
+   * Handle posting a chat message for displaying passive skills.
    * @param {Event} event   The originating click event
    * @private
    */
-  _onRollSkillCheck(event) {
-    event.preventDefault();
-    const skill = event.currentTarget.parentElement.dataset.skill;
-    this.actor.rollSkill(skill, {event: event});
-  }
+	_onRollPassiveCheck(event) {
+		event.preventDefault();
+		const passName = event.currentTarget.parentElement.dataset.passive;
+		const skillName = this.actor.data.data.passive[passName].skill;
+
+		ChatMessage.create({
+			user: game.user._id,
+			speaker: {actor: this.object, alias: this.object.data.name},
+			content: `Passive ${this.actor.data.data.skills[skillName].label} Skill Check: <SPAN STYLE="font-weight:bold">${this.object.data.data.passive[passName].value}`
+		});	
+	}
 
   /* -------------------------------------------- */
   
@@ -882,9 +916,9 @@ export class SimpleActorSheet extends ActorSheet {
    * @private
    */
   _onRollAbilityCheck(event) {
-    event.preventDefault();
-    let ability = event.currentTarget.parentElement.dataset.ability;
-    this.actor.rollAbility(ability, {event: event});
+	event.preventDefault();
+	let ability = event.currentTarget.parentElement.dataset.ability;
+	this.actor.rollAbility(ability, {event: event});
   }
   
   /* -------------------------------------------- */
@@ -897,7 +931,6 @@ export class SimpleActorSheet extends ActorSheet {
 	_onRollDefenceCheck(event) {
 		event.preventDefault();
 		const def = event.currentTarget.parentElement.dataset.defence;
-		console.log(event.currentTarget.parentElement)
 		this.actor.rollDef(def, {event: event});
 	}
 
@@ -907,28 +940,28 @@ export class SimpleActorSheet extends ActorSheet {
   /** @override */
   _updateObject(event, formData) {
 
-    // Handle the free-form attributes list
-    const formAttrs = expandObject(formData).data.attributes || {};
-    const attributes = Object.values(formAttrs).reduce((obj, v) => {
-      let k = v["key"].trim();
-      if ( /[\s\.]/.test(k) )  return ui.notifications.error("Attribute keys may not contain spaces or periods");
-      delete v["key"];
-      obj[k] = v;
-      return obj;
-    }, {});
-    
-    // Remove attributes which are no longer used
-    for ( let k of Object.keys(this.object.data.data.attributes) ) {
-      if ( !attributes.hasOwnProperty(k) ) attributes[`-=${k}`] = null;
-    }
+	// Handle the free-form attributes list
+	const formAttrs = expandObject(formData).data.attributes || {};
+	const attributes = Object.values(formAttrs).reduce((obj, v) => {
+	  let k = v["key"].trim();
+	  if ( /[\s\.]/.test(k) )  return ui.notifications.error("Attribute keys may not contain spaces or periods");
+	  delete v["key"];
+	  obj[k] = v;
+	  return obj;
+	}, {});
+	
+	// Remove attributes which are no longer used
+	for ( let k of Object.keys(this.object.data.data.attributes) ) {
+	  if ( !attributes.hasOwnProperty(k) ) attributes[`-=${k}`] = null;
+	}
 
-    // Re-combine formData
-    formData = Object.entries(formData).filter(e => !e[0].startsWith("data.attributes")).reduce((obj, e) => {
-      obj[e[0]] = e[1];
-      return obj;
-    }, {_id: this.object._id, "data.attributes": attributes});
-    
-    // Update the Actor
-    return this.object.update(formData);
+	// Re-combine formData
+	formData = Object.entries(formData).filter(e => !e[0].startsWith("data.attributes")).reduce((obj, e) => {
+	  obj[e[0]] = e[1];
+	  return obj;
+	}, {_id: this.object._id, "data.attributes": attributes});
+	
+	// Update the Actor
+	return this.object.update(formData);
   }
 }

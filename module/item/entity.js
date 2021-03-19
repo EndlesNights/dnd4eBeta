@@ -665,54 +665,54 @@ console.log(template)
 	async rollAttack(options={}) {
 		const itemData = this.data.data;
 		const actorData = this.actor.data.data;	
-	const weaponUse = Helper.getWeaponUse(itemData, this.actor);
-	
-		const flags = this.actor.data.flags.dnd4eBeta || {};
-		if ( !this.hasAttack ) {
-			throw new Error("You may not place an Attack Roll with this Item.");
-		}
-		let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
-	let flavor = title;
-	
-	// if(itemData.chatFlavor) flavor += `<br>${itemData.chatFlavor}`;
-	// if(itemData.target.type && !["none","personal"].includes(itemData.target.type)) {
-	// 	if(itemData.target.num) {
-	// 		flavor += `<br>Target: ${itemData.target.num} ${itemData.target.type}`;
-	// 	} else {
-	// 		flavor += `<br>Target: Each ${itemData.target.type} `;
-	// 	}
-	// 	//Determin weapon range and AoE type here from rangeType && rangePower.
-	// 	if(itemData.rangeType) {
-	// 		if(itemData.rangeType === "weapon") {
-	// 			flavor += `, ${CONFIG.DND4EBETA.weaponType[itemData.weaponType]}`;
-	// 		} 
-	// 		else if (itemData.rangeType !== "range") {
-	// 			flavor += `, ${CONFIG.DND4EBETA.rangeType[itemData.rangeType]}`;
-	// 		}
-	// 	}
-	// 	if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
-	// 		flavor += ` ${itemData.area}`
-	// 	}
-	// 	if(itemData.rangePower && !["closeBurst","closeBlast"].includes(itemData.rangeType) ) {
-	// 		flavor += ` within range of ${itemData.rangePower} squares.`
-	// 	}
-	// } else if (itemData.target.type) {
-	// 	flavor += `<br>Target: ${itemData.target.type} `;
-	// }
-	// flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
-	flavor += ` VS <b>${itemData.attack.def.toUpperCase() }<b>`;
-		const rollData = this.getRollData();
-	
-		// Define Roll bonuses
-		const parts = !!itemData.attack.formula? [`@power`] : [`@mod`];
-		// if ( (this.data.type !== "weapon") || itemData.proficient ) {
-			// parts.push("@prof");
+		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
+		
+			const flags = this.actor.data.flags.dnd4eBeta || {};
+			if ( !this.hasAttack ) {
+				throw new Error("You may not place an Attack Roll with this Item.");
+			}
+			let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
+		let flavor = title;
+		
+		// if(itemData.chatFlavor) flavor += `<br>${itemData.chatFlavor}`;
+		// if(itemData.target.type && !["none","personal"].includes(itemData.target.type)) {
+		// 	if(itemData.target.num) {
+		// 		flavor += `<br>Target: ${itemData.target.num} ${itemData.target.type}`;
+		// 	} else {
+		// 		flavor += `<br>Target: Each ${itemData.target.type} `;
+		// 	}
+		// 	//Determin weapon range and AoE type here from rangeType && rangePower.
+		// 	if(itemData.rangeType) {
+		// 		if(itemData.rangeType === "weapon") {
+		// 			flavor += `, ${CONFIG.DND4EBETA.weaponType[itemData.weaponType]}`;
+		// 		} 
+		// 		else if (itemData.rangeType !== "range") {
+		// 			flavor += `, ${CONFIG.DND4EBETA.rangeType[itemData.rangeType]}`;
+		// 		}
+		// 	}
+		// 	if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
+		// 		flavor += ` ${itemData.area}`
+		// 	}
+		// 	if(itemData.rangePower && !["closeBurst","closeBlast"].includes(itemData.rangeType) ) {
+		// 		flavor += ` within range of ${itemData.rangePower} squares.`
+		// 	}
+		// } else if (itemData.target.type) {
+		// 	flavor += `<br>Target: ${itemData.target.type} `;
 		// }
-	
-	//pack the powers formal and send it to the dice.
-	if(!!itemData.attack.formula) {		
-		rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null);
-	}
+		// flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
+		flavor += ` VS <b>${itemData.attack.def.toUpperCase() }<b>`;
+			const rollData = this.getRollData();
+		
+			// Define Roll bonuses
+			const parts = !!itemData.attack.formula? [`@power`] : [`@mod`];
+			// if ( (this.data.type !== "weapon") || itemData.proficient ) {
+				// parts.push("@prof");
+			// }
+		
+		//pack the powers formal and send it to the dice.
+		if(!!itemData.attack.formula) {		
+			rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null);
+		}
 	
 		// Attack Bonus
 		// const actorBonus = actorData?.bonuses?.[itemData.actionType] || {};
@@ -738,24 +738,24 @@ console.log(template)
 			}
 		}
 	
-	// Ammunition Bonus from weapon.
-	if(weaponUse) {
-		delete weaponUse._ammo;
-		const consume = weaponUse.data.data.consume;
-		if ( consume?.type === "ammo" ) {
-			const ammo = weaponUse.actor.items.get(consume.target);
-			const q = ammo.data.data.quantity;
-			if ( q && (q - consume.amount >= 0) ) {
-				let ammoBonus = ammo.data.data.attackBonus;
-				if ( ammoBonus ) {
-					if (parts[parts.length-1] !== "@ammo" ) parts.push("@ammo");
-					rollData["ammo"]? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
-					title += ` [${ammo.name}]`;
-					weaponUse._ammo = ammo;
+		// Ammunition Bonus from weapon.
+		if(weaponUse) {
+			delete weaponUse._ammo;
+			const consume = weaponUse.data.data.consume;
+			if ( consume?.type === "ammo" ) {
+				const ammo = weaponUse.actor.items.get(consume.target);
+				const q = ammo.data.data.quantity;
+				if ( q && (q - consume.amount >= 0) ) {
+					let ammoBonus = ammo.data.data.attackBonus;
+					if ( ammoBonus ) {
+						if (parts[parts.length-1] !== "@ammo" ) parts.push("@ammo");
+						rollData["ammo"]? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
+						title += ` [${ammo.name}]`;
+						weaponUse._ammo = ammo;
+					}
 				}
 			}
 		}
-	}
 
 		// Compose roll options
 		const rollConfig = mergeObject({
@@ -785,10 +785,10 @@ console.log(template)
 
 		// Handle resource consumption if the attack roll was made
 		const allowed = await (
-		this._handleResourceConsumption({isCard: false, isAttack: true},this.data.data),
-		weaponUse? this._handleResourceConsumption({isCard: false, isAttack: true},this.actor.items.get(weaponUse.id).data.data) : true
+			this._handleResourceConsumption({isCard: false, isAttack: true},this.data.data),
+			weaponUse? this._handleResourceConsumption({isCard: false, isAttack: true},this.actor.items.get(weaponUse.id).data.data) : true
 		// itemData.weaponUse? this.actor.items.get(itemData.weaponUse)
-	);
+		);
 	
 	
 		if ( allowed === false ) return null;

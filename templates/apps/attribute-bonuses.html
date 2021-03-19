@@ -11,7 +11,20 @@
 			{{/if}}
 		</div>
 	{{/if}}
-	
+	{{#if options.ac}}
+		<span>Light Armour: </span>
+		<input type="checkbox" name="data.light" data-dtype="Boolean" {{checked data.light}} title="Light/Unarmoured Check to add mod to AC"/>
+		<span>Alternative Mod: </span>
+		<select name="data.altability">
+			{{#select data.altability}}
+			<option value="" >Default</option>
+			<option value="str" >Strength</option>
+			<option value="con" >Constitution</option>
+			<option value="wis" >Wisdom</option>
+			<option value="cha" >Charisma</option>
+			{{/select}}
+		</select>
+	{{/if}}
 	{{#each bonusData as |bonus b|}}
 	<div class="bonus-part" data-bonus-part="{{b}}">
 		<span>Name of Bonus:</span>

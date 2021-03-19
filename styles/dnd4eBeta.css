@@ -223,6 +223,10 @@
 	color: #444;
 	font-weight:bold;
 }
+
+.dnd4eBeta.sheet.actor .section--attributes .attribute-health input.bloodied {
+	color: #d41111;
+}
 .dnd4eBeta.sheet.actor .attribute-value input {
 	font-size: 18px;
 	color: #444;
@@ -479,7 +483,7 @@ font-size: 12px;
 	min-width: 143px;
 }
 .dnd4eBeta .section--utilities .section--passives {
-	min-width: 183px;
+	min-width: 190px;
 }
 .dnd4eBeta .section--utilities .section--movement {
 	min-width: 105px;

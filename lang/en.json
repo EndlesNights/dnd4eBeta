@@ -85,6 +85,7 @@
 "DND4EBETA.BonusAbilitySkill": "Global Skill Check Bonus",
 "DND4EBETA.BonusAction": "Bonus Action",
 "DND4EBETA.Bonuses": "Global Bonuses",
+"DND4EBETA.BonusesTo": "Bonuses to",
 "DND4EBETA.BonusesHint": "Define global bonuses as formulas which are added to certain rolls. For example: 1d4 + 2",
 "DND4EBETA.BonusesInstructions": "Configure character bonuses which are added to the appropriate dice roll",
 "DND4EBETA.BonusMSAttack": "Melee Spell Attack Bonus",

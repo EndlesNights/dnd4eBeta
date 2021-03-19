@@ -128,6 +128,9 @@ export class SimpleActor extends Actor {
 		data.health.min = -data.details.bloodied;
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
 
+		//check if bloodied
+		data.details.isBloodied = (data.health.value <= data.health.max/2);
+
 		if(!(data.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(data.details.surgeEnv.bonus[0]))) {
 			for( const b of data.details.surgeEnv.bonus) {
 				if(b.active) {
