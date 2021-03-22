@@ -1741,7 +1741,7 @@ font-size: 12px;
 	flex: 0 0 100%;
 }
 .dnd4eBeta.sheet .items-list .item-detail {
-	flex: 0 0 70px;
+	flex: 0 0 55px;
 	font-size: 12px;
 	color: #7a7971;
 	text-align: center;
@@ -1754,7 +1754,7 @@ font-size: 12px;
 	border-right: none;
 }
 .dnd4eBeta.sheet .items-list .item-detail.item-action {
-	flex: 0 0 100px;
+	flex: 0 0 40px;
 }
 .dnd4eBeta.sheet .items-list .item-weight {
 	flex: 0 0 60px;

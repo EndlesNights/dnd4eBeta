@@ -180,8 +180,8 @@
 				<section class="section section--movement flexcol">
 					<div>
 						<!-- <input style="width:40%; border-bottom: 1px solid; border-radius: 0px; text-align: center;" type="text" name="data.movement.basic.base" value="{{data.movement.basic.base}}" title="Basic Movement Speed"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
-						<strong style="text-transform:initial;">{{numberFormat data.movement.basic.value}} sq.</strong>
-						<label>{{localize 'DND4EBETA.Speed'}}</label>
+						<strong class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat data.movement.basic.value}} sq.</strong>
+						<label class="movement-dialog rollable">{{localize 'DND4EBETA.Speed'}}</label>
 					</div>
 					<div>
 						<strong class="init-bonus rollable" title="{{localize 'DND4EBETA.InitiativeScore'}}">{{numberFormat data.init.value decimals=0 sign=true }}</strong>

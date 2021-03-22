@@ -105,6 +105,16 @@ DND4EBETA.abilityActivationTypes = {
   // "special": DND4EBETA.timePeriods.spec
 };
 
+DND4EBETA.abilityActivationTypesShort = {
+  "none": "DND4EBETA.NoneShort",
+  "standard": "DND4EBETA.ActionStandardShort",
+  "move": "DND4EBETA.ActionMoveShort",
+  "min": "DND4EBETA.ActionMinorShort",
+  "free": "DND4EBETA.ActionFreeShort",
+  "reaction": "DND4EBETA.ActionReactionShort",
+  "interrupt": "DND4EBETA.ActionInterruptShort",
+  "opportunity": "DND4EBETA.ActionOpportunityShort",
+};
 /* -------------------------------------------- */
 
 

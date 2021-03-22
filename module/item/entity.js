@@ -243,7 +243,6 @@ export default class Item4e extends Item {
 
 		// Item Actions
 		if ( data.hasOwnProperty("actionType") ) {
-
 			// Save DC
 			let save = data.save || {};
 			if ( !save.ability ) save.dc = null;
@@ -341,7 +340,6 @@ export default class Item4e extends Item {
 		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
 		const template = `systems/dnd4eBeta/templates/chat/${templateType}-card.html`;
 		const html = await renderTemplate(template, templateData);
-console.log(template)
 		// Basic chat message data
 		const chatData = {
 			user: game.user._id,
@@ -887,8 +885,6 @@ console.log(template)
 				delete weaponUse._ammo;
 			}
 		}
-		console.log(parts);
-		console.log(rollData);
 		//Add powers text to message.
 		if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
 		if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail

@@ -1,5 +1,4 @@
 <ol class="items-list inventory-list" style="height: 90%;">
-
 	{{#each sections as |section sid|}}
 		<li class="items-header flexrow">
 			<h3 class="item-name flexrow">{{localize section.label}}</h3>
@@ -9,11 +8,10 @@
 					<div class="item-detail {{css}}">{{label}}</div>
 				{{/each}}
 			{{else}}
-				<div class="item-detail power-target">{{localize "DND4EBETA.PowerTarget"}}</div>
-				<!-- <div class="item-detail item-action">{{localize "DND4EBETA.Action"}}</div> -->
-				<div class="item-detail item-action" title="{{localize 'DND4EBETA.Action'}}">ACT.</div>
 				<div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div>
-				{{/if}}
+				<div class="item-detail item-action">{{localize "DND4EBETA.Action"}}</div>
+				<div class="item-detail power-target">{{localize "DND4EBETA.PowerTarget"}}</div>
+			{{/if}}
 			{{#if ../owner}}
 			<div class="item-controls" style="width: 90px;">
 				<a class="item-control item-create" title='{{localize "DND4EBETA.ItemCreate"}}'
@@ -46,23 +44,22 @@
 					</div>
 					{{/each}}
 				{{else}}
+					<div class="item-detail item-uses">
+						{{#if item.hasUses }}
+							<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
+							/ {{item.data.uses.max}}
+						{{/if}}
+					</div>
+					<div class="item-detail item-action">
+						{{#if item.data.actionType }}
+							{{item.data.actionType}}
+						{{/if}}
+					</div>
 					<div class="item-detail power-target">
 						{{#if item.data.target.type}}
 							<div class="item-detail">
 								{{item.data.target.num}} {{ item.data.target.type }}
 							</div>
-						{{/if}}
-					</div>
-
-					<div class="item-detail item-action" title="{{lookup ../../config.abilityActivationTypes item.data.actionType}}" style="text-transform: uppercase;">
-						{{#if item.data.actionType }}
-						{{lookup ../../config.abilityActivationTypesShort item.data.actionType}}
-						{{/if}}
-					</div>
-					<div class="item-detail item-uses">
-						{{#if item.hasUses }}
-							<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
-							/ {{item.data.uses.max}}
 						{{/if}}
 					</div>
 				{{/if}}

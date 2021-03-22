@@ -1,8 +1,8 @@
-<form id="custom-roll-descriptions" class="dialog-content" onsubmit="event.preventDefault();">
+<form id="custom-roll-descriptions" class="dialog-content" onsubmit="event.preventDefault();" style="overflow-y: auto;">
 
     {{!-- Ability --}}
     {{#each data.abilities as |ability a|}}
-    <div>
+    <div style="width: 99.5%;">
         <span>{{ability.label}} Ability</span>
         <input class="stat-chat" name="data.abilities.{{a}}.chat" type="text" value="{{ability.chat}}" onClick="this.select();"/>
     </div>
@@ -10,7 +10,7 @@
 
     {{!-- Skills --}}
     {{#each data.skills as |skills s|}}
-    <div>
+    <div style="width: 99.5%;">
         <span>{{skills.label}} Skill</span>
         <input class="stat-chat" name="data.skills.{{s}}.chat" type="text" value="{{skills.chat}}" onClick="this.select();"/>
     </div>
@@ -18,11 +18,11 @@
     
     {{!-- Defences --}}
     {{#each data.defences as |defences d|}}
-    <div>
+    <div style="width: 99.5%;">
         <span>{{defences.label}} Defence</span>
         <input class="stat-chat" name="data.defences.{{d}}.chat" type="text" value="{{defences.chat}}" onClick="this.select();"/>
     </div>
     {{/each}}
 
-    <button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EBETA.Save"}}</button>
+    <button style="width: 99.5%;" type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EBETA.Save"}}</button>
 </form>

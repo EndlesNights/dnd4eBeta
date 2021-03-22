@@ -81,7 +81,6 @@ export default class ItemSheet4e extends ItemSheet {
 	
 		// Prepare Active Effects
 		data.effects = prepareActiveEffectCategories(this.entity.effects);
-		console.log(data.labels)
 		return data;
 	}
 
@@ -290,7 +289,6 @@ export default class ItemSheet4e extends ItemSheet {
 	_getItemProperties(item) {
 		const props = [];
 		const labels = this.item.labels;
-		console.log(item.type)
 		if ( item.type === "weapon" ) {
 
 			props.push(CONFIG.DND4EBETA.weaponTypes[item.data.weaponType])
@@ -307,7 +305,6 @@ export default class ItemSheet4e extends ItemSheet {
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4EBETA.damageTypes[e[0]])
 			);
-			console.log(props)
 
 			props.push(...Object.entries(item.data.weaponGroup)
 				.filter(e => e[1] === true)
@@ -353,7 +350,6 @@ export default class ItemSheet4e extends ItemSheet {
 				labels.duration
 			)
 		}
-		console.log(props.filter(p => !!p))
 		return props.filter(p => !!p);
 	}
 
@@ -533,7 +529,6 @@ export default class ItemSheet4e extends ItemSheet {
 		if(a.classList.contains("add-dice")) {
 			await this._onSubmit(event); // Submit any unsaved changes
 			const damageDice = duplicate(this.item.data.data.damageDice);
-			console.log(damageDice)
 			return this.item.update({"data.damageDice.parts": damageDice.parts.concat([["",""]])});
 		}
 

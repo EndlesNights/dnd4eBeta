@@ -6,6 +6,7 @@ import { DeathSaveDialog } from "./apps/death-save.js";
 import { SaveThrowDialog } from "./apps/save-throw.js";
 import { AttributeBonusDialog } from "./apps/attribute-bonuses.js";
 import { CustomRolldDescriptions } from "./apps/custom-roll-descriptions.js";
+import { MovementDialog } from "./apps/movement-dialog.js";
 import TraitSelector from "./apps/trait-selector.js";
 import TraitSelectorSense from "./apps/trait-selector-sense.js";
 import TraitSelectorSave from "./apps/trait-selector-save.js";
@@ -381,104 +382,106 @@ export class SimpleActorSheet extends ActorSheet {
 
   /** @override */
 	activateListeners(html) {
-	super.activateListeners(html);
+		super.activateListeners(html);
 
-	// Everything below here is only needed if the sheet is editable
-	if (!this.options.editable) return;
+		// Everything below here is only needed if the sheet is editable
+		if (!this.options.editable) return;
 
-	html.find('.skill-training').on("click contextmenu", this._onCycleSkillProficiency.bind(this));
+		html.find('.skill-training').on("click contextmenu", this._onCycleSkillProficiency.bind(this));
 
-	// Update Inventory Item
-	html.find('.item-edit').click(ev => {
-	  const li = $(ev.currentTarget).parents(".item");
-	  const item = this.actor.getOwnedItem(li.data("itemId"));
-	  item.sheet.render(true);
-	});
+		// Update Inventory Item
+		html.find('.item-edit').click(ev => {
+		const li = $(ev.currentTarget).parents(".item");
+		const item = this.actor.getOwnedItem(li.data("itemId"));
+		item.sheet.render(true);
+		});
 
-	// Delete Inventory Item
-	html.find('.item-delete').click(ev => {
-	  const li = $(ev.currentTarget).parents(".item");
-	  this.actor.deleteOwnedItem(li.data("itemId"));
-	  li.slideUp(200, () => this.render(false));
-	});
+		// Delete Inventory Item
+		html.find('.item-delete').click(ev => {
+		const li = $(ev.currentTarget).parents(".item");
+		this.actor.deleteOwnedItem(li.data("itemId"));
+		li.slideUp(200, () => this.render(false));
+		});
 
-	// Add or Remove Attribute
-	html.find(".attributes").on("click", ".attribute-control", this._onClickAttributeControl.bind(this));
+		// Add or Remove Attribute
+		html.find(".attributes").on("click", ".attribute-control", this._onClickAttributeControl.bind(this));
 
 
-	if ( this.actor.owner ) {	
-		// Roll Skill Checks
-		html.find('.skill-name').click(this._onRollSkillCheck.bind(this));
+		if ( this.actor.owner ) {	
+			// Roll Skill Checks
+			html.find('.skill-name').click(this._onRollSkillCheck.bind(this));
 
-		html.find('.passive-message').click(this._onRollPassiveCheck.bind(this));
-		
-		//Roll Abillity Checks
-		html.find('.ability-name').click(this._onRollAbilityCheck.bind(this));
-		
-		//Roll Defence Checks
-		html.find('.def-name').click(this._onRollDefenceCheck.bind(this));
-		
-		//Open HP-Options
-		html.find('.health-option').click(this._onHPOptions.bind(this));
-		
-		//Open Skill-Bonus
-		html.find('.skill-bonus').click(this._onSkillBonus.bind(this));
-		html.find('.death-save-bonus').click(this._onDeathSaveBonus.bind(this));
-		html.find('.roll-save-bonus').click(this._onSavingThrowBonus.bind(this));
-		html.find('.surge-bonus').click(this._onSurgeBonus.bind(this));
-		html.find('.envimental-loss-bonus').click(this._onSurgeEnv.bind(this));
-		html.find('.secondwind-bonus').click(this._onSecondWindBonus.bind(this));
-		html.find('.defence-bonus').click(this._onDefencesBonus.bind(this));
-		html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
-		html.find('.move-bonus').click(this._onMovementBonus.bind(this));
-		html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
-		html.find('.resistence-bonus').click(this._onResistencesBonus.bind(this));		
-		
-		html.find('.custom-roll-descriptions').click(this._onCustomRolldDescriptions.bind(this));
-		
-		//second wind
-		html.find('.second-wind').click(this._onSecondWind.bind(this));
-		
-		//short rest
-		html.find('.short-rest').click(this._onShortRest.bind(this));
-		
-		//long rest
-		html.find('.long-rest').click(this._onLongRest.bind(this));		
-		
-		//death save
-		html.find('.death-save').click(this._onDeathSave.bind(this));
-		html.find('.roll-save').click(this._onSavingThrow.bind(this));
-		
-		// Trait Selector
-		html.find('.trait-selector').click(this._onTraitSelectorLang.bind(this));
-		html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
-		
-		//save throw bonus
-		html.find(`.trait-selector-save`).click(this._onTraitSelectorSaveThrow.bind(this));
-		
-		//Inventory & Item management
-		html.find('.item-create').click(this._onItemCreate.bind(this));
-		html.find('.item-edit').click(this._onItemEdit.bind(this));
-		html.find('.item-delete').click(this._onItemDelete.bind(this));
-		html.find('.item-uses input').click(ev => ev.target.select()).change(this._onUsesChange.bind(this));
+			html.find('.passive-message').click(this._onRollPassiveCheck.bind(this));
+			
+			//Roll Abillity Checks
+			html.find('.ability-name').click(this._onRollAbilityCheck.bind(this));
+			
+			//Roll Defence Checks
+			html.find('.def-name').click(this._onRollDefenceCheck.bind(this));
+			
+			//Open HP-Options
+			html.find('.health-option').click(this._onHPOptions.bind(this));
+			
+			//Open Skill-Bonus
+			html.find('.skill-bonus').click(this._onSkillBonus.bind(this));
+			html.find('.death-save-bonus').click(this._onDeathSaveBonus.bind(this));
+			html.find('.roll-save-bonus').click(this._onSavingThrowBonus.bind(this));
+			html.find('.surge-bonus').click(this._onSurgeBonus.bind(this));
+			html.find('.envimental-loss-bonus').click(this._onSurgeEnv.bind(this));
+			html.find('.secondwind-bonus').click(this._onSecondWindBonus.bind(this));
+			html.find('.defence-bonus').click(this._onDefencesBonus.bind(this));
+			html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
+			html.find('.move-bonus').click(this._onMovementBonus.bind(this));
+			html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
+			html.find('.resistence-bonus').click(this._onResistencesBonus.bind(this));		
+			
+			html.find('.movement-dialog').click(this._onMovementDialog.bind(this));		
+			
+			html.find('.custom-roll-descriptions').click(this._onCustomRolldDescriptions.bind(this));
+			
+			//second wind
+			html.find('.second-wind').click(this._onSecondWind.bind(this));
+			
+			//short rest
+			html.find('.short-rest').click(this._onShortRest.bind(this));
+			
+			//long rest
+			html.find('.long-rest').click(this._onLongRest.bind(this));		
+			
+			//death save
+			html.find('.death-save').click(this._onDeathSave.bind(this));
+			html.find('.roll-save').click(this._onSavingThrow.bind(this));
+			
+			// Trait Selector
+			html.find('.trait-selector').click(this._onTraitSelectorLang.bind(this));
+			html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
+			
+			//save throw bonus
+			html.find(`.trait-selector-save`).click(this._onTraitSelectorSaveThrow.bind(this));
+			
+			//Inventory & Item management
+			html.find('.item-create').click(this._onItemCreate.bind(this));
+			html.find('.item-edit').click(this._onItemEdit.bind(this));
+			html.find('.item-delete').click(this._onItemDelete.bind(this));
+			html.find('.item-uses input').click(ev => ev.target.select()).change(this._onUsesChange.bind(this));
 
-		// Active Effect management
-		html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.entity));
-	  
-		// Item summaries
-		html.find('.item .item-name h4').click(event => this._onItemSummary(event));		
+			// Active Effect management
+			html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.entity));
 		
-		// Item State Toggling
-		html.find('.item-toggle').click(this._onToggleItem.bind(this));
-	
-		//convert currency to it's largest form to save weight.
-		html.find(".currency-convert").click(this._onConvertCurrency.bind(this));
+			// Item summaries
+			html.find('.item .item-name h4').click(event => this._onItemSummary(event));		
+			
+			// Item State Toggling
+			html.find('.item-toggle').click(this._onToggleItem.bind(this));
 		
-		// Item Rolling
-		html.find('.item .item-image').click(event => this._onItemRoll(event));
-		// html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
+			//convert currency to it's largest form to save weight.
+			html.find(".currency-convert").click(this._onConvertCurrency.bind(this));
+			
+			// Item Rolling
+			html.find('.item .item-image').click(event => this._onItemRoll(event));
+			// html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
+		}
 	}
-  }
 
   /* -------------------------------------------- */
 
@@ -577,14 +580,14 @@ export class SimpleActorSheet extends ActorSheet {
    * @param {Event} event   The triggering click event
    * @private
    */
-  async _onUsesChange(event) {
-	  event.preventDefault();
-	  const itemId = event.currentTarget.closest(".item").dataset.itemId;
-	  const item = this.actor.getOwnedItem(itemId);
-	  const uses = Math.clamped(0, parseInt(event.target.value), item.data.data.uses.max);
-	  event.target.value = uses;
-	  return item.update({ 'data.uses.value': uses });
-  }
+	async _onUsesChange(event) {
+		event.preventDefault();
+		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const item = this.actor.getOwnedItem(itemId);
+		const uses = Math.clamped(0, parseInt(event.target.value), item.data.data.uses.max);
+		event.target.value = uses;
+		return item.update({ 'data.uses.value': uses });
+	}
   
 	/* -------------------------------------------- */
   
@@ -647,7 +650,7 @@ export class SimpleActorSheet extends ActorSheet {
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.init`, label: "Initiative Bonues" };
+		const options = {target: `data.init`, label: "Initiative Bonues", init: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -657,6 +660,11 @@ export class SimpleActorSheet extends ActorSheet {
 		const target = `data.movement.${moveName}`;
 		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonues` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
+	}
+	
+	_onMovementDialog(event) {
+		event.preventDefault();
+		new MovementDialog(this.actor).render(true)
 	}
 	
 	_onPassiveBonus(event) {

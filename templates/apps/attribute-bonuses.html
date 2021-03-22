@@ -10,8 +10,7 @@
 			<span>{{data.armourPen}}</span>	
 			{{/if}}
 		</div>
-	{{/if}}
-	{{#if options.ac}}
+	{{else if options.ac}}
 		<span>Light Armour: </span>
 		<input type="checkbox" name="data.light" data-dtype="Boolean" {{checked data.light}} title="Light/Unarmoured Check to add mod to AC"/>
 		<span>Alternative Mod: </span>
@@ -24,6 +23,19 @@
 			<option value="cha" >Charisma</option>
 			{{/select}}
 		</select>
+
+	{{else if options.init}}
+	<span title="Ability Mod used for Initiative Score">Ability Mod:</span>
+	<select name="data.ability">
+		{{#select data.ability}}
+		<option value="str" >Strength</option>
+		<option value="con" >Constitution</option>
+		<option value="dex" >Dexterity</option>
+		<option value="int" >Intelligence</option>
+		<option value="wis" >Wisdom</option>
+		<option value="cha" >Charisma</option>
+		{{/select}}
+	</select>
 	{{/if}}
 	{{#each bonusData as |bonus b|}}
 	<div class="bonus-part" data-bonus-part="{{b}}">

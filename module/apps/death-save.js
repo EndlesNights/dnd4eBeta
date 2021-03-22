@@ -25,39 +25,6 @@ export class DeathSaveDialog extends BaseEntitySheet {
 		
 		const updateData = {};
 		
-		// let r = formData.save == "" ? new Roll("1d20 + " + this.object.data.data.details.deathsavebon.value) : new Roll("1d20 +" + this.object.data.data.details.deathsavebon.value + "+"+ formData.save);
-		
-		// try{
-		// 	r.roll();
-		// }catch (error){
-			
-		// 	console.log("Invalid roll input into Situational bonus.");
-		// 	r.roll();
-		// }
-		
-		// r.toMessage({
-		// 	user: game.user._id,
-		// 	speaker: ChatMessage.getSpeaker(),
-		// 	flavor: "Rolling Death Saving Throw"
-		// 	});
-			
-		// if(r.total < 10)
-		// {
-		// 	updateData[`data.details.deathsavefail`] = this.object.data.data.details.deathsavefail + 1;
-			
-		// 	if(this.object.data.data.details.deathsavefail + 1 >= this.object.data.data.details.deathsaves)
-		// 	{
-		// 		ChatMessage.create({
-		// 			user: game.user._id,
-		// 			speaker: ChatMessage.getSpeaker(),
-		// 			flavor: this.object.data.name + " has failed their last death saving throw and has died!"
-		// 		});					
-		// 	}
-		// }
-					
-		// this.object.update(updateData);
-
-
 		let message = `Rolling Death Saving Throw`;
 		const rollConfig = mergeObject({
 			parts: [this.object.data.data.details.deathsavebon.value, formData.save],

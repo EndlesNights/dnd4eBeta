@@ -200,7 +200,6 @@ export class Helper {
 
 			let val = typeof this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) === 'number' ?
 				this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) : '';
-			console.log(val);
 			newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
 		}
 		return newFormula;
