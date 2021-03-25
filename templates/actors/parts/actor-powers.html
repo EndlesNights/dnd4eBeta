@@ -11,6 +11,9 @@
 			{{else}}
 				<div class="item-detail power-target">{{localize "DND4EBETA.PowerTarget"}}</div>
 				<!-- <div class="item-detail item-action">{{localize "DND4EBETA.Action"}}</div> -->
+
+				<div class="item-detail item-range">RANGE</div>
+
 				<div class="item-detail item-action" title="{{localize 'DND4EBETA.Action'}}">ACT.</div>
 				<div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div>
 				{{/if}}
@@ -52,6 +55,10 @@
 								{{item.data.target.num}} {{ item.data.target.type }}
 							</div>
 						{{/if}}
+					</div>
+
+					<div class="item-detail item-range" title="{{item.data.rangeText}}">
+						{{item.data.rangeTextShort}}
 					</div>
 
 					<div class="item-detail item-action" title="{{lookup ../../config.abilityActivationTypes item.data.actionType}}" style="text-transform: uppercase;">

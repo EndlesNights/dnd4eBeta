@@ -7,8 +7,14 @@
 	"compatibleCoreVersion": "0.7.9",
 	"templateVersion": 2,
 	"author": "EndlesNights",
-	"esmodules": ["module/dnd4eBeta.js"],
-	"styles": ["styles/dnd4eBeta.css"],
+	"esmodules": [
+		"module/dnd4eBeta.js",
+		"module/vue/dnd4eBeta.js"
+	],
+	"styles": [
+		"styles/dnd4eBeta.css",
+		"styles/dnd4eVue.css"
+	],
 	"packs": [],
 	"languages": [
 		{
@@ -25,5 +31,18 @@
 	"secondaryTokenAttribute": "power",
   	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/master/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/master/dnd4eBeta.zip"
+	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/master/dnd4eBeta.zip",
+	"dependencies": [
+		{
+			"name": "dlopen",
+			"type": "module",
+			"manifest": "https://raw.githubusercontent.com/ForgeVTT/fvtt-module-dlopen/master/module.json"
+		},
+		{
+			"name": "vueport",
+			"type": "module",
+			"manifest": "https://raw.githubusercontent.com/ForgeVTT/fvtt-module-vueport/master/module.json"
+		}
+	]
+	
 }

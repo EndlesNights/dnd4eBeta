@@ -1,18 +1,18 @@
-import { DND4EBETA } from "./config.js";
-import { SecondWindDialog } from "./apps/second-wind.js";
-import { ShortRestDialog } from "./apps/short-rest.js";
-import { LongRestDialog } from "./apps/long-rest.js";
-import { DeathSaveDialog } from "./apps/death-save.js";
-import { SaveThrowDialog } from "./apps/save-throw.js";
-import { AttributeBonusDialog } from "./apps/attribute-bonuses.js";
-import { CustomRolldDescriptions } from "./apps/custom-roll-descriptions.js";
-import { MovementDialog } from "./apps/movement-dialog.js";
-import TraitSelector from "./apps/trait-selector.js";
-import TraitSelectorSense from "./apps/trait-selector-sense.js";
-import TraitSelectorSave from "./apps/trait-selector-save.js";
-import {onManageActiveEffect, prepareActiveEffectCategories} from "./effects.js";
-import HPOptions from "./apps/hp-options.js";
-import Item4e from "./item/entity.js";
+import { DND4EBETA } from "../config.js";
+import { SecondWindDialog } from "../apps/second-wind.js";
+import { ShortRestDialog } from "../apps/short-rest.js";
+import { LongRestDialog } from "../apps/long-rest.js";
+import { DeathSaveDialog } from "../apps/death-save.js";
+import { SaveThrowDialog } from "../apps/save-throw.js";
+import { AttributeBonusDialog } from "../apps/attribute-bonuses.js";
+import { CustomRolldDescriptions } from "../apps/custom-roll-descriptions.js";
+import { MovementDialog } from "../apps/movement-dialog.js";
+import TraitSelector from "../apps/trait-selector.js";
+import TraitSelectorSense from "../apps/trait-selector-sense.js";
+import TraitSelectorSave from "../apps/trait-selector-save.js";
+import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
+import HPOptions from "../apps/hp-options.js";
+import Item4e from "../item/entity.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications

@@ -200,7 +200,6 @@ export default class Item4e extends Item {
 
 		// Equipment Items
 		if ( itemData.type === "equipment" ) {
-			console.log(data.armour.ref)
 			labels.armour = data.armour.ac ? `${data.armour.ac} ${game.i18n.localize("DND4EBETA.AC")}` : "";
 			labels.fort = data.armour.fort ? `${data.armour.fort} ${game.i18n.localize("DND4EBETA.FORT")}` : "";
 			labels.ref = data.armour.ref ? `${data.armour.ref} ${game.i18n.localize("DND4EBETA.REF")}` : "";
@@ -209,7 +208,6 @@ export default class Item4e extends Item {
 
 		// Activated Items
 		if ( data.hasOwnProperty("activation") ) {
-
 			// Ability Activation Label
 			let act = data.activation || {};
 			if ( act ) labels.activation = [act.cost, C.abilityActivationTypes[act.type]].filterJoin(" ");
@@ -267,6 +265,11 @@ export default class Item4e extends Item {
 						}
 					}
 				}
+			}
+
+			if(DND4EBETA.powerUseType[itemData.type]) {
+				this._data.data.rangeText = "Melee"
+				this._data.data.rangeTextShort = "M"
 			}
 		}
 
