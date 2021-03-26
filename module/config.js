@@ -518,7 +518,7 @@ DND4EBETA.rangeType = {
 	"rangeBlast": "DND4EBETA.rangeBlast",
 	"wall": "DND4EBETA.rangeWall",
 	"personal": "DND4EBETA.rangePersonal",
-	
+	"touch": "DND4EBETA.rangeTouch",
 };
 
 DND4EBETA.effectTypes = {

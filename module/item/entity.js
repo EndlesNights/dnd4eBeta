@@ -268,8 +268,39 @@ export default class Item4e extends Item {
 			}
 
 			if(DND4EBETA.powerUseType[itemData.type]) {
-				this._data.data.rangeText = "Melee"
-				this._data.data.rangeTextShort = "M"
+				this._data.data.rangeText = "Not Avalible"
+				this._data.data.rangeTextShort = "NA"
+
+				console.log(itemData.data.weaponType)
+				console.log(itemData.data.weaponUse)
+				console.log(itemData.data.rangeType)
+
+				 if(itemData.data.rangeType === "range") {
+					this._data.data.rangeText = `Range ${itemData.data.rangePower}`
+					this._data.data.rangeTextShort = `R`
+					this._data.data.rangeTextBlock = `${itemData.data.rangePower}`
+				} else if(itemData.data.rangeType === "closeBurst") {
+					this._data.data.rangeText = `Close Burst ${itemData.data.area}`
+					this._data.data.rangeTextShort = "CBU"
+				} else if(itemData.data.rangeType === "rangeBurst") {
+					this._data.data.rangeText = `Area Burst ${itemData.data.area} within ${itemData.data.rangePower}`
+					this._data.data.rangeTextShort = "RBU"
+				} else if(itemData.data.rangeType === "closeBlast") {
+					this._data.data.rangeText = `Close Blast ${itemData.data.area}`
+					this._data.data.rangeTextShort = "CBL"
+				} else if(itemData.data.rangeType === "rangeBlast") {
+					this._data.data.rangeText = `Area Blast ${itemData.data.area} within ${itemData.data.rangePower}`
+					this._data.data.rangeTextShort = "RBL"
+				} else if(itemData.data.rangeType === "wall") {
+					this._data.data.rangeText = `Wall ${itemData.data.area} within ${itemData.data.rangePower}`
+					this._data.data.rangeTextShort = "W"
+				} else if(itemData.data.rangeType === "personal") {
+					this._data.data.rangeText = "Personal"
+					this._data.data.rangeTextShort = "P"
+				} else if(itemData.data.rangeType === "touch") {
+					this._data.data.rangeText = "Melee Touch"
+					this._data.data.rangeTextShort = "T"
+				}
 			}
 		}
 

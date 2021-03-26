@@ -58,7 +58,10 @@
 					</div>
 
 					<div class="item-detail item-range" title="{{item.data.rangeText}}">
-						{{item.data.rangeTextShort}}
+						<label>{{item.data.rangeTextShort}}</label>
+						{{#if item.data.rangeTextBlock}}
+						<label style="background-color: rgba(77, 77, 77, 0.199); border-radius: 2px; padding-left: 2px; padding-right: 2px;">{{item.data.rangeTextBlock}}</label>
+						{{/if}}
 					</div>
 
 					<div class="item-detail item-action" title="{{lookup ../../config.abilityActivationTypes item.data.actionType}}" style="text-transform: uppercase;">
