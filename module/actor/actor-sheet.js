@@ -13,6 +13,7 @@ import TraitSelectorSave from "../apps/trait-selector-save.js";
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import HPOptions from "../apps/hp-options.js";
 import Item4e from "../item/entity.js";
+import { Helper } from "../helper.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -225,8 +226,83 @@ export class SimpleActorSheet extends ActorSheet {
 		data.inventory = Object.values(inventory);
 		data.powers = Object.values(powers);
 		data.features = Object.values(features);
+
+		
+		powers.atwill.items.forEach (element => {
+			this._preparePowerRangeText(element);
+		});
+		powers.encounter.items.forEach (element => {
+			this._preparePowerRangeText(element);
+		});
+		powers.daily.items.forEach (element => {
+			this._preparePowerRangeText(element);
+		});
+		powers.utility.items.forEach (element => {
+			this._preparePowerRangeText(element);
+		});
+
+		
 	}
-	
+  /* -------------------------------------------- */
+    /**
+   * A helper method to generate the text for the range of difrent powers
+   * @param {itemData} itemData
+   * @private
+   */
+	_preparePowerRangeText(itemData) {
+		if(itemData.data.rangeType === "range") {
+			itemData.data.rangeText = `Range ${itemData.data.rangePower}`
+			itemData.data.rangeTextShort = `R`
+			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
+		} else if(itemData.data.rangeType === "closeBurst") {
+			itemData.data.rangeText = `Close Burst ${itemData.data.area}`
+			itemData.data.rangeTextShort = "CBU"
+			itemData.data.rangeTextBlock = `${itemData.data.area}`
+		} else if(itemData.data.rangeType === "rangeBurst") {
+			itemData.data.rangeText = `Area Burst ${itemData.data.area} within ${itemData.data.rangePower}`
+			itemData.data.rangeTextShort = "ABU"
+			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
+		} else if(itemData.data.rangeType === "closeBlast") {
+			itemData.data.rangeText = `Close Blast ${itemData.data.area}`
+			itemData.data.rangeTextShort = "CBL"
+			itemData.data.rangeTextBlock = `${itemData.data.area}`
+		} else if(itemData.data.rangeType === "rangeBlast") {
+			itemData.data.rangeText = `Area Blast ${itemData.data.area} within ${itemData.data.rangePower}`
+			itemData.data.rangeTextShort = "ABL"
+			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
+		} else if(itemData.data.rangeType === "wall") {
+			itemData.data.rangeText = `Wall ${itemData.data.area} within ${itemData.data.rangePower}`
+			itemData.data.rangeTextShort = "W"
+			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
+		} else if(itemData.data.rangeType === "personal") {
+			itemData.data.rangeText = "Personal"
+			itemData.data.rangeTextShort = "P"
+		} else if(itemData.data.rangeType === "touch") {
+			itemData.data.rangeText = "Melee Touch"
+			itemData.data.rangeTextShort = "M-T"
+		} else if(itemData.data.rangeType === "weapon") {
+
+			try {
+				const weaponUse = Helper.getWeaponUse(itemData.data, this.actor);
+				if(weaponUse.data.data.isRanged) {
+					itemData.data.rangeText = `Range Weapon - ${weaponUse.data.name}`
+					itemData.data.rangeTextShort = `W-R`
+					itemData.data.rangeTextBlock = `${weaponUse.data.data.range.value}/${weaponUse.data.data.range.long}`
+				} else {
+					itemData.data.rangeText = `Melee Weapon - ${weaponUse.data.name}`;
+					itemData.data.rangeTextShort = "W-M";
+				}
+
+			} catch {
+				itemData.data.rangeText = "Weapon";
+				itemData.data.rangeTextShort = "W-M";
+			}
+
+		} else {
+			itemData.data.rangeText = "Not Avalible"
+			itemData.data.rangeTextShort = "NA"
+		}
+	}
   /* -------------------------------------------- */
 
   /**
