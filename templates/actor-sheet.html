@@ -48,13 +48,13 @@
 
 
 						{{/if}}
-						<input {{#if data.details.isBloodied}} class="bloodied" {{/if}} type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<input {{#if data.details.isBloodied}} class="bloodied" {{/if}} type="text" name="data.attribute.hp.value" value="{{data.attribute.hp.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">/</span>
-						<input type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EBETA.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.attribute.hp.max" value="{{data.attribute.hp.max}}" title="{{localize 'DND4EBETA.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					<footer class="attribute-footer attribute-footer--temp-hp flexrow">
 						<span class="attribute-subname">{{localize 'DND4EBETA.TempHP'}}</span>
-						<input type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EBETA.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.attribute.hp.temphp" value="{{data.attribute.hp.temphp}}" title="{{localize 'DND4EBETA.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
 					</footer>
 				</div>
 
@@ -184,7 +184,7 @@
 						<label class="movement-dialog rollable">{{localize 'DND4EBETA.Speed'}}</label>
 					</div>
 					<div>
-						<strong class="init-bonus rollable" title="{{localize 'DND4EBETA.InitiativeScore'}}">{{numberFormat data.init.value decimals=0 sign=true }}</strong>
+						<strong class="init-bonus rollable" title="{{localize 'DND4EBETA.InitiativeScore'}}">{{numberFormat data.attribute.init.value decimals=0 sign=true }}</strong>
 						<label>{{localize 'DND4EBETA.Initiative'}}</label>
 					</div>
 				</section>
@@ -195,7 +195,7 @@
 				{{!-- Sheet Tab Navigation --}}
 				<nav class="sheet-tabs tabs" data-group="primary">
 					<a class="item" data-tab="details">{{localize 'DND4EBETA.Details'}}</a>
-					<a class="item" data-tab="powers">{{localize 'DND4EBETA.Powers'}}</a>
+					<a class="item " data-tab="powers">{{localize 'DND4EBETA.Powers'}}</a>
 					<a class="item" data-tab="inventory">{{localize 'DND4EBETA.Inventory'}}</a>
 					<a class="item" data-tab="features">{{localize 'DND4EBETA.Feats'}}</a>
 					<a class="item" data-tab="effects">{{localize 'DND4EBETA.Effects'}}</a>

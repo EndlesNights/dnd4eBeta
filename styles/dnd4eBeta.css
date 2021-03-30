@@ -1737,7 +1737,9 @@ font-size: 12px;
 	font-weight: 700;
 	font-size: 16px;
 }
-.dnd4eBeta.sheet .items-list .items-header .item-controls a.item-create {
+.dnd4eBeta.sheet .items-list .items-header .item-controls a.item-create,
+.dnd4eBeta.sheet .items-list .items-header .item-controls a.power-create {
+
 	flex: 0 0 100%;
 }
 .dnd4eBeta.sheet .items-list .item-detail {

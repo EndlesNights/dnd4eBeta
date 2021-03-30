@@ -29,24 +29,28 @@
 					"chat": "@name uses @label."
 				}
 			},
-			"biography": "",
-			"health": {
-				"value": 10,
-				"min": 0,
-				"max": 10,
-				"starting": 10,
-				"perlevel": 5,
-				"feat": 0,
-				"misc": 0,
-				"autototal": false,
-				"temprest": false
-			},		
-			"init": {
-				"value": 0,
-				"ability": "dex",
-				"bonus": [{}],
-				"notes": ""
+			"attribute": {
+				"hp": {
+					"value": 10,
+					"min": 0,
+					"max": 10,
+					"starting": 10,
+					"perlevel": 5,
+					"feat": 0,
+					"misc": 0,
+					"autototal": false,
+					"temprest": false,
+					"temphp": 0
+				},
+				"init": {
+					"value": 0,
+					"ability": "dex",
+					"bonus": [{}],
+					"notes": ""
+				}
 			},
+			
+			"biography": "",		
 			"actionpoints":	{
 				"value": 1,
 				"encounteruse": false,
@@ -127,7 +131,6 @@
 				"alignment": "",
 				"deity": "",
 				
-				"temphp": "",
 				"secondwind": false,
 				"deathsaves": 3,
 				"deathsavefail": null,
@@ -334,7 +337,7 @@
 					"bonus": [{}]
 				}
 			},
-			"resistences": {
+			"resistances": {
 				"damage": {
 					"value": 0,
 					"armour": 0,
@@ -450,7 +453,7 @@
 	}	
 },
 "Item": {
-	"types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power", "atwill", "encounter", "daily", "utility"],
+	"types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"],
 	"templates": {
 		"itemDescription": {
 			"description": {
@@ -540,53 +543,6 @@
 				"dt": null,
 				"conditions": ""
 			}
-		},
-		"power": {
-			"keyWords": [""],
-			"powersource": "martial",
-			"subName": "",
-			"prepared": true,
-			"useType": "power",
-			"actionType": "standard",
-			"requirements": "",
-			"weaponType": "melee",
-			"weaponUse": "default",
-			"rangeType": "weapon",
-			"rangeTextShort": "",
-			"rangeText": "",
-			"rangePower": "",
-			"area": 0,
-			"damageShare": false,
-			"target": {
-				"type": "creature",
-				"num": 1
-			},
-			"attack": {
-				"isAttack": true,
-				"ability": "str",
-				"abilityBonus": 0,
-				"def": "ac",
-				"defBonus": 0,
-				"formula": "1d20+@wepAttack+@powerMod+@lvhalf",
-				"damageType": {},
-				"effectType": {}
-			},
-			"hit": {
-				"isDamage": true,
-				"detail": "1[W] + Strength modifier damage.",
-				"formula": "@wepDice(1) + @powerMod + @wepDamage",
-				"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"
-			},
-			"miss": {
-				"detail": "Half Damage.",
-				"formula": "@{damageFormula}/2"
-			},
-			"effect": {
-				"detail": ""
-			},
-			"trigger": "",
-			"requirement": "",
-			"special": ""
 		},
 		"itemMacro": {
 			"macro": {
@@ -745,40 +701,55 @@
 		"charged": false
 		}
 	},
-	"atwill": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
-		"keyWords": ["At-Will"],
-		"useType": "atw"
-	},
-	"encounter": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
-		"keyWords": ["Encounter"],
-		"useType": "enc",
-		"uses": {
-			"value": 1,
-			"max": 1,
-			"per": "enc"
-		}
-	},
-	"daily": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
-		"keyWords": ["Daily"],
-		"useType": "day",
-		"uses": {
-			"value": 1,
-			"max": 1,
-			"per": "day"
-		}
-	},
-	"utility": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
-		"keyWords": ["Encounter"],
-		"useType": "enc",
-		"uses": {
-			"value": 1,
-			"max": 1,
-			"per": "enc"
-		}
+	"power": {
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"keyWords": [""],
+		"level": "1",
+		"powersource": "martial",
+		"subName": "",
+		"prepared": true,
+		"powerType": "class",
+		"useType": "atwill",
+		"actionType": "standard",
+		"requirements": "",
+		"weaponType": "melee",
+		"weaponUse": "default",
+		"rangeType": "weapon",
+		"rangeTextShort": "",
+		"rangeText": "",
+		"rangePower": "",
+		"area": 0,
+		"damageShare": false,
+		"target": {
+			"type": "creature",
+			"num": 1
+		},
+		"attack": {
+			"isAttack": true,
+			"ability": "str",
+			"abilityBonus": 0,
+			"def": "ac",
+			"defBonus": 0,
+			"formula": "1d20+@wepAttack+@powerMod+@lvhalf",
+			"damageType": {},
+			"effectType": {}
+		},
+		"hit": {
+			"isDamage": true,
+			"detail": "1[W] + Strength modifier damage.",
+			"formula": "@wepDice(1) + @powerMod + @wepDamage",
+			"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"
+		},
+		"miss": {
+			"detail": "Half Damage.",
+			"formula": "@{damageFormula}/2"
+		},
+		"effect": {
+			"detail": ""
+		},
+		"trigger": "",
+		"requirement": "",
+		"special": ""
 	}
 }
 }

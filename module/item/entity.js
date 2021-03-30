@@ -74,7 +74,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasDamage() {
-		if(!DND4EBETA.powerUseType[this.type]) return false; //curently only powers will deal damage or make attacks
+		if(!DND4EBETA.powerUseType[this.type] || itemData.type === "power") return false; //curently only powers will deal damage or make attacks
 		return this.data.data.hit?.isDamage;
 		return !!this.data.data.hit?.formula || !!(this.data.data.damage && this.data.data.damage.parts.length);
 	}
@@ -86,7 +86,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasEffect() {
-		if(!DND4EBETA.powerUseType[this.type]) return false; //curently only powers have effects
+		if(!DND4EBETA.powerUseType[this.type] || itemData.type === "power") return false; //curently only powers have effects
 		console.log(this.data.data.effect?.detail)
 		return !!this.data.data.effect?.detail;
 	}
@@ -258,7 +258,7 @@ export default class Item4e extends Item {
 				labels.damage = dam.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
 				labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
 
-				if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon") {
+				if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
 					if(this.data.data.damageType) {
 						for (let [id, data] of Object.entries(this.data.data.damageType)) {
 							if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;

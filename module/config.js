@@ -464,11 +464,17 @@ DND4EBETA.hitDieTypes = ["d6", "d8", "d10", "d12"];
 
 /* -------------------------------------------- */
 
+DND4EBETA.powerType = {
+	"class": "DND4EBETA.Class",
+	"race": "DND4EBETA.Race",
+	"utility": "DND4EBETA.PowerUtil"
+};
+
 DND4EBETA.powerUseType = {
 	"atwill": "DND4EBETA.PowerAt",
 	"encounter": "DND4EBETA.PowerEnc",
 	"daily": "DND4EBETA.PowerDaily",
-	"utility": "DND4EBETA.PowerUtil"
+	// "utility": "DND4EBETA.PowerUtil"
 };
 DND4EBETA.powerSource = {
 	"arcane": "DND4EBETA.Arcane",
@@ -479,6 +485,21 @@ DND4EBETA.powerSource = {
 	"primal": "DND4EBETA.Primal",
 	"psionic": "DND4EBETA.Psionic",
 	"shadow": "DND4EBETA.Shadow",
+};
+
+DND4EBETA.powerGroupTypes = {
+	"type": "DND4EBETA.Type",
+	"action": "DND4EBETA.Action",
+	"usage": "DND4EBETA.Usage",
+};
+
+DND4EBETA.powerSortTypes = {
+	"name": "DND4EBETA.Name",
+	"level": "DND4EBETA.Level",
+	"actionType": "DND4EBETA.Action",
+	"rangeTextShort": "DND4EBETA.Range",
+	"use.value": "DND4EBETA.Used",
+	"none": "DND4EBETA.None",
 };
 
 /* -------------------------------------------- */

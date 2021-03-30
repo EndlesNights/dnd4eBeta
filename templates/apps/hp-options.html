@@ -1,26 +1,26 @@
 <form autocomplete="off" onsubmit="event.preventDefault();">
 	<div>
-		<input type="checkbox" name="data.health.autototal" data-dtype="Boolean" {{checked data.health.autototal}} title="Auto Cal HP"/>
+		<input type="checkbox" name="data.attribute.hp.autototal" data-dtype="Boolean" {{checked data.attribute.hp.autototal}} title="Auto Cal HP"/>
 		<span>Automatically calculate total HP</span>
 	</div>
 	<div>
-		<input type="text" name="data.health.starting" value="{{data.health.starting}}" title="HP at 1st Level"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+		<input type="text" name="data.attribute.hp.starting" value="{{data.attribute.hp.starting}}" title="HP at 1st Level"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
 		<span title="Constitution Score" style="border-bottom: 1px dotted #000;" >+ {{data.abilities.con.value}}</span>
 		<span>Hit Points at 1st Level</span>
 
 		
 	</div>
 	<div>
-		<input type="text" name="data.health.perlevel" value="{{data.health.perlevel}}" title="HP per Level"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+		<input type="text" name="data.attribute.hp.perlevel" value="{{data.attribute.hp.perlevel}}" title="HP per Level"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
 		<span>Hit Points per level gain</span>
 	</div>
 	<div>
-		<input type="text" name="data.health.misc" value="{{data.health.misc}}" title="Misc HP"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+		<input type="text" name="data.attribute.hp.misc" value="{{data.attribute.hp.misc}}" title="Misc HP"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
 		<span>Misc bonus Hit Points</span>
 	</div>
 	
 	<div>
-		<input type="checkbox" name="data.health.temprest" data-dtype="Boolean" {{checked data.health.temprest}} title="Keep Temp HP on short rest"/>
+		<input type="checkbox" name="data.attribute.hp.temprest" data-dtype="Boolean" {{checked data.attribute.hp.temprest}} title="Keep Temp HP on short rest"/>
 		<span>Keep temporary hitpoints on short rest?</span>
 	</div>
 	

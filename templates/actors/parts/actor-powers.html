@@ -1,4 +1,36 @@
 <ol class="items-list inventory-list" style="height: 90%;">
+	<header class="power-filters flexrow">
+		<div class="group-powers">
+			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.groupBy.value">
+			<label for="power-group">GroupBy</label>
+			<select name="data.powerGroupTypes">
+				{{#select data.powerGroupTypes}}
+				{{#each config.powerGroupTypes as |name type|}}
+				<option value="{{type}}">{{name}}</option>
+				{{/each}}
+				{{/select}}
+			</select>
+		</div>
+
+		<div class="sort-powers">
+			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.sortBy.value">
+			<label for="power-sort">SortyBy</label>
+			<select name="data.powerSortTypes">
+				{{#select data.powerSortTypes}}
+				{{#each config.powerSortTypes as |name type|}}
+				<option value="{{type}}">{{name}}</option>
+				{{/each}}
+				{{/select}}
+			</select>
+		</div>
+
+		<div class="filter-search-powers">
+			<label for="power-filter-search">Filter</label>
+			<input type="text" name="power-filter-search" placeholder="filtername"/>
+		</div>
+	</header>
+
+
 
 	{{#each sections as |section sid|}}
 		<li class="items-header flexrow">
@@ -19,7 +51,7 @@
 				{{/if}}
 			{{#if ../owner}}
 			<div class="item-controls" style="width: 90px;">
-				<a class="item-control item-create" title='{{localize "DND4EBETA.ItemCreate"}}'
+				<a class="item-control power-create" title='{{localize "DND4EBETA.ItemCreate"}}'
 				   {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
 					<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 				</a>
@@ -144,4 +176,4 @@
 		{{/each}}
 		</ol>
 	{{/each}}
-	</ol>
+</ol>

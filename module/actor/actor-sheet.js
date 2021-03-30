@@ -107,7 +107,7 @@ export class SimpleActorSheet extends ActorSheet {
 		// Prepare active effects
 		data.effects = prepareActiveEffectCategories(this.entity.effects);
 
-		// data.actor.data.details.isBloodied = (data.actor.data.health.value <= data.actor.data.health.max/2);
+		// data.actor.data.details.isBloodied = (data.actor.data.attributes.hp.value <= data.actor.data.attributes.hp.max/2);
 		return data;
 	}
 	
@@ -139,6 +139,8 @@ export class SimpleActorSheet extends ActorSheet {
 	}
 
 	_prepareItems(data) {
+
+		//define diffrent item datasets
 		const inventory = {
 			weapon: { label: "DND4EBETA.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
 			equipment: { label: "DND4EBETA.ItemTypeEquipmentPl", items: [], dataset: {type: "equipment"} },
@@ -147,12 +149,8 @@ export class SimpleActorSheet extends ActorSheet {
 			backpack: { label: "DND4EBETA.ItemTypeContainerPl", items: [], dataset: {type: "backpack"} },
 			loot: { label: "DND4EBETA.ItemTypeLootPl", items: [], dataset: {type: "loot"} }
 		};
-		const powers = {
-			atwill: { label: "DND4EBETA.PowerAt", items: [], dataset: {type: "atwill"} },
-			encounter: { label: "DND4EBETA.PowerEnc", items: [], dataset: {type: "encounter"} },
-			daily: { label: "DND4EBETA.PowerDaily", items: [], dataset: {type: "daily"} },
-			utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} }
-		};
+		const powers = this._generatePowerGroups();
+
 		const features = {
 			raceFeats: { label: "DND4EBETA.FeatRace", items: [], dataset: {type: "raceFeats"} },
 			classFeats: { label: "DND4EBETA.FeatClass", items: [], dataset: {type: "classFeats"} },
@@ -179,10 +177,12 @@ export class SimpleActorSheet extends ActorSheet {
 
 			// Classify items into types
 			if ( Object.keys(inventory).includes(item.type ) ) arr[0].push(item);
-			else if ( Object.keys(powers).includes(item.type ) ) arr[1].push(item);
+			// else if ( Object.keys(powers).includes(item.type ) ) arr[1].push(item);
+			else if ( item.type === "power") arr[1].push(item);
 			else if ( Object.keys(features).includes(item.type ) ) arr[2].push(item);
 			return arr;
 		}, [[], [], [], []]);
+
 		// Apply active item filters
 		items = this._filterItems(items, this._filters.inventory);
 		pow = this._filterItems(pow, this._filters.powers);
@@ -202,8 +202,6 @@ export class SimpleActorSheet extends ActorSheet {
 		  // return (s.data.level > 0) && (s.data.preparation.mode === "prepared") && s.data.preparation.prepared;
 		// }).length;
 		
-
-	
 		// Organize Features
 		// const features = {
 		  // classes: { label: "DND4EBETA.ItemTypeClassPl", items: [], hasActions: false, dataset: {type: "class"}, isClass: true },
@@ -217,9 +215,11 @@ export class SimpleActorSheet extends ActorSheet {
 		  // if ( f.data.activation.type ) features.active.items.push(f);
 		  // else features.passive.items.push(f);
 		}
+
 		for ( let p of pow ) {
-			powers[p.type].items.push(p);
-		}			
+			powers[this._groupPowers(p,powers)].items.push(p);
+		}
+
 		// classes.sort((a, b) => b.levels - a.levels);
 		// features.classes.items = classes;
 		// Assign and return
@@ -227,24 +227,89 @@ export class SimpleActorSheet extends ActorSheet {
 		data.powers = Object.values(powers);
 		data.features = Object.values(features);
 
-		
-		powers.atwill.items.forEach (element => {
-			this._preparePowerRangeText(element);
-		});
-		powers.encounter.items.forEach (element => {
-			this._preparePowerRangeText(element);
-		});
-		powers.daily.items.forEach (element => {
-			this._preparePowerRangeText(element);
-		});
-		powers.utility.items.forEach (element => {
-			this._preparePowerRangeText(element);
-		});
+		for (const [key, group] of Object.entries(powers)) {
+			group.items?.forEach(item => {
+				this._preparePowerRangeText(item);
+			});
+		}
 
+		this._sortPowers(powers);
+	}
+	_sortPowers(powers) {
+
+		function _compareValues(key, order = 'asc') {
+			return function innerSort(a, b) {
+				if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+				// property doesn't exist on either object
+				return 0;
+				}
+	
+				const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
+				const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
+	
+				let comparison = 0;
+				if (varA > varB) {
+					comparison = 1;
+				}
+				else if (varA < varB) {
+					comparison = -1;
+				}
+				return (order === 'desc') ? (comparison * -1) : comparison;
+			};
+		};
 		
+		const sort = this.object.data.data.powerSortTypes;
+		if(sort === "none") {return;}
+		for (const [key, group] of Object.entries(powers)) {
+			group.items.sort(_compareValues(sort));
+		}
+	}
+
+	_groupPowers(power, powerGroups) {
+		if(this.object.data.data.powerGroupTypes === "type") {
+			if(Object.keys(powerGroups).includes(power.data.powerType) )return power.data.powerType;
+		}
+		if(this.object.data.data.powerGroupTypes === "action") {
+			if(Object.keys(powerGroups).includes(power.data.actionType) ) return power.data.actionType;
+		}
+		if(this.object.data.data.powerGroupTypes === "usage") {
+			if(Object.keys(powerGroups).includes(power.data.useType) ) return power.data.useType;
+		}
+		return "other";
+	}
+	_generatePowerGroups() {
+
+		if(this.object.data.data.powerGroupTypes === "type") {
+			return {
+				class: { label: "Class Power", items: [], dataset: {type: "class"} },
+				race: { label: "Racial Power", items: [], dataset: {type: "race"} },
+				utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
+				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
+			};
+		}
+		if(this.object.data.data.powerGroupTypes === "action") {
+			return {
+				standard: { label: "DND4EBETA.ActionStandard", items: [], dataset: {type: "standard"} },
+				move: { label: "DND4EBETA.ActionMove", items: [], dataset: {type: "move"} },
+				minor: { label: "DND4EBETA.ActionMinor", items: [], dataset: {type: "minor"} },
+				free: { label: "DND4EBETA.ActionFree", items: [], dataset: {type: "free"} },
+				reaction: { label: "DND4EBETA.ActionReaction", items: [], dataset: {type: "reaction"} },
+				interrupt: { label: "DND4EBETA.ActionInterrupt", items: [], dataset: {type: "interrupt"} },
+				opportunity: { label: "DND4EBETA.ActionOpportunity", items: [], dataset: {type: "opportunity"} },
+				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
+			};
+		}
+		return {
+			atwill: { label: "DND4EBETA.PowerAt", items: [], dataset: {type: "atwill"} },
+			encounter: { label: "DND4EBETA.PowerEnc", items: [], dataset: {type: "encounter"} },
+			daily: { label: "DND4EBETA.PowerDaily", items: [], dataset: {type: "daily"} },
+			utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
+			class: { label: "Class Power", items: [], dataset: {type: "class"} },
+			other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
+		};
 	}
   /* -------------------------------------------- */
-    /**
+	/**
    * A helper method to generate the text for the range of difrent powers
    * @param {itemData} itemData
    * @private
@@ -541,6 +606,10 @@ export class SimpleActorSheet extends ActorSheet {
 			html.find('.item-delete').click(this._onItemDelete.bind(this));
 			html.find('.item-uses input').click(ev => ev.target.select()).change(this._onUsesChange.bind(this));
 
+			html.find('.power-create').click(this._onPowerItemCreate.bind(this));
+
+			
+
 			// Active Effect management
 			html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.entity));
 		
@@ -618,6 +687,30 @@ export class SimpleActorSheet extends ActorSheet {
 			type: type,
 			data: duplicate(header.dataset)
 		};
+		delete itemData.data["type"];
+		return this.actor.createOwnedItem(itemData);
+	}
+
+	_onPowerItemCreate(event) {
+		event.preventDefault();
+		const header = event.currentTarget;
+		const type = header.dataset.type;
+		const itemData = {
+			name: game.i18n.format("DND4EBETA.ItemNew", {type: type.capitalize()}),
+			type: "power",
+			data: duplicate(header.dataset)
+		};
+
+		if(this.object.data.data.powerGroupTypes === "type") {
+			itemData.data.powerType = type;
+		}
+		else if(this.object.data.data.powerGroupTypes === "action") {
+			itemData.data.actionType = type;
+		}
+		else if(this.object.data.data.powerGroupTypes === "usage") {
+			itemData.data.useType = type;
+		}
+
 		delete itemData.data["type"];
 		return this.actor.createOwnedItem(itemData);
 	}
@@ -726,7 +819,7 @@ export class SimpleActorSheet extends ActorSheet {
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.init`, label: "Initiative Bonues", init: true };
+		const options = {target: `data.attributes.init`, label: "Initiative Bonues", init: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	

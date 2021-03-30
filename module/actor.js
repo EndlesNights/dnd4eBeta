@@ -101,9 +101,9 @@ export class SimpleActor extends Actor {
 		}
 		
 		//HP auto calc
-		if(data.health.autototal)
+		if(data.attribute.hp.autototal)
 		{
-			data.health.max = data.health.perlevel * (data.details.level - 1) + data.health.starting + data.health.feat + data.health.misc + data.abilities.con.value;
+			data.attribute.hp.max = data.attribute.hp.perlevel * (data.details.level - 1) + data.attribute.hp.starting + data.attribute.hp.feat + data.attribute.hp.misc + data.abilities.con.value;
 		}
 		
 		//Set Health related values
@@ -123,13 +123,13 @@ export class SimpleActor extends Actor {
 			}
 		}
 		
-		data.details.bloodied = Math.floor(data.health.max / 2);
+		data.details.bloodied = Math.floor(data.attribute.hp.max / 2);
 		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
-		data.health.min = -data.details.bloodied;
+		data.attribute.hp.min = -data.details.bloodied;
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
 
 		//check if bloodied
-		data.details.isBloodied = (data.health.value <= data.health.max/2);
+		data.details.isBloodied = (data.attribute.hp.value <= data.attribute.hp.max/2);
 
 		if(!(data.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(data.details.surgeEnv.bonus[0]))) {
 			for( const b of data.details.surgeEnv.bonus) {
@@ -186,8 +186,8 @@ export class SimpleActor extends Actor {
 
 		}
 		
-		if (data.details.temphp <= 0 )
-			data.details.temphp = null;
+		if (data.attribute.hp.temphp <= 0 )
+			data.attribute.hp.temphp = null;
 		
 		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
 		if(data.defences.ac.light)
@@ -239,17 +239,17 @@ export class SimpleActor extends Actor {
 
 		//calc init
 		let initBonusValue = 0 + Math.floor(data.details.level / 2);
-		if(!(data.init.bonus.length === 1 && jQuery.isEmptyObject(data.init.bonus[0]))) {
-			for( const b of data.init.bonus) {
+		if(!(data.attribute.init.bonus.length === 1 && jQuery.isEmptyObject(data.attribute.init.bonus[0]))) {
+			for( const b of data.attribute.init.bonus) {
 				if(b.active) {
 					initBonusValue += b.value;
 				}
 			}
 		}
-		data.init.bonusValue = initBonusValue;
-		data.init.value = (data.abilities[data.init.ability].mod + initBonusValue);
-		if(data.init.value > 999)
-			data.init.value = 999;
+		data.attribute.init.bonusValue = initBonusValue;
+		data.attribute.init.value = (data.abilities[data.attribute.init.ability].mod + initBonusValue);
+		if(data.attribute.init.value > 999)
+			data.attribute.init.value = 999;
 		
 		//calc movespeed
 		let basicBonusValue = 0;
@@ -316,8 +316,8 @@ export class SimpleActor extends Actor {
 			pas.value = 10 + data.skills[pas.skill].total + passiveBonusValue;
 		}
 		
-		//Resistences & Weaknesses
-		for (let [id, res] of Object.entries(data.resistences)) {
+		//Resistances & Weaknesses
+		for (let [id, res] of Object.entries(data.resistances)) {
 
 			let resBonusValue = 0;
 			if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
@@ -359,33 +359,33 @@ export class SimpleActor extends Actor {
 			if(attribute === 'health')
 			{
 				let newHealth = this.setConditions(value);			
-				this.update({[`data.details.temphp`]: newHealth[1] });
-				this.update({[`data.health.value`]: newHealth[0] });
+				this.update({[`data.attribute.hp.temphp`]: newHealth[1] });
+				this.update({[`data.attribute.hp.value`]: newHealth[0] });
 			}
 		}
 	}	
 	setConditions(newValue) {
 		
-		let newTemp = this.data.data.details.temphp;
-		if(newValue < this.data.data.health.value) {
-			let damage = this.data.data.health.value - newValue;
+		let newTemp = this.data.data.attribute.hp.temphp;
+		if(newValue < this.data.data.attribute.hp.value) {
+			let damage = this.data.data.attribute.hp.value - newValue;
 			
-			if(this.data.data.details.temphp > 0) {
+			if(this.data.data.attribute.hp.temphp > 0) {
 				newTemp -= damage;
 				if(newTemp < 0) {
-					newValue = this.data.data.health.value + newTemp;
+					newValue = this.data.data.attribute.hp.value + newTemp;
 					newTemp = null;
 				}
 				else {
-					newValue = this.data.data.health.value;
+					newValue = this.data.data.attribute.hp.value;
 				}
 				
-				this.update({[`data.details.temphp`]:newTemp});
+				this.update({[`data.attribute.hp.temphp`]:newTemp});
 			}
 		}
 		
-		if(newValue > this.data.data.health.max) newValue =  this.data.data.health.max;
-		else if(newValue < this.data.data.health.min) newValue =  this.data.data.health.min;
+		if(newValue > this.data.data.attribute.hp.max) newValue =  this.data.data.attribute.hp.max;
+		else if(newValue < this.data.data.attribute.hp.min) newValue =  this.data.data.attribute.hp.min;
 		
 		return [newValue,newTemp];
 	}  

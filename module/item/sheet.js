@@ -56,10 +56,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// Potential consumption targets
 		data.abilityConsumptionTargets = this._getItemConsumptionTargets(data.item);
 	
-		if(data.item.type === "atwill" ||
-			data.item.type === "encounter" ||
-			data.item.type === "daily" ||
-			data.item.type === "utility" ) data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(data.item);
+		if(data.item.type === "power") data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(data.item);
 		
 		if(data.item.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(data.item, data.config);
 		
@@ -133,7 +130,7 @@ export default class ItemSheet4e extends ItemSheet {
 			"magicItemUse.dailyuse",
 			"details.exp",
 			"details.age",
-			"details.temphp",
+			"attribute.hp.temphp",
 			"details.surgeCur",
 			"currency.ad",
 			"currency.pp",
@@ -319,8 +316,8 @@ export default class ItemSheet4e extends ItemSheet {
 			props.push(
 				labels.components,
 				labels.materials,
-				item.data.components.concentration ? game.i18n.localize("DND4EBETA.Concentration") : null,
-				item.data.components.ritual ? game.i18n.localize("DND4EBETA.Ritual") : null
+				// item.data.components.concentration ? game.i18n.localize("DND4EBETA.Concentration") : null,
+				// item.data.components.ritual ? game.i18n.localize("DND4EBETA.Ritual") : null
 			)
 		}
 
