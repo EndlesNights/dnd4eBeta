@@ -74,7 +74,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasDamage() {
-		if(!DND4EBETA.powerUseType[this.type] || itemData.type === "power") return false; //curently only powers will deal damage or make attacks
+		if(!itemData.type === "power") return false; //curently only powers will deal damage or make attacks
 		return this.data.data.hit?.isDamage;
 		return !!this.data.data.hit?.formula || !!(this.data.data.damage && this.data.data.damage.parts.length);
 	}
@@ -86,7 +86,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasEffect() {
-		if(!DND4EBETA.powerUseType[this.type] || itemData.type === "power") return false; //curently only powers have effects
+		if(!itemData.type === "power") return false; //curently only powers have effects
 		console.log(this.data.data.effect?.detail)
 		return !!this.data.data.effect?.detail;
 	}
@@ -241,6 +241,7 @@ export default class Item4e extends Item {
 
 		// Item Actions
 		if ( data.hasOwnProperty("actionType") ) {
+			console.log(this)
 			// Save DC
 			let save = data.save || {};
 			if ( !save.ability ) save.dc = null;

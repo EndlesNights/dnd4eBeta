@@ -696,7 +696,7 @@ export class SimpleActorSheet extends ActorSheet {
 		const header = event.currentTarget;
 		const type = header.dataset.type;
 		const itemData = {
-			name: game.i18n.format("DND4EBETA.ItemNew", {type: type.capitalize()}),
+			name: `${game.i18n.format("DND4EBETA.ItemNew", {type: type.capitalize()})} Power`,
 			type: "power",
 			data: duplicate(header.dataset)
 		};
