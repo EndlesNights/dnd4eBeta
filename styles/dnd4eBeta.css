@@ -1795,6 +1795,14 @@ font-size: 12px;
 	white-space: nowrap;
 	overflow: hidden;
 }
+
+.dnd4eBeta.sheet .items-list .power-detail,
+.dnd4eBeta.sheet.actor .inventory-list .item-controls .power-detail,
+.dnd4eBeta.sheet.actor .inventory-list .item-controls .power-detail.active {
+	color: #e0e0e0;
+	border-right: 0px;
+}
+
 .dnd4eBeta.sheet .items-list .item-detail:last-child {
 	border-right: none;
 }
@@ -1860,8 +1868,7 @@ font-size: 12px;
 .dnd4eBeta.sheet.actor .powers .item-controls .item-toggle {
 	color: #b5b3a4;
 }
-.dnd4eBeta.sheet.actor .inventory .item-controls .item-toggle.active,
-.dnd4eBeta.sheet.actor .powers .item-controls .item-toggle.active {
+.dnd4eBeta.sheet.actor .inventory .item-controls .item-toggle.active {
 	color: #4b4a44;
 }
 .dnd4eBeta.sheet.actor .inventory .item-controls .item-toggle.fixed,
