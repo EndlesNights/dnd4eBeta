@@ -508,6 +508,46 @@ font-size: 12px;
 	align-content: flex-start;
 }
 
+.ability-usage--atwill {
+	background: -o-linear-gradient(45deg, #003c15, #5ee25e);
+	background: linear-gradient(45deg, #003c15, #5ee25e); }
+	.colorBlindRG .ability-usage--atwill {
+	  background: -o-linear-gradient(45deg, #003c15, #087830);
+	  background: linear-gradient(45deg, #003c15, #087830); }
+	.colorBlindBY .ability-usage--atwill {
+	  background: -o-linear-gradient(45deg, #796501, #efde89);
+	  background: linear-gradient(45deg, #796501, #efde89); }
+  
+  .ability-usage--encounter {
+	background: -o-linear-gradient(45deg, #3c0000, #dc0000);
+	background: linear-gradient(45deg, #3c0000, #dc0000); }
+	.colorBlindRG .ability-usage--encountere {
+	  background: -o-linear-gradient(45deg, #003854, #89cdef);
+	  background: linear-gradient(45deg, #003854, #89cdef); }
+	.colorBlindBY .ability-usage--encounter {
+	  background: -o-linear-gradient(45deg, #4e0129, #891c54);
+	  background: linear-gradient(45deg, #4e0129, #891c54); }
+  
+  .ability-usage--daily {
+	background: -o-linear-gradient(45deg, #01003c, #ababab);
+	background: linear-gradient(45deg, #01003c, #ababab); }
+	.colorBlindRG .ability-usage--daily {
+	  background: -o-linear-gradient(45deg, #005748, #42ac9a);
+	  background: linear-gradient(45deg, #005748, #42ac9a); }
+	.colorBlindBY .ability-usage--daily {
+	  background: -o-linear-gradient(45deg, #333300, #9a9a30);
+	  background: linear-gradient(45deg, #333300, #9a9a30); }
+  
+  .ability-usage--other {
+	background: -o-linear-gradient(45deg, #25003c, #dc9ff1a6);
+	background: linear-gradient(45deg, #25003c, #dc9ff1a6); }
+	.colorBlindRG .ability-usage--other {
+	  background: -o-linear-gradient(45deg, #0d0145, #301c89);
+	  background: linear-gradient(45deg, #0d0145, #301c89); }
+	.colorBlindBY .ability-usage--other {
+	  background: -o-linear-gradient(45deg, #0d0145, #301c89);
+	  background: linear-gradient(45deg, #0d0145, #301c89); }
+
 .dnd4eBeta .sheet-header .header-fields {
 	flex: 1;
 	height: 99px;
@@ -735,8 +775,6 @@ font-size: 12px;
 	max-width: 50%;
 }
 
-
-
 .dnd4eBeta.sheet .class-summary {
 	flex: 0 0 100%;
 	height: 60px;
@@ -748,8 +786,13 @@ font-size: 12px;
 	top: 17px;
 	bottom: 1px;
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
-	font-size: 20px;		
+	font-size: 20px;	
 }
+.dnd4eBeta.sheet .sheet-header .header-details .summary input {
+	border: 0;
+	vertical-align: bottom;
+}
+
 .dnd4eBeta.sheet .class-summary li {
 	width: 33.33%;
 	float: left;
@@ -1691,7 +1734,7 @@ font-size: 12px;
 	flex: 0 0 30px;
 	height: 30px;
 	background-size: 30px;
-	margin-right: 5px;
+	/* margin-right: 5px; */
 }
 .dnd4eBeta.sheet .items-list .item .item-name h4 {
 	margin: 0;

@@ -18,7 +18,12 @@
 		<!-- <input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/> -->
 	</div>
 
-	<div>
+	<div class="form-group select">
+		<label>Level</label>
+		<input type="text" name="data.level" value="{{data.level}}"/>
+	</div>
+
+	<div class="form-group select">
 		<label>Power Type</label>
 		<select name="data.powerType">
 			{{#select data.powerType}}
@@ -30,7 +35,7 @@
 			{{/select}}
 		</select>
 	</div>
-	<div>
+	<div class="form-group select">
 		<label>Use Type</label>
 		<select name="data.useType">
 			{{#select data.useType}}
