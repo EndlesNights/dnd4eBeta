@@ -719,6 +719,7 @@
 		"rangeText": "",
 		"rangePower": "",
 		"area": 0,
+		"rechargeRoll": "",
 		"damageShare": false,
 		"target": {
 			"type": "creature",

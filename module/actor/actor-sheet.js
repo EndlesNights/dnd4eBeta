@@ -230,6 +230,7 @@ export class SimpleActorSheet extends ActorSheet {
 		for (const [key, group] of Object.entries(powers)) {
 			group.items?.forEach(item => {
 				this._preparePowerRangeText(item);
+				this._checkPowerAvailable(item);
 			});
 		}
 
@@ -300,7 +301,7 @@ export class SimpleActorSheet extends ActorSheet {
 				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 			};
 		}
-		if(this.object.data.data.powerGroupTypes === "action") {
+		else if(this.object.data.data.powerGroupTypes === "action") {
 			return {
 				standard: { label: "DND4EBETA.ActionStandard", items: [], dataset: {type: "standard"} },
 				move: { label: "DND4EBETA.ActionMove", items: [], dataset: {type: "move"} },
@@ -312,14 +313,22 @@ export class SimpleActorSheet extends ActorSheet {
 				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 			};
 		}
-		return {
+		else return { //"usage"
 			atwill: { label: "DND4EBETA.PowerAt", items: [], dataset: {type: "atwill"} },
 			encounter: { label: "DND4EBETA.PowerEnc", items: [], dataset: {type: "encounter"} },
 			daily: { label: "DND4EBETA.PowerDaily", items: [], dataset: {type: "daily"} },
-			utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
-			class: { label: "Class Power", items: [], dataset: {type: "class"} },
+			// utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
+			recharge: { label: "DND4EBETA.PowerRecharge", items: [], dataset: {type: "recharge"} },
 			other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 		};
+	}
+
+	_checkPowerAvailable(itemData) {
+		if( (itemData.data.uses.value == 0 && itemData.data.uses.max)
+			|| !itemData.data.prepared) {
+				itemData.data.notAvailable = true;
+
+		}
 	}
   /* -------------------------------------------- */
 	/**
@@ -721,6 +730,7 @@ export class SimpleActorSheet extends ActorSheet {
 			itemData.data.actionType = type;
 		}
 		else if(this.object.data.data.powerGroupTypes === "usage") {
+			console.log(type)
 			itemData.data.useType = type;
 		}
 

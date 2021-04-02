@@ -474,6 +474,7 @@ DND4EBETA.powerUseType = {
 	"atwill": "DND4EBETA.PowerAt",
 	"encounter": "DND4EBETA.PowerEnc",
 	"daily": "DND4EBETA.PowerDaily",
+	"recharge": "DND4EBETA.PowerRecharge",
 	// "utility": "DND4EBETA.PowerUtil"
 };
 DND4EBETA.powerSource = {

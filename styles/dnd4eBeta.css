@@ -509,8 +509,8 @@ font-size: 12px;
 }
 
 .ability-usage--atwill {
-	background: -o-linear-gradient(45deg, #003c15, #5ee25e);
-	background: linear-gradient(45deg, #003c15, #5ee25e); }
+	background: -o-linear-gradient(45deg, #125f15, #55aa2e);
+	background: linear-gradient(45deg, #125f15, #55aa2e); }
 	.colorBlindRG .ability-usage--atwill {
 	  background: -o-linear-gradient(45deg, #003c15, #087830);
 	  background: linear-gradient(45deg, #003c15, #087830); }
@@ -529,15 +529,25 @@ font-size: 12px;
 	  background: linear-gradient(45deg, #4e0129, #891c54); }
   
   .ability-usage--daily {
-	background: -o-linear-gradient(45deg, #01003c, #ababab);
-	background: linear-gradient(45deg, #01003c, #ababab); }
+	background: -o-linear-gradient(45deg, #1b1b1d, #ababab);
+	background: linear-gradient(45deg, #1b1b1d, #ababab); }
 	.colorBlindRG .ability-usage--daily {
 	  background: -o-linear-gradient(45deg, #005748, #42ac9a);
 	  background: linear-gradient(45deg, #005748, #42ac9a); }
 	.colorBlindBY .ability-usage--daily {
 	  background: -o-linear-gradient(45deg, #333300, #9a9a30);
 	  background: linear-gradient(45deg, #333300, #9a9a30); }
-  
+
+	.ability-usage--recharge {
+	background: -o-linear-gradient(45deg, #01003c, #71a2ec);
+	background: linear-gradient(45deg, #01003c, #71a2ec); }
+	.colorBlindRG .ability-usage--recharge {
+		background: -o-linear-gradient(45deg, #695702, #decd78);
+		background: linear-gradient(45deg, #695702, #decd78); }
+	.colorBlindBY .ability-usage--recharge {
+		background: -o-linear-gradient(45deg, #01536e, #66cdef);
+		background: linear-gradient(45deg, #01536e, #66cdef); }
+
   .ability-usage--other {
 	background: -o-linear-gradient(45deg, #25003c, #dc9ff1a6);
 	background: linear-gradient(45deg, #25003c, #dc9ff1a6); }
@@ -547,7 +557,7 @@ font-size: 12px;
 	.colorBlindBY .ability-usage--other {
 	  background: -o-linear-gradient(45deg, #0d0145, #301c89);
 	  background: linear-gradient(45deg, #0d0145, #301c89); }
-
+/* 01003c */
 .dnd4eBeta .sheet-header .header-fields {
 	flex: 1;
 	height: 99px;
@@ -1703,7 +1713,7 @@ font-size: 12px;
 .dnd4eBeta.sheet.actor .inventory-list {
 	list-style: none;
 	margin: 0;
-	padding: 0 5px;
+	/* padding: 0 5px; */
 	overflow-y: auto;
 	scrollbar-width: thin;
 	height: calc(100% - 116px) 
@@ -1767,8 +1777,8 @@ font-size: 12px;
 .dnd4eBeta.sheet .items-list .items-header {
 	margin: 2px 0;
 	padding: 0;
-	background: rgba(0, 0, 0, 0.05);
-	border: 2px groove #eeede0;
+	/* background: rgba(0, 0, 0, 0.05);
+	border-bottom: 2px groove #eeede0; */
 	font-weight: bold;
 	line-height: 24px;
 }
@@ -1803,11 +1813,18 @@ font-size: 12px;
 	border-right: 0px;
 }
 
+.dnd4eBeta.sheet .items-list .not-available .power-detail {
+	color: #e0e0e075;
+}
+
 .dnd4eBeta.sheet .items-list .item-detail:last-child {
 	border-right: none;
 }
 .dnd4eBeta.sheet .items-list .item-detail.item-action {
 	flex: 0 0 40px;
+}
+.dnd4eBeta.sheet .items-list .item-detail.item-prep {
+	flex: 0 0 34px;
 }
 .dnd4eBeta.sheet .items-list .item-weight {
 	flex: 0 0 60px;
@@ -1862,7 +1879,7 @@ font-size: 12px;
 }
 .dnd4eBeta.sheet.actor .inventory .item-controls,
 .dnd4eBeta.sheet.actor .powers .item-controls {
-	flex: 0 0 68px;
+	flex: 0 0 48px;
 }
 .dnd4eBeta.sheet.actor .inventory .item-controls .item-toggle,
 .dnd4eBeta.sheet.actor .powers .item-controls .item-toggle {
