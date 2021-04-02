@@ -1777,8 +1777,8 @@ font-size: 12px;
 .dnd4eBeta.sheet .items-list .items-header {
 	margin: 2px 0;
 	padding: 0;
-	/* background: rgba(0, 0, 0, 0.05);
-	border-bottom: 2px groove #eeede0; */
+	background: rgba(0, 0, 0, 0.05);
+	border-bottom: 2px groove #eeede0;
 	font-weight: bold;
 	line-height: 24px;
 }
@@ -1877,7 +1877,9 @@ font-size: 12px;
 	padding: 0.25em 0.5em;
 	border-top: 1px solid #c9c7b8;
 }
-.dnd4eBeta.sheet.actor .inventory .item-controls,
+.dnd4eBeta.sheet.actor .inventory .item-controls{
+	flex: 0 0 68px;
+}
 .dnd4eBeta.sheet.actor .powers .item-controls {
 	flex: 0 0 48px;
 }
