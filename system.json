@@ -2,18 +2,16 @@
 	"name": "dnd4eBeta",
 	"title": "4th Edition Beta",
 	"description": "A minimalist custom test build of 4th Ed.",
-	"version": "0.0.9",
+	"version": "0.1.1",
 	"minimumCoreVersion": "0.7.5",
 	"compatibleCoreVersion": "0.7.9",
 	"templateVersion": 2,
 	"author": "EndlesNights",
 	"esmodules": [
-		"module/dnd4eBeta.js",
-		"module/vue/dnd4eBeta.js"
-	],
+		"module/dnd4eBeta.js"
+		],
 	"styles": [
-		"styles/dnd4eBeta.css",
-		"styles/dnd4eVue.css"
+		"styles/dnd4eBeta.css"
 	],
 	"packs": [],
 	"languages": [
@@ -30,19 +28,7 @@
 	"primaryTokenAttribute": "attributes.hp",
 	"secondaryTokenAttribute": null,
   	"url": "https://github.com/EndlesNights/dnd4eBeta",
-	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/master/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/master/dnd4eBeta.zip",
-	"dependencies": [
-		{
-			"name": "dlopen",
-			"type": "module",
-			"manifest": "https://raw.githubusercontent.com/ForgeVTT/fvtt-module-dlopen/master/module.json"
-		},
-		{
-			"name": "vueport",
-			"type": "module",
-			"manifest": "https://raw.githubusercontent.com/ForgeVTT/fvtt-module-vueport/master/module.json"
-		}
-	]
+	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dev/system.json",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/dev/dnd4eBeta.zip"
 	
 }

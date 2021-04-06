@@ -45,7 +45,7 @@ export class SimpleActorSheet extends ActorSheet {
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",
-				initial: "attributes"
+				initial: "powers" //initial default tab
 			}],
 			dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}],
 			// scrollY: [".desk__content"]
