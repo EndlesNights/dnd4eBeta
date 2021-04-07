@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.1.0
+- Character Sheet compltetly reworked from the ground up.
+- Began standadisation of Player Character template to be more in line with other Foundry Systems to improve universal module use.
+- "health" changed to "attribute.hp"
+- "init" changed to "attribute.init"
+- All powers now inheriet from the same json template of "power"
+- "resistences" is now spelled correctly as "resistances" 
+
 ## Version 0.0.9
 - Fix issue with actor data path value
 - Changes to Implement Weapons seperating how attack bonus work between using phyiscal attacks and damage bonus, and Implement attack and damage bonus.
