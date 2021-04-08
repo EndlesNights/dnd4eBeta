@@ -29,7 +29,7 @@ export class Helper {
 		if(itemData.weaponUse === "default" || itemData.weaponUse === "defaultOH") {
 			let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 			let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
-			
+			console.log(itemData.weaponType)
 			return actor.itemTypes.weapon.find((i) =>  {
 				if(i.data.data.equipped) {
 

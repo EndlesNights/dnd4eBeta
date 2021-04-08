@@ -1764,6 +1764,9 @@ font-size: 12px;
 	width: 24px;
 	text-align: center;
 }
+.dnd4eBeta.sheet .items-list .item .power-detail input {
+	color: #e0e0e0;
+}
 .dnd4eBeta.sheet .items-list .item .item-properties {
 	margin-top: 3px;
 }
