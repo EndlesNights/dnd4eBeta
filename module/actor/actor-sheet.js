@@ -19,7 +19,7 @@ import { Helper } from "../helper.js";
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class SimpleActorSheet extends ActorSheet {
+export class ActorSheet4e extends ActorSheet {
 
   constructor(...args) {
 	super(...args);
@@ -280,7 +280,7 @@ export class SimpleActorSheet extends ActorSheet {
 	}
 
 	_groupPowers(power, powerGroups) {
-		if(this.object.data.data.powerGroupTypes === "type") {
+		if(this.object.data.data.powerGroupTypes === "type" || this.object.data.data.powerGroupTypes == undefined) {
 			if(Object.keys(powerGroups).includes(power.data.powerType) )return power.data.powerType;
 		}
 		if(this.object.data.data.powerGroupTypes === "action") {
@@ -293,7 +293,7 @@ export class SimpleActorSheet extends ActorSheet {
 	}
 	_generatePowerGroups() {
 
-		if(this.object.data.data.powerGroupTypes === "type") {
+		if(this.object.data.data.powerGroupTypes === "type" || this.object.data.data.powerGroupTypes == undefined) {
 			return {
 				class: { label: "Class Power", items: [], dataset: {type: "class"} },
 				race: { label: "Racial Power", items: [], dataset: {type: "race"} },
@@ -723,7 +723,13 @@ export class SimpleActorSheet extends ActorSheet {
 			data: duplicate(header.dataset)
 		};
 
-		if(this.object.data.data.powerGroupTypes === "type") {
+		console.log(type)
+		console.log(this.object.data.data.powerGroupTypes == undefined)
+		if(this.object.data.data.powerGroupTypes == undefined) {
+			console.log("enter")
+		}
+		if(this.object.data.data.powerGroupTypes === "type" || this.object.data.data.powerGroupTypes == undefined) {
+			console.log("enter?")
 			itemData.data.powerType = type;
 		}
 		else if(this.object.data.data.powerGroupTypes === "action") {

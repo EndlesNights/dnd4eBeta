@@ -1,5 +1,7 @@
 # Changelog
 
+## Version 0.1.1
+
 ## Version 0.1.0
 - Character Sheet compltetly reworked from the ground up.
 - Began standadisation of Player Character template to be more in line with other Foundry Systems to improve universal module use.

@@ -185,11 +185,12 @@ export default class ItemSheet4e extends ItemSheet {
 	* @private
 	*/
 	_getItemsWeaponUseTargets(weapon) {
+		
 		const weaponType = weapon.data.weaponType || {};
 		if ( !weaponType ) return [];
 		const actor = this.item.actor;
 		if ( !actor ) return {};
-
+		
 		if (weaponType === "any") {
 			return actor.itemTypes.weapon.reduce((obj, i) =>  {
 				obj[i.id] = `${i.name}`;
@@ -201,6 +202,7 @@ export default class ItemSheet4e extends ItemSheet {
 		let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
 		
 		if ( weaponType === "melee" ) {
+			console.log(actor)
 			return actor.itemTypes.weapon.reduce((obj, i) =>  {
 				if (setMelee.includes(i.data.data.weaponType) ) {
 					obj[i.id] = `${i.name}`;

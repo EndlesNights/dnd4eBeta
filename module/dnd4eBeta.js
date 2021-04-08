@@ -12,12 +12,12 @@ import { registerSystemSettings } from "./settings.js";
 import ItemSheet4e from "./item/sheet.js";
 import { measureDistances, getBarAttribute } from "./canvas.js";
 
-import { SimpleActorSheet } from "./actor/actor-sheet.js";
+import { ActorSheet4e } from "./actor/actor-sheet.js";
 import { DnD4eActorSheetV2 } from './actor/actor-sheet-v2.js';
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
-import { SimpleActor } from "./actor.js";
+import { Actor4e } from "./actor.js";
 import Item4e from "./item/entity.js";
 
 // Import Helpers
@@ -43,7 +43,7 @@ Hooks.once("init", async function() {
 	
 	// Define custom Entity classes
 	CONFIG.DND4EBETA = DND4EBETA;
-	CONFIG.Actor.entityClass = SimpleActor;
+	CONFIG.Actor.entityClass = Actor4e;
 	CONFIG.Item.entityClass = Item4e;
 	
 	// CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffectIcons;
@@ -52,7 +52,7 @@ Hooks.once("init", async function() {
 	registerSystemSettings();
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
-	Actors.registerSheet("dnd4eBeta", SimpleActorSheet, {
+	Actors.registerSheet("dnd4eBeta", ActorSheet4e, {
 		label: "Basic Character Sheet",
 		makeDefault: true
 	});
@@ -92,7 +92,7 @@ Hooks.once("setup", function() {
 
 	// Localize CONFIG objects once up-front
 	const toLocalize = [
-	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes", "damageTypes", "conditionTypes", "consumableTypes", "distanceUnits", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerSource", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
+	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes", "damageTypes", "conditionTypes", "consumableTypes", "distanceUnits", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "launchOrder", "limitedUsePeriods", "powerSource", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
 	];
 
 	const noSort = [

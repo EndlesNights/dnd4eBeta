@@ -7,7 +7,7 @@ import { DND4EBETA } from "./config.js";
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
-export class SimpleActor extends Actor {
+export class Actor4e extends Actor {
 
   /** @override */
   getRollData() {

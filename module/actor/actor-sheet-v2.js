@@ -1,7 +1,7 @@
-import { SimpleActorSheet } from './actor-sheet.js';
+import { ActorSheet4e } from './actor-sheet.js';
 // import { dnd4eBetaPrepopulate } from '../setup/dnd4eBeta-prepopulate.js';
 
-export class DnD4eActorSheetV2 extends SimpleActorSheet {
+export class DnD4eActorSheetV2 extends ActorSheet4e {
   /** @override */
   constructor(...args) {
     super(...args);

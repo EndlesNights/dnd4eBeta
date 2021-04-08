@@ -1,9 +1,9 @@
-<ol class="items-list inventory-list" style="height: 90%;">
+<ol class="items-list inventory-list" style="height: 100%;">
 	<header class="power-filters flexrow">
 		<div class="group-powers">
 			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.groupBy.value">
-			<label for="power-group">GroupBy</label>
-			<select name="data.powerGroupTypes">
+			<label for="power-group">GroupBy</label><br>
+			<select name="data.powerGroupTypes" style="min-width: 128px;">
 				{{#select data.powerGroupTypes}}
 				{{#each config.powerGroupTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
@@ -14,8 +14,8 @@
 
 		<div class="sort-powers">
 			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.sortBy.value">
-			<label for="power-sort">SortyBy</label>
-			<select name="data.powerSortTypes">
+			<label for="power-sort">SortyBy</label><br>
+			<select name="data.powerSortTypes" style="min-width: 128px;">
 				{{#select data.powerSortTypes}}
 				{{#each config.powerSortTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
@@ -25,8 +25,8 @@
 		</div>
 
 		<div class="filter-search-powers">
-			<label for="power-filter-search">Filter</label>
-			<input type="text" name="power-filter-search" placeholder="filtername" id="filterInput" onkeyup="filterPowers()"/>
+			<label for="power-filter-search">Filter</label><br>
+			<input type="text" style="min-width: 168px; margin-right: 2px;" name="power-filter-search" placeholder="Search for power..." id="filterInput" onkeyup="filterPowers()"/>
 		</div>
 	</header>
 
