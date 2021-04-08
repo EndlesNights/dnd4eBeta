@@ -20,8 +20,7 @@ export class Helper {
 			}
 		}
 		return o;
-	}	
-
+	}
 
 	static getWeaponUse(itemData, actor) {
 		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length == 0)) return null;
@@ -33,6 +32,11 @@ export class Helper {
 			
 			return actor.itemTypes.weapon.find((i) =>  {
 				if(i.data.data.equipped) {
+
+					if(itemData.weaponType === "any") {
+						return i;
+					}
+					
 					if(itemData.weaponType === "meleeRanged") {
 						if(setMelee.includes(i.data.data.weaponType) || setRanged.includes(i.data.data.weaponType) )
 							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
@@ -61,20 +65,20 @@ export class Helper {
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
-					else if(itemData.weaponType === "implementA") {
-						if(i.data.data.properties.imp || i.data.data.properties.impA )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
-								return i;
-							else if(itemData.weaponUse === "default")
-								return i;
-					}
-					else if(itemData.weaponType === "implementD") {
-						if(i.data.data.properties.imp || i.data.data.properties.impD )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
-								return i;
-							else if(itemData.weaponUse === "default")
-								return i;
-					}
+					// else if(itemData.weaponType === "implementA") {
+						// if(i.data.data.properties.imp || i.data.data.properties.impA )
+							// if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
+								// return i;
+							// else if(itemData.weaponUse === "default")
+								// return i;
+					// }
+					// else if(itemData.weaponType === "implementD") {
+						// if(i.data.data.properties.imp || i.data.data.properties.impD )
+							// if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
+								// return i;
+							// else if(itemData.weaponUse === "default")
+								// return i;
+					// }
 				}
 			}, {});
 		}
@@ -84,6 +88,7 @@ export class Helper {
 	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula;
+
 		if(actorData) {
 			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
@@ -104,13 +109,78 @@ export class Helper {
 		}
 
 		if(weaponData) {
+			newFormula = newFormula.replace("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) );
+			newFormula = newFormula.replace("@impDamageO", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) );
+
+			newFormula = newFormula.replace("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) : 0);
+			newFormula = newFormula.replace("@impDamage", weaponData.proficientI ? this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) : 0);
 			newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1));
 			newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1));
 			newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1));
+
+			newFormula = newFormula.replace("@profBonusO",weaponData.profBonus);
+			newFormula = newFormula.replace("@profImpBonusO", weaponData.profImpBonus);
+
+			newFormula = newFormula.replace("@profBonus", weaponData.proficient ? weaponData.profBonus : 0);
+			newFormula = newFormula.replace("@profImpBonus", weaponData.proficientI ? weaponData.profImpBonus : 0);
+			newFormula = newFormula.replace("@enhance", weaponData.enhance);
+
 			newFormula = this.replaceData (newFormula, weaponData);
 			
-			newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
-			newFormula = newFormula.replace("@wepDiceDamage", weaponData.diceDamage);
+			
+
+			if(newFormula.includes("@wepDice")) {
+				let parts = weaponData.damageDice.parts;
+				let indexStart = newFormula.indexOf("@wepDice")+8;
+				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
+
+				let weaponNum = newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
+				weaponNum = eval(weaponNum.replace(/[a-z]/gi, ''));
+
+				if(typeof(weaponNum) !== "number") weaponNum = 1;
+
+				let dice = "";
+				for(let i = 0; i< parts.length; i++) {
+					if(!parts[i][0] || !parts[i][1]) continue;
+					if(weaponData.properties.bru) {
+						dice += ` + (${parts[i][0]}*${weaponNum})d(${parts[i][1] - weaponData.brutal}) + (${weaponData.brutal}*${parts[i][0]}*${weaponNum})`;
+					}
+					else{
+						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}`;
+					}
+				}
+				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
+				newFormula = newFormula.replace("@wepDice", dice);
+			}
+
+			if(newFormula.includes("@wepMax")) {
+				let parts = weaponData.damageDice.parts;
+				let dice = "";
+				for(let i = 0; i< parts.length; i++) {
+					if(!parts[i][0] || !parts[i][1]) continue;
+					dice += ` + (${parts[i][0]} * ${parts[i][1]})`
+				}
+				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				newFormula = newFormula.replace("@wepMax", dice);
+			}
+			// if(weaponData.properties.bru) {
+			// 	let index = formula.trim().indexOf("*@wepDiceNum");
+			// 	let wDice = 1;
+			// 	if(index > 0 ) {
+			// 		let check = formula.trim().substring(0,index).match(/\d+$/);
+			// 		wDice = check? check[0] : 1;
+			// 	}
+			// 	newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
+			// 	newFormula = newFormula.replace("@wepDiceDamage", '(' + weaponData.diceDamage + '-'+ weaponData.brutal +') + '+ weaponData.brutal +' * ' + weaponData.diceNum * wDice);
+				
+			// }
+			// else {
+			// 	// newFormula = newFormula.replace("@wepDice", weaponData.damageDice);
+			// 	newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
+			// 	newFormula = newFormula.replace("@wepDiceDamage", weaponData.diceDamage);
+			// }
+
 		} else {
 			//if no weapon is in use replace the weapon keys with nothing.
 			newFormula = newFormula.replace("@wepAttack", "");
@@ -121,6 +191,17 @@ export class Helper {
 			newFormula = newFormula.replace("@wepDiceDamage", "0");			
 		}
 
+		//check for actor values in formula
+		
+		for(let i = 0; i < (newFormula.match(/@/g) || []).length; i++) {
+			let indexStart = newFormula.indexOf('@');
+			let indexEnd = (newFormula + ' ').substring(indexStart).search(/[ /*+-]/);
+			//FIX the regex, get rid of the ' ' and just tell it to search to up to end of string
+
+			let val = typeof this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) === 'number' ?
+				this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) : '';
+			newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
+		}
 		return newFormula;
 	}
   /**

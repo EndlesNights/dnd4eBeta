@@ -6,8 +6,8 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "actor-flags",
-			classes: ["dnd4ealtus", "actor-rest"],
-			template: "systems/dnd4ealtus/templates/apps/attribute-bonuses.html",
+			classes: ["dnd4eAltus", "actor-rest"],
+			template: "systems/dnd4eAltus/templates/apps/attribute-bonuses.html",
 			width: 500,
 			closeOnSubmit: false,
 			submitOnClose: true
@@ -25,7 +25,7 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 		return {bonusData: data.bonus, data: data, options: this.options};
 	}
 	
-	async _updateObject(event, formData) {	
+	async _updateObject(event, formData) {
 		const updateData = {};
 
 		let newBonus = [{}];
@@ -39,7 +39,13 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 		updateData[`${this.options.target}.bonus`] = newBonus;
 		if(this.options?.skill) {
 			updateData[`${this.options.target}.armourCheck`] = formData["data.armourCheck"];
-			this.position.height = Math.max(1, count) * 76 + 118;
+			this.position.height = Math.max(1, count) * 76 + 119;
+		} else if(this.options?.ac) {
+			updateData[`${this.options.target}.light`] = formData["data.light"];
+			updateData[`${this.options.target}.altability`] = formData["data.altability"];
+			this.position.height = Math.max(1, count) * 76 + 124;
+		} else if(this.options?.init) {
+			updateData[`${this.options.target}.ability`] = formData["data.ability"];
 		} else {
 			this.position.height = Math.max(1, count) * 76 + 91;
 		}

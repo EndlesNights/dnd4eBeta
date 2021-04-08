@@ -29,24 +29,28 @@
 					"chat": "@name uses @label."
 				}
 			},
-			"biography": "",
-			"health": {
-				"value": 10,
-				"min": 0,
-				"max": 10,
-				"starting": 10,
-				"perlevel": 5,
-				"feat": 0,
-				"misc": 0,
-				"autototal": false,
-				"temprest": false
-			},		
-			"init": {
-				"value": 0,
-				"ability": "dex",
-				"bonus": [{}],
-				"notes": ""
+			"attribute": {
+				"hp": {
+					"value": 10,
+					"min": 0,
+					"max": 10,
+					"starting": 10,
+					"perlevel": 5,
+					"feat": 0,
+					"misc": 0,
+					"autototal": false,
+					"temprest": false,
+					"temphp": 0
+				},
+				"init": {
+					"value": 0,
+					"ability": "dex",
+					"bonus": [{}],
+					"notes": ""
+				}
 			},
+			
+			"biography": "",		
 			"actionpoints":	{
 				"value": 1,
 				"encounteruse": false,
@@ -127,10 +131,10 @@
 				"alignment": "",
 				"deity": "",
 				
-				"temphp": "",
 				"secondwind": false,
 				"deathsaves": 3,
 				"deathsavefail": null,
+				"deathsaveCrit": 20,
 				"deathsavebon": {
 					"bonus": [{}],
 					"value": 0
@@ -152,8 +156,8 @@
 					"value": 0
 				},
 				"saves": {
-					"value": [],
-					"custom": ""
+					"bonus": [{}],
+					"value": 0
 				}
 			},
 			"languages": {
@@ -254,7 +258,6 @@
 					"value": 0,
 					"bonus": [{}],
 					"ability": "int",
-					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"hea": {
@@ -303,7 +306,6 @@
 					"value": 0,
 					"bonus": [{}],
 					"ability": "wis",
-					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
 				"rel": {
@@ -347,7 +349,7 @@
 					"bonus": [{}]
 				}
 			},
-			"resistences": {
+			"resistances": {
 				"damage": {
 					"value": 0,
 					"armour": 0,
@@ -446,10 +448,11 @@
 				"cp": 0
 			},
 			"ritualcomp": {
-				"ad" : 0,
+				"ar" : 0,
+				"ms" : 0,
 				"rh" : 0,
 				"si" : 0,
-				"mc" : 0
+				"rs" : 0
 			},
 			"attributes": {}			
 		}
@@ -462,308 +465,304 @@
 	}	
 },
 "Item": {
-    "types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power", "atwill", "encounter", "daily", "utility"],
-    "templates": {
-      "itemDescription": {
-        "description": {
-          "value": "",
-          "chat": "",
-          "unidentified": ""
-        },
-        "source": ""
-      },
-      "physicalItem": {
-        "quantity": 1,
-        "weight": 0,
-        "price": 0,
-        "attuned": false,
-        "equipped": false,
-        "rarity": "",
-        "identified": true
-      },
-      "activatedEffect": {
-        "activation": {
-          "type": "",
-          "cost": 0,
-          "condition": ""
-        },
-        "duration": {
-          "value": null,
-          "units": ""
-        },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
-        "range": {
-          "value": null,
-          "long": null,
-          "units": ""
-        },
-        "uses": {
-          "value": 0,
-          "max": 0,
-          "per": null
-        },
-        "consume": {
-          "type": "",
-          "target": null,
-          "amount": null
-        }
-      },
-      "action": {
-        "ability": null,
-        "actionType": null,
-        "attackBonus": 0,
-        "chatFlavor": "",
-        "critical": null,
-        "damage": {
-          "parts": [],
-          "versatile": ""
-        },
-        "damageCrit": {
-          "parts": [],
-          "versatile": ""
-        },
-        "formula": "",
-        "save": {
-          "ability": "",
-          "dc": null,
-          "scaling": "spell"
-        }
-      },
-      "mountable": {
-        "armour": {
-          "value": 10
-        },
-        "hp": {
-          "value": 0,
-          "max": 0,
-          "dt": null,
-          "conditions": ""
-        }
-      },
-		"power": {
-			"keyWords": [""],
-			"powersource": "martial",
-			"subName": "",
-			"prepared": true,
-			"useType": "power",
-			"actionType": "standard",
-			"requirements": "",
-			"weaponType": "melee",
-			"weaponUse": "default",
-			"rangeType": "weapon",
-			"rangePower": "",
-			"area": 0,
+	"types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"],
+	"templates": {
+		"itemDescription": {
+			"description": {
+				"value": "",
+				"chat": "",
+				"unidentified": ""
+			},
+			"source": ""
+		},
+		"physicalItem": {
+			"quantity": 1,
+			"weight": 0,
+			"price": 0,
+			"attuned": false,
+			"equipped": false,
+			"rarity": "",
+			"identified": true
+		},
+		"activatedEffect": {
+			"activation": {
+				"type": "",
+				"cost": 0,
+				"condition": ""
+			},
+			"duration": {
+				"value": null,
+				"units": ""
+			},
 			"target": {
-				"type": "creature",
-				"num": 1
+				"value": null,
+				"width": null,
+				"units": "",
+				"type": ""
 			},
-			"attack": {
-				"isAttack": true,
-				"ability": "str",
-				"abilityBonus": 0,
-				"def": "ac",
-				"defBonus": 0,
-				"formula": "1d20+@wepAttack+@powerMod",
-				"damageType": {},
-				"effectType": {}
+			"range": {
+				"value": null,
+				"long": null,
+				"units": ""
 			},
-			"hit": {
-				"isDamage": true,
-				"detail": "1[W] + Strength modifier damage.",
-				"formula": "(1*@wepDiceNum) d@wepDiceDamage + @powerMod + @wepDamage",
-				"critFormula": "1*@wepDiceNum*@wepDiceDamage+@powerMod+@wepCritBonus"
+			"uses": {
+				"value": 0,
+				"max": 0,
+				"per": null
 			},
-			"miss": {
-				"detail": "Half Damage.",
-				"formula": "@{damageFormula}/2"
+			"consume": {
+				"type": "",
+				"target": null,
+				"amount": null
+			}
+		},
+		"action": {
+			"ability": null,
+			"actionType": null,
+			"attackBonus": 0,
+			"chatFlavor": "",
+			"critical": null,
+			"damage": {
+				"parts": [],
+				"versatile": ""
 			},
-			"effect": {
-				"detail": ""
+			"damageCrit": {
+				"parts": [],
+				"versatile": ""
 			},
-			"trigger": "",
-			"requirement": "",
-			"special": ""
-		}	  
-    },
-    "backpack": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect"],
-      "capacity": {
-        "type": "weight",
-        "value": 0,
-        "weightless": false
-      },
-      "currency": {
-        "cp": 0,
-        "sp": 0,
-        "ep": 0,
-        "gp": 0,
-        "pp": 0
-      }
-    },
-    "classFeats": {
-      "templates": ["itemDescription"],
-	  "class": "",
-      "hitFistLevel": 10,
-      "hitPerLevel": 5,
-      "surgePerDay": 5,
-      "skills": {
-        "number": 2,
-        "choices": [],
-        "value": []
-      },
-	  "def": {
+			"damageImp": {
+				"parts": [],
+				"versatile": ""
+			},
+			"damageCritImp": {
+				"parts": [],
+				"versatile": ""
+			},
+			"formula": "",
+			"save": {
+				"ability": "",
+				"dc": null,
+				"scaling": "spell"
+			}
+		},
+		"mountable": {
+			"armour": {
+				"value": 10
+			},
+			"hp": {
+				"value": 0,
+				"max": 0,
+				"dt": null,
+				"conditions": ""
+			}
+		},
+		"itemMacro": {
+			"macro": {
+				"type": "script",
+				"scope": "global",
+				"launchOrder": "off",
+				"command": "",
+				"author": ""
+			}
+		}
+	},
+	"backpack": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+		"capacity": {
+		"type": "weight",
+		"value": 0,
+		"weightless": false
+		},
+		"currency": {
+		"cp": 0,
+		"sp": 0,
+		"ep": 0,
+		"gp": 0,
+		"pp": 0
+		}
+	},
+	"classFeats": {
+		"templates": ["itemDescription", "itemMacro"],
+		"class": "",
+		"hitFistLevel": 10,
+		"hitPerLevel": 5,
+		"surgePerDay": 5,
+		"skills": {
+		"number": 2,
+		"choices": [],
+		"value": []
+		},
+		"def": {
 		"ac": 0,
 		"fort": 0,
 		"ref": 0,
 		"wil": 0
-	  },
-	  "proficiencies": {
+		},
+		"proficiencies": {
 		"weapons": [],
 		"armour": []
-	  }
-    },
-    "consumable": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect", "action"],
-      "consumableType": "potion",
-      "uses": {
-        "autoDestroy": false
-      }
-    },
-    "equipment": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable"],
-      "armour": {
-        "type": "armour",
-		"subType": "cloth",
-        "ac": 0,
-		"fort": 0,
-		"ref": 0,
-		"wil": 0,
-        "dex": null,
-		"movePen": false,
-		"movePenValue": 0,
-		"skillCheck": false,
-		"skillCheckValue": 0,
-        "damageRes": {
-          "parts": []
-        }		
-      },
-      "speed": {
-        "value": null,
-        "conditions": ""
-      },
-      "strength": 0,
-      "stealth": false,
-      "proficient": true
-    },
-    "feat": {
-      "templates": ["itemDescription", "activatedEffect", "action"],
-      "requirements": "",
-      "recharge": {
-        "value": null,
-        "charged": false
-      }
-    },
-    "loot": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect"]
-    },
-    "tool": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect"],
-      "attribute": "abilities.int.mod",
-      "chatFlavor": "",
-      "formula": "",
-      "bonus": 2
-    },
-    "weapon": {
-      "templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable"],
-      "weaponType": "simpleM",
-	  "weaponHand": "HMain",
-      "properties": {},
-      "proficient": true,
-	  
-	  "profBonus": 0,
-	  "enhance": 0,
-	  "isRanged": false,
-	  "range": {"value": 5, "long": 10},
-	  "diceNum": 0,
-	  "diceDamage": 0,
-	  "damageType": {"physical":true},
-	  "weaponGroup": {},
-	  "attackForm": "@profBonus+@enhance",
-	  "damageForm": "@enhance",
-	  "critDamageForm": "@enhance+@enhance d6",
-	  "critRange": 20
-    },
-    "raceFeats": {
-      "templates": ["itemDescription", "activatedEffect", "action"],
-      "requirements": "",
-      "recharge": {
-        "value": null,
-        "charged": false
-      }
-    },
-    "pathFeats": {
-      "templates": ["itemDescription", "activatedEffect", "action"],
-      "requirements": "",
-      "recharge": {
-        "value": null,
-        "charged": false
-      }
-    },
-    "destinyFeats": {
-      "templates": ["itemDescription", "activatedEffect", "action"],
-      "requirements": "",
-      "recharge": {
-        "value": null,
-        "charged": false
-      }
-    },
-    "ritual": {
-      "templates": ["itemDescription", "activatedEffect", "action"],
-      "requirements": "",
-      "recharge": {
-        "value": null,
-        "charged": false
-      }
-    },
-	"atwill": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action"],
-		"keyWords": ["At-Will"],
-		"useType": "atw"
+		}
 	},
-	"encounter": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action"],
-		"keyWords": ["Encounter"],
-		"useType": "enc",
+	"consumable": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "itemMacro"],
+		"consumableType": "potion",
 		"uses": {
-          "value": 1,
-          "max": 1,
-          "per": "enc"
-        }
+		"autoDestroy": false
+		}
 	},
-	"daily": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action"],
-		"keyWords": ["Daily"],
-		"useType": "day",
-		"uses": {
-          "value": 1,
-          "max": 1,
-          "per": "day"
-        }
+	"equipment": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable", "itemMacro"],
+		"armour": {
+			"type": "armour",
+			"subType": "cloth",
+			"ac": 0,
+			"fort": 0,
+			"ref": 0,
+			"wil": 0,
+			"dex": null,
+			"movePen": false,
+			"movePenValue": 0,
+			"skillCheck": false,
+			"skillCheckValue": 0,
+			"damageRes": {
+				"parts": []
+			}		
+		},
+		"speed": {
+		"value": null,
+		"conditions": ""
+		},
+		"strength": 0,
+		"stealth": false,
+		"proficient": true
 	},
-	"utility": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action"],
-		"keyWords": ["Encounter"],
-		"useType": "enc",
-		"uses": {
-          "value": 1,
-          "max": 1,
-          "per": "enc"
-        }
+	"feat": {
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"requirements": "",
+		"recharge": {
+		"value": null,
+		"charged": false
+		}
+	},
+	"loot": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"]
+	},
+	"tool": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+		"attribute": "abilities.int.mod",
+		"chatFlavor": "",
+		"formula": "",
+		"bonus": 2
+	},
+	"weapon": {
+		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable", "itemMacro"],
+		"weaponType": "simpleM",
+		"weaponHand": "HMain",
+		"properties": {},
+		"proficient": true,
+		"proficientI": false,
+		"profBonus": 0,
+		"profImpBonus": 0,
+		"enhance": 0,
+		"isRanged": false,
+		"range": {"value": 5, "long": 10},
+		"damageDice": {
+			"parts": [["1","8"]]
+		},
+		"damageType": {"physical":true},
+		"brutalNum": 1,
+		"weaponGroup": {},
+		"attackForm": "@profBonus+@enhance",
+		"attackFormImp": "",
+		"damageForm": "@enhance",
+		"damageFormImp": "",
+		"critDamageForm": "@enhance+@enhance d6",
+		"critDamageFormImp": "",
+		"critRange": 20,
+		"critRangeImp": 20
+	},
+	"raceFeats": {
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"requirements": "",
+		"recharge": {
+		"value": null,
+		"charged": false
+		}
+	},
+	"pathFeats": {
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"requirements": "",
+		"recharge": {
+		"value": null,
+		"charged": false
+		}
+	},
+	"destinyFeats": {
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"requirements": "",
+		"recharge": {
+		"value": null,
+		"charged": false
+		}
+	},
+	"ritual": {
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"requirements": "",
+		"recharge": {
+		"value": null,
+		"charged": false
+		}
+	},
+	"power": {
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"keyWords": [""],
+		"level": "1",
+		"powersource": "martial",
+		"subName": "",
+		"prepared": true,
+		"powerType": "class",
+		"useType": "atwill",
+		"actionType": "standard",
+		"requirements": "",
+		"weaponType": "melee",
+		"weaponUse": "default",
+		"rangeType": "weapon",
+		"rangeTextShort": "",
+		"rangeText": "",
+		"rangePower": "",
+		"area": 0,
+		"rechargeRoll": "",
+		"damageShare": false,
+		"target": {
+			"type": "creature",
+			"num": 1
+		},
+		"attack": {
+			"isAttack": true,
+			"ability": "str",
+			"abilityBonus": 0,
+			"def": "ac",
+			"defBonus": 0,
+			"formula": "1d20+@wepAttack+@powerMod",
+			"damageType": {},
+			"effectType": {}
+		},
+		"hit": {
+			"isDamage": true,
+			"detail": "1[W] + Strength modifier damage.",
+			"formula": "@wepDice(1) + @powerMod + @wepDamage",
+			"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"
+		},
+		"miss": {
+			"detail": "Half Damage.",
+			"formula": "@{damageFormula}/2"
+		},
+		"effect": {
+			"detail": ""
+		},
+		"trigger": "",
+		"requirement": "",
+		"special": ""
 	}
-  }
+}
 }

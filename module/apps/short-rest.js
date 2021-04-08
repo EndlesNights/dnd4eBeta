@@ -4,8 +4,8 @@ export class ShortRestDialog extends BaseEntitySheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "actor-flags",
-			classes: ["dnd4ealtus", "actor-rest"],
-			template: "systems/dnd4ealtus/templates/apps/short-rest.html",
+			classes: ["dnd4eAltus", "actor-rest"],
+			template: "systems/dnd4eAltus/templates/apps/short-rest.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -25,7 +25,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 		
 		
 		const updateData = {};
-		updateData[`data.health.value`] = this.object.data.data.health.value;
+		updateData[`data.attribute.hp.value`] = this.object.data.data.attribute.hp.value;
 		
 		if(formData.surge > 0)
 		{
@@ -51,21 +51,21 @@ export class ShortRestDialog extends BaseEntitySheet {
 				healamount += this.object.data.data.details.surgeValue + r.total;
 			}
 
-			updateData[`data.health.value`] = Math.min(
-				(this.object.data.data.health.value + healamount),
-				this.object.data.data.health.max
+			updateData[`data.attribute.hp.value`] = Math.min(
+				(this.object.data.data.attribute.hp.value + healamount),
+				this.object.data.data.attribute.hp.max
 			);
 		
 			if(this.object.data.data.details.surgeCur > 0)
 				updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeCur - formData.surge;
 			
 		}
-		else if(formData.surge == 0 && this.object.data.data.health.value <= 0)
+		else if(formData.surge == 0 && this.object.data.data.attribute.hp.value <= 0)
 		{
-			updateData[`data.health.value`] = 1;
+			updateData[`data.attribute.hp.value`] = 1;
 		}
 		
-		if(!this.object.data.data.health.temprest)
+		if(!this.object.data.data.attribute.hp.temprest)
 			updateData[`data.details.temp`] = "";
 		
 		updateData[`data.details.secondwind`] = false;
@@ -87,7 +87,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 			user: game.user._id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
-			content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.health.value`] - this.object.data.data.health.value) + " HP."
+			content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attribute.hp.value`] - this.object.data.data.attribute.hp.value) + " HP."
 			//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 		});		
 		

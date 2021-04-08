@@ -1,0 +1,77 @@
+<div class="list-gen">
+    <input type="text" name="data.details.gender" value="{{data.details.gender}}" title="{{localize "DND4EALTUS.Gender"}}"  placeholder="{{localize "DND4EALTUS.Gender"}}" onClick="this.select();"/>
+</div>
+<div class="list-age">
+    <input type="text" name="data.details.age" value="{{data.details.age}}" title="{{localize "DND4EALTUS.Age"}}"  placeholder="{{localize "DND4EALTUS.Age"}}" onClick="this.select();"/>
+</div>					
+<div class="list-age">	
+    <input type="text" name="data.details.height" value="{{data.details.height}}" title="{{localize "DND4EALTUS.Height"}}"  placeholder="{{localize "DND4EALTUS.Height"}}" onClick="this.select();"/>
+</div>
+<div class="list-age">	
+    <input type="text" name="data.details.weight" value="{{data.details.weight}}" title="{{localize "DND4EALTUS.Weight"}}"  placeholder="{{localize "DND4EALTUS.Weight"}}" onClick="this.select();"/>
+</div>
+<div class="form-group">
+    <label style="font-weight: normal;">{{localize "DND4EALTUS.Size"}}:</label>
+    <select class="actor-size" name="data.details.size">
+        {{#select data.details.size}}
+        {{#each config.actorSizes as |label size|}}
+            <option value="{{size}}">{{label}}</option>
+        {{/each}}
+        {{/select}}
+    </select>
+</div>		
+
+{{!-- Languages --}}
+<div><!-- <div class="attribute-init resource-full languages"> -->
+    <h4 class="attribute-name box-title">Languages</h4>
+    <a class="trait-selector" data-options="spoken" data-target="data.languages.spoken">
+        <span>Spoken</span>
+        <i class="fas fa-edit"></i>
+    </a>
+    <ul class="traits-list" style="list-style-type: none;">
+    {{#each data.languages.spoken.selected as |v k|}}
+        <li class="tag {{k}}">{{v}}</li>
+    {{/each}}
+    </ul>
+    
+    <a class="trait-selector" data-options="script" data-target="data.languages.script">
+        <span>Script</span>
+        <i class="fas fa-edit"></i>
+    </a>
+    <ul class="traits-list" style="list-style-type: none;">
+    {{#each data.languages.script.selected as |v k|}}
+        <li class="tag {{k}}">{{v}}</li>
+    {{/each}}
+    </ul>					
+</div>
+
+{{!-- Senses --}}
+<div><!-- <div class="attribute-init resource-full movement"> -->
+    <h4 class="attribute-name box-title">Special Senses</h4>    
+    <div style="text-align: left;">
+        <a class="trait-selector-senses" data-options="vision" data-target="data.senses.vision">
+            <span>Vision</span>
+            <i class="fas fa-edit"></i>
+        </a>
+        <ul class="traits-list" style="list-style-type: none;">
+        {{#each data.senses.vision.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+        
+        <a class="trait-selector-senses" data-options="special" data-target="data.senses.special">
+            <span>special Senses</span>
+            <i class="fas fa-edit"></i>
+        </a>
+        <ul class="traits-list" style="list-style-type: none;">
+        {{#each data.senses.special.selected as |v k|}}
+            <li class="tag {{k}}">{{v}}</li>
+        {{/each}}
+        </ul>
+
+        <!-- <span>Other:</span> -->
+        <input type="text" name="data.senses.notes" value="{{data.senses.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
+    </div>
+</div>
+
+{{editor content=data.biography target="data.biography" button=true owner=owner editable=editable}}

@@ -12,6 +12,7 @@ ______      ______   ___  _____     ___  _ _
 __________________________________________________________`;
 
 
+
 /**
  * The set of Ability Scores used within the system
  * @type {Object}
@@ -105,6 +106,16 @@ DND4EALTUS.abilityActivationTypes = {
   // "special": DND4EALTUS.timePeriods.spec
 };
 
+DND4EALTUS.abilityActivationTypesShort = {
+  "none": "DND4EALTUS.NoneShort",
+  "standard": "DND4EALTUS.ActionStandardShort",
+  "move": "DND4EALTUS.ActionMoveShort",
+  "minor": "DND4EALTUS.ActionMinorShort",
+  "free": "DND4EALTUS.ActionFreeShort",
+  "reaction": "DND4EALTUS.ActionReactionShort",
+  "interrupt": "DND4EALTUS.ActionInterruptShort",
+  "opportunity": "DND4EALTUS.ActionOpportunityShort",
+};
 /* -------------------------------------------- */
 
 
@@ -174,6 +185,15 @@ DND4EALTUS.limitedUsePeriods = {
   "charges": "DND4EALTUS.Charges"
 };
 
+/* -------------------------------------------- */
+
+DND4EALTUS.launchOrder = {
+	"both": "DND4EALTUS.LaunchOrderBoth",
+	"off": "DND4EALTUS.LaunchOrderOff",
+	"pre": "DND4EALTUS.LaunchOrderPre",
+	"post": "DND4EALTUS.LaunchOrderPost",
+	"sub": "DND4EALTUS.LaunchOrderSub"
+}
 
 /* -------------------------------------------- */
 
@@ -296,20 +316,20 @@ DND4EALTUS.currencyConversion = {
 
 /* -------------------------------------------- */
 
-// DND4EALTUS.ritualcomponents = {
-	// "ar": "DND4EALTUS.RitualCompAR",
-	// "ms": "DND4EALTUS.RitualCompMS",
-	// "rh": "DND4EALTUS.RitualCompRH",
-	// "si": "DND4EALTUS.RitualCompSI",
-	// "rs": "DND4EALTUS.RitualCompRS"
-// };
-
 DND4EALTUS.ritualcomponents = {
-	"ad": "DND4EALTUS.RitualCompAD",
+	"ar": "DND4EALTUS.RitualCompAR",
+	"ms": "DND4EALTUS.RitualCompMS",
 	"rh": "DND4EALTUS.RitualCompRH",
 	"si": "DND4EALTUS.RitualCompSI",
-	"mc": "DND4EALTUS.RitualCompMC"
+	"rs": "DND4EALTUS.RitualCompRS"
 };
+
+// DND4EALTUS.ritualcomponents = {
+	// "ad": "DND4EALTUS.RitualCompAD",
+	// "rh": "DND4EALTUS.RitualCompRH",
+	// "si": "DND4EALTUS.RitualCompSI",
+	// "mc": "DND4EALTUS.RitualCompMC"
+// };
 
 
 /* -------------------------------------------- */
@@ -388,13 +408,16 @@ DND4EALTUS.encumbrance = {
  */
 DND4EALTUS.targetTypes = {
   "none": "DND4EALTUS.None",
-  "Personal": "DND4EALTUS.TargetPersonal",
-  "creature": "DND4EALTUS.TargetCreature",
   "ally": "DND4EALTUS.TargetAlly",
+  "creature": "DND4EALTUS.TargetCreature",
   "enemy": "DND4EALTUS.TargetEnemy",
+  "personal": "DND4EALTUS.TargetPersonal",
   "object": "DND4EALTUS.TargetObject",
   "square": "DND4EALTUS.TargetSquare",
-  "wall": "DND4EALTUS.TargetWall"
+  "wall": "DND4EALTUS.TargetWall",
+  "allyA": "DND4EALTUS.TargetAllyAdjacent",
+  "creatureA": "DND4EALTUS.TargetCreatureAdjacent",
+  "enemyA": "DND4EALTUS.TargetEnemyAdjacent",
 };
 
 
@@ -440,14 +463,20 @@ DND4EALTUS.healingTypes = {
  */
 DND4EALTUS.hitDieTypes = ["d6", "d8", "d10", "d12"];
 
-
 /* -------------------------------------------- */
+
+DND4EALTUS.powerType = {
+	"class": "DND4EALTUS.Class",
+	"race": "DND4EALTUS.Race",
+	"utility": "DND4EALTUS.PowerUtil"
+};
 
 DND4EALTUS.powerUseType = {
 	"atwill": "DND4EALTUS.PowerAt",
 	"encounter": "DND4EALTUS.PowerEnc",
 	"daily": "DND4EALTUS.PowerDaily",
-	"utility": "DND4EALTUS.PowerUtil"
+	"recharge": "DND4EALTUS.PowerRecharge",
+	// "utility": "DND4EALTUS.PowerUtil"
 };
 DND4EALTUS.powerSource = {
 	"arcane": "DND4EALTUS.Arcane",
@@ -458,6 +487,21 @@ DND4EALTUS.powerSource = {
 	"primal": "DND4EALTUS.Primal",
 	"psionic": "DND4EALTUS.Psionic",
 	"shadow": "DND4EALTUS.Shadow",
+};
+
+DND4EALTUS.powerGroupTypes = {
+	"type": "DND4EALTUS.Type",
+	"action": "DND4EALTUS.Action",
+	"usage": "DND4EALTUS.Usage",
+};
+
+DND4EALTUS.powerSortTypes = {
+	"name": "DND4EALTUS.Name",
+	"level": "DND4EALTUS.Level",
+	"actionType": "DND4EALTUS.Action",
+	"rangeTextShort": "DND4EALTUS.Range",
+	"use.value": "DND4EALTUS.Used",
+	"none": "DND4EALTUS.None",
 };
 
 /* -------------------------------------------- */
@@ -484,9 +528,8 @@ DND4EALTUS.weaponType = {
 	"meleeRanged": "DND4EALTUS.WeaponMeleeRanged",
 	"ranged": "DND4EALTUS.WeaponRanged",
 	"implement": "DND4EALTUS.WeaponPropertiesImp",
-	"implementA": "DND4EALTUS.WeaponImplementA",
-	"implementD": "DND4EALTUS.WeaponImplementD",
 	"none": "DND4EALTUS.None",
+	"any": "DND4EALTUS.AnyW",
 };
 
 DND4EALTUS.rangeType = {
@@ -498,7 +541,7 @@ DND4EALTUS.rangeType = {
 	"rangeBlast": "DND4EALTUS.rangeBlast",
 	"wall": "DND4EALTUS.rangeWall",
 	"personal": "DND4EALTUS.rangePersonal",
-	
+	"touch": "DND4EALTUS.rangeTouch",
 };
 
 DND4EALTUS.effectTypes = {
@@ -558,7 +601,7 @@ DND4EALTUS.saves = {
 /* -------------------------------------------- */
 
 /**
- * The set of skill which can be trained in D&D4eAltus
+ * The set of skill which can be trained in D&D4eltus
  * @type {Object}
  */
 DND4EALTUS.skills = {
@@ -669,8 +712,6 @@ DND4EALTUS.weaponProperties = {
   "def": "DND4EALTUS.WeaponPropertiesDef",
   "hic": "DND4EALTUS.WeaponPropertiesHic",
   "imp": "DND4EALTUS.WeaponPropertiesImp",
-  "impA": "DND4EALTUS.WeaponPropertiesImpA",
-  "impD": "DND4EALTUS.WeaponPropertiesImpD",
   "lof": "DND4EALTUS.WeaponPropertiesLof",
   "lom": "DND4EALTUS.WeaponPropertiesLom",
   "off": "DND4EALTUS.WeaponPropertiesOff",
@@ -817,7 +858,7 @@ DND4EALTUS.trainingLevels = {
 // Condition Types
 DND4EALTUS.conditionTypes = {
 	"blinded": "DND4EALTUS.ConBlinded",
-	"bloodied": "DND4EBETA.ConBlood",
+	"bloodied": "DND4EALTUS.ConBlood",
 	"dazed": "DND4EALTUS.ConDazed",
 	"deafened": "DND4EALTUS.ConDeafened",
 	"dominated": "DND4EALTUS.ConDominated",
@@ -836,23 +877,268 @@ DND4EALTUS.conditionTypes = {
 	"weakened": "DND4EALTUS.ConWeakened",
 };
 
+
+DND4EALTUS.statusEffect = [
+	//row 1
+	{
+		id: "mark_1",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eAltus/icons/statusEffects/mark_1.svg"
+	},
+	{
+		id: "mark_2",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eAltus/icons/statusEffects/mark_2.svg"
+	},
+	{
+		id: "mark_3",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eAltus/icons/statusEffects/mark_3.svg"
+	},
+	{
+		id: "mark_4",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eAltus/icons/statusEffects/mark_4.svg"
+	},
+	{
+		id: "mark_5",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eAltus/icons/statusEffects/mark_5.svg"
+	},
+	{
+		id: "mark_6",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eAltus/icons/statusEffects/mark_6.svg"
+	},
+	{
+		id: "mark_7",
+		label: "EFFECT.statusMark",
+		icon: "systems/dnd4eAltus/icons/statusEffects/mark_7.svg"
+	},
+	//row 2
+	{
+		id: "bloodied",
+		label: "EFFECT.statusBloodied",
+		icon: "systems/dnd4eAltus/icons/statusEffects/bloodied.svg"
+	},
+	{
+		id: "attack_up",
+		label: "EFFECT.statusAttackUp",
+		icon: "systems/dnd4eAltus/icons/statusEffects/attack_up.svg"
+	},
+	{
+		id: "attack_down",
+		label: "EFFECT.statusAttackDown",
+		icon: "systems/dnd4eAltus/icons/statusEffects/attack_down.svg"
+	},
+	{
+		id: "defUp",
+		label: "EFFECT.statusDefUp",
+		icon: "systems/dnd4eAltus/icons/statusEffects/def_up.svg"
+	},
+	{
+		id: "defDown",
+		label: "EFFECT.statusDefDown",
+		icon: "systems/dnd4eAltus/icons/statusEffects/def_down.svg"
+	},
+	{
+		id: "regen",
+		label: "EFFECT.statusRegen",
+		icon: "systems/dnd4eAltus/icons/statusEffects/regen.svg"
+	},
+	{
+		id: "ammo_count",
+		label: "EFFECT.statusAmmoCount",
+		icon: "systems/dnd4eAltus/icons/statusEffects/ammo_count.svg"
+	},
+	//row 3
+	{
+		id: "curse",
+		label: "EFFECT.statusCurse",
+		icon: "systems/dnd4eAltus/icons/statusEffects/curse.svg"
+	},
+	{
+		id: "oath",
+		label: "EFFECT.statusOath",
+		icon: "systems/dnd4eAltus/icons/statusEffects/oath.svg"
+	},
+	{
+		id: "hunter_mark",
+		label: "EFFECT.statusHunterMark",
+		icon: "systems/dnd4eAltus/icons/statusEffects/hunter_mark.svg"
+	},
+	{
+		id: "target",
+		label: "EFFECT.statusTarget",
+		icon: "systems/dnd4eAltus/icons/statusEffects/target.svg"
+	},
+	{
+		id: "ongoing_1",
+		label: "EFFECT.statusOngoing1",
+		icon: "systems/dnd4eAltus/icons/statusEffects/ongoing_1.svg"
+	},
+	{
+		id: "ongoing_2",
+		label: "EFFECT.statusOngoing2",
+		icon: "systems/dnd4eAltus/icons/statusEffects/ongoing_2.svg"
+	},
+	{
+		id: "ongoing_3",
+		label: "EFFECT.statusOngoing3",
+		icon: "systems/dnd4eAltus/icons/statusEffects/ongoing_3.svg"
+	},
+	//row 4
+	{
+		id: "mounted",
+		label: "EFFECT.statusMounted",
+		icon: "systems/dnd4eAltus/icons/statusEffects/mounted.svg"
+	},
+	{
+		id: "removed",
+		label: "EFFECT.statusRemoved",
+		icon: "systems/dnd4eAltus/icons/statusEffects/removed.svg"
+	},
+	{
+		id: "blinded",
+		label: "EFFECT.statusBlind",
+		icon: "systems/dnd4eAltus/icons/statusEffects/blinded.svg"
+	},
+	{
+		id: "dazed",
+		label: "EFFECT.statusDazed",
+		icon: "systems/dnd4eAltus/icons/statusEffects/dazed.svg"
+	},
+	{
+		id: "dead",
+		label: "EFFECT.statusDead",
+		icon: "systems/dnd4eAltus/icons/statusEffects/dead.svg"
+	},
+	{
+		id: "deafened",
+		label: "EFFECT.statusDeafened",
+		icon: "systems/dnd4eAltus/icons/statusEffects/deafened.svg"
+	},
+	{
+		id: "disarmed",
+		label: "EFFECT.statusDisarmed",
+		icon: "systems/dnd4eAltus/icons/statusEffects/disarmed.svg"
+	},
+	//row 5
+	{
+		id: "dominated",
+		label: "EFFECT.statusDominated",
+		icon: "systems/dnd4eAltus/icons/statusEffects/dominated.svg"
+	},
+	{
+		id: "drunk",
+		label: "EFFECT.statusDrunk",
+		icon: "systems/dnd4eAltus/icons/statusEffects/drunk.svg"
+	},
+	{
+		id: "dying",
+		label: "EFFECT.statusDying",
+		icon: "systems/dnd4eAltus/icons/statusEffects/dying.svg"
+	},
+	{
+		id: "flying",
+		label: "EFFECT.statusFlying",
+		icon: "systems/dnd4eAltus/icons/statusEffects/flying.svg"
+	},
+	{
+		id: "restrained",
+		label: "EFFECT.statusRestrained",
+		icon: "systems/dnd4eAltus/icons/statusEffects/restrained.svg"
+	},
+	{
+		id: "immobilized",
+		label: "EFFECT.statusImmobilized",
+		icon: "systems/dnd4eAltus/icons/statusEffects/immobilized.svg"
+	},
+	{
+		id: "insubstantial",
+		label: "EFFECT.statusInsubstantial",
+		icon: "systems/dnd4eAltus/icons/statusEffects/insubstantial.svg"
+	},
+	//row 6
+	{
+		id: "invisible",
+		label: "EFFECT.statusInvisible",
+		icon: "systems/dnd4eAltus/icons/statusEffects/invisible.svg"
+	},
+	{
+		id: "petrified",
+		label: "EFFECT.statusPetrified",
+		icon: "systems/dnd4eAltus/icons/statusEffects/Petrified.svg"
+	},
+	{
+		id: "prone",
+		label: "EFFECT.statusProne",
+		icon: "systems/dnd4eAltus/icons/statusEffects/prone.svg"
+	},
+	{
+		id: "grabbed",
+		label: "EFFECT.statusGrabbed",
+		icon: "systems/dnd4eAltus/icons/statusEffects/grabbed.svg"
+	},
+	{
+		id: "sleeping",
+		label: "EFFECT.statusSleeping",
+		icon: "systems/dnd4eAltus/icons/statusEffects/Sleeping.svg"
+	},
+	{
+		id: "slowed",
+		label: "EFFECT.statusSlowed",
+		icon: "systems/dnd4eAltus/icons/statusEffects/slowed.svg"
+	},
+	{
+		id: "sneaking",
+		label: "EFFECT.statusSneaking",
+		icon: "systems/dnd4eAltus/icons/statusEffects/sneaking.svg"
+	},
+	//row 7
+	{
+		id: "stunned",
+		label: "EFFECT.statusStunned",
+		icon: "systems/dnd4eAltus/icons/statusEffects/stunned.svg"
+	},
+	{
+		id: "surprised",
+		label: "EFFECT.statusSurprised",
+		icon: "systems/dnd4eAltus/icons/statusEffects/surprised.svg"
+	},
+	{
+		id: "torch",
+		label: "EFFECT.statusTorch",
+		icon: "systems/dnd4eAltus/icons/statusEffects/torch.svg"
+	},
+	{
+		id: "unconscious",
+		label: "EFFECT.statusUnconscious",
+		icon: "systems/dnd4eAltus/icons/statusEffects/unconscious.svg"
+	},
+	{
+		id: "weakened",
+		label: "EFFECT.statusWeakened",
+		icon: "systems/dnd4eAltus/icons/statusEffects/weakend.svg"
+	}
+];
 // Languages
 DND4EALTUS.spoken = {
-  "Alti": "DND4EALTUS.SpokenAlti",
-  "Cellian": "DND4EALTUS.SpokenCellian",
-  "Ghido": "DND4EALTUS.SpokenGhido",
-  "Jarissian": "DND4EALTUS.SpokenJarissian",
-  "Luxen": "DND4EALTUS.SpokenLuxen",
-  "Saeven": "DND4EALTUS.SpokenSaeven",
-  "Token": "DND4EALTUS.SpokenToken",
-  "Vasten": "DND4EALTUS.SpokenVasten"
-};
-DND4EALTUS.script = {
-  "Alti": "DND4EALTUS.ScriptAlti",
-  "Cellian": "DND4EALTUS.ScriptCellian",
-  "Ghido": "DND4EALTUS.ScriptGhido",
-  "Token": "DND4EALTUS.ScriptToken"
-};
+	"Alti": "DND4EALTUS.SpokenAlti",
+	"Cellian": "DND4EALTUS.SpokenCellian",
+	"Ghido": "DND4EALTUS.SpokenGhido",
+	"Jarissian": "DND4EALTUS.SpokenJarissian",
+	"Luxen": "DND4EALTUS.SpokenLuxen",
+	"Saeven": "DND4EALTUS.SpokenSaeven",
+	"Token": "DND4EALTUS.SpokenToken",
+	"Vasten": "DND4EALTUS.SpokenVasten"
+  };
+  DND4EALTUS.script = {
+	"Alti": "DND4EALTUS.ScriptAlti",
+	"Cellian": "DND4EALTUS.ScriptCellian",
+	"Ghido": "DND4EALTUS.ScriptGhido",
+	"Token": "DND4EALTUS.ScriptToken"
+  };
 
 // Character Level XP Requirements
 DND4EALTUS.CHARACTER_EXP_LEVELS =  [

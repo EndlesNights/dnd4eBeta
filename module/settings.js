@@ -14,19 +14,19 @@ export const registerSystemSettings = function() {
   /**
    * Register resting variants
    */
-  game.settings.register("dnd4eAltus", "restVariant", {
-    name: "SETTINGS.4eRestN",
-    hint: "SETTINGS.4eRestL",
-    scope: "world",
-    config: true,
-    default: "normal",
-    type: String,
-    choices: {
-      "normal": "SETTINGS.4eRestPHB",
-      "gritty": "SETTINGS.4eRestGritty",
-      "epic": "SETTINGS.4eRestEpic",
-    }
-  });
+  // game.settings.register("dnd4eAltus", "restVariant", {
+    // name: "SETTINGS.4eRestN",
+    // hint: "SETTINGS.4eRestL",
+    // scope: "world",
+    // config: true,
+    // default: "normal",
+    // type: String,
+    // choices: {
+      // "normal": "SETTINGS.4eRestPHB",
+      // "gritty": "SETTINGS.4eRestGritty",
+      // "epic": "SETTINGS.4eRestEpic",
+    // }
+  // });
 
   /**
    * Register diagonal movement rule setting

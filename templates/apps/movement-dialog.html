@@ -1,0 +1,27 @@
+<form id="movement-dialog" class="dialog-content" onsubmit="event.preventDefault();">
+    <div class="basic" data-movement="basic">
+        <span title="Movement Speed">Movement Speed:</span>
+        <span title="Movement Speed" style="margin-right: 4px;">{{data.movement.basic.value}}</span>
+        <span title="Base Speed">Base:</span> 
+        <input type="text" name="data.movement.basic.base" value="{{data.movement.basic.base}}" title="Base Movement Speed!" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+        <span>Armour: {{data.movement.basic.armour}}</span>
+        <!-- <input type="text" name="data.movement.basic.armour" value="{{data.movement.basic.armour}}" title="Armour Effect" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
+        <a class="move-bonus" data-target="data.details" title="Movement Bonus">Bonus: {{data.movement.basic.bonusValue}}</a>
+        <!-- <input type="text" name="data.movement.basic.misc" value="{{data.movement.basic.misc}}" title="Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
+    </div>
+    <div class="charge" style="display: inline" data-movement="charge">
+        <span title="Charge Movement Speed">Charge Speed:</span>
+        <span title="Charge Movement Speed" style="margin-right: 4px;">{{data.movement.charge.value}}</span>
+        <a class="move-bonus" data-target="data.details" title="Charge Bonus" style="margin-right: 6px;">Bonus: {{data.movement.charge.bonusValue}}</a>
+        <!-- <input type="text" name="data.movement.charge.misc" value="{{data.movement.charge.misc}}" title="Charge Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
+    </div>
+    <div class="run" style="display: inline" data-movement="run">
+        <span title="Run Movement Speed">Run Speed:</span>
+        <span title="Run Movement Speed" style="margin-right: 4px;">{{data.movement.run.value}}</span>
+        <a class="move-bonus" data-target="data.details" title="Running Bonus">Bonus: {{data.movement.run.bonusValue}}</a>
+        <!-- <input type="text" name="data.movement.run.misc" value="{{data.movement.run.misc}}" title="Run Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
+    </div>
+    <input type="text" name="data.movement.notes" value="{{data.movement.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
+
+    <button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
+</form>

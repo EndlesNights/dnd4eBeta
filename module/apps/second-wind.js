@@ -4,8 +4,8 @@ export class SecondWindDialog extends BaseEntitySheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "actor-flags",
-			classes: ["dnd4ealtus", "second-wind"],
-			template: "systems/dnd4ealtus/templates/apps/second-wind.html",
+			classes: ["dnd4eAltus", "second-wind"],
+			template: "systems/dnd4eAltus/templates/apps/second-wind.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -36,9 +36,9 @@ export class SecondWindDialog extends BaseEntitySheet {
 		}
 		
 		const updateData = {};
-		updateData[`data.health.value`] = Math.min(
-			(this.object.data.data.health.value + this.object.data.data.details.secondWindValue + r.total),
-			this.object.data.data.health.max
+		updateData[`data.attribute.hp.value`] = Math.min(
+			(this.object.data.data.attribute.hp.value + this.object.data.data.details.secondWindValue + r.total),
+			this.object.data.data.attribute.hp.max
 		);
 		
 		updateData[`data.details.secondwind`] = true;
@@ -50,7 +50,7 @@ export class SecondWindDialog extends BaseEntitySheet {
 			user: game.user._id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
-			content: this.object.data.name + " uses Second Wind, healing for " + (updateData[`data.health.value`] - this.object.data.data.health.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
+			content: this.object.data.name + " uses Second Wind, healing for " + (updateData[`data.attribute.hp.value`] - this.object.data.data.attribute.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
 			//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 		});		
 		

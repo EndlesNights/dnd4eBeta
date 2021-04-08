@@ -75,7 +75,10 @@
 				<label>{{ localize "DND4EALTUS.ItemWeaponStatus" }}</label>
 				<div class="form-fields">
 					<label class="checkbox">
-						<input type="checkbox" name="data.proficient" {{checked data.proficient}}/> {{ localize "DND4EALTUS.Proficient" }}
+						<input type="checkbox" name="data.proficient" {{checked data.proficient}}/> Weapon {{ localize "DND4EALTUS.Proficient" }}
+					</label>
+					<label class="checkbox">
+						<input type="checkbox" name="data.proficientI" {{checked data.proficientI}}/> Implement {{ localize "DND4EALTUS.Proficient" }}
 					</label>
 					<label class="checkbox">
 						<input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "DND4EALTUS.Equipped" }}
@@ -99,6 +102,12 @@
 						<input type="text" name="data.profBonus" value="{{data.profBonus}}" title="Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
+				<div class="form-group">
+					<label title="Implement Proficiency Bonus">Implement Proficiency Bonus:</label>
+					<div class="form-fields">
+						<input type="text" name="data.profImpBonus" value="{{data.profImpBonus}}" title="Implement Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
 				<div class="form-group">    
 					<label title="Enhancement Bonus">Enhancement Bonus:</label>
 					<div class="form-fields">
@@ -111,7 +120,7 @@
 					<div>
 						{{#if data.isRanged}}
 						<div class="form-fields">
-							<span title="The distance in squares a weapon can attack.">Wepon Range:</span>
+							<span title="The distance in squares a weapon can attack.">Weapon Range:</span>
 							<input type="text" name="data.range.value" value="{{data.range.value}}" title="Short Range: The distance in squares a weapon can attack without incurring a long range penalty." placeholder="Short Range" data-dtype="Number" onClick="this.select();"/>
 							<span class="sep">/</span>
 							<input type="text" name="data.range.long" value="{{data.range.long}}" title="Long Range: The maximume range this weapon can be used to make an attack." placeholder="Long Range" data-dtype="Number" onClick="this.select();"/>
@@ -157,19 +166,49 @@
 						</select>
 						<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
 					</div>
-				</div>				
-				<div class="form-group">
+				</div>
+
+				<!-- <div class="form-group">
 					<label title="Number of Dice in damage roll" for="diceNum">Damage Dice Num:</label>
 					<div class="form-fields">
-						<input type="text" name="data.diceNum" id="diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" onClick="this.select();"/>
+						<input type="text" name="data.diceNum" id="diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" onClick="this.select();" data-dtype="Number"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<label title="Size of Dice in damage roll." for="diceDamage">Damage Dice Size:</label>
 					<div class="form-fields">
-						<input type="text" name="data.diceDamage" id="diceDamage" value="{{data.diceDamage}}" title="Size of Dice in damage roll." placeholder="8" onClick="this.select();"/>
+						<input type="text" name="data.diceDamage" id="diceDamage" value="{{data.diceDamage}}" title="Rerollthreshhold for brutal dice." placeholder="8" onClick="this.select();" data-dtype="Number"/>
+					</div>
+				</div> -->
+
+				<div class="form-group">
+					<label title="Base number of dice rolled for weapon attacks." for="damageDice">Weapon Damage Dice:</label>
+					<!-- <div class="form-fields">
+						<input type="text" name="data.damageDice" id="damageDice" value="{{data.damageDice}}" title="Rerollthreshhold for brutal dice." onClick="this.select();"/>
+					</div> -->
+					<a class="damage-control add-dice"><i class="fas fa-plus"></i></a>
+				</div>
+				<ol class="damage-parts form-group">
+					{{#each data.damageDice.parts as |part i| }}
+					<li class="damage-part flexrow" data-damage-part="{{i}}">
+						<label>Dice Number:</label>
+						<input type="text" name="data.damageDice.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+						<label>Dice Size:</label>
+						<input type="text" name="data.damageDice.parts.{{i}}.1" value="{{lookup this "1"}}"/>
+						<a class="damage-control delete-dice"><i class="fas fa-minus"></i></a>
+					</li>
+					{{/each}}
+				</ol>
+
+				{{#if data.properties.bru}}
+				<div class="form-group">
+					<label title="Brutal Dice Value." for="brutal">Brutal Dice Value:</label>
+					<div class="form-fields">
+						<input type="text" name="data.brutal" id="brutal" value="{{data.brutal}}" title="Size of Dice in damage roll." placeholder="1" onClick="this.select();" data-dtype="Number"/>
 					</div>
 				</div>
+				{{/if}}
+
 				<!-- <div class="form-group">
 					<label title="Bonus to Attack Roll.">Attack Roll Bonus:</label>
 					<div class="form-fields">
@@ -188,6 +227,15 @@
 						<input type="text" name ="data.critRange" value="{{data.critRange}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
+
+				{{#if data.properties.imp}}
+				<div class="form-group">
+					<label title="Natural D20 Dice roll required for a hit to be considered a critical hit with an Implement.">Implement Critical Hit:</label>
+					<div class="form-fields">
+						<input type="text" name ="data.critRangeImp" value="{{data.critRangeImp}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
+					</div>
+				</div>
+				{{/if}}
 				<!-- <div class="form-group">
 					<label title="Ability Mod used for attack.">Attack Roll Mod:</label>
 					<div></div>
@@ -220,10 +268,12 @@
 					</select>
 				</div> -->
 
+				{{!-- Attack  Formula--}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Attack Rolls.">Bonus to Attack {{ localize "DND4EALTUS.Formula" }}:</h4>
 					<input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
+					
 				{{!-- Damage Formula --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Primary Damage {{ localize "DND4EALTUS.Formula" }}:</h4>
@@ -281,6 +331,76 @@
 					</li>
 					{{/each}}
 				</ol>
+
+				{{!-- Attack Formula for Weapon & Implement--}}
+				{{#if data.properties.imp}}
+				<div class="form-group stacked">
+					<h4 class="damage-header" title="Formula used for Attack Rolls.">Implement Attack {{ localize "DND4EALTUS.Formula" }}:</h4>
+					<input type="text" name="data.attackFormImp" value="{{data.attackFormImp}}" title="Formula used for Attack Rolls." data-dtype="String"/>
+				</div>
+				{{/if}}
+				
+				{{!-- Damage Formula for Weapon & Implement--}}
+				{{#if data.properties.imp}}
+				<div class="form-group stacked">
+					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Implement Damage {{ localize "DND4EALTUS.Formula" }}:</h4>
+					<input type="text" name="data.damageFormImp" value="{{data.damageFormImp}}" title="Formula used for Damage Rolls." data-dtype="String"/>
+				</div>	
+				
+				<h4 class="damage-header">
+					{{#unless isHealing }}Secondary Implement {{ localize "DND4EALTUS.Damage" }}{{ else }}{{ localize "DND4EALTUS.Healing" }}{{/unless}} {{ localize "DND4EALTUS.Formula" }}:
+					<a class="damage-control add-damage-imp"><i class="fas fa-plus"></i></a>
+				</h4>
+				<ol class="damage-parts form-group">
+					{{#each data.damageImp.parts as |part i| }}
+					<li class="damage-part flexrow" data-damage-part="{{i}}">
+						<input type="text" name="data.damageImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+						<select name="data.damageImp.parts.{{i}}.1">
+							{{#select (lookup this "1") }}
+							<option value="">{{ localize "DND4EALTUS.None" }}</option>
+							{{#each ../config.damageTypes as |name type|}}
+							<option value="{{type}}">{{name}}</option>
+							{{/each}}
+							{{#each ../config.healingTypes as |name type|}}
+							<option value="{{type}}">{{name}}</option>
+							{{/each}}
+							{{/select}}
+						</select>
+						<a class="damage-control delete-damage-imp"><i class="fas fa-minus"></i></a>
+					</li>
+					{{/each}}
+				</ol>
+
+				<div class="form-group stacked">
+					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Implement Critical Damage {{ localize "DND4EALTUS.Formula" }}:</h4>
+					<input type="text" name="data.critDamageFormImp" value="{{data.critDamageFormImp}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
+				</div>	
+				<h4 class="damage-header">
+					Secondary Implement Critical Damage {{ localize "DND4EALTUS.Formula" }}:
+					<a class="damage-control add-criticalDamage-imp"><i class="fas fa-plus"></i></a>
+				</h4>
+				<ol class="damage-parts form-group">
+					{{#each data.damageCritImp.parts as |part i| }}
+					<li class="damage-part flexrow" data-damage-part="{{i}}">
+						<input type="text" name="data.damageCritImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+						<select name="data.damageCritImp.parts.{{i}}.1">
+							{{#select (lookup this "1") }}
+							<option value="">{{ localize "DND4EALTUS.None" }}</option>
+							{{#each ../config.damageTypes as |name type|}}
+							<option value="{{type}}">{{name}}</option>
+							{{/each}}
+							{{#each ../config.healingTypes as |name type|}}
+							<option value="{{type}}">{{name}}</option>
+							{{/each}}
+							{{/select}}
+						</select>
+						<a class="damage-control delete-criticalDamage-imp"><i class="fas fa-minus"></i></a>
+					</li>
+					{{/each}}
+				</ol>
+
+				{{/if}}
+
 				<!-- <div class="form-group stacked">
 					<label title="Formula used for Critical Damage Rolls.">Critical Damage Formula:</label>
 					<input type="text" name="data.critDamageForm" value="{{data.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String" onClick="this.select();"/>

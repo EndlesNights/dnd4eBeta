@@ -8,7 +8,7 @@ export default class TraitSelector extends FormApplication {
 	static get defaultOptions() {
 	  return mergeObject(super.defaultOptions, {
 	    id: "trait-selector",
-      classes: ["dnd4ealtus"],
+      classes: ["dnd4eAltus"],
       title: "Actor Trait Selection",
       template: "systems/dnd4eAltus/templates/apps/trait-selector-sense.html",
       width: 320,

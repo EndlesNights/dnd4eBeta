@@ -4,8 +4,8 @@ export class LongRestDialog extends BaseEntitySheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "actor-flags",
-			classes: ["dnd4ealtus", "actor-rest"],
-			template: "systems/dnd4ealtus/templates/apps/long-rest.html",
+			classes: ["dnd4eAltus", "actor-rest"],
+			template: "systems/dnd4eAltus/templates/apps/long-rest.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -30,17 +30,17 @@ export class LongRestDialog extends BaseEntitySheet {
 			if(this.object.data.data.details.surgeEnv.value > this.object.data.data.details.surgeDay)
 			{
 				updateData[`data.details.surgeCur`] = 0;
-				updateData[`data.health.value`] = this.object.data.data.health.max + (this.object.data.data.details.surgeDay - this.object.data.data.details.surgeEnv.value) *  Math.floor(this.object.data.data.details.bloodied / 2);
+				updateData[`data.attribute.hp.value`] = this.object.data.data.attribute.hp.max + (this.object.data.data.details.surgeDay - this.object.data.data.details.surgeEnv.value) *  Math.floor(this.object.data.data.details.bloodied / 2);
 			}
 			else{
 				updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeDay - this.object.data.data.details.surgeEnv.value;
-				updateData[`data.health.value`] = this.object.data.data.health.max;
+				updateData[`data.attribute.hp.value`] = this.object.data.data.attribute.hp.max;
 			}
 		}
 		else
 		{
 			updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeDay;
-			updateData[`data.health.value`] = this.object.data.data.health.max;
+			updateData[`data.attribute.hp.value`] = this.object.data.data.attribute.hp.max;
 			
 			updateData[`data.details.surgeEnv.value`] = 0;
 			updateData[`data.details.surgeEnv.bonus`] = [{}];

@@ -5,27 +5,27 @@
 			<a class="currency-convert" title="Convert Currency"><i class="fas fa-coins"></i></a>
 		</h3>
 		{{#each data.currency as |v k|}}
-		<label class="denomination {{k}}">{{ localize (lookup ../config.currencies k )}}</label>
-		<input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number"/>
+		<label class="denomination {{k}}" title="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
+		<input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number" title="{{ localize (lookup ../config.currencies k )}}"/>
 		{{/each}}
 	</ol>
 
 	<ol class="currency flexrow">
 		<h3 title="Ritual Components">Ritual Comp.</h3>
 		{{#each data.ritualcomp as |v k|}}
-		<label class="denomination {{k}}">{{ localize (lookup ../config.ritualcomponents k )}}</label>
-		<input type="text" name="data.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number"/>
+		<label class="denomination {{k}}" title="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
+		<input type="text" name="data.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" title="{{ localize (lookup ../config.ritualcomponents k )}}"/>
 		{{/each}}
 	</ol>
 	
 	<div>
 		<div style="display: inline;">
-			<span>Daily Magical Item Powers use Per Day Remaining:</span> 
+			<span>Daily Magical Item Powers uses remaining:</span> 
 			<input style="width: 25px; text-align: right;" type="text" name="data.magicItemUse.dailyuse" value="{{data.magicItemUse.dailyuse}}" title="Daily Magic Items used Today"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
 			<span>/ {{data.magicItemUse.perDay}}</span>
 		</div>
 		<div style="float:right;">
-			<span >Daily Magical Item Used In encounter?</span>
+			<span >Used In Encounter?</span>
 			<input type="checkbox" name="data.magicItemUse.encounteruse" data-dtype="Boolean" {{checked data.magicItemUse.encounteruse}} title="Daily Magical Item Used In encounter"  style="height: 14px; position: relative; top: 2px;">
 		</div>
 		

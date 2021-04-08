@@ -4,8 +4,8 @@ export class CustomRolldDescriptions extends BaseEntitySheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "actor-flags",
-			classes: ["dnd4ealtus", "actor-rest"],
-			template: "systems/dnd4ealtus/templates/apps/custom-roll-descriptions.html",
+			classes: ["dnd4eAltus", "actor-rest"],
+			template: "systems/dnd4eAltus/templates/apps/custom-roll-descriptions.html",
 			width: 500,
 			closeOnSubmit: false,
 			submitOnClose: true
