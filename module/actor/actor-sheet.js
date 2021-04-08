@@ -569,6 +569,9 @@ export class ActorSheet4e extends ActorSheet {
 		// Add or Remove Attribute
 		html.find(".attributes").on("click", ".attribute-control", this._onClickAttributeControl.bind(this));
 
+		const inputs = html.find("input");
+		inputs.focus(ev => ev.currentTarget.select());
+		inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
 
 		if ( this.actor.owner ) {	
 			// Roll Skill Checks
@@ -647,6 +650,24 @@ export class ActorSheet4e extends ActorSheet {
 			// Item Rolling
 			html.find('.item .item-image').click(event => this._onItemRoll(event));
 			// html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
+		}
+	}
+
+  /* -------------------------------------------- */
+
+  /**
+   * Handle input changes to numeric form fields, allowing them to accept delta-typed inputs
+   * @param event
+   * @private
+   */
+   _onChangeInputDelta(event) {
+		const input = event.target;
+		const value = input.value;
+		if ( ["+", "-"].includes(value[0]) ) {
+			let delta = parseFloat(value);
+			input.value = getProperty(this.actor.data, input.name) + delta;
+		} else if ( value[0] === "=" ) {
+			input.value = value.slice(1);
 		}
 	}
 
