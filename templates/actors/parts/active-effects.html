@@ -35,4 +35,27 @@
 	{{/each}}
 	</ol>
 {{/each}}
+
+	{{!-- Resistances --}}
+	<div class="attribute-res resource-full">
+		<h4 class="attribute-name box-title">Resistances & Weaknesses</h4>
+		{{#each data.resistances as |res r|}}
+			<li class="skill flexrow" data-res="{{r}}">
+				<h4 class="res-name">{{res.label}}</h4>
+				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
+				<span class="res-armour">Armour: {{res.armour}} </span>
+				<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.armour" value="{{res.armour}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour Bonus"> </input> -->
+				<a class="resistances-bonus" data-target="data.resistances" title="Resistance Bonus">Bonus: {{res.resBonusValue}}</a>
+				<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.race" value="{{res.race}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Race"> </input> -->
+				<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.misc" value="{{res.misc}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Misc"> </input> -->
+				<!-- <input type="checkbox" name="data.resistances.{{r}}.half" data-dtype="Boolean" {{checked res.half}} title="Resistances"/> -->
+				<span class="res-immune">Immunity</span>
+				<input type="checkbox" name="data.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
+			</li>
+		{{/each}}					
+		<!-- <span>Resistances:</span> -->
+		<!-- <a class="trait-selector" data-options="damageTypes" data-target="data.traits.di"> -->
+			<!-- <i class="fas fa-edit"></i> -->
+		<!-- </a> -->
+	</div>
 </ol>
