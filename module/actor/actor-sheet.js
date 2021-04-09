@@ -599,7 +599,7 @@ export class ActorSheet4e extends ActorSheet {
 			html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
 			html.find('.move-bonus').click(this._onMovementBonus.bind(this));
 			html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
-			html.find('.resistence-bonus').click(this._onResistencesBonus.bind(this));		
+			html.find('.resistances-bonus').click(this._onResistancesBonus.bind(this));		
 			
 			html.find('.movement-dialog').click(this._onMovementDialog.bind(this));		
 			
@@ -895,11 +895,11 @@ export class ActorSheet4e extends ActorSheet {
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}	
 
-	_onResistencesBonus(event) {
+	_onResistancesBonus(event) {
 		event.preventDefault();
 		const resName = event.currentTarget.parentElement.dataset.res;
-		const target = `data.resistences.${resName}`;
-		const options = {target: target, label: `${this.actor.data.data.resistences[resName].label} Damage Resistences Bonues` };
+		const target = `data.resistances.${resName}`;
+		const options = {target: target, label: `${this.actor.data.data.resistances[resName].label} Damage Resistances Bonues` };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	
