@@ -1,6 +1,7 @@
 # Changelog
 
 ## Version 0.1.1
+- fixed issue where hp was no longer syncing corretly to token bars.
 
 ## Version 0.1.0
 - Character Sheet compltetly reworked from the ground up.

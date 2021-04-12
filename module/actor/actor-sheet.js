@@ -662,6 +662,7 @@ export class ActorSheet4e extends ActorSheet {
    * @private
    */
    _onChangeInputDelta(event) {
+	   console.log("test?")
 		const input = event.target;
 		const value = input.value;
 		if ( ["+", "-"].includes(value[0]) ) {
