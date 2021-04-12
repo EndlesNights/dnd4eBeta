@@ -356,7 +356,7 @@ export class Actor4e extends Actor {
 		if (!isNaN(value) && isBar ) {
 			const current = getProperty(this.data.data, attribute);
 			if (isDelta) value = Math.clamped(current.min, Number(current.value) + value, current.max);
-			if(attribute === 'health')
+			if(attribute === 'attribute.hp')
 			{
 				let newHealth = this.setConditions(value);			
 				this.update({[`data.attribute.hp.temphp`]: newHealth[1] });

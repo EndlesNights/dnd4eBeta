@@ -25,7 +25,7 @@
 	"initiative": "1d20 + @attributes.init.value + (@attributes.init.value / 100)",
 	"gridDistance": 1,
 	"gridUnits": "sq",
-	"primaryTokenAttribute": "attributes.hp",
+	"primaryTokenAttribute": "attributes.hp.value",
 	"secondaryTokenAttribute": null,
   	"url": "https://github.com/EndlesNights/dnd4eAltus",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dndAltus/system.json",
