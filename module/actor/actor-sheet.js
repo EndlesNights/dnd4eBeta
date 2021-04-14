@@ -12,7 +12,6 @@ import TraitSelectorSense from "../apps/trait-selector-sense.js";
 import TraitSelectorSave from "../apps/trait-selector-save.js";
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import HPOptions from "../apps/hp-options.js";
-import Item4e from "../item/entity.js";
 import { Helper } from "../helper.js";
 
 /**
@@ -209,7 +208,6 @@ export class ActorSheet4e extends ActorSheet {
 		  // passive: { label: "DND4EALTUS.FeaturePassive", items: [], hasActions: false, dataset: {type: "feat"} }
 		// };
 
-		
 		for ( let f of feats ) {
 			features[f.type].items.push(f);
 		  // if ( f.data.activation.type ) features.active.items.push(f);
@@ -280,11 +278,11 @@ export class ActorSheet4e extends ActorSheet {
 	}
 
 	_groupPowers(power, powerGroups) {
-		if(this.object.data.data.powerGroupTypes === "type" || this.object.data.data.powerGroupTypes == undefined) {
-			if(Object.keys(powerGroups).includes(power.data.powerType) )return power.data.powerType;
-		}
-		if(this.object.data.data.powerGroupTypes === "action") {
+		if(this.object.data.data.powerGroupTypes === "action" || this.object.data.data.powerGroupTypes == undefined) {
 			if(Object.keys(powerGroups).includes(power.data.actionType) ) return power.data.actionType;
+		}
+		if(this.object.data.data.powerGroupTypes === "type") {
+			if(Object.keys(powerGroups).includes(power.data.powerType) )return power.data.powerType;
 		}
 		if(this.object.data.data.powerGroupTypes === "usage") {
 			if(Object.keys(powerGroups).includes(power.data.useType) ) return power.data.useType;
@@ -293,15 +291,7 @@ export class ActorSheet4e extends ActorSheet {
 	}
 	_generatePowerGroups() {
 
-		if(this.object.data.data.powerGroupTypes === "type" || this.object.data.data.powerGroupTypes == undefined) {
-			return {
-				class: { label: "Class Power", items: [], dataset: {type: "class"} },
-				race: { label: "Racial Power", items: [], dataset: {type: "race"} },
-				utility: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} },
-				other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
-			};
-		}
-		else if(this.object.data.data.powerGroupTypes === "action") {
+		if(this.object.data.data.powerGroupTypes === "action" || this.object.data.data.powerGroupTypes == undefined) {
 			return {
 				standard: { label: "DND4EALTUS.ActionStandard", items: [], dataset: {type: "standard"} },
 				move: { label: "DND4EALTUS.ActionMove", items: [], dataset: {type: "move"} },
@@ -310,6 +300,14 @@ export class ActorSheet4e extends ActorSheet {
 				reaction: { label: "DND4EALTUS.ActionReaction", items: [], dataset: {type: "reaction"} },
 				interrupt: { label: "DND4EALTUS.ActionInterrupt", items: [], dataset: {type: "interrupt"} },
 				opportunity: { label: "DND4EALTUS.ActionOpportunity", items: [], dataset: {type: "opportunity"} },
+				other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
+			};
+		}
+		else if(this.object.data.data.powerGroupTypes === "type") {
+			return {
+				class: { label: "Class Power", items: [], dataset: {type: "class"} },
+				race: { label: "Racial Power", items: [], dataset: {type: "race"} },
+				utility: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} },
 				other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
 			};
 		}
@@ -633,8 +631,6 @@ export class ActorSheet4e extends ActorSheet {
 
 			html.find('.power-create').click(this._onPowerItemCreate.bind(this));
 
-			
-
 			// Active Effect management
 			html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.entity));
 		
@@ -660,7 +656,7 @@ export class ActorSheet4e extends ActorSheet {
    * @param event
    * @private
    */
-   _onChangeInputDelta(event) {
+	_onChangeInputDelta(event) {
 		const input = event.target;
 		const value = input.value;
 		if ( ["+", "-"].includes(value[0]) ) {
@@ -744,20 +740,13 @@ export class ActorSheet4e extends ActorSheet {
 			data: duplicate(header.dataset)
 		};
 
-		console.log(type)
-		console.log(this.object.data.data.powerGroupTypes == undefined)
-		if(this.object.data.data.powerGroupTypes == undefined) {
-			console.log("enter")
-		}
-		if(this.object.data.data.powerGroupTypes === "type" || this.object.data.data.powerGroupTypes == undefined) {
-			console.log("enter?")
-			itemData.data.powerType = type;
-		}
-		else if(this.object.data.data.powerGroupTypes === "action") {
+		if(this.object.data.data.powerGroupTypes === "action" || this.object.data.data.powerGroupTypes == undefined) {
 			itemData.data.actionType = type;
 		}
+		else if(this.object.data.data.powerGroupTypes === "type") {
+			itemData.data.powerType = type;
+		}
 		else if(this.object.data.data.powerGroupTypes === "usage") {
-			console.log(type)
 			itemData.data.useType = type;
 		}
 
