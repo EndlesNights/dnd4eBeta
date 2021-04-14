@@ -20,7 +20,8 @@ export class MovementDialog extends BaseEntitySheet {
 		return {data: this.object.data.data}
 	}
 	async _updateObject(event, formData) {
-		updateData[`data.movement.basic.base`] = this.object.data.data.movement.basic.base;
+		const updateData = {};
+		updateData[`data.movement.basic.base`] = formData[`data.movement.basic.base`];
 		this.object.update(updateData);
 	}
 
