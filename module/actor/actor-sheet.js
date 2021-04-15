@@ -49,11 +49,16 @@ export class ActorSheet4e extends ActorSheet {
 			dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}],
 			// scrollY: [".desk__content"]
 			scrollY: [
-				".attributes",
-				".desk__content", ".scrollbar",
+				// ".attributes",
+				// ".desk__content",
+				// ".scrollbar",
+
 				".inventory .inventory-list",
 				".features .inventory-list",
-				".powers .inventory-list"
+				".powers .inventory-list",
+
+				".section--sidebar",
+				".section--tabs-content"
 			]
 		});
   }

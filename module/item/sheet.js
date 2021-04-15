@@ -25,9 +25,10 @@ export default class ItemSheet4e extends ItemSheet {
 			height: 420,
 			classes: ["dnd4eAltus", "sheet", "item"],
 			resizable: true,
-			scrollY: [".tab.details", ".desk__content", ".scrollbar"],
-			tabs: [{navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description"}]
-		});
+			scrollY: [
+				".tab.details"
+			],
+			tabs: [{navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description"}],		});
 	}
 
 	/* -------------------------------------------- */
@@ -37,7 +38,6 @@ export default class ItemSheet4e extends ItemSheet {
 		const path = "systems/dnd4eAltus/templates/items/";
 		return `${path}/${this.item.data.type}.html`;
 	}
-
 
 	/* -------------------------------------------- */
 
@@ -372,8 +372,9 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	setPosition(position={}) {
-		if(this._tabs[0].active === "macros") return super.setPosition(position);
-		position.height = this._tabs[0].active === "details" ? "auto" : this.options.height;
+		if ( !(this._minimized  || position.height) ) {
+			position.height = (this._tabs[0].active === "details") ? "auto" : this.options.height;
+		}
 		return super.setPosition(position);
 	}
 

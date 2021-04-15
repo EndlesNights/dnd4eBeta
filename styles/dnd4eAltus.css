@@ -348,13 +348,16 @@ font-size: 12px;
 
 .dnd4eAltus .container--bottom {
 	/* height: 100%; */
+	height: calc(100% - 190px);
 }
 
 .dnd4eAltus .section--sidebar {
 	max-width: 260px;
 	margin-left: 15px;
 	border-right: 5px solid;
-	min-height: 100%;
+	/* min-height: 100%; */
+	height: 100%;
+	overflow-y: auto;
 }
 
 .dnd4eAltus .section--abilities {
@@ -425,6 +428,7 @@ font-size: 12px;
 	margin-bottom: 0;
 	font-size: 16px;
 	padding-top: 3px;
+	padding-left: 8px;
 }
 
 .dnd4eAltus .section--skills .skill-mod {
@@ -929,6 +933,7 @@ font-size: 12px;
 .dnd4eAltus.sheet.actor .training-toggle {
 	color: #b5b3a4;
 	font-size: 12px;
+	padding-left: 7px;
 }
 .dnd4eAltus.sheet.actor .proficient .training-toggle {
 	color: #4b4a44;
@@ -1491,7 +1496,7 @@ font-size: 12px;
 }
 .dnd4eAltus.sheet.item .sheet-body .tab {
 	padding: 0 5px;
-	overflow: hidden auto;
+	overflow-y: auto;
 }
 .dnd4eAltus.sheet.item .sheet-body .item-properties {
 	flex: 0 0 120px;
