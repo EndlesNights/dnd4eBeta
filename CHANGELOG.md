@@ -2,6 +2,9 @@
 
 ## Version 0.1.1
 - fixed issue where hp was no longer syncing corretly to token bars.
+- added scroll bars to atrabutes/skill section when character sheet is resized smalled
+- fixed issue where scroll bars would incorectly auto jump
+- fixed issue where incombrance bar would some times incorectly not show when character sheet reized smaller
 
 ## Version 0.1.0
 - Character Sheet compltetly reworked from the ground up.
