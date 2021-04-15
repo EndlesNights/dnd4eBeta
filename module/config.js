@@ -489,9 +489,9 @@ DND4EBETA.powerSource = {
 };
 
 DND4EBETA.powerGroupTypes = {
-	"type": "DND4EBETA.Type",
-	"action": "DND4EBETA.Action",
 	"usage": "DND4EBETA.Usage",
+	"action": "DND4EBETA.Action",
+	"type": "DND4EBETA.Type",
 };
 
 DND4EBETA.powerSortTypes = {
