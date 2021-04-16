@@ -22,10 +22,10 @@
 		}
 	],
 	"socket": true,
-	"initiative": "1d20 + @attributes.init.value + (@attributes.init.value / 100)",
+	"initiative": "1d20 + @attribute.init.value + (@attribute.init.value / 100)",
 	"gridDistance": 1,
 	"gridUnits": "sq",
-	"primaryTokenAttribute": "attributes.hp.value",
+	"primaryTokenAttribute": "attribute.hp.value",
 	"secondaryTokenAttribute": null,
   	"url": "https://github.com/EndlesNights/dnd4eAltus",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dndAltus/system.json",

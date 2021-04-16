@@ -291,7 +291,7 @@
 				"nat": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "int",
+					"ability": "wis",
 					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
