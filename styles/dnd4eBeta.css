@@ -428,6 +428,7 @@ font-size: 12px;
 	margin-bottom: 0;
 	font-size: 16px;
 	padding-top: 3px;
+	padding-left: 8px;
 }
 
 .dnd4eBeta .section--skills .skill-mod {
@@ -932,6 +933,7 @@ font-size: 12px;
 .dnd4eBeta.sheet.actor .training-toggle {
 	color: #b5b3a4;
 	font-size: 12px;
+	padding-left: 7px;
 }
 .dnd4eBeta.sheet.actor .proficient .training-toggle {
 	color: #4b4a44;
