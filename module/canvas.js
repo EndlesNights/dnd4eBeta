@@ -46,9 +46,9 @@ export const measureDistances = function(segments, options={}) {
 const _TokenGetBarAttribute = Token.prototype.getBarAttribute;
 export const getBarAttribute = function(...args) {
   const data = _TokenGetBarAttribute.bind(this)(...args);
-  if ( data && (data.attribute === "attribute.hp") ) {
-    data.value += parseInt(getProperty(this.actor.data, "data.attribute.hp.temp") || 0);
-    data.max += parseInt(getProperty(this.actor.data, "data.attribute.hp.tempmax") || 0);
+  if ( data && (data.attribute === "attributes.hp") ) {
+    data.value += parseInt(getProperty(this.actor.data, "data.attributes.hp.temp") || 0);
+    data.max += parseInt(getProperty(this.actor.data, "data.attributes.hp.tempmax") || 0);
   }
   return data;
 };

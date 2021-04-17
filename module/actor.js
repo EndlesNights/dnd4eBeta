@@ -10,17 +10,17 @@ import { DND4EBETA } from "./config.js";
 export class Actor4e extends Actor {
 
   /** @override */
-  getRollData() {
-    const data = super.getRollData();
-    const shorthand = game.settings.get("dnd4eBeta", "macroShorthand");
+//   getRollData() {
+//     const data = super.getRollData();
+//     const shorthand = game.settings.get("dnd4eBeta", "macroShorthand");
 
     // Re-map all attributes onto the base roll data
-    if ( !!shorthand ) {
-      for ( let [k, v] of Object.entries(data.attributes) ) {
-        if ( !(k in data) ) data[k] = v.value;
-      }
-      delete data.attributes;
-    }
+    // if ( !!shorthand ) {
+    //   for ( let [k, v] of Object.entries(data.attributes) ) {
+    //     if ( !(k in data) ) data[k] = v.value;
+    //   }
+    //   delete data.attributes;
+    // }
 
     // Map all items data using their slugified names
     // data.items = this.data.items.reduce((obj, i) => {
@@ -39,8 +39,8 @@ export class Actor4e extends Actor {
       // return obj;
     // }, {});
 	
-    return data;
-  }
+//     return data;
+//   }
   
 	/**
 		* Augment the basic actor data with additional dynamic data.
@@ -87,7 +87,7 @@ export class Actor4e extends Actor {
 
 			abl.mod = Math.floor((abl.value - 10) / 2);
 			abl.modHalf = abl.mod + Math.floor(data.details.level / 2);
-			abl.prof = (abl.proficient || 0) * data.attributes.prof;
+			abl.prof = (abl.proficient || 0);
 			abl.saveBonus = saveBonus + Math.floor(data.details.level / 2);
 			abl.checkBonus = checkBonus + Math.floor(data.details.level / 2);
 			abl.save = abl.mod + abl.prof + abl.saveBonus;
@@ -101,9 +101,10 @@ export class Actor4e extends Actor {
 		}
 		
 		//HP auto calc
-		if(data.attribute.hp.autototal)
+		console.log(data)
+		if(data.attributes.hp.autototal)
 		{
-			data.attribute.hp.max = data.attribute.hp.perlevel * (data.details.level - 1) + data.attribute.hp.starting + data.attribute.hp.feat + data.attribute.hp.misc + data.abilities.con.value;
+			data.attributes.hp.max = data.attributes.hp.perlevel * (data.details.level - 1) + data.attributes.hp.starting + data.attributes.hp.feat + data.attributes.hp.misc + data.abilities.con.value;
 		}
 		
 		//Set Health related values
@@ -123,13 +124,13 @@ export class Actor4e extends Actor {
 			}
 		}
 		
-		data.details.bloodied = Math.floor(data.attribute.hp.max / 2);
+		data.details.bloodied = Math.floor(data.attributes.hp.max / 2);
 		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
-		data.attribute.hp.min = -data.details.bloodied;
+		data.attributes.hp.min = -data.details.bloodied;
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
 
 		//check if bloodied
-		data.details.isBloodied = (data.attribute.hp.value <= data.attribute.hp.max/2);
+		data.details.isBloodied = (data.attributes.hp.value <= data.attributes.hp.max/2);
 
 		if(!(data.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(data.details.surgeEnv.bonus[0]))) {
 			for( const b of data.details.surgeEnv.bonus) {
@@ -186,8 +187,8 @@ export class Actor4e extends Actor {
 
 		}
 		
-		if (data.attribute.hp.temphp <= 0 )
-			data.attribute.hp.temphp = null;
+		if (data.attributes.hp.temphp <= 0 )
+			data.attributes.hp.temphp = null;
 		
 		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
 		if(data.defences.ac.light)
@@ -239,17 +240,17 @@ export class Actor4e extends Actor {
 
 		//calc init
 		let initBonusValue = 0 + Math.floor(data.details.level / 2);
-		if(!(data.attribute.init.bonus.length === 1 && jQuery.isEmptyObject(data.attribute.init.bonus[0]))) {
-			for( const b of data.attribute.init.bonus) {
+		if(!(data.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(data.attributes.init.bonus[0]))) {
+			for( const b of data.attributes.init.bonus) {
 				if(b.active) {
 					initBonusValue += b.value;
 				}
 			}
 		}
-		data.attribute.init.bonusValue = initBonusValue;
-		data.attribute.init.value = (data.abilities[data.attribute.init.ability].mod + initBonusValue);
-		if(data.attribute.init.value > 999)
-			data.attribute.init.value = 999;
+		data.attributes.init.bonusValue = initBonusValue;
+		data.attributes.init.value = (data.abilities[data.attributes.init.ability].mod + initBonusValue);
+		if(data.attributes.init.value > 999)
+			data.attributes.init.value = 999;
 		
 		//calc movespeed
 		let basicBonusValue = 0;
@@ -357,36 +358,36 @@ export class Actor4e extends Actor {
 			const current = getProperty(this.data.data, attribute);
 			if (isDelta) value = Math.clamped(current.min, Number(current.value) + value, current.max);
 			console.log(attribute)
-			if(attribute === 'attribute.hp')
+			if(attribute === 'attributes.hp')
 			{
 				let newHealth = this.setConditions(value);			
-				this.update({[`data.attribute.hp.temphp`]: newHealth[1] });
-				this.update({[`data.attribute.hp.value`]: newHealth[0] });
+				this.update({[`data.attributes.hp.temphp`]: newHealth[1] });
+				this.update({[`data.attributes.hp.value`]: newHealth[0] });
 			}
 		}
 	}	
 	setConditions(newValue) {
 		
-		let newTemp = this.data.data.attribute.hp.temphp;
-		if(newValue < this.data.data.attribute.hp.value) {
-			let damage = this.data.data.attribute.hp.value - newValue;
+		let newTemp = this.data.data.attributes.hp.temphp;
+		if(newValue < this.data.data.attributes.hp.value) {
+			let damage = this.data.data.attributes.hp.value - newValue;
 			
-			if(this.data.data.attribute.hp.temphp > 0) {
+			if(this.data.data.attributes.hp.temphp > 0) {
 				newTemp -= damage;
 				if(newTemp < 0) {
-					newValue = this.data.data.attribute.hp.value + newTemp;
+					newValue = this.data.data.attributes.hp.value + newTemp;
 					newTemp = null;
 				}
 				else {
-					newValue = this.data.data.attribute.hp.value;
+					newValue = this.data.data.attributes.hp.value;
 				}
 				
-				this.update({[`data.attribute.hp.temphp`]:newTemp});
+				this.update({[`data.attributes.hp.temphp`]:newTemp});
 			}
 		}
 		
-		if(newValue > this.data.data.attribute.hp.max) newValue =  this.data.data.attribute.hp.max;
-		else if(newValue < this.data.data.attribute.hp.min) newValue =  this.data.data.attribute.hp.min;
+		if(newValue > this.data.data.attributes.hp.max) newValue =  this.data.data.attributes.hp.max;
+		else if(newValue < this.data.data.attributes.hp.min) newValue =  this.data.data.attributes.hp.min;
 		
 		return [newValue,newTemp];
 	}  

@@ -30,17 +30,17 @@ export class LongRestDialog extends BaseEntitySheet {
 			if(this.object.data.data.details.surgeEnv.value > this.object.data.data.details.surgeDay)
 			{
 				updateData[`data.details.surgeCur`] = 0;
-				updateData[`data.attribute.hp.value`] = this.object.data.data.attribute.hp.max + (this.object.data.data.details.surgeDay - this.object.data.data.details.surgeEnv.value) *  Math.floor(this.object.data.data.details.bloodied / 2);
+				updateData[`data.attributes.hp.value`] = this.object.data.data.attributes.hp.max + (this.object.data.data.details.surgeDay - this.object.data.data.details.surgeEnv.value) *  Math.floor(this.object.data.data.details.bloodied / 2);
 			}
 			else{
 				updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeDay - this.object.data.data.details.surgeEnv.value;
-				updateData[`data.attribute.hp.value`] = this.object.data.data.attribute.hp.max;
+				updateData[`data.attributes.hp.value`] = this.object.data.data.attributes.hp.max;
 			}
 		}
 		else
 		{
 			updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeDay;
-			updateData[`data.attribute.hp.value`] = this.object.data.data.attribute.hp.max;
+			updateData[`data.attributes.hp.value`] = this.object.data.data.attributes.hp.max;
 			
 			updateData[`data.details.surgeEnv.value`] = 0;
 			updateData[`data.details.surgeEnv.bonus`] = [{}];

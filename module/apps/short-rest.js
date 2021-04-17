@@ -25,7 +25,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 		
 		
 		const updateData = {};
-		updateData[`data.attribute.hp.value`] = this.object.data.data.attribute.hp.value;
+		updateData[`data.attributes.hp.value`] = this.object.data.data.attributes.hp.value;
 		
 		if(formData.surge > 0)
 		{
@@ -51,21 +51,21 @@ export class ShortRestDialog extends BaseEntitySheet {
 				healamount += this.object.data.data.details.surgeValue + r.total;
 			}
 
-			updateData[`data.attribute.hp.value`] = Math.min(
-				(this.object.data.data.attribute.hp.value + healamount),
-				this.object.data.data.attribute.hp.max
+			updateData[`data.attributes.hp.value`] = Math.min(
+				(this.object.data.data.attributes.hp.value + healamount),
+				this.object.data.data.attributes.hp.max
 			);
 		
 			if(this.object.data.data.details.surgeCur > 0)
 				updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeCur - formData.surge;
 			
 		}
-		else if(formData.surge == 0 && this.object.data.data.attribute.hp.value <= 0)
+		else if(formData.surge == 0 && this.object.data.data.attributes.hp.value <= 0)
 		{
-			updateData[`data.attribute.hp.value`] = 1;
+			updateData[`data.attributes.hp.value`] = 1;
 		}
 		
-		if(!this.object.data.data.attribute.hp.temprest)
+		if(!this.object.data.data.attributes.hp.temprest)
 			updateData[`data.details.temp`] = "";
 		
 		updateData[`data.details.secondwind`] = false;
@@ -87,7 +87,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 			user: game.user._id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
-			content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attribute.hp.value`] - this.object.data.data.attribute.hp.value) + " HP."
+			content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP."
 			//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 		});		
 		

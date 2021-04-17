@@ -131,7 +131,7 @@ export default class ItemSheet4e extends ItemSheet {
 			"magicItemUse.dailyuse",
 			"details.exp",
 			"details.age",
-			"attribute.hp.temphp",
+			"attributes.hp.temphp",
 			"details.surgeCur",
 			"currency.ad",
 			"currency.pp",

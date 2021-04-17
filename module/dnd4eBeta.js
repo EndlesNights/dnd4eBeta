@@ -13,7 +13,6 @@ import ItemSheet4e from "./item/sheet.js";
 import { measureDistances, getBarAttribute } from "./canvas.js";
 
 import { ActorSheet4e } from "./actor/actor-sheet.js";
-import { DnD4eActorSheetV2 } from './actor/actor-sheet-v2.js';
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
@@ -56,26 +55,20 @@ Hooks.once("init", async function() {
 		label: "Basic Character Sheet",
 		makeDefault: true
 	});
-	
-	Actors.registerSheet("dnd4eBeta", DnD4eActorSheetV2, {
-		label: "V2 Character Sheet",
-		types: ["Player Character"],
-		makeDefault: false
-	});
-	
+		
 	Items.unregisterSheet("core", ItemSheet);
 	// Items.registerSheet("dnd4eBeta", SimpleItemSheet, {makeDefault: true});
 	Items.registerSheet("dnd4eBeta", ItemSheet4e, {makeDefault: true});
 
 	// Register system settings
-	game.settings.register("dnd4eBeta", "macroShorthand", {
-		name: "Shortened Macro Syntax",
-		hint: "Enable a shortened macro syntax which allows referencing attributes directly, for example @str instead of @attributes.str.value. Disable this setting if you need the ability to reference the full attribute model, for example @attributes.str.label.",
-		scope: "world",
-		type: Boolean,
-		default: true,
-		config: true
-	});
+	// game.settings.register("dnd4eBeta", "macroShorthand", {
+	// 	name: "Shortened Macro Syntax",
+	// 	hint: "Enable a shortened macro syntax which allows referencing attributes directly, for example @str instead of @attributes.str.value. Disable this setting if you need the ability to reference the full attribute model, for example @attributes.str.label.",
+	// 	scope: "world",
+	// 	type: Boolean,
+	// 	default: true,
+	// 	config: true
+	// });
 	
 	// Preload Handlebars Templates
 	preloadHandlebarsTemplates();
