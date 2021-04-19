@@ -47,12 +47,7 @@ export class ActorSheet4e extends ActorSheet {
 				initial: "powers" //initial default tab
 			}],
 			dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}],
-			// scrollY: [".desk__content"]
 			scrollY: [
-				// ".attributes",
-				// ".desk__content",
-				// ".scrollbar",
-
 				".inventory .inventory-list",
 				".features .inventory-list",
 				".powers .inventory-list",
@@ -70,20 +65,6 @@ export class ActorSheet4e extends ActorSheet {
 
 		let data = super.getData();
 		data.config = CONFIG.DND4EALTUS;
-		// const data = {
-			// owner: isOwner,
-			// limited: this.entity.limited,
-			// options: this.options,
-			// editable: this.isEditable,
-			// cssClass: isOwner ? "editable" : "locked",
-			// isCharacter: this.entity.data.type === "character",
-			// isNPC: this.entity.data.type === "npc",
-			// config: CONFIG.DND4EALTUS,
-		// };		
-		// data.dtypes = ["String", "Number", "Boolean"];
-		// for ( let attr of Object.values(data.data.attributes) ) {
-			// attr.isCheckbox = attr.dtype === "Boolean";
-		// }
 		data.actor.data.size = DND4EALTUS.actorSizes;
 		
 		for ( let [s, skl] of Object.entries(data.actor.data.skills)) {
@@ -569,9 +550,6 @@ export class ActorSheet4e extends ActorSheet {
 		li.slideUp(200, () => this.render(false));
 		});
 
-		// Add or Remove Attribute
-		html.find(".attributes").on("click", ".attribute-control", this._onClickAttributeControl.bind(this));
-
 		const inputs = html.find("input");
 		inputs.focus(ev => ev.currentTarget.select());
 		inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
@@ -863,7 +841,7 @@ export class ActorSheet4e extends ActorSheet {
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.attributes.init`, label: "Initiative Bonues", init: true };
+		const options = {target: `data.attribute.init`, label: "Initiative Bonues", init: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -1066,38 +1044,6 @@ export class ActorSheet4e extends ActorSheet {
 	return position;
   }
 
-  /* -------------------------------------------- */
-
-  /**
-   * Listen for click events on an attribute control to modify the composition of attributes in the sheet
-   * @param {MouseEvent} event    The originating left click event
-   * @private
-   */
-  async _onClickAttributeControl(event) {
-	event.preventDefault();
-	const a = event.currentTarget;
-	const action = a.dataset.action;
-	const attrs = this.object.data.data.attributes;
-	const form = this.form;
-
-	// Add new attribute
-	if ( action === "create" ) {
-	  const nk = Object.keys(attrs).length + 1;
-	  let newKey = document.createElement("div");
-	  newKey.innerHTML = `<input type="text" name="data.attributes.attr${nk}.key" value="attr${nk}"/>`;
-	  newKey = newKey.children[0];
-	  form.appendChild(newKey);
-	  await this._onSubmit(event);
-	}
-
-	// Remove existing attribute
-	else if ( action === "delete" ) {
-	  const li = a.closest(".attribute");
-	  li.parentElement.removeChild(li);
-	  await this._onSubmit(event);
-	}
-  }
-
 	/* -------------------------------------------- */
 
 	/**
@@ -1155,34 +1101,4 @@ export class ActorSheet4e extends ActorSheet {
 		this.actor.rollDef(def, {event: event});
 	}
 
-
-  /* -------------------------------------------- */  
-
-  /** @override */
-  _updateObject(event, formData) {
-
-	// Handle the free-form attributes list
-	const formAttrs = expandObject(formData).data.attributes || {};
-	const attributes = Object.values(formAttrs).reduce((obj, v) => {
-	  let k = v["key"].trim();
-	  if ( /[\s\.]/.test(k) )  return ui.notifications.error("Attribute keys may not contain spaces or periods");
-	  delete v["key"];
-	  obj[k] = v;
-	  return obj;
-	}, {});
-	
-	// Remove attributes which are no longer used
-	for ( let k of Object.keys(this.object.data.data.attributes) ) {
-	  if ( !attributes.hasOwnProperty(k) ) attributes[`-=${k}`] = null;
-	}
-
-	// Re-combine formData
-	formData = Object.entries(formData).filter(e => !e[0].startsWith("data.attributes")).reduce((obj, e) => {
-	  obj[e[0]] = e[1];
-	  return obj;
-	}, {_id: this.object._id, "data.attributes": attributes});
-	
-	// Update the Actor
-	return this.object.update(formData);
-  }
 }
