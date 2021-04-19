@@ -81,18 +81,18 @@
 							<div class="attribute-display surge-bonus rollable" title="{{localize 'DND4EBETA.SurgeValue'}}">{{localize 'DND4EBETA.Surge'}}</div>
 						</div>
 						<div class="attribute-sub attribute-input">
-							<input type="text" name="data.details.surgeCur" value="{{data.details.surgeCur}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="data.details.surges.value" value="{{data.details.surges.value}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 							<div class="attribute-display envimental-loss-bonus rollable" title="{{localize 'DND4EBETA.SurgeCur'}}">{{localize 'DND4EBETA.Uses'}}</div>
 						</div>
 						<span class="sep">/</span>
 						<div class="attribute-sub attribute-input">
-							<input type="text" name="data.details.surgeDay" value="{{data.details.surgeDay}}" title="{{localize 'DND4EBETA.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
-							<!-- <strong class="attribute-name" title="{{localize 'DND4EBETA.SurgeDay'}}">{{data.details.surgeDay}}</strong> -->
+							<input type="text" name="data.details.surges.max" value="{{data.details.surges.max}}" title="{{localize 'DND4EBETA.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+							<!-- <strong class="attribute-name" title="{{localize 'DND4EBETA.SurgeDay'}}">{{data.details.surges.max}}</strong> -->
 							<div class="attribute-display" title="{{localize 'DND4EBETA.SurgeDay'}}">{{localize 'DND4EBETA.Day'}}</div>
 						</div>
 						<div class="attribute-sub">
 							<input type="checkbox" name="data.details.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="{{localize 'DND4EBETA.SecondWindUsed'}}"/>
-							<div class="attribute-display-check secondwind-bonus rollable" title="{{localize 'DND4EBETA.SecondWind'}}">{{localize 'DND4EBETA.SW'}}</div>
+							<div class="attribute-display-check secondwind-bonus rollable" title="{{localize 'DND4EBETA.SecondWindBonus'}}">{{localize 'DND4EBETA.SW'}}</div>
 						</div>
 					</div>
 					<footer class="attribute-footer attribute-footer--surge flexrow">
@@ -116,6 +116,11 @@
 							<div class="attribute-display-check" title="{{localize 'DND4EBETA.ActionPointUsed'}}">{{localize 'DND4EBETA.Used'}}</div>
 						</div>
 					</div>
+					<footer class="attribute-footer attribute-footer--surge flexrow">
+						<span style="font-size: 10px; max-width:48px;">Milestones</span>
+						<input style="width:18px; border-bottom: 1px solid black; max-width:9%; height:14px;" name="data.magicItemUse.milestone" value="{{data.magicItemUse.milestone}}" title="{{localize 'DND4EBETA.Milestones'}}"  placeholder="0" data-dtype="Number" onClick="this.select();">
+						<a class="rest action-point" title="{{localize 'DND4EBETA.ActionPointUse'}}">{{localize "DND4EBETA.ActionPointUse"}}</a>
+					</footer>
 				</div>
 			</section>
 		</section>
@@ -185,7 +190,7 @@
 					</div>
 					<div>
 						<strong class="init-bonus rollable" title="{{localize 'DND4EBETA.InitiativeScore'}}">{{numberFormat data.attributes.init.value decimals=0 sign=true }}</strong>
-						<label>{{localize 'DND4EBETA.Initiative'}}</label>
+						<label class="rollInitiative rollable" >{{localize 'DND4EBETA.Initiative'}}</label>
 					</div>
 				</section>
 			</section>

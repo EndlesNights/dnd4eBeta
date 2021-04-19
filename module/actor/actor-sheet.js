@@ -1,5 +1,6 @@
 import { DND4EBETA } from "../config.js";
 import { SecondWindDialog } from "../apps/second-wind.js";
+import { ActionPointDialog } from "../apps/action-point.js";
 import { ShortRestDialog } from "../apps/short-rest.js";
 import { LongRestDialog } from "../apps/long-rest.js";
 import { DeathSaveDialog } from "../apps/death-save.js";
@@ -580,7 +581,7 @@ export class ActorSheet4e extends ActorSheet {
 			html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
 			html.find('.move-bonus').click(this._onMovementBonus.bind(this));
 			html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
-			html.find('.resistances-bonus').click(this._onResistancesBonus.bind(this));		
+			html.find('.resistances-bonus').click(this._onResistancesBonus.bind(this));
 			
 			html.find('.movement-dialog').click(this._onMovementDialog.bind(this));		
 			
@@ -588,6 +589,9 @@ export class ActorSheet4e extends ActorSheet {
 			
 			//second wind
 			html.find('.second-wind').click(this._onSecondWind.bind(this));
+
+			//action point
+			html.find('.action-point').click(this._onActionPointDialog.bind(this));
 			
 			//short rest
 			html.find('.short-rest').click(this._onShortRest.bind(this));
@@ -598,6 +602,9 @@ export class ActorSheet4e extends ActorSheet {
 			//death save
 			html.find('.death-save').click(this._onDeathSave.bind(this));
 			html.find('.roll-save').click(this._onSavingThrow.bind(this));
+
+			//roll init
+			html.find('.rollInitiative').click(this._onrollInitiative.bind(this));
 			
 			// Trait Selector
 			html.find('.trait-selector').click(this._onTraitSelectorLang.bind(this));
@@ -813,6 +820,7 @@ export class ActorSheet4e extends ActorSheet {
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
+	
 	_onSurgeBonus(event) {
 		event.preventDefault();
 		const options = {target: `data.details.surgeBon`, label: "Healing Surge Bonues" };
@@ -889,7 +897,13 @@ export class ActorSheet4e extends ActorSheet {
 	}
 	
 	/* -------------------------------------------- */
-  
+
+	_onActionPointDialog(event) {
+		console.log("action point")
+		event.preventDefault();
+		new ActionPointDialog(this.actor).render(true);
+	}
+
 	/**
 	*Opens dialog window to short rest.
 	*Spend n number of healin surges,
@@ -914,6 +928,11 @@ export class ActorSheet4e extends ActorSheet {
 	_onDeathSave(event) {
 		event.preventDefault();
 		new DeathSaveDialog(this.actor).render(true);
+	}
+
+	_onrollInitiative(event) {
+		event.preventDefault();
+		return this.actor.rollInitiative({createCombatants: true});
 	}
 
 	_onSavingThrow(event) {

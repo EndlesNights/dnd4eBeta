@@ -5,8 +5,8 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
-			classes: ["dnd4eBeta", "actor-rest"],
+			id: `attribute-bonus-${randomID()}`,
+			classes: ["dnd4eBeta"],
 			template: "systems/dnd4eBeta/templates/apps/attribute-bonuses.html",
 			width: 500,
 			closeOnSubmit: false,

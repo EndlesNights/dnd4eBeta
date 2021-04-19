@@ -132,7 +132,7 @@ export default class ItemSheet4e extends ItemSheet {
 			"details.exp",
 			"details.age",
 			"attributes.hp.temphp",
-			"details.surgeCur",
+			"details.surges.value",
 			"currency.ad",
 			"currency.pp",
 			"currency.gp",

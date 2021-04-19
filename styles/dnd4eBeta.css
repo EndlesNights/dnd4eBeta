@@ -1270,7 +1270,7 @@ font-size: 12px;
 }
 .dnd4eBeta .attribute-res {
 	margin: 0 0 0 0;
-	border: 2px groove #eeede0;
+	/* border: 2px groove #eeede0; */
 	border-radius: 4px;
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
 
@@ -1388,10 +1388,10 @@ font-size: 12px;
 .dnd4eBeta .attribute-init .init-bonus{
 	width: 30px;
 }
-.dnd4eBeta .action-point{
+/* .dnd4eBeta .action-point{
 	position: relative;
 	top: -20px;
-	/* height: 10px; */
+	height: 10px;
 
 	margin: 0 0 0 0;
 	border: 2px groove #eeede0;
@@ -1399,7 +1399,7 @@ font-size: 12px;
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;	
 	width: 100%;
 	float: left;
-}
+} */
 .dnd4eBeta input.action-box{
 	height: 14px;
 	width: 14px;

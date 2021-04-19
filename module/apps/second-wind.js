@@ -3,7 +3,7 @@ export class SecondWindDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
+			id: "second-wind",
 			classes: ["dnd4eBeta", "second-wind"],
 			template: "systems/dnd4eBeta/templates/apps/second-wind.html",
 			width: 500,
@@ -43,8 +43,8 @@ export class SecondWindDialog extends BaseEntitySheet {
 		
 		updateData[`data.details.secondwind`] = true;
 		
-		if(this.object.data.data.details.surgeCur > 0)
-			updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeCur - 1;
+		if(this.object.data.data.details.surges.value > 0)
+			updateData[`data.details.surges.value`] = this.object.data.data.details.surges.value - 1;
 		
 		ChatMessage.create({
 			user: game.user._id,

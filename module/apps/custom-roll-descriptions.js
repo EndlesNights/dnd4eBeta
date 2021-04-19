@@ -3,7 +3,7 @@ export class CustomRolldDescriptions extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
+			id: "custom-roll",
 			classes: ["dnd4eBeta", "actor-rest"],
 			template: "systems/dnd4eBeta/templates/apps/custom-roll-descriptions.html",
 			width: 500,

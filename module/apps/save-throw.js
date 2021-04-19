@@ -5,7 +5,7 @@ export class SaveThrowDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
+			id: "save-throw",
 			classes: ["dnd4eBeta", "actor-save-throw"],
 			template: "systems/dnd4eBeta/templates/apps/save-throw.html",
 			width: 500,

@@ -4,7 +4,7 @@ export class MovementDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
+			id: "movement-dialog",
 			classes: ["dnd4eBeta", "movement-dialog"],
 			template: "systems/dnd4eBeta/templates/apps/movement-dialog.html",
 			width: 500,

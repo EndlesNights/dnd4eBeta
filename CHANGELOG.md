@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.1.2
+- initiative can now be rolled from the character sheet
+- changed "surgeCur" to "surges.value"
+- changed "surgeDay" to "surges.max"
+- fixed issue where number dialog windows couldn't be open at the same time because they shaed IDs. They should now all have difrent IDs.
+- added button to spend action points
+- Milestones are now visually tracked under the Actionpoin sections.
+
 ## Version 0.1.1
 - fixed issue where hp was no longer syncing corretly to token bars.
 - added scroll bars to atrabutes/skill section when character sheet is resized smalled
