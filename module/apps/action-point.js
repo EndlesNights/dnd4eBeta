@@ -17,17 +17,28 @@ export class ActionPointDialog extends BaseEntitySheet {
 
 	/** @override */
 	getData() {
-		
-		return {data: this.object.data.data}
+		const extra = this.object.data.data.actionpoints.custom.split(";");
+		return { data: this.object.data.data, extra: extra };
 	}
 	async _updateObject(event, formData) {
 		
+		let extra = "";
+		if (this.object.data.data.actionpoints.custom) {
+			extra = this.object.data.data.actionpoints.custom;
+			extra = extra.replace(/;/g,'</li><li>');
+			extra = "<li>" + extra + "</li>";
+		}
+
 		if(this.object.data.data.actionpoints.value >= 1) {
 			ChatMessage.create({
 				user: game.user._id,
 				speaker: {actor: this.object, alias: this.object.data.name},
 				// flavor: restFlavor,
-				content: `${this.object.data.name} uses an actionpoint to gain an extra action.`
+				content: `${this.object.data.name} uses an actionpoint gaining the following benifits:
+				<ul>
+					<li>Gaining an addtional Standard ACtion</li>
+					${extra}
+				</ul>`
 				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 			});
 

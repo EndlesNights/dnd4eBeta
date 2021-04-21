@@ -55,7 +55,8 @@
 				"value": 1,
 				"encounteruse": false,
 				"effects": "",
-				"notes": ""
+				"notes": "",
+				"custom": ""
 			},
 			"magicItemUse": {
 				"perDay": 1,

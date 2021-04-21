@@ -1,6 +1,13 @@
 <form id="action-point-hd" class="dialog-content" onsubmit="event.preventDefault();">
 	<p>
-		Spend one action point to gain an extra action.
+		Spend one action point to:
+		<li>Gain an extra action.</li>
+
+		{{#if data.details.actionpoints.custom}}
+		{{#each extra as |e key|}}
+		<li>{{e}}</li>
+		{{/each}}
+		{{/if}}
 		<!-- <li>Regain an amount of hitpoints equil to {{data.details.secondWindValue}}.</li>
 		<li>Gain a +2 bonus to all defences until the start of your next turn.		</li> -->
 	</p>

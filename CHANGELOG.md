@@ -7,6 +7,8 @@
 - fixed issue where number dialog windows couldn't be open at the same time because they shaed IDs. They should now all have difrent IDs.
 - added button to spend action points
 - Milestones are now visually tracked under the Actionpoin sections.
+- Additional effect lines can now be tracked and auto stated via Second Wind
+- Additional effect lines can now be tracked and auto stated via Action Points
 
 ## Version 0.1.1
 - fixed issue where hp was no longer syncing corretly to token bars.

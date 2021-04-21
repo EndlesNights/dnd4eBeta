@@ -46,6 +46,10 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 			this.position.height = Math.max(1, count) * 76 + 124;
 		} else if(this.options?.init) {
 			updateData[`${this.options.target}.ability`] = formData["data.ability"];
+		}
+		else if(this.options?.secondWind){
+			console.log(formData["custom"])
+			updateData[`${this.options.target}.custom`] = formData["data.custom"];
 		} else {
 			this.position.height = Math.max(1, count) * 76 + 91;
 		}

@@ -835,7 +835,7 @@ export class ActorSheet4e extends ActorSheet {
 
 	_onSecondWindBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonues" };
+		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonues", secondWind: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	

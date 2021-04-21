@@ -36,6 +36,11 @@
 		<option value="cha" >Charisma</option>
 		{{/select}}
 	</select>
+	{{else if options.secondWind}}
+	<div class="form-group stacked">
+		<label>Additioanl Effects (Split with Semi-Colon)</label>
+		<input type="text" name="data.custom" value="{{data.custom}}" data-dtype="String"/>
+	</div>
 	{{/if}}
 	{{#each bonusData as |bonus b|}}
 	<div class="bonus-part" data-bonus-part="{{b}}">
