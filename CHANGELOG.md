@@ -1,5 +1,7 @@
 # Changelog
 
+## Version 0.1.3
+
 ## Version 0.1.2
 - initiative can now be rolled from the character sheet
 - changed "surgeCur" to "surges.value"

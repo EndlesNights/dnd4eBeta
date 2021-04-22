@@ -1,6 +1,6 @@
 <ol class="items-list inventory-list" style="height: 100%;">
 	<header class="power-filters flexrow">
-		<div class="group-powers">
+		<div class="group-powers" style="max-width: 144px;">
 			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.groupBy.value">
 			<label for="power-group">GroupBy</label><br>
 			<select name="data.powerGroupTypes" style="min-width: 128px;">
@@ -12,7 +12,7 @@
 			</select>
 		</div>
 
-		<div class="sort-powers">
+		<div class="sort-powers" style="max-width: 144px;">
 			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.sortBy.value">
 			<label for="power-sort">SortyBy</label><br>
 			<select name="data.powerSortTypes" style="min-width: 128px;">
@@ -25,7 +25,11 @@
 		</div>
 
 		<div class="filter-search-powers">
-			<label for="power-filter-search">Filter</label><br>
+			<label for="power-filter-search">Filter</label>
+			<button style="width:calc(100% - 80px); height: 17px; line-height:normal; border:0px; float:right; margin:2px 2px 0px 0px;" class="item-import button" title="Create Power" data-item-type="power" data-type="power" type="button"><i class="fas fa-atlas"> Import Powers</i></button>
+
+			
+			<br>
 			<input type="text" style="min-width: 168px; margin-right: 2px;" name="power-filter-search" placeholder="Search for power..." id="filterInput" onkeyup="filterPowers()"/>
 		</div>
 	</header>

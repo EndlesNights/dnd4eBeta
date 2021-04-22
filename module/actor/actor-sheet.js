@@ -40,7 +40,7 @@ export class ActorSheet4e extends ActorSheet {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eBeta", "sheet", "actor"],
 			template: "systems/dnd4eBeta/templates/actor-sheet.html",
-			width: 800,
+			width: 844,
 			height: 905,
 			tabs: [{
 				navSelector: ".sheet-tabs",
