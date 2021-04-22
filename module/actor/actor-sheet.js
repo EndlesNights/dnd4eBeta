@@ -621,6 +621,8 @@ export class ActorSheet4e extends ActorSheet {
 
 			html.find('.power-create').click(this._onPowerItemCreate.bind(this));
 
+			html.find('.item-import').click(this._onItemImport.bind(this));
+
 			// Active Effect management
 			html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.entity));
 		
@@ -636,6 +638,8 @@ export class ActorSheet4e extends ActorSheet {
 			// Item Rolling
 			html.find('.item .item-image').click(event => this._onItemRoll(event));
 			// html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
+
+			
 		}
 	}
 
@@ -718,6 +722,43 @@ export class ActorSheet4e extends ActorSheet {
 		};
 		delete itemData.data["type"];
 		return this.actor.createOwnedItem(itemData);
+	}
+
+	async _onItemImport(event) {
+		event.preventDefault();
+
+		let obj;
+		try{
+			await navigator.clipboard.readText()
+			.then(text => {
+				console.log(text)
+				try {
+					obj = JSON.parse(('Pasted content: ', text))
+				} catch(err) {
+					console.error("Invalid JSON Input")
+					ui.notifications.info("Invalid JSON in Clipboard to Generate Item");
+				}
+			})
+			.catch(err => {
+				console.error('Failed to read clipboard contents: ', err);
+			});
+		} catch (err) {
+			try {
+				obj = JSON.parse( window.prompt('Inset power JSON', "default"));
+			} catch(err) {
+				console.error("Invalid JSON Input")
+				ui.notifications.info("Invalid JSON in Clipboard to Generate Item");
+			}
+		}
+		
+		if(!obj._id) { obj._id = randomID(16); }
+		const validTypes = ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"]
+		if(!validTypes.includes(obj.type)) {
+			console.error("Invalid Object Type")
+			ui.notifications.info("Invalid Object Type");
+			return;
+		}
+		return this.actor.createOwnedItem(obj);
 	}
 
 	_onPowerItemCreate(event) {
