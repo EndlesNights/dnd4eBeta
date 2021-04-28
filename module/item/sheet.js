@@ -82,6 +82,21 @@ export default class ItemSheet4e extends ItemSheet {
 		return data;
 	}
 
+	_getHeaderButtons(){
+		let buttons = super._getHeaderButtons();
+	
+		// Share Entry
+		if (game.user.isGM) {
+			buttons.unshift({
+				label: "Show Players",
+				class: "share-image",
+				icon: "fas fa-eye",
+				onclick: () => this.shareItem()
+			});
+		}
+	
+		return buttons;
+	}
 
 	_getItemEquipmentSubTypeTargets(item, config) {
 
@@ -432,8 +447,8 @@ export default class ItemSheet4e extends ItemSheet {
 	async _onExecute(event) {
 		console.log("_onExecute");
 		event.preventDefault();
-        await this._onSubmit(event, {preventClose: true}); 
-        executeMacro(this.entity); 
+		await this._onSubmit(event, {preventClose: true}); 
+		executeMacro(this.entity); 
 	}
 	
 	/* -------------------------------------------- */
@@ -583,25 +598,25 @@ export default class ItemSheet4e extends ItemSheet {
 // }
 function executeMacro(item)
 {
-    // let actorID = item.actor.id;
-    // let itemID = item.id;
+	// let actorID = item.actor.id;
+	// let itemID = item.id;
 	// console.log(item);
 	// console.log(checkMacro(item));
-    // let cmd = ``;
+	// let cmd = ``;
 
-    // if(item.actor.isToken)
-    // {
-    //     cmd += `const item = game.actors.tokens["${actorID}"].items.get("${itemID}"); ${item.data.data.macro.command}`;
-    // }else{
-    //     cmd += `const item = game.actors.get("${actorID}").items.get("${itemID}"); ${item.data.data.macro.command}`;
-    // }
+	// if(item.actor.isToken)
+	// {
+	//     cmd += `const item = game.actors.tokens["${actorID}"].items.get("${itemID}"); ${item.data.data.macro.command}`;
+	// }else{
+	//     cmd += `const item = game.actors.get("${actorID}").items.get("${itemID}"); ${item.data.data.macro.command}`;
+	// }
 
-    new Macro ({ 
-        name : item.name,
-        type : item.data.data.macro.type,
-        scope : item.data.data.macro.scope,
-        command : item.data.data.macro.command, //cmd,
+	new Macro ({ 
+		name : item.name,
+		type : item.data.data.macro.type,
+		scope : item.data.data.macro.scope,
+		command : item.data.data.macro.command, //cmd,
 		author : game.user.id,
 		item: item.data.data
-    }).execute();
+	}).execute();
 }
