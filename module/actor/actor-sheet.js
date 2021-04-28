@@ -8,6 +8,7 @@ import { SaveThrowDialog } from "../apps/save-throw.js";
 import { AttributeBonusDialog } from "../apps/attribute-bonuses.js";
 import { CustomRolldDescriptions } from "../apps/custom-roll-descriptions.js";
 import { MovementDialog } from "../apps/movement-dialog.js";
+import { ItemImporterDialog} from "../apps/item-importer.js"
 import TraitSelector from "../apps/trait-selector.js";
 import TraitSelectorSense from "../apps/trait-selector-sense.js";
 import TraitSelectorSave from "../apps/trait-selector-save.js";
@@ -726,39 +727,7 @@ export class ActorSheet4e extends ActorSheet {
 
 	async _onItemImport(event) {
 		event.preventDefault();
-
-		let obj;
-		try{
-			await navigator.clipboard.readText()
-			.then(text => {
-				console.log(text)
-				try {
-					obj = JSON.parse(('Pasted content: ', text))
-				} catch(err) {
-					console.error("Invalid JSON Input")
-					ui.notifications.info("Invalid JSON in Clipboard to Generate Item");
-				}
-			})
-			.catch(err => {
-				console.error('Failed to read clipboard contents: ', err);
-			});
-		} catch (err) {
-			try {
-				obj = JSON.parse( window.prompt('Inset power JSON', "default"));
-			} catch(err) {
-				console.error("Invalid JSON Input")
-				ui.notifications.info("Invalid JSON in Clipboard to Generate Item");
-			}
-		}
-		
-		if(!obj._id) { obj._id = randomID(16); }
-		const validTypes = ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"]
-		if(!validTypes.includes(obj.type)) {
-			console.error("Invalid Object Type")
-			ui.notifications.info("Invalid Object Type");
-			return;
-		}
-		return this.actor.createOwnedItem(obj);
+		new ItemImporterDialog(this.actor).render(true);
 	}
 
 	_onPowerItemCreate(event) {
