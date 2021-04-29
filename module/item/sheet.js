@@ -95,7 +95,47 @@ export default class ItemSheet4e extends ItemSheet {
 			});
 		}
 	
+		// Export JSON
+		buttons.unshift({
+			label: "Expor JSON",
+			class: "export-json",
+			icon: "fas fa-atlas",
+			onclick: () => this.exportItem()
+		});
+
 		return buttons;
+	}
+
+	shareItem() {
+		game.socket.emit("system.dnd4eBeta", {
+		itemId: this.item._id
+		});
+	}
+
+	exportItem() {
+		const jsonString = JSON.stringify(this.object._data);
+
+		var textarea = document.createElement('textarea');
+		textarea.textContent = jsonString;
+		document.body.appendChild(textarea);
+	  
+		var selection = document.getSelection();
+		var range = document.createRange();
+		range.selectNodeContents(textarea);
+		selection.removeAllRanges();
+		selection.addRange(range);
+	  
+		textarea.select();
+	  
+		console.log(selection.getRangeAt(0).cloneContents());
+		console.log('Supported', document.queryCommandSupported('copy'));
+		console.log('Enabled', document.queryCommandEnabled('copy'));
+		console.log('copy success', document.execCommand('copy'));
+		selection.removeAllRanges();
+	  
+		document.body.removeChild(textarea);
+
+		ui.notifications.info("JSON data copied to clipboard");
 	}
 
 	_getItemEquipmentSubTypeTargets(item, config) {
