@@ -126,13 +126,7 @@ export default class ItemSheet4e extends ItemSheet {
 		selection.addRange(range);
 	  
 		textarea.select();
-	  
-		console.log(selection.getRangeAt(0).cloneContents());
-		console.log('Supported', document.queryCommandSupported('copy'));
-		console.log('Enabled', document.queryCommandEnabled('copy'));
-		console.log('copy success', document.execCommand('copy'));
 		selection.removeAllRanges();
-	  
 		document.body.removeChild(textarea);
 
 		ui.notifications.info("JSON data copied to clipboard");

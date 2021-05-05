@@ -867,6 +867,7 @@ export class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `data.movement.${moveName}`;
+		console.log(target)
 		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonues` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}

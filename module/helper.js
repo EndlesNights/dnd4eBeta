@@ -214,25 +214,34 @@ export class Helper {
    * @param {Object} missing    Value to use as missing replacements, such as {missing: "0"}.
    * @return {String} The formula with attributes replaced with values.
    */
-  static replaceData(formula, data, {missing=null,depth=1}={}) {
-    // Exit early if the formula is invalid.
-    if ( typeof formula != "string" || depth < 1) {
-      return 0;
-    }
-    // Replace attributes with their numeric equivalents.
-    let dataRgx = new RegExp(/@([a-z.0-9_\-]+)/gi);
-    let rollFormula = formula.replace(dataRgx, (match, term) => {
-      let value = getProperty(data, term);
-      // If there was a value returned, trim and return it.
-      if ( value || value == 0) {
-        return String(value).trim();
-      }
-      // Otherwise, return either the missing replacement value, or the original @attr string for later replacement.
-      else {
-        return missing != null ? missing : `@${term}`;
-      }
-    });
-    return rollFormula;
-  }
+	static replaceData(formula, data, {missing=null,depth=1}={}) {
+		// Exit early if the formula is invalid.
+		if ( typeof formula != "string" || depth < 1) {
+		return 0;
+		}
+		// Replace attributes with their numeric equivalents.
+		let dataRgx = new RegExp(/@([a-z.0-9_\-]+)/gi);
+		let rollFormula = formula.replace(dataRgx, (match, term) => {
+			let value = getProperty(data, term);
+			// If there was a value returned, trim and return it.
+			if ( value || value == 0) {
+				return String(value).trim();
+			}
+			// Otherwise, return either the missing replacement value, or the original @attr string for later replacement.
+			else {
+				return missing != null ? missing : `@${term}`;
+			}
+		});
+		return rollFormula;
+	}
 
+	static evaluate(s) {
+		let total = 0;
+		s = s.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
+
+		while (s.length) {
+			total += parseFloat(s.shift());
+		}
+		return total;
+	}
 }

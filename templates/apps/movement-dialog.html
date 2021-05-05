@@ -1,27 +1,57 @@
 <form id="movement-dialog" class="dialog-content" onsubmit="event.preventDefault();">
-    <div class="basic" data-movement="basic">
-        <span title="Movement Speed">Movement Speed:</span>
-        <span title="Movement Speed" style="margin-right: 4px;">{{data.movement.basic.value}}</span>
-        <span title="Base Speed">Base:</span> 
-        <input type="text" name="data.movement.basic.base" value="{{data.movement.basic.base}}" title="Base Movement Speed!" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-        <span>Armour: {{data.movement.basic.armour}}</span>
-        <!-- <input type="text" name="data.movement.basic.armour" value="{{data.movement.basic.armour}}" title="Armour Effect" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
-        <a class="move-bonus" data-target="data.details" title="Movement Bonus">Bonus: {{data.movement.basic.bonusValue}}</a>
-        <!-- <input type="text" name="data.movement.basic.misc" value="{{data.movement.basic.misc}}" title="Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
-    </div>
-    <div class="charge" style="display: inline" data-movement="charge">
-        <span title="Charge Movement Speed">Charge Speed:</span>
-        <span title="Charge Movement Speed" style="margin-right: 4px;">{{data.movement.charge.value}}</span>
-        <a class="move-bonus" data-target="data.details" title="Charge Bonus" style="margin-right: 6px;">Bonus: {{data.movement.charge.bonusValue}}</a>
-        <!-- <input type="text" name="data.movement.charge.misc" value="{{data.movement.charge.misc}}" title="Charge Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
-    </div>
-    <div class="run" style="display: inline" data-movement="run">
-        <span title="Run Movement Speed">Run Speed:</span>
-        <span title="Run Movement Speed" style="margin-right: 4px;">{{data.movement.run.value}}</span>
-        <a class="move-bonus" data-target="data.details" title="Running Bonus">Bonus: {{data.movement.run.bonusValue}}</a>
-        <!-- <input type="text" name="data.movement.run.misc" value="{{data.movement.run.misc}}" title="Run Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
-    </div>
-    <input type="text" name="data.movement.notes" value="{{data.movement.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
 
-    <button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EBETA.Save"}}</button>
+	<div class="form-group base" data-movement="base">
+		<span><b>{{data.movement.base.value}} sq.</b> Base Speed:</span>
+		<input type="text" name="data.movement.base.base" value="{{data.movement.base.base}}" title="Base Movement Speed." data-dtype="Number" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="data.details" title="Movement Bonus">Bonus: {{data.movement.base.bonusValue}}</a>
+		<span style="max-width:40px; padding-right: 3px;">Temp:</span>
+		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="data.movement.base.temp" value="{{data.movement.base.temp}}" title="Base Movement Speed." data-dtype="Number" onClick="this.select();" placeholder="0"/>
+	</div>
+	<footer class="flexrow">
+		<span>Movment Penelty from Armour : {{data.movement.base.armour}}</span>
+	</footer>
+
+	<div class="form-group base"  data-movement="walk">
+		<span title="Walking Movement Speed" style="margin-right: 4px;"><b>{{data.movement.walk.value}} sq.</b> Walking Speed:</span>
+		<input type="text" name="data.movement.walk.formula" value="{{data.movement.walk.formula}}" title="Walking Speed" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="data.details" title="Walk Movement Bonus">Bonus: {{data.movement.walk.bonusValue}}</a>
+		<span style="max-width:40px; padding-right: 3px;">Temp:</span>
+		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="data.movement.walk.temp" value="{{data.movement.walk.temp}}" title="Walk Movement Speed." data-dtype="Number" onClick="this.select();" placeholder="0"/>
+	</div>
+
+	<div class="form-group base"  data-movement="run">
+		<span title="Run Movement Speed" style="margin-right: 4px;"><b>{{data.movement.run.value}} sq.</b> Running Speed:</span>
+		<input type="text" name="data.movement.run.formula" value="{{data.movement.run.formula}}" title="Running  Speed" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="data.details" title="Running Movement Bonus">Bonus: {{data.movement.run.bonusValue}}</a>
+		<span style="max-width:40px; padding-right: 3px;">Temp:</span>
+		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="data.movement.run.temp" value="{{data.movement.run.temp}}" title="Running Movement Speed." data-dtype="Number" onClick="this.select();" placeholder="0"/>
+	</div>
+
+	<div class="form-group base"  data-movement="charge">
+		<span title="Charge Movement Speed" style="margin-right: 4px;"><b>{{data.movement.charge.value}} sq.</b> Charge Speed:</span>
+		<input type="text" name="data.movement.charge.formula" value="{{data.movement.charge.formula}}" title="Charge Speed" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="data.details" title="Charge Movement Bonus">Bonus: {{data.movement.charge.bonusValue}}</a>
+		<span style="max-width:40px; padding-right: 3px;">Temp:</span>
+		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="data.movement.charge.temp" value="{{data.movement.charge.temp}}" title="Charge Movement Speed." data-dtype="Number" onClick="this.select();" placeholder="0"/>
+	</div>
+
+	<div class="form-group base" data-movement="climb">
+		<span title="Climb Movement Speed" style="margin-right: 4px;"><b>{{data.movement.climb.value}} sq.</b> Climb Speed:</span>
+		<input type="text" name="data.movement.climb.formula" value="{{data.movement.climb.formula}}" title="Climb Speed" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="data.details" title="Climbing Movement Bonus">Bonus: {{data.movement.climb.bonusValue}}</a>
+		<span style="max-width:40px; padding-right: 3px;">Temp:</span>
+		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="data.movement.climb.temp" value="{{data.movement.climb.temp}}" title="Climbing Movement Speed." data-dtype="Number" onClick="this.select();" placeholder="0"/>
+	</div>
+	
+	<div class="form-group base"  data-movement="shift">
+		<span title="Shift Movement Speed" style="margin-right: 4px;"><b>{{data.movement.shift.value}} sq.</b> Shift Speed:</span>
+		<input type="text" name="data.movement.shift.formula" value="{{data.movement.shift.formula}}" title="Shift Movement" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="data.details" title="Shifting Movement Bonus">Bonus: {{data.movement.shift.bonusValue}}</a>
+		<span style="max-width:40px; padding-right: 3px;">Temp:</span>
+		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="data.movement.shift.temp" value="{{data.movement.shift.temp}}" title="Shifting Movement Speed." data-dtype="Number" onClick="this.select();" placeholder="0"/>
+	</div>
+
+	<input type="text" name="data.movement.notes" value="{{data.movement.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
+
+	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EBETA.Save"}}</button>
 </form>

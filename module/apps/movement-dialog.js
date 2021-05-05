@@ -7,8 +7,8 @@ export class MovementDialog extends BaseEntitySheet {
 			id: "movement-dialog",
 			classes: ["dnd4eBeta", "movement-dialog"],
 			template: "systems/dnd4eBeta/templates/apps/movement-dialog.html",
-			width: 500,
-			closeOnSubmit: true
+			width: 420,
+			closeOnSubmit: false
 		});
 	}
 	get title() {
@@ -21,7 +21,7 @@ export class MovementDialog extends BaseEntitySheet {
 	}
 	async _updateObject(event, formData) {
 		const updateData = {};
-		updateData[`data.movement.basic.base`] = formData[`data.movement.basic.base`];
+		for(let data in formData) { updateData[`${data}`] = formData[`${data}`];}
 		this.object.update(updateData);
 	}
 
@@ -35,6 +35,9 @@ export class MovementDialog extends BaseEntitySheet {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `data.movement.${moveName}`;
+		console.log(moveName)
+		console.log(event.currentTarget.parentElement.dataset)
+		console.log(event.currentTarget.parentElement)
 		const options = {target: target, label: `${this.object.data.data.movement[moveName].label} Movement Bonues` };
 		new AttributeBonusDialog(this.object, options).render(true);
 	}

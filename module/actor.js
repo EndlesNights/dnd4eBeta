@@ -2,6 +2,7 @@ import { d20Roll, damageRoll } from "./dice.js";
 import AbilityUseDialog from "./apps/ability-use-dialog.js";
 import AbilityTemplate from "./pixi/ability-template.js"
 import { DND4EBETA } from "./config.js";
+import { Helper } from "./helper.js"
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -101,7 +102,6 @@ export class Actor4e extends Actor {
 		}
 		
 		//HP auto calc
-		console.log(data)
 		if(data.attributes.hp.autototal)
 		{
 			data.attributes.hp.max = data.attributes.hp.perlevel * (data.details.level - 1) + data.attributes.hp.starting + data.attributes.hp.feat + data.attributes.hp.misc + data.abilities.con.value;
@@ -253,20 +253,31 @@ export class Actor4e extends Actor {
 			data.attributes.init.value = 999;
 		
 		//calc movespeed
-		let basicBonusValue = 0;
-		if(!(data.movement.basic.bonus.length === 1 && jQuery.isEmptyObject(data.movement.basic.bonus[0]))) {
-			for( const b of data.movement.basic.bonus) {
+		let baseMoveBonusValue = 0;
+		if(!(data.movement.base.bonus.length === 1 && jQuery.isEmptyObject(data.movement.base.bonus[0]))) {
+			for( const b of data.movement.base.bonus) {
 				if(b.active) {
-					basicBonusValue += b.value;
+					baseMoveBonusValue += b.value;
 				}
 			}
 		}
 		for ( let i of this.items) {
 			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
-			data.movement.basic.armour -= i.data.data.armour.movePenValue;
+			data.movement.base.armour -= i.data.data.armour.movePenValue;
 		}
-		data.movement.basic.bonusValue = basicBonusValue;
+		data.movement.base.bonusValue = baseMoveBonusValue;
+
 		
+		let walkBonusValue = 0;
+		if(!(data.movement.walk.bonus.length === 1 && jQuery.isEmptyObject(data.movement.walk.bonus[0]))) {
+			for( const b of data.movement.walk.bonus) {
+				if(b.active) {
+					walkBonusValue += b.value;
+				}
+			}
+		}
+		data.movement.walk.bonusValue = walkBonusValue;	
+
 		let chargeBonusValue = 0;
 		if(!(data.movement.charge.bonus.length === 1 && jQuery.isEmptyObject(data.movement.charge.bonus[0]))) {
 			for( const b of data.movement.charge.bonus) {
@@ -286,23 +297,66 @@ export class Actor4e extends Actor {
 			}
 		}
 		data.movement.run.bonusValue = runBonusValue;
-		
 	
-		data.movement.basic.value = + data.movement.basic.base + data.movement.basic.armour + basicBonusValue + data.movement.basic.temp;
+		let climbBonusValue = 0;
+		if(!(data.movement.climb.bonus.length === 1 && jQuery.isEmptyObject(data.movement.climb.bonus[0]))) {
+			for( const b of data.movement.climb.bonus) {
+				if(b.active) {
+					climbBonusValue += b.value;
+				}
+			}
+		}
+		data.movement.climb.bonusValue = climbBonusValue;	
+
+		let shiftBonusValue = 0;
+		if(!(data.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(data.movement.shift.bonus[0]))) {
+			for( const b of data.movement.shift.bonus) {
+				if(b.active) {
+					shiftBonusValue += b.value;
+				}
+			}
+		}
+		data.movement.shift.bonusValue = shiftBonusValue;	
+
+		data.movement.base.value = data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
+
+
+		console.log(data.movement.base.base)
+		console.log(baseMoveBonusValue)
+		console.log(data.movement.base.temp)
+
+		console.log(data.movement.base.value)
+
+		let walkForm = eval(data.movement.walk.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
+		data.movement.walk.value = walkForm + walkBonusValue + data.movement.base.temp;
 		
-		if (data.movement.basic.value < 0)
-			data.movement.basic.value = 0;
+		if (data.movement.walk.value < 0)
+			data.movement.walk.value = 0;
 		
-		data.movement.charge.value = data.movement.basic.value + data.movement.charge.armour + chargeBonusValue + data.movement.charge.temp;
-		
-		if (data.movement.charge.value < 0)
-			data.movement.charge.value = 0;
-		
-		data.movement.run.value = data.movement.basic.value + 2 + data.movement.run.armour + runBonusValue + data.movement.run.temp;
+		let runForm = eval(data.movement.run.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
+		data.movement.run.value = runForm + runBonusValue + data.movement.run.temp;
 		
 		if (data.movement.run.value < 0)
 			data.movement.run.value = 0;
+
+		let chargeForm = eval(data.movement.charge.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
+		data.movement.charge.value = chargeForm + chargeBonusValue + data.movement.charge.temp;
 		
+		if (data.movement.charge.value < 0)
+			data.movement.charge.value = 0;
+
+		let climbeForm = eval(data.movement.climb.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
+		data.movement.climb.value = climbeForm;
+		
+		if (data.movement.climb.value < 0)
+			data.movement.climb.value = 0;
+		
+		let shiftForm = eval(data.movement.shift.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
+		data.movement.shift.value = shiftForm;
+		
+		if (data.movement.shift.value < 0)
+			data.movement.shift.value = 0;
+			
 		//Passive Skills
 		for (let [id, pas] of Object.entries(data.passive)) {
 			let passiveBonusValue = 0;
