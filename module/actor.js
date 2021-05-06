@@ -320,13 +320,6 @@ export class Actor4e extends Actor {
 
 		data.movement.base.value = data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
 
-
-		console.log(data.movement.base.base)
-		console.log(baseMoveBonusValue)
-		console.log(data.movement.base.temp)
-
-		console.log(data.movement.base.value)
-
 		let walkForm = eval(data.movement.walk.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
 		data.movement.walk.value = walkForm + walkBonusValue + data.movement.base.temp;
 		

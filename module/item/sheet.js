@@ -115,21 +115,32 @@ export default class ItemSheet4e extends ItemSheet {
 	exportItem() {
 		const jsonString = JSON.stringify(this.object._data);
 
-		var textarea = document.createElement('textarea');
-		textarea.textContent = jsonString;
-		document.body.appendChild(textarea);
-	  
-		var selection = document.getSelection();
-		var range = document.createRange();
-		range.selectNodeContents(textarea);
-		selection.removeAllRanges();
-		selection.addRange(range);
-	  
-		textarea.select();
-		selection.removeAllRanges();
-		document.body.removeChild(textarea);
-
-		ui.notifications.info("JSON data copied to clipboard");
+		try {
+			navigator.clipboard.writeText(jsonString)
+			ui.notifications.info("JSON data copied to clipboard");
+		} catch (er) {
+			let d = new Dialog({
+				title: `Output`,
+				content: `<textarea readonly type="text" id="debugmacro">${jsonString}</textarea>`,
+				buttons: {
+				  copy: {
+					label: `Copy to clipboard`,
+					callback: () => {
+					  $("#debugmacro").select();
+					  document.execCommand('copy');
+					}
+				  },
+				  close: {
+					icon: "<i class='fas fa-tick'></i>",
+					label: `Close`
+				  },
+				},
+				default: "close",
+				close: () => {}
+			  });
+			  
+			  d.render(true);
+		}
 	}
 
 	_getItemEquipmentSubTypeTargets(item, config) {
