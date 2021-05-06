@@ -120,7 +120,7 @@ export default class ItemSheet4e extends ItemSheet {
 			ui.notifications.info("JSON data copied to clipboard");
 		} catch (er) {
 			let d = new Dialog({
-				title: `Output`,
+				title: `JSON Output`,
 				content: `<textarea readonly type="text" id="debugmacro">${jsonString}</textarea>`,
 				buttons: {
 				  copy: {
