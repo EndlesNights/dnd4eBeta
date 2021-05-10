@@ -38,16 +38,14 @@ export class DeathSaveDialog extends BaseEntitySheet {
 		});
 		rollConfig.event = event;
 		rollConfig.critical = this.object.data.data.details.deathsaveCrit || 20;
-		rollConfig.fumble = 9;
-		let roll = d20Roll(rollConfig);
+		rollConfig.fumble = 9 + formData.save;
+		const roll = await d20Roll(rollConfig);
 		
 		if(roll.total < 10)
 		{
 			updateData[`data.details.deathsavefail`] = this.object.data.data.details.deathsavefail + 1;
-			
-
 		}
-		if( roll && this.object.data.data.details.deathsavefail + 1 >= this.object.data.data.details.deathsaves)
+		if( roll.total < 10 && this.object.data.data.details.deathsavefail + 1 >= this.object.data.data.details.deathsaves)
 		{
 			await ChatMessage.create({
 				user: game.user._id,
@@ -58,5 +56,6 @@ export class DeathSaveDialog extends BaseEntitySheet {
 
 		this.object.update(updateData);
 
+		//Add in Nat 20 resaults
 	}
 }

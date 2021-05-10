@@ -134,7 +134,7 @@
 				
 				"secondwind": false,
 				"deathsaves": 3,
-				"deathsavefail": null,
+				"deathsavefail": 0,
 				"deathsaveCrit": 20,
 				"deathsavebon": {
 					"bonus": [{}],

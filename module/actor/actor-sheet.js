@@ -95,6 +95,7 @@ export class ActorSheet4e extends ActorSheet {
 		data.effects = prepareActiveEffectCategories(this.entity.effects);
 
 		// data.actor.data.details.isBloodied = (data.actor.data.attributes.hp.value <= data.actor.data.attributes.hp.max/2);
+		console.log(data)
 		return data;
 	}
 	
