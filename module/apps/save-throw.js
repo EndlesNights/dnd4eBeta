@@ -36,8 +36,8 @@ export class SaveThrowDialog extends BaseEntitySheet {
 			fastForward: true
 		});
 		rollConfig.event = event;
-		rollConfig.critical = formData.dc;
-		rollConfig.fumble = formData.dc -1;
+		rollConfig.critical = formData.dc - this.object.data.data.details.saves.value - formData.save || 10;
+		rollConfig.fumble = formData.dc -1 - this.object.data.data.details.saves.value - formData.save || 9;
 		await d20Roll(rollConfig);
 	}
 }

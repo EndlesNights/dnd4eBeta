@@ -38,7 +38,7 @@ export class DeathSaveDialog extends BaseEntitySheet {
 		});
 		rollConfig.event = event;
 		rollConfig.critical = this.object.data.data.details.deathsaveCrit || 20;
-		rollConfig.fumble = 9 + formData.save;
+		rollConfig.fumble = 9 - formData.save - this.object.data.data.details.deathsavebon.value;
 		const roll = await d20Roll(rollConfig);
 		
 		if(roll.total < 10)
@@ -53,9 +53,14 @@ export class DeathSaveDialog extends BaseEntitySheet {
 				content: this.object.data.name + " has failed their last death saving throw and has died!"
 			});
 		}
+		else if(roll.total - formData.save - this.object.data.data.details.deathsavebon.value >= rollConfig.critical) {
+			await ChatMessage.create({
+				user: game.user._id,
+				speaker: ChatMessage.getSpeaker(),
+				content: this.object.data.name + " has has critical succedded their death saving throw, is no longer unconouse and has regained 1 HP!"
+			});
+		}
 
 		this.object.update(updateData);
-
-		//Add in Nat 20 resaults
 	}
 }

@@ -5,6 +5,10 @@
 - reworked movement dialog options
 - Added an option to import JSON data into items
 - Added in option to export items as JSON data onto users clipboard, if browser does not allow for pushing data to clipboard, a pop dialog box where the data can be copied
+- fixed issue with death saving throw and bonus
+- fixed issue with saving throw and bonus
+- when setting a DC for a saving throw, it should now auto select the entire text
+- The Fumble and critical (DC) perameters for saving throw should now correctly auto set if an invalid value is submited
 
 ## Version 0.1.2
 - initiative can now be rolled from the character sheet
