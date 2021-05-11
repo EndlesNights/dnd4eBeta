@@ -183,7 +183,11 @@
 					</div>
 				</section>
 				<section class="section section--movement flexcol">
-					<div data-html="true" title="Walking Speed:<b>{{numberFormat data.movement.walk.value}}</b>&#013;Running Speed:<b>{{numberFormat data.movement.run.value}}</b>">
+					<div data-html="true" title=
+"{{numberFormat data.movement.walk.value}} sq. Walking Speed
+{{numberFormat data.movement.run.value}} sq. Running Speed
+{{numberFormat data.movement.charge.value}} sq. Charging Speed
+{{numberFormat data.movement.shift.value}} sq. Shifting Speed">
 						<!-- <input style="width:40%; border-bottom: 1px solid; border-radius: 0px; text-align: center;" type="text" name="data.movement.basic.base" value="{{data.movement.basic.base}}" title="Basic Movement Speed"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<strong class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat data.movement.walk.value}} sq.</strong>
 						<label class="movement-dialog rollable">{{localize 'DND4EBETA.Speed'}}</label>

@@ -3,6 +3,7 @@
 ## Version 0.1.3
 - Added an option for Game Masters to preview and show items to parties groups
 - reworked movement dialog options
+- Tooltip for movement will now show multiple difrent move speeds.
 - Added an option to import JSON data into items
 - Added in option to export items as JSON data onto users clipboard, if browser does not allow for pushing data to clipboard, a pop dialog box where the data can be copied
 - fixed issue with death saving throw and bonus
