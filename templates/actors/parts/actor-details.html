@@ -1,3 +1,51 @@
+<!-- <ul class="attributes flexrow">
+	{{#each resources as |res|}}
+	<li class="attribute resource">
+		<h4 class="attribute-name box-title">
+			<input name="data.resources.{{res.name}}.label" type="text" value="{{res.label}}"
+				   placeholder="{{res.placeholder}}" />
+		</h4>
+		<div class="attribute-value">
+			<label class="recharge checkbox">
+				{{ localize "DND4EBETA.AbbreviationSR" }} <input name="data.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
+			</label>
+
+			<input name="data.resources.{{res.name}}.value" type="number" value="{{res.value}}" placeholder="0"/>
+			<span class="sep"> / </span>
+			<input name="data.resources.{{res.name}}.max" type="number" value="{{res.max}}" placeholder="0"/>
+
+			<label class="recharge checkbox">
+				{{ localize "DND4EBETA.AbbreviationLR" }} <input name="data.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
+			</label>
+		</div>
+	</li>
+	{{/each}}
+</ul> -->
+
+<section class="flexrow section--attributes" style="border:none;">
+	{{!-- Custom Resources --}}
+	{{#each resources as |res|}}
+	<div class="attributes attribute-health">
+		<h4 class="attribute-name health-option rollable">
+			<input name="data.resources.{{res.name}}.label" type="text" value="{{res.label}}"
+				   placeholder="{{res.placeholder}}" />
+		</h4>
+		<div class="attribute-value flexrow">
+			<input name="data.resources.{{res.name}}.value" type="number" value="{{res.value}}" placeholder="0"/>
+			<span class="sep"> / </span>
+			<input name="data.resources.{{res.name}}.max" type="number" value="{{res.max}}" placeholder="0"/>
+		</div>
+		<footer class="attribute-footer attribute-footer--temp-hp flexrow">
+			<label class="recharge checkbox">
+				{{ localize "DND4EBETA.AbbreviationSR" }} <input name="data.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
+			</label>
+			<label class="recharge checkbox">
+				{{ localize "DND4EBETA.AbbreviationLR" }} <input name="data.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
+			</label>		</footer>
+	</div>
+	{{/each}}
+</section>
+
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="gender">{{localize 'DND4EBETA.Gender'}}:</label>
 	<input style="flex:1; text-align: right;" id="gender" type="text" name="data.details.gender" value="{{data.details.gender}}" title="{{localize 'DND4EBETA.Gender'}}"  placeholder="{{localize 'DND4EBETA.Gender'}}" onClick="this.select();"/>
