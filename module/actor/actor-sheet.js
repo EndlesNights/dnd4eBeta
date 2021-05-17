@@ -696,87 +696,113 @@ export class ActorSheet4e extends ActorSheet {
 			//generate summary entry here
 		//	let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
 		//	let props = $(`<div class="item-properties"></div>`);
+			if (item.type === "power") {
+				let powerDetail = `<span>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]} ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}`;
+				let tag = [];
 
-			let powerDetail = `<span>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]} ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}`;
-			let tag = [];
+				if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
+					tag.push(`Weapon`);
+				} 
+				else if ( chatData.weaponType === "implement") {
+					tag.push(`Implement`);
+				}
 
-			if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
-				tag.push(`Weapon`);
-			} 
-			else if ( chatData.weaponType === "implement") {
-				tag.push(`Implement`);
-			}
+				console.log(chatData.damageType)
+				if(chatData.damageType) {
+					for ( let [damage, d] of Object.entries(chatData.damageType)) {
+						// `${game.i18n.localize("DND4EBETA.CurrencyConvert")}`
+						if(d) tag.push(CONFIG.DND4EBETA.damageTypes[damage])
+					}
+				}
+				if(chatData.effectType) {
+					for ( let [effect, e] of Object.entries(chatData.effectType)) {
+						if(e) tag.push(CONFIG.DND4EBETA.effectTypes[effect])
+					}
+				}
+				tag.sort();
+				powerDetail += tag.length > 0 ? `, ${tag.join(', ')}</span>` : `</span>`;
+				
+				powerDetail += `<br><span>${CONFIG.DND4EBETA.abilityActivationTypes[chatData.actionType]} •`;
 
-			console.log(chatData.damageType)
-			for ( let [damage, d] of Object.entries(chatData.damageType)) {
-				// `${game.i18n.localize("DND4EBETA.CurrencyConvert")}`
-				if(d) tag.push(CONFIG.DND4EBETA.damageTypes[damage])
-			}
-			for ( let [effect, e] of Object.entries(chatData.effectType)) {
-				if(e) tag.push(CONFIG.DND4EBETA.effectTypes[effect])
-			}
-			tag.sort();
-			powerDetail += ` ${tag.join(', ')}</span>`
-			
-			powerDetail += `<br><span>${CONFIG.DND4EBETA.abilityActivationTypes[chatData.actionType]} •`;
+				if(chatData.rangeType === "weapon") {
+					powerDetail += ` ${CONFIG.DND4EBETA.weaponType[chatData.weaponType]}`;
+					chatData.rangePower ? powerDetail += ` <b>${chatData.rangePower}</b>` : {} ;
+					powerDetail += `</span>`;
+				} 
+				else if (chatData.rangeType === "range") {
+					powerDetail += ` ${game.i18n.localize("DND4EBETA.Range")} <b>${chatData.rangePower}</b></span>`;
+				}
+				else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
+					powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} <b>${chatData.area}</b></span>`;
+				}
+				else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
+					powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} <b>${chatData.area}</b> ${game.i18n.localize("DND4EBETA.RangeWithinOf")} <b>${chatData.rangePower}</b> ${game.i18n.localize("DND4EBETA.Squares")}</span>`;
+				}
+				else if (chatData.rangeType === "personal") {
+					powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</span>`;
+				}
+				else if (chatData.rangeType === "trouch") {
+					powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")} ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</span>`;
+				}
+				else {
+					powerDetail += `</span>`;
+				}
 
-			if(chatData.rangeType === "weapon") {
-				powerDetail += ` ${CONFIG.DND4EBETA.weaponType[chatData.weaponType]}`;
-				chatData.rangePower ? powerDetail += ` <b>${chatData.rangePower}</b>` : {} ;
-				powerDetail += `</span>`;
-			} 
-			else if (chatData.rangeType === "range") {
-				powerDetail += ` ${game.i18n.localize("DND4EBETA.Range")} <b>${chatData.rangePower}</b></span>`;
-			}
-			else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
-				powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} <b>${chatData.area}</b></span>`;
-			}
-			else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
-				powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} <b>${chatData.area}</b> ${game.i18n.localize("DND4EBETA.RangeWithinOf")} <b>${chatData.rangePower}</b> ${game.i18n.localize("DND4EBETA.Squares")}</span>`;
-			}
-			else if (chatData.rangeType === "personal") {
-				powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</span>`;
-			}
-			else if (chatData.rangeType === "trouch") {
-				powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")} ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</span>`;
-			}
-			else {
-				powerDetail += `</span>`;
-			}
+				if(chatData.target.num) {
+					powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Target")}: ${chatData.target.num}</span>`;
+				}
 
-			if(chatData.target.num) {
-				powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Target")}: ${chatData.target.num}</span>`;
+				if(chatData.trigger) {
+					powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Trigger")}: ${chatData.trigger}</span>`;
+				}
+
+				if(chatData.requirement) {
+					powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Requirements")}: ${chatData.requirement}</span>`;
+				}
+
+				if(!chatData.postEffect && chatData.effect.detail) {
+					powerDetail += `<p>${game.i18n.localize("DND4EBETA.Effect")}: ${chatData.effect.detail}</p>`;
+				}
+				if(!chatData.postSpecial && chatData.special) {
+					powerDetail += `<p>${game.i18n.localize("DND4EBETA.Special")}: ${chatData.special}</p>`;
+				}
+
+				if(chatData.attack.isAttack) {
+					console.log(chatData)
+					powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Attack")}: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+					chatData.hit.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Hit")}: ${chatData.hit.detail}</p>` : {};
+					chatData.miss.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Miss")}: ${chatData.miss.detail}</p>` : {};
+				}
+
+				if(chatData.postEffect && chatData.effect.detail) {
+					powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Effect")}: ${chatData.effect.detail}</p>`;
+				}
+				if(chatData.postSpecial && chatData.special) {
+					powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Special")}: ${chatData.special}</p>`;
+				}
+
+				console.log(chatData.sustain.actionType)
+				if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
+					powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}: ${chatData.sustain.detail}</p>`;
+				}
+
+				let div = $(`<div class="item-summary"></div>`);
+				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
+				let details = $(`<div class="item-details">${powerDetail}</div>`);
+				
+				div.append(descrip);
+				div.append(details);
+
+				li.append(div.hide());
+				div.slideDown(200);
+			} else {
+				let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
+				let props = $(`<div class="item-properties"></div>`);
+				chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
+				div.append(props);
+				li.append(div.hide());
+				div.slideDown(200);
 			}
-
-			if(chatData.trigger) {
-				powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Trigger")}: ${chatData.trigger}</span>`;
-			}
-
-			if(chatData.requirement) {
-				powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Requirements")}: ${chatData.requirement}</span>`;
-			}
-
-			if(chatData.attack.isAttack) {
-				console.log(chatData)
-				powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Attack")}: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
-				chatData.hit.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Hit")}: ${chatData.hit.detail}</p>` : {};
-				chatData.miss.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Miss")}: ${chatData.miss.detail}</p>` : {};
-			}
-
-			chatData.effect.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Effect")}: ${chatData.effect.detail}</p>` : {};
-			chatData.special ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Special")}: ${chatData.special}</p>` : {};
-
-			let div = $(`<div class="item-summary"></div>`);
-			let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
-			let details = $(`<div class="item-details">${powerDetail}</div>`);
-			
-			console.log(powerDetail)
-
-			div.append(descrip);
-			div.append(details);
-
-			li.append(div.hide());
-			div.slideDown(200);
 		}
 		li.toggleClass("expanded");
 	}

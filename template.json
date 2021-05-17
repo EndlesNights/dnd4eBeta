@@ -762,6 +762,12 @@
 		"area": 0,
 		"rechargeRoll": "",
 		"damageShare": false,
+		"postEffect": true,
+		"postSpecial": true,
+		"sustain": {
+			"actionType": "none",
+			"detail": ""
+		},
 		"target": {
 			"type": "creature",
 			"num": 1
