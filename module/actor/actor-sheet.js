@@ -707,7 +707,6 @@ export class ActorSheet4e extends ActorSheet {
 					tag.push(`Implement`);
 				}
 
-				console.log(chatData.damageType)
 				if(chatData.damageType) {
 					for ( let [damage, d] of Object.entries(chatData.damageType)) {
 						// `${game.i18n.localize("DND4EBETA.CurrencyConvert")}`
@@ -768,7 +767,6 @@ export class ActorSheet4e extends ActorSheet {
 				}
 
 				if(chatData.attack.isAttack) {
-					console.log(chatData)
 					powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Attack")}: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
 					chatData.hit.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Hit")}: ${chatData.hit.detail}</p>` : {};
 					chatData.miss.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Miss")}: ${chatData.miss.detail}</p>` : {};
@@ -781,7 +779,6 @@ export class ActorSheet4e extends ActorSheet {
 					powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Special")}: ${chatData.special}</p>`;
 				}
 
-				console.log(chatData.sustain.actionType)
 				if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
 					powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}: ${chatData.sustain.detail}</p>`;
 				}
@@ -865,9 +862,15 @@ export class ActorSheet4e extends ActorSheet {
 		}
 		else if(this.object.data.data.powerGroupTypes === "usage") {
 			itemData.data.useType = type;
+			if(["encounter", "daily"].includes(type)) {
+				itemData.data.uses = {
+					value: 1,
+					max: 1,
+					per: type === "encounter" ? "enc" : "day"
+				};
+			}
 		}
 
-		delete itemData.data["type"];
 		return this.actor.createOwnedItem(itemData);
 	}
 
@@ -984,7 +987,6 @@ export class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `data.movement.${moveName}`;
-		console.log(target)
 		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonues` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
@@ -1106,7 +1108,8 @@ export class ActorSheet4e extends ActorSheet {
 	const item = this.actor.getOwnedItem(itemId);
 	// Roll powers through the actor
 	const power = ["atwill","encounter","daily","utility"];
-	if ( power.includes(item.data.type)) {
+
+	if ( item.data.type === "power") {
 		return this.actor.usePower(item, {configureDialog: !event.shiftKey});
 	}
 	// Otherwise roll the Item directly

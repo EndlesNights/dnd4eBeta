@@ -588,7 +588,7 @@ export class Actor4e extends Actor {
 	*/
 	async usePower(item, {configureDialog=true}={}) {
 		//if not a valid type of item to use
-		if ( !DND4EBETA.powerUseType[item.data.type] ) throw new Error("Wrong Item type");
+		if ( item.data.type !=="power" ) throw new Error("Wrong Item type");
 		const itemData = item.data.data;
 		//configure Powers data
 		const limitedUses = !!itemData.uses.per;
