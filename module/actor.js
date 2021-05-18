@@ -665,4 +665,33 @@ export class Actor4e extends Actor {
 			encumbered: weight > max
 		};
 	}
+
+	async applyDamage(amount=0, multiplier=1) {
+		amount = Math.floor(parseInt(amount) * multiplier);
+		const hp = this.data.data.attributes.hp;
+	
+		// Deduct damage from temp HP first
+		const tmp = parseInt(hp.temp) || 0;
+		const dt = amount > 0 ? Math.min(tmp, amount) : 0;
+	
+		// Remaining goes to health
+		const tmpMax = parseInt(hp.tempmax) || 0;
+		const dh = Math.clamped(hp.value - (amount - dt), 0, hp.max + tmpMax);
+	
+		// Update the Actor
+		const updates = {
+		  "data.attributes.hp.temp": tmp - dt,
+		  "data.attributes.hp.value": dh
+		};
+	
+		// Delegate damage application to a hook
+		// TODO replace this in the future with a better modifyTokenAttribute function in the core
+		const allowed = Hooks.call("modifyTokenAttribute", {
+		  attribute: "attributes.hp",
+		  value: amount,
+		  isDelta: false,
+		  isBar: true
+		}, updates);
+		return allowed !== false ? this.update(updates) : this;
+	}
 }

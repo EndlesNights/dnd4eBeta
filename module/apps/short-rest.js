@@ -94,6 +94,12 @@ export class ShortRestDialog extends BaseEntitySheet {
 			//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 		});		
 		
+		for (let r of Object.entries(this.object.data.data.resources)) {
+			if(r[1].sr && r[1].max) {
+				updateData[`data.resources.${r[0]}.value`] = r[1].max;
+			}
+		}
+
 		this.object.update(updateData);
 	}	  
 }

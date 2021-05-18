@@ -700,7 +700,7 @@ export default class Item4e extends Item {
 		// 	flavor += `<br>Target: ${itemData.target.type} `;
 		// }
 		// flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
-		flavor += ` VS <b>${itemData.attack.def.toUpperCase() }<b>`;
+		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }<b>`;
 			const rollData = this.getRollData();
 		
 			// Define Roll bonuses
@@ -888,9 +888,9 @@ export default class Item4e extends Item {
 			}
 		}
 		//Add powers text to message.
-		if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
-		if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
-		if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
+		// if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
+		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
+		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 		// Call the roll helper utility
 		console.log(parts);
 		return damageRoll({

@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 0.1.4
+- Added Power Cards formating to character sheet display
+- Added Power Cards formating to power chat message
+- Added 3 resources to the character sheet that can be used to track custom resources. Can be set to resourch on either short, long rest, and can be accessed at 
+	resources.primary.value
+	resources.secondary.value
+	resources.tertiary.value
+- applyChatCardDamage should be working. Right Click on Roll Chat messages. 
+
 ## Version 0.1.3
 - Added an option for Game Masters to preview and show items to parties groups
 - reworked movement dialog options

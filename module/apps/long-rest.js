@@ -72,6 +72,12 @@ export class LongRestDialog extends BaseEntitySheet {
 			content: `${this.object.data.name} takes a long rest.`
 		});		
 		
+		for (let r of Object.entries(this.object.data.data.resources)) {
+			if((r[1].sr || r[1].lr) && r[1].max) {
+				updateData[`data.resources.${r[0]}.value`] = r[1].max;
+			}
+		}
+
 		this.object.update(updateData);
 	}	  
 }
