@@ -303,6 +303,8 @@ export default class Item4e extends Item {
 			// let x = func();
 			// console.log(x)
 		}
+
+		console.log(CONFIG)
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
@@ -315,6 +317,7 @@ export default class Item4e extends Item {
 			isHealing: this.isHealing,
 			hasDamage: this.hasDamage,
 			hasEffect: this.hasEffect,
+			cardData: Helper._preparePowerCardData(this.getChatData(), CONFIG),
 			isVersatile: this.isVersatile,
 			isSpell: this.data.type === "spell",
 			hasSave: this.hasSave,
@@ -338,11 +341,12 @@ export default class Item4e extends Item {
 		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
 		const template = `systems/dnd4eBeta/templates/chat/${templateType}-card.html`;
 		const html = await renderTemplate(template, templateData);
+
 		// Basic chat message data
 		const chatData = {
 			user: game.user._id,
 			type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-			content: html,
+			content: html.replace("ability-usage--", `ability-usage--${templateData.data.useType}`),
 			speaker: {
 				actor: this.actor._id,
 				token: this.actor.token,

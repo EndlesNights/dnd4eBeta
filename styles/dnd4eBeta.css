@@ -525,7 +525,7 @@ font-size: 12px;
 .ability-usage--encounter {
 	background: -o-linear-gradient(45deg, #3c0000, #dc0000);
 	background: linear-gradient(45deg, #3c0000, #dc0000); }
-.colorBlindRG .ability-usage--encountere {
+.colorBlindRG .ability-usage--encounter {
 	background: -o-linear-gradient(45deg, #003854, #89cdef);
 	background: linear-gradient(45deg, #003854, #89cdef); }
 .colorBlindBY .ability-usage--encounter {
@@ -2159,7 +2159,7 @@ font-size: 12px;
 	font-family: "Modesto Condensed", "Palatino Linotype", serif;
 	font-size: 20px;
 	font-weight: 700;
-	color: #4b4a44;
+	color: #e0e0e0;
 }
 .dnd4eBeta.chat-card .card-header h3:hover {
 	color: #111;
