@@ -7,7 +7,8 @@
 	resources.primary.value
 	resources.secondary.value
 	resources.tertiary.value
-- applyChatCardDamage should be working. Right Click on Roll Chat messages. 
+- applyChatCardDamage should be working. Right Click on Roll Chat messages.
+- fixed issue with scrollbar that was only vissable within browser, and not Electron client.
 
 ## Version 0.1.3
 - Added an option for Game Masters to preview and show items to parties groups
