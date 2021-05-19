@@ -296,8 +296,8 @@ export class Helper {
 			powerDetail += `</span>`;
 		}
 
-		if(chatData.target.num) {
-			powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Target")}: ${chatData.target.num}</span>`;
+		if(chatData.target) {
+			powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Target")}: ${chatData.target}</span>`;
 		}
 
 		if(chatData.trigger) {

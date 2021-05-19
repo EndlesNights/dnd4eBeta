@@ -532,35 +532,41 @@ font-size: 12px;
 	background: -o-linear-gradient(45deg, #4e0129, #891c54);
 	background: linear-gradient(45deg, #4e0129, #891c54); }
   
-  .ability-usage--daily {
+.ability-usage--daily {
 	background: -o-linear-gradient(45deg, #1b1b1d, #ababab);
 	background: linear-gradient(45deg, #1b1b1d, #ababab); }
-	.colorBlindRG .ability-usage--daily {
-	  background: -o-linear-gradient(45deg, #005748, #42ac9a);
-	  background: linear-gradient(45deg, #005748, #42ac9a); }
-	.colorBlindBY .ability-usage--daily {
-	  background: -o-linear-gradient(45deg, #333300, #9a9a30);
-	  background: linear-gradient(45deg, #333300, #9a9a30); }
+.colorBlindRG .ability-usage--daily {
+	background: -o-linear-gradient(45deg, #005748, #42ac9a);
+	background: linear-gradient(45deg, #005748, #42ac9a); }
+.colorBlindBY .ability-usage--daily {
+	background: -o-linear-gradient(45deg, #333300, #9a9a30);
+	background: linear-gradient(45deg, #333300, #9a9a30); }
 
-	.ability-usage--recharge {
+.ability-usage--recharge {
 	background: -o-linear-gradient(45deg, #01003c, #71a2ec);
 	background: linear-gradient(45deg, #01003c, #71a2ec); }
-	.colorBlindRG .ability-usage--recharge {
-		background: -o-linear-gradient(45deg, #695702, #decd78);
-		background: linear-gradient(45deg, #695702, #decd78); }
-	.colorBlindBY .ability-usage--recharge {
-		background: -o-linear-gradient(45deg, #01536e, #66cdef);
-		background: linear-gradient(45deg, #01536e, #66cdef); }
+.colorBlindRG .ability-usage--recharge {
+	background: -o-linear-gradient(45deg, #695702, #decd78);
+	background: linear-gradient(45deg, #695702, #decd78); }
+.colorBlindBY .ability-usage--recharge {
+	background: -o-linear-gradient(45deg, #01536e, #66cdef);
+	background: linear-gradient(45deg, #01536e, #66cdef); }
 
-  .ability-usage--other {
+.ability-usage--other {
 	background: -o-linear-gradient(45deg, #25003c, #dc9ff1a6);
 	background: linear-gradient(45deg, #25003c, #dc9ff1a6); }
-	.colorBlindRG .ability-usage--other {
-	  background: -o-linear-gradient(45deg, #0d0145, #301c89);
-	  background: linear-gradient(45deg, #0d0145, #301c89); }
-	.colorBlindBY .ability-usage--other {
-	  background: -o-linear-gradient(45deg, #0d0145, #301c89);
-	  background: linear-gradient(45deg, #0d0145, #301c89); }
+.colorBlindRG .ability-usage--other {
+	background: -o-linear-gradient(45deg, #0d0145, #301c89);
+	background: linear-gradient(45deg, #0d0145, #301c89); }
+.colorBlindBY .ability-usage--other {
+	background: -o-linear-gradient(45deg, #0d0145, #301c89);
+	background: linear-gradient(45deg, #0d0145, #301c89); }
+
+.ability-usage--item {
+	background: -o-linear-gradient(45deg, #6a581c, #d4af37);
+	background: linear-gradient(45deg, #6a581c, #d4af37); }
+
+
 /* 01003c */
 .dnd4eBeta .sheet-header .header-fields {
 	flex: 1;

@@ -768,10 +768,7 @@
 			"actionType": "none",
 			"detail": ""
 		},
-		"target": {
-			"type": "creature",
-			"num": 1
-		},
+		"target": "One Creature",
 		"attack": {
 			"isAttack": true,
 			"ability": "str",

@@ -129,8 +129,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasTarget() {
-		const target = this.data.data.target;
-		return target && !["none",""].includes(target.type);
+		return target && !["none",""].includes(this.data.data.target);
 	}
 
 	/* -------------------------------------------- */
@@ -304,7 +303,8 @@ export default class Item4e extends Item {
 			// console.log(x)
 		}
 
-		console.log(CONFIG)
+		console.log(this)
+		const cardData = this.data.type == "power" ? Helper._preparePowerCardData(this.getChatData(), CONFIG) : null;
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
@@ -315,9 +315,10 @@ export default class Item4e extends Item {
 			labels: this.labels,
 			hasAttack: this.hasAttack,
 			isHealing: this.isHealing,
+			isPower: this.data.type == "power",
 			hasDamage: this.hasDamage,
 			hasEffect: this.hasEffect,
-			cardData: Helper._preparePowerCardData(this.getChatData(), CONFIG),
+			cardData: cardData,
 			isVersatile: this.isVersatile,
 			isSpell: this.data.type === "spell",
 			hasSave: this.hasSave,
@@ -340,13 +341,27 @@ export default class Item4e extends Item {
 		// Render the chat card template
 		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
 		const template = `systems/dnd4eBeta/templates/chat/${templateType}-card.html`;
-		const html = await renderTemplate(template, templateData);
+console.log(templateType)
+		let html = await renderTemplate(template, templateData);
 
+		if(templateData.item.type === "power") {
+			html = html.replace("ability-usage--", `ability-usage--${templateData.data.useType}`);
+		}
+		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {
+			html = html.replace("ability-usage--", `ability-usage--item`);
+			console.log("test")
+		} else {
+			html = html.replace("ability-usage--", `ability-usage--other`);
+		}
+
+		console.log(templateData.item.type)
+
+		console.log(templateData)
 		// Basic chat message data
 		const chatData = {
 			user: game.user._id,
 			type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-			content: html.replace("ability-usage--", `ability-usage--${templateData.data.useType}`),
+			content: html,
 			speaker: {
 				actor: this.actor._id,
 				token: this.actor.token,

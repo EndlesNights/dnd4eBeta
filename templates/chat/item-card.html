@@ -55,9 +55,12 @@
 		{{/if}}
 	</div>
 
-	<!-- <footer class="card-footer">
-		{{#each data.properties}}
-		<span>{{this}}</span>
-		{{/each}}
-	</footer> -->
+	<footer class="card-footer">
+		{{#if isPower}}
+		{{else}}
+			{{#each data.properties}}
+			<span>{{this}}</span>
+			{{/each}}
+		{{/if}}
+	</footer>
 </div>
