@@ -89,6 +89,8 @@ export class Helper {
 		let newFormula = formula;
 
 		if(actorData) {
+
+			newFormula = Roll.replaceFormulaData(newFormula, actorData)
 			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
 			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);
@@ -192,15 +194,15 @@ export class Helper {
 
 		//check for actor values in formula
 		
-		for(let i = 0; i < (newFormula.match(/@/g) || []).length; i++) {
-			let indexStart = newFormula.indexOf('@');
-			let indexEnd = (newFormula + ' ').substring(indexStart).search(/[ /*+-]/);
-			//FIX the regex, get rid of the ' ' and just tell it to search to up to end of string
+		// for(let i = 0; i < (newFormula.match(/@/g) || []).length; i++) {
+		// 	let indexStart = newFormula.indexOf('@');
+		// 	let indexEnd = (newFormula + ' ').substring(indexStart).search(/[ /*+-]/);
+		// 	//FIX the regex, get rid of the ' ' and just tell it to search to up to end of string
 
-			let val = typeof this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) === 'number' ?
-				this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) : '';
-			newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
-		}
+		// 	let val = typeof this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) === 'number' ?
+		// 		this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) : '';
+		// 	newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
+		// }
 		return newFormula;
 	}
   /**

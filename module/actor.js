@@ -10,7 +10,12 @@ import { Helper } from "./helper.js"
  */
 export class Actor4e extends Actor {
 
-  /** @override */
+	/** @override */
+	getRollData() {
+		const data = super.getRollData();
+
+		return data;
+	}
 //   getRollData() {
 //     const data = super.getRollData();
 //     const shorthand = game.settings.get("dnd4eBeta", "macroShorthand");
@@ -319,32 +324,32 @@ export class Actor4e extends Actor {
 		data.movement.shift.bonusValue = shiftBonusValue;	
 
 		data.movement.base.value = data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
-
-		let walkForm = eval(data.movement.walk.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
+		
+		let walkForm = eval(Helper.replaceData(data.movement.walk.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
 		data.movement.walk.value = walkForm + walkBonusValue + data.movement.base.temp;
 		
 		if (data.movement.walk.value < 0)
 			data.movement.walk.value = 0;
 		
-		let runForm = eval(data.movement.run.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
+		let runForm = eval(Helper.replaceData(data.movement.run.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
 		data.movement.run.value = runForm + runBonusValue + data.movement.run.temp;
 		
 		if (data.movement.run.value < 0)
 			data.movement.run.value = 0;
 
-		let chargeForm = eval(data.movement.charge.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
+		let chargeForm = eval(Helper.replaceData(data.movement.charge.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
 		data.movement.charge.value = chargeForm + chargeBonusValue + data.movement.charge.temp;
 		
 		if (data.movement.charge.value < 0)
 			data.movement.charge.value = 0;
 
-		let climbeForm = eval(data.movement.climb.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
+		let climbeForm = eval(Helper.replaceData(data.movement.climb.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
 		data.movement.climb.value = climbeForm;
 		
 		if (data.movement.climb.value < 0)
 			data.movement.climb.value = 0;
 		
-		let shiftForm = eval(data.movement.shift.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour).replace(/[^-()\d/*+. ]/g, ''))
+		let shiftForm = eval(Helper.replaceData(data.movement.shift.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour),data).replace(/[^-()\d/*+. ]/g, ''));
 		data.movement.shift.value = shiftForm;
 		
 		if (data.movement.shift.value < 0)
@@ -647,8 +652,11 @@ export class Actor4e extends Actor {
 		
 		//round to nearest 100th.
 		weight = Math.round(weight * 1000) / 1000;
-		
-		const max = actorData.data.abilities.str.value * 10;
+
+		// const max = actorData.data.abilities.str.value * 10;
+		console.log(actorData.data.encumbrance.formulaNorm);
+		const max = eval(Helper.replaceData(actorData.data.encumbrance.formulaNorm, actorData.data).replace(/[^-()\d/*+. ]/g, ''));
+
 		//set ppc Percentage Base Carry-Capasity
 		const pbc = Math.clamped(weight / max * 100, 0, 99.7);
 		//set ppc Percentage Encumbranced Capasity
@@ -659,6 +667,9 @@ export class Actor4e extends Actor {
 		return {
 			value: weight,
 			max,
+			formulaNorm: actorData.data.encumbrance.formulaNorm,
+			formulaHeavy: actorData.data.encumbrance.formulaHeavy,
+			formulaMax: actorData.data.encumbrance.formulaMax,
 			pbc,
 			pec,
 			encumBar,

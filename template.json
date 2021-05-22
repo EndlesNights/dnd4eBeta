@@ -468,7 +468,10 @@
 			},
 			"encumbrance": {
 				"value": null,
-				"max": null
+				"max": null,
+				"formulaNorm": "@abilities.str.value * 10",
+				"formulaHeavy": "@abilities.str.value * 20",
+				"formulaMax": "@abilities.str.value * 50"
 			},
 			"currency": {
 				"ad": 0,
