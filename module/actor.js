@@ -654,8 +654,10 @@ export class Actor4e extends Actor {
 		weight = Math.round(weight * 1000) / 1000;
 
 		// const max = actorData.data.abilities.str.value * 10;
-		console.log(actorData.data.encumbrance.formulaNorm);
-		const max = eval(Helper.replaceData(actorData.data.encumbrance.formulaNorm, actorData.data).replace(/[^-()\d/*+. ]/g, ''));
+
+		const max = eval(Helper.replaceData(actorData.data.encumbrance.formulaNorm, actorData.data).toString().replace(/[^-()\d/*+. ]/g, ''));
+		const maxHeavy = eval(Helper.replaceData(actorData.data.encumbrance.formulaHeavy, actorData.data).toString().replace(/[^-()\d/*+. ]/g, ''));
+		const maxMax = eval(Helper.replaceData(actorData.data.encumbrance.formulaMax, actorData.data).toString().replace(/[^-()\d/*+. ]/g, ''));
 
 		//set ppc Percentage Base Carry-Capasity
 		const pbc = Math.clamped(weight / max * 100, 0, 99.7);
@@ -667,6 +669,8 @@ export class Actor4e extends Actor {
 		return {
 			value: weight,
 			max,
+			maxHeavy,
+			maxMax,
 			formulaNorm: actorData.data.encumbrance.formulaNorm,
 			formulaHeavy: actorData.data.encumbrance.formulaHeavy,
 			formulaMax: actorData.data.encumbrance.formulaMax,

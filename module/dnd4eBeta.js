@@ -75,10 +75,10 @@ Hooks.once("init", async function() {
 
 
 		// Define dependency on our own custom vue components for when we need it
-		Dlopen.register('actor-sheet', {
-			scripts: "/systems/dnd4eBeta/dist/vue-components.min.js",
-			// dependencies: [ "vue-select", "vue-numeric-input" ]
-		});
+		// Dlopen.register('actor-sheet', {
+		// 	scripts: "/systems/dnd4eBeta/dist/vue-components.min.js",
+		// 	// dependencies: [ "vue-select", "vue-numeric-input" ]
+		// });
 });
 
 Hooks.once("setup", function() {
@@ -120,13 +120,13 @@ Hooks.once("ready", function() {
 
 
 		// Preload Vue dependencies.
-		Dlopen.loadDependencies([
-			'vue',
+		// Dlopen.loadDependencies([
+			// 'vue',
 			// 'vue-select',
 			// 'vue-numeric-input',
 			// 'vue-wysiwyg',
-			'actor-sheet'
-		]);
+			// 'actor-sheet'
+		// ]);
 });
 
 /* -------------------------------------------- */

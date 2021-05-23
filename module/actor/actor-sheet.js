@@ -8,6 +8,7 @@ import { SaveThrowDialog } from "../apps/save-throw.js";
 import { AttributeBonusDialog } from "../apps/attribute-bonuses.js";
 import { CustomRolldDescriptions } from "../apps/custom-roll-descriptions.js";
 import { MovementDialog } from "../apps/movement-dialog.js";
+import { EncumbranceDialog } from "../apps/encumbrance-dialog.js";
 import { ItemImporterDialog} from "../apps/item-importer.js"
 import TraitSelector from "../apps/trait-selector.js";
 import TraitSelectorSense from "../apps/trait-selector-sense.js";
@@ -97,7 +98,7 @@ export class ActorSheet4e extends ActorSheet {
 		// data.actor.data.details.isBloodied = (data.actor.data.attributes.hp.value <= data.actor.data.attributes.hp.max/2);
 		console.log(data)
 
-		    // Resources
+			// Resources
 			data["resources"] = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
 				const res = data.data.resources[r] || {};
 				res.name = r;
@@ -550,14 +551,14 @@ export class ActorSheet4e extends ActorSheet {
 		if (!this.options.editable) return;
 
 		const inputs = html.find("input");
-		inputs.focus(ev => ev.currentTarget.select());
+		inputs.focus(event => event.currentTarget.select());
 		inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
 
 		html.find('.skill-training').on("click contextmenu", this._onCycleSkillProficiency.bind(this));
 
 		// Update Inventory Item
-		html.find('.item-edit').click(ev => {
-		const li = $(ev.currentTarget).parents(".item");
+		html.find('.item-edit').click(event => {
+		const li = $(event.currentTarget).parents(".item");
 		const item = this.actor.getOwnedItem(li.data("itemId"));
 		item.sheet.render(true);
 		});
@@ -631,14 +632,14 @@ export class ActorSheet4e extends ActorSheet {
 			html.find('.item-create').click(this._onItemCreate.bind(this));
 			html.find('.item-edit').click(this._onItemEdit.bind(this));
 			html.find('.item-delete').click(this._onItemDelete.bind(this));
-			html.find('.item-uses input').click(ev => ev.target.select()).change(this._onUsesChange.bind(this));
+			html.find('.item-uses input').click(event => event.target.select()).change(this._onUsesChange.bind(this));
 
 			html.find('.power-create').click(this._onPowerItemCreate.bind(this));
 
 			html.find('.item-import').click(this._onItemImport.bind(this));
 
 			// Active Effect management
-			html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.entity));
+			html.find(".effect-control").click(event => onManageActiveEffect(event, this.entity));
 		
 			// Item summaries
 			html.find('.item .item-name h4').click(event => this._onItemSummary(event));		
@@ -653,6 +654,7 @@ export class ActorSheet4e extends ActorSheet {
 			html.find('.item .item-image').click(event => this._onItemRoll(event));
 			// html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
 
+			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this))
 			
 		}
 	}
@@ -910,6 +912,11 @@ export class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		new MovementDialog(this.actor).render(true)
 	}
+
+	_onEncumbranceDialog(event) {
+		event.preventDefault();
+		new EncumbranceDialog(this.actor).render(true);
+	}
 	
 	_onPassiveBonus(event) {
 		event.preventDefault();
@@ -991,26 +998,26 @@ export class ActorSheet4e extends ActorSheet {
 		new AttributeBonusDialog(this.actor, options).render(true);	
 	}
 
-  _onCycleSkillProficiency(event) {
-	event.preventDefault();
-	const field = $(event.currentTarget).siblings('input[type="hidden"]');
+	_onCycleSkillProficiency(event) {
+		event.preventDefault();
+		const field = $(event.currentTarget).siblings('input[type="hidden"]');
 
-	// Get the current level and the array of levels
-	const level = parseFloat(field.val());
-	const levels = [0, 5, 8];
-	let idx = levels.indexOf(level);
+		// Get the current level and the array of levels
+		const level = parseFloat(field.val());
+		const levels = [0, 5, 8];
+		let idx = levels.indexOf(level);
 
-	// Toggle next level - forward on click, backwards on right
-	if ( event.type === "click" ) {
-	  field.val(levels[(idx === levels.length - 1) ? 0 : idx + 1]);
-	} else if ( event.type === "contextmenu" ) {
-	  field.val(levels[(idx === 0) ? levels.length - 1 : idx - 1]);
+		// Toggle next level - forward on click, backwards on right
+		if ( event.type === "click" ) {
+			field.val(levels[(idx === levels.length - 1) ? 0 : idx + 1]);
+		} else if ( event.type === "contextmenu" ) {
+			field.val(levels[(idx === 0) ? levels.length - 1 : idx - 1]);
+		}
+
+		// Update the field value and save the form
+		this._onSubmit(event);
 	}
 
-	// Update the field value and save the form
-	this._onSubmit(event);
-  }
-  
   /* -------------------------------------------- */
 
   /**

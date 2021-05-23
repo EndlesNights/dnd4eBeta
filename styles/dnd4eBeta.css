@@ -1773,7 +1773,7 @@ font-size: 12px;
 }
 .dnd4eBeta.sheet .items-list .item .item-uses input {
 	width: 24px;
-	text-align: center;
+	text-align: right;
 }
 .dnd4eBeta.sheet .items-list .item .power-detail input {
 	color: #e0e0e0;
@@ -1810,7 +1810,7 @@ font-size: 12px;
 	flex: 0 0 100%;
 }
 .dnd4eBeta.sheet .items-list .item-detail {
-	flex: 0 0 55px;
+	flex: 0 0 50px;
 	font-size: 12px;
 	color: #7a7971;
 	text-align: center;
@@ -1820,6 +1820,9 @@ font-size: 12px;
 	overflow: hidden;
 }
 
+.dnd4eBeta.sheet .items-list .item-range{
+	flex: 0 0 60px;
+}
 .dnd4eBeta.sheet .items-list .power-detail,
 .dnd4eBeta.sheet.actor .inventory-list .item-controls .power-detail,
 .dnd4eBeta.sheet.actor .inventory-list .item-controls .power-detail.active {
