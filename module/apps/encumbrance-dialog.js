@@ -1,12 +1,12 @@
 import { AttributeBonusDialog } from "./attribute-bonuses.js";
 
-export class MovementDialog extends BaseEntitySheet {
+export class EncumbranceDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "movement-dialog",
-			classes: ["dnd4eAltus", "movement-dialog"],
-			template: "systems/dnd4eAltus/templates/apps/movement-dialog.html",
+			id: "encumbrance-dialog",
+			classes: ["dnd4eAltus", "encumbrance-dialog"],
+			template: "systems/dnd4eAltus/templates/apps/encumbrance-dialog.html",
 			width: 420,
 			closeOnSubmit: false
 		});

@@ -11,8 +11,6 @@ ______      ______   ___  _____     ___  _ _
 |___/ \\___/\\/___/     |_/\\____/   \\_| |_/_|\\__|\\__,_|___/
 __________________________________________________________`;
 
-
-
 /**
  * The set of Ability Scores used within the system
  * @type {Object}
@@ -490,9 +488,9 @@ DND4EALTUS.powerSource = {
 };
 
 DND4EALTUS.powerGroupTypes = {
-	"type": "DND4EALTUS.Type",
-	"action": "DND4EALTUS.Action",
 	"usage": "DND4EALTUS.Usage",
+	"action": "DND4EALTUS.Action",
+	"type": "DND4EALTUS.Type",
 };
 
 DND4EALTUS.powerSortTypes = {
@@ -601,7 +599,7 @@ DND4EALTUS.saves = {
 /* -------------------------------------------- */
 
 /**
- * The set of skill which can be trained in D&D4eltus
+ * The set of skill which can be trained in D&D4eAltus
  * @type {Object}
  */
 DND4EALTUS.skills = {
@@ -1138,7 +1136,7 @@ DND4EALTUS.spoken = {
 	"Cellian": "DND4EALTUS.ScriptCellian",
 	"Ghido": "DND4EALTUS.ScriptGhido",
 	"Token": "DND4EALTUS.ScriptToken"
-  };
+};
 
 // Character Level XP Requirements
 DND4EALTUS.CHARACTER_EXP_LEVELS =  [

@@ -1,3 +1,3 @@
-# D&D 4e - Altus
+# D&D 4e - Beta
 
-A modified version of D&D4e for the play setting of Altus to be played on the Foundry VTT.
+A beta build of the D&D4e to be used via the Foundry VTT.

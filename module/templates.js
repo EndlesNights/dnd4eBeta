@@ -12,6 +12,7 @@ export const preloadHandlebarsTemplates = async function() {
     "systems/dnd4eAltus/templates/actors/parts/active-effects.html",
     // Actor Sheet Partials
     "systems/dnd4eAltus/templates/actors/parts/actor-attributes.html",
+    "systems/dnd4eAltus/templates/actors/parts/actor-biography.html",
     "systems/dnd4eAltus/templates/actors/parts/actor-details.html",
     "systems/dnd4eAltus/templates/actors/parts/actor-inventory.html",
     "systems/dnd4eAltus/templates/actors/parts/actor-features.html",

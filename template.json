@@ -1,767 +1,816 @@
 {
-"Actor": {
-	"types": ["Player Character","NPC"],
-	"templates":{
-		"common":{
-			"abilities":{
-				"str":{
-					"value": 10,
-					"chat": "@name uses @label."
+	"Actor": {
+		"types": ["Player Character","NPC"],
+		"templates":{
+			"common":{
+				"abilities":{
+					"str":{
+						"value": 10,
+						"chat": "@name uses @label."
+					},
+					"con":{
+						"value": 10,
+						"chat": "@name uses @label."
+					},
+					"dex":{
+						"value": 10,
+						"chat": "@name uses @label."
+					},
+					"int":{
+						"value": 10,
+						"chat": "@name uses @label."
+					},
+					"wis":{
+						"value": 10,
+						"chat": "@name uses @label."
+					},
+					"cha":{
+						"value": 10,
+						"chat": "@name uses @label."
+					}
 				},
-				"con":{
-					"value": 10,
-					"chat": "@name uses @label."
+				"attributes": {
+					"hp": {
+						"value": 10,
+						"min": 0,
+						"max": 10,
+						"starting": 10,
+						"perlevel": 5,
+						"feat": 0,
+						"misc": 0,
+						"autototal": false,
+						"temprest": false,
+						"temphp": 0
+					},
+					"init": {
+						"value": 0,
+						"ability": "dex",
+						"bonus": [{}],
+						"notes": ""
+					}
 				},
-				"dex":{
-					"value": 10,
-					"chat": "@name uses @label."
+				
+				"biography": "",		
+				"actionpoints":	{
+					"value": 1,
+					"encounteruse": false,
+					"effects": "",
+					"notes": "",
+					"custom": ""
 				},
-				"int":{
-					"value": 10,
-					"chat": "@name uses @label."
+				"magicItemUse": {
+					"perDay": 1,
+					"bonusValue": 0,
+					"milestone": 0,
+					"dailyuse": 1,
+					"encounteruse": false
 				},
-				"wis":{
-					"value": 10,
-					"chat": "@name uses @label."
+				"defences": {
+					"ac": {
+						"value": 10,
+						"ability": "",
+						"armour": 0,
+						"class": 0,
+						"feat": 0,
+						"enhance": 0,
+						"bonus": [{}],
+						"temp": 0,
+						"light": true,
+						"altability": "",
+						"condition": "Conditional Bonuses.",
+						"chat": "@name defends with armour."
+					},
+					"fort": {
+						"value": 10,
+						"ability": "",
+						"armour": 0,
+						"class": 0,
+						"feat": 0,
+						"enhance": 0,
+						"bonus": [{}],
+						"temp": 0,
+						"condition": "Conditional Bonuses.",
+						"chat": "@name defends with fortitude."
+					},
+					"ref": {
+						"value": 10,
+						"ability": "",
+						"armour": 0,
+						"class": 0,
+						"feat": 0,
+						"enhance": 0,
+						"bonus": [{}],
+						"temp": 0,
+						"condition": "Conditional Bonuses.",
+						"chat": "@name defends with reflexes."
+					},
+					"wil": {
+						"value": 10,
+						"ability": "",
+						"armour": 0,
+						"class": 0,
+						"feat": 0,
+						"enhance": 0,
+						"bonus": [{}],
+						"temp": 0,
+						"condition": "Conditional Bonuses.",
+						"chat": "@name defends with willpower."
+					}	
 				},
-				"cha":{
-					"value": 10,
-					"chat": "@name uses @label."
-				}
-			},
-			"attribute": {
-				"hp": {
-					"value": 10,
-					"min": 0,
-					"max": 10,
-					"starting": 10,
-					"perlevel": 5,
-					"feat": 0,
-					"misc": 0,
-					"autototal": false,
-					"temprest": false,
-					"temphp": 0
+				"details": {
+					"level": 1,
+					"exp": 0,
+					"class": "",
+					"paragon": "",
+					"epic": "",
+					"race": "",
+					"size": "med",
+					"age": "",
+					"gender": "",
+					"height": "",
+					"weight": "",
+					"alignment": "",
+					"deity": "",
+					
+					"secondwind": false,
+					"deathsaves": 3,
+					"deathsavefail": 0,
+					"deathsaveCrit": 20,
+					"deathsavebon": {
+						"bonus": [{}],
+						"value": 0
+					},
+					"bloodied": 0,
+					"surgeValue": 0,
+					"surgeBon": {
+						"bonus": [{}],
+						"value": 0
+					},
+					"surges": {
+						"value": 0,
+						"max": 0
+					},
+					"surgeEnv": {
+						"bonus": [{}],
+						"value": 0
+					},
+					"secondwindbon": {
+						"bonus": [{}],
+						"value": 0,
+						"custom": ""
+					},
+					"saves": {
+						"bonus": [{}],
+						"value": 0
+					}
 				},
-				"init": {
-					"value": 0,
-					"ability": "dex",
-					"bonus": [{}],
+				"languages": {
+					"spoken": {
+						"value": [],
+						"custom": ""
+					},
+					"script": {
+						"value": [],
+						"custom": ""
+					}
+				},
+				"senses": {
+					"vision": {
+						"value": [],
+						"custom": ""
+					},
+					"special": {
+						"value": [],
+						"custom": ""
+					},
 					"notes": ""
+				},
+				"movement": {
+					"base": {
+						"value": 0,
+						"base": 6,
+						"armour": 0,
+						"bonus": [{}],
+						"temp": 0
+					},
+					"walk": {
+						"value": 0,
+						"formula": "@base + @armour",
+						"bonus": [{}],
+						"temp": 0
+					},
+					"charge": {
+						"value": 0,
+						"formula": "@base + @armour",
+						"bonus": [{}],
+						"temp": 0
+					},
+					"run": {
+						"value": 0,
+						"formula": "@base + @armour + 2",
+						"bonus": [{}],
+						"misc": 0,
+						"temp": 0
+					},
+					"climb": {
+						"value": 0,
+						"formula": "(@base + @armour)/2",
+						"bonus": [{}],
+						"temp": 0
+					},
+					"shift": {
+						"value": 0,
+						"formula": "1",
+						"bonus": [{}],
+						"temp": 0
+					},
+					"notes": ""
+				},
+				"resources": {
+					"primary": {
+						"value": 0,
+						"max": 0,
+						"sr": 0,
+						"lr": 0
+					},
+					"secondary": {
+						"value": 0,
+						"max": 0,
+						"sr": 0,
+						"lr": 0
+					},
+					"tertiary": {
+						"value": 0,
+						"max": 0,
+						"sr": 0,
+						"lr": 0
+					}
+				},
+				"skills": {
+					"acr": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "dex",
+						"armourCheck": true,
+						"chat": "@name uses @label."
+					},
+					"arc": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "int",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"ath": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "str",
+						"armourCheck": true,
+						"chat": "@name uses @label."
+					},
+					"blu": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "cha",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"dip": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "cha",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"dun": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "wis",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"end": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "con",
+						"armourCheck": true,
+						"chat": "@name uses @label."
+					},
+					"eng": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "int",
+						"chat": "@name uses @label."
+					},
+					"hea": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "wis",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"his": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "int",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"ins": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "wis",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"itm": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "cha",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"nat": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "wis",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"prc": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "wis",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"pra": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "wis",
+						"chat": "@name uses @label."
+					},
+					"rel": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "int",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"stl": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "dex",
+						"armourCheck": true,
+						"chat": "@name uses @label."
+					},
+					"stw": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "cha",
+						"armourCheck": false,
+						"chat": "@name uses @label."
+					},
+					"thi": {
+						"value": 0,
+						"bonus": [{}],
+						"ability": "dex",
+						"armourCheck": true,
+						"chat": "@name uses @label."
+					}
+				},
+				"passive": {
+					"pasprc": {
+						"value": 0,
+						"skill": "prc",
+						"bonus": [{}]
+					},
+					"pasins": {
+						"value": 0,
+						"skill": "ins",
+						"bonus": [{}]
+					}
+				},
+				"resistances": {
+					"damage": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"physical": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"acid": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"cold": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"fire": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"force": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"lightning": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"necrotic": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"poison": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"psychic": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"radiant": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					},
+					"thunder": {
+						"value": 0,
+						"armour": 0,
+						"temp": 0,
+						"immune": false,
+						"bonus": [{}]
+					}
+					
+				},
+				"encumbrance": {
+					"value": null,
+					"max": null,
+					"formulaNorm": "@abilities.str.value * 10",
+					"formulaHeavy": "@abilities.str.value * 20",
+					"formulaMax": "@abilities.str.value * 50"
+				},
+				"currency": {
+					"ad": 0,
+					"pp": 0,
+					"gp": 0,
+					"sp": 0,
+					"cp": 0
+				},
+				"ritualcomp": {
+					"ar" : 0,
+					"ms" : 0,
+					"rh" : 0,
+					"si" : 0,
+					"rs" : 0
+				}		
+			}
+		},
+		"Player Character": {
+			"templates": ["common"]
+		},
+		"NPC": {
+			"templates": ["common"]
+		}	
+	},
+	"Item": {
+		"types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"],
+		"templates": {
+			"itemDescription": {
+				"description": {
+					"value": "",
+					"chat": "",
+					"unidentified": ""
+				},
+				"source": ""
+			},
+			"physicalItem": {
+				"quantity": 1,
+				"weight": 0,
+				"price": 0,
+				"attuned": false,
+				"equipped": false,
+				"rarity": "",
+				"identified": true
+			},
+			"activatedEffect": {
+				"activation": {
+					"type": "",
+					"cost": 0,
+					"condition": ""
+				},
+				"duration": {
+					"value": null,
+					"units": ""
+				},
+				"target": {
+					"value": null,
+					"width": null,
+					"units": "",
+					"type": ""
+				},
+				"range": {
+					"value": null,
+					"long": null,
+					"units": ""
+				},
+				"uses": {
+					"value": 0,
+					"max": 0,
+					"per": null
+				},
+				"consume": {
+					"type": "",
+					"target": null,
+					"amount": null
 				}
 			},
-			
-			"biography": "",		
-			"actionpoints":	{
-				"value": 1,
-				"encounteruse": false,
-				"effects": "",
-				"notes": ""
-			},
-			"magicItemUse": {
-				"perDay": 1,
-				"bonusValue": 0,
-				"milestone": 0,
-				"dailyuse": 1,
-				"encounteruse": false
-			},
-			"defences": {
-				"ac": {
-					"value": 10,
-					"ability": "",
-					"armour": 0,
-					"class": 0,
-					"feat": 0,
-					"enhance": 0,
-					"bonus": [{}],
-					"temp": 0,
-					"light": true,
-					"altability": "",
-					"condition": "Conditional Bonuses.",
-					"chat": "@name defends with armour."
-				},
-				"fort": {
-					"value": 10,
-					"ability": "",
-					"armour": 0,
-					"class": 0,
-					"feat": 0,
-					"enhance": 0,
-					"bonus": [{}],
-					"temp": 0,
-					"condition": "Conditional Bonuses.",
-					"chat": "@name defends with fortitude."
-				},
-				"ref": {
-					"value": 10,
-					"ability": "",
-					"armour": 0,
-					"class": 0,
-					"feat": 0,
-					"enhance": 0,
-					"bonus": [{}],
-					"temp": 0,
-					"condition": "Conditional Bonuses.",
-					"chat": "@name defends with reflexes."
-				},
-				"wil": {
-					"value": 10,
-					"ability": "",
-					"armour": 0,
-					"class": 0,
-					"feat": 0,
-					"enhance": 0,
-					"bonus": [{}],
-					"temp": 0,
-					"condition": "Conditional Bonuses.",
-					"chat": "@name defends with willpower."
-				}	
-			},
-			"details": {
-				"level": 1,
-				"exp": 0,
-				"class": "",
-				"paragon": "",
-				"epic": "",
-				"race": "",
-				"size": "med",
-				"age": "",
-				"gender": "",
-				"height": "",
-				"weight": "",
-				"alignment": "",
-				"deity": "",
-				
-				"secondwind": false,
-				"deathsaves": 3,
-				"deathsavefail": null,
-				"deathsaveCrit": 20,
-				"deathsavebon": {
-					"bonus": [{}],
-					"value": 0
-				},
-				"bloodied": 0,
-				"surgeValue": 0,
-				"surgeBon": {
-					"bonus": [{}],
-					"value": 0
-				},
-				"surgeCur": null,
-				"surgeDay": null,
-				"surgeEnv": {
-					"bonus": [{}],
-					"value": 0
-				},
-				"secondwindbon": {
-					"bonus": [{}],
-					"value": 0
-				},
-				"saves": {
-					"bonus": [{}],
-					"value": 0
-				}
-			},
-			"languages": {
-				"spoken": {
-					"value": [],
-					"custom": ""
-				},
-				"script": {
-					"value": [],
-					"custom": ""
-				}
-			},
-			"senses": {
-				"vision": {
-					"value": [],
-					"custom": ""
-				},
-				"special": {
-					"value": [],
-					"custom": ""
-				},
-				"notes": ""
-			},
-			"movement": {
-				"basic": {
-					"value": 0,
-					"base": 6,
-					"armour": 0,
-					"bonus": [{}],
-					"temp": 0
-				},
-				"charge": {
-					"value": 0,
-					"armour": 0,
-					"bonus": [{}],
-					"temp": 0
-				},
-				"run": {
-					"value": 0,
-					"armour": 0,
-					"bonus": [{}],
-					"misc": 0,
-					"temp": 0
-				},
-				"notes": ""
-			},
-			"skills": {
-				"acr": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "dex",
-					"armourCheck": true,
-					"chat": "@name uses @label."
-				},
-				"arc": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "int",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"ath": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "str",
-					"armourCheck": true,
-					"chat": "@name uses @label."
-				},
-				"blu": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "cha",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"dip": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "cha",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"dun": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "wis",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"end": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "con",
-					"armourCheck": true,
-					"chat": "@name uses @label."
-				},
-				"eng": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "int",
-					"chat": "@name uses @label."
-				},
-				"hea": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "wis",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"his": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "int",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"ins": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "wis",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"itm": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "cha",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"nat": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "wis",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"prc": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "wis",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"pra": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "wis",
-					"chat": "@name uses @label."
-				},
-				"rel": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "int",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"stl": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "dex",
-					"armourCheck": true,
-					"chat": "@name uses @label."
-				},
-				"stw": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "cha",
-					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"thi": {
-					"value": 0,
-					"bonus": [{}],
-					"ability": "dex",
-					"armourCheck": true,
-					"chat": "@name uses @label."
-				}
-			},
-			"passive": {
-				"pasprc": {
-					"value": 0,
-					"skill": "prc",
-					"bonus": [{}]
-				},
-				"pasins": {
-					"value": 0,
-					"skill": "ins",
-					"bonus": [{}]
-				}
-			},
-			"resistances": {
+			"action": {
+				"ability": null,
+				"actionType": null,
+				"attackBonus": 0,
+				"chatFlavor": "",
+				"critical": null,
 				"damage": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
+					"parts": [],
+					"versatile": ""
 				},
-				"physical": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
+				"damageCrit": {
+					"parts": [],
+					"versatile": ""
 				},
-				"acid": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
+				"damageImp": {
+					"parts": [],
+					"versatile": ""
 				},
-				"cold": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
+				"damageCritImp": {
+					"parts": [],
+					"versatile": ""
 				},
-				"fire": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
-				},
-				"force": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
-				},
-				"lightning": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
-				},
-				"necrotic": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
-				},
-				"poison": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
-				},
-				"psychic": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
-				},
-				"radiant": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
-				},
-				"thunder": {
-					"value": 0,
-					"armour": 0,
-					"temp": 0,
-					"immune": false,
-					"bonus": [{}]
+				"formula": "",
+				"save": {
+					"ability": "",
+					"dc": null,
+					"scaling": "spell"
 				}
-				
 			},
-			"encumbrance": {
-				"value": null,
-				"max": null
+			"mountable": {
+				"armour": {
+					"value": 10
+				},
+				"hp": {
+					"value": 0,
+					"max": 0,
+					"dt": null,
+					"conditions": ""
+				}
+			},
+			"itemMacro": {
+				"macro": {
+					"type": "script",
+					"scope": "global",
+					"launchOrder": "off",
+					"command": "",
+					"author": ""
+				}
+			}
+		},
+		"backpack": {
+			"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+			"capacity": {
+			"type": "weight",
+			"value": 0,
+			"weightless": false
 			},
 			"currency": {
-				"ad": 0,
-				"pp": 0,
-				"gp": 0,
-				"sp": 0,
-				"cp": 0
-			},
-			"ritualcomp": {
-				"ar" : 0,
-				"ms" : 0,
-				"rh" : 0,
-				"si" : 0,
-				"rs" : 0
-			}
-		}
-	},
-	"Player Character": {
-		"templates": ["common"]
-	},
-	"NPC": {
-		"templates": ["common"]
-	}	
-},
-"Item": {
-	"types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"],
-	"templates": {
-		"itemDescription": {
-			"description": {
-				"value": "",
-				"chat": "",
-				"unidentified": ""
-			},
-			"source": ""
-		},
-		"physicalItem": {
-			"quantity": 1,
-			"weight": 0,
-			"price": 0,
-			"attuned": false,
-			"equipped": false,
-			"rarity": "",
-			"identified": true
-		},
-		"activatedEffect": {
-			"activation": {
-				"type": "",
-				"cost": 0,
-				"condition": ""
-			},
-			"duration": {
-				"value": null,
-				"units": ""
-			},
-			"target": {
-				"value": null,
-				"width": null,
-				"units": "",
-				"type": ""
-			},
-			"range": {
-				"value": null,
-				"long": null,
-				"units": ""
-			},
-			"uses": {
-				"value": 0,
-				"max": 0,
-				"per": null
-			},
-			"consume": {
-				"type": "",
-				"target": null,
-				"amount": null
+			"cp": 0,
+			"sp": 0,
+			"ep": 0,
+			"gp": 0,
+			"pp": 0
 			}
 		},
-		"action": {
-			"ability": null,
-			"actionType": null,
-			"attackBonus": 0,
-			"chatFlavor": "",
-			"critical": null,
-			"damage": {
-				"parts": [],
-				"versatile": ""
+		"classFeats": {
+			"templates": ["itemDescription", "itemMacro"],
+			"class": "",
+			"hitFistLevel": 10,
+			"hitPerLevel": 5,
+			"surgePerDay": 5,
+			"skills": {
+			"number": 2,
+			"choices": [],
+			"value": []
 			},
-			"damageCrit": {
-				"parts": [],
-				"versatile": ""
-			},
-			"damageImp": {
-				"parts": [],
-				"versatile": ""
-			},
-			"damageCritImp": {
-				"parts": [],
-				"versatile": ""
-			},
-			"formula": "",
-			"save": {
-				"ability": "",
-				"dc": null,
-				"scaling": "spell"
-			}
-		},
-		"mountable": {
-			"armour": {
-				"value": 10
-			},
-			"hp": {
-				"value": 0,
-				"max": 0,
-				"dt": null,
-				"conditions": ""
-			}
-		},
-		"itemMacro": {
-			"macro": {
-				"type": "script",
-				"scope": "global",
-				"launchOrder": "off",
-				"command": "",
-				"author": ""
-			}
-		}
-	},
-	"backpack": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
-		"capacity": {
-		"type": "weight",
-		"value": 0,
-		"weightless": false
-		},
-		"currency": {
-		"cp": 0,
-		"sp": 0,
-		"ep": 0,
-		"gp": 0,
-		"pp": 0
-		}
-	},
-	"classFeats": {
-		"templates": ["itemDescription", "itemMacro"],
-		"class": "",
-		"hitFistLevel": 10,
-		"hitPerLevel": 5,
-		"surgePerDay": 5,
-		"skills": {
-		"number": 2,
-		"choices": [],
-		"value": []
-		},
-		"def": {
-		"ac": 0,
-		"fort": 0,
-		"ref": 0,
-		"wil": 0
-		},
-		"proficiencies": {
-		"weapons": [],
-		"armour": []
-		}
-	},
-	"consumable": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "itemMacro"],
-		"consumableType": "potion",
-		"uses": {
-		"autoDestroy": false
-		}
-	},
-	"equipment": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable", "itemMacro"],
-		"armour": {
-			"type": "armour",
-			"subType": "cloth",
+			"def": {
 			"ac": 0,
 			"fort": 0,
 			"ref": 0,
-			"wil": 0,
-			"dex": null,
-			"movePen": false,
-			"movePenValue": 0,
-			"skillCheck": false,
-			"skillCheckValue": 0,
-			"damageRes": {
-				"parts": []
-			}		
+			"wil": 0
+			},
+			"proficiencies": {
+			"weapons": [],
+			"armour": []
+			}
 		},
-		"speed": {
-		"value": null,
-		"conditions": ""
+		"consumable": {
+			"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "itemMacro"],
+			"consumableType": "potion",
+			"uses": {
+			"autoDestroy": false
+			}
 		},
-		"strength": 0,
-		"stealth": false,
-		"proficient": true
-	},
-	"feat": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
+		"equipment": {
+			"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable", "itemMacro"],
+			"armour": {
+				"type": "armour",
+				"subType": "cloth",
+				"ac": 0,
+				"fort": 0,
+				"ref": 0,
+				"wil": 0,
+				"dex": null,
+				"movePen": false,
+				"movePenValue": 0,
+				"skillCheck": false,
+				"skillCheckValue": 0,
+				"damageRes": {
+					"parts": []
+				}		
+			},
+			"speed": {
+			"value": null,
+			"conditions": ""
+			},
+			"strength": 0,
+			"stealth": false,
+			"proficient": true
+		},
+		"feat": {
+			"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+			"requirements": "",
+			"recharge": {
+			"value": null,
+			"charged": false
+			}
+		},
+		"loot": {
+			"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"]
+		},
+		"tool": {
+			"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+			"attribute": "abilities.int.mod",
+			"chatFlavor": "",
+			"formula": "",
+			"bonus": 2
+		},
+		"weapon": {
+			"templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable", "itemMacro"],
+			"weaponType": "simpleM",
+			"weaponHand": "HMain",
+			"properties": {},
+			"proficient": true,
+			"proficientI": false,
+			"profBonus": 0,
+			"profImpBonus": 0,
+			"enhance": 0,
+			"isRanged": false,
+			"range": {"value": 5, "long": 10},
+			"damageDice": {
+				"parts": [["1","8"]]
+			},
+			"damageType": {"physical":true},
+			"brutalNum": 1,
+			"weaponGroup": {},
+			"attackForm": "@profBonus+@enhance",
+			"attackFormImp": "",
+			"damageForm": "@enhance",
+			"damageFormImp": "",
+			"critDamageForm": "@enhance+@enhance d6",
+			"critDamageFormImp": "",
+			"critRange": 20,
+			"critRangeImp": 20
+		},
+		"raceFeats": {
+			"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+			"requirements": "",
+			"recharge": {
+			"value": null,
+			"charged": false
+			}
+		},
+		"pathFeats": {
+			"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+			"requirements": "",
+			"recharge": {
+			"value": null,
+			"charged": false
+			}
+		},
+		"destinyFeats": {
+			"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+			"requirements": "",
+			"recharge": {
+			"value": null,
+			"charged": false
+			}
+		},
+		"ritual": {
+			"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+			"requirements": "",
+			"recharge": {
+			"value": null,
+			"charged": false
+			}
+		},
+		"power": {
+			"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+			"keyWords": [""],
+			"level": "1",
+			"powersource": "martial",
+			"subName": "",
+			"prepared": true,
+			"powerType": "class",
+			"useType": "atwill",
+			"actionType": "standard",
+			"requirements": "",
+			"weaponType": "melee",
+			"weaponUse": "default",
+			"rangeType": "weapon",
+			"rangeTextShort": "",
+			"rangeText": "",
+			"rangePower": "",
+			"area": 0,
+			"rechargeRoll": "",
+			"damageShare": false,
+			"postEffect": true,
+			"postSpecial": true,
+			"sustain": {
+				"actionType": "none",
+				"detail": ""
+			},
+			"target": "One Creature",
+			"attack": {
+				"isAttack": true,
+				"ability": "str",
+				"abilityBonus": 0,
+				"def": "ac",
+				"defBonus": 0,
+				"formula": "1d20+@wepAttack+@powerMod",
+				"damageType": {},
+				"effectType": {}
+			},
+			"hit": {
+				"isDamage": true,
+				"detail": "1[W] + Strength modifier damage.",
+				"formula": "@wepDice(1) + @powerMod + @wepDamage",
+				"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"
+			},
+			"miss": {
+				"detail": "Half Damage.",
+				"formula": "@{damageFormula}/2"
+			},
+			"effect": {
+				"detail": ""
+			},
+			"trigger": "",
+			"requirement": "",
+			"special": ""
 		}
-	},
-	"loot": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"]
-	},
-	"tool": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
-		"attribute": "abilities.int.mod",
-		"chatFlavor": "",
-		"formula": "",
-		"bonus": 2
-	},
-	"weapon": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable", "itemMacro"],
-		"weaponType": "simpleM",
-		"weaponHand": "HMain",
-		"properties": {},
-		"proficient": true,
-		"proficientI": false,
-		"profBonus": 0,
-		"profImpBonus": 0,
-		"enhance": 0,
-		"isRanged": false,
-		"range": {"value": 5, "long": 10},
-		"damageDice": {
-			"parts": [["1","8"]]
-		},
-		"damageType": {"physical":true},
-		"brutalNum": 1,
-		"weaponGroup": {},
-		"attackForm": "@profBonus+@enhance",
-		"attackFormImp": "",
-		"damageForm": "@enhance",
-		"damageFormImp": "",
-		"critDamageForm": "@enhance+@enhance d6",
-		"critDamageFormImp": "",
-		"critRange": 20,
-		"critRangeImp": 20
-	},
-	"raceFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
-	},
-	"pathFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
-	},
-	"destinyFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
-	},
-	"ritual": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
-	},
-	"power": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
-		"keyWords": [""],
-		"level": "1",
-		"powersource": "martial",
-		"subName": "",
-		"prepared": true,
-		"powerType": "class",
-		"useType": "atwill",
-		"actionType": "standard",
-		"requirements": "",
-		"weaponType": "melee",
-		"weaponUse": "default",
-		"rangeType": "weapon",
-		"rangeTextShort": "",
-		"rangeText": "",
-		"rangePower": "",
-		"area": 0,
-		"rechargeRoll": "",
-		"damageShare": false,
-		"target": {
-			"type": "creature",
-			"num": 1
-		},
-		"attack": {
-			"isAttack": true,
-			"ability": "str",
-			"abilityBonus": 0,
-			"def": "ac",
-			"defBonus": 0,
-			"formula": "1d20+@wepAttack+@powerMod",
-			"damageType": {},
-			"effectType": {}
-		},
-		"hit": {
-			"isDamage": true,
-			"detail": "1[W] + Strength modifier damage.",
-			"formula": "@wepDice(1) + @powerMod + @wepDamage",
-			"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"
-		},
-		"miss": {
-			"detail": "Half Damage.",
-			"formula": "@{damageFormula}/2"
-		},
-		"effect": {
-			"detail": ""
-		},
-		"trigger": "",
-		"requirement": "",
-		"special": ""
 	}
-}
-}
+	}
+	

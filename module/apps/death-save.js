@@ -5,7 +5,7 @@ export class DeathSaveDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
+			id: "death-save",
 			classes: ["dnd4eAltus", "actor-death-save"],
 			template: "systems/dnd4eAltus/templates/apps/death-save.html",
 			width: 500,
@@ -38,16 +38,14 @@ export class DeathSaveDialog extends BaseEntitySheet {
 		});
 		rollConfig.event = event;
 		rollConfig.critical = this.object.data.data.details.deathsaveCrit || 20;
-		rollConfig.fumble = 9;
-		let roll = d20Roll(rollConfig);
+		rollConfig.fumble = 9 - formData.save - this.object.data.data.details.deathsavebon.value;
+		const roll = await d20Roll(rollConfig);
 		
 		if(roll.total < 10)
 		{
 			updateData[`data.details.deathsavefail`] = this.object.data.data.details.deathsavefail + 1;
-			
-
 		}
-		if( roll && this.object.data.data.details.deathsavefail + 1 >= this.object.data.data.details.deathsaves)
+		if( roll.total < 10 && this.object.data.data.details.deathsavefail + 1 >= this.object.data.data.details.deathsaves)
 		{
 			await ChatMessage.create({
 				user: game.user._id,
@@ -55,8 +53,14 @@ export class DeathSaveDialog extends BaseEntitySheet {
 				content: this.object.data.name + " has failed their last death saving throw and has died!"
 			});
 		}
+		else if(roll.total - formData.save - this.object.data.data.details.deathsavebon.value >= rollConfig.critical) {
+			await ChatMessage.create({
+				user: game.user._id,
+				speaker: ChatMessage.getSpeaker(),
+				content: this.object.data.name + " has has critical succedded their death saving throw, is no longer unconouse and has regained 1 HP!"
+			});
+		}
 
 		this.object.update(updateData);
-
 	}
 }

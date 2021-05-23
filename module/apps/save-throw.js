@@ -5,7 +5,7 @@ export class SaveThrowDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
+			id: "save-throw",
 			classes: ["dnd4eAltus", "actor-save-throw"],
 			template: "systems/dnd4eAltus/templates/apps/save-throw.html",
 			width: 500,
@@ -36,8 +36,8 @@ export class SaveThrowDialog extends BaseEntitySheet {
 			fastForward: true
 		});
 		rollConfig.event = event;
-		rollConfig.critical = formData.dc;
-		rollConfig.fumble = formData.dc -1;
+		rollConfig.critical = formData.dc - this.object.data.data.details.saves.value - formData.save || 10;
+		rollConfig.fumble = formData.dc -1 - this.object.data.data.details.saves.value - formData.save || 9;
 		await d20Roll(rollConfig);
 	}
 }

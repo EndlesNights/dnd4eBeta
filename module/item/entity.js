@@ -129,8 +129,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasTarget() {
-		const target = this.data.data.target;
-		return target && !["none",""].includes(target.type);
+		return target && !["none",""].includes(this.data.data.target);
 	}
 
 	/* -------------------------------------------- */
@@ -303,6 +302,9 @@ export default class Item4e extends Item {
 			// let x = func();
 			// console.log(x)
 		}
+
+		console.log(this)
+		const cardData = this.data.type == "power" ? Helper._preparePowerCardData(this.getChatData(), CONFIG) : null;
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
@@ -313,8 +315,10 @@ export default class Item4e extends Item {
 			labels: this.labels,
 			hasAttack: this.hasAttack,
 			isHealing: this.isHealing,
+			isPower: this.data.type == "power",
 			hasDamage: this.hasDamage,
 			hasEffect: this.hasEffect,
+			cardData: cardData,
 			isVersatile: this.isVersatile,
 			isSpell: this.data.type === "spell",
 			hasSave: this.hasSave,
@@ -337,7 +341,22 @@ export default class Item4e extends Item {
 		// Render the chat card template
 		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
 		const template = `systems/dnd4eAltus/templates/chat/${templateType}-card.html`;
-		const html = await renderTemplate(template, templateData);
+console.log(templateType)
+		let html = await renderTemplate(template, templateData);
+
+		if(templateData.item.type === "power") {
+			html = html.replace("ability-usage--", `ability-usage--${templateData.data.useType}`);
+		}
+		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {
+			html = html.replace("ability-usage--", `ability-usage--item`);
+			console.log("test")
+		} else {
+			html = html.replace("ability-usage--", `ability-usage--other`);
+		}
+
+		console.log(templateData.item.type)
+
+		console.log(templateData)
 		// Basic chat message data
 		const chatData = {
 			user: game.user._id,
@@ -696,7 +715,7 @@ export default class Item4e extends Item {
 		// 	flavor += `<br>Target: ${itemData.target.type} `;
 		// }
 		// flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
-		flavor += ` VS <b>${itemData.attack.def.toUpperCase() }<b>`;
+		flavor += ` ${game.i18n.localize("DND4EALTUS.VS")} <b>${itemData.attack.def.toUpperCase() }<b>`;
 			const rollData = this.getRollData();
 		
 			// Define Roll bonuses
@@ -884,9 +903,9 @@ export default class Item4e extends Item {
 			}
 		}
 		//Add powers text to message.
-		if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
-		if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
-		if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
+		// if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
+		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
+		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 		// Call the roll helper utility
 		console.log(parts);
 		return damageRoll({

@@ -37,6 +37,8 @@
 {{/each}}
 
 	{{!-- Resistances --}}
+
+	{{#if data.resistances}}
 	<div class="attribute-res resource-full">
 		<h4 class="attribute-name box-title">Resistances & Weaknesses</h4>
 		{{#each data.resistances as |res r|}}
@@ -58,4 +60,5 @@
 			<!-- <i class="fas fa-edit"></i> -->
 		<!-- </a> -->
 	</div>
+	{{/if}}
 </ol>

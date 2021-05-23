@@ -29,7 +29,6 @@ export class Helper {
 		if(itemData.weaponUse === "default" || itemData.weaponUse === "defaultOH") {
 			let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 			let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
-			
 			return actor.itemTypes.weapon.find((i) =>  {
 				if(i.data.data.equipped) {
 
@@ -90,6 +89,8 @@ export class Helper {
 		let newFormula = formula;
 
 		if(actorData) {
+
+			newFormula = Roll.replaceFormulaData(newFormula, actorData)
 			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
 			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);
@@ -193,15 +194,15 @@ export class Helper {
 
 		//check for actor values in formula
 		
-		for(let i = 0; i < (newFormula.match(/@/g) || []).length; i++) {
-			let indexStart = newFormula.indexOf('@');
-			let indexEnd = (newFormula + ' ').substring(indexStart).search(/[ /*+-]/);
-			//FIX the regex, get rid of the ' ' and just tell it to search to up to end of string
+		// for(let i = 0; i < (newFormula.match(/@/g) || []).length; i++) {
+		// 	let indexStart = newFormula.indexOf('@');
+		// 	let indexEnd = (newFormula + ' ').substring(indexStart).search(/[ /*+-]/);
+		// 	//FIX the regex, get rid of the ' ' and just tell it to search to up to end of string
 
-			let val = typeof this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) === 'number' ?
-				this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) : '';
-			newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
-		}
+		// 	let val = typeof this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) === 'number' ?
+		// 		this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) : '';
+		// 	newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
+		// }
 		return newFormula;
 	}
   /**
@@ -214,25 +215,125 @@ export class Helper {
    * @param {Object} missing    Value to use as missing replacements, such as {missing: "0"}.
    * @return {String} The formula with attributes replaced with values.
    */
-  static replaceData(formula, data, {missing=null,depth=1}={}) {
-    // Exit early if the formula is invalid.
-    if ( typeof formula != "string" || depth < 1) {
-      return 0;
-    }
-    // Replace attributes with their numeric equivalents.
-    let dataRgx = new RegExp(/@([a-z.0-9_\-]+)/gi);
-    let rollFormula = formula.replace(dataRgx, (match, term) => {
-      let value = getProperty(data, term);
-      // If there was a value returned, trim and return it.
-      if ( value || value == 0) {
-        return String(value).trim();
-      }
-      // Otherwise, return either the missing replacement value, or the original @attr string for later replacement.
-      else {
-        return missing != null ? missing : `@${term}`;
-      }
-    });
-    return rollFormula;
-  }
+	static replaceData(formula, data, {missing=null,depth=1}={}) {
+		// Exit early if the formula is invalid.
+		if ( typeof formula != "string" || depth < 1) {
+		return 0;
+		}
+		// Replace attributes with their numeric equivalents.
+		let dataRgx = new RegExp(/@([a-z.0-9_\-]+)/gi);
+		let rollFormula = formula.replace(dataRgx, (match, term) => {
+			let value = getProperty(data, term);
+			// If there was a value returned, trim and return it.
+			if ( value || value == 0) {
+				return String(value).trim();
+			}
+			// Otherwise, return either the missing replacement value, or the original @attr string for later replacement.
+			else {
+				return missing != null ? missing : `@${term}`;
+			}
+		});
+		return rollFormula;
+	}
 
+	static evaluate(s) {
+		let total = 0;
+		s = s.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
+
+		while (s.length) {
+			total += parseFloat(s.shift());
+		}
+		return total;
+	}
+
+	static _preparePowerCardData(chatData, CONFIG) {
+		console.log(chatData)
+
+		let powerDetail = `<span>${CONFIG.DND4EALTUS.powerUseType[`${chatData.useType}`]} ♦ ${CONFIG.DND4EALTUS.powerSource[`${chatData.powersource}`]}`;
+		let tag = [];
+
+		if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
+			tag.push(`Weapon`);
+		} 
+		else if ( chatData.weaponType === "implement") {
+			tag.push(`Implement`);
+		}
+
+		if(chatData.damageType) {
+			for ( let [damage, d] of Object.entries(chatData.damageType)) {
+				if(d) tag.push(CONFIG.DND4EALTUS.damageTypes[damage])
+			}
+		}
+		if(chatData.effectType) {
+			for ( let [effect, e] of Object.entries(chatData.effectType)) {
+				if(e) tag.push(CONFIG.DND4EALTUS.effectTypes[effect])
+			}
+		}
+		tag.sort();
+		powerDetail += tag.length > 0 ? `, ${tag.join(', ')}</span>` : `</span>`;
+		
+		powerDetail += `<br><span>${CONFIG.DND4EALTUS.abilityActivationTypes[chatData.actionType]} •`;
+
+		if(chatData.rangeType === "weapon") {
+			powerDetail += ` ${CONFIG.DND4EALTUS.weaponType[chatData.weaponType]}`;
+			chatData.rangePower ? powerDetail += ` <b>${chatData.rangePower}</b>` : {} ;
+			powerDetail += `</span>`;
+		} 
+		else if (chatData.rangeType === "range") {
+			powerDetail += ` ${game.i18n.localize("DND4EALTUS.Range")} <b>${chatData.rangePower}</b></span>`;
+		}
+		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
+			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]} <b>${chatData.area}</b></span>`;
+		}
+		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
+			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]} <b>${chatData.area}</b> ${game.i18n.localize("DND4EALTUS.RangeWithinOf")} <b>${chatData.rangePower}</b> ${game.i18n.localize("DND4EALTUS.Squares")}</span>`;
+		}
+		else if (chatData.rangeType === "personal") {
+			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]}</span>`;
+		}
+		else if (chatData.rangeType === "trouch") {
+			powerDetail += ` ${game.i18n.localize("DND4EALTUS.Melee")} ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]}</span>`;
+		}
+		else {
+			powerDetail += `</span>`;
+		}
+
+		if(chatData.target) {
+			powerDetail += `<br><span>${game.i18n.localize("DND4EALTUS.Target")}: ${chatData.target}</span>`;
+		}
+
+		if(chatData.trigger) {
+			powerDetail += `<br><span>${game.i18n.localize("DND4EALTUS.Trigger")}: ${chatData.trigger}</span>`;
+		}
+
+		if(chatData.requirement) {
+			powerDetail += `<br><span>${game.i18n.localize("DND4EALTUS.Requirements")}: ${chatData.requirement}</span>`;
+		}
+
+		if(!chatData.postEffect && chatData.effect.detail) {
+			powerDetail += `<p>${game.i18n.localize("DND4EALTUS.Effect")}: ${chatData.effect.detail}</p>`;
+		}
+		if(!chatData.postSpecial && chatData.special) {
+			powerDetail += `<p>${game.i18n.localize("DND4EALTUS.Special")}: ${chatData.special}</p>`;
+		}
+
+		if(chatData.attack.isAttack) {
+			powerDetail += `<p class="alt">${game.i18n.localize("DND4EALTUS.Attack")}: ${CONFIG.DND4EALTUS.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4EALTUS.VS")} ${CONFIG.DND4EALTUS.def[chatData.attack.def]}</p>`;
+			chatData.hit.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EALTUS.Hit")}: ${chatData.hit.detail}</p>` : {};
+			chatData.miss.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EALTUS.Miss")}: ${chatData.miss.detail}</p>` : {};
+		}
+
+		if(chatData.postEffect && chatData.effect.detail) {
+			powerDetail += `<p class="alt">${game.i18n.localize("DND4EALTUS.Effect")}: ${chatData.effect.detail}</p>`;
+		}
+		if(chatData.postSpecial && chatData.special) {
+			powerDetail += `<p class="alt">${game.i18n.localize("DND4EALTUS.Special")}: ${chatData.special}</p>`;
+		}
+
+		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
+			powerDetail += `<p class="alt">${game.i18n.localize("DND4EALTUS.Sustain")} ${CONFIG.DND4EALTUS.abilityActivationTypes[chatData.sustain.actionType]}: ${chatData.sustain.detail}</p>`;
+		}
+
+		return powerDetail;
+	}
 }

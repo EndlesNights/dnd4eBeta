@@ -2,7 +2,7 @@
 	"name": "dnd4eAltus",
 	"title": "4th Edition Altus",
 	"description": "A minimalist custom test build of 4th Ed.",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"minimumCoreVersion": "0.7.5",
 	"compatibleCoreVersion": "0.7.9",
 	"templateVersion": 2,
@@ -22,12 +22,12 @@
 		}
 	],
 	"socket": true,
-	"initiative": "1d20 + @attribute.init.value + (@attribute.init.value / 100)",
+	"initiative": "1d20 + @attributes.init.value + (@attributes.init.value / 100)",
 	"gridDistance": 1,
 	"gridUnits": "sq",
-	"primaryTokenAttribute": "attribute.hp.value",
+	"primaryTokenAttribute": "attributes.hp",
 	"secondaryTokenAttribute": null,
-  	"url": "https://github.com/EndlesNights/dnd4eAltus",
+  	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dndAltus/system.json",
 	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/dndAltus/dnd4eAltus.zip"
 	

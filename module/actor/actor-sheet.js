@@ -1,5 +1,6 @@
 import { DND4EALTUS } from "../config.js";
 import { SecondWindDialog } from "../apps/second-wind.js";
+import { ActionPointDialog } from "../apps/action-point.js";
 import { ShortRestDialog } from "../apps/short-rest.js";
 import { LongRestDialog } from "../apps/long-rest.js";
 import { DeathSaveDialog } from "../apps/death-save.js";
@@ -7,6 +8,8 @@ import { SaveThrowDialog } from "../apps/save-throw.js";
 import { AttributeBonusDialog } from "../apps/attribute-bonuses.js";
 import { CustomRolldDescriptions } from "../apps/custom-roll-descriptions.js";
 import { MovementDialog } from "../apps/movement-dialog.js";
+import { EncumbranceDialog } from "../apps/encumbrance-dialog.js";
+import { ItemImporterDialog} from "../apps/item-importer.js"
 import TraitSelector from "../apps/trait-selector.js";
 import TraitSelectorSense from "../apps/trait-selector-sense.js";
 import TraitSelectorSave from "../apps/trait-selector-save.js";
@@ -39,8 +42,8 @@ export class ActorSheet4e extends ActorSheet {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eAltus", "sheet", "actor"],
 			template: "systems/dnd4eAltus/templates/actor-sheet.html",
-			width: 800,
-			height: 958,
+			width: 844,
+			height: 957,
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",
@@ -93,6 +96,19 @@ export class ActorSheet4e extends ActorSheet {
 		data.effects = prepareActiveEffectCategories(this.entity.effects);
 
 		// data.actor.data.details.isBloodied = (data.actor.data.attributes.hp.value <= data.actor.data.attributes.hp.max/2);
+		console.log(data)
+
+			// Resources
+			data["resources"] = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
+				const res = data.data.resources[r] || {};
+				res.name = r;
+				res.placeholder = game.i18n.localize("DND4EALTUS.Resource"+r.titleCase());
+				if (res && res.value === 0) delete res.value;
+				if (res && res.max === 0) delete res.max;
+				return arr.concat([res]);
+			  }, []);
+
+
 		return data;
 	}
 	
@@ -534,11 +550,15 @@ export class ActorSheet4e extends ActorSheet {
 		// Everything below here is only needed if the sheet is editable
 		if (!this.options.editable) return;
 
+		const inputs = html.find("input");
+		inputs.focus(event => event.currentTarget.select());
+		inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
+
 		html.find('.skill-training').on("click contextmenu", this._onCycleSkillProficiency.bind(this));
 
 		// Update Inventory Item
-		html.find('.item-edit').click(ev => {
-		const li = $(ev.currentTarget).parents(".item");
+		html.find('.item-edit').click(event => {
+		const li = $(event.currentTarget).parents(".item");
 		const item = this.actor.getOwnedItem(li.data("itemId"));
 		item.sheet.render(true);
 		});
@@ -549,10 +569,6 @@ export class ActorSheet4e extends ActorSheet {
 		this.actor.deleteOwnedItem(li.data("itemId"));
 		li.slideUp(200, () => this.render(false));
 		});
-
-		const inputs = html.find("input");
-		inputs.focus(ev => ev.currentTarget.select());
-		inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
 
 		if ( this.actor.owner ) {	
 			// Roll Skill Checks
@@ -580,7 +596,7 @@ export class ActorSheet4e extends ActorSheet {
 			html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
 			html.find('.move-bonus').click(this._onMovementBonus.bind(this));
 			html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
-			html.find('.resistances-bonus').click(this._onResistancesBonus.bind(this));		
+			html.find('.resistances-bonus').click(this._onResistancesBonus.bind(this));
 			
 			html.find('.movement-dialog').click(this._onMovementDialog.bind(this));		
 			
@@ -588,6 +604,9 @@ export class ActorSheet4e extends ActorSheet {
 			
 			//second wind
 			html.find('.second-wind').click(this._onSecondWind.bind(this));
+
+			//action point
+			html.find('.action-point').click(this._onActionPointDialog.bind(this));
 			
 			//short rest
 			html.find('.short-rest').click(this._onShortRest.bind(this));
@@ -598,6 +617,9 @@ export class ActorSheet4e extends ActorSheet {
 			//death save
 			html.find('.death-save').click(this._onDeathSave.bind(this));
 			html.find('.roll-save').click(this._onSavingThrow.bind(this));
+
+			//roll init
+			html.find('.rollInitiative').click(this._onrollInitiative.bind(this));
 			
 			// Trait Selector
 			html.find('.trait-selector').click(this._onTraitSelectorLang.bind(this));
@@ -610,12 +632,14 @@ export class ActorSheet4e extends ActorSheet {
 			html.find('.item-create').click(this._onItemCreate.bind(this));
 			html.find('.item-edit').click(this._onItemEdit.bind(this));
 			html.find('.item-delete').click(this._onItemDelete.bind(this));
-			html.find('.item-uses input').click(ev => ev.target.select()).change(this._onUsesChange.bind(this));
+			html.find('.item-uses input').click(event => event.target.select()).change(this._onUsesChange.bind(this));
 
 			html.find('.power-create').click(this._onPowerItemCreate.bind(this));
 
+			html.find('.item-import').click(this._onItemImport.bind(this));
+
 			// Active Effect management
-			html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.entity));
+			html.find(".effect-control").click(event => onManageActiveEffect(event, this.entity));
 		
 			// Item summaries
 			html.find('.item .item-name h4').click(event => this._onItemSummary(event));		
@@ -629,6 +653,9 @@ export class ActorSheet4e extends ActorSheet {
 			// Item Rolling
 			html.find('.item .item-image').click(event => this._onItemRoll(event));
 			// html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
+
+			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this))
+			
 		}
 	}
 
@@ -656,27 +683,43 @@ export class ActorSheet4e extends ActorSheet {
    * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
    * @private
    */
-  _onItemSummary(event) {
-	event.preventDefault();
-	let li = $(event.currentTarget).parents(".item"),
-		item = this.actor.getOwnedItem(li.data("item-id")),
-		chatData = item.getChatData({secrets: this.actor.owner});
+	_onItemSummary(event) {
+		event.preventDefault();
+		let li = $(event.currentTarget).parents(".item"),
+			item = this.actor.getOwnedItem(li.data("item-id")),
+			chatData = item.getChatData({secrets: this.actor.owner});
 
-	
-	// Toggle summary
-	if ( li.hasClass("expanded") ) {
-	  let summary = li.children(".item-summary");
-	  summary.slideUp(200, () => summary.remove());
-	} else {
-	  let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
-	  let props = $(`<div class="item-properties"></div>`);
-	  chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
-	  div.append(props);
-	  li.append(div.hide());
-	  div.slideDown(200);
+
+		// Toggle summary
+		if ( li.hasClass("expanded") ) {
+			let summary = li.children(".item-summary");
+			summary.slideUp(200, () => summary.remove());
+		} else {
+			//generate summary entry here
+		//	let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
+		//	let props = $(`<div class="item-properties"></div>`);
+			if (item.type === "power") {
+				
+				let div = $(`<div class="item-summary"></div>`);
+				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
+				let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG)}</div>`);
+				
+				div.append(descrip);
+				div.append(details);
+
+				li.append(div.hide());
+				div.slideDown(200);
+			} else {
+				let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
+				let props = $(`<div class="item-properties"></div>`);
+				chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
+				div.append(props);
+				li.append(div.hide());
+				div.slideDown(200);
+			}
+		}
+		li.toggleClass("expanded");
 	}
-	li.toggleClass("expanded");
-  }
   
   /* -------------------------------------------- */
 
@@ -713,6 +756,11 @@ export class ActorSheet4e extends ActorSheet {
 		return this.actor.createOwnedItem(itemData);
 	}
 
+	async _onItemImport(event) {
+		event.preventDefault();
+		new ItemImporterDialog(this.actor).render(true);
+	}
+
 	_onPowerItemCreate(event) {
 		event.preventDefault();
 		const header = event.currentTarget;
@@ -731,9 +779,15 @@ export class ActorSheet4e extends ActorSheet {
 		}
 		else if(this.object.data.data.powerGroupTypes === "usage") {
 			itemData.data.useType = type;
+			if(["encounter", "daily"].includes(type)) {
+				itemData.data.uses = {
+					value: 1,
+					max: 1,
+					per: type === "encounter" ? "enc" : "day"
+				};
+			}
 		}
 
-		delete itemData.data["type"];
 		return this.actor.createOwnedItem(itemData);
 	}
 
@@ -813,6 +867,7 @@ export class ActorSheet4e extends ActorSheet {
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
+	
 	_onSurgeBonus(event) {
 		event.preventDefault();
 		const options = {target: `data.details.surgeBon`, label: "Healing Surge Bonues" };
@@ -827,7 +882,7 @@ export class ActorSheet4e extends ActorSheet {
 
 	_onSecondWindBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonues" };
+		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonues", secondWind: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -841,7 +896,7 @@ export class ActorSheet4e extends ActorSheet {
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.attribute.init`, label: "Initiative Bonues", init: true };
+		const options = {target: `data.attributes.init`, label: "Initiative Bonues", init: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -856,6 +911,11 @@ export class ActorSheet4e extends ActorSheet {
 	_onMovementDialog(event) {
 		event.preventDefault();
 		new MovementDialog(this.actor).render(true)
+	}
+
+	_onEncumbranceDialog(event) {
+		event.preventDefault();
+		new EncumbranceDialog(this.actor).render(true);
 	}
 	
 	_onPassiveBonus(event) {
@@ -889,7 +949,13 @@ export class ActorSheet4e extends ActorSheet {
 	}
 	
 	/* -------------------------------------------- */
-  
+
+	_onActionPointDialog(event) {
+		console.log("action point")
+		event.preventDefault();
+		new ActionPointDialog(this.actor).render(true);
+	}
+
 	/**
 	*Opens dialog window to short rest.
 	*Spend n number of healin surges,
@@ -916,6 +982,11 @@ export class ActorSheet4e extends ActorSheet {
 		new DeathSaveDialog(this.actor).render(true);
 	}
 
+	_onrollInitiative(event) {
+		event.preventDefault();
+		return this.actor.rollInitiative({createCombatants: true});
+	}
+
 	_onSavingThrow(event) {
 		event.preventDefault();
 		new SaveThrowDialog(this.actor).render(true);
@@ -927,26 +998,26 @@ export class ActorSheet4e extends ActorSheet {
 		new AttributeBonusDialog(this.actor, options).render(true);	
 	}
 
-  _onCycleSkillProficiency(event) {
-	event.preventDefault();
-	const field = $(event.currentTarget).siblings('input[type="hidden"]');
+	_onCycleSkillProficiency(event) {
+		event.preventDefault();
+		const field = $(event.currentTarget).siblings('input[type="hidden"]');
 
-	// Get the current level and the array of levels
-	const level = parseFloat(field.val());
-	const levels = [0, 5, 8];
-	let idx = levels.indexOf(level);
+		// Get the current level and the array of levels
+		const level = parseFloat(field.val());
+		const levels = [0, 5, 8];
+		let idx = levels.indexOf(level);
 
-	// Toggle next level - forward on click, backwards on right
-	if ( event.type === "click" ) {
-	  field.val(levels[(idx === levels.length - 1) ? 0 : idx + 1]);
-	} else if ( event.type === "contextmenu" ) {
-	  field.val(levels[(idx === 0) ? levels.length - 1 : idx - 1]);
+		// Toggle next level - forward on click, backwards on right
+		if ( event.type === "click" ) {
+			field.val(levels[(idx === levels.length - 1) ? 0 : idx + 1]);
+		} else if ( event.type === "contextmenu" ) {
+			field.val(levels[(idx === 0) ? levels.length - 1 : idx - 1]);
+		}
+
+		// Update the field value and save the form
+		this._onSubmit(event);
 	}
 
-	// Update the field value and save the form
-	this._onSubmit(event);
-  }
-  
   /* -------------------------------------------- */
 
   /**
@@ -959,7 +1030,8 @@ export class ActorSheet4e extends ActorSheet {
 	const item = this.actor.getOwnedItem(itemId);
 	// Roll powers through the actor
 	const power = ["atwill","encounter","daily","utility"];
-	if ( power.includes(item.data.type)) {
+
+	if ( item.data.type === "power") {
 		return this.actor.usePower(item, {configureDialog: !event.shiftKey});
 	}
 	// Otherwise roll the Item directly

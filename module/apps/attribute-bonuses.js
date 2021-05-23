@@ -5,8 +5,8 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
-			classes: ["dnd4eAltus", "actor-rest"],
+			id: `attribute-bonus-${randomID()}`,
+			classes: ["dnd4eAltus"],
 			template: "systems/dnd4eAltus/templates/apps/attribute-bonuses.html",
 			width: 500,
 			closeOnSubmit: false,
@@ -46,6 +46,10 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 			this.position.height = Math.max(1, count) * 76 + 124;
 		} else if(this.options?.init) {
 			updateData[`${this.options.target}.ability`] = formData["data.ability"];
+		}
+		else if(this.options?.secondWind){
+			console.log(formData["custom"])
+			updateData[`${this.options.target}.custom`] = formData["data.custom"];
 		} else {
 			this.position.height = Math.max(1, count) * 76 + 91;
 		}

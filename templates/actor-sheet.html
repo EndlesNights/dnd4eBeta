@@ -48,13 +48,13 @@
 
 
 						{{/if}}
-						<input {{#if data.details.isBloodied}} class="bloodied" {{/if}} type="text" name="data.attribute.hp.value" value="{{data.attribute.hp.value}}" title="{{localize 'DND4EALTUS.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<input {{#if data.details.isBloodied}} class="bloodied" {{/if}} type="text" name="data.attributes.hp.value" value="{{data.attributes.hp.value}}" title="{{localize 'DND4EALTUS.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">/</span>
-						<input type="text" name="data.attribute.hp.max" value="{{data.attribute.hp.max}}" title="{{localize 'DND4EALTUS.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.attributes.hp.max" value="{{data.attributes.hp.max}}" title="{{localize 'DND4EALTUS.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					<footer class="attribute-footer attribute-footer--temp-hp flexrow">
 						<span class="attribute-subname">{{localize 'DND4EALTUS.TempHP'}}</span>
-						<input type="text" name="data.attribute.hp.temphp" value="{{data.attribute.hp.temphp}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.attributes.hp.temphp" value="{{data.attributes.hp.temphp}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
 					</footer>
 				</div>
 
@@ -81,18 +81,18 @@
 							<div class="attribute-display surge-bonus rollable" title="{{localize 'DND4EALTUS.SurgeValue'}}">{{localize 'DND4EALTUS.Surge'}}</div>
 						</div>
 						<div class="attribute-sub attribute-input">
-							<input type="text" name="data.details.surgeCur" value="{{data.details.surgeCur}}" title="{{localize 'DND4EALTUS.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="data.details.surges.value" value="{{data.details.surges.value}}" title="{{localize 'DND4EALTUS.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 							<div class="attribute-display envimental-loss-bonus rollable" title="{{localize 'DND4EALTUS.SurgeCur'}}">{{localize 'DND4EALTUS.Uses'}}</div>
 						</div>
 						<span class="sep">/</span>
 						<div class="attribute-sub attribute-input">
-							<input type="text" name="data.details.surgeDay" value="{{data.details.surgeDay}}" title="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
-							<!-- <strong class="attribute-name" title="{{localize 'DND4EALTUS.SurgeDay'}}">{{data.details.surgeDay}}</strong> -->
+							<input type="text" name="data.details.surges.max" value="{{data.details.surges.max}}" title="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+							<!-- <strong class="attribute-name" title="{{localize 'DND4EALTUS.SurgeDay'}}">{{data.details.surges.max}}</strong> -->
 							<div class="attribute-display" title="{{localize 'DND4EALTUS.SurgeDay'}}">{{localize 'DND4EALTUS.Day'}}</div>
 						</div>
 						<div class="attribute-sub">
 							<input type="checkbox" name="data.details.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="{{localize 'DND4EALTUS.SecondWindUsed'}}"/>
-							<div class="attribute-display-check secondwind-bonus rollable" title="{{localize 'DND4EALTUS.SecondWind'}}">{{localize 'DND4EALTUS.SW'}}</div>
+							<div class="attribute-display-check secondwind-bonus rollable" title="{{localize 'DND4EALTUS.SecondWindBonus'}}">{{localize 'DND4EALTUS.SW'}}</div>
 						</div>
 					</div>
 					<footer class="attribute-footer attribute-footer--surge flexrow">
@@ -116,6 +116,11 @@
 							<div class="attribute-display-check" title="{{localize 'DND4EALTUS.ActionPointUsed'}}">{{localize 'DND4EALTUS.Used'}}</div>
 						</div>
 					</div>
+					<footer class="attribute-footer attribute-footer--surge flexrow">
+						<span style="font-size: 10px; max-width:48px;">Milestones</span>
+						<input style="width:18px; border-bottom: 1px solid black; max-width:9%; height:14px;" name="data.magicItemUse.milestone" value="{{data.magicItemUse.milestone}}" title="{{localize 'DND4EALTUS.Milestones'}}"  placeholder="0" data-dtype="Number" onClick="this.select();">
+						<a class="rest action-point" title="{{localize 'DND4EALTUS.ActionPointUse'}}">{{localize "DND4EALTUS.ActionPointUse"}}</a>
+					</footer>
 				</div>
 			</section>
 		</section>
@@ -154,7 +159,7 @@
 			<a class="custom-roll-descriptions" style="font-size: 11.5px;" title="Change custom descriptions for Skill and Ability roll checks.">Edit Skill & Ability Custom Descriptions.</a>
 		</section>
 
-		<section class="section section--main flexcol">
+		<section class="section section--main flexcol" style="height: 100%;">
 			<section class="section section--utilities flexrow">
 				<section class="section section--saves flexcol">
 					<div >
@@ -178,14 +183,19 @@
 					</div>
 				</section>
 				<section class="section section--movement flexcol">
-					<div>
+					<div data-html="true" title=
+"{{numberFormat data.movement.walk.value}} sq. Walking Speed
+{{numberFormat data.movement.run.value}} sq. Running Speed
+{{numberFormat data.movement.charge.value}} sq. Charging Speed
+{{numberFormat data.movement.climb.value}} sq. Climbing Speed
+{{numberFormat data.movement.shift.value}} sq. Shifting Speed">
 						<!-- <input style="width:40%; border-bottom: 1px solid; border-radius: 0px; text-align: center;" type="text" name="data.movement.basic.base" value="{{data.movement.basic.base}}" title="Basic Movement Speed"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
-						<strong class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat data.movement.basic.value}} sq.</strong>
+						<strong class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat data.movement.walk.value}} sq.</strong>
 						<label class="movement-dialog rollable">{{localize 'DND4EALTUS.Speed'}}</label>
 					</div>
 					<div>
-						<strong class="init-bonus rollable" title="{{localize 'DND4EALTUS.InitiativeScore'}}">{{numberFormat data.attribute.init.value decimals=0 sign=true }}</strong>
-						<label>{{localize 'DND4EALTUS.Initiative'}}</label>
+						<strong class="init-bonus rollable" title="{{localize 'DND4EALTUS.InitiativeScore'}}">{{numberFormat data.attributes.init.value decimals=0 sign=true }}</strong>
+						<label class="rollInitiative rollable" >{{localize 'DND4EALTUS.Initiative'}}</label>
 					</div>
 				</section>
 			</section>
@@ -194,6 +204,7 @@
 
 				{{!-- Sheet Tab Navigation --}}
 				<nav class="sheet-tabs tabs" data-group="primary">
+					<a class="item" data-tab="biography">{{localize 'DND4EALTUS.Biography'}}</a>
 					<a class="item" data-tab="details">{{localize 'DND4EALTUS.Details'}}</a>
 					<a class="item " data-tab="powers">{{localize 'DND4EALTUS.Powers'}}</a>
 					<a class="item" data-tab="inventory">{{localize 'DND4EALTUS.Inventory'}}</a>
@@ -207,10 +218,15 @@
 
 			{{!-- Sheet Body --}}
 			<section class="sheet-body section--tabs-content">
-		
+
 				{{!-- Biography Tab --}}
-				<div class="tab biography" data-group="primary" data-tab="details">
-					{{> "systems/dnd4eAltus/templates/actors/parts/actor-details.html" sections=biography}}
+				<div class="tab biography" data-group="primary" data-tab="biography">
+					{{> "systems/dnd4eAltus/templates/actors/parts/actor-biography.html" sections=biography}}
+				</div>
+
+				{{!-- Details Tab --}}
+				<div class="tab details" data-group="primary" data-tab="details">
+					{{> "systems/dnd4eAltus/templates/actors/parts/actor-details.html" sections=details}}
 				</div>
 		
 				{{!-- Owned Inventory Tab --}}

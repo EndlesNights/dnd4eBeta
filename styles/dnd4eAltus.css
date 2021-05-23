@@ -515,52 +515,58 @@ font-size: 12px;
 .ability-usage--atwill {
 	background: -o-linear-gradient(45deg, #125f15, #55aa2e);
 	background: linear-gradient(45deg, #125f15, #55aa2e); }
-	.colorBlindRG .ability-usage--atwill {
-	  background: -o-linear-gradient(45deg, #003c15, #087830);
-	  background: linear-gradient(45deg, #003c15, #087830); }
-	.colorBlindBY .ability-usage--atwill {
-	  background: -o-linear-gradient(45deg, #796501, #efde89);
-	  background: linear-gradient(45deg, #796501, #efde89); }
+.colorBlindRG .ability-usage--atwill {
+	background: -o-linear-gradient(45deg, #003c15, #087830);
+	background: linear-gradient(45deg, #003c15, #087830); }
+.colorBlindBY .ability-usage--atwill {
+	background: -o-linear-gradient(45deg, #796501, #efde89);
+	background: linear-gradient(45deg, #796501, #efde89); }
   
-  .ability-usage--encounter {
+.ability-usage--encounter {
 	background: -o-linear-gradient(45deg, #3c0000, #dc0000);
 	background: linear-gradient(45deg, #3c0000, #dc0000); }
-	.colorBlindRG .ability-usage--encountere {
-	  background: -o-linear-gradient(45deg, #003854, #89cdef);
-	  background: linear-gradient(45deg, #003854, #89cdef); }
-	.colorBlindBY .ability-usage--encounter {
-	  background: -o-linear-gradient(45deg, #4e0129, #891c54);
-	  background: linear-gradient(45deg, #4e0129, #891c54); }
+.colorBlindRG .ability-usage--encounter {
+	background: -o-linear-gradient(45deg, #003854, #89cdef);
+	background: linear-gradient(45deg, #003854, #89cdef); }
+.colorBlindBY .ability-usage--encounter {
+	background: -o-linear-gradient(45deg, #4e0129, #891c54);
+	background: linear-gradient(45deg, #4e0129, #891c54); }
   
-  .ability-usage--daily {
+.ability-usage--daily {
 	background: -o-linear-gradient(45deg, #1b1b1d, #ababab);
 	background: linear-gradient(45deg, #1b1b1d, #ababab); }
-	.colorBlindRG .ability-usage--daily {
-	  background: -o-linear-gradient(45deg, #005748, #42ac9a);
-	  background: linear-gradient(45deg, #005748, #42ac9a); }
-	.colorBlindBY .ability-usage--daily {
-	  background: -o-linear-gradient(45deg, #333300, #9a9a30);
-	  background: linear-gradient(45deg, #333300, #9a9a30); }
+.colorBlindRG .ability-usage--daily {
+	background: -o-linear-gradient(45deg, #005748, #42ac9a);
+	background: linear-gradient(45deg, #005748, #42ac9a); }
+.colorBlindBY .ability-usage--daily {
+	background: -o-linear-gradient(45deg, #333300, #9a9a30);
+	background: linear-gradient(45deg, #333300, #9a9a30); }
 
-	.ability-usage--recharge {
+.ability-usage--recharge {
 	background: -o-linear-gradient(45deg, #01003c, #71a2ec);
 	background: linear-gradient(45deg, #01003c, #71a2ec); }
-	.colorBlindRG .ability-usage--recharge {
-		background: -o-linear-gradient(45deg, #695702, #decd78);
-		background: linear-gradient(45deg, #695702, #decd78); }
-	.colorBlindBY .ability-usage--recharge {
-		background: -o-linear-gradient(45deg, #01536e, #66cdef);
-		background: linear-gradient(45deg, #01536e, #66cdef); }
+.colorBlindRG .ability-usage--recharge {
+	background: -o-linear-gradient(45deg, #695702, #decd78);
+	background: linear-gradient(45deg, #695702, #decd78); }
+.colorBlindBY .ability-usage--recharge {
+	background: -o-linear-gradient(45deg, #01536e, #66cdef);
+	background: linear-gradient(45deg, #01536e, #66cdef); }
 
-  .ability-usage--other {
+.ability-usage--other {
 	background: -o-linear-gradient(45deg, #25003c, #dc9ff1a6);
 	background: linear-gradient(45deg, #25003c, #dc9ff1a6); }
-	.colorBlindRG .ability-usage--other {
-	  background: -o-linear-gradient(45deg, #0d0145, #301c89);
-	  background: linear-gradient(45deg, #0d0145, #301c89); }
-	.colorBlindBY .ability-usage--other {
-	  background: -o-linear-gradient(45deg, #0d0145, #301c89);
-	  background: linear-gradient(45deg, #0d0145, #301c89); }
+.colorBlindRG .ability-usage--other {
+	background: -o-linear-gradient(45deg, #0d0145, #301c89);
+	background: linear-gradient(45deg, #0d0145, #301c89); }
+.colorBlindBY .ability-usage--other {
+	background: -o-linear-gradient(45deg, #0d0145, #301c89);
+	background: linear-gradient(45deg, #0d0145, #301c89); }
+
+.ability-usage--item {
+	background: -o-linear-gradient(45deg, #6a581c, #d4af37);
+	background: linear-gradient(45deg, #6a581c, #d4af37); }
+
+
 /* 01003c */
 .dnd4eAltus .sheet-header .header-fields {
 	flex: 1;
@@ -1270,7 +1276,7 @@ font-size: 12px;
 }
 .dnd4eAltus .attribute-res {
 	margin: 0 0 0 0;
-	border: 2px groove #eeede0;
+	/* border: 2px groove #eeede0; */
 	border-radius: 4px;
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
 
@@ -1388,10 +1394,10 @@ font-size: 12px;
 .dnd4eAltus .attribute-init .init-bonus{
 	width: 30px;
 }
-.dnd4eAltus .action-point{
+/* .dnd4eAltus .action-point{
 	position: relative;
 	top: -20px;
-	/* height: 10px; */
+	height: 10px;
 
 	margin: 0 0 0 0;
 	border: 2px groove #eeede0;
@@ -1399,7 +1405,7 @@ font-size: 12px;
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;	
 	width: 100%;
 	float: left;
-}
+} */
 .dnd4eAltus input.action-box{
 	height: 14px;
 	width: 14px;
@@ -1767,7 +1773,7 @@ font-size: 12px;
 }
 .dnd4eAltus.sheet .items-list .item .item-uses input {
 	width: 24px;
-	text-align: center;
+	text-align: right;
 }
 .dnd4eAltus.sheet .items-list .item .power-detail input {
 	color: #e0e0e0;
@@ -1804,7 +1810,7 @@ font-size: 12px;
 	flex: 0 0 100%;
 }
 .dnd4eAltus.sheet .items-list .item-detail {
-	flex: 0 0 55px;
+	flex: 0 0 50px;
 	font-size: 12px;
 	color: #7a7971;
 	text-align: center;
@@ -1814,6 +1820,9 @@ font-size: 12px;
 	overflow: hidden;
 }
 
+.dnd4eAltus.sheet .items-list .item-range{
+	flex: 0 0 60px;
+}
 .dnd4eAltus.sheet .items-list .power-detail,
 .dnd4eAltus.sheet.actor .inventory-list .item-controls .power-detail,
 .dnd4eAltus.sheet.actor .inventory-list .item-controls .power-detail.active {
@@ -2159,7 +2168,7 @@ font-size: 12px;
 	font-family: "Modesto Condensed", "Palatino Linotype", serif;
 	font-size: 20px;
 	font-weight: 700;
-	color: #4b4a44;
+	color: #e0e0e0;
 }
 .dnd4eAltus.chat-card .card-header h3:hover {
 	color: #111;
@@ -2207,6 +2216,77 @@ font-size: 12px;
 	border-right: none;
 	padding-right: 0;
 }
+
+
+.dnd4eAltus.sheet.actor ul.attributes {
+	flex: 0 0 60px;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute {
+	height: 60px;
+	margin: 0 5px 0 0;
+	border: 2px groove #eeede0;
+	border-radius: 4px;
+	text-align: center;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute:last-child {
+	margin: 0;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute .attribute-value {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 28px;
+	line-height: 28px;
+	font-family: "Modesto Condensed", "Palatino Linotype", serif;
+	font-size: 20px;
+	font-weight: 700;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute .attribute-value > * {
+	font-weight: 400;
+	font-size: 24px;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute .attribute-value.multiple input {
+	flex: 0 0 33%;
+}
+.dnd4eAltus.sheet.actor ul.attributes li.attribute .attribute-footer {
+	flex: 0 0 18px;
+	margin-top: -1px;
+	line-height: 18px;
+	font-family: "Signika", sans-serif;
+	font-size: 12px;
+	font-weight: 400;
+	white-space: nowrap;
+}
+
+.dnd4eAltus.sheet.actor.character .resource .attribute-value label.recharge {
+	height: 32px;
+	position: relative;
+	font-family: "Signika", sans-serif;
+	font-size: 11px;
+	text-align: center;
+	color: #4b4a44;
+}
+
+.dnd4eAltus .item-details span,
+.dnd4eAltus .item-details p,
+.dnd4eAltus .item-description p {
+	padding-left: 3px;
+	padding-right: 3px;
+	margin: 1px;
+	color: #000;
+}
+
+.dnd4eAltus .item-description p,
+.dnd4eAltus .item-details .alt:nth-of-type(even) {
+	/* background-color: #c3c2b7; */
+	/* background-color: linear-gradient(45deg, #c3c2b7, #c3c2b796) */
+	/* background: -o-linear-gradient(45deg, #125f15, #55aa2e); */
+	background: linear-gradient(90deg, #c3c2b7, #c3c2b718);
+}
+
 .dice-roll .dice-total.success {
 	color: inherit;
 	background: #c7d0c0;

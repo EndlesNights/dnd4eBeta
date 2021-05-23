@@ -1,4 +1,4 @@
-<form id="attribute-bonuses" class="dialog-content" onsubmit="event.preventDefault();">
+<form id="attribute-bonuses" class="dialog-content" onsubmit="event.preventDefault();" style="overflow-y: auto; overflow-x: hidden;">
 	<!-- <span>Total Bonus to {{skill}}: SOMENUM</span> -->
 	<!-- <a>+ Add New Bonus Button</a> -->
 	{{#if options.skill}}
@@ -36,6 +36,11 @@
 		<option value="cha" >Charisma</option>
 		{{/select}}
 	</select>
+	{{else if options.secondWind}}
+	<div class="form-group stacked">
+		<label>Additioanl Effects (Split with Semi-Colon)</label>
+		<input type="text" name="data.custom" value="{{data.custom}}" data-dtype="String"/>
+	</div>
 	{{/if}}
 	{{#each bonusData as |bonus b|}}
 	<div class="bonus-part" data-bonus-part="{{b}}">

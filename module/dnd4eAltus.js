@@ -1,5 +1,5 @@
 /**
- * A simple Beta build of D&D4e Altus varrient game system for the Foundry VTT.
+ * A simple Altus build of D&D4e game system for the Foundry VTT.
  * Author: EndlesNights
  * Software License: GNU GPLv3
  */
@@ -13,7 +13,6 @@ import ItemSheet4e from "./item/sheet.js";
 import { measureDistances, getBarAttribute } from "./canvas.js";
 
 import { ActorSheet4e } from "./actor/actor-sheet.js";
-import { DnD4eActorSheetV2 } from './actor/actor-sheet-v2.js';
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
@@ -56,26 +55,20 @@ Hooks.once("init", async function() {
 		label: "Basic Character Sheet",
 		makeDefault: true
 	});
-	
-	Actors.registerSheet("dnd4eAltus", DnD4eActorSheetV2, {
-		label: "V2 Character Sheet",
-		types: ["Player Character"],
-		makeDefault: false
-	});
-	
+		
 	Items.unregisterSheet("core", ItemSheet);
 	// Items.registerSheet("dnd4eAltus", SimpleItemSheet, {makeDefault: true});
 	Items.registerSheet("dnd4eAltus", ItemSheet4e, {makeDefault: true});
 
 	// Register system settings
-	game.settings.register("dnd4eAltus", "macroShorthand", {
-		name: "Shortened Macro Syntax",
-		hint: "Enable a shortened macro syntax which allows referencing attributes directly, for example @str instead of @attributes.str.value. Disable this setting if you need the ability to reference the full attribute model, for example @attributes.str.label.",
-		scope: "world",
-		type: Boolean,
-		default: true,
-		config: true
-	});
+	// game.settings.register("dnd4eAltus", "macroShorthand", {
+	// 	name: "Shortened Macro Syntax",
+	// 	hint: "Enable a shortened macro syntax which allows referencing attributes directly, for example @str instead of @attributes.str.value. Disable this setting if you need the ability to reference the full attribute model, for example @attributes.str.label.",
+	// 	scope: "world",
+	// 	type: Boolean,
+	// 	default: true,
+	// 	config: true
+	// });
 	
 	// Preload Handlebars Templates
 	preloadHandlebarsTemplates();
@@ -83,8 +76,8 @@ Hooks.once("init", async function() {
 
 		// Define dependency on our own custom vue components for when we need it
 		// Dlopen.register('actor-sheet', {
-			// scripts: "/systems/dnd4eAltus/dist/vue-components.min.js",
-			// dependencies: [ "vue-select", "vue-numeric-input" ]
+		// 	scripts: "/systems/dnd4eAltus/dist/vue-components.min.js",
+		// 	// dependencies: [ "vue-select", "vue-numeric-input" ]
 		// });
 });
 
@@ -92,7 +85,7 @@ Hooks.once("setup", function() {
 
 	// Localize CONFIG objects once up-front
 	const toLocalize = [
-	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes", "damageTypes", "conditionTypes", "consumableTypes", "distanceUnits", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "launchOrder", "limitedUsePeriods", "powerSource", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
+	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes", "damageTypes", "conditionTypes", "consumableTypes", "distanceUnits", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
 	];
 
 	const noSort = [
