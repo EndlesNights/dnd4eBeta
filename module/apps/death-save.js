@@ -18,8 +18,10 @@ export class DeathSaveDialog extends BaseEntitySheet {
 
 	/** @override */
 	getData() {
-		
-		return {data: this.object.data.data}
+		return {
+			data: this.object.data.data,
+			rollModes: CONFIG.Dice.rollModes
+		};
 	}
 	async _updateObject(event, formData) {
 		
@@ -34,7 +36,8 @@ export class DeathSaveDialog extends BaseEntitySheet {
 			flavor: message,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }},
-			fastForward: true
+			fastForward: true,
+			rollMode: formData.rollMode
 		});
 		rollConfig.event = event;
 		rollConfig.critical = this.object.data.data.details.deathsaveCrit || 20;

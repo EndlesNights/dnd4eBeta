@@ -773,6 +773,7 @@
 		},
 		"target": "One Creature",
 		"attack": {
+			"shareAttackRoll": false,
 			"isAttack": true,
 			"ability": "str",
 			"abilityBonus": 0,
@@ -783,6 +784,7 @@
 			"effectType": {}
 		},
 		"hit": {
+			"shareDamageRoll": false,
 			"isDamage": true,
 			"detail": "1[W] + Strength modifier damage.",
 			"formula": "@wepDice(1) + @powerMod + @wepDamage",

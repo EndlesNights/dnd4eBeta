@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.1.6
+- Updated to Foundry 0.7.10
+
+## Version 0.1.5
+- Saving Throw Dialog no longer shares ID with Death Saving Throw
+- Fixed Text in Saving Throw Dialog window.
+- Added Roll Mode Options to Saving Throw and Death Saving Throw. 
+
 ## Version 0.1.4
 - Added Power Cards formating to character sheet display
 - Added Power Cards formating to power chat message

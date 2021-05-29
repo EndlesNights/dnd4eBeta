@@ -23,6 +23,7 @@ import Item4e from "./item/entity.js";
 import * as chat from "./chat.js";
 import * as dice from "./dice.js";
 import * as macros from "./macros.js";
+import * as migrations from "./migration.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -37,6 +38,7 @@ Hooks.once("init", async function() {
 			Item4e,
 		},
 		macros: macros,
+		migrations: migrations,
 		rollItemMacro: macros.rollItemMacro
 	};
 	
@@ -119,14 +121,21 @@ Hooks.once("ready", function() {
 	Hooks.on("hotbarDrop", (bar, data, slot) => macros.create4eMacro(data, slot));
 
 
-		// Preload Vue dependencies.
-		// Dlopen.loadDependencies([
-			// 'vue',
-			// 'vue-select',
-			// 'vue-numeric-input',
-			// 'vue-wysiwyg',
-			// 'actor-sheet'
-		// ]);
+	// Determine whether a system migration is required and feasible
+	if ( !game.user.isGM ) return;
+	const currentVersion = game.settings.get("dnd4eBeta", "systemMigrationVersion");
+	// console.log(currentVersion)
+	const NEEDS_MIGRATION_VERSION = "0.1.4";
+	const COMPATIBLE_MIGRATION_VERSION = 0.80;
+	const needsMigration = currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion);
+	if ( !needsMigration ) return;
+
+	// Perform the migration
+	// if ( currentVersion && isNewerVersion(COMPATIBLE_MIGRATION_VERSION, currentVersion) ) {
+	// 	const warning = `Your DnD5e system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`;
+	// 	ui.notifications.error(warning, {permanent: true});
+	// }
+	// migrations.migrateWorld();
 });
 
 /* -------------------------------------------- */

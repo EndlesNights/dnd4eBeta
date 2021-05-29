@@ -13,16 +13,17 @@ export class SaveThrowDialog extends BaseEntitySheet {
 		});
 	}
 	get title() {
-		return `${this.object.name} - Death Saving Throw`;
+		return `${this.object.name} - Saving Throw`;
 	}
 
 	/** @override */
 	getData() {
-		
-		return {data: this.object.data.data}
+		return {
+			data: this.object.data.data,
+			rollModes: CONFIG.Dice.rollModes
+		};
 	}
 	async _updateObject(event, formData) {
-
 
 		let message = `Rolling Saving Throw, DC: ${formData.dc}`;
 		const rollConfig = mergeObject({
@@ -33,7 +34,8 @@ export class SaveThrowDialog extends BaseEntitySheet {
 			flavor: message,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }},
-			fastForward: true
+			fastForward: true,
+			rollMode: formData.rollMode
 		});
 		rollConfig.event = event;
 		rollConfig.critical = formData.dc - this.object.data.data.details.saves.value - formData.save || 10;

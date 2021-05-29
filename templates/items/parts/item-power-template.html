@@ -221,6 +221,12 @@
 	{{#if data.hit.isDamage}}
 	{{!-- Hit Details --}}
 	{{!-- Damage --}}
+	<div class="form-group">
+		<label>Shared Damage Roll</label>
+		<input type="checkbox" name="data.hit.shareDamageRoll" data-dtype="Boolean" {{checked data.hit.shareDamageRoll}}/>
+	</div>
+
+
 	<div class="form-group stacked">
 		<label>Damage {{ localize "DND4EBETA.Formula" }}</label>
 		<input type="text" name="data.hit.formula" value="{{data.hit.formula}}"/>
