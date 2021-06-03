@@ -1,4 +1,43 @@
-<ol class="items-list inventory-list" style="height: 90%;">
+<ol class="items-list inventory-list" style="height: 100%;">
+	<header class="power-filters flexrow">
+		<div class="group-powers" style="max-width: 144px;">
+			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.groupBy.value">
+			<label for="power-group">GroupBy</label><br>
+			<select name="data.powerGroupTypes" style="min-width: 128px;">
+				{{#select data.powerGroupTypes}}
+				{{#each config.powerGroupTypes as |name type|}}
+				<option value="{{type}}">{{name}}</option>
+				{{/each}}
+				{{/select}}
+			</select>
+		</div>
+
+		<div class="sort-powers" style="max-width: 144px;">
+			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.sortBy.value">
+			<label for="power-sort">SortyBy</label><br>
+			<select name="data.powerSortTypes" style="min-width: 128px;">
+				{{#select data.powerSortTypes}}
+				{{#each config.powerSortTypes as |name type|}}
+				<option value="{{type}}">{{name}}</option>
+				{{/each}}
+				{{/select}}
+			</select>
+		</div>
+
+		<div class="filter-search-powers">
+			<label for="power-filter-search">Filter</label>
+			<button style="min-width: 116px; width:calc(100% - 80px); height: 17px; line-height:normal; border:0px; float:right; margin:2px 2px 0px 0px;" class="item-import button" title="Create Power" data-item-type="power" data-type="power" type="button">
+				<i style="min-width: 105.6px;" class="fas fa-atlas"> Import Powers</i>
+			</button>
+
+			
+			<br>
+			<input type="text" style="min-width: 168px; margin-right: 2px;" name="power-filter-search" placeholder="Search for power..." id="filterInput" onkeyup="filterPowers()"/>
+		</div>
+	</header>
+
+
+
 	{{#each sections as |section sid|}}
 		<li class="items-header flexrow">
 			<h3 class="item-name flexrow">{{localize section.label}}</h3>
@@ -8,13 +47,15 @@
 					<div class="item-detail {{css}}">{{label}}</div>
 				{{/each}}
 			{{else}}
+				<div class="item-detail item-range">Range</div>
+				<div class="item-detail item-action" title="{{localize 'DND4EBETA.Action'}}">Act.</div>
+				<!-- <div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div> -->
 				<div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div>
-				<div class="item-detail item-action">{{localize "DND4EBETA.Action"}}</div>
-				<div class="item-detail power-target">{{localize "DND4EBETA.PowerTarget"}}</div>
-			{{/if}}
+				{{/if}}
+				<div class="item-detail item-prep" title="Power Prepared">Prep.</div>
 			{{#if ../owner}}
-			<div class="item-controls" style="width: 90px;">
-				<a class="item-control item-create" title='{{localize "DND4EBETA.ItemCreate"}}'
+			<div class="item-controls">
+				<a class="item-control power-create" title='{{localize "DND4EBETA.ItemCreate"}}'
 				   {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
 					<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 				</a>
@@ -22,113 +63,140 @@
 			{{/if}}
 		</li>
 	
-		<ol class="item-list">
+		<ol class="item-list power-list">
 		{{#each section.items as |item iid|}}
 			<li class="item flexrow {{#if isDepleted}}depleted{{/if}}" data-item-id="{{item._id}}">
-				<div class="item-name flexrow rollable">
-					<div class="item-image" style="background-image: url('{{item.img}}')"></div>
-					<h4>{{item.name}}</h4>
+				<div class="item-name flexrow rollable" style="max-width: 30px; margin-right: 5px;">
+					<div class="item-image" style="background-image: url('{{item.img}}')"></div>					
 				</div>
-				
-				{{#if section.columns}}
-					{{#each section.columns}}
-					<div class="item-detail {{css}}">
-						{{#with (getProperty item property)}}
-							{{#if ../editable}}
-								<input type="text" value="{{this}}" placeholder="&mdash;"
-									data-dtype="{{../editable}}" data-property="{{../property}}">
-							{{else}}
-								{{this}}
-							{{/if}}
-						{{/with}}
+				<div class="flexrow {{#if item.data.useType }}ability-usage--{{item.data.useType}}{{else}}ability-usage--blank{{/if}} {{#if item.data.notAvailable}}not-available{{/if}}">
+					<div class="item-name flexrow rollable">
+						<h4 class="power-detail" style="padding-left: 3px;">{{#if item.data.level}}[{{item.data.level}}]{{/if}}{{item.name}}</h4>
 					</div>
-					{{/each}}
-				{{else}}
-					<div class="item-detail item-uses">
-						{{#if item.hasUses }}
-							<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
-							/ {{item.data.uses.max}}
-						{{/if}}
-					</div>
-					<div class="item-detail item-action">
-						{{#if item.data.actionType }}
-							{{item.data.actionType}}
-						{{/if}}
-					</div>
-					<div class="item-detail power-target">
-						{{#if item.data.target.type}}
-							<div class="item-detail">
-								{{item.data.target.num}} {{ item.data.target.type }}
-							</div>
-						{{/if}}
-					</div>
-				{{/if}}
-		
-				{{#if ../owner}}
-				<div class="item-controls flexrow">
-					<a class="item-control item-create" title="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-						<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
-					</a>
-				</div>
-				{{/if}}
-
-				{{#if section.hasActions}}
-				<div class="item-detail item-uses">
-					{{#if item.isOnCooldown}}
-					<a class="item-recharge rollable">{{item.labels.recharge}}</a>
-					{{else if item.data.recharge.value}}
-					{{localize "DND4EBETA.Charged"}}
-	
-					{{else if item.hasUses}}
-					<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
-					{{/if}}
-				</div>
-	
-				<div class="item-detail item-action">
-					{{#if item.data.activation.type }}
-					{{item.labels.activation}}
-					{{/if}}
-				</div>
-	
-				{{else if section.isClass}}
-				<div class="item-detail player-class">
-					{{item.data.subclass}}
-				</div>
-				<div class="item-detail item-action">
-					Level {{item.data.levels}}
-				</div>
-				{{/if}}
-	
-				{{#if section.columns}}
-					{{#each section.columns}}
+					
+					{{#if section.columns}}
+						{{#each section.columns}}
 						<div class="item-detail {{css}}">
 							{{#with (getProperty item property)}}
 								{{#if ../editable}}
 									<input type="text" value="{{this}}" placeholder="&mdash;"
-										   data-dtype="{{../editable}}">
+										data-dtype="{{../editable}}" data-property="{{../property}}">
 								{{else}}
 									{{this}}
 								{{/if}}
 							{{/with}}
 						</div>
-					{{/each}}
-				{{/if}}
-	
-				{{#if ../../owner}}
-				<div class="item-controls flexrow">
-					{{#if section.crewable}}
-					<a class="item-control item-toggle {{item.toggleClass}}"
-					   title="{{item.toggleTitle}}">
-						<i class="fas fa-sun"></i>
-					</a>
+						{{/each}}
+					{{else}}
+						<div class="item-detail power-detail item-range" title="{{item.data.rangeText}}">
+							<label>{{item.data.rangeTextShort}}</label>
+							{{#if item.data.rangeTextBlock}}
+							<label style="background-color: rgba(77, 77, 77, 0.199); border-radius: 2px; padding-left: 2px; padding-right: 2px;">{{item.data.rangeTextBlock}}</label>
+							{{/if}}
+						</div>
+						<div class="item-detail power-detail item-action" title="{{lookup ../../config.abilityActivationTypes item.data.actionType}}" style="text-transform: uppercase;">
+							{{#if item.data.actionType }}
+							{{lookup ../../config.abilityActivationTypesShort item.data.actionType}}
+							{{/if}}
+						</div>
+						<div class="item-detail power-detail item-uses">
+							{{#if item.hasUses }}
+								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
+								/ {{item.data.uses.max}}
+							{{/if}}
+						</div>
 					{{/if}}
-					<a class="item-control item-toggle {{item.toggleClass}}" title="{{item.toggleTitle}}"><i class="fas fa-sun"></i></a>
-					<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-					<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+			
+					{{#if ../owner}}
+					<div class="item-controls flexrow">
+						<a class="item-control item-create" title="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+							<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
+						</a>
+					</div>
+					{{/if}}
+
+					{{#if section.hasActions}}
+					<div class="item-detail power-detail item-uses">
+						{{#if item.isOnCooldown}}
+						<a class="item-recharge rollable">{{item.labels.recharge}}</a>
+						{{else if item.data.recharge.value}}
+						{{localize "DND4EBETA.Charged"}}
+		
+						{{else if item.hasUses}}
+						<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
+						{{/if}}
+					</div>
+		
+					<div class="item-detail power-detail item-action">
+						{{#if item.data.activation.type }}
+						{{item.labels.activation}}
+						{{/if}}
+					</div>
+		
+					{{else if section.isClass}}
+					<div class="item-detail player-class">
+						{{item.data.subclass}}
+					</div>
+					<div class="item-detail power-detail item-action">
+						Level {{item.data.levels}}
+					</div>
+					{{/if}}
+		
+					{{#if section.columns}}
+						{{#each section.columns}}
+							<div class="item-detail {{css}}">
+								{{#with (getProperty item property)}}
+									{{#if ../editable}}
+										<input type="text" value="{{this}}" placeholder="&mdash;"
+											data-dtype="{{../editable}}">
+									{{else}}
+										{{this}}
+									{{/if}}
+								{{/with}}
+							</div>
+						{{/each}}
+					{{/if}}
+					<div class="item-detail power-detail item-prep">
+						<a class="item-control power-detail item-toggle {{item.toggleClass}}" title="{{item.toggleTitle}}"><i class="fas fa-sun"></i></a>
+					</div>
+					{{#if ../../owner}}
+					<div class="item-controls flexrow">
+						{{#if section.crewable}}
+						<a class="item-control item-toggle {{item.toggleClass}}"
+						title="{{item.toggleTitle}}">
+							<i class="fas fa-sun"></i>
+						</a>
+						{{/if}}
+						<!-- <a class="item-control power-detail item-toggle {{item.toggleClass}}" title="{{item.toggleTitle}}"><i class="fas fa-sun"></i></a> -->
+						<a class="item-control power-detail item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+						<a class="item-control power-detail item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+					</div>
+					{{/if}}
 				</div>
-				{{/if}}
 			</li>
 		{{/each}}
 		</ol>
 	{{/each}}
-	</ol>
+</ol>
+
+<script>
+	function filterPowers() {
+		let input, filter, ul, li, a, i, txtValue;
+		input = document.getElementById("filterInput");
+		filter = input.value.toUpperCase();
+		list = document.getElementsByClassName("power-list");
+
+		for(i = 0; i < list.length; i++) {
+			li = list[i].getElementsByTagName("li");
+			for (ii = 0; ii < li.length; ii++) {
+				a = li[ii].getElementsByTagName("h4")[0];
+				txtValue = a.textContent || a.innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+					li[ii].style.display = "";
+				} else {
+					li[ii].style.display = "none";
+				}
+			}
+		}
+	}
+	</script>

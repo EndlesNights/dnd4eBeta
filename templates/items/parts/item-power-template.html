@@ -18,6 +18,36 @@
 		<!-- <input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/> -->
 	</div>
 
+	<div class="form-group select">
+		<label>Level</label>
+		<input type="text" name="data.level" value="{{data.level}}"/>
+	</div>
+
+	<div class="form-group select">
+		<label>Power Type</label>
+		<select name="data.powerType">
+			{{#select data.powerType}}
+			<option value=""></option>
+			{{#each config.powerType as |name type|}}
+			<option value="{{type}}">{{name}}</option>
+			{{/each}}
+			<option value="other">{{localize "DND4EBETA.Other"}}</option>
+			{{/select}}
+		</select>
+	</div>
+	<div class="form-group select">
+		<label>Use Type</label>
+		<select name="data.useType">
+			{{#select data.useType}}
+			<option value=""></option>
+			{{#each config.powerUseType as |name type|}}
+			<option value="{{type}}">{{name}}</option>
+			{{/each}}
+			<option value="other">{{localize "DND4EBETA.Other"}}</option>
+			{{/select}}
+		</select>
+	</div>
+
 	{{!-- Action Type --}}
 	<div class="form-group select">
 		<label>{{ localize "DND4EBETA.ItemActionType" }}</label>
@@ -86,15 +116,7 @@
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.Target" }}</label>
 		<div class="form-fields">
-			<select name="data.target.type">
-				{{#select data.target.type}}
-				<option value=""></option>
-				{{#each config.targetTypes as |name type|}}
-				<option value="{{type}}">{{name}}</option>
-				{{/each}}
-				{{/select}}
-			</select>
-			<input type="text" name="data.target.num" value="{{data.target.num}}"/>
+			<input type="text" name="data.target" value="{{data.target}}"/>
 		</div>
 	</div>
 
@@ -145,10 +167,6 @@
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.Requirements" }}</label>
 		<input type="text" name="data.requirement" value="{{data.requirement}}"/>
-	</div>
-	<div class="form-group">
-		<label>{{ localize "DND4EBETA.Special" }}</label>
-		<input type="text" name="data.special" value="{{data.special}}"/>
 	</div>
 
 	{{!-- Attack Details--}}
@@ -203,6 +221,12 @@
 	{{#if data.hit.isDamage}}
 	{{!-- Hit Details --}}
 	{{!-- Damage --}}
+	<div class="form-group">
+		<label>Shared Damage Roll</label>
+		<input type="checkbox" name="data.hit.shareDamageRoll" data-dtype="Boolean" {{checked data.hit.shareDamageRoll}}/>
+	</div>
+
+
 	<div class="form-group stacked">
 		<label>Damage {{ localize "DND4EBETA.Formula" }}</label>
 		<input type="text" name="data.hit.formula" value="{{data.hit.formula}}"/>
@@ -214,7 +238,7 @@
 	<ol class="damage-parts form-group">
 		{{#each data.damage.parts as |part i| }}
 		<li class="damage-part flexrow" data-damage-part="{{i}}">
-			<input type="text" name="data.damage.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+			<input type="text" name="data.damage.parts.{{i}}.0" value="{{lookup this '0'}}"/>
 			<select name="data.damage.parts.{{i}}.1">
 				{{#select (lookup this "1") }}
 				<option value="">{{ localize "DND4EBETA.None" }}</option>
@@ -297,12 +321,40 @@
 	<div class="form-group stacked">
 		<!-- <label>{{ localize "DND4EBETA.Effects" }}</label> -->
 	</div>
-	<div class="form-group stacked">
+	<div class="form-group">
 		<label>{{ localize "DND4EBETA.EffectDetails" }}</label>
+		<span style="text-align: right;">Display Information Post Attack Details?</span>
+		<input type="checkbox" name="data.postEffect" data-dtype="Boolean" {{checked data.postEffect}}/>
+	</div>
+	<div class="form-group">
 		<input type="text" name="data.effect.detail" value="{{data.effect.detail}}"/>
 	</div>
 
+	<div class="form-group">
+		<label>{{ localize "DND4EBETA.Special" }}</label>
+		<span style="text-align: right;">Display Information Post Attack Details?</span>
+		<input type="checkbox" name="data.postSpecial" data-dtype="Boolean" {{checked data.postSpecial}}/>
+	</div>
+	<div class="form-group">
+		<input type="text" name="data.special" value="{{data.special}}"/>
+	</div>
 
+
+	<div class="form-group select">
+		<label>{{ localize "DND4EBETA.Sustain" }}</label>
+		<select name="data.sustain.actionType">
+			{{#select data.sustain.actionType}}
+			<option value=""></option>
+			{{#each config.abilityActivationTypes as |name type|}}
+			<option value="{{type}}">{{name}}</option>
+			{{/each}}
+			{{/select}}
+		</select>
+	</div>
+
+	<div class="form-group">
+		<input type="text" name="data.sustain.detail" value="{{data.sustain.detail}}"/>
+	</div>
 
 	<div class="form-group stacked weapon-properties">
 		<label title="Type of Damage Dealt by primary attack.">Effect Types & Keywords:</label>

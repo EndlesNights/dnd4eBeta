@@ -1,4 +1,4 @@
-<form id="attribute-bonuses" class="dialog-content" onsubmit="event.preventDefault();">
+<form id="attribute-bonuses" class="dialog-content" onsubmit="event.preventDefault();" style="overflow-y: auto; overflow-x: hidden;">
 	<!-- <span>Total Bonus to {{skill}}: SOMENUM</span> -->
 	<!-- <a>+ Add New Bonus Button</a> -->
 	{{#if options.skill}}
@@ -10,8 +10,38 @@
 			<span>{{data.armourPen}}</span>	
 			{{/if}}
 		</div>
+	{{else if options.ac}}
+		<span>Light Armour: </span>
+		<input type="checkbox" name="data.light" data-dtype="Boolean" {{checked data.light}} title="Light/Unarmoured Check to add mod to AC"/>
+		<span>Alternative Mod: </span>
+		<select name="data.altability">
+			{{#select data.altability}}
+			<option value="" >Default</option>
+			<option value="str" >Strength</option>
+			<option value="con" >Constitution</option>
+			<option value="wis" >Wisdom</option>
+			<option value="cha" >Charisma</option>
+			{{/select}}
+		</select>
+
+	{{else if options.init}}
+	<span title="Ability Mod used for Initiative Score">Ability Mod:</span>
+	<select name="data.ability">
+		{{#select data.ability}}
+		<option value="str" >Strength</option>
+		<option value="con" >Constitution</option>
+		<option value="dex" >Dexterity</option>
+		<option value="int" >Intelligence</option>
+		<option value="wis" >Wisdom</option>
+		<option value="cha" >Charisma</option>
+		{{/select}}
+	</select>
+	{{else if options.secondWind}}
+	<div class="form-group stacked">
+		<label>Additioanl Effects (Split with Semi-Colon)</label>
+		<input type="text" name="data.custom" value="{{data.custom}}" data-dtype="String"/>
+	</div>
 	{{/if}}
-	
 	{{#each bonusData as |bonus b|}}
 	<div class="bonus-part" data-bonus-part="{{b}}">
 		<span>Name of Bonus:</span>

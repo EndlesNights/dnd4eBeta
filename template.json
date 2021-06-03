@@ -29,29 +29,34 @@
 					"chat": "@name uses @label."
 				}
 			},
-			"biography": "",
-			"health": {
-				"value": 10,
-				"min": 0,
-				"max": 10,
-				"starting": 10,
-				"perlevel": 5,
-				"feat": 0,
-				"misc": 0,
-				"autototal": false,
-				"temprest": false
-			},		
-			"init": {
-				"value": 0,
-				"ability": "dex",
-				"bonus": [{}],
-				"notes": ""
+			"attributes": {
+				"hp": {
+					"value": 10,
+					"min": 0,
+					"max": 10,
+					"starting": 10,
+					"perlevel": 5,
+					"feat": 0,
+					"misc": 0,
+					"autototal": false,
+					"temprest": false,
+					"temphp": 0
+				},
+				"init": {
+					"value": 0,
+					"ability": "dex",
+					"bonus": [{}],
+					"notes": ""
+				}
 			},
+			
+			"biography": "",		
 			"actionpoints":	{
 				"value": 1,
 				"encounteruse": false,
 				"effects": "",
-				"notes": ""
+				"notes": "",
+				"custom": ""
 			},
 			"magicItemUse": {
 				"perDay": 1,
@@ -127,10 +132,10 @@
 				"alignment": "",
 				"deity": "",
 				
-				"temphp": "",
 				"secondwind": false,
 				"deathsaves": 3,
-				"deathsavefail": null,
+				"deathsavefail": 0,
+				"deathsaveCrit": 20,
 				"deathsavebon": {
 					"bonus": [{}],
 					"value": 0
@@ -141,19 +146,22 @@
 					"bonus": [{}],
 					"value": 0
 				},
-				"surgeCur": null,
-				"surgeDay": null,
+				"surges": {
+					"value": 0,
+					"max": 0
+				},
 				"surgeEnv": {
 					"bonus": [{}],
 					"value": 0
 				},
 				"secondwindbon": {
 					"bonus": [{}],
-					"value": 0
+					"value": 0,
+					"custom": ""
 				},
 				"saves": {
-					"value": [],
-					"custom": ""
+					"bonus": [{}],
+					"value": 0
 				}
 			},
 			"languages": {
@@ -178,27 +186,65 @@
 				"notes": ""
 			},
 			"movement": {
-				"basic": {
+				"base": {
 					"value": 0,
 					"base": 6,
 					"armour": 0,
 					"bonus": [{}],
 					"temp": 0
 				},
+				"walk": {
+					"value": 0,
+					"formula": "@base + @armour",
+					"bonus": [{}],
+					"temp": 0
+				},
 				"charge": {
 					"value": 0,
-					"armour": 0,
+					"formula": "@base + @armour",
 					"bonus": [{}],
 					"temp": 0
 				},
 				"run": {
 					"value": 0,
-					"armour": 0,
+					"formula": "@base + @armour + 2",
 					"bonus": [{}],
 					"misc": 0,
 					"temp": 0
 				},
+				"climb": {
+					"value": 0,
+					"formula": "(@base + @armour)/2",
+					"bonus": [{}],
+					"temp": 0
+				},
+				"shift": {
+					"value": 0,
+					"formula": "1",
+					"bonus": [{}],
+					"temp": 0
+				},
 				"notes": ""
+			},
+			"resources": {
+				"primary": {
+					"value": 0,
+					"max": 0,
+					"sr": 0,
+					"lr": 0
+				},
+				"secondary": {
+					"value": 0,
+					"max": 0,
+					"sr": 0,
+					"lr": 0
+				},
+				"tertiary": {
+					"value": 0,
+					"max": 0,
+					"sr": 0,
+					"lr": 0
+				}
 			},
 			"skills": {
 				"acr": {
@@ -281,7 +327,7 @@
 				"nat": {
 					"value": 0,
 					"bonus": [{}],
-					"ability": "int",
+					"ability": "wis",
 					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
@@ -333,7 +379,7 @@
 					"bonus": [{}]
 				}
 			},
-			"resistences": {
+			"resistances": {
 				"damage": {
 					"value": 0,
 					"armour": 0,
@@ -422,7 +468,10 @@
 			},
 			"encumbrance": {
 				"value": null,
-				"max": null
+				"max": null,
+				"formulaNorm": "@abilities.str.value * 10",
+				"formulaHeavy": "@abilities.str.value * 20",
+				"formulaMax": "@abilities.str.value * 50"
 			},
 			"currency": {
 				"ad": 0,
@@ -437,8 +486,7 @@
 				"rh" : 0,
 				"si" : 0,
 				"rs" : 0
-			},
-			"attributes": {}			
+			}		
 		}
 	},
 	"Player Character": {
@@ -449,7 +497,7 @@
 	}	
 },
 "Item": {
-	"types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power", "atwill", "encounter", "daily", "utility"],
+	"types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"],
 	"templates": {
 		"itemDescription": {
 			"description": {
@@ -539,51 +587,6 @@
 				"dt": null,
 				"conditions": ""
 			}
-		},
-		"power": {
-			"keyWords": [""],
-			"powersource": "martial",
-			"subName": "",
-			"prepared": true,
-			"useType": "power",
-			"actionType": "standard",
-			"requirements": "",
-			"weaponType": "melee",
-			"weaponUse": "default",
-			"rangeType": "weapon",
-			"rangePower": "",
-			"area": 0,
-			"damageShare": false,
-			"target": {
-				"type": "creature",
-				"num": 1
-			},
-			"attack": {
-				"isAttack": true,
-				"ability": "str",
-				"abilityBonus": 0,
-				"def": "ac",
-				"defBonus": 0,
-				"formula": "1d20+@wepAttack+@powerMod+@lvhalf",
-				"damageType": {},
-				"effectType": {}
-			},
-			"hit": {
-				"isDamage": true,
-				"detail": "1[W] + Strength modifier damage.",
-				"formula": "@wepDice(1) + @powerMod + @wepDamage",
-				"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"
-			},
-			"miss": {
-				"detail": "Half Damage.",
-				"formula": "@{damageFormula}/2"
-			},
-			"effect": {
-				"detail": ""
-			},
-			"trigger": "",
-			"requirement": "",
-			"special": ""
 		},
 		"itemMacro": {
 			"macro": {
@@ -742,40 +745,61 @@
 		"charged": false
 		}
 	},
-	"atwill": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
-		"keyWords": ["At-Will"],
-		"useType": "atw"
-	},
-	"encounter": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
-		"keyWords": ["Encounter"],
-		"useType": "enc",
-		"uses": {
-			"value": 1,
-			"max": 1,
-			"per": "enc"
-		}
-	},
-	"daily": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
-		"keyWords": ["Daily"],
-		"useType": "day",
-		"uses": {
-			"value": 1,
-			"max": 1,
-			"per": "day"
-		}
-	},
-	"utility": {
-		"templates": ["power", "itemDescription", "activatedEffect", "action", "itemMacro"],
-		"keyWords": ["Encounter"],
-		"useType": "enc",
-		"uses": {
-			"value": 1,
-			"max": 1,
-			"per": "enc"
-		}
+	"power": {
+		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"keyWords": [""],
+		"level": "1",
+		"powersource": "martial",
+		"subName": "",
+		"prepared": true,
+		"powerType": "class",
+		"useType": "atwill",
+		"actionType": "standard",
+		"requirements": "",
+		"weaponType": "melee",
+		"weaponUse": "default",
+		"rangeType": "weapon",
+		"rangeTextShort": "",
+		"rangeText": "",
+		"rangePower": "",
+		"area": 0,
+		"rechargeRoll": "",
+		"damageShare": false,
+		"postEffect": true,
+		"postSpecial": true,
+		"sustain": {
+			"actionType": "none",
+			"detail": ""
+		},
+		"target": "One Creature",
+		"attack": {
+			"shareAttackRoll": false,
+			"isAttack": true,
+			"ability": "str",
+			"abilityBonus": 0,
+			"def": "ac",
+			"defBonus": 0,
+			"formula": "1d20+@wepAttack+@powerMod+@lvhalf",
+			"damageType": {},
+			"effectType": {}
+		},
+		"hit": {
+			"shareDamageRoll": false,
+			"isDamage": true,
+			"detail": "1[W] + Strength modifier damage.",
+			"formula": "@wepDice(1) + @powerMod + @wepDamage",
+			"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"
+		},
+		"miss": {
+			"detail": "Half Damage.",
+			"formula": "@{damageFormula}/2"
+		},
+		"effect": {
+			"detail": ""
+		},
+		"trigger": "",
+		"requirement": "",
+		"special": ""
 	}
 }
 }

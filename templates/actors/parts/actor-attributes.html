@@ -34,13 +34,13 @@
 				<li class="attribute-health resource-half">
 					<h4 class="attribute-name box-title">Health</h4>
 					<div class="attribute-value">
-						<input style="width: 100%; text-align: right; padding-right: 4px;" type="text" name="data.health.value" value="{{data.health.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<input style="width: 100%; text-align: right; padding-right: 4px;" type="text" name="data.attributes.hp.value" value="{{data.attributes.hp.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep"> / </span>
-						<input style="width: 100%; text-align: left; padding-left: 4px;" type="text" name="data.health.max" value="{{data.health.max}}" title="{{localize 'DND4EBETA.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						<input style="width: 100%; text-align: left; padding-left: 4px;" type="text" name="data.attributes.hp.max" value="{{data.attributes.hp.max}}" title="{{localize 'DND4EBETA.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					<footer class="attribute-footer">
 						<Span>Temp HP:</Span>
-						<input style="width: 32px; padding: 0px; position: relative; top: -1px;" type="text" name="data.details.temphp" value="{{data.details.temphp}}" title="{{localize 'DND4EBETA.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
+						<input style="width: 32px; padding: 0px; position: relative; top: -1px;" type="text" name="data.attributes.hp.temphp" value="{{data.attributes.hp.temphp}}" title="{{localize 'DND4EBETA.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
 						<span title="{{localize 'DND4EBETA.HPBloodied'}}">{{localize 'DND4EBETA.HPBloodied'}}: {{data.details.bloodied}}</span>
 						<a class="health-option" data-target="data.details" title="Health & Surge Options" style="position: relative; left: -5px; top: 4px;">
 							<i class="fas fa-cog"></i>
@@ -52,9 +52,9 @@
 					<div class="attribute-value">
 						<input type="text" name="data.details.surgeValue" value="{{data.details.surgeValue}}" title="{{localize 'DND4EBETA.SurgeValue'}}"  placeholder="{{localize 'DND4EBETA.SurgeValue'}}" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">|</span>
-						<input type="text" name="data.details.surgeCur" value="{{data.details.surgeCur}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.surges.value" value="{{data.details.surges.value}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">/</span>
-						<input type="text" name="data.details.surgeDay" value="{{data.details.surgeDay}}" title="{{localize 'DND4EBETA.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.details.surges.max" value="{{data.details.surges.max}}" title="{{localize 'DND4EBETA.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
 					<footer class="attribute-footer flexrow ">
 						<a class="surge-bonus" style="position: relative; top: 4px;" data-target="data.details" title="{{localize 'DND4EBETA.SurgeBon'}}">Surge Bonus: {{data.details.surgeBon.value}}</a>
@@ -178,12 +178,12 @@
 					{{!-- Initiative --}}
 					<h4 class="attribute-name box-title">Initiative</h4>
 					<span title="Initiative Score">Initiative:</span>
-					<span title="Initiative Score">{{numberFormat data.init.value decimals=0 sign=true }}</span>
-					<a class="init-bonus" data-target="data.details" title="Initiative Bonus">Bonus: {{data.init.bonusValue}}</a>
-					<!-- <input class="init-bonus" type="text" name="data.init.bonus" value="{{data.init.bonus}}" title="Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
+					<span title="Initiative Score">{{numberFormat data.attributes.init.value decimals=0 sign=true }}</span>
+					<a class="init-bonus" data-target="data.details" title="Initiative Bonus">Bonus: {{data.attributes.init.bonusValue}}</a>
+					<!-- <input class="init-bonus" type="text" name="data.attributes.init.bonus" value="{{data.attributes.init.bonus}}" title="Misc" data-dtype="Number" onClick="this.select();" placeholder="0"/> -->
 					<span title="Initiative Score">Mod:</span>
-						<select name="data.init.ability">
-							{{#select data.init.ability}}
+						<select name="data.attributes.init.ability">
+							{{#select data.attributes.init.ability}}
 							<option value="str" >Strength</option>
 							<option value="con" >Constitution</option>
 							<option value="dex" >Dexterity</option>
@@ -192,7 +192,7 @@
 							<option value="cha" >Charisma</option>
 							{{/select}}
 						</select>
-					<input type="text" name="data.init.notes" value="{{data.init.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%; text-align: left;"/>
+					<input type="text" name="data.attributes.init.notes" value="{{data.attributes.init.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%; text-align: left;"/>
 
 				</div>
 				
@@ -305,24 +305,24 @@
 					</ul>					
 				</div>
 				
-				{{!-- Resistences --}}
+				{{!-- Resistances --}}
 				<div class="attribute-res resource-full">
-					<h4 class="attribute-name box-title">Resistences & Weaknesses</h4>
-					{{#each data.resistences as |res r|}}
+					<h4 class="attribute-name box-title">Resistances & Weaknesses</h4>
+					{{#each data.resistances as |res r|}}
 						<li class="skill flexrow" data-res="{{r}}">
 							<h4 class="res-name">{{res.label}}</h4>
 							<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
 							<span class="res-armour">Armour: {{res.armour}} </span>
-							<!-- <input type="text" class="skill-mod" name="data.resistences.{{r}}.armour" value="{{res.armour}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour Bonus"> </input> -->
-							<a class="resistence-bonus" data-target="data.resistences" title="Resistence Bonus">Bonus: {{res.resBonusValue}}</a>
-							<!-- <input type="text" class="skill-mod" name="data.resistences.{{r}}.race" value="{{res.race}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Race"> </input> -->
-							<!-- <input type="text" class="skill-mod" name="data.resistences.{{r}}.misc" value="{{res.misc}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Misc"> </input> -->
-							<!-- <input type="checkbox" name="data.resistences.{{r}}.half" data-dtype="Boolean" {{checked res.half}} title="Resistences"/> -->
+							<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.armour" value="{{res.armour}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour Bonus"> </input> -->
+							<a class="resistence-bonus" data-target="data.resistances" title="Resistence Bonus">Bonus: {{res.resBonusValue}}</a>
+							<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.race" value="{{res.race}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Race"> </input> -->
+							<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.misc" value="{{res.misc}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Misc"> </input> -->
+							<!-- <input type="checkbox" name="data.resistances.{{r}}.half" data-dtype="Boolean" {{checked res.half}} title="Resistances"/> -->
 							<span class="res-immune">Immunity</span>
-							<input type="checkbox" name="data.resistences.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
+							<input type="checkbox" name="data.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
 						</li>
 					{{/each}}					
-					<!-- <span>Resistences:</span> -->
+					<!-- <span>Resistances:</span> -->
 					<!-- <a class="trait-selector" data-options="damageTypes" data-target="data.traits.di"> -->
 						<!-- <i class="fas fa-edit"></i> -->
 					<!-- </a> -->

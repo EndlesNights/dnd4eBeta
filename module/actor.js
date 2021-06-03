@@ -2,25 +2,31 @@ import { d20Roll, damageRoll } from "./dice.js";
 import AbilityUseDialog from "./apps/ability-use-dialog.js";
 import AbilityTemplate from "./pixi/ability-template.js"
 import { DND4EBETA } from "./config.js";
+import { Helper } from "./helper.js"
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
-export class SimpleActor extends Actor {
+export class Actor4e extends Actor {
 
-  /** @override */
-  getRollData() {
-    const data = super.getRollData();
-    const shorthand = game.settings.get("dnd4eBeta", "macroShorthand");
+	/** @override */
+	getRollData() {
+		const data = super.getRollData();
+
+		return data;
+	}
+//   getRollData() {
+//     const data = super.getRollData();
+//     const shorthand = game.settings.get("dnd4eBeta", "macroShorthand");
 
     // Re-map all attributes onto the base roll data
-    if ( !!shorthand ) {
-      for ( let [k, v] of Object.entries(data.attributes) ) {
-        if ( !(k in data) ) data[k] = v.value;
-      }
-      delete data.attributes;
-    }
+    // if ( !!shorthand ) {
+    //   for ( let [k, v] of Object.entries(data.attributes) ) {
+    //     if ( !(k in data) ) data[k] = v.value;
+    //   }
+    //   delete data.attributes;
+    // }
 
     // Map all items data using their slugified names
     // data.items = this.data.items.reduce((obj, i) => {
@@ -39,8 +45,8 @@ export class SimpleActor extends Actor {
       // return obj;
     // }, {});
 	
-    return data;
-  }
+//     return data;
+//   }
   
 	/**
 		* Augment the basic actor data with additional dynamic data.
@@ -86,7 +92,8 @@ export class SimpleActor extends Actor {
 		for (let [id, abl] of Object.entries(data.abilities)) {
 
 			abl.mod = Math.floor((abl.value - 10) / 2);
-			abl.prof = (abl.proficient || 0) * data.attributes.prof;
+			abl.modHalf = abl.mod + Math.floor(data.details.level / 2);
+			abl.prof = (abl.proficient || 0);
 			abl.saveBonus = saveBonus + Math.floor(data.details.level / 2);
 			abl.checkBonus = checkBonus + Math.floor(data.details.level / 2);
 			abl.save = abl.mod + abl.prof + abl.saveBonus;
@@ -100,9 +107,9 @@ export class SimpleActor extends Actor {
 		}
 		
 		//HP auto calc
-		if(data.health.autototal)
+		if(data.attributes.hp.autototal)
 		{
-			data.health.max = data.health.perlevel * (data.details.level - 1) + data.health.starting + data.health.feat + data.health.misc + data.abilities.con.value;
+			data.attributes.hp.max = data.attributes.hp.perlevel * (data.details.level - 1) + data.attributes.hp.starting + data.attributes.hp.feat + data.attributes.hp.misc + data.abilities.con.value;
 		}
 		
 		//Set Health related values
@@ -122,10 +129,13 @@ export class SimpleActor extends Actor {
 			}
 		}
 		
-		data.details.bloodied = Math.floor(data.health.max / 2);
+		data.details.bloodied = Math.floor(data.attributes.hp.max / 2);
 		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
-		data.health.min = -data.details.bloodied;
+		data.attributes.hp.min = -data.details.bloodied;
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
+
+		//check if bloodied
+		data.details.isBloodied = (data.attributes.hp.value <= data.attributes.hp.max/2);
 
 		if(!(data.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(data.details.surgeEnv.bonus[0]))) {
 			for( const b of data.details.surgeEnv.bonus) {
@@ -182,8 +192,8 @@ export class SimpleActor extends Actor {
 
 		}
 		
-		if (data.details.temphp <= 0 )
-			data.details.temphp = null;
+		if (data.attributes.hp.temphp <= 0 )
+			data.attributes.hp.temphp = null;
 		
 		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
 		if(data.defences.ac.light)
@@ -235,33 +245,44 @@ export class SimpleActor extends Actor {
 
 		//calc init
 		let initBonusValue = 0 + Math.floor(data.details.level / 2);
-		if(!(data.init.bonus.length === 1 && jQuery.isEmptyObject(data.init.bonus[0]))) {
-			for( const b of data.init.bonus) {
+		if(!(data.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(data.attributes.init.bonus[0]))) {
+			for( const b of data.attributes.init.bonus) {
 				if(b.active) {
 					initBonusValue += b.value;
 				}
 			}
 		}
-		data.init.bonusValue = initBonusValue;
-		data.init.value = (data.abilities[data.init.ability].mod + initBonusValue);
-		if(data.init.value > 999)
-			data.init.value = 999;
+		data.attributes.init.bonusValue = initBonusValue;
+		data.attributes.init.value = (data.abilities[data.attributes.init.ability].mod + initBonusValue);
+		if(data.attributes.init.value > 999)
+			data.attributes.init.value = 999;
 		
 		//calc movespeed
-		let basicBonusValue = 0;
-		if(!(data.movement.basic.bonus.length === 1 && jQuery.isEmptyObject(data.movement.basic.bonus[0]))) {
-			for( const b of data.movement.basic.bonus) {
+		let baseMoveBonusValue = 0;
+		if(!(data.movement.base.bonus.length === 1 && jQuery.isEmptyObject(data.movement.base.bonus[0]))) {
+			for( const b of data.movement.base.bonus) {
 				if(b.active) {
-					basicBonusValue += b.value;
+					baseMoveBonusValue += b.value;
 				}
 			}
 		}
 		for ( let i of this.items) {
 			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
-			data.movement.basic.armour -= i.data.data.armour.movePenValue;
+			data.movement.base.armour -= i.data.data.armour.movePenValue;
 		}
-		data.movement.basic.bonusValue = basicBonusValue;
+		data.movement.base.bonusValue = baseMoveBonusValue;
+
 		
+		let walkBonusValue = 0;
+		if(!(data.movement.walk.bonus.length === 1 && jQuery.isEmptyObject(data.movement.walk.bonus[0]))) {
+			for( const b of data.movement.walk.bonus) {
+				if(b.active) {
+					walkBonusValue += b.value;
+				}
+			}
+		}
+		data.movement.walk.bonusValue = walkBonusValue;	
+
 		let chargeBonusValue = 0;
 		if(!(data.movement.charge.bonus.length === 1 && jQuery.isEmptyObject(data.movement.charge.bonus[0]))) {
 			for( const b of data.movement.charge.bonus) {
@@ -281,23 +302,59 @@ export class SimpleActor extends Actor {
 			}
 		}
 		data.movement.run.bonusValue = runBonusValue;
-		
 	
-		data.movement.basic.value = + data.movement.basic.base + data.movement.basic.armour + basicBonusValue + data.movement.basic.temp;
+		let climbBonusValue = 0;
+		if(!(data.movement.climb.bonus.length === 1 && jQuery.isEmptyObject(data.movement.climb.bonus[0]))) {
+			for( const b of data.movement.climb.bonus) {
+				if(b.active) {
+					climbBonusValue += b.value;
+				}
+			}
+		}
+		data.movement.climb.bonusValue = climbBonusValue;	
+
+		let shiftBonusValue = 0;
+		if(!(data.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(data.movement.shift.bonus[0]))) {
+			for( const b of data.movement.shift.bonus) {
+				if(b.active) {
+					shiftBonusValue += b.value;
+				}
+			}
+		}
+		data.movement.shift.bonusValue = shiftBonusValue;	
+
+		data.movement.base.value = data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
 		
-		if (data.movement.basic.value < 0)
-			data.movement.basic.value = 0;
+		let walkForm = eval(Helper.replaceData(data.movement.walk.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
+		data.movement.walk.value = walkForm + walkBonusValue + data.movement.base.temp;
 		
-		data.movement.charge.value = data.movement.basic.value + data.movement.charge.armour + chargeBonusValue + data.movement.charge.temp;
+		if (data.movement.walk.value < 0)
+			data.movement.walk.value = 0;
 		
-		if (data.movement.charge.value < 0)
-			data.movement.charge.value = 0;
-		
-		data.movement.run.value = data.movement.basic.value + 2 + data.movement.run.armour + runBonusValue + data.movement.run.temp;
+		let runForm = eval(Helper.replaceData(data.movement.run.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
+		data.movement.run.value = runForm + runBonusValue + data.movement.run.temp;
 		
 		if (data.movement.run.value < 0)
 			data.movement.run.value = 0;
+
+		let chargeForm = eval(Helper.replaceData(data.movement.charge.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
+		data.movement.charge.value = chargeForm + chargeBonusValue + data.movement.charge.temp;
 		
+		if (data.movement.charge.value < 0)
+			data.movement.charge.value = 0;
+
+		let climbeForm = eval(Helper.replaceData(data.movement.climb.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
+		data.movement.climb.value = climbeForm;
+		
+		if (data.movement.climb.value < 0)
+			data.movement.climb.value = 0;
+		
+		let shiftForm = eval(Helper.replaceData(data.movement.shift.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour),data).replace(/[^-()\d/*+. ]/g, ''));
+		data.movement.shift.value = shiftForm;
+		
+		if (data.movement.shift.value < 0)
+			data.movement.shift.value = 0;
+			
 		//Passive Skills
 		for (let [id, pas] of Object.entries(data.passive)) {
 			let passiveBonusValue = 0;
@@ -312,8 +369,8 @@ export class SimpleActor extends Actor {
 			pas.value = 10 + data.skills[pas.skill].total + passiveBonusValue;
 		}
 		
-		//Resistences & Weaknesses
-		for (let [id, res] of Object.entries(data.resistences)) {
+		//Resistances & Weaknesses
+		for (let [id, res] of Object.entries(data.resistances)) {
 
 			let resBonusValue = 0;
 			if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
@@ -352,36 +409,37 @@ export class SimpleActor extends Actor {
 		if (!isNaN(value) && isBar ) {
 			const current = getProperty(this.data.data, attribute);
 			if (isDelta) value = Math.clamped(current.min, Number(current.value) + value, current.max);
-			if(attribute === 'health')
+			console.log(attribute)
+			if(attribute === 'attributes.hp')
 			{
 				let newHealth = this.setConditions(value);			
-				this.update({[`data.details.temphp`]: newHealth[1] });
-				this.update({[`data.health.value`]: newHealth[0] });
+				this.update({[`data.attributes.hp.temphp`]: newHealth[1] });
+				this.update({[`data.attributes.hp.value`]: newHealth[0] });
 			}
 		}
 	}	
 	setConditions(newValue) {
 		
-		let newTemp = this.data.data.details.temphp;
-		if(newValue < this.data.data.health.value) {
-			let damage = this.data.data.health.value - newValue;
+		let newTemp = this.data.data.attributes.hp.temphp;
+		if(newValue < this.data.data.attributes.hp.value) {
+			let damage = this.data.data.attributes.hp.value - newValue;
 			
-			if(this.data.data.details.temphp > 0) {
+			if(this.data.data.attributes.hp.temphp > 0) {
 				newTemp -= damage;
 				if(newTemp < 0) {
-					newValue = this.data.data.health.value + newTemp;
+					newValue = this.data.data.attributes.hp.value + newTemp;
 					newTemp = null;
 				}
 				else {
-					newValue = this.data.data.health.value;
+					newValue = this.data.data.attributes.hp.value;
 				}
 				
-				this.update({[`data.details.temphp`]:newTemp});
+				this.update({[`data.attributes.hp.temphp`]:newTemp});
 			}
 		}
 		
-		if(newValue > this.data.data.health.max) newValue =  this.data.data.health.max;
-		else if(newValue < this.data.data.health.min) newValue =  this.data.data.health.min;
+		if(newValue > this.data.data.attributes.hp.max) newValue =  this.data.data.attributes.hp.max;
+		else if(newValue < this.data.data.attributes.hp.min) newValue =  this.data.data.attributes.hp.min;
 		
 		return [newValue,newTemp];
 	}  
@@ -535,7 +593,7 @@ export class SimpleActor extends Actor {
 	*/
 	async usePower(item, {configureDialog=true}={}) {
 		//if not a valid type of item to use
-		if ( !DND4EBETA.powerUseType[item.data.type] ) throw new Error("Wrong Item type");
+		if ( item.data.type !=="power" ) throw new Error("Wrong Item type");
 		const itemData = item.data.data;
 		//configure Powers data
 		const limitedUses = !!itemData.uses.per;
@@ -580,7 +638,7 @@ export class SimpleActor extends Actor {
 				weight += (e == "ad" ? v/500 : v/50);
 			}
 		}
-		console.log(game.settings.get("dnd4eBeta", "currencyWeight"))
+		// console.log(game.settings.get("dnd4eBeta", "currencyWeight"))
 		//Weight Ritual Components
 		for (let [e, v] of Object.entries(actorData.data.ritualcomp)) {
 			// weight += v/100 * 2.205;
@@ -594,8 +652,13 @@ export class SimpleActor extends Actor {
 		
 		//round to nearest 100th.
 		weight = Math.round(weight * 1000) / 1000;
-		
-		const max = actorData.data.abilities.str.value * 10;
+
+		// const max = actorData.data.abilities.str.value * 10;
+
+		const max = eval(Helper.replaceData(actorData.data.encumbrance.formulaNorm, actorData.data).toString().replace(/[^-()\d/*+. ]/g, ''));
+		const maxHeavy = eval(Helper.replaceData(actorData.data.encumbrance.formulaHeavy, actorData.data).toString().replace(/[^-()\d/*+. ]/g, ''));
+		const maxMax = eval(Helper.replaceData(actorData.data.encumbrance.formulaMax, actorData.data).toString().replace(/[^-()\d/*+. ]/g, ''));
+
 		//set ppc Percentage Base Carry-Capasity
 		const pbc = Math.clamped(weight / max * 100, 0, 99.7);
 		//set ppc Percentage Encumbranced Capasity
@@ -606,10 +669,44 @@ export class SimpleActor extends Actor {
 		return {
 			value: weight,
 			max,
+			maxHeavy,
+			maxMax,
+			formulaNorm: actorData.data.encumbrance.formulaNorm,
+			formulaHeavy: actorData.data.encumbrance.formulaHeavy,
+			formulaMax: actorData.data.encumbrance.formulaMax,
 			pbc,
 			pec,
 			encumBar,
 			encumbered: weight > max
 		};
+	}
+
+	async applyDamage(amount=0, multiplier=1) {
+		amount = Math.floor(parseInt(amount) * multiplier);
+		const hp = this.data.data.attributes.hp;
+	
+		// Deduct damage from temp HP first
+		const tmp = parseInt(hp.temp) || 0;
+		const dt = amount > 0 ? Math.min(tmp, amount) : 0;
+	
+		// Remaining goes to health
+		const tmpMax = parseInt(hp.tempmax) || 0;
+		const dh = Math.clamped(hp.value - (amount - dt), 0, hp.max + tmpMax);
+	
+		// Update the Actor
+		const updates = {
+		  "data.attributes.hp.temp": tmp - dt,
+		  "data.attributes.hp.value": dh
+		};
+	
+		// Delegate damage application to a hook
+		// TODO replace this in the future with a better modifyTokenAttribute function in the core
+		const allowed = Hooks.call("modifyTokenAttribute", {
+		  attribute: "attributes.hp",
+		  value: amount,
+		  isDelta: false,
+		  isBar: true
+		}, updates);
+		return allowed !== false ? this.update(updates) : this;
 	}
 }

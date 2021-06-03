@@ -3,7 +3,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
+			id: "short-rest",
 			classes: ["dnd4eBeta", "actor-rest"],
 			template: "systems/dnd4eBeta/templates/apps/short-rest.html",
 			width: 500,
@@ -23,14 +23,13 @@ export class ShortRestDialog extends BaseEntitySheet {
 	
 	async _updateObject(event, formData) {
 		
-		
 		const updateData = {};
-		updateData[`data.health.value`] = this.object.data.data.health.value;
+		updateData[`data.attributes.hp.value`] = this.object.data.data.attributes.hp.value;
 		
 		if(formData.surge > 0)
 		{
-			if(formData.surge > this.object.data.data.details.surgeCur)
-				formData.surge = this.object.data.data.details.surgeCur;
+			if(formData.surge > this.object.data.data.details.surges.value)
+				formData.surge = this.object.data.data.details.surges.value;
 			
 			let r = new Roll("0");
 			let healamount = 0;
@@ -51,21 +50,21 @@ export class ShortRestDialog extends BaseEntitySheet {
 				healamount += this.object.data.data.details.surgeValue + r.total;
 			}
 
-			updateData[`data.health.value`] = Math.min(
-				(this.object.data.data.health.value + healamount),
-				this.object.data.data.health.max
+			updateData[`data.attributes.hp.value`] = Math.min(
+				(this.object.data.data.attributes.hp.value + healamount),
+				this.object.data.data.attributes.hp.max
 			);
 		
-			if(this.object.data.data.details.surgeCur > 0)
-				updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeCur - formData.surge;
+			if(this.object.data.data.details.surges.value > 0)
+				updateData[`data.details.surges.value`] = this.object.data.data.details.surges.value - formData.surge;
 			
 		}
-		else if(formData.surge == 0 && this.object.data.data.health.value <= 0)
+		else if(formData.surge == 0 && this.object.data.data.attributes.hp.value <= 0)
 		{
-			updateData[`data.health.value`] = 1;
+			updateData[`data.attributes.hp.value`] = 1;
 		}
 		
-		if(!this.object.data.data.health.temprest)
+		if(!this.object.data.data.attributes.hp.temprest)
 			updateData[`data.details.temp`] = "";
 		
 		updateData[`data.details.secondwind`] = false;
@@ -87,10 +86,20 @@ export class ShortRestDialog extends BaseEntitySheet {
 			user: game.user._id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
-			content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.health.value`] - this.object.data.data.health.value) + " HP."
+			// content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP."
+
+			content: formData.surge >= 1 ? `${this.object.data.name} takes a short rest, spending ${formData.surge} healing surge, regaining ${(updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value)} HP.`
+				: `${this.object.data.name} takes a short rest.`
+			
 			//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 		});		
 		
+		for (let r of Object.entries(this.object.data.data.resources)) {
+			if(r[1].sr && r[1].max) {
+				updateData[`data.resources.${r[0]}.value`] = r[1].max;
+			}
+		}
+
 		this.object.update(updateData);
 	}	  
 }

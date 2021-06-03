@@ -25,8 +25,10 @@ export default class ItemSheet4e extends ItemSheet {
 			height: 420,
 			classes: ["dnd4eBeta", "sheet", "item"],
 			resizable: true,
-			scrollY: [".tab.details", ".desk__content", ".scrollbar"],
-			tabs: [{navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description"}]
+			scrollY: [
+				".tab.details"
+			],
+			tabs: [{navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description"}],
 		});
 	}
 
@@ -37,7 +39,6 @@ export default class ItemSheet4e extends ItemSheet {
 		const path = "systems/dnd4eBeta/templates/items/";
 		return `${path}/${this.item.data.type}.html`;
 	}
-
 
 	/* -------------------------------------------- */
 
@@ -56,10 +57,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// Potential consumption targets
 		data.abilityConsumptionTargets = this._getItemConsumptionTargets(data.item);
 	
-		if(data.item.type === "atwill" ||
-			data.item.type === "encounter" ||
-			data.item.type === "daily" ||
-			data.item.type === "utility" ) data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(data.item);
+		if(data.item.type === "power") data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(data.item);
 		
 		if(data.item.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(data.item, data.config);
 		
@@ -81,10 +79,69 @@ export default class ItemSheet4e extends ItemSheet {
 	
 		// Prepare Active Effects
 		data.effects = prepareActiveEffectCategories(this.entity.effects);
-		console.log(data.labels)
 		return data;
 	}
 
+	_getHeaderButtons(){
+		let buttons = super._getHeaderButtons();
+	
+		// Share Entry
+		if (game.user.isGM) {
+			buttons.unshift({
+				label: "Show Players",
+				class: "share-image",
+				icon: "fas fa-eye",
+				onclick: () => this.shareItem()
+			});
+		}
+	
+		// Export JSON
+		buttons.unshift({
+			label: "Expor JSON",
+			class: "export-json",
+			icon: "fas fa-atlas",
+			onclick: () => this.exportItem()
+		});
+
+		return buttons;
+	}
+
+	shareItem() {
+		game.socket.emit("system.dnd4eBeta", {
+		itemId: this.item._id
+		});
+	}
+
+	exportItem() {
+		const jsonString = JSON.stringify(this.object._data);
+
+		try {
+			navigator.clipboard.writeText(jsonString)
+			ui.notifications.info("JSON data copied to clipboard");
+		} catch (er) {
+			let d = new Dialog({
+				title: `JSON Output`,
+				content: `<textarea readonly type="text" id="debugmacro">${jsonString}</textarea>`,
+				buttons: {
+				  copy: {
+					label: `Copy to clipboard`,
+					callback: () => {
+					  $("#debugmacro").select();
+					  document.execCommand('copy');
+					}
+				  },
+				  close: {
+					icon: "<i class='fas fa-tick'></i>",
+					label: `Close`
+				  },
+				},
+				default: "close",
+				close: () => {}
+			  });
+			  
+			  d.render(true);
+		}
+	}
 
 	_getItemEquipmentSubTypeTargets(item, config) {
 
@@ -134,8 +191,8 @@ export default class ItemSheet4e extends ItemSheet {
 			"magicItemUse.dailyuse",
 			"details.exp",
 			"details.age",
-			"details.temphp",
-			"details.surgeCur",
+			"attributes.hp.temphp",
+			"details.surges.value",
 			"currency.ad",
 			"currency.pp",
 			"currency.gp",
@@ -189,11 +246,12 @@ export default class ItemSheet4e extends ItemSheet {
 	* @private
 	*/
 	_getItemsWeaponUseTargets(weapon) {
+		
 		const weaponType = weapon.data.weaponType || {};
 		if ( !weaponType ) return [];
 		const actor = this.item.actor;
 		if ( !actor ) return {};
-
+		
 		if (weaponType === "any") {
 			return actor.itemTypes.weapon.reduce((obj, i) =>  {
 				obj[i.id] = `${i.name}`;
@@ -205,6 +263,7 @@ export default class ItemSheet4e extends ItemSheet {
 		let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
 		
 		if ( weaponType === "melee" ) {
+			console.log(actor)
 			return actor.itemTypes.weapon.reduce((obj, i) =>  {
 				if (setMelee.includes(i.data.data.weaponType) ) {
 					obj[i.id] = `${i.name}`;
@@ -290,7 +349,6 @@ export default class ItemSheet4e extends ItemSheet {
 	_getItemProperties(item) {
 		const props = [];
 		const labels = this.item.labels;
-		console.log(item.type)
 		if ( item.type === "weapon" ) {
 
 			props.push(CONFIG.DND4EBETA.weaponTypes[item.data.weaponType])
@@ -307,7 +365,6 @@ export default class ItemSheet4e extends ItemSheet {
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4EBETA.damageTypes[e[0]])
 			);
-			console.log(props)
 
 			props.push(...Object.entries(item.data.weaponGroup)
 				.filter(e => e[1] === true)
@@ -322,8 +379,8 @@ export default class ItemSheet4e extends ItemSheet {
 			props.push(
 				labels.components,
 				labels.materials,
-				item.data.components.concentration ? game.i18n.localize("DND4EBETA.Concentration") : null,
-				item.data.components.ritual ? game.i18n.localize("DND4EBETA.Ritual") : null
+				// item.data.components.concentration ? game.i18n.localize("DND4EBETA.Concentration") : null,
+				// item.data.components.ritual ? game.i18n.localize("DND4EBETA.Ritual") : null
 			)
 		}
 
@@ -353,7 +410,6 @@ export default class ItemSheet4e extends ItemSheet {
 				labels.duration
 			)
 		}
-		console.log(props.filter(p => !!p))
 		return props.filter(p => !!p);
 	}
 
@@ -377,8 +433,9 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	setPosition(position={}) {
-		if(this._tabs[0].active === "macros") return super.setPosition(position);
-		position.height = this._tabs[0].active === "details" ? "auto" : this.options.height;
+		if ( !(this._minimized  || position.height) ) {
+			position.height = (this._tabs[0].active === "details") ? "auto" : this.options.height;
+		}
 		return super.setPosition(position);
 	}
 
@@ -435,8 +492,8 @@ export default class ItemSheet4e extends ItemSheet {
 	async _onExecute(event) {
 		console.log("_onExecute");
 		event.preventDefault();
-        await this._onSubmit(event, {preventClose: true}); 
-        executeMacro(this.entity); 
+		await this._onSubmit(event, {preventClose: true}); 
+		executeMacro(this.entity); 
 	}
 	
 	/* -------------------------------------------- */
@@ -533,7 +590,6 @@ export default class ItemSheet4e extends ItemSheet {
 		if(a.classList.contains("add-dice")) {
 			await this._onSubmit(event); // Submit any unsaved changes
 			const damageDice = duplicate(this.item.data.data.damageDice);
-			console.log(damageDice)
 			return this.item.update({"data.damageDice.parts": damageDice.parts.concat([["",""]])});
 		}
 
@@ -587,25 +643,25 @@ export default class ItemSheet4e extends ItemSheet {
 // }
 function executeMacro(item)
 {
-    // let actorID = item.actor.id;
-    // let itemID = item.id;
+	// let actorID = item.actor.id;
+	// let itemID = item.id;
 	// console.log(item);
 	// console.log(checkMacro(item));
-    // let cmd = ``;
+	// let cmd = ``;
 
-    // if(item.actor.isToken)
-    // {
-    //     cmd += `const item = game.actors.tokens["${actorID}"].items.get("${itemID}"); ${item.data.data.macro.command}`;
-    // }else{
-    //     cmd += `const item = game.actors.get("${actorID}").items.get("${itemID}"); ${item.data.data.macro.command}`;
-    // }
+	// if(item.actor.isToken)
+	// {
+	//     cmd += `const item = game.actors.tokens["${actorID}"].items.get("${itemID}"); ${item.data.data.macro.command}`;
+	// }else{
+	//     cmd += `const item = game.actors.get("${actorID}").items.get("${itemID}"); ${item.data.data.macro.command}`;
+	// }
 
-    new Macro ({ 
-        name : item.name,
-        type : item.data.data.macro.type,
-        scope : item.data.data.macro.scope,
-        command : item.data.data.macro.command, //cmd,
+	new Macro ({ 
+		name : item.name,
+		type : item.data.data.macro.type,
+		scope : item.data.data.macro.scope,
+		command : item.data.data.macro.command, //cmd,
 		author : game.user.id,
 		item: item.data.data
-    }).execute();
+	}).execute();
 }

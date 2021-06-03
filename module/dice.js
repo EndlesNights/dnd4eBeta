@@ -200,8 +200,6 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 
   // Render modal dialog
   template = template || "systems/dnd4eBeta/templates/chat/roll-dialog.html";
-  console.log(parts.join(" + "))
-  console.log(parts)
   let dialogData = {
     formula: parts.join(" + "),
     data: data,

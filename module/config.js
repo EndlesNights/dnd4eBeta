@@ -105,6 +105,16 @@ DND4EBETA.abilityActivationTypes = {
   // "special": DND4EBETA.timePeriods.spec
 };
 
+DND4EBETA.abilityActivationTypesShort = {
+  "none": "DND4EBETA.NoneShort",
+  "standard": "DND4EBETA.ActionStandardShort",
+  "move": "DND4EBETA.ActionMoveShort",
+  "minor": "DND4EBETA.ActionMinorShort",
+  "free": "DND4EBETA.ActionFreeShort",
+  "reaction": "DND4EBETA.ActionReactionShort",
+  "interrupt": "DND4EBETA.ActionInterruptShort",
+  "opportunity": "DND4EBETA.ActionOpportunityShort",
+};
 /* -------------------------------------------- */
 
 
@@ -454,11 +464,18 @@ DND4EBETA.hitDieTypes = ["d6", "d8", "d10", "d12"];
 
 /* -------------------------------------------- */
 
+DND4EBETA.powerType = {
+	"class": "DND4EBETA.Class",
+	"race": "DND4EBETA.Race",
+	"utility": "DND4EBETA.PowerUtil"
+};
+
 DND4EBETA.powerUseType = {
 	"atwill": "DND4EBETA.PowerAt",
 	"encounter": "DND4EBETA.PowerEnc",
 	"daily": "DND4EBETA.PowerDaily",
-	"utility": "DND4EBETA.PowerUtil"
+	"recharge": "DND4EBETA.PowerRecharge",
+	// "utility": "DND4EBETA.PowerUtil"
 };
 DND4EBETA.powerSource = {
 	"arcane": "DND4EBETA.Arcane",
@@ -469,6 +486,21 @@ DND4EBETA.powerSource = {
 	"primal": "DND4EBETA.Primal",
 	"psionic": "DND4EBETA.Psionic",
 	"shadow": "DND4EBETA.Shadow",
+};
+
+DND4EBETA.powerGroupTypes = {
+	"usage": "DND4EBETA.Usage",
+	"action": "DND4EBETA.Action",
+	"type": "DND4EBETA.Type",
+};
+
+DND4EBETA.powerSortTypes = {
+	"name": "DND4EBETA.Name",
+	"level": "DND4EBETA.Level",
+	"actionType": "DND4EBETA.Action",
+	"rangeTextShort": "DND4EBETA.Range",
+	"use.value": "DND4EBETA.Used",
+	"none": "DND4EBETA.None",
 };
 
 /* -------------------------------------------- */
@@ -508,7 +540,7 @@ DND4EBETA.rangeType = {
 	"rangeBlast": "DND4EBETA.rangeBlast",
 	"wall": "DND4EBETA.rangeWall",
 	"personal": "DND4EBETA.rangePersonal",
-	
+	"touch": "DND4EBETA.rangeTouch",
 };
 
 DND4EBETA.effectTypes = {

@@ -3,7 +3,7 @@ export class SecondWindDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
+			id: "second-wind",
 			classes: ["dnd4eBeta", "second-wind"],
 			template: "systems/dnd4eBeta/templates/apps/second-wind.html",
 			width: 500,
@@ -17,8 +17,8 @@ export class SecondWindDialog extends BaseEntitySheet {
 
 	/** @override */
 	getData() {
-		
-		return {data: this.object.data.data}
+		const extra = this.object.data.data.details.secondwindbon.custom.split(";");
+		return { data: this.object.data.data, extra: extra };
 	}
 	async _updateObject(event, formData) {
 		
@@ -36,26 +36,37 @@ export class SecondWindDialog extends BaseEntitySheet {
 		}
 		
 		const updateData = {};
-		updateData[`data.health.value`] = Math.min(
-			(this.object.data.data.health.value + this.object.data.data.details.secondWindValue + r.total),
-			this.object.data.data.health.max
+		updateData[`data.attributes.hp.value`] = Math.min(
+			(this.object.data.data.attributes.hp.value + this.object.data.data.details.secondWindValue + r.total),
+			this.object.data.data.attributes.hp.max
 		);
 		
 		updateData[`data.details.secondwind`] = true;
 		
-		if(this.object.data.data.details.surgeCur > 0)
-			updateData[`data.details.surgeCur`] = this.object.data.data.details.surgeCur - 1;
+		if(this.object.data.data.details.surges.value > 0)
+			updateData[`data.details.surges.value`] = this.object.data.data.details.surges.value - 1;
 		
-		ChatMessage.create({
-			user: game.user._id,
-			speaker: {actor: this.object, alias: this.object.data.name},
-			// flavor: restFlavor,
-			content: this.object.data.name + " uses Second Wind, healing for " + (updateData[`data.health.value`] - this.object.data.data.health.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
-			//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
-		});		
+			let extra = "";
+			if (this.object.data.data.details.secondwindbon.custom) {
+				extra = this.object.data.data.details.secondwindbon.custom;
+				extra = extra.replace(/;/g,'</li><li>');
+				extra = "<li>" + extra + "</li>";
+			}
+
+			ChatMessage.create({
+				user: game.user._id,
+				speaker: {actor: this.object, alias: this.object.data.name},
+				// flavor: restFlavor,
+				content: `${this.object.data.name} uses Second Wind gaining the following benifits:
+					<ul>
+						<li>Healing for ${(updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value)} HP.</li>
+						<li>Gaining a +2 to all defences until the stars of their next turn.</li>
+						${extra}
+					</ul>`,
+					// content: this.object.data.name + " uses Second Wind, healing for " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
+				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+			});		
 		
 		this.object.update(updateData);
 	}	  
 }
-
-

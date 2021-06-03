@@ -2,7 +2,7 @@
 	 {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
 	<header class="card-header flexrow">
 		<img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
-		<h3 class="item-name">{{item.name}}</h3>
+		<h3 class="item-name ability-usage--" style="padding-left: 3px;">{{item.name}}</h3>
 	</header>
 
 	<div class="card-content" style="display: block;">
@@ -11,8 +11,15 @@
 		<p><strong>{{ localize "DND4EBETA.RequiredMaterials" }}.</strong> {{data.materials.value}}</p>
 		{{/if}}
 	</div>
-
+	<div class="item-summary">
+		<div class="item-details">
+			{{{cardData}}}
+		</div>
+	</div>
 	<div class="card-buttons">
+
+
+
 		{{#if hasAttack}}<button data-action="attack">{{ localize "DND4EBETA.Attack" }}</button>{{/if}}
 
 		{{#if hasDamage}}
@@ -23,9 +30,9 @@
 		{{/if}}
 
 		{{#if hasEffect}}
-		<div class="card-content" style="display: block;">
+		<!-- <div class="card-content" style="display: block;">
 			{{localize "DND4EBETA.Effect" }}: {{{data.effect.detail}}}
-		</div>
+		</div> -->
 		{{/if}}
 		<!-- {{#if hasEffect}}<button data-action="effect">{{ localize "DND4EBETA.Effect" }}</button>{{/if}} -->
 
@@ -49,8 +56,11 @@
 	</div>
 
 	<footer class="card-footer">
-		{{#each data.properties}}
-		<span>{{this}}</span>
-		{{/each}}
+		{{#if isPower}}
+		{{else}}
+			{{#each data.properties}}
+			<span>{{this}}</span>
+			{{/each}}
+		{{/if}}
 	</footer>
 </div>

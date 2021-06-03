@@ -74,7 +74,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasDamage() {
-		if(!DND4EBETA.powerUseType[this.type]) return false; //curently only powers will deal damage or make attacks
+		if(!this.data.type === "power") return false; //curently only powers will deal damage or make attacks
 		return this.data.data.hit?.isDamage;
 		return !!this.data.data.hit?.formula || !!(this.data.data.damage && this.data.data.damage.parts.length);
 	}
@@ -86,7 +86,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasEffect() {
-		if(!DND4EBETA.powerUseType[this.type]) return false; //curently only powers have effects
+		if(!this.data.type === "power") return false; //curently only powers have effects
 		console.log(this.data.data.effect?.detail)
 		return !!this.data.data.effect?.detail;
 	}
@@ -129,8 +129,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasTarget() {
-		const target = this.data.data.target;
-		return target && !["none",""].includes(target.type);
+		return target && !["none",""].includes(this.data.data.target);
 	}
 
 	/* -------------------------------------------- */
@@ -200,7 +199,6 @@ export default class Item4e extends Item {
 
 		// Equipment Items
 		if ( itemData.type === "equipment" ) {
-			console.log(data.armour.ref)
 			labels.armour = data.armour.ac ? `${data.armour.ac} ${game.i18n.localize("DND4EBETA.AC")}` : "";
 			labels.fort = data.armour.fort ? `${data.armour.fort} ${game.i18n.localize("DND4EBETA.FORT")}` : "";
 			labels.ref = data.armour.ref ? `${data.armour.ref} ${game.i18n.localize("DND4EBETA.REF")}` : "";
@@ -209,7 +207,6 @@ export default class Item4e extends Item {
 
 		// Activated Items
 		if ( data.hasOwnProperty("activation") ) {
-
 			// Ability Activation Label
 			let act = data.activation || {};
 			if ( act ) labels.activation = [act.cost, C.abilityActivationTypes[act.type]].filterJoin(" ");
@@ -243,7 +240,6 @@ export default class Item4e extends Item {
 
 		// Item Actions
 		if ( data.hasOwnProperty("actionType") ) {
-
 			// Save DC
 			let save = data.save || {};
 			if ( !save.ability ) save.dc = null;
@@ -261,7 +257,7 @@ export default class Item4e extends Item {
 				labels.damage = dam.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
 				labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
 
-				if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon") {
+				if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
 					if(this.data.data.damageType) {
 						for (let [id, data] of Object.entries(this.data.data.damageType)) {
 							if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
@@ -306,6 +302,9 @@ export default class Item4e extends Item {
 			// let x = func();
 			// console.log(x)
 		}
+
+		console.log(this)
+		const cardData = this.data.type == "power" ? Helper._preparePowerCardData(this.getChatData(), CONFIG) : null;
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
@@ -316,8 +315,10 @@ export default class Item4e extends Item {
 			labels: this.labels,
 			hasAttack: this.hasAttack,
 			isHealing: this.isHealing,
+			isPower: this.data.type == "power",
 			hasDamage: this.hasDamage,
 			hasEffect: this.hasEffect,
+			cardData: cardData,
 			isVersatile: this.isVersatile,
 			isSpell: this.data.type === "spell",
 			hasSave: this.hasSave,
@@ -340,8 +341,22 @@ export default class Item4e extends Item {
 		// Render the chat card template
 		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
 		const template = `systems/dnd4eBeta/templates/chat/${templateType}-card.html`;
-		const html = await renderTemplate(template, templateData);
-console.log(template)
+console.log(templateType)
+		let html = await renderTemplate(template, templateData);
+
+		if(templateData.item.type === "power") {
+			html = html.replace("ability-usage--", `ability-usage--${templateData.data.useType}`);
+		}
+		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {
+			html = html.replace("ability-usage--", `ability-usage--item`);
+			console.log("test")
+		} else {
+			html = html.replace("ability-usage--", `ability-usage--other`);
+		}
+
+		console.log(templateData.item.type)
+
+		console.log(templateData)
 		// Basic chat message data
 		const chatData = {
 			user: game.user._id,
@@ -665,54 +680,54 @@ console.log(template)
 	async rollAttack(options={}) {
 		const itemData = this.data.data;
 		const actorData = this.actor.data.data;	
-	const weaponUse = Helper.getWeaponUse(itemData, this.actor);
-	
-		const flags = this.actor.data.flags.dnd4eBeta || {};
-		if ( !this.hasAttack ) {
-			throw new Error("You may not place an Attack Roll with this Item.");
-		}
-		let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
-	let flavor = title;
-	
-	// if(itemData.chatFlavor) flavor += `<br>${itemData.chatFlavor}`;
-	// if(itemData.target.type && !["none","personal"].includes(itemData.target.type)) {
-	// 	if(itemData.target.num) {
-	// 		flavor += `<br>Target: ${itemData.target.num} ${itemData.target.type}`;
-	// 	} else {
-	// 		flavor += `<br>Target: Each ${itemData.target.type} `;
-	// 	}
-	// 	//Determin weapon range and AoE type here from rangeType && rangePower.
-	// 	if(itemData.rangeType) {
-	// 		if(itemData.rangeType === "weapon") {
-	// 			flavor += `, ${CONFIG.DND4EBETA.weaponType[itemData.weaponType]}`;
-	// 		} 
-	// 		else if (itemData.rangeType !== "range") {
-	// 			flavor += `, ${CONFIG.DND4EBETA.rangeType[itemData.rangeType]}`;
-	// 		}
-	// 	}
-	// 	if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
-	// 		flavor += ` ${itemData.area}`
-	// 	}
-	// 	if(itemData.rangePower && !["closeBurst","closeBlast"].includes(itemData.rangeType) ) {
-	// 		flavor += ` within range of ${itemData.rangePower} squares.`
-	// 	}
-	// } else if (itemData.target.type) {
-	// 	flavor += `<br>Target: ${itemData.target.type} `;
-	// }
-	// flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
-	flavor += ` VS <b>${itemData.attack.def.toUpperCase() }<b>`;
-		const rollData = this.getRollData();
-	
-		// Define Roll bonuses
-		const parts = !!itemData.attack.formula? [`@power`] : [`@mod`];
-		// if ( (this.data.type !== "weapon") || itemData.proficient ) {
-			// parts.push("@prof");
+		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
+		
+			const flags = this.actor.data.flags.dnd4eBeta || {};
+			if ( !this.hasAttack ) {
+				throw new Error("You may not place an Attack Roll with this Item.");
+			}
+			let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
+		let flavor = title;
+		
+		// if(itemData.chatFlavor) flavor += `<br>${itemData.chatFlavor}`;
+		// if(itemData.target.type && !["none","personal"].includes(itemData.target.type)) {
+		// 	if(itemData.target.num) {
+		// 		flavor += `<br>Target: ${itemData.target.num} ${itemData.target.type}`;
+		// 	} else {
+		// 		flavor += `<br>Target: Each ${itemData.target.type} `;
+		// 	}
+		// 	//Determin weapon range and AoE type here from rangeType && rangePower.
+		// 	if(itemData.rangeType) {
+		// 		if(itemData.rangeType === "weapon") {
+		// 			flavor += `, ${CONFIG.DND4EBETA.weaponType[itemData.weaponType]}`;
+		// 		} 
+		// 		else if (itemData.rangeType !== "range") {
+		// 			flavor += `, ${CONFIG.DND4EBETA.rangeType[itemData.rangeType]}`;
+		// 		}
+		// 	}
+		// 	if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
+		// 		flavor += ` ${itemData.area}`
+		// 	}
+		// 	if(itemData.rangePower && !["closeBurst","closeBlast"].includes(itemData.rangeType) ) {
+		// 		flavor += ` within range of ${itemData.rangePower} squares.`
+		// 	}
+		// } else if (itemData.target.type) {
+		// 	flavor += `<br>Target: ${itemData.target.type} `;
 		// }
-	
-	//pack the powers formal and send it to the dice.
-	if(!!itemData.attack.formula) {		
-		rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null);
-	}
+		// flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
+		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }<b>`;
+			const rollData = this.getRollData();
+		
+			// Define Roll bonuses
+			const parts = !!itemData.attack.formula? [`@power`] : [`@mod`];
+			// if ( (this.data.type !== "weapon") || itemData.proficient ) {
+				// parts.push("@prof");
+			// }
+		
+		//pack the powers formal and send it to the dice.
+		if(!!itemData.attack.formula) {		
+			rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null);
+		}
 	
 		// Attack Bonus
 		// const actorBonus = actorData?.bonuses?.[itemData.actionType] || {};
@@ -738,24 +753,24 @@ console.log(template)
 			}
 		}
 	
-	// Ammunition Bonus from weapon.
-	if(weaponUse) {
-		delete weaponUse._ammo;
-		const consume = weaponUse.data.data.consume;
-		if ( consume?.type === "ammo" ) {
-			const ammo = weaponUse.actor.items.get(consume.target);
-			const q = ammo.data.data.quantity;
-			if ( q && (q - consume.amount >= 0) ) {
-				let ammoBonus = ammo.data.data.attackBonus;
-				if ( ammoBonus ) {
-					if (parts[parts.length-1] !== "@ammo" ) parts.push("@ammo");
-					rollData["ammo"]? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
-					title += ` [${ammo.name}]`;
-					weaponUse._ammo = ammo;
+		// Ammunition Bonus from weapon.
+		if(weaponUse) {
+			delete weaponUse._ammo;
+			const consume = weaponUse.data.data.consume;
+			if ( consume?.type === "ammo" ) {
+				const ammo = weaponUse.actor.items.get(consume.target);
+				const q = ammo.data.data.quantity;
+				if ( q && (q - consume.amount >= 0) ) {
+					let ammoBonus = ammo.data.data.attackBonus;
+					if ( ammoBonus ) {
+						if (parts[parts.length-1] !== "@ammo" ) parts.push("@ammo");
+						rollData["ammo"]? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
+						title += ` [${ammo.name}]`;
+						weaponUse._ammo = ammo;
+					}
 				}
 			}
 		}
-	}
 
 		// Compose roll options
 		const rollConfig = mergeObject({
@@ -785,10 +800,10 @@ console.log(template)
 
 		// Handle resource consumption if the attack roll was made
 		const allowed = await (
-		this._handleResourceConsumption({isCard: false, isAttack: true},this.data.data),
-		weaponUse? this._handleResourceConsumption({isCard: false, isAttack: true},this.actor.items.get(weaponUse.id).data.data) : true
+			this._handleResourceConsumption({isCard: false, isAttack: true},this.data.data),
+			weaponUse? this._handleResourceConsumption({isCard: false, isAttack: true},this.actor.items.get(weaponUse.id).data.data) : true
 		// itemData.weaponUse? this.actor.items.get(itemData.weaponUse)
-	);
+		);
 	
 	
 		if ( allowed === false ) return null;
@@ -887,12 +902,10 @@ console.log(template)
 				delete weaponUse._ammo;
 			}
 		}
-		console.log(parts);
-		console.log(rollData);
 		//Add powers text to message.
-		if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
-		if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
-		if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
+		// if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
+		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
+		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 		// Call the roll helper utility
 		console.log(parts);
 		return damageRoll({

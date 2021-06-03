@@ -5,8 +5,8 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "actor-flags",
-			classes: ["dnd4eBeta", "actor-rest"],
+			id: `attribute-bonus-${randomID()}`,
+			classes: ["dnd4eBeta"],
 			template: "systems/dnd4eBeta/templates/apps/attribute-bonuses.html",
 			width: 500,
 			closeOnSubmit: false,
@@ -39,7 +39,17 @@ export class AttributeBonusDialog extends BaseEntitySheet {
 		updateData[`${this.options.target}.bonus`] = newBonus;
 		if(this.options?.skill) {
 			updateData[`${this.options.target}.armourCheck`] = formData["data.armourCheck"];
-			this.position.height = Math.max(1, count) * 76 + 118;
+			this.position.height = Math.max(1, count) * 76 + 119;
+		} else if(this.options?.ac) {
+			updateData[`${this.options.target}.light`] = formData["data.light"];
+			updateData[`${this.options.target}.altability`] = formData["data.altability"];
+			this.position.height = Math.max(1, count) * 76 + 124;
+		} else if(this.options?.init) {
+			updateData[`${this.options.target}.ability`] = formData["data.ability"];
+		}
+		else if(this.options?.secondWind){
+			console.log(formData["custom"])
+			updateData[`${this.options.target}.custom`] = formData["data.custom"];
 		} else {
 			this.position.height = Math.max(1, count) * 76 + 91;
 		}

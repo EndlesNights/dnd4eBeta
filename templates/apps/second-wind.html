@@ -1,16 +1,21 @@
-<form id="short-rest-hd" class="dialog-content" onsubmit="event.preventDefault();">
-    <p>
+<form id="second-wind-hd" class="dialog-content" onsubmit="event.preventDefault();">
+	<p>
 		Spend one healing surge to gain the follow effects:
 		<li>Regain an amount of hitpoints equil to {{data.details.secondWindValue}}.</li>
 		<li>Gain a +2 bonus to all defences until the start of your next turn.		</li>
-	</p>
 	
-    <div class="form-group">
-        <label>Situational bonus to surge?</label>
-        <input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EBETA.RollExample' }}"/>
-    </div>
+		{{#if data.details.secondwindbon.custom}}
+			{{#each extra as |e key|}}
+			<li>{{e}}</li>
+			{{/each}}
+		{{/if}}
+	</p>
+		<div class="form-group">
+				<label>Situational bonus to surge?</label>
+				<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EBETA.RollExample' }}"/>
+		</div>
 
-    <div class="dialog-buttons">
+		<div class="dialog-buttons">
 		<button type="submit" name="submit">Second Wind</button>
-    </div>
+		</div>
 </form>

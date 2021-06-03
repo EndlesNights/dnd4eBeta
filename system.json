@@ -2,13 +2,17 @@
 	"name": "dnd4eBeta",
 	"title": "4th Edition Beta",
 	"description": "A minimalist custom test build of 4th Ed.",
-	"version": "0.0.9",
+	"version": "0.1.4",
 	"minimumCoreVersion": "0.7.5",
-	"compatibleCoreVersion": "0.7.9",
+	"compatibleCoreVersion": "0.7.10",
 	"templateVersion": 2,
 	"author": "EndlesNights",
-	"esmodules": ["module/dnd4eBeta.js"],
-	"styles": ["styles/dnd4eBeta.css"],
+	"esmodules": [
+		"module/dnd4eBeta.js"
+		],
+	"styles": [
+		"styles/dnd4eBeta.css"
+	],
 	"packs": [],
 	"languages": [
 		{
@@ -18,12 +22,13 @@
 		}
 	],
 	"socket": true,
-	"initiative": "1d20 + @init.value + (@init.value / 100)",
+	"initiative": "1d20 + @attributes.init.value + (@attributes.init.value / 100)",
 	"gridDistance": 1,
 	"gridUnits": "sq",
-	"primaryTokenAttribute": "health",
-	"secondaryTokenAttribute": "power",
+	"primaryTokenAttribute": "attributes.hp",
+	"secondaryTokenAttribute": null,
   	"url": "https://github.com/EndlesNights/dnd4eBeta",
-	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/master/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/master/dnd4eBeta.zip"
+	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dev/system.json",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/dev/dnd4eBeta.zip"
+	
 }
