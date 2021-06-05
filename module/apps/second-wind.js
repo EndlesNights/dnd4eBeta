@@ -1,4 +1,4 @@
-export class SecondWindDialog extends BaseEntitySheet {
+export class SecondWindDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;

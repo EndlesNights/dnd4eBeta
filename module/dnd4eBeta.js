@@ -12,7 +12,7 @@ import { registerSystemSettings } from "./settings.js";
 import ItemSheet4e from "./item/sheet.js";
 import { measureDistances, getBarAttribute } from "./canvas.js";
 
-import { ActorSheet4e } from "./actor/actor-sheet.js";
+import ActorSheet4e from "./actor/actor-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
@@ -35,6 +35,7 @@ Hooks.once("init", async function() {
 	game.dnd4eBeta = {
 		config: DND4EBETA,
 		entities: {
+			Actor4e,
 			Item4e,
 		},
 		macros: macros,

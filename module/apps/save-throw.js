@@ -1,6 +1,6 @@
 import {d20Roll} from "../dice.js";
 
-export class SaveThrowDialog extends BaseEntitySheet {
+export class SaveThrowDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;

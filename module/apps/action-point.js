@@ -1,4 +1,4 @@
-export class ActionPointDialog extends BaseEntitySheet {
+export class ActionPointDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;

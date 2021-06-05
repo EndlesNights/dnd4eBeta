@@ -21,7 +21,7 @@ import { Helper } from "../helper.js";
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class ActorSheet4e extends ActorSheet {
+export default class ActorSheet4e extends ActorSheet {
 
   constructor(...args) {
 	super(...args);
@@ -41,7 +41,7 @@ export class ActorSheet4e extends ActorSheet {
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eBeta", "sheet", "actor"],
-			template: "systems/dnd4eBeta/templates/actor-sheet.html",
+			// template: "systems/dnd4eBeta/templates/actor-sheet.html",
 			width: 844,
 			height: 905,
 			tabs: [{
@@ -63,51 +63,87 @@ export class ActorSheet4e extends ActorSheet {
 
   /* -------------------------------------------- */
 
+  /**
+   * A set of item types that should be prevented from being dropped on this type of actor sheet.
+   * @type {Set<string>}
+   */
+   static unsupportedItemTypes = new Set();
+  /* -------------------------------------------- */
+
+  /** @override */
+  get template() {
+    // if ( !game.user.isGM && this.actor.limited ) return "systems/dnd5e/templates/actors/limited-sheet.html";
+    return `systems/dnd4eBeta/templates/actor-sheet.html`;
+  }
+
+  /* -------------------------------------------- */
+
 	/** @override */
 	getData() {
 
-		let data = super.getData();
-		data.config = CONFIG.DND4EBETA;
-		data.actor.data.size = DND4EBETA.actorSizes;
+		let isOwner = this.actor.isOwner;
+
+		// const sheetData = super.getData();
+
+		const data = {
+			owner: isOwner,
+			limited: this.actor.limited,
+			options: this.options,
+			editable: this.isEditable,
+			cssClass: isOwner ? "editable" : "locked",
+			isCharacter: this.actor.type === "Player Character",
+			isNPC: this.actor.type === "NPC",
+			config: CONFIG.DND4EBETA,
+			rollData: this.actor.getRollData.bind(this.actor)
+		};
+
+		// The Actor's data
+		const actorData = this.actor.data.toObject(false);
+		data.actor = actorData;
+		data.data = actorData.data;
 		
-		for ( let [s, skl] of Object.entries(data.actor.data.skills)) {
-			skl.ability = data.actor.data.abilities[skl.ability].label.substring(0, 3);
+		// return;
+
+		// sheetData.config = CONFIG.DND4EBETA;
+		actorData.data.size = DND4EBETA.actorSizes;
+		
+		for ( let [s, skl] of Object.entries(actorData.data.skills)) {
+			skl.ability = actorData.data.abilities[skl.ability].label.substring(0, 3);
 			skl.icon = this._getTrainingIcon(skl.value);
 			skl.hover = game.i18n.localize(DND4EBETA.trainingLevels[skl.value]);
 			skl.label = game.i18n.localize(DND4EBETA.skills[s]);
 		}
 		
-		this._prepareData(data.actor.data.languages, 
+		this._prepareData(actorData.data.languages, 
 			{"spoken": CONFIG.DND4EBETA.spoken, "script": CONFIG.DND4EBETA.script}
 		);
 		
-		this._prepareDataSense(data.actor.data.senses,
+		this._prepareDataSense(actorData.data.senses,
 			{"vision": CONFIG.DND4EBETA.vision, "special": CONFIG.DND4EBETA.special}
 		);
 		
-		this._prepareDataSave(data.actor.data.details,
+		this._prepareDataSave(actorData.data.details,
 			{"saves": CONFIG.DND4EBETA.saves}
 		);
 
 		// Prepare owned items
-		this._prepareItems(data);
+		this._prepareItems(actorData);
 		
 		// Prepare active effects
-		data.effects = prepareActiveEffectCategories(this.entity.effects);
+		actorData.effects = prepareActiveEffectCategories(this.actor.effects);
 
-		// data.actor.data.details.isBloodied = (data.actor.data.attributes.hp.value <= data.actor.data.attributes.hp.max/2);
+		// Resources
+		actorData.data.resources = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
+			const res = actorData.data.resources[r] || {};
+			res.name = r;
+			res.placeholder = game.i18n.localize("DND4EBETA.Resource"+r.titleCase());
+			if (res && res.value === 0) delete res.value;
+			if (res && res.max === 0) delete res.max;
+			return arr.concat([res]);
+			}, []);
+
 		console.log(data)
-
-			// Resources
-			data["resources"] = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
-				const res = data.data.resources[r] || {};
-				res.name = r;
-				res.placeholder = game.i18n.localize("DND4EBETA.Resource"+r.titleCase());
-				if (res && res.value === 0) delete res.value;
-				if (res && res.max === 0) delete res.max;
-				return arr.concat([res]);
-			  }, []);
-
+		console.log(actorData)
 
 		return data;
 	}
@@ -570,7 +606,7 @@ export class ActorSheet4e extends ActorSheet {
 		li.slideUp(200, () => this.render(false));
 		});
 
-		if ( this.actor.owner ) {	
+		if ( this.actor.isOwner ) {	
 			// Roll Skill Checks
 			html.find('.skill-name').click(this._onRollSkillCheck.bind(this));
 
@@ -753,7 +789,7 @@ export class ActorSheet4e extends ActorSheet {
 			data: duplicate(header.dataset)
 		};
 		delete itemData.data["type"];
-		return this.actor.createOwnedItem(itemData);
+		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
 	async _onItemImport(event) {
@@ -788,7 +824,7 @@ export class ActorSheet4e extends ActorSheet {
 			}
 		}
 
-		return this.actor.createOwnedItem(itemData);
+		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
   /* -------------------------------------------- */

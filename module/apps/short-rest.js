@@ -1,4 +1,4 @@
-export class ShortRestDialog extends BaseEntitySheet {
+export class ShortRestDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;

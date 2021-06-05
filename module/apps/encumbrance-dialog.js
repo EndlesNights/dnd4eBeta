@@ -1,6 +1,6 @@
 import { AttributeBonusDialog } from "./attribute-bonuses.js";
 
-export class EncumbranceDialog extends BaseEntitySheet {
+export class EncumbranceDialog extends DocumentSheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {

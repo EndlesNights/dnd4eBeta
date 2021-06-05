@@ -60,6 +60,8 @@ export class Actor4e extends Actor {
 		const flags = actorData.flags.dnd4eBeta || {};
 		const bonuses = getProperty(data, "bonuses.abilities") || {};
 
+		console.log(data)
+
 		// Prepare Character data
 		if ( actorData.type === "character" ) this._prepareCharacterData(actorData);
 		else if ( actorData.type === "npc" ) this._prepareNPCData(actorData);

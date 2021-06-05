@@ -1,4 +1,4 @@
-export class LongRestDialog extends BaseEntitySheet {
+export class LongRestDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
