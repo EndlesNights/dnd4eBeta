@@ -607,11 +607,12 @@ export default class ActorSheet4e extends ActorSheet {
 		});
 
 		// Delete Inventory Item
-		html.find('.item-delete').click(ev => {
-		const li = $(ev.currentTarget).parents(".item");
-		this.actor.deleteOwnedItem(li.data("itemId"));
-		li.slideUp(200, () => this.render(false));
-		});
+		
+		// html.find('.item-delete').click(ev => {
+		// const li = $(ev.currentTarget).parents(".item");
+		// this.actor.deleteOwnedItem(li.data("itemId"));
+		// li.slideUp(200, () => this.render(false));
+		// });
 
 		if ( this.actor.isOwner ) {	
 			// Roll Skill Checks

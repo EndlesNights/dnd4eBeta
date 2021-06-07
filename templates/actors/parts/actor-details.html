@@ -24,7 +24,7 @@
 
 <section class="flexrow section--attributes" style="border:none;">
 	{{!-- Custom Resources --}}
-	{{#each resources as |res|}}
+	{{#each data.resources as |res|}}
 	<div class="attributes attribute-health">
 		<h4 class="attribute-name">
 			<input name="data.resources.{{res.name}}.label" type="text" value="{{res.label}}"
