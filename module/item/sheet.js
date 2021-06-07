@@ -44,41 +44,46 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	async getData(options) {		
-		const data = super.getData(options);
+		const data = super.getData(options); console.log(data);
+		const itemData = data.data; console.log(itemData);
 		data.labels = this.item.labels;
 		data.config = CONFIG.DND4EBETA;
 
 		// Item Type, Status, and Details
-		data.itemType = data.item.type.titleCase();
-		data.itemStatus = this._getItemStatus(data.item);
-		data.itemProperties = this._getItemProperties(data.item);
-		data.isPhysical = data.item.data.hasOwnProperty("quantity");
+		data.itemType = itemData.type.titleCase();
+		data.itemStatus = this._getItemStatus(itemData);
+		data.itemProperties = this._getItemProperties(itemData);
+		data.isPhysical = itemData.data.hasOwnProperty("quantity");
 
 		// Potential consumption targets
-		data.abilityConsumptionTargets = this._getItemConsumptionTargets(data.item);
+		data.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
 	
-		if(data.item.type === "power") data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(data.item);
+		if(itemData.type === "power") data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
 		
-		if(data.item.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(data.item, data.config);
-		
-		if(data.data?.useType) {
-			if(!(data.data.rangeType === "personal" || data.data.rangeType === "closeBurst" || data.data.rangeType === "closeBlast" || data.data.rangeType === ""))
-				data.data.isRange = true;
-			if(data.data.rangeType === "closeBurst" || data.data.rangeType === "closeBlast" || data.data.rangeType === "rangeBurst" || data.data.rangeType === "rangeBlast" || data.data.rangeType === "wall" ) 
-				data.data.isArea = true;
+		if(itemData.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
+		console.log(itemData.data?.useType)
+		if(itemData.data?.useType) {
+			if(!(itemData.data.rangeType === "personal" || itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || data.data.rangeType === ""))
+			itemData.data.isRange = true;
+			if(itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || itemData.data.rangeType === "rangeBurst" || data.data.rangeType === "rangeBlast" || data.data.rangeType === "wall" ) 
+			itemData.data.isArea = true;
 		}
 
 		// Action Details
 		data.hasAttackRoll = this.item.hasAttack;
-		data.isHealing = data.item.data.actionType === "heal";
-		data.isFlatDC = getProperty(data.item.data, "save.scaling") === "flat";
+		data.isHealing = itemData.data.actionType === "heal";
+		data.isFlatDC = getProperty(itemData.data, "save.scaling") === "flat";
 
 		// Vehicles
-		data.isCrewed = data.item.data.activation?.type === 'crew';
-		data.isMountable = this._isItemMountable(data.item);
+		data.isCrewed = itemData.data.activation?.type === 'crew';
+		data.isMountable = this._isItemMountable(itemData);
 	
 		// Prepare Active Effects
-		data.effects = prepareActiveEffectCategories(this.entity.effects);
+		data.effects = prepareActiveEffectCategories(this.document.effects);
+
+		// Re-define the template data references (backwards compatible)
+		data.item = itemData;
+		data.data = itemData.data;
 		return data;
 	}
 
@@ -493,7 +498,7 @@ export default class ItemSheet4e extends ItemSheet {
 		console.log("_onExecute");
 		event.preventDefault();
 		await this._onSubmit(event, {preventClose: true}); 
-		executeMacro(this.entity); 
+		executeMacro(this.document); 
 	}
 	
 	/* -------------------------------------------- */

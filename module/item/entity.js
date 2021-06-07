@@ -341,7 +341,6 @@ export default class Item4e extends Item {
 		// Render the chat card template
 		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
 		const template = `systems/dnd4eBeta/templates/chat/${templateType}-card.html`;
-console.log(templateType)
 		let html = await renderTemplate(template, templateData);
 
 		if(templateData.item.type === "power") {
@@ -824,6 +823,10 @@ console.log(templateType)
 		const actorData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === undefined)) {
+			throw new Error("You may not use this power as you do not have the proper weapon equipted.");
+		}
+
 		if ( !this.hasDamage ) {
 			throw new Error("You may not make a Damage Roll with this Item.");
 		}
@@ -1243,7 +1246,8 @@ console.log(templateType)
 		if ( !actor ) return;
 
 		// Get the Item
-		const item = actor.getOwnedItem(card.dataset.itemId);
+		// const item = actor.getOwnedItem(card.dataset.itemId);
+		const item = actor.items.get(card.dataset.itemId);
 		if ( !item ) {
 			return ui.notifications.error(game.i18n.format("DND4EBETA.ActionWarningNoItem", {item: card.dataset.itemId, name: actor.name}))
 		}

@@ -101,6 +101,13 @@ export default class ActorSheet4e extends ActorSheet {
 		const actorData = this.actor.data.toObject(false);
 		data.actor = actorData;
 		data.data = actorData.data;
+
+		data.items = actorData.items;
+		for ( let i of data.items ) {
+			const item = this.actor.items.get(i._id);
+			i.labels = item.labels;
+		}
+		console.log(actorData.items)
 		
 		// return;
 
@@ -127,7 +134,7 @@ export default class ActorSheet4e extends ActorSheet {
 		);
 
 		// Prepare owned items
-		this._prepareItems(actorData);
+		this._prepareItems(data);
 		
 		// Prepare active effects
 		actorData.effects = prepareActiveEffectCategories(this.actor.effects);
@@ -176,7 +183,7 @@ export default class ActorSheet4e extends ActorSheet {
 	}
 
 	_prepareItems(data) {
-
+		console.log(data)
 		//define diffrent item datasets
 		const inventory = {
 			weapon: { label: "DND4EBETA.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
@@ -595,7 +602,7 @@ export default class ActorSheet4e extends ActorSheet {
 		// Update Inventory Item
 		html.find('.item-edit').click(event => {
 		const li = $(event.currentTarget).parents(".item");
-		const item = this.actor.getOwnedItem(li.data("itemId"));
+		const item = this.actor.items.get(li.data("itemId"));
 		item.sheet.render(true);
 		});
 
@@ -722,8 +729,8 @@ export default class ActorSheet4e extends ActorSheet {
 	_onItemSummary(event) {
 		event.preventDefault();
 		let li = $(event.currentTarget).parents(".item"),
-			item = this.actor.getOwnedItem(li.data("item-id")),
-			chatData = item.getChatData({secrets: this.actor.owner});
+			item = this.actor.items.get(li.data("item-id")),
+			chatData = item.getChatData({secrets: this.actor.isOwner});
 
 
 		// Toggle summary
@@ -767,7 +774,7 @@ export default class ActorSheet4e extends ActorSheet {
   _onToggleItem(event) {
 	event.preventDefault();
 	const itemId = event.currentTarget.closest(".item").dataset.itemId;
-	const item = this.actor.getOwnedItem(itemId);
+	const item = this.actor.items.get(itemId);
 	const power = ["power","atwill","encounter","daily","utility"];
 	const attr = power.includes(item.data.type) ? "data.prepared" : "data.equipped";
 	return item.update({[attr]: !getProperty(item.data, attr)});
@@ -837,7 +844,7 @@ export default class ActorSheet4e extends ActorSheet {
   _onItemEdit(event) {
 	event.preventDefault();
 	const li = event.currentTarget.closest(".item");
-	const item = this.actor.getOwnedItem(li.dataset.itemId);
+	const item = this.actor.items.get(li.dataset.itemId);
 	item.sheet.render(true);
   }
 
@@ -864,7 +871,7 @@ export default class ActorSheet4e extends ActorSheet {
 	async _onUsesChange(event) {
 		event.preventDefault();
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
-		const item = this.actor.getOwnedItem(itemId);
+		const item = this.actor.items.get(itemId);
 		const uses = Math.clamped(0, parseInt(event.target.value), item.data.data.uses.max);
 		event.target.value = uses;
 		return item.update({ 'data.uses.value': uses });
@@ -1063,7 +1070,7 @@ export default class ActorSheet4e extends ActorSheet {
   _onItemRoll(event) {
 	event.preventDefault();
 	const itemId = event.currentTarget.closest(".item").dataset.itemId;
-	const item = this.actor.getOwnedItem(itemId);
+	const item = this.actor.items.get(itemId);
 	// Roll powers through the actor
 	const power = ["atwill","encounter","daily","utility"];
 
@@ -1177,7 +1184,7 @@ export default class ActorSheet4e extends ActorSheet {
 		const skillName = this.actor.data.data.passive[passName].skill;
 
 		ChatMessage.create({
-			user: game.user._id,
+			user: game.user.id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			content: `Passive ${this.actor.data.data.skills[skillName].label} Skill Check: <SPAN STYLE="font-weight:bold">${this.object.data.data.passive[passName].value}`
 		});	

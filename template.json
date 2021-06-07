@@ -708,7 +708,7 @@
 		"attackFormImp": "",
 		"damageForm": "@enhance",
 		"damageFormImp": "",
-		"critDamageForm": "@enhance+@enhance d6",
+		"critDamageForm": "(@enhance)d6",
 		"critDamageFormImp": "",
 		"critRange": 20,
 		"critRangeImp": 20

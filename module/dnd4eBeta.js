@@ -45,8 +45,8 @@ Hooks.once("init", async function() {
 	
 	// Define custom Entity classes
 	CONFIG.DND4EBETA = DND4EBETA;
-	CONFIG.Actor.entityClass = Actor4e;
-	CONFIG.Item.entityClass = Item4e;
+	CONFIG.Actor.documentClass = Actor4e;
+	CONFIG.Item.documentClass = Item4e;
 	
 	// CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffectIcons;
 	CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffect;

@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.0
+- Updated To Foundry 0.8.6
+
 ## Version 0.1.6
 - Updated to Foundry 0.7.10
 
