@@ -24,6 +24,6 @@
 	"primaryTokenAttribute": "health",
 	"secondaryTokenAttribute": "power",
   	"url": "https://github.com/EndlesNights/dnd4eBeta",
-	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/master/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/master/dnd4eBeta.zip"
+	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/0.0.9-Stable/system.json",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/0.0.9-Stable/dnd4eBeta.zip"
 }
