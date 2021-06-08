@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.2.1
+- fixed issue where temphp was not bieng taken into account  when right click applying damage.
+- fixed error in code where items would try to delete twice
+- fixed Burtal property to now use reccursive reroll feater that was added to core in FVTT 0.8.x
+- fixed active effects to work again 0.8.x
+- Added intragrated macro rolling to all items types
+
 ## Version 0.2.0
 - Updated To Foundry 0.8.6
 

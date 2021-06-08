@@ -686,9 +686,10 @@ export class Actor4e extends Actor {
 	async applyDamage(amount=0, multiplier=1) {
 		amount = Math.floor(parseInt(amount) * multiplier);
 		const hp = this.data.data.attributes.hp;
-	
+		console.log(hp)
+
 		// Deduct damage from temp HP first
-		const tmp = parseInt(hp.temp) || 0;
+		const tmp = parseInt(hp.temphp) || 0;
 		const dt = amount > 0 ? Math.min(tmp, amount) : 0;
 	
 		// Remaining goes to health
@@ -697,7 +698,7 @@ export class Actor4e extends Actor {
 	
 		// Update the Actor
 		const updates = {
-		  "data.attributes.hp.temp": tmp - dt,
+		  "data.attributes.hp.temphp": tmp - dt,
 		  "data.attributes.hp.value": dh
 		};
 	

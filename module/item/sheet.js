@@ -79,7 +79,7 @@ export default class ItemSheet4e extends ItemSheet {
 		data.isMountable = this._isItemMountable(itemData);
 	
 		// Prepare Active Effects
-		data.effects = prepareActiveEffectCategories(this.document.effects);
+		data.effects = prepareActiveEffectCategories(this.actor.effects);
 
 		// Re-define the template data references (backwards compatible)
 		data.item = itemData;
