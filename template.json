@@ -767,6 +767,7 @@
 		"damageShare": false,
 		"postEffect": true,
 		"postSpecial": true,
+		"autoGenChatPowerCard": true,
 		"sustain": {
 			"actionType": "none",
 			"detail": ""
@@ -779,7 +780,7 @@
 			"abilityBonus": 0,
 			"def": "ac",
 			"defBonus": 0,
-			"formula": "1d20+@wepAttack+@powerMod+@lvhalf",
+			"formula": "@wepAttack+@powerMod+@lvhalf",
 			"damageType": {},
 			"effectType": {}
 		},

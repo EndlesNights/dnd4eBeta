@@ -2,6 +2,9 @@
 
 ## Version 0.2.2
 - Reworked roll configeraion window for any d20 based rolls
+- Removed '1d20' from default attack roll formulas
+- Added an option to disable powers from auto generating power cards, and will instead just display their details (if there are any to display)
+- Fixed an issue where undifiend values where causing issues with dice rolls for powers/weapons. Unfined values should now return to zero by default.
 
 ## Version 0.2.1
 - fixed issue where temphp was not bieng taken into account  when right click applying damage.

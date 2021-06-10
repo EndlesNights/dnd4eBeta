@@ -2,6 +2,11 @@
 	<h3 class="form-header">{{ localize "DND4EBETA.PowerDetails" }}</h3>
 
 	{{!-- Power Source & Keywords --}}
+	<div class="form-group">
+		<label>Auto Generate Power Card Details</label>
+		<input type="checkbox" name="data.autoGenChatPowerCard" data-dtype="Boolean" {{checked data.autoGenChatPowerCard}}/>
+	</div>
+
 	<div class="form-group select">
 		<label>{{ localize "DND4EBETA.PowerSource" }}</label>
 		<select name="data.powersource">

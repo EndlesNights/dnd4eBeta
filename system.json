@@ -2,7 +2,7 @@
 	"name": "dnd4eBeta",
 	"title": "4th Edition Beta",
 	"description": "A minimalist custom test build of 4th Ed.",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"minimumCoreVersion": "0.8.5",
 	"compatibleCoreVersion": "0.8.6",
 	"templateVersion": 2,
