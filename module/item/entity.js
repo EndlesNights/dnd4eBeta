@@ -687,42 +687,16 @@ export default class Item4e extends Item {
 			}
 			let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
 		let flavor = title;
-		
-		// if(itemData.chatFlavor) flavor += `<br>${itemData.chatFlavor}`;
-		// if(itemData.target.type && !["none","personal"].includes(itemData.target.type)) {
-		// 	if(itemData.target.num) {
-		// 		flavor += `<br>Target: ${itemData.target.num} ${itemData.target.type}`;
-		// 	} else {
-		// 		flavor += `<br>Target: Each ${itemData.target.type} `;
-		// 	}
-		// 	//Determin weapon range and AoE type here from rangeType && rangePower.
-		// 	if(itemData.rangeType) {
-		// 		if(itemData.rangeType === "weapon") {
-		// 			flavor += `, ${CONFIG.DND4EBETA.weaponType[itemData.weaponType]}`;
-		// 		} 
-		// 		else if (itemData.rangeType !== "range") {
-		// 			flavor += `, ${CONFIG.DND4EBETA.rangeType[itemData.rangeType]}`;
-		// 		}
-		// 	}
-		// 	if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
-		// 		flavor += ` ${itemData.area}`
-		// 	}
-		// 	if(itemData.rangePower && !["closeBurst","closeBlast"].includes(itemData.rangeType) ) {
-		// 		flavor += ` within range of ${itemData.rangePower} squares.`
-		// 	}
-		// } else if (itemData.target.type) {
-		// 	flavor += `<br>Target: ${itemData.target.type} `;
-		// }
-		// flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
+
 		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }<b>`;
-			const rollData = this.getRollData();
-		
-			// Define Roll bonuses
-			const parts = !!itemData.attack.formula? [`@power`] : [`@mod`];
-			// if ( (this.data.type !== "weapon") || itemData.proficient ) {
-				// parts.push("@prof");
-			// }
-		
+		const rollData = this.getRollData();
+
+		rollData.isAttackRoll = true;
+		rollData.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
+
+		// Define Roll bonuses
+		const parts = !!itemData.attack.formula? [`@power`] : [`@mod`];
+
 		//pack the powers formal and send it to the dice.
 		if(!!itemData.attack.formula) {		
 			rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null);
@@ -777,13 +751,14 @@ export default class Item4e extends Item {
 			actor: this.actor,
 			data: rollData,
 			title: title,
-		flavor: flavor,
+			flavor: flavor,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			dialogOptions: {
 				width: 400,
 				top: options.event ? options.event.clientY - 80 : null,
 				left: window.innerWidth - 710
 			},
+			isAttackRoll: true,
 			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }}
 		}, options);
 		rollConfig.event = options.event;
@@ -792,7 +767,6 @@ export default class Item4e extends Item {
 		if (weaponUse) {
 			rollConfig.critical = itemData.weaponType === "implement" ? weaponUse.data.data.critRangeImp : weaponUse.data.data.critRange;
 		}
-	
 		// Invoke the d20 roll helper
 		const roll = await d20Roll(rollConfig);
 		if ( roll === false ) return null;
@@ -819,6 +793,7 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollDamage({event, spellLevel=null, versatile=false}={}) {
+		console.log("rollDamage")
 		const itemData = this.data.data;
 		const actorData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);

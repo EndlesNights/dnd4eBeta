@@ -29,7 +29,8 @@
 export async function d20Roll({parts=[], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 	flavor=null, fastForward=null, onClose, dialogOptions,
 	advantage=null, disadvantage=null, critical=20, fumble=1, targetValue=null,
-	elvenAccuracy=false, halflingLucky=false, reliableTalent=false}={}) {
+	elvenAccuracy=false, halflingLucky=false, reliableTalent=false, isAttackRoll=false}={}) {
+
 	// Handle input arguments
 	flavor = flavor || title;
 	speaker = speaker || ChatMessage.getSpeaker();
@@ -40,12 +41,39 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 	const _roll = function(parts, adv, form=null) {
 
 		// Determine the d20 roll and modifiers
-		if(!parts.includes("@power") && !parts.includes("@tool")) parts.unshift(`1d20`);
-	
+		// if(!parts.includes("@power") && !parts.includes("@tool")) parts.unshift(`1d20`);
+		if(!parts.includes("@tool")) {
+			if(!form) {
+				parts.unshift(`1d20`);
+			} else if(!form.d20?.value && form.d20?.value !== 0) {
+				parts.unshift(`${form.d20.value}d20`);
+			} else if(form.d20?.value>0){
+				parts.unshift(`${form.d20.value}d20kh`);
+			} else if(form.d20.value<0) {
+				parts.unshift(`${Math.abs(form.d20.value)}d20kl`);
+			}
+		}
+
+
+		// if(form.d20.value) {
+		// 	console.log(form.d20.value)
+		// 	data['d20'] = `${form.d20.value}d20`
+		// }
+
 		// Optionally include a situational bonus
 		if ( form !== null ) data['bonus'] = form.bonus.value;
+		if(isAttackRoll) {
+			for ( let [k, v] of Object.entries(form) ) {	
+				if(v.checked) {
+					data['bonus'] += CONFIG.DND4EBETA.commonAttackBonuses[v.name].value;
+				}
+			}
+		}
 		if ( !data["bonus"] ) parts.pop();
-	
+
+		console.log(data)
+		// data.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
+		// console.log(data)
 		// flavor = form.flavor.value || flavor;
 	
 		// Optionally include an ability score selection (used for tool checks)
@@ -109,7 +137,9 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		rollMode: rollMode,
 		rollModes: CONFIG.Dice.rollModes,
 		config: CONFIG.DND4EBETA,
-	flavor: newFlavor || flavor
+		flavor: newFlavor || flavor,
+		isAttackRoll: isAttackRoll,
+		isD20Roll: true
 	};
 	const html = await renderTemplate(template, dialogData);
 

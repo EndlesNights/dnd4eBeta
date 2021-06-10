@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.2
+- Reworked roll configeraion window for any d20 based rolls
+
 ## Version 0.2.1
 - fixed issue where temphp was not bieng taken into account  when right click applying damage.
 - fixed error in code where items would try to delete twice

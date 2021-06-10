@@ -289,6 +289,20 @@ DND4EBETA.consumableTypes = {
 };
 
 /* -------------------------------------------- */
+DND4EBETA.commonAttackBonuses = {
+	comAdv: {value: 2, label:"DND4EBETA.CommonAttackComAdv"},
+	charge: {value: 1, label:"DND4EBETA.CommonAttackCharge"},
+	conceal: {value: -2, label:"DND4EBETA.CommonAttackConceal"},
+	concealTotal: {value: -5, label:"DND4EBETA.CommonAttackConcealTotal"},
+	cover: {value: -2, label:"DND4EBETA.CommonAttackCover"},
+	coverSup: {value: -5, label:"DND4EBETA.CommonAttackCoverSup"},
+	longRange: {value: -2, label:"DND4EBETA.CommonAttackLongRange"},
+	prone: {value: -2, label:"DND4EBETA.CommonAttackProne"},
+	restrained: {value: -2, label:"DND4EBETA.CommonAttackRestrained"},
+	running: {value: -5, label:"DND4EBETA.CommonAttackRunning"},
+	squeez: {value: -5, label:"DND4EBETA.CommonAttackSqueez"},
+}
+/* -------------------------------------------- */
 
 /**
  * The valid currency denominations supported by the 4e system

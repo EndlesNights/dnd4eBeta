@@ -840,7 +840,8 @@ font-size: 12px;
 	font-size: 20px;
 	align-items: center;
 }
-.dnd4eBeta.sheet .editable .rollable:hover {
+.dnd4eBeta.sheet .editable .rollable:hover,
+.rollable:hover {
 	color: #000;
 	text-shadow: 0 0 10px red;
 	cursor: pointer;
