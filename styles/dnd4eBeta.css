@@ -1891,7 +1891,7 @@ font-size: 12px;
 }
 .dnd4eBeta.sheet.actor .inventory-list .item-summary {
 	flex: 0 0 100%;
-	font-size: 12px;
+	font-size: 14px;
 	line-height: 16px;
 	padding: 0.25em 0.5em;
 	border-top: 1px solid #c9c7b8;
@@ -2147,7 +2147,7 @@ font-size: 12px;
 /* ----------------------------------------- */
 .dnd4eBeta.chat-card {
 	font-style: normal;
-	font-size: 12px;
+	font-size: 14px;
 }
 .dnd4eBeta.chat-card .card-header {
 	padding: 3px 0;

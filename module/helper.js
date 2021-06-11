@@ -250,7 +250,7 @@ export class Helper {
 	static _preparePowerCardData(chatData, CONFIG) {
 		console.log(chatData)
 
-		let powerDetail = `<span>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]} ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}`;
+		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]} ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}`;
 		let tag = [];
 
 		if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
@@ -271,68 +271,68 @@ export class Helper {
 			}
 		}
 		tag.sort();
-		powerDetail += tag.length > 0 ? `, ${tag.join(', ')}</span>` : `</span>`;
+		powerDetail += tag.length > 0 ? `, ${tag.join(', ')}</b></span>` : `</b></span>`;
 		
-		powerDetail += `<br><span>${CONFIG.DND4EBETA.abilityActivationTypes[chatData.actionType]} •`;
+		powerDetail += `<br><span><b>${CONFIG.DND4EBETA.abilityActivationTypes[chatData.actionType]} •`;
 
 		if(chatData.rangeType === "weapon") {
 			powerDetail += ` ${CONFIG.DND4EBETA.weaponType[chatData.weaponType]}`;
-			chatData.rangePower ? powerDetail += ` <b>${chatData.rangePower}</b>` : {} ;
-			powerDetail += `</span>`;
+			chatData.rangePower ? powerDetail += `</b> ${chatData.rangePower}</span>` : powerDetail += `</b></span>`;
+			
 		} 
 		else if (chatData.rangeType === "range") {
-			powerDetail += ` ${game.i18n.localize("DND4EBETA.Range")} <b>${chatData.rangePower}</b></span>`;
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.Range")}</b> ${chatData.rangePower}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} <b>${chatData.area}</b></span>`;
+			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b></span>`;
 		}
 		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} <b>${chatData.area}</b> ${game.i18n.localize("DND4EBETA.RangeWithinOf")} <b>${chatData.rangePower}</b> ${game.i18n.localize("DND4EBETA.Squares")}</span>`;
+			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b> ${game.i18n.localize("DND4EBETA.RangeWithinOf")} <b>${chatData.rangePower}</b> ${game.i18n.localize("DND4EBETA.Squares")}</span>`;
 		}
 		else if (chatData.rangeType === "personal") {
-			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</span>`;
+			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
 		}
 		else if (chatData.rangeType === "trouch") {
-			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")} ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</span>`;
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")} ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
 		}
 		else {
-			powerDetail += `</span>`;
+			powerDetail += `</b></span>`;
 		}
 
 		if(chatData.target) {
-			powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Target")}: ${chatData.target}</span>`;
+			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Target")}:</b> ${chatData.target}</span>`;
 		}
 
 		if(chatData.trigger) {
-			powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Trigger")}: ${chatData.trigger}</span>`;
+			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Trigger")}:</b> ${chatData.trigger}</span>`;
 		}
 
 		if(chatData.requirement) {
-			powerDetail += `<br><span>${game.i18n.localize("DND4EBETA.Requirements")}: ${chatData.requirement}</span>`;
+			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Requirements")}:</b> ${chatData.requirement}</span>`;
 		}
 
 		if(!chatData.postEffect && chatData.effect.detail) {
-			powerDetail += `<p>${game.i18n.localize("DND4EBETA.Effect")}: ${chatData.effect.detail}</p>`;
+			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Effect")}:</b> ${chatData.effect.detail}</p>`;
 		}
 		if(!chatData.postSpecial && chatData.special) {
-			powerDetail += `<p>${game.i18n.localize("DND4EBETA.Special")}: ${chatData.special}</p>`;
+			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
 		}
 
 		if(chatData.attack.isAttack) {
-			powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Attack")}: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
-			chatData.hit.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Hit")}: ${chatData.hit.detail}</p>` : {};
-			chatData.miss.detail ? powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Miss")}: ${chatData.miss.detail}</p>` : {};
+			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+			chatData.hit.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Hit")}:</b> ${chatData.hit.detail}</p>` : {};
+			chatData.miss.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Miss")}:</b> ${chatData.miss.detail}</p>` : {};
 		}
 
 		if(chatData.postEffect && chatData.effect.detail) {
-			powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Effect")}: ${chatData.effect.detail}</p>`;
+			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Effect")}:</b> ${chatData.effect.detail}</p>`;
 		}
 		if(chatData.postSpecial && chatData.special) {
-			powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Special")}: ${chatData.special}</p>`;
+			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
 		}
 
 		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
-			powerDetail += `<p class="alt">${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}: ${chatData.sustain.detail}</p>`;
+			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
 		}
 
 		return powerDetail;
