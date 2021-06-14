@@ -20,30 +20,30 @@ export class Actor4e extends Actor {
 //     const data = super.getRollData();
 //     const shorthand = game.settings.get("dnd4eBeta", "macroShorthand");
 
-    // Re-map all attributes onto the base roll data
-    // if ( !!shorthand ) {
-    //   for ( let [k, v] of Object.entries(data.attributes) ) {
-    //     if ( !(k in data) ) data[k] = v.value;
-    //   }
-    //   delete data.attributes;
-    // }
+	// Re-map all attributes onto the base roll data
+	// if ( !!shorthand ) {
+	//   for ( let [k, v] of Object.entries(data.attributes) ) {
+	//     if ( !(k in data) ) data[k] = v.value;
+	//   }
+	//   delete data.attributes;
+	// }
 
-    // Map all items data using their slugified names
-    // data.items = this.data.items.reduce((obj, i) => {
-      // let key = i.name.slugify({strict: true});
-      // let itemData = duplicate(i.data);
-      // if ( !!shorthand ) {
+	// Map all items data using their slugified names
+	// data.items = this.data.items.reduce((obj, i) => {
+	  // let key = i.name.slugify({strict: true});
+	  // let itemData = duplicate(i.data);
+	  // if ( !!shorthand ) {
 		  // console.log( Object);
 		  // console.log( itemData);
 		  
-        // for ( let [k, v] of Object.entries(itemData.attributes) ) {
-          // if ( !(k in itemData) ) itemData[k] = v.value;
-        // }
-        // delete itemData["attributes"];
-      // }
-      // obj[key] = itemData;
-      // return obj;
-    // }, {});
+		// for ( let [k, v] of Object.entries(itemData.attributes) ) {
+		  // if ( !(k in itemData) ) itemData[k] = v.value;
+		// }
+		// delete itemData["attributes"];
+	  // }
+	  // obj[key] = itemData;
+	  // return obj;
+	// }, {});
 	
 //     return data;
 //   }
@@ -573,17 +573,17 @@ export class Actor4e extends Actor {
   /** @override */
   async createOwnedItem(itemData, options) {
 
-    // Assume NPCs are always proficient with weapons and always have spells prepared
-    if ( !this.isPC ) {
-      let t = itemData.type;
-      let initial = {};
-      if ( t === "weapon" ) initial["data.proficient"] = true;
-      if ( ["weapon", "equipment"].includes(t) ) initial["data.equipped"] = true;
-      if ( t === "spell" ) initial["data.prepared"] = true;
-      mergeObject(itemData, initial);
-    }
+	// Assume NPCs are always proficient with weapons and always have spells prepared
+	if ( !this.isPC ) {
+	  let t = itemData.type;
+	  let initial = {};
+	  if ( t === "weapon" ) initial["data.proficient"] = true;
+	  if ( ["weapon", "equipment"].includes(t) ) initial["data.equipped"] = true;
+	  if ( t === "spell" ) initial["data.prepared"] = true;
+	  mergeObject(itemData, initial);
+	}
 	
-    return super.createOwnedItem(itemData, options);
+	return super.createOwnedItem(itemData, options);
   }
 
 	/* -------------------------------------------- */
@@ -627,7 +627,7 @@ export class Actor4e extends Actor {
 			// if ( this.sheet.rendered ) this.sheet.minimize();
 		// }		
 		// Invoke the Item roll
-		return item.roll();		
+		return item.roll();
 	}
 	
 	_computeEncumbrance(actorData) {
@@ -683,23 +683,37 @@ export class Actor4e extends Actor {
 		};
 	}
 
-	async applyDamage(amount=0, multiplier=1) {
+	async applyDamage(amount=0, multiplier=1) 
+	{
 		amount = Math.floor(parseInt(amount) * multiplier);
+		const healFromZero = true; // If true, healing HP starts from zero (the usual for 4e). On false, it follows normal arithmetic
 		const hp = this.data.data.attributes.hp;
 		console.log(hp)
 
 		// Deduct damage from temp HP first
 		const tmp = parseInt(hp.temphp) || 0;
 		const dt = amount > 0 ? Math.min(tmp, amount) : 0;
-	
 		// Remaining goes to health
-		const tmpMax = parseInt(hp.tempmax) || 0;
-		const dh = Math.clamped(hp.value - (amount - dt), 0, hp.max + tmpMax);
+		//const tmpMax = parseInt(hp.tempmax) || 0;
+		amount = amount - dt;
+		var newHp = hp.value;
+		if (amount > 0) // Damage
+			{
+			newHp = Math.clamped(hp.value - amount, (-1)*this.data.data.details.bloodied, hp.max);
+			}
+		else if (amount < 0) // Healing
+			{
+			if (healFromZero == true && hp.value < 0)
+				{
+				newHp = 0;
+				}
+			newHp = Math.clamped(newHp - amount, (-1)*this.data.data.details.bloodied, hp.max);
+			}
 	
 		// Update the Actor
 		const updates = {
 		  "data.attributes.hp.temphp": tmp - dt,
-		  "data.attributes.hp.value": dh
+		  "data.attributes.hp.value": newHp
 		};
 	
 		// Delegate damage application to a hook

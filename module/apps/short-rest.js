@@ -46,7 +46,6 @@ export class ShortRestDialog extends DocumentSheet {
 						r.roll();
 					}
 				}
-				
 				healamount += this.object.data.data.details.surgeValue + r.total;
 			}
 
@@ -80,18 +79,17 @@ export class ShortRestDialog extends DocumentSheet {
 				"data.uses.value": item.data.data.uses.max
 			};
 		});
-		await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
+		// await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
+		await this.object.updateEmbeddedDocuments("Item", updateItems);
 		
 		ChatMessage.create({
 			user: game.user._id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
 			// content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP."
-
 			content: formData.surge >= 1 ? `${this.object.data.name} takes a short rest, spending ${formData.surge} healing surge, regaining ${(updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value)} HP.`
 				: `${this.object.data.name} takes a short rest.`
 			
-			//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 		});		
 		
 		for (let r of Object.entries(this.object.data.data.resources)) {
@@ -103,5 +101,3 @@ export class ShortRestDialog extends DocumentSheet {
 		this.object.update(updateData);
 	}	  
 }
-
-

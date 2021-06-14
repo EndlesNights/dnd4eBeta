@@ -302,13 +302,12 @@ export default class Item4e extends Item {
 			// let x = func();
 			// console.log(x)
 		}
-
 		const cardData = this.data.type == "power" && this.data.data.autoGenChatPowerCard ? Helper._preparePowerCardData(this.getChatData(), CONFIG) : null;
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
 			actor: this.actor,
-			tokenId: token ? `${token.scene._id}.${token.id}` : null,
+			tokenId: token ? token.uuid : null,
 			item: this.data,
 			data: this.getChatData(),
 			labels: this.labels,
@@ -347,14 +346,10 @@ export default class Item4e extends Item {
 		}
 		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--item`);
-			console.log("test")
 		} else {
 			html = html.replace("ability-usage--", `ability-usage--other`);
 		}
 
-		console.log(templateData.item.type)
-
-		console.log(templateData)
 		// Basic chat message data
 		const chatData = {
 			user: game.user._id,
@@ -535,7 +530,6 @@ export default class Item4e extends Item {
 	getChatData(htmlOptions={}) {
 		const data = duplicate(this.data.data);
 		const labels = this.labels;
-		console.log(labels)
 		// Rich text description
 		data.description.value = TextEditor.enrichHTML(data.description.value, htmlOptions);
 
@@ -563,7 +557,6 @@ export default class Item4e extends Item {
 				labels.damageTypes,
 				labels.effectType,
 			);
-			console.log(labels.damageTypes)
 		}
 		// Filter properties and return
 		data.properties = props.filter(p => !!p);
@@ -884,7 +877,6 @@ export default class Item4e extends Item {
 		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
 		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 		// Call the roll helper utility
-		console.log(parts);
 		return damageRoll({
 			event: event,
 			parts: parts,
@@ -1288,11 +1280,10 @@ export default class Item4e extends Item {
 	 * @private
 	 */
 	static _getChatCardActor(card) {
-
 		// Case 1 - a synthetic actor from a Token
 		const tokenKey = card.dataset.tokenId;
 		if (tokenKey) {
-			const [sceneId, tokenId] = tokenKey.split(".");
+			const [,sceneId,,tokenId] = tokenKey.split(".");
 			const scene = game.scenes.get(sceneId);
 			if (!scene) return null;
 			const tokenData = scene.getEmbeddedEntity("Token", tokenId);

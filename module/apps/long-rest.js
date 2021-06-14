@@ -64,7 +64,7 @@ export class LongRestDialog extends DocumentSheet {
 				"data.uses.value": item.data.data.uses.max
 			};
 		});
-		await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
+		await this.object.updateEmbeddedDocuments("Item", updateItems);
 		ChatMessage.create({
 			user: game.user._id,
 			speaker: {actor: this.object, alias: this.object.data.name},

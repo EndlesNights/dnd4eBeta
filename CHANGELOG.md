@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.3
+- fixed issue where unlinked tokens could not properly use powers
+- fixed issue with short/long rest not properly updating  after porting from FVTT 7.x to 8.x
+- fixed math issue where subtracting HP from chat rolls would not go into negtive values.
+
 ## Version 0.2.2
 - Reworked roll configeraion window for any d20 based rolls
 - Removed '1d20' from default attack roll formulas

@@ -823,7 +823,7 @@ export default class ActorSheet4e extends ActorSheet {
 		}
 		else if(this.object.data.data.powerGroupTypes === "usage") {
 			itemData.data.useType = type;
-			if(["encounter", "daily"].includes(type)) {
+			if(["encounter", "daily", "recharge"].includes(type)) {
 				itemData.data.uses = {
 					value: 1,
 					max: 1,
