@@ -319,7 +319,7 @@ export class Helper {
 		}
 
 		if(chatData.attack.isAttack) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
 			chatData.hit.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Hit")}:</b> ${chatData.hit.detail}</p>` : {};
 			chatData.miss.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Miss")}:</b> ${chatData.miss.detail}</p>` : {};
 		}

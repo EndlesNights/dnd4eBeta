@@ -10,10 +10,10 @@ import { Helper } from "./helper.js"
  */
 export class Actor4e extends Actor {
 
-	/** @override */
+	/** @inheritdoc */
 	getRollData() {
 		const data = super.getRollData();
-
+		console.log(data)
 		return data;
 	}
 //   getRollData() {

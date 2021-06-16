@@ -79,7 +79,7 @@ export default class ItemSheet4e extends ItemSheet {
 		data.isMountable = this._isItemMountable(itemData);
 	
 		// Prepare Active Effects
-		data.effects = prepareActiveEffectCategories(this.actor.effects);
+		data.effects = prepareActiveEffectCategories(this.item.effects);
 
 		// Re-define the template data references (backwards compatible)
 		data.item = itemData;
@@ -113,9 +113,35 @@ export default class ItemSheet4e extends ItemSheet {
 
 	shareItem() {
 		game.socket.emit("system.dnd4eBeta", {
-		itemId: this.item._id
+			itemId: this.item._id
 		});
 	}
+
+	static _handleShareItem({itemId}={}) {
+		let item = game.items.get(itemId);
+
+		if (item == undefined) {
+			let characters = game.actors.filter(x => x.data.type == "Player Character");
+
+			for (var x = 0; x <= characters.length; x++) {
+				let actor = characters[x];
+				let found = actor.data.items.find(x => x._id == itemId);
+				if (found) {
+					item = actor.items.get(itemId);
+					break;
+				}
+			}
+		}
+
+		let itemSheet = new ItemSheet4e(item, {
+			title: item.title,
+			uuid: item.uuid,
+			shareable: false,
+			editable: false
+		});
+
+		return itemSheet.render(true);
+	  }
 
 	exportItem() {
 		const jsonString = JSON.stringify(this.object._data);
@@ -670,3 +696,9 @@ function executeMacro(item)
 		item: item.data.data
 	}).execute();
 }
+
+Hooks.once('ready', async function () {
+	game.socket.on("system.dnd4eBeta", (msg) => {
+		ItemSheet4e._handleShareItem(msg);
+	});
+})

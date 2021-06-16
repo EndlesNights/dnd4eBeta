@@ -1,6 +1,13 @@
 # Changelog
 
 ## Version 0.2.3
+- fixed issue with inline not working on character sheet
+- fixed issue where item active effects where using actor active effects instead of their own after post 0.8.x change
+- Show Players button should now work for items, and share the item with your players.
+- Fixed an issue where if the power Attack Formual was empty, it would still add in the ability mob
+- powers that use implments as thier weapon should now be usable without one as it should be otional.
+
+## Version 0.2.3
 - fixed issue where unlinked tokens could not properly use powers
 - fixed issue with short/long rest not properly updating  after porting from FVTT 7.x to 8.x
 - fixed math issue where subtracting HP from chat rolls would not go into negtive values.

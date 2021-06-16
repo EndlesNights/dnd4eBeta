@@ -163,7 +163,6 @@ export default class Item4e extends Item {
 	 */
 	prepareData() {
 		super.prepareData();
-
 		// Get the Item's data
 		const itemData = this.data;
 		const actorData = this.actor ? this.actor.data : {};
@@ -171,6 +170,7 @@ export default class Item4e extends Item {
 		const C = CONFIG.DND4EBETA;
 		const labels = {};
 
+		
 		// Classes
 		// if ( itemData.type === "class" ) {
 		// 	data.levels = Math.clamped(data.levels, 1, 20);
@@ -672,7 +672,11 @@ export default class Item4e extends Item {
 		const itemData = this.data.data;
 		const actorData = this.actor.data.data;	
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
-		
+
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
+			throw new Error("You may not use this power as you do not have the proper weapon equipped.");
+		}
+
 			const flags = this.actor.data.flags.dnd4eBeta || {};
 			if ( !this.hasAttack ) {
 				throw new Error("You may not place an Attack Roll with this Item.");
@@ -687,7 +691,7 @@ export default class Item4e extends Item {
 		rollData.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
 
 		// Define Roll bonuses
-		const parts = !!itemData.attack.formula? [`@power`] : [`@mod`];
+		const parts = !!itemData.attack.formula? [`@power`] : [];
 
 		//pack the powers formal and send it to the dice.
 		if(!!itemData.attack.formula) {		
@@ -790,8 +794,8 @@ export default class Item4e extends Item {
 		const actorData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
-		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === undefined)) {
-			throw new Error("You may not use this power as you do not have the proper weapon equipted.");
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
+			throw new Error("You may not use this power as you do not have the proper weapon equipped.");
 		}
 
 		if ( !this.hasDamage ) {
@@ -1172,6 +1176,8 @@ export default class Item4e extends Item {
 		// Include a proficiency score
 		// const prof = "proficient" in rollData.item ? (rollData.item.proficient || 0) : 1;
 		// rollData["prof"] = Math.floor(prof * rollData.attributes.prof);
+		
+		console.log(rollData)
 		return rollData;
 	}
 
