@@ -9,7 +9,7 @@ A beta build of D&D4e to be used via the Foundry VTT.
 
 ## Installation
 * Open the Foundry application and click **"Install Module"** in the **"Add-On Modules"** tab.
-* Paste the following link: https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dev8/system.json
+* Paste the following link: https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dev/system.json
 * Click "Install"
 * Activate the module in your World using **Manage Modules** under the **Game Settings** tab.
 
