@@ -154,7 +154,14 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		
+
+		if(!(data.details.saves.bonus.length === 1 && jQuery.isEmptyObject(data.details.saves.bonus[0]))) {
+			for( const b of data.details.saves.bonus) {
+				if(b.active) {
+					data.details.saves.value += b.value;
+				}
+			}
+		}
 		//Weight & Encumbrance
 		data.encumbrance = this._computeEncumbrance(actorData);
 			

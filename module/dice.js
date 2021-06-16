@@ -74,8 +74,9 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		console.log(data)
 		// data.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
 		// console.log(data)
-		// flavor = form.flavor.value || flavor;
-	
+		if(form?.flavor.value){
+			flavor = form.flavor.value || flavor;
+		}	
 		// Optionally include an ability score selection (used for tool checks)
 		const ability = form ? form.ability : null;
 		if ( ability && ability.value ) {
@@ -204,6 +205,11 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 	const _roll = function(parts, partsCrit, crit, form) {
 		data['bonus'] = form.bonus.value || 0;
 		let roll = crit? new Roll(partsCrit.filterJoin("+"), data) : new Roll(parts.filterJoin("+"), data);
+
+		if(form.flavor.value){
+			flavor = form.flavor.value || flavor;
+		}
+
 		// Modify the damage formula for critical hits
 		if ( crit === true ) {
 			// let add = (actor && actor.getFlag("dnd4eBeta", "savageAttacks")) ? 1 : 0;

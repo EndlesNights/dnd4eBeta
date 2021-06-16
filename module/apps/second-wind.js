@@ -36,10 +36,18 @@ export class SecondWindDialog extends DocumentSheet {
 		}
 
 		const updateData = {};
-		updateData[`data.attributes.hp.value`] = Math.min(
-			(this.object.data.data.attributes.hp.value + this.object.data.data.details.secondWindValue + (r.total || 0)),
-			this.object.data.data.attributes.hp.max
-		);
+		if(this.object.data.data.attributes.hp.value <= 0) {
+			updateData[`data.attributes.hp.value`] = Math.min(
+				(this.object.data.data.details.secondWindValue + (r.total || 0)),
+				this.object.data.data.attributes.hp.max
+			);
+		} else {
+			updateData[`data.attributes.hp.value`] = Math.min(
+				(this.object.data.data.attributes.hp.value + this.object.data.data.details.secondWindValue + (r.total || 0)),
+				this.object.data.data.attributes.hp.max
+			);
+		}
+
 		
 		updateData[`data.details.secondwind`] = true;
 		

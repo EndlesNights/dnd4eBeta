@@ -26,7 +26,9 @@ export class SaveThrowDialog extends DocumentSheet {
 	async _updateObject(event, formData) {
 
 		let message = `Rolling Saving Throw, DC: ${formData.dc}`;
+		console.log(this.object.data.data.details.saves)
 		const rollConfig = mergeObject({
+			// parts: [this.object.data.data.details.saves.value, formData.save],
 			parts: [this.object.data.data.details.saves.value, formData.save],
 			actor: this.actor,
 			data: {},

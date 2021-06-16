@@ -4,7 +4,7 @@
 	"description": "A minimalist custom test build of 4th Ed.",
 	"version": "0.2.3",
 	"minimumCoreVersion": "0.8.5",
-	"compatibleCoreVersion": "0.8.6",
+	"compatibleCoreVersion": "0.8.7",
 	"templateVersion": 2,
 	"author": "EndlesNights",
 	"esmodules": [

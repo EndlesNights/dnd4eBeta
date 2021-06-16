@@ -249,6 +249,7 @@ export class Helper {
 
 	static _preparePowerCardData(chatData, CONFIG) {
 		console.log(chatData)
+		console.trace()
 
 		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]} ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}`;
 		let tag = [];

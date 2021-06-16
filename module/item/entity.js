@@ -558,6 +558,11 @@ export default class Item4e extends Item {
 				labels.effectType,
 			);
 		}
+		
+		if(data.chatFlavor) {
+			data.description.value = data.chatFlavor;
+		}
+
 		// Filter properties and return
 		data.properties = props.filter(p => !!p);
 		return data;
