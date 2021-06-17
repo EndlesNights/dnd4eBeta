@@ -493,7 +493,62 @@
 		"templates": ["common"]
 	},
 	"NPC": {
-		"templates": ["common"]
+		"templates": ["common"],
+		"details": {
+			
+			"origin": "",
+			"type": "",
+			"other": "",
+			"role": {
+				"primary": "",
+				"secondary": ""
+			},
+			"level": 1,
+			"exp": 0,
+			"class": "",
+			"paragon": "",
+			"epic": "",
+			"race": "",
+			"size": "med",
+			"age": "",
+			"gender": "",
+			"height": "",
+			"weight": "",
+			"alignment": "",
+			"deity": "",
+			
+			"secondwind": false,
+			"deathsaves": 3,
+			"deathsavefail": 0,
+			"deathsaveCrit": 20,
+			"deathsavebon": {
+				"bonus": [{}],
+				"value": 0
+			},
+			"bloodied": 0,
+			"surgeValue": 0,
+			"surgeBon": {
+				"bonus": [{}],
+				"value": 0
+			},
+			"surges": {
+				"value": 0,
+				"max": 0
+			},
+			"surgeEnv": {
+				"bonus": [{}],
+				"value": 0
+			},
+			"secondwindbon": {
+				"bonus": [{}],
+				"value": 0,
+				"custom": ""
+			},
+			"saves": {
+				"bonus": [{}],
+				"value": 0
+			}
+			}
 	}	
 },
 "Item": {

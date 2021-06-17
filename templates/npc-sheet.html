@@ -3,19 +3,160 @@
 		{{!-- SHeet Header --}}
 		<header class="sheet-header">
 			<ul class="summary">
-				<li class="summary-name">
-					<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EBETA.Name'}}" placeholder="{{localize 'DND4EBETA.Name'}}" onClick="this.select();"/>
+				<li class="summary-name-npc">
+					<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EBETA.NameNPC'}}" placeholder="{{localize 'DND4EBETA.NameNPC'}}" onClick="this.select();"/>
 				</li>
-
-				<li class="summary-exp">
-					<label>{{localize 'DND4EBETA.Exp'}}</label>
-					<input type="text" name="data.details.exp" value="{{data.details.exp}}" title="{{localize 'DND4EBETA.Exp'}}" data-dtype="Number" onClick="this.select();"/>
+				<li class="summary-role-second">
+					<select class="actor-role-second" name="data.details.role.secondary">
+						{{#select data.details.role.secondary}}
+						{{#each config.creatureRoleSecond as |label role|}}
+							<option value="{{role}}">{{label}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				</li>
+				
+				<li class="summary-role">
+					<select class="actor-role-prim" name="data.details.role.primary">
+						{{#select data.details.role.primary}}
+						{{#each config.creatureRole as |label role|}}
+							<option value="{{role}}">{{label}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
 				</li>
 				<li class="summary-level">
 					<label>{{localize 'DND4EBETA.Level'}}</label>
 					<input type="text" name="data.details.level" value="{{data.details.level}}" title="{{localize 'DND4EBETA.Level'}}" data-dtype="Number" onClick="this.select();"/>
 				</li>
 			</ul>
+
+			<ul class="summary">
+				<li class="summary-size">
+					<select class="actor-size" name="data.details.size">
+						{{#select data.details.size}}
+						{{#each config.actorSizes as |label size|}}
+							<option value="{{size}}">{{label}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				</li>
+				<li class="summary-origin">
+					<select class="actor-size" name="data.details.origin">
+						{{#select data.details.origin}}
+						{{#each config.creatureOrigin as |label origin|}}
+							<option value="{{origin}}">{{label}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				</li>
+				<li class="summary-size">
+					<select class="actor-size" name="data.details.type">
+						{{#select data.details.type}}
+						{{#each config.creatureType as |label type|}}
+							<option value="{{type}}">{{label}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				</li>
+				<li class="summary-name">
+					<input name="data.details.other" type="text" value="{{data.details.other}}" title="{{localize 'DND4EBETA.Other'}} Types" placeholder="{{localize 'DND4EBETA.Other'}} Types" onClick="this.select();"/>
+				</li>
+			
+				<li class="summary-exp">
+					<label>{{localize 'DND4EBETA.Exp'}}</label>
+					<input type="text" name="data.details.exp" value="{{data.details.exp}}" title="{{localize 'DND4EBETA.Exp'}}" data-dtype="Number" onClick="this.select();"/>
+				</li>
+			</ul>
 		</header>
+
+		<section class="">
+			<div style="display: flex;justify-content: space-between;">
+				<div class="" style="max-width: 180px; display:inline;">
+					<label>{{localize 'DND4EBETA.HP'}}:</label>
+					<input style="max-width: 40px;" {{#if data.details.isBloodied}} class="bloodied" {{/if}} type="text" name="data.attributes.hp.value" value="{{data.attributes.hp.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+					<span class="sep">/</span>
+					<input style="max-width: 40px;" type="text" name="data.attributes.hp.max" value="{{data.attributes.hp.max}}" title="{{localize 'DND4EBETA.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+				</div>
+				<div style="display:inline; text-align:right;">
+					<strong class="init-bonus rollable" title="{{localize 'DND4EBETA.InitiativeScore'}}">{{numberFormat data.attributes.init.value decimals=0 sign=true }}</strong>
+					<label class="rollInitiative rollable" >{{localize 'DND4EBETA.Initiative'}}</label>
+				</div>
+			</div>
+
+			<div style="display: flex;justify-content: space-between;">
+				<div class="" style="max-width: 280px; display: inline-block;">
+					{{#each data.defences as | def d|}}
+					<div class="" data-defence="{{d}}" style="display: inline-block;">
+						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EBETA.Roll'}} {{def.title}} {{localize 'DND4EBETA.Save'}}">{{def.label}}</strong>
+						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{def.title}}">{{def.value}}</label>
+					</div>
+					{{/each}}
+				</div>
+	
+				<div class="flexrow" data-skill="prc">
+					<h4 class="skill-name rollable">{{data.skills.prc.label}}</h4>
+					<input type="hidden" name="data.skills.prc.value" value="{{data.skills.prc.value}}" data-dtype="Number">
+					<label class="skill-mod skill-bonus rollable">{{numberFormat data.skills.prc.total decimals=0 sign=true }}</label>
+				</div>
+			</div>
+
+
+
+			<div data-html="true" title=
+"{{numberFormat data.movement.walk.value}} sq. Walking Speed
+{{numberFormat data.movement.run.value}} sq. Running Speed
+{{numberFormat data.movement.charge.value}} sq. Charging Speed
+{{numberFormat data.movement.climb.value}} sq. Climbing Speed
+{{numberFormat data.movement.shift.value}} sq. Shifting Speed">
+									<strong class="movement-dialog rollable">{{localize 'DND4EBETA.Speed'}}</strong>
+									<lable class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat data.movement.walk.value}} sq.</lable>
+			</div>
+
+			<div style="display: flex;justify-content: space-between;">
+			
+			</div>
+			<a class="trait-selector-senses" data-options="vision" data-target="data.senses.vision">
+				<span>Vision</span>
+				<i class="fas fa-edit"></i>
+			</a>
+			<ul class="traits-list" style="list-style-type: none;">
+			{{#each data.senses.vision.selected as |v k|}}
+				<li class="tag {{k}}">{{v}}</li>
+			{{/each}}
+			</ul>
+
+			<a class="trait-selector-senses" data-options="special" data-target="data.senses.special">
+				<span>Special Senses</span>
+				<i class="fas fa-edit"></i>
+			</a>
+			<ul class="traits-list" style="list-style-type: none;">
+			{{#each data.senses.special.selected as |v k|}}
+				<li class="tag {{k}}">{{v}}</li>
+			{{/each}}
+			</ul>
+
+			<div >
+				<img class="roll-save rollable" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20" title="{{localize 'DND4EBETA.SavingThrow'}}"/>
+				<label class="roll-save-bonus rollable" title="{{localize 'DND4EBETA.SavingThrowBonus'}}">{{localize 'DND4EBETA.ActionSave'}}</label>
+			</div>
+
+			<div>
+				<lable class="rest action-point rollable" title="{{localize 'DND4EBETA.ActionPointUse'}}">{{localize "DND4EBETA.ActionPointUse"}}</lable>
+				<input style="max-width: 40px;" type="text" name="data.actionpoints.value" value="{{data.actionpoints.value}}" title="{{localize 'DND4EBETA.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+			</div>
+
+			<div>
+				<label>Healing Surges</label>
+				<div class="attribute-sub attribute-input" style="display:inline;">
+					<input style="max-width: 40px;" type="text" name="data.details.surges.value" value="{{data.details.surges.value}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+				</div>
+				<span class="sep">/</span>
+				<div class="attribute-sub attribute-input" style="display:inline;">
+					<input style="max-width: 40px;" type="text" name="data.details.surges.max" value="{{data.details.surges.max}}" title="{{localize 'DND4EBETA.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+				</div>
+			</div>
+
+		</section>
 	</section>
 </form>

@@ -273,6 +273,47 @@ DND4EBETA.armourProficiencies = {
 
 /* -------------------------------------------- */
 
+DND4EBETA.creatureOrigin = {
+	"aberrant": "DND4EBETA.CreatureOriginAberrant",
+	"elemental": "DND4EBETA.CreatureOriginElemental",
+	"fey": "DND4EBETA.CreatureOriginFey",
+	"immortal": "DND4EBETA.CreatureOriginImmortal",
+	"natural": "DND4EBETA.CreatureOriginNatural",
+	"shadow": "DND4EBETA.CreatureOriginShadow",
+
+}
+
+/* -------------------------------------------- */
+
+DND4EBETA.creatureRole = {
+	"artillery": "DND4EBETA.CreatureRoleArtillery",
+	"brute": "DND4EBETA.CreatureRoleBrute",
+	"controller": "DND4EBETA.CreatureRoleController",
+	"lurker": "DND4EBETA.CreatureRoleLurker",
+	"skirmisher": "DND4EBETA.CreatureRoleSkirmisher",
+	"soldier": "DND4EBETA.CreatureRoleSoldier",
+}
+
+/* -------------------------------------------- */
+
+DND4EBETA.creatureRoleSecond = {
+	"regular": "DND4EBETA.CreatureRoleSecRegular",
+	"elite": "DND4EBETA.CreatureRoleSecElite",
+	"solo": "DND4EBETA.CreatureRoleSecSolo",
+	"minion": "DND4EBETA.CreatureRoleSecMinion",
+}
+
+/* -------------------------------------------- */
+
+DND4EBETA.creatureType = {
+	"animate": "DND4EBETA.CreatureTypeAnimate",
+	"beast": "DND4EBETA.CreatureTypeBeast",
+	"humanoid": "DND4EBETA.CreatureTypeHumanoid",
+	"magical": "DND4EBETA.CreatureTypeMagicalBeaste",
+}
+
+/* -------------------------------------------- */
+
 /**
  * Enumerate the valid consumable types which are recognized by the system
  * @type {Object}

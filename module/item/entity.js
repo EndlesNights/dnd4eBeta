@@ -1259,6 +1259,8 @@ export default class Item4e extends Item {
 
 		// Spell Template Creation
 		else if ( action === "placeTemplate") {
+			console.log(item)
+			// const template = game.dnd4eBeta.canvas.AbilityTemplate.fromItem(item);
 			const template = AbilityTemplate.fromItem(item);
 			if ( template ) template.drawPreview(event);
 		}

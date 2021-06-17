@@ -109,7 +109,10 @@
 .dnd4eBeta.sheet .sheet-header .summary-name {
 	width: calc(46% - 34px);
 	display: inline-block;
-
+}
+.dnd4eBeta.sheet .sheet-header .summary-name-npc {
+	width: calc(100% - 278px);
+	display: inline-block;
 }
 .dnd4eBeta.sheet .sheet-header .summary-race,
 .dnd4eBeta.sheet .sheet-header .summary-class {
@@ -129,6 +132,26 @@
 	text-align: center;
 	width: 35%;
 	padding: 0%;
+}
+
+.dnd4eBeta.sheet .sheet-header .summary-role-second {
+	float: right;
+	width: 78px;
+}
+
+.dnd4eBeta.sheet .sheet-header .summary-role {
+	float: right;
+	width: 98px;
+}
+
+.dnd4eBeta.sheet .sheet-header .summary-size {
+	width: 102px;
+	display: inline-block;
+}
+
+.dnd4eBeta.sheet .sheet-header .summary-origin {
+	width: 90px;
+	display: inline-block;
 }
 
 .dnd4eBeta.sheet .sheet-header .summary-path {
@@ -224,7 +247,7 @@
 	font-weight:bold;
 }
 
-.dnd4eBeta.sheet.actor .section--attributes .attribute-health input.bloodied {
+.dnd4eBeta.sheet.actor input.bloodied {
 	color: #d41111;
 }
 .dnd4eBeta.sheet.actor .attribute-value input {

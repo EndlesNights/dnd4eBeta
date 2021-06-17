@@ -17,6 +17,7 @@ import ActorSheet4eNPC from "./actor/npc-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
+import AbilityTemplate from "./pixi/ability-template.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/entity.js";
 
@@ -35,6 +36,9 @@ Hooks.once("init", async function() {
 	
 	game.dnd4eBeta = {
 		config: DND4EBETA,
+		canvas: {
+			AbilityTemplate
+		},
 		entities: {
 			Actor4e,
 			Item4e,
@@ -96,7 +100,8 @@ Hooks.once("setup", function() {
 
 	// Localize CONFIG objects once up-front
 	const toLocalize = [
-	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes", "damageTypes", "conditionTypes", "consumableTypes", "distanceUnits", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
+	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes",
+	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits", "damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
 	];
 
 	const noSort = [
