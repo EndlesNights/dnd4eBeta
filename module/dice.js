@@ -71,7 +71,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		}
 		if ( !data["bonus"] ) parts.pop();
 
-		console.log(data)
 		// data.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
 		// console.log(data)
 		if(form?.flavor.value){
@@ -90,7 +89,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
 		// Execute the roll and flag critical thresholds on the d20
 		const roll = new Roll(parts.join(" + "), data).roll();
-		console.log(parts)
 		
 		// Flag d20 options for any 20-sided dice in the roll
 		for ( let d of roll.dice ) {
@@ -204,7 +202,9 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 	// Define inner roll function
 	const _roll = function(parts, partsCrit, crit, form) {
 		data['bonus'] = form.bonus.value || 0;
-		let roll = crit? new Roll(partsCrit.filterJoin("+"), data) : new Roll(parts.filterJoin("+"), data);
+		let roll = crit ? new Roll(partsCrit.filterJoin("+"), data) : new Roll(parts.filterJoin("+"), data);
+
+		critical = crit;
 
 		if(form.flavor.value){
 			flavor = form.flavor.value || flavor;
@@ -234,12 +234,14 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 
 	// Modify the roll and handle fast-forwarding
 	if ( fastForward ) return _roll(parts, partsCrit, critical || event.altKey);
-	else parts = critical? partsCrit.concat(["@bonus"]) : parts.concat(["@bonus"]);
+	// else parts = critical ? partsCrit.concat(["@bonus"]) : parts.concat(["@bonus"]);
+	parts = parts.concat(["@bonus"]);
+	partsCrit = partsCrit.concat(["@bonus"]);
 
 	// Render modal dialog
 	template = template || "systems/dnd4eBeta/templates/chat/roll-dialog.html";
 	let dialogData = {
-		formula: parts.join(" + "),
+		formula: critical ? partsCrit.join(" + ") : parts.join(" + "),
 		data: data,
 		rollMode: rollMode,
 		rollModes: CONFIG.Dice.rollModes

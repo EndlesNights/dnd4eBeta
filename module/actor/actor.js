@@ -1,8 +1,8 @@
-import { d20Roll, damageRoll } from "./dice.js";
-import AbilityUseDialog from "./apps/ability-use-dialog.js";
-import AbilityTemplate from "./pixi/ability-template.js"
-import { DND4EBETA } from "./config.js";
-import { Helper } from "./helper.js"
+import { d20Roll, damageRoll } from "../dice.js";
+import AbilityUseDialog from "../apps/ability-use-dialog.js";
+import AbilityTemplate from "../pixi/ability-template.js"
+import { DND4EBETA } from "../config.js";
+import { Helper } from "../helper.js"
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -13,7 +13,6 @@ export class Actor4e extends Actor {
 	/** @inheritdoc */
 	getRollData() {
 		const data = super.getRollData();
-		console.log(data)
 		return data;
 	}
 //   getRollData() {
@@ -59,8 +58,6 @@ export class Actor4e extends Actor {
 		const data = actorData.data;
 		const flags = actorData.flags.dnd4eBeta || {};
 		const bonuses = getProperty(data, "bonuses.abilities") || {};
-
-		console.log(data)
 
 		// Prepare Character data
 		if ( actorData.type === "character" ) this._prepareCharacterData(actorData);

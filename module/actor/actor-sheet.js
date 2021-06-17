@@ -41,7 +41,6 @@ export default class ActorSheet4e extends ActorSheet {
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eBeta", "sheet", "actor"],
-			// template: "systems/dnd4eBeta/templates/actor-sheet.html",
 			width: 844,
 			height: 905,
 			tabs: [{
@@ -107,7 +106,6 @@ export default class ActorSheet4e extends ActorSheet {
 			const item = this.actor.items.get(i._id);
 			i.labels = item.labels;
 		}
-		console.log(actorData.items)
 		
 		// return;
 
@@ -149,9 +147,6 @@ export default class ActorSheet4e extends ActorSheet {
 			return arr.concat([res]);
 			}, []);
 
-		console.log(data)
-		console.log(actorData)
-
 		return data;
 	}
 	
@@ -183,7 +178,6 @@ export default class ActorSheet4e extends ActorSheet {
 	}
 
 	_prepareItems(data) {
-		console.log(data)
 		//define diffrent item datasets
 		const inventory = {
 			weapon: { label: "DND4EBETA.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
@@ -995,7 +989,6 @@ export default class ActorSheet4e extends ActorSheet {
 	/* -------------------------------------------- */
 
 	_onActionPointDialog(event) {
-		console.log("action point")
 		event.preventDefault();
 		new ActionPointDialog(this.actor).render(true);
 	}

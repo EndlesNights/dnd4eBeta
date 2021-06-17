@@ -1,14 +1,16 @@
 # Changelog
 
-## Version 0.2.3
+## Version 0.2.5
 - updated to Foundry Version 0.8.7
 - fixed how Flavor Text works.
 	flavor Text for items will override the item descrition when using the items
 	flavor Text as part of rolls will override what chat message text is displayed.
 - fixed issue where bonuses to saving throws was not being calculated
 - fixed an issue where second wind was healing arithmetically even when at negative HP. It should now heal correctly.
+- moved actor.js into /module/actor
+- started to wright NPC sheets
 
-## Version 0.2.3
+## Version 0.2.4
 - fixed issue with inline not working on character sheet
 - fixed issue where item active effects where using actor active effects instead of their own after post 0.8.x change
 - Show Players button should now work for items, and share the item with your players.

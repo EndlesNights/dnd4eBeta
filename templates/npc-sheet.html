@@ -1,0 +1,21 @@
+<form class="{{cssClass}}" autocomplete="off">				
+	<section>
+		{{!-- SHeet Header --}}
+		<header class="sheet-header">
+			<ul class="summary">
+				<li class="summary-name">
+					<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EBETA.Name'}}" placeholder="{{localize 'DND4EBETA.Name'}}" onClick="this.select();"/>
+				</li>
+
+				<li class="summary-exp">
+					<label>{{localize 'DND4EBETA.Exp'}}</label>
+					<input type="text" name="data.details.exp" value="{{data.details.exp}}" title="{{localize 'DND4EBETA.Exp'}}" data-dtype="Number" onClick="this.select();"/>
+				</li>
+				<li class="summary-level">
+					<label>{{localize 'DND4EBETA.Level'}}</label>
+					<input type="text" name="data.details.level" value="{{data.details.level}}" title="{{localize 'DND4EBETA.Level'}}" data-dtype="Number" onClick="this.select();"/>
+				</li>
+			</ul>
+		</header>
+	</section>
+</form>

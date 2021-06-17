@@ -161,7 +161,7 @@ export class Helper {
 				let dice = "";
 				for(let i = 0; i< parts.length; i++) {
 					if(!parts[i][0] || !parts[i][1]) continue;
-					dice += ` + (${parts[i][0]} * ${parts[i][1]})`
+					dice += `(${parts[i][0]} * ${parts[i][1]})`
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				newFormula = newFormula.replace("@wepMax", dice);

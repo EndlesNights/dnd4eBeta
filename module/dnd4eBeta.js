@@ -13,10 +13,11 @@ import ItemSheet4e from "./item/sheet.js";
 import { measureDistances, getBarAttribute } from "./canvas.js";
 
 import ActorSheet4e from "./actor/actor-sheet.js";
+import ActorSheet4eNPC from "./actor/npc-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
-import { Actor4e } from "./actor.js";
+import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/entity.js";
 
 // Import Helpers
@@ -55,10 +56,17 @@ Hooks.once("init", async function() {
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("dnd4eBeta", ActorSheet4e, {
+		types: ["Player Character"],
 		label: "Basic Character Sheet",
 		makeDefault: true
 	});
-		
+	Actors.registerSheet("dnd4eBeta", ActorSheet4eNPC, {
+		types: ["NPC"],
+		label: "NPC Sheet",
+		makeDefault: true
+	});		
+
+	
 	Items.unregisterSheet("core", ItemSheet);
 	// Items.registerSheet("dnd4eBeta", SimpleItemSheet, {makeDefault: true});
 	Items.registerSheet("dnd4eBeta", ItemSheet4e, {makeDefault: true});
