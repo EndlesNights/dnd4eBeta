@@ -46,7 +46,7 @@ export class LongRestDialog extends DocumentSheet {
 			updateData[`data.details.surgeEnv.bonus`] = [{}];
 		}
 
-		updateData[`data.details.temp`] = "";
+		updateData[`data.attributes.hp.temphp`] = "";
 		updateData[`data.details.deathsavefail`] = 0;
 		updateData[`data.actionpoints.value`] = 1;
 		updateData[`data.magicItemUse.milestone`] = 0;

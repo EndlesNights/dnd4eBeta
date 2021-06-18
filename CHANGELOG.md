@@ -3,6 +3,7 @@
 ## Version 0.2.6
 - fixed issue where auto generate templates where not working sicne switch from Foudnry 0.7.x to 0.8.x
 - some more work on NPC sheets
+- fixed issue where temp hp was not properly resetting after rests
 
 ## Version 0.2.5
 - updated to Foundry Version 0.8.7
