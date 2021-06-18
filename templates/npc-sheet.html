@@ -120,33 +120,18 @@
 				<span>Vision</span>
 				<i class="fas fa-edit"></i>
 			</a>
-			<ul class="traits-list" style="list-style-type: none;">
-			{{#each data.senses.vision.selected as |v k|}}
-				<li class="tag {{k}}">{{v}}</li>
-			{{/each}}
-			</ul>
 
-			<a class="trait-selector-senses" data-options="special" data-target="data.senses.special">
-				<span>Special Senses</span>
-				<i class="fas fa-edit"></i>
-			</a>
-			<ul class="traits-list" style="list-style-type: none;">
-			{{#each data.senses.special.selected as |v k|}}
-				<li class="tag {{k}}">{{v}}</li>
-			{{/each}}
-			</ul>
-
-			<div >
+			<div style="display:inline;">
 				<img class="roll-save rollable" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20" title="{{localize 'DND4EBETA.SavingThrow'}}"/>
 				<label class="roll-save-bonus rollable" title="{{localize 'DND4EBETA.SavingThrowBonus'}}">{{localize 'DND4EBETA.ActionSave'}}</label>
 			</div>
 
-			<div>
+			<div style="display:inline;">
 				<lable class="rest action-point rollable" title="{{localize 'DND4EBETA.ActionPointUse'}}">{{localize "DND4EBETA.ActionPointUse"}}</lable>
 				<input style="max-width: 40px;" type="text" name="data.actionpoints.value" value="{{data.actionpoints.value}}" title="{{localize 'DND4EBETA.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 			</div>
 
-			<div>
+			<div style="display:inline;">
 				<label>Healing Surges</label>
 				<div class="attribute-sub attribute-input" style="display:inline;">
 					<input style="max-width: 40px;" type="text" name="data.details.surges.value" value="{{data.details.surges.value}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
@@ -157,6 +142,80 @@
 				</div>
 			</div>
 
+			<ul class="traits-list" style="list-style-type: none;">
+				{{#each data.senses.vision.selected as |v k|}}
+					<li class="tag {{k}}">{{v}}</li>
+				{{/each}}
+				</ul>
+	
+				<a class="trait-selector-senses" data-options="special" data-target="data.senses.special">
+					<span>Special Senses</span>
+					<i class="fas fa-edit"></i>
+				</a>
+				<ul class="traits-list" style="list-style-type: none;">
+				{{#each data.senses.special.selected as |v k|}}
+					<li class="tag {{k}}">{{v}}</li>
+				{{/each}}
+				</ul>
 		</section>
+
 	</section>
+
+	<section class="section section--tabs flexshrink">
+
+		{{!-- Sheet Tab Navigation --}}
+		<nav class="sheet-tabs tabs" data-group="primary">
+			<a class="item" data-tab="biography">{{localize 'DND4EBETA.Biography'}}</a>
+			<a class="item " data-tab="skills">{{localize 'DND4EBETA.Skills'}}</a>
+			<a class="item " data-tab="powers">{{localize 'DND4EBETA.Powers'}}</a>
+			<a class="item" data-tab="inventory">{{localize 'DND4EBETA.Inventory'}}</a>
+			<a class="item" data-tab="features">{{localize 'DND4EBETA.Feats'}}</a>
+			<a class="item" data-tab="effects">{{localize 'DND4EBETA.Effects'}}</a>
+		</nav>
+	</section>
+	<section class="sheet-body section--tabs-content">
+		{{!-- Biography Tab --}}
+		<div class="tab biography" data-group="primary" data-tab="biography">
+			{{> "systems/dnd4eBeta/templates/actors/parts/actor-biography.html" sections=biography}}
+		</div>
+
+		{{!-- Skills Tab --}}
+		<div class="tab inventory" data-group="primary" data-tab="skills">
+			<ol class="items-list inventory-list" style="height: 100%;">
+				<section class="section section--skills">
+					{{#each data.skills as |skill s|}}
+					<div class="skill--block flexrow" data-skill="{{s}}">
+						<a class="training-toggle skill-training" title="{{skill.hover}}">{{{skill.icon}}}</a>
+						<h4 class="skill-name rollable">{{skill.label}}</h4>
+						<input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number">
+						<label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
+						<!-- <a class="skill-mod skill-bonus" data-target="data.details" title="Skill Bonus">{{skill.sklBonusValue}}</a> -->
+					</div>
+					{{/each}}
+				</section>
+			</ol>
+		</div>
+
+		{{!-- Owned Inventory Tab --}}
+		<div class="tab inventory npc" data-group="primary" data-tab="inventory">
+			{{> "systems/dnd4eBeta/templates/actors/parts/actor-inventory.html" sections=inventory}}
+		</div>
+
+		{{!-- Feat Tab --}}
+		<div class="tab features npc" data-group="primary" data-tab="features">
+			{{> "systems/dnd4eBeta/templates/actors/parts/actor-features.html" sections=features}}
+		</div>
+		
+		{{!-- Powers Tab --}}
+		<div class="tab powers npc" data-group="primary" data-tab="powers">
+			{{> "systems/dnd4eBeta/templates/actors/parts/actor-powers.html" sections=powers}}
+		</div>
+
+		{{!-- Effects Tab --}}
+		<div class="tab effects flexcol npc" data-group="primary" data-tab="effects">
+			{{> "systems/dnd4eBeta/templates/actors/parts/active-effects.html"}}
+		</div>
+	</section>
+
+
 </form>

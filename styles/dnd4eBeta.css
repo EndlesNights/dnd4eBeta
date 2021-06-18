@@ -530,7 +530,6 @@ font-size: 12px;
 }
 .dnd4eBeta.sheet .window-content .tab {
 	height: 100%;
-	/* height: calc(100% - 22px); */
 	overflow-y: auto;
 	align-content: flex-start;
 }
@@ -1751,7 +1750,16 @@ font-size: 12px;
 	/* padding: 0 5px; */
 	overflow-y: auto;
 	scrollbar-width: thin;
-	height: calc(100% - 116px) 
+	height: calc(100% - 116px);
+}
+
+.dnd4eBeta.sheet.actor .npc .inventory-list {
+	list-style: none;
+	margin: 0;
+	/* padding: 0 5px; */
+	overflow-y: auto;
+	scrollbar-width: thin;
+	height: calc(100% - 116px);
 }
 .dnd4eBeta.sheet .items-list {
 	list-style: none;

@@ -17,4 +17,14 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 		return `systems/dnd4eBeta/templates/npc-sheet.html`;
 	}
 
+	/* -------------------------------------------- */
+
+	/** @override */
+	setPosition(options={}) {
+		const position = super.setPosition(options);
+		const sheetBody = this.element.find(".sheet-body");
+		const bodyHeight = position.height - 272;
+		sheetBody.css("height", bodyHeight);
+		return position;
+	}
 }
