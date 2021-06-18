@@ -71,7 +71,6 @@
 		<label>{{ localize "DND4EBETA.WeaponTypeRequired" }}</label>
 		<select name="data.weaponType">
 			{{#select data.weaponType}}
-			<option value=""></option>
 			{{#each config.weaponType as |name type|}}
 			<option value="{{type}}">{{name}}</option>
 			{{/each}}
@@ -84,7 +83,7 @@
 				{{#select data.weaponUse}}
 				<option value="default">Default</option>
 				<option value="defaultOH">Default Off-Hand</option>
-				<option value="">None</option>
+				<option value="none">None</option>
 				{{#each powerWeaponUseTargets as |name key|}}
 				<option value="{{key}}">{{name}}</option>
 				{{/each}}

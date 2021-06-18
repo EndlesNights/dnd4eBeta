@@ -190,7 +190,20 @@ export class Helper {
 			newFormula = newFormula.replace("@wepCritBonus", "");
 			
 			newFormula = newFormula.replace("@wepDiceNum", "0");
-			newFormula = newFormula.replace("@wepDiceDamage", "0");			
+			newFormula = newFormula.replace("@wepDiceDamage", "0");
+			
+			if(newFormula.includes("@wepDice")) {
+				let indexStart = newFormula.indexOf("@wepDice")+8;
+				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
+
+				let weaponNum = newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
+				weaponNum = eval(weaponNum.replace(/[a-z]/gi, ''));
+
+				if(typeof(weaponNum) !== "number") weaponNum = 1;
+
+				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
+				newFormula = newFormula.replace("@wepDice", "");
+			}
 		}
 
 		//check for actor values in formula
