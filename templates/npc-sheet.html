@@ -116,10 +116,7 @@
 			<div style="display: flex;justify-content: space-between;">
 			
 			</div>
-			<a class="trait-selector-senses" data-options="vision" data-target="data.senses.vision">
-				<span>Vision</span>
-				<i class="fas fa-edit"></i>
-			</a>
+
 
 			<div style="display:inline;">
 				<img class="roll-save rollable" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20" title="{{localize 'DND4EBETA.SavingThrow'}}"/>
@@ -142,21 +139,31 @@
 				</div>
 			</div>
 
-			<ul class="traits-list" style="list-style-type: none;">
+			<div>
+
+			
+				<a class="trait-selector-senses" data-options="vision" data-target="data.senses.vision">
+					<span>Vision</span>
+					<i class="fas fa-edit"></i>
+				</a>
+				<ul class="traits-list" style="list-style-type: none; display:inline;">
 				{{#each data.senses.vision.selected as |v k|}}
 					<li class="tag {{k}}">{{v}}</li>
 				{{/each}}
 				</ul>
-	
+
 				<a class="trait-selector-senses" data-options="special" data-target="data.senses.special">
 					<span>Special Senses</span>
 					<i class="fas fa-edit"></i>
 				</a>
-				<ul class="traits-list" style="list-style-type: none;">
+				<ul class="traits-list" style="list-style-type: none; display:inline;">
 				{{#each data.senses.special.selected as |v k|}}
 					<li class="tag {{k}}">{{v}}</li>
 				{{/each}}
 				</ul>
+			</div>
+
+
 		</section>
 
 	</section>
