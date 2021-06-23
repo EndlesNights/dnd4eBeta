@@ -768,9 +768,11 @@ export default class Item4e extends Item {
 		if (weaponUse) {
 			rollConfig.critical = itemData.weaponType === "implement" ? weaponUse.data.data.critRangeImp : weaponUse.data.data.critRange;
 		}
+		
 		// Invoke the d20 roll helper
 		const roll = await d20Roll(rollConfig);
 		if ( roll === false ) return null;
+
 
 		// Handle resource consumption if the attack roll was made
 		const allowed = await (
@@ -1242,7 +1244,19 @@ export default class Item4e extends Item {
 		}
 
 		// Attack and Damage Rolls
-		if ( action === "attack" ) await item.rollAttack({event});
+		if ( action === "attack" ) {
+			
+			// Get current targets and set number of rolls required
+			const numTargets = game.user.targets.size;
+			const numTargetsDefault = 1;
+			
+			const numRolls = (numTargets || numTargetsDefault);
+			
+			// Invoke attack roll promise
+			for (var i=0;i<numRolls;i++) {
+				await item.rollAttack({event});
+			}
+		}
 		else if ( action === "damage" ) await item.rollDamage({event, spellLevel});
 		else if ( action === "versatile" ) await item.rollDamage({event, spellLevel, versatile: true});
 		else if ( action === "formula" ) await item.rollFormula({event, spellLevel});

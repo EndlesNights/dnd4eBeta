@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.8
+- included method for rolling multiple attacks based on number of targeted actors, defaulting to 1 if no actors are targeted
+
 ## Version 0.2.7
 - place holder NPC monster sheet
 
