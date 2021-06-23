@@ -689,7 +689,12 @@ export default class Item4e extends Item {
 			let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
 		let flavor = title;
 
-		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }<b>`;
+		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
+		if(game.user.targets.size) {
+			const targetArr = Array.from(game.user.targets);
+			flavor += `<br><b>Target:</b> ${targetArr[options.target].data.name}`
+
+		}
 		const rollData = this.getRollData();
 
 		rollData.isAttackRoll = true;
@@ -768,11 +773,9 @@ export default class Item4e extends Item {
 		if (weaponUse) {
 			rollConfig.critical = itemData.weaponType === "implement" ? weaponUse.data.data.critRangeImp : weaponUse.data.data.critRange;
 		}
-		
 		// Invoke the d20 roll helper
 		const roll = await d20Roll(rollConfig);
 		if ( roll === false ) return null;
-
 
 		// Handle resource consumption if the attack roll was made
 		const allowed = await (
@@ -800,7 +803,6 @@ export default class Item4e extends Item {
 		const itemData = this.data.data;
 		const actorData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
-		console.log(weaponUse)
 
 		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
 			throw new Error("You may not use this power as you do not have the proper weapon equipped.");
@@ -1185,7 +1187,6 @@ export default class Item4e extends Item {
 		// const prof = "proficient" in rollData.item ? (rollData.item.proficient || 0) : 1;
 		// rollData["prof"] = Math.floor(prof * rollData.attributes.prof);
 		
-		console.log(rollData)
 		return rollData;
 	}
 
@@ -1245,16 +1246,16 @@ export default class Item4e extends Item {
 
 		// Attack and Damage Rolls
 		if ( action === "attack" ) {
-			
+
 			// Get current targets and set number of rolls required
 			const numTargets = game.user.targets.size;
 			const numTargetsDefault = 1;
-			
+
 			const numRolls = (numTargets || numTargetsDefault);
-			
+
 			// Invoke attack roll promise
 			for (var i=0;i<numRolls;i++) {
-				await item.rollAttack({event});
+				await item.rollAttack({event, target:i});
 			}
 		}
 		else if ( action === "damage" ) await item.rollDamage({event, spellLevel});
