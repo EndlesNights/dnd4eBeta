@@ -558,6 +558,16 @@ DND4EBETA.powerSortTypes = {
 	"none": "DND4EBETA.None",
 };
 
+DND4EBETA.powerDiceTypes = {
+	"weapon": "[W]",
+	"flat": "Flat",
+	"d4": "d4",
+	"d6": "d6",
+	"d8": "d8",
+	"d10": "d10",
+	"d12": "d12"	
+};
+
 /* -------------------------------------------- */
 /**
  * Character senses options

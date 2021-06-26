@@ -842,6 +842,8 @@
 		"hit": {
 			"shareDamageRoll": false,
 			"isDamage": true,
+			"baseQuantity": 1,
+			"baseDiceType": "",
 			"detail": "1[W] + Strength modifier damage.",
 			"formula": "@wepDice(1) + @powerMod + @wepDamage",
 			"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"

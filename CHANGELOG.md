@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.10
+- Added Damage Dice Dropdown to Powers card
+
 ## Version 0.2.9
 - include names for attack rolls with multi targets
 
