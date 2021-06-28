@@ -559,8 +559,8 @@ DND4EBETA.powerSortTypes = {
 };
 
 DND4EBETA.powerDiceTypes = {
-	"weapon": "[W]",
-	"flat": "Flat",
+	"weapon": "DND4EBETA.PowerWeaponBase",
+	"flat": "DND4EBETA.PowerFlatDamage",
 	"d4": "d4",
 	"d6": "d6",
 	"d8": "d8",

@@ -843,10 +843,10 @@
 			"shareDamageRoll": false,
 			"isDamage": true,
 			"baseQuantity": 1,
-			"baseDiceType": "",
+			"baseDiceType": "Weapon Base Damage",
 			"detail": "1[W] + Strength modifier damage.",
-			"formula": "@wepDice(1) + @powerMod + @wepDamage",
-			"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"
+			"formula": "@powBase + @powerMod + @wepDamage",
+			"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus"
 		},
 		"miss": {
 			"detail": "Half Damage.",

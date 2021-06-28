@@ -938,5 +938,8 @@
 "SETTINGS.4eRestGritty": "Gritty Realism (LR: 7 days, SR: 8 hours)",
 "SETTINGS.4eRestL": "Configure which rest variant should be used for games within this system.",
 "SETTINGS.4eRestN": "Rest Variant",
-"SETTINGS.4eRestPHB": "Player's Handbook (LR: 8 hours, SR: 1 hour)"
+"SETTINGS.4eRestPHB": "Player's Handbook (LR: 8 hours, SR: 1 hour)",
+"DND4EBETA.PowerBaseDamage": "Base Damage",
+"DND4EBETA.PowerWeaponBase": "Weapon Base Damage",
+"DND4EBETA.PowerFlatDamage": "Flat Damage"
 }
