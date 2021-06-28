@@ -679,12 +679,14 @@ export default class Item4e extends Item {
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
-			throw new Error("You may not use this power as you do not have the proper weapon equipped.");
+			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
+			return null;
 		}
 
 			const flags = this.actor.data.flags.dnd4eBeta || {};
 			if ( !this.hasAttack ) {
-				throw new Error("You may not place an Attack Roll with this Item.");
+				ui.notifications.error("You may not place an Attack Roll with this Item.");
+				return null;
 			}
 			let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
 		let flavor = title;
@@ -805,11 +807,13 @@ export default class Item4e extends Item {
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
-			throw new Error("You may not use this power as you do not have the proper weapon equipped.");
+			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
+			return null;
 		}
 
 		if ( !this.hasDamage ) {
-			throw new Error("You may not make a Damage Roll with this Item.");
+			ui.notifications.error("You may not make a Damage Roll with this Item.");
+			return null;
 		}
 		const messageData = {"flags.dnd4eBeta.roll": {type: "damage", itemId: this.id }};
 

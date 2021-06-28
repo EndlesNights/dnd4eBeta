@@ -162,7 +162,7 @@ export class Helper {
 			//	-	flat damage
 			//	-	dice damage
 			if(newFormula.includes("@powBase")) {
-				let quantity = powerData.hit.baseQuanitiy;
+				let quantity = powerData.hit.baseQuantity;
 				let diceType = powerData.hit.baseDiceType;
 				
 				if(quantity === "") quantity = 1;
@@ -213,7 +213,7 @@ export class Helper {
 			//	-	dice damage
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
-				let quantity = powerData.hit.baseQuanitiy;
+				let quantity = powerData.hit.baseQuantity;
 				let diceType = powerData.hit.baseDiceType;
 				
 				if(quantity !== "number") quantity = 1;

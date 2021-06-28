@@ -843,7 +843,7 @@
 			"shareDamageRoll": false,
 			"isDamage": true,
 			"baseQuantity": 1,
-			"baseDiceType": "Weapon Base Damage",
+			"baseDiceType": "Base Weapon Damage",
 			"detail": "1[W] + Strength modifier damage.",
 			"formula": "@powBase + @powerMod + @wepDamage",
 			"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus"

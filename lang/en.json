@@ -532,6 +532,7 @@
 "DND4EBETA.PolymorphWarn": "You are not allowed to polymorph this actor!",
 "DND4EBETA.PolymorphWildShape": "Wild Shape",
 "DND4EBETA.PowerAt": "At-Will",
+"DND4EBETA.PowerBaseDamage": "Base Damage",
 "DND4EBETA.PowerDaily": "Daily",
 "DND4EBETA.PowerRecharge": "Recharge",
 "DND4EBETA.PowerDetails": "Power Details",
@@ -938,8 +939,5 @@
 "SETTINGS.4eRestGritty": "Gritty Realism (LR: 7 days, SR: 8 hours)",
 "SETTINGS.4eRestL": "Configure which rest variant should be used for games within this system.",
 "SETTINGS.4eRestN": "Rest Variant",
-"SETTINGS.4eRestPHB": "Player's Handbook (LR: 8 hours, SR: 1 hour)",
-"DND4EBETA.PowerBaseDamage": "Base Damage",
-"DND4EBETA.PowerWeaponBase": "Weapon Base Damage",
-"DND4EBETA.PowerFlatDamage": "Flat Damage"
+"SETTINGS.4eRestPHB": "Player's Handbook (LR: 8 hours, SR: 1 hour)"
 }
