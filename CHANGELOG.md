@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.2.10
+- updated to Foundry Version 0.8.8
+- fixed number of spell mistakes with the en.json lang file
+- changed some spells from British English to American English to be more in line with WotC
+- Reworkings of the NPC character
+
 ## Version 0.2.9
 - include names for attack rolls with multi targets
 
@@ -133,3 +139,6 @@
 
 ## Version 0.0.6
 - Fixed issues where the value for WilL Defence was trying to check the "char" abilities score instead of "cha"
+
+## Version 0.0.0
+- Initial commit

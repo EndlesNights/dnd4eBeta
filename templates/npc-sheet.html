@@ -71,47 +71,146 @@
 		</header>
 
 		<section class="">
-			<div style="display: flex;justify-content: space-between;">
-				<div class="" style="max-width: 180px; display:inline;">
+			<!-- <div style="display: flex;justify-content: space-between;"> -->
+				<!-- <div class="" style="max-width: 180px; display:inline;">
 					<label>{{localize 'DND4EBETA.HP'}}:</label>
 					<input style="max-width: 40px;" {{#if data.details.isBloodied}} class="bloodied" {{/if}} type="text" name="data.attributes.hp.value" value="{{data.attributes.hp.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 					<span class="sep">/</span>
 					<input style="max-width: 40px;" type="text" name="data.attributes.hp.max" value="{{data.attributes.hp.max}}" title="{{localize 'DND4EBETA.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
-				</div>
-				<div style="display:inline; text-align:right;">
+				</div> -->
+				<!-- <div style="display:inline; text-align:right;">
 					<strong class="init-bonus rollable" title="{{localize 'DND4EBETA.InitiativeScore'}}">{{numberFormat data.attributes.init.value decimals=0 sign=true }}</strong>
 					<label class="rollInitiative rollable" >{{localize 'DND4EBETA.Initiative'}}</label>
+				</div> -->
+			<!-- </div> -->
+
+			<div class="flexrow">
+				<div class="flexcol" style="flex-basis: 12px;">
+					<div class="" style="max-width: 180px; display:inline;">
+						<Strong>{{localize 'DND4EBETA.HP'}}:</Strong>
+						<input style="max-width: 40px; text-align: center;" {{#if data.details.isBloodied}} class="bloodied" {{/if}} type="text" name="data.attributes.hp.value" value="{{data.attributes.hp.value}}" title="{{localize 'DND4EBETA.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<span class="sep">/</span>
+						<input style="max-width: 40px; text-align: center;" type="text" name="data.attributes.hp.max" value="{{data.attributes.hp.max}}" title="{{localize 'DND4EBETA.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+					</div>
+					<div data-html="true" title=
+"{{numberFormat data.movement.walk.value}} sq. Walking Speed
+{{numberFormat data.movement.run.value}} sq. Running Speed
+{{numberFormat data.movement.charge.value}} sq. Charging Speed
+{{numberFormat data.movement.climb.value}} sq. Climbing Speed
+{{numberFormat data.movement.shift.value}} sq. Shifting Speed">
+						<strong class="movement-dialog rollable">{{localize 'DND4EBETA.Speed'}}</strong>
+						<lable class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat data.movement.walk.value}} sq.</lable>
+					</div>
+
+					<div class="" data-defence="{{ac}}" style="display: inline-block;">
+						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EBETA.Roll'}} {{data.defences.ac.title}} {{localize 'DND4EBETA.Save'}}">{{data.defences.ac.label}}</strong>
+						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{data.defences.ac.title}}">{{data.defences.ac.value}}</label>
+					</div>
+
 				</div>
+
+
+				<div class="flexcol">
+					<div style="flex: 1;" class="ability--score" data-ability="{{str}}">
+						<strong class="ability-name rollable" title="{{data.abilities.str.label }}">{{localize 'DND4EBETA.AbilStr'}}</strong>
+						<input class="ability-score" style="max-width: 40px;" name="data.abilities.str.value" type="Number" value="{{data.abilities.str.value}}" onfocus="this.select()" placeholder="10"/>
+						<!-- <label class="attribute-display ability-mod" title="{{data.abilities.str.label}}">{{numberFormat data.abilities.str.mod decimals=0 sign=true}}</label> -->
+						<label class="attribute-display ability-mod-half" title="{{data.abilities.str.label }}">{{numberFormat data.abilities.str.modHalf decimals=0 sign=true}}</label>
+					</div>
+
+					<div style="flex: 1;" class="ability--score" data-ability="{{con}}">
+						<strong class="ability-name rollable" title="{{data.abilities.con.label }}">{{localize 'DND4EBETA.AbilCon'}}</strong>
+						<input class="ability-score" style="max-width: 40px;" name="data.abilities.con.value" type="Number" value="{{data.abilities.con.value}}" onfocus="this.select()" placeholder="10"/>
+						<!-- <label class="attribute-display ability-mod" title="{{data.abilities.con.label}}">{{numberFormat data.abilities.con.mod decimals=0 sign=true}}</label> -->
+						<label class="attribute-display ability-mod-half" title="{{data.abilities.con.label }}">{{numberFormat data.abilities.con.modHalf decimals=0 sign=true}}</label>
+					</div>
+
+					<div class="" data-defence="{{fort}}" style="display: inline-block;">
+						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EBETA.Roll'}} {{data.defences.fort.title}} {{localize 'DND4EBETA.Save'}}">{{data.defences.fort.label}}</strong>
+						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{data.defences.fort.title}}">{{data.defences.fort.value}}</label>
+					</div>
+
+				</div>
+
+				<div class="flexcol">
+					<div style="flex: 1;" class="ability--score" data-ability="{{dex}}">
+						<strong class="ability-name rollable" title="{{data.abilities.dex.label }}">{{localize 'DND4EBETA.AbilDex'}}</strong>
+						<input class="ability-score" style="max-width: 40px;" name="data.abilities.dex.value" type="Number" value="{{data.abilities.dex.value}}" onfocus="this.select()" placeholder="10"/>
+						<!-- <label class="attribute-display ability-mod" title="{{data.abilities.dex.label}}">{{numberFormat data.abilities.dex.mod decimals=0 sign=true}}</label> -->
+						<label class="attribute-display ability-mod-half" title="{{data.abilities.dex.label }}">{{numberFormat data.abilities.dex.modHalf decimals=0 sign=true}}</label>
+					</div>
+
+					<div style="flex: 1;" class="ability--score" data-ability="{{int}}">
+						<strong class="ability-name rollable" title="{{data.abilities.int.label }}">{{localize 'DND4EBETA.AbilInt'}}</strong>
+						<input class="ability-score" style="max-width: 40px;" name="data.abilities.int.value" type="Number" value="{{data.abilities.int.value}}" onfocus="this.select()" placeholder="10"/>
+						<!-- <label class="attribute-display ability-mod" title="{{data.abilities.int.label}}">{{numberFormat data.abilities.int.mod decimals=0 sign=true}}</label> -->
+						<label class="attribute-display ability-mod-half" title="{{data.abilities.int.label }}">{{numberFormat data.abilities.int.modHalf decimals=0 sign=true}}</label>
+					</div>
+
+					<div class="" data-defence="{{ref}}" style="display: inline-block;">
+						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EBETA.Roll'}} {{data.defences.ref.title}} {{localize 'DND4EBETA.Save'}}">{{data.defences.ref.label}}</strong>
+						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{data.defences.ref.title}}">{{data.defences.ref.value}}</label>
+					</div>
+				</div>
+
+				<div class="flexcol">
+					<div style="flex: 1;" class="ability--score" data-ability="{{wis}}">
+						<strong class="ability-name rollable" title="{{data.abilities.wis.label }}">{{localize 'DND4EBETA.AbilWis'}}</strong>
+						<input class="ability-score" style="max-width: 40px;" name="data.abilities.wis.value" type="Number" value="{{data.abilities.wis.value}}" onfocus="this.select()" placeholder="10"/>
+						<!-- <label class="attribute-display ability-mod" title="{{data.abilities.wis.label}}">{{numberFormat data.abilities.wis.mod decimals=0 sign=true}}</label> -->
+						<label class="attribute-display ability-mod-half" title="{{data.abilities.wis.label }}">{{numberFormat data.abilities.wis.modHalf decimals=0 sign=true}}</label>
+					</div>
+
+					<div style="flex: 1;" class="ability--score" data-ability="{{cha}}">
+						<strong class="ability-name rollable" title="{{data.abilities.cha.label }}">{{localize 'DND4EBETA.AbilCha'}}</strong>
+						<input class="ability-score" style="max-width: 40px;" name="data.abilities.cha.value" type="Number" value="{{data.abilities.cha.value}}" onfocus="this.select()" placeholder="10"/>
+						<!-- <label class="attribute-display ability-mod" title="{{data.abilities.cha.label}}">{{numberFormat data.abilities.cha.mod decimals=0 sign=true}}</label> -->
+						<label class="attribute-display ability-mod-half" title="{{data.abilities.cha.label }}">{{numberFormat data.abilities.cha.modHalf decimals=0 sign=true}}</label>
+					</div>
+
+					<div class="" data-defence="{{wil}}" style="display: inline-block;">
+						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EBETA.Roll'}} {{data.defences.wil.title}} {{localize 'DND4EBETA.Save'}}">{{data.defences.wil.label}}</strong>
+						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{data.defences.wil.title}}">{{data.defences.wil.value}}</label>
+					</div>
+				</div>
+
+				<div class="flexcol">
+					<div class="flexrow" data-skill="prc">
+						<strong class="skill-name rollable" style="max-width: 120px;">{{data.skills.prc.label}}</strong>
+						<input type="hidden" name="data.skills.prc.value" value="{{data.skills.prc.value}}" data-dtype="Number">
+						<label class="skill-mod skill-bonus rollable">{{numberFormat data.skills.prc.total decimals=0 sign=true }}</label>
+					</div>
+
+					<div>
+						<strong class="rollInitiative rollable" >{{localize 'DND4EBETA.Initiative'}}</strong>
+						<label class="init-bonus rollable" title="{{localize 'DND4EBETA.InitiativeScore'}}">{{numberFormat data.attributes.init.value decimals=0 sign=true }}</label>
+					</div>
+				</div>
+
 			</div>
 
+
+
 			<div style="display: flex;justify-content: space-between;">
-				<div class="" style="max-width: 280px; display: inline-block;">
+				<!-- <div class="" style="max-width: 280px; display: inline-block;">
 					{{#each data.defences as | def d|}}
 					<div class="" data-defence="{{d}}" style="display: inline-block;">
 						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EBETA.Roll'}} {{def.title}} {{localize 'DND4EBETA.Save'}}">{{def.label}}</strong>
 						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{def.title}}">{{def.value}}</label>
 					</div>
 					{{/each}}
-				</div>
+				</div> -->
 	
-				<div class="flexrow" data-skill="prc">
+				<!-- <div class="flexrow" data-skill="prc">
 					<h4 class="skill-name rollable">{{data.skills.prc.label}}</h4>
 					<input type="hidden" name="data.skills.prc.value" value="{{data.skills.prc.value}}" data-dtype="Number">
 					<label class="skill-mod skill-bonus rollable">{{numberFormat data.skills.prc.total decimals=0 sign=true }}</label>
-				</div>
+				</div> -->
 			</div>
 
 
 
-			<div data-html="true" title=
-"{{numberFormat data.movement.walk.value}} sq. Walking Speed
-{{numberFormat data.movement.run.value}} sq. Running Speed
-{{numberFormat data.movement.charge.value}} sq. Charging Speed
-{{numberFormat data.movement.climb.value}} sq. Climbing Speed
-{{numberFormat data.movement.shift.value}} sq. Shifting Speed">
-									<strong class="movement-dialog rollable">{{localize 'DND4EBETA.Speed'}}</strong>
-									<lable class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat data.movement.walk.value}} sq.</lable>
-			</div>
+
 
 			<div style="display: flex;justify-content: space-between;">
 			
