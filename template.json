@@ -68,6 +68,7 @@
 			"defences": {
 				"ac": {
 					"value": 10,
+					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -82,6 +83,7 @@
 				},
 				"fort": {
 					"value": 10,
+					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -94,6 +96,7 @@
 				},
 				"ref": {
 					"value": 10,
+					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -106,6 +109,7 @@
 				},
 				"wil": {
 					"value": 10,
+					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -249,6 +253,7 @@
 			"skills": {
 				"acr": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -256,6 +261,7 @@
 				},
 				"arc": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -263,6 +269,7 @@
 				},
 				"ath": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "str",
 					"armourCheck": true,
@@ -270,6 +277,7 @@
 				},
 				"blu": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -277,6 +285,7 @@
 				},
 				"dip": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -284,6 +293,7 @@
 				},
 				"dun": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -291,6 +301,7 @@
 				},
 				"end": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "con",
 					"armourCheck": true,
@@ -298,6 +309,7 @@
 				},
 				"hea": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -305,6 +317,7 @@
 				},
 				"his": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -312,6 +325,7 @@
 				},
 				"ins": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -319,6 +333,7 @@
 				},
 				"itm": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -326,6 +341,7 @@
 				},
 				"nat": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -333,6 +349,7 @@
 				},
 				"prc": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -340,6 +357,7 @@
 				},
 				"rel": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -347,6 +365,7 @@
 				},
 				"stl": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -354,6 +373,7 @@
 				},
 				"stw": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -361,6 +381,7 @@
 				},
 				"thi": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -548,7 +569,63 @@
 				"bonus": [{}],
 				"value": 0
 			}
-			}
+		},
+		"defences": {
+			"ac": {
+				"value": 10,
+				"base": 10,
+				"ability": "",
+				"armour": 0,
+				"class": 0,
+				"feat": 0,
+				"enhance": 0,
+				"bonus": [{}],
+				"temp": 0,
+				"light": true,
+				"altability": "",
+				"condition": "Conditional Bonuses.",
+				"chat": "@name defends with armour."
+			},
+			"fort": {
+				"value": 10,
+				"base": 10,
+				"ability": "",
+				"armour": 0,
+				"class": 0,
+				"feat": 0,
+				"enhance": 0,
+				"bonus": [{}],
+				"temp": 0,
+				"condition": "Conditional Bonuses.",
+				"chat": "@name defends with fortitude."
+			},
+			"ref": {
+				"value": 10,
+				"base": 10,
+				"ability": "",
+				"armour": 0,
+				"class": 0,
+				"feat": 0,
+				"enhance": 0,
+				"bonus": [{}],
+				"temp": 0,
+				"condition": "Conditional Bonuses.",
+				"chat": "@name defends with reflexes."
+			},
+			"wil": {
+				"value": 10,
+				"base": 10,
+				"ability": "",
+				"armour": 0,
+				"class": 0,
+				"feat": 0,
+				"enhance": 0,
+				"bonus": [{}],
+				"temp": 0,
+				"condition": "Conditional Bonuses.",
+				"chat": "@name defends with willpower."
+			}	
+		}
 	}	
 },
 "Item": {

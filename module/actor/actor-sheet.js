@@ -707,11 +707,26 @@ export default class ActorSheet4e extends ActorSheet {
 	_onChangeInputDelta(event) {
 		const input = event.target;
 		const value = input.value;
-		if ( ["+", "-"].includes(value[0]) ) {
-			let delta = parseFloat(value);
-			input.value = getProperty(this.actor.data, input.name) + delta;
+
+		if(/^[0-9]+$/.test(value)) {
+			return;
+		}
+		
+		if(!/^[\-=+ 0-9]+$/.test(value)) {
+			input.value = getProperty(this.actor.data, input.name)
+			return;}
+
+		if ( ["+"].includes(value[0]) ) {
+			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
+			input.value = getProperty(this.actor.data, input.name) + delta || getProperty(this.actor.data, input.name);
+		}
+		else if ( ["-"].includes(value[0]) ) {
+			let delta = parseFloat(-value.replace(/[^0-9]/g, ""));
+			input.value = getProperty(this.actor.data, input.name) + delta || getProperty(this.actor.data, input.name);
 		} else if ( value[0] === "=" ) {
-			input.value = value.slice(1);
+			input.value = value.replace(/[^\-0-9]/g, "");
+		} else{
+			input.value = getProperty(this.actor.data, input.name)
 		}
 	}
 

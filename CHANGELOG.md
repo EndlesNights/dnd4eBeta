@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.11
+- NPC tweaking
+- tweak to _onChangeInputDelta function, value will no longer change if detects number of invald changes
+
 ## Version 0.2.10
 - updated to Foundry Version 0.8.8
 - fixed number of spell mistakes with the en.json lang file
