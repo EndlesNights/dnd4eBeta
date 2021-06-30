@@ -190,10 +190,15 @@ export class Actor4e extends Actor {
 			}
 			skl.armourPen = sklArmourPenalty;
 			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
-			
+
+			if(skl.base == undefined){
+				skl.base = 0;
+				// this.update({[`data.skills[${skl}].base`]: 0 });
+			}
+
 			// Compute modifier
 			skl.mod = data.abilities[skl.ability].mod;			
-			skl.total = skl.value + skl.mod + sklBonusValue - sklArmourPenalty + Math.floor(data.details.level / 2);
+			skl.total = skl.value + skl.base + skl.mod + sklBonusValue - sklArmourPenalty + Math.floor(data.details.level / 2);
 			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
 
 		}
@@ -244,9 +249,12 @@ export class Actor4e extends Actor {
 				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
 				def.armour += i.data.data.armour[id];
 			}
-
+			if(def.base == undefined){
+				def.base = 10;
+				this.update({[`data.defences[${def}].base`]: 10 });
+			}
 			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			def.value = 10 + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);			
+			def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);			
 		}
 
 		//calc init
@@ -635,7 +643,7 @@ export class Actor4e extends Actor {
 	}
 	
 	_computeEncumbrance(actorData) {
-		
+		console.log(actorData.items)
 		let weight = 0;
 		
 		//Weight Currency
@@ -652,10 +660,15 @@ export class Actor4e extends Actor {
 		}
 		//4e 1gp or residuum weights 0.000002
 		
-		for (let [e, v] of Object.entries(actorData.items)) {
-			if(!!v.data.weight && !!v.data.quantity) weight += v.data.weight * v.data.quantity;
-		}
-		
+		const physicalItems = ["weapon", "equipment", "consumable", "tool", "backpack", "loot"];
+		weight += actorData.items.reduce((weight, i) => {
+			if ( !physicalItems.includes(i.type) ) return weight;
+				const q = i.data.data.quantity || 0;
+				const w = i.data.data.weight || 0;
+				return weight + (q * w);
+			}, 0);
+	  
+
 		//round to nearest 100th.
 		weight = Math.round(weight * 1000) / 1000;
 

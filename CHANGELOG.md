@@ -1,7 +1,22 @@
 # Changelog
 
-## Version 0.2.10
+## Version 0.2.13
 - Added Damage Dice Dropdown to Powers card
+- Added handling of Power Damage Dice
+
+## Version 0.2.12
+- encumbrance weight calculations should be working as normal again. data structure was changed in 8.x for items, and the old itteration was no longer working
+
+
+## Version 0.2.11
+- NPC tweaking
+- tweak to _onChangeInputDelta function, value will no longer change if detects number of invald changes
+
+## Version 0.2.10
+- updated to Foundry Version 0.8.8
+- fixed number of spell mistakes with the en.json lang file
+- changed some spells from British English to American English to be more in line with WotC
+- Reworkings of the NPC character
 
 ## Version 0.2.9
 - include names for attack rolls with multi targets
@@ -136,3 +151,6 @@
 
 ## Version 0.0.6
 - Fixed issues where the value for WilL Defence was trying to check the "char" abilities score instead of "cha"
+
+## Version 0.0.0
+- Initial commit
