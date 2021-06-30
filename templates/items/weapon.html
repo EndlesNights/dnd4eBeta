@@ -422,16 +422,14 @@
 					</label>
 					{{/each}}
 
-					<!--
 					<label>"A new thing":</label>
-					{{#each config.weaponProperties as |name, p|}}
+					{{#each config.weaponProperties as |name p|}}
 					{{#with (lookup ../data.weaponProperties p) as |prop|}}
 						<label class="checkbox">
-							<input type="checkbox" name="data.properties.{{p}}" /> {{prop.name}}
+							<input type="checkbox" name="prop.name" {{checked (lookup ../data.properties p)}}/> {{prop.name}}
 						</label>
 					{{/with}}
 					{{/each}}
-					-->
 
 					<label>Weapon Group:</label>
 					{{#each config.weaponGroup as |name group|}}
