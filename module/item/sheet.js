@@ -69,6 +69,13 @@ export default class ItemSheet4e extends ItemSheet {
 			itemData.data.isArea = true;
 		}
 
+		// Weapon Properties
+		//if(itemData.data.weaponProperties){
+		//	for (let [p, prop] of Object.entries(itemData.data.weaponProperties)) {
+		//		prop.name = 'FooBar';
+		//	}
+		//}
+
 		// Action Details
 		data.hasAttackRoll = this.item.hasAttack;
 		data.isHealing = itemData.data.actionType === "heal";
