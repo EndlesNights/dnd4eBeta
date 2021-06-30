@@ -1,9 +1,11 @@
 # Changelog
 
-
-## Version 0.2.12
+## Version 0.2.13
 - Added Damage Dice Dropdown to Powers card
 - Added handling of Power Damage Dice
+
+## Version 0.2.12
+- encumbrance weight calculations should be working as normal again. data structure was changed in 8.x for items, and the old itteration was no longer working
 
 ## Version 0.2.11
 - NPC tweaking

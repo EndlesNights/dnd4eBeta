@@ -643,7 +643,7 @@ export class Actor4e extends Actor {
 	}
 	
 	_computeEncumbrance(actorData) {
-		
+		console.log(actorData.items)
 		let weight = 0;
 		
 		//Weight Currency
@@ -660,10 +660,15 @@ export class Actor4e extends Actor {
 		}
 		//4e 1gp or residuum weights 0.000002
 		
-		for (let [e, v] of Object.entries(actorData.items)) {
-			if(!!v.data.weight && !!v.data.quantity) weight += v.data.weight * v.data.quantity;
-		}
-		
+		const physicalItems = ["weapon", "equipment", "consumable", "tool", "backpack", "loot"];
+		weight += actorData.items.reduce((weight, i) => {
+			if ( !physicalItems.includes(i.type) ) return weight;
+				const q = i.data.data.quantity || 0;
+				const w = i.data.data.weight || 0;
+				return weight + (q * w);
+			}, 0);
+	  
+
 		//round to nearest 100th.
 		weight = Math.round(weight * 1000) / 1000;
 
