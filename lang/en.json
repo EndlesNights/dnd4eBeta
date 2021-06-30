@@ -538,6 +538,7 @@
 "DND4EBETA.PolymorphWarn": "You are not allowed to polymorph this actor!",
 "DND4EBETA.PolymorphWildShape": "Wild Shape",
 "DND4EBETA.PowerAt": "At-Will",
+"DND4EBETA.PowerBaseDamage": "Base Damage",
 "DND4EBETA.PowerDaily": "Daily",
 "DND4EBETA.PowerRecharge": "Recharge",
 "DND4EBETA.PowerDetails": "Power Details",

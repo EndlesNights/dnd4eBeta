@@ -125,6 +125,7 @@ export class Helper {
 			newFormula = newFormula.replace("@profBonus", weaponData.proficient ? weaponData.profBonus || 0 : 0);
 			newFormula = newFormula.replace("@profImpBonus", weaponData.proficientI ? weaponData.profImpBonus || 0 : 0);
 			newFormula = newFormula.replace("@enhance", weaponData.enhance || 0);
+			newFormula = newFormula.replace("@enhanceImp", weaponData.proficientI ? weaponData.enhance || 0 : 0);
 
 			newFormula = this.replaceData (newFormula, weaponData);
 			
@@ -155,6 +156,45 @@ export class Helper {
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
 				newFormula = newFormula.replace("@wepDice", dice);
 			}
+			
+			// New method to handle base power dice from dropdown
+			// Includes handling of:
+			//	-	weapon based damage
+			//	-	flat damage
+			//	-	dice damage
+			if(newFormula.includes("@powBase")) {
+				let quantity = powerData.hit.baseQuantity;
+				let diceType = powerData.hit.baseDiceType;
+				
+				if(quantity === "") quantity = 1;
+				
+				let dice = "";
+				
+				// Handle Weapon Type Damage
+				if(diceType.includes("weapon")){
+					let parts = weaponData.damageDice.parts;
+					for(let i = 0; i< parts.length; i++) {
+						if(!parts[i][0] || !parts[i][1]) continue;
+						if(weaponData.properties.bru) {
+							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}rr<${weaponData.brutal}`;
+						}
+						else{
+						dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}`;
+						}
+					}
+				}
+				// Handle Flat Type Damage
+				else if(diceType.includes("flat")) {
+					dice += `${quantity}`;
+				}
+				// Handle Dice Type Damage
+				else{
+					dice += `${quantity}${diceType}`;
+				}
+
+				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				newFormula = newFormula.replace("@powBase", dice);
+			}
 
 			if(newFormula.includes("@wepMax")) {
 				let parts = weaponData.damageDice.parts;
@@ -166,6 +206,41 @@ export class Helper {
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				newFormula = newFormula.replace("@wepMax", dice);
 			}
+			
+			// New method to handle base power dice from dropdown for critical hits
+			// Includes handling of:
+			//	-	weapon based damage
+			//	-	flat damage
+			//	-	dice damage
+			if(newFormula.includes("@powMax")) {
+				let dice = "";
+				let quantity = powerData.hit.baseQuantity;
+				let diceType = powerData.hit.baseDiceType;
+				
+				if(quantity !== "number") quantity = 1;
+				
+				// Handle Weapon Type Damage
+				if(diceType.includes("weapon")){
+					let parts = weaponData.damageDice.parts;
+						for(let i = 0; i< parts.length; i++) {
+							if(!parts[i][0] || !parts[i][1]) continue;
+							dice += `(${quantity} * ${parts[i][0]} * ${parts[i][1]})`
+						}
+				}
+				// Handle Flat Type Damage
+				else if(diceType.includes("flat")) {
+					dice += `${quantity}`;
+				}
+				// Handle Dice Type Damage
+				else{
+					let diceValue = diceType.match(/\d+/g).join('');
+					dice += `${quantity} * ${diceValue}`;
+				}
+				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				newFormula = newFormula.replace("@powMax", dice);
+			}
+			
+			
 			// if(weaponData.properties.bru) {
 			// 	let index = formula.trim().indexOf("*@wepDiceNum");
 			// 	let wDice = 1;

@@ -837,11 +837,11 @@
 		"brutalNum": 1,
 		"weaponGroup": {},
 		"attackForm": "@profBonus+@enhance",
-		"attackFormImp": "",
+		"attackFormImp": "@profImpBonus+@enhanceImp",
 		"damageForm": "@enhance",
-		"damageFormImp": "",
+		"damageFormImp": "@enhanceImp",
 		"critDamageForm": "(@enhance)d6",
-		"critDamageFormImp": "",
+		"critDamageFormImp": "(@enhanceImp)d6",
 		"critRange": 20,
 		"critRangeImp": 20
 	},
@@ -919,9 +919,11 @@
 		"hit": {
 			"shareDamageRoll": false,
 			"isDamage": true,
+			"baseQuantity": 1,
+			"baseDiceType": "Base Weapon Damage",
 			"detail": "1[W] + Strength modifier damage.",
-			"formula": "@wepDice(1) + @powerMod + @wepDamage",
-			"critFormula": "@wepMax * 1 + @powerMod + @wepDamage + @wepCritBonus"
+			"formula": "@powBase + @powerMod + @wepDamage",
+			"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus"
 		},
 		"miss": {
 			"detail": "Half Damage.",
