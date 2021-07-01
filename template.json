@@ -919,11 +919,13 @@
 		"hit": {
 			"shareDamageRoll": false,
 			"isDamage": true,
+			"isHealing": false,
 			"baseQuantity": 1,
 			"baseDiceType": "Base Weapon Damage",
 			"detail": "1[W] + Strength modifier damage.",
 			"formula": "@powBase + @powerMod + @wepDamage",
-			"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus"
+			"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
+			"healFormula": ""
 		},
 		"miss": {
 			"detail": "Half Damage.",

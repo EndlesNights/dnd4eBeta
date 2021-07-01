@@ -80,6 +80,15 @@ export default class Item4e extends Item {
 	}
 
 	/* -------------------------------------------- */
+	/**
+	 * Does the Item implement a heal roll as part of its usage
+	 * @type {boolean}
+	 */
+	 get hasHealing() {
+		if(!this.data.type === "power") return false; //curently only powers will deal damage or make attacks
+		return this.data.data.hit?.isHealing;
+	 }	
+	/* -------------------------------------------- */
 
 	/**
 	 * Does the Item have an effect line as part of its usage
@@ -315,6 +324,7 @@ export default class Item4e extends Item {
 			isHealing: this.isHealing,
 			isPower: this.data.type == "power",
 			hasDamage: this.hasDamage,
+			hasHealing: this.hasHealing,
 			hasEffect: this.hasEffect,
 			cardData: cardData,
 			isVersatile: this.isVersatile,
@@ -914,7 +924,112 @@ export default class Item4e extends Item {
 	}
 
 	/* -------------------------------------------- */
+	/**
+	 *
+	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
+	 */
+	rollHealing({event, spellLevel=null, versatile=false}={}) {
+		console.log("rollHealing")
+		const itemData = this.data.data;
+		const actorData = this.actor.data.data;
+		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
+			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
+			return null;
+		}
+
+		if ( !this.hasHealing ) {
+			ui.notifications.error("You may not make a Healing Roll with this Item.");
+			return null;
+		}
+		const messageData = {"flags.dnd4eBeta.roll": {type: "healing", itemId: this.id }};
+
+		// Get roll data
+		const rollData = this.getRollData();
+		if ( spellLevel ) rollData.item.level = spellLevel;
+
+		// Get message labels
+		const title = `${this.name} - ${game.i18n.localize("DND4EBETA.HealingRoll")}`;
+		let flavor = this.labels.damageTypes.length ? `${title} (${this.labels.damageTypes})` : title;
+
+		// Define Roll parts
+		const parts = itemData.damage.parts.map(d => d[0]);
+
+		//Add power damage into parts
+		if(!!itemData.hit?.healFormula) {
+			parts.unshift(Helper.commonReplace(itemData.hit.healFormula, actorData, this.data.data, weaponUse?.data.data));
+			//Add seconadary weapons damage into parts
+			if(weaponUse) {
+				if(itemData.hit.healFormula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
+					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+				
+				if(itemData.hit.healFormula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
+					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+				
+			}
+		}
+	
+		// Adjust damage from versatile usage
+		if(weaponUse) {
+			if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
+				parts.push("1");
+				messageData["flags.dnd4eBeta.roll"].versatile = true;
+			}
+		}
+		// if ( versatile && itemData.damage.versatile ) {
+			// parts[0] = itemData.damage.versatile;
+			// messageData["flags.dnd4eBeta.roll"].versatile = true;
+		// }	
+	
+		// Define Roll Data
+		const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
+		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
+			parts.push("@dmg");
+			rollData["dmg"] = actorBonus.damage;
+		}
+
+		// Ammunition Damage from power
+		if ( this._ammo ) {
+			parts.push("@ammo");
+			rollData["ammo"] = this._ammo.data.data.damage.parts.map(p => p[0]).join("+");
+			flavor += ` [${this._ammo.name}]`;
+			delete this._ammo;
+		}
+	
+		// Ammunition Damage from weapon
+		if(weaponUse) {
+			if ( weaponUse._ammo ) {
+				parts.push("@ammoW");
+				rollData["ammoW"] = weaponUse._ammo.data.data.damage.parts.map(p => p[0]).join("+");
+				flavor += ` [${weaponUse._ammo.name}]`;
+				delete weaponUse._ammo;
+			}
+		}
+		//Add powers text to message.
+		// if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
+		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
+		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
+		// Call the roll helper utility
+		return damageRoll({
+			event: event,
+			parts: parts,
+			actor: this.actor,
+			data: rollData,
+			title: title,
+			healingRoll: true,
+			flavor: flavor,
+			speaker: ChatMessage.getSpeaker({actor: this.actor}),
+			dialogOptions: {
+				width: 400,
+				top: event ? event.clientY - 80 : null,
+				left: window.innerWidth - 710
+			},
+			messageData,
+		});
+	}
 	/**
 	 * Adjust a cantrip damage formula to scale it for higher level characters and monsters
 	 * @private
@@ -1263,6 +1378,7 @@ export default class Item4e extends Item {
 			}
 		}
 		else if ( action === "damage" ) await item.rollDamage({event, spellLevel});
+		else if ( action === "healing" ) await item.rollHealing({event, spellLevel});
 		else if ( action === "versatile" ) await item.rollDamage({event, spellLevel, versatile: true});
 		else if ( action === "formula" ) await item.rollFormula({event, spellLevel});
 

@@ -44,8 +44,8 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	async getData(options) {		
-		const data = super.getData(options); console.log(data);
-		const itemData = data.data; console.log(itemData);
+		const data = super.getData(options);
+		const itemData = data.data;
 		data.labels = this.item.labels;
 		data.config = CONFIG.DND4EBETA;
 
@@ -61,7 +61,6 @@ export default class ItemSheet4e extends ItemSheet {
 		if(itemData.type === "power") data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
 		
 		if(itemData.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
-		console.log(itemData.data?.useType)
 		if(itemData.data?.useType) {
 			if(!(itemData.data.rangeType === "personal" || itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || data.data.rangeType === ""))
 			itemData.data.isRange = true;
@@ -294,7 +293,6 @@ export default class ItemSheet4e extends ItemSheet {
 		let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
 		
 		if ( weaponType === "melee" ) {
-			console.log(actor)
 			return actor.itemTypes.weapon.reduce((obj, i) =>  {
 				if (setMelee.includes(i.data.data.weaponType) ) {
 					obj[i.id] = `${i.name}`;
@@ -521,7 +519,6 @@ export default class ItemSheet4e extends ItemSheet {
 	/* -------------------------------------------- */
 	
 	async _onExecute(event) {
-		console.log("_onExecute");
 		event.preventDefault();
 		await this._onSubmit(event, {preventClose: true}); 
 		executeMacro(this.document); 

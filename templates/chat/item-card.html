@@ -20,12 +20,21 @@
 
 
 
-		{{#if hasAttack}}<button data-action="attack">{{ localize "DND4EBETA.Attack" }}</button>{{/if}}
+		{{#if hasAttack}}
+		<button data-action="attack">
+			{{ localize "DND4EBETA.Attack" }}
+		</button>
+		{{/if}}
 
 		{{#if hasDamage}}
 		<button data-action="damage">
-			{{#if isHealing}}{{ localize "DND4EBETA.Healing" }}
-			{{else}}{{localize "DND4EBETA.Damage" }}{{/if}}
+			{{localize "DND4EBETA.Damage" }}
+		</button>
+		{{/if}}
+
+		{{#if hasHealing}}
+		<button data-action="healing">
+			{{ localize "DND4EBETA.Healing" }}
 		</button>
 		{{/if}}
 

@@ -1,15 +1,17 @@
 # Changelog
 
 ## Version 0.2.13
-- Added Damage Dice Dropdown to Powers card
-- Added handling of Power Damage Dice
+- Added Damage Dice Dropdown to Powers card (merge from [ahoward-cf](https://github.com/ahoward-cf))
+- Added handling of Power Damage Dice (merge from [ahoward-cf](https://github.com/ahoward-cf))
+- quick change to the above, allowing formal rolls for the `baseQuantity` varuble.
+- added healing roll option
 
 ## Version 0.2.12
-- encumbrance weight calculations should be working as normal again. data structure was changed in 8.x for items, and the old itteration was no longer working
+- encumbrance weight calculations should be working as normal again. data structure was changed in 8.x for items, and the old iteration was no longer working
 
 ## Version 0.2.11
 - NPC tweaking
-- tweak to _onChangeInputDelta function, value will no longer change if detects number of invald changes
+- tweak to _onChangeInputDelta function, value will no longer change if detects number of invalid changes
 
 ## Version 0.2.10
 - updated to Foundry Version 0.8.8
@@ -34,7 +36,7 @@
 ## Version 0.2.5
 - updated to Foundry Version 0.8.7
 - fixed how Flavor Text works.
-	flavor Text for items will override the item descrition when using the items
+	flavor Text for items will override the item discretion when using the items
 	flavor Text as part of rolls will override what chat message text is displayed.
 - fixed issue where bonuses to saving throws was not being calculated
 - fixed an issue where second wind was healing arithmetically even when at negative HP. It should now heal correctly.

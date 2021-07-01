@@ -233,7 +233,7 @@
 	<div class="form-group uses-per">
 		<label>{{ localize "DND4EBETA.PowerBaseDamage" }}</label>
 		<div class="form-fields">
-			<input type="text" name="data.hit.baseQuantity" value="{{data.hit.baseQuantity}}" data-dtype="Number"/>
+			<input style="min-width: 105px;" type="text" name="data.hit.baseQuantity" value="{{data.hit.baseQuantity}}"/>
 			<select name="data.hit.baseDiceType">
 				{{#select data.hit.baseDiceType}}
 				{{#each config.powerDiceTypes as |name key|}}
@@ -250,7 +250,7 @@
 		<input type="text" name="data.hit.formula" value="{{data.hit.formula}}"/>
 	</div>
 	<h4 class="damage-header">
-		{{#unless isHealing }}Secondary {{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
+		Secondary {{ localize "DND4EBETA.Damage"}} {{localize "DND4EBETA.Formula" }}:
 		<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
 	</h4>
 	<ol class="damage-parts form-group">
@@ -279,7 +279,7 @@
 		<input type="text" name="data.hit.critFormula" value="{{data.hit.critFormula}}"/>
 	</div>
 	<h4 class="damage-header">
-		{{#unless isHealing }}Secondary Critial{{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
+		Secondary Critial{{ localize "DND4EBETA.Damage" }} {{ localize "DND4EBETA.Formula" }}:
 		<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
 	</h4>
 	<ol class="damage-parts form-group">
@@ -332,6 +332,16 @@
 		{{/each}}
 	</div>
 
+	{{/if}}
+	<div class="form-group">
+		<label>{{ localize "DND4EBETA.isHealing" }}</label>
+		<input type="checkbox" name="data.hit.isHealing" data-dtype="Boolean" {{checked data.hit.isHealing}}/>
+	</div>
+	{{#if data.hit.isHealing}}
+	<div class="form-group stacked">
+		<label>Healing {{ localize "DND4EBETA.Formula" }}</label>
+		<input type="text" name="data.hit.healFormula" value="{{data.hit.healFormula}}"/>
+	</div>
 	{{/if}}
 
 	{{!-- Effect Details --}}
