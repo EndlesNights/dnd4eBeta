@@ -270,11 +270,12 @@
 				</div> -->
 
 				{{!-- Attack  Formula--}}
+				{{#unless (eq data.weaponType "implement")}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Attack Rolls.">Bonus to Attack {{ localize "DND4EBETA.Formula" }}:</h4>
 					<input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
-					
+				
 				{{!-- Damage Formula --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Primary Damage {{ localize "DND4EBETA.Formula" }}:</h4>
@@ -332,17 +333,16 @@
 					</li>
 					{{/each}}
 				</ol>
-
-				{{!-- Attack Formula for Weapon & Implement--}}
+				{{/unless}}
+				
+				{{!-- Attack Formula for Implement--}}
 				{{#if data.properties.imp}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Attack Rolls.">Implement Attack {{ localize "DND4EBETA.Formula" }}:</h4>
 					<input type="text" name="data.attackFormImp" value="{{data.attackFormImp}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
-				{{/if}}
 				
-				{{!-- Damage Formula for Weapon & Implement--}}
-				{{#if data.properties.imp}}
+				{{!-- Damage Formula for Implement--}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Implement Damage {{ localize "DND4EBETA.Formula" }}:</h4>
 					<input type="text" name="data.damageFormImp" value="{{data.damageFormImp}}" title="Formula used for Damage Rolls." data-dtype="String"/>
@@ -372,6 +372,7 @@
 					{{/each}}
 				</ol>
 
+				{{!-- Critical Damage Formula for Implement --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Implement Critical Damage {{ localize "DND4EBETA.Formula" }}:</h4>
 					<input type="text" name="data.critDamageFormImp" value="{{data.critDamageFormImp}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
