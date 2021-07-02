@@ -414,21 +414,21 @@
 						<input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
 					</label>
 					{{/each}}
-	
+					
+					<!-- 
 					<label>{{ localize "DND4EBETA.ItemWeaponProperties" }}:</label>
 					{{#each config.weaponProperties as |name prop|}}
 					<label class="checkbox">
 						<input type="checkbox" name="data.properties.{{prop}}" {{checked (lookup ../data.properties prop)}}/> {{ name }}
 					</label>
 					{{/each}}
+					-->
 
-					<label>"A new thing":</label>
-					{{#each config.weaponProperties as |name p|}}
-					{{#with (lookup ../data.weaponProperties p) as |prop|}}
+					<label>{{ localize "DND4EBETA.ItemWeaponProperties" }}</label>
+					{{#each data.properties as |prop p|}}
 						<label class="checkbox">
-							<input type="checkbox" name="prop.name" {{checked (lookup ../data.properties p)}}/> {{prop.name}}
+							<input type="checkbox" name="data.properties.{{p}}" {{checked prop}}/> {{p}}
 						</label>
-					{{/with}}
 					{{/each}}
 
 					<label>Weapon Group:</label>
