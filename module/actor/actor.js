@@ -423,7 +423,7 @@ export class Actor4e extends Actor {
 		if (!isNaN(value) && isBar ) {
 			const current = getProperty(this.data.data, attribute);
 			if (isDelta) value = Math.clamped(current.min, Number(current.value) + value, current.max);
-			console.log(attribute)
+			
 			if(attribute === 'attributes.hp')
 			{
 				let newHealth = this.setConditions(value);			
@@ -643,7 +643,6 @@ export class Actor4e extends Actor {
 	}
 	
 	_computeEncumbrance(actorData) {
-		console.log(actorData.items)
 		let weight = 0;
 		
 		//Weight Currency

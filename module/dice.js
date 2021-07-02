@@ -192,8 +192,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
 export async function damageRoll({parts, partsCrit, actor, data, event={}, rollMode=null, template, title, speaker, flavor,
-	allowCritical=true, critical=false, fastForward=null, onClose, dialogOptions}) {
-
+	allowCritical=true, critical=false, fastForward=null, onClose, dialogOptions, healingRoll}) {
 	// Handle input arguments
 	flavor = flavor || title;
 	speaker = speaker || ChatMessage.getSpeaker();
@@ -236,7 +235,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 	if ( fastForward ) return _roll(parts, partsCrit, critical || event.altKey);
 	// else parts = critical ? partsCrit.concat(["@bonus"]) : parts.concat(["@bonus"]);
 	parts = parts.concat(["@bonus"]);
-	partsCrit = partsCrit.concat(["@bonus"]);
+	partsCrit = partsCrit?.concat(["@bonus"]);
 
 	// Render modal dialog
 	template = template || "systems/dnd4eBeta/templates/chat/roll-dialog.html";
@@ -250,26 +249,48 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 
 	// Create the Dialog window
 	let roll;
-	return new Promise(resolve => {
-		new Dialog({
-			title: title,
-			content: html,
-			buttons: {
-				critical: {
-					condition: allowCritical,
-					label: game.i18n.localize("DND4EBETA.CriticalHit"),
-					callback: html => roll = _roll(parts, partsCrit, true, html[0].querySelector("form"))
+
+	if(healingRoll){
+		return new Promise(resolve =>{
+			new Dialog({
+				title: title,
+				content: html,
+				buttons: {
+					normal: {
+						label: game.i18n.localize("DND4EBETA.Healing"),
+						callback: html => roll = _roll(parts, partsCrit, false, html[0].querySelector("form"))
+					}
 				},
-				normal: {
-					label: game.i18n.localize(allowCritical ? "DND4EBETA.Normal" : "DND4EBETA.Roll"),
-					callback: html => roll = _roll(parts, partsCrit, false, html[0].querySelector("form"))
+				default: "normal",
+				close: html => {
+					if (onClose) onClose(html, parts, data);
+					resolve(rolled ? roll : false);
+				}				
+			}, dialogOptions).render(true);
+		});
+	} else {
+		return new Promise(resolve => {
+			new Dialog({
+				title: title,
+				content: html,
+				buttons: {
+					critical: {
+						condition: allowCritical,
+						label: game.i18n.localize("DND4EBETA.CriticalHit"),
+						callback: html => roll = _roll(parts, partsCrit, true, html[0].querySelector("form"))
+					},
+					normal: {
+						label: game.i18n.localize(allowCritical ? "DND4EBETA.Normal" : "DND4EBETA.Roll"),
+						callback: html => roll = _roll(parts, partsCrit, false, html[0].querySelector("form"))
+					},
 				},
-			},
-			default: "normal",
-			close: html => {
-				if (onClose) onClose(html, parts, data);
-				resolve(rolled ? roll : false);
-			}
-		}, dialogOptions).render(true);
-	});
+				default: "normal",
+				close: html => {
+					if (onClose) onClose(html, parts, data);
+					resolve(rolled ? roll : false);
+				}
+			}, dialogOptions).render(true);
+		});
+	}
+
 }
