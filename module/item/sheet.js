@@ -71,15 +71,13 @@ export default class ItemSheet4e extends ItemSheet {
 
 		// Weapon Properties
 		if(itemData.type === "weapon"){
-			const weaponMetaProperties = {};
-			for (let attrib in itemData.data.properties) {
-				console.log(attrib)
-				weaponMetaProperties[attrib] = {
+			data.weaponMetaProperties = {};
+			for (let attrib in data.config.weaponProperties) {
+				data.weaponMetaProperties[attrib] = {
 						propName: data.config.weaponProperties[attrib], 
 						checked: itemData.data.properties[attrib],
 						disabled: (attrib === "imp" && itemData.data.weaponType === "implement")
 				}
-				console.log(weaponMetaProperties[attrib].propName)	
 			}
 		}
 

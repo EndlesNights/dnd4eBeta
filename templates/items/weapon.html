@@ -414,20 +414,11 @@
 						<input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
 					</label>
 					{{/each}}
-					
-					<!-- 
-					<label>{{ localize "DND4EBETA.ItemWeaponProperties" }}:</label>
-					{{#each config.weaponProperties as |name prop|}}
-					<label class="checkbox">
-						<input type="checkbox" name="data.properties.{{prop}}" {{checked (lookup ../data.properties prop)}}/> {{ name }}
-					</label>
-					{{/each}}
-					-->
 
-					<label>{{ localize "DND4EBETA.ItemWeaponProperties" }}</label>
-					{{#each data.properties as |prop p|}}
+					<label>{{ localize "DND4EBETA.ItemWeaponProperties" }}:</label>
+					{{#each weaponMetaProperties as |prop p|}}
 						<label class="checkbox">
-							<input type="checkbox" name="data.properties.{{p}}" {{checked prop}}/> {{p}}
+							<input type="checkbox" name="data.properties.{{p}}" {{checked prop.checked}} {{#if prop.disabled}}disabled{{/if}} /> {{ prop.propName }}
 						</label>
 					{{/each}}
 
