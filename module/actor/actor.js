@@ -229,32 +229,10 @@ export class Actor4e extends Actor {
 		data.defences.wil.ability = (data.abilities.wis.value >= data.abilities.cha.value) ? "wis" : "cha";
 
 		//Calc defence stats
-		for (let [id, def] of Object.entries(data.defences)) {
-			
-			def.label = game.i18n.localize(DND4EBETA.def[id]);
-			def.title = game.i18n.localize(DND4EBETA.defensives[id]);
-						
-			let defBonusValue = 0;
-			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
-				for( const b of def.bonus) {
-					if(b.active) {
-						defBonusValue += b.value;
-					}
-				}
-			}
-			def.bonusValue = defBonusValue;
-			
-			//Get Deff stats from items
-			for ( let i of this.items) {
-				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
-				def.armour += i.data.data.armour[id];
-			}
-			if(def.base == undefined){
-				def.base = 10;
-				this.update({[`data.defences[${def}].base`]: 10 });
-			}
-			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);			
+		if (this.data.type === "NPC") {
+			this.calcDefenceStatsNPC(data);
+		} else {
+			this.calcDefenceStatsCharacter(data);
 		}
 
 		//calc init
@@ -409,6 +387,64 @@ export class Actor4e extends Actor {
 
 	}
 
+	calcDefenceStatsCharacter(data) {		
+		for (let [id, def] of Object.entries(data.defences)) {
+			
+			def.label = game.i18n.localize(DND4EBETA.def[id]);
+			def.title = game.i18n.localize(DND4EBETA.defensives[id]);
+						
+			let defBonusValue = 0;
+			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
+				for( const b of def.bonus) {
+					if(b.active) {
+						defBonusValue += b.value;
+					}
+				}
+			}
+			def.bonusValue = defBonusValue;
+			
+			//Get Deff stats from items
+			for ( let i of this.items) {
+				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
+				def.armour += i.data.data.armour[id];
+			}
+			if(def.base == undefined){
+				def.base = 10;
+				this.update({[`data.defences[${def}].base`]: 10 });
+			}
+			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
+			def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);			
+		}
+	}
+
+	calcDefenceStatsNPC(data) {
+		for (let [id, def] of Object.entries(data.defences)) {
+			
+			def.label = game.i18n.localize(DND4EBETA.def[id]);
+			def.title = game.i18n.localize(DND4EBETA.defensives[id]);
+						
+			let defBonusValue = 0;
+			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
+				for( const b of def.bonus) {
+					if(b.active) {
+						defBonusValue += b.value;
+					}
+				}
+			}
+			def.bonusValue = defBonusValue;
+			
+			//Get Deff stats from items
+			for ( let i of this.items) {
+				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
+				def.armour += i.data.data.armour[id];
+			}
+			if(def.base == undefined){
+				def.base = 10;
+				this.update({[`data.defences[${def}].base`]: 10 });
+			}
+			def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + data.details.level;			
+		}
+	}
 
   /**
    * Handle how changes to a Token attribute bar are applied to the Actor.
@@ -431,7 +467,7 @@ export class Actor4e extends Actor {
 				this.update({[`data.attributes.hp.value`]: newHealth[0] });
 			}
 		}
-	}	
+	}
 	setConditions(newValue) {
 		
 		let newTemp = this.data.data.attributes.hp.temphp;
@@ -456,7 +492,7 @@ export class Actor4e extends Actor {
 		else if(newValue < this.data.data.attributes.hp.min) newValue =  this.data.data.attributes.hp.min;
 		
 		return [newValue,newTemp];
-	}  
+	}
   
   /**
    * Roll a Skill Check

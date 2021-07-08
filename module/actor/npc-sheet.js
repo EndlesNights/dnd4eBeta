@@ -17,6 +17,18 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 		return `systems/dnd4eBeta/templates/npc-sheet.html`;
 	}
 
+	prepareData() {
+		super.prepareData();
+		console.log("RIPRIP")
+
+	}
+
+	/** @override */
+	calcDefenceStats(data) {
+		console.log("RIP")
+		// super.calcDefenceStats(data);
+	}
+
 	/* -------------------------------------------- */
 
 	/** @override */

@@ -574,11 +574,14 @@ DND4EBETA.powerDiceTypes = {
  * @type {Object}
  */
 DND4EBETA.special = {
-  "aa": "DND4EBETA.SpecialSensesAA",
-  "bs": "DND4EBETA.SpecialSensesBS",
-  "dv": "DND4EBETA.SpecialSensesDV",
-  "ts": "DND4EBETA.SpecialSensesTS",
-  "tr": "DND4EBETA.SpecialSensesTR"
+	"nv": "DND4EBETA.VisionNormal",
+	"lv": "DND4EBETA.VisionLowLight",
+	"bv": "DND4EBETA.VisionBlind",
+	"aa": "DND4EBETA.SpecialSensesAA",
+	"bs": "DND4EBETA.SpecialSensesBS",
+	"dv": "DND4EBETA.SpecialSensesDV",
+	"ts": "DND4EBETA.SpecialSensesTS",
+	"tr": "DND4EBETA.SpecialSensesTR"
 };
 
 DND4EBETA.vision = {

@@ -1143,7 +1143,9 @@ export default class ActorSheet4e extends ActorSheet {
 	_onTraitSelectorSense(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.parentElement.parentElement.querySelector("h4");
+		// const label = a.parentElement.parentElement.querySelector("h4");
+		const label = a.parentElement.querySelector("span");
+		console.log(label)
 		const choices = CONFIG.DND4EBETA[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
 		new TraitSelectorSense(this.actor, options).render(true);
