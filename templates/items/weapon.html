@@ -96,6 +96,7 @@
 
 			{{!-- Weapon Properties --}}
 			<div class="">
+				{{#unless (eq data.weaponType "implement")}}
 				<h3 class="form-header">Weapon Stats</h3>
 				<div class="form-group">
 					<label title="Proficiency Bonus">Proficiency Bonus:</label>
@@ -103,6 +104,7 @@
 						<input type="text" name="data.profBonus" value="{{data.profBonus}}" title="Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
+				{{/unless}}
 				<div class="form-group">
 					<label title="Implement Proficiency Bonus">Implement Proficiency Bonus:</label>
 					<div class="form-fields">
@@ -222,12 +224,14 @@
 						<input type="text" name="data.bonusDamage" value="{{data.bonusDamage}}" title="Size of Dice in damage roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div> -->
+				{{#unless (eq data.weaponType "implement")}}
 				<div class="form-group">
 					<label title="Natural D20 Dice roll required for a hit to be considered a critical hit.">Critical Hit:</label>
 					<div class="form-fields">
 						<input type="text" name ="data.critRange" value="{{data.critRange}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
+				{{/unless}}
 
 				{{#if data.properties.imp}}
 				<div class="form-group">
