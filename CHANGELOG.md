@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 0.2.15
+- fixed an issue where situtation bonuses and common bonuses where not being added together properly
+
+## Version 0.2.14
+- combined Vision and Special Scenes into Scenes
+- Fixed an issue where special scenes would not open properly on NPC sheet
+- changed english names for number of vision types
+- fixed issue where on NPC sheet where Perception could not be trained
+- separated PC and NPC defense calculations
+- NPC sheet added space betwen defenses and abillity scores
+- NPC defense will no longer draw from Abilities
+- NPC defense will draw bonus from level instead of half level
+
 ## Version 0.2.13
 - Added Damage Dice Dropdown to Powers card (merge from [ahoward-cf](https://github.com/ahoward-cf))
 - Added handling of Power Damage Dice (merge from [ahoward-cf](https://github.com/ahoward-cf))

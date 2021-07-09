@@ -1302,7 +1302,7 @@ font-size: 12px;
 	/* border: 2px groove #eeede0; */
 	border-radius: 4px;
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
-
+	height: 100%;
 	width: 100%;
 	float: left;
 }
@@ -1759,7 +1759,7 @@ font-size: 12px;
 	/* padding: 0 5px; */
 	overflow-y: auto;
 	scrollbar-width: thin;
-	height: calc(100% - 116px);
+	height: calc(100% - 136px);
 }
 .dnd4eBeta.sheet .items-list {
 	list-style: none;
