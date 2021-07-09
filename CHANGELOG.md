@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.15
+- fixed an issue where situtation bonuses and common bonuses where not being added together properly
+
 ## Version 0.2.14
 - combined Vision and Special Scenes into Scenes
 - Fixed an issue where special scenes would not open properly on NPC sheet
