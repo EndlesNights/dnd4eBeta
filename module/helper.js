@@ -161,6 +161,7 @@ export class Helper {
 					else{
 						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}`;
 					}
+					if (i < parts.length - 1) dice += '+';
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
@@ -191,6 +192,7 @@ export class Helper {
 						else{
 						dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}`;
 						}
+						if (i < parts.length - 1) dice += '+';
 					}
 				}
 				// Handle Flat Type Damage
@@ -212,6 +214,7 @@ export class Helper {
 				for(let i = 0; i< parts.length; i++) {
 					if(!parts[i][0] || !parts[i][1]) continue;
 					dice += `(${parts[i][0]} * ${parts[i][1]})`
+					if (i < parts.length - 1) dice += '+';
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				newFormula = newFormula.replace("@wepMax", dice);
@@ -235,6 +238,7 @@ export class Helper {
 						for(let i = 0; i< parts.length; i++) {
 							if(!parts[i][0] || !parts[i][1]) continue;
 							dice += `(${quantity} * ${parts[i][0]} * ${parts[i][1]})`
+							if (i < parts.length - 1) dice += '+';
 						}
 				}
 				// Handle Flat Type Damage
