@@ -84,13 +84,13 @@ export class Helper {
 		return weaponUse;
 	}
 	
-	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1) {
+	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1, stringOnly = false) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula;
 
 		if(actorData) {
 
-			newFormula = Roll.replaceFormulaData(newFormula, actorData)
+			if (!stringOnly) newFormula = Roll.replaceFormulaData(newFormula, actorData);
 			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
 			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);

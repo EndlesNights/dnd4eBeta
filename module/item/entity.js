@@ -321,7 +321,15 @@ export default class Item4e extends Item {
 			// let x = func();
 			// console.log(x)
 		}
-		const cardData = this.data.type == "power" && this.data.data.autoGenChatPowerCard ? Helper._preparePowerCardData(this.getChatData(), CONFIG) : null;
+		const cardData = (() => {
+			if (this.data.type == "power" && this.data.data.autoGenChatPowerCard) {
+				let weaponUse = Helper.getWeaponUse(this.data.data, this.actor);
+				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG);
+				return Helper.commonReplace(cardString, this.actor.data.data, this.data, weaponUse? weaponUse.data.data : null, 1, true);
+			} else {
+				return null;
+			}
+		})();
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
