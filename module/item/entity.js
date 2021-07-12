@@ -698,7 +698,7 @@ export default class Item4e extends Item {
 		const actorData = this.actor.data.data;	
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
-		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === undefined)) {
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
 			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
 			return null;
 		}
@@ -826,7 +826,7 @@ export default class Item4e extends Item {
 		const actorData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
-		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === undefined)) {
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
 			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
 			return null;
 		}
