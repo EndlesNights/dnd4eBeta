@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.16
+- Added weapon Implement type (in addition to existing Implement Property)
+- Implement type auto-selects Implement Property and disables checkbox
+- Implement type hides some weapon damage fields
+
 ## Version 0.2.15
 - fixed an issue where situtation bonuses and common bonuses where not being added together properly
 

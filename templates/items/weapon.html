@@ -96,6 +96,7 @@
 
 			{{!-- Weapon Properties --}}
 			<div class="">
+				{{#unless (eq data.weaponType "implement")}}
 				<h3 class="form-header">Weapon Stats</h3>
 				<div class="form-group">
 					<label title="Proficiency Bonus">Proficiency Bonus:</label>
@@ -103,6 +104,7 @@
 						<input type="text" name="data.profBonus" value="{{data.profBonus}}" title="Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
+				{{/unless}}
 				<div class="form-group">
 					<label title="Implement Proficiency Bonus">Implement Proficiency Bonus:</label>
 					<div class="form-fields">
@@ -222,12 +224,14 @@
 						<input type="text" name="data.bonusDamage" value="{{data.bonusDamage}}" title="Size of Dice in damage roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div> -->
+				{{#unless (eq data.weaponType "implement")}}
 				<div class="form-group">
 					<label title="Natural D20 Dice roll required for a hit to be considered a critical hit.">Critical Hit:</label>
 					<div class="form-fields">
 						<input type="text" name ="data.critRange" value="{{data.critRange}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
+				{{/unless}}
 
 				{{#if data.properties.imp}}
 				<div class="form-group">
@@ -270,11 +274,12 @@
 				</div> -->
 
 				{{!-- Attack  Formula--}}
+				{{#unless (eq data.weaponType "implement")}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Attack Rolls.">Bonus to Attack {{ localize "DND4EBETA.Formula" }}:</h4>
 					<input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
-					
+				
 				{{!-- Damage Formula --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Primary Damage {{ localize "DND4EBETA.Formula" }}:</h4>
@@ -332,17 +337,16 @@
 					</li>
 					{{/each}}
 				</ol>
-
-				{{!-- Attack Formula for Weapon & Implement--}}
+				{{/unless}}
+				
+				{{!-- Attack Formula for Implement--}}
 				{{#if data.properties.imp}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Attack Rolls.">Implement Attack {{ localize "DND4EBETA.Formula" }}:</h4>
 					<input type="text" name="data.attackFormImp" value="{{data.attackFormImp}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
-				{{/if}}
 				
-				{{!-- Damage Formula for Weapon & Implement--}}
-				{{#if data.properties.imp}}
+				{{!-- Damage Formula for Implement--}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Implement Damage {{ localize "DND4EBETA.Formula" }}:</h4>
 					<input type="text" name="data.damageFormImp" value="{{data.damageFormImp}}" title="Formula used for Damage Rolls." data-dtype="String"/>
@@ -372,6 +376,7 @@
 					{{/each}}
 				</ol>
 
+				{{!-- Critical Damage Formula for Implement --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Implement Critical Damage {{ localize "DND4EBETA.Formula" }}:</h4>
 					<input type="text" name="data.critDamageFormImp" value="{{data.critDamageFormImp}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
@@ -414,12 +419,12 @@
 						<input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
 					</label>
 					{{/each}}
-	
+
 					<label>{{ localize "DND4EBETA.ItemWeaponProperties" }}:</label>
-					{{#each config.weaponProperties as |name prop|}}
-					<label class="checkbox">
-						<input type="checkbox" name="data.properties.{{prop}}" {{checked (lookup ../data.properties prop)}}/> {{ name }}
-					</label>
+					{{#each weaponMetaProperties as |prop p|}}
+						<label class="checkbox">
+							<input type="checkbox" name="data.properties.{{p}}" {{checked prop.checked}} {{#if prop.disabled}}disabled{{/if}} /> {{ prop.propName }}
+						</label>
 					{{/each}}
 
 					<label>Weapon Group:</label>

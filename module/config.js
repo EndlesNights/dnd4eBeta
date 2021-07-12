@@ -744,6 +744,7 @@ DND4EBETA.weaponTypes = {
 	"militaryR": "DND4EBETA.WeaponMilitaryR",
 	"superiorR": "DND4EBETA.WeaponSuperiorR",
 	"improvR": "DND4EBETA.WeaponImprovisedR",
+	"implement": "DND4EBETA.WeaponImplement",
 	"siegeM": "DND4EBETA.WeaponSiegeM",
 	"siegeR": "DND4EBETA.WeaponSiegeR",
 	"naturalM": "DND4EBETA.WeaponNaturalM",

@@ -9,6 +9,16 @@ import { DND4EBETA } from "../config.js";
  */
 export default class Item4e extends Item {
 
+	
+	/** @inheritdoc */
+	async _preUpdate(changed, options, user) {
+		await super._preUpdate(changed, options, user);
+		// Check for implement weapon type and set weapon implement property to true
+		if (this.type === "weapon" && changed.data.weaponType === "implement"){
+			foundry.utils.setProperty(changed, "data.properties.imp", true);
+		}
+	}
+
 	/* -------------------------------------------- */
 	/*  Item Properties                             */
 	/* -------------------------------------------- */
@@ -693,12 +703,12 @@ export default class Item4e extends Item {
 			return null;
 		}
 
-			const flags = this.actor.data.flags.dnd4eBeta || {};
-			if ( !this.hasAttack ) {
-				ui.notifications.error("You may not place an Attack Roll with this Item.");
-				return null;
-			}
-			let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
+		const flags = this.actor.data.flags.dnd4eBeta || {};
+		if ( !this.hasAttack ) {
+			ui.notifications.error("You may not place an Attack Roll with this Item.");
+			return null;
+		}
+		let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
 		let flavor = title;
 
 		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;

@@ -110,22 +110,32 @@ export class Helper {
 		}
 
 		if(weaponData) {
+
+			if (powerData.weaponType === "implement") {
+				newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
+			}
+			else {
+				newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1) || 0);
+			}
+
 			newFormula = newFormula.replace("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 );
 			newFormula = newFormula.replace("@impDamageO", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 );
 
 			newFormula = newFormula.replace("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
 			newFormula = newFormula.replace("@impDamage", weaponData.proficientI ? this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
-			newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1) || 0);
-			newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1) || 0);
-			newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1) || 0);
 
 			newFormula = newFormula.replace("@profBonusO",weaponData.profBonus || 0);
 			newFormula = newFormula.replace("@profImpBonusO", weaponData.profImpBonus || 0);
-
-			newFormula = newFormula.replace("@profBonus", weaponData.proficient ? weaponData.profBonus || 0 : 0);
+			
 			newFormula = newFormula.replace("@profImpBonus", weaponData.proficientI ? weaponData.profImpBonus || 0 : 0);
-			newFormula = newFormula.replace("@enhance", weaponData.enhance || 0);
+			newFormula = newFormula.replace("@profBonus", weaponData.proficient ? weaponData.profBonus || 0 : 0);
 			newFormula = newFormula.replace("@enhanceImp", weaponData.proficientI ? weaponData.enhance || 0 : 0);
+			newFormula = newFormula.replace("@enhance", weaponData.enhance || 0);
+			
 
 			newFormula = this.replaceData (newFormula, weaponData);
 			
@@ -151,6 +161,7 @@ export class Helper {
 					else{
 						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}`;
 					}
+					if (i < parts.length - 1) dice += '+';
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
@@ -181,6 +192,7 @@ export class Helper {
 						else{
 						dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}`;
 						}
+						if (i < parts.length - 1) dice += '+';
 					}
 				}
 				// Handle Flat Type Damage
@@ -202,6 +214,7 @@ export class Helper {
 				for(let i = 0; i< parts.length; i++) {
 					if(!parts[i][0] || !parts[i][1]) continue;
 					dice += `(${parts[i][0]} * ${parts[i][1]})`
+					if (i < parts.length - 1) dice += '+';
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				newFormula = newFormula.replace("@wepMax", dice);
@@ -225,6 +238,7 @@ export class Helper {
 						for(let i = 0; i< parts.length; i++) {
 							if(!parts[i][0] || !parts[i][1]) continue;
 							dice += `(${quantity} * ${parts[i][0]} * ${parts[i][1]})`
+							if (i < parts.length - 1) dice += '+';
 						}
 				}
 				// Handle Flat Type Damage

@@ -68,6 +68,18 @@ export default class ItemSheet4e extends ItemSheet {
 			itemData.data.isArea = true;
 		}
 
+		// Weapon Properties
+		if(itemData.type === "weapon"){
+			data.weaponMetaProperties = {};
+			for (let attrib in data.config.weaponProperties) {
+				data.weaponMetaProperties[attrib] = {
+						propName: data.config.weaponProperties[attrib], 
+						checked: itemData.data.properties[attrib],
+						disabled: (attrib === "imp" && itemData.data.weaponType === "implement")
+				}
+			}
+		}
+
 		// Action Details
 		data.hasAttackRoll = this.item.hasAttack;
 		data.isHealing = itemData.data.actionType === "heal";
