@@ -2082,6 +2082,7 @@ font-size: 12px;
 	border-bottom: 3px solid #44191A;
 }
 .dnd4eBeta.sheet.item .details input[type="text"],
+.dnd4eBeta.sheet.item .details input[type="textarea"],
 .dnd4eBeta.sheet.item .details .damage-res,
 .dnd4eBeta.sheet.item .details select {
 	height: 24px;
@@ -2166,6 +2167,23 @@ font-size: 12px;
 	flex: 1;
 }
 .dnd4eBeta.sheet.item .damage-control {
+	width: 18px;
+	flex: 0 0 18px;
+	line-height: 24px;
+	float: right;
+	text-align: right;
+	color: #7a7971;
+}
+.dnd4eBeta.sheet.item .onetext-parts {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.dnd4eBeta.sheet.item .onetext-parts .onetext-part {
+	flex: 0 0 100%;
+	padding: 0;
+}
+.dnd4eBeta.sheet.item .onetext-control {
 	width: 18px;
 	flex: 0 0 18px;
 	line-height: 24px;

@@ -549,6 +549,7 @@
 "DND4EBETA.Powers": "Powers",
 "DND4EBETA.PowerSource": "Power Source",
 "DND4EBETA.PowerTarget": "Power Target",
+"DND4EBETA.PowerTextFieldsPlaceholder": "For Rolls and Formulae, use double square brackets: e.g. [[1d4 + @chaMod]]",
 "DND4EBETA.PowerUnPrepared": "Unprepared",
 "DND4EBETA.PowerUtil": "Utility",
 "DND4EBETA.Prepared": "Prepared",
