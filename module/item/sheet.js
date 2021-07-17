@@ -507,8 +507,8 @@ export default class ItemSheet4e extends ItemSheet {
 		const damageDice = formData.data?.damageDice;
 		if(damageDice) damageDice.parts = Object.values(damageDice?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 
-		// const special = formData.data?.special;
-		// if (special) special.parts = Object.values(special?.parts || {}).map(d => [d[0] || ""]);
+		const special = formData.data?.specialAdd;
+		if (special) special.parts = Object.values(special?.parts || {}).map(d => [d || ""]);
 
 		// Update the Item
 		super._updateObject(event, formData);
@@ -523,7 +523,7 @@ export default class ItemSheet4e extends ItemSheet {
 			html.find("button.execute").click(this._onExecute.bind(this));
 
 			html.find(".damage-control").click(this._onDamageControl.bind(this));
-			//html.find(".onetext-control").click(this._onOnetextControl.bind(this));
+			html.find(".onetext-control").click(this._onOnetextControl.bind(this));
 			html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
 			html.find(".effect-control").click(ev => {
 			if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
@@ -646,32 +646,32 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 	}
 
-	// /**
-	//  * Add or remove a damage part from the damage formula
-	//  * @param {Event} event     The original click event
-	//  * @return {Promise}
-	//  * @private
-	//  */
-	// async _onOnetextControl(event) {
-	// 	event.preventDefault();
-	// 	const a = event.currentTarget;
+	/**
+	 * Add or remove a damage part from the damage formula
+	 * @param {Event} event     The original click event
+	 * @return {Promise}
+	 * @private
+	 */
+	async _onOnetextControl(event) {
+		event.preventDefault();
+		const a = event.currentTarget;
 
-	// 	// Add new special component
-	// 	if ( a.classList.contains("add-special") ) {
-	// 		await this._onSubmit(event);  // Submit any unsaved changes
-	// 		const special = this.item.data.data.special;
-	// 		return this.item.update({"data.special.parts": special.parts.concat([[""]])});
-	// 	}
+		// Add new special component
+		if ( a.classList.contains("add-special") ) {
+			await this._onSubmit(event);  // Submit any unsaved changes
+			const special = this.item.data.data.specialAdd;
+			return this.item.update({"data.specialAdd.parts": special.parts.concat([[""]])});
+		}
 
-	// 	// Remove a special component
-	// 	if ( a.classList.contains("delete-special") ) {
-	// 		await this._onSubmit(event);  // Submit any unsaved changes
-	// 		const li = a.closest(".onetext-part");
-	// 		const special = duplicate(this.item.data.data.special);
-	// 		special.parts.splice(Number(li.dataset.specialPart), 0);
-	// 		return this.item.update({"data.special.parts": special.parts});
-	// 	}
-	// }
+		// Remove a special component
+		if ( a.classList.contains("delete-special") ) {
+			await this._onSubmit(event);  // Submit any unsaved changes
+			const li = a.closest(".onetext-part");
+			const special = duplicate(this.item.data.data.specialAdd);
+			special.parts.splice(Number(li.dataset.specialPart), 1);
+			return this.item.update({"data.specialAdd.parts": special.parts});
+		}
+	}
 
 	/* -------------------------------------------- */
 

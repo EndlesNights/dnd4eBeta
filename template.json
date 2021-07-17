@@ -936,7 +936,10 @@
 		},
 		"trigger": "",
 		"requirement": "",
-		"special": ""
+		"special": "",
+		"specialAdd": {
+			"parts": []
+		}
 	}
 }
 }

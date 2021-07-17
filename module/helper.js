@@ -419,6 +419,9 @@ export class Helper {
 		}
 		if(!chatData.postSpecial && chatData.special) {
 			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
+				powerDetail += `<p>${entry}</p>`;
+			}
 		}
 
 		if(chatData.attack.isAttack) {
@@ -432,6 +435,9 @@ export class Helper {
 		}
 		if(chatData.postSpecial && chatData.special) {
 			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
+				powerDetail += `<p>${entry}</p>`;
+			}
 		}
 
 		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
