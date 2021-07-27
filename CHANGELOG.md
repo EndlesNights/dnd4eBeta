@@ -3,6 +3,10 @@
 ## Version 0.2.17
 - Fixed an issue with recovering HP on short rests, where if situalsual bonus to Healing surages was not speisifed the value would return as undified. It should now be working properly.
 - Fixed issue where acctive effects where not working after 8.x update, should now be working again.
+- Fixed Fast forwards options for attack and damage rolls: 
+	holding shift, ctrl or alt when pressing the attack button will roll an attack roll with no additional bonuses. 
+	Holding shift, ctrl when pressing the damage button will roll the damage roll with no additional bonuses. 
+	Holding alt when pressing the damage button will roll a crital damage roll with no additional bonuses. 
 
 ## Version 0.2.16
 - Added weapon Implement type (in addition to existing Implement Property)
