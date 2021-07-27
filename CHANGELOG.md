@@ -2,6 +2,7 @@
 
 ## Version 0.2.17
 - Fixed an issue with recovering HP on short rests, where if situalsual bonus to Healing surages was not speisifed the value would return as undified. It should now be working properly.
+- Fixed issue where acctive effects where not working after 8.x update, should now be working again.
 
 ## Version 0.2.16
 - Added weapon Implement type (in addition to existing Implement Property)
