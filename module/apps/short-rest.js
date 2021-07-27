@@ -46,7 +46,10 @@ export class ShortRestDialog extends DocumentSheet {
 						r.roll();
 					}
 				}
-				healamount += this.object.data.data.details.surgeValue + r.total;
+				healamount += this.object.data.data.details.surgeValue + (r.total || 0);
+				console.log(`surgeValue:${this.object.data.data.details.surgeValue}`)
+				console.log(`total:${r.total}`)
+				console.log(`healamount:${healamount}`)
 			}
 
 			updateData[`data.attributes.hp.value`] = Math.min(
@@ -97,6 +100,9 @@ export class ShortRestDialog extends DocumentSheet {
 				updateData[`data.resources.${r[0]}.value`] = r[1].max;
 			}
 		}
+
+		console.log(updateData[`data.attributes.hp.value`]);
+		console.log(this.object.data.data.attributes.hp.value);
 
 		this.object.update(updateData);
 	}	  
