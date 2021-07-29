@@ -281,6 +281,22 @@ export class Helper {
 			newFormula = newFormula.replace("@wepDiceNum", "0");
 			newFormula = newFormula.replace("@wepDiceDamage", "0");
 			
+			newFormula = newFormula.replace("@impAttackO", "0" );
+			newFormula = newFormula.replace("@impDamageO", "0");
+
+			newFormula = newFormula.replace("@impAttack", "0");
+			newFormula = newFormula.replace("@impDamage", "0");
+
+			newFormula = newFormula.replace("@profBonusO", "0");
+			newFormula = newFormula.replace("@profImpBonusO", "0");
+			
+			newFormula = newFormula.replace("@profImpBonus", "0");
+			newFormula = newFormula.replace("@profBonus", "0");
+			newFormula = newFormula.replace("@enhanceImp", "0");
+			newFormula = newFormula.replace("@enhance", "0");
+
+
+
 			if(newFormula.includes("@wepDice")) {
 				let indexStart = newFormula.indexOf("@wepDice")+8;
 				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
