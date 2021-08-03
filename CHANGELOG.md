@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.19
+- Fixed issue where Initiative Dexterity Tiebreaker was always on by default. It should now be a worable option that can be configured from the System Settings.
+
 ## Version 0.2.18
 - Fixed issue where powers that use implements as an optional  weapon should where not working properly.
 
