@@ -1,4 +1,151 @@
 /**
+ * An extension of the default Foundry Roll class for playing around with
+ */
+export class CustomRoll extends Roll{
+	constructor (formula, data={}, options={}) {
+		super(formula, data, options);
+		this.rollArray = [];
+		this._multirollData = [];
+		this.tooltipArray = [];
+		this.totalArray = [];
+	}
+
+	static CHAT_TEMPLATE = "systems/dnd4eBeta/templates/custom_roll_eval_template.html";
+
+	get multirollData() {
+		return this._multirollData;
+	}
+
+	addNewRoll(formula, data={}, options={}, targName='') {
+		let r = new Roll(formula, data, options).roll();	
+		this.rollArray.push(r);		
+	}
+
+	populateMultirollData(targNameArray) {
+		for (let [i, r] of this.rollArray.entries()){
+			let parts = r.dice.map(d => d.getTooltipData());
+			let targName = targNameArray[i];
+			this._multirollData.push({
+				formula : r._formula,
+				total : r._total,
+				parts : parts,
+				tooltip : '',
+				target : targName
+			});
+		};
+	}
+
+	/**
+	* Transform a Roll instance into a ChatMessage, displaying the roll result.
+	* This function can either create the ChatMessage directly, or return the data object that will be used to create.
+	*
+	* @param {object} messageData          The data object to use when creating the message
+	* @param {options} [options]           Additional options which modify the created message.
+	* @param {string} [options.rollMode]   The template roll mode to use for the message from CONFIG.Dice.rollModes
+	* @param {boolean} [options.create=true]   Whether to automatically create the chat message, or only return the
+	*                                          prepared chatData object.
+	* @return {Promise<ChatMessage>}       A promise which resolves to the created ChatMessage entity, if create is true
+	*                                      or the Object of prepared chatData otherwise.
+	*/
+	async toMessage(messageData={}, {rollMode, create=true}={}) {
+
+		// Perform the roll, if it has not yet been rolled
+		if (!this._evaluated) await this.evaluate({async: true});
+	
+		// Prepare chat data
+		messageData = foundry.utils.mergeObject({
+		  user: game.user.id,
+		  type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+		  content: this.total,
+		  sound: CONFIG.sounds.dice,
+		}, messageData);
+		messageData.roll = this;
+	
+		// Either create the message or just return the chat data
+		const cls = getDocumentClass("ChatMessage");
+		const msg = new cls(messageData);
+		if ( rollMode ) msg.applyRollMode(rollMode);
+	
+		// Either create or return the data
+		if ( create ) return cls.create(msg.data);
+		else return msg.data;
+	}
+
+	/**
+   	* Render a Roll instance to HTML
+   	* @param {object} [chatOptions]      An object configuring the behavior of the resulting chat message.
+   	* @return {Promise<string>}          The rendered HTML template as a string
+   	*/
+	async render(chatOptions={}) {
+		chatOptions = foundry.utils.mergeObject({
+		  	user: game.user.id,
+		  	flavor: null,
+		  	template: this.constructor.CHAT_TEMPLATE,
+		  	blind: false
+		}, chatOptions);
+		const isPrivate = chatOptions.isPrivate;
+
+		// Execute the roll, if needed
+		if (!this._evaluated) this.evaluate();
+
+		for (let roll of this._multirollData) {
+			let parts = roll.parts;
+			roll.tooltip = await renderTemplate(this.constructor.TOOLTIP_TEMPLATE, { parts });
+		};
+	
+		// Define chat data
+		const chatData = {
+		  	formula: isPrivate ? ["???"] : this._formula,
+			multirollData: isPrivate? ["???"] : this._multirollData,
+		  	flavor: isPrivate ? null : chatOptions.flavor,
+		  	user: chatOptions.user,
+		  	tooltip: isPrivate ? "" : await this.getTooltip(),
+		  	total: isPrivate ? "?" : Math.round(this.total * 100) / 100
+		};
+	
+		// Render the roll display template
+		return renderTemplate(chatOptions.template, chatData);
+	}
+
+	toJSON() {
+		return {
+		  class: this.constructor.name,
+		  options: this.options,
+		  dice: this._dice,
+		  formula: this._formula,
+		  multirollData: this._multirollData,
+		  terms: this.terms,
+		  total: this._total,
+		  evaluated: this._evaluated
+		}
+	}
+	static fromData(data) {
+
+		// Create the Roll instance
+		const roll = new this(data.formula, data.data, data.options);
+	
+		// Expand terms
+		roll.terms = data.terms.map(t => {
+		  if ( t.class ) {
+			if ( t.class === "DicePool" ) t.class = "PoolTerm"; // backwards compatibility
+			return RollTerm.fromData(t);
+		  }
+		  return t;
+		});
+	
+		// Repopulate evaluated state
+		if ( data.evaluated ?? true ) {
+		  roll._total = data.total;
+		  roll._dice = (data.dice || []).map(t => DiceTerm.fromData(t));
+		  roll._multirollData = data.multirollData;
+		  roll._evaluated = true;
+		}
+		return roll;
+	}
+}
+
+
+/**
  * A standardized helper function for managing core 4e "d20 rolls"
  *
  * Holding SHIFT, ALT, or CTRL when the attack is rolled will "fast-forward".
@@ -29,8 +176,9 @@
 export async function d20Roll({parts=[], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 	flavor=null, fastForward=null, onClose, dialogOptions,
 	advantage=null, disadvantage=null, critical=20, fumble=1, targetValue=null,
-	elvenAccuracy=false, halflingLucky=false, reliableTalent=false, isAttackRoll=false}={}) {
+	elvenAccuracy=false, halflingLucky=false, reliableTalent=false, isAttackRoll=false, isFinal=true}={}) {
 
+//	console.log(isFinal)
 	// Handle input arguments
 	flavor = flavor || title;
 	speaker = speaker || ChatMessage.getSpeaker();
@@ -88,20 +236,61 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		}
 
 		// Execute the roll and flag critical thresholds on the d20
-		const roll = new Roll(parts.join(" + "), data).roll();
-		
-		// Flag d20 options for any 20-sided dice in the roll
-		for ( let d of roll.dice ) {
-			if (d.faces === 20 ) {
-				d.options.critical = critical;
-				d.options.fumble = fumble;
-				if ( targetValue ) d.options.target = targetValue;
-			}
-		}
+		let roll;
+		if (game.user.targets.size){
+			const numTargets = game.user.targets.size;
+			roll = new CustomRoll(parts.join(" + "), data);
 
-		// If reliable talent was applied, add it to the flavor text
-		if ( reliableTalent && roll.dice[0].total < 10 ) {
-			flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`;
+			const targetArr = Array.from(game.user.targets);
+			var targNameArray = []
+			for (let targ = 0; targ < numTargets; targ++) {
+				let targName = targetArr[targ].data.name;
+				targNameArray.push(targName);
+				roll.addNewRoll(parts.join(" + "), data);
+			}
+
+			if (roll.rollArray.length === numTargets && roll.rollArray.every(obj => obj._evaluated)) {
+				roll._evaluated = true;
+			}
+			
+			// Flag d20 options for any 20-sided dice in the roll
+			for ( let subroll of roll.rollArray ) {
+				for ( let d of subroll.dice ) {
+					if (d.faces === 20 ) {
+						d.options.critical = critical;
+						d.options.fumble = fumble;
+						if ( targetValue ) d.options.target = targetValue;
+					}
+				}
+			}
+
+			roll.populateMultirollData(targNameArray);
+
+			// If reliable talent was applied, add it to the flavor text
+			let reliableFlavor = false;
+			for ( let subroll of roll.rollArray ) {
+				if ( reliableTalent && subroll.dice[0].total < 10 ) {
+					reliableFlavor = true;
+				}
+			}
+			if (reliableFlavor) {flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`};
+		
+		} else {
+			roll = new Roll(parts.join(" + "), data).roll();
+
+			// Flag d20 options for any 20-sided dice in the roll
+			for ( let d of roll.dice ) {
+				if (d.faces === 20 ) {
+					d.options.critical = critical;
+					d.options.fumble = fumble;
+					if ( targetValue ) d.options.target = targetValue;
+				}
+			}
+
+			// If reliable talent was applied, add it to the flavor text
+			if ( reliableTalent && roll.dice[0].total < 10 ) {
+				flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`;
+			}
 		}
 
 		// Convert the roll to a chat message and return the roll

@@ -1,0 +1,11 @@
+<div class="dice-roll">
+    {{#each multirollData as |roll|}}
+        <div class="dice-result">
+            <div class="flavor-text">Target: {{roll.target}}</div>
+            <div class="dice-flavor">{{../flavor}}</div>
+            <div class="dice-formula">{{roll.formula}}</div>
+            {{{roll.tooltip}}}
+            <h4 class="dice-total">{{roll.total}}</h4>
+        </div>
+    {{/each}}
+</div>

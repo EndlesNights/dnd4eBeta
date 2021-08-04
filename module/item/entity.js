@@ -720,11 +720,7 @@ export default class Item4e extends Item {
 		let flavor = title;
 
 		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
-		if(game.user.targets.size) {
-			const targetArr = Array.from(game.user.targets);
-			flavor += `<br><b>Target:</b> ${targetArr[options.target].data.name}`
 
-		}
 		const rollData = this.getRollData();
 
 		rollData.isAttackRoll = true;
@@ -733,7 +729,7 @@ export default class Item4e extends Item {
 		// Define Roll bonuses
 		const parts = !!itemData.attack.formula? [`@power`] : [];
 
-		//pack the powers formal and send it to the dice.
+		//pack the powers formula and send it to the dice.
 		if(!!itemData.attack.formula) {		
 			rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null);
 		}
@@ -1383,17 +1379,18 @@ export default class Item4e extends Item {
 
 		// Attack and Damage Rolls
 		if ( action === "attack" ) {
+			await item.rollAttack({event});
+			// // Get current targets and set number of rolls required
+			// const numTargets = game.user.targets.size;
+			// const numTargetsDefault = 1;
 
-			// Get current targets and set number of rolls required
-			const numTargets = game.user.targets.size;
-			const numTargetsDefault = 1;
+			// const numRolls = (numTargets || numTargetsDefault);
 
-			const numRolls = (numTargets || numTargetsDefault);
-
-			// Invoke attack roll promise
-			for (var i=0;i<numRolls;i++) {
-				await item.rollAttack({event, target:i});
-			}
+			// // Invoke attack roll promise
+			// for (var i=0;i<numRolls;i++) {
+			// 	var isFinal = (i<numRolls-1) ? false : true;
+			// 	await item.rollAttack({event, target:i}, isFinal);
+			// }
 		}
 		else if ( action === "damage" ) await item.rollDamage({event, spellLevel});
 		else if ( action === "healing" ) await item.rollHealing({event, spellLevel});
