@@ -70,17 +70,17 @@ export const registerSystemSettings = function() {
 		type: Boolean
 	});
 
-	/**
-	 * Option to disable XP bar for session-based or story-based advancement.
-	 */
-	game.settings.register("dnd4eBeta", "disableExperienceTracking", {
-		name: "SETTINGS.4eNoExpN",
-		hint: "SETTINGS.4eNoExpL",
-		scope: "world",
-		config: true,
-		default: false,
-		type: Boolean,
-	});
+	// /**
+	//  * Option to disable XP bar for session-based or story-based advancement.
+	//  */
+	// game.settings.register("dnd4eBeta", "disableExperienceTracking", {
+	// 	name: "SETTINGS.4eNoExpN",
+	// 	hint: "SETTINGS.4eNoExpL",
+	// 	scope: "world",
+	// 	config: true,
+	// 	default: false,
+	// 	type: Boolean,
+	// });
 
 	/**
 	 * Option to automatically collapse Item Card descriptions
@@ -97,17 +97,30 @@ export const registerSystemSettings = function() {
 		}
 	});
 
-	/**
-	 * Option to allow GMs to restrict polymorphing to GMs only.
-	 */
-	game.settings.register('dnd4eBeta', 'allowPolymorphing', {
-		name: 'SETTINGS.4eAllowPolymorphingN',
-		hint: 'SETTINGS.4eAllowPolymorphingL',
-		scope: 'world',
+	game.settings.register("dnd4eBeta", "automationCombat",{
+		name: "SETTINGS.4eAutomationCombatN",
+		hint: "SETTINGS.4eAutomationCombatL",
+		scope: "client",
 		config: true,
 		default: false,
-		type: Boolean
+		type: Boolean,
+		onChange: s => {
+			ui.chat.render();
+		}
 	});
+
+
+	// /**
+	//  * Option to allow GMs to restrict polymorphing to GMs only.
+	//  */
+	// game.settings.register('dnd4eBeta', 'allowPolymorphing', {
+	// 	name: 'SETTINGS.4eAllowPolymorphingN',
+	// 	hint: 'SETTINGS.4eAllowPolymorphingL',
+	// 	scope: 'world',
+	// 	config: true,
+	// 	default: false,
+	// 	type: Boolean
+	// });
 
 	/**
 	 * Remember last-used polymorph settings.

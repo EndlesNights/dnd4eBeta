@@ -2,6 +2,7 @@
 
 ## Version 0.2.19
 - Fixed issue where Initiative Dexterity Tiebreaker was always on by default. It should now be a worable option that can be configured from the System Settings.
+- If a token is selected while rolling an attack roll, the result message will now show a message if the attack is a hit or miss. This is optional and needs to be manualy enabled under, System Settings => Basic Combat Automation.
 
 ## Version 0.2.18
 - Fixed issue where powers that use implements as an optional  weapon should where not working properly.

@@ -935,6 +935,8 @@
 "SETTINGS.4eAllowPolymorphingN": "Allow Polymorphing",
 "SETTINGS.4eAutoCollapseCardL": "Automatically collapse Item Card descriptions in the Chat Log",
 "SETTINGS.4eAutoCollapseCardN": "Collapse Item Cards in Chat",
+"SETTINGS.4eAutomationCombatN": "Basic Combat Automation",
+"SETTINGS.4eAutomationCombatL": "Determine whether the Attack Rolls hits or misses.",
 "SETTINGS.4eAutoSpellTemplateL": "When a spell is cast, defaults to begin the process to create the corresponding Measured Template if any (requires TRUSTED or higher player role)",
 "SETTINGS.4eAutoSpellTemplateN": "Always place Spell Template",
 "SETTINGS.4eCurWtL": "Carried currency affects character encumbrance following the rules on PHB pg. 212.",

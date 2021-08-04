@@ -714,7 +714,12 @@ export default class Item4e extends Item {
 		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
 		if(game.user.targets.size) {
 			const targetArr = Array.from(game.user.targets);
-			flavor += `<br><b>Target:</b> ${targetArr[options.target].data.name}`
+			options.targetActor = targetArr[options.target].document._actor;
+			options.attackedDef = targetArr[options.target].document._actor.data.data.defences[itemData.attack.def].value;
+	
+			console.log(targetArr[options.target].document._actor.data.data.defences[itemData.attack.def].value)
+			// console.log(canvas.tokens)
+			// flavor += `<br><b>Target:</b> ${targetArr[options.target].data.name}`
 
 		}
 		const rollData = this.getRollData();
@@ -787,9 +792,11 @@ export default class Item4e extends Item {
 				left: window.innerWidth - 710
 			},
 			isAttackRoll: true,
-			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }}
-		}, options);
-		rollConfig.event = options.event;
+			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }},
+			options
+		});
+		console.log(rollConfig);
+		rollConfig.event = options.event;	
 
 		// Expanded weapon critical threshold
 		if (weaponUse) {

@@ -29,7 +29,7 @@
 export async function d20Roll({parts=[], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 	flavor=null, fastForward=null, onClose, dialogOptions,
 	advantage=null, disadvantage=null, critical=20, fumble=1, targetValue=null,
-	elvenAccuracy=false, halflingLucky=false, reliableTalent=false, isAttackRoll=false}={}) {
+	elvenAccuracy=false, halflingLucky=false, reliableTalent=false, isAttackRoll=false, options=null}={}) {
 
 	// Handle input arguments
 	flavor = flavor || title;
@@ -62,6 +62,8 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
 		// Optionally include a situational bonus
 		if ( form !== null ) {data['bonus'] = form.bonus.value;}
+		else{data['bonus'] = null;}
+
 		if(isAttackRoll && form !== null) {
 			for ( let [k, v] of Object.entries(form) ) {	
 				if(v.checked) {
@@ -69,10 +71,11 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 				}
 			}
 		}
+
+		
 		if ( !data["bonus"] ) parts.pop();
 
 		// data.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
-		// console.log(data)
 		if(form?.flavor.value){
 			flavor = form.flavor.value || flavor;
 		}	
@@ -89,7 +92,22 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
 		// Execute the roll and flag critical thresholds on the d20
 		const roll = new Roll(parts.join(" + "), data).roll();
-		
+
+		const targetArr = Array.from(game.user.targets);
+		if(game.user.targets.size) {
+			flavor += `<br><b>Target:</b> ${targetArr[options.target].data.name}`;
+			if(options.targetActor && game.settings.get("dnd4eBeta", "automationCombat")){
+				if(roll._total === 20){
+					flavor += `<b> CRITICAL HIT!</b>`;
+				} 
+				else if(roll._total >= options.attackedDef){
+					flavor += `<b> HIT!</b>`;
+				} else {
+					flavor += `<b> MISS!</b>`;
+				}
+			}
+
+		}	
 		// Flag d20 options for any 20-sided dice in the roll
 		for ( let d of roll.dice ) {
 			if (d.faces === 20 ) {
