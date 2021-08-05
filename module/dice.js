@@ -21,16 +21,18 @@ export class CustomRoll extends Roll{
 		this.rollArray.push(r);		
 	}
 
-	populateMultirollData(targNameArray) {
+	populateMultirollData(targNameArray, critStateArray) {
 		for (let [i, r] of this.rollArray.entries()){
 			let parts = r.dice.map(d => d.getTooltipData());
 			let targName = targNameArray[i];
+			let critState = critStateArray[i];
 			this._multirollData.push({
 				formula : r._formula,
 				total : r._total,
 				parts : parts,
 				tooltip : '',
-				target : targName
+				target : targName,
+				critstate : critState
 			});
 		};
 	}
@@ -253,6 +255,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 				roll._evaluated = true;
 			}
 			
+			var critStateArray = []
 			// Flag d20 options for any 20-sided dice in the roll
 			for ( let subroll of roll.rollArray ) {
 				for ( let d of subroll.dice ) {
@@ -262,9 +265,18 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 						if ( targetValue ) d.options.target = targetValue;
 					}
 				}
+				// Unable to figure out how to use the `chat.highlightCriticalSuccessFailure` function to individually flag rolls in the list of outputs when multiroll
+				// is used instead of a single Roll. Instead, this hacky way seems to work rather well. It has not failed me yet. 
+				if (subroll.dice.some(obj => obj.results.some(obj => obj.result >= critical)) && !subroll.dice.some(obj => obj.results.some(obj => obj.result <= fumble))){
+					critStateArray.push(' critical');
+				} else if (!subroll.dice.some(obj => obj.results.some(obj => obj.result >= critical)) && subroll.dice.some(obj => obj.results.some(obj => obj.result <= fumble))) {
+					critStateArray.push(' fumble');
+				} else {
+					critStateArray.push[''];
+				}
 			}
 
-			roll.populateMultirollData(targNameArray);
+			roll.populateMultirollData(targNameArray, critStateArray);
 
 			// If reliable talent was applied, add it to the flavor text
 			let reliableFlavor = false;
