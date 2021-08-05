@@ -268,11 +268,11 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 				// Unable to figure out how to use the `chat.highlightCriticalSuccessFailure` function to individually flag rolls in the list of outputs when multiroll
 				// is used instead of a single Roll. Instead, this hacky way seems to work rather well. It has not failed me yet. 
 				if (subroll.dice.some(obj => obj.results.some(obj => obj.result >= critical)) && !subroll.dice.some(obj => obj.results.some(obj => obj.result <= fumble))){
-					critStateArray.push(' critical');
+					critStateArray.push(" critical");
 				} else if (!subroll.dice.some(obj => obj.results.some(obj => obj.result >= critical)) && subroll.dice.some(obj => obj.results.some(obj => obj.result <= fumble))) {
-					critStateArray.push(' fumble');
+					critStateArray.push(" fumble");
 				} else {
-					critStateArray.push[''];
+					critStateArray.push("");
 				}
 			}
 
