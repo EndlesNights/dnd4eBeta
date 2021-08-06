@@ -169,38 +169,14 @@ export class Actor4e extends Actor {
 		// const skillBonus = Number.isNumeric(bonuses.skill) ? parseInt(bonuses.skill) :  0;	
 
 		// Skill modifiers
-		for (let [id, skl] of Object.entries(data.skills)) {
-			skl.value = parseFloat(skl.value || 0);
-
-			let sklBonusValue = 0;
-			let sklArmourPenalty = 0;
-			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
-				for( const b of skl.bonus) {
-					if(b.active) {
-						sklBonusValue += b.value;
-					}
-				}
-			}
-			if (skl.armourCheck) {
-				//Get Skill Check Penalty stats from armour
-				for ( let i of this.items) {
-					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
-					sklArmourPenalty += i.data.data.armour.skillCheckValue;
-				}
-			}
-			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
-
-			if(skl.base == undefined){
-				skl.base = 0;
-				// this.update({[`data.skills[${skl}].base`]: 0 });
-			}
-
-			// Compute modifier
-			skl.mod = data.abilities[skl.ability].mod;			
-			skl.total = skl.value + skl.base + skl.mod + sklBonusValue - sklArmourPenalty + Math.floor(data.details.level / 2);
-			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
-
+		// Skill modifiers
+		//Calc defence stats
+		if (this.data.type === "NPC") {
+			this.calcSkillNPC(data);
+			this.calcDefenceStatsNPC(data);
+		} else {
+			this.calcSkillCharacter(data);
+			this.calcDefenceStatsCharacter(data);
 		}
 		
 		if (data.attributes.hp.temphp <= 0 )
@@ -228,12 +204,7 @@ export class Actor4e extends Actor {
 		data.defences.ref.ability = (data.abilities.dex.value >= data.abilities.int.value) ? "dex" : "int";
 		data.defences.wil.ability = (data.abilities.wis.value >= data.abilities.cha.value) ? "wis" : "cha";
 
-		//Calc defence stats
-		if (this.data.type === "NPC") {
-			this.calcDefenceStatsNPC(data);
-		} else {
-			this.calcDefenceStatsCharacter(data);
-		}
+
 
 		//calc init
 		let initBonusValue = 0 + Math.floor(data.details.level / 2);
@@ -442,7 +413,86 @@ export class Actor4e extends Actor {
 				def.base = 10;
 				this.update({[`data.defences[${def}].base`]: 10 });
 			}
-			def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + data.details.level;			
+			if(data.advancedCals){
+				def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + data.details.level;
+			} else {
+				def.value = def.base;		
+			}
+		}
+	}
+
+	calcSkillCharacter(data){
+		for (let [id, skl] of Object.entries(data.skills)) {
+			skl.value = parseFloat(skl.value || 0);
+
+			let sklBonusValue = 0;
+			let sklArmourPenalty = 0;
+			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
+				for( const b of skl.bonus) {
+					if(b.active) {
+						sklBonusValue += b.value;
+					}
+				}
+			}
+			if (skl.armourCheck) {
+				//Get Skill Check Penalty stats from armour
+				for ( let i of this.items) {
+					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
+					sklArmourPenalty += i.data.data.armour.skillCheckValue;
+				}
+			}
+			skl.armourPen = sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+
+			if(skl.base == undefined){
+				skl.base = 0;
+				// this.update({[`data.skills[${skl}].base`]: 0 });
+			}
+
+			// Compute modifier
+			skl.mod = data.abilities[skl.ability].mod;			
+			skl.total = skl.value + skl.base + skl.mod + sklBonusValue - sklArmourPenalty + Math.floor(data.details.level / 2);
+			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
+
+		}
+	}
+
+	calcSkillNPC(data){
+		for (let [id, skl] of Object.entries(data.skills)) {
+			skl.value = parseFloat(skl.value || 0);
+
+			let sklBonusValue = 0;
+			let sklArmourPenalty = 0;
+			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
+				for( const b of skl.bonus) {
+					if(b.active) {
+						sklBonusValue += b.value;
+					}
+				}
+			}
+			if (skl.armourCheck) {
+				//Get Skill Check Penalty stats from armour
+				for ( let i of this.items) {
+					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
+					sklArmourPenalty += i.data.data.armour.skillCheckValue;
+				}
+			}
+			skl.armourPen = sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+
+			if(skl.base == undefined){
+				skl.base = 0;
+			}
+
+			// Compute modifier
+			skl.mod = data.abilities[skl.ability].mod;
+			if(data.advancedCals){
+				skl.total = skl.value + skl.base + skl.mod + sklBonusValue - sklArmourPenalty + Math.floor(data.details.level / 2);
+			} else {
+				skl.total = skl.base;
+			}
+
+			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
 		}
 	}
 
