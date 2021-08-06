@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.21
+- Fixed issue with the _preUpdate item enty by adding a null check
+
 ## Version 0.2.20
 - Fixed an issue where items that used Resource Consumption set to Attribute would cause the item to become unsable once on a character sheet. Attribute Resource Consumption should now be usable again.
 
