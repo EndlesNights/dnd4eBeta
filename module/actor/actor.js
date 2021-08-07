@@ -602,8 +602,8 @@ export class Actor4e extends Actor {
 		const abl = this.data.data.abilities[abilityId];
 
 		// Construct parts
-		const parts = ["@mod"];
-		const data = {mod: abl.mod};
+		const parts = ["@mod", "@halfLevel"];
+		const data = {mod: abl.mod, halfLevel: Math.floor(this.data.data.details.level / 2)};
 
 		// Add feat-related proficiency bonuses
 		// const feats = this.data.flags.dnd4eBeta || {};

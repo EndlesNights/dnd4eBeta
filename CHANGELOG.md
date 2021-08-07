@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.22
+- Added Half levels to Ability Rolls 
+- Fixed issue where common attack bonuses would not add together properly and through an error.
+
 ## Version 0.2.21
 - Fixed issue with the _preUpdate item enty by adding a null check
 

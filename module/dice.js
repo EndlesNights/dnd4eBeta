@@ -65,9 +65,16 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		else{data['bonus'] = null;}
 
 		if(isAttackRoll && form !== null) {
+			let i = 0;
 			for ( let [k, v] of Object.entries(form) ) {	
 				if(v.checked) {
-					data['bonus'] += `${form.bonus.value? "+":""} ${CONFIG.DND4EBETA.commonAttackBonuses[v.name].value}`;
+					let bonVal = CONFIG.DND4EBETA.commonAttackBonuses[v.name].value;
+					if(i>0){
+						data['bonus'] += `${bonVal > 0? "+":""} ${bonVal}`;
+					} else {
+						data['bonus'] += `${bonVal}`;
+					}
+					i++;
 				}
 			}
 		}
