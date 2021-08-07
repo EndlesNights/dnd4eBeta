@@ -1,18 +1,24 @@
 # Changelog
 
+## Version 0.2.23
+- Power Card Text can now use actor data to put numerical stat values using either the helper @Shorthands, or @actor.data.location formats.
+
+## Version 0.2.22
+- Cristal Hits should now be properly identified by the automation system.
+
 ## Version 0.2.22
 - Added Half levels to Ability Rolls 
 - Fixed issue where common attack bonuses would not add together properly and through an error.
 
 ## Version 0.2.21
-- Fixed issue with the _preUpdate item enty by adding a null check
+- Fixed issue with the _preUpdate item entry by adding a null check
 
 ## Version 0.2.20
-- Fixed an issue where items that used Resource Consumption set to Attribute would cause the item to become unsable once on a character sheet. Attribute Resource Consumption should now be usable again.
+- Fixed an issue where items that used Resource Consumption set to Attribute would cause the item to become unusable once on a character sheet. Attribute Resource Consumption should now be usable again.
 
 ## Version 0.2.19
-- Fixed issue where Initiative Dexterity Tiebreaker was always on by default. It should now be a worable option that can be configured from the System Settings.
-- If a token is selected while rolling an attack roll, the result message will now show a message if the attack is a hit or miss. This is optional and needs to be manualy enabled under, System Settings => Basic Combat Automation.
+- Fixed issue where Initiative Dexterity Tiebreaker was always on by default. It should now be a toggleable option that can be configured from the System Settings.
+- If a token is selected while rolling an attack roll, the result message will now show a message if the attack is a hit or miss. This is optional and needs to be manually enabled under, System Settings => Basic Combat Automation.
 
 ## Version 0.2.18
 - Fixed issue where powers that use implements as an optional  weapon should where not working properly.
@@ -21,9 +27,9 @@
 - Fixed an issue with recovering HP on short rests, where if situational bonus to Healing surges was not specified the value would return as undefined. It should now be working properly.
 - Fixed issue where active effects where not working after 8.x update, should now be working again.
 - Fixed Fast forwards options for attack and damage rolls: 
-	holding shift, ctrl or alt when pressing the attack button will roll an attack roll with no additional bonuses. 
-	Holding shift, ctrl when pressing the damage button will roll the damage roll with no additional bonuses. 
-	Holding alt when pressing the damage button will roll a critical damage roll with no additional bonuses. 
+	holding shift, ctrl or alt when pressing the attack button will roll an attack roll with no additional bonuses.
+	Holding shift, ctrl when pressing the damage button will roll the damage roll with no additional bonuses.
+	Holding alt when pressing the damage button will roll a critical damage roll with no additional bonuses.
 
 ## Version 0.2.16
 - Added weapon Implement type (in addition to existing Implement Property)

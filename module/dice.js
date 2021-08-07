@@ -100,11 +100,20 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		// Execute the roll and flag critical thresholds on the d20
 		const roll = new Roll(parts.join(" + "), data).roll();
 
+		// Flag d20 options for any 20-sided dice in the roll
+		for ( let d of roll.dice ) {
+			if (d.faces === 20 ) {
+				d.options.critical = critical;
+				d.options.fumble = fumble;
+				if ( targetValue ) d.options.target = targetValue;
+			}
+		}
+
 		const targetArr = Array.from(game.user.targets);
 		if(game.user.targets.size) {
 			flavor += `<br><b>Target:</b> ${targetArr[options.target].data.name}`;
 			if(options.targetActor && game.settings.get("dnd4eBeta", "automationCombat")){
-				if(roll._total === 20){
+				if(roll.terms[0].results[0].result >= roll.terms[0].options.critical){
 					flavor += `<b> CRITICAL HIT!</b>`;
 				} 
 				else if(roll._total >= options.attackedDef){
@@ -114,14 +123,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 				}
 			}
 
-		}	
-		// Flag d20 options for any 20-sided dice in the roll
-		for ( let d of roll.dice ) {
-			if (d.faces === 20 ) {
-				d.options.critical = critical;
-				d.options.fumble = fumble;
-				if ( targetValue ) d.options.target = targetValue;
-			}
 		}
 
 		// If reliable talent was applied, add it to the flavor text
@@ -259,7 +260,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 
 	// Modify the roll and handle fast-forwarding
 	if ( fastForward ) {
-		console.log(critical || event.altKey);
+		// console.log(critical || event.altKey);
 		// return _roll(parts, partsCrit, critical || event.altKey);
 		return _roll(parts, partsCrit, critical || event.altKey);
 		// return _roll(parts, partsCrit, true, html[0].querySelector("form"))

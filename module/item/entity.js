@@ -321,7 +321,7 @@ export default class Item4e extends Item {
 			// let x = func();
 			// console.log(x)
 		}
-		const cardData = this.data.type == "power" && this.data.data.autoGenChatPowerCard ? Helper._preparePowerCardData(this.getChatData(), CONFIG) : null;
+		const cardData = this.data.type == "power" && this.data.data.autoGenChatPowerCard ? Helper._preparePowerCardData(this.getChatData(), CONFIG, this.actor.data.data) : null;
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
