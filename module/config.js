@@ -11,6 +11,7 @@ ______      ______   ___  _____     ___  _ _
 |___/ \\___/\\/___/     |_/\\____/   \\_| |_/_|\\__|\\__,_|___/
 __________________________________________________________`;
 
+
 /**
  * The set of Ability Scores used within the system
  * @type {Object}
@@ -272,6 +273,47 @@ DND4EALTUS.armourProficiencies = {
 
 /* -------------------------------------------- */
 
+DND4EALTUS.creatureOrigin = {
+	"aberrant": "DND4EALTUS.CreatureOriginAberrant",
+	"elemental": "DND4EALTUS.CreatureOriginElemental",
+	"fey": "DND4EALTUS.CreatureOriginFey",
+	"immortal": "DND4EALTUS.CreatureOriginImmortal",
+	"natural": "DND4EALTUS.CreatureOriginNatural",
+	"shadow": "DND4EALTUS.CreatureOriginShadow",
+
+}
+
+/* -------------------------------------------- */
+
+DND4EALTUS.creatureRole = {
+	"artillery": "DND4EALTUS.CreatureRoleArtillery",
+	"brute": "DND4EALTUS.CreatureRoleBrute",
+	"controller": "DND4EALTUS.CreatureRoleController",
+	"lurker": "DND4EALTUS.CreatureRoleLurker",
+	"skirmisher": "DND4EALTUS.CreatureRoleSkirmisher",
+	"soldier": "DND4EALTUS.CreatureRoleSoldier",
+}
+
+/* -------------------------------------------- */
+
+DND4EALTUS.creatureRoleSecond = {
+	"regular": "DND4EALTUS.CreatureRoleSecRegular",
+	"elite": "DND4EALTUS.CreatureRoleSecElite",
+	"solo": "DND4EALTUS.CreatureRoleSecSolo",
+	"minion": "DND4EALTUS.CreatureRoleSecMinion",
+}
+
+/* -------------------------------------------- */
+
+DND4EALTUS.creatureType = {
+	"animate": "DND4EALTUS.CreatureTypeAnimate",
+	"beast": "DND4EALTUS.CreatureTypeBeast",
+	"humanoid": "DND4EALTUS.CreatureTypeHumanoid",
+	"magical": "DND4EALTUS.CreatureTypeMagicalBeaste",
+}
+
+/* -------------------------------------------- */
+
 /**
  * Enumerate the valid consumable types which are recognized by the system
  * @type {Object}
@@ -287,6 +329,20 @@ DND4EALTUS.consumableTypes = {
   "trinket": "DND4EALTUS.ConsumableTrinket"
 };
 
+/* -------------------------------------------- */
+DND4EALTUS.commonAttackBonuses = {
+	comAdv: {value: 2, label:"DND4EALTUS.CommonAttackComAdv"},
+	charge: {value: 1, label:"DND4EALTUS.CommonAttackCharge"},
+	conceal: {value: -2, label:"DND4EALTUS.CommonAttackConceal"},
+	concealTotal: {value: -5, label:"DND4EALTUS.CommonAttackConcealTotal"},
+	cover: {value: -2, label:"DND4EALTUS.CommonAttackCover"},
+	coverSup: {value: -5, label:"DND4EALTUS.CommonAttackCoverSup"},
+	longRange: {value: -2, label:"DND4EALTUS.CommonAttackLongRange"},
+	prone: {value: -2, label:"DND4EALTUS.CommonAttackProne"},
+	restrained: {value: -2, label:"DND4EALTUS.CommonAttackRestrained"},
+	running: {value: -5, label:"DND4EALTUS.CommonAttackRunning"},
+	squeez: {value: -5, label:"DND4EALTUS.CommonAttackSqueez"},
+}
 /* -------------------------------------------- */
 
 /**
@@ -502,17 +558,30 @@ DND4EALTUS.powerSortTypes = {
 	"none": "DND4EALTUS.None",
 };
 
+DND4EALTUS.powerDiceTypes = {
+	"weapon": "Base Weapon Damage",
+	"flat": "Flat Damage",
+	"d4": "d4",
+	"d6": "d6",
+	"d8": "d8",
+	"d10": "d10",
+	"d12": "d12"	
+};
+
 /* -------------------------------------------- */
 /**
  * Character senses options
  * @type {Object}
  */
 DND4EALTUS.special = {
-  "aa": "DND4EALTUS.SpecialSensesAA",
-  "bs": "DND4EALTUS.SpecialSensesBS",
-  "dv": "DND4EALTUS.SpecialSensesDV",
-  "ts": "DND4EALTUS.SpecialSensesTS",
-  "tr": "DND4EALTUS.SpecialSensesTR"
+	"nv": "DND4EALTUS.VisionNormal",
+	"lv": "DND4EALTUS.VisionLowLight",
+	"bv": "DND4EALTUS.VisionBlind",
+	"aa": "DND4EALTUS.SpecialSensesAA",
+	"bs": "DND4EALTUS.SpecialSensesBS",
+	"dv": "DND4EALTUS.SpecialSensesDV",
+	"ts": "DND4EALTUS.SpecialSensesTS",
+	"tr": "DND4EALTUS.SpecialSensesTR"
 };
 
 DND4EALTUS.vision = {
@@ -675,6 +744,7 @@ DND4EALTUS.weaponTypes = {
 	"militaryR": "DND4EALTUS.WeaponMilitaryR",
 	"superiorR": "DND4EALTUS.WeaponSuperiorR",
 	"improvR": "DND4EALTUS.WeaponImprovisedR",
+	"implement": "DND4EALTUS.WeaponImplement",
 	"siegeM": "DND4EALTUS.WeaponSiegeM",
 	"siegeR": "DND4EALTUS.WeaponSiegeR",
 	"naturalM": "DND4EALTUS.WeaponNaturalM",

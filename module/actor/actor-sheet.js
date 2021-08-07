@@ -21,7 +21,7 @@ import { Helper } from "../helper.js";
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class ActorSheet4e extends ActorSheet {
+export default class ActorSheet4e extends ActorSheet {
 
   constructor(...args) {
 	super(...args);
@@ -41,7 +41,6 @@ export class ActorSheet4e extends ActorSheet {
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eAltus", "sheet", "actor"],
-			template: "systems/dnd4eAltus/templates/actor-sheet.html",
 			width: 844,
 			height: 957,
 			tabs: [{
@@ -63,29 +62,72 @@ export class ActorSheet4e extends ActorSheet {
 
   /* -------------------------------------------- */
 
+  /**
+   * A set of item types that should be prevented from being dropped on this type of actor sheet.
+   * @type {Set<string>}
+   */
+   static unsupportedItemTypes = new Set();
+  /* -------------------------------------------- */
+
+  /** @override */
+  get template() {
+    // if ( !game.user.isGM && this.actor.limited ) return "systems/dnd5e/templates/actors/limited-sheet.html";
+    return `systems/dnd4eAltus/templates/actor-sheet.html`;
+  }
+
+  /* -------------------------------------------- */
+
 	/** @override */
 	getData() {
 
-		let data = super.getData();
-		data.config = CONFIG.DND4EALTUS;
-		data.actor.data.size = DND4EALTUS.actorSizes;
+		let isOwner = this.actor.isOwner;
+
+		// const sheetData = super.getData();
+
+		const data = {
+			owner: isOwner,
+			limited: this.actor.limited,
+			options: this.options,
+			editable: this.isEditable,
+			cssClass: isOwner ? "editable" : "locked",
+			isCharacter: this.actor.type === "Player Character",
+			isNPC: this.actor.type === "NPC",
+			config: CONFIG.DND4EALTUS,
+			rollData: this.actor.getRollData.bind(this.actor)
+		};
+
+		// The Actor's data
+		const actorData = this.actor.data.toObject(false);
+		data.actor = actorData;
+		data.data = actorData.data;
+
+		data.items = actorData.items;
+		for ( let i of data.items ) {
+			const item = this.actor.items.get(i._id);
+			i.labels = item.labels;
+		}
 		
-		for ( let [s, skl] of Object.entries(data.actor.data.skills)) {
-			skl.ability = data.actor.data.abilities[skl.ability].label.substring(0, 3);
+		// return;
+
+		// sheetData.config = CONFIG.DND4EALTUS;
+		actorData.data.size = DND4EALTUS.actorSizes;
+		
+		for ( let [s, skl] of Object.entries(actorData.data.skills)) {
+			skl.ability = actorData.data.abilities[skl.ability].label.substring(0, 3);
 			skl.icon = this._getTrainingIcon(skl.value);
 			skl.hover = game.i18n.localize(DND4EALTUS.trainingLevels[skl.value]);
 			skl.label = game.i18n.localize(DND4EALTUS.skills[s]);
 		}
 		
-		this._prepareData(data.actor.data.languages, 
+		this._prepareData(actorData.data.languages, 
 			{"spoken": CONFIG.DND4EALTUS.spoken, "script": CONFIG.DND4EALTUS.script}
 		);
 		
-		this._prepareDataSense(data.actor.data.senses,
+		this._prepareDataSense(actorData.data.senses,
 			{"vision": CONFIG.DND4EALTUS.vision, "special": CONFIG.DND4EALTUS.special}
 		);
 		
-		this._prepareDataSave(data.actor.data.details,
+		this._prepareDataSave(actorData.data.details,
 			{"saves": CONFIG.DND4EALTUS.saves}
 		);
 
@@ -93,21 +135,17 @@ export class ActorSheet4e extends ActorSheet {
 		this._prepareItems(data);
 		
 		// Prepare active effects
-		data.effects = prepareActiveEffectCategories(this.entity.effects);
+		data.effects = prepareActiveEffectCategories(this.actor.effects);
 
-		// data.actor.data.details.isBloodied = (data.actor.data.attributes.hp.value <= data.actor.data.attributes.hp.max/2);
-		console.log(data)
-
-			// Resources
-			data["resources"] = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
-				const res = data.data.resources[r] || {};
-				res.name = r;
-				res.placeholder = game.i18n.localize("DND4EALTUS.Resource"+r.titleCase());
-				if (res && res.value === 0) delete res.value;
-				if (res && res.max === 0) delete res.max;
-				return arr.concat([res]);
-			  }, []);
-
+		// Resources
+		actorData.data.resources = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
+			const res = actorData.data.resources[r] || {};
+			res.name = r;
+			res.placeholder = game.i18n.localize("DND4EALTUS.Resource"+r.titleCase());
+			if (res && res.value === 0) delete res.value;
+			if (res && res.max === 0) delete res.max;
+			return arr.concat([res]);
+			}, []);
 
 		return data;
 	}
@@ -140,7 +178,6 @@ export class ActorSheet4e extends ActorSheet {
 	}
 
 	_prepareItems(data) {
-
 		//define diffrent item datasets
 		const inventory = {
 			weapon: { label: "DND4EALTUS.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
@@ -559,18 +596,19 @@ export class ActorSheet4e extends ActorSheet {
 		// Update Inventory Item
 		html.find('.item-edit').click(event => {
 		const li = $(event.currentTarget).parents(".item");
-		const item = this.actor.getOwnedItem(li.data("itemId"));
+		const item = this.actor.items.get(li.data("itemId"));
 		item.sheet.render(true);
 		});
 
 		// Delete Inventory Item
-		html.find('.item-delete').click(ev => {
-		const li = $(ev.currentTarget).parents(".item");
-		this.actor.deleteOwnedItem(li.data("itemId"));
-		li.slideUp(200, () => this.render(false));
-		});
+		
+		// html.find('.item-delete').click(ev => {
+		// const li = $(ev.currentTarget).parents(".item");
+		// this.actor.deleteOwnedItem(li.data("itemId"));
+		// li.slideUp(200, () => this.render(false));
+		// });
 
-		if ( this.actor.owner ) {	
+		if ( this.actor.isOwner ) {	
 			// Roll Skill Checks
 			html.find('.skill-name').click(this._onRollSkillCheck.bind(this));
 
@@ -669,11 +707,26 @@ export class ActorSheet4e extends ActorSheet {
 	_onChangeInputDelta(event) {
 		const input = event.target;
 		const value = input.value;
-		if ( ["+", "-"].includes(value[0]) ) {
-			let delta = parseFloat(value);
-			input.value = getProperty(this.actor.data, input.name) + delta;
+
+		if(/^[0-9]+$/.test(value)) {
+			return;
+		}
+		
+		if(!/^[\-=+ 0-9]+$/.test(value)) {
+			input.value = getProperty(this.actor.data, input.name)
+			return;}
+
+		if ( ["+"].includes(value[0]) ) {
+			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
+			input.value = getProperty(this.actor.data, input.name) + delta || getProperty(this.actor.data, input.name);
+		}
+		else if ( ["-"].includes(value[0]) ) {
+			let delta = parseFloat(-value.replace(/[^0-9]/g, ""));
+			input.value = getProperty(this.actor.data, input.name) + delta || getProperty(this.actor.data, input.name);
 		} else if ( value[0] === "=" ) {
-			input.value = value.slice(1);
+			input.value = value.replace(/[^\-0-9]/g, "");
+		} else{
+			input.value = getProperty(this.actor.data, input.name)
 		}
 	}
 
@@ -686,8 +739,8 @@ export class ActorSheet4e extends ActorSheet {
 	_onItemSummary(event) {
 		event.preventDefault();
 		let li = $(event.currentTarget).parents(".item"),
-			item = this.actor.getOwnedItem(li.data("item-id")),
-			chatData = item.getChatData({secrets: this.actor.owner});
+			item = this.actor.items.get(li.data("item-id")),
+			chatData = item.getChatData({secrets: this.actor.isOwner});
 
 
 		// Toggle summary
@@ -702,7 +755,7 @@ export class ActorSheet4e extends ActorSheet {
 				
 				let div = $(`<div class="item-summary"></div>`);
 				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
-				let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG)}</div>`);
+				let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false).data)}</div>`);
 				
 				div.append(descrip);
 				div.append(details);
@@ -731,7 +784,7 @@ export class ActorSheet4e extends ActorSheet {
   _onToggleItem(event) {
 	event.preventDefault();
 	const itemId = event.currentTarget.closest(".item").dataset.itemId;
-	const item = this.actor.getOwnedItem(itemId);
+	const item = this.actor.items.get(itemId);
 	const power = ["power","atwill","encounter","daily","utility"];
 	const attr = power.includes(item.data.type) ? "data.prepared" : "data.equipped";
 	return item.update({[attr]: !getProperty(item.data, attr)});
@@ -753,7 +806,7 @@ export class ActorSheet4e extends ActorSheet {
 			data: duplicate(header.dataset)
 		};
 		delete itemData.data["type"];
-		return this.actor.createOwnedItem(itemData);
+		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
 	async _onItemImport(event) {
@@ -779,7 +832,7 @@ export class ActorSheet4e extends ActorSheet {
 		}
 		else if(this.object.data.data.powerGroupTypes === "usage") {
 			itemData.data.useType = type;
-			if(["encounter", "daily"].includes(type)) {
+			if(["encounter", "daily", "recharge"].includes(type)) {
 				itemData.data.uses = {
 					value: 1,
 					max: 1,
@@ -788,7 +841,7 @@ export class ActorSheet4e extends ActorSheet {
 			}
 		}
 
-		return this.actor.createOwnedItem(itemData);
+		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
   /* -------------------------------------------- */
@@ -801,7 +854,7 @@ export class ActorSheet4e extends ActorSheet {
   _onItemEdit(event) {
 	event.preventDefault();
 	const li = event.currentTarget.closest(".item");
-	const item = this.actor.getOwnedItem(li.dataset.itemId);
+	const item = this.actor.items.get(li.dataset.itemId);
 	item.sheet.render(true);
   }
 
@@ -828,7 +881,7 @@ export class ActorSheet4e extends ActorSheet {
 	async _onUsesChange(event) {
 		event.preventDefault();
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
-		const item = this.actor.getOwnedItem(itemId);
+		const item = this.actor.items.get(itemId);
 		const uses = Math.clamped(0, parseInt(event.target.value), item.data.data.uses.max);
 		event.target.value = uses;
 		return item.update({ 'data.uses.value': uses });
@@ -951,7 +1004,6 @@ export class ActorSheet4e extends ActorSheet {
 	/* -------------------------------------------- */
 
 	_onActionPointDialog(event) {
-		console.log("action point")
 		event.preventDefault();
 		new ActionPointDialog(this.actor).render(true);
 	}
@@ -1027,7 +1079,7 @@ export class ActorSheet4e extends ActorSheet {
   _onItemRoll(event) {
 	event.preventDefault();
 	const itemId = event.currentTarget.closest(".item").dataset.itemId;
-	const item = this.actor.getOwnedItem(itemId);
+	const item = this.actor.items.get(itemId);
 	// Roll powers through the actor
 	const power = ["atwill","encounter","daily","utility"];
 
@@ -1091,7 +1143,8 @@ export class ActorSheet4e extends ActorSheet {
 	_onTraitSelectorSense(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.parentElement.parentElement.querySelector("h4");
+		// const label = a.parentElement.parentElement.querySelector("h4");
+		const label = a.parentElement.querySelector("span");
 		const choices = CONFIG.DND4EALTUS[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
 		new TraitSelectorSense(this.actor, options).render(true);
@@ -1141,7 +1194,7 @@ export class ActorSheet4e extends ActorSheet {
 		const skillName = this.actor.data.data.passive[passName].skill;
 
 		ChatMessage.create({
-			user: game.user._id,
+			user: game.user.id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			content: `Passive ${this.actor.data.data.skills[skillName].label} Skill Check: <SPAN STYLE="font-weight:bold">${this.object.data.data.passive[passName].value}`
 		});	

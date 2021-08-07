@@ -1,6 +1,6 @@
 import {d20Roll} from "../dice.js";
 
-export class DeathSaveDialog extends BaseEntitySheet {
+export class DeathSaveDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
@@ -51,14 +51,14 @@ export class DeathSaveDialog extends BaseEntitySheet {
 		if( roll.total < 10 && this.object.data.data.details.deathsavefail + 1 >= this.object.data.data.details.deathsaves)
 		{
 			await ChatMessage.create({
-				user: game.user._id,
+				user: game.user.id,
 				speaker: ChatMessage.getSpeaker(),
 				content: this.object.data.name + " has failed their last death saving throw and has died!"
 			});
 		}
 		else if(roll.total - formData.save - this.object.data.data.details.deathsavebon.value >= rollConfig.critical) {
 			await ChatMessage.create({
-				user: game.user._id,
+				user: game.user.id,
 				speaker: ChatMessage.getSpeaker(),
 				content: this.object.data.name + " has has critical succedded their death saving throw, is no longer unconouse and has regained 1 HP!"
 			});

@@ -1,4 +1,4 @@
-export class ActionPointDialog extends BaseEntitySheet {
+export class ActionPointDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
@@ -31,7 +31,7 @@ export class ActionPointDialog extends BaseEntitySheet {
 
 		if(this.object.data.data.actionpoints.value >= 1) {
 			ChatMessage.create({
-				user: game.user._id,
+				user: game.user.id,
 				speaker: {actor: this.object, alias: this.object.data.name},
 				// flavor: restFlavor,
 				content: `${this.object.data.name} uses an actionpoint gaining the following benifits:

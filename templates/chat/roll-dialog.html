@@ -7,6 +7,33 @@
 		<label>{{ localize "DND4EALTUS.RollSituationalBonus" }}</label>
 		<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EALTUS.RollExample' }}"/>
 	</div>
+
+	{{#if isD20Roll}}
+		
+		<div class="input-group-button">
+			<label>Number of D20 to Roll:</label>
+			<button style="width: 9.375%; text-align: center;" type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" onclick="minus()">
+				<i class="fa fa-minus" aria-hidden="true"></i>
+			</button>
+			<input style="width: 12.5%; text-align: center;" id="d20" type="text" name="d20" value="1" onClick="this.select();"/>
+			<button style="width: 9.375%; text-align: center;" type="button" class="button hollow circle" data-quantity="plus" data-field="quantity" onclick="plus()">
+				<i class="fa fa-plus" aria-hidden="true"></i>
+			</button>
+		</div>
+	{{/if}}
+	
+	<div class="form-group stacked">
+	{{#if isAttackRoll}}
+	{{#each data.commonAttackBonuses as | a b |}}
+	<div class="column" style="max-width: 50%; margin: 0;">
+		<label class="rollable">
+			<input style="position:relative; top: 5px;" type="checkbox" name="{{b}}" data-dtype="Boolean" value="{{checked}}"/>{{ localize a.label}} ({{a.value}})
+		</label>
+	</div>
+	{{/each}}
+	{{/if}}
+	</div>
+
 	<div class="form-group">
 		<label>{{ localize "DND4EALTUS.RollMode" }}</label>
 		<select name="rollMode">
@@ -22,3 +49,36 @@
 		<input type="text" name="flavor" value="{{newFlavor}}" placeholder="{{flavor}}" title="Situational Flavour Text." />
 	</div>
 </form>
+
+
+<script>
+
+$(document).keydown(function(event){
+    if(event.which=="17")
+        cntrlIsPressed = true;
+});
+
+$(document).keyup(function(){
+    cntrlIsPressed = false;
+});
+
+var cntrlIsPressed = false;
+
+	function minus(){
+		input = document.getElementById("d20");
+		if(cntrlIsPressed) {
+			input.value = -2;
+		} else {
+			input.value --;
+		}
+	}
+
+	function plus(){
+		input = document.getElementById("d20");
+		if(cntrlIsPressed) {
+			input.value = 2;
+		} else {
+			input.value ++;
+		}
+	}
+</script>

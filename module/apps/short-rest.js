@@ -1,4 +1,4 @@
-export class ShortRestDialog extends BaseEntitySheet {
+export class ShortRestDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
@@ -46,8 +46,10 @@ export class ShortRestDialog extends BaseEntitySheet {
 						r.roll();
 					}
 				}
-				
-				healamount += this.object.data.data.details.surgeValue + r.total;
+				healamount += this.object.data.data.details.surgeValue + (r.total || 0);
+				console.log(`surgeValue:${this.object.data.data.details.surgeValue}`)
+				console.log(`total:${r.total}`)
+				console.log(`healamount:${healamount}`)
 			}
 
 			updateData[`data.attributes.hp.value`] = Math.min(
@@ -65,7 +67,7 @@ export class ShortRestDialog extends BaseEntitySheet {
 		}
 		
 		if(!this.object.data.data.attributes.hp.temprest)
-			updateData[`data.details.temp`] = "";
+			updateData[`data.attributes.hp.temphp`] = "";
 		
 		updateData[`data.details.secondwind`] = false;
 		updateData[`data.actionpoints.encounteruse`] = false;
@@ -80,18 +82,17 @@ export class ShortRestDialog extends BaseEntitySheet {
 				"data.uses.value": item.data.data.uses.max
 			};
 		});
-		await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
+		// await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
+		await this.object.updateEmbeddedDocuments("Item", updateItems);
 		
 		ChatMessage.create({
 			user: game.user._id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
 			// content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP."
-
 			content: formData.surge >= 1 ? `${this.object.data.name} takes a short rest, spending ${formData.surge} healing surge, regaining ${(updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value)} HP.`
 				: `${this.object.data.name} takes a short rest.`
 			
-			//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 		});		
 		
 		for (let r of Object.entries(this.object.data.data.resources)) {
@@ -100,8 +101,9 @@ export class ShortRestDialog extends BaseEntitySheet {
 			}
 		}
 
+		console.log(updateData[`data.attributes.hp.value`]);
+		console.log(this.object.data.data.attributes.hp.value);
+
 		this.object.update(updateData);
 	}	  
 }
-
-

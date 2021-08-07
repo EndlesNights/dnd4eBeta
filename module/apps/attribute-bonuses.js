@@ -1,6 +1,6 @@
 import { Helper } from "../helper.js"
 
-export class AttributeBonusDialog extends BaseEntitySheet {
+export class AttributeBonusDialog extends DocumentSheet {
 	
 	static get defaultOptions() {
 		const options = super.defaultOptions;

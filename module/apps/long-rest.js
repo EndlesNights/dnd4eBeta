@@ -1,4 +1,4 @@
-export class LongRestDialog extends BaseEntitySheet {
+export class LongRestDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
@@ -46,7 +46,7 @@ export class LongRestDialog extends BaseEntitySheet {
 			updateData[`data.details.surgeEnv.bonus`] = [{}];
 		}
 
-		updateData[`data.details.temp`] = "";
+		updateData[`data.attributes.hp.temphp`] = "";
 		updateData[`data.details.deathsavefail`] = 0;
 		updateData[`data.actionpoints.value`] = 1;
 		updateData[`data.magicItemUse.milestone`] = 0;
@@ -64,7 +64,7 @@ export class LongRestDialog extends BaseEntitySheet {
 				"data.uses.value": item.data.data.uses.max
 			};
 		});
-		await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
+		await this.object.updateEmbeddedDocuments("Item", updateItems);
 		ChatMessage.create({
 			user: game.user._id,
 			speaker: {actor: this.object, alias: this.object.data.name},

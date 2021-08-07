@@ -1,4 +1,4 @@
-export class ItemImporterDialog extends BaseEntitySheet {
+export class ItemImporterDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;

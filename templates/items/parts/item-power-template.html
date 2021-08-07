@@ -2,6 +2,11 @@
 	<h3 class="form-header">{{ localize "DND4EALTUS.PowerDetails" }}</h3>
 
 	{{!-- Power Source & Keywords --}}
+	<div class="form-group">
+		<label>Auto Generate Power Card Details</label>
+		<input type="checkbox" name="data.autoGenChatPowerCard" data-dtype="Boolean" {{checked data.autoGenChatPowerCard}}/>
+	</div>
+
 	<div class="form-group select">
 		<label>{{ localize "DND4EALTUS.PowerSource" }}</label>
 		<select name="data.powersource">
@@ -66,7 +71,6 @@
 		<label>{{ localize "DND4EALTUS.WeaponTypeRequired" }}</label>
 		<select name="data.weaponType">
 			{{#select data.weaponType}}
-			<option value=""></option>
 			{{#each config.weaponType as |name type|}}
 			<option value="{{type}}">{{name}}</option>
 			{{/each}}
@@ -79,7 +83,7 @@
 				{{#select data.weaponUse}}
 				<option value="default">Default</option>
 				<option value="defaultOH">Default Off-Hand</option>
-				<option value="">None</option>
+				<option value="none">None</option>
 				{{#each powerWeaponUseTargets as |name key|}}
 				<option value="{{key}}">{{name}}</option>
 				{{/each}}
@@ -221,12 +225,32 @@
 	{{#if data.hit.isDamage}}
 	{{!-- Hit Details --}}
 	{{!-- Damage --}}
+	<div class="form-group">
+		<label>Shared Damage Roll</label>
+		<input type="checkbox" name="data.hit.shareDamageRoll" data-dtype="Boolean" {{checked data.hit.shareDamageRoll}}/>
+	</div>
+	
+	<div class="form-group uses-per">
+		<label>{{ localize "DND4EALTUS.PowerBaseDamage" }}</label>
+		<div class="form-fields">
+			<input style="min-width: 105px;" type="text" name="data.hit.baseQuantity" value="{{data.hit.baseQuantity}}"/>
+			<select name="data.hit.baseDiceType">
+				{{#select data.hit.baseDiceType}}
+				{{#each config.powerDiceTypes as |name key|}}
+				<option value="{{key}}">{{name}}</option>
+				{{/each}}
+				{{/select}}
+			</select>
+		</div>
+	</div>
+
+
 	<div class="form-group stacked">
 		<label>Damage {{ localize "DND4EALTUS.Formula" }}</label>
 		<input type="text" name="data.hit.formula" value="{{data.hit.formula}}"/>
 	</div>
 	<h4 class="damage-header">
-		{{#unless isHealing }}Secondary {{ localize "DND4EALTUS.Damage" }}{{ else }}{{ localize "DND4EALTUS.Healing" }}{{/unless}} {{ localize "DND4EALTUS.Formula" }}:
+		Secondary {{ localize "DND4EALTUS.Damage"}} {{localize "DND4EALTUS.Formula" }}:
 		<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
 	</h4>
 	<ol class="damage-parts form-group">
@@ -255,7 +279,7 @@
 		<input type="text" name="data.hit.critFormula" value="{{data.hit.critFormula}}"/>
 	</div>
 	<h4 class="damage-header">
-		{{#unless isHealing }}Secondary Critial{{ localize "DND4EALTUS.Damage" }}{{ else }}{{ localize "DND4EALTUS.Healing" }}{{/unless}} {{ localize "DND4EALTUS.Formula" }}:
+		Secondary Critial{{ localize "DND4EALTUS.Damage" }} {{ localize "DND4EALTUS.Formula" }}:
 		<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
 	</h4>
 	<ol class="damage-parts form-group">
@@ -308,6 +332,16 @@
 		{{/each}}
 	</div>
 
+	{{/if}}
+	<div class="form-group">
+		<label>{{ localize "DND4EALTUS.isHealing" }}</label>
+		<input type="checkbox" name="data.hit.isHealing" data-dtype="Boolean" {{checked data.hit.isHealing}}/>
+	</div>
+	{{#if data.hit.isHealing}}
+	<div class="form-group stacked">
+		<label>Healing {{ localize "DND4EALTUS.Formula" }}</label>
+		<input type="text" name="data.hit.healFormula" value="{{data.hit.healFormula}}"/>
+	</div>
 	{{/if}}
 
 	{{!-- Effect Details --}}

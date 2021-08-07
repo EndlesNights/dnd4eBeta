@@ -1,26 +1,156 @@
 # Changelog
 
+## Version 0.2.23
+- Power Card Text can now use actor data to put numerical stat values using either the helper @Shorthands, or @actor.data.location formats.
+
+## Version 0.2.22
+- Cristal Hits should now be properly identified by the automation system.
+
+## Version 0.2.22
+- Added Half levels to Ability Rolls 
+- Fixed issue where common attack bonuses would not add together properly and through an error.
+
+## Version 0.2.21
+- Fixed issue with the _preUpdate item entry by adding a null check
+
+## Version 0.2.20
+- Fixed an issue where items that used Resource Consumption set to Attribute would cause the item to become unusable once on a character sheet. Attribute Resource Consumption should now be usable again.
+
+## Version 0.2.19
+- Fixed issue where Initiative Dexterity Tiebreaker was always on by default. It should now be a toggleable option that can be configured from the System Settings.
+- If a token is selected while rolling an attack roll, the result message will now show a message if the attack is a hit or miss. This is optional and needs to be manually enabled under, System Settings => Basic Combat Automation.
+
+## Version 0.2.18
+- Fixed issue where powers that use implements as an optional  weapon should where not working properly.
+
+## Version 0.2.17
+- Fixed an issue with recovering HP on short rests, where if situational bonus to Healing surges was not specified the value would return as undefined. It should now be working properly.
+- Fixed issue where active effects where not working after 8.x update, should now be working again.
+- Fixed Fast forwards options for attack and damage rolls: 
+	holding shift, ctrl or alt when pressing the attack button will roll an attack roll with no additional bonuses.
+	Holding shift, ctrl when pressing the damage button will roll the damage roll with no additional bonuses.
+	Holding alt when pressing the damage button will roll a critical damage roll with no additional bonuses.
+
+## Version 0.2.16
+- Added weapon Implement type (in addition to existing Implement Property)
+- Implement type auto-selects Implement Property and disables checkbox
+- Implement type hides some weapon damage fields
+
+## Version 0.2.15
+- fixed an issue where situation bonuses and common bonuses where not being added together properly
+
+## Version 0.2.14
+- combined Vision and Special Scenes into Scenes
+- Fixed an issue where special scenes would not open properly on NPC sheet
+- changed english names for number of vision types
+- fixed issue where on NPC sheet where Perception could not be trained
+- separated PC and NPC defense calculations
+- NPC sheet added space between defenses and ability scores
+- NPC defense will no longer draw from Abilities
+- NPC defense will draw bonus from level instead of half level
+
+## Version 0.2.13
+- Added Damage Dice Dropdown to Powers card (merge from [ahoward-cf](https://github.com/ahoward-cf))
+- Added handling of Power Damage Dice (merge from [ahoward-cf](https://github.com/ahoward-cf))
+- quick change to the above, allowing formal rolls for the `baseQuantity` varuble.
+- added healing roll option
+
+## Version 0.2.12
+- encumbrance weight calculations should be working as normal again. data structure was changed in 8.x for items, and the old iteration was no longer working
+
+## Version 0.2.11
+- NPC tweaking
+- tweak to _onChangeInputDelta function, value will no longer change if detects number of invalid changes
+
+## Version 0.2.10
+- updated to Foundry Version 0.8.8
+- fixed number of spelling mistakes with the en.json lang file
+- changed some spells from British English to American English to be more in line with WotC
+- Reworkings of the NPC character
+
+## Version 0.2.9
+- include names for attack rolls with multi targets
+
+## Version 0.2.8
+- included method for rolling multiple attacks based on number of targeted actors, defaulting to 1 if no actors are targeted  (merge from [ahoward-cf](https://github.com/ahoward-cf))
+
+## Version 0.2.7
+- place holder NPC monster sheet
+
+## Version 0.2.6
+- fixed issue where auto generate templates where not working since switch from Foudnry 0.7.x to 0.8.x
+- some more work on NPC sheets
+- fixed issue where temp hp was not properly resetting after rests
+
+## Version 0.2.5
+- updated to Foundry Version 0.8.7
+- fixed how Flavor Text works.
+	flavor Text for items will override the item discretion when using the items
+	flavor Text as part of rolls will override what chat message text is displayed.
+- fixed issue where bonuses to saving throws was not being calculated
+- fixed an issue where second wind was healing arithmetically even when at negative HP. It should now heal correctly.
+- moved actor.js into /module/actor
+- started to wright NPC sheets
+
+## Version 0.2.4
+- fixed issue with inline not working on character sheet
+- fixed issue where item active effects where using actor active effects instead of their own after post 0.8.x change
+- Show Players button should now work for items, and share the item with your players.
+- Fixed an issue where if the power Attack Formula was empty, it would still add in the ability mob
+- powers that use implements as their weapon should now be usable without one as it should be optional.
+
+## Version 0.2.3
+- fixed issue where unlinked tokens could not properly use powers
+- fixed issue with short/long rest not properly updating  after porting from FVTT 7.x to 8.x
+- fixed math issue where subtracting HP from chat rolls would not go into negative values.
+
+## Version 0.2.2
+- Reworked roll configuration window for any d20 based rolls
+- Removed '1d20' from default attack roll formulas
+- Added an option to disable powers from auto generating power cards, and will instead just display their details (if there are any to display)
+- Fixed an issue where undefined values where causing issues with dice rolls for powers/weapons. Undefined values should now return to zero by default.
+- Increased font size of power cards from 12px to 14px
+- Added Bolding to categories in chat cards to replicate that of original power cards
+
+## Version 0.2.1
+- fixed issue where temphp was not being taken into account  when right click applying damage.
+- fixed error in code where items would try to delete twice
+- fixed Brutal property to now use recursive reroll feater that was added to core in FVTT 0.8.x
+- fixed active effects to work again 0.8.x
+- Added integrated  macro rolling to all items types
+
+## Version 0.2.0
+- Updated To Foundry 0.8.6
+
+## Version 0.1.6
+- Updated to Foundry 0.7.10
+
+## Version 0.1.5
+- Saving Throw Dialog no longer shares ID with Death Saving Throw
+- Fixed Text in Saving Throw Dialog window.
+- Added Roll Mode Options to Saving Throw and Death Saving Throw. 
+
 ## Version 0.1.4
 - Added Power Cards formating to character sheet display
 - Added Power Cards formating to power chat message
-- Added 3 resources to the character sheet that can be used to track custom resources. Can be set to resourch on either short, long rest, and can be accessed at 
+- Added 3 resources to the character sheet that can be used to track custom resources. Can be set to reset on either short, long rest, and can be accessed at 
 	resources.primary.value
 	resources.secondary.value
 	resources.tertiary.value
 - applyChatCardDamage should be working. Right Click on Roll Chat messages.
-- fixed issue with scrollbar that was only vissable within browser, and not Electron client.
+- fixed issue with scrollbar that was only visible within browser, and not Electron client.
 - added custom encumbrance options
 
 ## Version 0.1.3
 - Added an option for Game Masters to preview and show items to parties groups
 - reworked movement dialog options
-- Tooltip for movement will now show multiple difrent move speeds.
+- Tooltip for movement will now show multiple different move speeds.
 - Added an option to import JSON data into items
 - Added in option to export items as JSON data onto users clipboard, if browser does not allow for pushing data to clipboard, a pop dialog box where the data can be copied
 - fixed issue with death saving throw and bonus
 - fixed issue with saving throw and bonus
 - when setting a DC for a saving throw, it should now auto select the entire text
-- The Fumble and critical (DC) perameters for saving throw should now correctly auto set if an invalid value is submited
+- The Fumble and critical (DC) perimeters for saving throw should now correctly auto set if an invalid value is submitted
 
 ## Version 0.1.2
 - initiative can now be rolled from the character sheet
@@ -71,3 +201,6 @@
 
 ## Version 0.0.6
 - Fixed issues where the value for WilL Defence was trying to check the "char" abilities score instead of "cha"
+
+## Version 0.0.0
+- Initial commit

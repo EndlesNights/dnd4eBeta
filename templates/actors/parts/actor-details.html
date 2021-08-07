@@ -24,7 +24,7 @@
 
 <section class="flexrow section--attributes" style="border:none;">
 	{{!-- Custom Resources --}}
-	{{#each resources as |res|}}
+	{{#each data.resources as |res|}}
 	<div class="attributes attribute-health">
 		<h4 class="attribute-name">
 			<input name="data.resources.{{res.name}}.label" type="text" value="{{res.label}}"
@@ -102,7 +102,7 @@
 <div><!-- <div class="attribute-init resource-full movement"> -->
 	<h4 class="attribute-name box-title">Special Senses</h4>    
 	<div style="text-align: left;">
-		<a class="trait-selector-senses" data-options="vision" data-target="data.senses.vision">
+		<!-- <a class="trait-selector-senses" data-options="vision" data-target="data.senses.vision">
 			<span>Vision</span>
 			<i class="fas fa-edit"></i>
 		</a>
@@ -110,7 +110,7 @@
 		{{#each data.senses.vision.selected as |v k|}}
 			<li class="tag {{k}}">{{v}}</li>
 		{{/each}}
-		</ul>
+		</ul> -->
 		
 		<a class="trait-selector-senses" data-options="special" data-target="data.senses.special">
 			<span>Special Senses</span>

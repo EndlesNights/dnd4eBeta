@@ -9,6 +9,16 @@ import { DND4EALTUS } from "../config.js";
  */
 export default class Item4e extends Item {
 
+	
+	/** @inheritdoc */
+	async _preUpdate(changed, options, user) {
+		await super._preUpdate(changed, options, user);
+		// Check for implement weapon type and set weapon implement property to true
+		if (this.type === "weapon" && changed.data?.weaponType === "implement"){
+			foundry.utils.setProperty(changed, "data.properties.imp", true);
+		}
+	}
+
 	/* -------------------------------------------- */
 	/*  Item Properties                             */
 	/* -------------------------------------------- */
@@ -79,6 +89,15 @@ export default class Item4e extends Item {
 		return !!this.data.data.hit?.formula || !!(this.data.data.damage && this.data.data.damage.parts.length);
 	}
 
+	/* -------------------------------------------- */
+	/**
+	 * Does the Item implement a heal roll as part of its usage
+	 * @type {boolean}
+	 */
+	 get hasHealing() {
+		if(!this.data.type === "power") return false; //curently only powers will deal damage or make attacks
+		return this.data.data.hit?.isHealing;
+	 }	
 	/* -------------------------------------------- */
 
 	/**
@@ -163,7 +182,6 @@ export default class Item4e extends Item {
 	 */
 	prepareData() {
 		super.prepareData();
-
 		// Get the Item's data
 		const itemData = this.data;
 		const actorData = this.actor ? this.actor.data : {};
@@ -171,6 +189,7 @@ export default class Item4e extends Item {
 		const C = CONFIG.DND4EALTUS;
 		const labels = {};
 
+		
 		// Classes
 		// if ( itemData.type === "class" ) {
 		// 	data.levels = Math.clamped(data.levels, 1, 20);
@@ -302,14 +321,12 @@ export default class Item4e extends Item {
 			// let x = func();
 			// console.log(x)
 		}
-
-		console.log(this)
-		const cardData = this.data.type == "power" ? Helper._preparePowerCardData(this.getChatData(), CONFIG) : null;
+		const cardData = this.data.type == "power" && this.data.data.autoGenChatPowerCard ? Helper._preparePowerCardData(this.getChatData(), CONFIG, this.actor.data.data) : null;
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
 			actor: this.actor,
-			tokenId: token ? `${token.scene._id}.${token.id}` : null,
+			tokenId: token ? token.uuid : null,
 			item: this.data,
 			data: this.getChatData(),
 			labels: this.labels,
@@ -317,6 +334,7 @@ export default class Item4e extends Item {
 			isHealing: this.isHealing,
 			isPower: this.data.type == "power",
 			hasDamage: this.hasDamage,
+			hasHealing: this.hasHealing,
 			hasEffect: this.hasEffect,
 			cardData: cardData,
 			isVersatile: this.isVersatile,
@@ -341,7 +359,6 @@ export default class Item4e extends Item {
 		// Render the chat card template
 		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
 		const template = `systems/dnd4eAltus/templates/chat/${templateType}-card.html`;
-console.log(templateType)
 		let html = await renderTemplate(template, templateData);
 
 		if(templateData.item.type === "power") {
@@ -349,14 +366,10 @@ console.log(templateType)
 		}
 		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--item`);
-			console.log("test")
 		} else {
 			html = html.replace("ability-usage--", `ability-usage--other`);
 		}
 
-		console.log(templateData.item.type)
-
-		console.log(templateData)
 		// Basic chat message data
 		const chatData = {
 			user: game.user._id,
@@ -537,7 +550,6 @@ console.log(templateType)
 	getChatData(htmlOptions={}) {
 		const data = duplicate(this.data.data);
 		const labels = this.labels;
-		console.log(labels)
 		// Rich text description
 		data.description.value = TextEditor.enrichHTML(data.description.value, htmlOptions);
 
@@ -565,8 +577,12 @@ console.log(templateType)
 				labels.damageTypes,
 				labels.effectType,
 			);
-			console.log(labels.damageTypes)
 		}
+		
+		if(data.chatFlavor) {
+			data.description.value = data.chatFlavor;
+		}
+
 		// Filter properties and return
 		data.properties = props.filter(p => !!p);
 		return data;
@@ -681,49 +697,39 @@ console.log(templateType)
 		const itemData = this.data.data;
 		const actorData = this.actor.data.data;	
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
-		
-			const flags = this.actor.data.flags.dnd4eAltus || {};
-			if ( !this.hasAttack ) {
-				throw new Error("You may not place an Attack Roll with this Item.");
-			}
-			let title = `${this.name} - ${game.i18n.localize("DND4EALTUS.AttackRoll")}`;
+
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
+			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
+			return null;
+		}
+
+		const flags = this.actor.data.flags.dnd4eAltus || {};
+		if ( !this.hasAttack ) {
+			ui.notifications.error("You may not place an Attack Roll with this Item.");
+			return null;
+		}
+		let title = `${this.name} - ${game.i18n.localize("DND4EALTUS.AttackRoll")}`;
 		let flavor = title;
-		
-		// if(itemData.chatFlavor) flavor += `<br>${itemData.chatFlavor}`;
-		// if(itemData.target.type && !["none","personal"].includes(itemData.target.type)) {
-		// 	if(itemData.target.num) {
-		// 		flavor += `<br>Target: ${itemData.target.num} ${itemData.target.type}`;
-		// 	} else {
-		// 		flavor += `<br>Target: Each ${itemData.target.type} `;
-		// 	}
-		// 	//Determin weapon range and AoE type here from rangeType && rangePower.
-		// 	if(itemData.rangeType) {
-		// 		if(itemData.rangeType === "weapon") {
-		// 			flavor += `, ${CONFIG.DND4EALTUS.weaponType[itemData.weaponType]}`;
-		// 		} 
-		// 		else if (itemData.rangeType !== "range") {
-		// 			flavor += `, ${CONFIG.DND4EALTUS.rangeType[itemData.rangeType]}`;
-		// 		}
-		// 	}
-		// 	if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.rangeType)) {
-		// 		flavor += ` ${itemData.area}`
-		// 	}
-		// 	if(itemData.rangePower && !["closeBurst","closeBlast"].includes(itemData.rangeType) ) {
-		// 		flavor += ` within range of ${itemData.rangePower} squares.`
-		// 	}
-		// } else if (itemData.target.type) {
-		// 	flavor += `<br>Target: ${itemData.target.type} `;
-		// }
-		// flavor += `<br>Attack VS ${itemData.attack.def.toUpperCase() }`;
-		flavor += ` ${game.i18n.localize("DND4EALTUS.VS")} <b>${itemData.attack.def.toUpperCase() }<b>`;
-			const rollData = this.getRollData();
-		
-			// Define Roll bonuses
-			const parts = !!itemData.attack.formula? [`@power`] : [`@mod`];
-			// if ( (this.data.type !== "weapon") || itemData.proficient ) {
-				// parts.push("@prof");
-			// }
-		
+
+		flavor += ` ${game.i18n.localize("DND4EALTUS.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
+		if(game.user.targets.size) {
+			const targetArr = Array.from(game.user.targets);
+			options.targetActor = targetArr[options.target].document._actor;
+			options.attackedDef = targetArr[options.target].document._actor.data.data.defences[itemData.attack.def].value;
+	
+			console.log(targetArr[options.target].document._actor.data.data.defences[itemData.attack.def].value)
+			// console.log(canvas.tokens)
+			// flavor += `<br><b>Target:</b> ${targetArr[options.target].data.name}`
+
+		}
+		const rollData = this.getRollData();
+
+		rollData.isAttackRoll = true;
+		rollData.commonAttackBonuses = CONFIG.DND4EALTUS.commonAttackBonuses;
+
+		// Define Roll bonuses
+		const parts = !!itemData.attack.formula? [`@power`] : [];
+
 		//pack the powers formal and send it to the dice.
 		if(!!itemData.attack.formula) {		
 			rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null);
@@ -778,22 +784,24 @@ console.log(templateType)
 			actor: this.actor,
 			data: rollData,
 			title: title,
-		flavor: flavor,
+			flavor: flavor,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			dialogOptions: {
 				width: 400,
 				top: options.event ? options.event.clientY - 80 : null,
 				left: window.innerWidth - 710
 			},
-			messageData: {"flags.dnd4eAltus.roll": {type: "attack", itemId: this.id }}
-		}, options);
-		rollConfig.event = options.event;
+			isAttackRoll: true,
+			messageData: {"flags.dnd4eAltus.roll": {type: "attack", itemId: this.id }},
+			options
+		});
+		console.log(rollConfig);
+		rollConfig.event = options.event;	
 
 		// Expanded weapon critical threshold
 		if (weaponUse) {
 			rollConfig.critical = itemData.weaponType === "implement" ? weaponUse.data.data.critRangeImp : weaponUse.data.data.critRange;
 		}
-	
 		// Invoke the d20 roll helper
 		const roll = await d20Roll(rollConfig);
 		if ( roll === false ) return null;
@@ -820,12 +828,19 @@ console.log(templateType)
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollDamage({event, spellLevel=null, versatile=false}={}) {
+		console.log("rollDamage")
 		const itemData = this.data.data;
 		const actorData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
+			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
+			return null;
+		}
+
 		if ( !this.hasDamage ) {
-			throw new Error("You may not make a Damage Roll with this Item.");
+			ui.notifications.error("You may not make a Damage Roll with this Item.");
+			return null;
 		}
 		const messageData = {"flags.dnd4eAltus.roll": {type: "damage", itemId: this.id }};
 
@@ -907,7 +922,6 @@ console.log(templateType)
 		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
 		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 		// Call the roll helper utility
-		console.log(parts);
 		return damageRoll({
 			event: event,
 			parts: parts,
@@ -927,7 +941,112 @@ console.log(templateType)
 	}
 
 	/* -------------------------------------------- */
+	/**
+	 *
+	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
+	 */
+	rollHealing({event, spellLevel=null, versatile=false}={}) {
+		console.log("rollHealing")
+		const itemData = this.data.data;
+		const actorData = this.actor.data.data;
+		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
+			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
+			return null;
+		}
+
+		if ( !this.hasHealing ) {
+			ui.notifications.error("You may not make a Healing Roll with this Item.");
+			return null;
+		}
+		const messageData = {"flags.dnd4eAltus.roll": {type: "healing", itemId: this.id }};
+
+		// Get roll data
+		const rollData = this.getRollData();
+		if ( spellLevel ) rollData.item.level = spellLevel;
+
+		// Get message labels
+		const title = `${this.name} - ${game.i18n.localize("DND4EALTUS.HealingRoll")}`;
+		let flavor = this.labels.damageTypes.length ? `${title} (${this.labels.damageTypes})` : title;
+
+		// Define Roll parts
+		const parts = itemData.damage.parts.map(d => d[0]);
+
+		//Add power damage into parts
+		if(!!itemData.hit?.healFormula) {
+			parts.unshift(Helper.commonReplace(itemData.hit.healFormula, actorData, this.data.data, weaponUse?.data.data));
+			//Add seconadary weapons damage into parts
+			if(weaponUse) {
+				if(itemData.hit.healFormula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
+					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+				
+				if(itemData.hit.healFormula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
+					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+				
+			}
+		}
+	
+		// Adjust damage from versatile usage
+		if(weaponUse) {
+			if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
+				parts.push("1");
+				messageData["flags.dnd4eAltus.roll"].versatile = true;
+			}
+		}
+		// if ( versatile && itemData.damage.versatile ) {
+			// parts[0] = itemData.damage.versatile;
+			// messageData["flags.dnd4eAltus.roll"].versatile = true;
+		// }	
+	
+		// Define Roll Data
+		const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
+		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
+			parts.push("@dmg");
+			rollData["dmg"] = actorBonus.damage;
+		}
+
+		// Ammunition Damage from power
+		if ( this._ammo ) {
+			parts.push("@ammo");
+			rollData["ammo"] = this._ammo.data.data.damage.parts.map(p => p[0]).join("+");
+			flavor += ` [${this._ammo.name}]`;
+			delete this._ammo;
+		}
+	
+		// Ammunition Damage from weapon
+		if(weaponUse) {
+			if ( weaponUse._ammo ) {
+				parts.push("@ammoW");
+				rollData["ammoW"] = weaponUse._ammo.data.data.damage.parts.map(p => p[0]).join("+");
+				flavor += ` [${weaponUse._ammo.name}]`;
+				delete weaponUse._ammo;
+			}
+		}
+		//Add powers text to message.
+		// if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
+		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
+		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
+		// Call the roll helper utility
+		return damageRoll({
+			event: event,
+			parts: parts,
+			actor: this.actor,
+			data: rollData,
+			title: title,
+			healingRoll: true,
+			flavor: flavor,
+			speaker: ChatMessage.getSpeaker({actor: this.actor}),
+			dialogOptions: {
+				width: 400,
+				top: event ? event.clientY - 80 : null,
+				left: window.innerWidth - 710
+			},
+			messageData,
+		});
+	}
 	/**
 	 * Adjust a cantrip damage formula to scale it for higher level characters and monsters
 	 * @private
@@ -1203,6 +1322,7 @@ console.log(templateType)
 		// Include a proficiency score
 		// const prof = "proficient" in rollData.item ? (rollData.item.proficient || 0) : 1;
 		// rollData["prof"] = Math.floor(prof * rollData.attributes.prof);
+		
 		return rollData;
 	}
 
@@ -1243,7 +1363,8 @@ console.log(templateType)
 		if ( !actor ) return;
 
 		// Get the Item
-		const item = actor.getOwnedItem(card.dataset.itemId);
+		// const item = actor.getOwnedItem(card.dataset.itemId);
+		const item = actor.items.get(card.dataset.itemId);
 		if ( !item ) {
 			return ui.notifications.error(game.i18n.format("DND4EALTUS.ActionWarningNoItem", {item: card.dataset.itemId, name: actor.name}))
 		}
@@ -1260,8 +1381,21 @@ console.log(templateType)
 		}
 
 		// Attack and Damage Rolls
-		if ( action === "attack" ) await item.rollAttack({event});
+		if ( action === "attack" ) {
+
+			// Get current targets and set number of rolls required
+			const numTargets = game.user.targets.size;
+			const numTargetsDefault = 1;
+
+			const numRolls = (numTargets || numTargetsDefault);
+
+			// Invoke attack roll promise
+			for (var i=0;i<numRolls;i++) {
+				await item.rollAttack({event, target:i});
+			}
+		}
 		else if ( action === "damage" ) await item.rollDamage({event, spellLevel});
+		else if ( action === "healing" ) await item.rollHealing({event, spellLevel});
 		else if ( action === "versatile" ) await item.rollDamage({event, spellLevel, versatile: true});
 		else if ( action === "formula" ) await item.rollFormula({event, spellLevel});
 
@@ -1278,6 +1412,8 @@ console.log(templateType)
 
 		// Spell Template Creation
 		else if ( action === "placeTemplate") {
+			console.log(item)
+			// const template = game.dnd4eAltus.canvas.AbilityTemplate.fromItem(item);
 			const template = AbilityTemplate.fromItem(item);
 			if ( template ) template.drawPreview(event);
 		}
@@ -1310,11 +1446,10 @@ console.log(templateType)
 	 * @private
 	 */
 	static _getChatCardActor(card) {
-
 		// Case 1 - a synthetic actor from a Token
 		const tokenKey = card.dataset.tokenId;
 		if (tokenKey) {
-			const [sceneId, tokenId] = tokenKey.split(".");
+			const [,sceneId,,tokenId] = tokenKey.split(".");
 			const scene = game.scenes.get(sceneId);
 			if (!scene) return null;
 			const tokenData = scene.getEmbeddedEntity("Token", tokenId);

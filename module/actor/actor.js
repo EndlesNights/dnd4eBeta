@@ -1,8 +1,8 @@
-import { d20Roll, damageRoll } from "./dice.js";
-import AbilityUseDialog from "./apps/ability-use-dialog.js";
-import AbilityTemplate from "./pixi/ability-template.js"
-import { DND4EALTUS } from "./config.js";
-import { Helper } from "./helper.js"
+import { d20Roll, damageRoll } from "../dice.js";
+import AbilityUseDialog from "../apps/ability-use-dialog.js";
+import AbilityTemplate from "../pixi/ability-template.js"
+import { DND4EALTUS } from "../config.js";
+import { Helper } from "../helper.js"
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -10,40 +10,39 @@ import { Helper } from "./helper.js"
  */
 export class Actor4e extends Actor {
 
-	/** @override */
+	/** @inheritdoc */
 	getRollData() {
 		const data = super.getRollData();
-
 		return data;
 	}
 //   getRollData() {
 //     const data = super.getRollData();
 //     const shorthand = game.settings.get("dnd4eAltus", "macroShorthand");
 
-    // Re-map all attributes onto the base roll data
-    // if ( !!shorthand ) {
-    //   for ( let [k, v] of Object.entries(data.attributes) ) {
-    //     if ( !(k in data) ) data[k] = v.value;
-    //   }
-    //   delete data.attributes;
-    // }
+	// Re-map all attributes onto the base roll data
+	// if ( !!shorthand ) {
+	//   for ( let [k, v] of Object.entries(data.attributes) ) {
+	//     if ( !(k in data) ) data[k] = v.value;
+	//   }
+	//   delete data.attributes;
+	// }
 
-    // Map all items data using their slugified names
-    // data.items = this.data.items.reduce((obj, i) => {
-      // let key = i.name.slugify({strict: true});
-      // let itemData = duplicate(i.data);
-      // if ( !!shorthand ) {
+	// Map all items data using their slugified names
+	// data.items = this.data.items.reduce((obj, i) => {
+	  // let key = i.name.slugify({strict: true});
+	  // let itemData = duplicate(i.data);
+	  // if ( !!shorthand ) {
 		  // console.log( Object);
 		  // console.log( itemData);
 		  
-        // for ( let [k, v] of Object.entries(itemData.attributes) ) {
-          // if ( !(k in itemData) ) itemData[k] = v.value;
-        // }
-        // delete itemData["attributes"];
-      // }
-      // obj[key] = itemData;
-      // return obj;
-    // }, {});
+		// for ( let [k, v] of Object.entries(itemData.attributes) ) {
+		  // if ( !(k in itemData) ) itemData[k] = v.value;
+		// }
+		// delete itemData["attributes"];
+	  // }
+	  // obj[key] = itemData;
+	  // return obj;
+	// }, {});
 	
 //     return data;
 //   }
@@ -92,7 +91,7 @@ export class Actor4e extends Actor {
 		for (let [id, abl] of Object.entries(data.abilities)) {
 
 			abl.mod = Math.floor((abl.value - 10) / 2);
-			abl.modHalf = abl.mod;
+			abl.modHalf = abl.mod + Math.floor(data.details.level / 2);
 			abl.prof = (abl.proficient || 0);
 			abl.saveBonus = saveBonus;
 			abl.checkBonus = checkBonus;
@@ -152,7 +151,14 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		
+
+		if(!(data.details.saves.bonus.length === 1 && jQuery.isEmptyObject(data.details.saves.bonus[0]))) {
+			for( const b of data.details.saves.bonus) {
+				if(b.active) {
+					data.details.saves.value += b.value;
+				}
+			}
+		}
 		//Weight & Encumbrance
 		data.encumbrance = this._computeEncumbrance(actorData);
 			
@@ -163,33 +169,14 @@ export class Actor4e extends Actor {
 		// const skillBonus = Number.isNumeric(bonuses.skill) ? parseInt(bonuses.skill) :  0;	
 
 		// Skill modifiers
-		for (let [id, skl] of Object.entries(data.skills)) {
-			skl.value = parseFloat(skl.value || 0);
-
-			let sklBonusValue = 0;
-			let sklArmourPenalty = 0;
-			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
-				for( const b of skl.bonus) {
-					if(b.active) {
-						sklBonusValue += b.value;
-					}
-				}
-			}
-			if (skl.armourCheck) {
-				//Get Skill Check Penalty stats from armour
-				for ( let i of this.items) {
-					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
-					sklArmourPenalty += i.data.data.armour.skillCheckValue;
-				}
-			}
-			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
-			
-			// Compute modifier
-			skl.mod = data.abilities[skl.ability].mod;			
-			skl.total = skl.value + skl.mod + sklBonusValue - sklArmourPenalty;
-			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
-
+		// Skill modifiers
+		//Calc defence stats
+		if (this.data.type === "NPC") {
+			this.calcSkillNPC(data);
+			this.calcDefenceStatsNPC(data);
+		} else {
+			this.calcSkillCharacter(data);
+			this.calcDefenceStatsCharacter(data);
 		}
 		
 		if (data.attributes.hp.temphp <= 0 )
@@ -217,31 +204,7 @@ export class Actor4e extends Actor {
 		data.defences.ref.ability = (data.abilities.dex.value >= data.abilities.int.value) ? "dex" : "int";
 		data.defences.wil.ability = (data.abilities.wis.value >= data.abilities.cha.value) ? "wis" : "cha";
 
-		//Calc defence stats
-		for (let [id, def] of Object.entries(data.defences)) {
-			
-			def.label = game.i18n.localize(DND4EALTUS.def[id]);
-			def.title = game.i18n.localize(DND4EALTUS.defensives[id]);
-						
-			let defBonusValue = 0;
-			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
-				for( const b of def.bonus) {
-					if(b.active) {
-						defBonusValue += b.value;
-					}
-				}
-			}
-			def.bonusValue = defBonusValue;
-			
-			//Get Deff stats from items
-			for ( let i of this.items) {
-				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
-				def.armour += i.data.data.armour[id];
-			}
 
-			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			def.value = 10 + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;			
-		}
 
 		//calc init
 		let initBonusValue = 0;
@@ -395,6 +358,143 @@ export class Actor4e extends Actor {
 
 	}
 
+	calcDefenceStatsCharacter(data) {		
+		for (let [id, def] of Object.entries(data.defences)) {
+			
+			def.label = game.i18n.localize(DND4EALTUS.def[id]);
+			def.title = game.i18n.localize(DND4EALTUS.defensives[id]);
+						
+			let defBonusValue = 0;
+			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
+				for( const b of def.bonus) {
+					if(b.active) {
+						defBonusValue += b.value;
+					}
+				}
+			}
+			def.bonusValue = defBonusValue;
+			
+			//Get Deff stats from items
+			for ( let i of this.items) {
+				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
+				def.armour += i.data.data.armour[id];
+			}
+			if(def.base == undefined){
+				def.base = 10;
+				this.update({[`data.defences[${def}].base`]: 10 });
+			}
+			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
+			def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;			
+		}
+	}
+
+	calcDefenceStatsNPC(data) {
+		for (let [id, def] of Object.entries(data.defences)) {
+			
+			def.label = game.i18n.localize(DND4EALTUS.def[id]);
+			def.title = game.i18n.localize(DND4EALTUS.defensives[id]);
+						
+			let defBonusValue = 0;
+			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
+				for( const b of def.bonus) {
+					if(b.active) {
+						defBonusValue += b.value;
+					}
+				}
+			}
+			def.bonusValue = defBonusValue;
+			
+			//Get Deff stats from items
+			for ( let i of this.items) {
+				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
+				def.armour += i.data.data.armour[id];
+			}
+			if(def.base == undefined){
+				def.base = 10;
+				this.update({[`data.defences[${def}].base`]: 10 });
+			}
+			if(data.advancedCals){
+				def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + data.details.level;
+			} else {
+				def.value = def.base;		
+			}
+		}
+	}
+
+	calcSkillCharacter(data){
+		for (let [id, skl] of Object.entries(data.skills)) {
+			skl.value = parseFloat(skl.value || 0);
+
+			let sklBonusValue = 0;
+			let sklArmourPenalty = 0;
+			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
+				for( const b of skl.bonus) {
+					if(b.active) {
+						sklBonusValue += b.value;
+					}
+				}
+			}
+			if (skl.armourCheck) {
+				//Get Skill Check Penalty stats from armour
+				for ( let i of this.items) {
+					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
+					sklArmourPenalty += i.data.data.armour.skillCheckValue;
+				}
+			}
+			skl.armourPen = sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+
+			if(skl.base == undefined){
+				skl.base = 0;
+				// this.update({[`data.skills[${skl}].base`]: 0 });
+			}
+
+			// Compute modifier
+			skl.mod = data.abilities[skl.ability].mod;			
+			skl.total = skl.value + skl.base + skl.mod + sklBonusValue - sklArmourPenalty;
+			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
+
+		}
+	}
+
+	calcSkillNPC(data){
+		for (let [id, skl] of Object.entries(data.skills)) {
+			skl.value = parseFloat(skl.value || 0);
+
+			let sklBonusValue = 0;
+			let sklArmourPenalty = 0;
+			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
+				for( const b of skl.bonus) {
+					if(b.active) {
+						sklBonusValue += b.value;
+					}
+				}
+			}
+			if (skl.armourCheck) {
+				//Get Skill Check Penalty stats from armour
+				for ( let i of this.items) {
+					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
+					sklArmourPenalty += i.data.data.armour.skillCheckValue;
+				}
+			}
+			skl.armourPen = sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+
+			if(skl.base == undefined){
+				skl.base = 0;
+			}
+
+			// Compute modifier
+			skl.mod = data.abilities[skl.ability].mod;
+			if(data.advancedCals){
+				skl.total = skl.value + skl.base + skl.mod + sklBonusValue - sklArmourPenalty;
+			} else {
+				skl.total = skl.base;
+			}
+
+			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
+		}
+	}
 
   /**
    * Handle how changes to a Token attribute bar are applied to the Actor.
@@ -409,7 +509,7 @@ export class Actor4e extends Actor {
 		if (!isNaN(value) && isBar ) {
 			const current = getProperty(this.data.data, attribute);
 			if (isDelta) value = Math.clamped(current.min, Number(current.value) + value, current.max);
-			console.log(attribute)
+			
 			if(attribute === 'attributes.hp')
 			{
 				let newHealth = this.setConditions(value);			
@@ -417,7 +517,7 @@ export class Actor4e extends Actor {
 				this.update({[`data.attributes.hp.value`]: newHealth[0] });
 			}
 		}
-	}	
+	}
 	setConditions(newValue) {
 		
 		let newTemp = this.data.data.attributes.hp.temphp;
@@ -442,7 +542,7 @@ export class Actor4e extends Actor {
 		else if(newValue < this.data.data.attributes.hp.min) newValue =  this.data.data.attributes.hp.min;
 		
 		return [newValue,newTemp];
-	}  
+	}
   
   /**
    * Roll a Skill Check
@@ -571,17 +671,17 @@ export class Actor4e extends Actor {
   /** @override */
   async createOwnedItem(itemData, options) {
 
-    // Assume NPCs are always proficient with weapons and always have spells prepared
-    if ( !this.isPC ) {
-      let t = itemData.type;
-      let initial = {};
-      if ( t === "weapon" ) initial["data.proficient"] = true;
-      if ( ["weapon", "equipment"].includes(t) ) initial["data.equipped"] = true;
-      if ( t === "spell" ) initial["data.prepared"] = true;
-      mergeObject(itemData, initial);
-    }
+	// Assume NPCs are always proficient with weapons and always have spells prepared
+	if ( !this.isPC ) {
+	  let t = itemData.type;
+	  let initial = {};
+	  if ( t === "weapon" ) initial["data.proficient"] = true;
+	  if ( ["weapon", "equipment"].includes(t) ) initial["data.equipped"] = true;
+	  if ( t === "spell" ) initial["data.prepared"] = true;
+	  mergeObject(itemData, initial);
+	}
 	
-    return super.createOwnedItem(itemData, options);
+	return super.createOwnedItem(itemData, options);
   }
 
 	/* -------------------------------------------- */
@@ -625,11 +725,10 @@ export class Actor4e extends Actor {
 			// if ( this.sheet.rendered ) this.sheet.minimize();
 		// }		
 		// Invoke the Item roll
-		return item.roll();		
+		return item.roll();
 	}
 	
 	_computeEncumbrance(actorData) {
-		
 		let weight = 0;
 		
 		//Weight Currency
@@ -646,10 +745,15 @@ export class Actor4e extends Actor {
 		}
 		//4e 1gp or residuum weights 0.000002
 		
-		for (let [e, v] of Object.entries(actorData.items)) {
-			if(!!v.data.weight && !!v.data.quantity) weight += v.data.weight * v.data.quantity;
-		}
-		
+		const physicalItems = ["weapon", "equipment", "consumable", "tool", "backpack", "loot"];
+		weight += actorData.items.reduce((weight, i) => {
+			if ( !physicalItems.includes(i.type) ) return weight;
+				const q = i.data.data.quantity || 0;
+				const w = i.data.data.weight || 0;
+				return weight + (q * w);
+			}, 0);
+	  
+
 		//round to nearest 100th.
 		weight = Math.round(weight * 1000) / 1000;
 
@@ -681,22 +785,37 @@ export class Actor4e extends Actor {
 		};
 	}
 
-	async applyDamage(amount=0, multiplier=1) {
+	async applyDamage(amount=0, multiplier=1) 
+	{
 		amount = Math.floor(parseInt(amount) * multiplier);
+		const healFromZero = true; // If true, healing HP starts from zero (the usual for 4e). On false, it follows normal arithmetic
 		const hp = this.data.data.attributes.hp;
-	
+		console.log(hp)
+
 		// Deduct damage from temp HP first
-		const tmp = parseInt(hp.temp) || 0;
+		const tmp = parseInt(hp.temphp) || 0;
 		const dt = amount > 0 ? Math.min(tmp, amount) : 0;
-	
 		// Remaining goes to health
-		const tmpMax = parseInt(hp.tempmax) || 0;
-		const dh = Math.clamped(hp.value - (amount - dt), 0, hp.max + tmpMax);
+		//const tmpMax = parseInt(hp.tempmax) || 0;
+		amount = amount - dt;
+		var newHp = hp.value;
+		if (amount > 0) // Damage
+			{
+			newHp = Math.clamped(hp.value - amount, (-1)*this.data.data.details.bloodied, hp.max);
+			}
+		else if (amount < 0) // Healing
+			{
+			if (healFromZero == true && hp.value < 0)
+				{
+				newHp = 0;
+				}
+			newHp = Math.clamped(newHp - amount, (-1)*this.data.data.details.bloodied, hp.max);
+			}
 	
 		// Update the Actor
 		const updates = {
-		  "data.attributes.hp.temp": tmp - dt,
-		  "data.attributes.hp.value": dh
+		  "data.attributes.hp.temphp": tmp - dt,
+		  "data.attributes.hp.value": newHp
 		};
 	
 		// Delegate damage application to a hook

@@ -109,7 +109,10 @@
 .dnd4eAltus.sheet .sheet-header .summary-name {
 	width: calc(46% - 34px);
 	display: inline-block;
-
+}
+.dnd4eAltus.sheet .sheet-header .summary-name-npc {
+	width: calc(100% - 278px);
+	display: inline-block;
 }
 .dnd4eAltus.sheet .sheet-header .summary-race,
 .dnd4eAltus.sheet .sheet-header .summary-class {
@@ -129,6 +132,26 @@
 	text-align: center;
 	width: 35%;
 	padding: 0%;
+}
+
+.dnd4eAltus.sheet .sheet-header .summary-role-second {
+	float: right;
+	width: 78px;
+}
+
+.dnd4eAltus.sheet .sheet-header .summary-role {
+	float: right;
+	width: 98px;
+}
+
+.dnd4eAltus.sheet .sheet-header .summary-size {
+	width: 102px;
+	display: inline-block;
+}
+
+.dnd4eAltus.sheet .sheet-header .summary-origin {
+	width: 90px;
+	display: inline-block;
 }
 
 .dnd4eAltus.sheet .sheet-header .summary-path {
@@ -168,8 +191,8 @@
 }
 
 .dnd4eAltus.sheet.actor .section--attributes {
-	border-top: 5px solid;
-	border-bottom: 5px solid;
+	border-top: 3px solid;
+	border-bottom: 3px solid;
 	margin: 10px;
 	margin-top: 0px;
 	max-height: 100px;
@@ -224,7 +247,7 @@
 	font-weight:bold;
 }
 
-.dnd4eAltus.sheet.actor .section--attributes .attribute-health input.bloodied {
+.dnd4eAltus.sheet.actor input.bloodied {
 	color: #d41111;
 }
 .dnd4eAltus.sheet.actor .attribute-value input {
@@ -354,7 +377,7 @@ font-size: 12px;
 .dnd4eAltus .section--sidebar {
 	max-width: 260px;
 	margin-left: 15px;
-	border-right: 5px solid;
+	border-right: 3px solid;
 	/* min-height: 100%; */
 	height: 100%;
 	overflow-y: auto;
@@ -363,7 +386,7 @@ font-size: 12px;
 .dnd4eAltus .section--abilities {
 	margin-right: 15px;
 	padding-bottom: 10px;
-	border-bottom: 5px solid;
+	border-bottom: 3px solid;
 	/* max-height: 187px; */
 }
 
@@ -445,7 +468,7 @@ font-size: 12px;
 }
 
 .dnd4eAltus .section--utilities {
-	border-bottom: 5px solid;
+	border-bottom: 3px solid;
 	max-height: 80px;
 	text-transform: uppercase;
 	font-size: 16px;
@@ -507,7 +530,6 @@ font-size: 12px;
 }
 .dnd4eAltus.sheet .window-content .tab {
 	height: 100%;
-	/* height: calc(100% - 22px); */
 	overflow-y: auto;
 	align-content: flex-start;
 }
@@ -840,7 +862,8 @@ font-size: 12px;
 	font-size: 20px;
 	align-items: center;
 }
-.dnd4eAltus.sheet .editable .rollable:hover {
+.dnd4eAltus.sheet .editable .rollable:hover,
+.rollable:hover {
 	color: #000;
 	text-shadow: 0 0 10px red;
 	cursor: pointer;
@@ -1279,7 +1302,7 @@ font-size: 12px;
 	/* border: 2px groove #eeede0; */
 	border-radius: 4px;
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
-
+	height: 100%;
 	width: 100%;
 	float: left;
 }
@@ -1727,7 +1750,16 @@ font-size: 12px;
 	/* padding: 0 5px; */
 	overflow-y: auto;
 	scrollbar-width: thin;
-	height: calc(100% - 116px) 
+	height: calc(100% - 116px);
+}
+
+.dnd4eAltus.sheet.actor .npc .inventory-list {
+	list-style: none;
+	margin: 0;
+	/* padding: 0 5px; */
+	overflow-y: auto;
+	scrollbar-width: thin;
+	height: calc(100% - 118px);
 }
 .dnd4eAltus.sheet .items-list {
 	list-style: none;
@@ -1775,7 +1807,7 @@ font-size: 12px;
 	width: 24px;
 	text-align: right;
 }
-.dnd4eAltus.sheet .items-list .item .power-detail input {
+.dnd4eAltus.sheet .items-list input {
 	color: #e0e0e0;
 }
 .dnd4eAltus.sheet .items-list .item .item-properties {
@@ -1830,7 +1862,8 @@ font-size: 12px;
 	border-right: 0px;
 }
 
-.dnd4eAltus.sheet .items-list .not-available .power-detail {
+.dnd4eAltus.sheet .items-list .not-available .power-detail,
+.dnd4eAltus.sheet .items-list .not-available input {
 	color: #e0e0e075;
 }
 
@@ -1889,7 +1922,7 @@ font-size: 12px;
 }
 .dnd4eAltus.sheet.actor .inventory-list .item-summary {
 	flex: 0 0 100%;
-	font-size: 12px;
+	font-size: 14px;
 	line-height: 16px;
 	padding: 0.25em 0.5em;
 	border-top: 1px solid #c9c7b8;
@@ -2145,7 +2178,7 @@ font-size: 12px;
 /* ----------------------------------------- */
 .dnd4eAltus.chat-card {
 	font-style: normal;
-	font-size: 12px;
+	font-size: 14px;
 }
 .dnd4eAltus.chat-card .card-header {
 	padding: 3px 0;

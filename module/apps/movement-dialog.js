@@ -1,6 +1,6 @@
 import { AttributeBonusDialog } from "./attribute-bonuses.js";
 
-export class MovementDialog extends BaseEntitySheet {
+export class MovementDialog extends DocumentSheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {

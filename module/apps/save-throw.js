@@ -1,6 +1,6 @@
 import {d20Roll} from "../dice.js";
 
-export class SaveThrowDialog extends BaseEntitySheet {
+export class SaveThrowDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
@@ -26,7 +26,9 @@ export class SaveThrowDialog extends BaseEntitySheet {
 	async _updateObject(event, formData) {
 
 		let message = `Rolling Saving Throw, DC: ${formData.dc}`;
+		console.log(this.object.data.data.details.saves)
 		const rollConfig = mergeObject({
+			// parts: [this.object.data.data.details.saves.value, formData.save],
 			parts: [this.object.data.data.details.saves.value, formData.save],
 			actor: this.actor,
 			data: {},

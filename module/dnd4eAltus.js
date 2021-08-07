@@ -11,18 +11,22 @@ import { registerSystemSettings } from "./settings.js";
 // import { SimpleItemSheet } from "./item-sheet.js";
 import ItemSheet4e from "./item/sheet.js";
 import { measureDistances, getBarAttribute } from "./canvas.js";
+import { _getInitiativeFormula } from "./combat.js";
 
-import { ActorSheet4e } from "./actor/actor-sheet.js";
+import ActorSheet4e from "./actor/actor-sheet.js";
+import ActorSheet4eNPC from "./actor/npc-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
-import { Actor4e } from "./actor.js";
+import AbilityTemplate from "./pixi/ability-template.js";
+import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/entity.js";
 
 // Import Helpers
 import * as chat from "./chat.js";
 import * as dice from "./dice.js";
 import * as macros from "./macros.js";
+import * as migrations from "./migration.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -33,29 +37,44 @@ Hooks.once("init", async function() {
 	
 	game.dnd4eAltus = {
 		config: DND4EALTUS,
+		canvas: {
+			AbilityTemplate
+		},
 		entities: {
+			Actor4e,
 			Item4e,
 		},
 		macros: macros,
+		migrations: migrations,
 		rollItemMacro: macros.rollItemMacro
 	};
 	
 	// Define custom Entity classes
 	CONFIG.DND4EALTUS = DND4EALTUS;
-	CONFIG.Actor.entityClass = Actor4e;
-	CONFIG.Item.entityClass = Item4e;
+	CONFIG.Actor.documentClass = Actor4e;
+	CONFIG.Item.documentClass = Item4e;
 	
 	// CONFIG.statusEffects = CONFIG.DND4EALTUS.statusEffectIcons;
 	CONFIG.statusEffects = CONFIG.DND4EALTUS.statusEffect;
 	
 	registerSystemSettings();
+
+	CONFIG.Combat.initiative.formula = "1d20 + @attributes.init.value";
+	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("dnd4eAltus", ActorSheet4e, {
+		types: ["Player Character"],
 		label: "Basic Character Sheet",
 		makeDefault: true
 	});
-		
+	Actors.registerSheet("dnd4eAltus", ActorSheet4eNPC, {
+		types: ["NPC"],
+		label: "NPC Sheet",
+		makeDefault: true
+	});		
+
+	
 	Items.unregisterSheet("core", ItemSheet);
 	// Items.registerSheet("dnd4eAltus", SimpleItemSheet, {makeDefault: true});
 	Items.registerSheet("dnd4eAltus", ItemSheet4e, {makeDefault: true});
@@ -85,7 +104,8 @@ Hooks.once("setup", function() {
 
 	// Localize CONFIG objects once up-front
 	const toLocalize = [
-	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes", "damageTypes", "conditionTypes", "consumableTypes", "distanceUnits", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
+	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes",
+	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits", "damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
 	];
 
 	const noSort = [
@@ -119,14 +139,21 @@ Hooks.once("ready", function() {
 	Hooks.on("hotbarDrop", (bar, data, slot) => macros.create4eMacro(data, slot));
 
 
-		// Preload Vue dependencies.
-		// Dlopen.loadDependencies([
-			// 'vue',
-			// 'vue-select',
-			// 'vue-numeric-input',
-			// 'vue-wysiwyg',
-			// 'actor-sheet'
-		// ]);
+	// Determine whether a system migration is required and feasible
+	if ( !game.user.isGM ) return;
+	const currentVersion = game.settings.get("dnd4eAltus", "systemMigrationVersion");
+	// console.log(currentVersion)
+	const NEEDS_MIGRATION_VERSION = "0.1.4";
+	const COMPATIBLE_MIGRATION_VERSION = 0.80;
+	const needsMigration = currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion);
+	if ( !needsMigration ) return;
+
+	// Perform the migration
+	// if ( currentVersion && isNewerVersion(COMPATIBLE_MIGRATION_VERSION, currentVersion) ) {
+	// 	const warning = `Your DnD5e system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`;
+	// 	ui.notifications.error(warning, {permanent: true});
+	// }
+	// migrations.migrateWorld();
 });
 
 /* -------------------------------------------- */

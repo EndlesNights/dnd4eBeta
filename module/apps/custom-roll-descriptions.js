@@ -1,4 +1,4 @@
-export class CustomRolldDescriptions extends BaseEntitySheet {
+export class CustomRolldDescriptions extends DocumentSheet {
 	
 	static get defaultOptions() {
 		const options = super.defaultOptions;

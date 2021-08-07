@@ -33,6 +33,7 @@
 		<a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
 		<a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
 		<a class="item" data-tab="effects">{{ localize "DND4EALTUS.Effects" }}</a>
+        <a class="item" data-tab="macros">{{ localize "DND4EALTUS.Macros" }}</a>
 	</nav>
 
 	{{!-- Item Sheet Body --}}
@@ -249,5 +250,7 @@
 		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
 			{{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
 		</div>
+		{{!-- Macros Tab --}}
+		{{> "systems/dnd4eAltus/templates/items/parts/item-macro.html"}}
 	</section>
 </form>

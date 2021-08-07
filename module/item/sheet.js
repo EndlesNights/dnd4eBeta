@@ -45,40 +45,56 @@ export default class ItemSheet4e extends ItemSheet {
 	/** @override */
 	async getData(options) {		
 		const data = super.getData(options);
+		const itemData = data.data;
 		data.labels = this.item.labels;
 		data.config = CONFIG.DND4EALTUS;
 
 		// Item Type, Status, and Details
-		data.itemType = data.item.type.titleCase();
-		data.itemStatus = this._getItemStatus(data.item);
-		data.itemProperties = this._getItemProperties(data.item);
-		data.isPhysical = data.item.data.hasOwnProperty("quantity");
+		data.itemType = itemData.type.titleCase();
+		data.itemStatus = this._getItemStatus(itemData);
+		data.itemProperties = this._getItemProperties(itemData);
+		data.isPhysical = itemData.data.hasOwnProperty("quantity");
 
 		// Potential consumption targets
-		data.abilityConsumptionTargets = this._getItemConsumptionTargets(data.item);
+		data.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
 	
-		if(data.item.type === "power") data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(data.item);
+		if(itemData.type === "power") data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
 		
-		if(data.item.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(data.item, data.config);
-		
-		if(data.data?.useType) {
-			if(!(data.data.rangeType === "personal" || data.data.rangeType === "closeBurst" || data.data.rangeType === "closeBlast" || data.data.rangeType === ""))
-				data.data.isRange = true;
-			if(data.data.rangeType === "closeBurst" || data.data.rangeType === "closeBlast" || data.data.rangeType === "rangeBurst" || data.data.rangeType === "rangeBlast" || data.data.rangeType === "wall" ) 
-				data.data.isArea = true;
+		if(itemData.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
+		if(itemData.data?.useType) {
+			if(!(itemData.data.rangeType === "personal" || itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || data.data.rangeType === ""))
+			itemData.data.isRange = true;
+			if(itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || itemData.data.rangeType === "rangeBurst" || data.data.rangeType === "rangeBlast" || data.data.rangeType === "wall" ) 
+			itemData.data.isArea = true;
+		}
+
+		// Weapon Properties
+		if(itemData.type === "weapon"){
+			data.weaponMetaProperties = {};
+			for (let attrib in data.config.weaponProperties) {
+				data.weaponMetaProperties[attrib] = {
+						propName: data.config.weaponProperties[attrib], 
+						checked: itemData.data.properties[attrib],
+						disabled: (attrib === "imp" && itemData.data.weaponType === "implement")
+				}
+			}
 		}
 
 		// Action Details
 		data.hasAttackRoll = this.item.hasAttack;
-		data.isHealing = data.item.data.actionType === "heal";
-		data.isFlatDC = getProperty(data.item.data, "save.scaling") === "flat";
+		data.isHealing = itemData.data.actionType === "heal";
+		data.isFlatDC = getProperty(itemData.data, "save.scaling") === "flat";
 
 		// Vehicles
-		data.isCrewed = data.item.data.activation?.type === 'crew';
-		data.isMountable = this._isItemMountable(data.item);
+		data.isCrewed = itemData.data.activation?.type === 'crew';
+		data.isMountable = this._isItemMountable(itemData);
 	
 		// Prepare Active Effects
-		data.effects = prepareActiveEffectCategories(this.entity.effects);
+		data.effects = prepareActiveEffectCategories(this.item.effects);
+
+		// Re-define the template data references (backwards compatible)
+		data.item = itemData;
+		data.data = itemData.data;
 		return data;
 	}
 
@@ -108,9 +124,35 @@ export default class ItemSheet4e extends ItemSheet {
 
 	shareItem() {
 		game.socket.emit("system.dnd4eAltus", {
-		itemId: this.item._id
+			itemId: this.item._id
 		});
 	}
+
+	static _handleShareItem({itemId}={}) {
+		let item = game.items.get(itemId);
+
+		if (item == undefined) {
+			let characters = game.actors.filter(x => x.data.type == "Player Character");
+
+			for (var x = 0; x <= characters.length; x++) {
+				let actor = characters[x];
+				let found = actor.data.items.find(x => x._id == itemId);
+				if (found) {
+					item = actor.items.get(itemId);
+					break;
+				}
+			}
+		}
+
+		let itemSheet = new ItemSheet4e(item, {
+			title: item.title,
+			uuid: item.uuid,
+			shareable: false,
+			editable: false
+		});
+
+		return itemSheet.render(true);
+	  }
 
 	exportItem() {
 		const jsonString = JSON.stringify(this.object._data);
@@ -184,31 +226,14 @@ export default class ItemSheet4e extends ItemSheet {
 
 	// Attributes
 	else if ( consume.type === "attribute" ) {
-		const attributes = Object.values(CombatTrackerConfig.prototype.getAttributeChoices())[0]; // Bit of a hack
-		//manualy adding values like a smuck
-		attributes.push(
-			"actionpoints.value",
-			"magicItemUse.dailyuse",
-			"details.exp",
-			"details.age",
-			"attributes.hp.temphp",
-			"details.surges.value",
-			"currency.ad",
-			"currency.pp",
-			"currency.gp",
-			"currency.sp",
-			"currency.cp",
-			"ritualcomp.ar",
-			"ritualcomp.ms",
-			"ritualcomp.rh",
-			"ritualcomp.si",
-			"ritualcomp.rs"
-		);
-
-		return attributes.reduce((obj, a) => {
-			obj[a] = a;
+		// const attributes = Object.values(CombatTrackerConfig.prototype.getAttributeChoices())[0]; // Bit of a hack
+		const attributes = TokenDocument.getTrackedAttributes(actor.data.data);
+		attributes.bar.forEach(a => a.push("value"));
+		return attributes.bar.concat(attributes.value).reduce((obj, a) => {
+			let k = a.join(".");
+			obj[k] = k;
 			return obj;
-		}, {});
+		},{});
 	}
 
 		// Materials
@@ -263,7 +288,6 @@ export default class ItemSheet4e extends ItemSheet {
 		let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
 		
 		if ( weaponType === "melee" ) {
-			console.log(actor)
 			return actor.itemTypes.weapon.reduce((obj, i) =>  {
 				if (setMelee.includes(i.data.data.weaponType) ) {
 					obj[i.id] = `${i.name}`;
@@ -490,10 +514,9 @@ export default class ItemSheet4e extends ItemSheet {
 	/* -------------------------------------------- */
 	
 	async _onExecute(event) {
-		console.log("_onExecute");
 		event.preventDefault();
 		await this._onSubmit(event, {preventClose: true}); 
-		executeMacro(this.entity); 
+		executeMacro(this.document); 
 	}
 	
 	/* -------------------------------------------- */
@@ -665,3 +688,9 @@ function executeMacro(item)
 		item: item.data.data
 	}).execute();
 }
+
+Hooks.once('ready', async function () {
+	game.socket.on("system.dnd4eAltus", (msg) => {
+		ItemSheet4e._handleShareItem(msg);
+	});
+})
