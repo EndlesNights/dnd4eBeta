@@ -167,18 +167,7 @@ export class Actor4e extends Actor {
 		// const joat = flags.jackOfAllTrades;
 		// const observant = flags.observantFeat;
 		// const skillBonus = Number.isNumeric(bonuses.skill) ? parseInt(bonuses.skill) :  0;	
-
-		// Skill modifiers
-		// Skill modifiers
-		//Calc defence stats
-		if (this.data.type === "NPC") {
-			this.calcSkillNPC(data);
-			this.calcDefenceStatsNPC(data);
-		} else {
-			this.calcSkillCharacter(data);
-			this.calcDefenceStatsCharacter(data);
-		}
-		
+	
 		if (data.attributes.hp.temphp <= 0 )
 			data.attributes.hp.temphp = null;
 		
@@ -204,7 +193,15 @@ export class Actor4e extends Actor {
 		data.defences.ref.ability = (data.abilities.dex.value >= data.abilities.int.value) ? "dex" : "int";
 		data.defences.wil.ability = (data.abilities.wis.value >= data.abilities.cha.value) ? "wis" : "cha";
 
-
+		// Skill modifiers
+		//Calc defence stats
+		if (this.data.type === "NPC") {
+			this.calcSkillNPC(data);
+			this.calcDefenceStatsNPC(data);
+		} else {
+			this.calcSkillCharacter(data);
+			this.calcDefenceStatsCharacter(data);
+		}
 
 		//calc init
 		let initBonusValue = 0 + Math.floor(data.details.level / 2);

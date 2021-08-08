@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.24
+- Fix issue where defences would no longer automatically add in ability modifies.
+
 ## Version 0.2.23
 - Power Card Text can now use actor data to put numerical stat values using either the helper @Shorthands, or @actor.data.location formats.
 
