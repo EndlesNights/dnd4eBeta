@@ -1,7 +1,7 @@
 /**
- * An extension of the default Foundry Roll class for playing around with
+ * An extension of the default Foundry Roll class for handling multiattack rolls and displaying them in a single chat message
  */
-export class CustomRoll extends Roll{
+export class MultiAttackRoll extends Roll{
 	constructor (formula, data={}, options={}) {
 		super(formula, data, options);
 		this.rollArray = [];
@@ -10,17 +10,31 @@ export class CustomRoll extends Roll{
 		this.totalArray = [];
 	}
 
+	/**
+	 * Custom chat template to handle multiroll attacks 
+	 */
 	static CHAT_TEMPLATE = "systems/dnd4eBeta/templates/custom_roll_eval_template.html";
 
 	get multirollData() {
 		return this._multirollData;
 	}
 
-	addNewRoll(formula, data={}, options={}, targName='') {
+	/**
+	 * Push a new roll instance to the multiroll master array
+	 * @param {string} formula 
+	 * @param {object} data 
+	 * @param {object} options 
+	 */
+	addNewRoll(formula, data={}, options={}) {
 		let r = new Roll(formula, data, options).roll();	
 		this.rollArray.push(r);		
 	}
 
+	/**
+	 * Populate data strucutre for each of the multiroll components
+	 * @param {Array} targNameArray 
+	 * @param {Array} critStateArray 
+	 */
 	populateMultirollData(targNameArray, critStateArray) {
 		for (let [i, r] of this.rollArray.entries()){
 			let parts = r.dice.map(d => d.getTooltipData());
@@ -38,45 +52,11 @@ export class CustomRoll extends Roll{
 	}
 
 	/**
-	* Transform a Roll instance into a ChatMessage, displaying the roll result.
-	* This function can either create the ChatMessage directly, or return the data object that will be used to create.
-	*
-	* @param {object} messageData          The data object to use when creating the message
-	* @param {options} [options]           Additional options which modify the created message.
-	* @param {string} [options.rollMode]   The template roll mode to use for the message from CONFIG.Dice.rollModes
-	* @param {boolean} [options.create=true]   Whether to automatically create the chat message, or only return the
-	*                                          prepared chatData object.
-	* @return {Promise<ChatMessage>}       A promise which resolves to the created ChatMessage entity, if create is true
-	*                                      or the Object of prepared chatData otherwise.
-	*/
-	async toMessage(messageData={}, {rollMode, create=true}={}) {
-
-		// Perform the roll, if it has not yet been rolled
-		if (!this._evaluated) await this.evaluate({async: true});
-	
-		// Prepare chat data
-		messageData = foundry.utils.mergeObject({
-		  user: game.user.id,
-		  type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-		  content: this.total,
-		  sound: CONFIG.sounds.dice,
-		}, messageData);
-		messageData.roll = this;
-	
-		// Either create the message or just return the chat data
-		const cls = getDocumentClass("ChatMessage");
-		const msg = new cls(messageData);
-		if ( rollMode ) msg.applyRollMode(rollMode);
-	
-		// Either create or return the data
-		if ( create ) return cls.create(msg.data);
-		else return msg.data;
-	}
-
-	/**
    	* Render a Roll instance to HTML
    	* @param {object} [chatOptions]      An object configuring the behavior of the resulting chat message.
    	* @return {Promise<string>}          The rendered HTML template as a string
+	*
+	* Modified to include multirollData attribute and handle multirollData dice tooltips
    	*/
 	async render(chatOptions={}) {
 		chatOptions = foundry.utils.mergeObject({
@@ -109,6 +89,10 @@ export class CustomRoll extends Roll{
 		return renderTemplate(chatOptions.template, chatData);
 	}
 
+	/**
+	 * Modified from base to include _multirollData attribute
+	 * @returns {object}
+	 */
 	toJSON() {
 		return {
 		  class: this.constructor.name,
@@ -121,6 +105,12 @@ export class CustomRoll extends Roll{
 		  evaluated: this._evaluated
 		}
 	}
+
+	/**
+	 * Modified from base to handle multirollData attribute
+	 * @param {object} data 
+	 * @returns 
+	 */
 	static fromData(data) {
 
 		// Create the Roll instance
@@ -241,7 +231,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		let roll;
 		if (game.user.targets.size){
 			const numTargets = game.user.targets.size;
-			roll = new CustomRoll(parts.join(" + "), data);
+			roll = new MultiAttackRoll(parts.join(" + "), data);
 
 			const targetArr = Array.from(game.user.targets);
 			var targNameArray = []

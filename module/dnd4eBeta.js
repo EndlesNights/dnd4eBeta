@@ -57,7 +57,7 @@ Hooks.once("init", async function() {
 	CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffect;
 
 	// define custom roll extensions
-	CONFIG.Dice.rolls.push(dice.CustomRoll);
+	CONFIG.Dice.rolls.push(dice.MultiAttackRoll);
 	
 	registerSystemSettings();
 	// Register sheet application classes
