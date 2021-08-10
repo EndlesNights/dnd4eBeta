@@ -755,7 +755,7 @@ export default class ActorSheet4e extends ActorSheet {
 				
 				let div = $(`<div class="item-summary"></div>`);
 				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
-				let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG)}</div>`);
+				let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false).data)}</div>`);
 				
 				div.append(descrip);
 				div.append(details);
@@ -1145,7 +1145,6 @@ export default class ActorSheet4e extends ActorSheet {
 		const a = event.currentTarget;
 		// const label = a.parentElement.parentElement.querySelector("h4");
 		const label = a.parentElement.querySelector("span");
-		console.log(label)
 		const choices = CONFIG.DND4EBETA[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
 		new TraitSelectorSense(this.actor, options).render(true);

@@ -281,6 +281,22 @@ export class Helper {
 			newFormula = newFormula.replace("@wepDiceNum", "0");
 			newFormula = newFormula.replace("@wepDiceDamage", "0");
 			
+			newFormula = newFormula.replace("@impAttackO", "0" );
+			newFormula = newFormula.replace("@impDamageO", "0");
+
+			newFormula = newFormula.replace("@impAttack", "0");
+			newFormula = newFormula.replace("@impDamage", "0");
+
+			newFormula = newFormula.replace("@profBonusO", "0");
+			newFormula = newFormula.replace("@profImpBonusO", "0");
+			
+			newFormula = newFormula.replace("@profImpBonus", "0");
+			newFormula = newFormula.replace("@profBonus", "0");
+			newFormula = newFormula.replace("@enhanceImp", "0");
+			newFormula = newFormula.replace("@enhance", "0");
+
+
+
 			if(newFormula.includes("@wepDice")) {
 				let indexStart = newFormula.indexOf("@wepDice")+8;
 				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
@@ -349,9 +365,7 @@ export class Helper {
 		return total;
 	}
 
-	static _preparePowerCardData(chatData, CONFIG) {
-		console.log(chatData)
-		console.trace()
+	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
 
 		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]} ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}`;
 		let tag = [];
@@ -442,6 +456,10 @@ export class Helper {
 
 		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
 			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
+		}
+
+		if(actorData){
+			powerDetail = this.commonReplace(powerDetail, actorData);
 		}
 
 		return powerDetail;

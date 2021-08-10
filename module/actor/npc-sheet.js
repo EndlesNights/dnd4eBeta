@@ -35,7 +35,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 	setPosition(options={}) {
 		const position = super.setPosition(options);
 		const sheetBody = this.element.find(".sheet-body");
-		const bodyHeight = position.height - 284;
+		const bodyHeight = position.height - 308;
 		sheetBody.css("height", bodyHeight);
 		return position;
 	}

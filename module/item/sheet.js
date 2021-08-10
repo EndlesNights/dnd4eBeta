@@ -226,31 +226,14 @@ export default class ItemSheet4e extends ItemSheet {
 
 	// Attributes
 	else if ( consume.type === "attribute" ) {
-		const attributes = Object.values(CombatTrackerConfig.prototype.getAttributeChoices())[0]; // Bit of a hack
-		//manualy adding values like a smuck
-		attributes.push(
-			"actionpoints.value",
-			"magicItemUse.dailyuse",
-			"details.exp",
-			"details.age",
-			"attributes.hp.temphp",
-			"details.surges.value",
-			"currency.ad",
-			"currency.pp",
-			"currency.gp",
-			"currency.sp",
-			"currency.cp",
-			"ritualcomp.ar",
-			"ritualcomp.ms",
-			"ritualcomp.rh",
-			"ritualcomp.si",
-			"ritualcomp.rs"
-		);
-
-		return attributes.reduce((obj, a) => {
-			obj[a] = a;
+		// const attributes = Object.values(CombatTrackerConfig.prototype.getAttributeChoices())[0]; // Bit of a hack
+		const attributes = TokenDocument.getTrackedAttributes(actor.data.data);
+		attributes.bar.forEach(a => a.push("value"));
+		return attributes.bar.concat(attributes.value).reduce((obj, a) => {
+			let k = a.join(".");
+			obj[k] = k;
 			return obj;
-		}, {});
+		},{});
 	}
 
 		// Materials

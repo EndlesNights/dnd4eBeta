@@ -14,7 +14,7 @@ export default class Item4e extends Item {
 	async _preUpdate(changed, options, user) {
 		await super._preUpdate(changed, options, user);
 		// Check for implement weapon type and set weapon implement property to true
-		if (this.type === "weapon" && changed.data.weaponType === "implement"){
+		if (this.type === "weapon" && changed.data?.weaponType === "implement"){
 			foundry.utils.setProperty(changed, "data.properties.imp", true);
 		}
 	}
@@ -706,7 +706,7 @@ export default class Item4e extends Item {
 		const actorData = this.actor.data.data;	
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
-		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === undefined)) {
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
 			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
 			return null;
 		}
@@ -791,9 +791,11 @@ export default class Item4e extends Item {
 				left: window.innerWidth - 710
 			},
 			isAttackRoll: true,
-			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }}
-		}, options);
-		rollConfig.event = options.event;
+			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }},
+			options
+		});
+		console.log(rollConfig);
+		rollConfig.event = options.event;	
 
 		// Expanded weapon critical threshold
 		if (weaponUse) {
@@ -830,7 +832,7 @@ export default class Item4e extends Item {
 		const actorData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
-		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === undefined)) {
+		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
 			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
 			return null;
 		}

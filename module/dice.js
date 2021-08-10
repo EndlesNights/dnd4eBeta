@@ -168,7 +168,7 @@ export class MultiAttackRoll extends Roll{
 export async function d20Roll({parts=[], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 	flavor=null, fastForward=null, onClose, dialogOptions,
 	advantage=null, disadvantage=null, critical=20, fumble=1, targetValue=null,
-	elvenAccuracy=false, halflingLucky=false, reliableTalent=false, isAttackRoll=false, isFinal=true}={}) {
+	elvenAccuracy=false, halflingLucky=false, reliableTalent=false, isAttackRoll=false, options=null}={}) {
 
 //	console.log(isFinal)
 	// Handle input arguments
@@ -201,18 +201,28 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		// }
 
 		// Optionally include a situational bonus
-		if ( form !== null ) data['bonus'] = form.bonus.value;
-		if(isAttackRoll) {
+		if ( form !== null ) {data['bonus'] = form.bonus.value;}
+		else{data['bonus'] = null;}
+
+		if(isAttackRoll && form !== null) {
+			let i = 0;
 			for ( let [k, v] of Object.entries(form) ) {	
 				if(v.checked) {
-					data['bonus'] += `${form.bonus.value? "+":""} ${CONFIG.DND4EBETA.commonAttackBonuses[v.name].value}`;
+					let bonVal = CONFIG.DND4EBETA.commonAttackBonuses[v.name].value;
+					if(i>0){
+						data['bonus'] += `${bonVal > 0? "+":""} ${bonVal}`;
+					} else {
+						data['bonus'] += `${bonVal}`;
+					}
+					i++;
 				}
 			}
 		}
+
+		
 		if ( !data["bonus"] ) parts.pop();
 
 		// data.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
-		// console.log(data)
 		if(form?.flavor.value){
 			flavor = form.flavor.value || flavor;
 		}	
@@ -313,9 +323,10 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
 	// Optionally allow fast-forwarding to specify advantage or disadvantage
 	if ( fastForward ) {
-		if ( advantage || event.altKey ) return _roll(parts, 1);
-		else if ( disadvantage || event.ctrlKey || event.metaKey ) return _roll(parts, -1);
-		else return _roll(parts, 0);
+		return _roll(parts, 0);
+		// if ( advantage || event.altKey ) return _roll(parts, 1);
+		// else if ( disadvantage || event.ctrlKey || event.metaKey ) return _roll(parts, -1);
+		// else return _roll(parts, 0);
 	}
 
 	// Render modal dialog
@@ -391,12 +402,12 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 	let rolled = false;
 	// Define inner roll function
 	const _roll = function(parts, partsCrit, crit, form) {
-		data['bonus'] = form.bonus.value || 0;
+		if(form){data['bonus'] = form.bonus.value || 0;}
 		let roll = crit ? new Roll(partsCrit.filterJoin("+"), data) : new Roll(parts.filterJoin("+"), data);
 
 		critical = crit;
 
-		if(form.flavor.value){
+		if(form?.flavor.value){
 			flavor = form.flavor.value || flavor;
 		}
 
@@ -423,7 +434,12 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 	}
 
 	// Modify the roll and handle fast-forwarding
-	if ( fastForward ) return _roll(parts, partsCrit, critical || event.altKey);
+	if ( fastForward ) {
+		// console.log(critical || event.altKey);
+		// return _roll(parts, partsCrit, critical || event.altKey);
+		return _roll(parts, partsCrit, critical || event.altKey);
+		// return _roll(parts, partsCrit, true, html[0].querySelector("form"))
+	}
 	// else parts = critical ? partsCrit.concat(["@bonus"]) : parts.concat(["@bonus"]);
 	parts = parts.concat(["@bonus"]);
 	partsCrit = partsCrit?.concat(["@bonus"]);

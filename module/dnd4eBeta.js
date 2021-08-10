@@ -11,6 +11,7 @@ import { registerSystemSettings } from "./settings.js";
 // import { SimpleItemSheet } from "./item-sheet.js";
 import ItemSheet4e from "./item/sheet.js";
 import { measureDistances, getBarAttribute } from "./canvas.js";
+import { _getInitiativeFormula } from "./combat.js";
 
 import ActorSheet4e from "./actor/actor-sheet.js";
 import ActorSheet4eNPC from "./actor/npc-sheet.js";
@@ -60,6 +61,9 @@ Hooks.once("init", async function() {
 	CONFIG.Dice.rolls.push(dice.MultiAttackRoll);
 	
 	registerSystemSettings();
+
+	CONFIG.Combat.initiative.formula = "1d20 + @attributes.init.value";
+	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("dnd4eBeta", ActorSheet4e, {
