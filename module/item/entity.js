@@ -721,6 +721,10 @@ export default class Item4e extends Item {
 
 		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
 
+		if (game.user.targets.size){
+			options.attackedDef = itemData.attack.def; 
+		}
+		
 		const rollData = this.getRollData();
 
 		rollData.isAttackRoll = true;

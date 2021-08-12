@@ -13,7 +13,7 @@ export class MultiAttackRoll extends Roll{
 	/**
 	 * Custom chat template to handle multiroll attacks 
 	 */
-	static CHAT_TEMPLATE = "systems/dnd4eBeta/templates/custom_roll_eval_template.html";
+	static CHAT_TEMPLATE = "systems/dnd4eBeta/templates/chat/multiattack_roll_template.html";
 
 	get multirollData() {
 		return this._multirollData;
@@ -35,17 +35,28 @@ export class MultiAttackRoll extends Roll{
 	 * @param {Array} targNameArray 
 	 * @param {Array} critStateArray 
 	 */
-	populateMultirollData(targNameArray, critStateArray) {
+	populateMultirollData(targDataArray, critStateArray) {
 		for (let [i, r] of this.rollArray.entries()){
 			let parts = r.dice.map(d => d.getTooltipData());
-			let targName = targNameArray[i];
+			let targName = targDataArray.targNameArray[i];
+			let targDefVal = targDataArray.targDefValArray[i];
 			let critState = critStateArray[i];
+			let hitState = "Probable Miss!";
+			if (critState === " critical"){
+				hitState = "<b>Critical Hit!</b>"
+			} else if (critState === " fumble"){
+				hitState = "<b>Critical Miss!</b>"
+			} else if (r._total >= targDefVal){
+				hitState = "Probable Hit!";
+			}
+			console.log(critState);
 			this._multirollData.push({
 				formula : r._formula,
 				total : r._total,
 				parts : parts,
 				tooltip : '',
 				target : targName,
+				hitstate : hitState,
 				critstate : critState
 			});
 		};
@@ -244,10 +255,15 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			roll = new MultiAttackRoll(parts.join(" + "), data);
 
 			const targetArr = Array.from(game.user.targets);
-			var targNameArray = []
+			var targDataArray = {
+				targNameArray: [],
+				targDefValArray: []
+			}
 			for (let targ = 0; targ < numTargets; targ++) {
 				let targName = targetArr[targ].data.name;
-				targNameArray.push(targName);
+				let targDefVal = targetArr[targ].document._actor.data.data.defences[options.attackedDef].value;
+				targDataArray.targNameArray.push(targName);
+				targDataArray.targDefValArray.push(targDefVal);
 				roll.addNewRoll(parts.join(" + "), data);
 			}
 
@@ -276,7 +292,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 				}
 			}
 
-			roll.populateMultirollData(targNameArray, critStateArray);
+			roll.populateMultirollData(targDataArray, critStateArray);
 
 			// If reliable talent was applied, add it to the flavor text
 			let reliableFlavor = false;
