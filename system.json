@@ -4,7 +4,7 @@
 	"description": "A minimalist custom test build of 4th Ed.",
 	"version": "0.2.24",
 	"minimumCoreVersion": "0.8.5",
-	"compatibleCoreVersion": "0.8.8",
+	"compatibleCoreVersion": "0.8.9",
 	"templateVersion": 2,
 	"author": "EndlesNights",
 	"esmodules": [
@@ -28,7 +28,7 @@
 	"primaryTokenAttribute": "attributes.hp",
 	"secondaryTokenAttribute": null,
   	"url": "https://github.com/EndlesNights/dnd4eBeta",
-	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dev/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/dev/dnd4eBeta.zip"
+	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/master/system.json",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/master/dnd4eBeta.zip"
 	
 }
