@@ -43,9 +43,9 @@ export class MultiAttackRoll extends Roll{
 			let critState = critStateArray[i];
 			let hitState = "Probable Miss!";
 			if (critState === " critical"){
-				hitState = "<b>Critical Hit!</b>"
+				hitState = "Critical Hit!"
 			} else if (critState === " fumble"){
-				hitState = "<b>Critical Miss!</b>"
+				hitState = "Critical Miss!"
 			} else if (r._total >= targDefVal){
 				hitState = "Probable Hit!";
 			}
