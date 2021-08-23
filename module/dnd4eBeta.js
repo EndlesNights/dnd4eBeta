@@ -56,6 +56,9 @@ Hooks.once("init", async function() {
 	
 	// CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffectIcons;
 	CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffect;
+
+	// define custom roll extensions
+	CONFIG.Dice.rolls.push(dice.MultiAttackRoll);
 	
 	registerSystemSettings();
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.25
+- Changed how multitarget attack rolls work
+- Multitarget attack rolls now use a custom Roll class, and all rolls are displayed in the same chat message to tidy up chat log
+- For now, a single roll dialogue is used for situational bonuses, which apply universally to all rolls (this will change in future)
+
 ## Version 0.2.24
 - Fix issue where defences would no longer automatically add in ability modifies.
 

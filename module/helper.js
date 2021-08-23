@@ -84,13 +84,13 @@ export class Helper {
 		return weaponUse;
 	}
 	
-	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1) {
+	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1, stringOnly = false) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula;
 
 		if(actorData) {
 
-			newFormula = Roll.replaceFormulaData(newFormula, actorData)
+			if (!stringOnly) newFormula = Roll.replaceFormulaData(newFormula, actorData);
 			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
 			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);
@@ -433,6 +433,9 @@ export class Helper {
 		}
 		if(!chatData.postSpecial && chatData.special) {
 			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
+				powerDetail += `<p>${entry}</p>`;
+			}
 		}
 
 		if(chatData.attack.isAttack) {
@@ -446,6 +449,9 @@ export class Helper {
 		}
 		if(chatData.postSpecial && chatData.special) {
 			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
+				powerDetail += `<p>${entry}</p>`;
+			}
 		}
 
 		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
