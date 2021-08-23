@@ -2338,6 +2338,11 @@ font-size: 12px;
 	background: linear-gradient(90deg, #c3c2b7, #c3c2b718);
 }
 
+span.flavor-text.critical,
+span.flavor-text.fumble {
+	font-weight: bold;
+}
+
 .dice-roll .dice-total.success {
 	color: inherit;
 	background: #c7d0c0;
