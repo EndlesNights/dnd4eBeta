@@ -174,6 +174,7 @@ export class Helper {
 			//	-	flat damage
 			//	-	dice damage
 			if(newFormula.includes("@powBase")) {
+				console.log("wut")
 				let quantity = powerData.hit.baseQuantity;
 				let diceType = powerData.hit.baseDiceType;
 				
@@ -308,6 +309,33 @@ export class Helper {
 
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
 				newFormula = newFormula.replace("@wepDice", "");
+			}
+
+			if(newFormula.includes("@powBase")) {
+				let quantity = powerData.hit.baseQuantity;
+				let diceType = powerData.hit.baseDiceType;
+				
+				console.log(diceType)
+				if(diceType == "weapon"){
+					newFormula = newFormula.replace("@powBase", '0');
+				} else {
+					if(quantity === "") quantity = 1;
+				
+					let dice = "";
+					
+					// Handle Flat Type Damage
+					if(diceType.includes("flat")) {
+						dice += `${quantity}`;
+					}
+					// Handle Dice Type Damage
+					else{
+						dice += `${quantity}${diceType}`;
+					}
+	
+					dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+					newFormula = newFormula.replace("@powBase", dice);
+				}
+
 			}
 		}
 

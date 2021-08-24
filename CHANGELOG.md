@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.26
+- change to how @powerBase works, should now work without the requirment of a weapon
+- changed default power formulas for NPC sheet, so the basic attack no longer uses a weapon by default
+- fixed some localization
+
 ## Version 0.2.25
 - Changed how multitarget attack rolls work
 - Multitarget attack rolls now use a custom Roll class, and all rolls are displayed in the same chat message to tidy up chat log

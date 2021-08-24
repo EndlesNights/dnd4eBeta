@@ -436,6 +436,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 		}
 		// Convert the roll to a chat message
 		rollMode = form ? form.rollMode.value : rollMode;
+		console.log(roll)
 		roll.toMessage({
 			speaker: speaker,
 			flavor: flavor
