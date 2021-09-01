@@ -221,7 +221,7 @@ export default class Item4e extends Item {
 			labels.armour = data.armour.ac ? `${data.armour.ac} ${game.i18n.localize("DND4EBETA.AC")}` : "";
 			labels.fort = data.armour.fort ? `${data.armour.fort} ${game.i18n.localize("DND4EBETA.FORT")}` : "";
 			labels.ref = data.armour.ref ? `${data.armour.ref} ${game.i18n.localize("DND4EBETA.REF")}` : "";
-			labels.wil = data.armour.wil ? `${data.armour.WIL} ${game.i18n.localize("DND4EBETA.WIL")}` : "";
+			labels.wil = data.armour.wil ? `${data.armour.wil} ${game.i18n.localize("DND4EBETA.WIL")}` : "";
 		}
 
 		// Activated Items
