@@ -159,6 +159,8 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+
+		data.details.tier = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3);
 		//Weight & Encumbrance
 		data.encumbrance = this._computeEncumbrance(actorData);
 			
@@ -411,7 +413,7 @@ export class Actor4e extends Actor {
 				this.update({[`data.defences[${def}].base`]: 10 });
 			}
 			if(data.advancedCals){
-				def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + data.details.level;
+				def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;
 			} else {
 				def.value = def.base;		
 			}

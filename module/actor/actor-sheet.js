@@ -841,6 +841,24 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 		}
 
+		if(this.actor.type === "NPC"){
+			
+			itemData.data.weaponType = "none";
+			itemData.data.weaponUse = "none";
+
+			itemData.data.attack = {formula:"@powerMod"};
+			itemData.data.hit  = {
+				formula:"@powBase + @powerMod",
+				critFormula:"@powMax + @powerMod",
+				baseDiceType: "d8",
+				detail: "1d8 + Strength modifier damage."
+			};
+
+			// itemData.data.attack.formula = "@powerMod+@lvhalf";
+			// itemData.data.hit.formula = "@powBase + @powerMod";
+			// itemData.data.hit.critFormula = "@powMax + @powerMod + @wepDamage";
+		}
+		
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 

@@ -57,6 +57,9 @@ Hooks.once("init", async function() {
 	// CONFIG.statusEffects = CONFIG.DND4EALTUS.statusEffectIcons;
 	CONFIG.statusEffects = CONFIG.DND4EALTUS.statusEffect;
 	
+	// define custom roll extensions
+	CONFIG.Dice.rolls.push(dice.MultiAttackRoll);
+	
 	registerSystemSettings();
 
 	CONFIG.Combat.initiative.formula = "1d20 + @attributes.init.value";

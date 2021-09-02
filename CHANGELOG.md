@@ -1,5 +1,24 @@
 # Changelog
 
+## Version 0.2.28
+- fixed issue where npc defence was not being added to properly with half levels
+
+## Version 0.2.27
+- fixed issue where detaul value for brutal weapons was null.
+- Templates generated from the 'Place Measured Template' will now take the character size into account when generating close burst area templates.
+- change to how @powerMax works, should now work without the requirment of a weapon
+- fixed issue where item Equipment Sidebar was not properly displaying WIL defence bonus.
+
+## Version 0.2.26
+- change to how @powerBase works, should now work without the requirment of a weapon
+- changed default power formulas for NPC sheet, so the basic attack no longer uses a weapon by default
+- fixed some localization
+
+## Version 0.2.25
+- Changed how multitarget attack rolls work
+- Multitarget attack rolls now use a custom Roll class, and all rolls are displayed in the same chat message to tidy up chat log
+- For now, a single roll dialogue is used for situational bonuses, which apply universally to all rolls (this will change in future)
+
 ## Version 0.2.24
 - Fix issue where defences would no longer automatically add in ability modifies.
 

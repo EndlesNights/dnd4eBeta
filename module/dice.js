@@ -1,4 +1,154 @@
 /**
+ * An extension of the default Foundry Roll class for handling multiattack rolls and displaying them in a single chat message
+ */
+ export class MultiAttackRoll extends Roll{
+	constructor (formula, data={}, options={}) {
+		super(formula, data, options);
+		this.rollArray = [];
+		this._multirollData = [];
+		this.tooltipArray = [];
+		this.totalArray = [];
+	}
+
+	/**
+	 * Custom chat template to handle multiroll attacks 
+	 */
+	static CHAT_TEMPLATE = "systems/dnd4eAltus/templates/chat/multiattack_roll_template.html";
+
+	get multirollData() {
+		return this._multirollData;
+	}
+
+	/**
+	 * Push a new roll instance to the multiroll master array
+	 * @param {string} formula 
+	 * @param {object} data 
+	 * @param {object} options 
+	 */
+	addNewRoll(formula, data={}, options={}) {
+		let r = new Roll(formula, data, options).roll();	
+		this.rollArray.push(r);		
+	}
+
+	/**
+	 * Populate data strucutre for each of the multiroll components
+	 * @param {Array} targNameArray 
+	 * @param {Array} critStateArray 
+	 */
+	populateMultirollData(targDataArray, critStateArray) {
+		for (let [i, r] of this.rollArray.entries()){
+			let parts = r.dice.map(d => d.getTooltipData());
+			let targName = targDataArray.targNameArray[i];
+			let targDefVal = targDataArray.targDefValArray[i];
+			let critState = critStateArray[i];
+			let hitState = "Probable Miss!";
+			if (critState === " critical"){
+				hitState = "Critical Hit!"
+			} else if (critState === " fumble"){
+				hitState = "Critical Miss!"
+			} else if (r._total >= targDefVal){
+				hitState = "Probable Hit!";
+			}
+			console.log(critState);
+			this._multirollData.push({
+				formula : r._formula,
+				total : r._total,
+				parts : parts,
+				tooltip : '',
+				target : targName,
+				hitstate : hitState,
+				critstate : critState
+			});
+		};
+	}
+
+	/**
+   	* Render a Roll instance to HTML
+   	* @param {object} [chatOptions]      An object configuring the behavior of the resulting chat message.
+   	* @return {Promise<string>}          The rendered HTML template as a string
+	*
+	* Modified to include multirollData attribute and handle multirollData dice tooltips
+   	*/
+	async render(chatOptions={}) {
+		chatOptions = foundry.utils.mergeObject({
+		  	user: game.user.id,
+		  	flavor: null,
+		  	template: this.constructor.CHAT_TEMPLATE,
+		  	blind: false
+		}, chatOptions);
+		const isPrivate = chatOptions.isPrivate;
+
+		// Execute the roll, if needed
+		if (!this._evaluated) this.evaluate();
+
+		for (let roll of this._multirollData) {
+			let parts = roll.parts;
+			roll.tooltip = await renderTemplate(this.constructor.TOOLTIP_TEMPLATE, { parts });
+		};
+	
+		// Define chat data
+		const chatData = {
+		  	formula: isPrivate ? ["???"] : this._formula,
+			multirollData: isPrivate? ["???"] : this._multirollData,
+		  	flavor: isPrivate ? null : chatOptions.flavor,
+		  	user: chatOptions.user,
+		  	tooltip: isPrivate ? "" : await this.getTooltip(),
+		  	total: isPrivate ? "?" : Math.round(this.total * 100) / 100
+		};
+	
+		// Render the roll display template
+		return renderTemplate(chatOptions.template, chatData);
+	}
+
+	/**
+	 * Modified from base to include _multirollData attribute
+	 * @returns {object}
+	 */
+	toJSON() {
+		return {
+		  class: this.constructor.name,
+		  options: this.options,
+		  dice: this._dice,
+		  formula: this._formula,
+		  multirollData: this._multirollData,
+		  terms: this.terms,
+		  total: this._total,
+		  evaluated: this._evaluated
+		}
+	}
+
+	/**
+	 * Modified from base to handle multirollData attribute
+	 * @param {object} data 
+	 * @returns 
+	 */
+	static fromData(data) {
+
+		// Create the Roll instance
+		const roll = new this(data.formula, data.data, data.options);
+	
+		// Expand terms
+		roll.terms = data.terms.map(t => {
+		  if ( t.class ) {
+			if ( t.class === "DicePool" ) t.class = "PoolTerm"; // backwards compatibility
+			return RollTerm.fromData(t);
+		  }
+		  return t;
+		});
+	
+		// Repopulate evaluated state
+		if ( data.evaluated ?? true ) {
+		  roll._total = data.total;
+		  roll._dice = (data.dice || []).map(t => DiceTerm.fromData(t));
+		  roll._multirollData = data.multirollData;
+		  roll._evaluated = true;
+		}
+		return roll;
+	}
+}
+
+
+/**
  * A standardized helper function for managing core 4e "d20 rolls"
  *
  * Holding SHIFT, ALT, or CTRL when the attack is rolled will "fast-forward".
@@ -98,36 +248,76 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		}
 
 		// Execute the roll and flag critical thresholds on the d20
-		const roll = new Roll(parts.join(" + "), data).roll();
+		let roll;
+		if (game.user.targets.size){
+			const numTargets = game.user.targets.size;
+			roll = new MultiAttackRoll(parts.join(" + "), data);
 
+			const targetArr = Array.from(game.user.targets);
+			var targDataArray = {
+				targNameArray: [],
+				targDefValArray: []
+			}
+			for (let targ = 0; targ < numTargets; targ++) {
+				let targName = targetArr[targ].data.name;
+				let targDefVal = targetArr[targ].document._actor.data.data.defences[options.attackedDef].value;
+				targDataArray.targNameArray.push(targName);
+				targDataArray.targDefValArray.push(targDefVal);
+				roll.addNewRoll(parts.join(" + "), data);
+			}
+
+			if (roll.rollArray.length === numTargets && roll.rollArray.every(obj => obj._evaluated)) {
+				roll._evaluated = true;
+			}
+			
+			var critStateArray = []
 		// Flag d20 options for any 20-sided dice in the roll
-		for ( let d of roll.dice ) {
-			if (d.faces === 20 ) {
+		for ( let subroll of roll.rollArray ) {
+			for ( let d of subroll.dice ) {
+				if (d.faces === 20 ) {
 				d.options.critical = critical;
 				d.options.fumble = fumble;
 				if ( targetValue ) d.options.target = targetValue;
 			}
 		}
-
-		const targetArr = Array.from(game.user.targets);
-		if(game.user.targets.size) {
-			flavor += `<br><b>Target:</b> ${targetArr[options.target].data.name}`;
-			if(options.targetActor && game.settings.get("dnd4eAltus", "automationCombat")){
-				if(roll.terms[0].results[0].result >= roll.terms[0].options.critical){
-					flavor += `<b> CRITICAL HIT!</b>`;
-				} 
-				else if(roll._total >= options.attackedDef){
-					flavor += `<b> HIT!</b>`;
+				// Unable to figure out how to use the `chat.highlightCriticalSuccessFailure` function to individually flag rolls in the list of outputs when multiroll
+				// is used instead of a single Roll. Instead, this hacky way seems to work rather well. It has not failed me yet. 
+				if (subroll.dice.some(obj => obj.results.some(obj => obj.result >= critical)) && !subroll.dice.some(obj => obj.results.some(obj => obj.result <= fumble))){
+					critStateArray.push(" critical");
+				} else if (!subroll.dice.some(obj => obj.results.some(obj => obj.result >= critical)) && subroll.dice.some(obj => obj.results.some(obj => obj.result <= fumble))) {
+					critStateArray.push(" fumble");
 				} else {
-					flavor += `<b> MISS!</b>`;
+					critStateArray.push("");
 				}
 			}
 
-		}
+			roll.populateMultirollData(targDataArray, critStateArray);
 
-		// If reliable talent was applied, add it to the flavor text
-		if ( reliableTalent && roll.dice[0].total < 10 ) {
-			flavor += ` (${game.i18n.localize("DND4EALTUS.FlagsReliableTalent")})`;
+			// If reliable talent was applied, add it to the flavor text
+			let reliableFlavor = false;
+			for ( let subroll of roll.rollArray ) {
+				if ( reliableTalent && subroll.dice[0].total < 10 ) {
+					reliableFlavor = true;
+				}
+			}
+			if (reliableFlavor) {flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`};
+		
+		} else {
+			roll = new Roll(parts.join(" + "), data).roll();
+
+			// Flag d20 options for any 20-sided dice in the roll
+			for ( let d of roll.dice ) {
+				if (d.faces === 20 ) {
+					d.options.critical = critical;
+					d.options.fumble = fumble;
+					if ( targetValue ) d.options.target = targetValue;
+				}
+			}
+
+			// If reliable talent was applied, add it to the flavor text
+			if ( reliableTalent && roll.dice[0].total < 10 ) {
+				flavor += ` (${game.i18n.localize("DND4EALTUS.FlagsReliableTalent")})`;
+			}
 		}
 
 		// Convert the roll to a chat message and return the roll

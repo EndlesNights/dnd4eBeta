@@ -221,7 +221,7 @@ export default class Item4e extends Item {
 			labels.armour = data.armour.ac ? `${data.armour.ac} ${game.i18n.localize("DND4EALTUS.AC")}` : "";
 			labels.fort = data.armour.fort ? `${data.armour.fort} ${game.i18n.localize("DND4EALTUS.FORT")}` : "";
 			labels.ref = data.armour.ref ? `${data.armour.ref} ${game.i18n.localize("DND4EALTUS.REF")}` : "";
-			labels.wil = data.armour.wil ? `${data.armour.WIL} ${game.i18n.localize("DND4EALTUS.WIL")}` : "";
+			labels.wil = data.armour.wil ? `${data.armour.wil} ${game.i18n.localize("DND4EALTUS.WIL")}` : "";
 		}
 
 		// Activated Items
@@ -321,7 +321,15 @@ export default class Item4e extends Item {
 			// let x = func();
 			// console.log(x)
 		}
-		const cardData = this.data.type == "power" && this.data.data.autoGenChatPowerCard ? Helper._preparePowerCardData(this.getChatData(), CONFIG, this.actor.data.data) : null;
+		const cardData = (() => {
+			if (this.data.type == "power" && this.data.data.autoGenChatPowerCard) {
+				let weaponUse = Helper.getWeaponUse(this.data.data, this.actor);
+				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG);
+				return Helper.commonReplace(cardString, this.actor.data.data, this.data, weaponUse? weaponUse.data.data : null, 1, true);
+			} else {
+				return null;
+			}
+		})();
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
@@ -704,7 +712,7 @@ export default class Item4e extends Item {
 		}
 
 		const flags = this.actor.data.flags.dnd4eAltus || {};
-		if ( !this.hasAttack ) {
+		if(!this.hasAttack ) {
 			ui.notifications.error("You may not place an Attack Roll with this Item.");
 			return null;
 		}
@@ -712,16 +720,11 @@ export default class Item4e extends Item {
 		let flavor = title;
 
 		flavor += ` ${game.i18n.localize("DND4EALTUS.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
+		
 		if(game.user.targets.size) {
-			const targetArr = Array.from(game.user.targets);
-			options.targetActor = targetArr[options.target].document._actor;
-			options.attackedDef = targetArr[options.target].document._actor.data.data.defences[itemData.attack.def].value;
-	
-			console.log(targetArr[options.target].document._actor.data.data.defences[itemData.attack.def].value)
-			// console.log(canvas.tokens)
-			// flavor += `<br><b>Target:</b> ${targetArr[options.target].data.name}`
-
+			options.attackedDef = itemData.attack.def; 
 		}
+
 		const rollData = this.getRollData();
 
 		rollData.isAttackRoll = true;
@@ -730,7 +733,7 @@ export default class Item4e extends Item {
 		// Define Roll bonuses
 		const parts = !!itemData.attack.formula? [`@power`] : [];
 
-		//pack the powers formal and send it to the dice.
+		//pack the powers formula and send it to the dice.
 		if(!!itemData.attack.formula) {		
 			rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null);
 		}
@@ -1382,17 +1385,18 @@ export default class Item4e extends Item {
 
 		// Attack and Damage Rolls
 		if ( action === "attack" ) {
+			await item.rollAttack({event});
+			// // Get current targets and set number of rolls required
+			// const numTargets = game.user.targets.size;
+			// const numTargetsDefault = 1;
 
-			// Get current targets and set number of rolls required
-			const numTargets = game.user.targets.size;
-			const numTargetsDefault = 1;
+			// const numRolls = (numTargets || numTargetsDefault);
 
-			const numRolls = (numTargets || numTargetsDefault);
-
-			// Invoke attack roll promise
-			for (var i=0;i<numRolls;i++) {
-				await item.rollAttack({event, target:i});
-			}
+			// // Invoke attack roll promise
+			// for (var i=0;i<numRolls;i++) {
+			// 	var isFinal = (i<numRolls-1) ? false : true;
+			// 	await item.rollAttack({event, target:i}, isFinal);
+			// }
 		}
 		else if ( action === "damage" ) await item.rollDamage({event, spellLevel});
 		else if ( action === "healing" ) await item.rollHealing({event, spellLevel});

@@ -2082,6 +2082,7 @@ font-size: 12px;
 	border-bottom: 3px solid #44191A;
 }
 .dnd4eAltus.sheet.item .details input[type="text"],
+.dnd4eAltus.sheet.item .details input[type="textarea"],
 .dnd4eAltus.sheet.item .details .damage-res,
 .dnd4eAltus.sheet.item .details select {
 	height: 24px;
@@ -2166,6 +2167,23 @@ font-size: 12px;
 	flex: 1;
 }
 .dnd4eAltus.sheet.item .damage-control {
+	width: 18px;
+	flex: 0 0 18px;
+	line-height: 24px;
+	float: right;
+	text-align: right;
+	color: #7a7971;
+}
+.dnd4eAltus.sheet.item .onetext-parts {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.dnd4eAltus.sheet.item .onetext-parts .onetext-part {
+	flex: 0 0 100%;
+	padding: 0;
+}
+.dnd4eAltus.sheet.item .onetext-control {
 	width: 18px;
 	flex: 0 0 18px;
 	line-height: 24px;
@@ -2318,6 +2336,11 @@ font-size: 12px;
 	/* background-color: linear-gradient(45deg, #c3c2b7, #c3c2b796) */
 	/* background: -o-linear-gradient(45deg, #125f15, #55aa2e); */
 	background: linear-gradient(90deg, #c3c2b7, #c3c2b718);
+}
+
+span.flavor-text.critical,
+span.flavor-text.fumble {
+	font-weight: bold;
 }
 
 .dice-roll .dice-total.success {
