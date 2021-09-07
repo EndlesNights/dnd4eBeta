@@ -174,7 +174,6 @@ export class Helper {
 			//	-	flat damage
 			//	-	dice damage
 			if(newFormula.includes("@powBase")) {
-				console.log("wut")
 				let quantity = powerData.hit.baseQuantity;
 				let diceType = powerData.hit.baseDiceType;
 				
@@ -218,7 +217,6 @@ export class Helper {
 					if (i < parts.length - 1) dice += '+';
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				console.log(dice);
 				let r = new Roll(dice)
 				if(dice){
 					r.evaluate({maximize: true});
@@ -228,8 +226,6 @@ export class Helper {
 				} else {
 					newFormula = newFormula.replace("@wepMax", dice);
 				}
-
-				// 
 			}
 			
 			// New method to handle base power dice from dropdown for critical hits

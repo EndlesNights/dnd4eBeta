@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.28
+- fix issue where writing and then deleting a descrition on a item/power would bause it to save and display as "null"
+
 ## Version 0.2.27
 - fixed issue where detaul value for brutal weapons was null.
 - Templates generated from the 'Place Measured Template' will now take the character size into account when generating close burst area templates.

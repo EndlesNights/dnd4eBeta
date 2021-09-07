@@ -559,8 +559,7 @@ export default class Item4e extends Item {
 		const data = duplicate(this.data.data);
 		const labels = this.labels;
 		// Rich text description
-		data.description.value = TextEditor.enrichHTML(data.description.value, htmlOptions);
-
+		data.description.value = TextEditor.enrichHTML(data.description.value || ``, htmlOptions);
 		// Item type specific properties
 		const props = [];
 		const fn = this[`_${this.data.type}ChatData`];
@@ -712,7 +711,7 @@ export default class Item4e extends Item {
 		}
 
 		const flags = this.actor.data.flags.dnd4eBeta || {};
-		if ( !this.hasAttack ) {
+		if(!this.hasAttack ) {
 			ui.notifications.error("You may not place an Attack Roll with this Item.");
 			return null;
 		}
@@ -721,7 +720,7 @@ export default class Item4e extends Item {
 
 		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
 
-		if (game.user.targets.size){
+		if(game.user.targets.size) {
 			options.attackedDef = itemData.attack.def; 
 		}
 		

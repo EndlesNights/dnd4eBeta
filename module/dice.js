@@ -181,7 +181,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 	advantage=null, disadvantage=null, critical=20, fumble=1, targetValue=null,
 	elvenAccuracy=false, halflingLucky=false, reliableTalent=false, isAttackRoll=false, options=null}={}) {
 
-//	console.log(isFinal)
 	// Handle input arguments
 	flavor = flavor || title;
 	speaker = speaker || ChatMessage.getSpeaker();
@@ -436,7 +435,6 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 		}
 		// Convert the roll to a chat message
 		rollMode = form ? form.rollMode.value : rollMode;
-		console.log(roll)
 		roll.toMessage({
 			speaker: speaker,
 			flavor: flavor
