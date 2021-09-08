@@ -172,9 +172,9 @@ export class Actor4e extends Actor {
 	
 		if (data.attributes.hp.temphp <= 0 )
 			data.attributes.hp.temphp = null;
-		
+
 		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
-		if(data.defences.ac.light)
+		if((data.defences.ac.light || this.checkLightArmour() ) && data.defences.ac.altability !== "none")
 		{
 			data.defences.ac.ability = (data.abilities.dex.value >= data.abilities.int.value) ? "dex" : "int";
 			if(data.defences.ac.altability != "")
@@ -514,6 +514,19 @@ export class Actor4e extends Actor {
 
 			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
 		}
+	}
+
+
+	checkLightArmour(){
+		for ( let i of this.items) {
+			if(i.data.type !="equipment" || !i.data.data.equipped ) { 
+				continue;
+			}
+			if(i.data.data.armour.type === "armour" && i.data.data.armour.subType === "heavy"){
+				return false;
+			}
+		}
+		return true;
 	}
 
   /**

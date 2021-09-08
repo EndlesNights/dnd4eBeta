@@ -11,14 +11,17 @@
 			{{/if}}
 		</div>
 	{{else if options.ac}}
-		<span>Light Armour: </span>
+		<span>Override Mod For Defence: </span>
 		<input type="checkbox" name="data.light" data-dtype="Boolean" {{checked data.light}} title="Light/Unarmoured Check to add mod to AC"/>
 		<span>Alternative Mod: </span>
 		<select name="data.altability">
 			{{#select data.altability}}
 			<option value="" >Default</option>
+			<option value="none" >None</option>
 			<option value="str" >Strength</option>
 			<option value="con" >Constitution</option>
+			<option value="dex" >Dexterity</option>
+			<option value="int" >Intelligence</option>
 			<option value="wis" >Wisdom</option>
 			<option value="cha" >Charisma</option>
 			{{/select}}
