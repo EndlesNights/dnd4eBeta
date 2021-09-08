@@ -239,7 +239,7 @@ export class Helper {
 				rQuantity.evaluate({maximize: true});
 
 				//check if is valid number
-				if(/^-?\d+$/.test(rQuantity.result)){ 
+				if(this._isNumber(rQuantity.result)){ 
 					quantity = rQuantity.result;
 				} else {
 					quantity = 1;
@@ -358,7 +358,7 @@ export class Helper {
 				let rQuantity = new Roll(quantity)
 				rQuantity.evaluate({maximize: true});
 				
-				if(/^-?\d+$/.test(rQuantity.result)) {
+				if(this._isNumber(rQuantity.result)) {
 					quantity = rQuantity.result;
 				} else {
 					quantity = 1;
@@ -541,5 +541,9 @@ export class Helper {
 		}
 
 		return powerDetail;
+	}
+
+	static _isNumber(str){
+		return /^-?\d+$/.test(str);
 	}
 }
