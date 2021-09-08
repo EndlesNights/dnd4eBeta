@@ -4,8 +4,8 @@
 - fixed an issue where non attack related d20 rolls would fail to roll if another token was targeted.
 - fixed an isse with dice tag '@powerMax' to work correctly when rolling multiple dice
 - fixed text color issue of charges for inventory
-
 - Character sheets will now be able to auto detect when you're wearing Heavy armour, prevoise option sitll works as an override to allow stat use even if using heavy armour. Can now also set the mod used for AC to none.
+- character/npc sheet bonuses dialog windows can now also accetpe bonus values in the notation of "@path.to.data" 
 
 ## Version 0.2.28
 - fix issue where writing and then deleting a descrition on a item/power would bause it to save and display as "null"
