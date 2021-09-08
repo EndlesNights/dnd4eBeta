@@ -1807,8 +1807,11 @@ font-size: 12px;
 	width: 24px;
 	text-align: right;
 }
-.dnd4eBeta.sheet .items-list input {
+.dnd4eBeta.sheet .powers .items-list input {
 	color: #e0e0e0;
+}
+.dnd4eBeta.sheet .inventory .items-list input {
+	color: #7a7971;
 }
 .dnd4eBeta.sheet .items-list .item .item-properties {
 	margin-top: 3px;

@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.29
+- fixed an issue where non attack related d20 rolls would fail to roll if another token was targeted.
+- fixed an isse with dice tag '@powerMax' to work correctly when rolling multiple dice
+- fixed text color issue of charges for inventory
+
 ## Version 0.2.28
 - fix issue where writing and then deleting a descrition on a item/power would bause it to save and display as "null"
 
