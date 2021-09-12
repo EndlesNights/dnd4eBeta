@@ -677,7 +677,7 @@ export default class ActorSheet4e extends ActorSheet {
 			html.find('.item-import').click(this._onItemImport.bind(this));
 
 			// Active Effect management
-			html.find(".effect-control").click(event => onManageActiveEffect(event, this.entity));
+			html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
 		
 			// Item summaries
 			html.find('.item .item-name h4').click(event => this._onItemSummary(event));		

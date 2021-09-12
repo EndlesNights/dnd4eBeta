@@ -220,8 +220,6 @@ export class Helper {
 				let r = new Roll(dice)
 				if(dice){
 					r.evaluate({maximize: true});
-					console.log(r.result);
-					console.log(r.total);
 					newFormula = newFormula.replace("@wepMax", r.result);
 				} else {
 				newFormula = newFormula.replace("@wepMax", dice);
@@ -237,8 +235,16 @@ export class Helper {
 				let dice = "";
 				let quantity = powerData.hit.baseQuantity;
 				let diceType = powerData.hit.baseDiceType;
+				let rQuantity = new Roll(quantity)
+				rQuantity.evaluate({maximize: true});
 				
-				if(quantity !== "number") quantity = 1;
+				//check if is valid number
+				if(this._isNumber(rQuantity.result)){ 
+					quantity = rQuantity.result;
+				} else {
+					quantity = 1;
+				}
+				
 				
 				// Handle Weapon Type Damage
 				if(diceType.includes("weapon")){
@@ -349,9 +355,15 @@ export class Helper {
 				let dice = "";
 				let quantity = powerData.hit.baseQuantity;
 				let diceType = powerData.hit.baseDiceType;
+				let rQuantity = new Roll(quantity)
+				rQuantity.evaluate({maximize: true});
 				
-				// if(quantity !== "number") quantity = 1;
-				
+				if(this._isNumber(rQuantity.result)) {
+					quantity = rQuantity.result;
+				} else {
+					quantity = 1;
+				}
+
 				// Handle Weapon Type Damage
 				if(diceType.includes("weapon")){
 					let parts = weaponData.damageDice.parts;
@@ -527,5 +539,9 @@ export class Helper {
 		}
 
 		return powerDetail;
+	}
+	
+	static _isNumber(str){
+		return /^-?\d+$/.test(str);
 	}
 }

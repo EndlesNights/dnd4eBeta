@@ -249,7 +249,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
 		// Execute the roll and flag critical thresholds on the d20
 		let roll;
-		if (game.user.targets.size){
+		if (game.user.targets.size && isAttackRoll) {
 			const numTargets = game.user.targets.size;
 			roll = new MultiAttackRoll(parts.join(" + "), data);
 

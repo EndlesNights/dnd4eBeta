@@ -558,8 +558,9 @@ export default class Item4e extends Item {
 	getChatData(htmlOptions={}) {
 		const data = duplicate(this.data.data);
 		const labels = this.labels;
+		
 		// Rich text description
-		data.description.value = TextEditor.enrichHTML(data.description.value, htmlOptions);
+		data.description.value = TextEditor.enrichHTML(data.description.value || ``, htmlOptions);
 
 		// Item type specific properties
 		const props = [];

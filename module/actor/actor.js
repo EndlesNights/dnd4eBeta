@@ -114,16 +114,28 @@ export class Actor4e extends Actor {
 		//Set Health related values
 		if(!(data.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(data.details.surgeBon.bonus[0]))) {
 			for( const b of data.details.surgeBon.bonus) {
-				if(b.active) {
-					data.details.surgeBon.value += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					data.details.surgeBon.value += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						data.details.surgeBon.value += parseInt(val);
+					}
 				}
 			}
 		}
 		
 		if(!(data.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(data.details.secondwindbon.bonus[0]))) {
 			for( const b of data.details.secondwindbon.bonus) {
-				if(b.active) {
-					data.details.secondwindbon.value += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					data.details.secondwindbon.value += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						data.details.secondwindbon.value += parseInt(val);
+					}
 				}
 			}
 		}
@@ -138,24 +150,42 @@ export class Actor4e extends Actor {
 
 		if(!(data.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(data.details.surgeEnv.bonus[0]))) {
 			for( const b of data.details.surgeEnv.bonus) {
-				if(b.active) {
-					data.details.surgeEnv.value += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					data.details.surgeEnv.value += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						data.details.surgeEnv.value += parseInt(val);
+					}
 				}
 			}
 		}
 
 		if(!(data.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(data.details.deathsavebon.bonus[0]))) {
 			for( const b of data.details.deathsavebon.bonus) {
-				if(b.active) {
-					data.details.deathsavebon.value += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					data.details.deathsavebon.value += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						data.details.deathsavebon.value += parseInt(val);
+					}
 				}
 			}
 		}
 
 		if(!(data.details.saves.bonus.length === 1 && jQuery.isEmptyObject(data.details.saves.bonus[0]))) {
 			for( const b of data.details.saves.bonus) {
-				if(b.active) {
-					data.details.saves.value += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					data.details.saves.value += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						data.details.saves.value += parseInt(val);
+					}
 				}
 			}
 		}
@@ -174,7 +204,7 @@ export class Actor4e extends Actor {
 			data.attributes.hp.temphp = null;
 		
 		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
-		if(data.defences.ac.light)
+		if((data.defences.ac.light || this.checkLightArmour() ) && data.defences.ac.altability !== "none")
 		{
 			data.defences.ac.ability = (data.abilities.dex.value >= data.abilities.int.value) ? "dex" : "int";
 			if(data.defences.ac.altability != "")
@@ -209,8 +239,14 @@ export class Actor4e extends Actor {
 		let initBonusValue = 0;
 		if(!(data.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(data.attributes.init.bonus[0]))) {
 			for( const b of data.attributes.init.bonus) {
-				if(b.active) {
-					initBonusValue += b.value;
+				if(b.active  && Helper._isNumber(b.value)) {
+					initBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						initBonusValue += parseInt(val);
+					}
 				}
 			}
 		}
@@ -223,8 +259,14 @@ export class Actor4e extends Actor {
 		let baseMoveBonusValue = 0;
 		if(!(data.movement.base.bonus.length === 1 && jQuery.isEmptyObject(data.movement.base.bonus[0]))) {
 			for( const b of data.movement.base.bonus) {
-				if(b.active) {
-					baseMoveBonusValue += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					baseMoveBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						baseMoveBonusValue += parseInt(val);
+					}
 				}
 			}
 		}
@@ -238,8 +280,14 @@ export class Actor4e extends Actor {
 		let walkBonusValue = 0;
 		if(!(data.movement.walk.bonus.length === 1 && jQuery.isEmptyObject(data.movement.walk.bonus[0]))) {
 			for( const b of data.movement.walk.bonus) {
-				if(b.active) {
-					walkBonusValue += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					walkBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						walkBonusValue += parseInt(val);
+					}
 				}
 			}
 		}
@@ -248,8 +296,14 @@ export class Actor4e extends Actor {
 		let chargeBonusValue = 0;
 		if(!(data.movement.charge.bonus.length === 1 && jQuery.isEmptyObject(data.movement.charge.bonus[0]))) {
 			for( const b of data.movement.charge.bonus) {
-				if(b.active) {
-					chargeBonusValue += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					chargeBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						chargeBonusValue += parseInt(val);
+					}
 				}
 			}
 		}
@@ -258,8 +312,14 @@ export class Actor4e extends Actor {
 		let runBonusValue = 0;
 		if(!(data.movement.run.bonus.length === 1 && jQuery.isEmptyObject(data.movement.run.bonus[0]))) {
 			for( const b of data.movement.run.bonus) {
-				if(b.active) {
-					runBonusValue += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					runBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						runBonusValue += parseInt(val);
+					}
 				}
 			}
 		}
@@ -268,8 +328,14 @@ export class Actor4e extends Actor {
 		let climbBonusValue = 0;
 		if(!(data.movement.climb.bonus.length === 1 && jQuery.isEmptyObject(data.movement.climb.bonus[0]))) {
 			for( const b of data.movement.climb.bonus) {
-				if(b.active) {
-					climbBonusValue += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					climbBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						climbBonusValue += parseInt(val);
+					}
 				}
 			}
 		}
@@ -278,8 +344,14 @@ export class Actor4e extends Actor {
 		let shiftBonusValue = 0;
 		if(!(data.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(data.movement.shift.bonus[0]))) {
 			for( const b of data.movement.shift.bonus) {
-				if(b.active) {
-					shiftBonusValue += b.value;
+				if(b.active && Helper._isNumber(b.value)) {
+					shiftBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,data)
+					if(Helper._isNumber(val)){
+						shiftBonusValue += parseInt(val);
+					}
 				}
 			}
 		}
@@ -322,8 +394,14 @@ export class Actor4e extends Actor {
 			let passiveBonusValue = 0;
 			if(!(pas.bonus.length === 1 && jQuery.isEmptyObject(pas.bonus[0]))) {
 				for( const b of pas.bonus) {
-					if(b.active) {
-						passiveBonusValue += b.value;
+					if(b.active && Helper._isNumber(b.value)) {
+						passiveBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,data)
+						if(Helper._isNumber(val)){
+							passiveBonusValue += parseInt(val);
+						}
 					}
 				}
 			}
@@ -337,8 +415,14 @@ export class Actor4e extends Actor {
 			let resBonusValue = 0;
 			if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
 				for( const b of res.bonus) {
-					if(b.active) {
-						resBonusValue += b.value;
+					if(b.active && Helper._isNumber(b.value)) {
+						resBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,data)
+						if(Helper._isNumber(val)){
+							resBonusValue += parseInt(val);
+						}
 					}
 				}
 			}
@@ -366,8 +450,14 @@ export class Actor4e extends Actor {
 			let defBonusValue = 0;
 			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
 				for( const b of def.bonus) {
-					if(b.active) {
-						defBonusValue += b.value;
+					if(b.active && Helper._isNumber(b.value)) {
+						defBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,data)
+						if(Helper._isNumber(val)){
+							defBonusValue += parseInt(val);
+						}
 					}
 				}
 			}
@@ -396,8 +486,14 @@ export class Actor4e extends Actor {
 			let defBonusValue = 0;
 			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
 				for( const b of def.bonus) {
-					if(b.active) {
-						defBonusValue += b.value;
+					if(b.active && Helper._isNumber(b.value)) {
+						defBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,data)
+						if(Helper._isNumber(val)){
+							defBonusValue += parseInt(val);
+						}
 					}
 				}
 			}
@@ -426,10 +522,17 @@ export class Actor4e extends Actor {
 
 			let sklBonusValue = 0;
 			let sklArmourPenalty = 0;
+			
 			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
 				for( const b of skl.bonus) {
-					if(b.active) {
-						sklBonusValue += b.value;
+					if(b.active && Helper._isNumber(b.value)) {
+						sklBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,data)
+						if(Helper._isNumber(val)){
+							sklBonusValue += parseInt(val);
+						}
 					}
 				}
 			}
@@ -448,9 +551,19 @@ export class Actor4e extends Actor {
 				// this.update({[`data.skills[${skl}].base`]: 0 });
 			}
 
+			if(skl.effectBonus == undefined){
+				skl.effectBonus = 0;
+			} else {
+				if(!isNaN(parseFloat(skl.effectBonus)) && isFinite(skl.effectBonus)){
+					skl.effectBonus = parseFloat(skl.effectBonus);
+				} else {
+					skl.effectBonus = 0;
+				}
+			}
+
 			// Compute modifier
 			skl.mod = data.abilities[skl.ability].mod;			
-			skl.total = skl.value + skl.base + skl.mod + sklBonusValue - sklArmourPenalty;
+			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
 			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
 
 		}
@@ -464,8 +577,14 @@ export class Actor4e extends Actor {
 			let sklArmourPenalty = 0;
 			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
 				for( const b of skl.bonus) {
-					if(b.active) {
-						sklBonusValue += b.value;
+					if(b.active && Helper._isNumber(b.value)) {
+						sklBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,data)
+						if(Helper._isNumber(val)){
+							sklBonusValue += parseInt(val);
+						}
 					}
 				}
 			}
@@ -483,16 +602,38 @@ export class Actor4e extends Actor {
 				skl.base = 0;
 			}
 
+			if(skl.effectBonus == undefined){
+				skl.effectBonus = 0;
+			} else {
+				if(!isNaN(parseFloat(skl.effectBonus)) && isFinite(skl.effectBonus)){
+					skl.effectBonus = parseFloat(skl.effectBonus);
+				} else {
+					skl.effectBonus = 0;
+				}
+			}
+
 			// Compute modifier
 			skl.mod = data.abilities[skl.ability].mod;
 			if(data.advancedCals){
-				skl.total = skl.value + skl.base + skl.mod + sklBonusValue - sklArmourPenalty;
+				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
 			} else {
 				skl.total = skl.base;
 			}
 
 			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
 		}
+	}
+
+	checkLightArmour(){
+		for ( let i of this.items) {
+			if(i.data.type !="equipment" || !i.data.data.equipped ) { 
+				continue;
+			}
+			if(i.data.data.armour.type === "armour" && i.data.data.armour.subType === "heavy"){
+				return false;
+			}
+		}
+		return true;
 	}
 
   /**

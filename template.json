@@ -253,6 +253,7 @@
 			"skills": {
 				"acr": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -260,6 +261,7 @@
 				},
 				"arc": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -267,6 +269,7 @@
 				},
 				"ath": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "str",
 					"armourCheck": true,
@@ -274,6 +277,7 @@
 				},
 				"blu": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -281,6 +285,7 @@
 				},
 				"dip": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -288,6 +293,7 @@
 				},
 				"dun": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -295,6 +301,7 @@
 				},
 				"end": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "con",
 					"armourCheck": true,
@@ -302,12 +309,14 @@
 				},
 				"eng": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"chat": "@name uses @label."
 				},
 				"hea": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -315,6 +324,7 @@
 				},
 				"his": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -322,6 +332,7 @@
 				},
 				"ins": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -329,6 +340,7 @@
 				},
 				"itm": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -336,6 +348,7 @@
 				},
 				"nat": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -343,6 +356,7 @@
 				},
 				"prc": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -350,12 +364,14 @@
 				},
 				"pra": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"chat": "@name uses @label."
 				},
 				"rel": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -363,6 +379,7 @@
 				},
 				"stl": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -370,6 +387,7 @@
 				},
 				"stw": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -377,6 +395,7 @@
 				},
 				"thi": {
 					"value": 0,
+					"base": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -932,7 +951,10 @@
 		},
 		"trigger": "",
 		"requirement": "",
-		"special": ""
+		"special": "",
+		"specialAdd": {
+			"parts": []
+		}
 	}
 }
 }
