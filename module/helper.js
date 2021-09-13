@@ -363,8 +363,6 @@ export class Helper {
 				} else {
 					quantity = 1;
 				}
-
-				console.log(quantity);
 				
 				// Handle Weapon Type Damage
 				if(diceType.includes("weapon")){

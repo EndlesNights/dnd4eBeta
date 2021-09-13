@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.30
+- fixed an issue where if using a situaltion bonus in conjuntion with one of the possive common attack would cause the two numbers to append together rather than add as intentded.
+- correctly changed compatibleCoreVersion from 8.8, to 8.9
+
 ## Version 0.2.29
 - fixed an issue where non attack related d20 rolls would fail to roll if another token was targeted.
 - fixed an isse with dice tag '@powerMax' to work correctly when rolling multiple dice
