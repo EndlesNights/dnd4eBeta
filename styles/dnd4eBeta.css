@@ -114,6 +114,10 @@
 	width: calc(100% - 278px);
 	display: inline-block;
 }
+.dnd4eBeta.sheet .sheet-header .summary-type {
+	width: calc(100% - 460px);
+	display: inline-block;
+}
 .dnd4eBeta.sheet .sheet-header .summary-race,
 .dnd4eBeta.sheet .sheet-header .summary-class {
 	width: calc(26% - 34px);

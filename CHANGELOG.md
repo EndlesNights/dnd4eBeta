@@ -3,6 +3,7 @@
 ## Version 0.2.31
 - Early version of automatic damage calculation implementation, when a actor is selected and a suer right clicks on a roll, the apply damage options will now take the actors Resistances, Weaknesses, and immunities into account when apply damage.
 - Added an additional option denoted as 'true damage' which will ignore all Resistances, Weaknesses, and immunities calculations.
+- Added character image to npc sheet.
 
 ## Version 0.2.30
 - fixed an issue where if using a situaltion bonus in conjuntion with one of the possive common attack bonuses would cause the two numbers to append together rather than add as intentded.
