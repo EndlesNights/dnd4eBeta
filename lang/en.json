@@ -121,6 +121,7 @@
 "DND4EBETA.ChatContextDoubleDamage": "Apply Double Damage",
 "DND4EBETA.ChatContextHalfDamage": "Apply Half Damage",
 "DND4EBETA.ChatContextHealing": "Apply Healing",
+"DND4EBETA.ChatContextTrueDamage": "True Damage",
 "DND4EBETA.ChatFlavor": "Chat Message Flavor",
 "DND4EBETA.Class": "Class",
 "DND4EBETA.ClassLevels": "Class Levels",

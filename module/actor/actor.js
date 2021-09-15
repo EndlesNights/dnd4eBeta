@@ -925,6 +925,46 @@ export class Actor4e extends Actor {
 		};
 	}
 
+	async calcDamage(damage, multiplier=1){
+		let totalDamage = 0;
+		if(Object.keys(damage).length >= 1){
+			const res = this.data.data.resistances;
+
+			let damageResAll = res['damage'].value;
+			let divider = Object.keys(damage).length;
+
+			for(let d in damage){
+				
+				let type = d && res[d] ?  d : 'damage';
+				let damageBase = damage[d];
+				let damageRes = res[type].value || 0;
+
+				let resPart = Math.ceil(damageResAll/divider)
+				damageResAll -= resPart;
+				divider--;
+
+				if((resPart > damageRes && damageRes >= 0) || (resPart < damageRes && damageRes <= 0) ){
+					damageRes = resPart;
+				}
+				else if( (resPart >= 0 && damageRes <= 0) || (resPart <= 0 && damageRes >= 0)){
+					damageRes += resPart;
+				}
+
+				// console.log(`${type}: ${damage[type]}`);
+
+				if(d == 'heal'){
+					totalDamage -= Math.max(0, damageBase);
+				}
+				else if(!res[type].immune && !res['damage'].immune){
+					totalDamage += Math.max(0, damageBase - damageRes);
+					console.log(`DamageType:${type}, Damage:${Math.max(0, damageBase - damageRes)}`)
+				}
+			}
+			console.log(`Total Damage: ${totalDamage * multiplier}`)
+			this.applyDamage(totalDamage, multiplier);
+		}
+	}
+
 	async applyDamage(amount=0, multiplier=1) 
 	{
 		amount = Math.floor(parseInt(amount) * multiplier);

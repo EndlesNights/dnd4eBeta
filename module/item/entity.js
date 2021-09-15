@@ -284,6 +284,20 @@ export default class Item4e extends Item {
 					}
 				}
 			}
+
+			let damCrit = data.damageCrit || {};
+			if(damCrit.parts) {
+				labels.damage = damCrit.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
+				labels.damageTypes = damCrit.parts.map(d => C.damageTypes[d[1]]).join(", ");
+
+				if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
+					if(this.data.data.damageType) {
+						for (let [id, data] of Object.entries(this.data.data.damageType)) {
+							if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
+						}
+					}
+				}				
+			}
 		}
 
 		// Assign labels
@@ -857,36 +871,58 @@ export default class Item4e extends Item {
 		let flavor = this.labels.damageTypes.length ? `${title} (${this.labels.damageTypes})` : title;
 
 		// Define Roll parts
-		const parts = itemData.damage.parts.map(d => d[0]);
-		const partsCrit = itemData.damage.parts.map(d => d[0]);
+		const parts = itemData.damage.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
+		const partsCrit = itemData.damageCrit.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
 
+		// itemData.damageType
+		let primaryDamage = ''
+		const pD = [];
+		for ( let [damage, d] of Object.entries(itemData.damageType)) {
+			if(d){
+				pD.push(damage);
+				// console.log(`${damage}`)
+				// primaryDamage += `${damage}`;
+			}
+		}
+
+		primaryDamage = pD.join(', ');
+
+		let damageFormula = '';
+		let critDamageFormula = '';
 		//Add power damage into parts
 		if(!!itemData.hit?.formula) {
-			parts.unshift(Helper.commonReplace(itemData.hit.formula, actorData, this.data.data, weaponUse?.data.data));
-			partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula, actorData, this.data.data, weaponUse?.data.data));
+			// parts.unshift(`(${Helper.commonReplace(itemData.hit.formula, actorData, this.data.data, weaponUse?.data.data)})[${primaryDamage}]`);
+			// partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula, actorData, this.data.data, weaponUse?.data.data));
+			damageFormula = Helper.commonReplace(itemData.hit.formula, actorData, this.data.data, weaponUse?.data.data);
+			critDamageFormula = Helper.commonReplace(itemData.hit.critFormula, actorData, this.data.data, weaponUse?.data.data);
+
+			//Should now be redudent with everything moved into the Helper#CommonReplace function
+
 			//Add seconadary weapons damage into parts
-			if(weaponUse) {
-				if(itemData.hit.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
-				}
-				if(itemData.hit.formula.includes("@wepCritBonus") && weaponUse.data.data.damageCrit.parts.length > 0) {
-					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
-				}
-				if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
-				}
-				if(itemData.hit.formula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImpCrit.parts.length > 0) {
-					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageImpCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
-				}
-			}
+			// if(weaponUse) {
+			// 	if(itemData.hit.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
+			// 		Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+			// 	}
+			// 	if(itemData.hit.formula.includes("@wepCritBonus") && weaponUse.data.data.damageCrit.parts.length > 0) {
+			// 		Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+			// 	}
+			// 	if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
+			// 		Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+			// 	}
+			// 	if(itemData.hit.formula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImpCrit.parts.length > 0) {
+			// 		Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageImpCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+			// 	}
+			// }
 		}
 	
 		// Adjust damage from versatile usage
 		if(weaponUse) {
 			if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
-				parts.push("1");
-				partsCrit.push("1");
-				messageData["flags.dnd4eBeta.roll"].versatile = true;
+				// parts.push("1");
+				// partsCrit.push("1");
+				damageFormula += `+ 1`;
+				critDamageFormula += `+ 1`;
+				// messageData["flags.dnd4eBeta.roll"].versatile = true;
 			}
 		}
 		// if ( versatile && itemData.damage.versatile ) {
@@ -897,9 +933,11 @@ export default class Item4e extends Item {
 		// Define Roll Data
 		const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
 		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
-			parts.push("@dmg");
-			partsCrit.push("@dmg");
-			rollData["dmg"] = actorBonus.damage;
+			// parts.push("@dmg");
+			// partsCrit.push("@dmg");
+			// rollData["dmg"] = actorBonus.damage;
+			damageFormula += `+ ${actorBonus.damage}`
+			critDamageFormula += `+ ${actorBonus.damage}`
 		}
 
 		// Ammunition Damage from power
@@ -926,6 +964,13 @@ export default class Item4e extends Item {
 		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
 		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 		// Call the roll helper utility
+
+		parts.unshift(`(${damageFormula})[${primaryDamage}]`);
+		partsCrit.unshift(`(${critDamageFormula})[${primaryDamage}]`);
+
+		console.log(parts)
+		console.log(partsCrit)
+
 		return damageRoll({
 			event: event,
 			parts: parts,
@@ -1050,96 +1095,6 @@ export default class Item4e extends Item {
 			},
 			messageData,
 		});
-	}
-	/**
-	 * Adjust a cantrip damage formula to scale it for higher level characters and monsters
-	 * @private
-	 */
-	_scaleCantripDamage(parts, scale, level, rollData) {
-		const add = Math.floor((level + 1) / 6);
-		if ( add === 0 ) return;
-
-		// FUTURE SOLUTION - 0.7.0 AND LATER
-		if (isNewerVersion(game.data.version, "0.6.9")) {
-			this._scaleDamage(parts, scale || parts.join(" + "), add, rollData)
-
-		}
-
-		// LEGACY SOLUTION - 0.6.x AND OLDER
-		// TODO: Deprecate the legacy solution one FVTT 0.7.x is RELEASE
-		else {
-			if ( scale && (scale !== parts[0]) ) {
-				parts[0] = parts[0] + " + " + scale.replace(new RegExp(Roll.diceRgx, "g"), (match, nd, d) => `${add}d${d}`);
-			} else {
-				parts[0] = parts[0].replace(new RegExp(Roll.diceRgx, "g"), (match, nd, d) => `${parseInt(nd)+add}d${d}`);
-			}
-		}
-	}
-
-	/* -------------------------------------------- */
-
-	/**
-	 * Adjust the spell damage formula to scale it for spell level up-casting
-	 * @param {Array} parts         The original damage parts
-	 * @param {number} baseLevel    The default spell level
-	 * @param {number} spellLevel   The casted spell level
-	 * @param {string} formula      The scaling formula
-	 * @param {object} rollData     A data object that should be applied to the scaled damage roll
-	 * @return {string[]}           The scaled roll parts
-	 * @private
-	 */
-	_scaleSpellDamage(parts, baseLevel, spellLevel, formula, rollData) {
-		const upcastLevels = Math.max(spellLevel - baseLevel, 0);
-		if ( upcastLevels === 0 ) return parts;
-
-		// FUTURE SOLUTION - 0.7.0 AND LATER
-		if (isNewerVersion(game.data.version, "0.6.9")) {
-			this._scaleDamage(parts, formula, upcastLevels, rollData);
-		}
-
-		// LEGACY SOLUTION - 0.6.x AND OLDER
-		// TODO: Deprecate the legacy solution one FVTT 0.7.x is RELEASE
-		else {
-			const bonus = new Roll(formula);
-			bonus.alter(0, upcastLevels);
-			parts.push(bonus.formula);
-		}
-		return parts;
-	}
-
-	/* -------------------------------------------- */
-
-	/**
-	 * Scale an array of damage parts according to a provided scaling formula and scaling multiplier
-	 * @param {string[]} parts    Initial roll parts
-	 * @param {string} scaling    A scaling formula
-	 * @param {number} times      A number of times to apply the scaling formula
-	 * @param {object} rollData   A data object that should be applied to the scaled damage roll
-	 * @return {string[]}         The scaled roll parts
-	 * @private
-	 */
-	_scaleDamage(parts, scaling, times, rollData) {
-		if ( times <= 0 ) return parts;
-		const p0 = new Roll(parts[0], rollData);
-		const s = new Roll(scaling, rollData).alter(times);
-
-		// Attempt to simplify by combining like dice terms
-		let simplified = false;
-		if ( (s.terms[0] instanceof Die) && (s.terms.length === 1) ) {
-			const d0 = p0.terms[0];
-			const s0 = s.terms[0];
-			if ( (d0 instanceof Die) && (d0.faces === s0.faces) && d0.modifiers.equals(s0.modifiers) ) {
-				d0.number += s0.number;
-				parts[0] = p0.formula;
-				simplified = true;
-			}
-		}
-
-		// Otherwise add to the first part
-		if ( !simplified ) {
-			parts[0] = `${parts[0]} + ${s.formula}`;
-		}
-		return parts;
 	}
 
 	/* -------------------------------------------- */
