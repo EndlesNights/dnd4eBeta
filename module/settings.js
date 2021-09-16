@@ -70,6 +70,19 @@ export const registerSystemSettings = function() {
 		type: Boolean
 	});
 
+	/**
+	 * Determins if the Advanced Math Options for NPC's is set during their generation
+	 */
+
+	 game.settings.register("dnd4eBeta", "npcMathOptions", {
+		name: "SETTINGS.4eNpcMathOptionsN",
+		hint: "SETTINGS.4eNpcMathOptionsL",
+		scope: "world",
+		config: true,
+		default: false,
+		type: Boolean
+	});
+
 	// /**
 	//  * Option to disable XP bar for session-based or story-based advancement.
 	//  */
@@ -81,6 +94,22 @@ export const registerSystemSettings = function() {
 	// 	default: false,
 	// 	type: Boolean,
 	// });
+
+
+	/**
+	 * Option to automatically generate powers with the Auto Generate Power Card Details set to true or false
+	 */
+	 game.settings.register("dnd4eBeta", "powerAutoGenerateLableOption", {
+		name: "SETTINGS.4ePowerAutoGenerateLableOptionN",
+		hint: "SETTINGS.4ePowerAutoGenerateLableOptionL",
+		scope: "client",
+		config: true,
+		default: true,
+		type: Boolean,
+		onChange: s => {
+			ui.chat.render();
+		}
+	});
 
 	/**
 	 * Option to automatically collapse Item Card descriptions
@@ -97,12 +126,15 @@ export const registerSystemSettings = function() {
 		}
 	});
 
+	/**
+	 * Option to automaticly roll attack rolls agianst targeted tokens defence values, and determin if the attack is a hit/miss.
+	 */
 	game.settings.register("dnd4eBeta", "automationCombat",{
 		name: "SETTINGS.4eAutomationCombatN",
 		hint: "SETTINGS.4eAutomationCombatL",
 		scope: "client",
 		config: true,
-		default: false,
+		default: true,
 		type: Boolean,
 		onChange: s => {
 			ui.chat.render();

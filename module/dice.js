@@ -41,15 +41,22 @@ export class MultiAttackRoll extends Roll{
 			let targName = targDataArray.targNameArray[i];
 			let targDefVal = targDataArray.targDefValArray[i];
 			let critState = critStateArray[i];
-			let hitState = "Probable Miss!";
-			if (critState === " critical"){
-				hitState = "Critical Hit!"
-			} else if (critState === " fumble"){
-				hitState = "Critical Miss!"
-			} else if (r._total >= targDefVal){
-				hitState = "Probable Hit!";
+
+			let hitState = "";
+			
+			if(game.settings.get("dnd4eBeta", "automationCombat")){
+				if (critState === " critical"){
+					hitState = "Critical Hit!"
+				} else if (critState === " fumble"){
+					hitState = "Critical Miss!"
+				} else if (r._total >= targDefVal){
+					hitState = "Probable Hit!";
+				} else {
+					hitState = "Probable Miss!";
+				}
 			}
-			console.log(critState);
+
+
 			this._multirollData.push({
 				formula : r._formula,
 				total : r._total,

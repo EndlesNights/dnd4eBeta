@@ -46,13 +46,22 @@ export class Actor4e extends Actor {
 	
 //     return data;
 //   }
-  
+
+	constructor(data, context) {
+		super(data, context);
+		if(data.type==='NPC'){
+			if(data?.data?.advancedCals == undefined){
+				this.data.data.advancedCals = game.settings.get("dnd4eBeta", "npcMathOptions");
+
+			}
+		}
+	}
+
 	/**
 		* Augment the basic actor data with additional dynamic data.
 		*/
 	prepareData() {
 		super.prepareData();
-		
 		// Get the Actor's data object
 		const actorData = this.data;
 		const data = actorData.data;

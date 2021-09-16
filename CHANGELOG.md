@@ -4,6 +4,9 @@
 - Early version of automatic damage calculation implementation, when a actor is selected and a suer right clicks on a roll, the apply damage options will now take the actors Resistances, Weaknesses, and immunities into account when apply damage.
 - Added an additional option denoted as 'true damage' which will ignore all Resistances, Weaknesses, and immunities calculations.
 - Added character image to npc sheet.
+- automationCombat option is now set to true by default
+- Added Auto Generate Power Card Details option to the system settings as a client system setting.
+- Added a system option to determine whether generated NPC will have Advanced Math Options turned on that auto calculate defenses and skills, or not.
 
 ## Version 0.2.30
 - fixed an issue where if using a situaltion bonus in conjuntion with one of the possive common attack bonuses would cause the two numbers to append together rather than add as intentded.

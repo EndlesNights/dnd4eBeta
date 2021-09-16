@@ -754,11 +754,15 @@ export default class ActorSheet4e extends ActorSheet {
 			if (item.type === "power") {
 				
 				let div = $(`<div class="item-summary"></div>`);
+
+
 				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
-				let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false).data)}</div>`);
-				
 				div.append(descrip);
-				div.append(details);
+
+				if(item.data.data.autoGenChatPowerCard){
+					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false).data)}</div>`);
+					div.append(details);
+				}
 
 				li.append(div.hide());
 				div.slideDown(200);
@@ -841,6 +845,8 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 		}
 
+		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4eBeta", "powerAutoGenerateLableOption");
+		
 		if(this.actor.type === "NPC"){
 			
 			itemData.data.weaponType = "none";
