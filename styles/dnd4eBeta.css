@@ -2409,3 +2409,26 @@ span.flavor-text.fumble {
 	pointer-events: none;
 	opacity: 1;
 }
+
+
+.status-effect-title {
+	visibility: hidden;
+	position: absolute;
+	top: -38px;
+	width: 175px;
+	font-size: 21px;
+	padding: 3px;
+	box-sizing: content-box;
+	background: rgba(0, 0, 0, 0.6);
+	box-shadow: 0 0 15px #000;
+	border: 1px solid #333;
+	border-radius: 4px;
+	height: 26px;
+
+	line-height: 30px;
+	text-align: center;
+}
+
+.status-effect-title.active{
+	visibility: visible;
+}

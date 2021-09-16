@@ -186,3 +186,31 @@ Hooks.on("canvasInit", function() {
 	// Extend Token Resource Bars
 	Token.prototype.getBarAttribute = getBarAttribute;
 });
+
+
+Hooks.on("renderTokenHUD", (app, html, data) => {
+//Display name of status effect when mousning over
+const message = `
+<div class="status-effect-title" id="displayStatLine" >STATUS EFFECT</div>
+
+<script>
+var statusName
+$(".effect-control ").hover(
+	function(eventObj) {
+		statusName = eventObj.target.title;
+		document.getElementById("displayStatLine").innerHTML = statusName;
+		eventObj.target.title = '';
+		console.log(eventObj)
+		document.getElementById("displayStatLine").classList.add("active");
+	},
+	function(eventObj) {
+		eventObj.target.title = statusName;
+		document.getElementById("displayStatLine").innerHTML = '';
+		document.getElementById("displayStatLine").classList.remove("active");
+	}
+);
+</script>
+`
+
+html.find('.effect-control').last().after(message);
+});
