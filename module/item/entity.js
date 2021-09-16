@@ -964,9 +964,14 @@ export default class Item4e extends Item {
 		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
 		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 		// Call the roll helper utility
-
-		parts.unshift(`(${damageFormula})[${primaryDamage}]`);
-		partsCrit.unshift(`(${critDamageFormula})[${primaryDamage}]`);
+		
+		if(primaryDamage){
+			parts.unshift(`(${damageFormula})[${primaryDamage}]`);
+			partsCrit.unshift(`(${critDamageFormula})[${primaryDamage}]`);
+		} else {
+			parts.unshift(`(${damageFormula})`);
+			partsCrit.unshift(`(${critDamageFormula})`);
+		}
 
 		console.log(parts)
 		console.log(partsCrit)

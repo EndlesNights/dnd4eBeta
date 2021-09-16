@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.33
+- Quick fix, issue with no damage type causing an error to occure while rolling damage.
+
 ## Version 0.2.32
 - Changed how mouseing over status effect titles are displayed within the renderTokenHUD
 
