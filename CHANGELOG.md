@@ -7,6 +7,7 @@
 - automationCombat option is now set to true by default
 - Added Auto Generate Power Card Details option to the system settings as a client system setting.
 - Added a system option to determine whether generated NPC will have Advanced Math Options turned on that auto calculate defenses and skills, or not.
+- adjusted the height of the Resistances & Weaknesses div so that the scroll bar should now be the proper length.
 
 ## Version 0.2.30
 - fixed an issue where if using a situaltion bonus in conjuntion with one of the possive common attack bonuses would cause the two numbers to append together rather than add as intentded.
