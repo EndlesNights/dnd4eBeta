@@ -1,5 +1,7 @@
 # Changelog
 
+## Version 0.2.34
+- Fixed an issue where rolling damage with no damage type would cause a diffrent issue some times.
 ## Version 0.2.33
 - Quick fix, issue with no damage type causing an error to occure while rolling damage.
 

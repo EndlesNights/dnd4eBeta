@@ -175,7 +175,7 @@ export class Helper {
 			//	-	dice damage
 			if(newFormula.includes("@powBase")) {
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
 				
 				if(quantity === "") quantity = 1;
 				
@@ -217,7 +217,7 @@ export class Helper {
 					if (i < parts.length - 1) dice += '+';
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				let r = new Roll(dice)
+				let r = new Roll(`${dice}`)
 				if(dice){
 					r.evaluate({maximize: true});
 					newFormula = newFormula.replace("@wepMax", r.result);
@@ -234,8 +234,8 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;				
-				let rQuantity = new Roll(quantity)
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let rQuantity = new Roll(`${quantity}`)
 				rQuantity.evaluate({maximize: true});
 
 				//check if is valid number
@@ -354,8 +354,8 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;
-				let rQuantity = new Roll(quantity)
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let rQuantity = new Roll(`${quantity}`)
 				rQuantity.evaluate({maximize: true});
 				
 				if(this._isNumber(rQuantity.result)) {

@@ -877,13 +877,17 @@ export default class Item4e extends Item {
 		// itemData.damageType
 		let primaryDamage = ''
 		const pD = [];
-		for ( let [damage, d] of Object.entries(itemData.damageType)) {
-			if(d){
-				pD.push(damage);
-				// console.log(`${damage}`)
-				// primaryDamage += `${damage}`;
+
+		if(itemData.damageType){
+			for ( let [damage, d] of Object.entries(itemData.damageType)) {
+				if(d){
+					pD.push(damage);
+					// console.log(`${damage}`)
+					// primaryDamage += `${damage}`;
+				}
 			}
 		}
+
 
 		primaryDamage = pD.join(', ');
 
