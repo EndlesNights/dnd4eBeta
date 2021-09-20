@@ -260,21 +260,13 @@ export default class Item4e extends Item {
 		// DamageTypes
 		if(data.hasOwnProperty("damageType")){
 			if(data.damageType){
-				console.log(this.type)
 				let damType = [];
 				for ( let [damage, d] of Object.entries(data.damageType)) {
 					if(d){
-						console.log(damage)
 						damType.push(`${game.i18n.localize(DND4EBETA.damageTypes[damage])}`);
-						
 					}
 				}
-
 				labels.damageTypes = damType.join(", ");
-				// labels.damageTypes = damType.map(d => C.damageTypes[d[1]]).join(", ");
-				// labels.damageTypes = damType.map();
-				console.log(labels.damageTypes)
-				console.log(labels)
 			}
 		}
 
