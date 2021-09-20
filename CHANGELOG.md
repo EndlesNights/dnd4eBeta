@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.35
+- Removed and reworked some legesy code
+
 ## Version 0.2.34
 - Fixed an issue where rolling damage with no damage type would cause a diffrent issue some times.
 ## Version 0.2.33

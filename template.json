@@ -769,14 +769,14 @@
 		}
 	},
 	"consumable": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
 		"consumableType": "potion",
 		"uses": {
 		"autoDestroy": false
 		}
 	},
 	"equipment": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable", "itemMacro"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "mountable", "itemMacro"],
 		"armour": {
 			"type": "armour",
 			"subType": "cloth",
@@ -802,7 +802,7 @@
 		"proficient": true
 	},
 	"feat": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -820,7 +820,7 @@
 		"bonus": 2
 	},
 	"weapon": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable", "itemMacro"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "mountable", "itemMacro"],
 		"weaponType": "simpleM",
 		"weaponHand": "HMain",
 		"properties": {},
@@ -847,7 +847,7 @@
 		"critRangeImp": 20
 	},
 	"raceFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -855,7 +855,7 @@
 		}
 	},
 	"pathFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -863,7 +863,7 @@
 		}
 	},
 	"destinyFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -871,7 +871,7 @@
 		}
 	},
 	"ritual": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -879,7 +879,7 @@
 		}
 	},
 	"power": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"keyWords": [""],
 		"level": "1",
 		"powersource": "martial",

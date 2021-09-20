@@ -257,47 +257,68 @@ export default class Item4e extends Item {
 			labels.recharge = `${game.i18n.localize("DND4EBETA.Recharge")} [${chg.value}${parseInt(chg.value) < 6 ? "+" : ""}]`;
 		}
 
+		// DamageTypes
+		if(data.hasOwnProperty("damageType")){
+			if(data.damageType){
+				console.log(this.type)
+				let damType = [];
+				for ( let [damage, d] of Object.entries(data.damageType)) {
+					if(d){
+						console.log(damage)
+						damType.push(`${game.i18n.localize(DND4EBETA.damageTypes[damage])}`);
+						
+					}
+				}
+
+				labels.damageTypes = damType.join(", ");
+				// labels.damageTypes = damType.map(d => C.damageTypes[d[1]]).join(", ");
+				// labels.damageTypes = damType.map();
+				console.log(labels.damageTypes)
+				console.log(labels)
+			}
+		}
+
 		// Item Actions
 		if ( data.hasOwnProperty("actionType") ) {
 			// Save DC
-			let save = data.save || {};
-			if ( !save.ability ) save.dc = null;
-			else if ( this.isOwned ) { // Actor owned items
-				if ( save.scaling === "spell" ) save.dc = actorData.data.attributes.spelldc;
-				else if ( save.scaling !== "flat" ) save.dc = this.actor.getSpellDC(save.scaling);
-			} else { // Un-owned items
-				if ( save.scaling !== "flat" ) save.dc = null;
-			}
-			labels.save = save.ability ? `${game.i18n.localize("DND4EBETA.AbbreviationDC")} ${save.dc || ""} ${C.abilities[save.ability]}` : "";
+			// let save = data.save || {};
+			// if ( !save.ability ) save.dc = null;
+			// else if ( this.isOwned ) { // Actor owned items
+			// 	if ( save.scaling === "spell" ) save.dc = actorData.data.attributes.spelldc;
+			// 	else if ( save.scaling !== "flat" ) save.dc = this.actor.getSpellDC(save.scaling);
+			// } else { // Un-owned items
+			// 	if ( save.scaling !== "flat" ) save.dc = null;
+			// }
+			// labels.save = save.ability ? `${game.i18n.localize("DND4EBETA.AbbreviationDC")} ${save.dc || ""} ${C.abilities[save.ability]}` : "";
 
 			// DamageTypes
-			let dam = data.damage || {};
-			if ( dam.parts ) {
-				labels.damage = dam.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
-				labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
+			// let dam = data.damage || {};
+			// if ( dam.parts ) {
+			// 	labels.damage = dam.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
+			// 	labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
 
-				if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
-					if(this.data.data.damageType) {
-						for (let [id, data] of Object.entries(this.data.data.damageType)) {
-							if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
-						}
-					}
-				}
-			}
+			// 	if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
+			// 		if(this.data.data.damageType) {
+			// 			for (let [id, data] of Object.entries(this.data.data.damageType)) {
+			// 				if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
+			// 			}
+			// 		}
+			// 	}
+			// }
 
-			let damCrit = data.damageCrit || {};
-			if(damCrit.parts) {
-				labels.damage = damCrit.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
-				labels.damageTypes = damCrit.parts.map(d => C.damageTypes[d[1]]).join(", ");
+			// let damCrit = data.damageCrit || {};
+			// if(damCrit.parts) {
+			// 	labels.damage = damCrit.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
+			// 	labels.damageTypes = damCrit.parts.map(d => C.damageTypes[d[1]]).join(", ");
 
-				if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
-					if(this.data.data.damageType) {
-						for (let [id, data] of Object.entries(this.data.data.damageType)) {
-							if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
-						}
-					}
-				}				
-			}
+			// 	if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
+			// 		if(this.data.data.damageType) {
+			// 			for (let [id, data] of Object.entries(this.data.data.damageType)) {
+			// 				if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
+			// 			}
+			// 		}
+			// 	}				
+			// }
 		}
 
 		// Assign labels
@@ -868,11 +889,13 @@ export default class Item4e extends Item {
 
 		// Get message labels
 		const title = `${this.name} - ${game.i18n.localize("DND4EBETA.DamageRoll")}`;
-		let flavor = this.labels.damageTypes.length ? `${title} (${this.labels.damageTypes})` : title;
+		let flavor = this.labels.damageTypes?.length ? `${title} (${this.labels.damageTypes})` : title;
 
 		// Define Roll parts
-		const parts = itemData.damage.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
-		const partsCrit = itemData.damageCrit.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
+		const parts = Array.prototype.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
+		const partsCrit = Array.prototype.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
+		// const parts = itemData.damage.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
+		// const partsCrit = itemData.damageCrit.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
 
 		// itemData.damageType
 		let primaryDamage = ''
