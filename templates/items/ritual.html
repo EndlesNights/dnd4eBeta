@@ -16,7 +16,7 @@
 
 			<ul class="summary flexrow">
 				<li>
-					{{labels.featType}}
+					{{localize "DND4EBETA.Ritual"}}
 				</li>
 				<li>
 					<input type="text" name="data.requirements" value="{{data.requirements}}" placeholder="{{ localize 'DND4EBETA.Requirements' }}"/>
@@ -44,31 +44,6 @@
 		{{!-- Details Tab --}}
 		<div class="tab details" data-group="primary" data-tab="details">
 
-			<h3 class="form-header">{{ localize "DND4EBETA.FeatureUsage" }}</h3>
-
-			{{!-- Item Activation Template --}}
-			{{> "systems/dnd4eBeta/templates/items/parts/item-activation.html"}}
-
-			{{!-- Recharge Requirement --}}
-			{{#if data.activation.type}}
-			<div class="form-group recharge">
-				<label>{{ localize "DND4EBETA.FeatureActionRecharge" }}</label>
-				<div class="form-fields">
-					<span>{{ localize "DND4EBETA.FeatureRechargeOn" }}</span>
-					<input type="text" name="data.recharge.value" value="{{data.recharge.value}}"
-						   data-dtype="Number" placeholder="{{ localize 'DND4EBETA.FeatureRechargeResult' }}"/>
-					<label class="checkbox">
-						{{ localize "DND4EBETA.Charged" }}
-						<input type="checkbox" name="data.recharge.charged" {{checked data.recharge.charged}}/>
-					</label>
-				</div>
-			</div>
-			{{/if}}
-
-			<h3 class="form-header">{{ localize "DND4EBETA.FeatureAttack" }}</h3>
-
-			{{!-- Item Action Template --}}
-			{{> "systems/dnd4eBeta/templates/items/parts/item-action.html"}}
 
 		</div>
 

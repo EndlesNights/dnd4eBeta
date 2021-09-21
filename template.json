@@ -681,35 +681,6 @@
 				"amount": null
 			}
 		},
-		"action": {
-			"ability": null,
-			"actionType": null,
-			"attackBonus": 0,
-			"chatFlavor": "",
-			"critical": null,
-			"damage": {
-				"parts": [],
-				"versatile": ""
-			},
-			"damageCrit": {
-				"parts": [],
-				"versatile": ""
-			},
-			"damageImp": {
-				"parts": [],
-				"versatile": ""
-			},
-			"damageCritImp": {
-				"parts": [],
-				"versatile": ""
-			},
-			"formula": "",
-			"save": {
-				"ability": "",
-				"dc": null,
-				"scaling": "spell"
-			}
-		},
 		"mountable": {
 			"armour": {
 				"value": 10
@@ -834,6 +805,18 @@
 		"damageDice": {
 			"parts": [["1","8"]]
 		},
+		"damage": {
+			"parts": []
+		},
+		"damageCrit": {
+			"parts": []
+		},
+		"damageImp": {
+			"parts": []
+		},
+		"damageCritImp": {
+			"parts": []
+		},
 		"damageType": {"physical":true},
 		"brutalNum": 1,
 		"weaponGroup": {},
@@ -934,6 +917,18 @@
 		},
 		"effect": {
 			"detail": ""
+		},
+		"damage": {
+			"parts": []
+		},
+		"damageCrit": {
+			"parts": []
+		},
+		"damageImp": {
+			"parts": []
+		},
+		"damageCritImp": {
+			"parts": []
 		},
 		"trigger": "",
 		"requirement": "",

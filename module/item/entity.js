@@ -883,11 +883,9 @@ export default class Item4e extends Item {
 		const title = `${this.name} - ${game.i18n.localize("DND4EBETA.DamageRoll")}`;
 		let flavor = this.labels.damageTypes?.length ? `${title} (${this.labels.damageTypes})` : title;
 
-		// Define Roll parts
-		const parts = Array.prototype.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
-		const partsCrit = Array.prototype.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
-		// const parts = itemData.damage.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
-		// const partsCrit = itemData.damageCrit.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
+		// Define Roll  and add seconadry parts
+		const parts = itemData.damage.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
+		const partsCrit = itemData.damageCrit.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]` );
 
 		// itemData.damageType
 		let primaryDamage = ''
@@ -918,20 +916,20 @@ export default class Item4e extends Item {
 			//Should now be redudent with everything moved into the Helper#CommonReplace function
 
 			//Add seconadary weapons damage into parts
-			// if(weaponUse) {
-			// 	if(itemData.hit.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
-			// 		Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
-			// 	}
-			// 	if(itemData.hit.formula.includes("@wepCritBonus") && weaponUse.data.data.damageCrit.parts.length > 0) {
-			// 		Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
-			// 	}
-			// 	if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
-			// 		Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
-			// 	}
-			// 	if(itemData.hit.formula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImpCrit.parts.length > 0) {
-			// 		Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageImpCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
-			// 	}
-			// }
+			if(weaponUse) {
+				if(itemData.hit.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
+					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+				if(itemData.hit.formula.includes("@wepCritBonus") && weaponUse.data.data.damageCrit.parts.length > 0) {
+					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+				if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
+					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+				if(itemData.hit.formula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImpCrit.parts.length > 0) {
+					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageImpCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+				}
+			}
 		}
 	
 		// Adjust damage from versatile usage
