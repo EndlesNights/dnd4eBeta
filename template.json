@@ -831,35 +831,22 @@
 	},
 	"raceFeats": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
+		"requirements": ""
 	},
 	"pathFeats": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
+		"requirements": ""
 	},
 	"destinyFeats": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
+		"requirements": ""
 	},
 	"ritual": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
+		"chatFlavor": "",
+		"attribute": "skills.arc.total",
+		"formula": "@skill"
 	},
 	"power": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],

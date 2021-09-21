@@ -263,9 +263,6 @@
 				{{#each ../config.damageTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
 				{{/each}}
-				{{#each ../config.healingTypes as |name type|}}
-				<option value="{{type}}">{{name}}</option>
-				{{/each}}
 				{{/select}}
 			</select>
 			<a class="damage-control delete-damage"><i class="fas fa-minus"></i></a>
@@ -290,9 +287,6 @@
 				{{#select (lookup this "1") }}
 				<option value="">{{ localize "DND4EBETA.None" }}</option>
 				{{#each ../config.damageTypes as |name type|}}
-				<option value="{{type}}">{{name}}</option>
-				{{/each}}
-				{{#each ../config.healingTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
 				{{/each}}
 				{{/select}}
