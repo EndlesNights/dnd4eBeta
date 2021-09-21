@@ -4,6 +4,7 @@
 - Removed and reworked some legacy code
 - Fixed issue where secondary Damage formula wasn't working for Critial damage
 - Ritual Template rework, still need to add functionality
+- Added in a number of missing keywords
 
 ## Version 0.2.34
 - Fixed an issue where rolling damage with no damage type would cause a diffrent issue some times.
