@@ -13,6 +13,6 @@ The software component of this system is distributed under the GNUv3 license.
 * Open the Foundry application and click **"Install System"** in the **"Gane Systems"** tab.
 * Paste the following link: https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dev/system.json
 * Click "Install"
-* When creating a new Game World, select **"4th Edition"** under **Game Systems**.
+* When creating a new Game World, select **"DnD 4th Edition"** under **Game Systems**.
 
 ![image](https://user-images.githubusercontent.com/58280840/122214010-991a4d80-ce77-11eb-8b55-98f537e93ebf.png)
