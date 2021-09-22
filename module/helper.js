@@ -84,13 +84,13 @@ export class Helper {
 		return weaponUse;
 	}
 	
-	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1) {
+	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1, stringOnly = false) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula;
 
 		if(actorData) {
 
-			newFormula = Roll.replaceFormulaData(newFormula, actorData)
+			if (!stringOnly) newFormula = Roll.replaceFormulaData(newFormula, actorData);
 			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
 			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);
@@ -156,7 +156,7 @@ export class Helper {
 					if(!parts[i][0] || !parts[i][1]) continue;
 					if(weaponData.properties.bru) {
 						// dice += ` + (${parts[i][0]}*${weaponNum})d(${parts[i][1] - weaponData.brutal}) + (${weaponData.brutal}*${parts[i][0]}*${weaponNum})`;
-						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}rr<${weaponData.brutal}`;
+						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}rr<${weaponData.brutal || 1}`;
 					}
 					else{
 						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}`;
@@ -175,7 +175,7 @@ export class Helper {
 			//	-	dice damage
 			if(newFormula.includes("@powBase")) {
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
 				
 				if(quantity === "") quantity = 1;
 				
@@ -217,7 +217,13 @@ export class Helper {
 					if (i < parts.length - 1) dice += '+';
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				newFormula = newFormula.replace("@wepMax", dice);
+				let r = new Roll(`${dice}`)
+				if(dice){
+					r.evaluate({maximize: true});
+					newFormula = newFormula.replace("@wepMax", r.result);
+				} else {
+					newFormula = newFormula.replace("@wepMax", dice);
+				}
 			}
 			
 			// New method to handle base power dice from dropdown for critical hits
@@ -228,10 +234,18 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let rQuantity = new Roll(`${quantity}`)
+				rQuantity.evaluate({maximize: true});
+
+				//check if is valid number
+				if(this._isNumber(rQuantity.result)){ 
+					quantity = rQuantity.result;
+				} else {
+					quantity = 1;
+				}
 				
-				if(quantity !== "number") quantity = 1;
-				
+
 				// Handle Weapon Type Damage
 				if(diceType.includes("weapon")){
 					let parts = weaponData.damageDice.parts;
@@ -309,6 +323,68 @@ export class Helper {
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
 				newFormula = newFormula.replace("@wepDice", "");
 			}
+
+			if(newFormula.includes("@powBase")) {
+				let quantity = powerData.hit.baseQuantity;
+				let diceType = powerData.hit.baseDiceType;
+				
+				if(diceType == "weapon"){
+					newFormula = newFormula.replace("@powBase", '0');
+				} else {
+					if(quantity === "") quantity = 1;
+				
+					let dice = "";
+					
+					// Handle Flat Type Damage
+					if(diceType.includes("flat")) {
+						dice += `${quantity}`;
+					}
+					// Handle Dice Type Damage
+					else{
+						dice += `${quantity}${diceType}`;
+					}
+	
+					dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+					newFormula = newFormula.replace("@powBase", dice);
+				}
+
+			}
+
+
+			if(newFormula.includes("@powMax")) {
+				let dice = "";
+				let quantity = powerData.hit.baseQuantity;
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let rQuantity = new Roll(`${quantity}`)
+				rQuantity.evaluate({maximize: true});
+				
+				if(this._isNumber(rQuantity.result)) {
+					quantity = rQuantity.result;
+				} else {
+					quantity = 1;
+				}
+				
+				// Handle Weapon Type Damage
+				if(diceType.includes("weapon")){
+					let parts = weaponData.damageDice.parts;
+						for(let i = 0; i< parts.length; i++) {
+							if(!parts[i][0] || !parts[i][1]) continue;
+							dice += `(${quantity} * ${parts[i][0]} * ${parts[i][1]})`
+							if (i < parts.length - 1) dice += '+';
+						}
+				}
+				// Handle Flat Type Damage
+				else if(diceType.includes("flat")) {
+					dice += `${quantity}`;
+				}
+				// Handle Dice Type Damage
+				else{
+					let diceValue = diceType.match(/\d+/g).join('');
+					dice += `${quantity} * ${diceValue}`;
+				}
+				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				newFormula = newFormula.replace("@powMax", dice);
+			}			
 		}
 
 		//check for actor values in formula
@@ -433,6 +509,9 @@ export class Helper {
 		}
 		if(!chatData.postSpecial && chatData.special) {
 			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
+				powerDetail += `<p>${entry}</p>`;
+			}
 		}
 
 		if(chatData.attack.isAttack) {
@@ -446,6 +525,9 @@ export class Helper {
 		}
 		if(chatData.postSpecial && chatData.special) {
 			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
+				powerDetail += `<p>${entry}</p>`;
+			}
 		}
 
 		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
@@ -457,5 +539,9 @@ export class Helper {
 		}
 
 		return powerDetail;
+	}
+
+	static _isNumber(str){
+		return /^-?\d+$/.test(str);
 	}
 }

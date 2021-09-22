@@ -1,5 +1,58 @@
 # Changelog
 
+## Version 0.2.35
+- Removed and reworked some legacy code
+- Fixed issue where secondary Damage formula wasn't working for Critial damage
+- Ritual Template rework, still need to add functionality
+- Added in a number of missing keywords
+
+## Version 0.2.34
+- Fixed an issue where rolling damage with no damage type would cause a diffrent issue some times.
+## Version 0.2.33
+- Quick fix, issue with no damage type causing an error to occure while rolling damage.
+
+## Version 0.2.32
+- Changed how mouseing over status effect titles are displayed within the renderTokenHUD
+
+## Version 0.2.31
+- Early version of automatic damage calculation implementation, when a actor is selected and a suer right clicks on a roll, the apply damage options will now take the actors Resistances, Weaknesses, and immunities into account when apply damage.
+- Added an additional option denoted as 'true damage' which will ignore all Resistances, Weaknesses, and immunities calculations.
+- Added character image to npc sheet.
+- automationCombat option is now set to true by default
+- Added Auto Generate Power Card Details option to the system settings as a client system setting.
+- Added a system option to determine whether generated NPC will have Advanced Math Options turned on that auto calculate defenses and skills, or not.
+- adjusted the height of the Resistances & Weaknesses div so that the scroll bar should now be the proper length.
+
+## Version 0.2.30
+- fixed an issue where if using a situaltion bonus in conjuntion with one of the possive common attack bonuses would cause the two numbers to append together rather than add as intentded.
+- correctly changed compatibleCoreVersion from 8.8, to 8.9
+
+## Version 0.2.29
+- fixed an issue where non attack related d20 rolls would fail to roll if another token was targeted.
+- fixed an isse with dice tag '@powerMax' to work correctly when rolling multiple dice
+- fixed text color issue of charges for inventory
+- Character sheets will now be able to auto detect when you're wearing Heavy armour, prevoise option sitll works as an override to allow stat use even if using heavy armour. Can now also set the mod used for AC to none.
+- character/npc sheet bonuses dialog windows can now also accetpe bonus values in the notation of "@path.to.data" 
+
+## Version 0.2.28
+- fix issue where writing and then deleting a descrition on a item/power would bause it to save and display as "null"
+
+## Version 0.2.27
+- fixed issue where detaul value for brutal weapons was null.
+- Templates generated from the 'Place Measured Template' will now take the character size into account when generating close burst area templates.
+- change to how @powerMax works, should now work without the requirment of a weapon
+- fixed issue where item Equipment Sidebar was not properly displaying WIL defence bonus.
+
+## Version 0.2.26
+- change to how @powerBase works, should now work without the requirment of a weapon
+- changed default power formulas for NPC sheet, so the basic attack no longer uses a weapon by default
+- fixed some localization
+
+## Version 0.2.25
+- Changed how multitarget attack rolls work
+- Multitarget attack rolls now use a custom Roll class, and all rolls are displayed in the same chat message to tidy up chat log
+- For now, a single roll dialogue is used for situational bonuses, which apply universally to all rolls (this will change in future)
+
 ## Version 0.2.24
 - Fix issue where defences would no longer automatically add in ability modifies.
 

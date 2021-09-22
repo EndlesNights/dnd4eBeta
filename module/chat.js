@@ -92,6 +92,12 @@ export const addChatMessageContextOptions = function(html, options) {
 			icon: '<i class="fas fa-user-shield"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, 0.5)
+		},
+		{
+			name: game.i18n.localize("DND4EBETA.ChatContextTrueDamage"),
+			icon: '<i class="fas fa-user-shield"></i>',
+			condition: canApply,
+			callback: li => applyChatCardDamage(li, 1, true)
 		}
 	);
 	return options;
@@ -107,14 +113,57 @@ export const addChatMessageContextOptions = function(html, options) {
  * @param {Number} multiplier   A damage multiplier to apply to the rolled damage.
  * @return {Promise}
  */
-function applyChatCardDamage(li, multiplier) {
+function applyChatCardDamage(li, multiplier, trueDamage=false) {
 	const message = game.messages.get(li.data("messageId"));
 	const roll = message.roll;
+
+	console.log(roll.terms)
+	let damage = {};
+
+	if(!trueDamage){
+		roll.terms.forEach(e => {
+			if(e.number){
+				let damageTypesArray = e.flavor.replace(/ /g,'').split(',');
+				let total = e.total;
+				let divider = damageTypesArray.length;
+	
+				damageTypesArray.forEach(f => {
+					let val = Math.ceil(total / divider)
+	
+					if(damage[f]){
+						damage[f] += val;
+					} else {
+						damage[f] = val;
+					}
+	
+					total -= val;
+					divider --;
+				});
+			}
+		});	
+	}
+
+
+	console.log(damage)
 	return Promise.all(canvas.tokens.controlled.map(t => {
 		const a = t.actor;
-		return a.applyDamage(roll.total, multiplier);
+		if(multiplier < 0 || trueDamage){ //if it's healing or true damage just heal directly
+			console.log( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealth: ${roll.total}`)
+			return a.applyDamage(roll.total, multiplier);
+		} else {
+			return a.calcDamage(damage, multiplier);
+		}
+		
 	}));
 }
 
+// decimal total = 143.13m;
+// int divider = 5;
+// while (divider > 0) {
+//   decimal amount = Math.Round(total / divider, 2);
+//   Console.WriteLine(amount);
+//   total -= amount;
+//   divider--;
+// }
 
 /* -------------------------------------------- */

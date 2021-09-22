@@ -114,6 +114,10 @@
 	width: calc(100% - 278px);
 	display: inline-block;
 }
+.dnd4eBeta.sheet .sheet-header .summary-type {
+	width: calc(100% - 460px);
+	display: inline-block;
+}
 .dnd4eBeta.sheet .sheet-header .summary-race,
 .dnd4eBeta.sheet .sheet-header .summary-class {
 	width: calc(26% - 34px);
@@ -1302,7 +1306,7 @@ font-size: 12px;
 	/* border: 2px groove #eeede0; */
 	border-radius: 4px;
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
-	height: 100%;
+	height: 328px;
 	width: 100%;
 	float: left;
 }
@@ -1807,8 +1811,11 @@ font-size: 12px;
 	width: 24px;
 	text-align: right;
 }
-.dnd4eBeta.sheet .items-list input {
+.dnd4eBeta.sheet .powers .items-list input {
 	color: #e0e0e0;
+}
+.dnd4eBeta.sheet .inventory .items-list input {
+	color: #7a7971;
 }
 .dnd4eBeta.sheet .items-list .item .item-properties {
 	margin-top: 3px;
@@ -2082,6 +2089,7 @@ font-size: 12px;
 	border-bottom: 3px solid #44191A;
 }
 .dnd4eBeta.sheet.item .details input[type="text"],
+.dnd4eBeta.sheet.item .details input[type="textarea"],
 .dnd4eBeta.sheet.item .details .damage-res,
 .dnd4eBeta.sheet.item .details select {
 	height: 24px;
@@ -2101,7 +2109,7 @@ font-size: 12px;
 	flex: 1.5;
 }
 .dnd4eBeta.sheet.item .details .form-group.uses-per input {
-	flex: 0 0 32px;
+	flex: 0 0 42px;
 }
 .dnd4eBeta.sheet.item .details .form-group.uses-per span {
 	flex: 0 0 16px;
@@ -2166,6 +2174,23 @@ font-size: 12px;
 	flex: 1;
 }
 .dnd4eBeta.sheet.item .damage-control {
+	width: 18px;
+	flex: 0 0 18px;
+	line-height: 24px;
+	float: right;
+	text-align: right;
+	color: #7a7971;
+}
+.dnd4eBeta.sheet.item .onetext-parts {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.dnd4eBeta.sheet.item .onetext-parts .onetext-part {
+	flex: 0 0 100%;
+	padding: 0;
+}
+.dnd4eBeta.sheet.item .onetext-control {
 	width: 18px;
 	flex: 0 0 18px;
 	line-height: 24px;
@@ -2320,6 +2345,11 @@ font-size: 12px;
 	background: linear-gradient(90deg, #c3c2b7, #c3c2b718);
 }
 
+span.flavor-text.critical,
+span.flavor-text.fumble {
+	font-weight: bold;
+}
+
 .dice-roll .dice-total.success {
 	color: inherit;
 	background: #c7d0c0;
@@ -2378,4 +2408,27 @@ font-size: 12px;
 	visibility: visible;
 	pointer-events: none;
 	opacity: 1;
+}
+
+
+.status-effect-title {
+	visibility: hidden;
+	position: absolute;
+	top: -38px;
+	width: 175px;
+	font-size: 21px;
+	padding: 3px;
+	box-sizing: content-box;
+	background: rgba(0, 0, 0, 0.6);
+	box-shadow: 0 0 15px #000;
+	border: 1px solid #333;
+	border-radius: 4px;
+	height: 26px;
+
+	line-height: 30px;
+	text-align: center;
+}
+
+.status-effect-title.active{
+	visibility: visible;
 }

@@ -677,7 +677,7 @@ export default class ActorSheet4e extends ActorSheet {
 			html.find('.item-import').click(this._onItemImport.bind(this));
 
 			// Active Effect management
-			html.find(".effect-control").click(event => onManageActiveEffect(event, this.entity));
+			html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
 		
 			// Item summaries
 			html.find('.item .item-name h4').click(event => this._onItemSummary(event));		
@@ -754,11 +754,15 @@ export default class ActorSheet4e extends ActorSheet {
 			if (item.type === "power") {
 				
 				let div = $(`<div class="item-summary"></div>`);
+
+
 				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
-				let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false).data)}</div>`);
-				
 				div.append(descrip);
-				div.append(details);
+
+				if(item.data.data.autoGenChatPowerCard){
+					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false).data)}</div>`);
+					div.append(details);
+				}
 
 				li.append(div.hide());
 				div.slideDown(200);
@@ -841,6 +845,26 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 		}
 
+		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4eBeta", "powerAutoGenerateLableOption");
+		
+		if(this.actor.type === "NPC"){
+			
+			itemData.data.weaponType = "none";
+			itemData.data.weaponUse = "none";
+
+			itemData.data.attack = {formula:"@powerMod+@lvhalf"};
+			itemData.data.hit  = {
+				formula:"@powBase + @powerMod",
+				critFormula:"@powMax + @powerMod",
+				baseDiceType: "d8",
+				detail: "1d8 + Strength modifier damage."
+			};
+
+			// itemData.data.attack.formula = "@powerMod+@lvhalf";
+			// itemData.data.hit.formula = "@powBase + @powerMod";
+			// itemData.data.hit.critFormula = "@powMax + @powerMod + @wepDamage";
+		}
+		
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
