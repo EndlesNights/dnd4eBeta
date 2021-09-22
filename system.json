@@ -1,7 +1,7 @@
 {
-	"name": "dnd4eBeta",
+	"name": "dnd4e",
 	"title": "4th Edition",
-	"description": "A minimalist custom test build of 4th Ed.",
+	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
 	"version": "0.2.35",
 	"minimumCoreVersion": "0.8.5",
 	"compatibleCoreVersion": "0.8.9",
