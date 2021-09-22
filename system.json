@@ -28,7 +28,7 @@
 	"primaryTokenAttribute": "attributes.hp",
 	"secondaryTokenAttribute": null,
   	"url": "https://github.com/EndlesNights/dnd4eBeta",
-	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dev/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/dev/dnd4eBeta.zip"
+	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/main/dnd4eBeta.zip"
 	
 }
