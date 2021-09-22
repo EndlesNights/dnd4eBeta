@@ -5,7 +5,7 @@
 * **Foundry VTT Compatibility**: 0.8.9
 
 ### Description
-A beta implementation of 4th Edition of the worls most popular Dragon Hunting RPG game system for [Foundry Virtual Tabletop](https://foundryvtt.com/) in accordance to the[ 4th Edition System Reference Document](http://weirdzine.com/wp-content/uploads/2015/07/4E_SRD-1.pdf). This system hopes to provide a basis that eases some of the cruncher side of 4th Edition, by providing a feature rich character sheet and some basic automation both inside of and outside of combat.
+A beta implementation of 4th Edition of the worlds most popular Dragon Hunting RPG game system for [Foundry Virtual Tabletop](https://foundryvtt.com/) in accordance to the[ 4th Edition System Reference Document](http://weirdzine.com/wp-content/uploads/2015/07/4E_SRD-1.pdf). This system hopes to provide a basis that eases some of the cruncher side of 4th Edition, by providing a feature rich character sheet and some basic automation both inside of and outside of combat.
 
 The software component of this system is distributed under the GNUv3 license.
 
