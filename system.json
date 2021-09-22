@@ -1,6 +1,6 @@
 {
 	"name": "dnd4eBeta",
-	"title": "4th Edition Beta",
+	"title": "4th Edition",
 	"description": "A minimalist custom test build of 4th Ed.",
 	"version": "0.2.35",
 	"minimumCoreVersion": "0.8.5",
