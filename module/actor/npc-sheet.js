@@ -14,7 +14,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 	}
 	/** @override */
 	get template() {
-		return `systems/dnd4eBeta/templates/npc-sheet.html`;
+		return `systems/dnd4e/templates/npc-sheet.html`;
 	}
 
 	prepareData() {

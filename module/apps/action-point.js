@@ -5,7 +5,7 @@ export class ActionPointDialog extends DocumentSheet {
 		return mergeObject(options, {
 			id: "action-point",
 			classes: ["dnd4eBeta", "action-point"],
-			template: "systems/dnd4eBeta/templates/apps/action-point.html",
+			template: "systems/dnd4e/templates/apps/action-point.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -36,7 +36,7 @@ export class ActionPointDialog extends DocumentSheet {
 				// flavor: restFlavor,
 				content: `${this.object.data.name} uses an actionpoint gaining the following benifits:
 				<ul>
-					<li>Gaining an addtional Standard ACtion</li>
+					<li>Gaining an addtional Standard Action</li>
 					${extra}
 				</ul>`
 				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})

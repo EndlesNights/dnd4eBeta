@@ -48,7 +48,7 @@ export default class AbilityUseDialog extends Dialog {
     if ( item.data.type === "spell" ) this._getSpellData(actorData, itemData, data);
 
     // Render the ability usage template
-    const html = await renderTemplate("systems/dnd4eBeta/templates/apps/ability-use.html", data);
+    const html = await renderTemplate("systems/dnd4e/templates/apps/ability-use.html", data);
 
     // Create the Dialog and return as a Promise
     const icon = data.hasSpellSlots ? "fa-magic" : "fa-fist-raised";

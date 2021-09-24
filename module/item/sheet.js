@@ -36,7 +36,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	get template() {
-		const path = "systems/dnd4eBeta/templates/items/";
+		const path = "systems/dnd4e/templates/items/";
 		return `${path}/${this.item.data.type}.html`;
 	}
 

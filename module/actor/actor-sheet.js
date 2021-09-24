@@ -72,7 +72,7 @@ export default class ActorSheet4e extends ActorSheet {
   /** @override */
   get template() {
     // if ( !game.user.isGM && this.actor.limited ) return "systems/dnd5e/templates/actors/limited-sheet.html";
-    return `systems/dnd4eBeta/templates/actor-sheet.html`;
+    return `systems/dnd4e/templates/actor-sheet.html`;
   }
 
   /* -------------------------------------------- */

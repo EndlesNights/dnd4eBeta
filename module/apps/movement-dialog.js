@@ -6,7 +6,7 @@ export class MovementDialog extends DocumentSheet {
 		return mergeObject(options, {
 			id: "movement-dialog",
 			classes: ["dnd4eBeta", "movement-dialog"],
-			template: "systems/dnd4eBeta/templates/apps/movement-dialog.html",
+			template: "systems/dnd4e/templates/apps/movement-dialog.html",
 			width: 420,
 			closeOnSubmit: false
 		});

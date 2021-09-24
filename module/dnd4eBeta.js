@@ -98,7 +98,7 @@ Hooks.once("init", async function() {
 
 		// Define dependency on our own custom vue components for when we need it
 		// Dlopen.register('actor-sheet', {
-		// 	scripts: "/systems/dnd4eBeta/dist/vue-components.min.js",
+		// 	scripts: "/systems/dnd4e/dist/vue-components.min.js",
 		// 	// dependencies: [ "vue-select", "vue-numeric-input" ]
 		// });
 });

@@ -13,7 +13,7 @@ export class MultiAttackRoll extends Roll{
 	/**
 	 * Custom chat template to handle multiroll attacks 
 	 */
-	static CHAT_TEMPLATE = "systems/dnd4eBeta/templates/chat/multiattack_roll_template.html";
+	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/multiattack_roll_template.html";
 
 	get multirollData() {
 		return this._multirollData;
@@ -353,7 +353,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
 	// Render modal dialog
 	let newFlavor = "";
-	template = template || "systems/dnd4eBeta/templates/chat/roll-dialog.html";
+	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
 		formula: parts.join(" + "),
 		data: data,
@@ -467,7 +467,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 	partsCrit = partsCrit?.concat(["@bonus"]);
 
 	// Render modal dialog
-	template = template || "systems/dnd4eBeta/templates/chat/roll-dialog.html";
+	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
 		formula: critical ? partsCrit.join(" + ") : parts.join(" + "),
 		data: data,
