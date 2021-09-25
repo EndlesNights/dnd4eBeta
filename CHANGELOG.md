@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.37
+- Changed some more file directories to match current namespace
+- Initive tiebreaker should now work properly
+- Initive tiebreaker is now on by default
+
 ## Version 0.2.36
 - Fixed some typos
 - Removed Unused lines from English localization
