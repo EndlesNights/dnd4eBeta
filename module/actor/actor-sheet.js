@@ -845,7 +845,7 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 		}
 
-		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4eBeta", "powerAutoGenerateLableOption");
+		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLableOption");
 		
 		if(this.actor.type === "NPC"){
 			

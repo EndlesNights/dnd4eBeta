@@ -44,7 +44,7 @@ export class MultiAttackRoll extends Roll{
 
 			let hitState = "";
 			
-			if(game.settings.get("dnd4eBeta", "automationCombat")){
+			if(game.settings.get("dnd4e", "automationCombat")){
 				if (critState === " critical"){
 					hitState = "Critical Hit!"
 				} else if (critState === " fumble"){
@@ -435,7 +435,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 
 		// Modify the damage formula for critical hits
 		if ( crit === true ) {
-			// let add = (actor && actor.getFlag("dnd4eBeta", "savageAttacks")) ? 1 : 0;
+			// let add = (actor && actor.getFlag("dnd4e", "savageAttacks")) ? 1 : 0;
 			// let mult = 2;
 			// roll.alter(add, mult);
 			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;

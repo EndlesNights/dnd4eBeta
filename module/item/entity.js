@@ -1273,7 +1273,7 @@ export default class Item4e extends Item {
 				top: options.event ? options.event.clientY - 80 : null,
 				left: window.innerWidth - 710,
 			},
-			// halflingLucky: this.actor.getFlag("dnd4eBeta", "halflingLucky" ) || false,
+			// halflingLucky: this.actor.getFlag("dnd4e", "halflingLucky" ) || false,
 			messageData: {"flags.dnd4eBeta.roll": {type: "tool", itemId: this.id }}
 		}, options);
 	

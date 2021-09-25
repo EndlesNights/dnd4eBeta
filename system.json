@@ -22,7 +22,6 @@
 		}
 	],
 	"socket": true,
-	"initiative": "1d20 + @attributes.init.value + (@attributes.init.value / 100)",
 	"gridDistance": 1,
 	"gridUnits": "sq",
 	"primaryTokenAttribute": "attributes.hp",

@@ -3,7 +3,7 @@ export const registerSystemSettings = function() {
 	/**
 	 * Track the system version upon which point a migration was last applied
 	 */
-	game.settings.register("dnd4eBeta", "systemMigrationVersion", {
+	game.settings.register("dnd4e", "systemMigrationVersion", {
 		name: "System Migration Version",
 		scope: "world",
 		config: false,
@@ -14,7 +14,7 @@ export const registerSystemSettings = function() {
 	/**
 	 * Register resting variants
 	 */
-	// game.settings.register("dnd4eBeta", "restVariant", {
+	// game.settings.register("dnd4e", "restVariant", {
 		// name: "SETTINGS.4eRestN",
 		// hint: "SETTINGS.4eRestL",
 		// scope: "world",
@@ -31,7 +31,7 @@ export const registerSystemSettings = function() {
 	/**
 	 * Register diagonal movement rule setting
 	 */
-	game.settings.register("dnd4eBeta", "diagonalMovement", {
+	game.settings.register("dnd4e", "diagonalMovement", {
 		name: "SETTINGS.4eDiagN",
 		hint: "SETTINGS.4eDiagL",
 		scope: "world",
@@ -49,7 +49,7 @@ export const registerSystemSettings = function() {
 	/**
 	 * Register Initiative formula setting
 	 */
-	game.settings.register("dnd4eBeta", "initiativeDexTiebreaker", {
+	game.settings.register("dnd4e", "initiativeDexTiebreaker", {
 		name: "SETTINGS.4eInitTBN",
 		hint: "SETTINGS.4eInitTBL",
 		scope: "world",
@@ -61,7 +61,7 @@ export const registerSystemSettings = function() {
 	/**
 	 * Require Currency Carrying Weight
 	 */
-	game.settings.register("dnd4eBeta", "currencyWeight", {
+	game.settings.register("dnd4e", "currencyWeight", {
 		name: "SETTINGS.4eCurWtN",
 		hint: "SETTINGS.4eCurWtL",
 		scope: "world",
@@ -74,7 +74,7 @@ export const registerSystemSettings = function() {
 	 * Determins if the Advanced Math Options for NPC's is set during their generation
 	 */
 
-	 game.settings.register("dnd4eBeta", "npcMathOptions", {
+	 game.settings.register("dnd4e", "npcMathOptions", {
 		name: "SETTINGS.4eNpcMathOptionsN",
 		hint: "SETTINGS.4eNpcMathOptionsL",
 		scope: "world",
@@ -86,7 +86,7 @@ export const registerSystemSettings = function() {
 	// /**
 	//  * Option to disable XP bar for session-based or story-based advancement.
 	//  */
-	// game.settings.register("dnd4eBeta", "disableExperienceTracking", {
+	// game.settings.register("dnd4e", "disableExperienceTracking", {
 	// 	name: "SETTINGS.4eNoExpN",
 	// 	hint: "SETTINGS.4eNoExpL",
 	// 	scope: "world",
@@ -99,7 +99,7 @@ export const registerSystemSettings = function() {
 	/**
 	 * Option to automatically generate powers with the Auto Generate Power Card Details set to true or false
 	 */
-	 game.settings.register("dnd4eBeta", "powerAutoGenerateLableOption", {
+	 game.settings.register("dnd4e", "powerAutoGenerateLableOption", {
 		name: "SETTINGS.4ePowerAutoGenerateLableOptionN",
 		hint: "SETTINGS.4ePowerAutoGenerateLableOptionL",
 		scope: "client",
@@ -114,7 +114,7 @@ export const registerSystemSettings = function() {
 	/**
 	 * Option to automatically collapse Item Card descriptions
 	 */
-	game.settings.register("dnd4eBeta", "autoCollapseItemCards", {
+	game.settings.register("dnd4e", "autoCollapseItemCards", {
 		name: "SETTINGS.4eAutoCollapseCardN",
 		hint: "SETTINGS.4eAutoCollapseCardL",
 		scope: "client",
@@ -129,7 +129,7 @@ export const registerSystemSettings = function() {
 	/**
 	 * Option to automaticly roll attack rolls agianst targeted tokens defence values, and determin if the attack is a hit/miss.
 	 */
-	game.settings.register("dnd4eBeta", "automationCombat",{
+	game.settings.register("dnd4e", "automationCombat",{
 		name: "SETTINGS.4eAutomationCombatN",
 		hint: "SETTINGS.4eAutomationCombatL",
 		scope: "client",
@@ -145,7 +145,7 @@ export const registerSystemSettings = function() {
 	// /**
 	//  * Option to allow GMs to restrict polymorphing to GMs only.
 	//  */
-	// game.settings.register('dnd4eBeta', 'allowPolymorphing', {
+	// game.settings.register('dnd4e', 'allowPolymorphing', {
 	// 	name: 'SETTINGS.4eAllowPolymorphingN',
 	// 	hint: 'SETTINGS.4eAllowPolymorphingL',
 	// 	scope: 'world',
@@ -157,7 +157,7 @@ export const registerSystemSettings = function() {
 	/**
 	 * Remember last-used polymorph settings.
 	 */
-	// game.settings.register('dnd4eBeta', 'polymorphSettings', {
+	// game.settings.register('dnd4e', 'polymorphSettings', {
 	// 	scope: 'client',
 	// 	default: {
 	// 		keepPhysical: false,
