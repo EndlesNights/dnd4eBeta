@@ -351,7 +351,28 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		// else return _roll(parts, 0);
 	}
 
+
 	// Render modal dialog
+	var targDataArray = {
+		targNameArray: []
+	}
+	if (game.user.targets.size) {
+		const numTargets = game.user.targets.size;
+		const targetArr = Array.from(game.user.targets);
+		targDataArray.hasTarget = true;
+		for (let targ = 0; targ < numTargets; targ++) {
+			let targName = targetArr[targ].data.name;
+			targDataArray.targNameArray.push(targName);
+		}
+	} else {
+		targDataArray.targNameArray.push('');
+		targDataArray.hasTarget = false;
+	}
+	if (targDataArray.targNameArray.length == 1) {
+		targDataArray.multiTargetCheck = false;
+	} else {
+		targDataArray.multiTargetCheck = true;
+	}
 	let newFlavor = "";
 	template = template || "systems/dnd4eBeta/templates/chat/roll-dialog.html";
 	let dialogData = {
@@ -362,7 +383,8 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		config: CONFIG.DND4EBETA,
 		flavor: newFlavor || flavor,
 		isAttackRoll: isAttackRoll,
-		isD20Roll: true
+		isD20Roll: true,
+		targetData: targDataArray
 	};
 	const html = await renderTemplate(template, dialogData);
 

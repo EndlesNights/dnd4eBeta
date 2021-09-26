@@ -2432,3 +2432,12 @@ span.flavor-text.fumble {
 .status-effect-title.active{
 	visibility: visible;
 }
+
+.multitarget-tab {
+	display: none;
+}
+
+.multitarget-np-flex {
+	display:flex;
+	justify-content:space-between;
+}
