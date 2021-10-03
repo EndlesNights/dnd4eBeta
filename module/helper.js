@@ -472,7 +472,13 @@ export class Helper {
 			powerDetail += ` ${CONFIG.DND4EBETA.weaponType[chatData.weaponType]}`;
 			chatData.rangePower ? powerDetail += `</b> ${chatData.rangePower}</span>` : powerDetail += `</b></span>`;
 			
-		} 
+		}
+		else if (chatData.rangeType === "melee") {
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")}</b> ${chatData.rangePower}</span>`;
+		}
+		else if (chatData.rangeType === "reach") {
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.rangeReach")}</b> ${chatData.rangePower}</span>`;
+		}
 		else if (chatData.rangeType === "range") {
 			powerDetail += ` ${game.i18n.localize("DND4EBETA.Range")}</b> ${chatData.rangePower}</span>`;
 		}
@@ -485,7 +491,7 @@ export class Helper {
 		else if (chatData.rangeType === "personal") {
 			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
 		}
-		else if (chatData.rangeType === "trouch") {
+		else if (chatData.rangeType === "touch") {
 			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")} ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
 		}
 		else {
