@@ -442,8 +442,8 @@ export class Helper {
 	}
 
 	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
-
-		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]} ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}`;
+		let powerSource = chatData.powersource !== "" ? ` ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}` : ""
+		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]}${powerSource}`;
 		let tag = [];
 
 		if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
