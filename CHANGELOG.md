@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.38
+- Added in meele and reach rang options for powers attacks (merge from [draconas1](https://github.com/draconas1))
+
 ## Version 0.2.37
 - Changed some more file directories to match current namespace
 - Initive tiebreaker should now work properly
