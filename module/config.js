@@ -588,6 +588,8 @@ DND4EBETA.weaponType = {
 
 DND4EBETA.rangeType = {
 	"weapon": "DND4EBETA.rangeWeapon",
+	"melee": "DND4EBETA.rangeMelee",
+	"reach": "DND4EBETA.rangeReach",
 	"range" : "DND4EBETA.rangeRanged",
 	"closeBurst": "DND4EBETA.rangeCloseBurst",
 	"closeBlast": "DND4EBETA.rangeCloseBlast",
