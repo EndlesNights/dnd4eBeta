@@ -2,6 +2,8 @@
 
 ## Version 0.2.38
 - Added in meele and reach rang options for powers attacks (merge from [draconas1](https://github.com/draconas1))
+- Issue fixed where Blank Power Source results in "undefined" in power card (merge from [draconas1](https://github.com/draconas1))
+- Added Recharge condition box text box to power config window (merge from [draconas1](https://github.com/draconas1))
 
 ## Version 0.2.37
 - Changed some more file directories to match current namespace
