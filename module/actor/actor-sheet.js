@@ -404,6 +404,19 @@ export default class ActorSheet4e extends ActorSheet {
 		} else if(itemData.data.rangeType === "touch") {
 			itemData.data.rangeText = "Melee Touch"
 			itemData.data.rangeTextShort = "M-T"
+		} else if(itemData.data.rangeType === "melee"){
+			if(itemData.data.rangePower === undefined || itemData.data.rangePower === null){
+				itemData.data.rangeText = `Melee`;
+				itemData.data.rangeTextShort = `M`;
+			} else {
+				itemData.data.rangeText = `Melee ${itemData.data.rangePower}`;
+				itemData.data.rangeTextShort = `M`;
+				itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
+			}
+		} else if(itemData.data.rangeType === "reach"){
+			itemData.data.rangeText = `Reach ${itemData.data.rangePower}`;
+			itemData.data.rangeTextShort = `R`;
+			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "weapon") {
 
 			try {
@@ -423,8 +436,8 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 
 		} else {
-			itemData.data.rangeText = "Not Avalible"
-			itemData.data.rangeTextShort = "NA"
+			itemData.data.rangeText = game.i18n.localize("DND4EBETA.NotAvalible");
+			itemData.data.rangeTextShort = game.i18n.localize("DND4EBETA.NotAvalibleShort");
 		}
 	}
   /* -------------------------------------------- */
