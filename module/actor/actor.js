@@ -17,7 +17,7 @@ export class Actor4e extends Actor {
 	}
 //   getRollData() {
 //     const data = super.getRollData();
-//     const shorthand = game.settings.get("dnd4eBeta", "macroShorthand");
+//     const shorthand = game.settings.get("dnd4e", "macroShorthand");
 
 	// Re-map all attributes onto the base roll data
 	// if ( !!shorthand ) {
@@ -51,7 +51,7 @@ export class Actor4e extends Actor {
 		super(data, context);
 		if(data.type==='NPC'){
 			if(data?.data?.advancedCals == undefined){
-				this.data.data.advancedCals = game.settings.get("dnd4eBeta", "npcMathOptions");
+				this.data.data.advancedCals = game.settings.get("dnd4e", "npcMathOptions");
 
 			}
 		}
@@ -724,7 +724,7 @@ export class Actor4e extends Actor {
 		flavText = flavText.replace("@label", this.data.data.skills[skillId].label);
 		
 		// Reliable Talent applies to any skill check we have full or better proficiency in
-		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4eBeta", "reliableTalent"));
+		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4e", "reliableTalent"));
 		// Roll and return
 		
 		return d20Roll(mergeObject(options, {
@@ -733,7 +733,7 @@ export class Actor4e extends Actor {
 			title: game.i18n.format("DND4EBETA.SkillPromptTitle", {skill: CONFIG.DND4EBETA.skills[skillId]}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
-			//halflingLucky: this.getFlag("dnd4eBeta", "halflingLucky"),
+			//halflingLucky: this.getFlag("dnd4e", "halflingLucky"),
 			//reliableTalent: reliableTalent
 		}));
 	}	
@@ -881,12 +881,12 @@ export class Actor4e extends Actor {
 		let weight = 0;
 		
 		//Weight Currency
-		if ( game.settings.get("dnd4eBeta", "currencyWeight") ) {
+		if ( game.settings.get("dnd4e", "currencyWeight") ) {
 			for (let [e, v] of Object.entries(actorData.data.currency)) {
 				weight += (e == "ad" ? v/500 : v/50);
 			}
 		}
-		// console.log(game.settings.get("dnd4eBeta", "currencyWeight"))
+		// console.log(game.settings.get("dnd4e", "currencyWeight"))
 		//Weight Ritual Components
 		for (let [e, v] of Object.entries(actorData.data.ritualcomp)) {
 			// weight += v/100 * 2.205;

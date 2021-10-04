@@ -98,7 +98,7 @@ Hooks.once("init", async function() {
 
 		// Define dependency on our own custom vue components for when we need it
 		// Dlopen.register('actor-sheet', {
-		// 	scripts: "/systems/dnd4eBeta/dist/vue-components.min.js",
+		// 	scripts: "/systems/dnd4e/dist/vue-components.min.js",
 		// 	// dependencies: [ "vue-select", "vue-numeric-input" ]
 		// });
 });
@@ -144,7 +144,7 @@ Hooks.once("ready", function() {
 
 	// Determine whether a system migration is required and feasible
 	if ( !game.user.isGM ) return;
-	const currentVersion = game.settings.get("dnd4eBeta", "systemMigrationVersion");
+	const currentVersion = game.settings.get("dnd4e", "systemMigrationVersion");
 	// console.log(currentVersion)
 	const NEEDS_MIGRATION_VERSION = "0.1.4";
 	const COMPATIBLE_MIGRATION_VERSION = 0.80;
@@ -172,7 +172,7 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 	chat.highlightCriticalSuccessFailure(app, html, data);
 
 	// Optionally collapse the content
-	if (game.settings.get("dnd4eBeta", "autoCollapseItemCards")) html.find(".card-content").hide();
+	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.find(".card-content").hide();
 });
 Hooks.on("getChatLogEntryContext", chat.addChatMessageContextOptions);
 Hooks.on("renderChatLog", (app, html, data) => Item4e.chatListeners(html));
@@ -180,7 +180,7 @@ Hooks.on("renderChatLog", (app, html, data) => Item4e.chatListeners(html));
 Hooks.on("canvasInit", function() {
 
 	// Extend Diagonal Measurement
-	canvas.grid.diagonalRule = game.settings.get("dnd4eBeta", "diagonalMovement");
+	canvas.grid.diagonalRule = game.settings.get("dnd4e", "diagonalMovement");
 	SquareGrid.prototype.measureDistances = measureDistances;
 
 	// Extend Token Resource Bars

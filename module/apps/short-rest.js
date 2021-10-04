@@ -5,7 +5,7 @@ export class ShortRestDialog extends DocumentSheet {
 		return mergeObject(options, {
 			id: "short-rest",
 			classes: ["dnd4eBeta", "actor-rest"],
-			template: "systems/dnd4eBeta/templates/apps/short-rest.html",
+			template: "systems/dnd4e/templates/apps/short-rest.html",
 			width: 500,
 			closeOnSubmit: true
 		});

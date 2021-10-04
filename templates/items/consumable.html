@@ -40,7 +40,7 @@
 	<section class="sheet-body">
 
 		{{!-- Description Tab --}}
-		{{> "systems/dnd4eBeta/templates/items/parts/item-description.html"}}
+		{{> "systems/dnd4e/templates/items/parts/item-description.html"}}
 
 		{{!-- Details Tab --}}
 		<div class="tab details" data-group="primary" data-tab="details">
@@ -74,7 +74,7 @@
 			<h3 class="form-header">{{ localize "DND4EBETA.ItemConsumableUsage" }}</h3>
 
 			{{!-- Item Activation Template --}}
-			<!-- {{> "systems/dnd4eBeta/templates/items/parts/item-activation.html"}} -->
+			<!-- {{> "systems/dnd4e/templates/items/parts/item-activation.html"}} -->
 			{{!-- Limited Uses --}}
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EBETA.LimitedUses" }}</label>
@@ -129,7 +129,7 @@
 			<h3 class="form-header">{{ localize "DND4EBETA.ItemConsumableActivation" }}</h3>
 
 			{{!-- Item Action Template --}}
-			<!-- {{> "systems/dnd4eBeta/templates/items/parts/item-action.html"}} -->
+			<!-- {{> "systems/dnd4e/templates/items/parts/item-action.html"}} -->
 			{{!-- Attack Roll Bonus --}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.ItemAttackBonus" }}</label>
@@ -174,9 +174,9 @@
 		
 		{{!-- Effects Tab --}}
 		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
-			{{> "systems/dnd4eBeta/templates/actors/parts/active-effects.html"}}
+			{{> "systems/dnd4e/templates/actors/parts/active-effects.html"}}
 		</div>
 		{{!-- Macros Tab --}}
-		{{> "systems/dnd4eBeta/templates/items/parts/item-macro.html"}}
+		{{> "systems/dnd4e/templates/items/parts/item-macro.html"}}
 	</section>
 </form>

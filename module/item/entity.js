@@ -393,7 +393,7 @@ export default class Item4e extends Item {
 
 		// Render the chat card template
 		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
-		const template = `systems/dnd4eBeta/templates/chat/${templateType}-card.html`;
+		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
 		let html = await renderTemplate(template, templateData);
 
 		if(templateData.item.type === "power") {
@@ -1264,7 +1264,7 @@ export default class Item4e extends Item {
 		const rollConfig = mergeObject({
 			parts: parts,
 			data: rollData,
-			// template: "systems/dnd4eBeta/templates/chat/tool-roll-dialog.html",
+			// template: "systems/dnd4e/templates/chat/tool-roll-dialog.html",
 			title: title,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: flavor,
@@ -1273,7 +1273,7 @@ export default class Item4e extends Item {
 				top: options.event ? options.event.clientY - 80 : null,
 				left: window.innerWidth - 710,
 			},
-			// halflingLucky: this.actor.getFlag("dnd4eBeta", "halflingLucky" ) || false,
+			// halflingLucky: this.actor.getFlag("dnd4e", "halflingLucky" ) || false,
 			messageData: {"flags.dnd4eBeta.roll": {type: "tool", itemId: this.id }}
 		}, options);
 	
