@@ -517,12 +517,12 @@
 		"templates": ["common"],
 		"details": {
 			
-			"origin": "",
-			"type": "",
+			"origin": "natural",
+			"type": "humanoid",
 			"other": "",
 			"role": {
-				"primary": "",
-				"secondary": ""
+				"primary": "soldier",
+				"secondary": "regular"
 			},
 			"level": 1,
 			"exp": 0,

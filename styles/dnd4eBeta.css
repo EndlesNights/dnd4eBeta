@@ -60,9 +60,7 @@
 	list-style: none;
 	/* border-top: 2px groove #eeede0;
 	border-bottom: none; */
-}
 
-.dnd4eBeta.sheet .sheet-header .summary {
 	/* flex: 0 0 100%;
 	height: 60px;
 	margin: 0;
@@ -111,7 +109,7 @@
 	display: inline-block;
 }
 .dnd4eBeta.sheet .sheet-header .summary-name-npc {
-	width: calc(100% - 278px);
+	width: calc(100% - 376px);
 	display: inline-block;
 }
 .dnd4eBeta.sheet .sheet-header .summary-type {
@@ -136,6 +134,11 @@
 	text-align: center;
 	width: 35%;
 	padding: 0%;
+}
+
+.dnd4eBeta.sheet .sheet-header .summary-leader {
+	float: right;
+	width: 98px;
 }
 
 .dnd4eBeta.sheet .sheet-header .summary-role-second {
@@ -420,6 +423,12 @@ font-size: 12px;
 	min-width: 140px;
 	font-size: 16px;
 }
+
+.dnd4eBeta.sheet .ability-name {
+	display: inline-block;
+	min-width: 24px;
+}
+
 .dnd4eBeta .section--abilities .ability--score .ability-mod {
 	display: flex;
 	align-items: center;

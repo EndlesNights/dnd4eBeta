@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.2.39
+- Change NPC defaults roles to 'Soldier', 'Regular', 'Natural', 'Humanoid'
+- Change default Power Group Types sorting to use Usage as the initial search option
+- Added Leader option toggle for NPC sheet
+- Other minor tweeks to NPC sheet HTML and CSS style
+
 ## Version 0.2.38
 - Added in meele and reach rang options for powers attacks (merge from [draconas1](https://github.com/draconas1))
 - Issue fixed where Blank Power Source results in "undefined" in power card (merge from [draconas1](https://github.com/draconas1))

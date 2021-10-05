@@ -27,6 +27,10 @@
 							{{/select}}
 						</select>
 					</li>
+					<li class="summary-leader">
+						<label>Leader:</label>
+						<input type="checkbox" name="data.leader" data-dtype="Boolean" {{checked data.leader}} title="{{localize 'DND4EBETA.leader'}}"/>
+					</li>
 					<li class="summary-level">
 						<label>{{localize 'DND4EBETA.Level'}}</label>
 						<input type="text" name="data.details.level" value="{{data.details.level}}" title="{{localize 'DND4EBETA.Level'}}" data-dtype="Number" onClick="this.select();"/>

@@ -49,12 +49,21 @@ export class Actor4e extends Actor {
 
 	constructor(data, context) {
 		super(data, context);
+		
+		//Set default NPC Math Options
 		if(data.type==='NPC'){
 			if(data?.data?.advancedCals == undefined){
 				this.data.data.advancedCals = game.settings.get("dnd4e", "npcMathOptions");
 
 			}
 		}
+
+		if(data.type){
+			if(data?.data?.powerGroupTypes == undefined){
+				this.data.data.powerGroupTypes = `usage`;
+			}
+		}
+
 	}
 
 	/**

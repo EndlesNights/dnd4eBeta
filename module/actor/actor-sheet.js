@@ -107,8 +107,6 @@ export default class ActorSheet4e extends ActorSheet {
 			i.labels = item.labels;
 		}
 		
-		// return;
-
 		// sheetData.config = CONFIG.DND4EBETA;
 		actorData.data.size = DND4EBETA.actorSizes;
 		
