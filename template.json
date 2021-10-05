@@ -515,6 +515,7 @@
 	},
 	"NPC": {
 		"templates": ["common"],
+		"advancedCals": false,
 		"details": {
 			
 			"origin": "natural",
@@ -537,7 +538,6 @@
 			"weight": "",
 			"alignment": "",
 			"deity": "",
-			"advancedCals": false,
 			
 			"secondwind": false,
 			"deathsaves": 3,

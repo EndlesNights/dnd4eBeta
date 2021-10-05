@@ -5,6 +5,7 @@
 - Change default Power Group Types sorting to use Usage as the initial search option
 - Added Leader option toggle for NPC sheet
 - Other minor tweeks to NPC sheet HTML and CSS style
+- advancedCals was inncoraetly being instantiated in data.details.advancedCals, while it was always checked at data.advancedCals. The NPC template has been fixed. 
 
 ## Version 0.2.38
 - Added in meele and reach rang options for powers attacks (merge from [draconas1](https://github.com/draconas1))
