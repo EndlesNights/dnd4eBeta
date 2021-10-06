@@ -47,12 +47,30 @@ export class Actor4e extends Actor {
 //     return data;
 //   }
   
+	constructor(data, context) {
+		super(data, context);
+		
+		//Set default NPC Math Options
+		if(data.type==='NPC'){
+			if(data?.data?.advancedCals == undefined){
+				this.data.data.advancedCals = game.settings.get("dnd4eAltus", "npcMathOptions");
+
+			}
+		}
+
+		if(data.type){
+			if(data?.data?.powerGroupTypes == undefined){
+				this.data.data.powerGroupTypes = `usage`;
+			}
+		}
+
+	}
+
 	/**
 		* Augment the basic actor data with additional dynamic data.
 		*/
 	prepareData() {
 		super.prepareData();
-		
 		// Get the Actor's data object
 		const actorData = this.data;
 		const data = actorData.data;
@@ -923,6 +941,46 @@ export class Actor4e extends Actor {
 			encumBar,
 			encumbered: weight > max
 		};
+	}
+
+	async calcDamage(damage, multiplier=1){
+		let totalDamage = 0;
+		if(Object.keys(damage).length >= 1){
+			const res = this.data.data.resistances;
+
+			let damageResAll = res['damage'].value;
+			let divider = Object.keys(damage).length;
+
+			for(let d in damage){
+				
+				let type = d && res[d] ?  d : 'damage';
+				let damageBase = damage[d];
+				let damageRes = res[type].value || 0;
+
+				let resPart = Math.ceil(damageResAll/divider)
+				damageResAll -= resPart;
+				divider--;
+
+				if((resPart > damageRes && damageRes >= 0) || (resPart < damageRes && damageRes <= 0) ){
+					damageRes = resPart;
+				}
+				else if( (resPart >= 0 && damageRes <= 0) || (resPart <= 0 && damageRes >= 0)){
+					damageRes += resPart;
+				}
+
+				// console.log(`${type}: ${damage[type]}`);
+
+				if(d == 'heal'){
+					totalDamage -= Math.max(0, damageBase);
+				}
+				else if(!res[type].immune && !res['damage'].immune){
+					totalDamage += Math.max(0, damageBase - damageRes);
+					console.log(`DamageType:${type}, Damage:${Math.max(0, damageBase - damageRes)}`)
+				}
+			}
+			console.log(`Total Damage: ${totalDamage * multiplier}`)
+			this.applyDamage(totalDamage, multiplier);
+		}
 	}
 
 	async applyDamage(amount=0, multiplier=1) 

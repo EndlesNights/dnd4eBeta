@@ -1,10 +1,10 @@
 {
 	"name": "dnd4eAltus",
 	"title": "4th Edition Altus",
-	"description": "A minimalist custom test build of 4th Ed.",
-	"version": "0.2.29",
+	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
+	"version": "0.2.39",
 	"minimumCoreVersion": "0.8.5",
-	"compatibleCoreVersion": "0.8.8",
+	"compatibleCoreVersion": "0.8.9",
 	"templateVersion": 2,
 	"author": "EndlesNights",
 	"esmodules": [

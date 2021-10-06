@@ -529,14 +529,14 @@
 	},
 	"NPC": {
 		"templates": ["common"],
+		"advancedCals": false,
 		"details": {
-			
-			"origin": "",
-			"type": "",
+			"origin": "natural",
+			"type": "humanoid",
 			"other": "",
 			"role": {
-				"primary": "",
-				"secondary": ""
+				"primary": "soldier",
+				"secondary": "regular"
 			},
 			"level": 1,
 			"exp": 0,
@@ -551,7 +551,6 @@
 			"weight": "",
 			"alignment": "",
 			"deity": "",
-			"advancedCals": false,
 			
 			"secondwind": false,
 			"deathsaves": 3,
@@ -695,35 +694,6 @@
 				"amount": null
 			}
 		},
-		"action": {
-			"ability": null,
-			"actionType": null,
-			"attackBonus": 0,
-			"chatFlavor": "",
-			"critical": null,
-			"damage": {
-				"parts": [],
-				"versatile": ""
-			},
-			"damageCrit": {
-				"parts": [],
-				"versatile": ""
-			},
-			"damageImp": {
-				"parts": [],
-				"versatile": ""
-			},
-			"damageCritImp": {
-				"parts": [],
-				"versatile": ""
-			},
-			"formula": "",
-			"save": {
-				"ability": "",
-				"dc": null,
-				"scaling": "spell"
-			}
-		},
 		"mountable": {
 			"armour": {
 				"value": 10
@@ -783,14 +753,14 @@
 		}
 	},
 	"consumable": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
 		"consumableType": "potion",
 		"uses": {
 		"autoDestroy": false
 		}
 	},
 	"equipment": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "action", "mountable", "itemMacro"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "mountable", "itemMacro"],
 		"armour": {
 			"type": "armour",
 			"subType": "cloth",
@@ -816,7 +786,7 @@
 		"proficient": true
 	},
 	"feat": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
 		"recharge": {
 		"value": null,
@@ -834,7 +804,7 @@
 		"bonus": 2
 	},
 	"weapon": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "action", "mountable", "itemMacro"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "mountable", "itemMacro"],
 		"weaponType": "simpleM",
 		"weaponHand": "HMain",
 		"properties": {},
@@ -847,6 +817,18 @@
 		"range": {"value": 5, "long": 10},
 		"damageDice": {
 			"parts": [["1","8"]]
+		},
+		"damage": {
+			"parts": []
+		},
+		"damageCrit": {
+			"parts": []
+		},
+		"damageImp": {
+			"parts": []
+		},
+		"damageCritImp": {
+			"parts": []
 		},
 		"damageType": {"physical":true},
 		"brutalNum": 1,
@@ -861,39 +843,26 @@
 		"critRangeImp": 20
 	},
 	"raceFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
+		"requirements": ""
 	},
 	"pathFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
+		"requirements": ""
 	},
 	"destinyFeats": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
-		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
+		"requirements": ""
 	},
 	"ritual": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
-		"recharge": {
-		"value": null,
-		"charged": false
-		}
+		"chatFlavor": "",
+		"attribute": "skills.arc.total",
+		"formula": "@skill"
 	},
 	"power": {
-		"templates": ["itemDescription", "activatedEffect", "action", "itemMacro"],
+		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"keyWords": [""],
 		"level": "1",
 		"powersource": "martial",
@@ -948,6 +917,18 @@
 		},
 		"effect": {
 			"detail": ""
+		},
+		"damage": {
+			"parts": []
+		},
+		"damageCrit": {
+			"parts": []
+		},
+		"damageImp": {
+			"parts": []
+		},
+		"damageCritImp": {
+			"parts": []
 		},
 		"trigger": "",
 		"requirement": "",

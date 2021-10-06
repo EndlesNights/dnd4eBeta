@@ -3,7 +3,7 @@
 
 	{{!-- Power Source & Keywords --}}
 	<div class="form-group">
-		<label>Auto Generate Power Card Details</label>
+		<label>{{ localize "DND4EALTUS.PowerAutoGenerateLable" }}</label>
 		<input type="checkbox" name="data.autoGenChatPowerCard" data-dtype="Boolean" {{checked data.autoGenChatPowerCard}}/>
 	</div>
 
@@ -52,6 +52,14 @@
 			{{/select}}
 		</select>
 	</div>
+	{{#if data.isRecharge}}
+	<div class="form-group">
+		<label>{{ localize "DND4EALTUS.PowerRechargeCondition" }}</label>
+		<div class="form-fields">
+			<input type="text" name="data.rechargeRoll" value="{{data.rechargeRoll}}"/>
+		</div>
+	</div>
+	{{/if}}
 
 	{{!-- Action Type --}}
 	<div class="form-group select">
@@ -263,9 +271,6 @@
 				{{#each ../config.damageTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
 				{{/each}}
-				{{#each ../config.healingTypes as |name type|}}
-				<option value="{{type}}">{{name}}</option>
-				{{/each}}
 				{{/select}}
 			</select>
 			<a class="damage-control delete-damage"><i class="fas fa-minus"></i></a>
@@ -280,7 +285,7 @@
 	</div>
 	<h4 class="damage-header">
 		Secondary Critial{{ localize "DND4EALTUS.Damage" }} {{ localize "DND4EALTUS.Formula" }}:
-		<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
+		<a class="damage-control add-criticalDamage"><i class="fas fa-plus"></i></a>
 	</h4>
 	<ol class="damage-parts form-group">
 		{{#each data.damageCrit.parts as |part i| }}
@@ -290,9 +295,6 @@
 				{{#select (lookup this "1") }}
 				<option value="">{{ localize "DND4EALTUS.None" }}</option>
 				{{#each ../config.damageTypes as |name type|}}
-				<option value="{{type}}">{{name}}</option>
-				{{/each}}
-				{{#each ../config.healingTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
 				{{/each}}
 				{{/select}}

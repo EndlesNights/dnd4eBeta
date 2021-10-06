@@ -41,15 +41,20 @@
 			let targName = targDataArray.targNameArray[i];
 			let targDefVal = targDataArray.targDefValArray[i];
 			let critState = critStateArray[i];
-			let hitState = "Probable Miss!";
-			if (critState === " critical"){
-				hitState = "Critical Hit!"
-			} else if (critState === " fumble"){
-				hitState = "Critical Miss!"
-			} else if (r._total >= targDefVal){
-				hitState = "Probable Hit!";
-			}
-			console.log(critState);
+			let hitState = "";
+			
+			if(game.settings.get("dnd4eAltus", "automationCombat")){
+				if (critState === " critical"){
+					hitState = "Critical Hit!"
+				} else if (critState === " fumble"){
+					hitState = "Critical Miss!"
+				} else if (r._total >= targDefVal){
+					hitState = "Probable Hit!";
+				} else {
+						hitState = "Probable Miss!";
+					}
+				}
+
 			this._multirollData.push({
 				formula : r._formula,
 				total : r._total,
@@ -219,7 +224,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			for ( let [k, v] of Object.entries(form) ) {	
 				if(v.checked) {
 					let bonVal = CONFIG.DND4EALTUS.commonAttackBonuses[v.name].value;
-					if(i>0){
+					if(data['bonus']){
 						data['bonus'] += `${bonVal > 0? "+":""} ${bonVal}`;
 					} else {
 						data['bonus'] += `${bonVal}`;
@@ -300,7 +305,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 					reliableFlavor = true;
 				}
 			}
-			if (reliableFlavor) {flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`};
+			if (reliableFlavor) {flavor += ` (${game.i18n.localize("DND4EALTUS.FlagsReliableTalent")})`};
 		
 		} else {
 			roll = new Roll(parts.join(" + "), data).roll();
@@ -385,7 +390,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 /* -------------------------------------------- */
 
 /**
- * A standardized helper function for managing core 5e "d20 rolls"
+ * A standardized helper function for managing core 4e "d20 rolls"
  *
  * Holding SHIFT, ALT, or CTRL when the attack is rolled will "fast-forward".
  * This chooses the default options of a normal attack with no bonus, Critical, or no bonus respectively

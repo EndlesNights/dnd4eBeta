@@ -14,6 +14,6 @@ export const _getInitiativeFormula = function() {
 	console.log(tiebreaker);
 	const parts = ["1d20", init,];
 	if ( actor.getFlag("dnd4eAltus", "initiativeAdv") ) parts[0] = "2d20kh";
-	if ( tiebreaker ) parts.push(actor.data.data.abilities.dex.value / 100);
+	if ( tiebreaker ) parts.push(actor.data.data.attributes.init.value / 100);
 	return parts.filter(p => p !== null).join(" + ");
 };

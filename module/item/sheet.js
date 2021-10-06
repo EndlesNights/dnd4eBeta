@@ -66,6 +66,7 @@ export default class ItemSheet4e extends ItemSheet {
 			itemData.data.isRange = true;
 			if(itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || itemData.data.rangeType === "rangeBurst" || data.data.rangeType === "rangeBlast" || data.data.rangeType === "wall" ) 
 			itemData.data.isArea = true;
+			itemData.data.isRecharge = itemData.data.useType === "recharge";
 		}
 
 		// Weapon Properties

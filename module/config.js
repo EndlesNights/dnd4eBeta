@@ -98,11 +98,6 @@ DND4EALTUS.abilityActivationTypes = {
   "reaction": "DND4EALTUS.ActionReaction",
   "interrupt": "DND4EALTUS.ActionInterrupt",
   "opportunity": "DND4EALTUS.ActionOpportunity",
-
-  // "minute": DND4EALTUS.timePeriods.minute,
-  // "hour": DND4EALTUS.timePeriods.hour,
-  // "day": DND4EALTUS.timePeriods.day,
-  // "special": DND4EALTUS.timePeriods.spec
 };
 
 DND4EALTUS.abilityActivationTypesShort = {
@@ -378,14 +373,6 @@ DND4EALTUS.ritualcomponents = {
 	"rs": "DND4EALTUS.RitualCompRS"
 };
 
-// DND4EALTUS.ritualcomponents = {
-	// "ad": "DND4EALTUS.RitualCompAD",
-	// "rh": "DND4EALTUS.RitualCompRH",
-	// "si": "DND4EALTUS.RitualCompSI",
-	// "mc": "DND4EALTUS.RitualCompMC"
-// };
-
-
 /* -------------------------------------------- */
 
 // Damage Types
@@ -601,6 +588,8 @@ DND4EALTUS.weaponType = {
 
 DND4EALTUS.rangeType = {
 	"weapon": "DND4EALTUS.rangeWeapon",
+	"melee": "DND4EALTUS.rangeMelee",
+	"reach": "DND4EALTUS.rangeReach",
 	"range" : "DND4EALTUS.rangeRanged",
 	"closeBurst": "DND4EALTUS.rangeCloseBurst",
 	"closeBlast": "DND4EALTUS.rangeCloseBlast",
@@ -612,24 +601,37 @@ DND4EALTUS.rangeType = {
 };
 
 DND4EALTUS.effectTypes = {
+	"augmentable": "DND4EALTUS.Augmentable",
+	"aura": "DND4EALTUS.Aura",
 	"beast": "DND4EALTUS.Beast",
 	"beastForm": "DND4EALTUS.BeastForm",
+	"channelDiv": "DND4EALTUS.ChannelDivinity",
 	"charm": "DND4EALTUS.Charm",
 	"conjuration": "DND4EALTUS.Conjuration",
+	"disease": "DND4EALTUS.Disease",
+	"elemental": "DND4EALTUS.Elemental",
+	"evocation": "DND4EALTUS.Evocation",
 	"fear": "DND4EALTUS.Fear",
+	"fullDis": "DND4EALTUS.FullDis",
+	"gaze": "DND4EALTUS.Gaze",
 	"healing": "DND4EALTUS.Healing",
 	"illusion": "DND4EALTUS.Illusion",
 	"invigorating": "DND4EALTUS.Invigorating",
+	"mount": "DND4EALTUS.Mount",
+	"necro": "DND4EALTUS.Necro",
+	"nether": "DND4EALTUS.Nether",
 	"poison": "DND4EALTUS.DamagePoison",
 	"polymorph": "DND4EALTUS.Polymorph",
 	"rage": "DND4EALTUS.Rage",
 	"rattling": "DND4EALTUS.Rattling",
 	"reliable": "DND4EALTUS.Reliable",
+	"runic": "DND4EALTUS.Runic",
 	"sleep": "DND4EALTUS.Sleep",
 	"spirit": "DND4EALTUS.Spirit",
 	"stance": "DND4EALTUS.Stance",
 	"summoning": "DND4EALTUS.Summoning",
 	"teleportation": "DND4EALTUS.Teleportation",
+	"transmutation": "DND4EALTUS.Transmutation",
 	"zone": "DND4EALTUS.Zone",
 };
 
@@ -810,99 +812,6 @@ DND4EALTUS.weaponGroup = {
 	"unarm": "DND4EALTUS.WeaponGroupUnarm"
 };
 
-// Spell Components
-DND4EALTUS.spellComponents = {
-  "V": "DND4EALTUS.ComponentVerbal",
-  "S": "DND4EALTUS.ComponentSomatic",
-  "M": "DND4EALTUS.ComponentMaterial"
-};
-
-// Spell Schools
-DND4EALTUS.spellSchools = {
-  "abj": "DND4EALTUS.SchoolAbj",
-  "con": "DND4EALTUS.SchoolCon",
-  "div": "DND4EALTUS.SchoolDiv",
-  "enc": "DND4EALTUS.SchoolEnc",
-  "evo": "DND4EALTUS.SchoolEvo",
-  "ill": "DND4EALTUS.SchoolIll",
-  "nec": "DND4EALTUS.SchoolNec",
-  "trs": "DND4EALTUS.SchoolTrs"
-};
-
-// Spell Levels
-DND4EALTUS.spellLevels = {
-  0: "DND4EALTUS.SpellLevel0",
-  1: "DND4EALTUS.SpellLevel1",
-  2: "DND4EALTUS.SpellLevel2",
-  3: "DND4EALTUS.SpellLevel3",
-  4: "DND4EALTUS.SpellLevel4",
-  5: "DND4EALTUS.SpellLevel5",
-  6: "DND4EALTUS.SpellLevel6",
-  7: "DND4EALTUS.SpellLevel7",
-  8: "DND4EALTUS.SpellLevel8",
-  9: "DND4EALTUS.SpellLevel9"
-};
-
-// Spell Scroll Compendium UUIDs
-DND4EALTUS.spellScrollIds = {
-  0: 'Compendium.dnd4eAltus.items.rQ6sO7HDWzqMhSI3',
-  1: 'Compendium.dnd4eAltus.items.9GSfMg0VOA2b4uFN',
-  2: 'Compendium.dnd4eAltus.items.XdDp6CKh9qEvPTuS',
-  3: 'Compendium.dnd4eAltus.items.hqVKZie7x9w3Kqds',
-  4: 'Compendium.dnd4eAltus.items.DM7hzgL836ZyUFB1',
-  5: 'Compendium.dnd4eAltus.items.wa1VF8TXHmkrrR35',
-  6: 'Compendium.dnd4eAltus.items.tI3rWx4bxefNCexS',
-  7: 'Compendium.dnd4eAltus.items.mtyw4NS1s7j2EJaD',
-  8: 'Compendium.dnd4eAltus.items.aOrinPg7yuDZEuWr',
-  9: 'Compendium.dnd4eAltus.items.O4YbkJkLlnsgUszZ'
-};
-
-/**
- * Define the standard slot progression by character level.
- * The entries of this array represent the spell slot progression for a full spell-caster.
- * @type {Array[]}
- */
-DND4EALTUS.SPELL_SLOT_TABLE = [
-  [2],
-  [3],
-  [4, 2],
-  [4, 3],
-  [4, 3, 2],
-  [4, 3, 3],
-  [4, 3, 3, 1],
-  [4, 3, 3, 2],
-  [4, 3, 3, 3, 1],
-  [4, 3, 3, 3, 2],
-  [4, 3, 3, 3, 2, 1],
-  [4, 3, 3, 3, 2, 1],
-  [4, 3, 3, 3, 2, 1, 1],
-  [4, 3, 3, 3, 2, 1, 1],
-  [4, 3, 3, 3, 2, 1, 1, 1],
-  [4, 3, 3, 3, 2, 1, 1, 1],
-  [4, 3, 3, 3, 2, 1, 1, 1, 1],
-  [4, 3, 3, 3, 3, 1, 1, 1, 1],
-  [4, 3, 3, 3, 3, 2, 1, 1, 1],
-  [4, 3, 3, 3, 3, 2, 2, 1, 1]
-];
-
-/* -------------------------------------------- */
-
-// Polymorph options.
-DND4EALTUS.polymorphSettings = {
-  keepPhysical: 'DND4EALTUS.PolymorphKeepPhysical',
-  keepMental: 'DND4EALTUS.PolymorphKeepMental',
-  keepSaves: 'DND4EALTUS.PolymorphKeepSaves',
-  keepSkills: 'DND4EALTUS.PolymorphKeepSkills',
-  mergeSaves: 'DND4EALTUS.PolymorphMergeSaves',
-  mergeSkills: 'DND4EALTUS.PolymorphMergeSkills',
-  keepClass: 'DND4EALTUS.PolymorphKeepClass',
-  keepFeats: 'DND4EALTUS.PolymorphKeepFeats',
-  keepSpells: 'DND4EALTUS.PolymorphKeepSpells',
-  keepItems: 'DND4EALTUS.PolymorphKeepItems',
-  keepBio: 'DND4EALTUS.PolymorphKeepBio',
-  keepVision: 'DND4EALTUS.PolymorphKeepVision'
-};
-
 /* -------------------------------------------- */
 
 /**
@@ -910,10 +819,6 @@ DND4EALTUS.polymorphSettings = {
  * Each level provides a proficiency multiplier
  * @type {Object}
  */
-DND4EALTUS.proficiencyLevels = {
-  0: "DND4EALTUS.NotProficient",
-  5: "DND4EALTUS.Proficient"
-};
 
 DND4EALTUS.trainingLevels = {
   0: "DND4EALTUS.NotTrained",
@@ -921,7 +826,6 @@ DND4EALTUS.trainingLevels = {
   8: "DND4EALTUS.FocusTrained"
 };
 /* -------------------------------------------- */
-
 
 // Condition Types
 DND4EALTUS.conditionTypes = {

@@ -107,8 +107,6 @@ export default class ActorSheet4e extends ActorSheet {
 			i.labels = item.labels;
 		}
 		
-		// return;
-
 		// sheetData.config = CONFIG.DND4EALTUS;
 		actorData.data.size = DND4EALTUS.actorSizes;
 		
@@ -404,6 +402,19 @@ export default class ActorSheet4e extends ActorSheet {
 		} else if(itemData.data.rangeType === "touch") {
 			itemData.data.rangeText = "Melee Touch"
 			itemData.data.rangeTextShort = "M-T"
+		} else if(itemData.data.rangeType === "melee"){
+			if(itemData.data.rangePower === undefined || itemData.data.rangePower === null){
+				itemData.data.rangeText = `Melee`;
+				itemData.data.rangeTextShort = `M`;
+			} else {
+				itemData.data.rangeText = `Melee ${itemData.data.rangePower}`;
+				itemData.data.rangeTextShort = `M`;
+				itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
+			}
+		} else if(itemData.data.rangeType === "reach"){
+			itemData.data.rangeText = `Reach ${itemData.data.rangePower}`;
+			itemData.data.rangeTextShort = `R`;
+			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "weapon") {
 
 			try {
@@ -423,8 +434,8 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 
 		} else {
-			itemData.data.rangeText = "Not Avalible"
-			itemData.data.rangeTextShort = "NA"
+			itemData.data.rangeText = game.i18n.localize("DND4EALTUS.NotAvalible");
+			itemData.data.rangeTextShort = game.i18n.localize("DND4EALTUS.NotAvalibleShort");
 		}
 	}
   /* -------------------------------------------- */
@@ -755,10 +766,12 @@ export default class ActorSheet4e extends ActorSheet {
 				
 				let div = $(`<div class="item-summary"></div>`);
 				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
-				let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false).data)}</div>`);
-				
 				div.append(descrip);
-				div.append(details);
+
+				if(item.data.data.autoGenChatPowerCard){
+					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false).data)}</div>`);
+					div.append(details);
+				}
 
 				li.append(div.hide());
 				div.slideDown(200);
@@ -840,6 +853,8 @@ export default class ActorSheet4e extends ActorSheet {
 				};
 			}
 		}
+
+		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4eAltus", "powerAutoGenerateLableOption");
 
 		if(this.actor.type === "NPC"){
 			
