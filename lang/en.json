@@ -564,6 +564,7 @@
 "DND4EBETA.PowerRechargeCondition": "Recharge On",
 "DND4EBETA.PowerDetails": "Power Details",
 "DND4EBETA.PowerEnc": "Encounter",
+"DND4EBETA.PowerOther": "Other",
 "DND4EBETA.PowerPrepared": "Prepared",
 "DND4EBETA.Powers": "Powers",
 "DND4EBETA.PowerSource": "Power Source",
@@ -594,7 +595,7 @@
 "DND4EBETA.rangeRanged": "Range",
 "DND4EBETA.rangeReach": "Reach",
 "DND4EBETA.RangeTouh": "Touch",
-"DND4EBETA.rangeWall": "Wall",
+"DND4EBETA.rangeWall": "Area Wall",
 "DND4EBETA.rangeWeapon": "Weapons Range",
 "DND4EBETA.RangeWithinOf": "within Range of",
 "DND4EBETA.Squares": "Squares",
@@ -977,10 +978,5 @@
 "SETTINGS.4eNpcMathOptionsL": "Determins if the Advanced Math Options for NPC's is set during their generation",
 "SETTINGS.4eNpcMathOptionsN": "NPC Stats Calculate",
 "SETTINGS.4ePowerAutoGenerateLableOptionN": "Auto Generate Power Card Details",
-"SETTINGS.4ePowerAutoGenerateLableOptionL": "When creating a new power, determin if the option to \"Auto Generate Power Card Details\" is set.",
-"SETTINGS.4eRestEpic": "Epic Heroism (LR: 1 hour, SR: 1 min)",
-"SETTINGS.4eRestGritty": "Gritty Realism (LR: 7 days, SR: 8 hours)",
-"SETTINGS.4eRestL": "Configure which rest variant should be used for games within this system.",
-"SETTINGS.4eRestN": "Rest Variant",
-"SETTINGS.4eRestPHB": "Player's Handbook (LR: 8 hours, SR: 1 hour)"
+"SETTINGS.4ePowerAutoGenerateLableOptionL": "When creating a new power, determin if the option to \"Auto Generate Power Card Details\" is set."
 }

@@ -1870,6 +1870,7 @@ font-size: 12px;
 
 .dnd4eBeta.sheet .items-list .item-range{
 	flex: 0 0 60px;
+	/* text-align: left; */
 }
 .dnd4eBeta.sheet .items-list .power-detail,
 .dnd4eBeta.sheet.actor .inventory-list .item-controls .power-detail,

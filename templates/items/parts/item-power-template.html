@@ -32,7 +32,6 @@
 		<label>Power Type</label>
 		<select name="data.powerType">
 			{{#select data.powerType}}
-			<option value=""></option>
 			{{#each config.powerType as |name type|}}
 			<option value="{{type}}">{{name}}</option>
 			{{/each}}
@@ -44,7 +43,6 @@
 		<label>Use Type</label>
 		<select name="data.useType">
 			{{#select data.useType}}
-			<option value=""></option>
 			{{#each config.powerUseType as |name type|}}
 			<option value="{{type}}">{{name}}</option>
 			{{/each}}
@@ -66,7 +64,6 @@
 		<label>{{ localize "DND4EBETA.ItemActionType" }}</label>
 		<select name="data.actionType">
 			{{#select data.actionType}}
-			<option value=""></option>
 			{{#each config.abilityActivationTypes as |name type|}}
 			<option value="{{type}}">{{name}}</option>
 			{{/each}}
@@ -107,7 +104,6 @@
 		<div class="form-fields">
 			<select name="data.rangeType">
 				{{#select data.rangeType}}
-				<option value=""></option>
 				{{#each config.rangeType as |name type|}}
 				<option value="{{type}}">{{name}}</option>
 				{{/each}}
