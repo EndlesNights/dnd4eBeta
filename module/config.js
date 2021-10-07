@@ -517,6 +517,7 @@ DND4EALTUS.powerUseType = {
 	"encounter": "DND4EALTUS.PowerEnc",
 	"daily": "DND4EALTUS.PowerDaily",
 	"recharge": "DND4EALTUS.PowerRecharge",
+	"other": "DND4EALTUS.PowerOther",
 	// "utility": "DND4EALTUS.PowerUtil"
 };
 DND4EALTUS.powerSource = {
@@ -799,9 +800,12 @@ DND4EALTUS.weaponGroup = {
 	"axe": "DND4EALTUS.WeaponGroupAxe",
 	"bladeH": "DND4EALTUS.WeaponGroupBladeH",
 	"bladeL": "DND4EALTUS.WeaponGroupBladeL",
+	"blowgun": "DND4EALTUS.WeaponGroupBlowgun",
 	"bow": "DND4EALTUS.WeaponGroupBow",
 	"cbow": "DND4EALTUS.WeaponGroupCBow",
+	"dragon": "DND4EALTUS.WeaponGroupDragonShard",
 	"flail": "DND4EALTUS.WeaponGroupFlail",
+	"garrote": "DND4EALTUS.WeaponGroupGarrote",
 	"ham": "DND4EALTUS.WeaponGroupHam",
 	"mace": "DND4EALTUS.WeaponGroupMace",
 	"pik": "DND4EALTUS.WeaponGroupPik",
@@ -809,7 +813,8 @@ DND4EALTUS.weaponGroup = {
 	"sling": "DND4EALTUS.WeaponGroupSling",
 	"spear": "DND4EALTUS.WeaponGroupSpear",
 	"staff": "DND4EALTUS.WeaponGroupStaff",
-	"unarm": "DND4EALTUS.WeaponGroupUnarm"
+	"unarm": "DND4EALTUS.WeaponGroupUnarm",
+	"whip": "DND4EALTUS.WeaponGroupWhip"
 };
 
 /* -------------------------------------------- */
@@ -1114,15 +1119,10 @@ DND4EALTUS.spoken = {
 
 // Character Level XP Requirements
 DND4EALTUS.CHARACTER_EXP_LEVELS =  [
-  0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000,
-  120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000]
-;
-
-// Challenge Rating XP Levels
-DND4EALTUS.CR_EXP_LEVELS = [
-  10, 200, 450, 700, 1100, 1800, 2300, 2900, 3900, 5000, 5900, 7200, 8400, 10000, 11500, 13000, 15000, 18000,
-  20000, 22000, 25000, 33000, 41000, 50000, 62000, 75000, 90000, 105000, 120000, 135000, 155000
-];
+	0, 1000, 2250, 3750, 5500, 7500, 10000, 13000, 16500, 20500,
+	26000, 32000, 39000, 47000, 57000, 69000, 83000, 99000, 119000, 143000,
+	175000, 210000, 255000, 310000, 375000, 450000, 550000, 675000, 825000, 1000000 
+	];
 
 // Configure Optional Character Flags
 DND4EALTUS.characterFlags = {

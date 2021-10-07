@@ -21,7 +21,7 @@ export default class ItemSheet4e extends ItemSheet {
 	/** @override */
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
-			width: 560,
+			width: 585,
 			height: 420,
 			classes: ["dnd4eAltus", "sheet", "item"],
 			resizable: true,
@@ -62,10 +62,13 @@ export default class ItemSheet4e extends ItemSheet {
 		
 		if(itemData.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
 		if(itemData.data?.useType) {
-			if(!(itemData.data.rangeType === "personal" || itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || data.data.rangeType === ""))
-			itemData.data.isRange = true;
-			if(itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || itemData.data.rangeType === "rangeBurst" || data.data.rangeType === "rangeBlast" || data.data.rangeType === "wall" ) 
-			itemData.data.isArea = true;
+			if(!(itemData.data.rangeType === "personal" || itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || data.data.rangeType === "")){
+				itemData.data.isRange = true;
+			}
+
+			if(itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || itemData.data.rangeType === "rangeBurst" || itemData.data.rangeType === "rangeBlast" || itemData.data.rangeType === "wall" ) { 
+				itemData.data.isArea = true;
+			}
 			itemData.data.isRecharge = itemData.data.useType === "recharge";
 		}
 

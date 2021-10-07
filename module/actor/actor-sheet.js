@@ -378,30 +378,36 @@ export default class ActorSheet4e extends ActorSheet {
 			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "closeBurst") {
 			itemData.data.rangeText = `Close Burst ${itemData.data.area}`
-			itemData.data.rangeTextShort = "CBU"
+			itemData.data.rangeTextShort = "C-BU"
 			itemData.data.rangeTextBlock = `${itemData.data.area}`
 		} else if(itemData.data.rangeType === "rangeBurst") {
 			itemData.data.rangeText = `Area Burst ${itemData.data.area} within ${itemData.data.rangePower}`
-			itemData.data.rangeTextShort = "ABU"
+			itemData.data.rangeTextShort = "A-BU"
 			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "closeBlast") {
 			itemData.data.rangeText = `Close Blast ${itemData.data.area}`
-			itemData.data.rangeTextShort = "CBL"
+			itemData.data.rangeTextShort = "C-BL"
 			itemData.data.rangeTextBlock = `${itemData.data.area}`
 		} else if(itemData.data.rangeType === "rangeBlast") {
 			itemData.data.rangeText = `Area Blast ${itemData.data.area} within ${itemData.data.rangePower}`
-			itemData.data.rangeTextShort = "ABL"
+			itemData.data.rangeTextShort = "A-BL"
 			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "wall") {
-			itemData.data.rangeText = `Wall ${itemData.data.area} within ${itemData.data.rangePower}`
+			itemData.data.rangeText = `Area Wall ${itemData.data.area} within ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = "W"
 			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "personal") {
 			itemData.data.rangeText = "Personal"
 			itemData.data.rangeTextShort = "P"
 		} else if(itemData.data.rangeType === "touch") {
-			itemData.data.rangeText = "Melee Touch"
-			itemData.data.rangeTextShort = "M-T"
+			itemData.data.rangeTextShort = "M-T";
+			if(itemData.data.rangePower == null){
+				itemData.data.rangeTextBlock = '';
+				itemData.data.rangeText = `Melee Touch`;
+			} else {
+				itemData.data.rangeText = `Melee Touch ${itemData.data.rangePower}`;
+				itemData.data.rangeTextBlock = `${itemData.data.rangePower}`;
+			}
 		} else if(itemData.data.rangeType === "melee"){
 			if(itemData.data.rangePower === undefined || itemData.data.rangePower === null){
 				itemData.data.rangeText = `Melee`;
@@ -426,11 +432,24 @@ export default class ActorSheet4e extends ActorSheet {
 				} else {
 					itemData.data.rangeText = `Melee Weapon - ${weaponUse.data.name}`;
 					itemData.data.rangeTextShort = "W-M";
+
+					if(itemData.data.rangePower == null){
+						itemData.data.rangeTextBlock = '';
+					} else {
+						itemData.data.rangeTextBlock = `${itemData.data.rangePower}`;
+					}
 				}
 
 			} catch {
 				itemData.data.rangeText = "Weapon";
 				itemData.data.rangeTextShort = "W-M";
+				itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
+
+				if(itemData.data.rangePower == null){
+					itemData.data.rangeTextBlock = '';
+				} else {
+					itemData.data.rangeTextBlock = `${itemData.data.rangePower}`;
+				}
 			}
 
 		} else {
