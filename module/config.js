@@ -799,9 +799,12 @@ DND4EBETA.weaponGroup = {
 	"axe": "DND4EBETA.WeaponGroupAxe",
 	"bladeH": "DND4EBETA.WeaponGroupBladeH",
 	"bladeL": "DND4EBETA.WeaponGroupBladeL",
+	"blowgun": "DND4EBETA.WeaponGroupBlowgun",
 	"bow": "DND4EBETA.WeaponGroupBow",
 	"cbow": "DND4EBETA.WeaponGroupCBow",
+	"dragon": "DND4EBETA.WeaponGroupDragonShard",
 	"flail": "DND4EBETA.WeaponGroupFlail",
+	"garrote": "DND4EBETA.WeaponGroupGarrote",
 	"ham": "DND4EBETA.WeaponGroupHam",
 	"mace": "DND4EBETA.WeaponGroupMace",
 	"pik": "DND4EBETA.WeaponGroupPik",
@@ -809,7 +812,8 @@ DND4EBETA.weaponGroup = {
 	"sling": "DND4EBETA.WeaponGroupSling",
 	"spear": "DND4EBETA.WeaponGroupSpear",
 	"staff": "DND4EBETA.WeaponGroupStaff",
-	"unarm": "DND4EBETA.WeaponGroupUnarm"
+	"unarm": "DND4EBETA.WeaponGroupUnarm",
+	"whip": "DND4EBETA.WeaponGroupWhip"
 };
 
 /* -------------------------------------------- */
@@ -1118,15 +1122,10 @@ DND4EBETA.script = {
 
 // Character Level XP Requirements
 DND4EBETA.CHARACTER_EXP_LEVELS =  [
-  0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000,
-  120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000]
-;
-
-// Challenge Rating XP Levels
-DND4EBETA.CR_EXP_LEVELS = [
-  10, 200, 450, 700, 1100, 1800, 2300, 2900, 3900, 5000, 5900, 7200, 8400, 10000, 11500, 13000, 15000, 18000,
-  20000, 22000, 25000, 33000, 41000, 50000, 62000, 75000, 90000, 105000, 120000, 135000, 155000
-];
+	0, 1000, 2250, 3750, 5500, 7500, 10000, 13000, 16500, 20500,
+	26000, 32000, 39000, 47000, 57000, 69000, 83000, 99000, 119000, 143000,
+	175000, 210000, 255000, 310000, 375000, 450000, 550000, 675000, 825000, 1000000 
+	];
 
 // Configure Optional Character Flags
 DND4EBETA.characterFlags = {
