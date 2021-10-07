@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.40
+- Fixed an issue where AC override was turned on by default.
+
 ## Version 0.2.39
 - Change NPC defaults roles to 'Soldier', 'Regular', 'Natural', 'Humanoid'
 - Change default Power Group Types sorting to use Usage as the initial search option

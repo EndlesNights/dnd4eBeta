@@ -76,7 +76,7 @@
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
-					"light": true,
+					"light": false,
 					"altability": "",
 					"condition": "Conditional Bonuses.",
 					"chat": "@name defends with armour."
@@ -582,7 +582,7 @@
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
-				"light": true,
+				"light": false,
 				"altability": "",
 				"condition": "Conditional Bonuses.",
 				"chat": "@name defends with armour."
