@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 0.2.41
+- Fixed an issue where off hand weapons where not working properly.
+
+## Version 0.2.40
+- Fixed an issue where AC override was turned on by default.
+- Multple fixes to powercard sheet, 
+	wall range and area should now be editable
+	Removed some blank options
+	Rename 'Wall' to 'Area Wall' to match offical language
+	Rename 'Touch' to 'Melee Touch' to match offical language
+
 ## Version 0.2.39
 - Change NPC defaults roles to 'Soldier', 'Regular', 'Natural', 'Humanoid'
 - Change default Power Group Types sorting to use Usage as the initial search option

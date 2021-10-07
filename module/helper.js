@@ -38,42 +38,42 @@ export class Helper {
 					
 					if(itemData.weaponType === "meleeRanged") {
 						if(setMelee.includes(i.data.data.weaponType) || setRanged.includes(i.data.data.weaponType) )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
-								return i;
+						if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					else if(itemData.weaponType === "melee") {
 						if(setMelee.includes(i.data.data.weaponType) )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
-								return i;
+						if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						return i;
 							else if(itemData.weaponUse === "default") 
 								return i;
 					}
 					else if(itemData.weaponType === "ranged") {
 						if(setRanged.includes(i.data.data.weaponType) )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
-								return i;
+						if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					else if(itemData.weaponType === "implement") {
 						if(i.data.data.properties.imp || i.data.data.properties.impA || i.data.data.properties.impD )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
-								return i;
+						if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					// else if(itemData.weaponType === "implementA") {
 						// if(i.data.data.properties.imp || i.data.data.properties.impA )
-							// if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
+							// if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
 								// return i;
 							// else if(itemData.weaponUse === "default")
 								// return i;
 					// }
 					// else if(itemData.weaponType === "implementD") {
 						// if(i.data.data.properties.imp || i.data.data.properties.impD )
-							// if(itemData.weaponUse === "defaultOH" && (i.data.data.hand === "HOff"))
+							// if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
 								// return i;
 							// else if(itemData.weaponUse === "default")
 								// return i;
