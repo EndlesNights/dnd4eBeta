@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.42
+- Fixxing some typos.
+
 ## Version 0.2.41
 - Fixed an issue where off hand weapons where not working properly.
 

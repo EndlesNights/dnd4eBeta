@@ -66,14 +66,14 @@ export class Helper {
 					}
 					// else if(itemData.weaponType === "implementA") {
 						// if(i.data.data.properties.imp || i.data.data.properties.impA )
-							// if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "HOff"))
+							// if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
 								// return i;
 							// else if(itemData.weaponUse === "default")
 								// return i;
 					// }
 					// else if(itemData.weaponType === "implementD") {
 						// if(i.data.data.properties.imp || i.data.data.properties.impD )
-							// if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "HOff"))
+							// if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
 								// return i;
 							// else if(itemData.weaponUse === "default")
 								// return i;
