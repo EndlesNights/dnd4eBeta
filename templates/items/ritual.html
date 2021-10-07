@@ -16,10 +16,10 @@
 
 			<ul class="summary flexrow">
 				<li>
-					{{labels.featType}}
+					{{localize "DND4EBETA.Ritual"}}
 				</li>
 				<li>
-					<input type="text" name="data.requirements" value="{{data.requirements}}" placeholder="{{ localize 'DND4EBETA.Requirements' }}"/>
+					<input type="text" name="data.category" value="{{data.category}}" placeholder="{{ localize 'DND4EBETA.Category' }}"/>
 				</li>
 				<li>
 					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
@@ -39,40 +39,93 @@
 	<section class="sheet-body">
 
 		{{!-- Description Tab --}}
-		{{> "systems/dnd4eBeta/templates/items/parts/item-description.html"}}
+		{{> "systems/dnd4e/templates/items/parts/item-description.html"}}
 
 		{{!-- Details Tab --}}
 		<div class="tab details" data-group="primary" data-tab="details">
 
-			<h3 class="form-header">{{ localize "DND4EBETA.FeatureUsage" }}</h3>
+			<div class="form-group select">
+				<label>Level</label>
+				<input type="text" name="data.level" value="{{data.level}}"/>
+			</div>
+			<div class="form-group select">
+				<label>Market Price</label>
+				<input type="text" name="data.market" value="{{data.market}}"/>
+			</div>
 
-			{{!-- Item Activation Template --}}
-			{{> "systems/dnd4eBeta/templates/items/parts/item-activation.html"}}
 
-			{{!-- Recharge Requirement --}}
-			{{#if data.activation.type}}
-			<div class="form-group recharge">
-				<label>{{ localize "DND4EBETA.FeatureActionRecharge" }}</label>
+			{{!-- Cast Time --}}
+			<div class="form-group input-select">
+				<label>Cast Time</label>
 				<div class="form-fields">
-					<span>{{ localize "DND4EBETA.FeatureRechargeOn" }}</span>
-					<input type="text" name="data.recharge.value" value="{{data.recharge.value}}"
-						   data-dtype="Number" placeholder="{{ localize 'DND4EBETA.FeatureRechargeResult' }}"/>
-					<label class="checkbox">
-						{{ localize "DND4EBETA.Charged" }}
-						<input type="checkbox" name="data.recharge.charged" {{checked data.recharge.charged}}/>
-					</label>
+					<input type="text" name="data.castTime.value" value="{{data.castTime.value}}" data-dtype="Number" placeholder="-"/>
+					<select name="data.castTime.units">
+						{{#select data.castTime.units}}
+						<option value=""></option>
+						{{#each config.timePeriods as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
 				</div>
 			</div>
-			{{/if}}
 
-			<h3 class="form-header">{{ localize "DND4EBETA.FeatureAttack" }}</h3>
+			{{!-- Effect Duration --}}
+			<div class="form-group input-select">
+				<label>{{ localize "DND4EBETA.Duration" }}</label>
+				<div class="form-fields">
+					<input type="text" name="data.duration.value" value="{{data.duration.value}}" data-dtype="Number" placeholder="-"/>
+					<select name="data.duration.units">
+						{{#select data.duration.units}}
+						<option value=""></option>
+						{{#each config.timePeriods as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				</div>
+			</div>
+			
+			{{!-- Ability Check --}}
+			<div class="form-group">
+				<label>{{ localize "DND4EBETA.DefaultAbilitySkillCheck" }}</label>
+				<select name="data.attribute">
+					{{#select data.attribute}}
+					{{#each config.abilities as |name a|}}
+					<option value="abilities.{{a}}.mod">{{name}}</option>
+					{{/each}}
+					{{#each config.skills as |name s|}}
+					<option value="skills.{{s}}.total">{{name}}</option>
+					{{/each}}
+					{{/select}}
+				</select>
+			</div>
 
-			{{!-- Item Action Template --}}
-			{{> "systems/dnd4eBeta/templates/items/parts/item-action.html"}}
-
+			<div class="form-group uses-per">
+				<label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
+				<div class="form-fields">
+					<select name="data.consume.type" style="flex: 0.55;">
+						{{#select data.consume.type}}
+						<option value=""></option>
+						{{#each config.abilityConsumptionTypes as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+					<select name="data.consume.target" style="width: 80%">
+						{{#select data.consume.target}}
+						<option value=""></option>
+						{{#each abilityConsumptionTargets as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+					<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
+				</div>
+			</div>	
 		</div>
 
 		{{!-- Macros Tab --}}
-		{{> "systems/dnd4eBeta/templates/items/parts/item-macro.html"}}
+		{{> "systems/dnd4e/templates/items/parts/item-macro.html"}}
 	</section>
 </form>

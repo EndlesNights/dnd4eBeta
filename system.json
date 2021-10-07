@@ -1,8 +1,8 @@
 {
-	"name": "dnd4eBeta",
-	"title": "4th Edition Beta",
-	"description": "A minimalist custom test build of 4th Ed.",
-	"version": "0.2.33",
+	"name": "dnd4e",
+	"title": "DnD 4th Edition",
+	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
+	"version": "0.2.39",
 	"minimumCoreVersion": "0.8.5",
 	"compatibleCoreVersion": "0.8.9",
 	"templateVersion": 2,
@@ -22,13 +22,11 @@
 		}
 	],
 	"socket": true,
-	"initiative": "1d20 + @attributes.init.value + (@attributes.init.value / 100)",
 	"gridDistance": 1,
 	"gridUnits": "sq",
 	"primaryTokenAttribute": "attributes.hp",
 	"secondaryTokenAttribute": null,
   	"url": "https://github.com/EndlesNights/dnd4eBeta",
-	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dev/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/dev/dnd4eBeta.zip"
-	
+	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/main/dnd4e.zip"
 }

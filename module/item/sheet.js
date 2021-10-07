@@ -36,7 +36,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	get template() {
-		const path = "systems/dnd4eBeta/templates/items/";
+		const path = "systems/dnd4e/templates/items/";
 		return `${path}/${this.item.data.type}.html`;
 	}
 
@@ -66,7 +66,9 @@ export default class ItemSheet4e extends ItemSheet {
 			itemData.data.isRange = true;
 			if(itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || itemData.data.rangeType === "rangeBurst" || data.data.rangeType === "rangeBlast" || data.data.rangeType === "wall" ) 
 			itemData.data.isArea = true;
+			itemData.data.isRecharge = itemData.data.useType === "recharge";
 		}
+
 
 		// Weapon Properties
 		if(itemData.type === "weapon"){

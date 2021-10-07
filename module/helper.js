@@ -175,7 +175,7 @@ export class Helper {
 			//	-	dice damage
 			if(newFormula.includes("@powBase")) {
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
 				
 				if(quantity === "") quantity = 1;
 				
@@ -217,7 +217,7 @@ export class Helper {
 					if (i < parts.length - 1) dice += '+';
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				let r = new Roll(dice)
+				let r = new Roll(`${dice}`)
 				if(dice){
 					r.evaluate({maximize: true});
 					newFormula = newFormula.replace("@wepMax", r.result);
@@ -234,8 +234,8 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;				
-				let rQuantity = new Roll(quantity)
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let rQuantity = new Roll(`${quantity}`)
 				rQuantity.evaluate({maximize: true});
 
 				//check if is valid number
@@ -354,8 +354,8 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;
-				let rQuantity = new Roll(quantity)
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let rQuantity = new Roll(`${quantity}`)
 				rQuantity.evaluate({maximize: true});
 				
 				if(this._isNumber(rQuantity.result)) {
@@ -442,8 +442,8 @@ export class Helper {
 	}
 
 	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
-
-		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]} ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}`;
+		let powerSource = chatData.powersource !== "" ? ` ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}` : ""
+		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]}${powerSource}`;
 		let tag = [];
 
 		if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
@@ -472,7 +472,13 @@ export class Helper {
 			powerDetail += ` ${CONFIG.DND4EBETA.weaponType[chatData.weaponType]}`;
 			chatData.rangePower ? powerDetail += `</b> ${chatData.rangePower}</span>` : powerDetail += `</b></span>`;
 			
-		} 
+		}
+		else if (chatData.rangeType === "melee") {
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")}</b> ${chatData.rangePower}</span>`;
+		}
+		else if (chatData.rangeType === "reach") {
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.rangeReach")}</b> ${chatData.rangePower}</span>`;
+		}
 		else if (chatData.rangeType === "range") {
 			powerDetail += ` ${game.i18n.localize("DND4EBETA.Range")}</b> ${chatData.rangePower}</span>`;
 		}
@@ -485,7 +491,7 @@ export class Helper {
 		else if (chatData.rangeType === "personal") {
 			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
 		}
-		else if (chatData.rangeType === "trouch") {
+		else if (chatData.rangeType === "touch") {
 			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")} ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
 		}
 		else {

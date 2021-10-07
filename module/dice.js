@@ -13,7 +13,7 @@ export class MultiAttackRoll extends Roll{
 	/**
 	 * Custom chat template to handle multiroll attacks 
 	 */
-	static CHAT_TEMPLATE = "systems/dnd4eBeta/templates/chat/multiattack_roll_template.html";
+	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/multiattack_roll_template.html";
 
 	get multirollData() {
 		return this._multirollData;
@@ -44,7 +44,7 @@ export class MultiAttackRoll extends Roll{
 
 			let hitState = "";
 			
-			if(game.settings.get("dnd4eBeta", "automationCombat")){
+			if(game.settings.get("dnd4e", "automationCombat")){
 				if (critState === " critical"){
 					hitState = "Critical Hit!"
 				} else if (critState === " fumble"){
@@ -425,7 +425,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		targDataArray.multiTargetCheck = true;
 	}
 	let newFlavor = "";
-	template = template || "systems/dnd4eBeta/templates/chat/roll-dialog.html";
+	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
 		formula: parts.join(" + "),
 		data: data,
@@ -508,7 +508,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 
 		// Modify the damage formula for critical hits
 		if ( crit === true ) {
-			// let add = (actor && actor.getFlag("dnd4eBeta", "savageAttacks")) ? 1 : 0;
+			// let add = (actor && actor.getFlag("dnd4e", "savageAttacks")) ? 1 : 0;
 			// let mult = 2;
 			// roll.alter(add, mult);
 			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
@@ -540,7 +540,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 	partsCrit = partsCrit?.concat(["@bonus"]);
 
 	// Render modal dialog
-	template = template || "systems/dnd4eBeta/templates/chat/roll-dialog.html";
+	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
 		formula: critical ? partsCrit.join(" + ") : parts.join(" + "),
 		data: data,
