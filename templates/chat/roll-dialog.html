@@ -8,8 +8,7 @@
 		<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EBETA.RollExample' }}"/>
 	</div>
 
-	{{#if isD20Roll}}
-		
+	{{#if isD20Roll}}	
 		<div class="input-group-button">
 			<label>Number of D20 to Roll:</label>
 			<button style="width: 9.375%; text-align: center;" type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" onclick="minus()">
@@ -23,50 +22,37 @@
 	{{/if}}
 	
 	<div class="form-group stacked">
-	{{#if isAttackRoll}}
-	{{#if targetData.multiTargetCheck}}
-	<div class="form-group">
-		<button class="button" type="button" id="multibonus-toggle" onclick="toggleMultibonus()" value="false"></button>
-	</div>
-	{{/if}}
-	<div class="multitarget-np-flex">
-		<button style="width: 9.375%; text-align: center;" type="button" class="button hollow circle" id="prevBtn" onclick="nextPrev(-1)">
-			<i class="fas fa-arrow-left" aria-hidden="true"></i>
-		</button>
-		<label id="bonusTabHeaderLabel"></label>
-		<button style="width: 9.375%; text-align: center;" type="button" class="button hollow circle" id="nextBtn" onclick="nextPrev(1)">
-			<i class="fas fa-arrow-right" aria-hidden="true"></i>
-		</button>
-	</div>
-	{{#each targetData.targNameArray as | t n |}}
-	<div class="multitarget-tab">
-		{{#if ../targetData.hasTarget}}
-		<div>
-			<label>Target: {{t}}</label>
+		{{#if isAttackRoll}}
+		<div class="multitarget-np-flex">
+			<button style="width: 9.375%; text-align: center;" type="button" class="button hollow circle" id="prevBtn" onclick="nextPrev(-1)">
+				<i class="fas fa-arrow-left" aria-hidden="true"></i>
+			</button>
+			<button class="button" type="button" id="multibonus-toggle" onclick="toggleMultibonus()" value="false"></button>
+			<button style="width: 9.375%; text-align: center;" type="button" class="button hollow circle" id="nextBtn" onclick="nextPrev(1)">
+				<i class="fas fa-arrow-right" aria-hidden="true"></i>
+			</button>
 		</div>
-		{{/if}}
-		<div class="form-group stacked">
-		{{#each ../data.commonAttackBonuses as | a b |}}
-		<div class="column" style="max-width: 50%; margin: 0;">
-			<label class="rollable">
-				<input style="position:relative; top: 5px;" type="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean" value="{{../checked}}"/>{{ localize a.label}} ({{a.value}})
-			</label>
+		{{#each targetData.targNameArray as | t n |}}
+		<div class="multitarget-tab">
+			{{#if ../targetData.hasTarget}}
+			<div>
+				<label>Target: {{t}}</label>
+			</div>
+			{{/if}}
+			<div class="form-group stacked">
+			{{#each ../data.commonAttackBonuses as | a b |}}
+			<div class="column" style="max-width: 50%; margin: 0;">
+				<label class="rollable">
+					<input style="position:relative; top: 5px;" type="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean" value="{{../checked}}"/>{{ localize a.label}} ({{a.value}})
+				</label>
+			</div>
+			{{/each}}
+			</div>
 		</div>
 		{{/each}}
-		</div>
+		{{/if}}
 	</div>
-	{{/each}}
-	</div>
-	<div class="form-group stacked">
-	{{#each data.commonAttackBonuses as | a b |}}
-	<div class="column" style="max-width: 50%; margin: 0;">
-		<label class="rollable">
-			<input style="position:relative; top: 5px;" type="checkbox" name="{{b}}" data-dtype="Boolean" value="{{checked}}"/>{{ localize a.label}} ({{a.value}})
-		</label>
-	</div>
-	{{/each}}
-	{{/if}}
-	</div>
+
 
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.RollMode" }}</label>
@@ -116,36 +102,50 @@ var cntrlIsPressed = false;
 		}
 	}
 
-var currentTab = 0;
-var multiTargetToggle = 0;
-var multiTargetToggleString = "Change to Individual Attack Bonuses";
-var bonusTabHeaderString = "Universal Bonuses";
-showTab(currentTab);
+var currentTab = 0;    // Defines the default current attack bonuses tab to be the first one
+var multiTargetToggle = 0;    // Defines the default state of the multi-target attack bonus toggle state to be in the "universal bonus" state
+var multiTargetToggleString = "Change to Individual Attack Bonuses";    // Defines the initial text for the multiTargetToggleString - assuming there is more than one target
+showTab(currentTab);    // Show the tabs upon first run
 
 function toggleMultibonus() {
-	console.log(document.getElementById("multibonus-toggle").value)
+	/*
+	* Function to toggle the state of the attack bonus tabs between Universal and 
+	* Individual attack bonuses based on the current value of the toggle button.
+	*
+	* Each option will update the button value, then update the toggle value, 
+	* then update the button text. 
+	*
+	* The condition for toggling from true to false then sets the current tab index
+	* to 0 to show only the first tab.
+	* 
+	* Both conditions then call the showTab function to update the currently
+	* displayed tab.
+	*/
 	if (document.getElementById("multibonus-toggle").value == "false"){
 		document.getElementById("multibonus-toggle").value = "true";
 		multiTargetToggle = 1;
 		multiTargetToggleString = "Change to Universal Attack Bonuses";
-		bonusTabHeaderString = "Individual Bonuses";
 		showTab(currentTab)
 	} else if (document.getElementById("multibonus-toggle").value == "true") {
 		document.getElementById("multibonus-toggle").value = "false";
 		multiTargetToggle = 0;
 		multiTargetToggleString = "Change to Individual Attack Bonuses";
-		bonusTabHeaderString = "Universal Bonuses";
 		currentTab = 0;
 		showTab(currentTab)
 	}
-	console.log(document.getElementById("multibonus-toggle").value)
 }
 
 function showTab(n) {
-	document.getElementById("multibonus-toggle").innerHTML = multiTargetToggleString;
-	document.getElementById("bonusTabHeaderLabel").innerHTML = bonusTabHeaderString;
-
 	let x = document.getElementsByClassName("multitarget-tab");
+	let numTargets = x.length;
+
+	if (numTargets <= 1) {
+		multiTargetToggleString = "Universal Attack Bonuses"
+		document.getElementById("multibonus-toggle").disabled = true;
+	}
+
+	document.getElementById("multibonus-toggle").innerHTML = multiTargetToggleString;
+
 	x[n].style.display = "block";
 	if (n <= 0){
 		document.getElementById("prevBtn").disabled = true;

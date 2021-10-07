@@ -221,23 +221,70 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		if ( form !== null ) {data['bonus'] = form.bonus.value;}
 		else{data['bonus'] = null;}
 
+		var multibonusToggle = null;
+		var bonusArray = null;
+
 		if(isAttackRoll && form !== null) {
-			let i = 0;
-			for ( let [k, v] of Object.entries(form) ) {	
-				if(v.checked) {
-					let bonVal = CONFIG.DND4EBETA.commonAttackBonuses[v.name].value;
-					if(data['bonus']){
-						data['bonus'] += `${bonVal > 0? "+":""} ${bonVal}`;
-					} else {
-						data['bonus'] += `${bonVal}`;
-					}
-					i++;
+			for (let [k, v] of Object.entries(form)){
+				if (v.id === "multibonus-toggle"){
+					multibonusToggle = (v.value === "true");
 				}
 			}
+			if (game.user.targets.size > 1 && multibonusToggle) {
+				bonusArray = []
+				let i = 0;
+				for (let targ = 0; targ < game.user.targets.size; targ++){
+					let tempString = "";
+					for ( let [k, v] of Object.entries(form) ) {	
+						if(v.checked) {
+							let tabInt = v.name.split(".")[0];
+							if (parseInt(tabInt) === targ) {
+								let bonusName = v.name.split(".")[1];
+								let bonVal = CONFIG.DND4EBETA.commonAttackBonuses[bonusName].value;
+								if(tempString){
+									tempString += `${bonVal > 0? "+":""} ${bonVal}`;
+								} else {
+									tempString += `${bonVal}`;
+								}
+							}
+							i++;
+						}
+					}
+					if (tempString) {
+						bonusArray.push(tempString);
+					} else {
+						bonusArray.push('0');
+					}
+				}
+
+
+
+
+			} else {
+				let i = 0;
+				let tempString = "";
+				for ( let [k, v] of Object.entries(form) ) {	
+					if(v.checked) {
+						let tabInt = v.name.split(".")[0];
+						if (parseInt(tabInt) === 0) {
+							let bonusName = v.name.split(".")[1];
+							let bonVal = CONFIG.DND4EBETA.commonAttackBonuses[bonusName].value;
+							if(tempString){
+								tempString += `${bonVal > 0? "+":""} ${bonVal}`;
+							} else {
+								tempString += `${bonVal}`;
+							}
+						}
+						i++;
+					}
+				}
+				data['bonus'] += tempString;
+			}
+			
 		}
 
 		
-		if ( !data["bonus"] ) parts.pop();
+		if ( !data["bonus"] && !bonusArray ) parts.pop();
 
 		// data.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
 		if(form?.flavor.value){
@@ -259,6 +306,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		if (game.user.targets.size && isAttackRoll) {
 			const numTargets = game.user.targets.size;
 			roll = new MultiAttackRoll(parts.join(" + "), data);
+			var defaultBonus = multibonusToggle ? data["bonus"] : null;
 
 			const targetArr = Array.from(game.user.targets);
 			var targDataArray = {
@@ -270,6 +318,9 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 				let targDefVal = targetArr[targ].document._actor.data.data.defences[options.attackedDef].value;
 				targDataArray.targNameArray.push(targName);
 				targDataArray.targDefValArray.push(targDefVal);
+				if (multibonusToggle) {
+					data["bonus"] = defaultBonus + bonusArray[targ];
+				}
 				roll.addNewRoll(parts.join(" + "), data);
 			}
 
