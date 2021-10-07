@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.41
+- Fixed an issue where off hand weapons where not working properly.
+
 ## Version 0.2.40
 - Fixed an issue where AC override was turned on by default.
 - Multple fixes to powercard sheet, 
