@@ -1045,7 +1045,7 @@ DND4EBETA.statusEffect = [
 	{
 		id: "petrified",
 		label: "EFFECT.statusPetrified",
-		icon: "systems/dnd4e/icons/statusEffects/Petrified.svg"
+		icon: "systems/dnd4e/icons/statusEffects/petrified.svg"
 	},
 	{
 		id: "prone",
@@ -1060,7 +1060,7 @@ DND4EBETA.statusEffect = [
 	{
 		id: "sleeping",
 		label: "EFFECT.statusSleeping",
-		icon: "systems/dnd4e/icons/statusEffects/Sleeping.svg"
+		icon: "systems/dnd4e/icons/statusEffects/sleeping.svg"
 	},
 	{
 		id: "slowed",
