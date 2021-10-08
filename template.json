@@ -68,7 +68,6 @@
 			"defences": {
 				"ac": {
 					"value": 10,
-					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -83,7 +82,6 @@
 				},
 				"fort": {
 					"value": 10,
-					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -96,7 +94,6 @@
 				},
 				"ref": {
 					"value": 10,
-					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -109,7 +106,6 @@
 				},
 				"wil": {
 					"value": 10,
-					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,

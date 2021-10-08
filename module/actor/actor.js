@@ -450,7 +450,7 @@ export class Actor4e extends Actor {
 				break;
 			}
 			res.resBonusValue = resBonusValue;
-			res.value = res.armour + resBonusValue;
+			res.value += res.armour + resBonusValue;
 			res.label = game.i18n.localize(DND4EBETA.damageTypes[id]); //.localize("");
 		}
 		
@@ -486,12 +486,12 @@ export class Actor4e extends Actor {
 				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
 				def.armour += i.data.data.armour[id];
 			}
-			if(def.base == undefined){
-				def.base = 10;
-				this.update({[`data.defences[${def}].base`]: 10 });
-			}
+			// if(def.base == undefined){
+			// 	def.base = 10;
+			// 	this.update({[`data.defences[${def}].base`]: 10 });
+			// }
 			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);			
+			def.value += modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);			
 		}
 	}
 
