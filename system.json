@@ -13,7 +13,57 @@
 	"styles": [
 		"styles/dnd4eBeta.css"
 	],
-	"packs": [],
+	"packs": [
+		{
+			"name": "example_character",
+			"label": "Example Character",
+			"system": "dnd4e",
+			"path": "./packs/example_character.db",
+			"entity": "Actor"
+		},
+		{
+			"name": "example_powers",
+			"label": "Example Powers",
+			"system": "dnd4e",
+			"path": "./packs/example_powers.db",
+			"entity": "Item"
+		},
+		{
+			"name": "example_features",
+			"label": "Example Features",
+			"system": "dnd4e",
+			"path": "./packs/example_features.db",
+			"entity": "Item"
+		},
+		{
+			"name": "example_class_features",
+			"label": "Example Class Features",
+			"system": "dnd4e",
+			"path": "./packs/example_class_features.db",
+			"entity": "Item"
+		},
+		{
+			"name": "example_racial_features",
+			"label": "Example Racial Features",
+			"system": "dnd4e",
+			"path": "./packs/example_racial_features.db",
+			"entity": "Item"
+		},
+		{
+			"name": "example_equipment",
+			"label": "Example Equipment",
+			"system": "dnd4e",
+			"path": "./packs/example_equipment.db",
+			"entity": "Item"
+		},
+		{
+			"name": "example_weapons",
+			"label": "Example Weapons",
+			"system": "dnd4e",
+			"path": "./packs/example_weapons.db",
+			"entity": "Item"
+		}
+	],
 	"languages": [
 		{
 			"lang": "en",
