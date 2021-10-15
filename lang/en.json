@@ -23,6 +23,7 @@
 "DND4EBETA.AbilityUseChargedHint": "This {type} is charged and ready to use!",
 "DND4EBETA.AbilityUseConsumableChargeHint": "Using this {type} will consume 1 charge of {value} remaining.",
 "DND4EBETA.AbilityUseConsumableDestroyHint": "Using this {type} will consume it's final charge and it will be destroyed.",
+"DND4EBETA.AbilityUseChargesLabel": "{value} Charges",
 "DND4EBETA.AbilityUseConsumableLabel": "{max} per {per}",
 "DND4EBETA.AbilityUseConsumableQuantityHint": "Using this {type} will consume 1 quantity of {quantity} remaining",
 "DND4EBETA.AbilityUseConsume": "Consume Available Usage?",

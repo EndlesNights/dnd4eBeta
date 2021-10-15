@@ -1,6 +1,10 @@
 # Changelog
 
 ## Version 0.2.43
+- Change how some more values are calculated to make them work better with active effects
+- "@tier" should now be a refrenceable value to refrence via the helper
+
+## Version 0.2.43
 - Change how some values are calculated to make them work better with active effects
 
 ## Version 0.2.42
