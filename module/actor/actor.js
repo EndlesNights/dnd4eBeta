@@ -66,6 +66,21 @@ export class Actor4e extends Actor {
 
 	}
 
+	/** @override */
+	async update(data, options={}) {
+		// Apply changes in Actor size to Token width/height
+		const newSize = data["data.details.size"];
+		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this.data, "data.details.size")) )) {
+			let size = CONFIG.DND4EBETA.tokenSizes[newSize];
+			if ( this.isToken ) this.token.update({height: size, width: size});
+			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
+				data["token.height"] = size;
+				data["token.width"] = size;
+			}
+		}
+		return super.update(data, options);
+	}
+
 	/**
 		* Augment the basic actor data with additional dynamic data.
 		*/
