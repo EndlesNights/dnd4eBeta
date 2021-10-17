@@ -588,26 +588,7 @@ export default class ActorSheet4e extends ActorSheet {
 			};
 		return icons[level];
 	}
-	
-	_onCycleSkillProficiency(event) {
-		event.preventDefault();
-		const field = $(event.currentTarget).siblings('input[type="hidden"]');
 
-		// Get the current level and the array of levels
-		const level = parseFloat(field.val());
-		const levels = [0, 5, 8];
-		let idx = levels.indexOf(level);
-
-		// Toggle next level - forward on click, backwards on right
-		if ( event.type === "click" ) {
-			field.val(levels[(idx === levels.length - 1) ? 0 : idx + 1]);
-		} else if ( event.type === "contextmenu" ) {
-			field.val(levels[(idx === 0) ? levels.length - 1 : idx - 1]);
-		}
-
-		// Update the field value and save the form
-		this._onSubmit(event);
-	}	
   /* -------------------------------------------- */
 
   /** @override */
@@ -1124,7 +1105,7 @@ export default class ActorSheet4e extends ActorSheet {
 		this._onSubmit(event);
 	}
 
-  /* -------------------------------------------- */
+	/* -------------------------------------------- */
 
   /**
    * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
