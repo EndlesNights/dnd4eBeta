@@ -3,6 +3,9 @@
 ## Version 0.2.43
 - Change how some more values are calculated to make them work better with active effects
 - adeed "@tier" to the short hand helper list
+- libWrapper has been added as a dependencies
+- implmented functionaly of [fvtt-rolldata-aware-active-effects](https://github.com/wyrmisis/fvtt-rolldata-aware-active-effects) into system
+
 - creation of example compendium
 
 ## Version 0.2.43
