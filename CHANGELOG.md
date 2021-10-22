@@ -6,7 +6,8 @@
 - libWrapper has been added as a dependencies
 - implmented functionaly of [fvtt-rolldata-aware-active-effects](https://github.com/wyrmisis/fvtt-rolldata-aware-active-effects) into system
 
-- creation of example compendium
+- creation of srd compendiums
+- creation of example compendiums
 
 - consumble itmes should not use charges properly
 - consumble, added missing feature for enabled to destroy item on final use

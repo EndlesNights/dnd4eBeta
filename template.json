@@ -119,6 +119,7 @@
 			},
 			"details": {
 				"level": 1,
+				"tier": 1,
 				"exp": 0,
 				"class": "",
 				"paragon": "",
@@ -522,6 +523,7 @@
 				"secondary": "regular"
 			},
 			"level": 1,
+			"tier": 1,
 			"exp": 0,
 			"class": "",
 			"paragon": "",
