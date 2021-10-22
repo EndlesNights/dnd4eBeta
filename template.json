@@ -740,6 +740,9 @@
 		"consumableType": "potion",
 		"uses": {
 		"autoDestroy": false
+		},
+		"damage": {
+			"parts": []
 		}
 	},
 	"equipment": {

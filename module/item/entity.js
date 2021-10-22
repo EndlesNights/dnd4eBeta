@@ -106,7 +106,6 @@ export default class Item4e extends Item {
 	 */
 	get hasEffect() {
 		if(!this.data.type === "power") return false; //curently only powers have effects
-		console.log(this.data.data.effect?.detail)
 		return !!this.data.data.effect?.detail;
 	}
 	
@@ -379,13 +378,14 @@ export default class Item4e extends Item {
 		};
 		// For feature items, optionally show an ability usage dialog
 		if (this.data.type === "feat") {
+			console.log("feat")
 			let configured = await this._rollFeat(configureDialog);
 			if ( configured === false ) return;
 		}
-	// else if ( this.data.type === "consumable" ) {
-			// let configured = await this._rollConsumable(configureDialog);
-			// if ( configured === false ) return;
-		// }
+		else if ( this.data.type === "consumable" ) {
+			let configured = await this._rollConsumable(configureDialog);
+			if ( configured === false ) return;
+		}
 
 		// For items which consume a resource, handle that here
 		const allowed = await this._handleResourceConsumption({isCard: true, isAttack: false},this.data.data);

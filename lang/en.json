@@ -31,6 +31,7 @@
 "DND4EBETA.AbilityUseNormalHint": "This {type} has {value} of {max} uses per {per} remaining.",
 "DND4EBETA.AbilityUseRechargedHint": "This {type} is depleted and must be recharged!",
 "DND4EBETA.AbilityUseUnavailableHint": "There are no uses of this item remaining!",
+"DND4EBETA.AbilityUseItem": "Use Item",
 "DND4EBETA.AbilityWis": "Wisdom",
 "DND4EBETA.AC": "AC",
 "DND4EBETA.Action": "Action",

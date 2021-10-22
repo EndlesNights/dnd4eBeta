@@ -109,7 +109,12 @@ Hooks.once("setup", function() {
 	// Localize CONFIG objects once up-front
 	const toLocalize = [
 	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes",
-	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits", "damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
+	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits",
+	"damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
+	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "healingTypes", "itemActionTypes",
+	"launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType",
+	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
+	"weaponTypes", "weaponHands"
 	];
 
 	const noSort = [
@@ -227,10 +232,7 @@ html.find('.effect-control').last().after(message);
  * @returns 
  */
 const apply = (wrapped, owner, change) => {
-  // console.log(owner)
-  // console.log(change)
-  // console.log(owner.data.data.abilities.con.mod)
-  console.log("lookup")
+	
   const stringDiceFormat = /\d+d\d+/;
     
   // If the user wants to use the rolldata format
