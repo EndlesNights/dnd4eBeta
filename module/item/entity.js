@@ -95,8 +95,16 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	 get hasHealing() {
-		if(!this.data.type === "power") return false; //curently only powers will deal damage or make attacks
-		return this.data.data.hit?.isHealing;
+		if(this.data.type === "power"){
+			return this.data.data.hit?.isHealing;
+		}
+		else if(this.data.type === "consumable"){
+			console.log(this.data.data.damage.parts.map(d => d[1]).includes("healing"))
+			return this.data.data.damage.parts.map(d => d[1]).includes("healing");
+			
+		}
+		return false; //curently only powers will deal damage or make attacks
+		
 	 }	
 	/* -------------------------------------------- */
 
@@ -1039,7 +1047,7 @@ export default class Item4e extends Item {
 
 		// Get message labels
 		const title = `${this.name} - ${game.i18n.localize("DND4EBETA.HealingRoll")}`;
-		let flavor = this.labels.damageTypes.length ? `${title} (${this.labels.damageTypes})` : title;
+		let flavor = this.labels.damageTypes?.length ? `${title} (${this.labels.damageTypes})` : title;
 
 		// Define Roll parts
 		const parts = itemData.damage.parts.map(d => d[0]);
@@ -1139,7 +1147,7 @@ export default class Item4e extends Item {
 
 		// Invoke the roll and submit it to chat
 		const roll = new Roll(rollData.item.formula, rollData).roll();
-		roll.toMessage({
+		roll.toMessage({ 
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: this.data.data.chatFlavor || title,
 			rollMode: game.settings.get("core", "rollMode"),
