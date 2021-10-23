@@ -963,21 +963,21 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const skillName = event.currentTarget.parentElement.dataset.skill;
 		const target = `data.skills.${skillName}`;
-		const options = {target: target, label: `${this.actor.data.data.skills[skillName].label} Skill Bonues`, skill: true };
+		const options = {target: target, label: `${this.actor.data.data.skills[skillName].label} Skill Bonus`, skill: true };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	/* -------------------------------------------- */
 
 	_onDeathSaveBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.deathsavebon`, label: "Death Savingthrow Bonues" };
+		const options = {target: `data.details.deathsavebon`, label: "Death Savingthrow Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	
 	_onSurgeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.surgeBon`, label: "Healing Surge Bonues" };
+		const options = {target: `data.details.surgeBon`, label: "Healing Surge Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -989,7 +989,7 @@ export default class ActorSheet4e extends ActorSheet {
 
 	_onSecondWindBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonues", secondWind: true };
+		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonus", secondWind: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -997,13 +997,13 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const defName = event.currentTarget.parentElement.dataset.defence;
 		const target = `data.defences.${defName}`;
-		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonues`, ac: (defName ==="ac")  };
+		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonus`, ac: (defName ==="ac")  };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.attributes.init`, label: "Initiative Bonues", init: true };
+		const options = {target: `data.attributes.init`, label: "Initiative Bonus", init: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -1011,7 +1011,7 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `data.movement.${moveName}`;
-		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonues` };
+		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -1030,7 +1030,7 @@ export default class ActorSheet4e extends ActorSheet {
 		const passName = event.currentTarget.parentElement.dataset.passive;
 		const skillName = this.actor.data.data.passive[passName].skill;
 		const target = `data.passive.${passName}`;
-		const options = {target: target, label: `Passive ${this.actor.data.data.skills[skillName].label} Bonues` };
+		const options = {target: target, label: `Passive ${this.actor.data.data.skills[skillName].label} Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}	
 
@@ -1038,7 +1038,7 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const resName = event.currentTarget.parentElement.dataset.res;
 		const target = `data.resistances.${resName}`;
-		const options = {target: target, label: `${this.actor.data.data.resistances[resName].label} Damage Resistances Bonues` };
+		const options = {target: target, label: `${this.actor.data.data.resistances[resName].label} Damage Resistances Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	
@@ -1100,7 +1100,7 @@ export default class ActorSheet4e extends ActorSheet {
 
 	_onSavingThrowBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.saves`, label: "Savingthrow Bonues" };
+		const options = {target: `data.details.saves`, label: "Savingthrow Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);	
 	}
 

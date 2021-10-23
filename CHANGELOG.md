@@ -11,6 +11,7 @@
 
 - consumble itmes should not use charges properly
 - consumble, added missing feature for enabled to destroy item on final use
+- fixed some spelling mistakes
 
 ## Version 0.2.43
 - Change how some values are calculated to make them work better with active effects

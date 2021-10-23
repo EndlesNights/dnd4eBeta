@@ -86,6 +86,13 @@
 			"system": "dnd4e",
 			"path": "./packs/srd_weapons.db",
 			"entity": "Item"
+		},
+		{
+			"name": "srd_rules",
+			"label": "SRD Rules",
+			"system": "dnd4e",
+			"path": "./packs/srd_rules.db",
+			"entity": "JournalEntry"
 		}
 	],
 	"languages": [

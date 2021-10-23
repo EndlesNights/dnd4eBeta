@@ -38,7 +38,7 @@ export class EncumbranceDialog extends DocumentSheet {
 		console.log(moveName)
 		console.log(event.currentTarget.parentElement.dataset)
 		console.log(event.currentTarget.parentElement)
-		const options = {target: target, label: `${this.object.data.data.movement[moveName].label} Movement Bonues` };
+		const options = {target: target, label: `${this.object.data.data.movement[moveName].label} Movement Bonus` };
 		new AttributeBonusDialog(this.object, options).render(true);
 	}
 }
