@@ -213,7 +213,6 @@ export class Actor4e extends Actor {
 		}
 		
 		data.details.tier = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3);
-		this.update({[`data.details.tier`]: data.details.tier });
 
 		//Weight & Encumbrance
 		data.encumbrance = this._computeEncumbrance(actorData);
