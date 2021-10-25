@@ -32,10 +32,10 @@
 			"entity": "Item"
 		},
 		{
-			"name": "example_features",
-			"label": "Example Features",
+			"name": "example_feats",
+			"label": "Example Feats",
 			"system": "dnd4e",
-			"path": "./packs/example_features.db",
+			"path": "./packs/example_feats.db",
 			"entity": "Item"
 		},
 		{
