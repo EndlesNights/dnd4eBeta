@@ -565,21 +565,7 @@ export default class ActorSheet4e extends ActorSheet {
 	});
   }	
 	
-	/** @override */
-	async update(data, options={}) {
-		
-		// Apply changes in Actor size to Token width/height
-		const newSize = data["data.traits.size"];
-		if ( newSize && (newSize !== getProperty(this.data, "data.traits.size")) ) {
-			let size = CONFIG.DND4EBETA.tokenSizes[newSize];
-			if ( this.isToken ) this.token.update({height: size, width: size});
-			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
-				data["token.height"] = size;
-				data["token.width"] = size;
-			}
-		}
-		return super.update(data, options);
-	}
+
 	_getTrainingIcon(level) {
 		const icons = {
 			0: '<i class="far fa-circle"></i>',
