@@ -124,6 +124,10 @@ export class Actor4e extends Actor {
 		for (let [id, abl] of Object.entries(data.abilities)) {
 
 			abl.mod = Math.floor((abl.value - 10) / 2);
+			if(abl.mod){
+				this.update({[`data.abilities.${id}.mod`]: abl.mod});
+			}
+
 			abl.modHalf = abl.mod + Math.floor(data.details.level / 2);
 			abl.prof = (abl.proficient || 0);
 			abl.saveBonus = saveBonus + Math.floor(data.details.level / 2);
@@ -174,7 +178,7 @@ export class Actor4e extends Actor {
 		}
 		
 		data.details.bloodied = Math.floor(data.attributes.hp.max / 2);
-		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
+		data.details.surgeValue += Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
 		data.attributes.hp.min = -data.details.bloodied;
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
 
@@ -223,8 +227,11 @@ export class Actor4e extends Actor {
 			}
 		}
 		
-		let tier = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3);
-		this.update({[`data.details.tier`]: tier });
+
+		if(data.details.tier != Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3)){
+			data.details.tier = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3);
+			this.update({[`data.details.tier`]: data.details.tier });
+		}
 
 		//Weight & Encumbrance
 		data.encumbrance = this._computeEncumbrance(actorData);
@@ -307,7 +314,7 @@ export class Actor4e extends Actor {
 		}
 		for ( let i of this.items) {
 			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
-			data.movement.base.armour -= i.data.data.armour.movePenValue;
+			data.movement.base.armour += i.data.data.armour.movePenValue;
 		}
 		data.movement.base.bonusValue = baseMoveBonusValue;
 
@@ -579,7 +586,7 @@ export class Actor4e extends Actor {
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
 
 			if(skl.base == undefined){
 				skl.base = 0;
@@ -631,7 +638,7 @@ export class Actor4e extends Actor {
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
 
 			if(skl.base == undefined){
 				skl.base = 0;
@@ -868,6 +875,7 @@ export class Actor4e extends Actor {
 	*/
 	async usePower(item, {configureDialog=true}={}) {
 		//if not a valid type of item to use
+		console.log("UsePower")
 		if ( item.data.type !=="power" ) throw new Error("Wrong Item type");
 		const itemData = item.data.data;
 		//configure Powers data

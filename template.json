@@ -34,8 +34,8 @@
 					"value": 10,
 					"min": 0,
 					"max": 10,
-					"starting": 10,
-					"perlevel": 5,
+					"starting": 0,
+					"perlevel": 0,
 					"feat": 0,
 					"misc": 0,
 					"autototal": false,
@@ -119,6 +119,7 @@
 			},
 			"details": {
 				"level": 1,
+				"tier": 1,
 				"exp": 0,
 				"class": "",
 				"paragon": "",
@@ -522,6 +523,7 @@
 				"secondary": "regular"
 			},
 			"level": 1,
+			"tier": 1,
 			"exp": 0,
 			"class": "",
 			"paragon": "",
@@ -740,6 +742,9 @@
 		"consumableType": "potion",
 		"uses": {
 		"autoDestroy": false
+		},
+		"damage": {
+			"parts": []
 		}
 	},
 	"equipment": {

@@ -95,8 +95,16 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	 get hasHealing() {
-		if(!this.data.type === "power") return false; //curently only powers will deal damage or make attacks
-		return this.data.data.hit?.isHealing;
+		if(this.data.type === "power"){
+			return this.data.data.hit?.isHealing;
+		}
+		else if(this.data.type === "consumable"){
+			console.log(this.data.data.damage.parts.map(d => d[1]).includes("healing"))
+			return this.data.data.damage.parts.map(d => d[1]).includes("healing");
+			
+		}
+		return false; //curently only powers will deal damage or make attacks
+		
 	 }	
 	/* -------------------------------------------- */
 
@@ -106,7 +114,6 @@ export default class Item4e extends Item {
 	 */
 	get hasEffect() {
 		if(!this.data.type === "power") return false; //curently only powers have effects
-		console.log(this.data.data.effect?.detail)
 		return !!this.data.data.effect?.detail;
 	}
 	
@@ -330,16 +337,17 @@ export default class Item4e extends Item {
 	async roll({configureDialog=true, rollMode=null, createMessage=true}={}) {
 
 		if(["both", "pre", "sub"].includes(this.data.data.macro?.launchOrder)) {
-
-			new Macro ({ 
+			let powerMacro = new Macro ({
 				name : this.name,
 				type : this.data.data.macro.type,
 				scope : this.data.data.macro.scope,
 				command : this.data.data.macro.command, //cmd,
 				author : game.user.id,
-				item: this.data.data,
-				launch: this.data.data.macro.launchOrder === "sub" ? "sub" : "pre"
-			}).execute();
+			});
+			powerMacro.data.actor = this.actor;
+			powerMacro.data.item = this.data;
+			powerMacro.data.launch = this.data.data.macro.launchOrder === "sub" ? "sub" : "pre";
+			powerMacro.execute();
 
 			if(this.data.data.macro.launchOrder === "sub") return;
 			// console.log(test);
@@ -379,13 +387,14 @@ export default class Item4e extends Item {
 		};
 		// For feature items, optionally show an ability usage dialog
 		if (this.data.type === "feat") {
+			console.log("feat")
 			let configured = await this._rollFeat(configureDialog);
 			if ( configured === false ) return;
 		}
-	// else if ( this.data.type === "consumable" ) {
-			// let configured = await this._rollConsumable(configureDialog);
-			// if ( configured === false ) return;
-		// }
+		else if ( this.data.type === "consumable" ) {
+			let configured = await this._rollConsumable(configureDialog);
+			if ( configured === false ) return;
+		}
 
 		// For items which consume a resource, handle that here
 		const allowed = await this._handleResourceConsumption({isCard: true, isAttack: false},this.data.data);
@@ -429,15 +438,17 @@ export default class Item4e extends Item {
 
 			if(["both", "post"].includes(this.data.data.macro?.launchOrder)) {
 
-				new Macro ({ 
+				let powerMacro = new Macro ({
 					name : this.name,
 					type : this.data.data.macro.type,
 					scope : this.data.data.macro.scope,
 					command : this.data.data.macro.command, //cmd,
 					author : game.user.id,
-					item: this.data.data,
-					launch: "post"
-				}).execute();
+				});
+				powerMacro.data.actor = this.actor;
+				powerMacro.data.item = this.data;
+				powerMacro.data.launch = "post";
+				powerMacro.execute();
 			}
 		}
 		else return chatData;
@@ -1039,7 +1050,7 @@ export default class Item4e extends Item {
 
 		// Get message labels
 		const title = `${this.name} - ${game.i18n.localize("DND4EBETA.HealingRoll")}`;
-		let flavor = this.labels.damageTypes.length ? `${title} (${this.labels.damageTypes})` : title;
+		let flavor = this.labels.damageTypes?.length ? `${title} (${this.labels.damageTypes})` : title;
 
 		// Define Roll parts
 		const parts = itemData.damage.parts.map(d => d[0]);
@@ -1139,7 +1150,7 @@ export default class Item4e extends Item {
 
 		// Invoke the roll and submit it to chat
 		const roll = new Roll(rollData.item.formula, rollData).roll();
-		roll.toMessage({
+		roll.toMessage({ 
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: this.data.data.chatFlavor || title,
 			rollMode: game.settings.get("core", "rollMode"),

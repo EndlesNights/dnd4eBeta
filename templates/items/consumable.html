@@ -33,7 +33,7 @@
 		<a class="item active" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
 		<a class="item" data-tab="details">{{ localize "DND4EBETA.Details" }}</a>
 		<a class="item" data-tab="effects">{{ localize "DND4EBETA.Effects" }}</a>
-        <a class="item" data-tab="macros">{{ localize "DND4EBETA.Macros" }}</a>
+		<a class="item" data-tab="macros">{{ localize "DND4EBETA.Macros" }}</a>
 	</nav>
 
 	{{!-- Item Sheet Body --}}
@@ -72,6 +72,12 @@
 			</div>
 
 			<h3 class="form-header">{{ localize "DND4EBETA.ItemConsumableUsage" }}</h3>
+
+			<div class="form-group">
+				<label class="checkbox">
+					<input type="checkbox" name="data.uses.autoDestroy" {{checked data.uses.autoDestroy}}/> {{ localize "DND4EBETA.ItemDestroyEmpty" }}
+				</label>
+			</div>
 
 			{{!-- Item Activation Template --}}
 			<!-- {{> "systems/dnd4e/templates/items/parts/item-activation.html"}} -->
