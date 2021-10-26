@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.44
+- fixed issue for item macros, actor data, item data, and launch order should now all be accessible again. 
+
 ## Version 0.2.43
 - Change how some more values are calculated to make them work better with active effects
 - adeed "@tier" to the short hand helper list

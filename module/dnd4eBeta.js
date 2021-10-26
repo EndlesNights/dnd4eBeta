@@ -206,7 +206,6 @@ $(".effect-control ").hover(
 		statusName = eventObj.target.title;
 		document.getElementById("displayStatLine").innerHTML = statusName;
 		eventObj.target.title = '';
-		console.log(eventObj)
 		document.getElementById("displayStatLine").classList.add("active");
 	},
 	function(eventObj) {
