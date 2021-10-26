@@ -299,7 +299,7 @@ export class Actor4e extends Actor {
 		}
 		for ( let i of this.items) {
 			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
-			data.movement.base.armour -= i.data.data.armour.movePenValue;
+			data.movement.base.armour += i.data.data.armour.movePenValue;
 		}
 		data.movement.base.bonusValue = baseMoveBonusValue;
 
@@ -571,7 +571,7 @@ export class Actor4e extends Actor {
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
 
 			if(skl.base == undefined){
 				skl.base = 0;
@@ -623,7 +623,7 @@ export class Actor4e extends Actor {
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
 
 			if(skl.base == undefined){
 				skl.base = 0;

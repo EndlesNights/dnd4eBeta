@@ -118,7 +118,7 @@ Hooks.once("setup", function() {
 	];
 
 	const noSort = [
-		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "rangeType", "weaponType", "weaponTypes", "weaponHands"
+		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerGroupTypes", "rangeType", "weaponType", "weaponTypes", "weaponHands"
 	];
 	
 	// const doLocalize = function(obj) {

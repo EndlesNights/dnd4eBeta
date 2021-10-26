@@ -5,13 +5,13 @@
 - adeed "@tier" to the short hand helper list
 - libWrapper has been added as a dependencies
 - implmented functionaly of [fvtt-rolldata-aware-active-effects](https://github.com/wyrmisis/fvtt-rolldata-aware-active-effects) into system
-
-- creation of srd compendiums
-- creation of example compendiums
-
 - consumble itmes should not use charges properly
 - consumble, added missing feature for enabled to destroy item on final use
 - fixed some spelling mistakes
+- made some fonts slightly darker for a higher contrast on the character sheet to improve readable
+- inverted how the Skill Check Penalty, and Movement Penalty values are calculated so that the numbers reflec that of the PHB. (Just used additiona instead of subtraction now)
+- creation of srd compendiums
+- creation of example compendiums
 
 ## Version 0.2.43
 - Change how some values are calculated to make them work better with active effects

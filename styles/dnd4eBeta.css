@@ -1780,7 +1780,8 @@ font-size: 12px;
 	padding: 0;
 	overflow-y: auto;
 	scrollbar-width: thin;
-	color: #7a7971;
+	/* color: #7a7971; */
+	color: #363632;
 }
 
 .dnd4eBeta.sheet .items-list .item {
@@ -1824,7 +1825,9 @@ font-size: 12px;
 	color: #e0e0e0;
 }
 .dnd4eBeta.sheet .inventory .items-list input {
-	color: #7a7971;
+	/* color: #7a7971; */
+	color: #363632;
+
 }
 .dnd4eBeta.sheet .items-list .item .item-properties {
 	margin-top: 3px;
@@ -1860,7 +1863,8 @@ font-size: 12px;
 .dnd4eBeta.sheet .items-list .item-detail {
 	flex: 0 0 50px;
 	font-size: 12px;
-	color: #7a7971;
+	/* color: #7a7971; */
+	color: #363632;
 	text-align: center;
 	border-right: 1px solid #c9c7b8;
 	word-break: break-word;
@@ -1935,7 +1939,8 @@ font-size: 12px;
 	flex: 0 0 22px;
 	font-size: 12px;
 	text-align: center;
-	color: #7a7971;
+	/* color: #7a7971; */
+	color: #363632;
 }
 .dnd4eBeta.sheet.actor .inventory-list .item-summary {
 	flex: 0 0 100%;
@@ -2419,7 +2424,6 @@ span.flavor-text.fumble {
 	pointer-events: none;
 	opacity: 1;
 }
-
 
 .status-effect-title {
 	visibility: hidden;
