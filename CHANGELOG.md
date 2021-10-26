@@ -3,7 +3,7 @@
 ## Version 0.2.43
 - Change how some more values are calculated to make them work better with active effects
 - adeed "@tier" to the short hand helper list
-- [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) has been added as a dependencies
+- [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) has been added as a dependency.
 - implemented functionally of [fvtt-rolldata-aware-active-effects](https://github.com/wyrmisis/fvtt-rolldata-aware-active-effects) into system
 - consumable items should not use charges properly
 - consumable, added missing feature for enabled to destroy item on final use
