@@ -68,6 +68,7 @@ export class Actor4e extends Actor {
 
 	/** @override */
 	async update(data, options={}) {
+		
 		// Apply changes in Actor size to Token width/height
 		const newSize = data["data.details.size"];
 		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this.data, "data.details.size")) )) {
@@ -78,6 +79,14 @@ export class Actor4e extends Actor {
 				data["token.width"] = size;
 			}
 		}
+
+		if(data[`data.details.level`]){
+			if(this.data.data.details.tier != Math.clamped(Math.floor(( data[`data.details.level`] - 1 ) /10 + 1),1,3)){
+				this.data.data.details.tier = Math.clamped(Math.floor(( data[`data.details.level`] - 1 ) /10 + 1),1,3);
+				data[`data.details.tier`] = this.data.data.details.tier;
+			}		
+		}
+
 		return super.update(data, options);
 	}
 
@@ -227,12 +236,6 @@ export class Actor4e extends Actor {
 			}
 		}
 		
-
-		if(data.details.tier != Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3)){
-			data.details.tier = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3);
-			this.update({[`data.details.tier`]: data.details.tier });
-		}
-
 		//Weight & Encumbrance
 		data.encumbrance = this._computeEncumbrance(actorData);
 			

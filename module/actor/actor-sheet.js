@@ -564,7 +564,6 @@ export default class ActorSheet4e extends ActorSheet {
 	  return true;
 	});
   }	
-	
 
 	_getTrainingIcon(level) {
 		const icons = {

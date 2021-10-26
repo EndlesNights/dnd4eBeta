@@ -337,17 +337,17 @@ export default class Item4e extends Item {
 	async roll({configureDialog=true, rollMode=null, createMessage=true}={}) {
 
 		if(["both", "pre", "sub"].includes(this.data.data.macro?.launchOrder)) {
-			let powerMacro = new Macro ({
+			let itemMacro = new Macro ({
 				name : this.name,
 				type : this.data.data.macro.type,
 				scope : this.data.data.macro.scope,
 				command : this.data.data.macro.command, //cmd,
 				author : game.user.id,
 			});
-			powerMacro.data.actor = this.actor;
-			powerMacro.data.item = this.data;
-			powerMacro.data.launch = this.data.data.macro.launchOrder === "sub" ? "sub" : "pre";
-			powerMacro.execute();
+			itemMacro.data.actor = this.actor;
+			itemMacro.data.item = this.data;
+			itemMacro.data.launch = this.data.data.macro.launchOrder;
+			itemMacro.execute();
 
 			if(this.data.data.macro.launchOrder === "sub") return;
 			// console.log(test);
@@ -438,17 +438,17 @@ export default class Item4e extends Item {
 
 			if(["both", "post"].includes(this.data.data.macro?.launchOrder)) {
 
-				let powerMacro = new Macro ({
+				let itemMacro = new Macro ({
 					name : this.name,
 					type : this.data.data.macro.type,
 					scope : this.data.data.macro.scope,
 					command : this.data.data.macro.command, //cmd,
 					author : game.user.id,
 				});
-				powerMacro.data.actor = this.actor;
-				powerMacro.data.item = this.data;
-				powerMacro.data.launch = "post";
-				powerMacro.execute();
+				itemMacro.data.actor = this.actor;
+				itemMacro.data.item = this.data;
+				itemMacro.data.launch = this.data.data.macro.launchOrder;
+				itemMacro.execute();
 			}
 		}
 		else return chatData;
