@@ -2,6 +2,7 @@
 
 ## Version 0.2.44
 - fixed issue for item macros, actor data, item data, and launch order should now all be accessible again. 
+- changed how the assisting macro for the [Dual Wielding Strike (Primary)](https://github.com/EndlesNights/dnd4eBeta/blob/f2cb282fbbca8c3a988f1fa1cec8ca4cf1f5dab8/packs/example_powers.db#L7) example power, should no longer require having the actor selected to trigger the use of the secondary power.
 
 ## Version 0.2.43
 - Change how some more values are calculated to make them work better with active effects
