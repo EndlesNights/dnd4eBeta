@@ -68,7 +68,7 @@ export class Actor4e extends Actor {
 
 	/** @override */
 	async update(data, options={}) {
-		
+		console.log(data)
 		// Apply changes in Actor size to Token width/height
 		const newSize = data["data.details.size"];
 		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this.data, "data.details.size")) )) {
@@ -86,7 +86,14 @@ export class Actor4e extends Actor {
 				data[`data.details.tier`] = this.data.data.details.tier;
 			}		
 		}
-
+		for (let [id, abl] of Object.entries(this.data.data.abilities)){
+			if(data[`data.abilities.${id}.value`]){
+				if(this.data.data.abilities[id].mod != Math.floor((data[`data.abilities.${id}.value`] - 10) / 2)){
+					data[`data.abilities.${id}.mod`] = Math.floor((data[`data.abilities.${id}.value`] - 10) / 2) 
+					console.log(id)
+				}
+			}
+		}
 		return super.update(data, options);
 	}
 
@@ -133,10 +140,6 @@ export class Actor4e extends Actor {
 		for (let [id, abl] of Object.entries(data.abilities)) {
 
 			abl.mod = Math.floor((abl.value - 10) / 2);
-			if(abl.mod){
-				this.update({[`data.abilities.${id}.mod`]: abl.mod});
-			}
-
 			abl.modHalf = abl.mod + Math.floor(data.details.level / 2);
 			abl.prof = (abl.proficient || 0);
 			abl.saveBonus = saveBonus + Math.floor(data.details.level / 2);

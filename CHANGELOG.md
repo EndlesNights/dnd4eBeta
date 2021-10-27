@@ -18,9 +18,6 @@
 - creation of srd compendiums
 - creation of example compendiums
 
-## Version 0.2.43
-- Change how some values are calculated to make them work better with active effects
-
 ## Version 0.2.42
 - Fixing some typos.
 
