@@ -7,7 +7,6 @@
 // Import Modules
 import { DND4EBETA } from "./config.js";
 import { registerSystemSettings } from "./settings.js";
-import {libWrapper} from './libWrapper-shim.js';
 
 // import { SimpleItemSheet } from "./item-sheet.js";
 import ItemSheet4e from "./item/sheet.js";
@@ -109,16 +108,11 @@ Hooks.once("setup", function() {
 	// Localize CONFIG objects once up-front
 	const toLocalize = [
 	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes",
-	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits",
-	"damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
-	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "healingTypes", "itemActionTypes",
-	"launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType",
-	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
-	"weaponTypes", "weaponHands"
+	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits", "damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType", "weaponTypes", "weaponHands"
 	];
 
 	const noSort = [
-		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerGroupTypes", "rangeType", "weaponType", "weaponTypes", "weaponHands"
+		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "rangeType", "weaponType", "weaponTypes", "weaponHands"
 	];
 	
 	// const doLocalize = function(obj) {
@@ -219,56 +213,4 @@ $(".effect-control ").hover(
 `
 
 html.find('.effect-control').last().after(message);
-});
-
-/**
- * Before passing changes to the parent ActiveEffect class,
- * we want to make some modifications to make the effect
- * rolldata aware.
- * 
- * @param {*} wrapped   The next call in the libWrapper chain
- * @param {Actor} owner     The Actor that is affected by the effect
- * @param {Object} change    The changeset to be applied with the Effect
- * @returns 
- */
-const apply = (wrapped, owner, change) => {
-	
-  const stringDiceFormat = /\d+d\d+/;
-    
-  // If the user wants to use the rolldata format
-  // for grabbing data keys, why stop them?
-  // This is purely syntactic sugar, and for folks
-  // who copy-paste values between the key and value
-  // fields.
-  if (change.key.indexOf('@') === 0)
-    change.key = change.key.replace('@', '');
-
-  // If the user entered a dice formula, I really doubt they're 
-  // looking to add a random number between X and Y every time
-  // the Effect is applied, so we treat dice formulas as normal
-  // strings.
-  // For anything else, we use Roll.replaceFormulaData to handle
-  // fetching of data fields from the actor, as well as math
-  // operations.  
-  if (!change.value.match(stringDiceFormat))
-    change.value = Roll.replaceFormulaData(change.value, owner.getRollData());
-
-  // If it'll evaluate, we'll send the evaluated result along 
-  // for the change.
-  // Otherwise we just send along the exact string we were given. 
-  try {
-    change.value = Roll.safeEval(change.value).toString();
-  } catch (e) { /* noop */ }
-
-  return wrapped(owner, change);
-}
-
-Hooks.once('init', async function() {
-  console.info(`AAAA`, libWrapper);
-
-  libWrapper.register(
-    'dnd4e',
-    'ActiveEffect.prototype.apply',
-    apply
-  );
 });

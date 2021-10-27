@@ -95,16 +95,8 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	 get hasHealing() {
-		if(this.data.type === "power"){
-			return this.data.data.hit?.isHealing;
-		}
-		else if(this.data.type === "consumable"){
-			console.log(this.data.data.damage.parts.map(d => d[1]).includes("healing"))
-			return this.data.data.damage.parts.map(d => d[1]).includes("healing");
-			
-		}
-		return false; //curently only powers will deal damage or make attacks
-		
+		if(!this.data.type === "power") return false; //curently only powers will deal damage or make attacks
+		return this.data.data.hit?.isHealing;
 	 }	
 	/* -------------------------------------------- */
 
@@ -114,6 +106,7 @@ export default class Item4e extends Item {
 	 */
 	get hasEffect() {
 		if(!this.data.type === "power") return false; //curently only powers have effects
+		console.log(this.data.data.effect?.detail)
 		return !!this.data.data.effect?.detail;
 	}
 	
@@ -386,14 +379,13 @@ export default class Item4e extends Item {
 		};
 		// For feature items, optionally show an ability usage dialog
 		if (this.data.type === "feat") {
-			console.log("feat")
 			let configured = await this._rollFeat(configureDialog);
 			if ( configured === false ) return;
 		}
-		else if ( this.data.type === "consumable" ) {
-			let configured = await this._rollConsumable(configureDialog);
-			if ( configured === false ) return;
-		}
+	// else if ( this.data.type === "consumable" ) {
+			// let configured = await this._rollConsumable(configureDialog);
+			// if ( configured === false ) return;
+		// }
 
 		// For items which consume a resource, handle that here
 		const allowed = await this._handleResourceConsumption({isCard: true, isAttack: false},this.data.data);
@@ -1047,7 +1039,7 @@ export default class Item4e extends Item {
 
 		// Get message labels
 		const title = `${this.name} - ${game.i18n.localize("DND4EBETA.HealingRoll")}`;
-		let flavor = this.labels.damageTypes?.length ? `${title} (${this.labels.damageTypes})` : title;
+		let flavor = this.labels.damageTypes.length ? `${title} (${this.labels.damageTypes})` : title;
 
 		// Define Roll parts
 		const parts = itemData.damage.parts.map(d => d[0]);
@@ -1147,7 +1139,7 @@ export default class Item4e extends Item {
 
 		// Invoke the roll and submit it to chat
 		const roll = new Roll(rollData.item.formula, rollData).roll();
-		roll.toMessage({ 
+		roll.toMessage({
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: this.data.data.chatFlavor || title,
 			rollMode: game.settings.get("core", "rollMode"),

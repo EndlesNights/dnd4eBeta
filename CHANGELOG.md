@@ -1,41 +1,28 @@
 # Changelog
 
 ## Version 0.2.43
-- Change how some more values are calculated to make them work better with active effects
-- adeed "@tier" to the short hand helper list
-- [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) has been added as a dependency.
-- implemented functionally of [fvtt-rolldata-aware-active-effects](https://github.com/wyrmisis/fvtt-rolldata-aware-active-effects) into system
-- consumable items should not use charges properly
-- consumable, added missing feature for enabled to destroy item on final use
-- fixed some spelling mistakes
-- made some fonts slightly darker for a higher contrast on the character sheet to improve readable
-- inverted how the Skill Check Penalty, and Movement Penalty values are calculated so that the numbers reflect that of the PHB. (Just used addition instead of subtraction now)
-- creation of srd compendiums
-- creation of example compendiums
-
-## Version 0.2.43
 - Change how some values are calculated to make them work better with active effects
 
 ## Version 0.2.42
-- Fixing some typos.
+- Fixxing some typos.
 
 ## Version 0.2.41
 - Fixed an issue where off hand weapons where not working properly.
 
 ## Version 0.2.40
 - Fixed an issue where AC override was turned on by default.
-- Multiple fixes to powercard sheet, 
+- Multple fixes to powercard sheet, 
 	wall range and area should now be editable
 	Removed some blank options
-	Rename 'Wall' to 'Area Wall' to match official language
-	Rename 'Touch' to 'Melee Touch' to match official language
+	Rename 'Wall' to 'Area Wall' to match offical language
+	Rename 'Touch' to 'Melee Touch' to match offical language
 
 ## Version 0.2.39
 - Change NPC defaults roles to 'Soldier', 'Regular', 'Natural', 'Humanoid'
 - Change default Power Group Types sorting to use Usage as the initial search option
 - Added Leader option toggle for NPC sheet
-- Other minor tweaks to NPC sheet HTML and CSS style
-- advancedCals was incorrectly being instantiated in data.details.advancedCals, while it was always checked at data.advancedCals. The NPC template has been fixed. 
+- Other minor tweeks to NPC sheet HTML and CSS style
+- advancedCals was inncoraetly being instantiated in data.details.advancedCals, while it was always checked at data.advancedCals. The NPC template has been fixed. 
 
 ## Version 0.2.38
 - Added in meele and reach rang options for powers attacks (merge from [draconas1](https://github.com/draconas1))
@@ -44,8 +31,8 @@
 
 ## Version 0.2.37
 - Changed some more file directories to match current namespace
-- Initiative tiebreaker should now work properly
-- Initiative tiebreaker is now on by default
+- Initive tiebreaker should now work properly
+- Initive tiebreaker is now on by default
 
 ## Version 0.2.36
 - Fixed some typos

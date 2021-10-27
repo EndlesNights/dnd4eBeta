@@ -46,6 +46,7 @@
 			{{#each config.powerUseType as |name type|}}
 			<option value="{{type}}">{{name}}</option>
 			{{/each}}
+			<option value="other">{{localize "DND4EBETA.Other"}}</option>
 			{{/select}}
 		</select>
 	</div>
@@ -273,13 +274,13 @@
 		{{/each}}
 	</ol>
 	
-	{{!-- Critical --}}
+	{{!-- Critial --}}
 	<div class="form-group stacked">
-		<label>Critical Damage {{ localize "DND4EBETA.Formula" }}</label>
+		<label>Critial Damage {{ localize "DND4EBETA.Formula" }}</label>
 		<input type="text" name="data.hit.critFormula" value="{{data.hit.critFormula}}"/>
 	</div>
 	<h4 class="damage-header">
-		Secondary Critical{{ localize "DND4EBETA.Damage" }} {{ localize "DND4EBETA.Formula" }}:
+		Secondary Critial{{ localize "DND4EBETA.Damage" }} {{ localize "DND4EBETA.Formula" }}:
 		<a class="damage-control add-criticalDamage"><i class="fas fa-plus"></i></a>
 	</h4>
 	<ol class="damage-parts form-group">

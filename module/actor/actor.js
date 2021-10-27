@@ -109,10 +109,6 @@ export class Actor4e extends Actor {
 		for (let [id, abl] of Object.entries(data.abilities)) {
 
 			abl.mod = Math.floor((abl.value - 10) / 2);
-			if(abl.mod){
-				this.update({[`data.abilities.${id}.mod`]: abl.mod});
-			}
-
 			abl.modHalf = abl.mod + Math.floor(data.details.level / 2);
 			abl.prof = (abl.proficient || 0);
 			abl.saveBonus = saveBonus + Math.floor(data.details.level / 2);
@@ -163,7 +159,7 @@ export class Actor4e extends Actor {
 		}
 		
 		data.details.bloodied = Math.floor(data.attributes.hp.max / 2);
-		data.details.surgeValue += Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
+		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
 		data.attributes.hp.min = -data.details.bloodied;
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
 
@@ -212,12 +208,7 @@ export class Actor4e extends Actor {
 			}
 		}
 		
-
-		if(data.details.tier != Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3)){
-			data.details.tier = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3);
-			this.update({[`data.details.tier`]: data.details.tier });
-		}
-
+		data.details.tier = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3);
 		//Weight & Encumbrance
 		data.encumbrance = this._computeEncumbrance(actorData);
 			
@@ -299,7 +290,7 @@ export class Actor4e extends Actor {
 		}
 		for ( let i of this.items) {
 			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
-			data.movement.base.armour += i.data.data.armour.movePenValue;
+			data.movement.base.armour -= i.data.data.armour.movePenValue;
 		}
 		data.movement.base.bonusValue = baseMoveBonusValue;
 
@@ -384,34 +375,34 @@ export class Actor4e extends Actor {
 		}
 		data.movement.shift.bonusValue = shiftBonusValue;	
 
-		data.movement.base.value += data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
+		data.movement.base.value = data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
 		
 		let walkForm = eval(Helper.replaceData(data.movement.walk.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.walk.value += walkForm + walkBonusValue + data.movement.base.temp;
+		data.movement.walk.value = walkForm + walkBonusValue + data.movement.base.temp;
 		
 		if (data.movement.walk.value < 0)
 			data.movement.walk.value = 0;
 		
 		let runForm = eval(Helper.replaceData(data.movement.run.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.run.value += runForm + runBonusValue + data.movement.run.temp;
+		data.movement.run.value = runForm + runBonusValue + data.movement.run.temp;
 		
 		if (data.movement.run.value < 0)
 			data.movement.run.value = 0;
 
 		let chargeForm = eval(Helper.replaceData(data.movement.charge.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.charge.value += chargeForm + chargeBonusValue + data.movement.charge.temp;
+		data.movement.charge.value = chargeForm + chargeBonusValue + data.movement.charge.temp;
 		
 		if (data.movement.charge.value < 0)
 			data.movement.charge.value = 0;
 
 		let climbeForm = eval(Helper.replaceData(data.movement.climb.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.climb.value += climbeForm;
+		data.movement.climb.value = climbeForm;
 		
 		if (data.movement.climb.value < 0)
 			data.movement.climb.value = 0;
 		
 		let shiftForm = eval(Helper.replaceData(data.movement.shift.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour),data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.shift.value += shiftForm;
+		data.movement.shift.value = shiftForm;
 		
 		if (data.movement.shift.value < 0)
 			data.movement.shift.value = 0;
@@ -571,7 +562,7 @@ export class Actor4e extends Actor {
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
 
 			if(skl.base == undefined){
 				skl.base = 0;
@@ -623,7 +614,7 @@ export class Actor4e extends Actor {
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
 
 			if(skl.base == undefined){
 				skl.base = 0;
@@ -860,7 +851,6 @@ export class Actor4e extends Actor {
 	*/
 	async usePower(item, {configureDialog=true}={}) {
 		//if not a valid type of item to use
-		console.log("UsePower")
 		if ( item.data.type !=="power" ) throw new Error("Wrong Item type");
 		const itemData = item.data.data;
 		//configure Powers data

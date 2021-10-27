@@ -136,7 +136,7 @@
 				</div>
 					{{#each data.abilities as | ability a|}}
 					<div class="ability--score flexrow" data-ability="{{a}}">
-						<input class="ability-score" name="data.abilities.{{a}}.value" type="text" data-dtype="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
+						<input class="ability-score" name="data.abilities.{{a}}.value" data-dtype="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
 						<label class="ability-name rollable" title="{{ability.label }}">{{ability.label}}</label>
 						<label class="attribute-display ability-mod" title="{{ability.label}}">{{numberFormat ability.mod decimals=0 sign=true}}</label>
 						<label class="attribute-display ability-mod-half" title="{{ability.label }}">{{numberFormat ability.modHalf decimals=0 sign=true}}</label>
