@@ -611,6 +611,7 @@ DND4EBETA.effectTypes = {
 	"conjuration": "DND4EBETA.Conjuration",
 	"disease": "DND4EBETA.Disease",
 	"elemental": "DND4EBETA.Elemental",
+	"enchantment": "DND4EBETA.Enchantment",
 	"evocation": "DND4EBETA.Evocation",
 	"fear": "DND4EBETA.Fear",
 	"fullDis": "DND4EBETA.FullDis",
