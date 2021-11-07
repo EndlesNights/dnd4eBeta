@@ -499,12 +499,12 @@ export class Helper {
 			powerDetail += `</b></span>`;
 		}
 
-		if(chatData.trigger) {
-			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Trigger")}:</b> ${chatData.trigger}</span>`;
-		}
-
 		if(chatData.requirement) {
 			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Requirements")}:</b> ${chatData.requirement}</span>`;
+		}
+
+		if(chatData.trigger) {
+			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Trigger")}:</b> ${chatData.trigger}</span>`;
 		}
 
 		if(chatData.target) {
