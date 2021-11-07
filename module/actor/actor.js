@@ -1076,4 +1076,38 @@ export class Actor4e extends Actor {
 		}, updates);
 		return allowed !== false ? this.update(updates) : this;
 	}
+
+	async applyTempHpChange(amount=0)
+	{
+		if (!this.canUserModify(game.user, "update")) {
+			return
+		}
+
+		const hp = this.data.data.attributes.hp;
+		console.log(hp)
+
+		// calculate existing temp hp
+		const tmp = parseInt(hp.temphp) || 0;
+
+		if (amount >= 0) {
+			// temp HP doesn't stack, so only update if we have a higher value
+			if (amount > tmp) {
+				const updates = {
+					"data.attributes.hp.temphp": amount,
+				};
+				return this.update(updates);
+			}
+		}
+		else {
+			// amount is negative, so subtract from temp HP, but floor at 0
+			let newTempHP = tmp + amount
+			newTempHP = Math.max(0, newTempHP)
+			const updates = {
+				"data.attributes.hp.temphp": newTempHP,
+			};
+			return this.update(updates);
+		}
+
+		return this
+	}
 }
