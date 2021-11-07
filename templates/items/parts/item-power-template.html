@@ -121,6 +121,20 @@
 	</div>
 
 	<div class="form-group">
+		<label>{{ localize "DND4EBETA.Trigger" }}</label>
+		<div class="form-fields">
+			<input type="text" name="data.trigger" value="{{data.trigger}}"/>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>{{ localize "DND4EBETA.Requirements" }}</label>
+		<div class="form-fields">
+			<input type="text" name="data.requirement" value="{{data.requirement}}"/>
+		</div>
+	</div>
+
+	<div class="form-group">
 		<label>{{ localize "DND4EBETA.Target" }}</label>
 		<div class="form-fields">
 			<input type="text" name="data.target" value="{{data.target}}"/>
@@ -165,15 +179,6 @@
 			</select>
 			<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
 		</div>
-	</div>	
-
-	<div class="form-group">
-		<label>{{ localize "DND4EBETA.Trigger" }}</label>
-		<input type="text" name="data.trigger" value="{{data.trigger}}"/>
-	</div>
-	<div class="form-group">
-		<label>{{ localize "DND4EBETA.Requirements" }}</label>
-		<input type="text" name="data.requirement" value="{{data.requirement}}"/>
 	</div>
 
 	{{!-- Attack Details--}}
