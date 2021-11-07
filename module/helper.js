@@ -500,15 +500,15 @@ export class Helper {
 		}
 
 		if(chatData.requirement) {
-			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Requirements")}:</b> ${chatData.requirement}</span>`;
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Requirements")}:</b> ${chatData.requirement}</span></p>`;
 		}
 
 		if(chatData.trigger) {
-			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Trigger")}:</b> ${chatData.trigger}</span>`;
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Trigger")}:</b> ${chatData.trigger}</span></p>`;
 		}
 
 		if(chatData.target) {
-			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Target")}:</b> ${chatData.target}</span>`;
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Target")}:</b> ${chatData.target}</span></p>`;
 		}
 
 		if(!chatData.postEffect && chatData.effect.detail) {
