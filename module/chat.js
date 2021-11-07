@@ -82,6 +82,12 @@ export const addChatMessageContextOptions = function(html, options) {
 			callback: li => applyChatCardDamage(li, -1)
 		},
 		{
+			name: game.i18n.localize("DND4EBETA.ChatContextTempHp"),
+			icon: '<i class="fas fa-user-plus"></i>',
+			condition: canApply,
+			callback: li => applyChatCardTempHp(li)
+		},
+		{
 			name: game.i18n.localize("DND4EBETA.ChatContextDoubleDamage"),
 			icon: '<i class="fas fa-user-injured"></i>',
 			condition: canApply,
@@ -154,6 +160,23 @@ function applyChatCardDamage(li, multiplier, trueDamage=false) {
 			return a.calcDamage(damage, multiplier);
 		}
 		
+	}));
+}
+
+/**
+ * Apply Temporary hit points based on a roll.
+ *
+ * Gaining temp HP separated from main damage calculation as that set of functions was relatively complex already,
+ * so making them more complex to deal with additions of temp HP and the logic behind it seemed like a bad plan from a maintenance perspective
+ * @param {HTMLElement} roll  The chat entry which contains the roll data
+ * @return {Promise}
+ */
+function applyChatCardTempHp(li) {
+	const message = game.messages.get(li.data("messageId"));
+	const roll = message.roll;
+	return Promise.all(canvas.tokens.controlled.map(t => {
+		const a = t.actor;
+		return a.applyTempHpChange(roll.total)
 	}));
 }
 

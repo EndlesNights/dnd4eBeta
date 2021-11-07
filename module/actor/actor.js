@@ -978,56 +978,36 @@ export class Actor4e extends Actor {
 		if(Object.keys(damage).length >= 1){
 			const res = this.data.data.resistances;
 
-			//let divider = Object.keys(damage).length;
+			let damageResAll = res['damage'].value;
+			let divider = Object.keys(damage).length;
 
-			//get lowest resistance
-			const maxRes = 9999;
-			let totalRes = maxRes;
-			let resistAll = res['damage'].value;
-			let immune = res['damage'].immune;
+			for(let d in damage){
+				
+				let type = d && res[d] ?  d : 'damage';
+				let damageBase = damage[d];
+				let damageRes = res[type].value || 0;
 
-			if (!immune){
-				for(let d in damage){
-					let type = d && res[d] ? d : 'damage';
-					if (type == 'damage' || type == 'heal'){
-						continue;
-					}
+				let resPart = Math.ceil(damageResAll/divider)
+				damageResAll -= resPart;
+				divider--;
 
-					let damageRes = res[type].value || 0;
-					
-					if (damageRes < totalRes && !res[type].immune){
-						totalRes = damageRes;
-						console.log(`Resist ${totalRes} ${type}`)
-					}
+				if((resPart > damageRes && damageRes >= 0) || (resPart < damageRes && damageRes <= 0) ){
+					damageRes = resPart;
 				}
-			
-				if ((totalRes > 0 && resistAll < 0) || (totalRes < 0 && resistAll > 0)){
-					totalRes += resistAll; // if resist and resist all have different signs, sum them
-				}
-				else if ((totalRes < resistAll && resistAll > 0) || (totalRes > resistAll && resistAll < 0)){
-					totalRes = resistAll;
+				else if( (resPart >= 0 && damageRes <= 0) || (resPart <= 0 && damageRes >= 0)){
+					damageRes += resPart;
 				}
 
-				if (totalRes >= maxRes){
-					immune = true;
+				// console.log(`${type}: ${damage[type]}`);
+
+				if(d == 'heal'){
+					totalDamage -= Math.max(0, damageBase);
+				}
+				else if(!res[type].immune && !res['damage'].immune){
+					totalDamage += Math.max(0, damageBase - damageRes);
+					console.log(`DamageType:${type}, Damage:${Math.max(0, damageBase - damageRes)}`)
 				}
 			}
-
-			//sum damage
-			if (!immune){
-				for(let d in damage){
-					if(d == 'heal'){
-						totalDamage -= Math.max(0, damage[d]);
-					}
-					else {
-						totalDamage += Math.max(0, damage[d]);
-					}
-				}
-
-				console.log(`PreResistDamage:${totalDamage}, SmallestResist:${totalRes}`)
-				totalDamage -= totalRes;
-			}
-
 			console.log(`Total Damage: ${totalDamage * multiplier}`)
 			this.applyDamage(totalDamage, multiplier);
 		}
@@ -1075,5 +1055,39 @@ export class Actor4e extends Actor {
 		  isBar: true
 		}, updates);
 		return allowed !== false ? this.update(updates) : this;
+	}
+
+	async applyTempHpChange(amount=0)
+	{
+		if (!this.canUserModify(game.user, "update")) {
+			return
+		}
+
+		const hp = this.data.data.attributes.hp;
+		console.log(hp)
+
+		// calculate existing temp hp
+		const tmp = parseInt(hp.temphp) || 0;
+
+		if (amount >= 0) {
+			// temp HP doesn't stack, so only update if we have a higher value
+			if (amount > tmp) {
+				const updates = {
+					"data.attributes.hp.temphp": amount,
+				};
+				return this.update(updates);
+			}
+		}
+		else {
+			// amount is negative, so subtract from temp HP, but floor at 0
+			let newTempHP = tmp + amount
+			newTempHP = Math.max(0, newTempHP)
+			const updates = {
+				"data.attributes.hp.temphp": newTempHP,
+			};
+			return this.update(updates);
+		}
+
+		return this
 	}
 }
