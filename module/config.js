@@ -697,6 +697,11 @@ DND4EBETA.skills = {
   "thi": "DND4EBETA.SkillThi"
 };
 
+/* -------------------------------------------- */
+DND4EBETA.modifiers ={
+	"attack": "DND4EBETA.ModifierAttack",
+	"damage": "DND4EBETA.ModifierDamage",
+}
 
 /* -------------------------------------------- */
 

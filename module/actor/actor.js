@@ -455,6 +455,28 @@ export class Actor4e extends Actor {
 			pas.bonusValue = passiveBonusValue;
 			pas.value = 10 + data.skills[pas.skill].total + passiveBonusValue;
 		}
+
+		//Modifiers
+		for (let [id, mod] of Object.entries(data.modifiers)) {
+			let modifierBonusValue = 0;
+			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
+				for( const b of mod.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						modifierBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,data)
+						if(Helper._isNumber(val)){
+							modifierBonusValue += parseInt(val);
+						}
+					}
+				}
+			}
+
+			mod.bonusValue = modifierBonusValue;
+			mod.value += mod.class + mod.feat + mod.item + mod.race + modifierBonusValue;
+			mod.label = game.i18n.localize(DND4EBETA.modifiers[id]);
+		}
 		
 		//Resistances & Weaknesses
 		for (let [id, res] of Object.entries(data.resistances)) {

@@ -103,6 +103,9 @@ export class Helper {
 			newFormula = newFormula.replace("@lvhalf", Math.floor(actorData.details.level/2));
 			newFormula = newFormula.replace("@lv", actorData.details.level);
 			newFormula = newFormula.replace("@tier", actorData.details.tier);
+
+			newFormula = newFormula.replace("@atkMod", actorData.modifiers.attack.value);
+			newFormula = newFormula.replace("@dmgMod", actorData.modifiers.damage.value);
 		}
 		
 		if(powerData) {

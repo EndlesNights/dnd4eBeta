@@ -518,6 +518,8 @@
 "DND4EBETA.Miss": "Miss",
 "DND4EBETA.MissDetailsText": "Miss Details",
 "DND4EBETA.Modifier": "Modifier",
+"DND4EBETA.ModifierAttack": "Attack Modifier",
+"DND4EBETA.ModifierDamage": "Damage Modifier",
 "DND4EBETA.Mod": "Mod",
 "DND4EBETA.MOD": "MOD",
 "DND4EBETA.Mount": "Mount",

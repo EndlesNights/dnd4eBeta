@@ -1,3 +1,17 @@
+<div class="attribute-init attribute-modifiers">
+	<h4 class="attribute-name box-title">Modifiers</h4>
+	<div class="attack-mod" data-modifiers="attack">
+		<span>Attack Modifiers:</span>
+		<span style="margin-right: 4px;">{{data.modifiers.attack.value}}</span>
+		<a class="modifiers-bonus" data-target="data.modifiers" title="Modifier Bonus">Bonus: {{data.modifiers.attack.bonusValue}}</a>
+	</div>
+	<div class="damage-mod" data-modifiers="damage">
+		<span>Damage Modifiers:</span>
+		<span style="margin-right: 4px;">{{data.modifiers.damage.value}}</span>
+		<a class="modifiers-bonus" data-target="data.modifiers" title="Modifier Bonus">Bonus: {{data.modifiers.damage.bonusValue}}</a>
+	</div>
+</div>
+
 <ol class="items-list effects-list">
 {{#each effects as |section sid|}}
 	<li class="items-header flexrow" data-effect-type="{{section.type}}">
