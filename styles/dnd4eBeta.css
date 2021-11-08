@@ -10,6 +10,11 @@
 	flex-wrap: wrap;
 	justify-content: flex-start;
 }
+.flexrow .thin {
+	padding-left: 15%;
+	padding-right: 15%;
+}
+
 .flexcol {
 	display: flex;
 	flex-direction: column;
@@ -1430,6 +1435,22 @@ font-size: 12px;
 .dnd4eBeta .attribute-init .init-bonus{
 	width: 30px;
 }
+
+.dnd4eBeta .attribute-modifiers {
+	margin: 0 0 0 0;
+	border: 2px groove #eeede0;
+	border-radius: 4px;
+	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
+		/* line-height:20px; */
+	width: 100%;
+	max-height: 76px;
+	/* height: 120px; */
+		/* margin-top: 10px; */
+	float: left;
+	text-align: center;
+	line-height:22px;
+}
+
 /* .dnd4eBeta .action-point{
 	position: relative;
 	top: -20px;

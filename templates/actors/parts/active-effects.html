@@ -1,18 +1,16 @@
-<div class="attribute-init attribute-modifiers">
+<div class="attribute-modifiers" style="max-height: 76px; line-height: 22px;">
 	<h4 class="attribute-name box-title">Modifiers</h4>
-	<div class="attack-mod" data-modifiers="attack">
-		<span>Attack Modifiers:</span>
-		<span style="margin-right: 4px;">{{data.modifiers.attack.value}}</span>
+	<div class="attack-mod flexrow thin" data-modifiers="attack">
+		<span>Attack Modifier: {{data.modifiers.attack.value}}</span>
 		<a class="modifiers-bonus" data-target="data.modifiers" title="Modifier Bonus">Bonus: {{data.modifiers.attack.bonusValue}}</a>
 	</div>
-	<div class="damage-mod" data-modifiers="damage">
-		<span>Damage Modifiers:</span>
-		<span style="margin-right: 4px;">{{data.modifiers.damage.value}}</span>
+	<div class="damage-mod flexrow thin" data-modifiers="damage">
+		<span>Damage Modifier: {{data.modifiers.damage.value}}</span>
 		<a class="modifiers-bonus" data-target="data.modifiers" title="Modifier Bonus">Bonus: {{data.modifiers.damage.bonusValue}}</a>
 	</div>
 </div>
 
-<ol class="items-list effects-list">
+<ol class="items-list effects-list" style="overflow-y: visible">
 {{#each effects as |section sid|}}
 	<li class="items-header flexrow" data-effect-type="{{section.type}}">
 		<h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
