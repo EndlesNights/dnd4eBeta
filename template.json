@@ -852,8 +852,9 @@
 	"power": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"keyWords": [""],
-		"level": "1",
+		"level": "",
 		"powersource": "martial",
+		"secondPowersource": "",
 		"subName": "",
 		"prepared": true,
 		"powerType": "class",

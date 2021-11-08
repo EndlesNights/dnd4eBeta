@@ -450,8 +450,12 @@ export class Helper {
 		if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
 			tag.push(`Weapon`);
 		} 
-		else if ( chatData.weaponType === "implement") {
+		else if (chatData.weaponType === "implement") {
 			tag.push(`Implement`);
+		}
+
+		if (chatData.secondPowersource && chatData.secondPowersource != chatData.powersource){
+			tag.push(`${CONFIG.DND4EBETA.powerSource[`${chatData.secondPowersource}`]}`)
 		}
 
 		if(chatData.damageType) {
@@ -523,6 +527,9 @@ export class Helper {
 
 		if(chatData.attack.isAttack) {
 			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+		}
+
+		if (chatData.hit.isDamage){
 			chatData.hit.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Hit")}:</b> ${chatData.hit.detail}</p>` : {};
 			chatData.miss.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Miss")}:</b> ${chatData.miss.detail}</p>` : {};
 		}
