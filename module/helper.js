@@ -450,8 +450,12 @@ export class Helper {
 		if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
 			tag.push(`Weapon`);
 		} 
-		else if ( chatData.weaponType === "implement") {
+		else if (chatData.weaponType === "implement") {
 			tag.push(`Implement`);
+		}
+
+		if (chatData.secondPowersource && chatData.secondPowersource != chatData.powersource){
+			tag.push(`${CONFIG.DND4EBETA.powerSource[`${chatData.secondPowersource}`]}`)
 		}
 
 		if(chatData.damageType) {
