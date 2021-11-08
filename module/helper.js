@@ -454,7 +454,7 @@ export class Helper {
 			tag.push(`Implement`);
 		}
 
-		if (chatData.secondPowersource && chatData.secondPowersource != chatData.powersource){
+		if (chatData.powersource && chatData.secondPowersource && chatData.secondPowersource != chatData.powersource){
 			tag.push(`${CONFIG.DND4EBETA.powerSource[`${chatData.secondPowersource}`]}`)
 		}
 
