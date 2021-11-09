@@ -1,3 +1,6 @@
+{{!-- Modifiers --}}
+
+{{#if data.modifiers}}
 <div class="attribute-modifiers" style="max-height: 76px; line-height: 22px;">
 	<h4 class="attribute-name box-title">Modifiers</h4>
 	<div class="attack-mod flexrow thin" data-modifiers="attack">
@@ -9,6 +12,7 @@
 		<a class="modifiers-bonus" data-target="data.modifiers" title="Modifier Bonus">Bonus: {{data.modifiers.damage.bonusValue}}</a>
 	</div>
 </div>
+{{/if}}
 
 <ol class="items-list effects-list" style="overflow-y: visible">
 {{#each effects as |section sid|}}
