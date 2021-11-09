@@ -123,6 +123,7 @@
 					"class": 0,
 					"feat": 0,
 					"item": 0,
+					"power": 0,
 					"race": 0,
 					"bonus": [{}]
 				},
@@ -131,6 +132,7 @@
 					"class": 0,
 					"feat": 0,
 					"item": 0,
+					"power": 0,
 					"race": 0,
 					"bonus": [{}]
 				}

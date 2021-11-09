@@ -456,7 +456,7 @@ export class Actor4e extends Actor {
 			pas.value = 10 + data.skills[pas.skill].total + passiveBonusValue;
 		}
 
-		//Modifiers
+		//Attack and damage modifiers
 		for (let [id, mod] of Object.entries(data.modifiers)) {
 			let modifierBonusValue = 0;
 			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
@@ -474,7 +474,7 @@ export class Actor4e extends Actor {
 			}
 
 			mod.bonusValue = modifierBonusValue;
-			mod.value += mod.class + mod.feat + mod.item + mod.race + modifierBonusValue;
+			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.race + modifierBonusValue;
 			mod.label = game.i18n.localize(DND4EBETA.modifiers[id]);
 		}
 		
