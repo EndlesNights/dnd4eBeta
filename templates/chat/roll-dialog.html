@@ -32,11 +32,14 @@
 				<i class="fas fa-arrow-right" aria-hidden="true"></i>
 			</button>
 		</div>
+		{{#if targetData.multiTargetCheck}}
+		<label id="multiTarget"></label>
+		{{/if}}
 		{{#each targetData.targNameArray as | t n |}}
 		<div class="multitarget-tab">
 			{{#if ../targetData.hasTarget}}
 			<div>
-				<label>Target: {{t}}</label>
+				<label id="singleTarget" >Target: {{t}}</label>
 			</div>
 			{{/if}}
 			<div class="form-group stacked">
@@ -72,7 +75,11 @@
 
 
 <script>
-
+//Checks if multi target attack that is universal, and display an alternative target dialog with every target's name in it.
+if ("{{targetData.multiTargetCheck}}" == "true" && document.getElementById("multibonus-toggle").value == "false" && "{{targetData.targNameArray}}"){
+	document.getElementById("multiTarget").innerHTML = "Targets: {{targetData.targNameArray}}";
+	document.getElementById("singleTarget").style.display = 'none';
+}
 $(document).keydown(function(event){
     if(event.which=="17")
         cntrlIsPressed = true;
@@ -126,12 +133,16 @@ function toggleMultibonus() {
 		multiTargetToggle = 1;
 		multiTargetToggleString = "Change to Universal Attack Bonuses";
 		showTab(currentTab)
+		document.getElementById("multiTarget").style.display = 'none';
+		document.getElementById("singleTarget").style.display = 'block';
 	} else if (document.getElementById("multibonus-toggle").value == "true") {
 		document.getElementById("multibonus-toggle").value = "false";
 		multiTargetToggle = 0;
 		multiTargetToggleString = "Change to Individual Attack Bonuses";
 		currentTab = 0;
 		showTab(currentTab)
+		document.getElementById("multiTarget").style.display = 'block';
+		document.getElementById("singleTarget").style.display = 'none';
 	}
 }
 
