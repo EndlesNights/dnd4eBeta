@@ -1003,8 +1003,7 @@ export class Actor4e extends Actor {
 			//let divider = Object.keys(damage).length;
 
 			//get lowest resistance
-			const maxRes = 9999;
-			let totalRes = maxRes;
+			let totalRes =  9999;
 			let resistAll = res['damage'].value;
 			let immune = res['damage'].immune;
 
@@ -1017,6 +1016,9 @@ export class Actor4e extends Actor {
 
 					let damageRes = res[type].value || 0;
 					
+					if (immune){
+						immune = res[type].immune;
+					}
 					if (damageRes < totalRes && !res[type].immune){
 						totalRes = damageRes;
 						console.log(`Resist ${totalRes} ${type}`)
@@ -1028,10 +1030,6 @@ export class Actor4e extends Actor {
 				}
 				else if ((totalRes < resistAll && resistAll > 0) || (totalRes > resistAll && resistAll < 0)){
 					totalRes = resistAll;
-				}
-
-				if (totalRes >= maxRes){
-					immune = true;
 				}
 			}
 
@@ -1047,6 +1045,7 @@ export class Actor4e extends Actor {
 				}
 
 				console.log(`PreResistDamage:${totalDamage}, SmallestResist:${totalRes}`)
+				totalRes = totalRes > totalDamage ? totalDamage : totalRes;
 				totalDamage -= totalRes;
 			}
 
