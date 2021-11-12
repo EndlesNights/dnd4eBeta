@@ -1014,11 +1014,22 @@ export class Actor4e extends Actor {
 						continue;
 					}
 
+					immune = res[type].immune;
+					if (!immune){
+						break;
+					}
+				}
+			}
+
+			if (!immune){
+				for(let d in damage){
+					let type = d && res[d] ? d : 'damage';
+					if (type == 'heal'){
+						continue;
+					}
+
 					let damageRes = res[type].value || 0;
 					
-					if (immune){
-						immune = res[type].immune;
-					}
 					if (damageRes < totalRes && !res[type].immune){
 						totalRes = damageRes;
 						console.log(`Resist ${totalRes} ${type}`)
@@ -1026,7 +1037,7 @@ export class Actor4e extends Actor {
 				}
 			
 				if ((totalRes > 0 && resistAll < 0) || (totalRes < 0 && resistAll > 0)){
-					totalRes += resistAll; // if resist and resist all have different signs, sum them
+					totalRes += resistAll; //if resist and resist all have different signs, sum them
 				}
 				else if ((totalRes < resistAll && resistAll > 0) || (totalRes > resistAll && resistAll < 0)){
 					totalRes = resistAll;
