@@ -1042,10 +1042,8 @@ export class Actor4e extends Actor {
 				else if ((totalRes < resistAll && resistAll > 0) || (totalRes > resistAll && resistAll < 0)){
 					totalRes = resistAll;
 				}
-			}
 
-			//sum damage
-			if (!immune){
+				//sum damage
 				for(let d in damage){
 					if(d == 'heal'){
 						totalDamage -= Math.max(0, damage[d]);
