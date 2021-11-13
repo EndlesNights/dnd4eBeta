@@ -776,6 +776,7 @@
 	"feat": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
+		"level": "",
 		"recharge": {
 		"value": null,
 		"charged": false
@@ -832,19 +833,23 @@
 	},
 	"raceFeats": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
-		"requirements": ""
+		"requirements": "",
+		"level": ""
 	},
 	"pathFeats": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
-		"requirements": ""
+		"requirements": "",
+		"level": ""
 	},
 	"destinyFeats": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
-		"requirements": ""
+		"requirements": "",
+		"level": ""
 	},
 	"ritual": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
+		"level": "",
 		"chatFlavor": "",
 		"attribute": "skills.arc.total",
 		"formula": "@skill"

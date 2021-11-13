@@ -506,6 +506,14 @@ DND4EBETA.hitDieTypes = ["d6", "d8", "d10", "d12"];
 
 /* -------------------------------------------- */
 
+DND4EBETA.featureSortTypes = {
+	"name": "DND4EBETA.ItemName",
+	"level": "DND4EBETA.Level",
+	"none": "DND4EBETA.None",
+};
+
+/* -------------------------------------------- */
+
 DND4EBETA.powerType = {
 	"class": "DND4EBETA.Class",
 	"race": "DND4EBETA.Race",
@@ -538,7 +546,7 @@ DND4EBETA.powerGroupTypes = {
 };
 
 DND4EBETA.powerSortTypes = {
-	"name": "DND4EBETA.Name",
+	"name": "DND4EBETA.ItemName",
 	"level": "DND4EBETA.Level",
 	"actionType": "DND4EBETA.Action",
 	"rangeTextShort": "DND4EBETA.Range",
