@@ -2,18 +2,99 @@
 	"name": "dnd4e",
 	"title": "DnD 4th Edition",
 	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.2.42",
+	"version": "0.2.44",
 	"minimumCoreVersion": "0.8.5",
 	"compatibleCoreVersion": "0.8.9",
 	"templateVersion": 2,
 	"author": "EndlesNights",
+	"dependencies": [
+		{ "name": "lib-wrapper" }
+	],
 	"esmodules": [
 		"module/dnd4eBeta.js"
-		],
+	],
 	"styles": [
 		"styles/dnd4eBeta.css"
 	],
-	"packs": [],
+	"packs": [
+		{
+			"name": "example_character",
+			"label": "Example Character",
+			"system": "dnd4e",
+			"path": "./packs/example_character.db",
+			"entity": "Actor"
+		},
+		{
+			"name": "example_powers",
+			"label": "Example Powers",
+			"system": "dnd4e",
+			"path": "./packs/example_powers.db",
+			"entity": "Item"
+		},
+		{
+			"name": "example_feats",
+			"label": "Example Feats",
+			"system": "dnd4e",
+			"path": "./packs/example_feats.db",
+			"entity": "Item"
+		},
+		{
+			"name": "class_features",
+			"label": "Class Features",
+			"system": "dnd4e",
+			"path": "./packs/class_features.db",
+			"entity": "Item"
+		},
+		{
+			"name": "racial_features",
+			"label": "Racial Features",
+			"system": "dnd4e",
+			"path": "./packs/racial_features.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_armour",
+			"label": "SRD Armour",
+			"system": "dnd4e",
+			"path": "./packs/srd_armour.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_classes",
+			"label": "SRD Classes",
+			"system": "dnd4e",
+			"path": "./packs/srd_classes.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_equipment",
+			"label": "SRD Equipment",
+			"system": "dnd4e",
+			"path": "./packs/srd_equipment.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_races",
+			"label": "SRD Races",
+			"system": "dnd4e",
+			"path": "./packs/srd_races.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_weapons",
+			"label": "SRD Weapons",
+			"system": "dnd4e",
+			"path": "./packs/srd_weapons.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_rules",
+			"label": "SRD Rules",
+			"system": "dnd4e",
+			"path": "./packs/srd_rules.db",
+			"entity": "JournalEntry"
+		}
+	],
 	"languages": [
 		{
 			"lang": "en",

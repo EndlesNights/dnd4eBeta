@@ -66,6 +66,36 @@ export class Actor4e extends Actor {
 
 	}
 
+	/** @override */
+	async update(data, options={}) {
+		// Apply changes in Actor size to Token width/height
+		const newSize = data["data.details.size"];
+		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this.data, "data.details.size")) )) {
+			let size = CONFIG.DND4EBETA.tokenSizes[newSize];
+			if ( this.isToken ) this.token.update({height: size, width: size});
+			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
+				data["token.height"] = size;
+				data["token.width"] = size;
+			}
+		}
+
+		if(data[`data.details.level`]){
+			if(this.data.data.details.tier != Math.clamped(Math.floor(( data[`data.details.level`] - 1 ) /10 + 1),1,3)){
+				this.data.data.details.tier = Math.clamped(Math.floor(( data[`data.details.level`] - 1 ) /10 + 1),1,3);
+				data[`data.details.tier`] = this.data.data.details.tier;
+			}		
+		}
+		for (let [id, abl] of Object.entries(this.data.data.abilities)){
+			if(data[`data.abilities.${id}.value`]){
+				if(this.data.data.abilities[id].mod != Math.floor((data[`data.abilities.${id}.value`] - 10) / 2)){
+					data[`data.abilities.${id}.mod`] = Math.floor((data[`data.abilities.${id}.value`] - 10) / 2) 
+					console.log(id)
+				}
+			}
+		}
+		return super.update(data, options);
+	}
+
 	/**
 		* Augment the basic actor data with additional dynamic data.
 		*/
@@ -159,7 +189,7 @@ export class Actor4e extends Actor {
 		}
 		
 		data.details.bloodied = Math.floor(data.attributes.hp.max / 2);
-		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
+		data.details.surgeValue += Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
 		data.attributes.hp.min = -data.details.bloodied;
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
 
@@ -208,7 +238,6 @@ export class Actor4e extends Actor {
 			}
 		}
 		
-		data.details.tier = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3);
 		//Weight & Encumbrance
 		data.encumbrance = this._computeEncumbrance(actorData);
 			
@@ -290,7 +319,7 @@ export class Actor4e extends Actor {
 		}
 		for ( let i of this.items) {
 			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
-			data.movement.base.armour -= i.data.data.armour.movePenValue;
+			data.movement.base.armour += i.data.data.armour.movePenValue;
 		}
 		data.movement.base.bonusValue = baseMoveBonusValue;
 
@@ -375,34 +404,34 @@ export class Actor4e extends Actor {
 		}
 		data.movement.shift.bonusValue = shiftBonusValue;	
 
-		data.movement.base.value = data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
+		data.movement.base.value += data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
 		
 		let walkForm = eval(Helper.replaceData(data.movement.walk.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.walk.value = walkForm + walkBonusValue + data.movement.base.temp;
+		data.movement.walk.value += walkForm + walkBonusValue + data.movement.base.temp;
 		
 		if (data.movement.walk.value < 0)
 			data.movement.walk.value = 0;
 		
 		let runForm = eval(Helper.replaceData(data.movement.run.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.run.value = runForm + runBonusValue + data.movement.run.temp;
+		data.movement.run.value += runForm + runBonusValue + data.movement.run.temp;
 		
 		if (data.movement.run.value < 0)
 			data.movement.run.value = 0;
 
 		let chargeForm = eval(Helper.replaceData(data.movement.charge.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.charge.value = chargeForm + chargeBonusValue + data.movement.charge.temp;
+		data.movement.charge.value += chargeForm + chargeBonusValue + data.movement.charge.temp;
 		
 		if (data.movement.charge.value < 0)
 			data.movement.charge.value = 0;
 
 		let climbeForm = eval(Helper.replaceData(data.movement.climb.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.climb.value = climbeForm;
+		data.movement.climb.value += climbeForm;
 		
 		if (data.movement.climb.value < 0)
 			data.movement.climb.value = 0;
 		
 		let shiftForm = eval(Helper.replaceData(data.movement.shift.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour),data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.shift.value = shiftForm;
+		data.movement.shift.value += shiftForm;
 		
 		if (data.movement.shift.value < 0)
 			data.movement.shift.value = 0;
@@ -562,7 +591,7 @@ export class Actor4e extends Actor {
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
 
 			if(skl.base == undefined){
 				skl.base = 0;
@@ -614,7 +643,7 @@ export class Actor4e extends Actor {
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
 
 			if(skl.base == undefined){
 				skl.base = 0;
@@ -851,6 +880,7 @@ export class Actor4e extends Actor {
 	*/
 	async usePower(item, {configureDialog=true}={}) {
 		//if not a valid type of item to use
+		console.log("UsePower")
 		if ( item.data.type !=="power" ) throw new Error("Wrong Item type");
 		const itemData = item.data.data;
 		//configure Powers data
@@ -1025,5 +1055,39 @@ export class Actor4e extends Actor {
 		  isBar: true
 		}, updates);
 		return allowed !== false ? this.update(updates) : this;
+	}
+
+	async applyTempHpChange(amount=0)
+	{
+		if (!this.canUserModify(game.user, "update")) {
+			return
+		}
+
+		const hp = this.data.data.attributes.hp;
+		console.log(hp)
+
+		// calculate existing temp hp
+		const tmp = parseInt(hp.temphp) || 0;
+
+		if (amount >= 0) {
+			// temp HP doesn't stack, so only update if we have a higher value
+			if (amount > tmp) {
+				const updates = {
+					"data.attributes.hp.temphp": amount,
+				};
+				return this.update(updates);
+			}
+		}
+		else {
+			// amount is negative, so subtract from temp HP, but floor at 0
+			let newTempHP = tmp + amount
+			newTempHP = Math.max(0, newTempHP)
+			const updates = {
+				"data.attributes.hp.temphp": newTempHP,
+			};
+			return this.update(updates);
+		}
+
+		return this
 	}
 }

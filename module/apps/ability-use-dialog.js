@@ -52,7 +52,8 @@ export default class AbilityUseDialog extends Dialog {
 
     // Create the Dialog and return as a Promise
     const icon = data.hasSpellSlots ? "fa-magic" : "fa-fist-raised";
-    const label = game.i18n.localize("DND4EBETA.AbilityUse" + (data.hasSpellSlots ? "Cast" : "Use"));
+    // const label = game.i18n.localize("DND4EBETA.AbilityUse" + (data.hasSpellSlots ? "Cast" : "Use"));
+    const label = game.i18n.localize("DND4EBETA.AbilityUseItem");
     return new Promise((resolve) => {
       const dlg = new this(item, {
         title: `${item.name}: Usage Configuration`,

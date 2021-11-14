@@ -246,7 +246,7 @@ DND4EBETA.equipmentTypesHead = {
 DND4EBETA.equipmentTypesNeck = {
 	"necklace": "DND4EBETA.EquipmentNeckNecklace",
 	"amulet": "DND4EBETA.EquipmentNeckAmulet",
-	"cloack": "DND4EBETA.EquipmentCloack",
+	"cloak": "DND4EBETA.EquipmentCloak",
 };
 DND4EBETA.equipmentTypesWaist = {
 	"belt": "DND4EBETA.EquipmentWaistBelt",
@@ -611,6 +611,7 @@ DND4EBETA.effectTypes = {
 	"conjuration": "DND4EBETA.Conjuration",
 	"disease": "DND4EBETA.Disease",
 	"elemental": "DND4EBETA.Elemental",
+	"enchantment": "DND4EBETA.Enchantment",
 	"evocation": "DND4EBETA.Evocation",
 	"fear": "DND4EBETA.Fear",
 	"fullDis": "DND4EBETA.FullDis",
@@ -1045,7 +1046,7 @@ DND4EBETA.statusEffect = [
 	{
 		id: "petrified",
 		label: "EFFECT.statusPetrified",
-		icon: "systems/dnd4e/icons/statusEffects/Petrified.svg"
+		icon: "systems/dnd4e/icons/statusEffects/petrified.svg"
 	},
 	{
 		id: "prone",
@@ -1060,7 +1061,7 @@ DND4EBETA.statusEffect = [
 	{
 		id: "sleeping",
 		label: "EFFECT.statusSleeping",
-		icon: "systems/dnd4e/icons/statusEffects/Sleeping.svg"
+		icon: "systems/dnd4e/icons/statusEffects/sleeping.svg"
 	},
 	{
 		id: "slowed",

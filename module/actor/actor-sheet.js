@@ -564,22 +564,7 @@ export default class ActorSheet4e extends ActorSheet {
 	  return true;
 	});
   }	
-	
-	/** @override */
-	async update(data, options={}) {
-		
-		// Apply changes in Actor size to Token width/height
-		const newSize = data["data.traits.size"];
-		if ( newSize && (newSize !== getProperty(this.data, "data.traits.size")) ) {
-			let size = CONFIG.DND4EBETA.tokenSizes[newSize];
-			if ( this.isToken ) this.token.update({height: size, width: size});
-			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
-				data["token.height"] = size;
-				data["token.width"] = size;
-			}
-		}
-		return super.update(data, options);
-	}
+
 	_getTrainingIcon(level) {
 		const icons = {
 			0: '<i class="far fa-circle"></i>',
@@ -588,26 +573,7 @@ export default class ActorSheet4e extends ActorSheet {
 			};
 		return icons[level];
 	}
-	
-	_onCycleSkillProficiency(event) {
-		event.preventDefault();
-		const field = $(event.currentTarget).siblings('input[type="hidden"]');
 
-		// Get the current level and the array of levels
-		const level = parseFloat(field.val());
-		const levels = [0, 5, 8];
-		let idx = levels.indexOf(level);
-
-		// Toggle next level - forward on click, backwards on right
-		if ( event.type === "click" ) {
-			field.val(levels[(idx === levels.length - 1) ? 0 : idx + 1]);
-		} else if ( event.type === "contextmenu" ) {
-			field.val(levels[(idx === 0) ? levels.length - 1 : idx - 1]);
-		}
-
-		// Update the field value and save the form
-		this._onSubmit(event);
-	}	
   /* -------------------------------------------- */
 
   /** @override */
@@ -963,21 +929,21 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const skillName = event.currentTarget.parentElement.dataset.skill;
 		const target = `data.skills.${skillName}`;
-		const options = {target: target, label: `${this.actor.data.data.skills[skillName].label} Skill Bonues`, skill: true };
+		const options = {target: target, label: `${this.actor.data.data.skills[skillName].label} Skill Bonus`, skill: true };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	/* -------------------------------------------- */
 
 	_onDeathSaveBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.deathsavebon`, label: "Death Savingthrow Bonues" };
+		const options = {target: `data.details.deathsavebon`, label: "Death Savingthrow Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	
 	_onSurgeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.surgeBon`, label: "Healing Surge Bonues" };
+		const options = {target: `data.details.surgeBon`, label: "Healing Surge Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -989,7 +955,7 @@ export default class ActorSheet4e extends ActorSheet {
 
 	_onSecondWindBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonues", secondWind: true };
+		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonus", secondWind: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -997,13 +963,13 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const defName = event.currentTarget.parentElement.dataset.defence;
 		const target = `data.defences.${defName}`;
-		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonues`, ac: (defName ==="ac")  };
+		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonus`, ac: (defName ==="ac")  };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.attributes.init`, label: "Initiative Bonues", init: true };
+		const options = {target: `data.attributes.init`, label: "Initiative Bonus", init: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -1011,7 +977,7 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `data.movement.${moveName}`;
-		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonues` };
+		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -1030,7 +996,7 @@ export default class ActorSheet4e extends ActorSheet {
 		const passName = event.currentTarget.parentElement.dataset.passive;
 		const skillName = this.actor.data.data.passive[passName].skill;
 		const target = `data.passive.${passName}`;
-		const options = {target: target, label: `Passive ${this.actor.data.data.skills[skillName].label} Bonues` };
+		const options = {target: target, label: `Passive ${this.actor.data.data.skills[skillName].label} Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}	
 
@@ -1038,7 +1004,7 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const resName = event.currentTarget.parentElement.dataset.res;
 		const target = `data.resistances.${resName}`;
-		const options = {target: target, label: `${this.actor.data.data.resistances[resName].label} Damage Resistances Bonues` };
+		const options = {target: target, label: `${this.actor.data.data.resistances[resName].label} Damage Resistances Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	
@@ -1100,7 +1066,7 @@ export default class ActorSheet4e extends ActorSheet {
 
 	_onSavingThrowBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.saves`, label: "Savingthrow Bonues" };
+		const options = {target: `data.details.saves`, label: "Savingthrow Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);	
 	}
 
@@ -1124,7 +1090,7 @@ export default class ActorSheet4e extends ActorSheet {
 		this._onSubmit(event);
 	}
 
-  /* -------------------------------------------- */
+	/* -------------------------------------------- */
 
   /**
    * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
