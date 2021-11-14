@@ -86,7 +86,7 @@ export class MultiAttackRoll extends Roll{
 		const isPrivate = chatOptions.isPrivate;
 
 		// Execute the roll, if needed
-		if (!this._evaluated) this.evaluate();
+		if (!this._evaluated) await this.evaluate({async : true});
 
 		for (let roll of this._multirollData) {
 			let parts = roll.parts;
@@ -195,7 +195,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 	rollMode = rollMode || game.settings.get("core", "rollMode");
 	let rolled = false;
 	// Define inner roll function
-	const _roll = function(parts, adv, form=null) {
+	const _roll = async function(parts, adv, form=null) {
 
 		// Determine the d20 roll and modifiers
 		// if(!parts.includes("@power") && !parts.includes("@tool")) parts.unshift(`1d20`);
@@ -361,7 +361,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			if (reliableFlavor) {flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`};
 		
 		} else {
-			roll = new Roll(parts.join(" + "), data).roll();
+			roll = await new Roll(parts.join(" + "), data).roll({async: true});
 
 			// Flag d20 options for any 20-sided dice in the roll
 			for ( let d of roll.dice ) {

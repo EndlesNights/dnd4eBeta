@@ -220,7 +220,7 @@ export class Helper {
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				let r = new Roll(`${dice}`)
 				if(dice){
-					r.evaluate({maximize: true});
+					r.evaluate({maximize: true, async: false});
 					newFormula = newFormula.replace("@wepMax", r.result);
 				} else {
 					newFormula = newFormula.replace("@wepMax", dice);
@@ -237,7 +237,7 @@ export class Helper {
 				let quantity = powerData.hit.baseQuantity;
 				let diceType = powerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
-				rQuantity.evaluate({maximize: true});
+				rQuantity.evaluate({maximize: true, async: false});
 
 				//check if is valid number
 				if(this._isNumber(rQuantity.result)){ 
@@ -357,7 +357,7 @@ export class Helper {
 				let quantity = powerData.hit.baseQuantity;
 				let diceType = powerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
-				rQuantity.evaluate({maximize: true});
+				rQuantity.evaluate({maximize: true, async: false});
 				
 				if(this._isNumber(rQuantity.result)) {
 					quantity = rQuantity.result;
