@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.2.45
+- Assign temp HP option to the damage rolls in chat [draconas1](https://github.com/draconas1)
+- Tweaked the chat helper to stop undefined's and empty spaces appearin [draconas1](https://github.com/draconas1)
+- Added some missing keywords [Marcloure](https://github.com/Marcloure)
+- Wil renamed to Will [Marcloure](https://github.com/Marcloure)
+- MultiTargetBonuses [ahoward-cf](https://github.com/ahoward-cf)
+- Number of spelling mistakes fixed [FoxLee](https://github.com/FoxLee))
+ 
 ## Version 0.2.44
 - fixed issue for item macros, actor data, item data, and launch order should now all be accessible again. 
 - changed how the assisting macro for the [Dual Wielding Strike (Primary)](https://github.com/EndlesNights/dnd4eBeta/blob/f2cb282fbbca8c3a988f1fa1cec8ca4cf1f5dab8/packs/example_powers.db#L7) example power, should no longer require having the actor selected to trigger the use of the secondary power.
