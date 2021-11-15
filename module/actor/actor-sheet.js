@@ -270,47 +270,60 @@ export default class ActorSheet4e extends ActorSheet {
 		}
 
 		this._sortPowers(powers);
+		this._sortFeatures(features);
 	}
-	_sortPowers(powers) {
 
-		function _compareValues(key, order = 'asc') {
-			return function innerSort(a, b) {
+	_compareValues(key, order = 'asc') {
+		return function innerSort(a, b) {
 
-				if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {	
-					const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
-					const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
-		
-					let comparison = 0;
-					if (varA > varB) {
-						comparison = 1;
-					}
-					else if (varA < varB) {
-						comparison = -1;
-					}
-					return (order === 'desc') ? (comparison * -1) : comparison;
-				} else if (a.data.hasOwnProperty(key) && b.data.hasOwnProperty(key)) {
-
-					const varA = (typeof a.data[key] === 'string') ? a.data[key].toUpperCase() : a.data[key];
-					const varB = (typeof b.data[key] === 'string') ? b.data[key].toUpperCase() : b.data[key];
-		
-					let comparison = 0;
-					if (varA > varB) {
-						comparison = 1;
-					}
-					else if (varA < varB) {
-						comparison = -1;
-					}
-					return (order === 'desc') ? (comparison * -1) : comparison;
+			if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {	
+				const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
+				const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
+	
+				let comparison = 0;
+				if (varA > varB) {
+					comparison = 1;
 				}
-				return 0;
+				else if (varA < varB) {
+					comparison = -1;
+				}
+				return (order === 'desc') ? (comparison * -1) : comparison;
+			} else if (a.data.hasOwnProperty(key) && b.data.hasOwnProperty(key)) {
 
-			};
+				const varA = (typeof a.data[key] === 'string') ? a.data[key].toUpperCase() : a.data[key];
+				const varB = (typeof b.data[key] === 'string') ? b.data[key].toUpperCase() : b.data[key];
+	
+				let comparison = 0;
+				if (varA > varB) {
+					comparison = 1;
+				}
+				else if (varA < varB) {
+					comparison = -1;
+				}
+				return (order === 'desc') ? (comparison * -1) : comparison;
+			}
+			return 0;
+
 		};
-		
+	};
+
+	/* -------------------------------------------- */
+
+	_sortFeatures(feats) {
+		const sort = this.object.data.data.featureSortTypes;
+		if(sort === "none") {return;}
+		for (const [keyy, group] of Object.entries(feats)) {
+			group.items.sort(this._compareValues(sort));
+		}
+	}
+
+	/* -------------------------------------------- */
+
+	_sortPowers(powers) {
 		const sort = this.object.data.data.powerSortTypes;
 		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(powers)) {
-			group.items.sort(_compareValues(sort));
+			group.items.sort(this._compareValues(sort));
 		}
 	}
 
