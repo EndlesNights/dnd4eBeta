@@ -3,8 +3,10 @@
 ## Version 0.2.45
 - Assign temp HP option to the damage rolls in chat [draconas1](https://github.com/draconas1)
 - Tweaked the chat helper to stop undefined's and empty spaces appearin [draconas1](https://github.com/draconas1)
+- Fix socket namespace [draconas1](https://github.com/draconas1)
 - Added some missing keywords [Marcloure](https://github.com/Marcloure)
 - Wil renamed to Will [Marcloure](https://github.com/Marcloure)
+- Added searching and sorting options to Features tab [Marcloure](https://github.com/Marcloure)
 - MultiTargetBonuses [ahoward-cf](https://github.com/ahoward-cf)
 - Number of spelling mistakes fixed [FoxLee](https://github.com/FoxLee))
  
