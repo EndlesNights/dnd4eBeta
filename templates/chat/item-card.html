@@ -1,4 +1,5 @@
-<div class="dnd4eBeta chat-card item-card" data-actor-id="{{actor._id}}" data-item-id="{{item._id}}"
+<!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
+<div class="dnd4eBeta chat-card item-card" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
 	 {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
 	<header class="card-header flexrow">
 		<img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
