@@ -128,8 +128,8 @@ export default class ItemSheet4e extends ItemSheet {
 	}
 
 	shareItem() {
-		game.socket.emit("system.dnd4eBeta", {
-			itemId: this.item.id
+		game.socket.emit("system.dnd4e", {
+			itemId: this.item._id
 		});
 	}
 
@@ -726,7 +726,7 @@ function executeMacro(item)
 }
 
 Hooks.once('ready', async function () {
-	game.socket.on("system.dnd4eBeta", (msg) => {
+	game.socket.on("system.dnd4e", (msg) => {
 		ItemSheet4e._handleShareItem(msg);
 	});
 })

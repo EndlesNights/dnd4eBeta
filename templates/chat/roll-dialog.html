@@ -149,24 +149,25 @@ function toggleMultibonus() {
 function showTab(n) {
 	let x = document.getElementsByClassName("multitarget-tab");
 	let numTargets = x.length;
+	if (document.getElementById("multibonus-toggle")) {
+		if (numTargets <= 1) {
+			multiTargetToggleString = "Universal Attack Bonuses"
+			document.getElementById("multibonus-toggle").disabled = true;
+		}
 
-	if (numTargets <= 1) {
-		multiTargetToggleString = "Universal Attack Bonuses"
-		document.getElementById("multibonus-toggle").disabled = true;
-	}
+		document.getElementById("multibonus-toggle").innerHTML = multiTargetToggleString;
 
-	document.getElementById("multibonus-toggle").innerHTML = multiTargetToggleString;
-
-	x[n].style.display = "block";
-	if (n <= 0){
-		document.getElementById("prevBtn").disabled = true;
-	} else {
-		document.getElementById("prevBtn").disabled = false;
-	}
-	if (n >= x.length - 1 || multiTargetToggle == 0){
-		document.getElementById("nextBtn").disabled = true;
-	} else {
-		document.getElementById("nextBtn").disabled = false;
+		x[n].style.display = "block";
+		if (n <= 0){
+			document.getElementById("prevBtn").disabled = true;
+		} else {
+			document.getElementById("prevBtn").disabled = false;
+		}
+		if (n >= x.length - 1 || multiTargetToggle == 0){
+			document.getElementById("nextBtn").disabled = true;
+		} else {
+			document.getElementById("nextBtn").disabled = false;
+		}
 	}
 }
 
