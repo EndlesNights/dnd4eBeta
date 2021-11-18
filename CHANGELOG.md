@@ -9,6 +9,8 @@
 - Added searching and sorting options to Features tab [Marcloure](https://github.com/Marcloure)
 - MultiTargetBonuses [ahoward-cf](https://github.com/ahoward-cf)
 - Number of spelling mistakes fixed [FoxLee](https://github.com/FoxLee))
+- Updated number of deprecated methods for v9.0 compatibility [draconas1](https://github.com/draconas1)
+- Fixed a few more deprecated methods
  
 ## Version 0.2.44
 - fixed issue for item macros, actor data, item data, and launch order should now all be accessible again. 

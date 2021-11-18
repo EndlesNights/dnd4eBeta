@@ -41,6 +41,6 @@ export class ItemImporterDialog extends DocumentSheet {
 		//assign obj ID if one was not made
 		if(!obj._id) { obj._id = randomID(16); }
 		//generate new item
-		this.object.createOwnedItem(obj)
+		this.obj.createEmbeddedDocuments("Item",[obj])
 	}
 }

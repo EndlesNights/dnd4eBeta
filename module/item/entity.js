@@ -1190,6 +1190,7 @@ export default class Item4e extends Item {
 
 		// Update Item data
 		if ( consume ) {
+			console.log("update?")
 			const current = uses.value || 0;
 			const remaining = usesCharges ? Math.max(current - 1, 0) : current;
 			if ( usesRecharge ) await this.update({"data.recharge.charged": false});

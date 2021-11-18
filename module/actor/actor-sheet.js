@@ -899,9 +899,10 @@ export default class ActorSheet4e extends ActorSheet {
    * @private
    */
   _onItemDelete(event) {
-	event.preventDefault();
-	const li = event.currentTarget.closest(".item");
-	this.actor.deleteOwnedItem(li.dataset.itemId);
+    event.preventDefault();
+    const li = event.currentTarget.closest(".item");
+    const item = this.actor.items.get(li.dataset.itemId);
+    if ( item ) return item.delete();
   }
   
   /* -------------------------------------------- */
