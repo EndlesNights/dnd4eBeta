@@ -117,6 +117,27 @@
 					"chat": "@name defends with willpower."
 				}	
 			},
+			"modifiers":{
+				"attack":{
+					"value": 0,
+					"class": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
+					"race": 0,
+					"bonus": [{}]
+				},
+				"damage":{
+					"value": 0,
+					"class": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
+					"race": 0,
+					"bonus": [{}]
+				}
+			},
+			
 			"details": {
 				"level": 1,
 				"tier": 1,
@@ -857,8 +878,9 @@
 	"power": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"keyWords": [""],
-		"level": "1",
+		"level": "",
 		"powersource": "martial",
+		"secondPowersource": "",
 		"subName": "",
 		"prepared": true,
 		"powerType": "class",
@@ -889,7 +911,7 @@
 			"abilityBonus": 0,
 			"def": "ac",
 			"defBonus": 0,
-			"formula": "@wepAttack+@powerMod+@lvhalf",
+			"formula": "@wepAttack + @powerMod + @lvhalf + @atkMod",
 			"damageType": {},
 			"effectType": {}
 		},
@@ -900,8 +922,8 @@
 			"baseQuantity": 1,
 			"baseDiceType": "Base Weapon Damage",
 			"detail": "1[W] + Strength modifier damage.",
-			"formula": "@powBase + @powerMod + @wepDamage",
-			"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
+			"formula": "@powBase + @powerMod + @wepDamage + @dmgMod",
+			"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus + @dmgMod",
 			"healFormula": ""
 		},
 		"miss": {

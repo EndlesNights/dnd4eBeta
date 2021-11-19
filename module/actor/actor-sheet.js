@@ -643,6 +643,7 @@ export default class ActorSheet4e extends ActorSheet {
 			html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
 			html.find('.move-bonus').click(this._onMovementBonus.bind(this));
 			html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
+			html.find('.modifiers-bonus').click(this._onModifiersBonus.bind(this));
 			html.find('.resistances-bonus').click(this._onResistancesBonus.bind(this));
 			
 			html.find('.movement-dialog').click(this._onMovementDialog.bind(this));		
@@ -1004,7 +1005,7 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		new EncumbranceDialog(this.actor).render(true);
 	}
-	
+
 	_onPassiveBonus(event) {
 		event.preventDefault();
 		const passName = event.currentTarget.parentElement.dataset.passive;
@@ -1012,6 +1013,14 @@ export default class ActorSheet4e extends ActorSheet {
 		const target = `data.passive.${passName}`;
 		const options = {target: target, label: `Passive ${this.actor.data.data.skills[skillName].label} Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
+	}	
+
+	_onModifiersBonus(event) {
+		event.preventDefault();
+		const modifierName = event.currentTarget.parentElement.dataset.modifiers;
+		const target = `data.modifiers.${modifierName}`;
+		const options = {target: target, label: `${this.actor.data.data.modifiers[modifierName].label} Bonus` };
+		new AttributeBonusDialog(this.actor, options).render(true);
 	}	
 
 	_onResistancesBonus(event) {

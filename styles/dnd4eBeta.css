@@ -10,6 +10,11 @@
 	flex-wrap: wrap;
 	justify-content: flex-start;
 }
+.flexrow .thin {
+	padding-left: 15%;
+	padding-right: 15%;
+}
+
 .flexcol {
 	display: flex;
 	flex-direction: column;
@@ -1430,6 +1435,22 @@ font-size: 12px;
 .dnd4eBeta .attribute-init .init-bonus{
 	width: 30px;
 }
+
+.dnd4eBeta .attribute-modifiers {
+	margin: 0 0 0 0;
+	border: 2px groove #eeede0;
+	border-radius: 4px;
+	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
+		/* line-height:20px; */
+	width: 100%;
+	max-height: 76px;
+	/* height: 120px; */
+		/* margin-top: 10px; */
+	float: left;
+	text-align: center;
+	line-height:22px;
+}
+
 /* .dnd4eBeta .action-point{
 	position: relative;
 	top: -20px;
@@ -2352,8 +2373,8 @@ font-size: 12px;
 	color: #000;
 }
 
-.dnd4eBeta .item-description p,
-.dnd4eBeta .item-details .alt:nth-of-type(even) {
+.dnd4eBeta .item-description p ,
+.dnd4eBeta .item-details .alt{
 	/* background-color: #c3c2b7; */
 	/* background-color: linear-gradient(45deg, #c3c2b7, #c3c2b796) */
 	/* background: -o-linear-gradient(45deg, #125f15, #55aa2e); */
@@ -2454,4 +2475,5 @@ span.flavor-text.fumble {
 .multitarget-np-flex {
 	display:flex;
 	justify-content:space-between;
+
 }

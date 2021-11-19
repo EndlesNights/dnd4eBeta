@@ -455,6 +455,28 @@ export class Actor4e extends Actor {
 			pas.bonusValue = passiveBonusValue;
 			pas.value = 10 + data.skills[pas.skill].total + passiveBonusValue;
 		}
+
+		//Attack and damage modifiers
+		for (let [id, mod] of Object.entries(data.modifiers)) {
+			let modifierBonusValue = 0;
+			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
+				for( const b of mod.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						modifierBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,data)
+						if(Helper._isNumber(val)){
+							modifierBonusValue += parseInt(val);
+						}
+					}
+				}
+			}
+
+			mod.bonusValue = modifierBonusValue;
+			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.race + modifierBonusValue;
+			mod.label = game.i18n.localize(DND4EBETA.modifiers[id]);
+		}
 		
 		//Resistances & Weaknesses
 		for (let [id, res] of Object.entries(data.resistances)) {
@@ -985,36 +1007,64 @@ export class Actor4e extends Actor {
 		if(Object.keys(damage).length >= 1){
 			const res = this.data.data.resistances;
 
-			let damageResAll = res['damage'].value;
-			let divider = Object.keys(damage).length;
+			//let divider = Object.keys(damage).length;
 
-			for(let d in damage){
-				
-				let type = d && res[d] ?  d : 'damage';
-				let damageBase = damage[d];
-				let damageRes = res[type].value || 0;
+			//get lowest resistance
+			let totalRes =  9999;
+			let resistAll = res['damage'].value;
+			let immune = res['damage'].immune;
 
-				let resPart = Math.ceil(damageResAll/divider)
-				damageResAll -= resPart;
-				divider--;
+			if (!immune){
+				for(let d in damage){
+					let type = d && res[d] ? d : 'damage';
+					if (type == 'damage' || type == 'heal'){
+						continue;
+					}
 
-				if((resPart > damageRes && damageRes >= 0) || (resPart < damageRes && damageRes <= 0) ){
-					damageRes = resPart;
-				}
-				else if( (resPart >= 0 && damageRes <= 0) || (resPart <= 0 && damageRes >= 0)){
-					damageRes += resPart;
-				}
-
-				// console.log(`${type}: ${damage[type]}`);
-
-				if(d == 'heal'){
-					totalDamage -= Math.max(0, damageBase);
-				}
-				else if(!res[type].immune && !res['damage'].immune){
-					totalDamage += Math.max(0, damageBase - damageRes);
-					console.log(`DamageType:${type}, Damage:${Math.max(0, damageBase - damageRes)}`)
+					immune = res[type].immune;
+					if (!immune){
+						break;
+					}
 				}
 			}
+
+			if (!immune){
+				for(let d in damage){
+					let type = d && res[d] ? d : 'damage';
+					if (type == 'heal'){
+						continue;
+					}
+
+					let damageRes = res[type].value || 0;
+					
+					if (damageRes < totalRes && !res[type].immune){
+						totalRes = damageRes;
+						console.log(`Resist ${totalRes} ${type}`)
+					}
+				}
+			
+				if ((totalRes > 0 && resistAll < 0) || (totalRes < 0 && resistAll > 0)){
+					totalRes += resistAll; //if resist and resist all have different signs, sum them
+				}
+				else if ((totalRes < resistAll && resistAll > 0) || (totalRes > resistAll && resistAll < 0)){
+					totalRes = resistAll;
+				}
+
+				//sum damage
+				for(let d in damage){
+					if(d == 'heal'){
+						totalDamage -= Math.max(0, damage[d]);
+					}
+					else {
+						totalDamage += Math.max(0, damage[d]);
+					}
+				}
+
+				console.log(`PreResistDamage:${totalDamage}, SmallestResist:${totalRes}`)
+				totalRes = totalRes > totalDamage ? totalDamage : totalRes;
+				totalDamage -= totalRes;
+			}
+
 			console.log(`Total Damage: ${totalDamage * multiplier}`)
 			this.applyDamage(totalDamage, multiplier);
 		}

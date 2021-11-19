@@ -103,6 +103,9 @@ export class Helper {
 			newFormula = newFormula.replace("@lvhalf", Math.floor(actorData.details.level/2));
 			newFormula = newFormula.replace("@lv", actorData.details.level);
 			newFormula = newFormula.replace("@tier", actorData.details.tier);
+
+			newFormula = newFormula.replace("@atkMod", actorData.modifiers.attack.value);
+			newFormula = newFormula.replace("@dmgMod", actorData.modifiers.damage.value);
 		}
 		
 		if(powerData) {
@@ -450,8 +453,12 @@ export class Helper {
 		if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
 			tag.push(`Weapon`);
 		} 
-		else if ( chatData.weaponType === "implement") {
+		else if (chatData.weaponType === "implement") {
 			tag.push(`Implement`);
+		}
+
+		if (chatData.powersource && chatData.secondPowersource && chatData.secondPowersource != chatData.powersource){
+			tag.push(`${CONFIG.DND4EBETA.powerSource[`${chatData.secondPowersource}`]}`)
 		}
 
 		if(chatData.damageType) {
@@ -499,16 +506,16 @@ export class Helper {
 			powerDetail += `</b></span>`;
 		}
 
-		if(chatData.target) {
-			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Target")}:</b> ${chatData.target}</span>`;
+		if(chatData.requirement) {
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Requirements")}:</b> ${chatData.requirement}</span></p>`;
 		}
 
 		if(chatData.trigger) {
-			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Trigger")}:</b> ${chatData.trigger}</span>`;
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Trigger")}:</b> ${chatData.trigger}</span></p>`;
 		}
 
-		if(chatData.requirement) {
-			powerDetail += `<br><span><b>${game.i18n.localize("DND4EBETA.Requirements")}:</b> ${chatData.requirement}</span>`;
+		if(chatData.target) {
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Target")}:</b> ${chatData.target}</span></p>`;
 		}
 
 		if(!chatData.postEffect && chatData.effect.detail) {
@@ -522,23 +529,34 @@ export class Helper {
 		}
 
 		if(chatData.attack.isAttack) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
-			chatData.hit.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Hit")}:</b> ${chatData.hit.detail}</p>` : {};
-			chatData.miss.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Miss")}:</b> ${chatData.miss.detail}</p>` : {};
+			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+		}
+
+		let highlight = true;
+		if (chatData.hit.detail){
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Hit")}:</b> ${chatData.hit.detail}</p>`;
+			highlight = !highlight;
+		}
+
+		if (chatData.miss.detail){
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Miss")}:</b> ${chatData.miss.detail}</p>`;
+			highlight = !highlight;
 		}
 
 		if(chatData.postEffect && chatData.effect.detail) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Effect")}:</b> ${chatData.effect.detail}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Effect")}:</b> ${chatData.effect.detail}</p>`;
+			highlight = !highlight;
 		}
 		if(chatData.postSpecial && chatData.special) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			highlight = !highlight;
 			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
 				powerDetail += `<p>${entry}</p>`;
 			}
 		}
 
 		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
 		}
 
 		if(actorData){
