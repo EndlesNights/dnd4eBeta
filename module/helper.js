@@ -223,7 +223,7 @@ export class Helper {
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				let r = new Roll(`${dice}`)
 				if(dice){
-					r.evaluate({maximize: true});
+					r.evaluate({maximize: true, async: false});
 					newFormula = newFormula.replace("@wepMax", r.result);
 				} else {
 					newFormula = newFormula.replace("@wepMax", dice);
@@ -240,7 +240,7 @@ export class Helper {
 				let quantity = powerData.hit.baseQuantity;
 				let diceType = powerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
-				rQuantity.evaluate({maximize: true});
+				rQuantity.evaluate({maximize: true, async: false});
 
 				//check if is valid number
 				if(this._isNumber(rQuantity.result)){ 
@@ -360,7 +360,7 @@ export class Helper {
 				let quantity = powerData.hit.baseQuantity;
 				let diceType = powerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
-				rQuantity.evaluate({maximize: true});
+				rQuantity.evaluate({maximize: true, async: false});
 				
 				if(this._isNumber(rQuantity.result)) {
 					quantity = rQuantity.result;
@@ -529,26 +529,34 @@ export class Helper {
 		}
 
 		if(chatData.attack.isAttack) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
 		}
 
-		if (chatData.hit.isDamage){
-			chatData.hit.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Hit")}:</b> ${chatData.hit.detail}</p>` : {};
-			chatData.miss.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Miss")}:</b> ${chatData.miss.detail}</p>` : {};
+		let highlight = true;
+		if (chatData.hit.detail){
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Hit")}:</b> ${chatData.hit.detail}</p>`;
+			highlight = !highlight;
+		}
+
+		if (chatData.miss.detail){
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Miss")}:</b> ${chatData.miss.detail}</p>`;
+			highlight = !highlight;
 		}
 
 		if(chatData.postEffect && chatData.effect.detail) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Effect")}:</b> ${chatData.effect.detail}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Effect")}:</b> ${chatData.effect.detail}</p>`;
+			highlight = !highlight;
 		}
 		if(chatData.postSpecial && chatData.special) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			highlight = !highlight;
 			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
 				powerDetail += `<p>${entry}</p>`;
 			}
 		}
 
 		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
 		}
 
 		if(actorData){
