@@ -416,11 +416,11 @@ export default class Item4e extends Item {
 
 		// Basic chat message data
 		const chatData = {
-			user: game.user._id,
+			user: game.user.id,
 			type: CONST.CHAT_MESSAGE_TYPES.OTHER,
 			content: html,
 			speaker: {
-				actor: this.actor._id,
+				actor: this.actor.id,
 				token: this.actor.token,
 				alias: this.actor.name
 			}
@@ -1190,6 +1190,7 @@ export default class Item4e extends Item {
 
 		// Update Item data
 		if ( consume ) {
+			console.log("update?")
 			const current = uses.value || 0;
 			const remaining = usesCharges ? Math.max(current - 1, 0) : current;
 			if ( usesRecharge ) await this.update({"data.recharge.charged": false});
@@ -1445,7 +1446,7 @@ export default class Item4e extends Item {
 			const [,sceneId,,tokenId] = tokenKey.split(".");
 			const scene = game.scenes.get(sceneId);
 			if (!scene) return null;
-			const tokenData = scene.getEmbeddedEntity("Token", tokenId);
+			const tokenData = scene.getEmbeddedDocument("Token", tokenId);
 			if (!tokenData) return null;
 			const token = new Token(tokenData);
 			return token.actor;

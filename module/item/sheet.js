@@ -128,7 +128,7 @@ export default class ItemSheet4e extends ItemSheet {
 	}
 
 	shareItem() {
-		game.socket.emit("system.dnd4eBeta", {
+		game.socket.emit("system.dnd4e", {
 			itemId: this.item._id
 		});
 	}
@@ -160,7 +160,7 @@ export default class ItemSheet4e extends ItemSheet {
 	  }
 
 	exportItem() {
-		const jsonString = JSON.stringify(this.object._data);
+		const jsonString = JSON.stringify(this.object.data._source);
 
 		try {
 			navigator.clipboard.writeText(jsonString)
@@ -726,7 +726,7 @@ function executeMacro(item)
 }
 
 Hooks.once('ready', async function () {
-	game.socket.on("system.dnd4eBeta", (msg) => {
+	game.socket.on("system.dnd4e", (msg) => {
 		ItemSheet4e._handleShareItem(msg);
 	});
 })

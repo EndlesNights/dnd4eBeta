@@ -876,22 +876,29 @@ export class Actor4e extends Actor {
 			flavor: flavText,
 		}));		
 	}
-	
-  /** @override */
-  async createOwnedItem(itemData, options) {
 
-	// Assume NPCs are always proficient with weapons and always have spells prepared
-	if ( !this.isPC ) {
-	  let t = itemData.type;
-	  let initial = {};
-	  if ( t === "weapon" ) initial["data.proficient"] = true;
-	  if ( ["weapon", "equipment"].includes(t) ) initial["data.equipped"] = true;
-	  if ( t === "spell" ) initial["data.prepared"] = true;
-	  mergeObject(itemData, initial);
-	}
-	
-	return super.createOwnedItem(itemData, options);
+  async createOwnedItem(itemData, options) {
+	console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
+	return this.createEmbeddedDocuments("Item", [itemData], options);
   }
+
+	/** @override */
+	async createEmbeddedDocuments(embeddedName, data=[], context={}) {
+		if (embeddedName === "Item") {
+			if ( !this.isPC ) {
+				data.forEach(datum => {
+					let t = datum.type;
+					let initial = {};
+					if ( t === "weapon" ) initial["data.proficient"] = true;
+					if ( ["weapon", "equipment"].includes(t) ) initial["data.equipped"] = true;
+					if ( t === "spell" ) initial["data.prepared"] = true;
+					mergeObject(datum, initial);
+				})
+			}
+		}
+		return super.createEmbeddedDocuments("Item", data, context);
+	}
+
 
 	/* -------------------------------------------- */
 
