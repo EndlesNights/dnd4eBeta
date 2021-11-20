@@ -1,6 +1,6 @@
 
 /**
- * Highlight critical success or failure on d20 rolls
+ * Highlight critical success or failure on d20 rolls, or recharge rolls
  */
 export const highlightCriticalSuccessFailure = function(message, html, data) {
 	if ( !message.isRoll || !message.isContentVisible ) return;
@@ -10,9 +10,9 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
 	if ( !roll.dice.length ) return;
 	const d = roll.dice[0];
 
-	// Ensure it is an un-modified d20 roll
+	// Ensure it is an un-modified d20 roll, is is part of a recharge roll
 	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
-	if ( !isD20 ) return;
+	if ( !isD20 && !d.options.recharge) return;
 	const isModifiedRoll = ("success" in d.results[0]) || d.options.marginSuccess || d.options.marginFailure;
 	if ( isModifiedRoll ) return;
 

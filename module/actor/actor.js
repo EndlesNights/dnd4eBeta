@@ -68,6 +68,7 @@ export class Actor4e extends Actor {
 
 	/** @override */
 	async update(data, options={}) {
+		if(!data) { return super.update(data, options); }
 		// Apply changes in Actor size to Token width/height
 		const newSize = data["data.details.size"];
 		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this.data, "data.details.size")) )) {

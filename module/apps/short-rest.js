@@ -83,6 +83,7 @@ export class ShortRestDialog extends DocumentSheet {
 			};
 		});
 		// await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
+		console.log(updateItems)
 		await this.object.updateEmbeddedDocuments("Item", updateItems);
 		
 		ChatMessage.create({

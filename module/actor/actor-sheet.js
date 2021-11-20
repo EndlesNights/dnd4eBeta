@@ -700,7 +700,7 @@ export default class ActorSheet4e extends ActorSheet {
 			
 			// Item Rolling
 			html.find('.item .item-image').click(event => this._onItemRoll(event));
-			// html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
+			html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
 
 			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this))
 			
@@ -1123,9 +1123,7 @@ export default class ActorSheet4e extends ActorSheet {
 	event.preventDefault();
 	const itemId = event.currentTarget.closest(".item").dataset.itemId;
 	const item = this.actor.items.get(itemId);
-	// Roll powers through the actor
-	const power = ["atwill","encounter","daily","utility"];
-
+	
 	if ( item.data.type === "power") {
 		return this.actor.usePower(item, {configureDialog: !event.shiftKey});
 	}
@@ -1133,6 +1131,53 @@ export default class ActorSheet4e extends ActorSheet {
 	return item.roll();
   }
   
+  /* -------------------------------------------- */
+
+	_onItemRecharge(event){
+		event.preventDefault();
+		console.log("roll recharge!")
+		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const item = this.actor.items.get(itemId);
+
+		if ( item.data.type === "power") {
+
+			if(item.data.data.rechargeRoll){
+				const r = new Roll("1d6");
+				r.options.async = true;
+				r.dice[0].options.recharge = true;
+				r.dice[0].options.critical = item.data.data.rechargeRoll;
+				r.dice[0].options.fumble = item.data.data.rechargeRoll -1;
+				r.evaluate({async: false});
+	
+				let flav = `${item.data.name} did not recharg.`;
+				if(r.total >= item.data.data.rechargeRoll){
+					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.uses.max}]);
+					flav = `${item.data.name} successfully recharged!`;
+				}
+
+				r.toMessage({
+					user: game.user.id,
+					speaker: {actor: this.object, alias: this.object.data.name},
+					flavor: flav,
+					rollMode: game.settings.get("core", "rollMode"),
+					messageData: {"flags.dnd4eBeta.roll": {type: "other", itemId: this.id }}
+				});
+
+			} else if (item.data.data.rechargeCondition) {
+
+				this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.uses.max}]);
+
+				ChatMessage.create({
+					user: game.user.id,
+					speaker: {actor: this.object, alias: this.object.data.name},
+					flavor: `${item.data.name} successfully recharged!`
+				});
+			}
+
+		}
+		return;
+	}
+
   /* -------------------------------------------- */
 
   /**

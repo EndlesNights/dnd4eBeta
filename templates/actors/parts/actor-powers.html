@@ -100,10 +100,21 @@
 							{{/if}}
 						</div>
 						<div class="item-detail power-detail item-uses">
-							{{#if item.hasUses }}
-								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
-								/ {{item.data.uses.max}}
+							{{#if item.data.notAvailable}}
+								{{#if item.data.rechargeRoll}}
+								<a class="item-recharge rollable" title="Click to roll 1d6 and recharge power on a roll of {{item.data.rechargeRoll}} or higher">Recharge[+{{item.data.rechargeRoll}}]</a>
+								{{else if item.data.rechargeCondition}}
+								<a class="item-recharge rollable" title="Click to recharge power when the condition of &quot;{{item.data.rechargeCondition}}&quot; is met">Recharge[C]</a>
+								{{else}}
+								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
+								{{/if}}
+							{{else}}
+								{{#if item.hasUses}}
+								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
+								{{/if}}
 							{{/if}}
+
+	
 						</div>
 					{{/if}}
 			
@@ -112,33 +123,6 @@
 						<a class="item-control item-create" title="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
 							<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 						</a>
-					</div>
-					{{/if}}
-
-					{{#if section.hasActions}}
-					<div class="item-detail power-detail item-uses">
-						{{#if item.isOnCooldown}}
-						<a class="item-recharge rollable">{{item.labels.recharge}}</a>
-						{{else if item.data.recharge.value}}
-						{{localize "DND4EBETA.Charged"}}
-		
-						{{else if item.hasUses}}
-						<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
-						{{/if}}
-					</div>
-		
-					<div class="item-detail power-detail item-action">
-						{{#if item.data.activation.type }}
-						{{item.labels.activation}}
-						{{/if}}
-					</div>
-		
-					{{else if section.isClass}}
-					<div class="item-detail player-class">
-						{{item.data.subclass}}
-					</div>
-					<div class="item-detail power-detail item-action">
-						Level {{item.data.levels}}
 					</div>
 					{{/if}}
 		

@@ -61,14 +61,6 @@
 			{{/select}}
 		</select>
 	</div>
-	{{#if data.isRecharge}}
-	<div class="form-group">
-		<label>{{ localize "DND4EBETA.PowerRechargeCondition" }}</label>
-		<div class="form-fields">
-			<input type="text" name="data.rechargeRoll" value="{{data.rechargeRoll}}"/>
-		</div>
-	</div>
-	{{/if}}
 
 	{{!-- Action Type --}}
 	<div class="form-group select">
@@ -107,8 +99,6 @@
 			</select>
 		{{/if}}
 	</div>
-
-	
 
 	<div class="form-group uses-per">
 		<label>{{ localize "DND4EBETA.RangePower" }}</label>
@@ -170,6 +160,23 @@
 			</select>
 		</div>
 	</div>
+
+	{{#if data.isRecharge}}
+	<div class="form-group">
+		<label>{{ localize "DND4EBETA.PowerRechargeCondition" }} Condition</label>
+		<div class="form-fields">
+			<input type="text" name="data.rechargeCondition" value="{{data.rechargeCondition}}" placeholder="Text Condition"/>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>{{ localize "DND4EBETA.PowerRechargeCondition" }} roll</label>
+		<div class="form-fields">
+			<input type="text" name="data.rechargeRoll" value="{{data.rechargeRoll}}" placeholder="1d6"/>
+		</div>
+	</div>
+	{{/if}}
+
 	<div class="form-group uses-per">
 		<label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
 		<div class="form-fields">
