@@ -365,6 +365,7 @@ export default class ActorSheet4e extends ActorSheet {
 			atwill: { label: "DND4EBETA.PowerAt", items: [], dataset: {type: "atwill"} },
 			encounter: { label: "DND4EBETA.PowerEnc", items: [], dataset: {type: "encounter"} },
 			daily: { label: "DND4EBETA.PowerDaily", items: [], dataset: {type: "daily"} },
+			item: { label: "DND4EBETA.PowerItem", items: [], dataset: {type: "item"} },
 			// utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
 			recharge: { label: "DND4EBETA.PowerRecharge", items: [], dataset: {type: "recharge"} },
 			other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
@@ -478,7 +479,7 @@ export default class ActorSheet4e extends ActorSheet {
    * @private
    */
   _prepareItemToggleState(item) {
-	  const power = ["power","atwill","encounter","daily","utility"];
+	const power = ["power","atwill","encounter","daily","utility"];
 	if (power.includes(item.type)) {
 	  // const isAlways = getProperty(item.data, "preparation.mode") === "always";
 	  const isPrepared =  getProperty(item.data, "prepared");
@@ -846,7 +847,7 @@ export default class ActorSheet4e extends ActorSheet {
 		}
 		else if(this.object.data.data.powerGroupTypes === "usage") {
 			itemData.data.useType = type;
-			if(["encounter", "daily", "recharge"].includes(type)) {
+			if(["encounter", "daily", "recharge", "item"].includes(type)) {
 				itemData.data.uses = {
 					value: 1,
 					max: 1,
