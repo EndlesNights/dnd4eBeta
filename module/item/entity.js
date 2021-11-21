@@ -1149,7 +1149,7 @@ export default class Item4e extends Item {
 		const title = `${this.name} - ${game.i18n.localize("DND4EBETA.OtherFormula")}`;
 
 		// Invoke the roll and submit it to chat
-		const roll = new Roll(rollData.item.formula, rollData).roll();
+		const roll = await new Roll(rollData.item.formula, rollData).roll({async : true});
 		roll.toMessage({ 
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: this.data.data.chatFlavor || title,
@@ -1206,7 +1206,7 @@ export default class Item4e extends Item {
 				}
 				// Case 3, destroy the item
 				else if ( (q <= 1) && autoDestroy ) {
-					await this.actor.deleteOwnedItem(this.id);
+					await this.actor.deleteEmbeddedDocuments("Item", [this.id]);
 				}
 				// Case 4, reduce item to 0 quantity and 0 charges
 				else if ( (q === 1) ) {
@@ -1223,7 +1223,7 @@ export default class Item4e extends Item {
 		if ( this.hasAreaTarget && placeTemplate ) {
 			const template = AbilityTemplate.fromItem(this);
 			if ( template ) template.drawPreview(event);
-			if ( this.owner && this.owner.sheet ) this.owner.sheet.minimize();
+			if ( this.isEmbedded  && this.parent.sheet ) this.parent.sheet.minimize();
 		}
 		return true;
 	}
@@ -1239,7 +1239,7 @@ export default class Item4e extends Item {
 		if ( !data.recharge.value ) return;
 
 		// Roll the check
-		const roll = new Roll("1d6").roll();
+		const roll = await new Roll("1d6").roll({async: true});
 		const success = roll.total >= parseInt(data.recharge.value);
 
 		// Display a Chat Message
