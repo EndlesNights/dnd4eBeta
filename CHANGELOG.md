@@ -12,7 +12,12 @@
 - Updated number of deprecated methods for v9.0 compatibility [draconas1](https://github.com/draconas1)
 - Fixed a few more deprecated methods
 - Recharge powers can now roll to be recharged when out of charges
- 
+- Fix to damage calculations [Marcloure](https://github.com/Marcloure)
+- Power card change, Requirements and Trigger come before Target [Marcloure](https://github.com/Marcloure)
+- Power card change, Hit text can now show up without attack roll in arrordance to
+- Power card change, Powers can have an optional secondary power source [Marcloure](https://github.com/Marcloure)
+- Added global Attack and Damage Modifiers that can be used for feats and items. These can be used in formulas as @atkMod and @dmgMod. [Marcloure](https://github.com/Marcloure)
+
 ## Version 0.2.44
 - fixed issue for item macros, actor data, item data, and launch order should now all be accessible again. 
 - changed how the assisting macro for the [Dual Wielding Strike (Primary)](https://github.com/EndlesNights/dnd4eBeta/blob/f2cb282fbbca8c3a988f1fa1cec8ca4cf1f5dab8/packs/example_powers.db#L7) example power, should no longer require having the actor selected to trigger the use of the secondary power.
