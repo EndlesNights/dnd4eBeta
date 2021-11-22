@@ -372,7 +372,7 @@ export default class ActorSheet4e extends ActorSheet {
 	}
 
 	_checkPowerAvailable(itemData) {
-		if( (itemData.data.uses.value == 0 && itemData.data.uses.max)
+		if( (!itemData.data.uses.value && itemData.data.uses.max)
 			|| !itemData.data.prepared) {
 				itemData.data.notAvailable = true;
 
