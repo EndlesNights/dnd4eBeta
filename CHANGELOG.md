@@ -2,7 +2,7 @@
 
 ## Version 0.2.45
 - Assign temp HP option to the damage rolls in chat [draconas1](https://github.com/draconas1)
-- Tweaked the chat helper to stop undefined's and empty spaces appearin [draconas1](https://github.com/draconas1)
+- Tweaked the chat helper to stop undefined and empty spaces appearing [draconas1](https://github.com/draconas1)
 - Fix socket namespace [draconas1](https://github.com/draconas1)
 - Added some missing keywords [Marcloure](https://github.com/Marcloure)
 - Wil renamed to Will [Marcloure](https://github.com/Marcloure)
@@ -14,7 +14,7 @@
 - Recharge powers can now roll to be recharged when out of charges
 - Fix to damage calculations [Marcloure](https://github.com/Marcloure)
 - Power card change, Requirements and Trigger come before Target [Marcloure](https://github.com/Marcloure)
-- Power card change, Hit text can now show up without attack roll in arrordance to
+- Power card change, Hit text can now show up without requiring an attack roll. 
 - Power card change, Powers can have an optional secondary power source [Marcloure](https://github.com/Marcloure)
 - Added global Attack and Damage Modifiers that can be used for feats and items. These can be used in formulas as @atkMod and @dmgMod. [Marcloure](https://github.com/Marcloure)
 
