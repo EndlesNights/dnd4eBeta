@@ -897,7 +897,7 @@ export class Actor4e extends Actor {
 				})
 			}
 		}
-		return super.createEmbeddedDocuments("Item", data, context);
+		return super.createEmbeddedDocuments(embeddedName, data, context);
 	}
 
 
