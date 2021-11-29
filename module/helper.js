@@ -388,7 +388,7 @@ export class Helper {
 				}
 				
 				// Handle Weapon Type Damage
-				if(diceType.includes("weapon")){
+				if(diceType.includes("weapon") && weaponData){
 					let parts = weaponData.damageDice.parts;
 						for(let i = 0; i< parts.length; i++) {
 							if(!parts[i][0] || !parts[i][1]) continue;
