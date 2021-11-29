@@ -742,15 +742,17 @@ export default class Item4e extends Item {
 	 */
 	async rollAttack(options={}) {
 		const itemData = this.data.data;
-		const actorData = this.actor.data.data;	
+		const actorData = this.actor.data.data;
+		// itemData.weaponUse = 2nd dropdown - default/none/weapon
+		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...
+		// find details on the weapon being used, if any.   This is null if no weapon is being used.
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
-		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
-			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
+		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
+			ui.notifications.error(game.i18n.localize("DND4EBETA.LackRequiredWeapon"));
 			return null;
 		}
 
-		const flags = this.actor.data.flags.dnd4eBeta || {};
 		if(!this.hasAttack ) {
 			ui.notifications.error("You may not place an Attack Roll with this Item.");
 			return null;
@@ -875,8 +877,8 @@ export default class Item4e extends Item {
 		const actorData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
-		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
-			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
+		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
+			ui.notifications.error(game.i18n.localize("DND4EBETA.LackRequiredWeapon"));
 			return null;
 		}
 
@@ -1033,8 +1035,8 @@ export default class Item4e extends Item {
 		const actorData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
-		if(!weaponUse && !(itemData.weaponType === "none" || itemData.weaponType === "implement" || itemData.weaponType === undefined)) {
-			ui.notifications.error("You may not use this power as you do not have the proper weapon equipped.");
+		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
+			ui.notifications.error(game.i18n.localize("DND4EBETA.LackRequiredWeapon"));
 			return null;
 		}
 

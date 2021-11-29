@@ -22,6 +22,13 @@ export class Helper {
 		return o;
 	}
 
+	/**
+	 * Find A suitable weapon to use with the power.
+	 * Either the specified weapon, or a weapon that matches the itemData.weaponType category if itemData.weaponUse is set to default
+	 * @param itemData The Power being used
+	 * @param actor The actor that owns the power
+	 * @returns {null|*} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
+	 */
 	static getWeaponUse(itemData, actor) {
 		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length == 0)) return null;
 		let weaponUse = itemData.weaponUse? actor.items.get(itemData.weaponUse) : null;
@@ -82,6 +89,18 @@ export class Helper {
 			}, {});
 		}
 		return weaponUse;
+	}
+
+	/**
+	 * Returns true if we should error out because the power needs a weapon equipped and the character doesn't have one
+	 * @param itemData The data object of the Power being used
+	 * @param weaponUse The details of the weapon being used for the power from Helper.getWeaponUse
+	 * @returns {boolean} True if the character lacks a suitable weapon to use the power
+	 */
+	static lacksRequiredWeaponEquipped(itemData, weaponUse) {
+		// a power needs a weapon equipped to roll attack if a weapon type has been specified that is not None or Implement And weaponUse is not none.
+		const powerNeedsAWeapon = itemData.weaponType && itemData.weaponType !== "none" && itemData.weaponType !== "implement" && itemData.weaponUse !== "none"
+		return !weaponUse && powerNeedsAWeapon
 	}
 	
 	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1, stringOnly = false) {
@@ -369,7 +388,7 @@ export class Helper {
 				}
 				
 				// Handle Weapon Type Damage
-				if(diceType.includes("weapon")){
+				if(diceType.includes("weapon") && weaponData){
 					let parts = weaponData.damageDice.parts;
 						for(let i = 0; i< parts.length; i++) {
 							if(!parts[i][0] || !parts[i][1]) continue;
