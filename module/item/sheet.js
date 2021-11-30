@@ -404,7 +404,7 @@ export default class ItemSheet4e extends ItemSheet {
 				props.push(`${game.i18n.localize("DND4EBETA.Range")}: ${item.data.range.value} / ${item.data.range.long}`);
 		}
 
-		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility"].includes(item.data.type)) {
+		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility","item"].includes(item.data.type)) {
 			props.push(
 				labels.components,
 				labels.materials,
