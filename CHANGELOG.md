@@ -17,6 +17,9 @@
 - Power card change, Hit text can now show up without requiring an attack roll. 
 - Power card change, Powers can have an optional secondary power source [Marcloure](https://github.com/Marcloure)
 - Added global Attack and Damage Modifiers that can be used for feats and items. These can be used in formulas as @atkMod and @dmgMod. [Marcloure](https://github.com/Marcloure)
+- Added Item type for powerson character sheet [draconas1](https://github.com/draconas1)
+- Allow for rools without weapons if weapon use is set to one even if weaponType is set to a non None value, [draconas1](https://github.com/draconas1) 
+- Fix issue with changing value of attribute bars
 
 ## Version 0.2.44
 - fixed issue for item macros, actor data, item data, and launch order should now all be accessible again. 
