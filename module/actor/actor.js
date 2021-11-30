@@ -716,17 +716,12 @@ export class Actor4e extends Actor {
    * @return {Promise}
    */
 	async modifyTokenAttribute(attribute, value, isDelta=false, isBar=true) {		
-		if (!isNaN(value) && isBar ) {
-			const current = getProperty(this.data.data, attribute);
-			if (isDelta) value = Math.clamped(current.min, Number(current.value) + value, current.max);
-			
-			if(attribute === 'attributes.hp')
-			{
-				let newHealth = this.setConditions(value);			
-				this.update({[`data.attributes.hp.temphp`]: newHealth[1] });
-				this.update({[`data.attributes.hp.value`]: newHealth[0] });
-			}
+		if(attribute === 'attributes.hp') {
+			const hp = getProperty(this.data.data, attribute);
+			const delta = isDelta ? (-1 * value) : (hp.value + hp.temp) - value;
+			return this.applyDamage(delta);
 		}
+		return super.modifyTokenAttribute(attribute, value, isDelta, isBar);
 	}
 	setConditions(newValue) {
 		
