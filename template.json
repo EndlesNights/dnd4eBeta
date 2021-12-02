@@ -928,7 +928,7 @@
 		},
 		"miss": {
 			"detail": "Half Damage.",
-			"formula": "@{damageFormula}/2"
+			"formula": "@damageFormula/2"
 		},
 		"effect": {
 			"detail": ""

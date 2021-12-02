@@ -961,7 +961,7 @@ export default class Item4e extends Item {
 			parts.push("@ammo");
 			partsCrit.push("@ammo");
 
-			if(!missDamageFormula.includes('@damageFormula')){
+			if(!missDamageFormula.includes('@damageFormula') && !missDamageFormula.includes('@halfDamageFormula')){
 				partsMiss.push("@ammo");
 			}
 
@@ -976,7 +976,7 @@ export default class Item4e extends Item {
 				parts.push("@ammoW");
 				partsCrit.push("@ammoW");
 
-				if(!missDamageFormula.includes('@damageFormula')){
+				if(!missDamageFormula.includes('@damageFormula') && !missDamageFormula.includes('@halfDamageFormula')){
 					partsMiss.push("@ammoW");
 				}
 
@@ -993,6 +993,10 @@ export default class Item4e extends Item {
 		
 		if(missDamageFormula.includes('@damageFormula')){
 			missDamageFormula = missDamageFormula.replace('@damageFormula', damageFormula);
+		}
+
+		if(missDamageFormula.includes('@halfDamageFormula')){
+			missDamageFormula = missDamageFormula.replace('@halfDamageFormula', `${damageFormula}/2`);
 		}
 
 		if(primaryDamage){
