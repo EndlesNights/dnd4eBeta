@@ -2,7 +2,7 @@
 
 ## DnD 4th Edition - Beta
 * **Author**: EndlesNights#9000
-* **Contributors**: [ahoward-cf](https://github.com/ahoward-cf), [draconas1](https://github.com/draconas1), [FoxLee](https://github.com/FoxLee)), [Marcloure](https://github.com/Marcloure)
+* **Contributors**: [ahoward-cf](https://github.com/ahoward-cf), [draconas1](https://github.com/draconas1), [FoxLee](https://github.com/FoxLee), [Marcloure](https://github.com/Marcloure)
 * **Foundry VTT Compatibility**: 0.8.9
 
 ## Description

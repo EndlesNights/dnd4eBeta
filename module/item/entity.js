@@ -772,20 +772,11 @@ export default class Item4e extends Item {
 		rollData.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
 
 		// Define Roll bonuses
-		const parts = !!itemData.attack.formula? [`@power`] : [];
-
-		//pack the powers formula and send it to the dice.
+		const parts = [];
 		if(!!itemData.attack.formula) {		
-			rollData["power"] = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null);
+			parts.push(Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null))
 		}
 	
-		// Attack Bonus
-		// const actorBonus = actorData?.bonuses?.[itemData.actionType] || {};
-		// if ( itemData.attackBonus || actorBonus.attack ) {
-			// parts.push("@atk");
-			// rollData["atk"] = [itemData.attackBonus, actorBonus.attack].filterJoin(" + ");
-		// }
-
 		// Ammunition Bonus from power.
 		delete this._ammo;
 		const consume = itemData.consume;
