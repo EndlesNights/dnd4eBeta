@@ -60,13 +60,13 @@ export class LongRestDialog extends DocumentSheet {
 		const items = this.object.items.filter(item => ["enc", "day"].includes(item.data.data.uses?.per));
 		const updateItems = items.map( item => {
 			return {
-				_id: item._id,
+				_id: item.id,
 				"data.uses.value": item.data.data.uses.max
 			};
 		});
 		await this.object.updateEmbeddedDocuments("Item", updateItems);
 		ChatMessage.create({
-			user: game.user._id,
+			user: game.user.id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
 			content: `${this.object.data.name} takes a long rest.`

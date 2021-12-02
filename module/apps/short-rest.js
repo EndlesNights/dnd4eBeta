@@ -38,12 +38,12 @@ export class ShortRestDialog extends DocumentSheet {
 				if(formData.bonus != "" ){
 					r = new Roll(formData.bonus);
 					try{
-						r.roll();
+						await r.roll({async : true});
 
 					}catch (error){
-						
-						console.log("Invalid roll input into healing surge bonus.");
-						r.roll();
+						ui.notifications.error(game.i18n.localize("DND4EBETA.InvalidHealingBonus"));
+						r = new Roll("0");
+						await r.roll({async : true});
 					}
 				}
 				healamount += this.object.data.data.details.surgeValue + (r.total || 0);
@@ -87,7 +87,7 @@ export class ShortRestDialog extends DocumentSheet {
 		await this.object.updateEmbeddedDocuments("Item", updateItems);
 		
 		ChatMessage.create({
-			user: game.user._id,
+			user: game.user.id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
 			// content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP."

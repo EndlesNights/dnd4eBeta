@@ -26,12 +26,12 @@ export class SecondWindDialog extends DocumentSheet {
 		if(formData.bonus != "" ){
 			r = new Roll(formData.bonus);
 			try{
-				r.roll();
+				await r.roll({async : true});
 
-			}catch (error){
-				
-				console.log("Invalid roll input into healing surge bonus.");
-				r.roll();
+			} catch (error){
+				ui.notifications.error(game.i18n.localize("DND4EBETA.InvalidHealingBonus"));
+				r = new Roll("0");
+				await r.roll({async : true});
 			}
 		}
 
@@ -62,7 +62,7 @@ export class SecondWindDialog extends DocumentSheet {
 			}
 
 			ChatMessage.create({
-				user: game.user._id,
+				user: game.user.id,
 				speaker: {actor: this.object, alias: this.object.data.name},
 				// flavor: restFlavor,
 				content: `${this.object.data.name} uses Second Wind gaining the following benifits:

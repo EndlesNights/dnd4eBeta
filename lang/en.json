@@ -432,6 +432,7 @@
 "DND4EBETA.InitiativeScore": "Initiative Score",
 "DND4EBETA.Inspiration": "Inspiration",
 "DND4EBETA.Inventory": "Inventory",
+"DND4EBETA.InvalidHealingBonus": "Invalid roll input into healing surge bonus.  Using 0",
 "DND4EBETA.Invigorating": "Invigorating",
 "DND4EBETA.IsAttack": "Attack Roll Required?",
 "DND4EBETA.IsDamage": "Damage Roll Required?",
