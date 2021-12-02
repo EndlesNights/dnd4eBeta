@@ -26,7 +26,7 @@ export class MultiAttackRoll extends Roll{
 	 * @param {object} options 
 	 */
 	addNewRoll(formula, data={}, options={}) {
-		let r = new Roll(formula, data, options).roll();	
+		let r = new Roll(formula, data, options).roll({async : false});
 		this.rollArray.push(r);		
 	}
 
@@ -119,7 +119,7 @@ export class MultiAttackRoll extends Roll{
 		  formula: this._formula,
 		  multirollData: this._multirollData,
 		  terms: this.terms,
-		  total: this._total,
+		  total: this.total,
 		  evaluated: this._evaluated
 		}
 	}

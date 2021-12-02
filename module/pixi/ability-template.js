@@ -57,7 +57,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		// Prepare template data
 		const templateData = {
 			t: templateShape,
-			user: game.user._id,
+			user: game.user.id,
 			distance: distance,
 			direction: 0,
 			x: 0,
