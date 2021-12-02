@@ -127,10 +127,10 @@ export class Helper {
 			newFormula = newFormula.replace("@dmgMod", actorData.modifiers.damage.value);
 		}
 		
-		if(powerData) {
-			newFormula = newFormula.replace("@damageFormula", this.commonReplace(formula, actorData, powerData, weaponData, depth-1));
-			newFormula = this.replaceData (newFormula, powerData);
-		}
+		// if(powerData) {
+		// 	newFormula = newFormula.replace("@damageFormula", this.commonReplace(formula, actorData, powerData, weaponData, depth-1));
+		// 	newFormula = this.replaceData (newFormula, powerData);
+		// }
 
 		if(weaponData) {
 

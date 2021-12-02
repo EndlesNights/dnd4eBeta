@@ -488,31 +488,38 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
  *
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
-export async function damageRoll({parts, partsCrit, actor, data, event={}, rollMode=null, template, title, speaker, flavor,
+export async function damageRoll({parts, partsCrit, partsMiss, actor, data, event={}, rollMode=null, template, title, speaker, flavor,
 	allowCritical=true, critical=false, fastForward=null, onClose, dialogOptions, healingRoll}) {
 	// Handle input arguments
 	flavor = flavor || title;
 	speaker = speaker || ChatMessage.getSpeaker();
 	rollMode = game.settings.get("core", "rollMode");
 	let rolled = false;
+	let formula = '';
 	// Define inner roll function
-	const _roll = function(parts, partsCrit, crit, form) {
+	const _roll = function(parts, partsCrit, partsMiss, hitType, form) {
 		if(form){data['bonus'] = form.bonus.value || 0;}
-		let roll = crit ? new Roll(partsCrit.filterJoin("+"), data) : new Roll(parts.filterJoin("+"), data);
+		
+		let roll;
+		
+		if(hitType === 'normal'){
+			roll = new Roll(parts.filterJoin("+"), data);
+		}
+		else if (hitType === 'crit') {
+			roll = new Roll(partsCrit.filterJoin("+"), data)
+			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
+		}
+		else if (hitType === 'miss') {
+			roll = new Roll(partsMiss.filterJoin("+"), data);
+			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Miss")})`;
+		}
 
-		critical = crit;
+		critical = (hitType === 'crit');
 
 		if(form?.flavor.value){
 			flavor = form.flavor.value || flavor;
 		}
 
-		// Modify the damage formula for critical hits
-		if ( crit === true ) {
-			// let add = (actor && actor.getFlag("dnd4e", "savageAttacks")) ? 1 : 0;
-			// let mult = 2;
-			// roll.alter(add, mult);
-			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
-		}
 		// Convert the roll to a chat message
 		rollMode = form ? form.rollMode.value : rollMode;
 		roll.toMessage({
@@ -538,11 +545,13 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 	// else parts = critical ? partsCrit.concat(["@bonus"]) : parts.concat(["@bonus"]);
 	parts = parts.concat(["@bonus"]);
 	partsCrit = partsCrit?.concat(["@bonus"]);
+	partsMiss = partsMiss?.concat(["@bonus"]);
 
+	formula = parts.join(" + ");
 	// Render modal dialog
 	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
-		formula: critical ? partsCrit.join(" + ") : parts.join(" + "),
+		formula: "@damage + @bonus",
 		data: data,
 		rollMode: rollMode,
 		rollModes: CONFIG.Dice.rollModes
@@ -560,7 +569,7 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 				buttons: {
 					normal: {
 						label: game.i18n.localize("DND4EBETA.Healing"),
-						callback: html => roll = _roll(parts, partsCrit, false, html[0].querySelector("form"))
+						callback: html => roll = _roll(parts, partsCrit, partsMiss, 'heal', html[0].querySelector("form"))
 					}
 				},
 				default: "normal",
@@ -572,20 +581,30 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 		});
 	} else {
 		return new Promise(resolve => {
+
+			const buttons = {
+				critical: {
+					condition: allowCritical,
+					label: game.i18n.localize("DND4EBETA.CriticalHit"),
+					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'crit', html[0].querySelector("form"))
+				},
+				normal: {
+					label: game.i18n.localize(allowCritical ? "DND4EBETA.Normal" : "DND4EBETA.Roll"),
+					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'normal', html[0].querySelector("form"))
+				}
+			}
+
+			if(data.item.miss.formula){
+				buttons.miss = {
+					label: game.i18n.localize(allowCritical ? "DND4EBETA.Miss" : "DND4EBETA.Roll"),
+					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'miss', html[0].querySelector("form"))
+				}
+			}
+
 			new Dialog({
 				title: title,
 				content: html,
-				buttons: {
-					critical: {
-						condition: allowCritical,
-						label: game.i18n.localize("DND4EBETA.CriticalHit"),
-						callback: html => roll = _roll(parts, partsCrit, true, html[0].querySelector("form"))
-					},
-					normal: {
-						label: game.i18n.localize(allowCritical ? "DND4EBETA.Normal" : "DND4EBETA.Roll"),
-						callback: html => roll = _roll(parts, partsCrit, false, html[0].querySelector("form"))
-					},
-				},
+				buttons: buttons,
 				default: "normal",
 				close: html => {
 					if (onClose) onClose(html, parts, data);

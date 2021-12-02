@@ -21,6 +21,7 @@
 - Allow for rools without weapons if weapon use is set to one even if weaponType is set to a non None value, [draconas1](https://github.com/draconas1) 
 - Fix issue with changing value of attribute bars
 - Reworked how attack roll attributes are computed, @paths with null values shouldn't cause errors anymore.
+- Added Miss button for damage roll dialog
 
 ## Version 0.2.44
 - fixed issue for item macros, actor data, item data, and launch order should now all be accessible again. 
