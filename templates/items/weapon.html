@@ -195,8 +195,8 @@
 					{{#each data.damageDice.parts as |part i| }}
 					<li class="damage-part" data-damage-part="{{i}}">
 						<label>{{ localize "DND4EBETA.DiceNumber"}}</label>
-						<input type="text" name="data.DiceSize.parts.{{i}}.0" value="{{lookup this "0"}}"/>
-						<label>{{ localize "DND4EBETA.DiceNumber"}}</label>
+						<input type="text" name="data.damageDice.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+						<label>{{ localize "DND4EBETA.DiceSize"}}</label>
 						<input type="text" name="data.damageDice.parts.{{i}}.1" value="{{lookup this "1"}}"/>
 						<label>{{ localize "DND4EBETA.DiceExtra"}}</label>
 						<input type="text" name="data.damageDice.parts.{{i}}.2" value="{{lookup this "2"}}"/>
