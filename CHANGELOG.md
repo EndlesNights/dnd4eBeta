@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.46
+- power dice options now include an option for a d20
+- added an extra field to weapons for Foundry dive modifiers
+- added @impCritBonus which will ignore the powers weapon requirment and just take the data from 'weaponData.critDamageFormImp'
+
 ## Version 0.2.45
 - Assign temp HP option to the damage rolls in chat [draconas1](https://github.com/draconas1)
 - Tweaked the chat helper to stop undefined and empty spaces appearing [draconas1](https://github.com/draconas1)

@@ -826,7 +826,7 @@
 		"isRanged": false,
 		"range": {"value": 5, "long": 10},
 		"damageDice": {
-			"parts": [["1","8"]]
+			"parts": [["1","8",""]]
 		},
 		"damage": {
 			"parts": []

@@ -145,6 +145,8 @@ export class Helper {
 				newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1) || 0);
 			}
 
+			newFormula = newFormula.replace("@impCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
+
 			newFormula = newFormula.replace("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 );
 			newFormula = newFormula.replace("@impDamageO", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 );
 
@@ -163,7 +165,7 @@ export class Helper {
 			newFormula = this.replaceData (newFormula, weaponData);
 			
 			
-
+			//deprecated, kept for legacy purposes
 			if(newFormula.includes("@wepDice")) {
 				let parts = weaponData.damageDice.parts;
 				let indexStart = newFormula.indexOf("@wepDice")+8;
@@ -210,10 +212,10 @@ export class Helper {
 					for(let i = 0; i< parts.length; i++) {
 						if(!parts[i][0] || !parts[i][1]) continue;
 						if(weaponData.properties.bru) {
-							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}rr<${weaponData.brutal}`;
+							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<${weaponData.brutal}`;
 						}
 						else{
-						dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}`;
+						dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}`;
 						}
 						if (i < parts.length - 1) dice += '+';
 					}
@@ -289,6 +291,7 @@ export class Helper {
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				newFormula = newFormula.replace("@powMax", dice);
+				console.log(dice)
 			}
 			
 			

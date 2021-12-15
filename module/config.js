@@ -494,16 +494,6 @@ DND4EBETA.healingTypes = {
   "temphp": "DND4EBETA.HealingTemp"
 };
 
-
-/* -------------------------------------------- */
-
-
-/**
- * Enumerate the denominations of hit dice which can apply to classes in the D&D4E system
- * @type {Array.<string>}
- */
-DND4EBETA.hitDieTypes = ["d6", "d8", "d10", "d12"];
-
 /* -------------------------------------------- */
 
 DND4EBETA.featureSortTypes = {
@@ -562,7 +552,8 @@ DND4EBETA.powerDiceTypes = {
 	"d6": "d6",
 	"d8": "d8",
 	"d10": "d10",
-	"d12": "d12"	
+	"d12": "d12",
+	"d20": "d20"
 };
 
 /* -------------------------------------------- */

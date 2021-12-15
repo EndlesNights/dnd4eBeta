@@ -2129,7 +2129,7 @@ font-size: 12px;
 .dnd4eBeta.sheet.item .details .damage-res,
 .dnd4eBeta.sheet.item .details select {
 	height: 24px;
-	/* width: 6%; */
+	width: 14%;
 	border: 1px solid #7a7971;
 	background: rgba(0, 0, 0, 0.05);
 	/* float:right; */

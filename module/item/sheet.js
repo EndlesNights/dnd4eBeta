@@ -493,7 +493,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( damageRes ) damageRes.parts = Object.values(damageRes?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 	
 		const damageDice = formData.data?.damageDice;
-		if(damageDice) damageDice.parts = Object.values(damageDice?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+		if(damageDice) damageDice.parts = Object.values(damageDice?.parts || {}).map(d => [d[0] || "", d[1] || "", d[2] || ""]);
 
 		const special = formData.data?.specialAdd;
 		if (special) special.parts = Object.values(special?.parts || {}).map(d => [d || ""]);
@@ -622,7 +622,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if(a.classList.contains("add-dice")) {
 			await this._onSubmit(event); // Submit any unsaved changes
 			const damageDice = duplicate(this.item.data.data.damageDice);
-			return this.item.update({"data.damageDice.parts": damageDice.parts.concat([["",""]])});
+			return this.item.update({"data.damageDice.parts": damageDice.parts.concat([["","",""]])});
 		}
 
 		if ( a.classList.contains("delete-dice") ) {
