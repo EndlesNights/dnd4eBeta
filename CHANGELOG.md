@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.47
+- quick fix to healing rolls
+
 ## Version 0.2.46
 - power dice options now include an option for a d20
 - added an extra field to weapons for Foundry dive modifiers

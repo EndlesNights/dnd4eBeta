@@ -513,6 +513,12 @@ export async function damageRoll({parts, partsCrit, partsMiss, actor, data, even
 			roll = new Roll(partsMiss.filterJoin("+"), data);
 			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Miss")})`;
 		}
+		else if (hitType === 'heal') {
+			roll = new Roll(parts.filterJoin("+"), data);
+			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Healing")})`;
+		} else {
+			roll = new Roll(parts.filterJoin("+"), data);
+		}
 
 		critical = (hitType === 'crit');
 
