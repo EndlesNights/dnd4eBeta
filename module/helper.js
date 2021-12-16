@@ -110,21 +110,21 @@ export class Helper {
 		if(actorData) {
 
 			if (!stringOnly) newFormula = Roll.replaceFormulaData(newFormula, actorData);
-			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
+			if(powerData) newFormula = newFormula.replaceAll("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
-			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);
-			newFormula = newFormula.replace("@conMod", actorData.abilities["con"].mod);
-			newFormula = newFormula.replace("@dexMod", actorData.abilities["dex"].mod);
-			newFormula = newFormula.replace("@intMod", actorData.abilities["int"].mod);
-			newFormula = newFormula.replace("@wisMod", actorData.abilities["wis"].mod);
-			newFormula = newFormula.replace("@chaMod", actorData.abilities["cha"].mod);
+			newFormula = newFormula.replaceAll("@strMod", actorData.abilities["str"].mod);
+			newFormula = newFormula.replaceAll("@conMod", actorData.abilities["con"].mod);
+			newFormula = newFormula.replaceAll("@dexMod", actorData.abilities["dex"].mod);
+			newFormula = newFormula.replaceAll("@intMod", actorData.abilities["int"].mod);
+			newFormula = newFormula.replaceAll("@wisMod", actorData.abilities["wis"].mod);
+			newFormula = newFormula.replaceAll("@chaMod", actorData.abilities["cha"].mod);
 			
-			newFormula = newFormula.replace("@lvhalf", Math.floor(actorData.details.level/2));
-			newFormula = newFormula.replace("@lv", actorData.details.level);
-			newFormula = newFormula.replace("@tier", actorData.details.tier);
+			newFormula = newFormula.replaceAll("@lvhalf", Math.floor(actorData.details.level/2));
+			newFormula = newFormula.replaceAll("@lv", actorData.details.level);
+			newFormula = newFormula.replaceAll("@tier", actorData.details.tier);
 
-			newFormula = newFormula.replace("@atkMod", actorData.modifiers.attack.value);
-			newFormula = newFormula.replace("@dmgMod", actorData.modifiers.damage.value);
+			newFormula = newFormula.replaceAll("@atkMod", actorData.modifiers.attack.value);
+			newFormula = newFormula.replaceAll("@dmgMod", actorData.modifiers.damage.value);
 		}
 		
 		// if(powerData) {
@@ -135,31 +135,31 @@ export class Helper {
 		if(weaponData) {
 
 			if (powerData.weaponType === "implement") {
-				newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepAttack", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepDamage", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
 			}
 			else {
-				newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1) || 0);
 			}
 
-			newFormula = newFormula.replace("@impCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
+			newFormula = newFormula.replaceAll("@impCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
 
-			newFormula = newFormula.replace("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 );
-			newFormula = newFormula.replace("@impDamageO", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 );
+			newFormula = newFormula.replaceAll("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 );
+			newFormula = newFormula.replaceAll("@impDamageO", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 );
 
-			newFormula = newFormula.replace("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
-			newFormula = newFormula.replace("@impDamage", weaponData.proficientI ? this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
+			newFormula = newFormula.replaceAll("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
+			newFormula = newFormula.replaceAll("@impDamage", weaponData.proficientI ? this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
 
-			newFormula = newFormula.replace("@profBonusO",weaponData.profBonus || 0);
-			newFormula = newFormula.replace("@profImpBonusO", weaponData.profImpBonus || 0);
+			newFormula = newFormula.replaceAll("@profBonusO",weaponData.profBonus || 0);
+			newFormula = newFormula.replaceAll("@profImpBonusO", weaponData.profImpBonus || 0);
 			
-			newFormula = newFormula.replace("@profImpBonus", weaponData.proficientI ? weaponData.profImpBonus || 0 : 0);
-			newFormula = newFormula.replace("@profBonus", weaponData.proficient ? weaponData.profBonus || 0 : 0);
-			newFormula = newFormula.replace("@enhanceImp", weaponData.proficientI ? weaponData.enhance || 0 : 0);
-			newFormula = newFormula.replace("@enhance", weaponData.enhance || 0);
+			newFormula = newFormula.replaceAll("@profImpBonus", weaponData.proficientI ? weaponData.profImpBonus || 0 : 0);
+			newFormula = newFormula.replaceAll("@profBonus", weaponData.proficient ? weaponData.profBonus || 0 : 0);
+			newFormula = newFormula.replaceAll("@enhanceImp", weaponData.proficientI ? weaponData.enhance || 0 : 0);
+			newFormula = newFormula.replaceAll("@enhance", weaponData.enhance || 0);
 			
 
 			newFormula = this.replaceData (newFormula, weaponData);
@@ -172,7 +172,7 @@ export class Helper {
 				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
 
 				let weaponNum = newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
-				weaponNum = eval(weaponNum.replace(/[a-z]/gi, ''));
+				weaponNum = eval(weaponNum.replaceAll(/[a-z]/gi, ''));
 
 				if(typeof(weaponNum) !== "number") weaponNum = 1;
 
@@ -190,7 +190,7 @@ export class Helper {
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
-				newFormula = newFormula.replace("@wepDice", dice);
+				newFormula = newFormula.replaceAll("@wepDice", dice);
 			}
 			
 			// New method to handle base power dice from dropdown
@@ -230,7 +230,7 @@ export class Helper {
 				}
 
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				newFormula = newFormula.replace("@powBase", dice);
+				newFormula = newFormula.replaceAll("@powBase", dice);
 			}
 
 			if(newFormula.includes("@wepMax")) {
@@ -245,9 +245,9 @@ export class Helper {
 				let r = new Roll(`${dice}`)
 				if(dice){
 					r.evaluate({maximize: true, async: false});
-					newFormula = newFormula.replace("@wepMax", r.result);
+					newFormula = newFormula.replaceAll("@wepMax", r.result);
 				} else {
-					newFormula = newFormula.replace("@wepMax", dice);
+					newFormula = newFormula.replaceAll("@wepMax", dice);
 				}
 			}
 			
@@ -290,7 +290,7 @@ export class Helper {
 					dice += `${quantity} * ${diceValue}`;
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				newFormula = newFormula.replace("@powMax", dice);
+				newFormula = newFormula.replaceAll("@powMax", dice);
 				console.log(dice)
 			}
 			
@@ -314,26 +314,26 @@ export class Helper {
 
 		} else {
 			//if no weapon is in use replace the weapon keys with nothing.
-			newFormula = newFormula.replace("@wepAttack", "");
-			newFormula = newFormula.replace("@wepDamage", "");
-			newFormula = newFormula.replace("@wepCritBonus", "");
+			newFormula = newFormula.replaceAll("@wepAttack", "");
+			newFormula = newFormula.replaceAll("@wepDamage", "");
+			newFormula = newFormula.replaceAll("@wepCritBonus", "");
 			
-			newFormula = newFormula.replace("@wepDiceNum", "0");
-			newFormula = newFormula.replace("@wepDiceDamage", "0");
+			newFormula = newFormula.replaceAll("@wepDiceNum", "0");
+			newFormula = newFormula.replaceAll("@wepDiceDamage", "0");
 			
-			newFormula = newFormula.replace("@impAttackO", "0" );
-			newFormula = newFormula.replace("@impDamageO", "0");
+			newFormula = newFormula.replaceAll("@impAttackO", "0" );
+			newFormula = newFormula.replaceAll("@impDamageO", "0");
 
-			newFormula = newFormula.replace("@impAttack", "0");
-			newFormula = newFormula.replace("@impDamage", "0");
+			newFormula = newFormula.replaceAll("@impAttack", "0");
+			newFormula = newFormula.replaceAll("@impDamage", "0");
 
-			newFormula = newFormula.replace("@profBonusO", "0");
-			newFormula = newFormula.replace("@profImpBonusO", "0");
+			newFormula = newFormula.replaceAll("@profBonusO", "0");
+			newFormula = newFormula.replaceAll("@profImpBonusO", "0");
 			
-			newFormula = newFormula.replace("@profImpBonus", "0");
-			newFormula = newFormula.replace("@profBonus", "0");
-			newFormula = newFormula.replace("@enhanceImp", "0");
-			newFormula = newFormula.replace("@enhance", "0");
+			newFormula = newFormula.replaceAll("@profImpBonus", "0");
+			newFormula = newFormula.replaceAll("@profBonus", "0");
+			newFormula = newFormula.replaceAll("@enhanceImp", "0");
+			newFormula = newFormula.replaceAll("@enhance", "0");
 
 
 
@@ -342,12 +342,12 @@ export class Helper {
 				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
 
 				let weaponNum = newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
-				weaponNum = eval(weaponNum.replace(/[a-z]/gi, ''));
+				weaponNum = eval(weaponNum.replaceAll(/[a-z]/gi, ''));
 
 				if(typeof(weaponNum) !== "number") weaponNum = 1;
 
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
-				newFormula = newFormula.replace("@wepDice", "");
+				newFormula = newFormula.replaceAll("@wepDice", "");
 			}
 
 			if(newFormula.includes("@powBase")) {
@@ -355,7 +355,7 @@ export class Helper {
 				let diceType = powerData.hit.baseDiceType;
 				
 				if(diceType == "weapon"){
-					newFormula = newFormula.replace("@powBase", '0');
+					newFormula = newFormula.replaceAll("@powBase", '0');
 				} else {
 					if(quantity === "") quantity = 1;
 				
@@ -371,7 +371,7 @@ export class Helper {
 					}
 	
 					dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-					newFormula = newFormula.replace("@powBase", dice);
+					newFormula = newFormula.replaceAll("@powBase", dice);
 				}
 
 			}
@@ -409,7 +409,7 @@ export class Helper {
 					dice += `${quantity} * ${diceValue}`;
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				newFormula = newFormula.replace("@powMax", dice);
+				newFormula = newFormula.replaceAll("@powMax", dice);
 			}			
 		}
 

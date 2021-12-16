@@ -2,6 +2,7 @@
 
 ## Version 0.2.47
 - quick fix to healing rolls
+- fixed an issue where the helper functions was not properly replace a value if it was used twice.
 
 ## Version 0.2.46
 - power dice options now include an option for a d20
