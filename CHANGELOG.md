@@ -5,6 +5,7 @@
 - When viewing character sheet where the character's hp is within the bloodied state, it should appear as red again.
 - Added player class options to NPC monster primary role options
 - fixed importing item objects to character / npc sheets after was broken in v9.x converstion
+- fix an error where in older weapons where the Extra Modifiers part of damageDice.parts.#.2 would cause 'undefined' to appear in the middle of rolls
 
 ## Version 0.2.47
 - quick fix to healing rolls

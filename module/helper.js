@@ -215,7 +215,9 @@ export class Helper {
 							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<${weaponData.brutal}`;
 						}
 						else{
-						dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}`;
+
+							// dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}`;
+							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2] || ``}`;// added a null check to i2 hotfix
 						}
 						if (i < parts.length - 1) dice += '+';
 					}
@@ -291,7 +293,6 @@ export class Helper {
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				newFormula = newFormula.replaceAll("@powMax", dice);
-				console.log(dice)
 			}
 			
 			
