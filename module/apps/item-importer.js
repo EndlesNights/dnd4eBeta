@@ -20,7 +20,6 @@ export class ItemImporterDialog extends DocumentSheet {
 		return {data: this.object.data.data}
 	}
 	async _updateObject(event, formData) {
-		console.log(this)
 		let obj = "";
 
 		try{
@@ -41,6 +40,6 @@ export class ItemImporterDialog extends DocumentSheet {
 		//assign obj ID if one was not made
 		if(!obj._id) { obj._id = randomID(16); }
 		//generate new item
-		this.obj.createEmbeddedDocuments("Item",[obj])
+		this.object.createEmbeddedDocuments("Item",[obj])
 	}
 }
