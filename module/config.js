@@ -284,8 +284,11 @@ DND4EBETA.creatureRole = {
 	"artillery": "DND4EBETA.CreatureRoleArtillery",
 	"brute": "DND4EBETA.CreatureRoleBrute",
 	"controller": "DND4EBETA.CreatureRoleController",
+	"defender": "DND4EBETA.CreatureRoleDefender",
+	"leader": "DND4EBETA.CreatureRoleLeader",
 	"lurker": "DND4EBETA.CreatureRoleLurker",
 	"skirmisher": "DND4EBETA.CreatureRoleSkirmisher",
+	"striker": "DND4EBETA.CreatureRoleStriker",
 	"soldier": "DND4EBETA.CreatureRoleSoldier",
 }
 
