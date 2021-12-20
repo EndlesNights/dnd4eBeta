@@ -118,6 +118,10 @@
 	display: inline-block;
 }
 .dnd4eBeta.sheet .sheet-header .summary-type {
+	width: 114px;
+	display: inline-block;
+}
+.dnd4eBeta.sheet .sheet-header .summary-typeother {
 	width: calc(100% - 460px);
 	display: inline-block;
 }
@@ -259,7 +263,8 @@
 	font-weight:bold;
 }
 
-.dnd4eBeta.sheet.actor input.bloodied {
+.dnd4eBeta.sheet.actor input.bloodied,
+.dnd4eBeta.sheet.actor .attribute-health input.bloodied {
 	color: #d41111;
 }
 .dnd4eBeta.sheet.actor .attribute-value input {

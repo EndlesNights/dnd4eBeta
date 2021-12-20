@@ -56,7 +56,7 @@
 							{{/select}}
 						</select>
 					</li>
-					<li class="summary-size">
+					<li class="summary-type">
 						<select class="actor-size" name="data.details.type">
 							{{#select data.details.type}}
 							{{#each config.creatureType as |label type|}}
@@ -65,7 +65,7 @@
 							{{/select}}
 						</select>
 					</li>
-					<li class="summary-type">
+					<li class="summary-typeother">
 						<input name="data.details.other" type="text" value="{{data.details.other}}" title="{{localize 'DND4EBETA.Other'}} Types" placeholder="{{localize 'DND4EBETA.Other'}} Types" onClick="this.select();"/>
 					</li>
 				

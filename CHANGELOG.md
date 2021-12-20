@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.48
+- fixed formating error on NPC sheet
+- When viewing character sheet where the character's hp is within the bloodied state, it should appear as red again.
+
 ## Version 0.2.47
 - quick fix to healing rolls
 - fixed an issue where the helper functions was not properly replace a value if it was used twice.
@@ -7,7 +11,7 @@
 ## Version 0.2.46
 - power dice options now include an option for a d20
 - added an extra field to weapons for Foundry dive modifiers
-- added @impCritBonus which will ignore the powers weapon requirment and just take the data from 'weaponData.critDamageFormImp'
+- added @impCritBonus which will ignore the powers weapon requirement and just take the data from 'weaponData.critDamageFormImp'
 
 ## Version 0.2.45
 - Assign temp HP option to the damage rolls in chat [draconas1](https://github.com/draconas1)
@@ -26,8 +30,8 @@
 - Power card change, Hit text can now show up without requiring an attack roll. 
 - Power card change, Powers can have an optional secondary power source [Marcloure](https://github.com/Marcloure)
 - Added global Attack and Damage Modifiers that can be used for feats and items. These can be used in formulas as @atkMod and @dmgMod. [Marcloure](https://github.com/Marcloure)
-- Added Item type for powerson character sheet [draconas1](https://github.com/draconas1)
-- Allow for rools without weapons if weapon use is set to one even if weaponType is set to a non None value, [draconas1](https://github.com/draconas1) 
+- Added Item type for powers on character sheet [draconas1](https://github.com/draconas1)
+- Allow for rolls without weapons if weapon use is set to one even if weaponType is set to a non None value, [draconas1](https://github.com/draconas1) 
 - Fix issue with changing value of attribute bars
 - Reworked how attack roll attributes are computed, @paths with null values shouldn't cause errors anymore.
 - Added Miss button for damage roll dialog
@@ -39,7 +43,7 @@
 
 ## Version 0.2.43
 - Change how some more values are calculated to make them work better with active effects
-- adeed "@tier" to the short hand helper list
+- added "@tier" to the short hand helper list
 - [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) has been added as a dependency.
 - implemented functionally of [fvtt-rolldata-aware-active-effects](https://github.com/wyrmisis/fvtt-rolldata-aware-active-effects) into system
 - consumable items should not use charges properly
