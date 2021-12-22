@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 0.3.0
+## Version 0.2.49
 - Updated To Foundry v9
 - change system compatibleCoreVersion to include v9
 - fixed issue with @impCritBonus
