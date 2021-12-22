@@ -1,15 +1,20 @@
 # Changelog
 
+## Version 0.3.0
+- Updated To Foundry v9
+- change system compatibleCoreVersion to include v9
+- fixed issue with @impCritBonus
+
 ## Version 0.2.48
 - fixed formating error on NPC sheet
 - When viewing character sheet where the character's hp is within the bloodied state, it should appear as red again.
 - Added player class options to NPC monster primary role options
-- fixed importing item objects to character / npc sheets after was broken in v9.x converstion
+- fixed importing item objects to character / npc sheets after was broken in v9.x conversion
 - fix an error where in older weapons where the Extra Modifiers part of damageDice.parts.#.2 would cause 'undefined' to appear in the middle of rolls
 
 ## Version 0.2.47
 - quick fix to healing rolls
-- fixed an issue where the helper functions was not properly replace a value if it was used twice.
+- fixed an issue where the helper functions would not properly replace a value if it was used twice.
 
 ## Version 0.2.46
 - power dice options now include an option for a d20

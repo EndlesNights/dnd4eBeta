@@ -924,7 +924,8 @@ export default class Item4e extends Item {
 				if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
 					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
 				}
-				if(itemData.hit.critFormula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImpCrit.parts.length > 0) {
+
+				if(itemData.hit.critFormula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageCritImp.parts.length > 0) {
 					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageImpCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
 				}
 

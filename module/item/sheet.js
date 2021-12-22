@@ -129,7 +129,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 	shareItem() {
 		game.socket.emit("system.dnd4e", {
-			itemId: this.item._id
+			itemId: this.item.id
 		});
 	}
 
