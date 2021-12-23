@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.50
+- Quick fix to short rest, for v9 comparability
+
 ## Version 0.2.49
 - Updated To Foundry v9
 - change system compatibleCoreVersion to include v9

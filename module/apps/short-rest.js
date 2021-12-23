@@ -78,7 +78,7 @@ export class ShortRestDialog extends DocumentSheet {
 		const items = this.object.items.filter(item => item.data.data.uses?.per === "enc");
 		const updateItems = items.map( item => {
 			return {
-				_id: item._id,
+				_id: item.id,
 				"data.uses.value": item.data.data.uses.max
 			};
 		});
