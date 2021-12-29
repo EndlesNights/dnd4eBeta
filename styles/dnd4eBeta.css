@@ -211,7 +211,7 @@
 	border-bottom: 3px solid;
 	margin: 10px;
 	margin-top: 0px;
-	max-height: 100px;
+	max-height: 110px;
 }
 
 /* .dnd4eBeta.sheet.actor .attributes {
@@ -349,6 +349,17 @@
 	margin: 0 3px;
 	font-size: 10px;
 	text-align: center;
+}
+
+.fakebutton {
+	width: 100%;
+	border: 2px groove #f0f0e0;
+	border-radius: 2px;
+	background: rgba(0, 0, 0, 0.05);
+	padding: 1px 3px;
+	margin: 0 3px;
+	text-align: center;
+	font-size: 14px;
 }
 
 /* .dnd4eBeta.sheet.actor ul.attributes li.attribute-rest a.rest {

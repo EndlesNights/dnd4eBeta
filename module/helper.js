@@ -468,6 +468,29 @@ export class Helper {
 		return total;
 	}
 
+	/**
+	 * Create and evaluate a roll based on the given roll expression string.  If no expression has been provided, evaluate a roll of 0.
+	 * In the event that the string fails to evaluate, display an error and return a roll of 0.
+	 *
+	 * Note this uses the async roll API so returns a Promise<Roll>
+	 *
+	 * @param {String} rollString    		The roll expression.
+	 * @param {String} errorMessageKey      The key that will be localised for the error message if the roll fails.
+	 * @returns {Promise<Roll>}    			The evaluated Roll instance as a promise
+	 */
+	static async roll(rollString, errorMessageKey = "DND4EBETA.InvalidRollExpression") {
+		if (rollString && rollString !== "") {
+			const roll = new Roll(rollString);
+			return roll.roll({async : true}).catch(err => {
+				ui.notifications.error(game.i18n.localize(errorMessageKey));
+				return new Roll("0").roll({async : true});
+			});
+		}
+		else {
+			return new Roll("0").roll({async : true});
+		}
+	}
+
 	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
 		let powerSource = (chatData.powersource && chatData.powersource !== "") ? ` ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}` : ""
 		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]}${powerSource}`;

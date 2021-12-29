@@ -10,6 +10,7 @@ import { CustomRolldDescriptions } from "../apps/custom-roll-descriptions.js";
 import { MovementDialog } from "../apps/movement-dialog.js";
 import { EncumbranceDialog } from "../apps/encumbrance-dialog.js";
 import { ItemImporterDialog} from "../apps/item-importer.js"
+import { HealMenuDialog } from "../apps/heal-menu-dialog.js";
 import TraitSelector from "../apps/trait-selector.js";
 import TraitSelectorSense from "../apps/trait-selector-sense.js";
 import TraitSelectorSave from "../apps/trait-selector-save.js";
@@ -42,7 +43,7 @@ export default class ActorSheet4e extends ActorSheet {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eBeta", "sheet", "actor"],
 			width: 844,
-			height: 905,
+			height: 915,
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",
@@ -654,6 +655,9 @@ export default class ActorSheet4e extends ActorSheet {
 			//second wind
 			html.find('.second-wind').click(this._onSecondWind.bind(this));
 
+			// heal menu
+			html.find('.heal-menu').click(this._onHealMenuDialog.bind(this));
+
 			//action point
 			html.find('.action-point').click(this._onActionPointDialog.bind(this));
 			
@@ -1000,6 +1004,11 @@ export default class ActorSheet4e extends ActorSheet {
 	_onMovementDialog(event) {
 		event.preventDefault();
 		new MovementDialog(this.actor).render(true)
+	}
+
+	_onHealMenuDialog(event) {
+		event.preventDefault();
+		new HealMenuDialog(this.actor).render(true)
 	}
 
 	_onEncumbranceDialog(event) {
