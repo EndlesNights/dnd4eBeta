@@ -975,16 +975,6 @@ DND4EBETA.statusEffect = [
 	},
 	//row 4
 	{
-		id: "mounted",
-		label: "EFFECT.statusMounted",
-		icon: "systems/dnd4e/icons/statusEffects/mounted.svg"
-	},
-	{
-		id: "removed",
-		label: "EFFECT.statusRemoved",
-		icon: "systems/dnd4e/icons/statusEffects/removed.svg"
-	},
-	{
 		id: "blinded",
 		label: "EFFECT.statusBlind",
 		icon: "systems/dnd4e/icons/statusEffects/blinded.svg"
@@ -1009,7 +999,6 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusDisarmed",
 		icon: "systems/dnd4e/icons/statusEffects/disarmed.svg"
 	},
-	//row 5
 	{
 		id: "dominated",
 		label: "EFFECT.statusDominated",
@@ -1019,7 +1008,8 @@ DND4EBETA.statusEffect = [
 		id: "drunk",
 		label: "EFFECT.statusDrunk",
 		icon: "systems/dnd4e/icons/statusEffects/drunk.svg"
-	},
+	},	
+	//row 5
 	{
 		id: "dying",
 		label: "EFFECT.statusDying",
@@ -1031,9 +1021,9 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4e/icons/statusEffects/flying.svg"
 	},
 	{
-		id: "restrained",
-		label: "EFFECT.statusRestrained",
-		icon: "systems/dnd4e/icons/statusEffects/restrained.svg"
+		id: "grabbed",
+		label: "EFFECT.statusGrabbed",
+		icon: "systems/dnd4e/icons/statusEffects/grabbed.svg"
 	},
 	{
 		id: "immobilized",
@@ -1045,12 +1035,18 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusInsubstantial",
 		icon: "systems/dnd4e/icons/statusEffects/insubstantial.svg"
 	},
-	//row 6
 	{
 		id: "invisible",
 		label: "EFFECT.statusInvisible",
 		icon: "systems/dnd4e/icons/statusEffects/invisible.svg"
 	},
+	{
+		id: "mounted",
+		label: "EFFECT.statusMounted",
+		icon: "systems/dnd4e/icons/statusEffects/mounted.svg"
+	},		
+	//row 6
+
 	{
 		id: "petrified",
 		label: "EFFECT.statusPetrified",
@@ -1062,10 +1058,15 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4e/icons/statusEffects/prone.svg"
 	},
 	{
-		id: "grabbed",
-		label: "EFFECT.statusGrabbed",
-		icon: "systems/dnd4e/icons/statusEffects/grabbed.svg"
-	},
+		id: "removed",
+		label: "EFFECT.statusRemoved",
+		icon: "systems/dnd4e/icons/statusEffects/removed.svg"
+	},	
+	{
+		id: "restrained",
+		label: "EFFECT.statusRestrained",
+		icon: "systems/dnd4e/icons/statusEffects/restrained.svg"
+	},	
 	{
 		id: "sleeping",
 		label: "EFFECT.statusSleeping",

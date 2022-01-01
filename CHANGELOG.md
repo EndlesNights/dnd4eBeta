@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.51
+- Rearranged of some status effects so that they are in alphabetical order.
+
 ## Version 0.2.50
 - Quick fix to short rest, for v9 comparability
 
