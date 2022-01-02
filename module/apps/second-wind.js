@@ -1,3 +1,5 @@
+import {Helper} from "../helper.js";
+
 export class SecondWindDialog extends DocumentSheet {
 
 	static get defaultOptions() {
@@ -22,18 +24,7 @@ export class SecondWindDialog extends DocumentSheet {
 	}
 	async _updateObject(event, formData) {
 		
-		let r = new Roll("0");
-		if(formData.bonus != "" ){
-			r = new Roll(formData.bonus);
-			try{
-				await r.roll({async : true});
-
-			} catch (error){
-				ui.notifications.error(game.i18n.localize("DND4EBETA.InvalidHealingBonus"));
-				r = new Roll("0");
-				await r.roll({async : true});
-			}
-		}
+		let r = await Helper.roll(formData.bonus, "DND4EBETA.InvalidHealingBonus")
 
 		const updateData = {};
 		if(this.object.data.data.attributes.hp.value <= 0) {

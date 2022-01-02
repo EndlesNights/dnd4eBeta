@@ -285,6 +285,7 @@
 .dnd4eBeta.sheet.actor .attribute-sub strong{
 	display: inline-block;
 	margin-top:  2px;
+	margin-bottom:  2px;
 }
 .dnd4eBeta.sheet.actor .attributes .attribute-display {
 	border-top: 1px solid;
@@ -298,16 +299,24 @@
 	font-size: 18px;
 	height: 22px;
 	line-height: 22px;
-	margin: 0 0 2px;
+	margin: 0 0 0px;
 	position: relative;
 	text-align: center;
+
+	margin-top: -3px;
+	margin-bottom: -3px;
 }
 
 .dnd4eBeta .attributes {
+	max-height: 90px;
 	padding: 2px;
 	margin: 2px;
+
+	/* padding: 2px;
+	margin: 2px; */
 	/* margin-top: 4px; */
-	margin-bottom: 4px;
+	/* margin-bottom: 4px; */
+
 	/* border: 2px solid rgba(0, 0, 0, 0.75); */
 }
 
@@ -349,6 +358,18 @@
 	margin: 0 3px;
 	font-size: 10px;
 	text-align: center;
+	min-width: 38px;
+}
+
+.fakebutton {
+	width: 100%;
+	border: 2px groove #f0f0e0;
+	border-radius: 2px;
+	background: rgba(0, 0, 0, 0.05);
+	padding: 1px 3px;
+	margin: 0 3px;
+	text-align: center;
+	font-size: 14px;
 }
 
 /* .dnd4eBeta.sheet.actor ul.attributes li.attribute-rest a.rest {
