@@ -4,6 +4,7 @@
 - Rearranged of some status effects so that they are in alphabetical order.
 - rich text editor option for power effects [draconas1](https://github.com/draconas1)
 - Added rechargeCondition to template.json [draconas1](https://github.com/draconas1)
+- Healing button added for eas of use to spend healing surges on self [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.50
 - Quick fix to short rest, for v9 comparability
