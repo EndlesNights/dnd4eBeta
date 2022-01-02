@@ -23,6 +23,15 @@ export class Helper {
 	}
 
 	/**
+	 * Surrounds the given object in brackets
+	 * @param str The object
+	 * @return {string} "({str})"
+	 */
+	static bracketed (str) {
+		return `(${str})`
+	}
+
+	/**
 	 * Find A suitable weapon to use with the power.
 	 * Either the specified weapon, or a weapon that matches the itemData.weaponType category if itemData.weaponUse is set to default
 	 * @param itemData The Power being used
@@ -135,23 +144,23 @@ export class Helper {
 		if(weaponData) {
 
 			if (powerData.weaponType === "implement") {
-				newFormula = newFormula.replaceAll("@wepAttack", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replaceAll("@wepDamage", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replaceAll("@wepCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0));
 			}
 			else {
-				newFormula = newFormula.replaceAll("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replaceAll("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replaceAll("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1) || 0));
 			}
 
-			newFormula = newFormula.replaceAll("@impCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
+			newFormula = newFormula.replaceAll("@impCritBonus", this.bracketed(this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0));
 
-			newFormula = newFormula.replaceAll("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 );
-			newFormula = newFormula.replaceAll("@impDamageO", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 );
+			newFormula = newFormula.replaceAll("@impAttackO", this.bracketed(this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 ));
+			newFormula = newFormula.replaceAll("@impDamageO", this.bracketed(this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 ));
 
-			newFormula = newFormula.replaceAll("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
-			newFormula = newFormula.replaceAll("@impDamage", weaponData.proficientI ? this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
+			newFormula = newFormula.replaceAll("@impAttack", this.bracketed(weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0));
+			newFormula = newFormula.replaceAll("@impDamage", this.bracketed(weaponData.proficientI ? this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0));
 
 			newFormula = newFormula.replaceAll("@profBonusO",weaponData.profBonus || 0);
 			newFormula = newFormula.replaceAll("@profImpBonusO", weaponData.profImpBonus || 0);

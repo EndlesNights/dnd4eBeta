@@ -60,6 +60,7 @@ Hooks.once("init", async function() {
 
 	// define custom roll extensions
 	CONFIG.Dice.rolls.push(dice.MultiAttackRoll);
+	CONFIG.Dice.rolls.push(dice.RollWithOriginalExpression);
 	
 	registerSystemSettings();
 

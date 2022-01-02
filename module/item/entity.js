@@ -767,8 +767,10 @@ export default class Item4e extends Item {
 
 		// Define Roll bonuses
 		const parts = [];
+		const expressionParts = [];
 		if(!!itemData.attack.formula) {		
 			parts.push(Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null))
+			expressionParts.push({value : itemData.attack.formula, target: parts[0]})
 		}
 	
 		// Ammunition Bonus from power.
@@ -808,12 +810,14 @@ export default class Item4e extends Item {
 		}
 
 		// Compose roll options
-		const rollConfig = mergeObject({
-			parts: parts,
+		const rollConfig = {
+			parts,
+			expressionParts,
 			actor: this.actor,
 			data: rollData,
-			title: title,
-			flavor: flavor,
+			title,
+			flavor,
+			event: options.event,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			dialogOptions: {
 				width: 400,
@@ -823,8 +827,7 @@ export default class Item4e extends Item {
 			isAttackRoll: true,
 			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }},
 			options
-		});
-		rollConfig.event = options.event;	
+		};
 
 		// Expanded weapon critical threshold
 		if (weaponUse) {
@@ -884,6 +887,10 @@ export default class Item4e extends Item {
 		const partsMiss = itemData.damage.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]`);
 		const partsCrit = itemData.damageCrit.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]`);
 
+		const partsExpression = parts.map(part => { return {target: part, value: "@pow2ndryDamage"}})
+		const partsMissExpression = parts.map(part => { return {target: part, value: "@pow2ndryDamage"}})
+		const partsCritExpression = parts.map(part => { return {target: part, value: "@pow2ndryDamage"}})
+
 		// itemData.damageType
 		let primaryDamage = ''
 		const pD = [];
@@ -903,6 +910,9 @@ export default class Item4e extends Item {
 		let damageFormula = '';
 		let missDamageFormula = '';
 		let critDamageFormula = '';
+		let damageFormulaExpression = '';
+		let missDamageFormulaExpression = '';
+		let critDamageFormulaExpression = '';
 		//Add power damage into parts
 		if(!!itemData.hit?.formula) {
 			// parts.unshift(`(${Helper.commonReplace(itemData.hit.formula, actorData, this.data.data, weaponUse?.data.data)})[${primaryDamage}]`);
@@ -910,30 +920,38 @@ export default class Item4e extends Item {
 			damageFormula = Helper.commonReplace(itemData.hit.formula, actorData, this.data.data, weaponUse?.data.data);
 			missDamageFormula = Helper.commonReplace(itemData.miss.formula, actorData, this.data.data, weaponUse?.data.data);
 			critDamageFormula = Helper.commonReplace(itemData.hit.critFormula, actorData, this.data.data, weaponUse?.data.data);
+			damageFormulaExpression = itemData.hit.formula
+			missDamageFormulaExpression = itemData.miss.formula
+			critDamageFormulaExpression = itemData.hit.critFormula
 
 			//Should now be redudent with everything moved into the Helper#CommonReplace function
 
 			//Add seconadary weapons damage into parts
+			const secondaryDamageExpressionHelper = (oldParts, expressionParts, newParts) => {
+				Array.prototype.push.apply(oldParts, newParts)
+				Array.prototype.push.apply(expressionParts, newParts.map(part => { return {target: part, value: "@wep2ndryDamage"}}))
+			}
+			//I really want to factor this, but they are annoyingly different enough to make it too headache inducing
 			if(weaponUse) {
 				if(itemData.hit.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					secondaryDamageExpressionHelper(parts, partsExpression, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)))
 				}
 				if(itemData.hit.critFormula.includes("@wepCritBonus") && weaponUse.data.data.damageCrit.parts.length > 0) {
-					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
-				}
-				if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					secondaryDamageExpressionHelper(partsCrit, partsCritExpression, weaponUse.data.data.damageCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)))
 				}
 
+				if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
+					secondaryDamageExpressionHelper(parts, partsExpression, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)))
+				}
 				if(itemData.hit.critFormula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageCritImp.parts.length > 0) {
-					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageImpCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					secondaryDamageExpressionHelper(partsCrit, partsCritExpression, weaponUse.data.data.damageImpCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)))
 				}
 
 				if(itemData.miss.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
-					Array.prototype.push.apply(partsMiss, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					secondaryDamageExpressionHelper(partsMiss, partsMissExpression, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)))
 				}
 				if(itemData.miss.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
-					Array.prototype.push.apply(partsMiss, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					secondaryDamageExpressionHelper(partsMiss, partsMissExpression, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)))
 				}
 			}
 		}
@@ -943,6 +961,8 @@ export default class Item4e extends Item {
 			if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
 				damageFormula += `+ 1`;
 				critDamageFormula += `+ 1`;
+				damageFormulaExpression  += `+ @versatile`;
+				critDamageFormulaExpression += `+ @versatile`;
 			}
 		}
 	
@@ -955,6 +975,9 @@ export default class Item4e extends Item {
 			damageFormula += `+ ${actorBonus.damage}`
 			missDamageFormula += `+ ${actorBonus.damage}`
 			critDamageFormula += `+ ${actorBonus.damage}`
+			damageFormulaExpression  += `+ @actorBonusDamage`
+			missDamageFormulaExpression += `+ @actorBonusDamage`
+			critDamageFormulaExpression +=  `+ @actorBonusDamage`
 		}
 
 		// Ammunition Damage from power
@@ -993,32 +1016,33 @@ export default class Item4e extends Item {
 		// Call the roll helper utility
 		
 		if(missDamageFormula.includes('@damageFormula')){
-			missDamageFormula = missDamageFormula.replace('@damageFormula', damageFormula);
+			missDamageFormula = missDamageFormula.replace('@damageFormula', Helper.bracketed(damageFormula));
 		}
 
 		if(missDamageFormula.includes('@halfDamageFormula')){
-			missDamageFormula = missDamageFormula.replace('@halfDamageFormula', `${damageFormula}/2`);
+			missDamageFormula = missDamageFormula.replace('@halfDamageFormula', Helper.bracketed(`${damageFormula}/2`));
 		}
 
-		if(primaryDamage){
-			parts.unshift(`(${damageFormula})[${primaryDamage}]`);
-			partsCrit.unshift(`(${critDamageFormula})[${primaryDamage}]`);
-			partsMiss.unshift(`(${missDamageFormula})[${primaryDamage}]`);
-		} else {
-			parts.unshift(`(${damageFormula})`);
-			partsCrit.unshift(`(${critDamageFormula})`);
-			partsMiss.unshift(`(${missDamageFormula})`);
-		}
+		const primaryDamageStr = primaryDamage ? `[${primaryDamage}]` : ""
+		parts.unshift(`(${damageFormula})${primaryDamageStr}`);
+		partsCrit.unshift(`(${critDamageFormula})${primaryDamageStr}`);
+		partsMiss.unshift(`(${missDamageFormula})${primaryDamageStr}`);
+		partsExpression.unshift({target : parts[0], value: damageFormulaExpression})
+		partsCritExpression.unshift({target : partsCrit[0], value: critDamageFormulaExpression})
+		partsMissExpression.unshift({target : partsMiss[0], value: missDamageFormulaExpression})
 
 		return damageRoll({
-			event: event,
-			parts: parts,
-			partsCrit: partsCrit,
-			partsMiss: partsMiss,
+			event,
+			parts,
+			partsCrit,
+			partsMiss,
+			partsExpression,
+			partsCritExpression,
+			partsMissExpression,
 			actor: this.actor,
 			data: rollData,
-			title: title,
-			flavor: flavor,
+			title,
+			flavor,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			dialogOptions: {
 				width: 400,
@@ -1076,7 +1100,7 @@ export default class Item4e extends Item {
 				
 			}
 		}
-	
+
 		// Adjust damage from versatile usage
 		if(weaponUse) {
 			if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
@@ -1087,7 +1111,7 @@ export default class Item4e extends Item {
 		// if ( versatile && itemData.damage.versatile ) {
 			// parts[0] = itemData.damage.versatile;
 			// messageData["flags.dnd4eBeta.roll"].versatile = true;
-		// }	
+		// }
 	
 		// Define Roll Data
 		const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
