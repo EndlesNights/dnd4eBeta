@@ -36,12 +36,6 @@
 	flex: 4;
 }
 
-/* .dnd4eBeta.sheet.actor .sheet-header .summary {
-	height: 30px;
-	border-bottom: 2px groove #eeede0;
-	font-size: 18px;
-} */
-
 .placeholder {
 	position: relative;
 	display: inline-block;
@@ -53,7 +47,6 @@
 	top: 9px;
 	content: attr(data-placeholder);
 	pointer-events: none;
-	/* opacity: 0.6; */
 	font-size: 12px;
 }
 
@@ -63,18 +56,6 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	/* border-top: 2px groove #eeede0;
-	border-bottom: none; */
-
-	/* flex: 0 0 100%;
-	height: 60px;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	border-top: 2px groove #eeede0;
-	border-bottom: none;
-	position: relative; */
-	/* top: -8px; */
 }
 
 .dnd4eBeta.sheet .sheet-header .summary input {
@@ -82,13 +63,10 @@
 	background: none;
 	border: 1px solid transparent;
 	position: relative;
-	/* top: -3px; */
 
 	border-bottom: 1px solid black;
 	border-radius: 0px;
 	padding: 2px;
-
-	/* width: 100%; */
 }
 
 .dnd4eBeta.sheet .sheet-header .summary label{
@@ -102,7 +80,6 @@
 .dnd4eBeta .window-content {
 	overflow-y: hidden;
 	padding: 5px;
-	/* height: 100%; */
 }
 .dnd4eBeta.sheet .window-content form {
 	height: 100%;
@@ -192,7 +169,6 @@
 
 .dnd4eBeta .sheet-header {
 	flex: 0 0 100%;
-	/* border-bottom: 2px groove #eeede0; */
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
 	font-size: 20px;
 	align-items: center;
@@ -214,24 +190,6 @@
 	max-height: 100px;
 }
 
-/* .dnd4eBeta.sheet.actor .attributes {
-	border-bottom: 1px solid #ccc;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-flex: 0;
-	-ms-flex: 0 0 80px;
-	flex: 0 0 80px;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	-ms-flex-direction: row;
-	flex-direction: row;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-box-pack: start;
-	-ms-flex-pack: start;
-	justify-content: flex-start;
-} */
 .dnd4eBeta.sheet.actor .attributes span.sep {
 	max-width: 20px;
 	font-size: 22px;
@@ -250,10 +208,6 @@
 }
 .dnd4eBeta.sheet.actor .attribute-health {
 	text-align: center;
-	/* font-size: 18px; */
-	/* -webkit-box-flex: 0;
-	-ms-flex: 0 0 27%;
-	flex: 0 0 27%; */
 }
 .dnd4eBeta.sheet.actor .section--attributes .attribute-health input {
 	border-bottom: 1px solid black;
@@ -270,7 +224,6 @@
 .dnd4eBeta.sheet.actor .attribute-value input {
 	font-size: 18px;
 	color: #444;
-	/* border-bottom: 1px solid black; */
 	border-radius: 0px;
 	font-weight:bold;
 }
@@ -293,7 +246,6 @@
 	margin-right: 2px;
 }
 .dnd4eBeta.sheet.actor .attribute-name {
-	/* border-bottom: 1px solid black; */
 	color: #444;
 	font-family: "mason-serif", "Nodesto", "Signika", "Palatino Linotype", serif;
 	font-size: 18px;
@@ -311,13 +263,6 @@
 	max-height: 90px;
 	padding: 2px;
 	margin: 2px;
-
-	/* padding: 2px;
-	margin: 2px; */
-	/* margin-top: 4px; */
-	/* margin-bottom: 4px; */
-
-	/* border: 2px solid rgba(0, 0, 0, 0.75); */
 }
 
 .dnd4eBeta .attributes+.attributes {
@@ -345,7 +290,6 @@
 
 .dnd4eBeta .attribute-footer--temp-hp span,
 .dnd4eBeta .attribute-footer--temp-hp input {
-	/* flex: .4; */
 	max-width: 40%;
 	text-align: center;
 }
@@ -372,43 +316,7 @@
 	font-size: 14px;
 }
 
-/* .dnd4eBeta.sheet.actor ul.attributes li.attribute-rest a.rest {
-	border: 1px solid #b5b3a4;
-	border-radius: 2px;
-	background: rgba(0, 0, 0, 0.05);
-	padding: 0 3px;
-	margin: 0 3px;
-	font-size: 12px;
-	text-align: left;
-}
-.dnd4eBeta.sheet.actor ul.attributes li.attribute-rest a.death {
-	content: "\A";
-	white-space: pre;
-	border: 1px solid #b5b3a4;
-	border-radius: 2px;
-	background: rgba(0, 0, 0, 0.05);
-	padding: 0 3px;
-	margin: 0 3px;
-	font-size: 12px;
-	text-align: left;
-} 
-
-.dnd4eBeta.sheet.actor ul.attributes li.attribute-rest input{
-font-size: 12px;
-}
-.dnd4eBeta.sheet.actor ul.attributes li.attribute-rest span{
-font-size: 12px;
-}
-.dnd4eBeta.sheet.actor ul.attributes li.attribute-rest input[type="checkbox"] {
-	height: 14px;
-	width: 14px;
-	margin: 0;
-	top: 2px;
-	position: relative;
-} */
-
 .dnd4eBeta .container--bottom {
-	/* height: 100%; */
 	height: calc(100% - 190px);
 }
 
@@ -416,7 +324,6 @@ font-size: 12px;
 	max-width: 260px;
 	margin-left: 15px;
 	border-right: 3px solid;
-	/* min-height: 100%; */
 	height: 100%;
 	overflow-y: auto;
 }
@@ -425,7 +332,6 @@ font-size: 12px;
 	margin-right: 15px;
 	padding-bottom: 10px;
 	border-bottom: 3px solid;
-	/* max-height: 187px; */
 }
 
 .dnd4eBeta .section--abilities .ability-header {
