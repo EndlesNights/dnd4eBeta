@@ -16,6 +16,7 @@ import { _getInitiativeFormula } from "./combat.js";
 
 import ActorSheet4e from "./actor/actor-sheet.js";
 import ActorSheet4eNPC from "./actor/npc-sheet.js";
+import {SaveThrowDialog} from "./apps/save-throw.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
@@ -102,6 +103,11 @@ Hooks.once("init", async function() {
 		// 	scripts: "/systems/dnd4e/dist/vue-components.min.js",
 		// 	// dependencies: [ "vue-select", "vue-numeric-input" ]
 		// });
+
+
+
+	// setup methods that allow for easy integration with token hud
+	game.dnd4eBeta.quickSave = (actor) => new SaveThrowDialog(actor)._updateObject(null, {save : 0, dc: 10})
 });
 
 Hooks.once("setup", function() {
