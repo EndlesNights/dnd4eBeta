@@ -193,7 +193,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 	speaker = speaker || ChatMessage.getSpeaker();
 	parts = parts.concat(["@bonus"]);
 	rollMode = rollMode || game.settings.get("core", "rollMode");
-	let rolled = false;
 	// Define inner roll function
 	const _roll = async function(parts, adv, form=null) {
 
@@ -385,7 +384,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			speaker: speaker,
 			flavor: flavor
 		}, { rollMode });
-		rolled = true;
 		return roll;
 	};
 
@@ -446,17 +444,15 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			title: title,
 			content: html,
 			buttons: {
-
 				normal: {
 					label: game.i18n.localize("DND4EBETA.Roll"),
 					callback: html => roll = _roll(parts, 0, html[0].querySelector("form"))
 				}
-
 			},
 			default: "normal",
 			close: html => {
 				if (onClose) onClose(html, parts, data);
-				resolve(rolled ? roll : false)
+				resolve(roll !== undefined ? roll : false) // check roll here as that was assigned on the active thread, not an async function
 			}
 		}, dialogOptions).render(true);
 	})
@@ -494,7 +490,6 @@ export async function damageRoll({parts, partsCrit, partsMiss, actor, data, even
 	flavor = flavor || title;
 	speaker = speaker || ChatMessage.getSpeaker();
 	rollMode = game.settings.get("core", "rollMode");
-	let rolled = false;
 	let formula = '';
 	// Define inner roll function
 	const _roll = function(parts, partsCrit, partsMiss, hitType, form) {
@@ -532,7 +527,6 @@ export async function damageRoll({parts, partsCrit, partsMiss, actor, data, even
 			speaker: speaker,
 			flavor: flavor
 		}, { rollMode });
-		rolled = true;
 		return roll;
 	};
 
@@ -581,7 +575,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, actor, data, even
 				default: "normal",
 				close: html => {
 					if (onClose) onClose(html, parts, data);
-					resolve(rolled ? roll : false);
+					resolve(roll !== undefined ? roll : false);
 				}				
 			}, dialogOptions).render(true);
 		});
@@ -614,7 +608,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, actor, data, even
 				default: "normal",
 				close: html => {
 					if (onClose) onClose(html, parts, data);
-					resolve(rolled ? roll : false);
+					resolve(roll !== undefined ? roll : false);
 				}
 			}, dialogOptions).render(true);
 		});

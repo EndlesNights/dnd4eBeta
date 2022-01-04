@@ -1,6 +1,15 @@
 
 export class Helper {
 
+	/**
+	 * Returns true if the variable is defined and is not an empty string.
+	 * @param str the object to check, could be a string, could be any other object
+	 * @returns {boolean} if the object is defined (non null) and is not the empty string.
+	 */
+	static isNonEmpty(str) {
+		return str && str !== ""
+	}
+
 	/* -------------------------------------------- */
 	/**
 	* Refrence a nested object by string.
@@ -30,7 +39,7 @@ export class Helper {
 	 * @returns {null|*} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
 	 */
 	static getWeaponUse(itemData, actor) {
-		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length == 0)) return null;
+		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length === 0)) return null;
 		let weaponUse = itemData.weaponUse? actor.items.get(itemData.weaponUse) : null;
 		//If default weapon is in use, find a sutable weapon
 		if(itemData.weaponUse === "default" || itemData.weaponUse === "defaultOH") {
