@@ -1159,7 +1159,7 @@ export default class ActorSheet4e extends ActorSheet {
 				r.dice[0].options.fumble = item.data.data.rechargeRoll -1;
 				r.evaluate({async: false});
 	
-				let flav = `${item.data.name} did not recharg.`;
+				let flav = `${item.data.name} did not recharge.`;
 				if(r.total >= item.data.data.rechargeRoll){
 					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.uses.max}]);
 					flav = `${item.data.name} successfully recharged!`;
@@ -1180,7 +1180,7 @@ export default class ActorSheet4e extends ActorSheet {
 				ChatMessage.create({
 					user: game.user.id,
 					speaker: {actor: this.object, alias: this.object.data.name},
-					flavor: `${item.data.name} successfully recharged!`
+					flavor: `${item.data.name} successfully recharged! Due to meeting condition ${item.data.data.rechargeCondition}`
 				});
 			}
 
