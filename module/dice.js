@@ -238,7 +238,6 @@ export async function d20Roll({parts=[],  expressionParts= [], data={}, event={}
 	parts = parts.concat(["@bonus"]);
 	rollMode = rollMode || game.settings.get("core", "rollMode");
 	const rollConfig = {parts, expressionParts, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options }
-	let rolled = false;
 
 	// Determine whether the roll can be fast-forward
 	if ( fastForward === null ) {
@@ -301,7 +300,7 @@ export async function d20Roll({parts=[],  expressionParts= [], data={}, event={}
 			default: "normal",
 			close: html => {
 				if (onClose) onClose(html, parts, data);
-				resolve(rolled ? roll : false)
+				resolve(roll !== undefined ? roll : false) // check roll here as that was assigned on the active thread, not an async function
 			}
 		}, dialogOptions).render(true);
 	})
@@ -508,7 +507,6 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpression= 
 	flavor = flavor || title;
 	speaker = speaker || ChatMessage.getSpeaker();
 	rollMode = game.settings.get("core", "rollMode");
-	let rolled = false;
 	let formula = '';
 	// Define inner roll function
 	const _roll = function(parts, partsCrit, partsMiss, hitType, form) {
@@ -546,7 +544,6 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpression= 
 			speaker: speaker,
 			flavor: flavor
 		}, { rollMode });
-		rolled = true;
 		return roll;
 	};
 
@@ -595,7 +592,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpression= 
 				default: "normal",
 				close: html => {
 					if (onClose) onClose(html, parts, data);
-					resolve(rolled ? roll : false);
+					resolve(roll !== undefined ? roll : false);
 				}				
 			}, dialogOptions).render(true);
 		});
@@ -628,7 +625,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpression= 
 				default: "normal",
 				close: html => {
 					if (onClose) onClose(html, parts, data);
-					resolve(rolled ? roll : false);
+					resolve(roll !== undefined ? roll : false);
 				}
 			}, dialogOptions).render(true);
 		});

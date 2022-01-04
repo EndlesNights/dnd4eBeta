@@ -764,6 +764,7 @@ export default class Item4e extends Item {
 
 		rollData.isAttackRoll = true;
 		rollData.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
+		rollData["ammo"] = 0 // because ammo is added to by weapon use multiple clicks of the button will add it higher
 
 		// Define Roll bonuses
 		const parts = [];
@@ -772,41 +773,63 @@ export default class Item4e extends Item {
 			parts.push(Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null))
 			expressionParts.push({value : itemData.attack.formula, target: parts[0]})
 		}
-	
-		// Ammunition Bonus from power.
-		delete this._ammo;
-		const consume = itemData.consume;
-		if ( consume?.type === "ammo" ) {
-			const ammo = this.actor.items.get(consume.target);
-			const q = ammo.data.data.quantity;
-			if ( q && (q - consume.amount >= 0) ) {
-				let ammoBonus = ammo.data.data.attackBonus;
-				if ( ammoBonus ) {
-					parts.push("@ammo");
-					rollData["ammo"] = ammoBonus;
-					title += ` [${ammo.name}]`;
-					this._ammo = ammo;
+
+		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
+			if ( consumable?.type === "ammo" ) {
+				if (Helper.isNonEmpty(consumable.target) && Helper.isNonEmpty(consumable.amount))
+				{
+					const ammo = this.actor.items.get(consumable.target);
+					if (ammo) {
+						const ammoCount = ammo.data.data.quantity;
+						if ( ammoCount && (ammoCount - consumable.amount >= 0) ) {
+							let ammoBonus = ammo.data.data.attackBonus;
+							if ( ammoBonus ) {
+								onHasBonus(ammo, ammoBonus)
+							}
+						}
+						else {
+							ui.notifications.warn(game.i18n.format("The {resourceType} requires {quantity} of '{target}' but the character only has {ammoCount}",
+								{resourceType, ammoCount, target: ammo.name, quantity: consumable.amount}))
+						}
+					}
+					else {
+						ui.notifications.warn(game.i18n.format("The {resourceType} requires a ammunition but none could be found on the character",
+							{resourceType, target: consumable.target}))
+					}
+				}
+				else {
+					if (!Helper.isNonEmpty(consumable.target)) {
+						ui.notifications.warn(game.i18n.format("The {resourceType} requires ammunition, but the type ('{target}') was empty",
+							{resourceType, target: consumable.target, quantity: consumable.amount}))
+					}
+					if (!Helper.isNonEmpty(consumable.quantity)) {
+						ui.notifications.warn(game.i18n.format("The {resourceType} requires ammunition, but the quantity ('{quantity}') was empty",
+							{resourceType, target: consumable.target, quantity: consumable.amount}))
+					}
 				}
 			}
 		}
+
+		// Ammunition Bonus from power.
+		delete this._ammo;
+		const powerHasAmmoWithBonus = (ammo, ammoBonus) => {
+			parts.push("@ammo");
+			rollData["ammo"] = ammoBonus;
+			title += ` [${ammo.name}]`;
+			this._ammo = ammo;
+		}
+		handlePowerAndWeaponAmmoBonuses(powerHasAmmoWithBonus, itemData.consume, "power")
 	
 		// Ammunition Bonus from weapon.
 		if(weaponUse) {
 			delete weaponUse._ammo;
-			const consume = weaponUse.data.data.consume;
-			if ( consume?.type === "ammo" ) {
-				const ammo = weaponUse.actor.items.get(consume.target);
-				const q = ammo.data.data.quantity;
-				if ( q && (q - consume.amount >= 0) ) {
-					let ammoBonus = ammo.data.data.attackBonus;
-					if ( ammoBonus ) {
-						if (parts[parts.length-1] !== "@ammo" ) parts.push("@ammo");
-						rollData["ammo"]? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
-						title += ` [${ammo.name}]`;
-						weaponUse._ammo = ammo;
-					}
-				}
+			const weaponHasAmmoWithBonus = (ammo, ammoBonus) => {
+				if (parts[parts.length-1] !== "@ammo" ) parts.push("@ammo");
+				rollData["ammo"]? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
+				title += ` [${ammo.name}]`;
+				weaponUse._ammo = ammo;
 			}
+			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.data.data.consume, "weapon used by the power")
 		}
 
 		// Compose roll options

@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 0.2.51
+- Rearranged of some status effects so that they are in alphabetical order.
+- rich text editor option for power effects [draconas1](https://github.com/draconas1)
+- Added rechargeCondition to template.json [draconas1](https://github.com/draconas1)
+- Healing button added for ease of use to spend healing surges on self [draconas1](https://github.com/draconas1)
+- Support added for use with the [Token Action HUD](https://github.com/Drental/fvtt-tokenactionhud) module [draconas1](https://github.com/draconas1)
+- SRD Compenuim updates: [draconas1](https://github.com/draconas1)
+	Rapier changed from the Superior Melee classification to Military Melee based on our interpretation of page 109 of the Errata doc.
+	Added SRD Potions Compendium with all PHB SRD Potions
+	Added SRD Common Powers Compendium with the basic action powers that involve attack rolls: Basic attack, bull rush, grab, drag and charge
+- fix to power consumables not being consumed [draconas1](https://github.com/draconas1)
+- fixes to "Steve, the example character" [draconas1](https://github.com/draconas1)
+
 ## Version 0.2.50
 - Quick fix to short rest, for v9 comparability
 

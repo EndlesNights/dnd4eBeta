@@ -1,6 +1,15 @@
 
 export class Helper {
 
+	/**
+	 * Returns true if the variable is defined and is not an empty string.
+	 * @param str the object to check, could be a string, could be any other object
+	 * @returns {boolean} if the object is defined (non null) and is not the empty string.
+	 */
+	static isNonEmpty(str) {
+		return str && str !== ""
+	}
+
 	/* -------------------------------------------- */
 	/**
 	* Refrence a nested object by string.
@@ -39,7 +48,7 @@ export class Helper {
 	 * @returns {null|*} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
 	 */
 	static getWeaponUse(itemData, actor) {
-		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length == 0)) return null;
+		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length === 0)) return null;
 		let weaponUse = itemData.weaponUse? actor.items.get(itemData.weaponUse) : null;
 		//If default weapon is in use, find a sutable weapon
 		if(itemData.weaponUse === "default" || itemData.weaponUse === "defaultOH") {
@@ -475,6 +484,29 @@ export class Helper {
 			total += parseFloat(s.shift());
 		}
 		return total;
+	}
+
+	/**
+	 * Create and evaluate a roll based on the given roll expression string.  If no expression has been provided, evaluate a roll of 0.
+	 * In the event that the string fails to evaluate, display an error and return a roll of 0.
+	 *
+	 * Note this uses the async roll API so returns a Promise<Roll>
+	 *
+	 * @param {String} rollString    		The roll expression.
+	 * @param {String} errorMessageKey      The key that will be localised for the error message if the roll fails.
+	 * @returns {Promise<Roll>}    			The evaluated Roll instance as a promise
+	 */
+	static async roll(rollString, errorMessageKey = "DND4EBETA.InvalidRollExpression") {
+		if (rollString && rollString !== "") {
+			const roll = new Roll(rollString);
+			return roll.roll({async : true}).catch(err => {
+				ui.notifications.error(game.i18n.localize(errorMessageKey));
+				return new Roll("0").roll({async : true});
+			});
+		}
+		else {
+			return new Roll("0").roll({async : true});
+		}
 	}
 
 	static _preparePowerCardData(chatData, CONFIG, actorData=null) {

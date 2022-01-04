@@ -36,12 +36,6 @@
 	flex: 4;
 }
 
-/* .dnd4eBeta.sheet.actor .sheet-header .summary {
-	height: 30px;
-	border-bottom: 2px groove #eeede0;
-	font-size: 18px;
-} */
-
 .placeholder {
 	position: relative;
 	display: inline-block;
@@ -53,7 +47,6 @@
 	top: 9px;
 	content: attr(data-placeholder);
 	pointer-events: none;
-	/* opacity: 0.6; */
 	font-size: 12px;
 }
 
@@ -63,18 +56,6 @@
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	/* border-top: 2px groove #eeede0;
-	border-bottom: none; */
-
-	/* flex: 0 0 100%;
-	height: 60px;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	border-top: 2px groove #eeede0;
-	border-bottom: none;
-	position: relative; */
-	/* top: -8px; */
 }
 
 .dnd4eBeta.sheet .sheet-header .summary input {
@@ -82,13 +63,10 @@
 	background: none;
 	border: 1px solid transparent;
 	position: relative;
-	/* top: -3px; */
 
 	border-bottom: 1px solid black;
 	border-radius: 0px;
 	padding: 2px;
-
-	/* width: 100%; */
 }
 
 .dnd4eBeta.sheet .sheet-header .summary label{
@@ -102,7 +80,6 @@
 .dnd4eBeta .window-content {
 	overflow-y: hidden;
 	padding: 5px;
-	/* height: 100%; */
 }
 .dnd4eBeta.sheet .window-content form {
 	height: 100%;
@@ -192,7 +169,6 @@
 
 .dnd4eBeta .sheet-header {
 	flex: 0 0 100%;
-	/* border-bottom: 2px groove #eeede0; */
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
 	font-size: 20px;
 	align-items: center;
@@ -214,24 +190,6 @@
 	max-height: 100px;
 }
 
-/* .dnd4eBeta.sheet.actor .attributes {
-	border-bottom: 1px solid #ccc;
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-flex: 0;
-	-ms-flex: 0 0 80px;
-	flex: 0 0 80px;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	-ms-flex-direction: row;
-	flex-direction: row;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	-webkit-box-pack: start;
-	-ms-flex-pack: start;
-	justify-content: flex-start;
-} */
 .dnd4eBeta.sheet.actor .attributes span.sep {
 	max-width: 20px;
 	font-size: 22px;
@@ -250,10 +208,6 @@
 }
 .dnd4eBeta.sheet.actor .attribute-health {
 	text-align: center;
-	/* font-size: 18px; */
-	/* -webkit-box-flex: 0;
-	-ms-flex: 0 0 27%;
-	flex: 0 0 27%; */
 }
 .dnd4eBeta.sheet.actor .section--attributes .attribute-health input {
 	border-bottom: 1px solid black;
@@ -270,7 +224,6 @@
 .dnd4eBeta.sheet.actor .attribute-value input {
 	font-size: 18px;
 	color: #444;
-	/* border-bottom: 1px solid black; */
 	border-radius: 0px;
 	font-weight:bold;
 }
@@ -285,6 +238,7 @@
 .dnd4eBeta.sheet.actor .attribute-sub strong{
 	display: inline-block;
 	margin-top:  2px;
+	margin-bottom:  2px;
 }
 .dnd4eBeta.sheet.actor .attributes .attribute-display {
 	border-top: 1px solid;
@@ -292,23 +246,23 @@
 	margin-right: 2px;
 }
 .dnd4eBeta.sheet.actor .attribute-name {
-	/* border-bottom: 1px solid black; */
 	color: #444;
 	font-family: "mason-serif", "Nodesto", "Signika", "Palatino Linotype", serif;
 	font-size: 18px;
 	height: 22px;
 	line-height: 22px;
-	margin: 0 0 2px;
+	margin: 0 0 0px;
 	position: relative;
 	text-align: center;
+
+	margin-top: -3px;
+	margin-bottom: -3px;
 }
 
 .dnd4eBeta .attributes {
+	max-height: 90px;
 	padding: 2px;
 	margin: 2px;
-	/* margin-top: 4px; */
-	margin-bottom: 4px;
-	/* border: 2px solid rgba(0, 0, 0, 0.75); */
 }
 
 .dnd4eBeta .attributes+.attributes {
@@ -336,7 +290,6 @@
 
 .dnd4eBeta .attribute-footer--temp-hp span,
 .dnd4eBeta .attribute-footer--temp-hp input {
-	/* flex: .4; */
 	max-width: 40%;
 	text-align: center;
 }
@@ -349,45 +302,21 @@
 	margin: 0 3px;
 	font-size: 10px;
 	text-align: center;
+	min-width: 38px;
 }
 
-/* .dnd4eBeta.sheet.actor ul.attributes li.attribute-rest a.rest {
-	border: 1px solid #b5b3a4;
+.fakebutton {
+	width: 100%;
+	border: 2px groove #f0f0e0;
 	border-radius: 2px;
 	background: rgba(0, 0, 0, 0.05);
-	padding: 0 3px;
+	padding: 1px 3px;
 	margin: 0 3px;
-	font-size: 12px;
-	text-align: left;
+	text-align: center;
+	font-size: 14px;
 }
-.dnd4eBeta.sheet.actor ul.attributes li.attribute-rest a.death {
-	content: "\A";
-	white-space: pre;
-	border: 1px solid #b5b3a4;
-	border-radius: 2px;
-	background: rgba(0, 0, 0, 0.05);
-	padding: 0 3px;
-	margin: 0 3px;
-	font-size: 12px;
-	text-align: left;
-} 
-
-.dnd4eBeta.sheet.actor ul.attributes li.attribute-rest input{
-font-size: 12px;
-}
-.dnd4eBeta.sheet.actor ul.attributes li.attribute-rest span{
-font-size: 12px;
-}
-.dnd4eBeta.sheet.actor ul.attributes li.attribute-rest input[type="checkbox"] {
-	height: 14px;
-	width: 14px;
-	margin: 0;
-	top: 2px;
-	position: relative;
-} */
 
 .dnd4eBeta .container--bottom {
-	/* height: 100%; */
 	height: calc(100% - 190px);
 }
 
@@ -395,7 +324,6 @@ font-size: 12px;
 	max-width: 260px;
 	margin-left: 15px;
 	border-right: 3px solid;
-	/* min-height: 100%; */
 	height: 100%;
 	overflow-y: auto;
 }
@@ -404,7 +332,6 @@ font-size: 12px;
 	margin-right: 15px;
 	padding-bottom: 10px;
 	border-bottom: 3px solid;
-	/* max-height: 187px; */
 }
 
 .dnd4eBeta .section--abilities .ability-header {
@@ -560,6 +487,9 @@ font-size: 12px;
 .ability-usage--atwill {
 	background: -o-linear-gradient(45deg, #125f15, #55aa2e);
 	background: linear-gradient(45deg, #125f15, #55aa2e); }
+.force-ability-usage--atwill {
+	background: -o-linear-gradient(45deg, #125f15, #55aa2e) !important;
+	background: linear-gradient(45deg, #125f15, #55aa2e) !important; }
 .colorBlindRG .ability-usage--atwill {
 	background: -o-linear-gradient(45deg, #003c15, #087830);
 	background: linear-gradient(45deg, #003c15, #087830); }
@@ -570,6 +500,9 @@ font-size: 12px;
 .ability-usage--encounter {
 	background: -o-linear-gradient(45deg, #3c0000, #dc0000);
 	background: linear-gradient(45deg, #3c0000, #dc0000); }
+.force-ability-usage--encounter {
+	background: -o-linear-gradient(45deg, #3c0000, #dc0000) !important;
+	background: linear-gradient(45deg, #3c0000, #dc0000) !important; }
 .colorBlindRG .ability-usage--encounter {
 	background: -o-linear-gradient(45deg, #003854, #89cdef);
 	background: linear-gradient(45deg, #003854, #89cdef); }
@@ -577,6 +510,9 @@ font-size: 12px;
 	background: -o-linear-gradient(45deg, #4e0129, #891c54);
 	background: linear-gradient(45deg, #4e0129, #891c54); }
   
+.force-ability-usage--daily {
+	background: -o-linear-gradient(45deg, #1b1b1d, #ababab) !important;
+	background: linear-gradient(45deg, #1b1b1d, #ababab) !important; }
 .ability-usage--daily {
 	background: -o-linear-gradient(45deg, #1b1b1d, #ababab);
 	background: linear-gradient(45deg, #1b1b1d, #ababab); }
@@ -590,6 +526,9 @@ font-size: 12px;
 .ability-usage--recharge {
 	background: -o-linear-gradient(45deg, #01003c, #71a2ec);
 	background: linear-gradient(45deg, #01003c, #71a2ec); }
+.force-ability-usage--recharge {
+	background: -o-linear-gradient(45deg, #01003c, #71a2ec) !important;
+	background: linear-gradient(45deg, #01003c, #71a2ec) !important; }
 .colorBlindRG .ability-usage--recharge {
 	background: -o-linear-gradient(45deg, #695702, #decd78);
 	background: linear-gradient(45deg, #695702, #decd78); }
@@ -600,6 +539,9 @@ font-size: 12px;
 .ability-usage--other {
 	background: -o-linear-gradient(45deg, #25003c, #dc9ff1a6);
 	background: linear-gradient(45deg, #25003c, #dc9ff1a6); }
+.force-ability-usage--other {
+	background: -o-linear-gradient(45deg, #25003c, #dc9ff1a6) !important;
+	background: linear-gradient(45deg, #25003c, #dc9ff1a6) !important; }
 .colorBlindRG .ability-usage--other {
 	background: -o-linear-gradient(45deg, #0d0145, #301c89);
 	background: linear-gradient(45deg, #0d0145, #301c89); }
@@ -610,7 +552,9 @@ font-size: 12px;
 .ability-usage--item {
 	background: -o-linear-gradient(45deg, #6a581c, #d4af37);
 	background: linear-gradient(45deg, #6a581c, #d4af37); }
-
+.force-ability-usage--item {
+	background: -o-linear-gradient(45deg, #6a581c, #d4af37) !important;
+	background: linear-gradient(45deg, #6a581c, #d4af37) !important; }
 
 /* 01003c */
 .dnd4eBeta .sheet-header .header-fields {

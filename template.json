@@ -895,6 +895,7 @@
 		"rangePower": "",
 		"area": 0,
 		"rechargeRoll": "",
+		"rechargeCondition": "",
 		"damageShare": false,
 		"postEffect": true,
 		"postSpecial": true,

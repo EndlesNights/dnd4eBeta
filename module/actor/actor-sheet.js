@@ -10,6 +10,7 @@ import { CustomRolldDescriptions } from "../apps/custom-roll-descriptions.js";
 import { MovementDialog } from "../apps/movement-dialog.js";
 import { EncumbranceDialog } from "../apps/encumbrance-dialog.js";
 import { ItemImporterDialog} from "../apps/item-importer.js"
+import { HealMenuDialog } from "../apps/heal-menu-dialog.js";
 import TraitSelector from "../apps/trait-selector.js";
 import TraitSelectorSense from "../apps/trait-selector-sense.js";
 import TraitSelectorSave from "../apps/trait-selector-save.js";
@@ -42,7 +43,7 @@ export default class ActorSheet4e extends ActorSheet {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eBeta", "sheet", "actor"],
 			width: 844,
-			height: 905,
+			height: 915,
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",
@@ -654,6 +655,9 @@ export default class ActorSheet4e extends ActorSheet {
 			//second wind
 			html.find('.second-wind').click(this._onSecondWind.bind(this));
 
+			// heal menu
+			html.find('.heal-menu').click(this._onHealMenuDialog.bind(this));
+
 			//action point
 			html.find('.action-point').click(this._onActionPointDialog.bind(this));
 			
@@ -1002,6 +1006,11 @@ export default class ActorSheet4e extends ActorSheet {
 		new MovementDialog(this.actor).render(true)
 	}
 
+	_onHealMenuDialog(event) {
+		event.preventDefault();
+		new HealMenuDialog(this.actor).render(true)
+	}
+
 	_onEncumbranceDialog(event) {
 		event.preventDefault();
 		new EncumbranceDialog(this.actor).render(true);
@@ -1150,7 +1159,7 @@ export default class ActorSheet4e extends ActorSheet {
 				r.dice[0].options.fumble = item.data.data.rechargeRoll -1;
 				r.evaluate({async: false});
 	
-				let flav = `${item.data.name} did not recharg.`;
+				let flav = `${item.data.name} did not recharge.`;
 				if(r.total >= item.data.data.rechargeRoll){
 					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.uses.max}]);
 					flav = `${item.data.name} successfully recharged!`;
@@ -1171,7 +1180,7 @@ export default class ActorSheet4e extends ActorSheet {
 				ChatMessage.create({
 					user: game.user.id,
 					speaker: {actor: this.object, alias: this.object.data.name},
-					flavor: `${item.data.name} successfully recharged!`
+					flavor: `${item.data.name} successfully recharged! Due to meeting condition ${item.data.data.rechargeCondition}`
 				});
 			}
 

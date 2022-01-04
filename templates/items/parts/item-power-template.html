@@ -369,17 +369,22 @@
 		<input type="text" name="data.miss.detail" value="{{data.miss.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
 	</div>
 
-	<div class="form-group stacked">
-		<!-- <label>{{ localize "DND4EBETA.Effects" }}</label> -->
-	</div>
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.EffectDetails" }}</label>
-		<span style="text-align: right;">Display Information Post Attack Details?</span>
+		<span style="text-align: right;">{{ localize "DND4EBETA.DisplayEffect" }}</span>
 		<input type="checkbox" name="data.postEffect" data-dtype="Boolean" {{checked data.postEffect}}/>
 	</div>
 	<div class="form-group">
-		<input type="text" name="data.effect.detail" value="{{data.effect.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+		<span style="text-align: right;">{{ localize "DND4EBETA.EffectHTMLInput" }}</span>
+		<input type="checkbox" name="data.effectHTML" data-dtype="Boolean" {{checked data.effectHTML}}/>
 	</div>
+	{{#if data.effectHTML}}
+		{{editor content=data.effect.detail target="data.effect.detail" button=true owner=owner editable=editable}}
+	{{else}}
+		<div class="form-group">
+			<input type="text" name="data.effect.detail" value="{{data.effect.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+		</div>
+	{{/if}}
 
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.Special" }}</label>
@@ -429,7 +434,7 @@
 	{{!-- Chat Message Flavor --}}
 	<div class="form-group stacked">
 		<label>{{ localize "DND4EBETA.ChatFlavor" }}</label>
-		<input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/>
+		<input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}" placeholder="{{ localize "DND4EBETA.ChatFlavorPlaceholder"}}"/>
 	</div>
 
 </div>

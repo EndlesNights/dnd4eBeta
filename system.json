@@ -2,7 +2,7 @@
 	"name": "dnd4e",
 	"title": "DnD 4th Edition",
 	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.2.50",
+	"version": "0.2.51",
 	"minimumCoreVersion": "0.8.5",
 	"compatibleCoreVersion": "9",
 	"templateVersion": 2,
@@ -71,6 +71,20 @@
 			"label": "SRD Equipment",
 			"system": "dnd4e",
 			"path": "./packs/srd_equipment.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_potions",
+			"label": "SRD Potions",
+			"system": "dnd4e",
+			"path": "./packs/srd_potions.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_powers_shared",
+			"label": "SRD Powers: Common Actions",
+			"system": "dnd4e",
+			"path": "./packs/srd_powers_shared.db",
 			"entity": "Item"
 		},
 		{
