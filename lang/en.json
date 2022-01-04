@@ -1014,5 +1014,7 @@
 "SETTINGS.4eNpcMathOptionsL": "Determins if the Advanced Math Options for NPC's is set during their generation",
 "SETTINGS.4eNpcMathOptionsN": "NPC Stats Calculate",
 "SETTINGS.4ePowerAutoGenerateLableOptionN": "Auto Generate Power Card Details",
-"SETTINGS.4ePowerAutoGenerateLableOptionL": "When creating a new power, determin if the option to \"Auto Generate Power Card Details\" is set."
+"SETTINGS.4ePowerAutoGenerateLableOptionL": "When creating a new power, determin if the option to \"Auto Generate Power Card Details\" is set.",
+"SETTINGS.4eShowRollExpressionN": "Show Roll Formula",
+"SETTINGS.4eShowRollExpressionL": "Display the formula used to create a given d20 or damage roll.  Useful to find out how a roll was calculate but may be confusing for novice users"
 }

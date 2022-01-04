@@ -27,6 +27,10 @@ export class RollWithOriginalExpression extends Roll {
 		// Execute the roll, if needed
 		if ( !this._evaluated ) await this.evaluate({async: true});
 
+		let expression = ""
+		if (game.settings.get("dnd4e", "showRollExpression")) {
+			expression = this.expression
+		}
 		// Define chat data
 		const chatData = {
 			formula: isPrivate ? "???" : this._formula,
@@ -34,7 +38,7 @@ export class RollWithOriginalExpression extends Roll {
 			user: chatOptions.user,
 			tooltip: isPrivate ? "" : await this.getTooltip(),
 			total: isPrivate ? "?" : Math.round(this.total * 100) / 100,
-			expression: this.expression
+			expression
 		};
 
 		// Render the roll display template
@@ -56,7 +60,7 @@ export class MultiAttackRoll extends Roll {
 	}
 
 	/**
-	 * Custom chat template to handle multiroll attacks 
+	 * Custom chat template to handle multiroll attacks
 	 */
 	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-multiattack.html";
 
@@ -66,8 +70,8 @@ export class MultiAttackRoll extends Roll {
 
 	/**
 	 * Push a new roll instance to the multiroll master array
-	 * @param {string} formula 
-	 * @param {object} data 
+	 * @param {string} formula
+	 * @param {object} data
 	 * @param {object} options
 	 * @return {RollWithOriginalExpression} the roll
 	 */
@@ -80,7 +84,7 @@ export class MultiAttackRoll extends Roll {
 	/**
 	 * Populate data strucutre for each of the multiroll components
 	 * @param {Object} targDataArray
-	 * @param {Array} critStateArray 
+	 * @param {Array} critStateArray
 	 */
 	populateMultirollData(targDataArray, critStateArray) {
 		for (let [i, r] of this.rollArray.entries()){
@@ -90,7 +94,7 @@ export class MultiAttackRoll extends Roll {
 			let critState = critStateArray[i];
 
 			let hitState = "";
-			
+
 			if(game.settings.get("dnd4e", "automationCombat")){
 				if (critState === " critical"){
 					hitState = "Critical Hit!"
@@ -116,18 +120,18 @@ export class MultiAttackRoll extends Roll {
 	}
 
 	/**
-   	* Render a Roll instance to HTML
-   	* @param {object} [chatOptions]      An object configuring the behavior of the resulting chat message.
-   	* @return {Promise<string>}          The rendered HTML template as a string
-	*
-	* Modified to include multirollData attribute and handle multirollData dice tooltips
-   	*/
+	 * Render a Roll instance to HTML
+	 * @param {object} [chatOptions]      An object configuring the behavior of the resulting chat message.
+	 * @return {Promise<string>}          The rendered HTML template as a string
+	 *
+	 * Modified to include multirollData attribute and handle multirollData dice tooltips
+	 */
 	async render(chatOptions={}) {
 		chatOptions = foundry.utils.mergeObject({
-		  	user: game.user.id,
-		  	flavor: null,
-		  	template: this.constructor.CHAT_TEMPLATE,
-		  	blind: false
+			user: game.user.id,
+			flavor: null,
+			template: this.constructor.CHAT_TEMPLATE,
+			blind: false
 		}, chatOptions);
 		const isPrivate = chatOptions.isPrivate;
 
@@ -138,17 +142,17 @@ export class MultiAttackRoll extends Roll {
 			let parts = roll.parts;
 			roll.tooltip = await renderTemplate(this.constructor.TOOLTIP_TEMPLATE, { parts });
 		};
-	
+
 		// Define chat data
 		const chatData = {
-		  	formula: isPrivate ? ["???"] : this._formula,
+			formula: isPrivate ? ["???"] : this._formula,
 			multirollData: isPrivate? ["???"] : this._multirollData,
-		  	flavor: isPrivate ? null : chatOptions.flavor,
-		  	user: chatOptions.user,
-		  	tooltip: isPrivate ? "" : await this.getTooltip(),
-		  	total: isPrivate ? "?" : Math.round(this.total * 100) / 100
+			flavor: isPrivate ? null : chatOptions.flavor,
+			user: chatOptions.user,
+			tooltip: isPrivate ? "" : await this.getTooltip(),
+			total: isPrivate ? "?" : Math.round(this.total * 100) / 100
 		};
-	
+
 		// Render the roll display template
 		return renderTemplate(chatOptions.template, chatData);
 	}
@@ -159,42 +163,42 @@ export class MultiAttackRoll extends Roll {
 	 */
 	toJSON() {
 		return {
-		  class: this.constructor.name,
-		  options: this.options,
-		  dice: this._dice,
-		  formula: this._formula,
-		  multirollData: this._multirollData,
-		  terms: this.terms,
-		  total: this.total,
-		  evaluated: this._evaluated
+			class: this.constructor.name,
+			options: this.options,
+			dice: this._dice,
+			formula: this._formula,
+			multirollData: this._multirollData,
+			terms: this.terms,
+			total: this.total,
+			evaluated: this._evaluated
 		}
 	}
 
 	/**
 	 * Modified from base to handle multirollData attribute
-	 * @param {object} data 
-	 * @returns 
+	 * @param {object} data
+	 * @returns
 	 */
 	static fromData(data) {
 
 		// Create the Roll instance
 		const roll = new this(data.formula, data.data, data.options);
-	
+
 		// Expand terms
 		roll.terms = data.terms.map(t => {
-		  if ( t.class ) {
-			if ( t.class === "DicePool" ) t.class = "PoolTerm"; // backwards compatibility
-			return RollTerm.fromData(t);
-		  }
-		  return t;
+			if ( t.class ) {
+				if ( t.class === "DicePool" ) t.class = "PoolTerm"; // backwards compatibility
+				return RollTerm.fromData(t);
+			}
+			return t;
 		});
-	
+
 		// Repopulate evaluated state
 		if ( data.evaluated ?? true ) {
-		  roll._total = data.total;
-		  roll._dice = (data.dice || []).map(t => DiceTerm.fromData(t));
-		  roll._multirollData = data.multirollData;
-		  roll._evaluated = true;
+			roll._total = data.total;
+			roll._dice = (data.dice || []).map(t => DiceTerm.fromData(t));
+			roll._multirollData = data.multirollData;
+			roll._evaluated = true;
 		}
 		return roll;
 	}
@@ -229,24 +233,16 @@ export class MultiAttackRoll extends Roll {
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
 export async function d20Roll({parts=[],  expressionParts= [], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
-								flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null,
-								isAttackRoll=false, options=null,}={}) {
-
-	// Handle input arguments
-	flavor = flavor || title;
-	speaker = speaker || ChatMessage.getSpeaker();
-	parts = parts.concat(["@bonus"]);
-	rollMode = rollMode || game.settings.get("core", "rollMode");
+								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null,
+								  isAttackRoll=false, options=null}={}) {
 	const rollConfig = {parts, expressionParts, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options }
 
-	// Determine whether the roll can be fast-forward
-	if ( fastForward === null ) {
-		fastForward = event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
-	}
+	// handle input arguments
+	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
 
 	// If fast-forward requested, perform the roll without a dialog
-	if ( fastForward ) {
-		return performRoll(null, rollConfig)
+	if ( rollConfig.fastForward ) {
+		return performD20RollAndCreateMessage(null, rollConfig)
 	}
 
 	// Render modal dialog
@@ -294,7 +290,7 @@ export async function d20Roll({parts=[],  expressionParts= [], data={}, event={}
 			buttons: {
 				normal: {
 					label: game.i18n.localize("DND4EBETA.Roll"),
-					callback: html => roll = performRoll(html[0].querySelector("form"), rollConfig)
+					callback: html => roll = performD20RollAndCreateMessage(html[0].querySelector("form"), rollConfig)
 				}
 			},
 			default: "normal",
@@ -306,14 +302,13 @@ export async function d20Roll({parts=[],  expressionParts= [], data={}, event={}
 	})
 }
 
-async function performRoll(form, {parts, expressionParts, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options}) {
+async function performD20RollAndCreateMessage(form, {parts, expressionParts, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options}) {
 	/*
 	 coming in the parts[] is in one of the following states:
 	 - Empty
 	 - containing some @variables (e.g. @ammo)
-	 - containing some formula that have already been poked (1+2+3)
+	 - containing some formula that have already been expanded (1+2+3)
 	 */
-
 
 	// define if we are rolling a d20
 	if(!parts.includes("@tool")) {
@@ -329,22 +324,7 @@ async function performRoll(form, {parts, expressionParts, data, speaker, rollMod
 
 	// sort out @bonus which was shoved onto the end of the expression to represent floating situational bonuses
 	// either the user specified one, or we want to get rid of it.  Also prettifiy if they made their bonus +1d6 - strip out the leading +
-	if ( form !== null ) {
-		if (form.bonus.value) {
-			// remove double +
-			let trimmed = form.bonus.value.trim()
-			if (trimmed.startsWith("+")) {
-				trimmed = trimmed.substring(1)
-			}
-			data['bonus'] = trimmed
-		}
-		else {
-			data['bonus'] = 0
-		}
-	}
-	else{
-		parts.pop()
-	}
+	manageBonusInParts(parts, form, data)
 
 	let allRollsParts = []
 	if (isAttackRoll && form !== null) {
@@ -391,7 +371,7 @@ async function performRoll(form, {parts, expressionParts, data, speaker, rollMod
 	}
 
 	// time to actually do the roll
-	let roll = new MultiAttackRoll(parts.join(" + "), data); // initial roll data is never going to be used, but makes foundry happy
+	let roll = new MultiAttackRoll(parts.filterJoin(" + "), data); // initial roll data is never going to be used, but makes foundry happy
 	const targets = Array.from(game.user.targets);
 	const targetData = {
 		targNameArray: [],
@@ -403,7 +383,7 @@ async function performRoll(form, {parts, expressionParts, data, speaker, rollMod
 		const rollExpression = allRollsParts[rollExpressionIdx]
 		let subroll
 		try {
-			subroll = roll.addNewRoll(rollExpression.join("+"), data, {expression: createExpression(rollExpression, expressionParts)});
+			subroll = roll.addNewRoll(rollExpression.filterJoin("+"), data, {expression: createExpression(rollExpression, expressionParts)});
 		}
 		catch(err) {
 			// let the user know what is going on if the roll doesn't evaluate.
@@ -451,26 +431,10 @@ async function performRoll(form, {parts, expressionParts, data, speaker, rollMod
 	return roll;
 }
 
-function createExpression(parts, expressionParts) {
-	const result = [...parts]
-	//n^2, but simple and n will always be small
-	for(let i = 0; i<result.length; i++) {
-		const toReplace = result[i]
-		expressionParts.forEach(element => {
-			if (element.target === toReplace) {
-				result[i] = element.value
-			}
-		})
-	}
-
-	return result.join("+")
-}
-
-
 /* -------------------------------------------- */
 
 /**
- * A standardized helper function for managing core 4e "d20 rolls"
+ * A standardized helper function for managing core 4e damage rolls
  *
  * Holding SHIFT, ALT, or CTRL when the attack is rolled will "fast-forward".
  * This chooses the default options of a normal attack with no bonus, Critical, or no bonus respectively
@@ -486,7 +450,7 @@ function createExpression(parts, expressionParts) {
  *                                 Each element should be in the form of { target: 'Text To Replace', value: 'text to replace with' }
  * @param {Actor} actor           The Actor making the damage roll
  * @param {Object} data           Actor or item data against which to parse the roll
- * @param {Event|object}[event    The triggering event which initiated the roll
+ * @param {Event|object} event    The triggering event which initiated the roll
  * @param {string} rollMode       A specific roll mode to apply as the default for the resulting roll
  * @param {String} template       The HTML template used to render the roll dialog
  * @param {String} title          The dice roll UI window title
@@ -497,74 +461,31 @@ function createExpression(parts, expressionParts) {
  * @param {Boolean} fastForward   Allow fast-forward advantage selection
  * @param {Function} onClose      Callback for actions to take when the dialog form is closed
  * @param {Object} dialogOptions  Modal dialog options
+ * @param {boolean} healingRoll   If the roll is a healing roll rather than a damage roll.
  *
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
-export async function damageRoll({parts, partsCrit, partsMiss, partsExpression= [], partsCritExpression= [], partsMissExpression= [], actor, data, event={},
-									 rollMode=null, template, title, speaker, flavor,
-	allowCritical=true, critical=false, fastForward=null, onClose, dialogOptions, healingRoll}) {
-	// Handle input arguments
-	flavor = flavor || title;
-	speaker = speaker || ChatMessage.getSpeaker();
-	rollMode = game.settings.get("core", "rollMode");
-	let formula = '';
-	// Define inner roll function
-	const _roll = function(parts, partsCrit, partsMiss, hitType, form) {
-		if(form){data['bonus'] = form.bonus.value || 0;}
-		
-		let roll;
-		
-		if(hitType === 'normal'){
-			roll = new RollWithOriginalExpression(parts.filterJoin("+"), data, {expression: createExpression(parts, partsExpression)});
-		}
-		else if (hitType === 'crit') {
-			roll = new RollWithOriginalExpression(partsCrit.filterJoin("+"), data, {expression: createExpression(partsCrit, partsCritExpression)})
-			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
-		}
-		else if (hitType === 'miss') {
-			roll = new RollWithOriginalExpression(partsMiss.filterJoin("+"), data, {expression: createExpression(partsMiss, partsMissExpression)});
-			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Miss")})`;
-		}
-		else if (hitType === 'heal') {
-			roll = new RollWithOriginalExpression(parts.filterJoin("+"), data, {expression: createExpression(parts, partsExpression)});
-			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Healing")})`;
-		} else {
-			roll = new RollWithOriginalExpression(parts.filterJoin("+"), data, {expression: createExpression(parts, partsExpression)});
-		}
+export async function damageRoll({parts, partsCrit, partsMiss, partsExpression= [], partsCritExpression= [], partsMissExpression= [], actor,
+									 data, event={}, rollMode=null, template, title, speaker, flavor, allowCritical=true,
+									 critical=false, fastForward=null, onClose, dialogOptions, healingRoll}) {
 
-		critical = (hitType === 'crit');
+	// First configure the Roll
+	const rollConfig = {parts, partsCrit, partsMiss, data, flavor, rollMode, partsExpression, partsCritExpression, partsMissExpression, speaker, hitType: 'normal'}
 
-		if(form?.flavor.value){
-			flavor = form.flavor.value || flavor;
-		}
+	// handle input arguments
+	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
 
-		// Convert the roll to a chat message
-		rollMode = form ? form.rollMode.value : rollMode;
-		roll.toMessage({
-			speaker: speaker,
-			flavor: flavor
-		}, { rollMode });
-		return roll;
-	};
-
-	// Determine whether the roll can be fast-forward
-	if ( fastForward === null ) {
-		fastForward = event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
-	}
+	// crit and miss need a @bonus as well as parts
+	rollConfig.partsCrit = partsCrit?.concat(["@bonus"]);
+	rollConfig.partsMiss = partsMiss?.concat(["@bonus"]);
 
 	// Modify the roll and handle fast-forwarding
-	if ( fastForward ) {
-		// console.log(critical || event.altKey);
-		// return _roll(parts, partsCrit, critical || event.altKey);
-		return _roll(parts, partsCrit, critical || event.altKey);
-		// return _roll(parts, partsCrit, true, html[0].querySelector("form"))
+	if ( rollConfig.fastForward ) {
+		return performDamageRollAndCreateChatMessage(null, rollConfig);
 	}
-	// else parts = critical ? partsCrit.concat(["@bonus"]) : parts.concat(["@bonus"]);
-	parts = parts.concat(["@bonus"]);
-	partsCrit = partsCrit?.concat(["@bonus"]);
-	partsMiss = partsMiss?.concat(["@bonus"]);
 
-	formula = parts.join(" + ");
+	// If they didn't want fast forward, then we need to display the rolls bonus input dialog.
+
 	// Render modal dialog
 	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
@@ -576,59 +497,154 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpression= 
 	const html = await renderTemplate(template, dialogData);
 
 	// Create the Dialog window
+	// this roll object will be set if any of the buttons are pressed
 	let roll;
+	// helper function for running the roll, as all the dialogs do basically the same thing
+	const doRoll = (html, hitType) =>  {
+		rollConfig.hitType = hitType
+		return performDamageRollAndCreateChatMessage(html[0].querySelector("form"), rollConfig)
+	}
+	// common dialog configuration
+	const dialogConfig = {
+		title: title,
+		content: html,
+		buttons: {
+		},
+		default: "normal"
+	}
+	// add the buttons
+	if (healingRoll) {
+		dialogConfig.buttons = {
+			normal: {
+				label: game.i18n.localize("DND4EBETA.Healing"),
+				callback: html => roll = doRoll(html, 'heal')
+			}
+		}
+	}
+	else {
+		dialogConfig.buttons = {
+			critical: {
+				condition: allowCritical,
+				label: game.i18n.localize("DND4EBETA.CriticalHit"),
+				callback: html => roll = doRoll(html, 'crit')
+			},
+			normal: {
+				label: game.i18n.localize(allowCritical ? "DND4EBETA.Normal" : "DND4EBETA.Roll"),
+				callback: html => roll = doRoll(html, 'normal')
+			}
+		}
+		if(data.item.miss.formula){
+			dialogConfig.buttons.miss = {
+				label: game.i18n.localize(allowCritical ? "DND4EBETA.Miss" : "DND4EBETA.Roll"),
+				callback:  html => roll = doRoll(html, 'miss')
+			}
+		}
+	}
+	// render the dialog
+	return new Promise(resolve => {
+		dialogConfig.close = html => {
+			if (onClose) onClose(html, parts, data);
+			resolve(roll !== undefined ? roll : false);
+		}
 
-	if(healingRoll){
-		return new Promise(resolve =>{
-			new Dialog({
-				title: title,
-				content: html,
-				buttons: {
-					normal: {
-						label: game.i18n.localize("DND4EBETA.Healing"),
-						callback: html => roll = _roll(parts, partsCrit, partsMiss, 'heal', html[0].querySelector("form"))
-					}
-				},
-				default: "normal",
-				close: html => {
-					if (onClose) onClose(html, parts, data);
-					resolve(roll !== undefined ? roll : false);
-				}				
-			}, dialogOptions).render(true);
-		});
+		new Dialog(dialogConfig, dialogOptions).render(true);
+	});
+}
+
+function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, partsMiss, data, hitType, flavor, rollMode, partsExpression, partsCritExpression, partsMissExpression, speaker}) {
+	manageBonusInParts(parts, form, data)
+	manageBonusInParts(partsCrit, form, data)
+	manageBonusInParts(partsMiss, form, data)
+
+	let roll;
+	if(hitType === 'normal'){
+		roll = new RollWithOriginalExpression(parts.filterJoin("+"), data, {expression: createExpression(parts, partsExpression)});
+	}
+	else if (hitType === 'crit') {
+		roll = new RollWithOriginalExpression(partsCrit.filterJoin("+"), data, {expression: createExpression(partsCrit, partsCritExpression)})
+		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
+	}
+	else if (hitType === 'miss') {
+		roll = new RollWithOriginalExpression(partsMiss.filterJoin("+"), data, {expression: createExpression(partsMiss, partsMissExpression)});
+		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Miss")})`;
+	}
+	else if (hitType === 'heal') {
+		roll = new RollWithOriginalExpression(parts.filterJoin("+"), data, {expression: createExpression(parts, partsExpression)});
+		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Healing")})`;
 	} else {
-		return new Promise(resolve => {
-
-			const buttons = {
-				critical: {
-					condition: allowCritical,
-					label: game.i18n.localize("DND4EBETA.CriticalHit"),
-					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'crit', html[0].querySelector("form"))
-				},
-				normal: {
-					label: game.i18n.localize(allowCritical ? "DND4EBETA.Normal" : "DND4EBETA.Roll"),
-					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'normal', html[0].querySelector("form"))
-				}
-			}
-
-			if(data.item.miss.formula){
-				buttons.miss = {
-					label: game.i18n.localize(allowCritical ? "DND4EBETA.Miss" : "DND4EBETA.Roll"),
-					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'miss', html[0].querySelector("form"))
-				}
-			}
-
-			new Dialog({
-				title: title,
-				content: html,
-				buttons: buttons,
-				default: "normal",
-				close: html => {
-					if (onClose) onClose(html, parts, data);
-					resolve(roll !== undefined ? roll : false);
-				}
-			}, dialogOptions).render(true);
-		});
+		roll = new RollWithOriginalExpression(parts.filterJoin("+"), data, {expression: createExpression(parts, partsExpression)});
 	}
 
+	if (form?.flavor.value) {
+		flavor = form.flavor.value || flavor;
+	}
+	// Convert the roll to a chat message
+	rollMode = form ? form.rollMode.value : rollMode;
+	roll.toMessage({
+		speaker,
+		flavor
+	}, { rollMode });
+	return roll;
+}
+
+
+// General helper functions for both attack and damage rolls
+
+function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward) {
+	// Handle input arguments
+	rollConfig.flavor = flavor || title;
+	rollConfig.speaker = speaker || ChatMessage.getSpeaker();
+	rollConfig.parts = parts.concat(["@bonus"]);
+	rollConfig.rollMode = rollMode || game.settings.get("core", "rollMode");
+
+	// Determine whether the roll can be fast-forward, make explicit comparison here as it might be set as false, so no falsey checks
+	if ( fastForward === null ) {
+		rollConfig.fastForward = event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
+	}
+	return rollConfig
+}
+
+/**
+ * sort out @bonus which was shoved onto the end of the expression to represent floating situational bonuses
+ * either the user specified one, or we want to get rid of it.  Also prettifiy if they made their bonus +1d6 - strip out the leading +
+ * @param parts The parts of the formula we were given, will have @bonus as the last element
+ * @param form The user input form (may be null)
+ * @param data The roll data
+ */
+function manageBonusInParts(parts, form, data) {
+	if ( form !== null ) {
+		if (form.bonus.value) {
+			// remove double +
+			let trimmed = form.bonus.value.trim()
+			if (trimmed.startsWith("+")) {
+				trimmed = trimmed.substring(1)
+			}
+			data['bonus'] = trimmed
+		}
+		else {
+			data['bonus'] = 0
+		}
+	}
+	else {
+		if (parts && parts.length > 0) {
+			if (parts[parts.length - 1] === "@bonus") {
+				parts.pop()
+			}
+		}
+	}
+}
+
+function createExpression(parts, expressionParts) {
+	const result = [...parts]
+	//n^2, but simple and n will always be small
+	for(let i = 0; i<result.length; i++) {
+		const toReplace = result[i]
+		expressionParts.forEach(element => {
+			if (element.target === toReplace) {
+				result[i] = element.value
+			}
+		})
+	}
+
+	return result.filterJoin("+")
 }

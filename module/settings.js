@@ -124,6 +124,18 @@ export const registerSystemSettings = function() {
 		}
 	});
 
+	/**
+	 * show the roll expression formula when making d20 rolls
+	 */
+	game.settings.register("dnd4e", "showRollExpression",{
+		name: "SETTINGS.4eShowRollExpressionN",
+		hint: "SETTINGS.4eShowRollExpressionL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean
+	});
+
 
 	// /**
 	//  * Option to allow GMs to restrict polymorphing to GMs only.
