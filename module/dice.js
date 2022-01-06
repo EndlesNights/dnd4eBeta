@@ -31,19 +31,66 @@ export class RollWithOriginalExpression extends Roll {
 		if (game.settings.get("dnd4e", "showRollExpression")) {
 			expression = this.expression
 		}
+		let regexp = /"(.+)"/g;
 		// Define chat data
 		const chatData = {
-			formula: isPrivate ? "???" : this._formula,
+			formula: isPrivate ? "???" : this.badger(this._formula, this.options.expressionArr, true),
 			flavor: isPrivate ? null : chatOptions.flavor,
 			user: chatOptions.user,
 			tooltip: isPrivate ? "" : await this.getTooltip(),
 			total: isPrivate ? "?" : Math.round(this.total * 100) / 100,
-			expression
+			expression: this.badger(this._formula, this.options.expressionArr, false),
 		};
 
 		// Render the roll display template
 		return renderTemplate(chatOptions.template, chatData);
 	}
+
+	badger(formula, expressionParts, form = true) {
+		const startTag = "<span>"
+		const endTag = "</span>"
+		let newFormula = ""
+		let newExpression = ""
+
+		let openBracket = 0;
+		let activeExpression = null
+		let expressionIdx = 0;
+		for (let i = 0; i < formula.length; i++) {
+			const char = formula.charAt(i)
+			if (char === '(') {
+				if (openBracket === 0) {
+					activeExpression = expressionParts[expressionIdx]
+					newFormula += `<span id="form${expressionIdx}">`
+					newExpression += `<span id="exp${expressionIdx}" onmouseenter="mouseEnter('${expressionIdx}')" onmouseleave="mouseLeave('${expressionIdx}')">`
+				}
+				openBracket++
+				newFormula += char
+				continue
+			}
+			if (char === ')') {
+				openBracket--
+				newFormula += char
+				if (openBracket === 0) {
+					newFormula += `</span>`
+					newExpression += activeExpression
+					newExpression += `</span>`
+					newExpression += " + "
+					expressionIdx++
+				}
+				continue
+			}
+			newFormula += char
+		}
+
+		if (form) {
+			return newFormula
+		}
+		else {
+			return newExpression.substring(0, newExpression.length - 3)
+		}
+
+	}
+
 
 }
 
@@ -80,6 +127,17 @@ export class MultiAttackRoll extends Roll {
 		this.rollArray.push(r);
 		return r
 	}
+
+	createRoll(parts, expressionParts, data, options) {
+		const expression = parts.map(x => `(${x})`).join("+")
+		options.parts = parts
+		options.expressionArr = createExpression2(parts, expressionParts)
+		options.expression = createExpression(parts, expressionParts)
+		const roll = new RollWithOriginalExpression(expression, data, options).roll({async : false});
+		this.rollArray.push(roll);
+		return roll;
+	}
+
 
 	/**
 	 * Populate data strucutre for each of the multiroll components
@@ -383,7 +441,9 @@ async function performD20RollAndCreateMessage(form, {parts, expressionParts, dat
 		const rollExpression = allRollsParts[rollExpressionIdx]
 		let subroll
 		try {
-			subroll = roll.addNewRoll(rollExpression.filterJoin("+"), data, {expression: createExpression(rollExpression, expressionParts)});
+			subroll = roll.createRoll(rollExpression, expressionParts, data, {})
+
+			//addNewRoll(rollExpression.map(x => `[${x}]`).filterJoin("+"), data, {expression: createExpression(rollExpression, expressionParts)});
 		}
 		catch(err) {
 			// let the user know what is going on if the roll doesn't evaluate.
@@ -647,4 +707,19 @@ function createExpression(parts, expressionParts) {
 	}
 
 	return result.filterJoin("+")
+}
+
+function createExpression2(parts, expressionParts) {
+	const result = [...parts]
+	//n^2, but simple and n will always be small
+	for(let i = 0; i<result.length; i++) {
+		const toReplace = result[i]
+		expressionParts.forEach(element => {
+			if (element.target === toReplace) {
+				result[i] = element.value
+			}
+		})
+	}
+
+	return result
 }

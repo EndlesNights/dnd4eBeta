@@ -3,9 +3,21 @@
     <div class="dice-flavor">{{flavor}}</div>
     {{/if}}
     <div class="dice-result">
-        <div class="dice-formula">{{formula}}</div>
-        <div class="dice-tooltip dice-formula">{{expression}}</div>
+        <div class="dice-formula">{{{formula}}}</div>
+        <div class="dice-tooltip dice-formula">{{{expression}}}</div>
         {{{tooltip}}}
         <h4 class="dice-total">{{total}}</h4>
     </div>
 </div>
+
+<script>
+    function mouseEnter(id) {
+        document.getElementById("form" + id).style.backgroundColor = "#99ccff"
+        document.getElementById("exp" + id).style.backgroundColor = "#99ccff"
+    }
+
+    function mouseLeave(id) {
+        document.getElementById("form" + id).style.backgroundColor = null
+        document.getElementById("exp" + id).style.backgroundColor = null
+    }
+</script>
