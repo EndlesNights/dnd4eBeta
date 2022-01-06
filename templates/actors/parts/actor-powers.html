@@ -1,7 +1,7 @@
 <ol class="items-list inventory-list" style="height: 100%;">
 	<header class="power-filters flexrow">
 		<div class="group-powers" style="max-width: 144px;">
-			<input type="hidden" name="flags.dnd4eAltus.sheetDisplay.powers.groupBy.value">
+			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.groupBy.value">
 			<label for="power-group">GroupBy</label><br>
 			<select name="data.powerGroupTypes" style="min-width: 128px;">
 				{{#select data.powerGroupTypes}}
@@ -13,8 +13,8 @@
 		</div>
 
 		<div class="sort-powers" style="max-width: 144px;">
-			<input type="hidden" name="flags.dnd4eAltus.sheetDisplay.powers.sortBy.value">
-			<label for="power-sort">SortyBy</label><br>
+			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.sortBy.value">
+			<label for="power-sort">SortBy</label><br>
 			<select name="data.powerSortTypes" style="min-width: 128px;">
 				{{#select data.powerSortTypes}}
 				{{#each config.powerSortTypes as |name type|}}
@@ -48,16 +48,16 @@
 				{{/each}}
 			{{else}}
 				<div class="item-detail item-range">Range</div>
-				<div class="item-detail item-action" title="{{localize 'DND4EALTUS.Action'}}">Act.</div>
-				<!-- <div class="item-detail item-uses">{{localize "DND4EALTUS.Charges"}}</div> -->
-				<div class="item-detail item-uses">{{localize "DND4EALTUS.Charges"}}</div>
+				<div class="item-detail item-action" title="{{localize 'DND4EBETA.Action'}}">Act.</div>
+				<!-- <div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div> -->
+				<div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div>
 				{{/if}}
 				<div class="item-detail item-prep" title="Power Prepared">Prep.</div>
 			{{#if ../owner}}
 			<div class="item-controls">
-				<a class="item-control power-create" title='{{localize "DND4EALTUS.ItemCreate"}}'
+				<a class="item-control power-create" title='{{localize "DND4EBETA.ItemCreate"}}'
 				   {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-					<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
+					<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 				</a>
 			</div>
 			{{/if}}
@@ -100,45 +100,27 @@
 							{{/if}}
 						</div>
 						<div class="item-detail power-detail item-uses">
-							{{#if item.hasUses }}
-								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
-								/ {{item.data.uses.max}}
+							{{#if item.data.notAvailable}}
+								{{#if item.data.rechargeRoll}}
+								<a class="item-recharge rollable" title="Click to roll 1d6 and recharge power on a roll of {{item.data.rechargeRoll}} or higher">Recharge[+{{item.data.rechargeRoll}}]</a>
+								{{else if item.data.rechargeCondition}}
+								<a class="item-recharge rollable" title="Click to recharge power when the condition of &quot;{{item.data.rechargeCondition}}&quot; is met">Recharge[C]</a>
+								{{else}}
+								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
+								{{/if}}
+							{{else}}
+								{{#if item.hasUses}}
+								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
+								{{/if}}
 							{{/if}}
 						</div>
 					{{/if}}
 			
 					{{#if ../owner}}
 					<div class="item-controls flexrow">
-						<a class="item-control item-create" title="{{localize 'DND4EALTUS.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-							<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
+						<a class="item-control item-create" title="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+							<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 						</a>
-					</div>
-					{{/if}}
-
-					{{#if section.hasActions}}
-					<div class="item-detail power-detail item-uses">
-						{{#if item.isOnCooldown}}
-						<a class="item-recharge rollable">{{item.labels.recharge}}</a>
-						{{else if item.data.recharge.value}}
-						{{localize "DND4EALTUS.Charged"}}
-		
-						{{else if item.hasUses}}
-						<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
-						{{/if}}
-					</div>
-		
-					<div class="item-detail power-detail item-action">
-						{{#if item.data.activation.type }}
-						{{item.labels.activation}}
-						{{/if}}
-					</div>
-		
-					{{else if section.isClass}}
-					<div class="item-detail player-class">
-						{{item.data.subclass}}
-					</div>
-					<div class="item-detail power-detail item-action">
-						Level {{item.data.levels}}
 					</div>
 					{{/if}}
 		
@@ -199,4 +181,4 @@
 			}
 		}
 	}
-	</script>
+</script>

@@ -34,8 +34,8 @@
 					"value": 10,
 					"min": 0,
 					"max": 10,
-					"starting": 10,
-					"perlevel": 5,
+					"starting": 0,
+					"perlevel": 0,
 					"feat": 0,
 					"misc": 0,
 					"autototal": false,
@@ -68,7 +68,6 @@
 			"defences": {
 				"ac": {
 					"value": 10,
-					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -83,7 +82,6 @@
 				},
 				"fort": {
 					"value": 10,
-					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -96,7 +94,6 @@
 				},
 				"ref": {
 					"value": 10,
-					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -109,7 +106,6 @@
 				},
 				"wil": {
 					"value": 10,
-					"base": 10,
 					"ability": "",
 					"armour": 0,
 					"class": 0,
@@ -121,8 +117,30 @@
 					"chat": "@name defends with willpower."
 				}	
 			},
+			"modifiers":{
+				"attack":{
+					"value": 0,
+					"class": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
+					"race": 0,
+					"bonus": [{}]
+				},
+				"damage":{
+					"value": 0,
+					"class": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
+					"race": 0,
+					"bonus": [{}]
+				}
+			},
+			
 			"details": {
 				"level": 1,
+				"tier": 1,
 				"exp": 0,
 				"class": "",
 				"paragon": "",
@@ -354,19 +372,19 @@
 					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
+				"pra": {
+					"value": 0,
+					"base": 0,
+					"bonus": [{}],
+					"ability": "wis",
+					"chat": "@name uses @label."
+				},	
 				"prc": {
 					"value": 0,
 					"base": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"pra": {
-					"value": 0,
-					"base": 0,
-					"bonus": [{}],
-					"ability": "wis",
 					"chat": "@name uses @label."
 				},
 				"rel": {
@@ -531,6 +549,7 @@
 		"templates": ["common"],
 		"advancedCals": false,
 		"details": {
+			
 			"origin": "natural",
 			"type": "humanoid",
 			"other": "",
@@ -539,6 +558,7 @@
 				"secondary": "regular"
 			},
 			"level": 1,
+			"tier": 1,
 			"exp": 0,
 			"class": "",
 			"paragon": "",
@@ -757,6 +777,9 @@
 		"consumableType": "potion",
 		"uses": {
 		"autoDestroy": false
+		},
+		"damage": {
+			"parts": []
 		}
 	},
 	"equipment": {
@@ -788,6 +811,7 @@
 	"feat": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
+		"level": "",
 		"recharge": {
 		"value": null,
 		"charged": false
@@ -816,7 +840,7 @@
 		"isRanged": false,
 		"range": {"value": 5, "long": 10},
 		"damageDice": {
-			"parts": [["1","8"]]
+			"parts": [["1","8",""]]
 		},
 		"damage": {
 			"parts": []
@@ -844,19 +868,23 @@
 	},
 	"raceFeats": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
-		"requirements": ""
+		"requirements": "",
+		"level": ""
 	},
 	"pathFeats": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
-		"requirements": ""
+		"requirements": "",
+		"level": ""
 	},
 	"destinyFeats": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
-		"requirements": ""
+		"requirements": "",
+		"level": ""
 	},
 	"ritual": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"requirements": "",
+		"level": "",
 		"chatFlavor": "",
 		"attribute": "skills.arc.total",
 		"formula": "@skill"
@@ -864,8 +892,9 @@
 	"power": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 		"keyWords": [""],
-		"level": "1",
+		"level": "",
 		"powersource": "martial",
+		"secondPowersource": "",
 		"subName": "",
 		"prepared": true,
 		"powerType": "class",
@@ -880,6 +909,7 @@
 		"rangePower": "",
 		"area": 0,
 		"rechargeRoll": "",
+		"rechargeCondition": "",
 		"damageShare": false,
 		"postEffect": true,
 		"postSpecial": true,
@@ -896,7 +926,7 @@
 			"abilityBonus": 0,
 			"def": "ac",
 			"defBonus": 0,
-			"formula": "@wepAttack+@powerMod",
+			"formula": "@wepAttack + @powerMod + @atkMod",
 			"damageType": {},
 			"effectType": {}
 		},
@@ -907,13 +937,13 @@
 			"baseQuantity": 1,
 			"baseDiceType": "Base Weapon Damage",
 			"detail": "1[W] + Strength modifier damage.",
-			"formula": "@powBase + @powerMod + @wepDamage",
-			"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
+			"formula": "@powBase + @powerMod + @wepDamage + @dmgMod",
+			"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus + @dmgMod",
 			"healFormula": ""
 		},
 		"miss": {
 			"detail": "Half Damage.",
-			"formula": "@{damageFormula}/2"
+			"formula": "@damageFormula/2"
 		},
 		"effect": {
 			"detail": ""

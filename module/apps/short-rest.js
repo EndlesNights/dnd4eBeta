@@ -4,8 +4,8 @@ export class ShortRestDialog extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "short-rest",
-			classes: ["dnd4eAltus", "actor-rest"],
-			template: "systems/dnd4eAltus/templates/apps/short-rest.html",
+			classes: ["dnd4eBeta", "actor-rest"],
+			template: "systems/dnd4e/templates/apps/short-rest.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -38,12 +38,12 @@ export class ShortRestDialog extends DocumentSheet {
 				if(formData.bonus != "" ){
 					r = new Roll(formData.bonus);
 					try{
-						r.roll();
+						await r.roll({async : true});
 
 					}catch (error){
-						
-						console.log("Invalid roll input into healing surge bonus.");
-						r.roll();
+						ui.notifications.error(game.i18n.localize("DND4EBETA.InvalidHealingBonus"));
+						r = new Roll("0");
+						await r.roll({async : true});
 					}
 				}
 				healamount += this.object.data.data.details.surgeValue + (r.total || 0);
@@ -78,15 +78,16 @@ export class ShortRestDialog extends DocumentSheet {
 		const items = this.object.items.filter(item => item.data.data.uses?.per === "enc");
 		const updateItems = items.map( item => {
 			return {
-				_id: item._id,
+				_id: item.id,
 				"data.uses.value": item.data.data.uses.max
 			};
 		});
 		// await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
+		console.log(updateItems)
 		await this.object.updateEmbeddedDocuments("Item", updateItems);
 		
 		ChatMessage.create({
-			user: game.user._id,
+			user: game.user.id,
 			speaker: {actor: this.object, alias: this.object.data.name},
 			// flavor: restFlavor,
 			// content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP."

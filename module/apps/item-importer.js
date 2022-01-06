@@ -4,8 +4,8 @@ export class ItemImporterDialog extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "item-importer",
-			classes: ["dnd4eAltus", "item-importer"],
-			template: "systems/dnd4eAltus/templates/apps/item-importer.html",
+			classes: ["dnd4eBeta", "item-importer"],
+			template: "systems/dnd4e/templates/apps/item-importer.html",
 			width: 500,
 			closeOnSubmit: false
 		});
@@ -20,7 +20,6 @@ export class ItemImporterDialog extends DocumentSheet {
 		return {data: this.object.data.data}
 	}
 	async _updateObject(event, formData) {
-		console.log(this)
 		let obj = "";
 
 		try{
@@ -41,6 +40,6 @@ export class ItemImporterDialog extends DocumentSheet {
 		//assign obj ID if one was not made
 		if(!obj._id) { obj._id = randomID(16); }
 		//generate new item
-		this.object.createOwnedItem(obj)
+		this.object.createEmbeddedDocuments("Item",[obj])
 	}
 }

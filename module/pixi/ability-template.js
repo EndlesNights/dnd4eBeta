@@ -1,4 +1,4 @@
-import { DND4EALTUS } from "../config.js";
+import { DND4EBETA } from "../config.js";
 
 /**
  * A helper class for building MeasuredTemplates for 4e spells and abilities
@@ -13,8 +13,8 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	 */
 	static fromItem(item) {
 		// const target = getProperty(item.data, "data.target") || {};
-		// const templateShape = DND4EALTUS.areaTargetTypes[target.type];
-		const templateShape = DND4EALTUS.areaTargetTypes[item.data.data.rangeType];
+		// const templateShape = DND4EBETA.areaTargetTypes[target.type];
+		const templateShape = DND4EBETA.areaTargetTypes[item.data.data.rangeType];
 	
 	let distance = item.data.data.area;
 	if(item.data.data.rangeType === "closeBlast" || item.data.data.rangeType === "rangeBlast") {
@@ -57,7 +57,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		// Prepare template data
 		const templateData = {
 			t: templateShape,
-			user: game.user._id,
+			user: game.user.id,
 			distance: distance,
 			direction: 0,
 			x: 0,

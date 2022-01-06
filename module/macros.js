@@ -16,7 +16,7 @@ export async function create4eMacro(data, slot) {
   const item = data.data;
 
   // Create the macro command
-  const command = `game.dnd4eAltus.rollItemMacro("${item.name}");`;
+  const command = `game.dnd4eBeta.rollItemMacro("${item.name}");`;
   let macro = game.macros.entities.find(m => (m.name === item.name) && (m.command === command));
   if ( !macro ) {
     macro = await Macro.create({
@@ -24,7 +24,7 @@ export async function create4eMacro(data, slot) {
       type: "script",
       img: item.img,
       command: command,
-      flags: {"dnd4eAltus.itemMacro": true}
+      flags: {"dnd4eBeta.itemMacro": true}
     });
   }
   game.user.assignHotbarMacro(macro, slot);
@@ -55,7 +55,7 @@ export function rollItemMacro(itemName) {
   const item = items[0];
 
   // Trigger the item roll
-  const power = ["power","atwill","encounter","daily","utility"];
+  const power = ["power","atwill","encounter","daily","utility", "item"];
   if ( power.includes(item.data.type)) return actor.usePower(item);
   return item.roll();
 }

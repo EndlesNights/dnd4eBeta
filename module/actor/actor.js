@@ -1,7 +1,7 @@
 import { d20Roll, damageRoll } from "../dice.js";
 import AbilityUseDialog from "../apps/ability-use-dialog.js";
 import AbilityTemplate from "../pixi/ability-template.js"
-import { DND4EALTUS } from "../config.js";
+import { DND4EBETA } from "../config.js";
 import { Helper } from "../helper.js"
 
 /**
@@ -17,7 +17,7 @@ export class Actor4e extends Actor {
 	}
 //   getRollData() {
 //     const data = super.getRollData();
-//     const shorthand = game.settings.get("dnd4eAltus", "macroShorthand");
+//     const shorthand = game.settings.get("dnd4e", "macroShorthand");
 
 	// Re-map all attributes onto the base roll data
 	// if ( !!shorthand ) {
@@ -46,14 +46,14 @@ export class Actor4e extends Actor {
 	
 //     return data;
 //   }
-  
+
 	constructor(data, context) {
 		super(data, context);
 		
 		//Set default NPC Math Options
 		if(data.type==='NPC'){
 			if(data?.data?.advancedCals == undefined){
-				this.data.data.advancedCals = game.settings.get("dnd4eAltus", "npcMathOptions");
+				this.data.data.advancedCals = game.settings.get("dnd4e", "npcMathOptions");
 
 			}
 		}
@@ -66,6 +66,37 @@ export class Actor4e extends Actor {
 
 	}
 
+	/** @override */
+	async update(data, options={}) {
+		if(!data) { return super.update(data, options); }
+		// Apply changes in Actor size to Token width/height
+		const newSize = data["data.details.size"];
+		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this.data, "data.details.size")) )) {
+			let size = CONFIG.DND4EBETA.tokenSizes[newSize];
+			if ( this.isToken ) this.token.update({height: size, width: size});
+			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
+				data["token.height"] = size;
+				data["token.width"] = size;
+			}
+		}
+
+		if(data[`data.details.level`]){
+			if(this.data.data.details.tier != Math.clamped(Math.floor(( data[`data.details.level`] - 1 ) /10 + 1),1,3)){
+				this.data.data.details.tier = Math.clamped(Math.floor(( data[`data.details.level`] - 1 ) /10 + 1),1,3);
+				data[`data.details.tier`] = this.data.data.details.tier;
+			}		
+		}
+		for (let [id, abl] of Object.entries(this.data.data.abilities)){
+			if(data[`data.abilities.${id}.value`]){
+				if(this.data.data.abilities[id].mod != Math.floor((data[`data.abilities.${id}.value`] - 10) / 2)){
+					data[`data.abilities.${id}.mod`] = Math.floor((data[`data.abilities.${id}.value`] - 10) / 2) 
+					console.log(id)
+				}
+			}
+		}
+		return super.update(data, options);
+	}
+
 	/**
 		* Augment the basic actor data with additional dynamic data.
 		*/
@@ -74,7 +105,7 @@ export class Actor4e extends Actor {
 		// Get the Actor's data object
 		const actorData = this.data;
 		const data = actorData.data;
-		const flags = actorData.flags.dnd4eAltus || {};
+		const flags = actorData.flags.dnd4eBeta || {};
 		const bonuses = getProperty(data, "bonuses.abilities") || {};
 
 		// Prepare Character data
@@ -87,8 +118,8 @@ export class Actor4e extends Actor {
 		// If we are a polymorphed actor, retrieve the skills and saves data from
 		// the original actor for later merging.
 		if (this.isPolymorphed) {
-			const transformOptions = this.getFlag('dnd4eAltus', 'transformOptions');
-			const original = game.actors?.get(this.getFlag('dnd4eAltus', 'originalActor'));
+			const transformOptions = this.getFlag('dnd4eBeta', 'transformOptions');
+			const original = game.actors?.get(this.getFlag('dnd4eBeta', 'originalActor'));
 
 			if (original) {
 				if (transformOptions.mergeSaves) {
@@ -115,7 +146,7 @@ export class Actor4e extends Actor {
 			abl.checkBonus = checkBonus;
 			abl.save = abl.mod + abl.prof + abl.saveBonus;
 			
-			abl.label = game.i18n.localize(DND4EALTUS.abilities[id]); //.localize("");
+			abl.label = game.i18n.localize(DND4EBETA.abilities[id]); //.localize("");
 			
 			// If we merged saves when transforming, take the highest bonus here.
 			if (originalSaves && abl.proficient) {
@@ -159,7 +190,7 @@ export class Actor4e extends Actor {
 		}
 		
 		data.details.bloodied = Math.floor(data.attributes.hp.max / 2);
-		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
+		data.details.surgeValue += Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
 		data.attributes.hp.min = -data.details.bloodied;
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
 
@@ -207,8 +238,7 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-
-		data.details.tier = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3);
+		
 		//Weight & Encumbrance
 		data.encumbrance = this._computeEncumbrance(actorData);
 			
@@ -220,7 +250,7 @@ export class Actor4e extends Actor {
 	
 		if (data.attributes.hp.temphp <= 0 )
 			data.attributes.hp.temphp = null;
-		
+
 		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
 		if((data.defences.ac.light || this.checkLightArmour() ) && data.defences.ac.altability !== "none")
 		{
@@ -290,7 +320,7 @@ export class Actor4e extends Actor {
 		}
 		for ( let i of this.items) {
 			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
-			data.movement.base.armour -= i.data.data.armour.movePenValue;
+			data.movement.base.armour += i.data.data.armour.movePenValue;
 		}
 		data.movement.base.bonusValue = baseMoveBonusValue;
 
@@ -375,34 +405,34 @@ export class Actor4e extends Actor {
 		}
 		data.movement.shift.bonusValue = shiftBonusValue;	
 
-		data.movement.base.value = data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
+		data.movement.base.value += data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
 		
 		let walkForm = eval(Helper.replaceData(data.movement.walk.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.walk.value = walkForm + walkBonusValue + data.movement.base.temp;
+		data.movement.walk.value += walkForm + walkBonusValue + data.movement.base.temp;
 		
 		if (data.movement.walk.value < 0)
 			data.movement.walk.value = 0;
 		
 		let runForm = eval(Helper.replaceData(data.movement.run.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.run.value = runForm + runBonusValue + data.movement.run.temp;
+		data.movement.run.value += runForm + runBonusValue + data.movement.run.temp;
 		
 		if (data.movement.run.value < 0)
 			data.movement.run.value = 0;
 
 		let chargeForm = eval(Helper.replaceData(data.movement.charge.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.charge.value = chargeForm + chargeBonusValue + data.movement.charge.temp;
+		data.movement.charge.value += chargeForm + chargeBonusValue + data.movement.charge.temp;
 		
 		if (data.movement.charge.value < 0)
 			data.movement.charge.value = 0;
 
 		let climbeForm = eval(Helper.replaceData(data.movement.climb.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.climb.value = climbeForm;
+		data.movement.climb.value += climbeForm;
 		
 		if (data.movement.climb.value < 0)
 			data.movement.climb.value = 0;
 		
 		let shiftForm = eval(Helper.replaceData(data.movement.shift.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour),data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.shift.value = shiftForm;
+		data.movement.shift.value += shiftForm;
 		
 		if (data.movement.shift.value < 0)
 			data.movement.shift.value = 0;
@@ -425,6 +455,28 @@ export class Actor4e extends Actor {
 			}
 			pas.bonusValue = passiveBonusValue;
 			pas.value = 10 + data.skills[pas.skill].total + passiveBonusValue;
+		}
+
+		//Attack and damage modifiers
+		for (let [id, mod] of Object.entries(data.modifiers)) {
+			let modifierBonusValue = 0;
+			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
+				for( const b of mod.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						modifierBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,data)
+						if(Helper._isNumber(val)){
+							modifierBonusValue += parseInt(val);
+						}
+					}
+				}
+			}
+
+			mod.bonusValue = modifierBonusValue;
+			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.race + modifierBonusValue;
+			mod.label = game.i18n.localize(DND4EBETA.modifiers[id]);
 		}
 		
 		//Resistances & Weaknesses
@@ -450,8 +502,8 @@ export class Actor4e extends Actor {
 				break;
 			}
 			res.resBonusValue = resBonusValue;
-			res.value = res.armour + resBonusValue;
-			res.label = game.i18n.localize(DND4EALTUS.damageTypes[id]); //.localize("");
+			res.value += res.armour + resBonusValue;
+			res.label = game.i18n.localize(DND4EBETA.damageTypes[id]); //.localize("");
 		}
 		
 		//Magic Items
@@ -462,8 +514,8 @@ export class Actor4e extends Actor {
 	calcDefenceStatsCharacter(data) {		
 		for (let [id, def] of Object.entries(data.defences)) {
 			
-			def.label = game.i18n.localize(DND4EALTUS.def[id]);
-			def.title = game.i18n.localize(DND4EALTUS.defensives[id]);
+			def.label = game.i18n.localize(DND4EBETA.def[id]);
+			def.title = game.i18n.localize(DND4EBETA.defensives[id]);
 						
 			let defBonusValue = 0;
 			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
@@ -486,20 +538,20 @@ export class Actor4e extends Actor {
 				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
 				def.armour += i.data.data.armour[id];
 			}
-			if(def.base == undefined){
-				def.base = 10;
-				this.update({[`data.defences[${def}].base`]: 10 });
-			}
+			// if(def.base == undefined){
+			// 	def.base = 10;
+			// 	this.update({[`data.defences[${def}].base`]: 10 });
+			// }
 			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;			
+			def.value += modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;			
 		}
 	}
 
 	calcDefenceStatsNPC(data) {
 		for (let [id, def] of Object.entries(data.defences)) {
 			
-			def.label = game.i18n.localize(DND4EALTUS.def[id]);
-			def.title = game.i18n.localize(DND4EALTUS.defensives[id]);
+			def.label = game.i18n.localize(DND4EBETA.def[id]);
+			def.title = game.i18n.localize(DND4EBETA.defensives[id]);
 						
 			let defBonusValue = 0;
 			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
@@ -540,7 +592,7 @@ export class Actor4e extends Actor {
 
 			let sklBonusValue = 0;
 			let sklArmourPenalty = 0;
-			
+
 			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
 				for( const b of skl.bonus) {
 					if(b.active && Helper._isNumber(b.value)) {
@@ -562,7 +614,7 @@ export class Actor4e extends Actor {
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
 
 			if(skl.base == undefined){
 				skl.base = 0;
@@ -582,7 +634,7 @@ export class Actor4e extends Actor {
 			// Compute modifier
 			skl.mod = data.abilities[skl.ability].mod;			
 			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
+			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
 
 		}
 	}
@@ -614,7 +666,7 @@ export class Actor4e extends Actor {
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue - sklArmourPenalty;
+			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
 
 			if(skl.base == undefined){
 				skl.base = 0;
@@ -638,7 +690,7 @@ export class Actor4e extends Actor {
 				skl.total = skl.base;
 			}
 
-			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
+			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
 		}
 	}
 
@@ -664,17 +716,12 @@ export class Actor4e extends Actor {
    * @return {Promise}
    */
 	async modifyTokenAttribute(attribute, value, isDelta=false, isBar=true) {		
-		if (!isNaN(value) && isBar ) {
-			const current = getProperty(this.data.data, attribute);
-			if (isDelta) value = Math.clamped(current.min, Number(current.value) + value, current.max);
-			
-			if(attribute === 'attributes.hp')
-			{
-				let newHealth = this.setConditions(value);			
-				this.update({[`data.attributes.hp.temphp`]: newHealth[1] });
-				this.update({[`data.attributes.hp.value`]: newHealth[0] });
-			}
+		if(attribute === 'attributes.hp') {
+			const hp = getProperty(this.data.data, attribute);
+			const delta = isDelta ? (-1 * value) : (hp.value + hp.temp) - value;
+			return this.applyDamage(delta);
 		}
+		return super.modifyTokenAttribute(attribute, value, isDelta, isBar);
 	}
 	setConditions(newValue) {
 		
@@ -733,16 +780,16 @@ export class Actor4e extends Actor {
 		flavText = flavText.replace("@label", this.data.data.skills[skillId].label);
 		
 		// Reliable Talent applies to any skill check we have full or better proficiency in
-		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4eAltus", "reliableTalent"));
+		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4e", "reliableTalent"));
 		// Roll and return
 		
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND4EALTUS.SkillPromptTitle", {skill: CONFIG.DND4EALTUS.skills[skillId]}),
+			title: game.i18n.format("DND4EBETA.SkillPromptTitle", {skill: CONFIG.DND4EBETA.skills[skillId]}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
-			//halflingLucky: this.getFlag("dnd4eAltus", "halflingLucky"),
+			//halflingLucky: this.getFlag("dnd4e", "halflingLucky"),
 			//reliableTalent: reliableTalent
 		}));
 	}	
@@ -756,7 +803,7 @@ export class Actor4e extends Actor {
    * @return {Promise<Roll>}      A Promise which resolves to the created Roll instance
    */
 	rollAbility(abilityId, options={}) {
-		const label = abilityId; //CONFIG.DND4EALTUS.abilities[abilityId];
+		const label = abilityId; //CONFIG.DND4EBETA.abilities[abilityId];
 		const abl = this.data.data.abilities[abilityId];
 
 		// Construct parts
@@ -764,8 +811,8 @@ export class Actor4e extends Actor {
 		const data = {mod: abl.mod};
 
 		// Add feat-related proficiency bonuses
-		// const feats = this.data.flags.dnd4eAltus || {};
-		// if ( feats.remarkableAthlete && DND4EALTUS.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
+		// const feats = this.data.flags.dnd4eBeta || {};
+		// if ( feats.remarkableAthlete && DND4EBETA.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
 			// parts.push("@proficiency");
 			// data.proficiency = Math.ceil(0.5 * this.data.data.attributes.prof);
 		// }
@@ -788,10 +835,10 @@ export class Actor4e extends Actor {
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND4EALTUS.AbilityPromptTitle", {ability: CONFIG.DND4EALTUS.abilities[label]}),
+			title: game.i18n.format("DND4EBETA.AbilityPromptTitle", {ability: CONFIG.DND4EBETA.abilities[label]}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
-			// flavor: "Flowery Text Here. MORE AND MORE AND \r\n MORE S MORE " + game.i18n.format("DND4EALTUS.AbilityPromptTitle", {ability: CONFIG.DND4EALTUS.abilities[label]}),
+			// flavor: "Flowery Text Here. MORE AND MORE AND \r\n MORE S MORE " + game.i18n.format("DND4EBETA.AbilityPromptTitle", {ability: CONFIG.DND4EBETA.abilities[label]}),
 			// halflingLucky: feats.halflingLucky
 		}));
 	}
@@ -819,28 +866,35 @@ export class Actor4e extends Actor {
 		return d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND4EALTUS.DefencePromptTitle", {defences: CONFIG.DND4EALTUS.defensives[label]}),
+			title: game.i18n.format("DND4EBETA.DefencePromptTitle", {defences: CONFIG.DND4EBETA.defensives[label]}),
 			// title: "TITLE",
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
 		}));		
 	}
-	
-  /** @override */
-  async createOwnedItem(itemData, options) {
 
-	// Assume NPCs are always proficient with weapons and always have spells prepared
-	if ( !this.isPC ) {
-	  let t = itemData.type;
-	  let initial = {};
-	  if ( t === "weapon" ) initial["data.proficient"] = true;
-	  if ( ["weapon", "equipment"].includes(t) ) initial["data.equipped"] = true;
-	  if ( t === "spell" ) initial["data.prepared"] = true;
-	  mergeObject(itemData, initial);
-	}
-	
-	return super.createOwnedItem(itemData, options);
+  async createOwnedItem(itemData, options) {
+	console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
+	return this.createEmbeddedDocuments("Item", [itemData], options);
   }
+
+	/** @override */
+	async createEmbeddedDocuments(embeddedName, data=[], context={}) {
+		if (embeddedName === "Item") {
+			if ( !this.isPC ) {
+				data.forEach(datum => {
+					let t = datum.type;
+					let initial = {};
+					if ( t === "weapon" ) initial["data.proficient"] = true;
+					if ( ["weapon", "equipment"].includes(t) ) initial["data.equipped"] = true;
+					if ( t === "spell" ) initial["data.prepared"] = true;
+					mergeObject(datum, initial);
+				})
+			}
+		}
+		return super.createEmbeddedDocuments(embeddedName, data, context);
+	}
+
 
 	/* -------------------------------------------- */
 
@@ -851,6 +905,7 @@ export class Actor4e extends Actor {
 	*/
 	async usePower(item, {configureDialog=true}={}) {
 		//if not a valid type of item to use
+		console.log("UsePower")
 		if ( item.data.type !=="power" ) throw new Error("Wrong Item type");
 		const itemData = item.data.data;
 		//configure Powers data
@@ -870,7 +925,7 @@ export class Actor4e extends Actor {
 		// Update Item data
 		if ( limitedUses && consumeUse ) {
 			const uses = parseInt(itemData.uses.value || 0);
-			if ( uses <= 0 ) ui.notifications.warn(game.i18n.format("DND4EALTUS.ItemNoUses", {name: item.name}));
+			if ( uses <= 0 ) ui.notifications.warn(game.i18n.format("DND4EBETA.ItemNoUses", {name: item.name}));
 			
 			await item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
 			// item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
@@ -890,12 +945,12 @@ export class Actor4e extends Actor {
 		let weight = 0;
 		
 		//Weight Currency
-		if ( game.settings.get("dnd4eAltus", "currencyWeight") ) {
+		if ( game.settings.get("dnd4e", "currencyWeight") ) {
 			for (let [e, v] of Object.entries(actorData.data.currency)) {
 				weight += (e == "ad" ? v/500 : v/50);
 			}
 		}
-		// console.log(game.settings.get("dnd4eAltus", "currencyWeight"))
+		// console.log(game.settings.get("dnd4e", "currencyWeight"))
 		//Weight Ritual Components
 		for (let [e, v] of Object.entries(actorData.data.ritualcomp)) {
 			// weight += v/100 * 2.205;
@@ -948,36 +1003,64 @@ export class Actor4e extends Actor {
 		if(Object.keys(damage).length >= 1){
 			const res = this.data.data.resistances;
 
-			let damageResAll = res['damage'].value;
-			let divider = Object.keys(damage).length;
+			//let divider = Object.keys(damage).length;
 
-			for(let d in damage){
-				
-				let type = d && res[d] ?  d : 'damage';
-				let damageBase = damage[d];
-				let damageRes = res[type].value || 0;
+			//get lowest resistance
+			let totalRes =  9999;
+			let resistAll = res['damage'].value;
+			let immune = res['damage'].immune;
 
-				let resPart = Math.ceil(damageResAll/divider)
-				damageResAll -= resPart;
-				divider--;
+			if (!immune){
+				for(let d in damage){
+					let type = d && res[d] ? d : 'damage';
+					if (type == 'damage' || type == 'heal'){
+						continue;
+					}
 
-				if((resPart > damageRes && damageRes >= 0) || (resPart < damageRes && damageRes <= 0) ){
-					damageRes = resPart;
-				}
-				else if( (resPart >= 0 && damageRes <= 0) || (resPart <= 0 && damageRes >= 0)){
-					damageRes += resPart;
-				}
-
-				// console.log(`${type}: ${damage[type]}`);
-
-				if(d == 'heal'){
-					totalDamage -= Math.max(0, damageBase);
-				}
-				else if(!res[type].immune && !res['damage'].immune){
-					totalDamage += Math.max(0, damageBase - damageRes);
-					console.log(`DamageType:${type}, Damage:${Math.max(0, damageBase - damageRes)}`)
+					immune = res[type].immune;
+					if (!immune){
+						break;
+					}
 				}
 			}
+
+			if (!immune){
+				for(let d in damage){
+					let type = d && res[d] ? d : 'damage';
+					if (type == 'heal'){
+						continue;
+					}
+
+					let damageRes = res[type].value || 0;
+					
+					if (damageRes < totalRes && !res[type].immune){
+						totalRes = damageRes;
+						console.log(`Resist ${totalRes} ${type}`)
+					}
+				}
+			
+				if ((totalRes > 0 && resistAll < 0) || (totalRes < 0 && resistAll > 0)){
+					totalRes += resistAll; //if resist and resist all have different signs, sum them
+				}
+				else if ((totalRes < resistAll && resistAll > 0) || (totalRes > resistAll && resistAll < 0)){
+					totalRes = resistAll;
+				}
+
+				//sum damage
+				for(let d in damage){
+					if(d == 'heal'){
+						totalDamage -= Math.max(0, damage[d]);
+					}
+					else {
+						totalDamage += Math.max(0, damage[d]);
+					}
+				}
+
+				console.log(`PreResistDamage:${totalDamage}, SmallestResist:${totalRes}`)
+				totalRes = totalRes > totalDamage ? totalDamage : totalRes;
+				totalDamage -= totalRes;
+			}
+
 			console.log(`Total Damage: ${totalDamage * multiplier}`)
 			this.applyDamage(totalDamage, multiplier);
 		}
@@ -1025,5 +1108,39 @@ export class Actor4e extends Actor {
 		  isBar: true
 		}, updates);
 		return allowed !== false ? this.update(updates) : this;
+	}
+
+	async applyTempHpChange(amount=0)
+	{
+		if (!this.canUserModify(game.user, "update")) {
+			return
+		}
+
+		const hp = this.data.data.attributes.hp;
+		console.log(hp)
+
+		// calculate existing temp hp
+		const tmp = parseInt(hp.temphp) || 0;
+
+		if (amount >= 0) {
+			// temp HP doesn't stack, so only update if we have a higher value
+			if (amount > tmp) {
+				const updates = {
+					"data.attributes.hp.temphp": amount,
+				};
+				return this.update(updates);
+			}
+		}
+		else {
+			// amount is negative, so subtract from temp HP, but floor at 0
+			let newTempHP = tmp + amount
+			newTempHP = Math.max(0, newTempHP)
+			const updates = {
+				"data.attributes.hp.temphp": newTempHP,
+			};
+			return this.update(updates);
+		}
+
+		return this
 	}
 }

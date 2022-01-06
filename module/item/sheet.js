@@ -23,7 +23,7 @@ export default class ItemSheet4e extends ItemSheet {
 		return mergeObject(super.defaultOptions, {
 			width: 585,
 			height: 420,
-			classes: ["dnd4eAltus", "sheet", "item"],
+			classes: ["dnd4eBeta", "sheet", "item"],
 			resizable: true,
 			scrollY: [
 				".tab.details"
@@ -36,7 +36,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	get template() {
-		const path = "systems/dnd4eAltus/templates/items/";
+		const path = "systems/dnd4e/templates/items/";
 		return `${path}/${this.item.data.type}.html`;
 	}
 
@@ -47,7 +47,7 @@ export default class ItemSheet4e extends ItemSheet {
 		const data = super.getData(options);
 		const itemData = data.data;
 		data.labels = this.item.labels;
-		data.config = CONFIG.DND4EALTUS;
+		data.config = CONFIG.DND4EBETA;
 
 		// Item Type, Status, and Details
 		data.itemType = itemData.type.titleCase();
@@ -71,6 +71,7 @@ export default class ItemSheet4e extends ItemSheet {
 			}
 			itemData.data.isRecharge = itemData.data.useType === "recharge";
 		}
+
 
 		// Weapon Properties
 		if(itemData.type === "weapon"){
@@ -127,8 +128,8 @@ export default class ItemSheet4e extends ItemSheet {
 	}
 
 	shareItem() {
-		game.socket.emit("system.dnd4eAltus", {
-			itemId: this.item._id
+		game.socket.emit("system.dnd4e", {
+			itemId: this.item.id
 		});
 	}
 
@@ -159,7 +160,7 @@ export default class ItemSheet4e extends ItemSheet {
 	  }
 
 	exportItem() {
-		const jsonString = JSON.stringify(this.object._data);
+		const jsonString = JSON.stringify(this.object.data._source);
 
 		try {
 			navigator.clipboard.writeText(jsonString)
@@ -256,8 +257,8 @@ export default class ItemSheet4e extends ItemSheet {
 				const uses = i.data.data.uses || {};
 				if ( uses.per && uses.max ) {
 					const label = uses.per === "charges" ?
-						` (${game.i18n.format("DND4EALTUS.AbilityUseChargesLabel", {value: uses.value})})` :
-						` (${game.i18n.format("DND4EALTUS.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
+						` (${game.i18n.format("DND4EBETA.AbilityUseChargesLabel", {value: uses.value})})` :
+						` (${game.i18n.format("DND4EBETA.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
 					obj[i.id] = i.name + label;
 				}
 				return obj;
@@ -357,13 +358,13 @@ export default class ItemSheet4e extends ItemSheet {
 	 */
 	_getItemStatus(item) {
 		if ( item.type === "spell" ) {
-			return CONFIG.DND4EALTUS.spellPreparationModes[item.data.preparation];
+			return CONFIG.DND4EBETA.spellPreparationModes[item.data.preparation];
 		}
 		else if ( ["weapon", "equipment"].includes(item.type) ) {
-			return game.i18n.localize(item.data.equipped ? "DND4EALTUS.Equipped" : "DND4EALTUS.Unequipped");
+			return game.i18n.localize(item.data.equipped ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped");
 		}
 		else if ( item.type === "tool" ) {
-			return game.i18n.localize(item.data.proficient ? "DND4EALTUS.Proficient" : "DND4EALTUS.NotProficient");
+			return game.i18n.localize(item.data.proficient ? "DND4EBETA.Proficient" : "DND4EBETA.NotProficient");
 		}
 	}
 
@@ -379,41 +380,41 @@ export default class ItemSheet4e extends ItemSheet {
 		const labels = this.item.labels;
 		if ( item.type === "weapon" ) {
 
-			props.push(CONFIG.DND4EALTUS.weaponTypes[item.data.weaponType])
+			props.push(CONFIG.DND4EBETA.weaponTypes[item.data.weaponType])
 
 			props.push(...Object.entries(item.data.properties)
 				.filter(e => e[1] === true)
 				.map(e => {
-					if(e[0] === "bru") return `${CONFIG.DND4EALTUS.weaponProperties[e[0]]} ${item.data.brutalNum}`;
-					return CONFIG.DND4EALTUS.weaponProperties[e[0]]
+					if(e[0] === "bru") return `${CONFIG.DND4EBETA.weaponProperties[e[0]]} ${item.data.brutalNum}`;
+					return CONFIG.DND4EBETA.weaponProperties[e[0]]
 				})
 			);
 
 			props.push(...Object.entries(item.data.damageType)
 				.filter(e => e[1] === true)
-				.map(e => CONFIG.DND4EALTUS.damageTypes[e[0]])
+				.map(e => CONFIG.DND4EBETA.damageTypes[e[0]])
 			);
 
 			props.push(...Object.entries(item.data.weaponGroup)
 				.filter(e => e[1] === true)
-				.map(e => CONFIG.DND4EALTUS.weaponGroup[e[0]])
+				.map(e => CONFIG.DND4EBETA.weaponGroup[e[0]])
 			);
 
 			if(item.data.isRanged)
-				props.push(`${game.i18n.localize("DND4EALTUS.Range")}: ${item.data.range.value} / ${item.data.range.long}`);
+				props.push(`${game.i18n.localize("DND4EBETA.Range")}: ${item.data.range.value} / ${item.data.range.long}`);
 		}
 
-		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility"].includes(item.data.type)) {
+		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility","item"].includes(item.data.type)) {
 			props.push(
 				labels.components,
 				labels.materials,
-				// item.data.components.concentration ? game.i18n.localize("DND4EALTUS.Concentration") : null,
-				// item.data.components.ritual ? game.i18n.localize("DND4EALTUS.Ritual") : null
+				// item.data.components.concentration ? game.i18n.localize("DND4EBETA.Concentration") : null,
+				// item.data.components.ritual ? game.i18n.localize("DND4EBETA.Ritual") : null
 			)
 		}
 
 		else if ( item.type === "equipment" ) {
-			props.push(CONFIG.DND4EALTUS.equipmentTypes[item.data.armour.type]);
+			props.push(CONFIG.DND4EBETA.equipmentTypes[item.data.armour.type]);
 			props.push(labels.armour);
 			props.push(labels.fort);
 			props.push(labels.ref);
@@ -426,7 +427,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 		// Action type
 		if ( item.data.actionType ) {
-			props.push(CONFIG.DND4EALTUS.itemActionTypes[item.data.actionType]);
+			props.push(CONFIG.DND4EBETA.itemActionTypes[item.data.actionType]);
 		}
 
 		// Action usage
@@ -492,7 +493,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( damageRes ) damageRes.parts = Object.values(damageRes?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 	
 		const damageDice = formData.data?.damageDice;
-		if(damageDice) damageDice.parts = Object.values(damageDice?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+		if(damageDice) damageDice.parts = Object.values(damageDice?.parts || {}).map(d => [d[0] || "", d[1] || "", d[2] || ""]);
 
 		const special = formData.data?.specialAdd;
 		if (special) special.parts = Object.values(special?.parts || {}).map(d => [d || ""]);
@@ -621,7 +622,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if(a.classList.contains("add-dice")) {
 			await this._onSubmit(event); // Submit any unsaved changes
 			const damageDice = duplicate(this.item.data.data.damageDice);
-			return this.item.update({"data.damageDice.parts": damageDice.parts.concat([["",""]])});
+			return this.item.update({"data.damageDice.parts": damageDice.parts.concat([["","",""]])});
 		}
 
 		if ( a.classList.contains("delete-dice") ) {
@@ -639,7 +640,7 @@ export default class ItemSheet4e extends ItemSheet {
 	 * @return {Promise}
 	 * @private
 	 */
-	 async _onOnetextControl(event) {
+	async _onOnetextControl(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
 
@@ -670,7 +671,7 @@ export default class ItemSheet4e extends ItemSheet {
 	_onConfigureClassSkills(event) {
 		event.preventDefault();
 		const skills = this.item.data.data.skills;
-		const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.DND4EALTUS.skills);
+		const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.DND4EBETA.skills);
 		const a = event.currentTarget;
 		const label = a.parentElement;
 
@@ -678,7 +679,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// new TraitSelector(this.item, {
 			// name: a.dataset.edit,
 			// title: label.innerText,
-			// choices: Object.entries(CONFIG.DND4EALTUS.skills).reduce((obj, e) => {
+			// choices: Object.entries(CONFIG.DND4EBETA.skills).reduce((obj, e) => {
 				// if ( choices.includes(e[0] ) ) obj[e[0]] = e[1];
 				// return obj;
 			// }, {}),
@@ -725,7 +726,7 @@ function executeMacro(item)
 }
 
 Hooks.once('ready', async function () {
-	game.socket.on("system.dnd4eAltus", (msg) => {
+	game.socket.on("system.dnd4e", (msg) => {
 		ItemSheet4e._handleShareItem(msg);
 	});
 })

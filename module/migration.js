@@ -171,7 +171,7 @@ function cleanActorData(actorData) {
 	actorData.data = filterObject(actorData.data, model);
 
 	// Scrub system flags
-	const allowedFlags = CONFIG.DND4EALTUS.allowedActorFlags.reduce((obj, f) => {
+	const allowedFlags = CONFIG.DND4EBETA.allowedActorFlags.reduce((obj, f) => {
 		obj[f] = null;
 		return obj;
 	}, {});
@@ -275,7 +275,7 @@ function _migrateActorSenses(actor, updateData) {
 		const match = s.match(pattern);
 		if ( !match ) continue;
 		const type = match[1].toLowerCase();
-		if ( type in CONFIG.DND4EALTUS.senses ) {
+		if ( type in CONFIG.DND4EBETA.senses ) {
 			updateData[`data.attributes.senses.${type}`] = Number(match[2]).toNearest(0.5);
 			wasMatched = true;
 		}
@@ -317,7 +317,7 @@ function _migrateActorType(actor, updateData) {
 
 		// Match a known creature type
 		const typeLc = match.groups.type.trim().toLowerCase();
-		const typeMatch = Object.entries(CONFIG.DND4EALTUS.creatureTypes).find(([k, v]) => {
+		const typeMatch = Object.entries(CONFIG.DND4EBETA.creatureTypes).find(([k, v]) => {
 			return (typeLc === k) ||
 				(typeLc === game.i18n.localize(v).toLowerCase()) ||
 				(typeLc === game.i18n.localize(`${v}Pl`).toLowerCase());
@@ -330,10 +330,10 @@ function _migrateActorType(actor, updateData) {
 		data.subtype = match.groups.subtype?.trim().titleCase() || "";
 
 		// Match a swarm
-		const isNamedSwarm = actor.name.startsWith(game.i18n.localize("DND4EALTUS.CreatureSwarm"));
+		const isNamedSwarm = actor.name.startsWith(game.i18n.localize("DND4EBETA.CreatureSwarm"));
 		if ( match.groups.size || isNamedSwarm ) {
 			const sizeLc = match.groups.size ? match.groups.size.trim().toLowerCase() : "tiny";
-			const sizeMatch = Object.entries(CONFIG.DND4EALTUS.actorSizes).find(([k, v]) => {
+			const sizeMatch = Object.entries(CONFIG.DND4EBETA.actorSizes).find(([k, v]) => {
 				return (sizeLc === k) || (sizeLc === game.i18n.localize(v).toLowerCase());
 			});
 			data.swarm = sizeMatch ? sizeMatch[0] : "tiny";
@@ -365,7 +365,7 @@ function _migrateActorType(actor, updateData) {
  */
 function _migrateItemAttunement(item, updateData) {
 	if ( item.data.attuned === undefined ) return updateData;
-	updateData["data.attunement"] = CONFIG.DND4EALTUS.attunementTypes.NONE;
+	updateData["data.attunement"] = CONFIG.DND4EBETA.attunementTypes.NONE;
 	updateData["data.-=attuned"] = null;
 	return updateData;
 }

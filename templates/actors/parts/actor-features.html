@@ -1,11 +1,31 @@
 <ol class="items-list inventory-list" style="height: 100%;">
+	<header class="feature-filters flexrow">
+		<div class="sort-features" style="max-width: 144px;">
+			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.features.sortBy.value">
+			<label for="feature-sort">SortBy</label><br>
+			<select name="data.featureSortTypes" style="min-width: 128px;">
+				{{#select data.featureSortTypes}}
+				{{#each config.featureSortTypes as |name type|}}
+				<option value="{{type}}">{{name}}</option>
+				{{/each}}
+				{{/select}}
+			</select>
+		</div>
+
+		<div class="filter-search-features">
+			<label for="feature-filter-search">Filter</label>	
+			<br>
+			<input type="text" style="min-width: 168px; margin-right: 2px;" name="feat-filter-search" placeholder="Search for feat..." id="filterInput" onkeyup="filterFeatures()"/>
+		</div>
+	</header>
+
 	{{#each sections as |section sid|}}
 		<li class="items-header flexrow">
 			<h3 class="item-name flexrow">{{localize section.label}}</h3>
 	
 			{{#if section.hasActions}}
-			<div class="item-detail item-uses">{{localize "DND4EALTUS.Uses"}}</div>
-			<div class="item-detail item-action">{{localize "DND4EALTUS.Usage"}}</div>
+			<div class="item-detail item-uses">{{localize "DND4EBETA.Uses"}}</div>
+			<div class="item-detail item-action">{{localize "DND4EBETA.Usage"}}</div>
 			{{/if}}
 	
 			{{#if section.columns}}
@@ -16,19 +36,19 @@
 	
 			{{#if ../owner}}
 			<div class="item-controls flexrow">
-				<a class="item-control item-create" title="{{localize 'DND4EALTUS.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-					<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
+				<a class="item-control item-create" title="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+					<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 				</a>
 			</div>
 			{{/if}}
 		</li>
 	
-		<ol class="item-list">
+		<ol class="item-list feature-list">
 		{{#each section.items as |item iid|}}
 			<li class="item flexrow {{#if isDepleted}}depleted{{/if}}" data-item-id="{{item._id}}">
 				<div class="item-name flexrow rollable">
 					<div class="item-image" style="background-image: url('{{item.img}}')"></div>
-					<h4>{{item.name}}</h4>
+					<h4>{{#if item.data.level}}[{{item.data.level}}]{{/if}}{{item.name}}</h4>
 				</div>
 	
 				{{#if section.hasActions}}
@@ -36,7 +56,7 @@
 					{{#if item.isOnCooldown}}
 					<a class="item-recharge rollable">{{item.labels.recharge}}</a>
 					{{else if item.data.recharge.value}}
-					{{localize "DND4EALTUS.Charged"}}
+					{{localize "DND4EBETA.Charged"}}
 	
 					{{else if item.hasUses}}
 					<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
@@ -89,4 +109,26 @@
 		{{/each}}
 		</ol>
 	{{/each}}
-	</ol>
+</ol>
+
+<script>
+	function filterFeatures() {
+		let input, filter, ul, li, a, i, txtValue;
+		input = document.getElementById("filterInput");
+		filter = input.value.toUpperCase();
+		list = document.getElementsByClassName("feature-list");
+
+		for(i = 0; i < list.length; i++) {
+			li = list[i].getElementsByTagName("li");
+			for (ii = 0; ii < li.length; ii++) {
+				a = li[ii].getElementsByTagName("h4")[0];
+				txtValue = a.textContent || a.innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+					li[ii].style.display = "";
+				} else {
+					li[ii].style.display = "none";
+				}
+			}
+		}
+	}
+</script>

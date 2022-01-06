@@ -1,6 +1,6 @@
 
 /**
- * Highlight critical success or failure on d20 rolls
+ * Highlight critical success or failure on d20 rolls, or recharge rolls
  */
 export const highlightCriticalSuccessFailure = function(message, html, data) {
 	if ( !message.isRoll || !message.isContentVisible ) return;
@@ -10,9 +10,9 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
 	if ( !roll.dice.length ) return;
 	const d = roll.dice[0];
 
-	// Ensure it is an un-modified d20 roll
+	// Ensure it is an un-modified d20 roll, is is part of a recharge roll
 	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
-	if ( !isD20 ) return;
+	if ( !isD20 && !d.options.recharge) return;
 	const isModifiedRoll = ("success" in d.results[0]) || d.options.marginSuccess || d.options.marginFailure;
 	if ( isModifiedRoll ) return;
 
@@ -33,7 +33,7 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
  * Optionally hide the display of chat card action buttons which cannot be performed by the user
  */
 export const displayChatActionButtons = function(message, html, data) {
-	const chatCard = html.find(".DND4EALTUS.chat-card");
+	const chatCard = html.find(".DND4EBETA.chat-card");
 	if ( chatCard.length > 0 ) {
 		const flavor = html.find(".flavor-text");
 		if ( flavor.text() === html.find(".item-name").text() ) flavor.remove();
@@ -70,31 +70,37 @@ export const addChatMessageContextOptions = function(html, options) {
 	};
 	options.push(
 		{
-			name: game.i18n.localize("DND4EALTUS.ChatContextDamage"),
+			name: game.i18n.localize("DND4EBETA.ChatContextDamage"),
 			icon: '<i class="fas fa-user-minus"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, 1)
 		},
 		{
-			name: game.i18n.localize("DND4EALTUS.ChatContextHealing"),
+			name: game.i18n.localize("DND4EBETA.ChatContextHealing"),
 			icon: '<i class="fas fa-user-plus"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, -1)
 		},
 		{
-			name: game.i18n.localize("DND4EALTUS.ChatContextDoubleDamage"),
+			name: game.i18n.localize("DND4EBETA.ChatContextTempHp"),
+			icon: '<i class="fas fa-user-plus"></i>',
+			condition: canApply,
+			callback: li => applyChatCardTempHp(li)
+		},
+		{
+			name: game.i18n.localize("DND4EBETA.ChatContextDoubleDamage"),
 			icon: '<i class="fas fa-user-injured"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, 2)
 		},
 		{
-			name: game.i18n.localize("DND4EALTUS.ChatContextHalfDamage"),
+			name: game.i18n.localize("DND4EBETA.ChatContextHalfDamage"),
 			icon: '<i class="fas fa-user-shield"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, 0.5)
 		},
 		{
-			name: game.i18n.localize("DND4EALTUS.ChatContextTrueDamage"),
+			name: game.i18n.localize("DND4EBETA.ChatContextTrueDamage"),
 			icon: '<i class="fas fa-user-shield"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, 1, true)
@@ -113,7 +119,7 @@ export const addChatMessageContextOptions = function(html, options) {
  * @param {Number} multiplier   A damage multiplier to apply to the rolled damage.
  * @return {Promise}
  */
- function applyChatCardDamage(li, multiplier, trueDamage=false) {
+function applyChatCardDamage(li, multiplier, trueDamage=false) {
 	const message = game.messages.get(li.data("messageId"));
 	const roll = message.roll;
 
@@ -144,6 +150,7 @@ export const addChatMessageContextOptions = function(html, options) {
 	}
 
 
+	console.log(damage)
 	return Promise.all(canvas.tokens.controlled.map(t => {
 		const a = t.actor;
 		if(multiplier < 0 || trueDamage){ //if it's healing or true damage just heal directly
@@ -155,5 +162,31 @@ export const addChatMessageContextOptions = function(html, options) {
 		
 	}));
 }
+
+/**
+ * Apply Temporary hit points based on a roll.
+ *
+ * Gaining temp HP separated from main damage calculation as that set of functions was relatively complex already,
+ * so making them more complex to deal with additions of temp HP and the logic behind it seemed like a bad plan from a maintenance perspective
+ * @param {HTMLElement} roll  The chat entry which contains the roll data
+ * @return {Promise}
+ */
+function applyChatCardTempHp(li) {
+	const message = game.messages.get(li.data("messageId"));
+	const roll = message.roll;
+	return Promise.all(canvas.tokens.controlled.map(t => {
+		const a = t.actor;
+		return a.applyTempHpChange(roll.total)
+	}));
+}
+
+// decimal total = 143.13m;
+// int divider = 5;
+// while (divider > 0) {
+//   decimal amount = Math.Round(total / divider, 2);
+//   Console.WriteLine(amount);
+//   total -= amount;
+//   divider--;
+// }
 
 /* -------------------------------------------- */

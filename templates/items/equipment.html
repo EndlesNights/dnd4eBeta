@@ -6,7 +6,7 @@
 
 		<div class="header-details flexrow">
 			<h1 class="charname">
-				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
+				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EBETA.ItemName' }}"/>
 			</h1>
 
 			<div class="item-subtitle">
@@ -19,10 +19,10 @@
 					{{lookup config.equipmentTypes data.armour.type }}
 				</li>
 				<li>
-					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
+					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EBETA.Rarity' }}"/>
 				</li>
 				<li>
-					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
+					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
 				</li>
 			</ul>
 		</div>
@@ -30,25 +30,25 @@
 
 	{{!-- Item Sheet Navigation --}}
 	<nav class="sheet-navigation tabs" data-group="primary">
-		<a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
-		<a class="item" data-tab="details">{{ localize "DND4EALTUS.Details" }}</a>
-		<a class="item" data-tab="effects">{{ localize "DND4EALTUS.Effects" }}</a>
-        <a class="item" data-tab="macros">{{ localize "DND4EALTUS.Macros" }}</a>
+		<a class="item active" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
+		<a class="item" data-tab="details">{{ localize "DND4EBETA.Details" }}</a>
+		<a class="item" data-tab="effects">{{ localize "DND4EBETA.Effects" }}</a>
+        <a class="item" data-tab="macros">{{ localize "DND4EBETA.Macros" }}</a>
 	</nav>
 
 	{{!-- Item Sheet Body --}}
 	<section class="sheet-body">
 
 		{{!-- Description Tab --}}
-		{{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
+		{{> "systems/dnd4e/templates/items/parts/item-description.html"}}
 
 		{{!-- Details Tab --}}
 		<div class="tab details" data-group="primary" data-tab="details">
-			<h3 class="form-header">{{ localize "DND4EALTUS.ItemEquipmentDetails" }}</h3>
+			<h3 class="form-header">{{ localize "DND4EBETA.ItemEquipmentDetails" }}</h3>
 
 			{{!-- Equipment Type --}}
 			<div class="form-group uses-per">
-				<label>{{ localize "DND4EALTUS.ItemEquipmentType" }}</label>
+				<label>{{ localize "DND4EBETA.ItemEquipmentType" }}</label>
 				<div class="form-fields">
 					<select name="data.armour.type">
 						{{#select data.armour.type}}
@@ -71,28 +71,28 @@
 
 			{{!-- Equipment Status --}}
 			<div class="form-group stacked">
-				<label>{{ localize "DND4EALTUS.ItemEquipmentStatus" }}</label>
+				<label>{{ localize "DND4EBETA.ItemEquipmentStatus" }}</label>
 				<label class="checkbox">
-					<input type="checkbox" name="data.proficient" {{checked data.proficient}}/> {{ localize "DND4EALTUS.Proficient" }}
+					<input type="checkbox" name="data.proficient" {{checked data.proficient}}/> {{ localize "DND4EBETA.Proficient" }}
 				</label>
 				<label class="checkbox">
-					<input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "DND4EALTUS.Equipped" }}
+					<input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "DND4EBETA.Equipped" }}
 				</label>
 				<label class="checkbox">
-					<input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "DND4EALTUS.Identified" }}
+					<input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "DND4EBETA.Identified" }}
 				</label>
 				<label class="checkbox">
-					<input type="checkbox" name="data.attuned" {{checked data.attuned}}/> {{ localize "DND4EALTUS.Attuned" }}
+					<input type="checkbox" name="data.attuned" {{checked data.attuned}}/> {{ localize "DND4EBETA.Attuned" }}
 				</label>
 			</div>
 
 			<div class="form-group uses-per">
-				<label>{{ localize "DND4EALTUS.LimitedUses"}}</label>
+				<label>{{ localize "DND4EBETA.LimitedUses"}}</label>
 				<div class="form-fields">
 					<input type="text" name="data.uses.value" value="{{data.uses.value}}" data-dtype="Number"/>
-					<span class="sep">{{ localize "DND4EALTUS.of" }}</span>
+					<span class="sep">{{ localize "DND4EBETA.of" }}</span>
 					<input type="text" name="data.uses.max" value="{{data.uses.max}}" data-dtype="Number"/>
-					<span class="sep">{{ localize "DND4EALTUS.per" }}</span>
+					<span class="sep">{{ localize "DND4EBETA.per" }}</span>
 					<select name="data.uses.per">
 						{{#select data.uses.per}}
 						<option value=""></option>
@@ -104,7 +104,7 @@
 				</div>
 			</div>
 			<div class="form-group uses-per">
-				<label>{{ localize "DND4EALTUS.ConsumeTitle" }}</label>
+				<label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
 				<div class="form-fields">
 					<select name="data.consume.type" style="flex: 0.55;">
 						{{#select data.consume.type}}
@@ -130,40 +130,40 @@
 
 			{{!-- armour Class --}}
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.DefenceAC" }}</label>
+				<label>{{ localize "DND4EBETA.DefenceAC" }}</label>
 				<div class="form-fields">
 				   <input type="text" name="data.armour.ac" value="{{data.armour.ac}}" data-dtype="Number"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.DefenceFort" }}</label>
+				<label>{{ localize "DND4EBETA.DefenceFort" }}</label>
 				<div class="form-fields">
 				   <input type="text" name="data.armour.fort" value="{{data.armour.fort}}" data-dtype="Number"/>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.DefenceRef" }}</label>
+				<label>{{ localize "DND4EBETA.DefenceRef" }}</label>
 				<div class="form-fields">
 				   <input type="text" name="data.armour.ref" value="{{data.armour.ref}}" data-dtype="Number"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.DefenceWil" }}</label>
+				<label>{{ localize "DND4EBETA.DefenceWil" }}</label>
 				<div class="form-fields">
 				   <input type="text" name="data.armour.wil" value="{{data.armour.wil}}" data-dtype="Number"/>
 				</div>
 			</div>
 
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.ArmourSkillPenelty" }}</label>
+				<label>{{ localize "DND4EBETA.ArmourSkillPenelty" }}</label>
 				<div class="form-fields">
 					<input type="checkbox" name="data.armour.skillCheck" data-dtype="Boolean" {{checked data.armour.skillCheck}}/>
 				   <input type="text" name="data.armour.skillCheckValue" value="{{data.armour.skillCheckValue}}" data-dtype="Number"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.ArmourMovePenelty" }}</label>
+				<label>{{ localize "DND4EBETA.ArmourMovePenelty" }}</label>
 				<div class="form-fields">
 					<input type="checkbox" name="data.armour.movePen" data-dtype="Boolean" {{checked data.armour.movePen}}/>
 				   <input type="text" name="data.armour.movePenValue" value="{{data.armour.movePenValue}}" data-dtype="Number"/>
@@ -182,7 +182,7 @@
 						<input class="damage-res" type="number" name="data.armour.damageRes.parts.{{i}}.0" value="{{lookup this "0"}}"/>
 						<select class="damage-res" name="data.armour.damageRes.parts.{{i}}.1">
 							{{#select (lookup this "1") }}
-							<option value="">{{ localize "DND4EALTUS.None" }}</option>
+							<option value="">{{ localize "DND4EBETA.None" }}</option>
 							{{#each ../config.damageTypes as |name type|}}
 							<option value="{{type}}">{{name}}</option>
 							{{/each}}
@@ -200,57 +200,57 @@
 			<!-- {{#unless isMountable}}
 			{{!-- Dexterity Modifier --}}
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.ItemEquipmentDexMod" }}</label>
+				<label>{{ localize "DND4EBETA.ItemEquipmentDexMod" }}</label>
 				<div class="form-fields">
-				   <input type="text" name="data.armour.dex" value="{{data.armour.dex}}" data-dtype="Number" placeholder="{{ localize 'DND4EALTUS.Unlimited' }}"/>
+				   <input type="text" name="data.armour.dex" value="{{data.armour.dex}}" data-dtype="Number" placeholder="{{ localize 'DND4EBETA.Unlimited' }}"/>
 				</div>
 			</div>
 
 			{{!-- Required Strength --}}
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.ItemRequiredStr" }}</label>
+				<label>{{ localize "DND4EBETA.ItemRequiredStr" }}</label>
 				<div class="form-fields">
-				   <input type="text" name="data.strength" value="{{data.strength}}" data-dtype="Number" placeholder="{{ localize 'DND4EALTUS.None' }}"/>
+				   <input type="text" name="data.strength" value="{{data.strength}}" data-dtype="Number" placeholder="{{ localize 'DND4EBETA.None' }}"/>
 				</div>
 			</div> -->
 
 			<!-- {{!-- Stealth Disadvantage --}}
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.ItemEquipmentStealthDisav" }}</label>
+				<label>{{ localize "DND4EBETA.ItemEquipmentStealthDisav" }}</label>
 				<input type="checkbox" name="data.stealth" value="1" {{checked data.stealth}}/>
 			</div>
 			{{/unless}} -->
 
 			<!-- {{#if isMountable}}
-			{{> 'systems/dnd4eAltus/templates/items/parts/item-mountable.html'}}
+			{{> 'systems/dnd4e/templates/items/parts/item-mountable.html'}}
 			<div class="form-group">
-				<label>{{localize 'DND4EALTUS.Speed'}}</label>
+				<label>{{localize 'DND4EBETA.Speed'}}</label>
 				<div class="form-fields">
 					<input type="text" name="data.speed.value" value="{{data.speed.value}}"
 						   placeholder="0" data-dtype="Number">
-					<span class="sep">{{localize 'DND4EALTUS.FeetAbbr'}}</span>
+					<span class="sep">{{localize 'DND4EBETA.FeetAbbr'}}</span>
 					<input type="text" name="data.speed.conditions"
 						   value="{{data.speed.conditions}}">
 				</div>
 			</div>
 			{{/if}} -->
 
-			<!-- <h3 class="form-header">{{ localize "DND4EALTUS.ItemEquipmentUsage" }}</h3>
+			<!-- <h3 class="form-header">{{ localize "DND4EBETA.ItemEquipmentUsage" }}</h3>
 
 			{{!-- Item Activation Template --}}
-			{{> "systems/dnd4eAltus/templates/items/parts/item-activation.html"}}
+			{{> "systems/dnd4e/templates/items/parts/item-activation.html"}}
 
-			<h3 class="form-header">{{ localize "DND4EALTUS.ItemEquipmentAction" }}</h3>
+			<h3 class="form-header">{{ localize "DND4EBETA.ItemEquipmentAction" }}</h3>
 
 			{{!-- Item Action Template --}}
-			{{> "systems/dnd4eAltus/templates/items/parts/item-action.html"}} -->
+			{{> "systems/dnd4e/templates/items/parts/item-action.html"}} -->
 		</div>
 
 		{{!-- Effects Tab --}}
 		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
-			{{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
+			{{> "systems/dnd4e/templates/actors/parts/active-effects.html"}}
 		</div>
 		{{!-- Macros Tab --}}
-		{{> "systems/dnd4eAltus/templates/items/parts/item-macro.html"}}
+		{{> "systems/dnd4e/templates/items/parts/item-macro.html"}}
 	</section>
 </form>

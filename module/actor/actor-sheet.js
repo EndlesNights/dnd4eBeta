@@ -1,4 +1,4 @@
-import { DND4EALTUS } from "../config.js";
+import { DND4EBETA } from "../config.js";
 import { SecondWindDialog } from "../apps/second-wind.js";
 import { ActionPointDialog } from "../apps/action-point.js";
 import { ShortRestDialog } from "../apps/short-rest.js";
@@ -10,6 +10,7 @@ import { CustomRolldDescriptions } from "../apps/custom-roll-descriptions.js";
 import { MovementDialog } from "../apps/movement-dialog.js";
 import { EncumbranceDialog } from "../apps/encumbrance-dialog.js";
 import { ItemImporterDialog} from "../apps/item-importer.js"
+import { HealMenuDialog } from "../apps/heal-menu-dialog.js";
 import TraitSelector from "../apps/trait-selector.js";
 import TraitSelectorSense from "../apps/trait-selector-sense.js";
 import TraitSelectorSave from "../apps/trait-selector-save.js";
@@ -40,7 +41,7 @@ export default class ActorSheet4e extends ActorSheet {
   /** @override */
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
-			classes: ["dnd4eAltus", "sheet", "actor"],
+			classes: ["dnd4eBeta", "sheet", "actor"],
 			width: 844,
 			height: 957,
 			tabs: [{
@@ -72,7 +73,7 @@ export default class ActorSheet4e extends ActorSheet {
   /** @override */
   get template() {
     // if ( !game.user.isGM && this.actor.limited ) return "systems/dnd5e/templates/actors/limited-sheet.html";
-    return `systems/dnd4eAltus/templates/actor-sheet.html`;
+    return `systems/dnd4e/templates/actor-sheet.html`;
   }
 
   /* -------------------------------------------- */
@@ -92,7 +93,7 @@ export default class ActorSheet4e extends ActorSheet {
 			cssClass: isOwner ? "editable" : "locked",
 			isCharacter: this.actor.type === "Player Character",
 			isNPC: this.actor.type === "NPC",
-			config: CONFIG.DND4EALTUS,
+			config: CONFIG.DND4EBETA,
 			rollData: this.actor.getRollData.bind(this.actor)
 		};
 
@@ -107,26 +108,26 @@ export default class ActorSheet4e extends ActorSheet {
 			i.labels = item.labels;
 		}
 		
-		// sheetData.config = CONFIG.DND4EALTUS;
-		actorData.data.size = DND4EALTUS.actorSizes;
+		// sheetData.config = CONFIG.DND4EBETA;
+		actorData.data.size = DND4EBETA.actorSizes;
 		
 		for ( let [s, skl] of Object.entries(actorData.data.skills)) {
 			skl.ability = actorData.data.abilities[skl.ability].label.substring(0, 3);
 			skl.icon = this._getTrainingIcon(skl.value);
-			skl.hover = game.i18n.localize(DND4EALTUS.trainingLevels[skl.value]);
-			skl.label = game.i18n.localize(DND4EALTUS.skills[s]);
+			skl.hover = game.i18n.localize(DND4EBETA.trainingLevels[skl.value]);
+			skl.label = game.i18n.localize(DND4EBETA.skills[s]);
 		}
 		
 		this._prepareData(actorData.data.languages, 
-			{"spoken": CONFIG.DND4EALTUS.spoken, "script": CONFIG.DND4EALTUS.script}
+			{"spoken": CONFIG.DND4EBETA.spoken, "script": CONFIG.DND4EBETA.script}
 		);
 		
 		this._prepareDataSense(actorData.data.senses,
-			{"vision": CONFIG.DND4EALTUS.vision, "special": CONFIG.DND4EALTUS.special}
+			{"vision": CONFIG.DND4EBETA.vision, "special": CONFIG.DND4EBETA.special}
 		);
 		
 		this._prepareDataSave(actorData.data.details,
-			{"saves": CONFIG.DND4EALTUS.saves}
+			{"saves": CONFIG.DND4EBETA.saves}
 		);
 
 		// Prepare owned items
@@ -139,7 +140,7 @@ export default class ActorSheet4e extends ActorSheet {
 		actorData.data.resources = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
 			const res = actorData.data.resources[r] || {};
 			res.name = r;
-			res.placeholder = game.i18n.localize("DND4EALTUS.Resource"+r.titleCase());
+			res.placeholder = game.i18n.localize("DND4EBETA.Resource"+r.titleCase());
 			if (res && res.value === 0) delete res.value;
 			if (res && res.max === 0) delete res.max;
 			return arr.concat([res]);
@@ -150,10 +151,10 @@ export default class ActorSheet4e extends ActorSheet {
 	
 	_prepareData(data, map) {
 		// const map = {
-			// "spoken": CONFIG.DND4EALTUS.spoken,
-			// "script": CONFIG.DND4EALTUS.script,
-			// "vision": CONFIG.DND4EALTUS.vision,
-			// "special": CONFIG.DND4EALTUS.special
+			// "spoken": CONFIG.DND4EBETA.spoken,
+			// "script": CONFIG.DND4EBETA.script,
+			// "vision": CONFIG.DND4EBETA.vision,
+			// "special": CONFIG.DND4EBETA.special
 		// }
 		for ( let [l, choices] of Object.entries(map) ) {
 			const trait = data[l];
@@ -178,22 +179,22 @@ export default class ActorSheet4e extends ActorSheet {
 	_prepareItems(data) {
 		//define diffrent item datasets
 		const inventory = {
-			weapon: { label: "DND4EALTUS.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
-			equipment: { label: "DND4EALTUS.ItemTypeEquipmentPl", items: [], dataset: {type: "equipment"} },
-			consumable: { label: "DND4EALTUS.ItemTypeConsumablePl", items: [], dataset: {type: "consumable"} },
-			tool: { label: "DND4EALTUS.ItemTypeToolPl", items: [], dataset: {type: "tool"} },
-			backpack: { label: "DND4EALTUS.ItemTypeContainerPl", items: [], dataset: {type: "backpack"} },
-			loot: { label: "DND4EALTUS.ItemTypeLootPl", items: [], dataset: {type: "loot"} }
+			weapon: { label: "DND4EBETA.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
+			equipment: { label: "DND4EBETA.ItemTypeEquipmentPl", items: [], dataset: {type: "equipment"} },
+			consumable: { label: "DND4EBETA.ItemTypeConsumablePl", items: [], dataset: {type: "consumable"} },
+			tool: { label: "DND4EBETA.ItemTypeToolPl", items: [], dataset: {type: "tool"} },
+			backpack: { label: "DND4EBETA.ItemTypeContainerPl", items: [], dataset: {type: "backpack"} },
+			loot: { label: "DND4EBETA.ItemTypeLootPl", items: [], dataset: {type: "loot"} }
 		};
 		const powers = this._generatePowerGroups();
 
 		const features = {
-			raceFeats: { label: "DND4EALTUS.FeatRace", items: [], dataset: {type: "raceFeats"} },
-			classFeats: { label: "DND4EALTUS.FeatClass", items: [], dataset: {type: "classFeats"} },
-			pathFeats: { label: "DND4EALTUS.FeatPath", items: [], dataset: {type: "pathFeats"} },
-			destinyFeats: { label: "DND4EALTUS.FeatDestiny", items: [], dataset: {type: "destinyFeats"} },
-			feat: { label: "DND4EALTUS.FeatLevel", items: [], dataset: {type: "feat"} },
-			ritual: { label: "DND4EALTUS.FeatRitual", items: [], dataset: {type: "ritual"} }
+			raceFeats: { label: "DND4EBETA.FeatRace", items: [], dataset: {type: "raceFeats"} },
+			classFeats: { label: "DND4EBETA.FeatClass", items: [], dataset: {type: "classFeats"} },
+			pathFeats: { label: "DND4EBETA.FeatPath", items: [], dataset: {type: "pathFeats"} },
+			destinyFeats: { label: "DND4EBETA.FeatDestiny", items: [], dataset: {type: "destinyFeats"} },
+			feat: { label: "DND4EBETA.FeatLevel", items: [], dataset: {type: "feat"} },
+			ritual: { label: "DND4EBETA.FeatRitual", items: [], dataset: {type: "ritual"} }
 		};
 		
 		// Partition items by category
@@ -240,9 +241,9 @@ export default class ActorSheet4e extends ActorSheet {
 		
 		// Organize Features
 		// const features = {
-		  // classes: { label: "DND4EALTUS.ItemTypeClassPl", items: [], hasActions: false, dataset: {type: "class"}, isClass: true },
-		  // active: { label: "DND4EALTUS.FeatureActive", items: [], hasActions: true, dataset: {type: "feat", "activation.type": "action"} },
-		  // passive: { label: "DND4EALTUS.FeaturePassive", items: [], hasActions: false, dataset: {type: "feat"} }
+		  // classes: { label: "DND4EBETA.ItemTypeClassPl", items: [], hasActions: false, dataset: {type: "class"}, isClass: true },
+		  // active: { label: "DND4EBETA.FeatureActive", items: [], hasActions: true, dataset: {type: "feat", "activation.type": "action"} },
+		  // passive: { label: "DND4EBETA.FeaturePassive", items: [], hasActions: false, dataset: {type: "feat"} }
 		// };
 
 		for ( let f of feats ) {
@@ -270,47 +271,60 @@ export default class ActorSheet4e extends ActorSheet {
 		}
 
 		this._sortPowers(powers);
+		this._sortFeatures(features);
 	}
-	_sortPowers(powers) {
 
-		function _compareValues(key, order = 'asc') {
-			return function innerSort(a, b) {
+	_compareValues(key, order = 'asc') {
+		return function innerSort(a, b) {
 
-				if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {	
-					const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
-					const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
-		
-					let comparison = 0;
-					if (varA > varB) {
-						comparison = 1;
-					}
-					else if (varA < varB) {
-						comparison = -1;
-					}
-					return (order === 'desc') ? (comparison * -1) : comparison;
-				} else if (a.data.hasOwnProperty(key) && b.data.hasOwnProperty(key)) {
-
-					const varA = (typeof a.data[key] === 'string') ? a.data[key].toUpperCase() : a.data[key];
-					const varB = (typeof b.data[key] === 'string') ? b.data[key].toUpperCase() : b.data[key];
-		
-					let comparison = 0;
-					if (varA > varB) {
-						comparison = 1;
-					}
-					else if (varA < varB) {
-						comparison = -1;
-					}
-					return (order === 'desc') ? (comparison * -1) : comparison;
+			if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {	
+				const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
+				const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
+	
+				let comparison = 0;
+				if (varA > varB) {
+					comparison = 1;
 				}
-				return 0;
+				else if (varA < varB) {
+					comparison = -1;
+				}
+				return (order === 'desc') ? (comparison * -1) : comparison;
+			} else if (a.data.hasOwnProperty(key) && b.data.hasOwnProperty(key)) {
 
-			};
+				const varA = (typeof a.data[key] === 'string') ? a.data[key].toUpperCase() : a.data[key];
+				const varB = (typeof b.data[key] === 'string') ? b.data[key].toUpperCase() : b.data[key];
+	
+				let comparison = 0;
+				if (varA > varB) {
+					comparison = 1;
+				}
+				else if (varA < varB) {
+					comparison = -1;
+				}
+				return (order === 'desc') ? (comparison * -1) : comparison;
+			}
+			return 0;
+
 		};
-		
+	};
+
+	/* -------------------------------------------- */
+
+	_sortFeatures(feats) {
+		const sort = this.object.data.data.featureSortTypes;
+		if(sort === "none") {return;}
+		for (const [keyy, group] of Object.entries(feats)) {
+			group.items.sort(this._compareValues(sort));
+		}
+	}
+
+	/* -------------------------------------------- */
+
+	_sortPowers(powers) {
 		const sort = this.object.data.data.powerSortTypes;
 		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(powers)) {
-			group.items.sort(_compareValues(sort));
+			group.items.sort(this._compareValues(sort));
 		}
 	}
 
@@ -330,36 +344,37 @@ export default class ActorSheet4e extends ActorSheet {
 
 		if(this.object.data.data.powerGroupTypes === "action" || this.object.data.data.powerGroupTypes == undefined) {
 			return {
-				standard: { label: "DND4EALTUS.ActionStandard", items: [], dataset: {type: "standard"} },
-				move: { label: "DND4EALTUS.ActionMove", items: [], dataset: {type: "move"} },
-				minor: { label: "DND4EALTUS.ActionMinor", items: [], dataset: {type: "minor"} },
-				free: { label: "DND4EALTUS.ActionFree", items: [], dataset: {type: "free"} },
-				reaction: { label: "DND4EALTUS.ActionReaction", items: [], dataset: {type: "reaction"} },
-				interrupt: { label: "DND4EALTUS.ActionInterrupt", items: [], dataset: {type: "interrupt"} },
-				opportunity: { label: "DND4EALTUS.ActionOpportunity", items: [], dataset: {type: "opportunity"} },
-				other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
+				standard: { label: "DND4EBETA.ActionStandard", items: [], dataset: {type: "standard"} },
+				move: { label: "DND4EBETA.ActionMove", items: [], dataset: {type: "move"} },
+				minor: { label: "DND4EBETA.ActionMinor", items: [], dataset: {type: "minor"} },
+				free: { label: "DND4EBETA.ActionFree", items: [], dataset: {type: "free"} },
+				reaction: { label: "DND4EBETA.ActionReaction", items: [], dataset: {type: "reaction"} },
+				interrupt: { label: "DND4EBETA.ActionInterrupt", items: [], dataset: {type: "interrupt"} },
+				opportunity: { label: "DND4EBETA.ActionOpportunity", items: [], dataset: {type: "opportunity"} },
+				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 			};
 		}
 		else if(this.object.data.data.powerGroupTypes === "type") {
 			return {
 				class: { label: "Class Power", items: [], dataset: {type: "class"} },
 				race: { label: "Racial Power", items: [], dataset: {type: "race"} },
-				utility: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} },
-				other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
+				utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
+				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 			};
 		}
 		else return { //"usage"
-			atwill: { label: "DND4EALTUS.PowerAt", items: [], dataset: {type: "atwill"} },
-			encounter: { label: "DND4EALTUS.PowerEnc", items: [], dataset: {type: "encounter"} },
-			daily: { label: "DND4EALTUS.PowerDaily", items: [], dataset: {type: "daily"} },
-			// utility: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} },
-			recharge: { label: "DND4EALTUS.PowerRecharge", items: [], dataset: {type: "recharge"} },
-			other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
+			atwill: { label: "DND4EBETA.PowerAt", items: [], dataset: {type: "atwill"} },
+			encounter: { label: "DND4EBETA.PowerEnc", items: [], dataset: {type: "encounter"} },
+			daily: { label: "DND4EBETA.PowerDaily", items: [], dataset: {type: "daily"} },
+			item: { label: "DND4EBETA.PowerItem", items: [], dataset: {type: "item"} },
+			// utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
+			recharge: { label: "DND4EBETA.PowerRecharge", items: [], dataset: {type: "recharge"} },
+			other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 		};
 	}
 
 	_checkPowerAvailable(itemData) {
-		if( (itemData.data.uses.value == 0 && itemData.data.uses.max)
+		if( (!itemData.data.uses.value && itemData.data.uses.max)
 			|| !itemData.data.prepared) {
 				itemData.data.notAvailable = true;
 
@@ -432,7 +447,7 @@ export default class ActorSheet4e extends ActorSheet {
 				} else {
 					itemData.data.rangeText = `Melee Weapon - ${weaponUse.data.name}`;
 					itemData.data.rangeTextShort = "W-M";
-
+					
 					if(itemData.data.rangePower == null){
 						itemData.data.rangeTextBlock = '';
 					} else {
@@ -453,8 +468,8 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 
 		} else {
-			itemData.data.rangeText = game.i18n.localize("DND4EALTUS.NotAvalible");
-			itemData.data.rangeTextShort = game.i18n.localize("DND4EALTUS.NotAvalibleShort");
+			itemData.data.rangeText = game.i18n.localize("DND4EBETA.NotAvalible");
+			itemData.data.rangeTextShort = game.i18n.localize("DND4EBETA.NotAvalibleShort");
 		}
 	}
   /* -------------------------------------------- */
@@ -465,21 +480,21 @@ export default class ActorSheet4e extends ActorSheet {
    * @private
    */
   _prepareItemToggleState(item) {
-	  const power = ["power","atwill","encounter","daily","utility"];
+	const power = ["power","atwill","encounter","daily","utility"];
 	if (power.includes(item.type)) {
 	  // const isAlways = getProperty(item.data, "preparation.mode") === "always";
 	  const isPrepared =  getProperty(item.data, "prepared");
 	  item.toggleClass = isPrepared ? "active" : "";
 	  // if ( isAlways ) item.toggleClass = "fixed";
-	  // if ( isAlways ) item.toggleTitle = CONFIG.DND4EALTUS.spellPreparationModes.always;
-	  // else if ( isPrepared ) item.toggleTitle = CONFIG.DND4EALTUS.spellPreparationModes.prepared;
-	  if ( isPrepared ) item.toggleTitle = game.i18n.localize("DND4EALTUS.PowerPrepared");
-	  else item.toggleTitle = game.i18n.localize("DND4EALTUS.PowerUnPrepared");
+	  // if ( isAlways ) item.toggleTitle = CONFIG.DND4EBETA.spellPreparationModes.always;
+	  // else if ( isPrepared ) item.toggleTitle = CONFIG.DND4EBETA.spellPreparationModes.prepared;
+	  if ( isPrepared ) item.toggleTitle = game.i18n.localize("DND4EBETA.PowerPrepared");
+	  else item.toggleTitle = game.i18n.localize("DND4EBETA.PowerUnPrepared");
 	}
 	else {
 	  const isActive = getProperty(item.data, "equipped");
 	  item.toggleClass = isActive ? "active" : "";
-	  item.toggleTitle = game.i18n.localize(isActive ? "DND4EALTUS.Equipped" : "DND4EALTUS.Unequipped");
+	  item.toggleTitle = game.i18n.localize(isActive ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped");
 	}
   }
 	_prepareDataSense(data, map) {
@@ -564,22 +579,7 @@ export default class ActorSheet4e extends ActorSheet {
 	  return true;
 	});
   }	
-	
-	/** @override */
-	async update(data, options={}) {
-		
-		// Apply changes in Actor size to Token width/height
-		const newSize = data["data.traits.size"];
-		if ( newSize && (newSize !== getProperty(this.data, "data.traits.size")) ) {
-			let size = CONFIG.DND4EALTUS.tokenSizes[newSize];
-			if ( this.isToken ) this.token.update({height: size, width: size});
-			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
-				data["token.height"] = size;
-				data["token.width"] = size;
-			}
-		}
-		return super.update(data, options);
-	}
+
 	_getTrainingIcon(level) {
 		const icons = {
 			0: '<i class="far fa-circle"></i>',
@@ -588,26 +588,7 @@ export default class ActorSheet4e extends ActorSheet {
 			};
 		return icons[level];
 	}
-	
-	_onCycleSkillProficiency(event) {
-		event.preventDefault();
-		const field = $(event.currentTarget).siblings('input[type="hidden"]');
 
-		// Get the current level and the array of levels
-		const level = parseFloat(field.val());
-		const levels = [0, 5, 8];
-		let idx = levels.indexOf(level);
-
-		// Toggle next level - forward on click, backwards on right
-		if ( event.type === "click" ) {
-			field.val(levels[(idx === levels.length - 1) ? 0 : idx + 1]);
-		} else if ( event.type === "contextmenu" ) {
-			field.val(levels[(idx === 0) ? levels.length - 1 : idx - 1]);
-		}
-
-		// Update the field value and save the form
-		this._onSubmit(event);
-	}	
   /* -------------------------------------------- */
 
   /** @override */
@@ -664,6 +645,7 @@ export default class ActorSheet4e extends ActorSheet {
 			html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
 			html.find('.move-bonus').click(this._onMovementBonus.bind(this));
 			html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
+			html.find('.modifiers-bonus').click(this._onModifiersBonus.bind(this));
 			html.find('.resistances-bonus').click(this._onResistancesBonus.bind(this));
 			
 			html.find('.movement-dialog').click(this._onMovementDialog.bind(this));		
@@ -672,6 +654,9 @@ export default class ActorSheet4e extends ActorSheet {
 			
 			//second wind
 			html.find('.second-wind').click(this._onSecondWind.bind(this));
+
+			// heal menu
+			html.find('.heal-menu').click(this._onHealMenuDialog.bind(this));
 
 			//action point
 			html.find('.action-point').click(this._onActionPointDialog.bind(this));
@@ -720,7 +705,7 @@ export default class ActorSheet4e extends ActorSheet {
 			
 			// Item Rolling
 			html.find('.item .item-image').click(event => this._onItemRoll(event));
-			// html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
+			html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
 
 			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this))
 			
@@ -784,6 +769,8 @@ export default class ActorSheet4e extends ActorSheet {
 			if (item.type === "power") {
 				
 				let div = $(`<div class="item-summary"></div>`);
+
+
 				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
 				div.append(descrip);
 
@@ -833,7 +820,7 @@ export default class ActorSheet4e extends ActorSheet {
 		const header = event.currentTarget;
 		const type = header.dataset.type;
 		const itemData = {
-			name: game.i18n.format("DND4EALTUS.ItemNew", {type: type.capitalize()}),
+			name: game.i18n.format("DND4EBETA.ItemNew", {type: type.capitalize()}),
 			type: type,
 			data: duplicate(header.dataset)
 		};
@@ -851,7 +838,7 @@ export default class ActorSheet4e extends ActorSheet {
 		const header = event.currentTarget;
 		const type = header.dataset.type;
 		const itemData = {
-			name: `${game.i18n.format("DND4EALTUS.ItemNew", {type: type.capitalize()})} Power`,
+			name: `${game.i18n.format("DND4EBETA.ItemNew", {type: type.capitalize()})} Power`,
 			type: "power",
 			data: duplicate(header.dataset)
 		};
@@ -864,7 +851,7 @@ export default class ActorSheet4e extends ActorSheet {
 		}
 		else if(this.object.data.data.powerGroupTypes === "usage") {
 			itemData.data.useType = type;
-			if(["encounter", "daily", "recharge"].includes(type)) {
+			if(["encounter", "daily", "recharge", "item"].includes(type)) {
 				itemData.data.uses = {
 					value: 1,
 					max: 1,
@@ -873,14 +860,14 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 		}
 
-		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4eAltus", "powerAutoGenerateLableOption");
-
+		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLableOption");
+		
 		if(this.actor.type === "NPC"){
 			
 			itemData.data.weaponType = "none";
 			itemData.data.weaponUse = "none";
 
-			itemData.data.attack = {formula:"@powerMod"};
+			itemData.data.attack = {formula:"@powerMod+@lvhalf"};
 			itemData.data.hit  = {
 				formula:"@powBase + @powerMod",
 				critFormula:"@powMax + @powerMod",
@@ -918,9 +905,10 @@ export default class ActorSheet4e extends ActorSheet {
    * @private
    */
   _onItemDelete(event) {
-	event.preventDefault();
-	const li = event.currentTarget.closest(".item");
-	this.actor.deleteOwnedItem(li.dataset.itemId);
+    event.preventDefault();
+    const li = event.currentTarget.closest(".item");
+    const item = this.actor.items.get(li.dataset.itemId);
+    if ( item ) return item.delete();
   }
   
   /* -------------------------------------------- */
@@ -961,21 +949,21 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const skillName = event.currentTarget.parentElement.dataset.skill;
 		const target = `data.skills.${skillName}`;
-		const options = {target: target, label: `${this.actor.data.data.skills[skillName].label} Skill Bonues`, skill: true };
+		const options = {target: target, label: `${this.actor.data.data.skills[skillName].label} Skill Bonus`, skill: true };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	/* -------------------------------------------- */
 
 	_onDeathSaveBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.deathsavebon`, label: "Death Savingthrow Bonues" };
+		const options = {target: `data.details.deathsavebon`, label: "Death Savingthrow Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	
 	_onSurgeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.surgeBon`, label: "Healing Surge Bonues" };
+		const options = {target: `data.details.surgeBon`, label: "Healing Surge Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -987,7 +975,7 @@ export default class ActorSheet4e extends ActorSheet {
 
 	_onSecondWindBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonues", secondWind: true };
+		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonus", secondWind: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -995,13 +983,13 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const defName = event.currentTarget.parentElement.dataset.defence;
 		const target = `data.defences.${defName}`;
-		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonues`, ac: (defName ==="ac")  };
+		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonus`, ac: (defName ==="ac")  };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.attributes.init`, label: "Initiative Bonues", init: true };
+		const options = {target: `data.attributes.init`, label: "Initiative Bonus", init: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -1009,7 +997,7 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `data.movement.${moveName}`;
-		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonues` };
+		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -1018,25 +1006,38 @@ export default class ActorSheet4e extends ActorSheet {
 		new MovementDialog(this.actor).render(true)
 	}
 
+	_onHealMenuDialog(event) {
+		event.preventDefault();
+		new HealMenuDialog(this.actor).render(true)
+	}
+
 	_onEncumbranceDialog(event) {
 		event.preventDefault();
 		new EncumbranceDialog(this.actor).render(true);
 	}
-	
+
 	_onPassiveBonus(event) {
 		event.preventDefault();
 		const passName = event.currentTarget.parentElement.dataset.passive;
 		const skillName = this.actor.data.data.passive[passName].skill;
 		const target = `data.passive.${passName}`;
-		const options = {target: target, label: `Passive ${this.actor.data.data.skills[skillName].label} Bonues` };
+		const options = {target: target, label: `Passive ${this.actor.data.data.skills[skillName].label} Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
+	}	
+
+	_onModifiersBonus(event) {
+		event.preventDefault();
+		const modifierName = event.currentTarget.parentElement.dataset.modifiers;
+		const target = `data.modifiers.${modifierName}`;
+		const options = {target: target, label: `${this.actor.data.data.modifiers[modifierName].label} Bonus` };
+		new AttributeBonusDialog(this.actor, options).render(true);
 	}	
 
 	_onResistancesBonus(event) {
 		event.preventDefault();
 		const resName = event.currentTarget.parentElement.dataset.res;
 		const target = `data.resistances.${resName}`;
-		const options = {target: target, label: `${this.actor.data.data.resistances[resName].label} Damage Resistances Bonues` };
+		const options = {target: target, label: `${this.actor.data.data.resistances[resName].label} Damage Resistances Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	
@@ -1098,7 +1099,7 @@ export default class ActorSheet4e extends ActorSheet {
 
 	_onSavingThrowBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.saves`, label: "Savingthrow Bonues" };
+		const options = {target: `data.details.saves`, label: "Savingthrow Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);	
 	}
 
@@ -1122,7 +1123,7 @@ export default class ActorSheet4e extends ActorSheet {
 		this._onSubmit(event);
 	}
 
-  /* -------------------------------------------- */
+	/* -------------------------------------------- */
 
   /**
    * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
@@ -1132,9 +1133,7 @@ export default class ActorSheet4e extends ActorSheet {
 	event.preventDefault();
 	const itemId = event.currentTarget.closest(".item").dataset.itemId;
 	const item = this.actor.items.get(itemId);
-	// Roll powers through the actor
-	const power = ["atwill","encounter","daily","utility"];
-
+	
 	if ( item.data.type === "power") {
 		return this.actor.usePower(item, {configureDialog: !event.shiftKey});
 	}
@@ -1142,6 +1141,53 @@ export default class ActorSheet4e extends ActorSheet {
 	return item.roll();
   }
   
+  /* -------------------------------------------- */
+
+	_onItemRecharge(event){
+		event.preventDefault();
+		console.log("roll recharge!")
+		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const item = this.actor.items.get(itemId);
+
+		if ( item.data.type === "power") {
+
+			if(item.data.data.rechargeRoll){
+				const r = new Roll("1d6");
+				r.options.async = true;
+				r.dice[0].options.recharge = true;
+				r.dice[0].options.critical = item.data.data.rechargeRoll;
+				r.dice[0].options.fumble = item.data.data.rechargeRoll -1;
+				r.evaluate({async: false});
+	
+				let flav = `${item.data.name} did not recharge.`;
+				if(r.total >= item.data.data.rechargeRoll){
+					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.uses.max}]);
+					flav = `${item.data.name} successfully recharged!`;
+				}
+
+				r.toMessage({
+					user: game.user.id,
+					speaker: {actor: this.object, alias: this.object.data.name},
+					flavor: flav,
+					rollMode: game.settings.get("core", "rollMode"),
+					messageData: {"flags.dnd4eBeta.roll": {type: "other", itemId: this.id }}
+				});
+
+			} else if (item.data.data.rechargeCondition) {
+
+				this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.uses.max}]);
+
+				ChatMessage.create({
+					user: game.user.id,
+					speaker: {actor: this.object, alias: this.object.data.name},
+					flavor: `${item.data.name} successfully recharged! Due to meeting condition ${item.data.data.rechargeCondition}`
+				});
+			}
+
+		}
+		return;
+	}
+
   /* -------------------------------------------- */
 
   /**
@@ -1152,8 +1198,8 @@ export default class ActorSheet4e extends ActorSheet {
   async _onConvertCurrency(event) {
 	event.preventDefault();
 	return Dialog.confirm({
-	  title: `${game.i18n.localize("DND4EALTUS.CurrencyConvert")}`,
-	  content: `<p>${game.i18n.localize("DND4EALTUS.CurrencyConvertHint")}</p>`,
+	  title: `${game.i18n.localize("DND4EBETA.CurrencyConvert")}`,
+	  content: `<p>${game.i18n.localize("DND4EBETA.CurrencyConvertHint")}</p>`,
 	  yes: () => this.convertCurrency()
 	});
   }
@@ -1167,7 +1213,7 @@ export default class ActorSheet4e extends ActorSheet {
    */
   convertCurrency() {
 	const curr = duplicate(this.actor.data.data.currency);
-	const convert = CONFIG.DND4EALTUS.currencyConversion;
+	const convert = CONFIG.DND4EBETA.currencyConversion;
 	for ( let [c, t] of Object.entries(convert) ) {
 	  let change = Math.floor(curr[c] / t.each);
 	  curr[c] -= (change * t.each);
@@ -1187,7 +1233,7 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const a = event.currentTarget;
 		const label = a.parentElement.querySelector("h4");
-		const choices = CONFIG.DND4EALTUS[a.dataset.options];
+		const choices = CONFIG.DND4EBETA[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
 		new TraitSelector(this.actor, options).render(true);
 	}
@@ -1197,7 +1243,7 @@ export default class ActorSheet4e extends ActorSheet {
 		const a = event.currentTarget;
 		// const label = a.parentElement.parentElement.querySelector("h4");
 		const label = a.parentElement.querySelector("span");
-		const choices = CONFIG.DND4EALTUS[a.dataset.options];
+		const choices = CONFIG.DND4EBETA[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
 		new TraitSelectorSense(this.actor, options).render(true);
 	}
@@ -1205,7 +1251,7 @@ export default class ActorSheet4e extends ActorSheet {
 	_onTraitSelectorSaveThrow(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		const choices = CONFIG.DND4EALTUS[a.dataset.options];
+		const choices = CONFIG.DND4EBETA[a.dataset.options];
 		const options = { name: a.dataset.target, title: "Saving Throw Mods", choices };
 		new TraitSelectorSave(this.actor, options).render(true);
 	}

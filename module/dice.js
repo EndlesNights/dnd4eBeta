@@ -1,7 +1,7 @@
 /**
  * An extension of the default Foundry Roll class for handling multiattack rolls and displaying them in a single chat message
  */
- export class MultiAttackRoll extends Roll{
+export class MultiAttackRoll extends Roll{
 	constructor (formula, data={}, options={}) {
 		super(formula, data, options);
 		this.rollArray = [];
@@ -13,7 +13,7 @@
 	/**
 	 * Custom chat template to handle multiroll attacks 
 	 */
-	static CHAT_TEMPLATE = "systems/dnd4eAltus/templates/chat/multiattack_roll_template.html";
+	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/multiattack_roll_template.html";
 
 	get multirollData() {
 		return this._multirollData;
@@ -26,7 +26,7 @@
 	 * @param {object} options 
 	 */
 	addNewRoll(formula, data={}, options={}) {
-		let r = new Roll(formula, data, options).roll();	
+		let r = new Roll(formula, data, options).roll({async : false});
 		this.rollArray.push(r);		
 	}
 
@@ -41,9 +41,10 @@
 			let targName = targDataArray.targNameArray[i];
 			let targDefVal = targDataArray.targDefValArray[i];
 			let critState = critStateArray[i];
+
 			let hitState = "";
 			
-			if(game.settings.get("dnd4eAltus", "automationCombat")){
+			if(game.settings.get("dnd4e", "automationCombat")){
 				if (critState === " critical"){
 					hitState = "Critical Hit!"
 				} else if (critState === " fumble"){
@@ -51,9 +52,10 @@
 				} else if (r._total >= targDefVal){
 					hitState = "Probable Hit!";
 				} else {
-						hitState = "Probable Miss!";
-					}
+					hitState = "Probable Miss!";
 				}
+			}
+
 
 			this._multirollData.push({
 				formula : r._formula,
@@ -84,7 +86,7 @@
 		const isPrivate = chatOptions.isPrivate;
 
 		// Execute the roll, if needed
-		if (!this._evaluated) this.evaluate();
+		if (!this._evaluated) await this.evaluate({async : true});
 
 		for (let roll of this._multirollData) {
 			let parts = roll.parts;
@@ -117,7 +119,7 @@
 		  formula: this._formula,
 		  multirollData: this._multirollData,
 		  terms: this.terms,
-		  total: this._total,
+		  total: this.total,
 		  evaluated: this._evaluated
 		}
 	}
@@ -191,9 +193,8 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 	speaker = speaker || ChatMessage.getSpeaker();
 	parts = parts.concat(["@bonus"]);
 	rollMode = rollMode || game.settings.get("core", "rollMode");
-	let rolled = false;
 	// Define inner roll function
-	const _roll = function(parts, adv, form=null) {
+	const _roll = async function(parts, adv, form=null) {
 
 		// Determine the d20 roll and modifiers
 		// if(!parts.includes("@power") && !parts.includes("@tool")) parts.unshift(`1d20`);
@@ -219,25 +220,72 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		if ( form !== null ) {data['bonus'] = form.bonus.value;}
 		else{data['bonus'] = null;}
 
+		var multibonusToggle = null;
+		var bonusArray = null;
+
 		if(isAttackRoll && form !== null) {
-			let i = 0;
-			for ( let [k, v] of Object.entries(form) ) {	
-				if(v.checked) {
-					let bonVal = CONFIG.DND4EALTUS.commonAttackBonuses[v.name].value;
-					if(data['bonus']){
-						data['bonus'] += `${bonVal > 0? "+":""} ${bonVal}`;
-					} else {
-						data['bonus'] += `${bonVal}`;
-					}
-					i++;
+			for (let [k, v] of Object.entries(form)){
+				if (v.id === "multibonus-toggle"){
+					multibonusToggle = (v.value === "true");
 				}
 			}
+			if (game.user.targets.size > 1 && multibonusToggle) {
+				bonusArray = []
+				let i = 0;
+				for (let targ = 0; targ < game.user.targets.size; targ++){
+					let tempString = "";
+					for ( let [k, v] of Object.entries(form) ) {	
+						if(v.checked) {
+							let tabInt = v.name.split(".")[0];
+							if (parseInt(tabInt) === targ) {
+								let bonusName = v.name.split(".")[1];
+								let bonVal = CONFIG.DND4EBETA.commonAttackBonuses[bonusName].value;
+								if(tempString){
+									tempString += `${bonVal > 0? "+":""} ${bonVal}`;
+								} else {
+									tempString += `${bonVal}`;
+								}
+							}
+							i++;
+						}
+					}
+					if (tempString) {
+						bonusArray.push(tempString);
+					} else {
+						bonusArray.push('0');
+					}
+				}
+
+
+
+
+			} else {
+				let i = 0;
+				let tempString = "";
+				for ( let [k, v] of Object.entries(form) ) {	
+					if(v.checked) {
+						let tabInt = v.name.split(".")[0];
+						if (parseInt(tabInt) === 0) {
+							let bonusName = v.name.split(".")[1];
+							let bonVal = CONFIG.DND4EBETA.commonAttackBonuses[bonusName].value;
+							if(tempString){
+								tempString += `${bonVal > 0? "+":""} ${bonVal}`;
+							} else {
+								tempString += `${bonVal}`;
+							}
+						}
+						i++;
+					}
+				}
+				data['bonus'] += tempString;
+			}
+			
 		}
 
 		
-		if ( !data["bonus"] ) parts.pop();
+		if ( !data["bonus"] && !bonusArray ) parts.pop();
 
-		// data.commonAttackBonuses = CONFIG.DND4EALTUS.commonAttackBonuses;
+		// data.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
 		if(form?.flavor.value){
 			flavor = form.flavor.value || flavor;
 		}	
@@ -248,7 +296,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			const abl = data.abilities[data.ability];
 			if ( abl ) {
 				data.mod = abl.mod;
-				flavor += ` (${CONFIG.DND4EALTUS.abilities[data.ability]})`;
+				flavor += ` (${CONFIG.DND4EBETA.abilities[data.ability]})`;
 			}
 		}
 
@@ -257,6 +305,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		if (game.user.targets.size && isAttackRoll) {
 			const numTargets = game.user.targets.size;
 			roll = new MultiAttackRoll(parts.join(" + "), data);
+			var defaultBonus = multibonusToggle ? data["bonus"] : null;
 
 			const targetArr = Array.from(game.user.targets);
 			var targDataArray = {
@@ -268,6 +317,9 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 				let targDefVal = targetArr[targ].document._actor.data.data.defences[options.attackedDef].value;
 				targDataArray.targNameArray.push(targName);
 				targDataArray.targDefValArray.push(targDefVal);
+				if (multibonusToggle) {
+					data["bonus"] = defaultBonus + bonusArray[targ];
+				}
 				roll.addNewRoll(parts.join(" + "), data);
 			}
 
@@ -276,15 +328,15 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			}
 			
 			var critStateArray = []
-		// Flag d20 options for any 20-sided dice in the roll
-		for ( let subroll of roll.rollArray ) {
-			for ( let d of subroll.dice ) {
-				if (d.faces === 20 ) {
-				d.options.critical = critical;
-				d.options.fumble = fumble;
-				if ( targetValue ) d.options.target = targetValue;
-			}
-		}
+			// Flag d20 options for any 20-sided dice in the roll
+			for ( let subroll of roll.rollArray ) {
+				for ( let d of subroll.dice ) {
+					if (d.faces === 20 ) {
+						d.options.critical = critical;
+						d.options.fumble = fumble;
+						if ( targetValue ) d.options.target = targetValue;
+					}
+				}
 				// Unable to figure out how to use the `chat.highlightCriticalSuccessFailure` function to individually flag rolls in the list of outputs when multiroll
 				// is used instead of a single Roll. Instead, this hacky way seems to work rather well. It has not failed me yet. 
 				if (subroll.dice.some(obj => obj.results.some(obj => obj.result >= critical)) && !subroll.dice.some(obj => obj.results.some(obj => obj.result <= fumble))){
@@ -305,10 +357,10 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 					reliableFlavor = true;
 				}
 			}
-			if (reliableFlavor) {flavor += ` (${game.i18n.localize("DND4EALTUS.FlagsReliableTalent")})`};
+			if (reliableFlavor) {flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`};
 		
 		} else {
-			roll = new Roll(parts.join(" + "), data).roll();
+			roll = await new Roll(parts.join(" + "), data).roll({async: true});
 
 			// Flag d20 options for any 20-sided dice in the roll
 			for ( let d of roll.dice ) {
@@ -321,7 +373,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
 			// If reliable talent was applied, add it to the flavor text
 			if ( reliableTalent && roll.dice[0].total < 10 ) {
-				flavor += ` (${game.i18n.localize("DND4EALTUS.FlagsReliableTalent")})`;
+				flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`;
 			}
 		}
 
@@ -332,7 +384,6 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			speaker: speaker,
 			flavor: flavor
 		}, { rollMode });
-		rolled = true;
 		return roll;
 	};
 
@@ -349,18 +400,40 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		// else return _roll(parts, 0);
 	}
 
+
 	// Render modal dialog
+	var targDataArray = {
+		targNameArray: []
+	}
+	if (game.user.targets.size) {
+		const numTargets = game.user.targets.size;
+		const targetArr = Array.from(game.user.targets);
+		targDataArray.hasTarget = true;
+		for (let targ = 0; targ < numTargets; targ++) {
+			let targName = targetArr[targ].data.name;
+			targDataArray.targNameArray.push(targName);
+		}
+	} else {
+		targDataArray.targNameArray.push('');
+		targDataArray.hasTarget = false;
+	}
+	if (targDataArray.targNameArray.length == 1) {
+		targDataArray.multiTargetCheck = false;
+	} else {
+		targDataArray.multiTargetCheck = true;
+	}
 	let newFlavor = "";
-	template = template || "systems/dnd4eAltus/templates/chat/roll-dialog.html";
+	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
 		formula: parts.join(" + "),
 		data: data,
 		rollMode: rollMode,
 		rollModes: CONFIG.Dice.rollModes,
-		config: CONFIG.DND4EALTUS,
+		config: CONFIG.DND4EBETA,
 		flavor: newFlavor || flavor,
 		isAttackRoll: isAttackRoll,
-		isD20Roll: true
+		isD20Roll: true,
+		targetData: targDataArray
 	};
 	const html = await renderTemplate(template, dialogData);
 
@@ -371,17 +444,15 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			title: title,
 			content: html,
 			buttons: {
-
 				normal: {
-					label: game.i18n.localize("DND4EALTUS.Roll"),
+					label: game.i18n.localize("DND4EBETA.Roll"),
 					callback: html => roll = _roll(parts, 0, html[0].querySelector("form"))
 				}
-
 			},
 			default: "normal",
 			close: html => {
 				if (onClose) onClose(html, parts, data);
-				resolve(rolled ? roll : false)
+				resolve(roll !== undefined ? roll : false) // check roll here as that was assigned on the active thread, not an async function
 			}
 		}, dialogOptions).render(true);
 	})
@@ -413,38 +484,49 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
  *
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
-export async function damageRoll({parts, partsCrit, actor, data, event={}, rollMode=null, template, title, speaker, flavor,
+export async function damageRoll({parts, partsCrit, partsMiss, actor, data, event={}, rollMode=null, template, title, speaker, flavor,
 	allowCritical=true, critical=false, fastForward=null, onClose, dialogOptions, healingRoll}) {
 	// Handle input arguments
 	flavor = flavor || title;
 	speaker = speaker || ChatMessage.getSpeaker();
 	rollMode = game.settings.get("core", "rollMode");
-	let rolled = false;
+	let formula = '';
 	// Define inner roll function
-	const _roll = function(parts, partsCrit, crit, form) {
+	const _roll = function(parts, partsCrit, partsMiss, hitType, form) {
 		if(form){data['bonus'] = form.bonus.value || 0;}
-		let roll = crit ? new Roll(partsCrit.filterJoin("+"), data) : new Roll(parts.filterJoin("+"), data);
+		
+		let roll;
+		
+		if(hitType === 'normal'){
+			roll = new Roll(parts.filterJoin("+"), data);
+		}
+		else if (hitType === 'crit') {
+			roll = new Roll(partsCrit.filterJoin("+"), data)
+			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
+		}
+		else if (hitType === 'miss') {
+			roll = new Roll(partsMiss.filterJoin("+"), data);
+			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Miss")})`;
+		}
+		else if (hitType === 'heal') {
+			roll = new Roll(parts.filterJoin("+"), data);
+			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Healing")})`;
+		} else {
+			roll = new Roll(parts.filterJoin("+"), data);
+		}
 
-		critical = crit;
+		critical = (hitType === 'crit');
 
 		if(form?.flavor.value){
 			flavor = form.flavor.value || flavor;
 		}
 
-		// Modify the damage formula for critical hits
-		if ( crit === true ) {
-			// let add = (actor && actor.getFlag("dnd4eAltus", "savageAttacks")) ? 1 : 0;
-			// let mult = 2;
-			// roll.alter(add, mult);
-			flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Critical")})`;
-		}
 		// Convert the roll to a chat message
 		rollMode = form ? form.rollMode.value : rollMode;
 		roll.toMessage({
 			speaker: speaker,
 			flavor: flavor
 		}, { rollMode });
-		rolled = true;
 		return roll;
 	};
 
@@ -463,11 +545,13 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 	// else parts = critical ? partsCrit.concat(["@bonus"]) : parts.concat(["@bonus"]);
 	parts = parts.concat(["@bonus"]);
 	partsCrit = partsCrit?.concat(["@bonus"]);
+	partsMiss = partsMiss?.concat(["@bonus"]);
 
+	formula = parts.join(" + ");
 	// Render modal dialog
-	template = template || "systems/dnd4eAltus/templates/chat/roll-dialog.html";
+	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
-		formula: critical ? partsCrit.join(" + ") : parts.join(" + "),
+		formula: "@damage + @bonus",
 		data: data,
 		rollMode: rollMode,
 		rollModes: CONFIG.Dice.rollModes
@@ -484,37 +568,47 @@ export async function damageRoll({parts, partsCrit, actor, data, event={}, rollM
 				content: html,
 				buttons: {
 					normal: {
-						label: game.i18n.localize("DND4EALTUS.Healing"),
-						callback: html => roll = _roll(parts, partsCrit, false, html[0].querySelector("form"))
+						label: game.i18n.localize("DND4EBETA.Healing"),
+						callback: html => roll = _roll(parts, partsCrit, partsMiss, 'heal', html[0].querySelector("form"))
 					}
 				},
 				default: "normal",
 				close: html => {
 					if (onClose) onClose(html, parts, data);
-					resolve(rolled ? roll : false);
+					resolve(roll !== undefined ? roll : false);
 				}				
 			}, dialogOptions).render(true);
 		});
 	} else {
 		return new Promise(resolve => {
+
+			const buttons = {
+				critical: {
+					condition: allowCritical,
+					label: game.i18n.localize("DND4EBETA.CriticalHit"),
+					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'crit', html[0].querySelector("form"))
+				},
+				normal: {
+					label: game.i18n.localize(allowCritical ? "DND4EBETA.Normal" : "DND4EBETA.Roll"),
+					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'normal', html[0].querySelector("form"))
+				}
+			}
+
+			if(data.item.miss.formula){
+				buttons.miss = {
+					label: game.i18n.localize(allowCritical ? "DND4EBETA.Miss" : "DND4EBETA.Roll"),
+					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'miss', html[0].querySelector("form"))
+				}
+			}
+
 			new Dialog({
 				title: title,
 				content: html,
-				buttons: {
-					critical: {
-						condition: allowCritical,
-						label: game.i18n.localize("DND4EALTUS.CriticalHit"),
-						callback: html => roll = _roll(parts, partsCrit, true, html[0].querySelector("form"))
-					},
-					normal: {
-						label: game.i18n.localize(allowCritical ? "DND4EALTUS.Normal" : "DND4EALTUS.Roll"),
-						callback: html => roll = _roll(parts, partsCrit, false, html[0].querySelector("form"))
-					},
-				},
+				buttons: buttons,
 				default: "normal",
 				close: html => {
 					if (onClose) onClose(html, parts, data);
-					resolve(rolled ? roll : false);
+					resolve(roll !== undefined ? roll : false);
 				}
 			}, dialogOptions).render(true);
 		});

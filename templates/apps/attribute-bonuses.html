@@ -39,9 +39,9 @@
 		<option value="cha" >Charisma</option>
 		{{/select}}
 	</select>
-	{{else if options.secondWind}}
+	{{else if options.secondWind}} 
 	<div class="form-group stacked">
-		<label>Additioanl Effects (Split with Semi-Colon)</label>
+		<label>Additional Effects (Split with Semi-Colon)</label>
 		<input type="text" name="data.custom" value="{{data.custom}}" data-dtype="String"/>
 	</div>
 	{{/if}}
@@ -63,6 +63,6 @@
 	<!-- <p>List of Bonus to skills go under here:</p>
 	<a>+ Add New Bonus Button</a> -->
 
-	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
+	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EBETA.Save"}}</button>
 
 </form>

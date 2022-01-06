@@ -7,7 +7,7 @@
 		</h4>
 		<div class="attribute-value">
 			<label class="recharge checkbox">
-				{{ localize "DND4EALTUS.AbbreviationSR" }} <input name="data.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
+				{{ localize "DND4EBETA.AbbreviationSR" }} <input name="data.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
 			</label>
 
 			<input name="data.resources.{{res.name}}.value" type="number" value="{{res.value}}" placeholder="0"/>
@@ -15,7 +15,7 @@
 			<input name="data.resources.{{res.name}}.max" type="number" value="{{res.max}}" placeholder="0"/>
 
 			<label class="recharge checkbox">
-				{{ localize "DND4EALTUS.AbbreviationLR" }} <input name="data.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
+				{{ localize "DND4EBETA.AbbreviationLR" }} <input name="data.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
 			</label>
 		</div>
 	</li>
@@ -37,34 +37,34 @@
 		</div>
 		<footer class="attribute-footer attribute-footer--temp-hp flexrow">
 			<label class="recharge checkbox">
-				{{ localize "DND4EALTUS.AbbreviationSR" }} <input name="data.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
+				{{ localize "DND4EBETA.AbbreviationSR" }} <input name="data.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
 			</label>
 			<label class="recharge checkbox">
-				{{ localize "DND4EALTUS.AbbreviationLR" }} <input name="data.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
+				{{ localize "DND4EBETA.AbbreviationLR" }} <input name="data.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
 			</label>		</footer>
 	</div>
 	{{/each}}
 </section>
 
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
-	<label for="gender">{{localize 'DND4EALTUS.Gender'}}:</label>
-	<input style="flex:1; text-align: right;" id="gender" type="text" name="data.details.gender" value="{{data.details.gender}}" title="{{localize 'DND4EALTUS.Gender'}}"  placeholder="{{localize 'DND4EALTUS.Gender'}}" onClick="this.select();"/>
+	<label for="gender">{{localize 'DND4EBETA.Gender'}}:</label>
+	<input style="flex:1; text-align: right;" id="gender" type="text" name="data.details.gender" value="{{data.details.gender}}" title="{{localize 'DND4EBETA.Gender'}}"  placeholder="{{localize 'DND4EBETA.Gender'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
-	<label for="age">{{localize 'DND4EALTUS.Age'}}:</label>
-	<input style="flex:1; text-align: right;" id="age" type="text" name="data.details.age" value="{{data.details.age}}" title="{{localize 'DND4EALTUS.Age'}}"  placeholder="{{localize 'DND4EALTUS.Age'}}" onClick="this.select();"/>
+	<label for="age">{{localize 'DND4EBETA.Age'}}:</label>
+	<input style="flex:1; text-align: right;" id="age" type="text" name="data.details.age" value="{{data.details.age}}" title="{{localize 'DND4EBETA.Age'}}"  placeholder="{{localize 'DND4EBETA.Age'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
-	<label for="height">{{localize 'DND4EALTUS.Height'}}:</label>
-	<input style="flex:1; text-align: right;" id="height" type="text" name="data.details.height" value="{{data.details.height}}" title="{{localize 'DND4EALTUS.Height'}}"  placeholder="{{localize 'DND4EALTUS.Height'}}" onClick="this.select();"/>
+	<label for="height">{{localize 'DND4EBETA.Height'}}:</label>
+	<input style="flex:1; text-align: right;" id="height" type="text" name="data.details.height" value="{{data.details.height}}" title="{{localize 'DND4EBETA.Height'}}"  placeholder="{{localize 'DND4EBETA.Height'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
-	<label for="weight">{{localize 'DND4EALTUS.Weight'}}:</label>
-	<input style="flex:1; text-align: right;" id="weight" type="text" name="data.details.weight" value="{{data.details.weight}}" title="{{localize 'DND4EALTUS.Weight'}}"  placeholder="{{localize 'DND4EALTUS.Weight'}}" onClick="this.select();"/>
+	<label for="weight">{{localize 'DND4EBETA.Weight'}}:</label>
+	<input style="flex:1; text-align: right;" id="weight" type="text" name="data.details.weight" value="{{data.details.weight}}" title="{{localize 'DND4EBETA.Weight'}}"  placeholder="{{localize 'DND4EBETA.Weight'}}" onClick="this.select();"/>
 </div>
 
 <div class="form-group" style="padding: 3px;">
-	<label style="font-weight: normal;">{{localize "DND4EALTUS.Size"}}:</label>
+	<label style="font-weight: normal;">{{localize "DND4EBETA.Size"}}:</label>
 	<select class="actor-size" name="data.details.size">
 		{{#select data.details.size}}
 		{{#each config.actorSizes as |label size|}}

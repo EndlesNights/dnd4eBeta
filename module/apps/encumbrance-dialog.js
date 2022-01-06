@@ -5,8 +5,8 @@ export class EncumbranceDialog extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "encumbrance-dialog",
-			classes: ["dnd4eAltus", "encumbrance-dialog"],
-			template: "systems/dnd4eAltus/templates/apps/encumbrance-dialog.html",
+			classes: ["dnd4eBeta", "encumbrance-dialog"],
+			template: "systems/dnd4e/templates/apps/encumbrance-dialog.html",
 			width: 420,
 			closeOnSubmit: false
 		});
@@ -38,7 +38,7 @@ export class EncumbranceDialog extends DocumentSheet {
 		console.log(moveName)
 		console.log(event.currentTarget.parentElement.dataset)
 		console.log(event.currentTarget.parentElement)
-		const options = {target: target, label: `${this.object.data.data.movement[moveName].label} Movement Bonues` };
+		const options = {target: target, label: `${this.object.data.data.movement[moveName].label} Movement Bonus` };
 		new AttributeBonusDialog(this.object, options).render(true);
 	}
 }

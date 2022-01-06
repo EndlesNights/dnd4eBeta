@@ -1,6 +1,15 @@
 
 export class Helper {
 
+	/**
+	 * Returns true if the variable is defined and is not an empty string.
+	 * @param str the object to check, could be a string, could be any other object
+	 * @returns {boolean} if the object is defined (non null) and is not the empty string.
+	 */
+	static isNonEmpty(str) {
+		return str && str !== ""
+	}
+
 	/* -------------------------------------------- */
 	/**
 	* Refrence a nested object by string.
@@ -22,8 +31,15 @@ export class Helper {
 		return o;
 	}
 
+	/**
+	 * Find A suitable weapon to use with the power.
+	 * Either the specified weapon, or a weapon that matches the itemData.weaponType category if itemData.weaponUse is set to default
+	 * @param itemData The Power being used
+	 * @param actor The actor that owns the power
+	 * @returns {null|*} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
+	 */
 	static getWeaponUse(itemData, actor) {
-		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length == 0)) return null;
+		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length === 0)) return null;
 		let weaponUse = itemData.weaponUse? actor.items.get(itemData.weaponUse) : null;
 		//If default weapon is in use, find a sutable weapon
 		if(itemData.weaponUse === "default" || itemData.weaponUse === "defaultOH") {
@@ -38,29 +54,29 @@ export class Helper {
 					
 					if(itemData.weaponType === "meleeRanged") {
 						if(setMelee.includes(i.data.data.weaponType) || setRanged.includes(i.data.data.weaponType) )
-						if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
-						return i;
+							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+								return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					else if(itemData.weaponType === "melee") {
 						if(setMelee.includes(i.data.data.weaponType) )
-						if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
-						return i;
+							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+								return i;
 							else if(itemData.weaponUse === "default") 
 								return i;
 					}
 					else if(itemData.weaponType === "ranged") {
 						if(setRanged.includes(i.data.data.weaponType) )
-						if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
-						return i;
+							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+								return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					else if(itemData.weaponType === "implement") {
 						if(i.data.data.properties.imp || i.data.data.properties.impA || i.data.data.properties.impD )
-						if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
-						return i;
+							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+								return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
@@ -83,6 +99,18 @@ export class Helper {
 		}
 		return weaponUse;
 	}
+
+	/**
+	 * Returns true if we should error out because the power needs a weapon equipped and the character doesn't have one
+	 * @param itemData The data object of the Power being used
+	 * @param weaponUse The details of the weapon being used for the power from Helper.getWeaponUse
+	 * @returns {boolean} True if the character lacks a suitable weapon to use the power
+	 */
+	static lacksRequiredWeaponEquipped(itemData, weaponUse) {
+		// a power needs a weapon equipped to roll attack if a weapon type has been specified that is not None or Implement And weaponUse is not none.
+		const powerNeedsAWeapon = itemData.weaponType && itemData.weaponType !== "none" && itemData.weaponType !== "implement" && itemData.weaponUse !== "none"
+		return !weaponUse && powerNeedsAWeapon
+	}
 	
 	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1, stringOnly = false) {
 		if (depth < 0 ) return 0;
@@ -91,63 +119,69 @@ export class Helper {
 		if(actorData) {
 
 			if (!stringOnly) newFormula = Roll.replaceFormulaData(newFormula, actorData);
-			if(powerData) newFormula = newFormula.replace("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
+			if(powerData) newFormula = newFormula.replaceAll("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
-			newFormula = newFormula.replace("@strMod", actorData.abilities["str"].mod);
-			newFormula = newFormula.replace("@conMod", actorData.abilities["con"].mod);
-			newFormula = newFormula.replace("@dexMod", actorData.abilities["dex"].mod);
-			newFormula = newFormula.replace("@intMod", actorData.abilities["int"].mod);
-			newFormula = newFormula.replace("@wisMod", actorData.abilities["wis"].mod);
-			newFormula = newFormula.replace("@chaMod", actorData.abilities["cha"].mod);
+			newFormula = newFormula.replaceAll("@strMod", actorData.abilities["str"].mod);
+			newFormula = newFormula.replaceAll("@conMod", actorData.abilities["con"].mod);
+			newFormula = newFormula.replaceAll("@dexMod", actorData.abilities["dex"].mod);
+			newFormula = newFormula.replaceAll("@intMod", actorData.abilities["int"].mod);
+			newFormula = newFormula.replaceAll("@wisMod", actorData.abilities["wis"].mod);
+			newFormula = newFormula.replaceAll("@chaMod", actorData.abilities["cha"].mod);
 			
-			newFormula = newFormula.replace("@lvhalf", Math.floor(actorData.details.level/2));
-			newFormula = newFormula.replace("@lv", actorData.details.level);
+			newFormula = newFormula.replaceAll("@lvhalf", Math.floor(actorData.details.level/2));
+			newFormula = newFormula.replaceAll("@lv", actorData.details.level);
+			newFormula = newFormula.replaceAll("@tier", actorData.details.tier);
+
+			newFormula = newFormula.replaceAll("@atkMod", actorData.modifiers.attack.value);
+			newFormula = newFormula.replaceAll("@dmgMod", actorData.modifiers.damage.value);
 		}
 		
-		if(powerData) {
-			newFormula = newFormula.replace("@damageFormula", this.commonReplace(formula, actorData, powerData, weaponData, depth-1));
-			newFormula = this.replaceData (newFormula, powerData);
-		}
+		// if(powerData) {
+		// 	newFormula = newFormula.replace("@damageFormula", this.commonReplace(formula, actorData, powerData, weaponData, depth-1));
+		// 	newFormula = this.replaceData (newFormula, powerData);
+		// }
 
 		if(weaponData) {
 
 			if (powerData.weaponType === "implement") {
-				newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepAttack", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepDamage", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
 			}
 			else {
-				newFormula = newFormula.replace("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replace("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1) || 0);
-				newFormula = newFormula.replace("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepAttack", this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepDamage", this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1) || 0);
+				newFormula = newFormula.replaceAll("@wepCritBonus", this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1) || 0);
 			}
 
-			newFormula = newFormula.replace("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 );
-			newFormula = newFormula.replace("@impDamageO", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 );
+			newFormula = newFormula.replaceAll("@impCritBonus", this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0);
 
-			newFormula = newFormula.replace("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
-			newFormula = newFormula.replace("@impDamage", weaponData.proficientI ? this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
+			newFormula = newFormula.replaceAll("@impAttackO", this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 );
+			newFormula = newFormula.replaceAll("@impDamageO", this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 );
 
-			newFormula = newFormula.replace("@profBonusO",weaponData.profBonus || 0);
-			newFormula = newFormula.replace("@profImpBonusO", weaponData.profImpBonus || 0);
+			newFormula = newFormula.replaceAll("@impAttack", weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
+			newFormula = newFormula.replaceAll("@impDamage", weaponData.proficientI ? this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0);
+
+			newFormula = newFormula.replaceAll("@profBonusO",weaponData.profBonus || 0);
+			newFormula = newFormula.replaceAll("@profImpBonusO", weaponData.profImpBonus || 0);
 			
-			newFormula = newFormula.replace("@profImpBonus", weaponData.proficientI ? weaponData.profImpBonus || 0 : 0);
-			newFormula = newFormula.replace("@profBonus", weaponData.proficient ? weaponData.profBonus || 0 : 0);
-			newFormula = newFormula.replace("@enhanceImp", weaponData.proficientI ? weaponData.enhance || 0 : 0);
-			newFormula = newFormula.replace("@enhance", weaponData.enhance || 0);
+			newFormula = newFormula.replaceAll("@profImpBonus", weaponData.proficientI ? weaponData.profImpBonus || 0 : 0);
+			newFormula = newFormula.replaceAll("@profBonus", weaponData.proficient ? weaponData.profBonus || 0 : 0);
+			newFormula = newFormula.replaceAll("@enhanceImp", weaponData.proficientI ? weaponData.enhance || 0 : 0);
+			newFormula = newFormula.replaceAll("@enhance", weaponData.enhance || 0);
 			
 
 			newFormula = this.replaceData (newFormula, weaponData);
 			
 			
-
+			//deprecated, kept for legacy purposes
 			if(newFormula.includes("@wepDice")) {
 				let parts = weaponData.damageDice.parts;
 				let indexStart = newFormula.indexOf("@wepDice")+8;
 				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
 
 				let weaponNum = newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
-				weaponNum = eval(weaponNum.replace(/[a-z]/gi, ''));
+				weaponNum = eval(weaponNum.replaceAll(/[a-z]/gi, ''));
 
 				if(typeof(weaponNum) !== "number") weaponNum = 1;
 
@@ -165,7 +199,7 @@ export class Helper {
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
-				newFormula = newFormula.replace("@wepDice", dice);
+				newFormula = newFormula.replaceAll("@wepDice", dice);
 			}
 			
 			// New method to handle base power dice from dropdown
@@ -175,7 +209,7 @@ export class Helper {
 			//	-	dice damage
 			if(newFormula.includes("@powBase")) {
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
 				
 				if(quantity === "") quantity = 1;
 				
@@ -187,10 +221,12 @@ export class Helper {
 					for(let i = 0; i< parts.length; i++) {
 						if(!parts[i][0] || !parts[i][1]) continue;
 						if(weaponData.properties.bru) {
-							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}rr<${weaponData.brutal}`;
+							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<${weaponData.brutal}`;
 						}
 						else{
-						dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}`;
+
+							// dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}`;
+							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2] || ``}`;// added a null check to i2 hotfix
 						}
 						if (i < parts.length - 1) dice += '+';
 					}
@@ -205,7 +241,7 @@ export class Helper {
 				}
 
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				newFormula = newFormula.replace("@powBase", dice);
+				newFormula = newFormula.replaceAll("@powBase", dice);
 			}
 
 			if(newFormula.includes("@wepMax")) {
@@ -217,15 +253,15 @@ export class Helper {
 					if (i < parts.length - 1) dice += '+';
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				let r = new Roll(dice)
+				let r = new Roll(`${dice}`)
 				if(dice){
-					r.evaluate({maximize: true});
-					newFormula = newFormula.replace("@wepMax", r.result);
+					r.evaluate({maximize: true, async: false});
+					newFormula = newFormula.replaceAll("@wepMax", r.result);
 				} else {
-				newFormula = newFormula.replace("@wepMax", dice);
+					newFormula = newFormula.replaceAll("@wepMax", dice);
 				}
 			}
-						
+			
 			// New method to handle base power dice from dropdown for critical hits
 			// Includes handling of:
 			//	-	weapon based damage
@@ -234,10 +270,10 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;
-				let rQuantity = new Roll(quantity)
-				rQuantity.evaluate({maximize: true});
-				
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let rQuantity = new Roll(`${quantity}`)
+				rQuantity.evaluate({maximize: true, async: false});
+
 				//check if is valid number
 				if(this._isNumber(rQuantity.result)){ 
 					quantity = rQuantity.result;
@@ -245,7 +281,7 @@ export class Helper {
 					quantity = 1;
 				}
 				
-				
+
 				// Handle Weapon Type Damage
 				if(diceType.includes("weapon")){
 					let parts = weaponData.damageDice.parts;
@@ -265,7 +301,7 @@ export class Helper {
 					dice += `${quantity} * ${diceValue}`;
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				newFormula = newFormula.replace("@powMax", dice);
+				newFormula = newFormula.replaceAll("@powMax", dice);
 			}
 			
 			
@@ -288,26 +324,26 @@ export class Helper {
 
 		} else {
 			//if no weapon is in use replace the weapon keys with nothing.
-			newFormula = newFormula.replace("@wepAttack", "");
-			newFormula = newFormula.replace("@wepDamage", "");
-			newFormula = newFormula.replace("@wepCritBonus", "");
+			newFormula = newFormula.replaceAll("@wepAttack", "");
+			newFormula = newFormula.replaceAll("@wepDamage", "");
+			newFormula = newFormula.replaceAll("@wepCritBonus", "");
 			
-			newFormula = newFormula.replace("@wepDiceNum", "0");
-			newFormula = newFormula.replace("@wepDiceDamage", "0");
+			newFormula = newFormula.replaceAll("@wepDiceNum", "0");
+			newFormula = newFormula.replaceAll("@wepDiceDamage", "0");
 			
-			newFormula = newFormula.replace("@impAttackO", "0" );
-			newFormula = newFormula.replace("@impDamageO", "0");
+			newFormula = newFormula.replaceAll("@impAttackO", "0" );
+			newFormula = newFormula.replaceAll("@impDamageO", "0");
 
-			newFormula = newFormula.replace("@impAttack", "0");
-			newFormula = newFormula.replace("@impDamage", "0");
+			newFormula = newFormula.replaceAll("@impAttack", "0");
+			newFormula = newFormula.replaceAll("@impDamage", "0");
 
-			newFormula = newFormula.replace("@profBonusO", "0");
-			newFormula = newFormula.replace("@profImpBonusO", "0");
+			newFormula = newFormula.replaceAll("@profBonusO", "0");
+			newFormula = newFormula.replaceAll("@profImpBonusO", "0");
 			
-			newFormula = newFormula.replace("@profImpBonus", "0");
-			newFormula = newFormula.replace("@profBonus", "0");
-			newFormula = newFormula.replace("@enhanceImp", "0");
-			newFormula = newFormula.replace("@enhance", "0");
+			newFormula = newFormula.replaceAll("@profImpBonus", "0");
+			newFormula = newFormula.replaceAll("@profBonus", "0");
+			newFormula = newFormula.replaceAll("@enhanceImp", "0");
+			newFormula = newFormula.replaceAll("@enhance", "0");
 
 
 
@@ -316,12 +352,12 @@ export class Helper {
 				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
 
 				let weaponNum = newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
-				weaponNum = eval(weaponNum.replace(/[a-z]/gi, ''));
+				weaponNum = eval(weaponNum.replaceAll(/[a-z]/gi, ''));
 
 				if(typeof(weaponNum) !== "number") weaponNum = 1;
 
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
-				newFormula = newFormula.replace("@wepDice", "");
+				newFormula = newFormula.replaceAll("@wepDice", "");
 			}
 
 			if(newFormula.includes("@powBase")) {
@@ -329,7 +365,7 @@ export class Helper {
 				let diceType = powerData.hit.baseDiceType;
 				
 				if(diceType == "weapon"){
-					newFormula = newFormula.replace("@powBase", '0');
+					newFormula = newFormula.replaceAll("@powBase", '0');
 				} else {
 					if(quantity === "") quantity = 1;
 				
@@ -345,7 +381,7 @@ export class Helper {
 					}
 	
 					dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-					newFormula = newFormula.replace("@powBase", dice);
+					newFormula = newFormula.replaceAll("@powBase", dice);
 				}
 
 			}
@@ -354,18 +390,18 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;
-				let rQuantity = new Roll(quantity)
-				rQuantity.evaluate({maximize: true});
+				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let rQuantity = new Roll(`${quantity}`)
+				rQuantity.evaluate({maximize: true, async: false});
 				
 				if(this._isNumber(rQuantity.result)) {
 					quantity = rQuantity.result;
 				} else {
 					quantity = 1;
 				}
-
+				
 				// Handle Weapon Type Damage
-				if(diceType.includes("weapon")){
+				if(diceType.includes("weapon") && weaponData){
 					let parts = weaponData.damageDice.parts;
 						for(let i = 0; i< parts.length; i++) {
 							if(!parts[i][0] || !parts[i][1]) continue;
@@ -383,7 +419,7 @@ export class Helper {
 					dice += `${quantity} * ${diceValue}`;
 				}
 				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
-				newFormula = newFormula.replace("@powMax", dice);
+				newFormula = newFormula.replaceAll("@powMax", dice);
 			}			
 		}
 
@@ -441,97 +477,142 @@ export class Helper {
 		return total;
 	}
 
-	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
+	/**
+	 * Create and evaluate a roll based on the given roll expression string.  If no expression has been provided, evaluate a roll of 0.
+	 * In the event that the string fails to evaluate, display an error and return a roll of 0.
+	 *
+	 * Note this uses the async roll API so returns a Promise<Roll>
+	 *
+	 * @param {String} rollString    		The roll expression.
+	 * @param {String} errorMessageKey      The key that will be localised for the error message if the roll fails.
+	 * @returns {Promise<Roll>}    			The evaluated Roll instance as a promise
+	 */
+	static async roll(rollString, errorMessageKey = "DND4EBETA.InvalidRollExpression") {
+		if (rollString && rollString !== "") {
+			const roll = new Roll(rollString);
+			return roll.roll({async : true}).catch(err => {
+				ui.notifications.error(game.i18n.localize(errorMessageKey));
+				return new Roll("0").roll({async : true});
+			});
+		}
+		else {
+			return new Roll("0").roll({async : true});
+		}
+	}
 
-		let powerDetail = `<span><b>${CONFIG.DND4EALTUS.powerUseType[`${chatData.useType}`]} ♦ ${CONFIG.DND4EALTUS.powerSource[`${chatData.powersource}`]}`;
+	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
+		let powerSource = (chatData.powersource && chatData.powersource !== "") ? ` ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}` : ""
+		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]}${powerSource}`;
 		let tag = [];
 
 		if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
 			tag.push(`Weapon`);
 		} 
-		else if ( chatData.weaponType === "implement") {
+		else if (chatData.weaponType === "implement") {
 			tag.push(`Implement`);
+		}
+
+		if (chatData.powersource && chatData.secondPowersource && chatData.secondPowersource != chatData.powersource){
+			tag.push(`${CONFIG.DND4EBETA.powerSource[`${chatData.secondPowersource}`]}`)
 		}
 
 		if(chatData.damageType) {
 			for ( let [damage, d] of Object.entries(chatData.damageType)) {
-				if(d) tag.push(CONFIG.DND4EALTUS.damageTypes[damage])
+				if(d && CONFIG.DND4EBETA.damageTypes[damage]) tag.push(CONFIG.DND4EBETA.damageTypes[damage])
 			}
 		}
 		if(chatData.effectType) {
 			for ( let [effect, e] of Object.entries(chatData.effectType)) {
-				if(e) tag.push(CONFIG.DND4EALTUS.effectTypes[effect])
+				if(e && CONFIG.DND4EBETA.effectTypes[effect]) tag.push(CONFIG.DND4EBETA.effectTypes[effect])
 			}
 		}
 		tag.sort();
 		powerDetail += tag.length > 0 ? `, ${tag.join(', ')}</b></span>` : `</b></span>`;
 		
-		powerDetail += `<br><span><b>${CONFIG.DND4EALTUS.abilityActivationTypes[chatData.actionType]} •`;
+		powerDetail += `<br><span><b>${CONFIG.DND4EBETA.abilityActivationTypes[chatData.actionType]} •`;
 
 		if(chatData.rangeType === "weapon") {
-			powerDetail += ` ${CONFIG.DND4EALTUS.weaponType[chatData.weaponType]}`;
+			powerDetail += ` ${CONFIG.DND4EBETA.weaponType[chatData.weaponType]}`;
 			chatData.rangePower ? powerDetail += `</b> ${chatData.rangePower}</span>` : powerDetail += `</b></span>`;
 			
-		} 
+		}
+		else if (chatData.rangeType === "melee") {
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")}</b> ${chatData.rangePower}</span>`;
+		}
+		else if (chatData.rangeType === "reach") {
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.rangeReach")}</b> ${chatData.rangePower}</span>`;
+		}
 		else if (chatData.rangeType === "range") {
-			powerDetail += ` ${game.i18n.localize("DND4EALTUS.Range")}</b> ${chatData.rangePower}</span>`;
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.Range")}</b> ${chatData.rangePower}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]} ${chatData.area}</b></span>`;
+			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b></span>`;
 		}
 		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]} ${chatData.area}</b> ${game.i18n.localize("DND4EALTUS.RangeWithinOf")} <b>${chatData.rangePower}</b> ${game.i18n.localize("DND4EALTUS.Squares")}</span>`;
+			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b> ${game.i18n.localize("DND4EBETA.RangeWithinOf")} <b>${chatData.rangePower}</b> ${game.i18n.localize("DND4EBETA.Squares")}</span>`;
 		}
 		else if (chatData.rangeType === "personal") {
-			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]}</b></span>`;
+			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
 		}
-		else if (chatData.rangeType === "trouch") {
-			powerDetail += ` ${game.i18n.localize("DND4EALTUS.Melee")} ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]}</b></span>`;
+		else if (chatData.rangeType === "touch") {
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")} ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
 		}
 		else {
 			powerDetail += `</b></span>`;
 		}
 
-		if(chatData.target) {
-			powerDetail += `<br><span><b>${game.i18n.localize("DND4EALTUS.Target")}:</b> ${chatData.target}</span>`;
+		if(chatData.requirement) {
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Requirements")}:</b> ${chatData.requirement}</span></p>`;
 		}
 
 		if(chatData.trigger) {
-			powerDetail += `<br><span><b>${game.i18n.localize("DND4EALTUS.Trigger")}:</b> ${chatData.trigger}</span>`;
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Trigger")}:</b> ${chatData.trigger}</span></p>`;
 		}
 
-		if(chatData.requirement) {
-			powerDetail += `<br><span><b>${game.i18n.localize("DND4EALTUS.Requirements")}:</b> ${chatData.requirement}</span>`;
+		if(chatData.target) {
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Target")}:</b> ${chatData.target}</span></p>`;
 		}
 
 		if(!chatData.postEffect && chatData.effect.detail) {
-			powerDetail += `<p><b>${game.i18n.localize("DND4EALTUS.Effect")}:</b> ${chatData.effect.detail}</p>`;
+			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Effect")}:</b> ${chatData.effect.detail}</p>`;
 		}
+		
 		if(!chatData.postSpecial && chatData.special) {
-			powerDetail += `<p><b>${game.i18n.localize("DND4EALTUS.Special")}:</b> ${chatData.special}</p>`;
+			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
 			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
 				powerDetail += `<p>${entry}</p>`;
 			}
 		}
 
 		if(chatData.attack.isAttack) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EALTUS.Attack")}</b>: ${CONFIG.DND4EALTUS.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EALTUS.VS")} ${CONFIG.DND4EALTUS.def[chatData.attack.def]}</p>`;
-			chatData.hit.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EALTUS.Hit")}:</b> ${chatData.hit.detail}</p>` : {};
-			chatData.miss.detail ? powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EALTUS.Miss")}:</b> ${chatData.miss.detail}</p>` : {};
+			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+		}
+
+		let highlight = true;
+		if (chatData.hit.detail){
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Hit")}:</b> ${chatData.hit.detail}</p>`;
+			highlight = !highlight;
+		}
+
+		if (chatData.miss.detail){
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Miss")}:</b> ${chatData.miss.detail}</p>`;
+			highlight = !highlight;
 		}
 
 		if(chatData.postEffect && chatData.effect.detail) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EALTUS.Effect")}:</b> ${chatData.effect.detail}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Effect")}:</b> ${chatData.effect.detail}</p>`;
+			highlight = !highlight;
 		}
 		if(chatData.postSpecial && chatData.special) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EALTUS.Special")}:</b> ${chatData.special}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			highlight = !highlight;
 			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
 				powerDetail += `<p>${entry}</p>`;
 			}
 		}
 
 		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EALTUS.Sustain")} ${CONFIG.DND4EALTUS.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
 		}
 
 		if(actorData){
@@ -540,7 +621,7 @@ export class Helper {
 
 		return powerDetail;
 	}
-	
+
 	static _isNumber(str){
 		return /^-?\d+$/.test(str);
 	}

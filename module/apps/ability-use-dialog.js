@@ -5,7 +5,7 @@
 export default class AbilityUseDialog extends Dialog {
   constructor(item, dialogData={}, options={}) {
     super(dialogData, options);
-    this.options.classes = ["dnd4eAltus", "dialog"];
+    this.options.classes = ["dnd4eBeta", "dialog"];
 
     /**
      * Store a reference to the Item entity being used
@@ -38,7 +38,7 @@ export default class AbilityUseDialog extends Dialog {
     // Prepare dialog form data
     const data = {
       item: item.data,
-      title: game.i18n.format("DND4EALTUS.AbilityUseHint", item.data),
+      title: game.i18n.format("DND4EBETA.AbilityUseHint", item.data),
       note: this._getAbilityUseNote(item.data, uses, recharge),
       hasLimitedUses: uses.max || recharges,
       canUse: recharges ? recharge.charged : (quantity > 0 && !uses.value) || uses.value > 0,
@@ -48,11 +48,12 @@ export default class AbilityUseDialog extends Dialog {
     if ( item.data.type === "spell" ) this._getSpellData(actorData, itemData, data);
 
     // Render the ability usage template
-    const html = await renderTemplate("systems/dnd4eAltus/templates/apps/ability-use.html", data);
+    const html = await renderTemplate("systems/dnd4e/templates/apps/ability-use.html", data);
 
     // Create the Dialog and return as a Promise
     const icon = data.hasSpellSlots ? "fa-magic" : "fa-fist-raised";
-    const label = game.i18n.localize("DND4EALTUS.AbilityUse" + (data.hasSpellSlots ? "Cast" : "Use"));
+    // const label = game.i18n.localize("DND4EBETA.AbilityUse" + (data.hasSpellSlots ? "Cast" : "Use"));
+    const label = game.i18n.localize("DND4EBETA.AbilityUseItem");
     return new Promise((resolve) => {
       const dlg = new this(item, {
         title: `${item.name}: Usage Configuration`,
@@ -83,20 +84,20 @@ export default class AbilityUseDialog extends Dialog {
 
     // Determine whether the spell may be up-cast
     const lvl = itemData.level;
-    const canUpcast = (lvl > 0) && CONFIG.DND4EALTUS.spellUpcastModes.includes(itemData.preparation.mode);
+    const canUpcast = (lvl > 0) && CONFIG.DND4EBETA.spellUpcastModes.includes(itemData.preparation.mode);
 
     // Determine the levels which are feasible
     let lmax = 0;
     const spellLevels = Array.fromRange(10).reduce((arr, i) => {
       if ( i < lvl ) return arr;
-      const label = CONFIG.DND4EALTUS.spellLevels[i];
+      const label = CONFIG.DND4EBETA.spellLevels[i];
       const l = actorData.spells["spell"+i] || {max: 0, override: null};
       let max = parseInt(l.override || l.max || 0);
       let slots = Math.clamped(parseInt(l.value || 0), 0, max);
       if ( max > 0 ) lmax = i;
       arr.push({
         level: i,
-        label: i > 0 ? game.i18n.format('DND4EALTUS.SpellLevelSlot', {level: label, n: slots}) : label,
+        label: i > 0 ? game.i18n.format('DND4EBETA.SpellLevelSlot', {level: label, n: slots}) : label,
         canCast: canUpcast && (max > 0),
         hasSlots: slots > 0
       });
@@ -108,7 +109,7 @@ export default class AbilityUseDialog extends Dialog {
     if (pact.level >= lvl) {
       spellLevels.push({
         level: 'pact',
-        label: `${game.i18n.format('DND4EALTUS.SpellLevelPact', {level: pact.level, n: pact.value})}`,
+        label: `${game.i18n.format('DND4EBETA.SpellLevelPact', {level: pact.level, n: pact.value})}`,
         canCast: canUpcast,
         hasSlots: pact.value > 0
       });
@@ -117,7 +118,7 @@ export default class AbilityUseDialog extends Dialog {
 
     // Return merged data
     data = mergeObject(data, { hasSpellSlots: true, canUpcast, spellLevels });
-    if ( !canCast ) data.errors.push("DND4EALTUS.SpellCastNoSlots");
+    if ( !canCast ) data.errors.push("DND4EBETA.SpellCastNoSlots");
   }
 
   /* -------------------------------------------- */
@@ -130,11 +131,11 @@ export default class AbilityUseDialog extends Dialog {
 
     // Zero quantity
     const quantity = item.data.quantity;
-    if ( quantity <= 0 ) return game.i18n.localize("DND4EALTUS.AbilityUseUnavailableHint");
+    if ( quantity <= 0 ) return game.i18n.localize("DND4EBETA.AbilityUseUnavailableHint");
 
     // Abilities which use Recharge
     if ( !!recharge.value ) {
-      return game.i18n.format(recharge.charged ? "DND4EALTUS.AbilityUseChargedHint" : "DND4EALTUS.AbilityUseRechargeHint", {
+      return game.i18n.format(recharge.charged ? "DND4EBETA.AbilityUseChargedHint" : "DND4EBETA.AbilityUseRechargeHint", {
         type: item.type,
       })
     }
@@ -144,10 +145,10 @@ export default class AbilityUseDialog extends Dialog {
 
     // Consumables
     if ( item.type === "consumable" ) {
-      let str = "DND4EALTUS.AbilityUseNormalHint";
-      if ( uses.value > 1 ) str = "DND4EALTUS.AbilityUseConsumableChargeHint";
-      else if ( item.data.quantity === 1 && uses.autoDestroy ) str = "DND4EALTUS.AbilityUseConsumableDestroyHint";
-      else if ( item.data.quantity > 1 ) str = "DND4EALTUS.AbilityUseConsumableQuantityHint";
+      let str = "DND4EBETA.AbilityUseNormalHint";
+      if ( uses.value > 1 ) str = "DND4EBETA.AbilityUseConsumableChargeHint";
+      else if ( item.data.quantity === 1 && uses.autoDestroy ) str = "DND4EBETA.AbilityUseConsumableDestroyHint";
+      else if ( item.data.quantity > 1 ) str = "DND4EBETA.AbilityUseConsumableQuantityHint";
       return game.i18n.format(str, {
         type: item.data.consumableType,
         value: uses.value,
@@ -157,11 +158,11 @@ export default class AbilityUseDialog extends Dialog {
 
     // Other Items
     else {
-      return game.i18n.format("DND4EALTUS.AbilityUseNormalHint", {
+      return game.i18n.format("DND4EBETA.AbilityUseNormalHint", {
         type: item.type,
         value: uses.value,
         max: uses.max,
-        per: CONFIG.DND4EALTUS.limitedUsePeriods[uses.per]
+        per: CONFIG.DND4EBETA.limitedUsePeriods[uses.per]
       });
     }
   }

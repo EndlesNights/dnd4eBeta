@@ -1,19 +1,114 @@
 {
 	"name": "dnd4eAltus",
-	"title": "4th Edition Altus",
-	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.2.41",
+	"title": "DnD 4th Altus Edition",
+	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
+	"version": "0.2.52",
 	"minimumCoreVersion": "0.8.5",
-	"compatibleCoreVersion": "0.8.9",
+	"compatibleCoreVersion": "9",
 	"templateVersion": 2,
 	"author": "EndlesNights",
-	"esmodules": [
-		"module/dnd4eAltus.js"
-		],
-	"styles": [
-		"styles/dnd4eAltus.css"
+	"dependencies": [
+		{ "name": "lib-wrapper" }
 	],
-	"packs": [],
+	"esmodules": [
+		"module/dnd4eBeta.js"
+	],
+	"styles": [
+		"styles/dnd4eBeta.css"
+	],
+	"packs": [
+		{
+			"name": "example_character",
+			"label": "Example Character",
+			"system": "dnd4eAltus",
+			"path": "./packs/example_character.db",
+			"entity": "Actor"
+		},
+		{
+			"name": "example_powers",
+			"label": "Example Powers",
+			"system": "dnd4eAltus",
+			"path": "./packs/example_powers.db",
+			"entity": "Item"
+		},
+		{
+			"name": "example_feats",
+			"label": "Example Feats",
+			"system": "dnd4eAltus",
+			"path": "./packs/example_feats.db",
+			"entity": "Item"
+		},
+		{
+			"name": "class_features",
+			"label": "Class Features",
+			"system": "dnd4eAltus",
+			"path": "./packs/class_features.db",
+			"entity": "Item"
+		},
+		{
+			"name": "racial_features",
+			"label": "Racial Features",
+			"system": "dnd4eAltus",
+			"path": "./packs/racial_features.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_armour",
+			"label": "SRD Armour",
+			"system": "dnd4eAltus",
+			"path": "./packs/srd_armour.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_classes",
+			"label": "SRD Classes",
+			"system": "dnd4eAltus",
+			"path": "./packs/srd_classes.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_equipment",
+			"label": "SRD Equipment",
+			"system": "dnd4eAltus",
+			"path": "./packs/srd_equipment.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_potions",
+			"label": "SRD Potions",
+			"system": "dnd4eAltus",
+			"path": "./packs/srd_potions.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_powers_shared",
+			"label": "SRD Powers: Common Actions",
+			"system": "dnd4eAltus",
+			"path": "./packs/srd_powers_shared.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_races",
+			"label": "SRD Races",
+			"system": "dnd4eAltus",
+			"path": "./packs/srd_races.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_weapons",
+			"label": "SRD Weapons",
+			"system": "dnd4eAltus",
+			"path": "./packs/srd_weapons.db",
+			"entity": "Item"
+		},
+		{
+			"name": "srd_rules",
+			"label": "SRD Rules",
+			"system": "dnd4eAltus",
+			"path": "./packs/srd_rules.db",
+			"entity": "JournalEntry"
+		}
+	],
 	"languages": [
 		{
 			"lang": "en",
@@ -22,13 +117,11 @@
 		}
 	],
 	"socket": true,
-	"initiative": "1d20 + @attributes.init.value + (@attributes.init.value / 100)",
 	"gridDistance": 1,
 	"gridUnits": "sq",
 	"primaryTokenAttribute": "attributes.hp",
 	"secondaryTokenAttribute": null,
-  	"url": "https://github.com/EndlesNights/dnd4eBeta",
+	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dndAltus/system.json",
 	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/dndAltus/dnd4eAltus.zip"
-	
 }

@@ -1,4 +1,5 @@
-<div class="dnd4eAltus chat-card item-card" data-actor-id="{{actor._id}}" data-item-id="{{item._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
+<!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
+<div class="dnd4eBeta chat-card item-card" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
     <header class="card-header flexrow">
         <img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
         <h3 class="item-name ability-usage--" style="padding-left: 3px;">{{item.name}}</h3>
@@ -7,7 +8,7 @@
     <div class="card-content">{{{data.description.value}}}</div>
 
     <div class="card-buttons">
-        <button data-action="toolCheck" data-ability="{{data.ability.value}}">{{ localize "DND4EALTUS.Use" }} {{item.name}}</button>
+        <button data-action="toolCheck" data-ability="{{data.ability.value}}">{{ localize "DND4EBETA.Use" }} {{item.name}}</button>
     </div>
 
     <footer class="card-footer">

@@ -1,5 +1,5 @@
 <template>
-<div class="dnd4eAltus-v2-vue flexcol">
+<div class="dnd4eBeta-v2-vue flexcol">
 TEST
 </div>
 </template>
@@ -31,13 +31,13 @@ export default {
     //     console.log('Vue Sheet Updated')
     //     // This method abstracts the prepare data call that the actor class
     //     // itself would normally call.
-    //     game.dnd4eAltus.ActorHelpersV2.prepareData(this.actor);
+    //     game.dnd4eBeta.ActorHelpersV2.prepareData(this.actor);
     //   }
     // }
   },
   async created() {
     console.log("Creating Sheet");
-    for (let [k,v] of Object.entries(window.dnd4eAltusVueMethods.methods)) {
+    for (let [k,v] of Object.entries(window.dnd4eBetaVueMethods.methods)) {
       this[k] = v;
     }
   },

@@ -1,11 +1,13 @@
+import {Helper} from "../helper.js";
+
 export class SecondWindDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "second-wind",
-			classes: ["dnd4eAltus", "second-wind"],
-			template: "systems/dnd4eAltus/templates/apps/second-wind.html",
+			classes: ["dnd4eBeta", "second-wind"],
+			template: "systems/dnd4e/templates/apps/second-wind.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -22,18 +24,7 @@ export class SecondWindDialog extends DocumentSheet {
 	}
 	async _updateObject(event, formData) {
 		
-		let r = new Roll("0");
-		if(formData.bonus != "" ){
-			r = new Roll(formData.bonus);
-			try{
-				r.roll();
-
-			}catch (error){
-				
-				console.log("Invalid roll input into healing surge bonus.");
-				r.roll();
-			}
-		}
+		let r = await Helper.roll(formData.bonus, "DND4EBETA.InvalidHealingBonus")
 
 		const updateData = {};
 		if(this.object.data.data.attributes.hp.value <= 0) {
@@ -62,7 +53,7 @@ export class SecondWindDialog extends DocumentSheet {
 			}
 
 			ChatMessage.create({
-				user: game.user._id,
+				user: game.user.id,
 				speaker: {actor: this.object, alias: this.object.data.name},
 				// flavor: restFlavor,
 				content: `${this.object.data.name} uses Second Wind gaining the following benifits:
@@ -72,7 +63,7 @@ export class SecondWindDialog extends DocumentSheet {
 						${extra}
 					</ul>`,
 					// content: this.object.data.name + " uses Second Wind, healing for " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
-				//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 			});		
 		
 		this.object.update(updateData);
