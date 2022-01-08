@@ -2,7 +2,7 @@
 	"name": "dnd4eAltus",
 	"title": "DnD 4th Altus Edition",
 	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.2.52",
+	"version": "0.2.53",
 	"minimumCoreVersion": "0.8.5",
 	"compatibleCoreVersion": "9",
 	"templateVersion": 2,
@@ -11,10 +11,10 @@
 		{ "name": "lib-wrapper" }
 	],
 	"esmodules": [
-		"module/dnd4eBeta.js"
+		"module/dnd4eAltus.js"
 	],
 	"styles": [
-		"styles/dnd4eBeta.css"
+		"styles/dnd4eAltus.css"
 	],
 	"packs": [
 		{

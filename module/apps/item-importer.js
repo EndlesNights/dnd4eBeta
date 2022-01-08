@@ -4,8 +4,8 @@ export class ItemImporterDialog extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "item-importer",
-			classes: ["dnd4eBeta", "item-importer"],
-			template: "systems/dnd4e/templates/apps/item-importer.html",
+			classes: ["dnd4eAltus", "item-importer"],
+			template: "systems/dnd4eAltus/templates/apps/item-importer.html",
 			width: 500,
 			closeOnSubmit: false
 		});

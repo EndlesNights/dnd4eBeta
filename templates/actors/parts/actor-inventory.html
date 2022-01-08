@@ -1,7 +1,7 @@
 <div class="inventory-filters flexrow flexcol">
 	<ol class="currency flexrow">
 		<h3>
-			{{localize "DND4EBETA.Currency"}}
+			{{localize "DND4EALTUS.Currency"}}
 			<a class="currency-convert" title="Convert Currency"><i class="fas fa-coins"></i></a>
 		</h3>
 		{{#each data.currency as |v k|}}
@@ -43,16 +43,16 @@
 				<div class="item-detail {{css}}">{{label}}</div>
 			{{/each}}
 		{{else}}
-			<div class="item-detail item-weight">{{localize "DND4EBETA.Weight"}}</div>
-			<div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div>
-			<div class="item-detail item-action">{{localize "DND4EBETA.Usage"}}</div>
+			<div class="item-detail item-weight">{{localize "DND4EALTUS.Weight"}}</div>
+			<div class="item-detail item-uses">{{localize "DND4EALTUS.Charges"}}</div>
+			<div class="item-detail item-action">{{localize "DND4EALTUS.Usage"}}</div>
 		{{/if}}
 
 		{{#if ../owner}}
 		<div class="item-controls" style="width: 90px;">
-			<a class="item-control item-create" title='{{localize "DND4EBETA.ItemCreate"}}'
+			<a class="item-control item-create" title='{{localize "DND4EALTUS.ItemCreate"}}'
 			   {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-				<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
+				<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
 			</a>
 		</div>
 		{{/if}}
@@ -70,7 +70,7 @@
 				<h4>
 					{{item.name~}}
 					{{~#if item.isStack}} ({{item.data.quantity}}){{/if}}
-					{{~#if item.data.attuned}} <i class="fas fa-sun attuned" title={{localize "DND4EBETA.Attuned"}}></i>{{/if}}
+					{{~#if item.data.attuned}} <i class="fas fa-sun attuned" title={{localize "DND4EALTUS.Attuned"}}></i>{{/if}}
 				</h4>
 				{{/if}}
 			</div>
@@ -92,7 +92,7 @@
 				<div class="item-detail item-weight">
 					{{#if item.totalWeight}}
 						<div class="item-detail">
-							{{ item.totalWeight }} {{localize "DND4EBETA.AbbreviationLbs"}}
+							{{ item.totalWeight }} {{localize "DND4EALTUS.AbbreviationLbs"}}
 						</div>
 					{{/if}}
 				</div>
@@ -117,9 +117,9 @@
 				<a class="item-control item-toggle {{item.toggleClass}}" title='{{item.toggleTitle}}'><i class="fas fa-shield-alt"></i></a>
 				{{/unless}}
 				{{#unless section.editableName}}
-				<a class="item-control item-edit" title='{{localize "DND4EBETA.ItemEdit"}}'><i class="fas fa-edit"></i></a>
+				<a class="item-control item-edit" title='{{localize "DND4EALTUS.ItemEdit"}}'><i class="fas fa-edit"></i></a>
 				{{/unless}}
-				<a class="item-control item-delete" title='{{localize "DND4EBETA.ItemDelete"}}'><i class="fas fa-trash"></i></a>
+				<a class="item-control item-delete" title='{{localize "DND4EALTUS.ItemDelete"}}'><i class="fas fa-trash"></i></a>
 			</div>
 			{{/if}}
 		</li>

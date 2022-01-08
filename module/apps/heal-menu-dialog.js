@@ -6,9 +6,9 @@ export class HealMenuDialog extends FormApplication {
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			id: "heal-menu-dialog",
-			classes: ["dnd4eBeta"],
+			classes: ["dnd4eAltus"],
 			title: "Healing Menu",
-			template: "systems/dnd4e/templates/apps/heal-menu-dialog.html",
+			template: "systems/dnd4eAltus/templates/apps/heal-menu-dialog.html",
 			width: 500,
 			height: "auto",
 			closeOnSubmit: true,
@@ -31,7 +31,7 @@ export class HealMenuDialog extends FormApplication {
 
 		console.log(JSON.stringify(formData))
 
-		let roll = await Helper.roll(formData.bonus, "DND4EBETA.InvalidHealingBonus")
+		let roll = await Helper.roll(formData.bonus, "DND4EALTUS.InvalidHealingBonus")
 
 		let surgeValueText = "0"
 		let surgeValue = 0

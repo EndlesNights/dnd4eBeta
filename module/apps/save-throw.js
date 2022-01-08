@@ -6,8 +6,8 @@ export class SaveThrowDialog extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "save-throw",
-			classes: ["dnd4eBeta", "actor-save-throw"],
-			template: "systems/dnd4e/templates/apps/save-throw.html",
+			classes: ["dnd4eAltus", "actor-save-throw"],
+			template: "systems/dnd4eAltus/templates/apps/save-throw.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -35,7 +35,7 @@ export class SaveThrowDialog extends DocumentSheet {
 			title: "",
 			flavor: message,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
-			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }},
+			messageData: {"flags.dnd4eAltus.roll": {type: "attack", itemId: this.id }},
 			fastForward: true,
 			rollMode: formData.rollMode
 		});

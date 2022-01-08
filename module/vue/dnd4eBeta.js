@@ -1,4 +1,4 @@
-window.dnd4eBetaVueMethods = {
+window.dnd4eAltusVueMethods = {
 	methods: {
 		getSafeValue(property, defaultValue) {
 			if (property) return property.value;

@@ -4,8 +4,8 @@ export class CustomRolldDescriptions extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "custom-roll",
-			classes: ["dnd4eBeta", "actor-rest"],
-			template: "systems/dnd4e/templates/apps/custom-roll-descriptions.html",
+			classes: ["dnd4eAltus", "actor-rest"],
+			template: "systems/dnd4eAltus/templates/apps/custom-roll-descriptions.html",
 			width: 500,
 			closeOnSubmit: false,
 			submitOnClose: true

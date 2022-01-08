@@ -15,7 +15,7 @@
 				await a.update(updateData, {enforceTypes: false});
 			}
 		} catch(err) {
-			err.message = `Failed dnd4e system migration for Actor ${a.name}: ${err.message}`;
+			err.message = `Failed dnd4eAltus system migration for Actor ${a.name}: ${err.message}`;
 			console.error(err);
 		}
 	}
@@ -29,7 +29,7 @@
 				await i.update(updateData, {enforceTypes: false});
 			}
 		} catch(err) {
-			err.message = `Failed dnd4e system migration for Item ${i.name}: ${err.message}`;
+			err.message = `Failed dnd4eAltus system migration for Item ${i.name}: ${err.message}`;
 			console.error(err);
 		}
 	}
@@ -43,7 +43,7 @@
 				await s.update(updateData, {enforceTypes: false});
 			}
 		} catch(err) {
-			err.message = `Failed dnd4e system migration for Scene ${s.name}: ${err.message}`;
+			err.message = `Failed dnd4eAltus system migration for Scene ${s.name}: ${err.message}`;
 			console.error(err);
 		}
 	}
@@ -56,7 +56,7 @@
 	}
 
 	// Set the migration as complete
-	game.settings.set("dnd4e", "systemMigrationVersion", game.system.data.version);
+	game.settings.set("dnd4eAltus", "systemMigrationVersion", game.system.data.version);
 	ui.notifications.info(`DnD4E System Migration to version ${game.system.data.version} completed!`, {permanent: true});
 };
 
@@ -103,7 +103,7 @@ export const migrateCompendium = async function(pack) {
 
 		// Handle migration failures
 		catch(err) {
-			err.message = `Failed dnd4e system migration for entity ${doc.name} in pack ${pack.collection}: ${err.message}`;
+			err.message = `Failed dnd4eAltus system migration for entity ${doc.name} in pack ${pack.collection}: ${err.message}`;
 			console.error(err);
 		}
 	}
@@ -171,12 +171,12 @@ function cleanActorData(actorData) {
 	actorData.data = filterObject(actorData.data, model);
 
 	// Scrub system flags
-	const allowedFlags = CONFIG.DND4EBETA.allowedActorFlags.reduce((obj, f) => {
+	const allowedFlags = CONFIG.DND4EALTUS.allowedActorFlags.reduce((obj, f) => {
 		obj[f] = null;
 		return obj;
 	}, {});
-	if ( actorData.flags.dnd4e ) {
-		actorData.flags.dnd4e = filterObject(actorData.flags.dnd4e, allowedFlags);
+	if ( actorData.flags.dnd4eAltus ) {
+		actorData.flags.dnd4eAltus = filterObject(actorData.flags.dnd4eAltus, allowedFlags);
 	}
 
 	// Return the scrubbed data
@@ -275,7 +275,7 @@ function _migrateActorSenses(actor, updateData) {
 		const match = s.match(pattern);
 		if ( !match ) continue;
 		const type = match[1].toLowerCase();
-		if ( type in CONFIG.DND4EBETA.senses ) {
+		if ( type in CONFIG.DND4EALTUS.senses ) {
 			updateData[`data.attributes.senses.${type}`] = Number(match[2]).toNearest(0.5);
 			wasMatched = true;
 		}
@@ -317,7 +317,7 @@ function _migrateActorType(actor, updateData) {
 
 		// Match a known creature type
 		const typeLc = match.groups.type.trim().toLowerCase();
-		const typeMatch = Object.entries(CONFIG.DND4EBETA.creatureTypes).find(([k, v]) => {
+		const typeMatch = Object.entries(CONFIG.DND4EALTUS.creatureTypes).find(([k, v]) => {
 			return (typeLc === k) ||
 				(typeLc === game.i18n.localize(v).toLowerCase()) ||
 				(typeLc === game.i18n.localize(`${v}Pl`).toLowerCase());
@@ -330,10 +330,10 @@ function _migrateActorType(actor, updateData) {
 		data.subtype = match.groups.subtype?.trim().titleCase() || "";
 
 		// Match a swarm
-		const isNamedSwarm = actor.name.startsWith(game.i18n.localize("DND4EBETA.CreatureSwarm"));
+		const isNamedSwarm = actor.name.startsWith(game.i18n.localize("DND4EALTUS.CreatureSwarm"));
 		if ( match.groups.size || isNamedSwarm ) {
 			const sizeLc = match.groups.size ? match.groups.size.trim().toLowerCase() : "tiny";
-			const sizeMatch = Object.entries(CONFIG.DND4EBETA.actorSizes).find(([k, v]) => {
+			const sizeMatch = Object.entries(CONFIG.DND4EALTUS.actorSizes).find(([k, v]) => {
 				return (sizeLc === k) || (sizeLc === game.i18n.localize(v).toLowerCase());
 			});
 			data.swarm = sizeMatch ? sizeMatch[0] : "tiny";
@@ -365,7 +365,7 @@ function _migrateActorType(actor, updateData) {
  */
 function _migrateItemAttunement(item, updateData) {
 	if ( item.data.attuned === undefined ) return updateData;
-	updateData["data.attunement"] = CONFIG.DND4EBETA.attunementTypes.NONE;
+	updateData["data.attunement"] = CONFIG.DND4EALTUS.attunementTypes.NONE;
 	updateData["data.-=attuned"] = null;
 	return updateData;
 }
@@ -399,8 +399,8 @@ function _migrateItemSpellcasting(item, updateData) {
  */
 export async function purgeFlags(pack) {
 	const cleanFlags = (flags) => {
-		const flags4e = flags.dnd4e || null;
-		return flags4e ? {dnd4e: flags4e} : {};
+		const flags4e = flags.dnd4eAltus || null;
+		return flags4e ? {dnd4eAltus: flags4e} : {};
 	};
 	await pack.configure({locked: false});
 	const content = await pack.getContent();

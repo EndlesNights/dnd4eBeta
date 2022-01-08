@@ -11,7 +11,7 @@
 	switch ( a.dataset.action ) {
 		case "create":
 			return owner.createEmbeddedDocuments("ActiveEffect", [{
-				label: game.i18n.localize("DND4EBETA.EffectNew"),
+				label: game.i18n.localize("DND4EALTUS.EffectNew"),
 				icon: "icons/svg/aura.svg",
 				origin: owner.uuid,
 				"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
@@ -37,17 +37,17 @@ export function prepareActiveEffectCategories(effects) {
 		const categories = {
 			temporary: {
 				type: "temporary",
-				label: game.i18n.localize("DND4EBETA.EffectTemporary"),
+				label: game.i18n.localize("DND4EALTUS.EffectTemporary"),
 				effects: []
 			},
 			passive: {
 				type: "passive",
-				label: game.i18n.localize("DND4EBETA.EffectPassive"),
+				label: game.i18n.localize("DND4EALTUS.EffectPassive"),
 				effects: []
 			},
 			inactive: {
 				type: "inactive",
-				label: game.i18n.localize("DND4EBETA.EffectInactive"),
+				label: game.i18n.localize("DND4EALTUS.EffectInactive"),
 				effects: []
 			}
 		};

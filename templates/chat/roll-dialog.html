@@ -1,11 +1,11 @@
 <form>
 	<div class="form-group">
-		<label>{{ localize "DND4EBETA.Formula" }}</label>
+		<label>{{ localize "DND4EALTUS.Formula" }}</label>
 		<input type="text" name="formula" value="{{formula}}" disabled/>
 	</div>
 	<div class="form-group">
-		<label>{{ localize "DND4EBETA.RollSituationalBonus" }}</label>
-		<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EBETA.RollExample' }}"/>
+		<label>{{ localize "DND4EALTUS.RollSituationalBonus" }}</label>
+		<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EALTUS.RollExample' }}"/>
 	</div>
 
 	{{#if isD20Roll}}	
@@ -58,7 +58,7 @@
 
 
 	<div class="form-group">
-		<label>{{ localize "DND4EBETA.RollMode" }}</label>
+		<label>{{ localize "DND4EALTUS.RollMode" }}</label>
 		<select name="rollMode">
 		{{#select rollMode}}
 		{{#each rollModes as |label mode|}}

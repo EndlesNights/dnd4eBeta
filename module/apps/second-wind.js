@@ -6,8 +6,8 @@ export class SecondWindDialog extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "second-wind",
-			classes: ["dnd4eBeta", "second-wind"],
-			template: "systems/dnd4e/templates/apps/second-wind.html",
+			classes: ["dnd4eAltus", "second-wind"],
+			template: "systems/dnd4eAltus/templates/apps/second-wind.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -24,7 +24,7 @@ export class SecondWindDialog extends DocumentSheet {
 	}
 	async _updateObject(event, formData) {
 		
-		let r = await Helper.roll(formData.bonus, "DND4EBETA.InvalidHealingBonus")
+		let r = await Helper.roll(formData.bonus, "DND4EALTUS.InvalidHealingBonus")
 
 		const updateData = {};
 		if(this.object.data.data.attributes.hp.value <= 0) {
@@ -63,7 +63,7 @@ export class SecondWindDialog extends DocumentSheet {
 						${extra}
 					</ul>`,
 					// content: this.object.data.name + " uses Second Wind, healing for " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
-				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+				//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 			});		
 		
 		this.object.update(updateData);

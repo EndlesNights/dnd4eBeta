@@ -4,8 +4,8 @@ export class ActionPointDialog extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "action-point",
-			classes: ["dnd4eBeta", "action-point"],
-			template: "systems/dnd4e/templates/apps/action-point.html",
+			classes: ["dnd4eAltus", "action-point"],
+			template: "systems/dnd4eAltus/templates/apps/action-point.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -39,7 +39,7 @@ export class ActionPointDialog extends DocumentSheet {
 					<li>Gaining an addtional Standard Action</li>
 					${extra}
 				</ul>`
-				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+				//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 			});
 
 			const updateData = {};

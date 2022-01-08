@@ -4,8 +4,8 @@ export class ShortRestDialog extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "short-rest",
-			classes: ["dnd4eBeta", "actor-rest"],
-			template: "systems/dnd4e/templates/apps/short-rest.html",
+			classes: ["dnd4eAltus", "actor-rest"],
+			template: "systems/dnd4eAltus/templates/apps/short-rest.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -41,7 +41,7 @@ export class ShortRestDialog extends DocumentSheet {
 						await r.roll({async : true});
 
 					}catch (error){
-						ui.notifications.error(game.i18n.localize("DND4EBETA.InvalidHealingBonus"));
+						ui.notifications.error(game.i18n.localize("DND4EALTUS.InvalidHealingBonus"));
 						r = new Roll("0");
 						await r.roll({async : true});
 					}

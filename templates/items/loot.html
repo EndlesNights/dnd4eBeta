@@ -6,7 +6,7 @@
 
 		<div class="header-details flexrow">
 			<h1 class="charname">
-				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EBETA.ItemName' }}"/>
+				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
 			</h1>
 
 			<div class="item-subtitle">
@@ -16,10 +16,10 @@
 
 			<ul class="summary flexrow">
 				<li>
-					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EBETA.Rarity' }}"/>
+					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EALTUS.Rarity' }}"/>
 				</li>
 				<li>
-					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
+					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
 				</li>
 			</ul>
 		</div>
@@ -27,21 +27,21 @@
 
 	{{!-- Item Sheet Navigation --}}
 	<nav class="sheet-navigation tabs" data-group="primary">
-		<a class="item active" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
-		<a class="item" data-tab="effects">{{ localize "DND4EBETA.Effects" }}</a>
-        <a class="item" data-tab="macros">{{ localize "DND4EBETA.Macros" }}</a>
+		<a class="item active" data-tab="description">{{ localize "DND4EALTUS.Description" }}</a>
+		<a class="item" data-tab="effects">{{ localize "DND4EALTUS.Effects" }}</a>
+        <a class="item" data-tab="macros">{{ localize "DND4EALTUS.Macros" }}</a>
 	</nav>
 	
 	{{!-- Item Sheet Body --}}
 	<section class="sheet-body">
 		{{!-- Description Tab --}}
-		{{> "systems/dnd4e/templates/items/parts/item-description.html"}}
+		{{> "systems/dnd4eAltus/templates/items/parts/item-description.html"}}
 
 		{{!-- Effects Tab --}}
 		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
-			{{> "systems/dnd4e/templates/actors/parts/active-effects.html"}}
+			{{> "systems/dnd4eAltus/templates/actors/parts/active-effects.html"}}
 		</div>
 		{{!-- Macros Tab --}}
-		{{> "systems/dnd4e/templates/items/parts/item-macro.html"}}
+		{{> "systems/dnd4eAltus/templates/items/parts/item-macro.html"}}
 	</section>
 </form>

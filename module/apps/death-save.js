@@ -6,8 +6,8 @@ export class DeathSaveDialog extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "death-save",
-			classes: ["dnd4eBeta", "actor-death-save"],
-			template: "systems/dnd4e/templates/apps/death-save.html",
+			classes: ["dnd4eAltus", "actor-death-save"],
+			template: "systems/dnd4eAltus/templates/apps/death-save.html",
 			width: 500,
 			closeOnSubmit: true
 		});
@@ -35,7 +35,7 @@ export class DeathSaveDialog extends DocumentSheet {
 			title: "",
 			flavor: message,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
-			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }},
+			messageData: {"flags.dnd4eAltus.roll": {type: "attack", itemId: this.id }},
 			fastForward: true,
 			rollMode: formData.rollMode
 		});

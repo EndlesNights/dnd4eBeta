@@ -16,15 +16,15 @@ export async function create4eMacro(data, slot) {
   const item = data.data;
 
   // Create the macro command
-  const command = `game.dnd4eBeta.rollItemMacro("${item.name}");`;
-  let macro = game.macros.entities.find(m => (m.name === item.name) && (m.command === command));
+  const command = `game.dnd4eAltus.rollItemMacro("${item.name}");`;
+  let macro = game.macros.find(m => (m.name === item.name) && (m.command === command));
   if ( !macro ) {
     macro = await Macro.create({
       name: item.name,
       type: "script",
       img: item.img,
       command: command,
-      flags: {"dnd4eBeta.itemMacro": true}
+      flags: {"dnd4eAltus.itemMacro": true}
     });
   }
   game.user.assignHotbarMacro(macro, slot);

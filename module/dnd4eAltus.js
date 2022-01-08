@@ -5,7 +5,7 @@
  */
 
 // Import Modules
-import { DND4EBETA } from "./config.js";
+import { DND4EALTUS } from "./config.js";
 import { registerSystemSettings } from "./settings.js";
 import {libWrapper} from './libWrapper-shim.js';
 
@@ -35,10 +35,10 @@ import * as migrations from "./migration.js";
 /* -------------------------------------------- */
 
 Hooks.once("init", async function() {
-	console.log(`D&D4eBeta | Initializing Dungeons & Dragons 4th Edition System\n${DND4EBETA.ASCII}`);
+	console.log(`D&D4eBeta | Initializing Dungeons & Dragons 4th Edition System\n${DND4EALTUS.ASCII}`);
 	
-	game.dnd4eBeta = {
-		config: DND4EBETA,
+	game.dnd4eAltus = {
+		config: DND4EALTUS,
 		canvas: {
 			AbilityTemplate
 		},
@@ -52,12 +52,12 @@ Hooks.once("init", async function() {
 	};
 	
 	// Define custom Entity classes
-	CONFIG.DND4EBETA = DND4EBETA;
+	CONFIG.DND4EALTUS = DND4EALTUS;
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
 	
-	// CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffectIcons;
-	CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffect;
+	// CONFIG.statusEffects = CONFIG.DND4EALTUS.statusEffectIcons;
+	CONFIG.statusEffects = CONFIG.DND4EALTUS.statusEffect;
 
 	// define custom roll extensions
 	CONFIG.Dice.rolls.push(dice.MultiAttackRoll);
@@ -68,12 +68,12 @@ Hooks.once("init", async function() {
 	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
-	Actors.registerSheet("dnd4eBeta", ActorSheet4e, {
+	Actors.registerSheet("dnd4eAltus", ActorSheet4e, {
 		types: ["Player Character"],
 		label: "Basic Character Sheet",
 		makeDefault: true
 	});
-	Actors.registerSheet("dnd4eBeta", ActorSheet4eNPC, {
+	Actors.registerSheet("dnd4eAltus", ActorSheet4eNPC, {
 		types: ["NPC"],
 		label: "NPC Sheet",
 		makeDefault: true
@@ -81,11 +81,11 @@ Hooks.once("init", async function() {
 
 	
 	Items.unregisterSheet("core", ItemSheet);
-	// Items.registerSheet("dnd4eBeta", SimpleItemSheet, {makeDefault: true});
-	Items.registerSheet("dnd4eBeta", ItemSheet4e, {makeDefault: true});
+	// Items.registerSheet("dnd4eAltus", SimpleItemSheet, {makeDefault: true});
+	Items.registerSheet("dnd4eAltus", ItemSheet4e, {makeDefault: true});
 
 	// Register system settings
-	// game.settings.register("dnd4eBeta", "macroShorthand", {
+	// game.settings.register("dnd4eAltus", "macroShorthand", {
 	// 	name: "Shortened Macro Syntax",
 	// 	hint: "Enable a shortened macro syntax which allows referencing attributes directly, for example @str instead of @attributes.str.value. Disable this setting if you need the ability to reference the full attribute model, for example @attributes.str.label.",
 	// 	scope: "world",
@@ -100,14 +100,14 @@ Hooks.once("init", async function() {
 
 		// Define dependency on our own custom vue components for when we need it
 		// Dlopen.register('actor-sheet', {
-		// 	scripts: "/systems/dnd4e/dist/vue-components.min.js",
+		// 	scripts: "/systems/dnd4eAltus/dist/vue-components.min.js",
 		// 	// dependencies: [ "vue-select", "vue-numeric-input" ]
 		// });
 
 
 
 	// setup methods that allow for easy integration with token hud
-	game.dnd4eBeta.quickSave = (actor) => new SaveThrowDialog(actor)._updateObject(null, {save : 0, dc: 10})
+	game.dnd4eAltus.quickSave = (actor) => new SaveThrowDialog(actor)._updateObject(null, {save : 0, dc: 10})
 });
 
 Hooks.once("setup", function() {
@@ -135,15 +135,15 @@ Hooks.once("setup", function() {
 		// }, {});
 	// };
 	// for ( let o of toLocalize ) {
-		// CONFIG.DND4EBETA[o] = doLocalize(CONFIG.DND4EBETA[o]);
+		// CONFIG.DND4EALTUS[o] = doLocalize(CONFIG.DND4EALTUS[o]);
 	// }
 // });
 	for ( let o of toLocalize ) {
-		const localized = Object.entries(CONFIG.DND4EBETA[o]).map(e => {
+		const localized = Object.entries(CONFIG.DND4EALTUS[o]).map(e => {
 			return [e[0], game.i18n.localize(e[1])];
 		});
 		if ( !noSort.includes(o) ) localized.sort((a, b) => a[1].localeCompare(b[1]));
-		CONFIG.DND4EBETA[o] = localized.reduce((obj, e) => {
+		CONFIG.DND4EALTUS[o] = localized.reduce((obj, e) => {
 			obj[e[0]] = e[1];
 			return obj;
 		}, {});
@@ -156,7 +156,7 @@ Hooks.once("ready", function() {
 
 	// Determine whether a system migration is required and feasible
 	if ( !game.user.isGM ) return;
-	const currentVersion = game.settings.get("dnd4e", "systemMigrationVersion");
+	const currentVersion = game.settings.get("dnd4eAltus", "systemMigrationVersion");
 	// console.log(currentVersion)
 	const NEEDS_MIGRATION_VERSION = "0.1.4";
 	const COMPATIBLE_MIGRATION_VERSION = 0.80;
@@ -184,7 +184,7 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 	chat.highlightCriticalSuccessFailure(app, html, data);
 
 	// Optionally collapse the content
-	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.find(".card-content").hide();
+	if (game.settings.get("dnd4eAltus", "autoCollapseItemCards")) html.find(".card-content").hide();
 });
 Hooks.on("getChatLogEntryContext", chat.addChatMessageContextOptions);
 Hooks.on("renderChatLog", (app, html, data) => Item4e.chatListeners(html));
@@ -192,7 +192,7 @@ Hooks.on("renderChatLog", (app, html, data) => Item4e.chatListeners(html));
 Hooks.on("canvasInit", function() {
 
 	// Extend Diagonal Measurement
-	canvas.grid.diagonalRule = game.settings.get("dnd4e", "diagonalMovement");
+	canvas.grid.diagonalRule = game.settings.get("dnd4eAltus", "diagonalMovement");
 	SquareGrid.prototype.measureDistances = measureDistances;
 
 	// Extend Token Resource Bars
@@ -272,7 +272,7 @@ Hooks.once('init', async function() {
   console.info(`AAAA`, libWrapper);
 
   libWrapper.register(
-    'dnd4e',
+    'dnd4eAltus',
     'ActiveEffect.prototype.apply',
     apply
   );

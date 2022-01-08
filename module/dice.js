@@ -13,7 +13,7 @@ export class MultiAttackRoll extends Roll{
 	/**
 	 * Custom chat template to handle multiroll attacks 
 	 */
-	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/multiattack_roll_template.html";
+	static CHAT_TEMPLATE = "systems/dnd4eAltus/templates/chat/multiattack_roll_template.html";
 
 	get multirollData() {
 		return this._multirollData;
@@ -44,7 +44,7 @@ export class MultiAttackRoll extends Roll{
 
 			let hitState = "";
 			
-			if(game.settings.get("dnd4e", "automationCombat")){
+			if(game.settings.get("dnd4eAltus", "automationCombat")){
 				if (critState === " critical"){
 					hitState = "Critical Hit!"
 				} else if (critState === " fumble"){
@@ -239,7 +239,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 							let tabInt = v.name.split(".")[0];
 							if (parseInt(tabInt) === targ) {
 								let bonusName = v.name.split(".")[1];
-								let bonVal = CONFIG.DND4EBETA.commonAttackBonuses[bonusName].value;
+								let bonVal = CONFIG.DND4EALTUS.commonAttackBonuses[bonusName].value;
 								if(tempString){
 									tempString += `${bonVal > 0? "+":""} ${bonVal}`;
 								} else {
@@ -267,7 +267,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 						let tabInt = v.name.split(".")[0];
 						if (parseInt(tabInt) === 0) {
 							let bonusName = v.name.split(".")[1];
-							let bonVal = CONFIG.DND4EBETA.commonAttackBonuses[bonusName].value;
+							let bonVal = CONFIG.DND4EALTUS.commonAttackBonuses[bonusName].value;
 							if(tempString){
 								tempString += `${bonVal > 0? "+":""} ${bonVal}`;
 							} else {
@@ -285,7 +285,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		
 		if ( !data["bonus"] && !bonusArray ) parts.pop();
 
-		// data.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
+		// data.commonAttackBonuses = CONFIG.DND4EALTUS.commonAttackBonuses;
 		if(form?.flavor.value){
 			flavor = form.flavor.value || flavor;
 		}	
@@ -296,7 +296,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			const abl = data.abilities[data.ability];
 			if ( abl ) {
 				data.mod = abl.mod;
-				flavor += ` (${CONFIG.DND4EBETA.abilities[data.ability]})`;
+				flavor += ` (${CONFIG.DND4EALTUS.abilities[data.ability]})`;
 			}
 		}
 
@@ -357,7 +357,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 					reliableFlavor = true;
 				}
 			}
-			if (reliableFlavor) {flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`};
+			if (reliableFlavor) {flavor += ` (${game.i18n.localize("DND4EALTUS.FlagsReliableTalent")})`};
 		
 		} else {
 			roll = await new Roll(parts.join(" + "), data).roll({async: true});
@@ -373,7 +373,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 
 			// If reliable talent was applied, add it to the flavor text
 			if ( reliableTalent && roll.dice[0].total < 10 ) {
-				flavor += ` (${game.i18n.localize("DND4EBETA.FlagsReliableTalent")})`;
+				flavor += ` (${game.i18n.localize("DND4EALTUS.FlagsReliableTalent")})`;
 			}
 		}
 
@@ -423,13 +423,13 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 		targDataArray.multiTargetCheck = true;
 	}
 	let newFlavor = "";
-	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
+	template = template || "systems/dnd4eAltus/templates/chat/roll-dialog.html";
 	let dialogData = {
 		formula: parts.join(" + "),
 		data: data,
 		rollMode: rollMode,
 		rollModes: CONFIG.Dice.rollModes,
-		config: CONFIG.DND4EBETA,
+		config: CONFIG.DND4EALTUS,
 		flavor: newFlavor || flavor,
 		isAttackRoll: isAttackRoll,
 		isD20Roll: true,
@@ -445,7 +445,7 @@ export async function d20Roll({parts=[], data={}, event={}, rollMode=null, templ
 			content: html,
 			buttons: {
 				normal: {
-					label: game.i18n.localize("DND4EBETA.Roll"),
+					label: game.i18n.localize("DND4EALTUS.Roll"),
 					callback: html => roll = _roll(parts, 0, html[0].querySelector("form"))
 				}
 			},
@@ -502,15 +502,15 @@ export async function damageRoll({parts, partsCrit, partsMiss, actor, data, even
 		}
 		else if (hitType === 'crit') {
 			roll = new Roll(partsCrit.filterJoin("+"), data)
-			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
+			flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Critical")})`;
 		}
 		else if (hitType === 'miss') {
 			roll = new Roll(partsMiss.filterJoin("+"), data);
-			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Miss")})`;
+			flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Miss")})`;
 		}
 		else if (hitType === 'heal') {
 			roll = new Roll(parts.filterJoin("+"), data);
-			flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Healing")})`;
+			flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Healing")})`;
 		} else {
 			roll = new Roll(parts.filterJoin("+"), data);
 		}
@@ -549,7 +549,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, actor, data, even
 
 	formula = parts.join(" + ");
 	// Render modal dialog
-	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
+	template = template || "systems/dnd4eAltus/templates/chat/roll-dialog.html";
 	let dialogData = {
 		formula: "@damage + @bonus",
 		data: data,
@@ -568,7 +568,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, actor, data, even
 				content: html,
 				buttons: {
 					normal: {
-						label: game.i18n.localize("DND4EBETA.Healing"),
+						label: game.i18n.localize("DND4EALTUS.Healing"),
 						callback: html => roll = _roll(parts, partsCrit, partsMiss, 'heal', html[0].querySelector("form"))
 					}
 				},
@@ -585,18 +585,18 @@ export async function damageRoll({parts, partsCrit, partsMiss, actor, data, even
 			const buttons = {
 				critical: {
 					condition: allowCritical,
-					label: game.i18n.localize("DND4EBETA.CriticalHit"),
+					label: game.i18n.localize("DND4EALTUS.CriticalHit"),
 					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'crit', html[0].querySelector("form"))
 				},
 				normal: {
-					label: game.i18n.localize(allowCritical ? "DND4EBETA.Normal" : "DND4EBETA.Roll"),
+					label: game.i18n.localize(allowCritical ? "DND4EALTUS.Normal" : "DND4EALTUS.Roll"),
 					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'normal', html[0].querySelector("form"))
 				}
 			}
 
 			if(data.item.miss.formula){
 				buttons.miss = {
-					label: game.i18n.localize(allowCritical ? "DND4EBETA.Miss" : "DND4EBETA.Roll"),
+					label: game.i18n.localize(allowCritical ? "DND4EALTUS.Miss" : "DND4EALTUS.Roll"),
 					callback: html => roll = _roll(parts, partsCrit, partsMiss, 'miss', html[0].querySelector("form"))
 				}
 			}

@@ -1,4 +1,4 @@
-import { DND4EBETA } from "../config.js";
+import { DND4EALTUS } from "../config.js";
 import { SecondWindDialog } from "../apps/second-wind.js";
 import { ActionPointDialog } from "../apps/action-point.js";
 import { ShortRestDialog } from "../apps/short-rest.js";
@@ -41,7 +41,7 @@ export default class ActorSheet4e extends ActorSheet {
   /** @override */
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
-			classes: ["dnd4eBeta", "sheet", "actor"],
+			classes: ["dnd4eAltus", "sheet", "actor"],
 			width: 844,
 			height: 957,
 			tabs: [{
@@ -73,7 +73,7 @@ export default class ActorSheet4e extends ActorSheet {
   /** @override */
   get template() {
     // if ( !game.user.isGM && this.actor.limited ) return "systems/dnd5e/templates/actors/limited-sheet.html";
-    return `systems/dnd4e/templates/actor-sheet.html`;
+    return `systems/dnd4eAltus/templates/actor-sheet.html`;
   }
 
   /* -------------------------------------------- */
@@ -93,7 +93,7 @@ export default class ActorSheet4e extends ActorSheet {
 			cssClass: isOwner ? "editable" : "locked",
 			isCharacter: this.actor.type === "Player Character",
 			isNPC: this.actor.type === "NPC",
-			config: CONFIG.DND4EBETA,
+			config: CONFIG.DND4EALTUS,
 			rollData: this.actor.getRollData.bind(this.actor)
 		};
 
@@ -108,26 +108,26 @@ export default class ActorSheet4e extends ActorSheet {
 			i.labels = item.labels;
 		}
 		
-		// sheetData.config = CONFIG.DND4EBETA;
-		actorData.data.size = DND4EBETA.actorSizes;
+		// sheetData.config = CONFIG.DND4EALTUS;
+		actorData.data.size = DND4EALTUS.actorSizes;
 		
 		for ( let [s, skl] of Object.entries(actorData.data.skills)) {
 			skl.ability = actorData.data.abilities[skl.ability].label.substring(0, 3);
 			skl.icon = this._getTrainingIcon(skl.value);
-			skl.hover = game.i18n.localize(DND4EBETA.trainingLevels[skl.value]);
-			skl.label = game.i18n.localize(DND4EBETA.skills[s]);
+			skl.hover = game.i18n.localize(DND4EALTUS.trainingLevels[skl.value]);
+			skl.label = game.i18n.localize(DND4EALTUS.skills[s]);
 		}
 		
 		this._prepareData(actorData.data.languages, 
-			{"spoken": CONFIG.DND4EBETA.spoken, "script": CONFIG.DND4EBETA.script}
+			{"spoken": CONFIG.DND4EALTUS.spoken, "script": CONFIG.DND4EALTUS.script}
 		);
 		
 		this._prepareDataSense(actorData.data.senses,
-			{"vision": CONFIG.DND4EBETA.vision, "special": CONFIG.DND4EBETA.special}
+			{"vision": CONFIG.DND4EALTUS.vision, "special": CONFIG.DND4EALTUS.special}
 		);
 		
 		this._prepareDataSave(actorData.data.details,
-			{"saves": CONFIG.DND4EBETA.saves}
+			{"saves": CONFIG.DND4EALTUS.saves}
 		);
 
 		// Prepare owned items
@@ -140,7 +140,7 @@ export default class ActorSheet4e extends ActorSheet {
 		actorData.data.resources = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
 			const res = actorData.data.resources[r] || {};
 			res.name = r;
-			res.placeholder = game.i18n.localize("DND4EBETA.Resource"+r.titleCase());
+			res.placeholder = game.i18n.localize("DND4EALTUS.Resource"+r.titleCase());
 			if (res && res.value === 0) delete res.value;
 			if (res && res.max === 0) delete res.max;
 			return arr.concat([res]);
@@ -151,10 +151,10 @@ export default class ActorSheet4e extends ActorSheet {
 	
 	_prepareData(data, map) {
 		// const map = {
-			// "spoken": CONFIG.DND4EBETA.spoken,
-			// "script": CONFIG.DND4EBETA.script,
-			// "vision": CONFIG.DND4EBETA.vision,
-			// "special": CONFIG.DND4EBETA.special
+			// "spoken": CONFIG.DND4EALTUS.spoken,
+			// "script": CONFIG.DND4EALTUS.script,
+			// "vision": CONFIG.DND4EALTUS.vision,
+			// "special": CONFIG.DND4EALTUS.special
 		// }
 		for ( let [l, choices] of Object.entries(map) ) {
 			const trait = data[l];
@@ -179,22 +179,22 @@ export default class ActorSheet4e extends ActorSheet {
 	_prepareItems(data) {
 		//define diffrent item datasets
 		const inventory = {
-			weapon: { label: "DND4EBETA.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
-			equipment: { label: "DND4EBETA.ItemTypeEquipmentPl", items: [], dataset: {type: "equipment"} },
-			consumable: { label: "DND4EBETA.ItemTypeConsumablePl", items: [], dataset: {type: "consumable"} },
-			tool: { label: "DND4EBETA.ItemTypeToolPl", items: [], dataset: {type: "tool"} },
-			backpack: { label: "DND4EBETA.ItemTypeContainerPl", items: [], dataset: {type: "backpack"} },
-			loot: { label: "DND4EBETA.ItemTypeLootPl", items: [], dataset: {type: "loot"} }
+			weapon: { label: "DND4EALTUS.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
+			equipment: { label: "DND4EALTUS.ItemTypeEquipmentPl", items: [], dataset: {type: "equipment"} },
+			consumable: { label: "DND4EALTUS.ItemTypeConsumablePl", items: [], dataset: {type: "consumable"} },
+			tool: { label: "DND4EALTUS.ItemTypeToolPl", items: [], dataset: {type: "tool"} },
+			backpack: { label: "DND4EALTUS.ItemTypeContainerPl", items: [], dataset: {type: "backpack"} },
+			loot: { label: "DND4EALTUS.ItemTypeLootPl", items: [], dataset: {type: "loot"} }
 		};
 		const powers = this._generatePowerGroups();
 
 		const features = {
-			raceFeats: { label: "DND4EBETA.FeatRace", items: [], dataset: {type: "raceFeats"} },
-			classFeats: { label: "DND4EBETA.FeatClass", items: [], dataset: {type: "classFeats"} },
-			pathFeats: { label: "DND4EBETA.FeatPath", items: [], dataset: {type: "pathFeats"} },
-			destinyFeats: { label: "DND4EBETA.FeatDestiny", items: [], dataset: {type: "destinyFeats"} },
-			feat: { label: "DND4EBETA.FeatLevel", items: [], dataset: {type: "feat"} },
-			ritual: { label: "DND4EBETA.FeatRitual", items: [], dataset: {type: "ritual"} }
+			raceFeats: { label: "DND4EALTUS.FeatRace", items: [], dataset: {type: "raceFeats"} },
+			classFeats: { label: "DND4EALTUS.FeatClass", items: [], dataset: {type: "classFeats"} },
+			pathFeats: { label: "DND4EALTUS.FeatPath", items: [], dataset: {type: "pathFeats"} },
+			destinyFeats: { label: "DND4EALTUS.FeatDestiny", items: [], dataset: {type: "destinyFeats"} },
+			feat: { label: "DND4EALTUS.FeatLevel", items: [], dataset: {type: "feat"} },
+			ritual: { label: "DND4EALTUS.FeatRitual", items: [], dataset: {type: "ritual"} }
 		};
 		
 		// Partition items by category
@@ -241,9 +241,9 @@ export default class ActorSheet4e extends ActorSheet {
 		
 		// Organize Features
 		// const features = {
-		  // classes: { label: "DND4EBETA.ItemTypeClassPl", items: [], hasActions: false, dataset: {type: "class"}, isClass: true },
-		  // active: { label: "DND4EBETA.FeatureActive", items: [], hasActions: true, dataset: {type: "feat", "activation.type": "action"} },
-		  // passive: { label: "DND4EBETA.FeaturePassive", items: [], hasActions: false, dataset: {type: "feat"} }
+		  // classes: { label: "DND4EALTUS.ItemTypeClassPl", items: [], hasActions: false, dataset: {type: "class"}, isClass: true },
+		  // active: { label: "DND4EALTUS.FeatureActive", items: [], hasActions: true, dataset: {type: "feat", "activation.type": "action"} },
+		  // passive: { label: "DND4EALTUS.FeaturePassive", items: [], hasActions: false, dataset: {type: "feat"} }
 		// };
 
 		for ( let f of feats ) {
@@ -344,32 +344,32 @@ export default class ActorSheet4e extends ActorSheet {
 
 		if(this.object.data.data.powerGroupTypes === "action" || this.object.data.data.powerGroupTypes == undefined) {
 			return {
-				standard: { label: "DND4EBETA.ActionStandard", items: [], dataset: {type: "standard"} },
-				move: { label: "DND4EBETA.ActionMove", items: [], dataset: {type: "move"} },
-				minor: { label: "DND4EBETA.ActionMinor", items: [], dataset: {type: "minor"} },
-				free: { label: "DND4EBETA.ActionFree", items: [], dataset: {type: "free"} },
-				reaction: { label: "DND4EBETA.ActionReaction", items: [], dataset: {type: "reaction"} },
-				interrupt: { label: "DND4EBETA.ActionInterrupt", items: [], dataset: {type: "interrupt"} },
-				opportunity: { label: "DND4EBETA.ActionOpportunity", items: [], dataset: {type: "opportunity"} },
-				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
+				standard: { label: "DND4EALTUS.ActionStandard", items: [], dataset: {type: "standard"} },
+				move: { label: "DND4EALTUS.ActionMove", items: [], dataset: {type: "move"} },
+				minor: { label: "DND4EALTUS.ActionMinor", items: [], dataset: {type: "minor"} },
+				free: { label: "DND4EALTUS.ActionFree", items: [], dataset: {type: "free"} },
+				reaction: { label: "DND4EALTUS.ActionReaction", items: [], dataset: {type: "reaction"} },
+				interrupt: { label: "DND4EALTUS.ActionInterrupt", items: [], dataset: {type: "interrupt"} },
+				opportunity: { label: "DND4EALTUS.ActionOpportunity", items: [], dataset: {type: "opportunity"} },
+				other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
 			};
 		}
 		else if(this.object.data.data.powerGroupTypes === "type") {
 			return {
 				class: { label: "Class Power", items: [], dataset: {type: "class"} },
 				race: { label: "Racial Power", items: [], dataset: {type: "race"} },
-				utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
-				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
+				utility: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} },
+				other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
 			};
 		}
 		else return { //"usage"
-			atwill: { label: "DND4EBETA.PowerAt", items: [], dataset: {type: "atwill"} },
-			encounter: { label: "DND4EBETA.PowerEnc", items: [], dataset: {type: "encounter"} },
-			daily: { label: "DND4EBETA.PowerDaily", items: [], dataset: {type: "daily"} },
-			item: { label: "DND4EBETA.PowerItem", items: [], dataset: {type: "item"} },
-			// utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
-			recharge: { label: "DND4EBETA.PowerRecharge", items: [], dataset: {type: "recharge"} },
-			other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
+			atwill: { label: "DND4EALTUS.PowerAt", items: [], dataset: {type: "atwill"} },
+			encounter: { label: "DND4EALTUS.PowerEnc", items: [], dataset: {type: "encounter"} },
+			daily: { label: "DND4EALTUS.PowerDaily", items: [], dataset: {type: "daily"} },
+			item: { label: "DND4EALTUS.PowerItem", items: [], dataset: {type: "item"} },
+			// utility: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} },
+			recharge: { label: "DND4EALTUS.PowerRecharge", items: [], dataset: {type: "recharge"} },
+			other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
 		};
 	}
 
@@ -468,8 +468,8 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 
 		} else {
-			itemData.data.rangeText = game.i18n.localize("DND4EBETA.NotAvalible");
-			itemData.data.rangeTextShort = game.i18n.localize("DND4EBETA.NotAvalibleShort");
+			itemData.data.rangeText = game.i18n.localize("DND4EALTUS.NotAvalible");
+			itemData.data.rangeTextShort = game.i18n.localize("DND4EALTUS.NotAvalibleShort");
 		}
 	}
   /* -------------------------------------------- */
@@ -486,15 +486,15 @@ export default class ActorSheet4e extends ActorSheet {
 	  const isPrepared =  getProperty(item.data, "prepared");
 	  item.toggleClass = isPrepared ? "active" : "";
 	  // if ( isAlways ) item.toggleClass = "fixed";
-	  // if ( isAlways ) item.toggleTitle = CONFIG.DND4EBETA.spellPreparationModes.always;
-	  // else if ( isPrepared ) item.toggleTitle = CONFIG.DND4EBETA.spellPreparationModes.prepared;
-	  if ( isPrepared ) item.toggleTitle = game.i18n.localize("DND4EBETA.PowerPrepared");
-	  else item.toggleTitle = game.i18n.localize("DND4EBETA.PowerUnPrepared");
+	  // if ( isAlways ) item.toggleTitle = CONFIG.DND4EALTUS.spellPreparationModes.always;
+	  // else if ( isPrepared ) item.toggleTitle = CONFIG.DND4EALTUS.spellPreparationModes.prepared;
+	  if ( isPrepared ) item.toggleTitle = game.i18n.localize("DND4EALTUS.PowerPrepared");
+	  else item.toggleTitle = game.i18n.localize("DND4EALTUS.PowerUnPrepared");
 	}
 	else {
 	  const isActive = getProperty(item.data, "equipped");
 	  item.toggleClass = isActive ? "active" : "";
-	  item.toggleTitle = game.i18n.localize(isActive ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped");
+	  item.toggleTitle = game.i18n.localize(isActive ? "DND4EALTUS.Equipped" : "DND4EALTUS.Unequipped");
 	}
   }
 	_prepareDataSense(data, map) {
@@ -820,7 +820,7 @@ export default class ActorSheet4e extends ActorSheet {
 		const header = event.currentTarget;
 		const type = header.dataset.type;
 		const itemData = {
-			name: game.i18n.format("DND4EBETA.ItemNew", {type: type.capitalize()}),
+			name: game.i18n.format("DND4EALTUS.ItemNew", {type: type.capitalize()}),
 			type: type,
 			data: duplicate(header.dataset)
 		};
@@ -838,7 +838,7 @@ export default class ActorSheet4e extends ActorSheet {
 		const header = event.currentTarget;
 		const type = header.dataset.type;
 		const itemData = {
-			name: `${game.i18n.format("DND4EBETA.ItemNew", {type: type.capitalize()})} Power`,
+			name: `${game.i18n.format("DND4EALTUS.ItemNew", {type: type.capitalize()})} Power`,
 			type: "power",
 			data: duplicate(header.dataset)
 		};
@@ -860,7 +860,7 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 		}
 
-		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLableOption");
+		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4eAltus", "powerAutoGenerateLableOption");
 		
 		if(this.actor.type === "NPC"){
 			
@@ -1170,7 +1170,7 @@ export default class ActorSheet4e extends ActorSheet {
 					speaker: {actor: this.object, alias: this.object.data.name},
 					flavor: flav,
 					rollMode: game.settings.get("core", "rollMode"),
-					messageData: {"flags.dnd4eBeta.roll": {type: "other", itemId: this.id }}
+					messageData: {"flags.dnd4eAltus.roll": {type: "other", itemId: this.id }}
 				});
 
 			} else if (item.data.data.rechargeCondition) {
@@ -1198,8 +1198,8 @@ export default class ActorSheet4e extends ActorSheet {
   async _onConvertCurrency(event) {
 	event.preventDefault();
 	return Dialog.confirm({
-	  title: `${game.i18n.localize("DND4EBETA.CurrencyConvert")}`,
-	  content: `<p>${game.i18n.localize("DND4EBETA.CurrencyConvertHint")}</p>`,
+	  title: `${game.i18n.localize("DND4EALTUS.CurrencyConvert")}`,
+	  content: `<p>${game.i18n.localize("DND4EALTUS.CurrencyConvertHint")}</p>`,
 	  yes: () => this.convertCurrency()
 	});
   }
@@ -1213,7 +1213,7 @@ export default class ActorSheet4e extends ActorSheet {
    */
   convertCurrency() {
 	const curr = duplicate(this.actor.data.data.currency);
-	const convert = CONFIG.DND4EBETA.currencyConversion;
+	const convert = CONFIG.DND4EALTUS.currencyConversion;
 	for ( let [c, t] of Object.entries(convert) ) {
 	  let change = Math.floor(curr[c] / t.each);
 	  curr[c] -= (change * t.each);
@@ -1233,7 +1233,7 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const a = event.currentTarget;
 		const label = a.parentElement.querySelector("h4");
-		const choices = CONFIG.DND4EBETA[a.dataset.options];
+		const choices = CONFIG.DND4EALTUS[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
 		new TraitSelector(this.actor, options).render(true);
 	}
@@ -1243,7 +1243,7 @@ export default class ActorSheet4e extends ActorSheet {
 		const a = event.currentTarget;
 		// const label = a.parentElement.parentElement.querySelector("h4");
 		const label = a.parentElement.querySelector("span");
-		const choices = CONFIG.DND4EBETA[a.dataset.options];
+		const choices = CONFIG.DND4EALTUS[a.dataset.options];
 		const options = { name: a.dataset.target, title: label.innerText, choices };
 		new TraitSelectorSense(this.actor, options).render(true);
 	}
@@ -1251,7 +1251,7 @@ export default class ActorSheet4e extends ActorSheet {
 	_onTraitSelectorSaveThrow(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		const choices = CONFIG.DND4EBETA[a.dataset.options];
+		const choices = CONFIG.DND4EALTUS[a.dataset.options];
 		const options = { name: a.dataset.target, title: "Saving Throw Mods", choices };
 		new TraitSelectorSave(this.actor, options).render(true);
 	}

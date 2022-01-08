@@ -487,7 +487,7 @@ export class Helper {
 	 * @param {String} errorMessageKey      The key that will be localised for the error message if the roll fails.
 	 * @returns {Promise<Roll>}    			The evaluated Roll instance as a promise
 	 */
-	static async roll(rollString, errorMessageKey = "DND4EBETA.InvalidRollExpression") {
+	static async roll(rollString, errorMessageKey = "DND4EALTUS.InvalidRollExpression") {
 		if (rollString && rollString !== "") {
 			const roll = new Roll(rollString);
 			return roll.roll({async : true}).catch(err => {
@@ -501,8 +501,8 @@ export class Helper {
 	}
 
 	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
-		let powerSource = (chatData.powersource && chatData.powersource !== "") ? ` ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}` : ""
-		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]}${powerSource}`;
+		let powerSource = (chatData.powersource && chatData.powersource !== "") ? ` ♦ ${CONFIG.DND4EALTUS.powerSource[`${chatData.powersource}`]}` : ""
+		let powerDetail = `<span><b>${CONFIG.DND4EALTUS.powerUseType[`${chatData.useType}`]}${powerSource}`;
 		let tag = [];
 
 		if(['melee', 'meleeRanged', 'ranged'].includes(chatData.weaponType) ) {
@@ -513,98 +513,98 @@ export class Helper {
 		}
 
 		if (chatData.powersource && chatData.secondPowersource && chatData.secondPowersource != chatData.powersource){
-			tag.push(`${CONFIG.DND4EBETA.powerSource[`${chatData.secondPowersource}`]}`)
+			tag.push(`${CONFIG.DND4EALTUS.powerSource[`${chatData.secondPowersource}`]}`)
 		}
 
 		if(chatData.damageType) {
 			for ( let [damage, d] of Object.entries(chatData.damageType)) {
-				if(d && CONFIG.DND4EBETA.damageTypes[damage]) tag.push(CONFIG.DND4EBETA.damageTypes[damage])
+				if(d && CONFIG.DND4EALTUS.damageTypes[damage]) tag.push(CONFIG.DND4EALTUS.damageTypes[damage])
 			}
 		}
 		if(chatData.effectType) {
 			for ( let [effect, e] of Object.entries(chatData.effectType)) {
-				if(e && CONFIG.DND4EBETA.effectTypes[effect]) tag.push(CONFIG.DND4EBETA.effectTypes[effect])
+				if(e && CONFIG.DND4EALTUS.effectTypes[effect]) tag.push(CONFIG.DND4EALTUS.effectTypes[effect])
 			}
 		}
 		tag.sort();
 		powerDetail += tag.length > 0 ? `, ${tag.join(', ')}</b></span>` : `</b></span>`;
 		
-		powerDetail += `<br><span><b>${CONFIG.DND4EBETA.abilityActivationTypes[chatData.actionType]} •`;
+		powerDetail += `<br><span><b>${CONFIG.DND4EALTUS.abilityActivationTypes[chatData.actionType]} •`;
 
 		if(chatData.rangeType === "weapon") {
-			powerDetail += ` ${CONFIG.DND4EBETA.weaponType[chatData.weaponType]}`;
+			powerDetail += ` ${CONFIG.DND4EALTUS.weaponType[chatData.weaponType]}`;
 			chatData.rangePower ? powerDetail += `</b> ${chatData.rangePower}</span>` : powerDetail += `</b></span>`;
 			
 		}
 		else if (chatData.rangeType === "melee") {
-			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")}</b> ${chatData.rangePower}</span>`;
+			powerDetail += ` ${game.i18n.localize("DND4EALTUS.Melee")}</b> ${chatData.rangePower}</span>`;
 		}
 		else if (chatData.rangeType === "reach") {
-			powerDetail += ` ${game.i18n.localize("DND4EBETA.rangeReach")}</b> ${chatData.rangePower}</span>`;
+			powerDetail += ` ${game.i18n.localize("DND4EALTUS.rangeReach")}</b> ${chatData.rangePower}</span>`;
 		}
 		else if (chatData.rangeType === "range") {
-			powerDetail += ` ${game.i18n.localize("DND4EBETA.Range")}</b> ${chatData.rangePower}</span>`;
+			powerDetail += ` ${game.i18n.localize("DND4EALTUS.Range")}</b> ${chatData.rangePower}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b></span>`;
+			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]} ${chatData.area}</b></span>`;
 		}
 		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b> ${game.i18n.localize("DND4EBETA.RangeWithinOf")} <b>${chatData.rangePower}</b> ${game.i18n.localize("DND4EBETA.Squares")}</span>`;
+			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]} ${chatData.area}</b> ${game.i18n.localize("DND4EALTUS.RangeWithinOf")} <b>${chatData.rangePower}</b> ${game.i18n.localize("DND4EALTUS.Squares")}</span>`;
 		}
 		else if (chatData.rangeType === "personal") {
-			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
+			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]}</b></span>`;
 		}
 		else if (chatData.rangeType === "touch") {
-			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")} ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
+			powerDetail += ` ${game.i18n.localize("DND4EALTUS.Melee")} ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]}</b></span>`;
 		}
 		else {
 			powerDetail += `</b></span>`;
 		}
 
 		if(chatData.requirement) {
-			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Requirements")}:</b> ${chatData.requirement}</span></p>`;
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EALTUS.Requirements")}:</b> ${chatData.requirement}</span></p>`;
 		}
 
 		if(chatData.trigger) {
-			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Trigger")}:</b> ${chatData.trigger}</span></p>`;
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EALTUS.Trigger")}:</b> ${chatData.trigger}</span></p>`;
 		}
 
 		if(chatData.target) {
-			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Target")}:</b> ${chatData.target}</span></p>`;
+			powerDetail += `<p span><b>${game.i18n.localize("DND4EALTUS.Target")}:</b> ${chatData.target}</span></p>`;
 		}
 
 		if(!chatData.postEffect && chatData.effect.detail) {
-			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EBETA.Effect")}:</b> ${chatData.effect.detail}</p>`;
+			powerDetail += `<p class="alt"><b>${game.i18n.localize("DND4EALTUS.Effect")}:</b> ${chatData.effect.detail}</p>`;
 		}
 		
 		if(!chatData.postSpecial && chatData.special) {
-			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			powerDetail += `<p><b>${game.i18n.localize("DND4EALTUS.Special")}:</b> ${chatData.special}</p>`;
 			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
 				powerDetail += `<p>${entry}</p>`;
 			}
 		}
 
 		if(chatData.attack.isAttack) {
-			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+			powerDetail += `<p><b>${game.i18n.localize("DND4EALTUS.Attack")}</b>: ${CONFIG.DND4EALTUS.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EALTUS.VS")} ${CONFIG.DND4EALTUS.def[chatData.attack.def]}</p>`;
 		}
 
 		let highlight = true;
 		if (chatData.hit.detail){
-			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Hit")}:</b> ${chatData.hit.detail}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EALTUS.Hit")}:</b> ${chatData.hit.detail}</p>`;
 			highlight = !highlight;
 		}
 
 		if (chatData.miss.detail){
-			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Miss")}:</b> ${chatData.miss.detail}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EALTUS.Miss")}:</b> ${chatData.miss.detail}</p>`;
 			highlight = !highlight;
 		}
 
 		if(chatData.postEffect && chatData.effect.detail) {
-			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Effect")}:</b> ${chatData.effect.detail}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EALTUS.Effect")}:</b> ${chatData.effect.detail}</p>`;
 			highlight = !highlight;
 		}
 		if(chatData.postSpecial && chatData.special) {
-			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Special")}:</b> ${chatData.special}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EALTUS.Special")}:</b> ${chatData.special}</p>`;
 			highlight = !highlight;
 			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
 				powerDetail += `<p>${entry}</p>`;
@@ -612,7 +612,7 @@ export class Helper {
 		}
 
 		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
-			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
+			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EALTUS.Sustain")} ${CONFIG.DND4EALTUS.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
 		}
 
 		if(actorData){

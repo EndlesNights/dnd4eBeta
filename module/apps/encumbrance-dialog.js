@@ -5,8 +5,8 @@ export class EncumbranceDialog extends DocumentSheet {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "encumbrance-dialog",
-			classes: ["dnd4eBeta", "encumbrance-dialog"],
-			template: "systems/dnd4e/templates/apps/encumbrance-dialog.html",
+			classes: ["dnd4eAltus", "encumbrance-dialog"],
+			template: "systems/dnd4eAltus/templates/apps/encumbrance-dialog.html",
 			width: 420,
 			closeOnSubmit: false
 		});

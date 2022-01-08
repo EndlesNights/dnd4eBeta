@@ -33,7 +33,7 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
  * Optionally hide the display of chat card action buttons which cannot be performed by the user
  */
 export const displayChatActionButtons = function(message, html, data) {
-	const chatCard = html.find(".DND4EBETA.chat-card");
+	const chatCard = html.find(".DND4EALTUS.chat-card");
 	if ( chatCard.length > 0 ) {
 		const flavor = html.find(".flavor-text");
 		if ( flavor.text() === html.find(".item-name").text() ) flavor.remove();
@@ -70,37 +70,37 @@ export const addChatMessageContextOptions = function(html, options) {
 	};
 	options.push(
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextDamage"),
+			name: game.i18n.localize("DND4EALTUS.ChatContextDamage"),
 			icon: '<i class="fas fa-user-minus"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, 1)
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextHealing"),
+			name: game.i18n.localize("DND4EALTUS.ChatContextHealing"),
 			icon: '<i class="fas fa-user-plus"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, -1)
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextTempHp"),
+			name: game.i18n.localize("DND4EALTUS.ChatContextTempHp"),
 			icon: '<i class="fas fa-user-plus"></i>',
 			condition: canApply,
 			callback: li => applyChatCardTempHp(li)
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextDoubleDamage"),
+			name: game.i18n.localize("DND4EALTUS.ChatContextDoubleDamage"),
 			icon: '<i class="fas fa-user-injured"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, 2)
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextHalfDamage"),
+			name: game.i18n.localize("DND4EALTUS.ChatContextHalfDamage"),
 			icon: '<i class="fas fa-user-shield"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, 0.5)
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextTrueDamage"),
+			name: game.i18n.localize("DND4EALTUS.ChatContextTrueDamage"),
 			icon: '<i class="fas fa-user-shield"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, 1, true)
