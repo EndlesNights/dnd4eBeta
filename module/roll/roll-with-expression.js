@@ -121,16 +121,8 @@ export class RollWithOriginalExpression extends Roll {
         // Execute the roll, if needed
         if ( !this._evaluated ) await this.evaluate({async: true});
 
-        let formulaData;
-        if (!isPrivate && game.settings.get("dnd4e", "showRollExpression")) {
-            formulaData =  this.surroundFormulaWithExpressionSpanTags(this._formula, this.options.expressionArr)
-        }
-        else {
-            formulaData = {
-                formula : this._formula,
-                expression : ""
-            }
-        }
+        let formulaData = this.getChatData(isPrivate);
+
         // Define chat data
         const chatData = {
             formula: isPrivate ? "???" : formulaData.formula,
@@ -145,8 +137,8 @@ export class RollWithOriginalExpression extends Roll {
         return renderTemplate(chatOptions.template, chatData);
     }
 
-   getChatData() {
-       if (game.settings.get("dnd4e", "showRollExpression")) {
+   getChatData(isPrivate = false) {
+       if (!isPrivate && game.settings.get("dnd4e", "showRollExpression")) {
            return this.surroundFormulaWithExpressionSpanTags(this._formula, this.options.expressionArr)
        }
        else {

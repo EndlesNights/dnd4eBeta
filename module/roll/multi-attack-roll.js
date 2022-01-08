@@ -20,21 +20,44 @@ export class MultiAttackRoll extends Roll {
     }
 
     /**
-     * Push a new roll instance to the multiroll master array
-     * @param {string} formula
-     * @param {object} data
-     * @param {object} options
-     * @return {RollWithOriginalExpression} the roll
+     * Adds a new roll to this multiroll expression.  This API is identical to {@link RollWithOriginalExpression#createRoll}
+     *
+     * Worked example:
+     * Attack roll: which is 1d20 + @wepAttack+@powerMod+@lvhalf+@bonus   {wepAttack: "3 + 1", powerMod: 5, lvhalf: 1, bonus: "1d6" }
+     * by the time this formula reaches out code it has become a parts array like so ["3 + 1 + 5 + 1", "@bonus"]  This is because entity.js calls Helper.commonReplace on the attack formula and performs all the substitutions required
+     * the @bonus gets added as a new part by the roll helper in dice.js to capture the situational bonus added by the user
+     * In order to get a nice expression with highlighting we need to call this method with the following parameters:
+     * parts: ["3 + 1 + 5 + 1", "@bonus"]
+     * expressionPartsReplacements: [{ target: "3 + 1 + 5 + 1", value: "@wepAttack + @powerMod + @lvhalf"}]
+     * data: {bonus: "1d6" }
+     * options {
+     *     formulaInnerData: {
+     *      wepAttack: "3 + 1",
+     *      powerMod: 5,
+     *      lvhalf: 1
+     *    }
+     * }
+     * @param parts {String[]} The Formula to be rolled as an array of different expressions it is to be built from (e.g. ["2+3+5", "4", "-2", "@bonus"]
+     * @param expressionPartsReplacements {Object[]} An array of replacement objects that can be used to find the original variables for any entry in the parts array that has already been substituted.
+     * Each object requires 2 fields: target which must contain a string that exactly matches 1 element in the parts array, and value which is the expression that was used to create it: [{ target: "2+3+5", value: "@weapAttack + @enhance"}]
+     * If this is not supplied then any pre-substituted formula will show up as their pre-subbed values in both the result and expression display
+     * @param data {Object} The roll substitution data, as a normal roll
+     * @param options {Object} The roll options.  If you have expressionPartsReplacements for certain parts, in order for highlighting to correctly highlight the individual variables in expressionPartsReplacements,
+     * you must set the 'formulaInnerData' property of this to be an object of {name: value} where name is the variable name without the @ and value is the exact value it was substituted for.
+     * If this is not supplied highlighting will be at the level of the parts array - mousing over a part of the parts array will highlight all of that part in the expression and result display.
+     * Please note that this object is serialised and deserialised to JSON and stored with rolls, it is therefore advisable to keep this as small as possible and not to simply copy the entire contents of the data object.
+     * @return {RollWithOriginalExpression} new a new Roll
+     *
      */
-    createRoll(parts, expressionParts, data, options) {
-        const roll = RollWithOriginalExpression.createRoll(parts, expressionParts, data, options).roll({async : false});
+    addNewRoll(parts, expressionPartsReplacements, data, options) {
+        const roll = RollWithOriginalExpression.createRoll(parts, expressionPartsReplacements, data, options).roll({async : false});
         this.rollArray.push(roll);
         return roll;
     }
 
 
     /**
-     * Populate data strucutre for each of the multiroll components
+     * Populate data structure for each of the multiroll components
      * @param {Object} targDataArray
      * @param {Array} critStateArray
      */
@@ -59,7 +82,7 @@ export class MultiAttackRoll extends Roll {
                 }
             }
 
-            const chatData = r.getChatData()
+            const chatData = r.getChatData(false)
 
             this._multirollData.push({
                 formula : chatData.formula,
