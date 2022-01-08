@@ -132,7 +132,7 @@ export const registerSystemSettings = function() {
 		hint: "SETTINGS.4eShowRollExpressionL",
 		scope: "client",
 		config: true,
-		default: false,
+		default: true,
 		type: Boolean
 	});
 
