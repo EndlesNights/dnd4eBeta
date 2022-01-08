@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.2.53
+- Fixed an issue with creating with dragging items into the macro bar that was cause by attempting to use a deprecated call from v8.
+
+## Version 0.2.52
+- Long rest defaults to hospitable environment [draconas1](https://github.com/draconas1)
+
 ## Version 0.2.51
 - Rearranged of some status effects so that they are in alphabetical order.
 - rich text editor option for power effects [draconas1](https://github.com/draconas1)
