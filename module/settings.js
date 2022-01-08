@@ -136,6 +136,18 @@ export const registerSystemSettings = function() {
 		type: Boolean
 	});
 
+	/**
+	 * collapse bonuses down when making rolls
+	 */
+	game.settings.register("dnd4e", "collapseSituationalBonus",{
+		name: "SETTINGS.collapseSituationalBonusN",
+		hint: "SETTINGS.collapseSituationalBonusL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean
+	});
+
 
 	// /**
 	//  * Option to allow GMs to restrict polymorphing to GMs only.

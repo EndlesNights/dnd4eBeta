@@ -120,14 +120,41 @@ export class Helper {
 		const powerNeedsAWeapon = itemData.weaponType && itemData.weaponType !== "none" && itemData.weaponType !== "implement" && itemData.weaponUse !== "none"
 		return !weaponUse && powerNeedsAWeapon
 	}
-	
-	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1, stringOnly = false) {
+
+	static get variableRegex() {
+		return new RegExp(/@([a-z.0-9_\-]+)/gi);
+	}
+
+	/**
+	 * Perform replacement of @variables in the formula involving a power.  This is a recursive function with 2 modes of operation!
+	 *
+	 * @param formula The formula to examine and perform replacements on
+	 * @param actorData The data from the actor to use to resolve variables.  This may be null
+	 * @param powerData The data from the power to use to resolve variables.
+	 * @param weaponData The data from the weapon to use to resolve variables.  This may be null
+	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.  Defaults to 1 which will produce 2 loops.
+	 * @param returnDataInsteadOfFormula If set to true it will return a data object of replacement variables instead of the formula string
+	 * @return {String|{}|number} "0" if called with a depth of <0, A substituted formula string if called with returnDataInsteadOfFormula = false (the default) or an object of {variable = value} if called with returnDataInsteadOfFormula = true
+	 */
+	// DEVELOPER: Remember this call is recursive, if you change the method signature, make sure you update everywhere its used!
+	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1, returnDataInsteadOfFormula = false) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula;
+		if (returnDataInsteadOfFormula) {
+			const result = {}
+			const variables = formula.match(this.variableRegex)
+			if (variables) {
+				variables.forEach(variable => {
+					// get the value for that variable - call this method with just the variable and with return data off
+					result[variable.substring(1)] = this.commonReplace(variable, actorData, powerData, weaponData, depth, false) // trim off the leading @
+				})
+			}
+			return result
+		}
 
 		if(actorData) {
 
-			if (!stringOnly) newFormula = Roll.replaceFormulaData(newFormula, actorData);
+			newFormula = Roll.replaceFormulaData(newFormula, actorData);
 			if(powerData) newFormula = newFormula.replaceAll("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
 			
 			newFormula = newFormula.replaceAll("@strMod", actorData.abilities["str"].mod);
@@ -445,6 +472,7 @@ export class Helper {
 		// }
 		return newFormula;
 	}
+
   /**
    * Replace referenced data attributes in the roll formula with the syntax `@attr` with the corresponding key from
    * the provided `data` object. This is a temporary helper function that will be replaced with Roll.replaceFormulaData()
@@ -461,7 +489,7 @@ export class Helper {
 		return 0;
 		}
 		// Replace attributes with their numeric equivalents.
-		let dataRgx = new RegExp(/@([a-z.0-9_\-]+)/gi);
+		let dataRgx = this.variableRegex
 		let rollFormula = formula.replace(dataRgx, (match, term) => {
 			let value = getProperty(data, term);
 			// If there was a value returned, trim and return it.

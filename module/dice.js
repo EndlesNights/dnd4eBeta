@@ -1,267 +1,5 @@
-export class RollWithOriginalExpression extends Roll {
-	constructor (formula, data={}, options={}) {
-		super(formula, data, foundry.utils.mergeObject({expression : formula}, options));
-		this.expression = options.expression ? options.expression : formula
-	}
-
-	/**
-	 * Custom chat template to handle multiroll attacks
-	 */
-	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-single.html";
-
-	/**
-	 * This is a copy of super.render with one change: the chatData has roll.expression added.
-	 *
-	 * @param chatOptions
-	 * @return {Promise<string|*>}
-	 */
-	async render(chatOptions={}) {
-		chatOptions = foundry.utils.mergeObject({
-			user: game.user.id,
-			flavor: null,
-			template: this.constructor.CHAT_TEMPLATE,
-			blind: false
-		}, chatOptions);
-		const isPrivate = chatOptions.isPrivate;
-
-		// Execute the roll, if needed
-		if ( !this._evaluated ) await this.evaluate({async: true});
-
-		let expression = ""
-		if (game.settings.get("dnd4e", "showRollExpression")) {
-			expression = this.expression
-		}
-		let regexp = /"(.+)"/g;
-		// Define chat data
-		const chatData = {
-			formula: isPrivate ? "???" : this.badger(this._formula, this.options.expressionArr, true),
-			flavor: isPrivate ? null : chatOptions.flavor,
-			user: chatOptions.user,
-			tooltip: isPrivate ? "" : await this.getTooltip(),
-			total: isPrivate ? "?" : Math.round(this.total * 100) / 100,
-			expression: this.badger(this._formula, this.options.expressionArr, false),
-		};
-
-		// Render the roll display template
-		return renderTemplate(chatOptions.template, chatData);
-	}
-
-	badger(formula, expressionParts, form = true) {
-		const startTag = "<span>"
-		const endTag = "</span>"
-		let newFormula = ""
-		let newExpression = ""
-
-		let openBracket = 0;
-		let activeExpression = null
-		let expressionIdx = 0;
-		for (let i = 0; i < formula.length; i++) {
-			const char = formula.charAt(i)
-			if (char === '(') {
-				if (openBracket === 0) {
-					activeExpression = expressionParts[expressionIdx]
-					newFormula += `<span id="form${expressionIdx}">`
-					newExpression += `<span id="exp${expressionIdx}" onmouseenter="mouseEnter('${expressionIdx}')" onmouseleave="mouseLeave('${expressionIdx}')">`
-				}
-				openBracket++
-				newFormula += char
-				continue
-			}
-			if (char === ')') {
-				openBracket--
-				newFormula += char
-				if (openBracket === 0) {
-					newFormula += `</span>`
-					newExpression += activeExpression
-					newExpression += `</span>`
-					newExpression += " + "
-					expressionIdx++
-				}
-				continue
-			}
-			newFormula += char
-		}
-
-		if (form) {
-			return newFormula
-		}
-		else {
-			return newExpression.substring(0, newExpression.length - 3)
-		}
-
-	}
-
-
-}
-
-/**
- * An extension of the default Foundry Roll class for handling multiattack rolls and displaying them in a single chat message
- */
-export class MultiAttackRoll extends Roll {
-	constructor (formula, data={}, options={}) {
-		super(formula, data, options);
-		this.rollArray = [];
-		this._multirollData = [];
-		this.tooltipArray = [];
-		this.totalArray = [];
-	}
-
-	/**
-	 * Custom chat template to handle multiroll attacks
-	 */
-	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-multiattack.html";
-
-	get multirollData() {
-		return this._multirollData;
-	}
-
-	/**
-	 * Push a new roll instance to the multiroll master array
-	 * @param {string} formula
-	 * @param {object} data
-	 * @param {object} options
-	 * @return {RollWithOriginalExpression} the roll
-	 */
-	addNewRoll(formula, data={}, options={}) {
-		let r = new RollWithOriginalExpression(formula, data, options).roll({async : false});
-		this.rollArray.push(r);
-		return r
-	}
-
-	createRoll(parts, expressionParts, data, options) {
-		const expression = parts.map(x => `(${x})`).join("+")
-		options.parts = parts
-		options.expressionArr = createExpression2(parts, expressionParts)
-		options.expression = createExpression(parts, expressionParts)
-		const roll = new RollWithOriginalExpression(expression, data, options).roll({async : false});
-		this.rollArray.push(roll);
-		return roll;
-	}
-
-
-	/**
-	 * Populate data strucutre for each of the multiroll components
-	 * @param {Object} targDataArray
-	 * @param {Array} critStateArray
-	 */
-	populateMultirollData(targDataArray, critStateArray) {
-		for (let [i, r] of this.rollArray.entries()){
-			let parts = r.dice.map(d => d.getTooltipData());
-			let targName = targDataArray.targNameArray[i];
-			let targDefVal = targDataArray.targDefValArray[i];
-			let critState = critStateArray[i];
-
-			let hitState = "";
-
-			if(game.settings.get("dnd4e", "automationCombat")){
-				if (critState === " critical"){
-					hitState = "Critical Hit!"
-				} else if (critState === " fumble"){
-					hitState = "Critical Miss!"
-				} else if (r._total >= targDefVal){
-					hitState = "Probable Hit!";
-				} else {
-					hitState = "Probable Miss!";
-				}
-			}
-
-			this._multirollData.push({
-				formula : r._formula,
-				total : r._total,
-				parts : parts,
-				tooltip : '',
-				target : targName,
-				hitstate : hitState,
-				critstate : critState
-			});
-		};
-	}
-
-	/**
-	 * Render a Roll instance to HTML
-	 * @param {object} [chatOptions]      An object configuring the behavior of the resulting chat message.
-	 * @return {Promise<string>}          The rendered HTML template as a string
-	 *
-	 * Modified to include multirollData attribute and handle multirollData dice tooltips
-	 */
-	async render(chatOptions={}) {
-		chatOptions = foundry.utils.mergeObject({
-			user: game.user.id,
-			flavor: null,
-			template: this.constructor.CHAT_TEMPLATE,
-			blind: false
-		}, chatOptions);
-		const isPrivate = chatOptions.isPrivate;
-
-		// Execute the roll, if needed
-		if (!this._evaluated) await this.evaluate({async : true});
-
-		for (let roll of this._multirollData) {
-			let parts = roll.parts;
-			roll.tooltip = await renderTemplate(this.constructor.TOOLTIP_TEMPLATE, { parts });
-		};
-
-		// Define chat data
-		const chatData = {
-			formula: isPrivate ? ["???"] : this._formula,
-			multirollData: isPrivate? ["???"] : this._multirollData,
-			flavor: isPrivate ? null : chatOptions.flavor,
-			user: chatOptions.user,
-			tooltip: isPrivate ? "" : await this.getTooltip(),
-			total: isPrivate ? "?" : Math.round(this.total * 100) / 100
-		};
-
-		// Render the roll display template
-		return renderTemplate(chatOptions.template, chatData);
-	}
-
-	/**
-	 * Modified from base to include _multirollData attribute
-	 * @returns {object}
-	 */
-	toJSON() {
-		return {
-			class: this.constructor.name,
-			options: this.options,
-			dice: this._dice,
-			formula: this._formula,
-			multirollData: this._multirollData,
-			terms: this.terms,
-			total: this.total,
-			evaluated: this._evaluated
-		}
-	}
-
-	/**
-	 * Modified from base to handle multirollData attribute
-	 * @param {object} data
-	 * @returns
-	 */
-	static fromData(data) {
-
-		// Create the Roll instance
-		const roll = new this(data.formula, data.data, data.options);
-
-		// Expand terms
-		roll.terms = data.terms.map(t => {
-			if ( t.class ) {
-				if ( t.class === "DicePool" ) t.class = "PoolTerm"; // backwards compatibility
-				return RollTerm.fromData(t);
-			}
-			return t;
-		});
-
-		// Repopulate evaluated state
-		if ( data.evaluated ?? true ) {
-			roll._total = data.total;
-			roll._dice = (data.dice || []).map(t => DiceTerm.fromData(t));
-			roll._multirollData = data.multirollData;
-			roll._evaluated = true;
-		}
-		return roll;
-	}
-}
-
+import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
+import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 
 /**
  * A standardized helper function for managing core 4e "d20 rolls"
@@ -292,7 +30,7 @@ export class MultiAttackRoll extends Roll {
  */
 export async function d20Roll({parts=[],  expressionParts= [], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null,
-								  isAttackRoll=false, options=null}={}) {
+								  isAttackRoll=false, options= {}}={}) {
 	const rollConfig = {parts, expressionParts, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options }
 
 	// handle input arguments
@@ -403,7 +141,14 @@ async function performD20RollAndCreateMessage(form, {parts, expressionParts, dat
 					}
 				}
 			}
-			allRollsParts.push(parts.concat(targetBonuses))
+			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
+				let total = 0;
+				targetBonuses.forEach(bonus => total += CONFIG.DND4EBETA.commonAttackBonuses[bonus.substring(1)].value)
+				allRollsParts.push(parts.concat([total]))
+			}
+			else {
+				allRollsParts.push(parts.concat(targetBonuses))
+			}
 		}
 	}
 	else {
@@ -429,7 +174,7 @@ async function performD20RollAndCreateMessage(form, {parts, expressionParts, dat
 	}
 
 	// time to actually do the roll
-	let roll = new MultiAttackRoll(parts.filterJoin(" + "), data); // initial roll data is never going to be used, but makes foundry happy
+	let roll = new MultiAttackRoll(parts.filterJoin(" + "), data, {}); // initial roll data is never going to be used, but makes foundry happy
 	const targets = Array.from(game.user.targets);
 	const targetData = {
 		targNameArray: [],
@@ -441,9 +186,7 @@ async function performD20RollAndCreateMessage(form, {parts, expressionParts, dat
 		const rollExpression = allRollsParts[rollExpressionIdx]
 		let subroll
 		try {
-			subroll = roll.createRoll(rollExpression, expressionParts, data, {})
-
-			//addNewRoll(rollExpression.map(x => `[${x}]`).filterJoin("+"), data, {expression: createExpression(rollExpression, expressionParts)});
+			subroll = roll.createRoll(rollExpression, expressionParts, data, options)
 		}
 		catch(err) {
 			// let the user know what is going on if the roll doesn't evaluate.
@@ -501,7 +244,7 @@ async function performD20RollAndCreateMessage(form, {parts, expressionParts, dat
  *
  * @param {Array} parts           The dice roll component parts
  * @param {Array} partsCrit       The dice roll component parts for a criticalhit
- * @param {Array} partsMiss 	  The dice roll component parts for a miss
+ * @param {Array} partsMiss      The dice roll component parts for a miss
  * @param {Array} partsExpression  Optional Array of replacement values for the parts array to create a formula to display where bonuses came from.
  *                                 Each element should be in the form of { target: 'Text To Replace', value: 'text to replace with' }
  * @param {Array} partsCritExpression  Optional Array of replacement values for the parts array to create a formula to display where bonuses came from.
@@ -522,15 +265,16 @@ async function performD20RollAndCreateMessage(form, {parts, expressionParts, dat
  * @param {Function} onClose      Callback for actions to take when the dialog form is closed
  * @param {Object} dialogOptions  Modal dialog options
  * @param {boolean} healingRoll   If the roll is a healing roll rather than a damage roll.
+ * @param {Object } options		  The Roll Options
  *
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
 export async function damageRoll({parts, partsCrit, partsMiss, partsExpression= [], partsCritExpression= [], partsMissExpression= [], actor,
 									 data, event={}, rollMode=null, template, title, speaker, flavor, allowCritical=true,
-									 critical=false, fastForward=null, onClose, dialogOptions, healingRoll}) {
+									 critical=false, fastForward=null, onClose, dialogOptions, healingRoll, options}) {
 
 	// First configure the Roll
-	const rollConfig = {parts, partsCrit, partsMiss, data, flavor, rollMode, partsExpression, partsCritExpression, partsMissExpression, speaker, hitType: 'normal'}
+	const rollConfig = {parts, partsCrit, partsMiss, data, flavor, rollMode, partsExpression, partsCritExpression, partsMissExpression, speaker, hitType: 'normal', options}
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
@@ -611,28 +355,28 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpression= 
 	});
 }
 
-function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, partsMiss, data, hitType, flavor, rollMode, partsExpression, partsCritExpression, partsMissExpression, speaker}) {
+async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, partsMiss, data, hitType, flavor, rollMode, partsExpression, partsCritExpression, partsMissExpression, speaker, options}) {
 	manageBonusInParts(parts, form, data)
 	manageBonusInParts(partsCrit, form, data)
 	manageBonusInParts(partsMiss, form, data)
 
 	let roll;
 	if(hitType === 'normal'){
-		roll = new RollWithOriginalExpression(parts.filterJoin("+"), data, {expression: createExpression(parts, partsExpression)});
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpression, data, options)
 	}
 	else if (hitType === 'crit') {
-		roll = new RollWithOriginalExpression(partsCrit.filterJoin("+"), data, {expression: createExpression(partsCrit, partsCritExpression)})
+		roll = RollWithOriginalExpression.createRoll(partsCrit, partsCritExpression, data, options)
 		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
 	}
 	else if (hitType === 'miss') {
-		roll = new RollWithOriginalExpression(partsMiss.filterJoin("+"), data, {expression: createExpression(partsMiss, partsMissExpression)});
+		roll = RollWithOriginalExpression.createRoll(partsMiss, partsMissExpression, data, options);
 		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Miss")})`;
 	}
 	else if (hitType === 'heal') {
-		roll = new RollWithOriginalExpression(parts.filterJoin("+"), data, {expression: createExpression(parts, partsExpression)});
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpression, data, options);
 		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Healing")})`;
 	} else {
-		roll = new RollWithOriginalExpression(parts.filterJoin("+"), data, {expression: createExpression(parts, partsExpression)});
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpression, data, options)
 	}
 
 	if (form?.flavor.value) {
@@ -692,34 +436,4 @@ function manageBonusInParts(parts, form, data) {
 			}
 		}
 	}
-}
-
-function createExpression(parts, expressionParts) {
-	const result = [...parts]
-	//n^2, but simple and n will always be small
-	for(let i = 0; i<result.length; i++) {
-		const toReplace = result[i]
-		expressionParts.forEach(element => {
-			if (element.target === toReplace) {
-				result[i] = element.value
-			}
-		})
-	}
-
-	return result.filterJoin("+")
-}
-
-function createExpression2(parts, expressionParts) {
-	const result = [...parts]
-	//n^2, but simple and n will always be small
-	for(let i = 0; i<result.length; i++) {
-		const toReplace = result[i]
-		expressionParts.forEach(element => {
-			if (element.target === toReplace) {
-				result[i] = element.value
-			}
-		})
-	}
-
-	return result
 }
