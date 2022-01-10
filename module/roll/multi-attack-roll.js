@@ -163,12 +163,20 @@ export class MultiAttackRoll extends Roll {
         const roll = new this(data.formula, data.data, data.options);
 
         // Expand terms
-        roll.terms = data.terms.map(t => {
-            if ( t.class ) {
-                if ( t.class === "DicePool" ) t.class = "PoolTerm"; // backwards compatibility
-                return RollTerm.fromData(t);
-            }
-            return t;
+        roll.terms = []
+        data.multirollData.forEach(multiTerm => {
+            multiTerm.parts.forEach(diceTerm => {
+                let dt = DiceTerm.fromData(diceTerm)
+                if(dt.class=== "DicePool" ) dt.class = "PoolTerm"; // backwards compatibility incase?
+                dt.results = diceTerm.rolls.map( t => {
+                    return {
+                        result: t.result,
+                        "active": true,
+                        "indexThrow": 0
+                    }
+                })
+                roll.terms.push(dt)
+            });
         });
 
         // Repopulate evaluated state
