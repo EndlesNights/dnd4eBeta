@@ -167,7 +167,7 @@ export class MultiAttackRoll extends Roll {
         data.multirollData.forEach(multiTerm => {
             multiTerm.parts.forEach(diceTerm => {
                 let dt = DiceTerm.fromData(diceTerm)
-                if(dt.class=== "DicePool" ) dt.class = "PoolTerm"; // backwards compatibility incase?
+                if(dt.class === "DicePool" ) dt.class = "PoolTerm"; // backwards compatibility incase?
                 dt.results = diceTerm.rolls.map( t => {
                     return {
                         result: t.result,

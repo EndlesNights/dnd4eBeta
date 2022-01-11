@@ -10,7 +10,7 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
 	if ( !roll.dice.length ) return;
 	const d = roll.dice[0];
 
-	// Ensure it is an un-modified d20 roll, is is part of a recharge roll
+	// Ensure it is an un-modified d20 roll, or is part of a recharge roll
 	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
 	if ( !isD20 && !d.options.recharge) return;
 	const isModifiedRoll = ("success" in d.results[0]) || d.options.marginSuccess || d.options.marginFailure;
