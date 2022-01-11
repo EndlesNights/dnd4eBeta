@@ -76,7 +76,7 @@
 
 <script>
 //Checks if multi target attack that is universal, and display an alternative target dialog with every target's name in it.
-if ("{{targetData.multiTargetCheck}}" == "true" && document.getElementById("multibonus-toggle").value == "false" && "{{targetData.targNameArray}}"){
+if ("{{targetData.multiTargetCheck}}" == "true" && document.getElementById("multibonus-toggle")?.value == "false" && "{{targetData.targNameArray}}"){
 	document.getElementById("multiTarget").innerHTML = "Targets: {{targetData.targNameArray}}";
 	document.getElementById("singleTarget").style.display = 'none';
 }

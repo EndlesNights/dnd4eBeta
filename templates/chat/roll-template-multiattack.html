@@ -1,0 +1,25 @@
+<div class="dice-roll">
+    {{#each multirollData as |roll|}}
+        <div class="dice-result">
+            <span class="flavor-text"><b>Target</b>: {{roll.target}}</span>
+            <div class="dice-flavor">{{roll.flavor}}</div>
+            <span class="flavor-text{{roll.critstate}}">{{roll.hitstate}}</span>
+            <div class="dice-formula">{{{roll.formula}}}</div>
+            <div class="dice-tooltip dice-formula">{{{roll.expression}}}</div>
+            {{{roll.tooltip}}}
+            <h4 class="dice-total{{roll.critstate}}">{{roll.total}}</h4>
+        </div>
+    {{/each}}
+</div>
+
+<script>
+    function mouseEnter(id) {
+        document.getElementById("form" + id).style.backgroundColor = "#99ccff"
+        document.getElementById("exp" + id).style.backgroundColor = "#99ccff"
+    }
+
+    function mouseLeave(id) {
+        document.getElementById("form" + id).style.backgroundColor = null
+        document.getElementById("exp" + id).style.backgroundColor = null
+    }
+</script>

@@ -124,6 +124,30 @@ export const registerSystemSettings = function() {
 		}
 	});
 
+	/**
+	 * show the roll expression formula when making d20 rolls
+	 */
+	game.settings.register("dnd4e", "showRollExpression",{
+		name: "SETTINGS.4eShowRollExpressionN",
+		hint: "SETTINGS.4eShowRollExpressionL",
+		scope: "client",
+		config: true,
+		default: true,
+		type: Boolean
+	});
+
+	/**
+	 * collapse bonuses down when making rolls
+	 */
+	game.settings.register("dnd4e", "collapseSituationalBonus",{
+		name: "SETTINGS.collapseSituationalBonusN",
+		hint: "SETTINGS.collapseSituationalBonusL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean
+	});
+
 
 	// /**
 	//  * Option to allow GMs to restrict polymorphing to GMs only.

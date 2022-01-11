@@ -26,9 +26,10 @@ import Item4e from "./item/entity.js";
 
 // Import Helpers
 import * as chat from "./chat.js";
-import * as dice from "./dice.js";
 import * as macros from "./macros.js";
 import * as migrations from "./migration.js";
+import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
+import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -36,7 +37,7 @@ import * as migrations from "./migration.js";
 
 Hooks.once("init", async function() {
 	console.log(`D&D4eBeta | Initializing Dungeons & Dragons 4th Edition System\n${DND4EBETA.ASCII}`);
-	
+
 	game.dnd4eBeta = {
 		config: DND4EBETA,
 		canvas: {
@@ -60,7 +61,8 @@ Hooks.once("init", async function() {
 	CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffect;
 
 	// define custom roll extensions
-	CONFIG.Dice.rolls.push(dice.MultiAttackRoll);
+	CONFIG.Dice.rolls.push(MultiAttackRoll);
+	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
 	
 	registerSystemSettings();
 
