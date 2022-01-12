@@ -28,8 +28,12 @@ export class DeathSaveDialog extends DocumentSheet {
 		const updateData = {};
 		
 		let message = `Rolling Death Saving Throw`;
+		const parts = [this.object.data.data.details.deathsavebon.value]
+		if (formData.save) {
+			parts.push(formData.save)
+		}
 		const rollConfig = mergeObject({
-			parts: [this.object.data.data.details.deathsavebon.value, formData.save],
+			parts,
 			actor: this.actor,
 			data: {},
 			title: "",

@@ -355,7 +355,7 @@ export default class Item4e extends Item {
 			if (this.data.type == "power" && this.data.data.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.data.data, this.actor);
 				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG);
-				return Helper.commonReplace(cardString, this.actor.data.data, this.data, weaponUse? weaponUse.data.data : null, 1, true);
+				return Helper.commonReplace(cardString, this.actor.data.data, this.data, weaponUse? weaponUse.data.data : null, 1);
 			} else {
 				return null;
 			}
@@ -768,8 +768,12 @@ export default class Item4e extends Item {
 
 		// Define Roll bonuses
 		const parts = [];
+		const partsExpressionReplacements = [];
 		if(!!itemData.attack.formula) {		
 			parts.push(Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null))
+			partsExpressionReplacements.push({value : itemData.attack.formula, target: parts[0]})
+			// add the substitutions that were used in the expression to the data object for later
+			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null, 1, true)
 		}
 
 		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
@@ -831,12 +835,14 @@ export default class Item4e extends Item {
 		}
 
 		// Compose roll options
-		const rollConfig = mergeObject({
-			parts: parts,
+		const rollConfig = {
+			parts,
+			partsExpressionReplacements,
 			actor: this.actor,
 			data: rollData,
-			title: title,
-			flavor: flavor,
+			title,
+			flavor,
+			event: options.event,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			dialogOptions: {
 				width: 400,
@@ -846,12 +852,13 @@ export default class Item4e extends Item {
 			isAttackRoll: true,
 			messageData: {"flags.dnd4eAltus.roll": {type: "attack", itemId: this.id }},
 			options
-		});
-		rollConfig.event = options.event;	
+		};
 
 		// Expanded weapon critical threshold
 		if (weaponUse) {
 			rollConfig.critical = itemData.weaponType === "implement" ? weaponUse.data.data.critRangeImp : weaponUse.data.data.critRange;
+			rollConfig.flavor += ` using ${weaponUse.name}`;
+			rollConfig.title += ` using ${weaponUse.name}`;
 		}
 		// Invoke the d20 roll helper
 		const roll = await d20Roll(rollConfig);
@@ -899,13 +906,34 @@ export default class Item4e extends Item {
 		if ( spellLevel ) rollData.item.level = spellLevel;
 
 		// Get message labels
-		const title = `${this.name} - ${game.i18n.localize("DND4EALTUS.DamageRoll")}`;
+		let title = `${this.name} - ${game.i18n.localize("DND4EALTUS.DamageRoll")}`;
 		let flavor = this.labels.damageTypes?.length ? `${title} (${this.labels.damageTypes})` : title;
 
 		// Define Roll  and add seconadry parts
-		const parts = itemData.damage.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]`);
-		const partsMiss = itemData.damage.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]`);
-		const partsCrit = itemData.damageCrit.parts.map(d => `(${Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data)})[${d[1]}]`);
+		const returnDamageRollAndOptionalType = (damageRoll, damageType) => {
+			if (damageType && damageType !== game.i18n.localize(game.dnd4eAltus.config.damageTypes.damage) && damageType !== game.i18n.localize("DND4EALTUS.None")) {
+				return `(${damageRoll})[${damageType}]`
+			}
+			else {
+				return damageRoll
+			}
+
+		}
+		const options = { formulaInnerData: {} }
+		const secondaryPartsHelper = (formula, damageType) => {
+			// store the values that were used to sub in any formulas
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data, 1, true))
+			// convert formula and type into a single string of "substituted formula [type]"
+			return returnDamageRollAndOptionalType(Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data), damageType)
+		}
+		const parts = itemData.damage.parts.map(d => secondaryPartsHelper(d[0], d[1]));
+		const partsMiss = itemData.damage.parts.map(d => secondaryPartsHelper(d[0], d[1]));
+		const partsCrit = itemData.damageCrit.parts.map(d => secondaryPartsHelper(d[0], d[1]));
+
+		// store the original expression formula that produced those formula
+		const partsExpressionReplacement = parts.map(part => { return {target: part, value: "@pow2ndryDamage"}})
+		const partsMissExpressionReplacement = partsMiss.map(part => { return {target: part, value: "@pow2ndryDamage"}})
+		const partsCritExpressionReplacement = partsCrit.map(part => { return {target: part, value: "@pow2ndryCritDamage"}})
 
 		// itemData.damageType
 		let primaryDamage = ''
@@ -926,37 +954,63 @@ export default class Item4e extends Item {
 		let damageFormula = '';
 		let missDamageFormula = '';
 		let critDamageFormula = '';
+		let damageFormulaExpression = '';
+		let missDamageFormulaExpression = '';
+		let critDamageFormulaExpression = '';
 		//Add power damage into parts
 		if(!!itemData.hit?.formula) {
-			// parts.unshift(`(${Helper.commonReplace(itemData.hit.formula, actorData, this.data.data, weaponUse?.data.data)})[${primaryDamage}]`);
-			// partsCrit.unshift(Helper.commonReplace(itemData.hit.critFormula, actorData, this.data.data, weaponUse?.data.data));
-			damageFormula = Helper.commonReplace(itemData.hit.formula, actorData, this.data.data, weaponUse?.data.data);
-			missDamageFormula = Helper.commonReplace(itemData.miss.formula, actorData, this.data.data, weaponUse?.data.data);
-			critDamageFormula = Helper.commonReplace(itemData.hit.critFormula, actorData, this.data.data, weaponUse?.data.data);
+			const formulaHelper = (formula) => {
+				// store the values that were used to sub in any formulas
+				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data, 1, true))
+				// convert formula and type into a single string of "substituted formula [type]"
+				return  Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data);
+			}
+			damageFormula = formulaHelper(itemData.hit.formula)
+			missDamageFormula =formulaHelper(itemData.miss.formula)
+			critDamageFormula = formulaHelper(itemData.hit.critFormula)
+			damageFormulaExpression = itemData.hit.formula
+			missDamageFormulaExpression = itemData.miss.formula
+			critDamageFormulaExpression = itemData.hit.critFormula
 
 			//Should now be redudent with everything moved into the Helper#CommonReplace function
 
 			//Add seconadary weapons damage into parts
+			const secondaryDamageExpressionHelper = (oldParts, expressionParts, newPartsArr) => {
+				const newParts = newPartsArr.map(d =>  {
+					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data, 1, true))
+					const formula = Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data);
+					if (d.length >= 2) {
+						return returnDamageRollAndOptionalType(formula, d[1])
+					}
+					else {
+						return formula
+					}
+				})
+
+				Array.prototype.push.apply(oldParts, newParts)
+				Array.prototype.push.apply(expressionParts, newParts.map(part => { return {target: part, value: "@wep2ndryDamage"}}))
+			}
+			//I really want to factor this, but they are annoyingly different enough to make it too headache inducing
 			if(weaponUse) {
 				if(itemData.hit.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					secondaryDamageExpressionHelper(parts, partsExpressionReplacement, weaponUse.data.data.damage.parts)
 				}
 				if(itemData.hit.critFormula.includes("@wepCritBonus") && weaponUse.data.data.damageCrit.parts.length > 0) {
-					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
-				}
-				if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					secondaryDamageExpressionHelper(partsCrit, partsCritExpressionReplacement, weaponUse.data.data.damageCrit.parts)
 				}
 
+				if(itemData.hit.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
+					secondaryDamageExpressionHelper(parts, partsExpressionReplacement, weaponUse.data.data.damageImp.parts)
+				}
 				if(itemData.hit.critFormula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageCritImp.parts.length > 0) {
-					Array.prototype.push.apply(partsCrit, weaponUse.data.data.damageImpCrit.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					secondaryDamageExpressionHelper(partsCrit, partsCritExpressionReplacement, weaponUse.data.data.damageImpCrit.parts)
 				}
 
 				if(itemData.miss.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
-					Array.prototype.push.apply(partsMiss, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					secondaryDamageExpressionHelper(partsMiss, partsMissExpressionReplacement, weaponUse.data.data.damage.parts)
 				}
 				if(itemData.miss.formula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
-					Array.prototype.push.apply(partsMiss, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					secondaryDamageExpressionHelper(partsMiss, partsMissExpressionReplacement, weaponUse.data.data.damageImp.parts)
 				}
 			}
 		}
@@ -966,6 +1020,9 @@ export default class Item4e extends Item {
 			if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
 				damageFormula += `+ 1`;
 				critDamageFormula += `+ 1`;
+				damageFormulaExpression  += `+ @versatile`;
+				critDamageFormulaExpression += `+ @versatile`;
+				options.formulaInnerData.versatile = 1
 			}
 		}
 	
@@ -978,6 +1035,10 @@ export default class Item4e extends Item {
 			damageFormula += `+ ${actorBonus.damage}`
 			missDamageFormula += `+ ${actorBonus.damage}`
 			critDamageFormula += `+ ${actorBonus.damage}`
+			damageFormulaExpression  += `+ @actorBonusDamage`
+			missDamageFormulaExpression += `+ @actorBonusDamage`
+			critDamageFormulaExpression +=  `+ @actorBonusDamage`
+			options.formulaInnerData.actorBonusDamage = actorBonus.damage
 		}
 
 		// Ammunition Damage from power
@@ -1008,6 +1069,8 @@ export default class Item4e extends Item {
 				flavor += ` [${weaponUse._ammo.name}]`;
 				delete weaponUse._ammo;
 			}
+			title += ` with ${weaponUse.name}`
+			flavor += ` with ${weaponUse.name}`
 		}
 		//Add powers text to message.
 		// if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
@@ -1016,39 +1079,41 @@ export default class Item4e extends Item {
 		// Call the roll helper utility
 		
 		if(missDamageFormula.includes('@damageFormula')){
-			missDamageFormula = missDamageFormula.replace('@damageFormula', damageFormula);
+			missDamageFormula = missDamageFormula.replace('@damageFormula', Helper.bracketed(damageFormula));
 		}
 
 		if(missDamageFormula.includes('@halfDamageFormula')){
-			missDamageFormula = missDamageFormula.replace('@halfDamageFormula', `${damageFormula}/2`);
+			missDamageFormula = missDamageFormula.replace('@halfDamageFormula', Helper.bracketed(`${damageFormula}/2`));
 		}
 
-		if(primaryDamage){
-			parts.unshift(`(${damageFormula})[${primaryDamage}]`);
-			partsCrit.unshift(`(${critDamageFormula})[${primaryDamage}]`);
-			partsMiss.unshift(`(${missDamageFormula})[${primaryDamage}]`);
-		} else {
-			parts.unshift(`(${damageFormula})`);
-			partsCrit.unshift(`(${critDamageFormula})`);
-			partsMiss.unshift(`(${missDamageFormula})`);
-		}
+		const primaryDamageStr = primaryDamage ? `[${primaryDamage}]` : ""
+		parts.unshift(`(${damageFormula})${primaryDamageStr}`);
+		partsCrit.unshift(`(${critDamageFormula})${primaryDamageStr}`);
+		partsMiss.unshift(`(${missDamageFormula})${primaryDamageStr}`);
+		partsExpressionReplacement.unshift({target : parts[0], value: damageFormulaExpression})
+		partsCritExpressionReplacement.unshift({target : partsCrit[0], value: critDamageFormulaExpression})
+		partsMissExpressionReplacement.unshift({target : partsMiss[0], value: missDamageFormulaExpression})
 
 		return damageRoll({
-			event: event,
-			parts: parts,
-			partsCrit: partsCrit,
-			partsMiss: partsMiss,
+			event,
+			parts,
+			partsCrit,
+			partsMiss,
+			partsExpressionReplacement,
+			partsCritExpressionReplacement,
+			partsMissExpressionReplacement,
 			actor: this.actor,
 			data: rollData,
-			title: title,
-			flavor: flavor,
+			title,
+			flavor,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			dialogOptions: {
 				width: 400,
 				top: event ? event.clientY - 80 : null,
 				left: window.innerWidth - 710
 			},
-			messageData
+			messageData,
+			options
 		});
 	}
 
@@ -1083,34 +1148,46 @@ export default class Item4e extends Item {
 
 		// Define Roll parts
 		const parts = itemData.damage.parts.map(d => d[0]);
+		const partsExpressionReplacement = itemData.damage.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}})
+
+		const options = { formulaInnerData : {} }
+		const formulaHelper = (formula) => {
+			// store the values that were used to sub in any formulas
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data, 1, true))
+			// convert formula and type into a single string of "substituted formula [type]"
+			return  Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data);
+		}
 
 		//Add power damage into parts
 		if(!!itemData.hit?.healFormula) {
-			parts.unshift(Helper.commonReplace(itemData.hit.healFormula, actorData, this.data.data, weaponUse?.data.data));
+			parts.unshift(formulaHelper(itemData.hit.healFormula))
 			//Add seconadary weapons damage into parts
 			if(weaponUse) {
 				if(itemData.hit.healFormula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d => formulaHelper(d[0])))
+					Array.prototype.push.apply(partsExpressionReplacement, weaponUse.data.data.damage.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
 				}
 				
 				if(itemData.hit.healFormula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d =>  Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data) ))
+					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d => formulaHelper(d[0])))
+					Array.prototype.push.apply(partsExpressionReplacement, weaponUse.data.data.damageImp.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
 				}
 				
 			}
 		}
-	
+
 		// Adjust damage from versatile usage
 		if(weaponUse) {
 			if(weaponUse.data.data.properties["ver"] && weaponUse.data.data.weaponHand === "hTwo" ) {
 				parts.push("1");
 				messageData["flags.dnd4eAltus.roll"].versatile = true;
+				partsExpressionReplacement.push({target: "1", value: "@versatile"})
 			}
 		}
 		// if ( versatile && itemData.damage.versatile ) {
 			// parts[0] = itemData.damage.versatile;
 			// messageData["flags.dnd4eAltus.roll"].versatile = true;
-		// }	
+		// }
 	
 		// Define Roll Data
 		const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
@@ -1143,13 +1220,14 @@ export default class Item4e extends Item {
 
 		// Call the roll helper utility
 		return damageRoll({
-			event: event,
-			parts: parts,
+			event,
+			parts,
+			partsExpressionReplacement,
 			actor: this.actor,
 			data: rollData,
-			title: title,
+			title,
 			healingRoll: true,
-			flavor: flavor,
+			flavor,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			dialogOptions: {
 				width: 400,
@@ -1157,6 +1235,7 @@ export default class Item4e extends Item {
 				left: window.innerWidth - 710
 			},
 			messageData,
+			options,
 		});
 	}
 

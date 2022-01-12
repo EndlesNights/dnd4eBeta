@@ -1,22 +1,117 @@
 # Changelog
 
+## Version 0.2.53
+- Fixed an issue with creating with dragging items into the macro bar that was cause by attempting to use a deprecated call from v8.
+- Roll formula display [merge](https://github.com/EndlesNights/dnd4eBeta/pull/140) from [draconas1](https://github.com/draconas1)
+	shows the origins formula expression that went into a roll, and highlights where those numbers come from
+	refactor the d20 Roll and rollDamage scripts to make them easier to maintain
+	refactor of helper functions to reduce number of duplication iteration
+	added the selected weapon's name to the attack and damage roll popout menus
+- Fixed multirolling interaction with [Dice-So-Nice](https://foundryvtt.com/packages/dice-so-nice) module, all the dice should now roll! More 3d dice!
+- Fixed a deprecated call where Items/Powers could not be dragged into the macro hotbar after updating v8 to v9.
+- Armour penalties are now treaded as absolute values and then subtracted from [draconas1](https://github.com/draconas1)
+
+## Version 0.2.52
+- Long rest defaults to hospitable environment [draconas1](https://github.com/draconas1)
+
+## Version 0.2.51
+- Rearranged of some status effects so that they are in alphabetical order.
+- rich text editor option for power effects [draconas1](https://github.com/draconas1)
+- Added rechargeCondition to template.json [draconas1](https://github.com/draconas1)
+- Healing button added for ease of use to spend healing surges on self [draconas1](https://github.com/draconas1)
+- Support added for use with the [Token Action HUD](https://github.com/Drental/fvtt-tokenactionhud) module [draconas1](https://github.com/draconas1)
+- SRD Compenuim updates: [draconas1](https://github.com/draconas1)
+	Rapier changed from the Superior Melee classification to Military Melee based on our interpretation of page 109 of the Errata doc.
+	Added SRD Potions Compendium with all PHB SRD Potions
+	Added SRD Common Powers Compendium with the basic action powers that involve attack rolls: Basic attack, bull rush, grab, drag and charge
+- fix to power consumables not being consumed [draconas1](https://github.com/draconas1)
+- fixes to "Steve, the example character" [draconas1](https://github.com/draconas1)
+
+## Version 0.2.50
+- Quick fix to short rest, for v9 comparability
+
+## Version 0.2.49
+- Updated To Foundry v9
+- change system compatibleCoreVersion to include v9
+- fixed issue with @impCritBonus
+
+## Version 0.2.48
+- fixed formating error on NPC sheet
+- When viewing character sheet where the character's hp is within the bloodied state, it should appear as red again.
+- Added player class options to NPC monster primary role options
+- fixed importing item objects to character / npc sheets after was broken in v9.x conversion
+- fix an error where in older weapons where the Extra Modifiers part of damageDice.parts.#.2 would cause 'undefined' to appear in the middle of rolls
+
+## Version 0.2.47
+- quick fix to healing rolls
+- fixed an issue where the helper functions would not properly replace a value if it was used twice.
+
+## Version 0.2.46
+- power dice options now include an option for a d20
+- added an extra field to weapons for Foundry dive modifiers
+- added @impCritBonus which will ignore the powers weapon requirement and just take the data from 'weaponData.critDamageFormImp'
+
+## Version 0.2.45
+- Assign temp HP option to the damage rolls in chat [draconas1](https://github.com/draconas1)
+- Tweaked the chat helper to stop undefined and empty spaces appearing [draconas1](https://github.com/draconas1)
+- Fix socket namespace [draconas1](https://github.com/draconas1)
+- Added some missing keywords [Marcloure](https://github.com/Marcloure)
+- Wil renamed to Will [Marcloure](https://github.com/Marcloure)
+- Added searching and sorting options to Features tab [Marcloure](https://github.com/Marcloure)
+- MultiTargetBonuses [ahoward-cf](https://github.com/ahoward-cf)
+- Number of spelling mistakes fixed [FoxLee](https://github.com/FoxLee))
+- Updated number of deprecated methods for v9.0 compatibility [draconas1](https://github.com/draconas1)
+- Fixed a few more deprecated methods
+- Recharge powers can now roll to be recharged when out of charges
+- Fix to damage calculations [Marcloure](https://github.com/Marcloure)
+- Power card change, Requirements and Trigger come before Target [Marcloure](https://github.com/Marcloure)
+- Power card change, Hit text can now show up without requiring an attack roll. 
+- Power card change, Powers can have an optional secondary power source [Marcloure](https://github.com/Marcloure)
+- Added global Attack and Damage Modifiers that can be used for feats and items. These can be used in formulas as @atkMod and @dmgMod. [Marcloure](https://github.com/Marcloure)
+- Added Item type for powers on character sheet [draconas1](https://github.com/draconas1)
+- Allow for rolls without weapons if weapon use is set to one even if weaponType is set to a non None value, [draconas1](https://github.com/draconas1) 
+- Fix issue with changing value of attribute bars
+- Reworked how attack roll attributes are computed, @paths with null values shouldn't cause errors anymore.
+- Added Miss button for damage roll dialog
+
+## Version 0.2.44
+- fixed issue for item macros, actor data, item data, and launch order should now all be accessible again. 
+- changed how the assisting macro for the [Dual Wielding Strike (Primary)](https://github.com/EndlesNights/dnd4eAltus/blob/f2cb282fbbca8c3a988f1fa1cec8ca4cf1f5dab8/packs/example_powers.db#L7) example power, should no longer require having the actor selected to trigger the use of the secondary power.
+- issue [#75](https://github.com/EndlesNights/dnd4eAltus/issues/75) fix with updates moved to the appropriate method.
+
+## Version 0.2.43
+- Change how some more values are calculated to make them work better with active effects
+- added "@tier" to the short hand helper list
+- [libWrapper](https://github.com/ruipin/fvtt-lib-wrapper) has been added as a dependency.
+- implemented functionally of [fvtt-rolldata-aware-active-effects](https://github.com/wyrmisis/fvtt-rolldata-aware-active-effects) into system
+- consumable items should not use charges properly
+- consumable, added missing feature for enabled to destroy item on final use
+- fixed some spelling mistakes
+- made some fonts slightly darker for a higher contrast on the character sheet to improve readable
+- inverted how the Skill Check Penalty, and Movement Penalty values are calculated so that the numbers reflect that of the PHB. (Just used addition instead of subtraction now)
+- creation of srd compendiums
+- creation of example compendiums
+
+## Version 0.2.42
+- Fixing some typos.
+
 ## Version 0.2.41
 - Fixed an issue where off hand weapons where not working properly.
 
 ## Version 0.2.40
 - Fixed an issue where AC override was turned on by default.
-- Multple fixes to powercard sheet, 
+- Multiple fixes to powercard sheet, 
 	wall range and area should now be editable
 	Removed some blank options
-	Rename 'Wall' to 'Area Wall' to match offical language
-	Rename 'Touch' to 'Melee Touch' to match offical language
+	Rename 'Wall' to 'Area Wall' to match official language
+	Rename 'Touch' to 'Melee Touch' to match official language
 
 ## Version 0.2.39
 - Change NPC defaults roles to 'Soldier', 'Regular', 'Natural', 'Humanoid'
 - Change default Power Group Types sorting to use Usage as the initial search option
 - Added Leader option toggle for NPC sheet
-- Other minor tweeks to NPC sheet HTML and CSS style
-- advancedCals was inncoraetly being instantiated in data.details.advancedCals, while it was always checked at data.advancedCals. The NPC template has been fixed. 
+- Other minor tweaks to NPC sheet HTML and CSS style
+- advancedCals was incorrectly being instantiated in data.details.advancedCals, while it was always checked at data.advancedCals. The NPC template has been fixed. 
 
 ## Version 0.2.38
 - Added in meele and reach rang options for powers attacks (merge from [draconas1](https://github.com/draconas1))
@@ -25,8 +120,8 @@
 
 ## Version 0.2.37
 - Changed some more file directories to match current namespace
-- Initive tiebreaker should now work properly
-- Initive tiebreaker is now on by default
+- Initiative tiebreaker should now work properly
+- Initiative tiebreaker is now on by default
 
 ## Version 0.2.36
 - Fixed some typos

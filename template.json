@@ -325,13 +325,6 @@
 					"armourCheck": true,
 					"chat": "@name uses @label."
 				},
-				"eng": {
-					"value": 0,
-					"base": 0,
-					"bonus": [{}],
-					"ability": "int",
-					"chat": "@name uses @label."
-				},
 				"hea": {
 					"value": 0,
 					"base": 0,
@@ -372,13 +365,6 @@
 					"armourCheck": false,
 					"chat": "@name uses @label."
 				},
-				"pra": {
-					"value": 0,
-					"base": 0,
-					"bonus": [{}],
-					"ability": "wis",
-					"chat": "@name uses @label."
-				},	
 				"prc": {
 					"value": 0,
 					"base": 0,
@@ -857,8 +843,8 @@
 		"damageType": {"physical":true},
 		"brutalNum": 1,
 		"weaponGroup": {},
-		"attackForm": "@profBonus",
-		"attackFormImp": "@profImpBonus",
+		"attackForm": "@profBonus+@enhance",
+		"attackFormImp": "@profImpBonus+@enhanceImp",
 		"damageForm": "@enhance",
 		"damageFormImp": "@enhanceImp",
 		"critDamageForm": "(@enhance)d6",
@@ -926,7 +912,7 @@
 			"abilityBonus": 0,
 			"def": "ac",
 			"defBonus": 0,
-			"formula": "@wepAttack + @powerMod + @atkMod",
+			"formula": "@wepAttack + @powerMod + @lvhalf + @atkMod",
 			"damageType": {},
 			"effectType": {}
 		},
