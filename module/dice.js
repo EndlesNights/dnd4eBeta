@@ -128,17 +128,21 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		Object.keys(CONFIG.DND4EBETA.commonAttackBonuses).forEach(function(key,index) {
 			data[key] = CONFIG.DND4EBETA.commonAttackBonuses[key].value
 		});
-
+		const individualAttack = (Object.entries(form)[6][1].value === "true");
 		const numberOfTargets = Math.max(1, game.user.targets.size)
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++ ) {
 			const targetBonuses = []
 			for ( let [k, v] of Object.entries(form) ) {
 				if(v.checked) {
 					let tabIndex = v.name.split(".")[0];
-					if (parseInt(tabIndex) === targetIndex) {
-						let bonusName = v.name.split(".")[1];
-						targetBonuses.push(`@${bonusName}`)
+					if((individualAttack && parseInt(tabIndex) === targetIndex) // check if Individual Attack Bonuses
+					|| !individualAttack ) { //otherwise just use Universal Attack Bonuses
+							let bonusName = v.name.split(".")[1];
+							targetBonuses.push(`@${bonusName}`)
 					}
+				}
+				if(!individualAttack && k > 21){
+					break;
 				}
 			}
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {

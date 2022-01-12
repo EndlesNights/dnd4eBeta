@@ -2,6 +2,13 @@
 
 ## Version 0.2.53
 - Fixed an issue with creating with dragging items into the macro bar that was cause by attempting to use a deprecated call from v8.
+- Roll formula display [merge](https://github.com/EndlesNights/dnd4eBeta/pull/140) from [draconas1](https://github.com/draconas1)
+	shows the origins formula expression that went into a roll, and highlights where those numbers come from
+	refactor the d20 Roll and rollDamage scripts to make them easier to maintain
+	refactor of helper functions to reduce number of duplication iteration
+	added the selected weapon's name to the attack and damage roll popout menus
+- Fixed multirolling interaction with [Dice-So-Nice](https://foundryvtt.com/packages/dice-so-nice) module, all the dice should now roll! More 3d dice!
+- Fixed a deprecated call where Items/Powers could not be dragged into the macro hotbar after updating v8 to v9.
 
 ## Version 0.2.52
 - Long rest defaults to hospitable environment [draconas1](https://github.com/draconas1)

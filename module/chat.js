@@ -1,3 +1,4 @@
+import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 
 /**
  * Highlight critical success or failure on d20 rolls, or recharge rolls
@@ -9,6 +10,8 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
 	const roll = message.roll;
 	if ( !roll.dice.length ) return;
 	const d = roll.dice[0];
+	// Has its own check
+	if(roll instanceof MultiAttackRoll){ return; }
 
 	// Ensure it is an un-modified d20 roll, or is part of a recharge roll
 	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
