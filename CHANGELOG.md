@@ -9,6 +9,7 @@
 	added the selected weapon's name to the attack and damage roll popout menus
 - Fixed multirolling interaction with [Dice-So-Nice](https://foundryvtt.com/packages/dice-so-nice) module, all the dice should now roll! More 3d dice!
 - Fixed a deprecated call where Items/Powers could not be dragged into the macro hotbar after updating v8 to v9.
+- Armour penalties are now treaded as absolute values and then subtracted from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.52
 - Long rest defaults to hospitable environment [draconas1](https://github.com/draconas1)
