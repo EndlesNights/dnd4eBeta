@@ -320,7 +320,8 @@ export class Actor4e extends Actor {
 		}
 		for ( let i of this.items) {
 			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
-			data.movement.base.armour += i.data.data.armour.movePenValue;
+			const absMovePen = Math.abs(i.data.data.armour.movePenValue)
+			data.movement.base.armour -= absMovePen;
 		}
 		data.movement.base.bonusValue = baseMoveBonusValue;
 
@@ -610,7 +611,7 @@ export class Actor4e extends Actor {
 				//Get Skill Check Penalty stats from armour
 				for ( let i of this.items) {
 					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
-					sklArmourPenalty += i.data.data.armour.skillCheckValue;
+					sklArmourPenalty += Math.abs(i.data.data.armour.skillCheckValue);
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
