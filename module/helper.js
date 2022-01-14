@@ -257,7 +257,7 @@ export class Helper {
 					for(let i = 0; i< parts.length; i++) {
 						if(!parts[i][0] || !parts[i][1]) continue;
 						if(weaponData.properties.bru) {
-							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<${weaponData.brutal}`;
+							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<${weaponData.brutal || 1}`;
 						}
 						else{
 
