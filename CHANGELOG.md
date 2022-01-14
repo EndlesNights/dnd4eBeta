@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.54
+- SRD Potions should now automatically target a characters healing surges
+- SRD weapon tables minor size adjustment
+
 ## Version 0.2.53
 - Fixed an issue with creating with dragging items into the macro bar that was cause by attempting to use a deprecated call from v8.
 - Roll formula display [merge](https://github.com/EndlesNights/dnd4eBeta/pull/140) from [draconas1](https://github.com/draconas1)
