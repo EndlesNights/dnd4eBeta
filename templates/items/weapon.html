@@ -207,30 +207,18 @@
 
 				{{#if data.properties.bru}}
 				<div class="form-group">
-					<label title="Brutal Dice Value." for="brutal">{{ localize "DND4EBETA.DiceBrutal"}}</label>
+					<label title="{{ localize "DND4EBETA.DiceBrutalTitle"}}" for="brutal">{{ localize "DND4EBETA.DiceBrutal"}}</label>
 					<div class="form-fields">
-						<input type="text" name="data.brutal" id="brutal" value="{{data.brutal}}" title="Size of Dice in damage roll." placeholder="1" onClick="this.select();" data-dtype="Number"/>
+						<input type="text" name="data.brutal" id="brutal" value="{{data.brutal}}" title="{{ localize "DND4EBETA.DiceBrutalTitle"}}" placeholder="{{ localize "DND4EBETA.DiceBrutalPlaceholder"}}" onClick="this.select();" data-dtype="Number"/>
 					</div>
 				</div>
 				{{/if}}
 
-				<!-- <div class="form-group">
-					<label title="Bonus to Attack Roll.">Attack Roll Bonus:</label>
-					<div class="form-fields">
-						<input type="text" name="data.bonusAttack" value="{{data.bonusAttack}}" title="Bonus to Attack Roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label title="Bonus to Damage Roll.">Damage Roll Bonus:</label>
-					<div class="form-fields">
-						<input type="text" name="data.bonusDamage" value="{{data.bonusDamage}}" title="Size of Dice in damage roll." placeholder="0" data-dtype="Number" onClick="this.select();"/>
-					</div>
-				</div> -->
 				{{#unless (eq data.weaponType "implement")}}
 				<div class="form-group">
-					<label title="Natural D20 Dice roll required for a hit to be considered a critical hit.">Critical Hit:</label>
+					<label title="{{ localize "DND4EBETA.CriticalHitTitle"}}">{{ localize "DND4EBETA.CriticalHit"}}:</label>
 					<div class="form-fields">
-						<input type="text" name ="data.critRange" value="{{data.critRange}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name ="data.critRange" value="{{data.critRange}}" title="{{ localize "DND4EBETA.CriticalHitTitle"}}" placeholder="{{ localize "DND4EBETA.CriticalHitPlaceholder"}}" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				{{/unless}}
