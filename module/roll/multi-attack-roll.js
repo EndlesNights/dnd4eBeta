@@ -52,6 +52,7 @@ export class MultiAttackRoll extends Roll {
     addNewRoll(parts, expressionPartsReplacements, data, options) {
         const roll = RollWithOriginalExpression.createRoll(parts, expressionPartsReplacements, data, options).roll({async : false});
         this.rollArray.push(roll);
+        console.log("ENTER")
         return roll;
     }
 

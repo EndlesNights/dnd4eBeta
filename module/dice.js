@@ -221,8 +221,9 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			critStateArray.push("");
 		}
 	}
+	
 	// if there is only 1 roll, it's not a multi roll
-	if (!isAttackRoll || roll.rollArray.length <= 1) {
+	if (!isAttackRoll || game.user.targets.size < 1) {
 		roll = roll.rollArray[0]
 	}
 	else {
