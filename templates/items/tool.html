@@ -11,7 +11,6 @@
 
 			<div class="item-subtitle">
 				<h4 class="item-type">{{itemType}}</h4>
-				<span class="item-status">{{itemStatus}}</span>
 			</div>
 
 			<ul class="summary flexrow">
@@ -47,6 +46,7 @@
 				<label>{{ localize "DND4EBETA.RollFormula" }}</label>
 				<input type="text" name="data.formula" value="{{data.formula}}" placeholder="{{ localize "DND4EBETA.RollPlaceholderTool"}}"/>
 			</div>
+			<label>{{ localize "DND4EBETA.ToolFormulaDescription"}}</label>
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.RollBonus" }}</label>
 				<input type="text" name="data.bonus" value="{{data.bonus}}"/>
@@ -70,7 +70,7 @@
 			{{!-- Chat Message Flavor --}}
 			<div class="form-group stacked">
 				<label>{{ localize "DND4EBETA.ChatFlavor" }}</label>
-				<input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/>
+				<input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}" placeholder="{{ localize "DND4EBETA.ChatFlavorPlaceholder"}}"/>
 			</div>
 		</div>
 		
