@@ -1374,12 +1374,12 @@ export default class Item4e extends Item {
 		let rollData = this.getRollData();
 		const parts = ["@tool"];
 
-	rollData["tool"] = this.data.data.formula? Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data.data, this.data.data) : `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)} + ${this.data.data.bonus}`;
-		const title = `${this.name} - ${game.i18n.localize("DND4EBETA.ToolCheck")}`;
-	
-	const label = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
+		rollData["tool"] = this.data.data.formula? Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data.data, this.data.data) : `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)} + ${this.data.data.bonus}`;
+			const title = `${this.name} - ${game.i18n.localize("DND4EBETA.ToolCheck")}`;
 
-	const flavor = this.data.data.chatFlavor + ` (${label} check)` || `${this.name} - ${game.i18n.localize("DND4EBETA.ToolCheck")}  (${label} check)`;
+		const label = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
+
+		const flavor = this.data.data.chatFlavor ?  `${this.data.data.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize("DND4EBETA.ToolCheck")}  (${label} check)`;
 		// Compose the roll data
 		const rollConfig = mergeObject({
 			parts: parts,
