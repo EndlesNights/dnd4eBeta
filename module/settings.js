@@ -57,9 +57,22 @@ export const registerSystemSettings = function() {
 	 * Determins if the Advanced Math Options for NPC's is set during their generation
 	 */
 
-	 game.settings.register("dnd4e", "npcMathOptions", {
+	game.settings.register("dnd4e", "npcMathOptions", {
 		name: "SETTINGS.4eNpcMathOptionsN",
 		hint: "SETTINGS.4eNpcMathOptionsL",
+		scope: "world",
+		config: true,
+		default: false,
+		type: Boolean
+	});
+
+	/**
+	 * Allows the ability to turn off half levels for: Ability, Defense, Skills and Initiative score values. Somewhat common house rule.
+	 */
+
+	game.settings.register("dnd4e", "halfLevelOptions", {
+		name: "SETTINGS.4eHalfLevelOptionsN",
+		hint: "SETTINGS.4eHalfLevelOptionsL",
 		scope: "world",
 		config: true,
 		default: false,

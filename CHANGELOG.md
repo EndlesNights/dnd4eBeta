@@ -5,6 +5,7 @@
 - SRD weapon tables minor size adjustment
 - if no value is entered into a weapons brutal dice value, the system should default to rerolling 1s
 - if no value is entered into a weapons critical hit value, the system should default to use a 20
+- added option to disable half levels for Ability, Defense, Skills and Initiative score values to accommodate for a somewhat common house rule.
 
 ## Version 0.2.53
 - Fixed an issue with creating with dragging items into the macro bar that was cause by attempting to use a deprecated call from v8.
