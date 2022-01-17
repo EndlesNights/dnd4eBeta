@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.2.55
+- Minor tweaks to tool checks [merge](https://github.com/EndlesNights/dnd4eBeta/pull/146) from [draconas1](https://github.com/draconas1)
+- Added Alignement back to Character and NPC sheets
+- Added Spoken Lauguage options to NPC sheets
+- Minnor tweak to CSS to fix the formating around custom resources
+
 ## Version 0.2.54
 - SRD Potions should now automatically target a characters healing surges
 - SRD weapon tables minor size adjustment

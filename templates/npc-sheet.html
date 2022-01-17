@@ -249,7 +249,7 @@
 			</div>
 
 			<div style="display:inline; margin-right: 25px;">
-				<img class="roll-save rollable" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20" title="{{localize 'DND4EBETA.SavingThrow'}}"/>
+				<img class="roll-save rollable" style="border: 0px; position: relative; top: 4px" src="icons/svg/d20-grey.svg" width="20" height="20" title="{{localize 'DND4EBETA.SavingThrow'}}"/>
 				<label class="roll-save-bonus rollable" title="{{localize 'DND4EBETA.SavingThrowBonus'}}">{{localize 'DND4EBETA.ActionSave'}}</label>
 			</div>
 
@@ -269,22 +269,45 @@
 				</div>
 			</div>
 
-			<div style="display:inline; margin-right: 25px; float:right;">
+			<div style="display:inline; float:right;">
 				<span title="Auto Calculate Defences & Skill, or just use flat numbers.">Advanced Math Options:</span>
 				<input style="position: relative; top:5px;" type="checkbox" name="data.advancedCals" data-dtype="Boolean" {{checked data.advancedCals}} title="{{localize 'DND4EBETA.advancedCals'}}"/>
 			</div>
 
-			<div>
-				<a class="trait-selector-senses" data-options="special" data-target="data.senses.special">
-					<span>Special Senses</span>
-					<i class="fas fa-edit"></i>
-				</a>
-				<ul class="traits-list" style="list-style-type: none;">
-				{{#each data.senses.special.selected as |v k|}}
-					<li class="tag {{k}}">{{v}}</li>
-				{{/each}}
-				</ul>
+			<div class="flexrow" style="height: 36px;">
+				<div>
+					<a class="trait-selector-senses" data-options="special" data-target="data.senses.special">
+						<span>{{ localize "DND4EBETA.SpecialSenses" }}:</span>
+						<i class="fas fa-edit"></i>
+					</a>
+					<ul class="traits-list" style="list-style-type: none;">
+					{{#each data.senses.special.selected as |v k|}}
+						<li class="tag {{k}}">{{v}}</li>
+					{{/each}}
+					</ul>
+				</div>	
+				<div >
+					<h4 hidden class="attribute-name box-title">{{localize 'DND4EBETA.SpokenLanguage'}}</h4>
+					<a class="trait-selector" data-options="spoken" data-target="data.languages.spoken">
+						<span>{{ localize "DND4EBETA.SpokenLanguage" }}:</span>
+						<i class="fas fa-edit"></i>
+					</a>
+	
+					<ul class="traits-list" style="list-style-type: none;">
+					{{#each data.languages.spoken.selected as |v k|}}
+						<li class="tag {{k}}">{{v}}</li>
+					{{/each}}
+					</ul>
+	
+				</div>	
+				<div>
+					<div style="display:flex;flex-direction:row;">
+						<label for="alignment">{{localize 'DND4EBETA.Alignment'}}:</label>
+						<input style="flex:1; position:relative; top:-5px" id="alignment" type="text" name="data.details.alignment" value="{{data.details.alignment}}" title="{{localize 'DND4EBETA.Alignment'}}"  placeholder="{{localize 'DND4EBETA.Alignment'}}" onClick="this.select();"/>
+					</div>
+				</div>
 			</div>
+
 
 
 		</section>

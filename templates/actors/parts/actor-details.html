@@ -26,7 +26,7 @@
 	{{!-- Custom Resources --}}
 	{{#each data.resources as |res|}}
 	<div class="attributes attribute-health">
-		<h4 class="attribute-name">
+		<h4 class="resource-name">
 			<input name="data.resources.{{res.name}}.label" type="text" value="{{res.label}}"
 				   placeholder="{{res.placeholder}}" />
 		</h4>
@@ -55,6 +55,10 @@
 	<input style="flex:1; text-align: right;" id="age" type="text" name="data.details.age" value="{{data.details.age}}" title="{{localize 'DND4EBETA.Age'}}"  placeholder="{{localize 'DND4EBETA.Age'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
+	<label for="alignment">{{localize 'DND4EBETA.Alignment'}}:</label>
+	<input style="flex:1; text-align: right;" id="alignment" type="text" name="data.details.alignment" value="{{data.details.alignment}}" title="{{localize 'DND4EBETA.Alignment'}}"  placeholder="{{localize 'DND4EBETA.Alignment'}}" onClick="this.select();"/>
+</div>
+<div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="height">{{localize 'DND4EBETA.Height'}}:</label>
 	<input style="flex:1; text-align: right;" id="height" type="text" name="data.details.height" value="{{data.details.height}}" title="{{localize 'DND4EBETA.Height'}}"  placeholder="{{localize 'DND4EBETA.Height'}}" onClick="this.select();"/>
 </div>
@@ -62,6 +66,7 @@
 	<label for="weight">{{localize 'DND4EBETA.Weight'}}:</label>
 	<input style="flex:1; text-align: right;" id="weight" type="text" name="data.details.weight" value="{{data.details.weight}}" title="{{localize 'DND4EBETA.Weight'}}"  placeholder="{{localize 'DND4EBETA.Weight'}}" onClick="this.select();"/>
 </div>
+
 
 <div class="form-group" style="padding: 3px;">
 	<label style="font-weight: normal;">{{localize "DND4EBETA.Size"}}:</label>
