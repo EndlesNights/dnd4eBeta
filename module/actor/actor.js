@@ -54,7 +54,6 @@ export class Actor4e extends Actor {
 		if(data.type==='NPC'){
 			if(data?.data?.advancedCals == undefined){
 				this.data.data.advancedCals = game.settings.get("dnd4eAltus", "npcMathOptions");
-
 			}
 		}
 
@@ -108,12 +107,10 @@ export class Actor4e extends Actor {
 		const flags = actorData.flags.dnd4eAltus || {};
 		const bonuses = getProperty(data, "bonuses.abilities") || {};
 
-		// Prepare Character data
-		if ( actorData.type === "character" ) this._prepareCharacterData(actorData);
-		else if ( actorData.type === "npc" ) this._prepareNPCData(actorData);
-
 		let originalSaves = null;
 		let originalSkills = null;
+
+		this.data.data.halfLevelOptions = game.settings.get("dnd4eAltus", "halfLevelOptions");
 
 		// If we are a polymorphed actor, retrieve the skills and saves data from
 		// the original actor for later merging.
@@ -142,8 +139,13 @@ export class Actor4e extends Actor {
 			abl.mod = Math.floor((abl.value - 10) / 2);
 			abl.modHalf = abl.mod + Math.floor(data.details.level / 2);
 			abl.prof = (abl.proficient || 0);
-			abl.saveBonus = saveBonus;
-			abl.checkBonus = checkBonus;
+			if(game.settings.get("dnd4eAltus", "halfLevelOptions")) {
+				abl.saveBonus = saveBonus;
+				abl.checkBonus = checkBonus;
+			} else {
+				abl.saveBonus = saveBonus + Math.floor(data.details.level / 2);
+				abl.checkBonus = checkBonus + Math.floor(data.details.level / 2);
+			}
 			abl.save = abl.mod + abl.prof + abl.saveBonus;
 			
 			abl.label = game.i18n.localize(DND4EALTUS.abilities[id]); //.localize("");
@@ -252,8 +254,7 @@ export class Actor4e extends Actor {
 			data.attributes.hp.temphp = null;
 
 		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
-		if((data.defences.ac.light || this.checkLightArmour() ) && data.defences.ac.altability !== "none")
-		{
+		if((data.defences.ac.light || this.checkLightArmour() ) && data.defences.ac.altability !== "none") {
 			data.defences.ac.ability = (data.abilities.dex.value >= data.abilities.int.value) ? "dex" : "int";
 			if(data.defences.ac.altability != "")
 			{
@@ -263,8 +264,7 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		else
-		{
+		else {
 			data.defences.ac.ability = "";
 		}
 		
@@ -285,6 +285,10 @@ export class Actor4e extends Actor {
 
 		//calc init
 		let initBonusValue = 0;
+		if(!game.settings.get("dnd4eAltus", "halfLevelOptions")){
+			initBonusValue += Math.floor(data.details.level / 2);
+		}
+		
 		if(!(data.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(data.attributes.init.bonus[0]))) {
 			for( const b of data.attributes.init.bonus) {
 				if(b.active  && Helper._isNumber(b.value)) {
@@ -544,7 +548,11 @@ export class Actor4e extends Actor {
 			// 	this.update({[`data.defences[${def}].base`]: 10 });
 			// }
 			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			def.value += modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;			
+			if(game.settings.get("dnd4eAltus", "halfLevelOptions")) {
+				def.value += modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;
+			} else {
+				def.value += modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);			
+			}
 		}
 	}
 
@@ -580,7 +588,12 @@ export class Actor4e extends Actor {
 				this.update({[`data.defences[${def}].base`]: 10 });
 			}
 			if(data.advancedCals){
-				def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;
+				if(game.settings.get("dnd4eAltus", "halfLevelOptions")) {
+					def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;
+				} else {
+					def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);
+				}
+				
 			} else {
 				def.value = def.base;		
 			}
@@ -634,7 +647,11 @@ export class Actor4e extends Actor {
 
 			// Compute modifier
 			skl.mod = data.abilities[skl.ability].mod;			
-			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
+			if(game.settings.get("dnd4eAltus", "halfLevelOptions")) {
+				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
+			} else {
+				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty + Math.floor(data.details.level / 2);
+			}
 			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
 
 		}
@@ -686,7 +703,11 @@ export class Actor4e extends Actor {
 			// Compute modifier
 			skl.mod = data.abilities[skl.ability].mod;
 			if(data.advancedCals){
-				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
+				if(game.settings.get("dnd4eAltus", "halfLevelOptions")) {
+					skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
+				} else {
+					skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty + Math.floor(data.details.level / 2);
+				}
 			} else {
 				skl.total = skl.base;
 			}
@@ -790,8 +811,6 @@ export class Actor4e extends Actor {
 			title: game.i18n.format("DND4EALTUS.SkillPromptTitle", {skill: CONFIG.DND4EALTUS.skills[skillId]}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
-			//halflingLucky: this.getFlag("dnd4eAltus", "halflingLucky"),
-			//reliableTalent: reliableTalent
 		}));
 	}	
   
@@ -808,8 +827,8 @@ export class Actor4e extends Actor {
 		const abl = this.data.data.abilities[abilityId];
 
 		// Construct parts
-		const parts = ["@mod"];
-		const data = {mod: abl.mod};
+		const parts = game.settings.get("dnd4eAltus", "halfLevelOptions") ? ["@mod"] : ["@mod", "@halfLevel"];
+		const data = game.settings.get("dnd4eAltus", "halfLevelOptions") ? {mod: abl.mod} : {mod: abl.mod, halfLevel: Math.floor(this.data.data.details.level / 2)};
 
 		// Add feat-related proficiency bonuses
 		// const feats = this.data.flags.dnd4eAltus || {};

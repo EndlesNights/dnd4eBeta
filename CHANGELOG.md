@@ -1,8 +1,22 @@
 # Changelog
 
+## Version 0.2.55
+- Minor tweaks to tool checks [merge](https://github.com/EndlesNights/dnd4eAltus/pull/146) from [draconas1](https://github.com/draconas1)
+- Added Alignement back to Character and NPC sheets
+- Added Spoken Lauguage options to NPC sheets
+- Minnor tweak to CSS to fix the formating around custom resources
+
+## Version 0.2.54
+- SRD Potions should now automatically target a characters healing surges
+- SRD weapon tables minor size adjustment
+- if no value is entered into a weapons brutal dice value, the system should default to rerolling 1s
+- if no value is entered into a weapons critical hit value, the system should default to use a 20
+- added option to disable half levels for Ability, Defense, Skills and Initiative score values to accommodate for a somewhat common house rule.
+- fixed issue with autmatic attack rolls not properly targeting single targets
+
 ## Version 0.2.53
 - Fixed an issue with creating with dragging items into the macro bar that was cause by attempting to use a deprecated call from v8.
-- Roll formula display [merge](https://github.com/EndlesNights/dnd4eBeta/pull/140) from [draconas1](https://github.com/draconas1)
+- Roll formula display [merge](https://github.com/EndlesNights/dnd4eAltus/pull/140) from [draconas1](https://github.com/draconas1)
 	shows the origins formula expression that went into a roll, and highlights where those numbers come from
 	refactor the d20 Roll and rollDamage scripts to make them easier to maintain
 	refactor of helper functions to reduce number of duplication iteration

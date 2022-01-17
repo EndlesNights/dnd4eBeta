@@ -245,7 +245,8 @@
 	margin-left: 2px;
 	margin-right: 2px;
 }
-.dnd4eAltus.sheet.actor .attribute-name {
+.dnd4eAltus.sheet.actor .attribute-name,
+.dnd4eAltus.sheet.actor .resource-name {
 	color: #444;
 	font-family: "mason-serif", "Nodesto", "Signika", "Palatino Linotype", serif;
 	font-size: 18px;
@@ -254,9 +255,12 @@
 	margin: 0 0 0px;
 	position: relative;
 	text-align: center;
-
 	margin-top: -3px;
 	margin-bottom: -3px;
+}
+
+.dnd4eAltus.sheet.actor .resource-name {
+	height: 28px;
 }
 
 .dnd4eAltus .attributes {

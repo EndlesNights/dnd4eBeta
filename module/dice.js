@@ -31,6 +31,7 @@ import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 export async function d20Roll({parts=[],  partsExpressionReplacements = [], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null,
 								  isAttackRoll=false, options= {}}={}) {
+	critical = critical || 20; //ensure that critical always has a value
 	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options }
 
 	// handle input arguments
@@ -220,8 +221,9 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			critStateArray.push("");
 		}
 	}
+	
 	// if there is only 1 roll, it's not a multi roll
-	if (!isAttackRoll || roll.rollArray.length <= 1) {
+	if (!isAttackRoll || game.user.targets.size < 1) {
 		roll = roll.rollArray[0]
 	}
 	else {
