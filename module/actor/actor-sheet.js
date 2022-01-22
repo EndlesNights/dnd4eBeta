@@ -753,9 +753,15 @@ export default class ActorSheet4e extends ActorSheet {
    */
 	_onItemSummary(event) {
 		event.preventDefault();
-		let li = $(event.currentTarget).parents(".item"),
-			item = this.actor.items.get(li.data("item-id")),
-			chatData = item.getChatData({secrets: this.actor.isOwner});
+		const li = $(event.currentTarget).parents(".item")
+	    const itemId = li.data("item-id")
+	  	if (!itemId)
+		{
+			console.log("got an item summary event for something without an item id.  Assuming its an effect.")
+			return
+		}
+		const item = this.actor.items.get(itemId)
+		const chatData = item.getChatData({secrets: this.actor.isOwner});
 
 
 		// Toggle summary

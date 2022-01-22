@@ -123,7 +123,7 @@ export const registerSystemSettings = function() {
 	});
 
 	/**
-	 * Option to automaticly roll attack rolls agianst targeted tokens defence values, and determin if the attack is a hit/miss.
+	 * Option to automatically roll attack rolls against targeted tokens defence values, and determine if the attack is a hit/miss.
 	 */
 	game.settings.register("dnd4e", "automationCombat",{
 		name: "SETTINGS.4eAutomationCombatN",
@@ -153,8 +153,21 @@ export const registerSystemSettings = function() {
 	 * collapse bonuses down when making rolls
 	 */
 	game.settings.register("dnd4e", "collapseSituationalBonus",{
-		name: "SETTINGS.collapseSituationalBonusN",
-		hint: "SETTINGS.collapseSituationalBonusL",
+		name: "SETTINGS.4eCollapseSituationalBonusN",
+		hint: "SETTINGS.4eCollapseSituationalBonusL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean
+	});
+
+
+	/**
+	 * debug power attack / damage effect bonuses
+	 */
+	game.settings.register("dnd4e", "debugEffectBonus",{
+		name: "SETTINGS.4eDebugPowerEffectsN",
+		hint: "SETTINGS.4eDebugPowerEffectsL",
 		scope: "client",
 		config: true,
 		default: false,
