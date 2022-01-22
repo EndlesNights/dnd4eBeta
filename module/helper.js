@@ -161,6 +161,7 @@ export class Helper {
 					this._addKeywords(suitableKeywords, weaponInnerData.weaponGroup)
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
 					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
+					this._addKeywords(suitableKeywords, weaponInnerData.implementGroup)
 				}
 
 				if (powerInnerData.powersource) {

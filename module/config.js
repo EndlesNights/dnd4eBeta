@@ -824,6 +824,17 @@ DND4EBETA.weaponGroup = {
 	"whip": "DND4EBETA.WeaponGroupWhip"
 };
 
+DND4EBETA.implementGroup = {
+	"holyS": "DND4EBETA.ImplementGroupHolySymbol",
+	"ki": "DND4EBETA.ImplementGroupKiFocus",
+	"orb": "DND4EBETA.ImplementGroupOrb",
+	"rod": "DND4EBETA.ImplementGroupRod",
+	"staff": "DND4EBETA.ImplementGroupStaff",
+	"tome": "DND4EBETA.ImplementGroupTome",
+	"totem": "DND4EBETA.ImplementGroupTotem",
+	"wand": "DND4EBETA.ImplementGroupWand"
+};
+
 /* -------------------------------------------- */
 
 /**

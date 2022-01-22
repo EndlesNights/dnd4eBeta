@@ -119,7 +119,7 @@ Hooks.once("setup", function() {
 	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes",
 	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits",
 	"damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
-	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "featureSortTypes", "healingTypes", "itemActionTypes",
+	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "featureSortTypes", "healingTypes", "implementGroup", "itemActionTypes",
 	"launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType",
 	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
 	"weaponTypes", "weaponHands"
@@ -133,7 +133,7 @@ Hooks.once("setup", function() {
 		// return Object.entries(obj).reduce((obj, e) => {
 			// if (typeof e[1] === "string") obj[e[0]] = game.i18n.localize(e[1]);
 			// else if (typeof e[1] === "object") obj[e[0]] = doLocalize(e[1]);
-			// return obj;
+			// return obj;git checkout
 		// }, {});
 	// };
 	// for ( let o of toLocalize ) {
