@@ -355,7 +355,7 @@ export default class Item4e extends Item {
 			if (this.data.type == "power" && this.data.data.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.data.data, this.actor);
 				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG);
-				return Helper.commonReplace(cardString, this.actor.data.data, this.data, weaponUse? weaponUse.data.data : null, 1);
+				return Helper.commonReplace(cardString, this.actor.data, this.data, weaponUse? weaponUse.data.data : null, 1);
 			} else {
 				return null;
 			}
@@ -736,7 +736,7 @@ export default class Item4e extends Item {
 	 */
 	async rollAttack(options={}) {
 		const itemData = this.data.data;
-		const actorData = this.actor.data.data;
+		const actorData = this.actor.data;
 		// itemData.weaponUse = 2nd dropdown - default/none/weapon
 		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...
 		// find details on the weapon being used, if any.   This is null if no weapon is being used.
@@ -770,10 +770,10 @@ export default class Item4e extends Item {
 		const parts = [];
 		const partsExpressionReplacements = [];
 		if(!!itemData.attack.formula) {		
-			parts.push(Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null))
+			parts.push(Helper.commonReplace(itemData.attack.formula, actorData, this.data.data, weaponUse? weaponUse.data.data : null))
 			partsExpressionReplacements.push({value : itemData.attack.formula, target: parts[0]})
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null, 1, true)
+			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData, this.data.data, weaponUse? weaponUse.data.data : null, 1, true)
 		}
 
 		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
@@ -887,7 +887,8 @@ export default class Item4e extends Item {
 	 */
 	rollDamage({event, spellLevel=null, versatile=false}={}) {
 		const itemData = this.data.data;
-		const actorData = this.actor.data.data;
+		const actorData = this.actor.data;
+		const actorInnerData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
@@ -1027,7 +1028,7 @@ export default class Item4e extends Item {
 		}
 	
 		// Define Roll Data
-		const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
+		const actorBonus = getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
 		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
 			// parts.push("@dmg");
 			// partsCrit.push("@dmg");
@@ -1124,7 +1125,8 @@ export default class Item4e extends Item {
 	 */
 	rollHealing({event, spellLevel=null, versatile=false}={}) {
 		const itemData = this.data.data;
-		const actorData = this.actor.data.data;
+		const actorData = this.actor.data;
+		const actorInnerData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
@@ -1190,7 +1192,7 @@ export default class Item4e extends Item {
 		// }
 	
 		// Define Roll Data
-		const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
+		const actorBonus = getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
 		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
 			parts.push("@dmg");
 			rollData["dmg"] = actorBonus.damage;
@@ -1374,7 +1376,7 @@ export default class Item4e extends Item {
 		let rollData = this.getRollData();
 		const parts = ["@tool"];
 
-		rollData["tool"] = this.data.data.formula? Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data.data, this.data.data) : `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)} + ${this.data.data.bonus}`;
+		rollData["tool"] = this.data.data.formula? Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data, this.data.data) : `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)} + ${this.data.data.bonus}`;
 			const title = `${this.name} - ${game.i18n.localize("DND4EBETA.ToolCheck")}`;
 
 		const label = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);

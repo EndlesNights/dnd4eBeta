@@ -775,7 +775,7 @@ export default class ActorSheet4e extends ActorSheet {
 				div.append(descrip);
 
 				if(item.data.data.autoGenChatPowerCard){
-					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false).data)}</div>`);
+					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false))}</div>`);
 					div.append(details);
 				}
 
