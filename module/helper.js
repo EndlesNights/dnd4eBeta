@@ -571,7 +571,6 @@ export class Helper {
 		if(chatData.rangeType === "weapon") {
 			powerDetail += ` ${CONFIG.DND4EBETA.weaponType[chatData.weaponType]}`;
 			chatData.rangePower ? powerDetail += `</b> ${chatData.rangePower}</span>` : powerDetail += `</b></span>`;
-			
 		}
 		else if (chatData.rangeType === "melee") {
 			powerDetail += ` ${game.i18n.localize("DND4EBETA.Melee")}</b> ${chatData.rangePower}</span>`;
@@ -606,7 +605,7 @@ export class Helper {
 			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Trigger")}:</b> ${chatData.trigger}</span></p>`;
 		}
 
-		if(chatData.target) {
+		if(chatData.target && (typeof chatData.target === "string")) { //target can sometimes be an object for things that did not have a dropdown
 			powerDetail += `<p span><b>${game.i18n.localize("DND4EBETA.Target")}:</b> ${chatData.target}</span></p>`;
 		}
 
@@ -648,7 +647,7 @@ export class Helper {
 			}
 		}
 
-		if(chatData.sustain.actionType !== "none" && chatData.sustain.actionType) {
+		if(chatData.sustain?.actionType !== "none" && chatData.sustain?.actionType) {
 			powerDetail += `<p${highlight? ` class="alt"`: ``}><b>${game.i18n.localize("DND4EBETA.Sustain")} ${CONFIG.DND4EBETA.abilityActivationTypes[chatData.sustain.actionType]}:</b> ${chatData.sustain.detail}</p>`;
 		}
 

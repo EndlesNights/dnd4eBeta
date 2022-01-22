@@ -17,6 +17,28 @@ export default class Item4e extends Item {
 		if (this.type === "weapon" && changed.data?.weaponType === "implement"){
 			foundry.utils.setProperty(changed, "data.properties.imp", true);
 		}
+
+		if (this.data.type === "consumable") {
+			const data = this.data.data
+			// does it have an old damage expression
+			if (data.damage.parts?.length > 0) {
+				console.log("DnD4e: Updating an obsolete consumable that somehow still had a parts roll")
+				// ok so need to fix it
+				if (data.damage.parts.map(d => d[1]).includes("healing") && !changed.data.hit?.healFormula) {
+					foundry.utils.setProperty(changed, "data.hit.healFormula", data.damage.parts[0][0])
+					foundry.utils.setProperty(changed, "data.hit.isHealing", true)
+				}
+				foundry.utils.setProperty(changed, "data.damage.parts", [])
+				// non healing damage expressions didn't work anyway
+			}
+			if (data.oldConsumableNeedsUpdate === true) {
+				console.log("DnD4e: Updating an obsolete consumable")
+				foundry.utils.setProperty(changed, "data.damage.parts", [])
+				foundry.utils.setProperty(changed, "data.hit.healFormula", data.hit.healFormula)
+				foundry.utils.setProperty(changed, "data.hit.isHealing", data.hit.isHealing)
+				delete data.oldConsumableNeedsUpdate
+			}
+		}
 	}
 
 	/* -------------------------------------------- */
@@ -95,12 +117,8 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	 get hasHealing() {
-		if(this.data.type === "power"){
+		if(this.data.type === "power" || this.data.type === "consumable"){
 			return this.data.data.hit?.isHealing;
-		}
-		else if(this.data.type === "consumable"){
-			return this.data.data.damage.parts.map(d => d[1]).includes("healing");
-			
 		}
 		return false; //curently only powers will deal damage or make attacks
 		
@@ -190,37 +208,9 @@ export default class Item4e extends Item {
 		super.prepareData();
 		// Get the Item's data
 		const itemData = this.data;
-		const actorData = this.actor ? this.actor.data : {};
 		const data = itemData.data;
 		const C = CONFIG.DND4EBETA;
 		const labels = {};
-
-		
-		// Classes
-		// if ( itemData.type === "class" ) {
-		// 	data.levels = Math.clamped(data.levels, 1, 20);
-		// }
-
-		// Spell Level,  School, and Components
-		// if ( itemData.type === "spell" ) {
-		// 	labels.level = C.spellLevels[data.level];
-		// 	labels.school = C.spellSchools[data.school];
-		// 	labels.components = Object.entries(data.components).reduce((arr, c) => {
-		// 		if ( c[1] !== true ) return arr;
-		// 		arr.push(c[0].titleCase().slice(0, 1));
-		// 		return arr;
-		// 	}, []);
-		// 	labels.materials = data?.materials?.value ?? null;
-		// }
-
-		// Feat Items
-		// else if ( itemData.type === "feat" ) {
-		// 	const act = data.activation;
-		// 	if ( act && (act.type === C.abilityActivationTypes.legendary) ) labels.featType = game.i18n.localize("DND4EBETA.LegendaryActionLabel");
-		// 	else if ( act && (act.type === C.abilityActivationTypes.lair) ) labels.featType = game.i18n.localize("DND4EBETA.LairActionLabel");
-		// 	else if ( act && act.type ) labels.featType = game.i18n.localize(data.damage.length ? "DND4EBETA.Attack" : "DND4EBETA.Action");
-		// 	else labels.featType = game.i18n.localize("DND4EBETA.Passive");
-		// }
 
 		// Equipment Items
 		if ( itemData.type === "equipment" ) {
@@ -276,47 +266,19 @@ export default class Item4e extends Item {
 			}
 		}
 
-		// Item Actions
-		if ( data.hasOwnProperty("actionType") ) {
-			// Save DC
-			// let save = data.save || {};
-			// if ( !save.ability ) save.dc = null;
-			// else if ( this.isOwned ) { // Actor owned items
-			// 	if ( save.scaling === "spell" ) save.dc = actorData.data.attributes.spelldc;
-			// 	else if ( save.scaling !== "flat" ) save.dc = this.actor.getSpellDC(save.scaling);
-			// } else { // Un-owned items
-			// 	if ( save.scaling !== "flat" ) save.dc = null;
-			// }
-			// labels.save = save.ability ? `${game.i18n.localize("DND4EBETA.AbbreviationDC")} ${save.dc || ""} ${C.abilities[save.ability]}` : "";
-
-			// DamageTypes
-			// let dam = data.damage || {};
-			// if ( dam.parts ) {
-			// 	labels.damage = dam.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
-			// 	labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
-
-			// 	if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
-			// 		if(this.data.data.damageType) {
-			// 			for (let [id, data] of Object.entries(this.data.data.damageType)) {
-			// 				if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
-			// 			}
-			// 		}
-			// 	}
-			// }
-
-			// let damCrit = data.damageCrit || {};
-			// if(damCrit.parts) {
-			// 	labels.damage = damCrit.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
-			// 	labels.damageTypes = damCrit.parts.map(d => C.damageTypes[d[1]]).join(", ");
-
-			// 	if(DND4EBETA.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
-			// 		if(this.data.data.damageType) {
-			// 			for (let [id, data] of Object.entries(this.data.data.damageType)) {
-			// 				if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EBETA.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EBETA.damageTypes[id]}`;
-			// 			}
-			// 		}
-			// 	}				
-			// }
+		// fix old healing consumables to migrate them to the new structure
+		if (itemData.type === "consumable") {
+			// does it have an old damage expression
+			if (data.damage.parts?.length > 0) {
+				if (data.damage.parts.map(d => d[1]).includes("healing") && !data.hit?.healFormula) {
+					data.hit.healFormula = data.damage.parts[0][0]
+					data.hit.isHealing = true
+					data.damage.parts = []
+					data.oldConsumableNeedsUpdate = true
+					// don't unassign parts here because it will get permanently solved by the update statement
+				}
+				// non healing damage expressions didn't work anyway
+			}
 		}
 
 		// Assign labels
@@ -352,7 +314,7 @@ export default class Item4e extends Item {
 
 		}
 		const cardData = (() => {
-			if (this.data.type == "power" && this.data.data.autoGenChatPowerCard) {
+			if ((this.data.type === "power" || this.data.type === "consumable") && this.data.data.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.data.data, this.actor);
 				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG);
 				return Helper.commonReplace(cardString, this.actor.data.data, this.data, weaponUse? weaponUse.data.data : null, 1);

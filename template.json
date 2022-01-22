@@ -719,6 +719,49 @@
 				"command": "",
 				"author": ""
 			}
+		},
+		"attackAndDamage": {
+			"attack": {
+				"shareAttackRoll": false,
+				"isAttack": true,
+				"ability": "str",
+				"abilityBonus": 0,
+				"def": "ac",
+				"defBonus": 0,
+				"formula": "@wepAttack + @powerMod + @lvhalf + @atkMod",
+				"damageType": {},
+				"effectType": {}
+			},
+			"hit": {
+				"shareDamageRoll": false,
+				"isDamage": true,
+				"isHealing": false,
+				"baseQuantity": 1,
+				"baseDiceType": "Base Weapon Damage",
+				"detail": "1[W] + Strength modifier damage.",
+				"formula": "@powBase + @powerMod + @wepDamage + @dmgMod",
+				"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus + @dmgMod",
+				"healFormula": ""
+			},
+			"miss": {
+				"detail": "Half Damage.",
+				"formula": "@damageFormula/2"
+			},
+			"effect": {
+				"detail": ""
+			},
+			"damage": {
+				"parts": []
+			},
+			"damageCrit": {
+				"parts": []
+			},
+			"damageImp": {
+				"parts": []
+			},
+			"damageCritImp": {
+				"parts": []
+			}
 		}
 	},
 	"backpack": {
@@ -759,13 +802,34 @@
 		}
 	},
 	"consumable": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro", "attackAndDamage"],
 		"consumableType": "potion",
+		"autoGenChatPowerCard" : false,
+		"useType": "item",
+		"actionType": "",
 		"uses": {
-		"autoDestroy": false
+			"autoDestroy": false,
+			"max": 1,
+			"value": 1,
+			"per" : "charges"
 		},
-		"damage": {
-			"parts": []
+		"target": "",
+		"rangeType": "",
+		"attack": {
+			"isAttack": false,
+			"ability": "",
+			"formula": ""
+		},
+		"hit": {
+			"isDamage": false,
+			"detail": "",
+			"formula": "",
+			"critFormula": "",
+			"healFormula": ""
+		},
+		"miss": {
+			"detail": "",
+			"formula": ""
 		}
 	},
 	"equipment": {
@@ -876,7 +940,7 @@
 		"formula": "@skill"
 	},
 	"power": {
-		"templates": ["itemDescription", "activatedEffect", "itemMacro"],
+		"templates": ["itemDescription", "activatedEffect", "itemMacro", "attackAndDamage"],
 		"keyWords": [""],
 		"level": "",
 		"powersource": "martial",
@@ -905,47 +969,7 @@
 			"detail": ""
 		},
 		"target": "One Creature",
-		"attack": {
-			"shareAttackRoll": false,
-			"isAttack": true,
-			"ability": "str",
-			"abilityBonus": 0,
-			"def": "ac",
-			"defBonus": 0,
-			"formula": "@wepAttack + @powerMod + @lvhalf + @atkMod",
-			"damageType": {},
-			"effectType": {}
-		},
-		"hit": {
-			"shareDamageRoll": false,
-			"isDamage": true,
-			"isHealing": false,
-			"baseQuantity": 1,
-			"baseDiceType": "Base Weapon Damage",
-			"detail": "1[W] + Strength modifier damage.",
-			"formula": "@powBase + @powerMod + @wepDamage + @dmgMod",
-			"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus + @dmgMod",
-			"healFormula": ""
-		},
-		"miss": {
-			"detail": "Half Damage.",
-			"formula": "@damageFormula/2"
-		},
-		"effect": {
-			"detail": ""
-		},
-		"damage": {
-			"parts": []
-		},
-		"damageCrit": {
-			"parts": []
-		},
-		"damageImp": {
-			"parts": []
-		},
-		"damageCritImp": {
-			"parts": []
-		},
+
 		"trigger": "",
 		"requirement": "",
 		"special": "",

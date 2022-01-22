@@ -45,14 +45,12 @@ export default class AbilityUseDialog extends Dialog {
       hasPlaceableTemplate: game.user.can("TEMPLATE_CREATE") && item.hasAreaTarget,
       errors: []
     };
-    if ( item.data.type === "spell" ) this._getSpellData(actorData, itemData, data);
 
     // Render the ability usage template
     const html = await renderTemplate("systems/dnd4e/templates/apps/ability-use.html", data);
 
     // Create the Dialog and return as a Promise
-    const icon = data.hasSpellSlots ? "fa-magic" : "fa-fist-raised";
-    // const label = game.i18n.localize("DND4EBETA.AbilityUse" + (data.hasSpellSlots ? "Cast" : "Use"));
+    const icon = "fa-fist-raised";
     const label = game.i18n.localize("DND4EBETA.AbilityUseItem");
     return new Promise((resolve) => {
       const dlg = new this(item, {
@@ -74,53 +72,6 @@ export default class AbilityUseDialog extends Dialog {
 
   /* -------------------------------------------- */
   /*  Helpers                                     */
-  /* -------------------------------------------- */
-
-  /**
-   * Get dialog data related to limited spell slots
-   * @private
-   */
-  static _getSpellData(actorData, itemData, data) {
-
-    // Determine whether the spell may be up-cast
-    const lvl = itemData.level;
-    const canUpcast = (lvl > 0) && CONFIG.DND4EBETA.spellUpcastModes.includes(itemData.preparation.mode);
-
-    // Determine the levels which are feasible
-    let lmax = 0;
-    const spellLevels = Array.fromRange(10).reduce((arr, i) => {
-      if ( i < lvl ) return arr;
-      const label = CONFIG.DND4EBETA.spellLevels[i];
-      const l = actorData.spells["spell"+i] || {max: 0, override: null};
-      let max = parseInt(l.override || l.max || 0);
-      let slots = Math.clamped(parseInt(l.value || 0), 0, max);
-      if ( max > 0 ) lmax = i;
-      arr.push({
-        level: i,
-        label: i > 0 ? game.i18n.format('DND4EBETA.SpellLevelSlot', {level: label, n: slots}) : label,
-        canCast: canUpcast && (max > 0),
-        hasSlots: slots > 0
-      });
-      return arr;
-    }, []).filter(sl => sl.level <= lmax);
-
-    // If this character has pact slots, present them as an option for casting the spell.
-    const pact = actorData.spells.pact;
-    if (pact.level >= lvl) {
-      spellLevels.push({
-        level: 'pact',
-        label: `${game.i18n.format('DND4EBETA.SpellLevelPact', {level: pact.level, n: pact.value})}`,
-        canCast: canUpcast,
-        hasSlots: pact.value > 0
-      });
-    }
-    const canCast = spellLevels.some(l => l.hasSlots);
-
-    // Return merged data
-    data = mergeObject(data, { hasSpellSlots: true, canUpcast, spellLevels });
-    if ( !canCast ) data.errors.push("DND4EBETA.SpellCastNoSlots");
-  }
-
   /* -------------------------------------------- */
 
   /**
@@ -146,13 +97,15 @@ export default class AbilityUseDialog extends Dialog {
     // Consumables
     if ( item.type === "consumable" ) {
       let str = "DND4EBETA.AbilityUseNormalHint";
-      if ( uses.value > 1 ) str = "DND4EBETA.AbilityUseConsumableChargeHint";
+      if ( uses.value >= 1 ) str = "DND4EBETA.AbilityUseConsumableChargeHint";
       else if ( item.data.quantity === 1 && uses.autoDestroy ) str = "DND4EBETA.AbilityUseConsumableDestroyHint";
       else if ( item.data.quantity > 1 ) str = "DND4EBETA.AbilityUseConsumableQuantityHint";
       return game.i18n.format(str, {
         type: item.data.consumableType,
         value: uses.value,
         quantity: item.data.quantity,
+        max: uses.max,
+        per: CONFIG.DND4EBETA.limitedUsePeriods[uses.per]
       });
     }
 

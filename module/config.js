@@ -317,13 +317,12 @@ DND4EBETA.creatureType = {
  * @type {Object}
  */
 DND4EBETA.consumableTypes = {
+  "alchemical": "DND4EBETA.ConsumableAlchemical",
   "ammo": "DND4EBETA.ConsumableAmmunition",
   "potion": "DND4EBETA.ConsumablePotion",
   "poison": "DND4EBETA.ConsumablePoison",
   "food": "DND4EBETA.ConsumableFood",
   "scroll": "DND4EBETA.ConsumableScroll",
-  "wand": "DND4EBETA.ConsumableWand",
-  "rod": "DND4EBETA.ConsumableRod",
   "trinket": "DND4EBETA.ConsumableTrinket"
 };
 
@@ -603,6 +602,10 @@ DND4EBETA.rangeType = {
 	"personal": "DND4EBETA.rangePersonal",
 	"touch": "DND4EBETA.rangeTouch",
 };
+
+DND4EBETA.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4EBETA.rangeType).filter(function ([key, value]) {
+	return key !== "weapon";
+}));
 
 DND4EBETA.effectTypes = {
 	"augmentable": "DND4EBETA.Augmentable",

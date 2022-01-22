@@ -53,6 +53,13 @@
 			"entity": "Item"
 		},
 		{
+			"name": "srd_alchemy",
+			"label": "SRD Alchemical Items",
+			"system": "dnd4e",
+			"path": "./packs/srd_alchemy.db",
+			"entity": "Item"
+		},
+		{
 			"name": "srd_armour",
 			"label": "SRD Armour",
 			"system": "dnd4e",
@@ -75,7 +82,7 @@
 		},
 		{
 			"name": "srd_potions",
-			"label": "SRD Potions",
+			"label": "SRD Potions & Poisons",
 			"system": "dnd4e",
 			"path": "./packs/srd_potions.db",
 			"entity": "Item"
