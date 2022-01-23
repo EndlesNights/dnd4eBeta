@@ -196,14 +196,14 @@ export class Helper {
 					const keyParts = effect.key.split(".")
 					if (keyParts.length === 4) {
 						const bonusType = keyParts[3]
-						if (bonusType === "unnamed") {
-							if (newParts["unnamedEffectBonus"]) {
-								newParts["unnamedEffectBonus"] = parseInt(newParts["unnamedEffectBonus"]) + parseInt(effect.value)
-								console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : Additional Unnamed Bonus.  They Stack.`)
+						if (bonusType === "untyped") {
+							if (newParts["untypedEffectBonus"]) {
+								newParts["untypedEffectBonus"] = parseInt(newParts["untypedEffectBonus"]) + parseInt(effect.value)
+								console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : Additional untyped Bonus.  They Stack.`)
 							}
 							else {
-								console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : First Unnamed Bonus`)
-								newParts["unnamedEffectBonus"] = effect.value
+								console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : First untyped Bonus`)
+								newParts["untypedEffectBonus"] = effect.value
 							}
 						}
 						else {
