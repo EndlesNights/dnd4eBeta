@@ -129,15 +129,15 @@ export class Helper {
 	 * Perform replacement of @variables in the formula involving a power.  This is a recursive function with 2 modes of operation!
 	 *
 	 * @param formula The formula to examine and perform replacements on
-	 * @param actorData The data from the actor to use to resolve variables.  This may be null
-	 * @param powerData The data from the power to use to resolve variables.
-	 * @param weaponData The data from the weapon to use to resolve variables.  This may be null
+	 * @param actorData The data from the actor to use to resolve variables: `actor.data`.  This may be null
+	 * @param powerInnerData The data from the power to use to resolve variables. `power.data.data`
+	 * @param weaponInnerData The data from the weapon to use to resolve variables.  `item.data.data` This may be null
 	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.  Defaults to 1 which will produce 2 loops.
 	 * @param returnDataInsteadOfFormula If set to true it will return a data object of replacement variables instead of the formula string
 	 * @return {String|{}|number} "0" if called with a depth of <0, A substituted formula string if called with returnDataInsteadOfFormula = false (the default) or an object of {variable = value} if called with returnDataInsteadOfFormula = true
 	 */
 	// DEVELOPER: Remember this call is recursive, if you change the method signature, make sure you update everywhere its used!
-	static commonReplace (formula, actorData, powerData, weaponData=null, depth = 1, returnDataInsteadOfFormula = false) {
+	static commonReplace (formula, actorData, powerInnerData, weaponInnerData=null, depth = 1, returnDataInsteadOfFormula = false) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula;
 		if (returnDataInsteadOfFormula) {
@@ -146,73 +146,100 @@ export class Helper {
 			if (variables) {
 				variables.forEach(variable => {
 					// get the value for that variable - call this method with just the variable and with return data off
-					result[variable.substring(1)] = this.commonReplace(variable, actorData, powerData, weaponData, depth, false) // trim off the leading @
+					result[variable.substring(1)] = this.commonReplace(variable, actorData, powerInnerData, weaponInnerData, depth, false) // trim off the leading @
 				})
 			}
 			return result
 		}
 
 		if(actorData) {
+			const actorInnerData = actorData.data
+			if (actorInnerData) {
+				newFormula = Roll.replaceFormulaData(newFormula, actorInnerData);
+				if(powerInnerData) newFormula = newFormula.replaceAll("@powerMod", !!(powerInnerData.attack?.ability)? actorInnerData.abilities[powerInnerData.attack.ability].mod : "");
 
-			newFormula = Roll.replaceFormulaData(newFormula, actorData);
-			if(powerData) newFormula = newFormula.replaceAll("@powerMod", !!(powerData.attack?.ability)? actorData.abilities[powerData.attack.ability].mod : "");
-			
-			newFormula = newFormula.replaceAll("@strMod", actorData.abilities["str"].mod);
-			newFormula = newFormula.replaceAll("@conMod", actorData.abilities["con"].mod);
-			newFormula = newFormula.replaceAll("@dexMod", actorData.abilities["dex"].mod);
-			newFormula = newFormula.replaceAll("@intMod", actorData.abilities["int"].mod);
-			newFormula = newFormula.replaceAll("@wisMod", actorData.abilities["wis"].mod);
-			newFormula = newFormula.replaceAll("@chaMod", actorData.abilities["cha"].mod);
-			
-			newFormula = newFormula.replaceAll("@lvhalf", Math.floor(actorData.details.level/2));
-			newFormula = newFormula.replaceAll("@lv", actorData.details.level);
-			newFormula = newFormula.replaceAll("@tier", actorData.details.tier);
+				newFormula = newFormula.replaceAll("@strMod", actorInnerData.abilities["str"].mod);
+				newFormula = newFormula.replaceAll("@conMod", actorInnerData.abilities["con"].mod);
+				newFormula = newFormula.replaceAll("@dexMod", actorInnerData.abilities["dex"].mod);
+				newFormula = newFormula.replaceAll("@intMod", actorInnerData.abilities["int"].mod);
+				newFormula = newFormula.replaceAll("@wisMod", actorInnerData.abilities["wis"].mod);
+				newFormula = newFormula.replaceAll("@chaMod", actorInnerData.abilities["cha"].mod);
 
-			newFormula = newFormula.replaceAll("@atkMod", actorData.modifiers.attack.value);
-			newFormula = newFormula.replaceAll("@dmgMod", actorData.modifiers.damage.value);
-		}
-		
-		// if(powerData) {
-		// 	newFormula = newFormula.replace("@damageFormula", this.commonReplace(formula, actorData, powerData, weaponData, depth-1));
-		// 	newFormula = this.replaceData (newFormula, powerData);
-		// }
+				newFormula = newFormula.replaceAll("@lvhalf", Math.floor(actorInnerData.details.level/2));
+				newFormula = newFormula.replaceAll("@lv", actorInnerData.details.level);
+				newFormula = newFormula.replaceAll("@tier", actorInnerData.details.tier);
 
-		if(weaponData) {
-
-			if (powerData.weaponType === "implement") {
-				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@atkMod", actorInnerData.modifiers.attack.value);
+				newFormula = newFormula.replaceAll("@dmgMod", actorInnerData.modifiers.damage.value);
 			}
 			else {
-				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponData.attackForm, actorData, powerData, weaponData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponData.damageForm, actorData, powerData, weaponData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponData.critDamageForm, actorData, powerData, weaponData, depth-1) || 0));
+				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.data.data by mistake!.  Replacing: " + formula)
 			}
 
-			newFormula = newFormula.replaceAll("@impCritBonus", this.bracketed(this.commonReplace(weaponData.critDamageFormImp, actorData, powerData, weaponData, depth-1) || 0));
+			if (actorData.effects) {
+				const resultObject = {}
+				const effects = Array.from(actorData.effects.values()).filter((effect) => effect.data.disabled === false)
+				effects.forEach((effect) => {
+					effect.data.changes.forEach((change => {
+						if (this.variableRegex.test(change.key)) {
+							if (!resultObject[change.key]) {
+								resultObject[change.key] = change.value
+							}
+							else {
+								if(this._isNumber(resultObject[change.key]) && this._isNumber(change.value)){
+									resultObject[change.key] = Number(resultObject[change.key]) + Number(change.value)
+								} else {
+									resultObject[change.key] = `${resultObject[change.key]} + ${change.value}`
+								}
+							}
+						}
+					}))
+				})
 
-			newFormula = newFormula.replaceAll("@impAttackO", this.bracketed(this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 ));
-			newFormula = newFormula.replaceAll("@impDamageO", this.bracketed(this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 ));
+				for (const [key, value] of Object.entries(resultObject)) {
+					newFormula = newFormula.replaceAll(key, value);
+				}
+			}
 
-			newFormula = newFormula.replaceAll("@impAttack", this.bracketed(weaponData.proficientI ? this.commonReplace(weaponData.attackFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0));
-			newFormula = newFormula.replaceAll("@impDamage", this.bracketed(weaponData.proficientI ? this.commonReplace(weaponData.damageFormImp, actorData, powerData, weaponData, depth-1) || 0 : 0));
 
-			newFormula = newFormula.replaceAll("@profBonusO",weaponData.profBonus || 0);
-			newFormula = newFormula.replaceAll("@profImpBonusO", weaponData.profImpBonus || 0);
+		}
+
+		if(weaponInnerData) {
+
+			if (powerInnerData.weaponType === "implement") {
+				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponInnerData.damageFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+			}
+			else {
+				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackForm, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponInnerData.damageForm, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageForm, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+			}
+
+			newFormula = newFormula.replaceAll("@impCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+
+			newFormula = newFormula.replaceAll("@impAttackO", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0 ));
+			newFormula = newFormula.replaceAll("@impDamageO", this.bracketed(this.commonReplace(weaponInnerData.damageFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0 ));
+
+			newFormula = newFormula.replaceAll("@impAttack", this.bracketed(weaponInnerData.proficientI ? this.commonReplace(weaponInnerData.attackFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0 : 0));
+			newFormula = newFormula.replaceAll("@impDamage", this.bracketed(weaponInnerData.proficientI ? this.commonReplace(weaponInnerData.damageFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0 : 0));
+
+			newFormula = newFormula.replaceAll("@profBonusO",weaponInnerData.profBonus || 0);
+			newFormula = newFormula.replaceAll("@profImpBonusO", weaponInnerData.profImpBonus || 0);
 			
-			newFormula = newFormula.replaceAll("@profImpBonus", weaponData.proficientI ? weaponData.profImpBonus || 0 : 0);
-			newFormula = newFormula.replaceAll("@profBonus", weaponData.proficient ? weaponData.profBonus || 0 : 0);
-			newFormula = newFormula.replaceAll("@enhanceImp", weaponData.proficientI ? weaponData.enhance || 0 : 0);
-			newFormula = newFormula.replaceAll("@enhance", weaponData.enhance || 0);
+			newFormula = newFormula.replaceAll("@profImpBonus", weaponInnerData.proficientI ? weaponInnerData.profImpBonus || 0 : 0);
+			newFormula = newFormula.replaceAll("@profBonus", weaponInnerData.proficient ? weaponInnerData.profBonus || 0 : 0);
+			newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? weaponInnerData.enhance || 0 : 0);
+			newFormula = newFormula.replaceAll("@enhance", weaponInnerData.enhance || 0);
 			
 
-			newFormula = this.replaceData (newFormula, weaponData);
+			newFormula = this.replaceData (newFormula, weaponInnerData);
 			
 			
 			//deprecated, kept for legacy purposes
 			if(newFormula.includes("@wepDice")) {
-				let parts = weaponData.damageDice.parts;
+				let parts = weaponInnerData.damageDice.parts;
 				let indexStart = newFormula.indexOf("@wepDice")+8;
 				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
 
@@ -224,16 +251,16 @@ export class Helper {
 				let dice = "";
 				for(let i = 0; i< parts.length; i++) {
 					if(!parts[i][0] || !parts[i][1]) continue;
-					if(weaponData.properties.bru) {
+					if(weaponInnerData.properties.bru) {
 						// dice += ` + (${parts[i][0]}*${weaponNum})d(${parts[i][1] - weaponData.brutal}) + (${weaponData.brutal}*${parts[i][0]}*${weaponNum})`;
-						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}rr<${weaponData.brutal || 1}`;
+						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}rr<${weaponInnerData.brutal || 1}`;
 					}
 					else{
 						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}`;
 					}
 					if (i < parts.length - 1) dice += '+';
 				}
-				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
 				newFormula = newFormula.replaceAll("@wepDice", dice);
 			}
@@ -244,8 +271,8 @@ export class Helper {
 			//	-	flat damage
 			//	-	dice damage
 			if(newFormula.includes("@powBase")) {
-				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let quantity = powerInnerData.hit.baseQuantity;
+				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				
 				if(quantity === "") quantity = 1;
 				
@@ -253,11 +280,11 @@ export class Helper {
 				
 				// Handle Weapon Type Damage
 				if(diceType.includes("weapon")){
-					let parts = weaponData.damageDice.parts;
+					let parts = weaponInnerData.damageDice.parts;
 					for(let i = 0; i< parts.length; i++) {
 						if(!parts[i][0] || !parts[i][1]) continue;
-						if(weaponData.properties.bru) {
-							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<${weaponData.brutal || 1}`;
+						if(weaponInnerData.properties.bru) {
+							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<${weaponInnerData.brutal || 1}`;
 						}
 						else{
 
@@ -276,19 +303,19 @@ export class Helper {
 					dice += `${quantity}${diceType}`;
 				}
 
-				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 				newFormula = newFormula.replaceAll("@powBase", dice);
 			}
 
 			if(newFormula.includes("@wepMax")) {
-				let parts = weaponData.damageDice.parts;
+				let parts = weaponInnerData.damageDice.parts;
 				let dice = "";
 				for(let i = 0; i< parts.length; i++) {
 					if(!parts[i][0] || !parts[i][1]) continue;
 					dice += `(${parts[i][0]} * ${parts[i][1]})`
 					if (i < parts.length - 1) dice += '+';
 				}
-				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 				let r = new Roll(`${dice}`)
 				if(dice){
 					r.evaluate({maximize: true, async: false});
@@ -305,8 +332,8 @@ export class Helper {
 			//	-	dice damage
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
-				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let quantity = powerInnerData.hit.baseQuantity;
+				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
 				rQuantity.evaluate({maximize: true, async: false});
 
@@ -320,7 +347,7 @@ export class Helper {
 
 				// Handle Weapon Type Damage
 				if(diceType.includes("weapon")){
-					let parts = weaponData.damageDice.parts;
+					let parts = weaponInnerData.damageDice.parts;
 						for(let i = 0; i< parts.length; i++) {
 							if(!parts[i][0] || !parts[i][1]) continue;
 							dice += `(${quantity} * ${parts[i][0]} * ${parts[i][1]})`
@@ -336,28 +363,9 @@ export class Helper {
 					let diceValue = diceType.match(/\d+/g).join('');
 					dice += `${quantity} * ${diceValue}`;
 				}
-				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 				newFormula = newFormula.replaceAll("@powMax", dice);
 			}
-			
-			
-			// if(weaponData.properties.bru) {
-			// 	let index = formula.trim().indexOf("*@wepDiceNum");
-			// 	let wDice = 1;
-			// 	if(index > 0 ) {
-			// 		let check = formula.trim().substring(0,index).match(/\d+$/);
-			// 		wDice = check? check[0] : 1;
-			// 	}
-			// 	newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
-			// 	newFormula = newFormula.replace("@wepDiceDamage", '(' + weaponData.diceDamage + '-'+ weaponData.brutal +') + '+ weaponData.brutal +' * ' + weaponData.diceNum * wDice);
-				
-			// }
-			// else {
-			// 	// newFormula = newFormula.replace("@wepDice", weaponData.damageDice);
-			// 	newFormula = newFormula.replace("@wepDiceNum", weaponData.diceNum);
-			// 	newFormula = newFormula.replace("@wepDiceDamage", weaponData.diceDamage);
-			// }
-
 		} else {
 			//if no weapon is in use replace the weapon keys with nothing.
 			newFormula = newFormula.replaceAll("@wepAttack", "");
@@ -381,8 +389,6 @@ export class Helper {
 			newFormula = newFormula.replaceAll("@enhanceImp", "0");
 			newFormula = newFormula.replaceAll("@enhance", "0");
 
-
-
 			if(newFormula.includes("@wepDice")) {
 				let indexStart = newFormula.indexOf("@wepDice")+8;
 				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
@@ -397,8 +403,8 @@ export class Helper {
 			}
 
 			if(newFormula.includes("@powBase")) {
-				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType;
+				let quantity = powerInnerData.hit.baseQuantity;
+				let diceType = powerInnerData.hit.baseDiceType;
 				
 				if(diceType == "weapon"){
 					newFormula = newFormula.replaceAll("@powBase", '0');
@@ -416,7 +422,7 @@ export class Helper {
 						dice += `${quantity}${diceType}`;
 					}
 	
-					dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+					dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 					newFormula = newFormula.replaceAll("@powBase", dice);
 				}
 
@@ -425,8 +431,8 @@ export class Helper {
 
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
-				let quantity = powerData.hit.baseQuantity;
-				let diceType = powerData.hit.baseDiceType.toLowerCase();
+				let quantity = powerInnerData.hit.baseQuantity;
+				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
 				rQuantity.evaluate({maximize: true, async: false});
 				
@@ -437,8 +443,8 @@ export class Helper {
 				}
 				
 				// Handle Weapon Type Damage
-				if(diceType.includes("weapon") && weaponData){
-					let parts = weaponData.damageDice.parts;
+				if(diceType.includes("weapon") && weaponInnerData){
+					let parts = weaponInnerData.damageDice.parts;
 						for(let i = 0; i< parts.length; i++) {
 							if(!parts[i][0] || !parts[i][1]) continue;
 							dice += `(${quantity} * ${parts[i][0]} * ${parts[i][1]})`
@@ -454,22 +460,11 @@ export class Helper {
 					let diceValue = diceType.match(/\d+/g).join('');
 					dice += `${quantity} * ${diceValue}`;
 				}
-				dice = this.commonReplace(dice, actorData, powerData, weaponData, depth-1)
+				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 				newFormula = newFormula.replaceAll("@powMax", dice);
 			}			
 		}
 
-		//check for actor values in formula
-		
-		// for(let i = 0; i < (newFormula.match(/@/g) || []).length; i++) {
-		// 	let indexStart = newFormula.indexOf('@');
-		// 	let indexEnd = (newFormula + ' ').substring(indexStart).search(/[ /*+-]/);
-		// 	//FIX the regex, get rid of the ' ' and just tell it to search to up to end of string
-
-		// 	let val = typeof this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) === 'number' ?
-		// 		this.byString(newFormula.substring(indexStart+1, indexStart + indexEnd), actorData) : '';
-		// 	newFormula = newFormula.replace(newFormula.substring(indexStart, indexStart + indexEnd), val);
-		// }
 		return newFormula;
 	}
 
@@ -483,7 +478,7 @@ export class Helper {
    * @param {Object} missing    Value to use as missing replacements, such as {missing: "0"}.
    * @return {String} The formula with attributes replaced with values.
    */
-	static replaceData(formula, data, {missing=null,depth=1}={}) {
+	static replaceData(formula, data, {missing=null, depth=1}={}) {
 		// Exit early if the formula is invalid.
 		if ( typeof formula != "string" || depth < 1) {
 		return 0;
