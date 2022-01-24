@@ -186,7 +186,11 @@ export class Helper {
 								resultObject[change.key] = change.value
 							}
 							else {
-								resultObject[change.key] = resultObject[change.key] + change.value
+								if(this._isNumber(resultObject[change.key]) && this._isNumber(change.value)){
+									resultObject[change.key] = Number(resultObject[change.key]) + Number(change.value)
+								} else {
+									resultObject[change.key] = `${resultObject[change.key]} + ${change.value}`
+								}
 							}
 						}
 					}))
