@@ -796,6 +796,8 @@ export default class Item4e extends Item {
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.data.data.consume, "weapon used by the power")
 		}
 
+		Helper.applyEffects([parts], rollData, actorData, this.data, weaponUse?.data, "attack")
+
 		// Compose roll options
 		const rollConfig = {
 			parts,
@@ -1056,6 +1058,8 @@ export default class Item4e extends Item {
 		partsExpressionReplacement.unshift({target : parts[0], value: damageFormulaExpression})
 		partsCritExpressionReplacement.unshift({target : partsCrit[0], value: critDamageFormulaExpression})
 		partsMissExpressionReplacement.unshift({target : partsMiss[0], value: missDamageFormulaExpression})
+
+		Helper.applyEffects([parts, partsCrit, partsMiss], rollData, actorData, this.data, weaponUse?.data, "damage")
 
 		return damageRoll({
 			event,

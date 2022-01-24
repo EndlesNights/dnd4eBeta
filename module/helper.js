@@ -125,6 +125,127 @@ export class Helper {
 		return new RegExp(/@([a-z.0-9_\-]+)/gi);
 	}
 
+
+	static applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType) {
+		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4eBeta |` : ""
+		if (actorData.effects) {
+			const powerInnerData = powerData.data
+			const weaponInnerData = weaponData?.data
+			if (debug) {
+				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.  Supplied Weapon: ${weaponData?.name}`)
+			}
+
+			const effectsToProcess = []
+			const effects = Array.from(actorData.effects.values()).filter((effect) => effect.data.disabled === false)
+			effects.forEach((effect) => {
+				effect.data.changes.forEach((change => {
+					if (change.key.startsWith(`power.${effectType}`) || (weaponInnerData && change.key.startsWith(`weapon.${effectType}`))) {
+						effectsToProcess.push({
+							name : effect.data.label,
+							key: change.key,
+							value: change.value
+						})
+					}
+				}))
+			})
+			if (effectsToProcess.length > 0) {
+				if (debug) {
+					console.log(`${debug} Found the following possible active effects`)
+					effectsToProcess.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
+				}
+
+				const suitableKeywords = []
+				this._addKeywords(suitableKeywords, powerInnerData.damageType)
+				this._addKeywords(suitableKeywords, powerInnerData.effectType)
+				if (weaponInnerData) {
+					this._addKeywords(suitableKeywords, weaponInnerData.weaponGroup)
+					this._addKeywords(suitableKeywords, weaponInnerData.properties)
+					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
+					this._addKeywords(suitableKeywords, weaponInnerData.implementGroup)
+				}
+
+				if (powerInnerData.powersource) {
+					suitableKeywords.push(powerInnerData.powersource)
+				}
+				if (powerInnerData.secondPowersource) {
+					suitableKeywords.push(powerInnerData.secondPowersource)
+				}
+
+				if (debug) {
+					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group, properties and damage type the following effect keys are suitable`)
+					suitableKeywords.forEach((keyword) => console.log(`${debug} ${keyword}`))
+				}
+
+				// filter out to just the relevant effects by keyword
+				const matchingEffects = effectsToProcess.filter((effect) => {
+					for (const keyword of suitableKeywords) {
+						if (effect.key.includes(`${effectType}.${keyword}`)) {
+							return true
+						}
+					}
+					return false
+				})
+
+				if (debug) {
+					console.log(`${debug} The following effects were deemed suitable by keyword filter`)
+					matchingEffects.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
+				}
+
+				const newParts = {}
+				for (const effect of matchingEffects) {
+					const keyParts = effect.key.split(".")
+					if (keyParts.length === 4) {
+						const bonusType = keyParts[3]
+						if (bonusType === "untyped") {
+							if (newParts["untypedEffectBonus"]) {
+								newParts["untypedEffectBonus"] = parseInt(newParts["untypedEffectBonus"]) + parseInt(effect.value)
+								console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : Additional untyped Bonus.  They Stack.`)
+							}
+							else {
+								console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : First untyped Bonus`)
+								newParts["untypedEffectBonus"] = effect.value
+							}
+						}
+						else {
+							const key = `${bonusType}EffectBonus`
+							if (newParts[key]) {
+								if (newParts[key] < effect.value) {
+									newParts[key] = effect.value
+									console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : Is greater than existing ${bonusType}, replacing`)
+								}
+								else {
+									console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : Is not great than existing ${bonusType}, discarding`)
+								}
+							}
+							else {
+								newParts[key] = effect.value
+								console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : First ${bonusType} Bonus`)
+							}
+						}
+					}
+					else {
+						ui.notifications.warn(`Tried to process an bonus effect that had too few/many .'s in it: ${effect.key}`)
+					}
+				}
+
+				for (const [key, value] of Object.entries(newParts)) {
+					for (const parts of arrayOfParts) {
+						parts.push("@" + key)
+					}
+					rollData[key] = value
+				}
+			}
+		}
+	}
+
+	static _addKeywords(suitableKeywords, keywordsActive) {
+		for (const [key, value] of Object.entries(keywordsActive)) {
+			if (value === true) {
+				suitableKeywords.push(key)
+			}
+		}
+	}
+
 	/**
 	 * Perform replacement of @variables in the formula involving a power.  This is a recursive function with 2 modes of operation!
 	 *
