@@ -1163,4 +1163,16 @@ export class Actor4e extends Actor {
 
 		return this
 	}
+
+	/** @inheritdoc */
+	async _preCreate(data, options, user) {
+		await super._preCreate(data, options, user);
+		const sourceId = this.getFlag("core", "sourceId");
+		if ( sourceId?.startsWith("Compendium.") ) return;
+
+		// Player character configuration
+		if ( this.type === "Player Character" ) {
+			this.data.token.update({vision: true, actorLink: true, disposition: 1});
+		}
+	}
 }
