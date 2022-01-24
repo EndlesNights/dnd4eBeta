@@ -134,48 +134,143 @@
 
 			<h3 class="form-header">{{ localize "DND4EBETA.ItemConsumableActivation" }}</h3>
 
-			{{!-- Item Action Template --}}
-			<!-- {{> "systems/dnd4e/templates/items/parts/item-action.html"}} -->
-			{{!-- Attack Roll Bonus --}}
 			<div class="form-group">
-				<label>{{ localize "DND4EBETA.ItemAttackBonus" }}</label>
-				<div class="form-fields">
-					<input type="text" name="data.attackBonus" value="{{data.attackBonus}}" data-dtype="Number"/>
-				</div>
+				<label>{{ localize "DND4EBETA.PowerAutoGenerateLable" }}</label>
+				<input type="checkbox" name="data.autoGenChatPowerCard" data-dtype="Boolean" {{checked data.autoGenChatPowerCard}}/>
 			</div>
 
-			{{!-- Damage Formula --}}
-			<h4 class="damage-header">
-				{{#unless isHealing }}{{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}
-				<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
-			</h4>
-			<ol class="damage-parts form-group">
-				{{#each data.damage.parts as |part i| }}
-				<li class="damage-part flexrow" data-damage-part="{{i}}">
-					<input type="text" name="data.damage.parts.{{i}}.0" value="{{lookup this "0"}}"/>
-					<select name="data.damage.parts.{{i}}.1">
-						{{#select (lookup this "1") }}
-						<option value="">{{ localize "DND4EBETA.None" }}</option>
-						{{#each ../config.damageTypes as |name type|}}
-						<option value="{{type}}">{{name}}</option>
-						{{/each}}
-						{{#each ../config.healingTypes as |name type|}}
+			{{!-- Action Type --}}
+			<div class="form-group select">
+				<label>{{ localize "DND4EBETA.ItemActionType" }}</label>
+				<select name="data.actionType">
+					{{#select data.actionType}}
+					{{#each config.abilityActivationTypes as |name type|}}
+					<option value="{{type}}">{{name}}</option>
+					{{/each}}
+					{{/select}}
+				</select>
+			</div>
+
+			{{!-- Attack Details--}}
+			<div class="form-group">
+				<label>{{ localize "DND4EBETA.IsAttack" }}</label>
+				<input type="checkbox" name="data.attack.isAttack" data-dtype="Boolean" {{checked data.attack.isAttack}}/>
+			</div>
+
+			{{#if data.attack.isAttack}}
+			<div class="form-group uses-per">
+				<label>{{ localize "DND4EBETA.Range" }}</label>
+				<div class="form-fields">
+					<select name="data.rangeType">
+						{{#select data.rangeType}}
+						{{#each config.rangeTypeNoWeapon as |name type|}}
 						<option value="{{type}}">{{name}}</option>
 						{{/each}}
 						{{/select}}
 					</select>
-					<a class="damage-control delete-damage"><i class="fas fa-minus"></i></a>
-				</li>
+					{{#if data.isArea}}
+					<span>{{ localize "DND4EBETA.AreaOf" }}</span>
+					<input type="text" name="data.area" value="{{data.area}}" data-dtype="Number"/>
+					{{/if}}
+					{{#if data.isRange}}
+					{{#if data.isArea}}<span style="flex: 2.8 0 16px">{{ localize "DND4EBETA.RangeWithinOf" }}</span>{{/if}}
+					{{#unless data.isArea}}<span style="flex: 0.6 0 16px">{{ localize "DND4EBETA.RangeOf" }}</span>{{/unless}}
+					<input type="text" name="data.rangePower" value="{{data.rangePower}}" data-dtype="Number"/>
+					{{/if}}
+				</div>
+			</div>
+			{{!-- Attack--}}
+			<div class="form-group uses-per">
+				<label>{{ localize "DND4EBETA.Attack" }}</label>
+				<div class="form-fields">
+					<span>{{ localize "DND4EBETA.VS" }}</span>
+					<select name="data.attack.def">
+						{{#select data.attack.def}}
+						<option value=""></option>
+						{{#each config.def as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label>Attack {{ localize "DND4EBETA.Formula" }}</label>
+				<input type="text" name="data.attack.formula" value="{{data.attack.formula}}" placeholder="Do not include 1d20, that will be added automatically"/>
+			</div>
+
+			<div class="form-group stacked">
+				<label>{{ localize "DND4EBETA.HitDetailsText" }}</label>
+				<input type="text" name="data.hit.detail" value="{{data.hit.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+			</div>
+			<div class="form-group stacked">
+				<label>{{ localize "DND4EBETA.MissDetailsText" }}</label>
+				<input type="text" name="data.miss.detail" value="{{data.miss.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+			</div>
+
+			{{/if}}
+
+			<div class="form-group">
+				<label>{{ localize "DND4EBETA.IsDamage" }}</label>
+				<input type="checkbox" name="data.hit.isDamage" data-dtype="Boolean" {{checked data.hit.isDamage}}/>
+			</div>
+			{{#if data.hit.isDamage}}
+			{{!-- Hit Details --}}
+			{{!-- Damage --}}
+			<div class="form-group">
+				<label>Damage {{ localize "DND4EBETA.Formula" }}</label>
+				<input type="text" name="data.hit.formula" value="{{data.hit.formula}}" placeholder="e.g. 1d6"/>
+			</div>
+
+			{{!-- Critical --}}
+			<div class="form-group ">
+				<label>Critical Damage {{ localize "DND4EBETA.Formula" }}</label>
+				<input type="text" name="data.hit.critFormula" value="{{data.hit.critFormula}}" placeholder="e.g. 6"/>
+			</div>
+
+			<div class="form-group stacked weapon-properties">
+				<label title="Type of Damage">Damage Type:</label>
+				{{#each config.damageTypes as |name type|}}
+				<label class="checkbox">
+					<input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
+				</label>
 				{{/each}}
-			</ol>
+			</div>
+			{{/if}}
+			<div class="form-group">
+				<label>{{ localize "DND4EBETA.IsHealing" }}</label>
+				<input type="checkbox" name="data.hit.isHealing" data-dtype="Boolean" {{checked data.hit.isHealing}}/>
+			</div>
+			{{#if data.hit.isHealing}}
+			<div class="form-group stacked">
+				<label>Healing {{ localize "DND4EBETA.Formula" }}</label>
+				<input type="text" name="data.hit.healFormula" value="{{data.hit.healFormula}}"/>
+			</div>
+			{{/if}}
 
 			{{!-- Other Formula --}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.OtherFormula" }}</label>
-				<div class="form-fields">
-					<input type="text" name="data.formula" value="{{data.formula}}" placeholder="{{ localize 'DND4EBETA.Formula' }}"/>
-				</div>
+				<input type="text" name="data.formula" value="{{data.formula}}" placeholder="{{ localize 'DND4EBETA.Formula' }}"/>
 			</div>
+
+			<div class="form-group">
+				<label>{{ localize "DND4EBETA.EffectDetails" }}</label>
+				<span style="text-align: right;">{{ localize "DND4EBETA.DisplayEffect" }}</span>
+				<input type="checkbox" name="data.postEffect" data-dtype="Boolean" {{checked data.postEffect}}/>
+			</div>
+			<div class="form-group">
+				<span style="text-align: right;">{{ localize "DND4EBETA.EffectHTMLInput" }}</span>
+				<input type="checkbox" name="data.effectHTML" data-dtype="Boolean" {{checked data.effectHTML}}/>
+			</div>
+			{{#if data.effectHTML}}
+			{{editor content=data.effect.detail target="data.effect.detail" button=true owner=owner editable=editable}}
+			{{else}}
+			<div class="form-group">
+				<input type="text" name="data.effect.detail" value="{{data.effect.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+			</div>
+			{{/if}}
 		</div>
 		
 		{{!-- Effects Tab --}}
