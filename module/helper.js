@@ -299,7 +299,7 @@ export class Helper {
 
 			if (actorData.effects) {
 				const resultObject = {}
-				const effects = Array.from(actorData.effects.values()).filter((effect) => effect.data.disabled === false)
+				const effects = Array.from(actorData.effects.values()).filter((effect) => effect.data?.disabled === false);
 				effects.forEach((effect) => {
 					effect.data.changes.forEach((change => {
 						if (this.variableRegex.test(change.key)) {
