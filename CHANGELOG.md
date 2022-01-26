@@ -2,9 +2,10 @@
 
 ## Version 0.2.56
 - Player Character Actors will now start with:
-	data linked between character sheet to tokens 
+	data linked between character sheet to tokens
 	vision mode turned on
 	token disposition set to friendly
+- refactoring of commonReplace formula
 
 ## Version 0.2.55
 - Minor tweaks to tool checks [merge](https://github.com/EndlesNights/dnd4eBeta/pull/146) from [draconas1](https://github.com/draconas1)

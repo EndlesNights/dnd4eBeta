@@ -18,11 +18,25 @@
 	],
 	"packs": [
 		{
+			"name": "example_alchemy",
+			"label": "Example Alchemical Items",
+			"system": "dnd4e",
+			"path": "./packs/example_alchemy.db",
+			"entity": "Item"
+		},		
+		{
 			"name": "example_character",
 			"label": "Example Character",
 			"system": "dnd4e",
 			"path": "./packs/example_character.db",
 			"entity": "Actor"
+		},
+		{
+			"name": "example_potions",
+			"label": "Example Potions & Poisons",
+			"system": "dnd4e",
+			"path": "./packs/example_potions.db",
+			"entity": "Item"
 		},
 		{
 			"name": "example_powers",
@@ -53,13 +67,6 @@
 			"entity": "Item"
 		},
 		{
-			"name": "srd_alchemy",
-			"label": "SRD Alchemical Items",
-			"system": "dnd4e",
-			"path": "./packs/srd_alchemy.db",
-			"entity": "Item"
-		},
-		{
 			"name": "srd_armour",
 			"label": "SRD Armour",
 			"system": "dnd4e",
@@ -78,13 +85,6 @@
 			"label": "SRD Equipment",
 			"system": "dnd4e",
 			"path": "./packs/srd_equipment.db",
-			"entity": "Item"
-		},
-		{
-			"name": "srd_potions",
-			"label": "SRD Potions & Poisons",
-			"system": "dnd4e",
-			"path": "./packs/srd_potions.db",
 			"entity": "Item"
 		},
 		{
