@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.57
+- changed the NPC monster leader value to be stored at 'data.details.leader' instead of 'data.leader'
+- NPC initiative will no longer add mod score while advanced math option is set to false 
+
 ## Version 0.2.56
 - Player Character Actors will now start with:
 	data linked between character sheet to tokens

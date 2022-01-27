@@ -275,7 +275,7 @@ export class Actor4e extends Actor {
 
 		// Skill modifiers
 		//Calc defence stats
-		if (this.data.type === "NPC") {
+		if(this.data.type === "NPC"){
 			this.calcSkillNPC(data);
 			this.calcDefenceStatsNPC(data);
 		} else {
@@ -303,7 +303,12 @@ export class Actor4e extends Actor {
 			}
 		}
 		data.attributes.init.bonusValue = initBonusValue;
-		data.attributes.init.value = (data.abilities[data.attributes.init.ability].mod + initBonusValue);
+		if(this.data.type === "NPC" && data.advancedCals){
+			data.attributes.init.value = data.attributes.init.base || 0;
+		} else {
+			data.attributes.init.value = (data.abilities[data.attributes.init.ability].mod + initBonusValue);
+		}
+		
 		if(data.attributes.init.value > 999)
 			data.attributes.init.value = 999;
 		

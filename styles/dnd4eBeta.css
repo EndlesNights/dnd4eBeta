@@ -1746,7 +1746,7 @@ font-size: 12px;
 	/* padding: 0 5px; */
 	overflow-y: auto;
 	scrollbar-width: thin;
-	height: calc(100% - 118px);
+	height: calc(100% - 126px);
 }
 .dnd4eBeta.sheet .items-list {
 	list-style: none;
