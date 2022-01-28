@@ -16,41 +16,38 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		// const templateShape = DND4EBETA.areaTargetTypes[target.type];
 		const templateShape = DND4EBETA.areaTargetTypes[item.data.data.rangeType];
 	
-	let distance = item.data.data.area;
-	if(item.data.data.rangeType === "closeBlast" || item.data.data.rangeType === "rangeBlast") {
-		distance *= Math.sqrt(2);
-	}
-	else if(item.data.data.rangeType === "rangeBurst") {
-		distance = Math.sqrt(2) * ( 1 + 2*distance);
-	}
-	else if(item.data.data.rangeType === "closeBurst") {
-		console.log(item.parent)
-		console.log(item.parent.data.data.details.size)
+		let distance = item.data.data.area;
+		let flag = templateShape;
 
-		switch(item.parent.data.data.details.size) {
-			case 'tiny':
-			case 'sm':
-			case 'med':
-				console.log('1x1');
-				distance = Math.sqrt(2) * ( 1 + 2*distance);
-				break;
-			case 'lg':
-				console.log('2x2');
-				distance = Math.sqrt(2) * ( 2 + 2*distance);
-				break;
-			case  'huge':
-				console.log('3x3');
-				distance = Math.sqrt(2) * ( 3 + 2*distance);
-				break;
-			case 'grg':
-				console.log('4x4');
-				distance = Math.sqrt(2) * ( 4 + 2*distance);
-				break;
-			default:
-				distance = Math.sqrt(2) * ( 1 + 2*distance);
+		if(item.data.data.rangeType === "closeBlast" || item.data.data.rangeType === "rangeBlast") {
+			distance *= Math.sqrt(2);
 		}
-	}
-	// if(item.data.data.rangeType === "closeBurst" || item.data.data.rangeType === "rangeBurst") distance = Math.sqrt(2) * ( 1 + 2*distance);
+		else if(item.data.data.rangeType === "rangeBurst") {
+			flag = "rectCenter";
+			distance += 0.5;
+		}
+		else if(item.data.data.rangeType === "closeBurst") {
+			flag = "rectCenter";
+			switch(item.parent.data.data.details.size) {
+				case 'tiny':
+				case 'sm':
+				case 'med':
+					distance += 0.5;
+					break;
+				case 'lg':
+					distance += 1;
+					break;
+				case  'huge':
+					distance += 1.5;
+					break;
+				case 'grg':
+					distance += 2;
+					break;
+				default:
+					distance = Math.sqrt(2) * ( 1 + 2*distance);
+			}
+		}
+		// if(item.data.data.rangeType === "closeBurst" || item.data.data.rangeType === "rangeBurst") distance = Math.sqrt(2) * ( 1 + 2*distance);
 	
 		if ( !templateShape ) return null;
 
@@ -62,7 +59,8 @@ export default class AbilityTemplate extends MeasuredTemplate {
 			direction: 0,
 			x: 0,
 			y: 0,
-			fillColor: game.user.color
+			fillColor: game.user.color,
+			flags: {dnd4e:{templateType:flag}}
 		};
 
 		// Additional type-specific data
@@ -84,7 +82,8 @@ export default class AbilityTemplate extends MeasuredTemplate {
 
 		// Return the template constructed from the item data
 		const cls = CONFIG.MeasuredTemplate.documentClass;
-		const template = new cls(templateData, {parent: canvas.scene});        const object = new this(template);
+		const template = new cls(templateData, {parent: canvas.scene});
+		const object = new this(template);
 		object.item = item;
 		object.actorSheet = item.actor?.sheet || null;
 		return object;
@@ -94,9 +93,8 @@ export default class AbilityTemplate extends MeasuredTemplate {
 
 	/**
 	 * Creates a preview of the spell template
-	 * @param {Event} event     The initiating click event
 	 */
-	drawPreview(event) {
+	drawPreview() {
 		const initialLayer = canvas.activeLayer;
 		this.draw();
 		this.layer.activate();
@@ -121,21 +119,20 @@ export default class AbilityTemplate extends MeasuredTemplate {
 			if ( now - moveTime <= 20 ) return;
 			const center = event.data.getLocalPosition(this.layer);
 			const snapped = canvas.grid.getSnappedPosition(center.x, center.y, 2);
-			this.data.x = snapped.x;
-			this.data.y = snapped.y;
+			this.data.update({x: snapped.x, y: snapped.y});
 			this.refresh();
 			moveTime = now;
 		};
 
 		// Cancel the workflow (right-click)
 		handlers.rc = event => {
-			this.layer.preview.removeChildren();
+			this.layer._onDragLeftCancel(event);
 			canvas.stage.off("mousemove", handlers.mm);
 			canvas.stage.off("mousedown", handlers.lc);
 			canvas.app.view.oncontextmenu = null;
 			canvas.app.view.onwheel = null;
 			initialLayer.activate();
-			this.actorSheet.maximize();
+			this.actorSheet?.maximize();
 		};
 
 		// Confirm the workflow (left-click)

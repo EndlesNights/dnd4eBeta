@@ -83,7 +83,6 @@ Hooks.once("init", async function() {
 
 	
 	Items.unregisterSheet("core", ItemSheet);
-	// Items.registerSheet("dnd4eBeta", SimpleItemSheet, {makeDefault: true});
 	Items.registerSheet("dnd4eBeta", ItemSheet4e, {makeDefault: true});
 
 	// Register system settings
@@ -98,15 +97,6 @@ Hooks.once("init", async function() {
 	
 	// Preload Handlebars Templates
 	preloadHandlebarsTemplates();
-
-
-		// Define dependency on our own custom vue components for when we need it
-		// Dlopen.register('actor-sheet', {
-		// 	scripts: "/systems/dnd4e/dist/vue-components.min.js",
-		// 	// dependencies: [ "vue-select", "vue-numeric-input" ]
-		// });
-
-
 
 	// setup methods that allow for easy integration with token hud
 	game.dnd4eBeta.quickSave = (actor) => new SaveThrowDialog(actor)._updateObject(null, {save : 0, dc: 10})
@@ -129,17 +119,6 @@ Hooks.once("setup", function() {
 		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerGroupTypes", "rangeType", "weaponType", "weaponTypes", "weaponHands"
 	];
 	
-	// const doLocalize = function(obj) {
-		// return Object.entries(obj).reduce((obj, e) => {
-			// if (typeof e[1] === "string") obj[e[0]] = game.i18n.localize(e[1]);
-			// else if (typeof e[1] === "object") obj[e[0]] = doLocalize(e[1]);
-			// return obj;git checkout
-		// }, {});
-	// };
-	// for ( let o of toLocalize ) {
-		// CONFIG.DND4EBETA[o] = doLocalize(CONFIG.DND4EBETA[o]);
-	// }
-// });
 	for ( let o of toLocalize ) {
 		const localized = Object.entries(CONFIG.DND4EBETA[o]).map(e => {
 			return [e[0], game.i18n.localize(e[1])];
@@ -270,12 +249,76 @@ const apply = (wrapped, owner, change) => {
   return wrapped(owner, change);
 }
 
-Hooks.once('init', async function() {
-  console.info(`AAAA`, libWrapper);
+function _getCircleSquareShape(wrapper, distance){
+	if(this.data.flags.dnd4e?.templateType === "rectCenter" 
+	|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4e?.templateType)) {
+		let r = Ray.fromAngle(0, 0, 0, distance),
+		dx = r.dx - r.dy,
+		dy = r.dy + r.dx;
 
-  libWrapper.register(
-    'dnd4e',
-    'ActiveEffect.prototype.apply',
-    apply
-  );
+		const points = [
+			dx, dy,
+			dy, -dx,
+			-dx, -dy,
+			-dy, dx,
+			dx, dy
+		];
+		return new PIXI.Polygon(points);
+	} else {
+		return (wrapper(distance))
+	}
+}
+
+function _refreshRulerBurst(wrapper){
+	if(this.data.flags.dnd4e?.templateType === "rectCenter" 
+		|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4e?.templateType)) {
+            const u = canvas.scene.data.gridUnits;
+            const d = Math.max(Math.round((this.data.distance -0.5 )* 10) / 10, 0);
+
+            const text = `Burst ${d}`;
+            this.hud.ruler.text = text;
+            this.hud.ruler.position.set(this.ray.dx + 10, this.ray.dy + 5);
+	} else {
+		return wrapper();
+	}
+}
+
+Hooks.once('init', async function() {
+
+	libWrapper.register(
+		'dnd4e',
+		'ActiveEffect.prototype.apply',
+		apply
+	);
+
+	libWrapper.register(
+		'dnd4e',
+		'MeasuredTemplate.prototype._getCircleShape',
+		_getCircleSquareShape
+	);
+
+	libWrapper.register(
+		'dnd4e',
+		'MeasuredTemplate.prototype._refreshRulerText',
+		_refreshRulerBurst
+	);
+});
+
+Hooks.on("getSceneControlButtons", function(controls){
+	//create addtioanl button in measure templates for burst
+	controls[1].tools.splice(controls[2].tools.length-1,0,{
+		name: "rectCenter",
+		title: "Square Template from the Center",
+		icon: "fas fa-external-link-square-alt",
+		onClick: toggled => canvas.templates._setWallCollision = toggled
+  })
+  return controls;
+})
+
+Hooks.on("createMeasuredTemplate", (obj,temp,userID) => {
+	console.log(obj.data.flags)
+	//set flag based on wich tool is selected
+	if(game.userId === userID && !obj.data.flags.dnd4e?.templateType) {
+		obj.setFlag("dnd4e", 'templateType',ui.controls.activeControl === "measure" ? ui.controls.activeTool : obj.data.t);
+	}
 });

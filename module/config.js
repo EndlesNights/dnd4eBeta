@@ -482,9 +482,9 @@ DND4EBETA.areaTargetTypes = {
   square: "rect",
   wall: "ray",
   closeBlast: "rect",
-  closeBurst: "rect",
+  closeBurst: "circle",
   rangeBlast: "rect",
-  rangeBurst: "rect",
+  rangeBurst: "circle",
 };
 
 
