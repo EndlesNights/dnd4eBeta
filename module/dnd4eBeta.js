@@ -249,40 +249,6 @@ const apply = (wrapped, owner, change) => {
   return wrapped(owner, change);
 }
 
-function _getCircleSquareShape(wrapper, distance){
-	if(this.data.flags.dnd4e?.templateType === "rectCenter" 
-	|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4e?.templateType)) {
-		let r = Ray.fromAngle(0, 0, 0, distance),
-		dx = r.dx - r.dy,
-		dy = r.dy + r.dx;
-
-		const points = [
-			dx, dy,
-			dy, -dx,
-			-dx, -dy,
-			-dy, dx,
-			dx, dy
-		];
-		return new PIXI.Polygon(points);
-	} else {
-		return (wrapper(distance))
-	}
-}
-
-function _refreshRulerBurst(wrapper){
-	if(this.data.flags.dnd4e?.templateType === "rectCenter" 
-		|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4e?.templateType)) {
-            const u = canvas.scene.data.gridUnits;
-            const d = Math.max(Math.round((this.data.distance -0.5 )* 10) / 10, 0);
-
-            const text = `Burst ${d}`;
-            this.hud.ruler.text = text;
-            this.hud.ruler.position.set(this.ray.dx + 10, this.ray.dy + 5);
-	} else {
-		return wrapper();
-	}
-}
-
 Hooks.once('init', async function() {
 
 	libWrapper.register(
@@ -294,13 +260,13 @@ Hooks.once('init', async function() {
 	libWrapper.register(
 		'dnd4e',
 		'MeasuredTemplate.prototype._getCircleShape',
-		_getCircleSquareShape
+		AbilityTemplate._getCircleSquareShape
 	);
 
 	libWrapper.register(
 		'dnd4e',
 		'MeasuredTemplate.prototype._refreshRulerText',
-		_refreshRulerBurst
+		AbilityTemplate._refreshRulerBurst
 	);
 });
 
@@ -312,11 +278,9 @@ Hooks.on("getSceneControlButtons", function(controls){
 		icon: "fas fa-external-link-square-alt",
 		onClick: toggled => canvas.templates._setWallCollision = toggled
   })
-  return controls;
 })
 
 Hooks.on("createMeasuredTemplate", (obj,temp,userID) => {
-	console.log(obj.data.flags)
 	//set flag based on wich tool is selected
 	if(game.userId === userID && !obj.data.flags.dnd4e?.templateType) {
 		obj.setFlag("dnd4e", 'templateType',ui.controls.activeControl === "measure" ? ui.controls.activeTool : obj.data.t);

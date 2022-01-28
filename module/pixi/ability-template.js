@@ -12,35 +12,37 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	 * @return {AbilityTemplate|null}         The template object, or null if the item does not produce a template
 	 */
 	static fromItem(item) {
-		// const target = getProperty(item.data, "data.target") || {};
-		// const templateShape = DND4EBETA.areaTargetTypes[target.type];
 		const templateShape = DND4EBETA.areaTargetTypes[item.data.data.rangeType];
 	
 		let distance = item.data.data.area;
-		let flag = templateShape;
+		let flags = {dnd4e:{templateType:templateShape}};
 
 		if(item.data.data.rangeType === "closeBlast" || item.data.data.rangeType === "rangeBlast") {
 			distance *= Math.sqrt(2);
 		}
 		else if(item.data.data.rangeType === "rangeBurst") {
-			flag = "rectCenter";
+			flags.dnd4e.templateType = "rectCenter";
 			distance += 0.5;
 		}
 		else if(item.data.data.rangeType === "closeBurst") {
-			flag = "rectCenter";
+			flags.dnd4e.templateType = "rectCenter";
 			switch(item.parent.data.data.details.size) {
 				case 'tiny':
 				case 'sm':
 				case 'med':
+					flags.dnd4e.closeBurst = 'med';
 					distance += 0.5;
 					break;
 				case 'lg':
+					flags.dnd4e.closeBurst = 'lg';
 					distance += 1;
 					break;
 				case  'huge':
+					flags.dnd4e.closeBurst = 'huge';
 					distance += 1.5;
 					break;
 				case 'grg':
+					flags.dnd4e.closeBurst = 'grg';
 					distance += 2;
 					break;
 				default:
@@ -60,7 +62,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 			x: 0,
 			y: 0,
 			fillColor: game.user.color,
-			flags: {dnd4e:{templateType:flag}}
+			flags: flags
 		};
 
 		// Additional type-specific data
@@ -69,8 +71,6 @@ export default class AbilityTemplate extends MeasuredTemplate {
 				templateData.angle = 53.13;
 				break;
 			case "rect": // 4e rectangular AoEs are always cubes
-				// templateData.distance = Math.hypot(target.value, target.value);
-				// templateData.width = target.value;
 				templateData.direction = 45;
 				break;
 			case "ray": // 4e rays are most commonly 1 square (5 ft) in width
@@ -158,5 +158,62 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		canvas.stage.on("mousedown", handlers.lc);
 		canvas.app.view.oncontextmenu = handlers.rc;
 		canvas.app.view.onwheel = handlers.mw;
+	}
+
+	static _getCircleSquareShape(wrapper, distance){
+		if(this.data.flags.dnd4e?.templateType === "rectCenter" 
+		|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4e?.templateType)) {
+			let r = Ray.fromAngle(0, 0, 0, distance),
+			dx = r.dx - r.dy,
+			dy = r.dy + r.dx;
+	
+			const points = [
+				dx, dy,
+				dy, -dx,
+				-dx, -dy,
+				-dy, dx,
+				dx, dy
+			];
+			return new PIXI.Polygon(points);
+		} else {
+			return (wrapper(distance))
+		}
+	}
+	
+	static _refreshRulerBurst(wrapper){
+		if( (this.data.flags.dnd4e?.templateType === "rectCenter"  && this.data.t === "circle")
+			|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4e?.templateType)) {
+				const u = canvas.scene.data.gridUnits;
+				let d;
+				let text;
+	
+				if(this.data.flags.dnd4e?.closeBurst){
+					switch(this.data.flags.dnd4e?.closeBurst){
+						case 'lg':
+							d = Math.max(Math.round((this.data.distance -1.0 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EBETA.rangeCloseBurst')} ${d} \n(${DND4EBETA.actorSizes[this.data.flags.dnd4e.closeBurst]})`;
+							break;
+						case 'huge':
+							d = Math.max(Math.round((this.data.distance -1.5 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EBETA.rangeCloseBurst')} ${d} \n(${DND4EBETA.actorSizes[this.data.flags.dnd4e.closeBurst]})`;
+							break;
+						case 'grg':
+							d = Math.max(Math.round((this.data.distance -2.0 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EBETA.rangeCloseBurst')} ${d} \n(${DND4EBETA.actorSizes[this.data.flags.dnd4e.closeBurst]})`;
+							break;
+						default:
+							d = Math.max(Math.round((this.data.distance -0.5 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EBETA.rangeCloseBurst')} ${d}`;
+					}
+				} else {
+					d = Math.max(Math.round((this.data.distance -0.5 )* 10) / 10, 0);
+					text = `Burst ${d}`;
+				}
+	
+				this.hud.ruler.text = text;
+				this.hud.ruler.position.set(this.ray.dx + 10, this.ray.dy + 5);
+		} else {
+			return wrapper();
+		}
 	}
 }
