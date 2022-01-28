@@ -295,10 +295,11 @@ DND4EBETA.creatureRole = {
 /* -------------------------------------------- */
 
 DND4EBETA.creatureRoleSecond = {
-	"regular": "DND4EBETA.CreatureRoleSecRegular",
+	"standard": "DND4EBETA.CreatureRoleSecStandard",
 	"elite": "DND4EBETA.CreatureRoleSecElite",
 	"solo": "DND4EBETA.CreatureRoleSecSolo",
 	"minion": "DND4EBETA.CreatureRoleSecMinion",
+	"other": "DND4EBETA.CreatureRoleSecOther",
 }
 
 /* -------------------------------------------- */
