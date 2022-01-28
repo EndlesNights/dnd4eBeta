@@ -183,7 +183,6 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	static _refreshRulerBurst(wrapper){
 		if( (this.data.flags.dnd4e?.templateType === "rectCenter"  && this.data.t === "circle")
 			|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4e?.templateType)) {
-				const u = canvas.scene.data.gridUnits;
 				let d;
 				let text;
 	

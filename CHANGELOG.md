@@ -1,9 +1,10 @@
 # Changelog
 
 ## Version 0.2.58
- - added custom mesure template to Foundry for burst
- - "Regular" creatureRoleSecond renamed to "Standard"
- - added "Other" option to creatureRoleSecond
+- added custom mesure template to Foundry for burst
+- "Regular" creatureRoleSecond renamed to "Standard"
+- added "Other" option to creatureRoleSecond
+- again changed the NPC monster leader value to be stored at 'data.details.role.leader' instead of 'data.details.leader'
 
 ## Version 0.2.57
 - changed the NPC monster leader value to be stored at 'data.details.leader' instead of 'data.leader'
