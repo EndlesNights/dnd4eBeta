@@ -541,7 +541,8 @@
 			"other": "",
 			"role": {
 				"primary": "soldier",
-				"secondary": "standard"
+				"secondary": "standard",
+				"leader" : false
 			},
 			"level": 1,
 			"tier": 1,
