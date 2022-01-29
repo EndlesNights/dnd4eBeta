@@ -80,7 +80,31 @@ export class RollWithOriginalExpression extends Roll {
 
         // do not surround with more brackets if they haven't asked for highlighting as it looks gash
         if (game.settings.get("dnd4e", "showRollExpression")) {
-            tempExpression = tempExpression.map(x => `(${x})`)
+            // regex -> english = look for (ANYTHING)[ANYTHING] - basically it must start with a term in brackets and end with a term in square brackets.
+            // The bracketed term and the square bracketed term can only be separated by 0 or more spaces
+            const regex = new RegExp('\\(.+\\)[ ]*\\[.+\\]')
+            tempExpression = tempExpression.map(part => {
+                /*
+                 This is for damage rolls primarily, where we rely on the roll flavour to give us damage types
+                 and from damage types work out resistances. - e.g. (1d6 + 5)[fire]
+                 However Foundry's formula parser does not like flavour inside brackets.  e.g. ((1d6 + 5)[fire])
+                 And the flavour is dropped entirely, which breaks the resistance calculation.
+
+                 So perform a check to try and determine if the part is entirely a flavoured damage expression.
+                 First basic check:
+                 - If the part starts with a ( and ends with a ] it is probably a flavoured damage expression.
+                 - then perform that godawful regex to make sure that it is the right shape and not someone using [] for random flavouring/clarity
+
+                  There are probably edge-cases here that I am not covering, but worst that happens is the highlighting looks a little weird / doesn't work.
+                 */
+                const trimmedPart = part.trim()
+                if (trimmedPart.indexOf("(") === 0 && trimmedPart.indexOf(']') === trimmedPart.length - 1) {
+                    if (regex.test(trimmedPart)) {
+                        return part
+                    }
+                }
+                return `(${part})`
+            })
         }
         const expression = tempExpression.join(" + ")
         options.parts = parts
@@ -199,6 +223,10 @@ export class RollWithOriginalExpression extends Roll {
                         // it is time to append the formula and expression we have been actively working on to the return results, wrapping them in the appropreate spans.
                         // call the secondary replacer for if the expression was itself multiple variables (e.g. the inital formula)
                         const formData = this.replaceInnerVariables(workingFormula, expressionParts[expressionIdx], spanId)
+
+                        // check to see if this was a synthetic bracket or a bracket around a damage type term that functioned like a synthetic bracket for us
+                        formData.formula = this.includeOuterBracketsIfFormulaIsFlavoured(formula, i, formData.formula)
+
                         // if the helper has done a load of work to the expression and formula, just use that
                         if (formData.changed) {
                             newFormula += formData.formula
@@ -216,7 +244,7 @@ export class RollWithOriginalExpression extends Roll {
                         }
                         // reset things because we have completed a part of this formula
                         newExpression += " + "
-                        workingFormula = '' // note we are not including the ) for a synthetic bracket that only denotes pression-parts
+                        workingFormula = '' // note we are not including the ) for a synthetic bracket that only denotes expression-parts
                         expressionIdx++
                     }
                     else {
@@ -241,6 +269,20 @@ export class RollWithOriginalExpression extends Roll {
                 expression: this.expression ? this.expression : formula
             }
         }
+    }
+
+    /**
+     * Out brackets should be included iff the next term is a [flavour] term.  Otherwise they were purely synthetic
+     * @param fullFormula The full formula expression
+     * @param currentIndex The index we are currently processing (the index of the closing bracket)
+     * @param currentWorkingFormula The piece of the formula that is currently being processed for display
+     * @return {string} A new currentWorkingFormula which will be bracketed if it's a flavour part, and not otherwise.
+     */
+    includeOuterBracketsIfFormulaIsFlavoured(fullFormula, currentIndex, currentWorkingFormula) {
+        if (currentIndex < fullFormula.length && fullFormula.charAt(currentIndex + 1) === '[') {
+            return '(' + currentWorkingFormula + ')'
+        }
+        return currentWorkingFormula
     }
 
     /**
