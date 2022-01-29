@@ -90,6 +90,7 @@
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.DefaultAbilitySkillCheck" }}</label>
 				<select name="data.attribute">
+					<option value=""></option>
 					{{#select data.attribute}}
 					{{#each config.abilities as |name a|}}
 					<option value="abilities.{{a}}.mod">{{name}}</option>
