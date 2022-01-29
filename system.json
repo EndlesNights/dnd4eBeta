@@ -88,13 +88,6 @@
 			"entity": "Item"
 		},
 		{
-			"name": "srd_powers_shared",
-			"label": "SRD Powers: Common Actions",
-			"system": "dnd4e",
-			"path": "./packs/srd_powers_shared.db",
-			"entity": "Item"
-		},
-		{
 			"name": "srd_races",
 			"label": "SRD Races",
 			"system": "dnd4e",
