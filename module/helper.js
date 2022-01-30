@@ -126,7 +126,7 @@ export class Helper {
 	}
 
 
-	static applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType) {
+	static async applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4eBeta |` : ""
 		if (actorData.effects) {
 			const powerInnerData = powerData.data
@@ -173,7 +173,8 @@ export class Helper {
 
 				if (debug) {
 					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group, properties and damage type the following effect keys are suitable`)
-					suitableKeywords.forEach((keyword) => console.log(`${debug} ${keyword}`))
+					suitableKeywords.sort()
+					console.log(`${debug} ${suitableKeywords.join(", ")}`)
 				}
 
 				// filter out to just the relevant effects by keyword
@@ -196,35 +197,49 @@ export class Helper {
 					const keyParts = effect.key.split(".")
 					if (keyParts.length === 4) {
 						const bonusType = keyParts[3]
+						const effectValueString = this.commonReplace(effect.value, actorData, powerData.data, weaponData?.data)
+						const effectDice = await this.rollWithErrorHandling(effectValueString, {context : effect.key})
+						const effectValue = effectDice.total
 						if (bonusType === "untyped") {
 							if (newParts["untypedEffectBonus"]) {
-								newParts["untypedEffectBonus"] = parseInt(newParts["untypedEffectBonus"]) + parseInt(effect.value)
-								console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : Additional untyped Bonus.  They Stack.`)
+								newParts["untypedEffectBonus"] = newParts["untypedEffectBonus"] + effectValue
+								if (debug) {
+									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Additional untyped Bonus.  They Stack.`)
+								}
 							}
 							else {
-								console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : First untyped Bonus`)
-								newParts["untypedEffectBonus"] = effect.value
+								newParts["untypedEffectBonus"] = effectValue
+								if (debug) {
+									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: First untyped Bonus`)
+								}
 							}
 						}
 						else {
 							const key = `${bonusType}EffectBonus`
 							if (newParts[key]) {
-								if (newParts[key] < effect.value) {
-									newParts[key] = effect.value
-									console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : Is greater than existing ${bonusType}, replacing`)
+								if (newParts[key] < effectValue) {
+									newParts[key] = effectValue
+									if (debug) {
+										console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Is greater than existing ${bonusType}, replacing`)
+									}
 								}
 								else {
-									console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : Is not great than existing ${bonusType}, discarding`)
+									if (debug) {
+										console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : Is not great than existing ${bonusType}, discarding`)
+									}
 								}
 							}
 							else {
-								newParts[key] = effect.value
-								console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value} : First ${bonusType} Bonus`)
+								newParts[key] = effectValue
+								if (debug) {
+									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : First ${bonusType} Bonus`)
+								}
 							}
 						}
 					}
 					else {
-						ui.notifications.warn(`Tried to process an bonus effect that had too few/many .'s in it: ${effect.key}`)
+						ui.notifications.warn(`Tried to process an bonus effect that had too few/many .'s in it: ${effect.key}: ${effect.value}`)
+						console.log(`Tried to process an bonus effect that had too few/many .'s in it: ${effect.key}: ${effect.value}`)
 					}
 				}
 
@@ -253,7 +268,7 @@ export class Helper {
 	 * @param actorData The data from the actor to use to resolve variables: `actor.data`.  This may be null
 	 * @param powerInnerData The data from the power to use to resolve variables. `power.data.data`
 	 * @param weaponInnerData The data from the weapon to use to resolve variables.  `item.data.data` This may be null
-	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.  Defaults to 1 which will produce 2 loops.
+	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.  Defaults to 1 which will produce 2 loops.  A depth of 0 will also prevent evaluation of custom effect variables (as that is an infinite hole)
 	 * @param returnDataInsteadOfFormula If set to true it will return a data object of replacement variables instead of the formula string
 	 * @return {String|{}|number} "0" if called with a depth of <0, A substituted formula string if called with returnDataInsteadOfFormula = false (the default) or an object of {variable = value} if called with returnDataInsteadOfFormula = true
 	 */
@@ -296,33 +311,6 @@ export class Helper {
 			else {
 				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.data.data by mistake!.  Replacing: " + formula)
 			}
-
-			if (actorData.effects) {
-				const resultObject = {}
-				const effects = Array.from(actorData.effects.values()).filter((effect) => effect.data?.disabled === false);
-				effects.forEach((effect) => {
-					effect.data.changes.forEach((change => {
-						if (this.variableRegex.test(change.key)) {
-							if (!resultObject[change.key]) {
-								resultObject[change.key] = change.value
-							}
-							else {
-								if(this._isNumber(resultObject[change.key]) && this._isNumber(change.value)){
-									resultObject[change.key] = Number(resultObject[change.key]) + Number(change.value)
-								} else {
-									resultObject[change.key] = `${resultObject[change.key]} + ${change.value}`
-								}
-							}
-						}
-					}))
-				})
-
-				for (const [key, value] of Object.entries(resultObject)) {
-					newFormula = newFormula.replaceAll(key, value);
-				}
-			}
-
-
 		}
 
 		if(weaponInnerData) {
@@ -487,7 +475,8 @@ export class Helper {
 				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 				newFormula = newFormula.replaceAll("@powMax", dice);
 			}
-		} else {
+		}
+		else {
 			//if no weapon is in use replace the weapon keys with nothing.
 			newFormula = newFormula.replaceAll("@wepAttack", "");
 			newFormula = newFormula.replaceAll("@wepDamage", "");
@@ -586,6 +575,52 @@ export class Helper {
 			}			
 		}
 
+		// this is done at the bottom, because I don't want to iterating the entire actor effects collection unless I have to
+		// as this could get unnecessarily expensive quickly.
+		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula
+		// having got to the bottom of common replace, check to see if there are any more @variables left.  If there aren't, then don't bother going any further
+		if (actorData?.effects && depth > 0 && newFormula.includes('@')) {
+			const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4eBeta |` : ""
+			if (debug) {
+				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.  Searching active effects for a suitable variable`)
+			}
+			const resultObject = {}
+			const effects = Array.from(actorData.effects.values()).filter((effect) => effect.data?.disabled === false);
+			effects.forEach((effect) => {
+				effect.data.changes.forEach((change => {
+					if (this.variableRegex.test(change.key)) {
+						if (debug) {
+							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.data.label}.  Value: ${change.value}`)
+						}
+						const changeValueReplaced = this.commonReplace(change.value, actorData, powerInnerData, weaponInnerData, 0) // set depth to avoid infinite recursion
+						if (!resultObject[change.key]) {
+							resultObject[change.key] = changeValueReplaced
+							if (debug) {
+								console.log(`${debug} Effect: ${effect.data.label}.  Computed Value: ${change.value} was the first match to ${change.key} `)
+							}
+						}
+						else {
+							if (debug) {
+								console.log(`${debug} Effect: ${effect.data.label}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
+							}
+							if(this._isNumber(resultObject[change.key]) && this._isNumber(changeValueReplaced)){
+								resultObject[change.key] = Number(resultObject[change.key]) + Number(changeValueReplaced)
+							} else {
+								resultObject[change.key] = `${resultObject[change.key]} + ${changeValueReplaced}`
+							}
+						}
+					}
+				}))
+			})
+
+			if (debug) {
+				console.log(`${debug} Discovered custom variable values in effects to substitute into formula (${newFormula}): ${JSON.stringify(resultObject)}`)
+			}
+			for (const [key, value] of Object.entries(resultObject)) {
+				newFormula = newFormula.replaceAll(key, value);
+			}
+		}
+
 		return newFormula;
 	}
 
@@ -638,13 +673,20 @@ export class Helper {
 	 *
 	 * @param {String} rollString    		The roll expression.
 	 * @param {String} errorMessageKey      The key that will be localised for the error message if the roll fails.
+	 * @param {String} context				Context on the source of the roll string / where it is being used
 	 * @returns {Promise<Roll>}    			The evaluated Roll instance as a promise
 	 */
-	static async roll(rollString, errorMessageKey = "DND4EBETA.InvalidRollExpression") {
+	static async rollWithErrorHandling(rollString, { errorMessageKey = "DND4EBETA.InvalidRollExpression", context = "" }) {
+		if (!errorMessageKey) {
+			errorMessageKey = "DND4EBETA.InvalidRollExpression"
+		}
 		if (rollString && rollString !== "") {
 			const roll = new Roll(rollString);
 			return roll.roll({async : true}).catch(err => {
-				ui.notifications.error(game.i18n.localize(errorMessageKey));
+				let msg = context ? `${game.i18n.localize(errorMessageKey)} (in ${context}) : ${rollString}` : `${game.i18n.localize(errorMessageKey)} : ${rollString}`
+				ui.notifications.error(msg);
+				console.log(msg)
+				console.log(err)
 				return new Roll("0").roll({async : true});
 			});
 		}
