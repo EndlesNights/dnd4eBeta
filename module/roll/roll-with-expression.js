@@ -97,7 +97,7 @@ export class RollWithOriginalExpression extends Roll {
 
                   There are probably edge-cases here that I am not covering, but worst that happens is the highlighting looks a little weird / doesn't work.
                  */
-                const trimmedPart = part.trim()
+                const trimmedPart = "" + part.trim() // remember part may be a number.  Very occasionally not everything is a string!
                 if (trimmedPart.indexOf("(") === 0 && trimmedPart.indexOf(']') === trimmedPart.length - 1) {
                     if (regex.test(trimmedPart)) {
                         return part
@@ -311,9 +311,11 @@ export class RollWithOriginalExpression extends Roll {
      */
     replaceInnerVariables(formula, expression, mainIndex) {
 
-        // are there multiple variables in here
-        // expression may be a number that doesn't match
-        if ((("" + expression).match(/@/g) || []).length > 1) {
+        // expression may be a number - do not try to call string methods on a number
+        // Check that there is at least 1 variable.
+        // edge cases checking here:
+        // expression = "12 + @bonus" <-- perform a substitution around @bonus
+        if ((("" + expression).match(/@/g) || []).length > 0) {
             try {
                 const regex = Helper.variableRegex
                 let newFormula = ""
@@ -321,46 +323,51 @@ export class RollWithOriginalExpression extends Roll {
                 let activeFormula = formula
                 let activeExpression = expression
                 const vars = expression.match(regex)
-                for (let innerIndex = 0; innerIndex < vars.length; innerIndex++) {
-                    const variable = vars[innerIndex]
-                    const spanId = mainIndex + "." + innerIndex
-                    if (!this.options.formulaInnerData) {
-                        throw `D&D4eBeta | Roll did not have formulaInnerData set in its options, so cannot substitute and will fall back to expression parts level replacement`
-                    }
-                    let replacementStr = this.options.formulaInnerData[variable.substring(1)]
-                    if (!replacementStr) {
-                        // may be a complex replacement: e.g. details.level
-                        replacementStr = Helper.replaceData(variable, this.options.formulaInnerData)
-                        if (!replacementStr) {
-                            throw `D&D4eBeta | Unable to find a value for variable '${variable}' that was part of the formula expression.  It was not added to the rolls data object`
+                // if the entire expression is just a variable - e.g. "@bonus" then don't bother faffing about here, the top level replacer will solve it
+                // edge case check:
+                // expression = "@bonus" <-- don't substitute
+                if (!(vars.length === 1 && vars[0] === expression)) {
+                    for (let innerIndex = 0; innerIndex < vars.length; innerIndex++) {
+                        const variable = vars[innerIndex]
+                        const spanId = mainIndex + "." + innerIndex
+                        if (!this.options.formulaInnerData) {
+                            throw `D&D4eBeta | Roll did not have formulaInnerData set in its options, so cannot substitute and will fall back to expression parts level replacement`
                         }
+                        let replacementStr = this.options.formulaInnerData[variable.substring(1)]
+                        if (!replacementStr) {
+                            // may be a complex replacement: e.g. details.level
+                            replacementStr = Helper.replaceData(variable, this.options.formulaInnerData)
+                            if (!replacementStr) {
+                                throw `D&D4eBeta | Unable to find a value for variable '${variable}' that was part of the formula expression.  It was not added to the rolls data object`
+                            }
+                        }
+                        // replace the expression variable with the span and mouseover tags
+                        activeExpression = activeExpression.replace(variable, `<span id="exp${spanId}" onmouseenter="mouseEnter('${spanId}')" onmouseleave="mouseLeave('${spanId}')">${variable}</span>`)
+
+                        // find the value
+                        const indexOfReplacement = activeFormula.indexOf(replacementStr)
+                        if (indexOfReplacement === -1) {
+                            // could not find, error out and fall back to default
+                            throw `D&D4eBeta | Unable to find the variable value '${replacementStr}' for variable '${variable}' in remaining part '${activeFormula}' of formula ${formula}`
+                        }
+
+                        // add in everything prior to the variable
+                        newFormula += activeFormula.substring(0, indexOfReplacement)
+                        // add in the variable span-et-ised
+                        newFormula += `<span id="form${spanId}">${replacementStr}</span>`
+
+                        // remove everything up to the end of the replacement from our working string
+                        // if the replacement is just a number javascript makes it a number and refuses to length it so force it back to a string
+                        activeFormula = activeFormula.substring(indexOfReplacement + ("" + replacementStr).length)
                     }
-                    // replace the expression variable with the span and mouseover tags
-                    activeExpression = activeExpression.replace(variable, `<span id="exp${spanId}" onmouseenter="mouseEnter('${spanId}')" onmouseleave="mouseLeave('${spanId}')">${variable}</span>`)
+                    // get the rest
+                    newFormula += activeFormula
 
-                    // find the value
-                    const indexOfReplacement = activeFormula.indexOf(replacementStr)
-                    if (indexOfReplacement === -1) {
-                        // could not find, error out and fall back to default
-                        throw `D&D4eBeta | Unable to find the variable value '${replacementStr}' for variable '${variable}' in remaining part '${activeFormula}' of formula ${formula}`
+                    return {
+                        formula: newFormula,
+                        expression: activeExpression,
+                        changed: true
                     }
-
-                    // add in everything prior to the variable
-                    newFormula += activeFormula.substring(0, indexOfReplacement)
-                    // add in the variable span-et-ised
-                    newFormula += `<span id="form${spanId}">${replacementStr}</span>`
-
-                    // remove everything up to the end of the replacement from our working string
-                    // if the replacement is just a number javascript makes it a number and refuses to length it so force it back to a string
-                    activeFormula = activeFormula.substring(indexOfReplacement + ("" + replacementStr).length)
-                }
-                // get the rest
-                newFormula += activeFormula
-
-                return {
-                    formula: newFormula,
-                    expression: activeExpression,
-                    changed: true
                 }
             }
             catch (e) {
