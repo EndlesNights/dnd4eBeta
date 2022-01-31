@@ -39,6 +39,15 @@ export default class Item4e extends Item {
 				delete data.oldConsumableNeedsUpdate
 			}
 		}
+
+		if (this.data.type === "ritual") {
+			const data = this.data.data
+			if (data.oldRitualNeedsUpdating === true) {
+				console.log("DnD4e: Updating an obsolete ritual")
+				foundry.utils.setProperty(changed, "data.formula", "@attribute")
+				delete data.oldRitualNeedsUpdating
+			}
+		}
 	}
 
 	/* -------------------------------------------- */
@@ -248,6 +257,13 @@ export default class Item4e extends Item {
 			if (["inst", "perm"].includes(dur.units)) dur.value = null;
 			labels.duration = [dur.value, C.timePeriods[dur.units]].filterJoin(" ");
 
+			// Duration Label
+			if (data.castTime) {
+				let castTime = data.castTime || {};
+				if (["inst", "perm"].includes(castTime.units)) castTime.value = null;
+				labels.castTime = [castTime.value, C.timePeriods[castTime.units]].filterJoin(" ");
+			}
+
 			// Recharge Label
 			let chg = data.recharge || {};
 			labels.recharge = `${game.i18n.localize("DND4EBETA.Recharge")} [${chg.value}${parseInt(chg.value) < 6 ? "+" : ""}]`;
@@ -278,6 +294,14 @@ export default class Item4e extends Item {
 					// don't unassign parts here because it will get permanently solved by the update statement
 				}
 				// non healing damage expressions didn't work anyway
+			}
+		}
+
+		// fix old rituals to migrate them to the new structure
+		if (itemData.type === "ritual") {
+			if (data.formula !== "@attribute") {
+				data.formula = "@attribute"
+				data.oldRitualNeedsUpdating = true;
 			}
 		}
 
@@ -357,7 +381,11 @@ export default class Item4e extends Item {
 		if ( allowed === false ) return;
 
 		// Render the chat card template
-		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
+		let templateType = "item"
+		if (["tool", "ritual"].includes(this.data.type)) {
+			templateType =  this.data.type
+			templateData.abilityCheck  = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
+		}
 		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
 		let html = await renderTemplate(template, templateData);
 
@@ -393,7 +421,6 @@ export default class Item4e extends Item {
 			ChatMessage.create(chatData);
 
 			if(["both", "post"].includes(this.data.data.macro?.launchOrder)) {
-
 				let itemMacro = new Macro ({
 					name : this.name,
 					type : this.data.data.macro.type,
@@ -580,6 +607,10 @@ export default class Item4e extends Item {
 				labels.damageTypes,
 				labels.effectType,
 			);
+
+			if (labels.castTime) {
+				props.push("Cast Time: " + labels.castTime)
+			}
 		}
 		
 		if(data.chatFlavor) {
@@ -1337,22 +1368,39 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollToolCheck(options={}) {
-		if ( this.type !== "tool" ) throw "Wrong item type!";
+		return this.rollToolOrRitualCheck("tool", "DND4EBETA.ToolCheck", options)
+	}
+
+	/**
+	 * Roll a Ritual Check. Rely upon the d20Roll logic for the core implementation
+	 * @prarm {Object} options   Roll configuration options provided to the d20Roll function
+	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
+	 */
+	rollRitualCheck(options={}) {
+		return this.rollToolOrRitualCheck("ritual", "DND4EBETA.RitualCheck", options)
+	}
+
+	rollToolOrRitualCheck(rollType, titleKey, options={}) {
+		//if ( this.type !== "tool" ) throw "Wrong item type!";
 		// Prepare roll data
 		let rollData = this.getRollData();
-		const parts = ["@tool"];
+		const parts = ["@" + rollType];
 
-		rollData["tool"] = this.data.data.formula? Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data, this.data.data) : `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)} + ${this.data.data.bonus}`;
-			const title = `${this.name} - ${game.i18n.localize("DND4EBETA.ToolCheck")}`;
+		if (this.data.data.formula) {
+			rollData[rollType] = Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data, this.data.data)
+		}
+		else {
+			rollData[rollType] = `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)} + ${this.data.data.bonus}`;
+		}
+		const title = `${this.name} - ${game.i18n.localize(titleKey)}`;
 
 		const label = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
 
-		const flavor = this.data.data.chatFlavor ?  `${this.data.data.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize("DND4EBETA.ToolCheck")}  (${label} check)`;
+		const flavor = this.data.data.chatFlavor ?  `${this.data.data.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize(titleKey)}  (${label} check)`;
 		// Compose the roll data
 		const rollConfig = mergeObject({
 			parts: parts,
 			data: rollData,
-			// template: "systems/dnd4e/templates/chat/tool-roll-dialog.html",
 			title: title,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: flavor,
@@ -1361,10 +1409,9 @@ export default class Item4e extends Item {
 				top: options.event ? options.event.clientY - 80 : null,
 				left: window.innerWidth - 710,
 			},
-			// halflingLucky: this.actor.getFlag("dnd4e", "halflingLucky" ) || false,
-			messageData: {"flags.dnd4eBeta.roll": {type: "tool", itemId: this.id }}
+			messageData: {"flags.dnd4eBeta.roll": {type: rollType, itemId: this.id }}
 		}, options);
-	
+
 		rollConfig.event = options.event;
 		// Call the roll helper utility
 		return d20Roll(rollConfig);
@@ -1479,6 +1526,7 @@ export default class Item4e extends Item {
 
 		// Tool usage
 		else if ( action === "toolCheck" ) await item.rollToolCheck({event});
+		else if ( action === "ritualCheck" ) await item.rollRitualCheck({event});
 
 		// Spell Template Creation
 		else if ( action === "placeTemplate") {
