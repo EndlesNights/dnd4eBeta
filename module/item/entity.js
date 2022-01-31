@@ -827,7 +827,7 @@ export default class Item4e extends Item {
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.data.data.consume, "weapon used by the power")
 		}
 
-		Helper.applyEffects([parts], rollData, actorData, this.data, weaponUse?.data, "attack")
+		await Helper.applyEffects([parts], rollData, actorData, this.data, weaponUse?.data, "attack")
 
 		// Compose roll options
 		const rollConfig = {
@@ -880,7 +880,7 @@ export default class Item4e extends Item {
 	 *
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
-	rollDamage({event, spellLevel=null, versatile=false}={}) {
+	async rollDamage({event, spellLevel=null, versatile=false}={}) {
 		const itemData = this.data.data;
 		const actorData = this.actor.data;
 		const actorInnerData = this.actor.data.data;
@@ -1090,7 +1090,7 @@ export default class Item4e extends Item {
 		partsCritExpressionReplacement.unshift({target : partsCrit[0], value: critDamageFormulaExpression})
 		partsMissExpressionReplacement.unshift({target : partsMiss[0], value: missDamageFormulaExpression})
 
-		Helper.applyEffects([parts, partsCrit, partsMiss], rollData, actorData, this.data, weaponUse?.data, "damage")
+		await Helper.applyEffects([parts, partsCrit, partsMiss], rollData, actorData, this.data, weaponUse?.data, "damage")
 
 		return damageRoll({
 			event,

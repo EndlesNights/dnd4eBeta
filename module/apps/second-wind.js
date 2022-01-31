@@ -24,7 +24,7 @@ export class SecondWindDialog extends DocumentSheet {
 	}
 	async _updateObject(event, formData) {
 		
-		let r = await Helper.roll(formData.bonus, "DND4EBETA.InvalidHealingBonus")
+		let r = await Helper.rollWithErrorHandling(formData.bonus, { errorMessageKey: "DND4EBETA.InvalidHealingBonus"})
 
 		const updateData = {};
 		if(this.object.data.data.attributes.hp.value <= 0) {
