@@ -80,7 +80,31 @@ export class RollWithOriginalExpression extends Roll {
 
         // do not surround with more brackets if they haven't asked for highlighting as it looks gash
         if (game.settings.get("dnd4e", "showRollExpression")) {
-            tempExpression = tempExpression.map(x => `(${x})`)
+            // regex -> english = look for (ANYTHING)[ANYTHING] - basically it must start with a term in brackets and end with a term in square brackets.
+            // The bracketed term and the square bracketed term can only be separated by 0 or more spaces
+            const regex = new RegExp('\\(.+\\)[ ]*\\[.+\\]')
+            tempExpression = tempExpression.map(part => {
+                /*
+                 This is for damage rolls primarily, where we rely on the roll flavour to give us damage types
+                 and from damage types work out resistances. - e.g. (1d6 + 5)[fire]
+                 However Foundry's formula parser does not like flavour inside brackets.  e.g. ((1d6 + 5)[fire])
+                 And the flavour is dropped entirely, which breaks the resistance calculation.
+
+                 So perform a check to try and determine if the part is entirely a flavoured damage expression.
+                 First basic check:
+                 - If the part starts with a ( and ends with a ] it is probably a flavoured damage expression.
+                 - then perform that godawful regex to make sure that it is the right shape and not someone using [] for random flavouring/clarity
+
+                  There are probably edge-cases here that I am not covering, but worst that happens is the highlighting looks a little weird / doesn't work.
+                 */
+                const trimmedPart = "" + part.trim() // remember part may be a number.  Very occasionally not everything is a string!
+                if (trimmedPart.indexOf("(") === 0 && trimmedPart.indexOf(']') === trimmedPart.length - 1) {
+                    if (regex.test(trimmedPart)) {
+                        return part
+                    }
+                }
+                return `(${part})`
+            })
         }
         const expression = tempExpression.join(" + ")
         options.parts = parts
@@ -199,6 +223,10 @@ export class RollWithOriginalExpression extends Roll {
                         // it is time to append the formula and expression we have been actively working on to the return results, wrapping them in the appropreate spans.
                         // call the secondary replacer for if the expression was itself multiple variables (e.g. the inital formula)
                         const formData = this.replaceInnerVariables(workingFormula, expressionParts[expressionIdx], spanId)
+
+                        // check to see if this was a synthetic bracket or a bracket around a damage type term that functioned like a synthetic bracket for us
+                        formData.formula = this.includeOuterBracketsIfFormulaIsFlavoured(formula, i, formData.formula)
+
                         // if the helper has done a load of work to the expression and formula, just use that
                         if (formData.changed) {
                             newFormula += formData.formula
@@ -216,7 +244,7 @@ export class RollWithOriginalExpression extends Roll {
                         }
                         // reset things because we have completed a part of this formula
                         newExpression += " + "
-                        workingFormula = '' // note we are not including the ) for a synthetic bracket that only denotes pression-parts
+                        workingFormula = '' // note we are not including the ) for a synthetic bracket that only denotes expression-parts
                         expressionIdx++
                     }
                     else {
@@ -241,6 +269,20 @@ export class RollWithOriginalExpression extends Roll {
                 expression: this.expression ? this.expression : formula
             }
         }
+    }
+
+    /**
+     * Out brackets should be included iff the next term is a [flavour] term.  Otherwise they were purely synthetic
+     * @param fullFormula The full formula expression
+     * @param currentIndex The index we are currently processing (the index of the closing bracket)
+     * @param currentWorkingFormula The piece of the formula that is currently being processed for display
+     * @return {string} A new currentWorkingFormula which will be bracketed if it's a flavour part, and not otherwise.
+     */
+    includeOuterBracketsIfFormulaIsFlavoured(fullFormula, currentIndex, currentWorkingFormula) {
+        if (currentIndex < fullFormula.length && fullFormula.charAt(currentIndex + 1) === '[') {
+            return '(' + currentWorkingFormula + ')'
+        }
+        return currentWorkingFormula
     }
 
     /**
@@ -269,9 +311,11 @@ export class RollWithOriginalExpression extends Roll {
      */
     replaceInnerVariables(formula, expression, mainIndex) {
 
-        // are there multiple variables in here
-        // expression may be a number that doesn't match
-        if ((("" + expression).match(/@/g) || []).length > 1) {
+        // expression may be a number - do not try to call string methods on a number
+        // Check that there is at least 1 variable.
+        // edge cases checking here:
+        // expression = "12 + @bonus" <-- perform a substitution around @bonus
+        if ((("" + expression).match(/@/g) || []).length > 0) {
             try {
                 const regex = Helper.variableRegex
                 let newFormula = ""
@@ -279,46 +323,51 @@ export class RollWithOriginalExpression extends Roll {
                 let activeFormula = formula
                 let activeExpression = expression
                 const vars = expression.match(regex)
-                for (let innerIndex = 0; innerIndex < vars.length; innerIndex++) {
-                    const variable = vars[innerIndex]
-                    const spanId = mainIndex + "." + innerIndex
-                    if (!this.options.formulaInnerData) {
-                        throw `D&D4eBeta | Roll did not have formulaInnerData set in its options, so cannot substitute and will fall back to expression parts level replacement`
-                    }
-                    let replacementStr = this.options.formulaInnerData[variable.substring(1)]
-                    if (!replacementStr) {
-                        // may be a complex replacement: e.g. details.level
-                        replacementStr = Helper.replaceData(variable, this.options.formulaInnerData)
-                        if (!replacementStr) {
-                            throw `D&D4eBeta | Unable to find a value for variable '${variable}' that was part of the formula expression.  It was not added to the rolls data object`
+                // if the entire expression is just a variable - e.g. "@bonus" then don't bother faffing about here, the top level replacer will solve it
+                // edge case check:
+                // expression = "@bonus" <-- don't substitute
+                if (!(vars.length === 1 && vars[0] === expression)) {
+                    for (let innerIndex = 0; innerIndex < vars.length; innerIndex++) {
+                        const variable = vars[innerIndex]
+                        const spanId = mainIndex + "." + innerIndex
+                        if (!this.options.formulaInnerData) {
+                            throw `D&D4eBeta | Roll did not have formulaInnerData set in its options, so cannot substitute and will fall back to expression parts level replacement`
                         }
+                        let replacementStr = this.options.formulaInnerData[variable.substring(1)]
+                        if (!replacementStr) {
+                            // may be a complex replacement: e.g. details.level
+                            replacementStr = Helper.replaceData(variable, this.options.formulaInnerData)
+                            if (!replacementStr) {
+                                throw `D&D4eBeta | Unable to find a value for variable '${variable}' that was part of the formula expression.  It was not added to the rolls data object`
+                            }
+                        }
+                        // replace the expression variable with the span and mouseover tags
+                        activeExpression = activeExpression.replace(variable, `<span id="exp${spanId}" onmouseenter="mouseEnter('${spanId}')" onmouseleave="mouseLeave('${spanId}')">${variable}</span>`)
+
+                        // find the value
+                        const indexOfReplacement = activeFormula.indexOf(replacementStr)
+                        if (indexOfReplacement === -1) {
+                            // could not find, error out and fall back to default
+                            throw `D&D4eBeta | Unable to find the variable value '${replacementStr}' for variable '${variable}' in remaining part '${activeFormula}' of formula ${formula}`
+                        }
+
+                        // add in everything prior to the variable
+                        newFormula += activeFormula.substring(0, indexOfReplacement)
+                        // add in the variable span-et-ised
+                        newFormula += `<span id="form${spanId}">${replacementStr}</span>`
+
+                        // remove everything up to the end of the replacement from our working string
+                        // if the replacement is just a number javascript makes it a number and refuses to length it so force it back to a string
+                        activeFormula = activeFormula.substring(indexOfReplacement + ("" + replacementStr).length)
                     }
-                    // replace the expression variable with the span and mouseover tags
-                    activeExpression = activeExpression.replace(variable, `<span id="exp${spanId}" onmouseenter="mouseEnter('${spanId}')" onmouseleave="mouseLeave('${spanId}')">${variable}</span>`)
+                    // get the rest
+                    newFormula += activeFormula
 
-                    // find the value
-                    const indexOfReplacement = activeFormula.indexOf(replacementStr)
-                    if (indexOfReplacement === -1) {
-                        // could not find, error out and fall back to default
-                        throw `D&D4eBeta | Unable to find the variable value '${replacementStr}' for variable '${variable}' in remaining part '${activeFormula}' of formula ${formula}`
+                    return {
+                        formula: newFormula,
+                        expression: activeExpression,
+                        changed: true
                     }
-
-                    // add in everything prior to the variable
-                    newFormula += activeFormula.substring(0, indexOfReplacement)
-                    // add in the variable span-et-ised
-                    newFormula += `<span id="form${spanId}">${replacementStr}</span>`
-
-                    // remove everything up to the end of the replacement from our working string
-                    // if the replacement is just a number javascript makes it a number and refuses to length it so force it back to a string
-                    activeFormula = activeFormula.substring(indexOfReplacement + ("" + replacementStr).length)
-                }
-                // get the rest
-                newFormula += activeFormula
-
-                return {
-                    formula: newFormula,
-                    expression: activeExpression,
-                    changed: true
                 }
             }
             catch (e) {
