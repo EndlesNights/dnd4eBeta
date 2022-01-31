@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.59
+- fixed issue with NPC initive calculation check
+
 ## Version 0.2.58
 - added custom mesure template to Foundry for burst
 - "Regular" creatureRoleSecond renamed to "Standard"

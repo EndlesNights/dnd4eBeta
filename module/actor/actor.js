@@ -303,7 +303,7 @@ export class Actor4e extends Actor {
 			}
 		}
 		data.attributes.init.bonusValue = initBonusValue;
-		if(this.data.type === "NPC" && data.advancedCals){
+		if(this.data.type === "NPC" && !data.advancedCals){
 			data.attributes.init.value = data.attributes.init.base || 0;
 		} else {
 			data.attributes.init.value = (data.abilities[data.attributes.init.ability].mod + initBonusValue);
