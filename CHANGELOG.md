@@ -1,7 +1,12 @@
 # Changelog
 
 ## Version 0.2.59
-- fixed issue with NPC initive calculation check
+- fixed issue with NPC initiative calculation check
+- fixed roll expressions highlighting [merge](https://github.com/EndlesNights/dnd4eBeta/pull/152) from [draconas1](https://github.com/draconas1)
+- added leader to npc template [merge](https://github.com/EndlesNights/dnd4eBeta/pull/153) from [draconas1](https://github.com/draconas1)
+- fixed ritual Rolling issue #95 [merge](https://github.com/EndlesNights/dnd4eBeta/pull/154) from [draconas1](https://github.com/draconas1)
+- compendium equipment updates [merge](https://github.com/EndlesNights/dnd4eBeta/pull/155) from [draconas1](https://github.com/draconas1)
+- updated to effect variables [merge](https://github.com/EndlesNights/dnd4eBeta/pull/156) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.58
 - added custom mesure template to Foundry for burst
