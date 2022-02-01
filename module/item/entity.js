@@ -67,7 +67,7 @@ export default class Item4e extends Item {
 			return null;
 		  }
 		}
-		return Number(max);
+		return Math.round(Number(max));
 	  }	
 	  
 	/* -------------------------------------------- */
