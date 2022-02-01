@@ -254,9 +254,11 @@ export class Helper {
 	}
 
 	static _addKeywords(suitableKeywords, keywordsActive) {
-		for (const [key, value] of Object.entries(keywordsActive)) {
-			if (value === true) {
-				suitableKeywords.push(key)
+		if (keywordsActive) {
+			for (const [key, value] of Object.entries(keywordsActive)) {
+				if (value === true) {
+					suitableKeywords.push(key)
+				}
 			}
 		}
 	}
