@@ -2,6 +2,7 @@
 
 ## Version 0.2.59
 - fixed issue with NPC initiative calculation check
+- can now use @varubles math formulas when define the max limited use of powers/items
 - fixed roll expressions highlighting [merge](https://github.com/EndlesNights/dnd4eBeta/pull/152) from [draconas1](https://github.com/draconas1)
 - added leader to npc template [merge](https://github.com/EndlesNights/dnd4eBeta/pull/153) from [draconas1](https://github.com/draconas1)
 - fixed ritual Rolling issue #95 [merge](https://github.com/EndlesNights/dnd4eBeta/pull/154) from [draconas1](https://github.com/draconas1)

@@ -40,7 +40,7 @@ export default class AbilityUseDialog extends Dialog {
       item: item.data,
       title: game.i18n.format("DND4EBETA.AbilityUseHint", item.data),
       note: this._getAbilityUseNote(item.data, uses, recharge),
-      hasLimitedUses: uses.max || recharges,
+      hasLimitedUses: itemData.preparedMaxUses || recharges,
       canUse: recharges ? recharge.charged : (quantity > 0 && !uses.value) || uses.value > 0,
       hasPlaceableTemplate: game.user.can("TEMPLATE_CREATE") && item.hasAreaTarget,
       errors: []
@@ -92,7 +92,7 @@ export default class AbilityUseDialog extends Dialog {
     }
 
     // Does not use any resource
-    if ( !uses.per || !uses.max ) return "";
+    if ( !uses.per || !item.data.preparedMaxUses ) return "";
 
     // Consumables
     if ( item.type === "consumable" ) {
@@ -104,7 +104,7 @@ export default class AbilityUseDialog extends Dialog {
         type: item.data.consumableType,
         value: uses.value,
         quantity: item.data.quantity,
-        max: uses.max,
+        max: item.data.preparedMaxUses,
         per: CONFIG.DND4EBETA.limitedUsePeriods[uses.per]
       });
     }
@@ -114,7 +114,7 @@ export default class AbilityUseDialog extends Dialog {
       return game.i18n.format("DND4EBETA.AbilityUseNormalHint", {
         type: item.type,
         value: uses.value,
-        max: uses.max,
+        max: item.data.preparedMaxUses,
         per: CONFIG.DND4EBETA.limitedUsePeriods[uses.per]
       });
     }

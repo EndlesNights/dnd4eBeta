@@ -50,6 +50,26 @@ export default class Item4e extends Item {
 		}
 	}
 
+	get preparedMaxUses() {
+		const data = this.data.data;
+		if (!data.uses?.max) return null;
+		let max = data.uses.max;
+	
+		// If this is an owned item and the max is not numeric, we need to calculate it
+		if (this.isOwned && !Number.isNumeric(max)) {
+		  if (this.actor.data === undefined) return null;
+		  try {
+			max = Helper.commonReplace(max, this.actor.data);
+			max = Roll.replaceFormulaData(max, this.actor.getRollData(), {missing: 0, warn: true});
+			max = Roll.safeEval(max);
+		  } catch(e) {
+			console.error("Problem preparing Max uses for", this.data.name, e);
+			return null;
+		  }
+		}
+		return Number(max);
+	  }	
+	  
 	/* -------------------------------------------- */
 	/*  Item Properties                             */
 	/* -------------------------------------------- */
@@ -203,7 +223,7 @@ export default class Item4e extends Item {
 	get hasLimitedUses() {
 		let chg = this.data.data.recharge || {};
 		let uses = this.data.data.uses || {};
-		return !!chg.value || (!!uses.per && (uses.max > 0));
+		return !!chg.value || (!!uses.per && (this.preparedMaxUses > 0));
 	}
 
 	/* -------------------------------------------- */
@@ -307,6 +327,11 @@ export default class Item4e extends Item {
 
 		// Assign labels
 		this.labels = labels;
+
+		if(this.isOwned){
+			data.preparedMaxUses = this.preparedMaxUses;
+		}
+
 	}
 
 	/* -------------------------------------------- */
@@ -528,7 +553,8 @@ export default class Item4e extends Item {
 		// Configure whether to consume a limited use or to place a template
 		const charge = this.data.data.recharge;
 		const uses = this.data.data.uses;
-		let usesCharges = !!uses.per && (uses.max > 0);
+				
+		let usesCharges = !!uses.per && (this.preparedMaxUses > 0);
 		let placeTemplate = false;
 		let consume = charge.value || usesCharges;
 
@@ -660,7 +686,7 @@ export default class Item4e extends Item {
 	_consumableChatData(data, labels, props) {
 		props.push(
 			CONFIG.DND4EBETA.consumableTypes[data.consumableType],
-			data.uses.value + "/" + data.uses.max + " " + game.i18n.localize("DND4EBETA.Charges")
+			data.uses.value + "/" + data.preparedMaxUses + " " + game.i18n.localize("DND4EBETA.Charges")
 		);
 		data.hasCharges = data.uses.value >= 0;
 	}
@@ -1282,7 +1308,7 @@ export default class Item4e extends Item {
 		// Determine whether to deduct uses of the item
 		const uses = itemData.uses || {};
 		const autoDestroy = uses.autoDestroy;
-		let usesCharges = !!uses.per && (uses.max > 0);
+		let usesCharges = !!uses.per && (this.preparedMaxUses > 0);
 		const recharge = itemData.recharge || {};
 		const usesRecharge = !!recharge.value;
 
@@ -1309,7 +1335,7 @@ export default class Item4e extends Item {
 				}
 				// Case 2, reduce quantity
 				else if ( q > 1 ) {
-					await this.update({"data.quantity": q - 1, "data.uses.value": uses.max || 0});
+					await this.update({"data.quantity": q - 1, "data.uses.value": this.preparedMaxUses || 0});
 				}
 				// Case 3, destroy the item
 				else if ( (q <= 1) && autoDestroy ) {

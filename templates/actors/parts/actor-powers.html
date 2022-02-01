@@ -106,11 +106,11 @@
 								{{else if item.data.rechargeCondition}}
 								<a class="item-recharge rollable" title="Click to recharge power when the condition of &quot;{{item.data.rechargeCondition}}&quot; is met">Recharge[C]</a>
 								{{else}}
-								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
+								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.prepareMaxUses}}
 								{{/if}}
 							{{else}}
 								{{#if item.hasUses}}
-								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.uses.max}}
+								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.prepareMaxUses}}
 								{{/if}}
 							{{/if}}
 						</div>

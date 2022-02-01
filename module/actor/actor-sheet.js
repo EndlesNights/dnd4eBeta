@@ -204,7 +204,7 @@ export default class ActorSheet4e extends ActorSheet {
 			item.isStack = Number.isNumeric(item.data.quantity) && (item.data.quantity !== 1);
 
 			// Item usage
-			item.hasUses = item.data.uses && (item.data.uses.max > 0);
+			item.hasUses = item.data.uses && (item.data.preparedMaxUses > 0);
 			item.isOnCooldown = item.data.recharge && !!item.data.recharge.value && (item.data.recharge.charged === false);
 			item.isDepleted = item.isOnCooldown && (item.data.uses.per && (item.data.uses.value > 0));
 			item.hasTarget = !!item.data.target && !(["none",""].includes(item.data.target.type));
@@ -374,7 +374,7 @@ export default class ActorSheet4e extends ActorSheet {
 	}
 
 	_checkPowerAvailable(itemData) {
-		if( (!itemData.data.uses.value && itemData.data.uses.max)
+		if( (!itemData.data.uses.value && itemData.data.preparedMaxUses)
 			|| !itemData.data.prepared) {
 				itemData.data.notAvailable = true;
 
@@ -928,7 +928,7 @@ export default class ActorSheet4e extends ActorSheet {
 		event.preventDefault();
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
-		const uses = Math.clamped(0, parseInt(event.target.value), item.data.data.uses.max);
+		const uses = Math.clamped(0, parseInt(event.target.value), item.data.data.preparedMaxUses);
 		event.target.value = uses;
 		return item.update({ 'data.uses.value': uses });
 	}
@@ -1167,7 +1167,7 @@ export default class ActorSheet4e extends ActorSheet {
 	
 				let flav = `${item.data.name} did not recharge.`;
 				if(r.total >= item.data.data.rechargeRoll){
-					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.uses.max}]);
+					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.preparedMaxUses}]);
 					flav = `${item.data.name} successfully recharged!`;
 				}
 
@@ -1181,7 +1181,7 @@ export default class ActorSheet4e extends ActorSheet {
 
 			} else if (item.data.data.rechargeCondition) {
 
-				this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.uses.max}]);
+				this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.preparedMaxUses}]);
 
 				ChatMessage.create({
 					user: game.user.id,

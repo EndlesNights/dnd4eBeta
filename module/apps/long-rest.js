@@ -61,7 +61,7 @@ export class LongRestDialog extends DocumentSheet {
 		const updateItems = items.map( item => {
 			return {
 				_id: item.id,
-				"data.uses.value": item.data.data.uses.max
+				"data.uses.value": item.data.data.preparedMaxUses
 			};
 		});
 		await this.object.updateEmbeddedDocuments("Item", updateItems);
