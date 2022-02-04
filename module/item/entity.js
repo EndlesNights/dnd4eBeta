@@ -278,11 +278,50 @@ export default class Item4e extends Item {
 
 			labels.duration = dur.value? `${game.i18n.localize("DND4EBETA.Duration")}: ${[dur.value, C.timePeriods[dur.units]].filterJoin(" ")}` : null;
 
-			// Duration Label
+			// CastTime Label
 			if (data.castTime) {
 				let castTime = data.castTime || {};
 				if (["inst", "perm"].includes(castTime.units)) castTime.value = null;
-				labels.castTime = [castTime.value, C.timePeriods[castTime.units]].filterJoin(" ");
+				labels.castTime = `${game.i18n.localize("DND4EBETA.CastTime")}: ${[castTime.value, C.timePeriods[castTime.units]].filterJoin(" ")}`;
+			}
+
+
+			// Attribute Label
+			if(data.attribute){
+				const attribute = data.attribute.split('.')[1];
+				if(DND4EBETA.abilities[attribute]){
+					console.log(data)
+					labels.attribute = `${game.i18n.localize("DND4EBETA.Ability")}: ${DND4EBETA.abilities[attribute]}`;
+				}
+				else if(DND4EBETA.skills[attribute]){
+					labels.attribute = `${game.i18n.localize("DND4EBETA.Skill")}: ${DND4EBETA.skills[attribute]}`;
+				}
+			}
+
+			//Component type + cost Label
+			if(itemData.type === "ritual"){
+				if(data.consume?.amount && data.consume?.type === "attribute" ){
+					const resourceTarget = data.consume.target.split('.')[1];
+					let resourceLabel;
+
+					if(DND4EBETA.ritualcomponents[resourceTarget]){
+						resourceLabel = game.i18n.localize(DND4EBETA.ritualcomponents[resourceTarget]);
+					}
+					else if(DND4EBETA.currencyConversion[resourceTarget]){
+						resourceLabel = game.i18n.localize(DND4EBETA.currencies[resourceTarget]);
+					}
+					else if(resourceTarget === "hp"){
+						resourceLabel = game.i18n.localize("DND4EBETA.HP");
+					}
+					else if(resourceTarget === "surges"){
+						resourceLabel = game.i18n.localize("DND4EBETA.HealingSurges");
+					}
+
+					if(resourceLabel){
+						labels.component = `${game.i18n.localize("DND4EBETA.Component")}: ${resourceLabel}`;
+						labels.componentCost = `${game.i18n.localize("DND4EBETA.ComponentCost")}: ${data.consume.amount}`;
+					}
+				}
 			}
 
 			// Recharge Label
@@ -620,16 +659,16 @@ export default class Item4e extends Item {
 		if ( data.hasOwnProperty("activation") ) {
 			props.push(
 				labels.activation + (data.activation?.condition ? ` (${data.activation.condition})` : ""),
+				labels.attribute,
 				labels.target,
 				data.isRanged && labels.range ? `${game.i18n.localize("DND4EBETA.Range")}: ${labels.range}` : "",
+				labels.castTime,
 				labels.duration,
+				labels.component,
+				labels.componentCost,
 				labels.damageTypes,
 				labels.effectType,
 			);
-
-			if (labels.castTime) {
-				props.push(`${game.i18n.localize("DND4EBETA.CastTime")}: ${labels.castTime}`)
-			}
 		}
 		
 		if(data.chatFlavor) {
