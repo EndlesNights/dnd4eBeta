@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.61
+- removed the default miss formula and effects [merge](https://github.com/EndlesNights/dnd4eBeta/pull/162) from [draconas1](https://github.com/draconas1)
+
 ## Version 0.2.60
 - fix implement groupings [merge](https://github.com/EndlesNights/dnd4eBeta/pull/159) from [draconas1](https://github.com/draconas1)
 - fixed issue with NPC initiative calculation check.... again...
