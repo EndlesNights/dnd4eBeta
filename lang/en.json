@@ -557,6 +557,7 @@
 "DND4EBETA.Melee": "Melee",
 "DND4EBETA.Miss": "Miss",
 "DND4EBETA.MissDetailsText": "Miss Details",
+"DND4EBETA.MissFormulaPlaceholder": "Half damage can easily be applied form the damage menu, no need for a separate formula",
 "DND4EBETA.Modifier": "Modifier",
 "DND4EBETA.ModifierAttack": "Attack Modifier",
 "DND4EBETA.ModifierDamage": "Damage Modifier",
