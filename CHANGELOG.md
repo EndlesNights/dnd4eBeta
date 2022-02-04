@@ -2,7 +2,7 @@
 
 ## Version 0.2.60
 - fix implement groupings [merge](https://github.com/EndlesNights/dnd4eBeta/pull/159) from [draconas1](https://github.com/draconas1)
-- fixed issue with NPC initiative calculation check.... again
+- fixed issue with NPC initiative calculation check.... again...
 - minor tweaks to NPC sheet CSS
 - changed how ritual roll formulas work
 - added labels to Rituals / Tool items
