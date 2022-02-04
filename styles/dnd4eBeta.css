@@ -91,7 +91,7 @@
 	display: inline-block;
 }
 .dnd4eBeta.sheet .sheet-header .summary-name-npc {
-	width: calc(100% - 376px);
+	width: calc(100% - 380px);
 	display: inline-block;
 }
 .dnd4eBeta.sheet .sheet-header .summary-type {
@@ -129,7 +129,7 @@
 
 .dnd4eBeta.sheet .sheet-header .summary-role-second {
 	float: right;
-	width: 78px;
+	width: 86px;
 }
 
 .dnd4eBeta.sheet .sheet-header .summary-role {

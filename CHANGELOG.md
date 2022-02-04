@@ -3,7 +3,6 @@
 ## Version 0.2.60
 - fix implement groupings [merge](https://github.com/EndlesNights/dnd4eBeta/pull/159) from [draconas1](https://github.com/draconas1)
 - fixed issue with NPC initiative calculation check.... again
--  
 
 ## Version 0.2.59
 - fixed issue with NPC initiative calculation check

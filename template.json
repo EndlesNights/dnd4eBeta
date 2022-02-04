@@ -938,7 +938,7 @@
 		"level": "",
 		"chatFlavor": "",
 		"attribute": "skills.arc.total",
-		"formula": "@attribute"
+		"formula": ""
 	},
 	"power": {
 		"templates": ["itemDescription", "activatedEffect", "itemMacro", "attackAndDamage"],

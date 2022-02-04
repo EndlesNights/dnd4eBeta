@@ -275,7 +275,8 @@ export default class Item4e extends Item {
 			// Duration Label
 			let dur = data.duration || {};
 			if (["inst", "perm"].includes(dur.units)) dur.value = null;
-			labels.duration = [dur.value, C.timePeriods[dur.units]].filterJoin(" ");
+
+			labels.duration = dur.value? `${game.i18n.localize("DND4EBETA.Duration")}: ${[dur.value, C.timePeriods[dur.units]].filterJoin(" ")}` : null;
 
 			// Duration Label
 			if (data.castTime) {
@@ -314,14 +315,6 @@ export default class Item4e extends Item {
 					// don't unassign parts here because it will get permanently solved by the update statement
 				}
 				// non healing damage expressions didn't work anyway
-			}
-		}
-
-		// fix old rituals to migrate them to the new structure
-		if (itemData.type === "ritual") {
-			if (data.formula !== "@attribute") {
-				data.formula = "@attribute"
-				data.oldRitualNeedsUpdating = true;
 			}
 		}
 
@@ -635,7 +628,7 @@ export default class Item4e extends Item {
 			);
 
 			if (labels.castTime) {
-				props.push("Cast Time: " + labels.castTime)
+				props.push(`${game.i18n.localize("DND4EBETA.CastTime")}: ${labels.castTime}`)
 			}
 		}
 		
