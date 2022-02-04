@@ -108,7 +108,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	 */
 
 	// define if we are rolling a d20
-	if(!parts.includes("@tool")) {
+	if(!parts.includes("@tool") && !parts.includes("@ritual")) {
 		// noinspection EqualityComparisonWithCoercionJS
 		if(!form || !form.d20?.value || form.d20?.value == 1) { // type coercion is expected here!  It's a string value
 			parts.unshift( `1d20`);

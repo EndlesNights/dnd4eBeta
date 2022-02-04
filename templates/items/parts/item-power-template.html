@@ -115,7 +115,7 @@
 				<input type="text" name="data.area" value="{{data.area}}" data-dtype="Number"/>
 			{{/if}}
 			{{#if data.isRange}}
-				{{#if data.isArea}}<span style="flex: 2.8 0 16px">{{ localize "DND4EALTUS.RangeWithinOf" }}</span>{{/if}}
+				{{#if data.isArea}}<span style="flex: 1 0 6px">{{ localize "DND4EALTUS.RangeWithinOf" }}</span>{{/if}}
 				{{#unless data.isArea}}<span style="flex: 0.6 0 16px">{{ localize "DND4EALTUS.RangeOf" }}</span>{{/unless}}
 				<input type="text" name="data.rangePower" value="{{data.rangePower}}" data-dtype="Number"/>
 			{{/if}}
@@ -148,7 +148,7 @@
 		<div class="form-fields">
 			<input type="text" name="data.uses.value" value="{{data.uses.value}}" data-dtype="Number"/>
 			<span class="sep">{{ localize "DND4EALTUS.of" }}</span>
-			<input type="text" name="data.uses.max" value="{{data.uses.max}}" data-dtype="Number"/>
+			<input type="text" name="data.uses.max" value="{{data.uses.max}}"/>
 			<span class="sep">{{ localize "DND4EALTUS.per" }}</span>
 			<select name="data.uses.per">
 				{{#select data.uses.per}}
@@ -324,7 +324,7 @@
 
 	<div class="form-group stacked">
 		<label>Miss Damage {{ localize "DND4EALTUS.Formula" }}</label>
-		<input type="text" name="data.miss.formula" value="{{data.miss.formula}}"/>
+		<input type="text" name="data.miss.formula" value="{{data.miss.formula}}" placeholder="{{ localize "DND4EALTUS.MissFormulaPlaceholder" }}"/>
 	</div>
 
 	<div class="form-group stacked weapon-properties">

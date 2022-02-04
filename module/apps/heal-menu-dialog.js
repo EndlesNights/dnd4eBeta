@@ -31,7 +31,7 @@ export class HealMenuDialog extends FormApplication {
 
 		console.log(JSON.stringify(formData))
 
-		let roll = await Helper.roll(formData.bonus, "DND4EALTUS.InvalidHealingBonus")
+		let roll = await Helper.rollWithErrorHandling(formData.bonus, { errorMessageKey: "DND4EALTUS.InvalidHealingBonus"})
 
 		let surgeValueText = "0"
 		let surgeValue = 0

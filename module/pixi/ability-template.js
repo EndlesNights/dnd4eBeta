@@ -12,45 +12,44 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	 * @return {AbilityTemplate|null}         The template object, or null if the item does not produce a template
 	 */
 	static fromItem(item) {
-		// const target = getProperty(item.data, "data.target") || {};
-		// const templateShape = DND4EALTUS.areaTargetTypes[target.type];
 		const templateShape = DND4EALTUS.areaTargetTypes[item.data.data.rangeType];
 	
-	let distance = item.data.data.area;
-	if(item.data.data.rangeType === "closeBlast" || item.data.data.rangeType === "rangeBlast") {
-		distance *= Math.sqrt(2);
-	}
-	else if(item.data.data.rangeType === "rangeBurst") {
-		distance = Math.sqrt(2) * ( 1 + 2*distance);
-	}
-	else if(item.data.data.rangeType === "closeBurst") {
-		console.log(item.parent)
-		console.log(item.parent.data.data.details.size)
+		let distance = item.data.data.area;
+		let flags = {dnd4eAltus:{templateType:templateShape}};
 
-		switch(item.parent.data.data.details.size) {
-			case 'tiny':
-			case 'sm':
-			case 'med':
-				console.log('1x1');
-				distance = Math.sqrt(2) * ( 1 + 2*distance);
-				break;
-			case 'lg':
-				console.log('2x2');
-				distance = Math.sqrt(2) * ( 2 + 2*distance);
-				break;
-			case  'huge':
-				console.log('3x3');
-				distance = Math.sqrt(2) * ( 3 + 2*distance);
-				break;
-			case 'grg':
-				console.log('4x4');
-				distance = Math.sqrt(2) * ( 4 + 2*distance);
-				break;
-			default:
-				distance = Math.sqrt(2) * ( 1 + 2*distance);
+		if(item.data.data.rangeType === "closeBlast" || item.data.data.rangeType === "rangeBlast") {
+			distance *= Math.sqrt(2);
 		}
-	}
-	// if(item.data.data.rangeType === "closeBurst" || item.data.data.rangeType === "rangeBurst") distance = Math.sqrt(2) * ( 1 + 2*distance);
+		else if(item.data.data.rangeType === "rangeBurst") {
+			flags.dnd4eAltus.templateType = "rectCenter";
+			distance += 0.5;
+		}
+		else if(item.data.data.rangeType === "closeBurst") {
+			flags.dnd4eAltus.templateType = "rectCenter";
+			switch(item.parent.data.data.details.size) {
+				case 'tiny':
+				case 'sm':
+				case 'med':
+					flags.dnd4eAltus.closeBurst = 'med';
+					distance += 0.5;
+					break;
+				case 'lg':
+					flags.dnd4eAltus.closeBurst = 'lg';
+					distance += 1;
+					break;
+				case  'huge':
+					flags.dnd4eAltus.closeBurst = 'huge';
+					distance += 1.5;
+					break;
+				case 'grg':
+					flags.dnd4eAltus.closeBurst = 'grg';
+					distance += 2;
+					break;
+				default:
+					distance = Math.sqrt(2) * ( 1 + 2*distance);
+			}
+		}
+		// if(item.data.data.rangeType === "closeBurst" || item.data.data.rangeType === "rangeBurst") distance = Math.sqrt(2) * ( 1 + 2*distance);
 	
 		if ( !templateShape ) return null;
 
@@ -62,7 +61,8 @@ export default class AbilityTemplate extends MeasuredTemplate {
 			direction: 0,
 			x: 0,
 			y: 0,
-			fillColor: game.user.color
+			fillColor: game.user.color,
+			flags: flags
 		};
 
 		// Additional type-specific data
@@ -71,8 +71,6 @@ export default class AbilityTemplate extends MeasuredTemplate {
 				templateData.angle = 53.13;
 				break;
 			case "rect": // 4e rectangular AoEs are always cubes
-				// templateData.distance = Math.hypot(target.value, target.value);
-				// templateData.width = target.value;
 				templateData.direction = 45;
 				break;
 			case "ray": // 4e rays are most commonly 1 square (5 ft) in width
@@ -84,7 +82,8 @@ export default class AbilityTemplate extends MeasuredTemplate {
 
 		// Return the template constructed from the item data
 		const cls = CONFIG.MeasuredTemplate.documentClass;
-		const template = new cls(templateData, {parent: canvas.scene});        const object = new this(template);
+		const template = new cls(templateData, {parent: canvas.scene});
+		const object = new this(template);
 		object.item = item;
 		object.actorSheet = item.actor?.sheet || null;
 		return object;
@@ -94,9 +93,8 @@ export default class AbilityTemplate extends MeasuredTemplate {
 
 	/**
 	 * Creates a preview of the spell template
-	 * @param {Event} event     The initiating click event
 	 */
-	drawPreview(event) {
+	drawPreview() {
 		const initialLayer = canvas.activeLayer;
 		this.draw();
 		this.layer.activate();
@@ -121,21 +119,20 @@ export default class AbilityTemplate extends MeasuredTemplate {
 			if ( now - moveTime <= 20 ) return;
 			const center = event.data.getLocalPosition(this.layer);
 			const snapped = canvas.grid.getSnappedPosition(center.x, center.y, 2);
-			this.data.x = snapped.x;
-			this.data.y = snapped.y;
+			this.data.update({x: snapped.x, y: snapped.y});
 			this.refresh();
 			moveTime = now;
 		};
 
 		// Cancel the workflow (right-click)
 		handlers.rc = event => {
-			this.layer.preview.removeChildren();
+			this.layer._onDragLeftCancel(event);
 			canvas.stage.off("mousemove", handlers.mm);
 			canvas.stage.off("mousedown", handlers.lc);
 			canvas.app.view.oncontextmenu = null;
 			canvas.app.view.onwheel = null;
 			initialLayer.activate();
-			this.actorSheet.maximize();
+			this.actorSheet?.maximize();
 		};
 
 		// Confirm the workflow (left-click)
@@ -161,5 +158,61 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		canvas.stage.on("mousedown", handlers.lc);
 		canvas.app.view.oncontextmenu = handlers.rc;
 		canvas.app.view.onwheel = handlers.mw;
+	}
+
+	static _getCircleSquareShape(wrapper, distance){
+		if(this.data.flags.dnd4eAltus?.templateType === "rectCenter" 
+		|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4eAltus?.templateType)) {
+			let r = Ray.fromAngle(0, 0, 0, distance),
+			dx = r.dx - r.dy,
+			dy = r.dy + r.dx;
+	
+			const points = [
+				dx, dy,
+				dy, -dx,
+				-dx, -dy,
+				-dy, dx,
+				dx, dy
+			];
+			return new PIXI.Polygon(points);
+		} else {
+			return (wrapper(distance))
+		}
+	}
+	
+	static _refreshRulerBurst(wrapper){
+		if( (this.data.flags.dnd4eAltus?.templateType === "rectCenter"  && this.data.t === "circle")
+			|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4eAltus?.templateType)) {
+				let d;
+				let text;
+	
+				if(this.data.flags.dnd4eAltus?.closeBurst){
+					switch(this.data.flags.dnd4eAltus?.closeBurst){
+						case 'lg':
+							d = Math.max(Math.round((this.data.distance -1.0 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d} \n(${DND4EALTUS.actorSizes[this.data.flags.dnd4eAltus.closeBurst]})`;
+							break;
+						case 'huge':
+							d = Math.max(Math.round((this.data.distance -1.5 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d} \n(${DND4EALTUS.actorSizes[this.data.flags.dnd4eAltus.closeBurst]})`;
+							break;
+						case 'grg':
+							d = Math.max(Math.round((this.data.distance -2.0 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d} \n(${DND4EALTUS.actorSizes[this.data.flags.dnd4eAltus.closeBurst]})`;
+							break;
+						default:
+							d = Math.max(Math.round((this.data.distance -0.5 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d}`;
+					}
+				} else {
+					d = Math.max(Math.round((this.data.distance -0.5 )* 10) / 10, 0);
+					text = `Burst ${d}`;
+				}
+	
+				this.hud.ruler.text = text;
+				this.hud.ruler.position.set(this.ray.dx + 10, this.ray.dy + 5);
+		} else {
+			return wrapper();
+		}
 	}
 }

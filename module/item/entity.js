@@ -17,8 +17,59 @@ export default class Item4e extends Item {
 		if (this.type === "weapon" && changed.data?.weaponType === "implement"){
 			foundry.utils.setProperty(changed, "data.properties.imp", true);
 		}
+
+		if (this.data.type === "consumable") {
+			const data = this.data.data
+			// does it have an old damage expression
+			if (data.damage.parts?.length > 0) {
+				console.log("DnD4e: Updating an obsolete consumable that somehow still had a parts roll")
+				// ok so need to fix it
+				if (data.damage.parts.map(d => d[1]).includes("healing") && !changed.data.hit?.healFormula) {
+					foundry.utils.setProperty(changed, "data.hit.healFormula", data.damage.parts[0][0])
+					foundry.utils.setProperty(changed, "data.hit.isHealing", true)
+				}
+				foundry.utils.setProperty(changed, "data.damage.parts", [])
+				// non healing damage expressions didn't work anyway
+			}
+			if (data.oldConsumableNeedsUpdate === true) {
+				console.log("DnD4e: Updating an obsolete consumable")
+				foundry.utils.setProperty(changed, "data.damage.parts", [])
+				foundry.utils.setProperty(changed, "data.hit.healFormula", data.hit.healFormula)
+				foundry.utils.setProperty(changed, "data.hit.isHealing", data.hit.isHealing)
+				delete data.oldConsumableNeedsUpdate
+			}
+		}
+
+		if (this.data.type === "ritual") {
+			const data = this.data.data
+			if (data.oldRitualNeedsUpdating === true) {
+				console.log("DnD4e: Updating an obsolete ritual")
+				foundry.utils.setProperty(changed, "data.formula", "@attribute")
+				delete data.oldRitualNeedsUpdating
+			}
+		}
 	}
 
+	get preparedMaxUses() {
+		const data = this.data.data;
+		if (!data.uses?.max) return null;
+		let max = data.uses.max;
+	
+		// If this is an owned item and the max is not numeric, we need to calculate it
+		if (this.isOwned && !Number.isNumeric(max)) {
+		  if (this.actor.data === undefined) return null;
+		  try {
+			max = Helper.commonReplace(max, this.actor.data);
+			max = Roll.replaceFormulaData(max, this.actor.getRollData(), {missing: 0, warn: true});
+			max = Roll.safeEval(max);
+		  } catch(e) {
+			console.error("Problem preparing Max uses for", this.data.name, e);
+			return null;
+		  }
+		}
+		return Math.round(Number(max));
+	  }	
+	  
 	/* -------------------------------------------- */
 	/*  Item Properties                             */
 	/* -------------------------------------------- */
@@ -95,12 +146,8 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	 get hasHealing() {
-		if(this.data.type === "power"){
+		if(this.data.type === "power" || this.data.type === "consumable"){
 			return this.data.data.hit?.isHealing;
-		}
-		else if(this.data.type === "consumable"){
-			return this.data.data.damage.parts.map(d => d[1]).includes("healing");
-			
 		}
 		return false; //curently only powers will deal damage or make attacks
 		
@@ -176,7 +223,7 @@ export default class Item4e extends Item {
 	get hasLimitedUses() {
 		let chg = this.data.data.recharge || {};
 		let uses = this.data.data.uses || {};
-		return !!chg.value || (!!uses.per && (uses.max > 0));
+		return !!chg.value || (!!uses.per && (this.preparedMaxUses > 0));
 	}
 
 	/* -------------------------------------------- */
@@ -190,37 +237,9 @@ export default class Item4e extends Item {
 		super.prepareData();
 		// Get the Item's data
 		const itemData = this.data;
-		const actorData = this.actor ? this.actor.data : {};
 		const data = itemData.data;
 		const C = CONFIG.DND4EALTUS;
 		const labels = {};
-
-		
-		// Classes
-		// if ( itemData.type === "class" ) {
-		// 	data.levels = Math.clamped(data.levels, 1, 20);
-		// }
-
-		// Spell Level,  School, and Components
-		// if ( itemData.type === "spell" ) {
-		// 	labels.level = C.spellLevels[data.level];
-		// 	labels.school = C.spellSchools[data.school];
-		// 	labels.components = Object.entries(data.components).reduce((arr, c) => {
-		// 		if ( c[1] !== true ) return arr;
-		// 		arr.push(c[0].titleCase().slice(0, 1));
-		// 		return arr;
-		// 	}, []);
-		// 	labels.materials = data?.materials?.value ?? null;
-		// }
-
-		// Feat Items
-		// else if ( itemData.type === "feat" ) {
-		// 	const act = data.activation;
-		// 	if ( act && (act.type === C.abilityActivationTypes.legendary) ) labels.featType = game.i18n.localize("DND4EALTUS.LegendaryActionLabel");
-		// 	else if ( act && (act.type === C.abilityActivationTypes.lair) ) labels.featType = game.i18n.localize("DND4EALTUS.LairActionLabel");
-		// 	else if ( act && act.type ) labels.featType = game.i18n.localize(data.damage.length ? "DND4EALTUS.Attack" : "DND4EALTUS.Action");
-		// 	else labels.featType = game.i18n.localize("DND4EALTUS.Passive");
-		// }
 
 		// Equipment Items
 		if ( itemData.type === "equipment" ) {
@@ -256,7 +275,54 @@ export default class Item4e extends Item {
 			// Duration Label
 			let dur = data.duration || {};
 			if (["inst", "perm"].includes(dur.units)) dur.value = null;
-			labels.duration = [dur.value, C.timePeriods[dur.units]].filterJoin(" ");
+
+			labels.duration = dur.value? `${game.i18n.localize("DND4EALTUS.Duration")}: ${[dur.value, C.timePeriods[dur.units]].filterJoin(" ")}` : null;
+
+			// CastTime Label
+			if (data.castTime) {
+				let castTime = data.castTime || {};
+				if (["inst", "perm"].includes(castTime.units)) castTime.value = null;
+				labels.castTime = `${game.i18n.localize("DND4EALTUS.CastTime")}: ${[castTime.value, C.timePeriods[castTime.units]].filterJoin(" ")}`;
+			}
+
+
+			// Attribute Label
+			if(data.attribute){
+				const attribute = data.attribute.split('.')[1];
+				if(DND4EALTUS.abilities[attribute]){
+					console.log(data)
+					labels.attribute = `${game.i18n.localize("DND4EALTUS.Ability")}: ${DND4EALTUS.abilities[attribute]}`;
+				}
+				else if(DND4EALTUS.skills[attribute]){
+					labels.attribute = `${game.i18n.localize("DND4EALTUS.Skill")}: ${DND4EALTUS.skills[attribute]}`;
+				}
+			}
+
+			//Component type + cost Label
+			if(itemData.type === "ritual"){
+				if(data.consume?.amount && data.consume?.type === "attribute" ){
+					const resourceTarget = data.consume.target.split('.')[1];
+					let resourceLabel;
+
+					if(DND4EALTUS.ritualcomponents[resourceTarget]){
+						resourceLabel = game.i18n.localize(DND4EALTUS.ritualcomponents[resourceTarget]);
+					}
+					else if(DND4EALTUS.currencyConversion[resourceTarget]){
+						resourceLabel = game.i18n.localize(DND4EALTUS.currencies[resourceTarget]);
+					}
+					else if(resourceTarget === "hp"){
+						resourceLabel = game.i18n.localize("DND4EALTUS.HP");
+					}
+					else if(resourceTarget === "surges"){
+						resourceLabel = game.i18n.localize("DND4EALTUS.HealingSurges");
+					}
+
+					if(resourceLabel){
+						labels.component = `${game.i18n.localize("DND4EALTUS.Component")}: ${resourceLabel}`;
+						labels.componentCost = `${game.i18n.localize("DND4EALTUS.ComponentCost")}: ${data.consume.amount}`;
+					}
+				}
+			}
 
 			// Recharge Label
 			let chg = data.recharge || {};
@@ -276,51 +342,28 @@ export default class Item4e extends Item {
 			}
 		}
 
-		// Item Actions
-		if ( data.hasOwnProperty("actionType") ) {
-			// Save DC
-			// let save = data.save || {};
-			// if ( !save.ability ) save.dc = null;
-			// else if ( this.isOwned ) { // Actor owned items
-			// 	if ( save.scaling === "spell" ) save.dc = actorData.data.attributes.spelldc;
-			// 	else if ( save.scaling !== "flat" ) save.dc = this.actor.getSpellDC(save.scaling);
-			// } else { // Un-owned items
-			// 	if ( save.scaling !== "flat" ) save.dc = null;
-			// }
-			// labels.save = save.ability ? `${game.i18n.localize("DND4EALTUS.AbbreviationDC")} ${save.dc || ""} ${C.abilities[save.ability]}` : "";
-
-			// DamageTypes
-			// let dam = data.damage || {};
-			// if ( dam.parts ) {
-			// 	labels.damage = dam.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
-			// 	labels.damageTypes = dam.parts.map(d => C.damageTypes[d[1]]).join(", ");
-
-			// 	if(DND4EALTUS.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
-			// 		if(this.data.data.damageType) {
-			// 			for (let [id, data] of Object.entries(this.data.data.damageType)) {
-			// 				if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EALTUS.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EALTUS.damageTypes[id]}`;
-			// 			}
-			// 		}
-			// 	}
-			// }
-
-			// let damCrit = data.damageCrit || {};
-			// if(damCrit.parts) {
-			// 	labels.damage = damCrit.parts.map(d => d[0]).join(" + ").replace(/\+ -/g, "- ");
-			// 	labels.damageTypes = damCrit.parts.map(d => C.damageTypes[d[1]]).join(", ");
-
-			// 	if(DND4EALTUS.powerUseType[itemData.type] || itemData.type === "weapon" || itemData.type === "power") {
-			// 		if(this.data.data.damageType) {
-			// 			for (let [id, data] of Object.entries(this.data.data.damageType)) {
-			// 				if(data) labels.damageTypes = labels.damageTypes? `${CONFIG.DND4EALTUS.damageTypes[id]}, ` + labels.damageTypes : `${CONFIG.DND4EALTUS.damageTypes[id]}`;
-			// 			}
-			// 		}
-			// 	}				
-			// }
+		// fix old healing consumables to migrate them to the new structure
+		if (itemData.type === "consumable") {
+			// does it have an old damage expression
+			if (data.damage.parts?.length > 0) {
+				if (data.damage.parts.map(d => d[1]).includes("healing") && !data.hit?.healFormula) {
+					data.hit.healFormula = data.damage.parts[0][0]
+					data.hit.isHealing = true
+					data.damage.parts = []
+					data.oldConsumableNeedsUpdate = true
+					// don't unassign parts here because it will get permanently solved by the update statement
+				}
+				// non healing damage expressions didn't work anyway
+			}
 		}
 
 		// Assign labels
 		this.labels = labels;
+
+		if(this.isOwned){
+			data.preparedMaxUses = this.preparedMaxUses;
+		}
+
 	}
 
 	/* -------------------------------------------- */
@@ -352,10 +395,10 @@ export default class Item4e extends Item {
 
 		}
 		const cardData = (() => {
-			if (this.data.type == "power" && this.data.data.autoGenChatPowerCard) {
+			if ((this.data.type === "power" || this.data.type === "consumable") && this.data.data.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.data.data, this.actor);
 				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG);
-				return Helper.commonReplace(cardString, this.actor.data.data, this.data, weaponUse? weaponUse.data.data : null, 1);
+				return Helper.commonReplace(cardString, this.actor.data, this.data, weaponUse? weaponUse.data.data : null, 1);
 			} else {
 				return null;
 			}
@@ -395,7 +438,11 @@ export default class Item4e extends Item {
 		if ( allowed === false ) return;
 
 		// Render the chat card template
-		const templateType = ["tool"].includes(this.data.type) ? this.data.type : "item";
+		let templateType = "item"
+		if (["tool", "ritual"].includes(this.data.type)) {
+			templateType =  this.data.type
+			templateData.abilityCheck  = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
+		}
 		const template = `systems/dnd4eAltus/templates/chat/${templateType}-card.html`;
 		let html = await renderTemplate(template, templateData);
 
@@ -431,7 +478,6 @@ export default class Item4e extends Item {
 			ChatMessage.create(chatData);
 
 			if(["both", "post"].includes(this.data.data.macro?.launchOrder)) {
-
 				let itemMacro = new Macro ({
 					name : this.name,
 					type : this.data.data.macro.type,
@@ -470,7 +516,7 @@ export default class Item4e extends Item {
 		if ( !consume.type ) return true;
 		const actor = this.actor;
 		const typeLabel = CONFIG.DND4EALTUS.abilityConsumptionTypes[consume.type];
-		const amount = parseInt(consume.amount || 1);
+		const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 1;
 
 		// Only handle certain types for certain actions
 		if ( ((consume.type === "ammo") && !isAttack ) || ((consume.type !== "ammo") && !isCard) ) return true;
@@ -539,7 +585,8 @@ export default class Item4e extends Item {
 		// Configure whether to consume a limited use or to place a template
 		const charge = this.data.data.recharge;
 		const uses = this.data.data.uses;
-		let usesCharges = !!uses.per && (uses.max > 0);
+				
+		let usesCharges = !!uses.per && (this.preparedMaxUses > 0);
 		let placeTemplate = false;
 		let consume = charge.value || usesCharges;
 
@@ -612,9 +659,13 @@ export default class Item4e extends Item {
 		if ( data.hasOwnProperty("activation") ) {
 			props.push(
 				labels.activation + (data.activation?.condition ? ` (${data.activation.condition})` : ""),
+				labels.attribute,
 				labels.target,
 				data.isRanged && labels.range ? `${game.i18n.localize("DND4EALTUS.Range")}: ${labels.range}` : "",
+				labels.castTime,
 				labels.duration,
+				labels.component,
+				labels.componentCost,
 				labels.damageTypes,
 				labels.effectType,
 			);
@@ -667,7 +718,7 @@ export default class Item4e extends Item {
 	_consumableChatData(data, labels, props) {
 		props.push(
 			CONFIG.DND4EALTUS.consumableTypes[data.consumableType],
-			data.uses.value + "/" + data.uses.max + " " + game.i18n.localize("DND4EALTUS.Charges")
+			data.uses.value + "/" + data.preparedMaxUses + " " + game.i18n.localize("DND4EALTUS.Charges")
 		);
 		data.hasCharges = data.uses.value >= 0;
 	}
@@ -736,7 +787,7 @@ export default class Item4e extends Item {
 	 */
 	async rollAttack(options={}) {
 		const itemData = this.data.data;
-		const actorData = this.actor.data.data;
+		const actorData = this.actor.data;
 		// itemData.weaponUse = 2nd dropdown - default/none/weapon
 		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...
 		// find details on the weapon being used, if any.   This is null if no weapon is being used.
@@ -770,10 +821,10 @@ export default class Item4e extends Item {
 		const parts = [];
 		const partsExpressionReplacements = [];
 		if(!!itemData.attack.formula) {		
-			parts.push(Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null))
+			parts.push(Helper.commonReplace(itemData.attack.formula, actorData, this.data.data, weaponUse? weaponUse.data.data : null))
 			partsExpressionReplacements.push({value : itemData.attack.formula, target: parts[0]})
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula,actorData, this.data.data, weaponUse? weaponUse.data.data : null, 1, true)
+			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData, this.data.data, weaponUse? weaponUse.data.data : null, 1, true)
 		}
 
 		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
@@ -834,6 +885,8 @@ export default class Item4e extends Item {
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.data.data.consume, "weapon used by the power")
 		}
 
+		await Helper.applyEffects([parts], rollData, actorData, this.data, weaponUse?.data, "attack")
+
 		// Compose roll options
 		const rollConfig = {
 			parts,
@@ -885,9 +938,10 @@ export default class Item4e extends Item {
 	 *
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
-	rollDamage({event, spellLevel=null, versatile=false}={}) {
+	async rollDamage({event, spellLevel=null, versatile=false}={}) {
 		const itemData = this.data.data;
-		const actorData = this.actor.data.data;
+		const actorData = this.actor.data;
+		const actorInnerData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
@@ -1027,7 +1081,7 @@ export default class Item4e extends Item {
 		}
 	
 		// Define Roll Data
-		const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
+		const actorBonus = getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
 		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
 			// parts.push("@dmg");
 			// partsCrit.push("@dmg");
@@ -1094,6 +1148,8 @@ export default class Item4e extends Item {
 		partsCritExpressionReplacement.unshift({target : partsCrit[0], value: critDamageFormulaExpression})
 		partsMissExpressionReplacement.unshift({target : partsMiss[0], value: missDamageFormulaExpression})
 
+		await Helper.applyEffects([parts, partsCrit, partsMiss], rollData, actorData, this.data, weaponUse?.data, "damage")
+
 		return damageRoll({
 			event,
 			parts,
@@ -1124,7 +1180,8 @@ export default class Item4e extends Item {
 	 */
 	rollHealing({event, spellLevel=null, versatile=false}={}) {
 		const itemData = this.data.data;
-		const actorData = this.actor.data.data;
+		const actorData = this.actor.data;
+		const actorInnerData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
@@ -1190,7 +1247,7 @@ export default class Item4e extends Item {
 		// }
 	
 		// Define Roll Data
-		const actorBonus = getProperty(actorData, `bonuses.${itemData.actionType}`) || {};
+		const actorBonus = getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
 		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
 			parts.push("@dmg");
 			rollData["dmg"] = actorBonus.damage;
@@ -1283,7 +1340,7 @@ export default class Item4e extends Item {
 		// Determine whether to deduct uses of the item
 		const uses = itemData.uses || {};
 		const autoDestroy = uses.autoDestroy;
-		let usesCharges = !!uses.per && (uses.max > 0);
+		let usesCharges = !!uses.per && (this.preparedMaxUses > 0);
 		const recharge = itemData.recharge || {};
 		const usesRecharge = !!recharge.value;
 
@@ -1310,7 +1367,7 @@ export default class Item4e extends Item {
 				}
 				// Case 2, reduce quantity
 				else if ( q > 1 ) {
-					await this.update({"data.quantity": q - 1, "data.uses.value": uses.max || 0});
+					await this.update({"data.quantity": q - 1, "data.uses.value": this.preparedMaxUses || 0});
 				}
 				// Case 3, destroy the item
 				else if ( (q <= 1) && autoDestroy ) {
@@ -1369,22 +1426,40 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollToolCheck(options={}) {
-		if ( this.type !== "tool" ) throw "Wrong item type!";
+		return this.rollToolOrRitualCheck("tool", "DND4EALTUS.ToolCheck", options)
+	}
+
+	/**
+	 * Roll a Ritual Check. Rely upon the d20Roll logic for the core implementation
+	 * @prarm {Object} options   Roll configuration options provided to the d20Roll function
+	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
+	 */
+	rollRitualCheck(options={}) {
+		return this.rollToolOrRitualCheck("ritual", "DND4EALTUS.RitualCheck", options)
+	}
+
+	rollToolOrRitualCheck(rollType, titleKey, options={}) {
+		//if ( this.type !== "tool" ) throw "Wrong item type!";
 		// Prepare roll data
 		let rollData = this.getRollData();
-		const parts = ["@tool"];
+		const parts = ["@" + rollType];
 
-		rollData["tool"] = this.data.data.formula? Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data.data, this.data.data) : `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)} + ${this.data.data.bonus}`;
-			const title = `${this.name} - ${game.i18n.localize("DND4EALTUS.ToolCheck")}`;
+		if(this.data.data.formula) {
+			rollData[rollType] = Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data, this.data.data)
+		} else {
+			rollData[rollType] = `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)}`; 
+			if(this.data.data.bonus) rollData[rollType]+= `${this.data.data.bonus}`;
+		}
+		console.log(rollData[rollType])
+		const title = `${this.name} - ${game.i18n.localize(titleKey)}`;
 
 		const label = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
 
-		const flavor = this.data.data.chatFlavor ?  `${this.data.data.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize("DND4EALTUS.ToolCheck")}  (${label} check)`;
+		const flavor = this.data.data.chatFlavor ?  `${this.data.data.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize(titleKey)}  (${label} check)`;
 		// Compose the roll data
 		const rollConfig = mergeObject({
 			parts: parts,
 			data: rollData,
-			// template: "systems/dnd4eAltus/templates/chat/tool-roll-dialog.html",
 			title: title,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: flavor,
@@ -1393,10 +1468,9 @@ export default class Item4e extends Item {
 				top: options.event ? options.event.clientY - 80 : null,
 				left: window.innerWidth - 710,
 			},
-			// halflingLucky: this.actor.getFlag("dnd4eAltus", "halflingLucky" ) || false,
-			messageData: {"flags.dnd4eAltus.roll": {type: "tool", itemId: this.id }}
+			messageData: {"flags.dnd4eAltus.roll": {type: rollType, itemId: this.id }}
 		}, options);
-	
+
 		rollConfig.event = options.event;
 		// Call the roll helper utility
 		return d20Roll(rollConfig);
@@ -1511,6 +1585,7 @@ export default class Item4e extends Item {
 
 		// Tool usage
 		else if ( action === "toolCheck" ) await item.rollToolCheck({event});
+		else if ( action === "ritualCheck" ) await item.rollRitualCheck({event});
 
 		// Spell Template Creation
 		else if ( action === "placeTemplate") {
@@ -1578,57 +1653,5 @@ export default class Item4e extends Item {
 		const targets = controlled.reduce((arr, t) => t.actor ? arr.concat([t.actor]) : arr, []);
 		if ( character && (controlled.length === 0) ) targets.push(character);
 		return targets;
-	}
-
-	/* -------------------------------------------- */
-	/*  Factory Methods                             */
-	/* -------------------------------------------- */
-
-	/**
-	 * Create a consumable spell scroll Item from a spell Item.
-	 * @param {Item4e} spell      The spell to be made into a scroll
-	 * @return {Item4e}           The created scroll consumable item
-	 * @private
-	 */
-	static async createScrollFromSpell(spell) {
-
-		// Get spell data
-		const itemData = spell instanceof Item4e ? spell.data : spell;
-		const {actionType, description, source, activation, duration, target, range, damage, save, level} = itemData.data;
-
-		// Get scroll data
-		const scrollUuid = CONFIG.DND4EALTUS.spellScrollIds[level];
-		const scrollItem = await fromUuid(scrollUuid);
-		const scrollData = scrollItem.data;
-		delete scrollData._id;
-
-		// Split the scroll description into an intro paragraph and the remaining details
-		const scrollDescription = scrollData.data.description.value;
-		const pdel = '</p>';
-		const scrollIntroEnd = scrollDescription.indexOf(pdel);
-		const scrollIntro = scrollDescription.slice(0, scrollIntroEnd + pdel.length);
-		const scrollDetails = scrollDescription.slice(scrollIntroEnd + pdel.length);
-
-		// Create a composite description from the scroll description and the spell details
-		const desc = `${scrollIntro}<hr/><h3>${itemData.name} (Level ${level})</h3><hr/>${description.value}<hr/><h3>Scroll Details</h3><hr/>${scrollDetails}`;
-
-		// Create the spell scroll data
-		const spellScrollData = mergeObject(scrollData, {
-			name: `${game.i18n.localize("DND4EALTUS.SpellScroll")}: ${itemData.name}`,
-			img: itemData.img,
-			data: {
-				"description.value": desc.trim(),
-				source,
-				actionType,
-				activation,
-				duration,
-				target,
-				range,
-				damage,
-				save,
-				level
-			}
-		});
-		return new this(spellScrollData);
 	}
 }

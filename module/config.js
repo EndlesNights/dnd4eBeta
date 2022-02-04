@@ -295,10 +295,11 @@ DND4EALTUS.creatureRole = {
 /* -------------------------------------------- */
 
 DND4EALTUS.creatureRoleSecond = {
-	"regular": "DND4EALTUS.CreatureRoleSecRegular",
+	"standard": "DND4EALTUS.CreatureRoleSecStandard",
 	"elite": "DND4EALTUS.CreatureRoleSecElite",
 	"solo": "DND4EALTUS.CreatureRoleSecSolo",
 	"minion": "DND4EALTUS.CreatureRoleSecMinion",
+	"other": "DND4EALTUS.CreatureRoleSecOther",
 }
 
 /* -------------------------------------------- */
@@ -317,13 +318,12 @@ DND4EALTUS.creatureType = {
  * @type {Object}
  */
 DND4EALTUS.consumableTypes = {
+  "alchemical": "DND4EALTUS.ConsumableAlchemical",
   "ammo": "DND4EALTUS.ConsumableAmmunition",
   "potion": "DND4EALTUS.ConsumablePotion",
   "poison": "DND4EALTUS.ConsumablePoison",
   "food": "DND4EALTUS.ConsumableFood",
   "scroll": "DND4EALTUS.ConsumableScroll",
-  "wand": "DND4EALTUS.ConsumableWand",
-  "rod": "DND4EALTUS.ConsumableRod",
   "trinket": "DND4EALTUS.ConsumableTrinket"
 };
 
@@ -483,9 +483,9 @@ DND4EALTUS.areaTargetTypes = {
   square: "rect",
   wall: "ray",
   closeBlast: "rect",
-  closeBurst: "rect",
+  closeBurst: "circle",
   rangeBlast: "rect",
-  rangeBurst: "rect",
+  rangeBurst: "circle",
 };
 
 
@@ -603,6 +603,10 @@ DND4EALTUS.rangeType = {
 	"personal": "DND4EALTUS.rangePersonal",
 	"touch": "DND4EALTUS.rangeTouch",
 };
+
+DND4EALTUS.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4EALTUS.rangeType).filter(function ([key, value]) {
+	return key !== "weapon";
+}));
 
 DND4EALTUS.effectTypes = {
 	"augmentable": "DND4EALTUS.Augmentable",
@@ -824,6 +828,17 @@ DND4EALTUS.weaponGroup = {
 	"staff": "DND4EALTUS.WeaponGroupStaff",
 	"unarm": "DND4EALTUS.WeaponGroupUnarm",
 	"whip": "DND4EALTUS.WeaponGroupWhip"
+};
+
+DND4EALTUS.implementGroup = {
+	"holyS": "DND4EALTUS.ImplementGroupHolySymbol",
+	"ki": "DND4EALTUS.ImplementGroupKiFocus",
+	"orb": "DND4EALTUS.ImplementGroupOrb",
+	"rod": "DND4EALTUS.ImplementGroupRod",
+	"staff": "DND4EALTUS.ImplementGroupStaff",
+	"tome": "DND4EALTUS.ImplementGroupTome",
+	"totem": "DND4EALTUS.ImplementGroupTotem",
+	"wand": "DND4EALTUS.ImplementGroupWand"
 };
 
 /* -------------------------------------------- */

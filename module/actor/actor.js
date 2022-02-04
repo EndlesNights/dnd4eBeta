@@ -275,7 +275,7 @@ export class Actor4e extends Actor {
 
 		// Skill modifiers
 		//Calc defence stats
-		if (this.data.type === "NPC") {
+		if(this.data.type === "NPC"){
 			this.calcSkillNPC(data);
 			this.calcDefenceStatsNPC(data);
 		} else {
@@ -288,7 +288,7 @@ export class Actor4e extends Actor {
 		if(!game.settings.get("dnd4eAltus", "halfLevelOptions")){
 			initBonusValue += Math.floor(data.details.level / 2);
 		}
-		
+
 		if(!(data.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(data.attributes.init.bonus[0]))) {
 			for( const b of data.attributes.init.bonus) {
 				if(b.active  && Helper._isNumber(b.value)) {
@@ -303,7 +303,12 @@ export class Actor4e extends Actor {
 			}
 		}
 		data.attributes.init.bonusValue = initBonusValue;
-		data.attributes.init.value = (data.abilities[data.attributes.init.ability].mod + initBonusValue);
+		if(this.data.type === "NPC" && !data.advancedCals){
+			data.attributes.init.value = (data.attributes.init.ability ? data.abilities[data.attributes.init.ability].mod : 0) + (data.attributes.init.base || 0) + initBonusValue;
+		} else {
+			data.attributes.init.value = data.attributes.init.ability ? data.abilities[data.attributes.init.ability].mod + initBonusValue : initBonusValue;
+		}
+		
 		if(data.attributes.init.value > 999)
 			data.attributes.init.value = 999;
 		
@@ -1162,5 +1167,17 @@ export class Actor4e extends Actor {
 		}
 
 		return this
+	}
+
+	/** @inheritdoc */
+	async _preCreate(data, options, user) {
+		await super._preCreate(data, options, user);
+		const sourceId = this.getFlag("core", "sourceId");
+		if ( sourceId?.startsWith("Compendium.") ) return;
+
+		// Player character configuration
+		if ( this.type === "Player Character" ) {
+			this.data.token.update({vision: true, actorLink: true, disposition: 1});
+		}
 	}
 }

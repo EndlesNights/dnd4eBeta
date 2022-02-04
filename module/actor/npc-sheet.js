@@ -17,25 +17,13 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 		return `systems/dnd4eAltus/templates/npc-sheet.html`;
 	}
 
-	prepareData() {
-		super.prepareData();
-		console.log("RIPRIP")
-
-	}
-
-	/** @override */
-	calcDefenceStats(data) {
-		console.log("RIP")
-		// super.calcDefenceStats(data);
-	}
-
 	/* -------------------------------------------- */
 
 	/** @override */
 	setPosition(options={}) {
 		const position = super.setPosition(options);
 		const sheetBody = this.element.find(".sheet-body");
-		const bodyHeight = position.height - 304;
+		const bodyHeight = position.height - 312;
 		sheetBody.css("height", bodyHeight);
 		return position;
 	}

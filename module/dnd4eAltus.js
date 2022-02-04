@@ -83,7 +83,6 @@ Hooks.once("init", async function() {
 
 	
 	Items.unregisterSheet("core", ItemSheet);
-	// Items.registerSheet("dnd4eAltus", SimpleItemSheet, {makeDefault: true});
 	Items.registerSheet("dnd4eAltus", ItemSheet4e, {makeDefault: true});
 
 	// Register system settings
@@ -99,15 +98,6 @@ Hooks.once("init", async function() {
 	// Preload Handlebars Templates
 	preloadHandlebarsTemplates();
 
-
-		// Define dependency on our own custom vue components for when we need it
-		// Dlopen.register('actor-sheet', {
-		// 	scripts: "/systems/dnd4eAltus/dist/vue-components.min.js",
-		// 	// dependencies: [ "vue-select", "vue-numeric-input" ]
-		// });
-
-
-
 	// setup methods that allow for easy integration with token hud
 	game.dnd4eAltus.quickSave = (actor) => new SaveThrowDialog(actor)._updateObject(null, {save : 0, dc: 10})
 });
@@ -119,8 +109,8 @@ Hooks.once("setup", function() {
 	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes",
 	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits",
 	"damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
-	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "featureSortTypes", "healingTypes", "itemActionTypes",
-	"launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType",
+	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "featureSortTypes", "healingTypes", "implementGroup", "itemActionTypes",
+	"launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "rangeTypeNoWeapon",
 	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
 	"weaponTypes", "weaponHands"
 	];
@@ -129,17 +119,6 @@ Hooks.once("setup", function() {
 		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerGroupTypes", "rangeType", "weaponType", "weaponTypes", "weaponHands"
 	];
 	
-	// const doLocalize = function(obj) {
-		// return Object.entries(obj).reduce((obj, e) => {
-			// if (typeof e[1] === "string") obj[e[0]] = game.i18n.localize(e[1]);
-			// else if (typeof e[1] === "object") obj[e[0]] = doLocalize(e[1]);
-			// return obj;
-		// }, {});
-	// };
-	// for ( let o of toLocalize ) {
-		// CONFIG.DND4EALTUS[o] = doLocalize(CONFIG.DND4EALTUS[o]);
-	// }
-// });
 	for ( let o of toLocalize ) {
 		const localized = Object.entries(CONFIG.DND4EALTUS[o]).map(e => {
 			return [e[0], game.i18n.localize(e[1])];
@@ -271,11 +250,39 @@ const apply = (wrapped, owner, change) => {
 }
 
 Hooks.once('init', async function() {
-  console.info(`AAAA`, libWrapper);
 
-  libWrapper.register(
-    'dnd4eAltus',
-    'ActiveEffect.prototype.apply',
-    apply
-  );
+	libWrapper.register(
+		'dnd4eAltus',
+		'ActiveEffect.prototype.apply',
+		apply
+	);
+
+	libWrapper.register(
+		'dnd4eAltus',
+		'MeasuredTemplate.prototype._getCircleShape',
+		AbilityTemplate._getCircleSquareShape
+	);
+
+	libWrapper.register(
+		'dnd4eAltus',
+		'MeasuredTemplate.prototype._refreshRulerText',
+		AbilityTemplate._refreshRulerBurst
+	);
+});
+
+Hooks.on("getSceneControlButtons", function(controls){
+	//create addtioanl button in measure templates for burst
+	controls[1].tools.splice(controls[2].tools.length-1,0,{
+		name: "rectCenter",
+		title: "Square Template from the Center",
+		icon: "fas fa-external-link-square-alt",
+		onClick: toggled => canvas.templates._setWallCollision = toggled
+  })
+})
+
+Hooks.on("createMeasuredTemplate", (obj,temp,userID) => {
+	//set flag based on wich tool is selected
+	if(game.userId === userID && !obj.data.flags.dnd4eAltus?.templateType) {
+		obj.setFlag("dnd4eAltus", 'templateType',ui.controls.activeControl === "measure" ? ui.controls.activeTool : obj.data.t);
+	}
 });

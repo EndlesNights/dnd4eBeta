@@ -90,6 +90,7 @@
 			<div class="form-group">
 				<label>{{ localize "DND4EALTUS.DefaultAbilitySkillCheck" }}</label>
 				<select name="data.attribute">
+					<option value=""></option>
 					{{#select data.attribute}}
 					{{#each config.abilities as |name a|}}
 					<option value="abilities.{{a}}.mod">{{name}}</option>
@@ -99,6 +100,11 @@
 					{{/each}}
 					{{/select}}
 				</select>
+			</div>
+
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.RollFormula" }}</label>
+				<input type="text" name="data.formula" value="{{data.formula}}" placeholder="{{ localize "DND4EALTUS.RollPlaceholderRitual"}}"/>
 			</div>
 
 			<div class="form-group uses-per">
@@ -126,6 +132,7 @@
 		</div>
 
 		{{!-- Macros Tab --}}
-		{{> "systems/dnd4eAltus/templates/items/parts/item-macro.html"}}
+<!-- DO NOT INDENT ME:  All of my indentation will be transferred to the macro text every time it is opened, causing each line of the macro to get steadily more tabs in front of it and march across the screen -->
+{{> "systems/dnd4eAltus/templates/items/parts/item-macro.html"}}
 	</section>
 </form>

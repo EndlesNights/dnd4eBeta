@@ -1,10 +1,46 @@
 # Changelog
 
+## Version 0.2.61
+- removed the default miss formula and effects [merge](https://github.com/EndlesNights/dnd4eAltus/pull/162) from [draconas1](https://github.com/draconas1)
+
+## Version 0.2.60
+- fix implement groupings [merge](https://github.com/EndlesNights/dnd4eAltus/pull/159) from [draconas1](https://github.com/draconas1)
+- fixed issue with NPC initiative calculation check.... again...
+- minor tweaks to NPC sheet CSS
+- changed how ritual roll formulas work
+- added labels to Rituals / Tool items
+
+## Version 0.2.59
+- fixed issue with NPC initiative calculation check
+- can now use @varubles math formulas when define the max limited use of powers/items
+- fixed roll expressions highlighting [merge](https://github.com/EndlesNights/dnd4eAltus/pull/152) from [draconas1](https://github.com/draconas1)
+- added leader to npc template [merge](https://github.com/EndlesNights/dnd4eAltus/pull/153) from [draconas1](https://github.com/draconas1)
+- fixed ritual Rolling issue #95 [merge](https://github.com/EndlesNights/dnd4eAltus/pull/154) from [draconas1](https://github.com/draconas1)
+- compendium equipment updates [merge](https://github.com/EndlesNights/dnd4eAltus/pull/155) from [draconas1](https://github.com/draconas1)
+- updated to effect variables [merge](https://github.com/EndlesNights/dnd4eAltus/pull/156) from [draconas1](https://github.com/draconas1)
+
+## Version 0.2.58
+- added custom mesure template to Foundry for burst
+- "Regular" creatureRoleSecond renamed to "Standard"
+- added "Other" option to creatureRoleSecond
+- again changed the NPC monster leader value to be stored at 'data.details.role.leader' instead of 'data.details.leader'
+
+## Version 0.2.57
+- changed the NPC monster leader value to be stored at 'data.details.leader' instead of 'data.leader'
+- NPC initiative will no longer add mod score while advanced math option is set to false 
+
+## Version 0.2.56
+- Player Character Actors will now start with:
+	data linked between character sheet to tokens
+	vision mode turned on
+	token disposition set to friendly
+- refactoring of commonReplace formula
+
 ## Version 0.2.55
 - Minor tweaks to tool checks [merge](https://github.com/EndlesNights/dnd4eAltus/pull/146) from [draconas1](https://github.com/draconas1)
-- Added Alignement back to Character and NPC sheets
-- Added Spoken Lauguage options to NPC sheets
-- Minnor tweak to CSS to fix the formating around custom resources
+- Added Alignment back to Character and NPC sheets
+- Added Spoken Language options to NPC sheets
+- Minor tweak to CSS to fix the formating around custom resources
 
 ## Version 0.2.54
 - SRD Potions should now automatically target a characters healing surges
@@ -12,7 +48,7 @@
 - if no value is entered into a weapons brutal dice value, the system should default to rerolling 1s
 - if no value is entered into a weapons critical hit value, the system should default to use a 20
 - added option to disable half levels for Ability, Defense, Skills and Initiative score values to accommodate for a somewhat common house rule.
-- fixed issue with autmatic attack rolls not properly targeting single targets
+- fixed issue with automatic attack rolls not properly targeting single targets
 
 ## Version 0.2.53
 - Fixed an issue with creating with dragging items into the macro bar that was cause by attempting to use a deprecated call from v8.

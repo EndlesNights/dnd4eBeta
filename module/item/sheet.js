@@ -433,10 +433,14 @@ export default class ItemSheet4e extends ItemSheet {
 		// Action usage
 		if ( (item.type !== "weapon") && item.data.activation && !isObjectEmpty(item.data.activation) ) {
 			props.push(
+				labels.attribute,
 				labels.activation,
 				labels.range,
 				labels.target,
-				labels.duration
+				labels.castTime,
+				labels.duration,
+				labels.component,
+				labels.componentCost
 			)
 		}
 		return props.filter(p => !!p);

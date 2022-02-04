@@ -2,7 +2,7 @@
 	"name": "dnd4eAltus",
 	"title": "DnD 4th Edition Altus",
 	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.2.55",
+	"version": "0.2.61",
 	"minimumCoreVersion": "0.8.5",
 	"compatibleCoreVersion": "9",
 	"templateVersion": 2,
@@ -18,11 +18,25 @@
 	],
 	"packs": [
 		{
+			"name": "example_alchemy",
+			"label": "Example Alchemical Items",
+			"system": "dnd4eAltus",
+			"path": "./packs/example_alchemy.db",
+			"entity": "Item"
+		},		
+		{
 			"name": "example_character",
 			"label": "Example Character",
 			"system": "dnd4eAltus",
 			"path": "./packs/example_character.db",
 			"entity": "Actor"
+		},
+		{
+			"name": "example_potions",
+			"label": "Example Potions & Poisons",
+			"system": "dnd4eAltus",
+			"path": "./packs/example_potions.db",
+			"entity": "Item"
 		},
 		{
 			"name": "example_powers",
@@ -71,20 +85,6 @@
 			"label": "SRD Equipment",
 			"system": "dnd4eAltus",
 			"path": "./packs/srd_equipment.db",
-			"entity": "Item"
-		},
-		{
-			"name": "srd_potions",
-			"label": "SRD Potions",
-			"system": "dnd4eAltus",
-			"path": "./packs/srd_potions.db",
-			"entity": "Item"
-		},
-		{
-			"name": "srd_powers_shared",
-			"label": "SRD Powers: Common Actions",
-			"system": "dnd4eAltus",
-			"path": "./packs/srd_powers_shared.db",
 			"entity": "Item"
 		},
 		{

@@ -136,7 +136,7 @@
 					<div class="form-fields">
 						<input type="text" name="data.uses.value" value="{{data.uses.value}}" data-dtype="Number"/>
 						<span class="sep">{{ localize "DND4EALTUS.of" }}</span>
-						<input type="text" name="data.uses.max" value="{{data.uses.max}}" data-dtype="Number"/>
+						<input type="text" name="data.uses.max" value="{{data.uses.max}}"/>
 						<span class="sep">{{ localize "DND4EALTUS.per" }}</span>
 						<select name="data.uses.per">
 							{{#select data.uses.per}}
@@ -423,6 +423,15 @@
 						<input type="checkbox" name="data.weaponGroup.{{group}}" {{checked (lookup ../data.weaponGroup group)}}/> {{ name }}
 					</label>
 					{{/each}}
+
+					{{#if data.properties.imp}}
+					<label>Implement Group:</label>
+					{{#each config.implementGroup as |name group|}}
+					<label class="checkbox">
+						<input type="checkbox" name="data.implementGroup.{{group}}" {{checked (lookup ../data.implementGroup group)}}/> {{ name }}
+					</label>
+					{{/each}}
+					{{/if}}
 				</div>
 			</div>
 			{{!-- Chat Message Flavor --}}
@@ -438,6 +447,7 @@
 		</div>
 
 		{{!-- Macros Tab --}}
-		{{> "systems/dnd4eAltus/templates/items/parts/item-macro.html"}}
+<!-- DO NOT INDENT ME:  All of my indentation will be transferred to the macro text every time it is opened, causing each line of the macro to get steadily more tabs in front of it and march across the screen -->
+{{> "systems/dnd4eAltus/templates/items/parts/item-macro.html"}}
 	</section>
 </form>
