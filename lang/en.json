@@ -677,7 +677,7 @@
 "DND4EBETA.RollExample": "e.g. +1d4",
 "DND4EBETA.RollFormula": "Roll Formula",
 "DND4EBETA.RollMode": "Roll Mode",
-"DND4EBETA.RollPlaceholderRitual": "1d20 + @attribute + @bonus",
+"DND4EBETA.RollPlaceholderRitual": "1d20 + @attribute",
 "DND4EBETA.RollPlaceholderTool": "1d20 + @attribute + @bonus",
 "DND4EBETA.RollSituationalBonus": "Situational Bonus?",
 "DND4EBETA.Runic": "Runic",

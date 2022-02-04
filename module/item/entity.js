@@ -477,7 +477,7 @@ export default class Item4e extends Item {
 		if ( !consume.type ) return true;
 		const actor = this.actor;
 		const typeLabel = CONFIG.DND4EBETA.abilityConsumptionTypes[consume.type];
-		const amount = parseInt(consume.amount || 1);
+		const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 1;
 
 		// Only handle certain types for certain actions
 		if ( ((consume.type === "ammo") && !isAttack ) || ((consume.type !== "ammo") && !isCard) ) return true;
@@ -1405,12 +1405,13 @@ export default class Item4e extends Item {
 		let rollData = this.getRollData();
 		const parts = ["@" + rollType];
 
-		if (this.data.data.formula) {
+		if(this.data.data.formula) {
 			rollData[rollType] = Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data, this.data.data)
+		} else {
+			rollData[rollType] = `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)}`; 
+			if(this.data.data.bonus) rollData[rollType]+= `${this.data.data.bonus}`;
 		}
-		else {
-			rollData[rollType] = `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)} + ${this.data.data.bonus}`;
-		}
+		console.log(rollData[rollType])
 		const title = `${this.name} - ${game.i18n.localize(titleKey)}`;
 
 		const label = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
