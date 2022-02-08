@@ -97,7 +97,7 @@ export class RollWithOriginalExpression extends Roll {
 
                   There are probably edge-cases here that I am not covering, but worst that happens is the highlighting looks a little weird / doesn't work.
                  */
-                const trimmedPart = "" + part.trim() // remember part may be a number.  Very occasionally not everything is a string!
+                const trimmedPart = ("" + part).trim() // remember part may be a number.  Very occasionally not everything is a string!
                 if (trimmedPart.indexOf("(") === 0 && trimmedPart.indexOf(']') === trimmedPart.length - 1) {
                     if (regex.test(trimmedPart)) {
                         return part
