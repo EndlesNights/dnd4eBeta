@@ -290,7 +290,6 @@ export default class Item4e extends Item {
 			if(data.attribute){
 				const attribute = data.attribute.split('.')[1];
 				if(DND4EBETA.abilities[attribute]){
-					console.log(data)
 					labels.attribute = `${game.i18n.localize("DND4EBETA.Ability")}: ${DND4EBETA.abilities[attribute]}`;
 				}
 				else if(DND4EBETA.skills[attribute]){

@@ -309,6 +309,10 @@
 	min-width: 38px;
 }
 
+.dnd4eBeta.sheet.actor .npc + a.rest {
+	margin: 0px;
+}
+
 .fakebutton {
 	width: 100%;
 	border: 2px groove #f0f0e0;
@@ -1488,13 +1492,20 @@ font-size: 12px;
 }
 .dnd4eBeta .tabs {
 	height: 40px;
-	/* border-top: 1px solid #AAA; */
 	border-bottom: 1px solid #AAA;
 }
 .dnd4eBeta .tabs .item {
 	line-height: 40px;
 	font-weight: bold;
 }
+
+.dnd4eBeta .npc .tabs {
+	height: 20px;
+}
+.dnd4eBeta .npc .tabs .item {
+	line-height: 0px;
+}
+
 .dnd4eBeta .tabs .item.active {
 	text-decoration: underline;
 	text-shadow: none;
