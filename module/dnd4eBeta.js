@@ -16,7 +16,6 @@ import { _getInitiativeFormula } from "./combat.js";
 
 import ActorSheet4e from "./actor/actor-sheet.js";
 import ActorSheet4eNPC from "./actor/npc-sheet.js";
-import {SaveThrowDialog} from "./apps/save-throw.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
@@ -30,6 +29,7 @@ import * as macros from "./macros.js";
 import * as migrations from "./migration.js";
 import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
+import {TokenBarHooks} from "./hooks.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -99,7 +99,9 @@ Hooks.once("init", async function() {
 	preloadHandlebarsTemplates();
 
 	// setup methods that allow for easy integration with token hud
-	game.dnd4eBeta.quickSave = (actor) => new SaveThrowDialog(actor)._updateObject(null, {save : 0, dc: 10})
+	game.dnd4eBeta.tokenBarHooks = TokenBarHooks
+	//legacy, remove after some time when its reasonable for people to have updated token bar
+	game.dnd4eBeta.quickSave = (actor) => game.dnd4eBeta.tokenBarHooks.quickSave(actor, null)
 });
 
 Hooks.once("setup", function() {

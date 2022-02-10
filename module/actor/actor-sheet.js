@@ -272,6 +272,28 @@ export default class ActorSheet4e extends ActorSheet {
 
 		this._sortPowers(powers);
 		this._sortFeatures(features);
+
+		// console.log(this)
+		// console.log(data)
+
+		// let moveTypesTitle = "";
+		// for(const moveType of Object.entries(data.data.movement)){
+		// 	moveTypesTitle += `${moveType.value} sq.`
+		// }
+
+		data.moveTitle = `
+${parseInt(data.data.movement.walk.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedWalking")}
+${parseInt(data.data.movement.run.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedRunning")}
+${parseInt(data.data.movement.charge.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedCharging")}
+${parseInt(data.data.movement.climb.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedClimbing")}
+${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedShifting")}`;
+
+		if(data.data.movement.custom){
+			const moveCustom = [];
+			data.data.movement.custom.split(";").forEach((c, i) => (c ? moveCustom[i] = c.trim() : null) );
+			data.data.moveCustom = moveCustom;
+			moveCustom.forEach((c) => data.moveTitle += `\n${c.trim()}`);
+		}
 	}
 
 	_compareValues(key, order = 'asc') {

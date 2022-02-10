@@ -1,5 +1,23 @@
 # Changelog
 
+## Version 0.2.62
+- Fixed issue with numbers not being strings, again. [merge](https://github.com/EndlesNights/dnd4eBeta/pull/168) from [draconas1](https://github.com/draconas1) authors note, "I hate javascript"
+- Update to Steve the Example Character [merge](https://github.com/EndlesNights/dnd4eBeta/pull/164) from [draconas1](https://github.com/draconas1)
+	Now has a close burst 1 AoE power that uses an implment
+	has an example ritual that can summon badgers
+	Feat that adds to fire attack and damage powers
+	Updated fighter weapon talents to have an effect to boost that attack.
+- Added Hooks for Token Action HUD [merge](https://github.com/EndlesNights/dnd4eBeta/pull/163) from [draconas1](https://github.com/draconas1)
+- custom movement types will now show up in the tooltip when mouse hovering over movement
+- Some more tinkering around with the NPC sheet
+	added rest buttons
+	added a field to see temporary HP
+	custom movement types will now appear directly on the sheet
+	other minor edits to the CSS styles
+
+## Version 0.2.61
+- removed the default miss formula and effects [merge](https://github.com/EndlesNights/dnd4eBeta/pull/162) from [draconas1](https://github.com/draconas1)
+
 ## Version 0.2.60
 - fix implement groupings [merge](https://github.com/EndlesNights/dnd4eBeta/pull/159) from [draconas1](https://github.com/draconas1)
 - fixed issue with NPC initiative calculation check.... again...

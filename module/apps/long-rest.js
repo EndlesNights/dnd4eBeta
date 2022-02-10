@@ -65,12 +65,15 @@ export class LongRestDialog extends DocumentSheet {
 			};
 		});
 		await this.object.updateEmbeddedDocuments("Item", updateItems);
-		ChatMessage.create({
-			user: game.user.id,
-			speaker: {actor: this.object, alias: this.object.data.name},
-			// flavor: restFlavor,
-			content: `${this.object.data.name} takes a long rest.`
-		});		
+
+		if(this.object.type === "Player Character"){
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this.object, alias: this.object.data.name},
+				// flavor: restFlavor,
+				content: `${this.object.data.name} takes a long rest.`
+			});
+		}
 		
 		for (let r of Object.entries(this.object.data.data.resources)) {
 			if((r[1].sr || r[1].lr) && r[1].max) {
