@@ -1056,7 +1056,7 @@ export default class Item4e extends Item {
 					secondaryDamageExpressionHelper(parts, partsExpressionReplacement, weaponUse.data.data.damageImp.parts)
 				}
 				if(itemData.hit.critFormula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageCritImp.parts.length > 0) {
-					secondaryDamageExpressionHelper(partsCrit, partsCritExpressionReplacement, weaponUse.data.data.damageImpCrit.parts)
+					secondaryDamageExpressionHelper(partsCrit, partsCritExpressionReplacement, weaponUse.data.data.damageCritImp.parts)
 				}
 
 				if(itemData.miss.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {

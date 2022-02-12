@@ -490,8 +490,8 @@ export default class ItemSheet4e extends ItemSheet {
 
 		const damageImp = formData.data?.damageImp;
 		if ( damageImp ) damageImp.parts = Object.values(damageImp?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
-		const damageImpCrit = formData.data?.damageImpCrit;
-		if ( damageImpCrit ) damageImpCrit.parts = Object.values(damageImpCrit?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+		const damageCritImp = formData.data?.damageCritImp;
+		if ( damageCritImp ) damageCritImp.parts = Object.values(damageCritImp?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 		
 		const damageRes = formData.data.armour?.damageRes;
 		if ( damageRes ) damageRes.parts = Object.values(damageRes?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
