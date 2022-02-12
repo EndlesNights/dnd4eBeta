@@ -90,7 +90,7 @@ DND4EBETA.timePeriods = {
  * @type {Object}
  */
 DND4EBETA.abilityActivationTypes = {
-  "none": "DND4EBETA.None",
+  "none": "DND4EBETA.NoAction",
   "standard": "DND4EBETA.ActionStandard",
   "move": "DND4EBETA.ActionMove",
   "minor": "DND4EBETA.ActionMinor",
@@ -101,7 +101,7 @@ DND4EBETA.abilityActivationTypes = {
 };
 
 DND4EBETA.abilityActivationTypesShort = {
-  "none": "DND4EBETA.NoneShort",
+  "none": "DND4EBETA.NoActionShort",
   "standard": "DND4EBETA.ActionStandardShort",
   "move": "DND4EBETA.ActionMoveShort",
   "minor": "DND4EBETA.ActionMinorShort",
@@ -602,6 +602,7 @@ DND4EBETA.rangeType = {
 	"wall": "DND4EBETA.rangeWall",
 	"personal": "DND4EBETA.rangePersonal",
 	"touch": "DND4EBETA.rangeTouch",
+	"special": "DND4EBETA.rangeSpecial",
 };
 
 DND4EBETA.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4EBETA.rangeType).filter(function ([key, value]) {
