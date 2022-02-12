@@ -739,15 +739,18 @@ export class Helper {
 			powerDetail += ` ${game.i18n.localize("DND4EBETA.rangeReach")}</b> ${chatData.rangePower}</span>`;
 		}
 		else if (chatData.rangeType === "range") {
-			powerDetail += ` ${game.i18n.localize("DND4EBETA.Range")}</b> ${chatData.rangePower}</span>`;
+			powerDetail += ` ${game.i18n.localize("DND4EBETA.rangeRanged")}</b> ${chatData.rangePower}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
 			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b></span>`;
 		}
 		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b> ${game.i18n.localize("DND4EBETA.RangeWithinOf")} <b>${chatData.rangePower}</b> ${game.i18n.localize("DND4EBETA.Squares")}</span>`;
+			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b> ${game.i18n.localize("DND4EBETA.RangeWithin")} <b>${chatData.rangePower}</b></span>`;
 		}
 		else if (chatData.rangeType === "personal") {
+			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
+		}
+		else if (chatData.rangeType === "special") {
 			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;
 		}
 		else if (chatData.rangeType === "touch") {
