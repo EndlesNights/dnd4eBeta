@@ -410,7 +410,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
    */
 	_preparePowerRangeText(itemData) {
 		if(itemData.data.rangeType === "range") {
-			itemData.data.rangeText = `Range ${itemData.data.rangePower}`
+			itemData.data.rangeText = `Ranged ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = `R`
 			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "closeBurst") {
@@ -436,6 +436,9 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		} else if(itemData.data.rangeType === "personal") {
 			itemData.data.rangeText = "Personal"
 			itemData.data.rangeTextShort = "P"
+		} else if(itemData.data.rangeType === "special") {
+			itemData.data.rangeText = "Special"
+			itemData.data.rangeTextShort = "S"
 		} else if(itemData.data.rangeType === "touch") {
 			itemData.data.rangeTextShort = "M-T";
 			if(itemData.data.rangePower == null){
