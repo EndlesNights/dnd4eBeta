@@ -40,7 +40,7 @@ export class RollWithOriginalExpression extends Roll {
      * new RollWithOriginalExpression(bracketFormula, {"bonus" : "1d6"}, {expressionArr: ["@wepAtk + @enhance", "@bonus"], formulaInnerData: {wepAtk: 3, enhance: 1}})
      */
     constructor (formula, data={}, options={}) {
-        super(formula, data, foundry.utils.mergeObject({expression : formula}, options));
+        super(formula, data, foundry.utils.mergeObject({expression : formula, originalFormula: formula}, options));
         this.expression = options.expression ? options.expression : formula
     }
 
@@ -163,7 +163,7 @@ export class RollWithOriginalExpression extends Roll {
 
    getChatData(isPrivate = false) {
        if (!isPrivate && game.settings.get("dnd4e", "showRollExpression")) {
-           return this.surroundFormulaWithExpressionSpanTags(this._formula, this.options.expressionArr)
+           return this.surroundFormulaWithExpressionSpanTags(this.options.originalFormula ? this.options.originalFormula : this._formula, this.options.expressionArr)
        }
        else {
            return {

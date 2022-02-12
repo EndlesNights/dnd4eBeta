@@ -309,6 +309,13 @@ export class Helper {
 
 				newFormula = newFormula.replaceAll("@atkMod", actorInnerData.modifiers.attack.value);
 				newFormula = newFormula.replaceAll("@dmgMod", actorInnerData.modifiers.damage.value);
+
+				newFormula = newFormula.replaceAll("@heroic", actorInnerData.details.level < 11 ? 1 : 0);
+				newFormula = newFormula.replaceAll("@paragon", actorInnerData.details.level >= 11 && actorInnerData.details.level < 21 ? 1 : 0);
+				newFormula = newFormula.replaceAll("@epic", actorInnerData.details.level >= 21 ? 1 : 0);
+
+				newFormula = newFormula.replaceAll("@heroicOrParagon", actorInnerData.details.level < 21 ? 1 : 0);
+				newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
 			}
 			else {
 				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.data.data by mistake!.  Replacing: " + formula)
@@ -348,7 +355,8 @@ export class Helper {
 			newFormula = this.replaceData (newFormula, weaponInnerData);
 			
 			
-			//deprecated, kept for legacy purposes
+			//deprecated, kept for legacy purposes and because it's really handy for High Crit Weapons!
+			// make sure to keep the dice formula same as main.  Definite candidate for a future refactor.
 			if(newFormula.includes("@wepDice")) {
 				let parts = weaponInnerData.damageDice.parts;
 				let indexStart = newFormula.indexOf("@wepDice")+8;
@@ -371,7 +379,8 @@ export class Helper {
 					}
 					if (i < parts.length - 1) dice += '+';
 				}
-				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
+				const possibleDice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
+				dice = possibleDice !== 0 ? possibleDice : dice //there probably shouldn't be any formula left, because @wepDice is a formula contents under our command.  So if we had hit the bottom of the recursion tree, just try the original
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
 				newFormula = newFormula.replaceAll("@wepDice", dice);
 			}
@@ -381,6 +390,7 @@ export class Helper {
 			//	-	weapon based damage
 			//	-	flat damage
 			//	-	dice damage
+			// make sure to keep the weapon dice formula same as above.  Definite candidate for a future refactor.
 			if(newFormula.includes("@powBase")) {
 				let quantity = powerInnerData.hit.baseQuantity;
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
@@ -444,13 +454,14 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerInnerData.hit.baseQuantity;
+				quantity = this.commonReplace(quantity, actorData, powerInnerData, weaponInnerData, 0)
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
 				rQuantity.evaluate({maximize: true, async: false});
 
 				//check if is valid number
-				if(this._isNumber(rQuantity.result)){ 
-					quantity = rQuantity.result;
+				if(this._isNumber(rQuantity.total)){
+					quantity = rQuantity.total;
 				} else {
 					quantity = 1;
 				}

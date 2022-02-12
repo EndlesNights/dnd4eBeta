@@ -1,6 +1,4 @@
-import { d20Roll, damageRoll } from "../dice.js";
-import AbilityUseDialog from "../apps/ability-use-dialog.js";
-import AbilityTemplate from "../pixi/ability-template.js"
+import { d20Roll } from "../dice.js";
 import { DND4EBETA } from "../config.js";
 import { Helper } from "../helper.js"
 
@@ -9,44 +7,6 @@ import { Helper } from "../helper.js"
  * @extends {Actor}
  */
 export class Actor4e extends Actor {
-
-	/** @inheritdoc */
-	getRollData() {
-		const data = super.getRollData();
-		return data;
-	}
-//   getRollData() {
-//     const data = super.getRollData();
-//     const shorthand = game.settings.get("dnd4e", "macroShorthand");
-
-	// Re-map all attributes onto the base roll data
-	// if ( !!shorthand ) {
-	//   for ( let [k, v] of Object.entries(data.attributes) ) {
-	//     if ( !(k in data) ) data[k] = v.value;
-	//   }
-	//   delete data.attributes;
-	// }
-
-	// Map all items data using their slugified names
-	// data.items = this.data.items.reduce((obj, i) => {
-	  // let key = i.name.slugify({strict: true});
-	  // let itemData = duplicate(i.data);
-	  // if ( !!shorthand ) {
-		  // console.log( Object);
-		  // console.log( itemData);
-		  
-		// for ( let [k, v] of Object.entries(itemData.attributes) ) {
-		  // if ( !(k in itemData) ) itemData[k] = v.value;
-		// }
-		// delete itemData["attributes"];
-	  // }
-	  // obj[key] = itemData;
-	  // return obj;
-	// }, {});
-	
-//     return data;
-//   }
-
 	constructor(data, context) {
 		super(data, context);
 		
@@ -96,46 +56,47 @@ export class Actor4e extends Actor {
 		return super.update(data, options);
 	}
 
+
+	/** @inheritdoc */
+	getRollData() {
+		this.prepareDerivedData();
+		const data = super.getRollData();
+		data["strMod"] = data.abilities["str"].mod
+		data["conMod"] = data.abilities["con"].mod
+		data["dexMod"] = data.abilities["dex"].mod
+		data["intMod"] = data.abilities["int"].mod
+		data["wisMod"] = data.abilities["wis"].mod
+		data["chaMod"] = data.abilities["cha"].mod
+
+		data["lvhalf"] = Math.floor(data.details.level/2)
+		data["lv"] = data.details.level
+		data["tier"] = data.details.tier
+
+		data["heroic"] = data.details.level < 11 ? 1 : 0
+		data["paragon"] = data.details.level >= 11 && data.details.level < 21 ? 1 : 0
+		data["epic"] = data.details.level >= 21 ? 1 : 0
+
+		data["heroicOrParagon"] = data.details.level < 21 ? 1 : 0
+		data["paragonOrEpic"] = data.details.level >= 11 ? 1 : 0
+		return data;
+	}
+
 	/**
-		* Augment the basic actor data with additional dynamic data.
-		*/
-	prepareData() {
-		super.prepareData();
-		// Get the Actor's data object
+	 * Currently this only does attributes, but can increase it in future if there are more things we want in effects
+	 */
+	prepareDerivedData() {
 		const actorData = this.data;
 		const data = actorData.data;
-		const flags = actorData.flags.dnd4eBeta || {};
 		const bonuses = getProperty(data, "bonuses.abilities") || {};
-
-		let originalSaves = null;
-		let originalSkills = null;
 
 		this.data.data.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
 
-		// If we are a polymorphed actor, retrieve the skills and saves data from
-		// the original actor for later merging.
-		if (this.isPolymorphed) {
-			const transformOptions = this.getFlag('dnd4eBeta', 'transformOptions');
-			const original = game.actors?.get(this.getFlag('dnd4eBeta', 'originalActor'));
-
-			if (original) {
-				if (transformOptions.mergeSaves) {
-					originalSaves = original.data.data.abilities;
-				}
-
-				if (transformOptions.mergeSkills) {
-					originalSkills = original.data.data.skills;
-				}
-			}
-		}		
-		
 		// Ability modifiers and saves
-		// Character All Ability Check" and All Ability Save bonuses added when rolled since not a fixed value.		
+		// Character All Ability Check" and All Ability Save bonuses added when rolled since not a fixed value.
 		const saveBonus = Number.isNumeric(bonuses.save) ? parseInt(bonuses.save) : 0;
 		const checkBonus = Number.isNumeric(bonuses.check) ? parseInt(bonuses.check) : 0;
-		
-		for (let [id, abl] of Object.entries(data.abilities)) {
 
+		for (let [id, abl] of Object.entries(data.abilities)) {
 			abl.mod = Math.floor((abl.value - 10) / 2);
 			abl.modHalf = abl.mod + Math.floor(data.details.level / 2);
 			abl.prof = (abl.proficient || 0);
@@ -147,14 +108,22 @@ export class Actor4e extends Actor {
 				abl.checkBonus = checkBonus + Math.floor(data.details.level / 2);
 			}
 			abl.save = abl.mod + abl.prof + abl.saveBonus;
-			
-			abl.label = game.i18n.localize(DND4EBETA.abilities[id]); //.localize("");
-			
-			// If we merged saves when transforming, take the highest bonus here.
-			if (originalSaves && abl.proficient) {
-				abl.save = Math.max(abl.save, originalSaves[id].save);
-			}
+
+			abl.label = game.i18n.localize(DND4EBETA.abilities[id]);
 		}
+	}
+
+
+	/**
+	 * Augment the basic actor data with additional dynamic data.
+	 */
+	prepareData() {
+		super.prepareData();
+		// Get the Actor's data object
+		const actorData = this.data;
+		const data = actorData.data;
+
+		this.prepareDerivedData();
 		
 		//HP auto calc
 		if(data.attributes.hp.autototal)
