@@ -9,7 +9,10 @@
         <h4 class="dice-total">{{total}}</h4>
     </div>
 </div>
-
+<div class="chatDamageButtons">
+    <a class="fakechatbutton chat-damage-button" title="{{ localize "DND4EBETA.ChatContextButtonTitle" }}" data-action="Damage"><i class="fas fa-user-minus"></i>{{ localize "DND4EBETA.ChatContextDamage" }}</a>
+    <a class="fakechatbutton chat-damage-button" title="{{ localize "DND4EBETA.ChatContextButtonTitle" }}" data-action="HalfDamage"><i class="fas fa-user-shield"></i>{{ localize "DND4EBETA.ChatContextHalfDamage" }}</a>
+</div>
 <script>
     function mouseEnter(id) {
         document.getElementById("form" + id).style.backgroundColor = "#99ccff"
