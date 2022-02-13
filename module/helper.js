@@ -315,7 +315,10 @@ export class Helper {
 			}
 		}
 
+		newFormula = newFormula.replaceAll("@powerLevel", powerInnerData.level ? powerInnerData.level : 0)
+
 		if(weaponInnerData) {
+			newFormula =  newFormula.replaceAll("@itemLevel", weaponInnerData.level ? weaponInnerData.level : 0)
 
 			if (powerInnerData.weaponType === "implement") {
 				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
@@ -479,6 +482,9 @@ export class Helper {
 			}
 		}
 		else {
+			// if there is no weapon, then itemLevel becomes power level
+			newFormula = newFormula.replaceAll("@itemLevel", powerInnerData.level ? powerInnerData.level : 0)
+
 			//if no weapon is in use replace the weapon keys with nothing.
 			newFormula = newFormula.replaceAll("@wepAttack", "");
 			newFormula = newFormula.replaceAll("@wepDamage", "");
