@@ -55,6 +55,21 @@ export const displayChatActionButtons = function(message, html, data) {
 	}
 };
 
+export const displayDamageOptionButtons = function(message, html, data) {
+	if ( !message.isRoll || !message.isContentVisible ) return;
+
+	// Highlight rolls where the first part is a d20 roll
+	const roll = message.roll;
+	if ( !roll.dice.length ) return;
+	const d = roll.dice[0];
+	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
+	if ( !isD20 && !d.options.recharge) return;
+	const buttons = html.find(".chatDamageButtons");
+	buttons.each((i, button) => {
+		button.style.display = "none"
+	})
+};
+
 /* -------------------------------------------- */
 
 /**
@@ -112,20 +127,50 @@ export const addChatMessageContextOptions = function(html, options) {
 	return options;
 };
 
+export function clickRollMessageDamageChatListener(html) {
+	html.on('click', '.chat-damage-button', this.clickRollMessageDamageButtons.bind(this));
+}
+
+export const clickRollMessageDamageButtons = function(event) {
+	event.preventDefault();
+	if (canvas.tokens.controlled.length < 1) {
+		ui.notifications.error(game.i18n.localize("DND4EBETA.NeedTokenSelected"))
+	}
+
+	// Extract card data
+	const button = event.currentTarget;
+	const messageId = button.closest(".message").dataset.messageId;
+	const message = game.messages.get(messageId);
+	const roll = message.roll;
+	const action = button.dataset.action;
+
+	// Apply
+	if (action === "Damage") {
+		applyChatCardDamageInner(roll, 1, false)
+	}
+	else if (action === "HalfDamage") {
+		applyChatCardDamageInner(roll, 0.5, false)
+	}
+}
+
 /* -------------------------------------------- */
 
 /**
  * Apply rolled dice damage to the token or tokens which are currently controlled.
  * This allows for damage to be scaled by a multiplier to account for healing, critical hits, or resistance
  *
- * @param {HTMLElement} roll    The chat entry which contains the roll data
+ * @param {HTMLElement} li    	The list item clicked
  * @param {Number} multiplier   A damage multiplier to apply to the rolled damage.
+ * @param {Boolean} trueDamage	Bypass damage resistance or not (default false)
  * @return {Promise}
  */
 function applyChatCardDamage(li, multiplier, trueDamage=false) {
 	const message = game.messages.get(li.data("messageId"));
 	const roll = message.roll;
+	applyChatCardDamageInner(roll, multiplier, trueDamage)
+}
 
+function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	console.log(roll.terms)
 	let damage = {};
 
