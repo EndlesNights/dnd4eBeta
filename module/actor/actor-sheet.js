@@ -357,6 +357,9 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		if(this.object.data.data.powerGroupTypes === "type") {
 			if(Object.keys(powerGroups).includes(power.data.powerType) )return power.data.powerType;
 		}
+		if(this.object.data.data.powerGroupTypes === "powerSubtype") {
+			if(Object.keys(powerGroups).includes(power.data.powerSubtype) )return power.data.powerSubtype;
+		}
 		if(this.object.data.data.powerGroupTypes === "usage") {
 			if(Object.keys(powerGroups).includes(power.data.useType) ) return power.data.useType;
 		}
@@ -378,9 +381,22 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		}
 		else if(this.object.data.data.powerGroupTypes === "type") {
 			return {
-				class: { label: "Class Power", items: [], dataset: {type: "class"} },
-				race: { label: "Racial Power", items: [], dataset: {type: "race"} },
+				class: { label: "DND4EBETA.Class", items: [], dataset: {type: "class"} },
+				race: { label: "DND4EBETA.Race", items: [], dataset: {type: "race"} },
+				paragon: { label: "DND4EBETA.Paragon", items: [], dataset: {type: "paragon"} },
+				epic: { label: "DND4EBETA.Epic", items: [], dataset: {type: "epic"} },
+				theme: { label: "DND4EBETA.Theme", items: [], dataset: {type: "theme"} },
+				feat: { label: "DND4EBETA.Feat", items: [], dataset: {type: "feat"} },
+				item: { label: "DND4EBETA.PowerItem", items: [], dataset: {type: "item"} },
+				//item: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
+				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
+			};
+		}
+		else if(this.object.data.data.powerGroupTypes === "powerSubtype") {
+			return {
+				attack: { label: "DND4EBETA.PowerAttack", items: [], dataset: {type: "attack"} },
 				utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
+				feature: { label: "DND4EBETA.PowerFeature", items: [], dataset: {type: "feature"} },
 				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 			};
 		}
