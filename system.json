@@ -107,6 +107,13 @@
 			"system": "dnd4e",
 			"path": "./packs/srd_rules.db",
 			"entity": "JournalEntry"
+		},
+		{
+			"name": "manual",
+			"label": "Manual & Help",
+			"system": "dnd4e",
+			"path": "./packs/manual.db",
+			"entity": "JournalEntry"
 		}
 	],
 	"languages": [
