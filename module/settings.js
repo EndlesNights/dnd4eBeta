@@ -175,37 +175,17 @@ export const registerSystemSettings = function() {
 	});
 
 
-	// /**
-	//  * Option to allow GMs to restrict polymorphing to GMs only.
-	//  */
-	// game.settings.register('dnd4e', 'allowPolymorphing', {
-	// 	name: 'SETTINGS.4eAllowPolymorphingN',
-	// 	hint: 'SETTINGS.4eAllowPolymorphingL',
-	// 	scope: 'world',
-	// 	config: true,
-	// 	default: false,
-	// 	type: Boolean
-	// });
-
 	/**
-	 * Remember last-used polymorph settings.
+	 * delete confirmation
 	 */
-	// game.settings.register('dnd4e', 'polymorphSettings', {
-	// 	scope: 'client',
-	// 	default: {
-	// 		keepPhysical: false,
-	// 		keepMental: false,
-	// 		keepSaves: false,
-	// 		keepSkills: false,
-	// 		mergeSaves: false,
-	// 		mergeSkills: false,
-	// 		keepClass: false,
-	// 		keepFeats: false,
-	// 		keepSpells: false,
-	// 		keepItems: false,
-	// 		keepBio: false,
-	// 		keepVision: true,
-	// 		transformTokens: true
-	// 	}
-	// });
+	game.settings.register("dnd4e", "itemDeleteConfirmation",{
+		name: "SETTINGS.4eItemDeleteConfirmationN",
+		hint: "SETTINGS.4eItemDeleteConfirmationL",
+		scope: "client",
+		config: true,
+		default: true,
+		type: Boolean
+	});
+
+
 };
