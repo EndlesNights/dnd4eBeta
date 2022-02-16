@@ -151,6 +151,12 @@ export const clickRollMessageDamageButtons = function(event) {
 	else if (action === "HalfDamage") {
 		applyChatCardDamageInner(roll, 0.5, false)
 	}
+	else if (action === "Heal") {
+		applyChatCardDamageInner(roll, -1, false)
+	}
+	else if (action === "TempHeal") {
+		applyChatCardTempHpInner(roll)
+	}
 }
 
 /* -------------------------------------------- */
@@ -222,6 +228,10 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 function applyChatCardTempHp(li) {
 	const message = game.messages.get(li.data("messageId"));
 	const roll = message.roll;
+	applyChatCardTempHpInner(roll);
+}
+
+function applyChatCardTempHpInner(roll){
 	return Promise.all(canvas.tokens.controlled.map(t => {
 		const a = t.actor;
 		return a.applyTempHpChange(roll.total)

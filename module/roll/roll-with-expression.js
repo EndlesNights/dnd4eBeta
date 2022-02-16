@@ -155,6 +155,8 @@ export class RollWithOriginalExpression extends Roll {
             tooltip: isPrivate ? "" : await this.getTooltip(),
             total: isPrivate ? "?" : Math.round(this.total * 100) / 100,
             expression: isPrivate? "???" : formulaData.expression,
+            hitTypeDamage: this.options?.hitTypeDamage,
+            hitTypeHealing: this.options?.hitTypeHealing,
         };
 
         // Render the roll display template

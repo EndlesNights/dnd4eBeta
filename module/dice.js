@@ -368,17 +368,21 @@ async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, pa
 
 	let roll;
 	if(hitType === 'normal'){
+		options.hitTypeDamage = true;
 		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options)
 	}
 	else if (hitType === 'crit') {
+		options.hitTypeDamage = true;
 		roll = RollWithOriginalExpression.createRoll(partsCrit, partsCritExpressionReplacement, data, options)
 		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
 	}
 	else if (hitType === 'miss') {
+		options.hitTypeDamage = true;
 		roll = RollWithOriginalExpression.createRoll(partsMiss, partsMissExpressionReplacement, data, options);
 		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Miss")})`;
 	}
 	else if (hitType === 'heal') {
+		options.hitTypeHealing = true;
 		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
 		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Healing")})`;
 	} else {
