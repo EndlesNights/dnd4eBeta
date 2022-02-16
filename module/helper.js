@@ -315,10 +315,10 @@ export class Helper {
 			}
 		}
 
-		newFormula = newFormula.replaceAll("@powerLevel", powerInnerData.level ? powerInnerData.level : 0)
+		newFormula = newFormula.replaceAll("@powerLevel", powerInnerData?.level ? powerInnerData.level : 0)
 
 		if(weaponInnerData) {
-			newFormula =  newFormula.replaceAll("@itemLevel", weaponInnerData?.level ? weaponInnerData.level : 0)
+			newFormula =  newFormula.replaceAll("@itemLevel", weaponInnerData.level ? weaponInnerData.level : 0)
 
 			if (powerInnerData.weaponType === "implement") {
 				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
