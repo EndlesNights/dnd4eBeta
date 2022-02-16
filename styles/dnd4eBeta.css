@@ -324,6 +324,23 @@
 	font-size: 14px;
 }
 
+.chatDamageButtons {
+	font-size: var(--font-size-12);
+	display: flex;
+}
+
+.fakechatbutton {
+	width: 100%;
+	border: 2px groove #f0f0e0;
+	border-radius: 3px;
+	background: rgba(255, 255, 240, 0.8);
+	padding: 3px 3px;
+	margin: 2px 0px;
+	text-align: center;
+	flex-grow: 1;
+
+}
+
 .dnd4eBeta .container--bottom {
 	height: calc(100% - 190px);
 }
