@@ -28,6 +28,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 - Added Level to all inventory items as a top level field, like on paragon/epic features [merge](https://github.com/EndlesNights/dnd4eBeta/pull/181) from [draconas1](https://github.com/draconas1)
 	also allows @itemLevel to reference it in formula.
 	updated example potions and example alchemy to have the correct values in that field (they are the only example things I know of that have a level, everything else is non magical).
+- Scrolling Text on token when they take damage or healing.
 
 ## Version 0.2.62
 - Fixed issue with numbers not being strings, again. [merge](https://github.com/EndlesNights/dnd4eBeta/pull/168) from [draconas1](https://github.com/draconas1) authors note, "I hate javascript"

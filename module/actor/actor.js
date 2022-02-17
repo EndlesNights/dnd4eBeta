@@ -27,6 +27,12 @@ export class Actor4e extends Actor {
 
 	/** @override */
 	async update(data, options={}) {
+
+		//used to call changes to HP scrolling text
+		if(data[`data.attributes.hp.value`]){
+			options.dhp = data[`data.attributes.hp.value`] - this.data.data.attributes.hp.value;
+		}
+
 		if(!data) { return super.update(data, options); }
 		// Apply changes in Actor size to Token width/height
 		const newSize = data["data.details.size"];
@@ -56,6 +62,37 @@ export class Actor4e extends Actor {
 		return super.update(data, options);
 	}
 
+	/** @inheritdoc */
+	_onUpdate(data, options, userId) {
+		super._onUpdate(data, options, userId);
+		this._displayScrollingDamage(options.dhp);
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Display changes to health as scrolling combat text.
+	 * Adapt the font size relative to the Actor's HP total to emphasize more significant blows.
+	 * @param {number} dhp      The change in hit points that was applied
+	 * @private
+	 */
+	_displayScrollingDamage(dhp) {
+		if ( !dhp ) return;
+		dhp = Number(dhp);
+		const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
+		for ( let t of tokens ) {
+			if ( !t?.hud?.createScrollingText ) continue;  // This is undefined prior to v9-p2
+			const pct = Math.clamped(Math.abs(dhp) / this.data.data.attributes.hp.max, 0, 1);
+			t.hud.createScrollingText(dhp.signedString(), {
+				anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
+				fontSize: 16 + (32 * pct), // Range between [16, 48]
+				fill: CONFIG.DND4EBETA.tokenHPColors[dhp < 0 ? "damage" : "healing"],
+				stroke: 0x000000,
+				strokeThickness: 4,
+				jitter: 0.25
+			});
+		}
+	}
 
 	/** @inheritdoc */
 	getRollData() {
