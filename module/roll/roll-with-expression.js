@@ -165,7 +165,7 @@ export class RollWithOriginalExpression extends Roll {
 
    getChatData(isPrivate = false) {
        if (!isPrivate && game.settings.get("dnd4e", "showRollExpression")) {
-           return this.surroundFormulaWithExpressionSpanTags(this.options.originalFormula ? this.options.originalFormula : this._formula, this.options.expressionArr)
+           return this.surroundFormulaWithExpressionSpanTags(this._formula, this.options.expressionArr)
        }
        else {
            return {
