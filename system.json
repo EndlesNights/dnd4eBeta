@@ -2,7 +2,7 @@
 	"name": "dnd4e",
 	"title": "DnD 4th Edition",
 	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.2.62",
+	"version": "0.2.63",
 	"minimumCoreVersion": "0.8.5",
 	"compatibleCoreVersion": "9",
 	"templateVersion": 2,
@@ -106,6 +106,13 @@
 			"label": "SRD Rules",
 			"system": "dnd4e",
 			"path": "./packs/srd_rules.db",
+			"entity": "JournalEntry"
+		},
+		{
+			"name": "manual",
+			"label": "Manual & Help",
+			"system": "dnd4e",
+			"path": "./packs/manual.db",
 			"entity": "JournalEntry"
 		}
 	],

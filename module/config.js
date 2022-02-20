@@ -82,7 +82,6 @@ DND4EBETA.timePeriods = {
   "spec": "DND4EBETA.Special"
 };
 
-
 /* -------------------------------------------- */
 
 /**
@@ -140,6 +139,20 @@ DND4EBETA.tokenSizes = {
   "lg": 2,
   "huge": 3,
   "grg": 4
+};
+
+/* -------------------------------------------- */
+
+/**
+ * Colors used to visualize temporary and temporary maximum HP in token health bars.
+ * @enum {number}
+ */
+DND4EBETA.tokenHPColors = {
+	damage: 0xFF0000,
+	healing: 0x00FF00,
+	temp: 0x66CCFF,
+	tempmax: 0x440066,
+	negmax: 0x550000
 };
 
 /* -------------------------------------------- */

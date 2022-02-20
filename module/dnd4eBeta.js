@@ -166,11 +166,18 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 	// Highlight critical success or failure die
 	chat.highlightCriticalSuccessFailure(app, html, data);
 
+	// hide damage buttons on d20 rolls
+	chat.displayDamageOptionButtons(app, html, data)
+
 	// Optionally collapse the content
 	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.find(".card-content").hide();
 });
+
 Hooks.on("getChatLogEntryContext", chat.addChatMessageContextOptions);
-Hooks.on("renderChatLog", (app, html, data) => Item4e.chatListeners(html));
+Hooks.on("renderChatLog", (app, html, data) => {
+	Item4e.chatListeners(html);
+	chat.clickRollMessageDamageChatListener(html);
+});
 
 Hooks.on("canvasInit", function() {
 
