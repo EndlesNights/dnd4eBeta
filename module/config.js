@@ -82,7 +82,6 @@ DND4EBETA.timePeriods = {
   "spec": "DND4EBETA.Special"
 };
 
-
 /* -------------------------------------------- */
 
 /**
@@ -90,7 +89,7 @@ DND4EBETA.timePeriods = {
  * @type {Object}
  */
 DND4EBETA.abilityActivationTypes = {
-  "none": "DND4EBETA.None",
+  "none": "DND4EBETA.NoAction",
   "standard": "DND4EBETA.ActionStandard",
   "move": "DND4EBETA.ActionMove",
   "minor": "DND4EBETA.ActionMinor",
@@ -101,7 +100,7 @@ DND4EBETA.abilityActivationTypes = {
 };
 
 DND4EBETA.abilityActivationTypesShort = {
-  "none": "DND4EBETA.NoneShort",
+  "none": "DND4EBETA.NoActionShort",
   "standard": "DND4EBETA.ActionStandardShort",
   "move": "DND4EBETA.ActionMoveShort",
   "minor": "DND4EBETA.ActionMinorShort",
@@ -140,6 +139,20 @@ DND4EBETA.tokenSizes = {
   "lg": 2,
   "huge": 3,
   "grg": 4
+};
+
+/* -------------------------------------------- */
+
+/**
+ * Colors used to visualize temporary and temporary maximum HP in token health bars.
+ * @enum {number}
+ */
+DND4EBETA.tokenHPColors = {
+	damage: 0xFF0000,
+	healing: 0x00FF00,
+	temp: 0x66CCFF,
+	tempmax: 0x440066,
+	negmax: 0x550000
 };
 
 /* -------------------------------------------- */
@@ -615,6 +628,7 @@ DND4EBETA.rangeType = {
 	"wall": "DND4EBETA.rangeWall",
 	"personal": "DND4EBETA.rangePersonal",
 	"touch": "DND4EBETA.rangeTouch",
+	"special": "DND4EBETA.rangeSpecial",
 };
 
 DND4EBETA.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4EBETA.rangeType).filter(function ([key, value]) {
