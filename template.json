@@ -767,6 +767,7 @@
 	},
 	"backpack": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+		"level": "",
 		"capacity": {
 		"type": "weight",
 		"value": 0,
@@ -804,6 +805,7 @@
 	},
 	"consumable": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro", "attackAndDamage"],
+		"level": "",
 		"consumableType": "potion",
 		"autoGenChatPowerCard" : false,
 		"useType": "item",
@@ -835,6 +837,7 @@
 	},
 	"equipment": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect", "mountable", "itemMacro"],
+		"level": "",
 		"armour": {
 			"type": "armour",
 			"subType": "cloth",
@@ -869,10 +872,12 @@
 		}
 	},
 	"loot": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"]
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+		"level": ""
 	},
 	"tool": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+		"level": "",
 		"attribute": "abilities.int.mod",
 		"chatFlavor": "",
 		"formula": "",
@@ -880,6 +885,7 @@
 	},
 	"weapon": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "mountable", "itemMacro"],
+		"level": "",
 		"weaponType": "simpleM",
 		"weaponHand": "HMain",
 		"properties": {},
