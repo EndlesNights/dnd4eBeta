@@ -426,7 +426,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
    */
 	_preparePowerRangeText(itemData) {
 		if(itemData.data.rangeType === "range") {
-			itemData.data.rangeText = `Range ${itemData.data.rangePower}`
+			itemData.data.rangeText = `Ranged ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = `R`
 			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "closeBurst") {
@@ -452,6 +452,9 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		} else if(itemData.data.rangeType === "personal") {
 			itemData.data.rangeText = "Personal"
 			itemData.data.rangeTextShort = "P"
+		} else if(itemData.data.rangeType === "special") {
+			itemData.data.rangeText = "Special"
+			itemData.data.rangeTextShort = "S"
 		} else if(itemData.data.rangeType === "touch") {
 			itemData.data.rangeTextShort = "M-T";
 			if(itemData.data.rangePower == null){
@@ -952,7 +955,20 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
     event.preventDefault();
     const li = event.currentTarget.closest(".item");
     const item = this.actor.items.get(li.dataset.itemId);
-    if ( item ) return item.delete();
+    if ( item )  {
+		if (game.settings.get("dnd4e", "itemDeleteConfirmation")) {
+			return Dialog.confirm({
+				title: game.i18n.format("DND4EBETA.DeleteConfirmTitle", {name: item.name}),
+				content: game.i18n.format("DND4EBETA.DeleteConfirmContent", {name: item.name}),
+				yes: () => { return item.delete() },
+				no: () => {},
+				defaultYes: true
+			});
+		}
+		else {
+			return item.delete();
+		}
+	}
   }
   
   /* -------------------------------------------- */
