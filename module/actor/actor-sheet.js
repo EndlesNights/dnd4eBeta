@@ -381,6 +381,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		}
 		else if(this.object.data.data.powerGroupTypes === "type") {
 			return {
+				inherent: { label: "DND4EBETA.Inherent", items: [], dataset: {type: "inherent"} },
 				class: { label: "DND4EBETA.Class", items: [], dataset: {type: "class"} },
 				race: { label: "DND4EBETA.Race", items: [], dataset: {type: "race"} },
 				paragon: { label: "DND4EBETA.Paragon", items: [], dataset: {type: "paragon"} },
