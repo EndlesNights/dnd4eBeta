@@ -955,6 +955,7 @@
 		"subName": "",
 		"prepared": true,
 		"powerType": "class",
+		"powerSubtype": "attack",
 		"useType": "atwill",
 		"actionType": "standard",
 		"requirements": "",

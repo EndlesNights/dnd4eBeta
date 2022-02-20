@@ -522,8 +522,19 @@ DND4EBETA.featureSortTypes = {
 
 DND4EBETA.powerType = {
 	"class": "DND4EBETA.Class",
-	"race": "DND4EBETA.Race",
-	"utility": "DND4EBETA.PowerUtil"
+	"race": "DND4EBETA.Racial",
+	"paragon": "DND4EBETA.Paragon",
+	"epic": "DND4EBETA.Epic",
+	"theme": "DND4EBETA.Theme",
+	"item": "DND4EBETA.PowerItem",
+	"feat": "DND4EBETA.Feat",
+	"skill": "DND4EBETA.Skill",
+	"utility": "DND4EBETA.PowerUtil" //Better keep this for legacy
+};
+DND4EBETA.powerSubtype = {
+	"attack": "DND4EBETA.PowerAttack",
+	"utility": "DND4EBETA.PowerUtil",
+	"feature": "DND4EBETA.PowerFeature"
 };
 
 DND4EBETA.powerUseType = {
@@ -550,6 +561,7 @@ DND4EBETA.powerGroupTypes = {
 	"usage": "DND4EBETA.Usage",
 	"action": "DND4EBETA.Action",
 	"type": "DND4EBETA.Type",
+	"powerSubtype": "DND4EBETA.PowerSubtype",
 };
 
 DND4EBETA.powerSortTypes = {
@@ -558,6 +570,7 @@ DND4EBETA.powerSortTypes = {
 	"actionType": "DND4EBETA.Action",
 	"rangeTextShort": "DND4EBETA.Range",
 	"use.value": "DND4EBETA.Used",
+	"powerSubtype": "DND4EBETA.PowerSubtype",
 	"none": "DND4EBETA.None",
 };
 

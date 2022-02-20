@@ -586,7 +586,7 @@ export class Helper {
 				}
 				// Handle Dice Type Damage
 				else{
-					let diceValue = diceType.match(/\d+/g).join('');
+					let diceValue = diceType.match(/\d+/g)?.join('');
 					dice += `${quantity} * ${diceValue}`;
 				}
 				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)

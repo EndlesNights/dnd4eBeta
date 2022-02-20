@@ -1094,6 +1094,22 @@ export default class Item4e extends Item {
 			options.formulaInnerData.actorBonusDamage = actorBonus.damage
 		}
 
+
+		// Originally these were a separate part, but then they were not part of the primary damage type
+		// which they should be.  So now appending them to the main expression.
+		const effectDamageParts = []
+		await Helper.applyEffects([effectDamageParts], rollData, actorData, this.data, weaponUse?.data, "damage")
+		effectDamageParts.forEach(part => {
+			const value = rollData[part.substring(1)]
+			damageFormula += `+ ${value}`
+			missDamageFormula += `+ ${value}`
+			critDamageFormula += `+ ${value}`
+			damageFormulaExpression  += `+ ${part}`
+			missDamageFormulaExpression += `+ ${part}`
+			critDamageFormulaExpression += `+ ${part}`
+			options.formulaInnerData[part.substring(1)] = value
+		})
+
 		// Ammunition Damage from power
 		if ( this._ammo ) {
 			parts.push("@ammo");
@@ -1147,7 +1163,7 @@ export default class Item4e extends Item {
 		partsCritExpressionReplacement.unshift({target : partsCrit[0], value: critDamageFormulaExpression})
 		partsMissExpressionReplacement.unshift({target : partsMiss[0], value: missDamageFormulaExpression})
 
-		await Helper.applyEffects([parts, partsCrit, partsMiss], rollData, actorData, this.data, weaponUse?.data, "damage")
+
 
 		return damageRoll({
 			event,
