@@ -521,6 +521,7 @@ DND4EBETA.featureSortTypes = {
 /* -------------------------------------------- */
 
 DND4EBETA.powerType = {
+	"inherent": "DND4EBETA.Inherent",
 	"class": "DND4EBETA.Class",
 	"race": "DND4EBETA.Racial",
 	"paragon": "DND4EBETA.Paragon",
