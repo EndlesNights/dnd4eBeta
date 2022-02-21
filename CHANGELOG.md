@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.2.64
+- fix to damage calculation with untyped damage.
+- Formula term highlight rollback + minor fixes [merge](https://github.com/EndlesNights/dnd4eBeta/pull/183) from [draconas1](https://github.com/draconas1)
+- Added additional power type category options [merge](https://github.com/EndlesNights/dnd4eBeta/pull/182) from [FoxLee](https://github.com/FoxLee)
+- updated example character and powers to match new categories.
+
 ## Version 0.2.63
 - "Manual & Help" documentation was added into the system as a Journal Entry Compendium pack. [merge](https://github.com/EndlesNights/dnd4eBeta/pull/171) from [draconas1](https://github.com/draconas1)
 - Number of data fixes seen in the following [merge](https://github.com/EndlesNights/dnd4eBeta/pull/177) from [draconas1](https://github.com/draconas1) This could have been a patch on its own!
