@@ -173,14 +173,21 @@ export const clickRollMessageDamageButtons = function(event) {
 function applyChatCardDamage(li, multiplier, trueDamage=false) {
 	const message = game.messages.get(li.data("messageId"));
 	const roll = message.roll;
+	console.log(message)
 	applyChatCardDamageInner(roll, multiplier, trueDamage)
 }
 
 function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
-	console.log(roll.terms)
+	console.log(roll)
 	let damage = {};
-
+	let damageTypes = [];
+	let rollTotalRemain = roll.total;
 	if(!trueDamage){
+		// roll.terms.forEach(e => {
+		// 	if(e.flavor){
+		// 		damageTypes = damageTypes.concat(e.flavor.replace(/ /g,'').split(','));
+		// 	}
+		// });
 		roll.terms.forEach(e => {
 			if(e.number){
 				let damageTypesArray = e.flavor.replace(/ /g,'').split(',');
@@ -188,22 +195,31 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 				let divider = damageTypesArray.length;
 	
 				damageTypesArray.forEach(f => {
-					let val = Math.ceil(total / divider)
-	
-					if(damage[f]){
-						damage[f] += val;
-					} else {
-						damage[f] = val;
+					if(f){
+						let val = Math.ceil(total / divider)
+						console.log(`Term: ${val}, ${f}`)
+						if(damage[f]){
+							damage[f] += val;
+						} else {
+							damage[f] = val;
+						}
+						rollTotalRemain -= val;
+						total -= val;
+						divider --;
 					}
-	
-					total -= val;
-					divider --;
 				});
+				console.log(`Total: ${total}`)
 			}
-		});	
+		});
 	}
 
-
+	if(rollTotalRemain){
+		if(damage.damage){
+			damage.damage += rollTotalRemain;
+		} else{
+			damage.damage = rollTotalRemain;
+		}
+	}
 	console.log(damage)
 	return Promise.all(canvas.tokens.controlled.map(t => {
 		const a = t.actor;
@@ -211,7 +227,8 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 			console.log( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealth: ${roll.total}`)
 			return a.applyDamage(roll.total, multiplier);
 		} else {
-			return a.calcDamage(damage, multiplier);
+			// return a.calcDamage(roll.total, multiplier, damageTypes);
+			return a.calcDamage(damage, multiplier, damageTypes);
 		}
 		
 	}));
