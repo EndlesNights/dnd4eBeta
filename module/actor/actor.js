@@ -198,7 +198,7 @@ export class Actor4e extends Actor {
 		}
 		
 		data.details.bloodied = Math.floor(data.attributes.hp.max / 2);
-		data.details.surgeValue += Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
+		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
 		data.attributes.hp.min = -data.details.bloodied;
 		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
 
