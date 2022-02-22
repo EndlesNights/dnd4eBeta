@@ -178,7 +178,6 @@ function applyChatCardDamage(li, multiplier, trueDamage=false) {
 }
 
 function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
-	console.log(roll)
 	let damage = {};
 	let damageTypes = [];
 	let rollTotalRemain = roll.total;
@@ -227,7 +226,6 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 			console.log( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealth: ${roll.total}`)
 			return a.applyDamage(roll.total, multiplier);
 		} else {
-			// return a.calcDamage(roll.total, multiplier, damageTypes);
 			return a.calcDamage(damage, multiplier, damageTypes);
 		}
 		

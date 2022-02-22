@@ -748,8 +748,8 @@ export class Actor4e extends Actor {
    * @param {boolean} isBar       Whether the new value is part of an attribute bar, or just a direct value
    * @return {Promise}
    */
-	async modifyTokenAttribute(attribute, value, isDelta=false, isBar=true) {		
-		if(attribute === 'attributes.hp') {
+	async modifyTokenAttribute(attribute, value, isDelta=false, isBar=true) {
+		if(attribute === 'attributes.hp' && isDelta) {
 			const hp = getProperty(this.data.data, attribute);
 			const delta = isDelta ? (-1 * value) : (hp.value + hp.temp) - value;
 			return this.applyDamage(delta);
@@ -1030,6 +1030,73 @@ export class Actor4e extends Actor {
 	}
 
 	async calcDamage(damage, multiplier=1){
+		if(game.settings.get("dnd4e", "damageCalcRules") === "errata"){
+			this.calcDamageErrata(damage, multiplier);
+		}
+		else if(game.settings.get("dnd4e", "diagonalMovement") === "phb"){
+			this.calcDamagePHB(damage, multiplier);
+		}
+	}
+
+	async calcDamageErrata(damage, multiplier){
+
+		if(Object.keys(damage).length < 1){
+			return; //if there is no damage, leave
+		}
+
+		const actorRes = this.data.data.resistances;
+		const isUntypedDamageImmune = actorRes['damage'].immune;
+		let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
+		let isImmune = isUntypedDamageImmune;
+		let lowestRes = Infinity;
+
+
+		for(let d in damage){
+			const type = d && actorRes[d] ? d : 'damage';
+			if(actorRes[type].immune){
+				continue;
+			}
+
+			if(actorRes[type].value !== 0 ){ //if has resistances or vulnerability
+				isImmuneAll=false;
+				if(actorRes[type].value < lowestRes){
+					lowestRes = actorRes[type].value;
+				}
+			} else {
+				if(!isUntypedDamageImmune) {
+					isImmuneAll=false;
+					if(actorRes['damage'].value){ //"damage" will stand in for any other damage that does not have a value
+						if(actorRes['damage'].value < lowestRes){
+							lowestRes = actorRes['damage'].value || 0;
+						}
+					}
+					else if(actorRes[type].value < lowestRes){
+						lowestRes = actorRes[type].value || 0;
+					}
+				}
+			}
+		}
+
+		if(!isImmuneAll) {
+			let sumDamage = 0;
+			let sumHeal = 0;
+			//sum damage
+			for(let d in damage){
+				if(d == 'heal'){
+					sumHeal -= damage[d];
+				}
+				else {
+					sumDamage += Math.max(0, damage[d]);
+				}
+			}
+				
+			let totalDamage = Math.max(sumDamage - lowestRes, 0) + sumHeal; // can't take negitive damage
+			console.log(`PreResistDamage:${totalDamage}, SmallestResist:${lowestRes}, DAMAGE: ${totalDamage}`)
+			this.applyDamage(totalDamage, multiplier);
+		}
+	}
+
+	async calcDamagePHB(damage, multiplier){
 		let totalDamage = 0;
 		if(Object.keys(damage).length >= 1){
 			const res = this.data.data.resistances;
@@ -1056,6 +1123,7 @@ export class Actor4e extends Actor {
 			}
 
 			if (!immune){
+				console.log(damage)
 				for(let d in damage){
 					let type = d && res[d] ? d : 'damage';
 					if (type == 'heal'){
@@ -1065,6 +1133,9 @@ export class Actor4e extends Actor {
 					let damageRes = res[type].value || 0;
 					
 					if (damageRes < totalRes && !res[type].immune){
+						if(type === "damage" && Object.keys(damage).length > 1){
+							continue;
+						}
 						totalRes = damageRes;
 						console.log(`Resist ${totalRes} ${type}`)
 					}
@@ -1094,7 +1165,7 @@ export class Actor4e extends Actor {
 
 			console.log(`Total Damage: ${totalDamage * multiplier}`)
 			this.applyDamage(totalDamage, multiplier);
-		}
+		}		
 	}
 
 	async applyDamage(amount=0, multiplier=1) 

@@ -30,6 +30,21 @@ export const registerSystemSettings = function() {
 	});
 
 	/**
+	 * Register resistances and vulnerabilities damage rule setting
+	 */
+	 game.settings.register("dnd4e", "damageCalcRules", {
+		name: "SETTINGS.4eDamageCalcN",
+		hint: "SETTINGS.4eDamageCalcL",
+		scope: "world",
+		config: true,
+		default: "errata",
+		type: String,
+		choices: {
+			"errata": "SETTINGS.4eDamageCalcErrata",
+			"phb": "SETTINGS.4eDamageCalcPHB",
+		},
+	});
+	/**
 	 * Register Initiative formula setting
 	 */
 	game.settings.register("dnd4e", "initiativeDexTiebreaker", {

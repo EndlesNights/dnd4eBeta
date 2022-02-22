@@ -1,6 +1,9 @@
 # Changelog
 
 ## Version 0.2.64
+- fixed issue with modifyTokenAttribute setting health while delta is false
+
+## Version 0.2.64
 - fix to damage calculation with untyped damage.
 - Formula term highlight rollback + minor fixes [merge](https://github.com/EndlesNights/dnd4eBeta/pull/183) from [draconas1](https://github.com/draconas1)
 - Added additional power type category options [merge](https://github.com/EndlesNights/dnd4eBeta/pull/182) from [FoxLee](https://github.com/FoxLee)
