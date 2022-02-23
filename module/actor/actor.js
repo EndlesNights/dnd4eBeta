@@ -27,7 +27,7 @@ export class Actor4e extends Actor {
 
 	/** @override */
 	async update(data, options={}) {
-
+		
 		//used to call changes to HP scrolling text
 		if(data[`data.attributes.hp.value`]){
 			options.dhp = data[`data.attributes.hp.value`] - this.data.data.attributes.hp.value;
@@ -256,8 +256,19 @@ export class Actor4e extends Actor {
 		// const observant = flags.observantFeat;
 		// const skillBonus = Number.isNumeric(bonuses.skill) ? parseInt(bonuses.skill) :  0;	
 	
-		if (data.attributes.hp.temphp <= 0 )
-			data.attributes.hp.temphp = null;
+		// Should I just write some proper migration code? Naaaaaa
+		// if(data.attributes.hp.temphp){
+		// 	if(!data.attributes.temphp){
+		// 		data.attributes.temphp = {
+		// 			value:data.attributes.hp.temphp,
+		// 			max: data.attributes.hp.max
+		// 		}
+		// 	}
+		// }
+		data.attributes.temphp.max = data.attributes.hp.max;
+
+		if (data.attributes.temphp.value <= 0 )
+			data.attributes.temphp.value = null;
 
 		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
 		if((data.defences.ac.light || this.checkLightArmour() ) && data.defences.ac.altability !== "none") {
@@ -758,11 +769,11 @@ export class Actor4e extends Actor {
 	}
 	setConditions(newValue) {
 		
-		let newTemp = this.data.data.attributes.hp.temphp;
+		let newTemp = this.data.data.attributes.temphp.value;
 		if(newValue < this.data.data.attributes.hp.value) {
 			let damage = this.data.data.attributes.hp.value - newValue;
 			
-			if(this.data.data.attributes.hp.temphp > 0) {
+			if(this.data.data.attributes.temphp.value > 0) {
 				newTemp -= damage;
 				if(newTemp < 0) {
 					newValue = this.data.data.attributes.hp.value + newTemp;
@@ -772,7 +783,7 @@ export class Actor4e extends Actor {
 					newValue = this.data.data.attributes.hp.value;
 				}
 				
-				this.update({[`data.attributes.hp.temphp`]:newTemp});
+				this.update({[`data.attributes.temphp.value`]:newTemp});
 			}
 		}
 		
@@ -1176,7 +1187,7 @@ export class Actor4e extends Actor {
 		console.log(hp)
 
 		// Deduct damage from temp HP first
-		const tmp = parseInt(hp.temphp) || 0;
+		const tmp = parseInt(this.data.data.attributes.temphp.value) || 0;
 		const dt = amount > 0 ? Math.min(tmp, amount) : 0;
 		// Remaining goes to health
 		//const tmpMax = parseInt(hp.tempmax) || 0;
@@ -1197,7 +1208,7 @@ export class Actor4e extends Actor {
 	
 		// Update the Actor
 		const updates = {
-		  "data.attributes.hp.temphp": tmp - dt,
+		  "data.attributes.temphp.value": tmp - dt,
 		  "data.attributes.hp.value": newHp
 		};
 	
@@ -1222,13 +1233,13 @@ export class Actor4e extends Actor {
 		console.log(hp)
 
 		// calculate existing temp hp
-		const tmp = parseInt(hp.temphp) || 0;
+		const tmp = parseInt(this.data.data.attributes.temphp.value) || 0;
 
 		if (amount >= 0) {
 			// temp HP doesn't stack, so only update if we have a higher value
 			if (amount > tmp) {
 				const updates = {
-					"data.attributes.hp.temphp": amount,
+					"data.attributes.temphp.value": amount,
 				};
 				return this.update(updates);
 			}
@@ -1238,7 +1249,7 @@ export class Actor4e extends Actor {
 			let newTempHP = tmp + amount
 			newTempHP = Math.max(0, newTempHP)
 			const updates = {
-				"data.attributes.hp.temphp": newTempHP,
+				"data.attributes.temphp.value.value": newTempHP,
 			};
 			return this.update(updates);
 		}

@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 0.2.64
+## Version 0.2.65
 - fixed issue with modifyTokenAttribute setting health while delta is false
 
 ## Version 0.2.64

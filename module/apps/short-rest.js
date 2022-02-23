@@ -67,7 +67,7 @@ export class ShortRestDialog extends DocumentSheet {
 		}
 		
 		if(!this.object.data.data.attributes.hp.temprest)
-			updateData[`data.attributes.hp.temphp`] = "";
+			updateData[`data.attributes.temphp.value`] = "";
 		
 		updateData[`data.details.secondwind`] = false;
 		updateData[`data.actionpoints.encounteruse`] = false;

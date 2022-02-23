@@ -39,8 +39,11 @@
 					"feat": 0,
 					"misc": 0,
 					"autototal": false,
-					"temprest": false,
-					"temphp": 0
+					"temprest": false
+				},
+				"temphp": {
+					"value": 0,
+					"max": 10
 				},
 				"init": {
 					"value": 0,

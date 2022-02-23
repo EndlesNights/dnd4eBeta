@@ -141,17 +141,26 @@ Hooks.once("ready", function() {
 	if ( !game.user.isGM ) return;
 	const currentVersion = game.settings.get("dnd4e", "systemMigrationVersion");
 	// console.log(currentVersion)
-	const NEEDS_MIGRATION_VERSION = "0.1.4";
+	const NEEDS_MIGRATION_VERSION = "0.2.64";
 	const COMPATIBLE_MIGRATION_VERSION = 0.80;
-	const needsMigration = currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion);
+	const needsMigration = (currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
+
+	if(!currentVersion) needsMigration = true;
+
+	console.log(`needsMigration: ${!!needsMigration}`);
+	console.log(isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
+	console.log(NEEDS_MIGRATION_VERSION);
+	console.log(currentVersion);
+	console.log(!currentVersion);
+
 	if ( !needsMigration ) return;
 
 	// Perform the migration
-	// if ( currentVersion && isNewerVersion(COMPATIBLE_MIGRATION_VERSION, currentVersion) ) {
-	// 	const warning = `Your DnD5e system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`;
-	// 	ui.notifications.error(warning, {permanent: true});
-	// }
-	// migrations.migrateWorld();
+	if ( currentVersion && isNewerVersion(COMPATIBLE_MIGRATION_VERSION, currentVersion) ) {
+		const warning = `Your DnD4e system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`;
+		ui.notifications.error(warning, {permanent: true});
+	}
+	migrations.migrateWorld();
 });
 
 /* -------------------------------------------- */
