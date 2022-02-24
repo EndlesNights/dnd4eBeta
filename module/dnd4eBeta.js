@@ -140,18 +140,10 @@ Hooks.once("ready", function() {
 	// Determine whether a system migration is required and feasible
 	if ( !game.user.isGM ) return;
 	const currentVersion = game.settings.get("dnd4e", "systemMigrationVersion");
-	// console.log(currentVersion)
 	const NEEDS_MIGRATION_VERSION = "0.2.64";
 	const COMPATIBLE_MIGRATION_VERSION = 0.80;
-	const needsMigration = (currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
-
-	if(!currentVersion) needsMigration = true;
-
-	console.log(`needsMigration: ${!!needsMigration}`);
-	console.log(isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
-	console.log(NEEDS_MIGRATION_VERSION);
-	console.log(currentVersion);
-	console.log(!currentVersion);
+	//if no current Version is set, run migration which will set value
+	const needsMigration = !currentVersion ? true : (currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
 
 	if ( !needsMigration ) return;
 
@@ -161,6 +153,7 @@ Hooks.once("ready", function() {
 		ui.notifications.error(warning, {permanent: true});
 	}
 	migrations.migrateWorld();
+
 });
 
 /* -------------------------------------------- */

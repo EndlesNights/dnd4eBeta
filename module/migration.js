@@ -130,6 +130,7 @@ export const migrateCompendium = async function(pack) {
  * @return {Object}         The updateData to apply
  */
 export const migrateActorData = function(actor, migrationData) {
+	console.trace()
 	const updateData = {};
 
 	// Actor Data Updates
@@ -142,29 +143,29 @@ export const migrateActorData = function(actor, migrationData) {
 	}
 
 
-	// Migrate Owned Items
-	if ( !actor.items ) return updateData;
-	const items = actor.items.reduce((arr, i) => {
-		// Migrate the Owned Item
-		const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
-		let itemUpdate = migrateItemData(itemData, migrationData);
+	// // Migrate Owned Items
+	// if ( !actor.items ) return updateData;
+	// const items = actor.items.reduce((arr, i) => {
+	// 	// Migrate the Owned Item
+	// 	const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
+	// 	let itemUpdate = migrateItemData(itemData, migrationData);
 
-		// Prepared, Equipped, and Proficient for NPC actors
-		if ( actor.type === "npc" ) {
-			if (getProperty(itemData.data, "preparation.prepared") === false) itemUpdate["data.preparation.prepared"] = true;
-			if (getProperty(itemData.data, "equipped") === false) itemUpdate["data.equipped"] = true;
-			if (getProperty(itemData.data, "proficient") === false) itemUpdate["data.proficient"] = true;
-		}	
+	// 	// Prepared, Equipped, and Proficient for NPC actors
+	// 	if ( actor.type === "npc" ) {
+	// 		// if (getProperty(itemData.data, "preparation.prepared") === false) itemUpdate["data.preparation.prepared"] = true;
+	// 		// if (getProperty(itemData.data, "equipped") === false) itemUpdate["data.equipped"] = true;
+	// 		// if (getProperty(itemData.data, "proficient") === false) itemUpdate["data.proficient"] = true;
+	// 	}	
 
-		// Update the Owned Item
-		if ( !isObjectEmpty(itemUpdate) ) {
-			itemUpdate._id = itemData._id;
-			arr.push(expandObject(itemUpdate));
-		}
+	// 	// Update the Owned Item
+	// 	if ( !isObjectEmpty(itemUpdate) ) {
+	// 		itemUpdate._id = itemData._id;
+	// 		arr.push(expandObject(itemUpdate));
+	// 	}
 
-		return arr;
-	}, []);
-	if ( items.length > 0 ) updateData.items = items;
+	// 	return arr;
+	// }, []);
+	// if ( items.length > 0 ) updateData.items = items;
 	return updateData;
 };
 
@@ -282,31 +283,25 @@ export const getMigrationData = async function() {
  * @private
  */
  function _migrateActorTempHP(actorData, updateData) {
-	const ad = actorData.data;
-  
-	// Work is needed if old data is present
+	const ad = actorData.data;	
 	const old = ad.attributes.hp.temphp;
-	console.log(`Old: ${old}`)
 	const hasOld = old !== undefined;
 	if ( hasOld ) {
 
 		// If new data is not present, migrate the old data
-		const hasNew = ad?.attributes?.temphp?.value !== undefined;
-		if ( !hasNew && (typeof old === "number") ) {
-
+		if (ad.attributes?.temphp?.value !== old && (typeof old === "number") ) {
+			console.log("setFooBar")
 			updateData["data.attributes.temphp"] = {
-				value: Number.isNumeric(old) ? parseInt(old) : 0,
-				max: 10
+				value: old,
+				max: 10,
 			}
 		}
 
 		// Remove the old attribute
-		let newHPObject = ad.attributes.hp;
-		delete newHPObject.temphp;
-		updateData["data.attributes.hp"] = newHPObject;
+		updateData["data.attributes.hp.-=temphp"] = null;
 	}
 	return updateData;
-  }
+}
 
 /**
  * A general tool to purge flags from all entities in a Compendium pack.
