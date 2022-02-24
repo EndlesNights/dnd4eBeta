@@ -1,7 +1,11 @@
 # Changelog
 
 ## Version 0.2.65
-- fixed issue with modifyTokenAttribute setting health while delta is false
+- fixed issue with modifyTokenAttribute setting health while delta is false. Should now be able to correctly change any values again.
+- changed how temphp is stored, is now stored at 'name="data.attributes.temphp.value'.
+- temphp can now be set when setting to as a token Bar attribute, using maxHP for its scale.
+- tempHP is now set as the default option for secondaryTokenAttribute for all new tokens.
+- surge values is now completely self derived via code as the bases for any surge at 'data.details.surgeValue'. Use 'data.details.surgeBon.value' via effects if you wish to modify it. [merge](https://github.com/EndlesNights/dnd4eBeta/pull/186) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.64
 - fix to damage calculation with untyped damage.
