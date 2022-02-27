@@ -41,7 +41,7 @@ export const registerSystemSettings = function() {
 		type: String,
 		choices: {
 			"errata": "SETTINGS.4eDamageCalcErrata",
-			"phb": "SETTINGS.4eDamageCalcPHB",
+			// "phb": "SETTINGS.4eDamageCalcPHB",
 		},
 	});
 	/**
