@@ -1186,11 +1186,11 @@ export class Actor4e extends Actor {
 		// Healing Surge related checks
 		if(surges.surgeAmount){
 			if(this.data.data.details.surges.value < surges.surgeAmount){ //check to see if enough surges left to use tihs source
-				ui.notifications.warn("You do not have enough healing surges to recover hp from this source");
+				ui.notifications.error(game.i18n.localize("DND4EBETA.HealingSurgeWarning"));
 				return;
 			}
 			else if(this.data.data.attributes.hp.value >= this.data.data.attributes.hp.max){
-				ui.notifications.warn("You can not recover any more hitpoits at this time");
+				ui.notifications.error(game.i18n.localize("DND4EBETA.HealingOverWarning"));
 				return;
 			}
 			amount+= this.data.data.details.surgeValue*surges.surgeAmount*multiplier
