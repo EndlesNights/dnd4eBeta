@@ -740,6 +740,7 @@
 				"shareDamageRoll": false,
 				"isDamage": true,
 				"isHealing": false,
+				"healSurge": "",
 				"baseQuantity": 1,
 				"baseDiceType": "Base Weapon Damage",
 				"detail": "1[W] + Strength modifier damage.",

@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.66
+- Tweak to Effects modifieirs CSS
+- Heal/Damage by surge amount
+
 ## Version 0.2.65
 - fixed issue with modifyTokenAttribute setting health while delta is false. Should now be able to correctly change any values again.
 - changed how temphp is stored, is now stored at 'name="data.attributes.temphp.value'.

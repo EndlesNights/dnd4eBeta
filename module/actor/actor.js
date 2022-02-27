@@ -1040,16 +1040,16 @@ export class Actor4e extends Actor {
 		};
 	}
 
-	async calcDamage(damage, multiplier=1){
+	async calcDamage(damage, multiplier=1, surges=0){
 		if(game.settings.get("dnd4e", "damageCalcRules") === "errata"){
-			this.calcDamageErrata(damage, multiplier);
+			this.calcDamageErrata(damage, multiplier,surges);
 		}
 		else if(game.settings.get("dnd4e", "diagonalMovement") === "phb"){
-			this.calcDamagePHB(damage, multiplier);
+			this.calcDamagePHB(damage, multiplier, surges);
 		}
 	}
 
-	async calcDamageErrata(damage, multiplier){
+	async calcDamageErrata(damage, multiplier, surges){
 
 		if(Object.keys(damage).length < 1){
 			return; //if there is no damage, leave
@@ -1107,7 +1107,7 @@ export class Actor4e extends Actor {
 		}
 	}
 
-	async calcDamagePHB(damage, multiplier){
+	async calcDamagePHB(damage, multiplier, surges){
 		let totalDamage = 0;
 		if(Object.keys(damage).length >= 1){
 			const res = this.data.data.resistances;
@@ -1179,9 +1179,26 @@ export class Actor4e extends Actor {
 		}		
 	}
 
-	async applyDamage(amount=0, multiplier=1) 
+	async applyDamage(amount=0, multiplier=1, surges={}) 
 	{
 		amount = Math.floor(parseInt(amount) * multiplier);
+		
+		// Healing Surge related checks
+		if(surges.surgeAmount){
+			if(this.data.data.details.surges.value < surges.surgeAmount){ //check to see if enough surges left to use tihs source
+				ui.notifications.warn("You do not have enough healing surges to recover hp from this source");
+				return;
+			}
+			else if(this.data.data.attributes.hp.value >= this.data.data.attributes.hp.max){
+				ui.notifications.warn("You can not recover any more hitpoits at this time");
+				return;
+			}
+			amount+= this.data.data.details.surgeValue*surges.surgeAmount*multiplier
+		}
+		if(surges.surgeAmountValue){
+			amount+= this.data.data.details.surgeValue*surges.surgeAmountValue*multiplier
+		}
+		
 		const healFromZero = true; // If true, healing HP starts from zero (the usual for 4e). On false, it follows normal arithmetic
 		const hp = this.data.data.attributes.hp;
 		console.log(hp)
@@ -1208,10 +1225,15 @@ export class Actor4e extends Actor {
 	
 		// Update the Actor
 		const updates = {
-		  "data.attributes.temphp.value": tmp - dt,
-		  "data.attributes.hp.value": newHp
+			"data.attributes.temphp.value": tmp - dt,
+			"data.attributes.hp.value": newHp
 		};
 	
+		//spend healing surges
+		if(multiplier < 0  && surges.surgeAmount){
+			updates["data.details.surges.value"] =  this.data.data.details.surges.value - surges.surgeAmount;
+		}
+
 		// Delegate damage application to a hook
 		// TODO replace this in the future with a better modifyTokenAttribute function in the core
 		const allowed = Hooks.call("modifyTokenAttribute", {

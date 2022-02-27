@@ -181,22 +181,31 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	let damage = {};
 	let damageTypes = [];
 	let rollTotalRemain = roll.total;
-	if(!trueDamage){
-		// roll.terms.forEach(e => {
-		// 	if(e.flavor){
-		// 		damageTypes = damageTypes.concat(e.flavor.replace(/ /g,'').split(','));
-		// 	}
-		// });
+	let surgeAmount = 0;
+	let surgeValueAmount = 0;
+	
+	//count surges used, shouldn't be more than 1, but you never know....
+	if(multiplier < 0 ){
 		roll.terms.forEach(e => {
-			if(e.number){
+			if(e.flavor.includes("surge")){
+				surgeAmount++;
+			}
+			else if(e.flavor.includes("surgeValue")){
+				surgeValueAmount++;
+			}
+		});
+	}
+
+	if(!trueDamage){
+		roll.terms.forEach(e => {
+			if(typeof e.number === "number"){
 				let damageTypesArray = e.flavor.replace(/ /g,'').split(',');
 				let total = e.total;
 				let divider = damageTypesArray.length;
-	
+				
 				damageTypesArray.forEach(f => {
 					if(f){
 						let val = Math.ceil(total / divider)
-						console.log(`Term: ${val}, ${f}`)
 						if(damage[f]){
 							damage[f] += val;
 						} else {
@@ -219,12 +228,11 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 			damage.damage = rollTotalRemain;
 		}
 	}
-	console.log(damage)
 	return Promise.all(canvas.tokens.controlled.map(t => {
 		const a = t.actor;
 		if(multiplier < 0 || trueDamage){ //if it's healing or true damage just heal directly
 			console.log( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealth: ${roll.total}`)
-			return a.applyDamage(roll.total, multiplier);
+			return a.applyDamage(roll.total, multiplier, {surgeAmount, surgeValueAmount});
 		} else {
 			return a.calcDamage(damage, multiplier, damageTypes);
 		}

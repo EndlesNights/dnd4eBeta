@@ -350,6 +350,18 @@
 		<input type="checkbox" name="data.hit.isHealing" data-dtype="Boolean" {{checked data.hit.isHealing}}/>
 	</div>
 	{{#if data.hit.isHealing}}
+
+	<div class="form-group select">
+		<label>Healing {{ localize "DND4EBETA.Formula" }}</label>
+		<select name="data.hit.healSurge">
+		{{#select data.hit.healSurge}}
+			<option value="">None</option>
+			<option value="surge">Spend Surge</option>
+			<option value="surgeValue">Get Surge Value</option>
+		{{/select}}
+		</select>
+	</div>
+
 	<div class="form-group stacked">
 		<label>Healing {{ localize "DND4EBETA.Formula" }}</label>
 		<input type="text" name="data.hit.healFormula" value="{{data.hit.healFormula}}"/>

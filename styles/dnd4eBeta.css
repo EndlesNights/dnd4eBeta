@@ -1412,7 +1412,7 @@ font-size: 12px;
 
 .dnd4eBeta .attribute-modifiers {
 	margin: 0 0 0 0;
-	border: 2px groove #eeede0;
+	/* border: 2px groove #eeede0; */
 	border-radius: 4px;
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
 		/* line-height:20px; */

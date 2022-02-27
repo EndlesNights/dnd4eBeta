@@ -158,7 +158,6 @@ export class RollWithOriginalExpression extends Roll {
             hitTypeDamage: this.options?.hitTypeDamage,
             hitTypeHealing: this.options?.hitTypeHealing,
         };
-
         // Render the roll display template
         return renderTemplate(chatOptions.template, chatData);
     }

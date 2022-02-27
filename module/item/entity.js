@@ -1230,21 +1230,22 @@ export default class Item4e extends Item {
 			return  Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data);
 		}
 
-		//Add power damage into parts
-		if(!!itemData.hit?.healFormula) {
-			parts.unshift(formulaHelper(itemData.hit.healFormula))
-			//Add seconadary weapons damage into parts
-			if(weaponUse) {
-				if(itemData.hit.healFormula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d => formulaHelper(d[0])))
-					Array.prototype.push.apply(partsExpressionReplacement, weaponUse.data.data.damage.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
-				}
-				
-				if(itemData.hit.healFormula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d => formulaHelper(d[0])))
-					Array.prototype.push.apply(partsExpressionReplacement, weaponUse.data.data.damageImp.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
-				}
-				
+		//Add power healing into parts
+		if(!itemData.hit?.healFormula){
+			itemData.hit.healFormula = "0";
+		}
+		let surge = itemData.hit.healSurge ? `, ${itemData.hit.healSurge}`: "";
+		parts.unshift(`(${formulaHelper(itemData.hit.healFormula)})[heal${surge}]`) //add healFormula here
+		//Add seconadary weapons damage into parts
+		if(weaponUse) {
+			if(itemData.hit.healFormula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
+				Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d => formulaHelper(d[0])))
+				Array.prototype.push.apply(partsExpressionReplacement, weaponUse.data.data.damage.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
+			}
+			
+			if(itemData.hit.healFormula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
+				Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d => formulaHelper(d[0])))
+				Array.prototype.push.apply(partsExpressionReplacement, weaponUse.data.data.damageImp.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
 			}
 		}
 
