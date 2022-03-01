@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.67
+- Hotfix check that added "-2 to attack rolls" for Non proficient armour penalty caused Not-A-Number. when no penalty was detected instead of zero.
+
 ## Version 0.2.66
 - Tweak to Effects modifieirs CSS
 - Heal/Damage by surge amount

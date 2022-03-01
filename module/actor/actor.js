@@ -502,7 +502,7 @@ export class Actor4e extends Actor {
 			}
 
 			mod.bonusValue = modifierBonusValue;
-			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.race + modifierBonusValue + mod.armourPen;
+			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.race + modifierBonusValue + (mod.armourPen || 0);
 			mod.label = game.i18n.localize(DND4EBETA.modifiers[id]);
 		}
 		
