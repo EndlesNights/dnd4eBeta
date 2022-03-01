@@ -3,6 +3,8 @@
 ## Version 0.2.66
 - Tweak to Effects modifieirs CSS
 - Heal/Damage by surge amount
+- Non proficient armour penalty added. Characters who are wearing armour that they are not proficient in will take a -2 to attack rolls and have a -2 to their reflex defences.
+- Non proficient shield penalty added. Characters who are not proficient with a shield they have equipped will not gain the any of the defences provided by the shields stats.
 
 ## Version 0.2.65
 - fixed issue with modifyTokenAttribute setting health while delta is false. Should now be able to correctly change any values again.

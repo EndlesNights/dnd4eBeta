@@ -634,6 +634,7 @@
 "DND4EBETA.PowerDaily": "Daily",
 "DND4EBETA.PowerRecharge": "Recharge",
 "DND4EBETA.PowerRechargeCondition": "Recharge On",
+"DND4EBETA.PowerRechargePlaceholder": "Input minimum number needed to be rolled on 1d6.",
 "DND4EBETA.PowerDetails": "Power Details",
 "DND4EBETA.PowerEnc": "Encounter",
 "DND4EBETA.PowerFeature": "Feature",

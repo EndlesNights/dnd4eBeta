@@ -502,7 +502,7 @@ export class Actor4e extends Actor {
 			}
 
 			mod.bonusValue = modifierBonusValue;
-			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.race + modifierBonusValue;
+			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.race + modifierBonusValue + mod.armourPen;
 			mod.label = game.i18n.localize(DND4EBETA.modifiers[id]);
 		}
 		
@@ -563,6 +563,15 @@ export class Actor4e extends Actor {
 			//Get Deff stats from items
 			for ( let i of this.items) {
 				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
+				if(i.data.data.armour.type === "arms" && ["light", "heavy"].includes(i.data.data.armour.subType)){
+					if(!i.data.data.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+				}
+				else if(i.data.data.armour.type === "armour" && id === "ref"){
+					if(!i.data.data.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+						def.armour -= 2;
+						this.data.data.modifiers.attack.armourPen =-2;
+					}
+				}
 				def.armour += i.data.data.armour[id];
 			}
 			// if(def.base == undefined){
@@ -603,6 +612,15 @@ export class Actor4e extends Actor {
 			//Get Deff stats from items
 			for ( let i of this.items) {
 				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
+				if(i.data.data.armour.type === "arms" && ["light", "heavy"].includes(i.data.data.armour.subType)){
+					if(!i.data.data.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+				}
+				else if(i.data.data.armour.type === "armour" && id === "ref"){
+					if(!i.data.data.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+						def.armour -= 2;
+						this.data.data.modifiers.attack.armourPen =-2;
+					}
+				}
 				def.armour += i.data.data.armour[id];
 			}
 			if(def.base == undefined){
