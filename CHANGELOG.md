@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.68
+- moved "Spend Healing Surges?" option into the isHealing required handle be where it was intended to be.
+
 ## Version 0.2.67
 - Hotfix check that added "-2 to attack rolls" for Non proficient armour penalty caused Not-A-Number. when no penalty was detected instead of zero.
 
