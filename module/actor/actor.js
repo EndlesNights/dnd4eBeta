@@ -1062,7 +1062,7 @@ export class Actor4e extends Actor {
 		if(game.settings.get("dnd4e", "damageCalcRules") === "errata"){
 			this.calcDamageErrata(damage, multiplier,surges);
 		}
-		else if(game.settings.get("dnd4e", "diagonalMovement") === "phb"){
+		else {
 			this.calcDamagePHB(damage, multiplier, surges);
 		}
 	}
