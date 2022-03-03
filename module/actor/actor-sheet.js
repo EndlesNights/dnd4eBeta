@@ -272,6 +272,28 @@ export default class ActorSheet4e extends ActorSheet {
 
 		this._sortPowers(powers);
 		this._sortFeatures(features);
+
+		// console.log(this)
+		// console.log(data)
+
+		// let moveTypesTitle = "";
+		// for(const moveType of Object.entries(data.data.movement)){
+		// 	moveTypesTitle += `${moveType.value} sq.`
+		// }
+
+		data.moveTitle = `
+${parseInt(data.data.movement.walk.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedWalking")}
+${parseInt(data.data.movement.run.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedRunning")}
+${parseInt(data.data.movement.charge.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedCharging")}
+${parseInt(data.data.movement.climb.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedClimbing")}
+${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedShifting")}`;
+
+		if(data.data.movement.custom){
+			const moveCustom = [];
+			data.data.movement.custom.split(";").forEach((c, i) => (c ? moveCustom[i] = c.trim() : null) );
+			data.data.moveCustom = moveCustom;
+			moveCustom.forEach((c) => data.moveTitle += `\n${c.trim()}`);
+		}
 	}
 
 	_compareValues(key, order = 'asc') {
@@ -335,6 +357,9 @@ export default class ActorSheet4e extends ActorSheet {
 		if(this.object.data.data.powerGroupTypes === "type") {
 			if(Object.keys(powerGroups).includes(power.data.powerType) )return power.data.powerType;
 		}
+		if(this.object.data.data.powerGroupTypes === "powerSubtype") {
+			if(Object.keys(powerGroups).includes(power.data.powerSubtype) )return power.data.powerSubtype;
+		}
 		if(this.object.data.data.powerGroupTypes === "usage") {
 			if(Object.keys(powerGroups).includes(power.data.useType) ) return power.data.useType;
 		}
@@ -356,9 +381,23 @@ export default class ActorSheet4e extends ActorSheet {
 		}
 		else if(this.object.data.data.powerGroupTypes === "type") {
 			return {
-				class: { label: "Class Power", items: [], dataset: {type: "class"} },
-				race: { label: "Racial Power", items: [], dataset: {type: "race"} },
+				inherent: { label: "DND4EALTUS.Inherent", items: [], dataset: {type: "inherent"} },
+				class: { label: "DND4EALTUS.Class", items: [], dataset: {type: "class"} },
+				race: { label: "DND4EALTUS.Race", items: [], dataset: {type: "race"} },
+				paragon: { label: "DND4EALTUS.Paragon", items: [], dataset: {type: "paragon"} },
+				epic: { label: "DND4EALTUS.Epic", items: [], dataset: {type: "epic"} },
+				theme: { label: "DND4EALTUS.Theme", items: [], dataset: {type: "theme"} },
+				feat: { label: "DND4EALTUS.Feat", items: [], dataset: {type: "feat"} },
+				item: { label: "DND4EALTUS.PowerItem", items: [], dataset: {type: "item"} },
+				//item: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} },
+				other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
+			};
+		}
+		else if(this.object.data.data.powerGroupTypes === "powerSubtype") {
+			return {
+				attack: { label: "DND4EALTUS.PowerAttack", items: [], dataset: {type: "attack"} },
 				utility: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} },
+				feature: { label: "DND4EALTUS.PowerFeature", items: [], dataset: {type: "feature"} },
 				other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
 			};
 		}
@@ -388,7 +427,7 @@ export default class ActorSheet4e extends ActorSheet {
    */
 	_preparePowerRangeText(itemData) {
 		if(itemData.data.rangeType === "range") {
-			itemData.data.rangeText = `Range ${itemData.data.rangePower}`
+			itemData.data.rangeText = `Ranged ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = `R`
 			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "closeBurst") {
@@ -414,6 +453,9 @@ export default class ActorSheet4e extends ActorSheet {
 		} else if(itemData.data.rangeType === "personal") {
 			itemData.data.rangeText = "Personal"
 			itemData.data.rangeTextShort = "P"
+		} else if(itemData.data.rangeType === "special") {
+			itemData.data.rangeText = "Special"
+			itemData.data.rangeTextShort = "S"
 		} else if(itemData.data.rangeType === "touch") {
 			itemData.data.rangeTextShort = "M-T";
 			if(itemData.data.rangePower == null){
@@ -914,7 +956,20 @@ export default class ActorSheet4e extends ActorSheet {
     event.preventDefault();
     const li = event.currentTarget.closest(".item");
     const item = this.actor.items.get(li.dataset.itemId);
-    if ( item ) return item.delete();
+    if ( item )  {
+		if (game.settings.get("dnd4eAltus", "itemDeleteConfirmation")) {
+			return Dialog.confirm({
+				title: game.i18n.format("DND4EALTUS.DeleteConfirmTitle", {name: item.name}),
+				content: game.i18n.format("DND4EALTUS.DeleteConfirmContent", {name: item.name}),
+				yes: () => { return item.delete() },
+				no: () => {},
+				defaultYes: true
+			});
+		}
+		else {
+			return item.delete();
+		}
+	}
   }
   
   /* -------------------------------------------- */

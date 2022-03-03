@@ -16,7 +16,6 @@ import { _getInitiativeFormula } from "./combat.js";
 
 import ActorSheet4e from "./actor/actor-sheet.js";
 import ActorSheet4eNPC from "./actor/npc-sheet.js";
-import {SaveThrowDialog} from "./apps/save-throw.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
@@ -30,6 +29,7 @@ import * as macros from "./macros.js";
 import * as migrations from "./migration.js";
 import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
+import {TokenBarHooks} from "./hooks.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -99,7 +99,9 @@ Hooks.once("init", async function() {
 	preloadHandlebarsTemplates();
 
 	// setup methods that allow for easy integration with token hud
-	game.dnd4eAltus.quickSave = (actor) => new SaveThrowDialog(actor)._updateObject(null, {save : 0, dc: 10})
+	game.dnd4eAltus.tokenBarHooks = TokenBarHooks
+	//legacy, remove after some time when its reasonable for people to have updated token bar
+	game.dnd4eAltus.quickSave = (actor) => game.dnd4eAltus.tokenBarHooks.quickSave(actor, null)
 });
 
 Hooks.once("setup", function() {
@@ -110,7 +112,7 @@ Hooks.once("setup", function() {
 	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits",
 	"damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
 	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "featureSortTypes", "healingTypes", "implementGroup", "itemActionTypes",
-	"launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "rangeTypeNoWeapon",
+	"launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerSubtype", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "rangeTypeNoWeapon",
 	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
 	"weaponTypes", "weaponHands"
 	];
@@ -138,18 +140,20 @@ Hooks.once("ready", function() {
 	// Determine whether a system migration is required and feasible
 	if ( !game.user.isGM ) return;
 	const currentVersion = game.settings.get("dnd4eAltus", "systemMigrationVersion");
-	// console.log(currentVersion)
-	const NEEDS_MIGRATION_VERSION = "0.1.4";
+	const NEEDS_MIGRATION_VERSION = "0.2.64";
 	const COMPATIBLE_MIGRATION_VERSION = 0.80;
-	const needsMigration = currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion);
+	//if no current Version is set, run migration which will set value
+	const needsMigration = !currentVersion ? true : (currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
+
 	if ( !needsMigration ) return;
 
 	// Perform the migration
-	// if ( currentVersion && isNewerVersion(COMPATIBLE_MIGRATION_VERSION, currentVersion) ) {
-	// 	const warning = `Your DnD5e system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`;
-	// 	ui.notifications.error(warning, {permanent: true});
-	// }
-	// migrations.migrateWorld();
+	if ( currentVersion && isNewerVersion(COMPATIBLE_MIGRATION_VERSION, currentVersion) ) {
+		const warning = `Your DnD4e system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`;
+		ui.notifications.error(warning, {permanent: true});
+	}
+	migrations.migrateWorld();
+
 });
 
 /* -------------------------------------------- */
@@ -164,11 +168,18 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 	// Highlight critical success or failure die
 	chat.highlightCriticalSuccessFailure(app, html, data);
 
+	// hide damage buttons on d20 rolls
+	chat.displayDamageOptionButtons(app, html, data)
+
 	// Optionally collapse the content
 	if (game.settings.get("dnd4eAltus", "autoCollapseItemCards")) html.find(".card-content").hide();
 });
+
 Hooks.on("getChatLogEntryContext", chat.addChatMessageContextOptions);
-Hooks.on("renderChatLog", (app, html, data) => Item4e.chatListeners(html));
+Hooks.on("renderChatLog", (app, html, data) => {
+	Item4e.chatListeners(html);
+	chat.clickRollMessageDamageChatListener(html);
+});
 
 Hooks.on("canvasInit", function() {
 

@@ -67,7 +67,7 @@ export class ShortRestDialog extends DocumentSheet {
 		}
 		
 		if(!this.object.data.data.attributes.hp.temprest)
-			updateData[`data.attributes.hp.temphp`] = "";
+			updateData[`data.attributes.temphp.value`] = "";
 		
 		updateData[`data.details.secondwind`] = false;
 		updateData[`data.actionpoints.encounteruse`] = false;
@@ -86,15 +86,18 @@ export class ShortRestDialog extends DocumentSheet {
 		console.log(updateItems)
 		await this.object.updateEmbeddedDocuments("Item", updateItems);
 		
-		ChatMessage.create({
-			user: game.user.id,
-			speaker: {actor: this.object, alias: this.object.data.name},
-			// flavor: restFlavor,
-			// content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP."
-			content: formData.surge >= 1 ? `${this.object.data.name} takes a short rest, spending ${formData.surge} healing surge, regaining ${(updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value)} HP.`
-				: `${this.object.data.name} takes a short rest.`
-			
-		});		
+		if(this.object.type === "Player Character"){
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this.object, alias: this.object.data.name},
+				// flavor: restFlavor,
+				// content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value) + " HP."
+				content: formData.surge >= 1 ? `${this.object.data.name} takes a short rest, spending ${formData.surge} healing surge, regaining ${(updateData[`data.attributes.hp.value`] - this.object.data.data.attributes.hp.value)} HP.`
+					: `${this.object.data.name} takes a short rest.`
+				
+			});				
+		}
+
 		
 		for (let r of Object.entries(this.object.data.data.resources)) {
 			if(r[1].sr && r[1].max) {

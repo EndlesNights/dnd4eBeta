@@ -309,6 +309,10 @@
 	min-width: 38px;
 }
 
+.dnd4eAltus.sheet.actor .npc + a.rest {
+	margin: 0px;
+}
+
 .fakebutton {
 	width: 100%;
 	border: 2px groove #f0f0e0;
@@ -318,6 +322,23 @@
 	margin: 0 3px;
 	text-align: center;
 	font-size: 14px;
+}
+
+.chatDamageButtons {
+	font-size: var(--font-size-12);
+	display: flex;
+}
+
+.fakechatbutton {
+	width: 100%;
+	border: 2px groove #f0f0e0;
+	border-radius: 3px;
+	background: rgba(255, 255, 240, 0.8);
+	padding: 3px 3px;
+	margin: 2px 0px;
+	text-align: center;
+	flex-grow: 1;
+
 }
 
 .dnd4eAltus .container--bottom {
@@ -1391,7 +1412,7 @@ font-size: 12px;
 
 .dnd4eAltus .attribute-modifiers {
 	margin: 0 0 0 0;
-	border: 2px groove #eeede0;
+	/* border: 2px groove #eeede0; */
 	border-radius: 4px;
 	font-family: "Nodesto", "Signika", "Palatino Linotype", serif;
 		/* line-height:20px; */
@@ -1488,13 +1509,20 @@ font-size: 12px;
 }
 .dnd4eAltus .tabs {
 	height: 40px;
-	/* border-top: 1px solid #AAA; */
 	border-bottom: 1px solid #AAA;
 }
 .dnd4eAltus .tabs .item {
 	line-height: 40px;
 	font-weight: bold;
 }
+
+.dnd4eAltus .npc .tabs {
+	height: 20px;
+}
+.dnd4eAltus .npc .tabs .item {
+	line-height: 0px;
+}
+
 .dnd4eAltus .tabs .item.active {
 	text-decoration: underline;
 	text-shadow: none;

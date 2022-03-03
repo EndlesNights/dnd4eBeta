@@ -55,6 +55,21 @@ export const displayChatActionButtons = function(message, html, data) {
 	}
 };
 
+export const displayDamageOptionButtons = function(message, html, data) {
+	if ( !message.isRoll || !message.isContentVisible ) return;
+
+	// Highlight rolls where the first part is a d20 roll
+	const roll = message.roll;
+	if ( !roll.dice.length ) return;
+	const d = roll.dice[0];
+	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
+	if ( !isD20 && !d.options.recharge) return;
+	const buttons = html.find(".chatDamageButtons");
+	buttons.each((i, button) => {
+		button.style.display = "none"
+	})
+};
+
 /* -------------------------------------------- */
 
 /**
@@ -112,55 +127,114 @@ export const addChatMessageContextOptions = function(html, options) {
 	return options;
 };
 
+export function clickRollMessageDamageChatListener(html) {
+	html.on('click', '.chat-damage-button', this.clickRollMessageDamageButtons.bind(this));
+}
+
+export const clickRollMessageDamageButtons = function(event) {
+	event.preventDefault();
+	if (canvas.tokens.controlled.length < 1) {
+		ui.notifications.error(game.i18n.localize("DND4EALTUS.NeedTokenSelected"))
+	}
+
+	// Extract card data
+	const button = event.currentTarget;
+	const messageId = button.closest(".message").dataset.messageId;
+	const message = game.messages.get(messageId);
+	const roll = message.roll;
+	const action = button.dataset.action;
+
+	// Apply
+	if (action === "Damage") {
+		applyChatCardDamageInner(roll, 1, false)
+	}
+	else if (action === "HalfDamage") {
+		applyChatCardDamageInner(roll, 0.5, false)
+	}
+	else if (action === "Heal") {
+		applyChatCardDamageInner(roll, -1, false)
+	}
+	else if (action === "TempHeal") {
+		applyChatCardTempHpInner(roll)
+	}
+}
+
 /* -------------------------------------------- */
 
 /**
  * Apply rolled dice damage to the token or tokens which are currently controlled.
  * This allows for damage to be scaled by a multiplier to account for healing, critical hits, or resistance
  *
- * @param {HTMLElement} roll    The chat entry which contains the roll data
+ * @param {HTMLElement} li    	The list item clicked
  * @param {Number} multiplier   A damage multiplier to apply to the rolled damage.
+ * @param {Boolean} trueDamage	Bypass damage resistance or not (default false)
  * @return {Promise}
  */
 function applyChatCardDamage(li, multiplier, trueDamage=false) {
 	const message = game.messages.get(li.data("messageId"));
 	const roll = message.roll;
+	console.log(message)
+	applyChatCardDamageInner(roll, multiplier, trueDamage)
+}
 
-	console.log(roll.terms)
+function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	let damage = {};
+	let damageTypes = [];
+	let rollTotalRemain = roll.total;
+	let surgeAmount = 0;
+	let surgeValueAmount = 0;
+	
+	//count surges used, shouldn't be more than 1, but you never know....
+	if(multiplier < 0 ){
+		roll.terms.forEach(e => {
+			if(e.flavor.includes("surge")){
+				surgeAmount++;
+			}
+			else if(e.flavor.includes("surgeValue")){
+				surgeValueAmount++;
+			}
+		});
+	}
 
 	if(!trueDamage){
 		roll.terms.forEach(e => {
-			if(e.number){
+			if(typeof e.number === "number"){
 				let damageTypesArray = e.flavor.replace(/ /g,'').split(',');
 				let total = e.total;
 				let divider = damageTypesArray.length;
-	
+				
 				damageTypesArray.forEach(f => {
-					let val = Math.ceil(total / divider)
-	
-					if(damage[f]){
-						damage[f] += val;
-					} else {
-						damage[f] = val;
+					if(f){
+						let val = Math.ceil(total / divider)
+						if(damage[f]){
+							damage[f] += val;
+						} else {
+							damage[f] = val;
+						}
+						rollTotalRemain -= val;
+						total -= val;
+						divider --;
 					}
-	
-					total -= val;
-					divider --;
 				});
+				console.log(`Total: ${total}`)
 			}
-		});	
+		});
 	}
 
-
-	console.log(damage)
+	if(rollTotalRemain){
+		if(damage.damage){
+			damage.damage += rollTotalRemain;
+		} else{
+			damage.damage = rollTotalRemain;
+		}
+	}
 	return Promise.all(canvas.tokens.controlled.map(t => {
 		const a = t.actor;
 		if(multiplier < 0 || trueDamage){ //if it's healing or true damage just heal directly
 			console.log( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealth: ${roll.total}`)
-			return a.applyDamage(roll.total, multiplier);
+			return a.applyDamage(roll.total, multiplier, {surgeAmount, surgeValueAmount});
 		} else {
-			return a.calcDamage(damage, multiplier);
+			return a.calcDamage(damage, multiplier, damageTypes);
 		}
 		
 	}));
@@ -177,6 +251,10 @@ function applyChatCardDamage(li, multiplier, trueDamage=false) {
 function applyChatCardTempHp(li) {
 	const message = game.messages.get(li.data("messageId"));
 	const roll = message.roll;
+	applyChatCardTempHpInner(roll);
+}
+
+function applyChatCardTempHpInner(roll){
 	return Promise.all(canvas.tokens.controlled.map(t => {
 		const a = t.actor;
 		return a.applyTempHpChange(roll.total)

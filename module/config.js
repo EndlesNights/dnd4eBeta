@@ -82,7 +82,6 @@ DND4EALTUS.timePeriods = {
   "spec": "DND4EALTUS.Special"
 };
 
-
 /* -------------------------------------------- */
 
 /**
@@ -90,7 +89,7 @@ DND4EALTUS.timePeriods = {
  * @type {Object}
  */
 DND4EALTUS.abilityActivationTypes = {
-  "none": "DND4EALTUS.None",
+  "none": "DND4EALTUS.NoAction",
   "standard": "DND4EALTUS.ActionStandard",
   "move": "DND4EALTUS.ActionMove",
   "minor": "DND4EALTUS.ActionMinor",
@@ -101,7 +100,7 @@ DND4EALTUS.abilityActivationTypes = {
 };
 
 DND4EALTUS.abilityActivationTypesShort = {
-  "none": "DND4EALTUS.NoneShort",
+  "none": "DND4EALTUS.NoActionShort",
   "standard": "DND4EALTUS.ActionStandardShort",
   "move": "DND4EALTUS.ActionMoveShort",
   "minor": "DND4EALTUS.ActionMinorShort",
@@ -140,6 +139,20 @@ DND4EALTUS.tokenSizes = {
   "lg": 2,
   "huge": 3,
   "grg": 4
+};
+
+/* -------------------------------------------- */
+
+/**
+ * Colors used to visualize temporary and temporary maximum HP in token health bars.
+ * @enum {number}
+ */
+DND4EALTUS.tokenHPColors = {
+	damage: 0xFF0000,
+	healing: 0x00FF00,
+	temp: 0x66CCFF,
+	tempmax: 0x440066,
+	negmax: 0x550000
 };
 
 /* -------------------------------------------- */
@@ -508,9 +521,21 @@ DND4EALTUS.featureSortTypes = {
 /* -------------------------------------------- */
 
 DND4EALTUS.powerType = {
+	"inherent": "DND4EALTUS.Inherent",
 	"class": "DND4EALTUS.Class",
-	"race": "DND4EALTUS.Race",
-	"utility": "DND4EALTUS.PowerUtil"
+	"race": "DND4EALTUS.Racial",
+	"paragon": "DND4EALTUS.Paragon",
+	"epic": "DND4EALTUS.Epic",
+	"theme": "DND4EALTUS.Theme",
+	"item": "DND4EALTUS.PowerItem",
+	"feat": "DND4EALTUS.Feat",
+	"skill": "DND4EALTUS.Skill",
+	"utility": "DND4EALTUS.PowerUtil" //Better keep this for legacy
+};
+DND4EALTUS.powerSubtype = {
+	"attack": "DND4EALTUS.PowerAttack",
+	"utility": "DND4EALTUS.PowerUtil",
+	"feature": "DND4EALTUS.PowerFeature"
 };
 
 DND4EALTUS.powerUseType = {
@@ -537,6 +562,7 @@ DND4EALTUS.powerGroupTypes = {
 	"usage": "DND4EALTUS.Usage",
 	"action": "DND4EALTUS.Action",
 	"type": "DND4EALTUS.Type",
+	"powerSubtype": "DND4EALTUS.PowerSubtype",
 };
 
 DND4EALTUS.powerSortTypes = {
@@ -545,6 +571,7 @@ DND4EALTUS.powerSortTypes = {
 	"actionType": "DND4EALTUS.Action",
 	"rangeTextShort": "DND4EALTUS.Range",
 	"use.value": "DND4EALTUS.Used",
+	"powerSubtype": "DND4EALTUS.PowerSubtype",
 	"none": "DND4EALTUS.None",
 };
 
@@ -602,6 +629,7 @@ DND4EALTUS.rangeType = {
 	"wall": "DND4EALTUS.rangeWall",
 	"personal": "DND4EALTUS.rangePersonal",
 	"touch": "DND4EALTUS.rangeTouch",
+	"special": "DND4EALTUS.rangeSpecial",
 };
 
 DND4EALTUS.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4EALTUS.rangeType).filter(function ([key, value]) {

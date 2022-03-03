@@ -22,19 +22,19 @@
 
 
 		{{#if hasAttack}}
-		<button data-action="attack">
+		<button data-action="attack" title="{{ localize "DND4EALTUS.QuickRoll" }}">
 			{{ localize "DND4EALTUS.Attack" }}
 		</button>
 		{{/if}}
 
 		{{#if hasDamage}}
-		<button data-action="damage">
+		<button data-action="damage" title="{{ localize "DND4EALTUS.QuickRoll" }}">
 			{{localize "DND4EALTUS.Damage" }}
 		</button>
 		{{/if}}
 
 		{{#if hasHealing}}
-		<button data-action="healing">
+		<button data-action="healing" title="{{ localize "DND4EALTUS.QuickRoll" }}">
 			{{ localize "DND4EALTUS.Healing" }}
 		</button>
 		{{/if}}

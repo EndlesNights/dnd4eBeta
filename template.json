@@ -39,8 +39,11 @@
 					"feat": 0,
 					"misc": 0,
 					"autototal": false,
-					"temprest": false,
-					"temphp": 0
+					"temprest": false
+				},
+				"temphp": {
+					"value": 0,
+					"max": 10
 				},
 				"init": {
 					"value": 0,
@@ -743,7 +746,7 @@
 				"abilityBonus": 0,
 				"def": "ac",
 				"defBonus": 0,
-				"formula": "@wepAttack + @powerMod + @atkMod",
+				"formula": "@wepAttack + @powerMod + @lvhalf + @atkMod",
 				"damageType": {},
 				"effectType": {}
 			},
@@ -751,6 +754,7 @@
 				"shareDamageRoll": false,
 				"isDamage": true,
 				"isHealing": false,
+				"healSurge": "",
 				"baseQuantity": 1,
 				"baseDiceType": "Base Weapon Damage",
 				"detail": "1[W] + Strength modifier damage.",
@@ -781,6 +785,7 @@
 	},
 	"backpack": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+		"level": "",
 		"capacity": {
 		"type": "weight",
 		"value": 0,
@@ -818,6 +823,7 @@
 	},
 	"consumable": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro", "attackAndDamage"],
+		"level": "",
 		"consumableType": "potion",
 		"autoGenChatPowerCard" : false,
 		"useType": "item",
@@ -849,6 +855,7 @@
 	},
 	"equipment": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect", "mountable", "itemMacro"],
+		"level": "",
 		"armour": {
 			"type": "armour",
 			"subType": "cloth",
@@ -883,10 +890,12 @@
 		}
 	},
 	"loot": {
-		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"]
+		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+		"level": ""
 	},
 	"tool": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
+		"level": "",
 		"attribute": "abilities.int.mod",
 		"chatFlavor": "",
 		"formula": "",
@@ -894,6 +903,7 @@
 	},
 	"weapon": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "mountable", "itemMacro"],
+		"level": "",
 		"weaponType": "simpleM",
 		"weaponHand": "HMain",
 		"properties": {},
@@ -922,8 +932,8 @@
 		"damageType": {"physical":true},
 		"brutalNum": 1,
 		"weaponGroup": {},
-		"attackForm": "@profBonus",
-		"attackFormImp": "@profImpBonus",
+		"attackForm": "@profBonus+@enhance",
+		"attackFormImp": "@profImpBonus+@enhanceImp",
 		"damageForm": "@enhance",
 		"damageFormImp": "@enhanceImp",
 		"critDamageForm": "(@enhance)d6",
@@ -963,6 +973,7 @@
 		"subName": "",
 		"prepared": true,
 		"powerType": "class",
+		"powerSubtype": "attack",
 		"useType": "atwill",
 		"actionType": "standard",
 		"requirements": "",

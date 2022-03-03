@@ -1,5 +1,77 @@
 # Changelog
 
+## Version 0.2.68
+- moved "Spend Healing Surges?" option into the isHealing required handle be where it was intended to be.
+- fix variable name mistype where "diagonalMovement" was checking instead of intended "damageCalcRules"
+- Updates to Manual [merge](https://github.com/EndlesNights/dnd4eAltus/pull/191) from [draconas1](https://github.com/draconas1)
+
+## Version 0.2.67
+- Hotfix check that added "-2 to attack rolls" for Non proficient armour penalty caused Not-A-Number. when no penalty was detected instead of zero.
+
+## Version 0.2.66
+- Tweak to Effects modifieirs CSS
+- Heal/Damage by surge amount
+- Non proficient armour penalty added. Characters who are wearing armour that they are not proficient in will take a -2 to attack rolls and have a -2 to their reflex defences.
+- Non proficient shield penalty added. Characters who are not proficient with a shield they have equipped will not gain the any of the defences provided by the shields stats.
+
+## Version 0.2.65
+- fixed issue with modifyTokenAttribute setting health while delta is false. Should now be able to correctly change any values again.
+- changed how temphp is stored, is now stored at 'name="data.attributes.temphp.value'.
+- temphp can now be set when setting to as a token Bar attribute, using maxHP for its scale.
+- tempHP is now set as the default option for secondaryTokenAttribute for all new tokens.
+- surge values is now completely self derived via code as the bases for any surge at 'data.details.surgeValue'. Use 'data.details.surgeBon.value' via effects if you wish to modify it. [merge](https://github.com/EndlesNights/dnd4eAltus/pull/186) from [draconas1](https://github.com/draconas1)
+
+## Version 0.2.64
+- fix to damage calculation with untyped damage.
+- Formula term highlight rollback + minor fixes [merge](https://github.com/EndlesNights/dnd4eAltus/pull/183) from [draconas1](https://github.com/draconas1)
+- Added additional power type category options [merge](https://github.com/EndlesNights/dnd4eAltus/pull/182) from [FoxLee](https://github.com/FoxLee)
+- updated example character and powers to match new categories.
+
+## Version 0.2.63
+- "Manual & Help" documentation was added into the system as a Journal Entry Compendium pack. [merge](https://github.com/EndlesNights/dnd4eAltus/pull/171) from [draconas1](https://github.com/draconas1)
+- Number of data fixes seen in the following [merge](https://github.com/EndlesNights/dnd4eAltus/pull/177) from [draconas1](https://github.com/draconas1) This could have been a patch on its own!
+- refactor to prepareData()
+- new helper formula calls to help with all sorts of power or feat formulas that scale from tiers 
+	@heroic, returns value of 1 if character level is less than 11, else zero
+	@paragon, returns value of 1 if character level is or is between 11 and 20, else zero
+	@Epic, returns a value of 1 if character level is 21 or higher, else zero,
+	@heroicOrParagon, if @heroic or @paragon are true, return 1 else zero
+	@paragonOrEpic, if @paragon or @epic are true, return 1 else zero
+- All classes now use @conMod for their surge bonus, no more half a surge for characters with con 15! Stupid javascript type system.
+- All classes now set their HP formula to override, because HP auto-calc fields are saved in the actor and the effects directly edit them, having effects that add to them is hilarious and bumps them every time you view that screen and triggered a save.
+It should be noted this is still a risk with hp-auto calc and the bonus field.
+- Dragonborn racial fixed to modify surge value, not number of surges. Closes Dragonborn Racial applies wrong effect #166
+- Elves kneecapped. Previously Elves added 7 to their speed and so went zipping along at speed 13. Set to override.
+- Human racial flange of +1 to all defences added to their racial package. I know humans suck, but not giving them their racial defence bonus was really mean. Think of all the poor humans who have died for the lack of +1 ref!
+- Updated Basic Melee and Ranged attacks to use a base damage formula of 1 + @Epic so their damage scales automatically
+- Poked the @powmax variable in formula helper so it will handle formula in the power base damage multiplier the same as @powbase does.
+- Fixed an issue in highlighted rolls because foundry modifies the formula of dice rolls (a few spaces appear and disappear)
+- Resurrected @wepDice() to use with high crit weapons
+- All SRD high crit weapons have their bonus crit damage put in the bonus crit damage formula and done as @wepDice(@tier) so it just gives them the right number based on their base damage and tier.
+- when I entered SRD weapons I somehow missed the 2 handed property. 2 handed wepaons now correctly have the 2H weapon property set so work with the example fighter weapon talent.
+- Fixed why implement secondary crit damage could not be deleted [merge](https://github.com/EndlesNights/dnd4eAltus/pull/178) from [draconas1](https://github.com/draconas1)
+- Added Confirm delete option, no more accedently deleting powers/items when enabled [merge](https://github.com/EndlesNights/dnd4eAltus/pull/179) from [draconas1](https://github.com/draconas1) RIP all you accedently deleted powers.
+- Buttons added at the ned of damage and healing rolls to indicate to apply damage and or healing effect [merge](https://github.com/EndlesNights/dnd4eAltus/pull/180) from [draconas1](https://github.com/draconas1)
+- Added Level to all inventory items as a top level field, like on paragon/epic features [merge](https://github.com/EndlesNights/dnd4eAltus/pull/181) from [draconas1](https://github.com/draconas1)
+	also allows @itemLevel to reference it in formula.
+	updated example potions and example alchemy to have the correct values in that field (they are the only example things I know of that have a level, everything else is non magical).
+- Scrolling Text on token when they take damage or healing.
+
+## Version 0.2.62
+- Fixed issue with numbers not being strings, again. [merge](https://github.com/EndlesNights/dnd4eAltus/pull/168) from [draconas1](https://github.com/draconas1) authors note, "I hate javascript"
+- Update to Steve the Example Character [merge](https://github.com/EndlesNights/dnd4eAltus/pull/164) from [draconas1](https://github.com/draconas1)
+	Now has a close burst 1 AoE power that uses an implment
+	has an example ritual that can summon badgers
+	Feat that adds to fire attack and damage powers
+	Updated fighter weapon talents to have an effect to boost that attack.
+- Added Hooks for Token Action HUD [merge](https://github.com/EndlesNights/dnd4eAltus/pull/163) from [draconas1](https://github.com/draconas1)
+- custom movement types will now show up in the tooltip when mouse hovering over movement
+- Some more tinkering around with the NPC sheet
+	added rest buttons
+	added a field to see temporary HP
+	custom movement types will now appear directly on the sheet
+	other minor edits to the CSS styles
+
 ## Version 0.2.61
 - removed the default miss formula and effects [merge](https://github.com/EndlesNights/dnd4eAltus/pull/162) from [draconas1](https://github.com/draconas1)
 

@@ -40,11 +40,19 @@
 		<input type="text" name="data.level" value="{{data.level}}"/>
 	</div>
 
-	<div class="form-group select">
+	<div class="form-group uses-per">
 		<label>Power Type</label>
 		<select name="data.powerType">
 			{{#select data.powerType}}
 			{{#each config.powerType as |name type|}}
+			<option value="{{type}}">{{name}}</option>
+			{{/each}}
+			<option value="other">{{localize "DND4EALTUS.Other"}}</option>
+			{{/select}}
+		</select> 
+		<select name="data.powerSubtype">
+			{{#select data.powerSubtype}}
+			{{#each config.powerSubtype as |name type|}}
 			<option value="{{type}}">{{name}}</option>
 			{{/each}}
 			<option value="other">{{localize "DND4EALTUS.Other"}}</option>
@@ -172,7 +180,7 @@
 	<div class="form-group">
 		<label>{{ localize "DND4EALTUS.PowerRechargeCondition" }} roll</label>
 		<div class="form-fields">
-			<input type="text" name="data.rechargeRoll" value="{{data.rechargeRoll}}" placeholder="1d6"/>
+			<input type="text" name="data.rechargeRoll" value="{{data.rechargeRoll}}" placeholder="{{ localize "DND4EALTUS.PowerRechargePlaceholder" }}"/>
 		</div>
 	</div>
 	{{/if}}
@@ -342,9 +350,21 @@
 		<input type="checkbox" name="data.hit.isHealing" data-dtype="Boolean" {{checked data.hit.isHealing}}/>
 	</div>
 	{{#if data.hit.isHealing}}
+
 	<div class="form-group stacked">
-		<label>Healing {{ localize "DND4EALTUS.Formula" }}</label>
+		<label>{{ localize "DND4EALTUS.ActionHeal" }} {{ localize "DND4EALTUS.Formula" }}</label>
 		<input type="text" name="data.hit.healFormula" value="{{data.hit.healFormula}}"/>
+	</div>
+
+	<div class="form-group select">
+		<label>{{ localize "DND4EALTUS.HealingSurgeSpending" }}</label>
+		<select name="data.hit.healSurge">
+		{{#select data.hit.healSurge}}
+			<option value="">{{ localize "DND4EALTUS.None" }}</option>
+			<option value="surge">{{ localize "DND4EALTUS.HealingSurgeSpend" }}</option>
+			<option value="surgeValue">{{ localize "DND4EALTUS.HealingSurgeValue" }}</option>
+		{{/select}}
+		</select>
 	</div>
 	{{/if}}
 

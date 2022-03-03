@@ -32,7 +32,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null,
 								  isAttackRoll=false, options= {}}={}) {
 	critical = critical || 20; //ensure that critical always has a value
-	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options }
+	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options }
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
@@ -280,7 +280,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 									 critical=false, fastForward=null, onClose, dialogOptions, healingRoll, options}) {
 
 	// First configure the Roll
-	const rollConfig = {parts, partsCrit, partsMiss, data, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: 'normal', options}
+	const rollConfig = {parts, partsCrit, partsMiss, data, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: 'normal', fastForward, options}
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
@@ -368,17 +368,25 @@ async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, pa
 
 	let roll;
 	if(hitType === 'normal'){
+		options.hitTypeDamage = true;
+		parts[1] = data.bonus;
 		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options)
 	}
 	else if (hitType === 'crit') {
+		options.hitTypeDamage = true;
+		partsCrit[1] = data.bonus;
 		roll = RollWithOriginalExpression.createRoll(partsCrit, partsCritExpressionReplacement, data, options)
 		flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Critical")})`;
 	}
 	else if (hitType === 'miss') {
+		options.hitTypeDamage = true;
+		partsMiss[1] = data.bonus;
 		roll = RollWithOriginalExpression.createRoll(partsMiss, partsMissExpressionReplacement, data, options);
 		flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Miss")})`;
 	}
 	else if (hitType === 'heal') {
+		options.hitTypeHealing = true;
+		parts[1] = data.bonus;
 		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
 		flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Healing")})`;
 	} else {
@@ -408,7 +416,7 @@ function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, t
 	rollConfig.rollMode = rollMode || game.settings.get("core", "rollMode");
 
 	// Determine whether the roll can be fast-forward, make explicit comparison here as it might be set as false, so no falsey checks
-	if ( fastForward === null ) {
+	if ( fastForward === null || fastForward === undefined) {
 		rollConfig.fastForward = event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
 	}
 	return rollConfig

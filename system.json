@@ -2,7 +2,7 @@
 	"name": "dnd4eAltus",
 	"title": "DnD 4th Edition Altus",
 	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.2.61",
+	"version": "0.2.68",
 	"minimumCoreVersion": "0.8.5",
 	"compatibleCoreVersion": "9",
 	"templateVersion": 2,
@@ -107,6 +107,13 @@
 			"system": "dnd4eAltus",
 			"path": "./packs/srd_rules.db",
 			"entity": "JournalEntry"
+		},
+		{
+			"name": "manual",
+			"label": "Manual & Help",
+			"system": "dnd4eAltus",
+			"path": "./packs/manual.db",
+			"entity": "JournalEntry"
 		}
 	],
 	"languages": [
@@ -120,7 +127,7 @@
 	"gridDistance": 1,
 	"gridUnits": "sq",
 	"primaryTokenAttribute": "attributes.hp",
-	"secondaryTokenAttribute": null,
+	"secondaryTokenAttribute": "attributes.temphp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dndAltus/system.json",
 	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/dndAltus/dnd4eAltus.zip"

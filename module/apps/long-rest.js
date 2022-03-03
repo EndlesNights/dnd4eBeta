@@ -46,7 +46,7 @@ export class LongRestDialog extends DocumentSheet {
 			updateData[`data.details.surgeEnv.bonus`] = [{}];
 		}
 
-		updateData[`data.attributes.hp.temphp`] = "";
+		updateData[`data.attributes.temphp.value`] = "";
 		updateData[`data.details.deathsavefail`] = 0;
 		updateData[`data.actionpoints.value`] = 1;
 		updateData[`data.magicItemUse.milestone`] = 0;
@@ -65,12 +65,15 @@ export class LongRestDialog extends DocumentSheet {
 			};
 		});
 		await this.object.updateEmbeddedDocuments("Item", updateItems);
-		ChatMessage.create({
-			user: game.user.id,
-			speaker: {actor: this.object, alias: this.object.data.name},
-			// flavor: restFlavor,
-			content: `${this.object.data.name} takes a long rest.`
-		});		
+
+		if(this.object.type === "Player Character"){
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this.object, alias: this.object.data.name},
+				// flavor: restFlavor,
+				content: `${this.object.data.name} takes a long rest.`
+			});
+		}
 		
 		for (let r of Object.entries(this.object.data.data.resources)) {
 			if((r[1].sr || r[1].lr) && r[1].max) {

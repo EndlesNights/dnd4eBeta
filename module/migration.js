@@ -2,16 +2,17 @@
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
-
  export const migrateWorld = async function() {
 	ui.notifications.info(`Applying DnD4E System Migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`, {permanent: true});
 
+	const migrationData = await getMigrationData();
+
 	// Migrate World Actors
-	for ( let a of game.actors.entities ) {
+	for ( let a of game.actors ) {
 		try {
-			const updateData = migrateActorData(a.data);
+			const updateData = migrateActorData(a.toObject(), migrationData);
 			if ( !foundry.utils.isObjectEmpty(updateData) ) {
-				console.log(`Migrating Actor entity ${a.name}`);
+				console.log(`Migrating Actor document ${a.name}`);
 				await a.update(updateData, {enforceTypes: false});
 			}
 		} catch(err) {
@@ -21,11 +22,11 @@
 	}
 
 	// Migrate World Items
-	for ( let i of game.items.entities ) {
+	for ( let i of game.items ) {
 		try {
-			const updateData = migrateItemData(i.data);
+			const updateData = migrateItemData(i.toObject(), migrationData);
 			if ( !foundry.utils.isObjectEmpty(updateData) ) {
-				console.log(`Migrating Item entity ${i.name}`);
+				console.log(`Migrating Item document ${i.name}`);
 				await i.update(updateData, {enforceTypes: false});
 			}
 		} catch(err) {
@@ -35,12 +36,15 @@
 	}
 
 	// Migrate Actor Override Tokens
-	for ( let s of game.scenes.entities ) {
+	for ( let s of game.scenes ) {
 		try {
-			const updateData = migrateSceneData(s.data);
+			const updateData = migrateSceneData(s.data, migrationData);
 			if ( !foundry.utils.isObjectEmpty(updateData) ) {
-				console.log(`Migrating Scene entity ${s.name}`);
+				console.log(`Migrating Scene document ${s.name}`);
 				await s.update(updateData, {enforceTypes: false});
+				// If we do not do this, then synthetic token actors remain in cache
+				// with the un-updated actorData.
+				s.tokens.forEach(t => t._actor = null);
 			}
 		} catch(err) {
 			err.message = `Failed dnd4eAltus system migration for Scene ${s.name}: ${err.message}`;
@@ -51,7 +55,7 @@
 	// Migrate World Compendium Packs
 	for ( let p of game.packs ) {
 		if ( p.metadata.package !== "world" ) continue;
-		if ( !["Actor", "Item", "Scene"].includes(p.metadata.entity) ) continue;
+		if ( !["Actor", "Item", "Scene"].includes(p.documentName) ) continue;
 		await migrateCompendium(p);
 	}
 
@@ -63,13 +67,15 @@
 /* -------------------------------------------- */
 
 /**
- * Apply migration rules to all Entities within a single Compendium pack
- * @param pack
- * @return {Promise}
+ * Apply migration rules to all Documents within a single Compendium pack
+ * @param {CompendiumCollection} pack  Pack to be migrated.
+ * @returns {Promise}
  */
 export const migrateCompendium = async function(pack) {
-	const entity = pack.metadata.entity;
-	if ( !["Actor", "Item", "Scene"].includes(entity) ) return;
+	const documentName = pack.documentName;
+	if ( !["Actor", "Item", "Scene"].includes(documentName) ) return;
+
+	const migrationData = await getMigrationData();
 
 	// Unlock the pack for editing
 	const wasLocked = pack.locked;
@@ -83,34 +89,34 @@ export const migrateCompendium = async function(pack) {
 	for ( let doc of documents ) {
 		let updateData = {};
 		try {
-			switch (entity) {
+			switch (documentName) {
 				case "Actor":
-					updateData = migrateActorData(doc.data);
+					updateData = migrateActorData(doc.toObject(), migrationData);
 					break;
 				case "Item":
-					updateData = migrateItemData(doc.data);
+					updateData = migrateItemData(doc.toObject(), migrationData);
 					break;
 				case "Scene":
-					updateData = migrateSceneData(doc.data);
+					updateData = migrateSceneData(doc.data, migrationData);
 					break;
 			}
 
 			// Save the entry, if data was changed
 			if ( foundry.utils.isObjectEmpty(updateData) ) continue;
 			await doc.update(updateData);
-			console.log(`Migrated ${entity} entity ${doc.name} in Compendium ${pack.collection}`);
+			console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
 		}
 
 		// Handle migration failures
 		catch(err) {
-			err.message = `Failed dnd4eAltus system migration for entity ${doc.name} in pack ${pack.collection}: ${err.message}`;
+			err.message = `Failed dnd4eAltus system migration for document ${doc.name} in pack ${pack.collection}: ${err.message}`;
 			console.error(err);
 		}
 	}
 
 	// Apply the original locked status for the pack
 	await pack.configure({locked: wasLocked});
-	console.log(`Migrated all ${entity} entities from Compendium ${pack.collection}`);
+	console.log(`Migrated all ${documentName} documents from Compendium ${pack.collection}`);
 };
 
 /* -------------------------------------------- */
@@ -123,36 +129,43 @@ export const migrateCompendium = async function(pack) {
  * @param {object} actor    The actor data object to update
  * @return {Object}         The updateData to apply
  */
-export const migrateActorData = function(actor) {
+export const migrateActorData = function(actor, migrationData) {
+	console.trace()
 	const updateData = {};
 
 	// Actor Data Updates
-	_migrateActorMovement(actor, updateData);
-	_migrateActorSenses(actor, updateData);
-	_migrateActorType(actor, updateData);
+	if (actor.data) {
+		// _migrateActorMovement(actor, updateData);
+		// _migrateActorSenses(actor, updateData);
+		// _migrateActorType(actor, updateData);
 
-	// Migrate Owned Items
-	if ( !actor.items ) return updateData;
-	const items = actor.items.reduce((arr, i) => {
-		// Migrate the Owned Item
-		let itemUpdate = migrateItemData(i.data);
+		_migrateActorTempHP(actor, updateData);
+	}
 
-		// Prepared, Equipped, and Proficient for NPC actors
-		if ( actor.type === "npc" ) {
-			if (getProperty(i.data, "preparation.prepared") === false) itemUpdate["data.preparation.prepared"] = true;
-			if (getProperty(i.data, "equipped") === false) itemUpdate["data.equipped"] = true;
-			if (getProperty(i.data, "proficient") === false) itemUpdate["data.proficient"] = true;
-		}
 
-		// Update the Owned Item
-		if ( !isObjectEmpty(itemUpdate) ) {
-			itemUpdate._id = i.id;
-			arr.push(itemUpdate);
-		}
+	// // Migrate Owned Items
+	// if ( !actor.items ) return updateData;
+	// const items = actor.items.reduce((arr, i) => {
+	// 	// Migrate the Owned Item
+	// 	const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
+	// 	let itemUpdate = migrateItemData(itemData, migrationData);
 
-		return arr;
-	}, []);
-	if ( items.length > 0 ) updateData.items = items;
+	// 	// Prepared, Equipped, and Proficient for NPC actors
+	// 	if ( actor.type === "npc" ) {
+	// 		// if (getProperty(itemData.data, "preparation.prepared") === false) itemUpdate["data.preparation.prepared"] = true;
+	// 		// if (getProperty(itemData.data, "equipped") === false) itemUpdate["data.equipped"] = true;
+	// 		// if (getProperty(itemData.data, "proficient") === false) itemUpdate["data.proficient"] = true;
+	// 	}	
+
+	// 	// Update the Owned Item
+	// 	if ( !isObjectEmpty(itemUpdate) ) {
+	// 		itemUpdate._id = itemData._id;
+	// 		arr.push(expandObject(itemUpdate));
+	// 	}
+
+	// 	return arr;
+	// }, []);
+	// if ( items.length > 0 ) updateData.items = items;
 	return updateData;
 };
 
@@ -161,9 +174,10 @@ export const migrateActorData = function(actor) {
 
 /**
  * Scrub an Actor's system data, removing all keys which are not explicitly defined in the system template
- * @param {Object} actorData    The data object for an Actor
- * @return {Object}             The scrubbed Actor data
+ * @param {object} actorData    The data object for an Actor
+ * @returns {object}            The scrubbed Actor data
  */
+// eslint-disable-next-line no-unused-vars -- We might want to still use this in later migrations.
 function cleanActorData(actorData) {
 
 	// Scrub system data
@@ -183,7 +197,6 @@ function cleanActorData(actorData) {
 	return actorData;
 }
 
-
 /* -------------------------------------------- */
 
 /**
@@ -194,203 +207,101 @@ function cleanActorData(actorData) {
  */
 export const migrateItemData = function(item) {
 	const updateData = {};
-	_migrateItemAttunement(item, updateData);
-	_migrateItemSpellcasting(item, updateData);
+	// _migrateItemAttunement(item, updateData);
+	// _migrateItemSpellcasting(item, updateData);
 	return updateData;
 };
 
 /* -------------------------------------------- */
 
 /**
- * Migrate a single Scene entity to incorporate changes to the data model of it's actor data overrides
+ * Migrate a single Scene document to incorporate changes to the data model of it's actor data overrides
  * Return an Object of updateData to be applied
- * @param {Object} scene  The Scene data to Update
- * @return {Object}       The updateData to apply
+ * @param {object} scene            The Scene data to Update
+ * @param {object} [migrationData]  Additional data to perform the migration
+ * @returns {object}                The updateData to apply
  */
-export const migrateSceneData = function(scene) {
+ export const migrateSceneData = function(scene, migrationData) {
 	const tokens = scene.tokens.map(token => {
-		const t = token.toJSON();
-		if (!t.actorId || t.actorLink || !t.actorData.data) {
+		const t = token.toObject();
+		const update = {};
+		// _migrateTokenImage(t, update);
+		if ( Object.keys(update).length ) foundry.utils.mergeObject(t, update);
+		if ( !t.actorId || t.actorLink ) {
 			t.actorData = {};
 		}
-		else if ( !game.actors.has(t.actorId) ){
+		else if ( !game.actors.has(t.actorId) ) {
 			t.actorId = null;
 			t.actorData = {};
 		}
 		else if ( !t.actorLink ) {
-			t.actorData = mergeObject(t.actorData, migrateActorData(t.actorData));
+			const actorData = duplicate(t.actorData);
+			actorData.type = token.actor?.type;
+			const update = migrateActorData(actorData, migrationData);
+			["items", "effects"].forEach(embeddedName => {
+				if (!update[embeddedName]?.length) return;
+				const updates = new Map(update[embeddedName].map(u => [u._id, u]));
+				t.actorData[embeddedName].forEach(original => {
+					const update = updates.get(original._id);
+					if (update) mergeObject(original, update);
+				});
+				delete update[embeddedName];
+			});
+
+			mergeObject(t.actorData, update);
 		}
 		return t;
 	});
 	return {tokens};
 };
 
+
+/* -------------------------------------------- */
+
+/**
+ * Fetch bundled data for large-scale migrations.
+ * @returns {Promise<object>}  Object mapping original system icons to their core replacements.
+ */
+export const getMigrationData = async function() {
+	const data = {};
+	try {
+		//don't need this but's it's setup incase we ever do I suppose
+	} catch(err) {
+		console.warn(`Failed to retrieve icon migration data: ${err.message}`);
+	}
+	return data;
+};
 /* -------------------------------------------- */
 /*  Low level migration utilities
 /* -------------------------------------------- */
 
 /**
- * Migrate the actor speed string to movement object
+ * Migrate the actor temphp from attributes.hp to attributes.temphp object
+ * @param {object} actorData   Actor data being migrated.
+ * @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
  * @private
  */
-function _migrateActorMovement(actorData, updateData) {
-	const ad = actorData.data;
-
-	// Work is needed if old data is present
-	const old = actorData.type === 'vehicle' ? ad?.attributes?.speed : ad?.attributes?.speed?.value;
+ function _migrateActorTempHP(actorData, updateData) {
+	const ad = actorData.data;	
+	const old = ad.attributes.hp.temphp;
 	const hasOld = old !== undefined;
 	if ( hasOld ) {
 
 		// If new data is not present, migrate the old data
-		const hasNew = ad?.attributes?.movement?.walk !== undefined;
-		if ( !hasNew && (typeof old === "string") ) {
-			const s = (old || "").split(" ");
-			if ( s.length > 0 ) updateData["data.attributes.movement.walk"] = Number.isNumeric(s[0]) ? parseInt(s[0]) : null;
+		if (ad.attributes?.temphp?.value !== old && (typeof old === "number") ) {
+			console.log("setFooBar")
+			updateData["data.attributes.temphp"] = {
+				value: old,
+				max: 10,
+			}
 		}
 
 		// Remove the old attribute
-		updateData["data.attributes.-=speed"] = null;
+		updateData["data.attributes.hp.-=temphp"] = null;
 	}
-	return updateData
-}
-
-/* -------------------------------------------- */
-
-/**
- * Migrate the actor traits.senses string to attributes.senses object
- * @private
- */
-function _migrateActorSenses(actor, updateData) {
-	const ad = actor.data;
-	if ( ad?.traits?.senses === undefined ) return;
-	const original = ad.traits.senses || "";
-
-	// Try to match old senses with the format like "Darkvision 60 ft, Blindsight 30 ft"
-	const pattern = /([A-z]+)\s?([0-9]+)\s?([A-z]+)?/;
-	let wasMatched = false;
-
-	// Match each comma-separated term
-	for ( let s of original.split(",") ) {
-		s = s.trim();
-		const match = s.match(pattern);
-		if ( !match ) continue;
-		const type = match[1].toLowerCase();
-		if ( type in CONFIG.DND4EALTUS.senses ) {
-			updateData[`data.attributes.senses.${type}`] = Number(match[2]).toNearest(0.5);
-			wasMatched = true;
-		}
-	}
-
-	// If nothing was matched, but there was an old string - put the whole thing in "special"
-	if ( !wasMatched && !!original ) {
-		updateData["data.attributes.senses.special"] = original;
-	}
-
-	// Remove the old traits.senses string once the migration is complete
-	updateData["data.traits.-=senses"] = null;
 	return updateData;
 }
-
-/* -------------------------------------------- */
-
-/**
- * Migrate the actor details.type string to object
- * @private
- */
-function _migrateActorType(actor, updateData) {
-	const ad = actor.data;
-	const original = ad.details?.type;
-	if ( (original === undefined) || (foundry.utils.getType(original) === "Object") ) return;
-
-	// New default data structure
-	let data = {
-		"value": "",
-		"subtype": "",
-		"swarm": "",
-		"custom": ""
-	}
-
-	// Match the existing string
-	const pattern = /^(?:swarm of (?<size>[\w\-]+) )?(?<type>[^(]+?)(?:\((?<subtype>[^)]+)\))?$/i;
-	const match = original.trim().match(pattern);
-	if ( match ) {
-
-		// Match a known creature type
-		const typeLc = match.groups.type.trim().toLowerCase();
-		const typeMatch = Object.entries(CONFIG.DND4EALTUS.creatureTypes).find(([k, v]) => {
-			return (typeLc === k) ||
-				(typeLc === game.i18n.localize(v).toLowerCase()) ||
-				(typeLc === game.i18n.localize(`${v}Pl`).toLowerCase());
-		});
-		if (typeMatch) data.value = typeMatch[0];
-		else {
-			data.value = "custom";
-			data.custom = match.groups.type.trim().titleCase();
-		}
-		data.subtype = match.groups.subtype?.trim().titleCase() || "";
-
-		// Match a swarm
-		const isNamedSwarm = actor.name.startsWith(game.i18n.localize("DND4EALTUS.CreatureSwarm"));
-		if ( match.groups.size || isNamedSwarm ) {
-			const sizeLc = match.groups.size ? match.groups.size.trim().toLowerCase() : "tiny";
-			const sizeMatch = Object.entries(CONFIG.DND4EALTUS.actorSizes).find(([k, v]) => {
-				return (sizeLc === k) || (sizeLc === game.i18n.localize(v).toLowerCase());
-			});
-			data.swarm = sizeMatch ? sizeMatch[0] : "tiny";
-		}
-		else data.swarm = "";
-	}
-
-	// No match found
-	else {
-		data.value = "custom";
-		data.custom = original;
-	}
-
-	// Update the actor data
-	updateData["data.details.type"] = data;
-	console.log(data);
-	return updateData;
-}
-
-/* -------------------------------------------- */
-
-/**
- * Delete the old data.attuned boolean
- *
- * @param {object} item        Item data to migrate
- * @param {object} updateData  Existing update to expand upon
- * @return {object}            The updateData to apply
- * @private
- */
-function _migrateItemAttunement(item, updateData) {
-	if ( item.data.attuned === undefined ) return updateData;
-	updateData["data.attunement"] = CONFIG.DND4EALTUS.attunementTypes.NONE;
-	updateData["data.-=attuned"] = null;
-	return updateData;
-}
-
-/* -------------------------------------------- */
-
-/**
- * Replace class spellcasting string to object.
- *
- * @param {object} item        Item data to migrate
- * @param {object} updateData  Existing update to expand upon
- * @return {object}            The updateData to apply
- * @private
- */
-function _migrateItemSpellcasting(item, updateData) {
-	if ( item.type !== "class" || (foundry.utils.getType(item.data.spellcasting) === "Object") ) return updateData;
-	updateData["data.spellcasting"] = {
-		progression: item.data.spellcasting,
-		ability: ""
-	};
-	return updateData;
-}
-
-
-/* -------------------------------------------- */
 
 /**
  * A general tool to purge flags from all entities in a Compendium pack.
@@ -404,26 +315,26 @@ export async function purgeFlags(pack) {
 	};
 	await pack.configure({locked: false});
 	const content = await pack.getContent();
-	for ( let entity of content ) {
-		const update = {_id: entity.id, flags: cleanFlags(entity.data.flags)};
-		if ( pack.entity === "Actor" ) {
-			update.items = entity.data.items.map(i => {
-				i.flags = cleanFlags(i.flags);
-				return i;
-			})
+	for ( let doc of content ) {
+		const update = {flags: cleanFlags(doc.data.flags)};
+		if ( pack.documentName === "Actor" ) {
+			update.items = doc.data.items.map(i => {
+			i.flags = cleanFlags(i.flags);
+			return i;
+			});
 		}
-		await pack.updateEntity(update, {recursive: false});
-		console.log(`Purged flags from ${entity.name}`);
+		await doc.update(update, {recursive: false});
+		console.log(`Purged flags from ${doc.name}`);
 	}
 	await pack.configure({locked: true});
 }
 
 /* -------------------------------------------- */
 
-
 /**
  * Purge the data model of any inner objects which have been flagged as _deprecated.
- * @param {object} data   The data to clean
+ * @param {object} data   The data to clean.
+ * @returns {object}      Cleaned data.
  * @private
  */
 export function removeDeprecatedObjects(data) {

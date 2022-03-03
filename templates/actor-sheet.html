@@ -54,7 +54,7 @@
 					</div>
 					<footer class="attribute-footer attribute-footer--temp-hp flexrow">
 						<span class="attribute-subname">{{localize 'DND4EALTUS.TempHP'}}</span>
-						<input type="text" name="data.attributes.hp.temphp" value="{{data.attributes.hp.temphp}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="data.attributes.temphp.value" value="{{data.attributes.temphp.value}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
 					</footer>
 				</div>
 
@@ -184,12 +184,7 @@
 					</div>
 				</section>
 				<section class="section section--movement flexcol">
-					<div data-html="true" title=
-"{{numberFormat data.movement.walk.value}} sq. Walking Speed
-{{numberFormat data.movement.run.value}} sq. Running Speed
-{{numberFormat data.movement.charge.value}} sq. Charging Speed
-{{numberFormat data.movement.climb.value}} sq. Climbing Speed
-{{numberFormat data.movement.shift.value}} sq. Shifting Speed">
+					<div title="{{moveTitle}}">
 						<!-- <input style="width:40%; border-bottom: 1px solid; border-radius: 0px; text-align: center;" type="text" name="data.movement.basic.base" value="{{data.movement.basic.base}}" title="Basic Movement Speed"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<strong class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat data.movement.walk.value}} sq.</strong>
 						<label class="movement-dialog rollable">{{localize 'DND4EALTUS.Speed'}}</label>

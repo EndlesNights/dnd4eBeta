@@ -30,6 +30,21 @@ export const registerSystemSettings = function() {
 	});
 
 	/**
+	 * Register resistances and vulnerabilities damage rule setting
+	 */
+	 game.settings.register("dnd4eAltus", "damageCalcRules", {
+		name: "SETTINGS.4eDamageCalcN",
+		hint: "SETTINGS.4eDamageCalcL",
+		scope: "world",
+		config: true,
+		default: "errata",
+		type: String,
+		choices: {
+			"errata": "SETTINGS.4eDamageCalcErrata",
+			// "phb": "SETTINGS.4eDamageCalcPHB",
+		},
+	});
+	/**
 	 * Register Initiative formula setting
 	 */
 	game.settings.register("dnd4eAltus", "initiativeDexTiebreaker", {
@@ -75,7 +90,7 @@ export const registerSystemSettings = function() {
 		hint: "SETTINGS.4eHalfLevelOptionsL",
 		scope: "world",
 		config: true,
-		default: true,
+		default: false,
 		type: Boolean
 	});
 
@@ -175,37 +190,17 @@ export const registerSystemSettings = function() {
 	});
 
 
-	// /**
-	//  * Option to allow GMs to restrict polymorphing to GMs only.
-	//  */
-	// game.settings.register('dnd4eAltus', 'allowPolymorphing', {
-	// 	name: 'SETTINGS.4eAllowPolymorphingN',
-	// 	hint: 'SETTINGS.4eAllowPolymorphingL',
-	// 	scope: 'world',
-	// 	config: true,
-	// 	default: false,
-	// 	type: Boolean
-	// });
-
 	/**
-	 * Remember last-used polymorph settings.
+	 * delete confirmation
 	 */
-	// game.settings.register('dnd4eAltus', 'polymorphSettings', {
-	// 	scope: 'client',
-	// 	default: {
-	// 		keepPhysical: false,
-	// 		keepMental: false,
-	// 		keepSaves: false,
-	// 		keepSkills: false,
-	// 		mergeSaves: false,
-	// 		mergeSkills: false,
-	// 		keepClass: false,
-	// 		keepFeats: false,
-	// 		keepSpells: false,
-	// 		keepItems: false,
-	// 		keepBio: false,
-	// 		keepVision: true,
-	// 		transformTokens: true
-	// 	}
-	// });
+	game.settings.register("dnd4eAltus", "itemDeleteConfirmation",{
+		name: "SETTINGS.4eItemDeleteConfirmationN",
+		hint: "SETTINGS.4eItemDeleteConfirmationL",
+		scope: "client",
+		config: true,
+		default: true,
+		type: Boolean
+	});
+
+
 };

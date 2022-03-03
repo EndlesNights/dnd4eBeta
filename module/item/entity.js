@@ -290,7 +290,6 @@ export default class Item4e extends Item {
 			if(data.attribute){
 				const attribute = data.attribute.split('.')[1];
 				if(DND4EALTUS.abilities[attribute]){
-					console.log(data)
 					labels.attribute = `${game.i18n.localize("DND4EALTUS.Ability")}: ${DND4EALTUS.abilities[attribute]}`;
 				}
 				else if(DND4EALTUS.skills[attribute]){
@@ -1057,7 +1056,7 @@ export default class Item4e extends Item {
 					secondaryDamageExpressionHelper(parts, partsExpressionReplacement, weaponUse.data.data.damageImp.parts)
 				}
 				if(itemData.hit.critFormula.includes("@impCritBonus") && weaponUse.data.data.proficientI && weaponUse.data.data.damageCritImp.parts.length > 0) {
-					secondaryDamageExpressionHelper(partsCrit, partsCritExpressionReplacement, weaponUse.data.data.damageImpCrit.parts)
+					secondaryDamageExpressionHelper(partsCrit, partsCritExpressionReplacement, weaponUse.data.data.damageCritImp.parts)
 				}
 
 				if(itemData.miss.formula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
@@ -1094,6 +1093,22 @@ export default class Item4e extends Item {
 			critDamageFormulaExpression +=  `+ @actorBonusDamage`
 			options.formulaInnerData.actorBonusDamage = actorBonus.damage
 		}
+
+
+		// Originally these were a separate part, but then they were not part of the primary damage type
+		// which they should be.  So now appending them to the main expression.
+		const effectDamageParts = []
+		await Helper.applyEffects([effectDamageParts], rollData, actorData, this.data, weaponUse?.data, "damage")
+		effectDamageParts.forEach(part => {
+			const value = rollData[part.substring(1)]
+			damageFormula += `+ ${value}`
+			missDamageFormula += `+ ${value}`
+			critDamageFormula += `+ ${value}`
+			damageFormulaExpression  += `+ ${part}`
+			missDamageFormulaExpression += `+ ${part}`
+			critDamageFormulaExpression += `+ ${part}`
+			options.formulaInnerData[part.substring(1)] = value
+		})
 
 		// Ammunition Damage from power
 		if ( this._ammo ) {
@@ -1148,7 +1163,7 @@ export default class Item4e extends Item {
 		partsCritExpressionReplacement.unshift({target : partsCrit[0], value: critDamageFormulaExpression})
 		partsMissExpressionReplacement.unshift({target : partsMiss[0], value: missDamageFormulaExpression})
 
-		await Helper.applyEffects([parts, partsCrit, partsMiss], rollData, actorData, this.data, weaponUse?.data, "damage")
+
 
 		return damageRoll({
 			event,
@@ -1215,21 +1230,22 @@ export default class Item4e extends Item {
 			return  Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data);
 		}
 
-		//Add power damage into parts
-		if(!!itemData.hit?.healFormula) {
-			parts.unshift(formulaHelper(itemData.hit.healFormula))
-			//Add seconadary weapons damage into parts
-			if(weaponUse) {
-				if(itemData.hit.healFormula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d => formulaHelper(d[0])))
-					Array.prototype.push.apply(partsExpressionReplacement, weaponUse.data.data.damage.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
-				}
-				
-				if(itemData.hit.healFormula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
-					Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d => formulaHelper(d[0])))
-					Array.prototype.push.apply(partsExpressionReplacement, weaponUse.data.data.damageImp.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
-				}
-				
+		//Add power healing into parts
+		if(!itemData.hit?.healFormula){
+			itemData.hit.healFormula = "0";
+		}
+		let surge = itemData.hit.healSurge ? `, ${itemData.hit.healSurge}`: "";
+		parts.unshift(`(${formulaHelper(itemData.hit.healFormula)})[heal${surge}]`) //add healFormula here
+		//Add seconadary weapons damage into parts
+		if(weaponUse) {
+			if(itemData.hit.healFormula.includes("@wepDamage") && weaponUse.data.data.damage.parts.length > 0) {
+				Array.prototype.push.apply(parts, weaponUse.data.data.damage.parts.map(d => formulaHelper(d[0])))
+				Array.prototype.push.apply(partsExpressionReplacement, weaponUse.data.data.damage.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
+			}
+			
+			if(itemData.hit.healFormula.includes("@impDamage") && weaponUse.data.data.proficientI && weaponUse.data.data.damageImp.parts.length > 0) {
+				Array.prototype.push.apply(parts, weaponUse.data.data.damageImp.parts.map(d => formulaHelper(d[0])))
+				Array.prototype.push.apply(partsExpressionReplacement, weaponUse.data.data.damageImp.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
 			}
 		}
 

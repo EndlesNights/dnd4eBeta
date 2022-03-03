@@ -51,7 +51,10 @@
 		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="data.movement.shift.temp" value="{{data.movement.shift.temp}}" title="Shifting Movement Speed." data-dtype="Number" onClick="this.select();" placeholder="0"/>
 	</div>
 
-	<input type="text" name="data.movement.notes" value="{{data.movement.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
+	<label>{{ localize "DND4EALTUS.TraitSelectorSpecial" }}</label>
+	<input type="text" name="data.movement.custom" value="{{data.movement.custom}}" data-dtype="String"/>	
+	<!-- <input type="text" name="data.movement.notes" value="{{data.movement.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/> -->
+	<textarea type="text" name="data.movement.notes" value="{{data.movement.notes}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none;" placeholder="Notes:" contentEditable>{{data.movement.notes}}</textarea>
 
 	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
 </form>
