@@ -2,6 +2,8 @@
 
 ## Version 0.2.68
 - moved "Spend Healing Surges?" option into the isHealing required handle be where it was intended to be.
+- fix variable name mistype where "diagonalMovement" was checking instead of intended "damageCalcRules"
+- Updates to Manual [merge](https://github.com/EndlesNights/dnd4eBeta/pull/191) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.67
 - Hotfix check that added "-2 to attack rolls" for Non proficient armour penalty caused Not-A-Number. when no penalty was detected instead of zero.
