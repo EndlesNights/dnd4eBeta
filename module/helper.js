@@ -1,6 +1,21 @@
 
 export class Helper {
 
+	static executeMacro(item) {
+		const macro = new Macro ({
+			name : item.name,
+			type : item.data.data.macro.type,
+			scope : item.data.data.macro.scope,
+			command : item.data.data.macro.command, //cmd,
+			author : game.user.id
+		})
+		// not part of the Macro data object so need to be set manually
+		macro.data.item = item.data  // Drac: I don't like this - the dif between item and actor, but I have set this for backwards compatibility to not break existing macros
+		macro.data.actor = item.actor //needs to be actor and not data to get at actors items collection - e.g. other items
+		macro.data.launch = item.data.data.macro.launchOrder;
+		return macro.execute();
+	}
+
 	/**
 	 * Returns true if the variable is defined and is not an empty string.
 	 * @param str the object to check, could be a string, could be any other object
