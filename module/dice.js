@@ -291,6 +291,9 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 
 	// Modify the roll and handle fast-forwarding
 	if ( rollConfig.fastForward ) {
+		if (healingRoll) {
+			rollConfig.hitType = 'heal'
+		}
 		return performDamageRollAndCreateChatMessage(null, rollConfig);
 	}
 
