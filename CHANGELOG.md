@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.69
+- nice
+- Made all SRD armours proficient by default [merge](https://github.com/EndlesNights/dnd4eBeta/pull/194) from [draconas1](https://github.com/draconas1)
+- Fixed Macro Execution, Centralised the execution to one place so they all have consistent data [merge](https://github.com/EndlesNights/dnd4eBeta/pull/193) from [draconas1](https://github.com/draconas1)
+
 ## Version 0.2.68
 - moved "Spend Healing Surges?" option into the isHealing required handle be where it was intended to be.
 - fix variable name mistype where "diagonalMovement" was checking instead of intended "damageCalcRules"
