@@ -1,5 +1,5 @@
-import TraitSelector from "../apps/trait-selector.js";
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
+import {Helper} from "../helper.js";
 
 /**
  * Override and extend the core ItemSheet implementation to handle specific item types
@@ -528,8 +528,8 @@ export default class ItemSheet4e extends ItemSheet {
 	
 	async _onExecute(event) {
 		event.preventDefault();
-		await this._onSubmit(event, {preventClose: true}); 
-		executeMacro(this.document); 
+		await this._onSubmit(event, {preventClose: true});
+		return Helper.executeMacro(this.document)
 	}
 	
 	/* -------------------------------------------- */
@@ -691,42 +691,6 @@ export default class ItemSheet4e extends ItemSheet {
 			// maximum: skills.number
 		// }).render(true)
 	}
-}
-
-
-// undefined and "" are both falsey, so if either the flag is undefined or the command is empty, this equates to false
-// and setting flag the check means you don't need to run the getFlag command more than once.
-// export function hasMacro(item) {
-//     let flag = item.data.flags.itemacro?.macro;
-//     return flag && flag?.data.command;
-// }
-// function checkMacro(item)
-// {
-//     return hasMacro(item) ? item.getFlag('itemacro', 'macro.data.command') : "";
-// }
-function executeMacro(item)
-{
-	// let actorID = item.actor.id;
-	// let itemID = item.id;
-	// console.log(item);
-	// console.log(checkMacro(item));
-	// let cmd = ``;
-
-	// if(item.actor.isToken)
-	// {
-	//     cmd += `const item = game.actors.tokens["${actorID}"].items.get("${itemID}"); ${item.data.data.macro.command}`;
-	// }else{
-	//     cmd += `const item = game.actors.get("${actorID}").items.get("${itemID}"); ${item.data.data.macro.command}`;
-	// }
-
-	new Macro ({ 
-		name : item.name,
-		type : item.data.data.macro.type,
-		scope : item.data.data.macro.scope,
-		command : item.data.data.macro.command, //cmd,
-		author : game.user.id,
-		item: item.data.data
-	}).execute();
 }
 
 Hooks.once('ready', async function () {

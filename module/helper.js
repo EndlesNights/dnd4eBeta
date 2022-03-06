@@ -1,6 +1,26 @@
 
 export class Helper {
 
+	static executeMacro(item) {
+		const macro = new Macro ({
+			name : item.name,
+			type : item.data.data.macro.type,
+			scope : item.data.data.macro.scope,
+			command : item.data.data.macro.command, //cmd,
+			author : game.user.id
+		})
+		// below vars are not part of the Macro data object so need to be set manually
+		// CODE SMELL
+		// data.item has historically been item.data
+		// data.actor has historically been the actor
+		// changing that would break existing macros that rely on item data.  I would like to make data.item = the item.
+		// can still get to the item using .document
+		macro.data.item = item.data
+		macro.data.actor = item.actor //needs to be actor and not data to get at actors items collection - e.g. other items
+		macro.data.launch = item.data.data.macro.launchOrder;
+		return macro.execute();
+	}
+
 	/**
 	 * Returns true if the variable is defined and is not an empty string.
 	 * @param str the object to check, could be a string, could be any other object
