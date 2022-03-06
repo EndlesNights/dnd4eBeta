@@ -378,20 +378,8 @@ export default class Item4e extends Item {
 	async roll({configureDialog=true, rollMode=null, createMessage=true}={}) {
 
 		if(["both", "pre", "sub"].includes(this.data.data.macro?.launchOrder)) {
-			let itemMacro = new Macro ({
-				name : this.name,
-				type : this.data.data.macro.type,
-				scope : this.data.data.macro.scope,
-				command : this.data.data.macro.command, //cmd,
-				author : game.user.id,
-			});
-			itemMacro.data.actor = this.actor;
-			itemMacro.data.item = this.data;
-			itemMacro.data.launch = this.data.data.macro.launchOrder;
-			itemMacro.execute();
-
-			if(this.data.data.macro.launchOrder === "sub") return;
-
+			Helper.executeMacro(this)
+			if (this.data.data.macro.launchOrder === "sub") return;
 		}
 		const cardData = (() => {
 			if ((this.data.type === "power" || this.data.type === "consumable") && this.data.data.autoGenChatPowerCard) {
@@ -477,17 +465,7 @@ export default class Item4e extends Item {
 			ChatMessage.create(chatData);
 
 			if(["both", "post"].includes(this.data.data.macro?.launchOrder)) {
-				let itemMacro = new Macro ({
-					name : this.name,
-					type : this.data.data.macro.type,
-					scope : this.data.data.macro.scope,
-					command : this.data.data.macro.command, //cmd,
-					author : game.user.id,
-				});
-				itemMacro.data.actor = this.actor;
-				itemMacro.data.item = this.data;
-				itemMacro.data.launch = this.data.data.macro.launchOrder;
-				itemMacro.execute();
+				Helper.executeMacro(this)
 			}
 		}
 		else return chatData;
