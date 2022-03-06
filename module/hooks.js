@@ -3,7 +3,9 @@ import {SaveThrowDialog} from "./apps/save-throw.js";
 /**
  * These methods are all called by https://github.com/Drental/fvtt-tokenactionhud, their method signature should not be changed without a code change there.
  */
-export const TokenBarHooks = {}
+export const TokenBarHooks = {
+    version: 2
+}
 
 TokenBarHooks.generatePowerGroups = (actor) => actor.sheet._generatePowerGroups()
 
@@ -30,3 +32,8 @@ TokenBarHooks.rollAbility = (actor, checkId, event) => actor.rollAbility(checkId
 
 TokenBarHooks.rollItem = (actor, item, event) => item.roll()
 
+TokenBarHooks.deathSave = (actor, event) => actor.sheet._onDeathSave(event)
+
+TokenBarHooks.secondWind = (actor, event) => actor.sheet._onSecondWind(event)
+
+TokenBarHooks.actionPoint = (actor, event) => actor.sheet._onActionPointDialog(event)
