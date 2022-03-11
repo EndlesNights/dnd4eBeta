@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.70
+- Added an option to show formual as part of power data card text
+- NPC powers will now have the formual as the default instea of an ability score
+
 ## Version 0.2.69
 - nice
 - Made all SRD armours proficient by default [merge](https://github.com/EndlesNights/dnd4eBeta/pull/194) from [draconas1](https://github.com/draconas1)

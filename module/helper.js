@@ -314,7 +314,9 @@ export class Helper {
 			const actorInnerData = actorData.data
 			if (actorInnerData) {
 				newFormula = Roll.replaceFormulaData(newFormula, actorInnerData);
-				if(powerInnerData) newFormula = newFormula.replaceAll("@powerMod", !!(powerInnerData.attack?.ability)? actorInnerData.abilities[powerInnerData.attack.ability].mod : "");
+				if(powerInnerData) {
+					newFormula = newFormula.replaceAll("@powerMod", !!(actorInnerData.abilities[powerInnerData.attack?.ability])? actorInnerData.abilities[powerInnerData.attack.ability].mod : "");
+				}
 
 				newFormula = newFormula.replaceAll("@strMod", actorInnerData.abilities["str"].mod);
 				newFormula = newFormula.replaceAll("@conMod", actorInnerData.abilities["con"].mod);
@@ -821,7 +823,20 @@ export class Helper {
 		}
 
 		if(chatData.attack.isAttack) {
-			powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+			if(chatData.attack.ability === "form"){
+				//if does not srtart with a number sign add one
+				let trimmedForm = chatData.attack.formula.trim()
+				if(!(trimmedForm.startsWith("+") || trimmedForm.startsWith("-"))) {
+					trimmedForm = '+' + trimmedForm;
+				}
+				powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${trimmedForm} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+			}
+			else if(chatData.attack.ability){
+				powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+			} else {
+				powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${game.i18n.localize("DND4EBETA.Attack")} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
+			}
+			// powerDetail += `<p><b>${game.i18n.localize("DND4EBETA.Attack")}</b>: ${CONFIG.DND4EBETA.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EBETA.VS")} ${CONFIG.DND4EBETA.def[chatData.attack.def]}</p>`;
 		}
 
 		let highlight = true;

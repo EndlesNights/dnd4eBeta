@@ -226,6 +226,7 @@
 				{{#each config.abilities as |name key|}}
 				<option value="{{key}}">{{name}}</option>
 				{{/each}}
+				<option value="form">{{ localize "DND4EBETA.FormulaAttack" }}</option>
 				{{/select}}
 			</select>
 			<!-- {{#if data.attack.ability}}
@@ -249,7 +250,7 @@
 	</div>
 
 	<div class="form-group stacked">
-		<label>Attack {{ localize "DND4EBETA.Formula" }}</label>
+		<label>{{ localize "DND4EBETA.FormulaAttack" }}</label>
 		<input type="text" name="data.attack.formula" value="{{data.attack.formula}}"/>
 	</div>
 	{{/if}}
@@ -280,7 +281,7 @@
 	</div>
 
 	<div class="form-group stacked">
-		<label>Damage {{ localize "DND4EBETA.Formula" }}</label>
+		<label>{{ localize "DND4EBETA.FormulaDamage" }}</label>
 		<input type="text" name="data.hit.formula" value="{{data.hit.formula}}"/>
 	</div>
 	<h4 class="damage-header">

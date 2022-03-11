@@ -915,17 +915,16 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 			itemData.data.weaponType = "none";
 			itemData.data.weaponUse = "none";
 
-			itemData.data.attack = {formula:"@powerMod+@lvhalf"};
+			itemData.data.attack = {
+				formula:"@powerMod+@lvhalf",
+				ability:"form"
+			};
 			itemData.data.hit  = {
 				formula:"@powBase + @powerMod",
 				critFormula:"@powMax + @powerMod",
 				baseDiceType: "d8",
 				detail: "1d8 + Strength modifier damage."
 			};
-
-			// itemData.data.attack.formula = "@powerMod+@lvhalf";
-			// itemData.data.hit.formula = "@powBase + @powerMod";
-			// itemData.data.hit.critFormula = "@powMax + @powerMod + @wepDamage";
 		}
 		
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
