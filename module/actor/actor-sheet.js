@@ -916,14 +916,14 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 			itemData.data.weaponUse = "none";
 
 			itemData.data.attack = {
-				formula:"@powerMod+@lvhalf",
+				formula:"@lvhalf",
 				ability:"form"
 			};
 			itemData.data.hit  = {
-				formula:"@powBase + @powerMod",
-				critFormula:"@powMax + @powerMod",
+				formula:"@powBase",
+				critFormula:"@powMax",
 				baseDiceType: "d8",
-				detail: "1d8 + Strength modifier damage."
+				detail: "1d8 damage."
 			};
 		}
 		
