@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.71
+- fixed issue where addition symbol was not correctly being added to the bonus from tool rolls, causing the value to be appended to the value of the skill. 
+
 ## Version 0.2.70
 - Added an option to show formual as part of power data card text
 - NPC powers will now have the formual as the default instea of an ability score

@@ -1433,16 +1433,24 @@ export default class Item4e extends Item {
 	}
 
 	rollToolOrRitualCheck(rollType, titleKey, options={}) {
+
 		//if ( this.type !== "tool" ) throw "Wrong item type!";
 		// Prepare roll data
 		let rollData = this.getRollData();
 		const parts = ["@" + rollType];
 
 		if(this.data.data.formula) {
-			rollData[rollType] = Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data, this.data.data)
+			rollData[rollType] = Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data, this.data.data);
 		} else {
 			rollData[rollType] = `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)}`; 
-			if(this.data.data.bonus) rollData[rollType]+= `${this.data.data.bonus}`;
+			if(this.data.data.bonus){
+				//if does not srtart with a number sign add one
+				let trimmedbonus = this.data.data.bonus.trim();
+				if(!(trimmedbonus.startsWith("+") || trimmedbonus.startsWith("-"))) {
+					trimmedbonus = ' + ' + trimmedbonus;
+				}
+				rollData[rollType]+= `${trimmedbonus}`;
+			}
 		}
 		console.log(rollData[rollType])
 		const title = `${this.name} - ${game.i18n.localize(titleKey)}`;
