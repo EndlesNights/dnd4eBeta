@@ -96,7 +96,7 @@ export class Helper {
 								return i;
 					}
 					else if(itemData.weaponType === "ranged") {
-						if(setRanged.includes(i.data.data.weaponType) )
+						if(setRanged.includes(i.data.data.weaponType) || i.data.data.properties.tlg || i.data.data.properties.thv )
 							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
 								return i;
 							else if(itemData.weaponUse === "default")

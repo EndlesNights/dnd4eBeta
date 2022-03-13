@@ -1,7 +1,8 @@
 # Changelog
 
 ## Version 0.2.71
-- fixed issue where addition symbol was not correctly being added to the bonus from tool rolls, causing the value to be appended to the value of the skill. 
+- fixed issue where addition symbol was not correctly being added to the bonus from tool rolls, causing the value to be appended to the value of the skill.
+- melee weapons with the light throw and heavy throw properties should now be usable with both melee and ranged powers  
 
 ## Version 0.2.70
 - Added an option to show formual as part of power data card text
