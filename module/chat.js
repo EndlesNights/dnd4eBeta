@@ -180,6 +180,7 @@ function applyChatCardDamage(li, multiplier, trueDamage=false) {
 function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	let damage = {};
 	let damageTypes = [];
+	console.log(damageTypes)
 	let rollTotalRemain = roll.total;
 	let surgeAmount = 0;
 	let surgeValueAmount = 0;
@@ -221,11 +222,13 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 		});
 	}
 
+	//evenly split up the untyped damage into typed damage
 	if(rollTotalRemain){
-		if(damage.damage){
-			damage.damage += rollTotalRemain;
-		} else{
-			damage.damage = rollTotalRemain;
+		const length = Object.keys(damage).length;
+		let i = 0;
+		for (const [key, value] of Object.entries(damage)) {
+			damage[key] += 0|rollTotalRemain/length+(i<rollTotalRemain%length);
+			i++;
 		}
 	}
 	return Promise.all(canvas.tokens.controlled.map(t => {
