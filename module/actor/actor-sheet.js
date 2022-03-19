@@ -17,6 +17,7 @@ import TraitSelectorSave from "../apps/trait-selector-save.js";
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import HPOptions from "../apps/hp-options.js";
 import { Helper } from "../helper.js";
+import {ActionPointExtraDialog} from "../apps/action-point-extra.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -702,6 +703,9 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 
 			//action point
 			html.find('.action-point').click(this._onActionPointDialog.bind(this));
+			html.find('.action-point-extra').click(this._onActionPointExtraDialog.bind(this));
+
+
 			
 			//short rest
 			html.find('.short-rest').click(this._onShortRest.bind(this));
@@ -1119,6 +1123,11 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	_onActionPointDialog(event) {
 		event.preventDefault();
 		new ActionPointDialog(this.actor).render(true);
+	}
+
+	_onActionPointExtraDialog(event) {
+		event.preventDefault();
+		new ActionPointExtraDialog(this.actor).render(true);
 	}
 
 	/**
