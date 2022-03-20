@@ -369,10 +369,24 @@ async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, pa
 	manageBonusInParts(partsCrit, form, data)
 	manageBonusInParts(partsMiss, form, data)
 
+	if(data.bonus){ //stopgap fix because bonus damage type is not being recorded properly
+		if(parts[parts.length-1] === "@bonus"){
+			let index = data.bonus.lastIndexOf('[');
+			if(index >=0) {
+				parts[parts.length-1] = '(' + data.bonus.slice(0,index) + ')' + data.bonus.slice(index);
+			} else {
+				parts[parts.length-1] = '(' + data.bonus + ')';
+			}
+		}
+	} else {
+		parts.pop();
+	}
+	console.log(parts)
+
 	let roll;
 	if(hitType === 'normal'){
 		options.hitTypeDamage = true;
-		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options)
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
 	}
 	else if (hitType === 'crit') {
 		options.hitTypeDamage = true;
