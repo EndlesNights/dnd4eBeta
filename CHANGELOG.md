@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.73
+- fix damage type calculation
+- added alternative damage calculation rules
+- action point riders custom text [merge](https://github.com/EndlesNights/dnd4eBeta/pull/200) from [draconas1](https://github.com/draconas1)
+
 ## Version 0.2.72
 - fixed an issue where bonus damage was overrider secondary damage.
 
