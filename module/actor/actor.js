@@ -1063,8 +1063,6 @@ export class Actor4e extends Actor {
 			this.calcDamageErrata(damage, multiplier,surges);
 		}
 		else {
-			//JOKES ON YOU I have implmented this yet!
-			// this.calcDamageErrata(damage, multiplier,surges);
 			this.calcDamagePHB(damage, multiplier, surges);
 		}
 	}
