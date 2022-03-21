@@ -17,15 +17,15 @@ export class ActionPointDialog extends DocumentSheet {
 
 	/** @override */
 	getData() {
-		const extra = this.object.data.data.actionpoints.custom.split(";");
+		const extra = this.object.data.data.actionpoints.custom !== "" ? this.object.data.data.actionpoints.custom.split("\n") : "";
 		return { data: this.object.data.data, extra: extra };
 	}
 	async _updateObject(event, formData) {
 		
 		let extra = "";
-		if (this.object.data.data.actionpoints.custom) {
+		if (this.object.data.data.actionpoints.custom !== "") {
 			extra = this.object.data.data.actionpoints.custom;
-			extra = extra.replace(/;/g,'</li><li>');
+			extra = extra.replace(/\n/g,'</li><li>');
 			extra = "<li>" + extra + "</li>";
 		}
 
@@ -34,12 +34,11 @@ export class ActionPointDialog extends DocumentSheet {
 				user: game.user.id,
 				speaker: {actor: this.object, alias: this.object.data.name},
 				// flavor: restFlavor,
-				content: `${this.object.data.name} uses an actionpoint gaining the following benifits:
+				content: `${this.object.data.name} uses an actionpoint gaining the following benefits:
 				<ul>
 					<li>Gaining an addtional Standard Action</li>
 					${extra}
 				</ul>`
-				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 			});
 
 			const updateData = {};
