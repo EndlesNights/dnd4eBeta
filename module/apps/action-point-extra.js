@@ -3,8 +3,8 @@ export class ActionPointExtraDialog extends DocumentSheet {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
-			id: "action-point",
-			classes: ["dnd4eBeta", "action-point"],
+			id: "action-point-extra",
+			classes: ["action-point"],
 			template: "systems/dnd4e/templates/apps/action-point-extra.html",
 			width: 500,
 			closeOnSubmit: true
