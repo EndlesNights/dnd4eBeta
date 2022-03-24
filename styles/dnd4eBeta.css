@@ -666,12 +666,17 @@
 	flex: 2;
 	color: #4b4a44;
 	font-weight: bold;
+	max-width: 174px;
 }
 .dnd4eBeta .form-group .form-fields {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: flex-start;
+}
+
+.dnd4eBeta.sheet.item .details .form-group span.checkbox{
+	text-align: right;
 }
 .dnd4eBeta .form-group .form-fields > * {
 	flex: 1;

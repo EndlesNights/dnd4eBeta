@@ -173,27 +173,9 @@
 						<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
 					</div>
 				</div>
-
-				<!-- <div class="form-group">
-					<label title="Number of Dice in damage roll" for="diceNum">Damage Dice Num:</label>
-					<div class="form-fields">
-						<input type="text" name="data.diceNum" id="diceNum" value="{{data.diceNum}}" title="Number of Dice in damage roll" placeholder="1" onClick="this.select();" data-dtype="Number"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label title="Size of Dice in damage roll." for="diceDamage">Damage Dice Size:</label>
-					<div class="form-fields">
-						<input type="text" name="data.diceDamage" id="diceDamage" value="{{data.diceDamage}}" title="Rerollthreshhold for brutal dice." placeholder="8" onClick="this.select();" data-dtype="Number"/>
-					</div>
-				</div> -->
-
-				<div class="form-group">
-					<label title="Base number of dice rolled for weapon attacks." for="damageDice">{{ localize "DND4EBETA.DiceWeapon"}}</label>
-					<!-- <div class="form-fields">
-						<input type="text" name="data.damageDice" id="damageDice" value="{{data.damageDice}}" title="Rerollthreshhold for brutal dice." onClick="this.select();"/>
-					</div> -->
-					<a class="damage-control add-dice"><i class="fas fa-plus"></i></a>
-				</div>
+				
+				<h4 class="damage-header"title="Base number of dice rolled for weapon attacks." for="damageDice">{{ localize "DND4EBETA.DiceWeapon"}}<a class="damage-control add-dice"><i class="fas fa-plus"></i></a></h4>
+				
 				<ol class="damage-parts form-group">
 					{{#each data.damageDice.parts as |part i| }}
 					<li class="damage-part" data-damage-part="{{i}}">
@@ -234,37 +216,6 @@
 					</div>
 				</div>
 				{{/if}}
-				<!-- <div class="form-group">
-					<label title="Ability Mod used for attack.">Attack Roll Mod:</label>
-					<div></div>
-					<select name="data.abilityModAttack">
-						{{#select data.abilityModAttack}}
-						<option value="str" >Strength</option>
-						<option value="con" >Constitution</option>
-						<option value="dex" >Dexterity</option>
-						<option value="int" >Intelligence</option>
-						<option value="wis" >Wisdom</option>
-						<option value="cha" >Charisma</option>
-						<option value=null >None</option>
-						{{/select}}
-					</select>
-					
-				</div>
-				<div class="form-group">
-					<label title="Ability Mod used for damage.">Damage Roll Mod:</label>
-					<div></div>
-					<select name="data.abilityModDamage">
-						{{#select data.abilityModDamage}}
-						<option value="str" >Strength</option>
-						<option value="con" >Constitution</option>
-						<option value="dex" >Dexterity</option>
-						<option value="int" >Intelligence</option>
-						<option value="wis" >Wisdom</option>
-						<option value="cha" >Charisma</option>
-						<option value=null >None</option>
-						{{/select}}
-					</select>
-				</div> -->
 
 				{{!-- Attack  Formula--}}
 				{{#unless (eq data.weaponType "implement")}}
@@ -407,6 +358,7 @@
 
 				<div class="form-group stacked weapon-properties">
 					<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:</label>
+					<pr></pr>
 					{{#each config.damageTypes as |name type|}}
 					<label class="checkbox">
 						<input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
@@ -414,6 +366,7 @@
 					{{/each}}
 
 					<label>{{ localize "DND4EBETA.ItemWeaponProperties" }}:</label>
+					<pr></pr>
 					{{#each weaponMetaProperties as |prop p|}}
 						<label class="checkbox">
 							<input type="checkbox" name="data.properties.{{p}}" {{checked prop.checked}} {{#if prop.disabled}}disabled{{/if}} /> {{ prop.propName }}
@@ -421,6 +374,7 @@
 					{{/each}}
 
 					<label>Weapon Group:</label>
+					<pr></pr>
 					{{#each config.weaponGroup as |name group|}}
 					<label class="checkbox">
 						<input type="checkbox" name="data.weaponGroup.{{group}}" {{checked (lookup ../data.weaponGroup group)}}/> {{ name }}
@@ -429,6 +383,7 @@
 
 					{{#if data.properties.imp}}
 					<label>Implement Group:</label>
+					<pr></pr>
 					{{#each config.implementGroup as |name group|}}
 					<label class="checkbox">
 						<input type="checkbox" name="data.implementGroup.{{group}}" {{checked (lookup ../data.implementGroup group)}}/> {{ name }}

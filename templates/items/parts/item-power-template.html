@@ -3,11 +3,10 @@
 
 	{{!-- Power Source & Keywords --}}
 	<div class="form-group">
-		<label>{{ localize "DND4EBETA.PowerAutoGenerateLable" }}</label>
-		<input type="checkbox" name="data.autoGenChatPowerCard" data-dtype="Boolean" {{checked data.autoGenChatPowerCard}}/>
+		<label style="max-width: 208px;">{{ localize "DND4EBETA.PowerAutoGenerateLable" }}</label>
+		<span class="checkbox"><input type="checkbox" name="data.autoGenChatPowerCard" data-dtype="Boolean" {{checked data.autoGenChatPowerCard}}/></span>
 	</div>
-
-	<div class="form-group uses-per">
+	<div class="form-group short uses-per">
 		<label>{{ localize "DND4EBETA.PowerSource" }}</label>
 		<select name="data.powersource">
 			{{#select data.powersource}}
@@ -40,7 +39,7 @@
 		<input type="text" name="data.level" value="{{data.level}}"/>
 	</div>
 
-	<div class="form-group uses-per">
+	<div class="form-group short uses-per">
 		<label>Power Type</label>
 		<select name="data.powerType">
 			{{#select data.powerType}}
@@ -83,7 +82,7 @@
 	</div>
 
 	{{!-- Weapon Range and AoE--}}
-	<div class="form-group uses-per">
+	<div class="form-group short uses-per">
 		<label>{{ localize "DND4EBETA.WeaponTypeRequired" }}</label>
 		<select name="data.weaponType">
 			{{#select data.weaponType}}
@@ -108,7 +107,7 @@
 		{{/if}}
 	</div>
 
-	<div class="form-group uses-per">
+	<div class="form-group short uses-per">
 		<label>{{ localize "DND4EBETA.RangePower" }}</label>
 		<div class="form-fields">
 			<select name="data.rangeType">
@@ -124,7 +123,7 @@
 			{{/if}}
 			{{#if data.isRange}}
 				{{#if data.isArea}}<span style="flex: 1 0 6px">{{ localize "DND4EBETA.RangeWithinOf" }}</span>{{/if}}
-				{{#unless data.isArea}}<span style="flex: 0.6 0 16px">{{ localize "DND4EBETA.RangeOf" }}</span>{{/unless}}
+				{{#unless data.isArea}}<span style="flex: 0.3 0 16px">{{ localize "DND4EBETA.RangeOf" }}</span>{{/unless}}
 				<input type="text" name="data.rangePower" value="{{data.rangePower}}" data-dtype="Number"/>
 			{{/if}}
 		</div>
@@ -212,7 +211,7 @@
 	<h3 class="form-header">{{ localize "DND4EBETA.AttackDetails" }}</h3>
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.IsAttack" }}</label>
-		<input type="checkbox" name="data.attack.isAttack" data-dtype="Boolean" {{checked data.attack.isAttack}}/>
+		<span class="checkbox"><input class="checkbox" type="checkbox" name="data.attack.isAttack" data-dtype="Boolean" {{checked data.attack.isAttack}}/></span>
 	</div>
 	
 	{{#if data.attack.isAttack}}
@@ -256,14 +255,14 @@
 	{{/if}}
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.IsDamage" }}</label>
-		<input type="checkbox" name="data.hit.isDamage" data-dtype="Boolean" {{checked data.hit.isDamage}}/>
+		<span class="checkbox"><input type="checkbox" name="data.hit.isDamage" data-dtype="Boolean" {{checked data.hit.isDamage}}/></span>
 	</div>
 	{{#if data.hit.isDamage}}
 	{{!-- Hit Details --}}
 	{{!-- Damage --}}
 	<div class="form-group">
 		<label>Shared Damage Roll</label>
-		<input type="checkbox" name="data.hit.shareDamageRoll" data-dtype="Boolean" {{checked data.hit.shareDamageRoll}}/>
+		<span class="checkbox"><input type="checkbox" name="data.hit.shareDamageRoll" data-dtype="Boolean" {{checked data.hit.shareDamageRoll}}/></span>
 	</div>
 	
 	<div class="form-group uses-per">
@@ -337,7 +336,8 @@
 	</div>
 
 	<div class="form-group stacked weapon-properties">
-		<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:</label>
+		<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:Stuff</label>
+		<pr></pr>
 		{{#each config.damageTypes as |name type|}}
 		<label class="checkbox">
 			<input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
@@ -348,7 +348,7 @@
 	{{/if}}
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.IsHealing" }}</label>
-		<input type="checkbox" name="data.hit.isHealing" data-dtype="Boolean" {{checked data.hit.isHealing}}/>
+		<span class="checkbox"><input type="checkbox" name="data.hit.isHealing" data-dtype="Boolean" {{checked data.hit.isHealing}}/></span>
 	</div>
 	{{#if data.hit.isHealing}}
 
@@ -392,12 +392,10 @@
 
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.EffectDetails" }}</label>
-		<span style="text-align: right;">{{ localize "DND4EBETA.DisplayEffect" }}</span>
-		<input type="checkbox" name="data.postEffect" data-dtype="Boolean" {{checked data.postEffect}}/>
+		<span class="checkbox">{{ localize "DND4EBETA.DisplayEffect" }}<input type="checkbox" name="data.postEffect" data-dtype="Boolean" {{checked data.postEffect}}/></span>
 	</div>
 	<div class="form-group">
-		<span style="text-align: right;">{{ localize "DND4EBETA.EffectHTMLInput" }}</span>
-		<input type="checkbox" name="data.effectHTML" data-dtype="Boolean" {{checked data.effectHTML}}/>
+		<span class="checkbox">{{ localize "DND4EBETA.EffectHTMLInput" }}<input type="checkbox" name="data.effectHTML" data-dtype="Boolean" {{checked data.effectHTML}}/></span>
 	</div>
 	{{#if data.effectHTML}}
 		{{editor content=data.effect.detail target="data.effect.detail" button=true owner=owner editable=editable}}
@@ -409,8 +407,7 @@
 
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.Special" }}</label>
-		<span style="text-align: right;">Display Information Post Attack Details?</span>
-		<input type="checkbox" name="data.postSpecial" data-dtype="Boolean" {{checked data.postSpecial}}/>
+		<span class="checkbox">Display Information Post Attack Details?<input type="checkbox" name="data.postSpecial" data-dtype="Boolean" {{checked data.postSpecial}}/></span>
 	</div>
 	<div class="form-group">
 		<input type="text" name="data.special" value="{{data.special}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
