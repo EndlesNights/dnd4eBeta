@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.74
+- item sheet css fix
+- added some more sorting options for powers
+- powers will also have a tertiary alphabetical sorting applied to them.
+
 ## Version 0.2.73
 - fix damage type calculation
 - added alternative damage calculation rules

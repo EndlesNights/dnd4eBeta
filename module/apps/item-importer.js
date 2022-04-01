@@ -31,7 +31,7 @@ export class ItemImporterDialog extends DocumentSheet {
 		}
 
 		//check if JSON type is valid
-		const validTypes = ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"]
+		const validTypes = ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"];
 		if(!validTypes.includes(obj.type)) {
 			console.error(`Invalid Object Type of "${obj.type}"`)
 			ui.notifications.info(`Invalid Object Type of "${obj.type}"`);

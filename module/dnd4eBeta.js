@@ -27,6 +27,8 @@ import Item4e from "./item/entity.js";
 import * as chat from "./chat.js";
 import * as macros from "./macros.js";
 import * as migrations from "./migration.js";
+import ActiveEffect4e from "./effects/effects.js";
+import ActiveEffectConfig4e from "./effects/effects-config.js";
 import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 import {TokenBarHooks} from "./hooks.js";
@@ -54,6 +56,12 @@ Hooks.once("init", async function() {
 	
 	// Define custom Entity classes
 	CONFIG.DND4EBETA = DND4EBETA;
+	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
+
+	// console.log(CONFIG.ActiveEffect.sheetConfig)
+	// CONFIG.ActiveEffect.sheetConfig.base["core.ActiveEffectConfig"].cls.defaultOptions.width = 300;
+	// CONFIG.ActiveEffects.sheetConfig.documentClass = ActiveEffectConfig4e;
+	
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
 	
@@ -131,6 +139,9 @@ Hooks.once("setup", function() {
 			return obj;
 		}, {});
 	}
+
+
+
 });
 Hooks.once("ready", function() {
 	// Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
@@ -260,12 +271,28 @@ const apply = (wrapped, owner, change) => {
   return wrapped(owner, change);
 }
 
+const defaultOptions = (wrapped) => {
+	return foundry.utils.mergeObject(DocumentSheet.defaultOptions, {
+		classes: ["sheet", "active-effect-sheet"],
+		template: "systems/dnd4e/templates/sheets/active-effect-config.html",
+		width: 560,
+		height: "auto",
+		tabs: [{navSelector: ".tabs", contentSelector: "form", initial: "details"}]
+	});
+}
+
 Hooks.once('init', async function() {
 
 	libWrapper.register(
 		'dnd4e',
 		'ActiveEffect.prototype.apply',
 		apply
+	);
+
+	libWrapper.register(
+		'dnd4e',
+		'ActiveEffectConfig.defaultOptions',
+		defaultOptions
 	);
 
 	libWrapper.register(

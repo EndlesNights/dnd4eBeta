@@ -570,6 +570,7 @@ DND4EBETA.powerSortTypes = {
 	"level": "DND4EBETA.Level",
 	"actionType": "DND4EBETA.Action",
 	"rangeTextShort": "DND4EBETA.Range",
+	"useType": "DND4EBETA.Usage",
 	"use.value": "DND4EBETA.Used",
 	"powerSubtype": "DND4EBETA.PowerSubtype",
 	"none": "DND4EBETA.None",

@@ -14,7 +14,8 @@ import { HealMenuDialog } from "../apps/heal-menu-dialog.js";
 import TraitSelector from "../apps/trait-selector.js";
 import TraitSelectorSense from "../apps/trait-selector-sense.js";
 import TraitSelectorSave from "../apps/trait-selector-save.js";
-import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
+// import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
+import ActiveEffect4e from "../effects/effects.js";
 import HPOptions from "../apps/hp-options.js";
 import { Helper } from "../helper.js";
 import {ActionPointExtraDialog} from "../apps/action-point-extra.js";
@@ -25,21 +26,21 @@ import {ActionPointExtraDialog} from "../apps/action-point-extra.js";
  */
 export default class ActorSheet4e extends ActorSheet {
 
-  constructor(...args) {
-	super(...args);
+	constructor(...args) {
+		super(...args);
 
-	/**
-	 * Track the set of item filters which are applied
-	 * @type {Set}
-	 */
-	this._filters = {
-	  inventory: new Set(),
-	  powers: new Set(),
-	  features: new Set()
-	};
-  }
+		/**
+		 * Track the set of item filters which are applied
+		 * @type {Set}
+		 */
+		this._filters = {
+			inventory: new Set(),
+			powers: new Set(),
+			features: new Set()
+		};
+	}
   
-  /** @override */
+	/** @override */
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eBeta", "sheet", "actor"],
@@ -135,7 +136,8 @@ export default class ActorSheet4e extends ActorSheet {
 		this._prepareItems(data);
 		
 		// Prepare active effects
-		data.effects = prepareActiveEffectCategories(this.actor.effects);
+		// data.effects = prepareActiveEffectCategories(this.actor.effects);
+		data.effects = ActiveEffect4e.prepareActiveEffectCategories(this.actor.effects);
 
 		// Resources
 		actorData.data.resources = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
@@ -299,7 +301,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 
 	_compareValues(key, order = 'asc') {
 		return function innerSort(a, b) {
-
 			if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {	
 				const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
 				const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
@@ -310,6 +311,9 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 				}
 				else if (varA < varB) {
 					comparison = -1;
+				}
+				else if( varA === varB){
+					comparison = a.name.toUpperCase().localeCompare(b.name.toUpperCase());
 				}
 				return (order === 'desc') ? (comparison * -1) : comparison;
 			} else if (a.data.hasOwnProperty(key) && b.data.hasOwnProperty(key)) {
@@ -323,6 +327,9 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 				}
 				else if (varA < varB) {
 					comparison = -1;
+				}
+				else if( varA === varB){
+					comparison = a.name.toUpperCase().localeCompare(b.name.toUpperCase());
 				}
 				return (order === 'desc') ? (comparison * -1) : comparison;
 			}
@@ -738,7 +745,8 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 			html.find('.item-import').click(this._onItemImport.bind(this));
 
 			// Active Effect management
-			html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
+			// html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
+			html.find(".effect-control").click(event => ActiveEffect4e.onManageActiveEffect(event, this.actor));
 		
 			// Item summaries
 			html.find('.item .item-name h4').click(event => this._onItemSummary(event));		

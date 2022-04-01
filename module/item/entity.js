@@ -214,6 +214,21 @@ export default class Item4e extends Item {
 		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.data.data.rangeType);
 	}
 
+  /* -------------------------------------------- */
+
+	/**
+	 * Should this item's active effects be suppressed.
+	 * @type {boolean}
+	 */
+	get areEffectsSuppressed() {
+		return false;
+		const requireEquipped = (this.data.type !== "consumable") || ["rod", "trinket", "wand"].includes(
+			this.data.data.consumableType);
+		if ( requireEquipped && (this.data.data.equipped === false) ) return true;
+
+		return this.data.data.attunement === CONFIG.DND4E.attunementTypes.REQUIRED;
+	}	
+
 	/* -------------------------------------------- */
 
 	/**

@@ -1,4 +1,5 @@
-import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
+// import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
+import ActiveEffect4e from "../effects/effects.js";
 import {Helper} from "../helper.js";
 
 /**
@@ -95,7 +96,8 @@ export default class ItemSheet4e extends ItemSheet {
 		data.isMountable = this._isItemMountable(itemData);
 	
 		// Prepare Active Effects
-		data.effects = prepareActiveEffectCategories(this.item.effects);
+		data.effects = ActiveEffect4e.prepareActiveEffectCategories(this.item.effects)
+		// data.effects = prepareActiveEffectCategories(this.item.effects);
 
 		// Re-define the template data references (backwards compatible)
 		data.item = itemData;
@@ -518,8 +520,9 @@ export default class ItemSheet4e extends ItemSheet {
 			html.find(".onetext-control").click(this._onOnetextControl.bind(this));
 			html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
 			html.find(".effect-control").click(ev => {
-			if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
-			onManageActiveEffect(ev, this.item)
+				if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
+					ActiveEffect4e.onManageActiveEffect(ev, this.item);
+					// onManageActiveEffect(ev, this.item)
 		});
 	}
 
