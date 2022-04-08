@@ -56,13 +56,19 @@
 
         {{#if isItemEffect}}
         <div class="form-group">
+            <label>Only Apply Effect when Equipped?</label>
+            <div class="form-fields">
+                <input type="checkbox" name="flags.dnd4e.effectData.equippedRec" data-dtype="Boolean" {{checked effect.flags.dnd4e.effectData.equippedRec}}/>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label>{{ localize "EFFECT.Transfer" }}</label>
             <div class="form-fields">
                 <input type="checkbox" name="transfer" {{checked data.transfer}}/>
             </div>
         </div>
         {{/if}}
-
     </section>
 
     <!-- Duration Tab -->

@@ -4,6 +4,15 @@
  */
  export default class ActiveEffect4e extends ActiveEffect {
 
+
+	constructor(data, context) {
+		if (data.id) {
+		  setProperty(data, "flags.core.statusId", data.id);
+		  delete data.id;
+		}
+		super(data, context);
+	}
+
 	/**
 	 * Is this active effect currently suppressed?
 	 * @type {boolean}
@@ -21,8 +30,8 @@
 
   /** @inheritdoc */
   _onUpdate(data, options, userId) {
-    super._onUpdate(data, options, userId);
-    if ( "disabled" in data ) this._displayScrollingStatus(!data.disabled);
+	super._onUpdate(data, options, userId);
+	if ( "disabled" in data ) this._displayScrollingStatus(!data.disabled);
   }
 
 	/** @inheritdoc */
@@ -55,7 +64,7 @@
 		//types of items that can be equipted
 		const validTypes = ["weapon", "equipment", "consumable", "tool", "loot", "backpack"];
 		if(validTypes.includes(item.type) && item.data.data.equipped === false){
-			this.isSuppressed = true;
+			this.isSuppressed = this.data.flags.dnd4e?.effectData?.equippedRec || false;
 			return;
 		}
 		this.isSuppressed = item.areEffectsSuppressed;

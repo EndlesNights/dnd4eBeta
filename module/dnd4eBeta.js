@@ -41,6 +41,9 @@ Hooks.once("init", async function() {
 	console.log(`D&D4eBeta | Initializing Dungeons & Dragons 4th Edition System\n${DND4EBETA.ASCII}`);
 
 	game.dnd4eBeta = {
+		apps: {
+			ActiveEffectConfig4e
+		},
 		config: DND4EBETA,
 		canvas: {
 			AbilityTemplate
@@ -56,18 +59,14 @@ Hooks.once("init", async function() {
 	
 	// Define custom Entity classes
 	CONFIG.DND4EBETA = DND4EBETA;
-	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
 
-	// console.log(CONFIG.ActiveEffect.sheetConfig)
-	// CONFIG.ActiveEffect.sheetConfig.base["core.ActiveEffectConfig"].cls.defaultOptions.width = 300;
-	// CONFIG.ActiveEffects.sheetConfig.documentClass = ActiveEffectConfig4e;
+	DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4eBeta", ActiveEffectConfig4e, {makeDefault :true});
+	DocumentSheetConfig.registerSheet(Actor4e, "dnd4eBeta", ActiveEffectConfig4e, {makeDefault :true});
+	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
 	
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
 	
-	// CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffectIcons;
-	CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffect;
-
 	// define custom roll extensions
 	CONFIG.Dice.rolls.push(MultiAttackRoll);
 	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
@@ -271,28 +270,12 @@ const apply = (wrapped, owner, change) => {
   return wrapped(owner, change);
 }
 
-const defaultOptions = (wrapped) => {
-	return foundry.utils.mergeObject(DocumentSheet.defaultOptions, {
-		classes: ["sheet", "active-effect-sheet"],
-		template: "systems/dnd4e/templates/sheets/active-effect-config.html",
-		width: 560,
-		height: "auto",
-		tabs: [{navSelector: ".tabs", contentSelector: "form", initial: "details"}]
-	});
-}
-
 Hooks.once('init', async function() {
 
 	libWrapper.register(
 		'dnd4e',
 		'ActiveEffect.prototype.apply',
 		apply
-	);
-
-	libWrapper.register(
-		'dnd4e',
-		'ActiveEffectConfig.defaultOptions',
-		defaultOptions
 	);
 
 	libWrapper.register(
