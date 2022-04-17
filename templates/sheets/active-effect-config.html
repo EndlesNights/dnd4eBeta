@@ -69,10 +69,38 @@
             </div>
         </div>
         {{/if}}
+
+        {{#if powerParent}}
+        <div class="form-group">
+            <label>Apply Effect application on:</label>
+            <div class="form-fields">
+                <select name="flags.dnd4e.effectData.powerEffectTypes">
+                    {{#select effect.flags.dnd4e.effectData.powerEffectTypes}}
+                    <option value=""></option>
+                    {{#each config.powerEffectTypes as |label type|}}
+                    <option value="{{type}}">{{label}}</option>
+                    {{/each}}
+                    {{/select}}
+                </select>
+            </div>
+        </div>
+        {{/if}}
+
     </section>
 
     <!-- Duration Tab -->
     <section class="tab" data-tab="duration">
+        <div class="form-group">
+            <label>{{ localize "DND4EBETA.DurationType" }}</label>
+            <select name="flags.dnd4e.effectData.durationType">
+                {{#select effect.flags.dnd4e.effectData.durationType}}
+                <option value=""></option>
+                {{#each config.durationType as |label type|}}
+                <option value="{{type}}">{{label}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+        </div>
         <div class="form-group">
             <label>{{ localize "EFFECT.DurationSecs" }}</label>
             <div class="form-fields">

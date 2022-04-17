@@ -1,0 +1,83 @@
+{{!-- Modifiers --}}
+
+{{#if data.modifiers}}
+<div class="attribute-modifiers" style="max-height: 76px; line-height: 22px;">
+	<h4 class="attribute-name box-title">Modifiers</h4>
+	<div class="attack-mod flexrow thin" data-modifiers="attack">
+		<span>Attack Modifier: {{data.modifiers.attack.value}}</span>
+		<a class="modifiers-bonus" data-target="data.modifiers" title="Modifier Bonus">Bonus: {{data.modifiers.attack.bonusValue}}</a>
+	</div>
+	<div class="damage-mod flexrow thin" data-modifiers="damage">
+		<span>Damage Modifier: {{data.modifiers.damage.value}}</span>
+		<a class="modifiers-bonus" data-target="data.modifiers" title="Modifier Bonus">Bonus: {{data.modifiers.damage.bonusValue}}</a>
+	</div>
+</div>
+{{/if}}
+
+<ol class="items-list effects-list" style="overflow-y: visible">
+
+	{{#each effectsPowers as |section sid|}}
+		<li class="items-header flexrow" data-effect-type="{{section.type}}">
+			<h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
+			<div class="effect-source">Source</div>
+			<div class="effect-source" style="width:150%;">Duration Type</div>
+			<div class="effect-source">Duration</div>
+			<div class="item-controls effect-controls flexrow">
+				<a class="powereffect-control" data-action="create" title="{{localize 'DND4EBETA.EffectCreate'}}">
+					<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
+				</a>
+			</div>
+		</li>
+
+		<ol class="item-list">
+		{{#each section.effects as |effect|}}
+			<li class="item effect flexrow" data-effect-id="{{effect.id}}">
+				<div class="item-name effect-name flexrow">
+					<img class="item-image" src="{{effect.data.icon}}"/>
+					<h4>{{effect.data.label}}</h4>
+				</div>
+				<div class="effect-source">{{effect.sourceName}}</div>
+				<div class="effect-duration" style="width:150%;">{{effect.durationTypeLable}}</div>
+				<div class="effect-duration">{{effect.duration.label}}</div>
+				<div class="item-controls effect-controls flexrow">
+					<a class="effect-control" data-action="toggle" title="{{localize 'DND4EBETA.EffectToggle'}}">
+						<i class="fas fa-circle-notch"></i>
+					</a>
+					<a class="powereffect-control" data-action="edit" title="{{localize 'DND4EBETA.EffectEdit'}}">
+						<i class="fas fa-edit"></i>
+					</a>
+					<a class="powereffect-control" data-action="delete" title="{{localize 'DND4EBETA.EffectDelete'}}">
+						<i class="fas fa-trash"></i>
+					</a>
+				</div>
+			</li>
+		{{/each}}
+		</ol>
+	{{/each}}
+
+	{{!-- Resistances --}}
+
+	{{#if data.resistances}}
+	<div class="attribute-res resource-full">
+		<h4 class="attribute-name box-title">Resistances & Weaknesses</h4>
+		{{#each data.resistances as |res r|}}
+			<li class="skill flexrow" data-res="{{r}}">
+				<h4 class="res-name">{{res.label}}</h4>
+				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
+				<span class="res-armour">Armour: {{res.armour}} </span>
+				<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.armour" value="{{res.armour}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour Bonus"> </input> -->
+				<a class="resistances-bonus" data-target="data.resistances" title="Resistance Bonus">Bonus: {{res.resBonusValue}}</a>
+				<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.race" value="{{res.race}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Race"> </input> -->
+				<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.misc" value="{{res.misc}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Misc"> </input> -->
+				<!-- <input type="checkbox" name="data.resistances.{{r}}.half" data-dtype="Boolean" {{checked res.half}} title="Resistances"/> -->
+				<span class="res-immune">Immunity</span>
+				<input type="checkbox" name="data.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
+			</li>
+		{{/each}}					
+		<!-- <span>Resistances:</span> -->
+		<!-- <a class="trait-selector" data-options="damageTypes" data-target="data.traits.di"> -->
+			<!-- <i class="fas fa-edit"></i> -->
+		<!-- </a> -->
+	</div>
+	{{/if}}
+</ol>

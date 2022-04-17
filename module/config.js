@@ -447,6 +447,26 @@ DND4EBETA.distanceUnits = {
 
 /* -------------------------------------------- */
 
+DND4EBETA.durationType = {
+	"endOfTargetTurn": "DND4EBETA.DurationEndOfTargetTurn",
+	"endOfUserTurn": "DND4EBETA.DurationEndOfUserTurn",
+	"startOfTargetTurn": "DND4EBETA.DurationStartOfTargetTurn",
+	"startOfUserTurn": "DND4EBETA.DurationStartOfUserTurn",
+	"saveEnd": "DND4EBETA.DurationSaveEnd",
+	"endOfEncounter": "DND4EBETA.DurationEndOfEnc",
+	"custom": "DND4EBETA.DurationCustom",
+}
+
+/* -------------------------------------------- */
+
+DND4EBETA.powerEffectTypes = {
+	"all": "DND4EBETA.TargetAll",
+	"hit": "DND4EBETA.TargetHit",
+	"miss": "DND4EBETA.TargetMiss",
+	"self": "DND4EBETA.TargetSelf",
+}
+/* -------------------------------------------- */
+
 
 /**
  * Configure aspects of encumbrance calculation so that it could be configured by modules

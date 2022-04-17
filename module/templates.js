@@ -10,6 +10,7 @@ export const preloadHandlebarsTemplates = async function() {
 
     // Shared Partials
     "systems/dnd4e/templates/actors/parts/active-effects.html",
+    "systems/dnd4e/templates/items/parts/power-effects.html",
     // Actor Sheet Partials
     "systems/dnd4e/templates/actors/parts/actor-attributes.html",
     "systems/dnd4e/templates/actors/parts/actor-biography.html",

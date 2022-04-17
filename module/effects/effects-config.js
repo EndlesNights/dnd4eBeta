@@ -1,3 +1,5 @@
+import { DND4EBETA } from "../config.js";
+
 export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 
 	/** @override */
@@ -9,5 +11,15 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 			height: "auto",
 			tabs: [{navSelector: ".tabs", contentSelector: "form", initial: "details"}]
 		});
+	}
+
+	/** @override */
+	getData(options) {
+		let data = super.getData(options);
+		
+		data.config = CONFIG.DND4EBETA;
+		data.powerParent = (this.object.parent.type === "power");
+
+		return data;
 	}
 }

@@ -44,7 +44,7 @@ export default class ItemSheet4e extends ItemSheet {
 	/* -------------------------------------------- */
 
 	/** @override */
-	async getData(options) {		
+	async getData(options) {
 		const data = super.getData(options);
 		const itemData = data.data;
 		data.labels = this.item.labels;
@@ -59,8 +59,12 @@ export default class ItemSheet4e extends ItemSheet {
 		// Potential consumption targets
 		data.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
 	
-		if(itemData.type === "power") data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
-		
+		if(itemData.type === "power"){
+			data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
+			console.log(this.item)
+			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
+		}
+
 		if(itemData.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
 		if(itemData.data?.useType) {
 			if(!(itemData.data.rangeType === "personal" || itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || data.data.rangeType === "")){
@@ -96,12 +100,13 @@ export default class ItemSheet4e extends ItemSheet {
 		data.isMountable = this._isItemMountable(itemData);
 	
 		// Prepare Active Effects
-		data.effects = ActiveEffect4e.prepareActiveEffectCategories(this.item.effects)
-		// data.effects = prepareActiveEffectCategories(this.item.effects);
+		data.effects = ActiveEffect4e.prepareActiveEffectCategories(this.item.effects);
+		console.log(data.effects)
 
 		// Re-define the template data references (backwards compatible)
 		data.item = itemData;
 		data.data = itemData.data;
+		console.log(data)
 		return data;
 	}
 
@@ -127,6 +132,80 @@ export default class ItemSheet4e extends ItemSheet {
 		});
 
 		return buttons;
+	}
+
+	/**
+	 * Prepare the data structure for Power Effects which can then be transfered as active effectst to other actors.
+	 * @param {PowerEffect[]} powerEffects    The array of Active Effect instances to prepare sheet data for
+	 * @returns {object}                  Data for rendering
+	 */
+	_prepareEffectPowersCategories(effectPowers){
+		const categories = {};
+		for (const [key, value] of Object.entries(CONFIG.DND4EBETA.powerEffectTypes)) {
+			categories[key] = {
+			type:key,
+			label: game.i18n.localize(value),
+			effects: []
+		  }
+		}
+
+		if(effectPowers){
+			for ( let e of effectPowers ) {
+				e.durationTypeLable = `${CONFIG.DND4EBETA.durationType[e.data.flags.dnd4e.effectData.durationType]}`;
+				if(e.data.flags.dnd4e?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
+				else if(e.data.flags.dnd4e?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
+				else categories.all.effects.push(e);
+			}
+		}
+		console.log(categories);
+		return categories;
+	}
+
+	async _onPowerEffectControl(event) {
+		event.preventDefault();
+		const a = event.currentTarget;
+		const li = a.closest("li");
+		const effect = li.dataset.effectId ? this.item.effects.get(li.dataset.effectId) : null;
+		switch(a.dataset.action){
+			case "create":
+				console.log(li.dataset.effectType)
+				console.log(this);
+				this.item.createEmbeddedDocuments("ActiveEffect", [{
+					label: game.i18n.localize("DND4EBETA.EffectNew"),
+					icon: "icons/svg/aura.svg",
+					origin: this.item.uuid,
+					"flags.dnd4e.effectData.powerEffectTypes": li.dataset.effectType,
+					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
+					disabled: li.dataset.effectType === "inactive"
+				}]);
+				return;
+				// let someEffect = new ActiveEffect4e({
+				// 	label: game.i18n.localize("DND4EBETA.EffectNew"),
+				// 	icon: "icons/svg/aura.svg",
+				// 	origin: this.item.uuid,
+				// 	"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
+				// 	disabled: li.dataset.effectType === "inactive"
+				// });
+				// console.log(someEffect);
+				// if(this.object.data.data.effectPowers == undefined){
+				// 	this.object.data.data.effectPowers = [];
+				// }
+				// this.object.data.data.effectPowers.push(someEffect);
+				console.log(this);
+				return;
+				return this.item.createEmbeddedDocuments("ActiveEffect", [{
+					label: game.i18n.localize("DND4EBETA.EffectNew"),
+					icon: "icons/svg/aura.svg",
+					origin: this.item.uuid,
+					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
+					disabled: li.dataset.effectType === "inactive"
+				}]);
+			case "edit":
+				return effect.sheet.render(true);
+			case "delete":
+				return effect.delete();
+		}
+
 	}
 
 	shareItem() {
@@ -523,7 +602,8 @@ export default class ItemSheet4e extends ItemSheet {
 				if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
 					ActiveEffect4e.onManageActiveEffect(ev, this.item);
 					// onManageActiveEffect(ev, this.item)
-		});
+			});
+			html.find('.powereffect-control').click(this._onPowerEffectControl.bind(this));
 	}
 
 	}
