@@ -1001,13 +1001,7 @@ export class Actor4e extends Actor {
 			await item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
 			// item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
 		}
-		
-		// Initiate ability template placement workflow if selected
-		// if ( placeTemplate && item.hasAreaTarget ) {
-			// const template = AbilityTemplate.fromItem(item);
-			// if ( template ) template.drawPreview();
-			// if ( this.sheet.rendered ) this.sheet.minimize();
-		// }		
+			
 		// Invoke the Item roll
 		return item.roll();
 	}

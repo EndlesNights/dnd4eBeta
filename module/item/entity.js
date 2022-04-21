@@ -221,6 +221,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get areEffectsSuppressed() {
+		if(this.type === "power") return true;
 		return false;
 		const requireEquipped = (this.data.type !== "consumable") || ["rod", "trinket", "wand"].includes(
 			this.data.data.consumableType);
@@ -450,6 +451,46 @@ export default class Item4e extends Item {
 
 		if(templateData.item.type === "power") {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.data.useType}`);
+			console.log(this)
+			console.log(game.user.targets)
+
+			Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
+			console.log(this.parent)
+			// for(let e of this.effects){
+			// 	console.log(e)
+
+			// 	if(e.data.flags.dnd4e.effectData.powerEffectTypes === "all"){
+			// 		for(let t of game.user.targets){
+			// 			let effectData = e.data;
+			// 			console.log(effectData)
+			// 			effectData.sourceName = this.parent.name
+			// 			effectData.origin = this.parent.uuid
+			// 			await t.actor.createEmbeddedDocuments("ActiveEffect", [{
+			// 				label: e.data.label,
+			// 				icon: e.data.icon,
+			// 				origin: this.parent.uuid,
+			// 				sourceName: this.parent.name,
+			// 				duration: e.data.duration,
+			// 				tint: e.data.tint,
+			// 				flags: e.data.flags,
+			// 				changes: e.data.changes
+			// 			}]);
+			// 		}
+			// 	}
+			// }
+			// console.log(effects)
+
+			for(let t of game.user.targets){
+				
+
+				// await t.actor.createEmbeddedDocuments("ActiveEffect", [{
+				// 	label: game.i18n.localize("DND4EBETA.EffectNew"),
+				// 	icon: "icons/svg/aura.svg",
+				// 	origin: this.uuid,
+				// 	"duration.rounds": 1,
+				// }]);
+			}
+
 		}
 		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--item`);
@@ -878,7 +919,7 @@ export default class Item4e extends Item {
 		}
 
 		await Helper.applyEffects([parts], rollData, actorData, this.data, weaponUse?.data, "attack")
-
+		console.log(this)
 		// Compose roll options
 		const rollConfig = {
 			parts,
@@ -898,6 +939,11 @@ export default class Item4e extends Item {
 			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }},
 			options
 		};
+
+		if(this.type === "power"){
+			rollConfig.options.powerEffects = this.effects;
+			rollConfig.options.parent = this.parent;
+		}
 
 		// Expanded weapon critical threshold
 		if (weaponUse) {

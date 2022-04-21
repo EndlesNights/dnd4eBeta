@@ -4,7 +4,9 @@
 - item sheet css fix
 - added some more sorting options for powers
 - powers will also have a tertiary alphabetical sorting applied to them.
-- active effects provided by items now have an option wherre the effect is only turned on while the item is equipted
+- active effects provided by items now have an option wherre the effect is only turned on while the item is equipted.
+- active effects from powers can be applyed to target tokens
+- duration options have been added to active effects
 
 ## Version 0.2.73
 - fix damage type calculation

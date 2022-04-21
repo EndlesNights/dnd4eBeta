@@ -35,7 +35,11 @@
 				<h4>{{effect.data.label}}</h4>
 			</div>
 			<div class="effect-source">{{effect.sourceName}}</div>
-			<div class="effect-duration">{{effect.duration.label}}</div>
+			{{#if effect._getIsSave}}
+				<a class="effect-duration effect-save rollable">{{effect.duration.label}}</a>
+			{{else}}
+				<div class="effect-duration">{{effect.duration.label}}</div>
+			{{/if}}
 			<div class="item-controls effect-controls flexrow">
 				<a class="effect-control" data-action="toggle" title="{{localize 'DND4EBETA.EffectToggle'}}">
 					<i class="fas fa-circle-notch"></i>

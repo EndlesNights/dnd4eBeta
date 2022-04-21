@@ -876,4 +876,28 @@ export class Helper {
 	static _isNumber(str){
 		return /^-?\d+$/.test(str);
 	}
+
+	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
+		console.log(game.combat);
+		for(let e of effectMap){
+			if(e.data.flags.dnd4e.effectData.powerEffectTypes === condition){
+				for(let t of tokenTarget){
+					let effectData = e.data;
+					console.log(effectData)
+					effectData.sourceName = parent.name
+					effectData.origin = parent.uuid
+					await t.actor.createEmbeddedDocuments("ActiveEffect", [{
+						label: e.data.label,
+						icon: e.data.icon,
+						origin: parent.uuid,
+						sourceName: parent.name,
+						duration: e.data.duration,
+						tint: e.data.tint,
+						flags: e.data.flags,
+						changes: e.data.changes
+					}]);
+				}
+			}
+		}
+	}
 }

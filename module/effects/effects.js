@@ -3,13 +3,20 @@
  * @extends {ActiveEffect}
  */
  export default class ActiveEffect4e extends ActiveEffect {
-
-
 	constructor(data, context) {
-		console.log(data)
+		// console.log(data)
 		if (data.id) {
 		  setProperty(data, "flags.core.statusId", data.id);
 		  delete data.id;
+		}
+
+
+		try{
+			if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
+				data.transfer = false;
+			}
+		} catch{
+
 		}
 		super(data, context);
 	}
@@ -53,17 +60,33 @@
 	/**
 	 * Determine whether this Active Effect is suppressed or not.
 	 */
-	determineSuppression() {
+	 determineSuppression() {
 		this.isSuppressed = false;
 
+
+		console.log(this.data.origin);
+
 		if ( this.data.disabled || (this.parent.documentName !== "Actor") ) return;
+
+
 		const [parentType, parentId, documentType, documentId] = this.data.origin?.split(".") ?? [];
-		if ( (parentType !== "Actor") || (parentId !== this.parent.id) || (documentType !== "Item") ) return;
-		const item = this.parent.items.get(documentId);
+		const originArray = this.data.origin?.split(".");
+
+		// if ( (parentType !== "Actor") || (parentId !== this.parent.id) || (documentType !== "Item") ) return;
+
+		let indexItemID = originArray.indexOf('Item') > 0 ? originArray.indexOf('Item') + 1 : -1;
+		if(indexItemID < 1){
+			console.log(indexItemID)
+			return;
+		}
+		// const item = this.parent.items.get(documentId);
+		const item = this.parent.items.get(originArray[indexItemID]);
+
 		if ( !item ) return;
 
 		//types of items that can be equipted
 		const validTypes = ["weapon", "equipment", "consumable", "tool", "loot", "backpack"];
+		console.log(item.type);
 		if(validTypes.includes(item.type) && item.data.data.equipped === false){
 			this.isSuppressed = this.data.flags.dnd4e?.effectData?.equippedRec || false;
 			return;
@@ -102,6 +125,65 @@
 		}
 	}
 
+	/* -------------------------------------------- */
+
+	/**
+	 * Describe whether the ActiveEffect has a temporary duration based on combat turns or rounds.
+	 * @type {boolean}
+	 */
+	get isTemporary() {
+		const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
+		if(durationType){
+			return !!durationType;
+		}
+		
+		return super.isTemporary;
+		// const duration = this.data.duration.seconds ?? (this.data.duration.rounds || this.data.duration.turns) ?? 0;
+		// return (duration > 0) || this.getFlag("core", "statusId");
+	}
+
+	// /* --------------------------------------------- */
+
+	// /**
+	//  * Summarize the active effect duration
+	//  * @type {{type: string, duration: number|null, remaining: number|null, label: string}}
+	//  */
+	// get duration() {
+	// 	const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
+	// 	if(durationType){
+	// 		console.log(durationType)
+	// 		return durationType;
+	// 	}
+
+	// 	return super.duration;
+	// }
+
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Format a number of rounds and turns into a human-readable duration label
+	 * @param {number} rounds   The number of rounds
+	 * @param {number} turns    The number of turns
+	 * @returns {string}        The formatted label
+	 * @private
+	 */
+	_getDurationLabel(rounds, turns) {
+		const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
+		if(durationType){
+
+			if(durationType === "endOfTargetTurn") return  game.i18n.localize("DND4EBETA.DurationEndOfTargetTurnSimp");
+			else if(durationType === "startOfTargetTurn")  return game.i18n.localize("DND4EBETA.DurationStartOfTargetTurnSimp");
+
+			return CONFIG.DND4EBETA.durationType[durationType];
+		}
+
+		return super._getDurationLabel(rounds, turns);
+	}
+
+	_getIsSave() {
+		return this.getFlag("dnd4e", "effectData")?.durationType === "saveEnd";
+	}
 	/* --------------------------------------------- */
 
 	/**
@@ -138,6 +220,7 @@
 		// Iterate over active effects, classifying them into categories
 		for ( let e of effects ) {
 			e._getSourceName(); // Trigger a lookup for the source name
+			console.log(e);
 			if ( e.isSuppressed ) categories.suppressed.effects.push(e);
 			else if ( e.data.disabled ) categories.inactive.effects.push(e);
 			else if ( e.isTemporary ) categories.temporary.effects.push(e);

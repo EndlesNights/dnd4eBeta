@@ -761,6 +761,8 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 			html.find('.item .item-image').click(event => this._onItemRoll(event));
 			html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
 
+			html.find('.effect-save').click(event => this._onRollEffectSave(event));
+
 			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this))
 			
 		}
@@ -827,10 +829,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		//	let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
 		//	let props = $(`<div class="item-properties"></div>`);
 			if (item.type === "power") {
-				
 				let div = $(`<div class="item-summary"></div>`);
-
-
 				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
 				div.append(descrip);
 
@@ -1202,23 +1201,38 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 
 	/* -------------------------------------------- */
 
-  /**
-   * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
-   * @private
-   */
-  _onItemRoll(event) {
-	event.preventDefault();
-	const itemId = event.currentTarget.closest(".item").dataset.itemId;
-	const item = this.actor.items.get(itemId);
-	
-	if ( item.data.type === "power") {
-		return this.actor.usePower(item, {configureDialog: !event.shiftKey});
+	/**
+	 * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
+	 * @private
+	 */
+	_onItemRoll(event) {
+		event.preventDefault();
+		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const item = this.actor.items.get(itemId);
+		
+		if ( item.data.type === "power") {
+			return this.actor.usePower(item, {configureDialog: !event.shiftKey});
+		}
+		// Otherwise roll the Item directly
+		return item.roll();
 	}
-	// Otherwise roll the Item directly
-	return item.roll();
-  }
-  
-  /* -------------------------------------------- */
+
+	/* -------------------------------------------- */
+
+	_onRollEffectSave(event){
+		event.preventDefault();
+		console.log("rollSave Throw v Effect!");
+
+		const effectId = event.currentTarget.closest(".item").dataset.effectId;
+		const effect = this.actor.effects.get(effectId);
+
+		let save = new SaveThrowDialog(this.actor, {effectSave:true, effectId: effectId}).render(true);
+
+		console.log(save)
+		console.log(effectId);
+		console.log(this.actor.effects.get(effectId));
+	}
+	/* -------------------------------------------- */
 
 	_onItemRecharge(event){
 		event.preventDefault();

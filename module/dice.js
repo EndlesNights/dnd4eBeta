@@ -1,5 +1,6 @@
 import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
+import { Helper } from "./helper.js"
 
 /**
  * A standardized helper function for managing core 4e "d20 rolls"
@@ -31,8 +32,12 @@ import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 export async function d20Roll({parts=[],  partsExpressionReplacements = [], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null,
 								  isAttackRoll=false, options= {}}={}) {
+	console.trace()
 	critical = critical || 20; //ensure that critical always has a value
 	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options }
+
+	console.log(rollConfig)
+	console.log(options)
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
@@ -80,6 +85,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 
 	// Create the Dialog window
 	let roll;
+	console.log(rollConfig)
 	return new Promise(resolve => {
 		new Dialog({
 			title: title,
@@ -183,7 +189,10 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	const targets = Array.from(game.user.targets);
 	const targetData = {
 		targNameArray: [],
-		targDefValArray: []
+		targDefValArray: [],
+		targets: [],
+		targetHit: [],
+		targetMissed: []
 	}
 	const critStateArray = []
 
@@ -203,6 +212,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			let targDefVal = targets[rollExpressionIdx].document._actor.data.data.defences[options.attackedDef].value;
 			targetData.targNameArray.push(targName);
 			targetData.targDefValArray.push(targDefVal);
+			targetData.targets.push(targets[rollExpressionIdx]);
 		}
 		for (let dice of subroll.dice) {
 			if (dice.faces === 20) {
@@ -224,11 +234,23 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	
 	// if there is only 1 roll, it's not a multi roll
 	if (!isAttackRoll || game.user.targets.size < 1) {
-		roll = roll.rollArray[0]
+		roll = roll.rollArray[0];
 	}
 	else {
 		roll.populateMultirollData(targetData, critStateArray);
+
+		Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
+		// for(let e of options.powerEffects){
+		// 	if(e.data.flags.dnd4e.effectData.powerEffectTypes === "hit"){
+				
+		// 	}
+		// 	else if(e.data.flags.dnd4e.effectData.powerEffectTypes === "miss"){
+	
+		// 	}
+		// }
 	}
+	
+
 
 	// Convert the roll to a chat message and return the roll
 	rollMode = form ? form.rollMode.value : rollMode;
