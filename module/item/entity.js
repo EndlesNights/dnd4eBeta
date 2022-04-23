@@ -917,9 +917,8 @@ export default class Item4e extends Item {
 			}
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.data.data.consume, "weapon used by the power")
 		}
-
 		await Helper.applyEffects([parts], rollData, actorData, this.data, weaponUse?.data, "attack")
-		console.log(this)
+
 		// Compose roll options
 		const rollConfig = {
 			parts,

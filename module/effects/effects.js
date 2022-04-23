@@ -71,7 +71,6 @@
 		this.isSuppressed = false;
 
 
-		console.log(this.data.origin);
 
 		if ( this.data.disabled || (this.parent.documentName !== "Actor") ) return;
 
@@ -83,7 +82,6 @@
 
 		let indexItemID = originArray.indexOf('Item') > 0 ? originArray.indexOf('Item') + 1 : -1;
 		if(indexItemID < 1){
-			console.log(indexItemID)
 			return;
 		}
 		// const item = this.parent.items.get(documentId);
@@ -93,7 +91,6 @@
 
 		//types of items that can be equipted
 		const validTypes = ["weapon", "equipment", "consumable", "tool", "loot", "backpack"];
-		console.log(item.type);
 		if(validTypes.includes(item.type) && item.data.data.equipped === false){
 			this.isSuppressed = this.data.flags.dnd4e?.effectData?.equippedRec || false;
 			return;
@@ -248,7 +245,6 @@
 		// Iterate over active effects, classifying them into categories
 		for ( let e of effects ) {
 			e._getSourceName(); // Trigger a lookup for the source name
-			console.log(e);
 			if ( e.isSuppressed ) categories.suppressed.effects.push(e);
 			else if ( e.data.disabled ) categories.inactive.effects.push(e);
 			else if ( e.isTemporary ) categories.temporary.effects.push(e);

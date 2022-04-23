@@ -81,7 +81,6 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 
 	// Create the Dialog window
 	let roll;
-	console.log(rollConfig)
 	return new Promise(resolve => {
 		new Dialog({
 			title: title,
