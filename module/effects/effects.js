@@ -48,9 +48,16 @@
 		// Set initial duration data for Actor-owned effects
 		if ( this.parent instanceof Actor ) {
 			const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
-			if ( game.combat ) {
-				updates.duration.startRound = game.combat.round;
-				updates.duration.startTurn = game.combat.turn ?? 0;
+			const combat = game.combat;
+			if ( combat ) {
+				// updates.duration.startRound = game.combat.round;
+				// updates.duration.startTurn = game.combat.turn ?? 0;
+
+				// updates.duration.startRound = combat.round;
+				
+				// updates.duration.startTurn = combat.turns[combat.turn].data.initiative ?? 0;
+				// updates.flags.dnd4e.effectData.durationInit = combat.turns[combat.turn].data.initiative ?? 0;
+				updates.flags = {dnd4e: { effectData: { startTurnInit: combat.turns[combat.turn].data.initiative ?? 0}}};
 			}
 			this.data.update(updates);
 		}
@@ -158,10 +165,31 @@
 	// 	return super.duration;
 	// }
 
+	/* --------------------------------------------- */
 
+	
+	/**
+	 * @override
+	 * Summarize the active effect duration
+	 * @type {{type: string, duration: number|null, remaining: number|null, label: string}}
+	 */
+	get duration() {
+		if(this.data.flags?.dnd4e?.effectData?.durationType){
+			const d = this.data.duration;
+			const duration = this._getCombatTime(d.rounds, d.turns);
+			return {
+				type: "turns",
+				duration: duration,
+				remaining: duration,
+				label: this._getDurationLabel(d.rounds, d.turns)
+			}
+		}
+		return super.duration;
+	}
 	/* -------------------------------------------- */
 
 	/**
+	 * @override
 	 * Format a number of rounds and turns into a human-readable duration label
 	 * @param {number} rounds   The number of rounds
 	 * @param {number} turns    The number of turns

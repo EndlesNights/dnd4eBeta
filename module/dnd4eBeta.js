@@ -289,6 +289,12 @@ Hooks.once('init', async function() {
 		'MeasuredTemplate.prototype._refreshRulerText',
 		AbilityTemplate._refreshRulerBurst
 	);
+
+	libWrapper.register(
+		'dnd4e',
+		'Combat.prototype.nextTurn',
+		onNextTurn
+	)
 });
 
 Hooks.on("getSceneControlButtons", function(controls){
@@ -307,3 +313,39 @@ Hooks.on("createMeasuredTemplate", (obj,temp,userID) => {
 		obj.setFlag("dnd4e", 'templateType',ui.controls.activeControl === "measure" ? ui.controls.activeTool : obj.data.t);
 	}
 });
+
+async function onNextTurn(wrapped){
+
+	const currentRound = game.combat.round;
+	// const currentTurn = game.combat.turn;
+	const currentInit = game.combat.turns[game.combat.turn].initiative;
+
+	// const nextTurn = game.combat.turn + 1 < game.combat.turns.length? game.combat.turn + 1 : 0;
+	const nextInit = game.combat.turn + 1 < game.combat.turns.length? game.combat.turns[game.combat.turn + 1].initiative :  game.combat.turns[0].initiative;
+
+	for(let t of game.combat.turns){
+		let toDelete = [];
+		for(let e of t.token.actor.effects){
+			const effectData = e.data.flags.dnd4e?.effectData;
+			const durationType = effectData?.durationType;
+
+			if(!durationType){
+				continue;
+			}
+			if(durationType === "endOfTargetTurn" || durationType === "endOfUserTurn"){
+				if(currentInit <= effectData.durationTurnInit && currentRound >= e.data.duration.rounds){
+						toDelete.push(e.id);
+				}
+			}
+			else if(durationType === "startOfTargetTurn" || durationType === "startOfUserTurn"){
+				if(nextInit <= effectData.durationTurnInit && currentRound >= e.data.duration.rounds){
+						toDelete.push(e.id);
+				}
+			}
+		}
+		if(toDelete.length){
+			await t.actor.deleteEmbeddedDocuments("ActiveEffect", toDelete);
+		}
+	}
+	return wrapped();
+}

@@ -120,7 +120,9 @@
                 <label>{{ localize "COMBAT.Rounds" }}</label>
                 <input type="number" name="duration.rounds" value="{{ data.duration.rounds }}"/>
                 <label>{{ localize "COMBAT.Turns" }}</label>
-                <input type="number" name="duration.turns" value="{{ data.duration.turns }}"/>
+                <!-- <input type="number" name="duration.turns" value="{{ data.duration.turns }}"/> -->
+                <input type="number" step="0.01" name="flags.dnd4e.effectData.durationTurnInit" value="{{ effect.flags.dnd4e.effectData.durationTurnInit }}"/>
+                
             </div>
         </div>
         <div class="form-group">
@@ -136,7 +138,9 @@
                 <label>{{ localize "COMBAT.Round" }}</label>
                 <input type="number" name="duration.startRound" value="{{ data.duration.startRound }}"/>
                 <label>{{ localize "COMBAT.Turn" }}</label>
-                <input type="number" name="duration.startTurn" value="{{ data.duration.startTurn }}"/>
+                <!-- <input type="number" name="duration.startTurn" value="{{ data.duration.startTurn }}"/> -->
+                <input type="number" step="0.01" name="flags.dnd4e.effectData.startTurnInit" value="{{ effect.flags.dnd4e.effectData.startTurnInit }}"/>
+
             </div>
         </div>
     </section>

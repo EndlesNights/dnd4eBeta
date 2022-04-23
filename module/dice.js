@@ -32,12 +32,8 @@ import { Helper } from "./helper.js"
 export async function d20Roll({parts=[],  partsExpressionReplacements = [], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null,
 								  isAttackRoll=false, options= {}}={}) {
-	console.trace()
 	critical = critical || 20; //ensure that critical always has a value
 	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options }
-
-	console.log(rollConfig)
-	console.log(options)
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
@@ -238,20 +234,10 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	}
 	else {
 		roll.populateMultirollData(targetData, critStateArray);
-
-		Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
-		// for(let e of options.powerEffects){
-		// 	if(e.data.flags.dnd4e.effectData.powerEffectTypes === "hit"){
-				
-		// 	}
-		// 	else if(e.data.flags.dnd4e.effectData.powerEffectTypes === "miss"){
-	
-		// 	}
-		// }
+		if(targetData.targetHit) Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
+		if(targetData.targetMissed) Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", options.parent);
 	}
 	
-
-
 	// Convert the roll to a chat message and return the roll
 	rollMode = form ? form.rollMode.value : rollMode;
 

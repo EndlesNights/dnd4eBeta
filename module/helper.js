@@ -877,15 +877,47 @@ export class Helper {
 		return /^-?\d+$/.test(str);
 	}
 
+	static getInitiativeByToken(id){
+		for(let t of game.combat.turns){
+			if(t.data.tokenId === id){
+				return t.data.initiative
+			}
+		}
+
+		return -1;
+	}
+
+	static getCurrentTurnInitiative(){
+		return game.combat.turns[game.combat.turn].initiative;
+	}
 	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
-		console.log(game.combat);
+		const combat = game.combat;
 		for(let e of effectMap){
 			if(e.data.flags.dnd4e.effectData.powerEffectTypes === condition){
+
 				for(let t of tokenTarget){
 					let effectData = e.data;
-					console.log(effectData)
 					effectData.sourceName = parent.name
 					effectData.origin = parent.uuid
+
+					const duration = e.data.duration;
+					const flags = e.data.flags;
+					duration.combat = combat.id;
+					duration.startRound = combat.round;
+					flags.dnd4e.effectData.startTurnInit = combat.turns[combat.turn].data.initiative;
+
+					const userInit = this.getInitiativeByToken(parent.token.id);
+					const targetInit = this.getInitiativeByToken(t.id);
+					const currentInit = this.getCurrentTurnInitiative();
+
+					if(flags.dnd4e.effectData.durationType === "endOfTargetTurn" || flags.dnd4e.effectData.durationType === "startOfTargetTurn"){
+						duration.rounds = currentInit > targetInit ? combat.round : combat.round + 1;
+						flags.dnd4e.effectData.durationTurnInit = this.getInitiativeByToken(t.data._id);
+					}
+					else if(flags.dnd4e.effectData.durationType === "endOfUserTurn" || flags.dnd4e.effectData.durationType === "startOfUserTurn" ){
+						duration.rounds = currentInit > userInit ? combat.round : combat.round + 1;
+						flags.dnd4e.effectData.durationTurnInit = userInit;
+					}
 					await t.actor.createEmbeddedDocuments("ActiveEffect", [{
 						label: e.data.label,
 						icon: e.data.icon,
@@ -893,7 +925,7 @@ export class Helper {
 						sourceName: parent.name,
 						duration: e.data.duration,
 						tint: e.data.tint,
-						flags: e.data.flags,
+						flags: flags,
 						changes: e.data.changes
 					}]);
 				}
