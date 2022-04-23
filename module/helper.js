@@ -878,6 +878,7 @@ export class Helper {
 	}
 
 	static getInitiativeByToken(id){
+		if(!game.combat) return 0;
 		for(let t of game.combat.turns){
 			if(t.data.tokenId === id){
 				return t.data.initiative
@@ -888,7 +889,7 @@ export class Helper {
 	}
 
 	static getCurrentTurnInitiative(){
-		return game.combat.turns[game.combat.turn].initiative;
+		return game.combat? game.combat.turns[game.combat.turn].initiative : 0;
 	}
 	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
 		const combat = game.combat;
@@ -902,20 +903,20 @@ export class Helper {
 
 					const duration = e.data.duration;
 					const flags = e.data.flags;
-					duration.combat = combat.id;
-					duration.startRound = combat.round;
-					flags.dnd4e.effectData.startTurnInit = combat.turns[combat.turn].data.initiative;
+					duration.combat = combat?.id || "None Combat";
+					duration.startRound = combat?.round || 0;
+					flags.dnd4e.effectData.startTurnInit = combat?.turns[combat.turn].data.initiative || 0;
 
 					const userInit = this.getInitiativeByToken(parent.token.id);
 					const targetInit = this.getInitiativeByToken(t.id);
 					const currentInit = this.getCurrentTurnInitiative();
 
 					if(flags.dnd4e.effectData.durationType === "endOfTargetTurn" || flags.dnd4e.effectData.durationType === "startOfTargetTurn"){
-						duration.rounds = currentInit > targetInit ? combat.round : combat.round + 1;
+						duration.rounds = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
 						flags.dnd4e.effectData.durationTurnInit = this.getInitiativeByToken(t.data._id);
 					}
 					else if(flags.dnd4e.effectData.durationType === "endOfUserTurn" || flags.dnd4e.effectData.durationType === "startOfUserTurn" ){
-						duration.rounds = currentInit > userInit ? combat.round : combat.round + 1;
+						duration.rounds = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
 						flags.dnd4e.effectData.durationTurnInit = userInit;
 					}
 					await t.actor.createEmbeddedDocuments("ActiveEffect", [{
