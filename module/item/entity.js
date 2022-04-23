@@ -451,45 +451,9 @@ export default class Item4e extends Item {
 
 		if(templateData.item.type === "power") {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.data.useType}`);
-			console.log(this)
-			console.log(game.user.targets)
-
+			
 			Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
-			console.log(this.parent)
-			// for(let e of this.effects){
-			// 	console.log(e)
-
-			// 	if(e.data.flags.dnd4e.effectData.powerEffectTypes === "all"){
-			// 		for(let t of game.user.targets){
-			// 			let effectData = e.data;
-			// 			console.log(effectData)
-			// 			effectData.sourceName = this.parent.name
-			// 			effectData.origin = this.parent.uuid
-			// 			await t.actor.createEmbeddedDocuments("ActiveEffect", [{
-			// 				label: e.data.label,
-			// 				icon: e.data.icon,
-			// 				origin: this.parent.uuid,
-			// 				sourceName: this.parent.name,
-			// 				duration: e.data.duration,
-			// 				tint: e.data.tint,
-			// 				flags: e.data.flags,
-			// 				changes: e.data.changes
-			// 			}]);
-			// 		}
-			// 	}
-			// }
-			// console.log(effects)
-
-			for(let t of game.user.targets){
-				
-
-				// await t.actor.createEmbeddedDocuments("ActiveEffect", [{
-				// 	label: game.i18n.localize("DND4EBETA.EffectNew"),
-				// 	icon: "icons/svg/aura.svg",
-				// 	origin: this.uuid,
-				// 	"duration.rounds": 1,
-				// }]);
-			}
+			Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
 
 		}
 		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {

@@ -1024,6 +1024,7 @@
 "DND4EBETA.Weight": "Weight",
 "DND4EBETA.WIL": "WILL",
 "DND4EBETA.Zone": "Zone",
+"EFFECT.DurationEndInit": "Effect End Time*",
 "EFFECT.statusAmmoCount": "Ammo Charges",
 "EFFECT.statusAttackDown": "Attack Down",
 "EFFECT.statusAttackUp": "Attack Up",
