@@ -336,7 +336,7 @@
 	</div>
 
 	<div class="form-group stacked weapon-properties">
-		<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:Stuff</label>
+		<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:</label>
 		<pr></pr>
 		{{#each config.damageTypes as |name type|}}
 		<label class="checkbox">
@@ -440,6 +440,7 @@
 
 	<div class="form-group stacked weapon-properties">
 		<label title="Type of Damage Dealt by primary attack.">Effect Types & Keywords:</label>
+		<pr></pr>
 		{{#each config.effectTypes as |name type|}}
 		<label class="checkbox">
 			<input type="checkbox" name="data.effectType.{{type}}" {{checked (lookup ../data.effectType type)}}/> {{ name }}
