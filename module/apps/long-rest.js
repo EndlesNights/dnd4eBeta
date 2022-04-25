@@ -56,15 +56,9 @@ export class LongRestDialog extends DocumentSheet {
 		updateData[`data.actionpoints.encounteruse`] = false;
 		updateData[`data.magicItemUse.encounteruse`] = false;
 		
-		// *** TODO For Each reset encounter & daily power HERE
-		const items = this.object.items.filter(item => ["enc", "day"].includes(item.data.data.uses?.per));
-		const updateItems = items.map( item => {
-			return {
-				_id: item.id,
-				"data.uses.value": item.data.data.preparedMaxUses
-			};
-		});
-		await this.object.updateEmbeddedDocuments("Item", updateItems);
+		Helper.rechargeItems(this.object, ["enc", "day", "round"]);
+		Helper.endEffects(this.document, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter", "endOfDay"]);
+
 
 		if(this.object.type === "Player Character"){
 			ChatMessage.create({

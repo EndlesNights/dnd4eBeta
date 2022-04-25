@@ -189,7 +189,8 @@ DND4EBETA.itemCapacityTypes = {
 DND4EBETA.limitedUsePeriods = {
   "enc": "DND4EBETA.Encounter",
   "day": "DND4EBETA.Day",
-  "charges": "DND4EBETA.Charges"
+  "charges": "DND4EBETA.Charges",
+  "round": "DND4EBETA.Round"
 };
 
 /* -------------------------------------------- */
@@ -454,6 +455,7 @@ DND4EBETA.durationType = {
 	"startOfUserTurn": "DND4EBETA.DurationStartOfUserTurn",
 	"saveEnd": "DND4EBETA.DurationSaveEnd",
 	"endOfEncounter": "DND4EBETA.DurationEndOfEnc",
+	"endOfDay": "DND4EBETA.DurationEndOfEnc",
 	"custom": "DND4EBETA.DurationCustom",
 }
 

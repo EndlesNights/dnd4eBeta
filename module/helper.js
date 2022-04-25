@@ -877,6 +877,30 @@ export class Helper {
 		return /^-?\d+$/.test(str);
 	}
 
+	static async rechargeItems(actor, targetArray){
+
+		const items = actor.items.filter(item => targetArray.includes(item.data.data.uses?.per));
+		const updateItems = items.map( item => {
+			return {
+				_id: item.id,
+				"data.uses.value": item.data.data.preparedMaxUses
+			};
+		});
+
+		if(updateItems) await actor.updateEmbeddedDocuments("Item", updateItems);
+	}
+
+	static async endEffects(actor, targetArray){
+		// const effects = actor.effects.filter(effect => targetArray.includes(effect.data.flags.dnd4e.effectData.durationType));
+		const effects = [];
+		for(let e of actor.effects){
+			if(targetArray.includes(e.data.flags.dnd4e?.effectData?.durationType)){
+				effects.push(e.id);
+			}
+		}
+		if(effects) await actor.deleteEmbeddedDocuments("ActiveEffect", effects);
+	}
+
 	static getInitiativeByToken(id){
 		if(!game.combat) return 0;
 		for(let t of game.combat.turns){
@@ -891,6 +915,7 @@ export class Helper {
 	static getCurrentTurnInitiative(){
 		return game.combat? game.combat.turns[game.combat.turn].initiative : 0;
 	}
+
 	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
 		const combat = game.combat;
 		for(let e of effectMap){

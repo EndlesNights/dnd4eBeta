@@ -20,8 +20,11 @@ import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
 import AbilityTemplate from "./pixi/ability-template.js";
+import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/entity.js";
+
+import { Helper } from "./helper.js"
 
 // Import Helpers
 import * as chat from "./chat.js";
@@ -56,6 +59,8 @@ Hooks.once("init", async function() {
 		migrations: migrations,
 		rollItemMacro: macros.rollItemMacro
 	};
+
+	game.helper = Helper;
 	
 	// Define custom Entity classes
 	CONFIG.DND4EBETA = DND4EBETA;
@@ -66,6 +71,8 @@ Hooks.once("init", async function() {
 	
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
+
+	CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffect;
 	
 	// define custom roll extensions
 	CONFIG.Dice.rolls.push(MultiAttackRoll);
@@ -293,7 +300,7 @@ Hooks.once('init', async function() {
 	libWrapper.register(
 		'dnd4e',
 		'Combat.prototype.nextTurn',
-		onNextTurn
+		Turns._onNextTurn
 	)
 });
 
@@ -313,58 +320,3 @@ Hooks.on("createMeasuredTemplate", (obj,temp,userID) => {
 		obj.setFlag("dnd4e", 'templateType',ui.controls.activeControl === "measure" ? ui.controls.activeTool : obj.data.t);
 	}
 });
-
-async function onNextTurn(wrapped){
-	const currentRound = game.combat.round;
-	const currentTurn = game.combat.turn;
-	const currentInit = game.combat.turns[game.combat.turn].initiative;
-
-	// const nextTurn = game.combat.turn + 1 < game.combat.turns.length? game.combat.turn + 1 : 0;
-	const nextInit = game.combat.turn + 1 < game.combat.turns.length? game.combat.turns[game.combat.turn + 1].initiative :  game.combat.turns[0].initiative;
-
-	for(let t of game.combat.turns){
-		let toDelete = [];
-		for(let e of t.token.actor.effects){
-			const effectData = e.data.flags.dnd4e?.effectData;
-			const durationType = effectData?.durationType;
-
-			if(!durationType){
-				continue;
-			}
-
-			if(durationType === "endOfTargetTurn"){
-				if(currentInit <= effectData.durationTurnInit && currentRound >= e.data.duration.rounds && t.id === game.combat.combatant.id
-					|| (currentRound > e.data.duration.rounds && t.id === game.combat.combatant.id) ){
-						toDelete.push(e.id);
-				}
-			}
-			else if(durationType === "endOfUserTurn"){
-				if(currentInit <= effectData.durationTurnInit && currentRound >= e.data.duration.rounds){
-						toDelete.push(e.id);
-				}
-			}
-			else if(durationType === "startOfTargetTurn" || durationType === "startOfUserTurn"){
-				if(nextInit <= effectData.durationTurnInit && currentRound == e.data.duration.rounds || currentRound > e.data.duration.rounds ){
-						toDelete.push(e.id);
-				}
-			}
-
-			if(currentTurn === game.combat.combatants.size){
-				if(durationType === "endOfUserTurn"){
-					if(effectData.durationTurnInit < currentInit && e.data.duration.rounds <= currentRound){
-						toDelete.push(e.id);
-					}
-				}
-			}
-			else if(currentTurn === 0){
-				if(durationType === "startOfTargetTurn" || durationType === "startOfUserTurn"){
-
-				}
-			}
-		}
-		if(toDelete.length){
-			await t.actor.deleteEmbeddedDocuments("ActiveEffect", toDelete);
-		}
-	}
-	return wrapped();
-}

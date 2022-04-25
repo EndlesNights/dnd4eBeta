@@ -729,6 +729,7 @@
 "DND4EBETA.RollPlaceholderRitual": "1d20 + @attribute",
 "DND4EBETA.RollPlaceholderTool": "1d20 + @attribute + @bonus",
 "DND4EBETA.RollSituationalBonus": "Situational Bonus?",
+"DND4EBETA.Round": "Round",
 "DND4EBETA.Runic": "Runic",
 "DND4EBETA.Save": "Save",
 "DND4EBETA.SavingThrow": "Roll Saving Throw",

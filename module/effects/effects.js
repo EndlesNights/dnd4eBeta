@@ -80,7 +80,7 @@
 
 		// if ( (parentType !== "Actor") || (parentId !== this.parent.id) || (documentType !== "Item") ) return;
 
-		let indexItemID = originArray.indexOf('Item') > 0 ? originArray.indexOf('Item') + 1 : -1;
+		let indexItemID = originArray?.indexOf('Item') > 0 ? originArray.indexOf('Item') + 1 : -1;
 		if(indexItemID < 1){
 			return;
 		}

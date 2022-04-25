@@ -914,7 +914,8 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 				itemData.data.uses = {
 					value: 1,
 					max: 1,
-					per: type === "encounter" ? "enc" : "day"
+					per: ["encounter", "charges", "round"].includes(type)  ? "enc" : "day"
+					// per: type === "encounter" ? "enc" : "day"
 				};
 			}
 		}
@@ -1144,7 +1145,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	*/
 	_onShortRest(event) {
 		event.preventDefault();
-		new ShortRestDialog(this.actor).render(true)
+		new ShortRestDialog(this.actor).render(true);
 	}
 	
 	/* -------------------------------------------- */
