@@ -7,6 +7,7 @@
 - active effects provided by items now have an option wherre the effect is only turned on while the item is equipted.
 - active effects from powers can be applyed to target tokens
 - duration options have been added to active effects
+- when half levels are turned off, it will no longer show the value of mod + 1/2 level next to the ability mods.
 
 ## Version 0.2.73
 - fix damage type calculation
