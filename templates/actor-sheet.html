@@ -136,8 +136,23 @@
 			<section class="section section--abilities">
 				<div class="ability-header">
 					<label>{{localize 'DND4EBETA.MOD'}}</label>
+					
+
+					{{#unless data.halfLevelOptions}}
 					<label>+{{localize 'DND4EBETA.HalfLVL'}}</label>
+					{{/unless}}
+
 				</div>
+
+				{{#if data.halfLevelOptions}}
+					{{#each data.abilities as | ability a|}}
+					<div class="ability--score flexrow" data-ability="{{a}}">
+						<input class="ability-score" name="data.abilities.{{a}}.value" type="text" data-dtype="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
+						<label class="ability-name rollable" title="{{ability.label }}">{{ability.label}}</label>
+						<label class="attribute-display ability-mod-half" style="max-width:35px; border-left: 1px solid;" title="{{ability.label}}">{{numberFormat ability.mod decimals=0 sign=true}}</label>
+					</div>
+					{{/each}}
+				{{else}}
 					{{#each data.abilities as | ability a|}}
 					<div class="ability--score flexrow" data-ability="{{a}}">
 						<input class="ability-score" name="data.abilities.{{a}}.value" type="text" data-dtype="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
@@ -146,6 +161,8 @@
 						<label class="attribute-display ability-mod-half" title="{{ability.label }}">{{numberFormat ability.modHalf decimals=0 sign=true}}</label>
 					</div>
 					{{/each}}
+				{{/if}}
+				
 			</section>
 			{{!-- Skills --}}
 			<section class="section section--skills">
