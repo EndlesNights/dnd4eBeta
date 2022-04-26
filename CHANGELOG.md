@@ -1,11 +1,14 @@
 # Changelog
 
+## Version 0.2.75
+- hotfix, added text for end of day for durations
+
 ## Version 0.2.74
 - item sheet css fix
 - added some more sorting options for powers
 - powers will also have a tertiary alphabetical sorting applied to them.
-- active effects provided by items now have an option wherre the effect is only turned on while the item is equipted.
-- active effects from powers can be applyed to target tokens
+- active effects provided by items now have an option where the effect is only turned on while the item is equipped.
+- active effects from powers can be applied to target tokens
 - duration options have been added to active effects
 - when half levels are turned off, it will no longer show the value of mod + 1/2 level next to the ability mods.
 - The value for Area of Effect sizes within powers/consumables is now a string text, and can be composed of basic roll formulas.

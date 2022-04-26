@@ -455,7 +455,7 @@ DND4EBETA.durationType = {
 	"startOfUserTurn": "DND4EBETA.DurationStartOfUserTurn",
 	"saveEnd": "DND4EBETA.DurationSaveEnd",
 	"endOfEncounter": "DND4EBETA.DurationEndOfEnc",
-	"endOfDay": "DND4EBETA.DurationEndOfEnc",
+	"endOfDay": "DND4EBETA.DurationEndOfDay",
 	"custom": "DND4EBETA.DurationCustom",
 }
 
