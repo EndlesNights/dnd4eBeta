@@ -61,7 +61,6 @@ export default class ItemSheet4e extends ItemSheet {
 	
 		if(itemData.type === "power"){
 			data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
-			console.log(this.item)
 			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
 		}
 
@@ -101,12 +100,10 @@ export default class ItemSheet4e extends ItemSheet {
 	
 		// Prepare Active Effects
 		data.effects = ActiveEffect4e.prepareActiveEffectCategories(this.item.effects);
-		console.log(data.effects)
 
 		// Re-define the template data references (backwards compatible)
 		data.item = itemData;
 		data.data = itemData.data;
-		console.log(data)
 		return data;
 	}
 
@@ -157,7 +154,6 @@ export default class ItemSheet4e extends ItemSheet {
 				else categories.all.effects.push(e);
 			}
 		}
-		console.log(categories);
 		return categories;
 	}
 
@@ -168,8 +164,6 @@ export default class ItemSheet4e extends ItemSheet {
 		const effect = li.dataset.effectId ? this.item.effects.get(li.dataset.effectId) : null;
 		switch(a.dataset.action){
 			case "create":
-				console.log(li.dataset.effectType)
-				console.log(this);
 				this.item.createEmbeddedDocuments("ActiveEffect", [{
 					label: game.i18n.localize("DND4EBETA.EffectNew"),
 					icon: "icons/svg/aura.svg",
@@ -179,27 +173,6 @@ export default class ItemSheet4e extends ItemSheet {
 					disabled: li.dataset.effectType === "inactive"
 				}]);
 				return;
-				// let someEffect = new ActiveEffect4e({
-				// 	label: game.i18n.localize("DND4EBETA.EffectNew"),
-				// 	icon: "icons/svg/aura.svg",
-				// 	origin: this.item.uuid,
-				// 	"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
-				// 	disabled: li.dataset.effectType === "inactive"
-				// });
-				// console.log(someEffect);
-				// if(this.object.data.data.effectPowers == undefined){
-				// 	this.object.data.data.effectPowers = [];
-				// }
-				// this.object.data.data.effectPowers.push(someEffect);
-				console.log(this);
-				return;
-				return this.item.createEmbeddedDocuments("ActiveEffect", [{
-					label: game.i18n.localize("DND4EBETA.EffectNew"),
-					icon: "icons/svg/aura.svg",
-					origin: this.item.uuid,
-					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
-					disabled: li.dataset.effectType === "inactive"
-				}]);
 			case "edit":
 				return effect.sheet.render(true);
 			case "delete":

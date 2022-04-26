@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.76
+- hotfix, fixed spelling / grammer
+
 ## Version 0.2.75
 - hotfix, added text for end of day for durations
 
