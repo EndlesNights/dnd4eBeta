@@ -736,6 +736,19 @@ export class Helper {
 		}
 	}
 
+	static _areaValue(chatData, actorData){
+		if(chatData.area) {
+			try{
+				let areaForm = this.commonReplace(`${chatData.area}`, actorData);
+				return  Roll.safeEval(areaForm);
+			} catch (e) {
+				return  chatData.area;
+			}
+		} else {
+			return  0;
+		}
+	}
+
 	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
 		let powerSource = (chatData.powersource && chatData.powersource !== "") ? ` ♦ ${CONFIG.DND4EBETA.powerSource[`${chatData.powersource}`]}` : ""
 		let powerDetail = `<span><b>${CONFIG.DND4EBETA.powerUseType[`${chatData.useType}`]}${powerSource}`;
@@ -781,10 +794,10 @@ export class Helper {
 			powerDetail += ` ${game.i18n.localize("DND4EBETA.rangeRanged")}</b> ${chatData.rangePower}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b></span>`;
+			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${this._areaValue(chatData, actorData)}</b></span>`;
 		}
 		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${chatData.area}</b> ${game.i18n.localize("DND4EBETA.RangeWithin")} <b>${chatData.rangePower}</b></span>`;
+			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]} ${this._areaValue(chatData, actorData)}</b> ${game.i18n.localize("DND4EBETA.RangeWithin")} <b>${chatData.rangePower}</b></span>`;
 		}
 		else if (chatData.rangeType === "personal") {
 			powerDetail += ` ${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</b></span>`;

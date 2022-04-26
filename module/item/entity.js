@@ -400,7 +400,7 @@ export default class Item4e extends Item {
 		const cardData = (() => {
 			if ((this.data.type === "power" || this.data.type === "consumable") && this.data.data.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.data.data, this.actor);
-				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG);
+				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG, this.actor.data);
 				return Helper.commonReplace(cardString, this.actor.data, this.data, weaponUse? weaponUse.data.data : null, 1);
 			} else {
 				return null;

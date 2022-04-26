@@ -434,30 +434,43 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
    * @private
    */
 	_preparePowerRangeText(itemData) {
+
+		let area;
+		if(itemData.data.area) {
+			try{
+				let areaForm = game.helper.commonReplace(`${itemData.data.area}`, this.actor.data);
+				area = Roll.safeEval(areaForm);
+			} catch (e) {
+				area = itemData.data.area;
+			}
+		} else {
+			area = 0;
+		}
+
 		if(itemData.data.rangeType === "range") {
 			itemData.data.rangeText = `Ranged ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = `R`
 			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "closeBurst") {
-			itemData.data.rangeText = `Close Burst ${itemData.data.area}`
+			itemData.data.rangeText = `Close Burst ${area}`
 			itemData.data.rangeTextShort = "C-BU"
-			itemData.data.rangeTextBlock = `${itemData.data.area}`
+			itemData.data.rangeTextBlock = `${area}`
 		} else if(itemData.data.rangeType === "rangeBurst") {
-			itemData.data.rangeText = `Area Burst ${itemData.data.area} within ${itemData.data.rangePower}`
+			itemData.data.rangeText = `Area Burst ${area} within ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = "A-BU"
-			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
+			itemData.data.rangeTextBlock = `${area} - ${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "closeBlast") {
-			itemData.data.rangeText = `Close Blast ${itemData.data.area}`
+			itemData.data.rangeText = `Close Blast ${area}`
 			itemData.data.rangeTextShort = "C-BL"
-			itemData.data.rangeTextBlock = `${itemData.data.area}`
+			itemData.data.rangeTextBlock = `${area}`
 		} else if(itemData.data.rangeType === "rangeBlast") {
-			itemData.data.rangeText = `Area Blast ${itemData.data.area} within ${itemData.data.rangePower}`
+			itemData.data.rangeText = `Area Blast ${area} within ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = "A-BL"
-			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
+			itemData.data.rangeTextBlock = `${area} - ${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "wall") {
-			itemData.data.rangeText = `Area Wall ${itemData.data.area} within ${itemData.data.rangePower}`
+			itemData.data.rangeText = `Area Wall ${area} within ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = "W"
-			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
+			itemData.data.rangeTextBlock = `${area} - ${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "personal") {
 			itemData.data.rangeText = "Personal"
 			itemData.data.rangeTextShort = "P"
@@ -937,6 +950,16 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 				baseDiceType: "d8",
 				detail: "1d8 damage."
 			};
+		}
+
+		if(game.settings.get("dnd4e", "halfLevelOptions")){
+			if(this.actor.type === "NPC"){
+				itemData.data.attack.formula = ""; 
+			} else {
+				itemData.data.attack = {
+					formula:"@wepAttack + @powerMod + @atkMod"
+				}
+			}
 		}
 		
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
