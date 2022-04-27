@@ -1,3 +1,5 @@
+import { Helper } from "../helper.js";
+
 export class LongRestDialog extends DocumentSheet {
 
 	static get defaultOptions() {

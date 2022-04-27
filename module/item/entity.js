@@ -906,6 +906,7 @@ export default class Item4e extends Item {
 		if(this.type === "power"){
 			rollConfig.options.powerEffects = this.effects;
 			rollConfig.options.parent = this.parent;
+			console.log(this);
 		}
 
 		// Expanded weapon critical threshold

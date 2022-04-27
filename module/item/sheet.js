@@ -151,6 +151,7 @@ export default class ItemSheet4e extends ItemSheet {
 				e.durationTypeLable = `${CONFIG.DND4EBETA.durationType[e.data.flags.dnd4e.effectData.durationType]}`;
 				if(e.data.flags.dnd4e?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
 				else if(e.data.flags.dnd4e?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
+				else if(e.data.flags.dnd4e?.effectData?.powerEffectTypes === "self") categories.self.effects.push(e);
 				else categories.all.effects.push(e);
 			}
 		}

@@ -922,7 +922,33 @@ export class Helper {
 			}
 		}
 
-		return -1;
+		return game.combat.turns[game.combat.turn].initiative || -1;
+	}
+
+	static getTokenIdForLinkedActor(actor){
+		if(actor.token?.id){
+			return actor.token.id;
+		}
+
+		const actorId = actor.id;
+
+		if(canvas.tokens.controlled){
+			for(let t of canvas.tokens.controlled){
+				if(t.actor.id === actorId){
+					return t.id;
+				}
+			}
+		}
+
+		if(game.combat.turns[game.combat.turn].actor.id === actorId){
+			return game.combat.turns[game.combat.turn].id;
+		}
+
+		for(let t of game.combat.turns){
+			if(t.actor.id === actorId){
+				return t.id;
+			}
+		}
 	}
 
 	static getCurrentTurnInitiative(){
@@ -945,7 +971,8 @@ export class Helper {
 					duration.startRound = combat?.round || 0;
 					flags.dnd4e.effectData.startTurnInit = combat?.turns[combat.turn].data.initiative || 0;
 
-					const userInit = this.getInitiativeByToken(parent.token.id);
+					const userTokenId = this.getTokenIdForLinkedActor(parent);
+					const userInit = this.getInitiativeByToken(this.getTokenIdForLinkedActor(parent));
 					const targetInit = this.getInitiativeByToken(t.id);
 					const currentInit = this.getCurrentTurnInitiative();
 

@@ -70,10 +70,7 @@
 	 determineSuppression() {
 		this.isSuppressed = false;
 
-
-
 		if ( this.data.disabled || (this.parent.documentName !== "Actor") ) return;
-
 
 		const [parentType, parentId, documentType, documentId] = this.data.origin?.split(".") ?? [];
 		const originArray = this.data.origin?.split(".");
