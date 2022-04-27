@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.77
+- hotfix, fix long rest, broke because of effect durations
+- hotfix, fix filter issue with power effects that should target self not going into their proper category
+- hotfix, fix an issue where powers that soured from token/actors with linked data would cause a null value that would prevent their effects from being placed on their targets. 
+
 ## Version 0.2.76
 - hotfix, fixed spelling / grammer
 
