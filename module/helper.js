@@ -973,27 +973,44 @@ export class Helper {
 
 					const userTokenId = this.getTokenIdForLinkedActor(parent);
 					const userInit = this.getInitiativeByToken(this.getTokenIdForLinkedActor(parent));
-					const targetInit = this.getInitiativeByToken(t.id);
+					const targetInit = t ? this.getInitiativeByToken(t.id) : userInit;
 					const currentInit = this.getCurrentTurnInitiative();
 
 					if(flags.dnd4e.effectData.durationType === "endOfTargetTurn" || flags.dnd4e.effectData.durationType === "startOfTargetTurn"){
 						duration.rounds = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
-						flags.dnd4e.effectData.durationTurnInit = this.getInitiativeByToken(t.data._id);
+						flags.dnd4e.effectData.durationTurnInit = t ? this.getInitiativeByToken(t.data._id) : userInit;						
 					}
 					else if(flags.dnd4e.effectData.durationType === "endOfUserTurn" || flags.dnd4e.effectData.durationType === "startOfUserTurn" ){
 						duration.rounds = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
 						flags.dnd4e.effectData.durationTurnInit = userInit;
 					}
-					await t.actor.createEmbeddedDocuments("ActiveEffect", [{
-						label: e.data.label,
-						icon: e.data.icon,
-						origin: parent.uuid,
-						sourceName: parent.name,
-						duration: e.data.duration,
-						tint: e.data.tint,
-						flags: flags,
-						changes: e.data.changes
-					}]);
+
+					if(t?.actor){
+						await t.actor.createEmbeddedDocuments("ActiveEffect", [{
+							label: e.data.label,
+							icon: e.data.icon,
+							origin: parent.uuid,
+							sourceName: parent.name,
+							// duration: duration, //Not too sure why this fails, but it does
+							duration: {rounds: duration.rounds, startRound: duration.startRound},
+							tint: e.data.tint,
+							flags: flags,
+							changes: e.data.changes
+						}]);
+					} else { //extra condition for when actors this linked data target self
+						await parent.createEmbeddedDocuments("ActiveEffect", [{
+							label: e.data.label,
+							icon: e.data.icon,
+							origin: parent.uuid,
+							sourceName: parent.name,
+							// duration: duration, //Not too sure why this fails, but it does
+							duration: {rounds: duration.rounds, startRound: duration.startRound},
+							tint: e.data.tint,
+							flags: flags,
+							changes: e.data.changes
+						}]); 
+					}
+
 				}
 			}
 		}

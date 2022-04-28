@@ -33,7 +33,8 @@ export class Turns{
                     }
                 }
                 else if(durationType === "startOfTargetTurn" || durationType === "startOfUserTurn"){
-                    if(nextInit <= effectData.durationTurnInit && currentRound == e.data.duration.rounds || currentRound > e.data.duration.rounds ){
+                    if((nextInit <= effectData.durationTurnInit && currentRound == e.data.duration.rounds || currentRound > e.data.duration.rounds)
+                    ||  (nextTurn <= currentTurn && nextInit <= effectData.durationTurnInit && currentRound+1 == e.data.duration.rounds)){
                             toDelete.push(e.id);
                     }
                 }

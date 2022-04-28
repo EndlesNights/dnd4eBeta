@@ -452,8 +452,8 @@ export default class Item4e extends Item {
 		if(templateData.item.type === "power") {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.data.useType}`);
 			
-			Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
-			Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
+		Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
+		Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
 
 		}
 		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {

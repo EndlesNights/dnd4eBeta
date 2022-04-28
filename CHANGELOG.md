@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.78
+- more fixes with linked actor/token effect interactions in regards to self application of effects
+- added edge case for effects ending at the start of a targets turn when they are first in the init order
+- fix strange interaction where some times an effects duration would not properly set if sourced from actors with linked data
+
 ## Version 0.2.77
 - hotfix, fix long rest, broke because of effect durations
 - hotfix, fix filter issue with power effects that should target self not going into their proper category
