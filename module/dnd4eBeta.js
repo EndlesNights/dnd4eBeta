@@ -24,7 +24,7 @@ import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/entity.js";
 
-import { Helper } from "./helper.js"
+import { Helper, handleApplyEffectToToken } from "./helper.js"
 
 // Import Helpers
 import * as chat from "./chat.js";
@@ -96,19 +96,10 @@ Hooks.once("init", async function() {
 	});		
 
 	
+	// Setup Item Sheet
 	Items.unregisterSheet("core", ItemSheet);
 	Items.registerSheet("dnd4eBeta", ItemSheet4e, {makeDefault: true});
 
-	// Register system settings
-	// game.settings.register("dnd4eBeta", "macroShorthand", {
-	// 	name: "Shortened Macro Syntax",
-	// 	hint: "Enable a shortened macro syntax which allows referencing attributes directly, for example @str instead of @attributes.str.value. Disable this setting if you need the ability to reference the full attribute model, for example @attributes.str.label.",
-	// 	scope: "world",
-	// 	type: Boolean,
-	// 	default: true,
-	// 	config: true
-	// });
-	
 	// Preload Handlebars Templates
 	preloadHandlebarsTemplates();
 
@@ -149,10 +140,15 @@ Hooks.once("setup", function() {
 
 
 });
-Hooks.once("ready", function() {
+Hooks.once("ready",  function() {
 	// Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
 	Hooks.on("hotbarDrop", (bar, data, slot) => macros.create4eMacro(data, slot));
 
+		// Add socket listener for applying activeEffects on targets that users do not own
+		game.socket.on('system.dnd4e', (data) => {
+			if(data.operation === 'applyTokenEffect') handleApplyEffectToToken(data);
+			else ItemSheet4e._handleShareItem(data);
+		});
 
 	// Determine whether a system migration is required and feasible
 	if ( !game.user.isGM ) return;

@@ -959,7 +959,6 @@ export class Helper {
 		const combat = game.combat;
 		for(let e of effectMap){
 			if(e.data.flags.dnd4e.effectData.powerEffectTypes === condition){
-
 				for(let t of tokenTarget){
 					let effectData = e.data;
 					effectData.sourceName = parent.name
@@ -985,34 +984,50 @@ export class Helper {
 						flags.dnd4e.effectData.durationTurnInit = userInit;
 					}
 
+					const newEffectData = {
+						label: e.data.label,
+						icon: e.data.icon,
+						origin: parent.uuid,
+						sourceName: parent.name,
+						// duration: duration, //Not too sure why this fails, but it does
+						// duration: {rounds: duration.rounds, startRound: duration.startRound},
+						rounds: duration.rounds,
+						startRound: duration.startRound,
+						tint: e.data.tint,
+						flags: flags,
+						changes: e.data.changes,
+						changesID: e.uuid
+					};
+					let actor;
 					if(t?.actor){
-						await t.actor.createEmbeddedDocuments("ActiveEffect", [{
-							label: e.data.label,
-							icon: e.data.icon,
-							origin: parent.uuid,
-							sourceName: parent.name,
-							// duration: duration, //Not too sure why this fails, but it does
-							duration: {rounds: duration.rounds, startRound: duration.startRound},
-							tint: e.data.tint,
-							flags: flags,
-							changes: e.data.changes
-						}]);
-					} else { //extra condition for when actors this linked data target self
-						await parent.createEmbeddedDocuments("ActiveEffect", [{
-							label: e.data.label,
-							icon: e.data.icon,
-							origin: parent.uuid,
-							sourceName: parent.name,
-							// duration: duration, //Not too sure why this fails, but it does
-							duration: {rounds: duration.rounds, startRound: duration.startRound},
-							tint: e.data.tint,
-							flags: flags,
-							changes: e.data.changes
-						}]); 
+						actor = t.actor;
+					} else { //extra condition for when actors this linked data target self						
+						actor = parent;
 					}
 
+					if(game.user.isGM){
+						actor.newActiveEffect(newEffectData);
+					} else {
+						game.socket.emit('system.dnd4e', {
+							actorID: actor.id,
+							tokenID: t?.id || null,
+							operation: 'applyTokenEffect',
+							user: game.user.id,
+							scene: canvas.scene.id,
+							effectData: newEffectData
+						});
+					}
 				}
 			}
 		}
 	}
+}
+
+export async function handleApplyEffectToToken(data){
+	if(!game.user.isGM){
+		return;
+	}
+	const effectData = data.effectData;
+	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
+	await actor.newActiveEffectSocket(effectData);
 }

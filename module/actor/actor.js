@@ -1159,8 +1159,7 @@ export class Actor4e extends Actor {
 		this.applyDamage(totalDamage, multiplier);
 	}
 
-	async applyDamage(amount=0, multiplier=1, surges={}) 
-	{
+	async applyDamage(amount=0, multiplier=1, surges={}) {
 		amount = Math.floor(parseInt(amount) * multiplier);
 		
 		// Healing Surge related checks
@@ -1268,5 +1267,44 @@ export class Actor4e extends Actor {
 		if ( this.type === "Player Character" ) {
 			this.data.token.update({vision: true, actorLink: true, disposition: 1});
 		}
+	}
+
+	async newActiveEffect(effectData){
+		this.createEmbeddedDocuments("ActiveEffect", [{
+			label: effectData.label,
+			icon:effectData.icon,
+			origin: effectData.origin,
+			sourceName: effectData.sourceName,
+			// duration: effectData.duration, //Not too sure why this fails, but it does
+			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
+			tint: effectData.tint,
+			flags: effectData.flags,
+			changes: effectData.changes
+		}]);
+	}
+
+	async newActiveEffectSocket(effectData){
+		const uuid = effectData.changesID.split('.')
+		let changes
+		if(uuid[0] === "Actor"){
+			changes = game.actors.get(uuid[1]).data.items.get(uuid[3]).data.effects.get(uuid[5]).data.changes;
+		}
+		else if(uuid[0] === "Scene"){
+			changes = game.scenes.get(uuid[1]).tokens.get(uuid[3]).actor.items.get(uuid[5]).data.effects.get(uuid[7]).data.changes;
+		}
+		game.actors.get("QWQfxG1XRG3DLexd").data.items.get("swFSwDhGhQUKpZIJ").data.effects.get("nPZw1R0agQpoJNDE")
+
+		const data = {
+			label: effectData.label,
+			icon:effectData.icon,
+			origin: effectData.origin,
+			sourceName: effectData.sourceName,
+			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
+			tint: effectData.tint,
+			flags: effectData.flags,
+			changes: changes
+		}
+
+		this.createEmbeddedDocuments("ActiveEffect", [data]);
 	}
 }

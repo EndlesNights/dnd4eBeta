@@ -31,6 +31,5 @@ export default class HPOptions extends FormApplication {
 		}
 
 		this.object.update(updateData);
-
 	}
 }

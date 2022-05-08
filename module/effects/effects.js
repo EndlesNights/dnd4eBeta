@@ -4,7 +4,6 @@
  */
  export default class ActiveEffect4e extends ActiveEffect {
 	constructor(data, context) {
-		// console.log(data)
 		if (data.id) {
 		  setProperty(data, "flags.core.statusId", data.id);
 		  delete data.id;

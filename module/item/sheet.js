@@ -749,9 +749,3 @@ export default class ItemSheet4e extends ItemSheet {
 		// }).render(true)
 	}
 }
-
-Hooks.once('ready', async function () {
-	game.socket.on("system.dnd4e", (msg) => {
-		ItemSheet4e._handleShareItem(msg);
-	});
-})

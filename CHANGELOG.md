@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.79
+- users should now be able to apply effects to tarets that they do not controls via socket
+
 ## Version 0.2.78
 - more fixes with linked actor/token effect interactions in regards to self application of effects
 - added edge case for effects ending at the start of a targets turn when they are first in the init order
