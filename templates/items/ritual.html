@@ -52,8 +52,29 @@
 				<label>Market Price</label>
 				<input type="text" name="data.market" value="{{data.market}}"/>
 			</div>
-
-
+			
+			{{!-- Component Cost --}}
+			<div class="form-group input-select">
+				<label>Ritual Component Cost</label>
+				<div class="form-fields">
+					<input type="text" name="data.ritualcomponentcost.value" value="{{data.ritualcomponentcost.value}}" data-dtype="Number" placeholder="-"/>
+					<select name="data.ritualcomponentcost.units">
+						{{#select data.ritualcomponentcost.units}}
+						<option value=""></option>
+						{{#each config.ritualcomponents as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+					<input type="text" name="data.ritualcomponentcost.additional" value="{{data.ritualcomponentcost.additional}}"/>
+				</div>
+			</div>
+			
+			<div class="form-group select">
+			<label>Required Focus</label>
+				<input type="text" name="data.ritualFocus" value="{{data.ritualFocus}}"/>
+			</div>
+			
 			{{!-- Cast Time --}}
 			<div class="form-group input-select">
 				<label>Cast Time</label>
