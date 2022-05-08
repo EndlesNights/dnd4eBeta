@@ -519,9 +519,9 @@ export class Helper {
 			newFormula = newFormula.replaceAll("@itemLevel", powerInnerData?.level ? powerInnerData.level : 0)
 
 			//if no weapon is in use replace the weapon keys with nothing.
-			newFormula = newFormula.replaceAll("@wepAttack", "");
-			newFormula = newFormula.replaceAll("@wepDamage", "");
-			newFormula = newFormula.replaceAll("@wepCritBonus", "");
+			newFormula = newFormula.replaceAll("@wepAttack", "0");
+			newFormula = newFormula.replaceAll("@wepDamage", "0");
+			newFormula = newFormula.replaceAll("@wepCritBonus", "0");
 			
 			newFormula = newFormula.replaceAll("@wepDiceNum", "0");
 			newFormula = newFormula.replaceAll("@wepDiceDamage", "0");
