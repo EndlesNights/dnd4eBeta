@@ -1051,7 +1051,7 @@ DND4EBETA.statusEffect = [
 	{
 		id: "dead",
 		label: "EFFECT.statusDead",
-		icon: "systems/dnd4e/icons/statusEffects/dead.svg"
+		icon: "icons/svg/skull.svg"
 	},
 	{
 		id: "deafened",
