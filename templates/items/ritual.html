@@ -57,16 +57,16 @@
 			<div class="form-group input-select">
 				<label>Ritual Component Cost</label>
 				<div class="form-fields">
-					<input type="text" name="data.ritualcomponentcost.value" value="{{data.ritualcomponentcost.value}}" data-dtype="Number" placeholder="-"/>
-					<select name="data.ritualcomponentcost.units">
-						{{#select data.ritualcomponentcost.units}}
+					<input type="text" name="data.ritualComponentCost.value" value="{{data.ritualComponentCost.value}}" data-dtype="Number" placeholder="-"/>
+					<select name="data.ritualComponentCost.units">
+						{{#select data.ritualComponentCost.units}}
 						<option value=""></option>
 						{{#each config.ritualcomponents as |name key|}}
 						<option value="{{key}}">{{name}}</option>
 						{{/each}}
 						{{/select}}
 					</select>
-					<input type="text" name="data.ritualcomponentcost.additional" value="{{data.ritualcomponentcost.additional}}"/>
+					<input type="text" name="data.ritualComponentCost.additional" value="{{data.ritualComponentCost.additional}}"/>
 				</div>
 			</div>
 			
