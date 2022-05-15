@@ -66,7 +66,7 @@ Hooks.once("init", async function() {
 	CONFIG.DND4EBETA = DND4EBETA;
 
 	DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4eBeta", ActiveEffectConfig4e, {makeDefault :true});
-	DocumentSheetConfig.registerSheet(Actor4e, "dnd4eBeta", ActiveEffectConfig4e, {makeDefault :true});
+	// DocumentSheetConfig.registerSheet(Actor4e, "dnd4eBeta", ActiveEffectConfig4e, {makeDefault :true});
 	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
 	
 	CONFIG.Actor.documentClass = Actor4e;

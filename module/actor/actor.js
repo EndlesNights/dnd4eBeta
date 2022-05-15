@@ -938,16 +938,71 @@ export class Actor4e extends Actor {
 			parts: parts,
 			data: data,
 			title: game.i18n.format("DND4EBETA.DefencePromptTitle", {defences: CONFIG.DND4EBETA.defensives[label]}),
-			// title: "TITLE",
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
 		}));		
 	}
 
-  async createOwnedItem(itemData, options) {
-	console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
-	return this.createEmbeddedDocuments("Item", [itemData], options);
-  }
+	async rollInitiative({createCombatants=false, rerollInitiative=false, initiativeOptions={}, event={}}={}, options={}) {
+		// Obtain (or create) a combat encounter
+		let combat = game.combat;
+		if ( !combat ) {
+			if ( game.user.isGM && canvas.scene ) {
+				const cls = getDocumentClass("Combat")
+				combat = await cls.create({scene: canvas.scene.id, active: true});
+			}
+			else {
+				ui.notifications.warn("COMBAT.NoneActive", {localize: true});
+				return null;
+			}
+		}
+
+		// Create new combatants
+		if ( createCombatants ) {
+			const tokens = this.getActiveTokens();
+			const toCreate = [];
+			if ( tokens.length ) {
+				for ( let t of tokens ) {
+					if ( t.inCombat ) continue;
+					toCreate.push({tokenId: t.id, sceneId: t.scene.id, actorId: this.id, hidden: t.data.hidden});
+				}
+			} else toCreate.push({actorId: this.id, hidden: false})
+			await combat.createEmbeddedDocuments("Combatant", toCreate);
+		}
+
+		// Roll initiative for combatants
+		const combatants = combat.combatants.reduce((arr, c) => {
+			if ( c.actor.id !== this.id ) return arr;
+			if( this.isToken && c.token.id !== this.token.id) return arr;
+			arr.push(c.id);
+			return arr;
+		}, []);
+		
+		const isReroll = !!(game.combat.combatants.get(combatants[0]).data.initiative || game.combat.combatants.get(combatants[0]).data.initiative == 0)
+
+		const parts = ['@init'];
+		let init = this.data.data.attributes.init.value;
+		const tiebreaker = game.settings.get("dnd4e", "initiativeDexTiebreaker");
+		if ( tiebreaker ) init += this.data.data.attributes.init.value / 100;
+		const data = {init: init};
+
+		const initRoll = await  d20Roll(mergeObject(options, {
+			parts: parts,
+			data: data,
+			title: `Init Roll`,
+			speaker: ChatMessage.getSpeaker({actor: this}),
+			flavor: isReroll? `${this.name} re-rolls Initiative!` : `${this.name} rolls for Initiative!`,
+		}));
+
+		if(combatants[0])
+		game.combat.combatants.get(combatants[0]).update({initiative:initRoll.total});
+		return combat;
+	}
+
+	async createOwnedItem(itemData, options) {
+		console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
+		return this.createEmbeddedDocuments("Item", [itemData], options);
+	}
 
 	/** @override */
 	async createEmbeddedDocuments(embeddedName, data=[], context={}) {

@@ -1,7 +1,11 @@
 # Changelog
 
 ## Version 0.2.79
-- users should now be able to apply effects to tarets that they do not controls via socket
+- users should now be able to apply effects to targets that they do not controls via socket
+- switched the icon used for dead tokens to standardized with core Foundry [merge](https://github.com/EndlesNights/dnd4eBeta/pull/120) from [TheGiddyLimit](https://github.com/TheGiddyLimit)
+- change to helper function that will replace empty values with a string of "0" instead of empty strings so that roll formulas properly eventuate. [merge](https://github.com/EndlesNights/dnd4eBeta/pull/209) from [BadgerKing7](https://github.com/BadgerKing7)
+- fixed an issue where older powers area of effect templates would not load properly as there value was still stored numerically and not in a string.
+- When rolling initiative from a character sheet, the user will now be promoted with the standard rolling dialog option and be able to input situational bonuses
 
 ## Version 0.2.78
 - more fixes with linked actor/token effect interactions in regards to self application of effects

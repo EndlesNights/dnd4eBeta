@@ -9,9 +9,9 @@ export default class AbilityTemplate extends MeasuredTemplate {
 
 	static getDistanceCalc(item){
 
-		let area = item.data.data.area;
+		//use toString() as some older powers formats may still be numerical
+		let area = item.data.data.area?.toString();
 		if(!area) return null;
-
 		try{
 			area = game.helper.commonReplace(area, item.actor.data);
 			area = Roll.replaceFormulaData(area, item.actor.getRollData(), {missing: 0, warn: true});

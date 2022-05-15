@@ -1189,7 +1189,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 
 	_onrollInitiative(event) {
 		event.preventDefault();
-		return this.actor.rollInitiative({createCombatants: true});
+		return this.actor.rollInitiative({createCombatants: true},{event: event});
 	}
 
 	_onSavingThrow(event) {
