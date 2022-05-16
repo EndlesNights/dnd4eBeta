@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.80
+- hotfix, forgot to remove a testcase.
+
 ## Version 0.2.79
 - users should now be able to apply effects to targets that they do not controls via socket
 - switched the icon used for dead tokens to standardized with core Foundry [merge](https://github.com/EndlesNights/dnd4eBeta/pull/120) from [TheGiddyLimit](https://github.com/TheGiddyLimit)

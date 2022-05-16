@@ -1347,7 +1347,6 @@ export class Actor4e extends Actor {
 		else if(uuid[0] === "Scene"){
 			changes = game.scenes.get(uuid[1]).tokens.get(uuid[3]).actor.items.get(uuid[5]).data.effects.get(uuid[7]).data.changes;
 		}
-		game.actors.get("QWQfxG1XRG3DLexd").data.items.get("swFSwDhGhQUKpZIJ").data.effects.get("nPZw1R0agQpoJNDE")
 
 		const data = {
 			label: effectData.label,
