@@ -283,8 +283,8 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
 export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionReplacement  = [], partsCritExpressionReplacement= [], partsMissExpressionReplacement= [], actor,
-									 data, event={}, rollMode=null, template, title, speaker, flavor, allowCritical=true,
-									 critical=false, fastForward=null, onClose, dialogOptions, healingRoll, options}) {
+								data, event={}, rollMode=null, template, title, speaker, flavor, allowCritical=true,
+								critical=false, fastForward=null, onClose, dialogOptions, healingRoll, options}) {
 
 	// First configure the Roll
 	const rollConfig = {parts, partsCrit, partsMiss, data, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: 'normal', fastForward, options}
@@ -371,7 +371,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 	});
 }
 
-async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, partsMiss, data, hitType, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options}) {
+async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, partsMiss, data, hitType, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options, fastForward}) {
 	manageBonusInParts(parts, form, data)
 	manageBonusInParts(partsCrit, form, data)
 	manageBonusInParts(partsMiss, form, data)
@@ -386,7 +386,7 @@ async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, pa
 			}
 		}
 	} else {
-		parts.pop();
+		if(!fastForward) parts.pop();
 	}
 	console.log(parts)
 
