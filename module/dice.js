@@ -37,7 +37,6 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
-
 	// If fast-forward requested, perform the roll without a dialog
 	if ( rollConfig.fastForward ) {
 		return performD20RollAndCreateMessage(null, rollConfig)
@@ -285,7 +284,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionReplacement  = [], partsCritExpressionReplacement= [], partsMissExpressionReplacement= [], actor,
 								data, event={}, rollMode=null, template, title, speaker, flavor, allowCritical=true,
 								critical=false, fastForward=null, onClose, dialogOptions, healingRoll, options}) {
-
+									
 	// First configure the Roll
 	const rollConfig = {parts, partsCrit, partsMiss, data, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: 'normal', fastForward, options}
 
@@ -438,6 +437,9 @@ function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, t
 	// Determine whether the roll can be fast-forward, make explicit comparison here as it might be set as false, so no falsey checks
 	if ( fastForward === null || fastForward === undefined) {
 		rollConfig.fastForward = event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
+		if(rollConfig.options?.fastForward){
+			rollConfig.fastForward = rollConfig.options.fastForward;
+		}
 	}
 	return rollConfig
 }

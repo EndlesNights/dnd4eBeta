@@ -940,7 +940,8 @@ export default class Item4e extends Item {
 	 *
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
-	async rollDamage({event, spellLevel=null, versatile=false}={}) {
+	async rollDamage({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
+		console.log(fastForward)
 		const itemData = this.data.data;
 		const actorData = this.actor.data;
 		const actorInnerData = this.actor.data.data;
@@ -1187,7 +1188,8 @@ export default class Item4e extends Item {
 				left: window.innerWidth - 710
 			},
 			messageData,
-			options
+			options,
+			fastForward
 		});
 	}
 
@@ -1196,7 +1198,7 @@ export default class Item4e extends Item {
 	 *
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
-	rollHealing({event, spellLevel=null, versatile=false}={}) {
+	rollHealing({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
 		const itemData = this.data.data;
 		const actorData = this.actor.data;
 		const actorInnerData = this.actor.data.data;
@@ -1312,6 +1314,7 @@ export default class Item4e extends Item {
 			},
 			messageData,
 			options,
+			fastForward
 		});
 	}
 

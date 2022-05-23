@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.2.81
+- fixed fastforward for damage rolls
+- can now fastword power use, will autmaticly roll attack, damage, and healing rolls, as well as place measure templates.
+
 ## Version 0.2.80
 - hotfix, forgot to remove a testcase.
 

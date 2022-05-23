@@ -1,6 +1,7 @@
 import { d20Roll } from "../dice.js";
 import { DND4EBETA } from "../config.js";
 import { Helper } from "../helper.js"
+import AbilityTemplate from "../pixi/ability-template.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -1029,7 +1030,8 @@ export class Actor4e extends Actor {
 	* @param {Item4e} item   The power being used by the actor
 	* @param {Event} event   The originating user interaction which triggered the cast
 	*/
-	async usePower(item, {configureDialog=true}={}) {
+	
+	async usePower(item, {configureDialog=true, fastForward=false}={}) {
 		//if not a valid type of item to use
 		console.log("UsePower")
 		if ( item.data.type !=="power" ) throw new Error("Wrong Item type");
@@ -1039,13 +1041,8 @@ export class Actor4e extends Actor {
 		let consumeUse = false;
 		let placeTemplate = false;
 		
-		if( configureDialog && limitedUses) {
-			// const usage = await AbilityUseDialog.create(item);
-			// if ( usage === null ) return;
-			
-			// consumeUse = Boolean(usage.get("consumeUse"));
+		if( (configureDialog||fastForward) && limitedUses) {
 			consumeUse = true;
-			// placeTemplate = Boolean(usage.get("placeTemplate"));
 			placeTemplate = true;
 		}
 		// Update Item data
@@ -1055,6 +1052,27 @@ export class Actor4e extends Actor {
 			
 			await item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
 			// item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
+		}
+
+		if(fastForward){
+
+			await item.roll();
+
+			if(item.hasAreaTarget){
+				const template = AbilityTemplate.fromItem(item);
+				if ( template ) template.drawPreview(event);
+			}
+
+			if(item.hasAttack){
+				await item.rollAttack({fastForward:true});
+			}
+			if(item.hasDamage){
+				await item.rollDamage({fastForward:true});
+			}
+			if(item.hasHealing){
+				await item.rollHealing({fastForward:true});
+			}
+			return
 		}
 			
 		// Invoke the Item roll

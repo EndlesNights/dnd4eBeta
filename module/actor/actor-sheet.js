@@ -1235,7 +1235,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		const item = this.actor.items.get(itemId);
 		
 		if ( item.data.type === "power") {
-			return this.actor.usePower(item, {configureDialog: !event.shiftKey});
+			return this.actor.usePower(item, {configureDialog: !event.shiftKey, fastForward: event.shiftKey});
 		}
 		// Otherwise roll the Item directly
 		return item.roll();
