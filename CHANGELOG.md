@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.2.82
+- fixed small issue with object sorting on sheets. Powers, items, and feats should now be able to be manually resorted objects within the confines of the current sorting filters by dragging and dropping the items once more.
+- fixed issue with power text filter, where the input element id was having interference from the feat filter input element because they shared the same id.
+- fixed css for pwer text filter, where the css intended for another element was not specific enough and was causing the text to be unreadable shade of white.
+
 ## Version 0.2.81
 - fixed fastforward for damage rolls
 - can now fastword power use, will autmaticly roll attack, damage, and healing rolls, as well as place measure templates.
