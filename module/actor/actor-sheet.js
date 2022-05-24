@@ -236,32 +236,15 @@ export default class ActorSheet4e extends ActorSheet {
 			inventory[i.type].items.push(i);
 		}
 
-		// Organize Spellbook and count the number of prepared spells (excluding always, at will, etc...)
-		// const spellbook = this._prepareSpellbook(data, spells);
-		// const nPrepared = spells.filter(s => {
-		  // return (s.data.level > 0) && (s.data.preparation.mode === "prepared") && s.data.preparation.prepared;
-		// }).length;
-		
-		// Organize Features
-		// const features = {
-		  // classes: { label: "DND4EBETA.ItemTypeClassPl", items: [], hasActions: false, dataset: {type: "class"}, isClass: true },
-		  // active: { label: "DND4EBETA.FeatureActive", items: [], hasActions: true, dataset: {type: "feat", "activation.type": "action"} },
-		  // passive: { label: "DND4EBETA.FeaturePassive", items: [], hasActions: false, dataset: {type: "feat"} }
-		// };
-
 		for ( let f of feats ) {
 			features[f.type].items.push(f);
-		  // if ( f.data.activation.type ) features.active.items.push(f);
-		  // else features.passive.items.push(f);
+
 		}
 
 		for ( let p of pow ) {
 			powers[this._groupPowers(p,powers)].items.push(p);
 		}
 
-		// classes.sort((a, b) => b.levels - a.levels);
-		// features.classes.items = classes;
-		// Assign and return
 		data.inventory = Object.values(inventory);
 		data.powers = Object.values(powers);
 		data.features = Object.values(features);
@@ -275,14 +258,6 @@ export default class ActorSheet4e extends ActorSheet {
 
 		this._sortPowers(powers);
 		this._sortFeatures(features);
-
-		// console.log(this)
-		// console.log(data)
-
-		// let moveTypesTitle = "";
-		// for(const moveType of Object.entries(data.data.movement)){
-		// 	moveTypesTitle += `${moveType.value} sq.`
-		// }
 
 		data.moveTitle = `
 ${parseInt(data.data.movement.walk.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedWalking")}
@@ -329,7 +304,9 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 					comparison = -1;
 				}
 				else if( varA === varB){
-					comparison = a.name.toUpperCase().localeCompare(b.name.toUpperCase());
+					// comparison = a.name.toUpperCase().localeCompare(b.name.toUpperCase());
+					if(a.sort > b.sort) comparison = 1;
+					else if(a.sort < b.sort) comparison = -1;
 				}
 				return (order === 'desc') ? (comparison * -1) : comparison;
 			}
@@ -337,6 +314,41 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 
 		};
 	};
+
+  /**
+   * Handle a drop event for an existing embedded Item to sort that Item relative to its siblings
+   * Overriders core to fix some minnor issues
+   * @param {Event} event
+   * @param {Object} itemData
+   * @Override
+   */
+	_onSortItem(event, itemData) {
+
+		// Get the drag source and its siblings
+		const source = this.actor.items.get(itemData._id);
+		const siblings = this.actor.items.filter(i => {
+			return (i.data.type === source.data.type) && (i.data._id !== source.data._id);
+		});
+
+		// Get the drop target
+		const dropTarget = event.target.closest("[data-item-id]");
+		const targetId = dropTarget ? dropTarget.dataset.itemId : null;
+		const target = siblings.find(s => s.data._id === targetId);
+
+		// Ensure we are only sorting like-types
+		if (!target || (source.data.type !== target.data.type)) return; // changed from if (target && (source.data.type !== target.data.type)) return;
+
+		// Perform the sort
+		const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings, sortBefore: (source.data.sort > target.data.sort)}); //Changed from const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings});
+		const updateData = sortUpdates.map(u => {
+			const update = u.update;
+			update._id = u.target.data._id;
+			return update;
+		});
+
+		// Perform the update
+		return this.actor.updateEmbeddedDocuments("Item", updateData);
+	}
 
 	/* -------------------------------------------- */
 
@@ -352,9 +364,12 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 
 	_sortPowers(powers) {
 		const sort = this.object.data.data.powerSortTypes;
-		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(powers)) {
-			group.items.sort(this._compareValues(sort));
+			if(sort === "none"){
+				group.items.sort((a,b) => a.sort - b.sort);
+			} else {
+				group.items.sort(this._compareValues(sort));
+			}
 		}
 	}
 
@@ -397,7 +412,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 				theme: { label: "DND4EBETA.Theme", items: [], dataset: {type: "theme"} },
 				feat: { label: "DND4EBETA.Feat", items: [], dataset: {type: "feat"} },
 				item: { label: "DND4EBETA.PowerItem", items: [], dataset: {type: "item"} },
-				//item: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
 				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 			};
 		}
@@ -414,7 +428,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 			encounter: { label: "DND4EBETA.PowerEnc", items: [], dataset: {type: "encounter"} },
 			daily: { label: "DND4EBETA.PowerDaily", items: [], dataset: {type: "daily"} },
 			item: { label: "DND4EBETA.PowerItem", items: [], dataset: {type: "item"} },
-			// utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },
 			recharge: { label: "DND4EBETA.PowerRecharge", items: [], dataset: {type: "recharge"} },
 			other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 		};
@@ -622,19 +635,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		}
 	  }
 
-	  // Spell-specific filters
-	  // if ( filters.has("ritual") ) {
-		// if (data.components.ritual !== true) return false;
-	  // }
-	  // if ( filters.has("concentration") ) {
-		// if (data.components.concentration !== true) return false;
-	  // }
-	  // if ( filters.has("prepared") ) {
-		// if ( data.level === 0 || ["innate", "always"].includes(data.preparation.mode) ) return true;
-		// if ( this.actor.data.type === "npc" ) return true;
-		// return data.preparation.prepared;
-	  // }
-
 	  // Equipment-specific filters
 	  if ( filters.has("equipped") ) {
 		if ( data.equipped !== true ) return false;
@@ -674,13 +674,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		item.sheet.render(true);
 		});
 
-		// Delete Inventory Item
-		
-		// html.find('.item-delete').click(ev => {
-		// const li = $(ev.currentTarget).parents(".item");
-		// this.actor.deleteOwnedItem(li.data("itemId"));
-		// li.slideUp(200, () => this.render(false));
-		// });
 
 		if ( this.actor.isOwner ) {	
 			// Roll Skill Checks
@@ -724,8 +717,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 			//action point
 			html.find('.action-point').click(this._onActionPointDialog.bind(this));
 			html.find('.action-point-extra').click(this._onActionPointExtraDialog.bind(this));
-
-
 			
 			//short rest
 			html.find('.short-rest').click(this._onShortRest.bind(this));
@@ -839,8 +830,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 			summary.slideUp(200, () => summary.remove());
 		} else {
 			//generate summary entry here
-		//	let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
-		//	let props = $(`<div class="item-properties"></div>`);
 			if (item.type === "power") {
 				let div = $(`<div class="item-summary"></div>`);
 				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
