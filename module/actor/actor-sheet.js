@@ -238,7 +238,6 @@ export default class ActorSheet4e extends ActorSheet {
 
 		for ( let f of feats ) {
 			features[f.type].items.push(f);
-
 		}
 
 		for ( let p of pow ) {
@@ -256,6 +255,7 @@ export default class ActorSheet4e extends ActorSheet {
 			});
 		}
 
+		this._sortinventory(inventory);
 		this._sortPowers(powers);
 		this._sortFeatures(features);
 
@@ -348,6 +348,16 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 
 		// Perform the update
 		return this.actor.updateEmbeddedDocuments("Item", updateData);
+	}
+
+	/* -------------------------------------------- */
+
+	_sortinventory(inventory) {
+		const sort = this.object.data.data.featureSortTypes;
+		if(sort === "none") {return;}
+		for (const [keyy, group] of Object.entries(inventory)) {
+			group.items.sort((a,b) => a.sort - b.sort);
+		}
 	}
 
 	/* -------------------------------------------- */
