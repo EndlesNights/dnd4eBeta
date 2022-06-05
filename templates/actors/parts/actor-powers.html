@@ -29,10 +29,8 @@
 			<button style="min-width: 116px; width:calc(100% - 80px); height: 17px; line-height:normal; border:0px; float:right; margin:2px 2px 0px 0px;" class="item-import button" title="Create Power" data-item-type="power" data-type="power" type="button">
 				<i style="min-width: 105.6px;" class="fas fa-atlas"> Import Powers</i>
 			</button>
-
-			
 			<br>
-			<input type="text" style="min-width: 168px; margin-right: 2px;" name="power-filter-search" placeholder="Search for power..." id="filterInput" onkeyup="filterPowers()"/>
+			<input type="text" style="min-width: 168px; margin-right: 2px;" name="power-filter-search" placeholder="Search for power..." id="filterInput-power" onkeyup="filterPowers()"/>
 		</div>
 	</header>
 
@@ -164,10 +162,10 @@
 <script>
 	function filterPowers() {
 		let input, filter, ul, li, a, i, txtValue;
-		input = document.getElementById("filterInput");
+		input = document.getElementById("filterInput-power");
 		filter = input.value.toUpperCase();
 		list = document.getElementsByClassName("power-list");
-
+		
 		for(i = 0; i < list.length; i++) {
 			li = list[i].getElementsByTagName("li");
 			for (ii = 0; ii < li.length; ii++) {

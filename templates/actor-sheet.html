@@ -34,9 +34,7 @@
 
 		
 		<section class="flexrow">
-			<!-- <div class="attributes" style="max-width: 120px;"> -->
-				<img class="profile-img" style="max-width: 100px; margin-left: 15px;" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
-			<!-- </div> -->
+			<img class="profile-img" style="max-width: 100px; margin-left: 15px;" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
 
 			{{!-- Attributes --}}
 			<section class="flexrow section--attributes">
@@ -66,7 +64,6 @@
 						<div class="attribute-sub" data-defence="{{d}}">
 							<strong class="attribute-name defence-bonus rollable" title="{{localize 'DND4EALTUS.BonusesTo'}} {{def.title}}">{{def.value}}</strong>
 							<div class="attribute-display def-name rollable" title="{{localize 'DND4EALTUS.Roll'}} {{def.title}} {{localize 'DND4EALTUS.Save'}}">{{def.label}}</div>
-							<!-- <div class="attribute-display def-name rollable" title="{{def.title }}">{{def.label}}</div> -->
 						</div>
 						{{/each}}
 					</div>
@@ -87,7 +84,6 @@
 						<span class="sep">/</span>
 						<div class="attribute-sub attribute-input">
 							<input type="text" name="data.details.surges.max" value="{{data.details.surges.max}}" title="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
-							<!-- <strong class="attribute-name" title="{{localize 'DND4EALTUS.SurgeDay'}}">{{data.details.surges.max}}</strong> -->
 							<div class="attribute-display" title="{{localize 'DND4EALTUS.SurgeDay'}}">{{localize 'DND4EALTUS.Day'}}</div>
 						</div>
 						<div class="attribute-sub">
@@ -112,7 +108,6 @@
 							<div class="attribute-display" title="{{localize 'DND4EALTUS.ActionPointsRemain'}}">{{localize 'DND4EALTUS.Remaining'}}</div>
 						</div>
 						<div class="attribute-sub">
-							<!-- <input type="checkbox" name="data.actionpoints.secondwind" data-dtype="Boolean" {{checked data.details.secondwind}} title="{{localize 'DND4EALTUS.SecondWindUsed'}}"/> -->
 							<input type="checkbox" type="checkbox" name="data.actionpoints.encounteruse" data-dtype="Boolean" {{checked data.actionpoints.encounteruse}} title="Action Point used this encounter?"/>
 							<div class="attribute-display-check" title="{{localize 'DND4EALTUS.ActionPointUsed'}}">{{localize 'DND4EALTUS.Used'}}</div>
 						</div>
@@ -120,6 +115,9 @@
 					<footer class="attribute-footer attribute-footer--surge flexrow">
 						<span style="font-size: 10px; max-width:48px;">Milestones</span>
 						<input style="width:18px; border-bottom: 1px solid black; max-width:9%; height:14px;" name="data.magicItemUse.milestone" value="{{data.magicItemUse.milestone}}" title="{{localize 'DND4EALTUS.Milestones'}}"  placeholder="0" data-dtype="Number" onClick="this.select();">
+						<a class="rest action-point-extra" title="{{localize 'DND4EALTUS.ActionPointUse'}}">{{localize "DND4EALTUS.ActionPointRiders"}}</a>
+					</footer>
+					<footer class="attribute-footer attribute-footer--surge flexrow">
 						<a class="rest action-point" title="{{localize 'DND4EALTUS.ActionPointUse'}}">{{localize "DND4EALTUS.ActionPointUse"}}</a>
 					</footer>
 				</div>
@@ -133,8 +131,23 @@
 			<section class="section section--abilities">
 				<div class="ability-header">
 					<label>{{localize 'DND4EALTUS.MOD'}}</label>
+					
+
+					{{#unless data.halfLevelOptions}}
 					<label>+{{localize 'DND4EALTUS.HalfLVL'}}</label>
+					{{/unless}}
+
 				</div>
+
+				{{#if data.halfLevelOptions}}
+					{{#each data.abilities as | ability a|}}
+					<div class="ability--score flexrow" data-ability="{{a}}">
+						<input class="ability-score" name="data.abilities.{{a}}.value" type="text" data-dtype="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
+						<label class="ability-name rollable" title="{{ability.label }}">{{ability.label}}</label>
+						<label class="attribute-display ability-mod-half" style="max-width:35px; border-left: 1px solid;" title="{{ability.label}}">{{numberFormat ability.mod decimals=0 sign=true}}</label>
+					</div>
+					{{/each}}
+				{{else}}
 					{{#each data.abilities as | ability a|}}
 					<div class="ability--score flexrow" data-ability="{{a}}">
 						<input class="ability-score" name="data.abilities.{{a}}.value" type="text" data-dtype="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
@@ -143,6 +156,8 @@
 						<label class="attribute-display ability-mod-half" title="{{ability.label }}">{{numberFormat ability.modHalf decimals=0 sign=true}}</label>
 					</div>
 					{{/each}}
+				{{/if}}
+				
 			</section>
 			{{!-- Skills --}}
 			<section class="section section--skills">
@@ -152,7 +167,6 @@
 					<h4 class="skill-name rollable">{{skill.label}}</h4>
 					<input type="hidden" name="data.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number">
 					<label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
-					<!-- <a class="skill-mod skill-bonus" data-target="data.details" title="Skill Bonus">{{skill.sklBonusValue}}</a> -->
 				</div>
 				{{/each}}
 			</section>
@@ -185,7 +199,6 @@
 				</section>
 				<section class="section section--movement flexcol">
 					<div title="{{moveTitle}}">
-						<!-- <input style="width:40%; border-bottom: 1px solid; border-radius: 0px; text-align: center;" type="text" name="data.movement.basic.base" value="{{data.movement.basic.base}}" title="Basic Movement Speed"  placeholder="0" data-dtype="Number" onClick="this.select();"/> -->
 						<strong class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat data.movement.walk.value}} sq.</strong>
 						<label class="movement-dialog rollable">{{localize 'DND4EALTUS.Speed'}}</label>
 					</div>
@@ -208,9 +221,6 @@
 					<a class="item" data-tab="effects">{{localize 'DND4EALTUS.Effects'}}</a>
 				</nav>
 			</section>
-
-			<!-- <section class="section section--tabs-content flexcol">
-			</section> -->
 
 			{{!-- Sheet Body --}}
 			<section class="sheet-body section--tabs-content">
@@ -248,98 +258,4 @@
 		</section>
 	</section>
 
-	<!-- <header class="sheet-header flexrow">
-		<img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
-		
-		
-		<div class="header-fields flexcol">
-			<div class="flexrow">
-				<h1 class="charname">
-					<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EALTUS.Name'}}" placeholder="{{localize 'DND4EALTUS.Name'}}" onClick="this.select();"/>			
-				</h1>
-				
-				<div class="charlevel">
-					<div class= "level">
-						<span>Level:</span>
-						<input type="text" name="data.details.level" value="{{data.details.level}}" title="{{localize "DND4EALTUS.Level"}}" data-dtype="Number" onClick="this.select();"/>
-					</div>
-					<div class="experience">
-						<span>Total Exp:</span>
-						<input type="text" name="data.details.exp" value="{{data.details.exp}}" title="{{localize "DND4EALTUS.Exp"}}" data-dtype="Number" onClick="this.select();"/>
-					</div>					
-				</div>
-			</div>
-			{{!-- Character Summary --}}
-			<div class="flexcol">
-				<div class="summary">
-					<div class="list-race">
-						<input type="text" name="data.details.race" value="{{data.details.race}}" title="{{localize 'DND4EALTUS.Race'}}" placeholder="{{localize 'DND4EALTUS.Race'}}" onClick="this.select();"/>
-					</div>
-					<div class="list-gen">
-						<input type="text" name="data.details.gender" value="{{data.details.gender}}" title="{{localize "DND4EALTUS.Gender"}}"  placeholder="{{localize "DND4EALTUS.Gender"}}" onClick="this.select();"/>
-					</div>
-					<div class="list-age">
-						<input type="text" name="data.details.age" value="{{data.details.age}}" title="{{localize "DND4EALTUS.Age"}}"  placeholder="{{localize "DND4EALTUS.Age"}}" onClick="this.select();"/>
-					</div>					
-					<div class="list-age">	
-						<input type="text" name="data.details.height" value="{{data.details.height}}" title="{{localize "DND4EALTUS.Height"}}"  placeholder="{{localize "DND4EALTUS.Height"}}" onClick="this.select();"/>
-					</div>
-					<div class="list-age">	
-						<input type="text" name="data.details.weight" value="{{data.details.weight}}" title="{{localize "DND4EALTUS.Weight"}}"  placeholder="{{localize "DND4EALTUS.Weight"}}" onClick="this.select();"/>
-					</div>
-					
-					<div class="list-size">
-						<div class="form-group">
-							<label style="font-weight: normal;">{{localize "DND4EALTUS.Size"}}:</label>
-							<select class="actor-size" name="data.details.size">
-								{{#select data.details.size}}
-								{{#each config.actorSizes as |label size|}}
-									<option value="{{size}}">{{label}}</option>
-								{{/each}}
-								{{/select}}
-							</select>
-						</div>							
-					</div>					
-					<div class="list-alig">	
-						<input type="text" name="data.details.alignment" value="{{data.details.alignment}}" title="{{localize "DND4EALTUS.Alignment"}}"  placeholder="{{localize "DND4EALTUS.Alignment"}}" onClick="this.select();"/>
-					</div>
-					<div class="list-alig">	
-						<input type="text" name="data.details.deity" value="{{data.details.deity}}" title="{{localize "DND4EALTUS.Deity"}}"  placeholder="{{localize "DND4EALTUS.Deity"}}" onClick="this.select();"/>						
-					</div>
-					<div class="list-class">	
-						<input type="text" name="data.details.class" value="{{data.details.class}}" title="{{localize 'DND4EALTUS.ClassName'}}"placeholder="{{localize 'DND4EALTUS.ClassName'}}" onClick="this.select();"/>
-					</div>
-					<div class="list-class">	
-						<input type="text" name="data.details.paragon" value="{{data.details.paragon}}" title="{{localize "DND4EALTUS.Paragon"}}"placeholder="{{localize "DND4EALTUS.Paragon"}}" onClick="this.select();"/>
-					</div>
-					<div class="list-end">	
-						<input type="text" name="data.details.epic" value="{{data.details.epic}}" title="{{localize "DND4EALTUS.Epic"}}"placeholder="{{localize "DND4EALTUS.Epic"}}" onClick="this.select();"/>
-					</div>
-					
-				</div>
-			</div>
-		</div>
-	</header> -->
-
-	{{!-- Sheet Tab Navigation --}}
-	<!-- <nav class="sheet-tabs tabs" data-group="primary">
-		<a class="item" data-tab="description">Bio & Info</a>
-		<a class="item" data-tab="attributes">Attributes</a>
-		<a class="item" data-tab="inventory">Inventory</a>
-		<a class="item" data-tab="features">Features</a>
-		<a class="item" data-tab="powers">Powers</a>
-		<a class="item" data-tab="effects">Effects</a>
-	</nav> -->
-
-
 </form>
-
-<!-- text-shadow style.css:1056 -->
-
-<!-- Active -->
-<!-- .pf1.sheet .sheet-navigation .item.active pf1.css:396 -->
-<!-- border-bottom: 3px solid #44191A; -->
-
-<!-- Non active -->
-<!-- .pf1.sheet .sheet-navigation .item	pf1.css:389 -->
-<!-- border-bottom: 3px solid #b5b3a4; -->

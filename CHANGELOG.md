@@ -1,5 +1,72 @@
 # Changelog
 
+## Version 0.2.82
+- fixed small issue with object sorting on sheets. Powers, items, and feats should now be able to be manually resorted objects within the confines of the current sorting filters by dragging and dropping the items once more.
+- fixed issue with power text filter, where the input element id was having interference from the feat filter input element because they shared the same id.
+- fixed css for pwer text filter, where the css intended for another element was not specific enough and was causing the text to be unreadable shade of white.
+
+## Version 0.2.81
+- fixed fastforward for damage rolls
+- can now fastword power use, will autmaticly roll attack, damage, and healing rolls, as well as place measure templates.
+
+## Version 0.2.80
+- hotfix, forgot to remove a testcase.
+
+## Version 0.2.79
+- users should now be able to apply effects to targets that they do not controls via socket
+- switched the icon used for dead tokens to standardized with core Foundry [merge](https://github.com/EndlesNights/dnd4eAltus/pull/120) from [TheGiddyLimit](https://github.com/TheGiddyLimit)
+- change to helper function that will replace empty values with a string of "0" instead of empty strings so that roll formulas properly eventuate. [merge](https://github.com/EndlesNights/dnd4eAltus/pull/209) from [BadgerKing7](https://github.com/BadgerKing7)
+- fixed an issue where older powers area of effect templates would not load properly as there value was still stored numerically and not in a string.
+- When rolling initiative from a character sheet, the user will now be promoted with the standard rolling dialog option and be able to input situational bonuses
+
+## Version 0.2.78
+- more fixes with linked actor/token effect interactions in regards to self application of effects
+- added edge case for effects ending at the start of a targets turn when they are first in the init order
+- fix strange interaction where some times an effects duration would not properly set if sourced from actors with linked data
+
+## Version 0.2.77
+- hotfix, fix long rest, broke because of effect durations
+- hotfix, fix filter issue with power effects that should target self not going into their proper category
+- hotfix, fix an issue where powers that soured from token/actors with linked data would cause a null value that would prevent their effects from being placed on their targets. 
+
+## Version 0.2.76
+- hotfix, fixed spelling / grammer
+
+## Version 0.2.75
+- hotfix, added text for end of day for durations
+
+## Version 0.2.74
+- item sheet css fix
+- added some more sorting options for powers
+- powers will also have a tertiary alphabetical sorting applied to them.
+- active effects provided by items now have an option where the effect is only turned on while the item is equipped.
+- active effects from powers can be applied to target tokens
+- duration options have been added to active effects
+- when half levels are turned off, it will no longer show the value of mod + 1/2 level next to the ability mods.
+- The value for Area of Effect sizes within powers/consumables is now a string text, and can be composed of basic roll formulas.
+
+## Version 0.2.73
+- fix damage type calculation
+- added alternative damage calculation rules
+- action point riders custom text [merge](https://github.com/EndlesNights/dnd4eAltus/pull/200) from [draconas1](https://github.com/draconas1)
+
+## Version 0.2.72
+- fixed an issue where bonus damage was overrider secondary damage.
+
+## Version 0.2.71
+- fixed issue where addition symbol was not correctly being added to the bonus from tool rolls, causing the value to be appended to the value of the skill.
+- melee weapons with the light throw and heavy throw properties should now be usable with both melee and ranged powers  
+
+## Version 0.2.70
+- Added an option to show formual as part of power data card text
+- NPC powers will now have the formual as the default instea of an ability score
+- Some extra hooks for Token Action HUD. [merge](https://github.com/EndlesNights/dnd4eAltus/pull/195) from [draconas1](https://github.com/draconas1)
+
+## Version 0.2.69
+- nice
+- Made all SRD armours proficient by default [merge](https://github.com/EndlesNights/dnd4eAltus/pull/194) from [draconas1](https://github.com/draconas1)
+- Fixed Macro Execution, Centralised the execution to one place so they all have consistent data [merge](https://github.com/EndlesNights/dnd4eAltus/pull/193) from [draconas1](https://github.com/draconas1)
+
 ## Version 0.2.68
 - moved "Spend Healing Surges?" option into the isHealing required handle be where it was intended to be.
 - fix variable name mistype where "diagonalMovement" was checking instead of intended "damageCalcRules"

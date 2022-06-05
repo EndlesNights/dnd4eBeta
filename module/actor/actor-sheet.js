@@ -14,9 +14,11 @@ import { HealMenuDialog } from "../apps/heal-menu-dialog.js";
 import TraitSelector from "../apps/trait-selector.js";
 import TraitSelectorSense from "../apps/trait-selector-sense.js";
 import TraitSelectorSave from "../apps/trait-selector-save.js";
-import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
+// import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
+import ActiveEffect4e from "../effects/effects.js";
 import HPOptions from "../apps/hp-options.js";
 import { Helper } from "../helper.js";
+import {ActionPointExtraDialog} from "../apps/action-point-extra.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -24,21 +26,21 @@ import { Helper } from "../helper.js";
  */
 export default class ActorSheet4e extends ActorSheet {
 
-  constructor(...args) {
-	super(...args);
+	constructor(...args) {
+		super(...args);
 
-	/**
-	 * Track the set of item filters which are applied
-	 * @type {Set}
-	 */
-	this._filters = {
-	  inventory: new Set(),
-	  powers: new Set(),
-	  features: new Set()
-	};
-  }
+		/**
+		 * Track the set of item filters which are applied
+		 * @type {Set}
+		 */
+		this._filters = {
+			inventory: new Set(),
+			powers: new Set(),
+			features: new Set()
+		};
+	}
   
-  /** @override */
+	/** @override */
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eAltus", "sheet", "actor"],
@@ -134,7 +136,8 @@ export default class ActorSheet4e extends ActorSheet {
 		this._prepareItems(data);
 		
 		// Prepare active effects
-		data.effects = prepareActiveEffectCategories(this.actor.effects);
+		// data.effects = prepareActiveEffectCategories(this.actor.effects);
+		data.effects = ActiveEffect4e.prepareActiveEffectCategories(this.actor.effects);
 
 		// Resources
 		actorData.data.resources = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
@@ -233,32 +236,14 @@ export default class ActorSheet4e extends ActorSheet {
 			inventory[i.type].items.push(i);
 		}
 
-		// Organize Spellbook and count the number of prepared spells (excluding always, at will, etc...)
-		// const spellbook = this._prepareSpellbook(data, spells);
-		// const nPrepared = spells.filter(s => {
-		  // return (s.data.level > 0) && (s.data.preparation.mode === "prepared") && s.data.preparation.prepared;
-		// }).length;
-		
-		// Organize Features
-		// const features = {
-		  // classes: { label: "DND4EALTUS.ItemTypeClassPl", items: [], hasActions: false, dataset: {type: "class"}, isClass: true },
-		  // active: { label: "DND4EALTUS.FeatureActive", items: [], hasActions: true, dataset: {type: "feat", "activation.type": "action"} },
-		  // passive: { label: "DND4EALTUS.FeaturePassive", items: [], hasActions: false, dataset: {type: "feat"} }
-		// };
-
 		for ( let f of feats ) {
 			features[f.type].items.push(f);
-		  // if ( f.data.activation.type ) features.active.items.push(f);
-		  // else features.passive.items.push(f);
 		}
 
 		for ( let p of pow ) {
 			powers[this._groupPowers(p,powers)].items.push(p);
 		}
 
-		// classes.sort((a, b) => b.levels - a.levels);
-		// features.classes.items = classes;
-		// Assign and return
 		data.inventory = Object.values(inventory);
 		data.powers = Object.values(powers);
 		data.features = Object.values(features);
@@ -270,16 +255,9 @@ export default class ActorSheet4e extends ActorSheet {
 			});
 		}
 
+		this._sortinventory(inventory);
 		this._sortPowers(powers);
 		this._sortFeatures(features);
-
-		// console.log(this)
-		// console.log(data)
-
-		// let moveTypesTitle = "";
-		// for(const moveType of Object.entries(data.data.movement)){
-		// 	moveTypesTitle += `${moveType.value} sq.`
-		// }
 
 		data.moveTitle = `
 ${parseInt(data.data.movement.walk.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedWalking")}
@@ -298,7 +276,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 
 	_compareValues(key, order = 'asc') {
 		return function innerSort(a, b) {
-
 			if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {	
 				const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
 				const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
@@ -309,6 +286,9 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 				}
 				else if (varA < varB) {
 					comparison = -1;
+				}
+				else if( varA === varB){
+					comparison = a.name.toUpperCase().localeCompare(b.name.toUpperCase());
 				}
 				return (order === 'desc') ? (comparison * -1) : comparison;
 			} else if (a.data.hasOwnProperty(key) && b.data.hasOwnProperty(key)) {
@@ -323,12 +303,62 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 				else if (varA < varB) {
 					comparison = -1;
 				}
+				else if( varA === varB){
+					// comparison = a.name.toUpperCase().localeCompare(b.name.toUpperCase());
+					if(a.sort > b.sort) comparison = 1;
+					else if(a.sort < b.sort) comparison = -1;
+				}
 				return (order === 'desc') ? (comparison * -1) : comparison;
 			}
 			return 0;
 
 		};
 	};
+
+  /**
+   * Handle a drop event for an existing embedded Item to sort that Item relative to its siblings
+   * Overriders core to fix some minnor issues
+   * @param {Event} event
+   * @param {Object} itemData
+   * @Override
+   */
+	_onSortItem(event, itemData) {
+
+		// Get the drag source and its siblings
+		const source = this.actor.items.get(itemData._id);
+		const siblings = this.actor.items.filter(i => {
+			return (i.data.type === source.data.type) && (i.data._id !== source.data._id);
+		});
+
+		// Get the drop target
+		const dropTarget = event.target.closest("[data-item-id]");
+		const targetId = dropTarget ? dropTarget.dataset.itemId : null;
+		const target = siblings.find(s => s.data._id === targetId);
+
+		// Ensure we are only sorting like-types
+		if (!target || (source.data.type !== target.data.type)) return; // changed from if (target && (source.data.type !== target.data.type)) return;
+
+		// Perform the sort
+		const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings, sortBefore: (source.data.sort > target.data.sort)}); //Changed from const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings});
+		const updateData = sortUpdates.map(u => {
+			const update = u.update;
+			update._id = u.target.data._id;
+			return update;
+		});
+
+		// Perform the update
+		return this.actor.updateEmbeddedDocuments("Item", updateData);
+	}
+
+	/* -------------------------------------------- */
+
+	_sortinventory(inventory) {
+		const sort = this.object.data.data.featureSortTypes;
+		if(sort === "none") {return;}
+		for (const [keyy, group] of Object.entries(inventory)) {
+			group.items.sort((a,b) => a.sort - b.sort);
+		}
+	}
 
 	/* -------------------------------------------- */
 
@@ -344,9 +374,12 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 
 	_sortPowers(powers) {
 		const sort = this.object.data.data.powerSortTypes;
-		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(powers)) {
-			group.items.sort(this._compareValues(sort));
+			if(sort === "none"){
+				group.items.sort((a,b) => a.sort - b.sort);
+			} else {
+				group.items.sort(this._compareValues(sort));
+			}
 		}
 	}
 
@@ -389,7 +422,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 				theme: { label: "DND4EALTUS.Theme", items: [], dataset: {type: "theme"} },
 				feat: { label: "DND4EALTUS.Feat", items: [], dataset: {type: "feat"} },
 				item: { label: "DND4EALTUS.PowerItem", items: [], dataset: {type: "item"} },
-				//item: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} },
 				other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
 			};
 		}
@@ -406,7 +438,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 			encounter: { label: "DND4EALTUS.PowerEnc", items: [], dataset: {type: "encounter"} },
 			daily: { label: "DND4EALTUS.PowerDaily", items: [], dataset: {type: "daily"} },
 			item: { label: "DND4EALTUS.PowerItem", items: [], dataset: {type: "item"} },
-			// utility: { label: "DND4EALTUS.PowerUtil", items: [], dataset: {type: "utility"} },
 			recharge: { label: "DND4EALTUS.PowerRecharge", items: [], dataset: {type: "recharge"} },
 			other: { label: "DND4EALTUS.Other", items: [], dataset: {type: "other"} },
 		};
@@ -426,30 +457,43 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
    * @private
    */
 	_preparePowerRangeText(itemData) {
+
+		let area;
+		if(itemData.data.area) {
+			try{
+				let areaForm = game.helper.commonReplace(`${itemData.data.area}`, this.actor.data);
+				area = Roll.safeEval(areaForm);
+			} catch (e) {
+				area = itemData.data.area;
+			}
+		} else {
+			area = 0;
+		}
+
 		if(itemData.data.rangeType === "range") {
 			itemData.data.rangeText = `Ranged ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = `R`
 			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "closeBurst") {
-			itemData.data.rangeText = `Close Burst ${itemData.data.area}`
+			itemData.data.rangeText = `Close Burst ${area}`
 			itemData.data.rangeTextShort = "C-BU"
-			itemData.data.rangeTextBlock = `${itemData.data.area}`
+			itemData.data.rangeTextBlock = `${area}`
 		} else if(itemData.data.rangeType === "rangeBurst") {
-			itemData.data.rangeText = `Area Burst ${itemData.data.area} within ${itemData.data.rangePower}`
+			itemData.data.rangeText = `Area Burst ${area} within ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = "A-BU"
-			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
+			itemData.data.rangeTextBlock = `${area} - ${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "closeBlast") {
-			itemData.data.rangeText = `Close Blast ${itemData.data.area}`
+			itemData.data.rangeText = `Close Blast ${area}`
 			itemData.data.rangeTextShort = "C-BL"
-			itemData.data.rangeTextBlock = `${itemData.data.area}`
+			itemData.data.rangeTextBlock = `${area}`
 		} else if(itemData.data.rangeType === "rangeBlast") {
-			itemData.data.rangeText = `Area Blast ${itemData.data.area} within ${itemData.data.rangePower}`
+			itemData.data.rangeText = `Area Blast ${area} within ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = "A-BL"
-			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
+			itemData.data.rangeTextBlock = `${area} - ${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "wall") {
-			itemData.data.rangeText = `Area Wall ${itemData.data.area} within ${itemData.data.rangePower}`
+			itemData.data.rangeText = `Area Wall ${area} within ${itemData.data.rangePower}`
 			itemData.data.rangeTextShort = "W"
-			itemData.data.rangeTextBlock = `${itemData.data.area} - ${itemData.data.rangePower}`
+			itemData.data.rangeTextBlock = `${area} - ${itemData.data.rangePower}`
 		} else if(itemData.data.rangeType === "personal") {
 			itemData.data.rangeText = "Personal"
 			itemData.data.rangeTextShort = "P"
@@ -601,19 +645,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 		}
 	  }
 
-	  // Spell-specific filters
-	  // if ( filters.has("ritual") ) {
-		// if (data.components.ritual !== true) return false;
-	  // }
-	  // if ( filters.has("concentration") ) {
-		// if (data.components.concentration !== true) return false;
-	  // }
-	  // if ( filters.has("prepared") ) {
-		// if ( data.level === 0 || ["innate", "always"].includes(data.preparation.mode) ) return true;
-		// if ( this.actor.data.type === "npc" ) return true;
-		// return data.preparation.prepared;
-	  // }
-
 	  // Equipment-specific filters
 	  if ( filters.has("equipped") ) {
 		if ( data.equipped !== true ) return false;
@@ -653,13 +684,6 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 		item.sheet.render(true);
 		});
 
-		// Delete Inventory Item
-		
-		// html.find('.item-delete').click(ev => {
-		// const li = $(ev.currentTarget).parents(".item");
-		// this.actor.deleteOwnedItem(li.data("itemId"));
-		// li.slideUp(200, () => this.render(false));
-		// });
 
 		if ( this.actor.isOwner ) {	
 			// Roll Skill Checks
@@ -702,6 +726,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 
 			//action point
 			html.find('.action-point').click(this._onActionPointDialog.bind(this));
+			html.find('.action-point-extra').click(this._onActionPointExtraDialog.bind(this));
 			
 			//short rest
 			html.find('.short-rest').click(this._onShortRest.bind(this));
@@ -734,7 +759,8 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 			html.find('.item-import').click(this._onItemImport.bind(this));
 
 			// Active Effect management
-			html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
+			// html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
+			html.find(".effect-control").click(event => ActiveEffect4e.onManageActiveEffect(event, this.actor));
 		
 			// Item summaries
 			html.find('.item .item-name h4').click(event => this._onItemSummary(event));		
@@ -748,6 +774,8 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 			// Item Rolling
 			html.find('.item .item-image').click(event => this._onItemRoll(event));
 			html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
+
+			html.find('.effect-save').click(event => this._onRollEffectSave(event));
 
 			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this))
 			
@@ -812,13 +840,8 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 			summary.slideUp(200, () => summary.remove());
 		} else {
 			//generate summary entry here
-		//	let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
-		//	let props = $(`<div class="item-properties"></div>`);
 			if (item.type === "power") {
-				
 				let div = $(`<div class="item-summary"></div>`);
-
-
 				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
 				div.append(descrip);
 
@@ -903,7 +926,8 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 				itemData.data.uses = {
 					value: 1,
 					max: 1,
-					per: type === "encounter" ? "enc" : "day"
+					per: ["encounter", "charges", "round"].includes(type)  ? "enc" : "day"
+					// per: type === "encounter" ? "enc" : "day"
 				};
 			}
 		}
@@ -915,17 +939,26 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 			itemData.data.weaponType = "none";
 			itemData.data.weaponUse = "none";
 
-			itemData.data.attack = {formula:"@powerMod+@lvhalf"};
-			itemData.data.hit  = {
-				formula:"@powBase + @powerMod",
-				critFormula:"@powMax + @powerMod",
-				baseDiceType: "d8",
-				detail: "1d8 + Strength modifier damage."
+			itemData.data.attack = {
+				formula:"@lvhalf",
+				ability:"form"
 			};
+			itemData.data.hit  = {
+				formula:"@powBase",
+				critFormula:"@powMax",
+				baseDiceType: "d8",
+				detail: "1d8 damage."
+			};
+		}
 
-			// itemData.data.attack.formula = "@powerMod+@lvhalf";
-			// itemData.data.hit.formula = "@powBase + @powerMod";
-			// itemData.data.hit.critFormula = "@powMax + @powerMod + @wepDamage";
+		if(game.settings.get("dnd4eAltus", "halfLevelOptions")){
+			if(this.actor.type === "NPC"){
+				itemData.data.attack.formula = ""; 
+			} else {
+				itemData.data.attack = {
+					formula:"@wepAttack + @powerMod + @atkMod"
+				}
+			}
 		}
 		
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
@@ -1122,6 +1155,11 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 		new ActionPointDialog(this.actor).render(true);
 	}
 
+	_onActionPointExtraDialog(event) {
+		event.preventDefault();
+		new ActionPointExtraDialog(this.actor).render(true);
+	}
+
 	/**
 	*Opens dialog window to short rest.
 	*Spend n number of healin surges,
@@ -1129,7 +1167,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 	*/
 	_onShortRest(event) {
 		event.preventDefault();
-		new ShortRestDialog(this.actor).render(true)
+		new ShortRestDialog(this.actor).render(true);
 	}
 	
 	/* -------------------------------------------- */
@@ -1150,7 +1188,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 
 	_onrollInitiative(event) {
 		event.preventDefault();
-		return this.actor.rollInitiative({createCombatants: true});
+		return this.actor.rollInitiative({createCombatants: true},{event: event});
 	}
 
 	_onSavingThrow(event) {
@@ -1186,23 +1224,38 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.Mov
 
 	/* -------------------------------------------- */
 
-  /**
-   * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
-   * @private
-   */
-  _onItemRoll(event) {
-	event.preventDefault();
-	const itemId = event.currentTarget.closest(".item").dataset.itemId;
-	const item = this.actor.items.get(itemId);
-	
-	if ( item.data.type === "power") {
-		return this.actor.usePower(item, {configureDialog: !event.shiftKey});
+	/**
+	 * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
+	 * @private
+	 */
+	_onItemRoll(event) {
+		event.preventDefault();
+		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const item = this.actor.items.get(itemId);
+		
+		if ( item.data.type === "power") {
+			return this.actor.usePower(item, {configureDialog: !event.shiftKey, fastForward: event.shiftKey});
+		}
+		// Otherwise roll the Item directly
+		return item.roll();
 	}
-	// Otherwise roll the Item directly
-	return item.roll();
-  }
-  
-  /* -------------------------------------------- */
+
+	/* -------------------------------------------- */
+
+	_onRollEffectSave(event){
+		event.preventDefault();
+		console.log("rollSave Throw v Effect!");
+
+		const effectId = event.currentTarget.closest(".item").dataset.effectId;
+		const effect = this.actor.effects.get(effectId);
+
+		let save = new SaveThrowDialog(this.actor, {effectSave:true, effectId: effectId}).render(true);
+
+		console.log(save)
+		console.log(effectId);
+		console.log(this.actor.effects.get(effectId));
+	}
+	/* -------------------------------------------- */
 
 	_onItemRecharge(event){
 		event.preventDefault();

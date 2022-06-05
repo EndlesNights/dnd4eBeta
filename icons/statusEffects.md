@@ -7,7 +7,6 @@ The icons within the icons/statusEffects folder are by the authors of [Game-icon
 * Deafened:		https://game-icons.net/1x1/skoll/hearing-disabled.html
 * Dominated:		https://game-icons.net/1x1/lorc/psychic-waves.html
 * Dying:			https://game-icons.net/1x1/lorc/pummeled.html
-* Dead:			https://game-icons.net/1x1/delapouite/dead-head.html
 * Restrained:		https://game-icons.net/1x1/lorc/imprisoned.html
 * Immobilized:	https://game-icons.net/1x1/lorc/nailed-foot.html
 * Invisable:		https://game-icons.net/1x1/delapouite/invisible.html

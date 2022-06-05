@@ -20,13 +20,18 @@ import { preloadHandlebarsTemplates } from "./templates.js";
 
 // Import Entities
 import AbilityTemplate from "./pixi/ability-template.js";
+import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/entity.js";
+
+import { Helper, handleApplyEffectToToken } from "./helper.js"
 
 // Import Helpers
 import * as chat from "./chat.js";
 import * as macros from "./macros.js";
 import * as migrations from "./migration.js";
+import ActiveEffect4e from "./effects/effects.js";
+import ActiveEffectConfig4e from "./effects/effects-config.js";
 import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 import {TokenBarHooks} from "./hooks.js";
@@ -39,6 +44,9 @@ Hooks.once("init", async function() {
 	console.log(`D&D4eBeta | Initializing Dungeons & Dragons 4th Edition System\n${DND4EALTUS.ASCII}`);
 
 	game.dnd4eAltus = {
+		apps: {
+			ActiveEffectConfig4e
+		},
 		config: DND4EALTUS,
 		canvas: {
 			AbilityTemplate
@@ -51,15 +59,21 @@ Hooks.once("init", async function() {
 		migrations: migrations,
 		rollItemMacro: macros.rollItemMacro
 	};
+
+	game.helper = Helper;
 	
 	// Define custom Entity classes
 	CONFIG.DND4EALTUS = DND4EALTUS;
+
+	DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4eAltus", ActiveEffectConfig4e, {makeDefault :true});
+	// DocumentSheetConfig.registerSheet(Actor4e, "dnd4eAltus", ActiveEffectConfig4e, {makeDefault :true});
+	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
+	
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
-	
-	// CONFIG.statusEffects = CONFIG.DND4EALTUS.statusEffectIcons;
-	CONFIG.statusEffects = CONFIG.DND4EALTUS.statusEffect;
 
+	CONFIG.statusEffects = CONFIG.DND4EALTUS.statusEffect;
+	
 	// define custom roll extensions
 	CONFIG.Dice.rolls.push(MultiAttackRoll);
 	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
@@ -82,19 +96,10 @@ Hooks.once("init", async function() {
 	});		
 
 	
+	// Setup Item Sheet
 	Items.unregisterSheet("core", ItemSheet);
 	Items.registerSheet("dnd4eAltus", ItemSheet4e, {makeDefault: true});
 
-	// Register system settings
-	// game.settings.register("dnd4eAltus", "macroShorthand", {
-	// 	name: "Shortened Macro Syntax",
-	// 	hint: "Enable a shortened macro syntax which allows referencing attributes directly, for example @str instead of @attributes.str.value. Disable this setting if you need the ability to reference the full attribute model, for example @attributes.str.label.",
-	// 	scope: "world",
-	// 	type: Boolean,
-	// 	default: true,
-	// 	config: true
-	// });
-	
 	// Preload Handlebars Templates
 	preloadHandlebarsTemplates();
 
@@ -109,16 +114,16 @@ Hooks.once("setup", function() {
 	// Localize CONFIG objects once up-front
 	const toLocalize = [
 	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes",
-	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits",
+	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits", "durationType",
 	"damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
 	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "featureSortTypes", "healingTypes", "implementGroup", "itemActionTypes",
-	"launchOrder", "limitedUsePeriods", "powerSource", "powerType", "powerSubtype", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "rangeTypeNoWeapon",
+	"launchOrder", "limitedUsePeriods", "powerEffectTypes", "powerSource", "powerType", "powerSubtype", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "rangeTypeNoWeapon",
 	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
 	"weaponTypes", "weaponHands"
 	];
 
 	const noSort = [
-		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerGroupTypes", "rangeType", "weaponType", "weaponTypes", "weaponHands"
+		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "durationType", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerEffectTypes", "powerGroupTypes", "rangeType", "weaponType", "weaponTypes", "weaponHands"
 	];
 	
 	for ( let o of toLocalize ) {
@@ -131,11 +136,19 @@ Hooks.once("setup", function() {
 			return obj;
 		}, {});
 	}
+
+
+
 });
-Hooks.once("ready", function() {
+Hooks.once("ready",  function() {
 	// Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
 	Hooks.on("hotbarDrop", (bar, data, slot) => macros.create4eMacro(data, slot));
 
+		// Add socket listener for applying activeEffects on targets that users do not own
+		game.socket.on('system.dnd4eAltus', (data) => {
+			if(data.operation === 'applyTokenEffect') handleApplyEffectToToken(data);
+			else ItemSheet4e._handleShareItem(data);
+		});
 
 	// Determine whether a system migration is required and feasible
 	if ( !game.user.isGM ) return;
@@ -279,6 +292,12 @@ Hooks.once('init', async function() {
 		'MeasuredTemplate.prototype._refreshRulerText',
 		AbilityTemplate._refreshRulerBurst
 	);
+
+	libWrapper.register(
+		'dnd4eAltus',
+		'Combat.prototype.nextTurn',
+		Turns._onNextTurn
+	)
 });
 
 Hooks.on("getSceneControlButtons", function(controls){

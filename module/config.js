@@ -189,7 +189,8 @@ DND4EALTUS.itemCapacityTypes = {
 DND4EALTUS.limitedUsePeriods = {
   "enc": "DND4EALTUS.Encounter",
   "day": "DND4EALTUS.Day",
-  "charges": "DND4EALTUS.Charges"
+  "charges": "DND4EALTUS.Charges",
+  "round": "DND4EALTUS.Round"
 };
 
 /* -------------------------------------------- */
@@ -447,6 +448,27 @@ DND4EALTUS.distanceUnits = {
 
 /* -------------------------------------------- */
 
+DND4EALTUS.durationType = {
+	"endOfTargetTurn": "DND4EALTUS.DurationEndOfTargetTurn",
+	"endOfUserTurn": "DND4EALTUS.DurationEndOfUserTurn",
+	"startOfTargetTurn": "DND4EALTUS.DurationStartOfTargetTurn",
+	"startOfUserTurn": "DND4EALTUS.DurationStartOfUserTurn",
+	"saveEnd": "DND4EALTUS.DurationSaveEnd",
+	"endOfEncounter": "DND4EALTUS.DurationEndOfEnc",
+	"endOfDay": "DND4EALTUS.DurationEndOfDay",
+	"custom": "DND4EALTUS.DurationCustom",
+}
+
+/* -------------------------------------------- */
+
+DND4EALTUS.powerEffectTypes = {
+	"all": "DND4EALTUS.TargetAll",
+	"hit": "DND4EALTUS.TargetHit",
+	"miss": "DND4EALTUS.TargetMiss",
+	"self": "DND4EALTUS.TargetSelf",
+}
+/* -------------------------------------------- */
+
 
 /**
  * Configure aspects of encumbrance calculation so that it could be configured by modules
@@ -570,6 +592,7 @@ DND4EALTUS.powerSortTypes = {
 	"level": "DND4EALTUS.Level",
 	"actionType": "DND4EALTUS.Action",
 	"rangeTextShort": "DND4EALTUS.Range",
+	"useType": "DND4EALTUS.Usage",
 	"use.value": "DND4EALTUS.Used",
 	"powerSubtype": "DND4EALTUS.PowerSubtype",
 	"none": "DND4EALTUS.None",
@@ -1030,7 +1053,7 @@ DND4EALTUS.statusEffect = [
 	{
 		id: "dead",
 		label: "EFFECT.statusDead",
-		icon: "systems/dnd4eAltus/icons/statusEffects/dead.svg"
+		icon: "icons/svg/skull.svg"
 	},
 	{
 		id: "deafened",
@@ -1150,24 +1173,43 @@ DND4EALTUS.statusEffect = [
 		id: "weakened",
 		label: "EFFECT.statusWeakened",
 		icon: "systems/dnd4eAltus/icons/statusEffects/weakend.svg"
+	},
+	{
+		id: "shitter",
+		label: "EFFECT.statusShitter",
+		icon: "systems/dnd4eAltus/icons/statusEffects/shitter.svg"
+	},
+	{
+		id: "sitting",
+		label: "EFFECT.statusSitting",
+		icon: "systems/dnd4eAltus/icons/statusEffects/sitting.svg"
+	},
+	{
+		id: "nuke",
+		label: "EFFECT.statusNuke",
+		icon: "systems/dnd4eAltus/icons/statusEffects/nuke.svg"
 	}
 ];
 // Languages
 DND4EALTUS.spoken = {
-	"Alti": "DND4EALTUS.SpokenAlti",
-	"Cellian": "DND4EALTUS.SpokenCellian",
-	"Ghido": "DND4EALTUS.SpokenGhido",
-	"Jarissian": "DND4EALTUS.SpokenJarissian",
-	"Luxen": "DND4EALTUS.SpokenLuxen",
-	"Saeven": "DND4EALTUS.SpokenSaeven",
-	"Token": "DND4EALTUS.SpokenToken",
-	"Vasten": "DND4EALTUS.SpokenVasten"
+  "Abyssal": "DND4EALTUS.SpokenAbyssal",
+  "Common": "DND4EALTUS.SpokenCommon",
+  "DeepSpeech": "DND4EALTUS.SpokenDeepSpeech",
+  "Draconic": "DND4EALTUS.SpokenDraconic",
+  "Dwarven": "DND4EALTUS.SpokenDwarven",
+  "Elven": "DND4EALTUS.SpokenElven",
+  "Giant": "DND4EALTUS.SpokenGiant",
+  "Goblin": "DND4EALTUS.SpokenGoblin",
+  "Primordial": "DND4EALTUS.SpokenPrimordial",
+  "Supernal": "DND4EALTUS.SpokenSupernal",
 };
 DND4EALTUS.script = {
-	"Alti": "DND4EALTUS.ScriptAlti",
-	"Cellian": "DND4EALTUS.ScriptCellian",
-	"Ghido": "DND4EALTUS.ScriptGhido",
-	"Token": "DND4EALTUS.ScriptToken"
+  "Common": "DND4EALTUS.ScriptCommon",
+  "Barazhad": "DND4EALTUS.ScriptBarazhad",
+  "Davek": "DND4EALTUS.ScriptDavek",
+  "Iokharic": "DND4EALTUS.ScriptIokharic",
+  "Rellanic": "DND4EALTUS.ScriptRellanic",
+
 };
 
 // Character Level XP Requirements

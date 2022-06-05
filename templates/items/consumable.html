@@ -138,8 +138,8 @@
 			<h3 class="form-header">{{ localize "DND4EALTUS.ItemConsumableActivation" }}</h3>
 
 			<div class="form-group">
-				<label>{{ localize "DND4EALTUS.PowerAutoGenerateLable" }}</label>
-				<input type="checkbox" name="data.autoGenChatPowerCard" data-dtype="Boolean" {{checked data.autoGenChatPowerCard}}/>
+				<label style="max-width: 208px;">{{ localize "DND4EALTUS.PowerAutoGenerateLable" }}</label>
+				<span class="checkbox"><input type="checkbox" name="data.autoGenChatPowerCard" data-dtype="Boolean" {{checked data.autoGenChatPowerCard}}/></span>
 			</div>
 
 			{{!-- Action Type --}}
@@ -157,7 +157,7 @@
 			{{!-- Attack Details--}}
 			<div class="form-group">
 				<label>{{ localize "DND4EALTUS.IsAttack" }}</label>
-				<input type="checkbox" name="data.attack.isAttack" data-dtype="Boolean" {{checked data.attack.isAttack}}/>
+				<span class="checkbox"><input type="checkbox" name="data.attack.isAttack" data-dtype="Boolean" {{checked data.attack.isAttack}}/></span>
 			</div>
 
 			{{#if data.attack.isAttack}}
@@ -173,7 +173,7 @@
 					</select>
 					{{#if data.isArea}}
 					<span>{{ localize "DND4EALTUS.AreaOf" }}</span>
-					<input type="text" name="data.area" value="{{data.area}}" data-dtype="Number"/>
+					<input type="text" name="data.area" value="{{data.area}}"/>
 					{{/if}}
 					{{#if data.isRange}}
 					{{#if data.isArea}}<span style="flex: 1 0 6px">{{ localize "DND4EALTUS.RangeWithinOf" }}</span>{{/if}}
@@ -216,7 +216,7 @@
 
 			<div class="form-group">
 				<label>{{ localize "DND4EALTUS.IsDamage" }}</label>
-				<input type="checkbox" name="data.hit.isDamage" data-dtype="Boolean" {{checked data.hit.isDamage}}/>
+				<span class="checkbox"><input type="checkbox" name="data.hit.isDamage" data-dtype="Boolean" {{checked data.hit.isDamage}}/></span>
 			</div>
 			{{#if data.hit.isDamage}}
 			{{!-- Hit Details --}}
@@ -234,6 +234,7 @@
 
 			<div class="form-group stacked weapon-properties">
 				<label title="Type of Damage">Damage Type:</label>
+				<pr></pr>
 				{{#each config.damageTypes as |name type|}}
 				<label class="checkbox">
 					<input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
@@ -243,7 +244,7 @@
 			{{/if}}
 			<div class="form-group">
 				<label>{{ localize "DND4EALTUS.IsHealing" }}</label>
-				<input type="checkbox" name="data.hit.isHealing" data-dtype="Boolean" {{checked data.hit.isHealing}}/>
+				<span class="checkbox"><input type="checkbox" name="data.hit.isHealing" data-dtype="Boolean" {{checked data.hit.isHealing}}/></span>
 			</div>
 			{{#if data.hit.isHealing}}
 			<div class="form-group stacked">

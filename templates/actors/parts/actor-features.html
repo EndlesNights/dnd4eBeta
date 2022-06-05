@@ -15,7 +15,7 @@
 		<div class="filter-search-features">
 			<label for="feature-filter-search">Filter</label>	
 			<br>
-			<input type="text" style="min-width: 168px; margin-right: 2px;" name="feat-filter-search" placeholder="Search for feat..." id="filterInput" onkeyup="filterFeatures()"/>
+			<input type="text" style="min-width: 168px; margin-right: 2px;" name="feat-filter-search" placeholder="Search for feat..." id="filterInput-feat" onkeyup="filterFeatures()"/>
 		</div>
 	</header>
 
@@ -114,7 +114,7 @@
 <script>
 	function filterFeatures() {
 		let input, filter, ul, li, a, i, txtValue;
-		input = document.getElementById("filterInput");
+		input = document.getElementById("filterInput-feat");
 		filter = input.value.toUpperCase();
 		list = document.getElementsByClassName("feature-list");
 

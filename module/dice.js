@@ -1,5 +1,6 @@
 import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
+import { Helper } from "./helper.js"
 
 /**
  * A standardized helper function for managing core 4e "d20 rolls"
@@ -36,7 +37,6 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
-
 	// If fast-forward requested, perform the roll without a dialog
 	if ( rollConfig.fastForward ) {
 		return performD20RollAndCreateMessage(null, rollConfig)
@@ -183,7 +183,10 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	const targets = Array.from(game.user.targets);
 	const targetData = {
 		targNameArray: [],
-		targDefValArray: []
+		targDefValArray: [],
+		targets: [],
+		targetHit: [],
+		targetMissed: []
 	}
 	const critStateArray = []
 
@@ -203,6 +206,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			let targDefVal = targets[rollExpressionIdx].document._actor.data.data.defences[options.attackedDef].value;
 			targetData.targNameArray.push(targName);
 			targetData.targDefValArray.push(targDefVal);
+			targetData.targets.push(targets[rollExpressionIdx]);
 		}
 		for (let dice of subroll.dice) {
 			if (dice.faces === 20) {
@@ -224,12 +228,14 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	
 	// if there is only 1 roll, it's not a multi roll
 	if (!isAttackRoll || game.user.targets.size < 1) {
-		roll = roll.rollArray[0]
+		roll = roll.rollArray[0];
 	}
 	else {
 		roll.populateMultirollData(targetData, critStateArray);
+		if(targetData.targetHit) Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
+		if(targetData.targetMissed) Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", options.parent);
 	}
-
+	
 	// Convert the roll to a chat message and return the roll
 	rollMode = form ? form.rollMode.value : rollMode;
 
@@ -276,9 +282,9 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
 export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionReplacement  = [], partsCritExpressionReplacement= [], partsMissExpressionReplacement= [], actor,
-									 data, event={}, rollMode=null, template, title, speaker, flavor, allowCritical=true,
-									 critical=false, fastForward=null, onClose, dialogOptions, healingRoll, options}) {
-
+								data, event={}, rollMode=null, template, title, speaker, flavor, allowCritical=true,
+								critical=false, fastForward=null, onClose, dialogOptions, healingRoll, options}) {
+									
 	// First configure the Roll
 	const rollConfig = {parts, partsCrit, partsMiss, data, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: 'normal', fastForward, options}
 
@@ -291,6 +297,9 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 
 	// Modify the roll and handle fast-forwarding
 	if ( rollConfig.fastForward ) {
+		if (healingRoll) {
+			rollConfig.hitType = 'heal'
+		}
 		return performDamageRollAndCreateChatMessage(null, rollConfig);
 	}
 
@@ -361,32 +370,42 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 	});
 }
 
-async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, partsMiss, data, hitType, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options}) {
+async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, partsMiss, data, hitType, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options, fastForward}) {
 	manageBonusInParts(parts, form, data)
 	manageBonusInParts(partsCrit, form, data)
 	manageBonusInParts(partsMiss, form, data)
 
+	if(data.bonus){ //stopgap fix because bonus damage type is not being recorded properly
+		if(parts[parts.length-1] === "@bonus"){
+			let index = data.bonus.lastIndexOf('[');
+			if(index >=0) {
+				parts[parts.length-1] = '(' + data.bonus.slice(0,index) + ')' + data.bonus.slice(index);
+			} else {
+				parts[parts.length-1] = '(' + data.bonus + ')';
+			}
+		}
+	} else {
+		if(!fastForward) parts.pop();
+	}
+	console.log(parts)
+
 	let roll;
 	if(hitType === 'normal'){
 		options.hitTypeDamage = true;
-		parts[1] = data.bonus;
-		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options)
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
 	}
 	else if (hitType === 'crit') {
 		options.hitTypeDamage = true;
-		partsCrit[1] = data.bonus;
 		roll = RollWithOriginalExpression.createRoll(partsCrit, partsCritExpressionReplacement, data, options)
 		flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Critical")})`;
 	}
 	else if (hitType === 'miss') {
 		options.hitTypeDamage = true;
-		partsMiss[1] = data.bonus;
 		roll = RollWithOriginalExpression.createRoll(partsMiss, partsMissExpressionReplacement, data, options);
 		flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Miss")})`;
 	}
 	else if (hitType === 'heal') {
 		options.hitTypeHealing = true;
-		parts[1] = data.bonus;
 		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
 		flavor = `${flavor} (${game.i18n.localize("DND4EALTUS.Healing")})`;
 	} else {
@@ -418,6 +437,9 @@ function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, t
 	// Determine whether the roll can be fast-forward, make explicit comparison here as it might be set as false, so no falsey checks
 	if ( fastForward === null || fastForward === undefined) {
 		rollConfig.fastForward = event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
+		if(rollConfig.options?.fastForward){
+			rollConfig.fastForward = rollConfig.options.fastForward;
+		}
 	}
 	return rollConfig
 }

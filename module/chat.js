@@ -178,12 +178,11 @@ function applyChatCardDamage(li, multiplier, trueDamage=false) {
 }
 
 function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
-	let damage = {};
-	let damageTypes = [];
+	let damageDealt = [];
 	let rollTotalRemain = roll.total;
 	let surgeAmount = 0;
 	let surgeValueAmount = 0;
-	
+
 	//count surges used, shouldn't be more than 1, but you never know....
 	if(multiplier < 0 ){
 		roll.terms.forEach(e => {
@@ -196,48 +195,41 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 		});
 	}
 
-	if(!trueDamage){
-		roll.terms.forEach(e => {
-			if(typeof e.number === "number"){
-				let damageTypesArray = e.flavor.replace(/ /g,'').split(',');
-				let total = e.total;
-				let divider = damageTypesArray.length;
-				
-				damageTypesArray.forEach(f => {
-					if(f){
-						let val = Math.ceil(total / divider)
-						if(damage[f]){
-							damage[f] += val;
-						} else {
-							damage[f] = val;
-						}
-						rollTotalRemain -= val;
-						total -= val;
-						divider --;
-					}
-				});
-				console.log(`Total: ${total}`)
-			}
-		});
-	}
-
-	if(rollTotalRemain){
-		if(damage.damage){
-			damage.damage += rollTotalRemain;
-		} else{
-			damage.damage = rollTotalRemain;
-		}
-	}
-	return Promise.all(canvas.tokens.controlled.map(t => {
-		const a = t.actor;
-		if(multiplier < 0 || trueDamage){ //if it's healing or true damage just heal directly
+	if(multiplier < 0 || trueDamage){
+		return Promise.all(canvas.tokens.controlled.map(t => {
+			const a = t.actor;
 			console.log( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealth: ${roll.total}`)
 			return a.applyDamage(roll.total, multiplier, {surgeAmount, surgeValueAmount});
-		} else {
-			return a.calcDamage(damage, multiplier, damageTypes);
+		}));
+	}
+
+	//Sort damage and damage type from roll terms into simpler array
+	roll.terms.forEach(e => {
+		if(typeof e.number === "number"){
+			if(e.flavor){
+				damageDealt.push([e.total,e.flavor]);
+				rollTotalRemain -= e.total;
+			}
 		}
-		
+	});
+
+	//evenly split up the untyped damage into typed damage
+	if(rollTotalRemain){
+		const length = damageDealt.length;
+		if(length === 0){
+			damageDealt.push([rollTotalRemain, 'damage'])
+		} else {
+			for(let i = 0; i < length; i++){
+				damageDealt[i][0] += 0|rollTotalRemain/length+(i<rollTotalRemain%length);
+			}
+		}
+	}
+
+	return Promise.all(canvas.tokens.controlled.map(t => {
+		const a = t.actor;
+		return a.calcDamage(damageDealt, multiplier);
 	}));
+
 }
 
 /**

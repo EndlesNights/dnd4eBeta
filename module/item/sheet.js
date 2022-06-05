@@ -1,5 +1,6 @@
-import TraitSelector from "../apps/trait-selector.js";
-import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
+// import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
+import ActiveEffect4e from "../effects/effects.js";
+import {Helper} from "../helper.js";
 
 /**
  * Override and extend the core ItemSheet implementation to handle specific item types
@@ -43,7 +44,7 @@ export default class ItemSheet4e extends ItemSheet {
 	/* -------------------------------------------- */
 
 	/** @override */
-	async getData(options) {		
+	async getData(options) {
 		const data = super.getData(options);
 		const itemData = data.data;
 		data.labels = this.item.labels;
@@ -58,8 +59,11 @@ export default class ItemSheet4e extends ItemSheet {
 		// Potential consumption targets
 		data.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
 	
-		if(itemData.type === "power") data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
-		
+		if(itemData.type === "power"){
+			data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
+			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
+		}
+
 		if(itemData.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
 		if(itemData.data?.useType) {
 			if(!(itemData.data.rangeType === "personal" || itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || data.data.rangeType === "")){
@@ -95,7 +99,7 @@ export default class ItemSheet4e extends ItemSheet {
 		data.isMountable = this._isItemMountable(itemData);
 	
 		// Prepare Active Effects
-		data.effects = prepareActiveEffectCategories(this.item.effects);
+		data.effects = ActiveEffect4e.prepareActiveEffectCategories(this.item.effects);
 
 		// Re-define the template data references (backwards compatible)
 		data.item = itemData;
@@ -125,6 +129,57 @@ export default class ItemSheet4e extends ItemSheet {
 		});
 
 		return buttons;
+	}
+
+	/**
+	 * Prepare the data structure for Power Effects which can then be transfered as active effectst to other actors.
+	 * @param {PowerEffect[]} powerEffects    The array of Active Effect instances to prepare sheet data for
+	 * @returns {object}                  Data for rendering
+	 */
+	_prepareEffectPowersCategories(effectPowers){
+		const categories = {};
+		for (const [key, value] of Object.entries(CONFIG.DND4EALTUS.powerEffectTypes)) {
+			categories[key] = {
+			type:key,
+			label: game.i18n.localize(value),
+			effects: []
+		  }
+		}
+
+		if(effectPowers){
+			for ( let e of effectPowers ) {
+				e.durationTypeLable = `${CONFIG.DND4EALTUS.durationType[e.data.flags.dnd4eAltus.effectData.durationType]}`;
+				if(e.data.flags.dnd4eAltus?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
+				else if(e.data.flags.dnd4eAltus?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
+				else if(e.data.flags.dnd4eAltus?.effectData?.powerEffectTypes === "self") categories.self.effects.push(e);
+				else categories.all.effects.push(e);
+			}
+		}
+		return categories;
+	}
+
+	async _onPowerEffectControl(event) {
+		event.preventDefault();
+		const a = event.currentTarget;
+		const li = a.closest("li");
+		const effect = li.dataset.effectId ? this.item.effects.get(li.dataset.effectId) : null;
+		switch(a.dataset.action){
+			case "create":
+				this.item.createEmbeddedDocuments("ActiveEffect", [{
+					label: game.i18n.localize("DND4EALTUS.EffectNew"),
+					icon: "icons/svg/aura.svg",
+					origin: this.item.uuid,
+					"flags.dnd4eAltus.effectData.powerEffectTypes": li.dataset.effectType,
+					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
+					disabled: li.dataset.effectType === "inactive"
+				}]);
+				return;
+			case "edit":
+				return effect.sheet.render(true);
+			case "delete":
+				return effect.delete();
+		}
+
 	}
 
 	shareItem() {
@@ -518,9 +573,11 @@ export default class ItemSheet4e extends ItemSheet {
 			html.find(".onetext-control").click(this._onOnetextControl.bind(this));
 			html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
 			html.find(".effect-control").click(ev => {
-			if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
-			onManageActiveEffect(ev, this.item)
-		});
+				if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
+					ActiveEffect4e.onManageActiveEffect(ev, this.item);
+					// onManageActiveEffect(ev, this.item)
+			});
+			html.find('.powereffect-control').click(this._onPowerEffectControl.bind(this));
 	}
 
 	}
@@ -528,8 +585,8 @@ export default class ItemSheet4e extends ItemSheet {
 	
 	async _onExecute(event) {
 		event.preventDefault();
-		await this._onSubmit(event, {preventClose: true}); 
-		executeMacro(this.document); 
+		await this._onSubmit(event, {preventClose: true});
+		return Helper.executeMacro(this.document)
 	}
 	
 	/* -------------------------------------------- */
@@ -692,45 +749,3 @@ export default class ItemSheet4e extends ItemSheet {
 		// }).render(true)
 	}
 }
-
-
-// undefined and "" are both falsey, so if either the flag is undefined or the command is empty, this equates to false
-// and setting flag the check means you don't need to run the getFlag command more than once.
-// export function hasMacro(item) {
-//     let flag = item.data.flags.itemacro?.macro;
-//     return flag && flag?.data.command;
-// }
-// function checkMacro(item)
-// {
-//     return hasMacro(item) ? item.getFlag('itemacro', 'macro.data.command') : "";
-// }
-function executeMacro(item)
-{
-	// let actorID = item.actor.id;
-	// let itemID = item.id;
-	// console.log(item);
-	// console.log(checkMacro(item));
-	// let cmd = ``;
-
-	// if(item.actor.isToken)
-	// {
-	//     cmd += `const item = game.actors.tokens["${actorID}"].items.get("${itemID}"); ${item.data.data.macro.command}`;
-	// }else{
-	//     cmd += `const item = game.actors.get("${actorID}").items.get("${itemID}"); ${item.data.data.macro.command}`;
-	// }
-
-	new Macro ({ 
-		name : item.name,
-		type : item.data.data.macro.type,
-		scope : item.data.data.macro.scope,
-		command : item.data.data.macro.command, //cmd,
-		author : game.user.id,
-		item: item.data.data
-	}).execute();
-}
-
-Hooks.once('ready', async function () {
-	game.socket.on("system.dnd4eAltus", (msg) => {
-		ItemSheet4e._handleShareItem(msg);
-	});
-})

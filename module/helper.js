@@ -1,6 +1,26 @@
 
 export class Helper {
 
+	static executeMacro(item) {
+		const macro = new Macro ({
+			name : item.name,
+			type : item.data.data.macro.type,
+			scope : item.data.data.macro.scope,
+			command : item.data.data.macro.command, //cmd,
+			author : game.user.id
+		})
+		// below vars are not part of the Macro data object so need to be set manually
+		// CODE SMELL
+		// data.item has historically been item.data
+		// data.actor has historically been the actor
+		// changing that would break existing macros that rely on item data.  I would like to make data.item = the item.
+		// can still get to the item using .document
+		macro.data.item = item.data
+		macro.data.actor = item.actor //needs to be actor and not data to get at actors items collection - e.g. other items
+		macro.data.launch = item.data.data.macro.launchOrder;
+		return macro.execute();
+	}
+
 	/**
 	 * Returns true if the variable is defined and is not an empty string.
 	 * @param str the object to check, could be a string, could be any other object
@@ -76,7 +96,7 @@ export class Helper {
 								return i;
 					}
 					else if(itemData.weaponType === "ranged") {
-						if(setRanged.includes(i.data.data.weaponType) )
+						if(setRanged.includes(i.data.data.weaponType) || i.data.data.properties.tlg || i.data.data.properties.thv )
 							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
 								return i;
 							else if(itemData.weaponUse === "default")
@@ -294,7 +314,9 @@ export class Helper {
 			const actorInnerData = actorData.data
 			if (actorInnerData) {
 				newFormula = Roll.replaceFormulaData(newFormula, actorInnerData);
-				if(powerInnerData) newFormula = newFormula.replaceAll("@powerMod", !!(powerInnerData.attack?.ability)? actorInnerData.abilities[powerInnerData.attack.ability].mod : "");
+				if(powerInnerData) {
+					newFormula = newFormula.replaceAll("@powerMod", !!(actorInnerData.abilities[powerInnerData.attack?.ability])? actorInnerData.abilities[powerInnerData.attack.ability].mod : "");
+				}
 
 				newFormula = newFormula.replaceAll("@strMod", actorInnerData.abilities["str"].mod);
 				newFormula = newFormula.replaceAll("@conMod", actorInnerData.abilities["con"].mod);
@@ -497,9 +519,9 @@ export class Helper {
 			newFormula = newFormula.replaceAll("@itemLevel", powerInnerData?.level ? powerInnerData.level : 0)
 
 			//if no weapon is in use replace the weapon keys with nothing.
-			newFormula = newFormula.replaceAll("@wepAttack", "");
-			newFormula = newFormula.replaceAll("@wepDamage", "");
-			newFormula = newFormula.replaceAll("@wepCritBonus", "");
+			newFormula = newFormula.replaceAll("@wepAttack", "0");
+			newFormula = newFormula.replaceAll("@wepDamage", "0");
+			newFormula = newFormula.replaceAll("@wepCritBonus", "0");
 			
 			newFormula = newFormula.replaceAll("@wepDiceNum", "0");
 			newFormula = newFormula.replaceAll("@wepDiceDamage", "0");
@@ -714,6 +736,19 @@ export class Helper {
 		}
 	}
 
+	static _areaValue(chatData, actorData){
+		if(chatData.area) {
+			try{
+				let areaForm = this.commonReplace(`${chatData.area}`, actorData);
+				return  Roll.safeEval(areaForm);
+			} catch (e) {
+				return  chatData.area;
+			}
+		} else {
+			return  0;
+		}
+	}
+
 	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
 		let powerSource = (chatData.powersource && chatData.powersource !== "") ? ` ♦ ${CONFIG.DND4EALTUS.powerSource[`${chatData.powersource}`]}` : ""
 		let powerDetail = `<span><b>${CONFIG.DND4EALTUS.powerUseType[`${chatData.useType}`]}${powerSource}`;
@@ -759,10 +794,10 @@ export class Helper {
 			powerDetail += ` ${game.i18n.localize("DND4EALTUS.rangeRanged")}</b> ${chatData.rangePower}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]} ${chatData.area}</b></span>`;
+			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]} ${this._areaValue(chatData, actorData)}</b></span>`;
 		}
 		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
-			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]} ${chatData.area}</b> ${game.i18n.localize("DND4EALTUS.RangeWithin")} <b>${chatData.rangePower}</b></span>`;
+			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]} ${this._areaValue(chatData, actorData)}</b> ${game.i18n.localize("DND4EALTUS.RangeWithin")} <b>${chatData.rangePower}</b></span>`;
 		}
 		else if (chatData.rangeType === "personal") {
 			powerDetail += ` ${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]}</b></span>`;
@@ -801,7 +836,20 @@ export class Helper {
 		}
 
 		if(chatData.attack.isAttack) {
-			powerDetail += `<p><b>${game.i18n.localize("DND4EALTUS.Attack")}</b>: ${CONFIG.DND4EALTUS.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EALTUS.VS")} ${CONFIG.DND4EALTUS.def[chatData.attack.def]}</p>`;
+			if(chatData.attack.ability === "form"){
+				//if does not srtart with a number sign add one
+				let trimmedForm = chatData.attack.formula.trim()
+				if(!(trimmedForm.startsWith("+") || trimmedForm.startsWith("-"))) {
+					trimmedForm = '+' + trimmedForm;
+				}
+				powerDetail += `<p><b>${game.i18n.localize("DND4EALTUS.Attack")}</b>: ${trimmedForm} ${game.i18n.localize("DND4EALTUS.VS")} ${CONFIG.DND4EALTUS.def[chatData.attack.def]}</p>`;
+			}
+			else if(chatData.attack.ability){
+				powerDetail += `<p><b>${game.i18n.localize("DND4EALTUS.Attack")}</b>: ${CONFIG.DND4EALTUS.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4EALTUS.VS")} ${CONFIG.DND4EALTUS.def[chatData.attack.def]}</p>`;
+			} else {
+				powerDetail += `<p><b>${game.i18n.localize("DND4EALTUS.Attack")}</b>: ${game.i18n.localize("DND4EALTUS.Attack")} ${game.i18n.localize("DND4EALTUS.VS")} ${CONFIG.DND4EALTUS.def[chatData.attack.def]}</p>`;
+			}
+			// powerDetail += `<p><b>${game.i18n.localize("DND4EALTUS.Attack")}</b>: ${CONFIG.DND4EALTUS.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4EALTUS.VS")} ${CONFIG.DND4EALTUS.def[chatData.attack.def]}</p>`;
 		}
 
 		let highlight = true;
@@ -841,4 +889,147 @@ export class Helper {
 	static _isNumber(str){
 		return /^-?\d+$/.test(str);
 	}
+
+	static async rechargeItems(actor, targetArray){
+
+		const items = actor.items.filter(item => targetArray.includes(item.data.data.uses?.per));
+		const updateItems = items.map( item => {
+			return {
+				_id: item.id,
+				"data.uses.value": item.data.data.preparedMaxUses
+			};
+		});
+
+		if(updateItems) await actor.updateEmbeddedDocuments("Item", updateItems);
+	}
+
+	static async endEffects(actor, targetArray){
+		// const effects = actor.effects.filter(effect => targetArray.includes(effect.data.flags.dnd4eAltus.effectData.durationType));
+		const effects = [];
+		for(let e of actor.effects){
+			if(targetArray.includes(e.data.flags.dnd4eAltus?.effectData?.durationType)){
+				effects.push(e.id);
+			}
+		}
+		if(effects) await actor.deleteEmbeddedDocuments("ActiveEffect", effects);
+	}
+
+	static getInitiativeByToken(id){
+		if(!game.combat) return 0;
+		for(let t of game.combat.turns){
+			if(t.data.tokenId === id){
+				return t.data.initiative
+			}
+		}
+
+		return game.combat.turns[game.combat.turn].initiative || -1;
+	}
+
+	static getTokenIdForLinkedActor(actor){
+		if(actor.token?.id){
+			return actor.token.id;
+		}
+
+		const actorId = actor.id;
+
+		if(canvas.tokens.controlled){
+			for(let t of canvas.tokens.controlled){
+				if(t.actor.id === actorId){
+					return t.id;
+				}
+			}
+		}
+
+		if(!game.combat) return null;
+		
+		if(game.combat.turns[game.combat.turn].actor.id === actorId){
+			return game.combat.turns[game.combat.turn].id;
+		}
+
+		for(let t of game.combat.turns){
+			if(t.actor.id === actorId){
+				return t.id;
+			}
+		}
+	}
+
+	static getCurrentTurnInitiative(){
+		return game.combat? game.combat.turns[game.combat.turn].initiative : 0;
+	}
+
+	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
+		const combat = game.combat;
+		for(let e of effectMap){
+			if(e.data.flags.dnd4eAltus.effectData.powerEffectTypes === condition){
+				for(let t of tokenTarget){
+					let effectData = e.data;
+					effectData.sourceName = parent.name
+					effectData.origin = parent.uuid
+
+					const duration = e.data.duration;
+					const flags = e.data.flags;
+					duration.combat = combat?.id || "None Combat";
+					duration.startRound = combat?.round || 0;
+					flags.dnd4eAltus.effectData.startTurnInit = combat?.turns[combat.turn].data.initiative || 0;
+
+					const userTokenId = this.getTokenIdForLinkedActor(parent);
+					const userInit = this.getInitiativeByToken(this.getTokenIdForLinkedActor(parent));
+					const targetInit = t ? this.getInitiativeByToken(t.id) : userInit;
+					const currentInit = this.getCurrentTurnInitiative();
+
+					if(flags.dnd4eAltus.effectData.durationType === "endOfTargetTurn" || flags.dnd4eAltus.effectData.durationType === "startOfTargetTurn"){
+						duration.rounds = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
+						flags.dnd4eAltus.effectData.durationTurnInit = t ? this.getInitiativeByToken(t.data._id) : userInit;						
+					}
+					else if(flags.dnd4eAltus.effectData.durationType === "endOfUserTurn" || flags.dnd4eAltus.effectData.durationType === "startOfUserTurn" ){
+						duration.rounds = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
+						flags.dnd4eAltus.effectData.durationTurnInit = userInit;
+					}
+
+					const newEffectData = {
+						label: e.data.label,
+						icon: e.data.icon,
+						origin: parent.uuid,
+						sourceName: parent.name,
+						// duration: duration, //Not too sure why this fails, but it does
+						// duration: {rounds: duration.rounds, startRound: duration.startRound},
+						rounds: duration.rounds,
+						startRound: duration.startRound,
+						tint: e.data.tint,
+						flags: flags,
+						changes: e.data.changes,
+						changesID: e.uuid
+					};
+					let actor;
+					if(t?.actor){
+						actor = t.actor;
+					} else { //extra condition for when actors this linked data target self						
+						actor = parent;
+					}
+
+					if(game.user.isGM){
+						actor.newActiveEffect(newEffectData);
+					} else {
+						game.socket.emit('system.dnd4eAltus', {
+							actorID: actor.id,
+							tokenID: t?.id || null,
+							operation: 'applyTokenEffect',
+							user: game.user.id,
+							scene: canvas.scene.id,
+							effectData: newEffectData
+						});
+					}
+				}
+			}
+		}
+	}
+}
+
+export async function handleApplyEffectToToken(data){
+	if(!game.user.isGM){
+		return;
+	}
+	const effectData = data.effectData;
+	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
+	await actor.newActiveEffectSocket(effectData);
 }

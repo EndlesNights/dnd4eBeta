@@ -24,9 +24,7 @@ export class SaveThrowDialog extends DocumentSheet {
 		};
 	}
 	async _updateObject(event, formData) {
-
 		let message = `Rolling Saving Throw, DC: ${formData.dc}`;
-		console.log(this.object.data.data.details.saves)
 		const parts = [this.object.data.data.details.saves.value]
 		if (formData.save) {
 			parts.push(formData.save)
@@ -45,6 +43,11 @@ export class SaveThrowDialog extends DocumentSheet {
 		rollConfig.event = event;
 		rollConfig.critical = formData.dc - this.object.data.data.details.saves.value - formData.save || 10;
 		rollConfig.fumble = formData.dc -1 - this.object.data.data.details.saves.value - formData.save || 9;
-		await d20Roll(rollConfig);
+		
+		const r = await d20Roll(rollConfig);
+
+		if(this.options.effectSave && r.total >= rollConfig.critical){
+			await this.object.effects.get(this.options.effectId).delete();
+		}
 	}
 }

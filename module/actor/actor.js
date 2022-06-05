@@ -1,6 +1,7 @@
 import { d20Roll } from "../dice.js";
 import { DND4EALTUS } from "../config.js";
 import { Helper } from "../helper.js"
+import AbilityTemplate from "../pixi/ability-template.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -66,6 +67,17 @@ export class Actor4e extends Actor {
 	_onUpdate(data, options, userId) {
 		super._onUpdate(data, options, userId);
 		this._displayScrollingDamage(options.dhp);
+	}
+
+
+	/* --------------------------------------------- */
+
+	/** @override */
+	applyActiveEffects() {
+		// The Active Effects do not have access to their parent at preparation time so we wait until this stage to
+		// determine whether they are suppressed or not.
+		this.effects.forEach(e => e.determineSuppression());
+		return super.applyActiveEffects();
 	}
 
 	/* -------------------------------------------- */
@@ -927,16 +939,71 @@ export class Actor4e extends Actor {
 			parts: parts,
 			data: data,
 			title: game.i18n.format("DND4EALTUS.DefencePromptTitle", {defences: CONFIG.DND4EALTUS.defensives[label]}),
-			// title: "TITLE",
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
 		}));		
 	}
 
-  async createOwnedItem(itemData, options) {
-	console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
-	return this.createEmbeddedDocuments("Item", [itemData], options);
-  }
+	async rollInitiative({createCombatants=false, rerollInitiative=false, initiativeOptions={}, event={}}={}, options={}) {
+		// Obtain (or create) a combat encounter
+		let combat = game.combat;
+		if ( !combat ) {
+			if ( game.user.isGM && canvas.scene ) {
+				const cls = getDocumentClass("Combat")
+				combat = await cls.create({scene: canvas.scene.id, active: true});
+			}
+			else {
+				ui.notifications.warn("COMBAT.NoneActive", {localize: true});
+				return null;
+			}
+		}
+
+		// Create new combatants
+		if ( createCombatants ) {
+			const tokens = this.getActiveTokens();
+			const toCreate = [];
+			if ( tokens.length ) {
+				for ( let t of tokens ) {
+					if ( t.inCombat ) continue;
+					toCreate.push({tokenId: t.id, sceneId: t.scene.id, actorId: this.id, hidden: t.data.hidden});
+				}
+			} else toCreate.push({actorId: this.id, hidden: false})
+			await combat.createEmbeddedDocuments("Combatant", toCreate);
+		}
+
+		// Roll initiative for combatants
+		const combatants = combat.combatants.reduce((arr, c) => {
+			if ( c.actor.id !== this.id ) return arr;
+			if( this.isToken && c.token.id !== this.token.id) return arr;
+			arr.push(c.id);
+			return arr;
+		}, []);
+		
+		const isReroll = !!(game.combat.combatants.get(combatants[0]).data.initiative || game.combat.combatants.get(combatants[0]).data.initiative == 0)
+
+		const parts = ['@init'];
+		let init = this.data.data.attributes.init.value;
+		const tiebreaker = game.settings.get("dnd4eAltus", "initiativeDexTiebreaker");
+		if ( tiebreaker ) init += this.data.data.attributes.init.value / 100;
+		const data = {init: init};
+
+		const initRoll = await  d20Roll(mergeObject(options, {
+			parts: parts,
+			data: data,
+			title: `Init Roll`,
+			speaker: ChatMessage.getSpeaker({actor: this}),
+			flavor: isReroll? `${this.name} re-rolls Initiative!` : `${this.name} rolls for Initiative!`,
+		}));
+
+		if(combatants[0])
+		game.combat.combatants.get(combatants[0]).update({initiative:initRoll.total});
+		return combat;
+	}
+
+	async createOwnedItem(itemData, options) {
+		console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
+		return this.createEmbeddedDocuments("Item", [itemData], options);
+	}
 
 	/** @override */
 	async createEmbeddedDocuments(embeddedName, data=[], context={}) {
@@ -963,7 +1030,8 @@ export class Actor4e extends Actor {
 	* @param {Item4e} item   The power being used by the actor
 	* @param {Event} event   The originating user interaction which triggered the cast
 	*/
-	async usePower(item, {configureDialog=true}={}) {
+	
+	async usePower(item, {configureDialog=true, fastForward=false}={}) {
 		//if not a valid type of item to use
 		console.log("UsePower")
 		if ( item.data.type !=="power" ) throw new Error("Wrong Item type");
@@ -973,13 +1041,8 @@ export class Actor4e extends Actor {
 		let consumeUse = false;
 		let placeTemplate = false;
 		
-		if( configureDialog && limitedUses) {
-			// const usage = await AbilityUseDialog.create(item);
-			// if ( usage === null ) return;
-			
-			// consumeUse = Boolean(usage.get("consumeUse"));
+		if( (configureDialog||fastForward) && limitedUses) {
 			consumeUse = true;
-			// placeTemplate = Boolean(usage.get("placeTemplate"));
 			placeTemplate = true;
 		}
 		// Update Item data
@@ -990,13 +1053,28 @@ export class Actor4e extends Actor {
 			await item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
 			// item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
 		}
-		
-		// Initiate ability template placement workflow if selected
-		// if ( placeTemplate && item.hasAreaTarget ) {
-			// const template = AbilityTemplate.fromItem(item);
-			// if ( template ) template.drawPreview();
-			// if ( this.sheet.rendered ) this.sheet.minimize();
-		// }		
+
+		if(fastForward){
+
+			await item.roll();
+
+			if(item.hasAreaTarget){
+				const template = AbilityTemplate.fromItem(item);
+				if ( template ) template.drawPreview(event);
+			}
+
+			if(item.hasAttack){
+				await item.rollAttack({fastForward:true});
+			}
+			if(item.hasDamage){
+				await item.rollDamage({fastForward:true});
+			}
+			if(item.hasHealing){
+				await item.rollHealing({fastForward:true});
+			}
+			return
+		}
+			
 		// Invoke the Item roll
 		return item.roll();
 	}
@@ -1068,137 +1146,93 @@ export class Actor4e extends Actor {
 	}
 
 	async calcDamageErrata(damage, multiplier, surges){
+		let totalDamage = 0;
 
-		if(Object.keys(damage).length < 1){
-			return; //if there is no damage, leave
-		}
+		console.log(damage)
+		for(let d of damage){
+			//get all the damageTypes in this term
+			let damageTypesArray = d[1].replace(/ /g,'').split(',');
 
-		const actorRes = this.data.data.resistances;
-		const isUntypedDamageImmune = actorRes['damage'].immune;
-		let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
-		let isImmune = isUntypedDamageImmune;
-		let lowestRes = Infinity;
+			const actorRes = this.data.data.resistances;
+			const isUntypedDamageImmune = actorRes['damage'].immune;
+			let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
+			let lowestRes = Infinity; // will attemtpe to replace this with the lowest resistance / highest vunrability
 
-
-		for(let d in damage){
-			const type = d && actorRes[d] ? d : 'damage';
-			if(actorRes[type].immune){
-				continue;
-			}
-
-			if(actorRes[type].value !== 0 ){ //if has resistances or vulnerability
-				isImmuneAll=false;
-				if(actorRes[type].value < lowestRes){
-					lowestRes = actorRes[type].value;
+			for(let dt of damageTypesArray){
+				const type = dt && actorRes[dt] ? dt : 'damage';
+				if(actorRes[type].immune){
+					continue;
 				}
-			} else {
-				if(!isUntypedDamageImmune) {
+	
+				if(actorRes[type].value !== 0 ){ //if has resistances or vulnerability
 					isImmuneAll=false;
-					if(actorRes['damage'].value){ //"damage" will stand in for any other damage that does not have a value
-						if(actorRes['damage'].value < lowestRes){
-							lowestRes = actorRes['damage'].value || 0;
+					if(actorRes[type].value < lowestRes){
+						lowestRes = actorRes[type].value;
+					}
+				} else {
+					if(!isUntypedDamageImmune) {
+						isImmuneAll=false;
+						if(actorRes['damage'].value){ //"damage" will stand in for any other damage that does not have a value
+							if(actorRes['damage'].value < lowestRes){
+								lowestRes = actorRes['damage'].value || 0;
+							}
+						}
+						else if(actorRes[type].value < lowestRes){
+							lowestRes = actorRes[type].value || 0;
 						}
 					}
-					else if(actorRes[type].value < lowestRes){
-						lowestRes = actorRes[type].value || 0;
-					}
 				}
 			}
+
+			if(!isImmuneAll) {
+				totalDamage += Math.max(0, d[0] - lowestRes);
+				console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}\nLowest Res: ${lowestRes}`);
+			} else{
+				console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}`);
+			}
+			// console.log(`Lowest Res: ${lowestRes}`)
 		}
 
-		if(!isImmuneAll) {
-			let sumDamage = 0;
-			let sumHeal = 0;
-			//sum damage
-			for(let d in damage){
-				if(d == 'heal'){
-					sumHeal -= damage[d];
-				}
-				else {
-					sumDamage += Math.max(0, damage[d]);
-				}
-			}
-				
-			let totalDamage = Math.max(sumDamage - lowestRes, 0) + sumHeal; // can't take negitive damage
-			console.log(`PreResistDamage:${totalDamage}, SmallestResist:${lowestRes}, DAMAGE: ${totalDamage}`)
-			this.applyDamage(totalDamage, multiplier);
-		}
+		console.log(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`)
+		this.applyDamage(totalDamage, multiplier);
 	}
 
 	async calcDamagePHB(damage, multiplier, surges){
+		let damageDealt = {};
 		let totalDamage = 0;
-		if(Object.keys(damage).length >= 1){
-			const res = this.data.data.resistances;
+		const actorRes = this.data.data.resistances;
 
-			//let divider = Object.keys(damage).length;
+		for(let d of damage){
+			let damageTypesArray = d[1].replace(/ /g,'').split(',');
 
-			//get lowest resistance
-			let totalRes =  9999;
-			let resistAll = res['damage'].value;
-			let immune = res['damage'].immune;
-
-			if (!immune){
-				for(let d in damage){
-					let type = d && res[d] ? d : 'damage';
-					if (type == 'damage' || type == 'heal'){
-						continue;
-					}
-
-					immune = res[type].immune;
-					if (!immune){
-						break;
-					}
+			let i = 0;
+			for(let dt of damageTypesArray){
+				if(damageDealt[dt] === undefined){
+					damageDealt[dt] = 0|d[0]/damageTypesArray.length+(i<d[0]%damageTypesArray.length);
+				} else{
+					damageDealt[dt] += 0|d[0]/damageTypesArray.length+(i<d[0]%damageTypesArray.length);
 				}
+				i++;
 			}
+		}
 
-			if (!immune){
-				console.log(damage)
-				for(let d in damage){
-					let type = d && res[d] ? d : 'damage';
-					if (type == 'heal'){
-						continue;
-					}
+		for(const d in damageDealt){
+			const damagetype = actorRes[d] ? d : 'damage';
+			if(actorRes[damagetype].immune) continue; //No damage to immune types
+			if(actorRes[`damage`].immune && !actorRes[damagetype].value) continue;
 
-					let damageRes = res[type].value || 0;
-					
-					if (damageRes < totalRes && !res[type].immune){
-						if(type === "damage" && Object.keys(damage).length > 1){
-							continue;
-						}
-						totalRes = damageRes;
-						console.log(`Resist ${totalRes} ${type}`)
-					}
-				}
-			
-				if ((totalRes > 0 && resistAll < 0) || (totalRes < 0 && resistAll > 0)){
-					totalRes += resistAll; //if resist and resist all have different signs, sum them
-				}
-				else if ((totalRes < resistAll && resistAll > 0) || (totalRes > resistAll && resistAll < 0)){
-					totalRes = resistAll;
-				}
-
-				//sum damage
-				for(let d in damage){
-					if(d == 'heal'){
-						totalDamage -= Math.max(0, damage[d]);
-					}
-					else {
-						totalDamage += Math.max(0, damage[d]);
-					}
-				}
-
-				console.log(`PreResistDamage:${totalDamage}, SmallestResist:${totalRes}`)
-				totalRes = totalRes > totalDamage ? totalDamage : totalRes;
-				totalDamage -= totalRes;
+			let res = actorRes[damagetype].value || 0;
+			if(!res && actorRes[`damage`].value){
+				res = actorRes[`damage`].value;
 			}
-
-			console.log(`Total Damage: ${totalDamage * multiplier}`)
-			this.applyDamage(totalDamage, multiplier);
-		}		
+			totalDamage += Math.max(0, damageDealt[damagetype]-res);
+		}
+		console.log(damageDealt);
+		console.log(`Total Damage: ${totalDamage}`)
+		this.applyDamage(totalDamage, multiplier);
 	}
 
-	async applyDamage(amount=0, multiplier=1, surges={}) 
-	{
+	async applyDamage(amount=0, multiplier=1, surges={}) {
 		amount = Math.floor(parseInt(amount) * multiplier);
 		
 		// Healing Surge related checks
@@ -1219,7 +1253,6 @@ export class Actor4e extends Actor {
 		
 		const healFromZero = true; // If true, healing HP starts from zero (the usual for 4e). On false, it follows normal arithmetic
 		const hp = this.data.data.attributes.hp;
-		console.log(hp)
 
 		// Deduct damage from temp HP first
 		const tmp = parseInt(this.data.data.attributes.temphp.value) || 0;
@@ -1307,5 +1340,43 @@ export class Actor4e extends Actor {
 		if ( this.type === "Player Character" ) {
 			this.data.token.update({vision: true, actorLink: true, disposition: 1});
 		}
+	}
+
+	async newActiveEffect(effectData){
+		this.createEmbeddedDocuments("ActiveEffect", [{
+			label: effectData.label,
+			icon:effectData.icon,
+			origin: effectData.origin,
+			sourceName: effectData.sourceName,
+			// duration: effectData.duration, //Not too sure why this fails, but it does
+			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
+			tint: effectData.tint,
+			flags: effectData.flags,
+			changes: effectData.changes
+		}]);
+	}
+
+	async newActiveEffectSocket(effectData){
+		const uuid = effectData.changesID.split('.')
+		let changes
+		if(uuid[0] === "Actor"){
+			changes = game.actors.get(uuid[1]).data.items.get(uuid[3]).data.effects.get(uuid[5]).data.changes;
+		}
+		else if(uuid[0] === "Scene"){
+			changes = game.scenes.get(uuid[1]).tokens.get(uuid[3]).actor.items.get(uuid[5]).data.effects.get(uuid[7]).data.changes;
+		}
+
+		const data = {
+			label: effectData.label,
+			icon:effectData.icon,
+			origin: effectData.origin,
+			sourceName: effectData.sourceName,
+			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
+			tint: effectData.tint,
+			flags: effectData.flags,
+			changes: changes
+		}
+
+		this.createEmbeddedDocuments("ActiveEffect", [data]);
 	}
 }

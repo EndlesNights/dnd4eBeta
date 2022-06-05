@@ -1,3 +1,5 @@
+import { DND4EALTUS } from "../config.js";
+
 /**
  * An extension of the default Foundry Roll class for handling multiattack rolls and displaying them in a single chat message
  */
@@ -72,13 +74,17 @@ export class MultiAttackRoll extends Roll {
 
             if(game.settings.get("dnd4eAltus", "automationCombat")){
                 if (critState === " critical"){
-                    hitState = "Critical Hit!"
+                    hitState = game.i18n.localize("DND4EALTUS.AttackRollHitCrit");
+                    targDataArray.targetHit.push(targDataArray.targets[i]);
                 } else if (critState === " fumble"){
-                    hitState = "Critical Miss!"
+                    hitState = game.i18n.localize("DND4EALTUS.AttackRollMissCrit");
+                    targDataArray.targetMissed.push(targDataArray.targets[i]);
                 } else if (r._total >= targDefVal){
-                    hitState = "Probable Hit!";
+                    hitState = game.i18n.localize("DND4EALTUS.AttackRollHit");
+                    targDataArray.targetHit.push(targDataArray.targets[i]);
                 } else {
-                    hitState = "Probable Miss!";
+                    hitState = game.i18n.localize("DND4EALTUS.AttackRollMiss");
+                    targDataArray.targetMissed.push(targDataArray.targets[i]);
                 }
             }
 

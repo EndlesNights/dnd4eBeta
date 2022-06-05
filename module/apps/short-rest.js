@@ -1,3 +1,5 @@
+import { Helper } from "../helper.js";
+
 export class ShortRestDialog extends DocumentSheet {
 
 	static get defaultOptions() {
@@ -73,18 +75,10 @@ export class ShortRestDialog extends DocumentSheet {
 		updateData[`data.actionpoints.encounteruse`] = false;
 		updateData[`data.magicItemUse.encounteruse`] = false;
 		
-		// *** TODO For Each reset encounter power HERE
-		//get all encounter rechage items/powers
-		const items = this.object.items.filter(item => item.data.data.uses?.per === "enc");
-		const updateItems = items.map( item => {
-			return {
-				_id: item.id,
-				"data.uses.value": item.data.data.preparedMaxUses
-			};
-		});
-		// await this.object.updateEmbeddedEntity("OwnedItem", updateItems);
-		console.log(updateItems)
-		await this.object.updateEmbeddedDocuments("Item", updateItems);
+		console.log(this)
+		Helper.rechargeItems(this.object, ["enc", "round"]);
+		Helper.endEffects(this.document, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter"]);
+
 		
 		if(this.object.type === "Player Character"){
 			ChatMessage.create({

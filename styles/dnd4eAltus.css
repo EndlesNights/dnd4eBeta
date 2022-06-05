@@ -432,7 +432,7 @@
 .dnd4eAltus .section--skills .skill-mod {
 	text-align: right;
 	font-weight:bold;
-	max-width: 34.5px;
+	max-width: 35px;
 	font-size: 16px;
 	padding-top: 5px;
 }
@@ -666,12 +666,17 @@
 	flex: 2;
 	color: #4b4a44;
 	font-weight: bold;
+	max-width: 174px;
 }
 .dnd4eAltus .form-group .form-fields {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: flex-start;
+}
+
+.dnd4eAltus.sheet.item .details .form-group span.checkbox{
+	text-align: right;
 }
 .dnd4eAltus .form-group .form-fields > * {
 	flex: 1;
@@ -1639,7 +1644,7 @@ font-size: 12px;
 	border: none;
 }
 .dnd4eAltus.sheet.actor {
-	min-width: 774px;
+	min-width: 836px;
 	min-height: 420px;
 }
 .dnd4eAltus.sheet.item {
@@ -1823,7 +1828,7 @@ font-size: 12px;
 	width: 24px;
 	text-align: right;
 }
-.dnd4eAltus.sheet .powers .items-list input {
+.dnd4eAltus.sheet .powers .items-list .item-detail input {
 	color: #e0e0e0;
 }
 .dnd4eAltus.sheet .inventory .items-list input {

@@ -214,6 +214,22 @@ export default class Item4e extends Item {
 		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.data.data.rangeType);
 	}
 
+  /* -------------------------------------------- */
+
+	/**
+	 * Should this item's active effects be suppressed.
+	 * @type {boolean}
+	 */
+	get areEffectsSuppressed() {
+		if(this.type === "power") return true;
+		return false;
+		const requireEquipped = (this.data.type !== "consumable") || ["rod", "trinket", "wand"].includes(
+			this.data.data.consumableType);
+		if ( requireEquipped && (this.data.data.equipped === false) ) return true;
+
+		return this.data.data.attunement === CONFIG.DND4EALTUS.attunementTypes.REQUIRED;
+	}	
+
 	/* -------------------------------------------- */
 
 	/**
@@ -378,25 +394,13 @@ export default class Item4e extends Item {
 	async roll({configureDialog=true, rollMode=null, createMessage=true}={}) {
 
 		if(["both", "pre", "sub"].includes(this.data.data.macro?.launchOrder)) {
-			let itemMacro = new Macro ({
-				name : this.name,
-				type : this.data.data.macro.type,
-				scope : this.data.data.macro.scope,
-				command : this.data.data.macro.command, //cmd,
-				author : game.user.id,
-			});
-			itemMacro.data.actor = this.actor;
-			itemMacro.data.item = this.data;
-			itemMacro.data.launch = this.data.data.macro.launchOrder;
-			itemMacro.execute();
-
-			if(this.data.data.macro.launchOrder === "sub") return;
-
+			Helper.executeMacro(this)
+			if (this.data.data.macro.launchOrder === "sub") return;
 		}
 		const cardData = (() => {
 			if ((this.data.type === "power" || this.data.type === "consumable") && this.data.data.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.data.data, this.actor);
-				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG);
+				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG, this.actor.data);
 				return Helper.commonReplace(cardString, this.actor.data, this.data, weaponUse? weaponUse.data.data : null, 1);
 			} else {
 				return null;
@@ -447,6 +451,10 @@ export default class Item4e extends Item {
 
 		if(templateData.item.type === "power") {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.data.useType}`);
+			
+		Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
+		Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
+
 		}
 		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--item`);
@@ -477,17 +485,7 @@ export default class Item4e extends Item {
 			ChatMessage.create(chatData);
 
 			if(["both", "post"].includes(this.data.data.macro?.launchOrder)) {
-				let itemMacro = new Macro ({
-					name : this.name,
-					type : this.data.data.macro.type,
-					scope : this.data.data.macro.scope,
-					command : this.data.data.macro.command, //cmd,
-					author : game.user.id,
-				});
-				itemMacro.data.actor = this.actor;
-				itemMacro.data.item = this.data;
-				itemMacro.data.launch = this.data.data.macro.launchOrder;
-				itemMacro.execute();
+				Helper.executeMacro(this)
 			}
 		}
 		else return chatData;
@@ -883,7 +881,6 @@ export default class Item4e extends Item {
 			}
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.data.data.consume, "weapon used by the power")
 		}
-
 		await Helper.applyEffects([parts], rollData, actorData, this.data, weaponUse?.data, "attack")
 
 		// Compose roll options
@@ -905,6 +902,12 @@ export default class Item4e extends Item {
 			messageData: {"flags.dnd4eAltus.roll": {type: "attack", itemId: this.id }},
 			options
 		};
+
+		if(this.type === "power"){
+			rollConfig.options.powerEffects = this.effects;
+			rollConfig.options.parent = this.parent;
+			console.log(this);
+		}
 
 		// Expanded weapon critical threshold
 		if (weaponUse) {
@@ -937,7 +940,8 @@ export default class Item4e extends Item {
 	 *
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
-	async rollDamage({event, spellLevel=null, versatile=false}={}) {
+	async rollDamage({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
+		console.log(fastForward)
 		const itemData = this.data.data;
 		const actorData = this.actor.data;
 		const actorInnerData = this.actor.data.data;
@@ -1184,7 +1188,8 @@ export default class Item4e extends Item {
 				left: window.innerWidth - 710
 			},
 			messageData,
-			options
+			options,
+			fastForward
 		});
 	}
 
@@ -1193,7 +1198,7 @@ export default class Item4e extends Item {
 	 *
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
-	rollHealing({event, spellLevel=null, versatile=false}={}) {
+	rollHealing({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
 		const itemData = this.data.data;
 		const actorData = this.actor.data;
 		const actorInnerData = this.actor.data.data;
@@ -1309,6 +1314,7 @@ export default class Item4e extends Item {
 			},
 			messageData,
 			options,
+			fastForward
 		});
 	}
 
@@ -1455,16 +1461,24 @@ export default class Item4e extends Item {
 	}
 
 	rollToolOrRitualCheck(rollType, titleKey, options={}) {
+
 		//if ( this.type !== "tool" ) throw "Wrong item type!";
 		// Prepare roll data
 		let rollData = this.getRollData();
 		const parts = ["@" + rollType];
 
 		if(this.data.data.formula) {
-			rollData[rollType] = Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data, this.data.data)
+			rollData[rollType] = Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data, this.data.data);
 		} else {
 			rollData[rollType] = `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)}`; 
-			if(this.data.data.bonus) rollData[rollType]+= `${this.data.data.bonus}`;
+			if(this.data.data.bonus){
+				//if does not srtart with a number sign add one
+				let trimmedbonus = this.data.data.bonus.trim();
+				if(!(trimmedbonus.startsWith("+") || trimmedbonus.startsWith("-"))) {
+					trimmedbonus = ' + ' + trimmedbonus;
+				}
+				rollData[rollType]+= `${trimmedbonus}`;
+			}
 		}
 		console.log(rollData[rollType])
 		const title = `${this.name} - ${game.i18n.localize(titleKey)}`;

@@ -746,7 +746,7 @@
 				"abilityBonus": 0,
 				"def": "ac",
 				"defBonus": 0,
-				"formula": "@wepAttack + @powerMod + @lvhalf + @atkMod",
+				"formula": "@wepAttack + @powerMod + @atkMod",
 				"damageType": {},
 				"effectType": {}
 			},
@@ -995,7 +995,6 @@
 			"detail": ""
 		},
 		"target": "One Creature",
-
 		"trigger": "",
 		"requirement": "",
 		"special": "",

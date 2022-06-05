@@ -6,6 +6,24 @@ import { DND4EALTUS } from "../config.js";
  */
 export default class AbilityTemplate extends MeasuredTemplate {
 
+
+	static getDistanceCalc(item){
+
+		//use toString() as some older powers formats may still be numerical
+		let area = item.data.data.area?.toString();
+		if(!area) return null;
+		try{
+			area = game.helper.commonReplace(area, item.actor.data);
+			area = Roll.replaceFormulaData(area, item.actor.getRollData(), {missing: 0, warn: true});
+			let r = new Roll(area);
+			r.evaluate({ async: false });
+			return r.total;
+		} catch (e) {
+			console.error("Problem preparing Area size for ", item.data.name, e);
+			return null;
+		}
+
+	}
 	/**
 	 * A factory method to create an AbilityTemplate instance using provided data from an Item4e instance
 	 * @param {Item4e} item                             The Item object for which to construct the template
@@ -14,7 +32,9 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	static fromItem(item) {
 		const templateShape = DND4EALTUS.areaTargetTypes[item.data.data.rangeType];
 	
-		let distance = item.data.data.area;
+		console.log(item);
+		let distance = this.getDistanceCalc(item);
+
 		let flags = {dnd4eAltus:{templateType:templateShape}};
 
 		if(item.data.data.rangeType === "closeBlast" || item.data.data.rangeType === "rangeBlast") {
