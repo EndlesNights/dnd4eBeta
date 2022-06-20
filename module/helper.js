@@ -397,7 +397,7 @@ export class Helper {
 					if(!parts[i][0] || !parts[i][1]) continue;
 					if(weaponInnerData.properties.bru) {
 						// dice += ` + (${parts[i][0]}*${weaponNum})d(${parts[i][1] - weaponData.brutal}) + (${weaponData.brutal}*${parts[i][0]}*${weaponNum})`;
-						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}rr<${weaponInnerData.brutal || 1}`;
+						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}rr<=${weaponInnerData.brutal || 1}`;
 					}
 					else{
 						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}`;
@@ -430,7 +430,7 @@ export class Helper {
 					for(let i = 0; i< parts.length; i++) {
 						if(!parts[i][0] || !parts[i][1]) continue;
 						if(weaponInnerData.properties.bru) {
-							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<${weaponInnerData.brutal || 1}`;
+							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<=${weaponInnerData.brutal || 1}`;
 						}
 						else{
 
@@ -940,6 +940,8 @@ export class Helper {
 			}
 		}
 
+		if(!game.combat) return null;
+		
 		if(game.combat.turns[game.combat.turn].actor.id === actorId){
 			return game.combat.turns[game.combat.turn].id;
 		}

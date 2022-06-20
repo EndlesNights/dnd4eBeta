@@ -49,13 +49,7 @@
 			const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
 			const combat = game.combat;
 			if ( combat ) {
-				// updates.duration.startRound = game.combat.round;
-				// updates.duration.startTurn = game.combat.turn ?? 0;
 
-				// updates.duration.startRound = combat.round;
-				
-				// updates.duration.startTurn = combat.turns[combat.turn].data.initiative ?? 0;
-				// updates.flags.dnd4e.effectData.durationInit = combat.turns[combat.turn].data.initiative ?? 0;
 				updates.flags = {dnd4e: { effectData: { startTurnInit: combat.turns[combat.turn].data.initiative ?? 0}}};
 			}
 			this.data.update(updates);

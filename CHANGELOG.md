@@ -1,6 +1,9 @@
 # Changelog
 
 ## Version 0.2.82
+- fixed issue where brutal value should have been checking for "less than equal" when it was instead just checking for "less than"
+
+## Version 0.2.82
 - fixed small issue with object sorting on sheets. Powers, items, and feats should now be able to be manually resorted objects within the confines of the current sorting filters by dragging and dropping the items once more.
 - fixed issue with power text filter, where the input element id was having interference from the feat filter input element because they shared the same id.
 - fixed css for pwer text filter, where the css intended for another element was not specific enough and was causing the text to be unreadable shade of white.
