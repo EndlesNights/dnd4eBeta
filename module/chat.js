@@ -186,11 +186,11 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	//count surges used, shouldn't be more than 1, but you never know....
 	if(multiplier < 0 ){
 		roll.terms.forEach(e => {
-			if(e.flavor.includes("surge")){
-				surgeAmount++;
-			}
-			else if(e.flavor.includes("surgeValue")){
+			if(e.flavor.includes("surgeValue")){
 				surgeValueAmount++;
+			}
+			else if(e.flavor.includes("surge")){
+				surgeAmount++;
 			}
 		});
 	}

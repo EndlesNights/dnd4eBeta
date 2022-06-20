@@ -2,6 +2,7 @@
 
 ## Version 0.2.82
 - fixed issue where brutal value should have been checking for "less than equal" when it was instead just checking for "less than"
+- fixed issue where healing where "surgeValue" tag was consuming a healing surge instead of just granting the HP.
 
 ## Version 0.2.82
 - fixed small issue with object sorting on sheets. Powers, items, and feats should now be able to be manually resorted objects within the confines of the current sorting filters by dragging and dropping the items once more.
