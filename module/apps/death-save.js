@@ -57,14 +57,14 @@ export class DeathSaveDialog extends DocumentSheet {
 			await ChatMessage.create({
 				user: game.user.id,
 				speaker: ChatMessage.getSpeaker(),
-				content: this.object.data.name + " has failed their last death saving throw and has died!"
+				content:this.object.data.name + game.i18n.localize("DND4EBETA.DeathSaveFailure")
 			});
 		}
 		else if(roll.total - formData.save - this.object.data.data.details.deathsavebon.value >= rollConfig.critical) {
 			await ChatMessage.create({
 				user: game.user.id,
 				speaker: ChatMessage.getSpeaker(),
-				content: this.object.data.name + " has has critical succedded their death saving throw, is no longer unconouse and has regained 1 HP!"
+				content:this.object.data.name + game.i18n.localize("DND4EBETA.DeathSaveCriticalSuccess")
 			});
 		}
 
