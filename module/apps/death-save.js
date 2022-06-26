@@ -60,14 +60,15 @@ export class DeathSaveDialog extends DocumentSheet {
 				content:this.object.data.name + game.i18n.localize("DND4EBETA.DeathSaveFailure")
 			});
 		}
-		else if(roll.total - formData.save - this.object.data.data.details.deathsavebon.value >= rollConfig.critical) {
+		else if(roll.total >= rollConfig.critical) {
 			await ChatMessage.create({
 				user: game.user.id,
 				speaker: ChatMessage.getSpeaker(),
 				content:this.object.data.name + game.i18n.localize("DND4EBETA.DeathSaveCriticalSuccess")
 			});
 		}
-
+		console.log(roll.total)
+		console.log(rollConfig.critical)
 		this.object.update(updateData);
 	}
 }
