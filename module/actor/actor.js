@@ -1247,8 +1247,8 @@ export class Actor4e extends Actor {
 			}
 			amount+= this.data.data.details.surgeValue*surges.surgeAmount*multiplier
 		}
-		if(surges.surgeAmountValue){
-			amount+= this.data.data.details.surgeValue*surges.surgeAmountValue*multiplier
+		if(surges.surgeValueAmount){
+			amount+= this.data.data.details.surgeValue*surges.surgeValueAmount*multiplier
 		}
 		
 		const healFromZero = true; // If true, healing HP starts from zero (the usual for 4e). On false, it follows normal arithmetic

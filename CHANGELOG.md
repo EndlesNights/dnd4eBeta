@@ -1,6 +1,10 @@
 # Changelog
 
-## Version 0.2.82
+## Version 0.2.84
+- fixed issue where healing where "surgeValue" tag was consuming a healing surge instead of just granting the HP. (For real this time)
+
+
+## Version 0.2.83
 - fixed issue where brutal value should have been checking for "less than equal" when it was instead just checking for "less than"
 - fixed issue where healing where "surgeValue" tag was consuming a healing surge instead of just granting the HP.
 
