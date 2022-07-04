@@ -7,7 +7,7 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
 	if ( !message.isRoll || !message.isContentVisible ) return;
 
 	// Highlight rolls where the first part is a d20 roll
-	const roll = message.roll;
+	const roll = message.rolls[0];
 	if ( !roll.dice.length ) return;
 	const d = roll.dice[0];
 	// Has its own check
@@ -59,7 +59,7 @@ export const displayDamageOptionButtons = function(message, html, data) {
 	if ( !message.isRoll || !message.isContentVisible ) return;
 
 	// Highlight rolls where the first part is a d20 roll
-	const roll = message.roll;
+	const roll = message.rolls[0];
 	if ( !roll.dice.length ) return;
 	const d = roll.dice[0];
 	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
@@ -141,7 +141,7 @@ export const clickRollMessageDamageButtons = function(event) {
 	const button = event.currentTarget;
 	const messageId = button.closest(".message").dataset.messageId;
 	const message = game.messages.get(messageId);
-	const roll = message.roll;
+	const roll = message.rolls[0];
 	const action = button.dataset.action;
 
 	// Apply
@@ -172,7 +172,7 @@ export const clickRollMessageDamageButtons = function(event) {
  */
 function applyChatCardDamage(li, multiplier, trueDamage=false) {
 	const message = game.messages.get(li.data("messageId"));
-	const roll = message.roll;
+	const roll = message.rolls[0];
 	console.log(message)
 	applyChatCardDamageInner(roll, multiplier, trueDamage)
 }
@@ -242,7 +242,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
  */
 function applyChatCardTempHp(li) {
 	const message = game.messages.get(li.data("messageId"));
-	const roll = message.roll;
+	const roll = message.rolls[0];
 	applyChatCardTempHpInner(roll);
 }
 
