@@ -113,9 +113,8 @@ export default class ActorSheet4e extends ActorSheet {
 		
 		// sheetData.config = CONFIG.DND4EBETA;
 		actorData.size = DND4EBETA.actorSizes;
-		
 		for ( let [s, skl] of Object.entries(actorData.skills)) {
-			skl.ability = actorData.abilities[skl.ability].label.substring(0, 3);
+			skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase();
 			skl.icon = this._getTrainingIcon(skl.value);
 			skl.hover = game.i18n.localize(DND4EBETA.trainingLevels[skl.value]);
 			skl.label = game.i18n.localize(DND4EBETA.skills[s]);
@@ -348,7 +347,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	/* -------------------------------------------- */
 
 	_sortinventory(inventory) {
-		const sort = this.object.data.data.featureSortTypes;
+		const sort = this.object.system.featureSortTypes;
 		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(inventory)) {
 			group.items.sort((a,b) => a.sort - b.sort);
@@ -358,7 +357,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	/* -------------------------------------------- */
 
 	_sortFeatures(feats) {
-		const sort = this.object.data.data.featureSortTypes;
+		const sort = this.object.system.featureSortTypes;
 		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(feats)) {
 			group.items.sort(this._compareValues(sort));
@@ -368,7 +367,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	/* -------------------------------------------- */
 
 	_sortPowers(powers) {
-		const sort = this.object.data.data.powerSortTypes;
+		const sort = this.object.system.powerSortTypes;
 		for (const [keyy, group] of Object.entries(powers)) {
 			if(sort === "none"){
 				group.items.sort((a,b) => a.sort - b.sort);
@@ -394,8 +393,8 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		return "other";
 	}
 	_generatePowerGroups() {
-
-		if(this.object.data.data.powerGroupTypes === "action" || this.object.data.data.powerGroupTypes == undefined) {
+		const actorData = this.object.system;
+		if(actorData.powerGroupTypes === "action" || actorData.powerGroupTypes == undefined) {
 			return {
 				standard: { label: "DND4EBETA.ActionStandard", items: [], dataset: {type: "standard"} },
 				move: { label: "DND4EBETA.ActionMove", items: [], dataset: {type: "move"} },
@@ -407,7 +406,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 			};
 		}
-		else if(this.object.data.data.powerGroupTypes === "type") {
+		else if(actorData.powerGroupTypes === "type") {
 			return {
 				inherent: { label: "DND4EBETA.Inherent", items: [], dataset: {type: "inherent"} },
 				class: { label: "DND4EBETA.Class", items: [], dataset: {type: "class"} },
@@ -420,7 +419,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 				other: { label: "DND4EBETA.Other", items: [], dataset: {type: "other"} },
 			};
 		}
-		else if(this.object.data.data.powerGroupTypes === "powerSubtype") {
+		else if(actorData.powerGroupTypes === "powerSubtype") {
 			return {
 				attack: { label: "DND4EBETA.PowerAttack", items: [], dataset: {type: "attack"} },
 				utility: { label: "DND4EBETA.PowerUtil", items: [], dataset: {type: "utility"} },

@@ -14,13 +14,13 @@ export class Actor4e extends Actor {
 		//Set default NPC Math Options
 		if(data.type==='NPC'){
 			if(data?.system?.advancedCals == undefined){
-				this.data.system.advancedCals = game.settings.get("dnd4e", "npcMathOptions");
+				this.system.advancedCals = game.settings.get("dnd4e", "npcMathOptions");
 			}
 		}
 
 		if(data.type){
 			if(data?.system?.powerGroupTypes == undefined){
-				this.data.system.powerGroupTypes = `usage`;
+				this.system.powerGroupTypes = `usage`;
 			}
 		}
 
@@ -30,14 +30,14 @@ export class Actor4e extends Actor {
 	async update(data, options={}) {
 		
 		//used to call changes to HP scrolling text
-		if(data[`data.attributes.hp.value`]){
-			options.dhp = data[`data.attributes.hp.value`] - this.data.data.attributes.hp.value;
+		if(data[`system.attributes.hp.value`]){
+			options.dhp = data[`system.attributes.hp.value`] - this.system.attributes.hp.value;
 		}
 
 		if(!data) { return super.update(data, options); }
 		// Apply changes in Actor size to Token width/height
-		const newSize = data["data.details.size"];
-		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this.data, "data.details.size")) )) {
+		const newSize = data["system.details.size"];
+		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this.system, "system.details.size")) )) {
 			let size = CONFIG.DND4EBETA.tokenSizes[newSize];
 			if ( this.isToken ) this.token.update({height: size, width: size});
 			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
@@ -46,17 +46,16 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		if(data[`data.details.level`]){
-			if(this.data.data.details.tier != Math.clamped(Math.floor(( data[`data.details.level`] - 1 ) /10 + 1),1,3)){
-				this.data.data.details.tier = Math.clamped(Math.floor(( data[`data.details.level`] - 1 ) /10 + 1),1,3);
-				data[`data.details.tier`] = this.data.data.details.tier;
+		if(data[`system.details.level`]){
+			if(this.system.details.tier != Math.clamped(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3)){
+				this.system.details.tier = Math.clamped(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3);
+				data[`system.details.tier`] = this.system.details.tier;
 			}		
 		}
-		for (let [id, abl] of Object.entries(this.data.data.abilities)){
-			if(data[`data.abilities.${id}.value`]){
-				if(this.data.data.abilities[id].mod != Math.floor((data[`data.abilities.${id}.value`] - 10) / 2)){
-					data[`data.abilities.${id}.mod`] = Math.floor((data[`data.abilities.${id}.value`] - 10) / 2) 
-					console.log(id)
+		for (let [id, abl] of Object.entries(this.system.abilities)){
+			if(data[`system.abilities.${id}.value`]){
+				if(this.system.abilities[id].mod != Math.floor((data[`system.abilities.${id}.value`] - 10) / 2)){
+					data[`system.abilities.${id}.mod`] = Math.floor((data[`system.abilities.${id}.value`] - 10) / 2) 
 				}
 			}
 		}
@@ -169,8 +168,6 @@ export class Actor4e extends Actor {
 	prepareData() {
 		super.prepareData();
 		// Get the Actor's data object
-		console.log(this)
-
 		const actorData = this;
 		const system = this.system;
 
@@ -334,7 +331,7 @@ export class Actor4e extends Actor {
 			}
 		}
 		system.attributes.init.bonusValue = initBonusValue;
-		if(this.data.type === "NPC" && !system.advancedCals){
+		if(this.type === "NPC" && !system.advancedCals){
 			system.attributes.init.value = (system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod : 0) + (system.attributes.init.base || 0) + initBonusValue;
 		} else {
 			system.attributes.init.value = system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod + initBonusValue : initBonusValue;
