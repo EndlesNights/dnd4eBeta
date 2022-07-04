@@ -100,35 +100,36 @@ export default class ActorSheet4e extends ActorSheet {
 		};
 
 		// The Actor's data
-		const actorData = this.actor.data.toObject(false);
-		data.actor = actorData;
-		data.data = actorData.data;
+		const actor = this.actor
+		const actorData = actor.system;
+		data.actor = actor;
+		data.data = actorData;
 
-		data.items = actorData.items;
+		data.items = actor.items;
 		for ( let i of data.items ) {
 			const item = this.actor.items.get(i._id);
 			i.labels = item.labels;
 		}
 		
 		// sheetData.config = CONFIG.DND4EBETA;
-		actorData.data.size = DND4EBETA.actorSizes;
+		actorData.size = DND4EBETA.actorSizes;
 		
-		for ( let [s, skl] of Object.entries(actorData.data.skills)) {
-			skl.ability = actorData.data.abilities[skl.ability].label.substring(0, 3);
+		for ( let [s, skl] of Object.entries(actorData.skills)) {
+			skl.ability = actorData.abilities[skl.ability].label.substring(0, 3);
 			skl.icon = this._getTrainingIcon(skl.value);
 			skl.hover = game.i18n.localize(DND4EBETA.trainingLevels[skl.value]);
 			skl.label = game.i18n.localize(DND4EBETA.skills[s]);
 		}
 		
-		this._prepareData(actorData.data.languages, 
+		this._prepareData(actorData.languages, 
 			{"spoken": CONFIG.DND4EBETA.spoken, "script": CONFIG.DND4EBETA.script}
 		);
 		
-		this._prepareDataSense(actorData.data.senses,
+		this._prepareDataSense(actorData.senses,
 			{"vision": CONFIG.DND4EBETA.vision, "special": CONFIG.DND4EBETA.special}
 		);
 		
-		this._prepareDataSave(actorData.data.details,
+		this._prepareDataSave(actorData.details,
 			{"saves": CONFIG.DND4EBETA.saves}
 		);
 
@@ -137,11 +138,11 @@ export default class ActorSheet4e extends ActorSheet {
 		
 		// Prepare active effects
 		// data.effects = prepareActiveEffectCategories(this.actor.effects);
-		data.effects = ActiveEffect4e.prepareActiveEffectCategories(this.actor.effects);
+		data.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.effects);
 
 		// Resources
-		actorData.data.resources = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
-			const res = actorData.data.resources[r] || {};
+		actorData.resources = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
+			const res = actorData.resources[r] || {};
 			res.name = r;
 			res.placeholder = game.i18n.localize("DND4EBETA.Resource"+r.titleCase());
 			if (res && res.value === 0) delete res.value;
@@ -153,12 +154,6 @@ export default class ActorSheet4e extends ActorSheet {
 	}
 	
 	_prepareData(data, map) {
-		// const map = {
-			// "spoken": CONFIG.DND4EBETA.spoken,
-			// "script": CONFIG.DND4EBETA.script,
-			// "vision": CONFIG.DND4EBETA.vision,
-			// "special": CONFIG.DND4EBETA.special
-		// }
 		for ( let [l, choices] of Object.entries(map) ) {
 			const trait = data[l];
 			if ( !trait ) continue;
