@@ -93,7 +93,7 @@ export class Actor4e extends Actor {
 		const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
 		for ( let t of tokens ) {
 			if ( !t?.hud?.createScrollingText ) continue;  // This is undefined prior to v9-p2
-			const pct = Math.clamped(Math.abs(dhp) / this.data.data.attributes.hp.max, 0, 1);
+			const pct = Math.clamped(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
 			t.hud.createScrollingText(dhp.signedString(), {
 				anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
 				fontSize: 16 + (32 * pct), // Range between [16, 48]
@@ -580,7 +580,7 @@ export class Actor4e extends Actor {
 				else if(i.data.data.armour.type === "armour" && id === "ref"){
 					if(!i.data.data.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
 						def.armour -= 2;
-						this.data.data.modifiers.attack.armourPen =-2;
+						this.system.modifiers.attack.armourPen =-2;
 					}
 				}
 				def.armour += i.data.data.armour[id];
@@ -629,7 +629,7 @@ export class Actor4e extends Actor {
 				else if(i.data.data.armour.type === "armour" && id === "ref"){
 					if(!i.data.data.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
 						def.armour -= 2;
-						this.data.data.modifiers.attack.armourPen =-2;
+						this.system.modifiers.attack.armourPen =-2;
 					}
 				}
 				def.armour += i.data.data.armour[id];
@@ -790,7 +790,7 @@ export class Actor4e extends Actor {
    */
 	async modifyTokenAttribute(attribute, value, isDelta=false, isBar=true) {
 		if(attribute === 'attributes.hp' && isDelta) {
-			const hp = getProperty(this.data.data, attribute);
+			const hp = getProperty(this.system, attribute);
 			const delta = isDelta ? (-1 * value) : (hp.value + hp.temp) - value;
 			return this.applyDamage(delta);
 		}
@@ -798,26 +798,26 @@ export class Actor4e extends Actor {
 	}
 	setConditions(newValue) {
 		
-		let newTemp = this.data.data.attributes.temphp.value;
-		if(newValue < this.data.data.attributes.hp.value) {
-			let damage = this.data.data.attributes.hp.value - newValue;
+		let newTemp = this.system.attributes.temphp.value;
+		if(newValue < this.system.attributes.hp.value) {
+			let damage = this.system.attributes.hp.value - newValue;
 			
-			if(this.data.data.attributes.temphp.value > 0) {
+			if(this.system.attributes.temphp.value > 0) {
 				newTemp -= damage;
 				if(newTemp < 0) {
-					newValue = this.data.data.attributes.hp.value + newTemp;
+					newValue = this.system.attributes.hp.value + newTemp;
 					newTemp = null;
 				}
 				else {
-					newValue = this.data.data.attributes.hp.value;
+					newValue = this.system.attributes.hp.value;
 				}
 				
 				this.update({[`data.attributes.temphp.value`]:newTemp});
 			}
 		}
 		
-		if(newValue > this.data.data.attributes.hp.max) newValue =  this.data.data.attributes.hp.max;
-		else if(newValue < this.data.data.attributes.hp.min) newValue =  this.data.data.attributes.hp.min;
+		if(newValue > this.system.attributes.hp.max) newValue =  this.system.attributes.hp.max;
+		else if(newValue < this.system.attributes.hp.min) newValue =  this.system.attributes.hp.min;
 		
 		return [newValue,newTemp];
 	}
@@ -830,8 +830,8 @@ export class Actor4e extends Actor {
    * @return {Promise.<Roll>}   A Promise which resolves to the created Roll instance
    */
 	rollSkill(skillId, options={}) {
-		const skl = this.data.data.skills[skillId];
-		const bonuses = getProperty(this.data.data, "bonuses.abilities") || {};
+		const skl = this.system.skills[skillId];
+		const bonuses = getProperty(this.system, "bonuses.abilities") || {};
 
 		// Compose roll parts and data
 		const parts = ["@mod"];
@@ -849,8 +849,8 @@ export class Actor4e extends Actor {
 			parts.push("@skillBonus");
 		}
 
-		let flavText = this.data.data.skills[skillId].chat.replace("@name", this.data.name);
-		flavText = flavText.replace("@label", this.data.data.skills[skillId].label);
+		let flavText = this.system.skills[skillId].chat.replace("@name", this.data.name);
+		flavText = flavText.replace("@label", this.system.skills[skillId].label);
 		
 		// Reliable Talent applies to any skill check we have full or better proficiency in
 		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4e", "reliableTalent"));
@@ -875,32 +875,32 @@ export class Actor4e extends Actor {
    */
 	rollAbility(abilityId, options={}) {
 		const label = abilityId; //CONFIG.DND4EBETA.abilities[abilityId];
-		const abl = this.data.data.abilities[abilityId];
+		const abl = this.system.abilities[abilityId];
 
 		// Construct parts
 		const parts = game.settings.get("dnd4e", "halfLevelOptions") ? ["@mod"] : ["@mod", "@halfLevel"];
-		const data = game.settings.get("dnd4e", "halfLevelOptions") ? {mod: abl.mod} : {mod: abl.mod, halfLevel: Math.floor(this.data.data.details.level / 2)};
+		const data = game.settings.get("dnd4e", "halfLevelOptions") ? {mod: abl.mod} : {mod: abl.mod, halfLevel: Math.floor(this.system.details.level / 2)};
 
 		// Add feat-related proficiency bonuses
 		// const feats = this.data.flags.dnd4eBeta || {};
 		// if ( feats.remarkableAthlete && DND4EBETA.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
 			// parts.push("@proficiency");
-			// data.proficiency = Math.ceil(0.5 * this.data.data.attributes.prof);
+			// data.proficiency = Math.ceil(0.5 * this.system.attributes.prof);
 		// }
 		// else if ( feats.jackOfAllTrades ) {
 			// parts.push("@proficiency");
-			// data.proficiency = Math.floor(0.5 * this.data.data.attributes.prof);
+			// data.proficiency = Math.floor(0.5 * this.system.attributes.prof);
 		// }
 
 		// Add global actor bonus
-		const bonuses = getProperty(this.data.data, "bonuses.abilities") || {};
+		const bonuses = getProperty(this.system, "bonuses.abilities") || {};
 		if ( bonuses.check ) {
 			parts.push("@checkBonus");
 			data.checkBonus = bonuses.check;
 		}
 		
-		let flavText = this.data.data.abilities[abilityId].chat.replace("@name", this.data.name);
-		flavText = flavText.replace("@label", this.data.data.abilities[abilityId].label);
+		let flavText = this.system.abilities[abilityId].chat.replace("@name", this.data.name);
+		flavText = flavText.replace("@label", this.system.abilities[abilityId].label);
 		
 		// Roll and return
 		return d20Roll(mergeObject(options, {
@@ -916,22 +916,22 @@ export class Actor4e extends Actor {
 	
 	rollDef(defId, options={}) {
 		const label = defId;
-		const def = this.data.data.defences[defId];
+		const def = this.system.defences[defId];
 
 		// Construct parts
 		const parts = ["@mod"];
 		const data = {mod: def.value - 10};
 		
 		// Add global actor bonus
-		const bonuses = getProperty(this.data.data, "bonuses.defences") || {};
+		const bonuses = getProperty(this.system, "bonuses.defences") || {};
 		if ( bonuses.check ) {
 			parts.push("@checkBonus");
 			data.checkBonus = bonuses.check;
 		}
 		
-		let flavText = this.data.data.defences[defId].chat.replace("@name", this.data.name);
-		flavText = flavText.replace("@label", this.data.data.defences[defId].label);
-		flavText = flavText.replace("@title", this.data.data.defences[defId].title);
+		let flavText = this.system.defences[defId].chat.replace("@name", this.data.name);
+		flavText = flavText.replace("@label", this.system.defences[defId].label);
+		flavText = flavText.replace("@title", this.system.defences[defId].title);
 		
 		// Roll and return
 		return d20Roll(mergeObject(options, {
@@ -981,9 +981,9 @@ export class Actor4e extends Actor {
 		const isReroll = !!(game.combat.combatants.get(combatants[0]).data.initiative || game.combat.combatants.get(combatants[0]).data.initiative == 0)
 
 		const parts = ['@init'];
-		let init = this.data.data.attributes.init.value;
+		let init = this.system.attributes.init.value;
 		const tiebreaker = game.settings.get("dnd4e", "initiativeDexTiebreaker");
-		if ( tiebreaker ) init += this.data.data.attributes.init.value / 100;
+		if ( tiebreaker ) init += this.system.attributes.init.value / 100;
 		const data = {init: init};
 
 		const initRoll = await  d20Roll(mergeObject(options, {
@@ -1149,7 +1149,7 @@ export class Actor4e extends Actor {
 			//get all the damageTypes in this term
 			let damageTypesArray = d[1].replace(/ /g,'').split(',');
 
-			const actorRes = this.data.data.resistances;
+			const actorRes = this.system.resistances;
 			const isUntypedDamageImmune = actorRes['damage'].immune;
 			let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
 			let lowestRes = Infinity; // will attemtpe to replace this with the lowest resistance / highest vunrability
@@ -1196,7 +1196,7 @@ export class Actor4e extends Actor {
 	async calcDamagePHB(damage, multiplier, surges){
 		let damageDealt = {};
 		let totalDamage = 0;
-		const actorRes = this.data.data.resistances;
+		const actorRes = this.system.resistances;
 
 		for(let d of damage){
 			let damageTypesArray = d[1].replace(/ /g,'').split(',');
@@ -1233,25 +1233,25 @@ export class Actor4e extends Actor {
 		
 		// Healing Surge related checks
 		if(surges.surgeAmount){
-			if(this.data.data.details.surges.value < surges.surgeAmount){ //check to see if enough surges left to use tihs source
+			if(this.system.details.surges.value < surges.surgeAmount){ //check to see if enough surges left to use tihs source
 				ui.notifications.error(game.i18n.localize("DND4EBETA.HealingSurgeWarning"));
 				return;
 			}
-			else if(this.data.data.attributes.hp.value >= this.data.data.attributes.hp.max){
+			else if(this.system.attributes.hp.value >= this.system.attributes.hp.max){
 				ui.notifications.error(game.i18n.localize("DND4EBETA.HealingOverWarning"));
 				return;
 			}
-			amount+= this.data.data.details.surgeValue*surges.surgeAmount*multiplier
+			amount+= this.system.details.surgeValue*surges.surgeAmount*multiplier
 		}
 		if(surges.surgeValueAmount){
-			amount+= this.data.data.details.surgeValue*surges.surgeValueAmount*multiplier
+			amount+= this.system.details.surgeValue*surges.surgeValueAmount*multiplier
 		}
 		
 		const healFromZero = true; // If true, healing HP starts from zero (the usual for 4e). On false, it follows normal arithmetic
-		const hp = this.data.data.attributes.hp;
+		const hp = this.system.attributes.hp;
 
 		// Deduct damage from temp HP first
-		const tmp = parseInt(this.data.data.attributes.temphp.value) || 0;
+		const tmp = parseInt(this.system.attributes.temphp.value) || 0;
 		const dt = amount > 0 ? Math.min(tmp, amount) : 0;
 		// Remaining goes to health
 		//const tmpMax = parseInt(hp.tempmax) || 0;
@@ -1259,7 +1259,7 @@ export class Actor4e extends Actor {
 		var newHp = hp.value;
 		if (amount > 0) // Damage
 			{
-			newHp = Math.clamped(hp.value - amount, (-1)*this.data.data.details.bloodied, hp.max);
+			newHp = Math.clamped(hp.value - amount, (-1)*this.system.details.bloodied, hp.max);
 			}
 		else if (amount < 0) // Healing
 			{
@@ -1267,7 +1267,7 @@ export class Actor4e extends Actor {
 				{
 				newHp = 0;
 				}
-			newHp = Math.clamped(newHp - amount, (-1)*this.data.data.details.bloodied, hp.max);
+			newHp = Math.clamped(newHp - amount, (-1)*this.system.details.bloodied, hp.max);
 			}
 	
 		// Update the Actor
@@ -1278,7 +1278,7 @@ export class Actor4e extends Actor {
 	
 		//spend healing surges
 		if(multiplier < 0  && surges.surgeAmount){
-			updates["data.details.surges.value"] =  this.data.data.details.surges.value - surges.surgeAmount;
+			updates["data.details.surges.value"] =  this.system.details.surges.value - surges.surgeAmount;
 		}
 
 		// Delegate damage application to a hook
@@ -1298,11 +1298,11 @@ export class Actor4e extends Actor {
 			return
 		}
 
-		const hp = this.data.data.attributes.hp;
+		const hp = this.system.attributes.hp;
 		console.log(hp)
 
 		// calculate existing temp hp
-		const tmp = parseInt(this.data.data.attributes.temphp.value) || 0;
+		const tmp = parseInt(this.system.attributes.temphp.value) || 0;
 
 		if (amount >= 0) {
 			// temp HP doesn't stack, so only update if we have a higher value

@@ -19,7 +19,7 @@ export default class Item4e extends Item {
 		}
 
 		if (this.data.type === "consumable") {
-			const data = this.data.data
+			const data = this.system
 			// does it have an old damage expression
 			if (data.damage.parts?.length > 0) {
 				console.log("DnD4e: Updating an obsolete consumable that somehow still had a parts roll")
@@ -41,7 +41,7 @@ export default class Item4e extends Item {
 		}
 
 		if (this.data.type === "ritual") {
-			const data = this.data.data
+			const data = this.system
 			if (data.oldRitualNeedsUpdating === true) {
 				console.log("DnD4e: Updating an obsolete ritual")
 				foundry.utils.setProperty(changed, "data.formula", "@attribute")
@@ -51,7 +51,7 @@ export default class Item4e extends Item {
 	}
 
 	get preparedMaxUses() {
-		const data = this.data.data;
+		const data = this.system;
 		if (!data.uses?.max) return null;
 		let max = data.uses.max;
 	
@@ -79,7 +79,7 @@ export default class Item4e extends Item {
 	 * @type {string|null}
 	 */
 	get abilityMod() {
-		const itemData = this.data.data;
+		const itemData = this.system;
 		if (!("ability" in itemData)) return null;
 
 		// Case 1 - defined directly by the item
@@ -124,8 +124,8 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasAttack() {
-		return this.data.data.attack?.isAttack;
-		// return ["mwak", "rwak", "msak", "rsak"].includes(this.data.data.actionType);
+		return this.system.attack?.isAttack;
+		// return ["mwak", "rwak", "msak", "rsak"].includes(this.system.actionType);
 	}
 
 	/* -------------------------------------------- */
@@ -136,8 +136,8 @@ export default class Item4e extends Item {
 	 */
 	get hasDamage() {
 		if(!this.data.type === "power") return false; //curently only powers will deal damage or make attacks
-		return this.data.data.hit?.isDamage;
-		return !!this.data.data.hit?.formula || !!(this.data.data.damage && this.data.data.damage.parts.length);
+		return this.system.hit?.isDamage;
+		return !!this.system.hit?.formula || !!(this.system.damage && this.system.damage.parts.length);
 	}
 
 	/* -------------------------------------------- */
@@ -147,7 +147,7 @@ export default class Item4e extends Item {
 	 */
 	 get hasHealing() {
 		if(this.data.type === "power" || this.data.type === "consumable"){
-			return this.data.data.hit?.isHealing;
+			return this.system.hit?.isHealing;
 		}
 		return false; //curently only powers will deal damage or make attacks
 		
@@ -160,7 +160,7 @@ export default class Item4e extends Item {
 	 */
 	get hasEffect() {
 		if(!this.data.type === "power") return false; //curently only powers have effects
-		return !!this.data.data.effect?.detail;
+		return !!this.system.effect?.detail;
 	}
 	
 	/* -------------------------------------------- */
@@ -171,7 +171,7 @@ export default class Item4e extends Item {
 	 */
 	get isVersatile() {
 		return false;
-		return !!(this.hasDamage && this.data.data.damage.versatile);
+		return !!(this.hasDamage && this.system.damage.versatile);
 	}
 
 	/* -------------------------------------------- */
@@ -181,7 +181,7 @@ export default class Item4e extends Item {
 	 * @return {boolean}
 	 */
 	get isHealing() {
-		return (this.data.data.actionType === "heal") && this.data.data.damage.parts.length;
+		return (this.system.actionType === "heal") && this.system.damage.parts.length;
 	}
 
 	/* -------------------------------------------- */
@@ -191,7 +191,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasSave() {
-		return !!(this.data.data.save && this.data.data.save.ability);
+		return !!(this.system.save && this.system.save.ability);
 	}
 
 	/* -------------------------------------------- */
@@ -201,7 +201,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasTarget() {
-		return target && !["none",""].includes(this.data.data.target);
+		return target && !["none",""].includes(this.system.target);
 	}
 
 	/* -------------------------------------------- */
@@ -211,7 +211,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasAreaTarget() {
-		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.data.data.rangeType);
+		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.system.rangeType);
 	}
 
   /* -------------------------------------------- */
@@ -224,10 +224,10 @@ export default class Item4e extends Item {
 		if(this.type === "power") return true;
 		return false;
 		const requireEquipped = (this.data.type !== "consumable") || ["rod", "trinket", "wand"].includes(
-			this.data.data.consumableType);
-		if ( requireEquipped && (this.data.data.equipped === false) ) return true;
+			this.system.consumableType);
+		if ( requireEquipped && (this.system.equipped === false) ) return true;
 
-		return this.data.data.attunement === CONFIG.DND4E.attunementTypes.REQUIRED;
+		return this.system.attunement === CONFIG.DND4E.attunementTypes.REQUIRED;
 	}	
 
 	/* -------------------------------------------- */
@@ -237,8 +237,8 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasLimitedUses() {
-		let chg = this.data.data.recharge || {};
-		let uses = this.data.data.uses || {};
+		let chg = this.system.recharge || {};
+		let uses = this.system.uses || {};
 		return !!chg.value || (!!uses.per && (this.preparedMaxUses > 0));
 	}
 
@@ -393,13 +393,13 @@ export default class Item4e extends Item {
 	 */
 	async roll({configureDialog=true, rollMode=null, createMessage=true}={}) {
 
-		if(["both", "pre", "sub"].includes(this.data.data.macro?.launchOrder)) {
+		if(["both", "pre", "sub"].includes(this.system.macro?.launchOrder)) {
 			Helper.executeMacro(this)
-			if (this.data.data.macro.launchOrder === "sub") return;
+			if (this.system.macro.launchOrder === "sub") return;
 		}
 		const cardData = (() => {
-			if ((this.data.type === "power" || this.data.type === "consumable") && this.data.data.autoGenChatPowerCard) {
-				let weaponUse = Helper.getWeaponUse(this.data.data, this.actor);
+			if ((this.data.type === "power" || this.data.type === "consumable") && this.system.autoGenChatPowerCard) {
+				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
 				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG, this.actor.data);
 				return Helper.commonReplace(cardString, this.actor.data, this.data, weaponUse? weaponUse.data.data : null, 1);
 			} else {
@@ -437,14 +437,14 @@ export default class Item4e extends Item {
 		}
 
 		// For items which consume a resource, handle that here
-		const allowed = await this._handleResourceConsumption({isCard: true, isAttack: false},this.data.data);
+		const allowed = await this._handleResourceConsumption({isCard: true, isAttack: false},this.system);
 		if ( allowed === false ) return;
 
 		// Render the chat card template
 		let templateType = "item"
 		if (["tool", "ritual"].includes(this.data.type)) {
 			templateType =  this.data.type
-			templateData.abilityCheck  = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
+			templateData.abilityCheck  = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
 		}
 		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
 		let html = await renderTemplate(template, templateData);
@@ -484,7 +484,7 @@ export default class Item4e extends Item {
 
 			ChatMessage.create(chatData);
 
-			if(["both", "post"].includes(this.data.data.macro?.launchOrder)) {
+			if(["both", "post"].includes(this.system.macro?.launchOrder)) {
 				Helper.executeMacro(this)
 			}
 		}
@@ -507,7 +507,7 @@ export default class Item4e extends Item {
 	 * @private
 	 */
 	async _handleResourceConsumption({isCard=false, isAttack=false}={}, itemData) {
-		// const itemData = this.data.data;
+		// const itemData = this.system;
 	
 		const consume = itemData.consume || {};
 		if ( !consume.type ) return true;
@@ -580,8 +580,8 @@ export default class Item4e extends Item {
 		if ( this.data.type !== "feat" ) throw new Error("Wrong Item type");
 
 		// Configure whether to consume a limited use or to place a template
-		const charge = this.data.data.recharge;
-		const uses = this.data.data.uses;
+		const charge = this.system.recharge;
+		const uses = this.system.uses;
 				
 		let usesCharges = !!uses.per && (this.preparedMaxUses > 0);
 		let placeTemplate = false;
@@ -632,7 +632,7 @@ export default class Item4e extends Item {
 	 * @return {Object}               An object of chat data to render
 	 */
 	getChatData(htmlOptions={}) {
-		const data = duplicate(this.data.data);
+		const data = duplicate(this.system);
 		const labels = this.labels;
 		
 		// Rich text description
@@ -783,7 +783,7 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll|null>}   A Promise which resolves to the created Roll instance
 	 */
 	async rollAttack(options={}) {
-		const itemData = this.data.data;
+		const itemData = this.system;
 		const actorData = this.actor.data;
 		// itemData.weaponUse = 2nd dropdown - default/none/weapon
 		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...
@@ -818,10 +818,10 @@ export default class Item4e extends Item {
 		const parts = [];
 		const partsExpressionReplacements = [];
 		if(!!itemData.attack.formula) {		
-			parts.push(Helper.commonReplace(itemData.attack.formula, actorData, this.data.data, weaponUse? weaponUse.data.data : null))
+			parts.push(Helper.commonReplace(itemData.attack.formula, actorData, this.system, weaponUse? weaponUse.data.data : null))
 			partsExpressionReplacements.push({value : itemData.attack.formula, target: parts[0]})
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData, this.data.data, weaponUse? weaponUse.data.data : null, 1, true)
+			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData, this.system, weaponUse? weaponUse.data.data : null, 1, true)
 		}
 
 		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
@@ -921,7 +921,7 @@ export default class Item4e extends Item {
 
 		// Handle resource consumption if the attack roll was made
 		const allowed = await (
-			this._handleResourceConsumption({isCard: false, isAttack: true},this.data.data),
+			this._handleResourceConsumption({isCard: false, isAttack: true},this.system),
 			weaponUse? this._handleResourceConsumption({isCard: false, isAttack: true},this.actor.items.get(weaponUse.id).data.data) : true
 		// itemData.weaponUse? this.actor.items.get(itemData.weaponUse)
 		);
@@ -942,7 +942,7 @@ export default class Item4e extends Item {
 	 */
 	async rollDamage({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
 		console.log(fastForward)
-		const itemData = this.data.data;
+		const itemData = this.system;
 		const actorData = this.actor.data;
 		const actorInnerData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
@@ -979,9 +979,9 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData: {} }
 		const secondaryPartsHelper = (formula, damageType) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data, 1, true))
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.system, weaponUse?.data.data, 1, true))
 			// convert formula and type into a single string of "substituted formula [type]"
-			return returnDamageRollAndOptionalType(Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data), damageType)
+			return returnDamageRollAndOptionalType(Helper.commonReplace(formula, actorData, this.system, weaponUse?.data.data), damageType)
 		}
 		const parts = itemData.damage.parts.map(d => secondaryPartsHelper(d[0], d[1]));
 		const partsMiss = itemData.damage.parts.map(d => secondaryPartsHelper(d[0], d[1]));
@@ -1018,9 +1018,9 @@ export default class Item4e extends Item {
 		if(!!itemData.hit?.formula) {
 			const formulaHelper = (formula) => {
 				// store the values that were used to sub in any formulas
-				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data, 1, true))
+				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.system, weaponUse?.data.data, 1, true))
 				// convert formula and type into a single string of "substituted formula [type]"
-				return  Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data);
+				return  Helper.commonReplace(formula, actorData, this.system, weaponUse?.data.data);
 			}
 			damageFormula = formulaHelper(itemData.hit.formula)
 			missDamageFormula =formulaHelper(itemData.miss.formula)
@@ -1034,8 +1034,8 @@ export default class Item4e extends Item {
 			//Add seconadary weapons damage into parts
 			const secondaryDamageExpressionHelper = (oldParts, expressionParts, newPartsArr) => {
 				const newParts = newPartsArr.map(d =>  {
-					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data, 1, true))
-					const formula = Helper.commonReplace(d[0], actorData, this.data.data, weaponUse?.data.data);
+					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(d[0], actorData, this.system, weaponUse?.data.data, 1, true))
+					const formula = Helper.commonReplace(d[0], actorData, this.system, weaponUse?.data.data);
 					if (d.length >= 2) {
 						return returnDamageRollAndOptionalType(formula, d[1])
 					}
@@ -1199,7 +1199,7 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollHealing({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
-		const itemData = this.data.data;
+		const itemData = this.system;
 		const actorData = this.actor.data;
 		const actorInnerData = this.actor.data.data;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
@@ -1230,9 +1230,9 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData : {} }
 		const formulaHelper = (formula) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data, 1, true))
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.system, weaponUse?.data.data, 1, true))
 			// convert formula and type into a single string of "substituted formula [type]"
-			return  Helper.commonReplace(formula, actorData, this.data.data, weaponUse?.data.data);
+			return  Helper.commonReplace(formula, actorData, this.system, weaponUse?.data.data);
 		}
 
 		//Add power healing into parts
@@ -1327,7 +1327,7 @@ export default class Item4e extends Item {
 	 * @return {Promise.<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	async rollFormula(options={}) {
-		if ( !this.data.data.formula ) {
+		if ( !this.system.formula ) {
 			throw new Error("This Item does not have a formula to roll!");
 		}
 
@@ -1340,7 +1340,7 @@ export default class Item4e extends Item {
 		const roll = await new Roll(rollData.item.formula, rollData).roll({async : true});
 		roll.toMessage({ 
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
-			flavor: this.data.data.chatFlavor || title,
+			flavor: this.system.chatFlavor || title,
 			rollMode: game.settings.get("core", "rollMode"),
 			messageData: {"flags.dnd4eBeta.roll": {type: "other", itemId: this.id }}
 		});
@@ -1357,7 +1357,7 @@ export default class Item4e extends Item {
 	 */
 	async _rollConsumable(configureDialog) {
 		if ( this.data.type !== "consumable" ) throw new Error("Wrong Item type");
-		const itemData = this.data.data;
+		const itemData = this.system;
 
 		// Determine whether to deduct uses of the item
 		const uses = itemData.uses || {};
@@ -1422,7 +1422,7 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	async rollRecharge() {
-		const data = this.data.data;
+		const data = this.system;
 		if ( !data.recharge.value ) return;
 
 		// Roll the check
@@ -1467,13 +1467,13 @@ export default class Item4e extends Item {
 		let rollData = this.getRollData();
 		const parts = ["@" + rollType];
 
-		if(this.data.data.formula) {
-			rollData[rollType] = Helper.commonReplace(this.data.data.formula.replace("@attribute", Helper.byString(this.data.data.attribute, this.actor.data.data)), this.actor.data, this.data.data);
+		if(this.system.formula) {
+			rollData[rollType] = Helper.commonReplace(this.system.formula.replace("@attribute", Helper.byString(this.system.attribute, this.actor.data.data)), this.actor.data, this.system);
 		} else {
-			rollData[rollType] = `1d20 + ${Helper.byString(this.data.data.attribute, this.actor.data.data)}`; 
-			if(this.data.data.bonus){
+			rollData[rollType] = `1d20 + ${Helper.byString(this.system.attribute, this.actor.data.data)}`; 
+			if(this.system.bonus){
 				//if does not srtart with a number sign add one
-				let trimmedbonus = this.data.data.bonus.trim();
+				let trimmedbonus = this.system.bonus.trim();
 				if(!(trimmedbonus.startsWith("+") || trimmedbonus.startsWith("-"))) {
 					trimmedbonus = ' + ' + trimmedbonus;
 				}
@@ -1483,9 +1483,9 @@ export default class Item4e extends Item {
 		console.log(rollData[rollType])
 		const title = `${this.name} - ${game.i18n.localize(titleKey)}`;
 
-		const label = Helper.byString(this.data.data.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
+		const label = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.data.data);
 
-		const flavor = this.data.data.chatFlavor ?  `${this.data.data.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize(titleKey)}  (${label} check)`;
+		const flavor = this.system.chatFlavor ?  `${this.system.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize(titleKey)}  (${label} check)`;
 		// Compose the roll data
 		const rollConfig = mergeObject({
 			parts: parts,
@@ -1515,7 +1515,7 @@ export default class Item4e extends Item {
 	getRollData() {
 		if ( !this.actor ) return null;
 		const rollData = this.actor.getRollData();
-		rollData.item = duplicate(this.data.data);
+		rollData.item = duplicate(this.system);
 
 		// Include an ability score modifier if one exists
 		const abl = this.abilityMod;
