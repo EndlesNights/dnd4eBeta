@@ -9,7 +9,14 @@
 		"maximum": 10
 	},
 	"templateVersion": 2,
-	"authors": "EndlesNights",
+	"authors": [
+		{
+			"name": "EndlesNights",
+			"url": "https://github.com/EndlesNights",
+			"email": "endlesnights@gmail.com",
+			"discord": "endlesnights#9000"
+		  }
+	],
 	"relationships.requires": [
 		{ "name": "lib-wrapper" }
 	],
