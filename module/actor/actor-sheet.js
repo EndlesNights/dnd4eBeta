@@ -170,7 +170,7 @@ export default class ActorSheet4e extends ActorSheet {
 			if ( trait.custom ) {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
-			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
+			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
 		}
 	}
 
@@ -595,7 +595,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 			if ( trait.custom ) {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
-			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
+			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
 			
 		}
 	}
@@ -617,7 +617,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 			if ( trait.custom ) {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
-			trait.cssClass = !isObjectEmpty(trait.selected) ? "" : "inactive";
+			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
 			
 		}
 	}

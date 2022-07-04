@@ -11,7 +11,7 @@
 	for ( let a of game.actors ) {
 		try {
 			const updateData = migrateActorData(a.toObject(), migrationData);
-			if ( !foundry.utils.isObjectEmpty(updateData) ) {
+			if ( !foundry.utils.isEmpty(updateData) ) {
 				console.log(`Migrating Actor document ${a.name}`);
 				await a.update(updateData, {enforceTypes: false});
 			}
@@ -25,7 +25,7 @@
 	for ( let i of game.items ) {
 		try {
 			const updateData = migrateItemData(i.toObject(), migrationData);
-			if ( !foundry.utils.isObjectEmpty(updateData) ) {
+			if ( !foundry.utils.isEmpty(updateData) ) {
 				console.log(`Migrating Item document ${i.name}`);
 				await i.update(updateData, {enforceTypes: false});
 			}
@@ -39,7 +39,7 @@
 	for ( let s of game.scenes ) {
 		try {
 			const updateData = migrateSceneData(s.data, migrationData);
-			if ( !foundry.utils.isObjectEmpty(updateData) ) {
+			if ( !foundry.utils.isEmpty(updateData) ) {
 				console.log(`Migrating Scene document ${s.name}`);
 				await s.update(updateData, {enforceTypes: false});
 				// If we do not do this, then synthetic token actors remain in cache
@@ -102,7 +102,7 @@ export const migrateCompendium = async function(pack) {
 			}
 
 			// Save the entry, if data was changed
-			if ( foundry.utils.isObjectEmpty(updateData) ) continue;
+			if ( foundry.utils.isEmpty(updateData) ) continue;
 			await doc.update(updateData);
 			console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
 		}
@@ -158,7 +158,7 @@ export const migrateActorData = function(actor, migrationData) {
 	// 	}	
 
 	// 	// Update the Owned Item
-	// 	if ( !isObjectEmpty(itemUpdate) ) {
+	// 	if ( !isEmpty(itemUpdate) ) {
 	// 		itemUpdate._id = itemData._id;
 	// 		arr.push(expandObject(itemUpdate));
 	// 	}
