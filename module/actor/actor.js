@@ -134,27 +134,27 @@ export class Actor4e extends Actor {
 	 * Currently this only does attributes, but can increase it in future if there are more things we want in effects
 	 */
 	prepareDerivedData() {
-		const actorData = this.data;
-		const data = actorData.data;
-		const bonuses = getProperty(data, "bonuses.abilities") || {};
+		const system = this.system;
+		const bonuses = getProperty(system, "bonuses.abilities") || {};
 
-		this.data.data.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
+		// this.data.data.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
+		system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
 
 		// Ability modifiers and saves
 		// Character All Ability Check" and All Ability Save bonuses added when rolled since not a fixed value.
 		const saveBonus = Number.isNumeric(bonuses.save) ? parseInt(bonuses.save) : 0;
 		const checkBonus = Number.isNumeric(bonuses.check) ? parseInt(bonuses.check) : 0;
 
-		for (let [id, abl] of Object.entries(data.abilities)) {
+		for (let [id, abl] of Object.entries(system.abilities)) {
 			abl.mod = Math.floor((abl.value - 10) / 2);
-			abl.modHalf = abl.mod + Math.floor(data.details.level / 2);
+			abl.modHalf = abl.mod + Math.floor(system.details.level / 2);
 			abl.prof = (abl.proficient || 0);
 			if(game.settings.get("dnd4e", "halfLevelOptions")) {
 				abl.saveBonus = saveBonus;
 				abl.checkBonus = checkBonus;
 			} else {
-				abl.saveBonus = saveBonus + Math.floor(data.details.level / 2);
-				abl.checkBonus = checkBonus + Math.floor(data.details.level / 2);
+				abl.saveBonus = saveBonus + Math.floor(system.details.level / 2);
+				abl.checkBonus = checkBonus + Math.floor(system.details.level / 2);
 			}
 			abl.save = abl.mod + abl.prof + abl.saveBonus;
 
@@ -169,98 +169,100 @@ export class Actor4e extends Actor {
 	prepareData() {
 		super.prepareData();
 		// Get the Actor's data object
-		const actorData = this.data;
-		const data = actorData.data;
+		console.log(this)
+
+		const actorData = this;
+		const system = this.system;
 
 		this.prepareDerivedData();
 		
 		//HP auto calc
-		if(data.attributes.hp.autototal)
+		if(system.attributes.hp.autototal)
 		{
-			data.attributes.hp.max = data.attributes.hp.perlevel * (data.details.level - 1) + data.attributes.hp.starting + data.attributes.hp.feat + data.attributes.hp.misc + data.abilities.con.value;
+			system.attributes.hp.max = system.attributes.hp.perlevel * (system.details.level - 1) + system.attributes.hp.starting + system.attributes.hp.feat + system.attributes.hp.misc + system.abilities.con.value;
 		}
 		
 		//Set Health related values
-		if(!(data.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(data.details.surgeBon.bonus[0]))) {
-			for( const b of data.details.surgeBon.bonus) {
+		if(!(system.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeBon.bonus[0]))) {
+			for( const b of system.details.surgeBon.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
-					data.details.surgeBon.value += parseInt(b.value);
+					system.details.surgeBon.value += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
-						data.details.surgeBon.value += parseInt(val);
+						system.details.surgeBon.value += parseInt(val);
 					}
 				}
 			}
 		}
 		
-		if(!(data.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(data.details.secondwindbon.bonus[0]))) {
-			for( const b of data.details.secondwindbon.bonus) {
+		if(!(system.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(system.details.secondwindbon.bonus[0]))) {
+			for( const b of system.details.secondwindbon.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
-					data.details.secondwindbon.value += parseInt(b.value);
+					system.details.secondwindbon.value += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
-						data.details.secondwindbon.value += parseInt(val);
+						system.details.secondwindbon.value += parseInt(val);
 					}
 				}
 			}
 		}
 		
-		data.details.bloodied = Math.floor(data.attributes.hp.max / 2);
-		data.details.surgeValue = Math.floor(data.details.bloodied / 2) + data.details.surgeBon.value;
-		data.attributes.hp.min = -data.details.bloodied;
-		data.details.secondWindValue = data.details.surgeValue + data.details.secondwindbon.value;
+		system.details.bloodied = Math.floor(system.attributes.hp.max / 2);
+		system.details.surgeValue = Math.floor(system.details.bloodied / 2) + system.details.surgeBon.value;
+		system.attributes.hp.min = -system.details.bloodied;
+		system.details.secondWindValue = system.details.surgeValue + system.details.secondwindbon.value;
 
 		//check if bloodied
-		data.details.isBloodied = (data.attributes.hp.value <= data.attributes.hp.max/2);
+		system.details.isBloodied = (system.attributes.hp.value <= system.attributes.hp.max/2);
 
-		if(!(data.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(data.details.surgeEnv.bonus[0]))) {
-			for( const b of data.details.surgeEnv.bonus) {
+		if(!(system.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeEnv.bonus[0]))) {
+			for( const b of system.details.surgeEnv.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
-					data.details.surgeEnv.value += parseInt(b.value);
+					system.details.surgeEnv.value += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
-						data.details.surgeEnv.value += parseInt(val);
+						system.details.surgeEnv.value += parseInt(val);
 					}
 				}
 			}
 		}
 
-		if(!(data.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(data.details.deathsavebon.bonus[0]))) {
-			for( const b of data.details.deathsavebon.bonus) {
+		if(!(system.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(system.details.deathsavebon.bonus[0]))) {
+			for( const b of system.details.deathsavebon.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
-					data.details.deathsavebon.value += parseInt(b.value);
+					system.details.deathsavebon.value += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
-						data.details.deathsavebon.value += parseInt(val);
+						system.details.deathsavebon.value += parseInt(val);
 					}
 				}
 			}
 		}
 
-		if(!(data.details.saves.bonus.length === 1 && jQuery.isEmptyObject(data.details.saves.bonus[0]))) {
-			for( const b of data.details.saves.bonus) {
+		if(!(system.details.saves.bonus.length === 1 && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
+			for( const b of system.details.saves.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
-					data.details.saves.value += parseInt(b.value);
+					system.details.saves.value += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
-						data.details.saves.value += parseInt(val);
+						system.details.saves.value += parseInt(val);
 					}
 				}
 			}
 		}
 		
 		//Weight & Encumbrance
-		data.encumbrance = this._computeEncumbrance(actorData);
+		system.encumbrance = this._computeEncumbrance(actorData.system);
 			
 		// const feats = DND4E.characterFlags;
 		// const athlete = flags.remarkableAthlete;
@@ -277,79 +279,79 @@ export class Actor4e extends Actor {
 		// 		}
 		// 	}
 		// }
-		data.attributes.temphp.max = data.attributes.hp.max;
+		system.attributes.temphp.max = system.attributes.hp.max;
 
-		if (data.attributes.temphp.value <= 0 )
-			data.attributes.temphp.value = null;
+		if (system.attributes.temphp.value <= 0 )
+			system.attributes.temphp.value = null;
 
 		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
-		if((data.defences.ac.light || this.checkLightArmour() ) && data.defences.ac.altability !== "none") {
-			data.defences.ac.ability = (data.abilities.dex.value >= data.abilities.int.value) ? "dex" : "int";
-			if(data.defences.ac.altability != "")
+		if((system.defences.ac.light || this.checkLightArmour() ) && system.defences.ac.altability !== "none") {
+			system.defences.ac.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
+			if(system.defences.ac.altability != "")
 			{
 				// if(data.abilities[data.defences.ac.altability].value > data.abilities[data.defences.ac.ability].value)
 				{
-					data.defences.ac.ability = data.defences.ac.altability;
+					system.defences.ac.ability = system.defences.ac.altability;
 				}
 			}
 		}
 		else {
-			data.defences.ac.ability = "";
+			system.defences.ac.ability = "";
 		}
 		
 		//set mods for defences
-		data.defences.fort.ability = (data.abilities.str.value >= data.abilities.con.value) ? "str" : "con";
-		data.defences.ref.ability = (data.abilities.dex.value >= data.abilities.int.value) ? "dex" : "int";
-		data.defences.wil.ability = (data.abilities.wis.value >= data.abilities.cha.value) ? "wis" : "cha";
+		system.defences.fort.ability = (system.abilities.str.value >= system.abilities.con.value) ? "str" : "con";
+		system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
+		system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
 
 		// Skill modifiers
 		//Calc defence stats
-		if(this.data.type === "NPC"){
-			this.calcSkillNPC(data);
-			this.calcDefenceStatsNPC(data);
+		if(this.type === "NPC"){
+			this.calcSkillNPC(system);
+			this.calcDefenceStatsNPC(system);
 		} else {
-			this.calcSkillCharacter(data);
-			this.calcDefenceStatsCharacter(data);
+			this.calcSkillCharacter(system);
+			this.calcDefenceStatsCharacter(system);
 		}
 
 		//calc init
 		let initBonusValue = 0;
 		if(!game.settings.get("dnd4e", "halfLevelOptions")){
-			initBonusValue += Math.floor(data.details.level / 2);
+			initBonusValue += Math.floor(system.details.level / 2);
 		}
 
-		if(!(data.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(data.attributes.init.bonus[0]))) {
-			for( const b of data.attributes.init.bonus) {
+		if(!(system.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(system.attributes.init.bonus[0]))) {
+			for( const b of system.attributes.init.bonus) {
 				if(b.active  && Helper._isNumber(b.value)) {
 					initBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
 						initBonusValue += parseInt(val);
 					}
 				}
 			}
 		}
-		data.attributes.init.bonusValue = initBonusValue;
-		if(this.data.type === "NPC" && !data.advancedCals){
-			data.attributes.init.value = (data.attributes.init.ability ? data.abilities[data.attributes.init.ability].mod : 0) + (data.attributes.init.base || 0) + initBonusValue;
+		system.attributes.init.bonusValue = initBonusValue;
+		if(this.data.type === "NPC" && !system.advancedCals){
+			system.attributes.init.value = (system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod : 0) + (system.attributes.init.base || 0) + initBonusValue;
 		} else {
-			data.attributes.init.value = data.attributes.init.ability ? data.abilities[data.attributes.init.ability].mod + initBonusValue : initBonusValue;
+			system.attributes.init.value = system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod + initBonusValue : initBonusValue;
 		}
 		
-		if(data.attributes.init.value > 999)
-			data.attributes.init.value = 999;
+		if(system.attributes.init.value > 999)
+			system.attributes.init.value = 999;
 		
 		//calc movespeed
 		let baseMoveBonusValue = 0;
-		if(!(data.movement.base.bonus.length === 1 && jQuery.isEmptyObject(data.movement.base.bonus[0]))) {
-			for( const b of data.movement.base.bonus) {
+		if(!(system.movement.base.bonus.length === 1 && jQuery.isEmptyObject(system.movement.base.bonus[0]))) {
+			for( const b of system.movement.base.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
 					baseMoveBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
 						baseMoveBonusValue += parseInt(val);
 					}
@@ -359,125 +361,125 @@ export class Actor4e extends Actor {
 		for ( let i of this.items) {
 			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
 			const absMovePen = Math.abs(i.data.data.armour.movePenValue)
-			data.movement.base.armour -= absMovePen;
+			system.movement.base.armour -= absMovePen;
 		}
-		data.movement.base.bonusValue = baseMoveBonusValue;
+		system.movement.base.bonusValue = baseMoveBonusValue;
 
 		
 		let walkBonusValue = 0;
-		if(!(data.movement.walk.bonus.length === 1 && jQuery.isEmptyObject(data.movement.walk.bonus[0]))) {
-			for( const b of data.movement.walk.bonus) {
+		if(!(system.movement.walk.bonus.length === 1 && jQuery.isEmptyObject(system.movement.walk.bonus[0]))) {
+			for( const b of system.movement.walk.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
 					walkBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
 						walkBonusValue += parseInt(val);
 					}
 				}
 			}
 		}
-		data.movement.walk.bonusValue = walkBonusValue;	
+		system.movement.walk.bonusValue = walkBonusValue;	
 
 		let chargeBonusValue = 0;
-		if(!(data.movement.charge.bonus.length === 1 && jQuery.isEmptyObject(data.movement.charge.bonus[0]))) {
-			for( const b of data.movement.charge.bonus) {
+		if(!(system.movement.charge.bonus.length === 1 && jQuery.isEmptyObject(system.movement.charge.bonus[0]))) {
+			for( const b of system.movement.charge.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
 					chargeBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
 						chargeBonusValue += parseInt(val);
 					}
 				}
 			}
 		}
-		data.movement.charge.bonusValue = chargeBonusValue;	
+		system.movement.charge.bonusValue = chargeBonusValue;	
 		
 		let runBonusValue = 0;
-		if(!(data.movement.run.bonus.length === 1 && jQuery.isEmptyObject(data.movement.run.bonus[0]))) {
-			for( const b of data.movement.run.bonus) {
+		if(!(system.movement.run.bonus.length === 1 && jQuery.isEmptyObject(system.movement.run.bonus[0]))) {
+			for( const b of system.movement.run.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
 					runBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
 						runBonusValue += parseInt(val);
 					}
 				}
 			}
 		}
-		data.movement.run.bonusValue = runBonusValue;
+		system.movement.run.bonusValue = runBonusValue;
 	
 		let climbBonusValue = 0;
-		if(!(data.movement.climb.bonus.length === 1 && jQuery.isEmptyObject(data.movement.climb.bonus[0]))) {
-			for( const b of data.movement.climb.bonus) {
+		if(!(system.movement.climb.bonus.length === 1 && jQuery.isEmptyObject(system.movement.climb.bonus[0]))) {
+			for( const b of system.movement.climb.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
 					climbBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
 						climbBonusValue += parseInt(val);
 					}
 				}
 			}
 		}
-		data.movement.climb.bonusValue = climbBonusValue;	
+		system.movement.climb.bonusValue = climbBonusValue;	
 
 		let shiftBonusValue = 0;
-		if(!(data.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(data.movement.shift.bonus[0]))) {
-			for( const b of data.movement.shift.bonus) {
+		if(!(system.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(system.movement.shift.bonus[0]))) {
+			for( const b of system.movement.shift.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
 					shiftBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
-					let val = Helper.replaceData(b.value,data)
+					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
 						shiftBonusValue += parseInt(val);
 					}
 				}
 			}
 		}
-		data.movement.shift.bonusValue = shiftBonusValue;	
+		system.movement.shift.bonusValue = shiftBonusValue;	
 
-		data.movement.base.value += data.movement.base.base +  baseMoveBonusValue + data.movement.base.temp;
+		system.movement.base.value += system.movement.base.base +  baseMoveBonusValue + system.movement.base.temp;
 		
-		let walkForm = eval(Helper.replaceData(data.movement.walk.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.walk.value += walkForm + walkBonusValue + data.movement.base.temp;
+		let walkForm = eval(Helper.replaceData(system.movement.walk.formula.replace(/@base/g,system.movement.base.base).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+		system.movement.walk.value += walkForm + walkBonusValue + system.movement.base.temp;
 		
-		if (data.movement.walk.value < 0)
-			data.movement.walk.value = 0;
+		if (system.movement.walk.value < 0)
+			system.movement.walk.value = 0;
 		
-		let runForm = eval(Helper.replaceData(data.movement.run.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.run.value += runForm + runBonusValue + data.movement.run.temp;
+		let runForm = eval(Helper.replaceData(system.movement.run.formula.replace(/@base/g,system.movement.base.base).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+		system.movement.run.value += runForm + runBonusValue + system.movement.run.temp;
 		
-		if (data.movement.run.value < 0)
-			data.movement.run.value = 0;
+		if (system.movement.run.value < 0)
+			system.movement.run.value = 0;
 
-		let chargeForm = eval(Helper.replaceData(data.movement.charge.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.charge.value += chargeForm + chargeBonusValue + data.movement.charge.temp;
+		let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.base).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+		system.movement.charge.value += chargeForm + chargeBonusValue + system.movement.charge.temp;
 		
-		if (data.movement.charge.value < 0)
-			data.movement.charge.value = 0;
+		if (system.movement.charge.value < 0)
+			system.movement.charge.value = 0;
 
-		let climbeForm = eval(Helper.replaceData(data.movement.climb.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour), data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.climb.value += climbeForm;
+		let climbeForm = eval(Helper.replaceData(system.movement.climb.formula.replace(/@base/g,system.movement.base.base).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+		system.movement.climb.value += climbeForm;
 		
-		if (data.movement.climb.value < 0)
-			data.movement.climb.value = 0;
+		if (system.movement.climb.value < 0)
+			system.movement.climb.value = 0;
 		
-		let shiftForm = eval(Helper.replaceData(data.movement.shift.formula.replace(/@base/g,data.movement.base.base).replace(/@armour/g,data.movement.base.armour),data).replace(/[^-()\d/*+. ]/g, ''));
-		data.movement.shift.value += shiftForm;
+		let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.base).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
+		system.movement.shift.value += shiftForm;
 		
-		if (data.movement.shift.value < 0)
-			data.movement.shift.value = 0;
+		if (system.movement.shift.value < 0)
+			system.movement.shift.value = 0;
 			
 		//Passive Skills
-		for (let [id, pas] of Object.entries(data.passive)) {
+		for (let [id, pas] of Object.entries(system.passive)) {
 			let passiveBonusValue = 0;
 			if(!(pas.bonus.length === 1 && jQuery.isEmptyObject(pas.bonus[0]))) {
 				for( const b of pas.bonus) {
@@ -485,7 +487,7 @@ export class Actor4e extends Actor {
 						passiveBonusValue += parseInt(b.value);
 					}
 					else if(b.active){
-						let val = Helper.replaceData(b.value,data)
+						let val = Helper.replaceData(b.value,system)
 						if(Helper._isNumber(val)){
 							passiveBonusValue += parseInt(val);
 						}
@@ -493,11 +495,11 @@ export class Actor4e extends Actor {
 				}
 			}
 			pas.bonusValue = passiveBonusValue;
-			pas.value = 10 + data.skills[pas.skill].total + passiveBonusValue;
+			pas.value = 10 + system.skills[pas.skill].total + passiveBonusValue;
 		}
 
 		//Attack and damage modifiers
-		for (let [id, mod] of Object.entries(data.modifiers)) {
+		for (let [id, mod] of Object.entries(system.modifiers)) {
 			let modifierBonusValue = 0;
 			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
 				for( const b of mod.bonus) {
@@ -505,7 +507,7 @@ export class Actor4e extends Actor {
 						modifierBonusValue += parseInt(b.value);
 					}
 					else if(b.active){
-						let val = Helper.replaceData(b.value,data)
+						let val = Helper.replaceData(b.value,system)
 						if(Helper._isNumber(val)){
 							modifierBonusValue += parseInt(val);
 						}
@@ -519,7 +521,7 @@ export class Actor4e extends Actor {
 		}
 		
 		//Resistances & Weaknesses
-		for (let [id, res] of Object.entries(data.resistances)) {
+		for (let [id, res] of Object.entries(system.resistances)) {
 
 			let resBonusValue = 0;
 			if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
@@ -528,7 +530,7 @@ export class Actor4e extends Actor {
 						resBonusValue += parseInt(b.value);
 					}
 					else if(b.active){
-						let val = Helper.replaceData(b.value,data)
+						let val = Helper.replaceData(b.value,system)
 						if(Helper._isNumber(val)){
 							resBonusValue += parseInt(val);
 						}
@@ -546,7 +548,7 @@ export class Actor4e extends Actor {
 		}
 		
 		//Magic Items
-		data.magicItemUse.perDay = Math.clamped(Math.floor(( data.details.level - 1 ) /10 + 1),1,3) + data.magicItemUse.bonusValue + data.magicItemUse.milestone;
+		system.magicItemUse.perDay = Math.clamped(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
 
 	}
 
@@ -1084,23 +1086,23 @@ export class Actor4e extends Actor {
 		
 		//Weight Currency
 		if ( game.settings.get("dnd4e", "currencyWeight") ) {
-			for (let [e, v] of Object.entries(actorData.data.currency)) {
+			for (let [e, v] of Object.entries(actorData.currency)) {
 				weight += (e == "ad" ? v/500 : v/50);
 			}
 		}
 		// console.log(game.settings.get("dnd4e", "currencyWeight"))
 		//Weight Ritual Components
-		for (let [e, v] of Object.entries(actorData.data.ritualcomp)) {
+		for (let [e, v] of Object.entries(actorData.ritualcomp)) {
 			// weight += v/100 * 2.205;
 			weight += v * 0.000002;
 		}
 		//4e 1gp or residuum weights 0.000002
 		
 		const physicalItems = ["weapon", "equipment", "consumable", "tool", "backpack", "loot"];
-		weight += actorData.items.reduce((weight, i) => {
+		weight += this.items.reduce((weight, i) => {
 			if ( !physicalItems.includes(i.type) ) return weight;
-				const q = i.data.data.quantity || 0;
-				const w = i.data.data.weight || 0;
+				const q = i.system.quantity || 0;
+				const w = i.system.weight || 0;
 				return weight + (q * w);
 			}, 0);
 	  
@@ -1108,27 +1110,24 @@ export class Actor4e extends Actor {
 		//round to nearest 100th.
 		weight = Math.round(weight * 1000) / 1000;
 
-		// const max = actorData.data.abilities.str.value * 10;
-
-		const max = eval(Helper.replaceData(actorData.data.encumbrance.formulaNorm, actorData.data).toString().replace(/[^-()\d/*+. ]/g, ''));
-		const maxHeavy = eval(Helper.replaceData(actorData.data.encumbrance.formulaHeavy, actorData.data).toString().replace(/[^-()\d/*+. ]/g, ''));
-		const maxMax = eval(Helper.replaceData(actorData.data.encumbrance.formulaMax, actorData.data).toString().replace(/[^-()\d/*+. ]/g, ''));
+		const max = eval(Helper.replaceData(actorData.encumbrance.formulaNorm, actorData).toString().replace(/[^-()\d/*+. ]/g, ''));
+		const maxHeavy = eval(Helper.replaceData(actorData.encumbrance.formulaHeavy, actorData).toString().replace(/[^-()\d/*+. ]/g, ''));
+		const maxMax = eval(Helper.replaceData(actorData.encumbrance.formulaMax, actorData).toString().replace(/[^-()\d/*+. ]/g, ''));
 
 		//set ppc Percentage Base Carry-Capasity
 		const pbc = Math.clamped(weight / max * 100, 0, 99.7);
 		//set ppc Percentage Encumbranced Capasity
 		const pec =	Math.clamped(weight / (max ) * 100 - 100, 1, 99.7);
 		const encumBar = weight > max ? "#b72b2b" : "#6c8aa5";
-		const actdatadat = actorData.data;
 
 		return {
 			value: weight,
 			max,
 			maxHeavy,
 			maxMax,
-			formulaNorm: actorData.data.encumbrance.formulaNorm,
-			formulaHeavy: actorData.data.encumbrance.formulaHeavy,
-			formulaMax: actorData.data.encumbrance.formulaMax,
+			formulaNorm: actorData.encumbrance.formulaNorm,
+			formulaHeavy: actorData.encumbrance.formulaHeavy,
+			formulaMax: actorData.encumbrance.formulaMax,
 			pbc,
 			pec,
 			encumBar,
