@@ -4,29 +4,29 @@
 			{{localize "DND4EBETA.Currency"}}
 			<a class="currency-convert" title="Convert Currency"><i class="fas fa-coins"></i></a>
 		</h3>
-		{{#each data.currency as |v k|}}
+		{{#each system.currency as |v k|}}
 		<label class="denomination {{k}}" title="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
-		<input type="text" name="data.currency.{{k}}" value="{{v}}" data-dtype="Number" title="{{ localize (lookup ../config.currencies k )}}"/>
+		<input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" title="{{ localize (lookup ../config.currencies k )}}"/>
 		{{/each}}
 	</ol>
 
 	<ol class="currency flexrow">
 		<h3 title="Ritual Components">Ritual Comp.</h3>
-		{{#each data.ritualcomp as |v k|}}
+		{{#each system.ritualcomp as |v k|}}
 		<label class="denomination {{k}}" title="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
-		<input type="text" name="data.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" title="{{ localize (lookup ../config.ritualcomponents k )}}"/>
+		<input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" title="{{ localize (lookup ../config.ritualcomponents k )}}"/>
 		{{/each}}
 	</ol>
 	
 	<div>
 		<div style="display: inline;">
 			<span>Daily Magical Item Powers uses remaining:</span> 
-			<input style="width: 25px; text-align: right;" type="text" name="data.magicItemUse.dailyuse" value="{{data.magicItemUse.dailyuse}}" title="Daily Magic Items used Today"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
-			<span>/ {{data.magicItemUse.perDay}}</span>
+			<input style="width: 25px; text-align: right;" type="text" name="system.magicItemUse.dailyuse" value="{{system.magicItemUse.dailyuse}}" title="Daily Magic Items used Today"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
+			<span>/ {{system.magicItemUse.perDay}}</span>
 		</div>
 		<div style="float:right;">
 			<span >Used In Encounter?</span>
-			<input type="checkbox" name="data.magicItemUse.encounteruse" data-dtype="Boolean" {{checked data.magicItemUse.encounteruse}} title="Daily Magical Item Used In encounter"  style="height: 14px; position: relative; top: 2px;">
+			<input type="checkbox" name="system.magicItemUse.encounteruse" data-dtype="Boolean" {{checked system.magicItemUse.encounteruse}} title="Daily Magical Item Used In encounter"  style="height: 14px; position: relative; top: 2px;">
 		</div>
 		
 	</div>
@@ -68,9 +68,9 @@
 				{{else}}
 				<div class="item-image" style="background-image: url({{item.img}})"></div>
 				<h4>
-					{{#if item.data.level}}[{{item.data.level}}]{{/if}}{{item.name~}}
-					{{~#if item.isStack}} ({{item.data.quantity}}){{/if}}
-					{{~#if item.data.attuned}} <i class="fas fa-sun attuned" title={{localize "DND4EBETA.Attuned"}}></i>{{/if}}
+					{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
+					{{~#if item.isStack}} ({{item.system.quantity}}){{/if}}
+					{{~#if item.system.attuned}} <i class="fas fa-sun attuned" title={{localize "DND4EBETA.Attuned"}}></i>{{/if}}
 				</h4>
 				{{/if}}
 			</div>
@@ -99,13 +99,13 @@
 
 				<div class="item-detail item-uses">
 					{{#if item.hasUses }}
-						<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>
-						/ {{item.data.preparedMaxUses}}
+						<input type="text" value="{{item.system.uses.value}}" placeholder="0"/>
+						/ {{item.system.preparedMaxUses}}
 					{{/if}}
 				</div>
 
 				<div class="item-detail item-action">
-					{{#if item.data.activation.type }}
+					{{#if item.system.activation.type }}
 						{{item.labels.activation}}
 					{{/if}}
 				</div>
@@ -128,16 +128,12 @@
 {{/each}}
 </ol>
 
-{{#with data.encumbrance}}
+{{#with system.encumbrance}}
 <div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" style="height: 12px;">
 	<span class="encumbrance-bar" style="width:{{pbc}}%; background: #6c8aa5;"></span>
 	{{#if encumbered}}
 		<span class="encumbrance-bar" style="width:{{pec}}%; background: #b72b2b;"></span>
 	{{/if}}
 	<span class="encumbrance-label">{{value}} / {{max}} lbs.</span>
-	<!-- <i class="encumbrance-breakpoint encumbrance-33 arrow-up"></i>
-	<i class="encumbrance-breakpoint encumbrance-33 arrow-down"></i>
-	<i class="encumbrance-breakpoint encumbrance-66 arrow-up"></i>
-	<i class="encumbrance-breakpoint encumbrance-66 arrow-down"></i> -->
 </div>
 {{/with}}

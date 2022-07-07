@@ -356,8 +356,8 @@ export class Actor4e extends Actor {
 			}
 		}
 		for ( let i of this.items) {
-			if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.movePen) { continue; };
-			const absMovePen = Math.abs(i.data.data.armour.movePenValue)
+			if(i.type !="equipment" || !i.system.equipped || !i.system.armour.movePen) { continue; };
+			const absMovePen = Math.abs(i.system.armour.movePenValue)
 			system.movement.base.armour -= absMovePen;
 		}
 		system.movement.base.bonusValue = baseMoveBonusValue;
@@ -535,8 +535,8 @@ export class Actor4e extends Actor {
 				}
 			}
 			for ( let i of this.items) {
-				if(i.data.type !="equipment" || !i.data.data.equipped || i.data.data.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
-				res.armour += i.data.data.armour.damageRes.parts.filter(p => p[1] === id)[0][0];
+				if(i.type !="equipment" || !i.system.equipped || i.system.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
+				res.armour += i.system.armour.damageRes.parts.filter(p => p[1] === id)[0][0];
 				break;
 			}
 			res.resBonusValue = resBonusValue;
@@ -573,17 +573,17 @@ export class Actor4e extends Actor {
 			
 			//Get Deff stats from items
 			for ( let i of this.items) {
-				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
-				if(i.data.data.armour.type === "arms" && ["light", "heavy"].includes(i.data.data.armour.subType)){
-					if(!i.data.data.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+				if(i.type !="equipment" || !i.system.equipped ) { continue; };
+				if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
+					if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
 				}
-				else if(i.data.data.armour.type === "armour" && id === "ref"){
-					if(!i.data.data.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+				else if(i.system.armour.type === "armour" && id === "ref"){
+					if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
 						def.armour -= 2;
 						this.system.modifiers.attack.armourPen =-2;
 					}
 				}
-				def.armour += i.data.data.armour[id];
+				def.armour += i.system.armour[id];
 			}
 			// if(def.base == undefined){
 			// 	def.base = 10;
@@ -622,17 +622,17 @@ export class Actor4e extends Actor {
 			
 			//Get Deff stats from items
 			for ( let i of this.items) {
-				if(i.data.type !="equipment" || !i.data.data.equipped ) { continue; };
-				if(i.data.data.armour.type === "arms" && ["light", "heavy"].includes(i.data.data.armour.subType)){
-					if(!i.data.data.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+				if(i.type !="equipment" || !i.system.equipped ) { continue; };
+				if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
+					if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
 				}
-				else if(i.data.data.armour.type === "armour" && id === "ref"){
-					if(!i.data.data.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+				else if(i.system.armour.type === "armour" && id === "ref"){
+					if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
 						def.armour -= 2;
 						this.system.modifiers.attack.armourPen =-2;
 					}
 				}
-				def.armour += i.data.data.armour[id];
+				def.armour += i.system.armour[id];
 			}
 			if(def.base == undefined){
 				def.base = 10;
@@ -651,8 +651,8 @@ export class Actor4e extends Actor {
 		}
 	}
 
-	calcSkillCharacter(data){
-		for (let [id, skl] of Object.entries(data.skills)) {
+	calcSkillCharacter(system){
+		for (let [id, skl] of Object.entries(system.skills)) {
 			skl.value = parseFloat(skl.value || 0);
 
 			let sklBonusValue = 0;
@@ -664,7 +664,7 @@ export class Actor4e extends Actor {
 						sklBonusValue += parseInt(b.value);
 					}
 					else if(b.active){
-						let val = Helper.replaceData(b.value,data)
+						let val = Helper.replaceData(b.value,system)
 						if(Helper._isNumber(val)){
 							sklBonusValue += parseInt(val);
 						}
@@ -674,8 +674,8 @@ export class Actor4e extends Actor {
 			if (skl.armourCheck) {
 				//Get Skill Check Penalty stats from armour
 				for ( let i of this.items) {
-					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
-					sklArmourPenalty += Math.abs(i.data.data.armour.skillCheckValue);
+					if(i.type !="equipment" || !i.system.equipped || !i.system.armour.skillCheck) { continue; };
+					sklArmourPenalty += Math.abs(i.system.armour.skillCheckValue);
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
@@ -697,11 +697,11 @@ export class Actor4e extends Actor {
 			}
 
 			// Compute modifier
-			skl.mod = data.abilities[skl.ability].mod;			
+			skl.mod = system.abilities[skl.ability].mod;			
 			if(game.settings.get("dnd4e", "halfLevelOptions")) {
 				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
 			} else {
-				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty + Math.floor(data.details.level / 2);
+				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty + Math.floor(system.details.level / 2);
 			}
 			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
 
@@ -730,8 +730,8 @@ export class Actor4e extends Actor {
 			if (skl.armourCheck) {
 				//Get Skill Check Penalty stats from armour
 				for ( let i of this.items) {
-					if(i.data.type !="equipment" || !i.data.data.equipped || !i.data.data.armour.skillCheck) { continue; };
-					sklArmourPenalty += i.data.data.armour.skillCheckValue;
+					if(i.type !="equipment" || !i.system.equipped || !i.system.armour.skillCheck) { continue; };
+					sklArmourPenalty += i.system.armour.skillCheckValue;
 				}
 			}
 			skl.armourPen = sklArmourPenalty;
@@ -769,10 +769,10 @@ export class Actor4e extends Actor {
 
 	checkLightArmour(){
 		for ( let i of this.items) {
-			if(i.data.type !="equipment" || !i.data.data.equipped ) { 
+			if(i.type !="equipment" || !i.system.equipped ) { 
 				continue;
 			}
-			if(i.data.data.armour.type === "armour" && i.data.data.armour.subType === "heavy"){
+			if(i.system.armour.type === "armour" && i.system.armour.subType === "heavy"){
 				return false;
 			}
 		}
@@ -849,7 +849,7 @@ export class Actor4e extends Actor {
 			parts.push("@skillBonus");
 		}
 
-		let flavText = this.system.skills[skillId].chat.replace("@name", this.data.name);
+		let flavText = this.system.skills[skillId].chat.replace("@name", this.name);
 		flavText = flavText.replace("@label", this.system.skills[skillId].label);
 		
 		// Reliable Talent applies to any skill check we have full or better proficiency in
@@ -899,7 +899,7 @@ export class Actor4e extends Actor {
 			data.checkBonus = bonuses.check;
 		}
 		
-		let flavText = this.system.abilities[abilityId].chat.replace("@name", this.data.name);
+		let flavText = this.system.abilities[abilityId].chat.replace("@name", this.name);
 		flavText = flavText.replace("@label", this.system.abilities[abilityId].label);
 		
 		// Roll and return
@@ -929,7 +929,7 @@ export class Actor4e extends Actor {
 			data.checkBonus = bonuses.check;
 		}
 		
-		let flavText = this.system.defences[defId].chat.replace("@name", this.data.name);
+		let flavText = this.system.defences[defId].chat.replace("@name", this.name);
 		flavText = flavText.replace("@label", this.system.defences[defId].label);
 		flavText = flavText.replace("@title", this.system.defences[defId].title);
 		
@@ -964,7 +964,7 @@ export class Actor4e extends Actor {
 			if ( tokens.length ) {
 				for ( let t of tokens ) {
 					if ( t.inCombat ) continue;
-					toCreate.push({tokenId: t.id, sceneId: t.scene.id, actorId: this.id, hidden: t.data.hidden});
+					toCreate.push({tokenId: t.id, sceneId: t.scene.id, actorId: this.id, hidden: t.hidden});
 				}
 			} else toCreate.push({actorId: this.id, hidden: false})
 			await combat.createEmbeddedDocuments("Combatant", toCreate);
@@ -978,7 +978,7 @@ export class Actor4e extends Actor {
 			return arr;
 		}, []);
 		
-		const isReroll = !!(game.combat.combatants.get(combatants[0]).data.initiative || game.combat.combatants.get(combatants[0]).data.initiative == 0)
+		const isReroll = !!(game.combat.combatants.get(combatants[0]).initiative || game.combat.combatants.get(combatants[0]).initiative == 0)
 
 		const parts = ['@init'];
 		let init = this.system.attributes.init.value;
@@ -1033,8 +1033,8 @@ export class Actor4e extends Actor {
 	async usePower(item, {configureDialog=true, fastForward=false}={}) {
 		//if not a valid type of item to use
 		console.log("UsePower")
-		if ( item.data.type !=="power" ) throw new Error("Wrong Item type");
-		const itemData = item.data.data;
+		if ( item.type !=="power" ) throw new Error("Wrong Item type");
+		const itemData = item.system;
 		//configure Powers data
 		const limitedUses = !!itemData.uses.per;
 		let consumeUse = false;
@@ -1049,7 +1049,7 @@ export class Actor4e extends Actor {
 			const uses = parseInt(itemData.uses.value || 0);
 			if ( uses <= 0 ) ui.notifications.warn(game.i18n.format("DND4EBETA.ItemNoUses", {name: item.name}));
 			
-			await item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
+			await item.update({"data.uses.value": Math.max(parseInt(item.system.uses.value || 0) - 1, 0)})
 			// item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
 		}
 
@@ -1334,7 +1334,7 @@ export class Actor4e extends Actor {
 
 		// Player character configuration
 		if ( this.type === "Player Character" ) {
-			this.data.token.update({vision: true, actorLink: true, disposition: 1});
+			this.prototypeToken.updateSource({vision: true, actorLink: true, disposition: 1});
 		}
 	}
 
@@ -1356,10 +1356,10 @@ export class Actor4e extends Actor {
 		const uuid = effectData.changesID.split('.')
 		let changes
 		if(uuid[0] === "Actor"){
-			changes = game.actors.get(uuid[1]).data.items.get(uuid[3]).data.effects.get(uuid[5]).data.changes;
+			changes = game.actors.get(uuid[1]).items.get(uuid[3]).effects.get(uuid[5]).changes;
 		}
 		else if(uuid[0] === "Scene"){
-			changes = game.scenes.get(uuid[1]).tokens.get(uuid[3]).actor.items.get(uuid[5]).data.effects.get(uuid[7]).data.changes;
+			changes = game.scenes.get(uuid[1]).tokens.get(uuid[3]).actor.items.get(uuid[5]).effects.get(uuid[7]).changes;
 		}
 
 		const data = {

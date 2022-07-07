@@ -252,27 +252,27 @@ export default class Item4e extends Item {
 	prepareData() {
 		super.prepareData();
 		// Get the Item's data
-		const itemData = this.data;
-		const data = itemData.data;
+		const itemData = this;
+		const system = itemData.system;
 		const C = CONFIG.DND4EBETA;
 		const labels = {};
 
 		// Equipment Items
 		if ( itemData.type === "equipment" ) {
-			labels.armour = data.armour.ac ? `${data.armour.ac} ${game.i18n.localize("DND4EBETA.AC")}` : "";
-			labels.fort = data.armour.fort ? `${data.armour.fort} ${game.i18n.localize("DND4EBETA.FORT")}` : "";
-			labels.ref = data.armour.ref ? `${data.armour.ref} ${game.i18n.localize("DND4EBETA.REF")}` : "";
-			labels.wil = data.armour.wil ? `${data.armour.wil} ${game.i18n.localize("DND4EBETA.WIL")}` : "";
+			labels.armour = system.armour.ac ? `${system.armour.ac} ${game.i18n.localize("DND4EBETA.AC")}` : "";
+			labels.fort = system.armour.fort ? `${system.armour.fort} ${game.i18n.localize("DND4EBETA.FORT")}` : "";
+			labels.ref = system.armour.ref ? `${system.armour.ref} ${game.i18n.localize("DND4EBETA.REF")}` : "";
+			labels.wil = system.armour.wil ? `${system.armour.wil} ${game.i18n.localize("DND4EBETA.WIL")}` : "";
 		}
 
 		// Activated Items
-		if ( data.hasOwnProperty("activation") ) {
+		if ( system.hasOwnProperty("activation") ) {
 			// Ability Activation Label
-			let act = data.activation || {};
+			let act = system.activation || {};
 			if ( act ) labels.activation = [act.cost, C.abilityActivationTypes[act.type]].filterJoin(" ");
 
 			// Target Label
-			let tgt = data.target || {};
+			let tgt = system.target || {};
 			if (["none", "touch", "self"].includes(tgt.units)) tgt.value = null;
 			if (["none", "self"].includes(tgt.type)) {
 				tgt.value = null;
@@ -281,7 +281,7 @@ export default class Item4e extends Item {
 			labels.target = [tgt.value, C.distanceUnits[tgt.units], C.targetTypes[tgt.type]].filterJoin(" ");
 
 			// Range Label
-			let rng = data.range || {};
+			let rng = system.range || {};
 			if (["none", "touch", "self"].includes(rng.units) || (rng.value === 0)) {
 				rng.value = null;
 				rng.long = null;
@@ -289,22 +289,22 @@ export default class Item4e extends Item {
 			labels.range = [rng.value, rng.long ? `/ ${rng.long}` : null, C.distanceUnits[rng.units]].filterJoin(" ");
 
 			// Duration Label
-			let dur = data.duration || {};
+			let dur = system.duration || {};
 			if (["inst", "perm"].includes(dur.units)) dur.value = null;
 
 			labels.duration = dur.value? `${game.i18n.localize("DND4EBETA.Duration")}: ${[dur.value, C.timePeriods[dur.units]].filterJoin(" ")}` : null;
 
 			// CastTime Label
-			if (data.castTime) {
-				let castTime = data.castTime || {};
+			if (system.castTime) {
+				let castTime = system.castTime || {};
 				if (["inst", "perm"].includes(castTime.units)) castTime.value = null;
 				labels.castTime = `${game.i18n.localize("DND4EBETA.CastTime")}: ${[castTime.value, C.timePeriods[castTime.units]].filterJoin(" ")}`;
 			}
 
 
 			// Attribute Label
-			if(data.attribute){
-				const attribute = data.attribute.split('.')[1];
+			if(system.attribute){
+				const attribute = system.attribute.split('.')[1];
 				if(DND4EBETA.abilities[attribute]){
 					labels.attribute = `${game.i18n.localize("DND4EBETA.Ability")}: ${DND4EBETA.abilities[attribute]}`;
 				}
@@ -315,8 +315,8 @@ export default class Item4e extends Item {
 
 			//Component type + cost Label
 			if(itemData.type === "ritual"){
-				if(data.consume?.amount && data.consume?.type === "attribute" ){
-					const resourceTarget = data.consume.target.split('.')[1];
+				if(system.consume?.amount && system.consume?.type === "attribute" ){
+					const resourceTarget = system.consume.target.split('.')[1];
 					let resourceLabel;
 
 					if(DND4EBETA.ritualcomponents[resourceTarget]){
@@ -334,21 +334,21 @@ export default class Item4e extends Item {
 
 					if(resourceLabel){
 						labels.component = `${game.i18n.localize("DND4EBETA.Component")}: ${resourceLabel}`;
-						labels.componentCost = `${game.i18n.localize("DND4EBETA.ComponentCost")}: ${data.consume.amount}`;
+						labels.componentCost = `${game.i18n.localize("DND4EBETA.ComponentCost")}: ${system.consume.amount}`;
 					}
 				}
 			}
 
 			// Recharge Label
-			let chg = data.recharge || {};
+			let chg = system.recharge || {};
 			labels.recharge = `${game.i18n.localize("DND4EBETA.Recharge")} [${chg.value}${parseInt(chg.value) < 6 ? "+" : ""}]`;
 		}
 
 		// DamageTypes
-		if(data.hasOwnProperty("damageType")){
-			if(data.damageType){
+		if(system.hasOwnProperty("damageType")){
+			if(system.damageType){
 				let damType = [];
-				for ( let [damage, d] of Object.entries(data.damageType)) {
+				for ( let [damage, d] of Object.entries(system.damageType)) {
 					if(d){
 						damType.push(`${game.i18n.localize(DND4EBETA.damageTypes[damage])}`);
 					}
@@ -360,12 +360,12 @@ export default class Item4e extends Item {
 		// fix old healing consumables to migrate them to the new structure
 		if (itemData.type === "consumable") {
 			// does it have an old damage expression
-			if (data.damage.parts?.length > 0) {
-				if (data.damage.parts.map(d => d[1]).includes("healing") && !data.hit?.healFormula) {
-					data.hit.healFormula = data.damage.parts[0][0]
-					data.hit.isHealing = true
-					data.damage.parts = []
-					data.oldConsumableNeedsUpdate = true
+			if (system.damage.parts?.length > 0) {
+				if (system.damage.parts.map(d => d[1]).includes("healing") && !system.hit?.healFormula) {
+					system.hit.healFormula = system.damage.parts[0][0]
+					system.hit.isHealing = true
+					system.damage.parts = []
+					system.oldConsumableNeedsUpdate = true
 					// don't unassign parts here because it will get permanently solved by the update statement
 				}
 				// non healing damage expressions didn't work anyway
@@ -376,7 +376,7 @@ export default class Item4e extends Item {
 		this.labels = labels;
 
 		if(this.isOwned){
-			data.preparedMaxUses = this.preparedMaxUses;
+			system.preparedMaxUses = this.preparedMaxUses;
 		}
 
 	}

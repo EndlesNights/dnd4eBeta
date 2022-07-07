@@ -21,7 +21,7 @@ export class AttributeBonusDialog extends DocumentSheet {
 	
 	/** @override */
 	getData() {
-		const data = Helper.byString(this.options.target, this.object.data);
+		const data = Helper.byString(this.options.target, this.object);
 		return {bonusData: data.bonus, data: data, options: this.options};
 	}
 	

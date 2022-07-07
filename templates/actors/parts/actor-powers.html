@@ -3,8 +3,8 @@
 		<div class="group-powers" style="max-width: 144px;">
 			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.groupBy.value">
 			<label for="power-group">GroupBy</label><br>
-			<select name="data.powerGroupTypes" style="min-width: 128px;">
-				{{#select data.powerGroupTypes}}
+			<select name="system.powerGroupTypes" style="min-width: 128px;">
+				{{#select system.powerGroupTypes}}
 				{{#each config.powerGroupTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
 				{{/each}}
@@ -15,8 +15,8 @@
 		<div class="sort-powers" style="max-width: 144px;">
 			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.sortBy.value">
 			<label for="power-sort">SortBy</label><br>
-			<select name="data.powerSortTypes" style="min-width: 128px;">
-				{{#select data.powerSortTypes}}
+			<select name="system.powerSortTypes" style="min-width: 128px;">
+				{{#select system.powerSortTypes}}
 				{{#each config.powerSortTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
 				{{/each}}
@@ -67,9 +67,9 @@
 				<div class="item-name flexrow rollable" style="max-width: 30px; margin-right: 5px;">
 					<div class="item-image" style="background-image: url('{{item.img}}')"></div>					
 				</div>
-				<div class="flexrow {{#if item.data.useType }}ability-usage--{{item.data.useType}}{{else}}ability-usage--blank{{/if}} {{#if item.data.notAvailable}}not-available{{/if}}">
+				<div class="flexrow {{#if item.system.useType }}ability-usage--{{item.system.useType}}{{else}}ability-usage--blank{{/if}} {{#if item.system.notAvailable}}not-available{{/if}}">
 					<div class="item-name flexrow rollable">
-						<h4 class="power-detail" style="padding-left: 3px;">{{#if item.data.level}}[{{item.data.level}}]{{/if}}{{item.name}}</h4>
+						<h4 class="power-detail" style="padding-left: 3px;">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
 					</div>
 					
 					{{#if section.columns}}
@@ -86,29 +86,29 @@
 						</div>
 						{{/each}}
 					{{else}}
-						<div class="item-detail power-detail item-range" title="{{item.data.rangeText}}">
-							<label>{{item.data.rangeTextShort}}</label>
-							{{#if item.data.rangeTextBlock}}
-							<label style="background-color: rgba(77, 77, 77, 0.199); border-radius: 2px; padding-left: 2px; padding-right: 2px;">{{item.data.rangeTextBlock}}</label>
+						<div class="item-detail power-detail item-range" title="{{item.system.rangeText}}">
+							<label>{{item.system.rangeTextShort}}</label>
+							{{#if item.system.rangeTextBlock}}
+							<label style="background-color: rgba(77, 77, 77, 0.199); border-radius: 2px; padding-left: 2px; padding-right: 2px;">{{item.system.rangeTextBlock}}</label>
 							{{/if}}
 						</div>
-						<div class="item-detail power-detail item-action" title="{{lookup ../../config.abilityActivationTypes item.data.actionType}}" style="text-transform: uppercase;">
-							{{#if item.data.actionType }}
-							{{lookup ../../config.abilityActivationTypesShort item.data.actionType}}
+						<div class="item-detail power-detail item-action" title="{{lookup ../../config.abilityActivationTypes item.system.actionType}}" style="text-transform: uppercase;">
+							{{#if item.system.actionType }}
+							{{lookup ../../config.abilityActivationTypesShort item.system.actionType}}
 							{{/if}}
 						</div>
 						<div class="item-detail power-detail item-uses">
-							{{#if item.data.notAvailable}}
-								{{#if item.data.rechargeRoll}}
-								<a class="item-recharge rollable" title="Click to roll 1d6 and recharge power on a roll of {{item.data.rechargeRoll}} or higher">Recharge[+{{item.data.rechargeRoll}}]</a>
-								{{else if item.data.rechargeCondition}}
-								<a class="item-recharge rollable" title="Click to recharge power when the condition of &quot;{{item.data.rechargeCondition}}&quot; is met">Recharge[C]</a>
+							{{#if item.system.notAvailable}}
+								{{#if item.system.rechargeRoll}}
+								<a class="item-recharge rollable" title="Click to roll 1d6 and recharge power on a roll of {{item.system.rechargeRoll}} or higher">Recharge[+{{item.system.rechargeRoll}}]</a>
+								{{else if item.system.rechargeCondition}}
+								<a class="item-recharge rollable" title="Click to recharge power when the condition of &quot;{{item.system.rechargeCondition}}&quot; is met">Recharge[C]</a>
 								{{else}}
-								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.preparedMaxUses}}
+								<input type="text" value="{{item.system.uses.value}}" placeholder="0"/>/ {{item.system.preparedMaxUses}}
 								{{/if}}
 							{{else}}
 								{{#if item.hasUses}}
-								<input type="text" value="{{item.data.uses.value}}" placeholder="0"/>/ {{item.data.preparedMaxUses}}
+								<input type="text" value="{{item.system.uses.value}}" placeholder="0"/>/ {{item.system.preparedMaxUses}}
 								{{/if}}
 							{{/if}}
 						</div>

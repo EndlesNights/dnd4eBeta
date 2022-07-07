@@ -39,6 +39,14 @@ export default class ActorSheet4e extends ActorSheet {
 			features: new Set()
 		};
 	}
+
+
+	  /** @inheritdoc */
+	  async _updateObject(event, formData) {
+		console.log(event)
+		console.log(formData)
+		return super._updateObject(event, formData);
+	  }
   
 	/** @override */
 	static get defaultOptions() {
@@ -103,7 +111,7 @@ export default class ActorSheet4e extends ActorSheet {
 		const actor = this.actor
 		const actorData = actor.system;
 		data.actor = actor;
-		data.data = actorData;
+		data.system = actorData;
 
 		data.items = actor.items;
 		for ( let i of data.items ) {
@@ -149,6 +157,7 @@ export default class ActorSheet4e extends ActorSheet {
 			return arr.concat([res]);
 			}, []);
 
+		console.log(data)
 		return data;
 	}
 	
@@ -194,17 +203,20 @@ export default class ActorSheet4e extends ActorSheet {
 			ritual: { label: "DND4EBETA.FeatRitual", items: [], dataset: {type: "ritual"} }
 		};
 		
+		console.log(data.items)
 		// Partition items by category
 		let [items, pow, feats] = data.items.reduce((arr, item) => {
 			// Item details
 			item.img = item.img || DEFAULT_TOKEN;
-			item.isStack = Number.isNumeric(item.data.quantity) && (item.data.quantity !== 1);
+			item.isStack = Number.isNumeric(item.system.quantity) && (item.system.quantity !== 1);
 
 			// Item usage
-			item.hasUses = item.data.uses && (item.data.preparedMaxUses > 0);
-			item.isOnCooldown = item.data.recharge && !!item.data.recharge.value && (item.data.recharge.charged === false);
-			item.isDepleted = item.isOnCooldown && (item.data.uses.per && (item.data.uses.value > 0));
-			item.hasTarget = !!item.data.target && !(["none",""].includes(item.data.target.type));
+			item.hasUses = item.system.uses && (item.system.preparedMaxUses > 0);
+			item.isOnCooldown = item.system.recharge && !!item.system.recharge.value && (item.system.recharge.charged === false);
+			item.isDepleted = item.isOnCooldown && (item.system.uses.per && (item.system.uses.value > 0));
+			//Causing error in v10, only getter no setter now.
+			// item.hasTarget = !!item.data.target && !(["none",""].includes(item.data.target.type));
+			// item.hasTarget = !!item.system.target && !(["none",""].includes(item.system.target.type));
 
 			// Item toggle state
 			this._prepareItemToggleState(item);
@@ -224,9 +236,9 @@ export default class ActorSheet4e extends ActorSheet {
 
 		// Organize items
 		for ( let i of items ) {
-			i.data.quantity = i.data.quantity || 0;
-			i.data.weight = i.data.weight || 0;
-			i.totalWeight = Math.round(i.data.quantity * i.data.weight * 10) / 10;
+			i.system.quantity = i.system.quantity || 0;
+			i.system.weight = i.system.weight || 0;
+			i.totalWeight = Math.round(i.system.quantity * i.system.weight * 10) / 10;
 			inventory[i.type].items.push(i);
 		}
 
@@ -254,16 +266,16 @@ export default class ActorSheet4e extends ActorSheet {
 		this._sortFeatures(features);
 
 		data.moveTitle = `
-${parseInt(data.data.movement.walk.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedWalking")}
-${parseInt(data.data.movement.run.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedRunning")}
-${parseInt(data.data.movement.charge.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedCharging")}
-${parseInt(data.data.movement.climb.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedClimbing")}
-${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedShifting")}`;
+${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedWalking")}
+${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedRunning")}
+${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedCharging")}
+${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedClimbing")}
+${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedShifting")}`;
 
-		if(data.data.movement.custom){
+		if(data.system.movement.custom){
 			const moveCustom = [];
-			data.data.movement.custom.split(";").forEach((c, i) => (c ? moveCustom[i] = c.trim() : null) );
-			data.data.moveCustom = moveCustom;
+			data.system.movement.custom.split(";").forEach((c, i) => (c ? moveCustom[i] = c.trim() : null) );
+			data.system.moveCustom = moveCustom;
 			moveCustom.forEach((c) => data.moveTitle += `\n${c.trim()}`);
 		}
 	}
@@ -378,17 +390,17 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	}
 
 	_groupPowers(power, powerGroups) {
-		if(this.object.data.data.powerGroupTypes === "action" || this.object.data.data.powerGroupTypes == undefined) {
-			if(Object.keys(powerGroups).includes(power.data.actionType) ) return power.data.actionType;
+		if(this.object.system.powerGroupTypes === "action" || this.object.system.powerGroupTypes == undefined) {
+			if(Object.keys(powerGroups).includes(power.system.actionType) ) return power.system.actionType;
 		}
-		if(this.object.data.data.powerGroupTypes === "type") {
-			if(Object.keys(powerGroups).includes(power.data.powerType) )return power.data.powerType;
+		if(this.object.system.powerGroupTypes === "type") {
+			if(Object.keys(powerGroups).includes(power.system.powerType) )return power.system.powerType;
 		}
-		if(this.object.data.data.powerGroupTypes === "powerSubtype") {
-			if(Object.keys(powerGroups).includes(power.data.powerSubtype) )return power.data.powerSubtype;
+		if(this.object.system.powerGroupTypes === "powerSubtype") {
+			if(Object.keys(powerGroups).includes(power.system.powerSubtype) )return power.system.powerSubtype;
 		}
-		if(this.object.data.data.powerGroupTypes === "usage") {
-			if(Object.keys(powerGroups).includes(power.data.useType) ) return power.data.useType;
+		if(this.object.system.powerGroupTypes === "usage") {
+			if(Object.keys(powerGroups).includes(power.system.useType) ) return power.system.useType;
 		}
 		return "other";
 	}
@@ -438,9 +450,9 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	}
 
 	_checkPowerAvailable(itemData) {
-		if( (!itemData.data.uses.value && itemData.data.preparedMaxUses)
-			|| !itemData.data.prepared) {
-				itemData.data.notAvailable = true;
+		if( (!itemData.system.uses.value && itemData.system.preparedMaxUses)
+			|| !itemData.system.prepared) {
+				itemData.system.notAvailable = true;
 
 		}
 	}
@@ -450,106 +462,106 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
    * @param {itemData} itemData
    * @private
    */
-	_preparePowerRangeText(itemData) {
+	 _preparePowerRangeText(itemData) {
 
 		let area;
-		if(itemData.data.area) {
+		if(itemData.system.area) {
 			try{
-				let areaForm = game.helper.commonReplace(`${itemData.data.area}`, this.actor.data);
+				let areaForm = game.helper.commonReplace(`${itemData.system.area}`, this.actor.system);
 				area = Roll.safeEval(areaForm);
 			} catch (e) {
-				area = itemData.data.area;
+				area = itemData.system.area;
 			}
 		} else {
 			area = 0;
 		}
 
-		if(itemData.data.rangeType === "range") {
-			itemData.data.rangeText = `Ranged ${itemData.data.rangePower}`
-			itemData.data.rangeTextShort = `R`
-			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
-		} else if(itemData.data.rangeType === "closeBurst") {
-			itemData.data.rangeText = `Close Burst ${area}`
-			itemData.data.rangeTextShort = "C-BU"
-			itemData.data.rangeTextBlock = `${area}`
-		} else if(itemData.data.rangeType === "rangeBurst") {
-			itemData.data.rangeText = `Area Burst ${area} within ${itemData.data.rangePower}`
-			itemData.data.rangeTextShort = "A-BU"
-			itemData.data.rangeTextBlock = `${area} - ${itemData.data.rangePower}`
-		} else if(itemData.data.rangeType === "closeBlast") {
-			itemData.data.rangeText = `Close Blast ${area}`
-			itemData.data.rangeTextShort = "C-BL"
-			itemData.data.rangeTextBlock = `${area}`
-		} else if(itemData.data.rangeType === "rangeBlast") {
-			itemData.data.rangeText = `Area Blast ${area} within ${itemData.data.rangePower}`
-			itemData.data.rangeTextShort = "A-BL"
-			itemData.data.rangeTextBlock = `${area} - ${itemData.data.rangePower}`
-		} else if(itemData.data.rangeType === "wall") {
-			itemData.data.rangeText = `Area Wall ${area} within ${itemData.data.rangePower}`
-			itemData.data.rangeTextShort = "W"
-			itemData.data.rangeTextBlock = `${area} - ${itemData.data.rangePower}`
-		} else if(itemData.data.rangeType === "personal") {
-			itemData.data.rangeText = "Personal"
-			itemData.data.rangeTextShort = "P"
-		} else if(itemData.data.rangeType === "special") {
-			itemData.data.rangeText = "Special"
-			itemData.data.rangeTextShort = "S"
-		} else if(itemData.data.rangeType === "touch") {
-			itemData.data.rangeTextShort = "M-T";
-			if(itemData.data.rangePower == null){
-				itemData.data.rangeTextBlock = '';
-				itemData.data.rangeText = `Melee Touch`;
+		if(itemData.system.rangeType === "range") {
+			itemData.system.rangeText = `Ranged ${itemData.system.rangePower}`
+			itemData.system.rangeTextShort = `R`
+			itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
+		} else if(itemData.system.rangeType === "closeBurst") {
+			itemData.system.rangeText = `Close Burst ${area}`
+			itemData.system.rangeTextShort = "C-BU"
+			itemData.system.rangeTextBlock = `${area}`
+		} else if(itemData.system.rangeType === "rangeBurst") {
+			itemData.system.rangeText = `Area Burst ${area} within ${itemData.system.rangePower}`
+			itemData.system.rangeTextShort = "A-BU"
+			itemData.system.rangeTextBlock = `${area} - ${itemData.system.rangePower}`
+		} else if(itemData.system.rangeType === "closeBlast") {
+			itemData.system.rangeText = `Close Blast ${area}`
+			itemData.system.rangeTextShort = "C-BL"
+			itemData.system.rangeTextBlock = `${area}`
+		} else if(itemData.system.rangeType === "rangeBlast") {
+			itemData.system.rangeText = `Area Blast ${area} within ${itemData.system.rangePower}`
+			itemData.system.rangeTextShort = "A-BL"
+			itemData.system.rangeTextBlock = `${area} - ${itemData.system.rangePower}`
+		} else if(itemData.system.rangeType === "wall") {
+			itemData.system.rangeText = `Area Wall ${area} within ${itemData.system.rangePower}`
+			itemData.system.rangeTextShort = "W"
+			itemData.system.rangeTextBlock = `${area} - ${itemData.system.rangePower}`
+		} else if(itemData.system.rangeType === "personal") {
+			itemData.system.rangeText = "Personal"
+			itemData.system.rangeTextShort = "P"
+		} else if(itemData.system.rangeType === "special") {
+			itemData.system.rangeText = "Special"
+			itemData.system.rangeTextShort = "S"
+		} else if(itemData.system.rangeType === "touch") {
+			itemData.system.rangeTextShort = "M-T";
+			if(itemData.system.rangePower == null){
+				itemData.system.rangeTextBlock = '';
+				itemData.system.rangeText = `Melee Touch`;
 			} else {
-				itemData.data.rangeText = `Melee Touch ${itemData.data.rangePower}`;
-				itemData.data.rangeTextBlock = `${itemData.data.rangePower}`;
+				itemData.system.rangeText = `Melee Touch ${itemData.system.rangePower}`;
+				itemData.system.rangeTextBlock = `${itemData.system.rangePower}`;
 			}
-		} else if(itemData.data.rangeType === "melee"){
-			if(itemData.data.rangePower === undefined || itemData.data.rangePower === null){
-				itemData.data.rangeText = `Melee`;
-				itemData.data.rangeTextShort = `M`;
+		} else if(itemData.system.rangeType === "melee"){
+			if(itemData.system.rangePower === undefined || itemData.system.rangePower === null){
+				itemData.system.rangeText = `Melee`;
+				itemData.system.rangeTextShort = `M`;
 			} else {
-				itemData.data.rangeText = `Melee ${itemData.data.rangePower}`;
-				itemData.data.rangeTextShort = `M`;
-				itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
+				itemData.system.rangeText = `Melee ${itemData.system.rangePower}`;
+				itemData.system.rangeTextShort = `M`;
+				itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
 			}
-		} else if(itemData.data.rangeType === "reach"){
-			itemData.data.rangeText = `Reach ${itemData.data.rangePower}`;
-			itemData.data.rangeTextShort = `R`;
-			itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
-		} else if(itemData.data.rangeType === "weapon") {
+		} else if(itemData.system.rangeType === "reach"){
+			itemData.system.rangeText = `Reach ${itemData.system.rangePower}`;
+			itemData.system.rangeTextShort = `R`;
+			itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
+		} else if(itemData.system.rangeType === "weapon") {
 
 			try {
-				const weaponUse = Helper.getWeaponUse(itemData.data, this.actor);
-				if(weaponUse.data.data.isRanged) {
-					itemData.data.rangeText = `Range Weapon - ${weaponUse.data.name}`
-					itemData.data.rangeTextShort = `W-R`
-					itemData.data.rangeTextBlock = `${weaponUse.data.data.range.value}/${weaponUse.data.data.range.long}`
+				const weaponUse = Helper.getWeaponUse(itemData.system, this.actor);
+				if(weaponUse.system.isRanged) {
+					itemData.system.rangeText = `Range Weapon - ${weaponUse.system.name}`
+					itemData.system.rangeTextShort = `W-R`
+					itemData.system.rangeTextBlock = `${weaponUse.system.range.value}/${weaponUse.system.range.long}`
 				} else {
-					itemData.data.rangeText = `Melee Weapon - ${weaponUse.data.name}`;
-					itemData.data.rangeTextShort = "W-M";
+					itemData.system.rangeText = `Melee Weapon - ${weaponUse.system.name}`;
+					itemData.system.rangeTextShort = "W-M";
 					
-					if(itemData.data.rangePower == null){
-						itemData.data.rangeTextBlock = '';
+					if(itemData.system.rangePower == null){
+						itemData.system.rangeTextBlock = '';
 					} else {
-						itemData.data.rangeTextBlock = `${itemData.data.rangePower}`;
+						itemData.system.rangeTextBlock = `${itemData.system.rangePower}`;
 					}
 				}
 
 			} catch {
-				itemData.data.rangeText = "Weapon";
-				itemData.data.rangeTextShort = "W-M";
-				itemData.data.rangeTextBlock = `${itemData.data.rangePower}`
+				itemData.system.rangeText = "Weapon";
+				itemData.system.rangeTextShort = "W-M";
+				itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
 
-				if(itemData.data.rangePower == null){
-					itemData.data.rangeTextBlock = '';
+				if(itemData.system.rangePower == null){
+					itemData.system.rangeTextBlock = '';
 				} else {
-					itemData.data.rangeTextBlock = `${itemData.data.rangePower}`;
+					itemData.system.rangeTextBlock = `${itemData.system.rangePower}`;
 				}
 			}
 
 		} else {
-			itemData.data.rangeText = game.i18n.localize("DND4EBETA.NotAvalible");
-			itemData.data.rangeTextShort = game.i18n.localize("DND4EBETA.NotAvalibleShort");
+			itemData.system.rangeText = game.i18n.localize("DND4EBETA.NotAvalible");
+			itemData.system.rangeTextShort = game.i18n.localize("DND4EBETA.NotAvalibleShort");
 		}
 	}
   /* -------------------------------------------- */
@@ -563,7 +575,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	const power = ["power","atwill","encounter","daily","utility"];
 	if (power.includes(item.type)) {
 	  // const isAlways = getProperty(item.data, "preparation.mode") === "always";
-	  const isPrepared =  getProperty(item.data, "prepared");
+	  const isPrepared =  getProperty(item.system, "prepared");
 	  item.toggleClass = isPrepared ? "active" : "";
 	  // if ( isAlways ) item.toggleClass = "fixed";
 	  // if ( isAlways ) item.toggleTitle = CONFIG.DND4EBETA.spellPreparationModes.always;
@@ -572,7 +584,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	  else item.toggleTitle = game.i18n.localize("DND4EBETA.PowerUnPrepared");
 	}
 	else {
-	  const isActive = getProperty(item.data, "equipped");
+	  const isActive = getProperty(item.system, "equipped");
 	  item.toggleClass = isActive ? "active" : "";
 	  item.toggleTitle = game.i18n.localize(isActive ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped");
 	}
@@ -630,18 +642,18 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
    */
   _filterItems(items, filters) {
 	return items.filter(item => {
-	  const data = item.data;
+	  const system = item.system;
 
 	  // Action usage
 	  for ( let f of ["action", "bonus", "reaction"] ) {
 		if ( filters.has(f) ) {
-		  if ((data.activation && (data.activation.type !== f))) return false;
+		  if ((system.activation && (system.activation.type !== f))) return false;
 		}
 	  }
 
 	  // Equipment-specific filters
 	  if ( filters.has("equipped") ) {
-		if ( data.equipped !== true ) return false;
+		if ( system.equipped !== true ) return false;
 	  }
 	  return true;
 	});
@@ -839,7 +851,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
 				div.append(descrip);
 
-				if(item.data.data.autoGenChatPowerCard){
+				if(item.system.autoGenChatPowerCard){
 					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false))}</div>`);
 					div.append(details);
 				}
@@ -908,13 +920,13 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 			data: duplicate(header.dataset)
 		};
 
-		if(this.object.data.data.powerGroupTypes === "action" || this.object.data.data.powerGroupTypes == undefined) {
+		if(this.object.system.powerGroupTypes === "action" || this.object.system.powerGroupTypes == undefined) {
 			itemData.data.actionType = type;
 		}
-		else if(this.object.data.data.powerGroupTypes === "type") {
+		else if(this.object.system.powerGroupTypes === "type") {
 			itemData.data.powerType = type;
 		}
-		else if(this.object.data.data.powerGroupTypes === "usage") {
+		else if(this.object.system.powerGroupTypes === "usage") {
 			itemData.data.useType = type;
 			if(["encounter", "daily", "recharge", "item"].includes(type)) {
 				itemData.data.uses = {
@@ -1010,7 +1022,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		event.preventDefault();
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
-		const uses = Math.clamped(0, parseInt(event.target.value), item.data.data.preparedMaxUses);
+		const uses = Math.clamped(0, parseInt(event.target.value), item.system.preparedMaxUses);
 		event.target.value = uses;
 		return item.update({ 'data.uses.value': uses });
 	}
@@ -1036,56 +1048,56 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	_onSkillBonus(event) {
 		event.preventDefault();
 		const skillName = event.currentTarget.parentElement.dataset.skill;
-		const target = `data.skills.${skillName}`;
-		const options = {target: target, label: `${this.actor.data.data.skills[skillName].label} Skill Bonus`, skill: true };
+		const target = `system.skills.${skillName}`;
+		const options = {target: target, label: `${this.actor.system.skills[skillName].label} Skill Bonus`, skill: true };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	/* -------------------------------------------- */
 
 	_onDeathSaveBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.deathsavebon`, label: "Death Savingthrow Bonus" };
+		const options = {target: `system.details.deathsavebon`, label: "Death Savingthrow Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	
 	_onSurgeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.surgeBon`, label: "Healing Surge Bonus" };
+		const options = {target: `system.details.surgeBon`, label: "Healing Surge Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onSurgeEnv(event) {
 		event.preventDefault();
-		const options = {target: `data.details.surgeEnv`, label: "Healing Surges Environmental Losses" };
+		const options = {target: `system.details.surgeEnv`, label: "Healing Surges Environmental Losses" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 
 	_onSecondWindBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.secondwindbon`, label: "Second Wind Bonus", secondWind: true };
+		const options = {target: `system.details.secondwindbon`, label: "Second Wind Bonus", secondWind: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onDefencesBonus(event) {
 		event.preventDefault();
 		const defName = event.currentTarget.parentElement.dataset.defence;
-		const target = `data.defences.${defName}`;
-		const options = {target: target, label: `${this.actor.data.data.defences[defName].label} Defence Bonus`, ac: (defName ==="ac")  };
+		const target = `system.defences.${defName}`;
+		const options = {target: target, label: `${this.actor.system.defences[defName].label} Defence Bonus`, ac: (defName ==="ac")  };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.attributes.init`, label: "Initiative Bonus", init: true };
+		const options = {target: `system.attributes.init`, label: "Initiative Bonus", init: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onMovementBonus(event) {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
-		const target = `data.movement.${moveName}`;
-		const options = {target: target, label: `${this.actor.data.data.movement[moveName].label} Movement Bonus` };
+		const target = `system.movement.${moveName}`;
+		const options = {target: target, label: `${this.actor.system.movement[moveName].label} Movement Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -1107,9 +1119,9 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	_onPassiveBonus(event) {
 		event.preventDefault();
 		const passName = event.currentTarget.parentElement.dataset.passive;
-		const skillName = this.actor.data.data.passive[passName].skill;
+		const skillName = this.actor.system.passive[passName].skill;
 		const target = `data.passive.${passName}`;
-		const options = {target: target, label: `Passive ${this.actor.data.data.skills[skillName].label} Bonus` };
+		const options = {target: target, label: `Passive ${this.actor.system.skills[skillName].label} Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}	
 
@@ -1117,7 +1129,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		event.preventDefault();
 		const modifierName = event.currentTarget.parentElement.dataset.modifiers;
 		const target = `data.modifiers.${modifierName}`;
-		const options = {target: target, label: `${this.actor.data.data.modifiers[modifierName].label} Bonus` };
+		const options = {target: target, label: `${this.actor.system.modifiers[modifierName].label} Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}	
 
@@ -1125,7 +1137,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 		event.preventDefault();
 		const resName = event.currentTarget.parentElement.dataset.res;
 		const target = `data.resistances.${resName}`;
-		const options = {target: target, label: `${this.actor.data.data.resistances[resName].label} Damage Resistances Bonus` };
+		const options = {target: target, label: `${this.actor.system.resistances[resName].label} Damage Resistances Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	
@@ -1259,17 +1271,17 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 
 		if ( item.data.type === "power") {
 
-			if(item.data.data.rechargeRoll){
+			if(item.system.rechargeRoll){
 				const r = new Roll("1d6");
 				r.options.async = true;
 				r.dice[0].options.recharge = true;
-				r.dice[0].options.critical = item.data.data.rechargeRoll;
-				r.dice[0].options.fumble = item.data.data.rechargeRoll -1;
+				r.dice[0].options.critical = item.system.rechargeRoll;
+				r.dice[0].options.fumble = item.system.rechargeRoll -1;
 				r.evaluate({async: false});
 	
 				let flav = `${item.data.name} did not recharge.`;
-				if(r.total >= item.data.data.rechargeRoll){
-					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.preparedMaxUses}]);
+				if(r.total >= item.system.rechargeRoll){
+					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.system.preparedMaxUses}]);
 					flav = `${item.data.name} successfully recharged!`;
 				}
 
@@ -1281,14 +1293,14 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 					messageData: {"flags.dnd4eBeta.roll": {type: "other", itemId: this.id }}
 				});
 
-			} else if (item.data.data.rechargeCondition) {
+			} else if (item.system.rechargeCondition) {
 
-				this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.data.data.preparedMaxUses}]);
+				this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.system.preparedMaxUses}]);
 
 				ChatMessage.create({
 					user: game.user.id,
 					speaker: {actor: this.object, alias: this.object.data.name},
-					flavor: `${item.data.name} successfully recharged! Due to meeting condition ${item.data.data.rechargeCondition}`
+					flavor: `${item.data.name} successfully recharged! Due to meeting condition ${item.system.rechargeCondition}`
 				});
 			}
 
@@ -1320,7 +1332,7 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
    * @return {Promise<Actor4e>}
    */
   convertCurrency() {
-	const curr = duplicate(this.actor.data.data.currency);
+	const curr = duplicate(this.actor.system.currency);
 	const convert = CONFIG.DND4EBETA.currencyConversion;
 	for ( let [c, t] of Object.entries(convert) ) {
 	  let change = Math.floor(curr[c] / t.each);
@@ -1397,12 +1409,12 @@ ${parseInt(data.data.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Move
 	_onRollPassiveCheck(event) {
 		event.preventDefault();
 		const passName = event.currentTarget.parentElement.dataset.passive;
-		const skillName = this.actor.data.data.passive[passName].skill;
+		const skillName = this.actor.system.passive[passName].skill;
 
 		ChatMessage.create({
 			user: game.user.id,
 			speaker: {actor: this.object, alias: this.object.data.name},
-			content: `Passive ${this.actor.data.data.skills[skillName].label} Skill Check: <SPAN STYLE="font-weight:bold">${this.object.data.data.passive[passName].value}`
+			content: `Passive ${this.actor.system.skills[skillName].label} Skill Check: <SPAN STYLE="font-weight:bold">${this.object.system.passive[passName].value}`
 		});	
 	}
 
