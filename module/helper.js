@@ -311,7 +311,7 @@ export class Helper {
 		}
 
 		if(actorData) {
-			const actorInnerData = actorData.data
+			const actorInnerData = actorData.system
 			if (actorInnerData) {
 				newFormula = Roll.replaceFormulaData(newFormula, actorInnerData);
 				if(powerInnerData) {

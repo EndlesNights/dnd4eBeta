@@ -5,11 +5,11 @@
             <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
             <div class="resource">
             	<label>Quantity</label>
-                <input type="text" name="data.data.data.quantity" value="{{data.quantity}}" data-dtype="Number"/>
+                <input type="text" name="system.data.data.quantity" value="{{system.quantity}}" data-dtype="Number"/>
             </div>
             <div class="resource">
             	<label>Weight</label>
-                <input type="text" name="data.weight" value="{{data.weight}}" data-dtype="Number"/>
+                <input type="text" name="system.weight" value="{{system.weight}}" data-dtype="Number"/>
             </div>
         </div>
     </header>
@@ -25,7 +25,7 @@
 
         {{!-- Description Tab --}}
         <div class="tab" data-group="primary" data-tab="description">
-            {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+            {{editor system.description target="system.description" button=true owner=owner editable=editable}}
         </div>
 
         {{!-- Attributes Tab --}}
@@ -41,14 +41,14 @@
             <ol class="attributes-list">
             {{#each data.attributes as |attr key|}}
                 <li class="attribute flexrow" data-attribute="{{key}}">
-                    <input class="attribute-key" type="text" name="data.attributes.{{key}}.key" value="{{key}}"/>
+                    <input class="attribute-key" type="text" name="system.attributes.{{key}}.key" value="{{key}}"/>
                     {{#if attr.isCheckbox}}
-                    <label class="attribute-value checkbox"><input type="checkbox" name="data.attributes.{{key}}.value" {{checked attr.value}}/></label>
+                    <label class="attribute-value checkbox"><input type="checkbox" name="system.attributes.{{key}}.value" {{checked attr.value}}/></label>
                     {{else}}
-                    <input class="attribute-value" type="text" name="data.attributes.{{key}}.value" value="{{attr.value}}" data-dtype="{{attr.dtype}}"/>
+                    <input class="attribute-value" type="text" name="system.attributes.{{key}}.value" value="{{attr.value}}" data-dtype="{{attr.dtype}}"/>
                     {{/if}}
-                    <input class="attribute-label" type="text" name="data.attributes.{{key}}.label" value="{{attr.label}}"/>
-                    <select class="attribute-dtype" name="data.attributes.{{key}}.dtype">
+                    <input class="attribute-label" type="text" name="system.attributes.{{key}}.label" value="{{attr.label}}"/>
+                    <select class="attribute-dtype" name="system.attributes.{{key}}.dtype">
                         {{#select attr.dtype}}
                         {{#each ../dtypes as |t|}}
                         <option value="{{t}}">{{t}}</option>

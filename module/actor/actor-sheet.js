@@ -82,7 +82,6 @@ export default class ActorSheet4e extends ActorSheet {
 
   /** @override */
   get template() {
-    // if ( !game.user.isGM && this.actor.limited ) return "systems/dnd5e/templates/actors/limited-sheet.html";
     return `systems/dnd4e/templates/actor-sheet.html`;
   }
 
@@ -852,7 +851,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 				div.append(descrip);
 
 				if(item.system.autoGenChatPowerCard){
-					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.data.toObject(false))}</div>`);
+					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
 					div.append(details);
 				}
 

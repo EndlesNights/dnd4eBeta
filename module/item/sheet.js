@@ -10,7 +10,7 @@ export default class ItemSheet4e extends ItemSheet {
 	constructor(...args) {
 		super(...args);
 		// Expand the default size of the class sheet
-		if ( this.object.data.type === "class" ) {
+		if ( this.object.type === "class" ) {
 			this.options.resizable = true;
 			this.options.width =  600;
 			this.options.height = 680;
@@ -38,7 +38,7 @@ export default class ItemSheet4e extends ItemSheet {
 	/** @override */
 	get template() {
 		const path = "systems/dnd4e/templates/items/";
-		return `${path}/${this.item.data.type}.html`;
+		return `${path}/${this.item.type}.html`;
 	}
 
 	/* -------------------------------------------- */
@@ -54,7 +54,7 @@ export default class ItemSheet4e extends ItemSheet {
 		data.itemType = itemData.type.titleCase();
 		data.itemStatus = this._getItemStatus(itemData);
 		data.itemProperties = this._getItemProperties(itemData);
-		data.isPhysical = itemData.data.hasOwnProperty("quantity");
+		data.isPhysical = itemData.system.hasOwnProperty("quantity");
 
 		// Potential consumption targets
 		data.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
@@ -65,15 +65,15 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 
 		if(itemData.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
-		if(itemData.data?.useType) {
-			if(!(itemData.data.rangeType === "personal" || itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || data.data.rangeType === "")){
-				itemData.data.isRange = true;
+		if(itemData.system?.useType) {
+			if(!(itemData.system.rangeType === "personal" || itemData.system.rangeType === "closeBurst" || itemData.system.rangeType === "closeBlast" || itemData.system.rangeType === "")){
+				itemData.system.isRange = true;
 			}
 
-			if(itemData.data.rangeType === "closeBurst" || itemData.data.rangeType === "closeBlast" || itemData.data.rangeType === "rangeBurst" || itemData.data.rangeType === "rangeBlast" || itemData.data.rangeType === "wall" ) { 
-				itemData.data.isArea = true;
+			if(itemData.system.rangeType === "closeBurst" || itemData.system.rangeType === "closeBlast" || itemData.system.rangeType === "rangeBurst" || itemData.system.rangeType === "rangeBlast" || itemData.system.rangeType === "wall" ) { 
+				itemData.system.isArea = true;
 			}
-			itemData.data.isRecharge = itemData.data.useType === "recharge";
+			itemData.system.isRecharge = itemData.system.useType === "recharge";
 		}
 
 
@@ -83,19 +83,19 @@ export default class ItemSheet4e extends ItemSheet {
 			for (let attrib in data.config.weaponProperties) {
 				data.weaponMetaProperties[attrib] = {
 						propName: data.config.weaponProperties[attrib], 
-						checked: itemData.data.properties[attrib],
-						disabled: (attrib === "imp" && itemData.data.weaponType === "implement")
+						checked: itemData.system.properties[attrib],
+						disabled: (attrib === "imp" && itemData.system.weaponType === "implement")
 				}
 			}
 		}
 
 		// Action Details
 		data.hasAttackRoll = this.item.hasAttack;
-		data.isHealing = itemData.data.actionType === "heal";
-		data.isFlatDC = getProperty(itemData.data, "save.scaling") === "flat";
+		data.isHealing = itemData.system.actionType === "heal";
+		data.isFlatDC = getProperty(itemData.system, "save.scaling") === "flat";
 
 		// Vehicles
-		data.isCrewed = itemData.data.activation?.type === 'crew';
+		data.isCrewed = itemData.system.activation?.type === 'crew';
 		data.isMountable = this._isItemMountable(itemData);
 	
 		// Prepare Active Effects
@@ -103,7 +103,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 		// Re-define the template data references (backwards compatible)
 		data.item = itemData;
-		data.data = itemData.data;
+		data.system = itemData.system;
 		return data;
 	}
 
@@ -269,7 +269,7 @@ export default class ItemSheet4e extends ItemSheet {
 	 * @private
 	 */
 	_getItemConsumptionTargets(item) {
-		const consume = item.data.consume || {};
+		const consume = item.system.consume || {};
 		if ( !consume.type ) return [];
 		const actor = this.item.actor;
 		if ( !actor ) return {};
@@ -277,8 +277,8 @@ export default class ItemSheet4e extends ItemSheet {
 		// Ammunition
 		if ( consume.type === "ammo" ) {
 			return actor.itemTypes.consumable.reduce((ammo, i) =>  {
-				if ( i.data.data.consumableType === "ammo" ) {
-					ammo[i.id] = `${i.name} (${i.data.data.quantity})`;
+				if ( i.system.consumableType === "ammo" ) {
+					ammo[i.id] = `${i.name} (${i.system.quantity})`;
 				}
 				return ammo;
 			}, {});
@@ -287,7 +287,7 @@ export default class ItemSheet4e extends ItemSheet {
 	// Attributes
 	else if ( consume.type === "attribute" ) {
 		// const attributes = Object.values(CombatTrackerConfig.prototype.getAttributeChoices())[0]; // Bit of a hack
-		const attributes = TokenDocument.getTrackedAttributes(actor.data.data);
+		const attributes = TokenDocument.getTrackedAttributes(actor.system);
 		attributes.bar.forEach(a => a.push("value"));
 		return attributes.bar.concat(attributes.value).reduce((obj, a) => {
 			let k = a.join(".");
@@ -300,7 +300,7 @@ export default class ItemSheet4e extends ItemSheet {
 		else if ( consume.type === "material" ) {
 			return actor.items.reduce((obj, i) => {
 				if ( ["consumable", "loot"].includes(i.data.type) ) {
-					obj[i.id] = `${i.name} (${i.data.data.quantity})`;
+					obj[i.id] = `${i.name} (${i.system.quantity})`;
 				}
 				return obj;
 			}, {});
@@ -309,7 +309,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// Charges
 		else if ( consume.type === "charges" ) {
 			return actor.items.reduce((obj, i) => {
-				const uses = i.data.data.uses || {};
+				const uses = i.system.uses || {};
 				if ( uses.per && uses.max ) {
 					const label = uses.per === "charges" ?
 						` (${game.i18n.format("DND4EBETA.AbilityUseChargesLabel", {value: uses.value})})` :
@@ -332,7 +332,7 @@ export default class ItemSheet4e extends ItemSheet {
 	*/
 	_getItemsWeaponUseTargets(weapon) {
 		
-		const weaponType = weapon.data.weaponType || {};
+		const weaponType = weapon.system.weaponType || {};
 		if ( !weaponType ) return [];
 		const actor = this.item.actor;
 		if ( !actor ) return {};
@@ -349,7 +349,7 @@ export default class ItemSheet4e extends ItemSheet {
 		
 		if ( weaponType === "melee" ) {
 			return actor.itemTypes.weapon.reduce((obj, i) =>  {
-				if (setMelee.includes(i.data.data.weaponType) ) {
+				if (setMelee.includes(i.system.weaponType) ) {
 					obj[i.id] = `${i.name}`;
 				}
 				return obj;
@@ -358,7 +358,7 @@ export default class ItemSheet4e extends ItemSheet {
 		
 		if ( weaponType === "ranged" ) {
 			return actor.itemTypes.weapon.reduce((obj, i) =>  {
-				if (setRanged.includes(i.data.data.weaponType) ) {
+				if (setRanged.includes(i.system.weaponType) ) {
 					obj[i.id] = `${i.name}`;
 				}
 				return obj;
@@ -367,7 +367,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 		if ( weaponType === "meleeRanged" ) {
 			return actor.itemTypes.weapon.reduce((obj, i) =>  {
-				if (setMelee.includes(i.data.data.weaponType) || setRanged.includes(i.data.data.weaponType) ) {
+				if (setMelee.includes(i.system.weaponType) || setRanged.includes(i.system.weaponType) ) {
 					obj[i.id] = `${i.name}`;
 				}
 				return obj;
@@ -376,31 +376,13 @@ export default class ItemSheet4e extends ItemSheet {
 		
 		if ( weaponType === "implement" ) {
 			return actor.itemTypes.weapon.reduce((obj, i) =>  {
-				if (i.data.data.properties.imp ) {
+				if (i.system.properties.imp ) {
 					obj[i.id] = `${i.name}`;
 				}
 				return obj;
 			}, {});			
 		}
-				
-		// if ( weaponType === "implementA" ) {
-			// return actor.itemTypes.weapon.reduce((obj, i) =>  {
-				// if (i.data.data.properties.impA || i.data.data.properties.imp ) {
-					// obj[i.id] = `${i.name}`;
-				// }
-				// return obj;
-			// }, {});			
-		// }
-		
-		// if ( weaponType === "implementD" ) {
-			// return actor.itemTypes.weapon.reduce((obj, i) =>  {
-				// if (i.data.data.properties.impD || i.data.data.properties.imp ) {
-					// obj[i.id] = `${i.name}`;
-				// }
-				// return obj;
-			// }, {});			
-		// }
-		
+						
 		return {};
 	}
 
@@ -435,41 +417,41 @@ export default class ItemSheet4e extends ItemSheet {
 		const labels = this.item.labels;
 		if ( item.type === "weapon" ) {
 
-			props.push(CONFIG.DND4EBETA.weaponTypes[item.data.weaponType])
+			props.push(CONFIG.DND4EBETA.weaponTypes[item.system.weaponType])
 
-			props.push(...Object.entries(item.data.properties)
+			props.push(...Object.entries(item.system.properties)
 				.filter(e => e[1] === true)
 				.map(e => {
-					if(e[0] === "bru") return `${CONFIG.DND4EBETA.weaponProperties[e[0]]} ${item.data.brutalNum}`;
+					if(e[0] === "bru") return `${CONFIG.DND4EBETA.weaponProperties[e[0]]} ${item.system.brutalNum}`;
 					return CONFIG.DND4EBETA.weaponProperties[e[0]]
 				})
 			);
 
-			props.push(...Object.entries(item.data.damageType)
+			props.push(...Object.entries(item.system.damageType)
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4EBETA.damageTypes[e[0]])
 			);
 
-			props.push(...Object.entries(item.data.weaponGroup)
+			props.push(...Object.entries(item.system.weaponGroup)
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4EBETA.weaponGroup[e[0]])
 			);
 
-			if(item.data.isRanged)
-				props.push(`${game.i18n.localize("DND4EBETA.Range")}: ${item.data.range.value} / ${item.data.range.long}`);
+			if(item.system.isRanged)
+				props.push(`${game.i18n.localize("DND4EBETA.Range")}: ${item.system.range.value} / ${item.system.range.long}`);
 		}
 
-		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility","item"].includes(item.data.type)) {
+		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility","item"].includes(item.system.type)) {
 			props.push(
 				labels.components,
 				labels.materials,
-				// item.data.components.concentration ? game.i18n.localize("DND4EBETA.Concentration") : null,
-				// item.data.components.ritual ? game.i18n.localize("DND4EBETA.Ritual") : null
+				// item.system.components.concentration ? game.i18n.localize("DND4EBETA.Concentration") : null,
+				// item.system.components.ritual ? game.i18n.localize("DND4EBETA.Ritual") : null
 			)
 		}
 
 		else if ( item.type === "equipment" ) {
-			props.push(CONFIG.DND4EBETA.equipmentTypes[item.data.armour.type]);
+			props.push(CONFIG.DND4EBETA.equipmentTypes[item.system.armour.type]);
 			props.push(labels.armour);
 			props.push(labels.fort);
 			props.push(labels.ref);
@@ -481,12 +463,12 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 
 		// Action type
-		if ( item.data.actionType ) {
-			props.push(CONFIG.DND4EBETA.itemActionTypes[item.data.actionType]);
+		if ( item.system.actionType ) {
+			props.push(CONFIG.DND4EBETA.itemActionTypes[item.system.actionType]);
 		}
 
 		// Action usage
-		if ( (item.type !== "weapon") && item.data.activation && !isEmpty(item.data.activation) ) {
+		if ( (item.type !== "weapon") && item.system.activation && !isEmpty(item.system.activation) ) {
 			props.push(
 				labels.attribute,
 				labels.activation,
@@ -512,9 +494,9 @@ export default class ItemSheet4e extends ItemSheet {
 	 * @private
 	 */
 	_isItemMountable(item) {
-		const data = item.data;
-		return (item.type === 'weapon' && data.weaponType === 'siege')
-			|| (item.type === 'equipment' && data.armour.type === 'vehicle');
+		const system = item.system;
+		return (item.type === 'weapon' && system.weaponType === 'siege')
+			|| (item.type === 'equipment' && system.armour.type === 'vehicle');
 	}
 
 	/* -------------------------------------------- */
@@ -604,7 +586,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// Add new damage component
 		if ( a.classList.contains("add-damage") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
-			const damage = this.item.data.data.damage;
+			const damage = this.item.system.damage;
 			return this.item.update({"data.damage.parts": damage.parts.concat([["", ""]])});
 		}
 
@@ -612,7 +594,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( a.classList.contains("delete-damage") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const li = a.closest(".damage-part");
-			const damage = duplicate(this.item.data.data.damage);
+			const damage = duplicate(this.item.system.damage);
 			damage.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"data.damage.parts": damage.parts});
 		}
@@ -620,7 +602,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// Add new critical damage component
 		if ( a.classList.contains("add-criticalDamage") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
-			const damageCrit = this.item.data.data.damageCrit;
+			const damageCrit = this.item.system.damageCrit;
 			return this.item.update({"data.damageCrit.parts": damageCrit.parts.concat([["", ""]])});
 		}
 
@@ -628,7 +610,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( a.classList.contains("delete-criticalDamage") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const li = a.closest(".damage-part");
-			const damageCrit = duplicate(this.item.data.data.damageCrit);
+			const damageCrit = duplicate(this.item.system.damageCrit);
 			damageCrit.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"data.damageCrit.parts": damageCrit.parts});
 		}
@@ -636,7 +618,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// Add new implement damage component
 		if ( a.classList.contains("add-damage-imp") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
-			const damageImp = this.item.data.data.damageImp;
+			const damageImp = this.item.system.damageImp;
 			return this.item.update({"data.damageImp.parts": damageImp.parts.concat([["", ""]])});
 		}
 
@@ -644,7 +626,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( a.classList.contains("delete-damage-imp") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const li = a.closest(".damage-part");
-			const damageImp = duplicate(this.item.data.data.damageImp);
+			const damageImp = duplicate(this.item.system.damageImp);
 			damageImp.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"data.damageImp.parts": damageImp.parts});
 		}
@@ -652,7 +634,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// Add new implement critical damage component
 		if ( a.classList.contains("add-criticalDamage-imp") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
-			const damageCritImp = this.item.data.data.damageCritImp;
+			const damageCritImp = this.item.system.damageCritImp;
 			return this.item.update({"data.damageCritImp.parts": damageCritImp.parts.concat([["", ""]])});
 		}
 
@@ -660,14 +642,14 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( a.classList.contains("delete-criticalDamage-imp") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const li = a.closest(".damage-part");
-			const damageCritImp = duplicate(this.item.data.data.damageCritImp);
+			const damageCritImp = duplicate(this.item.system.damageCritImp);
 			damageCritImp.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"data.damageCritImp.parts": damageCritImp.parts});
 		}
 		// Add new damage res
 		if ( a.classList.contains("add-damageRes") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
-			const damageRes = this.item.data.data.armour.damageRes;
+			const damageRes = this.item.system.armour.damageRes;
 			return this.item.update({"data.armour.damageRes.parts": damageRes.parts.concat([["", ""]])});
 		}
 
@@ -675,21 +657,21 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( a.classList.contains("delete-damageRes") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const li = a.closest(".damage-part");
-			const damageRes = duplicate(this.item.data.data.armour.damageRes);
+			const damageRes = duplicate(this.item.system.armour.damageRes);
 			damageRes.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"data.armour.damageRes.parts": damageRes.parts});
 		}
 
 		if(a.classList.contains("add-dice")) {
 			await this._onSubmit(event); // Submit any unsaved changes
-			const damageDice = duplicate(this.item.data.data.damageDice);
+			const damageDice = duplicate(this.item.system.damageDice);
 			return this.item.update({"data.damageDice.parts": damageDice.parts.concat([["","",""]])});
 		}
 
 		if ( a.classList.contains("delete-dice") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const li = a.closest(".damage-part");
-			const damageDice = duplicate(this.item.data.data.damageDice);
+			const damageDice = duplicate(this.item.system.damageDice);
 			damageDice.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"data.damageDice.parts": damageDice.parts});
 		}
@@ -708,7 +690,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// Add new special component
 		if ( a.classList.contains("add-special") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
-			const special = this.item.data.data.specialAdd;
+			const special = this.item.system.specialAdd;
 			return this.item.update({"data.specialAdd.parts": special.parts.concat([[""]])});
 		}
 
@@ -716,7 +698,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( a.classList.contains("delete-special") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const li = a.closest(".onetext-part");
-			const special = duplicate(this.item.data.data.specialAdd);
+			const special = duplicate(this.item.system.specialAdd);
 			special.parts.splice(Number(li.dataset.specialPart), 1);
 			return this.item.update({"data.specialAdd.parts": special.parts});
 		}
@@ -731,7 +713,7 @@ export default class ItemSheet4e extends ItemSheet {
 	 */
 	_onConfigureClassSkills(event) {
 		event.preventDefault();
-		const skills = this.item.data.data.skills;
+		const skills = this.item.system.skills;
 		const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.DND4EBETA.skills);
 		const a = event.currentTarget;
 		const label = a.parentElement;
