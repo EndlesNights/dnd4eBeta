@@ -16,16 +16,16 @@
 
 			<ul class="summary flexrow">
 				<li>
-					{{lookup config.consumableTypes data.consumableType }}
+					{{lookup config.consumableTypes system.consumableType }}
 				</li>
 				<li>
-					<input type="number" name="data.level" value="{{data.level}}" placeholder="{{ localize 'DND4EBETA.Level' }}"/>
+					<input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4EBETA.Level' }}"/>
 				</li>
 				<li>
-					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EBETA.Rarity' }}"/>
+					<input type="text" name="system.rarity" value="{{system.rarity}}" placeholder="{{ localize 'DND4EBETA.Rarity' }}"/>
 				</li>
 				<li>
-					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
+					<input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
 				</li>
 			</ul>
 		</div>
@@ -52,8 +52,8 @@
 			{{!-- Consumable Type --}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.ItemConsumableType" }}</label>
-				<select name="data.consumableType">
-					{{#select data.consumableType}}
+				<select name="system.consumableType">
+					{{#select system.consumableType}}
 					{{#each config.consumableTypes as |name type|}}
 					<option value="{{type}}">{{name}}</option>
 					{{/each}}
@@ -64,13 +64,13 @@
 			<div class="form-group stacked">
 				<label>{{ localize "DND4EBETA.ItemConsumableStatus" }}</label>
 				<label class="checkbox">
-					<input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "DND4EBETA.Equipped" }}
+					<input type="checkbox" name="system.equipped" {{checked system.equipped}}/> {{ localize "DND4EBETA.Equipped" }}
 				</label>
 				<label class="checkbox">
-					<input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "DND4EBETA.Identified" }}
+					<input type="checkbox" name="system.identified" {{checked system.identified}}/> {{ localize "DND4EBETA.Identified" }}
 				</label>
 				<label class="checkbox">
-					<input type="checkbox" name="data.attuned" {{checked data.attuned}}/> {{ localize "DND4EBETA.Attuned" }}
+					<input type="checkbox" name="system.attuned" {{checked system.attuned}}/> {{ localize "DND4EBETA.Attuned" }}
 				</label>
 			</div>
 
@@ -78,7 +78,7 @@
 
 			<div class="form-group">
 				<label class="checkbox">
-					<input type="checkbox" name="data.uses.autoDestroy" {{checked data.uses.autoDestroy}}/> {{ localize "DND4EBETA.ItemDestroyEmpty" }}
+					<input type="checkbox" name="system.uses.autoDestroy" {{checked system.uses.autoDestroy}}/> {{ localize "DND4EBETA.ItemDestroyEmpty" }}
 				</label>
 			</div>
 
@@ -88,11 +88,11 @@
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EBETA.LimitedUses" }}</label>
 				<div class="form-fields">
-					<input type="text" name="data.uses.value" value="{{data.uses.value}}" data-dtype="Number"/>
+					<input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number"/>
 					<span class="sep"> {{ localize "DND4EBETA.of" }} </span>
-					<input type="text" name="data.uses.max" value="{{data.uses.max}}"/>
-					<select name="data.uses.per">
-						{{#select data.uses.per}}
+					<input type="text" name="system.uses.max" value="{{system.uses.max}}"/>
+					<select name="system.uses.per">
+						{{#select system.uses.per}}
 						<option value=""></option>
 						{{#each config.limitedUsePeriods as |name key|}}
 						<option value="{{key}}">{{name}}</option>
@@ -106,31 +106,31 @@
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
 				<div class="form-fields">
-					<select name="data.consume.type" style="flex: 0.55;">
-						{{#select data.consume.type}}
+					<select name="system.consume.type" style="flex: 0.55;">
+						{{#select system.consume.type}}
 						<option value=""></option>
 						{{#each config.abilityConsumptionTypes as |name key|}}
 						<option value="{{key}}">{{name}}</option>
 						{{/each}}
 						{{/select}}
 					</select>
-					<select name="data.consume.target" style="width: 80%">
-						{{#select data.consume.target}}
+					<select name="system.consume.target" style="width: 80%">
+						{{#select system.consume.target}}
 						<option value=""></option>
 						{{#each abilityConsumptionTargets as |name key|}}
 						<option value="{{key}}">{{name}}</option>
 						{{/each}}
 						{{/select}}
 					</select>
-					<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
+					<input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number"/>
 				</div>
 			</div>
 
 
-			{{#if data.activation.type}}
+			{{#if system.activation.type}}
 			<div class="form-group">
 				<label class="checkbox">
-					<input type="checkbox" name="data.uses.autoDestroy" {{checked data.uses.autoDestroy}}/> {{ localize "DND4EBETA.ItemDestroyEmpty" }}
+					<input type="checkbox" name="system.uses.autoDestroy" {{checked system.uses.autoDestroy}}/> {{ localize "DND4EBETA.ItemDestroyEmpty" }}
 				</label>
 			</div>
 			{{/if}}
@@ -139,14 +139,14 @@
 
 			<div class="form-group">
 				<label style="max-width: 208px;">{{ localize "DND4EBETA.PowerAutoGenerateLable" }}</label>
-				<span class="checkbox"><input type="checkbox" name="data.autoGenChatPowerCard" data-dtype="Boolean" {{checked data.autoGenChatPowerCard}}/></span>
+				<span class="checkbox"><input type="checkbox" name="system.autoGenChatPowerCard" data-dtype="Boolean" {{checked system.autoGenChatPowerCard}}/></span>
 			</div>
 
 			{{!-- Action Type --}}
 			<div class="form-group select">
 				<label>{{ localize "DND4EBETA.ItemActionType" }}</label>
-				<select name="data.actionType">
-					{{#select data.actionType}}
+				<select name="system.actionType">
+					{{#select system.actionType}}
 					{{#each config.abilityActivationTypes as |name type|}}
 					<option value="{{type}}">{{name}}</option>
 					{{/each}}
@@ -157,28 +157,28 @@
 			{{!-- Attack Details--}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.IsAttack" }}</label>
-				<span class="checkbox"><input type="checkbox" name="data.attack.isAttack" data-dtype="Boolean" {{checked data.attack.isAttack}}/></span>
+				<span class="checkbox"><input type="checkbox" name="system.attack.isAttack" data-dtype="Boolean" {{checked system.attack.isAttack}}/></span>
 			</div>
 
-			{{#if data.attack.isAttack}}
+			{{#if system.attack.isAttack}}
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EBETA.Range" }}</label>
 				<div class="form-fields">
-					<select name="data.rangeType">
-						{{#select data.rangeType}}
+					<select name="system.rangeType">
+						{{#select system.rangeType}}
 						{{#each config.rangeTypeNoWeapon as |name type|}}
 						<option value="{{type}}">{{name}}</option>
 						{{/each}}
 						{{/select}}
 					</select>
-					{{#if data.isArea}}
+					{{#if system.isArea}}
 					<span>{{ localize "DND4EBETA.AreaOf" }}</span>
-					<input type="text" name="data.area" value="{{data.area}}"/>
+					<input type="text" name="system.area" value="{{system.area}}"/>
 					{{/if}}
-					{{#if data.isRange}}
-					{{#if data.isArea}}<span style="flex: 1 0 6px">{{ localize "DND4EBETA.RangeWithinOf" }}</span>{{/if}}
-					{{#unless data.isArea}}<span style="flex: 0.6 0 16px">{{ localize "DND4EBETA.RangeOf" }}</span>{{/unless}}
-					<input type="text" name="data.rangePower" value="{{data.rangePower}}" data-dtype="Number"/>
+					{{#if system.isRange}}
+					{{#if system.isArea}}<span style="flex: 1 0 6px">{{ localize "DND4EBETA.RangeWithinOf" }}</span>{{/if}}
+					{{#unless system.isArea}}<span style="flex: 0.6 0 16px">{{ localize "DND4EBETA.RangeOf" }}</span>{{/unless}}
+					<input type="text" name="system.rangePower" value="{{system.rangePower}}" data-dtype="Number"/>
 					{{/if}}
 				</div>
 			</div>
@@ -187,8 +187,8 @@
 				<label>{{ localize "DND4EBETA.Attack" }}</label>
 				<div class="form-fields">
 					<span>{{ localize "DND4EBETA.VS" }}</span>
-					<select name="data.attack.def">
-						{{#select data.attack.def}}
+					<select name="system.attack.def">
+						{{#select system.attack.def}}
 						<option value=""></option>
 						{{#each config.def as |name key|}}
 						<option value="{{key}}">{{name}}</option>
@@ -200,36 +200,36 @@
 
 			<div class="form-group">
 				<label>Attack {{ localize "DND4EBETA.Formula" }}</label>
-				<input type="text" name="data.attack.formula" value="{{data.attack.formula}}" placeholder="Do not include 1d20, that will be added automatically"/>
+				<input type="text" name="system.attack.formula" value="{{system.attack.formula}}" placeholder="Do not include 1d20, that will be added automatically"/>
 			</div>
 
 			<div class="form-group stacked">
 				<label>{{ localize "DND4EBETA.HitDetailsText" }}</label>
-				<input type="text" name="data.hit.detail" value="{{data.hit.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+				<input type="text" name="system.hit.detail" value="{{system.hit.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
 			</div>
 			<div class="form-group stacked">
 				<label>{{ localize "DND4EBETA.MissDetailsText" }}</label>
-				<input type="text" name="data.miss.detail" value="{{data.miss.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+				<input type="text" name="system.miss.detail" value="{{system.miss.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
 			</div>
 
 			{{/if}}
 
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.IsDamage" }}</label>
-				<span class="checkbox"><input type="checkbox" name="data.hit.isDamage" data-dtype="Boolean" {{checked data.hit.isDamage}}/></span>
+				<span class="checkbox"><input type="checkbox" name="system.hit.isDamage" data-dtype="Boolean" {{checked system.hit.isDamage}}/></span>
 			</div>
-			{{#if data.hit.isDamage}}
+			{{#if system.hit.isDamage}}
 			{{!-- Hit Details --}}
 			{{!-- Damage --}}
 			<div class="form-group">
 				<label>Damage {{ localize "DND4EBETA.Formula" }}</label>
-				<input type="text" name="data.hit.formula" value="{{data.hit.formula}}" placeholder="e.g. 1d6"/>
+				<input type="text" name="system.hit.formula" value="{{system.hit.formula}}" placeholder="e.g. 1d6"/>
 			</div>
 
 			{{!-- Critical --}}
 			<div class="form-group ">
 				<label>Critical Damage {{ localize "DND4EBETA.Formula" }}</label>
-				<input type="text" name="data.hit.critFormula" value="{{data.hit.critFormula}}" placeholder="e.g. 6"/>
+				<input type="text" name="system.hit.critFormula" value="{{system.hit.critFormula}}" placeholder="e.g. 6"/>
 			</div>
 
 			<div class="form-group stacked weapon-properties">
@@ -237,42 +237,42 @@
 				<pr></pr>
 				{{#each config.damageTypes as |name type|}}
 				<label class="checkbox">
-					<input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
+					<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
 				</label>
 				{{/each}}
 			</div>
 			{{/if}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.IsHealing" }}</label>
-				<span class="checkbox"><input type="checkbox" name="data.hit.isHealing" data-dtype="Boolean" {{checked data.hit.isHealing}}/></span>
+				<span class="checkbox"><input type="checkbox" name="system.hit.isHealing" data-dtype="Boolean" {{checked system.hit.isHealing}}/></span>
 			</div>
-			{{#if data.hit.isHealing}}
+			{{#if system.hit.isHealing}}
 			<div class="form-group stacked">
 				<label>Healing {{ localize "DND4EBETA.Formula" }}</label>
-				<input type="text" name="data.hit.healFormula" value="{{data.hit.healFormula}}"/>
+				<input type="text" name="system.hit.healFormula" value="{{system.hit.healFormula}}"/>
 			</div>
 			{{/if}}
 
 			{{!-- Other Formula --}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.OtherFormula" }}</label>
-				<input type="text" name="data.formula" value="{{data.formula}}" placeholder="{{ localize 'DND4EBETA.Formula' }}"/>
+				<input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize 'DND4EBETA.Formula' }}"/>
 			</div>
 
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.EffectDetails" }}</label>
 				<span style="text-align: right;">{{ localize "DND4EBETA.DisplayEffect" }}</span>
-				<input type="checkbox" name="data.postEffect" data-dtype="Boolean" {{checked data.postEffect}}/>
+				<input type="checkbox" name="system.postEffect" data-dtype="Boolean" {{checked system.postEffect}}/>
 			</div>
 			<div class="form-group">
 				<span style="text-align: right;">{{ localize "DND4EBETA.EffectHTMLInput" }}</span>
-				<input type="checkbox" name="data.effectHTML" data-dtype="Boolean" {{checked data.effectHTML}}/>
+				<input type="checkbox" name="system.effectHTML" data-dtype="Boolean" {{checked system.effectHTML}}/>
 			</div>
-			{{#if data.effectHTML}}
-			{{editor content=data.effect.detail target="data.effect.detail" button=true owner=owner editable=editable}}
+			{{#if system.effectHTML}}
+			{{editor system.effect.detail target="system.effect.detail" button=true owner=owner editable=editable}}
 			{{else}}
 			<div class="form-group">
-				<input type="text" name="data.effect.detail" value="{{data.effect.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+				<input type="text" name="system.effect.detail" value="{{system.effect.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
 			</div>
 			{{/if}}
 		</div>

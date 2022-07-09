@@ -15,13 +15,13 @@
 
 			<ul class="summary flexrow">
 				<li>
-					<input type="number" name="data.level" value="{{data.level}}" placeholder="{{ localize 'DND4EBETA.Level' }}"/>
+					<input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4EBETA.Level' }}"/>
 				</li>
 				<li>
-					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EBETA.Rarity' }}"/>
+					<input type="text" name="system.rarity" value="{{system.rarity}}" placeholder="{{ localize 'DND4EBETA.Rarity' }}"/>
 				</li>
 				<li>
-					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
+					<input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
 				</li>
 			</ul>
 		</div>
@@ -47,19 +47,19 @@
 			{{!-- Tool Proficiency --}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.RollFormula" }}</label>
-				<input type="text" name="data.formula" value="{{data.formula}}" placeholder="{{ localize "DND4EBETA.RollPlaceholderTool"}}"/>
+				<input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize "DND4EBETA.RollPlaceholderTool"}}"/>
 			</div>
 			<label>{{ localize "DND4EBETA.ToolFormulaDescription"}}</label>
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.RollBonus" }}</label>
-				<input type="text" name="data.bonus" value="{{data.bonus}}"/>
+				<input type="text" name="system.bonus" value="{{system.bonus}}"/>
 			</div>
 
 			{{!-- Ability Check --}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.DefaultAbilitySkillCheck" }}</label>
-				<select name="data.attribute">
-					{{#select data.attribute}}
+				<select name="system.attribute">
+					{{#select system.attribute}}
 					{{#each config.abilities as |name a|}}
 					<option value="abilities.{{a}}.mod">{{name}}</option>
 					{{/each}}
@@ -73,7 +73,7 @@
 			{{!-- Chat Message Flavor --}}
 			<div class="form-group stacked">
 				<label>{{ localize "DND4EBETA.ChatFlavor" }}</label>
-				<input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}" placeholder="{{ localize "DND4EBETA.ChatFlavorPlaceholder"}}"/>
+				<input type="text" name="system.chatFlavor" value="{{system.chatFlavor}}" placeholder="{{ localize "DND4EBETA.ChatFlavorPlaceholder"}}"/>
 			</div>
 		</div>
 		

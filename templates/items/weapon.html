@@ -16,16 +16,16 @@
 
 			<ul class="summary flexrow">
 				<li>
-					{{lookup config.weaponTypes data.weaponType }}
+					{{lookup config.weaponTypes system.weaponType }}
 				</li>
 				<li>
-					<input type="number" name="data.level" value="{{data.level}}" placeholder="{{ localize 'DND4EBETA.Level' }}"/>
+					<input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4EBETA.Level' }}"/>
 				</li>
 				<li>
-					<input type="text" name="data.rarity" value="{{data.rarity}}" placeholder="{{ localize 'DND4EBETA.Rarity' }}"/>
+					<input type="text" name="system.rarity" value="{{system.rarity}}" placeholder="{{ localize 'DND4EBETA.Rarity' }}"/>
 				</li>
 				<li>
-					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
+					<input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
 				</li>
 			</ul>
 		</div>
@@ -52,8 +52,8 @@
 			{{!-- Weapon Type --}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.ItemWeaponType" }}</label>
-				<select name="data.weaponType">
-					{{#select data.weaponType}}
+				<select name="system.weaponType">
+					{{#select system.weaponType}}
 					{{#each config.weaponTypes as |name type|}}
 					<option value="{{type}}">{{name}}</option>
 					{{/each}}
@@ -64,8 +64,8 @@
 			{{!-- Weapon Hand --}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.ItemWeaponHand" }}</label>
-				<select name="data.weaponHand">
-					{{#select data.weaponHand}}
+				<select name="system.weaponHand">
+					{{#select system.weaponHand}}
 					{{#each config.weaponHands as |name hand|}}
 					<option value="{{hand}}">{{name}}</option>
 					{{/each}}
@@ -79,19 +79,19 @@
 				<label>{{ localize "DND4EBETA.ItemWeaponStatus" }}</label>
 				<div class="form-fields">
 					<label class="checkbox">
-						<input type="checkbox" name="data.proficient" {{checked data.proficient}}/> Weapon {{ localize "DND4EBETA.Proficient" }}
+						<input type="checkbox" name="system.proficient" {{checked system.proficient}}/> Weapon {{ localize "DND4EBETA.Proficient" }}
 					</label>
 					<label class="checkbox">
-						<input type="checkbox" name="data.proficientI" {{checked data.proficientI}}/> Implement {{ localize "DND4EBETA.Proficient" }}
+						<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> Implement {{ localize "DND4EBETA.Proficient" }}
 					</label>
 					<label class="checkbox">
-						<input type="checkbox" name="data.equipped" {{checked data.equipped}}/> {{ localize "DND4EBETA.Equipped" }}
+						<input type="checkbox" name="system.equipped" {{checked system.equipped}}/> {{ localize "DND4EBETA.Equipped" }}
 					</label>
 					<label class="checkbox">
-						<input type="checkbox" name="data.identified" {{checked data.identified}}/> {{ localize "DND4EBETA.Identified" }}
+						<input type="checkbox" name="system.identified" {{checked system.identified}}/> {{ localize "DND4EBETA.Identified" }}
 					</label>
 					<label class="checkbox">
-						<input type="checkbox" name="data.attuned" {{checked data.attuned}}/> {{ localize "DND4EBETA.Attuned" }}
+						<input type="checkbox" name="system.attuned" {{checked system.attuned}}/> {{ localize "DND4EBETA.Attuned" }}
 					</label>
 				</div>
 			</div>
@@ -99,37 +99,37 @@
 
 			{{!-- Weapon Properties --}}
 			<div class="">
-				{{#unless (eq data.weaponType "implement")}}
+				{{#unless (eq system.weaponType "implement")}}
 				<h3 class="form-header">Weapon Stats</h3>
 				<div class="form-group">
 					<label title="Proficiency Bonus">Proficiency Bonus:</label>
 					<div class="form-fields">
-						<input type="text" name="data.profBonus" value="{{data.profBonus}}" title="Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.profBonus" value="{{system.profBonus}}" title="Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				{{/unless}}
 				<div class="form-group">
 					<label title="Implement Proficiency Bonus">Implement Proficiency Bonus:</label>
 					<div class="form-fields">
-						<input type="text" name="data.profImpBonus" value="{{data.profImpBonus}}" title="Implement Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.profImpBonus" value="{{system.profImpBonus}}" title="Implement Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				<div class="form-group">    
 					<label title="Enhancement Bonus">Enhancement Bonus:</label>
 					<div class="form-fields">
-						<input type="text" name="data.enhance" value="{{data.enhance}}" title="Enhancement Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.enhance" value="{{system.enhance}}" title="Enhancement Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				<div class="form-group">
 					<label title="Is this a Ranged Weapon?">Is Ranged Weapon?</label>
-					<input type="checkbox" name="data.isRanged" data-dtype="Boolean" {{checked data.isRanged}}/>
+					<input type="checkbox" name="system.isRanged" data-dtype="Boolean" {{checked system.isRanged}}/>
 					<div>
-						{{#if data.isRanged}}
+						{{#if system.isRanged}}
 						<div class="form-fields">
 							<span title="The distance in squares a weapon can attack.">Weapon Range:</span>
-							<input type="text" name="data.range.value" value="{{data.range.value}}" title="Short Range: The distance in squares a weapon can attack without incurring a long range penalty." placeholder="Short Range" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="system.range.value" value="{{system.range.value}}" title="Short Range: The distance in squares a weapon can attack without incurring a long range penalty." placeholder="Short Range" data-dtype="Number" onClick="this.select();"/>
 							<span class="sep">/</span>
-							<input type="text" name="data.range.long" value="{{data.range.long}}" title="Long Range: The maximume range this weapon can be used to make an attack." placeholder="Long Range" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="system.range.long" value="{{system.range.long}}" title="Long Range: The maximume range this weapon can be used to make an attack." placeholder="Long Range" data-dtype="Number" onClick="this.select();"/>
 						</div>
 						{{/if}}
 					</div>
@@ -137,12 +137,12 @@
 				<div class="form-group uses-per">
 					<label>{{ localize "DND4EBETA.LimitedUses"}}</label>
 					<div class="form-fields">
-						<input type="text" name="data.uses.value" value="{{data.uses.value}}" data-dtype="Number"/>
+						<input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number"/>
 						<span class="sep">{{ localize "DND4EBETA.of" }}</span>
-						<input type="text" name="data.uses.max" value="{{data.uses.max}}"/>
+						<input type="text" name="system.uses.max" value="{{system.uses.max}}"/>
 						<span class="sep">{{ localize "DND4EBETA.per" }}</span>
-						<select name="data.uses.per">
-							{{#select data.uses.per}}
+						<select name="system.uses.per">
+							{{#select system.uses.per}}
 							<option value=""></option>
 							{{#each config.limitedUsePeriods as |name key|}}
 							<option value="{{key}}">{{name}}</option>
@@ -154,90 +154,90 @@
 				<div class="form-group uses-per">
 					<label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
 					<div class="form-fields">
-						<select name="data.consume.type" style="flex: 0.55;">
-							{{#select data.consume.type}}
+						<select name="system.consume.type" style="flex: 0.55;">
+							{{#select system.consume.type}}
 							<option value=""></option>
 							{{#each config.abilityConsumptionTypes as |name key|}}
 							<option value="{{key}}">{{name}}</option>
 							{{/each}}
 							{{/select}}
 						</select>
-						<select name="data.consume.target" style="width: 80%">
-							{{#select data.consume.target}}
+						<select name="system.consume.target" style="width: 80%">
+							{{#select system.consume.target}}
 							<option value=""></option>
 							{{#each abilityConsumptionTargets as |name key|}}
 							<option value="{{key}}">{{name}}</option>
 							{{/each}}
 							{{/select}}
 						</select>
-						<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
+						<input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number"/>
 					</div>
 				</div>
 				
 				<h4 class="damage-header"title="Base number of dice rolled for weapon attacks." for="damageDice">{{ localize "DND4EBETA.DiceWeapon"}}<a class="damage-control add-dice"><i class="fas fa-plus"></i></a></h4>
 				
 				<ol class="damage-parts form-group">
-					{{#each data.damageDice.parts as |part i| }}
+					{{#each system.damageDice.parts as |part i| }}
 					<li class="damage-part" data-damage-part="{{i}}">
 						<label>{{ localize "DND4EBETA.DiceNumber"}}</label>
-						<input type="text" name="data.damageDice.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+						<input type="text" name="system.damageDice.parts.{{i}}.0" value="{{lookup this "0"}}"/>
 						<label>{{ localize "DND4EBETA.DiceSize"}}</label>
-						<input type="text" name="data.damageDice.parts.{{i}}.1" value="{{lookup this "1"}}"/>
+						<input type="text" name="system.damageDice.parts.{{i}}.1" value="{{lookup this "1"}}"/>
 						<label>{{ localize "DND4EBETA.DiceExtra"}}</label>
-						<input type="text" name="data.damageDice.parts.{{i}}.2" value="{{lookup this "2"}}"/>
+						<input type="text" name="system.damageDice.parts.{{i}}.2" value="{{lookup this "2"}}"/>
 						<a class="damage-control delete-dice"><i class="fas fa-minus"></i></a>
 					</li>
 					{{/each}}
 				</ol>
 
-				{{#if data.properties.bru}}
+				{{#if system.properties.bru}}
 				<div class="form-group">
 					<label title="{{ localize "DND4EBETA.DiceBrutalTitle"}}" for="brutal">{{ localize "DND4EBETA.DiceBrutal"}}</label>
 					<div class="form-fields">
-						<input type="text" name="data.brutal" id="brutal" value="{{data.brutal}}" title="{{ localize "DND4EBETA.DiceBrutalTitle"}}" placeholder="{{ localize "DND4EBETA.DiceBrutalPlaceholder"}}" onClick="this.select();" data-dtype="Number"/>
+						<input type="text" name="system.brutal" id="brutal" value="{{system.brutal}}" title="{{ localize "DND4EBETA.DiceBrutalTitle"}}" placeholder="{{ localize "DND4EBETA.DiceBrutalPlaceholder"}}" onClick="this.select();" data-dtype="Number"/>
 					</div>
 				</div>
 				{{/if}}
 
-				{{#unless (eq data.weaponType "implement")}}
+				{{#unless (eq system.weaponType "implement")}}
 				<div class="form-group">
 					<label title="{{ localize "DND4EBETA.CriticalHitTitle"}}">{{ localize "DND4EBETA.CriticalHit"}}:</label>
 					<div class="form-fields">
-						<input type="text" name ="data.critRange" value="{{data.critRange}}" title="{{ localize "DND4EBETA.CriticalHitTitle"}}" placeholder="{{ localize "DND4EBETA.CriticalHitPlaceholder"}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name ="system.critRange" value="{{system.critRange}}" title="{{ localize "DND4EBETA.CriticalHitTitle"}}" placeholder="{{ localize "DND4EBETA.CriticalHitPlaceholder"}}" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				{{/unless}}
 
-				{{#if data.properties.imp}}
+				{{#if system.properties.imp}}
 				<div class="form-group">
 					<label title="Natural D20 Dice roll required for a hit to be considered a critical hit with an Implement.">Implement Critical Hit:</label>
 					<div class="form-fields">
-						<input type="text" name ="data.critRangeImp" value="{{data.critRangeImp}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name ="system.critRangeImp" value="{{system.critRangeImp}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				{{/if}}
 
 				{{!-- Attack  Formula--}}
-				{{#unless (eq data.weaponType "implement")}}
+				{{#unless (eq system.weaponType "implement")}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Attack Rolls.">Bonus to Attack {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="data.attackForm" value="{{data.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String"/>
+					<input type="text" name="system.attackForm" value="{{system.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
 				
 				{{!-- Damage Formula --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Primary Damage {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="data.damageForm" value="{{data.damageForm}}" title="Formula used for Damage Rolls." data-dtype="String"/>
+					<input type="text" name="system.damageForm" value="{{system.damageForm}}" title="Formula used for Damage Rolls." data-dtype="String"/>
 				</div>				
 				<h4 class="damage-header">
 					{{#unless isHealing }}Secondary {{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
 					<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
-					{{#each data.damage.parts as |part i| }}
+					{{#each system.damage.parts as |part i| }}
 					<li class="damage-part flexrow" data-damage-part="{{i}}">
-						<input type="text" name="data.damage.parts.{{i}}.0" value="{{lookup this "0"}}"/>
-						<select name="data.damage.parts.{{i}}.1">
+						<input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+						<select name="system.damage.parts.{{i}}.1">
 							{{#select (lookup this "1") }}
 							<option value="">{{ localize "DND4EBETA.None" }}</option>
 							{{#each ../config.damageTypes as |name type|}}
@@ -256,17 +256,17 @@
 				{{!-- Critical Damage Formula --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Critical Damage {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="data.critDamageForm" value="{{data.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
+					<input type="text" name="system.critDamageForm" value="{{system.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
 				</div>				
 				<h4 class="damage-header">
 					Secondary Critical Damage {{ localize "DND4EBETA.Formula" }}:
 					<a class="damage-control add-criticalDamage"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
-					{{#each data.damageCrit.parts as |part i| }}
+					{{#each system.damageCrit.parts as |part i| }}
 					<li class="damage-part flexrow" data-damage-part="{{i}}">
-						<input type="text" name="data.damageCrit.parts.{{i}}.0" value="{{lookup this "0"}}"/>
-						<select name="data.damageCrit.parts.{{i}}.1">
+						<input type="text" name="system.damageCrit.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+						<select name="system.damageCrit.parts.{{i}}.1">
 							{{#select (lookup this "1") }}
 							<option value="">{{ localize "DND4EBETA.None" }}</option>
 							{{#each ../config.damageTypes as |name type|}}
@@ -284,16 +284,16 @@
 				{{/unless}}
 				
 				{{!-- Attack Formula for Implement--}}
-				{{#if data.properties.imp}}
+				{{#if system.properties.imp}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Attack Rolls.">Implement Attack {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="data.attackFormImp" value="{{data.attackFormImp}}" title="Formula used for Attack Rolls." data-dtype="String"/>
+					<input type="text" name="system.attackFormImp" value="{{system.attackFormImp}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
 				
 				{{!-- Damage Formula for Implement--}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Implement Damage {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="data.damageFormImp" value="{{data.damageFormImp}}" title="Formula used for Damage Rolls." data-dtype="String"/>
+					<input type="text" name="system.damageFormImp" value="{{system.damageFormImp}}" title="Formula used for Damage Rolls." data-dtype="String"/>
 				</div>	
 				
 				<h4 class="damage-header">
@@ -301,10 +301,10 @@
 					<a class="damage-control add-damage-imp"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
-					{{#each data.damageImp.parts as |part i| }}
+					{{#each system.damageImp.parts as |part i| }}
 					<li class="damage-part flexrow" data-damage-part="{{i}}">
-						<input type="text" name="data.damageImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
-						<select name="data.damageImp.parts.{{i}}.1">
+						<input type="text" name="system.damageImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+						<select name="system.damageImp.parts.{{i}}.1">
 							{{#select (lookup this "1") }}
 							<option value="">{{ localize "DND4EBETA.None" }}</option>
 							{{#each ../config.damageTypes as |name type|}}
@@ -323,17 +323,17 @@
 				{{!-- Critical Damage Formula for Implement --}}
 				<div class="form-group stacked">
 					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Implement Critical Damage {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="data.critDamageFormImp" value="{{data.critDamageFormImp}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
+					<input type="text" name="system.critDamageFormImp" value="{{system.critDamageFormImp}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
 				</div>	
 				<h4 class="damage-header">
 					Secondary Implement Critical Damage {{ localize "DND4EBETA.Formula" }}:
 					<a class="damage-control add-criticalDamage-imp"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
-					{{#each data.damageCritImp.parts as |part i| }}
+					{{#each system.damageCritImp.parts as |part i| }}
 					<li class="damage-part flexrow" data-damage-part="{{i}}">
-						<input type="text" name="data.damageCritImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
-						<select name="data.damageCritImp.parts.{{i}}.1">
+						<input type="text" name="system.damageCritImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+						<select name="system.damageCritImp.parts.{{i}}.1">
 							{{#select (lookup this "1") }}
 							<option value="">{{ localize "DND4EBETA.None" }}</option>
 							{{#each ../config.damageTypes as |name type|}}
@@ -351,17 +351,12 @@
 
 				{{/if}}
 
-				<!-- <div class="form-group stacked">
-					<label title="Formula used for Critical Damage Rolls.">Critical Damage Formula:</label>
-					<input type="text" name="data.critDamageForm" value="{{data.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String" onClick="this.select();"/>
-				</div> -->
-
 				<div class="form-group stacked weapon-properties">
 					<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:</label>
 					<pr></pr>
 					{{#each config.damageTypes as |name type|}}
 					<label class="checkbox">
-						<input type="checkbox" name="data.damageType.{{type}}" {{checked (lookup ../data.damageType type)}}/> {{ name }}
+						<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
 					</label>
 					{{/each}}
 
@@ -369,7 +364,7 @@
 					<pr></pr>
 					{{#each weaponMetaProperties as |prop p|}}
 						<label class="checkbox">
-							<input type="checkbox" name="data.properties.{{p}}" {{checked prop.checked}} {{#if prop.disabled}}disabled{{/if}} /> {{ prop.propName }}
+							<input type="checkbox" name="system.properties.{{p}}" {{checked prop.checked}} {{#if prop.disabled}}disabled{{/if}} /> {{ prop.propName }}
 						</label>
 					{{/each}}
 
@@ -377,16 +372,16 @@
 					<pr></pr>
 					{{#each config.weaponGroup as |name group|}}
 					<label class="checkbox">
-						<input type="checkbox" name="data.weaponGroup.{{group}}" {{checked (lookup ../data.weaponGroup group)}}/> {{ name }}
+						<input type="checkbox" name="system.weaponGroup.{{group}}" {{checked (lookup ../system.weaponGroup group)}}/> {{ name }}
 					</label>
 					{{/each}}
 
-					{{#if data.properties.imp}}
+					{{#if system.properties.imp}}
 					<label>Implement Group:</label>
 					<pr></pr>
 					{{#each config.implementGroup as |name group|}}
 					<label class="checkbox">
-						<input type="checkbox" name="data.implementGroup.{{group}}" {{checked (lookup ../data.implementGroup group)}}/> {{ name }}
+						<input type="checkbox" name="system.implementGroup.{{group}}" {{checked (lookup ../system.implementGroup group)}}/> {{ name }}
 					</label>
 					{{/each}}
 					{{/if}}
@@ -395,7 +390,7 @@
 			{{!-- Chat Message Flavor --}}
 			<div class="form-group stacked">
 				<label>{{ localize "DND4EBETA.ChatFlavor" }}</label>
-				<input type="text" name="data.chatFlavor" value="{{data.chatFlavor}}"/>
+				<input type="text" name="system.chatFlavor" value="{{system.chatFlavor}}"/>
 			</div>
 		</div>
 

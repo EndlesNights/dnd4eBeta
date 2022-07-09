@@ -395,13 +395,13 @@ export default class ItemSheet4e extends ItemSheet {
 	 */
 	_getItemStatus(item) {
 		if ( item.type === "spell" ) {
-			return CONFIG.DND4EBETA.spellPreparationModes[item.data.preparation];
+			return CONFIG.DND4EBETA.spellPreparationModes[item.system.preparation];
 		}
 		else if ( ["weapon", "equipment"].includes(item.type) ) {
-			return game.i18n.localize(item.data.equipped ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped");
+			return game.i18n.localize(item.system.equipped ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped");
 		}
 		else if ( item.type === "tool" ) {
-			return game.i18n.localize(item.data.proficient ? "DND4EBETA.Proficient" : "DND4EBETA.NotProficient");
+			return game.i18n.localize(item.system.proficient ? "DND4EBETA.Proficient" : "DND4EBETA.NotProficient");
 		}
 	}
 
@@ -517,26 +517,26 @@ export default class ItemSheet4e extends ItemSheet {
 	_updateObject(event, formData) {
 
 		// TODO: This can be removed once 0.7.x is release channel
-		if ( !formData.data ) formData = expandObject(formData);
+		if ( !formData.system ) formData = expandObject(formData);
 
 		// Handle Damage Array
-		const damage = formData.data?.damage;
+		const damage = formData.system?.damage;
 		if ( damage ) damage.parts = Object.values(damage?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
-		const damageCrit = formData.data?.damageCrit;
+		const damageCrit = formData.system?.damageCrit;
 		if ( damageCrit ) damageCrit.parts = Object.values(damageCrit?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 
-		const damageImp = formData.data?.damageImp;
+		const damageImp = formData.system?.damageImp;
 		if ( damageImp ) damageImp.parts = Object.values(damageImp?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
-		const damageCritImp = formData.data?.damageCritImp;
+		const damageCritImp = formData.system?.damageCritImp;
 		if ( damageCritImp ) damageCritImp.parts = Object.values(damageCritImp?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 		
-		const damageRes = formData.data.armour?.damageRes;
+		const damageRes = formData.system.armour?.damageRes;
 		if ( damageRes ) damageRes.parts = Object.values(damageRes?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 	
-		const damageDice = formData.data?.damageDice;
+		const damageDice = formData.system?.damageDice;
 		if(damageDice) damageDice.parts = Object.values(damageDice?.parts || {}).map(d => [d[0] || "", d[1] || "", d[2] || ""]);
 
-		const special = formData.data?.specialAdd;
+		const special = formData.system?.specialAdd;
 		if (special) special.parts = Object.values(special?.parts || {}).map(d => [d || ""]);
 
 		// Update the Item
