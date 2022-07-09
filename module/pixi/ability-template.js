@@ -10,7 +10,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	static getDistanceCalc(item){
 
 		//use toString() as some older powers formats may still be numerical
-		let area = item.data.data.area?.toString();
+		let area = item.system.area?.toString();
 		if(!area) return null;
 		try{
 			area = game.helper.commonReplace(area, item.actor.data);
@@ -30,23 +30,23 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	 * @return {AbilityTemplate|null}         The template object, or null if the item does not produce a template
 	 */
 	static fromItem(item) {
-		const templateShape = DND4EBETA.areaTargetTypes[item.data.data.rangeType];
+		const templateShape = DND4EBETA.areaTargetTypes[item.system.rangeType];
 	
 		console.log(item);
 		let distance = this.getDistanceCalc(item);
 
 		let flags = {dnd4e:{templateType:templateShape}};
 
-		if(item.data.data.rangeType === "closeBlast" || item.data.data.rangeType === "rangeBlast") {
+		if(item.system.rangeType === "closeBlast" || item.system.rangeType === "rangeBlast") {
 			distance *= Math.sqrt(2);
 		}
-		else if(item.data.data.rangeType === "rangeBurst") {
+		else if(item.system.rangeType === "rangeBurst") {
 			flags.dnd4e.templateType = "rectCenter";
 			distance += 0.5;
 		}
-		else if(item.data.data.rangeType === "closeBurst") {
+		else if(item.system.rangeType === "closeBurst") {
 			flags.dnd4e.templateType = "rectCenter";
-			switch(item.parent.data.data.details.size) {
+			switch(item.parent.system.details.size) {
 				case 'tiny':
 				case 'sm':
 				case 'med':
@@ -69,7 +69,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 					distance = Math.sqrt(2) * ( 1 + 2*distance);
 			}
 		}
-		// if(item.data.data.rangeType === "closeBurst" || item.data.data.rangeType === "rangeBurst") distance = Math.sqrt(2) * ( 1 + 2*distance);
+		// if(item.system.rangeType === "closeBurst" || item.system.rangeType === "rangeBurst") distance = Math.sqrt(2) * ( 1 + 2*distance);
 	
 		if ( !templateShape ) return null;
 

@@ -28,8 +28,8 @@ export default class AbilityUseDialog extends Dialog {
     if ( !item.isOwned ) throw new Error("You cannot display an ability usage dialog for an unowned item");
 
     // Prepare data
-    const actorData = item.actor.data.data;
-    const itemData = item.data.data;
+    const actorData = item.actor.system;
+    const itemData = item.system;
     const uses = itemData.uses || {};
     const quantity = itemData.quantity || 0;
     const recharge = itemData.recharge || {};

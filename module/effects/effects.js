@@ -81,7 +81,7 @@
 
 		//types of items that can be equipted
 		const validTypes = ["weapon", "equipment", "consumable", "tool", "loot", "backpack"];
-		if(validTypes.includes(item.type) && item.data.data.equipped === false){
+		if(validTypes.includes(item.type) && item.system.equipped === false){
 			this.isSuppressed = this.data.flags.dnd4e?.effectData?.equippedRec || false;
 			return;
 		}

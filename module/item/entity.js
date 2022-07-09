@@ -400,7 +400,7 @@ export default class Item4e extends Item {
 		const cardData = (() => {
 			if ((this.type === "power" || this.type === "consumable") && this.system.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
-				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG, this.actor.data);
+				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG, this.actor);
 				return Helper.commonReplace(cardString, this.actor.system, this, weaponUse? weaponUse.system : null, 1);
 			} else {
 				return null;
@@ -786,7 +786,7 @@ export default class Item4e extends Item {
 	 */
 	async rollAttack(options={}) {
 		const itemData = this.system;
-		const actorData = this.actor.data;
+		const actorData = this.actor;
 		// itemData.weaponUse = 2nd dropdown - default/none/weapon
 		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...
 		// find details on the weapon being used, if any.   This is null if no weapon is being used.
@@ -883,7 +883,7 @@ export default class Item4e extends Item {
 			}
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power")
 		}
-		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse?.data, "attack")
+		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack")
 
 		// Compose roll options
 		const rollConfig = {
@@ -945,7 +945,7 @@ export default class Item4e extends Item {
 	async rollDamage({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
 		console.log(fastForward)
 		const itemData = this.system;
-		const actorData = this.actor.data;
+		const actorData = this.actor;
 		const actorInnerData = this.actor.system;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 

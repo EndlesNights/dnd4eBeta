@@ -18,8 +18,8 @@ export class HealMenuDialog extends FormApplication {
 
 	/** @override */
 	getData(options) {
-		const hpMax = this.object.data.data.attributes.hp.value === this.object.data.data.attributes.hp.max
-		const constHasSurges = this.object.data.data.details.surges.value > 0
+		const hpMax = this.object.system.attributes.hp.value === this.object.system.attributes.hp.max
+		const constHasSurges = this.object.system.details.surges.value > 0
 		return {hpMax, constHasSurges}
 	}
 
@@ -36,7 +36,7 @@ export class HealMenuDialog extends FormApplication {
 		let surgeValueText = "0"
 		let surgeValue = 0
 		if (formData["gain-healing-surge-value"] === true) {
-			surgeValue = this.object.data.data.details.surgeValue
+			surgeValue = this.object.system.details.surgeValue
 			surgeValueText = surgeValue
 		}
 
@@ -55,7 +55,7 @@ export class HealMenuDialog extends FormApplication {
 		let healingSurgeText = ""
 		if (formData["spend-healing-surge"] === true) {
 			healingSurgeText = "Spending a healing surge for"
-			updateData[`data.details.surges.value`] = Math.max(this.object.data.data.details.surges.value - 1, 0)
+			updateData[`data.details.surges.value`] = Math.max(this.object.system.details.surges.value - 1, 0)
 			this.object.update(updateData);
 		}
 		else {

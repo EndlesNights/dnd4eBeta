@@ -17,7 +17,7 @@ export class MovementDialog extends DocumentSheet {
 
 	/** @override */
 	getData() {
-		return {data: this.object.data.data}
+		return {data: this.object.system}
 	}
 	async _updateObject(event, formData) {
 		const updateData = {};
@@ -38,7 +38,7 @@ export class MovementDialog extends DocumentSheet {
 		console.log(moveName)
 		console.log(event.currentTarget.parentElement.dataset)
 		console.log(event.currentTarget.parentElement)
-		const options = {target: target, label: `${this.object.data.data.movement[moveName].label} Movement Bonus` };
+		const options = {target: target, label: `${this.object.system.movement[moveName].label} Movement Bonus` };
 		new AttributeBonusDialog(this.object, options).render(true);
 	}
 }

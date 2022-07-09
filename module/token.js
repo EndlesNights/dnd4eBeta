@@ -43,7 +43,7 @@ export class Token5e extends Token {
   _drawHPBar(number, bar, data) {
 
     // Extract health data
-    let {value, max, temp, tempmax} = this.document.actor.data.data.attributes.hp;
+    let {value, max, temp, tempmax} = this.document.actor.system.attributes.hp;
     temp = Number(temp || 0);
     tempmax = Number(tempmax || 0);
 

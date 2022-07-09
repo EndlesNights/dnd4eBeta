@@ -136,7 +136,7 @@ export class Actor4e extends Actor {
 		const system = this.system;
 		const bonuses = getProperty(system, "bonuses.abilities") || {};
 
-		// this.data.data.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
+		// this.system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
 		system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
 
 		// Ability modifiers and saves
@@ -587,7 +587,7 @@ export class Actor4e extends Actor {
 			}
 			// if(def.base == undefined){
 			// 	def.base = 10;
-			// 	this.update({[`data.defences[${def}].base`]: 10 });
+			// 	this.update({[`system.defences[${def}].base`]: 10 });
 			// }
 			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
 			if(game.settings.get("dnd4e", "halfLevelOptions")) {
@@ -636,7 +636,7 @@ export class Actor4e extends Actor {
 			}
 			if(def.base == undefined){
 				def.base = 10;
-				this.update({[`data.defences[${def}].base`]: 10 });
+				this.update({[`system.defences[${def}].base`]: 10 });
 			}
 			if(data.advancedCals){
 				if(game.settings.get("dnd4e", "halfLevelOptions")) {
@@ -683,7 +683,7 @@ export class Actor4e extends Actor {
 
 			if(skl.base == undefined){
 				skl.base = 0;
-				// this.update({[`data.skills[${skl}].base`]: 0 });
+				// this.update({[`system.skills[${skl}].base`]: 0 });
 			}
 
 			if(skl.effectBonus == undefined){
@@ -812,7 +812,7 @@ export class Actor4e extends Actor {
 					newValue = this.system.attributes.hp.value;
 				}
 				
-				this.update({[`data.attributes.temphp.value`]:newTemp});
+				this.update({[`system.attributes.temphp.value`]:newTemp});
 			}
 		}
 		
@@ -1011,9 +1011,9 @@ export class Actor4e extends Actor {
 				data.forEach(datum => {
 					let t = datum.type;
 					let initial = {};
-					if ( t === "weapon" ) initial["data.proficient"] = true;
-					if ( ["weapon", "equipment"].includes(t) ) initial["data.equipped"] = true;
-					if ( t === "spell" ) initial["data.prepared"] = true;
+					if ( t === "weapon" ) initial["system.proficient"] = true;
+					if ( ["weapon", "equipment"].includes(t) ) initial["system.equipped"] = true;
+					if ( t === "spell" ) initial["system.prepared"] = true;
 					mergeObject(datum, initial);
 				})
 			}
@@ -1049,8 +1049,8 @@ export class Actor4e extends Actor {
 			const uses = parseInt(itemData.uses.value || 0);
 			if ( uses <= 0 ) ui.notifications.warn(game.i18n.format("DND4EBETA.ItemNoUses", {name: item.name}));
 			
-			await item.update({"data.uses.value": Math.max(parseInt(item.system.uses.value || 0) - 1, 0)})
-			// item.update({"data.uses.value": Math.max(parseInt(item.data.data.uses.value || 0) - 1, 0)})
+			await item.update({"system.uses.value": Math.max(parseInt(item.system.uses.value || 0) - 1, 0)})
+			// item.update({"system.uses.value": Math.max(parseInt(item.system.uses.value || 0) - 1, 0)})
 		}
 
 		if(fastForward){
@@ -1272,13 +1272,13 @@ export class Actor4e extends Actor {
 	
 		// Update the Actor
 		const updates = {
-			"data.attributes.temphp.value": tmp - dt,
-			"data.attributes.hp.value": newHp
+			"system.attributes.temphp.value": tmp - dt,
+			"system.attributes.hp.value": newHp
 		};
 	
 		//spend healing surges
 		if(multiplier < 0  && surges.surgeAmount){
-			updates["data.details.surges.value"] =  this.system.details.surges.value - surges.surgeAmount;
+			updates["system.details.surges.value"] =  this.system.details.surges.value - surges.surgeAmount;
 		}
 
 		// Delegate damage application to a hook
@@ -1308,7 +1308,7 @@ export class Actor4e extends Actor {
 			// temp HP doesn't stack, so only update if we have a higher value
 			if (amount > tmp) {
 				const updates = {
-					"data.attributes.temphp.value": amount,
+					"system.attributes.temphp.value": amount,
 				};
 				return this.update(updates);
 			}
@@ -1318,7 +1318,7 @@ export class Actor4e extends Actor {
 			let newTempHP = tmp + amount
 			newTempHP = Math.max(0, newTempHP)
 			const updates = {
-				"data.attributes.temphp.value.value": newTempHP,
+				"system.attributes.temphp.value.value": newTempHP,
 			};
 			return this.update(updates);
 		}

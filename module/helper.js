@@ -4,9 +4,9 @@ export class Helper {
 	static executeMacro(item) {
 		const macro = new Macro ({
 			name : item.name,
-			type : item.data.data.macro.type,
-			scope : item.data.data.macro.scope,
-			command : item.data.data.macro.command, //cmd,
+			type : item.system.macro.type,
+			scope : item.system.macro.scope,
+			command : item.system.macro.command, //cmd,
 			author : game.user.id
 		})
 		// below vars are not part of the Macro data object so need to be set manually
@@ -17,7 +17,7 @@ export class Helper {
 		// can still get to the item using .document
 		macro.data.item = item.data
 		macro.data.actor = item.actor //needs to be actor and not data to get at actors items collection - e.g. other items
-		macro.data.launch = item.data.data.macro.launchOrder;
+		macro.data.launch = item.system.macro.launchOrder;
 		return macro.execute();
 	}
 
@@ -75,50 +75,50 @@ export class Helper {
 			let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 			let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
 			return actor.itemTypes.weapon.find((i) =>  {
-				if(i.data.data.equipped) {
+				if(i.system.equipped) {
 
 					if(itemData.weaponType === "any") {
 						return i;
 					}
 					
 					if(itemData.weaponType === "meleeRanged") {
-						if(setMelee.includes(i.data.data.weaponType) || setRanged.includes(i.data.data.weaponType) )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						if(setMelee.includes(i.system.weaponType) || setRanged.includes(i.system.weaponType) )
+							if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					else if(itemData.weaponType === "melee") {
-						if(setMelee.includes(i.data.data.weaponType) )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						if(setMelee.includes(i.system.weaponType) )
+							if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								return i;
 							else if(itemData.weaponUse === "default") 
 								return i;
 					}
 					else if(itemData.weaponType === "ranged") {
-						if(setRanged.includes(i.data.data.weaponType) || i.data.data.properties.tlg || i.data.data.properties.thv )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						if(setRanged.includes(i.system.weaponType) || i.system.properties.tlg || i.system.properties.thv )
+							if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					else if(itemData.weaponType === "implement") {
-						if(i.data.data.properties.imp || i.data.data.properties.impA || i.data.data.properties.impD )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						if(i.system.properties.imp || i.system.properties.impA || i.system.properties.impD )
+							if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					// else if(itemData.weaponType === "implementA") {
-						// if(i.data.data.properties.imp || i.data.data.properties.impA )
-							// if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						// if(i.system.properties.imp || i.system.properties.impA )
+							// if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								// return i;
 							// else if(itemData.weaponUse === "default")
 								// return i;
 					// }
 					// else if(itemData.weaponType === "implementD") {
-						// if(i.data.data.properties.imp || i.data.data.properties.impD )
-							// if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						// if(i.system.properties.imp || i.system.properties.impD )
+							// if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								// return i;
 							// else if(itemData.weaponUse === "default")
 								// return i;
@@ -149,8 +149,8 @@ export class Helper {
 	static async applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4eBeta |` : ""
 		if (actorData.effects) {
-			const powerInnerData = powerData.data
-			const weaponInnerData = weaponData?.data
+			const powerInnerData = powerData
+			const weaponInnerData = weaponData
 			if (debug) {
 				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.  Supplied Weapon: ${weaponData?.name}`)
 			}
@@ -288,8 +288,8 @@ export class Helper {
 	 *
 	 * @param formula The formula to examine and perform replacements on
 	 * @param actorData The data from the actor to use to resolve variables: `actor.data`.  This may be null
-	 * @param powerInnerData The data from the power to use to resolve variables. `power.data.data`
-	 * @param weaponInnerData The data from the weapon to use to resolve variables.  `item.data.data` This may be null
+	 * @param powerInnerData The data from the power to use to resolve variables. `power.system`
+	 * @param weaponInnerData The data from the weapon to use to resolve variables.  `item.system` This may be null
 	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.  Defaults to 1 which will produce 2 loops.  A depth of 0 will also prevent evaluation of custom effect variables (as that is an infinite hole)
 	 * @param returnDataInsteadOfFormula If set to true it will return a data object of replacement variables instead of the formula string
 	 * @return {String|{}|number} "0" if called with a depth of <0, A substituted formula string if called with returnDataInsteadOfFormula = false (the default) or an object of {variable = value} if called with returnDataInsteadOfFormula = true
@@ -340,7 +340,7 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
 			}
 			else {
-				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.data.data by mistake!.  Replacing: " + formula)
+				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.  Replacing: " + formula)
 			}
 		}
 
@@ -892,11 +892,11 @@ export class Helper {
 
 	static async rechargeItems(actor, targetArray){
 
-		const items = actor.items.filter(item => targetArray.includes(item.data.data.uses?.per));
+		const items = actor.items.filter(item => targetArray.includes(item.system.uses?.per));
 		const updateItems = items.map( item => {
 			return {
 				_id: item.id,
-				"data.uses.value": item.data.data.preparedMaxUses
+				"data.uses.value": item.system.preparedMaxUses
 			};
 		});
 

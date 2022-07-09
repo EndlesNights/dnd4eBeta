@@ -296,10 +296,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 					comparison = a.name.toUpperCase().localeCompare(b.name.toUpperCase());
 				}
 				return (order === 'desc') ? (comparison * -1) : comparison;
-			} else if (a.data.hasOwnProperty(key) && b.data.hasOwnProperty(key)) {
+			} else if (a.system.hasOwnProperty(key) && b.system.hasOwnProperty(key)) {
 
-				const varA = (typeof a.data[key] === 'string') ? a.data[key].toUpperCase() : a.data[key];
-				const varB = (typeof b.data[key] === 'string') ? b.data[key].toUpperCase() : b.data[key];
+				const varA = (typeof a.system[key] === 'string') ? a.system[key].toUpperCase() : a.system[key];
+				const varB = (typeof b.system[key] === 'string') ? b.system[key].toUpperCase() : b.system[key];
 	
 				let comparison = 0;
 				if (varA > varB) {
@@ -881,8 +881,8 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	const itemId = event.currentTarget.closest(".item").dataset.itemId;
 	const item = this.actor.items.get(itemId);
 	const power = ["power","atwill","encounter","daily","utility"];
-	const attr = power.includes(item.data.type) ? "data.prepared" : "data.equipped";
-	return item.update({[attr]: !getProperty(item.data, attr)});
+	const attr = power.includes(item.type) ? "system.prepared" : "system.equipped";
+	return item.update({[attr]: !getProperty(item, attr)});
   }
   /* -------------------------------------------- */
 
@@ -1238,7 +1238,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 		
-		if ( item.data.type === "power") {
+		if ( item.type === "power") {
 			return this.actor.usePower(item, {configureDialog: !event.shiftKey, fastForward: event.shiftKey});
 		}
 		// Otherwise roll the Item directly
