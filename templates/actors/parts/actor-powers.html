@@ -27,7 +27,7 @@
 		<div class="filter-search-powers">
 			<label for="power-filter-search">Filter</label>
 			<button style="min-width: 116px; width:calc(100% - 80px); height: 17px; line-height:normal; border:0px; float:right; margin:2px 2px 0px 0px;" class="item-import button" title="Create Power" data-item-type="power" data-type="power" type="button">
-				<i style="min-width: 105.6px;" class="fas fa-atlas"> Import Powers</i>
+				<i style="min-width: 105.6px;" class="fas fa-atlas"> <span class="import-button">{{localize "DND4EBETA.ImportPowers"}}</span></i>
 			</button>
 			<br>
 			<input type="text" style="min-width: 168px; margin-right: 2px;" name="power-filter-search" placeholder="Search for power..." id="filterInput-power" onkeyup="filterPowers()"/>
@@ -47,7 +47,6 @@
 			{{else}}
 				<div class="item-detail item-range">Range</div>
 				<div class="item-detail item-action" title="{{localize 'DND4EBETA.Action'}}">Act.</div>
-				<!-- <div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div> -->
 				<div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div>
 				{{/if}}
 				<div class="item-detail item-prep" title="Power Prepared">Prep.</div>

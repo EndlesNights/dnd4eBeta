@@ -991,34 +991,13 @@
 	width: 10px !important;
 	
 }
-.dnd4eBeta.sheet.actor .tab.attributes {
-	/* overflow: hidden; */
-}
+
 .dnd4eBeta.sheet.actor .scrollbar {
 	height: 100%;
 	overflow-y: scroll;
 	scrollbar-width: thin;
 }
-.dnd4eBeta.sheet.actor ul.attributes {
-	/* flex: 0 0 60px; */
-	
-	/* list-style: none;
-	margin: 0;
-	padding: 0;
-	width: 20%;
-	height: calc(100% - 18px);
-	display: inline; */
 
-	/* flex: 0 0 100%;
-	margin: 0; */
-}
-.dnd4eBeta.sheet.actor ul.attributes li{
-	/* width:25%; */
-	/* margin-right: 25%; */
-	/* display: inline; */
-	/* flex: 0 0 100%;
-	margin: 0; */
-}
 .dnd4eBeta.sheet.actor ul.attributes li.attribute-health {
 	height: 80px;
 	margin: 0 0 0 0;
@@ -1072,22 +1051,6 @@
 	position: relative;
 	top: 5px;
 }
-.dnd4eBeta.sheet.actor .hitpoints {
-	/* display: flex; */
-	/* flex-direction: row; */
-	/* flex-wrap: wrap; */
-	/* justify-content: flex-start; */
-}
-
-/* .dnd4eBeta.sheet.actor h4.box-title { */
-	/* text-align: center; */
-	/* height: 18px; */
-	/* line-height: 16px; */
-	/* margin: 4px 8px 2px; */
-	/* font-size: 18px; */
-	/* color: #4b4a44; */
-	/* border-bottom: 1px solid #c9c7b8; */
-/* } */
 
 .dnd4eBeta.sheet.actor .box-title-hit {
 	text-align: center;
@@ -1689,6 +1652,10 @@ font-size: 12px;
 	padding: 0;
 	font-size: 12px;
 }
+
+.dnd4eBeta.sheet.actor .inventory h3{
+	border-bottom: 0px;
+}
 .dnd4eBeta.sheet.actor .inventory .currency label {
 	flex: 0;
 	white-space:nowrap;
@@ -1781,6 +1748,11 @@ font-size: 12px;
 	scrollbar-width: thin;
 	height: calc(100% - 118px);
 }
+
+.dnd4eBeta.sheet.actor .inventory-list .import-button{
+	font-size: 15px;
+	font-family: "Signika, sans-serif";
+}
 .dnd4eBeta.sheet .items-list {
 	list-style: none;
 	margin: 0;
@@ -1790,7 +1762,6 @@ font-size: 12px;
 	/* color: #7a7971; */
 	color: #363632;
 }
-
 .dnd4eBeta.sheet .items-list .item {
 	line-height: 30px;
 	padding: 0 2px;
@@ -1858,9 +1829,9 @@ font-size: 12px;
 	margin: 0 -5px 0 0;
 	padding-left: 5px;
 	font-family: "Modesto Condensed", "Palatino Linotype", serif;
-	font-size: 20px;
 	font-weight: 700;
 	font-size: 16px;
+	border-bottom: 0px;
 }
 .dnd4eBeta.sheet .items-list .items-header .item-controls a.item-create,
 .dnd4eBeta.sheet .items-list .items-header .item-controls a.power-create {
