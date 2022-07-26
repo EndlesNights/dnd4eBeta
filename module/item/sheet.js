@@ -247,16 +247,16 @@ export default class ItemSheet4e extends ItemSheet {
 
 	_getItemEquipmentSubTypeTargets(item, config) {
 
-		if(item.data.armour.type == "armour") { return config.equipmentTypesArmour; }
-		else if (item.data.armour.type == "arms") { return config.equipmentTypesArms; }
-		else if (item.data.armour.type == "feet") { return config.equipmentTypesFeet; }
-		else if (item.data.armour.type == "hands") { return config.equipmentTypesHands; }
-		else if (item.data.armour.type == "head") { return config.equipmentTypesHead; }
-		else if (item.data.armour.type == "neck") { return config.equipmentTypesNeck; }
-		else if (item.data.armour.type == "ring") { return null; }
-		else if (item.data.armour.type == "waist") { return config.equipmentTypesWaist; }
-		else if (item.data.armour.type == "natural") { return null; }
-		else if (item.data.armour.type == "other") { return null; }
+		if(item.system.armour.type == "armour") { return config.equipmentTypesArmour; }
+		else if (item.system.armour.type == "arms") { return config.equipmentTypesArms; }
+		else if (item.system.armour.type == "feet") { return config.equipmentTypesFeet; }
+		else if (item.system.armour.type == "hands") { return config.equipmentTypesHands; }
+		else if (item.system.armour.type == "head") { return config.equipmentTypesHead; }
+		else if (item.system.armour.type == "neck") { return config.equipmentTypesNeck; }
+		else if (item.system.armour.type == "ring") { return null; }
+		else if (item.system.armour.type == "waist") { return config.equipmentTypesWaist; }
+		else if (item.system.armour.type == "natural") { return null; }
+		else if (item.system.armour.type == "other") { return null; }
 		
 		return null;
 	}

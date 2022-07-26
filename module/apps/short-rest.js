@@ -83,11 +83,9 @@ export class ShortRestDialog extends DocumentSheet {
 		if(this.object.type === "Player Character"){
 			ChatMessage.create({
 				user: game.user.id,
-				speaker: {actor: this.object, alias: this.object.data.name},
-				// flavor: restFlavor,
-				// content: this.object.data.name + " spends a short rest, regaining " + (updateData[`data.attributes.hp.value`] - this.object.system.attributes.hp.value) + " HP."
-				content: formData.surge >= 1 ? `${this.object.data.name} takes a short rest, spending ${formData.surge} healing surge, regaining ${(updateData[`data.attributes.hp.value`] - this.object.system.attributes.hp.value)} HP.`
-					: `${this.object.data.name} takes a short rest.`
+				speaker: {actor: this.object, alias: this.object.name},
+				content: formData.surge >= 1 ? `${this.object.name} takes a short rest, spending ${formData.surge} healing surge, regaining ${(updateData[`system.attributes.hp.value`] - this.object.system.attributes.hp.value)} HP.`
+					: `${this.object.name} takes a short rest.`
 				
 			});				
 		}

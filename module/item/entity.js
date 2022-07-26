@@ -59,7 +59,7 @@ export default class Item4e extends Item {
 		if (this.isOwned && !Number.isNumeric(max)) {
 		  if (this.actor.system === undefined) return null;
 		  try {
-			max = Helper.commonReplace(max, this.actor.system);
+			max = Helper.commonReplace(max, this.actor);
 			max = Roll.replaceFormulaData(max, this.actor.getRollData(), {missing: 0, warn: true});
 			max = Roll.safeEval(max);
 		  } catch(e) {
@@ -401,7 +401,7 @@ export default class Item4e extends Item {
 			if ((this.type === "power" || this.type === "consumable") && this.system.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
 				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG, this.actor);
-				return Helper.commonReplace(cardString, this.actor.system, this, weaponUse? weaponUse.system : null, 1);
+				return Helper.commonReplace(cardString, this.actor, this, weaponUse? weaponUse.system : null, 1);
 			} else {
 				return null;
 			}
@@ -908,7 +908,6 @@ export default class Item4e extends Item {
 		if(this.type === "power"){
 			rollConfig.options.powerEffects = this.effects;
 			rollConfig.options.parent = this.parent;
-			console.log(this);
 		}
 
 		// Expanded weapon critical threshold
@@ -943,7 +942,6 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	async rollDamage({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
-		console.log(fastForward)
 		const itemData = this.system;
 		const actorData = this.actor;
 		const actorInnerData = this.actor.system;
@@ -1470,7 +1468,7 @@ export default class Item4e extends Item {
 		const parts = ["@" + rollType];
 
 		if(this.system.formula) {
-			rollData[rollType] = Helper.commonReplace(this.system.formula.replace("@attribute", Helper.byString(this.system.attribute, this.actor.system)), this.actor.data, this.system);
+			rollData[rollType] = Helper.commonReplace(this.system.formula.replace("@attribute", Helper.byString(this.system.attribute, this.actor)), this.actor.data, this.system);
 		} else {
 			rollData[rollType] = `1d20 + ${Helper.byString(this.system.attribute, this.actor.system)}`; 
 			if(this.system.bonus){

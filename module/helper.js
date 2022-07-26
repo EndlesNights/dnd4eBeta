@@ -287,7 +287,7 @@ export class Helper {
 	 * Perform replacement of @variables in the formula involving a power.  This is a recursive function with 2 modes of operation!
 	 *
 	 * @param formula The formula to examine and perform replacements on
-	 * @param actorData The data from the actor to use to resolve variables: `actor.data`.  This may be null
+	 * @param actorData The data from the actor to use to resolve variables: `actor.system`.  This may be null
 	 * @param powerInnerData The data from the power to use to resolve variables. `power.system`
 	 * @param weaponInnerData The data from the weapon to use to resolve variables.  `item.system` This may be null
 	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.  Defaults to 1 which will produce 2 loops.  A depth of 0 will also prevent evaluation of custom effect variables (as that is an infinite hole)
@@ -297,7 +297,7 @@ export class Helper {
 	// DEVELOPER: Remember this call is recursive, if you change the method signature, make sure you update everywhere its used!
 	static commonReplace (formula, actorData, powerInnerData, weaponInnerData=null, depth = 1, returnDataInsteadOfFormula = false) {
 		if (depth < 0 ) return 0;
-		let newFormula = formula;
+		let newFormula = formula.toString(); // just in case integers somehow get passed
 		if (returnDataInsteadOfFormula) {
 			const result = {}
 			const variables = formula.match(this.variableRegex)

@@ -16,7 +16,6 @@ export class AttributeBonusDialog extends DocumentSheet {
 	
 	get title() {		
 		return `${this.object.name} - ${this.options.label}`;
-		// return `${this.object.name} - ${Helper.byString(this.options.target + ".label", this.object.data)} ${this.options.label}`;
 	}
 	
 	/** @override */
@@ -68,7 +67,7 @@ export class AttributeBonusDialog extends DocumentSheet {
 	
 	_onBonusAdd(event) {
 		event.preventDefault();
-		const bonusData = Helper.byString(this.options.target, this.object.data).bonus;
+		const bonusData = Helper.byString(this.options.target, this.object).bonus;
 		const newBonus =[{}];
 		this.position.height += 76;
 		return this.object.update({[`${this.options.target}.bonus`]: bonusData.concat(newBonus)});
@@ -77,7 +76,7 @@ export class AttributeBonusDialog extends DocumentSheet {
 	_onBonusDelete(event) {
 		event.preventDefault();
 		const div = event.currentTarget.closest(".bonus-part");
-		const bonus = duplicate(Helper.byString(this.options.target, this.object.data).bonus);
+		const bonus = duplicate(Helper.byString(this.options.target, this.object).bonus);
 		bonus.splice(Number(div.dataset.bonusPart), 1);
 		this.position.height -= 76;
 		return this.object.update({[`${this.options.target}.bonus`]: bonus});

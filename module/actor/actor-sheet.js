@@ -466,7 +466,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		let area;
 		if(itemData.system.area) {
 			try{
-				let areaForm = game.helper.commonReplace(`${itemData.system.area}`, this.actor.system);
+				let areaForm = game.helper.commonReplace(`${itemData.system.area}`, this.actor);
 				area = Roll.safeEval(areaForm);
 			} catch (e) {
 				area = itemData.system.area;
@@ -1142,7 +1142,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	
 	_onCustomRolldDescriptions(event) {
 		event.preventDefault();
-		const options = {data: this.actor.data};
+		const options = {data: this.actor};
 		new CustomRolldDescriptions(this.actor).render(true, options);
 	}
 	/**

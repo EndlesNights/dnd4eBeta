@@ -1540,27 +1540,17 @@ font-size: 12px;
 	line-height: 18px;
 }
 
-
-
-
-
-
 .dnd4eBeta .editor,
 .dnd4eBeta .editor-content {
 	height: 100%;
+	margin-top: 0px;
 }
 .dnd4eBeta .item-list {
 	list-style: none;
 	margin: 7px 0;
 	padding: 0;
-	/* overflow-y: auto; */
 }
-/* .dnd4eBeta .item-list .item { */
-	/* height: 30px; */
-	/* line-height: 24px; */
-	/* padding: 3px 0; */
-	/* border-bottom: 1px solid #BBB; */
-/* } */
+
 .dnd4eBeta .item-list .item img {
 	flex: 0 0 24px;
 	margin-right: 5px;
@@ -1861,6 +1851,7 @@ font-size: 12px;
 	border-right: 0px;
 }
 
+.dnd4eBeta.sheet .powers .items-list .not-available .item-detail input,
 .dnd4eBeta.sheet .items-list .not-available .power-detail,
 .dnd4eBeta.sheet .items-list .not-available input {
 	color: #e0e0e075;
