@@ -639,10 +639,11 @@ export class Actor4e extends Actor {
 				this.update({[`system.defences[${def}].base`]: 10 });
 			}
 			if(data.advancedCals){
+				let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
 				if(game.settings.get("dnd4e", "halfLevelOptions")) {
-					def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;
+					def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;
 				} else {
-					def.value = def.base + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);
+					def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);
 				}
 				
 			} else {
