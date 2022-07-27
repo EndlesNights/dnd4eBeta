@@ -20,8 +20,8 @@ export class AttributeBonusDialog extends DocumentSheet {
 	
 	/** @override */
 	getData() {
-		const data = Helper.byString(this.options.target, this.object);
-		return {bonusData: data.bonus, data: data, options: this.options};
+		const system = Helper.byString(this.options.target, this.object);
+		return {bonusData: system.bonus, system: system, options: this.options};
 	}
 	
 	async _updateObject(event, formData) {
@@ -37,18 +37,18 @@ export class AttributeBonusDialog extends DocumentSheet {
 		}
 		updateData[`${this.options.target}.bonus`] = newBonus;
 		if(this.options?.skill) {
-			updateData[`${this.options.target}.armourCheck`] = formData["data.armourCheck"];
+			updateData[`${this.options.target}.armourCheck`] = formData["system.armourCheck"];
 			this.position.height = Math.max(1, count) * 76 + 119;
 		} else if(this.options?.ac) {
-			updateData[`${this.options.target}.light`] = formData["data.light"];
-			updateData[`${this.options.target}.altability`] = formData["data.altability"];
+			updateData[`${this.options.target}.light`] = formData["system.light"];
+			updateData[`${this.options.target}.altability`] = formData["system.altability"];
 			this.position.height = Math.max(1, count) * 76 + 124;
 		} else if(this.options?.init) {
-			updateData[`${this.options.target}.ability`] = formData["data.ability"];
+			updateData[`${this.options.target}.ability`] = formData["system.ability"];
 		}
 		else if(this.options?.secondWind){
 			console.log(formData["custom"])
-			updateData[`${this.options.target}.custom`] = formData["data.custom"];
+			updateData[`${this.options.target}.custom`] = formData["system.custom"];
 		} else {
 			this.position.height = Math.max(1, count) * 76 + 91;
 		}
