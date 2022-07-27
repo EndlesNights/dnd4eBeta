@@ -18,7 +18,7 @@ export class ActionPointDialog extends DocumentSheet {
 	/** @override */
 	getData() {
 		const extra = this.object.system.actionpoints.custom !== "" ? this.object.system.actionpoints.custom.split("\n") : "";
-		return { data: this.object.system, extra: extra };
+		return { system: this.object.system, extra: extra };
 	}
 	async _updateObject(event, formData) {
 		
@@ -29,7 +29,7 @@ export class ActionPointDialog extends DocumentSheet {
 			extra = "<li>" + extra + "</li>";
 		}
 
-		if(this.object.systema.actionpoints.value >= 1) {
+		if(this.object.system.actionpoints.value >= 1) {
 			ChatMessage.create({
 				user: game.user.id,
 				speaker: {actor: this.object, alias: this.object.name},
