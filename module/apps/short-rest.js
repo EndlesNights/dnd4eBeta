@@ -20,13 +20,13 @@ export class ShortRestDialog extends DocumentSheet {
 	/** @override */
 	getData() {
 		
-		return {data: this.object.system}
+		return {system: this.object.system}
 	}
 	
 	async _updateObject(event, formData) {
 		
 		const updateData = {};
-		updateData[`data.attributes.hp.value`] = this.object.system.attributes.hp.value;
+		updateData[`system.attributes.hp.value`] = this.object.system.attributes.hp.value;
 		
 		if(formData.surge > 0)
 		{
@@ -54,26 +54,26 @@ export class ShortRestDialog extends DocumentSheet {
 				console.log(`healamount:${healamount}`)
 			}
 
-			updateData[`data.attributes.hp.value`] = Math.min(
+			updateData[`system.attributes.hp.value`] = Math.min(
 				(this.object.system.attributes.hp.value + healamount),
 				this.object.system.attributes.hp.max
 			);
 		
 			if(this.object.system.details.surges.value > 0)
-				updateData[`data.details.surges.value`] = this.object.system.details.surges.value - formData.surge;
+				updateData[`system.details.surges.value`] = this.object.system.details.surges.value - formData.surge;
 			
 		}
 		else if(formData.surge == 0 && this.object.system.attributes.hp.value <= 0)
 		{
-			updateData[`data.attributes.hp.value`] = 1;
+			updateData[`system.attributes.hp.value`] = 1;
 		}
 		
 		if(!this.object.system.attributes.hp.temprest)
-			updateData[`data.attributes.temphp.value`] = "";
+			updateData[`system.attributes.temphp.value`] = "";
 		
-		updateData[`data.details.secondwind`] = false;
-		updateData[`data.actionpoints.encounteruse`] = false;
-		updateData[`data.magicItemUse.encounteruse`] = false;
+		updateData[`system.details.secondwind`] = false;
+		updateData[`system.actionpoints.encounteruse`] = false;
+		updateData[`system.magicItemUse.encounteruse`] = false;
 		
 		console.log(this)
 		Helper.rechargeItems(this.object, ["enc", "round"]);
@@ -81,6 +81,9 @@ export class ShortRestDialog extends DocumentSheet {
 
 		
 		if(this.object.type === "Player Character"){
+
+			console.log(updateData[`system.attributes.hp.value`])
+			console.log(this.object.system.attributes.hp.value)
 			ChatMessage.create({
 				user: game.user.id,
 				speaker: {actor: this.object, alias: this.object.name},
