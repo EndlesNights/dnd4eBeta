@@ -55,7 +55,7 @@ export class HealMenuDialog extends FormApplication {
 		let healingSurgeText = ""
 		if (formData["spend-healing-surge"] === true) {
 			healingSurgeText = "Spending a healing surge for"
-			updateData[`data.details.surges.value`] = Math.max(this.object.system.details.surges.value - 1, 0)
+			updateData[`system.details.surges.value`] = Math.max(this.object.system.details.surges.value - 1, 0)
 			this.object.update(updateData);
 		}
 		else {
@@ -66,8 +66,8 @@ export class HealMenuDialog extends FormApplication {
 
 		ChatMessage.create({
 			user: game.user.id,
-			speaker: {actor: this.object, alias: this.object.data.name},
-			content: `${this.object.data.name} ${healTypeText}. ${healingSurgeText} ${surgeValueText} ${rollMessage}`,
+			speaker: {actor: this.object, alias: this.object.system.name},
+			content: `${this.object.system.name} ${healTypeText}. ${healingSurgeText} ${surgeValueText} ${rollMessage}`,
 		});
 	}
 }
