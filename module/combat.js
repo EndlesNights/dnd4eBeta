@@ -11,7 +11,6 @@ export const _getInitiativeFormula = function() {
 	console.log(actor.system)
 	const init = actor.system.attributes.init.value;
 	const tiebreaker = game.settings.get("dnd4e", "initiativeDexTiebreaker");
-	console.log(tiebreaker);
 	const parts = ["1d20", init,];
 	if ( actor.getFlag("dnd4e", "initiativeAdv") ) parts[0] = "2d20kh";
 	if ( tiebreaker ) parts.push(actor.system.attributes.init.value / 100);
