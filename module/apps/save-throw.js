@@ -19,7 +19,7 @@ export class SaveThrowDialog extends DocumentSheet {
 	/** @override */
 	getData() {
 		return {
-			data: this.object.system,
+			system: this.object.system,
 			rollModes: CONFIG.Dice.rollModes
 		};
 	}
