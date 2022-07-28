@@ -8,8 +8,6 @@
 		  setProperty(data, "flags.core.statusId", data.id);
 		  delete data.id;
 		}
-
-
 		try{
 			if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
 				data.transfer = false;
@@ -50,9 +48,6 @@
 			const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
 			const combat = game.combat;
 			if (combat?.turn) {//if combat has started
-				console.log(combat)
-				console.log(combat.turns)
-				console.log(combat.turns[combat.turn])
 				updates.flags = {dnd4e: { effectData: { startTurnInit: combat.turns[combat.turn].initiative ?? 0}}};
 			}
 			this.updateSource(updates);
@@ -136,32 +131,33 @@
 		
 		return super.isTemporary;
 	}
+	
+	// /**
+	//  * @override
+	//  * Summarize the active effect duration
+	//  * @type {{type: string, duration: number|null, remaining: number|null, label: string}}
+	//  */
+	// get duration() {
+	// 	// console.log(this)
+	// 	if(this.flags?.dnd4e?.effectData?.durationType){
+	// 		const d = this.duration;
+	// 		const duration = this._getCombatTime(d.rounds, d.turns);
+	// 		return {
+	// 			type: "turns",
+	// 			duration: duration,
+	// 			remaining: duration,
+	// 			label: this._getDurationLabel(d.rounds, d.turns)
+	// 		}
+	// 	}
+	// 	if(super.duration){
+	// 		return super.duration
+	// 	}
+	// 	return {};
+	// }
 
-	/**
-	 * @override
-	 * Summarize the active effect duration
-	 * @type {{type: string, duration: number|null, remaining: number|null, label: string}}
-	 */
-	get duration() {
-		if(this.flags?.dnd4e?.effectData?.durationType){
-			const d = this.duration;
-			const duration = this._getCombatTime(d.rounds, d.turns);
-			return {
-				type: "turns",
-				duration: duration,
-				remaining: duration,
-				label: this._getDurationLabel(d.rounds, d.turns)
-			}
-		}
-		if(super.duration){
-			return super.duration
-		}
-		return {};
-	}
-
-	set duration(duration){
-		return duration;
-	}
+	// set duration(duration){
+	// 	return duration;
+	// }
 
 	/* -------------------------------------------- */
 
