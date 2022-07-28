@@ -156,12 +156,12 @@ export class Helper {
 			}
 
 			const effectsToProcess = []
-			const effects = Array.from(actorData.effects.values()).filter((effect) => effect.data.disabled === false)
+			const effects = Array.from(actorData.effects.values()).filter((effect) => effect.disabled === false)
 			effects.forEach((effect) => {
-				effect.data.changes.forEach((change => {
+				effect.changes.forEach((change => {
 					if (change.key.startsWith(`power.${effectType}`) || (weaponInnerData && change.key.startsWith(`weapon.${effectType}`))) {
 						effectsToProcess.push({
-							name : effect.data.label,
+							name : effect.label,
 							key: change.key,
 							value: change.value
 						})
@@ -626,23 +626,23 @@ export class Helper {
 				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.  Searching active effects for a suitable variable`)
 			}
 			const resultObject = {}
-			const effects = Array.from(actorData.effects.values()).filter((effect) => effect.data?.disabled === false);
+			const effects = Array.from(actorData.effects.values()).filter((effect) => effect?.disabled === false);
 			effects.forEach((effect) => {
-				effect.data.changes.forEach((change => {
+				effect.changes.forEach((change => {
 					if (this.variableRegex.test(change.key)) {
 						if (debug) {
-							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.data.label}.  Value: ${change.value}`)
+							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.label}.  Value: ${change.value}`)
 						}
 						const changeValueReplaced = this.commonReplace(change.value, actorData, powerInnerData, weaponInnerData, 0) // set depth to avoid infinite recursion
 						if (!resultObject[change.key]) {
 							resultObject[change.key] = changeValueReplaced
 							if (debug) {
-								console.log(`${debug} Effect: ${effect.data.label}.  Computed Value: ${change.value} was the first match to ${change.key} `)
+								console.log(`${debug} Effect: ${effect.label}.  Computed Value: ${change.value} was the first match to ${change.key} `)
 							}
 						}
 						else {
 							if (debug) {
-								console.log(`${debug} Effect: ${effect.data.label}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
+								console.log(`${debug} Effect: ${effect.label}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
 							}
 							if(this._isNumber(resultObject[change.key]) && this._isNumber(changeValueReplaced)){
 								resultObject[change.key] = Number(resultObject[change.key]) + Number(changeValueReplaced)
@@ -904,10 +904,9 @@ export class Helper {
 	}
 
 	static async endEffects(actor, targetArray){
-		// const effects = actor.effects.filter(effect => targetArray.includes(effect.data.flags.dnd4e.effectData.durationType));
 		const effects = [];
 		for(let e of actor.effects){
-			if(targetArray.includes(e.data.flags.dnd4e?.effectData?.durationType)){
+			if(targetArray.includes(e.flags.dnd4e?.effectData?.durationType)){
 				effects.push(e.id);
 			}
 		}
@@ -917,8 +916,8 @@ export class Helper {
 	static getInitiativeByToken(id){
 		if(!game.combat) return 0;
 		for(let t of game.combat.turns){
-			if(t.data.tokenId === id){
-				return t.data.initiative
+			if(t.tokenId === id){
+				return t.initiative
 			}
 		}
 
@@ -960,17 +959,17 @@ export class Helper {
 	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
 		const combat = game.combat;
 		for(let e of effectMap){
-			if(e.data.flags.dnd4e.effectData.powerEffectTypes === condition){
+			if(e.flags.dnd4e.effectData.powerEffectTypes === condition){
 				for(let t of tokenTarget){
 					let effectData = e.data;
 					effectData.sourceName = parent.name
 					effectData.origin = parent.uuid
 
-					const duration = e.data.duration;
-					const flags = e.data.flags;
+					const duration = e.duration;
+					const flags = e.flags;
 					duration.combat = combat?.id || "None Combat";
 					duration.startRound = combat?.round || 0;
-					flags.dnd4e.effectData.startTurnInit = combat?.turns[combat.turn].data.initiative || 0;
+					flags.dnd4e.effectData.startTurnInit = combat?.turns[combat.turn].initiative || 0;
 
 					const userTokenId = this.getTokenIdForLinkedActor(parent);
 					const userInit = this.getInitiativeByToken(this.getTokenIdForLinkedActor(parent));
@@ -979,7 +978,7 @@ export class Helper {
 
 					if(flags.dnd4e.effectData.durationType === "endOfTargetTurn" || flags.dnd4e.effectData.durationType === "startOfTargetTurn"){
 						duration.rounds = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
-						flags.dnd4e.effectData.durationTurnInit = t ? this.getInitiativeByToken(t.data._id) : userInit;						
+						flags.dnd4e.effectData.durationTurnInit = t ? this.getInitiativeByToken(t._id) : userInit;						
 					}
 					else if(flags.dnd4e.effectData.durationType === "endOfUserTurn" || flags.dnd4e.effectData.durationType === "startOfUserTurn" ){
 						duration.rounds = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
@@ -987,17 +986,17 @@ export class Helper {
 					}
 
 					const newEffectData = {
-						label: e.data.label,
-						icon: e.data.icon,
+						label: e.label,
+						icon: e.icon,
 						origin: parent.uuid,
 						sourceName: parent.name,
 						// duration: duration, //Not too sure why this fails, but it does
 						// duration: {rounds: duration.rounds, startRound: duration.startRound},
 						rounds: duration.rounds,
 						startRound: duration.startRound,
-						tint: e.data.tint,
+						tint: e.tint,
 						flags: flags,
-						changes: e.data.changes,
+						changes: e.changes,
 						changesID: e.uuid
 					};
 					let actor;
