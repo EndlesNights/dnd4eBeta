@@ -803,20 +803,20 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		}
 		
 		if(!/^[\-=+ 0-9]+$/.test(value)) {
-			input.value = getProperty(this.actor.data, input.name)
+			input.value = getProperty(this.actor, input.name)
 			return;}
 
 		if ( ["+"].includes(value[0]) ) {
 			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
-			input.value = getProperty(this.actor.data, input.name) + delta || getProperty(this.actor.data, input.name);
+			input.value = getProperty(this.actor, input.name) + delta || getProperty(this.actor, input.name);
 		}
 		else if ( ["-"].includes(value[0]) ) {
 			let delta = parseFloat(-value.replace(/[^0-9]/g, ""));
-			input.value = getProperty(this.actor.data, input.name) + delta || getProperty(this.actor.data, input.name);
+			input.value = getProperty(this.actor, input.name) + delta || getProperty(this.actor, input.name);
 		} else if ( value[0] === "=" ) {
 			input.value = value.replace(/[^\-0-9]/g, "");
 		} else{
-			input.value = getProperty(this.actor.data, input.name)
+			input.value = getProperty(this.actor, input.name)
 		}
 	}
 
