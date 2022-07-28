@@ -96,11 +96,11 @@ export class ShortRestDialog extends DocumentSheet {
 		
 		for (let r of Object.entries(this.object.system.resources)) {
 			if(r[1].sr && r[1].max) {
-				updateData[`data.resources.${r[0]}.value`] = r[1].max;
+				updateData[`system.resources.${r[0]}.value`] = r[1].max;
 			}
 		}
 
-		console.log(updateData[`data.attributes.hp.value`]);
+		console.log(updateData[`system.attributes.hp.value`]);
 		console.log(this.object.system.attributes.hp.value);
 
 		this.object.update(updateData);

@@ -587,7 +587,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( a.classList.contains("add-damage") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const damage = this.item.system.damage;
-			return this.item.update({"data.damage.parts": damage.parts.concat([["", ""]])});
+			return this.item.update({"system.damage.parts": damage.parts.concat([["", ""]])});
 		}
 
 		// Remove a damage component
@@ -596,14 +596,14 @@ export default class ItemSheet4e extends ItemSheet {
 			const li = a.closest(".damage-part");
 			const damage = duplicate(this.item.system.damage);
 			damage.parts.splice(Number(li.dataset.damagePart), 1);
-			return this.item.update({"data.damage.parts": damage.parts});
+			return this.item.update({"system.damage.parts": damage.parts});
 		}
 	
 		// Add new critical damage component
 		if ( a.classList.contains("add-criticalDamage") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const damageCrit = this.item.system.damageCrit;
-			return this.item.update({"data.damageCrit.parts": damageCrit.parts.concat([["", ""]])});
+			return this.item.update({"system.damageCrit.parts": damageCrit.parts.concat([["", ""]])});
 		}
 
 		// Remove a critical damage component
@@ -612,14 +612,14 @@ export default class ItemSheet4e extends ItemSheet {
 			const li = a.closest(".damage-part");
 			const damageCrit = duplicate(this.item.system.damageCrit);
 			damageCrit.parts.splice(Number(li.dataset.damagePart), 1);
-			return this.item.update({"data.damageCrit.parts": damageCrit.parts});
+			return this.item.update({"system.damageCrit.parts": damageCrit.parts});
 		}
 
 		// Add new implement damage component
 		if ( a.classList.contains("add-damage-imp") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const damageImp = this.item.system.damageImp;
-			return this.item.update({"data.damageImp.parts": damageImp.parts.concat([["", ""]])});
+			return this.item.update({"system.damageImp.parts": damageImp.parts.concat([["", ""]])});
 		}
 
 		// Remove a implement damage component
@@ -628,14 +628,14 @@ export default class ItemSheet4e extends ItemSheet {
 			const li = a.closest(".damage-part");
 			const damageImp = duplicate(this.item.system.damageImp);
 			damageImp.parts.splice(Number(li.dataset.damagePart), 1);
-			return this.item.update({"data.damageImp.parts": damageImp.parts});
+			return this.item.update({"system.damageImp.parts": damageImp.parts});
 		}
 	
 		// Add new implement critical damage component
 		if ( a.classList.contains("add-criticalDamage-imp") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const damageCritImp = this.item.system.damageCritImp;
-			return this.item.update({"data.damageCritImp.parts": damageCritImp.parts.concat([["", ""]])});
+			return this.item.update({"system.damageCritImp.parts": damageCritImp.parts.concat([["", ""]])});
 		}
 
 		// Remove a implement critical damage component
@@ -644,13 +644,13 @@ export default class ItemSheet4e extends ItemSheet {
 			const li = a.closest(".damage-part");
 			const damageCritImp = duplicate(this.item.system.damageCritImp);
 			damageCritImp.parts.splice(Number(li.dataset.damagePart), 1);
-			return this.item.update({"data.damageCritImp.parts": damageCritImp.parts});
+			return this.item.update({"system.damageCritImp.parts": damageCritImp.parts});
 		}
 		// Add new damage res
 		if ( a.classList.contains("add-damageRes") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const damageRes = this.item.system.armour.damageRes;
-			return this.item.update({"data.armour.damageRes.parts": damageRes.parts.concat([["", ""]])});
+			return this.item.update({"system.armour.damageRes.parts": damageRes.parts.concat([["", ""]])});
 		}
 
 		// Remove a damage res
@@ -659,13 +659,13 @@ export default class ItemSheet4e extends ItemSheet {
 			const li = a.closest(".damage-part");
 			const damageRes = duplicate(this.item.system.armour.damageRes);
 			damageRes.parts.splice(Number(li.dataset.damagePart), 1);
-			return this.item.update({"data.armour.damageRes.parts": damageRes.parts});
+			return this.item.update({"system.armour.damageRes.parts": damageRes.parts});
 		}
 
 		if(a.classList.contains("add-dice")) {
 			await this._onSubmit(event); // Submit any unsaved changes
 			const damageDice = duplicate(this.item.system.damageDice);
-			return this.item.update({"data.damageDice.parts": damageDice.parts.concat([["","",""]])});
+			return this.item.update({"system.damageDice.parts": damageDice.parts.concat([["","",""]])});
 		}
 
 		if ( a.classList.contains("delete-dice") ) {
@@ -673,7 +673,7 @@ export default class ItemSheet4e extends ItemSheet {
 			const li = a.closest(".damage-part");
 			const damageDice = duplicate(this.item.system.damageDice);
 			damageDice.parts.splice(Number(li.dataset.damagePart), 1);
-			return this.item.update({"data.damageDice.parts": damageDice.parts});
+			return this.item.update({"system.damageDice.parts": damageDice.parts});
 		}
 	}
 
@@ -691,7 +691,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( a.classList.contains("add-special") ) {
 			await this._onSubmit(event);  // Submit any unsaved changes
 			const special = this.item.system.specialAdd;
-			return this.item.update({"data.specialAdd.parts": special.parts.concat([[""]])});
+			return this.item.update({"system.specialAdd.parts": special.parts.concat([[""]])});
 		}
 
 		// Remove a special component
@@ -700,7 +700,7 @@ export default class ItemSheet4e extends ItemSheet {
 			const li = a.closest(".onetext-part");
 			const special = duplicate(this.item.system.specialAdd);
 			special.parts.splice(Number(li.dataset.specialPart), 1);
-			return this.item.update({"data.specialAdd.parts": special.parts});
+			return this.item.update({"system.specialAdd.parts": special.parts});
 		}
 	}
 

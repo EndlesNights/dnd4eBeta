@@ -47,8 +47,8 @@ const _TokenGetBarAttribute = Token.prototype.getBarAttribute;
 export const getBarAttribute = function(...args) {
   const data = _TokenGetBarAttribute.bind(this)(...args);
   if ( data && (data.attribute === "attributes.hp") ) {
-    data.value += parseInt(getProperty(this.actor.data, "data.attributes.hp.temp") || 0);
-    data.max += parseInt(getProperty(this.actor.data, "data.attributes.hp.tempmax") || 0);
+    data.value += parseInt(getProperty(this.actor.system, "attributes.hp.temp") || 0);
+    data.max += parseInt(getProperty(this.actor.system, "attributes.hp.tempmax") || 0);
   }
   return data;
 };

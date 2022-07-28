@@ -50,7 +50,7 @@ export class DeathSaveDialog extends DocumentSheet {
 		
 		if(roll.total < 10)
 		{
-			updateData[`data.details.deathsavefail`] = this.object.system.details.deathsavefail + 1;
+			updateData[`system.details.deathsavefail`] = this.object.system.details.deathsavefail + 1;
 		}
 		if( roll.total < 10 && this.object.system.details.deathsavefail + 1 >= this.object.system.details.deathsaves)
 		{

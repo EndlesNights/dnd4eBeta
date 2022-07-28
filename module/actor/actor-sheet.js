@@ -1023,7 +1023,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		const item = this.actor.items.get(itemId);
 		const uses = Math.clamped(0, parseInt(event.target.value), item.system.preparedMaxUses);
 		event.target.value = uses;
-		return item.update({ 'data.uses.value': uses });
+		return item.update({ 'system.uses.value': uses });
 	}
   
 	/* -------------------------------------------- */
@@ -1119,7 +1119,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		event.preventDefault();
 		const passName = event.currentTarget.parentElement.dataset.passive;
 		const skillName = this.actor.system.passive[passName].skill;
-		const target = `data.passive.${passName}`;
+		const target = `system.passive.${passName}`;
 		const options = {target: target, label: `Passive ${this.actor.system.skills[skillName].label} Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}	
@@ -1127,7 +1127,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	_onModifiersBonus(event) {
 		event.preventDefault();
 		const modifierName = event.currentTarget.parentElement.dataset.modifiers;
-		const target = `data.modifiers.${modifierName}`;
+		const target = `system.modifiers.${modifierName}`;
 		const options = {target: target, label: `${this.actor.system.modifiers[modifierName].label} Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}	
@@ -1135,7 +1135,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	_onResistancesBonus(event) {
 		event.preventDefault();
 		const resName = event.currentTarget.parentElement.dataset.res;
-		const target = `data.resistances.${resName}`;
+		const target = `system.resistances.${resName}`;
 		const options = {target: target, label: `${this.actor.system.resistances[resName].label} Damage Resistances Bonus` };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
@@ -1268,7 +1268,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 
-		if ( item.data.type === "power") {
+		if ( item.type === "power") {
 
 			if(item.system.rechargeRoll){
 				const r = new Roll("1d6");
@@ -1278,15 +1278,15 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 				r.dice[0].options.fumble = item.system.rechargeRoll -1;
 				r.evaluate({async: false});
 	
-				let flav = `${item.data.name} did not recharge.`;
+				let flav = `${item.name} did not recharge.`;
 				if(r.total >= item.system.rechargeRoll){
-					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.system.preparedMaxUses}]);
-					flav = `${item.data.name} successfully recharged!`;
+					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "system.uses.value": item.system.preparedMaxUses}]);
+					flav = `${item.name} successfully recharged!`;
 				}
 
 				r.toMessage({
 					user: game.user.id,
-					speaker: {actor: this.object, alias: this.object.data.name},
+					speaker: {actor: this.object, alias: this.object.name},
 					flavor: flav,
 					rollMode: game.settings.get("core", "rollMode"),
 					messageData: {"flags.dnd4eBeta.roll": {type: "other", itemId: this.id }}
@@ -1294,12 +1294,12 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 			} else if (item.system.rechargeCondition) {
 
-				this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "data.uses.value": item.system.preparedMaxUses}]);
+				this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "system.uses.value": item.system.preparedMaxUses}]);
 
 				ChatMessage.create({
 					user: game.user.id,
-					speaker: {actor: this.object, alias: this.object.data.name},
-					flavor: `${item.data.name} successfully recharged! Due to meeting condition ${item.system.rechargeCondition}`
+					speaker: {actor: this.object, alias: this.object.name},
+					flavor: `${item.name} successfully recharged! Due to meeting condition ${item.system.rechargeCondition}`
 				});
 			}
 
@@ -1338,7 +1338,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	  curr[c] -= (change * t.each);
 	  curr[t.into] += change;
 	}
-	return this.object.update({"data.currency": curr});
+	return this.object.update({"system.currency": curr});
   }
   
   /* -------------------------------------------- */
@@ -1412,7 +1412,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 		ChatMessage.create({
 			user: game.user.id,
-			speaker: {actor: this.object, alias: this.object.data.name},
+			speaker: {actor: this.object, alias: this.object.name},
 			content: `Passive ${this.actor.system.skills[skillName].label} Skill Check: <SPAN STYLE="font-weight:bold">${this.object.system.passive[passName].value}`
 		});	
 	}

@@ -896,7 +896,7 @@ export class Helper {
 		const updateItems = items.map( item => {
 			return {
 				_id: item.id,
-				"data.uses.value": item.system.preparedMaxUses
+				"system.uses.value": item.system.preparedMaxUses
 			};
 		});
 
