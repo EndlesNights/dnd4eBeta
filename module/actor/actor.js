@@ -28,16 +28,17 @@ export class Actor4e extends Actor {
 
 	/** @override */
 	async update(data, options={}) {
+		if(!data) { return super.update(data, options); }
 		
 		//used to call changes to HP scrolling text
-		if(data[`system.attributes.hp.value`]){
+		if(data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
 			options.dhp = data[`system.attributes.hp.value`] - this.system.attributes.hp.value;
 		}
 
-		if(!data) { return super.update(data, options); }
 		// Apply changes in Actor size to Token width/height
 		const newSize = data["system.details.size"];
-		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this.system, "system.details.size")) )) {
+
+		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this, "system.details.size")) )) {
 			let size = CONFIG.DND4EBETA.tokenSizes[newSize];
 			if ( this.isToken ) this.token.update({height: size, width: size});
 			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
@@ -92,9 +93,8 @@ export class Actor4e extends Actor {
 		dhp = Number(dhp);
 		const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
 		for ( let t of tokens ) {
-			if ( !t?.hud?.createScrollingText ) continue;  // This is undefined prior to v9-p2
 			const pct = Math.clamped(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
-			t.hud.createScrollingText(dhp.signedString(), {
+			canvas.interface.createScrollingText(t.center, dhp.signedString(), {
 				anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
 				fontSize: 16 + (32 * pct), // Range between [16, 48]
 				fill: CONFIG.DND4EBETA.tokenHPColors[dhp < 0 ? "damage" : "healing"],
