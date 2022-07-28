@@ -885,7 +885,7 @@
 		"attribute": "abilities.int.mod",
 		"chatFlavor": "",
 		"formula": "",
-		"bonus": 2
+		"bonus": "2"
 	},
 	"weapon": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "mountable", "itemMacro"],

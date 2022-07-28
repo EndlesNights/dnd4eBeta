@@ -1472,7 +1472,7 @@ export default class Item4e extends Item {
 			rollData[rollType] = `1d20 + ${Helper.byString(this.system.attribute, this.actor.system)}`; 
 			if(this.system.bonus){
 				//if does not srtart with a number sign add one
-				let trimmedbonus = this.system.bonus.trim();
+				let trimmedbonus = this.system.bonus.toString().trim();
 				if(!(trimmedbonus.startsWith("+") || trimmedbonus.startsWith("-"))) {
 					trimmedbonus = ' + ' + trimmedbonus;
 				}
