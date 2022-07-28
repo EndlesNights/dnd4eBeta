@@ -1203,7 +1203,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 	_onSavingThrowBonus(event) {
 		event.preventDefault();
-		const options = {target: `data.details.saves`, label: "Savingthrow Bonus" };
+		const options = {target: `system.details.saves`, label: "Savingthrow Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);	
 	}
 
