@@ -66,7 +66,7 @@ export class LongRestDialog extends DocumentSheet {
 				user: game.user.id,
 				speaker: {actor: this.object, alias: this.object.system.name},
 				// flavor: restFlavor,
-				content: `${this.object.system.name} takes a long rest.`
+				content: `${this.object.name} takes a long rest.`
 			});
 		}
 		

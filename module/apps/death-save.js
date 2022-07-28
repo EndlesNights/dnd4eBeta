@@ -57,14 +57,14 @@ export class DeathSaveDialog extends DocumentSheet {
 			await ChatMessage.create({
 				user: game.user.id,
 				speaker: ChatMessage.getSpeaker(),
-				content:this.object.data.name + game.i18n.localize("DND4EBETA.DeathSaveFailure")
+				content:this.object.name + game.i18n.localize("DND4EBETA.DeathSaveFailure")
 			});
 		}
 		else if(roll.total >= rollConfig.critical) {
 			await ChatMessage.create({
 				user: game.user.id,
 				speaker: ChatMessage.getSpeaker(),
-				content:this.object.data.name + game.i18n.localize("DND4EBETA.DeathSaveCriticalSuccess")
+				content:this.object.name + game.i18n.localize("DND4EBETA.DeathSaveCriticalSuccess")
 			});
 		}
 		console.log(roll.total)
