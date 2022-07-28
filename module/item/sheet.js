@@ -215,7 +215,7 @@ export default class ItemSheet4e extends ItemSheet {
 	  }
 
 	exportItem() {
-		const jsonString = JSON.stringify(this.object.data._source);
+		const jsonString = JSON.stringify(this.object._source);
 
 		try {
 			navigator.clipboard.writeText(jsonString)
