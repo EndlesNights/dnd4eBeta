@@ -412,7 +412,7 @@ export default class Item4e extends Item {
 			actor: this.actor,
 			tokenId: token ? token.uuid : null,
 			item: this,
-			data: this.getChatData(),
+			system: this.getChatData(),
 			labels: this.labels,
 			hasAttack: this.hasAttack,
 			isHealing: this.isHealing,
@@ -422,7 +422,6 @@ export default class Item4e extends Item {
 			hasEffect: this.hasEffect,
 			cardData: cardData,
 			isVersatile: this.isVersatile,
-			// isSpell: this.data.type === "spell",
 			hasSave: this.hasSave,
 			hasAreaTarget: this.hasAreaTarget
 		};
@@ -448,9 +447,9 @@ export default class Item4e extends Item {
 		}
 		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
 		let html = await renderTemplate(template, templateData);
-
+		
 		if(templateData.item.type === "power") {
-			html = html.replace("ability-usage--", `ability-usage--${templateData.data.useType}`);
+			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
 			
 		Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
 		Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);

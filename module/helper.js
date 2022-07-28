@@ -15,9 +15,9 @@ export class Helper {
 		// data.actor has historically been the actor
 		// changing that would break existing macros that rely on item data.  I would like to make data.item = the item.
 		// can still get to the item using .document
-		macro.data.item = item.data
-		macro.data.actor = item.actor //needs to be actor and not data to get at actors items collection - e.g. other items
-		macro.data.launch = item.system.macro.launchOrder;
+		macro.item = item
+		macro.actor = item.actor //needs to be actor and not data to get at actors items collection - e.g. other items
+		macro.launch = item.system.macro.launchOrder;
 		return macro.execute();
 	}
 

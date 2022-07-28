@@ -295,6 +295,12 @@ Hooks.once('init', async function() {
 
 	libWrapper.register(
 		'dnd4e',
+		'TemplateLayer.prototype._onDragLeftStart',
+		AbilityTemplate._onDragLeftStart
+	)
+	
+	libWrapper.register(
+		'dnd4e',
 		'Combat.prototype.nextTurn',
 		Turns._onNextTurn
 	)
@@ -310,9 +316,3 @@ Hooks.on("getSceneControlButtons", function(controls){
   })
 })
 
-Hooks.on("createMeasuredTemplate", (obj,temp,userID) => {
-	//set flag based on wich tool is selected
-	if(game.userId === userID && !obj.data.flags.dnd4e?.templateType) {
-		obj.setFlag("dnd4e", 'templateType',ui.controls.activeControl === "measure" ? ui.controls.activeTool : obj.data.t);
-	}
-});
