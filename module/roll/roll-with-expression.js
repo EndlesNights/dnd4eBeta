@@ -41,7 +41,7 @@ export class RollWithOriginalExpression extends Roll {
      */
     constructor (formula, data={}, options={}) {
         super(formula, data, foundry.utils.mergeObject({expression : formula, originalFormula: formula}, options));
-        this.expression = options.expression ? options.expression : formula
+        this.expression = options.expression ? options.expression : formula;
     }
 
     /**
@@ -157,6 +157,7 @@ export class RollWithOriginalExpression extends Roll {
             expression: isPrivate? "???" : formulaData.expression,
             hitTypeDamage: this.options?.hitTypeDamage,
             hitTypeHealing: this.options?.hitTypeHealing,
+            attackRoll: this.options?.multirollData,
         };
         // Render the roll display template
         return renderTemplate(chatOptions.template, chatData);
@@ -382,6 +383,4 @@ export class RollWithOriginalExpression extends Roll {
             changed: false
         }
     }
-
-
 }
