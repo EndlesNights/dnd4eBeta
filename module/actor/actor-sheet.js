@@ -43,8 +43,6 @@ export default class ActorSheet4e extends ActorSheet {
 
 	  /** @inheritdoc */
 	  async _updateObject(event, formData) {
-		console.log(event)
-		console.log(formData)
 		return super._updateObject(event, formData);
 	  }
   
@@ -155,8 +153,6 @@ export default class ActorSheet4e extends ActorSheet {
 			if (res && res.max === 0) delete res.max;
 			return arr.concat([res]);
 			}, []);
-
-		console.log(data)
 		return data;
 	}
 	
@@ -202,7 +198,6 @@ export default class ActorSheet4e extends ActorSheet {
 			ritual: { label: "DND4EBETA.FeatRitual", items: [], dataset: {type: "ritual"} }
 		};
 		
-		console.log(data.items)
 		// Partition items by category
 		let [items, pow, feats] = data.items.reduce((arr, item) => {
 			// Item details
