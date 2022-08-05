@@ -102,6 +102,8 @@
 								<a class="item-recharge rollable" title="Click to roll 1d6 and recharge power on a roll of {{item.system.rechargeRoll}} or higher">Recharge[+{{item.system.rechargeRoll}}]</a>
 								{{else if item.system.rechargeCondition}}
 								<a class="item-recharge rollable" title="Click to recharge power when the condition of &quot;{{item.system.rechargeCondition}}&quot; is met">Recharge[C]</a>
+								{{else if item.system.isOnCooldown}}
+								<a class="item-recharge rollable" title="Click to roll 1d6 and recharge power on a roll of {{item.system.rechargeRoll}} or higher">Recharge[+6]</a>
 								{{else}}
 								<input type="text" value="{{item.system.uses.value}}" placeholder="0"/>/ {{item.system.preparedMaxUses}}
 								{{/if}}

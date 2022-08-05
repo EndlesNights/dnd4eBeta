@@ -211,8 +211,8 @@ export default class ActorSheet4e extends ActorSheet {
 
 			// Item usage
 			item.hasUses = item.system.uses && (item.system.preparedMaxUses > 0);
-			item.isOnCooldown = item.system.recharge && !!item.system.recharge.value && (item.system.recharge.charged === false);
-			item.isDepleted = item.isOnCooldown && (item.system.uses.per && (item.system.uses.value > 0));
+			// item.isOnCooldown = item.system.recharge && !!item.system.recharge.value && (item.system.recharge.charged === false);
+			item.isDepleted = item.isOnCooldown && (item.system.uses?.per && (item.system.uses?.value > 0));
 			//Causing error in v10, only getter no setter now.
 			// item.hasTarget = !!item.data.target && !(["none",""].includes(item.data.target.type));
 			// item.hasTarget = !!item.system.target && !(["none",""].includes(item.system.target.type));
@@ -1270,16 +1270,16 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 		if ( item.type === "power") {
 
-			if(item.system.rechargeRoll){
+			if(item.system.rechargeRoll || (!item.system.rechargeRoll && !item.system.rechargeCondition)){
 				const r = new Roll("1d6");
 				r.options.async = true;
 				r.dice[0].options.recharge = true;
-				r.dice[0].options.critical = item.system.rechargeRoll;
-				r.dice[0].options.fumble = item.system.rechargeRoll -1;
+				r.dice[0].options.critical = item.system.rechargeRoll || 6;
+				r.dice[0].options.fumble = r.dice[0].options.critical -1;
 				r.evaluate({async: false});
 	
 				let flav = `${item.name} did not recharge.`;
-				if(r.total >= item.system.rechargeRoll){
+				if(r.total >= r.dice[0].options.critical){
 					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "system.uses.value": item.system.preparedMaxUses}]);
 					flav = `${item.name} successfully recharged!`;
 				}

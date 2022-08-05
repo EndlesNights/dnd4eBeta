@@ -379,6 +379,8 @@ export default class Item4e extends Item {
 			system.preparedMaxUses = this.preparedMaxUses;
 		}
 
+		itemData.system.isOnCooldown = this.isOnCooldown();
+
 	}
 
 	/* -------------------------------------------- */
@@ -1682,5 +1684,14 @@ export default class Item4e extends Item {
 		const targets = controlled.reduce((arr, t) => t.actor ? arr.concat([t.actor]) : arr, []);
 		if ( character && (controlled.length === 0) ) targets.push(character);
 		return targets;
+	}
+
+
+	isOnCooldown(){
+		if(this.type !== "power") return false;
+		if(this.system.uses.value || (!this.system.uses.value && !this.system.uses.max)) return false;
+		if(this.system.type !== "recharge") return false;
+
+		return true;
 	}
 }
