@@ -332,22 +332,22 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		// Get the drag source and its siblings
 		const source = this.actor.items.get(itemData._id);
 		const siblings = this.actor.items.filter(i => {
-			return (i.data.type === source.data.type) && (i.data._id !== source.data._id);
+			return (i.type === source.type) && (i._id !== source._id);
 		});
 
 		// Get the drop target
 		const dropTarget = event.target.closest("[data-item-id]");
 		const targetId = dropTarget ? dropTarget.dataset.itemId : null;
-		const target = siblings.find(s => s.data._id === targetId);
+		const target = siblings.find(s => s._id === targetId);
 
 		// Ensure we are only sorting like-types
-		if (!target || (source.data.type !== target.data.type)) return; // changed from if (target && (source.data.type !== target.data.type)) return;
+		if (!target || (source.type !== target.type)) return; // changed from if (target && (source.data.type !== target.data.type)) return;
 
 		// Perform the sort
-		const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings, sortBefore: (source.data.sort > target.data.sort)}); //Changed from const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings});
+		const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings, sortBefore: (source.sort > target.sort)}); //Changed from const sortUpdates = SortingHelpers.performIntegerSort(source, {target: target, siblings});
 		const updateData = sortUpdates.map(u => {
 			const update = u.update;
-			update._id = u.target.data._id;
+			update._id = u.target._id;
 			return update;
 		});
 
