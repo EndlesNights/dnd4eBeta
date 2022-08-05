@@ -4,29 +4,37 @@ import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
  * Highlight critical success or failure on d20 rolls, or recharge rolls
  */
 export const highlightCriticalSuccessFailure = function(message, html, data) {
+
 	if ( !message.isRoll || !message.isContentVisible ) return;
+	let i = 0;
+	for(const roll of message.rolls){
+		if ( !roll.dice.length ) continue;
+		const d = roll.dice[0];
 
-	// Highlight rolls where the first part is a d20 roll
-	const roll = message.rolls[0];
-	if ( !roll.dice.length ) return;
-	const d = roll.dice[0];
-	// Has its own check
-	if(roll instanceof MultiAttackRoll){ return; }
+		// Ensure it is an un-modified d20 roll, or is part of a recharge roll
+		const isD20 = (d.faces === 20) && ( d.values.length === 1 );
+		if ( !isD20 && !d.options.recharge) return;
+		const isModifiedRoll = ("success" in d.results[0]) || d.options.marginSuccess || d.options.marginFailure;
+		if ( isModifiedRoll ) return;
 
-	// Ensure it is an un-modified d20 roll, or is part of a recharge roll
-	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
-	if ( !isD20 && !d.options.recharge) return;
-	const isModifiedRoll = ("success" in d.results[0]) || d.options.marginSuccess || d.options.marginFailure;
-	if ( isModifiedRoll ) return;
+		// Highlight successes and failures
+		const critical = d.options.critical || 20;
+		const fumble = d.options.fumble || 1;
+		if ( d.total >= critical ) {
+			html.find(`.dice-total`)[i].classList.add("critical");
+		}
+		else if ( d.total <= fumble ){ 
+			html.find(`.dice-total`)[i].classList.add("fumble");
+		}
+		else if ( d.options.target ) {
+			if ( roll.total >= d.options.target ){
+				html.find(`.dice-total`)[i].classList.add("success");
+			} else {
+				html.find(`.dice-total`)[i].classList.add("failure");
+			}
+		}
 
-	// Highlight successes and failures
-	const critical = d.options.critical || 20;
-	const fumble = d.options.fumble || 1;
-	if ( d.total >= critical ) html.find(".dice-total").addClass("critical");
-	else if ( d.total <= fumble ) html.find(".dice-total").addClass("fumble");
-	else if ( d.options.target ) {
-		if ( roll.total >= d.options.target ) html.find(".dice-total").addClass("success");
-		else html.find(".dice-total").addClass("failure");
+		i++;
 	}
 };
 
