@@ -124,13 +124,13 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	manageBonusInParts(parts, form, data)
 
 	let allRollsParts = []
+	const numberOfTargets = Math.max(1, game.user.targets.size);
 	if (isAttackRoll && form !== null) {
 		// populate the common attack bonuses into data
 		Object.keys(CONFIG.DND4EBETA.commonAttackBonuses).forEach(function(key,index) {
 			data[key] = CONFIG.DND4EBETA.commonAttackBonuses[key].value
 		});
 		const individualAttack = (Object.entries(form)[6][1].value === "true");
-		const numberOfTargets = Math.max(1, game.user.targets.size)
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++ ) {
 			const targetBonuses = []
 			for ( let [k, v] of Object.entries(form) ) {
@@ -157,7 +157,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		}
 	}
 	else {
-		allRollsParts.push(parts)
+		allRollsParts = Array(numberOfTargets).fill(parts);
 	}
 
 	// if the form updated the roll flavor
