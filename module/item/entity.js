@@ -805,7 +805,9 @@ export default class Item4e extends Item {
 		let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
 		let flavor = title;
 
-		flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
+		if(itemData.attack.def) {
+			flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
+		}
 
 		if(game.user.targets.size) {
 			options.attackedDef = itemData.attack.def; 
