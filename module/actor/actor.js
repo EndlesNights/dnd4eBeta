@@ -990,6 +990,7 @@ export class Actor4e extends Actor {
 		const initRoll = await  d20Roll(mergeObject(options, {
 			parts: parts,
 			data: data,
+			event,
 			title: `Init Roll`,
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: isReroll? `${this.name} re-rolls Initiative!` : `${this.name} rolls for Initiative!`,

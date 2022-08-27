@@ -436,7 +436,7 @@ function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, t
 
 	// Determine whether the roll can be fast-forward, make explicit comparison here as it might be set as false, so no falsey checks
 	if ( fastForward === null || fastForward === undefined) {
-		rollConfig.fastForward = event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
+		rollConfig.fastForward = Helper.isUsingFastForwardKey(event);
 		if(rollConfig.options?.fastForward){
 			rollConfig.fastForward = rollConfig.options.fastForward;
 		}
