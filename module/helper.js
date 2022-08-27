@@ -1023,6 +1023,16 @@ export class Helper {
 			}
 		}
 	}
+
+	/**
+	 * Determine if a fastForward key was held during the given click event.
+	 *
+	 * @param {Event} event A click event
+	 * @returns {boolean} if the click was done while holding down a fastForward key
+	 */
+	static isUsingFastForwardKey(event) {
+		return event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey)
+	}
 }
 
 export async function handleApplyEffectToToken(data){
