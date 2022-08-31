@@ -50,6 +50,10 @@
 	font-size: 12px;
 }
 
+.dnd4eBeta.sheet select {
+	font-size: revert;
+}
+
 .dnd4eBeta.sheet .sheet-header .summary {
 	flex: 0 0 100%;
 	height: 40px;
