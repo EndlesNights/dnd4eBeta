@@ -19,7 +19,7 @@ export class DeathSaveDialog extends DocumentSheet {
 	/** @override */
 	getData() {
 		return {
-			data: this.object.data.data,
+			data: this.object.system,
 			rollModes: CONFIG.Dice.rollModes
 		};
 	}
@@ -28,7 +28,7 @@ export class DeathSaveDialog extends DocumentSheet {
 		const updateData = {};
 		
 		let message = `Rolling Death Saving Throw`;
-		const parts = [this.object.data.data.details.deathsavebon.value]
+		const parts = [this.object.system.details.deathsavebon.value]
 		if (formData.save) {
 			parts.push(formData.save)
 		}
@@ -44,30 +44,31 @@ export class DeathSaveDialog extends DocumentSheet {
 			rollMode: formData.rollMode
 		});
 		rollConfig.event = event;
-		rollConfig.critical = this.object.data.data.details.deathsaveCrit || 20;
-		rollConfig.fumble = 9 - formData.save - this.object.data.data.details.deathsavebon.value;
+		rollConfig.critical = this.object.system.details.deathsaveCrit || 20;
+		rollConfig.fumble = 9 - formData.save - this.object.system.details.deathsavebon.value;
 		const roll = await d20Roll(rollConfig);
 		
 		if(roll.total < 10)
 		{
-			updateData[`data.details.deathsavefail`] = this.object.data.data.details.deathsavefail + 1;
+			updateData[`system.details.deathsavefail`] = this.object.system.details.deathsavefail + 1;
 		}
-		if( roll.total < 10 && this.object.data.data.details.deathsavefail + 1 >= this.object.data.data.details.deathsaves)
+		if( roll.total < 10 && this.object.system.details.deathsavefail + 1 >= this.object.system.details.deathsaves)
 		{
 			await ChatMessage.create({
 				user: game.user.id,
 				speaker: ChatMessage.getSpeaker(),
-				content: this.object.data.name + " has failed their last death saving throw and has died!"
+				content:this.object.name + game.i18n.localize("DND4EALTUS.DeathSaveFailure")
 			});
 		}
-		else if(roll.total - formData.save - this.object.data.data.details.deathsavebon.value >= rollConfig.critical) {
+		else if(roll.total >= rollConfig.critical) {
 			await ChatMessage.create({
 				user: game.user.id,
 				speaker: ChatMessage.getSpeaker(),
-				content: this.object.data.name + " has has critical succedded their death saving throw, is no longer unconouse and has regained 1 HP!"
+				content:this.object.name + game.i18n.localize("DND4EALTUS.DeathSaveCriticalSuccess")
 			});
 		}
-
+		console.log(roll.total)
+		console.log(rollConfig.critical)
 		this.object.update(updateData);
 	}
 }

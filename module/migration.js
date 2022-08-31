@@ -3,7 +3,7 @@
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
  export const migrateWorld = async function() {
-	ui.notifications.info(`Applying DnD4E System Migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`, {permanent: true});
+	ui.notifications.info(`Applying DnD4E System Migration for version ${game.system.version}. Please be patient and do not close your game or shut down your server.`, {permanent: true});
 
 	const migrationData = await getMigrationData();
 
@@ -11,7 +11,7 @@
 	for ( let a of game.actors ) {
 		try {
 			const updateData = migrateActorData(a.toObject(), migrationData);
-			if ( !foundry.utils.isObjectEmpty(updateData) ) {
+			if ( !foundry.utils.isEmpty(updateData) ) {
 				console.log(`Migrating Actor document ${a.name}`);
 				await a.update(updateData, {enforceTypes: false});
 			}
@@ -25,7 +25,7 @@
 	for ( let i of game.items ) {
 		try {
 			const updateData = migrateItemData(i.toObject(), migrationData);
-			if ( !foundry.utils.isObjectEmpty(updateData) ) {
+			if ( !foundry.utils.isEmpty(updateData) ) {
 				console.log(`Migrating Item document ${i.name}`);
 				await i.update(updateData, {enforceTypes: false});
 			}
@@ -39,7 +39,7 @@
 	for ( let s of game.scenes ) {
 		try {
 			const updateData = migrateSceneData(s.data, migrationData);
-			if ( !foundry.utils.isObjectEmpty(updateData) ) {
+			if ( !foundry.utils.isEmpty(updateData) ) {
 				console.log(`Migrating Scene document ${s.name}`);
 				await s.update(updateData, {enforceTypes: false});
 				// If we do not do this, then synthetic token actors remain in cache
@@ -60,8 +60,8 @@
 	}
 
 	// Set the migration as complete
-	game.settings.set("dnd4eAltus", "systemMigrationVersion", game.system.data.version);
-	ui.notifications.info(`DnD4E System Migration to version ${game.system.data.version} completed!`, {permanent: true});
+	game.settings.set("dnd4eAltus", "systemMigrationVersion", game.system.version);
+	ui.notifications.info(`DnD4E System Migration to version ${game.system.version} completed!`, {permanent: true});
 };
 
 /* -------------------------------------------- */
@@ -102,7 +102,7 @@ export const migrateCompendium = async function(pack) {
 			}
 
 			// Save the entry, if data was changed
-			if ( foundry.utils.isObjectEmpty(updateData) ) continue;
+			if ( foundry.utils.isEmpty(updateData) ) continue;
 			await doc.update(updateData);
 			console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
 		}
@@ -135,37 +135,9 @@ export const migrateActorData = function(actor, migrationData) {
 
 	// Actor Data Updates
 	if (actor.data) {
-		// _migrateActorMovement(actor, updateData);
-		// _migrateActorSenses(actor, updateData);
-		// _migrateActorType(actor, updateData);
-
 		_migrateActorTempHP(actor, updateData);
 	}
 
-
-	// // Migrate Owned Items
-	// if ( !actor.items ) return updateData;
-	// const items = actor.items.reduce((arr, i) => {
-	// 	// Migrate the Owned Item
-	// 	const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
-	// 	let itemUpdate = migrateItemData(itemData, migrationData);
-
-	// 	// Prepared, Equipped, and Proficient for NPC actors
-	// 	if ( actor.type === "npc" ) {
-	// 		// if (getProperty(itemData.data, "preparation.prepared") === false) itemUpdate["data.preparation.prepared"] = true;
-	// 		// if (getProperty(itemData.data, "equipped") === false) itemUpdate["data.equipped"] = true;
-	// 		// if (getProperty(itemData.data, "proficient") === false) itemUpdate["data.proficient"] = true;
-	// 	}	
-
-	// 	// Update the Owned Item
-	// 	if ( !isObjectEmpty(itemUpdate) ) {
-	// 		itemUpdate._id = itemData._id;
-	// 		arr.push(expandObject(itemUpdate));
-	// 	}
-
-	// 	return arr;
-	// }, []);
-	// if ( items.length > 0 ) updateData.items = items;
 	return updateData;
 };
 

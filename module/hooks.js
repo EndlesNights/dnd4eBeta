@@ -13,7 +13,7 @@ TokenBarHooks.updatePowerAvailable = (actor, power) =>  actor.sheet._checkPowerA
 
 TokenBarHooks.isPowerAvailable = (actor, power) => {
     actor.sheet._checkPowerAvailable(power.data)
-    return !power.data.data.notAvailable
+    return !power.system.notAvailable
 }
 
 TokenBarHooks.quickSave = (actor, event) => new SaveThrowDialog(actor)._updateObject(event, {save : 0, dc: 10})

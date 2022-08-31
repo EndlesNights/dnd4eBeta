@@ -25,21 +25,21 @@ export default class AbilityUseDialog extends Dialog {
    * @return {Promise}
    */
   static async create(item) {
-    if ( !item.isOwned ) throw new Error("You cannot display an ability usage dialog for an unowned item");
+    if ( !item.isOwned ) throw new Error("You cannot display an ability usage dialog for an unkowned item");
 
     // Prepare data
-    const actorData = item.actor.data.data;
-    const itemData = item.data.data;
+    const actorData = item.actor.system;
+    const itemData = item.system;
     const uses = itemData.uses || {};
     const quantity = itemData.quantity || 0;
     const recharge = itemData.recharge || {};
     const recharges = !!recharge.value;
 
     // Prepare dialog form data
-    const data = {
-      item: item.data,
-      title: game.i18n.format("DND4EALTUS.AbilityUseHint", item.data),
-      note: this._getAbilityUseNote(item.data, uses, recharge),
+    const system = {
+      item: item.system,
+      title: game.i18n.format("DND4EALTUS.AbilityUseHint", item.system),
+      note: this._getAbilityUseNote(item, uses, recharge),
       hasLimitedUses: itemData.preparedMaxUses || recharges,
       canUse: recharges ? recharge.charged : (quantity > 0 && !uses.value) || uses.value > 0,
       hasPlaceableTemplate: game.user.can("TEMPLATE_CREATE") && item.hasAreaTarget,
@@ -47,7 +47,7 @@ export default class AbilityUseDialog extends Dialog {
     };
 
     // Render the ability usage template
-    const html = await renderTemplate("systems/dnd4eAltus/templates/apps/ability-use.html", data);
+    const html = await renderTemplate("systems/dnd4eAltus/templates/apps/ability-use.html", system);
 
     // Create the Dialog and return as a Promise
     const icon = "fa-fist-raised";
@@ -81,7 +81,7 @@ export default class AbilityUseDialog extends Dialog {
   static _getAbilityUseNote(item, uses, recharge) {
 
     // Zero quantity
-    const quantity = item.data.quantity;
+    const quantity = item.system.quantity;
     if ( quantity <= 0 ) return game.i18n.localize("DND4EALTUS.AbilityUseUnavailableHint");
 
     // Abilities which use Recharge
@@ -92,19 +92,19 @@ export default class AbilityUseDialog extends Dialog {
     }
 
     // Does not use any resource
-    if ( !uses.per || !item.data.preparedMaxUses ) return "";
+    if ( !uses.per || !item.system.preparedMaxUses ) return "";
 
     // Consumables
     if ( item.type === "consumable" ) {
       let str = "DND4EALTUS.AbilityUseNormalHint";
       if ( uses.value >= 1 ) str = "DND4EALTUS.AbilityUseConsumableChargeHint";
-      else if ( item.data.quantity === 1 && uses.autoDestroy ) str = "DND4EALTUS.AbilityUseConsumableDestroyHint";
-      else if ( item.data.quantity > 1 ) str = "DND4EALTUS.AbilityUseConsumableQuantityHint";
+      else if ( item.system.quantity === 1 && uses.autoDestroy ) str = "DND4EALTUS.AbilityUseConsumableDestroyHint";
+      else if ( item.system.quantity > 1 ) str = "DND4EALTUS.AbilityUseConsumableQuantityHint";
       return game.i18n.format(str, {
-        type: item.data.consumableType,
+        type: item.system.consumableType,
         value: uses.value,
-        quantity: item.data.quantity,
-        max: item.data.preparedMaxUses,
+        quantity: item.system.quantity,
+        max: item.system.preparedMaxUses,
         per: CONFIG.DND4EALTUS.limitedUsePeriods[uses.per]
       });
     }
@@ -114,7 +114,7 @@ export default class AbilityUseDialog extends Dialog {
       return game.i18n.format("DND4EALTUS.AbilityUseNormalHint", {
         type: item.type,
         value: uses.value,
-        max: item.data.preparedMaxUses,
+        max: item.system.preparedMaxUses,
         per: CONFIG.DND4EALTUS.limitedUsePeriods[uses.per]
       });
     }

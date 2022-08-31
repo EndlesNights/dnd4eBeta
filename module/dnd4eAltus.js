@@ -295,6 +295,12 @@ Hooks.once('init', async function() {
 
 	libWrapper.register(
 		'dnd4eAltus',
+		'TemplateLayer.prototype._onDragLeftStart',
+		AbilityTemplate._onDragLeftStart
+	)
+	
+	libWrapper.register(
+		'dnd4eAltus',
 		'Combat.prototype.nextTurn',
 		Turns._onNextTurn
 	)
@@ -310,9 +316,3 @@ Hooks.on("getSceneControlButtons", function(controls){
   })
 })
 
-Hooks.on("createMeasuredTemplate", (obj,temp,userID) => {
-	//set flag based on wich tool is selected
-	if(game.userId === userID && !obj.data.flags.dnd4eAltus?.templateType) {
-		obj.setFlag("dnd4eAltus", 'templateType',ui.controls.activeControl === "measure" ? ui.controls.activeTool : obj.data.t);
-	}
-});

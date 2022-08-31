@@ -50,6 +50,10 @@
 	font-size: 12px;
 }
 
+.dnd4eAltus.sheet select {
+	font-size: revert;
+}
+
 .dnd4eAltus.sheet .sheet-header .summary {
 	flex: 0 0 100%;
 	height: 40px;
@@ -991,34 +995,13 @@
 	width: 10px !important;
 	
 }
-.dnd4eAltus.sheet.actor .tab.attributes {
-	/* overflow: hidden; */
-}
+
 .dnd4eAltus.sheet.actor .scrollbar {
 	height: 100%;
 	overflow-y: scroll;
 	scrollbar-width: thin;
 }
-.dnd4eAltus.sheet.actor ul.attributes {
-	/* flex: 0 0 60px; */
-	
-	/* list-style: none;
-	margin: 0;
-	padding: 0;
-	width: 20%;
-	height: calc(100% - 18px);
-	display: inline; */
 
-	/* flex: 0 0 100%;
-	margin: 0; */
-}
-.dnd4eAltus.sheet.actor ul.attributes li{
-	/* width:25%; */
-	/* margin-right: 25%; */
-	/* display: inline; */
-	/* flex: 0 0 100%;
-	margin: 0; */
-}
 .dnd4eAltus.sheet.actor ul.attributes li.attribute-health {
 	height: 80px;
 	margin: 0 0 0 0;
@@ -1072,22 +1055,6 @@
 	position: relative;
 	top: 5px;
 }
-.dnd4eAltus.sheet.actor .hitpoints {
-	/* display: flex; */
-	/* flex-direction: row; */
-	/* flex-wrap: wrap; */
-	/* justify-content: flex-start; */
-}
-
-/* .dnd4eAltus.sheet.actor h4.box-title { */
-	/* text-align: center; */
-	/* height: 18px; */
-	/* line-height: 16px; */
-	/* margin: 4px 8px 2px; */
-	/* font-size: 18px; */
-	/* color: #4b4a44; */
-	/* border-bottom: 1px solid #c9c7b8; */
-/* } */
 
 .dnd4eAltus.sheet.actor .box-title-hit {
 	text-align: center;
@@ -1577,27 +1544,17 @@ font-size: 12px;
 	line-height: 18px;
 }
 
-
-
-
-
-
 .dnd4eAltus .editor,
 .dnd4eAltus .editor-content {
 	height: 100%;
+	margin-top: 0px;
 }
 .dnd4eAltus .item-list {
 	list-style: none;
 	margin: 7px 0;
 	padding: 0;
-	/* overflow-y: auto; */
 }
-/* .dnd4eAltus .item-list .item { */
-	/* height: 30px; */
-	/* line-height: 24px; */
-	/* padding: 3px 0; */
-	/* border-bottom: 1px solid #BBB; */
-/* } */
+
 .dnd4eAltus .item-list .item img {
 	flex: 0 0 24px;
 	margin-right: 5px;
@@ -1644,7 +1601,7 @@ font-size: 12px;
 	border: none;
 }
 .dnd4eAltus.sheet.actor {
-	min-width: 836px;
+	min-width: 774px;
 	min-height: 420px;
 }
 .dnd4eAltus.sheet.item {
@@ -1688,6 +1645,10 @@ font-size: 12px;
 	margin: 4px 0 8px;
 	padding: 0;
 	font-size: 12px;
+}
+
+.dnd4eAltus.sheet.actor .inventory h3{
+	border-bottom: 0px;
 }
 .dnd4eAltus.sheet.actor .inventory .currency label {
 	flex: 0;
@@ -1781,6 +1742,11 @@ font-size: 12px;
 	scrollbar-width: thin;
 	height: calc(100% - 118px);
 }
+
+.dnd4eAltus.sheet.actor .inventory-list .import-button{
+	font-size: 15px;
+	font-family: "Signika, sans-serif";
+}
 .dnd4eAltus.sheet .items-list {
 	list-style: none;
 	margin: 0;
@@ -1790,7 +1756,6 @@ font-size: 12px;
 	/* color: #7a7971; */
 	color: #363632;
 }
-
 .dnd4eAltus.sheet .items-list .item {
 	line-height: 30px;
 	padding: 0 2px;
@@ -1858,9 +1823,9 @@ font-size: 12px;
 	margin: 0 -5px 0 0;
 	padding-left: 5px;
 	font-family: "Modesto Condensed", "Palatino Linotype", serif;
-	font-size: 20px;
 	font-weight: 700;
 	font-size: 16px;
+	border-bottom: 0px;
 }
 .dnd4eAltus.sheet .items-list .items-header .item-controls a.item-create,
 .dnd4eAltus.sheet .items-list .items-header .item-controls a.power-create {
@@ -1890,6 +1855,7 @@ font-size: 12px;
 	border-right: 0px;
 }
 
+.dnd4eAltus.sheet .powers .items-list .not-available .item-detail input,
 .dnd4eAltus.sheet .items-list .not-available .power-detail,
 .dnd4eAltus.sheet .items-list .not-available input {
 	color: #e0e0e075;
@@ -2249,6 +2215,7 @@ font-size: 12px;
 	font-size: 20px;
 	font-weight: 700;
 	color: #e0e0e0;
+	border-bottom: 0px;
 }
 .dnd4eAltus.chat-card .card-header h3:hover {
 	color: #111;

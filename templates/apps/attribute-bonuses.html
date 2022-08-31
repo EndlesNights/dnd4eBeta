@@ -4,18 +4,18 @@
 	{{#if options.skill}}
 		<div>
 			<span>Skill Effected by Armour Penalty?</span>
-			<input type="checkbox" name="data.armourCheck" data-dtype="Boolean" {{checked data.armourCheck}} title="Armour Penalty">
-			{{#if data.armourCheck}}
+			<input type="checkbox" name="system.armourCheck" data-dtype="Boolean" {{checked system.armourCheck}} title="Armour Penalty">
+			{{#if system.armourCheck}}
 			<span>Skill Penalty from armour:</span>
-			<span>{{data.armourPen}}</span>	
+			<span>{{system.armourPen}}</span>	
 			{{/if}}
 		</div>
 	{{else if options.ac}}
 		<span>Override Mod For Defence: </span>
-		<input type="checkbox" name="data.light" data-dtype="Boolean" {{checked data.light}} title="Light/Unarmoured Check to add mod to AC"/>
+		<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} title="Light/Unarmoured Check to add mod to AC"/>
 		<span>Alternative Mod: </span>
-		<select name="data.altability">
-			{{#select data.altability}}
+		<select name="system.altability">
+			{{#select system.altability}}
 			<option value="" >Default</option>
 			<option value="none" >None</option>
 			<option value="str" >Strength</option>
@@ -29,8 +29,8 @@
 
 	{{else if options.init}}
 	<span title="Ability Mod used for Initiative Score">Ability Mod:</span>
-	<select name="data.ability">
-		{{#select data.ability}}
+	<select name="system.ability">
+		{{#select system.ability}}
 		<option value="" >None</option>
 		<option value="str" >Strength</option>
 		<option value="con" >Constitution</option>
@@ -43,7 +43,7 @@
 	{{else if options.secondWind}} 
 	<div class="form-group stacked">
 		<label>Additional Effects (Split with Semi-Colon)</label>
-		<input type="text" name="data.custom" value="{{data.custom}}" data-dtype="String"/>
+		<input type="text" name="system.custom" value="{{system.custom}}" data-dtype="String"/>
 	</div>
 	{{/if}}
 	{{#each bonusData as |bonus b|}}
@@ -54,16 +54,12 @@
 		<input type="text" name="{{b}}.value" value="{{bonus.value}}" data-dtype="String" style="width: 105px;"/>
 		<span>Active: </span>
 		<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} title="Activate Bonus">
-		<!-- <a class="bonus-control bonus-toggle active" title="Equipped" style="margin: 0 5px;" ><i class="fas fa-shield-alt"></i></a> -->
 		<a class="bonus-control bonus-delete" title="Delete Bonus" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
 		<textarea type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none;" placeholder="Notes:" contentEditable>{{bonus.note}}</textarea>
 	</div>
 	{{/each}}
 
 	<div><a class="bonus-control bonus-add">Add a new bonus +</a></div>
-	<!-- <p>List of Bonus to skills go under here:</p>
-	<a>+ Add New Bonus Button</a> -->
-
 	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
 
 </form>

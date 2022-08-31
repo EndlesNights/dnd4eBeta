@@ -328,13 +328,6 @@
 					"armourCheck": true,
 					"chat": "@name uses @label."
 				},
-				"eng": {
-					"value": 0,
-					"base": 0,
-					"bonus": [{}],
-					"ability": "int",
-					"chat": "@name uses @label."
-				},
 				"hea": {
 					"value": 0,
 					"base": 0,
@@ -373,13 +366,6 @@
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
-					"chat": "@name uses @label."
-				},
-				"pra": {
-					"value": 0,
-					"base": 0,
-					"bonus": [{}],
-					"ability": "wis",
 					"chat": "@name uses @label."
 				},
 				"prc": {
@@ -746,7 +732,7 @@
 				"abilityBonus": 0,
 				"def": "ac",
 				"defBonus": 0,
-				"formula": "@wepAttack + @powerMod + @atkMod",
+				"formula": "@wepAttack + @powerMod + @lvhalf + @atkMod",
 				"damageType": {},
 				"effectType": {}
 			},
@@ -755,7 +741,7 @@
 				"isDamage": true,
 				"isHealing": false,
 				"healSurge": "",
-				"baseQuantity": 1,
+				"baseQuantity": "1",
 				"baseDiceType": "Base Weapon Damage",
 				"detail": "1[W] + Strength modifier damage.",
 				"formula": "@powBase + @powerMod + @wepDamage + @dmgMod",
@@ -899,7 +885,7 @@
 		"attribute": "abilities.int.mod",
 		"chatFlavor": "",
 		"formula": "",
-		"bonus": 2
+		"bonus": "2"
 	},
 	"weapon": {
 		"templates": ["itemDescription", "physicalItem", "activatedEffect" , "mountable", "itemMacro"],

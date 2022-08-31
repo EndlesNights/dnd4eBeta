@@ -1,3 +1,5 @@
 # IDE
 .idea/
 .vs/
+/node_modules
+/packs/dist/*

@@ -1,46 +1,22 @@
-<!-- <ul class="attributes flexrow">
-	{{#each resources as |res|}}
-	<li class="attribute resource">
-		<h4 class="attribute-name box-title">
-			<input name="data.resources.{{res.name}}.label" type="text" value="{{res.label}}"
-				   placeholder="{{res.placeholder}}" />
-		</h4>
-		<div class="attribute-value">
-			<label class="recharge checkbox">
-				{{ localize "DND4EALTUS.AbbreviationSR" }} <input name="data.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
-			</label>
-
-			<input name="data.resources.{{res.name}}.value" type="number" value="{{res.value}}" placeholder="0"/>
-			<span class="sep"> / </span>
-			<input name="data.resources.{{res.name}}.max" type="number" value="{{res.max}}" placeholder="0"/>
-
-			<label class="recharge checkbox">
-				{{ localize "DND4EALTUS.AbbreviationLR" }} <input name="data.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
-			</label>
-		</div>
-	</li>
-	{{/each}}
-</ul> -->
-
 <section class="flexrow section--attributes" style="border:none;">
 	{{!-- Custom Resources --}}
-	{{#each data.resources as |res|}}
+	{{#each system.resources as |res|}}
 	<div class="attributes attribute-health">
 		<h4 class="resource-name">
-			<input name="data.resources.{{res.name}}.label" type="text" value="{{res.label}}"
+			<input name="system.resources.{{res.name}}.label" type="text" value="{{res.label}}"
 				   placeholder="{{res.placeholder}}" />
 		</h4>
 		<div class="attribute-value flexrow">
-			<input name="data.resources.{{res.name}}.value" type="number" value="{{res.value}}" placeholder="0"/>
+			<input name="system.resources.{{res.name}}.value" type="number" value="{{res.value}}" placeholder="0"/>
 			<span class="sep"> / </span>
-			<input name="data.resources.{{res.name}}.max" type="number" value="{{res.max}}" placeholder="0"/>
+			<input name="system.resources.{{res.name}}.max" type="number" value="{{res.max}}" placeholder="0"/>
 		</div>
 		<footer class="attribute-footer attribute-footer--temp-hp flexrow">
 			<label class="recharge checkbox">
-				{{ localize "DND4EALTUS.AbbreviationSR" }} <input name="data.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
+				{{ localize "DND4EALTUS.AbbreviationSR" }} <input name="system.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
 			</label>
 			<label class="recharge checkbox">
-				{{ localize "DND4EALTUS.AbbreviationLR" }} <input name="data.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
+				{{ localize "DND4EALTUS.AbbreviationLR" }} <input name="system.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
 			</label>		</footer>
 	</div>
 	{{/each}}
@@ -48,30 +24,30 @@
 
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="gender">{{localize 'DND4EALTUS.Gender'}}:</label>
-	<input style="flex:1; text-align: right;" id="gender" type="text" name="data.details.gender" value="{{data.details.gender}}" title="{{localize 'DND4EALTUS.Gender'}}"  placeholder="{{localize 'DND4EALTUS.Gender'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="gender" type="text" name="system.details.gender" value="{{system.details.gender}}" title="{{localize 'DND4EALTUS.Gender'}}"  placeholder="{{localize 'DND4EALTUS.Gender'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="age">{{localize 'DND4EALTUS.Age'}}:</label>
-	<input style="flex:1; text-align: right;" id="age" type="text" name="data.details.age" value="{{data.details.age}}" title="{{localize 'DND4EALTUS.Age'}}"  placeholder="{{localize 'DND4EALTUS.Age'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="age" type="text" name="system.details.age" value="{{system.details.age}}" title="{{localize 'DND4EALTUS.Age'}}"  placeholder="{{localize 'DND4EALTUS.Age'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="alignment">{{localize 'DND4EALTUS.Alignment'}}:</label>
-	<input style="flex:1; text-align: right;" id="alignment" type="text" name="data.details.alignment" value="{{data.details.alignment}}" title="{{localize 'DND4EALTUS.Alignment'}}"  placeholder="{{localize 'DND4EALTUS.Alignment'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="alignment" type="text" name="system.details.alignment" value="{{system.details.alignment}}" title="{{localize 'DND4EALTUS.Alignment'}}"  placeholder="{{localize 'DND4EALTUS.Alignment'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="height">{{localize 'DND4EALTUS.Height'}}:</label>
-	<input style="flex:1; text-align: right;" id="height" type="text" name="data.details.height" value="{{data.details.height}}" title="{{localize 'DND4EALTUS.Height'}}"  placeholder="{{localize 'DND4EALTUS.Height'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="height" type="text" name="system.details.height" value="{{system.details.height}}" title="{{localize 'DND4EALTUS.Height'}}"  placeholder="{{localize 'DND4EALTUS.Height'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="weight">{{localize 'DND4EALTUS.Weight'}}:</label>
-	<input style="flex:1; text-align: right;" id="weight" type="text" name="data.details.weight" value="{{data.details.weight}}" title="{{localize 'DND4EALTUS.Weight'}}"  placeholder="{{localize 'DND4EALTUS.Weight'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="weight" type="text" name="system.details.weight" value="{{system.details.weight}}" title="{{localize 'DND4EALTUS.Weight'}}"  placeholder="{{localize 'DND4EALTUS.Weight'}}" onClick="this.select();"/>
 </div>
 
 
 <div class="form-group" style="padding: 3px;">
 	<label style="font-weight: normal;">{{localize "DND4EALTUS.Size"}}:</label>
-	<select class="actor-size" name="data.details.size">
-		{{#select data.details.size}}
+	<select class="actor-size" name="system.details.size">
+		{{#select system.details.size}}
 		{{#each config.actorSizes as |label size|}}
 			<option value="{{size}}">{{label}}</option>
 		{{/each}}
@@ -80,54 +56,45 @@
 </div>		
 
 {{!-- Languages --}}
-<div><!-- <div class="attribute-init resource-full languages"> -->
+<div>
 	<h4 class="attribute-name box-title">Languages</h4>
-	<a class="trait-selector" data-options="spoken" data-target="data.languages.spoken">
+	<a class="trait-selector" data-options="spoken" data-target="system.languages.spoken">
 		<span>Spoken</span>
 		<i class="fas fa-edit"></i>
 	</a>
 	<ul class="traits-list" style="list-style-type: none;">
-	{{#each data.languages.spoken.selected as |v k|}}
+	{{#each system.languages.spoken.selected as |v k|}}
 		<li class="tag {{k}}">{{v}}</li>
 	{{/each}}
 	</ul>
 	
-	<a class="trait-selector" data-options="script" data-target="data.languages.script">
+	<a class="trait-selector" data-options="script" data-target="system.languages.script">
 		<span>Script</span>
 		<i class="fas fa-edit"></i>
 	</a>
 	<ul class="traits-list" style="list-style-type: none;">
-	{{#each data.languages.script.selected as |v k|}}
+	{{#each system.languages.script.selected as |v k|}}
 		<li class="tag {{k}}">{{v}}</li>
 	{{/each}}
 	</ul>					
 </div>
 
 {{!-- Senses --}}
-<div><!-- <div class="attribute-init resource-full movement"> -->
+<div>
 	<h4 class="attribute-name box-title">Special Senses</h4>    
 	<div style="text-align: left;">
-		<!-- <a class="trait-selector-senses" data-options="vision" data-target="data.senses.vision">
-			<span>Vision</span>
-			<i class="fas fa-edit"></i>
-		</a>
-		<ul class="traits-list" style="list-style-type: none;">
-		{{#each data.senses.vision.selected as |v k|}}
-			<li class="tag {{k}}">{{v}}</li>
-		{{/each}}
-		</ul> -->
+
 		
-		<a class="trait-selector-senses" data-options="special" data-target="data.senses.special">
+		<a class="trait-selector-senses" data-options="special" data-target="system.senses.special">
 			<span>Special Senses</span>
 			<i class="fas fa-edit"></i>
 		</a>
 		<ul class="traits-list" style="list-style-type: none;">
-		{{#each data.senses.special.selected as |v k|}}
+		{{#each system.senses.special.selected as |v k|}}
 			<li class="tag {{k}}">{{v}}</li>
 		{{/each}}
 		</ul>
 
-		<!-- <span>Other:</span> -->
-		<input type="text" name="data.senses.notes" value="{{data.senses.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
+		<input type="text" name="system.senses.notes" value="{{system.senses.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
 	</div>
 </div>

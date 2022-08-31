@@ -10,16 +10,16 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	static getDistanceCalc(item){
 
 		//use toString() as some older powers formats may still be numerical
-		let area = item.data.data.area?.toString();
+		let area = item.system.area?.toString();
 		if(!area) return null;
 		try{
-			area = game.helper.commonReplace(area, item.actor.data);
+			area = game.helper.commonReplace(area, item.actor);
 			area = Roll.replaceFormulaData(area, item.actor.getRollData(), {missing: 0, warn: true});
 			let r = new Roll(area);
 			r.evaluate({ async: false });
 			return r.total;
 		} catch (e) {
-			console.error("Problem preparing Area size for ", item.data.name, e);
+			console.error("Problem preparing Area size for ", item.name, e);
 			return null;
 		}
 
@@ -30,23 +30,23 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	 * @return {AbilityTemplate|null}         The template object, or null if the item does not produce a template
 	 */
 	static fromItem(item) {
-		const templateShape = DND4EALTUS.areaTargetTypes[item.data.data.rangeType];
+		const templateShape = DND4EALTUS.areaTargetTypes[item.system.rangeType];
 	
 		console.log(item);
 		let distance = this.getDistanceCalc(item);
 
 		let flags = {dnd4eAltus:{templateType:templateShape}};
 
-		if(item.data.data.rangeType === "closeBlast" || item.data.data.rangeType === "rangeBlast") {
+		if(item.system.rangeType === "closeBlast" || item.system.rangeType === "rangeBlast") {
 			distance *= Math.sqrt(2);
 		}
-		else if(item.data.data.rangeType === "rangeBurst") {
+		else if(item.system.rangeType === "rangeBurst") {
 			flags.dnd4eAltus.templateType = "rectCenter";
 			distance += 0.5;
 		}
-		else if(item.data.data.rangeType === "closeBurst") {
+		else if(item.system.rangeType === "closeBurst") {
 			flags.dnd4eAltus.templateType = "rectCenter";
-			switch(item.parent.data.data.details.size) {
+			switch(item.parent.system.details.size) {
 				case 'tiny':
 				case 'sm':
 				case 'med':
@@ -69,7 +69,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 					distance = Math.sqrt(2) * ( 1 + 2*distance);
 			}
 		}
-		// if(item.data.data.rangeType === "closeBurst" || item.data.data.rangeType === "rangeBurst") distance = Math.sqrt(2) * ( 1 + 2*distance);
+		// if(item.system.rangeType === "closeBurst" || item.system.rangeType === "rangeBurst") distance = Math.sqrt(2) * ( 1 + 2*distance);
 	
 		if ( !templateShape ) return null;
 
@@ -139,7 +139,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 			if ( now - moveTime <= 20 ) return;
 			const center = event.data.getLocalPosition(this.layer);
 			const snapped = canvas.grid.getSnappedPosition(center.x, center.y, 2);
-			this.data.update({x: snapped.x, y: snapped.y});
+			this.document.updateSource({x: snapped.x, y: snapped.y});
 			this.refresh();
 			moveTime = now;
 		};
@@ -158,9 +158,9 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		// Confirm the workflow (left-click)
 		handlers.lc = event => {
 			handlers.rc(event);
-			const destination = canvas.grid.getSnappedPosition(this.data.x, this.data.y, 2);
-			this.data.update(destination);
-			canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.data]);
+			const destination = canvas.grid.getSnappedPosition(this.document.x, this.document.y, 2);
+			this.document.updateSource(destination);
+			canvas.scene.createEmbeddedDocuments("MeasuredTemplate", [this.document.toObject()]);
 		};
 
 		// Rotate the template by 3 degree increments (mouse-wheel)
@@ -169,7 +169,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 			event.stopPropagation();
 			let delta = canvas.grid.type > CONST.GRID_TYPES.SQUARE ? 30 : 15;
 			let snap = event.shiftKey ? delta : 5;
-			this.data.update({direction: this.data.direction + (snap * Math.sign(event.deltaY))});
+			this.document.updateSource({direction: this.document.direction + (snap * Math.sign(event.deltaY))});
 			this.refresh();
 		};
 
@@ -181,8 +181,8 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	}
 
 	static _getCircleSquareShape(wrapper, distance){
-		if(this.data.flags.dnd4eAltus?.templateType === "rectCenter" 
-		|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4eAltus?.templateType)) {
+		if(this.document.flags.dnd4eAltus?.templateType === "rectCenter" 
+		|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.document.flags.dnd4eAltus?.templateType)) {
 			let r = Ray.fromAngle(0, 0, 0, distance),
 			dx = r.dx - r.dy,
 			dy = r.dy + r.dx;
@@ -201,38 +201,68 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	}
 	
 	static _refreshRulerBurst(wrapper){
-		if( (this.data.flags.dnd4eAltus?.templateType === "rectCenter"  && this.data.t === "circle")
-			|| (this.data.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.data.flags.dnd4eAltus?.templateType)) {
+		if( (this.document.flags.dnd4eAltus?.templateType === "rectCenter"  && this.document.t === "circle")
+			|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.document.flags.dnd4eAltus?.templateType)) {
 				let d;
 				let text;
 	
-				if(this.data.flags.dnd4eAltus?.closeBurst){
-					switch(this.data.flags.dnd4eAltus?.closeBurst){
+				if(this.document.flags.dnd4eAltus?.closeBurst){
+					switch(this.document.flags.dnd4eAltus?.closeBurst){
 						case 'lg':
-							d = Math.max(Math.round((this.data.distance -1.0 )* 10) / 10, 0);
-							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d} \n(${DND4EALTUS.actorSizes[this.data.flags.dnd4eAltus.closeBurst]})`;
+							d = Math.max(Math.round((this.document.distance -1.0 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d} \n(${DND4EALTUS.actorSizes[this.document.flags.dnd4eAltus.closeBurst]})`;
 							break;
 						case 'huge':
-							d = Math.max(Math.round((this.data.distance -1.5 )* 10) / 10, 0);
-							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d} \n(${DND4EALTUS.actorSizes[this.data.flags.dnd4eAltus.closeBurst]})`;
+							d = Math.max(Math.round((this.document.distance -1.5 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d} \n(${DND4EALTUS.actorSizes[this.document.flags.dnd4eAltus.closeBurst]})`;
 							break;
 						case 'grg':
-							d = Math.max(Math.round((this.data.distance -2.0 )* 10) / 10, 0);
-							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d} \n(${DND4EALTUS.actorSizes[this.data.flags.dnd4eAltus.closeBurst]})`;
+							d = Math.max(Math.round((this.document.distance -2.0 )* 10) / 10, 0);
+							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d} \n(${DND4EALTUS.actorSizes[this.document.flags.dnd4eAltus.closeBurst]})`;
 							break;
 						default:
-							d = Math.max(Math.round((this.data.distance -0.5 )* 10) / 10, 0);
+							d = Math.max(Math.round((this.document.distance -0.5 )* 10) / 10, 0);
 							text = `${game.i18n.localize('DND4EALTUS.rangeCloseBurst')} ${d}`;
 					}
 				} else {
-					d = Math.max(Math.round((this.data.distance -0.5 )* 10) / 10, 0);
+					d = Math.max(Math.round((this.document.distance -0.5 )* 10) / 10, 0);
 					text = `Burst ${d}`;
 				}
-	
-				this.hud.ruler.text = text;
-				this.hud.ruler.position.set(this.ray.dx + 10, this.ray.dy + 5);
+				this.ruler.text = text;
+				this.ruler.position.set(this.ray.dx + 10, this.ray.dy + 5);
 		} else {
 			return wrapper();
 		}
+	}
+
+
+	static async _onDragLeftStart(wrapper, event){
+		const {origin, originalEvent} = event.data;
+		const tool = game.activeTool;
+
+		if(tool !== "rectCenter"){
+			return wrapper(event);
+		}
+
+		const previewData = {
+			user: game.user.id,
+			t: 'circle',
+			x: origin.x,
+			y: origin.y,
+			distance: 1,
+			direction: 0,
+			fillColor: game.user.color || "#FF0000",
+			hidden: originalEvent.altKey,
+
+			flags: {dnd4eAltus:{templateType: "rectCenter"}}
+		};
+		
+		const cls = getDocumentClass("MeasuredTemplate");
+		const doc = new cls(previewData, {parent: canvas.scene});
+	
+		// Create a preview MeasuredTemplate object
+		const template = new this.constructor.placeableClass(doc);
+		event.data.preview = this.preview.addChild(template);
+		return template.draw();
 	}
 }

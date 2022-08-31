@@ -72,7 +72,7 @@ export class MultiAttackRoll extends Roll {
 
             let hitState = "";
 
-            if(game.settings.get("dnd4eAltus", "automationCombat")){
+	    if(game.settings.get("dnd4eAltus", "automationCombat") && targDefVal !== undefined) {
                 if (critState === " critical"){
                     hitState = game.i18n.localize("DND4EALTUS.AttackRollHitCrit");
                     targDataArray.targetHit.push(targDataArray.targets[i]);
@@ -194,5 +194,58 @@ export class MultiAttackRoll extends Roll {
         }
         return roll;
     }
+
+  /* -------------------------------------------- */
+
+  /**
+   * @Override
+   *  
+   * Transform a Roll instance into a ChatMessage, displaying the roll result.
+   * This function can either create the ChatMessage directly, or return the data object that will be used to create.
+   *
+   * @param {object} messageData          The data object to use when creating the message
+   * @param {options} [options]           Additional options which modify the created message.
+   * @param {string} [options.rollMode]   The template roll mode to use for the message from CONFIG.Dice.rollModes
+   * @param {boolean} [options.create=true]   Whether to automatically create the chat message, or only return the
+   *                                          prepared chatData object.
+   * @returns {Promise<ChatMessage|object>} A promise which resolves to the created ChatMessage document if create is
+   *                                        true, or the Object of prepared chatData otherwise.
+   */
+   async toMessage(messageData={}, {rollMode, create=true}={}) {
+
+    // Perform the roll, if it has not yet been rolled
+    if ( !this._evaluated ) await this.evaluate({async: true});
+
+    // Prepare chat data
+    messageData = foundry.utils.mergeObject({
+      user: game.user.id,
+      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+      content: String(this.total),
+      sound: CONFIG.sounds.dice,
+      flags: {dnd4eAltus:{ [`multi-attack-roll`]: this}},
+    }, messageData);
+
+    let i = 0;
+    for(const r of this.rollArray){
+        r.options.multirollData = this.multirollData[i];
+        i++;
+    }
+
+    messageData.rolls = this.rollArray;
+
+    // const msg = await ChatMessage.create(messageData);
+    // return msg;
+
+    // Either create the message or just return the chat data
+    const cls = getDocumentClass("ChatMessage");
+    const msg = new cls(messageData);
+
+    // Either create or return the data
+    if ( create ) return cls.create(msg.toObject(), { rollMode });
+    else {
+      if ( rollMode ) msg.applyRollMode(rollMode);
+      return msg.toObject();
+    }
+  }
 }
 

@@ -51,7 +51,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 		const targetArr = Array.from(game.user.targets);
 		targDataArray.hasTarget = true;
 		for (let targ = 0; targ < numTargets; targ++) {
-			let targName = targetArr[targ].data.name;
+			let targName = targetArr[targ].name;
 			targDataArray.targNameArray.push(targName);
 		}
 	} else {
@@ -124,13 +124,13 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	manageBonusInParts(parts, form, data)
 
 	let allRollsParts = []
+	const numberOfTargets = Math.max(1, game.user.targets.size);
 	if (isAttackRoll && form !== null) {
 		// populate the common attack bonuses into data
 		Object.keys(CONFIG.DND4EALTUS.commonAttackBonuses).forEach(function(key,index) {
 			data[key] = CONFIG.DND4EALTUS.commonAttackBonuses[key].value
 		});
 		const individualAttack = (Object.entries(form)[6][1].value === "true");
-		const numberOfTargets = Math.max(1, game.user.targets.size)
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++ ) {
 			const targetBonuses = []
 			for ( let [k, v] of Object.entries(form) ) {
@@ -157,7 +157,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		}
 	}
 	else {
-		allRollsParts.push(parts)
+		allRollsParts = Array(numberOfTargets).fill(parts);
 	}
 
 	// if the form updated the roll flavor
@@ -202,8 +202,8 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			throw err
 		}
 		if (isAttackRoll && targets.length > rollExpressionIdx) {
-			let targName = targets[rollExpressionIdx].data.name;
-			let targDefVal = targets[rollExpressionIdx].document._actor.data.data.defences[options.attackedDef].value;
+			let targName = targets[rollExpressionIdx].name;
+			let targDefVal = targets[rollExpressionIdx].document._actor.system.defences[options.attackedDef]?.value;
 			targetData.targNameArray.push(targName);
 			targetData.targDefValArray.push(targDefVal);
 			targetData.targets.push(targets[rollExpressionIdx]);
@@ -436,7 +436,7 @@ function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, t
 
 	// Determine whether the roll can be fast-forward, make explicit comparison here as it might be set as false, so no falsey checks
 	if ( fastForward === null || fastForward === undefined) {
-		rollConfig.fastForward = event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
+		rollConfig.fastForward = Helper.isUsingFastForwardKey(event);
 		if(rollConfig.options?.fastForward){
 			rollConfig.fastForward = rollConfig.options.fastForward;
 		}

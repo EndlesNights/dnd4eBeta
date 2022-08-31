@@ -17,24 +17,24 @@ export class ActionPointDialog extends DocumentSheet {
 
 	/** @override */
 	getData() {
-		const extra = this.object.data.data.actionpoints.custom !== "" ? this.object.data.data.actionpoints.custom.split("\n") : "";
-		return { data: this.object.data.data, extra: extra };
+		const extra = this.object.system.actionpoints.custom !== "" ? this.object.system.actionpoints.custom.split("\n") : "";
+		return { system: this.object.system, extra: extra };
 	}
 	async _updateObject(event, formData) {
 		
 		let extra = "";
-		if (this.object.data.data.actionpoints.custom !== "") {
-			extra = this.object.data.data.actionpoints.custom;
+		if (this.object.system.actionpoints.custom !== "") {
+			extra = this.object.system.actionpoints.custom;
 			extra = extra.replace(/\n/g,'</li><li>');
 			extra = "<li>" + extra + "</li>";
 		}
 
-		if(this.object.data.data.actionpoints.value >= 1) {
+		if(this.object.system.actionpoints.value >= 1) {
 			ChatMessage.create({
 				user: game.user.id,
-				speaker: {actor: this.object, alias: this.object.data.name},
+				speaker: {actor: this.object, alias: this.object.name},
 				// flavor: restFlavor,
-				content: `${this.object.data.name} uses an actionpoint gaining the following benefits:
+				content: `${this.object.name} uses an actionpoint gaining the following benefits:
 				<ul>
 					<li>Gaining an addtional Standard Action</li>
 					${extra}
@@ -42,8 +42,8 @@ export class ActionPointDialog extends DocumentSheet {
 			});
 
 			const updateData = {};
-			updateData[`data.actionpoints.value`] = this.object.data.data.actionpoints.value -1;
-			updateData[`data.actionpoints.encounteruse`] = true;
+			updateData[`system.actionpoints.value`] = this.object.system.actionpoints.value -1;
+			updateData[`system.actionpoints.encounteruse`] = true;
 
 
 			this.object.update(updateData);

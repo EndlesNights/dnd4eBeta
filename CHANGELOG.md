@@ -1,5 +1,23 @@
 # Changelog
 
+## Version 0.3.0
+- Update to Foundry v10
+- Minnor fixes to css
+
+## Version 0.2.85
+- Pass the event into initative to allow for fast forwarding [merge](https://github.com/EndlesNights/dnd4eAltus/pull/232) from [TheGiddyLimit](https://github.com/draconas1)
+- FastForward Keys moved to helper function [merge](https://github.com/EndlesNights/dnd4eAltus/pull/231) from [kyleady](https://github.com/kyleady)
+- Bugfix with Attacking Multiple Tokens with FastForward [merge](https://github.com/EndlesNights/dnd4eAltus/pull/230) from [kyleady](https://github.com/kyleady)
+- Bugfix when attack with defecne that targeted null defence type [merge](https://github.com/EndlesNights/dnd4eAltus/pull/229) from [kyleady](https://github.com/kyleady)
+- Added limited view for NPCs [merge](https://github.com/EndlesNights/dnd4eAltus/pull/228) from [mncimino1993](https://github.com/mncimino1993)
+
+## Version 0.2.84
+- fixed issue where healing where "surgeValue" tag was consuming a healing surge instead of just granting the HP. (For real this time)
+
+## Version 0.2.83
+- fixed issue where brutal value should have been checking for "less than equal" when it was instead just checking for "less than"
+- fixed issue where healing where "surgeValue" tag was consuming a healing surge instead of just granting the HP.
+
 ## Version 0.2.82
 - fixed small issue with object sorting on sheets. Powers, items, and feats should now be able to be manually resorted objects within the confines of the current sorting filters by dragging and dropping the items once more.
 - fixed issue with power text filter, where the input element id was having interference from the feat filter input element because they shared the same id.

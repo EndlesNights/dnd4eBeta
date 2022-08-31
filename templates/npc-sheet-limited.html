@@ -1,0 +1,70 @@
+<form class="{{cssClass}}" autocomplete="off">				
+	<section>
+		{{!-- SHeet Header --}}
+		<header class="sheet-header">
+			<img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img" style="margin-bottom: 6px;"/>
+			<section>
+				<ul class="summary">
+					<li class="summary-name-npc">
+						<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EALTUS.NameNPC'}}" placeholder="{{localize 'DND4EALTUS.NameNPC'}}" onClick="this.select();"/>
+					</li>
+				</ul>
+	
+				<ul class="summary">
+					<li class="summary-size">
+						<select class="actor-size" name="data.details.size">
+							{{#select data.details.size}}
+							{{#each config.actorSizes as |label size|}}
+								<option value="{{size}}">{{label}}</option>
+							{{/each}}
+							{{/select}}
+						</select>
+					</li>
+					<li class="summary-origin">
+						<select class="actor-size" name="data.details.origin">
+							{{#select data.details.origin}}
+							{{#each config.creatureOrigin as |label origin|}}
+								<option value="{{origin}}">{{label}}</option>
+							{{/each}}
+							{{/select}}
+						</select>
+					</li>
+					<li class="summary-type">
+						<select class="actor-size" name="data.details.type">
+							{{#select data.details.type}}
+							{{#each config.creatureType as |label type|}}
+								<option value="{{type}}">{{label}}</option>
+							{{/each}}
+							{{/select}}
+						</select>
+					</li>
+					<li class="summary-typeother">
+						<input name="data.details.other" type="text" value="{{data.details.other}}" title="{{localize 'DND4EALTUS.Other'}} Types" placeholder="{{localize 'DND4EALTUS.Other'}} Types" onClick="this.select();"/>
+					</li>
+				
+
+				</ul>
+			</section>
+
+		</header>
+
+	</section>
+
+	<section class="section section--tabs flexshrink npc">
+
+		{{!-- Sheet Tab Navigation --}}
+		<nav class="sheet-tabs tabs" data-group="primary">
+			<a class="item" data-tab="biography">{{localize 'DND4EALTUS.Biography'}}</a>
+		</nav>
+	</section>
+	<section class="sheet-body section--tabs-content">
+		{{!-- Biography Tab --}}
+		<div class="tab biography" data-group="primary" data-tab="biography">
+			{{> "systems/dnd4eAltus/templates/actors/parts/actor-biography.html" sections=biography}}
+		</div>
+
+		
+	</section>
+
+
+</form>

@@ -19,10 +19,10 @@
 					{{localize "DND4EALTUS.Ritual"}}
 				</li>
 				<li>
-					<input type="text" name="data.category" value="{{data.category}}" placeholder="{{ localize 'DND4EALTUS.Category' }}"/>
+					<input type="text" name="system.category" value="{{system.category}}" placeholder="{{ localize 'DND4EALTUS.Category' }}"/>
 				</li>
 				<li>
-					<input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
+					<input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4EALTUS.Source' }}"/>
 				</li>
 			</ul>
 		</div>
@@ -46,11 +46,11 @@
 
 			<div class="form-group select">
 				<label>Level</label>
-				<input type="text" name="data.level" value="{{data.level}}"/>
+				<input type="text" name="system.level" value="{{system.level}}"/>
 			</div>
 			<div class="form-group select">
 				<label>Market Price</label>
-				<input type="text" name="data.market" value="{{data.market}}"/>
+				<input type="text" name="system.market" value="{{system.market}}"/>
 			</div>
 
 
@@ -58,9 +58,9 @@
 			<div class="form-group input-select">
 				<label>Cast Time</label>
 				<div class="form-fields">
-					<input type="text" name="data.castTime.value" value="{{data.castTime.value}}" data-dtype="Number" placeholder="-"/>
-					<select name="data.castTime.units">
-						{{#select data.castTime.units}}
+					<input type="text" name="system.castTime.value" value="{{system.castTime.value}}" data-dtype="Number" placeholder="-"/>
+					<select name="system.castTime.units">
+						{{#select system.castTime.units}}
 						<option value=""></option>
 						{{#each config.timePeriods as |name key|}}
 						<option value="{{key}}">{{name}}</option>
@@ -74,9 +74,9 @@
 			<div class="form-group input-select">
 				<label>{{ localize "DND4EALTUS.Duration" }}</label>
 				<div class="form-fields">
-					<input type="text" name="data.duration.value" value="{{data.duration.value}}" data-dtype="Number" placeholder="-"/>
-					<select name="data.duration.units">
-						{{#select data.duration.units}}
+					<input type="text" name="system.duration.value" value="{{system.duration.value}}" data-dtype="Number" placeholder="-"/>
+					<select name="system.duration.units">
+						{{#select system.duration.units}}
 						<option value=""></option>
 						{{#each config.timePeriods as |name key|}}
 						<option value="{{key}}">{{name}}</option>
@@ -89,9 +89,9 @@
 			{{!-- Ability Check --}}
 			<div class="form-group">
 				<label>{{ localize "DND4EALTUS.DefaultAbilitySkillCheck" }}</label>
-				<select name="data.attribute">
+				<select name="system.attribute">
 					<option value=""></option>
-					{{#select data.attribute}}
+					{{#select system.attribute}}
 					{{#each config.abilities as |name a|}}
 					<option value="abilities.{{a}}.mod">{{name}}</option>
 					{{/each}}
@@ -104,29 +104,29 @@
 
 			<div class="form-group">
 				<label>{{ localize "DND4EALTUS.RollFormula" }}</label>
-				<input type="text" name="data.formula" value="{{data.formula}}" placeholder="{{ localize "DND4EALTUS.RollPlaceholderRitual"}}"/>
+				<input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize "DND4EALTUS.RollPlaceholderRitual"}}"/>
 			</div>
 
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EALTUS.ConsumeTitle" }}</label>
 				<div class="form-fields">
-					<select name="data.consume.type" style="flex: 0.55;">
-						{{#select data.consume.type}}
+					<select name="system.consume.type" style="flex: 0.55;">
+						{{#select system.consume.type}}
 						<option value=""></option>
 						{{#each config.abilityConsumptionTypes as |name key|}}
 						<option value="{{key}}">{{name}}</option>
 						{{/each}}
 						{{/select}}
 					</select>
-					<select name="data.consume.target" style="width: 80%">
-						{{#select data.consume.target}}
+					<select name="system.consume.target" style="width: 80%">
+						{{#select system.consume.target}}
 						<option value=""></option>
 						{{#each abilityConsumptionTargets as |name key|}}
 						<option value="{{key}}">{{name}}</option>
 						{{/each}}
 						{{/select}}
 					</select>
-					<input type="text" name="data.consume.amount" value="{{data.consume.amount}}" data-dtype="Number"/>
+					<input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number"/>
 				</div>
 			</div>	
 		</div>

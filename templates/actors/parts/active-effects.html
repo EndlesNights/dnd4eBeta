@@ -1,15 +1,15 @@
 {{!-- Modifiers --}}
 
-{{#if data.modifiers}}
+{{#if system.modifiers}}
 <div class="attribute-modifiers" style="max-height: 76px; line-height: 22px;">
 	<h4 class="attribute-name box-title">Modifiers</h4>
 	<div class="attack-mod flexrow thin" data-modifiers="attack">
-		<span>Attack Modifier: {{data.modifiers.attack.value}}</span>
-		<a class="modifiers-bonus" data-target="data.modifiers" title="Modifier Bonus">Bonus: {{data.modifiers.attack.bonusValue}}</a>
+		<span>Attack Modifier: {{system.modifiers.attack.value}}</span>
+		<a class="modifiers-bonus" data-target="system.modifiers" title="Modifier Bonus">Bonus: {{system.modifiers.attack.bonusValue}}</a>
 	</div>
 	<div class="damage-mod flexrow thin" data-modifiers="damage">
-		<span>Damage Modifier: {{data.modifiers.damage.value}}</span>
-		<a class="modifiers-bonus" data-target="data.modifiers" title="Modifier Bonus">Bonus: {{data.modifiers.damage.bonusValue}}</a>
+		<span>Damage Modifier: {{system.modifiers.damage.value}}</span>
+		<a class="modifiers-bonus" data-target="system.modifiers" title="Modifier Bonus">Bonus: {{system.modifiers.damage.bonusValue}}</a>
 	</div>
 </div>
 {{/if}}
@@ -31,8 +31,8 @@
 	{{#each section.effects as |effect|}}
 		<li class="item effect flexrow" data-effect-id="{{effect.id}}">
 			<div class="item-name effect-name flexrow">
-				<img class="item-image" src="{{effect.data.icon}}"/>
-				<h4>{{effect.data.label}}</h4>
+				<img class="item-image" src="{{effect.icon}}"/>
+				<h4>{{effect.label}}</h4>
 			</div>
 			<div class="effect-source">{{effect.sourceName}}</div>
 			{{#if effect._getIsSave}}
@@ -58,27 +58,20 @@
 
 	{{!-- Resistances --}}
 
-	{{#if data.resistances}}
+	{{#if system.resistances}}
 	<div class="attribute-res resource-full">
 		<h4 class="attribute-name box-title">Resistances & Weaknesses</h4>
-		{{#each data.resistances as |res r|}}
+		{{#each system.resistances as |res r|}}
 			<li class="skill flexrow" data-res="{{r}}">
 				<h4 class="res-name">{{res.label}}</h4>
 				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
 				<span class="res-armour">Armour: {{res.armour}} </span>
-				<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.armour" value="{{res.armour}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Armour Bonus"> </input> -->
-				<a class="resistances-bonus" data-target="data.resistances" title="Resistance Bonus">Bonus: {{res.resBonusValue}}</a>
-				<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.race" value="{{res.race}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Race"> </input> -->
-				<!-- <input type="text" class="skill-mod" name="data.resistances.{{r}}.misc" value="{{res.misc}}" placeholder="0" data-dtype="Number" onClick="this.select();" title="Misc"> </input> -->
-				<!-- <input type="checkbox" name="data.resistances.{{r}}.half" data-dtype="Boolean" {{checked res.half}} title="Resistances"/> -->
+				<a class="resistances-bonus" data-target="system.resistances" title="Resistance Bonus">Bonus: {{res.resBonusValue}}</a>
 				<span class="res-immune">Immunity</span>
-				<input type="checkbox" name="data.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
+				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
 			</li>
 		{{/each}}					
-		<!-- <span>Resistances:</span> -->
-		<!-- <a class="trait-selector" data-options="damageTypes" data-target="data.traits.di"> -->
-			<!-- <i class="fas fa-edit"></i> -->
-		<!-- </a> -->
+
 	</div>
 	{{/if}}
 </ol>

@@ -14,6 +14,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 	}
 	/** @override */
 	get template() {
+		if ( !game.user.isGM && this.actor.limited ) return `systems/dnd4eAltus/templates/npc-sheet-limited.html`;
 		return `systems/dnd4eAltus/templates/npc-sheet.html`;
 	}
 

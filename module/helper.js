@@ -4,9 +4,9 @@ export class Helper {
 	static executeMacro(item) {
 		const macro = new Macro ({
 			name : item.name,
-			type : item.data.data.macro.type,
-			scope : item.data.data.macro.scope,
-			command : item.data.data.macro.command, //cmd,
+			type : item.system.macro.type,
+			scope : item.system.macro.scope,
+			command : item.system.macro.command, //cmd,
 			author : game.user.id
 		})
 		// below vars are not part of the Macro data object so need to be set manually
@@ -15,9 +15,9 @@ export class Helper {
 		// data.actor has historically been the actor
 		// changing that would break existing macros that rely on item data.  I would like to make data.item = the item.
 		// can still get to the item using .document
-		macro.data.item = item.data
-		macro.data.actor = item.actor //needs to be actor and not data to get at actors items collection - e.g. other items
-		macro.data.launch = item.data.data.macro.launchOrder;
+		macro.item = item
+		macro.actor = item.actor //needs to be actor and not data to get at actors items collection - e.g. other items
+		macro.launch = item.system.macro.launchOrder;
 		return macro.execute();
 	}
 
@@ -75,50 +75,50 @@ export class Helper {
 			let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 			let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
 			return actor.itemTypes.weapon.find((i) =>  {
-				if(i.data.data.equipped) {
+				if(i.system.equipped) {
 
 					if(itemData.weaponType === "any") {
 						return i;
 					}
 					
 					if(itemData.weaponType === "meleeRanged") {
-						if(setMelee.includes(i.data.data.weaponType) || setRanged.includes(i.data.data.weaponType) )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						if(setMelee.includes(i.system.weaponType) || setRanged.includes(i.system.weaponType) )
+							if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					else if(itemData.weaponType === "melee") {
-						if(setMelee.includes(i.data.data.weaponType) )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						if(setMelee.includes(i.system.weaponType) )
+							if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								return i;
 							else if(itemData.weaponUse === "default") 
 								return i;
 					}
 					else if(itemData.weaponType === "ranged") {
-						if(setRanged.includes(i.data.data.weaponType) || i.data.data.properties.tlg || i.data.data.properties.thv )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						if(setRanged.includes(i.system.weaponType) || i.system.properties.tlg || i.system.properties.thv )
+							if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					else if(itemData.weaponType === "implement") {
-						if(i.data.data.properties.imp || i.data.data.properties.impA || i.data.data.properties.impD )
-							if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						if(i.system.properties.imp || i.system.properties.impA || i.system.properties.impD )
+							if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								return i;
 							else if(itemData.weaponUse === "default")
 								return i;
 					}
 					// else if(itemData.weaponType === "implementA") {
-						// if(i.data.data.properties.imp || i.data.data.properties.impA )
-							// if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						// if(i.system.properties.imp || i.system.properties.impA )
+							// if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								// return i;
 							// else if(itemData.weaponUse === "default")
 								// return i;
 					// }
 					// else if(itemData.weaponType === "implementD") {
-						// if(i.data.data.properties.imp || i.data.data.properties.impD )
-							// if(itemData.weaponUse === "defaultOH" && (i.data.data.weaponHand === "hOff"))
+						// if(i.system.properties.imp || i.system.properties.impD )
+							// if(itemData.weaponUse === "defaultOH" && (i.system.weaponHand === "hOff"))
 								// return i;
 							// else if(itemData.weaponUse === "default")
 								// return i;
@@ -149,19 +149,19 @@ export class Helper {
 	static async applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType) {
 		const debug = game.settings.get("dnd4eAltus", "debugEffectBonus") ? `D&D4eBeta |` : ""
 		if (actorData.effects) {
-			const powerInnerData = powerData.data
-			const weaponInnerData = weaponData?.data
+			const powerInnerData = powerData
+			const weaponInnerData = weaponData
 			if (debug) {
 				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.  Supplied Weapon: ${weaponData?.name}`)
 			}
 
 			const effectsToProcess = []
-			const effects = Array.from(actorData.effects.values()).filter((effect) => effect.data.disabled === false)
+			const effects = Array.from(actorData.effects.values()).filter((effect) => effect.disabled === false)
 			effects.forEach((effect) => {
-				effect.data.changes.forEach((change => {
+				effect.changes.forEach((change => {
 					if (change.key.startsWith(`power.${effectType}`) || (weaponInnerData && change.key.startsWith(`weapon.${effectType}`))) {
 						effectsToProcess.push({
-							name : effect.data.label,
+							name : effect.label,
 							key: change.key,
 							value: change.value
 						})
@@ -287,9 +287,9 @@ export class Helper {
 	 * Perform replacement of @variables in the formula involving a power.  This is a recursive function with 2 modes of operation!
 	 *
 	 * @param formula The formula to examine and perform replacements on
-	 * @param actorData The data from the actor to use to resolve variables: `actor.data`.  This may be null
-	 * @param powerInnerData The data from the power to use to resolve variables. `power.data.data`
-	 * @param weaponInnerData The data from the weapon to use to resolve variables.  `item.data.data` This may be null
+	 * @param actorData The data from the actor to use to resolve variables: `actor.system`.  This may be null
+	 * @param powerInnerData The data from the power to use to resolve variables. `power.system`
+	 * @param weaponInnerData The data from the weapon to use to resolve variables.  `item.system` This may be null
 	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.  Defaults to 1 which will produce 2 loops.  A depth of 0 will also prevent evaluation of custom effect variables (as that is an infinite hole)
 	 * @param returnDataInsteadOfFormula If set to true it will return a data object of replacement variables instead of the formula string
 	 * @return {String|{}|number} "0" if called with a depth of <0, A substituted formula string if called with returnDataInsteadOfFormula = false (the default) or an object of {variable = value} if called with returnDataInsteadOfFormula = true
@@ -297,7 +297,7 @@ export class Helper {
 	// DEVELOPER: Remember this call is recursive, if you change the method signature, make sure you update everywhere its used!
 	static commonReplace (formula, actorData, powerInnerData, weaponInnerData=null, depth = 1, returnDataInsteadOfFormula = false) {
 		if (depth < 0 ) return 0;
-		let newFormula = formula;
+		let newFormula = formula.toString(); // just in case integers somehow get passed
 		if (returnDataInsteadOfFormula) {
 			const result = {}
 			const variables = formula.match(this.variableRegex)
@@ -311,7 +311,7 @@ export class Helper {
 		}
 
 		if(actorData) {
-			const actorInnerData = actorData.data
+			const actorInnerData = actorData.system
 			if (actorInnerData) {
 				newFormula = Roll.replaceFormulaData(newFormula, actorInnerData);
 				if(powerInnerData) {
@@ -340,7 +340,7 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
 			}
 			else {
-				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.data.data by mistake!.  Replacing: " + formula)
+				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.  Replacing: " + formula)
 			}
 		}
 
@@ -397,7 +397,7 @@ export class Helper {
 					if(!parts[i][0] || !parts[i][1]) continue;
 					if(weaponInnerData.properties.bru) {
 						// dice += ` + (${parts[i][0]}*${weaponNum})d(${parts[i][1] - weaponData.brutal}) + (${weaponData.brutal}*${parts[i][0]}*${weaponNum})`;
-						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}rr<${weaponInnerData.brutal || 1}`;
+						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}rr<=${weaponInnerData.brutal || 1}`;
 					}
 					else{
 						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}`;
@@ -430,7 +430,7 @@ export class Helper {
 					for(let i = 0; i< parts.length; i++) {
 						if(!parts[i][0] || !parts[i][1]) continue;
 						if(weaponInnerData.properties.bru) {
-							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<${weaponInnerData.brutal || 1}`;
+							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<=${weaponInnerData.brutal || 1}`;
 						}
 						else{
 
@@ -626,23 +626,23 @@ export class Helper {
 				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.  Searching active effects for a suitable variable`)
 			}
 			const resultObject = {}
-			const effects = Array.from(actorData.effects.values()).filter((effect) => effect.data?.disabled === false);
+			const effects = Array.from(actorData.effects.values()).filter((effect) => effect?.disabled === false);
 			effects.forEach((effect) => {
-				effect.data.changes.forEach((change => {
+				effect.changes.forEach((change => {
 					if (this.variableRegex.test(change.key)) {
 						if (debug) {
-							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.data.label}.  Value: ${change.value}`)
+							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.label}.  Value: ${change.value}`)
 						}
 						const changeValueReplaced = this.commonReplace(change.value, actorData, powerInnerData, weaponInnerData, 0) // set depth to avoid infinite recursion
 						if (!resultObject[change.key]) {
 							resultObject[change.key] = changeValueReplaced
 							if (debug) {
-								console.log(`${debug} Effect: ${effect.data.label}.  Computed Value: ${change.value} was the first match to ${change.key} `)
+								console.log(`${debug} Effect: ${effect.label}.  Computed Value: ${change.value} was the first match to ${change.key} `)
 							}
 						}
 						else {
 							if (debug) {
-								console.log(`${debug} Effect: ${effect.data.label}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
+								console.log(`${debug} Effect: ${effect.label}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
 							}
 							if(this._isNumber(resultObject[change.key]) && this._isNumber(changeValueReplaced)){
 								resultObject[change.key] = Number(resultObject[change.key]) + Number(changeValueReplaced)
@@ -892,11 +892,11 @@ export class Helper {
 
 	static async rechargeItems(actor, targetArray){
 
-		const items = actor.items.filter(item => targetArray.includes(item.data.data.uses?.per));
+		const items = actor.items.filter(item => targetArray.includes(item.system.uses?.per));
 		const updateItems = items.map( item => {
 			return {
 				_id: item.id,
-				"data.uses.value": item.data.data.preparedMaxUses
+				"system.uses.value": item.system.preparedMaxUses
 			};
 		});
 
@@ -904,10 +904,9 @@ export class Helper {
 	}
 
 	static async endEffects(actor, targetArray){
-		// const effects = actor.effects.filter(effect => targetArray.includes(effect.data.flags.dnd4eAltus.effectData.durationType));
 		const effects = [];
 		for(let e of actor.effects){
-			if(targetArray.includes(e.data.flags.dnd4eAltus?.effectData?.durationType)){
+			if(targetArray.includes(e.flags.dnd4eAltus?.effectData?.durationType)){
 				effects.push(e.id);
 			}
 		}
@@ -917,8 +916,8 @@ export class Helper {
 	static getInitiativeByToken(id){
 		if(!game.combat) return 0;
 		for(let t of game.combat.turns){
-			if(t.data.tokenId === id){
-				return t.data.initiative
+			if(t.tokenId === id){
+				return t.initiative
 			}
 		}
 
@@ -960,17 +959,17 @@ export class Helper {
 	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
 		const combat = game.combat;
 		for(let e of effectMap){
-			if(e.data.flags.dnd4eAltus.effectData.powerEffectTypes === condition){
+			if(e.flags.dnd4eAltus.effectData.powerEffectTypes === condition){
 				for(let t of tokenTarget){
 					let effectData = e.data;
 					effectData.sourceName = parent.name
 					effectData.origin = parent.uuid
 
-					const duration = e.data.duration;
-					const flags = e.data.flags;
+					const duration = e.duration;
+					const flags = e.flags;
 					duration.combat = combat?.id || "None Combat";
 					duration.startRound = combat?.round || 0;
-					flags.dnd4eAltus.effectData.startTurnInit = combat?.turns[combat.turn].data.initiative || 0;
+					flags.dnd4eAltus.effectData.startTurnInit = combat?.turns[combat.turn].initiative || 0;
 
 					const userTokenId = this.getTokenIdForLinkedActor(parent);
 					const userInit = this.getInitiativeByToken(this.getTokenIdForLinkedActor(parent));
@@ -979,7 +978,7 @@ export class Helper {
 
 					if(flags.dnd4eAltus.effectData.durationType === "endOfTargetTurn" || flags.dnd4eAltus.effectData.durationType === "startOfTargetTurn"){
 						duration.rounds = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
-						flags.dnd4eAltus.effectData.durationTurnInit = t ? this.getInitiativeByToken(t.data._id) : userInit;						
+						flags.dnd4eAltus.effectData.durationTurnInit = t ? this.getInitiativeByToken(t._id) : userInit;						
 					}
 					else if(flags.dnd4eAltus.effectData.durationType === "endOfUserTurn" || flags.dnd4eAltus.effectData.durationType === "startOfUserTurn" ){
 						duration.rounds = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
@@ -987,17 +986,17 @@ export class Helper {
 					}
 
 					const newEffectData = {
-						label: e.data.label,
-						icon: e.data.icon,
+						label: e.label,
+						icon: e.icon,
 						origin: parent.uuid,
 						sourceName: parent.name,
 						// duration: duration, //Not too sure why this fails, but it does
 						// duration: {rounds: duration.rounds, startRound: duration.startRound},
 						rounds: duration.rounds,
 						startRound: duration.startRound,
-						tint: e.data.tint,
+						tint: e.tint,
 						flags: flags,
-						changes: e.data.changes,
+						changes: e.changes,
 						changesID: e.uuid
 					};
 					let actor;
@@ -1022,6 +1021,16 @@ export class Helper {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Determine if a fastForward key was held during the given click event.
+	 *
+	 * @param {Event} event A click event
+	 * @returns {boolean} if the click was done while holding down a fastForward key
+	 */
+	static isUsingFastForwardKey(event) {
+		return event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey)
 	}
 }
 

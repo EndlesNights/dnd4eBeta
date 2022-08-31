@@ -1,13 +1,23 @@
 {
-	"name": "dnd4eAltus",
+	"id": "dnd4eAltus",
 	"title": "DnD 4th Edition Altus",
-	"description": "A beta implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.2.82",
-	"minimumCoreVersion": "0.8.5",
-	"compatibleCoreVersion": "9",
+	"description": "An implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop Altus setting.",
+	"version": "0.3.0",
+	"compatibility":{
+		"minimum": 10,
+		"verified": 10,
+		"maximum": 10
+	},
 	"templateVersion": 2,
-	"author": "EndlesNights",
-	"dependencies": [
+	"authors": [
+		{
+			"name": "EndlesNights",
+			"url": "https://github.com/EndlesNights",
+			"email": "endlesnights@gmail.com",
+			"discord": "endlesnights#9000"
+		  }
+	],
+	"relationships.requires": [
 		{ "name": "lib-wrapper" }
 	],
 	"esmodules": [
@@ -22,98 +32,98 @@
 			"label": "Example Alchemical Items",
 			"system": "dnd4eAltus",
 			"path": "./packs/example_alchemy.db",
-			"entity": "Item"
+			"type": "Item"
 		},		
 		{
 			"name": "example_character",
 			"label": "Example Character",
 			"system": "dnd4eAltus",
 			"path": "./packs/example_character.db",
-			"entity": "Actor"
+			"type": "Actor"
 		},
 		{
 			"name": "example_potions",
 			"label": "Example Potions & Poisons",
 			"system": "dnd4eAltus",
 			"path": "./packs/example_potions.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "example_powers",
 			"label": "Example Powers",
 			"system": "dnd4eAltus",
 			"path": "./packs/example_powers.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "example_feats",
 			"label": "Example Feats",
 			"system": "dnd4eAltus",
 			"path": "./packs/example_feats.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "class_features",
 			"label": "Class Features",
 			"system": "dnd4eAltus",
 			"path": "./packs/class_features.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "racial_features",
 			"label": "Racial Features",
 			"system": "dnd4eAltus",
 			"path": "./packs/racial_features.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "srd_armour",
 			"label": "SRD Armour",
 			"system": "dnd4eAltus",
 			"path": "./packs/srd_armour.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "srd_classes",
 			"label": "SRD Classes",
 			"system": "dnd4eAltus",
 			"path": "./packs/srd_classes.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "srd_equipment",
 			"label": "SRD Equipment",
 			"system": "dnd4eAltus",
 			"path": "./packs/srd_equipment.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "srd_races",
 			"label": "SRD Races",
 			"system": "dnd4eAltus",
 			"path": "./packs/srd_races.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "srd_weapons",
 			"label": "SRD Weapons",
 			"system": "dnd4eAltus",
 			"path": "./packs/srd_weapons.db",
-			"entity": "Item"
+			"type": "Item"
 		},
 		{
 			"name": "srd_rules",
 			"label": "SRD Rules",
 			"system": "dnd4eAltus",
 			"path": "./packs/srd_rules.db",
-			"entity": "JournalEntry"
+			"type": "JournalEntry"
 		},
 		{
 			"name": "manual",
 			"label": "Manual & Help",
 			"system": "dnd4eAltus",
 			"path": "./packs/manual.db",
-			"entity": "JournalEntry"
+			"type": "JournalEntry"
 		}
 	],
 	"languages": [
@@ -130,5 +140,5 @@
 	"secondaryTokenAttribute": "attributes.temphp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dndAltus/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/raw/dndAltus/dnd4eAltus.zip"
+	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/Altus-0.3.0.zip"
 }

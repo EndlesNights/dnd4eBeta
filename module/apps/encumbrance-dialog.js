@@ -17,11 +17,11 @@ export class EncumbranceDialog extends DocumentSheet {
 
 	/** @override */
 	getData() {
-		return {data: this.object.data.data}
+		return {system: this.object.system}
 	}
 	async _updateObject(event, formData) {
 		const updateData = {};
-		for(let data in formData) { updateData[`${data}`] = formData[`${data}`];}
+		for(let system in formData) { updateData[`${system}`] = formData[`${system}`];}
 		this.object.update(updateData);
 	}
 
@@ -34,11 +34,11 @@ export class EncumbranceDialog extends DocumentSheet {
 	_onMovementBonus(event) {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
-		const target = `data.movement.${moveName}`;
+		const target = `system.movement.${moveName}`;
 		console.log(moveName)
 		console.log(event.currentTarget.parentElement.dataset)
 		console.log(event.currentTarget.parentElement)
-		const options = {target: target, label: `${this.object.data.data.movement[moveName].label} Movement Bonus` };
+		const options = {target: target, label: `${this.object.system.movement[moveName].label} Movement Bonus` };
 		new AttributeBonusDialog(this.object, options).render(true);
 	}
 }

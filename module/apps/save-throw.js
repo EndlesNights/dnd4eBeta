@@ -19,13 +19,13 @@ export class SaveThrowDialog extends DocumentSheet {
 	/** @override */
 	getData() {
 		return {
-			data: this.object.data.data,
+			system: this.object.system,
 			rollModes: CONFIG.Dice.rollModes
 		};
 	}
 	async _updateObject(event, formData) {
 		let message = `Rolling Saving Throw, DC: ${formData.dc}`;
-		const parts = [this.object.data.data.details.saves.value]
+		const parts = [this.object.system.details.saves.value]
 		if (formData.save) {
 			parts.push(formData.save)
 		}
@@ -41,8 +41,8 @@ export class SaveThrowDialog extends DocumentSheet {
 			rollMode: formData.rollMode
 		});
 		rollConfig.event = event;
-		rollConfig.critical = formData.dc - this.object.data.data.details.saves.value - formData.save || 10;
-		rollConfig.fumble = formData.dc -1 - this.object.data.data.details.saves.value - formData.save || 9;
+		rollConfig.critical = formData.dc - this.object.system.details.saves.value - formData.save || 10;
+		rollConfig.fumble = formData.dc -1 - this.object.system.details.saves.value - formData.save || 9;
 		
 		const r = await d20Roll(rollConfig);
 
