@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.3.0
+- Update to Foundry v10
+- Minnor fixes to css
+
 ## Version 0.2.85
 - Pass the event into initative to allow for fast forwarding [merge](https://github.com/EndlesNights/dnd4eBeta/pull/232) from [TheGiddyLimit](https://github.com/draconas1)
 - FastForward Keys moved to helper function [merge](https://github.com/EndlesNights/dnd4eBeta/pull/231) from [kyleady](https://github.com/kyleady)
