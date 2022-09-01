@@ -390,7 +390,7 @@
 		<span class="checkbox">{{ localize "DND4EBETA.EffectHTMLInput" }}<input type="checkbox" name="system.effectHTML" data-dtype="Boolean" {{checked system.effectHTML}}/></span>
 	</div>
 	{{#if system.effectHTML}}
-		{{editor system.effect.detail target="system.effect.detail" button=true owner=owner editable=editable}}
+		{{editor effectDetailHTML target="system.effect.detail" button=true owner=owner editable=editable}}
 	{{else}}
 		<div class="form-group">
 			<input type="text" name="system.effect.detail" value="{{system.effect.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>

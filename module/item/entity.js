@@ -399,7 +399,7 @@ export default class Item4e extends Item {
 			Helper.executeMacro(this)
 			if (this.system.macro.launchOrder === "sub") return;
 		}
-		const cardData = (async () => {
+		const cardData = await ( async () => {
 			if ((this.type === "power" || this.type === "consumable") && this.system.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
 				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor);

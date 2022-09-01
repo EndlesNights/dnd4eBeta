@@ -86,7 +86,7 @@ export default class ActorSheet4e extends ActorSheet {
   /* -------------------------------------------- */
 
 	/** @override */
-	getData() {
+	async getData() {
 
 		let isOwner = this.actor.isOwner;
 
@@ -153,6 +153,13 @@ export default class ActorSheet4e extends ActorSheet {
 			if (res && res.max === 0) delete res.max;
 			return arr.concat([res]);
 			}, []);
+
+		data.biographyHTML = await TextEditor.enrichHTML(data.system.biography, {
+			secrets: isOwner,
+			async: true,
+			relativeTo: this.actor
+		});
+
 		return data;
 	}
 	

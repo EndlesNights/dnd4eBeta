@@ -104,6 +104,20 @@ export default class ItemSheet4e extends ItemSheet {
 		// Re-define the template data references (backwards compatible)
 		data.item = itemData;
 		data.system = itemData.system;
+
+		const description = data.system.description;
+		data.descriptionHTML = await TextEditor.enrichHTML(description.value || description, {
+			secrets: data.item.isOwner,
+			async: true,
+			relativeTo: this.item
+		});
+
+		data.effectDetailHTML = await TextEditor.enrichHTML(data.system.effect.detail, {
+			secrets: data.item.isOwner,
+			async: true,
+			relativeTo: this.item
+		});
+
 		return data;
 	}
 
