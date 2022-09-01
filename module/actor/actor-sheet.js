@@ -821,7 +821,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
    * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
    * @private
    */
-	_onItemSummary(event) {
+	async _onItemSummary(event) {
 		event.preventDefault();
 		const li = $(event.currentTarget).parents(".item")
 	    const itemId = li.data("item-id")
@@ -831,7 +831,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 			return
 		}
 		const item = this.actor.items.get(itemId)
-		const chatData = item.getChatData({secrets: this.actor.isOwner});
+		const chatData = await item.getChatData({secrets: this.actor.isOwner});
 
 
 		// Toggle summary
