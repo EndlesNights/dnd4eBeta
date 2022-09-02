@@ -1233,7 +1233,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 		
-		if ( item.data.type === "power") {
+		if ( item.type === "power") {
 			const fastForward = Helper.isUsingFastForwardKey(event);
 			return this.actor.usePower(item, {configureDialog: !fastForward, fastForward: fastForward});
 		}
