@@ -137,7 +137,7 @@ export class Helper {
 	 */
 	static lacksRequiredWeaponEquipped(itemData, weaponUse) {
 		// a power needs a weapon equipped to roll attack if a weapon type has been specified that is not None or Implement And weaponUse is not none.
-		const powerNeedsAWeapon = itemData.weaponType && itemData.weaponType !== "none" && itemData.weaponType !== "implement" && itemData.weaponUse !== "none"
+		const powerNeedsAWeapon = itemData.weaponType && !["none", "implement", "any"].includes(itemData.weaponType) && itemData.weaponUse !== "none"
 		return !weaponUse && powerNeedsAWeapon
 	}
 
