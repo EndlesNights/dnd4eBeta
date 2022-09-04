@@ -112,7 +112,7 @@ export default class ItemSheet4e extends ItemSheet {
 			relativeTo: this.item
 		});
 
-		data.effectDetailHTML = await TextEditor.enrichHTML(data.system.effect.detail, {
+		data.effectDetailHTML = await TextEditor.enrichHTML(data.system.effect?.detail, {
 			secrets: data.item.isOwner,
 			async: true,
 			relativeTo: this.item
