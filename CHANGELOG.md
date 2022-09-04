@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.3.2
+- enrichHTML bug fix [merge](https://github.com/EndlesNights/dnd4eBeta/pull/237) from [kyleady](https://github.com/kyleady)
+- any weapon bug fix [merge](https://github.com/EndlesNights/dnd4eBeta/pull/235) from [kyleady](https://github.com/kyleady)
+
 ## Version 0.3.1
 - enrichHTML changes from v9 to v10 [merge](https://github.com/EndlesNights/dnd4eBeta/pull/233) from [kyleady](https://github.com/kyleady)
 
