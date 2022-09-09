@@ -1105,7 +1105,7 @@ export default class Item4e extends Item {
 		// Originally these were a separate part, but then they were not part of the primary damage type
 		// which they should be.  So now appending them to the main expression.
 		const effectDamageParts = []
-		await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse?.system, "damage")
+		await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse, "damage")
 		effectDamageParts.forEach(part => {
 			const value = rollData[part.substring(1)]
 			damageFormula += `+ ${value}`
