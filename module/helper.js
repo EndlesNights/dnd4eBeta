@@ -149,8 +149,8 @@ export class Helper {
 	static async applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4eBeta |` : ""
 		if (actorData.effects) {
-			const powerInnerData = powerData
-			const weaponInnerData = weaponData
+			const powerInnerData = powerData.system
+			const weaponInnerData = weaponData?.system
 			if (debug) {
 				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.  Supplied Weapon: ${weaponData?.name}`)
 			}
@@ -217,7 +217,7 @@ export class Helper {
 					const keyParts = effect.key.split(".")
 					if (keyParts.length === 4) {
 						const bonusType = keyParts[3]
-						const effectValueString = this.commonReplace(effect.value, actorData, powerData.data, weaponData?.data)
+						const effectValueString = this.commonReplace(effect.value, actorData, powerInnerData, weaponInnerData)
 						const effectDice = await this.rollWithErrorHandling(effectValueString, {context : effect.key})
 						const effectValue = effectDice.total
 						if (bonusType === "untyped") {
