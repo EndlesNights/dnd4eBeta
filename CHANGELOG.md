@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.3
+- Custom Effects Fixes [merge](https://github.com/EndlesNights/dnd4eBeta/pull/239) from [draconas1](https://github.com/draconas1)
+
 ## Version 0.3.2
 - enrichHTML bug fix [merge](https://github.com/EndlesNights/dnd4eBeta/pull/237) from [kyleady](https://github.com/kyleady)
 - any weapon bug fix [merge](https://github.com/EndlesNights/dnd4eBeta/pull/235) from [kyleady](https://github.com/kyleady)
