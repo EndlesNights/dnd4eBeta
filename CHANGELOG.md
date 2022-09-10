@@ -1,11 +1,21 @@
 # Changelog
 
+## Version 0.3.3
+- Custom Effects Fixes [merge](https://github.com/EndlesNights/dnd4eAltus/pull/239) from [draconas1](https://github.com/draconas1)
+
+## Version 0.3.2
+- enrichHTML bug fix [merge](https://github.com/EndlesNights/dnd4eAltus/pull/237) from [kyleady](https://github.com/kyleady)
+- any weapon bug fix [merge](https://github.com/EndlesNights/dnd4eAltus/pull/235) from [kyleady](https://github.com/kyleady)
+
+## Version 0.3.1
+- enrichHTML changes from v9 to v10 [merge](https://github.com/EndlesNights/dnd4eAltus/pull/233) from [kyleady](https://github.com/kyleady)
+
 ## Version 0.3.0
 - Update to Foundry v10
 - Minnor fixes to css
 
 ## Version 0.2.85
-- Pass the event into initative to allow for fast forwarding [merge](https://github.com/EndlesNights/dnd4eAltus/pull/232) from [TheGiddyLimit](https://github.com/draconas1)
+- Pass the event into initative to allow for fast forwarding [merge](https://github.com/EndlesNights/dnd4eAltus/pull/232) from [TheGiddyLimit](https://github.com/TheGiddyLimit)
 - FastForward Keys moved to helper function [merge](https://github.com/EndlesNights/dnd4eAltus/pull/231) from [kyleady](https://github.com/kyleady)
 - Bugfix with Attacking Multiple Tokens with FastForward [merge](https://github.com/EndlesNights/dnd4eAltus/pull/230) from [kyleady](https://github.com/kyleady)
 - Bugfix when attack with defecne that targeted null defence type [merge](https://github.com/EndlesNights/dnd4eAltus/pull/229) from [kyleady](https://github.com/kyleady)

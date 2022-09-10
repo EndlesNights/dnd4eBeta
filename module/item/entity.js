@@ -399,10 +399,10 @@ export default class Item4e extends Item {
 			Helper.executeMacro(this)
 			if (this.system.macro.launchOrder === "sub") return;
 		}
-		const cardData = (() => {
+		const cardData = await ( async () => {
 			if ((this.type === "power" || this.type === "consumable") && this.system.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
-				let cardString = Helper._preparePowerCardData(this.getChatData(), CONFIG, this.actor);
+				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor);
 				return Helper.commonReplace(cardString, this.actor, this, weaponUse? weaponUse.system : null, 1);
 			} else {
 				return null;
@@ -414,7 +414,7 @@ export default class Item4e extends Item {
 			actor: this.actor,
 			tokenId: token ? token.uuid : null,
 			item: this,
-			system: this.getChatData(),
+			system: await this.getChatData(),
 			labels: this.labels,
 			hasAttack: this.hasAttack,
 			isHealing: this.isHealing,
@@ -632,14 +632,14 @@ export default class Item4e extends Item {
 	 * @param {Object} htmlOptions    Options used by the TextEditor.enrichHTML function
 	 * @return {Object}               An object of chat data to render
 	 */
-	getChatData(htmlOptions={}) {
+	async getChatData(htmlOptions={}) {
 		const data = duplicate(this.system);
 		const labels = this.labels;
 
 		
 		// Rich text description
-		htmlOptions.async=false; //TextEditor.enrichHTML is becoming asynchronous. In the short term you may pass async=true or async=false as an option to nominate your preferred behavior.
-		data.description.value = TextEditor.enrichHTML(data.description.value || ``, htmlOptions);
+		htmlOptions.async = true; //TextEditor.enrichHTML is becoming asynchronous. In the short term you may pass async=true or async=false as an option to nominate your preferred behavior.
+		data.description.value = await TextEditor.enrichHTML(data.description.value || ``, htmlOptions);
 
 		// Item type specific properties
 		const props = [];
@@ -1105,7 +1105,7 @@ export default class Item4e extends Item {
 		// Originally these were a separate part, but then they were not part of the primary damage type
 		// which they should be.  So now appending them to the main expression.
 		const effectDamageParts = []
-		await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse?.system, "damage")
+		await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse, "damage")
 		effectDamageParts.forEach(part => {
 			const value = rollData[part.substring(1)]
 			damageFormula += `+ ${value}`

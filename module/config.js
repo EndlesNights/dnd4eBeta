@@ -1192,24 +1192,20 @@ DND4EALTUS.statusEffect = [
 ];
 // Languages
 DND4EALTUS.spoken = {
-  "Abyssal": "DND4EALTUS.SpokenAbyssal",
-  "Common": "DND4EALTUS.SpokenCommon",
-  "DeepSpeech": "DND4EALTUS.SpokenDeepSpeech",
-  "Draconic": "DND4EALTUS.SpokenDraconic",
-  "Dwarven": "DND4EALTUS.SpokenDwarven",
-  "Elven": "DND4EALTUS.SpokenElven",
-  "Giant": "DND4EALTUS.SpokenGiant",
-  "Goblin": "DND4EALTUS.SpokenGoblin",
-  "Primordial": "DND4EALTUS.SpokenPrimordial",
-  "Supernal": "DND4EALTUS.SpokenSupernal",
+	"Alti": "DND4EALTUS.SpokenAlti",
+	"Cellian": "DND4EALTUS.SpokenCellian",
+	"Ghido": "DND4EALTUS.SpokenGhido",
+	"Jarissian": "DND4EALTUS.SpokenJarissian",
+	"Luxen": "DND4EALTUS.SpokenLuxen",
+	"Saeven": "DND4EALTUS.SpokenSaeven",
+	"Token": "DND4EALTUS.SpokenToken",
+	"Vasten": "DND4EALTUS.SpokenVasten"
 };
 DND4EALTUS.script = {
-  "Common": "DND4EALTUS.ScriptCommon",
-  "Barazhad": "DND4EALTUS.ScriptBarazhad",
-  "Davek": "DND4EALTUS.ScriptDavek",
-  "Iokharic": "DND4EALTUS.ScriptIokharic",
-  "Rellanic": "DND4EALTUS.ScriptRellanic",
-
+	"Alti": "DND4EALTUS.ScriptAlti",
+	"Cellian": "DND4EALTUS.ScriptCellian",
+	"Ghido": "DND4EALTUS.ScriptGhido",
+	"Token": "DND4EALTUS.ScriptToken"
 };
 
 // Character Level XP Requirements
