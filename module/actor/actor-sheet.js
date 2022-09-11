@@ -145,14 +145,15 @@ export default class ActorSheet4e extends ActorSheet {
 		data.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.effects);
 
 		// Resources
-		actorData.resources = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
+		actorData.resources = ["primary", "secondary", "tertiary"].reduce((obj, r) => {
 			const res = actorData.resources[r] || {};
 			res.name = r;
 			res.placeholder = game.i18n.localize("DND4EBETA.Resource"+r.titleCase());
 			if (res && res.value === 0) delete res.value;
 			if (res && res.max === 0) delete res.max;
-			return arr.concat([res]);
-			}, []);
+			obj[r] = res
+			return obj;
+		}, {});
 
 		data.biographyHTML = await TextEditor.enrichHTML(data.system.biography, {
 			secrets: isOwner,
