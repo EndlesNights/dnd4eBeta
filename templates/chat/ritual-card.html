@@ -5,16 +5,16 @@
         <h3 class="item-name ability-usage--" style="padding-left: 3px;">{{item.name}}</h3>
     </header>
 
-    <div class="card-content">{{{data.description.value}}}</div>
+    <div class="card-content">{{{system.description.value}}}</div>
 
-    {{#if data.attribute}}
+    {{#if system.attribute}}
     <div class="card-buttons">
-        <button data-action="ritualCheck" data-ability="{{data.ability.value}}">{{ abilityCheck }} Check to {{item.name}}</button>
+        <button data-action="ritualCheck" data-ability="{{system.ability.value}}">{{ abilityCheck }} Check to {{item.name}}</button>
     </div>
     {{/if}}
 
     <footer class="card-footer">
-        {{#each data.properties}}
+        {{#each system.properties}}
         <span>{{this}}</span>
         {{/each}}
     </footer>
