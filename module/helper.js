@@ -9,14 +9,8 @@ export class Helper {
 			command : item.system.macro.command, //cmd,
 			author : game.user.id
 		})
-		// below vars are not part of the Macro data object so need to be set manually
-		// CODE SMELL
-		// data.item has historically been item.data
-		// data.actor has historically been the actor
-		// changing that would break existing macros that rely on item data.  I would like to make data.item = the item.
-		// can still get to the item using .document
 		macro.item = item
-		macro.actor = item.actor //needs to be actor and not data to get at actors items collection - e.g. other items
+		macro.actor = item.actor
 		macro.launch = item.system.macro.launchOrder;
 		return macro.execute();
 	}
