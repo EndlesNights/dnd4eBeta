@@ -12,13 +12,13 @@
 
 ## Version 0.3.0
 - Update to Foundry v10
-- Minnor fixes to css
+- Minor fixes to css
 
 ## Version 0.2.85
-- Pass the event into initative to allow for fast forwarding [merge](https://github.com/EndlesNights/dnd4eBeta/pull/232) from [TheGiddyLimit](https://github.com/TheGiddyLimit)
+- Pass the event into initiative to allow for fast forwarding [merge](https://github.com/EndlesNights/dnd4eBeta/pull/232) from [draconas1](https://github.com/draconas1)
 - FastForward Keys moved to helper function [merge](https://github.com/EndlesNights/dnd4eBeta/pull/231) from [kyleady](https://github.com/kyleady)
 - Bugfix with Attacking Multiple Tokens with FastForward [merge](https://github.com/EndlesNights/dnd4eBeta/pull/230) from [kyleady](https://github.com/kyleady)
-- Bugfix when attack with defecne that targeted null defence type [merge](https://github.com/EndlesNights/dnd4eBeta/pull/229) from [kyleady](https://github.com/kyleady)
+- Bugfix when attack with defence that targeted null defence type [merge](https://github.com/EndlesNights/dnd4eBeta/pull/229) from [kyleady](https://github.com/kyleady)
 - Added limited view for NPCs [merge](https://github.com/EndlesNights/dnd4eBeta/pull/228) from [mncimino1993](https://github.com/mncimino1993)
 
 ## Version 0.2.84
@@ -31,11 +31,11 @@
 ## Version 0.2.82
 - fixed small issue with object sorting on sheets. Powers, items, and feats should now be able to be manually resorted objects within the confines of the current sorting filters by dragging and dropping the items once more.
 - fixed issue with power text filter, where the input element id was having interference from the feat filter input element because they shared the same id.
-- fixed css for pwer text filter, where the css intended for another element was not specific enough and was causing the text to be unreadable shade of white.
+- fixed css for power text filter, where the css intended for another element was not specific enough and was causing the text to be unreadable shade of white.
 
 ## Version 0.2.81
 - fixed fastforward for damage rolls
-- can now fastword power use, will autmaticly roll attack, damage, and healing rolls, as well as place measure templates.
+- can now fastforward power use, will automatically roll attack, damage, and healing rolls, as well as place measure templates.
 
 ## Version 0.2.80
 - hotfix, forgot to remove a testcase.

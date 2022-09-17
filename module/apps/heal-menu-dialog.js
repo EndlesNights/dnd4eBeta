@@ -19,8 +19,9 @@ export class HealMenuDialog extends FormApplication {
 	/** @override */
 	getData(options) {
 		const hpMax = this.object.system.attributes.hp.value === this.object.system.attributes.hp.max
+		const surgeValue = this.object.system.details.surgeValue
 		const constHasSurges = this.object.system.details.surges.value > 0
-		return {hpMax, constHasSurges}
+		return {hpMax, constHasSurges, surgeValue}
 	}
 
 	/* -------------------------------------------- */
