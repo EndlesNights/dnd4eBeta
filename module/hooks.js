@@ -9,10 +9,10 @@ export const TokenBarHooks = {
 
 TokenBarHooks.generatePowerGroups = (actor) => actor.sheet._generatePowerGroups()
 
-TokenBarHooks.updatePowerAvailable = (actor, power) =>  actor.sheet._checkPowerAvailable(power.data)
+TokenBarHooks.updatePowerAvailable = (actor, power) =>  actor.sheet._checkPowerAvailable(power)
 
 TokenBarHooks.isPowerAvailable = (actor, power) => {
-    actor.sheet._checkPowerAvailable(power.data)
+    actor.sheet._checkPowerAvailable(power)
     return !power.system.notAvailable
 }
 
