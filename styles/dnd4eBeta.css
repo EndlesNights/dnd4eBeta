@@ -2223,6 +2223,7 @@ font-size: 12px;
 }
 .dnd4eBeta.chat-card .card-content {
 	margin: 5px 0;
+	background: linear-gradient(90deg, #c3c2b7, #c3c2b718);
 }
 .dnd4eBeta.chat-card .card-content h3 {
 	font-size: 12px;

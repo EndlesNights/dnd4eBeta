@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.3.4
+- fixes "undefined undefined" when using consumables [merge](https://github.com/EndlesNights/dnd4eBeta/pull/242) from [draconas1](https://github.com/draconas1)
+- Effects would not set for the first combatent [merge](https://github.com/EndlesNights/dnd4eBeta/pull/242) from [draconas1](https://github.com/draconas1)
+- Heal dialog menu now displays surge value [merge](https://github.com/EndlesNights/dnd4eBeta/pull/242) from [draconas1](https://github.com/draconas1)
+- changelog updated to fix spelling and fix mis-attributed changeset [merge](https://github.com/EndlesNights/dnd4eBeta/pull/242) from [draconas1](https://github.com/draconas1)
+- Resetting Resources [merge](https://github.com/EndlesNights/dnd4eBeta/pull/240) from [kyleady](https://github.com/kyleady)
+- minor css fixes
+
 ## Version 0.3.3
 - Custom Effects Fixes [merge](https://github.com/EndlesNights/dnd4eBeta/pull/239) from [draconas1](https://github.com/draconas1)
 
