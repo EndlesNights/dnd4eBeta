@@ -38,7 +38,7 @@ export default class AbilityUseDialog extends Dialog {
     // Prepare dialog form data
     const system = {
       item: item.system,
-      title: game.i18n.format("DND4EBETA.AbilityUseHint", item.system),
+      title: game.i18n.format("DND4EBETA.AbilityUseHint", item),
       note: this._getAbilityUseNote(item, uses, recharge),
       hasLimitedUses: itemData.preparedMaxUses || recharges,
       canUse: recharges ? recharge.charged : (quantity > 0 && !uses.value) || uses.value > 0,

@@ -47,7 +47,7 @@
 		if ( this.parent instanceof Actor ) {
 			const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
 			const combat = game.combat;
-			if (combat?.turn) {//if combat has started
+			if (combat?.turn != null && combat.turns && combat.turns[combat.turn]) {//if combat has started - combat.turn for the first character = 0 (so cannot use truthy value).  If there are no combatents combat.turns = []
 				updates.flags = {dnd4e: { effectData: { startTurnInit: combat.turns[combat.turn].initiative ?? 0}}};
 			}
 			this.updateSource(updates);
