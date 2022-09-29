@@ -196,26 +196,42 @@ export default class ItemSheet4e extends ItemSheet {
 
 	}
 
-	shareItem() {
+	async shareItem() {
+		let changeBack = false
+		//set the default permsion to be vieable for all players if it it not already higher
+		if(this.item.ownership.default <= 0){
+			await this.item.update({"ownership.default": 1});
+			changeBack = !game.keyboard.downKeys.has(game.keybindings.bindings.get(`dnd4e.permShowPlayer`)[0].key);
+		}
+
 		game.socket.emit("system.dnd4e", {
 			itemId: this.item.id
 		});
+
+		if(changeBack){
+			this.item.update({"ownership.default": 0});
+		}
 	}
 
 	static _handleShareItem({itemId}={}) {
 		let item = game.items.get(itemId);
 
 		if (item == undefined) {
-			let characters = game.actors.filter(x => x.data.type == "Player Character");
+			let characters = game.actors.filter(x => x.type == "Player Character");
 
 			for (var x = 0; x <= characters.length; x++) {
 				let actor = characters[x];
-				let found = actor.data.items.find(x => x._id == itemId);
-				if (found) {
+				if(!actor) continue;
+
+				if(actor.items.get(itemId)){
 					item = actor.items.get(itemId);
 					break;
 				}
 			}
+		}
+
+		if(!item){
+			return;
 		}
 
 		let itemSheet = new ItemSheet4e(item, {

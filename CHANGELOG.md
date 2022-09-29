@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.5
+- the "show players" button on items should now work for items within the directory that players do not have permission to see. Holding down the "Show Players Item Permanently" key (default to Alt) will change the base permission to at least viewable for all players.
+
 ## Version 0.3.4
 - fixes "undefined undefined" when using consumables [merge](https://github.com/EndlesNights/dnd4eBeta/pull/242) from [draconas1](https://github.com/draconas1)
 - Effects would not set for the first combatent [merge](https://github.com/EndlesNights/dnd4eBeta/pull/242) from [draconas1](https://github.com/draconas1)

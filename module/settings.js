@@ -202,5 +202,14 @@ export const registerSystemSettings = function() {
 		type: Boolean
 	});
 
-
+	game.keybindings.register("dnd4e", "permShowPlayer", {
+		name: "Show Players Item Permanently",
+		hint: "When clicking the show player button on an item while holding this key, it will permanently give all players permsion to see the item rather then them only being shown the item temporarily.",
+		editable: [
+		  {
+			key: "AltLeft"
+		  }
+		],
+		precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL,
+	});
 };
