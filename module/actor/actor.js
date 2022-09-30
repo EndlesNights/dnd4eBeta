@@ -330,7 +330,9 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		system.attributes.init.bonusValue = initBonusValue;
+		//used for effects
+		initBonusValue += system.attributes.init.bonusValue;
+		
 		if(this.type === "NPC" && !system.advancedCals){
 			system.attributes.init.value = (system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod : 0) + (system.attributes.init.base || 0) + initBonusValue;
 		} else {
