@@ -457,7 +457,7 @@ export default class ItemSheet4e extends ItemSheet {
 				})
 			);
 
-			props.push(...Object.entries(item.system.damageType)
+			props.push(...Object.entries(item.getDamageType())
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4EBETA.damageTypes[e[0]])
 			);

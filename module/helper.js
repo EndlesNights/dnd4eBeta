@@ -169,12 +169,12 @@ export class Helper {
 				}
 
 				const suitableKeywords = []
-				this._addKeywords(suitableKeywords, powerInnerData.damageType)
+				this._addKeywords(suitableKeywords, powerInnerData.getDamageType)
 				this._addKeywords(suitableKeywords, powerInnerData.effectType)
 				if (weaponInnerData) {
 					this._addKeywords(suitableKeywords, weaponInnerData.weaponGroup)
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
-					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
+					this._addKeywords(suitableKeywords, weaponInnerData.getDamageType)
 					this._addKeywords(suitableKeywords, weaponInnerData.implementGroup)
 				}
 
@@ -759,8 +759,8 @@ export class Helper {
 			tag.push(`${CONFIG.DND4EBETA.powerSource[`${chatData.secondPowersource}`]}`)
 		}
 
-		if(chatData.damageType) {
-			for ( let [damage, d] of Object.entries(chatData.damageType)) {
+		if(chatData.getDamageType) {
+			for ( let [damage, d] of Object.entries(chatData.getDamageType)) {
 				if(d && CONFIG.DND4EBETA.damageTypes[damage]) tag.push(CONFIG.DND4EBETA.damageTypes[damage])
 			}
 		}

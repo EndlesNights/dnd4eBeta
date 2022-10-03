@@ -346,9 +346,9 @@ export default class Item4e extends Item {
 
 		// DamageTypes
 		if(system.hasOwnProperty("damageType")){
-			if(system.damageType){
+			if(this.getDamageType()){
 				let damType = [];
-				for ( let [damage, d] of Object.entries(system.damageType)) {
+				for ( let [damage, d] of Object.entries(this.getDamageType())) {
 					if(d){
 						damType.push(`${game.i18n.localize(DND4EBETA.damageTypes[damage])}`);
 					}
@@ -381,6 +381,19 @@ export default class Item4e extends Item {
 
 		itemData.system.isOnCooldown = this.isOnCooldown();
 
+	}
+
+	/* -------------------------------------------- */
+
+	getDamageType(){
+		if(this.type == "power" && this.actor){
+			const weapon = Helper.getWeaponUse(this.system, this.actor);
+			if(this.system.damageTypeWeapon && weapon){
+				this.system.weaponDamageType = weapon.system.damageType;
+				return weapon.system.damageType;
+			}
+		}
+		return this.system.damageType;
 	}
 
 	/* -------------------------------------------- */
@@ -999,8 +1012,8 @@ export default class Item4e extends Item {
 		let primaryDamage = ''
 		const pD = [];
 
-		if(itemData.damageType){
-			for ( let [damage, d] of Object.entries(itemData.damageType)) {
+		if(this.getDamageType()){
+			for ( let [damage, d] of Object.entries(this.getDamageType())) {
 				if(d){
 					pD.push(damage);
 					// primaryDamage += `${damage}`;
