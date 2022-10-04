@@ -388,9 +388,13 @@ export default class Item4e extends Item {
 	getDamageType(){
 		if(this.type == "power" && this.actor){
 			const weapon = Helper.getWeaponUse(this.system, this.actor);
-			if(this.system.damageTypeWeapon && weapon){
+			// if(this.system.damageTypeWeapon && weapon){
+			if(weapon && weapon.system.damageTypeWeapon){
+				this.system.damageTypeWeapon = true;
 				this.system.weaponDamageType = weapon.system.damageType;
 				return weapon.system.damageType;
+			} else {
+				this.system.damageTypeWeapon = false;
 			}
 		}
 		return this.system.damageType;

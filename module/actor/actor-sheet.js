@@ -534,12 +534,13 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 			try {
 				const weaponUse = Helper.getWeaponUse(itemData.system, this.actor);
+				console.log(weaponUse)
 				if(weaponUse.system.isRanged) {
-					itemData.system.rangeText = `Range Weapon - ${weaponUse.system.name}`
+					itemData.system.rangeText = `Range Weapon - ${weaponUse.name}`
 					itemData.system.rangeTextShort = `W-R`
 					itemData.system.rangeTextBlock = `${weaponUse.system.range.value}/${weaponUse.system.range.long}`
 				} else {
-					itemData.system.rangeText = `Melee Weapon - ${weaponUse.system.name}`;
+					itemData.system.rangeText = `Melee Weapon - ${weaponUse.name}`;
 					itemData.system.rangeTextShort = "W-M";
 					
 					if(itemData.system.rangePower == null){

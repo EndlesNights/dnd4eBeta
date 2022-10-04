@@ -456,8 +456,8 @@ export default class ItemSheet4e extends ItemSheet {
 					return CONFIG.DND4EBETA.weaponProperties[e[0]]
 				})
 			);
-
-			props.push(...Object.entries(item.getDamageType())
+			console.log(item)
+			props.push(...Object.entries(item.system.damageType)
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4EBETA.damageTypes[e[0]])
 			);

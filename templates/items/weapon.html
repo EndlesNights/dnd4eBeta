@@ -360,6 +360,11 @@
 					</label>
 					{{/each}}
 
+					<div class="form-group">
+						<label>{{localize 'DND4EBETA.DamageTypeFromWeapon'}}</label>
+						<span class="checkbox"><input type="checkbox" name="system.damageTypeWeapon" data-dtype="Boolean" {{checked system.damageTypeWeapon}}/></span>
+					</div>
+
 					<label>{{ localize "DND4EBETA.ItemWeaponProperties" }}:</label>
 					<pr></pr>
 					{{#each weaponMetaProperties as |prop p|}}
