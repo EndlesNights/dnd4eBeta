@@ -759,11 +759,19 @@ export class Helper {
 			tag.push(`${CONFIG.DND4EBETA.powerSource[`${chatData.secondPowersource}`]}`)
 		}
 
-		if(chatData.getDamageType) {
-			for ( let [damage, d] of Object.entries(chatData.getDamageType)) {
+
+		
+		if(chatData.weaponDamageType) {
+			for ( let [damage, d] of Object.entries(chatData.weaponDamageType)) {
 				if(d && CONFIG.DND4EBETA.damageTypes[damage]) tag.push(CONFIG.DND4EBETA.damageTypes[damage])
 			}
 		}
+		else if(chatData.dmageType) {
+			for ( let [damage, d] of Object.entries(chatData.damageType)) {
+				if(d && CONFIG.DND4EBETA.damageTypes[damage]) tag.push(CONFIG.DND4EBETA.damageTypes[damage])
+			}
+		}
+
 		if(chatData.effectType) {
 			for ( let [effect, e] of Object.entries(chatData.effectType)) {
 				if(e && CONFIG.DND4EBETA.effectTypes[effect]) tag.push(CONFIG.DND4EBETA.effectTypes[effect])

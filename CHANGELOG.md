@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.9
+- fix power cards labels to again properly show damage types.
+
 ## Version 0.3.8
 - fix consumable items, where there roll properties would become unusable if the item had "Delete on Empty" selected and the item deleted its self.
 
