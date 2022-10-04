@@ -955,9 +955,10 @@ export class Helper {
 		for(let e of effectMap){
 			if(e.flags.dnd4e.effectData.powerEffectTypes === condition){
 				for(let t of tokenTarget){
-					let effectData = e.data;
-					effectData.sourceName = parent.name
-					effectData.origin = parent.uuid
+					// console.log(e)
+					// let effectData = e.data;
+					// e.sourceName = parent.name;
+					e.origin = parent.uuid;
 
 					const duration = e.duration;
 					const flags = e.flags;

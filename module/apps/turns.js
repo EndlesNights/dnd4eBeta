@@ -14,7 +14,7 @@ export class Turns{
         for(let t of game.combat.turns){
             let toDelete = [];
             for(let e of t.token.actor.effects){
-                const effectData = e.data.flags.dnd4e?.effectData;
+                const effectData = e.flags.dnd4e?.effectData;
                 const durationType = effectData?.durationType;
     
                 if(!durationType){
@@ -22,26 +22,26 @@ export class Turns{
                 }
     
                 if(durationType === "endOfTargetTurn"){
-                    if(currentInit <= effectData.durationTurnInit && currentRound >= e.data.duration.rounds && t.id === game.combat.combatant.id
-                        || (currentRound > e.data.duration.rounds && t.id === game.combat.combatant.id) ){
+                    if(currentInit <= effectData.durationTurnInit && currentRound >= e.duration.rounds && t.id === game.combat.combatant.id
+                        || (currentRound > e.duration.rounds && t.id === game.combat.combatant.id) ){
                             toDelete.push(e.id);
                     }
                 }
                 else if(durationType === "endOfUserTurn"){
-                    if(currentInit <= effectData.durationTurnInit && currentRound >= e.data.duration.rounds){
+                    if(currentInit <= effectData.durationTurnInit && currentRound >= e.duration.rounds){
                             toDelete.push(e.id);
                     }
                 }
                 else if(durationType === "startOfTargetTurn" || durationType === "startOfUserTurn"){
-                    if((nextInit <= effectData.durationTurnInit && currentRound == e.data.duration.rounds || currentRound > e.data.duration.rounds)
-                    ||  (nextTurn <= currentTurn && nextInit <= effectData.durationTurnInit && currentRound+1 == e.data.duration.rounds)){
+                    if((nextInit <= effectData.durationTurnInit && currentRound == e.duration.rounds || currentRound > e.duration.rounds)
+                    ||  (nextTurn <= currentTurn && nextInit <= effectData.durationTurnInit && currentRound+1 == e.duration.rounds)){
                             toDelete.push(e.id);
                     }
                 }
     
                 if(currentTurn === game.combat.combatants.size){
                     if(durationType === "endOfUserTurn"){
-                        if(effectData.durationTurnInit < currentInit && e.data.duration.rounds <= currentRound){
+                        if(effectData.durationTurnInit < currentInit && e.duration.rounds <= currentRound){
                             toDelete.push(e.id);
                         }
                     }

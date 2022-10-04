@@ -162,10 +162,10 @@ export default class ItemSheet4e extends ItemSheet {
 
 		if(effectPowers){
 			for ( let e of effectPowers ) {
-				e.durationTypeLable = `${CONFIG.DND4EBETA.durationType[e.data.flags.dnd4e.effectData.durationType]}`;
-				if(e.data.flags.dnd4e?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
-				else if(e.data.flags.dnd4e?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
-				else if(e.data.flags.dnd4e?.effectData?.powerEffectTypes === "self") categories.self.effects.push(e);
+				e.durationTypeLable = `${CONFIG.DND4EBETA.durationType[e.flags.dnd4e.effectData.durationType]}`;
+				if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
+				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
+				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "self") categories.self.effects.push(e);
 				else categories.all.effects.push(e);
 			}
 		}
