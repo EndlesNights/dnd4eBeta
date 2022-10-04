@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.8
+- fix consumable items, where there roll properties would become unusable if the item had "Delete on Empty" selected and the item deleted its self.
+
 ## Version 0.3.7
 - Added damage type override to weapon. Now weapons can chnage the damage type of powers.
 

@@ -490,8 +490,14 @@ export default class Item4e extends Item {
 				actor: this.actor.id,
 				token: this.actor.token,
 				alias: this.actor.name
-			}
+			},
+			flags: {}
 		};
+
+	    // If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
+		if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
+			chatData.flags["dnd4e.itemData"] = templateData.item;
+		}
 
 		// Toggle default roll mode
 		rollMode = rollMode || game.settings.get("core", "rollMode");
@@ -1221,7 +1227,7 @@ export default class Item4e extends Item {
 	 */
 	rollHealing({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
 		const itemData = this.system;
-		const actorData = this.actor.data;
+		const actorData = this.actor;
 		const actorInnerData = this.actor.system;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
@@ -1589,8 +1595,9 @@ export default class Item4e extends Item {
 		if ( !actor ) return;
 
 		// Get the Item
-		// const item = actor.getOwnedItem(card.dataset.itemId);
-		const item = actor.items.get(card.dataset.itemId);
+		const storedData = message.getFlag("dnd4e", "itemData");
+		const item = storedData ? new this(storedData, {parent: actor}) : actor.items.get(card.dataset.itemId) || storedData;
+
 		if ( !item ) {
 			return ui.notifications.error(game.i18n.format("DND4EBETA.ActionWarningNoItem", {item: card.dataset.itemId, name: actor.name}))
 		}
