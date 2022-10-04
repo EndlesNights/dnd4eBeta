@@ -534,7 +534,6 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 			try {
 				const weaponUse = Helper.getWeaponUse(itemData.system, this.actor);
-				console.log(weaponUse)
 				if(weaponUse.system.isRanged) {
 					itemData.system.rangeText = `Range Weapon - ${weaponUse.name}`
 					itemData.system.rangeTextShort = `W-R`
@@ -1261,15 +1260,14 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 		let save = new SaveThrowDialog(this.actor, {effectSave:true, effectId: effectId}).render(true);
 
-		console.log(save)
-		console.log(effectId);
-		console.log(this.actor.effects.get(effectId));
+		// console.log(save)
+		// console.log(effectId);
+		// console.log(this.actor.effects.get(effectId));
 	}
 	/* -------------------------------------------- */
 
 	_onItemRecharge(event){
 		event.preventDefault();
-		console.log("roll recharge!")
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 

@@ -1,7 +1,10 @@
 # Changelog
 
+## Version 0.3.7
+- Added damage type override to weapon. Now weapons can chnage the damage type of powers.
+
 ## Version 0.3.6
-Hotfix, add zero check to system.attributes.init.bonusValue
+- Hotfix, add zero check to system.attributes.init.bonusValue
 
 ## Version 0.3.5
 - the "show players" button on items should now work for items within the directory that players do not have permission to see. Holding down the "Show Players Item Permanently" key (default to Alt) will change the base permission to at least viewable for all players.

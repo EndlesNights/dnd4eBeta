@@ -352,6 +352,12 @@
 				{{/if}}
 
 				<div class="form-group stacked weapon-properties">
+					<div class="form-group">
+						<label style="max-width: 250px">{{localize 'DND4EBETA.DamageTypeFromWeapon'}}</label>
+						<span class="checkbox"><input type="checkbox" name="system.damageTypeWeapon" data-dtype="Boolean" {{checked system.damageTypeWeapon}}/></span>
+					</div>
+
+					{{#if system.damageTypeWeapon}}					
 					<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:</label>
 					<pr></pr>
 					{{#each config.damageTypes as |name type|}}
@@ -359,11 +365,7 @@
 						<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
 					</label>
 					{{/each}}
-
-					<div class="form-group">
-						<label>{{localize 'DND4EBETA.DamageTypeFromWeapon'}}</label>
-						<span class="checkbox"><input type="checkbox" name="system.damageTypeWeapon" data-dtype="Boolean" {{checked system.damageTypeWeapon}}/></span>
-					</div>
+					{{/if}}
 
 					<label>{{ localize "DND4EBETA.ItemWeaponProperties" }}:</label>
 					<pr></pr>

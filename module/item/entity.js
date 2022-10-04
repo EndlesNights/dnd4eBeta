@@ -392,6 +392,7 @@ export default class Item4e extends Item {
 			if(weapon && weapon.system.damageTypeWeapon){
 				this.system.damageTypeWeapon = true;
 				this.system.weaponDamageType = weapon.system.damageType;
+				this.system.weaponSourceName = weapon.name;
 				return weapon.system.damageType;
 			} else {
 				this.system.damageTypeWeapon = false;

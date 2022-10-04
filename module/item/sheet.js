@@ -456,7 +456,6 @@ export default class ItemSheet4e extends ItemSheet {
 					return CONFIG.DND4EBETA.weaponProperties[e[0]]
 				})
 			);
-			console.log(item)
 			props.push(...Object.entries(item.system.damageType)
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4EBETA.damageTypes[e[0]])
@@ -585,7 +584,6 @@ export default class ItemSheet4e extends ItemSheet {
 			html.find(".onetext-control").click(this._onOnetextControl.bind(this));
 			html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
 			html.find(".effect-control").click(event => {
-				console.log(event)
 				if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
 					ActiveEffect4e.onManageActiveEffect(event, this.item);
 			});

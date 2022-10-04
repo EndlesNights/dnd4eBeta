@@ -329,10 +329,9 @@
 
 
 	<div class="form-group stacked weapon-properties">
-		<label title="{{localize 'PrimaryDamageTypeTitle' }}">{{localize "DND4EBETA.PrimaryDamageType"}}:</label>
+		<label title="{{localize 'PrimaryDamageTypeTitleSource'}}" style="max-width: 100%">{{localize "DND4EBETA.PrimaryDamageTypeSource"}}: {{system.weaponSourceName}}</label>
 		<pr></pr>
 		{{#if system.damageTypeWeapon}}
-
 		{{#each config.damageTypes as |name type|}}
 		<label class="checkbox">
 			<input disabled="disabled" type="checkbox" name="system.weaponDamageType.{{type}}" {{checked (lookup ../system.weaponDamageType type)}}/> {{ name }}
