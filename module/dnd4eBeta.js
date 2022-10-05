@@ -152,21 +152,32 @@ Hooks.once("ready",  function() {
 
 	// Determine whether a system migration is required and feasible
 	if ( !game.user.isGM ) return;
-	const currentVersion = game.settings.get("dnd4e", "systemMigrationVersion");
-	const NEEDS_MIGRATION_VERSION = "0.2.64";
-	const COMPATIBLE_MIGRATION_VERSION = 0.80;
-	//if no current Version is set, run migration which will set value
-	const needsMigration = !currentVersion ? true : (currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
+	// const currentVersion = game.settings.get("dnd4e", "systemMigrationVersion");
+	// const NEEDS_MIGRATION_VERSION = "0.3.9";
+	// const COMPATIBLE_MIGRATION_VERSION = "0.2.85";
+	// //if no current Version is set, run migration which will set value
+	// const needsMigration = !currentVersion ? true : (currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
 
-	if ( !needsMigration ) return;
+	// if ( !needsMigration ) return;
 
+	// // Perform the migration
+	// if ( currentVersion && isNewerVersion(COMPATIBLE_MIGRATION_VERSION, currentVersion) ) {
+	// 	const warning = `Your DnD4e system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`;
+	// 	ui.notifications.error(warning, {permanent: true});
+	// }
+
+	const cv = game.settings.get("dnd4e", "systemMigrationVersion") || game.world.flags.dnd4e?.version;
+	const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
+	if ( !cv && totalDocuments === 0 ) return game.settings.set("dnd4e", "systemMigrationVersion", game.system.version);
+	if ( cv && !isNewerVersion(game.system.flags.needsMigrationVersion, cv) ) return;
+  
+	const cmv = game.system.flags.compatibleMigrationVersion || "0.2.85";
 	// Perform the migration
-	if ( currentVersion && isNewerVersion(COMPATIBLE_MIGRATION_VERSION, currentVersion) ) {
-		const warning = `Your DnD4e system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`;
-		ui.notifications.error(warning, {permanent: true});
+	if ( cv && isNewerVersion(cmv, cv) ) {
+	  ui.notifications.error(game.i18n.localize("MIGRATION.4eVersionTooOldWarning"), {permanent: true});
 	}
+	
 	migrations.migrateWorld();
-
 });
 
 /* -------------------------------------------- */
