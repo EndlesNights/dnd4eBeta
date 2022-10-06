@@ -82,7 +82,7 @@
 	border: 1px solid transparent;
 }
 .dnd4eBeta .window-content {
-	overflow-y: hidden;
+	/* overflow-y: hidden; */
 	padding: 5px;
 }
 .dnd4eBeta.sheet .window-content form {

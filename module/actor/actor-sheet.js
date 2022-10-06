@@ -86,7 +86,7 @@ export default class ActorSheet4e extends ActorSheet {
   /* -------------------------------------------- */
 
 	/** @override */
-	async getData() {
+	async getData(options) {
 
 		let isOwner = this.actor.isOwner;
 
@@ -125,8 +125,26 @@ export default class ActorSheet4e extends ActorSheet {
 			skl.label = game.i18n.localize(DND4EBETA.skills[s]);
 		}
 		
-		this._prepareData(actorData.languages, 
+		this._prepareDataTraits(actorData.languages, 
 			{"spoken": CONFIG.DND4EBETA.spoken, "script": CONFIG.DND4EBETA.script}
+		);
+
+		this._prepareDataProfs(actorData.details.armorProf, 
+			{"profArmor": CONFIG.DND4EBETA.profArmor}
+		);
+
+		this._prepareDataProfs(actorData.details.weaponProf, 
+			{ weapons:Object.assign(
+				CONFIG.DND4EBETA.weaponProficiencies,
+				CONFIG.DND4EBETA.simpleM,
+				CONFIG.DND4EBETA.simpleR,
+				CONFIG.DND4EBETA.militaryM,
+				CONFIG.DND4EBETA.militaryR,
+				CONFIG.DND4EBETA.superiorM,
+				CONFIG.DND4EBETA.superiorR,
+				CONFIG.DND4EBETA.improvisedM,
+				CONFIG.DND4EBETA.improvisedR,
+			)}
 		);
 		
 		this._prepareDataSense(actorData.senses,
@@ -164,7 +182,7 @@ export default class ActorSheet4e extends ActorSheet {
 		return data;
 	}
 	
-	_prepareData(data, map) {
+	_prepareDataTraits(data, map) {
 		for ( let [l, choices] of Object.entries(map) ) {
 			const trait = data[l];
 			if ( !trait ) continue;
@@ -183,6 +201,29 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
 		}
+	}
+
+	_prepareDataProfs(data, map){
+		for ( let [l, choices] of Object.entries(map) ) {
+
+			let values = [];
+			if ( data.value ) {
+				values = data.value instanceof Array ? data.value : [data.value];
+			}
+			data.selected = values.reduce((obj, l) => {
+				obj[l] = choices[l];
+				return obj;
+			}, {});
+			data.selected
+
+			// Add custom entry
+			if ( data.custom ) {
+				data.custom.split(";").forEach((c, i) => data.selected[`custom${i+1}`] = c.trim());
+			}
+			data.cssClass = !isEmpty(data.selected) ? "" : "inactive";
+		}
+
+		console.log(data.selected )
 	}
 
 	_prepareItems(data) {
@@ -750,7 +791,8 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 			html.find('.rollInitiative').click(this._onrollInitiative.bind(this));
 			
 			// Trait Selector
-			html.find('.trait-selector').click(this._onTraitSelectorLang.bind(this));
+			html.find('.trait-selector').click(this._onTraitSelector.bind(this));
+			html.find('.trait-selector-weapon').click(this._onTraitSelectorWeapon.bind(this));
 			html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
 			
 			//save throw bonus
@@ -1351,12 +1393,21 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
    * @param {Event} event   The click event which originated the selection
    * @private
    */
-	_onTraitSelectorLang(event) {
+	_onTraitSelector(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
 		const label = a.parentElement.querySelector("h4");
 		const choices = CONFIG.DND4EBETA[a.dataset.options];
-		const options = { name: a.dataset.target, title: label.innerText, choices };
+		const options = { name: a.dataset.target, title: label.innerText, choices};
+		new TraitSelector(this.actor, options).render(true);
+	}
+
+	_onTraitSelectorWeapon(event){
+		event.preventDefault();
+		const a = event.currentTarget;
+		const label = a.parentElement.querySelector("h4");
+		const choices = CONFIG.DND4EBETA.weaponProficienciesMap;
+		const options = { name: a.dataset.target, title: label.innerText, choices, datasetOptions: a.dataset.options, config:CONFIG};
 		new TraitSelector(this.actor, options).render(true);
 	}
 
