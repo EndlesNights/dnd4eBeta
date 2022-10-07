@@ -67,7 +67,6 @@ export default class ItemSheet4e extends ItemSheet {
 		if(itemData.type == "equipment"){
 			data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
 
-			console.log(itemData.system.armour.subType)
 			if(itemData.system.armour.type === "armour"){
 				data.isArmour = true;
 				data.armourBaseTypes = CONFIG.DND4EBETA[itemData.system.armour.subType];

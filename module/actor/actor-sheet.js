@@ -129,7 +129,7 @@ export default class ActorSheet4e extends ActorSheet {
 			{"spoken": CONFIG.DND4EBETA.spoken, "script": CONFIG.DND4EBETA.script}
 		);
 
-		this._prepareDataProfs(actorData.details.armorProf, 
+		this._prepareDataProfs(actorData.details.armourProf, 
 			{"profArmor": CONFIG.DND4EBETA.profArmor}
 		);
 
@@ -223,8 +223,6 @@ export default class ActorSheet4e extends ActorSheet {
 			}
 			data.cssClass = !isEmpty(data.selected) ? "" : "inactive";
 		}
-
-		console.log(data.selected )
 	}
 
 	_prepareItems(data) {

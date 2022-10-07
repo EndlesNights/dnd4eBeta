@@ -292,8 +292,7 @@ export const getMigrationData = async function() {
  function _migrateActorAddProfKeys(actorData, updateData) {
 	if(!actorData?.system?.details) return;
 
-	console.log(actorData.system.details.armorProf == undefined)
-	if(actorData.system.details.armorProf == undefined){
+	if(actorData.system.details.armourProf == undefined){
 		updateData["system.details"] = {
 			"value": [],
 			"custom": ""

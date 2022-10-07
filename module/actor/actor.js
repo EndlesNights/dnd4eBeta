@@ -1015,9 +1015,8 @@ export class Actor4e extends Actor {
 				data.forEach(datum => {
 					let t = datum.type;
 					let initial = {};
-					if ( t === "weapon" ) initial["system.proficient"] = true;
+					// if ( t === "weapon" ) initial["system.proficient"] = true;
 					if ( ["weapon", "equipment"].includes(t) ) initial["system.equipped"] = true;
-					if ( t === "spell" ) initial["system.prepared"] = true;
 					mergeObject(datum, initial);
 				})
 			}

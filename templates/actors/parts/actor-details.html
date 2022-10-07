@@ -57,12 +57,12 @@
 {{!-- Proficiency --}}
 <div>
 	<h4 class="attribute-name box-title">{{ localize "DND4EBETA.Proficiency" }}</h4>
-	<a class="trait-selector" data-options="profArmor" data-target="system.details.armorProf">
+	<a class="trait-selector" data-options="profArmor" data-target="system.details.armourProf">
 		<span>{{ localize "DND4EBETA.Armour" }}</span>
 		<i class="fas fa-edit"></i>
 	</a>
 	<ul class="traits-list" style="list-style-type: none;">
-	{{#each system.details.armorProf.selected as |v k|}}
+	{{#each system.details.armourProf.selected as |v k|}}
 		<li class="tag {{k}}">{{v}}</li>
 	{{/each}}
 	</ul>

@@ -487,22 +487,19 @@ DND4EBETA.cloth = {
 DND4EBETA.light = {
 	leather: "DND4EBETA.ArmourProfLeather",
 	hide: "DND4EBETA.ArmourProfHide",
-}
+};
 DND4EBETA.heavy = {
 	chain: "DND4EBETA.ArmourProfChain",
 	scale: "DND4EBETA.ArmourProfScale",
 	plate: "DND4EBETA.ArmourProfPlate",
-}
-
+};
 DND4EBETA.natural = {
 
-}
-
+};
 DND4EBETA.shield = {
 	light: "DND4EBETA.ArmourProfShieldLight",
 	heavy: "DND4EBETA.ArmourProfShieldHeavy",
-}
-
+};
 DND4EBETA.weaponProficiencies = {
 	simpleM: "DND4EBETA.WeaponSimpleM",
 	simpleR: "DND4EBETA.WeaponSimpleR",

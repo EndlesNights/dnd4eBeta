@@ -68,8 +68,107 @@ export default class Item4e extends Item {
 		  }
 		}
 		return Math.round(Number(max));
-	  }	
+	}	
 	  
+
+	/** @inheritdoc */
+	async _preCreate(data, options, user) {
+		await super._preCreate(data, options, user);
+		if ( !this.isEmbedded) return;
+		const isNPC = this.parent.type === "npc";
+		let updates;
+		switch (data.type) {
+			case "equipment":
+				updates = this._onCreateOwnedEquipment(data, isNPC);
+				break;
+			case "weapon":
+				updates = this._onCreateOwnedWeapon(data, isNPC);
+				break;
+		}
+		if ( updates ){
+			console.log(updates)
+			return this.updateSource(updates);
+		} 
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Pre-creation logic for the automatic configuration of owned equipment type Items.
+	 *
+	 * @param {object} data       Data for the newly created item.
+	 * @param {boolean} isNPC     Is this actor an NPC?
+	 * @returns {object}          Updates to apply to the item data.
+	 * @private
+	 */
+	_onCreateOwnedEquipment(data, isNPC) {
+		if ( isNPC ) {
+			const updates = {};
+			if ( !foundry.utils.hasProperty(data, "system.equipped") ) updates["system.equipped"] = true;
+			if ( !foundry.utils.hasProperty(data, "system.proficient") ) updates["system.proficient"] = true;
+			return updates;
+		}
+
+		const updates = {};
+		const actorProfs = this.parent.system.details.armourProf;
+		updates["system.proficient"] = false;
+
+		if(data.system.armour.type === "armour" ){
+			if(actorProfs.value.includes(data.system.armourBaseType)){
+				updates["system.proficient"] = actorProfs.value.includes(data.system.armourBaseType);
+			}
+			else if(data.system.armourBaseType === "custom"){
+				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.armourBaseTypeCustom);
+			}
+		}
+
+		if(data.system.armour.type === "arms" && CONFIG.DND4EBETA.shield[data.system.armour.subType]){
+			if(actorProfs.value.includes(data.system.shieldBaseType)){
+				updates["system.proficient"] = actorProfs.value.includes(data.system.shieldBaseType);
+				console.log("Enters")
+			}
+			else if(data.system.shieldBaseType === "custom"){
+				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.shieldBaseTypeCustom);
+			}
+		}
+
+		return updates;
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Pre-creation logic for the automatic configuration of owned weapon type Items.
+	 * @param {object} data       Data for the newly created item.
+	 * @param {boolean} isNPC     Is this actor an NPC?
+	 * @returns {object}          Updates to apply to the item data.
+	 * @private
+	 */
+
+	_onCreateOwnedWeapon(data, isNPC) {
+		if ( isNPC ) {
+			const updates = {};
+			if ( !foundry.utils.hasProperty(data, "system.equipped") ) updates["system.equipped"] = true;
+			if ( !foundry.utils.hasProperty(data, "system.proficient") ) updates["system.proficient"] = true;
+			return updates;
+		}
+		if(data.system?.proficient === undefined ) return {};
+
+		const updates = {};
+		const actorProfs = this.parent.system.details.weaponProf;
+		updates["system.proficient"] = false;
+
+		if(actorProfs.value.includes(data.system.weaponType)){
+			updates["system.proficient"] = actorProfs.value.includes(data.system.weaponType);
+		}
+		else if(data.system.weaponBaseType === "custom"){
+			updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.weaponBaseTypeCustom);
+		} else {
+			updates["system.proficient"] = actorProfs.value.includes(data.system.weaponBaseType);
+		}
+		return updates;
+	}
+
 	/* -------------------------------------------- */
 	/*  Item Properties                             */
 	/* -------------------------------------------- */
