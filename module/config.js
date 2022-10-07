@@ -503,6 +503,8 @@ DND4EBETA.weaponProficienciesMap = {
 
 	improvisedM: "ImprovisedM",
 	improvisedR: "ImprovisedR",
+
+	implementGroup: "Implement"
 };
 
 DND4EBETA.simpleM = {

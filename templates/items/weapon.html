@@ -73,7 +73,19 @@
 				</select>
 			</div>
 
-			<!-- {{#unless isMountable}} -->
+			<div class="form-group">
+				<label>{{ localize "DND4EBETA.WeaponBase" }}:</label>
+				<select name="system.weaponBaseType">
+					{{#select system.weaponBaseType}}
+					<option value="">{{ localize 'DND4EBETA.None' }}</option>
+					<option value="custom">{{ localize 'DND4EBETA.Custom' }}</option>
+					{{#each weaponBaseTypes as |name type|}}
+					<option value="{{type}}">{{name}}</option>
+					{{/each}}
+					{{/select}}
+				</select>
+			</div>
+
 			{{!-- Weapon Status --}}
 			<div class="form-group stacked">
 				<label>{{ localize "DND4EBETA.ItemWeaponStatus" }}</label>
@@ -95,7 +107,6 @@
 					</label>
 				</div>
 			</div>
-			<!-- {{/unless}} -->
 
 			{{!-- Weapon Properties --}}
 			<div class="">

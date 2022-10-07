@@ -2368,6 +2368,10 @@ span.flavor-text.fumble {
 	margin: 0;
 	padding: 0;
 }
+
+#trait-selector .trait-list .trait-list {
+	padding-left: 20px;
+}
 #trait-selector input[type="text"] {
 	height: 18px;
 	margin: 2px;

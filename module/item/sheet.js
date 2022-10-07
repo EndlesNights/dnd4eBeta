@@ -87,6 +87,8 @@ export default class ItemSheet4e extends ItemSheet {
 						disabled: (attrib === "imp" && itemData.system.weaponType === "implement")
 				}
 			}
+
+			data.weaponBaseTypes = CONFIG.DND4EBETA[itemData.system.weaponType];
 		}
 
 		// Action Details
