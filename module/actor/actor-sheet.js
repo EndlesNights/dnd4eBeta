@@ -144,7 +144,7 @@ export default class ActorSheet4e extends ActorSheet {
 				CONFIG.DND4EBETA.superiorR,
 				CONFIG.DND4EBETA.improvisedM,
 				CONFIG.DND4EBETA.improvisedR,
-				CONFIG.DND4EBETA.implementGroup
+				CONFIG.DND4EBETA.implement
 			)}
 		);
 		

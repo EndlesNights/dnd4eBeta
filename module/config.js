@@ -477,8 +477,31 @@ DND4EBETA.profArmor = {
 	chain: "DND4EBETA.ArmourProfChain",
 	scale: "DND4EBETA.ArmourProfScale",
 	plate: "DND4EBETA.ArmourProfPlate",
-	shield: "DND4EBETA.ArmourProfShield",
+	light: "DND4EBETA.ArmourProfShieldLight",
+	heavy: "DND4EBETA.ArmourProfShieldHeavy",
 };
+
+DND4EBETA.cloth = {
+	cloth: "DND4EBETA.ArmourProfCloth",
+};
+DND4EBETA.light = {
+	leather: "DND4EBETA.ArmourProfLeather",
+	hide: "DND4EBETA.ArmourProfHide",
+}
+DND4EBETA.heavy = {
+	chain: "DND4EBETA.ArmourProfChain",
+	scale: "DND4EBETA.ArmourProfScale",
+	plate: "DND4EBETA.ArmourProfPlate",
+}
+
+DND4EBETA.natural = {
+
+}
+
+DND4EBETA.shield = {
+	light: "DND4EBETA.ArmourProfShieldLight",
+	heavy: "DND4EBETA.ArmourProfShieldHeavy",
+}
 
 DND4EBETA.weaponProficiencies = {
 	simpleM: "DND4EBETA.WeaponSimpleM",
@@ -504,7 +527,7 @@ DND4EBETA.weaponProficienciesMap = {
 	improvisedM: "ImprovisedM",
 	improvisedR: "ImprovisedR",
 
-	implementGroup: "Implement"
+	implement: "Implement"
 };
 
 DND4EBETA.simpleM = {
@@ -971,15 +994,15 @@ DND4EBETA.weaponGroup = {
 	"whip": "DND4EBETA.WeaponGroupWhip"
 };
 
-DND4EBETA.implementGroup = {
-	"holyS": "DND4EBETA.ImplementGroupHolySymbol",
-	"ki": "DND4EBETA.ImplementGroupKiFocus",
-	"orb": "DND4EBETA.ImplementGroupOrb",
-	"rod": "DND4EBETA.ImplementGroupRod",
-	"staff": "DND4EBETA.ImplementGroupStaff",
-	"tome": "DND4EBETA.ImplementGroupTome",
-	"totem": "DND4EBETA.ImplementGroupTotem",
-	"wand": "DND4EBETA.ImplementGroupWand"
+DND4EBETA.implement = {
+	"holyS": "DND4EBETA.ImplementHolySymbol",
+	"ki": "DND4EBETA.ImplementKiFocus",
+	"orb": "DND4EBETA.ImplementOrb",
+	"rod": "DND4EBETA.ImplementRod",
+	"staff": "DND4EBETA.ImplementStaff",
+	"tome": "DND4EBETA.ImplementTome",
+	"totem": "DND4EBETA.ImplementTotem",
+	"wand": "DND4EBETA.ImplementWand"
 };
 
 /* -------------------------------------------- */

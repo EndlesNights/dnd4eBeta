@@ -64,7 +64,22 @@ export default class ItemSheet4e extends ItemSheet {
 			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
 		}
 
-		if(itemData.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
+		if(itemData.type == "equipment"){
+			data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
+
+			console.log(itemData.system.armour.subType)
+			if(itemData.system.armour.type === "armour"){
+				data.isArmour = true;
+				data.armourBaseTypes = CONFIG.DND4EBETA[itemData.system.armour.subType];
+				data.isArmourBaseTypeCustom = (itemData.system.armourBaseType === "custom");
+			}
+			else if(itemData.system.armour.type === "arms" && CONFIG.DND4EBETA.profArmor[itemData.system.armour.subType]){
+				data.isShield = true;
+				data.shieldBaseTypes = CONFIG.DND4EBETA.shield;
+				data.isShieldBaseTypeCustom = (itemData.system.shieldBaseType === "custom");
+			}
+		}
+
 		if(itemData.system?.useType) {
 			if(!(itemData.system.rangeType === "personal" || itemData.system.rangeType === "closeBurst" || itemData.system.rangeType === "closeBlast" || itemData.system.rangeType === "")){
 				itemData.system.isRange = true;
@@ -89,6 +104,7 @@ export default class ItemSheet4e extends ItemSheet {
 			}
 
 			data.weaponBaseTypes = CONFIG.DND4EBETA[itemData.system.weaponType];
+			data.isWeaponBaseTypeCustom = (itemData.system.weaponBaseType === "custom");
 		}
 
 		// Action Details

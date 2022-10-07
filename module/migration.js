@@ -181,8 +181,7 @@ function cleanActorData(actorData) {
  */
 export const migrateItemData = function(item) {
 	const updateData = {};
-	// _migrateItemAttunement(item, updateData);
-	// _migrateItemSpellcasting(item, updateData);
+	_migrateImplmentKey(item, updateData);
 	return updateData;
 };
 
@@ -310,6 +309,24 @@ export const getMigrationData = async function() {
 	return updateData;
  }
 
+
+/**
+ * Migrate any data from the key "implementGroup" to the key of "implment"
+ * @param {object} itemData   Item data being migrated.
+ * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+ function _migrateImplmentKey(itemData, updateData){
+	if(itemData.type !== "weapon" && itemData.system.implementGroup != undefined) return;
+
+	const implementData = itemData.system.implementGroup;
+
+	updateData["system.-=implementGroup"] = null;
+	updateData["system.implement"] = implementData;
+
+	return updateData;
+ }
 /**
  * A general tool to purge flags from all entities in a Compendium pack.
  * @param {Compendium} pack   The compendium pack to clean

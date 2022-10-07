@@ -86,6 +86,13 @@
 				</select>
 			</div>
 
+			{{#if isWeaponBaseTypeCustom}}
+			<div class="form-group">
+				<label>{{ localize "DND4EBETA.WeaponBaseCustom" }}:</label>
+				<input type="text" name="system.weaponBaseTypeCustom" value="{{system.weaponBaseTypeCustom}}" title="{{ localize "DND4EBETA.WeaponBaseCustom" }}" placeholder="{{ localize "DND4EBETA.WeaponBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+			</div>
+			{{/if}}
+
 			{{!-- Weapon Status --}}
 			<div class="form-group stacked">
 				<label>{{ localize "DND4EBETA.ItemWeaponStatus" }}</label>
@@ -385,8 +392,8 @@
 							<input type="checkbox" name="system.properties.{{p}}" {{checked prop.checked}} {{#if prop.disabled}}disabled{{/if}} /> {{ prop.propName }}
 						</label>
 					{{/each}}
-
-					<label>Weapon Group:</label>
+					<pr></pr>
+					<label>{{ localize "DND4EBETA.WeaponGroup" }}:</label>
 					<pr></pr>
 					{{#each config.weaponGroup as |name group|}}
 					<label class="checkbox">
@@ -395,11 +402,12 @@
 					{{/each}}
 
 					{{#if system.properties.imp}}
-					<label>Implement Group:</label>
 					<pr></pr>
-					{{#each config.implementGroup as |name group|}}
+					<label>{{ localize "DND4EBETA.ImplementGroup" }}:</label>
+					<pr></pr>
+					{{#each config.implement as |name group|}}
 					<label class="checkbox">
-						<input type="checkbox" name="system.implementGroup.{{group}}" {{checked (lookup ../system.implementGroup group)}}/> {{ name }}
+						<input type="checkbox" name="system.implement.{{group}}" {{checked (lookup ../system.implement group)}}/> {{ name }}
 					</label>
 					{{/each}}
 					{{/if}}
