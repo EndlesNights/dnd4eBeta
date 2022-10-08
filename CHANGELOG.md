@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.11
+- fixed bug caused by 0.3.7 to effects untyped bonus
+
 ## Version 0.3.10
 - added proficiency tracker for armour
 - added proficiency tracker for weapons
