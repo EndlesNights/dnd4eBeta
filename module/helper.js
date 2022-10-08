@@ -169,12 +169,12 @@ export class Helper {
 				}
 
 				const suitableKeywords = []
-				this._addKeywords(suitableKeywords, powerInnerData.getDamageType)
+				this._addKeywords(suitableKeywords, powerInnerData.damageType)
 				this._addKeywords(suitableKeywords, powerInnerData.effectType)
 				if (weaponInnerData) {
 					this._addKeywords(suitableKeywords, weaponInnerData.weaponGroup)
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
-					this._addKeywords(suitableKeywords, weaponInnerData.getDamageType)
+					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
 					this._addKeywords(suitableKeywords, weaponInnerData.implement)
 				}
 
