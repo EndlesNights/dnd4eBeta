@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.3.10
+- added proficiency tracker for armour
+- added proficiency tracker for weapons
+- when adding a armour or weapon to a player character sheet, it will check the items base stats against the characters proficiency, and automatically set the items proficiency to match.
+- fixed an error where player names would not properly display on secondwind message.
+
 ## Version 0.3.9
 - fix power cards labels to again properly show damage types.
 
