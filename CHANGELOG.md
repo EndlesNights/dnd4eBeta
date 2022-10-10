@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.12
+- hothix an error when creating equipment type items on character sheets
+
 ## Version 0.3.11
 - fixed bug caused by 0.3.7 to effects untyped bonus
 

@@ -113,7 +113,7 @@ export default class Item4e extends Item {
 		const actorProfs = this.parent.system.details.armourProf;
 		updates["system.proficient"] = false;
 
-		if(data.system.armour.type === "armour" ){
+		if(data.system.armour?.type === "armour" ){
 			if(actorProfs.value.includes(data.system.armourBaseType)){
 				updates["system.proficient"] = actorProfs.value.includes(data.system.armourBaseType);
 			}
@@ -122,7 +122,7 @@ export default class Item4e extends Item {
 			}
 		}
 
-		if(data.system.armour.type === "arms" && CONFIG.DND4EBETA.shield[data.system.armour.subType]){
+		if(data.system.armour?.type === "arms" && CONFIG.DND4EBETA.shield[data.system.armour.subType]){
 			if(actorProfs.value.includes(data.system.shieldBaseType)){
 				updates["system.proficient"] = actorProfs.value.includes(data.system.shieldBaseType);
 				console.log("Enters")
