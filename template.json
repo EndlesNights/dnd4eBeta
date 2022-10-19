@@ -516,6 +516,7 @@
 				}
 				
 			},
+			"conditionImmunities": [],
 			"encumbrance": {
 				"value": null,
 				"max": null,
@@ -569,6 +570,7 @@
 			"weight": "",
 			"alignment": "",
 			"deity": "",
+			"equipment": "",
 			
 			"secondwind": false,
 			"deathsaves": 3,
