@@ -516,6 +516,7 @@
 				}
 				
 			},
+			"conditionResistances": [],
 			"conditionImmunities": [],
 			"encumbrance": {
 				"value": null,
