@@ -260,7 +260,7 @@ export const getMigrationData = async function() {
 	if(!ad) return updateData;
 
 	const old = ad?.attributes?.hp?.temphp;
-	const hasOld = old !== undefined || ad.attributes[`hp-=temphp`] !== undefined;
+	const hasOld = old !== undefined && ad.attributes[`hp-=temphp`] !== undefined;
 	if ( hasOld ) {
 		// If new data is not present, migrate the old data
 		if (old !== undefined && ad.attributes?.temphp?.value !== old && (typeof old === "number") ) {
