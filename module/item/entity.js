@@ -12,6 +12,7 @@ export default class Item4e extends Item {
 	
 	/** @inheritdoc */
 	async _preUpdate(changed, options, user) {
+		console.log(changed)
 		await super._preUpdate(changed, options, user);
 		// Check for implement weapon type and set weapon implement property to true
 		if (this.type === "weapon" && changed.system?.weaponType === "implement"){
@@ -363,6 +364,9 @@ export default class Item4e extends Item {
 			labels.ref = system.armour.ref ? `${system.armour.ref} ${game.i18n.localize("DND4EBETA.REF")}` : "";
 			labels.wil = system.armour.wil ? `${system.armour.wil} ${game.i18n.localize("DND4EBETA.WIL")}` : "";
 		}
+		else if (itemData.type === "power"){
+			this.prepPowerImage();
+		}
 
 		// Activated Items
 		if ( system.hasOwnProperty("activation") ) {
@@ -480,6 +484,37 @@ export default class Item4e extends Item {
 
 		itemData.system.isOnCooldown = this.isOnCooldown();
 
+	}
+
+	/* -------------------------------------------- */
+	prepPowerImage(){
+		if(this.img && this.img !== "icons/svg/item-bag.svg") return;
+		
+		const system = this.system;
+		console.log(this)
+
+		//set up the primary based on use type, ie At-Will, Encounter, daily etc
+		let svgPath = `systems/dnd4e/icons/power-icons/${system.useType}`;
+		
+		//set up the secondary
+		if(system.actionType === "move"){
+			svgPath += `_move`;
+		}
+		else if(system.effectType?.spirit){
+			svgPath += `_spirit`;
+		}
+		else if(system.effectType?.summon){
+			svgPath += `_summon`;
+		}
+		else if(system.rangeType === "weapon"){
+			if(["meleeRanged", "melee", "range"].includes(system.weaponType)){
+				svgPath += `_${system.weaponType}`;
+			}
+		}
+
+		svgPath += ".svg";
+		console.log(svgPath)
+		this.img = "systems/dnd4e/icons/power-icons/sword.svg";
 	}
 
 	/* -------------------------------------------- */
