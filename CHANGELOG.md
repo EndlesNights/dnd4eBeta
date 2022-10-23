@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.13
+- fixes Migration Fix and Template Changes [merge](https://github.com/EndlesNights/dnd4eBeta/pull/249) from [draconas1](https://github.com/draconas1)
+
 ## Version 0.3.12
 - hothix an error when creating equipment type items on character sheets
 
