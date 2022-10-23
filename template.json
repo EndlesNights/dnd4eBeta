@@ -516,8 +516,11 @@
 				}
 				
 			},
-			"conditionResistances": [],
-			"conditionImmunities": [],
+			"untypedResistances": {
+				"resistances" : [],
+				"vulnerabilities" : [],
+				"immunities" : []
+			},
 			"encumbrance": {
 				"value": null,
 				"max": null,
