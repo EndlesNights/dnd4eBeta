@@ -317,36 +317,49 @@ export default class ItemSheet4e extends ItemSheet {
 	 */
 	_getItemConsumptionTargets(item) {
 		const consume = item.system.consume || {};
-		if ( !consume.type ) return [];
+		if (!consume.type) return [];
+
 		const actor = this.item.actor;
-		if ( !actor ) return {};
-	
+
+		// Attributes
+		// this can work separate to an actor as the actors model is known at compile time
+		// if separate from an actor it will default to the PC model, as unlikely to be set with an NPC
+		if (consume.type === "attribute") {
+			if (actor) {
+				const attributes = TokenDocument.getTrackedAttributes(actor.system)
+				attributes.bar.forEach(a => a.push("value"));
+				return attributes.bar.concat(attributes.value).reduce((obj, a) => {
+					let k = a.join(".");
+					obj[k] = k;
+					return obj;
+				}, {});
+			}
+			else {
+				const attributes = game.system.model.Actor['Player Character']
+				return Object.keys(foundry.utils.flattenObject(attributes)).reduce((obj, a) => {
+					obj[a] = a;
+					return obj;
+				}, {});
+			}
+		}
+
+		// All the rest of them require the actor, because they are very tied to that individual actors stuff
+		if (!actor) return {};
+
 		// Ammunition
-		if ( consume.type === "ammo" ) {
-			return actor.itemTypes.consumable.reduce((ammo, i) =>  {
-				if ( i.system.consumableType === "ammo" ) {
+		else if (consume.type === "ammo") {
+			return actor.itemTypes.consumable.reduce((ammo, i) => {
+				if (i.system.consumableType === "ammo") {
 					ammo[i.id] = `${i.name} (${i.system.quantity})`;
 				}
 				return ammo;
 			}, {});
 		}
 
-	// Attributes
-	else if ( consume.type === "attribute" ) {
-		// const attributes = Object.values(CombatTrackerConfig.prototype.getAttributeChoices())[0]; // Bit of a hack
-		const attributes = TokenDocument.getTrackedAttributes(actor.system);
-		attributes.bar.forEach(a => a.push("value"));
-		return attributes.bar.concat(attributes.value).reduce((obj, a) => {
-			let k = a.join(".");
-			obj[k] = k;
-			return obj;
-		},{});
-	}
-
 		// Materials
-		else if ( consume.type === "material" ) {
+		else if (consume.type === "material") {
 			return actor.items.reduce((obj, i) => {
-				if ( ["consumable", "loot"].includes(i.data.type) ) {
+				if (["consumable", "loot"].includes(i.data.type)) {
 					obj[i.id] = `${i.name} (${i.system.quantity})`;
 				}
 				return obj;
@@ -354,10 +367,10 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 
 		// Charges
-		else if ( consume.type === "charges" ) {
+		else if (consume.type === "charges") {
 			return actor.items.reduce((obj, i) => {
 				const uses = i.system.uses || {};
-				if ( uses.per && uses.max ) {
+				if (uses.per && uses.max) {
 					const label = uses.per === "charges" ?
 						` (${game.i18n.format("DND4EBETA.AbilityUseChargesLabel", {value: uses.value})})` :
 						` (${game.i18n.format("DND4EBETA.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
