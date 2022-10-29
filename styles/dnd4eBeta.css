@@ -2201,8 +2201,7 @@ font-size: 12px;
 .dnd4eBeta.chat-card .card-header img {
 	flex: 0 0 36px;
 	margin-right: 5px;
-	
-		display: flex;
+	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: flex-start;
@@ -2216,6 +2215,7 @@ font-size: 12px;
 	font-weight: 700;
 	color: #e0e0e0;
 	border-bottom: 0px;
+	padding-left: 3px;
 }
 .dnd4eBeta.chat-card .card-header h3:hover {
 	color: #111;
