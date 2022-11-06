@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.15
+- fixed an error where some damage types was not appearing in power cards.
+
 ## Version 0.3.14
 - Items without actors will now be able to set attribute resource consuemntion [merge](https://github.com/EndlesNights/dnd4eBeta/pull/251) from [draconas1](https://github.com/draconas1)
 - Change to chat card styling [merge](https://github.com/EndlesNights/dnd4eBeta/pull/250) from [FoxLee](https://github.com/FoxLee)
