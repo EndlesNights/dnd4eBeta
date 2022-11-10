@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.16
+- Fast Forward for TAH Powers [merge](https://github.com/EndlesNights/dnd4eBeta/pull/252) from [draconas1](https://github.com/draconas1)
+
 ## Version 0.3.15
 - fixed an error where some damage types was not appearing in power cards.
 
