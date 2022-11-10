@@ -1030,7 +1030,7 @@ export class Actor4e extends Actor {
 	/**
 	* Use a Power, consume that abilities use, and resources
 	* @param {Item4e} item   The power being used by the actor
-	* @param {Event} event   The originating user interaction which triggered the cast
+	* @param {} options   Options for using the power
 	*/
 	
 	async usePower(item, {configureDialog=true, fastForward=false}={}) {
