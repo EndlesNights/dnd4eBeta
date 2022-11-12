@@ -1,9 +1,9 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
-<div class="dnd4eAltus chat-card item-card" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
+<div class="dnd4eAltus chat-card item-card {{item.type}}-card {{actor.type}} {{#if isPower}}use-{{item.system.useType}}{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
 	 {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
 	<header class="card-header flexrow">
 		<img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
-		<h3 class="item-name ability-usage--" style="padding-left: 3px;">{{item.name}}</h3>
+		<h3 class="item-name ability-usage--">{{item.name}}</h3>
 	</header>
 
 	<div class="card-content" style="display: block;">
@@ -18,8 +18,6 @@
 		</div>
 	</div>
 	<div class="card-buttons">
-
-
 
 		{{#if hasAttack}}
 		<button data-action="attack" title="{{ localize "DND4EALTUS.QuickRoll" }}">
@@ -65,12 +63,11 @@
 		{{/if}}
 	</div>
 
+	{{#unless isPower}}
 	<footer class="card-footer">
-		{{#if isPower}}
-		{{else}}
 			{{#each data.properties}}
 			<span>{{this}}</span>
 			{{/each}}
-		{{/if}}
 	</footer>
+	{{/unless}}
 </div>

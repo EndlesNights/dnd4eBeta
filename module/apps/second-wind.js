@@ -51,10 +51,9 @@ export class SecondWindDialog extends DocumentSheet {
 				extra = extra.replace(/;/g,'</li><li>');
 				extra = "<li>" + extra + "</li>";
 			}
-
 			ChatMessage.create({
 				user: game.user.id,
-				speaker: {actor: this.object, alias: this.object.system.name},
+				speaker: {actor: this.object, alias: this.object.name},
 				// flavor: restFlavor,
 				content: `${this.object.system.name} uses Second Wind gaining the following benifits:
 					<ul>

@@ -54,12 +54,35 @@
 		{{/select}}
 	</select>
 </div>		
+{{!-- Proficiency --}}
+<div>
+	<h4 class="attribute-name box-title">{{ localize "DND4EALTUS.Proficiency" }}</h4>
+	<a class="trait-selector" data-options="profArmor" data-target="system.details.armourProf">
+		<span>{{ localize "DND4EALTUS.Armour" }}</span>
+		<i class="fas fa-edit"></i>
+	</a>
+	<ul class="traits-list" style="list-style-type: none;">
+	{{#each system.details.armourProf.selected as |v k|}}
+		<li class="tag {{k}}">{{v}}</li>
+	{{/each}}
+	</ul>
+
+	<a class="trait-selector-weapon" data-options="weaponProf" data-target="system.details.weaponProf">
+		<span>{{ localize "DND4EALTUS.Weapon" }}</span>
+		<i class="fas fa-edit"></i>
+	</a>
+	<ul class="traits-list" style="list-style-type: none;">
+	{{#each system.details.weaponProf.selected as |v k|}}
+		<li class="tag {{k}}">{{v}}</li>
+	{{/each}}
+	</ul>
+</div>
 
 {{!-- Languages --}}
 <div>
-	<h4 class="attribute-name box-title">Languages</h4>
+	<h4 class="attribute-name box-title">{{ localize "DND4EALTUS.Languages" }}</h4>
 	<a class="trait-selector" data-options="spoken" data-target="system.languages.spoken">
-		<span>Spoken</span>
+		<span>{{ localize "DND4EALTUS.Spoken" }}</span>
 		<i class="fas fa-edit"></i>
 	</a>
 	<ul class="traits-list" style="list-style-type: none;">
@@ -69,7 +92,7 @@
 	</ul>
 	
 	<a class="trait-selector" data-options="script" data-target="system.languages.script">
-		<span>Script</span>
+		<span>{{ localize "DND4EALTUS.Script" }}</span>
 		<i class="fas fa-edit"></i>
 	</a>
 	<ul class="traits-list" style="list-style-type: none;">
@@ -81,12 +104,10 @@
 
 {{!-- Senses --}}
 <div>
-	<h4 class="attribute-name box-title">Special Senses</h4>    
+	<h4 class="attribute-name box-title">{{ localize "DND4EALTUS.SpecialSenses" }}</h4>    
 	<div style="text-align: left;">
-
-		
 		<a class="trait-selector-senses" data-options="special" data-target="system.senses.special">
-			<span>Special Senses</span>
+			<span>{{ localize "DND4EALTUS.SpecialSenses" }}</span>
 			<i class="fas fa-edit"></i>
 		</a>
 		<ul class="traits-list" style="list-style-type: none;">

@@ -7,7 +7,7 @@
     <div class="form-group">
         <label>{{ localize "DND4EALTUS.AbilityModifier" }}</label>
         <select name="ability">
-        {{#select data.item.ability}}
+        {{#select system.item.ability}}
         {{#each config.abilities as |ability a|}}
         <option value="{{a}}">{{ability}}</option>
         {{/each}}

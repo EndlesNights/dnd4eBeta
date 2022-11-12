@@ -187,6 +187,14 @@
 				"saves": {
 					"bonus": [{}],
 					"value": 0
+				},
+				"weaponProf": {
+					"value": [],
+					"custom": ""
+				},
+				"armourProf": {
+					"value": [],
+					"custom": ""
 				}
 			},
 			"languages": {
@@ -522,6 +530,11 @@
 				}
 				
 			},
+			"untypedResistances": {
+				"resistances" : [],
+				"vulnerabilities" : [],
+				"immunities" : []
+			},
 			"encumbrance": {
 				"value": null,
 				"max": null,
@@ -575,6 +588,7 @@
 			"weight": "",
 			"alignment": "",
 			"deity": "",
+			"equipment": "",
 			
 			"secondwind": false,
 			"deathsaves": 3,

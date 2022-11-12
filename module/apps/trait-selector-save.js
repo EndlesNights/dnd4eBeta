@@ -40,7 +40,7 @@ export default class TraitSelectorSave extends FormApplication {
   getData() {
 	
     // Get current values
-    let attr = getProperty(this.object.data, this.attribute) || {};
+    let attr = getProperty(this.object, this.attribute) || {};
     attr.value = attr.value || [];
 	
 	// Populate choices

@@ -330,7 +330,9 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		system.attributes.init.bonusValue = initBonusValue;
+		//used for effects
+		initBonusValue += system.attributes.init.bonusValue || 0;
+
 		if(this.type === "NPC" && !system.advancedCals){
 			system.attributes.init.value = (system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod : 0) + (system.attributes.init.base || 0) + initBonusValue;
 		} else {
@@ -1013,9 +1015,8 @@ export class Actor4e extends Actor {
 				data.forEach(datum => {
 					let t = datum.type;
 					let initial = {};
-					if ( t === "weapon" ) initial["system.proficient"] = true;
+					// if ( t === "weapon" ) initial["system.proficient"] = true;
 					if ( ["weapon", "equipment"].includes(t) ) initial["system.equipped"] = true;
-					if ( t === "spell" ) initial["system.prepared"] = true;
 					mergeObject(datum, initial);
 				})
 			}
@@ -1029,7 +1030,7 @@ export class Actor4e extends Actor {
 	/**
 	* Use a Power, consume that abilities use, and resources
 	* @param {Item4e} item   The power being used by the actor
-	* @param {Event} event   The originating user interaction which triggered the cast
+	* @param {} options   Options for using the power
 	*/
 	
 	async usePower(item, {configureDialog=true, fastForward=false}={}) {

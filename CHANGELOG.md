@@ -1,5 +1,54 @@
 # Changelog
 
+## Version 0.3.16
+- Fast Forward for TAH Powers [merge](https://github.com/EndlesNights/dnd4eAltus/pull/252) from [draconas1](https://github.com/draconas1)
+
+## Version 0.3.15
+- fixed an error where some damage types was not appearing in power cards.
+
+## Version 0.3.14
+- Items without actors will now be able to set attribute resource consuemntion [merge](https://github.com/EndlesNights/dnd4eAltus/pull/251) from [draconas1](https://github.com/draconas1)
+- Change to chat card styling [merge](https://github.com/EndlesNights/dnd4eAltus/pull/250) from [FoxLee](https://github.com/FoxLee)
+
+## Version 0.3.13
+- fixes Migration Fix and Template Changes [merge](https://github.com/EndlesNights/dnd4eAltus/pull/249) from [draconas1](https://github.com/draconas1)
+
+## Version 0.3.12
+- hothix an error when creating equipment type items on character sheets
+
+## Version 0.3.11
+- fixed bug caused by 0.3.7 to effects untyped bonus
+
+## Version 0.3.10
+- added proficiency tracker for armour
+- added proficiency tracker for weapons
+- when adding a armour or weapon to a player character sheet, it will check the items base stats against the characters proficiency, and automatically set the items proficiency to match.
+- fixed an error where player names would not properly display on secondwind message.
+
+## Version 0.3.9
+- fix power cards labels to again properly show damage types.
+
+## Version 0.3.8
+- fix consumable items, where there roll properties would become unusable if the item had "Delete on Empty" selected and the item deleted its self.
+
+## Version 0.3.7
+- Added damage type override to weapon. Now weapons can chnage the damage type of powers.
+
+## Version 0.3.6
+- Hotfix, add zero check to system.attributes.init.bonusValue
+
+## Version 0.3.5
+- the "show players" button on items should now work for items within the directory that players do not have permission to see. Holding down the "Show Players Item Permanently" key (default to Alt) will change the base permission to at least viewable for all players.
+- Effect can now add bonuses to Initative value with the key of `system.attributes.init.bonusValue`
+
+## Version 0.3.4
+- fixes "undefined undefined" when using consumables [merge](https://github.com/EndlesNights/dnd4eAltus/pull/242) from [draconas1](https://github.com/draconas1)
+- Effects would not set for the first combatent [merge](https://github.com/EndlesNights/dnd4eAltus/pull/242) from [draconas1](https://github.com/draconas1)
+- Heal dialog menu now displays surge value [merge](https://github.com/EndlesNights/dnd4eAltus/pull/242) from [draconas1](https://github.com/draconas1)
+- changelog updated to fix spelling and fix mis-attributed changeset [merge](https://github.com/EndlesNights/dnd4eAltus/pull/242) from [draconas1](https://github.com/draconas1)
+- Resetting Resources [merge](https://github.com/EndlesNights/dnd4eAltus/pull/240) from [kyleady](https://github.com/kyleady)
+- minor css fixes
+
 ## Version 0.3.3
 - Custom Effects Fixes [merge](https://github.com/EndlesNights/dnd4eAltus/pull/239) from [draconas1](https://github.com/draconas1)
 
@@ -12,13 +61,13 @@
 
 ## Version 0.3.0
 - Update to Foundry v10
-- Minnor fixes to css
+- Minor fixes to css
 
 ## Version 0.2.85
-- Pass the event into initative to allow for fast forwarding [merge](https://github.com/EndlesNights/dnd4eAltus/pull/232) from [TheGiddyLimit](https://github.com/TheGiddyLimit)
+- Pass the event into initiative to allow for fast forwarding [merge](https://github.com/EndlesNights/dnd4eAltus/pull/232) from [draconas1](https://github.com/draconas1)
 - FastForward Keys moved to helper function [merge](https://github.com/EndlesNights/dnd4eAltus/pull/231) from [kyleady](https://github.com/kyleady)
 - Bugfix with Attacking Multiple Tokens with FastForward [merge](https://github.com/EndlesNights/dnd4eAltus/pull/230) from [kyleady](https://github.com/kyleady)
-- Bugfix when attack with defecne that targeted null defence type [merge](https://github.com/EndlesNights/dnd4eAltus/pull/229) from [kyleady](https://github.com/kyleady)
+- Bugfix when attack with defence that targeted null defence type [merge](https://github.com/EndlesNights/dnd4eAltus/pull/229) from [kyleady](https://github.com/kyleady)
 - Added limited view for NPCs [merge](https://github.com/EndlesNights/dnd4eAltus/pull/228) from [mncimino1993](https://github.com/mncimino1993)
 
 ## Version 0.2.84
@@ -31,11 +80,11 @@
 ## Version 0.2.82
 - fixed small issue with object sorting on sheets. Powers, items, and feats should now be able to be manually resorted objects within the confines of the current sorting filters by dragging and dropping the items once more.
 - fixed issue with power text filter, where the input element id was having interference from the feat filter input element because they shared the same id.
-- fixed css for pwer text filter, where the css intended for another element was not specific enough and was causing the text to be unreadable shade of white.
+- fixed css for power text filter, where the css intended for another element was not specific enough and was causing the text to be unreadable shade of white.
 
 ## Version 0.2.81
 - fixed fastforward for damage rolls
-- can now fastword power use, will autmaticly roll attack, damage, and healing rolls, as well as place measure templates.
+- can now fastforward power use, will automatically roll attack, damage, and healing rolls, as well as place measure templates.
 
 ## Version 0.2.80
 - hotfix, forgot to remove a testcase.

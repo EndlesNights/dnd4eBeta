@@ -68,8 +68,107 @@ export default class Item4e extends Item {
 		  }
 		}
 		return Math.round(Number(max));
-	  }	
+	}	
 	  
+
+	/** @inheritdoc */
+	async _preCreate(data, options, user) {
+		await super._preCreate(data, options, user);
+		if ( !this.isEmbedded) return;
+		const isNPC = this.parent.type === "npc";
+		let updates;
+		switch (data.type) {
+			case "equipment":
+				updates = this._onCreateOwnedEquipment(data, isNPC);
+				break;
+			case "weapon":
+				updates = this._onCreateOwnedWeapon(data, isNPC);
+				break;
+		}
+		if ( updates ){
+			console.log(updates)
+			return this.updateSource(updates);
+		} 
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Pre-creation logic for the automatic configuration of owned equipment type Items.
+	 *
+	 * @param {object} data       Data for the newly created item.
+	 * @param {boolean} isNPC     Is this actor an NPC?
+	 * @returns {object}          Updates to apply to the item data.
+	 * @private
+	 */
+	_onCreateOwnedEquipment(data, isNPC) {
+		if ( isNPC ) {
+			const updates = {};
+			if ( !foundry.utils.hasProperty(data, "system.equipped") ) updates["system.equipped"] = true;
+			if ( !foundry.utils.hasProperty(data, "system.proficient") ) updates["system.proficient"] = true;
+			return updates;
+		}
+
+		const updates = {};
+		const actorProfs = this.parent.system.details.armourProf;
+		updates["system.proficient"] = false;
+
+		if(data.system.armour?.type === "armour" ){
+			if(actorProfs.value.includes(data.system.armourBaseType)){
+				updates["system.proficient"] = actorProfs.value.includes(data.system.armourBaseType);
+			}
+			else if(data.system.armourBaseType === "custom"){
+				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.armourBaseTypeCustom);
+			}
+		}
+
+		if(data.system.armour?.type === "arms" && CONFIG.DND4EALTUS.shield[data.system.armour.subType]){
+			if(actorProfs.value.includes(data.system.shieldBaseType)){
+				updates["system.proficient"] = actorProfs.value.includes(data.system.shieldBaseType);
+				console.log("Enters")
+			}
+			else if(data.system.shieldBaseType === "custom"){
+				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.shieldBaseTypeCustom);
+			}
+		}
+
+		return updates;
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Pre-creation logic for the automatic configuration of owned weapon type Items.
+	 * @param {object} data       Data for the newly created item.
+	 * @param {boolean} isNPC     Is this actor an NPC?
+	 * @returns {object}          Updates to apply to the item data.
+	 * @private
+	 */
+
+	_onCreateOwnedWeapon(data, isNPC) {
+		if ( isNPC ) {
+			const updates = {};
+			if ( !foundry.utils.hasProperty(data, "system.equipped") ) updates["system.equipped"] = true;
+			if ( !foundry.utils.hasProperty(data, "system.proficient") ) updates["system.proficient"] = true;
+			return updates;
+		}
+		if(data.system?.proficient === undefined ) return {};
+
+		const updates = {};
+		const actorProfs = this.parent.system.details.weaponProf;
+		updates["system.proficient"] = false;
+
+		if(actorProfs.value.includes(data.system.weaponType)){
+			updates["system.proficient"] = actorProfs.value.includes(data.system.weaponType);
+		}
+		else if(data.system.weaponBaseType === "custom"){
+			updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.weaponBaseTypeCustom);
+		} else {
+			updates["system.proficient"] = actorProfs.value.includes(data.system.weaponBaseType);
+		}
+		return updates;
+	}
+
 	/* -------------------------------------------- */
 	/*  Item Properties                             */
 	/* -------------------------------------------- */
@@ -346,9 +445,9 @@ export default class Item4e extends Item {
 
 		// DamageTypes
 		if(system.hasOwnProperty("damageType")){
-			if(system.damageType){
+			if(this.getDamageType()){
 				let damType = [];
-				for ( let [damage, d] of Object.entries(system.damageType)) {
+				for ( let [damage, d] of Object.entries(this.getDamageType())) {
 					if(d){
 						damType.push(`${game.i18n.localize(DND4EALTUS.damageTypes[damage])}`);
 					}
@@ -381,6 +480,24 @@ export default class Item4e extends Item {
 
 		itemData.system.isOnCooldown = this.isOnCooldown();
 
+	}
+
+	/* -------------------------------------------- */
+
+	getDamageType(){
+		if(this.type == "power" && this.actor){
+			const weapon = Helper.getWeaponUse(this.system, this.actor);
+			// if(this.system.damageTypeWeapon && weapon){
+			if(weapon && weapon.system.damageTypeWeapon){
+				this.system.damageTypeWeapon = true;
+				this.system.weaponDamageType = weapon.system.damageType;
+				this.system.weaponSourceName = weapon.name;
+				return weapon.system.damageType;
+			} else {
+				this.system.damageTypeWeapon = false;
+			}
+		}
+		return this.system.damageType;
 	}
 
 	/* -------------------------------------------- */
@@ -472,8 +589,14 @@ export default class Item4e extends Item {
 				actor: this.actor.id,
 				token: this.actor.token,
 				alias: this.actor.name
-			}
+			},
+			flags: {}
 		};
+
+	    // If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
+		if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
+			chatData.flags["dnd4eAltus.itemData"] = templateData.item;
+		}
 
 		// Toggle default roll mode
 		rollMode = rollMode || game.settings.get("core", "rollMode");
@@ -999,8 +1122,8 @@ export default class Item4e extends Item {
 		let primaryDamage = ''
 		const pD = [];
 
-		if(itemData.damageType){
-			for ( let [damage, d] of Object.entries(itemData.damageType)) {
+		if(this.getDamageType()){
+			for ( let [damage, d] of Object.entries(this.getDamageType())) {
 				if(d){
 					pD.push(damage);
 					// primaryDamage += `${damage}`;
@@ -1203,7 +1326,7 @@ export default class Item4e extends Item {
 	 */
 	rollHealing({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
 		const itemData = this.system;
-		const actorData = this.actor.data;
+		const actorData = this.actor;
 		const actorInnerData = this.actor.system;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
@@ -1571,8 +1694,9 @@ export default class Item4e extends Item {
 		if ( !actor ) return;
 
 		// Get the Item
-		// const item = actor.getOwnedItem(card.dataset.itemId);
-		const item = actor.items.get(card.dataset.itemId);
+		const storedData = message.getFlag("dnd4eAltus", "itemData");
+		const item = storedData ? new this(storedData, {parent: actor}) : actor.items.get(card.dataset.itemId) || storedData;
+
 		if ( !item ) {
 			return ui.notifications.error(game.i18n.format("DND4EALTUS.ActionWarningNoItem", {item: card.dataset.itemId, name: actor.name}))
 		}

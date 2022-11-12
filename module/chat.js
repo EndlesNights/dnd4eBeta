@@ -109,7 +109,7 @@ export const addChatMessageContextOptions = function(html, options) {
 		},
 		{
 			name: game.i18n.localize("DND4EALTUS.ChatContextTempHp"),
-			icon: '<i class="fas fa-user-plus"></i>',
+			icon: '<i class="fas fa-user-clock fa-fw"></i>',
 			condition: canApply,
 			callback: li => applyChatCardTempHp(li)
 		},
@@ -127,7 +127,7 @@ export const addChatMessageContextOptions = function(html, options) {
 		},
 		{
 			name: game.i18n.localize("DND4EALTUS.ChatContextTrueDamage"),
-			icon: '<i class="fas fa-user-shield"></i>',
+			icon: '<i class="fa-light fa-user-shield"></i>',
 			condition: canApply,
 			callback: li => applyChatCardDamage(li, 1, true)
 		}

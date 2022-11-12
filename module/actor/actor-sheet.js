@@ -86,7 +86,7 @@ export default class ActorSheet4e extends ActorSheet {
   /* -------------------------------------------- */
 
 	/** @override */
-	async getData() {
+	async getData(options) {
 
 		let isOwner = this.actor.isOwner;
 
@@ -125,8 +125,27 @@ export default class ActorSheet4e extends ActorSheet {
 			skl.label = game.i18n.localize(DND4EALTUS.skills[s]);
 		}
 		
-		this._prepareData(actorData.languages, 
+		this._prepareDataTraits(actorData.languages, 
 			{"spoken": CONFIG.DND4EALTUS.spoken, "script": CONFIG.DND4EALTUS.script}
+		);
+
+		this._prepareDataProfs(actorData.details.armourProf, 
+			{"profArmor": CONFIG.DND4EALTUS.profArmor}
+		);
+
+		this._prepareDataProfs(actorData.details.weaponProf, 
+			{ weapons:Object.assign(
+				CONFIG.DND4EALTUS.weaponProficiencies,
+				CONFIG.DND4EALTUS.simpleM,
+				CONFIG.DND4EALTUS.simpleR,
+				CONFIG.DND4EALTUS.militaryM,
+				CONFIG.DND4EALTUS.militaryR,
+				CONFIG.DND4EALTUS.superiorM,
+				CONFIG.DND4EALTUS.superiorR,
+				CONFIG.DND4EALTUS.improvisedM,
+				CONFIG.DND4EALTUS.improvisedR,
+				CONFIG.DND4EALTUS.implement
+			)}
 		);
 		
 		this._prepareDataSense(actorData.senses,
@@ -145,14 +164,15 @@ export default class ActorSheet4e extends ActorSheet {
 		data.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.effects);
 
 		// Resources
-		actorData.resources = ["primary", "secondary", "tertiary"].reduce((arr, r) => {
+		actorData.resources = ["primary", "secondary", "tertiary"].reduce((obj, r) => {
 			const res = actorData.resources[r] || {};
 			res.name = r;
 			res.placeholder = game.i18n.localize("DND4EALTUS.Resource"+r.titleCase());
 			if (res && res.value === 0) delete res.value;
 			if (res && res.max === 0) delete res.max;
-			return arr.concat([res]);
-			}, []);
+			obj[r] = res
+			return obj;
+		}, {});
 
 		data.biographyHTML = await TextEditor.enrichHTML(data.system.biography, {
 			secrets: isOwner,
@@ -163,7 +183,7 @@ export default class ActorSheet4e extends ActorSheet {
 		return data;
 	}
 	
-	_prepareData(data, map) {
+	_prepareDataTraits(data, map) {
 		for ( let [l, choices] of Object.entries(map) ) {
 			const trait = data[l];
 			if ( !trait ) continue;
@@ -181,6 +201,27 @@ export default class ActorSheet4e extends ActorSheet {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
 			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
+		}
+	}
+
+	_prepareDataProfs(data, map){
+		for ( let [l, choices] of Object.entries(map) ) {
+
+			let values = [];
+			if ( data.value ) {
+				values = data.value instanceof Array ? data.value : [data.value];
+			}
+			data.selected = values.reduce((obj, l) => {
+				obj[l] = choices[l];
+				return obj;
+			}, {});
+			data.selected
+
+			// Add custom entry
+			if ( data.custom ) {
+				data.custom.split(";").forEach((c, i) => data.selected[`custom${i+1}`] = c.trim());
+			}
+			data.cssClass = !isEmpty(data.selected) ? "" : "inactive";
 		}
 	}
 
@@ -534,11 +575,11 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 			try {
 				const weaponUse = Helper.getWeaponUse(itemData.system, this.actor);
 				if(weaponUse.system.isRanged) {
-					itemData.system.rangeText = `Range Weapon - ${weaponUse.system.name}`
+					itemData.system.rangeText = `Range Weapon - ${weaponUse.name}`
 					itemData.system.rangeTextShort = `W-R`
 					itemData.system.rangeTextBlock = `${weaponUse.system.range.value}/${weaponUse.system.range.long}`
 				} else {
-					itemData.system.rangeText = `Melee Weapon - ${weaponUse.system.name}`;
+					itemData.system.rangeText = `Melee Weapon - ${weaponUse.name}`;
 					itemData.system.rangeTextShort = "W-M";
 					
 					if(itemData.system.rangePower == null){
@@ -749,7 +790,8 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 			html.find('.rollInitiative').click(this._onrollInitiative.bind(this));
 			
 			// Trait Selector
-			html.find('.trait-selector').click(this._onTraitSelectorLang.bind(this));
+			html.find('.trait-selector').click(this._onTraitSelector.bind(this));
+			html.find('.trait-selector-weapon').click(this._onTraitSelectorWeapon.bind(this));
 			html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
 			
 			//save throw bonus
@@ -1259,15 +1301,14 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 
 		let save = new SaveThrowDialog(this.actor, {effectSave:true, effectId: effectId}).render(true);
 
-		console.log(save)
-		console.log(effectId);
-		console.log(this.actor.effects.get(effectId));
+		// console.log(save)
+		// console.log(effectId);
+		// console.log(this.actor.effects.get(effectId));
 	}
 	/* -------------------------------------------- */
 
 	_onItemRecharge(event){
 		event.preventDefault();
-		console.log("roll recharge!")
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 
@@ -1351,12 +1392,21 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
    * @param {Event} event   The click event which originated the selection
    * @private
    */
-	_onTraitSelectorLang(event) {
+	_onTraitSelector(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
 		const label = a.parentElement.querySelector("h4");
 		const choices = CONFIG.DND4EALTUS[a.dataset.options];
-		const options = { name: a.dataset.target, title: label.innerText, choices };
+		const options = { name: a.dataset.target, title: label.innerText, choices};
+		new TraitSelector(this.actor, options).render(true);
+	}
+
+	_onTraitSelectorWeapon(event){
+		event.preventDefault();
+		const a = event.currentTarget;
+		const label = a.parentElement.querySelector("h4");
+		const choices = CONFIG.DND4EALTUS.weaponProficienciesMap;
+		const options = { name: a.dataset.target, title: label.innerText, choices, datasetOptions: a.dataset.options, config:CONFIG};
 		new TraitSelector(this.actor, options).render(true);
 	}
 

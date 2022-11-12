@@ -467,8 +467,120 @@ DND4EALTUS.powerEffectTypes = {
 	"miss": "DND4EALTUS.TargetMiss",
 	"self": "DND4EALTUS.TargetSelf",
 }
+
 /* -------------------------------------------- */
 
+DND4EALTUS.profArmor = {
+	cloth: "DND4EALTUS.ArmourProfCloth",
+	leather: "DND4EALTUS.ArmourProfLeather",
+	hide: "DND4EALTUS.ArmourProfHide",
+	chain: "DND4EALTUS.ArmourProfChain",
+	scale: "DND4EALTUS.ArmourProfScale",
+	plate: "DND4EALTUS.ArmourProfPlate",
+	light: "DND4EALTUS.ArmourProfShieldLight",
+	heavy: "DND4EALTUS.ArmourProfShieldHeavy",
+};
+
+DND4EALTUS.cloth = {
+	cloth: "DND4EALTUS.ArmourProfCloth",
+};
+DND4EALTUS.light = {
+	leather: "DND4EALTUS.ArmourProfLeather",
+	hide: "DND4EALTUS.ArmourProfHide",
+};
+DND4EALTUS.heavy = {
+	chain: "DND4EALTUS.ArmourProfChain",
+	scale: "DND4EALTUS.ArmourProfScale",
+	plate: "DND4EALTUS.ArmourProfPlate",
+};
+DND4EALTUS.natural = {
+
+};
+DND4EALTUS.shield = {
+	light: "DND4EALTUS.ArmourProfShieldLight",
+	heavy: "DND4EALTUS.ArmourProfShieldHeavy",
+};
+DND4EALTUS.weaponProficiencies = {
+	simpleM: "DND4EALTUS.WeaponSimpleM",
+	simpleR: "DND4EALTUS.WeaponSimpleR",
+	militaryM: "DND4EALTUS.WeaponMilitaryM",
+	militaryR: "DND4EALTUS.WeaponMilitaryR",
+	superiorM: "DND4EALTUS.WeaponSuperiorM",
+	superiorR: "DND4EALTUS.WeaponSuperiorR",
+	improvisedM: "DND4EALTUS.WeaponImprovisedM",
+	improvisedR: "DND4EALTUS.WeaponImprovisedR",
+};
+
+DND4EALTUS.weaponProficienciesMap = {
+	simpleM: "SimpleM",
+	simpleR: "SimpleR",
+	
+	militaryM: "MilitaryM",
+	militaryR: "MilitaryR",
+
+	superiorM: "SuperiorM",
+	superiorR: "SuperiorR",
+
+	improvisedM: "ImprovisedM",
+	improvisedR: "ImprovisedR",
+
+	implement: "Implement"
+};
+
+DND4EALTUS.simpleM = {
+	club:"DND4EALTUS.WeaponClub",
+	dagger:"DND4EALTUS.WeaponDagger",
+	javelin:"DND4EALTUS.WeaponJavelin",
+	mace:"DND4EALTUS.WeaponMace",
+	sickle:"DND4EALTUS.WeaponSickle",
+	spear:"DND4EALTUS.WeaponSpear",
+	greatclub:"DND4EALTUS.WeaponGreatclub",
+	morningstar:"DND4EALTUS.WeaponMorningStar",
+	quarterstaff:"DND4EALTUS.WeaponQuarterStaff",
+	scythe:"DND4EALTUS.WeaponScythe"
+};
+DND4EALTUS.simpleR = {
+	handcrossbow:"DND4EALTUS.WeaponHandcrossbow",
+	sling:"DND4EALTUS.WeaponSling",
+	crossbow:"DND4EALTUS.WeaponCrossbow"
+};
+
+DND4EALTUS.militaryM = {
+	battleaxe:"DND4EALTUS.WeaponBattleaxe",
+	flail:"DND4EALTUS.WeaponFlail",
+	handaxe:"DND4EALTUS.WeaponHandaxe",
+	longsword:"DND4EALTUS.WeaponLongsword",
+	scimitar:"DND4EALTUS.WeaponScimitar",
+	shortsword:"DND4EALTUS.WeaponShortsword",
+	throwinghammer:"DND4EALTUS.WeaponThrowingHammer",
+	warhammer:"DND4EALTUS.WeaponWarhammer",
+	warpick:"DND4EALTUS.WeaponWarpick",
+	falchion:"DND4EALTUS.WeaponFalchion",
+	glaive:"DND4EALTUS.WeaponGlaive",
+	greataxe:"DND4EALTUS.WeaponGreataxe",
+	greatsword:"DND4EALTUS.WeaponGreatsword",
+	halberd:"DND4EALTUS.WeaponHalberd",
+	heavyflail:"DND4EALTUS.WeaponHeavyflail",
+	longspear:"DND4EALTUS.WeaponLongspear",
+	maul:"DND4EALTUS.WeaponMaul"
+};
+DND4EALTUS.militaryR = {
+	longbow:"DND4EALTUS.WeaponLongbow",
+	shortbow:"DND4EALTUS.WeaponShortbow"
+};
+
+DND4EALTUS.superiorM = {
+	bastardsword:"DND4EALTUS.WeaponBastardsword",
+	katar:"DND4EALTUS.WeaponKatar",
+	rapier:"DND4EALTUS.WeaponRapier",
+	spikeChain:"DND4EALTUS.WeaponSpikeChain"
+};
+DND4EALTUS.superiorR = {
+	shuriken:"DND4EALTUS.WeaponShuriken"
+};
+
+DND4EALTUS.improvisedM = {};
+DND4EALTUS.improvisedR = {};
 
 /**
  * Configure aspects of encumbrance calculation so that it could be configured by modules
@@ -881,15 +993,15 @@ DND4EALTUS.weaponGroup = {
 	"whip": "DND4EALTUS.WeaponGroupWhip"
 };
 
-DND4EALTUS.implementGroup = {
-	"holyS": "DND4EALTUS.ImplementGroupHolySymbol",
-	"ki": "DND4EALTUS.ImplementGroupKiFocus",
-	"orb": "DND4EALTUS.ImplementGroupOrb",
-	"rod": "DND4EALTUS.ImplementGroupRod",
-	"staff": "DND4EALTUS.ImplementGroupStaff",
-	"tome": "DND4EALTUS.ImplementGroupTome",
-	"totem": "DND4EALTUS.ImplementGroupTotem",
-	"wand": "DND4EALTUS.ImplementGroupWand"
+DND4EALTUS.implement = {
+	"holyS": "DND4EALTUS.ImplementHolySymbol",
+	"ki": "DND4EALTUS.ImplementKiFocus",
+	"orb": "DND4EALTUS.ImplementOrb",
+	"rod": "DND4EALTUS.ImplementRod",
+	"staff": "DND4EALTUS.ImplementStaff",
+	"tome": "DND4EALTUS.ImplementTome",
+	"totem": "DND4EALTUS.ImplementTotem",
+	"wand": "DND4EALTUS.ImplementWand"
 };
 
 /* -------------------------------------------- */

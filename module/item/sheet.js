@@ -64,7 +64,21 @@ export default class ItemSheet4e extends ItemSheet {
 			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
 		}
 
-		if(itemData.type == "equipment") data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
+		if(itemData.type == "equipment"){
+			data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
+
+			if(itemData.system.armour.type === "armour"){
+				data.isArmour = true;
+				data.armourBaseTypes = CONFIG.DND4EALTUS[itemData.system.armour.subType];
+				data.isArmourBaseTypeCustom = (itemData.system.armourBaseType === "custom");
+			}
+			else if(itemData.system.armour.type === "arms" && CONFIG.DND4EALTUS.profArmor[itemData.system.armour.subType]){
+				data.isShield = true;
+				data.shieldBaseTypes = CONFIG.DND4EALTUS.shield;
+				data.isShieldBaseTypeCustom = (itemData.system.shieldBaseType === "custom");
+			}
+		}
+
 		if(itemData.system?.useType) {
 			if(!(itemData.system.rangeType === "personal" || itemData.system.rangeType === "closeBurst" || itemData.system.rangeType === "closeBlast" || itemData.system.rangeType === "")){
 				itemData.system.isRange = true;
@@ -87,6 +101,9 @@ export default class ItemSheet4e extends ItemSheet {
 						disabled: (attrib === "imp" && itemData.system.weaponType === "implement")
 				}
 			}
+
+			data.weaponBaseTypes = CONFIG.DND4EALTUS[itemData.system.weaponType];
+			data.isWeaponBaseTypeCustom = (itemData.system.weaponBaseType === "custom");
 		}
 
 		// Action Details
@@ -162,10 +179,10 @@ export default class ItemSheet4e extends ItemSheet {
 
 		if(effectPowers){
 			for ( let e of effectPowers ) {
-				e.durationTypeLable = `${CONFIG.DND4EALTUS.durationType[e.data.flags.dnd4eAltus.effectData.durationType]}`;
-				if(e.data.flags.dnd4eAltus?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
-				else if(e.data.flags.dnd4eAltus?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
-				else if(e.data.flags.dnd4eAltus?.effectData?.powerEffectTypes === "self") categories.self.effects.push(e);
+				e.durationTypeLable = `${CONFIG.DND4EALTUS.durationType[e.flags.dnd4eAltus.effectData.durationType]}`;
+				if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
+				else if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
+				else if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "self") categories.self.effects.push(e);
 				else categories.all.effects.push(e);
 			}
 		}
@@ -196,26 +213,42 @@ export default class ItemSheet4e extends ItemSheet {
 
 	}
 
-	shareItem() {
+	async shareItem() {
+		let changeBack = false
+		//set the default permsion to be vieable for all players if it it not already higher
+		if(this.item.ownership.default <= 0){
+			await this.item.update({"ownership.default": 1});
+			changeBack = !game.keyboard.downKeys.has(game.keybindings.bindings.get(`dnd4eAltus.permShowPlayer`)[0].key);
+		}
+
 		game.socket.emit("system.dnd4eAltus", {
 			itemId: this.item.id
 		});
+
+		if(changeBack){
+			this.item.update({"ownership.default": 0});
+		}
 	}
 
 	static _handleShareItem({itemId}={}) {
 		let item = game.items.get(itemId);
 
 		if (item == undefined) {
-			let characters = game.actors.filter(x => x.data.type == "Player Character");
+			let characters = game.actors.filter(x => x.type == "Player Character");
 
 			for (var x = 0; x <= characters.length; x++) {
 				let actor = characters[x];
-				let found = actor.data.items.find(x => x._id == itemId);
-				if (found) {
+				if(!actor) continue;
+
+				if(actor.items.get(itemId)){
 					item = actor.items.get(itemId);
 					break;
 				}
 			}
+		}
+
+		if(!item){
+			return;
 		}
 
 		let itemSheet = new ItemSheet4e(item, {
@@ -284,36 +317,49 @@ export default class ItemSheet4e extends ItemSheet {
 	 */
 	_getItemConsumptionTargets(item) {
 		const consume = item.system.consume || {};
-		if ( !consume.type ) return [];
+		if (!consume.type) return [];
+
 		const actor = this.item.actor;
-		if ( !actor ) return {};
-	
+
+		// Attributes
+		// this can work separate to an actor as the actors model is known at compile time
+		// if separate from an actor it will default to the PC model, as unlikely to be set with an NPC
+		if (consume.type === "attribute") {
+			if (actor) {
+				const attributes = TokenDocument.getTrackedAttributes(actor.system)
+				attributes.bar.forEach(a => a.push("value"));
+				return attributes.bar.concat(attributes.value).reduce((obj, a) => {
+					let k = a.join(".");
+					obj[k] = k;
+					return obj;
+				}, {});
+			}
+			else {
+				const attributes = game.system.model.Actor['Player Character']
+				return Object.keys(foundry.utils.flattenObject(attributes)).reduce((obj, a) => {
+					obj[a] = a;
+					return obj;
+				}, {});
+			}
+		}
+
+		// All the rest of them require the actor, because they are very tied to that individual actors stuff
+		if (!actor) return {};
+
 		// Ammunition
-		if ( consume.type === "ammo" ) {
-			return actor.itemTypes.consumable.reduce((ammo, i) =>  {
-				if ( i.system.consumableType === "ammo" ) {
+		else if (consume.type === "ammo") {
+			return actor.itemTypes.consumable.reduce((ammo, i) => {
+				if (i.system.consumableType === "ammo") {
 					ammo[i.id] = `${i.name} (${i.system.quantity})`;
 				}
 				return ammo;
 			}, {});
 		}
 
-	// Attributes
-	else if ( consume.type === "attribute" ) {
-		// const attributes = Object.values(CombatTrackerConfig.prototype.getAttributeChoices())[0]; // Bit of a hack
-		const attributes = TokenDocument.getTrackedAttributes(actor.system);
-		attributes.bar.forEach(a => a.push("value"));
-		return attributes.bar.concat(attributes.value).reduce((obj, a) => {
-			let k = a.join(".");
-			obj[k] = k;
-			return obj;
-		},{});
-	}
-
 		// Materials
-		else if ( consume.type === "material" ) {
+		else if (consume.type === "material") {
 			return actor.items.reduce((obj, i) => {
-				if ( ["consumable", "loot"].includes(i.data.type) ) {
+				if (["consumable", "loot"].includes(i.data.type)) {
 					obj[i.id] = `${i.name} (${i.system.quantity})`;
 				}
 				return obj;
@@ -321,10 +367,10 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 
 		// Charges
-		else if ( consume.type === "charges" ) {
+		else if (consume.type === "charges") {
 			return actor.items.reduce((obj, i) => {
 				const uses = i.system.uses || {};
-				if ( uses.per && uses.max ) {
+				if (uses.per && uses.max) {
 					const label = uses.per === "charges" ?
 						` (${game.i18n.format("DND4EALTUS.AbilityUseChargesLabel", {value: uses.value})})` :
 						` (${game.i18n.format("DND4EALTUS.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
@@ -440,7 +486,6 @@ export default class ItemSheet4e extends ItemSheet {
 					return CONFIG.DND4EALTUS.weaponProperties[e[0]]
 				})
 			);
-
 			props.push(...Object.entries(item.system.damageType)
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4EALTUS.damageTypes[e[0]])
@@ -569,7 +614,6 @@ export default class ItemSheet4e extends ItemSheet {
 			html.find(".onetext-control").click(this._onOnetextControl.bind(this));
 			html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
 			html.find(".effect-control").click(event => {
-				console.log(event)
 				if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
 					ActiveEffect4e.onManageActiveEffect(event, this.item);
 			});

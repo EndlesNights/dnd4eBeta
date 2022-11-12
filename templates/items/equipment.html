@@ -72,6 +72,50 @@
 				</div>
 			</div>
 
+			{{#if isArmour}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.ArmourBase" }}:</label>
+				<select name="system.armourBaseType">
+					{{#select system.armourBaseType}}
+					<option value="">{{ localize 'DND4EALTUS.None' }}</option>
+					<option value="custom">{{ localize 'DND4EALTUS.Custom' }}</option>
+					{{#each armourBaseTypes as |name type|}}
+					<option value="{{type}}">{{name}}</option>
+					{{/each}}
+					{{/select}}
+				</select>
+			</div>
+
+			{{#if isArmourBaseTypeCustom}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.ArmourBaseCustom" }}:</label>
+				<input type="text" name="system.armourBaseTypeCustom" value="{{system.armourBaseTypeCustom}}" title="{{ localize "DND4EALTUS.ArmourBaseCustom" }}" placeholder="{{ localize "DND4EALTUS.ArmourBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+			</div>
+			{{/if}}
+			{{/if}}
+
+			{{#if isShield}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.ShieldBase" }}:</label>
+				<select name="system.shieldBaseType">
+					{{#select system.shieldBaseType}}
+					<option value="">{{ localize 'DND4EALTUS.None' }}</option>
+					<option value="custom">{{ localize 'DND4EALTUS.Custom' }}</option>
+					{{#each shieldBaseTypes as |name type|}}
+					<option value="{{type}}">{{name}}</option>
+					{{/each}}
+					{{/select}}
+				</select>
+			</div>
+
+			{{#if isShieldBaseTypeCustom}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.ShieldBaseCustom" }}:</label>
+				<input type="text" name="system.shieldBaseTypeCustom" value="{{system.shieldBaseTypeCustom}}" title="{{ localize "DND4EALTUS.ShieldBaseCustom" }}" placeholder="{{ localize "DND4EALTUS.ShieldBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+			</div>
+			{{/if}}
+			{{/if}}
+
 			{{!-- Equipment Status --}}
 			<div class="form-group stacked">
 				<label>{{ localize "DND4EALTUS.ItemEquipmentStatus" }}</label>

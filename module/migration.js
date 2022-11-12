@@ -3,7 +3,8 @@
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
  export const migrateWorld = async function() {
-	ui.notifications.info(`Applying DnD4E System Migration for version ${game.system.version}. Please be patient and do not close your game or shut down your server.`, {permanent: true});
+	const version = game.system.version;
+	ui.notifications.info(game.i18n.format("MIGRATION.4eBegin", {version}), {permanent: true});
 
 	const migrationData = await getMigrationData();
 
@@ -38,7 +39,7 @@
 	// Migrate Actor Override Tokens
 	for ( let s of game.scenes ) {
 		try {
-			const updateData = migrateSceneData(s.data, migrationData);
+			const updateData = migrateSceneData(s, migrationData);
 			if ( !foundry.utils.isEmpty(updateData) ) {
 				console.log(`Migrating Scene document ${s.name}`);
 				await s.update(updateData, {enforceTypes: false});
@@ -61,7 +62,8 @@
 
 	// Set the migration as complete
 	game.settings.set("dnd4eAltus", "systemMigrationVersion", game.system.version);
-	ui.notifications.info(`DnD4E System Migration to version ${game.system.version} completed!`, {permanent: true});
+	ui.notifications.info(game.i18n.format("MIGRATION.4eComplete", {version}), {permanent: true});
+
 };
 
 /* -------------------------------------------- */
@@ -97,7 +99,7 @@ export const migrateCompendium = async function(pack) {
 					updateData = migrateItemData(doc.toObject(), migrationData);
 					break;
 				case "Scene":
-					updateData = migrateSceneData(doc.data, migrationData);
+					updateData = migrateSceneData(doc, migrationData);
 					break;
 			}
 
@@ -130,12 +132,12 @@ export const migrateCompendium = async function(pack) {
  * @return {Object}         The updateData to apply
  */
 export const migrateActorData = function(actor, migrationData) {
-	console.trace()
 	const updateData = {};
 
 	// Actor Data Updates
-	if (actor.data) {
+	if (actor) {
 		_migrateActorTempHP(actor, updateData);
+		_migrateActorAddProfKeys(actor, updateData);
 	}
 
 	return updateData;
@@ -154,7 +156,7 @@ function cleanActorData(actorData) {
 
 	// Scrub system data
 	const model = game.system.model.Actor[actorData.type];
-	actorData.data = filterObject(actorData.data, model);
+	actorData = filterObject(actorData, model);
 
 	// Scrub system flags
 	const allowedFlags = CONFIG.DND4EALTUS.allowedActorFlags.reduce((obj, f) => {
@@ -179,8 +181,7 @@ function cleanActorData(actorData) {
  */
 export const migrateItemData = function(item) {
 	const updateData = {};
-	// _migrateItemAttunement(item, updateData);
-	// _migrateItemSpellcasting(item, updateData);
+	_migrateImplmentKey(item, updateData);
 	return updateData;
 };
 
@@ -255,26 +256,76 @@ export const getMigrationData = async function() {
  * @private
  */
  function _migrateActorTempHP(actorData, updateData) {
-	const ad = actorData.data;	
-	const old = ad.attributes.hp.temphp;
-	const hasOld = old !== undefined;
-	if ( hasOld ) {
+	const ad = actorData.system;
+	if(!ad) return updateData;
 
+	const old = ad?.attributes?.hp?.temphp;
+	const hasOld = old !== undefined && ad.attributes[`hp-=temphp`] !== undefined;
+	if ( hasOld ) {
 		// If new data is not present, migrate the old data
-		if (ad.attributes?.temphp?.value !== old && (typeof old === "number") ) {
-			console.log("setFooBar")
-			updateData["data.attributes.temphp"] = {
+		if (old !== undefined && ad.attributes?.temphp?.value !== old && (typeof old === "number") ) {
+			ad.attributes.temphp = {
 				value: old,
 				max: 10,
 			}
 		}
 
 		// Remove the old attribute
-		updateData["data.attributes.hp.-=temphp"] = null;
+		if(ad.attributes.hp.temphp !== undefined){
+			updateData["system.attributes.-=temphp"] = null;
+		}
+
+		if(ad.attributes[`hp-=temphp`] !== undefined){
+			updateData["system.attributes.-=hp-=temphp"] = null;
+		}
 	}
 	return updateData;
 }
 
+/**
+ * Migrate the actor adding in object keys for proficiencies
+ * @param {object} actorData   Actor data being migrated.
+ * @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+ function _migrateActorAddProfKeys(actorData, updateData) {
+	if(!actorData?.system?.details) return;
+
+	if(actorData.system.details.armourProf == undefined){
+		updateData["system.details"] = {
+			"value": [],
+			"custom": ""
+		}
+	}
+	if(actorData.system.details.weaponProf == undefined){
+		updateData["system.details"] = {
+			"value": [],
+			"custom": ""
+		}
+	}
+
+	return updateData;
+ }
+
+
+/**
+ * Migrate any data from the key "implementGroup" to the key of "implment"
+ * @param {object} itemData   Item data being migrated.
+ * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+ function _migrateImplmentKey(itemData, updateData){
+	if(itemData.type !== "weapon" && itemData.system.implementGroup != undefined) return;
+
+	const implementData = itemData.system.implementGroup;
+
+	updateData["system.-=implementGroup"] = null;
+	updateData["system.implement"] = implementData;
+
+	return updateData;
+ }
 /**
  * A general tool to purge flags from all entities in a Compendium pack.
  * @param {Compendium} pack   The compendium pack to clean
@@ -288,9 +339,9 @@ export async function purgeFlags(pack) {
 	await pack.configure({locked: false});
 	const content = await pack.getContent();
 	for ( let doc of content ) {
-		const update = {flags: cleanFlags(doc.data.flags)};
+		const update = {flags: cleanFlags(doc.flags)};
 		if ( pack.documentName === "Actor" ) {
-			update.items = doc.data.items.map(i => {
+			update.items = doc.items.map(i => {
 			i.flags = cleanFlags(i.flags);
 			return i;
 			});

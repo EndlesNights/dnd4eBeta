@@ -116,14 +116,16 @@ Hooks.once("setup", function() {
 	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes",
 	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits", "durationType",
 	"damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
-	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "featureSortTypes", "healingTypes", "implementGroup", "itemActionTypes",
-	"launchOrder", "limitedUsePeriods", "powerEffectTypes", "powerSource", "powerType", "powerSubtype", "powerUseType", "powerGroupTypes", "powerSortTypes", "rangeType", "rangeTypeNoWeapon",
+	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "featureSortTypes", "healingTypes", "implement", "itemActionTypes",
+	"launchOrder", "limitedUsePeriods", "powerEffectTypes", "powerSource", "powerType", "powerSubtype", "powerUseType", "powerGroupTypes", "powerSortTypes",
+	"profArmor", "cloth", "light", "heavy", "shield",
+	"weaponProficiencies", "simpleM", "simpleR", "militaryM", "militaryR", "superiorM", "superiorR", "improvisedM", "improvisedR","rangeType", "rangeTypeNoWeapon",
 	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
 	"weaponTypes", "weaponHands"
 	];
 
 	const noSort = [
-		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "durationType", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerEffectTypes", "powerGroupTypes", "rangeType", "weaponType", "weaponTypes", "weaponHands"
+		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "durationType", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerEffectTypes", "powerGroupTypes", "profArmor", "profWeapon","rangeType", "weaponType", "weaponTypes", "weaponHands"
 	];
 	
 	for ( let o of toLocalize ) {
@@ -152,21 +154,18 @@ Hooks.once("ready",  function() {
 
 	// Determine whether a system migration is required and feasible
 	if ( !game.user.isGM ) return;
-	const currentVersion = game.settings.get("dnd4eAltus", "systemMigrationVersion");
-	const NEEDS_MIGRATION_VERSION = "0.2.64";
-	const COMPATIBLE_MIGRATION_VERSION = 0.80;
-	//if no current Version is set, run migration which will set value
-	const needsMigration = !currentVersion ? true : (currentVersion && isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion));
-
-	if ( !needsMigration ) return;
-
+	const cv = game.settings.get("dnd4eAltus", "systemMigrationVersion") || game.world.flags.dnd4eAltus?.version;
+	const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
+	if ( !cv && totalDocuments === 0 ) return game.settings.set("dnd4eAltus", "systemMigrationVersion", game.system.version);
+	if ( cv && !isNewerVersion(game.system.flags.needsMigrationVersion, cv) ) return;
+  
+	const cmv = game.system.flags.compatibleMigrationVersion || "0.2.85";
 	// Perform the migration
-	if ( currentVersion && isNewerVersion(COMPATIBLE_MIGRATION_VERSION, currentVersion) ) {
-		const warning = `Your DnD4e system data is from too old a Foundry version and cannot be reliably migrated to the latest version. The process will be attempted, but errors may occur.`;
-		ui.notifications.error(warning, {permanent: true});
+	if ( cv && isNewerVersion(cmv, cv) ) {
+	  ui.notifications.error(game.i18n.localize("MIGRATION.4eVersionTooOldWarning"), {permanent: true});
 	}
+	
 	migrations.migrateWorld();
-
 });
 
 /* -------------------------------------------- */

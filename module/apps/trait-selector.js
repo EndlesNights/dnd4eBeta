@@ -40,17 +40,37 @@ export default class TraitSelector extends FormApplication {
   getData() {
 
     // Get current values
-    let attr = getProperty(this.object.data, this.attribute) || {};
+    let attr = getProperty(this.object, this.attribute) || {};
     attr.value = attr.value || [];
 
 	  // Populate choices
     const choices = duplicate(this.options.choices);
-    for ( let [k, v] of Object.entries(choices) ) {
-      choices[k] = {
-        label: v,
-        chosen: attr ? attr.value.includes(k) : false
+
+    if(this.options.datasetOptions == "weaponProf"){
+      for ( let [k, v] of Object.entries(choices) ) {
+        const children = CONFIG.DND4EALTUS[k] ? duplicate(CONFIG.DND4EALTUS[k]) : {};
+        for ( let [kc, vc] of Object.entries(children) ) {
+          children[kc] = {
+            label: vc,
+            chosen: attr ? attr.value.includes(kc) : false
+          }
+        }
+
+        choices[k] = {
+          label: game.i18n.localize(`DND4EALTUS.Weapon${v}`),
+          chosen: attr ? attr.value.includes(k) : false,
+          children: children
+        }
+      }
+    } else {
+      for ( let [k, v] of Object.entries(choices) ) {
+        choices[k] = {
+          label: v,
+          chosen: attr ? attr.value.includes(k) : false
+        }
       }
     }
+
 
     // Return data
 	  return {
@@ -65,7 +85,6 @@ export default class TraitSelector extends FormApplication {
   /** @override */
   _updateObject(event, formData) {
     const updateData = {};
-
     // Obtain choices
     const chosen = [];
     for ( let [k, v] of Object.entries(formData) ) {
@@ -89,4 +108,42 @@ export default class TraitSelector extends FormApplication {
     // Update the object
     this.object.update(updateData);
   }
+
+  /* -------------------------------------------- */
+
+  /** @inheritdoc */
+  activateListeners(html) {
+    super.activateListeners(html);
+
+    for ( const checkbox of html[0].querySelectorAll("input[type='checkbox']") ) {
+      if ( checkbox.checked ) this._onToggleCategory(checkbox);
+    }
+  }
+
+  /* -------------------------------------------- */
+
+  /** @inheritdoc */
+  async _onChangeInput(event) {
+    super._onChangeInput(event);
+
+    if ( event.target.tagName === "INPUT" ) this._onToggleCategory(event.target);
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Enable/disable all children when a category is checked.
+   *
+   * @param {HTMLElement} checkbox  Checkbox that was changed.
+   * @private
+   */
+   _onToggleCategory(checkbox) {
+    const children = checkbox.closest("li")?.querySelector("ol");
+    if ( !children ) return;
+
+    for ( const child of children.querySelectorAll("input[type='checkbox']") ) {
+      child.checked = child.disabled = checkbox.checked;
+    }
+  }
+
 }

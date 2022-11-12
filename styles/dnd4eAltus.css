@@ -82,7 +82,7 @@
 	border: 1px solid transparent;
 }
 .dnd4eAltus .window-content {
-	overflow-y: hidden;
+	/* overflow-y: hidden; */
 	padding: 5px;
 }
 .dnd4eAltus.sheet .window-content form {
@@ -2201,8 +2201,7 @@ font-size: 12px;
 .dnd4eAltus.chat-card .card-header img {
 	flex: 0 0 36px;
 	margin-right: 5px;
-	
-		display: flex;
+	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: flex-start;
@@ -2216,6 +2215,7 @@ font-size: 12px;
 	font-weight: 700;
 	color: #e0e0e0;
 	border-bottom: 0px;
+	padding-left: 3px;
 }
 .dnd4eAltus.chat-card .card-header h3:hover {
 	color: #111;
@@ -2223,6 +2223,7 @@ font-size: 12px;
 }
 .dnd4eAltus.chat-card .card-content {
 	margin: 5px 0;
+	background: linear-gradient(90deg, #c3c2b7, #c3c2b718);
 }
 .dnd4eAltus.chat-card .card-content h3 {
 	font-size: 12px;
@@ -2366,6 +2367,10 @@ span.flavor-text.fumble {
 	list-style: none;
 	margin: 0;
 	padding: 0;
+}
+
+#trait-selector .trait-list .trait-list {
+	padding-left: 20px;
 }
 #trait-selector input[type="text"] {
 	height: 18px;

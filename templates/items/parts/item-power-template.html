@@ -327,15 +327,30 @@
 		<input type="text" name="system.miss.formula" value="{{system.miss.formula}}" placeholder="{{ localize "DND4EALTUS.MissFormulaPlaceholder" }}"/>
 	</div>
 
+
 	<div class="form-group stacked weapon-properties">
-		<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:</label>
+		<label title="{{localize 'PrimaryDamageTypeTitleSource'}}" style="max-width: 100%">{{localize "DND4EALTUS.PrimaryDamageTypeSource"}}: {{system.weaponSourceName}}</label>
 		<pr></pr>
+		{{#if system.damageTypeWeapon}}
+		{{#each config.damageTypes as |name type|}}
+		<label class="checkbox">
+			<input disabled="disabled" type="checkbox" name="system.weaponDamageType.{{type}}" {{checked (lookup ../system.weaponDamageType type)}}/> {{ name }}
+		</label>
+		{{/each}}
+		{{else}}
 		{{#each config.damageTypes as |name type|}}
 		<label class="checkbox">
 			<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
 		</label>
 		{{/each}}
+
+		{{/if}}
 	</div>
+
+	<!-- <div class="form-group">
+		<label>{{localize 'DND4EALTUS.DamageTypeFromWeapon'}}</label>
+		<span class="checkbox"><input type="checkbox" name="system.damageTypeWeapon" data-dtype="Boolean" {{checked system.damageTypeWeapon}}/></span>
+	</div> -->
 
 	{{/if}}
 	<div class="form-group">

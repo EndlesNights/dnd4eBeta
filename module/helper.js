@@ -9,14 +9,8 @@ export class Helper {
 			command : item.system.macro.command, //cmd,
 			author : game.user.id
 		})
-		// below vars are not part of the Macro data object so need to be set manually
-		// CODE SMELL
-		// data.item has historically been item.data
-		// data.actor has historically been the actor
-		// changing that would break existing macros that rely on item data.  I would like to make data.item = the item.
-		// can still get to the item using .document
 		macro.item = item
-		macro.actor = item.actor //needs to be actor and not data to get at actors items collection - e.g. other items
+		macro.actor = item.actor
 		macro.launch = item.system.macro.launchOrder;
 		return macro.execute();
 	}
@@ -181,7 +175,7 @@ export class Helper {
 					this._addKeywords(suitableKeywords, weaponInnerData.weaponGroup)
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
 					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
-					this._addKeywords(suitableKeywords, weaponInnerData.implementGroup)
+					this._addKeywords(suitableKeywords, weaponInnerData.implement)
 				}
 
 				if (powerInnerData.powersource) {
@@ -750,7 +744,7 @@ export class Helper {
 	}
 
 	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
-		let powerSource = (chatData.powersource && chatData.powersource !== "") ? ` ♦ ${CONFIG.DND4EALTUS.powerSource[`${chatData.powersource}`]}` : ""
+		let powerSource = (chatData.powersource && chatData.powersource !== "") ? ` ♦ ${CONFIG.DND4EALTUS.powerSource[`${chatData.powersource}`]}` : "";
 		let powerDetail = `<span><b>${CONFIG.DND4EALTUS.powerUseType[`${chatData.useType}`]}${powerSource}`;
 		let tag = [];
 
@@ -765,11 +759,19 @@ export class Helper {
 			tag.push(`${CONFIG.DND4EALTUS.powerSource[`${chatData.secondPowersource}`]}`)
 		}
 
-		if(chatData.damageType) {
+
+		
+		if(chatData.weaponDamageType) {
+			for ( let [damage, d] of Object.entries(chatData.weaponDamageType)) {
+				if(d && CONFIG.DND4EALTUS.damageTypes[damage]) tag.push(CONFIG.DND4EALTUS.damageTypes[damage])
+			}
+		}
+		else if(chatData.damageType) {
 			for ( let [damage, d] of Object.entries(chatData.damageType)) {
 				if(d && CONFIG.DND4EALTUS.damageTypes[damage]) tag.push(CONFIG.DND4EALTUS.damageTypes[damage])
 			}
 		}
+
 		if(chatData.effectType) {
 			for ( let [effect, e] of Object.entries(chatData.effectType)) {
 				if(e && CONFIG.DND4EALTUS.effectTypes[effect]) tag.push(CONFIG.DND4EALTUS.effectTypes[effect])
@@ -961,9 +963,10 @@ export class Helper {
 		for(let e of effectMap){
 			if(e.flags.dnd4eAltus.effectData.powerEffectTypes === condition){
 				for(let t of tokenTarget){
-					let effectData = e.data;
-					effectData.sourceName = parent.name
-					effectData.origin = parent.uuid
+					// console.log(e)
+					// let effectData = e.data;
+					// e.sourceName = parent.name;
+					e.origin = parent.uuid;
 
 					const duration = e.duration;
 					const flags = e.flags;

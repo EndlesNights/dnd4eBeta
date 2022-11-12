@@ -73,7 +73,26 @@
 				</select>
 			</div>
 
-			<!-- {{#unless isMountable}} -->
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.WeaponBase" }}:</label>
+				<select name="system.weaponBaseType">
+					{{#select system.weaponBaseType}}
+					<option value="">{{ localize 'DND4EALTUS.None' }}</option>
+					<option value="custom">{{ localize 'DND4EALTUS.Custom' }}</option>
+					{{#each weaponBaseTypes as |name type|}}
+					<option value="{{type}}">{{name}}</option>
+					{{/each}}
+					{{/select}}
+				</select>
+			</div>
+
+			{{#if isWeaponBaseTypeCustom}}
+			<div class="form-group">
+				<label>{{ localize "DND4EALTUS.WeaponBaseCustom" }}:</label>
+				<input type="text" name="system.weaponBaseTypeCustom" value="{{system.weaponBaseTypeCustom}}" title="{{ localize "DND4EALTUS.WeaponBaseCustom" }}" placeholder="{{ localize "DND4EALTUS.WeaponBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+			</div>
+			{{/if}}
+
 			{{!-- Weapon Status --}}
 			<div class="form-group stacked">
 				<label>{{ localize "DND4EALTUS.ItemWeaponStatus" }}</label>
@@ -95,7 +114,6 @@
 					</label>
 				</div>
 			</div>
-			<!-- {{/unless}} -->
 
 			{{!-- Weapon Properties --}}
 			<div class="">
@@ -352,6 +370,12 @@
 				{{/if}}
 
 				<div class="form-group stacked weapon-properties">
+					<div class="form-group">
+						<label style="max-width: 250px">{{localize 'DND4EALTUS.DamageTypeFromWeapon'}}</label>
+						<span class="checkbox"><input type="checkbox" name="system.damageTypeWeapon" data-dtype="Boolean" {{checked system.damageTypeWeapon}}/></span>
+					</div>
+
+					{{#if system.damageTypeWeapon}}					
 					<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:</label>
 					<pr></pr>
 					{{#each config.damageTypes as |name type|}}
@@ -359,6 +383,7 @@
 						<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
 					</label>
 					{{/each}}
+					{{/if}}
 
 					<label>{{ localize "DND4EALTUS.ItemWeaponProperties" }}:</label>
 					<pr></pr>
@@ -367,8 +392,8 @@
 							<input type="checkbox" name="system.properties.{{p}}" {{checked prop.checked}} {{#if prop.disabled}}disabled{{/if}} /> {{ prop.propName }}
 						</label>
 					{{/each}}
-
-					<label>Weapon Group:</label>
+					<pr></pr>
+					<label>{{ localize "DND4EALTUS.WeaponGroup" }}:</label>
 					<pr></pr>
 					{{#each config.weaponGroup as |name group|}}
 					<label class="checkbox">
@@ -377,11 +402,12 @@
 					{{/each}}
 
 					{{#if system.properties.imp}}
-					<label>Implement Group:</label>
 					<pr></pr>
-					{{#each config.implementGroup as |name group|}}
+					<label>{{ localize "DND4EALTUS.ImplementGroup" }}:</label>
+					<pr></pr>
+					{{#each config.implement as |name group|}}
 					<label class="checkbox">
-						<input type="checkbox" name="system.implementGroup.{{group}}" {{checked (lookup ../system.implementGroup group)}}/> {{ name }}
+						<input type="checkbox" name="system.implement.{{group}}" {{checked (lookup ../system.implement group)}}/> {{ name }}
 					</label>
 					{{/each}}
 					{{/if}}
