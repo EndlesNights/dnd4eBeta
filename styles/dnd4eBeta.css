@@ -2352,7 +2352,6 @@ span.flavor-text.critical,
 span.flavor-text.fumble {
 	font-weight: bold;
 }
-
 .dice-roll .dice-total.success {
 	color: inherit;
 	background: #c7d0c0;
@@ -2368,6 +2367,17 @@ span.flavor-text.fumble {
 }
 .dice-roll .dice-total.fumble {
 	color: red;
+}
+.dice-roll .hit-prediction::before{
+	content:"\1F894";
+	display:inline-block;
+	margin-right:5px;
+}
+.dice-roll .hit-prediction.critical{
+	color:green;
+}
+.dice-roll .hit-prediction.fumble{
+	color:red;
 }
 /* ----------------------------------------- */
 /* Trait Selector
