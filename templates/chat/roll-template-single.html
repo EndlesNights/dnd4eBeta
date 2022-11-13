@@ -4,9 +4,15 @@
     {{/if}}
     <div class="dice-result">
         
-        {{#if attackRoll}}
-        <span class="flavor-text target"><b>Target</b>: {{attackRoll.target}}</span>
-        <span class="flavor-text hit-prediction{{attackRoll.critstate}}">{{attackRoll.hitstate}}</span>
+			{{#if attackRoll}}
+			<span class="flavor-text target"><b>Target</b>: {{attackRoll.target}}</span>
+			<span class="flavor-text hit-prediction{{attackRoll.critstate}}{{!--
+				--}}{{#if (eq attackRoll.hitstate 'Probable Hit!')}}{{!--
+					--}} probable-hit{{!--
+				--}}{{else if (eq attackRoll.hitstate 'Probable Miss!')}}{{!--
+					--}} probable-miss{{!--
+				--}}{{/if}}{{!--
+			--}}">{{attackRoll.hitstate}}</span>
         {{/if}}
 
         <div class="dice-formula">{{{formula}}}</div>
