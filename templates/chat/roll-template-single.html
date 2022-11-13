@@ -5,14 +5,14 @@
     <div class="dice-result">
         
         {{#if attackRoll}}
-        <span class="flavor-text"><b>Target</b>: {{attackRoll.target}}</span>
-        <span class="flavor-text{{roll.critstate}}">{{attackRoll.hitstate}}</span>
+        <span class="flavor-text target"><b>Target</b>: {{attackRoll.target}}</span>
+        <span class="flavor-text hit-prediction{{attackRoll.critstate}}">{{attackRoll.hitstate}}</span>
         {{/if}}
 
         <div class="dice-formula">{{{formula}}}</div>
         <div class="dice-tooltip dice-formula">{{{expression}}}</div>
         {{{tooltip}}}
-        <h4 class="dice-total">{{total}}</h4>
+        <h4 class="dice-total{{attackRoll.critstate}}">{{total}}</h4>
     </div>
 </div>
 <div class="chatDamageButtons">
