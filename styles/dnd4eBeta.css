@@ -2318,13 +2318,26 @@ font-size: 12px;
 	color: #4b4a44;
 }
 
-.dnd4eBeta .item-details span,
+.dnd4eBeta .item-details span{
+	margin: 1px;
+	color: #000;
+}
+.dnd4eBeta .item-details>span,
 .dnd4eBeta .item-details p,
 .dnd4eBeta .item-description p {
 	padding-left: 3px;
 	padding-right: 3px;
 	margin: 1px;
 	color: #000;
+}
+.dnd4eBeta .item-details .action+.range-type{
+	padding-left:1em;
+}
+.dnd4eBeta .item-details .usage,
+.dnd4eBeta .item-details .keywords,
+.dnd4eBeta .item-details .action,
+.dnd4eBeta .item-details .range-type{
+	font-weight:bold;
 }
 
 .dnd4eBeta .item-description p ,
@@ -2339,7 +2352,6 @@ span.flavor-text.critical,
 span.flavor-text.fumble {
 	font-weight: bold;
 }
-
 .dice-roll .dice-total.success {
 	color: inherit;
 	background: #c7d0c0;
@@ -2355,6 +2367,17 @@ span.flavor-text.fumble {
 }
 .dice-roll .dice-total.fumble {
 	color: red;
+}
+.dice-roll .hit-prediction::before{
+	content:"\1F894";
+	display:inline-block;
+	margin-right:5px;
+}
+.dice-roll .hit-prediction.critical{
+	color:green;
+}
+.dice-roll .hit-prediction.fumble{
+	color:red;
 }
 /* ----------------------------------------- */
 /* Trait Selector

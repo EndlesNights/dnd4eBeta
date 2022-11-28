@@ -1,9 +1,15 @@
 <div class="dice-roll">
     {{#each multirollData as |roll|}}
         <div class="dice-result">
-            <span class="flavor-text"><b>Target</b>: {{roll.target}}</span>
+            <span class="flavor-text target"><b>Target</b>: {{roll.target}}</span>
             <div class="dice-flavor">{{roll.flavor}}</div>
-            <span class="flavor-text{{roll.critstate}}">{{roll.hitstate}}</span>
+            <span class="flavor-text hit-prediction{{roll.critstate}}{{!--
+				--}}{{#if (eq roll.hitstate 'Probable Hit!')}}{{!--
+						--}} probable-hit{{!--
+					--}}{{else if (eq roll.hitstate 'Probable Miss!')}}{{!--
+						--}} probable-miss{{!--
+					--}}{{/if}}{{!--
+				--}}">{{roll.hitstate}}</span>
             <div class="dice-formula">{{{roll.formula}}}</div>
             <div class="dice-tooltip dice-formula">{{{roll.expression}}}</div>
             {{{roll.tooltip}}}
