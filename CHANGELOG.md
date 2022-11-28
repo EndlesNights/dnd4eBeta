@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.17
+- Style update [merge](https://github.com/EndlesNights/dnd4eBeta/pull/254) from [FoxLee](https://github.com/FoxLee)
+
 ## Version 0.3.16
 - Fast Forward for TAH Powers [merge](https://github.com/EndlesNights/dnd4eBeta/pull/252) from [draconas1](https://github.com/draconas1)
 
