@@ -1,5 +1,5 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
-<div class="dnd4eBeta chat-card item-card {{item.type}}-card {{actor.type}} {{#if isPower}}use-{{item.system.useType}}{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
+<div class="dnd4eBeta chat-card item-card {{item.type}}-card {{actor.type}} {{#if isPower}}use-{{item.system.useType}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
 	 {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
 	<header class="card-header flexrow">
 		<img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
@@ -7,7 +7,7 @@
 	</header>
 
 	<div class="card-content" style="display: block;">
-		{{{system.description.value}}}
+		{{#if item.system.chatFlavor}}<p class="chat-flavour">{{/if}}{{{system.description.value}}}{{#if item.system.chatFlavor}}</p>{{/if}}
 		{{#if data.materials.value}}
 		<p><strong>{{ localize "DND4EBETA.RequiredMaterials" }}.</strong> {{data.materials.value}}</p>
 		{{/if}}
