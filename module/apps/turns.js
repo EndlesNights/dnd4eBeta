@@ -13,7 +13,7 @@ export class Turns{
     
         for(let t of game.combat.turns){
             let toDelete = [];
-            for(let e of t.token.actor.effects){
+            for(let e of t.token?.actor?.effects){
                 const effectData = e.flags.dnd4e?.effectData;
                 const durationType = effectData?.durationType;
     

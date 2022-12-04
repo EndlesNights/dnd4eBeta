@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.18
+- added null checks to turns.js to ward off edge case.
+
 ## Version 0.3.17
 - Style update [merge](https://github.com/EndlesNights/dnd4eBeta/pull/254) from [FoxLee](https://github.com/FoxLee)
 
