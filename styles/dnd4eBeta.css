@@ -2327,7 +2327,7 @@ font-size: 12px;
 	color: #000;
 }
 
-.dnd4eBeta .item-description p ,
+.dnd4eBeta .item-description,
 .dnd4eBeta .item-details .alt{
 	/* background-color: #c3c2b7; */
 	/* background-color: linear-gradient(45deg, #c3c2b7, #c3c2b796) */

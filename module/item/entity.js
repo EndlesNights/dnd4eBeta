@@ -759,10 +759,17 @@ export default class Item4e extends Item {
 		const data = duplicate(this.system);
 		const labels = this.labels;
 
-		
+		// if(data.chatFlavor) {
+		// 	data.description.value = data.chatFlavor;
+		// }
+			
+		const description = data.description;
+		const weaponUse = Helper.getWeaponUse(data, this.actor);
+		const descriptionText = Helper.commonReplace(description.value, this.actor, this.system, weaponUse?.system);
+
 		// Rich text description
 		htmlOptions.async = true; //TextEditor.enrichHTML is becoming asynchronous. In the short term you may pass async=true or async=false as an option to nominate your preferred behavior.
-		data.description.value = await TextEditor.enrichHTML(data.description.value || ``, htmlOptions);
+		data.description.value = await TextEditor.enrichHTML(descriptionText || ``, htmlOptions);
 
 		// Item type specific properties
 		const props = [];
@@ -794,9 +801,7 @@ export default class Item4e extends Item {
 			);
 		}
 		
-		if(data.chatFlavor) {
-			data.description.value = data.chatFlavor;
-		}
+
 
 		// Filter properties and return
 		data.properties = props.filter(p => !!p);
