@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.3.19
+- You should now be able to use the "@path.to.data" notation to refrence to actor data within the Item Card Descriptions.
+- Fixed style issue with item cards description backgrounds. New Line breaks should no longer sperate the background image.
+- Changes to chat card generation for NPC powers  [merge](https://github.com/EndlesNights/dnd4eBeta/pull/256) from [FoxLee](https://github.com/FoxLee)
 ## Version 0.3.18
 - added null checks to turns.js to ward off edge case.
 
