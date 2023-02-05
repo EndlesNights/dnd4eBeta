@@ -67,8 +67,8 @@ export class HealMenuDialog extends FormApplication {
 
 		ChatMessage.create({
 			user: game.user.id,
-			speaker: {actor: this.object, alias: this.object.system.name},
-			content: `${this.object.system.name} ${healTypeText}. ${healingSurgeText} ${surgeValueText} ${rollMessage}`,
+			speaker: {actor: this.object, alias: this.object.name},
+			content: `${this.object.name} ${healTypeText}. ${healingSurgeText} ${surgeValueText} ${rollMessage}`,
 		});
 	}
 }

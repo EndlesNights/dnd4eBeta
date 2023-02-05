@@ -6,6 +6,7 @@
 - Changes to chat card generation for NPC powers [merge](https://github.com/EndlesNights/dnd4eBeta/pull/256) from [FoxLee](https://github.com/FoxLee)
 - French Translation Added, thanks to [Gilphe](https://github.com/Gilphe) and [merge](https://github.com/EndlesNights/dnd4eBeta/pull/261) from [draconas1](https://github.com/draconas1)
 - Fix to Ritual Formula [merge](https://github.com/EndlesNights/dnd4eBeta/pull/261) from [draconas1](https://github.com/draconas1)
+- Fixed an issue with a heal dialog to properly display actor name.
 
 ## Version 0.3.18
 - added null checks to turns.js to ward off edge case.
