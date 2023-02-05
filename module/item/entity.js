@@ -1599,7 +1599,7 @@ export default class Item4e extends Item {
 		const parts = ["@" + rollType];
 
 		if(this.system.formula) {
-			rollData[rollType] = Helper.commonReplace(this.system.formula.replace("@attribute", Helper.byString(this.system.attribute, this.actor)), this.actor.data, this.system);
+			rollData[rollType] = Helper.commonReplace(this.system.formula.replace("@attribute", Helper.byString(this.system.attribute, this.actor.system)), this.actor.system, this.system);
 		} else {
 			rollData[rollType] = `1d20 + ${Helper.byString(this.system.attribute, this.actor.system)}`; 
 			if(this.system.bonus){
