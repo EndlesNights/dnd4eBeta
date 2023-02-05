@@ -1,7 +1,7 @@
 # Changelog
 
 ## Version 0.3.19
-- You should now be able to use the "@path.to.data" notation to refrence to actor data within the Item Card Descriptions.
+- You should now be able to use the "@path.to.data" notation to reference to actor data within the Item Card Descriptions.
 - Fixed style issue with item cards description backgrounds. New Line breaks should no longer sperate the background image.
 - Changes to chat card generation for NPC powers [merge](https://github.com/EndlesNights/dnd4eBeta/pull/256) from [FoxLee](https://github.com/FoxLee)
 - French Translation Added, thanks to [Gilphe](https://github.com/Gilphe) and [merge](https://github.com/EndlesNights/dnd4eBeta/pull/261) from [draconas1](https://github.com/draconas1)
