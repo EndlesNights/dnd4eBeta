@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.20
+- fix Item Card Descriptions when viewed without actor, was causing a null issue because of 0.3.19 change.
+
 ## Version 0.3.19
 - You should now be able to use the "@path.to.data" notation to reference to actor data within the Item Card Descriptions.
 - Fixed style issue with item cards description backgrounds. New Line breaks should no longer sperate the background image.
