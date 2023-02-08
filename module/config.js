@@ -1039,7 +1039,6 @@ DND4EBETA.conditionTypes = {
 	"weakened": "DND4EBETA.ConWeakened",
 };
 
-
 DND4EBETA.statusEffect = [
 	//row 1
 	{
@@ -1212,22 +1211,17 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4e/icons/statusEffects/insubstantial.svg"
 	},
 	{
-		id: "invisible",
-		label: "EFFECT.statusInvisible",
-		icon: "systems/dnd4e/icons/statusEffects/invisible.svg"
-	},
-	{
 		id: "mounted",
 		label: "EFFECT.statusMounted",
 		icon: "systems/dnd4e/icons/statusEffects/mounted.svg"
 	},		
-	//row 6
 
 	{
 		id: "petrified",
 		label: "EFFECT.statusPetrified",
 		icon: "systems/dnd4e/icons/statusEffects/petrified.svg"
 	},
+	//row 6
 	{
 		id: "prone",
 		label: "EFFECT.statusProne",
@@ -1254,12 +1248,6 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4e/icons/statusEffects/slowed.svg"
 	},
 	{
-		id: "sneaking",
-		label: "EFFECT.statusSneaking",
-		icon: "systems/dnd4e/icons/statusEffects/sneaking.svg"
-	},
-	//row 7
-	{
 		id: "stunned",
 		label: "EFFECT.statusStunned",
 		icon: "systems/dnd4e/icons/statusEffects/stunned.svg"
@@ -1269,6 +1257,7 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusSurprised",
 		icon: "systems/dnd4e/icons/statusEffects/surprised.svg"
 	},
+	//row 7
 	{
 		id: "torch",
 		label: "EFFECT.statusTorch",
@@ -1283,8 +1272,34 @@ DND4EBETA.statusEffect = [
 		id: "weakened",
 		label: "EFFECT.statusWeakened",
 		icon: "systems/dnd4e/icons/statusEffects/weakend.svg"
-	}
+	},
+	{
+		id: "invisible",
+		label: "EFFECT.statusInvisible",
+		icon: "systems/dnd4e/icons/statusEffects/invisible.svg"
+	},
+	{
+		id: "hidden",
+		label: "EFFECT.statusHidden",
+		icon: "systems/dnd4e/icons/statusEffects/hidden.svg"
+	},
+	{
+		id: "sneaking",
+		label: "EFFECT.statusSneaking",
+		icon: "systems/dnd4e/icons/statusEffects/sneaking.svg"
+	},
+	{
+		id: "concealed",
+		label: "EFFECT.statusConceal",
+		icon: "systems/dnd4e/icons/statusEffects/concealment.svg"
+	},
+	{
+		id: "concealedfull",
+		label: "EFFECT.statusConcealFull",
+		icon: "systems/dnd4e/icons/statusEffects/concealment-full.svg"
+	},
 ];
+
 // Languages
 DND4EBETA.spoken = {
   "Abyssal": "DND4EBETA.SpokenAbyssal",
