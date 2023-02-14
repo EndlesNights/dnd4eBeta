@@ -1,7 +1,7 @@
 <div class="dice-roll">
     {{#each multirollData as |roll|}}
         <div class="dice-result">
-            <span class="flavor-text target"><b>Target</b>: {{roll.target}}</span>
+            <span class="flavor-text target"><b>{{localize 'DND4EBETA.Target'}}</b>: {{roll.target}}</span>
             <div class="dice-flavor">{{roll.flavor}}</div>
             <span class="flavor-text hit-prediction{{roll.critstate}}{{!--
 				--}}{{#if (eq roll.hitstate 'Probable Hit!')}}{{!--
