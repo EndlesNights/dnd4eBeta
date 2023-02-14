@@ -29,23 +29,19 @@
 		{{/if}}
 	</div>
 
-	<div class="form-group stacked">
-		<label>{{ localize "DND4EBETA.Keywords" }}</label>
-	</div>
-
 	<div class="form-group select">
-		<label>Level</label>
+		<label>{{ localize 'DND4EBETA.Level' }}</label>
 		<input type="text" name="system.level" value="{{system.level}}"/>
 	</div>
 
 	<div class="form-group short uses-per">
-		<label>Power Type</label>
+		<label>{{ localize 'DND4EBETA.PowerType' }}</label>
 		<select name="system.powerType">
 			{{#select system.powerType}}
 			{{#each config.powerType as |name type|}}
 			<option value="{{type}}">{{name}}</option>
 			{{/each}}
-			<option value="other">{{localize "DND4EBETA.Other"}}</option>
+			<option value="other">{{localize 'DND4EBETA.Other'}}</option>
 			{{/select}}
 		</select> 
 		<select name="system.powerSubtype">
@@ -58,7 +54,7 @@
 		</select>
 	</div>
 	<div class="form-group select">
-		<label>Use Type</label>
+		<label>{{ localize 'DND4EBETA.Usage' }}</label>
 		<select name="system.useType">
 			{{#select system.useType}}
 			{{#each config.powerUseType as |name type|}}
@@ -95,9 +91,9 @@
 			<!-- <span>Weapon</span> -->
 			<select name="system.weaponUse">
 				{{#select system.weaponUse}}
-				<option value="default">Default</option>
-				<option value="defaultOH">Default Off-Hand</option>
-				<option value="none">None</option>
+				<option value="default">{{ localize 'DND4EBETA.Default' }}</option>
+				<option value="defaultOH">{{ localize 'DND4EBETA.Default' }} {{ localize 'DND4EBETA.HOff' }}</option>
+				<option value="none">{{ localize 'DND4EBETA.None' }}</option>
 				{{#each powerWeaponUseTargets as |name key|}}
 				<option value="{{key}}">{{name}}</option>
 				{{/each}}
@@ -253,7 +249,7 @@
 	{{!-- Hit Details --}}
 	{{!-- Damage --}}
 	<div class="form-group">
-		<label>Shared Damage Roll</label>
+		<label>{{ localize "DND4EBETA.PowerDamShared" }}</label>
 		<span class="checkbox"><input type="checkbox" name="system.hit.shareDamageRoll" data-dtype="Boolean" {{checked system.hit.shareDamageRoll}}/></span>
 	</div>
 	
@@ -272,11 +268,11 @@
 	</div>
 
 	<div class="form-group stacked">
-		<label>{{ localize "DND4EBETA.FormulaDamage" }}</label>
+		<label>{{ localize 'DND4EBETA.FormulaDamage' }}</label>
 		<input type="text" name="system.hit.formula" value="{{system.hit.formula}}"/>
 	</div>
 	<h4 class="damage-header">
-		Secondary {{ localize "DND4EBETA.Damage"}} {{localize "DND4EBETA.Formula" }}:
+		{{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaDamage' }}:
 		<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
 	</h4>
 	<ol class="damage-parts form-group">
@@ -285,7 +281,7 @@
 			<input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this '0'}}"/>
 			<select name="system.damage.parts.{{i}}.1">
 				{{#select (lookup this "1") }}
-				<option value="">{{ localize "DND4EBETA.None" }}</option>
+				<option value="">{{ localize 'DND4EBETA.None' }}</option>
 				{{#each ../config.damageTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
 				{{/each}}
@@ -298,11 +294,11 @@
 	
 	{{!-- Critical --}}
 	<div class="form-group stacked">
-		<label>Critical Damage {{ localize "DND4EBETA.Formula" }}</label>
+		<label>{{ localize 'DND4EBETA.Critical' }} {{ localize 'DND4EBETA.FormulaDamage' }}</label>
 		<input type="text" name="system.hit.critFormula" value="{{system.hit.critFormula}}"/>
 	</div>
 	<h4 class="damage-header">
-		Secondary Critical{{ localize "DND4EBETA.Damage" }} {{ localize "DND4EBETA.Formula" }}:
+		{{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.Critical' }} {{ localize 'DND4EBETA.FormulaDamage' }}:
 		<a class="damage-control add-criticalDamage"><i class="fas fa-plus"></i></a>
 	</h4>
 	<ol class="damage-parts form-group">
@@ -311,7 +307,7 @@
 			<input type="text" name="system.damageCrit.parts.{{i}}.0" value="{{lookup this "0"}}"/>
 			<select name="system.damageCrit.parts.{{i}}.1">
 				{{#select (lookup this "1") }}
-				<option value="">{{ localize "DND4EBETA.None" }}</option>
+				<option value="">{{ localize 'DND4EBETA.None' }}</option>
 				{{#each ../config.damageTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
 				{{/each}}
@@ -323,14 +319,13 @@
 	</ol>
 
 	<div class="form-group stacked">
-		<label>Miss Damage {{ localize "DND4EBETA.Formula" }}</label>
+		<label>{{ localize 'DND4EBETA.Miss' }} {{ localize 'DND4EBETA.FormulaDamage' }}</label>
 		<input type="text" name="system.miss.formula" value="{{system.miss.formula}}" placeholder="{{ localize "DND4EBETA.MissFormulaPlaceholder" }}"/>
 	</div>
 
 
 	<div class="form-group stacked weapon-properties">
-		<label title="{{localize 'PrimaryDamageTypeTitleSource'}}" style="max-width: 100%">{{localize "DND4EBETA.PrimaryDamageTypeSource"}}: {{system.weaponSourceName}}</label>
-		<pr></pr>
+		<label title="{{localize 'DND4EBETA.PrimaryDamageType'}}" style="max-width: 100%">{{localize "DND4EBETA.PrimaryDamageType"}}: {{system.weaponSourceName}}</label>
 		{{#if system.damageTypeWeapon}}
 		{{#each config.damageTypes as |name type|}}
 		<label class="checkbox">
@@ -385,7 +380,7 @@
 	</div>
 	<div class="form-group stacked">
 		<label>{{ localize "DND4EBETA.HitDetailsText" }}</label>
-		<input type="text" name="system.hit.detail" value="{{system.hit.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+		<input type="text" name="system.hit.detail" value="{{system.hit.detail}}" placeholder="{{ localize 'DND4EBETA.PowerTextFieldsPlaceholder'}}"/>
 	</div>
 
 	{{!-- Miss Details --}}
@@ -408,16 +403,16 @@
 		{{editor effectDetailHTML target="system.effect.detail" button=true owner=owner editable=editable}}
 	{{else}}
 		<div class="form-group">
-			<input type="text" name="system.effect.detail" value="{{system.effect.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+			<input type="text" name="system.effect.detail" value="{{system.effect.detail}}" placeholder="{{ localize 'DND4EBETA.PowerTextFieldsPlaceholder'}}"/>
 		</div>
 	{{/if}}
 
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.Special" }}</label>
-		<span class="checkbox">Display Information Post Attack Details?<input type="checkbox" name="system.postSpecial" data-dtype="Boolean" {{checked system.postSpecial}}/></span>
+		<span class="checkbox">{{ localize 'DND4EBETA.DisplayEffect' }}?<input type="checkbox" name="system.postSpecial" data-dtype="Boolean" {{checked system.postSpecial}}/></span>
 	</div>
 	<div class="form-group">
-		<input type="text" name="system.special" value="{{system.special}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+		<input type="text" name="system.special" value="{{system.special}}" placeholder="{{ localize 'DND4EBETA.PowerTextFieldsPlaceholder'}}"/>
 		<a class="onetext-control add-special"><i class="fas fa-plus"></i></a>
 	</div>
 	<ol class="onetext-parts form-group">
@@ -442,11 +437,11 @@
 	</div>
 
 	<div class="form-group">
-		<input type="text" name="system.sustain.detail" value="{{system.sustain.detail}}" placeholder="{{ localize "DND4EBETA.PowerTextFieldsPlaceholder"}}"/>
+		<input type="text" name="system.sustain.detail" value="{{system.sustain.detail}}" placeholder="{{ localize 'DND4EBETA.PowerTextFieldsPlaceholder'}}"/>
 	</div>
 
 	<div class="form-group stacked weapon-properties">
-		<label title="Type of Damage Dealt by primary attack.">Effect Types & Keywords:</label>
+		<label title="{{ localize 'DND4EBETA.Keywords' }}">{{ localize 'DND4EBETA.Effect' }} {{ localize 'DND4EBETA.Type' }} {{ localize 'DND4EBETA.Keywords' }}</label>
 		<pr></pr>
 		{{#each config.effectTypes as |name type|}}
 		<label class="checkbox">
@@ -458,7 +453,7 @@
 	{{!-- Chat Message Flavor --}}
 	<div class="form-group stacked">
 		<label>{{ localize "DND4EBETA.ChatFlavor" }}</label>
-		<input type="text" name="system.chatFlavor" value="{{system.chatFlavor}}" placeholder="{{ localize "DND4EBETA.ChatFlavorPlaceholder"}}"/>
+		<input type="text" name="system.chatFlavor" value="{{system.chatFlavor}}" placeholder="{{ localize 'DND4EBETA.ChatFlavorPlaceholder'}}"/>
 	</div>
 
 </div>
