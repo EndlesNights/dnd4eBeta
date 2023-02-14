@@ -706,6 +706,7 @@
 .dnd4eBeta .form-group.stacked label {
 	flex: 0 0 100%;
 	margin: 0;
+	max-width:100%;
 }
 .dnd4eBeta .form-group.stacked label.checkbox {
 	flex: auto;
