@@ -2,7 +2,7 @@
 	<header class="feature-filters flexrow">
 		<div class="sort-features" style="max-width: 144px;">
 			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.features.sortBy.value">
-			<label for="feature-sort">SortBy</label><br>
+			<label for="feature-sort">{{localize 'DND4EUI.SortBy'}}</label><br>
 			<select name="system.featureSortTypes" style="min-width: 128px;">
 				{{#select system.featureSortTypes}}
 				{{#each config.featureSortTypes as |name type|}}
@@ -13,9 +13,9 @@
 		</div>
 
 		<div class="filter-search-features">
-			<label for="feature-filter-search">Filter</label>	
+			<label for="feature-filter-search">{{localize "DND4EBETA.Filter"}}</label>	
 			<br>
-			<input type="text" style="min-width: 168px; margin-right: 2px;" name="feat-filter-search" placeholder="Search for feat..." id="filterInput-feat" onkeyup="filterFeatures()"/>
+			<input type="text" style="min-width: 168px; margin-right: 2px;" name="feat-filter-search" placeholder="{{localize 'DND4EUI.SearchFor'}} {{localize 'DND4EBETA.Feat'}}..." id="filterInput-feat" onkeyup="filterFeatures()"/>
 		</div>
 	</header>
 
@@ -101,8 +101,8 @@
 						<i class="fas fa-sun"></i>
 					</a>
 					{{/if}}
-					<a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-					<a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+					<a class="item-control item-edit" title="{{localize 'DND4EBETA.ItemEdit'}}"><i class="fas fa-edit"></i></a>
+					<a class="item-control item-delete" title="{{localize 'DND4EBETA.ItemDelete'}}"><i class="fas fa-trash"></i></a>
 				</div>
 				{{/if}}
 			</li>
