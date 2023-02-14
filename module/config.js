@@ -231,7 +231,7 @@ DND4EBETA.equipmentTypes = {
 };
 
 DND4EBETA.equipmentTypesArmour = {
-	"cloth": "DND4EBETA.EquipmentArmourCloth",
+	//"cloth": "DND4EBETA.EquipmentArmourCloth",
 	"light": "DND4EBETA.EquipmentArmourLight",
 	"heavy": "DND4EBETA.EquipmentArmourHeavy",
 	"natural": "DND4EBETA.EquipmentArmourNatural",
@@ -273,9 +273,9 @@ DND4EBETA.equipmentTypesWaist = {
  * @type {Object}
  */
 DND4EBETA.armourProficiencies = {
-  "lgt": DND4EBETA.equipmentTypes.light,
-  "med": DND4EBETA.equipmentTypes.medium,
-  "hvy": DND4EBETA.equipmentTypes.heavy,
+  "lgt": "DND4EBETA.equipmentTypes.light",
+  "med": "DND4EBETA.equipmentTypes.medium",
+  "hvy": "DND4EBETA.equipmentTypes.heavy",
   "shl": "DND4EBETA.EquipmentShieldProficiency"
 };
 
@@ -395,7 +395,7 @@ DND4EBETA.ritualcomponents = {
 // Damage Types
 DND4EBETA.damageTypes = {
 	
-  "damage": "DND4EBETA.Damage",
+  "damage": "DND4EBETA.DamageAll",
   "acid": "DND4EBETA.DamageAcid",
   // "bludgeoning": "DND4EBETA.DamageBludgeoning",
   // "bludgeon": "DND4EBETA.DamageBludgeoning",
@@ -482,9 +482,10 @@ DND4EBETA.profArmor = {
 };
 
 DND4EBETA.cloth = {
-	cloth: "DND4EBETA.ArmourProfCloth",
+	
 };
 DND4EBETA.light = {
+	cloth: "DND4EBETA.ArmourProfCloth",
 	leather: "DND4EBETA.ArmourProfLeather",
 	hide: "DND4EBETA.ArmourProfHide",
 };
@@ -530,39 +531,58 @@ DND4EBETA.weaponProficienciesMap = {
 DND4EBETA.simpleM = {
 	club:"DND4EBETA.WeaponClub",
 	dagger:"DND4EBETA.WeaponDagger",
-	javelin:"DND4EBETA.WeaponJavelin",
-	mace:"DND4EBETA.WeaponMace",
-	sickle:"DND4EBETA.WeaponSickle",
-	spear:"DND4EBETA.WeaponSpear",
 	greatclub:"DND4EBETA.WeaponGreatclub",
+	javelin:"DND4EBETA.WeaponJavelin",
+	lightMace:"DND4EBETA.WeaponMace",
+	mace:"DND4EBETA.WeaponMace",
 	morningstar:"DND4EBETA.WeaponMorningStar",
 	quarterstaff:"DND4EBETA.WeaponQuarterStaff",
-	scythe:"DND4EBETA.WeaponScythe"
+	scythe:"DND4EBETA.WeaponScythe",
+	shortSpear:"DND4EBETA.WeaponShortSpear",
+	sickle:"DND4EBETA.WeaponSickle",
+	spear:"DND4EBETA.WeaponSpear",
+	spikeGauntlet:"DND4EBETA.WeaponSpikeGauntlet",
+	wristRazor:"DND4EBETA.WeaponWristRazor"
 };
 DND4EBETA.simpleR = {
+	crossbow:"DND4EBETA.WeaponCrossbow",
+	dejada:"DND4EBETA.WeaponDejada",
 	handcrossbow:"DND4EBETA.WeaponHandcrossbow",
-	sling:"DND4EBETA.WeaponSling",
-	crossbow:"DND4EBETA.WeaponCrossbow"
+	repeatCrossbow:"DND4EBETA.WeaponRepeatCrossbow",
+	sling:"DND4EBETA.WeaponSling"
 };
 
 DND4EBETA.militaryM = {
+	alhulak:"DND4EBETA.WeaponAlhulak",
 	battleaxe:"DND4EBETA.WeaponBattleaxe",
-	flail:"DND4EBETA.WeaponFlail",
-	handaxe:"DND4EBETA.WeaponHandaxe",
-	longsword:"DND4EBETA.WeaponLongsword",
-	scimitar:"DND4EBETA.WeaponScimitar",
-	shortsword:"DND4EBETA.WeaponShortsword",
-	throwinghammer:"DND4EBETA.WeaponThrowingHammer",
-	warhammer:"DND4EBETA.WeaponWarhammer",
-	warpick:"DND4EBETA.WeaponWarpick",
+	broadsword:"DND4EBETA.WeaponBroadsword",
+	carrikal:"DND4EBETA.WeaponCarrikal",
+	chatchka:"DND4EBETA.WeaponChatchka",
 	falchion:"DND4EBETA.WeaponFalchion",
+	flail:"DND4EBETA.WeaponFlail",
 	glaive:"DND4EBETA.WeaponGlaive",
 	greataxe:"DND4EBETA.WeaponGreataxe",
 	greatsword:"DND4EBETA.WeaponGreatsword",
 	halberd:"DND4EBETA.WeaponHalberd",
+	handaxe:"DND4EBETA.WeaponHandaxe",
 	heavyflail:"DND4EBETA.WeaponHeavyflail",
+	heavyWarpick:"DND4EBETA.WeaponHeavyWarPick",
+	khopesh:"DND4EBETA.WeaponKhopesh",
+	lance:"DND4EBETA.WeaponLance",
+	lightWarpick:"DND4EBETA.WeaponLightWarPick",
 	longspear:"DND4EBETA.WeaponLongspear",
-	maul:"DND4EBETA.WeaponMaul"
+	longsword:"DND4EBETA.WeaponLongsword",
+	maul:"DND4EBETA.WeaponMaul",
+	pike:"DND4EBETA.WeaponPike",
+	rapier:"DND4EBETA.WeaponRapier",
+	scimitar:"DND4EBETA.WeaponScimitar",
+	scourge:"DND4EBETA.WeaponScourge",
+	shortsword:"DND4EBETA.WeaponShortsword",
+	throwinghammer:"DND4EBETA.WeaponThrowingHammer",
+	trident:"DND4EBETA.WeaponTrident",
+	trikal:"DND4EBETA.WeaponTrikal",
+	warhammer:"DND4EBETA.WeaponWarhammer",
+	warpick:"DND4EBETA.WeaponWarpick"
 };
 DND4EBETA.militaryR = {
 	longbow:"DND4EBETA.WeaponLongbow",
@@ -571,12 +591,50 @@ DND4EBETA.militaryR = {
 
 DND4EBETA.superiorM = {
 	bastardsword:"DND4EBETA.WeaponBastardsword",
+	cahulaks:"DND4EBETA.WeaponCahulaks",
+	craghammer:"DND4EBETA.WeaponCraghammer",
+	cutWheel:"DND4EBETA.WeaponCutWheel",
+	doubleAxe:"DND4EBETA.WeaponDoubleAxe",
+	doubleFlail:"DND4EBETA.WeaponDoubleFlail",
+	doubleScimitar:"DND4EBETA.WeaponDoubleScimitar",
+	doubleSword:"DND4EBETA.WeaponDoubleSword",
+	dragonPaw:"DND4EBETA.WeaponDragonPaw",
+	executionAxe:"DND4EBETA.WeaponExecutionAxe",
+	fullblade:"DND4EBETA.WeaponFullblade",
+	garrote:"DND4EBETA.WeaponGarrote",
+	gauntletAxe:"DND4EBETA.WeaponGauntletAxe",
+	gouge:"DND4EBETA.WeaponGouge",
+	greatspear:"DND4EBETA.WeaponGreatspear",
+	gythka:"DND4EBETA.WeaponGythka",
 	katar:"DND4EBETA.WeaponKatar",
-	rapier:"DND4EBETA.WeaponRapier",
-	spikeChain:"DND4EBETA.WeaponSpikeChain"
+	kukri:"DND4EBETA.WeaponKukri",
+	longKnife:"DND4EBETA.WeaponLongKnife",
+	lotulis:"DND4EBETA.WeaponLotulis",
+	mordenkrad:"DND4EBETA.WeaponMordenkrad",
+	net:"DND4EBETA.WeaponNet",
+	parryDagger:"DND4EBETA.WeaponParryDagger",
+	serratedPick:"DND4EBETA.WeaponSerratedPick",
+	sharrash:"DND4EBETA.WeaponSharrash",
+	singingStick:"DND4EBETA.WeaponSingingStick",
+	spikeChain:"DND4EBETA.WeaponSpikeChain",
+	spikeShield:"DND4EBETA.WeaponSpikeShield",
+	tangat:"DND4EBETA.WeaponTangat",
+	tortoiseBlade:"DND4EBETA.WeaponTortoiseBlade",
+	tratnyr:"DND4EBETA.WeaponTratnyr",
+	triFlail:"DND4EBETA.WeaponTriFlail",
+	urgrosh:"DND4EBETA.WeaponUrgrosh",
+	waraxe:"DND4EBETA.WeaponWaraxe",
+	whip:"DND4EBETA.WeaponWhip",
+	zadatl:"DND4EBETA.WeaponZadatl",
+	zulaat:"DND4EBETA.WeaponZulaat"
 };
 DND4EBETA.superiorR = {
-	shuriken:"DND4EBETA.WeaponShuriken"
+	boomerang:"DND4EBETA.WeaponBoomerang",
+	bola:"DND4EBETA.WeaponBola",
+	blowgun:"DND4EBETA.WeaponBlowgun",
+	greatbow:"DND4EBETA.WeaponGreatbow",
+	shuriken:"DND4EBETA.WeaponShuriken",
+	superCrossbow:"DND4EBETA.WeaponSuperCrossbow"
 };
 
 DND4EBETA.improvisedM = {};
@@ -1212,22 +1270,17 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4e/icons/statusEffects/insubstantial.svg"
 	},
 	{
-		id: "invisible",
-		label: "EFFECT.statusInvisible",
-		icon: "systems/dnd4e/icons/statusEffects/invisible.svg"
-	},
-	{
 		id: "mounted",
 		label: "EFFECT.statusMounted",
 		icon: "systems/dnd4e/icons/statusEffects/mounted.svg"
 	},		
-	//row 6
 
 	{
 		id: "petrified",
 		label: "EFFECT.statusPetrified",
 		icon: "systems/dnd4e/icons/statusEffects/petrified.svg"
 	},
+	//row 6
 	{
 		id: "prone",
 		label: "EFFECT.statusProne",
@@ -1254,12 +1307,6 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4e/icons/statusEffects/slowed.svg"
 	},
 	{
-		id: "sneaking",
-		label: "EFFECT.statusSneaking",
-		icon: "systems/dnd4e/icons/statusEffects/sneaking.svg"
-	},
-	//row 7
-	{
 		id: "stunned",
 		label: "EFFECT.statusStunned",
 		icon: "systems/dnd4e/icons/statusEffects/stunned.svg"
@@ -1269,6 +1316,7 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusSurprised",
 		icon: "systems/dnd4e/icons/statusEffects/surprised.svg"
 	},
+	//row 7
 	{
 		id: "torch",
 		label: "EFFECT.statusTorch",
@@ -1283,8 +1331,34 @@ DND4EBETA.statusEffect = [
 		id: "weakened",
 		label: "EFFECT.statusWeakened",
 		icon: "systems/dnd4e/icons/statusEffects/weakend.svg"
-	}
+	},
+	{
+		id: "invisible",
+		label: "EFFECT.statusInvisible",
+		icon: "systems/dnd4e/icons/statusEffects/invisible.svg"
+	},
+	{
+		id: "hidden",
+		label: "EFFECT.statusHidden",
+		icon: "systems/dnd4e/icons/statusEffects/hidden.svg"
+	},
+	{
+		id: "sneaking",
+		label: "EFFECT.statusSneaking",
+		icon: "systems/dnd4e/icons/statusEffects/sneaking.svg"
+	},
+	{
+		id: "concealed",
+		label: "EFFECT.statusConceal",
+		icon: "systems/dnd4e/icons/statusEffects/concealment.svg"
+	},
+	{
+		id: "concealedfull",
+		label: "EFFECT.statusConcealFull",
+		icon: "systems/dnd4e/icons/statusEffects/concealment-full.svg"
+	},
 ];
+
 // Languages
 DND4EBETA.spoken = {
   "Abyssal": "DND4EBETA.SpokenAbyssal",
