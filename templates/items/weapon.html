@@ -51,7 +51,7 @@
 
 			{{!-- Weapon Type --}}
 			<div class="form-group">
-				<label>{{ localize "DND4EBETA.ItemWeaponType" }}</label>
+				<label>{{ localize "DND4EBETA.ItemWeaponType" }}:</label>
 				<select name="system.weaponType">
 					{{#select system.weaponType}}
 					{{#each config.weaponTypes as |name type|}}
@@ -63,7 +63,7 @@
 
 			{{!-- Weapon Hand --}}
 			<div class="form-group">
-				<label>{{ localize "DND4EBETA.ItemWeaponHand" }}</label>
+				<label>{{ localize "DND4EBETA.ItemWeaponHand" }}:</label>
 				<select name="system.weaponHand">
 					{{#select system.weaponHand}}
 					{{#each config.weaponHands as |name hand|}}
@@ -89,19 +89,19 @@
 			{{#if isWeaponBaseTypeCustom}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.WeaponBaseCustom" }}:</label>
-				<input type="text" name="system.weaponBaseTypeCustom" value="{{system.weaponBaseTypeCustom}}" title="{{ localize "DND4EBETA.WeaponBaseCustom" }}" placeholder="{{ localize "DND4EBETA.WeaponBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+				<input type="text" name="system.weaponBaseTypeCustom" value="{{system.weaponBaseTypeCustom}}" title="{{ localize 'DND4EBETA.WeaponBaseCustom' }}" placeholder="{{ localize 'DND4EBETA.WeaponBaseCustom' }}" data-dtype="String" onClick="this.select();"/>
 			</div>
 			{{/if}}
 
 			{{!-- Weapon Status --}}
 			<div class="form-group stacked">
-				<label>{{ localize "DND4EBETA.ItemWeaponStatus" }}</label>
+				<label>{{ localize "DND4EBETA.ItemWeaponStatus" }}:</label>
 				<div class="form-fields">
 					<label class="checkbox">
-						<input type="checkbox" name="system.proficient" {{checked system.proficient}}/> Weapon {{ localize "DND4EBETA.Proficient" }}
+						<input type="checkbox" name="system.proficient" {{checked system.proficient}}/> {{ localize "DND4EBETA.Proficient" }}
 					</label>
 					<label class="checkbox">
-						<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> Implement {{ localize "DND4EBETA.Proficient" }}
+						<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4EBETA.ProficiencyI" }}
 					</label>
 					<label class="checkbox">
 						<input type="checkbox" name="system.equipped" {{checked system.equipped}}/> {{ localize "DND4EBETA.Equipped" }}
@@ -118,42 +118,42 @@
 			{{!-- Weapon Properties --}}
 			<div class="">
 				{{#unless (eq system.weaponType "implement")}}
-				<h3 class="form-header">Weapon Stats</h3>
+				<h3 class="form-header">{{ localize 'DND4EBETA.ItemWeaponStats' }}</h3>
 				<div class="form-group">
-					<label title="Proficiency Bonus">Proficiency Bonus:</label>
+					<label title="{{ localize 'DND4EBETA.BonusTypeProficiency' }}">{{ localize 'DND4EBETA.BonusTypeProficiency' }}:</label>
 					<div class="form-fields">
-						<input type="text" name="system.profBonus" value="{{system.profBonus}}" title="Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.profBonus" value="{{system.profBonus}}" title="{{ localize 'DND4EBETA.BonusTypeProficiency' }}" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				{{/unless}}
 				<div class="form-group">
-					<label title="Implement Proficiency Bonus">Implement Proficiency Bonus:</label>
+					<label title="{{ localize 'DND4EBETA.WeaponImplement' }} {{ localize 'DND4EBETA.BonusTypeProficiency' }}">{{ localize 'DND4EBETA.WeaponImplement' }} {{ localize 'DND4EBETA.BonusTypeProficiency' }}:</label>
 					<div class="form-fields">
-						<input type="text" name="system.profImpBonus" value="{{system.profImpBonus}}" title="Implement Proficiency Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.profImpBonus" value="{{system.profImpBonus}}" title="{{ localize 'DND4EBETA.WeaponImplement' }} {{ localize 'DND4EBETA.BonusTypeProficiency' }}" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				<div class="form-group">    
-					<label title="Enhancement Bonus">Enhancement Bonus:</label>
+					<label title="{{ localize 'DND4EBETA.BonusTypeEnhancement' }}">{{ localize 'DND4EBETA.BonusTypeEnhancement' }}:</label>
 					<div class="form-fields">
-						<input type="text" name="system.enhance" value="{{system.enhance}}" title="Enhancement Bonus" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.enhance" value="{{system.enhance}}" title="{{ localize 'DND4EBETA.BonusTypeEnhancement' }}" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				<div class="form-group">
-					<label title="Is this a Ranged Weapon?">Is Ranged Weapon?</label>
+					<label title="{{ localize 'DND4EBETA.WeaponRanged' }}?">{{ localize 'DND4EBETA.WeaponRanged' }}?</label>
 					<input type="checkbox" name="system.isRanged" data-dtype="Boolean" {{checked system.isRanged}}/>
 					<div>
 						{{#if system.isRanged}}
 						<div class="form-fields">
-							<span title="The distance in squares a weapon can attack.">Weapon Range:</span>
-							<input type="text" name="system.range.value" value="{{system.range.value}}" title="Short Range: The distance in squares a weapon can attack without incurring a long range penalty." placeholder="Short Range" data-dtype="Number" onClick="this.select();"/>
+							<span title="{{ localize 'DND4EBETA.WeaponRangeTip' }}">{{ localize 'DND4EBETA.rangeWeapon' }}:</span>
+							<input type="text" name="system.range.value" value="{{system.range.value}}" title="{{ localize 'DND4EBETA.WeaponRangeShort' }}: {{ localize 'DND4EBETA.WeaponRangeShortTip' }}" placeholder="{{ localize 'DND4EBETA.WeaponRangeShort' }}" data-dtype="Number" onClick="this.select();"/>
 							<span class="sep">/</span>
-							<input type="text" name="system.range.long" value="{{system.range.long}}" title="Long Range: The maximume range this weapon can be used to make an attack." placeholder="Long Range" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="system.range.long" value="{{system.range.long}}" title="{{ localize 'DND4EBETA.WeaponRangeLong' }}: {{ localize 'DND4EBETA.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4EBETA.WeaponRangeLong' }}" data-dtype="Number" onClick="this.select();"/>
 						</div>
 						{{/if}}
 					</div>
 				</div>
 				<div class="form-group uses-per">
-					<label>{{ localize "DND4EBETA.LimitedUses"}}</label>
+					<label>{{ localize "DND4EBETA.LimitedUses"}}:</label>
 					<div class="form-fields">
 						<input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number"/>
 						<span class="sep">{{ localize "DND4EBETA.of" }}</span>
@@ -170,7 +170,7 @@
 					</div>
 				</div>
 				<div class="form-group uses-per">
-					<label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
+					<label>{{ localize "DND4EBETA.ConsumeTitle" }}:</label>
 					<div class="form-fields">
 						<select name="system.consume.type" style="flex: 0.55;">
 							{{#select system.consume.type}}
@@ -192,7 +192,7 @@
 					</div>
 				</div>
 				
-				<h4 class="damage-header"title="Base number of dice rolled for weapon attacks." for="damageDice">{{ localize "DND4EBETA.DiceWeapon"}}<a class="damage-control add-dice"><i class="fas fa-plus"></i></a></h4>
+				<h4 class="damage-header"title="{{ localize 'DND4EBETA.DiceWeapon' }}: {{ localize 'DND4EBETA.DiceWeaponTip' }}" for="damageDice">{{ localize "DND4EBETA.DiceWeapon"}}<a class="damage-control add-dice"><i class="fas fa-plus"></i></a></h4>
 				
 				<ol class="damage-parts form-group">
 					{{#each system.damageDice.parts as |part i| }}
@@ -212,25 +212,25 @@
 				<div class="form-group">
 					<label title="{{ localize "DND4EBETA.DiceBrutalTitle"}}" for="brutal">{{ localize "DND4EBETA.DiceBrutal"}}</label>
 					<div class="form-fields">
-						<input type="text" name="system.brutal" id="brutal" value="{{system.brutal}}" title="{{ localize "DND4EBETA.DiceBrutalTitle"}}" placeholder="{{ localize "DND4EBETA.DiceBrutalPlaceholder"}}" onClick="this.select();" data-dtype="Number"/>
+						<input type="text" name="system.brutal" id="brutal" value="{{system.brutal}}" title="{{ localize 'DND4EBETA.DiceBrutalTitle'}}" placeholder="{{ localize "DND4EBETA.DiceBrutalPlaceholder"}}" onClick="this.select();" data-dtype="Number"/>
 					</div>
 				</div>
 				{{/if}}
 
 				{{#unless (eq system.weaponType "implement")}}
 				<div class="form-group">
-					<label title="{{ localize "DND4EBETA.CriticalHitTitle"}}">{{ localize "DND4EBETA.CriticalHit"}}:</label>
+					<label title="{{ localize 'DND4EBETA.CriticalHitTitle'}}">{{ localize 'DND4EBETA.CriticalHit'}}:</label>
 					<div class="form-fields">
-						<input type="text" name ="system.critRange" value="{{system.critRange}}" title="{{ localize "DND4EBETA.CriticalHitTitle"}}" placeholder="{{ localize "DND4EBETA.CriticalHitPlaceholder"}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name ="system.critRange" value="{{system.critRange}}" title="{{ localize 'DND4EBETA.CriticalHitTitle'}}" placeholder="{{ localize 'DND4EBETA.CriticalHitPlaceholder'}}" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				{{/unless}}
 
 				{{#if system.properties.imp}}
 				<div class="form-group">
-					<label title="Natural D20 Dice roll required for a hit to be considered a critical hit with an Implement.">Implement Critical Hit:</label>
+					<label title="{{ localize 'DND4EBETA.CriticalHitTitle'}}">{{ localize 'DND4EBETA.WeaponImplement'}} {{ localize 'DND4EBETA.CriticalHit'}}:</label>
 					<div class="form-fields">
-						<input type="text" name ="system.critRangeImp" value="{{system.critRangeImp}}" title="Natural D20 Dice roll required for a hit to be considered a critical hit." placeholder="20" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name ="system.critRangeImp" value="{{system.critRangeImp}}" title="{{ localize 'DND4EBETA.CriticalHitTitle'}}" placeholder="20" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				{{/if}}
@@ -238,17 +238,17 @@
 				{{!-- Attack  Formula--}}
 				{{#unless (eq system.weaponType "implement")}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="Formula used for Attack Rolls.">Bonus to Attack {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="system.attackForm" value="{{system.attackForm}}" title="Formula used for Attack Rolls." data-dtype="String"/>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}">{{ localize 'DND4EBETA.FormulaAttackBonus' }}:</h4>
+					<input type="text" name="system.attackForm" value="{{system.attackForm}}" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}" data-dtype="String"/>
 				</div>
 				
 				{{!-- Damage Formula --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Primary Damage {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="system.damageForm" value="{{system.damageForm}}" title="Formula used for Damage Rolls." data-dtype="String"/>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}">{{ localize 'DND4EBETA.FormulaDamageBonusPrimary' }}:</h4>
+					<input type="text" name="system.damageForm" value="{{system.damageForm}}" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}" data-dtype="String"/>
 				</div>				
 				<h4 class="damage-header">
-					{{#unless isHealing }}Secondary {{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
+					{{#unless isHealing }}{{ localize 'DND4EBETA.Secondary' }} {{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
 					<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
@@ -273,11 +273,11 @@
 
 				{{!-- Critical Damage Formula --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Critical Damage {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="system.critDamageForm" value="{{system.critDamageForm}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}">{{ localize 'DND4EBETA.FormulaCritBonus' }}:</h4>
+					<input type="text" name="system.critDamageForm" value="{{system.critDamageForm}}" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}" data-dtype="String"/>
 				</div>				
 				<h4 class="damage-header">
-					Secondary Critical Damage {{ localize "DND4EBETA.Formula" }}:
+					{{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaCritBonus' }}:
 					<a class="damage-control add-criticalDamage"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
@@ -304,18 +304,18 @@
 				{{!-- Attack Formula for Implement--}}
 				{{#if system.properties.imp}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="Formula used for Attack Rolls.">Implement Attack {{ localize "DND4EBETA.Formula" }}:</h4>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}">{{ localize 'DND4EBETA.FormulaAttackBonus' }}:</h4>
 					<input type="text" name="system.attackFormImp" value="{{system.attackFormImp}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
 				
 				{{!-- Damage Formula for Implement--}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="Formula used for Damage Rolls.">Bonus to Implement Damage {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="system.damageFormImp" value="{{system.damageFormImp}}" title="Formula used for Damage Rolls." data-dtype="String"/>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}">{{ localize 'DND4EBETA.FormulaDamageBonusPrimary' }}:</h4>
+					<input type="text" name="system.damageFormImp" value="{{system.damageFormImp}}" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}" data-dtype="String"/>
 				</div>	
 				
 				<h4 class="damage-header">
-					{{#unless isHealing }}Secondary Implement {{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
+					{{#unless isHealing }}{{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaDamageBonus' }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
 					<a class="damage-control add-damage-imp"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
@@ -340,11 +340,11 @@
 
 				{{!-- Critical Damage Formula for Implement --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="Formula used for Critical Damage Rolls.">Bonus to Implement Critical Damage {{ localize "DND4EBETA.Formula" }}:</h4>
-					<input type="text" name="system.critDamageFormImp" value="{{system.critDamageFormImp}}" title="Formula used for Critical Damage Rolls." data-dtype="String"/>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}">{{ localize 'DND4EBETA.FormulaCritBonus' }}:</h4>
+					<input type="text" name="system.critDamageFormImp" value="{{system.critDamageFormImp}}" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}" data-dtype="String"/>
 				</div>	
 				<h4 class="damage-header">
-					Secondary Implement Critical Damage {{ localize "DND4EBETA.Formula" }}:
+					{{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaCritBonus' }}:
 					<a class="damage-control add-criticalDamage-imp"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
@@ -376,7 +376,7 @@
 					</div>
 
 					{{#if system.damageTypeWeapon}}					
-					<label title="Type of Damage Dealt by primary attack.">Primary Damage Type:</label>
+					<label title="{{ localize 'DND4EBETA.PrimaryDamageType' }}">{{ localize 'DND4EBETA.PrimaryDamageType' }}:</label>
 					<pr></pr>
 					{{#each config.damageTypes as |name type|}}
 					<label class="checkbox">
