@@ -1,6 +1,6 @@
 <form class="{{cssClass}}" autocomplete="off">				
 	<section>
-		{{!-- SHeet Header --}}
+		{{!-- Sheet Header --}}
 		<header class="sheet-header">
 			<img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img" style="margin-bottom: 6px;"/>
 			<section>
@@ -28,8 +28,8 @@
 						</select>
 					</li>
 					<li class="summary-leader">
-						<label>Leader:</label>
-						<input type="checkbox" name="system.details.role.leader" data-dtype="Boolean" {{checked system.details.role.leader}} title="{{localize 'DND4EBETA.leader'}}"/>
+						<label>{{localize 'DND4EBETA.CreatureRoleLeader'}}:</label>
+						<input type="checkbox" name="system.details.role.leader" data-dtype="Boolean" {{checked system.details.role.leader}} title="{{localize 'DND4EBETA.CreatureRoleLeader'}}"/>
 					</li>
 					<li class="summary-level">
 						<label>{{localize 'DND4EBETA.Level'}}</label>
@@ -66,7 +66,7 @@
 						</select>
 					</li>
 					<li class="summary-typeother">
-						<input name="system.details.other" type="text" value="{{system.details.other}}" title="{{localize 'DND4EBETA.Other'}} Types" placeholder="{{localize 'DND4EBETA.Other'}} Types" onClick="this.select();"/>
+						<input name="system.details.other" type="text" value="{{system.details.other}}" title="{{localize 'DND4EBETA.CreatureSubtypes'}}" placeholder="{{localize 'DND4EBETA.CreatureSubtypes'}}" onClick="this.select();"/>
 					</li>
 				
 					<li class="summary-exp">
@@ -98,7 +98,7 @@
 						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EBETA.Roll'}} {{system.defences.ac.title}} {{localize 'DND4EBETA.Save'}}">{{system.defences.ac.label}}</strong>
 						{{#if system.advancedCals}}
 						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{system.defences.ac.title}}">{{system.defences.ac.value}}</label>
-						<label>Base:</label>
+						<label>{{localize 'DND4EBETA.Base'}}:</label>
 						<input style="max-width: 40px;" name="system.defences.ac.base" value="{{system.defences.ac.base}}" data-dtype="Number" onfocus="this.select()">
 						{{else}}
 						<input class="attribute-name" style="max-width: 40px;" name="system.defences.ac.base" value="{{system.defences.ac.base}}" data-dtype="Number" onfocus="this.select()">
@@ -110,7 +110,7 @@
 				<div class="flexcol npc">
 					<div style="flex: 1;" class="ability--score " data-ability="str">
 						<strong class="ability-name rollable" title="{{system.abilities.str.label }}">{{localize 'DND4EBETA.AbilStr'}}</strong>
-						<input class="ability-score" style="max-width: 40px;" name="system.abilities.str.value"data-dtype="Number" value="{{system.abilities.str.value}}" onfocus="this.select()" placeholder="10"/>
+						<input class="ability-score" style="max-width: 40px;" name="system.abilities.str.value" data-dtype="Number" value="{{system.abilities.str.value}}" onfocus="this.select()" placeholder="10"/>
 						{{#if system.halfLevelOptions}}
 						<label class="attribute-display ability-mod-half" title="{{system.abilities.str.label }}">{{numberFormat system.abilities.str.mod decimals=0 sign=true}}</label>
 						{{else}}
@@ -132,7 +132,7 @@
 
 						{{#if system.advancedCals}}
 						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{system.defences.fort.title}}">{{system.defences.fort.value}}</label>
-						<label>Base:</label>
+						<label>{{localize 'DND4EBETA.Base'}}:</label>
 						<input style="max-width: 40px;" name="system.defences.fort.base" value="{{system.defences.fort.base}}" data-dtype="Number" onfocus="this.select()">							
 						{{else}}
 						<input class="attribute-name" style="max-width: 40px;" name="system.defences.fort.base" value="{{system.defences.fort.base}}" data-dtype="Number" onfocus="this.select()">
@@ -166,7 +166,7 @@
 						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EBETA.Roll'}} {{system.defences.ref.title}} {{localize 'DND4EBETA.Save'}}">{{system.defences.ref.label}}</strong>
 						{{#if system.advancedCals}}
 						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{system.defences.ref.title}}">{{system.defences.ref.value}}</label>
-						<label>Base:</label>
+						<label>{{localize 'DND4EBETA.Base'}}:</label>
 						<input style="max-width: 40px;" name="system.defences.ref.base" value="{{system.defences.ref.base}}" data-dtype="Number" onfocus="this.select()">
 						{{else}}
 						<input class="attribute-name" style="max-width: 40px;" name="system.defences.ref.base" value="{{system.defences.ref.base}}" data-dtype="Number" onfocus="this.select()">
@@ -197,7 +197,7 @@
 						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EBETA.Roll'}} {{system.defences.wil.title}} {{localize 'DND4EBETA.Save'}}">{{system.defences.wil.label}}</strong>
 						{{#if system.advancedCals}}
 						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EBETA.BonusesTo'}} {{system.defences.wil.title}}">{{system.defences.wil.value}}</label>
-						<label>Base:</label>
+						<label>{{localize 'DND4EBETA.Base'}}:</label>
 						<input style="max-width: 40px;" name="system.defences.wil.base" value="{{system.defences.wil.base}}" data-dtype="Number" onfocus="this.select()">	
 						{{else}}
 						<input class="attribute-name" style="max-width: 40px;" name="system.defences.wil.base" value="{{system.defences.wil.base}}" data-dtype="Number" onfocus="this.select()">
@@ -245,7 +245,7 @@
 			<div class="flexrow">	
 				<div title="{{moveTitle}}">
 					<strong class="movement-dialog rollable">{{localize 'DND4EBETA.Speed'}}</strong>
-					<lable class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat system.movement.walk.value}} sq.</lable>
+					<label class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat system.movement.walk.value}} sq.</label>
 					{{#each system.moveCustom as |v k|}}
 					<li class="tag {{k}}">{{v}}</li>
 					{{/each}}
@@ -269,14 +269,14 @@
 			</div>
 
 			<div style="display:inline; margin-right: 25px;">
-				<lable class="rest action-point rollable" title="{{localize 'DND4EBETA.ActionPointUse'}}">{{localize "DND4EBETA.ActionPointUse"}}</lable>
+				<label class="rest action-point rollable" title="{{localize 'DND4EBETA.ActionPointUse'}}">{{localize "DND4EBETA.ActionPointUse"}}</label>
 				<input style="max-width: 40px; text-align: center;" type="text" name="system.actionpoints.value" value="{{system.actionpoints.value}}" title="{{localize 'DND4EBETA.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 			</div>
 
 			<div style="display:inline; margin-right: 25px;">
-				<label>Healing Surges</label>
+				<label>{{localize 'DND4EBETA.HealingSurges'}}</label>
 				<div class="attribute-sub attribute-input" style="display:inline;">
-					<input style="max-width: 40px; text-align: center;" type="text" name="system.details.surges.value" value="{{system.details.surges.value}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+					<input style="max-width: 40px; text-align: center;" type="text" name="system.details.surges.value" value="{{system.details.surges.value}}" title="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="{{localize 'DND4EBETA.SurgeCur'}}" data-dtype="Number" onClick="this.select();"/>
 				</div>
 				<span class="sep">/</span>
 				<div class="attribute-sub attribute-input" style="display:inline;">
@@ -285,8 +285,8 @@
 			</div>
 
 			<div style="display:inline; float:right;">
-				<span title="Auto Calculate Defences & Skill, or just use flat numbers.">Advanced Math Options:</span>
-				<input style="position: relative; top:5px;" type="checkbox" name="system.advancedCals" data-dtype="Boolean" {{checked system.advancedCals}} title="{{localize 'DND4EBETA.advancedCals'}}"/>
+				<span title="{{localize 'DND4EBETA.NPCAutoMathTip'}}">{{localize 'DND4EBETA.NPCAutoMath'}}:</span>
+				<input style="position: relative; top:5px;" type="checkbox" name="system.advancedCals" data-dtype="Boolean" {{checked system.advancedCals}} title="{{localize 'DND4EBETA.NPCAutoMathTip'}}"/>
 			</div>
 
 			<div class="flexrow">
