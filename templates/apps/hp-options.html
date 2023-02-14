@@ -1,27 +1,25 @@
 <form autocomplete="off" onsubmit="event.preventDefault();">
 	<div>
-		<input type="checkbox" name="system.attributes.hp.autototal" data-dtype="Boolean" {{checked system.attributes.hp.autototal}} title="Auto Cal HP"/>
-		<span>Automatically calculate total HP</span>
+		<input type="checkbox" name="system.attributes.hp.autototal" data-dtype="Boolean" {{checked system.attributes.hp.autototal}} title="{{localize 'DND4EBETA.HPAuto'}}"/>
+		<span>{{localize 'DND4EBETA.HPAuto'}}</span>
 	</div>
 	<div>
-		<input type="text" name="system.attributes.hp.starting" value="{{system.attributes.hp.starting}}" title="HP at 1st Level"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
-		<span title="Constitution Score" style="border-bottom: 1px dotted #000;" >+ {{system.abilities.con.value}}</span>
-		<span>Hit Points at 1st Level</span>
-
-		
+		<input type="text" name="system.attributes.hp.starting" value="{{system.attributes.hp.starting}}" title="{{localize 'DND4EBETA.HPBase'}}"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+		<span title="{{localize 'DND4EBETA.AbilityCon'}} {{localize 'DND4EBETA.Score'}}" style="border-bottom: 1px dotted #000;" >+ {{system.abilities.con.value}}</span>
+		<span>{{localize 'DND4EBETA.HPFirst'}}</span>
 	</div>
 	<div>
-		<input type="text" name="system.attributes.hp.perlevel" value="{{system.attributes.hp.perlevel}}" title="HP per Level"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
-		<span>Hit Points per level gain</span>
+		<input type="text" name="system.attributes.hp.perlevel" value="{{system.attributes.hp.perlevel}}" title="{{localize 'DND4EBETA.HPPer'}}"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+		<span>{{localize 'DND4EBETA.HPPer'}}</span>
 	</div>
 	<div>
-		<input type="text" name="system.attributes.hp.misc" value="{{system.attributes.hp.misc}}" title="Misc HP"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
-		<span>Misc bonus Hit Points</span>
+		<input type="text" name="system.attributes.hp.misc" value="{{system.attributes.hp.misc}}" title="{{localize 'DND4EBETA.HPBonus'}}"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+		<span>{{localize 'DND4EBETA.HPBonus'}}</span>
 	</div>
 	
 	<div>
-		<input type="checkbox" name="system.attributes.hp.temprest" data-dtype="Boolean" {{checked system.attributes.hp.temprest}} title="Keep Temp HP on short rest"/>
-		<span>Keep temporary hit points on short rest?</span>
+		<input type="checkbox" name="system.attributes.hp.temprest" data-dtype="Boolean" {{checked system.attributes.hp.temprest}} title="{{localize 'DND4EBETA.HPTempKeep'}}"/>
+		<span>{{localize 'DND4EBETA.HPTempKeep'}}?</span>
 	</div>
 		
 	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EBETA.Save"}}</button>

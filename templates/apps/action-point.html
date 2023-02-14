@@ -1,16 +1,16 @@
 <form id="action-point-hd" class="dialog-content" onsubmit="event.preventDefault();">
-	<p>
-		Spend one action point to:
-		<li>Gain an extra action.</li>
+	<p>{{localize 'DND4EBETA.ActionPointUseTo'}}:</p>
+		<ul>
+			<li>{{localize 'DND4EBETA.ActionPointEffect'}}</li>
 
-		{{#if system.actionpoints.custom}}
-		{{#each extra as |e key|}}
-		<li>{{e}}</li>
-		{{/each}}
-		{{/if}}
-	</p>
+			{{#if system.actionpoints.custom}}
+			{{#each extra as |e key|}}
+			<li>{{e}}</li>
+			{{/each}}
+			{{/if}}
+		</ul>
 
 	<div class="dialog-buttons">
-		<button type="submit" name="submit">Spend Action Point</button>
+		<button type="submit" name="submit">{{localize 'DND4EBETA.ActionPointUse'}}</button>
 	</div>
 </form>

@@ -3,7 +3,7 @@
     {{!-- Ability --}}
     {{#each system.abilities as |ability a|}}
     <div style="width: 99.5%;">
-        <span>{{ability.label}} Ability</span>
+        <span>{{ability.label}} {{localize 'DND4EBETA.Ability'}}</span>
         <input class="stat-chat" name="system.abilities.{{a}}.chat" type="text" value="{{ability.chat}}" onClick="this.select();"/>
     </div>
     {{/each}}
@@ -11,7 +11,7 @@
     {{!-- Skills --}}
     {{#each system.skills as |skills s|}}
     <div style="width: 99.5%;">
-        <span>{{skills.label}} Skill</span>
+        <span>{{skills.label}} {{localize 'DND4EBETA.Skill'}}</span>
         <input class="stat-chat" name="system.skills.{{s}}.chat" type="text" value="{{skills.chat}}" onClick="this.select();"/>
     </div>
     {{/each}}
@@ -19,7 +19,7 @@
     {{!-- Defences --}}
     {{#each system.defences as |defences d|}}
     <div style="width: 99.5%;">
-        <span>{{defences.label}} Defence</span>
+        <span>{{defences.label}} {{localize 'DND4EBETA.Defence'}}</span>
         <input class="stat-chat" name="system.defences.{{d}}.chat" type="text" value="{{defences.chat}}" onClick="this.select();"/>
     </div>
     {{/each}}

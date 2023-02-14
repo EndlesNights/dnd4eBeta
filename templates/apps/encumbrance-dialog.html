@@ -1,19 +1,19 @@
 <form id="encumbrance-dialog" class="dialog-content" onsubmit="event.preventDefault();">
 
 	<div class="form-group base"  data-movement="walk">
-		<span title="Heaviest Weight you can normaly move without penalty." style="margin-right: 4px;"><b>{{system.encumbrance.max}} lbs.</b> Normal Carry Load:</span>
-		<input type="text" name="system.encumbrance.formulaNorm" value="{{system.encumbrance.formulaNorm}}" title="Heaviest Weight you can normaly move without penalty." placeholder="0"/>
+		<span title="{{localize 'DND4EBETA.LoadNormalTip'}}" style="margin-right: 4px;"><b>{{system.encumbrance.max}} {{localize 'DND4EBETA.AbbreviationLbs'}}</b> {{localize 'DND4EBETA.LoadNormal'}}:</span>
+		<input type="text" name="system.encumbrance.formulaNorm" value="{{system.encumbrance.formulaNorm}}" title="{{localize 'DND4EBETA.LoadNormalTip'}}" placeholder="0"/>
 	</div>
 
 	<div class="form-group base"  data-movement="walk">
-		<span title="Maximum weight you can lift off the ground, requires both hands and you will be considered slowed." style="margin-right: 4px;"><b>{{system.encumbrance.maxHeavy}} lbs.</b> Heavy Carry Load:</span>
-		<input type="text" name="system.encumbrance.formulaHeavy" value="{{system.encumbrance.formulaHeavy}}" title="Maximum weight you can lift off the ground, requires both hands and you will be considered slowed." placeholder="0"/>
+		<span title="{{localize 'DND4EBETA.LoadHeavyTip'}}" style="margin-right: 4px;"><b>{{system.encumbrance.maxHeavy}} {{localize 'DND4EBETA.AbbreviationLbs'}}</b> {{localize 'DND4EBETA.LoadHeavy'}}:</span>
+		<input type="text" name="system.encumbrance.formulaHeavy" value="{{system.encumbrance.formulaHeavy}}" title="{{localize 'DND4EBETA.LoadHeavyTip'}}" placeholder="0"/>
 	</div>
 
 
 	<div class="form-group base"  data-movement="walk">
-		<span title="The most weight you can push or drag along the ground." style="margin-right: 4px;"><b>{{system.encumbrance.maxMax}} lbs.</b> Max Move Load:</span>
-		<input type="text" name="system.encumbrance.formulaMax" value="{{system.encumbrance.formulaMax}}" title="The most weight you can push or drag along the ground." placeholder="0"/>
+		<span title="{{localize 'DND4EBETA.LoadDragTip'}}" style="margin-right: 4px;"><b>{{system.encumbrance.maxMax}} {{localize 'DND4EBETA.AbbreviationLbs'}}</b> {{localize 'DND4EBETA.LoadDrag'}}:</span>
+		<input type="text" name="system.encumbrance.formulaMax" value="{{system.encumbrance.formulaMax}}" title="{{localize 'DND4EBETA.LoadDragTip'}}" placeholder="0"/>
 	</div>
 
 	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EBETA.Save"}}</button>

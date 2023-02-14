@@ -1,23 +1,23 @@
 <form id="short-rest" class="dialog-content" onsubmit="event.preventDefault();">
-	<p>
-		Take a short rest? During a short rest, your character takes a 5 minute where they can; stand guard, sit in place, ride on a wagon or other vehicle, or do other tasks that don't require much exertion, to gain the following benefits:
-   </p>
-   <li>Renew all the uses of your encounter powers, and regain the use of your second wind and action points.</li>
-   
-   <li>Spend Healing Surges to regain hit points.</li>
+	<p><strong>{{localize 'DND4EBETA.ShortRestTake'}}?</strong></p>
+	<p>{{localize 'DND4EBETA.ShortRestHint'}}:</p>
+	<ul>
+		<li>{{localize 'DND4EBETA.ShortRestEffectRefresh'}}</li>
+		<li>{{localize 'DND4EBETA.ShortRestEffectSurges'}}</li>
+	</ul>
    
     <div class="form-group">
-        <label>Number of Healing Surges?</label>
+        <label>{{localize 'DND4EBETA.ShortRestSelect'}}</label>
         <input type="text" name="surge" value="" placeholder=""/>
     </div>   
 	
     <div class="form-group">
-        <label>Situational bonus to surge?</label>
+        <label>{{localize 'DND4EBETA.HealingMenuSituational'}}</label>
         <input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EBETA.RollExample' }}"/>
     </div>
 	
     <div class="dialog-buttons">
-		<button type="submit" name="submit">Short Rest?</button>
+		<button type="submit" name="submit">{{localize 'DND4EBETA.ShortRestTake'}}</button>
     </div>
 	
 </form>
