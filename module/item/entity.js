@@ -120,6 +120,9 @@ export default class Item4e extends Item {
 			else if(data.system.armourBaseType === "custom"){
 				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.armourBaseTypeCustom);
 			}
+			else if(data.system.armourBaseType === "cloth"){
+				updates["system.proficient"] = true; //everyone is proficient with cloth.
+			}
 		}
 
 		if(data.system.armour?.type === "arms" && CONFIG.DND4EBETA.shield[data.system.armour.subType]){
