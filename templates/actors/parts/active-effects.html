@@ -2,14 +2,14 @@
 
 {{#if system.modifiers}}
 <div class="attribute-modifiers" style="max-height: 76px; line-height: 22px;">
-	<h4 class="attribute-name box-title">Modifiers</h4>
+	<h4 class="attribute-name box-title">{{localize 'DND4EBETA.ModifierPlural'}}</h4>
 	<div class="attack-mod flexrow thin" data-modifiers="attack">
-		<span>Attack Modifier: {{system.modifiers.attack.value}}</span>
-		<a class="modifiers-bonus" data-target="system.modifiers" title="Modifier Bonus">Bonus: {{system.modifiers.attack.bonusValue}}</a>
+		<span>{{localize 'DND4EBETA.ModifierAttack'}}: {{system.modifiers.attack.value}}</span>
+		<a class="modifiers-bonus" data-target="system.modifiers" title="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.ModifierAttack'}}">{{localize 'DND4EBETA.Bonus'}}: {{system.modifiers.attack.bonusValue}}</a>
 	</div>
 	<div class="damage-mod flexrow thin" data-modifiers="damage">
-		<span>Damage Modifier: {{system.modifiers.damage.value}}</span>
-		<a class="modifiers-bonus" data-target="system.modifiers" title="Modifier Bonus">Bonus: {{system.modifiers.damage.bonusValue}}</a>
+		<span>{{localize 'DND4EBETA.ModifierDamage'}}: {{system.modifiers.damage.value}}</span>
+		<a class="modifiers-bonus" data-target="system.modifiers" title="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.ModifierDamage'}}">{{localize 'DND4EBETA.Bonus'}}: {{system.modifiers.damage.bonusValue}}</a>
 	</div>
 </div>
 {{/if}}
@@ -18,8 +18,8 @@
 {{#each effects as |section sid|}}
 	<li class="items-header flexrow" data-effect-type="{{section.type}}">
 		<h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
-		<div class="effect-source">Source</div>
-		<div class="effect-source">Duration</div>
+		<div class="effect-source">{{localize 'DND4EBETA.Source'}}</div>
+		<div class="effect-source">{{localize 'DND4EBETA.Duration'}}</div>
 		<div class="item-controls effect-controls flexrow">
 			<a class="effect-control" data-action="create" title="{{localize 'DND4EBETA.EffectCreate'}}">
 				<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
@@ -60,15 +60,15 @@
 
 	{{#if system.resistances}}
 	<div class="attribute-res resource-full">
-		<h4 class="attribute-name box-title">Resistances & Weaknesses</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4EBETA.DamResVuln'}}</h4>
 		{{#each system.resistances as |res r|}}
 			<li class="skill flexrow" data-res="{{r}}">
 				<h4 class="res-name">{{res.label}}</h4>
 				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
-				<span class="res-armour">Armour: {{res.armour}} </span>
-				<a class="resistances-bonus" data-target="system.resistances" title="Resistance Bonus">Bonus: {{res.resBonusValue}}</a>
-				<span class="res-immune">Immunity</span>
-				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
+				<span class="res-armour">{{localize 'DND4EBETA.Armour'}}: {{res.armour}} </span>
+				<a class="resistances-bonus" data-target="system.resistances" title="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.DamRes'}}">{{localize 'DND4EBETA.Bonus'}}: {{res.resBonusValue}}</a>
+				<span class="res-immune">{{localize 'DND4EBETA.Immunity'}}</span>
+				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="{{localize 'DND4EBETA.Immunity'}}"/>
 			</li>
 		{{/each}}					
 

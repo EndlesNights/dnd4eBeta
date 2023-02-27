@@ -222,18 +222,18 @@
 			{{!-- Hit Details --}}
 			{{!-- Damage --}}
 			<div class="form-group">
-				<label>Damage {{ localize "DND4EBETA.Formula" }}</label>
-				<input type="text" name="system.hit.formula" value="{{system.hit.formula}}" placeholder="e.g. 1d6"/>
+				<label>{{ localize 'DND4EBETA.FormulaDamage' }}</label>
+				<input type="text" name="system.hit.formula" value="{{system.hit.formula}}" placeholder="{{ localize 'DND4EBETA.FormulaDamageExample' }}"/>
 			</div>
 
 			{{!-- Critical --}}
 			<div class="form-group ">
-				<label>Critical Damage {{ localize "DND4EBETA.Formula" }}</label>
-				<input type="text" name="system.hit.critFormula" value="{{system.hit.critFormula}}" placeholder="e.g. 6"/>
+				<label>{{ localize 'DND4EBETA.Critical' }} {{ localize 'DND4EBETA.FormulaDamage' }}</label>
+				<input type="text" name="system.hit.critFormula" value="{{system.hit.critFormula}}" placeholder="{{ localize 'DND4EBETA.FormulaDamageCritExample' }}"/>
 			</div>
 
 			<div class="form-group stacked weapon-properties">
-				<label title="Type of Damage">Damage Type:</label>
+				<label title="{{ localize 'DND4EBETA.Damage' }} {{ localize 'DND4EBETA.Type' }}">{{ localize 'DND4EBETA.Damage' }} {{ localize 'DND4EBETA.Type' }}:</label>
 				<pr></pr>
 				{{#each config.damageTypes as |name type|}}
 				<label class="checkbox">
@@ -248,7 +248,7 @@
 			</div>
 			{{#if system.hit.isHealing}}
 			<div class="form-group stacked">
-				<label>Healing {{ localize "DND4EBETA.Formula" }}</label>
+				<label>{{ localize 'DND4EBETA.Healing' }} {{ localize "DND4EBETA.Formula" }}</label>
 				<input type="text" name="system.hit.healFormula" value="{{system.hit.healFormula}}"/>
 			</div>
 			{{/if}}

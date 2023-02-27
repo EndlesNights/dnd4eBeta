@@ -2,13 +2,13 @@
     <header class="sheet-header">
         <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
         <div class="header-fields">
-            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'Name'}}"/></h1>
             <div class="resource">
-            	<label>Quantity</label>
+            	<label>{{localize 'DND4EBETA.Quantity'}}</label>
                 <input type="text" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
             </div>
             <div class="resource">
-            	<label>Weight</label>
+            	<label>{{localize 'DND4EBETA.Weight'}}</label>
                 <input type="text" name="system.weight" value="{{system.weight}}" data-dtype="Number"/>
             </div>
         </div>
@@ -16,8 +16,8 @@
 
     {{!-- Sheet Tab Navigation --}}
     <nav class="sheet-tabs tabs" data-group="primary">
-        <a class="item" data-tab="description">Description</a>
-        <a class="item" data-tab="attributes">Attributes</a>
+        <a class="item" data-tab="description">{{localize 'DND4EBETA.Description'}}</a>
+        <a class="item" data-tab="attributes">{{localize 'DND4EBETA.Attributes'}}</a>
     </nav>
 
     {{!-- Sheet Body --}}
@@ -31,10 +31,10 @@
         {{!-- Attributes Tab --}}
         <div class="tab attributes" data-group="primary" data-tab="attributes">
             <header class="attributes-header flexrow">
-                <span class="attribute-key">Attribute Key</span>
-                <span class="attribute-value">Value</span>
-                <span class="attribute-label">Label</span>
-                <span class="attribute-dtype">Data Type</span>
+                <span class="attribute-key">{{localize 'DND4EUI.AttributeKey'}}</span>
+                <span class="attribute-value">{{localize 'DND4EBETA.Value'}}</span>
+                <span class="attribute-label">{{localize 'DND4EUI.Label'}}</span>
+                <span class="attribute-dtype">{{localize 'DND4EUI.DataType'}}</span>
                 <a class="attribute-control" data-action="create"><i class="fas fa-plus"></i></a>
             </header>
 

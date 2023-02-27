@@ -56,7 +56,7 @@
 
         {{#if isItemEffect}}
         <div class="form-group">
-            <label>Only Apply Effect when Equipped?</label>
+            <label>{{localize 'DND4EBETA.EffectWhenEquipped'}}?</label>
             <div class="form-fields">
                 <input type="checkbox" name="flags.dnd4e.effectData.equippedRec" data-dtype="Boolean" {{checked effect.flags.dnd4e.effectData.equippedRec}}/>
             </div>
@@ -72,7 +72,7 @@
 
         {{#if powerParent}}
         <div class="form-group">
-            <label>Apply Effect application on:</label>
+            <label>{{localize 'DND4EBETA.EffectApply'}}:</label>
             <div class="form-fields">
                 <select name="flags.dnd4e.effectData.powerEffectTypes">
                     {{#select effect.flags.dnd4e.effectData.powerEffectTypes}}

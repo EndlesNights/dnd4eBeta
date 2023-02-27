@@ -1,8 +1,8 @@
 <form id="death-save" class="dialog-content" onsubmit="event.preventDefault();">
-	<p>Oh no you're dieing! Make a saving throw to not do that!</p>
+	<p>{{localize 'DND4EBETA.DeathSaveTip'}}</p>
 	
 	<div class="form-group">
-		<label>Situational bonus?</label>
+		<label>{{localize 'DND4EBETA.RollSituationalBonus'}}</label>
 		<input type="text" name="save" value="" placeholder=""/>
 	</div>
 
@@ -18,7 +18,7 @@
 	</div>
 
 	<div class="dialog-buttons">
-		<button type="submit" name="submit">Death Save!</button>
+		<button type="submit" name="submit">{{localize 'DND4EBETA.DeathSave'}}!</button>
 	</div>
 	
 </form>

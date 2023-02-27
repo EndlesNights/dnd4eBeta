@@ -1,12 +1,12 @@
 <form id="save-throw" class="dialog-content" onsubmit="event.preventDefault();">
-	<p>Roll Saving throw dialoge box</p>
+	<p>{{localize 'DND4EBETA.SavePrompt'}}</p>
 	<div class="form-group">
-		<label>Set save DC:</label>
+		<label>{{localize 'DND4EBETA.SaveDCSet'}}:</label>
 		<input type="text" name="dc" value="10" placeholder="" onClick="this.select();"/>
 	</div>
 
 	<div class="form-group">
-		<label>Situational bonus to save?</label>
+		<label>{{localize 'DND4EBETA.SaveSituational'}}?</label>
 		<input type="text" name="save" value="" placeholder=""/>
 	</div>
 
@@ -22,7 +22,7 @@
 	</div>
 
 	<div class="dialog-buttons">
-		<button type="submit" name="submit">Roll Saving Throw!</button>
+		<button type="submit" name="submit">{{localize 'DND4EBETA.SaveRoll'}}</button>
 	</div>
 	
 </form>
