@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.21
+- Translation readiness + New Conditions + Complete Weapons List [merge](https://github.com/EndlesNights/dnd4eBeta/pull/265) from [FoxLee](https://github.com/FoxLee)
+
 ## Version 0.3.20
 - fix Item Card Descriptions when viewed without actor, was causing a null issue because of 0.3.19 change.
 
