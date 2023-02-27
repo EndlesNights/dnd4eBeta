@@ -1214,6 +1214,16 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4e/icons/statusEffects/blinded.svg"
 	},
 	{
+		id: "concealed",
+		label: "EFFECT.statusConceal",
+		icon: "systems/dnd4e/icons/statusEffects/concealment.svg"
+	},
+	{
+		id: "concealedfull",
+		label: "EFFECT.statusConcealFull",
+		icon: "systems/dnd4e/icons/statusEffects/concealment-full.svg"
+	},
+	{
 		id: "dazed",
 		label: "EFFECT.statusDazed",
 		icon: "systems/dnd4e/icons/statusEffects/dazed.svg"
@@ -1233,6 +1243,7 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusDisarmed",
 		icon: "systems/dnd4e/icons/statusEffects/disarmed.svg"
 	},
+	//row 5
 	{
 		id: "dominated",
 		label: "EFFECT.statusDominated",
@@ -1243,7 +1254,6 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusDrunk",
 		icon: "systems/dnd4e/icons/statusEffects/drunk.svg"
 	},	
-	//row 5
 	{
 		id: "dying",
 		label: "EFFECT.statusDying",
@@ -1269,6 +1279,12 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusInsubstantial",
 		icon: "systems/dnd4e/icons/statusEffects/insubstantial.svg"
 	},
+	//row 6
+	{
+		id: "invisible",
+		label: "EFFECT.statusInvisible",
+		icon: "systems/dnd4e/icons/statusEffects/invisible.svg"
+	},
 	{
 		id: "mounted",
 		label: "EFFECT.statusMounted",
@@ -1280,7 +1296,6 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusPetrified",
 		icon: "systems/dnd4e/icons/statusEffects/petrified.svg"
 	},
-	//row 6
 	{
 		id: "prone",
 		label: "EFFECT.statusProne",
@@ -1301,6 +1316,7 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusSleeping",
 		icon: "systems/dnd4e/icons/statusEffects/sleeping.svg"
 	},
+	//row 7
 	{
 		id: "slowed",
 		label: "EFFECT.statusSlowed",
@@ -1316,12 +1332,6 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusSurprised",
 		icon: "systems/dnd4e/icons/statusEffects/surprised.svg"
 	},
-	//row 7
-	{
-		id: "torch",
-		label: "EFFECT.statusTorch",
-		icon: "systems/dnd4e/icons/statusEffects/torch.svg"
-	},
 	{
 		id: "unconscious",
 		label: "EFFECT.statusUnconscious",
@@ -1333,11 +1343,6 @@ DND4EBETA.statusEffect = [
 		icon: "systems/dnd4e/icons/statusEffects/weakend.svg"
 	},
 	{
-		id: "invisible",
-		label: "EFFECT.statusInvisible",
-		icon: "systems/dnd4e/icons/statusEffects/invisible.svg"
-	},
-	{
 		id: "hidden",
 		label: "EFFECT.statusHidden",
 		icon: "systems/dnd4e/icons/statusEffects/hidden.svg"
@@ -1347,16 +1352,13 @@ DND4EBETA.statusEffect = [
 		label: "EFFECT.statusSneaking",
 		icon: "systems/dnd4e/icons/statusEffects/sneaking.svg"
 	},
+	//row 8
 	{
-		id: "concealed",
-		label: "EFFECT.statusConceal",
-		icon: "systems/dnd4e/icons/statusEffects/concealment.svg"
+		id: "torch",
+		label: "EFFECT.statusTorch",
+		icon: "systems/dnd4e/icons/statusEffects/torch.svg"
 	},
-	{
-		id: "concealedfull",
-		label: "EFFECT.statusConcealFull",
-		icon: "systems/dnd4e/icons/statusEffects/concealment-full.svg"
-	},
+
 ];
 
 // Languages
