@@ -42,8 +42,6 @@
 	<label for="weight">{{localize 'DND4EBETA.Weight'}}:</label>
 	<input style="flex:1; text-align: right;" id="weight" type="text" name="system.details.weight" value="{{system.details.weight}}" title="{{localize 'DND4EBETA.Weight'}}"  placeholder="{{localize 'DND4EBETA.Weight'}}" onClick="this.select();"/>
 </div>
-
-
 <div class="form-group" style="padding: 3px;">
 	<label style="font-weight: normal;">{{localize "DND4EBETA.Size"}}:</label>
 	<select class="actor-size" name="system.details.size">
@@ -53,7 +51,31 @@
 		{{/each}}
 		{{/select}}
 	</select>
-</div>		
+</div>
+<div class="form-group" style="padding: 3px;">
+	<label style="font-weight: normal;">{{localize "DND4EBETA.CreatureOrigin"}}:</label>
+	<select class="actor-origin" name="system.details.origin">
+		{{#select system.details.origin}}
+		{{#each config.creatureOrigin as |label origin|}}
+			<option value="{{origin}}">{{label}}</option>
+		{{/each}}
+		{{/select}}
+	</select>
+</div>
+<div class="form-group" style="padding: 3px;">
+	<label style="font-weight: normal;">{{localize "DND4EBETA.CreatureType"}}:</label>
+	<select class="actor-type" name="system.details.type">
+		{{#select system.details.type}}
+		{{#each config.creatureType as |label type|}}
+			<option value="{{type}}">{{label}}</option>
+		{{/each}}
+		{{/select}}
+	</select>
+</div>
+<div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
+	<label for="subtypes">{{localize 'DND4EBETA.CreatureSubtypes'}}:</label>
+	<input style="flex:1; text-align: right;" id="other" type="text" name="system.details.other" value="{{system.details.other}}" title="{{localize 'DND4EBETA.CreatureSubtypes'}}"  placeholder="{{localize 'DND4EBETA.CreatureSubtypes'}}" onClick="this.select();"/>
+</div>			
 {{!-- Proficiency --}}
 <div>
 	<h4 class="attribute-name box-title">{{ localize "DND4EBETA.Proficiency" }}</h4>
