@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.22
+- Fixed an error where items could not render if the description was set to null
+
 ## Version 0.3.21
 - Translation readiness + New Conditions + Complete Weapons List [merge](https://github.com/EndlesNights/dnd4eBeta/pull/265) from [FoxLee](https://github.com/FoxLee)
 
