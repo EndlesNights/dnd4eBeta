@@ -150,6 +150,9 @@
 				"epic": "",
 				"race": "",
 				"size": "med",
+				"origin": "natural",
+				"type": "humanoid",
+				"other": "",
 				"age": "",
 				"gender": "",
 				"height": "",
@@ -552,9 +555,6 @@
 		"advancedCals": false,
 		"details": {
 			
-			"origin": "natural",
-			"type": "humanoid",
-			"other": "",
 			"role": {
 				"primary": "soldier",
 				"secondary": "standard",
