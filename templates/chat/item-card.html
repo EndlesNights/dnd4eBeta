@@ -14,7 +14,11 @@
 			{{{system.description.value}}}
 		{{/if}}
 	{{else}}
-		{{#if item.system.chatFlavor}}<p class="chat-flavour">{{/if}}{{{system.description.value}}}{{#if item.system.chatFlavor}}</p>{{/if}}
+		{{#if item.system.chatFlavor}}
+			<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+		{{else}}
+			{{{system.description.value}}}
+		{{/if}}
 		{{#if data.materials.value}}
 		<p><strong>{{ localize "DND4EBETA.RequiredMaterials" }}.</strong> {{data.materials.value}}</p>
 		{{/if}}
