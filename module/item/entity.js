@@ -120,6 +120,9 @@ export default class Item4e extends Item {
 			else if(data.system.armourBaseType === "custom"){
 				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.armourBaseTypeCustom);
 			}
+			else if(data.system.armourBaseType === "cloth"){
+				updates["system.proficient"] = true; //everyone is proficient with cloth.
+			}
 		}
 
 		if(data.system.armour?.type === "arms" && CONFIG.DND4EALTUS.shield[data.system.armour.subType]){
@@ -759,10 +762,17 @@ export default class Item4e extends Item {
 		const data = duplicate(this.system);
 		const labels = this.labels;
 
-		
+		// if(data.chatFlavor) {
+		// 	data.description.value = data.chatFlavor;
+		// }
+			
+		const description = data.description;
+		const weaponUse = Helper.getWeaponUse(data, this.actor);
+		const descriptionText = description.value ? Helper.commonReplace(description.value, this.actor, this.system, weaponUse?.system) : "";
+
 		// Rich text description
 		htmlOptions.async = true; //TextEditor.enrichHTML is becoming asynchronous. In the short term you may pass async=true or async=false as an option to nominate your preferred behavior.
-		data.description.value = await TextEditor.enrichHTML(data.description.value || ``, htmlOptions);
+		data.description.value = await TextEditor.enrichHTML(descriptionText || ``, htmlOptions);
 
 		// Item type specific properties
 		const props = [];
@@ -794,9 +804,7 @@ export default class Item4e extends Item {
 			);
 		}
 		
-		if(data.chatFlavor) {
-			data.description.value = data.chatFlavor;
-		}
+
 
 		// Filter properties and return
 		data.properties = props.filter(p => !!p);
@@ -1594,7 +1602,7 @@ export default class Item4e extends Item {
 		const parts = ["@" + rollType];
 
 		if(this.system.formula) {
-			rollData[rollType] = Helper.commonReplace(this.system.formula.replace("@attribute", Helper.byString(this.system.attribute, this.actor)), this.actor.data, this.system);
+			rollData[rollType] = Helper.commonReplace(this.system.formula.replace("@attribute", Helper.byString(this.system.attribute, this.actor.system)), this.actor.system, this.system);
 		} else {
 			rollData[rollType] = `1d20 + ${Helper.byString(this.system.attribute, this.actor.system)}`; 
 			if(this.system.bonus){

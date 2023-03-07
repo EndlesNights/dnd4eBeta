@@ -706,6 +706,7 @@
 .dnd4eAltus .form-group.stacked label {
 	flex: 0 0 100%;
 	margin: 0;
+	max-width:100%;
 }
 .dnd4eAltus .form-group.stacked label.checkbox {
 	flex: auto;
@@ -2318,7 +2319,11 @@ font-size: 12px;
 	color: #4b4a44;
 }
 
-.dnd4eAltus .item-details span,
+.dnd4eAltus .item-details span{
+	margin: 1px;
+	color: #000;
+}
+.dnd4eAltus .item-details>span,
 .dnd4eAltus .item-details p,
 .dnd4eAltus .item-description p {
 	padding-left: 3px;
@@ -2326,8 +2331,17 @@ font-size: 12px;
 	margin: 1px;
 	color: #000;
 }
+.dnd4eAltus .item-details .action+.range-type{
+	padding-left:1em;
+}
+.dnd4eAltus .item-details .usage,
+.dnd4eAltus .item-details .keywords,
+.dnd4eAltus .item-details .action,
+.dnd4eAltus .item-details .range-type{
+	font-weight:bold;
+}
 
-.dnd4eAltus .item-description p ,
+.dnd4eAltus .item-description,
 .dnd4eAltus .item-details .alt{
 	/* background-color: #c3c2b7; */
 	/* background-color: linear-gradient(45deg, #c3c2b7, #c3c2b796) */
@@ -2339,7 +2353,6 @@ span.flavor-text.critical,
 span.flavor-text.fumble {
 	font-weight: bold;
 }
-
 .dice-roll .dice-total.success {
 	color: inherit;
 	background: #c7d0c0;
@@ -2355,6 +2368,17 @@ span.flavor-text.fumble {
 }
 .dice-roll .dice-total.fumble {
 	color: red;
+}
+.dice-roll .hit-prediction::before{
+	content:"\1F894";
+	display:inline-block;
+	margin-right:5px;
+}
+.dice-roll .hit-prediction.critical{
+	color:green;
+}
+.dice-roll .hit-prediction.fumble{
+	color:red;
 }
 /* ----------------------------------------- */
 /* Trait Selector

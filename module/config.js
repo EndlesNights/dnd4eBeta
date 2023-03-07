@@ -231,7 +231,7 @@ DND4EALTUS.equipmentTypes = {
 };
 
 DND4EALTUS.equipmentTypesArmour = {
-	"cloth": "DND4EALTUS.EquipmentArmourCloth",
+	//"cloth": "DND4EALTUS.EquipmentArmourCloth",
 	"light": "DND4EALTUS.EquipmentArmourLight",
 	"heavy": "DND4EALTUS.EquipmentArmourHeavy",
 	"natural": "DND4EALTUS.EquipmentArmourNatural",
@@ -273,9 +273,9 @@ DND4EALTUS.equipmentTypesWaist = {
  * @type {Object}
  */
 DND4EALTUS.armourProficiencies = {
-  "lgt": DND4EALTUS.equipmentTypes.light,
-  "med": DND4EALTUS.equipmentTypes.medium,
-  "hvy": DND4EALTUS.equipmentTypes.heavy,
+  "lgt": "DND4EALTUS.equipmentTypes.light",
+  "med": "DND4EALTUS.equipmentTypes.medium",
+  "hvy": "DND4EALTUS.equipmentTypes.heavy",
   "shl": "DND4EALTUS.EquipmentShieldProficiency"
 };
 
@@ -395,7 +395,7 @@ DND4EALTUS.ritualcomponents = {
 // Damage Types
 DND4EALTUS.damageTypes = {
 	
-  "damage": "DND4EALTUS.Damage",
+  "damage": "DND4EALTUS.DamageAll",
   "acid": "DND4EALTUS.DamageAcid",
   // "bludgeoning": "DND4EALTUS.DamageBludgeoning",
   // "bludgeon": "DND4EALTUS.DamageBludgeoning",
@@ -482,9 +482,10 @@ DND4EALTUS.profArmor = {
 };
 
 DND4EALTUS.cloth = {
-	cloth: "DND4EALTUS.ArmourProfCloth",
+	
 };
 DND4EALTUS.light = {
+	cloth: "DND4EALTUS.ArmourProfCloth",
 	leather: "DND4EALTUS.ArmourProfLeather",
 	hide: "DND4EALTUS.ArmourProfHide",
 };
@@ -530,39 +531,58 @@ DND4EALTUS.weaponProficienciesMap = {
 DND4EALTUS.simpleM = {
 	club:"DND4EALTUS.WeaponClub",
 	dagger:"DND4EALTUS.WeaponDagger",
-	javelin:"DND4EALTUS.WeaponJavelin",
-	mace:"DND4EALTUS.WeaponMace",
-	sickle:"DND4EALTUS.WeaponSickle",
-	spear:"DND4EALTUS.WeaponSpear",
 	greatclub:"DND4EALTUS.WeaponGreatclub",
+	javelin:"DND4EALTUS.WeaponJavelin",
+	lightMace:"DND4EALTUS.WeaponMace",
+	mace:"DND4EALTUS.WeaponMace",
 	morningstar:"DND4EALTUS.WeaponMorningStar",
 	quarterstaff:"DND4EALTUS.WeaponQuarterStaff",
-	scythe:"DND4EALTUS.WeaponScythe"
+	scythe:"DND4EALTUS.WeaponScythe",
+	shortSpear:"DND4EALTUS.WeaponShortSpear",
+	sickle:"DND4EALTUS.WeaponSickle",
+	spear:"DND4EALTUS.WeaponSpear",
+	spikeGauntlet:"DND4EALTUS.WeaponSpikeGauntlet",
+	wristRazor:"DND4EALTUS.WeaponWristRazor"
 };
 DND4EALTUS.simpleR = {
+	crossbow:"DND4EALTUS.WeaponCrossbow",
+	dejada:"DND4EALTUS.WeaponDejada",
 	handcrossbow:"DND4EALTUS.WeaponHandcrossbow",
-	sling:"DND4EALTUS.WeaponSling",
-	crossbow:"DND4EALTUS.WeaponCrossbow"
+	repeatCrossbow:"DND4EALTUS.WeaponRepeatCrossbow",
+	sling:"DND4EALTUS.WeaponSling"
 };
 
 DND4EALTUS.militaryM = {
+	alhulak:"DND4EALTUS.WeaponAlhulak",
 	battleaxe:"DND4EALTUS.WeaponBattleaxe",
-	flail:"DND4EALTUS.WeaponFlail",
-	handaxe:"DND4EALTUS.WeaponHandaxe",
-	longsword:"DND4EALTUS.WeaponLongsword",
-	scimitar:"DND4EALTUS.WeaponScimitar",
-	shortsword:"DND4EALTUS.WeaponShortsword",
-	throwinghammer:"DND4EALTUS.WeaponThrowingHammer",
-	warhammer:"DND4EALTUS.WeaponWarhammer",
-	warpick:"DND4EALTUS.WeaponWarpick",
+	broadsword:"DND4EALTUS.WeaponBroadsword",
+	carrikal:"DND4EALTUS.WeaponCarrikal",
+	chatchka:"DND4EALTUS.WeaponChatchka",
 	falchion:"DND4EALTUS.WeaponFalchion",
+	flail:"DND4EALTUS.WeaponFlail",
 	glaive:"DND4EALTUS.WeaponGlaive",
 	greataxe:"DND4EALTUS.WeaponGreataxe",
 	greatsword:"DND4EALTUS.WeaponGreatsword",
 	halberd:"DND4EALTUS.WeaponHalberd",
+	handaxe:"DND4EALTUS.WeaponHandaxe",
 	heavyflail:"DND4EALTUS.WeaponHeavyflail",
+	heavyWarpick:"DND4EALTUS.WeaponHeavyWarPick",
+	khopesh:"DND4EALTUS.WeaponKhopesh",
+	lance:"DND4EALTUS.WeaponLance",
+	lightWarpick:"DND4EALTUS.WeaponLightWarPick",
 	longspear:"DND4EALTUS.WeaponLongspear",
-	maul:"DND4EALTUS.WeaponMaul"
+	longsword:"DND4EALTUS.WeaponLongsword",
+	maul:"DND4EALTUS.WeaponMaul",
+	pike:"DND4EALTUS.WeaponPike",
+	rapier:"DND4EALTUS.WeaponRapier",
+	scimitar:"DND4EALTUS.WeaponScimitar",
+	scourge:"DND4EALTUS.WeaponScourge",
+	shortsword:"DND4EALTUS.WeaponShortsword",
+	throwinghammer:"DND4EALTUS.WeaponThrowingHammer",
+	trident:"DND4EALTUS.WeaponTrident",
+	trikal:"DND4EALTUS.WeaponTrikal",
+	warhammer:"DND4EALTUS.WeaponWarhammer",
+	warpick:"DND4EALTUS.WeaponWarpick"
 };
 DND4EALTUS.militaryR = {
 	longbow:"DND4EALTUS.WeaponLongbow",
@@ -571,12 +591,50 @@ DND4EALTUS.militaryR = {
 
 DND4EALTUS.superiorM = {
 	bastardsword:"DND4EALTUS.WeaponBastardsword",
+	cahulaks:"DND4EALTUS.WeaponCahulaks",
+	craghammer:"DND4EALTUS.WeaponCraghammer",
+	cutWheel:"DND4EALTUS.WeaponCutWheel",
+	doubleAxe:"DND4EALTUS.WeaponDoubleAxe",
+	doubleFlail:"DND4EALTUS.WeaponDoubleFlail",
+	doubleScimitar:"DND4EALTUS.WeaponDoubleScimitar",
+	doubleSword:"DND4EALTUS.WeaponDoubleSword",
+	dragonPaw:"DND4EALTUS.WeaponDragonPaw",
+	executionAxe:"DND4EALTUS.WeaponExecutionAxe",
+	fullblade:"DND4EALTUS.WeaponFullblade",
+	garrote:"DND4EALTUS.WeaponGarrote",
+	gauntletAxe:"DND4EALTUS.WeaponGauntletAxe",
+	gouge:"DND4EALTUS.WeaponGouge",
+	greatspear:"DND4EALTUS.WeaponGreatspear",
+	gythka:"DND4EALTUS.WeaponGythka",
 	katar:"DND4EALTUS.WeaponKatar",
-	rapier:"DND4EALTUS.WeaponRapier",
-	spikeChain:"DND4EALTUS.WeaponSpikeChain"
+	kukri:"DND4EALTUS.WeaponKukri",
+	longKnife:"DND4EALTUS.WeaponLongKnife",
+	lotulis:"DND4EALTUS.WeaponLotulis",
+	mordenkrad:"DND4EALTUS.WeaponMordenkrad",
+	net:"DND4EALTUS.WeaponNet",
+	parryDagger:"DND4EALTUS.WeaponParryDagger",
+	serratedPick:"DND4EALTUS.WeaponSerratedPick",
+	sharrash:"DND4EALTUS.WeaponSharrash",
+	singingStick:"DND4EALTUS.WeaponSingingStick",
+	spikeChain:"DND4EALTUS.WeaponSpikeChain",
+	spikeShield:"DND4EALTUS.WeaponSpikeShield",
+	tangat:"DND4EALTUS.WeaponTangat",
+	tortoiseBlade:"DND4EALTUS.WeaponTortoiseBlade",
+	tratnyr:"DND4EALTUS.WeaponTratnyr",
+	triFlail:"DND4EALTUS.WeaponTriFlail",
+	urgrosh:"DND4EALTUS.WeaponUrgrosh",
+	waraxe:"DND4EALTUS.WeaponWaraxe",
+	whip:"DND4EALTUS.WeaponWhip",
+	zadatl:"DND4EALTUS.WeaponZadatl",
+	zulaat:"DND4EALTUS.WeaponZulaat"
 };
 DND4EALTUS.superiorR = {
-	shuriken:"DND4EALTUS.WeaponShuriken"
+	boomerang:"DND4EALTUS.WeaponBoomerang",
+	bola:"DND4EALTUS.WeaponBola",
+	blowgun:"DND4EALTUS.WeaponBlowgun",
+	greatbow:"DND4EALTUS.WeaponGreatbow",
+	shuriken:"DND4EALTUS.WeaponShuriken",
+	superCrossbow:"DND4EALTUS.WeaponSuperCrossbow"
 };
 
 DND4EALTUS.improvisedM = {};
@@ -1158,6 +1216,16 @@ DND4EALTUS.statusEffect = [
 		icon: "systems/dnd4eAltus/icons/statusEffects/blinded.svg"
 	},
 	{
+		id: "concealed",
+		label: "EFFECT.statusConceal",
+		icon: "systems/dnd4eAltus/icons/statusEffects/concealment.svg"
+	},
+	{
+		id: "concealedfull",
+		label: "EFFECT.statusConcealFull",
+		icon: "systems/dnd4eAltus/icons/statusEffects/concealment-full.svg"
+	},
+	{
 		id: "dazed",
 		label: "EFFECT.statusDazed",
 		icon: "systems/dnd4eAltus/icons/statusEffects/dazed.svg"
@@ -1177,6 +1245,7 @@ DND4EALTUS.statusEffect = [
 		label: "EFFECT.statusDisarmed",
 		icon: "systems/dnd4eAltus/icons/statusEffects/disarmed.svg"
 	},
+	//row 5
 	{
 		id: "dominated",
 		label: "EFFECT.statusDominated",
@@ -1187,7 +1256,6 @@ DND4EALTUS.statusEffect = [
 		label: "EFFECT.statusDrunk",
 		icon: "systems/dnd4eAltus/icons/statusEffects/drunk.svg"
 	},	
-	//row 5
 	{
 		id: "dying",
 		label: "EFFECT.statusDying",
@@ -1213,6 +1281,7 @@ DND4EALTUS.statusEffect = [
 		label: "EFFECT.statusInsubstantial",
 		icon: "systems/dnd4eAltus/icons/statusEffects/insubstantial.svg"
 	},
+	//row 6
 	{
 		id: "invisible",
 		label: "EFFECT.statusInvisible",
@@ -1223,7 +1292,6 @@ DND4EALTUS.statusEffect = [
 		label: "EFFECT.statusMounted",
 		icon: "systems/dnd4eAltus/icons/statusEffects/mounted.svg"
 	},		
-	//row 6
 
 	{
 		id: "petrified",
@@ -1250,17 +1318,12 @@ DND4EALTUS.statusEffect = [
 		label: "EFFECT.statusSleeping",
 		icon: "systems/dnd4eAltus/icons/statusEffects/sleeping.svg"
 	},
+	//row 7
 	{
 		id: "slowed",
 		label: "EFFECT.statusSlowed",
 		icon: "systems/dnd4eAltus/icons/statusEffects/slowed.svg"
 	},
-	{
-		id: "sneaking",
-		label: "EFFECT.statusSneaking",
-		icon: "systems/dnd4eAltus/icons/statusEffects/sneaking.svg"
-	},
-	//row 7
 	{
 		id: "stunned",
 		label: "EFFECT.statusStunned",
@@ -1272,11 +1335,6 @@ DND4EALTUS.statusEffect = [
 		icon: "systems/dnd4eAltus/icons/statusEffects/surprised.svg"
 	},
 	{
-		id: "torch",
-		label: "EFFECT.statusTorch",
-		icon: "systems/dnd4eAltus/icons/statusEffects/torch.svg"
-	},
-	{
 		id: "unconscious",
 		label: "EFFECT.statusUnconscious",
 		icon: "systems/dnd4eAltus/icons/statusEffects/unconscious.svg"
@@ -1285,6 +1343,22 @@ DND4EALTUS.statusEffect = [
 		id: "weakened",
 		label: "EFFECT.statusWeakened",
 		icon: "systems/dnd4eAltus/icons/statusEffects/weakend.svg"
+	},
+	{
+		id: "hidden",
+		label: "EFFECT.statusHidden",
+		icon: "systems/dnd4eAltus/icons/statusEffects/hidden.svg"
+	},
+	{
+		id: "sneaking",
+		label: "EFFECT.statusSneaking",
+		icon: "systems/dnd4eAltus/icons/statusEffects/sneaking.svg"
+	},
+	//row 8
+	{
+		id: "torch",
+		label: "EFFECT.statusTorch",
+		icon: "systems/dnd4eAltus/icons/statusEffects/torch.svg"
 	},
 	{
 		id: "shitter",
@@ -1301,7 +1375,9 @@ DND4EALTUS.statusEffect = [
 		label: "EFFECT.statusNuke",
 		icon: "systems/dnd4eAltus/icons/statusEffects/nuke.svg"
 	}
+
 ];
+
 // Languages
 DND4EALTUS.spoken = {
 	"Alti": "DND4EALTUS.SpokenAlti",

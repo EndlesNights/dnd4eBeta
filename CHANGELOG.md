@@ -1,17 +1,45 @@
 # Changelog
 
+## Version 0.3.23
+Creature typing for PCs [merge](https://github.com/EndlesNights/DND4EALTUS/pull/267) from [FoxLee](https://github.com/FoxLee)
+Fixed description text output error [merge](https://github.com/EndlesNights/DND4EALTUS/pull/268) from [FoxLee](https://github.com/FoxLee)
+
+
+## Version 0.3.22
+- Fixed an error where items could not render if the description was set to null
+
+## Version 0.3.21
+- Translation readiness + New Conditions + Complete Weapons List [merge](https://github.com/EndlesNights/DND4EALTUS/pull/265) from [FoxLee](https://github.com/FoxLee)
+
+## Version 0.3.20
+- fix Item Card Descriptions when viewed without actor, was causing a null issue because of 0.3.19 change.
+
+## Version 0.3.19
+- You should now be able to use the "@path.to.data" notation to reference to actor data within the Item Card Descriptions.
+- Fixed style issue with item cards description backgrounds. New Line breaks should no longer sperate the background image.
+- Changes to chat card generation for NPC powers [merge](https://github.com/EndlesNights/DND4EALTUS/pull/256) from [FoxLee](https://github.com/FoxLee)
+- French Translation Added, thanks to [Gilphe](https://github.com/Gilphe) and [merge](https://github.com/EndlesNights/DND4EALTUS/pull/261) from [draconas1](https://github.com/draconas1)
+- Fix to Ritual Formula [merge](https://github.com/EndlesNights/DND4EALTUS/pull/261) from [draconas1](https://github.com/draconas1)
+- Fixed an issue with a heal dialog to properly display actor name.
+
+## Version 0.3.18
+- added null checks to turns.js to ward off edge case.
+
+## Version 0.3.17
+- Style update [merge](https://github.com/EndlesNights/DND4EALTUS/pull/254) from [FoxLee](https://github.com/FoxLee)
+
 ## Version 0.3.16
-- Fast Forward for TAH Powers [merge](https://github.com/EndlesNights/dnd4eAltus/pull/252) from [draconas1](https://github.com/draconas1)
+- Fast Forward for TAH Powers [merge](https://github.com/EndlesNights/DND4EALTUS/pull/252) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.3.15
 - fixed an error where some damage types was not appearing in power cards.
 
 ## Version 0.3.14
-- Items without actors will now be able to set attribute resource consuemntion [merge](https://github.com/EndlesNights/dnd4eAltus/pull/251) from [draconas1](https://github.com/draconas1)
-- Change to chat card styling [merge](https://github.com/EndlesNights/dnd4eAltus/pull/250) from [FoxLee](https://github.com/FoxLee)
+- Items without actors will now be able to set attribute resource consuemntion [merge](https://github.com/EndlesNights/DND4EALTUS/pull/251) from [draconas1](https://github.com/draconas1)
+- Change to chat card styling [merge](https://github.com/EndlesNights/DND4EALTUS/pull/250) from [FoxLee](https://github.com/FoxLee)
 
 ## Version 0.3.13
-- fixes Migration Fix and Template Changes [merge](https://github.com/EndlesNights/dnd4eAltus/pull/249) from [draconas1](https://github.com/draconas1)
+- fixes Migration Fix and Template Changes [merge](https://github.com/EndlesNights/DND4EALTUS/pull/249) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.3.12
 - hothix an error when creating equipment type items on character sheets
@@ -42,33 +70,33 @@
 - Effect can now add bonuses to Initative value with the key of `system.attributes.init.bonusValue`
 
 ## Version 0.3.4
-- fixes "undefined undefined" when using consumables [merge](https://github.com/EndlesNights/dnd4eAltus/pull/242) from [draconas1](https://github.com/draconas1)
-- Effects would not set for the first combatent [merge](https://github.com/EndlesNights/dnd4eAltus/pull/242) from [draconas1](https://github.com/draconas1)
-- Heal dialog menu now displays surge value [merge](https://github.com/EndlesNights/dnd4eAltus/pull/242) from [draconas1](https://github.com/draconas1)
-- changelog updated to fix spelling and fix mis-attributed changeset [merge](https://github.com/EndlesNights/dnd4eAltus/pull/242) from [draconas1](https://github.com/draconas1)
-- Resetting Resources [merge](https://github.com/EndlesNights/dnd4eAltus/pull/240) from [kyleady](https://github.com/kyleady)
+- fixes "undefined undefined" when using consumables [merge](https://github.com/EndlesNights/DND4EALTUS/pull/242) from [draconas1](https://github.com/draconas1)
+- Effects would not set for the first combatent [merge](https://github.com/EndlesNights/DND4EALTUS/pull/242) from [draconas1](https://github.com/draconas1)
+- Heal dialog menu now displays surge value [merge](https://github.com/EndlesNights/DND4EALTUS/pull/242) from [draconas1](https://github.com/draconas1)
+- changelog updated to fix spelling and fix mis-attributed changeset [merge](https://github.com/EndlesNights/DND4EALTUS/pull/242) from [draconas1](https://github.com/draconas1)
+- Resetting Resources [merge](https://github.com/EndlesNights/DND4EALTUS/pull/240) from [kyleady](https://github.com/kyleady)
 - minor css fixes
 
 ## Version 0.3.3
-- Custom Effects Fixes [merge](https://github.com/EndlesNights/dnd4eAltus/pull/239) from [draconas1](https://github.com/draconas1)
+- Custom Effects Fixes [merge](https://github.com/EndlesNights/DND4EALTUS/pull/239) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.3.2
-- enrichHTML bug fix [merge](https://github.com/EndlesNights/dnd4eAltus/pull/237) from [kyleady](https://github.com/kyleady)
-- any weapon bug fix [merge](https://github.com/EndlesNights/dnd4eAltus/pull/235) from [kyleady](https://github.com/kyleady)
+- enrichHTML bug fix [merge](https://github.com/EndlesNights/DND4EALTUS/pull/237) from [kyleady](https://github.com/kyleady)
+- any weapon bug fix [merge](https://github.com/EndlesNights/DND4EALTUS/pull/235) from [kyleady](https://github.com/kyleady)
 
 ## Version 0.3.1
-- enrichHTML changes from v9 to v10 [merge](https://github.com/EndlesNights/dnd4eAltus/pull/233) from [kyleady](https://github.com/kyleady)
+- enrichHTML changes from v9 to v10 [merge](https://github.com/EndlesNights/DND4EALTUS/pull/233) from [kyleady](https://github.com/kyleady)
 
 ## Version 0.3.0
 - Update to Foundry v10
 - Minor fixes to css
 
 ## Version 0.2.85
-- Pass the event into initiative to allow for fast forwarding [merge](https://github.com/EndlesNights/dnd4eAltus/pull/232) from [draconas1](https://github.com/draconas1)
-- FastForward Keys moved to helper function [merge](https://github.com/EndlesNights/dnd4eAltus/pull/231) from [kyleady](https://github.com/kyleady)
-- Bugfix with Attacking Multiple Tokens with FastForward [merge](https://github.com/EndlesNights/dnd4eAltus/pull/230) from [kyleady](https://github.com/kyleady)
-- Bugfix when attack with defence that targeted null defence type [merge](https://github.com/EndlesNights/dnd4eAltus/pull/229) from [kyleady](https://github.com/kyleady)
-- Added limited view for NPCs [merge](https://github.com/EndlesNights/dnd4eAltus/pull/228) from [mncimino1993](https://github.com/mncimino1993)
+- Pass the event into initiative to allow for fast forwarding [merge](https://github.com/EndlesNights/DND4EALTUS/pull/232) from [draconas1](https://github.com/draconas1)
+- FastForward Keys moved to helper function [merge](https://github.com/EndlesNights/DND4EALTUS/pull/231) from [kyleady](https://github.com/kyleady)
+- Bugfix with Attacking Multiple Tokens with FastForward [merge](https://github.com/EndlesNights/DND4EALTUS/pull/230) from [kyleady](https://github.com/kyleady)
+- Bugfix when attack with defence that targeted null defence type [merge](https://github.com/EndlesNights/DND4EALTUS/pull/229) from [kyleady](https://github.com/kyleady)
+- Added limited view for NPCs [merge](https://github.com/EndlesNights/DND4EALTUS/pull/228) from [mncimino1993](https://github.com/mncimino1993)
 
 ## Version 0.2.84
 - fixed issue where healing where "surgeValue" tag was consuming a healing surge instead of just granting the HP. (For real this time)
@@ -91,8 +119,8 @@
 
 ## Version 0.2.79
 - users should now be able to apply effects to targets that they do not controls via socket
-- switched the icon used for dead tokens to standardized with core Foundry [merge](https://github.com/EndlesNights/dnd4eAltus/pull/120) from [TheGiddyLimit](https://github.com/TheGiddyLimit)
-- change to helper function that will replace empty values with a string of "0" instead of empty strings so that roll formulas properly eventuate. [merge](https://github.com/EndlesNights/dnd4eAltus/pull/209) from [BadgerKing7](https://github.com/BadgerKing7)
+- switched the icon used for dead tokens to standardized with core Foundry [merge](https://github.com/EndlesNights/DND4EALTUS/pull/120) from [TheGiddyLimit](https://github.com/TheGiddyLimit)
+- change to helper function that will replace empty values with a string of "0" instead of empty strings so that roll formulas properly eventuate. [merge](https://github.com/EndlesNights/DND4EALTUS/pull/209) from [BadgerKing7](https://github.com/BadgerKing7)
 - fixed an issue where older powers area of effect templates would not load properly as there value was still stored numerically and not in a string.
 - When rolling initiative from a character sheet, the user will now be promoted with the standard rolling dialog option and be able to input situational bonuses
 
@@ -125,7 +153,7 @@
 ## Version 0.2.73
 - fix damage type calculation
 - added alternative damage calculation rules
-- action point riders custom text [merge](https://github.com/EndlesNights/dnd4eAltus/pull/200) from [draconas1](https://github.com/draconas1)
+- action point riders custom text [merge](https://github.com/EndlesNights/DND4EALTUS/pull/200) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.72
 - fixed an issue where bonus damage was overrider secondary damage.
@@ -137,17 +165,17 @@
 ## Version 0.2.70
 - Added an option to show formual as part of power data card text
 - NPC powers will now have the formual as the default instea of an ability score
-- Some extra hooks for Token Action HUD. [merge](https://github.com/EndlesNights/dnd4eAltus/pull/195) from [draconas1](https://github.com/draconas1)
+- Some extra hooks for Token Action HUD. [merge](https://github.com/EndlesNights/DND4EALTUS/pull/195) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.69
 - nice
-- Made all SRD armours proficient by default [merge](https://github.com/EndlesNights/dnd4eAltus/pull/194) from [draconas1](https://github.com/draconas1)
-- Fixed Macro Execution, Centralised the execution to one place so they all have consistent data [merge](https://github.com/EndlesNights/dnd4eAltus/pull/193) from [draconas1](https://github.com/draconas1)
+- Made all SRD armours proficient by default [merge](https://github.com/EndlesNights/DND4EALTUS/pull/194) from [draconas1](https://github.com/draconas1)
+- Fixed Macro Execution, Centralised the execution to one place so they all have consistent data [merge](https://github.com/EndlesNights/DND4EALTUS/pull/193) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.68
 - moved "Spend Healing Surges?" option into the isHealing required handle be where it was intended to be.
 - fix variable name mistype where "diagonalMovement" was checking instead of intended "damageCalcRules"
-- Updates to Manual [merge](https://github.com/EndlesNights/dnd4eAltus/pull/191) from [draconas1](https://github.com/draconas1)
+- Updates to Manual [merge](https://github.com/EndlesNights/DND4EALTUS/pull/191) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.67
 - Hotfix check that added "-2 to attack rolls" for Non proficient armour penalty caused Not-A-Number. when no penalty was detected instead of zero.
@@ -163,17 +191,17 @@
 - changed how temphp is stored, is now stored at 'name="data.attributes.temphp.value'.
 - temphp can now be set when setting to as a token Bar attribute, using maxHP for its scale.
 - tempHP is now set as the default option for secondaryTokenAttribute for all new tokens.
-- surge values is now completely self derived via code as the bases for any surge at 'data.details.surgeValue'. Use 'data.details.surgeBon.value' via effects if you wish to modify it. [merge](https://github.com/EndlesNights/dnd4eAltus/pull/186) from [draconas1](https://github.com/draconas1)
+- surge values is now completely self derived via code as the bases for any surge at 'data.details.surgeValue'. Use 'data.details.surgeBon.value' via effects if you wish to modify it. [merge](https://github.com/EndlesNights/DND4EALTUS/pull/186) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.64
 - fix to damage calculation with untyped damage.
-- Formula term highlight rollback + minor fixes [merge](https://github.com/EndlesNights/dnd4eAltus/pull/183) from [draconas1](https://github.com/draconas1)
-- Added additional power type category options [merge](https://github.com/EndlesNights/dnd4eAltus/pull/182) from [FoxLee](https://github.com/FoxLee)
+- Formula term highlight rollback + minor fixes [merge](https://github.com/EndlesNights/DND4EALTUS/pull/183) from [draconas1](https://github.com/draconas1)
+- Added additional power type category options [merge](https://github.com/EndlesNights/DND4EALTUS/pull/182) from [FoxLee](https://github.com/FoxLee)
 - updated example character and powers to match new categories.
 
 ## Version 0.2.63
-- "Manual & Help" documentation was added into the system as a Journal Entry Compendium pack. [merge](https://github.com/EndlesNights/dnd4eAltus/pull/171) from [draconas1](https://github.com/draconas1)
-- Number of data fixes seen in the following [merge](https://github.com/EndlesNights/dnd4eAltus/pull/177) from [draconas1](https://github.com/draconas1) This could have been a patch on its own!
+- "Manual & Help" documentation was added into the system as a Journal Entry Compendium pack. [merge](https://github.com/EndlesNights/DND4EALTUS/pull/171) from [draconas1](https://github.com/draconas1)
+- Number of data fixes seen in the following [merge](https://github.com/EndlesNights/DND4EALTUS/pull/177) from [draconas1](https://github.com/draconas1) This could have been a patch on its own!
 - refactor to prepareData()
 - new helper formula calls to help with all sorts of power or feat formulas that scale from tiers 
 	@heroic, returns value of 1 if character level is less than 11, else zero
@@ -193,22 +221,22 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 - Resurrected @wepDice() to use with high crit weapons
 - All SRD high crit weapons have their bonus crit damage put in the bonus crit damage formula and done as @wepDice(@tier) so it just gives them the right number based on their base damage and tier.
 - when I entered SRD weapons I somehow missed the 2 handed property. 2 handed wepaons now correctly have the 2H weapon property set so work with the example fighter weapon talent.
-- Fixed why implement secondary crit damage could not be deleted [merge](https://github.com/EndlesNights/dnd4eAltus/pull/178) from [draconas1](https://github.com/draconas1)
-- Added Confirm delete option, no more accedently deleting powers/items when enabled [merge](https://github.com/EndlesNights/dnd4eAltus/pull/179) from [draconas1](https://github.com/draconas1) RIP all you accedently deleted powers.
-- Buttons added at the ned of damage and healing rolls to indicate to apply damage and or healing effect [merge](https://github.com/EndlesNights/dnd4eAltus/pull/180) from [draconas1](https://github.com/draconas1)
-- Added Level to all inventory items as a top level field, like on paragon/epic features [merge](https://github.com/EndlesNights/dnd4eAltus/pull/181) from [draconas1](https://github.com/draconas1)
+- Fixed why implement secondary crit damage could not be deleted [merge](https://github.com/EndlesNights/DND4EALTUS/pull/178) from [draconas1](https://github.com/draconas1)
+- Added Confirm delete option, no more accedently deleting powers/items when enabled [merge](https://github.com/EndlesNights/DND4EALTUS/pull/179) from [draconas1](https://github.com/draconas1) RIP all you accedently deleted powers.
+- Buttons added at the ned of damage and healing rolls to indicate to apply damage and or healing effect [merge](https://github.com/EndlesNights/DND4EALTUS/pull/180) from [draconas1](https://github.com/draconas1)
+- Added Level to all inventory items as a top level field, like on paragon/epic features [merge](https://github.com/EndlesNights/DND4EALTUS/pull/181) from [draconas1](https://github.com/draconas1)
 	also allows @itemLevel to reference it in formula.
 	updated example potions and example alchemy to have the correct values in that field (they are the only example things I know of that have a level, everything else is non magical).
 - Scrolling Text on token when they take damage or healing.
 
 ## Version 0.2.62
-- Fixed issue with numbers not being strings, again. [merge](https://github.com/EndlesNights/dnd4eAltus/pull/168) from [draconas1](https://github.com/draconas1) authors note, "I hate javascript"
-- Update to Steve the Example Character [merge](https://github.com/EndlesNights/dnd4eAltus/pull/164) from [draconas1](https://github.com/draconas1)
+- Fixed issue with numbers not being strings, again. [merge](https://github.com/EndlesNights/DND4EALTUS/pull/168) from [draconas1](https://github.com/draconas1) authors note, "I hate javascript"
+- Update to Steve the Example Character [merge](https://github.com/EndlesNights/DND4EALTUS/pull/164) from [draconas1](https://github.com/draconas1)
 	Now has a close burst 1 AoE power that uses an implment
 	has an example ritual that can summon badgers
 	Feat that adds to fire attack and damage powers
 	Updated fighter weapon talents to have an effect to boost that attack.
-- Added Hooks for Token Action HUD [merge](https://github.com/EndlesNights/dnd4eAltus/pull/163) from [draconas1](https://github.com/draconas1)
+- Added Hooks for Token Action HUD [merge](https://github.com/EndlesNights/DND4EALTUS/pull/163) from [draconas1](https://github.com/draconas1)
 - custom movement types will now show up in the tooltip when mouse hovering over movement
 - Some more tinkering around with the NPC sheet
 	added rest buttons
@@ -217,10 +245,10 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 	other minor edits to the CSS styles
 
 ## Version 0.2.61
-- removed the default miss formula and effects [merge](https://github.com/EndlesNights/dnd4eAltus/pull/162) from [draconas1](https://github.com/draconas1)
+- removed the default miss formula and effects [merge](https://github.com/EndlesNights/DND4EALTUS/pull/162) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.60
-- fix implement groupings [merge](https://github.com/EndlesNights/dnd4eAltus/pull/159) from [draconas1](https://github.com/draconas1)
+- fix implement groupings [merge](https://github.com/EndlesNights/DND4EALTUS/pull/159) from [draconas1](https://github.com/draconas1)
 - fixed issue with NPC initiative calculation check.... again...
 - minor tweaks to NPC sheet CSS
 - changed how ritual roll formulas work
@@ -229,11 +257,11 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 ## Version 0.2.59
 - fixed issue with NPC initiative calculation check
 - can now use @varubles math formulas when define the max limited use of powers/items
-- fixed roll expressions highlighting [merge](https://github.com/EndlesNights/dnd4eAltus/pull/152) from [draconas1](https://github.com/draconas1)
-- added leader to npc template [merge](https://github.com/EndlesNights/dnd4eAltus/pull/153) from [draconas1](https://github.com/draconas1)
-- fixed ritual Rolling issue #95 [merge](https://github.com/EndlesNights/dnd4eAltus/pull/154) from [draconas1](https://github.com/draconas1)
-- compendium equipment updates [merge](https://github.com/EndlesNights/dnd4eAltus/pull/155) from [draconas1](https://github.com/draconas1)
-- updated to effect variables [merge](https://github.com/EndlesNights/dnd4eAltus/pull/156) from [draconas1](https://github.com/draconas1)
+- fixed roll expressions highlighting [merge](https://github.com/EndlesNights/DND4EALTUS/pull/152) from [draconas1](https://github.com/draconas1)
+- added leader to npc template [merge](https://github.com/EndlesNights/DND4EALTUS/pull/153) from [draconas1](https://github.com/draconas1)
+- fixed ritual Rolling issue #95 [merge](https://github.com/EndlesNights/DND4EALTUS/pull/154) from [draconas1](https://github.com/draconas1)
+- compendium equipment updates [merge](https://github.com/EndlesNights/DND4EALTUS/pull/155) from [draconas1](https://github.com/draconas1)
+- updated to effect variables [merge](https://github.com/EndlesNights/DND4EALTUS/pull/156) from [draconas1](https://github.com/draconas1)
 
 ## Version 0.2.58
 - added custom mesure template to Foundry for burst
@@ -253,7 +281,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 - refactoring of commonReplace formula
 
 ## Version 0.2.55
-- Minor tweaks to tool checks [merge](https://github.com/EndlesNights/dnd4eAltus/pull/146) from [draconas1](https://github.com/draconas1)
+- Minor tweaks to tool checks [merge](https://github.com/EndlesNights/DND4EALTUS/pull/146) from [draconas1](https://github.com/draconas1)
 - Added Alignment back to Character and NPC sheets
 - Added Spoken Language options to NPC sheets
 - Minor tweak to CSS to fix the formating around custom resources
@@ -268,7 +296,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.2.53
 - Fixed an issue with creating with dragging items into the macro bar that was cause by attempting to use a deprecated call from v8.
-- Roll formula display [merge](https://github.com/EndlesNights/dnd4eAltus/pull/140) from [draconas1](https://github.com/draconas1)
+- Roll formula display [merge](https://github.com/EndlesNights/DND4EALTUS/pull/140) from [draconas1](https://github.com/draconas1)
 	shows the origins formula expression that went into a roll, and highlights where those numbers come from
 	refactor the d20 Roll and rollDamage scripts to make them easier to maintain
 	refactor of helper functions to reduce number of duplication iteration
@@ -342,8 +370,8 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.2.44
 - fixed issue for item macros, actor data, item data, and launch order should now all be accessible again. 
-- changed how the assisting macro for the [Dual Wielding Strike (Primary)](https://github.com/EndlesNights/dnd4eAltus/blob/f2cb282fbbca8c3a988f1fa1cec8ca4cf1f5dab8/packs/example_powers.db#L7) example power, should no longer require having the actor selected to trigger the use of the secondary power.
-- issue [#75](https://github.com/EndlesNights/dnd4eAltus/issues/75) fix with updates moved to the appropriate method.
+- changed how the assisting macro for the [Dual Wielding Strike (Primary)](https://github.com/EndlesNights/DND4EALTUS/blob/f2cb282fbbca8c3a988f1fa1cec8ca4cf1f5dab8/packs/example_powers.db#L7) example power, should no longer require having the actor selected to trigger the use of the secondary power.
+- issue [#75](https://github.com/EndlesNights/DND4EALTUS/issues/75) fix with updates moved to the appropriate method.
 
 ## Version 0.2.43
 - Change how some more values are calculated to make them work better with active effects

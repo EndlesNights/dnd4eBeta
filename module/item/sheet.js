@@ -123,7 +123,10 @@ export default class ItemSheet4e extends ItemSheet {
 		data.system = itemData.system;
 
 		const description = data.system.description;
-		data.descriptionHTML = await TextEditor.enrichHTML(description.value || description, {
+		const weaponUse = this.actor ? Helper.getWeaponUse(itemData.system, this.actor) : null;
+		const itemActor = this.item.actor || null;
+		const descriptionText = description.value ? Helper.commonReplace(description.value, itemActor, itemData.system, weaponUse?.system) : "";
+		data.descriptionHTML = await TextEditor.enrichHTML(descriptionText || description, {
 			secrets: data.item.isOwner,
 			async: true,
 			relativeTo: this.item
