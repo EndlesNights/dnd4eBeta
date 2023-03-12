@@ -33,6 +33,7 @@ export class Actor4e extends Actor {
 		//used to call changes to HP scrolling text
 		if(data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
 			options.dhp = data[`system.attributes.hp.value`] - this.system.attributes.hp.value;
+			data[`system.details.isBloodied`] = data[`system.attributes.hp.value`] <= this.system.attributes.hp.max/2;
 		}
 
 		// Apply changes in Actor size to Token width/height
@@ -53,6 +54,7 @@ export class Actor4e extends Actor {
 				data[`system.details.tier`] = this.system.details.tier;
 			}		
 		}
+
 		for (let [id, abl] of Object.entries(this.system.abilities)){
 			if(data[`system.abilities.${id}.value`]){
 				if(this.system.abilities[id].mod != Math.floor((data[`system.abilities.${id}.value`] - 10) / 2)){
