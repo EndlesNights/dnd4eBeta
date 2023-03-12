@@ -2,7 +2,8 @@
 
 ## Version 0.3.24
 - Added an @bloodied helper tag, which can be refrenced in roll formulas returning a value of 1 if the actor is bloodied, or 0 if not.
-- Checking for some Deterministic elements inside parts of damage dice rolling, which will improve the final formual as displayed to players by being less cluttered with terms making it more easily readable. 
+- Checking for some Deterministic elements inside parts of damage dice rolling, which will improve the final formual as displayed to players by being less cluttered with terms making it more easily readable.
+- User control for untyped/condition/special resistances  [merge](https://github.com/EndlesNights/dnd4eBeta/pull/270) from [FoxLee](https://github.com/FoxLee)
 
 ## Version 0.3.23
 - Creature typing for PCs [merge](https://github.com/EndlesNights/dnd4eBeta/pull/267) from [FoxLee](https://github.com/FoxLee)
