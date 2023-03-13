@@ -9,7 +9,6 @@
 - Creature typing for PCs [merge](https://github.com/EndlesNights/dnd4eBeta/pull/267) from [FoxLee](https://github.com/FoxLee)
 - Fixed description text output error [merge](https://github.com/EndlesNights/dnd4eBeta/pull/268) from [FoxLee](https://github.com/FoxLee)
 
-
 ## Version 0.3.22
 - Fixed an error where items could not render if the description was set to null
 
