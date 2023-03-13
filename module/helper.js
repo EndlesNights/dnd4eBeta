@@ -175,7 +175,8 @@ export class Helper {
 					this._addKeywords(suitableKeywords, weaponInnerData.weaponGroup)
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
 					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
-					this._addKeywords(suitableKeywords, weaponInnerData.implement)
+					/* Unnecessary with the later tool logic? Just commenting out for now cus I'm afraid I'm going to break required tool detection.—Fox
+					this._addKeywords(suitableKeywords, weaponInnerData.implement)*/
 				}
 
 				if (powerInnerData.powersource) {
@@ -183,6 +184,76 @@ export class Helper {
 				}
 				if (powerInnerData.secondPowersource) {
 					suitableKeywords.push(powerInnerData.secondPowersource)
+				}
+				if (powerInnerData.powerType){
+					suitableKeywords.push(powerInnerData.powerType)
+				}
+				if (powerInnerData.powersubtype){
+					suitableKeywords.push(powerInnerData.powersubtype)
+				}
+				if(powerInnerData.weaponType){
+					//If the power has a required tool, we can assume the character is using it or there would already be an error. Therefore, the power's tool requirement is the most useful way to differentiate between melee weapon, ranged weapon and implement.
+					switch(powerInnerData.weaponType){
+						case "implement":
+							suitableKeywords.push("usesImplement");
+							break;
+						case "melee":
+							suitableKeywords.push("weapon");
+							suitableKeywords.push("meleeWeapon");
+							break;
+						case "ranged":
+							suitableKeywords.push("usesWeapon");
+							suitableKeywords.push("rangedWeapon");
+							break;
+						case "meleeRanged":
+							suitableKeywords.push("weapon");
+							if (weaponInnerData){
+								if (weaponInnerData.isRanged){
+									suitableKeywords.push("rangedWeapon");
+								} else {
+									suitableKeywords.push("meleeWeapon");
+								}
+							}
+							break;
+					}
+				}
+				
+				if(powerInnerData.rangeType){
+					switch(powerInnerData.rangeType){
+						case "closeBurst":
+							suitableKeywords.push("close");
+							suitableKeywords.push("burst");
+							suitableKeywords.push("closeBurst");
+							break;
+						case "closeBlast":
+							suitableKeywords.push("close");
+							suitableKeywords.push("blast");
+							suitableKeywords.push("closeBlast");
+							break;
+						case "range":
+							suitableKeywords.push("ranged");
+							break;
+						case "rangeBurst":
+							suitableKeywords.push("area");
+							suitableKeywords.push("burst");
+							suitableKeywords.push("areaBurst");
+							break;
+						case "rangeBlast":
+							suitableKeywords.push("area");
+							suitableKeywords.push("blast");
+							suitableKeywords.push("areaBlast");
+							break;
+						case "wall":
+							suitableKeywords.push("area");
+							break;
+						case "melee":
+						case "reach":
+						case "touch":
+							suitableKeywords.push("melee");
+							break;
+						default:
+							break;
+					}
 				}
 
 				if (debug) {
