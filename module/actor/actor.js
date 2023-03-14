@@ -31,7 +31,7 @@ export class Actor4e extends Actor {
 		if(!data) { return super.update(data, options); }
 		
 		//used to call changes to HP scrolling text
-		if(data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
+		if(data[`system.attributes.hp.value`] != undefined && data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
 			options.dhp = data[`system.attributes.hp.value`] - this.system.attributes.hp.value;
 			data[`system.details.isBloodied`] = data[`system.attributes.hp.value`] <= this.system.attributes.hp.max/2;
 		}
