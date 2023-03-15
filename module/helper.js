@@ -185,14 +185,8 @@ export class Helper {
 				if (powerInnerData.secondPowersource) {
 					suitableKeywords.push(powerInnerData.secondPowersource)
 				}
-				if (powerInnerData.powerType){
-					suitableKeywords.push(powerInnerData.powerType)
-				}
-				if (powerInnerData.powersubtype){
-					suitableKeywords.push(powerInnerData.powersubtype)
-				}
 				if(powerInnerData.weaponType){
-					//If the power has a required tool, we can assume the character is using it or there would already be an error. Therefore, the power's tool requirement is the most useful way to differentiate between melee weapon, ranged weapon and implement.
+					//Tool-based keywords like implement and weapon belong to the power, so in most cases we do not need to check the weapon to know which ones to use. Mixed melee/ranged weapons are the main exception, so we check the equipped weapon just for those.
 					switch(powerInnerData.weaponType){
 						case "implement":
 							suitableKeywords.push("usesImplement");
@@ -250,8 +244,6 @@ export class Helper {
 						case "reach":
 						case "touch":
 							suitableKeywords.push("melee");
-							break;
-						default:
 							break;
 					}
 				}
