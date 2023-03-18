@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.26
+- french language update from [Gilphe](https://github.com/Gilphe)
+
 ## Version 0.3.25
 - Hotfix small issue with Actor#Update
 
