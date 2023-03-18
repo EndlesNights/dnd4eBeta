@@ -829,6 +829,29 @@ DND4EBETA.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4EBETA.rangeT
 	return key !== "weapon";
 }));
 
+// Bonus keys for tool required by a power—NOT the same as the keywords pulled from the weapon.
+DND4EBETA.toolKeys = {
+	"meleeWeapon": "DND4EBETA.WeaponMelee",
+	"rangedWeapon": "DND4EBETA.WeaponRanged",
+	"weapon": "DND4EBETA.Weapon",
+	"usesImplement": "DND4EBETA.WeaponPropertiesImp"
+};
+
+// Bonus keys for range/shape—NOT the same as the plain range values.
+DND4EBETA.rangeKeys = {
+	"melee": "DND4EBETA.rangeMelee",
+	"ranged" : "DND4EBETA.rangeRanged",
+	"close": "DND4EBETA.rangeWeapon",
+	"area": "DND4EBETA.rangeArea",
+	"blast": "DND4EBETA.rangeJustBlast",
+	"burst" : "DND4EBETA.rangeJustBurst",
+	"closeBurst": "DND4EBETA.rangeCloseBurst",
+	"closeBlast": "DND4EBETA.rangeCloseBlast",
+	"areaBurst": "DND4EBETA.rangeBurst",
+	"areaBlast": "DND4EBETA.rangeBlast",
+	"wall": "DND4EBETA.rangeWall"
+};
+
 DND4EBETA.effectTypes = {
 	"augmentable": "DND4EBETA.Augmentable",
 	"aura": "DND4EBETA.Aura",
