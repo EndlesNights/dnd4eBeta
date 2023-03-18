@@ -1828,4 +1828,24 @@ export default class Item4e extends Item {
 
 		return true;
 	}
+
+	get getAutoPowerIcon(){
+
+		if(this.type !== "power"){
+			return "icons/svg/item-bag.svg";
+		}
+
+		const system = this.system
+		let target = `systems/dnd4e/icons/powerIcons/${system.useType}-melee`;
+ 
+		let range = "";
+		if(system.weaponType == "melee"){
+			range = "melee";
+		}
+		
+
+		target += range;
+		target += ".svg";
+		return target;
+	}
 }

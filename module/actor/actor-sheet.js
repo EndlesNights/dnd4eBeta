@@ -119,6 +119,8 @@ export default class ActorSheet4e extends ActorSheet {
 		
 		// sheetData.config = CONFIG.DND4EBETA;
 		actorData.size = DND4EBETA.actorSizes;
+		console.log(actorData)
+		console.log(actorData.skills)
 		for ( let [s, skl] of Object.entries(actorData.skills)) {
 			skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase();
 			skl.icon = this._getTrainingIcon(skl.value);
@@ -250,7 +252,11 @@ export default class ActorSheet4e extends ActorSheet {
 		// Partition items by category
 		let [items, pow, feats] = data.items.reduce((arr, item) => {
 			// Item details
-			item.img = item.img || DEFAULT_TOKEN;
+			
+			if(item.system.autoGenPowerIcon){
+				item.img = item.getAutoPowerIcon;
+			}
+			
 			item.isStack = Number.isNumeric(item.system.quantity) && (item.system.quantity !== 1);
 
 			// Item usage

@@ -2,9 +2,13 @@
 	<h3 class="form-header">{{ localize "DND4EBETA.PowerDetails" }}</h3>
 
 	{{!-- Power Source & Keywords --}}
-	<div class="form-group">
-		<label style="max-width: 208px;">{{ localize "DND4EBETA.PowerAutoGenerateLable" }}</label>
+	<div class="form-group wide">
+		<label >{{ localize "DND4EBETA.PowerAutoGeneratePowerCardLable" }}</label>
 		<span class="checkbox"><input type="checkbox" name="system.autoGenChatPowerCard" data-dtype="Boolean" {{checked system.autoGenChatPowerCard}}/></span>
+	</div>
+	<div class="form-group wide">
+		<label >{{ localize "DND4EBETA.PowerAutoGenerateImageLable" }}</label>
+		<span class="checkbox"><input type="checkbox" name="system.autoGenPowerIcon" data-dtype="Boolean" {{checked system.autoGenPowerIcon}}/></span>
 	</div>
 	<div class="form-group short uses-per">
 		<label>{{ localize "DND4EBETA.PowerSource" }}</label>
