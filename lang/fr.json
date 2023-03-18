@@ -661,7 +661,7 @@
     "DND4EBETA.PolymorphTokens": "Transformer tous les tokens liés ?",
     "DND4EBETA.PolymorphWarn": "Vous n'êtes pas autorisé à Polymorpher cet Acteur !",
     "DND4EBETA.PolymorphWildShape": "Forme Sauvage",
-    "DND4EBETA.PowerAutoGenerateLable": "Auto-génére les informations des cartes de pouvoirs",
+    "DND4EBETA.PowerAutoGeneratePowerCardLable": "Auto-génére les informations des cartes de pouvoirs",
     "DND4EBETA.PowerAt": "A Volonté",
     "DND4EBETA.PowerAttack": "Attaque",
     "DND4EBETA.PowerBaseDamage": "Dégâts de Base",

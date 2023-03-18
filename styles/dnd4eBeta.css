@@ -672,6 +672,9 @@
 	font-weight: bold;
 	max-width: 174px;
 }
+.dnd4eBeta .form-group.wide label {
+	max-width: 208px;
+}
 .dnd4eBeta .form-group .form-fields {
 	display: flex;
 	flex-direction: row;
