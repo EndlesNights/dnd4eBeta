@@ -174,8 +174,7 @@ export class Helper {
 					this._addKeywords(suitableKeywords, weaponInnerData.weaponGroup)
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
 					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
-					/* Unnecessary with the later tool logic? Just commenting out for now cus I'm afraid I'm going to break required tool detection.—Fox
-					this._addKeywords(suitableKeywords, weaponInnerData.implement)*/
+					this._addKeywords(suitableKeywords, weaponInnerData.implement) // implement group for implement powers.  Bad naming of property, sorry -Drac
 				}
 
 				if (powerInnerData.powersource) {
