@@ -194,7 +194,7 @@ export class Helper {
 							suitableKeywords.push("meleeWeapon");
 							break;
 						case "ranged":
-							suitableKeywords.push("usesWeapon");
+							suitableKeywords.push("weapon");
 							suitableKeywords.push("rangedWeapon");
 							break;
 						case "meleeRanged":
