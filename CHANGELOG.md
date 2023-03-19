@@ -3,6 +3,7 @@
 ## Version 0.3.26
 - New bonus keys from [merge](https://github.com/EndlesNights/dnd4eBeta/pull/272) from [FoxLee](https://github.com/FoxLee)
 - french language update from [Gilphe](https://github.com/Gilphe)
+- added a number of sanitize to ensure that only strings are passes into the Roll Class constructor for the formual expression.
 
 ## Version 0.3.25
 - Hotfix small issue with Actor#Update

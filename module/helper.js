@@ -1,4 +1,3 @@
-
 export class Helper {
 
 	static executeMacro(item) {
@@ -456,7 +455,7 @@ export class Helper {
 					if(!parts[i][0] || !parts[i][1]) continue;
 
 					let quantity = this.commonReplace(parts[i][0], actorData, powerInnerData, weaponInnerData, depth-1);
-					let r = new Roll(quantity);
+					let r = new Roll(`${quantity}`);
 
 					if(r.isDeterministic){
 						r.evaluate({async: false});
@@ -485,7 +484,7 @@ export class Helper {
 			// make sure to keep the weapon dice formula same as above.  Definite candidate for a future refactor.
 			if(newFormula.includes("@powBase")) {
 				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorData, powerInnerData, weaponInnerData, depth-1);
-				let r = new Roll(quantity);
+				let r = new Roll(`${quantity}`);
 
 				//Just to help keep the rolls cleaner, look for Deterministic elements to remove
 				if(r.isDeterministic){
@@ -507,7 +506,7 @@ export class Helper {
 						if(!parts[i][0] || !parts[i][1]) continue;
 
 						let weaponDiceQuantity = this.commonReplace(`(${quantity}) * (${parts[i][0]})`, actorData, powerInnerData, weaponInnerData, depth-1);
-						let r2 = new Roll(weaponDiceQuantity);
+						let r2 = new Roll(`${weaponDiceQuantity}`);
 	
 						if(r2.isDeterministic){
 							r2.evaluate({async: false});
@@ -640,8 +639,9 @@ export class Helper {
 				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorData, powerInnerData, weaponInnerData, depth-1);
 				let diceType = powerInnerData.hit.baseDiceType;
 
-				let r = new Roll(quantity);
+				let r = new Roll(`${quantity}`);
 				if(r.isDeterministic){
+					console.log("here")
 					r.evaluate({async: false});
 					quantity = r.total;
 				}
@@ -811,7 +811,7 @@ export class Helper {
 			errorMessageKey = "DND4EBETA.InvalidRollExpression"
 		}
 		if (rollString && rollString !== "") {
-			const roll = new Roll(rollString);
+			const roll = new Roll(`${rollString}`);
 			return roll.roll({async : true}).catch(err => {
 				let msg = context ? `${game.i18n.localize(errorMessageKey)} (in ${context}) : ${rollString}` : `${game.i18n.localize(errorMessageKey)} : ${rollString}`
 				ui.notifications.error(msg);
