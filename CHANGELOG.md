@@ -1,16 +1,19 @@
 # Changelog
 
+## Version 0.3.27
+- Hotfix Bonus effect checker to check implement type [merge](https://github.com/EndlesNights/dnd4eBeta/pull/274) from [draconas1](https://github.com/draconas1)
+
 ## Version 0.3.26
 - New bonus keys from [merge](https://github.com/EndlesNights/dnd4eBeta/pull/272) from [FoxLee](https://github.com/FoxLee)
-- french language update from [Gilphe](https://github.com/Gilphe)
-- added a number of sanitize to ensure that only strings are passes into the Roll Class constructor for the formual expression.
+- French language update from [Gilphe](https://github.com/Gilphe)
+- added a number of sanitize to ensure that only strings are passes into the Roll Class constructor for the formula expression.
 
 ## Version 0.3.25
 - Hotfix small issue with Actor#Update
 
 ## Version 0.3.24
-- Added an @bloodied helper tag, which can be refrenced in roll formulas returning a value of 1 if the actor is bloodied, or 0 if not.
-- Checking for some Deterministic elements inside parts of damage dice rolling, which will improve the final formual as displayed to players by being less cluttered with terms making it more easily readable.
+- Added an @bloodied helper tag, which can be referenced in roll formulas returning a value of 1 if the actor is bloodied, or 0 if not.
+- Checking for some Deterministic elements inside parts of damage dice rolling, which will improve the final formula as displayed to players by being less cluttered with terms making it more easily readable.
 - User control for untyped/condition/special resistances [merge](https://github.com/EndlesNights/dnd4eBeta/pull/270) from [FoxLee](https://github.com/FoxLee)
 
 ## Version 0.3.23
