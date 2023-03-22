@@ -1,8 +1,11 @@
 # Changelog
 
+## Version 0.3.29
+- minor fix to how derived movement calculations
+
 ## Version 0.3.28
 - French language update from [Gilphe](https://github.com/Gilphe)
-- Minnor fix to item card
+- Minor fix to item card
 - Mirror fix to NPC item chat card logic for displaying Flavour/Description
 
 ## Version 0.3.27
