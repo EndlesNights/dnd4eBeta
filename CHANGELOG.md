@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.3.28
+- French language update from [Gilphe](https://github.com/Gilphe)
+- Minnor fix to item card
+- Mirror fix to NPC item chat card logic for displaying Flavour/Description
+
 ## Version 0.3.27
 - Hotfix Bonus effect checker to check implement type [merge](https://github.com/EndlesNights/dnd4eBeta/pull/274) from [draconas1](https://github.com/draconas1)
 
