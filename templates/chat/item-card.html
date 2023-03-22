@@ -9,7 +9,11 @@
 	<div class="card-content" style="display: block;">
 	{{#if (eq actor.type "NPC")}}
 		{{#if item.system.autoGenChatPowerCard}}
-			{{#if item.system.chatFlavor}}<p class="chat-flavour">{{item.system.chatFlavor}}</p>{{/if}}
+			{{#if item.system.chatFlavor}}
+				<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+			{{else}}
+				{{{system.description.value}}}
+			{{/if}}
 		{{else}}
 			{{{system.description.value}}}
 		{{/if}}
