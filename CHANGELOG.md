@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.3.30
+- minor bug fix to how base movement is calculated
+- updated documentation about which keys should be used for movement, now you should be using "system.movement.<type>.bonusValue" rather than "system.movement.<type>.value"
+
 ## Version 0.3.29
 - minor fix to how derived movement calculations
 

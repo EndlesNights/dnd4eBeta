@@ -346,7 +346,7 @@ export class Actor4e extends Actor {
 		
 		//calc movespeed
 		let baseMoveBonusValue = system.movement.base.bonusValue || 0;
-		console.log(baseMoveBonusValue)
+		
 		if(!(system.movement.base.bonus.length === 1 && jQuery.isEmptyObject(system.movement.base.bonus[0]))) {
 			for( const b of system.movement.base.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
@@ -448,7 +448,7 @@ export class Actor4e extends Actor {
 		}
 		system.movement.shift.bonusValue = shiftBonusValue;	
 
-		system.movement.base.value += system.movement.base.base +  baseMoveBonusValue + system.movement.base.temp;
+		system.movement.base.value = system.movement.base.base +  baseMoveBonusValue + system.movement.base.temp;
 		
 		let walkForm = eval(Helper.replaceData(system.movement.walk.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.walk.value += walkForm + walkBonusValue + system.movement.base.temp;
@@ -457,25 +457,25 @@ export class Actor4e extends Actor {
 			system.movement.walk.value = 0;
 		
 		let runForm = eval(Helper.replaceData(system.movement.run.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.run.value += runForm + runBonusValue + system.movement.run.temp;
+		system.movement.run.value = runForm + runBonusValue + system.movement.run.temp;
 		
 		if (system.movement.run.value < 0)
 			system.movement.run.value = 0;
 
 		let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.charge.value += chargeForm + chargeBonusValue + system.movement.charge.temp;
+		system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge.temp;
 		
 		if (system.movement.charge.value < 0)
 			system.movement.charge.value = 0;
 
-		let climbeForm = eval(Helper.replaceData(system.movement.climb.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.climb.value += climbeForm;
+		let climbForm = eval(Helper.replaceData(system.movement.climb.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+		system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb.temp;
 		
 		if (system.movement.climb.value < 0)
 			system.movement.climb.value = 0;
 		
 		let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.shift.value += shiftForm;
+		system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift.temp;;
 		
 		if (system.movement.shift.value < 0)
 			system.movement.shift.value = 0;
