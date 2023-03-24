@@ -1263,6 +1263,35 @@ export class Actor4e extends Actor {
 		this.update(updateData);
 	}
 
+	async actionPoint(event, options){
+
+		let extra = "";
+		if (this.system.actionpoints.custom !== "") {
+			extra = this.system.actionpoints.custom;
+			extra = extra.replace(/\n/g,'</li><li>');
+			extra = "<li>" + extra + "</li>";
+		}
+
+		if(this.system.actionpoints.value >= 1) {
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this, alias: this.name},
+				// flavor: restFlavor,
+				content: `${this.name} uses an actionpoint gaining the following benefits:
+				<ul>
+					<li>Gaining an addtional Standard Action</li>
+					${extra}
+				</ul>`
+			});
+
+			const updateData = {};
+			updateData[`system.actionpoints.value`] = this.system.actionpoints.value -1;
+			updateData[`system.actionpoints.encounteruse`] = true;
+
+			this.update(updateData);
+		}
+	}
+
 	async createOwnedItem(itemData, options) {
 		console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
 		return this.createEmbeddedDocuments("Item", [itemData], options);

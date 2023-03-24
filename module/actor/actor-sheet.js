@@ -1207,6 +1207,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 	_onActionPointDialog(event) {
 		event.preventDefault();
+		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		if(isFF){
+			return this.actor.actionPoint(event,{isFF});
+		}
 		new ActionPointDialog(this.actor).render(true);
 	}
 
