@@ -1218,6 +1218,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	*/
 	_onShortRest(event) {
 		event.preventDefault();
+		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		if(isFF){
+			return this.actor.shortRest(event,{isFF});
+		}
 		new ShortRestDialog(this.actor).render(true);
 	}
 	

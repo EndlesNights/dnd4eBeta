@@ -1083,6 +1083,85 @@ export class Actor4e extends Actor {
 		this.update(updateData);
 	}
 
+	async shortRest(event, options){
+		const updateData = {};
+		updateData[`system.attributes.hp.value`] = this.system.attributes.hp.value;
+		
+		if(options.surge > 0)
+		{
+			if(options.surge > this.system.details.surges.value)
+			options.surge = this.system.details.surges.value;
+			
+			let r = new Roll("0");
+			let healamount = 0;
+			for(let i = 0; i < options.surge; i++){
+				
+				if(options.bonus != "" ){
+					r = new Roll(options.bonus);
+					try{
+						await r.roll({async : true});
+
+					}catch (error){
+						ui.notifications.error(game.i18n.localize("DND4EBETA.InvalidHealingBonus"));
+						r = new Roll("0");
+						await r.roll({async : true});
+					}
+				}
+				healamount += this.system.details.surgeValue + (r.total || 0);
+				console.log(`surgeValue:${this.system.details.surgeValue}`)
+				console.log(`total:${r.total}`)
+				console.log(`healamount:${healamount}`)
+			}
+
+			updateData[`system.attributes.hp.value`] = Math.min(
+				(this.system.attributes.hp.value + healamount),
+				this.system.attributes.hp.max
+			);
+		
+			if(this.system.details.surges.value > 0)
+				updateData[`system.details.surges.value`] = this.system.details.surges.value - options.surge;
+			
+		}
+		else if(options.surge == 0 && this.system.attributes.hp.value <= 0)
+		{
+			updateData[`system.attributes.hp.value`] = 1;
+		}
+		
+		if(!this.system.attributes.hp.temprest)
+			updateData[`system.attributes.temphp.value`] = "";
+		
+		updateData[`system.details.secondwind`] = false;
+		updateData[`system.actionpoints.encounteruse`] = false;
+		updateData[`system.magicItemUse.encounteruse`] = false;
+		
+		Helper.rechargeItems(this, ["enc", "round"]);
+		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter"]);
+		
+		if(this.type === "Player Character"){
+
+			console.log(updateData[`system.attributes.hp.value`])
+			console.log(this.system.attributes.hp.value)
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this, alias: this.name},
+				content: options.surge >= 1 ? `${this.name} takes a short rest, spending ${options.surge} healing surge, regaining ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} HP.`
+					: `${this.name} takes a short rest.`
+				
+			});				
+		}
+
+		for (let r of Object.entries(this.system.resources)) {
+			if(r[1].sr && r[1].max) {
+				updateData[`system.resources.${r[0]}.value`] = r[1].max;
+			}
+		}
+
+		// console.log(updateData[`system.attributes.hp.value`]);
+		// console.log(this.system.attributes.hp.value);
+
+		this.update(updateData);
+	}
+
 	async createOwnedItem(itemData, options) {
 		console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
 		return this.createEmbeddedDocuments("Item", [itemData], options);
