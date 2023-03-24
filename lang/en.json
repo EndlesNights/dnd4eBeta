@@ -1365,6 +1365,8 @@
 "SETTINGS.4eNoExpN": "Disable Experience Tracking",
 "SETTINGS.4eNpcMathOptionsL": "Determines if the Advanced Math Options for NPCs is set during their generation",
 "SETTINGS.4eNpcMathOptionsN": "NPC Stats Calculate",
+"SETTINGS.4epermShowPlayerL": "When clicking the show player button on an item while holding this key, it will permanently give all players permsion to see the item rather then them only being shown the item temporarily.",
+"SETTINGS.4epermShowPlayerN": "Show Players Item Permanently",
 "SETTINGS.4ePowerAutoGenerateLableOptionN": "Auto Generate Power Card Details",
 "SETTINGS.4ePowerAutoGenerateLableOptionL": "When creating a new power, determine if the option to \"Auto Generate Power Card Details\" is set.",
 "SETTINGS.4eShowRollExpressionN": "Show Roll Formula",

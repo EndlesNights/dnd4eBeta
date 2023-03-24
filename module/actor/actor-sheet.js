@@ -1243,8 +1243,12 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	}
 
 	_onSavingThrow(event) {
+		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
 		event.preventDefault();
-		new SaveThrowDialog(this.actor).render(true);
+		if(isFF){
+			return this.actor.rollSave(event,{isFF});
+		}
+		return new SaveThrowDialog(this.actor, {isFF}).render(!isFF);
 	}
 
 	_onSavingThrowBonus(event) {

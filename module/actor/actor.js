@@ -1006,6 +1006,35 @@ export class Actor4e extends Actor {
 		return combat;
 	}
 
+	async rollSave(event, options){
+		let message = `Rolling Saving Throw, DC: ${options.dc || 10}`;
+		const parts = [this.system.details.saves.value];
+		if (options.save) {
+			parts.push(options.save)
+		}
+		
+		const rollConfig = mergeObject({
+			parts,
+			actor: this.actor,
+			data: {},
+			title: "",
+			flavor: message,
+			speaker: ChatMessage.getSpeaker({actor: this}),
+			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }},
+			fastForward: true,
+			rollMode: options.rollMode
+		});
+		rollConfig.event = event;
+		rollConfig.critical = options.dc - this.system.details.saves.value - options.save || 10;
+		rollConfig.fumble = options.dc -1 - this.system.details.saves.value - options.save || 9;
+		
+		const r = await d20Roll(rollConfig);
+
+		if(options.effectSave && r.total >= rollConfig.critical){
+			await this.effects.get(options.effectId).delete();
+		}
+	}
+
 	async createOwnedItem(itemData, options) {
 		console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
 		return this.createEmbeddedDocuments("Item", [itemData], options);
