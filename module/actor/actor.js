@@ -1012,10 +1012,10 @@ export class Actor4e extends Actor {
 		if (options.save) {
 			parts.push(options.save)
 		}
-		
+
 		const rollConfig = mergeObject({
 			parts,
-			actor: this.actor,
+			actor: this,
 			data: {},
 			title: "",
 			flavor: message,
@@ -1033,6 +1033,54 @@ export class Actor4e extends Actor {
 		if(options.effectSave && r.total >= rollConfig.critical){
 			await this.effects.get(options.effectId).delete();
 		}
+	}
+
+	async rollDeathSave(event, options){
+		const updateData = {};
+		
+		let message = `Rolling Death Saving Throw`;
+		const parts = [this.system.details.deathsavebon.value]
+		if (options.save) {
+			parts.push(options.save)
+		}
+		const rollConfig = mergeObject({
+			parts,
+			actor: this,
+			data: {},
+			title: "",
+			flavor: message,
+			speaker: ChatMessage.getSpeaker({actor: this}),
+			messageData: {"flags.dnd4eBeta.roll": {type: "save", itemId: this.id }},
+			fastForward: true,
+			rollMode: options.rollMode
+		});
+		rollConfig.event = event;
+		rollConfig.critical = this.system.details.deathsaveCrit || 20;
+		rollConfig.fumble = 9 - options.save - this.system.details.deathsavebon.value;
+		const roll = await d20Roll(rollConfig);
+		
+		if(roll.total < 10)
+		{
+			updateData[`system.details.deathsavefail`] = this.system.details.deathsavefail + 1;
+		}
+		if( roll.total < 10 && this.system.details.deathsavefail + 1 >= this.system.details.deathsaves)
+		{
+			await ChatMessage.create({
+				user: game.user.id,
+				speaker: ChatMessage.getSpeaker(),
+				content:this.name + game.i18n.localize("DND4EBETA.DeathSaveFailure")
+			});
+		}
+		else if(roll.total >= rollConfig.critical) {
+			await ChatMessage.create({
+				user: game.user.id,
+				speaker: ChatMessage.getSpeaker(),
+				content:this.name + game.i18n.localize("DND4EBETA.DeathSaveCriticalSuccess")
+			});
+		}
+		console.log(roll.total)
+		console.log(rollConfig.critical)
+		this.update(updateData);
 	}
 
 	async createOwnedItem(itemData, options) {

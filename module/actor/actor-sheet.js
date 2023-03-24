@@ -1234,6 +1234,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 	_onDeathSave(event) {
 		event.preventDefault();
+		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		if(isFF){
+			return this.actor.rollDeathSave(event,{isFF});
+		}
 		new DeathSaveDialog(this.actor).render(true);
 	}
 
@@ -1243,12 +1247,12 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	}
 
 	_onSavingThrow(event) {
-		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
 		event.preventDefault();
+		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
 		if(isFF){
 			return this.actor.rollSave(event,{isFF});
 		}
-		return new SaveThrowDialog(this.actor, {isFF}).render(!isFF);
+		return new SaveThrowDialog(this.actor).render(true);
 	}
 
 	_onSavingThrowBonus(event) {

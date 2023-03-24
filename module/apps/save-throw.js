@@ -30,8 +30,6 @@ export class SaveThrowDialog extends DocumentSheet {
 		options.save = formData.save;
 		options.rollMode = formData.rollMode;
 
-
 		this.document.rollSave(event, options);
-
 	}
 }
