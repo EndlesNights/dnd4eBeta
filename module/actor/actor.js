@@ -1219,6 +1219,50 @@ export class Actor4e extends Actor {
 		this.update(updateData);
 	}
 
+	async secondWind(event, options){
+		let r = await Helper.rollWithErrorHandling(options.bonus, { errorMessageKey: "DND4EBETA.InvalidHealingBonus"})
+
+		const updateData = {};
+		if(this.system.attributes.hp.value <= 0) {
+			updateData[`system.attributes.hp.value`] = Math.min(
+				(this.system.details.secondWindValue + (r.total || 0)),
+				this.system.attributes.hp.max
+			);
+		} else {
+			updateData[`system.attributes.hp.value`] = Math.min(
+				(this.system.attributes.hp.value + this.system.details.secondWindValue + (r.total || 0)),
+				this.system.attributes.hp.max
+			);
+		}
+
+		updateData[`system.details.secondwind`] = true;
+		
+		if(this.system.details.surges.value > 0)
+			updateData[`system.details.surges.value`] = this.system.details.surges.value - 1;
+		
+			let extra = "";
+			if (this.system.details.secondwindbon.custom) {
+				extra = this.system.details.secondwindbon.custom;
+				extra = extra.replace(/;/g,'</li><li>');
+				extra = "<li>" + extra + "</li>";
+			}
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this, alias: this.name},
+				// flavor: restFlavor,
+				content: `${this.name} uses Second Wind gaining the following benifits:
+					<ul>
+						<li>Healing for ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} HP.</li>
+						<li>Gaining a +2 to all defences until the stars of their next turn.</li>
+						${extra}
+					</ul>`,
+					// content: this.system.name + " uses Second Wind, healing for " + (updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
+				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+			});		
+		
+		this.update(updateData);
+	}
+
 	async createOwnedItem(itemData, options) {
 		console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
 		return this.createEmbeddedDocuments("Item", [itemData], options);

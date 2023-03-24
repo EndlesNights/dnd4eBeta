@@ -1196,6 +1196,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	*/
 	_onSecondWind(event) {
 		event.preventDefault();
+		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		if(isFF){
+			return this.actor.secondWind(event,{isFF});
+		}
 		new SecondWindDialog(this.actor).render(true);		
 	}
 	
