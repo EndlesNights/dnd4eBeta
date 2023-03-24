@@ -1007,7 +1007,7 @@ export class Actor4e extends Actor {
 	}
 
 	async rollSave(event, options){
-		let message = `Rolling Saving Throw, DC: ${options.dc || 10}`;
+		let message = `${game.i18n.localize("DND4EBETA.RollSave")} ${options.dc || 10}`;
 		const parts = [this.system.details.saves.value];
 		if (options.save) {
 			parts.push(options.save)
@@ -1038,7 +1038,7 @@ export class Actor4e extends Actor {
 	async rollDeathSave(event, options){
 		const updateData = {};
 		
-		let message = `Rolling Death Saving Throw`;
+		let message = game.i18n.localize("DND4EBETA.RollDeathSave");
 		const parts = [this.system.details.deathsavebon.value]
 		if (options.save) {
 			parts.push(options.save)
