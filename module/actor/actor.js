@@ -1162,6 +1162,63 @@ export class Actor4e extends Actor {
 		this.update(updateData);
 	}
 
+	// also known as the Extended Rest
+	async longRest(event, options){
+		const updateData = {};
+		
+		if(options.envi == "false")
+		{
+			if(this.system.details.surgeEnv.value > this.system.details.surges.max)
+			{
+				updateData[`system.details.surges.value`] = 0;
+				updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max + (this.system.details.surges.max - this.system.details.surgeEnv.value) *  Math.floor(this.system.details.bloodied / 2);
+			}
+			else{
+				updateData[`system.details.surges.value`] = this.system.details.surges.max - this.system.details.surgeEnv.value;
+				updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max;
+			}
+		}
+		else
+		{
+			updateData[`system.details.surges.value`] = this.system.details.surges.max;
+			updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max;
+			
+			updateData[`system.details.surgeEnv.value`] = 0;
+			updateData[`system.details.surgeEnv.bonus`] = [{}];
+		}
+
+		updateData[`system.attributes.temphp.value`] = "";
+		updateData[`system.details.deathsavefail`] = 0;
+		updateData[`system.actionpoints.value`] = 1;
+		updateData[`system.magicItemUse.milestone`] = 0;
+		updateData[`system.magicItemUse.dailyuse`] = this.system.magicItemUse.perDay;
+		
+		updateData[`system.details.secondwind`] = false;
+		updateData[`system.actionpoints.encounteruse`] = false;
+		updateData[`system.magicItemUse.encounteruse`] = false;
+		
+		Helper.rechargeItems(this, ["enc", "day", "round"]);
+		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter", "endOfDay"]);
+
+
+		if(this.type === "Player Character"){
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this, alias: this.system.name},
+				// flavor: restFlavor,
+				content: `${this.name} takes a long rest.`
+			});
+		}
+		
+		for (let r of Object.entries(this.system.resources)) {
+			if((r[1].sr || r[1].lr) && r[1].max) {
+				updateData[`system.resources.${r[0]}.value`] = r[1].max;
+			}
+		}
+
+		this.update(updateData);
+	}
+
 	async createOwnedItem(itemData, options) {
 		console.warn("You are referencing Actor4E#createOwnedItem which is deprecated in favor of Item.create or Actor#createEmbeddedDocuments.  This method exists to aid transition compatibility");
 		return this.createEmbeddedDocuments("Item", [itemData], options);

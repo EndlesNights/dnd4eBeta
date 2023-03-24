@@ -1233,6 +1233,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	*/
 	_onLongRest(event) {
 		event.preventDefault();
+		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		if(isFF){
+			return this.actor.longRest(event,{isFF});
+		}
 		new LongRestDialog(this.actor).render(true)
 	}
 
