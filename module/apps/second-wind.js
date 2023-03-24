@@ -1,5 +1,3 @@
-import {Helper} from "../helper.js";
-
 export class SecondWindDialog extends DocumentSheet {
 
 	static get defaultOptions() {
