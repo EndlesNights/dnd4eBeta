@@ -1196,7 +1196,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	*/
 	_onSecondWind(event) {
 		event.preventDefault();
-		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.secondWind(event,{isFF});
 		}
@@ -1207,7 +1207,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 	_onActionPointDialog(event) {
 		event.preventDefault();
-		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.actionPoint(event,{isFF});
 		}
@@ -1226,7 +1226,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	*/
 	_onShortRest(event) {
 		event.preventDefault();
-		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.shortRest(event,{isFF});
 		}
@@ -1241,7 +1241,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	*/
 	_onLongRest(event) {
 		event.preventDefault();
-		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.longRest(event,{isFF});
 		}
@@ -1250,7 +1250,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 	_onDeathSave(event) {
 		event.preventDefault();
-		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.rollDeathSave(event,{isFF});
 		}
@@ -1264,7 +1264,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 	_onSavingThrow(event) {
 		event.preventDefault();
-		const isFF = (event?.shiftKey || event?.altKey || event?.ctrlKey || event?.metaKey);
+		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.rollSave(event,{isFF});
 		}
@@ -1309,7 +1309,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		const item = this.actor.items.get(itemId);
 		
 		if ( item.type === "power") {
-			const fastForward = Helper.isUsingFastForwardKey(event);
+			const fastForward = Helper.isRollFastForwarded(event);
 			return this.actor.usePower(item, {configureDialog: !fastForward, fastForward: fastForward});
 		}
 		// Otherwise roll the Item directly

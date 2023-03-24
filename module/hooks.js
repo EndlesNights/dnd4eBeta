@@ -26,7 +26,7 @@ TokenBarHooks.healDialog = (actor, event) =>  actor.sheet._onHealMenuDialog(even
 TokenBarHooks.rechargePower = (actor, power, event) => actor.sheet._onItemRecharge(event)
 
 TokenBarHooks.rollPower = (actor, power, event) => {
-    const fastForward = Helper.isUsingFastForwardKey(event);
+    const fastForward = Helper.isRollFastForwarded(event);
     return actor.usePower(power, {configureDialog: !fastForward, fastForward: fastForward})
 }
 

@@ -1128,9 +1128,15 @@ export class Helper {
 	 * @returns {boolean} if the click was done while holding down a fastForward key
 	 */
 	static isUsingFastForwardKey(event) {
-		return event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey)
+		return event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
+	}
+
+	static isRollFastForwarded(event) {
+		const isModKeyPressed = this.isUsingFastForwardKey(event);
+		return game.settings.get("dnd4e","fastFowardSettings") ? !isModKeyPressed : isModKeyPressed;
 	}
 }
+
 
 export async function handleApplyEffectToToken(data){
 	if(!game.user.isGM){
