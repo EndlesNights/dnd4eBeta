@@ -1,5 +1,3 @@
-import {d20Roll} from "../dice.js";
-
 export class DeathSaveDialog extends DocumentSheet {
 
 	static get defaultOptions() {
