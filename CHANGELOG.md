@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.3.31
+- Saving Throw, Death Saves, Short Rests, Seconds Wind, Extended Rests and Spending Actions Points had their logic moved to Actor.js and can now make use of the fast forwarded option.
+- fastFowardSettings option added, when set to true, will always make rolls/actions with the fastforward option. use the FastForward keys instead to take the slow option.
+
 ## Version 0.3.30
 - minor bug fix to how base movement is calculated
 - updated documentation about which keys should be used for movement, now you should be using "system.movement.<type>.bonusValue" rather than "system.movement.<type>.value"
