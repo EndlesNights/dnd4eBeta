@@ -119,6 +119,10 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		this.draw();
 		this.layer.activate();
 		this.layer.preview.addChild(this);
+
+		// Hide the sheet that originated the preview
+		this.actorSheet?.minimize();
+
 		this.activatePreviewListeners(initialLayer);
 	}
 
