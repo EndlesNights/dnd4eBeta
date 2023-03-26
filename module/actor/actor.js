@@ -1138,14 +1138,13 @@ export class Actor4e extends Actor {
 		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter"]);
 		
 		if(this.type === "Player Character"){
-
 			console.log(updateData[`system.attributes.hp.value`])
 			console.log(this.system.attributes.hp.value)
 			ChatMessage.create({
 				user: game.user.id,
 				speaker: {actor: this, alias: this.name},
-				content: options.surge >= 1 ? `${this.name} takes a short rest, spending ${options.surge} healing surge, regaining ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} HP.`
-					: `${this.name} takes a short rest.`
+				content: options.surge >= 1 ? `${this.name} ${game.i18n.localize('DND4EBETA.ShortRestChat')}, ${game.i18n.localize('DND4EBETA.Spending')} ${options.surge} ${game.i18n.localize('DND4EBETA.SurgesSpendRegain')} ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} ${game.i18n.localize('DND4EBETA.HPShort')}.`
+					: `${this.name} ${game.i18n.localize('DND4EBETA.ShortRestChat')}`
 				
 			});				
 		}
@@ -1206,7 +1205,7 @@ export class Actor4e extends Actor {
 				user: game.user.id,
 				speaker: {actor: this, alias: this.system.name},
 				// flavor: restFlavor,
-				content: `${this.name} takes a long rest.`
+				content: `${this.name} ${game.i18n.localize('DND4EBETA.LongRestResult')}.`
 			});
 		}
 		
@@ -1250,10 +1249,9 @@ export class Actor4e extends Actor {
 				user: game.user.id,
 				speaker: {actor: this, alias: this.name},
 				// flavor: restFlavor,
-				content: `${this.name} uses Second Wind gaining the following benifits:
+				content: `${this.name} ${game.i18n.localize("DND4EBETA.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} ${game.i18n.localize("DND4EBETA.HPShort")} ${game.i18n.localize("DND4EBETA.SecondWindChatEffect")}
 					<ul>
-						<li>Healing for ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} HP.</li>
-						<li>Gaining a +2 to all defences until the stars of their next turn.</li>
+						<li>${game.i18n.localize("DND4EBETA.SecondWindEffect")}</li>
 						${extra}
 					</ul>`,
 					// content: this.system.name + " uses Second Wind, healing for " + (updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
