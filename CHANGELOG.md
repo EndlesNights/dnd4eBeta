@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.3.32
+- Label error and spelling fixes, translatable text for pseudo-power chat cards [merge](https://github.com/EndlesNights/dnd4eBeta/pull/278) from [FoxLee](https://github.com/FoxLee)
+- character sheet minimizes when using the place template button
+
 ## Version 0.3.31
 - Saving Throw, Death Saves, Short Rests, Seconds Wind, Extended Rests and Spending Actions Points had their logic moved to Actor.js and can now make use of the fast forwarded option.
 - fastFowardSettings option added, when set to true, will always make rolls/actions with the fastforward option. use the FastForward keys instead to take the slow option.
