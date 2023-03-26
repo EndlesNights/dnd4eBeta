@@ -1,5 +1,5 @@
 <form class="{{cssClass}}" autocomplete="off">				
-	<section>
+	<section class="npc-upper">
 		{{!-- SHeet Header --}}
 		<header class="sheet-header">
 			<img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img" style="margin-bottom: 6px;"/>
@@ -50,21 +50,19 @@
 
 	</section>
 
-	<section class="section section--tabs flexshrink npc">
+	<section class="npc-lower">
+		<section class="section section--tabs flexshrink npc">
 
-		{{!-- Sheet Tab Navigation --}}
-		<nav class="sheet-tabs tabs" data-group="primary">
-			<a class="item" data-tab="biography">{{localize 'DND4EBETA.Biography'}}</a>
-		</nav>
+			{{!-- Sheet Tab Navigation --}}
+			<nav class="sheet-tabs tabs" data-group="primary">
+				<a class="item" data-tab="biography">{{localize 'DND4EBETA.Biography'}}</a>
+			</nav>
+		</section>
+		<section class="sheet-body section--tabs-content">
+			{{!-- Biography Tab --}}
+			<div class="tab biography" data-group="primary" data-tab="biography">
+				{{> "systems/dnd4e/templates/actors/parts/actor-biography.html" sections=biography}}
+			</div>			
+		</section>
 	</section>
-	<section class="sheet-body section--tabs-content">
-		{{!-- Biography Tab --}}
-		<div class="tab biography" data-group="primary" data-tab="biography">
-			{{> "systems/dnd4e/templates/actors/parts/actor-biography.html" sections=biography}}
-		</div>
-
-		
-	</section>
-
-
 </form>

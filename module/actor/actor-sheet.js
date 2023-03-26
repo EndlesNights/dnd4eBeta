@@ -1467,9 +1467,9 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
   /** @override */
   setPosition(options={}) {
 	const position = super.setPosition(options);
-	const sheetBody = this.element.find(".sheet-body");
-	const bodyHeight = position.height - 345;
-	sheetBody.css("height", bodyHeight);
+	// const sheetBody = this.element.find(".sheet-body");
+	// const bodyHeight = position.height - 345;
+	// sheetBody.css("height", bodyHeight);
 	return position;
   }
 
