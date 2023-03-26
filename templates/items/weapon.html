@@ -219,7 +219,7 @@
 
 				{{#unless (eq system.weaponType "implement")}}
 				<div class="form-group">
-					<label title="{{ localize 'DND4EBETA.CriticalHitTitle'}}">{{ localize 'DND4EBETA.CriticalHit'}}:</label>
+					<label title="{{ localize 'DND4EBETA.CriticalHitTitle'}}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.CriticalHit'}}:</label>
 					<div class="form-fields">
 						<input type="text" name ="system.critRange" value="{{system.critRange}}" title="{{ localize 'DND4EBETA.CriticalHitTitle'}}" placeholder="{{ localize 'DND4EBETA.CriticalHitPlaceholder'}}" data-dtype="Number" onClick="this.select();"/>
 					</div>
@@ -228,7 +228,7 @@
 
 				{{#if system.properties.imp}}
 				<div class="form-group">
-					<label title="{{ localize 'DND4EBETA.CriticalHitTitle'}}">{{ localize 'DND4EBETA.WeaponImplement'}} {{ localize 'DND4EBETA.CriticalHit'}}:</label>
+					<label title="{{ localize 'DND4EBETA.CriticalHitTitle'}}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement'}}{{/unless}} {{ localize 'DND4EBETA.CriticalHit'}}:</label>
 					<div class="form-fields">
 						<input type="text" name ="system.critRangeImp" value="{{system.critRangeImp}}" title="{{ localize 'DND4EBETA.CriticalHitTitle'}}" placeholder="20" data-dtype="Number" onClick="this.select();"/>
 					</div>
@@ -238,17 +238,17 @@
 				{{!-- Attack  Formula--}}
 				{{#unless (eq system.weaponType "implement")}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}">{{ localize 'DND4EBETA.FormulaAttackBonus' }}:</h4>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.FormulaAttackBonus' }}:</h4>
 					<input type="text" name="system.attackForm" value="{{system.attackForm}}" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}" data-dtype="String"/>
 				</div>
 				
 				{{!-- Damage Formula --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}">{{ localize 'DND4EBETA.FormulaDamageBonusPrimary' }}:</h4>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.FormulaDamageBonusPrimary' }}:</h4>
 					<input type="text" name="system.damageForm" value="{{system.damageForm}}" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}" data-dtype="String"/>
 				</div>				
 				<h4 class="damage-header">
-					{{#unless isHealing }}{{ localize 'DND4EBETA.Secondary' }} {{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
+					{{#unless isHealing }}{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.Secondary' }} {{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
 					<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
@@ -273,11 +273,11 @@
 
 				{{!-- Critical Damage Formula --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}">{{ localize 'DND4EBETA.FormulaCritBonus' }}:</h4>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.FormulaCritBonus' }}:</h4>
 					<input type="text" name="system.critDamageForm" value="{{system.critDamageForm}}" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}" data-dtype="String"/>
 				</div>				
 				<h4 class="damage-header">
-					{{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaCritBonus' }}:
+					{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaCritBonus' }}:
 					<a class="damage-control add-criticalDamage"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
@@ -304,18 +304,18 @@
 				{{!-- Attack Formula for Implement--}}
 				{{#if system.properties.imp}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}">{{ localize 'DND4EBETA.FormulaAttackBonus' }}:</h4>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.FormulaAttackBonus' }}:</h4>
 					<input type="text" name="system.attackFormImp" value="{{system.attackFormImp}}" title="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
 				
 				{{!-- Damage Formula for Implement--}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}">{{ localize 'DND4EBETA.FormulaDamageBonusPrimary' }}:</h4>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.FormulaDamageBonusPrimary' }}:</h4>
 					<input type="text" name="system.damageFormImp" value="{{system.damageFormImp}}" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}" data-dtype="String"/>
 				</div>	
 				
 				<h4 class="damage-header">
-					{{#unless isHealing }}{{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaDamageBonus' }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
+					{{#unless isHealing }}{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaDamageBonus' }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
 					<a class="damage-control add-damage-imp"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
@@ -340,11 +340,11 @@
 
 				{{!-- Critical Damage Formula for Implement --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}">{{ localize 'DND4EBETA.FormulaCritBonus' }}:</h4>
+					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.FormulaCritBonus' }}:</h4>
 					<input type="text" name="system.critDamageFormImp" value="{{system.critDamageFormImp}}" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}" data-dtype="String"/>
 				</div>	
 				<h4 class="damage-header">
-					{{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaCritBonus' }}:
+					{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaCritBonus' }}:
 					<a class="damage-control add-criticalDamage-imp"><i class="fas fa-plus"></i></a>
 				</h4>
 				<ol class="damage-parts form-group">
