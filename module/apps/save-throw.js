@@ -1,5 +1,3 @@
-import {d20Roll} from "../dice.js";
-
 export class SaveThrowDialog extends DocumentSheet {
 
 	static get defaultOptions() {
@@ -23,31 +21,13 @@ export class SaveThrowDialog extends DocumentSheet {
 			rollModes: CONFIG.Dice.rollModes
 		};
 	}
-	async _updateObject(event, formData) {
-		let message = `Rolling Saving Throw, DC: ${formData.dc}`;
-		const parts = [this.object.system.details.saves.value]
-		if (formData.save) {
-			parts.push(formData.save)
-		}
-		const rollConfig = mergeObject({
-			parts,
-			actor: this.actor,
-			data: {},
-			title: "",
-			flavor: message,
-			speaker: ChatMessage.getSpeaker({actor: this.actor}),
-			messageData: {"flags.dnd4eAltus.roll": {type: "attack", itemId: this.id }},
-			fastForward: true,
-			rollMode: formData.rollMode
-		});
-		rollConfig.event = event;
-		rollConfig.critical = formData.dc - this.object.system.details.saves.value - formData.save || 10;
-		rollConfig.fumble = formData.dc -1 - this.object.system.details.saves.value - formData.save || 9;
-		
-		const r = await d20Roll(rollConfig);
 
-		if(this.options.effectSave && r.total >= rollConfig.critical){
-			await this.object.effects.get(this.options.effectId).delete();
-		}
+	async _updateObject(event, formData) {
+		const options = this.options;
+		options.dc = formData.dc;
+		options.save = formData.save;
+		options.rollMode = formData.rollMode;
+
+		this.document.rollSave(event, options);
 	}
 }

@@ -342,7 +342,6 @@
 	margin: 2px 0px;
 	text-align: center;
 	flex-grow: 1;
-
 }
 
 .dnd4eAltus .container--bottom {
@@ -671,6 +670,9 @@
 	color: #4b4a44;
 	font-weight: bold;
 	max-width: 174px;
+}
+.dnd4eAltus .form-group.wide label {
+	max-width: 208px;
 }
 .dnd4eAltus .form-group .form-fields {
 	display: flex;
@@ -1511,6 +1513,11 @@ font-size: 12px;
 .dnd4eAltus.sheet.item .sheet-body {
 	overflow: hidden;
 }
+
+.dnd4eAltus.sheet .npc-lower .sheet-body {
+	height: calc(100% - 20px);
+}
+
 .dnd4eAltus.sheet.item .sheet-body .tab {
 	padding: 0 5px;
 	overflow-y: auto;
@@ -1602,7 +1609,7 @@ font-size: 12px;
 	border: none;
 }
 .dnd4eAltus.sheet.actor {
-	min-width: 774px;
+	min-width: 836px;
 	min-height: 420px;
 }
 .dnd4eAltus.sheet.item {

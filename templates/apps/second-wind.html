@@ -1,21 +1,22 @@
 <form id="second-wind-hd" class="dialog-content" onsubmit="event.preventDefault();">
-	<p>
-		Spend one healing surge to gain the follow effects:
-		<li>Regain an amount of hit points equal to {{system.details.secondWindValue}}.</li>
-		<li>Gain a +2 bonus to all defences until the start of your next turn.		</li>
+	<p><strong>{{localize 'DND4EALTUS.SecondWindUse'}}?</strong></p>
+	<p>{{localize 'DND4EALTUS.SecondWindTip'}}:</p>
+	<ul>
+		<li>{{localize 'DND4EALTUS.Regain'}} {{system.details.secondWindValue}} {{localize 'DND4EALTUS.HP'}}</li>
+		<li>{{localize 'DND4EALTUS.SecondWindEffect'}}</li>
 	
 		{{#if system.details.secondwindbon.custom}}
 			{{#each extra as |e key|}}
 			<li>{{e}}</li>
 			{{/each}}
 		{{/if}}
-	</p>
-		<div class="form-group">
-				<label>Situational bonus to surge?</label>
-				<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EALTUS.RollExample' }}"/>
-		</div>
+	</ul>
+	<div class="form-group">
+			<label>{{localize 'DND4EALTUS.HealingMenuSituational'}}?</label>
+			<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EALTUS.RollExample' }}"/>
+	</div>
 
-		<div class="dialog-buttons">
-		<button type="submit" name="submit">Second Wind</button>
-		</div>
+	<div class="dialog-buttons">
+	<button type="submit" name="submit">{{localize 'DND4EALTUS.SecondWind'}}</button>
+	</div>
 </form>

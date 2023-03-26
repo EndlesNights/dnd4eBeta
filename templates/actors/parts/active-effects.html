@@ -2,14 +2,14 @@
 
 {{#if system.modifiers}}
 <div class="attribute-modifiers" style="max-height: 76px; line-height: 22px;">
-	<h4 class="attribute-name box-title">Modifiers</h4>
+	<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.ModifierPlural'}}</h4>
 	<div class="attack-mod flexrow thin" data-modifiers="attack">
-		<span>Attack Modifier: {{system.modifiers.attack.value}}</span>
-		<a class="modifiers-bonus" data-target="system.modifiers" title="Modifier Bonus">Bonus: {{system.modifiers.attack.bonusValue}}</a>
+		<span>{{localize 'DND4EALTUS.ModifierAttack'}}: {{system.modifiers.attack.value}}</span>
+		<a class="modifiers-bonus" data-target="system.modifiers" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.ModifierAttack'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.modifiers.attack.bonusValue}}</a>
 	</div>
 	<div class="damage-mod flexrow thin" data-modifiers="damage">
-		<span>Damage Modifier: {{system.modifiers.damage.value}}</span>
-		<a class="modifiers-bonus" data-target="system.modifiers" title="Modifier Bonus">Bonus: {{system.modifiers.damage.bonusValue}}</a>
+		<span>{{localize 'DND4EALTUS.ModifierDamage'}}: {{system.modifiers.damage.value}}</span>
+		<a class="modifiers-bonus" data-target="system.modifiers" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.ModifierDamage'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.modifiers.damage.bonusValue}}</a>
 	</div>
 </div>
 {{/if}}
@@ -18,8 +18,8 @@
 {{#each effects as |section sid|}}
 	<li class="items-header flexrow" data-effect-type="{{section.type}}">
 		<h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
-		<div class="effect-source">Source</div>
-		<div class="effect-source">Duration</div>
+		<div class="effect-source">{{localize 'DND4EALTUS.Source'}}</div>
+		<div class="effect-source">{{localize 'DND4EALTUS.Duration'}}</div>
 		<div class="item-controls effect-controls flexrow">
 			<a class="effect-control" data-action="create" title="{{localize 'DND4EALTUS.EffectCreate'}}">
 				<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
@@ -60,17 +60,54 @@
 
 	{{#if system.resistances}}
 	<div class="attribute-res resource-full">
-		<h4 class="attribute-name box-title">Resistances & Weaknesses</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.DamResVuln'}}</h4>
 		{{#each system.resistances as |res r|}}
 			<li class="skill flexrow" data-res="{{r}}">
 				<h4 class="res-name">{{res.label}}</h4>
 				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
-				<span class="res-armour">Armour: {{res.armour}} </span>
-				<a class="resistances-bonus" data-target="system.resistances" title="Resistance Bonus">Bonus: {{res.resBonusValue}}</a>
-				<span class="res-immune">Immunity</span>
-				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
+				<span class="res-armour">{{localize 'DND4EALTUS.Armour'}}: {{res.armour}} </span>
+				<a class="resistances-bonus" data-target="system.resistances" title="{{localize 'DND4EALTUS.BonusesTo'}} {{localize 'DND4EALTUS.DamRes'}}">{{localize 'DND4EALTUS.Bonus'}}: {{res.resBonusValue}}</a>
+				<span class="res-immune">{{localize 'DND4EALTUS.Immunity'}}</span>
+				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="{{localize 'DND4EALTUS.Immunity'}}"/>
 			</li>
-		{{/each}}					
+		{{/each}}
+
+		{{!-- Condition & Special Resistances --}}
+		<div style="text-align: left;"> 
+		
+			<a class="list-string-input untyped-resistances" data-options="special" data-target="system.untypedResistances.resistances">
+				<span>{{ localize "DND4EALTUS.UntypedRes" }}</span>
+				<i class="fas fa-edit"></i>
+			</a>
+			
+			<ul class="traits-list" style="list-style-type: none;">
+			{{#each system.untypedResistances.resistances as |v k|}}
+				<li class="tag {{k}}">{{v}}</li>
+			{{/each}}
+			</ul>
+			
+			<a class="list-string-input untyped-resistances" data-options="special" data-target="system.untypedResistances.vulnerabilities">
+				<span>{{ localize "DND4EALTUS.UntypedVuln" }}</span>
+				<i class="fas fa-edit"></i>
+			</a>
+				
+			<ul class="traits-list" style="list-style-type: none;">
+			{{#each system.untypedResistances.vulnerabilities as |v k|}}
+				<li class="tag {{k}}">{{v}}</li>
+			{{/each}}
+			</ul>
+			
+			<a class="list-string-input untyped-resistances" data-options="special" data-target="system.untypedResistances.immunities">
+				<span>{{ localize "DND4EALTUS.UntypedImm" }}</span>
+				<i class="fas fa-edit"></i>
+			</a>
+			
+			<ul class="traits-list" style="list-style-type: none;">
+			{{#each system.untypedResistances.immunities as |v k|}}
+				<li class="tag {{k}}">{{v}}</li>
+			{{/each}}
+			</ul>
+		</div>
 
 	</div>
 	{{/if}}

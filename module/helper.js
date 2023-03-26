@@ -1,4 +1,3 @@
-
 export class Helper {
 
 	static executeMacro(item) {
@@ -175,7 +174,7 @@ export class Helper {
 					this._addKeywords(suitableKeywords, weaponInnerData.weaponGroup)
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
 					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
-					this._addKeywords(suitableKeywords, weaponInnerData.implement)
+					this._addKeywords(suitableKeywords, weaponInnerData.implement) // implement group for implement powers.  Bad naming of property, sorry -Drac
 				}
 
 				if (powerInnerData.powersource) {
@@ -183,6 +182,68 @@ export class Helper {
 				}
 				if (powerInnerData.secondPowersource) {
 					suitableKeywords.push(powerInnerData.secondPowersource)
+				}
+				if(powerInnerData.weaponType){
+					//Tool-based keywords like implement and weapon belong to the power, so in most cases we do not need to check the weapon to know which ones to use. Mixed melee/ranged weapons are the main exception, so we check the equipped weapon just for those.
+					switch(powerInnerData.weaponType){
+						case "implement":
+							suitableKeywords.push("usesImplement");
+							break;
+						case "melee":
+							suitableKeywords.push("weapon");
+							suitableKeywords.push("meleeWeapon");
+							break;
+						case "ranged":
+							suitableKeywords.push("weapon");
+							suitableKeywords.push("rangedWeapon");
+							break;
+						case "meleeRanged":
+							suitableKeywords.push("weapon");
+							if (weaponInnerData){
+								if (weaponInnerData.isRanged){
+									suitableKeywords.push("rangedWeapon");
+								} else {
+									suitableKeywords.push("meleeWeapon");
+								}
+							}
+							break;
+					}
+				}
+				
+				if(powerInnerData.rangeType){
+					switch(powerInnerData.rangeType){
+						case "closeBurst":
+							suitableKeywords.push("close");
+							suitableKeywords.push("burst");
+							suitableKeywords.push("closeBurst");
+							break;
+						case "closeBlast":
+							suitableKeywords.push("close");
+							suitableKeywords.push("blast");
+							suitableKeywords.push("closeBlast");
+							break;
+						case "range":
+							suitableKeywords.push("ranged");
+							break;
+						case "rangeBurst":
+							suitableKeywords.push("area");
+							suitableKeywords.push("burst");
+							suitableKeywords.push("areaBurst");
+							break;
+						case "rangeBlast":
+							suitableKeywords.push("area");
+							suitableKeywords.push("blast");
+							suitableKeywords.push("areaBlast");
+							break;
+						case "wall":
+							suitableKeywords.push("area");
+							break;
+						case "melee":
+						case "reach":
+						case "touch":
+							suitableKeywords.push("melee");
+							break;
+					}
 				}
 
 				if (debug) {
@@ -332,6 +393,8 @@ export class Helper {
 
 				newFormula = newFormula.replaceAll("@heroicOrParagon", actorInnerData.details.level < 21 ? 1 : 0);
 				newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
+
+				newFormula = newFormula.replaceAll("@bloodied",  actorInnerData.attributes.hp.value <= actorInnerData.attributes.hp.max/2 ? 1 : 0);
 			}
 			else {
 				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.  Replacing: " + formula)
@@ -389,12 +452,20 @@ export class Helper {
 				let dice = "";
 				for(let i = 0; i< parts.length; i++) {
 					if(!parts[i][0] || !parts[i][1]) continue;
+
+					let quantity = this.commonReplace(parts[i][0], actorData, powerInnerData, weaponInnerData, depth-1);
+					let r = new Roll(`${quantity}`);
+
+					if(r.isDeterministic){
+						r.evaluate({async: false});
+						quantity = r.total;
+					}
+
 					if(weaponInnerData.properties.bru) {
-						// dice += ` + (${parts[i][0]}*${weaponNum})d(${parts[i][1] - weaponData.brutal}) + (${weaponData.brutal}*${parts[i][0]}*${weaponNum})`;
-						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}rr<=${weaponInnerData.brutal || 1}`;
+						dice += `(${quantity}*${weaponNum})d${parts[i][1]}rr<=${weaponInnerData.brutal || 1}`;
 					}
 					else{
-						dice += `(${parts[i][0]}*${weaponNum})d${parts[i][1]}`;
+						dice += `(${quantity}*${weaponNum})d${parts[i][1]}`;
 					}
 					if (i < parts.length - 1) dice += '+';
 				}
@@ -411,7 +482,15 @@ export class Helper {
 			//	-	dice damage
 			// make sure to keep the weapon dice formula same as above.  Definite candidate for a future refactor.
 			if(newFormula.includes("@powBase")) {
-				let quantity = powerInnerData.hit.baseQuantity;
+				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorData, powerInnerData, weaponInnerData, depth-1);
+				let r = new Roll(`${quantity}`);
+
+				//Just to help keep the rolls cleaner, look for Deterministic elements to remove
+				if(r.isDeterministic){
+					r.evaluate({async: false});
+					quantity = r.total;
+				}
+
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				
 				if(quantity === "") quantity = 1;
@@ -422,15 +501,23 @@ export class Helper {
 				if(diceType.includes("weapon")){
 					let parts = weaponInnerData.damageDice.parts;
 					for(let i = 0; i< parts.length; i++) {
+
 						if(!parts[i][0] || !parts[i][1]) continue;
+
+						let weaponDiceQuantity = this.commonReplace(`(${quantity}) * (${parts[i][0]})`, actorData, powerInnerData, weaponInnerData, depth-1);
+						let r2 = new Roll(`${weaponDiceQuantity}`);
+	
+						if(r2.isDeterministic){
+							r2.evaluate({async: false});
+							weaponDiceQuantity = r2.total;
+						}
 						if(weaponInnerData.properties.bru) {
-							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}rr<=${weaponInnerData.brutal || 1}`;
+							dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2]}rr<=${weaponInnerData.brutal || 1}`;
 						}
 						else{
-
-							// dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2]}`;
-							dice += `(${quantity} * ${parts[i][0]})d${parts[i][1]}${parts[i][2] || ``}`;// added a null check to i2 hotfix
+							dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2] || ``}`;// added a null check to i2 hotfix
 						}
+
 						if (i < parts.length - 1) dice += '+';
 					}
 				}
@@ -443,7 +530,7 @@ export class Helper {
 					dice += `${quantity}${diceType}`;
 				}
 
-				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
+				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1);
 				newFormula = newFormula.replaceAll("@powBase", dice);
 			}
 
@@ -548,8 +635,15 @@ export class Helper {
 			}
 
 			if(newFormula.includes("@powBase")) {
-				let quantity = powerInnerData.hit.baseQuantity;
+				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorData, powerInnerData, weaponInnerData, depth-1);
 				let diceType = powerInnerData.hit.baseDiceType;
+
+				let r = new Roll(`${quantity}`);
+				if(r.isDeterministic){
+					console.log("here")
+					r.evaluate({async: false});
+					quantity = r.total;
+				}
 				
 				if(diceType == "weapon"){
 					newFormula = newFormula.replaceAll("@powBase", '0');
@@ -716,7 +810,7 @@ export class Helper {
 			errorMessageKey = "DND4EALTUS.InvalidRollExpression"
 		}
 		if (rollString && rollString !== "") {
-			const roll = new Roll(rollString);
+			const roll = new Roll(`${rollString}`);
 			return roll.roll({async : true}).catch(err => {
 				let msg = context ? `${game.i18n.localize(errorMessageKey)} (in ${context}) : ${rollString}` : `${game.i18n.localize(errorMessageKey)} : ${rollString}`
 				ui.notifications.error(msg);
@@ -1034,9 +1128,15 @@ export class Helper {
 	 * @returns {boolean} if the click was done while holding down a fastForward key
 	 */
 	static isUsingFastForwardKey(event) {
-		return event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey)
+		return event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
+	}
+
+	static isRollFastForwarded(event) {
+		const isModKeyPressed = this.isUsingFastForwardKey(event);
+		return game.settings.get("dnd4eAltus","fastFowardSettings") ? !isModKeyPressed : isModKeyPressed;
 	}
 }
+
 
 export async function handleApplyEffectToToken(data){
 	if(!game.user.isGM){

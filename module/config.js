@@ -3,12 +3,12 @@ export const DND4EALTUS = {};
 
 // ASCII Artwork
 DND4EALTUS.ASCII = `__________________________________________________________
-______      ______   ___  _____     ___  _ _             
-|  _  \\___  |  _  \\ /   ||  ___|   / _ \\| | |            
-| | | ( _ ) | | | |/ /| || |__    / /_\\ \\ | |_ _   _ ___ 
-| | | / _ \\/\\ | | / /_| ||  __|   |  _  | | __| | | / __|
-| |/ / (_>  < |/ /\\___  || |___   | | | | | |_| |_| \\__ \\
-|___/ \\___/\\/___/     |_/\\____/   \\_| |_/_|\\__|\\__,_|___/
+______      ______   ___     ______      _        
+|  _  \\___  |  _  \\ /   |    | ___ \\    | |       
+| | | ( _ ) | | | |/ /| | ___| |_/ / ___| |_ __ _ 
+| | | / _ \\/\\ | | / /_| |/ _ \\ ___ \\/ _ \\ __/ _\' |
+| |/ / (_>  < |/ /\\___  |  __/ |_/ /  __/ || (_| |
+|___/ \\___/\\/___/     |_/\\___\\____/ \\___|\\__\\__,_|
 __________________________________________________________`;
 
 
@@ -828,6 +828,29 @@ DND4EALTUS.rangeType = {
 DND4EALTUS.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4EALTUS.rangeType).filter(function ([key, value]) {
 	return key !== "weapon";
 }));
+
+// Bonus keys for tool required by a power—NOT the same as the keywords pulled from the weapon.
+DND4EALTUS.toolKeys = {
+	"meleeWeapon": "DND4EALTUS.WeaponMelee",
+	"rangedWeapon": "DND4EALTUS.WeaponRanged",
+	"weapon": "DND4EALTUS.Weapon",
+	"usesImplement": "DND4EALTUS.WeaponPropertiesImp"
+};
+
+// Bonus keys for range/shape—NOT the same as the plain range values.
+DND4EALTUS.rangeKeys = {
+	"melee": "DND4EALTUS.rangeMelee",
+	"ranged" : "DND4EALTUS.rangeRanged",
+	"close": "DND4EALTUS.rangeWeapon",
+	"area": "DND4EALTUS.rangeArea",
+	"blast": "DND4EALTUS.rangeJustBlast",
+	"burst" : "DND4EALTUS.rangeJustBurst",
+	"closeBurst": "DND4EALTUS.rangeCloseBurst",
+	"closeBlast": "DND4EALTUS.rangeCloseBlast",
+	"areaBurst": "DND4EALTUS.rangeBurst",
+	"areaBlast": "DND4EALTUS.rangeBlast",
+	"wall": "DND4EALTUS.rangeWall"
+};
 
 DND4EALTUS.effectTypes = {
 	"augmentable": "DND4EALTUS.Augmentable",

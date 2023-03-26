@@ -1,5 +1,5 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
-<div class="dnd4eAltus chat-card item-card {{item.type}}-card {{actor.type}} {{#if isPower}}use-{{item.system.useType}}{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
+<div class="dnd4eAltus chat-card item-card {{item.type}}-card {{actor.type}} {{#if isPower}}use-{{item.system.useType}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
 	 {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
 	<header class="card-header flexrow">
 		<img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
@@ -7,10 +7,26 @@
 	</header>
 
 	<div class="card-content" style="display: block;">
-		{{{system.description.value}}}
+	{{#if (eq actor.type "NPC")}}
+		{{#if item.system.autoGenChatPowerCard}}
+			{{#if item.system.chatFlavor}}
+				<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+			{{else}}
+				{{{system.description.value}}}
+			{{/if}}
+		{{else}}
+			{{{system.description.value}}}
+		{{/if}}
+	{{else}}
+		{{#if item.system.chatFlavor}}
+			<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+		{{else}}
+			{{{system.description.value}}}
+		{{/if}}
 		{{#if data.materials.value}}
 		<p><strong>{{ localize "DND4EALTUS.RequiredMaterials" }}.</strong> {{data.materials.value}}</p>
 		{{/if}}
+	{{/if}}
 	</div>
 	<div class="item-summary">
 		<div class="item-details">
@@ -20,19 +36,19 @@
 	<div class="card-buttons">
 
 		{{#if hasAttack}}
-		<button data-action="attack" title="{{ localize "DND4EALTUS.QuickRoll" }}">
+		<button data-action="attack" title="{{ localize 'DND4EALTUS.QuickRoll' }}">
 			{{ localize "DND4EALTUS.Attack" }}
 		</button>
 		{{/if}}
 
 		{{#if hasDamage}}
-		<button data-action="damage" title="{{ localize "DND4EALTUS.QuickRoll" }}">
+		<button data-action="damage" title="{{ localize 'DND4EALTUS.QuickRoll' }}">
 			{{localize "DND4EALTUS.Damage" }}
 		</button>
 		{{/if}}
 
 		{{#if hasHealing}}
-		<button data-action="healing" title="{{ localize "DND4EALTUS.QuickRoll" }}">
+		<button data-action="healing" title="{{ localize 'DND4EALTUS.QuickRoll' }}">
 			{{ localize "DND4EALTUS.Healing" }}
 		</button>
 		{{/if}}

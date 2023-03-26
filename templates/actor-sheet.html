@@ -113,8 +113,8 @@
 						</div>
 					</div>
 					<footer class="attribute-footer attribute-footer--surge flexrow">
-						<span style="font-size: 10px; max-width:48px;">Milestones</span>
-						<input style="width:18px; border-bottom: 1px solid black; max-width:9%; height:14px;" name="system.magicItemUse.milestone" value="{{system.magicItemUse.milestone}}" title="{{localize 'DND4EALTUS.Milestones'}}"  placeholder="0" data-dtype="Number" onClick="this.select();">
+						<span style="font-size: 10px; max-width:48px;">{{localize 'DND4EALTUS.MilestonePlural'}}</span>
+						<input style="width:18px; border-bottom: 1px solid black; max-width:9%; height:14px;" name="system.magicItemUse.milestone" value="{{system.magicItemUse.milestone}}" title="{{localize 'DND4EALTUS.MilestonePlural'}}"  placeholder="0" data-dtype="Number" onClick="this.select();">
 						<a class="rest action-point-extra" title="{{localize 'DND4EALTUS.ActionPointUse'}}">{{localize "DND4EALTUS.ActionPointRiders"}}</a>
 					</footer>
 					<footer class="attribute-footer attribute-footer--surge flexrow">
@@ -171,7 +171,7 @@
 				{{/each}}
 			</section>
 
-			<a class="custom-roll-descriptions" style="font-size: 11.5px;" title="Change custom descriptions for Skill and Ability roll checks.">Edit Skill & Ability Custom Descriptions.</a>
+			<a class="custom-roll-descriptions" style="font-size: 11.5px;" title="{{localize 'DND4EALTUS.CheckDescsLong'}}">{{localize 'DND4EALTUS.CheckDescs'}}</a>
 		</section>
 
 		<section class="section section--main flexcol" style="height: 100%;">
@@ -184,7 +184,7 @@
 					<div class="">
 						<img class="death-save rollable" style="border: 0px;" src="icons/svg/d20-grey.svg" width="20" height="20" title="{{localize 'DND4EALTUS.DeathSavingThrow'}}"/>
 						<label class="death-save-bonus rollable" title="{{localize 'DND4EALTUS.DeathSavingThrowBonus'}}" >{{localize 'DND4EALTUS.Death'}}</label>
-						<input style="width:40%; border-bottom: 1px solid; border-radius: 0px; text-align: center;" type="text" name="system.details.deathsavefail" value="{{system.details.deathsavefail}}" title="Death Save Failures"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input style="width:40%; border-bottom: 1px solid; border-radius: 0px; text-align: center;" type="text" name="system.details.deathsavefail" value="{{system.details.deathsavefail}}" title="{{localize 'DND4EALTUS.DeathSaveFails'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</section>
 				<section class="section section--passives flexcol">

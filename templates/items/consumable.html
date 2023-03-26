@@ -138,7 +138,7 @@
 			<h3 class="form-header">{{ localize "DND4EALTUS.ItemConsumableActivation" }}</h3>
 
 			<div class="form-group">
-				<label style="max-width: 208px;">{{ localize "DND4EALTUS.PowerAutoGenerateLable" }}</label>
+				<label style="max-width: 208px;">{{ localize "DND4EALTUS.PowerAutoGeneratePowerCardLable" }}</label>
 				<span class="checkbox"><input type="checkbox" name="system.autoGenChatPowerCard" data-dtype="Boolean" {{checked system.autoGenChatPowerCard}}/></span>
 			</div>
 
@@ -222,18 +222,18 @@
 			{{!-- Hit Details --}}
 			{{!-- Damage --}}
 			<div class="form-group">
-				<label>Damage {{ localize "DND4EALTUS.Formula" }}</label>
-				<input type="text" name="system.hit.formula" value="{{system.hit.formula}}" placeholder="e.g. 1d6"/>
+				<label>{{ localize 'DND4EALTUS.FormulaDamage' }}</label>
+				<input type="text" name="system.hit.formula" value="{{system.hit.formula}}" placeholder="{{ localize 'DND4EALTUS.FormulaDamageExample' }}"/>
 			</div>
 
 			{{!-- Critical --}}
 			<div class="form-group ">
-				<label>Critical Damage {{ localize "DND4EALTUS.Formula" }}</label>
-				<input type="text" name="system.hit.critFormula" value="{{system.hit.critFormula}}" placeholder="e.g. 6"/>
+				<label>{{ localize 'DND4EALTUS.Critical' }} {{ localize 'DND4EALTUS.FormulaDamage' }}</label>
+				<input type="text" name="system.hit.critFormula" value="{{system.hit.critFormula}}" placeholder="{{ localize 'DND4EALTUS.FormulaDamageCritExample' }}"/>
 			</div>
 
 			<div class="form-group stacked weapon-properties">
-				<label title="Type of Damage">Damage Type:</label>
+				<label title="{{ localize 'DND4EALTUS.Damage' }} {{ localize 'DND4EALTUS.Type' }}">{{ localize 'DND4EALTUS.Damage' }} {{ localize 'DND4EALTUS.Type' }}:</label>
 				<pr></pr>
 				{{#each config.damageTypes as |name type|}}
 				<label class="checkbox">
@@ -248,7 +248,7 @@
 			</div>
 			{{#if system.hit.isHealing}}
 			<div class="form-group stacked">
-				<label>Healing {{ localize "DND4EALTUS.Formula" }}</label>
+				<label>{{ localize 'DND4EALTUS.Healing' }} {{ localize "DND4EALTUS.Formula" }}</label>
 				<input type="text" name="system.hit.healFormula" value="{{system.hit.healFormula}}"/>
 			</div>
 			{{/if}}

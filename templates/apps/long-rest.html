@@ -1,13 +1,19 @@
 <form id="long-rest" class="dialog-content" onsubmit="event.preventDefault();">
-	<p>Take a long rest?</p>
-	<p>Hospitable environment?
+	<p><strong>{{localize 'DND4EALTUS.LongRestTake'}}?</strong></p>
+	<p>{{localize 'DND4EALTUS.LongRestHint'}}:</p>
+	<ul>
+		<li>{{localize 'DND4EALTUS.LongRestEffectHP'}}</li>
+		<li>{{localize 'DND4EALTUS.LongRestEffectResources'}}</li>
+		<li>{{localize 'DND4EALTUS.LongRestEffectAP'}}</li>
+</ul>
+	<p>{{localize 'DND4EALTUS.LongRestTakeSafe'}}?
 		<select name="envi">
-			<option value=true >Yes</option>
-			<option value=false >No</option>
+			<option value=true >{{localize 'DND4EUI.Yes'}}</option>
+			<option value=false >{{localize 'DND4EUI.No'}}</option>
 		</select>     
 	</p>
 
 	<div class="dialog-buttons">
-		<button type="submit" name="submit">Long Rest?</button>
+		<button type="submit" name="submit">{{localize 'DND4EALTUS.LongRestTake'}}</button>
 	</div>
 </form>

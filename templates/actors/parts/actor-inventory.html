@@ -2,7 +2,7 @@
 	<ol class="currency flexrow">
 		<h3>
 			{{localize "DND4EALTUS.Currency"}}
-			<a class="currency-convert" title="Convert Currency"><i class="fas fa-coins"></i></a>
+			<a class="currency-convert" title="{{localize 'DND4EALTUS.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
 		</h3>
 		{{#each system.currency as |v k|}}
 		<label class="denomination {{k}}" title="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
@@ -11,7 +11,7 @@
 	</ol>
 
 	<ol class="currency flexrow">
-		<h3 title="Ritual Components">Ritual Comp.</h3>
+		<h3 title="{{localize 'DND4EALTUS.RitualComp'}}">{{localize 'DND4EALTUS.RitualComp'}}</h3>
 		{{#each system.ritualcomp as |v k|}}
 		<label class="denomination {{k}}" title="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
 		<input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" title="{{ localize (lookup ../config.ritualcomponents k )}}"/>
@@ -20,13 +20,13 @@
 	
 	<div>
 		<div style="display: inline;">
-			<span>Daily Magical Item Powers uses remaining:</span> 
-			<input style="width: 25px; text-align: right;" type="text" name="system.magicItemUse.dailyuse" value="{{system.magicItemUse.dailyuse}}" title="Daily Magic Items used Today"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
-			<span>/ {{system.magicItemUse.perDay}}</span>
+			<span>{{localize 'DND4EALTUS.ItemUseDaily'}}:</span> 
+			<input style="width: 25px; text-align: right;" type="text" name="system.magicItemUse.dailyuse" value="{{system.magicItemUse.dailyuse}}" title="{{localize 'DND4EALTUS.ItemUseDailyRem'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
+			<span title="{{localize 'DND4EALTUS.ItemUseDaily'}}">/ {{system.magicItemUse.perDay}}</span>
 		</div>
 		<div style="float:right;">
-			<span >Used In Encounter?</span>
-			<input type="checkbox" name="system.magicItemUse.encounteruse" data-dtype="Boolean" {{checked system.magicItemUse.encounteruse}} title="Daily Magical Item Used In encounter"  style="height: 14px; position: relative; top: 2px;">
+			<span>{{localize 'DND4EALTUS.ItemUseDailyEnc'}}</span>
+			<input type="checkbox" name="system.magicItemUse.encounteruse" data-dtype="Boolean" {{checked system.magicItemUse.encounteruse}} title="{{localize 'DND4EALTUS.ItemUseDailyEnc'}}"  style="height: 14px; position: relative; top: 2px;">
 		</div>
 		
 	</div>

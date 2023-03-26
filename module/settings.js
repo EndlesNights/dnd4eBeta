@@ -202,14 +202,40 @@ export const registerSystemSettings = function() {
 		type: Boolean
 	});
 
+	game.settings.register("dnd4eAltus", "fastFowardSettings",{
+		name: "SETTINGS.4eFastFowardSettingsN",
+		hint: "SETTINGS.4eFastFowardSettingsL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean
+	});
+
 	game.keybindings.register("dnd4eAltus", "permShowPlayer", {
-		name: "Show Players Item Permanently",
-		hint: "When clicking the show player button on an item while holding this key, it will permanently give all players permsion to see the item rather then them only being shown the item temporarily.",
+		name: game.i18n.localize("SETTINGS.4epermShowPlayerN"),
+		hint: game.i18n.localize("SETTINGS.4epermShowPlayerL"),
 		editable: [
-		  {
-			key: "AltLeft"
-		  }
+			{
+				key: "AltLeft"
+			}
 		],
 		precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL,
 	});
+
+	// game.keybindings.register("dnd4eAltus", "fastFowardKeyBind", {
+	// 	name: game.i18n.localize("SETTINGS.4eFastFowardKeyBindN"),
+	// 	hint: game.i18n.localize("SETTINGS.4eFastFowardKeyBindL"),
+	// 	editable: [
+	// 		{
+	// 			key: "Alt"
+	// 		},
+	// 		{
+	// 			key: "Control"
+	// 		},
+	// 		{
+	// 			key: "Shift"
+	// 		}
+	// 	],
+	// 	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL,
+	// });
 };

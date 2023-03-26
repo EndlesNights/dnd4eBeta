@@ -44,9 +44,11 @@ export class HealMenuDialog extends FormApplication {
 		const healTotal = surgeValue + roll.total
 
 		const healType = formData["heal-type"]
-		let healTypeText = "heals"
+		let healTypeText = game.i18n.localize("DND4EALTUS.regains")
+		let hpTypeText = game.i18n.localize("DND4EALTUS.HP")
 		if (healType === "tempHP") {
-			healTypeText = "gains temp HP"
+			healTypeText = game.i18n.localize("DND4EALTUS.gains")
+			hpTypeText = game.i18n.localize("DND4EALTUS.TempHPTip")
 			await this.object.applyTempHpChange(healTotal)
 		}
 		else {
@@ -55,12 +57,9 @@ export class HealMenuDialog extends FormApplication {
 
 		let healingSurgeText = ""
 		if (formData["spend-healing-surge"] === true) {
-			healingSurgeText = "Spending a healing surge for"
+			healingSurgeText = game.i18n.localize("DND4EALTUS.SurgeSpendAnd")
 			updateData[`system.details.surges.value`] = Math.max(this.object.system.details.surges.value - 1, 0)
 			this.object.update(updateData);
-		}
-		else {
-			healingSurgeText = "For"
 		}
 
 		const rollMessage = formData.bonus && formData.bonus !== "" ? ` + ${roll.total} (${roll.formula} => ${roll.result})` : ""
@@ -68,7 +67,7 @@ export class HealMenuDialog extends FormApplication {
 		ChatMessage.create({
 			user: game.user.id,
 			speaker: {actor: this.object, alias: this.object.name},
-			content: `${this.object.name} ${healTypeText}. ${healingSurgeText} ${surgeValueText} ${rollMessage}`,
+			content: `${this.object.name} ${healingSurgeText} ${healTypeText} ${surgeValueText} ${rollMessage} ${hpTypeText}.`,
 		});
 	}
 }

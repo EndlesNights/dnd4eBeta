@@ -14,6 +14,7 @@ import { HealMenuDialog } from "../apps/heal-menu-dialog.js";
 import TraitSelector from "../apps/trait-selector.js";
 import TraitSelectorSense from "../apps/trait-selector-sense.js";
 import TraitSelectorSave from "../apps/trait-selector-save.js";
+import ListStringInput from "../apps/list-string-input.js";
 // import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import ActiveEffect4e from "../effects/effects.js";
 import HPOptions from "../apps/hp-options.js";
@@ -51,7 +52,7 @@ export default class ActorSheet4e extends ActorSheet {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eAltus", "sheet", "actor"],
 			width: 844,
-			height: 957,
+			height: 915,
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",
@@ -674,7 +675,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 			
 		}
 	}
-
+	
   /* -------------------------------------------- */
 
   /**
@@ -793,6 +794,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 			html.find('.trait-selector').click(this._onTraitSelector.bind(this));
 			html.find('.trait-selector-weapon').click(this._onTraitSelectorWeapon.bind(this));
 			html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
+			html.find('.list-string-input').click(this._onListStringInput.bind(this));
 			
 			//save throw bonus
 			html.find(`.trait-selector-save`).click(this._onTraitSelectorSaveThrow.bind(this));
@@ -1194,6 +1196,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 	*/
 	_onSecondWind(event) {
 		event.preventDefault();
+		const isFF = Helper.isRollFastForwarded(event);
+		if(isFF){
+			return this.actor.secondWind(event,{isFF});
+		}
 		new SecondWindDialog(this.actor).render(true);		
 	}
 	
@@ -1201,6 +1207,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 
 	_onActionPointDialog(event) {
 		event.preventDefault();
+		const isFF = Helper.isRollFastForwarded(event);
+		if(isFF){
+			return this.actor.actionPoint(event,{isFF});
+		}
 		new ActionPointDialog(this.actor).render(true);
 	}
 
@@ -1216,6 +1226,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 	*/
 	_onShortRest(event) {
 		event.preventDefault();
+		const isFF = Helper.isRollFastForwarded(event);
+		if(isFF){
+			return this.actor.shortRest(event,{isFF});
+		}
 		new ShortRestDialog(this.actor).render(true);
 	}
 	
@@ -1227,11 +1241,19 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 	*/
 	_onLongRest(event) {
 		event.preventDefault();
+		const isFF = Helper.isRollFastForwarded(event);
+		if(isFF){
+			return this.actor.longRest(event,{isFF});
+		}
 		new LongRestDialog(this.actor).render(true)
 	}
 
 	_onDeathSave(event) {
 		event.preventDefault();
+		const isFF = Helper.isRollFastForwarded(event);
+		if(isFF){
+			return this.actor.rollDeathSave(event,{isFF});
+		}
 		new DeathSaveDialog(this.actor).render(true);
 	}
 
@@ -1242,7 +1264,11 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 
 	_onSavingThrow(event) {
 		event.preventDefault();
-		new SaveThrowDialog(this.actor).render(true);
+		const isFF = Helper.isRollFastForwarded(event);
+		if(isFF){
+			return this.actor.rollSave(event,{isFF});
+		}
+		return new SaveThrowDialog(this.actor).render(true);
 	}
 
 	_onSavingThrowBonus(event) {
@@ -1283,7 +1309,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 		const item = this.actor.items.get(itemId);
 		
 		if ( item.type === "power") {
-			const fastForward = Helper.isUsingFastForwardKey(event);
+			const fastForward = Helper.isRollFastForwarded(event);
 			return this.actor.usePower(item, {configureDialog: !fastForward, fastForward: fastForward});
 		}
 		// Otherwise roll the Item directly
@@ -1420,6 +1446,14 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 		new TraitSelectorSense(this.actor, options).render(true);
 	}
 	
+	_onListStringInput(event) {
+		event.preventDefault();
+		const a = event.currentTarget;
+		const label = a.parentElement.querySelector("span");
+		const options = { name: a.dataset.target, title: label.innerText};
+		new ListStringInput(this.actor, options).render(true);
+	}
+	
 	_onTraitSelectorSaveThrow(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
@@ -1433,9 +1467,9 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
   /** @override */
   setPosition(options={}) {
 	const position = super.setPosition(options);
-	const sheetBody = this.element.find(".sheet-body");
-	const bodyHeight = position.height - 345;
-	sheetBody.css("height", bodyHeight);
+	// const sheetBody = this.element.find(".sheet-body");
+	// const bodyHeight = position.height - 345;
+	// sheetBody.css("height", bodyHeight);
 	return position;
   }
 

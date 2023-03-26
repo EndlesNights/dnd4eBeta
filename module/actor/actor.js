@@ -31,7 +31,7 @@ export class Actor4e extends Actor {
 		if(!data) { return super.update(data, options); }
 		
 		//used to call changes to HP scrolling text
-		if(data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
+		if(data[`system.attributes.hp.value`] != undefined && data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
 			options.dhp = data[`system.attributes.hp.value`] - this.system.attributes.hp.value;
 			data[`system.details.isBloodied`] = data[`system.attributes.hp.value`] <= this.system.attributes.hp.max/2;
 		}
@@ -345,7 +345,8 @@ export class Actor4e extends Actor {
 			system.attributes.init.value = 999;
 		
 		//calc movespeed
-		let baseMoveBonusValue = 0;
+		let baseMoveBonusValue = system.movement.base.bonusValue || 0;
+		
 		if(!(system.movement.base.bonus.length === 1 && jQuery.isEmptyObject(system.movement.base.bonus[0]))) {
 			for( const b of system.movement.base.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
@@ -367,7 +368,7 @@ export class Actor4e extends Actor {
 		system.movement.base.bonusValue = baseMoveBonusValue;
 
 		
-		let walkBonusValue = 0;
+		let walkBonusValue = system.movement.walk.bonusValue || 0;
 		if(!(system.movement.walk.bonus.length === 1 && jQuery.isEmptyObject(system.movement.walk.bonus[0]))) {
 			for( const b of system.movement.walk.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
@@ -383,7 +384,7 @@ export class Actor4e extends Actor {
 		}
 		system.movement.walk.bonusValue = walkBonusValue;	
 
-		let chargeBonusValue = 0;
+		let chargeBonusValue = system.movement.charge.bonusValue || 0;
 		if(!(system.movement.charge.bonus.length === 1 && jQuery.isEmptyObject(system.movement.charge.bonus[0]))) {
 			for( const b of system.movement.charge.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
@@ -399,7 +400,7 @@ export class Actor4e extends Actor {
 		}
 		system.movement.charge.bonusValue = chargeBonusValue;	
 		
-		let runBonusValue = 0;
+		let runBonusValue = system.movement.run.bonusValue || 0;
 		if(!(system.movement.run.bonus.length === 1 && jQuery.isEmptyObject(system.movement.run.bonus[0]))) {
 			for( const b of system.movement.run.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
@@ -415,7 +416,7 @@ export class Actor4e extends Actor {
 		}
 		system.movement.run.bonusValue = runBonusValue;
 	
-		let climbBonusValue = 0;
+		let climbBonusValue = system.movement.climb.bonusValue || 0;
 		if(!(system.movement.climb.bonus.length === 1 && jQuery.isEmptyObject(system.movement.climb.bonus[0]))) {
 			for( const b of system.movement.climb.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
@@ -431,7 +432,7 @@ export class Actor4e extends Actor {
 		}
 		system.movement.climb.bonusValue = climbBonusValue;	
 
-		let shiftBonusValue = 0;
+		let shiftBonusValue = system.movement.shift.bonusValue || 0;
 		if(!(system.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(system.movement.shift.bonus[0]))) {
 			for( const b of system.movement.shift.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
@@ -447,34 +448,34 @@ export class Actor4e extends Actor {
 		}
 		system.movement.shift.bonusValue = shiftBonusValue;	
 
-		system.movement.base.value += system.movement.base.base +  baseMoveBonusValue + system.movement.base.temp;
+		system.movement.base.value = system.movement.base.base +  baseMoveBonusValue + system.movement.base.temp;
 		
-		let walkForm = eval(Helper.replaceData(system.movement.walk.formula.replace(/@base/g,system.movement.base.base).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+		let walkForm = eval(Helper.replaceData(system.movement.walk.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.walk.value += walkForm + walkBonusValue + system.movement.base.temp;
 		
 		if (system.movement.walk.value < 0)
 			system.movement.walk.value = 0;
 		
-		let runForm = eval(Helper.replaceData(system.movement.run.formula.replace(/@base/g,system.movement.base.base).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.run.value += runForm + runBonusValue + system.movement.run.temp;
+		let runForm = eval(Helper.replaceData(system.movement.run.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+		system.movement.run.value = runForm + runBonusValue + system.movement.run.temp;
 		
 		if (system.movement.run.value < 0)
 			system.movement.run.value = 0;
 
-		let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.base).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.charge.value += chargeForm + chargeBonusValue + system.movement.charge.temp;
+		let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+		system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge.temp;
 		
 		if (system.movement.charge.value < 0)
 			system.movement.charge.value = 0;
 
-		let climbeForm = eval(Helper.replaceData(system.movement.climb.formula.replace(/@base/g,system.movement.base.base).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.climb.value += climbeForm;
+		let climbForm = eval(Helper.replaceData(system.movement.climb.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+		system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb.temp;
 		
 		if (system.movement.climb.value < 0)
 			system.movement.climb.value = 0;
 		
-		let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.base).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.shift.value += shiftForm;
+		let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
+		system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift.temp;;
 		
 		if (system.movement.shift.value < 0)
 			system.movement.shift.value = 0;
@@ -1003,6 +1004,290 @@ export class Actor4e extends Actor {
 		if(combatants[0])
 		game.combat.combatants.get(combatants[0]).update({initiative:initRoll.total});
 		return combat;
+	}
+
+	async rollSave(event, options){
+		let message = `${game.i18n.localize("DND4EALTUS.RollSave")} ${options.dc || 10}`;
+		const parts = [this.system.details.saves.value];
+		if (options.save) {
+			parts.push(options.save)
+		}
+
+		const rollConfig = mergeObject({
+			parts,
+			actor: this,
+			data: {},
+			title: "",
+			flavor: message,
+			speaker: ChatMessage.getSpeaker({actor: this}),
+			messageData: {"flags.dnd4eAltus.roll": {type: "attack", itemId: this.id }},
+			fastForward: true,
+			rollMode: options.rollMode
+		});
+		rollConfig.event = event;
+		rollConfig.critical = options.dc - this.system.details.saves.value - options.save || 10;
+		rollConfig.fumble = options.dc -1 - this.system.details.saves.value - options.save || 9;
+		
+		const r = await d20Roll(rollConfig);
+
+		if(options.effectSave && r.total >= rollConfig.critical){
+			await this.effects.get(options.effectId).delete();
+		}
+	}
+
+	async rollDeathSave(event, options){
+		const updateData = {};
+		
+		let message = game.i18n.localize("DND4EALTUS.RollDeathSave");
+		const parts = [this.system.details.deathsavebon.value]
+		if (options.save) {
+			parts.push(options.save)
+		}
+		const rollConfig = mergeObject({
+			parts,
+			actor: this,
+			data: {},
+			title: "",
+			flavor: message,
+			speaker: ChatMessage.getSpeaker({actor: this}),
+			messageData: {"flags.dnd4eAltus.roll": {type: "save", itemId: this.id }},
+			fastForward: true,
+			rollMode: options.rollMode
+		});
+		rollConfig.event = event;
+		rollConfig.critical = this.system.details.deathsaveCrit || 20;
+		rollConfig.fumble = 9 - options.save - this.system.details.deathsavebon.value;
+		const roll = await d20Roll(rollConfig);
+		
+		if(roll.total < 10)
+		{
+			updateData[`system.details.deathsavefail`] = this.system.details.deathsavefail + 1;
+		}
+		if( roll.total < 10 && this.system.details.deathsavefail + 1 >= this.system.details.deathsaves)
+		{
+			await ChatMessage.create({
+				user: game.user.id,
+				speaker: ChatMessage.getSpeaker(),
+				content:this.name + game.i18n.localize("DND4EALTUS.DeathSaveFailure")
+			});
+		}
+		else if(roll.total >= rollConfig.critical) {
+			await ChatMessage.create({
+				user: game.user.id,
+				speaker: ChatMessage.getSpeaker(),
+				content:this.name + game.i18n.localize("DND4EALTUS.DeathSaveCriticalSuccess")
+			});
+		}
+		console.log(roll.total)
+		console.log(rollConfig.critical)
+		this.update(updateData);
+	}
+
+	async shortRest(event, options){
+		const updateData = {};
+		updateData[`system.attributes.hp.value`] = this.system.attributes.hp.value;
+		
+		if(options.surge > 0)
+		{
+			if(options.surge > this.system.details.surges.value)
+			options.surge = this.system.details.surges.value;
+			
+			let r = new Roll("0");
+			let healamount = 0;
+			for(let i = 0; i < options.surge; i++){
+				
+				if(options.bonus != "" ){
+					r = new Roll(options.bonus);
+					try{
+						await r.roll({async : true});
+
+					}catch (error){
+						ui.notifications.error(game.i18n.localize("DND4EALTUS.InvalidHealingBonus"));
+						r = new Roll("0");
+						await r.roll({async : true});
+					}
+				}
+				healamount += this.system.details.surgeValue + (r.total || 0);
+				console.log(`surgeValue:${this.system.details.surgeValue}`)
+				console.log(`total:${r.total}`)
+				console.log(`healamount:${healamount}`)
+			}
+
+			updateData[`system.attributes.hp.value`] = Math.min(
+				(this.system.attributes.hp.value + healamount),
+				this.system.attributes.hp.max
+			);
+		
+			if(this.system.details.surges.value > 0)
+				updateData[`system.details.surges.value`] = this.system.details.surges.value - options.surge;
+			
+		}
+		else if(options.surge == 0 && this.system.attributes.hp.value <= 0)
+		{
+			updateData[`system.attributes.hp.value`] = 1;
+		}
+		
+		if(!this.system.attributes.hp.temprest)
+			updateData[`system.attributes.temphp.value`] = "";
+		
+		updateData[`system.details.secondwind`] = false;
+		updateData[`system.actionpoints.encounteruse`] = false;
+		updateData[`system.magicItemUse.encounteruse`] = false;
+		
+		Helper.rechargeItems(this, ["enc", "round"]);
+		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter"]);
+		
+		if(this.type === "Player Character"){
+			console.log(updateData[`system.attributes.hp.value`])
+			console.log(this.system.attributes.hp.value)
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this, alias: this.name},
+				content: options.surge >= 1 ? `${this.name} ${game.i18n.localize('DND4EALTUS.ShortRestChat')}, ${game.i18n.localize('DND4EALTUS.Spending')} ${options.surge} ${game.i18n.localize('DND4EALTUS.SurgesSpendRegain')} ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} ${game.i18n.localize('DND4EALTUS.HPShort')}.`
+					: `${this.name} ${game.i18n.localize('DND4EALTUS.ShortRestChat')}`
+				
+			});				
+		}
+
+		for (let r of Object.entries(this.system.resources)) {
+			if(r[1].sr && r[1].max) {
+				updateData[`system.resources.${r[0]}.value`] = r[1].max;
+			}
+		}
+
+		// console.log(updateData[`system.attributes.hp.value`]);
+		// console.log(this.system.attributes.hp.value);
+
+		this.update(updateData);
+	}
+
+	// also known as the Extended Rest
+	async longRest(event, options){
+		const updateData = {};
+		
+		if(options.envi == "false")
+		{
+			if(this.system.details.surgeEnv.value > this.system.details.surges.max)
+			{
+				updateData[`system.details.surges.value`] = 0;
+				updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max + (this.system.details.surges.max - this.system.details.surgeEnv.value) *  Math.floor(this.system.details.bloodied / 2);
+			}
+			else{
+				updateData[`system.details.surges.value`] = this.system.details.surges.max - this.system.details.surgeEnv.value;
+				updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max;
+			}
+		}
+		else
+		{
+			updateData[`system.details.surges.value`] = this.system.details.surges.max;
+			updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max;
+			
+			updateData[`system.details.surgeEnv.value`] = 0;
+			updateData[`system.details.surgeEnv.bonus`] = [{}];
+		}
+
+		updateData[`system.attributes.temphp.value`] = "";
+		updateData[`system.details.deathsavefail`] = 0;
+		updateData[`system.actionpoints.value`] = 1;
+		updateData[`system.magicItemUse.milestone`] = 0;
+		updateData[`system.magicItemUse.dailyuse`] = this.system.magicItemUse.perDay;
+		
+		updateData[`system.details.secondwind`] = false;
+		updateData[`system.actionpoints.encounteruse`] = false;
+		updateData[`system.magicItemUse.encounteruse`] = false;
+		
+		Helper.rechargeItems(this, ["enc", "day", "round"]);
+		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter", "endOfDay"]);
+
+
+		if(this.type === "Player Character"){
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this, alias: this.system.name},
+				// flavor: restFlavor,
+				content: `${this.name} ${game.i18n.localize('DND4EALTUS.LongRestResult')}.`
+			});
+		}
+		
+		for (let r of Object.entries(this.system.resources)) {
+			if((r[1].sr || r[1].lr) && r[1].max) {
+				updateData[`system.resources.${r[0]}.value`] = r[1].max;
+			}
+		}
+
+		this.update(updateData);
+	}
+
+	async secondWind(event, options){
+		let r = await Helper.rollWithErrorHandling(options.bonus, { errorMessageKey: "DND4EALTUS.InvalidHealingBonus"})
+
+		const updateData = {};
+		if(this.system.attributes.hp.value <= 0) {
+			updateData[`system.attributes.hp.value`] = Math.min(
+				(this.system.details.secondWindValue + (r.total || 0)),
+				this.system.attributes.hp.max
+			);
+		} else {
+			updateData[`system.attributes.hp.value`] = Math.min(
+				(this.system.attributes.hp.value + this.system.details.secondWindValue + (r.total || 0)),
+				this.system.attributes.hp.max
+			);
+		}
+
+		updateData[`system.details.secondwind`] = true;
+		
+		if(this.system.details.surges.value > 0)
+			updateData[`system.details.surges.value`] = this.system.details.surges.value - 1;
+		
+			let extra = "";
+			if (this.system.details.secondwindbon.custom) {
+				extra = this.system.details.secondwindbon.custom;
+				extra = extra.replace(/;/g,'</li><li>');
+				extra = "<li>" + extra + "</li>";
+			}
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this, alias: this.name},
+				// flavor: restFlavor,
+				content: `${this.name} ${game.i18n.localize("DND4EALTUS.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} ${game.i18n.localize("DND4EALTUS.HPShort")} ${game.i18n.localize("DND4EALTUS.SecondWindChatEffect")}
+					<ul>
+						<li>${game.i18n.localize("DND4EALTUS.SecondWindEffect")}</li>
+						${extra}
+					</ul>`,
+					// content: this.system.name + " uses Second Wind, healing for " + (updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
+				//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+			});		
+		
+		this.update(updateData);
+	}
+
+	async actionPoint(event, options){
+
+		let extra = "";
+		if (this.system.actionpoints.custom !== "") {
+			extra = this.system.actionpoints.custom;
+			extra = extra.replace(/\n/g,'</li><li>');
+			extra = "<li>" + extra + "</li>";
+		}
+
+		if(this.system.actionpoints.value >= 1) {
+			ChatMessage.create({
+				user: game.user.id,
+				speaker: {actor: this, alias: this.name},
+				// flavor: restFlavor,
+				content: `${this.name} ${game.i18n.localize("DND4EALTUS.ActionPointUseChat")}:
+				<ul>
+					<li>${game.i18n.localize("DND4EALTUS.ActionPointEffect")}</li>
+					${extra}
+				</ul>`
+			});
+
+			const updateData = {};
+			updateData[`system.actionpoints.value`] = this.system.actionpoints.value -1;
+			updateData[`system.actionpoints.encounteruse`] = true;
+
+			this.update(updateData);
+		}
 	}
 
 	async createOwnedItem(itemData, options) {

@@ -3,63 +3,63 @@
 	<!-- <a>+ Add New Bonus Button</a> -->
 	{{#if options.skill}}
 		<div>
-			<span>Skill Effected by Armour Penalty?</span>
-			<input type="checkbox" name="system.armourCheck" data-dtype="Boolean" {{checked system.armourCheck}} title="Armour Penalty">
+			<span>{{localize 'DND4EALTUS.SkillACPToggle'}}</span>
+			<input type="checkbox" name="system.armourCheck" data-dtype="Boolean" {{checked system.armourCheck}} title="{{localize 'DND4EALTUS.SkillACPToggle'}}">
 			{{#if system.armourCheck}}
-			<span>Skill Penalty from armour:</span>
+			<span>{{localize 'DND4EALTUS.ArmourSkillACP'}}</span>
 			<span>{{system.armourPen}}</span>	
 			{{/if}}
 		</div>
 	{{else if options.ac}}
-		<span>Override Mod For Defence: </span>
-		<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} title="Light/Unarmoured Check to add mod to AC"/>
-		<span>Alternative Mod: </span>
+		<span>{{localize 'DND4EALTUS.DefModUse'}}: </span>
+		<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} title="{{localize 'DND4EALTUS.DefModOverride'}}"/>
+		<span>{{localize 'DND4EALTUS.DefModOverride'}}: </span>
 		<select name="system.altability">
 			{{#select system.altability}}
-			<option value="" >Default</option>
-			<option value="none" >None</option>
-			<option value="str" >Strength</option>
-			<option value="con" >Constitution</option>
-			<option value="dex" >Dexterity</option>
-			<option value="int" >Intelligence</option>
-			<option value="wis" >Wisdom</option>
-			<option value="cha" >Charisma</option>
+			<option value="" >{{localize 'DND4EALTUS.Default'}}</option>
+			<option value="none" >{{localize 'DND4EALTUS.None'}}</option>
+			<option value="str" >{{localize 'DND4EALTUS.AbilityStr'}}</option>
+			<option value="con" >{{localize 'DND4EALTUS.AbilityCon'}}</option>
+			<option value="dex" >{{localize 'DND4EALTUS.AbilityDex'}}</option>
+			<option value="int" >{{localize 'DND4EALTUS.AbilityInt'}}</option>
+			<option value="wis" >{{localize 'DND4EALTUS.AbilityWis'}}</option>
+			<option value="cha" >{{localize 'DND4EALTUS.AbilityCha'}}</option>
 			{{/select}}
 		</select>
 
 	{{else if options.init}}
-	<span title="Ability Mod used for Initiative Score">Ability Mod:</span>
+	<span title="{{localize 'DND4EALTUS.InitAbilityMod'}}">{{localize 'DND4EALTUS.AbilityModifier'}}:</span>
 	<select name="system.ability">
 		{{#select system.ability}}
-		<option value="" >None</option>
-		<option value="str" >Strength</option>
-		<option value="con" >Constitution</option>
-		<option value="dex" >Dexterity</option>
-		<option value="int" >Intelligence</option>
-		<option value="wis" >Wisdom</option>
-		<option value="cha" >Charisma</option>
+		<option value="" >{{localize 'DND4EALTUS.None'}}</option>
+		<option value="str" >{{localize 'DND4EALTUS.AbilityStr'}}</option>
+		<option value="con" >{{localize 'DND4EALTUS.AbilityCon'}}</option>
+		<option value="dex" >{{localize 'DND4EALTUS.AbilityDex'}}</option>
+		<option value="int" >{{localize 'DND4EALTUS.AbilityInt'}}</option>
+		<option value="wis" >{{localize 'DND4EALTUS.AbilityWis'}}</option>
+		<option value="cha" >{{localize 'DND4EALTUS.AbilityCha'}}</option>
 		{{/select}}
 	</select>
 	{{else if options.secondWind}} 
 	<div class="form-group stacked">
-		<label>Additional Effects (Split with Semi-Colon)</label>
+		<label>{{localize 'DND4EALTUS.SecondWindSpecial'}}</label>
 		<input type="text" name="system.custom" value="{{system.custom}}" data-dtype="String"/>
 	</div>
 	{{/if}}
 	{{#each bonusData as |bonus b|}}
 	<div class="bonus-part" data-bonus-part="{{b}}">
-		<span>Name of Bonus:</span>
+		<span>{{localize 'DND4EALTUS.BonusName'}}:</span>
 		<input type="text" name="{{b}}.name" value="{{bonus.name}}" data-dtype="String" style="width: 125px;"/>
-		<span>Value:</span>
+		<span>{{localize 'DND4EALTUS.Value'}}:</span>
 		<input type="text" name="{{b}}.value" value="{{bonus.value}}" data-dtype="String" style="width: 105px;"/>
-		<span>Active: </span>
-		<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} title="Activate Bonus">
-		<a class="bonus-control bonus-delete" title="Delete Bonus" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
-		<textarea type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none;" placeholder="Notes:" contentEditable>{{bonus.note}}</textarea>
+		<span>{{localize 'DND4EALTUS.Active'}}: </span>
+		<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} title="{{localize 'DND4EALTUS.BonusToggle'}}">
+		<a class="bonus-control bonus-delete" title="{{localize 'DND4EUI.Delete'}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
+		<textarea type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none;" placeholder="{{localize 'DND4EALTUS.Notes'}}" contentEditable>{{bonus.note}}</textarea>
 	</div>
 	{{/each}}
 
-	<div><a class="bonus-control bonus-add">Add a new bonus +</a></div>
+	<div><a class="bonus-control bonus-add">{{localize 'DND4EUI.AddNew'}}</a></div>
 	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
 
 </form>

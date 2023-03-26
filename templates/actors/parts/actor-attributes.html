@@ -4,7 +4,7 @@
 	<li class="ability" data-ability="{{a}}">
 		<h4 class="ability-name box-title rollable">{{ability.label}}</h4>
 		<input class="ability-score" name="system.abilities.{{a}}.value" type="Number" value="{{ability.value}}" onClick="this.select();" placeholder="10"/>
-		<span class="ability-mod" title="Modifier">{{numberFormat ability.mod decimals=0 sign=true}}</span>
+		<span class="ability-mod" title="{{localize 'DND4EALTUS.Modifier'}}">{{numberFormat ability.mod decimals=0 sign=true}}</span>
 	</li>
 {{/each}}
 </ul>
@@ -19,33 +19,33 @@
 		<h4 class="skill-name rollable">{{skill.label}}</h4>
 		<span class="skill-ability">{{skill.ability}}</span>
 		<a class="training-toggle skill-training" title="{{skill.hover}}">{{{skill.icon}}}</a>
-		<a class="skill-mod skill-bonus" data-target="system.details" title="Skill Bonus">{{skill.sklBonusValue}}</a>
+		<a class="skill-mod skill-bonus" data-target="system.details" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.Skill'}}">{{skill.sklBonusValue}}</a>
 	</li>
 {{/each}}
-	<a class="custom-roll-descriptions" style="font-size: 11.5px;" title="Change custom descriptions for Skill and Ability roll checks.">Edit Skill & Ability Custom Descriptions.</a>
+	<a class="custom-roll-descriptions" style="font-size: 11.5px;" title="{{localize 'DND4EALTUS.CheckDescsLong'}}">{{localize 'DND4EALTUS.CheckDescs'}}</a>
 </ul>
 
 {{!-- Attributes --}}
 <ul class="attributes scrollbar">
 	{{!-- Health --}}
 	<li class="attribute-health resource-half">
-		<h4 class="attribute-name box-title">Health</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.Health'}}</h4>
 		<div class="attribute-value">
 			<input style="width: 100%; text-align: right; padding-right: 4px;" type="text" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" title="{{localize 'DND4EALTUS.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 			<span class="sep"> / </span>
 			<input style="width: 100%; text-align: left; padding-left: 4px;" type="text" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" title="{{localize 'DND4EALTUS.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 		</div>
 		<footer class="attribute-footer">
-			<Span>Temp HP:</Span>
+			<Span>{{localize 'DND4EALTUS.TempHP'}}:</Span>
 			<input style="width: 32px; padding: 0px; position: relative; top: -1px;" type="text" name="system.attributes.temphp.value" value="{{system.attributes.temphp.value}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
 			<span title="{{localize 'DND4EALTUS.HPBloodied'}}">{{localize 'DND4EALTUS.HPBloodied'}}: {{system.details.bloodied}}</span>
-			<a class="health-option" data-target="system.details" title="Health & Surge Options" style="position: relative; left: -5px; top: 4px;">
+			<a class="health-option" data-target="system.details" title="{{localize 'DND4EALTUS.HealthOptions'}}" style="position: relative; left: -5px; top: 4px;">
 				<i class="fas fa-cog"></i>
 			</a>
 		</footer>
 	</li>
 	<li class="attribute-health resource-half">
-		<h4 class="attribute-name box-title">Surge</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.Surge'}}</h4>
 		<div class="attribute-value">
 			<input type="text" name="system.details.surgeValue" value="{{system.details.surgeValue}}" title="{{localize 'DND4EALTUS.SurgeValue'}}"  placeholder="{{localize 'DND4EALTUS.SurgeValue'}}" data-dtype="Number" onClick="this.select();"/>
 			<span class="sep">|</span>
@@ -54,52 +54,52 @@
 			<input type="text" name="system.details.surges.max" value="{{system.details.surges.max}}" title="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 		</div>
 		<footer class="attribute-footer flexrow ">
-			<a class="surge-bonus" style="position: relative; top: 4px;" data-target="system.details" title="{{localize 'DND4EALTUS.SurgeBon'}}">Surge Bonus: {{system.details.surgeBon.value}}</a>
-			<a class="envimental-loss-bonus" style="position: relative; top: 4px;" data-target="system.details" title="{{localize 'DND4EALTUS.SurgeEnv'}}">Envir Losses: {{system.details.surgeEnv.value}}</a>
+			<a class="surge-bonus" style="position: relative; top: 4px;" data-target="system.details" title="{{localize 'DND4EALTUS.SurgeValBon'}}">{{localize 'DND4EALTUS.SurgeBon'}}: {{system.details.surgeBon.value}}</a>
+			<a class="envimental-loss-bonus" style="position: relative; top: 4px;" data-target="system.details" title="{{localize 'DND4EALTUS.SurgeEnv'}}">{{localize 'DND4EALTUS.SurgeEnvShort'}}: {{system.details.surgeEnv.value}}</a>
 		</footer>
 	</li>
 	{{!-- Rest and Death --}}
 	<li class="attribute-rest resource-full">
 		<div>
-			<a class="rest second-wind">Second Wind</a>
-			<input type="checkbox" name="system.details.secondwind" data-dtype="Boolean" {{checked system.details.secondwind}} title="Second Wind Used"/>
-			<a class="secondwind-bonus" style="font-size: 12px;" data-target="system.details" title="Second Wind Bonus">Bonus: {{system.details.secondwindbon.value}}</a>
+			<a class="rest second-wind">{{localize 'DND4EALTUS.SecondWind'}}</a>
+			<input type="checkbox" name="system.details.secondwind" data-dtype="Boolean" {{checked system.details.secondwind}} title="{{localize 'DND4EALTUS.SecondWindUsed'}}"/>
+			<a class="secondwind-bonus" style="font-size: 12px;" data-target="system.details" title="{{localize 'DND4EALTUS.SecondWindBonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.details.secondwindbon.value}}</a>
 			
-			<a class="rest short-rest">{{ localize "DND4EALTUS.RestS" }}</a>
-			<a class="rest long-rest">{{ localize "DND4EALTUS.RestL" }}</a>
+			<a class="rest short-rest">{{ localize 'DND4EALTUS.RestS' }}</a>
+			<a class="rest long-rest">{{ localize 'DND4EALTUS.RestL' }}</a>
 		</div>	
 		<div >	
-			<a class="death death-save">Death Saving Throw</a>
-			<a class="death-save-bonus" style="font-size: 12px;" data-target="system.details" title="Death Save Bonus">Bonus: {{system.details.deathsavebon.value}}</a>
-			<span>Failures:</span>
-			<input type="text" name="system.details.deathsavefail" value="{{system.details.deathsavefail}}" title="Death Save Failures"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+			<a class="death death-save">{{ localize 'DND4EALTUS.DeathSavingThrow' }}</a>
+			<a class="death-save-bonus" style="font-size: 12px;" data-target="system.details" title="{{ localize 'DND4EALTUS.DeathSavingThrowBonus' }}">{{localize 'DND4EALTUS.Bonus'}}: {{system.details.deathsavebon.value}}</a>
+			<span>{{localize 'DND4EALTUS.Failures'}}:</span>
+			<input type="text" name="system.details.deathsavefail" value="{{system.details.deathsavefail}}" title="{{localize 'DND4EALTUS.DeathSaveFails'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 			<i class="fas fa-skull"></i>
 
 		</div>
 	</li>
 	{{!-- Defences --}}
 	<div class="attribute-def resource-full">
-		<h4 class="attribute-name box-title">Defences</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.Defences'}}</h4>
 		<li class="flexrow" data-defence="ac">
 				<span class="def-value">{{numberFormat system.defences.ac.value decimals=0 sign=true }}</span>
 				<span class="def-name rollable" title="{{system.defences.ac.title}}">{{system.defences.ac.label}}</span>
-				<span class="def-armour">Armour: {{system.defences.ac.armour}}</span>
-				<a class="defence-bonus" data-target="system.defences" title="AC Bonus">Bonus: {{system.defences.ac.bonusValue}}</a>
-				<span class="def-temp">Temp:</span>
-				<input type="text" name="system.defences.ac.temp" value="{{system.defences.ac.temp}}" title="AC Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+				<span class="def-armour">{{localize 'DND4EALTUS.Armour'}}: {{system.defences.ac.armour}}</span>
+				<a class="defence-bonus" data-target="system.defences" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.DefenceAC'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.defences.ac.bonusValue}}</a>
+				<span class="def-temp">{{localize 'DND4EALTUS.Temp'}}:</span>
+				<input type="text" name="system.defences.ac.temp" value="{{system.defences.ac.temp}}" title="{{localize 'DND4EALTUS.Temporary'}} {{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.DefenceAC'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 		</li>
 		<li class="attribute-ac">
 				<footer style="text-align: center;">
-					<span>Light Armour: </span>
-					<input type="checkbox" name="system.defences.ac.light" data-dtype="Boolean" {{checked system.defences.ac.light}} title="Light/Unarmoured Check to add mod to AC"/>
-					<span>Alternative Mod: </span>
+					<span>{{localize 'DND4EALTUS.EquipmentArmourLight'}}: </span>
+					<input type="checkbox" name="system.defences.ac.light" data-dtype="Boolean" {{checked system.defences.ac.light}} title="{{localize 'DND4EALTUS.DefenceACLightCheck'}}" />
+					<span>{{localize 'DND4EALTUS.DefenceACAltMod'}}: </span>
 					<select name="system.defences.ac.altability">
 						{{#select system.defences.ac.altability}}
 						<option value="" >Default</option>
-						<option value="str" >Strength</option>
-						<option value="con" >Constitution</option>
-						<option value="wis" >Wisdom</option>
-						<option value="cha" >Charisma</option>
+						<option value="str" >{{localize 'DND4EALTUS.AbilityStr'}}</option>
+						<option value="con" >{{localize 'DND4EALTUS.AbilityCon'}}</option>
+						<option value="wis" >{{localize 'DND4EALTUS.AbilityWis'}}</option>
+						<option value="cha" >{{localize 'DND4EALTUS.AbilityCha'}}</option>
 						{{/select}}
 					</select>
 				</footer>						
@@ -108,31 +108,31 @@
 		
 			<span class="def-value">{{numberFormat system.defences.fort.value decimals=0 sign=true }}</span>
 			<span class="def-name rollable" title="{{system.defences.fort.title}}">{{system.defences.fort.label}}</span>
-			<span class="def-armour">Armour: {{system.defences.fort.armour}}</span>
+			<span class="def-armour">{{localize 'DND4EALTUS.Armour'}}: {{system.defences.fort.armour}}</span>
 			<a class="defence-bonus" data-target="system.defences" title="Fort Bonus">Bonus: {{system.defences.fort.bonusValue}}</a>
-			<span class="def-temp">Temp:</span>
-			<input type="text" name="system.defences.fort.temp" value="{{system.defences.fort.temp}}" title="Fort Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>						
+			<span class="def-temp">{{localize 'DND4EALTUS.Temp'}}:</span>
+			<input type="text" name="system.defences.fort.temp" value="{{system.defences.fort.temp}}" title="{{localize 'DND4EALTUS.Temporary'}} {{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.DefenceFort'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>						
 		</li>
 		<li class="flexrow def-ref" data-defence="ref">
 			<span class="def-value">{{numberFormat system.defences.ref.value decimals=0 sign=true }}</span>
 			<span class="def-name rollable" title="{{system.defences.ref.title}}">{{system.defences.ref.label}}</span>
-			<span class="def-armour">Armour: {{system.defences.ref.armour}}</span>
-			<a class="defence-bonus" data-target="system.defences" title="Ref Bonus">Bonus: {{system.defences.ref.bonusValue}}</a>
-			<span class="def-temp">Temp:</span>
-			<input type="text" name="system.defences.ref.temp" value="{{system.defences.ref.temp}}" title="Ref Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+			<span class="def-armour">{{localize 'DND4EALTUS.Armour'}}: {{system.defences.ref.armour}}</span>
+			<a class="defence-bonus" data-target="system.defences" title="Ref Bonus">{{localize 'DND4EALTUS.Bonus'}}: {{system.defences.ref.bonusValue}}</a>
+			<span class="def-temp">{{localize 'DND4EALTUS.Temp'}}:</span>
+			<input type="text" name="system.defences.ref.temp" value="{{system.defences.ref.temp}}" title="{{localize 'DND4EALTUS.Temporary'}} {{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.DefenceRef'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 		</li>
 		<li class="flexrow def-will" data-defence="wil">
 			<span class="def-value">{{numberFormat system.defences.wil.value decimals=0 sign=true }}</span>
 			<span class="def-name rollable" title="{{system.defences.wil.title}}">{{system.defences.wil.label}}</span>
-			<span class="def-armour">Armour: {{system.defences.wil.armour}}</span>
-			<a class="defence-bonus" data-target="system.defences" title="Will Bonus">Bonus: {{system.defences.wil.bonusValue}}</a>
-			<span class="def-temp">Temp:</span>
-			<input type="text" name="system.defences.wil.temp" value="{{system.defences.wil.temp}}" title="Will Temp"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+			<span class="def-armour">{{localize 'DND4EALTUS.Armour'}}: {{system.defences.wil.armour}}</span>
+			<a class="defence-bonus" data-target="system.defences" title="Will Bonus">{{localize 'DND4EALTUS.Bonus'}}: {{system.defences.wil.bonusValue}}</a>
+			<span class="def-temp">{{localize 'DND4EALTUS.Temp'}}:</span>
+			<input type="text" name="system.defences.wil.temp" value="{{system.defences.wil.temp}}" title="{{localize 'DND4EALTUS.Temporary'}} {{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.DefenceWil'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 		</li>
 
 		<div style="text-align: left;">
 			<a class="trait-selector-save" data-options="saves" data-target="system.details.saves" >
-				<span>Saving Throw Mods:</span>
+				<span>{{localize 'DND4EALTUS.SavingThrowMods'}}:</span>
 				<i class="fas fa-edit" style="font-size: 12px;"></i>
 			</a>
 			<ul class="traits-list" style="list-style-type: none;">
@@ -146,77 +146,77 @@
 	
 	<div class="attribute-init resource-full">
 		{{!-- Initiative --}}
-		<h4 class="attribute-name box-title">Initiative</h4>
-		<span title="Initiative Score">Initiative:</span>
-		<span title="Initiative Score">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</span>
-		<a class="init-bonus" data-target="system.details" title="Initiative Bonus">Bonus: {{system.attributes.init.bonusValue}}</a>
-		<span title="Initiative Score">Mod:</span>
+		<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.Initiative'}}</h4>
+		<span title="{{localize 'DND4EALTUS.Initiative'}} {{localize 'DND4EALTUS.Modifier'}}">{{localize 'DND4EALTUS.Initiative'}}:</span>
+		<span title="{{localize 'DND4EALTUS.Initiative'}} {{localize 'DND4EALTUS.Modifier'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</span>
+		<a class="init-bonus" data-target="system.details" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.Initiative'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.attributes.init.bonusValue}}</a>
+		<span title="{{localize 'DND4EALTUS.Initiative'}} {{localize 'DND4EALTUS.Modifier'}}">{{localize 'DND4EALTUS.Mod'}}:</span>
 			<select name="system.attributes.init.ability">
 				{{#select system.attributes.init.ability}}
-				<option value="str" >Strength</option>
-				<option value="con" >Constitution</option>
-				<option value="dex" >Dexterity</option>
-				<option value="int" >Intelligence</option>
-				<option value="wis" >Wisdom</option>
-				<option value="cha" >Charisma</option>
+				<option value="str" >{{localize 'DND4EALTUS.AbilityStr'}}</option>
+				<option value="con" >{{localize 'DND4EALTUS.AbilityCon'}}</option>
+				<option value="dex" >{{localize 'DND4EALTUS.AbilityDex'}}</option>
+				<option value="int" >{{localize 'DND4EALTUS.AbilityInt'}}</option>
+				<option value="wis" >{{localize 'DND4EALTUS.AbilityWis'}}</option>
+				<option value="cha" >{{localize 'DND4EALTUS.AbilityCha'}}</option>
 				{{/select}}
 			</select>
-		<input type="text" name="system.attributes.init.notes" value="{{system.attributes.init.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%; text-align: left;"/>
+		<input type="text" name="system.attributes.init.notes" value="{{system.attributes.init.notes}}" title="notes" placeholder="{{localize 'DND4EALTUS.Notes'}}" style="width: 99%; text-align: left;"/>
 
 	</div>
 	
 	{{!-- Action Point --}}
 	
 	<div class="attribute-init resource-full">
-		<h4 class="attribute-name box-title">Action Points</h4>
-		<span title="Action Points">Action Points:</span>
-		<input type="text" name="system.actionpoints.value" value="{{system.actionpoints.value}}" title="Number of Action Points" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-		<label for="bonusAction" title="Action Points">Bonus Action Taken:</label>
-		<input class="action-box" id="bonusAction" type="checkbox" name="system.actionpoints.encounteruse" data-dtype="Boolean" {{checked system.actionpoints.encounteruse}} title="Action Point used this encounter?"/>
-		<input type="text" name="system.actionpoints.notes" value="{{system.actionpoints.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;  text-align: left;"/>
+		<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.ActionPoints'}}</h4>
+		<span title="{{localize 'DND4EALTUS.ActionPoints'}}">{{localize 'DND4EALTUS.ActionPoints'}}:</span>
+		<input type="text" name="system.actionpoints.value" value="{{system.actionpoints.value}}" title="{{localize 'DND4EALTUS.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+		<label for="bonusAction" title="{{localize 'DND4EALTUS.ActionPointUsed'}}">{{localize 'DND4EALTUS.ActionPointUsed'}}:</label>
+		<input class="action-box" id="bonusAction" type="checkbox" name="system.actionpoints.encounteruse" data-dtype="Boolean" {{checked system.actionpoints.encounteruse}} title="{{localize 'DND4EALTUS.ActionPointUsed'}}"/>
+		<input type="text" name="system.actionpoints.notes" value="{{system.actionpoints.notes}}" title="notes" placeholder="{{localize 'DND4EALTUS.Notes'}}" style="width: 99%;  text-align: left;"/>
 	</div>
 		
 	{{!-- Movement --}}
 	<div class="attribute-init resource-full movement">
-		<h4 class="attribute-name box-title">Movement</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.Movement'}}</h4>
 		<div class="basic" data-movement="basic">
-			<span title="Movement Speed">Movement Speed:</span>
-			<span title="Movement Speed" style="margin-right: 4px;">{{system.movement.basic.value}}</span>
-			<span title="Base Speed">Base:</span> 
-			<input type="text" name="system.movement.basic.base" value="{{system.movement.basic.base}}" title="Base Movement Speed!" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-			<span>Armour: {{system.movement.basic.armour}}</span>
-			<a class="move-bonus" data-target="system.details" title="Movement Bonus">Bonus: {{system.movement.basic.bonusValue}}</a>
+			<span title="{{localize 'DND4EALTUS.Speed'}}">{{localize 'DND4EALTUS.Speed'}}:</span>
+			<span title="{{localize 'DND4EALTUS.Speed'}}" style="margin-right: 4px;">{{system.movement.basic.value}}</span>
+			<span title="{{localize 'DND4EALTUS.MovementSpeedBase'}}">{{localize 'DND4EALTUS.MovementSpeedBase'}}:</span> 
+			<input type="text" name="system.movement.basic.base" value="{{system.movement.basic.base}}" title="{{localize 'DND4EALTUS.MovementSpeedBase'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+			<span>{{localize 'DND4EALTUS.Armour'}}: {{system.movement.basic.armour}}</span>
+			<a class="move-bonus" data-target="system.details" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.MovementSpeedBase'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.basic.bonusValue}}</a>
 		</div>
 		<div class="charge" style="display: inline" data-movement="charge">
-			<span title="Charge Movement Speed">Charge Speed:</span>
-			<span title="Charge Movement Speed" style="margin-right: 4px;">{{system.movement.charge.value}}</span>
-			<a class="move-bonus" data-target="system.details" title="Charge Bonus" style="margin-right: 6px;">Bonus: {{system.movement.charge.bonusValue}}</a>
+			<span title="{{localize 'DND4EALTUS.MovementSpeedCharging'}}">{{localize 'DND4EALTUS.MovementSpeedCharging'}}:</span>
+			<span title="{{localize 'DND4EALTUS.MovementSpeedCharging'}}" style="margin-right: 4px;">{{system.movement.charge.value}}</span>
+			<a class="move-bonus" data-target="system.details" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.MovementSpeedCharging'}}" style="margin-right: 6px;">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.charge.bonusValue}}</a>
 		</div>
 		<div class="run" style="display: inline" data-movement="run">
-			<span title="Run Movement Speed">Run Speed:</span>
-			<span title="Run Movement Speed" style="margin-right: 4px;">{{system.movement.run.value}}</span>
-			<a class="move-bonus" data-target="system.details" title="Running Bonus">Bonus: {{system.movement.run.bonusValue}}</a>
+			<span title="{{localize 'DND4EALTUS.MovementSpeedRunning'}}">{{localize 'DND4EALTUS.MovementSpeedRunning'}}:</span>
+			<span title="{{localize 'DND4EALTUS.MovementSpeedRunning'}}" style="margin-right: 4px;">{{system.movement.run.value}}</span>
+			<a class="move-bonus" data-target="system.details" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.MovementSpeedRunning'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.run.bonusValue}}</a>
 		</div>
-		<input type="text" name="system.movement.notes" value="{{system.movement.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
+		<input type="text" name="system.movement.notes" value="{{system.movement.notes}}" title="notes" placeholder="{{localize 'DND4EALTUS.Notes'}}" style="width: 99%;"/>
 	</div>
 	
 	{{!-- Senses --}}
 	<div class="attribute-init resource-full movement">
-		<h4 class="attribute-name box-title">Special Senses</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.Senses'}}</h4>
 		<div class="Passive-Per" data-passive="pasprc">
-			<span>Passive Perception:</span>
+			<span>{{localize 'DND4EALTUS.PasPer'}}:</span>
 			<span style="margin-right: 4px;">{{system.passive.pasprc.value}}</span>
-			<a class="passive-bonus" data-target="system.details" title="Charge Bonus">Bonus: {{system.passive.pasprc.bonusValue}}</a>
+			<a class="passive-bonus" data-target="system.details" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.PasPer'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.passive.pasprc.bonusValue}}</a>
 		</div>
 		<div class="Passive-Ins" data-passive="pasins">
-			<span>Passive Insight:</span>
+			<span>{{localize 'DND4EALTUS.PasIns'}}:</span>
 			<span style="margin-right: 4px;">{{system.passive.pasins.value}}</span>
-			<a class="passive-bonus" data-target="system.details" title="Charge Bonus">Bonus: {{system.passive.pasins.bonusValue}}</a>
+			<a class="passive-bonus" data-target="system.details" title="{{localize 'DND4EALTUS.BonusTp'}} {{localize 'DND4EALTUS.PasIns'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.passive.pasins.bonusValue}}</a>
 		</div>					
 		
 		<div style="text-align: left;">
 			<a class="trait-selector-senses" data-options="vision" data-target="system.senses.vision">
-				<span>Vision</span>
+				<span>{{localize 'DND4EALTUS.Vision'}}</span>
 				<i class="fas fa-edit"></i>
 			</a>
 			<ul class="traits-list" style="list-style-type: none;">
@@ -226,7 +226,7 @@
 			</ul>
 			
 			<a class="trait-selector-senses" data-options="special" data-target="system.senses.special">
-				<span>special Senses</span>
+				<span>{{localize 'DND4EALTUS.SpecialSenses'}}</span>
 				<i class="fas fa-edit"></i>
 			</a>
 			<ul class="traits-list" style="list-style-type: none;">
@@ -235,7 +235,7 @@
 			{{/each}}
 			</ul>
 
-			<input type="text" name="system.senses.notes" value="{{system.senses.notes}}" title="notes" placeholder="Other & Notes." style="width: 99%;"/>
+			<input type="text" name="system.senses.notes" value="{{system.senses.notes}}" title="notes" placeholder="{{localize 'DND4EALTUS.Notes'}}" style="width: 99%;"/>
 		</div>
 		
 		
@@ -243,9 +243,9 @@
 	
 	{{!-- Languages --}}
 	<div class="attribute-init resource-full languages">
-		<h4 class="attribute-name box-title">Languages</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.Languages'}}</h4>
 		<a class="trait-selector" data-options="spoken" data-target="system.languages.spoken">
-			<span>Spoken</span>
+			<span>{{localize 'DND4EALTUS.Spoken'}}</span>
 			<i class="fas fa-edit"></i>
 		</a>
 		<ul class="traits-list" style="list-style-type: none;">
@@ -255,7 +255,7 @@
 		</ul>
 		
 		<a class="trait-selector" data-options="script" data-target="system.languages.script">
-			<span>Script</span>
+			<span>{{localize 'DND4EALTUS.Script'}}</span>
 			<i class="fas fa-edit"></i>
 		</a>
 		<ul class="traits-list" style="list-style-type: none;">
@@ -267,15 +267,15 @@
 	
 	{{!-- Resistances --}}
 	<div class="attribute-res resource-full">
-		<h4 class="attribute-name box-title">Resistances & Weaknesses</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.DamResVuln'}}</h4>
 		{{#each system.resistances as |res r|}}
 			<li class="skill flexrow" data-res="{{r}}">
 				<h4 class="res-name">{{res.label}}</h4>
 				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
-				<span class="res-armour">Armour: {{res.armour}} </span>
-				<a class="resistence-bonus" data-target="system.resistances" title="Resistence Bonus">Bonus: {{res.resBonusValue}}</a>
-				<span class="res-immune">Immunity</span>
-				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
+				<span class="res-armour">{{localize 'DND4EALTUS.Armour'}}: {{res.armour}} </span>
+				<a class="resistence-bonus" data-target="system.resistances" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.DamRes'}}">{{localize 'DND4EALTUS.Bonus'}}: {{res.resBonusValue}}</a>
+				<span class="res-immune">{{localize 'DND4EALTUS.Immunity'}}</span>
+				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="{{localize 'DND4EALTUS.Immunity'}}"/>
 			</li>
 		{{/each}}					
 	</div>
