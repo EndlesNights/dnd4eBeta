@@ -1275,9 +1275,9 @@ export class Actor4e extends Actor {
 				user: game.user.id,
 				speaker: {actor: this, alias: this.name},
 				// flavor: restFlavor,
-				content: `${this.name} uses an actionpoint gaining the following benefits:
+				content: `${this.name} ${game.i18n.localize("DND4EBETA.ActionPointUseChat")}:
 				<ul>
-					<li>Gaining an addtional Standard Action</li>
+					<li>${game.i18n.localize("DND4EBETA.ActionPointEffect")}</li>
 					${extra}
 				</ul>`
 			});
