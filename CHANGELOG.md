@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.3.33
+- add Chinese Language support courtesy of 扶摇
+- updated French Language courtesy of [Gilphe](https://github.com/Gilphe)
+- removed an some deprecated code.
+
 ## Version 0.3.32
 - Label error and spelling fixes, translatable text for pseudo-power chat cards [merge](https://github.com/EndlesNights/dnd4eBeta/pull/278) from [FoxLee](https://github.com/FoxLee)
 - character sheet minimizes when using the place template button
