@@ -136,6 +136,11 @@
 			"lang": "fr",
 			"name": "Français",
 			"path": "lang/fr.json"
+		},
+		{
+			"lang": "cn",
+			"name": "中文",
+			"path": "lang/cn.json"
 		}
 	],
 	"socket": true,
