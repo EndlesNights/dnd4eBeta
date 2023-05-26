@@ -141,6 +141,11 @@
 			"lang": "cn",
 			"name": "中文",
 			"path": "lang/cn.json"
+		},
+		{
+			"lang": "en-AU",
+			"name": "English (Australian)",
+			"path": "lang/en-au.json"
 		}
 	],
 	"socket": true,
