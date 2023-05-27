@@ -725,12 +725,12 @@ export class Helper {
 						if (!resultObject[change.key]) {
 							resultObject[change.key] = changeValueReplaced
 							if (debug) {
-								console.log(`${debug} Effect: ${effect.label}.  Computed Value: ${change.value} was the first match to ${change.key} `)
+								console.log(`${debug} Effect: ${effect.name}.  Computed Value: ${change.value} was the first match to ${change.key} `)
 							}
 						}
 						else {
 							if (debug) {
-								console.log(`${debug} Effect: ${effect.label}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
+								console.log(`${debug} Effect: ${effect.name}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
 							}
 							if(this._isNumber(resultObject[change.key]) && this._isNumber(changeValueReplaced)){
 								resultObject[change.key] = Number(resultObject[change.key]) + Number(changeValueReplaced)
