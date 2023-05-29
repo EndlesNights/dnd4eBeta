@@ -79,7 +79,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 	const html = await renderTemplate(template, dialogData);
 
 	// Create the Dialog window
-	let roll;	
+	let roll;
 	return new Promise(resolve => {
 		new Dialog({
 			title: title,
@@ -99,7 +99,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 	})
 }
 
-async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options }) {
+async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options}) {
 	/*
 	 coming in the parts[] is in one of the following states:
 	 - Empty
