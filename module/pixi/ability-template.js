@@ -35,7 +35,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		console.log(item);
 		let distance = this.getDistanceCalc(item);
 
-		let flags = {dnd4e:{templateType:templateShape}};
+		let flags = {dnd4e:{templateType:templateShape, item}};
 
 		if(item.system.rangeType === "closeBlast" || item.system.rangeType === "rangeBlast") {
 			distance *= Math.sqrt(2);
