@@ -146,6 +146,11 @@
 			"lang": "en-AU",
 			"name": "English (Australian)",
 			"path": "lang/en-au.json"
+		},
+		{
+			"lang": "en-UK",
+			"name": "English (United Kindom)",
+			"path": "lang/en-uk.json"
 		}
 	],
 	"socket": true,
