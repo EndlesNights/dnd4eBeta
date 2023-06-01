@@ -203,7 +203,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		}
 		if (isAttackRoll && targets.length > rollExpressionIdx) {
 			let targName = targets[rollExpressionIdx].name;
-			let targDefVal = targets[rollExpressionIdx].document._actor.system.defences[options.attackedDef]?.value;
+			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[options.attackedDef]?.value;
 			targetData.targNameArray.push(targName);
 			targetData.targDefValArray.push(targDefVal);
 			targetData.targets.push(targets[rollExpressionIdx]);
