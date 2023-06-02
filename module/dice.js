@@ -230,8 +230,9 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	if (!isAttackRoll || game.user.targets.size < 1) {
 		roll = roll.rollArray[0];
 	}
-	else {
-		roll.populateMultirollData(targetData, critStateArray);
+	else {		
+		roll.populateMultirollData(targetData, critStateArray);			
+		Hooks.callAll("dnd4e.rollAttack", data.item, targetData, speaker);		
 		if(targetData.targetHit) Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
 		if(targetData.targetMissed) Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", options.parent);
 	}
