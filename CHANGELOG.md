@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.0
+- conversion to Foundry v11
+
 ## Version 0.3.33
 - add Chinese Language support courtesy of 扶摇
 - updated French Language courtesy of [Gilphe](https://github.com/Gilphe)
