@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.3.34
+- added Automated Animation support to system, [merge](https://github.com/EndlesNights/dnd4eBeta/pull/285) from [zarick1342](https://github.com/zarick1342)
+
 ## Version 0.3.33
 - add Chinese Language support courtesy of 扶摇
 - updated French Language courtesy of [Gilphe](https://github.com/Gilphe)
