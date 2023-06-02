@@ -184,6 +184,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		canvas.app.view.onwheel = handlers.mw;
 	}
 
+	//Deprecated as _getCircleSquareShape is now #getCircleSquareShape which private
 	static _getCircleSquareShape(wrapper, distance){
 		if(this.document.flags.dnd4e?.templateType === "rectCenter" 
 		|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.document.flags.dnd4e?.templateType)) {
@@ -200,7 +201,32 @@ export default class AbilityTemplate extends MeasuredTemplate {
 			];
 			return new PIXI.Polygon(points);
 		} else {
-			return (wrapper(distance))
+			return (wrapper(distance));
+		}
+	}
+
+	static _computeShape(wrapper){
+		if(this.document.flags.dnd4e?.templateType === "rectCenter" 
+		|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.document.flags.dnd4e?.templateType)) {
+			
+			let {angle, width, t} = this.document;
+			const {angle: direction, distance} = this.ray;
+			width *= canvas.dimensions.distancePixels;
+			
+			let r = Ray.fromAngle(0, 0, 0, distance),
+			dx = r.dx - r.dy,
+			dy = r.dy + r.dx;
+	
+			const points = [
+				dx, dy,
+				dy, -dx,
+				-dx, -dy,
+				-dy, dx,
+				dx, dy
+			];
+			return new PIXI.Polygon(points);
+		} else {
+			return (wrapper());
 		}
 	}
 	
