@@ -184,26 +184,13 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		canvas.app.view.onwheel = handlers.mw;
 	}
 
-	//Deprecated as _getCircleSquareShape is now #getCircleSquareShape which private
-	static _getCircleSquareShape(wrapper, distance){
-		if(this.document.flags.dnd4e?.templateType === "rectCenter" 
-		|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.document.flags.dnd4e?.templateType)) {
-			let r = Ray.fromAngle(0, 0, 0, distance),
-			dx = r.dx - r.dy,
-			dy = r.dy + r.dx;
+	/* -------------------------------------------- */
 	
-			const points = [
-				dx, dy,
-				dy, -dx,
-				-dx, -dy,
-				-dy, dx,
-				dx, dy
-			];
-			return new PIXI.Polygon(points);
-		} else {
-			return (wrapper(distance));
-		}
-	}
+	/**
+	 * Wrapped computeShape as MeasuredTemplate.#getCircleShape is now private,
+	 * Overrides the method to allow for 4e Burst shapes allowing drawing square template from the center.
+	 * @param {wrapper} wrapper    refrence to the original core method
+	 */
 
 	static _computeShape(wrapper){
 		if(this.document.flags.dnd4e?.templateType === "rectCenter" 
@@ -225,9 +212,9 @@ export default class AbilityTemplate extends MeasuredTemplate {
 				dx, dy
 			];
 			return new PIXI.Polygon(points);
-		} else {
-			return (wrapper());
 		}
+		
+		return (wrapper());
 	}
 	
 	static _refreshRulerBurst(wrapper){
