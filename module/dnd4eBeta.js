@@ -280,10 +280,17 @@ Hooks.once('init', async function() {
 		apply
 	);
 
+	// libWrapper.register(
+	// 	'dnd4e',
+	// 	// 'MeasuredTemplate.prototype._getCircleShape', // This method can no longer be wrapped
+	// 	'MeasuredTemplate.#getCircleShape',
+	// 	AbilityTemplate._getCircleSquareShape
+	// );
+
 	libWrapper.register(
 		'dnd4e',
-		'MeasuredTemplate.prototype._getCircleShape',
-		AbilityTemplate._getCircleSquareShape
+		'MeasuredTemplate.prototype._computeShape',
+		AbilityTemplate._computeShape
 	);
 
 	libWrapper.register(
