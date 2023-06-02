@@ -267,22 +267,23 @@ export default class AbilityTemplate extends MeasuredTemplate {
 
 
 	static async _onDragLeftStart(wrapper, event){
-		const {origin, originalEvent} = event.data;
 		const tool = game.activeTool;
 
 		if(tool !== "rectCenter"){
 			return wrapper(event);
 		}
+		const interaction = event.interactionData;
+
 
 		const previewData = {
 			user: game.user.id,
 			t: 'circle',
-			x: origin.x,
-			y: origin.y,
+			x: interaction.origin.x,
+			y: interaction.origin.y,
 			distance: 1,
 			direction: 0,
 			fillColor: game.user.color || "#FF0000",
-			hidden: originalEvent.altKey,
+			hidden: event.altKey,
 
 			flags: {dnd4e:{templateType: "rectCenter"}}
 		};
@@ -292,7 +293,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	
 		// Create a preview MeasuredTemplate object
 		const template = new this.constructor.placeableClass(doc);
-		event.data.preview = this.preview.addChild(template);
+		interaction.preview = this.preview.addChild(template);
 		return template.draw();
 	}
 }
