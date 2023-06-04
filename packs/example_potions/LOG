@@ -1,5 +1,0 @@
-2023/06/04-12:04:33.096 374c Delete type=3 #1
-2023/06/04-12:04:47.969 29f8 Level-0 table #5: started
-2023/06/04-12:04:47.972 29f8 Level-0 table #5: 7909 bytes OK
-2023/06/04-12:04:47.974 29f8 Delete type=0 #3
-2023/06/04-12:04:47.980 29f8 Manual compaction at level-0 from '!items!2uLAKJ2zSA0fwXgv' @ 72057594037927935 : 1 .. '!items!x5Z4uodAvRreLe2y' @ 0 : 0; will stop at (end)
