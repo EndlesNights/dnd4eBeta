@@ -7,5 +7,4 @@
 # Don't commit LevelDB files for now for v10 back-compat
 packs/**/*.log
 packs/**/*.old
-packs/**/*.ldb
-packs/**/LOCK
+packs/**/LOG
