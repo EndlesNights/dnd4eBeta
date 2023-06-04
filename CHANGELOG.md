@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.4.2
+## Version 0.4.1
+- added git attributes for binary files
+- fixed gitignore for binary file database
+- regenerated packs database
+
 ## Version 0.4.0
 - conversion to Foundry v11
 
