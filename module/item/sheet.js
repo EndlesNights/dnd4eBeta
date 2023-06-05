@@ -616,10 +616,14 @@ export default class ItemSheet4e extends ItemSheet {
 			html.find(".damage-control").click(this._onDamageControl.bind(this));
 			html.find(".onetext-control").click(this._onOnetextControl.bind(this));
 			html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
-			html.find(".effect-control").click(event => {
-				if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
-					ActiveEffect4e.onManageActiveEffect(event, this.item);
-			});
+
+			// html.find(".effect-control").click(event => {
+			// 	if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
+			// 		ActiveEffect4e.onManageActiveEffect(event, this.item);
+			// });
+			html.find(".effect-control").click(event => { ActiveEffect4e.onManageActiveEffect(event, this.item);});
+
+
 			html.find('.powereffect-control').click(this._onPowerEffectControl.bind(this));
 	}
 
