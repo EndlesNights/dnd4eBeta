@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.3
+- updated active effects. now  editable on items/powers that are embedded to an actor.
+- updated active effect config html layout. Removed redundant options. Added a text description field
+
 ## Version 0.4.2
 ## Version 0.4.1
 - added git attributes for binary files
