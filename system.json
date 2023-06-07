@@ -28,101 +28,53 @@
 	],
 	"packs": [
 		{
-			"name": "example_alchemy",
-			"label": "Example Alchemical Items",
-			"system": "dnd4e",
-			"path": "./packs/example_alchemy.db",
-			"type": "Item"
-		},		
-		{
-			"name": "example_character",
-			"label": "Example Character",
-			"system": "dnd4e",
-			"path": "./packs/example_character.db",
-			"type": "Actor"
+			"name": "equipmentPack",
+			"label": "Equipment",
+			"path": "./packs/equipmentPack",
+			"type": "Item",
+			"private": false,
+			"flags": {}
 		},
 		{
-			"name": "example_potions",
-			"label": "Example Potions & Poisons",
-			"system": "dnd4e",
-			"path": "./packs/example_potions.db",
-			"type": "Item"
+			"name": "featuresPack",
+			"label": "Classes, Race, & Features",
+			"path": "./packs/featuresPack",
+			"type": "Item",
+			"private": false,
+			"flags": {}
 		},
 		{
 			"name": "example_powers",
 			"label": "Example Powers",
 			"system": "dnd4e",
-			"path": "./packs/example_powers.db",
-			"type": "Item"
+			"path": "./packs/example_powers",
+			"type": "Item",
+			"private": false,
+			"flags": {}
 		},
 		{
-			"name": "example_feats",
-			"label": "Example Feats",
+			"name": "manual",
+			"label": "Manual & Help",
 			"system": "dnd4e",
-			"path": "./packs/example_feats.db",
-			"type": "Item"
-		},
+			"path": "./packs/manual",
+			"type": "JournalEntry",
+			"private": false,
+			"flags": {}
+		},		
 		{
-			"name": "class_features",
-			"label": "Class Features",
+			"name": "example_character",
+			"label": "Example Character",
 			"system": "dnd4e",
-			"path": "./packs/class_features.db",
-			"type": "Item"
-		},
-		{
-			"name": "racial_features",
-			"label": "Racial Features",
-			"system": "dnd4e",
-			"path": "./packs/racial_features.db",
-			"type": "Item"
-		},
-		{
-			"name": "srd_armour",
-			"label": "SRD Armour",
-			"system": "dnd4e",
-			"path": "./packs/srd_armour.db",
-			"type": "Item"
-		},
-		{
-			"name": "srd_classes",
-			"label": "SRD Classes",
-			"system": "dnd4e",
-			"path": "./packs/srd_classes.db",
-			"type": "Item"
-		},
-		{
-			"name": "srd_equipment",
-			"label": "SRD Equipment",
-			"system": "dnd4e",
-			"path": "./packs/srd_equipment.db",
-			"type": "Item"
-		},
-		{
-			"name": "srd_races",
-			"label": "SRD Races",
-			"system": "dnd4e",
-			"path": "./packs/srd_races.db",
-			"type": "Item"
-		},
-		{
-			"name": "srd_weapons",
-			"label": "SRD Weapons",
-			"system": "dnd4e",
-			"path": "./packs/srd_weapons.db",
-			"type": "Item"
+			"path": "./packs/example_character",
+			"type": "Actor",
+			"private": false,
+			"flags": {}
 		},
 		{
 			"name": "srd_rules",
 			"label": "SRD Rules",
 			"system": "dnd4e",
 			"path": "./packs/srd_rules.db",
-			"type": "JournalEntry"
-		},
-		{
-			"name": "manual",
-			"label": "Manual & Help",
-			"system": "dnd4e",
-			"path": "./packs/manual.db",
 			"type": "JournalEntry"
 		}
 	],
