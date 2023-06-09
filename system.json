@@ -78,6 +78,20 @@
 			"type": "JournalEntry"
 		}
 	],
+	"packFolders": [
+		{
+		  "name": "DnD4e",
+		  "color": "#193974",
+		  "packs": [
+			"equipmentPack",
+			"featuresPack",
+			"example_powers",
+			"manual",
+			"example_character",
+			"srd_rules"
+		  ]
+		}
+	  ],
 	"languages": [
 		{
 			"lang": "en",
