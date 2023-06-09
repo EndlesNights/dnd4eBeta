@@ -321,4 +321,3 @@ Hooks.on("getSceneControlButtons", function(controls){
 		onClick: toggled => canvas.templates._setWallCollision = toggled
   })
 })
-
