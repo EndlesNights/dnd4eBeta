@@ -1,10 +1,13 @@
 # Changelog
 
+## Version 0.4.4
+- hotfix folders for system compendium packs, remove double folder
+
 ## Version 0.4.3
-- updated active effects. now  editable on items/powers that are embedded to an actor.
+- updated active effects. now editable on items/powers that are embedded to an actor.
 - updated active effect config html layout. Removed redundant options. Added a text description field
 - update compendium packs layout
-- seperated american and global english into two seperate language files, with en.json representing Americna english spelling (armor) and en-au.json representing Global English (armour)
+- separated American and global English into two separate language files, with en.json representing American English spelling (armor) and en-au.json representing Global English (armour)
 - added folders to system compendium packs
 
 ## Version 0.4.2
