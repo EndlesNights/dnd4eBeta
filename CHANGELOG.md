@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.5
+- added Automated Animation support to system, [merge](https://github.com/EndlesNights/dnd4eBeta/pull/287) from [zarick1342](https://github.com/zarick1342)
+
 ## Version 0.4.4
 - hotfix folders for system compendium packs, remove double folder
 
