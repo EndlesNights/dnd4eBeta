@@ -104,19 +104,19 @@ export const addChatMessageContextOptions = function(html, options) {
 	options.push(
 		{
 			name: game.i18n.localize("DND4EBETA.SeleteAllTargets"),
-			icon: '<i class="fa-light fa-user-shield"></i>',
+			icon: '<i class="fa-regular fa-users"></i>',
 			condition: isAttackRoll,
 			callback: li => selectTargetTokens(li, "all")
 		},
 		{
 			name: game.i18n.localize("DND4EBETA.SeleteHitTargets"),
-			icon: '<i class="fa-light fa-user-shield"></i>',
+			icon: '<i class="fa-solid fa-users"></i>',
 			condition: isAttackRoll,
 			callback: li => selectTargetTokens(li, "hit")
 		},
 		{
 			name: game.i18n.localize("DND4EBETA.SeleteMissedTargets"),
-			icon: '<i class="fa-light fa-user-shield"></i>',
+			icon: '<i class="fa-light fa-users"></i>',
 			condition: isAttackRoll,
 			callback: li => selectTargetTokens(li, "miss")
 		},
