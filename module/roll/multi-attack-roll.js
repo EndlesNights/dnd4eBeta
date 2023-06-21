@@ -72,7 +72,7 @@ export class MultiAttackRoll extends Roll {
 
             let hitState = "";
 
-	    if(game.settings.get("dnd4e", "automationCombat") && targDefVal !== undefined) {
+	        if(game.settings.get("dnd4e", "automationCombat") && targDefVal !== undefined) {
                 if (critState === " critical"){
                     hitState = game.i18n.localize("DND4EBETA.AttackRollHitCrit");
                     targDataArray.targetHit.push(targDataArray.targets[i]);
@@ -97,6 +97,7 @@ export class MultiAttackRoll extends Roll {
                 parts : parts,
                 tooltip : '',
                 target : targName,
+                targetID: targDataArray.targets[i].id,
                 hitstate : hitState,
                 critstate : critState
             });

@@ -90,45 +90,71 @@ export const displayDamageOptionButtons = function(message, html, data) {
  * @return {Array}              The extended options Array including new context choices
  */
 export const addChatMessageContextOptions = function(html, options) {
-	let canApply = li => {
+
+	let isAttackRoll = li => {
+		const message = game.messages.get(li.data("messageId"));
+		return message.isRoll && message.isContentVisible && li[0].querySelector('.hit-prediction');
+	};
+	
+	let canApplyDamage = li => {
 		const message = game.messages.get(li.data("messageId"));
 		return message.isRoll && message.isContentVisible && canvas.tokens.controlled.length;
 	};
+
 	options.push(
+		{
+			name: game.i18n.localize("DND4EBETA.SeleteAllTargets"),
+			icon: '<i class="fa-light fa-user-shield"></i>',
+			condition: isAttackRoll,
+			callback: li => selectTargetTokens(li, "all")
+		},
+		{
+			name: game.i18n.localize("DND4EBETA.SeleteHitTargets"),
+			icon: '<i class="fa-light fa-user-shield"></i>',
+			condition: isAttackRoll,
+			callback: li => selectTargetTokens(li, "hit")
+		},
+		{
+			name: game.i18n.localize("DND4EBETA.SeleteMissedTargets"),
+			icon: '<i class="fa-light fa-user-shield"></i>',
+			condition: isAttackRoll,
+			callback: li => selectTargetTokens(li, "miss")
+		},
+
 		{
 			name: game.i18n.localize("DND4EBETA.ChatContextDamage"),
 			icon: '<i class="fas fa-user-minus"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 1)
 		},
 		{
 			name: game.i18n.localize("DND4EBETA.ChatContextHealing"),
 			icon: '<i class="fas fa-user-plus"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, -1)
 		},
 		{
 			name: game.i18n.localize("DND4EBETA.ChatContextTempHp"),
 			icon: '<i class="fas fa-user-clock fa-fw"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardTempHp(li)
 		},
 		{
 			name: game.i18n.localize("DND4EBETA.ChatContextDoubleDamage"),
 			icon: '<i class="fas fa-user-injured"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 2)
 		},
 		{
 			name: game.i18n.localize("DND4EBETA.ChatContextHalfDamage"),
 			icon: '<i class="fas fa-user-shield"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 0.5)
 		},
 		{
 			name: game.i18n.localize("DND4EBETA.ChatContextTrueDamage"),
 			icon: '<i class="fa-light fa-user-shield"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 1, true)
 		}
 	);
@@ -164,6 +190,42 @@ export const clickRollMessageDamageButtons = function(event) {
 	}
 	else if (action === "TempHeal") {
 		applyChatCardTempHpInner(roll)
+	}
+}
+
+/* -------------------------------------------- */
+/**
+ *
+ * @param {HTMLElement} li    	The list item clicked
+ * @param {string} targetType   Target Type between "hit", "miss", and "all". But I just use else for all soooo what ever
+ * @return {Promise}
+ */
+function selectTargetTokens(li, targetType){
+	const message = game.messages.get(li.data("messageId"));
+
+	if(!event.shiftKey){
+		canvas.tokens.selectObjects();
+	}
+
+	if(targetType === "hit"){
+		console.log("hit")
+		for(const roll of message.rolls){
+			if([game.i18n.localize("DND4EBETA.AttackRollHit"), game.i18n.localize("DND4EBETA.AttackRollHitCrit")].includes(roll.options.multirollData.hitstate)){
+				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
+			}
+		}
+	}
+	else if(targetType === "miss"){
+		console.log("miss")
+		for(const roll of message.rolls){
+			if([game.i18n.localize("DND4EBETA.AttackRollMiss"), game.i18n.localize("DND4EBETA.AttackRollMissCrit")].includes(roll.options.multirollData.hitstate)){
+				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
+			}
+		}
+	} else {
+		for(const roll of message.rolls){
+			canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
+		}
 	}
 }
 
