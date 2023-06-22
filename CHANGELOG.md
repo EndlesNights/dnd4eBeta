@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.7
+- Hotfix, issue with SVGs height and width being set within style caused issues for a number of browsers.
+
 ## Version 0.4.6
 - reworked visuals for "Probable Hit/Miss" so that it is now already Green/Red text, making it more apparent.
 - Can now rightclick attack roll messages to either select related targeted tokens to the attacks based on the categories of "All Tokens", "Hit Tokens", or "Miss Tokens"
