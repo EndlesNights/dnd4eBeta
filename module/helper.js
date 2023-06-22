@@ -154,7 +154,7 @@ export class Helper {
 				effect.changes.forEach((change => {
 					if (change.key.startsWith(`power.${effectType}`) || (weaponInnerData && change.key.startsWith(`weapon.${effectType}`))) {
 						effectsToProcess.push({
-							name : effect.label,
+							name : effect.name,
 							key: change.key,
 							value: change.value
 						})

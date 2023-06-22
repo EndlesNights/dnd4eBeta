@@ -35,7 +35,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		console.log(item);
 		let distance = this.getDistanceCalc(item);
 
-		let flags = {dnd4eAltus:{templateType:templateShape}};
+		let flags = {dnd4eAltus:{templateType:templateShape, item}};
 
 		if(item.system.rangeType === "closeBlast" || item.system.rangeType === "rangeBlast") {
 			distance *= Math.sqrt(2);
@@ -184,9 +184,22 @@ export default class AbilityTemplate extends MeasuredTemplate {
 		canvas.app.view.onwheel = handlers.mw;
 	}
 
-	static _getCircleSquareShape(wrapper, distance){
+	/* -------------------------------------------- */
+	
+	/**
+	 * Wrapped computeShape as MeasuredTemplate.#getCircleShape is now private,
+	 * Overrides the method to allow for 4e Burst shapes allowing drawing square template from the center.
+	 * @param {wrapper} wrapper    refrence to the original core method
+	 */
+
+	static _computeShape(wrapper){
 		if(this.document.flags.dnd4eAltus?.templateType === "rectCenter" 
 		|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "rectCenter" && !this.document.flags.dnd4eAltus?.templateType)) {
+			
+			let {angle, width, t} = this.document;
+			const {angle: direction, distance} = this.ray;
+			width *= canvas.dimensions.distancePixels;
+			
 			let r = Ray.fromAngle(0, 0, 0, distance),
 			dx = r.dx - r.dy,
 			dy = r.dy + r.dx;
@@ -199,9 +212,9 @@ export default class AbilityTemplate extends MeasuredTemplate {
 				dx, dy
 			];
 			return new PIXI.Polygon(points);
-		} else {
-			return (wrapper(distance))
 		}
+		
+		return (wrapper());
 	}
 	
 	static _refreshRulerBurst(wrapper){
@@ -241,22 +254,23 @@ export default class AbilityTemplate extends MeasuredTemplate {
 
 
 	static async _onDragLeftStart(wrapper, event){
-		const {origin, originalEvent} = event.data;
 		const tool = game.activeTool;
 
 		if(tool !== "rectCenter"){
 			return wrapper(event);
 		}
+		const interaction = event.interactionData;
+
 
 		const previewData = {
 			user: game.user.id,
 			t: 'circle',
-			x: origin.x,
-			y: origin.y,
+			x: interaction.origin.x,
+			y: interaction.origin.y,
 			distance: 1,
 			direction: 0,
 			fillColor: game.user.color || "#FF0000",
-			hidden: originalEvent.altKey,
+			hidden: event.altKey,
 
 			flags: {dnd4eAltus:{templateType: "rectCenter"}}
 		};
@@ -266,7 +280,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	
 		// Create a preview MeasuredTemplate object
 		const template = new this.constructor.placeableClass(doc);
-		event.data.preview = this.preview.addChild(template);
+		interaction.preview = this.preview.addChild(template);
 		return template.draw();
 	}
 }

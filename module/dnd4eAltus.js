@@ -280,10 +280,17 @@ Hooks.once('init', async function() {
 		apply
 	);
 
+	// libWrapper.register(
+	// 	'dnd4eAltus',
+	// 	// 'MeasuredTemplate.prototype._getCircleShape', // This method can no longer be wrapped
+	// 	'MeasuredTemplate.#getCircleShape',
+	// 	AbilityTemplate._getCircleSquareShape
+	// );
+
 	libWrapper.register(
 		'dnd4eAltus',
-		'MeasuredTemplate.prototype._getCircleShape',
-		AbilityTemplate._getCircleSquareShape
+		'MeasuredTemplate.prototype._computeShape',
+		AbilityTemplate._computeShape
 	);
 
 	libWrapper.register(
@@ -303,6 +310,18 @@ Hooks.once('init', async function() {
 		'Combat.prototype.nextTurn',
 		Turns._onNextTurn
 	)
+
+	libWrapper.register(
+		'dnd4eAltus',
+		'ChatLog.prototype.activateListeners',
+		chat.ChatLogsWrapped.activateListeners
+	)
+
+	libWrapper.register(
+		'dnd4eAltus',
+		'ChatLog.prototype._onDiceRollClick',
+		chat._onDiceRollClick
+	)
 });
 
 Hooks.on("getSceneControlButtons", function(controls){
@@ -314,4 +333,3 @@ Hooks.on("getSceneControlButtons", function(controls){
 		onClick: toggled => canvas.templates._setWallCollision = toggled
   })
 })
-

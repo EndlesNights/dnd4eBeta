@@ -3,3 +3,8 @@
 .vs/
 /node_modules
 /packs/dist/*
+
+# Don't commit LevelDB files for now for v10 back-compat
+packs/**/*.log
+packs/**/*.old
+packs/**/LOG

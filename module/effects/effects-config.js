@@ -7,7 +7,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["sheet", "active-effect-sheet"],
 			template: "systems/dnd4eAltus/templates/sheets/active-effect-config.html",
-			width: 560,
+			width: 580,
 			height: "auto",
 			tabs: [{navSelector: ".tabs", contentSelector: "form", initial: "details"}]
 		});

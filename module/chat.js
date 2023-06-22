@@ -90,45 +90,71 @@ export const displayDamageOptionButtons = function(message, html, data) {
  * @return {Array}              The extended options Array including new context choices
  */
 export const addChatMessageContextOptions = function(html, options) {
-	let canApply = li => {
+
+	let isAttackRoll = li => {
+		const message = game.messages.get(li.data("messageId"));
+		return message.isRoll && message.isContentVisible && li[0].querySelector('.hit-prediction');
+	};
+	
+	let canApplyDamage = li => {
 		const message = game.messages.get(li.data("messageId"));
 		return message.isRoll && message.isContentVisible && canvas.tokens.controlled.length;
 	};
+
 	options.push(
+		{
+			name: game.i18n.localize("DND4EALTUS.SeleteAllTargets"),
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: isAttackRoll,
+			callback: li => selectTargetTokens(li, "all")
+		},
+		{
+			name: game.i18n.localize("DND4EALTUS.SeleteHitTargets"),
+			icon: '<i class="fa-solid fa-users"></i>',
+			condition: isAttackRoll,
+			callback: li => selectTargetTokens(li, "hit")
+		},
+		{
+			name: game.i18n.localize("DND4EALTUS.SeleteMissedTargets"),
+			icon: '<i class="fa-light fa-users"></i>',
+			condition: isAttackRoll,
+			callback: li => selectTargetTokens(li, "miss")
+		},
+
 		{
 			name: game.i18n.localize("DND4EALTUS.ChatContextDamage"),
 			icon: '<i class="fas fa-user-minus"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 1)
 		},
 		{
 			name: game.i18n.localize("DND4EALTUS.ChatContextHealing"),
 			icon: '<i class="fas fa-user-plus"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, -1)
 		},
 		{
 			name: game.i18n.localize("DND4EALTUS.ChatContextTempHp"),
 			icon: '<i class="fas fa-user-clock fa-fw"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardTempHp(li)
 		},
 		{
 			name: game.i18n.localize("DND4EALTUS.ChatContextDoubleDamage"),
 			icon: '<i class="fas fa-user-injured"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 2)
 		},
 		{
 			name: game.i18n.localize("DND4EALTUS.ChatContextHalfDamage"),
 			icon: '<i class="fas fa-user-shield"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 0.5)
 		},
 		{
 			name: game.i18n.localize("DND4EALTUS.ChatContextTrueDamage"),
 			icon: '<i class="fa-light fa-user-shield"></i>',
-			condition: canApply,
+			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 1, true)
 		}
 	);
@@ -164,6 +190,42 @@ export const clickRollMessageDamageButtons = function(event) {
 	}
 	else if (action === "TempHeal") {
 		applyChatCardTempHpInner(roll)
+	}
+}
+
+/* -------------------------------------------- */
+/**
+ *
+ * @param {HTMLElement} li    	The list item clicked
+ * @param {string} targetType   Target Type between "hit", "miss", and "all". But I just use else for all soooo what ever
+ * @return {Promise}
+ */
+function selectTargetTokens(li, targetType){
+	const message = game.messages.get(li.data("messageId"));
+
+	if(!event.shiftKey){
+		canvas.tokens.selectObjects();
+	}
+
+	if(targetType === "hit"){
+		console.log("hit")
+		for(const roll of message.rolls){
+			if([game.i18n.localize("DND4EALTUS.AttackRollHit"), game.i18n.localize("DND4EALTUS.AttackRollHitCrit")].includes(roll.options.multirollData.hitstate)){
+				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
+			}
+		}
+	}
+	else if(targetType === "miss"){
+		console.log("miss")
+		for(const roll of message.rolls){
+			if([game.i18n.localize("DND4EALTUS.AttackRollMiss"), game.i18n.localize("DND4EALTUS.AttackRollMissCrit")].includes(roll.options.multirollData.hitstate)){
+				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
+			}
+		}
+	} else {
+		for(const roll of message.rolls){
+			canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
+		}
 	}
 }
 
@@ -261,13 +323,67 @@ function applyChatCardTempHpInner(roll){
 	}));
 }
 
-// decimal total = 143.13m;
-// int divider = 5;
-// while (divider > 0) {
-//   decimal amount = Math.Round(total / divider, 2);
-//   Console.WriteLine(amount);
-//   total -= amount;
-//   divider--;
-// }
-
 /* -------------------------------------------- */
+
+/**
+ * Wrapped ChatLog class to add addtioanl functions to the actionListener
+ *
+*/
+
+export class ChatLogsWrapped extends ChatLog {
+
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	static activateListeners(wrapped, html) {
+		wrapped(html);
+
+		//When clicking on the name of a taget in a chat messages from attack rolls, will select and pan to the highlighted token
+		html.find(".target").click(function(){
+			event.preventDefault();
+			console.log(event)
+
+			const tokenID = this.getAttribute('target-id');
+			if(!tokenID) return;
+
+			const token = canvas.tokens.get(tokenID);
+
+			if(!token) return console.log(`Token ID: ${tokenID} does not exist in this scene.`);
+			if ( !token.actor?.testUserPermission(game.user, "OBSERVER") ) return;
+
+			if(!event.shiftKey){
+				canvas.tokens.selectObjects();
+			}
+
+			token.control({releaseOthers: false});
+			return canvas.animatePan(token.center);
+			
+		});
+
+		//When hover over chat messages with "Target" from attack rolls, will highlight the token who's have is being hovered
+		html.find(".target").hover(function(){
+			event.preventDefault();
+			if ( !canvas.ready ) return;
+
+			if(event.type === "mouseover"){
+				const tokenID = this.getAttribute('target-id');
+				const token = canvas.tokens.get(tokenID);
+				if ( token?.isVisible ) {
+				  if ( !token.controlled ) token._onHoverIn(event, {hoverOutOthers: true});
+				   this._highlighted = token;
+				}
+			} else if(event.type === "mouseout"){
+				return this._highlighted?._onHoverOut(event);
+			}
+		});
+	}
+}
+
+export function _onDiceRollClick(wrapper, event){
+	//stop roll from opening up when clicking the .target 
+	if(event.target.classList.contains("target") || (event.target.tagName.toLowerCase() === 'b' && event.target.parentElement.classList.contains("target"))){
+		return;
+	}
+
+	return wrapper(event);
+}

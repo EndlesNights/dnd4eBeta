@@ -150,6 +150,9 @@
 				"epic": "",
 				"race": "",
 				"size": "med",
+				"origin": "natural",
+				"type": "humanoid",
+				"other": "",
 				"age": "",
 				"gender": "",
 				"height": "",
@@ -566,9 +569,6 @@
 		"advancedCals": false,
 		"details": {
 			
-			"origin": "natural",
-			"type": "humanoid",
-			"other": "",
 			"role": {
 				"primary": "soldier",
 				"secondary": "standard",
@@ -760,7 +760,7 @@
 				"abilityBonus": 0,
 				"def": "ac",
 				"defBonus": 0,
-				"formula": "@wepAttack + @powerMod + @atkMod",
+				"formula": "@wepAttack + @powerMod + @lvhalf + @atkMod",
 				"damageType": {},
 				"effectType": {}
 			},

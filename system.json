@@ -2,11 +2,11 @@
 	"id": "dnd4eAltus",
 	"title": "DnD 4th Edition Altus",
 	"description": "An implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop Altus setting.",
-	"version": "0.3.32",
+	"version": "0.4.6",
 	"compatibility":{
-		"minimum": 10,
-		"verified": 10,
-		"maximum": 10
+		"minimum": 11,
+		"verified": 11,
+		"maximum": 11
 	},
 	"templateVersion": 2,
 	"authors": [
@@ -28,88 +28,47 @@
 	],
 	"packs": [
 		{
-			"name": "example_alchemy",
-			"label": "Example Alchemical Items",
-			"system": "dnd4eAltus",
-			"path": "./packs/example_alchemy.db",
-			"type": "Item"
-		},		
-		{
-			"name": "example_character",
-			"label": "Example Character",
-			"system": "dnd4eAltus",
-			"path": "./packs/example_character.db",
-			"type": "Actor"
+			"name": "equipmentPack",
+			"label": "Equipment",
+			"path": "./packs/equipmentPack",
+			"type": "Item",
+			"private": false,
+			"flags": {}
 		},
 		{
-			"name": "example_potions",
-			"label": "Example Potions & Poisons",
-			"system": "dnd4eAltus",
-			"path": "./packs/example_potions.db",
-			"type": "Item"
+			"name": "featuresPack",
+			"label": "Classes, Race, & Features",
+			"path": "./packs/featuresPack",
+			"type": "Item",
+			"private": false,
+			"flags": {}
 		},
 		{
 			"name": "example_powers",
 			"label": "Example Powers",
 			"system": "dnd4eAltus",
-			"path": "./packs/example_powers.db",
-			"type": "Item"
+			"path": "./packs/example_powers",
+			"type": "Item",
+			"private": false,
+			"flags": {}
 		},
 		{
-			"name": "example_feats",
-			"label": "Example Feats",
+			"name": "manual",
+			"label": "Manual & Help",
 			"system": "dnd4eAltus",
-			"path": "./packs/example_feats.db",
-			"type": "Item"
-		},
+			"path": "./packs/manual",
+			"type": "JournalEntry",
+			"private": false,
+			"flags": {}
+		},		
 		{
-			"name": "class_features",
-			"label": "Class Features",
+			"name": "example_character",
+			"label": "Example Character",
 			"system": "dnd4eAltus",
-			"path": "./packs/class_features.db",
-			"type": "Item"
-		},
-		{
-			"name": "racial_features",
-			"label": "Racial Features",
-			"system": "dnd4eAltus",
-			"path": "./packs/racial_features.db",
-			"type": "Item"
-		},
-		{
-			"name": "srd_armour",
-			"label": "SRD Armour",
-			"system": "dnd4eAltus",
-			"path": "./packs/srd_armour.db",
-			"type": "Item"
-		},
-		{
-			"name": "srd_classes",
-			"label": "SRD Classes",
-			"system": "dnd4eAltus",
-			"path": "./packs/srd_classes.db",
-			"type": "Item"
-		},
-		{
-			"name": "srd_equipment",
-			"label": "SRD Equipment",
-			"system": "dnd4eAltus",
-			"path": "./packs/srd_equipment.db",
-			"type": "Item"
-		},
-		{
-			"name": "srd_races",
-			"label": "SRD Races",
-			"system": "dnd4eAltus",
-			"path": "./packs/srd_races.db",
-			"type": "Item"
-		},
-		{
-			"name": "srd_weapons",
-			"label": "SRD Weapons",
-			"system": "dnd4eAltus",
-			"path": "./packs/srd_weapons.db",
-			"type": "Item"
+			"path": "./packs/example_character",
+			"type": "Actor",
+			"private": false,
+			"flags": {}
 		},
 		{
 			"name": "srd_rules",
@@ -117,20 +76,42 @@
 			"system": "dnd4eAltus",
 			"path": "./packs/srd_rules.db",
 			"type": "JournalEntry"
-		},
-		{
-			"name": "manual",
-			"label": "Manual & Help",
-			"system": "dnd4eAltus",
-			"path": "./packs/manual.db",
-			"type": "JournalEntry"
 		}
 	],
+	"packFolders": [
+		{
+		  "name": "DnD4e",
+		  "color": "#193974",
+		  "packs": [
+			"equipmentPack",
+			"featuresPack",
+			"example_powers",
+			"manual",
+			"example_character",
+			"srd_rules"
+		  ]
+		}
+	  ],
 	"languages": [
 		{
 			"lang": "en",
 			"name": "English",
 			"path": "lang/en.json"
+		},
+		{
+			"lang": "fr",
+			"name": "Français",
+			"path": "lang/fr.json"
+		},
+		{
+			"lang": "cn",
+			"name": "中文",
+			"path": "lang/cn.json"
+		},
+		{
+			"lang": "en-AU",
+			"name": "English (Australian)",
+			"path": "lang/en-au.json"
 		}
 	],
 	"socket": true,
@@ -140,7 +121,7 @@
 	"secondaryTokenAttribute": "attributes.temphp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dndAltus/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/Altus-0.3.32.zip",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/Altus-0.4.6.zip",
 	"flags": {
 		"needsMigrationVersion": "0.3.9",
 		"compatibleMigrationVersion": "0.2.50"

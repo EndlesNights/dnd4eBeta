@@ -32,13 +32,6 @@
 		return super.apply(actor, change);
 	}
 
-
-  /** @inheritdoc */
-  _onUpdate(data, options, userId) {
-	super._onUpdate(data, options, userId);
-	if ( "disabled" in data ) this._displayScrollingStatus(!data.disabled);
-  }
-
 	/** @inheritdoc */
 	async _preCreate(data, options, user) {
 		await super._preCreate(data, options, user);
@@ -102,7 +95,7 @@
 		switch ( a.dataset.action ) {
 			case "create":
 				return owner.createEmbeddedDocuments("ActiveEffect", [{
-					label: game.i18n.localize("DND4EALTUS.EffectNew"),
+					name: game.i18n.localize("DND4EALTUS.EffectNew"),
 					icon: "icons/svg/aura.svg",
 					origin: owner.uuid,
 					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
@@ -131,33 +124,6 @@
 		
 		return super.isTemporary;
 	}
-	
-	// /**
-	//  * @override
-	//  * Summarize the active effect duration
-	//  * @type {{type: string, duration: number|null, remaining: number|null, label: string}}
-	//  */
-	// get duration() {
-	// 	// console.log(this)
-	// 	if(this.flags?.dnd4eAltus?.effectData?.durationType){
-	// 		const d = this.duration;
-	// 		const duration = this._getCombatTime(d.rounds, d.turns);
-	// 		return {
-	// 			type: "turns",
-	// 			duration: duration,
-	// 			remaining: duration,
-	// 			label: this._getDurationLabel(d.rounds, d.turns)
-	// 		}
-	// 	}
-	// 	if(super.duration){
-	// 		return super.duration
-	// 	}
-	// 	return {};
-	// }
-
-	// set duration(duration){
-	// 	return duration;
-	// }
 
 	/* -------------------------------------------- */
 
@@ -220,7 +186,6 @@
 
 		// Iterate over active effects, classifying them into categories
 		for ( let e of effects ) {
-			e._getSourceName(); // Trigger a lookup for the source name
 			if ( e.isSuppressed ) categories.suppressed.effects.push(e);
 			else if ( e.disabled ) categories.inactive.effects.push(e);
 			else if ( e.isTemporary ) categories.temporary.effects.push(e);
@@ -230,4 +195,45 @@
 		categories.suppressed.hidden = !categories.suppressed.effects.length;
 		return categories;
 	}
+
+	async _preUpdate(data, options, user){
+		super._preUpdate(data, options, user);
+		console.log(this);
+		console.log(data);
+		console.log(options);
+		console.log(user);
+
+		console.log(this.changes[0].value)
+	}
+	// _onUpdate(data, options, userId) {
+	// 	super._onUpdate(data, options, userId);
+
+	// 	//check if the effect if on an Item that is on an Actor
+	// 	if(this.parent.documentName === "Item" && this.parent.parent?.documentName ==="Actor"){
+	// 		if(this.parent.type === "power"){
+	// 			return;
+	// 		}
+
+	// 		console.log(this);
+	// 		console.log(data);
+	// 		console.log(options);
+	// 		console.log(userId);
+
+	// 		const actor = this.parent.parent;
+	// 		for(const effect of actor.effects){
+	// 			if(effect.origin.includes(`Item.${this.parent.id}`)){
+	// 				console.log(effect);
+
+	// 				console.log(this.changes[0].key)
+	// 				console.log(this.changes[0].value)
+	// 				// effect.apply(actor, options);
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	// _onDelete(options, userId) {
+	// 	console.trace();
+	// 	super._onDelete(options, userId);
+	// }
 }

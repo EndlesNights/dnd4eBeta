@@ -2357,7 +2357,9 @@ font-size: 12px;
 }
 
 span.flavor-text.critical,
-span.flavor-text.fumble {
+span.flavor-text.fumble,
+span.flavor-text.probable-hit,
+span.flavor-text.probable-miss {
 	font-weight: bold;
 }
 .dice-roll .dice-total.success {
@@ -2381,10 +2383,12 @@ span.flavor-text.fumble {
 	display:inline-block;
 	margin-right:5px;
 }
-.dice-roll .hit-prediction.critical{
+.dice-roll .hit-prediction.critical,
+.dice-roll .hit-prediction.probable-hit {
 	color:green;
 }
-.dice-roll .hit-prediction.fumble{
+.dice-roll .hit-prediction.fumble,
+.dice-roll .hit-prediction.probable-miss{
 	color:red;
 }
 /* ----------------------------------------- */

@@ -1,9 +1,14 @@
-![](https://img.shields.io/badge/Foundry-v9-informational)
+![](https://img.shields.io/badge/Foundry-v10-informational)
 
-## DnD 4th Edition - Beta
-* **Author**: EndlesNights#9000
-* **Contributors**: [ahoward-cf](https://github.com/ahoward-cf), [draconas1](https://github.com/draconas1), [FoxLee](https://github.com/FoxLee), [Marcloure](https://github.com/Marcloure), [kyleady](https://github.com/kyleady), [TheGiddyLimit](https://github.com/TheGiddyLimit)
+# DnD 4th Edition - Beta
 * **Foundry VTT Compatibility**: v10
+* **Author**: EndlesNights#9000
+* **Contributors**: [draconas1](https://github.com/draconas1), [FoxLee](https://github.com/FoxLee), [ahoward-cf](https://github.com/ahoward-cf), [Marcloure](https://github.com/Marcloure), [kyleady](https://github.com/kyleady), [TheGiddyLimit](https://github.com/TheGiddyLimit), [BadgerKing7](https://github.com/BadgerKing7), [mncimino1993](https://github.com/mncimino1993), [zarick1342](https://github.com/zarick1342)
+
+## **Language Support** 
+- Français, courtoisie de [Gilphe](https://github.com/Gilphe)
+- 中文, 由 扶摇
+
 
 ## Description
 An implementation for the 4th Edition of Everyone's Favourite Cave Spelunking, and Wyvern Slaying, Fantasy Role Playing Game System for [Foundry Virtual Tabletop](https://foundryvtt.com/) in accordance to the [4th Edition System Reference Document](http://weirdzine.com/wp-content/uploads/2015/07/4E_SRD-1.pdf). This system hopes to provide a basis that eases some of the cruncher side of 4th Edition, by providing a feature rich character sheet and some basic automation both inside of and outside of combat.
