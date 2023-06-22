@@ -152,6 +152,13 @@ Hooks.once("ready",  function() {
 			else ItemSheet4e._handleShareItem(data);
 		});
 
+
+	
+	$("#myElement").mouseover(function() {
+		// Call your function here
+		myFunction();
+	});
+	
 	// Determine whether a system migration is required and feasible
 	if ( !game.user.isGM ) return;
 	const cv = game.settings.get("dnd4e", "systemMigrationVersion") || game.world.flags.dnd4e?.version;
@@ -309,6 +316,12 @@ Hooks.once('init', async function() {
 		'dnd4e',
 		'Combat.prototype.nextTurn',
 		Turns._onNextTurn
+	)
+
+	libWrapper.register(
+		'dnd4e',
+		'ChatLog.prototype.activateListeners',
+		chat.ChatLogsWrapped.activateListeners
 	)
 });
 
