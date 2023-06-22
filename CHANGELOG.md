@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.4.6
+- reworked visuals for "Probable Hit/Miss" so that it is now already Green/Red text, making it more apparent.
+- Can now rightclick attack roll messages to either select related targeted tokens to the attacks based on the categories of "All Tokens", "Hit Tokens", or "Miss Tokens"
+- Can now mouse over the "Target: <name>" text of a message to highlight the related token (if visible)
+- Can now left click the "Target: <name>" text of a message to select the related token (if permissions) 
+
 ## Version 0.4.5
 - added Automated Animation support to system, [merge](https://github.com/EndlesNights/dnd4eBeta/pull/287) from [zarick1342](https://github.com/zarick1342)
 
