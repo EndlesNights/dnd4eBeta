@@ -323,6 +323,12 @@ Hooks.once('init', async function() {
 		'ChatLog.prototype.activateListeners',
 		chat.ChatLogsWrapped.activateListeners
 	)
+
+	libWrapper.register(
+		'dnd4e',
+		'ChatLog.prototype._onDiceRollClick',
+		chat._onDiceRollClick
+	)
 });
 
 Hooks.on("getSceneControlButtons", function(controls){

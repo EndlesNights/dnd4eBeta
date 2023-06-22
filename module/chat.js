@@ -341,6 +341,7 @@ export class ChatLogsWrapped extends ChatLog {
 		//When clicking on the name of a taget in a chat messages from attack rolls, will select and pan to the highlighted token
 		html.find(".target").click(function(){
 			event.preventDefault();
+			console.log(event)
 
 			const tokenID = this.getAttribute('target-id');
 			if(!tokenID) return;
@@ -376,4 +377,13 @@ export class ChatLogsWrapped extends ChatLog {
 			}
 		});
 	}
+}
+
+export function _onDiceRollClick(wrapper, event){
+	//stop roll from opening up when clicking the .target 
+	if(event.target.classList.contains("target") || (event.target.tagName.toLowerCase() === 'b' && event.target.parentElement.classList.contains("target"))){
+		return;
+	}
+
+	return wrapper(event);
 }
