@@ -1651,6 +1651,7 @@ export default class Item4e extends Item {
 		const rollData = this.actor.getRollData();
 		rollData.item = duplicate(this.system);
 		rollData.item.name = this.name;
+		rollData.item.flags = duplicate(this.flags);
 
 		// Include an ability score modifier if one exists
 		const abl = this.abilityMod;
