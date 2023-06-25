@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.9
+- Fix old effect labels
+
 ## Version 0.4.8
 - fix to Active Effects applying, and displaying of labels
 - Autoanimations fixes [merge](https://github.com/EndlesNights/dnd4eBeta/pull/291) from [zarick1342](https://github.com/zarick1342)
