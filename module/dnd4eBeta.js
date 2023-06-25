@@ -121,7 +121,7 @@ Hooks.once("setup", function() {
 	"profArmor", "cloth", "light", "heavy", "shield",
 	"weaponProficiencies", "simpleM", "simpleR", "militaryM", "militaryR", "superiorM", "superiorR", "improvisedM", "improvisedR","rangeType", "rangeTypeNoWeapon",
 	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
-	"weaponTypes", "weaponHands"
+	"weaponTypes", "weaponHands", "autoanimationHook"
 	];
 
 	const noSort = [

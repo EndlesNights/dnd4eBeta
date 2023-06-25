@@ -205,6 +205,16 @@ DND4EBETA.launchOrder = {
 
 /* -------------------------------------------- */
 
+DND4EBETA.autoanimationHook = {
+  "attack": "DND4EBETA.AutoanimationHookAttack",
+  "damage": "DND4EBETA.AutoanimationHookDamage",
+  "healing": "DND4EBETA.AutoanimationHookHealing",
+  "usePower": "DND4EBETA.AutoanimationHookUsePower",
+  "template": "DND4EBETA.AutoanimationHookTemplate",
+};
+
+/* -------------------------------------------- */
+
 /**
  * The set of equipment types for armour, clothing, and other objects which can ber worn by the character
  * @type {Object}
