@@ -2,6 +2,7 @@
 
 ## Version 0.4.8
 - fix to Active Effects applying, and displaying of labels
+- Autoanimations fixes [merge](https://github.com/EndlesNights/dnd4eBeta/pull/291) from [zarick1342](https://github.com/zarick1342)
 
 ## Version 0.4.7
 - Hotfix, issue with SVGs height and width being set within style caused issues for a number of browsers.
