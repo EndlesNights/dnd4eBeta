@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.8
+- fix to Active Effects applying, and displaying of labels
+
 ## Version 0.4.7
 - Hotfix, issue with SVGs height and width being set within style caused issues for a number of browsers.
 
