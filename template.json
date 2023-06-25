@@ -735,7 +735,8 @@
 				"scope": "global",
 				"launchOrder": "off",
 				"command": "",
-				"author": ""
+				"author": "",
+				"autoanimationHook": ""
 			}
 		},
 		"attackAndDamage": {

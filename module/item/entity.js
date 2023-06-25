@@ -609,6 +609,10 @@ export default class Item4e extends Item {
 		// Create the chat message
 		if ( createMessage ) {
 
+			if(this.type === "power") {
+				Hooks.callAll("dnd4e.usePower", this, ChatMessage.getSpeaker({ actor: this.actor }));
+			}
+
 			ChatMessage.create(chatData);
 
 			if(["both", "post"].includes(this.system.macro?.launchOrder)) {
@@ -1300,8 +1304,10 @@ export default class Item4e extends Item {
 		partsExpressionReplacement.unshift({target : parts[0], value: damageFormulaExpression})
 		partsCritExpressionReplacement.unshift({target : partsCrit[0], value: critDamageFormulaExpression})
 		partsMissExpressionReplacement.unshift({target : partsMiss[0], value: missDamageFormulaExpression})
+		
+		const speaker = ChatMessage.getSpeaker({ actor: this.actor });
 
-
+		Hooks.callAll("dnd4e.rollDamage", this, speaker);		
 
 		return damageRoll({
 			event,
@@ -1315,7 +1321,7 @@ export default class Item4e extends Item {
 			data: rollData,
 			title,
 			flavor,
-			speaker: ChatMessage.getSpeaker({actor: this.actor}),
+			speaker,
 			dialogOptions: {
 				width: 400,
 				top: event ? event.clientY - 80 : null,
@@ -1430,6 +1436,10 @@ export default class Item4e extends Item {
 		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
 		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 
+		const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+
+		Hooks.callAll("dnd4e.rollHealing", this, speaker);
+
 		// Call the roll helper utility
 		return damageRoll({
 			event,
@@ -1440,7 +1450,7 @@ export default class Item4e extends Item {
 			title,
 			healingRoll: true,
 			flavor,
-			speaker: ChatMessage.getSpeaker({actor: this.actor}),
+			speaker,
 			dialogOptions: {
 				width: 400,
 				top: event ? event.clientY - 80 : null,
@@ -1651,6 +1661,7 @@ export default class Item4e extends Item {
 		const rollData = this.actor.getRollData();
 		rollData.item = duplicate(this.system);
 		rollData.item.name = this.name;
+		rollData.item.flags = duplicate(this.flags);
 
 		// Include an ability score modifier if one exists
 		const abl = this.abilityMod;

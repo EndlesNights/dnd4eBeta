@@ -138,6 +138,8 @@ export default class ItemSheet4e extends ItemSheet {
 			relativeTo: this.item
 		});
 
+		data.autoanimationsActive = game.modules.get("autoanimations")?.active;
+
 		return data;
 	}
 
