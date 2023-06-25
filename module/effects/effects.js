@@ -125,6 +125,54 @@
 		return super.isTemporary;
 	}
 
+	_prepareDuration(){
+		
+		if(this.parent.type === "power"){
+			const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
+			if(durationType){
+				return{
+					label: this._getDurationLabel(0,0)
+				};
+			}
+		}
+		
+		const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
+		if(durationType){
+
+			const d = this.duration;
+			const cbt = game.combat;
+			if ( !cbt ) return {
+				type: "turns",
+				_combatTime: undefined
+			};
+
+			const c = {round: cbt.round ?? 0, turn: cbt.turn ?? 0, nTurns: cbt.turns.length || 1};
+			const current = this._getCombatTime(c.round, c.turn);
+			const duration = this._getCombatTime(d.rounds, d.turns);
+			const start = this._getCombatTime(d.startRound, d.startTurn, c.nTurns);
+
+
+			// Some number of remaining rounds and turns (possibly zero)
+			const remaining = Math.max(((start + duration) - current).toNearest(0.01), 0);
+			const remainingRounds = Math.floor(remaining);
+			let remainingTurns = 0;
+			if ( remaining > 0 ) {
+			let nt = c.turn - d.startTurn;
+			while ( nt < 0 ) nt += c.nTurns;
+			remainingTurns = nt > 0 ? c.nTurns - nt : 0;
+			}
+
+			return {
+				type: "turns",
+				duration: duration,
+				remaining: remaining,
+				label: this._getDurationLabel(d.rounds, d.turns),
+				_combatTime: current
+			  };
+		}
+		return super._prepareDuration();
+	}
+
 	/* -------------------------------------------- */
 
 	/**
@@ -138,7 +186,6 @@
 	_getDurationLabel(rounds, turns) {
 		const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
 		if(durationType){
-
 			if(durationType === "endOfTargetTurn") return  game.i18n.localize("DND4EBETA.DurationEndOfTargetTurnSimp");
 			else if(durationType === "startOfTargetTurn")  return game.i18n.localize("DND4EBETA.DurationStartOfTargetTurnSimp");
 
