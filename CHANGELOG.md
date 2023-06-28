@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.10
+- Add effect description to applying effects to actors [merge](https://github.com/EndlesNights/dnd4eBeta/pull/295) from [zarick1342](https://github.com/zarick1342)
+
 ## Version 0.4.9
 - Fix old effect labels
 
