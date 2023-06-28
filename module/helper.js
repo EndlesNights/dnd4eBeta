@@ -1085,6 +1085,7 @@ export class Helper {
 
 					const newEffectData = {
 						name: e.name,
+						description: e.description ? e.description : '',
 						icon: e.icon,
 						origin: parent.uuid,
 						sourceName: parent.name,
