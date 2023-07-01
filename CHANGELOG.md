@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.11
+- Updates to Manual [merge](https://github.com/EndlesNights/dnd4eBeta/pull/296) from [draconas1](https://github.com/draconas1)
+
 ## Version 0.4.10
 - Add effect description to applying effects to actors [merge](https://github.com/EndlesNights/dnd4eBeta/pull/295) from [zarick1342](https://github.com/zarick1342)
 
