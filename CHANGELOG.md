@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.12
+- renamed `clickRollMessageDamageChatListener` function to `chatMessageListener` as it will be more genericly used.
+- moved the chat listener for the hover over and clicking of token names within attack result chat box out of their own wrapped listen into generic listener. This resolved an issue where the listener would not always be added correctly upon message creation. 
+
 ## Version 0.4.11
 - Updates to Manual [merge](https://github.com/EndlesNights/dnd4eBeta/pull/296) from [draconas1](https://github.com/draconas1)
 
