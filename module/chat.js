@@ -161,8 +161,49 @@ export const addChatMessageContextOptions = function(html, options) {
 	return options;
 };
 
-export function clickRollMessageDamageChatListener(html) {
+export function chatMessageListener(html) {
 	html.on('click', '.chat-damage-button', this.clickRollMessageDamageButtons.bind(this));
+
+	html.on('click', '.target', this.clickTokenActorName.bind(this));
+	html.on('mouseenter', '.target', this.hoverTokenActorName.bind(this)).on('mouseleave', '.target', this.hoverTokenActorName.bind(this));
+}
+
+//When clicking on the name of a taget in a chat messages from attack rolls, will select and pan to the highlighted token
+export const clickTokenActorName = function(event){
+		event.preventDefault();
+
+		const tokenID = event.currentTarget.getAttribute('target-id');
+		if(!tokenID) return;
+
+		const token = canvas.tokens.get(tokenID);
+
+		if(!token) return console.log(`Token ID: ${tokenID} does not exist in this scene.`);
+		if ( !token.actor?.testUserPermission(game.user, "OBSERVER") ) return;
+
+		if(!event.shiftKey){
+			canvas.tokens.selectObjects();
+		}
+
+		token.control({releaseOthers: false});
+		return canvas.animatePan(token.center);
+}
+
+//When hover over chat messages with "Target" from attack rolls, will highlight the token who's have is being hovered
+export const hoverTokenActorName = function(event){
+	event.preventDefault();
+
+	if ( !canvas.ready ) return;
+
+	if(event.type === "mouseenter"){
+		const tokenID = event.currentTarget.getAttribute('target-id');
+		const token = canvas.tokens.get(tokenID);
+		if ( token?.isVisible ) {
+		  if ( !token.controlled ) token._onHoverIn(event, {hoverOutOthers: true});
+		  event.currentTarget._highlighted = token;
+		}
+	} else if(event.type === "mouseleave"){
+		return event.currentTarget._highlighted?._onHoverOut(event);
+	}
 }
 
 export const clickRollMessageDamageButtons = function(event) {
@@ -321,62 +362,6 @@ function applyChatCardTempHpInner(roll){
 		const a = t.actor;
 		return a.applyTempHpChange(roll.total)
 	}));
-}
-
-/* -------------------------------------------- */
-
-/**
- * Wrapped ChatLog class to add addtioanl functions to the actionListener
- *
-*/
-
-export class ChatLogsWrapped extends ChatLog {
-
-	/* -------------------------------------------- */
-
-	/** @inheritdoc */
-	static activateListeners(wrapped, html) {
-		wrapped(html);
-
-		//When clicking on the name of a taget in a chat messages from attack rolls, will select and pan to the highlighted token
-		html.find(".target").click(function(){
-			event.preventDefault();
-			console.log(event)
-
-			const tokenID = this.getAttribute('target-id');
-			if(!tokenID) return;
-
-			const token = canvas.tokens.get(tokenID);
-
-			if(!token) return console.log(`Token ID: ${tokenID} does not exist in this scene.`);
-			if ( !token.actor?.testUserPermission(game.user, "OBSERVER") ) return;
-
-			if(!event.shiftKey){
-				canvas.tokens.selectObjects();
-			}
-
-			token.control({releaseOthers: false});
-			return canvas.animatePan(token.center);
-			
-		});
-
-		//When hover over chat messages with "Target" from attack rolls, will highlight the token who's have is being hovered
-		html.find(".target").hover(function(){
-			event.preventDefault();
-			if ( !canvas.ready ) return;
-
-			if(event.type === "mouseover"){
-				const tokenID = this.getAttribute('target-id');
-				const token = canvas.tokens.get(tokenID);
-				if ( token?.isVisible ) {
-				  if ( !token.controlled ) token._onHoverIn(event, {hoverOutOthers: true});
-				   this._highlighted = token;
-				}
-			} else if(event.type === "mouseout"){
-				return this._highlighted?._onHoverOut(event);
-			}
-		});
-	}
 }
 
 export function _onDiceRollClick(wrapper, event){

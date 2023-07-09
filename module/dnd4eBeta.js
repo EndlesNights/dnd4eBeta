@@ -190,7 +190,7 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 Hooks.on("getChatLogEntryContext", chat.addChatMessageContextOptions);
 Hooks.on("renderChatLog", (app, html, data) => {
 	Item4e.chatListeners(html);
-	chat.clickRollMessageDamageChatListener(html);
+	chat.chatMessageListener(html);
 });
 
 Hooks.on("canvasInit", function() {
@@ -309,12 +309,6 @@ Hooks.once('init', async function() {
 		'dnd4e',
 		'Combat.prototype.nextTurn',
 		Turns._onNextTurn
-	)
-
-	libWrapper.register(
-		'dnd4e',
-		'ChatLog.prototype.activateListeners',
-		chat.ChatLogsWrapped.activateListeners
 	)
 
 	libWrapper.register(
