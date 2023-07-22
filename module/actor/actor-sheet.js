@@ -52,7 +52,7 @@ export default class ActorSheet4e extends ActorSheet {
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4eAltus", "sheet", "actor"],
 			width: 844,
-			height: 915,
+			height: 955,
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",

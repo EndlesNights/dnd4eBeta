@@ -205,6 +205,16 @@ DND4EALTUS.launchOrder = {
 
 /* -------------------------------------------- */
 
+DND4EALTUS.autoanimationHook = {
+  "attack": "DND4EALTUS.AutoanimationHookAttack",
+  "damage": "DND4EALTUS.AutoanimationHookDamage",
+  "healing": "DND4EALTUS.AutoanimationHookHealing",
+  "usePower": "DND4EALTUS.AutoanimationHookUsePower",
+  "template": "DND4EALTUS.AutoanimationHookTemplate",
+};
+
+/* -------------------------------------------- */
+
 /**
  * The set of equipment types for armour, clothing, and other objects which can ber worn by the character
  * @type {Object}

@@ -1,0 +1,7 @@
+2023/07/22-11:07:42.243 4c9c Recovering log #12
+2023/07/22-11:07:42.253 4c9c Delete type=0 #12
+2023/07/22-11:07:42.253 4c9c Delete type=3 #10
+2023/07/22-11:10:48.381 3bac Level-0 table #17: started
+2023/07/22-11:10:48.381 3bac Level-0 table #17: 0 bytes OK
+2023/07/22-11:10:48.385 3bac Delete type=0 #15
+2023/07/22-11:10:48.390 3bac Manual compaction at level-0 from 'undefined' @ 72057594037927935 : 1 .. 'undefined' @ 0 : 0; will stop at (end)

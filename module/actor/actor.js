@@ -1630,7 +1630,8 @@ export class Actor4e extends Actor {
 
 	async newActiveEffect(effectData){
 		this.createEmbeddedDocuments("ActiveEffect", [{
-			label: effectData.label,
+			name: effectData.name,
+			description: effectData.description,
 			icon:effectData.icon,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
@@ -1653,7 +1654,8 @@ export class Actor4e extends Actor {
 		}
 
 		const data = {
-			label: effectData.label,
+			name: effectData.name,
+			description: effectData.description,
 			icon:effectData.icon,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,

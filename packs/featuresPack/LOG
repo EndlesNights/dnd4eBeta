@@ -1,0 +1,8 @@
+2023/07/22-11:07:42.213 48c8 Recovering log #75
+2023/07/22-11:07:42.221 48c8 Delete type=0 #75
+2023/07/22-11:07:42.221 48c8 Delete type=3 #73
+2023/07/22-11:10:48.372 3bac Level-0 table #80: started
+2023/07/22-11:10:48.372 3bac Level-0 table #80: 0 bytes OK
+2023/07/22-11:10:48.374 3bac Delete type=0 #78
+2023/07/22-11:10:48.377 3bac Manual compaction at level-0 from '!folders!3WBJGLs24aDlvlbA' @ 72057594037927935 : 1 .. '!items.effects!w6kVSNawY1wiqRr9.CjpzuzKFRCfqBMm6' @ 0 : 0; will stop at (end)
+2023/07/22-11:10:48.379 3bac Manual compaction at level-1 from '!folders!3WBJGLs24aDlvlbA' @ 72057594037927935 : 1 .. '!items.effects!w6kVSNawY1wiqRr9.CjpzuzKFRCfqBMm6' @ 0 : 0; will stop at (end)

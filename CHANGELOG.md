@@ -1,5 +1,22 @@
 # Changelog
 
+## Version 0.4.12
+- renamed `clickRollMessageDamageChatListener` function to `chatMessageListener` as it will be more genericly used.
+- moved the chat listener for the hover over and clicking of token names within attack result chat box out of their own wrapped listen into generic listener. This resolved an issue where the listener would not always be added correctly upon message creation. 
+
+## Version 0.4.11
+- Updates to Manual [merge](https://github.com/EndlesNights/dnd4eAltus/pull/296) from [draconas1](https://github.com/draconas1)
+
+## Version 0.4.10
+- Add effect description to applying effects to actors [merge](https://github.com/EndlesNights/dnd4eAltus/pull/295) from [zarick1342](https://github.com/zarick1342)
+
+## Version 0.4.9
+- Fix old effect labels
+
+## Version 0.4.8
+- fix to Active Effects applying, and displaying of labels
+- Autoanimations fixes [merge](https://github.com/EndlesNights/dnd4eAltus/pull/291) from [zarick1342](https://github.com/zarick1342)
+
 ## Version 0.4.7
 - Hotfix, issue with SVGs height and width being set within style caused issues for a number of browsers.
 

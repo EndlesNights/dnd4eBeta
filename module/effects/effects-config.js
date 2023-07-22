@@ -14,8 +14,8 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	}
 
 	/** @override */
-	getData(options) {
-		let data = super.getData(options);
+	async getData(options) {
+		let data = await super.getData(options);
 		
 		data.config = CONFIG.DND4EALTUS;
 		data.powerParent = (this.object.parent.type === "power");

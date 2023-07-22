@@ -1,0 +1,8 @@
+2023/07/22-11:07:42.213 4ddc Recovering log #62
+2023/07/22-11:07:42.221 4ddc Delete type=0 #62
+2023/07/22-11:07:42.221 4ddc Delete type=3 #60
+2023/07/22-11:10:48.368 3bac Level-0 table #67: started
+2023/07/22-11:10:48.369 3bac Level-0 table #67: 0 bytes OK
+2023/07/22-11:10:48.372 3bac Delete type=0 #65
+2023/07/22-11:10:48.376 3bac Manual compaction at level-0 from '!folders!676N3JsB3VGN4pMD' @ 72057594037927935 : 1 .. '!items!zBGH9J2qiWcVGosv' @ 0 : 0; will stop at (end)
+2023/07/22-11:10:48.379 3bac Manual compaction at level-1 from '!folders!676N3JsB3VGN4pMD' @ 72057594037927935 : 1 .. '!items!zBGH9J2qiWcVGosv' @ 0 : 0; will stop at (end)

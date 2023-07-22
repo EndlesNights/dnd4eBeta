@@ -4,7 +4,5 @@
 /node_modules
 /packs/dist/*
 
-# Don't commit LevelDB files for now for v10 back-compat
-packs/**/*.log
+# Level DB is complicated, and the only thing we can safely ignore is the .old files.
 packs/**/*.old
-packs/**/LOG
