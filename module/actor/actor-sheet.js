@@ -991,11 +991,11 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 			itemData.data.weaponUse = "none";
 
 			itemData.data.attack = {
-				formula:"@lvhalf",
+				formula:"5 + @atkMod",
 				ability:"form"
 			};
 			itemData.data.hit  = {
-				formula:"@powBase",
+				formula:"@powBase + @dmgMod",
 				critFormula:"@powMax",
 				baseDiceType: "d8",
 				detail: "1d8 damage."
