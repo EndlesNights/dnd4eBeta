@@ -1696,7 +1696,7 @@ export default class Item4e extends Item {
 	 */
 	static async _onChatCardAction(event) {
 		event.preventDefault();
-
+		
 		// Extract card data
 		const button = event.currentTarget;
 		button.disabled = true;
@@ -1733,20 +1733,8 @@ export default class Item4e extends Item {
 		}
 
 		// Attack and Damage Rolls
-		if ( action === "attack" ) {
-			await item.rollAttack({event});
-			// // Get current targets and set number of rolls required
-			// const numTargets = game.user.targets.size;
-			// const numTargetsDefault = 1;
-
-			// const numRolls = (numTargets || numTargetsDefault);
-
-			// // Invoke attack roll promise
-			// for (var i=0;i<numRolls;i++) {
-			// 	var isFinal = (i<numRolls-1) ? false : true;
-			// 	await item.rollAttack({event, target:i}, isFinal);
-			// }
-		}
+		console.log(action)
+		if ( action === "attack" ) await item.rollAttack({event});
 		else if ( action === "damage" ) await item.rollDamage({event, spellLevel});
 		else if ( action === "healing" ) await item.rollHealing({event, spellLevel});
 		else if ( action === "versatile" ) await item.rollDamage({event, spellLevel, versatile: true});
