@@ -175,6 +175,10 @@ export class Helper {
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
 					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
 					this._addKeywords(suitableKeywords, weaponInnerData.implement) // implement group for implement powers.  Bad naming of property, sorry -Drac
+
+					if(weaponInnerData.weaponBaseType){
+						suitableKeywords.push(weaponInnerData.weaponBaseType)
+					}
 				}
 
 				if (powerInnerData.powersource) {
