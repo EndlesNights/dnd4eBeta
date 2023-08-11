@@ -29,7 +29,54 @@
 	/** @inheritdoc */
 	apply(actor, change) {
 		if ( this.isSuppressed ) return null;
+
+		console.log(this)
+		this.safeEvalEffectValue(actor, change);
+
+		console.log(actor)
+		console.log(change)
 		return super.apply(actor, change);
+	}
+
+	/* --------------------------------------------- */
+
+	/**
+	 * Before passing changes to the parent ActiveEffect class,
+	 * we want to make some modifications to make the effect
+	 * rolldata aware.
+	 * 
+	 * @param {*} wrapped   The next call in the libWrapper chain
+	 * @param {Actor} actor     The Actor that is affected by the effect
+	 * @param {Object} change    The changeset to be applied with the Effect
+	 * @returns 
+	 */
+	safeEvalEffectValue(actor, change){
+		const stringDiceFormat = /\d+d\d+/;
+    
+		// If the user wants to use the rolldata format
+		// for grabbing data keys, why stop them?
+		// This is purely syntactic sugar, and for folks
+		// who copy-paste values between the key and value
+		// fields.
+		if (change.key.indexOf('@') === 0)
+		  change.key = change.key.replace('@', '');
+	  
+		// If the user entered a dice formula, I really doubt they're 
+		// looking to add a random number between X and Y every time
+		// the Effect is applied, so we treat dice formulas as normal
+		// strings.
+		// For anything else, we use Roll.replaceFormulaData to handle
+		// fetching of data fields from the actor, as well as math
+		// operations.  
+		if (!change.value.match(stringDiceFormat))
+		  change.value = Roll.replaceFormulaData(change.value, actor.getRollData());
+	  
+		// If it'll evaluate, we'll send the evaluated result along 
+		// for the change.
+		// Otherwise we just send along the exact string we were given. 
+		try {
+		  change.value = Roll.safeEval(change.value).toString();
+		} catch (e) { /* noop */ }
 	}
 
 	/** @inheritdoc */
