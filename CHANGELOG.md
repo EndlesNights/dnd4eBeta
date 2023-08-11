@@ -3,6 +3,8 @@
 ## Version 0.4.13
 - Change to default NPC attack and damage formulas. Both modernized to use the global attack/damage bonuses of `@atkMod` and `@dmgMod`
 - added weaponBaseType to the suitable keywords used when apply effects. This allows for some feats that only apply to specific weapons.
+- moved move apply active effect to effects.js
+- Brazilian Portuguese from [PilotodeMouse](https://github.com/PilotodeMouse)
 
 ## Version 0.4.12
 - renamed `clickRollMessageDamageChatListener` function to `chatMessageListener` as it will be more genericly used.

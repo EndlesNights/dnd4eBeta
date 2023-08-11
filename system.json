@@ -112,6 +112,11 @@
 			"lang": "en-AU",
 			"name": "English (Australian)",
 			"path": "lang/en-au.json"
+		},
+		{
+			"lang": "pt-br",
+			"name": "Portugues do Brasil",
+			"path": "lang/pt-br.json"
 		}
 	],
 	"socket": true,
