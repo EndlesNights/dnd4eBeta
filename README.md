@@ -8,6 +8,7 @@
 ## **Language Support** 
 - Français, courtoisie de [Gilphe](https://github.com/Gilphe)
 - 中文, 由 扶摇
+- Portugues do Brasil, cortesia de [PilotodeMouse](https://github.com/PilotodeMouse)
 
 
 ## Description
