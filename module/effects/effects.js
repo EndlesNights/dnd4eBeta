@@ -29,15 +29,31 @@
 	/** @inheritdoc */
 	apply(actor, change) {
 		if ( this.isSuppressed ) return null;
-
-		console.log(this)
+		
+		// this.otherActorLink(actor, change);
 		this.safeEvalEffectValue(actor, change);
 
-		console.log(actor)
-		console.log(change)
 		return super.apply(actor, change);
 	}
 
+	/* --------------------------------------------- */
+
+	// Work in progress, evaluate from other actors given ID?
+	
+	otherActorLink(actor, change){
+		//Should only be based on terms not the start, cut up the string nad check by terms instead of this garbage
+		if(!change.value.startsWith("@actor.")) return;
+
+		const match = change.value.match(/@actor\.(.*?)\@/);
+
+		if(!match || !match[1]) return;
+		const targetActor = game.actors.get(match[1])
+		if(!targetActor) return;
+
+		change.value.replace(`@actor.${match[1]}@`, '@');
+		actor = targetActor;
+		
+	}
 	/* --------------------------------------------- */
 
 	/**
