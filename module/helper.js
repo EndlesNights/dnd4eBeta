@@ -939,7 +939,14 @@ export class Helper {
 		if(chatData.attack.isAttack) {
 			if(chatData.attack.ability === "form"){
 				//if does not srtart with a number sign add one
-				let trimmedForm = chatData.attack.formula.trim()
+
+				let attackForm = this.commonReplace(chatData.attack.formula, actorData);
+				try {
+					attackForm = Roll.safeEval(attackForm).toString();
+				} catch (e) { /* noop */ }
+				
+
+				let trimmedForm = attackForm.trim()
 				if(!(trimmedForm.startsWith("+") || trimmedForm.startsWith("-"))) {
 					trimmedForm = '+' + trimmedForm;
 				}
