@@ -262,6 +262,12 @@ Hooks.once('init', async function() {
 		'ChatLog.prototype._onDiceRollClick',
 		chat._onDiceRollClick
 	)
+
+	libWrapper.register(
+		'dnd4e',
+		'ChatLog.prototype._processDiceCommand',
+		chat._processDiceCommand
+	)
 });
 
 Hooks.on("getSceneControlButtons", function(controls){
