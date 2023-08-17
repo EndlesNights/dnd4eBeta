@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.4.14
+- compendium links fix
+- simplfy Attack Formuals preveiw in power cards.
+- allow for helper short hands to be used in effects formulas.
+- allow for helper short hands to be used in char roll formulas.
+
 ## Version 0.4.13
 - Change to default NPC attack and damage formulas. Both modernized to use the global attack/damage bonuses of `@atkMod` and `@dmgMod`
 - added weaponBaseType to the suitable keywords used when apply effects. This allows for some feats that only apply to specific weapons.
