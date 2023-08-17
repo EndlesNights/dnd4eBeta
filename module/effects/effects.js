@@ -85,7 +85,7 @@
 		// fetching of data fields from the actor, as well as math
 		// operations.  
 		if (!change.value.match(stringDiceFormat))
-		  change.value = Roll.replaceFormulaData(change.value, actor.getRollData());
+		  change.value = Roll.replaceFormulaData(game.helper.commonReplace(change.value, actor), actor.getRollData());
 	  
 		// If it'll evaluate, we'll send the evaluated result along 
 		// for the change.
