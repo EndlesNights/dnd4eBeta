@@ -212,6 +212,7 @@
 }
 .dnd4eBeta.sheet.actor .attribute-health {
 	text-align: center;
+	position: relative;
 }
 .dnd4eBeta.sheet.actor .section--attributes .attribute-health input {
 	border-bottom: 1px solid black;
@@ -2470,4 +2471,16 @@ span.flavor-text.probable-miss {
 	display:flex;
 	justify-content:space-between;
 
+}
+
+.dnd4eBeta.sheet.actor .health-option:hover + .config-button,
+.dnd4eBeta.sheet.actor .config-button:hover  {
+	display: block;
+}
+
+.dnd4eBeta.sheet.actor .config-button {
+  position: absolute;
+  top: 2px;
+  right: 0px;
+  display: none;
 }

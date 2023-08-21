@@ -40,7 +40,10 @@
 			<section class="flexrow section--attributes">
 				{{!-- Hit Points --}}
 				<div class="attributes attribute-health">
-					<h4 class="attribute-name health-option rollable">{{localize 'DND4EBETA.HP'}}</h4>
+					<h4 class="attribute-name health-option rollable" data-tooltip="DND4EBETA.HealthOptions">{{localize 'DND4EBETA.HP'}}</h4>
+					<a class="config-button health-option" data-action="ability" data-tooltip="DND4EBETA.HealthOptions">
+						<i class="fas fa-cog"></i>
+					</a>
 					<div class="attribute-value flexrow">
 						{{#if system.details.isBloodied}}
 
