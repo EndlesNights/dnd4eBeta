@@ -1673,6 +1673,7 @@ font-size: 12px;
 	border-bottom: 2px groove #eeede0;
 }
 .dnd4eBeta.sheet.actor .encumbrance {
+	cursor:pointer;
 	flex: 0 0 12px;
 	background: #7a7971;
 	margin: 1px 15px 0 1px;
