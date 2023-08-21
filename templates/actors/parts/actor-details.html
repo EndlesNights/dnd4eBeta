@@ -24,23 +24,23 @@
 
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="gender">{{localize 'DND4EBETA.Gender'}}:</label>
-	<input style="flex:1; text-align: right;" id="gender" type="text" name="system.details.gender" value="{{system.details.gender}}" title="{{localize 'DND4EBETA.Gender'}}"  placeholder="{{localize 'DND4EBETA.Gender'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="gender" type="text" name="system.details.gender" value="{{system.details.gender}}" data-tooltip="{{localize 'DND4EBETA.Gender'}}"  placeholder="{{localize 'DND4EBETA.Gender'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="age">{{localize 'DND4EBETA.Age'}}:</label>
-	<input style="flex:1; text-align: right;" id="age" type="text" name="system.details.age" value="{{system.details.age}}" title="{{localize 'DND4EBETA.Age'}}"  placeholder="{{localize 'DND4EBETA.Age'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="age" type="text" name="system.details.age" value="{{system.details.age}}" data-tooltip="{{localize 'DND4EBETA.Age'}}"  placeholder="{{localize 'DND4EBETA.Age'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="alignment">{{localize 'DND4EBETA.Alignment'}}:</label>
-	<input style="flex:1; text-align: right;" id="alignment" type="text" name="system.details.alignment" value="{{system.details.alignment}}" title="{{localize 'DND4EBETA.Alignment'}}"  placeholder="{{localize 'DND4EBETA.Alignment'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="alignment" type="text" name="system.details.alignment" value="{{system.details.alignment}}" data-tooltip="{{localize 'DND4EBETA.Alignment'}}"  placeholder="{{localize 'DND4EBETA.Alignment'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="height">{{localize 'DND4EBETA.Height'}}:</label>
-	<input style="flex:1; text-align: right;" id="height" type="text" name="system.details.height" value="{{system.details.height}}" title="{{localize 'DND4EBETA.Height'}}"  placeholder="{{localize 'DND4EBETA.Height'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="height" type="text" name="system.details.height" value="{{system.details.height}}" data-tooltip="{{localize 'DND4EBETA.Height'}}"  placeholder="{{localize 'DND4EBETA.Height'}}" onClick="this.select();"/>
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="weight">{{localize 'DND4EBETA.Weight'}}:</label>
-	<input style="flex:1; text-align: right;" id="weight" type="text" name="system.details.weight" value="{{system.details.weight}}" title="{{localize 'DND4EBETA.Weight'}}"  placeholder="{{localize 'DND4EBETA.Weight'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="weight" type="text" name="system.details.weight" value="{{system.details.weight}}" data-tooltip="{{localize 'DND4EBETA.Weight'}}"  placeholder="{{localize 'DND4EBETA.Weight'}}" onClick="this.select();"/>
 </div>
 <div class="form-group" style="padding: 3px;">
 	<label style="font-weight: normal;">{{localize "DND4EBETA.Size"}}:</label>
@@ -74,7 +74,7 @@
 </div>
 <div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
 	<label for="subtypes">{{localize 'DND4EBETA.CreatureSubtypes'}}:</label>
-	<input style="flex:1; text-align: right;" id="other" type="text" name="system.details.other" value="{{system.details.other}}" title="{{localize 'DND4EBETA.CreatureSubtypes'}}"  placeholder="{{localize 'DND4EBETA.CreatureSubtypes'}}" onClick="this.select();"/>
+	<input style="flex:1; text-align: right;" id="other" type="text" name="system.details.other" value="{{system.details.other}}" data-tooltip="{{localize 'DND4EBETA.CreatureSubtypes'}}"  placeholder="{{localize 'DND4EBETA.CreatureSubtypes'}}" onClick="this.select();"/>
 </div>			
 {{!-- Proficiency --}}
 <div>
@@ -138,6 +138,6 @@
 		{{/each}}
 		</ul>
 
-		<input type="text" name="system.senses.notes" value="{{system.senses.notes}}" title="notes" placeholder="{{localize 'DND4EBETA.Notes'}}" style="width: 99%;"/>
+		<input type="text" name="system.senses.notes" value="{{system.senses.notes}}" data-tooltip="notes" placeholder="{{localize 'DND4EBETA.Notes'}}" style="width: 99%;"/>
 	</div>
 </div>

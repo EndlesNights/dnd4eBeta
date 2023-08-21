@@ -5,11 +5,11 @@
 	<h4 class="attribute-name box-title">{{localize 'DND4EBETA.ModifierPlural'}}</h4>
 	<div class="attack-mod flexrow thin" data-modifiers="attack">
 		<span>{{localize 'DND4EBETA.ModifierAttack'}}: {{system.modifiers.attack.value}}</span>
-		<a class="modifiers-bonus" data-target="system.modifiers" title="Modifier Bonus">{{localize 'DND4EBETA.Bonus'}}: {{system.modifiers.attack.bonusValue}}</a>
+		<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="Modifier Bonus">{{localize 'DND4EBETA.Bonus'}}: {{system.modifiers.attack.bonusValue}}</a>
 	</div>
 	<div class="damage-mod flexrow thin" data-modifiers="damage">
 		<span>{{localize 'DND4EBETA.ModifierDamage'}}: {{system.modifiers.damage.value}}</span>
-		<a class="modifiers-bonus" data-target="system.modifiers" title="Modifier Bonus">{{localize 'DND4EBETA.Bonus'}}: {{system.modifiers.damage.bonusValue}}</a>
+		<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="Modifier Bonus">{{localize 'DND4EBETA.Bonus'}}: {{system.modifiers.damage.bonusValue}}</a>
 	</div>
 </div>
 {{/if}}
@@ -23,7 +23,7 @@
 			<!-- <div class="effect-source" style="width:150%;">Duration Type</div> -->
 			<div class="effect-source">{{localize 'DND4EBETA.Duration'}}:</div>
 			<div class="item-controls effect-controls flexrow">
-				<a class="powereffect-control" data-action="create" title="{{localize 'DND4EBETA.EffectCreate'}}">
+				<a class="powereffect-control" data-action="create" data-tooltip="{{localize 'DND4EBETA.EffectCreate'}}">
 					<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 				</a>
 			</div>
@@ -40,13 +40,13 @@
 				<!-- <div class="effect-duration" style="width:150%;">{{effect.durationTypeLable}}</div> -->
 				<div class="effect-duration">{{effect.duration.label}}</div>
 				<div class="item-controls effect-controls flexrow">
-					<a class="effect-control" data-action="toggle" title="{{localize 'DND4EBETA.EffectToggle'}}">
+					<a class="effect-control" data-action="toggle" data-tooltip="{{localize 'DND4EBETA.EffectToggle'}}">
 						<i class="fas fa-circle-notch"></i>
 					</a>
-					<a class="powereffect-control" data-action="edit" title="{{localize 'DND4EBETA.EffectEdit'}}">
+					<a class="powereffect-control" data-action="edit" data-tooltip="{{localize 'DND4EBETA.EffectEdit'}}">
 						<i class="fas fa-edit"></i>
 					</a>
-					<a class="powereffect-control" data-action="delete" title="{{localize 'DND4EBETA.EffectDelete'}}">
+					<a class="powereffect-control" data-action="delete" data-tooltip="{{localize 'DND4EBETA.EffectDelete'}}">
 						<i class="fas fa-trash"></i>
 					</a>
 				</div>
@@ -65,9 +65,9 @@
 				<h4 class="res-name">{{res.label}}</h4>
 				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
 				<span class="res-armour">{{localize 'DND4EBETA.Armour'}}: {{res.armour}} </span>
-				<a class="resistances-bonus" data-target="system.resistances" title="Resistance Bonus">{{localize 'DND4EBETA.Bonus'}}: {{res.resBonusValue}}</a>
+				<a class="resistances-bonus" data-target="system.resistances" data-tooltip="Resistance Bonus">{{localize 'DND4EBETA.Bonus'}}: {{res.resBonusValue}}</a>
 				<span class="res-immune">{{localize 'DND4EBETA.Immunity'}}</span>
-				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="Immune"/>
+				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} data-tooltip="Immune"/>
 			</li>
 		{{/each}}
 	</div>

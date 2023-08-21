@@ -4,7 +4,7 @@
 	{{#if options.skill}}
 		<div>
 			<span>{{localize 'DND4EBETA.SkillACPToggle'}}</span>
-			<input type="checkbox" name="system.armourCheck" data-dtype="Boolean" {{checked system.armourCheck}} title="{{localize 'DND4EBETA.SkillACPToggle'}}">
+			<input type="checkbox" name="system.armourCheck" data-dtype="Boolean" {{checked system.armourCheck}} data-tooltip="{{localize 'DND4EBETA.SkillACPToggle'}}">
 			{{#if system.armourCheck}}
 			<span>{{localize 'DND4EBETA.ArmourSkillACP'}}</span>
 			<span>{{system.armourPen}}</span>	
@@ -12,7 +12,7 @@
 		</div>
 	{{else if options.ac}}
 		<span>{{localize 'DND4EBETA.DefModUse'}}: </span>
-		<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} title="{{localize 'DND4EBETA.DefModOverride'}}"/>
+		<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} data-tooltip="{{localize 'DND4EBETA.DefModOverride'}}"/>
 		<span>{{localize 'DND4EBETA.DefModOverride'}}: </span>
 		<select name="system.altability">
 			{{#select system.altability}}
@@ -28,7 +28,7 @@
 		</select>
 
 	{{else if options.init}}
-	<span title="{{localize 'DND4EBETA.InitAbilityMod'}}">{{localize 'DND4EBETA.AbilityModifier'}}:</span>
+	<span data-tooltip="{{localize 'DND4EBETA.InitAbilityMod'}}">{{localize 'DND4EBETA.AbilityModifier'}}:</span>
 	<select name="system.ability">
 		{{#select system.ability}}
 		<option value="" >{{localize 'DND4EBETA.None'}}</option>
@@ -53,8 +53,8 @@
 		<span>{{localize 'DND4EBETA.Value'}}:</span>
 		<input type="text" name="{{b}}.value" value="{{bonus.value}}" data-dtype="String" style="width: 105px;"/>
 		<span>{{localize 'DND4EBETA.Active'}}: </span>
-		<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} title="{{localize 'DND4EBETA.BonusToggle'}}">
-		<a class="bonus-control bonus-delete" title="{{localize 'DND4EUI.Delete'}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
+		<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} data-tooltip="{{localize 'DND4EBETA.BonusToggle'}}">
+		<a class="bonus-control bonus-delete" data-tooltip="{{localize 'DND4EUI.Delete'}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
 		<textarea type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none;" placeholder="{{localize 'DND4EBETA.Notes'}}" contentEditable>{{bonus.note}}</textarea>
 	</div>
 	{{/each}}

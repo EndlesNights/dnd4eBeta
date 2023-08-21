@@ -2,7 +2,7 @@
 
 	{{!-- Item Sheet Header --}}
 	<header class="sheet-header flexrow">
-		<img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
+		<img class="profile" src="{{item.img}}" data-tooltip="{{item.name}}" data-edit="img"/>
 
 		<div class="header-details flexrow">
 			<h1 class="charname">
@@ -89,7 +89,7 @@
 			{{#if isWeaponBaseTypeCustom}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.WeaponBaseCustom" }}:</label>
-				<input type="text" name="system.weaponBaseTypeCustom" value="{{system.weaponBaseTypeCustom}}" title="{{ localize 'DND4EBETA.WeaponBaseCustom' }}" placeholder="{{ localize 'DND4EBETA.WeaponBaseCustom' }}" data-dtype="String" onClick="this.select();"/>
+				<input type="text" name="system.weaponBaseTypeCustom" value="{{system.weaponBaseTypeCustom}}" data-tooltip="{{ localize 'DND4EBETA.WeaponBaseCustom' }}" placeholder="{{ localize 'DND4EBETA.WeaponBaseCustom' }}" data-dtype="String" onClick="this.select();"/>
 			</div>
 			{{/if}}
 
@@ -120,34 +120,34 @@
 				{{#unless (eq system.weaponType "implement")}}
 				<h3 class="form-header">{{ localize 'DND4EBETA.ItemWeaponStats' }}</h3>
 				<div class="form-group">
-					<label title="{{ localize 'DND4EBETA.BonusTypeProficiency' }}">{{ localize 'DND4EBETA.BonusTypeProficiency' }}:</label>
+					<label data-tooltip="{{ localize 'DND4EBETA.BonusTypeProficiency' }}">{{ localize 'DND4EBETA.BonusTypeProficiency' }}:</label>
 					<div class="form-fields">
-						<input type="text" name="system.profBonus" value="{{system.profBonus}}" title="{{ localize 'DND4EBETA.BonusTypeProficiency' }}" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.profBonus" value="{{system.profBonus}}" data-tooltip="{{ localize 'DND4EBETA.BonusTypeProficiency' }}" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				{{/unless}}
 				<div class="form-group">
-					<label title="{{ localize 'DND4EBETA.WeaponImplement' }} {{ localize 'DND4EBETA.BonusTypeProficiency' }}">{{ localize 'DND4EBETA.WeaponImplement' }} {{ localize 'DND4EBETA.BonusTypeProficiency' }}:</label>
+					<label data-tooltip="{{ localize 'DND4EBETA.WeaponImplement' }} {{ localize 'DND4EBETA.BonusTypeProficiency' }}">{{ localize 'DND4EBETA.WeaponImplement' }} {{ localize 'DND4EBETA.BonusTypeProficiency' }}:</label>
 					<div class="form-fields">
-						<input type="text" name="system.profImpBonus" value="{{system.profImpBonus}}" title="{{ localize 'DND4EBETA.WeaponImplement' }} {{ localize 'DND4EBETA.BonusTypeProficiency' }}" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.profImpBonus" value="{{system.profImpBonus}}" data-tooltip="{{ localize 'DND4EBETA.WeaponImplement' }} {{ localize 'DND4EBETA.BonusTypeProficiency' }}" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				<div class="form-group">    
-					<label title="{{ localize 'DND4EBETA.BonusTypeEnhancement' }}">{{ localize 'DND4EBETA.BonusTypeEnhancement' }}:</label>
+					<label data-tooltip="{{ localize 'DND4EBETA.BonusTypeEnhancement' }}">{{ localize 'DND4EBETA.BonusTypeEnhancement' }}:</label>
 					<div class="form-fields">
-						<input type="text" name="system.enhance" value="{{system.enhance}}" title="{{ localize 'DND4EBETA.BonusTypeEnhancement' }}" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.enhance" value="{{system.enhance}}" data-tooltip="{{ localize 'DND4EBETA.BonusTypeEnhancement' }}" placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				<div class="form-group">
-					<label title="{{ localize 'DND4EBETA.WeaponRanged' }}?">{{ localize 'DND4EBETA.WeaponRanged' }}?</label>
+					<label data-tooltip="{{ localize 'DND4EBETA.WeaponRanged' }}?">{{ localize 'DND4EBETA.WeaponRanged' }}?</label>
 					<input type="checkbox" name="system.isRanged" data-dtype="Boolean" {{checked system.isRanged}}/>
 					<div>
 						{{#if system.isRanged}}
 						<div class="form-fields">
-							<span title="{{ localize 'DND4EBETA.WeaponRangeTip' }}">{{ localize 'DND4EBETA.rangeWeapon' }}:</span>
-							<input type="text" name="system.range.value" value="{{system.range.value}}" title="{{ localize 'DND4EBETA.WeaponRangeShort' }}: {{ localize 'DND4EBETA.WeaponRangeShortTip' }}" placeholder="{{ localize 'DND4EBETA.WeaponRangeShort' }}" data-dtype="Number" onClick="this.select();"/>
+							<span data-tooltip="{{ localize 'DND4EBETA.WeaponRangeTip' }}">{{ localize 'DND4EBETA.rangeWeapon' }}:</span>
+							<input type="text" name="system.range.value" value="{{system.range.value}}" data-tooltip="{{ localize 'DND4EBETA.WeaponRangeShort' }}: {{ localize 'DND4EBETA.WeaponRangeShortTip' }}" placeholder="{{ localize 'DND4EBETA.WeaponRangeShort' }}" data-dtype="Number" onClick="this.select();"/>
 							<span class="sep">/</span>
-							<input type="text" name="system.range.long" value="{{system.range.long}}" title="{{ localize 'DND4EBETA.WeaponRangeLong' }}: {{ localize 'DND4EBETA.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4EBETA.WeaponRangeLong' }}" data-dtype="Number" onClick="this.select();"/>
+							<input type="text" name="system.range.long" value="{{system.range.long}}" data-tooltip="{{ localize 'DND4EBETA.WeaponRangeLong' }}: {{ localize 'DND4EBETA.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4EBETA.WeaponRangeLong' }}" data-dtype="Number" onClick="this.select();"/>
 						</div>
 						{{/if}}
 					</div>
@@ -192,7 +192,7 @@
 					</div>
 				</div>
 				
-				<h4 class="damage-header"title="{{ localize 'DND4EBETA.DiceWeapon' }}: {{ localize 'DND4EBETA.DiceWeaponTip' }}" for="damageDice">{{ localize "DND4EBETA.DiceWeapon"}}<a class="damage-control add-dice"><i class="fas fa-plus"></i></a></h4>
+				<h4 class="damage-header"data-tooltip="{{ localize 'DND4EBETA.DiceWeapon' }}: {{ localize 'DND4EBETA.DiceWeaponTip' }}" for="damageDice">{{ localize "DND4EBETA.DiceWeapon"}}<a class="damage-control add-dice"><i class="fas fa-plus"></i></a></h4>
 				
 				<ol class="damage-parts form-group">
 					{{#each system.damageDice.parts as |part i| }}
@@ -210,27 +210,27 @@
 
 				{{#if system.properties.bru}}
 				<div class="form-group">
-					<label title="{{ localize "DND4EBETA.DiceBrutalTitle"}}" for="brutal">{{ localize "DND4EBETA.DiceBrutal"}}</label>
+					<label data-tooltip="{{ localize "DND4EBETA.DiceBrutalTitle"}}" for="brutal">{{ localize "DND4EBETA.DiceBrutal"}}</label>
 					<div class="form-fields">
-						<input type="text" name="system.brutal" id="brutal" value="{{system.brutal}}" title="{{ localize 'DND4EBETA.DiceBrutalTitle'}}" placeholder="{{ localize "DND4EBETA.DiceBrutalPlaceholder"}}" onClick="this.select();" data-dtype="Number"/>
+						<input type="text" name="system.brutal" id="brutal" value="{{system.brutal}}" data-tooltip="{{ localize 'DND4EBETA.DiceBrutalTitle'}}" placeholder="{{ localize "DND4EBETA.DiceBrutalPlaceholder"}}" onClick="this.select();" data-dtype="Number"/>
 					</div>
 				</div>
 				{{/if}}
 
 				{{#unless (eq system.weaponType "implement")}}
 				<div class="form-group">
-					<label title="{{ localize 'DND4EBETA.CriticalHitTitle'}}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.CriticalHit'}}:</label>
+					<label data-tooltip="{{ localize 'DND4EBETA.CriticalHitTitle'}}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.CriticalHit'}}:</label>
 					<div class="form-fields">
-						<input type="text" name ="system.critRange" value="{{system.critRange}}" title="{{ localize 'DND4EBETA.CriticalHitTitle'}}" placeholder="{{ localize 'DND4EBETA.CriticalHitPlaceholder'}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name ="system.critRange" value="{{system.critRange}}" data-tooltip="{{ localize 'DND4EBETA.CriticalHitTitle'}}" placeholder="{{ localize 'DND4EBETA.CriticalHitPlaceholder'}}" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				{{/unless}}
 
 				{{#if system.properties.imp}}
 				<div class="form-group">
-					<label title="{{ localize 'DND4EBETA.CriticalHitTitle'}}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement'}}{{/unless}} {{ localize 'DND4EBETA.CriticalHit'}}:</label>
+					<label data-tooltip="{{ localize 'DND4EBETA.CriticalHitTitle'}}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement'}}{{/unless}} {{ localize 'DND4EBETA.CriticalHit'}}:</label>
 					<div class="form-fields">
-						<input type="text" name ="system.critRangeImp" value="{{system.critRangeImp}}" title="{{ localize 'DND4EBETA.CriticalHitTitle'}}" placeholder="20" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name ="system.critRangeImp" value="{{system.critRangeImp}}" data-tooltip="{{ localize 'DND4EBETA.CriticalHitTitle'}}" placeholder="20" data-dtype="Number" onClick="this.select();"/>
 					</div>
 				</div>
 				{{/if}}
@@ -238,14 +238,14 @@
 				{{!-- Attack  Formula--}}
 				{{#unless (eq system.weaponType "implement")}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.FormulaAttackBonus' }}:</h4>
-					<input type="text" name="system.attackForm" value="{{system.attackForm}}" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}" data-dtype="String"/>
+					<h4 class="damage-header" data-tooltip="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.FormulaAttackBonus' }}:</h4>
+					<input type="text" name="system.attackForm" value="{{system.attackForm}}" data-tooltip="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}" data-dtype="String"/>
 				</div>
 				
 				{{!-- Damage Formula --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.FormulaDamageBonusPrimary' }}:</h4>
-					<input type="text" name="system.damageForm" value="{{system.damageForm}}" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}" data-dtype="String"/>
+					<h4 class="damage-header" data-tooltip="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.FormulaDamageBonusPrimary' }}:</h4>
+					<input type="text" name="system.damageForm" value="{{system.damageForm}}" data-tooltip="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}" data-dtype="String"/>
 				</div>				
 				<h4 class="damage-header">
 					{{#unless isHealing }}{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.Secondary' }} {{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}:
@@ -273,8 +273,8 @@
 
 				{{!-- Critical Damage Formula --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.FormulaCritBonus' }}:</h4>
-					<input type="text" name="system.critDamageForm" value="{{system.critDamageForm}}" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}" data-dtype="String"/>
+					<h4 class="damage-header" data-tooltip="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.FormulaCritBonus' }}:</h4>
+					<input type="text" name="system.critDamageForm" value="{{system.critDamageForm}}" data-tooltip="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}" data-dtype="String"/>
 				</div>				
 				<h4 class="damage-header">
 					{{#if system.properties.imp}}{{ localize 'DND4EBETA.Weapon' }}{{/if}} {{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaCritBonus' }}:
@@ -304,14 +304,14 @@
 				{{!-- Attack Formula for Implement--}}
 				{{#if system.properties.imp}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.FormulaAttackBonus' }}:</h4>
-					<input type="text" name="system.attackFormImp" value="{{system.attackFormImp}}" title="Formula used for Attack Rolls." data-dtype="String"/>
+					<h4 class="damage-header" data-tooltip="{{ localize 'DND4EBETA.FormulaAttackBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.FormulaAttackBonus' }}:</h4>
+					<input type="text" name="system.attackFormImp" value="{{system.attackFormImp}}" data-tooltip="Formula used for Attack Rolls." data-dtype="String"/>
 				</div>
 				
 				{{!-- Damage Formula for Implement--}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.FormulaDamageBonusPrimary' }}:</h4>
-					<input type="text" name="system.damageFormImp" value="{{system.damageFormImp}}" title="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}" data-dtype="String"/>
+					<h4 class="damage-header" data-tooltip="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.FormulaDamageBonusPrimary' }}:</h4>
+					<input type="text" name="system.damageFormImp" value="{{system.damageFormImp}}" data-tooltip="{{ localize 'DND4EBETA.FormulaDamageBonusTip' }}" data-dtype="String"/>
 				</div>	
 				
 				<h4 class="damage-header">
@@ -340,8 +340,8 @@
 
 				{{!-- Critical Damage Formula for Implement --}}
 				<div class="form-group stacked">
-					<h4 class="damage-header" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.FormulaCritBonus' }}:</h4>
-					<input type="text" name="system.critDamageFormImp" value="{{system.critDamageFormImp}}" title="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}" data-dtype="String"/>
+					<h4 class="damage-header" data-tooltip="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.FormulaCritBonus' }}:</h4>
+					<input type="text" name="system.critDamageFormImp" value="{{system.critDamageFormImp}}" data-tooltip="{{ localize 'DND4EBETA.FormulaCritBonusTip' }}" data-dtype="String"/>
 				</div>	
 				<h4 class="damage-header">
 					{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4EBETA.WeaponImplement' }}{{/unless}} {{ localize 'DND4EBETA.Secondary' }} {{ localize 'DND4EBETA.FormulaCritBonus' }}:
@@ -376,7 +376,7 @@
 					</div>
 
 					{{#if system.damageTypeWeapon}}					
-					<label title="{{ localize 'DND4EBETA.PrimaryDamageType' }}">{{ localize 'DND4EBETA.PrimaryDamageType' }}:</label>
+					<label data-tooltip="{{ localize 'DND4EBETA.PrimaryDamageType' }}">{{ localize 'DND4EBETA.PrimaryDamageType' }}:</label>
 					<pr></pr>
 					{{#each config.damageTypes as |name type|}}
 					<label class="checkbox">

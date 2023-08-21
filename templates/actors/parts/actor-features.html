@@ -36,7 +36,7 @@
 	
 			{{#if ../owner}}
 			<div class="item-controls flexrow">
-				<a class="item-control item-create" title="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+				<a class="item-control item-create" data-tooltip="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
 					<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 				</a>
 			</div>
@@ -97,12 +97,12 @@
 				<div class="item-controls flexrow">
 					{{#if section.crewable}}
 					<a class="item-control item-toggle {{item.toggleClass}}"
-					   title="{{item.toggleTitle}}">
+					   data-tooltip="{{item.toggleTitle}}">
 						<i class="fas fa-sun"></i>
 					</a>
 					{{/if}}
-					<a class="item-control item-edit" title="{{localize 'DND4EBETA.ItemEdit'}}"><i class="fas fa-edit"></i></a>
-					<a class="item-control item-delete" title="{{localize 'DND4EBETA.ItemDelete'}}"><i class="fas fa-trash"></i></a>
+					<a class="item-control item-edit" data-tooltip="{{localize 'DND4EBETA.ItemEdit'}}"><i class="fas fa-edit"></i></a>
+					<a class="item-control item-delete" data-tooltip="{{localize 'DND4EBETA.ItemDelete'}}"><i class="fas fa-trash"></i></a>
 				</div>
 				{{/if}}
 			</li>

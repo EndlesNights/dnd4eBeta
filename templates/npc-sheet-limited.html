@@ -2,11 +2,11 @@
 	<section class="npc-upper">
 		{{!-- SHeet Header --}}
 		<header class="sheet-header">
-			<img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img" style="margin-bottom: 6px;"/>
+			<img class="profile" src="{{actor.img}}" data-tooltip="{{actor.name}}" data-edit="img" style="margin-bottom: 6px;"/>
 			<section>
 				<ul class="summary">
 					<li class="summary-name-npc">
-						<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EBETA.NameNPC'}}" placeholder="{{localize 'DND4EBETA.NameNPC'}}" onClick="this.select();"/>
+						<input name="name" type="text" value="{{actor.name}}" data-tooltip="{{localize 'DND4EBETA.NameNPC'}}" placeholder="{{localize 'DND4EBETA.NameNPC'}}" onClick="this.select();"/>
 					</li>
 				</ul>
 	
@@ -39,7 +39,7 @@
 						</select>
 					</li>
 					<li class="summary-typeother">
-						<input name="data.details.other" type="text" value="{{data.details.other}}" title="{{localize 'DND4EBETA.CreatureSubtypes'}}" placeholder="{{localize 'DND4EBETA.CreatureSubtypes'}}" onClick="this.select();"/>
+						<input name="data.details.other" type="text" value="{{data.details.other}}" data-tooltip="{{localize 'DND4EBETA.CreatureSubtypes'}}" placeholder="{{localize 'DND4EBETA.CreatureSubtypes'}}" onClick="this.select();"/>
 					</li>
 				
 

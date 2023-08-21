@@ -2,7 +2,7 @@
 
 	{{!-- Item Sheet Header --}}
 	<header class="sheet-header flexrow">
-		<img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
+		<img class="profile" src="{{item.img}}" data-tooltip="{{item.name}}" data-edit="img"/>
 
 		<div class="header-details flexrow">
 			<h1 class="charname">
@@ -233,7 +233,7 @@
 			</div>
 
 			<div class="form-group stacked weapon-properties">
-				<label title="{{ localize 'DND4EBETA.Damage' }} {{ localize 'DND4EBETA.Type' }}">{{ localize 'DND4EBETA.Damage' }} {{ localize 'DND4EBETA.Type' }}:</label>
+				<label data-tooltip="{{ localize 'DND4EBETA.Damage' }} {{ localize 'DND4EBETA.Type' }}">{{ localize 'DND4EBETA.Damage' }} {{ localize 'DND4EBETA.Type' }}:</label>
 				<pr></pr>
 				{{#each config.damageTypes as |name type|}}
 				<label class="checkbox">

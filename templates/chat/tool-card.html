@@ -1,7 +1,7 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
 <div class="dnd4eBeta chat-card item-card tool {{actor.type}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
     <header class="card-header flexrow">
-        <img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
+        <img src="{{item.img}}" data-tooltip="{{item.name}}" width="36" height="36"/>
         <h3 class="item-name ability-usage--">{{item.name}}</h3>
     </header>
 

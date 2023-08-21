@@ -325,7 +325,7 @@
 
 
 	<div class="form-group stacked weapon-properties">
-		<label title="{{localize 'DND4EBETA.PrimaryDamageType'}}" style="max-width: 100%">{{localize "DND4EBETA.PrimaryDamageType"}}: {{system.weaponSourceName}}</label>
+		<label data-tooltip="{{localize 'DND4EBETA.PrimaryDamageType'}}" style="max-width: 100%">{{localize "DND4EBETA.PrimaryDamageType"}}: {{system.weaponSourceName}}</label>
 		{{#if system.damageTypeWeapon}}
 		{{#each config.damageTypes as |name type|}}
 		<label class="checkbox">
@@ -441,7 +441,7 @@
 	</div>
 
 	<div class="form-group stacked weapon-properties">
-		<label title="{{ localize 'DND4EBETA.Keywords' }}">{{ localize 'DND4EBETA.Effect' }} {{ localize 'DND4EBETA.Type' }} {{ localize 'DND4EBETA.Keywords' }}</label>
+		<label data-tooltip="{{ localize 'DND4EBETA.Keywords' }}">{{ localize 'DND4EBETA.Effect' }} {{ localize 'DND4EBETA.Type' }} {{ localize 'DND4EBETA.Keywords' }}</label>
 		<pr></pr>
 		{{#each config.effectTypes as |name type|}}
 		<label class="checkbox">

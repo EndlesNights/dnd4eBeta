@@ -2,7 +2,7 @@
 <div class="dnd4eBeta chat-card item-card {{item.type}}-card {{actor.type}} {{#if isPower}}use-{{item.system.useType}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
 	 {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
 	<header class="card-header flexrow">
-		<img src="{{item.img}}" title="{{item.name}}" width="36" height="36"/>
+		<img src="{{item.img}}" data-tooltip="{{item.name}}" width="36" height="36"/>
 		<h3 class="item-name ability-usage--">{{item.name}}</h3>
 	</header>
 
@@ -36,19 +36,19 @@
 	<div class="card-buttons">
 
 		{{#if hasAttack}}
-		<button data-action="attack" title="{{ localize 'DND4EBETA.QuickRoll' }}">
+		<button data-action="attack" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
 			{{ localize "DND4EBETA.Attack" }}
 		</button>
 		{{/if}}
 
 		{{#if hasDamage}}
-		<button data-action="damage" title="{{ localize 'DND4EBETA.QuickRoll' }}">
+		<button data-action="damage" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
 			{{localize "DND4EBETA.Damage" }}
 		</button>
 		{{/if}}
 
 		{{#if hasHealing}}
-		<button data-action="healing" title="{{ localize 'DND4EBETA.QuickRoll' }}">
+		<button data-action="healing" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
 			{{ localize "DND4EBETA.Healing" }}
 		</button>
 		{{/if}}

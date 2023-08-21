@@ -26,7 +26,7 @@
 
 		<div class="filter-search-powers">
 			<label for="power-filter-search">{{localize "DND4EBETA.Filter"}}</label>
-			<button style="min-width: 116px; width:calc(100% - 80px); height: 17px; line-height:normal; border:0px; float:right; margin:2px 2px 0px 0px;" class="item-import button" title="{{localize 'DND4EBETA.PowerCreate'}}" data-item-type="power" data-type="power" type="button">
+			<button style="min-width: 116px; width:calc(100% - 80px); height: 17px; line-height:normal; border:0px; float:right; margin:2px 2px 0px 0px;" class="item-import button" data-tooltip="{{localize 'DND4EBETA.PowerCreate'}}" data-item-type="power" data-type="power" type="button">
 				<i style="min-width: 105.6px;" class="fas fa-atlas"> <span class="import-button">{{localize "DND4EBETA.ImportPowers"}}</span></i>
 			</button>
 			<br>
@@ -46,13 +46,13 @@
 				{{/each}}
 			{{else}}
 				<div class="item-detail item-range">{{localize 'DND4EBETA.Range'}}</div>
-				<div class="item-detail item-action" title="{{localize 'DND4EBETA.Action'}}">{{localize 'DND4EBETA.ActionShort'}}</div>
+				<div class="item-detail item-action" data-tooltip="{{localize 'DND4EBETA.Action'}}">{{localize 'DND4EBETA.ActionShort'}}</div>
 				<div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div>
 			{{/if}}
-				<div class="item-detail item-prep" title="{{localize 'DND4EBETA.PowerPrepared'}}">{{localize 'DND4EBETA.PowerPreparedShort'}}</div>
+				<div class="item-detail item-prep" data-tooltip="{{localize 'DND4EBETA.PowerPrepared'}}">{{localize 'DND4EBETA.PowerPreparedShort'}}</div>
 			{{#if ../owner}}
 			<div class="item-controls">
-				<a class="item-control power-create" title='{{localize "DND4EBETA.ItemCreate"}}'
+				<a class="item-control power-create" data-tooltip="{{localize "DND4EBETA.ItemCreate"}}"
 				   {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
 					<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 				</a>
@@ -85,13 +85,13 @@
 						</div>
 						{{/each}}
 					{{else}}
-						<div class="item-detail power-detail item-range" title="{{item.system.rangeText}}">
+						<div class="item-detail power-detail item-range" data-tooltip="{{item.system.rangeText}}">
 							<label>{{item.system.rangeTextShort}}</label>
 							{{#if item.system.rangeTextBlock}}
 							<label style="background-color: rgba(77, 77, 77, 0.199); border-radius: 2px; padding-left: 2px; padding-right: 2px;">{{item.system.rangeTextBlock}}</label>
 							{{/if}}
 						</div>
-						<div class="item-detail power-detail item-action" title="{{lookup ../../config.abilityActivationTypes item.system.actionType}}" style="text-transform: uppercase;">
+						<div class="item-detail power-detail item-action" data-tooltip="{{lookup ../../config.abilityActivationTypes item.system.actionType}}" style="text-transform: uppercase;">
 							{{#if item.system.actionType }}
 							{{lookup ../../config.abilityActivationTypesShort item.system.actionType}}
 							{{/if}}
@@ -99,11 +99,11 @@
 						<div class="item-detail power-detail item-uses">
 							{{#if item.system.notAvailable}}
 								{{#if item.system.rechargeRoll}}
-								<a class="item-recharge rollable" title="{{localize 'DND4EBETA.PowerRechargeTipCond'}} {{item.system.rechargeRoll}}">Recharge[+{{item.system.rechargeRoll}}]</a>
+								<a class="item-recharge rollable" data-tooltip="{{localize 'DND4EBETA.PowerRechargeTipCond'}} {{item.system.rechargeRoll}}">Recharge[+{{item.system.rechargeRoll}}]</a>
 								{{else if item.system.rechargeCondition}}
-								<a class="item-recharge rollable" title="{{localize 'DND4EBETA.PowerRechargeTipCond'}} &quot;{{item.system.rechargeCondition}}&quot;">Recharge[C]</a>
+								<a class="item-recharge rollable" data-tooltip="{{localize 'DND4EBETA.PowerRechargeTipCond'}} &quot;{{item.system.rechargeCondition}}&quot;">Recharge[C]</a>
 								{{else if item.system.isOnCooldown}}
-								<a class="item-recharge rollable" title="C{{localize 'DND4EBETA.PowerRechargeTipRoll'}} {{item.system.rechargeRoll}}">Recharge[+6]</a>
+								<a class="item-recharge rollable" data-tooltip="C{{localize 'DND4EBETA.PowerRechargeTipRoll'}} {{item.system.rechargeRoll}}">Recharge[+6]</a>
 								{{else}}
 								<input type="text" value="{{item.system.uses.value}}" placeholder="0"/>/ {{item.system.preparedMaxUses}}
 								{{/if}}
@@ -117,7 +117,7 @@
 			
 					{{#if ../owner}}
 					<div class="item-controls flexrow">
-						<a class="item-control item-create" title="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+						<a class="item-control item-create" data-tooltip="{{localize 'DND4EBETA.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
 							<i class="fas fa-plus"></i> {{localize "DND4EBETA.Add"}}
 						</a>
 					</div>
@@ -138,19 +138,19 @@
 						{{/each}}
 					{{/if}}
 					<div class="item-detail power-detail item-prep">
-						<a class="item-control power-detail item-toggle {{item.toggleClass}}" title="{{item.toggleTitle}}"><i class="fas fa-sun"></i></a>
+						<a class="item-control power-detail item-toggle {{item.toggleClass}}" data-tooltip="{{item.toggleTitle}}"><i class="fas fa-sun"></i></a>
 					</div>
 					{{#if ../../owner}}
 					<div class="item-controls flexrow">
 						{{#if section.crewable}}
 						<a class="item-control item-toggle {{item.toggleClass}}"
-						title="{{item.toggleTitle}}">
+						data-tooltip="{{item.toggleTitle}}">
 							<i class="fas fa-sun"></i>
 						</a>
 						{{/if}}
-						<!-- <a class="item-control power-detail item-toggle {{item.toggleClass}}" title="{{item.toggleTitle}}"><i class="fas fa-sun"></i></a> -->
-						<a class="item-control power-detail item-edit" title="{{localize 'DND4EBETA.ItemEdit'}}"><i class="fas fa-edit"></i></a>
-						<a class="item-control power-detail item-delete" title="{{localize 'DND4EBETA.ItemDelete'}}"><i class="fas fa-trash"></i></a>
+						<!-- <a class="item-control power-detail item-toggle {{item.toggleClass}}" data-tooltip="{{item.toggleTitle}}"><i class="fas fa-sun"></i></a> -->
+						<a class="item-control power-detail item-edit" data-tooltip="{{localize 'DND4EBETA.ItemEdit'}}"><i class="fas fa-edit"></i></a>
+						<a class="item-control power-detail item-delete" data-tooltip="{{localize 'DND4EBETA.ItemDelete'}}"><i class="fas fa-trash"></i></a>
 					</div>
 					{{/if}}
 				</div>

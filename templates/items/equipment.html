@@ -2,7 +2,7 @@
 
 	{{!-- Item Sheet Header --}}
 	<header class="sheet-header flexrow">
-		<img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
+		<img class="profile" src="{{item.img}}" data-tooltip="{{item.name}}" data-edit="img"/>
 
 		<div class="header-details flexrow">
 			<h1 class="charname">
@@ -89,7 +89,7 @@
 			{{#if isArmourBaseTypeCustom}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.ArmourBaseCustom" }}:</label>
-				<input type="text" name="system.armourBaseTypeCustom" value="{{system.armourBaseTypeCustom}}" title="{{ localize "DND4EBETA.ArmourBaseCustom" }}" placeholder="{{ localize "DND4EBETA.ArmourBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+				<input type="text" name="system.armourBaseTypeCustom" value="{{system.armourBaseTypeCustom}}" data-tooltip="{{ localize "DND4EBETA.ArmourBaseCustom" }}" placeholder="{{ localize "DND4EBETA.ArmourBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
 			</div>
 			{{/if}}
 			{{/if}}
@@ -111,7 +111,7 @@
 			{{#if isShieldBaseTypeCustom}}
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.ShieldBaseCustom" }}:</label>
-				<input type="text" name="system.shieldBaseTypeCustom" value="{{system.shieldBaseTypeCustom}}" title="{{ localize "DND4EBETA.ShieldBaseCustom" }}" placeholder="{{ localize "DND4EBETA.ShieldBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+				<input type="text" name="system.shieldBaseTypeCustom" value="{{system.shieldBaseTypeCustom}}" data-tooltip="{{ localize "DND4EBETA.ShieldBaseCustom" }}" placeholder="{{ localize "DND4EBETA.ShieldBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
 			</div>
 			{{/if}}
 			{{/if}}
