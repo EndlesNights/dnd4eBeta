@@ -5,6 +5,7 @@
 - Added DocumentSheet4e wichh extended from DocumentSheet. Enabled the above mentioned input field locking with active effects for Document Sheets
 - Added a pointer to the encumbrance CSS, so it is more apparent that it may be clicked on.
 - Replaces all html "title" tags with "data-tooltip"
+- When hovering Hit Points, will show a cog icon to indicate that to users that clicking is a configurable options
 
 ## Version 0.4.14
 - compendium links fix
