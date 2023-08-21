@@ -2,7 +2,9 @@
 
 ## Version 0.4.15
 - Input fields that are being modified by Active Effects are now disabled and will display a tool tip warning explaining why they are disabled
-- Added DocumentSheet4e wich extended from DocumentSheet. Enabled the above mentioned input field locking with active effects for Document Sheets
+- Added DocumentSheet4e wichh extended from DocumentSheet. Enabled the above mentioned input field locking with active effects for Document Sheets
+- Added a pointer to the encumbrance CSS, so it is more apparent that it may be clicked on.
+- Replaces all html "title" tags with "data-tooltip"
 
 ## Version 0.4.14
 - compendium links fix
