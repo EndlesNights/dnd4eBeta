@@ -1,8 +1,11 @@
 # Changelog
 
+## Version 0.4.15
+- Input fields that are being modified by Active Effects are now disabled and will display a tool tip warning explaining why they are disabled
+
 ## Version 0.4.14
 - compendium links fix
-- simplfy Attack Formuals preveiw in power cards.
+- simplify Attack Formulas preview in power cards.
 - allow for helper short hands to be used in effects formulas.
 - allow for helper short hands to be used in char roll formulas.
 
