@@ -829,17 +829,36 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 			html.find('.effect-save').click(event => this._onRollEffectSave(event));
 
 			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this))
-			
+		}
+
+		//Disabels and adds warning to input fields that are being modfied by active effects
+		if (this.isEditable) {
+			for ( const override of this._getActorOverrides() ) {
+				html.find(`input[name="${override}"],select[name="${override}"]`).each((i, el) => {
+					el.disabled = true;
+					el.dataset.tooltip = "DND4EBETA.ActiveEffectOverrideWarning";
+				});
+			}
 		}
 	}
-
-  /* -------------------------------------------- */
-
+	
+	/* -------------------------------------------- */
   /**
-   * Handle input changes to numeric form fields, allowing them to accept delta-typed inputs
-   * @param event
-   * @private
-   */
+	 * Retrieve the list of fields that are currently modified by Active Effects on the Actor.
+	 * @returns {string[]}
+	 * @protected
+	 */
+	_getActorOverrides() {
+		return Object.keys(foundry.utils.flattenObject(this.object.overrides || {}));
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle input changes to numeric form fields, allowing them to accept delta-typed inputs
+	 * @param event
+	 * @private
+	 */
 	_onChangeInputDelta(event) {
 		const input = event.target;
 		const value = input.value;

@@ -70,6 +70,7 @@
     "DND4EBETA.ActionStandardShort": "STD.",
     "DND4EBETA.ActionUtil": "Utility",
     "DND4EBETA.Active": "Active",
+    "DND4EBETA.ActiveEffectOverrideWarning": "This value is being modified by an Active Effect and cannot be edited. Disable the effect to edit it.",
     "DND4EBETA.Add": "Add",
     "DND4EBETA.Advantage": "Advantage",
     "DND4EBETA.Age": "Age",
