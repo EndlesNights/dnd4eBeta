@@ -711,9 +711,9 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		return icons[level];
 	}
 
-  /* -------------------------------------------- */
+	/* -------------------------------------------- */
 
-  /** @override */
+	/** @override */
 	activateListeners(html) {
 		super.activateListeners(html);
 
@@ -843,7 +843,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	}
 	
 	/* -------------------------------------------- */
-  /**
+	/**
 	 * Retrieve the list of fields that are currently modified by Active Effects on the Actor.
 	 * @returns {string[]}
 	 * @protected

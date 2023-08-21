@@ -1,6 +1,7 @@
 import {Helper} from "../helper.js";
+import DocumentSheet4e from "./DocumentSheet4e.js"
 
-export class HealMenuDialog extends FormApplication {
+export class HealMenuDialog extends DocumentSheet4e {
 
 	/** @override */
 	static get defaultOptions() {

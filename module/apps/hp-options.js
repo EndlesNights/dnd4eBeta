@@ -1,4 +1,6 @@
-export default class HPOptions extends FormApplication {
+import DocumentSheet4e from "./DocumentSheet4e.js"
+
+export default class HPOptions extends DocumentSheet4e {
 
   /** @override */
 	static get defaultOptions() {
@@ -16,7 +18,6 @@ export default class HPOptions extends FormApplication {
 	
 	/** @override */
 	getData() {
-		
 		return {system: this.object.system}
 	}
 	

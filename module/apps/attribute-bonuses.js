@@ -1,6 +1,7 @@
 import { Helper } from "../helper.js"
+import DocumentSheet4e from "./DocumentSheet4e.js"
 
-export class AttributeBonusDialog extends DocumentSheet {
+export class AttributeBonusDialog extends DocumentSheet4e {
 	
 	static get defaultOptions() {
 		const options = super.defaultOptions;

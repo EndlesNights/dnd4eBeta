@@ -1,4 +1,6 @@
-export class ActionPointExtraDialog extends DocumentSheet {
+import DocumentSheet4e from "./DocumentSheet4e.js"
+
+export class ActionPointExtraDialog extends DocumentSheet4e {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
