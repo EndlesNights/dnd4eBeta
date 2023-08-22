@@ -45,13 +45,13 @@
 						<i class="fas fa-cog"></i>
 					</a>
 					<div class="attribute-value flexrow">
-						{{#if system.details.isBloodied}}
-
-
-						{{/if}}
 						<input {{#if system.details.isBloodied}} class="bloodied" {{/if}} type="text" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" data-tooltip="{{localize 'DND4EBETA.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">/</span>
+						{{#if system.attributes.hp.autototal}}
+						<input type="text" disabled name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" data-tooltip="{{localize 'DND4EBETA.HPTotalAuto'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						{{else}}
 						<input type="text" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" data-tooltip="{{localize 'DND4EBETA.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						{{/if}}
 					</div>
 					<footer class="attribute-footer attribute-footer--temp-hp flexrow">
 						<span class="attribute-subname">{{localize 'DND4EBETA.TempHP'}}</span>
