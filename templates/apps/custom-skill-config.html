@@ -1,3 +1,58 @@
 <form id="second-wind-hd" class="dialog-content" onsubmit="event.preventDefault();">
 
+
+	{{#each customSkills as |customSkill s|}}
+	<div class="bonus-part" data-bonus-part="{{b}}">
+		<span>{{localize 'DND4EBETA.SkillLabel'}}</span>
+		<input type="text" name="{{s}}.name" value="{{customSkill.name}}" data-dtype="String" style="width: 125px;"/>
+		<span>{{localize 'DND4EBETA.SkillID'}}</span>
+		<input type="text" name="{{s}}.value" value="{{customSkill.value}}" data-dtype="String" style="width: 105px;"/>
+		<span>{{localize 'DND4EBETA.Attribute'}}</span>
+
+
+		<select name="system.altability">
+			{{#select system.altability}}
+			<option value="str" >{{localize 'DND4EBETA.AbilityStr'}}</option>
+			<option value="con" >{{localize 'DND4EBETA.AbilityCon'}}</option>
+			<option value="dex" >{{localize 'DND4EBETA.AbilityDex'}}</option>
+			<option value="int" >{{localize 'DND4EBETA.AbilityInt'}}</option>
+			<option value="wis" >{{localize 'DND4EBETA.AbilityWis'}}</option>
+			<option value="cha" >{{localize 'DND4EBETA.AbilityCha'}}</option>
+			<option value="none" >{{localize 'DND4EBETA.None'}}</option>
+			{{/select}}
+		</select>
+
+		<a class="bonus-control bonus-delete" data-tooltip="{{localize 'DND4EUI.Delete'}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
+	</div>
+	{{/each}}
+
+
+	<div class="bonus-part" data-bonus-part="{{b}}">
+		<span>{{localize 'DND4EBETA.SkillLabel'}}</span>
+		<input type="text" name="{{s}}.name" value="{{customSkill.name}}" data-dtype="String" style="width: 125px;"/>
+		<span>{{localize 'DND4EBETA.SkillID'}}</span>
+		<input type="text" name="{{s}}.value" value="{{customSkill.value}}" data-dtype="String" style="width: 105px;"/>
+		<span>{{localize 'DND4EBETA.Attribute'}}</span>
+
+
+		<select name="system.altability">
+			{{#select system.altability}}
+			<option value="str" >{{localize 'DND4EBETA.AbilityStr'}}</option>
+			<option value="con" >{{localize 'DND4EBETA.AbilityCon'}}</option>
+			<option value="dex" >{{localize 'DND4EBETA.AbilityDex'}}</option>
+			<option value="int" >{{localize 'DND4EBETA.AbilityInt'}}</option>
+			<option value="wis" >{{localize 'DND4EBETA.AbilityWis'}}</option>
+			<option value="cha" >{{localize 'DND4EBETA.AbilityCha'}}</option>
+			<option value="none" >{{localize 'DND4EBETA.None'}}</option>
+			{{/select}}
+		</select>
+
+		<a class="bonus-control bonus-delete" data-tooltip="{{localize 'DND4EUI.Delete'}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
+	</div>
+
+
+	<div><a class="bonus-control bonus-add">{{localize 'DND4EUI.AddNew'}} <i class="fas fa-plus"></i></a></div>
+
+	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EBETA.Save"}}</button>
+	<button type="button" data-cancel="" name="cancel"><i class="fas fa-ban"></i> {{ localize "DND4EBETA.Cancel"}}</button>
 </form>
