@@ -57,7 +57,7 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 		this.object.update(updateData);
 	}
 
-  /** @override */
+	/** @override */
 	activateListeners(html) {
 		super.activateListeners(html);
 		if ( this.isEditable ) {
