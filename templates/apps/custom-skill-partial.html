@@ -1,0 +1,22 @@
+<li class="sfx flexrow sfx-line">
+    <div>
+		<span>{{localize 'DND4EBETA.SkillLabel'}}</span>
+		<input type="text" name="{{s}}.label" value="{{customSkill.label}}" data-dtype="String" style="width: 125px;"/>
+		<span>{{localize 'DND4EBETA.SkillID'}}</span>
+		<input type="text" name="{{s}}.id" value="{{customSkill.id}}" data-dtype="String" style="width: 105px;"/>
+		<span>{{localize 'DND4EBETA.Attribute'}}</span>
+
+
+		<select name="{{s}}.ability">
+			{{#select customSkill.ability}}
+			<option value="str" >{{localize 'DND4EBETA.AbilityStr'}}</option>
+			<option value="con" >{{localize 'DND4EBETA.AbilityCon'}}</option>
+			<option value="dex" >{{localize 'DND4EBETA.AbilityDex'}}</option>
+			<option value="int" >{{localize 'DND4EBETA.AbilityInt'}}</option>
+			<option value="wis" >{{localize 'DND4EBETA.AbilityWis'}}</option>
+			<option value="cha" >{{localize 'DND4EBETA.AbilityCha'}}</option>
+			<option value="none" >{{localize 'DND4EBETA.None'}}</option>
+			{{/select}}
+		</select>
+        <a class="bonus-control bonus-delete" data-tooltip="{{localize 'DND4EUI.Delete'}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>	</div>
+</li>
