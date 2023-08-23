@@ -11,6 +11,14 @@ export const registerSystemSettings = function() {
 		restricted: true,
 	});
 
+	game.settings.register("dnd4e", "custom-skills",{
+		name: "Custom Skills",
+		scope: "world",
+		config: false,
+		type: Object,
+		default: []
+	});
+
 	/**
 	 * Track the system version upon which point a migration was last applied
 	 */
