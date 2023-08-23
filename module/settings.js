@@ -1,4 +1,15 @@
+import CustomSkillConfig from "./apps/custom-skill-config.js";
+
 export const registerSystemSettings = function() {
+
+	game.settings.registerMenu("dnd4e", "show-custom-skill", {
+		name: "SETTINGS.4eShowCustomSkillN",
+		label: "SETTINGS.4eShowCustomSkillL",
+		hint: "SETTINGS.4eShowCustomSkillH",
+		icon: 'fas fa-cog',
+		type: CustomSkillConfig,
+		restricted: true,
+	});
 
 	/**
 	 * Track the system version upon which point a migration was last applied
