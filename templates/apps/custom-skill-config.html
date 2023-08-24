@@ -6,13 +6,13 @@
 			<li class="flexrow custom-skill-line">
 			<div id="{{s}}">
 				<span>{{localize 'DND4EBETA.SkillLabel'}}</span>
-				<input type="text" name="label" value="{{skill.label}}" data-dtype="String" style="width: 125px;"/>
+				<input disabled type="text" name="label" value="{{skill.label}}" data-dtype="String" style="width: 125px;"/>
 				<span>{{localize 'DND4EBETA.SkillID'}}</span>
-				<input type="text" name="id" value="{{skill.id}}" data-dtype="String" style="width: 105px;"/>
+				<input disabled type="text" name="id" value="{{skill.id}}" data-dtype="String" style="width: 105px;"/>
 				<span>{{localize 'DND4EBETA.Attribute'}}</span>
 		
 		
-				<select name="ability">
+				<select disabled name="ability">
 					<option value="str" {{#if (eq skill.ability "str")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityStr'}}</option>
 					<option value="con" {{#if (eq skill.ability "con")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityCon'}}</option>
 					<option value="dex" {{#if (eq skill.ability "dex")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityDex'}}</option>
