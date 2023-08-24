@@ -12,6 +12,7 @@
 				<input disabled type="text" name="id" value="{{skill.id}}" data-dtype="String" style="width: 105px;"/>
 				
 				<span>{{localize 'DND4EBETA.Attribute'}}</span>
+
 				<select disabled name="ability">
 					<option value="str" {{#if (eq skill.ability "str")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityStr'}}</option>
 					<option value="con" {{#if (eq skill.ability "con")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityCon'}}</option>
@@ -23,7 +24,7 @@
 				</select>
 
 				<span>{{localize 'DND4EBETA.SkillACPToggle'}}</span>
-				<input disabled type="checkbox" name="armourCheck" value="{{skill.armourCheck}}" data-dtype="Boolean" checked="">
+				<input disabled type="checkbox" name="armourCheck" {{checked skill.armourCheck}} data-dtype="Boolean">
 
 				<a class="custom-skill-control" custom-skill-delete data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	</div>	
 			</div>
@@ -36,7 +37,7 @@
 	<a class="custom-skill-control custom-skill-add" custom-skill-create>{{localize 'DND4EUI.AddNewSkill'}} <i class="fas fa-plus"></i></a>
 
 	<footer class="sheet-footer flexrow">
-		<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EBETA.Save"}}</button>
+		<button type="submit" data-save name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EBETA.Save"}}</button>
 		<button type="button" data-cancel name="cancel"><i class="fas fa-ban"></i> {{ localize "DND4EBETA.Cancel"}}</button>
 	</footer>
 </form>
