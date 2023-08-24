@@ -1,13 +1,13 @@
-<li class="sfx flexrow sfx-line">
-    <div>
+<li class="flexrow custom-skill-line">
+	<div>
 		<span>{{localize 'DND4EBETA.SkillLabel'}}</span>
-		<input type="text" name="{{s}}.label" value="{{customSkill.label}}" data-dtype="String" style="width: 125px;"/>
+		<input type="text" name="label" value="{{customSkill.label}}" data-dtype="String" style="width: 125px;"/>
 		<span>{{localize 'DND4EBETA.SkillID'}}</span>
-		<input type="text" name="{{s}}.id" value="{{customSkill.id}}" data-dtype="String" style="width: 105px;"/>
+		<input type="text" name="id" value="{{customSkill.id}}" data-dtype="String" style="width: 105px;"/>
 		<span>{{localize 'DND4EBETA.Attribute'}}</span>
 
 
-		<select name="{{s}}.ability">
+		<select name="ability">
 			{{#select customSkill.ability}}
 			<option value="str" >{{localize 'DND4EBETA.AbilityStr'}}</option>
 			<option value="con" >{{localize 'DND4EBETA.AbilityCon'}}</option>
@@ -18,5 +18,6 @@
 			<option value="none" >{{localize 'DND4EBETA.None'}}</option>
 			{{/select}}
 		</select>
-        <a class="bonus-control bonus-delete" data-tooltip="{{localize 'DND4EUI.Delete'}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>	</div>
+		<a class="bonus-control bonus-delete" data-tooltip="{{localize 'DND4EUI.Delete'}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
+	</div>
 </li>

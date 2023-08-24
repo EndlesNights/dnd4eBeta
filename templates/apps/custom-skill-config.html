@@ -1,9 +1,31 @@
 <form id="custom-skill-config" class="dialog-content" onsubmit="event.preventDefault();">
-
-
 	<ol id="custom-skill-list" class="custom-skill-list">
 		<li class="custom-skill flexrow custom-skill-header">
 
+			{{#each customSkills as |skill s|}}
+			<li class="flexrow custom-skill-line">
+			<div id="{{s}}">
+				<span>{{localize 'DND4EBETA.SkillLabel'}}</span>
+				<input type="text" name="label" value="{{skill.label}}" data-dtype="String" style="width: 125px;"/>
+				<span>{{localize 'DND4EBETA.SkillID'}}</span>
+				<input type="text" name="id" value="{{skill.id}}" data-dtype="String" style="width: 105px;"/>
+				<span>{{localize 'DND4EBETA.Attribute'}}</span>
+		
+		
+				<select name="ability">
+					<option value="str" {{#if (eq skill.ability "str")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityStr'}}</option>
+					<option value="con" {{#if (eq skill.ability "con")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityCon'}}</option>
+					<option value="dex" {{#if (eq skill.ability "dex")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityDex'}}</option>
+					<option value="int" {{#if (eq skill.ability "int")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityInt'}}</option>
+					<option value="wis" {{#if (eq skill.ability "wis")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityWis'}}</option>
+					<option value="cha" {{#if (eq skill.ability "cha")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityCha'}}</option>
+					<option value="none" {{#if (eq skill.ability "none")}}selected{{/if}}>{{localize 'DND4EBETA.None'}}</option>
+				</select>
+				<a class="bonus-control bonus-delete" data-tooltip="{{localize 'DND4EUI.Delete'}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>	</div>	
+			</div>
+			</li>
+
+			{{/each}}
 		</li>
 	</ol>
 
