@@ -7,11 +7,11 @@
 			<div id="{{s}}">
 				<span>{{localize 'DND4EBETA.SkillLabel'}}</span>
 				<input disabled type="text" name="label" value="{{skill.label}}" data-dtype="String" style="width: 125px;"/>
+				
 				<span>{{localize 'DND4EBETA.SkillID'}}</span>
 				<input disabled type="text" name="id" value="{{skill.id}}" data-dtype="String" style="width: 105px;"/>
+				
 				<span>{{localize 'DND4EBETA.Attribute'}}</span>
-		
-		
 				<select disabled name="ability">
 					<option value="str" {{#if (eq skill.ability "str")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityStr'}}</option>
 					<option value="con" {{#if (eq skill.ability "con")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityCon'}}</option>
@@ -21,6 +21,10 @@
 					<option value="cha" {{#if (eq skill.ability "cha")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityCha'}}</option>
 					<option value="none" {{#if (eq skill.ability "none")}}selected{{/if}}>{{localize 'DND4EBETA.None'}}</option>
 				</select>
+
+				<span>{{localize 'DND4EBETA.SkillACPToggle'}}</span>
+				<input disabled type="checkbox" name="armourCheck" value="{{skill.armourCheck}}" data-dtype="Boolean" checked="">
+
 				<a class="custom-skill-control" custom-skill-delete data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	</div>	
 			</div>
 			</li>
