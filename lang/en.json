@@ -1401,6 +1401,10 @@
 "SETTINGS.4ePowerAutoGenerateLableOptionL": "When creating a new power, determine if the option to \"Auto Generate Power Card Details\" is set.",
 "SETTINGS.4eShowRollExpressionN": "Show Roll Formula",
 "SETTINGS.4eShowRollExpressionL": "Display the formula used to create a given d20 or damage roll.  Useful to find out how a roll was calculate but may be confusing for novice users",
+"SETTINGS.4eShowCustomSkillH": "Options for adding in custom skills for characters into the game system",
+"SETTINGS.4eShowCustomSkillL": "Custom Skills Configure",
+"SETTINGS.4eShowCustomSkillN": "Custom Skills Configure",
+"DND4EUI.AddNewSkill": "Add new Skill",
 
 "MIGRATION.4eBegin": "Applying DnD4E System Migration for version {version}. Please be patient and do not close your game or shut down your server.",
 "MIGRATION.4eComplete": "DnD4E System Migration to version {version} completed!",
