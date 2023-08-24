@@ -35,6 +35,7 @@ import ActiveEffectConfig4e from "./effects/effects-config.js";
 import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 import {TokenBarHooks} from "./hooks.js";
+import { customSKillSetUp } from "./skills/custom-skills.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -107,6 +108,8 @@ Hooks.once("init", async function() {
 	game.dnd4eBeta.tokenBarHooks = TokenBarHooks
 	//legacy, remove after some time when its reasonable for people to have updated token bar
 	game.dnd4eBeta.quickSave = (actor) => game.dnd4eBeta.tokenBarHooks.quickSave(actor, null)
+
+	customSKillSetUp();
 });
 
 Hooks.once("setup", function() {

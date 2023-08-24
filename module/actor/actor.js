@@ -23,7 +23,6 @@ export class Actor4e extends Actor {
 				this.system.powerGroupTypes = `usage`;
 			}
 		}
-
 	}
 
 	/** @override */
@@ -658,7 +657,7 @@ export class Actor4e extends Actor {
 	}
 
 	calcSkillCharacter(system){
-		for (let [id, skl] of Object.entries(system.skills)) {
+		for (const [id, skl] of Object.entries(system.skills)) {
 			skl.value = parseFloat(skl.value || 0);
 
 			let sklBonusValue = 0;
@@ -709,7 +708,7 @@ export class Actor4e extends Actor {
 			} else {
 				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty + Math.floor(system.details.level / 2);
 			}
-			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
+			skl.label = skl.label? skl.label : game.i18n.localize(DND4EBETA.skills[id]);
 
 		}
 	}
