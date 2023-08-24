@@ -228,7 +228,8 @@
 			return {
 				type: "turns",
 				duration: duration,
-				remaining: remaining,
+				// remaining: remaining,
+				remaining: ((d.rounds == null && d.turns == null && d.seconds == null ) ? null : remaining),
 				label: this._getDurationLabel(d.rounds, d.turns),
 				_combatTime: current
 			  };
