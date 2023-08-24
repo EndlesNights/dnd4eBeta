@@ -2,6 +2,7 @@
 
 ## Version 0.4.16
 - Added system support for custom skills
+- edit to remaining effect time which cause issues with other modules
 
 ## Version 0.4.15
 - Input fields that are being modified by Active Effects are now disabled and will display a tool tip warning explaining why they are disabled
