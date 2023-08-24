@@ -2484,3 +2484,7 @@ span.flavor-text.probable-miss {
   right: 0px;
   display: none;
 }
+
+.custom-skill-config .custom-skill-control {
+	margin: 0 5px;
+}
