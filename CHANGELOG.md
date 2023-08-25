@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.17
+- Change to how Skill Labels work, allowing for the value to be manly set or overridden on an individual actor.
+
 ## Version 0.4.16
 - Added system support for custom skills
 - edit to remaining effect time which cause issues with other modules
