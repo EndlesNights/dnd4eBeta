@@ -768,7 +768,7 @@ export class Actor4e extends Actor {
 				skl.total = skl.base;
 			}
 
-			skl.label = game.i18n.localize(DND4EBETA.skills[id]);
+			skl.label = skl.label? skl.label : game.i18n.localize(DND4EBETA.skills[id]);
 		}
 	}
 

@@ -123,7 +123,7 @@ export default class ActorSheet4e extends ActorSheet {
 			// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
 			skl.icon = this._getTrainingIcon(skl.value);
 			skl.hover = game.i18n.localize(DND4EBETA.trainingLevels[skl.value]);
-			skl.label = game.i18n.localize(DND4EBETA.skills[s]);
+			skl.label = skl.label ? skl.label: game.i18n.localize(DND4EBETA.skills[s]);
 		}
 		
 		this._prepareDataTraits(actorData.languages, 
