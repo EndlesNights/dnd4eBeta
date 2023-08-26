@@ -229,6 +229,15 @@ export const registerSystemSettings = function() {
 		default: false,
 		type: Boolean
 	});
+	
+	game.settings.register("dnd4e", "saveReminders",{
+		name: "SETTINGS.4eSaveRemindersN",
+		hint: "SETTINGS.4eSaveRemindersL",
+		scope: "client",
+		config: true,
+		default: true,
+		type: Boolean
+	});
 
 	game.keybindings.register("dnd4e", "permShowPlayer", {
 		name: game.i18n.localize("SETTINGS.4epermShowPlayerN"),
