@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.4.19
+- Added socket for users to delete active effects
+
+## Version 0.4.18
+- Automated saving throw dialogues [merge](https://github.com/EndlesNights/dnd4eBeta/pull/302) from [FoxLee](https://github.com/FoxLee)
+
 ## Version 0.4.17
 - Change to how Skill Labels work, allowing for the value to be manly set or overridden on an individual actor.
 

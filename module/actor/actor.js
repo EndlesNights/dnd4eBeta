@@ -1006,7 +1006,15 @@ export class Actor4e extends Actor {
 	}
 
 	async rollSave(event, options){
-		let message = `${game.i18n.localize("DND4EBETA.RollSave")} ${options.dc || 10}`;
+		//let message = `${game.i18n.localize("DND4EBETA.RollSave")} ${options.dc || 10}`;
+		
+		let message =  `(${game.i18n.localize("DND4EBETA.AbbreviationDC")} ${options.dc || 10})`;
+		if(options.effectSave){
+			message = `${game.i18n.localize("DND4EBETA.SaveVs")} <strong>${this.effects.get(options.effectId).name}</strong> ${message}`;
+		}else{
+			message = `${game.i18n.localize("DND4EBETA.RollSave")} ${message}`;
+		}
+		
 		const parts = [this.system.details.saves.value];
 		if (options.save) {
 			parts.push(options.save)

@@ -1,4 +1,5 @@
-import { Helper } from "../helper.js"
+import { Helper } from "../helper.js";
+import { SaveThrowDialog } from "../apps/save-throw.js";
 
 export class Turns{
 	static async _onNextTurn(wrapped){
