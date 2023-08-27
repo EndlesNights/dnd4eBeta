@@ -1,5 +1,10 @@
 <form id="save-throw" class="dialog-content" onsubmit="event.preventDefault();">
-	<p>{{localize 'DND4EBETA.SavePrompt'}}</p>
+	<p>{{#if effectName}}
+		{{localize 'DND4EBETA.SaveVsPrompt'}} <strong>{{effectName}}</strong>"
+	{{else}}
+		{{localize 'DND4EBETA.SavePrompt'}} 
+	{{/if}}
+	</p>
 	<div class="form-group">
 		<label>{{localize 'DND4EBETA.SaveDCSet'}}:</label>
 		<input type="text" name="dc" value="10" placeholder="" onClick="this.select();"/>

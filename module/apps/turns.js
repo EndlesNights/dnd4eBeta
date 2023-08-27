@@ -1,4 +1,5 @@
-import { Helper } from "../helper.js"
+import { Helper } from "../helper.js";
+import { SaveThrowDialog } from "../apps/save-throw.js";
 
 export class Turns{
     static async _onNextTurn(wrapped){
@@ -10,9 +11,12 @@ export class Turns{
         const nextInit = game.combat.turn + 1 < game.combat.turns.length? game.combat.turns[game.combat.turn + 1].initiative :  game.combat.turns[0].initiative;
     
         Helper.rechargeItems(game.combat.turns[nextTurn].actor, ["round"]);
+		  
+		  const saveReminders = game.settings.get("dnd4e","saveReminders");
     
         for(let t of game.combat.turns){
             let toDelete = [];
+				
             for(let e of t.token?.actor?.effects){
                 const effectData = e.flags.dnd4e?.effectData;
                 const durationType = effectData?.durationType;
@@ -20,7 +24,19 @@ export class Turns{
                 if(!durationType){
                     continue;
                 }
-    
+
+                if(durationType === "saveEnd" && saveReminders){
+                    if( t.id === game.combat.combatant.id ){
+							  
+								//Ideally this would respect Fast-Forward settings. Unfortunately Fox couldn't quite get there.
+								//const fastForward = Helper.isRollFastForwarded(event);
+								//return this.actor.usePower(item, {configureDialog: !fastForward, fastForward: fastForward});
+								
+								let save = new SaveThrowDialog(t.token.actor, {effectSave:true, effectId: e.id}).render(true);
+                    }
+						  
+                }
+					 
                 if(durationType === "endOfTargetTurn"){
                     if(currentInit <= effectData.durationTurnInit && currentRound >= e.duration.rounds && t.id === game.combat.combatant.id
                         || (currentRound > e.duration.rounds && t.id === game.combat.combatant.id) ){

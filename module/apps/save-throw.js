@@ -13,14 +13,16 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		});
 	}
 	get title() {
-		return `${this.object.name} - Saving Throw`;
+		return `${this.object.name} - ${game.i18n.format("DND4EBETA.SavingThrow")}`;
 	}
 
 	/** @override */
 	getData() {
+		const options = this.options;
 		return {
 			system: this.object.system,
-			rollModes: CONFIG.Dice.rollModes
+			rollModes: CONFIG.Dice.rollModes,
+			effectName: ( options.effectSave ? this.object.effects.get(options.effectId).name : null )
 		};
 	}
 
