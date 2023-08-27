@@ -1666,4 +1666,8 @@ export class Actor4e extends Actor {
 
 		this.createEmbeddedDocuments("ActiveEffect", [data]);
 	}
+
+	async deleteActiveEffectSocket(toDelete){
+		this.deleteEmbeddedDocuments("ActiveEffect", toDelete)
+	}
 }

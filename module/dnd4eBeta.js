@@ -24,7 +24,7 @@ import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/entity.js";
 
-import { Helper, handleApplyEffectToToken } from "./helper.js"
+import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken } from "./helper.js"
 
 // Import Helpers
 import * as chat from "./chat.js";
@@ -152,6 +152,7 @@ Hooks.once("ready",  function() {
 		// Add socket listener for applying activeEffects on targets that users do not own
 		game.socket.on('system.dnd4e', (data) => {
 			if(data.operation === 'applyTokenEffect') handleApplyEffectToToken(data);
+			else if(data.operation === 'deleteTokenEffect') handleDeleteEffectToToken(data);
 			else ItemSheet4e._handleShareItem(data);
 		});
 

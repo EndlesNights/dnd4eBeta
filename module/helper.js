@@ -1061,7 +1061,7 @@ export class Helper {
 	}
 
 	static getCurrentTurnInitiative(){
-		return game.combat? game.combat.turns[game.combat.turn].initiative : 0;
+		return game.combat? game.combat.turns[game.combat.turn]?.initiative : 0;
 	}
 
 	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
@@ -1078,7 +1078,7 @@ export class Helper {
 					const flags = e.flags;
 					duration.combat = combat?.id || "None Combat";
 					duration.startRound = combat?.round || 0;
-					flags.dnd4e.effectData.startTurnInit = combat?.turns[combat.turn].initiative || 0;
+					flags.dnd4e.effectData.startTurnInit =  combat?.turns[combat?.turn]?.initiative || 0;
 
 					const userTokenId = this.getTokenIdForLinkedActor(parent);
 					const userInit = this.getInitiativeByToken(this.getTokenIdForLinkedActor(parent));
@@ -1157,4 +1157,13 @@ export async function handleApplyEffectToToken(data){
 	const effectData = data.effectData;
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
 	await actor.newActiveEffectSocket(effectData);
+}
+
+export async function handleDeleteEffectToToken(data){
+	if(!game.user.isGM){
+		return;
+	}
+
+	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
+	await actor.deleteActiveEffectSocket(data.toDelete);
 }
