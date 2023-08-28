@@ -12,6 +12,8 @@ export class Turns{
 	
 		Helper.rechargeItems(game.combat.turns[nextTurn].actor, ["round"]);
 	
+		const saveReminders = game.settings.get("dnd4e","saveReminders");
+		
 		//t current turn
 		for(let t of game.combat.turns){
 			let toDelete = [];
@@ -21,6 +23,17 @@ export class Turns{
 	
 				if(!durationType){
 					continue;
+				}
+
+				if(durationType === "saveEnd" && saveReminders){
+					if( t.id === game.combat.combatant.id ){
+
+								//Ideally this would respect Fast-Forward settings. Unfortunately Fox couldn't quite get there.
+								//const fastForward = Helper.isRollFastForwarded(event);
+								//return this.actor.usePower(item, {configureDialog: !fastForward, fastForward: fastForward});
+
+								let save = new SaveThrowDialog(t.token.actor, {effectSave:true, effectId: e.id}).render(true);
+					}
 				}
 	
 				if(durationType === "endOfTargetTurn"){
