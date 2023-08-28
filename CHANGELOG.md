@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.20
+- Fix to merge error where part of [PR 302](https://github.com/EndlesNights/dnd4eBeta/pull/302) from [FoxLee](https://github.com/FoxLee) was not merged correctly. (my bad -Endles)
+
 ## Version 0.4.19
 - Added socket for users to delete active effects
 
