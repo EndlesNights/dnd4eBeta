@@ -1465,7 +1465,7 @@ export class Actor4e extends Actor {
 			if ( damageTypesArray.includes("ongoing") ){
 				if (actorRes['ongoing'].immune) isDamageImmune = actorRes['ongoing'].immune;
 
-				resAll = Helper.sumExtremes([resAll,actorRes['ongoing'].value]);
+				resAll = Helper.sumExtremes([resAll,actorRes['ongoing'].value] || 0);
 			}
 			
 			let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
@@ -1474,10 +1474,10 @@ export class Actor4e extends Actor {
 			for(let dt of damageTypesArray){
 				const type = dt && actorRes[dt] ? dt : 'damage';
 				//Skip if we're immune, or if the current type is ongoing (that's handled in a special way later)
-				if( dt == "ongoing" || actorRes[type].immune ) continue;
+				if( dt == "ongoing" || actorRes[type]?.immune ) continue;
 				
 				//Adjust specific resistance with "resist all" value, according to combining resistance/vulnerability rules
-				const currentRes = Helper.sumExtremes([resAll,actorRes[type].value || 0]);
+				const currentRes = Helper.sumExtremes([resAll,actorRes[type]?.value || 0]);
 	
 				if(currentRes !== 0 ){ //if has resistances or vulnerability
 					isImmuneAll=false;
@@ -1544,7 +1544,7 @@ export class Actor4e extends Actor {
 			if ( isOngoing ){
 				if (actorRes['ongoing'].immune) isDamageImmune = actorRes['ongoing'].immune;
 
-				resAll = Helper.sumExtremes([resAll,actorRes['ongoing'].value]);
+				resAll = Helper.sumExtremes([resAll,actorRes['ongoing']?.value] || 0);
 			}
 
 			//If we have immune all, skip the resistance comparisons
@@ -1552,16 +1552,15 @@ export class Actor4e extends Actor {
 				for(const d in damageDealt){
 					const damagetype = actorRes[d] ? d : 'damage';
 					if(actorRes[damagetype].immune) continue; //No damage to immune types
-					if(isDamageImmune && !actorRes[damagetype].value) continue;
-					
-					const res = Helper.sumExtremes([resAll,actorRes[damagetype].value || 0]);
+					//if(isDamageImmune && !actorRes[damagetype].value) continue;
+					let res = Helper.sumExtremes([resAll,actorRes[damagetype]?.value || 0]);
 
-					/*let res = currentRes;
+					/*Should be unnecessary when adjusting resistances in the previous step
 					if(!res && resAll){
 						res = resAll;
 					}*/
-						
-					totalDamage += Math.max(0, damageDealt[damagetype]-res);
+					
+					totalDamage += Math.max(0, damageDealt[d]-res);
 				}
 			}
 		}
