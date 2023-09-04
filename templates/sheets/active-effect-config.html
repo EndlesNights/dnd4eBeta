@@ -137,6 +137,8 @@
 
     <!-- Effects Tab -->
     <section class="tab" data-tab="effects">
+	 
+		  <h3 class="subsection">{{ localize "DND4EBETA.ModifierPlural" }}</h3>
         <header class="effect-change effects-header flexrow">
             <div class="key">{{ localize "EFFECT.ChangeKey" }}</div>
             <div class="mode">{{ localize "EFFECT.ChangeMode" }}</div>
@@ -165,6 +167,35 @@
             </li>
             {{/each}}
         </ol>
+		  
+		  <br />
+		  
+		  <!-- Ongoing Damage instances attached to this effect-->
+		  <h3 class="subsection">{{ localize "DND4EBETA.OngoingDamage" }}</h3>
+        <header class="effect-change effects-header flexrow">
+            <div class="amount">{{ localize "DND4EBETA.Value" }}</div>
+            <div class="type">{{ localize "DND4EBETA.Type" }}</div>
+            <div class="effect-controls">
+                <a class="effect-dot-control" data-action="add"><i class="far fa-plus-square"></i></a>
+            </div>
+        </header>
+        <ol class="dots-list">
+            {{#each effect.flags.dnd4e.dots as |dot i|}}
+            <li class="effect-dot flexrow" data-index="{{i}}">
+                <div class="amount">
+                    <input type="text" name="flags.dnd4e.dots.{{i}}.amount" value="{{dot.amount}}"/>
+                </div>
+                <div class="type">
+                    <input type="text" name="flags.dnd4e.dots.{{i}}.type" value="{{dot.type}}"/>
+                </div>
+                <div class="effect-controls">
+                    <a class="effect-dot-control" data-action="delete"><i class="fas fa-trash"></i></a>
+                </div>
+            </li>
+            {{/each}}
+        </ol>
+		  
+		  <br />
     </section>
 
     <footer class="sheet-footer">
