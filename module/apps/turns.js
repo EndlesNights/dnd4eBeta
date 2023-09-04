@@ -1,5 +1,4 @@
 import { Helper } from "../helper.js";
-import { SaveThrowDialog } from "../apps/save-throw.js";
 
 export class Turns{
 	static async _onNextTurn(wrapped){
@@ -9,14 +8,15 @@ export class Turns{
 	
 		const nextTurn = game.combat.turn + 1 < game.combat.turns.length? game.combat.turn + 1 : 0;
 		const nextInit = game.combat.turn + 1 < game.combat.turns.length? game.combat.turns[game.combat.turn + 1].initiative :  game.combat.turns[0].initiative;
-	
-		Helper.rechargeItems(game.combat.turns[nextTurn].actor, ["round"]);
-	
-		const saveReminders = game.settings.get("dnd4e","saveReminders");
+		
+		//Moved to happen after the loop deletes end-of-turn effects
+		//Helper.rechargeItems(game.combat.turns[nextTurn].actor, ["round"])
 		
 		//t current turn
 		for(let t of game.combat.turns){
+			
 			let toDelete = [];
+			
 			for(let e of t.token?.actor?.effects){
 				const effectData = e.flags.dnd4e?.effectData;
 				const durationType = effectData?.durationType;
@@ -25,18 +25,7 @@ export class Turns{
 					continue;
 				}
 
-				if(durationType === "saveEnd" && saveReminders){
-					if( t.id === game.combat.combatant.id ){
-
-								//Ideally this would respect Fast-Forward settings. Unfortunately Fox couldn't quite get there.
-								//const fastForward = Helper.isRollFastForwarded(event);
-								//return this.actor.usePower(item, {configureDialog: !fastForward, fastForward: fastForward});
-
-								let save = new SaveThrowDialog(t.token.actor, {effectSave:true, effectId: e.id}).render(true);
-					}
-				}
-	
-				if(durationType === "endOfTargetTurn"){
+				else if(durationType === "endOfTargetTurn"){
 					if(currentInit <= effectData.durationTurnInit && currentRound >= e.duration.rounds && t.id === game.combat.combatant.id
 						|| (currentRound > e.duration.rounds && t.id === game.combat.combatant.id) ){
 							toDelete.push(e.id);
@@ -69,7 +58,6 @@ export class Turns{
 			}
 
 			if(toDelete.length){
-
 				if(game.user.isGM){
 					await t.actor.deleteEmbeddedDocuments("ActiveEffect", toDelete);
 				} else {
@@ -83,7 +71,50 @@ export class Turns{
 					});
 				}
 			}
+			
 		}
+
+		// Signal the current actor to check end-of-turn saves
+		const currentActor = game.combat.turns[currentTurn].token?.actor
+		const targetUser = Helper.firstOwner(currentActor);
+		//console.log(targetUser);
+		//console.log(currentActor);
+		if(game.user.isGM && targetUser.isGM || game.user == targetUser){
+			await currentActor.promptEoTSavesSocket();
+		} else {
+			game.socket.emit('system.dnd4e', {
+				actorID: currentActor.id,
+				tokenID: game.combat.turns[currentTurn]?.token.id || null,
+				operation: 'promptEoTSaves',
+				user: targetUser.id,
+				scene: canvas.scene.id,
+				targetUser: targetUser.id
+			});
+		}
+
+		//Triggers for the beginning of the next turn
+		Helper.rechargeItems(game.combat.turns[nextTurn].token?.actor, ["round"]);
+		
+		// After EoT durations are resolved, collect ongoing damage instances from effects
+		const nextCombatant = game.combat.turns[nextTurn].token?.actor || null;
+		
+		if(nextCombatant){
+			const nextTargetUser = Helper.firstOwner(nextCombatant);
+			if(game.user.isGM && nextTargetUser.isGM){
+				await nextCombatant.autoDoTsSocket(game.combat.turns[nextTurn].tokenId);
+			} else {
+				game.socket.emit('system.dnd4e', {
+					actorID: nextCombatant.id,
+					tokenID: game.combat.turns[nextTurn].tokenId,
+					operation: 'autoDoTs',
+					user: nextTargetUser.id,
+					scene: canvas.scene.id,
+					targetUser: nextTargetUser.id,
+					//"event":event
+				});
+			}
+		}
+		
 		return wrapped();
 	}
 }
