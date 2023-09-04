@@ -2196,6 +2196,33 @@ font-size: 12px;
 	text-align: right;
 	color: #7a7971;
 }
+/* Active Effects Dialogue */
+.active-effect-sheet h3.subsection{
+	font-size:1em;
+	margin:0 0 0.2rem;
+	border-bottom:unset;
+	font-weight:bold;
+}
+.active-effect-sheet .effects-header>div{
+   padding:0 2px;
+}
+.active-effect-sheet .effects-header>:first-child{
+	padding-left:4px;
+}
+.active-effect-sheet .dots-list{
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+.active-effect-sheet .effect-dot{
+	align-items:center;
+	padding:3px 1px;
+}
+.active-effect-sheet .effect-dot:not(:last-child){
+	border-bottom:1px solid var(--color-border-light-primary);
+}
+
+
 /* ----------------------------------------- */
 /*  Chat Cards
 /* ----------------------------------------- */
@@ -2385,13 +2412,19 @@ span.flavor-text.probable-miss {
 	display:inline-block;
 	margin-right:5px;
 }
+.dice-roll .hit-prediction.fumble,
+.dice-roll .hit-prediction.probable-miss,
+.dot-report .damage-taken:not(.resistant-full){
+	color:red;
+}
 .dice-roll .hit-prediction.critical,
-.dice-roll .hit-prediction.probable-hit {
+.dice-roll .hit-prediction.probable-hit,
+.dot-report .damage-taken.resistant-full {
 	color:green;
 }
-.dice-roll .hit-prediction.fumble,
-.dice-roll .hit-prediction.probable-miss{
-	color:red;
+
+.dot-report .damage-taken{
+	font-weight:bold;
 }
 /* ----------------------------------------- */
 /* Trait Selector
