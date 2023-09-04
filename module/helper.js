@@ -1147,8 +1147,55 @@ export class Helper {
 		const isModKeyPressed = this.isUsingFastForwardKey(event);
 		return game.settings.get("dnd4e","fastFowardSettings") ? !isModKeyPressed : isModKeyPressed;
 	}
-}
+	
+	/**
+	/* Function to determine the owner of a document - 
+	/* favouring players and falling back to a GM
+	/* (pinched from the 5e system for use in the combat loop)
+	/* Returns the player object, or the player's ID if 
+	/* called with idOnly set to "true"
+	/*																			*/
+	static firstOwner(doc,idOnly=false){
+		// null docs could mean an empty lookup, null docs are not owned by anyone
+		if (!doc) return false;
 
+		const playerOwners = Object.entries(doc.ownership)
+		.filter(([id, level]) => (!game.users.get(id)?.isGM && game.users.get(id)?.active) && level === 3)
+		.map(([id, level])=> id);
+
+		if(playerOwners.length > 0) {
+			return ( idOnly ? playerOwners[0] : game.users.get(playerOwners[0]));
+		}
+
+		// if no online player owns this actor, fall back to first GM
+		const firstGM = game.users.find(u => u.isGM && u.active);
+		return ( idOnly ? firstGM.id : firstGM );
+	}
+	
+	
+	/**
+	/* Function to return the sum of the highest positive value 
+	/* and the lowest negative value in a given set.
+	/* Intended for getting the correct value from multiple 
+	/* resistances and vulnerabilities.
+	/*																			*/
+	static sumExtremes(values = []){
+		if (!values.length) return;
+		let negatives = [0], positives = [0];
+		for (let v of values){
+			if (v === 0) continue;
+			if ( v < 0 ){
+				//console.log(`negative: ${v}`)
+				negatives.push(v);
+			} else {
+				//console.log(`positive: ${v}`)
+				positives.push(v);
+			}
+		}
+		return Math.max(...positives) + Math.min(...negatives);
+	}
+
+}
 
 export async function handleApplyEffectToToken(data){
 	if(!game.user.isGM){
@@ -1166,4 +1213,18 @@ export async function handleDeleteEffectToToken(data){
 
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
 	await actor.deleteActiveEffectSocket(data.toDelete);
+}
+
+export async function handlePromptEoTSaves(data) {
+	//console.log('handler reached');
+	if (!!data.targetUser && game.userId !== data.targetUser) return;
+	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
+	
+	await actor.promptEoTSavesSocket();
+}
+
+export async function handleAutoDoTs(data) {
+	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
+
+	await actor.autoDoTsSocket(data.tokenID);
 }
