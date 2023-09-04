@@ -24,7 +24,7 @@ import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/entity.js";
 
-import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken } from "./helper.js"
+import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs } from "./helper.js";
 
 // Import Helpers
 import * as chat from "./chat.js";
@@ -153,6 +153,8 @@ Hooks.once("ready",  function() {
 		game.socket.on('system.dnd4e', (data) => {
 			if(data.operation === 'applyTokenEffect') handleApplyEffectToToken(data);
 			else if(data.operation === 'deleteTokenEffect') handleDeleteEffectToToken(data);
+			else if(data.operation === 'promptEoTSaves') handlePromptEoTSaves(data);
+			else if(data.operation === 'autoDoTs') handleAutoDoTs(data);
 			else ItemSheet4e._handleShareItem(data);
 		});
 
