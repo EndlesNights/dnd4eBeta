@@ -406,6 +406,7 @@ DND4EBETA.ritualcomponents = {
 DND4EBETA.damageTypes = {
 	
   "damage": "DND4EBETA.DamageAll",
+  "ongoing": "DND4EBETA.Ongoing",
   "acid": "DND4EBETA.DamageAcid",
   // "bludgeoning": "DND4EBETA.DamageBludgeoning",
   // "bludgeon": "DND4EBETA.DamageBludgeoning",
@@ -918,6 +919,7 @@ DND4EBETA.saves = {
 	"Psychic": "DND4EBETA.DamagePsychic",
 	"Radiant": "DND4EBETA.DamageRadiant",
 	"Thunder ": "DND4EBETA.DamageThunder",
+	"Ongoing ": "DND4EBETA.Ongoing",
 
 	"Charm": "DND4EBETA.Charm",
 	"Fear": "DND4EBETA.Fear",
