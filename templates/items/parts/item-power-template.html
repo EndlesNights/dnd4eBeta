@@ -281,9 +281,11 @@
 			<input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this '0'}}"/>
 			<select name="system.damage.parts.{{i}}.1">
 				{{#select (lookup this "1") }}
-				<option value="">{{ localize 'DND4EBETA.None' }}</option>
+				<option value="">&nbsp;</option>
 				{{#each ../config.damageTypes as |name type|}}
-				<option value="{{type}}">{{name}}</option>
+					{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+					<option value="{{type}}">{{name}}</option>
+					{{/unless}}{{/unless}}
 				{{/each}}
 				{{/select}}
 			</select>
@@ -307,9 +309,11 @@
 			<input type="text" name="system.damageCrit.parts.{{i}}.0" value="{{lookup this "0"}}"/>
 			<select name="system.damageCrit.parts.{{i}}.1">
 				{{#select (lookup this "1") }}
-				<option value="">{{ localize 'DND4EBETA.None' }}</option>
+				<option value="">&nbsp;</option>
 				{{#each ../config.damageTypes as |name type|}}
+				{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
 				<option value="{{type}}">{{name}}</option>
+				{{/unless}}{{/unless}}
 				{{/each}}
 				{{/select}}
 			</select>
@@ -327,18 +331,21 @@
 	<div class="form-group stacked weapon-properties">
 		<label data-tooltip="{{localize 'DND4EBETA.PrimaryDamageType'}}" style="max-width: 100%">{{localize "DND4EBETA.PrimaryDamageType"}}: {{system.weaponSourceName}}</label>
 		{{#if system.damageTypeWeapon}}
-		{{#each config.damageTypes as |name type|}}
-		<label class="checkbox">
-			<input disabled="disabled" type="checkbox" name="system.weaponDamageType.{{type}}" {{checked (lookup ../system.weaponDamageType type)}}/> {{ name }}
-		</label>
-		{{/each}}
+			{{#each config.damageTypes as |name type|}}
+				{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+				<label class="checkbox">
+					<input disabled="disabled" type="checkbox" name="system.weaponDamageType.{{type}}" {{checked (lookup ../system.weaponDamageType type)}}/> {{ name }}
+				</label>
+				{{/unless}}{{/unless}}
+			{{/each}}
 		{{else}}
-		{{#each config.damageTypes as |name type|}}
-		<label class="checkbox">
-			<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
-		</label>
-		{{/each}}
-
+			{{#each config.damageTypes as |name type|}}
+				{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+				<label class="checkbox">
+					<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
+				</label>
+				{{/unless}}{{/unless}}
+			{{/each}}
 		{{/if}}
 	</div>
 
