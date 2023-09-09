@@ -105,7 +105,9 @@
 								{{else if item.system.isOnCooldown}}
 								<a class="item-recharge rollable" data-tooltip="C{{localize 'DND4EBETA.PowerRechargeTipRoll'}} {{item.system.rechargeRoll}}">Recharge[+6]</a>
 								{{else}}
-								<input type="text" value="{{item.system.uses.value}}" placeholder="0"/>/ {{item.system.preparedMaxUses}}
+									{{#if item.hasUses}}
+									<input type="text" value="{{item.system.uses.value}}" placeholder="0"/>/ {{item.system.preparedMaxUses}}
+									{{/if}}
 								{{/if}}
 							{{else}}
 								{{#if item.hasUses}}
