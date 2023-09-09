@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.4.21
+
+- added Right-CLick context menue to items on a character sheet, which allow for an number of options, including a easy duplicating.
+- added Right-Click context menue to active Effects on character sheet, which allow for an number of options, including a easy duplicating.
+- Fix minnor bug where the CSS for the placeholder text of an unprepared powers charges was showing an incorrect color.
+- Fix an issue where an unprepared power would show "0/" charges even if the power did not have any charges
+- Fix an issue where items sheets would resize upon being moved around.
+
 ## Version 0.4.20
 - Fix to merge error where part of [PR 302](https://github.com/EndlesNights/dnd4eBeta/pull/302) from [FoxLee](https://github.com/FoxLee) was not merged correctly. (my bad -Endles)
 
