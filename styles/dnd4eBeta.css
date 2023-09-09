@@ -1867,7 +1867,8 @@ font-size: 12px;
 
 .dnd4eBeta.sheet .powers .items-list .not-available .item-detail input,
 .dnd4eBeta.sheet .items-list .not-available .power-detail,
-.dnd4eBeta.sheet .items-list .not-available input {
+.dnd4eBeta.sheet .items-list .not-available input,
+.dnd4eBeta.sheet .items-list .not-available input::placeholder {
 	color: #e0e0e075;
 }
 
