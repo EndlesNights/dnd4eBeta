@@ -81,7 +81,7 @@ export default class ActorSheet4e extends ActorSheet {
 
   /** @override */
   get template() {
-    return `systems/dnd4e/templates/actor-sheet.html`;
+	return `systems/dnd4e/templates/actor-sheet.html`;
   }
 
   /* -------------------------------------------- */
@@ -828,7 +828,9 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 
 			html.find('.effect-save').click(event => this._onRollEffectSave(event));
 
-			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this))
+			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this));
+
+			new ContextMenu(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this)});
 		}
 
 		//Disabels and adds warning to input fields that are being modfied by active effects
@@ -894,7 +896,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	async _onItemSummary(event) {
 		event.preventDefault();
 		const li = $(event.currentTarget).parents(".item")
-	    const itemId = li.data("item-id")
+		const itemId = li.data("item-id")
 	  	if (!itemId)
 		{
 			console.log("got an item summary event for something without an item id.  Assuming its an effect.")
@@ -1056,10 +1058,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
    * @private
    */
   _onItemDelete(event) {
-    event.preventDefault();
-    const li = event.currentTarget.closest(".item");
-    const item = this.actor.items.get(li.dataset.itemId);
-    if ( item )  {
+	event.preventDefault();
+	const li = event.currentTarget.closest(".item");
+	const item = this.actor.items.get(li.dataset.itemId);
+	if ( item )  {
 		if (game.settings.get("dnd4e", "itemDeleteConfirmation")) {
 			return Dialog.confirm({
 				title: game.i18n.format("DND4EBETA.DeleteConfirmTitle", {name: item.name}),
@@ -1523,26 +1525,111 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		});	
 	}
 
-  /* -------------------------------------------- */
-  
-  /**
-   * Handle rolling a ability check
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  _onRollAbilityCheck(event) {
-	event.preventDefault();
-	let ability = event.currentTarget.parentElement.dataset.ability;
-	this.actor.rollAbility(ability, {event: event});
-  }
-  
-  /* -------------------------------------------- */
 
-  /**
-   * Handle rolling a defences check
-   * @param {Event} event   The originating click event
-   * @private
-   */
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle activation of a context menu for an embedded Item or ActiveEffect document.
+	 * Dynamically populate the array of context menu options.
+	 * @param {HTMLElement} element       The HTML element for which the context menu is activated
+	 * @protected
+	 */
+	_onItemContext(element) {
+
+		// Active Effects
+		if ( element.classList.contains("effect") ) {
+			const effect = this.actor.effects.get(element.dataset.effectId);
+			if ( !effect ) return;
+			ui.context.menuItems = this._getActiveEffectContextOptions(effect);
+			Hooks.call("DND4EBETA.getActiveEffectContextOptions", effect, ui.context.menuItems);
+		}
+
+		// Items
+		else {
+			const item = this.actor.items.get(element.dataset.itemId);
+			if ( !item ) return;
+			ui.context.menuItems = this._getItemContextOptions(item);
+			Hooks.call("DND4EBETA.getItemContextOptions", item, ui.context.menuItems);
+		}
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Prepare an array of context menu options which are available for owned Item documents.
+	 * @param {Item4e} item                   The Item for which the context menu is activated
+	 * @returns {ContextMenuEntry[]}          An array of context menu options offered for the Item
+	 * @protected
+	 */
+	_getItemContextOptions(item) {
+		// Standard Options
+		const options = [
+		{
+			name: "DND4EBETA.ContextMenuActionEdit",
+			icon: "<i class='fas fa-edit fa-fw'></i>",
+			callback: () => item.sheet.render(true)
+		},
+		{
+			name: "DND4EBETA.ContextMenuActionDuplicate",
+			icon: "<i class='fas fa-copy fa-fw'></i>",
+			condition: () => !["race", "background", "class", "subclass"].includes(item.type),
+			callback: () => item.clone({name: game.i18n.format("DOCUMENT.CopyOf", {name: item.name})}, {save: true})
+		},
+		{
+			name: "DND4EBETA.ContextMenuActionDelete",
+			icon: "<i class='fas fa-trash fa-fw'></i>",
+			callback: () => item.deleteDialog()
+		}
+		];
+
+		// Toggle Attunement State
+		if ( ("attunement" in item.system) && (item.system.attunement !== CONFIG.DND4EBETA.attunementTypes.NONE) ) {
+			const isAttuned = item.system.attunement === CONFIG.DND4EBETA.attunementTypes.ATTUNED;
+			options.push({
+				name: isAttuned ? "DND4EBETA.ContextMenuActionUnattune" : "DND4EBETA.ContextMenuActionAttune",
+				icon: "<i class='fas fa-sun fa-fw'></i>",
+				callback: () => item.update({
+					"system.attunement": CONFIG.DND4EBETA.attunementTypes[isAttuned ? "REQUIRED" : "ATTUNED"]
+				})
+			});
+		}
+
+		// Toggle Equipped State
+		if ( "equipped" in item.system ) options.push({
+			name: item.system.equipped ? "DND4EBETA.ContextMenuActionUnequip" : "DND4EBETA.ContextMenuActionEquip",
+			icon: "<i class='fas fa-shield-alt fa-fw'></i>",
+			callback: () => item.update({"system.equipped": !item.system.equipped})
+		});
+
+		// Toggle Prepared State
+		if ( ("prepared" in item.system)) options.push({
+			name: item.system?.prepared ? "DND4EBETA.ContextMenuActionUnprepare" : "DND4EBETA.ContextMenuActionPrepare",
+			icon: "<i class='fas fa-sun fa-fw'></i>",
+			callback: () => item.update({"system.prepared": !item.system.prepared})
+		});
+		return options;
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle rolling a ability check
+	 * @param {Event} event   The originating click event
+	 * @private
+	 */
+	_onRollAbilityCheck(event) {
+		event.preventDefault();
+		let ability = event.currentTarget.parentElement.dataset.ability;
+		this.actor.rollAbility(ability, {event: event});
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle rolling a defences check
+	 * @param {Event} event   The originating click event
+	 * @private
+	 */
 	_onRollDefenceCheck(event) {
 		event.preventDefault();
 		const def = event.currentTarget.parentElement.dataset.defence;
