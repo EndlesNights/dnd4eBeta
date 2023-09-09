@@ -30,6 +30,7 @@ export default class ItemSheet4e extends ItemSheet {
 				".tab.details"
 			],
 			tabs: [{navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description"}],
+			dragDrop: [{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},]
 		});
 	}
 
@@ -797,4 +798,74 @@ export default class ItemSheet4e extends ItemSheet {
 			// maximum: skills.number
 		// }).render(true)
 	}
+
+
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	_onDragStart(event) {
+		console.log("Start")
+		const li = event.currentTarget;
+		if ( event.target.classList.contains("content-link") ) return;
+
+		// Create drag data
+		let dragData;
+
+		// Active Effect
+		if ( li.dataset.effectId ) {
+		const effect = this.item.effects.get(li.dataset.effectId);
+		dragData = effect.toDragData();
+		} else if ( li.classList.contains("advancement-item") ) {
+		dragData = this.item.advancement.byId[li.dataset.id]?.toDragData();
+		}
+
+		if ( !dragData ) return;
+
+		// Set data transfer
+		event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+	}
+
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	_onDrop(event) {
+		const data = TextEditor.getDragEventData(event);
+		const item = this.item;
+
+		/**
+		 * A hook event that fires when some useful data is dropped onto an ItemSheet4e.
+		 * @function dnd4e.dropItemSheetData
+		 * @memberof hookEvents
+		 * @param {Item4e} item                  The Item4e
+		 * @param {ItemSheet4e} sheet            The ItemSheet4e application
+		 * @param {object} data                  The data that has been dropped onto the sheet
+		 * @returns {boolean}                    Explicitly return `false` to prevent normal drop handling.
+		 */
+		const allowed = Hooks.call("dnd4e.dropItemSheetData", item, this, data);
+		if ( allowed === false ) return;
+
+		switch ( data.type ) {
+		case "ActiveEffect":
+			return this._onDropActiveEffect(event, data);
+		}
+	}
+  /* -------------------------------------------- */
+
+	/**
+	 * Handle the dropping of ActiveEffect data onto an Item Sheet
+	 * @param {DragEvent} event                  The concluding DragEvent which contains drop data
+	 * @param {object} data                      The data transfer extracted from the event
+	 * @returns {Promise<ActiveEffect|boolean>}  The created ActiveEffect object or false if it couldn't be created.
+	 * @protected
+	 */
+	async _onDropActiveEffect(event, data) {
+		const effect = await ActiveEffect.implementation.fromDropData(data);
+		if ( !this.item.isOwner || !effect ) return false;
+		if ( (this.item.uuid === effect.parent?.uuid) || (this.item.uuid === effect.origin) ) return false;
+		return ActiveEffect.create({
+			...effect.toObject(),
+			origin: this.item.uuid
+		}, {parent: this.item});
+	}
+
 }

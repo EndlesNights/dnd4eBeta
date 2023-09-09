@@ -9,7 +9,6 @@ import { DND4EBETA } from "../config.js";
  */
 export default class Item4e extends Item {
 
-	
 	/** @inheritdoc */
 	async _preUpdate(changed, options, user) {
 		await super._preUpdate(changed, options, user);
@@ -596,7 +595,7 @@ export default class Item4e extends Item {
 			flags: {}
 		};
 
-	    // If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
+		// If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
 		if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
 			chatData.flags["dnd4e.itemData"] = templateData.item;
 		}
