@@ -1556,6 +1556,39 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	/* -------------------------------------------- */
 
 	/**
+	 * Prepare an array of context menu options which are available for owned ActiveEffect documents.
+	 * @param {ActiveEffect4e} effect         The ActiveEffect for which the context menu is activated
+	 * @returns {ContextMenuEntry[]}          An array of context menu options offered for the ActiveEffect
+	 * @protected
+	 */	
+
+	/* -------------------------------------------- */
+	_getActiveEffectContextOptions(effect) {
+		return [
+			{
+				name: "DND4EBETA.ContextMenuActionEdit",
+				icon: "<i class='fas fa-edit fa-fw'></i>",
+				callback: () => effect.sheet.render(true)
+			},
+			{
+				name: "DND4EBETA.ContextMenuActionDuplicate",
+				icon: "<i class='fas fa-copy fa-fw'></i>",
+				callback: () => effect.clone({name: game.i18n.format("DOCUMENT.CopyOf", {name: effect.name})}, {save: true})
+			},
+			{
+				name: "DND4EBETA.ContextMenuActionDelete",
+				icon: "<i class='fas fa-trash fa-fw'></i>",
+				callback: () => effect.deleteDialog()
+			},
+			{
+				name: effect.disabled ? "DND4EBETA.ContextMenuActionEnable" : "DND4EBETA.ContextMenuActionDisable",
+				icon: effect.disabled ? "<i class='fas fa-check fa-fw'></i>" : "<i class='fas fa-times fa-fw'></i>",
+				callback: () => effect.update({disabled: !effect.disabled})
+			}
+		];
+	}
+
+	/**
 	 * Prepare an array of context menu options which are available for owned Item documents.
 	 * @param {Item4e} item                   The Item for which the context menu is activated
 	 * @returns {ContextMenuEntry[]}          An array of context menu options offered for the Item
