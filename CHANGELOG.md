@@ -2,11 +2,12 @@
 
 ## Version 0.4.21
 - Auto saves and DOTs [PR 304](https://github.com/EndlesNights/dnd4eBeta/pull/304) from [FoxLee](https://github.com/FoxLee)
-- added Right-CLick context menue to items on a character sheet, which allow for an number of options, including a easy duplicating.
-- added Right-Click context menue to active Effects on character sheet, which allow for an number of options, including a easy duplicating.
-- Fix minnor bug where the CSS for the placeholder text of an unprepared powers charges was showing an incorrect color.
+- added Right-CLick context menu to items on a character sheet, which allow for an number of options, including a easy duplicating.
+- added Right-Click context menu to active Effects on character sheet, which allow for an number of options, including a easy duplicating.
+- Fix minor bug where the CSS for the placeholder text of an unprepared powers charges was showing an incorrect color.
 - Fix an issue where an unprepared power would show "0/" charges even if the power did not have any charges
 - Fix an issue where items sheets would resize upon being moved around.
+- changed `target-id` to `data-target-id` as per proper html attribute naming convention 
 
 ## Version 0.4.20
 - Fix to merge error where part of [PR 302](https://github.com/EndlesNights/dnd4eBeta/pull/302) from [FoxLee](https://github.com/FoxLee) was not merged correctly. (my bad -Endles)
@@ -15,7 +16,7 @@
 - Added socket for users to delete active effects
 
 ## Version 0.4.18
-- Automated saving throw dialogues [merge](https://github.com/EndlesNights/dnd4eBeta/pull/302) from [FoxLee](https://github.com/FoxLee)
+- Automated saving throw dialogs [merge](https://github.com/EndlesNights/dnd4eBeta/pull/302) from [FoxLee](https://github.com/FoxLee)
 
 ## Version 0.4.17
 - Change to how Skill Labels work, allowing for the value to be manly set or overridden on an individual actor.
@@ -26,7 +27,7 @@
 
 ## Version 0.4.15
 - Input fields that are being modified by Active Effects are now disabled and will display a tool tip warning explaining why they are disabled
-- Added DocumentSheet4e wichh extended from DocumentSheet. Enabled the above mentioned input field locking with active effects for Document Sheets
+- Added DocumentSheet4e which extended from DocumentSheet. Enabled the above mentioned input field locking with active effects for Document Sheets
 - Added a pointer to the encumbrance CSS, so it is more apparent that it may be clicked on.
 - Replaces all html "title" tags with "data-tooltip"
 - When hovering Hit Points, will show a cog icon to indicate that to users that clicking is a configurable options
@@ -45,7 +46,7 @@
 - Brazilian Portuguese from [PilotodeMouse](https://github.com/PilotodeMouse)
 
 ## Version 0.4.12
-- renamed `clickRollMessageDamageChatListener` function to `chatMessageListener` as it will be more genericly used.
+- renamed `clickRollMessageDamageChatListener` function to `chatMessageListener` as it will be more generically used.
 - moved the chat listener for the hover over and clicking of token names within attack result chat box out of their own wrapped listen into generic listener. This resolved an issue where the listener would not always be added correctly upon message creation. 
 
 ## Version 0.4.11
