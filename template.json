@@ -447,6 +447,13 @@
 					"immune": false,
 					"bonus": [{}]
 				},
+				"ongoing": {
+					"value": 0,
+					"armour": 0,
+					"temp": 0,
+					"immune": false,
+					"bonus": [{}]
+				},
 				"acid": {
 					"value": 0,
 					"armour": 0,

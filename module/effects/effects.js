@@ -4,6 +4,9 @@
  */
  export default class ActiveEffect4e extends ActiveEffect {
 	constructor(data, context) {
+		if(!data.flags?.dnd4e?.dots){
+			setProperty(data, "flags.dnd4e.dots", new Array);	//Empty array for storing Ongoing Damage instances
+		}
 		if (data.id) {
 		  setProperty(data, "flags.core.statusId", data.id);
 		  delete data.id;

@@ -1,7 +1,8 @@
-import { d20Roll } from "../dice.js";
+import { d20Roll, damageRoll } from "../dice.js";
 import { DND4EBETA } from "../config.js";
 import { Helper } from "../helper.js"
 import AbilityTemplate from "../pixi/ability-template.js";
+import { SaveThrowDialog } from "../apps/save-throw.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -1430,11 +1431,18 @@ export class Actor4e extends Actor {
 	}
 
 	async calcDamage(damage, multiplier=1, surges=0){
+	//This now calls calcDamageInner() to get the value, so we can do the damage calculation without also applying the damage, if needs be.
+		const totalDamage = await this.calcDamageInner(damage, multiplier,surges);
+		this.applyDamage(totalDamage, multiplier, surges);
+	}
+	
+	async calcDamageInner(damage, multiplier=1, surges=0){
+	//Provides the actual damage value to calcDamage(), but does not itself apply damage. Call this directly if you need to get the correct value without dealing the damage.
 		if(game.settings.get("dnd4e", "damageCalcRules") === "errata"){
-			this.calcDamageErrata(damage, multiplier,surges);
+			return this.calcDamageErrata(damage, multiplier,surges);
 		}
 		else {
-			this.calcDamagePHB(damage, multiplier, surges);
+			return this.calcDamagePHB(damage, multiplier, surges);
 		}
 	}
 
@@ -1443,35 +1451,50 @@ export class Actor4e extends Actor {
 
 		console.log(damage)
 		for(let d of damage){
+			console.log(d);
 			//get all the damageTypes in this term
 			let damageTypesArray = d[1].replace(/ /g,'').split(',');
 
 			const actorRes = this.system.resistances;
-			const isUntypedDamageImmune = actorRes['damage'].immune;
+			
+			let resAll = actorRes['damage'].value;
+			let isDamageImmune = actorRes['damage'].immune;
+			
+			/* Special logic for ongoing damage.
+				Compare our "ongoing" res/immunity to our "all" res/immunity and use the best/highest value */
+			if ( damageTypesArray.includes("ongoing") ){
+				if (actorRes['ongoing'].immune) isDamageImmune = actorRes['ongoing'].immune;
+
+				resAll = Helper.sumExtremes([resAll,actorRes['ongoing'].value] || 0);
+			}
+			
 			let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
-			let lowestRes = Infinity; // will attemtpe to replace this with the lowest resistance / highest vunrability
+			let lowestRes = Infinity; // will attempt to replace this with the lowest resistance / highest vunrability
 
 			for(let dt of damageTypesArray){
 				const type = dt && actorRes[dt] ? dt : 'damage';
-				if(actorRes[type].immune){
-					continue;
-				}
+				//Skip if we're immune, or if the current type is ongoing (that's handled in a special way later)
+				if( dt == "ongoing" || actorRes[type]?.immune ) continue;
+				
+				//Adjust specific resistance with "resist all" value, according to combining resistance/vulnerability rules
+				const currentRes = Helper.sumExtremes([resAll,actorRes[type]?.value || 0]);
 	
-				if(actorRes[type].value !== 0 ){ //if has resistances or vulnerability
+				if(currentRes !== 0 ){ //if has resistances or vulnerability
 					isImmuneAll=false;
-					if(actorRes[type].value < lowestRes){
-						lowestRes = actorRes[type].value;
+					//console.log(`Modifier found: ${type}  ${actorRes[type].value}`);
+					if(currentRes < lowestRes){
+						lowestRes = currentRes;
 					}
 				} else {
-					if(!isUntypedDamageImmune) {
+					if(!isDamageImmune) {
 						isImmuneAll=false;
-						if(actorRes['damage'].value){ //"damage" will stand in for any other damage that does not have a value
-							if(actorRes['damage'].value < lowestRes){
-								lowestRes = actorRes['damage'].value || 0;
+						if(resAll){ //"Resist all" will stand in for any other damage that does not have a value
+							if(resAll < lowestRes){
+								lowestRes = resAll || 0;
 							}
 						}
-						else if(actorRes[type].value < lowestRes){
-							lowestRes = actorRes[type].value || 0;
+						else if(currentRes < lowestRes){
+							lowestRes = currentRes || 0;
 						}
 					}
 				}
@@ -1486,16 +1509,21 @@ export class Actor4e extends Actor {
 			// console.log(`Lowest Res: ${lowestRes}`)
 		}
 
-		console.log(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`)
-		this.applyDamage(totalDamage, multiplier);
+		//console.log(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`)
+		return totalDamage;
 	}
 
 	async calcDamagePHB(damage, multiplier, surges){
 		let damageDealt = {};
 		let totalDamage = 0;
 		const actorRes = this.system.resistances;
+		console.log(damage);
 
 		for(let d of damage){
+			// Check if "ongoing" is in our types array, and if so remove it before dividing up the damage.
+			const isOngoing = d[1].includes("ongoing");
+			if(isOngoing) d[1] = d[1].replaceAll(/(,| )*ongoing(,| )*/g,"");
+			
 			let damageTypesArray = d[1].replace(/ /g,'').split(',');
 
 			let i = 0;
@@ -1507,22 +1535,38 @@ export class Actor4e extends Actor {
 				}
 				i++;
 			}
-		}
 
-		for(const d in damageDealt){
-			const damagetype = actorRes[d] ? d : 'damage';
-			if(actorRes[damagetype].immune) continue; //No damage to immune types
-			if(actorRes[`damage`].immune && !actorRes[damagetype].value) continue;
+			let resAll = actorRes['damage'].value;
+			let isDamageImmune = actorRes['damage'].immune;
+			
+			/* Special logic for ongoing damage.
+			Compare our "ongoing" res/immunity to our "all" res/immunity and use the best/highest value */
+			if ( isOngoing ){
+				if (actorRes['ongoing'].immune) isDamageImmune = actorRes['ongoing'].immune;
 
-			let res = actorRes[damagetype].value || 0;
-			if(!res && actorRes[`damage`].value){
-				res = actorRes[`damage`].value;
+				resAll = Helper.sumExtremes([resAll,actorRes['ongoing']?.value] || 0);
 			}
-			totalDamage += Math.max(0, damageDealt[damagetype]-res);
+
+			//If we have immune all, skip the resistance comparisons
+			if ( !isDamageImmune) {
+				for(const d in damageDealt){
+					const damagetype = actorRes[d] ? d : 'damage';
+					if(actorRes[damagetype].immune) continue; //No damage to immune types
+					//if(isDamageImmune && !actorRes[damagetype].value) continue;
+					let res = Helper.sumExtremes([resAll,actorRes[damagetype]?.value || 0]);
+
+					/*Should be unnecessary when adjusting resistances in the previous step
+					if(!res && resAll){
+						res = resAll;
+					}*/
+					
+					totalDamage += Math.max(0, damageDealt[d]-res);
+				}
+			}
 		}
 		console.log(damageDealt);
 		console.log(`Total Damage: ${totalDamage}`)
-		this.applyDamage(totalDamage, multiplier);
+		return totalDamage;
 	}
 
 	async applyDamage(amount=0, multiplier=1, surges={}) {
@@ -1589,8 +1633,7 @@ export class Actor4e extends Actor {
 		return allowed !== false ? this.update(updates) : this;
 	}
 
-	async applyTempHpChange(amount=0)
-	{
+	async applyTempHpChange(amount=0) {
 		if (!this.canUserModify(game.user, "update")) {
 			return
 		}
@@ -1678,4 +1721,132 @@ export class Actor4e extends Actor {
 	async deleteActiveEffectSocket(toDelete){
 		this.deleteEmbeddedDocuments("ActiveEffect", toDelete)
 	}
+
+	async promptEoTSavesSocket(){
+		//console.log('socket reached');
+		const saveReminders = game.settings.get("dnd4e","saveReminders");
+		if(!saveReminders) return;
+		
+		let toSave = [];
+		for (const e of this.effects){
+			if(e.flags.dnd4e?.effectData?.durationType === "saveEnd"){
+				toSave.push(e.id);
+			}
+		}
+		
+		if(toSave.length){
+			const isFF = Helper.isRollFastForwarded(event);
+			for (let i of toSave){
+				if(isFF) {
+					let save = await this.rollSave(event, {effectSave:true, effectId:i});
+				} else {
+					let save = await new SaveThrowDialog(this, {effectSave:true,effectId:i}).render(true);
+				}
+			}
+		}
+
+	}
+
+	async autoDoTsSocket(tokenId){
+		//console.log(tokenId);
+		const autoDoTs = game.settings.get("dnd4e","autoDoTs");
+		if(autoDoTs != "none"){
+			let activeDoTs = {};
+			
+			for(const e of this.effects){
+				if(e.flags.dnd4e?.dots.length && e.disabled === false){
+					for (let dot of e.flags.dnd4e.dots){
+						
+						// Combine the types array into a usable string
+						// (we use this instead of the input string in order to avoid irregularities)
+						let types = dot.typesArray.join(',');
+						
+						// Only keep the highest DoT of each unique type—
+						// you can only be so much on fire.
+						if (dot.amount - activeDoTs[types]?.amount <= 0){
+							continue;
+						} else { 
+							activeDoTs[types] = { type:types+=',ongoing', amount:dot.amount, effectId:e.id, effectName: e.name };
+						}
+					}
+				}
+			}
+			
+			activeDoTs = Array.from(Object.values(activeDoTs || {}));
+			
+			if(activeDoTs.length){
+				for(const dot of activeDoTs){
+					const dmgTaken = await this.calcDamageInner([[dot.amount,dot.type]]);
+					
+					let chatRecipients = [Helper.firstOwner(this)];
+					switch (game.settings.get("dnd4e","autoDoTsPublic")){
+						case 'all':
+							chatRecipients = null;
+							break;
+						case 'none':
+							if(chatRecipients[0] != game.user){
+								chatRecipients.push(game.user);
+							}
+							break;
+						case 'pcs':
+							if(this.type == "Player Character"){
+								chatRecipients = null;
+							}
+							break;
+					}
+					
+					let dmgImpact = "neutral";
+					if(dmgTaken == 0){
+						dmgImpact = "resistant-full";
+					}else if (dot.amount - dmgTaken > 0){
+						dmgImpact = "resistant";
+					} else if (dot.amount - dmgTaken < 0){
+						dmgImpact = "vulnerable";
+					}
+					
+					const chatData = {
+						dot: dot,
+						autoDoTs: autoDoTs,
+						dmgTaken: dmgTaken,
+						dmgDiff: Math.max(dot.amount,dmgTaken) - Math.min(dot.amount,dmgTaken),
+						typesFormatted: dot.type.replaceAll(/,*ongoing,*/g,"").replaceAll(',',' and '),
+						actorName: this.isToken ? this.token.name : this.name,
+						dmgImpact: dmgImpact,
+						targetToken: tokenId
+					}
+					
+					const html = await renderTemplate(
+						'systems/dnd4e/templates/chat/ongoing-damage.html',chatData 
+					);
+										
+					await ChatMessage.create({
+						user: Helper.firstOwner(this),
+						speaker: {actor: this, alias: this.isToken ? this.token.name : this.name},
+						content: html,
+						flavor: `${game.i18n.localize ("DND4EBETA.OngoingDamage")}: ${dot.effectName}`,
+						whisper: chatRecipients,
+						//rollMode: "gmroll",
+						rolls: [{
+							formula: `(${dot.amount})[${dot.type}]`,
+							terms: [{
+								class: "NumericTerm",
+								options: {
+									flavor: dot.type
+								},
+								evaluated: true,
+								number: dot.amount
+							}],
+							total: dot.amount,
+							evaluated: true
+						}]
+					});						
+					
+					if (autoDoTs == "apply"){
+						await this.applyDamage(dmgTaken);
+					}
+				}
+			}
+		}
+	}
+
 }

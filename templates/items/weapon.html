@@ -257,13 +257,15 @@
 						<input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this "0"}}"/>
 						<select name="system.damage.parts.{{i}}.1">
 							{{#select (lookup this "1") }}
-							<option value="">{{ localize "DND4EBETA.None" }}</option>
-							{{#each ../config.damageTypes as |name type|}}
-							<option value="{{type}}">{{name}}</option>
-							{{/each}}
-							{{#each ../config.healingTypes as |name type|}}
-							<option value="{{type}}">{{name}}</option>
-							{{/each}}
+								<option value="">&nbsp;</option>
+								{{#each ../config.damageTypes as |name type|}}
+									{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+									<option value="{{type}}">{{name}}</option>
+									{{/unless}}{{/unless}}
+								{{/each}}
+								{{#each ../config.healingTypes as |name type|}}
+								<option value="{{type}}">{{name}}</option>
+								{{/each}}
 							{{/select}}
 						</select>
 						<a class="damage-control delete-damage"><i class="fas fa-minus"></i></a>
@@ -286,13 +288,15 @@
 						<input type="text" name="system.damageCrit.parts.{{i}}.0" value="{{lookup this "0"}}"/>
 						<select name="system.damageCrit.parts.{{i}}.1">
 							{{#select (lookup this "1") }}
-							<option value="">{{ localize "DND4EBETA.None" }}</option>
-							{{#each ../config.damageTypes as |name type|}}
-							<option value="{{type}}">{{name}}</option>
-							{{/each}}
-							{{#each ../config.healingTypes as |name type|}}
-							<option value="{{type}}">{{name}}</option>
-							{{/each}}
+								<option value="">&nbsp;</option>
+								{{#each ../config.damageTypes as |name type|}}
+								{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+									<option value="{{type}}">{{name}}</option>
+								{{/unless}}{{/unless}}
+								{{/each}}
+								{{#each ../config.healingTypes as |name type|}}
+								<option value="{{type}}">{{name}}</option>
+								{{/each}}
 							{{/select}}
 						</select>
 						<a class="damage-control delete-criticalDamage"><i class="fas fa-minus"></i></a>
@@ -324,13 +328,15 @@
 						<input type="text" name="system.damageImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
 						<select name="system.damageImp.parts.{{i}}.1">
 							{{#select (lookup this "1") }}
-							<option value="">{{ localize "DND4EBETA.None" }}</option>
-							{{#each ../config.damageTypes as |name type|}}
-							<option value="{{type}}">{{name}}</option>
-							{{/each}}
-							{{#each ../config.healingTypes as |name type|}}
-							<option value="{{type}}">{{name}}</option>
-							{{/each}}
+								<option value="">&nbsp;</option>
+								{{#each ../config.damageTypes as |name type|}}
+								{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+									<option value="{{type}}">{{name}}</option>
+								{{/unless}}{{/unless}}
+								{{/each}}
+								{{#each ../config.healingTypes as |name type|}}
+								<option value="{{type}}">{{name}}</option>
+								{{/each}}
 							{{/select}}
 						</select>
 						<a class="damage-control delete-damage-imp"><i class="fas fa-minus"></i></a>
@@ -353,13 +359,15 @@
 						<input type="text" name="system.damageCritImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
 						<select name="system.damageCritImp.parts.{{i}}.1">
 							{{#select (lookup this "1") }}
-							<option value="">{{ localize "DND4EBETA.None" }}</option>
-							{{#each ../config.damageTypes as |name type|}}
-							<option value="{{type}}">{{name}}</option>
-							{{/each}}
-							{{#each ../config.healingTypes as |name type|}}
-							<option value="{{type}}">{{name}}</option>
-							{{/each}}
+								<option value="">&nbsp;</option>
+								{{#each ../config.damageTypes as |name type|}}
+								{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+									<option value="{{type}}">{{name}}</option>
+								{{/unless}}{{/unless}}
+								{{/each}}
+								{{#each ../config.healingTypes as |name type|}}
+								<option value="{{type}}">{{name}}</option>
+								{{/each}}
 							{{/select}}
 						</select>
 						<a class="damage-control delete-criticalDamage-imp"><i class="fas fa-minus"></i></a>
@@ -379,9 +387,11 @@
 					<label data-tooltip="{{ localize 'DND4EBETA.PrimaryDamageType' }}">{{ localize 'DND4EBETA.PrimaryDamageType' }}:</label>
 					<pr></pr>
 					{{#each config.damageTypes as |name type|}}
-					<label class="checkbox">
-						<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
-					</label>
+					{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+						<label class="checkbox">
+							<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
+						</label>
+					{{/unless}}{{/unless}}
 					{{/each}}
 					{{/if}}
 

@@ -238,6 +238,34 @@ export const registerSystemSettings = function() {
 		default: true,
 		type: Boolean
 	});
+	
+	game.settings.register("dnd4e", "autoDoTs",{
+		name: "SETTINGS.4eAutoDoTsN",
+		hint: "SETTINGS.4eAutoDoTsL",
+		scope: "client",
+		config: true,
+		default: "apply",
+		type: String,
+		choices: {
+			"none": "DND4EBETA.None",
+			"apply": "SETTINGS.4eAutoDoTsApply",
+			"notify": "SETTINGS.4eAutoDoTsNotify"
+		}
+	});
+	
+	game.settings.register("dnd4e", "autoDoTsPublic",{
+		name: "SETTINGS.4eAutoDoTsPublicN",
+		hint: "SETTINGS.4eAutoDoTsPublicL",
+		scope: "world",
+		config: true,
+		default: "all",
+		type: String,
+		choices: {
+			"all": "SETTINGS.4eAutoDoTsPublicAll",
+			"none": "SETTINGS.4eAutoDoTsPublicNone",
+			"pcs": "SETTINGS.4eAutoDoTsPublicPCs"
+		}
+	});
 
 	game.keybindings.register("dnd4e", "permShowPlayer", {
 		name: game.i18n.localize("SETTINGS.4epermShowPlayerN"),
