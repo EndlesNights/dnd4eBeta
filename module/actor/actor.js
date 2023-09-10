@@ -1810,7 +1810,7 @@ export class Actor4e extends Actor {
 						dmgTaken: dmgTaken,
 						dmgDiff: Math.max(dot.amount,dmgTaken) - Math.min(dot.amount,dmgTaken),
 						typesFormatted: dot.type.replaceAll(/,*ongoing,*/g,"").replaceAll(',',' and '),
-						actorName: this.name,
+						actorName: this.isToken ? this.token.name : this.name,
 						dmgImpact: dmgImpact,
 						targetToken: tokenId
 					}
@@ -1821,7 +1821,7 @@ export class Actor4e extends Actor {
 										
 					await ChatMessage.create({
 						user: Helper.firstOwner(this),
-						speaker: {actor: this, alias: this.name},
+						speaker: {actor: this, alias: this.isToken ? this.token.name : this.name},
 						content: html,
 						flavor: `${game.i18n.localize ("DND4EBETA.OngoingDamage")}: ${dot.effectName}`,
 						whisper: chatRecipients,
