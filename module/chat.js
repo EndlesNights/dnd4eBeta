@@ -172,7 +172,7 @@ export function chatMessageListener(html) {
 export const clickTokenActorName = function(event){
 		event.preventDefault();
 
-		const tokenID = event.currentTarget.getAttribute('target-id');
+		const tokenID = event.currentTarget.getAttribute('data-target-id') || event.currentTarget.getAttribute('target-id'); //second one was for legasy where improper typing is used, will get rid of in a month or so
 		if(!tokenID) return;
 
 		const token = canvas.tokens.get(tokenID);
@@ -195,7 +195,7 @@ export const hoverTokenActorName = function(event){
 	if ( !canvas.ready ) return;
 
 	if(event.type === "mouseenter"){
-		const tokenID = event.currentTarget.getAttribute('target-id');
+		const tokenID = event.currentTarget.getAttribute('data-target-id') || event.currentTarget.getAttribute('target-id'); //second one was for legasy where improper typing is used, will get rid of in a month or so
 		const token = canvas.tokens.get(tokenID);
 		if ( token?.isVisible ) {
 		  if ( !token.controlled ) token._onHoverIn(event, {hoverOutOthers: true});

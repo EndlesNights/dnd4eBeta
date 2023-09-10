@@ -5,7 +5,7 @@
     <div class="dice-result">
         
 		{{#if attackRoll}}
-			<a class="flavor-text target" target-id="{{attackRoll.targetID}}"><b>{{localize 'DND4EBETA.Target'}}</b>: {{attackRoll.target}}</a>
+			<a class="flavor-text target" data-target-id="{{attackRoll.targetID}}"><b>{{localize 'DND4EBETA.Target'}}</b>: {{attackRoll.target}}</a>
 			<span class="flavor-text hit-prediction{{attackRoll.critstate}}{{!--
 				--}}{{#if (eq attackRoll.hitstate 'Probable Hit!')}}{{!--
 					--}} probable-hit{{!--
