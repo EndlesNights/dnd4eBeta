@@ -65,7 +65,11 @@ export default class ItemSheet4e extends ItemSheet {
 			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
 		}
 
-		if(itemData.type == "equipment"){
+		if(itemData.type === "consumable"){
+			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
+		}
+
+		if(itemData.type === "equipment"){
 			data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
 
 			if(itemData.system.armour.type === "armour"){

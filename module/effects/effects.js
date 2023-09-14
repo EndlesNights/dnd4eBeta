@@ -12,7 +12,9 @@
 		  delete data.id;
 		}
 		try{
-			if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
+			
+			// if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
+			if(["power", "consumable"].includes(context?.parent?.type)){
 				data.transfer = false;
 			}
 		} catch{
@@ -137,7 +139,7 @@
 		if ( !item ) return;
 
 		//types of items that can be equipted
-		const validTypes = ["weapon", "equipment", "consumable", "tool", "loot", "backpack"];
+		const validTypes = ["weapon", "equipment", "tool", "loot", "backpack"];
 		if(validTypes.includes(item.type) && item.system.equipped === false){
 			this.isSuppressed = this.flags.dnd4e?.effectData?.equippedRec || false;
 			return;
@@ -193,7 +195,7 @@
 
 	_prepareDuration(){
 		
-		if(this.parent.type === "power"){
+		if(["power", "consumable"].includes(this.parent.type)){
 			const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
 			if(durationType){
 				return{

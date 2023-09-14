@@ -569,14 +569,14 @@ export default class Item4e extends Item {
 		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
 		let html = await renderTemplate(template, templateData);
 		
-		if(templateData.item.type === "power") {
+		if(["power", "consumable"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
 			
-		Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
-		Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
+			Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
+			Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
 
 		}
-		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {
+		else if (["weapon", "equipment", "backpack", "tool", "loot"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--item`);
 		} else {
 			html = html.replace("ability-usage--", `ability-usage--other`);
@@ -1042,7 +1042,7 @@ export default class Item4e extends Item {
 			options
 		};
 
-		if(this.type === "power"){
+		if(["power", "consumable"].includes(this.type)){
 			rollConfig.options.powerEffects = this.effects;
 			rollConfig.options.parent = this.parent;
 		}

@@ -18,7 +18,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		let data = await super.getData(options);
 		
 		data.config = CONFIG.DND4EBETA;
-		data.powerParent = (this.object.parent.type === "power");
+		data.powerParent = (["power", "consumable"].includes(this.object.parent.type));
 
 		return data;
 	}

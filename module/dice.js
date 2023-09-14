@@ -232,9 +232,10 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	}
 	else {		
 		roll.populateMultirollData(targetData, critStateArray);			
-		Hooks.callAll("dnd4e.rollAttack", data.item, targetData, speaker);		
-		if(targetData.targetHit) Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
-		if(targetData.targetMissed) Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", options.parent);
+		Hooks.callAll("dnd4e.rollAttack", data.item, targetData, speaker);
+	
+		if(targetData.targetHit.length) Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
+		if(targetData.targetMissed.length) Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", options.parent);
 	}
 	
 	// Convert the roll to a chat message and return the roll
