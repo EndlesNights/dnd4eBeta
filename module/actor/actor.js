@@ -1685,6 +1685,7 @@ export class Actor4e extends Actor {
 			icon:effectData.icon,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
+			statuses: Array.from(effectData.statuses),
 			// duration: effectData.duration, //Not too sure why this fails, but it does
 			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
 			tint: effectData.tint,
@@ -1709,6 +1710,7 @@ export class Actor4e extends Actor {
 			icon:effectData.icon,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
+			statuses: Array.from(effectData.statuses),
 			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
 			tint: effectData.tint,
 			flags: effectData.flags,

@@ -1104,6 +1104,7 @@ export class Helper {
 						// duration: {rounds: duration.rounds, startRound: duration.startRound},
 						rounds: duration.rounds,
 						startRound: duration.startRound,
+						statuses: e.statuses,
 						tint: e.tint,
 						flags: flags,
 						changes: e.changes,
