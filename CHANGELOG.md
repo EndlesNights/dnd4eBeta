@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.22
+- Active Effect apply status effects correctly
+
 ## Version 0.4.21
 - Auto saves and DOTs [PR 304](https://github.com/EndlesNights/dnd4eBeta/pull/304) from [FoxLee](https://github.com/FoxLee)
 - added Right-CLick context menu to items on a character sheet, which allow for an number of options, including a easy duplicating.
