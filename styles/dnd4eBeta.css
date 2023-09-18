@@ -53,6 +53,17 @@
 .dnd4eBeta.sheet select {
 	font-size: revert;
 }
+select[multiple]{
+	background:var(--color-bg-option);
+}
+select[multiple] option{
+	background:unset;
+}
+select[multiple] option:checked{
+	background:#508fff;
+	opacity:1;
+	color:#fff;
+}
 
 .dnd4eBeta.sheet .sheet-header .summary {
 	flex: 0 0 100%;
@@ -2198,6 +2209,9 @@ font-size: 12px;
 	color: #7a7971;
 }
 /* Active Effects Dialogue */
+.active-effect-sheet input.saveDC{
+	max-width:4em;
+}
 .active-effect-sheet h3.subsection{
 	font-size:1em;
 	margin:0 0 0.2rem;
@@ -2214,6 +2228,7 @@ font-size: 12px;
 	list-style:none;
 	margin:0;
 	padding:0;
+	margin-bottom:2em;
 }
 .active-effect-sheet .effect-dot{
 	align-items:center;
@@ -2221,6 +2236,54 @@ font-size: 12px;
 }
 .active-effect-sheet .effect-dot:not(:last-child){
 	border-bottom:1px solid var(--color-border-light-primary);
+}
+.multiselect{
+	position:relative;
+}
+.multiselect .toggle{
+	display:flex;
+	width:calc(100% - 2px);
+	min-width:20px;
+	height:var(--form-field-height);
+	background:rgba(0, 0, 0, 0.05);
+	padding:3px 3px;
+	margin:0;
+	color:var(--color-text-dark-primary);
+	font-family:inherit;
+	font-size:inherit;
+	text-align:inherit;
+	line-height:inherit;
+	border:1px solid var(--color-border-light-tertiary);
+	border-radius:3px;
+	align-items:center;
+	justify-content:space-between;
+}
+.multiselect select[multiple]{
+	height:0;
+	padding:0;
+	border:unset;
+	position:absolute;
+	z-index:1;
+	width:100%;
+	margin-bottom:2em;
+}
+.multiselect .toggle:focus-within+select[multiple],
+.multiselect .toggle:focus+select[multiple],
+.multiselect select[multiple]:focus,
+.multiselect select[multiple]:focus-within{
+	height:auto;
+	padding:3px;
+	border:1px solid var(--color-border-light-tertiary);
+}
+.multiselect .toggle:focus-within,
+.multiselect .toggle:focus{
+	pointer-events:none;
+}
+.multiselect .toggle .fa-chevron-down{
+	font-size:0.65rem;
+	line-height:0;
+	font-weight:400;
+	margin-right: 0.25em;
 }
 
 
@@ -2415,15 +2478,15 @@ span.flavor-text.probable-miss {
 }
 .dice-roll .hit-prediction.fumble,
 .dice-roll .hit-prediction.probable-miss,
-.dot-report .damage-taken:not(.resistant-full){
+.dot-report .damage-taken:not(.resistant-full,.healing){
 	color:red;
 }
 .dice-roll .hit-prediction.critical,
 .dice-roll .hit-prediction.probable-hit,
-.dot-report .damage-taken.resistant-full {
+.dot-report .damage-taken.resistant-full,
+.dot-report .damage-taken.healing{
 	color:green;
 }
-
 .dot-report .damage-taken{
 	font-weight:bold;
 }
