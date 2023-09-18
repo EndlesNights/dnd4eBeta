@@ -2265,9 +2265,10 @@ font-size: 12px;
 	height:0;
 	padding:0;
 	border:unset;
-	position:absolute;
+	position:fixed;
 	z-index:1;
-	width:100%;
+	width:inherit;
+	max-width:inherit;
 	margin-bottom:2em;
 }
 .multiselect .toggle:focus-within+select[multiple],
