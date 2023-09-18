@@ -1229,3 +1229,7 @@ export async function handleAutoDoTs(data) {
 
 	await actor.autoDoTsSocket(data.tokenID);
 }
+
+Handlebars.registerHelper('contains', function(lunch, lunchbox) {
+	return lunchbox.includes(lunch);
+});
