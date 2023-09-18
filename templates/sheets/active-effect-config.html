@@ -180,7 +180,7 @@
 		  <h3 class="subsection">{{ localize "DND4EBETA.OngoingDamage" }} / {{localize "EFFECT.statusRegen"}}</h3>
         <header class="effect-change effects-header flexrow">
             <div class="amount">{{ localize "DND4EBETA.Value" }}</div>
-            <div class="type">{{ localize "DND4EBETA.Type" }}</div>
+            <div class="type">{{ localize "DND4EBETA.Type" }} ({{ localize "DND4EUI.HowSelectMultiple" }})</div>
             <div class="effect-controls">
                 <a class="effect-dot-control" data-action="add"><i class="far fa-plus-square"></i></a>
             </div>
@@ -205,6 +205,7 @@
 								--}}{{/each}}
 								</span>
 								<i class="fas fa-chevron-down"></i>
+								<i class="fas fa-chevron-up"></i>
 							</label>
 							<select name="flags.dnd4e.dots.{{i}}.typesArray"  class="damage-types-selection refreshes" id="damage-types-selection-{{i}}" multiple>
 								{{#each ../config.damageTypes as |name type|}}
