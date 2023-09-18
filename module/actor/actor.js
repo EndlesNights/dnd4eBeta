@@ -1753,32 +1753,38 @@ export class Actor4e extends Actor {
 		//console.log(tokenId);
 		const autoDoTs = game.settings.get("dnd4e","autoDoTs");
 		if(autoDoTs != "none"){
-			let activeDoTs = {};
+			let applicableDoTs = {};
 			
 			for(const e of this.effects){
 				if(e.flags.dnd4e?.dots.length && e.disabled === false){
 					for (let dot of e.flags.dnd4e.dots){
 						
 						// Combine the types array into a usable string
-						// (we use this instead of the input string in order to avoid irregularities)
-						let types = dot.typesArray.join(',');
+						const types = (dot.typesArray.includes("healing") ? "healing" : dot.typesArray.join(','));
 						
 						// Only keep the highest DoT of each unique type—
 						// you can only be so much on fire.
-						if (dot.amount - activeDoTs[types]?.amount <= 0){
+						if (dot.amount - applicableDoTs[types]?.amount <= 0){
 							continue;
 						} else { 
-							activeDoTs[types] = { type:types+=',ongoing', amount:dot.amount, effectId:e.id, effectName: e.name };
+							applicableDoTs[types] = { 
+								type: ( types == "healing" ? types : types+=',ongoing'), 
+								amount:dot.amount, 
+								effectId:e.id, 
+								effectName: e.name 
+							};
 						}
 					}
 				}
 			}
 			
-			activeDoTs = Array.from(Object.values(activeDoTs || {}));
+			applicableDoTs = Array.from(Object.values(applicableDoTs || {}));
 			
-			if(activeDoTs.length){
-				for(const dot of activeDoTs){
-					const dmgTaken = await this.calcDamageInner([[dot.amount,dot.type]]);
+			if(applicableDoTs.length){
+				for(const dot of applicableDoTs){
+					const dmgTaken = ( dot.type == "healing" ? Math.min(dot.amount, this.system.attributes.hp.max - this.system.attributes.hp.value) : await this.calcDamageInner([[dot.amount,dot.type]]));
+					console.log(this.calcDamageInner([[dot.amount,dot.type]]));
+					let dmgImpact = "neutral";
 					
 					let chatRecipients = [Helper.firstOwner(this)];
 					switch (game.settings.get("dnd4e","autoDoTsPublic")){
@@ -1797,12 +1803,13 @@ export class Actor4e extends Actor {
 							break;
 					}
 					
-					let dmgImpact = "neutral";
-					if(dmgTaken == 0){
+					if(dot.type == "healing"){
+						dmgImpact="healing";
+					}else if(dmgTaken == 0){
 						dmgImpact = "resistant-full";
 					}else if (dot.amount - dmgTaken > 0){
 						dmgImpact = "resistant";
-					} else if (dot.amount - dmgTaken < 0){
+					}else if (dot.amount - dmgTaken < 0){
 						dmgImpact = "vulnerable";
 					}
 					
@@ -1844,7 +1851,11 @@ export class Actor4e extends Actor {
 					});						
 					
 					if (autoDoTs == "apply"){
-						await this.applyDamage(dmgTaken);
+						if (dot.type="healing"){
+							await this.applyDamage(dmgTaken*-1);
+						}else{
+							await this.applyDamage(dmgTaken);
+						}
 					}
 				}
 			}
