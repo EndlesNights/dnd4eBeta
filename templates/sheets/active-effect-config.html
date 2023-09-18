@@ -207,7 +207,7 @@
 								<i class="fas fa-chevron-down"></i>
 								<i class="fas fa-chevron-up"></i>
 							</label>
-							<select name="flags.dnd4e.dots.{{i}}.typesArray"  class="damage-types-selection refreshes" id="damage-types-selection-{{i}}" multiple>
+							<select name="flags.dnd4e.dots.{{i}}.typesArray"  class="damage-types-selection refreshes" id="damage-types-selection-{{i}}" size="13" multiple>
 								{{#each ../config.damageTypes as |name type|}}
 								{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
 								<option value="{{type}}" {{#if (contains type dot.typesArray)}}selected{{/if}}>{{name}}</option>
