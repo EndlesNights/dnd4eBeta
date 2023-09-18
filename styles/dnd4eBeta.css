@@ -2237,6 +2237,9 @@ font-size: 12px;
 .active-effect-sheet .effect-dot:not(:last-child){
 	border-bottom:1px solid var(--color-border-light-primary);
 }
+
+/*  Multiselect styling */
+/*  Class and proximity-based; should be reusable */
 .multiselect{
 	position:relative;
 }
@@ -2279,11 +2282,21 @@ font-size: 12px;
 .multiselect .toggle:focus{
 	pointer-events:none;
 }
-.multiselect .toggle .fa-chevron-down{
+.multiselect .toggle .fa-chevron-down,
+.multiselect .toggle .fa-chevron-up{
 	font-size:0.65rem;
 	line-height:0;
 	font-weight:400;
 	margin-right: 0.25em;
+}
+.multiselect .toggle .fa-chevron-up,
+.multiselect .toggle:focus-within .fa-chevron-down,
+.multiselect .toggle:focus .fa-chevron-down{
+	display:none;
+}
+.multiselect .toggle:focus-within .fa-chevron-up,
+.multiselect .toggle:focus .fa-chevron-up{
+	display:block;
 }
 
 
