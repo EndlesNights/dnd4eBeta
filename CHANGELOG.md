@@ -2,6 +2,8 @@
 
 ## Version 0.4.22
 - Active Effect apply status effects correctly
+- Added addtional null checks into `turns.js`, so the turn tracker should no longer get stuck if an actor becomes unlinked from a combatant / token
+- Regeneration as DoTs + settable effect save DCs [PR 308](https://github.com/EndlesNights/dnd4eBeta/pull/308) from [FoxLee](https://github.com/FoxLee)
 
 ## Version 0.4.21
 - Auto saves and DOTs [PR 304](https://github.com/EndlesNights/dnd4eBeta/pull/304) from [FoxLee](https://github.com/FoxLee)
