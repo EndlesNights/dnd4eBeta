@@ -1768,7 +1768,7 @@ export class Actor4e extends Actor {
 							continue;
 						} else { 
 							applicableDoTs[types] = { 
-								type: ( types == "healing" ? types : types+=',ongoing'), 
+								type: ( types == "healing" ? types : types + ',ongoing'), 
 								amount:dot.amount, 
 								effectId:e.id, 
 								effectName: e.name 
