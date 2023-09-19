@@ -22,7 +22,8 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		return {
 			system: this.object.system,
 			rollModes: CONFIG.Dice.rollModes,
-			effectName: ( options.effectSave ? this.object.effects.get(options.effectId).name : null )
+			effectName: ( options.effectSave ? this.object.effects.get(options.effectId).name : null ),
+			saveDC: ( options.effectSave ? this.object.effects.get(options.effectId).flags.dnd4e?.effectData?.saveDC : null )
 		};
 	}
 

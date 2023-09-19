@@ -82,14 +82,20 @@
     <section class="tab" data-tab="duration">
         <div class="form-group">
             <label>{{ localize "DND4EBETA.DurationType" }}</label>
-            <select name="flags.dnd4e.effectData.durationType">
-                {{#select effect.flags.dnd4e.effectData.durationType}}
-                <option value=""></option>
-                {{#each config.durationType as |label type|}}
-                <option value="{{type}}">{{label}}</option>
-                {{/each}}
-                {{/select}}
-            </select>
+            <div class="form-fields">
+					<select class="durationType refreshes" name="flags.dnd4e.effectData.durationType">
+						 {{#select effect.flags.dnd4e.effectData.durationType}}
+						 <option value=""></option>
+						 {{#each config.durationType as |label type|}}
+						 <option value="{{type}}">{{label}}</option>
+						 {{/each}}
+						 {{/select}}
+					</select>
+					{{#if (eq effect.flags.dnd4e.effectData.durationType "saveEnd")}}
+						  <label>{{ localize "DND4EBETA.AbbreviationDC" }}</label>
+						  <input type="text" class="number saveDC" name="flags.dnd4e.effectData.saveDC" value="{{#if effect.flags.dnd4e.effectData.saveDC}}{{ effect.flags.dnd4e.effectData.saveDC }}{{else}}10{{/if}}" placeholder="10" data-dtype="number" />
+					{{/if}}
+				</div>
         </div>
         <div class="form-group">
             <label>{{ localize "EFFECT.DurationSecs" }}</label>
@@ -171,10 +177,10 @@
 		  <br />
 		  
 		  <!-- Ongoing Damage instances attached to this effect-->
-		  <h3 class="subsection">{{ localize "DND4EBETA.OngoingDamage" }}</h3>
+		  <h3 class="subsection">{{ localize "DND4EBETA.OngoingDamage" }} / {{localize "EFFECT.statusRegen"}}</h3>
         <header class="effect-change effects-header flexrow">
             <div class="amount">{{ localize "DND4EBETA.Value" }}</div>
-            <div class="type">{{ localize "DND4EBETA.Type" }}</div>
+            <div class="type">{{ localize "DND4EBETA.Type" }} ({{ localize "DND4EUI.HowSelectMultiple" }})</div>
             <div class="effect-controls">
                 <a class="effect-dot-control" data-action="add"><i class="far fa-plus-square"></i></a>
             </div>
@@ -185,8 +191,33 @@
                 <div class="amount">
                     <input type="text" name="flags.dnd4e.dots.{{i}}.amount" value="{{dot.amount}}"/>
                 </div>
-                <div class="type">
-                    <input type="text" name="flags.dnd4e.dots.{{i}}.type" value="{{dot.type}}"/>
+                <div class="type damage-type">
+						<div class="multiselect">
+							<label class="toggle" tabindex="-1">
+								<span class="damage-types-text" id="damage-types-text-{{i}}">
+								{{#each dot.typesArray as |type i|}}{{!--
+									--}}{{#unless (eq i 0)}}, {{/unless}}{{!--
+									--}}{{#if (eq type "healing")}}{{!--
+										--}}{{localize "EFFECT.statusRegen"}}{{!--
+									--}}{{else}}{{!--
+										--}}{{lookup ../../config.damageTypes type}}{{!--
+									--}}{{/if}}{{!--
+								--}}{{/each}}
+								</span>
+								<i class="fas fa-chevron-down"></i>
+								<i class="fas fa-chevron-up"></i>
+							</label>
+							<select name="flags.dnd4e.dots.{{i}}.typesArray"  class="damage-types-selection refreshes" id="damage-types-selection-{{i}}" size="13" multiple>
+								{{#each ../config.damageTypes as |name type|}}
+								{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+								<option value="{{type}}" {{#if (contains type dot.typesArray)}}selected{{/if}}>{{name}}</option>
+								{{/unless}}{{/unless}}
+								{{/each}}
+								<option value="healing" {{#if (contains "healing" dot.typesArray)}}selected{{/if}}>[{{localize "EFFECT.statusRegen"}}]</option>
+								<option value="">&nbsp;</option>
+							</select>
+						  <!--<input type="text" name="flags.dnd4e.dots.{{i}}.type" value="{{dot.type}}"/>-->
+						</div>
                 </div>
                 <div class="effect-controls">
                     <a class="effect-dot-control" data-action="delete"><i class="fas fa-trash"></i></a>
@@ -194,8 +225,7 @@
             </li>
             {{/each}}
         </ol>
-		  
-		  <br />
+
     </section>
 
     <footer class="sheet-footer">
