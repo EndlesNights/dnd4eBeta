@@ -717,6 +717,14 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	activateListeners(html) {
 		super.activateListeners(html);
 
+		//veiw image
+		html.find('.actor-art').click(this._onDisplayActorArt.bind(this));
+
+		if(this.options.viewPermission){ // With at leaste observation permisions, be able to view item summary
+			// Item summaries
+			html.find('.item .item-name h4').click(event => this._onItemSummary(event));
+		}
+
 		// Everything below here is only needed if the sheet is editable
 		if (!this.options.editable) return;
 
@@ -732,7 +740,6 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		const item = this.actor.items.get(li.data("itemId"));
 		item.sheet.render(true);
 		});
-
 
 		if ( this.actor.isOwner ) {	
 			// Roll Skill Checks
@@ -812,10 +819,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 			// Active Effect management
 			// html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
 			html.find(".effect-control").click(event => ActiveEffect4e.onManageActiveEffect(event, this.actor));
-		
-			// Item summaries
-			html.find('.item .item-name h4').click(event => this._onItemSummary(event));		
-			
+				
 			// Item State Toggling
 			html.find('.item-toggle').click(this._onToggleItem.bind(this));
 		
@@ -894,6 +898,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
    * @private
    */
 	async _onItemSummary(event) {
+		console.log("Enter?")
 		event.preventDefault();
 		const li = $(event.currentTarget).parents(".item")
 		const itemId = li.data("item-id")
@@ -935,6 +940,15 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		}
 		li.toggleClass("expanded");
 	}
+
+  /* -------------------------------------------- */
+
+	_onDisplayActorArt(event) {
+		event.preventDefault();
+
+		const p = new ImagePopout(this.object.img);
+		p.render(true);
+	}
   
   /* -------------------------------------------- */
 
@@ -951,6 +965,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 	const attr = power.includes(item.type) ? "system.prepared" : "system.equipped";
 	return item.update({[attr]: !getProperty(item, attr)});
   }
+
   /* -------------------------------------------- */
 
   /**

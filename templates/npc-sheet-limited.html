@@ -2,8 +2,10 @@
 	<section class="npc-upper">
 		{{!-- SHeet Header --}}
 		<header class="sheet-header">
-			<img class="profile" src="{{actor.img}}" data-tooltip="{{actor.name}}" data-edit="img" style="margin-bottom: 6px;"/>
-			<section>
+			<div class="image-frame">
+				<img class="profile-img" src="{{actor.img}}" data-edit="img" data-tooltip="{{actor.name}}" height="64" width="64"/>
+				<a class="hover-icon actor-art" data-action="show-image"><i class="fas fa-image fa-fw"></i></a>
+			</div>			<section>
 				<ul class="summary">
 					<li class="summary-name-npc">
 						<input name="name" type="text" value="{{actor.name}}" data-tooltip="{{localize 'DND4EBETA.NameNPC'}}" placeholder="{{localize 'DND4EBETA.NameNPC'}}" onClick="this.select();"/>

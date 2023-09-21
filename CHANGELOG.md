@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.23
+- Added button that appears when hovering the image on a Player and NPC character sheet. This button opens ups up the image in a ImagePoput frame.
+- With at least observation permissions of an actor, be able to view item summary when clicking on name
+
 ## Version 0.4.22
 - Active Effect apply status effects correctly
 - Added addtional null checks into `turns.js`, so the turn tracker should no longer get stuck if an actor becomes unlinked from a combatant / token
