@@ -3,6 +3,7 @@
 ## Version 0.4.23
 - Added button that appears when hovering the image on a Player and NPC character sheet. This button opens ups up the image in a ImagePoput frame.
 - With at least observation permissions of an actor, be able to view item summary when clicking on name
+- Fixed error with ongoing damage [PR 310](https://github.com/EndlesNights/dnd4eBeta/pull/3108) from [FoxLee](https://github.com/FoxLee)
 
 ## Version 0.4.22
 - Active Effect apply status effects correctly
