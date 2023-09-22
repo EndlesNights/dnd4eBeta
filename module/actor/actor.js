@@ -1851,7 +1851,7 @@ export class Actor4e extends Actor {
 					});						
 					
 					if (autoDoTs == "apply"){
-						if (dot.type="healing"){
+						if (dot.type == "healing"){
 							await this.applyDamage(dmgTaken*-1);
 						}else{
 							await this.applyDamage(dmgTaken);
