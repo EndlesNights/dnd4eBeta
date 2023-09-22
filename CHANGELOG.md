@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.24
+- hotfix [PR 312](https://github.com/EndlesNights/dnd4eBeta/pull/312) from [FoxLee](https://github.com/FoxLee)
+
 ## Version 0.4.23
 - Added button that appears when hovering the image on a Player and NPC character sheet. This button opens ups up the image in a ImagePoput frame.
 - With at least observation permissions of an actor, be able to view item summary when clicking on name
