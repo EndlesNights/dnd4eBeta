@@ -1,15 +1,18 @@
-2023/08/11-23:23:21.180 554c Recovering log #212
-2023/08/11-23:23:21.189 554c Delete type=0 #212
-2023/08/11-23:23:21.189 554c Delete type=3 #210
-2023/08/11-23:29:24.388 2de0 Level-0 table #217: started
-2023/08/11-23:29:24.390 2de0 Level-0 table #217: 25157 bytes OK
-2023/08/11-23:29:24.392 2de0 Delete type=0 #215
-2023/08/11-23:29:24.396 2de0 Manual compaction at level-0 from '!journal!PuJCVdkeDHbyFpeT' @ 72057594037927935 : 1 .. '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 0 : 0; will stop at (end)
-2023/08/11-23:29:24.399 2de0 Manual compaction at level-1 from '!journal!PuJCVdkeDHbyFpeT' @ 72057594037927935 : 1 .. '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 0 : 0; will stop at '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 72 : 1
-2023/08/11-23:29:24.399 2de0 Compacting 1@1 + 1@2 files
-2023/08/11-23:29:24.403 2de0 Generated table #218@1: 20 keys, 61405 bytes
-2023/08/11-23:29:24.403 2de0 Compacted 1@1 + 1@2 files => 61405 bytes
-2023/08/11-23:29:24.405 2de0 compacted to: files[ 0 0 1 0 0 0 0 ]
-2023/08/11-23:29:24.406 2de0 Delete type=2 #93
-2023/08/11-23:29:24.406 2de0 Delete type=2 #217
-2023/08/11-23:29:24.409 2de0 Manual compaction at level-1 from '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 72 : 1 .. '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 0 : 0; will stop at (end)
+2023/09/23-18:50:38.521 277c Recovering log #220
+2023/09/23-18:50:38.525 277c Level-0 table #222: started
+2023/09/23-18:50:38.642 277c Level-0 table #222: 1040300 bytes OK
+2023/09/23-18:50:38.908 277c Delete type=0 #220
+2023/09/23-18:50:38.908 277c Delete type=3 #219
+2023/09/23-19:36:26.032 1898 Moved #222 to level-1 1040300 bytes OK: files[ 0 1 1 0 0 0 0 ]
+2023/09/23-19:44:13.401 1898 Compacting 1@1 + 1@2 files
+2023/09/23-19:44:13.468 1898 Generated table #224@1: 21 keys, 55687 bytes
+2023/09/23-19:44:13.468 1898 Compacted 1@1 + 1@2 files => 55687 bytes
+2023/09/23-19:44:13.480 1898 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/09/23-19:44:13.480 1898 Delete type=2 #218
+2023/09/23-19:44:13.480 1898 Delete type=2 #222
+2023/09/23-21:40:58.843 1898 Level-0 table #226: started
+2023/09/23-21:40:58.936 1898 Level-0 table #226: 1720366 bytes OK
+2023/09/23-21:40:58.962 1898 Delete type=0 #223
+2023/09/23-23:07:27.218 1898 Level-0 table #228: started
+2023/09/23-23:07:27.410 1898 Level-0 table #228: 1805771 bytes OK
+2023/09/23-23:07:27.431 1898 Delete type=0 #225
