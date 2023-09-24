@@ -1036,9 +1036,12 @@ export class Actor4e extends Actor {
 		rollConfig.critical = options.dc - this.system.details.saves.value - options.save || 10;
 		rollConfig.fumble = options.dc -1 - this.system.details.saves.value - options.save || 9;
 		
+		const saveDC = options.dc || 10;
 		const r = await d20Roll(rollConfig);
 
-		if(options.effectSave && r.total >= rollConfig.critical){
+		/* Changed the roll comparison to DC from rollConfig.critical, to fix discrepancy 
+		between success/fail and effect removal when the actor has a save bonus  */
+		if(options.effectSave && r.total >= saveDC){
 			await this.effects.get(options.effectId).delete();
 		}
 	}
