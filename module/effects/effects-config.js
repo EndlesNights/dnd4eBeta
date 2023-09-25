@@ -78,7 +78,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		data.flags.dnd4e.dots = Array.from(Object.values(data.flags.dnd4e.dots || {}));
 		if (data.flags.dnd4e.dots.length){
 			for (let [i, dot] of data.flags.dnd4e.dots.entries()){
-				data.flags.dnd4e.dots[i].amount = parseInt(dot.amount);
+				data.flags.dnd4e.dots[i].amount = dot.amount;
 				data.flags.dnd4e.dots[i].typesArray = dot.typesArray.sort();
 				/*if(!dot.type) {
 					data.flags.dnd4e.dots[i].typesArray = ['physical'];
