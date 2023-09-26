@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 0.4.25
+- [PR 314](https://github.com/EndlesNights/dnd4eBeta/pull/314) from [FoxLee](https://github.com/FoxLee)
+	- Restored lost hint text for how to select multiple damage types on ongoing damage.
+	- Fixed a bug reported on Discord by Milo & Marcloure: effects could sometimes be removed even on a failed save, if a saving throw bonus was present.
+	- Added the ability to use variables in "amount" value for ongoing damage/regen (issue #311).
+	- Updated the Manual & Help Compendium—mostly for the sake of adding a section about ongoing damage, but while I was there I made a bunch of smaller updates and typo fixes too. Please see the commit for more details!
+	- Removed (most) inline formatting from the Manual and added it as default journal CSS instead, with the goal of making the manual a lot more friendly to journal enhancements.
+	- Added a tooltip to the new "show image" button on an actor's portrait.
+
 ## Version 0.4.24
 - hotfix [PR 312](https://github.com/EndlesNights/dnd4eBeta/pull/312) from [FoxLee](https://github.com/FoxLee)
 
