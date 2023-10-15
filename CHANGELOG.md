@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.26
+- Added descriptions to all status effects
+- Added Options for when Death Saves can reset, with default now correctly being short rests
+
 ## Version 0.4.25
 - [PR 314](https://github.com/EndlesNights/dnd4eBeta/pull/314) from [FoxLee](https://github.com/FoxLee)
 	- Restored lost hint text for how to select multiple damage types on ongoing damage.
