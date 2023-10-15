@@ -1181,6 +1181,7 @@ export class Actor4e extends Actor {
 	async longRest(event, options){
 		const updateData = {};
 		
+		// Check if the Extended Rest is in a "Hospitable Environment" or an area of "Environmental Danger"
 		if(options.envi == "false")
 		{
 			if(this.system.details.surgeEnv.value > this.system.details.surges.max)
@@ -1193,7 +1194,7 @@ export class Actor4e extends Actor {
 				updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max;
 			}
 
-			if (game.settings.get("dnd4e", "deathSaveRest") <= 2){
+			if (game.settings.get("dnd4e", "deathSaveRest") <= 1){
 				updateData[`system.details.deathsavefail`] = 0;
 			}
 		}
@@ -1205,7 +1206,7 @@ export class Actor4e extends Actor {
 			updateData[`system.details.surgeEnv.value`] = 0;
 			updateData[`system.details.surgeEnv.bonus`] = [{}];
 
-			if(game.settings.get("dnd4e", "deathSaveRest") <= 1){
+			if(game.settings.get("dnd4e", "deathSaveRest") <= 2){
 				updateData[`system.details.deathsavefail`] = 0;
 			}
 		}
