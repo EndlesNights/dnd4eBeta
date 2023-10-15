@@ -1166,6 +1166,11 @@ export class Actor4e extends Actor {
 			}
 		}
 
+
+		if(!game.settings.get("dnd4e", "deathSaveRest")){
+			updateData[`system.details.deathsavefail`] = 0;
+		}
+
 		// console.log(updateData[`system.attributes.hp.value`]);
 		// console.log(this.system.attributes.hp.value);
 
@@ -1187,6 +1192,10 @@ export class Actor4e extends Actor {
 				updateData[`system.details.surges.value`] = this.system.details.surges.max - this.system.details.surgeEnv.value;
 				updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max;
 			}
+
+			if (game.settings.get("dnd4e", "deathSaveRest") <= 2){
+				updateData[`system.details.deathsavefail`] = 0;
+			}
 		}
 		else
 		{
@@ -1195,10 +1204,13 @@ export class Actor4e extends Actor {
 			
 			updateData[`system.details.surgeEnv.value`] = 0;
 			updateData[`system.details.surgeEnv.bonus`] = [{}];
+
+			if(game.settings.get("dnd4e", "deathSaveRest") <= 1){
+				updateData[`system.details.deathsavefail`] = 0;
+			}
 		}
 
 		updateData[`system.attributes.temphp.value`] = "";
-		updateData[`system.details.deathsavefail`] = 0;
 		updateData[`system.actionpoints.value`] = 1;
 		updateData[`system.magicItemUse.milestone`] = 0;
 		updateData[`system.magicItemUse.dailyuse`] = this.system.magicItemUse.perDay;
