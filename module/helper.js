@@ -1029,7 +1029,7 @@ export class Helper {
 			}
 		}
 
-		return game.combat.turns[game.combat.turn].initiative || -1;
+		return game.combat.turns[game.combat.turn]?.initiative || -1;
 	}
 
 	static getTokenIdForLinkedActor(actor){
@@ -1196,7 +1196,30 @@ export class Helper {
 		return Math.max(...positives) + Math.min(...negatives);
 	}
 
+	
+	/**
+	 * Determine if a fastForward key was held during the given click event.
+	 *
+	 * @param {actorSet} set Actors
+	 * @param {disposition} string disposition value to keep
+	 * @param {same} boolean match based on same or diffrent disposition
+	 * @returns {set} New set of matching disposition
+	 */
+
+	static filterActorSetByDisposition(actorSet, disposition, same=true) {
+		if(disposition === null){
+			return [];
+		}
+		const filteredSet = new Set();
+		for (const actor of Array.from(game.user.targets)) {
+			if((actor.document?.disposition === disposition) === same) {
+				filteredSet.add(actor);
+			}
+		}
+		return filteredSet;
+	}
 }
+
 
 export async function handleApplyEffectToToken(data){
 	if(!game.user.isGM){

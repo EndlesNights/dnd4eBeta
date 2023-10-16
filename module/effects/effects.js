@@ -119,7 +119,7 @@
 			}
 		}
 
-		if(data.statuses.length && data.description){
+		if(data.statuses?.length && data.description){
 			updates.description = game.i18n.localize(data.description);
 		}
 
