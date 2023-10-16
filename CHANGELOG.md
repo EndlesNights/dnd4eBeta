@@ -3,6 +3,8 @@
 ## Version 0.4.26
 - Added descriptions to all status effects
 - Added Options for when Death Saves can reset, with default now correctly being short rests
+- Additional Effect Application to All Allies, All Enemies, or self dependent on hit/miss of other targets
+- fix some edge case issues were effects would not apply.
 
 ## Version 0.4.25
 - [PR 314](https://github.com/EndlesNights/dnd4eBeta/pull/314) from [FoxLee](https://github.com/FoxLee)
