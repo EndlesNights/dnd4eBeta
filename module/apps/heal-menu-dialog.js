@@ -16,6 +16,9 @@ export class HealMenuDialog extends DocumentSheet4e {
 			submitOnClose: false
 		});
 	}
+	get title() {
+		return `${this.object.name} - ${game.i18n.localize( 'DND4EBETA.Healing')}`;
+	}
 
 	/** @override */
 	getData(options) {
