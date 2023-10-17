@@ -2629,3 +2629,62 @@ span.flavor-text.probable-miss {
 .custom-skill-config .custom-skill-control {
 	margin: 0 5px;
 }
+
+/* ----------------------------------------- */
+/* Journals
+/* ----------------------------------------- */
+.sheet.journal-entry .journal-entry-page :is(h1, h2, h3, h4, h5, h6):not(:first-child){
+	margin-top:1.5rem;
+}
+.sheet.journal-entry .journal-entry-page h4{
+	font-size:1.15em;
+	font-style:italic;
+}
+.sheet.journal-entry .journal-entry-page h5{
+	font-size:1.1em;
+	font-weight:bold;
+	font-style:italic;
+}
+.sheet.journal-entry .journal-entry-page h5{
+	font-size:1em;
+	font-weight:bold;
+	font-style:italic;
+}
+.journal-page-content table,
+.editor-content[data-engine="prosemirror"] table,
+.editor-enriched table{
+	box-sizing:border-box;
+	user-select:text;	
+	border-collapse:collapse;
+	border:unset;
+}
+.journal-page-content table thead,
+.editor-content[data-engine="prosemirror"] table thead,
+.editor-enriched table thead{
+	color:#fff;
+}
+.journal-page-content table tbody,
+.editor-content[data-engine="prosemirror"] table tbody,
+.editor-enriched table tbody{
+	border-bottom:1px solid var(--color-border-light-tertiary);
+}
+.journal-page-content table th,
+.journal-page-content table td,
+.editor-content[data-engine="prosemirror"] th,
+.editor-content[data-engine="prosemirror"] td,
+.editor-enriched th,
+.editor-enriched td{
+	border:unset;
+	padding:0.5em;
+}
+.journal-page-content table tbody tr:nth-child(odd),
+.editor-content[data-engine="prosemirror"] table tbody tr:nth-child(odd),
+.editor-enriched table tbody tr:nth-child(odd){
+	background:rgba(0, 0, 0, 0.05);
+}
+.journal-page-content table tfoot,
+.editor-content[data-engine="prosemirror"] table tfoot,
+.editor-enriched table tfoot{
+	font-size:80%;
+	background-color:#dedede;
+}

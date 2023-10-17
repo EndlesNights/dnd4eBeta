@@ -113,6 +113,24 @@ export const registerSystemSettings = function() {
 		type: Boolean
 	});
 
+
+	/**
+	 * Determs when Death Saving Throws are reset
+	 */
+	game.settings.register("dnd4e", "deathSaveRest", {
+		name: "SETTINGS.4eDeathSaveRestN",
+		hint: "SETTINGS.4eDeathSaveRestL",
+		scope: "world",
+		config: true,
+		default: "short",
+		type: Number,
+		choices: {
+			0: "DND4EBETA.RestShort",
+			1: "DND4EBETA.RestLong",
+			2: "DND4EBETA.RestLongH",
+		}
+	});
+
 	// /**
 	//  * Option to disable XP bar for session-based or story-based advancement.
 	//  */

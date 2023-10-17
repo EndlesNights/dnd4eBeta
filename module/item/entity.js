@@ -571,10 +571,15 @@ export default class Item4e extends Item {
 		
 		if(["power", "consumable"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
-			
-			Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
+
 			Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
 
+			if(game.user.targets.size){
+				Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
+				const parentDisposition = this.parent.token?.disposition || this.parent.prototypeToken.disposition || null;
+				Helper.applyEffectsToTokens(this.effects, Helper.filterActorSetByDisposition([game.user.targets], parentDisposition), "allies", this.parent);
+				Helper.applyEffectsToTokens(this.effects, Helper.filterActorSetByDisposition([game.user.targets], parentDisposition, false), "enemies", this.parent);
+			}
 		}
 		else if (["weapon", "equipment", "backpack", "tool", "loot"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--item`);

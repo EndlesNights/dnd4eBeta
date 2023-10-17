@@ -1036,9 +1036,12 @@ export class Actor4e extends Actor {
 		rollConfig.critical = options.dc - this.system.details.saves.value - options.save || 10;
 		rollConfig.fumble = options.dc -1 - this.system.details.saves.value - options.save || 9;
 		
+		const saveDC = options.dc || 10;
 		const r = await d20Roll(rollConfig);
 
-		if(options.effectSave && r.total >= rollConfig.critical){
+		/* Changed the roll comparison to DC from rollConfig.critical, to fix discrepancy 
+		between success/fail and effect removal when the actor has a save bonus  */
+		if(options.effectSave && r.total >= saveDC){
 			await this.effects.get(options.effectId).delete();
 		}
 	}
@@ -1163,6 +1166,11 @@ export class Actor4e extends Actor {
 			}
 		}
 
+
+		if(!game.settings.get("dnd4e", "deathSaveRest")){
+			updateData[`system.details.deathsavefail`] = 0;
+		}
+
 		// console.log(updateData[`system.attributes.hp.value`]);
 		// console.log(this.system.attributes.hp.value);
 
@@ -1173,6 +1181,7 @@ export class Actor4e extends Actor {
 	async longRest(event, options){
 		const updateData = {};
 		
+		// Check if the Extended Rest is in a "Hospitable Environment" or an area of "Environmental Danger"
 		if(options.envi == "false")
 		{
 			if(this.system.details.surgeEnv.value > this.system.details.surges.max)
@@ -1184,6 +1193,10 @@ export class Actor4e extends Actor {
 				updateData[`system.details.surges.value`] = this.system.details.surges.max - this.system.details.surgeEnv.value;
 				updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max;
 			}
+
+			if (game.settings.get("dnd4e", "deathSaveRest") <= 1){
+				updateData[`system.details.deathsavefail`] = 0;
+			}
 		}
 		else
 		{
@@ -1192,10 +1205,13 @@ export class Actor4e extends Actor {
 			
 			updateData[`system.details.surgeEnv.value`] = 0;
 			updateData[`system.details.surgeEnv.bonus`] = [{}];
+
+			if(game.settings.get("dnd4e", "deathSaveRest") <= 2){
+				updateData[`system.details.deathsavefail`] = 0;
+			}
 		}
 
 		updateData[`system.attributes.temphp.value`] = "";
-		updateData[`system.details.deathsavefail`] = 0;
 		updateData[`system.actionpoints.value`] = 1;
 		updateData[`system.magicItemUse.milestone`] = 0;
 		updateData[`system.magicItemUse.dailyuse`] = this.system.magicItemUse.perDay;
@@ -1762,14 +1778,26 @@ export class Actor4e extends Actor {
 						// Combine the types array into a usable string
 						const types = (dot.typesArray.includes("healing") ? "healing" : dot.typesArray.join(','));
 						
+						/* Use logic pinched from ActiveEffect4e.safeEvalEffectValue() to 
+						evaluate variables in "amount" string */
+						const stringDiceFormat = /\d+d\d+/;
+						let parsedAmount = dot.amount;
+
+						if (!parsedAmount.match(stringDiceFormat))
+						  parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
+						try {
+						  parsedAmount = Roll.safeEval(parsedAmount).toString();
+						} catch (e) { /* noop */ }
+						/* End pinched */
+						
 						// Only keep the highest DoT of each unique type—
 						// you can only be so much on fire.
-						if (dot.amount - applicableDoTs[types]?.amount <= 0){
+						if (parsedAmount - applicableDoTs[types]?.amount <= 0){
 							continue;
-						} else { 
+						} else {
 							applicableDoTs[types] = { 
 								type: ( types == "healing" ? types : types + ',ongoing'), 
-								amount:dot.amount, 
+								amount:parsedAmount, 
 								effectId:e.id, 
 								effectName: e.name 
 							};

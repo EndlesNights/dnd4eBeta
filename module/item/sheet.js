@@ -193,6 +193,10 @@ export default class ItemSheet4e extends ItemSheet {
 				if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "self") categories.self.effects.push(e);
+				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "selfHit") categories.selfHit.effects.push(e);
+				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "selfMiss") categories.selfMiss.effects.push(e);
+				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "allies") categories.allies.effects.push(e);
+				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "enemies") categories.enemies.effects.push(e);
 				else categories.all.effects.push(e);
 			}
 		}

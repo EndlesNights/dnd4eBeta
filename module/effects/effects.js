@@ -33,6 +33,7 @@
 
 	/** @inheritdoc */
 	apply(actor, change) {
+
 		if ( this.isSuppressed ) return null;
 		
 		// this.otherActorLink(actor, change);
@@ -103,16 +104,29 @@
 	/** @inheritdoc */
 	async _preCreate(data, options, user) {
 		await super._preCreate(data, options, user);
+		const updates = {};
 
 		// Set initial duration data for Actor-owned effects
 		if ( this.parent instanceof Actor ) {
-			const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
+			// const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
+			updates.duration = {startTime: game.time.worldTime};
+			updates.transfer = false;
+			updates.equippedRec = false
+
 			const combat = game.combat;
 			if (combat?.turn != null && combat.turns && combat.turns[combat.turn]) {//if combat has started - combat.turn for the first character = 0 (so cannot use truthy value).  If there are no combatents combat.turns = []
 				updates.flags = {dnd4e: { effectData: { startTurnInit: combat.turns[combat.turn].initiative ?? 0}}};
 			}
+		}
+
+		if(data.statuses?.length && data.description){
+			updates.description = game.i18n.localize(data.description);
+		}
+
+		if(Object.keys(updates).length){
 			this.updateSource(updates);
 		}
+
 	}
 	/* --------------------------------------------- */
 
