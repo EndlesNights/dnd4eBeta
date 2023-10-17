@@ -598,92 +598,40 @@ textarea{
 	margin-top:1em;
 }
 .ability-usage--atwill{
-	background:-o-linear-gradient(45deg, #125f15, #55aa2e);
-	background:linear-gradient(45deg, #125f15, #55aa2e);
+	background:var(--background-atwill);
 }
 .force-ability-usage--atwill{
-	background:-o-linear-gradient(45deg, #125f15, #55aa2e) !important;
-	background:linear-gradient(45deg, #125f15, #55aa2e) !important;
-}
-.colorBlindRG .ability-usage--atwill{
-	background:-o-linear-gradient(45deg, #003c15, #087830);
-	background:linear-gradient(45deg, #003c15, #087830);
-}
-.colorBlindBY .ability-usage--atwill{
-	background:-o-linear-gradient(45deg, #796501, #efde89);
-	background:linear-gradient(45deg, #796501, #efde89);
+	background:var(--background-atwill) !important;
 }
 .ability-usage--encounter{
-	background:-o-linear-gradient(45deg, #3c0000, #dc0000);
-	background:linear-gradient(45deg, #3c0000, #dc0000);
+	background:var(--background-encounter);
 }
 .force-ability-usage--encounter{
-	background:-o-linear-gradient(45deg, #3c0000, #dc0000) !important;
-	background:linear-gradient(45deg, #3c0000, #dc0000) !important;
-}
-.colorBlindRG .ability-usage--encounter{
-	background:-o-linear-gradient(45deg, #003854, #89cdef);
-	background:linear-gradient(45deg, #003854, #89cdef);
-}
-.colorBlindBY .ability-usage--encounter{
-	background:-o-linear-gradient(45deg, #4e0129, #891c54);
-	background:linear-gradient(45deg, #4e0129, #891c54);
-}  
-.force-ability-usage--daily{
-	background:-o-linear-gradient(45deg, #1b1b1d, #ababab) !important;
-	background:linear-gradient(45deg, #1b1b1d, #ababab) !important;
+	background:var(--background-encounter) !important;
 }
 .ability-usage--daily{
-	background:-o-linear-gradient(45deg, #1b1b1d, #ababab);
-	background:linear-gradient(45deg, #1b1b1d, #ababab);
+	background:var(--background-daily);
 }
-.colorBlindRG .ability-usage--daily{
-	background:-o-linear-gradient(45deg, #005748, #42ac9a);
-	background:linear-gradient(45deg, #005748, #42ac9a);
-}
-.colorBlindBY .ability-usage--daily{
-	background:-o-linear-gradient(45deg, #333300, #9a9a30);
-	background:linear-gradient(45deg, #333300, #9a9a30);
+.force-ability-usage--daily{
+	background:var(--background-daily) !important;
 }
 .ability-usage--recharge{
-	background:-o-linear-gradient(45deg, #01003c, #71a2ec);
-	background:linear-gradient(45deg, #01003c, #71a2ec);
+	background:var(--background-recharge);
 }
 .force-ability-usage--recharge{
-	background:-o-linear-gradient(45deg, #01003c, #71a2ec) !important;
-	background:linear-gradient(45deg, #01003c, #71a2ec) !important;
-}
-.colorBlindRG .ability-usage--recharge{
-	background:-o-linear-gradient(45deg, #695702, #decd78);
-	background:linear-gradient(45deg, #695702, #decd78);
-}
-.colorBlindBY .ability-usage--recharge{
-	background:-o-linear-gradient(45deg, #01536e, #66cdef);
-	background:linear-gradient(45deg, #01536e, #66cdef);
+	background:var(--background-recharge) !important;
 }
 .ability-usage--other{
-	background:-o-linear-gradient(45deg, #25003c, #dc9ff1a6);
-	background:linear-gradient(45deg, #25003c, #dc9ff1a6);
+	background:var(--background-other);
 }
 .force-ability-usage--other{
-	background:-o-linear-gradient(45deg, #25003c, #dc9ff1a6) !important;
-	background:linear-gradient(45deg, #25003c, #dc9ff1a6) !important;
-}
-.colorBlindRG .ability-usage--other{
-	background:-o-linear-gradient(45deg, #0d0145, #301c89);
-	background:linear-gradient(45deg, #0d0145, #301c89);
-}
-.colorBlindBY .ability-usage--other{
-	background:-o-linear-gradient(45deg, #0d0145, #301c89);
-	background:linear-gradient(45deg, #0d0145, #301c89);
+	background:var(--background-other)!important;
 }
 .ability-usage--item{
-	background:-o-linear-gradient(45deg, #6a581c, #d4af37);
-	background:linear-gradient(45deg, #6a581c, #d4af37);
+	background:var(--background-item);
 }
 .force-ability-usage--item{
-	background:-o-linear-gradient(45deg, #6a581c, #d4af37) !important;
-	background:linear-gradient(45deg, #6a581c, #d4af37) !important;
+	background:var(--background-item) !important;
 }
 .dnd4eBeta .sheet-header .header-fields{
 	flex:1;
