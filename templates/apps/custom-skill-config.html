@@ -1,19 +1,18 @@
 <form id="custom-skill-config" class="dialog-content" onsubmit="event.preventDefault();">
 	<ol id="custom-skill-list" class="custom-skill-list">
-		<li class="custom-skill flexrow custom-skill-header">
 
 			{{#each customSkills as |skill s|}}
 			<li class="flexrow custom-skill-line">
 			<div id="{{s}}">
 				<span>{{localize 'DND4EBETA.SkillLabel'}}</span>
-				<input disabled type="text" name="label" value="{{skill.label}}" data-dtype="String" style="width: 125px;"/>
+				<input class="custom-skill-label" disabled type="text" name="label" value="{{skill.label}}" data-dtype="String" />
 				
 				<span>{{localize 'DND4EBETA.SkillID'}}</span>
-				<input disabled type="text" name="id" value="{{skill.id}}" data-dtype="String" style="width: 105px;"/>
+				<input class="custom-skill-id" disabled type="text" name="id" value="{{skill.id}}" data-dtype="String" />
 				
 				<span>{{localize 'DND4EBETA.Attribute'}}</span>
 
-				<select disabled name="ability">
+				<select class="custom-skill-ability" disabled name="ability">
 					<option value="str" {{#if (eq skill.ability "str")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityStr'}}</option>
 					<option value="con" {{#if (eq skill.ability "con")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityCon'}}</option>
 					<option value="dex" {{#if (eq skill.ability "dex")}}selected{{/if}}>{{localize 'DND4EBETA.AbilityDex'}}</option>
@@ -24,14 +23,13 @@
 				</select>
 
 				<span>{{localize 'DND4EBETA.SkillACPToggle'}}</span>
-				<input disabled type="checkbox" name="armourCheck" {{checked skill.armourCheck}} data-dtype="Boolean">
+				<input class="custom-skill-acp" disabled type="checkbox" name="armourCheck" {{checked skill.armourCheck}} data-dtype="Boolean">
 
-				<a class="custom-skill-control" custom-skill-delete data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	</div>	
+				<a class="custom-skill-control" custom-skill-delete data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	
 			</div>
 			</li>
 
 			{{/each}}
-		</li>
 	</ol>
 
 	<a class="custom-skill-control custom-skill-add" custom-skill-create>{{localize 'DND4EUI.AddNewSkill'}} <i class="fas fa-plus"></i></a>
