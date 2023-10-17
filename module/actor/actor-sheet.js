@@ -919,7 +919,13 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 			//generate summary entry here
 			if (item.type === "power") {
 				let div = $(`<div class="item-summary"></div>`);
-				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
+				console.log(chatData);
+				let descrip;
+				if(item.system.autoGenChatPowerCard && chatData.chatFlavor){
+					descrip = $(`<div class="item-description">${chatData.chatFlavor}</div>`);
+				}else{
+					descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
+				}
 				div.append(descrip);
 
 				if(item.system.autoGenChatPowerCard){
