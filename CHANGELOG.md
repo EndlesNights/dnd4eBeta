@@ -7,6 +7,17 @@
 - fix some edge case issues were effects would not apply.
 - new effects created on objects will use the objects img for default image
 
+- [PR 316](https://github.com/EndlesNights/dnd4eBeta/pull/316) from [FoxLee](https://github.com/FoxLee)
+	- Darkmode
+	- template files cleaned up
+	- revised CSS files
+	- revised character sheet item description toggle to respect description/chat flavour/auto generate combination as per chat card generation. This prevents both the description and chat flavour being output when auto-generate cards is on.
+	- revised character and item sheets, I've updated the HTML fields to use ProseMirror as the editor. This is because TinyMCE uses iframes (which prevent styling) and therefore really messes up dark mode.
+
+	- disabled inputs show a "disabled" cursor on hover.
+	- NPC sheet revised upper section to better match the style of PC sheets and prioritise information used during combat. This includes converting the "advanced maths" checkbox to a button in the header.
+	- added translatable strings for the names of sheets and item types. Foundry was excepting these and defaulting to IDs when it didn't find them, which just made things seem a bit haphazard.
+
 ## Version 0.4.25
 - [PR 314](https://github.com/EndlesNights/dnd4eBeta/pull/314) from [FoxLee](https://github.com/FoxLee)
 	- Restored lost hint text for how to select multiple damage types on ongoing damage.
