@@ -1,4 +1,4 @@
-<form class="{{cssClass}} flexcol item-sheet" autocomplete="off">
+<form class="{{cssClass}} flexcol item-sheet consumable" autocomplete="off">
 
 	{{!-- Item Sheet Header --}}
 	<header class="sheet-header flexrow">
@@ -105,8 +105,8 @@
 			{{!-- Consumption --}}
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
-				<div class="form-fields">
-					<select name="system.consume.type" style="flex: 0.55;">
+				<div class="form-fields consumption">
+					<select class="consume-type" name="system.consume.type">
 						{{#select system.consume.type}}
 						<option value=""></option>
 						{{#each config.abilityConsumptionTypes as |name key|}}
@@ -114,7 +114,7 @@
 						{{/each}}
 						{{/select}}
 					</select>
-					<select name="system.consume.target" style="width: 80%">
+					<select name="system.consume.target">
 						{{#select system.consume.target}}
 						<option value=""></option>
 						{{#each abilityConsumptionTargets as |name key|}}
@@ -138,7 +138,7 @@
 			<h3 class="form-header">{{ localize "DND4EBETA.ItemConsumableActivation" }}</h3>
 
 			<div class="form-group">
-				<label style="max-width: 208px;">{{ localize "DND4EBETA.PowerAutoGeneratePowerCardLable" }}</label>
+				<label class="auto-card">{{ localize "DND4EBETA.PowerAutoGeneratePowerCardLable" }}</label>
 				<span class="checkbox"><input type="checkbox" name="system.autoGenChatPowerCard" data-dtype="Boolean" {{checked system.autoGenChatPowerCard}}/></span>
 			</div>
 
@@ -163,7 +163,7 @@
 			{{#if system.attack.isAttack}}
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EBETA.Range" }}</label>
-				<div class="form-fields">
+				<div class="form-fields item-range">
 					<select name="system.rangeType">
 						{{#select system.rangeType}}
 						{{#each config.rangeTypeNoWeapon as |name type|}}
@@ -176,8 +176,8 @@
 					<input type="text" name="system.area" value="{{system.area}}"/>
 					{{/if}}
 					{{#if system.isRange}}
-					{{#if system.isArea}}<span style="flex: 1 0 6px">{{ localize "DND4EBETA.RangeWithinOf" }}</span>{{/if}}
-					{{#unless system.isArea}}<span style="flex: 0.6 0 16px">{{ localize "DND4EBETA.RangeOf" }}</span>{{/unless}}
+					{{#if system.isArea}}<span class="range-within-of">{{ localize "DND4EBETA.RangeWithinOf" }}</span>{{/if}}
+					{{#unless system.isArea}}<span class="range-of">{{ localize "DND4EBETA.RangeOf" }}</span>{{/unless}}
 					<input type="text" name="system.rangePower" value="{{system.rangePower}}" data-dtype="Number"/>
 					{{/if}}
 				</div>
@@ -261,11 +261,11 @@
 
 			<div class="form-group">
 				<label>{{ localize "DND4EBETA.EffectDetails" }}</label>
-				<span style="text-align: right;">{{ localize "DND4EBETA.DisplayEffect" }}</span>
+				<span class="display-effect">{{ localize "DND4EBETA.DisplayEffect" }}</span>
 				<input type="checkbox" name="system.postEffect" data-dtype="Boolean" {{checked system.postEffect}}/>
 			</div>
 			<div class="form-group">
-				<span style="text-align: right;">{{ localize "DND4EBETA.EffectHTMLInput" }}</span>
+				<span class="effect-html">{{ localize "DND4EBETA.EffectHTMLInput" }}</span>
 				<input type="checkbox" name="system.effectHTML" data-dtype="Boolean" {{checked system.effectHTML}}/>
 			</div>
 			{{#if system.effectHTML}}
