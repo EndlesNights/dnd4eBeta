@@ -1,9 +1,9 @@
-<ol class="items-list inventory-list" style="height: 100%;">
+<ol class="items-list inventory-list powers">
 	<header class="power-filters flexrow">
-		<div class="group-powers" style="max-width: 144px;">
+		<div class="group-powers">
 			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.groupBy.value">
-			<label for="power-group">{{localize "DND4EUI.GroupBy"}}</label><br>
-			<select name="system.powerGroupTypes" style="min-width: 128px;">
+			<label for="power-group">{{localize "DND4EUI.GroupBy"}}</label><br />
+			<select name="system.powerGroupTypes">
 				{{#select system.powerGroupTypes}}
 				{{#each config.powerGroupTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
@@ -12,10 +12,10 @@
 			</select>
 		</div>
 
-		<div class="sort-powers" style="max-width: 144px;">
+		<div class="sort-powers">
 			<input type="hidden" name="flags.dnd4eBeta.sheetDisplay.powers.sortBy.value">
-			<label for="power-sort">{{localize "DND4EUI.SortBy"}}</label><br>
-			<select name="system.powerSortTypes" style="min-width: 128px;">
+			<label for="power-sort">{{localize "DND4EUI.SortBy"}}</label><br />
+			<select name="system.powerSortTypes">
 				{{#select system.powerSortTypes}}
 				{{#each config.powerSortTypes as |name type|}}
 				<option value="{{type}}">{{name}}</option>
@@ -26,14 +26,13 @@
 
 		<div class="filter-search-powers">
 			<label for="power-filter-search">{{localize "DND4EBETA.Filter"}}</label>
-			<button style="min-width: 116px; width:calc(100% - 80px); height: 17px; line-height:normal; border:0px; float:right; margin:2px 2px 0px 0px;" class="item-import button" data-tooltip="{{localize 'DND4EBETA.PowerCreate'}}" data-item-type="power" data-type="power" type="button">
-				<i style="min-width: 105.6px;" class="fas fa-atlas"> <span class="import-button">{{localize "DND4EBETA.ImportPowers"}}</span></i>
+			<button class="item-import button" data-tooltip="{{localize 'DND4EBETA.PowerCreate'}}" data-item-type="power" data-type="power" type="button">
+				<i class="fas fa-atlas"></i> <span class="import-button">{{localize "DND4EBETA.ImportPowers"}}</span>
 			</button>
-			<br>
-			<input type="text" style="min-width: 168px; margin-right: 2px;" name="power-filter-search" placeholder="{{localize 'DND4EUI.SearchFor'}} {{localize 'DND4EBETA.Power'}}..." id="filterInput-power" onkeyup="filterPowers()"/>
+			<br />
+			<input type="text" class="power-filter-search" name="power-filter-search" placeholder="{{localize 'DND4EUI.SearchFor'}} {{localize 'DND4EBETA.Power'}}..." id="filterInput-power" onkeyup="filterPowers()"/>
 		</div>
 	</header>
-
 
 
 	{{#each sections as |section sid|}}
@@ -63,12 +62,12 @@
 		<ol class="item-list power-list">
 		{{#each section.items as |item iid|}}
 			<li class="item flexrow {{#if isDepleted}}depleted{{/if}}" data-item-id="{{item._id}}">
-				<div class="item-name flexrow rollable" style="max-width: 30px; margin-right: 5px;">
-					<div class="item-image" style="background-image: url('{{item.img}}')"></div>					
+				<div class="item-name item-image flexrow rollable">
+					<img src="{{item.img}}" width="30" height="30"/>
 				</div>
-				<div class="flexrow {{#if item.system.useType }}ability-usage--{{item.system.useType}}{{else}}ability-usage--blank{{/if}} {{#if item.system.notAvailable}}not-available{{/if}}">
+				<div class="flexrow power-name {{#if item.system.useType }}ability-usage--{{item.system.useType}}{{else}}ability-usage--blank{{/if}} {{#if item.system.notAvailable}}not-available{{/if}}">
 					<div class="item-name flexrow rollable">
-						<h4 class="power-detail" style="padding-left: 3px;">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
+						<h4 class="power-detail">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
 					</div>
 					
 					{{#if section.columns}}
@@ -88,10 +87,10 @@
 						<div class="item-detail power-detail item-range" data-tooltip="{{item.system.rangeText}}">
 							<label>{{item.system.rangeTextShort}}</label>
 							{{#if item.system.rangeTextBlock}}
-							<label style="background-color: rgba(77, 77, 77, 0.199); border-radius: 2px; padding-left: 2px; padding-right: 2px;">{{item.system.rangeTextBlock}}</label>
+							<label class="range-number">{{item.system.rangeTextBlock}}</label>
 							{{/if}}
 						</div>
-						<div class="item-detail power-detail item-action" data-tooltip="{{lookup ../../config.abilityActivationTypes item.system.actionType}}" style="text-transform: uppercase;">
+						<div class="item-detail power-detail item-action" data-tooltip="{{lookup ../../config.abilityActivationTypes item.system.actionType}}">
 							{{#if item.system.actionType }}
 							{{lookup ../../config.abilityActivationTypesShort item.system.actionType}}
 							{{/if}}
