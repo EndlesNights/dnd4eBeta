@@ -1469,8 +1469,9 @@ font-size:12px;
 	line-height:normal;
 	border:0px;
 	float:right;
-	margin:2px 2px 0px 0px;
+	margin:2px 2px 2px 0px;
 	font-size:12px;
+	font-weight:bold;
 }
 .dnd4eBeta.sheet.actor .power-filters :is(.group-powers,.sort-powers,.sort-features){
 	max-width:144px;
@@ -1644,6 +1645,7 @@ font-size:12px;
 }
 .dnd4eBeta.sheet .attribute-res .resistances-special{
 	text-align:left;
+	height: 62px;
 }
 .dnd4eBeta.sheet.actor .inventory-list .item-controls > *{
 	flex:1;
@@ -1714,6 +1716,13 @@ font-size:12px;
   display:none;
 }
 
+.dnd4eBeta.sheet.actor .prosemirror menu {
+	padding: 2px 4px;
+}
+
+.dnd4eBeta.sheet.actor .prosemirror menu > li {
+	margin: 6px 1.5px;
+}
 
 /* ----------------------------------------- */
 /*  NPC Sheets
@@ -1840,7 +1849,7 @@ font-size:12px;
 	flex-grow:0;
 }
 .dnd4eBeta.sheet.actor .npc .inventory .inventory-list{
-	height:calc(100% - 118px);
+	height:calc(100% - 128px);
 }
 .dnd4eBeta.sheet.actor .npc + a.rest{
 	margin:0px;
@@ -2548,7 +2557,7 @@ input[type="text"].dice-count{
 	border-radius:3px;
 	background:var(--color-bg-btn-minor-active);
 	padding:3px 3px;
-	margin:2px 0px;
+	margin:2px 1px;
 	text-align:center;
 	flex-grow:1;
 }
