@@ -3,10 +3,10 @@
 
 	{{!-- Power Source & Keywords --}}
 	<div class="form-group">
-		<label style="max-width: 208px;">{{ localize "DND4EBETA.PowerAutoGeneratePowerCardLable" }}</label>
+		<label>{{ localize "DND4EBETA.PowerAutoGeneratePowerCardLable" }}</label>
 		<span class="checkbox"><input type="checkbox" name="system.autoGenChatPowerCard" data-dtype="Boolean" {{checked system.autoGenChatPowerCard}}/></span>
 	</div>
-	<div class="form-group short uses-per">
+	<div class="form-group short power-source two-input">
 		<label>{{ localize "DND4EBETA.PowerSource" }}</label>
 		<select name="system.powersource">
 			{{#select system.powersource}}
@@ -34,7 +34,7 @@
 		<input type="text" name="system.level" value="{{system.level}}"/>
 	</div>
 
-	<div class="form-group short uses-per">
+	<div class="form-group short power-type two-input">
 		<label>{{ localize 'DND4EBETA.PowerType' }}</label>
 		<select name="system.powerType">
 			{{#select system.powerType}}
@@ -77,7 +77,7 @@
 	</div>
 
 	{{!-- Weapon Range and AoE--}}
-	<div class="form-group short uses-per">
+	<div class="form-group short power-weapon two-input">
 		<label>{{ localize "DND4EBETA.WeaponTypeRequired" }}</label>
 		<select name="system.weaponType">
 			{{#select system.weaponType}}
@@ -102,9 +102,9 @@
 		{{/if}}
 	</div>
 
-	<div class="form-group short uses-per">
+	<div class="form-group short">
 		<label>{{ localize "DND4EBETA.RangePower" }}</label>
-		<div class="form-fields">
+		<div class="form-fields item-range">
 			<select name="system.rangeType">
 				{{#select system.rangeType}}
 				{{#each config.rangeType as |name type|}}
@@ -117,8 +117,8 @@
 				<input type="text" name="system.area" value="{{system.area}}"/>
 			{{/if}}
 			{{#if system.isRange}}
-				{{#if system.isArea}}<span style="flex: 1 0 6px">{{ localize "DND4EBETA.RangeWithinOf" }}</span>{{/if}}
-				{{#unless system.isArea}}<span style="flex: 0.3 0 16px">{{ localize "DND4EBETA.RangeOf" }}</span>{{/unless}}
+				{{#if system.isArea}}<span class="ramge-within-of">{{ localize "DND4EBETA.RangeWithinOf" }}</span>{{/if}}
+				{{#unless system.isArea}}<span class="range-of">{{ localize "DND4EBETA.RangeOf" }}</span>{{/unless}}
 				<input type="text" name="system.rangePower" value="{{system.rangePower}}" data-dtype="Number"/>
 			{{/if}}
 		</div>
@@ -145,7 +145,7 @@
 		</div>
 	</div>
 
-	<div class="form-group uses-per">
+	<div class="form-group uses-per two-input">
 		<label>{{ localize "DND4EBETA.LimitedUses"}}</label>
 		<div class="form-fields">
 			<input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number"/>
@@ -174,15 +174,15 @@
 	<div class="form-group">
 		<label>{{ localize "DND4EBETA.PowerRechargeCondition" }} roll</label>
 		<div class="form-fields">
-			<input type="text" name="system.rechargeRoll" value="{{system.rechargeRoll}}" placeholder="{{ localize "DND4EBETA.PowerRechargePlaceholder" }}"/>
+			<input type="text" name="system.rechargeRoll" value="{{system.rechargeRoll}}" placeholder="{{ localize 'DND4EBETA.PowerRechargePlaceholder' }}"/>
 		</div>
 	</div>
 	{{/if}}
 
-	<div class="form-group uses-per">
+	<div class="form-group">
 		<label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
-		<div class="form-fields">
-			<select name="system.consume.type" style="flex: 0.55;">
+		<div class="form-fields consumption">
+			<select name="system.consume.type" class="consume-type">
 				{{#select system.consume.type}}
 				<option value=""></option>
 				{{#each config.abilityConsumptionTypes as |name key|}}
@@ -190,7 +190,7 @@
 				{{/each}}
 				{{/select}}
 			</select>
-			<select name="system.consume.target" style="width: 80%">
+			<select name="system.consume.target" class="consume-target">
 				{{#select system.consume.target}}
 				<option value=""></option>
 				{{#each abilityConsumptionTargets as |name key|}}
@@ -211,7 +211,7 @@
 	
 	{{#if system.attack.isAttack}}
 	{{!-- Attack--}}
-	<div class="form-group uses-per">
+	<div class="form-group">
 		<label>{{ localize "DND4EBETA.Attack" }}</label>
 		<div class="form-fields">
 			<select name="system.attack.ability">
@@ -253,10 +253,10 @@
 		<span class="checkbox"><input type="checkbox" name="system.hit.shareDamageRoll" data-dtype="Boolean" {{checked system.hit.shareDamageRoll}}/></span>
 	</div>
 	
-	<div class="form-group uses-per">
+	<div class="form-group">
 		<label>{{ localize "DND4EBETA.PowerBaseDamage" }}</label>
-		<div class="form-fields">
-			<input style="min-width: 105px;" type="text" name="system.hit.baseQuantity" value="{{system.hit.baseQuantity}}"/>
+		<div class="form-fields item-damage">
+			<input class="dmg-base-qty" type="text" name="system.hit.baseQuantity" value="{{system.hit.baseQuantity}}"/>
 			<select name="system.hit.baseDiceType">
 				{{#select system.hit.baseDiceType}}
 				{{#each config.powerDiceTypes as |name key|}}
@@ -324,12 +324,12 @@
 
 	<div class="form-group stacked">
 		<label>{{ localize 'DND4EBETA.Miss' }} {{ localize 'DND4EBETA.FormulaDamage' }}</label>
-		<input type="text" name="system.miss.formula" value="{{system.miss.formula}}" placeholder="{{ localize "DND4EBETA.MissFormulaPlaceholder" }}"/>
+		<input type="text" name="system.miss.formula" value="{{system.miss.formula}}" placeholder="{{ localize 'DND4EBETA.MissFormulaPlaceholder' }}"/>
 	</div>
 
 
 	<div class="form-group stacked weapon-properties">
-		<label data-tooltip="{{localize 'DND4EBETA.PrimaryDamageType'}}" style="max-width: 100%">{{localize "DND4EBETA.PrimaryDamageType"}}: {{system.weaponSourceName}}</label>
+		<label class="damage-type" data-tooltip="{{localize 'DND4EBETA.PrimaryDamageType'}}">{{localize "DND4EBETA.PrimaryDamageType"}}: {{system.weaponSourceName}}</label>
 		{{#if system.damageTypeWeapon}}
 			{{#each config.damageTypes as |name type|}}
 				{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
@@ -407,7 +407,7 @@
 		<span class="checkbox">{{ localize "DND4EBETA.EffectHTMLInput" }}<input type="checkbox" name="system.effectHTML" data-dtype="Boolean" {{checked system.effectHTML}}/></span>
 	</div>
 	{{#if system.effectHTML}}
-		{{editor effectDetailHTML target="system.effect.detail" button=true owner=owner editable=editable}}
+		{{editor effectDetailHTML target="system.effect.detail" button=true owner=owner editable=editable engine="prosemirror"}}
 	{{else}}
 		<div class="form-group">
 			<input type="text" name="system.effect.detail" value="{{system.effect.detail}}" placeholder="{{ localize 'DND4EBETA.PowerTextFieldsPlaceholder'}}"/>
