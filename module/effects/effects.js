@@ -176,9 +176,10 @@
 		const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
 		switch ( a.dataset.action ) {
 			case "create":
+				const isActor = owner instanceof Actor;
 				return owner.createEmbeddedDocuments("ActiveEffect", [{
-					name: game.i18n.localize("DND4EBETA.EffectNew"),
-					icon: "icons/svg/aura.svg",
+					name: isActor ? game.i18n.localize("DND4EBETA.EffectNew") : owner.name,
+					icon: isActor ? "icons/svg/aura.svg" : owner.img,
 					origin: owner.uuid,
 					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
 					disabled: li.dataset.effectType === "inactive"

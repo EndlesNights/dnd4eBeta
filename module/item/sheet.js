@@ -210,9 +210,10 @@ export default class ItemSheet4e extends ItemSheet {
 		const effect = li.dataset.effectId ? this.item.effects.get(li.dataset.effectId) : null;
 		switch(a.dataset.action){
 			case "create":
+				console.log(this)
 				this.item.createEmbeddedDocuments("ActiveEffect", [{
 					label: game.i18n.localize("DND4EBETA.EffectNew"),
-					icon: "icons/svg/aura.svg",
+					icon: this.item.img || "icons/svg/aura.svg",
 					origin: this.item.uuid,
 					"flags.dnd4e.effectData.powerEffectTypes": li.dataset.effectType,
 					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
