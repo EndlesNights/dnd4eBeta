@@ -1,19 +1,19 @@
-<form autocomplete="off" onsubmit="event.preventDefault();">
+<form class="hitpoint-config" autocomplete="off" onsubmit="event.preventDefault();">
 	<div>
 		<input type="checkbox" name="system.attributes.hp.autototal" data-dtype="Boolean" {{checked system.attributes.hp.autototal}} data-tooltip="{{localize 'DND4EBETA.HPAuto'}}"/>
 		<span>{{localize 'DND4EBETA.HPAuto'}}</span>
 	</div>
 	<div>
-		<input type="text" name="system.attributes.hp.starting" value="{{system.attributes.hp.starting}}" data-tooltip="{{localize 'DND4EBETA.HPBase'}}"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
-		<span data-tooltip="{{localize 'DND4EBETA.AbilityCon'}} {{localize 'DND4EBETA.Score'}}" style="border-bottom: 1px dotted #000;" >+ {{system.abilities.con.value}}</span>
+		<input class="hp-starting" type="text" name="system.attributes.hp.starting" value="{{system.attributes.hp.starting}}" data-tooltip="{{localize 'DND4EBETA.HPBase'}}"  placeholder="0" data-dtype="Number" onClick="this.select();" />
+		<span class="hp-con" data-tooltip="{{localize 'DND4EBETA.AbilityCon'}} {{localize 'DND4EBETA.Score'}}">+ {{system.abilities.con.value}}</span>
 		<span>{{localize 'DND4EBETA.HPFirst'}}</span>
 	</div>
 	<div>
-		<input type="text" name="system.attributes.hp.perlevel" value="{{system.attributes.hp.perlevel}}" data-tooltip="{{localize 'DND4EBETA.HPPer'}}"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+		<input class="hp-perlevel" type="text" name="system.attributes.hp.perlevel" value="{{system.attributes.hp.perlevel}}" data-tooltip="{{localize 'DND4EBETA.HPPer'}}"  placeholder="0" data-dtype="Number" onClick="this.select();" />
 		<span>{{localize 'DND4EBETA.HPPer'}}</span>
 	</div>
 	<div>
-		<input type="text" name="system.attributes.hp.misc" value="{{system.attributes.hp.misc}}" data-tooltip="{{localize 'DND4EBETA.HPBonus'}}"  placeholder="0" data-dtype="Number" onClick="this.select();" style="width:40px; text-align: center;"/>
+		<input class="hp-misc" type="text" name="system.attributes.hp.misc" value="{{system.attributes.hp.misc}}" data-tooltip="{{localize 'DND4EBETA.HPBonus'}}"  placeholder="0" data-dtype="Number" onClick="this.select();" />
 		<span>{{localize 'DND4EBETA.HPBonus'}}</span>
 	</div>
 	

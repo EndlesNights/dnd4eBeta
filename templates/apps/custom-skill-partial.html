@@ -1,13 +1,13 @@
 <li class="flexrow custom-skill-line">
 	<div>
 		<span>{{localize 'DND4EBETA.SkillLabel'}}</span>
-		<input type="text" name="label" value="{{customSkill.label}}" data-dtype="String" style="width: 125px;"/>
+		<input class="custom-skill-label" type="text" name="label" value="{{customSkill.label}}" data-dtype="String" style="width: 125px;"/>
 		
 		<span>{{localize 'DND4EBETA.SkillID'}}</span>
-		<input type="text" name="id" value="{{customSkill.id}}" data-dtype="String" style="width: 105px;"/>
+		<input class="custom-skill-id" type="text" name="id" value="{{customSkill.id}}" data-dtype="String" style="width: 105px;"/>
 		
 		<span>{{localize 'DND4EBETA.Attribute'}}</span>
-		<select name="ability">
+		<select class="custom-skill-ability" name="ability">
 			{{#select customSkill.ability}}
 			<option value="str" >{{localize 'DND4EBETA.AbilityStr'}}</option>
 			<option value="con" >{{localize 'DND4EBETA.AbilityCon'}}</option>
@@ -20,7 +20,7 @@
 		</select>
 
 		<span>{{localize 'DND4EBETA.SkillACPToggle'}}</span>
-		<input type="checkbox" name="armourCheck" value="{{customSkill.armourCheck}}" data-dtype="Boolean">
+		<input class="custom-skill-acp" type="checkbox" name="armourCheck" value="{{customSkill.armourCheck}}" data-dtype="Boolean">
 
 		<a class="custom-skill-control" custom-skill-delete data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>
 	</div>

@@ -1,4 +1,4 @@
-<form class="{{cssClass}} flexcol item-sheet" autocomplete="off">
+<form class="{{cssClass}} flexcol item-sheet ritual" autocomplete="off">
 
 	{{!-- Item Sheet Header --}}
 	<header class="sheet-header flexrow">
@@ -109,8 +109,8 @@
 
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
-				<div class="form-fields">
-					<select name="system.consume.type" style="flex: 0.55;">
+				<div class="form-fields consumption">
+					<select class="consume-type" name="system.consume.type">
 						{{#select system.consume.type}}
 						<option value=""></option>
 						{{#each config.abilityConsumptionTypes as |name key|}}
@@ -118,7 +118,7 @@
 						{{/each}}
 						{{/select}}
 					</select>
-					<select name="system.consume.target" style="width: 80%">
+					<select class="consume-target" name="system.consume.target">
 						{{#select system.consume.target}}
 						<option value=""></option>
 						{{#each abilityConsumptionTargets as |name key|}}

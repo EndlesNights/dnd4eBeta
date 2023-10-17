@@ -87,19 +87,35 @@ Hooks.once("init", async function() {
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("dnd4eBeta", ActorSheet4e, {
 		types: ["Player Character"],
-		label: "Basic Character Sheet",
+		label: game.i18n.localize("SHEET.Character.Basic"),
 		makeDefault: true
 	});
 	Actors.registerSheet("dnd4eBeta", ActorSheet4eNPC, {
 		types: ["NPC"],
-		label: "NPC Sheet",
+		label: game.i18n.localize("SHEET.NPC"),
 		makeDefault: true
 	});		
 
 	
 	// Setup Item Sheet
 	Items.unregisterSheet("core", ItemSheet);
-	Items.registerSheet("dnd4eBeta", ItemSheet4e, {makeDefault: true});
+	Items.registerSheet("dnd4eBeta", ItemSheet4e, {
+		makeDefault: true,
+		label: game.i18n.localize("SHEET.Item")
+	});
+
+
+	// Add conditional CSS
+	var head = document.getElementsByTagName('HEAD')[0];
+	
+	if (game.settings.get("dnd4e","darkMode")){
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = './systems/dnd4e/styles/dnd4eBeta-DarkMode.css';
+		//Append link element to HTML head
+		head.appendChild(link);
+	}
 
 	// Preload Handlebars Templates
 	preloadHandlebarsTemplates();

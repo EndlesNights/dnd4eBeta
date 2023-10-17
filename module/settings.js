@@ -112,8 +112,6 @@ export const registerSystemSettings = function() {
 		default: false,
 		type: Boolean
 	});
-
-
 	/**
 	 * Determs when Death Saving Throws are reset
 	 */
@@ -130,7 +128,6 @@ export const registerSystemSettings = function() {
 			2: "DND4EBETA.RestLongH",
 		}
 	});
-
 	// /**
 	//  * Option to disable XP bar for session-based or story-based advancement.
 	//  */
@@ -283,6 +280,16 @@ export const registerSystemSettings = function() {
 			"none": "SETTINGS.4eAutoDoTsPublicNone",
 			"pcs": "SETTINGS.4eAutoDoTsPublicPCs"
 		}
+	});
+	
+	game.settings.register("dnd4e", "darkMode",{
+		name: "SETTINGS.4eDarkModeN",
+		hint: "SETTINGS.4eDarkModeL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean,
+		onChange: debouncedReload
 	});
 
 	game.keybindings.register("dnd4e", "permShowPlayer", {

@@ -13,7 +13,7 @@ export class MovementDialog extends DocumentSheet4e {
 		});
 	}
 	get title() {
-		return `${this.object.name} - Movement Speed Dialog`;
+		return `${this.object.name} - ${game.i18n.localize( 'DND4EBETA.SpeedAndMove')}`;
 	}
 
 	/** @override */

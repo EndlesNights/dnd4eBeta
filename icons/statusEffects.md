@@ -1,4 +1,4 @@
-The icons within the icons/statusEffects folder are by the authors of [Game-icons.net](https://game-icons.net/) are licensed under [CC BY 3.0.](https://creativecommons.org/licenses/by/3.0/legalcode).
+The icons within the icons/statusEffects and icons/ui folders are by the authors of [Game-icons.net](https://game-icons.net/) are licensed under [CC BY 3.0.](https://creativecommons.org/licenses/by/3.0/legalcode).
 
 
 * Blinded:		https://game-icons.net/1x1/skoll/sight-disabled.html
@@ -43,3 +43,5 @@ The icons within the icons/statusEffects folder are by the authors of [Game-icon
 * Drunk:			https://game-icons.net/1x1/lorc/pouring-chalice.html
 * Sneaking:		https://game-icons.net/1x1/delapouite/robber.html
 
+UI ICONS:
+* Calc: https://game-icons.net/1x1/delapouite/calculator.html

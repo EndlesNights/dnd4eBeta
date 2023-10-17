@@ -1,16 +1,23 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
-<div class="dnd4eBeta chat-card item-card tool {{actor.type}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
+<div class="dnd4eBeta chat-card item-card tool {{actor.type}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
+
     <header class="card-header flexrow">
         <img src="{{item.img}}" data-tooltip="{{item.name}}" width="36" height="36"/>
-        <h3 class="item-name ability-usage--">{{item.name}}</h3>
+			<div class="flexcol item-name ability-usage--">
+				<h3>{{item.name}}</h3>
+		  </div>
     </header>
 
-    <div class="card-content">{{{system.description.value}}}</div>
+    <div class="card-content">
+	 
+		<div class="item-summary">{{{system.description.value}}}</div>
 
-    <div class="card-buttons">
-        <button data-action="toolCheck" data-ability="{{system.ability.value}}">{{ localize "DND4EBETA.Use" }} {{item.name}}</button>
-    </div>
+		<div class="card-buttons">
+		  <button data-action="toolCheck" data-ability="{{system.ability.value}}">{{ localize "DND4EBETA.Use" }} {{item.name}}</button>
+		</div>
 
+	</div>
+	
     <footer class="card-footer">
         {{#each system.properties}}
         <span>{{this}}</span>

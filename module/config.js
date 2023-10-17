@@ -1199,7 +1199,7 @@ DND4EBETA.statusEffect = [
 		id: "attack_down",
 		label: "EFFECT.statusAttackDown",
 		icon: "systems/dnd4e/icons/statusEffects/attack_down.svg",
-		description: "EFFECTDESC.attackdown"
+		description: "EFFECTDESC.attackDown"
 	},
 	{
 		id: "defUp",
@@ -1230,7 +1230,7 @@ DND4EBETA.statusEffect = [
 		id: "curse",
 		label: "EFFECT.statusCurse",
 		icon: "systems/dnd4e/icons/statusEffects/curse.svg",
-		description: "EFFECTDESC.ammoCount"
+		description: "EFFECTDESC.curse"
 	},
 	{
 		id: "oath",
@@ -1248,7 +1248,7 @@ DND4EBETA.statusEffect = [
 		id: "target",
 		label: "EFFECT.statusTarget",
 		icon: "systems/dnd4e/icons/statusEffects/target.svg",
-		description: "EFFECTDESC.TEXT"
+		description: "EFFECTDESC.target"
 	},
 	{
 		id: "ongoing_1",
@@ -1352,7 +1352,7 @@ DND4EBETA.statusEffect = [
 		id: "insubstantial",
 		label: "EFFECT.statusInsubstantial",
 		icon: "systems/dnd4e/icons/statusEffects/insubstantial.svg",
-		description: "EFFECTDESC.TEXT"
+		description: "EFFECTDESC.insubstantial"
 	},
 	//row 6
 	{

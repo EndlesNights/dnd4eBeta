@@ -1,7 +1,7 @@
 {{!-- Modifiers --}}
 
 {{#if system.modifiers}}
-<div class="attribute-modifiers" style="max-height: 76px; line-height: 22px;">
+<div class="attribute-modifiers">
 	<h4 class="attribute-name box-title">{{localize 'DND4EBETA.ModifierPlural'}}</h4>
 	<div class="attack-mod flexrow thin" data-modifiers="attack">
 		<span>{{localize 'DND4EBETA.ModifierAttack'}}: {{system.modifiers.attack.value}}</span>
@@ -14,7 +14,7 @@
 </div>
 {{/if}}
 
-<ol class="items-list effects-list" style="overflow-y: visible">
+<ol class="items-list effects-list">
 {{#each effects as |section sid|}}
 	<li class="items-header flexrow" data-effect-type="{{section.type}}">
 		<h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
@@ -73,7 +73,7 @@
 		{{/each}}
 
 		{{!-- Condition & Special Resistances --}}
-		<div style="text-align: left;"> 
+		<div class="resistances-special"> 
 		
 			<a class="list-string-input untyped-resistances" data-options="special" data-target="system.untypedResistances.resistances">
 				<span>{{ localize "DND4EBETA.UntypedRes" }}</span>
