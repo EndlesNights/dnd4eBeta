@@ -1,89 +1,101 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
 <div class="dnd4eBeta chat-card item-card {{item.type}}-card {{actor.type}} {{#if isPower}}use-{{item.system.useType}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
 	 {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
+	 
 	<header class="card-header flexrow">
 		<img src="{{item.img}}" data-tooltip="{{item.name}}" width="36" height="36"/>
-		<h3 class="item-name ability-usage--">{{item.name}}</h3>
+		<div class="flexcol item-name ability-usage--">
+			<h3>{{item.name}}</h3>
+		</div>
 	</header>
 
-	<div class="card-content" style="display: block;">
-	{{#if (eq actor.type "NPC")}}
-		{{#if item.system.autoGenChatPowerCard}}
-			{{#if item.system.chatFlavor}}
-				<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+	<div class="card-content">
+	
+		{{#if (eq actor.type "NPC")}}
+			{{#if item.system.autoGenChatPowerCard}}
+				{{#if item.system.chatFlavor}}
+					<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+				{{else}}
+					{{{system.description.value}}}
+				{{/if}}
 			{{else}}
 				{{{system.description.value}}}
 			{{/if}}
 		{{else}}
-			{{{system.description.value}}}
+			{{#if item.system.chatFlavor}}
+				{{#if item.system.autoGenChatPowerCard}}
+					<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+				{{/if}}
+			{{else}}
+				{{{system.description.value}}}
+			{{/if}}
 		{{/if}}
-	{{else}}
-		{{#if item.system.chatFlavor}}
-			<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
-		{{else}}
-			{{{system.description.value}}}
-		{{/if}}
-		{{#if data.materials.value}}
-		<p><strong>{{ localize "DND4EBETA.RequiredMaterials" }}.</strong> {{data.materials.value}}</p>
-		{{/if}}
-	{{/if}}
-	</div>
-	<div class="item-summary">
-		<div class="item-details">
-			{{{cardData}}}
+	
+		{{#if item.system.autoGenChatPowerCard}}
+		<div class="item-summary">
+			<div class="item-details">
+				{{{cardData}}}
+			</div>
 		</div>
+		{{/if}}
+		
+		<div class="card-buttons">
+
+			{{#if hasAttack}}
+			<button data-action="attack" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
+				{{ localize "DND4EBETA.Attack" }}
+			</button>
+			{{/if}}
+
+			{{#if hasDamage}}
+			<button data-action="damage" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
+				{{localize "DND4EBETA.Damage" }}
+			</button>
+			{{/if}}
+
+			{{#if hasHealing}}
+			<button data-action="healing" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
+				{{ localize "DND4EBETA.Healing" }}
+			</button>
+			{{/if}}
+
+			{{#if hasEffect}}
+			<!-- <div class="card-content">
+				{{localize "DND4EBETA.Effect" }}: {{{data.effect.detail}}}
+			</div> -->
+			{{/if}}
+			<!-- {{#if hasEffect}}<button data-action="effect">{{ localize "DND4EBETA.Effect" }}</button>{{/if}} -->
+
+			{{#if isVersatile}}
+			<button data-action="versatile">{{ localize "DND4EBETA.Versatile" }}</button>
+			{{/if}}
+
+			{{#if hasSave}}
+			<button data-action="save" data-ability="{{data.save.ability}}" disabled>
+				{{ localize "DND4EBETA.SavingThrow" }} {{labels.save}}
+			</button>
+			{{/if}}
+
+			{{#if data.formula}}
+			<button data-action="formula">{{ localize "DND4EBETA.OtherFormula"}}</button>
+			{{/if}}
+
+			{{#if hasAreaTarget}}
+			<button data-action="placeTemplate">{{ localize "DND4EBETA.PlaceTemplate" }}</button>
+			{{/if}}
+		</div>
+		
 	</div>
-	<div class="card-buttons">
-
-		{{#if hasAttack}}
-		<button data-action="attack" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
-			{{ localize "DND4EBETA.Attack" }}
-		</button>
-		{{/if}}
-
-		{{#if hasDamage}}
-		<button data-action="damage" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
-			{{localize "DND4EBETA.Damage" }}
-		</button>
-		{{/if}}
-
-		{{#if hasHealing}}
-		<button data-action="healing" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
-			{{ localize "DND4EBETA.Healing" }}
-		</button>
-		{{/if}}
-
-		{{#if hasEffect}}
-		<!-- <div class="card-content" style="display: block;">
-			{{localize "DND4EBETA.Effect" }}: {{{data.effect.detail}}}
-		</div> -->
-		{{/if}}
-		<!-- {{#if hasEffect}}<button data-action="effect">{{ localize "DND4EBETA.Effect" }}</button>{{/if}} -->
-
-		{{#if isVersatile}}
-		<button data-action="versatile">{{ localize "DND4EBETA.Versatile" }}</button>
-		{{/if}}
-
-		{{#if hasSave}}
-		<button data-action="save" data-ability="{{data.save.ability}}" disabled>
-			{{ localize "DND4EBETA.SavingThrow" }} {{labels.save}}
-		</button>
-		{{/if}}
-
-		{{#if data.formula}}
-		<button data-action="formula">{{ localize "DND4EBETA.OtherFormula"}}</button>
-		{{/if}}
-
-		{{#if hasAreaTarget}}
-		<button data-action="placeTemplate">{{ localize "DND4EBETA.PlaceTemplate" }}</button>
-		{{/if}}
-	</div>
+	
 
 	{{#unless isPower}}
 	<footer class="card-footer">
-			{{#each data.properties}}
-			<span>{{this}}</span>
-			{{/each}}
+		{{#each data.properties}}
+		<span>{{this}}</span>
+		{{/each}}
+		{{#if data.materials.value}}
+		<p><strong>{{ localize "DND4EBETA.RequiredMaterials" }}:</strong> {{data.materials.value}}</p>
+		{{/if}}
 	</footer>
 	{{/unless}}
 </div>
