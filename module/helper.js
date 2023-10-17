@@ -885,7 +885,7 @@ export class Helper {
 			if(chatData.rangePower) powerDetail += ` <span class="range-value">${chatData.rangePower}</span>`;
 		}
 		else if (chatData.rangeType === "melee") {
-			powerDetail += ` <span class="range-type melee">${game.i18n.localize("DND4EBETA.Melee")}</span><span class="range-size"> ${chatData.rangePower}</span>`;
+			powerDetail += ` <span class="range-type melee">${game.i18n.localize("DND4EBETA.Melee")}</span> <span class="range-size">${chatData.rangePower}</span>`;
 		}
 		else if (chatData.rangeType === "reach") {
 			powerDetail += ` <span class="range-type reach">${game.i18n.localize("DND4EBETA.rangeReach")}</span> <span class="range-size">${chatData.rangePower}</span>`;
@@ -894,7 +894,7 @@ export class Helper {
 			powerDetail += ` <span class="range-type ranged">${game.i18n.localize("DND4EBETA.rangeRanged")}</span> <span class="range-size">${chatData.rangePower}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
-			powerDetail += ` <span class="range-type close">${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</span><span class="range-size">${this._areaValue(chatData, actorData)}</span>`;
+			powerDetail += ` <span class="range-type close">${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span>`;
 		}
 		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
 			powerDetail += ` <span class="range-type area">${CONFIG.DND4EBETA.rangeType[chatData.rangeType]}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span> <span class="label-within">${game.i18n.localize("DND4EBETA.RangeWithin")}</span> <span class="range-within">${chatData.rangePower}</span>`;
@@ -1219,7 +1219,6 @@ export class Helper {
 		return filteredSet;
 	}
 }
-
 
 export async function handleApplyEffectToToken(data){
 	if(!game.user.isGM){
