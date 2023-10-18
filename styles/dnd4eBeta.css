@@ -1602,9 +1602,15 @@ font-size:12px;
 	padding-left:3px;
 	border:unset;
 }
-.dnd4eBeta.sheet .items-list .not-available .power-detail{
+.dnd4eBeta.sheet .items-list .not-available .power-detail, 
+.dnd4eBeta.sheet.actor .inventory .item-controls .item-toggle {
 	opacity:0.5;
 }
+
+.dnd4eBeta.sheet.actor .inventory .item-controls a.item-control.item-toggle.active {
+	opacity:1;
+}
+
 .dnd4eBeta.sheet .items-list .item-detail:last-child{
 	border-right:none;
 }

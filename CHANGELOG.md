@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.27
+- hot fix CSS issue where item equipment toggle was accidentally removed.
+
 ## Version 0.4.26
 - Added descriptions to all status effects
 - Added Options for when Death Saves can reset, with default now correctly being short rests
