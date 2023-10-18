@@ -413,7 +413,7 @@ textarea{
 	margin-left:15px;
 	border-right:var(--border-heavy);
 	height:100%;
-	overflow-y:auto;
+	/* overflow-y:auto; */
 }
 .dnd4eBeta .section--abilities{
 	margin-right:15px;
@@ -464,6 +464,8 @@ textarea{
 .dnd4eBeta .section--skills{
 	margin-right:15px;
 	margin-top:10px;
+	overflow-y: auto;
+	height:calc(100% - 195px);
 }
 .dnd4eBeta .section--skills .skill--block{
 	min-height:27px;
