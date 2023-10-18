@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.28
+- custom skills now should be sorted alphabetically.
+
 ## Version 0.4.27
 - hot fix CSS issue where item equipment toggle was accidentally removed.
 
