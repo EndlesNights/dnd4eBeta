@@ -119,6 +119,23 @@ export default class ActorSheet4e extends ActorSheet {
 		
 		// sheetData.config = CONFIG.DND4EBETA;
 		actorData.size = DND4EBETA.actorSizes;
+
+
+		//if any custom skills, sort them alphabetically
+		if(Object.entries(game.dnd4eBeta.config.coreSkills).length != Object.entries(actorData.skills).length){
+			const skillNames = Object.keys(actorData.skills);
+
+			// Sort the skill names based on the label property
+			skillNames.sort((a, b) => actorData.skills[a].label.localeCompare(actorData.skills[b].label));
+			
+			const sortedSkills = skillNames.reduce((acc, skillName) => {
+			  acc[skillName] = actorData.skills[skillName];
+			  return acc;
+			}, {});
+			
+			actorData.skills = sortedSkills;
+		}
+
 		for ( let [s, skl] of Object.entries(actorData.skills)) {
 			// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
 			skl.icon = this._getTrainingIcon(skl.value);
