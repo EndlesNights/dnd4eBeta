@@ -1252,6 +1252,26 @@ export async function handleAutoDoTs(data) {
 	await actor.autoDoTsSocket(data.tokenID);
 }
 
-Handlebars.registerHelper('contains', function(lunch, lunchbox) {
-	return lunchbox.includes(lunch);
+/* "Contains" Handlebars Helper: checks if a value exists in an array.
+*
+*  @param {String} lunch The value to find
+*  @param {Array} lunchbox The array to search
+*  @param {String} meal (optional) A key to pair with lunch
+*  @returns {boolean} true if lunch exists in lunchbox.
+*	If meal is provided, lunchbox is assumed to contain objects,
+*  and will search for one where meal = lunch.
+*
+*  I don't know why, but meal is apparently the helper object, 
+*  if not given? Not a null, which would have been useful :\
+*  Anyway the type check shoudl take care of it.
+/*																			*/
+Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
+	try{
+		if(typeof meal != "string") return lunchbox.includes(lunch);
+		const lunchLocation = lunchbox.findIndex((x) => x[meal] == lunch);
+		if(lunchLocation > 0) return true;
+		return false;
+	} catch(err) {
+		return "Contains helper spat up. Did you give it the right parameter types?";
+	}
 });
