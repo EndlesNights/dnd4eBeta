@@ -176,6 +176,11 @@ img[src$="svg"].rollable:hover{
 .dnd4eBeta.sheet .npc .sheet-header .automath img{
 	filter:unset;
 }
+.active-effect-sheet .effect-dot:not(:last-child),
+.active-effect-sheet .effect-status:not(:last-child),
+.active-effect-sheet .effect-change:not(:last-child){
+	border-bottom:1px solid rgba(255,255,255,0.1);
+}
 
 /** CHAT **/
 

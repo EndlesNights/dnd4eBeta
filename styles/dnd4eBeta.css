@@ -413,7 +413,7 @@ textarea{
 	margin-left:15px;
 	border-right:var(--border-heavy);
 	height:100%;
-	/* overflow-y:auto; */
+	overflow-y:auto;
 }
 .dnd4eBeta .section--abilities{
 	margin-right:15px;
@@ -464,8 +464,6 @@ textarea{
 .dnd4eBeta .section--skills{
 	margin-right:15px;
 	margin-top:10px;
-	overflow-y: auto;
-	height:calc(100% - 195px);
 }
 .dnd4eBeta .section--skills .skill--block{
 	min-height:27px;
@@ -2184,18 +2182,38 @@ font-size:12px;
 .active-effect-sheet .effects-header>:first-child{
 	padding-left:4px;
 }
-.active-effect-sheet .dots-list{
+.active-effect-sheet .dots-list,
+.active-effect-sheet .statuses-list{
 	list-style:none;
 	margin:0;
 	padding:0;
 	margin-bottom:2em;
 }
-.active-effect-sheet .effect-dot{
+.active-effect-sheet .effect-dot,
+.active-effect-sheet .effect-status{
 	align-items:center;
 	padding:3px 1px;
 }
-.active-effect-sheet .effect-dot:not(:last-child){
-	border-bottom:1px solid var(--color-border-light-primary);
+.active-effect-sheet .effect-dot:not(:last-child),
+.active-effect-sheet .effect-status:not(:last-child),
+.active-effect-sheet .effect-change:not(:last-child){
+	border-bottom:1px solid rgba(0,0,0,0.1);
+}
+.active-effect-sheet .effect-status .status-select{
+	flex-basis:8.5em;
+	margin-right:4px;
+}
+.active-effect-sheet .effect-status .status-controls{
+	flex-basis:19.5em;
+}
+.active-effect-sheet .effect-status .status-select select{
+	width:100%;
+}
+.active-effect-sheet .effect-status button{
+	border-radius:3px;
+	font-size:80%;
+	line-height:1;
+	padding:0.5em;
 }
 
 
