@@ -189,7 +189,7 @@
             {{#each data.statuses as |status i|}}
             <li class="effect-status flexrow" data-status-id="{{status}}" data-index="{{i}}">
 					<div class="status-select">
-						<select name="statuses.{{i}}" {{#unless (eq status "none")}}
+						<select class="refreshes" name="statuses.{{i}}" {{#unless (eq status "none")}}
 							{{#unless (contains status ../config.statusEffects "id")}} data-tooltip="{{status}}: {{localize 'DND4EUI.UnknownCondition.Tip'}}"
 							{{/unless}}
 						{{/unless}}
