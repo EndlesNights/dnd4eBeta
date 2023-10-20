@@ -85,6 +85,8 @@ textarea{
 	--color-bg-input:rgba(0,0,0,0.075);
 	--color-bg-select:rgba(0,0,0,0.075);
 	--color-label:var(--color-text-dark-secondary);
+	--color-text-good:green;
+	--color-text-bad:red;
 	--gradient-4e:linear-gradient(90deg, #c3c2b7, #c3c2b718);
 	--background-atwill:-o-linear-gradient(45deg, #125f15, #55aa2e);
 	--background-atwill:linear-gradient(45deg, #125f15, #55aa2e);
@@ -2630,10 +2632,10 @@ span.flavor-text.probable-miss{
 	border:1px solid #6e0000;
 }
 .dice-roll .dice-total.critical{
-	color:green;
+	color:var(--color-text-good);
 }
 .dice-roll .dice-total.fumble{
-	color:red;
+	color:var(--color-text-bad);
 }
 .dice-roll .hit-prediction::before{
 	content:"\1F894";
@@ -2643,13 +2645,13 @@ span.flavor-text.probable-miss{
 .dice-roll .hit-prediction.fumble,
 .dice-roll .hit-prediction.probable-miss,
 .dot-report .damage-taken:not(.resistant-full,.healing){
-	color:red;
+	color:var(--color-text-bad);
 }
 .dice-roll .hit-prediction.critical,
 .dice-roll .hit-prediction.probable-hit,
 .dot-report .damage-taken.resistant-full,
 .dot-report .damage-taken.healing{
-	color:green;
+	color:var(--color-text-good);
 }
 .dot-report .damage-taken{
 	font-weight:bold;
