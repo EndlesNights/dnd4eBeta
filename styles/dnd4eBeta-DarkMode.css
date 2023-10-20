@@ -202,6 +202,10 @@ a.content-link, a.inline-roll{
 .dot-report .damage-taken:not(.resistant-full,.healing){
 	color:#ff6060;
 }
+.chat-message.whisper{
+	background:rgba(219,219,251,0.23);
+}
+
 
 /** JOURNALS **/
 
