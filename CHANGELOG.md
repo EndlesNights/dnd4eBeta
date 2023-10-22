@@ -3,6 +3,7 @@
 ## Version 0.4.28
 - custom skills now should be sorted alphabetically.
 - Added a tooltip to the new "show image" button on item's portrait.
+- added icon for unprepared powers.
 - [PR 316](https://github.com/EndlesNights/dnd4eBeta/pull/317) from [FoxLee](https://github.com/FoxLee)
 
 

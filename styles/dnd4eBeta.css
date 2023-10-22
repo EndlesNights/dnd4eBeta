@@ -218,20 +218,24 @@ textarea{
 .image-frame{
 	max-width:100px;
 	max-height:100px;
-	margin-left:15px;
 	position:relative;
+}
+.dnd4eBeta.sheet.actor .image-frame{
+	margin-left:15px;
 }
 .dnd4eBeta.sheet.actor{
 	min-width:836px;
 	min-height:420px;
 }
-.dnd4eBeta.sheet.actor .image-frame:hover .hover-icon{
+.dnd4eBeta.sheet.actor .image-frame:hover .hover-icon,
+.dnd4eBeta.sheet.item .image-frame:hover .hover-icon{
 	display:block;
 }
-.dnd4eBeta.sheet.actor .image-frame .hover-icon{
+.dnd4eBeta.sheet.actor .image-frame .hover-icon,
+.dnd4eBeta.sheet.item .image-frame .hover-icon{
 	display:none;
 	position:absolute;
-	right:0px;
+	right:2px;
 	bottom:0px;
 	text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 	color:#fff;
