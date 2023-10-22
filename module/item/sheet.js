@@ -622,6 +622,10 @@ export default class ItemSheet4e extends ItemSheet {
 	/** @override */
 	activateListeners(html) {
 		super.activateListeners(html);
+
+		//veiw image
+		html.find('.item-art').click(this._onDisplayItemArt.bind(this));
+
 		if ( this.isEditable ) {
 			html.find("button.execute").click(this._onExecute.bind(this));
 
@@ -637,9 +641,18 @@ export default class ItemSheet4e extends ItemSheet {
 
 
 			html.find('.powereffect-control').click(this._onPowerEffectControl.bind(this));
+		}
 	}
 
-	}
+
+	/* -------------------------------------------- */
+
+	_onDisplayItemArt(event) {
+		event.preventDefault();
+
+		const p = new ImagePopout(this.object.img);
+		p.render(true);
+	}	
 	/* -------------------------------------------- */
 	
 	async _onExecute(event) {
