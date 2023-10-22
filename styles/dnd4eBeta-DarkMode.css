@@ -11,6 +11,9 @@
 	--color-text-light-highlight:#f7f5e8;
 	--color-text-good:#0fe75f;
 	--color-text-bad:#ff6060;
+	--color-text-dark-primary:var(--color-text-light-primary);
+   --color-text-dark-secondary:var(--color-text-light-primary);
+   --color-text-dark-header:var(--color-text-light-heading);
 }
 input::placeholder,.placeholder::after{
 	color:var(--color-text-light-primary);
