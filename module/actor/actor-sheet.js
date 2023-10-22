@@ -915,7 +915,6 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
    * @private
    */
 	async _onItemSummary(event) {
-		console.log("Enter?")
 		event.preventDefault();
 		const li = $(event.currentTarget).parents(".item")
 		const itemId = li.data("item-id")
@@ -936,7 +935,6 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 			//generate summary entry here
 			if (item.type === "power") {
 				let div = $(`<div class="item-summary"></div>`);
-				console.log(chatData);
 				let descrip;
 				if(item.system.autoGenChatPowerCard && chatData.chatFlavor){
 					descrip = $(`<div class="item-description">${chatData.chatFlavor}</div>`);
