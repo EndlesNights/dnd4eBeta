@@ -19,6 +19,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		
 		data.config = CONFIG.DND4EBETA;
 		data.powerParent = (["power", "consumable"].includes(this.object.parent.type));
+		data.config.statusEffects = CONFIG.statusEffects;
 
 		return data;
 	}
@@ -29,6 +30,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	activateListeners(html) {
 		super.activateListeners(html);
 		html.find(".effect-dot-control").click(this._onEffectDotControl.bind(this));
+		html.find(".effect-status-control").click(this._onEffectStatusControl.bind(this));
 		html.find(".refreshes").change(this._refresh.bind(this));
 	}
 
@@ -54,6 +56,31 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	/* ----------------------------------------- */
 
 	/**
+	* Handling for mouse clicks on status control buttons - adapted from _onEffectControl
+	* Delegate responsibility out to action-specific handlers depending on the button action.
+	* @param {MouseEvent} event      The originating click event
+	*/
+	_onEffectStatusControl(event) {
+		event.preventDefault();
+		const button = event.currentTarget;
+		switch ( button.dataset.action ) {
+			case "copy-name":
+			case "copy-icon":
+			case "copy-desc":
+			case "copy-all":
+				const statusId = button.closest(".effect-status").getAttribute("data-status-id");
+				return this._copyStatusDetails(statusId,button.dataset.action).then(() => this.render());
+			case "add":
+				return this._addEffectStatus();
+			case "delete":
+				button.closest(".effect-status").remove();
+				return this.submit({preventClose: true}).then(() => this.render());
+		}
+	}
+
+	/* ----------------------------------------- */
+
+	/**
 	* Handle adding a new dot to the dots array - adapted from _addEffectChange
 	*/
 	async _addEffectDot() {
@@ -62,6 +89,51 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		return this.submit({preventClose: true, updateData: {
 			[`flags.dnd4e.dots.${i}`] : {amount: "", type: "", typesArray: []}
 		}});
+	}
+
+	/* ----------------------------------------- */
+
+	/**
+	* Handle adding a new status to the statuses array - adapted from _addEffectChange
+	*/
+	async _addEffectStatus() {
+		const i = this.document.statuses.size;
+		return this.submit({preventClose: true, updateData: {
+			[`statuses.${i}`] : "none"
+		}});
+	}
+
+	/* ----------------------------------------- */
+
+	/**
+	* Copy fluff to effect from status condition config
+	*/
+	async _copyStatusDetails(statusId,scope="copy-all") {
+		if(!statusId) return;
+		
+		const statuses = CONFIG.statusEffects;
+		
+		try{
+			//I remembered error handling this time! This should be expected to fail if the status id isn't found, such as if you have remapped your conditions since setting up the effect.
+			
+			const statusIndex = statuses.findIndex((x) => x.id == statusId);
+			let effectUpdates = {};
+			
+			if(scope == "copy-name" || scope == "copy-all"){
+				effectUpdates.name = game.i18n.localize(statuses[statusIndex].label);
+			}
+			if(scope == "copy-icon" || scope == "copy-all"){
+				effectUpdates.icon = statuses[statusIndex].icon;
+			}
+			if(scope == "copy-desc" || scope == "copy-all"){
+				effectUpdates.description = game.i18n.localize(statuses[statusIndex].description);
+			}
+			
+			return this.submit({preventClose: true, updateData: effectUpdates });
+			
+		} catch(err) {
+			ui.notifications.error(game.i18n.localize('ERROR.4eCopyStatusDetails'));
+		}
 	}
 
 	/* ----------------------------------------- */
@@ -74,18 +146,14 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		let data = foundry.utils.expandObject(fd.object);
 		if ( updateData ) foundry.utils.mergeObject(data, updateData);
 		data.changes = Array.from(Object.values(data.changes || {}));
+		data.statuses = Array.from(Object.values(data.statuses || {})).filter(x => x);
+		//The form throws an error if it's updated while there is an unselected status condition row. I can't find a way to catch it, so instead I'm just trimming 
 		
 		data.flags.dnd4e.dots = Array.from(Object.values(data.flags.dnd4e.dots || {}));
 		if (data.flags.dnd4e.dots.length){
 			for (let [i, dot] of data.flags.dnd4e.dots.entries()){
 				data.flags.dnd4e.dots[i].amount = dot.amount;
 				data.flags.dnd4e.dots[i].typesArray = dot.typesArray.sort();
-				/*if(!dot.type) {
-					data.flags.dnd4e.dots[i].typesArray = ['physical'];
-				} else {
-					let type = dot.type.toLowerCase().replaceAll(/( and )|(;(?! ))|(; )|(, )|(,(?! ))|([^;,]) (?!and)/g,"$6|");
-					data.flags.dnd4e.dots[i].typesArray = type.split("|").sort();
-				}*/
 			}
 		}
 		

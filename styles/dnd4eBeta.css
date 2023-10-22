@@ -85,6 +85,8 @@ textarea{
 	--color-bg-input:rgba(0,0,0,0.075);
 	--color-bg-select:rgba(0,0,0,0.075);
 	--color-label:var(--color-text-dark-secondary);
+	--color-text-good:green;
+	--color-text-bad:red;
 	--gradient-4e:linear-gradient(90deg, #c3c2b7, #c3c2b718);
 	--background-atwill:-o-linear-gradient(45deg, #125f15, #55aa2e);
 	--background-atwill:linear-gradient(45deg, #125f15, #55aa2e);
@@ -413,7 +415,7 @@ textarea{
 	margin-left:15px;
 	border-right:var(--border-heavy);
 	height:100%;
-	/* overflow-y:auto; */
+	overflow-y:auto;
 }
 .dnd4eBeta .section--abilities{
 	margin-right:15px;
@@ -464,8 +466,6 @@ textarea{
 .dnd4eBeta .section--skills{
 	margin-right:15px;
 	margin-top:10px;
-	overflow-y: auto;
-	height:calc(100% - 195px);
 }
 .dnd4eBeta .section--skills .skill--block{
 	min-height:27px;
@@ -2184,18 +2184,38 @@ font-size:12px;
 .active-effect-sheet .effects-header>:first-child{
 	padding-left:4px;
 }
-.active-effect-sheet .dots-list{
+.active-effect-sheet .dots-list,
+.active-effect-sheet .statuses-list{
 	list-style:none;
 	margin:0;
 	padding:0;
 	margin-bottom:2em;
 }
-.active-effect-sheet .effect-dot{
+.active-effect-sheet .effect-dot,
+.active-effect-sheet .effect-status{
 	align-items:center;
 	padding:3px 1px;
 }
-.active-effect-sheet .effect-dot:not(:last-child){
-	border-bottom:1px solid var(--color-border-light-primary);
+.active-effect-sheet .effect-dot:not(:last-child),
+.active-effect-sheet .effect-status:not(:last-child),
+.active-effect-sheet .effect-change:not(:last-child){
+	border-bottom:1px solid rgba(0,0,0,0.1);
+}
+.active-effect-sheet .effect-status .status-select{
+	flex-basis:8.5em;
+	margin-right:4px;
+}
+.active-effect-sheet .effect-status .status-controls{
+	flex-basis:19.5em;
+}
+.active-effect-sheet .effect-status .status-select select{
+	width:100%;
+}
+.active-effect-sheet .effect-status button{
+	border-radius:3px;
+	font-size:80%;
+	line-height:1;
+	padding:0.5em;
 }
 
 
@@ -2612,10 +2632,10 @@ span.flavor-text.probable-miss{
 	border:1px solid #6e0000;
 }
 .dice-roll .dice-total.critical{
-	color:green;
+	color:var(--color-text-good);
 }
 .dice-roll .dice-total.fumble{
-	color:red;
+	color:var(--color-text-bad);
 }
 .dice-roll .hit-prediction::before{
 	content:"\1F894";
@@ -2625,13 +2645,13 @@ span.flavor-text.probable-miss{
 .dice-roll .hit-prediction.fumble,
 .dice-roll .hit-prediction.probable-miss,
 .dot-report .damage-taken:not(.resistant-full,.healing){
-	color:red;
+	color:var(--color-text-bad);
 }
 .dice-roll .hit-prediction.critical,
 .dice-roll .hit-prediction.probable-hit,
 .dot-report .damage-taken.resistant-full,
 .dot-report .damage-taken.healing{
-	color:green;
+	color:var(--color-text-good);
 }
 .dot-report .damage-taken{
 	font-weight:bold;

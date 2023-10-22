@@ -176,9 +176,48 @@
 		  
 		  <br />
 		  
+			<!-- Status conditions attached to this effect -->
+			<h3 class="subsection">{{localize 'DND4EBETA.StatusConditions'}}</h3>
+			<header class="effect-status effects-header flexrow">
+            <div class="status-select">Status</div>
+            <div class="status-controls">Replace Effect Details</div>
+            <div class="effect-controls">
+					<a class="effect-status-control" data-action="add"><i class="far fa-plus-square"></i></a>
+            </div>
+			</header>
+			<ol class="statuses-list">
+            {{#each data.statuses as |status i|}}
+            <li class="effect-status flexrow" data-status-id="{{status}}" data-index="{{i}}">
+					<div class="status-select">
+						<select class="refreshes" name="statuses.{{i}}" {{#unless (eq status "none")}}
+							{{#unless (contains status ../config.statusEffects "id")}} data-tooltip="{{status}}: {{localize 'DND4EUI.UnknownCondition.Tip'}}"
+							{{/unless}}
+						{{/unless}}
+						>
+							{{selectOptions ../config.statusEffects selected=status nameAttr="id" labelAttr="label" localize=true blank="none"}}
+							{{#unless (eq status "none")}}
+								{{#unless (contains status ../config.statusEffects "id")}}
+								<option value="{{status}}" selected>{{localize 'DND4EUI.UnknownCondition.Label'}}</option>
+								{{/unless}}
+							{{/unless}}
+						</select>
+					</div>
+					<button class="effect-status-control" data-action="copy-all">{{localize 'DND4EUI.All'}}
+					<button class="effect-status-control" data-action="copy-name">{{localize 'Name'}}</button>
+					<button class="effect-status-control" data-action="copy-icon">{{localize 'DND4EUI.Icon'}}</button>
+					<button class="effect-status-control" data-action="copy-desc">{{localize 'Description'}}</button>
+					<div class="effect-controls">
+						<a class="effect-status-control" data-action="delete"><i class="fas fa-trash"></i></a>
+					</div>
+            </li>
+            {{/each}}
+			</ol>
+			
+		  <br />
+		  
 		  <!-- Ongoing Damage instances attached to this effect-->
 		  <h3 class="subsection">{{ localize "DND4EBETA.OngoingDamage" }} / {{localize "EFFECT.statusRegen"}}</h3>
-        <header class="effect-change effects-header flexrow">
+        <header class="effect-dot effects-header flexrow">
             <div class="amount">{{ localize "DND4EBETA.Value" }}</div>
             <div class="type">{{ localize "DND4EBETA.Type" }} ({{ localize "DND4EUI.HowSelectMultiple" }})</div>
             <div class="effect-controls">
@@ -216,7 +255,6 @@
 								<option value="healing" {{#if (contains "healing" dot.typesArray)}}selected{{/if}}>[{{localize "EFFECT.statusRegen"}}]</option>
 								<option value="">&nbsp;</option>
 							</select>
-						  <!--<input type="text" name="flags.dnd4e.dots.{{i}}.type" value="{{dot.type}}"/>-->
 						</div>
                 </div>
                 <div class="effect-controls">

@@ -9,6 +9,8 @@
 	--color-text-light-primary:#c9c7b8;
 	--color-text-light-heading:#e9e7d6;
 	--color-text-light-highlight:#f7f5e8;
+	--color-text-good:#0fe75f;
+	--color-text-bad:#ff6060;
 }
 input::placeholder,.placeholder::after{
 	color:var(--color-text-light-primary);
@@ -176,6 +178,11 @@ img[src$="svg"].rollable:hover{
 .dnd4eBeta.sheet .npc .sheet-header .automath img{
 	filter:unset;
 }
+.active-effect-sheet .effect-dot:not(:last-child),
+.active-effect-sheet .effect-status:not(:last-child),
+.active-effect-sheet .effect-change:not(:last-child){
+	border-bottom:1px solid rgba(255,255,255,0.1);
+}
 
 /** CHAT **/
 
@@ -186,17 +193,10 @@ a.content-link, a.inline-roll{
 	background:var(--color-bg-input);
 	border-color:var(--color-border-light-tertiary);	
 }
-.dice-roll .hit-prediction.critical,
-.dice-roll .hit-prediction.probable-hit,
-.dot-report .damage-taken.resistant-full,
-.dot-report .damage-taken.healing{
-	color:#0fe75f;
+.chat-message.whisper{
+	background:rgba(219,219,251,0.23);
 }
-.dice-roll .hit-prediction.fumble,
-.dice-roll .hit-prediction.probable-miss,
-.dot-report .damage-taken:not(.resistant-full,.healing){
-	color:#ff6060;
-}
+
 
 /** JOURNALS **/
 
