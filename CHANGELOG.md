@@ -1,10 +1,15 @@
 # Changelog
 
+## Version 0.4.29
+- CN lang update
+- Improvements for Active effect statuses [PR 319](https://github.com/EndlesNights/dnd4eBeta/pull/319) from [FoxLee](https://github.com/FoxLee)
+- Fix chat card posting and effect transfer [PR 320](https://github.com/EndlesNights/dnd4eBeta/pull/320) from [wigmeister2000](https://github.com/wigmeister2000)
+
 ## Version 0.4.28
 - custom skills now should be sorted alphabetically.
 - Added a tooltip to the new "show image" button on item's portrait.
 - added icon for unprepared powers.
-- [PR 316](https://github.com/EndlesNights/dnd4eBeta/pull/317) from [FoxLee](https://github.com/FoxLee)
+- [PR 317](https://github.com/EndlesNights/dnd4eBeta/pull/317) from [FoxLee](https://github.com/FoxLee)
 
 
 ## Version 0.4.27
