@@ -25,6 +25,8 @@
 			{{#if item.system.chatFlavor}}
 				{{#if item.system.autoGenChatPowerCard}}
 					<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+				{{else}}
+				    {{{system.description.value}}}
 				{{/if}}
 			{{else}}
 				{{{system.description.value}}}
