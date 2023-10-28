@@ -11,15 +11,28 @@
 	--color-text-light-highlight:#f7f5e8;
 	--color-text-good:#0fe75f;
 	--color-text-bad:#ff6060;
+	--color-text-dark-primary:var(--color-text-light-primary);
+   --color-text-dark-secondary:var(--color-text-light-primary);
+   --color-text-dark-header:var(--color-text-light-heading);
+}
+input::-webkit-input-placeholder{
+	opacity:0.4;
+}
+input::-moz-placeholder{
+	opacity:0.4;
+}
+input:-ms-input-placeholder{
+	opacity:0.4;
+}
+input::-ms-input-placeholder{
+	opacity:0.4;
 }
 input::placeholder,.placeholder::after{
-	color:var(--color-text-light-primary);
 	opacity:0.4;
 }
 .chat-message,
 .window-app .window-content{
 	background-image:url('../icons/ui/parchment-dark.png');
-	color:var(--color-text-light-primary);
 }
 input,
 input[type="text"],input[type="number"],
@@ -53,7 +66,6 @@ button:disabled{
 }
 select,select[multiple],
 .multiselect .toggle{
-	color:var(--color-text-light-primary);
 	background:#49494b;
 }
 button{
@@ -67,7 +79,6 @@ form button{
 	background:var(--color-bg-btn-minor-inactive);
 }
 a:hover{
-	color:var(--color-text-light-highlight);
 }
 input[type="color"][data-edit]{
 	border:2px groove rgba(0,0,0,0.4);
@@ -87,7 +98,6 @@ input[type="color"][data-edit]{
 	color:var(--color-text-light-primary);
 }
 .chat-message .message-header{
-   color: var(--color-text-light-heading);
 }
 .directory .directory-header .header-search input{
 	background:rgba(255,255,255,0.05);
@@ -100,7 +110,6 @@ input[type="color"][data-edit]{
 	opacity:0.4;
 }
 form .notes,form .hint{
-   color:var(--color-text-light-heading);
 }
 #tours-management .tour .status{
 	color:var(--color-text-light-4);
@@ -109,7 +118,6 @@ form .notes,form .hint{
 	color:var(--color-text-light-6);
 }
 #permissions-config .hint{
-	color:var(--color-text-light-heading);
 }
 .dialog .dialog-buttons button,
 .dialog .dialog-buttons button.default{
@@ -172,11 +180,14 @@ img[src$="svg"].rollable:hover{
 }
 .dnd4eBeta.sheet .items-list .item .item-image.rollable:hover,
 .dnd4eBeta.sheet .items-list .item .rollable .item-image:hover{
-	background:url("/icons/svg/d20-white.svg") no-repeat;
 	background-size:contain;
+	-webkit-filter:brightness(255);
+	        filter:brightness(255);
+	
 }
 .dnd4eBeta.sheet .npc .sheet-header .automath img{
-	filter:unset;
+	-webkit-filter:unset;
+	        filter:unset;
 }
 .active-effect-sheet .effect-dot:not(:last-child),
 .active-effect-sheet .effect-status:not(:last-child),
@@ -210,8 +221,41 @@ a.content-link, a.inline-roll{
 	background-color:rgba(255,255,255,0.05);
 }
 
+
 /** MISC DIALOGUES **/
 
 input[type="text"].hp-con{
 	border-bottom:1px dotted rgba(255,255,255,0.5);
+}
+
+
+/** THIRD PARTY **/
+
+.condition-lab li.row{
+	background:var(--color-bg-input);
+}
+.CodeMirror{
+	background:var(--color-bg-input);
+	color:#fff;
+}
+.cm-s-default .cm-qualifier{
+   color:#cfbebe;
+}
+.cm-s-default .cm-tag{
+   color:#62e64c;
+}
+.cm-s-default .cm-string{
+   color:#f35757;
+}
+.cm-s-default .cm-keyword{
+   filter:#ec6aff;
+}
+.cm-s-default .cm-number{
+   color:#53d29f;
+}
+.cm-s-default .cm-atom{
+   color:#a699ff;
+}
+.CodeMirror-gutters{
+	background:var(--color-bg-input);
 }

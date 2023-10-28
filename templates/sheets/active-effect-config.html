@@ -202,10 +202,12 @@
 							{{/unless}}
 						</select>
 					</div>
-					<button class="effect-status-control" data-action="copy-all">{{localize 'DND4EUI.All'}}
-					<button class="effect-status-control" data-action="copy-name">{{localize 'Name'}}</button>
-					<button class="effect-status-control" data-action="copy-icon">{{localize 'DND4EUI.Icon'}}</button>
-					<button class="effect-status-control" data-action="copy-desc">{{localize 'Description'}}</button>
+					<button class="effect-status-control" data-action="copy-all"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.All'}}
+					<button class="effect-status-control" data-action="copy-name"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'Name'}}</button>
+					<button class="effect-status-control" data-action="copy-icon"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.Icon'}}</button>
+					<button class="effect-status-control" data-action="copy-desc"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.Desc'}}</button>
+					<button class="effect-status-control" data-action="copy-mods"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.Mods'}}</button>
+					<button class="effect-status-control" data-action="copy-cl-flags"{{log ../config.statusEffects}}{{log ../config.statusEffect}}{{#if (eq ../config.statusEffects ../config.statusEffect)}} hidden{{/if}}{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.ConditionLabFlags'}}</button>
 					<div class="effect-controls">
 						<a class="effect-status-control" data-action="delete"><i class="fas fa-trash"></i></a>
 					</div>

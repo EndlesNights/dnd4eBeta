@@ -66,7 +66,7 @@ textarea{
 	/* overflow-y:hidden; */
 	padding:5px;
 }
-:is(input,select):disabled{
+:is(input,select,button):disabled{
 	cursor:not-allowed;
 }
 
