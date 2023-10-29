@@ -67,6 +67,8 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 			case "copy-name":
 			case "copy-icon":
 			case "copy-desc":
+			case "copy-mods":
+			case "copy-cl":
 			case "copy-all":
 				const statusId = button.closest(".effect-status").getAttribute("data-status-id");
 				return this._copyStatusDetails(statusId,button.dataset.action).then(() => this.render());
@@ -124,15 +126,27 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 			}
 			if(scope == "copy-icon" || scope == "copy-all"){
 				effectUpdates.icon = statuses[statusIndex].icon;
+				//console.log(effectUpdates);
 			}
 			if(scope == "copy-desc" || scope == "copy-all"){
 				effectUpdates.description = game.i18n.localize(statuses[statusIndex].description);
+			}
+			if(scope == "copy-mods" || scope == "copy-all"){
+				effectUpdates.changes = statuses[statusIndex].changes;
+			}
+			if (game.modules.get("condition-lab-triggler")?.active){
+				if(scope == "copy-flags" || scope == "copy-all"){
+					if(statuses[statusIndex].flags['condition-lab-triggler']){
+						effectUpdates.conditionLab = statuses[statusIndex].flags['condition-lab-triggler'];
+					}
+				}
 			}
 			
 			return this.submit({preventClose: true, updateData: effectUpdates });
 			
 		} catch(err) {
 			ui.notifications.error(game.i18n.localize('ERROR.4eCopyStatusDetails'));
+			console.log(err);
 		}
 	}
 
@@ -147,7 +161,14 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		if ( updateData ) foundry.utils.mergeObject(data, updateData);
 		data.changes = Array.from(Object.values(data.changes || {}));
 		data.statuses = Array.from(Object.values(data.statuses || {})).filter(x => x);
-		//The form throws an error if it's updated while there is an unselected status condition row. I can't find a way to catch it, so instead I'm just trimming 
+		// The form throws an error if it's updated while there is an unselected status condition row. 
+		// I can't find a way to catch it, so instead I'm just trimming - Fox
+		
+		if(data.conditionLab){
+		// This doesn't like merging directly, seemingly because of the hyphens in the property name. 
+		//	Storing it in a separate property and updating manually seems to work. - Fox
+			data.flags['condition-lab-triggler'] = data.conditionLab;
+		}
 		
 		data.flags.dnd4e.dots = Array.from(Object.values(data.flags.dnd4e.dots || {}));
 		if (data.flags.dnd4e.dots.length){

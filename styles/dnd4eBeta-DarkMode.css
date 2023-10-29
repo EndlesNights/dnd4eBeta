@@ -221,8 +221,41 @@ a.content-link, a.inline-roll{
 	background-color:rgba(255,255,255,0.05);
 }
 
+
 /** MISC DIALOGUES **/
 
 input[type="text"].hp-con{
 	border-bottom:1px dotted rgba(255,255,255,0.5);
+}
+
+
+/** THIRD PARTY **/
+
+.condition-lab li.row{
+	background:var(--color-bg-input);
+}
+.CodeMirror{
+	background:var(--color-bg-input);
+	color:#fff;
+}
+.cm-s-default .cm-qualifier{
+   color:#cfbebe;
+}
+.cm-s-default .cm-tag{
+   color:#62e64c;
+}
+.cm-s-default .cm-string{
+   color:#f35757;
+}
+.cm-s-default .cm-keyword{
+   filter:#ec6aff;
+}
+.cm-s-default .cm-number{
+   color:#53d29f;
+}
+.cm-s-default .cm-atom{
+   color:#a699ff;
+}
+.CodeMirror-gutters{
+	background:var(--color-bg-input);
 }

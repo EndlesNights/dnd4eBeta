@@ -1066,7 +1066,8 @@ export class Helper {
 
 	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
 		const combat = game.combat;
-		for(let e of effectMap){
+		for(let effect of effectMap){
+			let e = effect.toObject(); // This is to avoid editing the source effect
 			if(e.flags.dnd4e.effectData.powerEffectTypes === condition){
 				for(let t of tokenTarget){
 					// console.log(e)
@@ -1081,13 +1082,13 @@ export class Helper {
 					flags.dnd4e.effectData.startTurnInit =  combat?.turns[combat?.turn]?.initiative || 0;
 
 					const userTokenId = this.getTokenIdForLinkedActor(parent);
-					const userInit = this.getInitiativeByToken(this.getTokenIdForLinkedActor(parent));
+					const userInit = this.getInitiativeByToken(userTokenId);
 					const targetInit = t ? this.getInitiativeByToken(t.id) : userInit;
 					const currentInit = this.getCurrentTurnInitiative();
 
 					if(flags.dnd4e.effectData.durationType === "endOfTargetTurn" || flags.dnd4e.effectData.durationType === "startOfTargetTurn"){
 						duration.rounds = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
-						flags.dnd4e.effectData.durationTurnInit = t ? this.getInitiativeByToken(t._id) : userInit;						
+						flags.dnd4e.effectData.durationTurnInit = t ? targetInit : userInit;						
 					}
 					else if(flags.dnd4e.effectData.durationType === "endOfUserTurn" || flags.dnd4e.effectData.durationType === "startOfUserTurn" ){
 						duration.rounds = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
