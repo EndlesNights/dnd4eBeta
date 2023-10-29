@@ -1119,7 +1119,7 @@ export class Helper {
 					}
 
 					if(game.user.isGM){
-						actor.newActiveEffect(newEffectData);
+						await actor.newActiveEffect(newEffectData);
 					} else {
 						game.socket.emit('system.dnd4e', {
 							actorID: actor.id,
