@@ -11,34 +11,26 @@
 
 	<div class="card-content">
 	
-		{{#if (eq actor.type "NPC")}}
-			{{#if item.system.autoGenChatPowerCard}}
-				{{#if item.system.chatFlavor}}
-					<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
-				{{else}}
-					{{{system.description.value}}}
-				{{/if}}
-			{{else}}
-				{{{system.description.value}}}
-			{{/if}}
-		{{else}}
-			{{#if item.system.chatFlavor}}
-				{{#if item.system.autoGenChatPowerCard}}
-					<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
-				{{else}}
-				    {{{system.description.value}}}
-				{{/if}}
-			{{else}}
-				{{{system.description.value}}}
-			{{/if}}
-		{{/if}}
-	
 		{{#if item.system.autoGenChatPowerCard}}
-		<div class="item-summary">
-			<div class="item-details">
-				{{{cardData}}}
+		
+			{{#if item.system.chatFlavor}}
+				<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+			{{else}}
+				{{#unless (eq actor.type "NPC")}}<!-- For NPCs, flavour text display shouldn't be conditional on the presence of flavour text, because almost all NPC powers lack flavour text -->
+					{{{system.description.value}}}
+				{{/unless}}
+			{{/if}}
+			
+			<div class="item-summary">
+				<div class="item-details">
+					{{{cardData}}}
+				</div>
 			</div>
-		</div>
+			
+		{{else}}
+		
+			{{{system.description.value}}}
+			
 		{{/if}}
 		
 		<div class="card-buttons">
