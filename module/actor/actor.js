@@ -1695,6 +1695,7 @@ export class Actor4e extends Actor {
 	}
 
 	async newActiveEffect(effectData){
+		console.log(effectData)
 		this.createEmbeddedDocuments("ActiveEffect", [{
 			name: effectData.name,
 			description: effectData.description,
@@ -1711,15 +1712,6 @@ export class Actor4e extends Actor {
 	}
 
 	async newActiveEffectSocket(effectData){
-		const uuid = effectData.changesID.split('.')
-		let changes
-		if(uuid[0] === "Actor"){
-			changes = game.actors.get(uuid[1]).items.get(uuid[3]).effects.get(uuid[5]).changes;
-		}
-		else if(uuid[0] === "Scene"){
-			changes = game.scenes.get(uuid[1]).tokens.get(uuid[3]).actor.items.get(uuid[5]).effects.get(uuid[7]).changes;
-		}
-
 		const data = {
 			name: effectData.name,
 			description: effectData.description,
@@ -1730,7 +1722,7 @@ export class Actor4e extends Actor {
 			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
 			tint: effectData.tint,
 			flags: effectData.flags,
-			changes: changes
+			changes: effectData.changes
 		}
 
 		this.createEmbeddedDocuments("ActiveEffect", [data]);
