@@ -5,6 +5,9 @@
 - Improvements for Active effect statuses [PR 319](https://github.com/EndlesNights/dnd4eBeta/pull/319) from [FoxLee](https://github.com/FoxLee)
 - Fix chat card posting and effect transfer [PR 320](https://github.com/EndlesNights/dnd4eBeta/pull/320) from [wigmeister2000](https://github.com/wigmeister2000)
 - fix to user apply socket effects
+- minor CSS fix
+- NPC chat card template updates [PR 321](https://github.com/EndlesNights/dnd4eBeta/pull/321) from [FoxLee](https://github.com/FoxLee)
+
 
 ## Version 0.4.28
 - custom skills now should be sorted alphabetically.
