@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.30
+- await Effect Creation
+
 ## Version 0.4.29
 - CN lang update
 - Improvements for Active effect statuses [PR 319](https://github.com/EndlesNights/dnd4eBeta/pull/319) from [FoxLee](https://github.com/FoxLee)

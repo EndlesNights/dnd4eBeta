@@ -8,7 +8,6 @@
 export const _getInitiativeFormula = function() {
 	const actor = this.actor;
 	if ( !actor ) return "1d20";
-	console.log(actor.system)
 	const init = actor.system.attributes.init.value;
 	const tiebreaker = game.settings.get("dnd4e", "initiativeDexTiebreaker");
 	const parts = ["1d20", init,];
