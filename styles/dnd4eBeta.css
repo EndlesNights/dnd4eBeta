@@ -74,7 +74,7 @@ textarea{
 /*  Sheets
 /* ----------------------------------------- */
 
-.dnd4eBeta{
+:root{
 	--border-engraved:2px groove #eeede0;
 	--border-heavy:3px solid #7a7971;
 	--border-normal:1px solid #7a7971;
