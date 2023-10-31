@@ -576,9 +576,10 @@ export class Actor4e extends Actor {
 				{key: "system.defences.fort.value", mode: 2, value: 2},
 				{key: "system.defences.ref.value", mode: 2, value: 2},
 				{key: "system.defences.wil.value", mode: 2, value: 2},
-			]
+			],
+			flags:{dnd4e:{effectData:{durationType:"endOfUserTurn"}}}
 		};
-		secondwindEffect.flags.dnd4e.effectData.durationType = "startOfTargetTurn"
+
 		this.update({"system.details.secondwindEffect": secondwindEffect});
 		
 	}
