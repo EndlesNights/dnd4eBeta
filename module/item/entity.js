@@ -626,6 +626,78 @@ export default class Item4e extends Item {
 		else return chatData;
 	}
 
+	/**
+	 * Post the item to chat without triggering macros, effect transfer, resource consumption etc., 
+	 * @return {Promise}
+	 */
+	async toChat(){
+
+		const cardData = await ( async () => {
+			if ((this.type === "power" || this.type === "consumable") && this.system.autoGenChatPowerCard) {
+				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
+				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor);
+				return Helper.commonReplace(cardString, this.actor, this, weaponUse? weaponUse.system : null, 1);
+			} else {
+				return null;
+			}
+		})();
+
+		// Basic template rendering data
+		const token = this.actor.token;
+		const templateData = {
+			actor: this.actor,
+			tokenId: token ? token.uuid : null,
+			item: this,
+			system: await this.getChatData(),
+			labels: this.labels,
+			hasAttack: false,
+			isHealing: false,
+			isPower: this.type === "power",
+			hasDamage: false,
+			hasHealing: false,
+			hasEffect: this.hasEffect,
+			cardData: cardData,
+			isVersatile: this.isVersatile,
+			hasSave: false,
+			hasAreaTarget: false
+		};
+
+		// Render the chat card template
+		let templateType = "item"
+		if (["tool", "ritual"].includes(this.type)) {
+			templateType = this.type
+			templateData.abilityCheck  = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
+			templateData.system.attribute = ""; // Suppress button
+		}
+		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
+		let html = await renderTemplate(template, templateData);
+		
+		if(["power", "consumable"].includes(templateData.item.type)) {
+			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
+		}
+		else if (["weapon", "equipment", "backpack", "tool", "loot"].includes(templateData.item.type)) {
+			html = html.replace("ability-usage--", `ability-usage--item`);
+		} else {
+			html = html.replace("ability-usage--", `ability-usage--other`);
+		}
+
+		// Basic chat message data
+		const chatData = {
+			user: game.user.id,
+			type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+			content: html,
+			speaker: {
+				actor: this.actor.id,
+				token: this.actor.token,
+				alias: this.actor.name
+			},
+			flags: {}
+		};
+
+		// Create the chat message
+		ChatMessage.create(chatData);
+	}
+
 	/* -------------------------------------------- */
 
 	/**

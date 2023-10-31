@@ -255,6 +255,7 @@
 "DND4EBETA.ContextMenuActionUnequip": "Unequip",
 "DND4EBETA.ContextMenuActionPrepare": "Prepare",
 "DND4EBETA.ContextMenuActionUnprepare": "Unprepare",
+"DND4EBETA.ContextMenuActionToChat": "To Chat",
 "DND4EBETA.ContextMenuActionAttune": "Attune",
 "DND4EBETA.ContextMenuActionUnattune": "Unattune",
 "DND4EBETA.ContextMenuActionEnable": "Enable",
