@@ -174,6 +174,7 @@ export class Actor4e extends Actor {
 		const system = this.system;
 
 		this.prepareDerivedData();
+		this.defaultSecondWindEffect();
 		
 		//HP auto calc
 		if(system.attributes.hp.autototal)
@@ -551,8 +552,38 @@ export class Actor4e extends Actor {
 		
 		//Magic Items
 		system.magicItemUse.perDay = Math.clamped(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
-
 	}
+
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Initializes the default ActiveEffect for SecondWind on a character.
+	 */
+
+	defaultSecondWindEffect(){
+		if(this.system.details.secondwindEffect && Object.keys(this.system.details.secondwindEffect)){
+			return;
+		}
+		const secondwindEffect = {
+			name: game.i18n.localize("DND4EBETA.SecondWind"),
+			icon: "icons/magic/life/heart-glowing-red.webp",
+			origin: this.uuid,
+			disabled:false,
+			description: game.i18n.localize("DND4EBETA.SecondWindEffect"),
+			changes: [
+				{key: "system.defences.ac.value", mode: 2, value: 2},
+				{key: "system.defences.fort.value", mode: 2, value: 2},
+				{key: "system.defences.ref.value", mode: 2, value: 2},
+				{key: "system.defences.wil.value", mode: 2, value: 2},
+			]
+		};
+		secondwindEffect.flags.dnd4e.effectData.durationType = "startOfTargetTurn"
+		this.update({"system.details.secondwindEffect": secondwindEffect});
+		
+	}
+
+	/* -------------------------------------------- */
 
 	calcDefenceStatsCharacter(data) {		
 		for (let [id, def] of Object.entries(data.defences)) {

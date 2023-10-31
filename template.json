@@ -161,6 +161,7 @@
 				"deity": "",
 				
 				"secondwind": false,
+				"secondwindeEffect": {},
 				"deathsaves": 3,
 				"deathsavefail": 0,
 				"deathsaveCrit": 20,
