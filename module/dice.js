@@ -236,13 +236,18 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	
 		if(targetData.targetHit.length){
 			Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
+			Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hitOrMiss", options.parent);
 			Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfHit", options.parent);
 		}
 		if(targetData.targetMissed.length){
 			Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", options.parent);
+			Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "hitOrMiss", options.parent);
 			Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfMiss", options.parent);
 		}
 	}
+
+	// Always apply these effects after the attack, even if the player forgot to select targets
+	Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfAfterAttack", options.parent);
 	
 	// Convert the roll to a chat message and return the roll
 	rollMode = form ? form.rollMode.value : rollMode;
