@@ -478,10 +478,11 @@ DND4EBETA.powerEffectTypes = {
 	"enemies": "DND4EBETA.TargetEnemies",
 	"hit": "DND4EBETA.TargetHit",
 	"miss": "DND4EBETA.TargetMiss",
+	"hitOrMiss": "DND4EBETA.TargetHitOrMiss",
 	"self": "DND4EBETA.TargetSelf",
+	"selfAfterAttack": "DND4EBETA.TargetSelfAfterAttack",
 	"selfHit": "DND4EBETA.TargetSelfHit",
-	"selfMiss": "DND4EBETA.TargetSelfMiss",
-
+	"selfMiss": "DND4EBETA.TargetSelfMiss"
 }
 
 /* -------------------------------------------- */
