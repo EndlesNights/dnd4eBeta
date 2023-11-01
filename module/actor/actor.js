@@ -1696,7 +1696,7 @@ export class Actor4e extends Actor {
 
 	async newActiveEffect(effectData){
 		console.log(effectData)
-		this.createEmbeddedDocuments("ActiveEffect", [{
+		return this.createEmbeddedDocuments("ActiveEffect", [{
 			name: effectData.name,
 			description: effectData.description,
 			icon:effectData.icon,
@@ -1725,11 +1725,11 @@ export class Actor4e extends Actor {
 			changes: effectData.changes
 		}
 
-		this.createEmbeddedDocuments("ActiveEffect", [data]);
+		return this.createEmbeddedDocuments("ActiveEffect", [data]);
 	}
 
 	async deleteActiveEffectSocket(toDelete){
-		this.deleteEmbeddedDocuments("ActiveEffect", toDelete)
+		return this.deleteEmbeddedDocuments("ActiveEffect", toDelete);
 	}
 
 	async promptEoTSavesSocket(){
