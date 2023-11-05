@@ -1124,18 +1124,16 @@ export class Actor4e extends Actor {
 				console.log(`healamount:${healamount}`)
 			}
 
+			if (healamount){
 			updateData[`system.attributes.hp.value`] = Math.min(
-				(this.system.attributes.hp.value + healamount),
+				    (Math.max(0, this.system.attributes.hp.value) + healamount),
 				this.system.attributes.hp.max
 			);
+			}
 		
 			if(this.system.details.surges.value > 0)
 				updateData[`system.details.surges.value`] = this.system.details.surges.value - options.surge;
 			
-		}
-		else if(options.surge == 0 && this.system.attributes.hp.value <= 0)
-		{
-			updateData[`system.attributes.hp.value`] = 1;
 		}
 		
 		if(!this.system.attributes.hp.temprest)
@@ -1154,7 +1152,7 @@ export class Actor4e extends Actor {
 			ChatMessage.create({
 				user: game.user.id,
 				speaker: {actor: this, alias: this.name},
-				content: options.surge >= 1 ? `${this.name} ${game.i18n.localize('DND4EBETA.ShortRestChat')}, ${game.i18n.localize('DND4EBETA.Spending')} ${options.surge} ${game.i18n.localize('DND4EBETA.SurgesSpendRegain')} ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} ${game.i18n.localize('DND4EBETA.HPShort')}.`
+				content: options.surge >= 1 ? `${this.name} ${game.i18n.localize('DND4EBETA.ShortRestChat')}, ${game.i18n.localize('DND4EBETA.Spending')} ${options.surge} ${game.i18n.localize('DND4EBETA.SurgesSpendRegain')} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize('DND4EBETA.HPShort')}.`
 					: `${this.name} ${game.i18n.localize('DND4EBETA.ShortRestChat')}`
 				
 			});				
