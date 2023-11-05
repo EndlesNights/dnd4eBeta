@@ -1091,7 +1091,7 @@ export class Actor4e extends Actor {
 		}
 		console.log(roll.total)
 		console.log(rollConfig.critical)
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
 	async shortRest(event, options){
@@ -1125,10 +1125,10 @@ export class Actor4e extends Actor {
 			}
 
 			if (healamount){
-			updateData[`system.attributes.hp.value`] = Math.min(
+			    updateData[`system.attributes.hp.value`] = Math.min(
 				    (Math.max(0, this.system.attributes.hp.value) + healamount),
-				this.system.attributes.hp.max
-			);
+			    	this.system.attributes.hp.max
+			    );
 			}
 		
 			if(this.system.details.surges.value > 0)
@@ -1172,7 +1172,7 @@ export class Actor4e extends Actor {
 		// console.log(updateData[`system.attributes.hp.value`]);
 		// console.log(this.system.attributes.hp.value);
 
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
 	// also known as the Extended Rest
@@ -1237,7 +1237,7 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
 	async secondWind(event, options){
@@ -1271,7 +1271,7 @@ export class Actor4e extends Actor {
 				user: game.user.id,
 				speaker: {actor: this, alias: this.name},
 				// flavor: restFlavor,
-				content: `${this.name} ${game.i18n.localize("DND4EBETA.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} ${game.i18n.localize("DND4EBETA.HPShort")} ${game.i18n.localize("DND4EBETA.SecondWindChatEffect")}
+				content: `${this.name} ${game.i18n.localize("DND4EBETA.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize("DND4EBETA.HPShort")} ${game.i18n.localize("DND4EBETA.SecondWindChatEffect")}
 					<ul>
 						<li>${game.i18n.localize("DND4EBETA.SecondWindEffect")}</li>
 						${extra}
@@ -1280,7 +1280,7 @@ export class Actor4e extends Actor {
 				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 			});		
 		
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
 	async actionPoint(event, options){
@@ -1308,7 +1308,7 @@ export class Actor4e extends Actor {
 			updateData[`system.actionpoints.value`] = this.system.actionpoints.value -1;
 			updateData[`system.actionpoints.encounteruse`] = true;
 
-			this.update(updateData);
+			await this.update(updateData);
 		}
 	}
 
