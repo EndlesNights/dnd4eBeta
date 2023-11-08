@@ -1634,6 +1634,11 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 		// Standard Options
 		const options = [
 		{
+			name: "DND4EBETA.ContextMenuActionToChat",
+			icon: "<i class='fas fa-share-from-square fa-fw'></i>",
+			callback: () => item.toChat()
+		},
+		{
 			name: "DND4EBETA.ContextMenuActionEdit",
 			icon: "<i class='fas fa-edit fa-fw'></i>",
 			callback: () => item.sheet.render(true)
@@ -1676,6 +1681,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.Mo
 			icon: "<i class='fas fa-sun fa-fw'></i>",
 			callback: () => item.update({"system.prepared": !item.system.prepared})
 		});
+
 		return options;
 	}
 

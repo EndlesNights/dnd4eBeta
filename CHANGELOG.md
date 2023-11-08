@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.31
+- Additional effect transfer options and "To Chat" context option for items [PR 323](https://github.com/EndlesNights/dnd4eBeta/pull/323) from [wigmeister2000](https://github.com/wigmeister2000)
+
 ## Version 0.4.30
 - await Effect Creation
 

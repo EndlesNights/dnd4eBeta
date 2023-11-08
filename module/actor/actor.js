@@ -1123,7 +1123,7 @@ export class Actor4e extends Actor {
 		}
 		console.log(roll.total)
 		console.log(rollConfig.critical)
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
 	async shortRest(event, options){
@@ -1156,18 +1156,16 @@ export class Actor4e extends Actor {
 				console.log(`healamount:${healamount}`)
 			}
 
-			updateData[`system.attributes.hp.value`] = Math.min(
-				(this.system.attributes.hp.value + healamount),
-				this.system.attributes.hp.max
-			);
+			if (healamount){
+			    updateData[`system.attributes.hp.value`] = Math.min(
+				    (Math.max(0, this.system.attributes.hp.value) + healamount),
+			    	this.system.attributes.hp.max
+			    );
+			}
 		
 			if(this.system.details.surges.value > 0)
 				updateData[`system.details.surges.value`] = this.system.details.surges.value - options.surge;
 			
-		}
-		else if(options.surge == 0 && this.system.attributes.hp.value <= 0)
-		{
-			updateData[`system.attributes.hp.value`] = 1;
 		}
 		
 		if(!this.system.attributes.hp.temprest)
@@ -1186,7 +1184,7 @@ export class Actor4e extends Actor {
 			ChatMessage.create({
 				user: game.user.id,
 				speaker: {actor: this, alias: this.name},
-				content: options.surge >= 1 ? `${this.name} ${game.i18n.localize('DND4EBETA.ShortRestChat')}, ${game.i18n.localize('DND4EBETA.Spending')} ${options.surge} ${game.i18n.localize('DND4EBETA.SurgesSpendRegain')} ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} ${game.i18n.localize('DND4EBETA.HPShort')}.`
+				content: options.surge >= 1 ? `${this.name} ${game.i18n.localize('DND4EBETA.ShortRestChat')}, ${game.i18n.localize('DND4EBETA.Spending')} ${options.surge} ${game.i18n.localize('DND4EBETA.SurgesSpendRegain')} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize('DND4EBETA.HPShort')}.`
 					: `${this.name} ${game.i18n.localize('DND4EBETA.ShortRestChat')}`
 				
 			});				
@@ -1206,7 +1204,7 @@ export class Actor4e extends Actor {
 		// console.log(updateData[`system.attributes.hp.value`]);
 		// console.log(this.system.attributes.hp.value);
 
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
 	// also known as the Extended Rest
@@ -1271,7 +1269,7 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
 	async secondWind(event, options){
@@ -1305,7 +1303,7 @@ export class Actor4e extends Actor {
 				user: game.user.id,
 				speaker: {actor: this, alias: this.name},
 				// flavor: restFlavor,
-				content: `${this.name} ${game.i18n.localize("DND4EBETA.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} ${game.i18n.localize("DND4EBETA.HPShort")} ${game.i18n.localize("DND4EBETA.SecondWindChatEffect")}
+				content: `${this.name} ${game.i18n.localize("DND4EBETA.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize("DND4EBETA.HPShort")} ${game.i18n.localize("DND4EBETA.SecondWindChatEffect")}
 					<ul>
 						<li>${game.i18n.localize("DND4EBETA.SecondWindEffect")}</li>
 						${extra}
@@ -1314,7 +1312,7 @@ export class Actor4e extends Actor {
 				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
 			});		
 		
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
 	async actionPoint(event, options){
@@ -1342,7 +1340,7 @@ export class Actor4e extends Actor {
 			updateData[`system.actionpoints.value`] = this.system.actionpoints.value -1;
 			updateData[`system.actionpoints.encounteruse`] = true;
 
-			this.update(updateData);
+			await this.update(updateData);
 		}
 	}
 
@@ -1728,7 +1726,7 @@ export class Actor4e extends Actor {
 
 	async newActiveEffect(effectData){
 		console.log(effectData)
-		this.createEmbeddedDocuments("ActiveEffect", [{
+		return this.createEmbeddedDocuments("ActiveEffect", [{
 			name: effectData.name,
 			description: effectData.description,
 			icon:effectData.icon,
@@ -1757,11 +1755,11 @@ export class Actor4e extends Actor {
 			changes: effectData.changes
 		}
 
-		this.createEmbeddedDocuments("ActiveEffect", [data]);
+		return this.createEmbeddedDocuments("ActiveEffect", [data]);
 	}
 
 	async deleteActiveEffectSocket(toDelete){
-		this.deleteEmbeddedDocuments("ActiveEffect", toDelete)
+		return this.deleteEmbeddedDocuments("ActiveEffect", toDelete);
 	}
 
 	async promptEoTSavesSocket(){

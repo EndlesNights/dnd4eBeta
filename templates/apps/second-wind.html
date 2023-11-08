@@ -17,6 +17,35 @@
 	</div>
 
 	<div class="dialog-buttons">
-	<button type="submit" name="submit">{{localize 'DND4EBETA.SecondWind'}}</button>
+	<button id="secondWindButton" type="submit" name="submit">{{localize 'DND4EBETA.SecondWind'}}</button>
 	</div>
+    <input type="hidden" id="surges" value="{{system.details.surges.value}}"/>
 </form>
+
+<script>
+
+  function buttonEnabledLogic() {
+      let swButtonEnabled = true;
+      let swButtonText = game.i18n.localize("DND4EBETA.SecondWind");
+
+      if (Number(document.getElementById('surges').value) <= 0) {
+          swButtonEnabled = false;
+          swButtonText = game.i18n.localize("DND4EBETA.HealingMenuOutOfSurges");
+      }
+
+      setButton('secondWindButton', swButtonEnabled, swButtonText);
+  }
+
+  function setButton(buttonId, enabled, text) {
+      const button = document.getElementById(buttonId);
+      button.innerHTML = text;
+
+      if (enabled) {
+          button.removeAttribute("disabled");
+      } else {
+          button.setAttribute("disabled", "true");
+    }
+  }
+
+  buttonEnabledLogic();
+</script>
