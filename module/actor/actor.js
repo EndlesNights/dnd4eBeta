@@ -560,9 +560,8 @@ export class Actor4e extends Actor {
 	/**
 	 * Initializes the default ActiveEffect for SecondWind on a character.
 	 */
-
 	defaultSecondWindEffect(){
-		if(this.system.details.secondwindEffect && Object.keys(this.system.details.secondwindEffect)){
+		if(this.system.details.secondwindEffect && Object.keys(this.system.details.secondwindEffect).length){
 			return;
 		}
 		const secondwindEffect = {
@@ -577,11 +576,10 @@ export class Actor4e extends Actor {
 				{key: "system.defences.ref.value", mode: 2, value: 2},
 				{key: "system.defences.wil.value", mode: 2, value: 2},
 			],
-			flags:{dnd4e:{effectData:{durationType:"endOfUserTurn"}}}
+			flags:{dnd4e:{effectData:{durationType:"startOfUserTurn"}}}
 		};
 
 		this.update({"system.details.secondwindEffect": secondwindEffect});
-		
 	}
 
 	/* -------------------------------------------- */
@@ -1272,6 +1270,13 @@ export class Actor4e extends Actor {
 		await this.update(updateData);
 	}
 
+	/* -------------------------------------------- */
+
+	/**
+	 * Appying Second Wind effect to actor.
+	 * @param {MouseEvent} event	The originating click event
+	 * @param {object} options		Options which can hold addtional bonuses
+	 */
 	async secondWind(event, options){
 		let r = await Helper.rollWithErrorHandling(options.bonus, { errorMessageKey: "DND4EBETA.InvalidHealingBonus"})
 
@@ -1290,29 +1295,43 @@ export class Actor4e extends Actor {
 
 		updateData[`system.details.secondwind`] = true;
 		
-		if(this.system.details.surges.value > 0)
+		if(this.system.details.surges.value > 0){
 			updateData[`system.details.surges.value`] = this.system.details.surges.value - 1;
-		
-			let extra = "";
-			if (this.system.details.secondwindbon.custom) {
-				extra = this.system.details.secondwindbon.custom;
-				extra = extra.replace(/;/g,'</li><li>');
-				extra = "<li>" + extra + "</li>";
-			}
-			ChatMessage.create({
-				user: game.user.id,
-				speaker: {actor: this, alias: this.name},
-				// flavor: restFlavor,
-				content: `${this.name} ${game.i18n.localize("DND4EBETA.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize("DND4EBETA.HPShort")} ${game.i18n.localize("DND4EBETA.SecondWindChatEffect")}
-					<ul>
-						<li>${game.i18n.localize("DND4EBETA.SecondWindEffect")}</li>
-						${extra}
-					</ul>`,
-					// content: this.system.name + " uses Second Wind, healing for " + (updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
-				//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
-			});		
-		
+		}
+
+		let extra = "";
+		if (this.system.details.secondwindbon.custom) {
+			extra = this.system.details.secondwindbon.custom;
+			extra = extra.replace(/;/g,'</li><li>');
+			extra = "<li>" + extra + "</li>";
+		}
+
+		ChatMessage.create({
+			user: game.user.id,
+			speaker: {actor: this, alias: this.name},
+			// flavor: restFlavor,
+			content: `${this.name} ${game.i18n.localize("DND4EBETA.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize("DND4EBETA.HPShort")} ${game.i18n.localize("DND4EBETA.SecondWindChatEffect")}
+				<ul>
+					<li>${game.i18n.localize("DND4EBETA.SecondWindEffect")}</li>
+					${extra}
+				</ul>`,
+				// content: this.system.name + " uses Second Wind, healing for " + (updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
+			//game.i18n.format("DND4EBETA.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+		});		
+	
+		this.applySecondWindEffect();
 		await this.update(updateData);
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Creats a new emebeded effect based on data stored in this.system.details.secondwindEffect.
+	 */
+	async applySecondWindEffect(){
+		if(this.system.details.secondwindEffect){
+			await this.createEmbeddedDocuments("ActiveEffect", [this.system.details.secondwindEffect]);
+		}
 	}
 
 	async actionPoint(event, options){
