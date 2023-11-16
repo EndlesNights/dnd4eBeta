@@ -179,7 +179,7 @@ export default class ActorSheet4e extends ActorSheet {
 		
 		// Prepare active effects
 		// data.effects = prepareActiveEffectCategories(this.actor.effects);
-		data.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.getActiveEffects());
+		data.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.appliedEffects);
 
 		// Resources
 		actorData.resources = ["primary", "secondary", "tertiary"].reduce((obj, r) => {
