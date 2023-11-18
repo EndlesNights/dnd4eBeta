@@ -42,14 +42,26 @@
 			{{/if}}
 			<div class="item-controls effect-controls flexrow">
 				<a class="effect-control" data-action="toggle" data-tooltip="{{localize 'DND4EBETA.EffectToggle'}}">
-					<i class="fas fa-circle-notch"></i>
+					<i class="{{#if (isActive this)}}fas fa-power-off{{else}}fas fa-circle-notch{{/if}}"></i>
 				</a>
 				<a class="effect-control" data-action="edit" data-tooltip="{{localize 'DND4EBETA.EffectEdit'}}">
 					<i class="fas fa-edit"></i>
 				</a>
-				<a class="effect-control" data-action="delete" data-tooltip="{{localize 'DND4EBETA.EffectDelete'}}">
-					<i class="fas fa-trash"></i>
-				</a>
+				{{#if (isActor ../../this)}}
+					{{#if effect.transfer}}
+						<p>
+							<i class=""></i>
+						</p>
+					{{else}}
+						<a class="effect-control" data-action="delete" data-tooltip="{{localize 'DND4EBETA.EffectDelete'}}">
+							<i class="fas fa-trash"></i>
+						</a>
+					{{/if}}
+				{{else}}
+					<a class="effect-control" data-action="delete" data-tooltip="{{localize 'DND4EBETA.EffectDelete'}}">
+						<i class="fas fa-trash"></i>
+					</a>
+				{{/if}}
 			</div>
 		</li>
 	{{/each}}

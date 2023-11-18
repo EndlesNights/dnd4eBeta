@@ -173,7 +173,8 @@
 		event.preventDefault();
 		const a = event.currentTarget;
 		const li = a.closest("li");
-		const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
+		const effects = ["Player Character", "NPC"].includes(owner.type) ? owner.getActiveEffects() : owner.effects.contents;
+		const effect = li.dataset.effectId ? effects.find(e => e._id === li.dataset.effectId) : null;
 		switch ( a.dataset.action ) {
 			case "create":
 				const isActor = owner instanceof Actor;
