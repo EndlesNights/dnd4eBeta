@@ -49,9 +49,9 @@
 				</a>
 				{{#if (isActor ../../this)}}
 					{{#if effect.transfer}}
-						<p>
+						<a class="effect-control" data-action="none" data-tooltip="{{localize 'DND4EBETA.EffectFromItem'}}">
 							<i class=""></i>
-						</p>
+						</a>
 					{{else}}
 						<a class="effect-control" data-action="delete" data-tooltip="{{localize 'DND4EBETA.EffectDelete'}}">
 							<i class="fas fa-trash"></i>

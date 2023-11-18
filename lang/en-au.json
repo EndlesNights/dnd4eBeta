@@ -406,6 +406,7 @@
 "DND4EBETA.EffectToggle": "Toggle Effect",
 "DND4EBETA.EffectEdit": "Edit Effect",
 "DND4EBETA.EffectDelete": "Delete Effect",
+"DND4EBETA.EffectFromItem": "Transferred from Item",
 "DND4EBETA.EffectWhenEquipped": "Only Apply Effect when Equipped",
 "DND4EBETA.EffectUnavailable": "Unavailable Effect",
 "DND4EBETA.Elemental": "Elemental",
