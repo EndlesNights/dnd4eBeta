@@ -1284,3 +1284,7 @@ Handlebars.registerHelper("isActor", function(obj) {
 Handlebars.registerHelper("isActive", function(effect){
 	return !effect.disabled && !effect.isSuppressed;
 });
+
+Handlebars.registerHelper("getSourceName", function(effect){
+	return effect.sourceName === "Unknown" ? effect.parent.name : effect.sourceName;
+});

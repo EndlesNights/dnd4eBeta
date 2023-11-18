@@ -34,7 +34,7 @@
 				<img class="item-image" src="{{effect.icon}}"/>
 				<h4>{{effect.name}}</h4>
 			</div>
-			<div class="effect-source">{{effect.sourceName}}</div>
+			<div class="effect-source">{{getSourceName effect}}</div>
 			{{#if effect._getIsSave}}
 				<a class="effect-duration effect-save rollable">{{effect.duration.label}}</a>
 			{{else}}
