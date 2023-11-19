@@ -585,7 +585,7 @@ export class Actor4e extends Actor {
 			flags:{dnd4e:{effectData:{durationType:"startOfUserTurn"}}}
 		};
 
-		this.update({"system.details.secondwindEffect": secondwindEffect});
+		this.system.details.secondwindEffect = secondwindEffect;
 	}
 
 	/* -------------------------------------------- */
