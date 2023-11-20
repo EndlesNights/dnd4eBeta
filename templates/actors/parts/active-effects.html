@@ -30,15 +30,15 @@
 	<ol class="item-list">
 	{{#each section.effects as |effect|}}
 		<li class="item effect flexrow" data-effect-id="{{effect.id}}">
-			<div class="item-name effect-name flexrow">
+			<div class="item-name effect-name flexrow" data-tooltip="{{effect.name}}">
 				<img class="item-image" src="{{effect.icon}}"/>
 				<h4>{{effect.name}}</h4>
 			</div>
-			<div class="effect-source">{{getSourceName effect}}</div>
+			<div class="effect-source" data-tooltip="{{getSourceName effect}}">{{getSourceName effect}}</div>
 			{{#if effect._getIsSave}}
-				<a class="effect-duration effect-save rollable">{{effect.duration.label}}</a>
+				<a class="effect-duration effect-save rollable" data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}</a>
 			{{else}}
-				<div class="effect-duration">{{effect.duration.label}}</div>
+				<div class="effect-duration" data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}</div>
 			{{/if}}
 			<div class="item-controls effect-controls flexrow">
 				<a class="effect-control" data-action="toggle" data-tooltip="{{localize 'DND4EBETA.EffectToggle'}}">
