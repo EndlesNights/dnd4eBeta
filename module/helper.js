@@ -1276,3 +1276,15 @@ Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
 		return "Contains helper spat up. Did you give it the right parameter types?";
 	}
 });
+
+Handlebars.registerHelper("isActor", function(obj) {
+	return obj.isCharacter || obj.isNPC;
+});
+
+Handlebars.registerHelper("isActive", function(effect){
+	return !effect.disabled && !effect.isSuppressed;
+});
+
+Handlebars.registerHelper("getSourceName", function(effect){
+	return effect.sourceName === "Unknown" ? effect.parent.name : effect.sourceName;
+});
