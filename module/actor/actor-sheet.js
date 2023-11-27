@@ -325,12 +325,12 @@ export default class ActorSheet4e extends ActorSheet {
 		this._sortPowers(powers);
 		this._sortFeatures(features);
 
-		data.moveTitle = `
+		data.moveTitle = `<p style="text-align:left">
 ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedWalking")}
-${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedRunning")}
-${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedCharging")}
-${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedClimbing")}
-${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedShifting")}`;
+<br>${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedRunning")}
+<br>${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedCharging")}
+<br>${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedClimbing")}
+<br>${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EBETA.MovementUnit")} ${game.i18n.localize("DND4EBETA.MovementSpeedShifting")}`;
 
 		if(data.system.movement.custom){
 			const moveCustom = [];
