@@ -186,11 +186,16 @@ export class Actor4e extends Actor {
 		if(system.attributes.hp.autototal)
 		{
 			system.attributes.hp.max = system.attributes.hp.perlevel * (system.details.level - 1) + system.attributes.hp.starting + system.attributes.hp.misc + system.abilities.con.value;
-			system.attributes.hp.max += system.attributes.hp.feat|| 0;
-			system.attributes.hp.max += system.attributes.hp.item|| 0;
+			system.attributes.hp.max += system.attributes.hp.feat || 0;
+			system.attributes.hp.max += system.attributes.hp.item || 0;
 			system.attributes.hp.max += system.attributes.hp.power || 0;
 		}
 		
+		// Healing Surges
+		system.details.surges.value += system.details.surges.feat || 0;
+		system.details.surges.value += system.details.surges.item || 0;
+		system.details.surges.value += system.details.surges.power || 0;
+
 		//Set Health related values
 		if(!(system.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeBon.bonus[0]))) {
 			for( const b of system.details.surgeBon.bonus) {
@@ -205,6 +210,9 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		system.details.surgeBon.value += system.details.surgeBon.feat || 0;
+		system.details.surgeBon.value += system.details.surgeBon.item || 0;
+		system.details.surgeBon.value += system.details.surgeBon.power || 0;
 		
 		if(!(system.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(system.details.secondwindbon.bonus[0]))) {
 			for( const b of system.details.secondwindbon.bonus) {
@@ -219,6 +227,9 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		system.details.secondwindbon.value += system.details.secondwindbon.feat || 0;
+		system.details.secondwindbon.value += system.details.secondwindbon.item || 0;
+		system.details.secondwindbon.value += system.details.secondwindbon.power || 0;
 		
 		system.details.bloodied = Math.floor(system.attributes.hp.max / 2);
 		system.details.surgeValue = Math.floor(system.details.bloodied / 2) + system.details.surgeBon.value;
@@ -241,6 +252,9 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		system.details.surgeEnv.value += system.details.surgeEnv.feat || 0;
+		system.details.surgeEnv.value += system.details.surgeEnv.item || 0;
+		system.details.surgeEnv.value += system.details.surgeEnv.power || 0;
 
 		//Death Saving Throw
 		if(!(system.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(system.details.deathsavebon.bonus[0]))) {
@@ -256,8 +270,8 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		system.details.deathsavebon.value += system.details.deathsavebon.feat|| 0;
-		system.details.deathsavebon.value += system.details.deathsavebon.item|| 0;
+		system.details.deathsavebon.value += system.details.deathsavebon.feat || 0;
+		system.details.deathsavebon.value += system.details.deathsavebon.item || 0;
 		system.details.deathsavebon.value += system.details.deathsavebon.power || 0;
 
 		if(!(system.details.saves.bonus.length === 1 && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
@@ -273,8 +287,8 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		system.details.saves.value += system.details.saves.feat|| 0;
-		system.details.saves.value += system.details.saves.item|| 0;
+		system.details.saves.value += system.details.saves.feat || 0;
+		system.details.saves.value += system.details.saves.item || 0;
 		system.details.saves.value += system.details.saves.power || 0;
 		
 		//Weight & Encumbrance
@@ -386,7 +400,6 @@ export class Actor4e extends Actor {
 			system.movement.base.armour -= absMovePen;
 		}
 		system.movement.base.bonusValue = baseMoveBonusValue;
-
 		
 		let walkBonusValue = system.movement.walk.bonusValue || 0;
 		if(!(system.movement.walk.bonus.length === 1 && jQuery.isEmptyObject(system.movement.walk.bonus[0]))) {
@@ -469,34 +482,52 @@ export class Actor4e extends Actor {
 		system.movement.shift.bonusValue = shiftBonusValue;	
 
 		system.movement.base.value = system.movement.base.base +  baseMoveBonusValue + system.movement.base.temp;
+		system.movement.base.value += system.movement.base.feat || 0;
+		system.movement.base.value += system.movement.base.item || 0;
+		system.movement.base.value += system.movement.base.power || 0;
 		
 		let walkForm = eval(Helper.replaceData(system.movement.walk.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.walk.value += walkForm + walkBonusValue + system.movement.base.temp;
+		system.movement.walk.value += system.movement.walk.feat || 0;
+		system.movement.walk.value += system.movement.walk.item || 0;
+		system.movement.walk.value += system.movement.walk.power || 0;
 		
 		if (system.movement.walk.value < 0)
 			system.movement.walk.value = 0;
 		
 		let runForm = eval(Helper.replaceData(system.movement.run.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.run.value = runForm + runBonusValue + system.movement.run.temp;
+		system.movement.run.value += system.movement.run.feat || 0;
+		system.movement.run.value += system.movement.run.item || 0;
+		system.movement.run.value += system.movement.run.power || 0;
 		
 		if (system.movement.run.value < 0)
 			system.movement.run.value = 0;
 
 		let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge.temp;
+		system.movement.charge.value += system.movement.charge.feat || 0;
+		system.movement.charge.value += system.movement.charge.item || 0;
+		system.movement.charge.value += system.movement.charge.power || 0;
 		
 		if (system.movement.charge.value < 0)
 			system.movement.charge.value = 0;
 
 		let climbForm = eval(Helper.replaceData(system.movement.climb.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb.temp;
+		system.movement.climb.value += system.movement.climb.feat || 0;
+		system.movement.climb.value += system.movement.climb.item || 0;
+		system.movement.climb.value += system.movement.climb.power || 0;
 		
 		if (system.movement.climb.value < 0)
 			system.movement.climb.value = 0;
 		
 		let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift.temp;;
-		
+		system.movement.shift.value += system.movement.shift.feat || 0;
+		system.movement.shift.value += system.movement.shift.item || 0;
+		system.movement.shift.value += system.movement.shift.power || 0;
+
 		if (system.movement.shift.value < 0)
 			system.movement.shift.value = 0;
 			
