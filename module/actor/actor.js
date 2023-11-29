@@ -242,6 +242,7 @@ export class Actor4e extends Actor {
 			}
 		}
 
+		//Death Saving Throw
 		if(!(system.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(system.details.deathsavebon.bonus[0]))) {
 			for( const b of system.details.deathsavebon.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
@@ -255,6 +256,9 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		system.details.deathsavebon.value += system.details.deathsavebon.feat|| 0;
+		system.details.deathsavebon.value += system.details.deathsavebon.item|| 0;
+		system.details.deathsavebon.value += system.details.deathsavebon.power || 0;
 
 		if(!(system.details.saves.bonus.length === 1 && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
 			for( const b of system.details.saves.bonus) {
@@ -269,6 +273,9 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		system.details.saves.value += system.details.saves.feat|| 0;
+		system.details.saves.value += system.details.saves.item|| 0;
+		system.details.saves.value += system.details.saves.power || 0;
 		
 		//Weight & Encumbrance
 		system.encumbrance = this._computeEncumbrance(actorData.system);
@@ -632,15 +639,16 @@ export class Actor4e extends Actor {
 				}
 				def.armour += i.system.armour[id];
 			}
-			// if(def.base == undefined){
-			// 	def.base = 10;
-			// 	this.update({[`system.defences[${def}].base`]: 10 });
-			// }
+
 			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			if(game.settings.get("dnd4e", "halfLevelOptions")) {
-				def.value += modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;
-			} else {
-				def.value += modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);			
+
+			def.value += modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
+			def.value += def.feat|| 0;
+			def.value += def.item|| 0;
+			def.value += def.power || 0;
+
+			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
+				def.value += Math.floor(data.details.level / 2);
 			}
 		}
 	}
@@ -687,15 +695,19 @@ export class Actor4e extends Actor {
 			}
 			if(data.advancedCals){
 				let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-				if(game.settings.get("dnd4e", "halfLevelOptions")) {
-					def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;
-				} else {
-					def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);
+
+				def.value += def.base + modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
+				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
+					def.value += Math.floor(data.details.level / 2);
 				}
 				
 			} else {
 				def.value = def.base;		
 			}
+
+			def.value += def.feat|| 0;
+			def.value += def.item|| 0;
+			def.value += def.power || 0;
 		}
 	}
 
