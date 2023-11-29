@@ -597,6 +597,11 @@ export class Actor4e extends Actor {
 			}
 			res.resBonusValue = resBonusValue;
 			res.value += res.armour + resBonusValue;
+
+			res.value += res.feat || 0;
+			res.value += res.item || 0;
+			res.value += res.power || 0;
+
 			res.label = game.i18n.localize(DND4EBETA.damageTypes[id]); //.localize("");
 		}
 		
