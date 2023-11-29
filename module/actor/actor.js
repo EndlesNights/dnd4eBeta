@@ -185,7 +185,10 @@ export class Actor4e extends Actor {
 		//HP auto calc
 		if(system.attributes.hp.autototal)
 		{
-			system.attributes.hp.max = system.attributes.hp.perlevel * (system.details.level - 1) + system.attributes.hp.starting + system.attributes.hp.feat + system.attributes.hp.misc + system.abilities.con.value;
+			system.attributes.hp.max = system.attributes.hp.perlevel * (system.details.level - 1) + system.attributes.hp.starting + system.attributes.hp.misc + system.abilities.con.value;
+			system.attributes.hp.max += system.attributes.hp.feat|| 0;
+			system.attributes.hp.max += system.attributes.hp.item|| 0;
+			system.attributes.hp.max += system.attributes.hp.power || 0;
 		}
 		
 		//Set Health related values
