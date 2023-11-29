@@ -37,6 +37,8 @@
 					"starting": 0,
 					"perlevel": 0,
 					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"misc": 0,
 					"autototal": false,
 					"temprest": false
@@ -49,6 +51,9 @@
 					"value": 0,
 					"ability": "dex",
 					"bonus": [{}],
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"notes": ""
 				}
 			},
@@ -75,6 +80,8 @@
 					"armour": 0,
 					"class": 0,
 					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
@@ -89,6 +96,8 @@
 					"armour": 0,
 					"class": 0,
 					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
@@ -101,6 +110,8 @@
 					"armour": 0,
 					"class": 0,
 					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
@@ -113,6 +124,8 @@
 					"armour": 0,
 					"class": 0,
 					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
@@ -167,25 +180,40 @@
 				"deathsaveCrit": 20,
 				"deathsavebon": {
 					"bonus": [{}],
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"value": 0
 				},
 				"bloodied": 0,
 				"surgeValue": 0,
 				"surgeBon": {
 					"bonus": [{}],
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"value": 0
 				},
 				"surges": {
 					"value": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"max": 0
 				},
 				"surgeEnv": {
 					"bonus": [{}],
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"value": 0
 				},
 				"secondwindbon": {
 					"bonus": [{}],
 					"value": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"custom": ""
 				},
 				"saves": {
@@ -228,24 +256,36 @@
 					"base": 6,
 					"armour": 0,
 					"bonus": [{}],
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"temp": 0
 				},
 				"walk": {
 					"value": 0,
 					"formula": "@base + @armour",
 					"bonus": [{}],
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"temp": 0
 				},
 				"charge": {
 					"value": 0,
 					"formula": "@base + @armour",
 					"bonus": [{}],
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"temp": 0
 				},
 				"run": {
 					"value": 0,
 					"formula": "@base + @armour + 2",
 					"bonus": [{}],
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"misc": 0,
 					"temp": 0
 				},
@@ -253,12 +293,18 @@
 					"value": 0,
 					"formula": "(@base + @armour)/2",
 					"bonus": [{}],
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"temp": 0
 				},
 				"shift": {
 					"value": 0,
 					"formula": "1",
 					"bonus": [{}],
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"temp": 0
 				},
 				"notes": ""
@@ -287,6 +333,9 @@
 				"acr": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -295,6 +344,9 @@
 				"arc": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -303,6 +355,9 @@
 				"ath": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "str",
 					"armourCheck": true,
@@ -311,6 +366,9 @@
 				"blu": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -319,6 +377,9 @@
 				"dip": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -327,6 +388,9 @@
 				"dun": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -335,6 +399,9 @@
 				"end": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "con",
 					"armourCheck": true,
@@ -343,6 +410,9 @@
 				"hea": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -351,6 +421,9 @@
 				"his": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -359,6 +432,9 @@
 				"ins": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -367,6 +443,9 @@
 				"itm": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -375,6 +454,9 @@
 				"nat": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -383,6 +465,9 @@
 				"prc": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -391,6 +476,9 @@
 				"rel": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -399,6 +487,9 @@
 				"stl": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -407,6 +498,9 @@
 				"stw": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -415,6 +509,9 @@
 				"thi": {
 					"value": 0,
 					"base": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -424,11 +521,17 @@
 			"passive": {
 				"pasprc": {
 					"value": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"skill": "prc",
 					"bonus": [{}]
 				},
 				"pasins": {
 					"value": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"skill": "ins",
 					"bonus": [{}]
 				}
@@ -438,6 +541,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -445,6 +551,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -452,6 +561,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -459,6 +571,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -466,6 +581,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -473,6 +591,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -480,6 +601,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -487,6 +611,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -494,6 +621,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -501,6 +631,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -508,6 +641,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -515,6 +651,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -522,6 +661,9 @@
 					"value": 0,
 					"armour": 0,
 					"temp": 0,
+					"feat": 0,
+					"item": 0,
+					"power": 0,
 					"immune": false,
 					"bonus": [{}]
 				}
@@ -624,6 +766,8 @@
 				"armour": 0,
 				"class": 0,
 				"feat": 0,
+				"item": 0,
+				"power": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
@@ -639,6 +783,8 @@
 				"armour": 0,
 				"class": 0,
 				"feat": 0,
+				"item": 0,
+				"power": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
@@ -652,6 +798,8 @@
 				"armour": 0,
 				"class": 0,
 				"feat": 0,
+				"item": 0,
+				"power": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
@@ -665,6 +813,8 @@
 				"armour": 0,
 				"class": 0,
 				"feat": 0,
+				"item": 0,
+				"power": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
