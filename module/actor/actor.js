@@ -323,7 +323,7 @@ export class Actor4e extends Actor {
 			this.calcDefenceStatsCharacter(system);
 		}
 
-		//calc init
+		//calculate initiative
 		let initBonusValue = 0;
 		if(!game.settings.get("dnd4e", "halfLevelOptions")){
 			initBonusValue += Math.floor(system.details.level / 2);
@@ -350,7 +350,10 @@ export class Actor4e extends Actor {
 		} else {
 			system.attributes.init.value = system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod + initBonusValue : initBonusValue;
 		}
-		
+		system.attributes.init.value += system.attributes.init.feat|| 0;
+		system.attributes.init.value += system.attributes.init.item|| 0;
+		system.attributes.init.value += system.attributes.init.power || 0;
+
 		if(system.attributes.init.value > 999)
 			system.attributes.init.value = 999;
 		
