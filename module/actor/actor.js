@@ -739,14 +739,18 @@ export class Actor4e extends Actor {
 			}
 
 			// Compute modifier
-			skl.mod = system.abilities[skl.ability].mod;			
-			if(game.settings.get("dnd4e", "halfLevelOptions")) {
-				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-			} else {
-				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty + Math.floor(system.details.level / 2);
-			}
-			skl.label = skl.label? skl.label : game.i18n.localize(DND4EBETA.skills[id]);
+			skl.mod = system.abilities[skl.ability].mod;
 
+			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
+			skl.total += skl.feat || 0;
+			skl.total += skl.item || 0;
+			skl.total += skl.power || 0;
+
+			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
+				skl.total += Math.floor(system.details.level / 2);
+			}
+		
+			skl.label = skl.label? skl.label : game.i18n.localize(DND4EBETA.skills[id]);
 		}
 	}
 
@@ -796,10 +800,14 @@ export class Actor4e extends Actor {
 			// Compute modifier
 			skl.mod = data.abilities[skl.ability].mod;
 			if(data.advancedCals){
-				if(game.settings.get("dnd4e", "halfLevelOptions")) {
-					skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-				} else {
-					skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty + Math.floor(data.details.level / 2);
+				
+				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
+				skl.total += skl.feat || 0;
+				skl.total += skl.item || 0;
+				skl.total += skl.power || 0;
+	
+				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
+					skl.total += Math.floor(system.details.level / 2);
 				}
 			} else {
 				skl.total = skl.base;
