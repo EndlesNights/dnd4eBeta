@@ -246,9 +246,12 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		}
 	}
 
-	// Always apply these effects after the attack, even if the player forgot to select targets
-	Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfAfterAttack", options.parent);
-	
+	// Move this so that it only gets called when attacks are made, not all d20 rolls?
+	if(options.powerEffects) {
+		// Always apply these effects after the attack, even if the player forgot to select targets
+		Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfAfterAttack", options.parent);
+	}
+
 	// Convert the roll to a chat message and return the roll
 	rollMode = form ? form.rollMode.value : rollMode;
 
