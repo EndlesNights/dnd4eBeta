@@ -39,6 +39,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"misc": 0,
 					"autototal": false,
 					"temprest": false
@@ -54,6 +55,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"notes": ""
 				}
 			},
@@ -82,6 +84,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
@@ -98,6 +101,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
@@ -112,6 +116,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
@@ -126,6 +131,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"enhance": 0,
 					"bonus": [{}],
 					"temp": 0,
@@ -140,6 +146,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"race": 0,
 					"bonus": [{}]
 				},
@@ -149,6 +156,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"race": 0,
 					"bonus": [{}]
 				}
@@ -183,6 +191,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"value": 0
 				},
 				"bloodied": 0,
@@ -192,6 +201,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"value": 0
 				},
 				"surges": {
@@ -199,6 +209,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"max": 0
 				},
 				"surgeEnv": {
@@ -206,6 +217,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"value": 0
 				},
 				"secondwindbon": {
@@ -214,6 +226,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"custom": ""
 				},
 				"saves": {
@@ -259,6 +272,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"temp": 0
 				},
 				"walk": {
@@ -268,6 +282,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"temp": 0
 				},
 				"charge": {
@@ -277,6 +292,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"temp": 0
 				},
 				"run": {
@@ -286,6 +302,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"misc": 0,
 					"temp": 0
 				},
@@ -296,6 +313,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"temp": 0
 				},
 				"shift": {
@@ -305,6 +323,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"temp": 0
 				},
 				"notes": ""
@@ -336,6 +355,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -347,6 +367,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -358,6 +379,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "str",
 					"armourCheck": true,
@@ -369,6 +391,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -380,6 +403,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -391,6 +415,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -402,6 +427,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "con",
 					"armourCheck": true,
@@ -413,6 +439,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -424,6 +451,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -435,6 +463,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -446,6 +475,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -457,6 +487,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -468,6 +499,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "wis",
 					"armourCheck": false,
@@ -479,6 +511,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "int",
 					"armourCheck": false,
@@ -490,6 +523,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -501,6 +535,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "cha",
 					"armourCheck": false,
@@ -512,6 +547,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"bonus": [{}],
 					"ability": "dex",
 					"armourCheck": true,
@@ -524,6 +560,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"skill": "prc",
 					"bonus": [{}]
 				},
@@ -532,6 +569,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"skill": "ins",
 					"bonus": [{}]
 				}
@@ -544,6 +582,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -554,6 +593,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -564,6 +604,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -574,6 +615,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -584,6 +626,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -594,6 +637,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -604,6 +648,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -614,6 +659,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -624,6 +670,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -634,6 +681,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -644,6 +692,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -654,6 +703,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				},
@@ -664,6 +714,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
 				}
@@ -768,6 +819,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
+					"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
@@ -785,6 +837,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
+					"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
@@ -800,6 +853,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
+					"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
@@ -815,6 +869,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
+					"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
