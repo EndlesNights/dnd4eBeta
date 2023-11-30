@@ -189,12 +189,14 @@ export class Actor4e extends Actor {
 			system.attributes.hp.max += system.attributes.hp.feat || 0;
 			system.attributes.hp.max += system.attributes.hp.item || 0;
 			system.attributes.hp.max += system.attributes.hp.power || 0;
+			system.attributes.hp.max += system.attributes.hp.untyped || 0;
 		}
 		
 		// Healing Surges
 		system.details.surges.value += system.details.surges.feat || 0;
 		system.details.surges.value += system.details.surges.item || 0;
 		system.details.surges.value += system.details.surges.power || 0;
+		system.details.surges.value += system.details.surges.untyped || 0;
 
 		//Set Health related values
 		if(!(system.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeBon.bonus[0]))) {
@@ -213,6 +215,7 @@ export class Actor4e extends Actor {
 		system.details.surgeBon.value += system.details.surgeBon.feat || 0;
 		system.details.surgeBon.value += system.details.surgeBon.item || 0;
 		system.details.surgeBon.value += system.details.surgeBon.power || 0;
+		system.details.surgeBon.value += system.details.surgeBon.untyped || 0;
 		
 		if(!(system.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(system.details.secondwindbon.bonus[0]))) {
 			for( const b of system.details.secondwindbon.bonus) {
@@ -230,6 +233,7 @@ export class Actor4e extends Actor {
 		system.details.secondwindbon.value += system.details.secondwindbon.feat || 0;
 		system.details.secondwindbon.value += system.details.secondwindbon.item || 0;
 		system.details.secondwindbon.value += system.details.secondwindbon.power || 0;
+		system.details.secondwindbon.value += system.details.secondwindbon.untyped || 0;
 		
 		system.details.bloodied = Math.floor(system.attributes.hp.max / 2);
 		system.details.surgeValue = Math.floor(system.details.bloodied / 2) + system.details.surgeBon.value;
@@ -255,6 +259,7 @@ export class Actor4e extends Actor {
 		system.details.surgeEnv.value += system.details.surgeEnv.feat || 0;
 		system.details.surgeEnv.value += system.details.surgeEnv.item || 0;
 		system.details.surgeEnv.value += system.details.surgeEnv.power || 0;
+		system.details.surgeEnv.value += system.details.surgeEnv.untyped || 0;
 
 		//Death Saving Throw
 		if(!(system.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(system.details.deathsavebon.bonus[0]))) {
@@ -273,6 +278,7 @@ export class Actor4e extends Actor {
 		system.details.deathsavebon.value += system.details.deathsavebon.feat || 0;
 		system.details.deathsavebon.value += system.details.deathsavebon.item || 0;
 		system.details.deathsavebon.value += system.details.deathsavebon.power || 0;
+		system.details.deathsavebon.value += system.details.deathsavebon.untyped || 0;
 
 		if(!(system.details.saves.bonus.length === 1 && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
 			for( const b of system.details.saves.bonus) {
@@ -290,6 +296,7 @@ export class Actor4e extends Actor {
 		system.details.saves.value += system.details.saves.feat || 0;
 		system.details.saves.value += system.details.saves.item || 0;
 		system.details.saves.value += system.details.saves.power || 0;
+		system.details.saves.value += system.details.saves.untyped || 0;
 		
 		//Weight & Encumbrance
 		system.encumbrance = this._computeEncumbrance(actorData.system);
@@ -374,6 +381,7 @@ export class Actor4e extends Actor {
 		system.attributes.init.value += system.attributes.init.feat|| 0;
 		system.attributes.init.value += system.attributes.init.item|| 0;
 		system.attributes.init.value += system.attributes.init.power || 0;
+		system.attributes.init.value += system.attributes.init.untyped || 0;
 
 		if(system.attributes.init.value > 999)
 			system.attributes.init.value = 999;
@@ -485,12 +493,14 @@ export class Actor4e extends Actor {
 		system.movement.base.value += system.movement.base.feat || 0;
 		system.movement.base.value += system.movement.base.item || 0;
 		system.movement.base.value += system.movement.base.power || 0;
+		system.movement.base.value += system.movement.base.untyped || 0;
 		
 		let walkForm = eval(Helper.replaceData(system.movement.walk.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.walk.value += walkForm + walkBonusValue + system.movement.base.temp;
 		system.movement.walk.value += system.movement.walk.feat || 0;
 		system.movement.walk.value += system.movement.walk.item || 0;
 		system.movement.walk.value += system.movement.walk.power || 0;
+		system.movement.walk.value += system.movement.walk.untyped || 0;
 		
 		if (system.movement.walk.value < 0)
 			system.movement.walk.value = 0;
@@ -500,6 +510,7 @@ export class Actor4e extends Actor {
 		system.movement.run.value += system.movement.run.feat || 0;
 		system.movement.run.value += system.movement.run.item || 0;
 		system.movement.run.value += system.movement.run.power || 0;
+		system.movement.run.value += system.movement.run.untyped || 0;
 		
 		if (system.movement.run.value < 0)
 			system.movement.run.value = 0;
@@ -509,6 +520,7 @@ export class Actor4e extends Actor {
 		system.movement.charge.value += system.movement.charge.feat || 0;
 		system.movement.charge.value += system.movement.charge.item || 0;
 		system.movement.charge.value += system.movement.charge.power || 0;
+		system.movement.charge.value += system.movement.charge.untyped || 0;
 		
 		if (system.movement.charge.value < 0)
 			system.movement.charge.value = 0;
@@ -518,6 +530,7 @@ export class Actor4e extends Actor {
 		system.movement.climb.value += system.movement.climb.feat || 0;
 		system.movement.climb.value += system.movement.climb.item || 0;
 		system.movement.climb.value += system.movement.climb.power || 0;
+		system.movement.climb.value += system.movement.climb.untyped || 0;
 		
 		if (system.movement.climb.value < 0)
 			system.movement.climb.value = 0;
@@ -527,6 +540,7 @@ export class Actor4e extends Actor {
 		system.movement.shift.value += system.movement.shift.feat || 0;
 		system.movement.shift.value += system.movement.shift.item || 0;
 		system.movement.shift.value += system.movement.shift.power || 0;
+		system.movement.shift.value += system.movement.shift.untyped || 0;
 
 		if (system.movement.shift.value < 0)
 			system.movement.shift.value = 0;
@@ -569,7 +583,7 @@ export class Actor4e extends Actor {
 			}
 
 			mod.bonusValue = modifierBonusValue;
-			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.race + modifierBonusValue + (mod.armourPen || 0);
+			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.untyped + mod.race + modifierBonusValue + (mod.armourPen || 0);
 			mod.label = game.i18n.localize(DND4EBETA.modifiers[id]);
 		}
 		
@@ -601,6 +615,7 @@ export class Actor4e extends Actor {
 			res.value += res.feat || 0;
 			res.value += res.item || 0;
 			res.value += res.power || 0;
+			res.value += res.untyped || 0;
 
 			res.label = game.i18n.localize(DND4EBETA.damageTypes[id]); //.localize("");
 		}
@@ -682,6 +697,7 @@ export class Actor4e extends Actor {
 			def.value += def.feat|| 0;
 			def.value += def.item|| 0;
 			def.value += def.power || 0;
+			def.value += def.untyped || 0;
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 				def.value += Math.floor(data.details.level / 2);
@@ -744,6 +760,7 @@ export class Actor4e extends Actor {
 			def.value += def.feat|| 0;
 			def.value += def.item|| 0;
 			def.value += def.power || 0;
+			def.value += def.untyped || 0;
 		}
 	}
 
@@ -799,6 +816,7 @@ export class Actor4e extends Actor {
 			skl.total += skl.feat || 0;
 			skl.total += skl.item || 0;
 			skl.total += skl.power || 0;
+			skl.total += skl.untyped || 0;
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 				skl.total += Math.floor(system.details.level / 2);
@@ -808,8 +826,8 @@ export class Actor4e extends Actor {
 		}
 	}
 
-	calcSkillNPC(data){
-		for (let [id, skl] of Object.entries(data.skills)) {
+	calcSkillNPC(system){
+		for (let [id, skl] of Object.entries(system.skills)) {
 			skl.value = parseFloat(skl.value || 0);
 
 			let sklBonusValue = 0;
@@ -820,7 +838,7 @@ export class Actor4e extends Actor {
 						sklBonusValue += parseInt(b.value);
 					}
 					else if(b.active){
-						let val = Helper.replaceData(b.value,data)
+						let val = Helper.replaceData(b.value,system)
 						if(Helper._isNumber(val)){
 							sklBonusValue += parseInt(val);
 						}
@@ -852,17 +870,19 @@ export class Actor4e extends Actor {
 			}
 
 			// Compute modifier
-			skl.mod = data.abilities[skl.ability].mod;
-			if(data.advancedCals){
+			skl.mod = system.abilities[skl.ability].mod;
+			if(system.advancedCals){
 				
 				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
 				skl.total += skl.feat || 0;
 				skl.total += skl.item || 0;
 				skl.total += skl.power || 0;
+				skl.total += skl.untyped || 0;
 	
 				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 					skl.total += Math.floor(system.details.level / 2);
 				}
+				
 			} else {
 				skl.total = skl.base;
 			}
