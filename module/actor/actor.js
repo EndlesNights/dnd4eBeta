@@ -583,7 +583,7 @@ export class Actor4e extends Actor {
 			}
 
 			mod.bonusValue = modifierBonusValue;
-			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.untyped + mod.race + modifierBonusValue + (mod.armourPen || 0);
+			mod.value += mod.class + mod.feat + mod.item + mod.power + (mod.untyped) + mod.race + modifierBonusValue + (mod.armourPen || 0);
 			mod.label = game.i18n.localize(DND4EBETA.modifiers[id]);
 		}
 		
@@ -882,7 +882,7 @@ export class Actor4e extends Actor {
 				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 					skl.total += Math.floor(system.details.level / 2);
 				}
-				
+
 			} else {
 				skl.total = skl.base;
 			}
