@@ -170,7 +170,7 @@
 				<div class="skill--block flexrow" data-skill="{{s}}">
 					<a class="training-toggle skill-training" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
 					<h4 class="skill-name rollable">{{skill.label}}</h4>
-					<input type="hidden" name="system.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number">
+					<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
 					<label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
 				</div>
 				{{/each}}
