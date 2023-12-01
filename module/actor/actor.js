@@ -809,6 +809,18 @@ export class Actor4e extends Actor {
 				}
 			}
 
+			let trainingBonus = 0;
+			switch (skl.training){
+				case 8:
+					trainingBonus = system.skillTraining.expertise;
+					break;
+				case 5:
+					trainingBonus = system.skillTraining.trained;
+					break;
+				case 0:
+					trainingBonus = system.skillTraining.untrained;
+			}
+
 			// Compute modifier
 			skl.mod = system.abilities[skl.ability].mod;
 
@@ -817,6 +829,7 @@ export class Actor4e extends Actor {
 			skl.total += skl.item || 0;
 			skl.total += skl.power || 0;
 			skl.total += skl.untyped || 0;
+			skl.total += trainingBonus;
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 				skl.total += Math.floor(system.details.level / 2);
@@ -873,11 +886,24 @@ export class Actor4e extends Actor {
 			skl.mod = system.abilities[skl.ability].mod;
 			if(system.advancedCals){
 				
+				let trainingBonus = 0;
+				switch (skl.training){
+					case 8:
+						trainingBonus = system.skillTraining.expertise;
+						break;
+					case 5:
+						trainingBonus = system.skillTraining.trained;
+						break;
+					case 0:
+						trainingBonus = system.skillTraining.untrained;
+				}
+
 				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
 				skl.total += skl.feat || 0;
 				skl.total += skl.item || 0;
 				skl.total += skl.power || 0;
 				skl.total += skl.untyped || 0;
+				skl.total += trainingBonus;
 	
 				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 					skl.total += Math.floor(system.details.level / 2);
