@@ -810,24 +810,36 @@ export class Actor4e extends Actor {
 			}
 
 			let trainingBonus = 0;
+			let featBonus = 0;
+			let itemBonus = 0;
+			let powerBonus = 0;
 			switch (skl.training){
 				case 8:
-					trainingBonus = system.skillTraining.expertise;
+					trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
+					featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat);
+					itemBonus = Math.max(system.skillTraining.expertise.item, skl.item);
+					powerBonus = Math.max(system.skillTraining.expertise.power, skl.power);
 					break;
 				case 5:
-					trainingBonus = system.skillTraining.trained;
+					trainingBonus = system.skillTraining.trained.value + system.skillTraining.trained.untyped;
+					featBonus = Math.max(system.skillTraining.trained.feat, skl.feat);
+					itemBonus = Math.max(system.skillTraining.trained.item, skl.item);
+					powerBonus = Math.max(system.skillTraining.trained.power, skl.power);
 					break;
 				case 0:
-					trainingBonus = system.skillTraining.untrained;
+					trainingBonus = system.skillTraining.untrained.value + system.skillTraining.untrained.untyped;
+					featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat);
+					itemBonus = Math.max(system.skillTraining.untrained.item, skl.item);
+					powerBonus = Math.max(system.skillTraining.untrained.power, skl.power);
 			}
 
 			// Compute modifier
 			skl.mod = system.abilities[skl.ability].mod;
 
 			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-			skl.total += skl.feat || 0;
-			skl.total += skl.item || 0;
-			skl.total += skl.power || 0;
+			skl.total += featBonus || 0;
+			skl.total += itemBonus || 0;
+			skl.total += powerBonus || 0;
 			skl.total += skl.untyped || 0;
 			skl.total += trainingBonus;
 
@@ -887,21 +899,33 @@ export class Actor4e extends Actor {
 			if(system.advancedCals){
 				
 				let trainingBonus = 0;
+				let featBonus = 0;
+				let itemBonus = 0;
+				let powerBonus = 0;
 				switch (skl.training){
 					case 8:
-						trainingBonus = system.skillTraining.expertise;
+						trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
+						featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat);
+						itemBonus = Math.max(system.skillTraining.expertise.item, skl.item);
+						powerBonus = Math.max(system.skillTraining.expertise.power, skl.power);
 						break;
 					case 5:
-						trainingBonus = system.skillTraining.trained;
+						trainingBonus = system.skillTraining.trained.value + system.skillTraining.trained.untyped;
+						featBonus = Math.max(system.skillTraining.trained.feat, skl.feat);
+						itemBonus = Math.max(system.skillTraining.trained.item, skl.item);
+						powerBonus = Math.max(system.skillTraining.trained.power, skl.power);
 						break;
 					case 0:
-						trainingBonus = system.skillTraining.untrained;
+						trainingBonus = system.skillTraining.untrained.value + system.skillTraining.untrained.untyped;
+						featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat);
+						itemBonus = Math.max(system.skillTraining.untrained.item, skl.item);
+						powerBonus = Math.max(system.skillTraining.untrained.power, skl.power);
 				}
 
 				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-				skl.total += skl.feat || 0;
-				skl.total += skl.item || 0;
-				skl.total += skl.power || 0;
+				skl.total += featBonus || 0;
+				skl.total += itemBonus || 0;
+				skl.total += powerBonus || 0;
 				skl.total += skl.untyped || 0;
 				skl.total += trainingBonus;
 	

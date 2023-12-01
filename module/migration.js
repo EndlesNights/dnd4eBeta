@@ -330,9 +330,27 @@ function _migrateActorSkills(actorData, updateData){
 	}
 
 	updateData[`system.skillTraining`] = {
-		untrained:0,
-		trained:5,
-		expertise:8,
+		untrained:{
+			value:0,
+			feat: 0,
+			item: 0,
+			power: 0,
+			untyped: 0
+		},
+		trained:{
+			value:5,
+			feat: 0,
+			item: 0,
+			power: 0,
+			untyped: 0
+		},
+		expertise:{
+			value:8,
+			feat: 0,
+			item: 0,
+			power: 0,
+			untyped: 0
+		}
 	}
 
 	return updateData;
