@@ -138,6 +138,9 @@ export const migrateActorData = function(actor, migrationData) {
 	if (actor) {
 		_migrateActorTempHP(actor, updateData);
 		_migrateActorAddProfKeys(actor, updateData);
+		_migrateActorSkills(actor, updateData);
+		_migrateActorFeatItemPowerBonusSources(actor, updateData);
+
 	}
 
 	return updateData;
@@ -308,7 +311,63 @@ export const getMigrationData = async function() {
 	return updateData;
  }
 
+ /**
+ * Migrate the actor adding missing keys for skill training to move the out of the "value" key. v0.4.33
+ * @param {object} actorData   Actor data being migrated.
+ * @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+function _migrateActorSkills(actorData, updateData){
+	const skills = actorData?.system?.skills;
+	if(! skills) return;
 
+	for( const [id, skl] of Object.entries(skills)){
+		if(skl.training == undefined){
+			updateData[`system.skills.${id}.training`] = skl.value || 0;
+			updateData[`system.skills.${id}.value`] = 0;
+		}
+	}
+
+	updateData[`system.skillTraining`] = {
+		untrained:0,
+		trained:5,
+		expertise:8,
+	}
+	
+	return updateData;
+}
+
+ /**
+ * Migrate the actor adding missing keys for Feats, Item and Power bonus keys. v0.4.33
+ * @param {object} actorData   Actor data being migrated.
+ * @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
+	const skills = actorData?.system?.skills;
+	if(skills){
+		for( const [id, skl] of Object.entries(skills)){
+			if(skl.feat == undefined){
+				updateData[`system.skills.${id}.feat`] = 0;
+			}
+			if(skl.item == undefined){
+				updateData[`system.skills.${id}.item`] = 0;
+			}
+			if(skl.power == undefined){
+				updateData[`system.skills.${id}.power`] = 0;
+			}
+			if(skl.untyped == undefined){
+				updateData[`system.skills.${id}.untyped`] = 0;
+			}
+		}
+	}
+
+
+
+	return updateData;
+}
 /**
  * Migrate any data from the key "implementGroup" to the key of "implment"
  * @param {object} itemData   Item data being migrated.
