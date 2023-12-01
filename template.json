@@ -161,7 +161,6 @@
 					"bonus": [{}]
 				}
 			},
-			
 			"details": {
 				"level": 1,
 				"tier": 1,
@@ -841,7 +840,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
-					"untyped": 0,
+				"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
@@ -859,7 +858,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
-					"untyped": 0,
+				"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
@@ -875,7 +874,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
-					"untyped": 0,
+				"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
@@ -891,7 +890,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
-					"untyped": 0,
+				"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
 				"temp": 0,
