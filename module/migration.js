@@ -334,7 +334,7 @@ function _migrateActorSkills(actorData, updateData){
 		trained:5,
 		expertise:8,
 	}
-	
+
 	return updateData;
 }
 
@@ -347,6 +347,7 @@ function _migrateActorSkills(actorData, updateData){
  */
 function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 	const skills = actorData?.system?.skills;
+
 	if(skills){
 		for( const [id, skl] of Object.entries(skills)){
 			if(skl.feat == undefined){
@@ -364,6 +365,205 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 		}
 	}
 
+	const defences = actorData?.system?.defences;
+	if(defences){
+		for( const [id, def] of Object.entries(skills)){
+			if(def.feat == undefined){
+				updateData[`system.defences.${id}.feat`] = 0;
+			}
+			if(def.item == undefined){
+				updateData[`system.defences.${id}.item`] = 0;
+			}
+			if(def.power == undefined){
+				updateData[`system.defences.${id}.power`] = 0;
+			}
+			if(def.untyped == undefined){
+				updateData[`system.defences.${id}.untyped`] = 0;
+			}
+		}
+	}
+
+	const hp = actorData?.system?.attributes?.hp;
+	if(hp){
+		if(hp.feat == undefined){
+			updateData[`system.attributes.hp.${id}.feat`] = 0;
+		}
+		if(hp.item == undefined){
+			updateData[`system.attributes.hp.${id}.item`] = 0;
+		}
+		if(hp.power == undefined){
+			updateData[`system.attributes.hp.${id}.power`] = 0;
+		}
+		if(hp.untyped == undefined){
+			updateData[`system.attributes.hp.${id}.untyped`] = 0;
+		}
+	}
+
+	const init = actorData?.system?.attributes?.init;
+	if(init){
+		if(init.feat == undefined){
+			updateData[`system.attributes.init.${id}.feat`] = 0;
+		}
+		if(init.item == undefined){
+			updateData[`system.attributes.init.${id}.item`] = 0;
+		}
+		if(init.power == undefined){
+			updateData[`system.attributes.init.${id}.power`] = 0;
+		}
+		if(init.untyped == undefined){
+			updateData[`system.attributes.init.${id}.untyped`] = 0;
+		}
+	}
+
+	const modifiers = actorData?.system?.modifiers;
+	if(modifiers){
+		for( const [id, mod] of Object.entries(skills)){
+			if(mod.feat == undefined){
+				updateData[`system.modifiers.${id}.feat`] = 0;
+			}
+			if(mod.item == undefined){
+				updateData[`system.modifiers.${id}.item`] = 0;
+			}
+			if(mod.power == undefined){
+				updateData[`system.modifiers.${id}.power`] = 0;
+			}
+			if(mod.untyped == undefined){
+				updateData[`system.modifiers.${id}.untyped`] = 0;
+			}
+		}
+	}
+
+	const movement = actorData?.system?.details?.movement;
+	if(movement){
+		for( const [id, mov] of Object.entries(skills)){
+			if(mov.feat == undefined){
+				updateData[`system.details.movement.${id}.feat`] = 0;
+			}
+			if(mov.item == undefined){
+				updateData[`system.details.movement.${id}.item`] = 0;
+			}
+			if(mov.power == undefined){
+				updateData[`system.details.movement.${id}.power`] = 0;
+			}
+			if(mov.untyped == undefined){
+				updateData[`system.details.movement.${id}.untyped`] = 0;
+			}
+		}
+	}
+
+	const deathsavebon = actorData?.system?.details?.deathsavebon;
+	if(deathsavebon){
+		if(deathsavebon.feat == undefined){
+			updateData[`system.details.deathsavebon.${id}.feat`] = 0;
+		}
+		if(deathsavebon.item == undefined){
+			updateData[`system.details.deathsavebon.${id}.item`] = 0;
+		}
+		if(deathsavebon.power == undefined){
+			updateData[`system.details.deathsavebon.${id}.power`] = 0;
+		}
+		if(deathsavebon.untyped == undefined){
+			updateData[`system.details.deathsavebon.${id}.untyped`] = 0;
+		}
+	}
+
+	const surgeBon = actorData?.system?.details?.surgeBon;
+	if(surgeBon){
+		if(surgeBon.feat == undefined){
+			updateData[`system.details.surgeBon.${id}.feat`] = 0;
+		}
+		if(surgeBon.item == undefined){
+			updateData[`system.details.surgeBon.${id}.item`] = 0;
+		}
+		if(surgeBon.power == undefined){
+			updateData[`system.details.surgeBon.${id}.power`] = 0;
+		}
+		if(surgeBon.untyped == undefined){
+			updateData[`system.details.surgeBon.${id}.untyped`] = 0;
+		}
+	}
+
+	const surges = actorData?.system?.details?.surges;
+	if(surges){
+		if(surges.feat == undefined){
+			updateData[`system.details.surges.${id}.feat`] = 0;
+		}
+		if(surges.item == undefined){
+			updateData[`system.details.surges.${id}.item`] = 0;
+		}
+		if(surges.power == undefined){
+			updateData[`system.details.surges.${id}.power`] = 0;
+		}
+		if(surges.untyped == undefined){
+			updateData[`system.details.surges.${id}.untyped`] = 0;
+		}
+	}
+	const surgeEnv = actorData?.system?.details?.surgeEnv;
+	if(surgeEnv){
+		if(surgeEnv.feat == undefined){
+			updateData[`system.details.surgeEnv.${id}.feat`] = 0;
+		}
+		if(surgeEnv.item == undefined){
+			updateData[`system.details.surgeEnv.${id}.item`] = 0;
+		}
+		if(surgeEnv.power == undefined){
+			updateData[`system.details.surgeEnv.${id}.power`] = 0;
+		}
+		if(surgeEnv.untyped == undefined){
+			updateData[`system.details.surgeEnv.${id}.untyped`] = 0;
+		}
+	}
+	const secondwindbon = actorData?.system?.details?.secondwindbon;
+	if(secondwindbon){
+		if(secondwindbon.feat == undefined){
+			updateData[`system.details.secondwindbon.${id}.feat`] = 0;
+		}
+		if(secondwindbon.item == undefined){
+			updateData[`system.details.secondwindbon.${id}.item`] = 0;
+		}
+		if(secondwindbon.power == undefined){
+			updateData[`system.details.secondwindbon.${id}.power`] = 0;
+		}
+		if(secondwindbon.untyped == undefined){
+			updateData[`system.details.secondwindbon.${id}.untyped`] = 0;
+		}
+	}
+
+	const passive = actorData?.system?.passive;
+	if(passive){
+		for( const [id, pasv] of Object.entries(skills)){
+			if(pasv.feat == undefined){
+				updateData[`system.passive.${id}.feat`] = 0;
+			}
+			if(pasv.item == undefined){
+				updateData[`system.passive.${id}.item`] = 0;
+			}
+			if(pasv.power == undefined){
+				updateData[`system.passive.${id}.power`] = 0;
+			}
+			if(pasv.untyped == undefined){
+				updateData[`system.passive.${id}.untyped`] = 0;
+			}
+		}
+	}
+
+	const resistances = actorData?.system?.resistances;
+	if(resistances){
+		for( const [id, res] of Object.entries(skills)){
+			if(res.feat == undefined){
+				updateData[`system.resistances.${id}.feat`] = 0;
+			}
+			if(res.item == undefined){
+				updateData[`system.resistances.${id}.item`] = 0;
+			}
+			if(res.power == undefined){
+				updateData[`system.resistances.${id}.power`] = 0;
+			}
+			if(res.untyped == undefined){
+				updateData[`system.resistances.${id}.untyped`] = 0;
+			}
+		}
+	}
 
 
 	return updateData;
