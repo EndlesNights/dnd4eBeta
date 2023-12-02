@@ -140,7 +140,7 @@ export class Helper {
 
 
 	static async applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType) {
-		const debug = game.settings.get("dnd4eAltus", "debugEffectBonus") ? `D&D4eBeta |` : ""
+		const debug = game.settings.get("dnd4eAltus", "debugEffectBonus") ? `D&D4eAltus |` : ""
 		if (actorData.effects) {
 			const powerInnerData = powerData.system
 			const weaponInnerData = weaponData?.system
@@ -149,7 +149,7 @@ export class Helper {
 			}
 
 			const effectsToProcess = []
-			const effects = Array.from(actorData.effects.values()).filter((effect) => effect.disabled === false)
+			const effects = actorData.getActiveEffects().filter((effect) => effect.disabled === false)
 			effects.forEach((effect) => {
 				effect.changes.forEach((change => {
 					if (change.key.startsWith(`power.${effectType}`) || (weaponInnerData && change.key.startsWith(`weapon.${effectType}`))) {
@@ -175,6 +175,10 @@ export class Helper {
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
 					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
 					this._addKeywords(suitableKeywords, weaponInnerData.implement) // implement group for implement powers.  Bad naming of property, sorry -Drac
+
+					if(weaponInnerData.weaponBaseType){
+						suitableKeywords.push(weaponInnerData.weaponBaseType)
+					}
 				}
 
 				if (powerInnerData.powersource) {
@@ -709,12 +713,12 @@ export class Helper {
 		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula
 		// having got to the bottom of common replace, check to see if there are any more @variables left.  If there aren't, then don't bother going any further
 		if (actorData?.effects && depth > 0 && newFormula.includes('@')) {
-			const debug = game.settings.get("dnd4eAltus", "debugEffectBonus") ? `D&D4eBeta |` : ""
+			const debug = game.settings.get("dnd4eAltus", "debugEffectBonus") ? `D&D4eAltus |` : ""
 			if (debug) {
 				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.  Searching active effects for a suitable variable`)
 			}
 			const resultObject = {}
-			const effects = Array.from(actorData.effects.values()).filter((effect) => effect?.disabled === false);
+			const effects = actorData.getActiveEffects().filter((effect) => effect?.disabled === false);
 			effects.forEach((effect) => {
 				effect.changes.forEach((change => {
 					if (this.variableRegex.test(change.key)) {
@@ -881,7 +885,7 @@ export class Helper {
 			if(chatData.rangePower) powerDetail += ` <span class="range-value">${chatData.rangePower}</span>`;
 		}
 		else if (chatData.rangeType === "melee") {
-			powerDetail += ` <span class="range-type melee">${game.i18n.localize("DND4EALTUS.Melee")}</span><span class="range-size"> ${chatData.rangePower}</span>`;
+			powerDetail += ` <span class="range-type melee">${game.i18n.localize("DND4EALTUS.Melee")}</span> <span class="range-size">${chatData.rangePower}</span>`;
 		}
 		else if (chatData.rangeType === "reach") {
 			powerDetail += ` <span class="range-type reach">${game.i18n.localize("DND4EALTUS.rangeReach")}</span> <span class="range-size">${chatData.rangePower}</span>`;
@@ -890,7 +894,7 @@ export class Helper {
 			powerDetail += ` <span class="range-type ranged">${game.i18n.localize("DND4EALTUS.rangeRanged")}</span> <span class="range-size">${chatData.rangePower}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
-			powerDetail += ` <span class="range-type close">${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]}</span><span class="range-size">${this._areaValue(chatData, actorData)}</span>`;
+			powerDetail += ` <span class="range-type close">${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span>`;
 		}
 		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
 			powerDetail += ` <span class="range-type area">${CONFIG.DND4EALTUS.rangeType[chatData.rangeType]}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span> <span class="label-within">${game.i18n.localize("DND4EALTUS.RangeWithin")}</span> <span class="range-within">${chatData.rangePower}</span>`;
@@ -935,7 +939,14 @@ export class Helper {
 		if(chatData.attack.isAttack) {
 			if(chatData.attack.ability === "form"){
 				//if does not srtart with a number sign add one
-				let trimmedForm = chatData.attack.formula.trim()
+
+				let attackForm = this.commonReplace(chatData.attack.formula, actorData);
+				try {
+					attackForm = Roll.safeEval(attackForm).toString();
+				} catch (e) { /* noop */ }
+				
+
+				let trimmedForm = attackForm.trim()
 				if(!(trimmedForm.startsWith("+") || trimmedForm.startsWith("-"))) {
 					trimmedForm = '+' + trimmedForm;
 				}
@@ -1018,7 +1029,7 @@ export class Helper {
 			}
 		}
 
-		return game.combat.turns[game.combat.turn].initiative || -1;
+		return game.combat.turns[game.combat.turn]?.initiative || -1;
 	}
 
 	static getTokenIdForLinkedActor(actor){
@@ -1050,12 +1061,13 @@ export class Helper {
 	}
 
 	static getCurrentTurnInitiative(){
-		return game.combat? game.combat.turns[game.combat.turn].initiative : 0;
+		return game.combat? game.combat.turns[game.combat.turn]?.initiative : 0;
 	}
 
 	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
 		const combat = game.combat;
-		for(let e of effectMap){
+		for(let effect of effectMap){
+			let e = effect.toObject(); // This is to avoid editing the source effect
 			if(e.flags.dnd4eAltus.effectData.powerEffectTypes === condition){
 				for(let t of tokenTarget){
 					// console.log(e)
@@ -1067,16 +1079,16 @@ export class Helper {
 					const flags = e.flags;
 					duration.combat = combat?.id || "None Combat";
 					duration.startRound = combat?.round || 0;
-					flags.dnd4eAltus.effectData.startTurnInit = combat?.turns[combat.turn].initiative || 0;
+					flags.dnd4eAltus.effectData.startTurnInit =  combat?.turns[combat?.turn]?.initiative || 0;
 
 					const userTokenId = this.getTokenIdForLinkedActor(parent);
-					const userInit = this.getInitiativeByToken(this.getTokenIdForLinkedActor(parent));
+					const userInit = this.getInitiativeByToken(userTokenId);
 					const targetInit = t ? this.getInitiativeByToken(t.id) : userInit;
 					const currentInit = this.getCurrentTurnInitiative();
 
 					if(flags.dnd4eAltus.effectData.durationType === "endOfTargetTurn" || flags.dnd4eAltus.effectData.durationType === "startOfTargetTurn"){
 						duration.rounds = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
-						flags.dnd4eAltus.effectData.durationTurnInit = t ? this.getInitiativeByToken(t._id) : userInit;						
+						flags.dnd4eAltus.effectData.durationTurnInit = t ? targetInit : userInit;						
 					}
 					else if(flags.dnd4eAltus.effectData.durationType === "endOfUserTurn" || flags.dnd4eAltus.effectData.durationType === "startOfUserTurn" ){
 						duration.rounds = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
@@ -1093,6 +1105,7 @@ export class Helper {
 						// duration: {rounds: duration.rounds, startRound: duration.startRound},
 						rounds: duration.rounds,
 						startRound: duration.startRound,
+						statuses: e.statuses,
 						tint: e.tint,
 						flags: flags,
 						changes: e.changes,
@@ -1106,7 +1119,7 @@ export class Helper {
 					}
 
 					if(game.user.isGM){
-						actor.newActiveEffect(newEffectData);
+						await actor.newActiveEffect(newEffectData);
 					} else {
 						game.socket.emit('system.dnd4eAltus', {
 							actorID: actor.id,
@@ -1136,8 +1149,77 @@ export class Helper {
 		const isModKeyPressed = this.isUsingFastForwardKey(event);
 		return game.settings.get("dnd4eAltus","fastFowardSettings") ? !isModKeyPressed : isModKeyPressed;
 	}
-}
+	
+	/**
+	/* Function to determine the owner of a document - 
+	/* favouring players and falling back to a GM
+	/* (pinched from the 5e system for use in the combat loop)
+	/* Returns the player object, or the player's ID if 
+	/* called with idOnly set to "true"
+	/*																			*/
+	static firstOwner(doc,idOnly=false){
+		// null docs could mean an empty lookup, null docs are not owned by anyone
+		if (!doc) return false;
 
+		const playerOwners = Object.entries(doc.ownership)
+		.filter(([id, level]) => (!game.users.get(id)?.isGM && game.users.get(id)?.active) && level === 3)
+		.map(([id, level])=> id);
+
+		if(playerOwners.length > 0) {
+			return ( idOnly ? playerOwners[0] : game.users.get(playerOwners[0]));
+		}
+
+		// if no online player owns this actor, fall back to first GM
+		const firstGM = game.users.find(u => u.isGM && u.active);
+		return ( idOnly ? firstGM.id : firstGM );
+	}
+	
+	
+	/**
+	/* Function to return the sum of the highest positive value 
+	/* and the lowest negative value in a given set.
+	/* Intended for getting the correct value from multiple 
+	/* resistances and vulnerabilities.
+	/*																			*/
+	static sumExtremes(values = []){
+		if (!values.length) return;
+		let negatives = [0], positives = [0];
+		for (let v of values){
+			if (v === 0) continue;
+			if ( v < 0 ){
+				//console.log(`negative: ${v}`)
+				negatives.push(v);
+			} else {
+				//console.log(`positive: ${v}`)
+				positives.push(v);
+			}
+		}
+		return Math.max(...positives) + Math.min(...negatives);
+	}
+
+	
+	/**
+	 * Determine if a fastForward key was held during the given click event.
+	 *
+	 * @param {actorSet} set Actors
+	 * @param {disposition} string disposition value to keep
+	 * @param {same} boolean match based on same or diffrent disposition
+	 * @returns {set} New set of matching disposition
+	 */
+
+	static filterActorSetByDisposition(actorSet, disposition, same=true) {
+		if(disposition === null){
+			return [];
+		}
+		const filteredSet = new Set();
+		for (const actor of Array.from(game.user.targets)) {
+			if((actor.document?.disposition === disposition) === same) {
+				filteredSet.add(actor);
+			}
+		}
+		return filteredSet;
+	}
+}
 
 export async function handleApplyEffectToToken(data){
 	if(!game.user.isGM){
@@ -1147,3 +1229,62 @@ export async function handleApplyEffectToToken(data){
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
 	await actor.newActiveEffectSocket(effectData);
 }
+
+export async function handleDeleteEffectToToken(data){
+	if(!game.user.isGM){
+		return;
+	}
+
+	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
+	await actor.deleteActiveEffectSocket(data.toDelete);
+}
+
+export async function handlePromptEoTSaves(data) {
+	//console.log('handler reached');
+	if (!!data.targetUser && game.userId !== data.targetUser) return;
+	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
+	
+	await actor.promptEoTSavesSocket();
+}
+
+export async function handleAutoDoTs(data) {
+	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
+
+	await actor.autoDoTsSocket(data.tokenID);
+}
+
+/* "Contains" Handlebars Helper: checks if a value exists in an array.
+*
+*  @param {String} lunch The value to find
+*  @param {Array} lunchbox The array to search
+*  @param {String} meal (optional) A key to pair with lunch
+*  @returns {boolean} true if lunch exists in lunchbox.
+*	If meal is provided, lunchbox is assumed to contain objects,
+*  and will search for one where meal = lunch.
+*
+*  I don't know why, but meal is apparently the helper object, 
+*  if not given? Not a null, which would have been useful :\
+*  Anyway the type check shoudl take care of it.
+/*																			*/
+Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
+	try{
+		if(typeof meal != "string") return lunchbox.includes(lunch);
+		const lunchLocation = lunchbox.findIndex((x) => x[meal] == lunch);
+		if(lunchLocation > 0) return true;
+		return false;
+	} catch(err) {
+		return "Contains helper spat up. Did you give it the right parameter types?";
+	}
+});
+
+Handlebars.registerHelper("isActor", function(obj) {
+	return obj.isCharacter || obj.isNPC;
+});
+
+Handlebars.registerHelper("isActive", function(effect){
+	return !effect.disabled && !effect.isSuppressed;
+});
+
+Handlebars.registerHelper("getSourceName", function(effect){
+	return effect.sourceName === "Unknown" ? effect.parent.name : effect.sourceName;
+});

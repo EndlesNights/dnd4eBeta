@@ -2,8 +2,11 @@
 
 	{{!-- Item Sheet Header --}}
 	<header class="sheet-header flexrow">
-		<img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
-
+		<div class="image-frame">
+			<img class="profile" src="{{item.img}}" data-tooltip="{{item.name}}" data-edit="img"/>
+			<a class="hover-icon item-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="show-image"><i class="fas fa-image fa-fw"></i></a>
+		</div>
+		
 		<div class="header-details flexrow">
 			<h1 class="charname">
 				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ClassName' }}"/>

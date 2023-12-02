@@ -30,6 +30,7 @@ export default class ItemSheet4e extends ItemSheet {
 				".tab.details"
 			],
 			tabs: [{navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description"}],
+			dragDrop: [{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},]
 		});
 	}
 
@@ -64,7 +65,11 @@ export default class ItemSheet4e extends ItemSheet {
 			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
 		}
 
-		if(itemData.type == "equipment"){
+		if(itemData.type === "consumable"){
+			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
+		}
+
+		if(itemData.type === "equipment"){
 			data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
 
 			if(itemData.system.armour.type === "armour"){
@@ -187,7 +192,13 @@ export default class ItemSheet4e extends ItemSheet {
 				e.durationTypeLable = `${CONFIG.DND4EALTUS.durationType[e.flags.dnd4eAltus.effectData.durationType]}`;
 				if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
 				else if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
+				else if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "hitOrMiss") categories.hitOrMiss.effects.push(e);
 				else if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "self") categories.self.effects.push(e);
+				else if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "selfHit") categories.selfHit.effects.push(e);
+				else if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "selfMiss") categories.selfMiss.effects.push(e);
+				else if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "selfAfterAttack") categories.selfAfterAttack.effects.push(e);
+				else if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "allies") categories.allies.effects.push(e);
+				else if(e.flags.dnd4eAltus?.effectData?.powerEffectTypes === "enemies") categories.enemies.effects.push(e);
 				else categories.all.effects.push(e);
 			}
 		}
@@ -201,9 +212,10 @@ export default class ItemSheet4e extends ItemSheet {
 		const effect = li.dataset.effectId ? this.item.effects.get(li.dataset.effectId) : null;
 		switch(a.dataset.action){
 			case "create":
+				console.log(this)
 				this.item.createEmbeddedDocuments("ActiveEffect", [{
 					label: game.i18n.localize("DND4EALTUS.EffectNew"),
-					icon: "icons/svg/aura.svg",
+					icon: this.item.img || "icons/svg/aura.svg",
 					origin: this.item.uuid,
 					"flags.dnd4eAltus.effectData.powerEffectTypes": li.dataset.effectType,
 					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
@@ -568,7 +580,7 @@ export default class ItemSheet4e extends ItemSheet {
 	/** @override */
 	setPosition(position={}) {
 		if ( !(this._minimized  || position.height) ) {
-			position.height = (this._tabs[0].active === "details") ? "auto" : this.options.height;
+			position.height = (this._tabs[0].active === "details") ? "auto" : Math.max(this.height, this.options.height);
 		}
 		return super.setPosition(position);
 	}
@@ -612,6 +624,10 @@ export default class ItemSheet4e extends ItemSheet {
 	/** @override */
 	activateListeners(html) {
 		super.activateListeners(html);
+
+		//veiw image
+		html.find('.item-art').click(this._onDisplayItemArt.bind(this));
+
 		if ( this.isEditable ) {
 			html.find("button.execute").click(this._onExecute.bind(this));
 
@@ -627,9 +643,18 @@ export default class ItemSheet4e extends ItemSheet {
 
 
 			html.find('.powereffect-control').click(this._onPowerEffectControl.bind(this));
+		}
 	}
 
-	}
+
+	/* -------------------------------------------- */
+
+	_onDisplayItemArt(event) {
+		event.preventDefault();
+
+		const p = new ImagePopout(this.object.img);
+		p.render(true);
+	}	
 	/* -------------------------------------------- */
 	
 	async _onExecute(event) {
@@ -797,4 +822,74 @@ export default class ItemSheet4e extends ItemSheet {
 			// maximum: skills.number
 		// }).render(true)
 	}
+
+
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	_onDragStart(event) {
+		console.log("Start")
+		const li = event.currentTarget;
+		if ( event.target.classList.contains("content-link") ) return;
+
+		// Create drag data
+		let dragData;
+
+		// Active Effect
+		if ( li.dataset.effectId ) {
+		const effect = this.item.effects.get(li.dataset.effectId);
+		dragData = effect.toDragData();
+		} else if ( li.classList.contains("advancement-item") ) {
+		dragData = this.item.advancement.byId[li.dataset.id]?.toDragData();
+		}
+
+		if ( !dragData ) return;
+
+		// Set data transfer
+		event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+	}
+
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	_onDrop(event) {
+		const data = TextEditor.getDragEventData(event);
+		const item = this.item;
+
+		/**
+		 * A hook event that fires when some useful data is dropped onto an ItemSheet4e.
+		 * @function dnd4eAltus.dropItemSheetData
+		 * @memberof hookEvents
+		 * @param {Item4e} item                  The Item4e
+		 * @param {ItemSheet4e} sheet            The ItemSheet4e application
+		 * @param {object} data                  The data that has been dropped onto the sheet
+		 * @returns {boolean}                    Explicitly return `false` to prevent normal drop handling.
+		 */
+		const allowed = Hooks.call("dnd4eAltus.dropItemSheetData", item, this, data);
+		if ( allowed === false ) return;
+
+		switch ( data.type ) {
+		case "ActiveEffect":
+			return this._onDropActiveEffect(event, data);
+		}
+	}
+  /* -------------------------------------------- */
+
+	/**
+	 * Handle the dropping of ActiveEffect data onto an Item Sheet
+	 * @param {DragEvent} event                  The concluding DragEvent which contains drop data
+	 * @param {object} data                      The data transfer extracted from the event
+	 * @returns {Promise<ActiveEffect|boolean>}  The created ActiveEffect object or false if it couldn't be created.
+	 * @protected
+	 */
+	async _onDropActiveEffect(event, data) {
+		const effect = await ActiveEffect.implementation.fromDropData(data);
+		if ( !this.item.isOwner || !effect ) return false;
+		if ( (this.item.uuid === effect.parent?.uuid) || (this.item.uuid === effect.origin) ) return false;
+		return ActiveEffect.create({
+			...effect.toObject(),
+			origin: this.item.uuid
+		}, {parent: this.item});
+	}
+
 }

@@ -1,9 +1,12 @@
-<form class="{{cssClass}} flexcol item-sheet" autocomplete="off">
+<form class="{{cssClass}} flexcol item-sheet equipment" autocomplete="off">
 
 	{{!-- Item Sheet Header --}}
 	<header class="sheet-header flexrow">
-		<img class="profile" src="{{item.img}}" title="{{item.name}}" data-edit="img"/>
-
+		<div class="image-frame">
+			<img class="profile" src="{{item.img}}" data-tooltip="{{item.name}}" data-edit="img"/>
+			<a class="hover-icon item-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="show-image"><i class="fas fa-image fa-fw"></i></a>
+		</div>
+		
 		<div class="header-details flexrow">
 			<h1 class="charname">
 				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EALTUS.ItemName' }}"/>
@@ -89,7 +92,7 @@
 			{{#if isArmourBaseTypeCustom}}
 			<div class="form-group">
 				<label>{{ localize "DND4EALTUS.ArmourBaseCustom" }}:</label>
-				<input type="text" name="system.armourBaseTypeCustom" value="{{system.armourBaseTypeCustom}}" title="{{ localize "DND4EALTUS.ArmourBaseCustom" }}" placeholder="{{ localize "DND4EALTUS.ArmourBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+				<input type="text" name="system.armourBaseTypeCustom" value="{{system.armourBaseTypeCustom}}" data-tooltip="{{ localize "DND4EALTUS.ArmourBaseCustom" }}" placeholder="{{ localize "DND4EALTUS.ArmourBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
 			</div>
 			{{/if}}
 			{{/if}}
@@ -111,7 +114,7 @@
 			{{#if isShieldBaseTypeCustom}}
 			<div class="form-group">
 				<label>{{ localize "DND4EALTUS.ShieldBaseCustom" }}:</label>
-				<input type="text" name="system.shieldBaseTypeCustom" value="{{system.shieldBaseTypeCustom}}" title="{{ localize "DND4EALTUS.ShieldBaseCustom" }}" placeholder="{{ localize "DND4EALTUS.ShieldBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+				<input type="text" name="system.shieldBaseTypeCustom" value="{{system.shieldBaseTypeCustom}}" data-tooltip="{{ localize "DND4EALTUS.ShieldBaseCustom" }}" placeholder="{{ localize "DND4EALTUS.ShieldBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
 			</div>
 			{{/if}}
 			{{/if}}
@@ -152,8 +155,8 @@
 			</div>
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4EALTUS.ConsumeTitle" }}</label>
-				<div class="form-fields">
-					<select name="system.consume.type" style="flex: 0.55;">
+				<div class="form-fields consumption">
+					<select class="consume-type" name="system.consume.type">
 						{{#select system.consume.type}}
 						<option value=""></option>
 						{{#each config.abilityConsumptionTypes as |name key|}}
@@ -161,7 +164,7 @@
 						{{/each}}
 						{{/select}}
 					</select>
-					<select name="system.consume.target" style="width: 80%">
+					<select class="consume-target" name="system.consume.target">
 						{{#select system.consume.target}}
 						<option value=""></option>
 						{{#each abilityConsumptionTargets as |name key|}}

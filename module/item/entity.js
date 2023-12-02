@@ -9,7 +9,6 @@ import { DND4EALTUS } from "../config.js";
  */
 export default class Item4e extends Item {
 
-	
 	/** @inheritdoc */
 	async _preUpdate(changed, options, user) {
 		await super._preUpdate(changed, options, user);
@@ -570,14 +569,19 @@ export default class Item4e extends Item {
 		const template = `systems/dnd4eAltus/templates/chat/${templateType}-card.html`;
 		let html = await renderTemplate(template, templateData);
 		
-		if(templateData.item.type === "power") {
+		if(["power", "consumable"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
-			
-		Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
-		Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
 
+			Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
+
+			if(game.user.targets.size){
+				Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
+				const parentDisposition = this.parent.token?.disposition || this.parent.prototypeToken.disposition || null;
+				Helper.applyEffectsToTokens(this.effects, Helper.filterActorSetByDisposition([game.user.targets], parentDisposition), "allies", this.parent);
+				Helper.applyEffectsToTokens(this.effects, Helper.filterActorSetByDisposition([game.user.targets], parentDisposition, false), "enemies", this.parent);
+			}
 		}
-		else if (["weapon", "equipment", "consumable", "backpack", "tool", "loot"].includes(templateData.item.type)) {
+		else if (["weapon", "equipment", "backpack", "tool", "loot"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--item`);
 		} else {
 			html = html.replace("ability-usage--", `ability-usage--other`);
@@ -596,7 +600,7 @@ export default class Item4e extends Item {
 			flags: {}
 		};
 
-	    // If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
+		// If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
 		if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
 			chatData.flags["dnd4eAltus.itemData"] = templateData.item;
 		}
@@ -620,6 +624,78 @@ export default class Item4e extends Item {
 			}
 		}
 		else return chatData;
+	}
+
+	/**
+	 * Post the item to chat without triggering macros, effect transfer, resource consumption etc., 
+	 * @return {Promise}
+	 */
+	async toChat(){
+
+		const cardData = await ( async () => {
+			if ((this.type === "power" || this.type === "consumable") && this.system.autoGenChatPowerCard) {
+				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
+				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor);
+				return Helper.commonReplace(cardString, this.actor, this, weaponUse? weaponUse.system : null, 1);
+			} else {
+				return null;
+			}
+		})();
+
+		// Basic template rendering data
+		const token = this.actor.token;
+		const templateData = {
+			actor: this.actor,
+			tokenId: token ? token.uuid : null,
+			item: this,
+			system: await this.getChatData(),
+			labels: this.labels,
+			hasAttack: false,
+			isHealing: false,
+			isPower: this.type === "power",
+			hasDamage: false,
+			hasHealing: false,
+			hasEffect: this.hasEffect,
+			cardData: cardData,
+			isVersatile: this.isVersatile,
+			hasSave: false,
+			hasAreaTarget: false
+		};
+
+		// Render the chat card template
+		let templateType = "item"
+		if (["tool", "ritual"].includes(this.type)) {
+			templateType = this.type
+			templateData.abilityCheck  = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
+			templateData.system.attribute = ""; // Suppress button
+		}
+		const template = `systems/dnd4eAltus/templates/chat/${templateType}-card.html`;
+		let html = await renderTemplate(template, templateData);
+		
+		if(["power", "consumable"].includes(templateData.item.type)) {
+			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
+		}
+		else if (["weapon", "equipment", "backpack", "tool", "loot"].includes(templateData.item.type)) {
+			html = html.replace("ability-usage--", `ability-usage--item`);
+		} else {
+			html = html.replace("ability-usage--", `ability-usage--other`);
+		}
+
+		// Basic chat message data
+		const chatData = {
+			user: game.user.id,
+			type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+			content: html,
+			speaker: {
+				actor: this.actor.id,
+				token: this.actor.token,
+				alias: this.actor.name
+			},
+			flags: {}
+		};
+
+		// Create the chat message
+		ChatMessage.create(chatData);
 	}
 
 	/* -------------------------------------------- */
@@ -1043,7 +1119,7 @@ export default class Item4e extends Item {
 			options
 		};
 
-		if(this.type === "power"){
+		if(["power", "consumable"].includes(this.type)){
 			rollConfig.options.powerEffects = this.effects;
 			rollConfig.options.parent = this.parent;
 		}
@@ -1696,7 +1772,7 @@ export default class Item4e extends Item {
 	 */
 	static async _onChatCardAction(event) {
 		event.preventDefault();
-		console.log("stuff")
+		
 		// Extract card data
 		const button = event.currentTarget;
 		button.disabled = true;

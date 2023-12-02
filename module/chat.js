@@ -172,7 +172,7 @@ export function chatMessageListener(html) {
 export const clickTokenActorName = function(event){
 		event.preventDefault();
 
-		const tokenID = event.currentTarget.getAttribute('target-id');
+		const tokenID = event.currentTarget.getAttribute('data-target-id') || event.currentTarget.getAttribute('target-id'); //second one was for legasy where improper typing is used, will get rid of in a month or so
 		if(!tokenID) return;
 
 		const token = canvas.tokens.get(tokenID);
@@ -195,7 +195,7 @@ export const hoverTokenActorName = function(event){
 	if ( !canvas.ready ) return;
 
 	if(event.type === "mouseenter"){
-		const tokenID = event.currentTarget.getAttribute('target-id');
+		const tokenID = event.currentTarget.getAttribute('data-target-id') || event.currentTarget.getAttribute('target-id'); //second one was for legasy where improper typing is used, will get rid of in a month or so
 		const token = canvas.tokens.get(tokenID);
 		if ( token?.isVisible ) {
 		  if ( !token.controlled ) token._onHoverIn(event, {hoverOutOthers: true});
@@ -371,4 +371,39 @@ export function _onDiceRollClick(wrapper, event){
 	}
 
 	return wrapper(event);
+}
+
+  /* -------------------------------------------- */
+
+  /**
+   * Process messages which are posted using a dice-roll command
+   * @param {string} command          The chat command type
+   * @param {RegExpMatchArray[]} matches Multi-line matched roll expressions
+   * @param {Object} chatData         The initial chat data
+   * @param {Object} createOptions    Options used to create the message
+   * @private
+   * 
+   *  Overrides the core class allowing custom 4e system helper functions to be used
+   */
+
+export async function _processDiceCommand(wrapper, ...args){
+	let [command, matches, chatData, createOptions] = args;
+
+	const actor = ChatMessage.getSpeakerActor(chatData.speaker) || game.user.character;
+	const rollData = actor ? actor.getRollData() : {};
+	const rolls = [];
+	for ( const match of matches ) {
+		if ( !match ) continue;
+		const [formula, flavor] = match.slice(2, 4);
+		if ( flavor && !chatData.flavor ) chatData.flavor = flavor;
+		// const roll = Roll.create(formula, rollData);
+		const roll = Roll.create(actor? game.helper.commonReplace(formula,actor) : formula, rollData);
+		await roll.evaluate({async: true});
+		rolls.push(roll);
+	}
+	chatData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+	chatData.rolls = rolls;
+	chatData.sound = CONFIG.sounds.dice;
+	chatData.content = rolls.reduce((t, r) => t + r.total, 0);
+	createOptions.rollMode = command;
 }

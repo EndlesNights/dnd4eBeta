@@ -1,12 +1,15 @@
-<form class="{{cssClass}}" autocomplete="off">				
+<form class="{{cssClass}} npc" autocomplete="off">				
 	<section class="npc-upper">
 		{{!-- Sheet Header --}}
 		<header class="sheet-header">
-			<img class="profile" src="{{actor.img}}" title="{{actor.name}}" data-edit="img" style="margin-bottom: 6px;"/>
+			<div class="image-frame">
+				<img class="profile-img" src="{{actor.img}}" data-edit="img" data-tooltip="{{actor.name}}" height="64" width="64"/>
+				<a class="hover-icon actor-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="show-image"><i class="fas fa-image fa-fw"></i></a>
+			</div>
 			<section>
-				<ul class="summary">
+				<ul class="summary flexrow">
 					<li class="summary-name-npc">
-						<input name="name" type="text" value="{{actor.name}}" title="{{localize 'DND4EALTUS.NameNPC'}}" placeholder="{{localize 'DND4EALTUS.NameNPC'}}" onClick="this.select();"/>
+						<input name="name" type="text" value="{{actor.name}}" data-tooltip="{{localize 'DND4EALTUS.NameNPC'}}" placeholder="{{localize 'DND4EALTUS.NameNPC'}}" onClick="this.select();"/>
 					</li>
 					<li class="summary-role-second">
 						<select class="actor-role-second" name="system.details.role.secondary">
@@ -29,15 +32,15 @@
 					</li>
 					<li class="summary-leader">
 						<label>{{localize 'DND4EALTUS.CreatureRoleLeader'}}:</label>
-						<input type="checkbox" name="system.details.role.leader" data-dtype="Boolean" {{checked system.details.role.leader}} title="{{localize 'DND4EALTUS.CreatureRoleLeader'}}"/>
+						<input type="checkbox" name="system.details.role.leader" data-dtype="Boolean" {{checked system.details.role.leader}} data-tooltip="{{localize 'DND4EALTUS.CreatureRoleLeader'}}"/>
 					</li>
 					<li class="summary-level">
 						<label>{{localize 'DND4EALTUS.Level'}}</label>
-						<input type="text" name="system.details.level" value="{{system.details.level}}" title="{{localize 'DND4EALTUS.Level'}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.details.level" value="{{system.details.level}}" data-tooltip="{{localize 'DND4EALTUS.Level'}}" data-dtype="Number" onClick="this.select();"/>
 					</li>
 				</ul>
 	
-				<ul class="summary">
+				<ul class="summary flexrow">
 					<li class="summary-size">
 						<select class="actor-size" name="system.details.size">
 							{{#select system.details.size}}
@@ -66,246 +69,237 @@
 						</select>
 					</li>
 					<li class="summary-typeother">
-						<input name="system.details.other" type="text" value="{{system.details.other}}" title="{{localize 'DND4EALTUS.CreatureSubtypes'}}" placeholder="{{localize 'DND4EALTUS.CreatureSubtypes'}}" onClick="this.select();"/>
+						<input name="system.details.other" type="text" value="{{system.details.other}}" data-tooltip="{{localize 'DND4EALTUS.CreatureSubtypes'}}" placeholder="{{localize 'DND4EALTUS.CreatureSubtypes'}}" onClick="this.select();"/>
 					</li>
 				
 					<li class="summary-exp">
 						<label>{{localize 'DND4EALTUS.Exp'}}</label>
-						<input type="text" name="system.details.exp" value="{{system.details.exp}}" title="{{localize 'DND4EALTUS.Exp'}}" data-dtype="Number" onClick="this.select();"/>
+						<input type="text" name="system.details.exp" value="{{system.details.exp}}" data-tooltip="{{localize 'DND4EALTUS.Exp'}}" data-dtype="Number" onClick="this.select();"/>
+					</li>
+
+					<li class="automath">
+						<span class="label" data-tooltip="{{localize 'DND4EALTUS.NPCAutoMathTip'}}">{{localize 'DND4EALTUS.NPCAutoMath'}}</span> 
+						<input type="checkbox" name="system.advancedCals" data-dtype="Boolean" {{checked system.advancedCals}} data-tooltip="{{localize 'DND4EALTUS.NPCAutoMathTip'}}"/>
+						<img class="button" src="/systems/dnd4eAltus/icons/ui/calc.svg" height="40" width="30" />
 					</li>
 				</ul>
 			</section>
 
 		</header>
 
-		<section class="">
-			<div class="flexrow">
-				<div class="flexcol" style="flex-basis: 12px;">
-					<div class="" style="max-width: 180px; display:inline;position: relative;top: -4px;">
-						<Strong title="{{localize 'DND4EALTUS.HP'}}">{{localize 'DND4EALTUS.HPShort'}}:</Strong>
-						<input style="max-width: 40px; text-align: center;" {{#if system.details.isBloodied}} class="bloodied" {{/if}} type="text" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" title="{{localize 'DND4EALTUS.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+		<section class="basics flexrow">
+			
+				<div class="flexcol resources">
+				
+					<div class="hitpoints">
+						<label data-tooltip="{{localize 'DND4EALTUS.HP'}}">{{localize 'DND4EALTUS.HPShort'}}</label>
+						<input class="number{{#if system.details.isBloodied}}  bloodied{{/if}}" type="text" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" data-tooltip="{{localize 'DND4EALTUS.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">/</span>
-						<input style="max-width: 40px; text-align: center;" type="text" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" title="{{localize 'DND4EALTUS.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+						<input class="number" type="text" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" data-tooltip="{{localize 'DND4EALTUS.HPTotal'}}" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 					</div>
-					<div style="position: relative;top: -5px; max-height: 26px;">
-						<span title="{{localize 'DND4EALTUS.TempHPTip'}}">{{localize 'DND4EALTUS.Temp'}}:</span>
-						<input style="max-width: 30px; text-align: left;" type="text" name="system.attributes.temphp.value" value="{{system.attributes.temphp.value}}" title="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
-						<a class="rest short-rest npc" title="{{localize 'DND4EALTUS.RestShort'}}">{{ localize "DND4EALTUS.RestS" }}</a>
-						<a class="rest long-rest npc" title="{{localize 'DND4EALTUS.RestLong'}}">{{ localize "DND4EALTUS.RestL" }}</a>
+					
+					<div class="hitpoints-temp">
+						<label data-tooltip="{{localize 'DND4EALTUS.TempHPTip'}}">{{localize 'DND4EALTUS.Temp'}}</label>
+						<input class="number" type="text" name="system.attributes.temphp.value" value="{{system.attributes.temphp.value}}" data-tooltip="{{localize 'DND4EALTUS.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
+						<a class="rest short-rest npc" data-tooltip="{{localize 'DND4EALTUS.RestShort'}}">{{ localize "DND4EALTUS.RestS" }}</a>
+						<a class="rest long-rest npc" data-tooltip="{{localize 'DND4EALTUS.RestLong'}}">{{ localize "DND4EALTUS.RestL" }}</a>
+					</div>
+					
+					<div class="surges">
+						<label>{{localize 'DND4EALTUS.HealingSurgesShort'}}</label>
+							<input class="number attribute-sub attribute-input" type="text" name="system.details.surges.value" value="{{system.details.surges.value}}" data-tooltip="{{localize 'DND4EALTUS.SurgeCur'}}"  placeholder="{{localize 'DND4EALTUS.SurgeCur'}}" data-dtype="Number" onClick="this.select();"/>
+						<span class="sep">/</span>
+							<input class="number attribute-sub attribute-input" type="text" name="system.details.surges.max" value="{{system.details.surges.max}}" data-tooltip="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+					</div>
 
+					<div class="saves flexrow">
+						<img class="roll-save rollable" src="icons/svg/d20-grey.svg" width="20" height="20" data-tooltip="{{localize 'DND4EALTUS.SavingThrow'}}"/>
+						<label class="roll-save-bonus rollable" data-tooltip="{{localize 'DND4EALTUS.SavingThrowBonus'}}">{{localize 'DND4EALTUS.ActionSave'}}</label>
 					</div>
-					<div data-defence="ac" style="display: inline-block; min-height: 24px; position: relative;top: -2px;">
-						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EALTUS.Roll'}} {{system.defences.ac.title}} {{localize 'DND4EALTUS.Save'}}">{{system.defences.ac.label}}</strong>
+
+					<div class="action-points">
+						<label class="rest action-point rollable" data-tooltip="{{localize 'DND4EALTUS.ActionPointUse'}}">{{localize "DND4EALTUS.ActionPoints"}}</label>
+						<input class="number" type="text" name="system.actionpoints.value" value="{{system.actionpoints.value}}" data-tooltip="{{localize 'DND4EALTUS.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+					</div>
+					
+				</div>
+				
+				<div class="flexcol defences{{#if system.advancedCals}} advanced{{/if}}">
+					
+					<div class="defence" data-defence="ac">
+						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4EALTUS.Roll'}} {{system.defences.ac.title}} {{localize 'DND4EALTUS.Save'}}">{{system.defences.ac.label}}</label>
 						{{#if system.advancedCals}}
-						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EALTUS.BonusesTo'}} {{system.defences.ac.title}}">{{system.defences.ac.value}}</label>
-						<label>{{localize 'DND4EALTUS.Base'}}:</label>
-						<input style="max-width: 40px;" name="system.defences.ac.base" value="{{system.defences.ac.base}}" data-dtype="Number" onfocus="this.select()">
+						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4EALTUS.BonusesTo'}} {{system.defences.ac.title}}">{{system.defences.ac.value}}</strong>
+						<label class="def-base">{{localize 'DND4EALTUS.Base'}}:</label>
+						<input class="number" name="system.defences.ac.base" value="{{system.defences.ac.base}}" data-dtype="Number" onfocus="this.select()">
 						{{else}}
-						<input class="attribute-name" style="max-width: 40px;" name="system.defences.ac.base" value="{{system.defences.ac.base}}" data-dtype="Number" onfocus="this.select()">
+						<input class="number attribute-name" name="system.defences.ac.base" value="{{system.defences.ac.base}}" data-dtype="Number" onfocus="this.select()">
 						{{/if}}
 					</div>
+					
+					<div class="defence" data-defence="fort">
+						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4EALTUS.Roll'}} {{system.defences.fort.title}} {{localize 'DND4EALTUS.Save'}}">{{system.defences.fort.label}}</label>
+						{{#if system.advancedCals}}
+						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4EALTUS.BonusesTo'}} {{system.defences.fort.title}}">{{system.defences.fort.value}}</strong>
+						<label class="def-base">{{localize 'DND4EALTUS.Base'}}:</label>
+						<input class="number" name="system.defences.fort.base" value="{{system.defences.fort.base}}" data-dtype="Number" onfocus="this.select()">				
+						{{else}}
+						<input class="number attribute-name" name="system.defences.fort.base" value="{{system.defences.fort.base}}" data-dtype="Number" onfocus="this.select()">
+						{{/if}}
+					</div>
+						
+					<div class="defence" data-defence="ref">
+						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4EALTUS.Roll'}} {{system.defences.ref.title}} {{localize 'DND4EALTUS.Save'}}">{{system.defences.ref.label}}</label>
+						{{#if system.advancedCals}}
+						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4EALTUS.BonusesTo'}} {{system.defences.ref.title}}">{{system.defences.ref.value}}</strong>
+						<label class="def-base">{{localize 'DND4EALTUS.Base'}}:</label>
+						<input class="number" name="system.defences.ref.base" value="{{system.defences.ref.base}}" data-dtype="Number" onfocus="this.select()">
+						{{else}}
+						<input class="number attribute-name" name="system.defences.ref.base" value="{{system.defences.ref.base}}" data-dtype="Number" onfocus="this.select()">
+						{{/if}}
+					</div>
+					
+					<div class="defence" data-defence="wil">
+						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4EALTUS.Roll'}} {{system.defences.wil.title}} {{localize 'DND4EALTUS.Save'}}">{{system.defences.wil.label}}</label>
+						{{#if system.advancedCals}}
+						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4EALTUS.BonusesTo'}} {{system.defences.wil.title}}">{{system.defences.wil.value}}</strong>
+						<label class="def-base">{{localize 'DND4EALTUS.Base'}}:</label>
+						<input class="number" name="system.defences.wil.base" value="{{system.defences.wil.base}}" data-dtype="Number" onfocus="this.select()">	
+						{{else}}
+						<input class="number attribute-name" name="system.defences.wil.base" value="{{system.defences.wil.base}}" data-dtype="Number" onfocus="this.select()">
+						{{/if}}
+					</div>
+						
 				</div>
 
-
-				<div class="flexcol npc">
-					<div style="flex: 1;" class="ability--score " data-ability="str">
-						<strong class="ability-name rollable" title="{{system.abilities.str.label }}">{{localize 'DND4EALTUS.AbilStr'}}</strong>
-						<input class="ability-score" style="max-width: 40px;" name="system.abilities.str.value" data-dtype="Number" value="{{system.abilities.str.value}}" onfocus="this.select()" placeholder="10"/>
-						{{#if system.halfLevelOptions}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.str.label }}">{{numberFormat system.abilities.str.mod decimals=0 sign=true}}</label>
-						{{else}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.str.label }}">{{numberFormat system.abilities.str.modHalf decimals=0 sign=true}}</label>
-						{{/if}}
-					</div>
-
-					<div style="flex: 1;" class="ability--score" data-ability="con">
-						<strong class="ability-name rollable" title="{{system.abilities.con.label }}">{{localize 'DND4EALTUS.AbilCon'}}</strong>
-						<input class="ability-score" style="max-width: 40px;" name="system.abilities.con.value" data-dtype="Number" value="{{system.abilities.con.value}}" onfocus="this.select()" placeholder="10"/>
-						{{#if system.halfLevelOptions}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.con.label }}">{{numberFormat system.abilities.con.mod decimals=0 sign=true}}</label>
-						{{else}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.con.label }}">{{numberFormat system.abilities.con.modHalf decimals=0 sign=true}}</label>
-						{{/if}}
-					</div>
-					<div class="" data-defence="fort" style="display: inline-block; min-height: 24px;">
-						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EALTUS.Roll'}} {{system.defences.fort.title}} {{localize 'DND4EALTUS.Save'}}">{{system.defences.fort.label}}</strong>
-
-						{{#if system.advancedCals}}
-						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EALTUS.BonusesTo'}} {{system.defences.fort.title}}">{{system.defences.fort.value}}</label>
-						<label>{{localize 'DND4EALTUS.Base'}}:</label>
-						<input style="max-width: 40px;" name="system.defences.fort.base" value="{{system.defences.fort.base}}" data-dtype="Number" onfocus="this.select()">							
-						{{else}}
-						<input class="attribute-name" style="max-width: 40px;" name="system.defences.fort.base" value="{{system.defences.fort.base}}" data-dtype="Number" onfocus="this.select()">
-						{{/if}}
-
-					</div>
-
-				</div>
-
-				<div class="flexcol npc">
-					<div style="flex: 1;" class="ability--score" data-ability="dex">
-						<strong class="ability-name rollable" title="{{system.abilities.dex.label }}">{{localize 'DND4EALTUS.AbilDex'}}</strong>
-						<input class="ability-score" style="max-width: 40px;" name="system.abilities.dex.value" data-dtype="Number" value="{{system.abilities.dex.value}}" onfocus="this.select()" placeholder="10"/>
-						{{#if system.halfLevelOptions}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.dex.label }}">{{numberFormat system.abilities.dex.mod decimals=0 sign=true}}</label>
-						{{else}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.dex.label }}">{{numberFormat system.abilities.dex.modHalf decimals=0 sign=true}}</label>
-						{{/if}}
-					</div>
-
-					<div style="flex: 1;" class="ability--score" data-ability="int">
-						<strong class="ability-name rollable" title="{{system.abilities.int.label }}">{{localize 'DND4EALTUS.AbilInt'}}</strong>
-						<input class="ability-score" style="max-width: 40px;" name="system.abilities.int.value" data-dtype="Number" value="{{system.abilities.int.value}}" onfocus="this.select()" placeholder="10"/>
-						{{#if system.halfLevelOptions}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.int.label }}">{{numberFormat system.abilities.int.mod decimals=0 sign=true}}</label>
-						{{else}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.int.label }}">{{numberFormat system.abilities.int.modHalf decimals=0 sign=true}}</label>
-						{{/if}}
-					</div>
-					<div class="" data-defence="ref" style="display: inline-block; min-height: 24px;">
-						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EALTUS.Roll'}} {{system.defences.ref.title}} {{localize 'DND4EALTUS.Save'}}">{{system.defences.ref.label}}</strong>
-						{{#if system.advancedCals}}
-						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EALTUS.BonusesTo'}} {{system.defences.ref.title}}">{{system.defences.ref.value}}</label>
-						<label>{{localize 'DND4EALTUS.Base'}}:</label>
-						<input style="max-width: 40px;" name="system.defences.ref.base" value="{{system.defences.ref.base}}" data-dtype="Number" onfocus="this.select()">
-						{{else}}
-						<input class="attribute-name" style="max-width: 40px;" name="system.defences.ref.base" value="{{system.defences.ref.base}}" data-dtype="Number" onfocus="this.select()">
-						{{/if}}
-					</div>
-				</div>
-
-				<div class="flexcol npc">
-					<div style="flex: 1;" class="ability--score" data-ability="wis">
-						<strong class="ability-name rollable" title="{{system.abilities.wis.label }}">{{localize 'DND4EALTUS.AbilWis'}}</strong>
-						<input class="ability-score" style="max-width: 40px;" name="system.abilities.wis.value" data-dtype="Number" value="{{system.abilities.wis.value}}" onfocus="this.select()" placeholder="10"/>
-						{{#if system.halfLevelOptions}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.wis.label }}">{{numberFormat system.abilities.wis.mod decimals=0 sign=true}}</label>
-						{{else}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.wis.label }}">{{numberFormat system.abilities.wis.modHalf decimals=0 sign=true}}</label>
-						{{/if}}					</div>
-
-					<div style="flex: 1;" class="ability--score" data-ability="cha">
-						<strong class="ability-name rollable" title="{{system.abilities.cha.label }}">{{localize 'DND4EALTUS.AbilCha'}}</strong>
-						<input class="ability-score" style="max-width: 40px;" name="system.abilities.cha.value" data-dtype="Number" value="{{system.abilities.cha.value}}" onfocus="this.select()" placeholder="10"/>
-						{{#if system.halfLevelOptions}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.cha.label }}">{{numberFormat system.abilities.cha.mod decimals=0 sign=true}}</label>
-						{{else}}
-						<label class="attribute-display ability-mod-half" title="{{system.abilities.cha.label }}">{{numberFormat system.abilities.cha.modHalf decimals=0 sign=true}}</label>
-						{{/if}}
-					</div>
-					<div class="" data-defence="wil" style="display: inline-block; min-height: 24px;">
-						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EALTUS.Roll'}} {{system.defences.wil.title}} {{localize 'DND4EALTUS.Save'}}">{{system.defences.wil.label}}</strong>
-						{{#if system.advancedCals}}
-						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EALTUS.BonusesTo'}} {{system.defences.wil.title}}">{{system.defences.wil.value}}</label>
-						<label>{{localize 'DND4EALTUS.Base'}}:</label>
-						<input style="max-width: 40px;" name="system.defences.wil.base" value="{{system.defences.wil.base}}" data-dtype="Number" onfocus="this.select()">	
-						{{else}}
-						<input class="attribute-name" style="max-width: 40px;" name="system.defences.wil.base" value="{{system.defences.wil.base}}" data-dtype="Number" onfocus="this.select()">
-						{{/if}}
-
-					</div>
-				</div>
-
-				<div class="flexcol">
-					<div class="flexrow" data-skill="prc">
-						<strong class="skill-name rollable" style="max-width: 120px;">{{system.skills.prc.label}}</strong>
-						<label class="skill-mod skill-bonus rollable">{{numberFormat system.skills.prc.total decimals=0 sign=true }}</label>
-					</div>
-
+				<div class="flexcol combat">
+					
 					<div>
-						<strong class="rollInitiative rollable" >{{localize 'DND4EALTUS.Initiative'}}</strong>
-						<label class="init-bonus rollable" title="{{localize 'DND4EALTUS.InitiativeScore'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</label>
+						<label class="rollInitiative rollable" >{{localize 'DND4EALTUS.Initiative'}}</label>
+						<strong class="init-bonus rollable" data-tooltip="{{localize 'DND4EALTUS.InitiativeScore'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</strong>
 					</div>
-					<hr></hr>
+					
+					<div class="senses-perception" data-skill="prc">
+						<label class="skill-name rollable">{{system.skills.prc.label}}</label>
+						<strong class="skill-mod skill-bonus rollable">{{numberFormat system.skills.prc.total decimals=0 sign=true }}</strong>
+					</div>
+					
+					<div>
+						<a class="trait-selector-senses" data-options="special" data-target="system.senses.special">
+							<span class="label">{{ localize "DND4EALTUS.Senses" }}</span>
+							<i class="fas fa-edit"></i>
+						</a>
+						{{#each system.senses.special.selected as |v k|}}
+							<li class="tag {{k}}">{{v}}</li>
+						{{/each}}
+					</div>
+					
+					<div data-tooltip="{{moveTitle}}">
+						<label class="movement-dialog rollable">{{localize 'DND4EALTUS.Speed'}}</label>
+						<strong class="movement-dialog rollable">{{numberFormat system.movement.walk.value}} sq.</strong>
+						{{#each system.moveCustom as |v k|}}
+						<li class="tag {{k}}">{{v}}</li>
+						{{/each}}
+					</div>
+					
 				</div>
+								
 
-			</div>
+				<div class="flexcol details">
+					<div class="flexrow ability-scores">
+						<div class="flexcol ability-scores-left">
+							<div class="ability--score" data-ability="str">
+								<label class="ability-name rollable" data-tooltip="{{system.abilities.str.label }}">{{localize 'DND4EALTUS.AbilStr'}}</label>
+								<input class="number ability-score" name="system.abilities.str.value" data-dtype="Number" value="{{system.abilities.str.value}}" onfocus="this.select()" placeholder="10"/>
+								{{#if system.halfLevelOptions}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.str.label }}">{{numberFormat system.abilities.str.mod decimals=0 sign=true}}</label>
+								{{else}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.str.label }}">{{numberFormat system.abilities.str.modHalf decimals=0 sign=true}}</label>
+								{{/if}}
+							</div>
+							
+							<div class="ability--score" data-ability="dex">
+								<label class="ability-name rollable" data-tooltip="{{system.abilities.dex.label }}">{{localize 'DND4EALTUS.AbilDex'}}</label>
+								<input class="number ability-score" name="system.abilities.dex.value" data-dtype="Number" value="{{system.abilities.dex.value}}" onfocus="this.select()" placeholder="10"/>
+								{{#if system.halfLevelOptions}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.dex.label }}">{{numberFormat system.abilities.dex.mod decimals=0 sign=true}}</label>
+								{{else}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.dex.label }}">{{numberFormat system.abilities.dex.modHalf decimals=0 sign=true}}</label>
+								{{/if}}
+							</div>
 
-			<div style="display: flex;justify-content: space-between;">
-				<!-- <div class="" style="max-width: 280px; display: inline-block;">
-					{{#each system.defences as | def d|}}
-					<div class="" data-defence="{{d}}" style="display: inline-block;">
-						<strong class="attribute-display def-name rollable" title="{{localize 'DND4EALTUS.Roll'}} {{def.title}} {{localize 'DND4EALTUS.Save'}}">{{def.label}}</strong>
-						<label class="attribute-name defence-bonus rollable" title="{{localize 'DND4EALTUS.BonusesTo'}} {{def.title}}">{{def.value}}</label>
+							<div class="ability--score" data-ability="con">
+								<label class="ability-name rollable" data-tooltip="{{system.abilities.con.label }}">{{localize 'DND4EALTUS.AbilCon'}}</label>
+								<input class="number ability-score" name="system.abilities.con.value" data-dtype="Number" value="{{system.abilities.con.value}}" onfocus="this.select()" placeholder="10"/>
+								{{#if system.halfLevelOptions}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.con.label }}">{{numberFormat system.abilities.con.mod decimals=0 sign=true}}</label>
+								{{else}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.con.label }}">{{numberFormat system.abilities.con.modHalf decimals=0 sign=true}}</label>
+								{{/if}}
+							</div>
+						</div>
+						
+						<div class="flexcol ability-scores-right">
+							<div class="ability--score" data-ability="int">
+								<label class="ability-name rollable" data-tooltip="{{system.abilities.int.label }}">{{localize 'DND4EALTUS.AbilInt'}}</label>
+								<input class="number ability-score" name="system.abilities.int.value" data-dtype="Number" value="{{system.abilities.int.value}}" onfocus="this.select()" placeholder="10"/>
+								{{#if system.halfLevelOptions}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.int.label }}">{{numberFormat system.abilities.int.mod decimals=0 sign=true}}</label>
+								{{else}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.int.label }}">{{numberFormat system.abilities.int.modHalf decimals=0 sign=true}}</label>
+								{{/if}}
+							</div>
+
+							<div class="ability--score" data-ability="wis">
+								<label class="ability-name rollable" data-tooltip="{{system.abilities.wis.label }}">{{localize 'DND4EALTUS.AbilWis'}}</label>
+								<input class="number ability-score" name="system.abilities.wis.value" data-dtype="Number" value="{{system.abilities.wis.value}}" onfocus="this.select()" placeholder="10"/>
+								{{#if system.halfLevelOptions}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.wis.label }}">{{numberFormat system.abilities.wis.mod decimals=0 sign=true}}</label>
+								{{else}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.wis.label }}">{{numberFormat system.abilities.wis.modHalf decimals=0 sign=true}}</label>
+								{{/if}}
+							</div>
+
+							<div class="ability--score" data-ability="cha">
+								<label class="ability-name rollable" data-tooltip="{{system.abilities.cha.label }}">{{localize 'DND4EALTUS.AbilCha'}}</label>
+								<input class="number ability-score" name="system.abilities.cha.value" data-dtype="Number" value="{{system.abilities.cha.value}}" onfocus="this.select()" placeholder="10"/>
+								{{#if system.halfLevelOptions}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.cha.label }}">{{numberFormat system.abilities.cha.mod decimals=0 sign=true}}</label>
+								{{else}}
+								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.cha.label }}">{{numberFormat system.abilities.cha.modHalf decimals=0 sign=true}}</label>
+								{{/if}}
+							</div>
+							
+						</div>
+						
 					</div>
-					{{/each}}
-				</div> -->
-	
-				<!-- <div class="flexrow" data-skill="prc">
-					<h4 class="skill-name rollable">{{system.skills.prc.label}}</h4>
-					<input type="hidden" name="system.skills.prc.value" value="{{system.skills.prc.value}}" data-dtype="Number">
-					<label class="skill-mod skill-bonus rollable">{{numberFormat system.skills.prc.total decimals=0 sign=true }}</label>
-				</div> -->
-			</div>
+					
+					<div class="flexcol social">
+					
+						<div class="alignment">
+							<label class="label" for="alignment">{{localize 'DND4EALTUS.Alignment'}}:</label>
+							<input id="alignment" type="text" name="system.details.alignment" value="{{system.details.alignment}}" data-tooltip="{{localize 'DND4EALTUS.Alignment'}}"  placeholder="{{localize 'DND4EALTUS.AlignmentUN'}}" onClick="this.select();"/>
+						</div>
+						
+						<div class="languages">
+							<h4 hidden class="attribute-name box-title">{{localize 'DND4EALTUS.SpokenLanguage'}}</h4>
+							<a class="trait-selector" data-options="spoken" data-target="system.languages.spoken">
+								<span class="label">{{ localize "DND4EALTUS.Languages" }}</span>
+								<i class="fas fa-edit"></i>
+							</a>
+							{{#each system.languages.spoken.selected as |v k|}}
+								<li class="tag {{k}}">{{v}}</li>
+							{{/each}}
+						</div>
 
-			<div style="display: flex;justify-content: space-between;">
+					</div>
+					
+				</div>
 			
 			</div>
-
-			<div class="flexrow">	
-				<div title="{{moveTitle}}">
-					<strong class="movement-dialog rollable">{{localize 'DND4EALTUS.Speed'}}</strong>
-					<label class="movement-dialog rollable" style="text-transform:initial;">{{numberFormat system.movement.walk.value}} sq.</label>
-					{{#each system.moveCustom as |v k|}}
-					<li class="tag {{k}}">{{v}}</li>
-					{{/each}}
-				</div>
-	
-				<div>
-					<a class="trait-selector-senses" data-options="special" data-target="system.senses.special">
-						<span>{{ localize "DND4EALTUS.SpecialSenses" }}:</span>
-						<i class="fas fa-edit"></i>
-					</a>
-					{{#each system.senses.special.selected as |v k|}}
-						<li class="tag {{k}}">{{v}}</li>
-					{{/each}}
-				</div>
-			</div>
-
-
-			<div style="display:inline; margin-right: 25px;">
-				<img class="roll-save rollable" style="border: 0px; position: relative; top: 4px" src="icons/svg/d20-grey.svg" width="20" height="20" title="{{localize 'DND4EALTUS.SavingThrow'}}"/>
-				<label class="roll-save-bonus rollable" title="{{localize 'DND4EALTUS.SavingThrowBonus'}}">{{localize 'DND4EALTUS.ActionSave'}}</label>
-			</div>
-
-			<div style="display:inline; margin-right: 25px;">
-				<label class="rest action-point rollable" title="{{localize 'DND4EALTUS.ActionPointUse'}}">{{localize "DND4EALTUS.ActionPointUse"}}</label>
-				<input style="max-width: 40px; text-align: center;" type="text" name="system.actionpoints.value" value="{{system.actionpoints.value}}" title="{{localize 'DND4EALTUS.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-			</div>
-
-			<div style="display:inline; margin-right: 25px;">
-				<label>{{localize 'DND4EALTUS.HealingSurges'}}</label>
-				<div class="attribute-sub attribute-input" style="display:inline;">
-					<input style="max-width: 40px; text-align: center;" type="text" name="system.details.surges.value" value="{{system.details.surges.value}}" title="{{localize 'DND4EALTUS.SurgeCur'}}"  placeholder="{{localize 'DND4EALTUS.SurgeCur'}}" data-dtype="Number" onClick="this.select();"/>
-				</div>
-				<span class="sep">/</span>
-				<div class="attribute-sub attribute-input" style="display:inline;">
-					<input style="max-width: 40px; text-align: center;" type="text" name="system.details.surges.max" value="{{system.details.surges.max}}" title="{{localize 'DND4EALTUS.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
-				</div>
-			</div>
-
-			<div style="display:inline; float:right;">
-				<span title="{{localize 'DND4EALTUS.NPCAutoMathTip'}}">{{localize 'DND4EALTUS.NPCAutoMath'}}:</span>
-				<input style="position: relative; top:5px;" type="checkbox" name="system.advancedCals" data-dtype="Boolean" {{checked system.advancedCals}} title="{{localize 'DND4EALTUS.NPCAutoMathTip'}}"/>
-			</div>
-
-			<div class="flexrow">
-				<div style="display:flex;flex-direction:row; max-width: 180px;">
-					<label for="alignment">{{localize 'DND4EALTUS.Alignment'}}:</label>
-					<input style="flex:1; position:relative; top:-5px;" id="alignment" type="text" name="system.details.alignment" value="{{system.details.alignment}}" title="{{localize 'DND4EALTUS.Alignment'}}"  placeholder="{{localize 'DND4EALTUS.AlignmentUN'}}" onClick="this.select();"/>
-				</div>
-				<div >
-					<h4 hidden class="attribute-name box-title">{{localize 'DND4EALTUS.SpokenLanguage'}}</h4>
-					<a class="trait-selector" data-options="spoken" data-target="system.languages.spoken">
-						<span>{{ localize "DND4EALTUS.SpokenLanguage" }}:</span>
-						<i class="fas fa-edit"></i>
-					</a>
-					{{#each system.languages.spoken.selected as |v k|}}
-						<li class="tag {{k}}">{{v}}</li>
-					{{/each}}
-				</div>	
-			</div>
+			
 		</section>
+			
 	</section>
 	
 	<section class="npc-lower">
@@ -314,8 +308,8 @@
 			{{!-- Sheet Tab Navigation --}}
 			<nav class="sheet-tabs tabs" data-group="primary">
 				<a class="item" data-tab="biography">{{localize 'DND4EALTUS.Biography'}}</a>
-				<a class="item " data-tab="skills">{{localize 'DND4EALTUS.Skills'}}</a>
-				<a class="item " data-tab="powers">{{localize 'DND4EALTUS.Powers'}}</a>
+				<a class="item" data-tab="skills">{{localize 'DND4EALTUS.Skills'}}</a>
+				<a class="item" data-tab="powers">{{localize 'DND4EALTUS.Powers'}}</a>
 				<a class="item" data-tab="inventory">{{localize 'DND4EALTUS.Inventory'}}</a>
 				<a class="item" data-tab="features">{{localize 'DND4EALTUS.Feats'}}</a>
 				<a class="item" data-tab="effects">{{localize 'DND4EALTUS.Effects'}}</a>
@@ -329,20 +323,19 @@
 			</div>
 
 			{{!-- Skills Tab --}}
-			<div class="tab inventory" data-group="primary" data-tab="skills">
-				<ol class="items-list inventory-list" style="height: 100%;">
+			<div class="tab skills" data-group="primary" data-tab="skills">
+				<ol class="items-list inventory-list">
 					<section class="section section--skills">
 
 						{{#if system.advancedCals}}
 							{{#each system.skills as |skill s|}}
 							<div class="skill--block flexrow" data-skill="{{s}}">
-								<a class="training-toggle skill-training" title="{{skill.hover}}">{{{skill.icon}}}</a>
+								<a class="training-toggle skill-training" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
 								<h4 class="skill-name rollable">{{skill.label}}</h4>
-								<input type="hidden" name="system.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number">
+								<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
 								<label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
-								<!-- <a class="skill-mod skill-bonus" data-target="system.details" title="Skill Bonus">{{skill.sklBonusValue}}</a> -->
-								<label style="max-width: 70px; margin-left: 10px;">Base: 
-									<input class="skill-mod" style="color: #7a7971; max-width: 30px; text-align: left;" name="system.skills.{{s}}.base" value="{{skill.base}}" data-dtype="Number">
+								<label class="skill-base">Base 
+									<input class="skill-mod" name="system.skills.{{s}}.base" value="{{skill.base}}" data-dtype="Number">
 								</label>
 							</div>
 							{{/each}}
@@ -350,8 +343,8 @@
 							{{#each system.skills as |skill s|}}
 							<div class="skill--block flexrow" data-skill="{{s}}">
 								<h4 class="skill-name rollable">{{skill.label}}</h4>
-								<input type="hidden" name="system.skills.{{s}}.value" value="{{skill.value}}" data-dtype="Number">
-								<input class="skill-mod" style="color: #7a7971; max-width: 30px; text-align: left;" name="system.skills.{{s}}.base" value="{{skill.base}}" data-dtype="Number">
+								<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
+								<input class="skill-mod" name="system.skills.{{s}}.base" value="{{skill.base}}" data-dtype="Number">
 							</div>
 							{{/each}}
 						{{/if}}

@@ -1,0 +1,27 @@
+<li class="flexrow custom-skill-line">
+	<div>
+		<span>{{localize 'DND4EALTUS.SkillLabel'}}</span>
+		<input class="custom-skill-label" type="text" name="label" value="{{customSkill.label}}" data-dtype="String" style="width: 125px;"/>
+		
+		<span>{{localize 'DND4EALTUS.SkillID'}}</span>
+		<input class="custom-skill-id" type="text" name="id" value="{{customSkill.id}}" data-dtype="String" style="width: 105px;"/>
+		
+		<span>{{localize 'DND4EALTUS.Attribute'}}</span>
+		<select class="custom-skill-ability" name="ability">
+			{{#select customSkill.ability}}
+			<option value="str" >{{localize 'DND4EALTUS.AbilityStr'}}</option>
+			<option value="con" >{{localize 'DND4EALTUS.AbilityCon'}}</option>
+			<option value="dex" >{{localize 'DND4EALTUS.AbilityDex'}}</option>
+			<option value="int" >{{localize 'DND4EALTUS.AbilityInt'}}</option>
+			<option value="wis" >{{localize 'DND4EALTUS.AbilityWis'}}</option>
+			<option value="cha" >{{localize 'DND4EALTUS.AbilityCha'}}</option>
+			<option value="none" >{{localize 'DND4EALTUS.None'}}</option>
+			{{/select}}
+		</select>
+
+		<span>{{localize 'DND4EALTUS.SkillACPToggle'}}</span>
+		<input class="custom-skill-acp" type="checkbox" name="armourCheck" value="{{customSkill.armourCheck}}" data-dtype="Boolean">
+
+		<a class="custom-skill-control" custom-skill-delete data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>
+	</div>
+</li>

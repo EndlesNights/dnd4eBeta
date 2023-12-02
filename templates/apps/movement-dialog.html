@@ -1,59 +1,59 @@
 <form id="movement-dialog" class="dialog-content" onsubmit="event.preventDefault();">
 
 	<div class="form-group base" data-movement="base">
-		<span><b>{{system.movement.base.value}} {{localize 'DND4EALTUS.MovementUnit'}}</b> {{localize 'DND4EALTUS.MovementSpeedBase'}}:</span>
-		<input type="text" name="system.movement.base.base" value="{{system.movement.base.base}}" title="{{localize 'DND4EALTUS.MovementSpeedBase'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="system.details" title="{{localize 'DND4EALTUS.MovementSpeedBase'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.base.bonusValue}}</a>
-		<span style="max-width:40px; padding-right: 3px;">{{localize 'DND4EALTUS.Temp'}}:</span>
-		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="system.movement.base.temp" value="{{system.movement.base.temp}}" title="{{localize 'DND4EALTUS.MovementSpeedBase'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+		<span class="move-value"><strong>{{system.movement.base.value}} {{localize 'DND4EALTUS.MovementUnit'}}</strong> {{localize 'DND4EALTUS.MovementSpeedBase'}}:</span>
+		<input type="text" name="system.movement.base.base" value="{{system.movement.base.base}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedBase'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedBase'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.base.bonusValue}}</a>
+		<span class="temp-label">{{localize 'DND4EALTUS.Temp'}}:</span>
+		<input class="temp-value" type="text" name="system.movement.base.temp" value="{{system.movement.base.temp}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedBase'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 	</div>
 	<footer class="flexrow">
 		<span>{{localize 'DND4EALTUS.Armour'}} {{localize 'DND4EALTUS.ArmourMovePenelty'}}: {{system.movement.base.armour}}</span>
 	</footer>
 
-	<div class="form-group base"  data-movement="walk">
-		<span title="{{localize 'DND4EALTUS.MovementSpeedWalking'}}" style="margin-right: 4px;"><b>{{system.movement.walk.value}} {{localize 'DND4EALTUS.MovementUnit'}}</b> {{localize 'DND4EALTUS.MovementSpeedWalking'}}:</span>
-		<input type="text" name="system.movement.walk.formula" value="{{system.movement.walk.formula}}" title="{{localize 'DND4EALTUS.MovementSpeedWalking'}}" onClick="this.select();" placeholder="0"/>
-		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="system.details" title="{{localize 'DND4EALTUS.MovementSpeedWalking'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.walk.bonusValue}}</a>
-		<span style="max-width:40px; padding-right: 3px;">{{localize 'DND4EALTUS.Temp'}}:</span>
-		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="system.movement.walk.temp" value="{{system.movement.walk.temp}}" title="{{localize 'DND4EALTUS.MovementSpeedWalking'}} Speed" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+	<div class="form-group base" data-movement="walk">
+		<span class="move-value" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedWalking'}}"><strong>{{system.movement.walk.value}} {{localize 'DND4EALTUS.MovementUnit'}}</strong> {{localize 'DND4EALTUS.MovementSpeedWalking'}}:</span>
+		<input type="text" name="system.movement.walk.formula" value="{{system.movement.walk.formula}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedWalking'}}" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedWalking'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.walk.bonusValue}}</a>
+		<span class="temp-label">{{localize 'DND4EALTUS.Temp'}}:</span>
+		<input class="temp-value" type="text" name="system.movement.walk.temp" value="{{system.movement.walk.temp}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedWalking'}} Speed" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 	</div>
 
 	<div class="form-group base"  data-movement="run">
-		<span title="{{localize 'DND4EALTUS.MovementSpeedRunning'}}" style="margin-right: 4px;"><b>{{system.movement.run.value}} {{localize 'DND4EALTUS.MovementUnit'}}</b> {{localize 'DND4EALTUS.MovementSpeedRunning'}}:</span>
-		<input type="text" name="system.movement.run.formula" value="{{system.movement.run.formula}}" title="{{localize 'DND4EALTUS.MovementSpeedRunning'}}" onClick="this.select();" placeholder="0"/>
-		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="system.details" title="{{localize 'DND4EALTUS.MovementSpeedRunning'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.run.bonusValue}}</a>
-		<span style="max-width:40px; padding-right: 3px;">{{localize 'DND4EALTUS.Temp'}}:</span>
-		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="system.movement.run.temp" value="{{system.movement.run.temp}}" title="{{localize 'DND4EALTUS.MovementSpeedRunning'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+		<span class="move-value" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedRunning'}}"><strong>{{system.movement.run.value}} {{localize 'DND4EALTUS.MovementUnit'}}</strong> {{localize 'DND4EALTUS.MovementSpeedRunning'}}:</span>
+		<input type="text" name="system.movement.run.formula" value="{{system.movement.run.formula}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedRunning'}}" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedRunning'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.run.bonusValue}}</a>
+		<span class="temp-label">{{localize 'DND4EALTUS.Temp'}}:</span>
+		<input type="text" class="temp-value" name="system.movement.run.temp" value="{{system.movement.run.temp}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedRunning'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 	</div>
 
 	<div class="form-group base"  data-movement="charge">
-		<span title="Charge Movement Speed" style="margin-right: 4px;"><b>{{system.movement.charge.value}} {{localize 'DND4EALTUS.MovementUnit'}}</b> {{localize 'DND4EALTUS.MovementSpeedCharging'}}:</span>
-		<input type="text" name="system.movement.charge.formula" value="{{system.movement.charge.formula}}" title="{{localize 'DND4EALTUS.MovementSpeedCharging'}}" onClick="this.select();" placeholder="0"/>
-		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="system.details" title="{{localize 'DND4EALTUS.MovementSpeedCharging'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.charge.bonusValue}}</a>
-		<span style="max-width:40px; padding-right: 3px;">{{localize 'DND4EALTUS.Temp'}}:</span>
-		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="system.movement.charge.temp" value="{{system.movement.charge.temp}}" title="{{localize 'DND4EALTUS.MovementSpeedCharging'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+		<span class="move-value" data-tooltip="Charge Movement Speed"><strong>{{system.movement.charge.value}} {{localize 'DND4EALTUS.MovementUnit'}}</strong> {{localize 'DND4EALTUS.MovementSpeedCharging'}}:</span>
+		<input type="text" name="system.movement.charge.formula" value="{{system.movement.charge.formula}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedCharging'}}" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedCharging'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.charge.bonusValue}}</a>
+		<span class="temp-label">{{localize 'DND4EALTUS.Temp'}}:</span>
+		<input type="text" class="temp-value" name="system.movement.charge.temp" value="{{system.movement.charge.temp}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedCharging'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 	</div>
 
 	<div class="form-group base" data-movement="climb">
-		<span title="{{localize 'DND4EALTUS.MovementSpeedClimbing'}}" style="margin-right: 4px;"><b>{{system.movement.climb.value}} {{localize 'DND4EALTUS.MovementUnit'}}</b> {{localize 'DND4EALTUS.MovementSpeedClimbing'}}:</span>
-		<input type="text" name="system.movement.climb.formula" value="{{system.movement.climb.formula}}" title="{{localize 'DND4EALTUS.MovementSpeedClimbing'}}" onClick="this.select();" placeholder="0"/>
-		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="system.details" title="{{localize 'DND4EALTUS.MovementSpeedClimbing'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.climb.bonusValue}}</a>
-		<span style="max-width:40px; padding-right: 3px;">{{localize 'DND4EALTUS.Temp'}}:</span>
-		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="system.movement.climb.temp" value="{{system.movement.climb.temp}}" title="{{localize 'DND4EALTUS.MovementSpeedClimbing'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+		<span class="move-value" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedClimbing'}}"><strong>{{system.movement.climb.value}} {{localize 'DND4EALTUS.MovementUnit'}}</strong> {{localize 'DND4EALTUS.MovementSpeedClimbing'}}:</span>
+		<input type="text" name="system.movement.climb.formula" value="{{system.movement.climb.formula}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedClimbing'}}" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedClimbing'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.climb.bonusValue}}</a>
+		<span class="temp-label">{{localize 'DND4EALTUS.Temp'}}:</span>
+		<input type="text" class="temp-value" name="system.movement.climb.temp" value="{{system.movement.climb.temp}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedClimbing'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 	</div>
 	
 	<div class="form-group base"  data-movement="shift">
-		<span title="{{localize 'DND4EALTUS.MovementSpeedShifting'}}" style="margin-right: 4px;"><b>{{system.movement.shift.value}} {{localize 'DND4EALTUS.MovementUnit'}}</b> {{localize 'DND4EALTUS.MovementSpeedShifting'}}:</span>
-		<input type="text" name="system.movement.shift.formula" value="{{system.movement.shift.formula}}" title="{{localize 'DND4EALTUS.MovementSpeedShifting'}}" onClick="this.select();" placeholder="0"/>
-		<a class="move-bonus" style="max-width:60px; padding:0px 3px 0px 3px;" data-target="system.details" title="{{localize 'DND4EALTUS.MovementSpeedShifting'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.shift.bonusValue}}</a>
-		<span style="max-width:40px; padding-right: 3px;">{{localize 'DND4EALTUS.Temp'}}:</span>
-		<input type="text" style="max-width:30px; padding:0px 3px 0px 3px; text-align:center;" name="system.movement.shift.temp" value="{{system.movement.shift.temp}}" title="{{localize 'DND4EALTUS.MovementSpeedShifting'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+		<span class="move-value" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedShifting'}}"><strong>{{system.movement.shift.value}} {{localize 'DND4EALTUS.MovementUnit'}}</strong> {{localize 'DND4EALTUS.MovementSpeedShifting'}}:</span>
+		<input type="text" name="system.movement.shift.formula" value="{{system.movement.shift.formula}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedShifting'}}" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedShifting'}} {{localize 'DND4EALTUS.Bonus'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.movement.shift.bonusValue}}</a>
+		<span class="temp-label">{{localize 'DND4EALTUS.Temp'}}:</span>
+		<input type="text" class="temp-value" name="system.movement.shift.temp" value="{{system.movement.shift.temp}}" data-tooltip="{{localize 'DND4EALTUS.MovementSpeedShifting'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 	</div>
 
-	<label>{{ localize "DND4EALTUS.TraitSelectorSpecial" }}</label>
+	<move-value>{{ localize "DND4EALTUS.TraitSelectorSpecial" }}</move-value>
 	<input type="text" name="system.movement.custom" value="{{system.movement.custom}}" data-dtype="String"/>	
-	<textarea type="text" name="system.movement.notes" value="{{system.movement.notes}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none;" placeholder="{{localize 'DND4EALTUS.Notes'}}" contentEditable>{{system.movement.notes}}</textarea>
+	<textarea type="text" name="system.movement.notes" value="{{system.movement.notes}}" data-dtype="String" placeholder="{{localize 'DND4EALTUS.Notes'}}" contentEditable>{{system.movement.notes}}</textarea>
 
 	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
 </form>

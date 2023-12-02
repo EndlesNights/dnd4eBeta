@@ -1,7 +1,129 @@
 # Changelog
 
+## Version 0.4.33
+- Added in options to use `item`, `feat`, `power`, and `untyped` suffixes for specific bonuses many actor attributes. This should now be the primary keys used while setting up active effects.
+- Moved skill training tracking out of `skills#value` to `skills#training`
+- added `#skillTraining` to the actor template, which can be used to modify skills based on training level. The Jack of All Trades feat can be implemented now with a single effect attribute key of `system.skillTraining.untrained.feat` and a value of `2` 
+- fix minor issue on npc sheet #328
+- fix Bonus processing for v11 ActiveEffects [PR 329](https://github.com/EndlesNights/dnd4eAltus/pull/329) from [wigmeister2000](https://github.com/wigmeister2000)
+- Minor update to Steve!
+
+## Version 0.4.32
+- Fix actor sheet effects tab for v11 ActiveEffects transfer [PR 326](https://github.com/EndlesNights/dnd4eAltus/pull/326) from [wigmeister2000](https://github.com/wigmeister2000)
+- Fix to speed data-tooltip formating
+
+## Version 0.4.31
+- Additional effect transfer options and "To Chat" context option for items [PR 323](https://github.com/EndlesNights/dnd4eAltus/pull/323) from [wigmeister2000](https://github.com/wigmeister2000)
+
+## Version 0.4.30
+- await Effect Creation
+
+## Version 0.4.29
+- CN lang update
+- Improvements for Active effect statuses [PR 319](https://github.com/EndlesNights/dnd4eAltus/pull/319) from [FoxLee](https://github.com/FoxLee)
+- Fix chat card posting and effect transfer [PR 320](https://github.com/EndlesNights/dnd4eAltus/pull/320) from [wigmeister2000](https://github.com/wigmeister2000)
+- fix to user apply socket effects
+- minor CSS fix
+- NPC chat card template updates [PR 321](https://github.com/EndlesNights/dnd4eAltus/pull/321) from [FoxLee](https://github.com/FoxLee)
+
+
+## Version 0.4.28
+- custom skills now should be sorted alphabetically.
+- Added a tooltip to the new "show image" button on item's portrait.
+- added icon for unprepared powers.
+- [PR 317](https://github.com/EndlesNights/dnd4eAltus/pull/317) from [FoxLee](https://github.com/FoxLee)
+
+
+## Version 0.4.27
+- hot fix CSS issue where item equipment toggle was accidentally removed.
+
+## Version 0.4.26
+- Added descriptions to all status effects
+- Added Options for when Death Saves can reset, with default now correctly being short rests
+- Additional Effect Application to All Allies, All Enemies, or self dependent on hit/miss of other targets
+- fix some edge case issues were effects would not apply.
+- new effects created on objects will use the objects img for default image
+
+- [PR 316](https://github.com/EndlesNights/dnd4eAltus/pull/316) from [FoxLee](https://github.com/FoxLee)
+	- Darkmode
+	- template files cleaned up
+	- revised CSS files
+	- revised character sheet item description toggle to respect description/chat flavour/auto generate combination as per chat card generation. This prevents both the description and chat flavour being output when auto-generate cards is on.
+	- revised character and item sheets, I've updated the HTML fields to use ProseMirror as the editor. This is because TinyMCE uses iframes (which prevent styling) and therefore really messes up dark mode.
+
+	- disabled inputs show a "disabled" cursor on hover.
+	- NPC sheet revised upper section to better match the style of PC sheets and prioritise information used during combat. This includes converting the "advanced maths" checkbox to a button in the header.
+	- added translatable strings for the names of sheets and item types. Foundry was excepting these and defaulting to IDs when it didn't find them, which just made things seem a bit haphazard.
+
+## Version 0.4.25
+- [PR 314](https://github.com/EndlesNights/dnd4eAltus/pull/314) from [FoxLee](https://github.com/FoxLee)
+	- Restored lost hint text for how to select multiple damage types on ongoing damage.
+	- Fixed a bug reported on Discord by Milo & Marcloure: effects could sometimes be removed even on a failed save, if a saving throw bonus was present.
+	- Added the ability to use variables in "amount" value for ongoing damage/regen (issue #311).
+	- Updated the Manual & Help Compendium—mostly for the sake of adding a section about ongoing damage, but while I was there I made a bunch of smaller updates and typo fixes too. Please see the commit for more details!
+	- Removed (most) inline formatting from the Manual and added it as default journal CSS instead, with the goal of making the manual a lot more friendly to journal enhancements.
+	- Added a tooltip to the new "show image" button on an actor's portrait.
+
+## Version 0.4.24
+- hotfix [PR 312](https://github.com/EndlesNights/dnd4eAltus/pull/312) from [FoxLee](https://github.com/FoxLee)
+
+## Version 0.4.23
+- Added button that appears when hovering the image on a Player and NPC character sheet. This button opens ups up the image in a ImagePoput frame.
+- With at least observation permissions of an actor, be able to view item summary when clicking on name
+- Fixed error with ongoing damage [PR 310](https://github.com/EndlesNights/dnd4eAltus/pull/3108) from [FoxLee](https://github.com/FoxLee)
+
+## Version 0.4.22
+- Active Effect apply status effects correctly
+- Added addtional null checks into `turns.js`, so the turn tracker should no longer get stuck if an actor becomes unlinked from a combatant / token
+- Regeneration as DoTs + settable effect save DCs [PR 308](https://github.com/EndlesNights/dnd4eAltus/pull/308) from [FoxLee](https://github.com/FoxLee)
+
+## Version 0.4.21
+- Auto saves and DOTs [PR 304](https://github.com/EndlesNights/dnd4eAltus/pull/304) from [FoxLee](https://github.com/FoxLee)
+- added Right-CLick context menu to items on a character sheet, which allow for an number of options, including a easy duplicating.
+- added Right-Click context menu to active Effects on character sheet, which allow for an number of options, including a easy duplicating.
+- Fix minor bug where the CSS for the placeholder text of an unprepared powers charges was showing an incorrect color.
+- Fix an issue where an unprepared power would show "0/" charges even if the power did not have any charges
+- Fix an issue where items sheets would resize upon being moved around.
+- changed `target-id` to `data-target-id` as per proper html attribute naming convention 
+
+## Version 0.4.20
+- Fix to merge error where part of [PR 302](https://github.com/EndlesNights/dnd4eAltus/pull/302) from [FoxLee](https://github.com/FoxLee) was not merged correctly. (my bad -Endles)
+
+## Version 0.4.19
+- Added socket for users to delete active effects
+
+## Version 0.4.18
+- Automated saving throw dialogs [merge](https://github.com/EndlesNights/dnd4eAltus/pull/302) from [FoxLee](https://github.com/FoxLee)
+
+## Version 0.4.17
+- Change to how Skill Labels work, allowing for the value to be manly set or overridden on an individual actor.
+
+## Version 0.4.16
+- Added system support for custom skills
+- edit to remaining effect time which cause issues with other modules
+
+## Version 0.4.15
+- Input fields that are being modified by Active Effects are now disabled and will display a tool tip warning explaining why they are disabled
+- Added DocumentSheet4e which extended from DocumentSheet. Enabled the above mentioned input field locking with active effects for Document Sheets
+- Added a pointer to the encumbrance CSS, so it is more apparent that it may be clicked on.
+- Replaces all html "title" tags with "data-tooltip"
+- When hovering Hit Points, will show a cog icon to indicate that to users that clicking is a configurable options
+- Max HP input field should now lock when it is set to auto calculate.
+
+## Version 0.4.14
+- compendium links fix
+- simplify Attack Formulas preview in power cards.
+- allow for helper short hands to be used in effects formulas.
+- allow for helper short hands to be used in char roll formulas.
+
+## Version 0.4.13
+- Change to default NPC attack and damage formulas. Both modernized to use the global attack/damage bonuses of `@atkMod` and `@dmgMod`
+- added weaponBaseType to the suitable keywords used when apply effects. This allows for some feats that only apply to specific weapons.
+- moved move apply active effect to effects.js
+- Brazilian Portuguese from [PilotodeMouse](https://github.com/PilotodeMouse)
+
 ## Version 0.4.12
-- renamed `clickRollMessageDamageChatListener` function to `chatMessageListener` as it will be more genericly used.
+- renamed `clickRollMessageDamageChatListener` function to `chatMessageListener` as it will be more generically used.
 - moved the chat listener for the hover over and clicking of token names within attack result chat box out of their own wrapped listen into generic listener. This resolved an issue where the listener would not always be added correctly upon message creation. 
 
 ## Version 0.4.11

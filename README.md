@@ -1,13 +1,14 @@
 ![](https://img.shields.io/badge/Foundry-v10-informational)
 
 # DnD 4th Edition - Beta
-* **Foundry VTT Compatibility**: v10
+* **Foundry VTT Compatibility**: v11
 * **Author**: EndlesNights#9000
-* **Contributors**: [draconas1](https://github.com/draconas1), [FoxLee](https://github.com/FoxLee), [ahoward-cf](https://github.com/ahoward-cf), [Marcloure](https://github.com/Marcloure), [kyleady](https://github.com/kyleady), [TheGiddyLimit](https://github.com/TheGiddyLimit), [BadgerKing7](https://github.com/BadgerKing7), [mncimino1993](https://github.com/mncimino1993), [zarick1342](https://github.com/zarick1342)
+* **Contributors**: [draconas1](https://github.com/draconas1), [FoxLee](https://github.com/FoxLee), [ahoward-cf](https://github.com/ahoward-cf), [Marcloure](https://github.com/Marcloure), [kyleady](https://github.com/kyleady), [TheGiddyLimit](https://github.com/TheGiddyLimit), [BadgerKing7](https://github.com/BadgerKing7), [mncimino1993](https://github.com/mncimino1993), [zarick1342](https://github.com/zarick1342), [wigmeister2000](https://github.com/wigmeister2000)
 
 ## **Language Support** 
 - Français, courtoisie de [Gilphe](https://github.com/Gilphe)
 - 中文, 由 扶摇
+- Portugues do Brasil, cortesia de [PilotodeMouse](https://github.com/PilotodeMouse)
 
 
 ## Description

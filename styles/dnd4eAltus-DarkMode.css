@@ -1,0 +1,261 @@
+
+/** GLOBAL **/
+
+:root{
+	--color-bg-btn-minor-inactive:rgba(255,255,255,0.05);
+	--color-bg-btn-minor-active:rgba(255,255,255,0.05);
+	--color-bg-input:rgba(255,255,255,0.05);
+	--color-bg-option:#49494b;
+	--color-text-light-primary:#c9c7b8;
+	--color-text-light-heading:#e9e7d6;
+	--color-text-light-highlight:#f7f5e8;
+	--color-text-good:#0fe75f;
+	--color-text-bad:#ff6060;
+	--color-text-dark-primary:var(--color-text-light-primary);
+   --color-text-dark-secondary:var(--color-text-light-primary);
+   --color-text-dark-header:var(--color-text-light-heading);
+}
+input::-webkit-input-placeholder{
+	opacity:0.4;
+}
+input::-moz-placeholder{
+	opacity:0.4;
+}
+input:-ms-input-placeholder{
+	opacity:0.4;
+}
+input::-ms-input-placeholder{
+	opacity:0.4;
+}
+input::placeholder,.placeholder::after{
+	opacity:0.4;
+}
+.chat-message,
+.window-app .window-content{
+	background-image:url('../icons/ui/parchment-dark.png');
+}
+input,
+input[type="text"],input[type="number"],
+input[type="password"],input[type="date"],
+input[type="time"],input[type="search"]{
+	background:var(--color-bg-input);
+	color:var(--color-text-light-highlight);
+}
+option, optgroup,
+textarea{
+	color:var(--color-text-light-primary);
+}
+input[type="checkbox"]{
+	-webkit-filter:invert(100%);
+	filter:invert(100%);
+	--color-checkbox-checked:#303030;
+	opacity:0.3;
+	border:unset;
+}
+input[type="checkbox"]:checked{
+	-webkit-filter:unset;
+	filter:unset;
+	opacity:0.8;
+}
+select,button{
+	color:var(--color-text-light-primary);
+}
+select:disabled,
+button:disabled{
+	opacity:0.5;
+}
+select,select[multiple],
+.multiselect .toggle{
+	background:#49494b;
+}
+button{
+	background:var(--color-bg-btn-minor-inactive);
+}
+form button{
+	background:var(--color-bg-btn-minor-inactive);
+	border:2px groove rgba(0,0,0,0.4);
+}
+.editor-edit{
+	background:var(--color-bg-btn-minor-inactive);
+}
+a:hover{
+}
+input[type="color"][data-edit]{
+	border:2px groove rgba(0,0,0,0.4);
+}
+
+
+/** FOUNDRY CORE **/
+#chat-form textarea{
+	background:rgba(255,255,255,0.05);
+}
+#chat-controls .roll-type-select{
+	background:rgba(255,255,255,0.05);
+}
+#module-management .package-list .package-title,
+#module-management .package-list .package-metadata,
+#module-management .package-list .package-description{
+	color:var(--color-text-light-primary);
+}
+.chat-message .message-header{
+}
+.directory .directory-header .header-search input{
+	background:rgba(255,255,255,0.05);
+}
+#keybindings .binding .key {
+	background:rgba(255,255,255,0.05);
+}
+#keybindings .binding .key.uneditable{
+	background:rgba(255,255,255,0.05);
+	opacity:0.4;
+}
+form .notes,form .hint{
+}
+#tours-management .tour .status{
+	color:var(--color-text-light-4);
+}
+#tours-management .tour.completed label{
+	color:var(--color-text-light-6);
+}
+#permissions-config .hint{
+}
+.dialog .dialog-buttons button,
+.dialog .dialog-buttons button.default{
+	border:2px groove rgba(0,0,0,0.4);
+	background:var(--color-bg-btn-minor-inactive);
+}
+form .form-group label,
+form .form-group.slim .form-fields > label,
+form h1.form-header,
+form h2.form-header,
+form h3.form-header{
+	color:var(--color-text-light-heading);
+}
+
+/** EDITORS **/
+
+.prosemirror{
+	--color-control-bg:#3a3b36;
+	--color-hover-bg:#3a3b36;
+}
+.prosemirror menu button:hover,
+.prosemirror menu button.active{
+	color:var(--color-text-light-primary);
+}
+.prosemirror.editing-source textarea{
+	color:var(--color-text-light-primary);
+}
+
+/** SHEETS **/
+
+.dnd4eAltus{
+	--border-engraved:2px groove rgba(0,0,0,0.4);
+	--border-normal:1px solid #6f6c66;
+	--border-heavy:3px solid #6f6c66;
+	--border-faint:1px solid rgba(111,108,102,0.075);
+	--color-bg-btn-minor-inactive:rgba(255,255,255,0.05);
+	--color-bg-btn-minor-active:rgba(255,255,255,0.05);
+	--color-bg-input:rgba(255,255,255,0.05);
+	--color-bg-option:rgba(255,255,255,0.05);
+	--color-bg-select:rgba(255,255,255,0.05);
+	--gradient-4e:linear-gradient(90deg, #262626, #474742);
+	--color-label:var(--color-text-light-primary);
+}
+.dnd4eAltus.sheet .editable .rollable:hover,
+.rollable:hover{
+	color:#fff;
+}
+.dnd4eAltus.sheet select{
+	background:#49494b;
+}
+.dnd4eAltus.sheet .items-list .item .item-uses input{
+	width:24px;
+	text-align:right;
+	color:var(--color-text-light-highlight);
+}
+.dnd4eAltus.sheet .editable img[src$="svg"].rollable:hover,
+img[src$="svg"].rollable:hover{
+	-webkit-filter:brightness(255);
+	        filter:brightness(255);
+}
+.dnd4eAltus.sheet .items-list .item .item-image.rollable:hover,
+.dnd4eAltus.sheet .items-list .item .rollable .item-image:hover{
+	background-size:contain;
+	-webkit-filter:brightness(255);
+	        filter:brightness(255);
+	
+}
+.dnd4eAltus.sheet .npc .sheet-header .automath img{
+	-webkit-filter:unset;
+	        filter:unset;
+}
+.active-effect-sheet .effect-dot:not(:last-child),
+.active-effect-sheet .effect-status:not(:last-child),
+.active-effect-sheet .effect-change:not(:last-child){
+	border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+/** CHAT **/
+
+.dnd4eAltus.chat-card .card-buttons span{
+	border-color:var(--color-border-light-tertiary);
+}
+a.content-link, a.inline-roll{
+	background:var(--color-bg-input);
+	border-color:var(--color-border-light-tertiary);	
+}
+.chat-message.whisper{
+	background:rgba(219,219,251,0.23);
+}
+
+
+/** JOURNALS **/
+
+.sheet.journal-entry .journal-entry-content{
+	background-image:url('../icons/ui/parchment-dark.png');
+}
+.journal-page-content table tfoot,
+.editor-content[data-engine="prosemirror"] table tfoot,
+.editor-enriched table tfoot{
+	font-size:80%;
+	background-color:rgba(255,255,255,0.05);
+}
+
+
+/** MISC DIALOGUES **/
+
+input[type="text"].hp-con{
+	border-bottom:1px dotted rgba(255,255,255,0.5);
+}
+
+
+/** THIRD PARTY **/
+
+.condition-lab li.row{
+	background:var(--color-bg-input);
+}
+.CodeMirror{
+	background:var(--color-bg-input);
+	color:#fff;
+}
+.cm-s-default .cm-qualifier{
+   color:#cfbebe;
+}
+.cm-s-default .cm-tag{
+   color:#62e64c;
+}
+.cm-s-default .cm-string{
+   color:#f35757;
+}
+.cm-s-default .cm-keyword{
+   filter:#ec6aff;
+}
+.cm-s-default .cm-number{
+   color:#53d29f;
+}
+.cm-s-default .cm-atom{
+   color:#a699ff;
+}
+.CodeMirror-gutters{
+	background:var(--color-bg-input);
+}

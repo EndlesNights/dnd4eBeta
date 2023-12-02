@@ -1,7 +1,8 @@
-import { d20Roll } from "../dice.js";
+import { d20Roll, damageRoll } from "../dice.js";
 import { DND4EALTUS } from "../config.js";
 import { Helper } from "../helper.js"
 import AbilityTemplate from "../pixi/ability-template.js";
+import { SaveThrowDialog } from "../apps/save-throw.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -23,7 +24,6 @@ export class Actor4e extends Actor {
 				this.system.powerGroupTypes = `usage`;
 			}
 		}
-
 	}
 
 	/** @override */
@@ -71,6 +71,12 @@ export class Actor4e extends Actor {
 		this._displayScrollingDamage(options.dhp);
 	}
 
+	/** Get all ActiveEffects stored in the actor or transferred from items */
+	getActiveEffects() {
+		const effects = this.effects.contents; // Effects stored in actor
+		const transferred = this.items.map(item => item.effects.filter(e => e.transfer)).flat(); // Stored in items
+		return effects.concat(transferred);
+	}
 
 	/* --------------------------------------------- */
 
@@ -174,13 +180,24 @@ export class Actor4e extends Actor {
 		const system = this.system;
 
 		this.prepareDerivedData();
+		this.defaultSecondWindEffect();
 		
 		//HP auto calc
 		if(system.attributes.hp.autototal)
 		{
-			system.attributes.hp.max = system.attributes.hp.perlevel * (system.details.level - 1) + system.attributes.hp.starting + system.attributes.hp.feat + system.attributes.hp.misc + system.abilities.con.value;
+			system.attributes.hp.max = system.attributes.hp.perlevel * (system.details.level - 1) + system.attributes.hp.starting + system.attributes.hp.misc + system.abilities.con.value;
+			system.attributes.hp.max += system.attributes.hp.feat || 0;
+			system.attributes.hp.max += system.attributes.hp.item || 0;
+			system.attributes.hp.max += system.attributes.hp.power || 0;
+			system.attributes.hp.max += system.attributes.hp.untyped || 0;
 		}
 		
+		// Healing Surges
+		system.details.surges.value += system.details.surges.feat || 0;
+		system.details.surges.value += system.details.surges.item || 0;
+		system.details.surges.value += system.details.surges.power || 0;
+		system.details.surges.value += system.details.surges.untyped || 0;
+
 		//Set Health related values
 		if(!(system.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeBon.bonus[0]))) {
 			for( const b of system.details.surgeBon.bonus) {
@@ -195,6 +212,10 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		system.details.surgeBon.value += system.details.surgeBon.feat || 0;
+		system.details.surgeBon.value += system.details.surgeBon.item || 0;
+		system.details.surgeBon.value += system.details.surgeBon.power || 0;
+		system.details.surgeBon.value += system.details.surgeBon.untyped || 0;
 		
 		if(!(system.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(system.details.secondwindbon.bonus[0]))) {
 			for( const b of system.details.secondwindbon.bonus) {
@@ -209,6 +230,10 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		system.details.secondwindbon.value += system.details.secondwindbon.feat || 0;
+		system.details.secondwindbon.value += system.details.secondwindbon.item || 0;
+		system.details.secondwindbon.value += system.details.secondwindbon.power || 0;
+		system.details.secondwindbon.value += system.details.secondwindbon.untyped || 0;
 		
 		system.details.bloodied = Math.floor(system.attributes.hp.max / 2);
 		system.details.surgeValue = Math.floor(system.details.bloodied / 2) + system.details.surgeBon.value;
@@ -231,7 +256,12 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		system.details.surgeEnv.value += system.details.surgeEnv.feat || 0;
+		system.details.surgeEnv.value += system.details.surgeEnv.item || 0;
+		system.details.surgeEnv.value += system.details.surgeEnv.power || 0;
+		system.details.surgeEnv.value += system.details.surgeEnv.untyped || 0;
 
+		//Death Saving Throw
 		if(!(system.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(system.details.deathsavebon.bonus[0]))) {
 			for( const b of system.details.deathsavebon.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
@@ -245,6 +275,10 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		system.details.deathsavebon.value += system.details.deathsavebon.feat || 0;
+		system.details.deathsavebon.value += system.details.deathsavebon.item || 0;
+		system.details.deathsavebon.value += system.details.deathsavebon.power || 0;
+		system.details.deathsavebon.value += system.details.deathsavebon.untyped || 0;
 
 		if(!(system.details.saves.bonus.length === 1 && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
 			for( const b of system.details.saves.bonus) {
@@ -259,6 +293,10 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		system.details.saves.value += system.details.saves.feat || 0;
+		system.details.saves.value += system.details.saves.item || 0;
+		system.details.saves.value += system.details.saves.power || 0;
+		system.details.saves.value += system.details.saves.untyped || 0;
 		
 		//Weight & Encumbrance
 		system.encumbrance = this._computeEncumbrance(actorData.system);
@@ -313,7 +351,7 @@ export class Actor4e extends Actor {
 			this.calcDefenceStatsCharacter(system);
 		}
 
-		//calc init
+		//calculate initiative
 		let initBonusValue = 0;
 		if(!game.settings.get("dnd4eAltus", "halfLevelOptions")){
 			initBonusValue += Math.floor(system.details.level / 2);
@@ -340,7 +378,11 @@ export class Actor4e extends Actor {
 		} else {
 			system.attributes.init.value = system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod + initBonusValue : initBonusValue;
 		}
-		
+		system.attributes.init.value += system.attributes.init.feat|| 0;
+		system.attributes.init.value += system.attributes.init.item|| 0;
+		system.attributes.init.value += system.attributes.init.power || 0;
+		system.attributes.init.value += system.attributes.init.untyped || 0;
+
 		if(system.attributes.init.value > 999)
 			system.attributes.init.value = 999;
 		
@@ -366,7 +408,6 @@ export class Actor4e extends Actor {
 			system.movement.base.armour -= absMovePen;
 		}
 		system.movement.base.bonusValue = baseMoveBonusValue;
-
 		
 		let walkBonusValue = system.movement.walk.bonusValue || 0;
 		if(!(system.movement.walk.bonus.length === 1 && jQuery.isEmptyObject(system.movement.walk.bonus[0]))) {
@@ -449,34 +490,58 @@ export class Actor4e extends Actor {
 		system.movement.shift.bonusValue = shiftBonusValue;	
 
 		system.movement.base.value = system.movement.base.base +  baseMoveBonusValue + system.movement.base.temp;
+		system.movement.base.value += system.movement.base.feat || 0;
+		system.movement.base.value += system.movement.base.item || 0;
+		system.movement.base.value += system.movement.base.power || 0;
+		system.movement.base.value += system.movement.base.untyped || 0;
 		
 		let walkForm = eval(Helper.replaceData(system.movement.walk.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.walk.value += walkForm + walkBonusValue + system.movement.base.temp;
+		system.movement.walk.value += system.movement.walk.feat || 0;
+		system.movement.walk.value += system.movement.walk.item || 0;
+		system.movement.walk.value += system.movement.walk.power || 0;
+		system.movement.walk.value += system.movement.walk.untyped || 0;
 		
 		if (system.movement.walk.value < 0)
 			system.movement.walk.value = 0;
 		
 		let runForm = eval(Helper.replaceData(system.movement.run.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.run.value = runForm + runBonusValue + system.movement.run.temp;
+		system.movement.run.value += system.movement.run.feat || 0;
+		system.movement.run.value += system.movement.run.item || 0;
+		system.movement.run.value += system.movement.run.power || 0;
+		system.movement.run.value += system.movement.run.untyped || 0;
 		
 		if (system.movement.run.value < 0)
 			system.movement.run.value = 0;
 
 		let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge.temp;
+		system.movement.charge.value += system.movement.charge.feat || 0;
+		system.movement.charge.value += system.movement.charge.item || 0;
+		system.movement.charge.value += system.movement.charge.power || 0;
+		system.movement.charge.value += system.movement.charge.untyped || 0;
 		
 		if (system.movement.charge.value < 0)
 			system.movement.charge.value = 0;
 
 		let climbForm = eval(Helper.replaceData(system.movement.climb.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb.temp;
+		system.movement.climb.value += system.movement.climb.feat || 0;
+		system.movement.climb.value += system.movement.climb.item || 0;
+		system.movement.climb.value += system.movement.climb.power || 0;
+		system.movement.climb.value += system.movement.climb.untyped || 0;
 		
 		if (system.movement.climb.value < 0)
 			system.movement.climb.value = 0;
 		
 		let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
 		system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift.temp;;
-		
+		system.movement.shift.value += system.movement.shift.feat || 0;
+		system.movement.shift.value += system.movement.shift.item || 0;
+		system.movement.shift.value += system.movement.shift.power || 0;
+		system.movement.shift.value += system.movement.shift.untyped || 0;
+
 		if (system.movement.shift.value < 0)
 			system.movement.shift.value = 0;
 			
@@ -518,7 +583,7 @@ export class Actor4e extends Actor {
 			}
 
 			mod.bonusValue = modifierBonusValue;
-			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.race + modifierBonusValue + (mod.armourPen || 0);
+			mod.value += mod.class + mod.feat + mod.item + mod.power + (mod.untyped) + mod.race + modifierBonusValue + (mod.armourPen || 0);
 			mod.label = game.i18n.localize(DND4EALTUS.modifiers[id]);
 		}
 		
@@ -546,13 +611,48 @@ export class Actor4e extends Actor {
 			}
 			res.resBonusValue = resBonusValue;
 			res.value += res.armour + resBonusValue;
+
+			res.value += res.feat || 0;
+			res.value += res.item || 0;
+			res.value += res.power || 0;
+			res.value += res.untyped || 0;
+
 			res.label = game.i18n.localize(DND4EALTUS.damageTypes[id]); //.localize("");
 		}
 		
 		//Magic Items
 		system.magicItemUse.perDay = Math.clamped(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
-
 	}
+
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Initializes the default ActiveEffect for SecondWind on a character.
+	 */
+	defaultSecondWindEffect(){
+		if(this.system.details.secondwindEffect && Object.keys(this.system.details.secondwindEffect).length){
+			return;
+		}
+		const secondwindEffect = {
+			name: game.i18n.localize("DND4EALTUS.SecondWind"),
+			icon: "icons/magic/life/heart-glowing-red.webp",
+			origin: this.uuid,
+			disabled:false,
+			description: game.i18n.localize("DND4EALTUS.SecondWindEffect"),
+			changes: [
+				{key: "system.defences.ac.value", mode: 2, value: 2},
+				{key: "system.defences.fort.value", mode: 2, value: 2},
+				{key: "system.defences.ref.value", mode: 2, value: 2},
+				{key: "system.defences.wil.value", mode: 2, value: 2},
+			],
+			flags:{dnd4eAltus:{effectData:{durationType:"startOfUserTurn"}}}
+		};
+
+		this.system.details.secondwindEffect = secondwindEffect;
+	}
+
+	/* -------------------------------------------- */
 
 	calcDefenceStatsCharacter(data) {		
 		for (let [id, def] of Object.entries(data.defences)) {
@@ -590,15 +690,17 @@ export class Actor4e extends Actor {
 				}
 				def.armour += i.system.armour[id];
 			}
-			// if(def.base == undefined){
-			// 	def.base = 10;
-			// 	this.update({[`system.defences[${def}].base`]: 10 });
-			// }
+
 			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-			if(game.settings.get("dnd4eAltus", "halfLevelOptions")) {
-				def.value += modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;
-			} else {
-				def.value += modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);			
+
+			def.value += modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
+			def.value += def.feat|| 0;
+			def.value += def.item|| 0;
+			def.value += def.power || 0;
+			def.value += def.untyped || 0;
+
+			if(!game.settings.get("dnd4eAltus", "halfLevelOptions")) {
+				def.value += Math.floor(data.details.level / 2);
 			}
 		}
 	}
@@ -645,20 +747,25 @@ export class Actor4e extends Actor {
 			}
 			if(data.advancedCals){
 				let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
-				if(game.settings.get("dnd4eAltus", "halfLevelOptions")) {
-					def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue;
-				} else {
-					def.value = def.base + modBonus + def.armour + def.class + def.feat + def.enhance + def.temp + defBonusValue + Math.floor(data.details.level / 2);
+
+				def.value += def.base + modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
+				if(!game.settings.get("dnd4eAltus", "halfLevelOptions")) {
+					def.value += Math.floor(data.details.level / 2);
 				}
 				
 			} else {
 				def.value = def.base;		
 			}
+
+			def.value += def.feat|| 0;
+			def.value += def.item|| 0;
+			def.value += def.power || 0;
+			def.value += def.untyped || 0;
 		}
 	}
 
 	calcSkillCharacter(system){
-		for (let [id, skl] of Object.entries(system.skills)) {
+		for (const [id, skl] of Object.entries(system.skills)) {
 			skl.value = parseFloat(skl.value || 0);
 
 			let sklBonusValue = 0;
@@ -702,20 +809,50 @@ export class Actor4e extends Actor {
 				}
 			}
 
-			// Compute modifier
-			skl.mod = system.abilities[skl.ability].mod;			
-			if(game.settings.get("dnd4eAltus", "halfLevelOptions")) {
-				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-			} else {
-				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty + Math.floor(system.details.level / 2);
+			let trainingBonus = 0;
+			let featBonus = 0;
+			let itemBonus = 0;
+			let powerBonus = 0;
+			switch (skl.training){
+				case 8:
+					trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
+					featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat);
+					itemBonus = Math.max(system.skillTraining.expertise.item, skl.item);
+					powerBonus = Math.max(system.skillTraining.expertise.power, skl.power);
+					break;
+				case 5:
+					trainingBonus = system.skillTraining.trained.value + system.skillTraining.trained.untyped;
+					featBonus = Math.max(system.skillTraining.trained.feat, skl.feat);
+					itemBonus = Math.max(system.skillTraining.trained.item, skl.item);
+					powerBonus = Math.max(system.skillTraining.trained.power, skl.power);
+					break;
+				case 0:
+					trainingBonus = system.skillTraining.untrained.value + system.skillTraining.untrained.untyped;
+					featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat);
+					itemBonus = Math.max(system.skillTraining.untrained.item, skl.item);
+					powerBonus = Math.max(system.skillTraining.untrained.power, skl.power);
 			}
-			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
 
+			// Compute modifier
+			skl.mod = system.abilities[skl.ability].mod;
+
+			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
+			skl.total += featBonus || 0;
+			skl.total += itemBonus || 0;
+			skl.total += powerBonus || 0;
+			skl.total += skl.untyped || 0;
+			skl.total += trainingBonus;
+
+			if(!game.settings.get("dnd4eAltus", "halfLevelOptions")) {
+				skl.total += Math.floor(system.details.level / 2);
+			}
+		
+			skl.label = skl.label? skl.label : game.i18n.localize(DND4EALTUS.skills[id]);
 		}
 	}
 
-	calcSkillNPC(data){
-		for (let [id, skl] of Object.entries(data.skills)) {
+	calcSkillNPC(system){
+		for (let [id, skl] of Object.entries(system.skills)) {
 			skl.value = parseFloat(skl.value || 0);
 
 			let sklBonusValue = 0;
@@ -726,7 +863,7 @@ export class Actor4e extends Actor {
 						sklBonusValue += parseInt(b.value);
 					}
 					else if(b.active){
-						let val = Helper.replaceData(b.value,data)
+						let val = Helper.replaceData(b.value,system)
 						if(Helper._isNumber(val)){
 							sklBonusValue += parseInt(val);
 						}
@@ -758,18 +895,49 @@ export class Actor4e extends Actor {
 			}
 
 			// Compute modifier
-			skl.mod = data.abilities[skl.ability].mod;
-			if(data.advancedCals){
-				if(game.settings.get("dnd4eAltus", "halfLevelOptions")) {
-					skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-				} else {
-					skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty + Math.floor(data.details.level / 2);
+			skl.mod = system.abilities[skl.ability].mod;
+			if(system.advancedCals){
+				
+				let trainingBonus = 0;
+				let featBonus = 0;
+				let itemBonus = 0;
+				let powerBonus = 0;
+				switch (skl.training){
+					case 8:
+						trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
+						featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat);
+						itemBonus = Math.max(system.skillTraining.expertise.item, skl.item);
+						powerBonus = Math.max(system.skillTraining.expertise.power, skl.power);
+						break;
+					case 5:
+						trainingBonus = system.skillTraining.trained.value + system.skillTraining.trained.untyped;
+						featBonus = Math.max(system.skillTraining.trained.feat, skl.feat);
+						itemBonus = Math.max(system.skillTraining.trained.item, skl.item);
+						powerBonus = Math.max(system.skillTraining.trained.power, skl.power);
+						break;
+					case 0:
+						trainingBonus = system.skillTraining.untrained.value + system.skillTraining.untrained.untyped;
+						featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat);
+						itemBonus = Math.max(system.skillTraining.untrained.item, skl.item);
+						powerBonus = Math.max(system.skillTraining.untrained.power, skl.power);
 				}
+
+				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
+				skl.total += featBonus || 0;
+				skl.total += itemBonus || 0;
+				skl.total += powerBonus || 0;
+				skl.total += skl.untyped || 0;
+				skl.total += trainingBonus;
+	
+				if(!game.settings.get("dnd4eAltus", "halfLevelOptions")) {
+					skl.total += Math.floor(system.details.level / 2);
+				}
+
 			} else {
 				skl.total = skl.base;
 			}
 
-			skl.label = game.i18n.localize(DND4EALTUS.skills[id]);
+			skl.label = skl.label? skl.label : game.i18n.localize(DND4EALTUS.skills[id]);
 		}
 	}
 
@@ -1007,7 +1175,15 @@ export class Actor4e extends Actor {
 	}
 
 	async rollSave(event, options){
-		let message = `${game.i18n.localize("DND4EALTUS.RollSave")} ${options.dc || 10}`;
+		//let message = `${game.i18n.localize("DND4EALTUS.RollSave")} ${options.dc || 10}`;
+		
+		let message =  `(${game.i18n.localize("DND4EALTUS.AbbreviationDC")} ${options.dc || 10})`;
+		if(options.effectSave){
+			message = `${game.i18n.localize("DND4EALTUS.SaveVs")} <strong>${this.effects.get(options.effectId).name}</strong> ${message}`;
+		}else{
+			message = `${game.i18n.localize("DND4EALTUS.RollSave")} ${message}`;
+		}
+		
 		const parts = [this.system.details.saves.value];
 		if (options.save) {
 			parts.push(options.save)
@@ -1028,9 +1204,12 @@ export class Actor4e extends Actor {
 		rollConfig.critical = options.dc - this.system.details.saves.value - options.save || 10;
 		rollConfig.fumble = options.dc -1 - this.system.details.saves.value - options.save || 9;
 		
+		const saveDC = options.dc || 10;
 		const r = await d20Roll(rollConfig);
 
-		if(options.effectSave && r.total >= rollConfig.critical){
+		/* Changed the roll comparison to DC from rollConfig.critical, to fix discrepancy 
+		between success/fail and effect removal when the actor has a save bonus  */
+		if(options.effectSave && r.total >= saveDC){
 			await this.effects.get(options.effectId).delete();
 		}
 	}
@@ -1080,7 +1259,7 @@ export class Actor4e extends Actor {
 		}
 		console.log(roll.total)
 		console.log(rollConfig.critical)
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
 	async shortRest(event, options){
@@ -1113,18 +1292,16 @@ export class Actor4e extends Actor {
 				console.log(`healamount:${healamount}`)
 			}
 
-			updateData[`system.attributes.hp.value`] = Math.min(
-				(this.system.attributes.hp.value + healamount),
-				this.system.attributes.hp.max
-			);
+			if (healamount){
+			    updateData[`system.attributes.hp.value`] = Math.min(
+				    (Math.max(0, this.system.attributes.hp.value) + healamount),
+			    	this.system.attributes.hp.max
+			    );
+			}
 		
 			if(this.system.details.surges.value > 0)
 				updateData[`system.details.surges.value`] = this.system.details.surges.value - options.surge;
 			
-		}
-		else if(options.surge == 0 && this.system.attributes.hp.value <= 0)
-		{
-			updateData[`system.attributes.hp.value`] = 1;
 		}
 		
 		if(!this.system.attributes.hp.temprest)
@@ -1143,7 +1320,7 @@ export class Actor4e extends Actor {
 			ChatMessage.create({
 				user: game.user.id,
 				speaker: {actor: this, alias: this.name},
-				content: options.surge >= 1 ? `${this.name} ${game.i18n.localize('DND4EALTUS.ShortRestChat')}, ${game.i18n.localize('DND4EALTUS.Spending')} ${options.surge} ${game.i18n.localize('DND4EALTUS.SurgesSpendRegain')} ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} ${game.i18n.localize('DND4EALTUS.HPShort')}.`
+				content: options.surge >= 1 ? `${this.name} ${game.i18n.localize('DND4EALTUS.ShortRestChat')}, ${game.i18n.localize('DND4EALTUS.Spending')} ${options.surge} ${game.i18n.localize('DND4EALTUS.SurgesSpendRegain')} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize('DND4EALTUS.HPShort')}.`
 					: `${this.name} ${game.i18n.localize('DND4EALTUS.ShortRestChat')}`
 				
 			});				
@@ -1155,16 +1332,22 @@ export class Actor4e extends Actor {
 			}
 		}
 
+
+		if(!game.settings.get("dnd4eAltus", "deathSaveRest")){
+			updateData[`system.details.deathsavefail`] = 0;
+		}
+
 		// console.log(updateData[`system.attributes.hp.value`]);
 		// console.log(this.system.attributes.hp.value);
 
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
 	// also known as the Extended Rest
 	async longRest(event, options){
 		const updateData = {};
 		
+		// Check if the Extended Rest is in a "Hospitable Environment" or an area of "Environmental Danger"
 		if(options.envi == "false")
 		{
 			if(this.system.details.surgeEnv.value > this.system.details.surges.max)
@@ -1176,6 +1359,10 @@ export class Actor4e extends Actor {
 				updateData[`system.details.surges.value`] = this.system.details.surges.max - this.system.details.surgeEnv.value;
 				updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max;
 			}
+
+			if (game.settings.get("dnd4eAltus", "deathSaveRest") <= 1){
+				updateData[`system.details.deathsavefail`] = 0;
+			}
 		}
 		else
 		{
@@ -1184,10 +1371,13 @@ export class Actor4e extends Actor {
 			
 			updateData[`system.details.surgeEnv.value`] = 0;
 			updateData[`system.details.surgeEnv.bonus`] = [{}];
+
+			if(game.settings.get("dnd4eAltus", "deathSaveRest") <= 2){
+				updateData[`system.details.deathsavefail`] = 0;
+			}
 		}
 
 		updateData[`system.attributes.temphp.value`] = "";
-		updateData[`system.details.deathsavefail`] = 0;
 		updateData[`system.actionpoints.value`] = 1;
 		updateData[`system.magicItemUse.milestone`] = 0;
 		updateData[`system.magicItemUse.dailyuse`] = this.system.magicItemUse.perDay;
@@ -1215,9 +1405,16 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		this.update(updateData);
+		await this.update(updateData);
 	}
 
+	/* -------------------------------------------- */
+
+	/**
+	 * Appying Second Wind effect to actor.
+	 * @param {MouseEvent} event	The originating click event
+	 * @param {object} options		Options which can hold addtional bonuses
+	 */
 	async secondWind(event, options){
 		let r = await Helper.rollWithErrorHandling(options.bonus, { errorMessageKey: "DND4EALTUS.InvalidHealingBonus"})
 
@@ -1236,29 +1433,43 @@ export class Actor4e extends Actor {
 
 		updateData[`system.details.secondwind`] = true;
 		
-		if(this.system.details.surges.value > 0)
+		if(this.system.details.surges.value > 0){
 			updateData[`system.details.surges.value`] = this.system.details.surges.value - 1;
-		
-			let extra = "";
-			if (this.system.details.secondwindbon.custom) {
-				extra = this.system.details.secondwindbon.custom;
-				extra = extra.replace(/;/g,'</li><li>');
-				extra = "<li>" + extra + "</li>";
-			}
-			ChatMessage.create({
-				user: game.user.id,
-				speaker: {actor: this, alias: this.name},
-				// flavor: restFlavor,
-				content: `${this.name} ${game.i18n.localize("DND4EALTUS.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value)} ${game.i18n.localize("DND4EALTUS.HPShort")} ${game.i18n.localize("DND4EALTUS.SecondWindChatEffect")}
-					<ul>
-						<li>${game.i18n.localize("DND4EALTUS.SecondWindEffect")}</li>
-						${extra}
-					</ul>`,
-					// content: this.system.name + " uses Second Wind, healing for " + (updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
-				//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
-			});		
-		
-		this.update(updateData);
+		}
+
+		let extra = "";
+		if (this.system.details.secondwindbon.custom) {
+			extra = this.system.details.secondwindbon.custom;
+			extra = extra.replace(/;/g,'</li><li>');
+			extra = "<li>" + extra + "</li>";
+		}
+
+		ChatMessage.create({
+			user: game.user.id,
+			speaker: {actor: this, alias: this.name},
+			// flavor: restFlavor,
+			content: `${this.name} ${game.i18n.localize("DND4EALTUS.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize("DND4EALTUS.HPShort")} ${game.i18n.localize("DND4EALTUS.SecondWindChatEffect")}
+				<ul>
+					<li>${game.i18n.localize("DND4EALTUS.SecondWindEffect")}</li>
+					${extra}
+				</ul>`,
+				// content: this.system.name + " uses Second Wind, healing for " + (updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
+			//game.i18n.format("DND4EALTUS.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+		});		
+	
+		this.applySecondWindEffect();
+		await this.update(updateData);
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Creats a new emebeded effect based on data stored in this.system.details.secondwindEffect.
+	 */
+	async applySecondWindEffect(){
+		if(this.system.details.secondwindEffect){
+			await this.createEmbeddedDocuments("ActiveEffect", [this.system.details.secondwindEffect]);
+		}
 	}
 
 	async actionPoint(event, options){
@@ -1286,7 +1497,7 @@ export class Actor4e extends Actor {
 			updateData[`system.actionpoints.value`] = this.system.actionpoints.value -1;
 			updateData[`system.actionpoints.encounteruse`] = true;
 
-			this.update(updateData);
+			await this.update(updateData);
 		}
 	}
 
@@ -1423,11 +1634,18 @@ export class Actor4e extends Actor {
 	}
 
 	async calcDamage(damage, multiplier=1, surges=0){
+	//This now calls calcDamageInner() to get the value, so we can do the damage calculation without also applying the damage, if needs be.
+		const totalDamage = await this.calcDamageInner(damage, multiplier,surges);
+		this.applyDamage(totalDamage, multiplier, surges);
+	}
+	
+	async calcDamageInner(damage, multiplier=1, surges=0){
+	//Provides the actual damage value to calcDamage(), but does not itself apply damage. Call this directly if you need to get the correct value without dealing the damage.
 		if(game.settings.get("dnd4eAltus", "damageCalcRules") === "errata"){
-			this.calcDamageErrata(damage, multiplier,surges);
+			return this.calcDamageErrata(damage, multiplier,surges);
 		}
 		else {
-			this.calcDamagePHB(damage, multiplier, surges);
+			return this.calcDamagePHB(damage, multiplier, surges);
 		}
 	}
 
@@ -1436,35 +1654,50 @@ export class Actor4e extends Actor {
 
 		console.log(damage)
 		for(let d of damage){
+			console.log(d);
 			//get all the damageTypes in this term
 			let damageTypesArray = d[1].replace(/ /g,'').split(',');
 
 			const actorRes = this.system.resistances;
-			const isUntypedDamageImmune = actorRes['damage'].immune;
+			
+			let resAll = actorRes['damage'].value;
+			let isDamageImmune = actorRes['damage'].immune;
+			
+			/* Special logic for ongoing damage.
+				Compare our "ongoing" res/immunity to our "all" res/immunity and use the best/highest value */
+			if ( damageTypesArray.includes("ongoing") ){
+				if (actorRes['ongoing'].immune) isDamageImmune = actorRes['ongoing'].immune;
+
+				resAll = Helper.sumExtremes([resAll,actorRes['ongoing'].value] || 0);
+			}
+			
 			let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
-			let lowestRes = Infinity; // will attemtpe to replace this with the lowest resistance / highest vunrability
+			let lowestRes = Infinity; // will attempt to replace this with the lowest resistance / highest vunrability
 
 			for(let dt of damageTypesArray){
 				const type = dt && actorRes[dt] ? dt : 'damage';
-				if(actorRes[type].immune){
-					continue;
-				}
+				//Skip if we're immune, or if the current type is ongoing (that's handled in a special way later)
+				if( dt == "ongoing" || actorRes[type]?.immune ) continue;
+				
+				//Adjust specific resistance with "resist all" value, according to combining resistance/vulnerability rules
+				const currentRes = Helper.sumExtremes([resAll,actorRes[type]?.value || 0]);
 	
-				if(actorRes[type].value !== 0 ){ //if has resistances or vulnerability
+				if(currentRes !== 0 ){ //if has resistances or vulnerability
 					isImmuneAll=false;
-					if(actorRes[type].value < lowestRes){
-						lowestRes = actorRes[type].value;
+					//console.log(`Modifier found: ${type}  ${actorRes[type].value}`);
+					if(currentRes < lowestRes){
+						lowestRes = currentRes;
 					}
 				} else {
-					if(!isUntypedDamageImmune) {
+					if(!isDamageImmune) {
 						isImmuneAll=false;
-						if(actorRes['damage'].value){ //"damage" will stand in for any other damage that does not have a value
-							if(actorRes['damage'].value < lowestRes){
-								lowestRes = actorRes['damage'].value || 0;
+						if(resAll){ //"Resist all" will stand in for any other damage that does not have a value
+							if(resAll < lowestRes){
+								lowestRes = resAll || 0;
 							}
 						}
-						else if(actorRes[type].value < lowestRes){
-							lowestRes = actorRes[type].value || 0;
+						else if(currentRes < lowestRes){
+							lowestRes = currentRes || 0;
 						}
 					}
 				}
@@ -1479,16 +1712,21 @@ export class Actor4e extends Actor {
 			// console.log(`Lowest Res: ${lowestRes}`)
 		}
 
-		console.log(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`)
-		this.applyDamage(totalDamage, multiplier);
+		//console.log(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`)
+		return totalDamage;
 	}
 
 	async calcDamagePHB(damage, multiplier, surges){
 		let damageDealt = {};
 		let totalDamage = 0;
 		const actorRes = this.system.resistances;
+		console.log(damage);
 
 		for(let d of damage){
+			// Check if "ongoing" is in our types array, and if so remove it before dividing up the damage.
+			const isOngoing = d[1].includes("ongoing");
+			if(isOngoing) d[1] = d[1].replaceAll(/(,| )*ongoing(,| )*/g,"");
+			
 			let damageTypesArray = d[1].replace(/ /g,'').split(',');
 
 			let i = 0;
@@ -1500,22 +1738,38 @@ export class Actor4e extends Actor {
 				}
 				i++;
 			}
-		}
 
-		for(const d in damageDealt){
-			const damagetype = actorRes[d] ? d : 'damage';
-			if(actorRes[damagetype].immune) continue; //No damage to immune types
-			if(actorRes[`damage`].immune && !actorRes[damagetype].value) continue;
+			let resAll = actorRes['damage'].value;
+			let isDamageImmune = actorRes['damage'].immune;
+			
+			/* Special logic for ongoing damage.
+			Compare our "ongoing" res/immunity to our "all" res/immunity and use the best/highest value */
+			if ( isOngoing ){
+				if (actorRes['ongoing'].immune) isDamageImmune = actorRes['ongoing'].immune;
 
-			let res = actorRes[damagetype].value || 0;
-			if(!res && actorRes[`damage`].value){
-				res = actorRes[`damage`].value;
+				resAll = Helper.sumExtremes([resAll,actorRes['ongoing']?.value] || 0);
 			}
-			totalDamage += Math.max(0, damageDealt[damagetype]-res);
+
+			//If we have immune all, skip the resistance comparisons
+			if ( !isDamageImmune) {
+				for(const d in damageDealt){
+					const damagetype = actorRes[d] ? d : 'damage';
+					if(actorRes[damagetype].immune) continue; //No damage to immune types
+					//if(isDamageImmune && !actorRes[damagetype].value) continue;
+					let res = Helper.sumExtremes([resAll,actorRes[damagetype]?.value || 0]);
+
+					/*Should be unnecessary when adjusting resistances in the previous step
+					if(!res && resAll){
+						res = resAll;
+					}*/
+					
+					totalDamage += Math.max(0, damageDealt[d]-res);
+				}
+			}
 		}
 		console.log(damageDealt);
 		console.log(`Total Damage: ${totalDamage}`)
-		this.applyDamage(totalDamage, multiplier);
+		return totalDamage;
 	}
 
 	async applyDamage(amount=0, multiplier=1, surges={}) {
@@ -1582,8 +1836,7 @@ export class Actor4e extends Actor {
 		return allowed !== false ? this.update(updates) : this;
 	}
 
-	async applyTempHpChange(amount=0)
-	{
+	async applyTempHpChange(amount=0) {
 		if (!this.canUserModify(game.user, "update")) {
 			return
 		}
@@ -1629,12 +1882,14 @@ export class Actor4e extends Actor {
 	}
 
 	async newActiveEffect(effectData){
-		this.createEmbeddedDocuments("ActiveEffect", [{
+		console.log(effectData)
+		return this.createEmbeddedDocuments("ActiveEffect", [{
 			name: effectData.name,
 			description: effectData.description,
 			icon:effectData.icon,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
+			statuses: Array.from(effectData.statuses),
 			// duration: effectData.duration, //Not too sure why this fails, but it does
 			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
 			tint: effectData.tint,
@@ -1644,27 +1899,174 @@ export class Actor4e extends Actor {
 	}
 
 	async newActiveEffectSocket(effectData){
-		const uuid = effectData.changesID.split('.')
-		let changes
-		if(uuid[0] === "Actor"){
-			changes = game.actors.get(uuid[1]).items.get(uuid[3]).effects.get(uuid[5]).changes;
-		}
-		else if(uuid[0] === "Scene"){
-			changes = game.scenes.get(uuid[1]).tokens.get(uuid[3]).actor.items.get(uuid[5]).effects.get(uuid[7]).changes;
-		}
-
 		const data = {
 			name: effectData.name,
 			description: effectData.description,
 			icon:effectData.icon,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
+			statuses: Array.from(effectData.statuses),
 			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
 			tint: effectData.tint,
 			flags: effectData.flags,
-			changes: changes
+			changes: effectData.changes
 		}
 
-		this.createEmbeddedDocuments("ActiveEffect", [data]);
+		return this.createEmbeddedDocuments("ActiveEffect", [data]);
 	}
+
+	async deleteActiveEffectSocket(toDelete){
+		return this.deleteEmbeddedDocuments("ActiveEffect", toDelete);
+	}
+
+	async promptEoTSavesSocket(){
+		//console.log('socket reached');
+		const saveReminders = game.settings.get("dnd4eAltus","saveReminders");
+		if(!saveReminders) return;
+		
+		let toSave = [];
+		for (const e of this.effects){
+			if(e.flags.dnd4eAltus?.effectData?.durationType === "saveEnd"){
+				toSave.push(e.id);
+			}
+		}
+		
+		if(toSave.length){
+			const isFF = Helper.isRollFastForwarded(event);
+			for (let i of toSave){
+				if(isFF) {
+					let save = await this.rollSave(event, {effectSave:true, effectId:i});
+				} else {
+					let save = await new SaveThrowDialog(this, {effectSave:true,effectId:i}).render(true);
+				}
+			}
+		}
+
+	}
+
+	async autoDoTsSocket(tokenId){
+		//console.log(tokenId);
+		const autoDoTs = game.settings.get("dnd4eAltus","autoDoTs");
+		if(autoDoTs != "none"){
+			let applicableDoTs = {};
+			
+			for(const e of this.effects){
+				if(e.flags.dnd4eAltus?.dots.length && e.disabled === false){
+					for (let dot of e.flags.dnd4eAltus.dots){
+						
+						// Combine the types array into a usable string
+						const types = (dot.typesArray.includes("healing") ? "healing" : dot.typesArray.join(','));
+						
+						/* Use logic pinched from ActiveEffect4e.safeEvalEffectValue() to 
+						evaluate variables in "amount" string */
+						const stringDiceFormat = /\d+d\d+/;
+						let parsedAmount = dot.amount;
+
+						if (!parsedAmount.match(stringDiceFormat))
+						  parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
+						try {
+						  parsedAmount = Roll.safeEval(parsedAmount).toString();
+						} catch (e) { /* noop */ }
+						/* End pinched */
+						
+						// Only keep the highest DoT of each unique type—
+						// you can only be so much on fire.
+						if (parsedAmount - applicableDoTs[types]?.amount <= 0){
+							continue;
+						} else {
+							applicableDoTs[types] = { 
+								type: ( types == "healing" ? types : types + ',ongoing'), 
+								amount:parsedAmount, 
+								effectId:e.id, 
+								effectName: e.name 
+							};
+						}
+					}
+				}
+			}
+			
+			applicableDoTs = Array.from(Object.values(applicableDoTs || {}));
+			
+			if(applicableDoTs.length){
+				for(const dot of applicableDoTs){
+					const dmgTaken = ( dot.type == "healing" ? Math.min(dot.amount, this.system.attributes.hp.max - this.system.attributes.hp.value) : await this.calcDamageInner([[dot.amount,dot.type]]));
+					console.log(this.calcDamageInner([[dot.amount,dot.type]]));
+					let dmgImpact = "neutral";
+					
+					let chatRecipients = [Helper.firstOwner(this)];
+					switch (game.settings.get("dnd4eAltus","autoDoTsPublic")){
+						case 'all':
+							chatRecipients = null;
+							break;
+						case 'none':
+							if(chatRecipients[0] != game.user){
+								chatRecipients.push(game.user);
+							}
+							break;
+						case 'pcs':
+							if(this.type == "Player Character"){
+								chatRecipients = null;
+							}
+							break;
+					}
+					
+					if(dot.type == "healing"){
+						dmgImpact="healing";
+					}else if(dmgTaken == 0){
+						dmgImpact = "resistant-full";
+					}else if (dot.amount - dmgTaken > 0){
+						dmgImpact = "resistant";
+					}else if (dot.amount - dmgTaken < 0){
+						dmgImpact = "vulnerable";
+					}
+					
+					const chatData = {
+						dot: dot,
+						autoDoTs: autoDoTs,
+						dmgTaken: dmgTaken,
+						dmgDiff: Math.max(dot.amount,dmgTaken) - Math.min(dot.amount,dmgTaken),
+						typesFormatted: dot.type.replaceAll(/,*ongoing,*/g,"").replaceAll(',',' and '),
+						actorName: this.isToken ? this.token.name : this.name,
+						dmgImpact: dmgImpact,
+						targetToken: tokenId
+					}
+					
+					const html = await renderTemplate(
+						'systems/dnd4eAltus/templates/chat/ongoing-damage.html',chatData 
+					);
+										
+					await ChatMessage.create({
+						user: Helper.firstOwner(this),
+						speaker: {actor: this, alias: this.isToken ? this.token.name : this.name},
+						content: html,
+						flavor: `${game.i18n.localize ("DND4EALTUS.OngoingDamage")}: ${dot.effectName}`,
+						whisper: chatRecipients,
+						//rollMode: "gmroll",
+						rolls: [{
+							formula: `(${dot.amount})[${dot.type}]`,
+							terms: [{
+								class: "NumericTerm",
+								options: {
+									flavor: dot.type
+								},
+								evaluated: true,
+								number: dot.amount
+							}],
+							total: dot.amount,
+							evaluated: true
+						}]
+					});						
+					
+					if (autoDoTs == "apply"){
+						if (dot.type == "healing"){
+							await this.applyDamage(dmgTaken*-1);
+						}else{
+							await this.applyDamage(dmgTaken);
+						}
+					}
+				}
+			}
+		}
+	}
+
 }

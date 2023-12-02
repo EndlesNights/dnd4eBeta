@@ -1,28 +1,32 @@
-<form id="custom-roll-descriptions" class="dialog-content" onsubmit="event.preventDefault();" style="overflow-y: auto;">
+<form id="custom-roll-descriptions" class="dialog-content" onsubmit="event.preventDefault();">
 
-    {{!-- Ability --}}
-    {{#each system.abilities as |ability a|}}
-    <div style="width: 99.5%;">
-        <span>{{ability.label}} {{localize 'DND4EALTUS.Ability'}}</span>
-        <input class="stat-chat" name="system.abilities.{{a}}.chat" type="text" value="{{ability.chat}}" onClick="this.select();"/>
-    </div>
-    {{/each}}
+	{{!-- Ability --}}
+	<h2>{{localize 'DND4EALTUS.Ability'}} {{localize 'DND4EALTUS.CheckPlural'}}</h2>
+	{{#each system.abilities as |ability a|}}
+	<div class="ability">
+		<span>{{ability.label}}</span>
+		<input class="stat-chat" name="system.abilities.{{a}}.chat" type="text" value="{{ability.chat}}" onClick="this.select();"/>
+	</div>
+	{{/each}}
 
-    {{!-- Skills --}}
-    {{#each system.skills as |skills s|}}
-    <div style="width: 99.5%;">
-        <span>{{skills.label}} {{localize 'DND4EALTUS.Skill'}}</span>
-        <input class="stat-chat" name="system.skills.{{s}}.chat" type="text" value="{{skills.chat}}" onClick="this.select();"/>
-    </div>
-    {{/each}}
-    
-    {{!-- Defences --}}
-    {{#each system.defences as |defences d|}}
-    <div style="width: 99.5%;">
-        <span>{{defences.label}} {{localize 'DND4EALTUS.Defence'}}</span>
-        <input class="stat-chat" name="system.defences.{{d}}.chat" type="text" value="{{defences.chat}}" onClick="this.select();"/>
-    </div>
-    {{/each}}
+	{{!-- Skills --}}
+	<h2>{{localize 'DND4EALTUS.Skill'}} {{localize 'DND4EALTUS.CheckPlural'}}</h2>
+	{{#each system.skills as |skills s|}}
+	<div class="skill">
+		<span>{{skills.label}}</span>
+		<input class="stat-chat" name="system.skills.{{s}}.chat" type="text" value="{{skills.chat}}" onClick="this.select();"/>
+	</div>
+	{{/each}}
 
-    <button style="width: 99.5%;" type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
+	{{!-- Defences --}}
+	<h2>{{localize 'DND4EALTUS.Defence'}} {{localize 'DND4EALTUS.CheckPlural'}}</h2>
+	{{#each system.defences as |defences d|}}
+	<div class="defence">
+		<span>{{defences.label}}</span>
+		<input class="stat-chat" name="system.defences.{{d}}.chat" type="text" value="{{defences.chat}}" onClick="this.select();"/>
+	</div>
+	{{/each}}
+
+	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
+	
 </form>

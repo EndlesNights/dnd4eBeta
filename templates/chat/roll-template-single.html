@@ -5,7 +5,8 @@
     <div class="dice-result">
         
 		{{#if attackRoll}}
-			<a class="flavor-text target" target-id="{{attackRoll.targetID}}"><b>{{localize 'DND4EALTUS.Target'}}</b>: {{attackRoll.target}}</a>
+			<div class="target">
+			<a class="flavor-text target" data-target-id="{{attackRoll.targetID}}"><strong>{{localize 'DND4EALTUS.Target'}}:</strong> {{attackRoll.target}}</a>
 			<span class="flavor-text hit-prediction{{attackRoll.critstate}}{{!--
 				--}}{{#if (eq attackRoll.hitstate 'Probable Hit!')}}{{!--
 					--}} probable-hit{{!--
@@ -13,7 +14,8 @@
 					--}} probable-miss{{!--
 				--}}{{/if}}{{!--
 			--}}">{{attackRoll.hitstate}}</span>
-        {{/if}}
+			</div>
+      {{/if}}
 
         <div class="dice-formula">{{{formula}}}</div>
         <div class="dice-tooltip dice-formula">{{{expression}}}</div>
@@ -23,11 +25,11 @@
 </div>
 <div class="chatDamageButtons">
     {{#if hitTypeDamage}}
-    <a class="fakechatbutton chat-damage-button" title="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="Damage"><i class="fas fa-user-minus"></i>{{ localize "DND4EALTUS.ChatContextDamage" }}</a>
-    <a class="fakechatbutton chat-damage-button" title="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="HalfDamage"><i class="fas fa-user-shield"></i>{{ localize "DND4EALTUS.ChatContextHalfDamage" }}</a>
+    <a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="Damage"><i class="fas fa-user-minus"></i>{{ localize "DND4EALTUS.ChatContextDamage" }}</a>
+    <a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="HalfDamage"><i class="fas fa-user-shield"></i>{{ localize "DND4EALTUS.ChatContextHalfDamage" }}</a>
     {{else if hitTypeHealing}}
-    <a class="fakechatbutton chat-damage-button" title="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="Heal"><i class="fas fa-user-plus fa-fw"></i>{{ localize "DND4EALTUS.ChatContextHealing" }}</a>
-    <a class="fakechatbutton chat-damage-button" title="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="TempHeal"><i class="fas fa-user-clock fa-fw"></i>{{ localize "DND4EALTUS.ChatContextTempHp" }}</a>
+    <a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="Heal"><i class="fas fa-user-plus fa-fw"></i>{{ localize "DND4EALTUS.ChatContextHealing" }}</a>
+    <a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="TempHeal"><i class="fas fa-user-clock fa-fw"></i>{{ localize "DND4EALTUS.ChatContextTempHp" }}</a>
     {{/if}}
 </div>
 <script>

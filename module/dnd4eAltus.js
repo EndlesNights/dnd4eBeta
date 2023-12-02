@@ -24,7 +24,7 @@ import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/entity.js";
 
-import { Helper, handleApplyEffectToToken } from "./helper.js"
+import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs } from "./helper.js";
 
 // Import Helpers
 import * as chat from "./chat.js";
@@ -35,13 +35,14 @@ import ActiveEffectConfig4e from "./effects/effects-config.js";
 import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 import {TokenBarHooks} from "./hooks.js";
+import { customSKillSetUp } from "./skills/custom-skills.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
 /* -------------------------------------------- */
 
 Hooks.once("init", async function() {
-	console.log(`D&D4eBeta | Initializing Dungeons & Dragons 4th Edition System\n${DND4EALTUS.ASCII}`);
+	console.log(`D&D4eAltus | Initializing Dungeons & Dragons 4th Edition System\n${DND4EALTUS.ASCII}`);
 
 	game.dnd4eAltus = {
 		apps: {
@@ -68,6 +69,7 @@ Hooks.once("init", async function() {
 	DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4eAltus", ActiveEffectConfig4e, {makeDefault :true});
 	// DocumentSheetConfig.registerSheet(Actor4e, "dnd4eAltus", ActiveEffectConfig4e, {makeDefault :true});
 	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
+	CONFIG.ActiveEffect.legacyTransferral = false;
 	
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
@@ -86,19 +88,35 @@ Hooks.once("init", async function() {
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("dnd4eAltus", ActorSheet4e, {
 		types: ["Player Character"],
-		label: "Basic Character Sheet",
+		label: game.i18n.localize("SHEET.Character.Basic"),
 		makeDefault: true
 	});
 	Actors.registerSheet("dnd4eAltus", ActorSheet4eNPC, {
 		types: ["NPC"],
-		label: "NPC Sheet",
+		label: game.i18n.localize("SHEET.NPC"),
 		makeDefault: true
 	});		
 
 	
 	// Setup Item Sheet
 	Items.unregisterSheet("core", ItemSheet);
-	Items.registerSheet("dnd4eAltus", ItemSheet4e, {makeDefault: true});
+	Items.registerSheet("dnd4eAltus", ItemSheet4e, {
+		makeDefault: true,
+		label: game.i18n.localize("SHEET.Item")
+	});
+
+
+	// Add conditional CSS
+	var head = document.getElementsByTagName('HEAD')[0];
+	
+	if (game.settings.get("dnd4eAltus","darkMode")){
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = './systems/dnd4eAltus/styles/dnd4eAltus-DarkMode.css';
+		//Append link element to HTML head
+		head.appendChild(link);
+	}
 
 	// Preload Handlebars Templates
 	preloadHandlebarsTemplates();
@@ -107,6 +125,8 @@ Hooks.once("init", async function() {
 	game.dnd4eAltus.tokenBarHooks = TokenBarHooks
 	//legacy, remove after some time when its reasonable for people to have updated token bar
 	game.dnd4eAltus.quickSave = (actor) => game.dnd4eAltus.tokenBarHooks.quickSave(actor, null)
+
+	customSKillSetUp();
 });
 
 Hooks.once("setup", function() {
@@ -149,6 +169,9 @@ Hooks.once("ready",  function() {
 		// Add socket listener for applying activeEffects on targets that users do not own
 		game.socket.on('system.dnd4eAltus', (data) => {
 			if(data.operation === 'applyTokenEffect') handleApplyEffectToToken(data);
+			else if(data.operation === 'deleteTokenEffect') handleDeleteEffectToToken(data);
+			else if(data.operation === 'promptEoTSaves') handlePromptEoTSaves(data);
+			else if(data.operation === 'autoDoTs') handleAutoDoTs(data);
 			else ItemSheet4e._handleShareItem(data);
 		});
 
@@ -230,62 +253,8 @@ $(".effect-control ").hover(
 html.find('.effect-control').last().after(message);
 });
 
-/**
- * Before passing changes to the parent ActiveEffect class,
- * we want to make some modifications to make the effect
- * rolldata aware.
- * 
- * @param {*} wrapped   The next call in the libWrapper chain
- * @param {Actor} owner     The Actor that is affected by the effect
- * @param {Object} change    The changeset to be applied with the Effect
- * @returns 
- */
-const apply = (wrapped, owner, change) => {
-	
-  const stringDiceFormat = /\d+d\d+/;
-    
-  // If the user wants to use the rolldata format
-  // for grabbing data keys, why stop them?
-  // This is purely syntactic sugar, and for folks
-  // who copy-paste values between the key and value
-  // fields.
-  if (change.key.indexOf('@') === 0)
-    change.key = change.key.replace('@', '');
-
-  // If the user entered a dice formula, I really doubt they're 
-  // looking to add a random number between X and Y every time
-  // the Effect is applied, so we treat dice formulas as normal
-  // strings.
-  // For anything else, we use Roll.replaceFormulaData to handle
-  // fetching of data fields from the actor, as well as math
-  // operations.  
-  if (!change.value.match(stringDiceFormat))
-    change.value = Roll.replaceFormulaData(change.value, owner.getRollData());
-
-  // If it'll evaluate, we'll send the evaluated result along 
-  // for the change.
-  // Otherwise we just send along the exact string we were given. 
-  try {
-    change.value = Roll.safeEval(change.value).toString();
-  } catch (e) { /* noop */ }
-
-  return wrapped(owner, change);
-}
 
 Hooks.once('init', async function() {
-
-	libWrapper.register(
-		'dnd4eAltus',
-		'ActiveEffect.prototype.apply',
-		apply
-	);
-
-	// libWrapper.register(
-	// 	'dnd4eAltus',
-	// 	// 'MeasuredTemplate.prototype._getCircleShape', // This method can no longer be wrapped
-	// 	'MeasuredTemplate.#getCircleShape',
-	// 	AbilityTemplate._getCircleSquareShape
-	// );
 
 	libWrapper.register(
 		'dnd4eAltus',
@@ -315,6 +284,12 @@ Hooks.once('init', async function() {
 		'dnd4eAltus',
 		'ChatLog.prototype._onDiceRollClick',
 		chat._onDiceRollClick
+	)
+
+	libWrapper.register(
+		'dnd4eAltus',
+		'ChatLog.prototype._processDiceCommand',
+		chat._processDiceCommand
 	)
 });
 

@@ -1,4 +1,23 @@
+import CustomSkillConfig from "./apps/custom-skill-config.js";
+
 export const registerSystemSettings = function() {
+
+	game.settings.registerMenu("dnd4eAltus", "show-custom-skill", {
+		name: "SETTINGS.4eShowCustomSkillN",
+		label: "SETTINGS.4eShowCustomSkillL",
+		hint: "SETTINGS.4eShowCustomSkillH",
+		icon: 'fas fa-cog',
+		type: CustomSkillConfig,
+		restricted: true,
+	});
+
+	game.settings.register("dnd4eAltus", "custom-skills",{
+		name: "Custom Skills",
+		scope: "world",
+		config: false,
+		type: Object,
+		default: []
+	});
 
 	/**
 	 * Track the system version upon which point a migration was last applied
@@ -93,7 +112,22 @@ export const registerSystemSettings = function() {
 		default: false,
 		type: Boolean
 	});
-
+	/**
+	 * Determs when Death Saving Throws are reset
+	 */
+	game.settings.register("dnd4eAltus", "deathSaveRest", {
+		name: "SETTINGS.4eDeathSaveRestN",
+		hint: "SETTINGS.4eDeathSaveRestL",
+		scope: "world",
+		config: true,
+		default: "short",
+		type: Number,
+		choices: {
+			0: "DND4EALTUS.RestShort",
+			1: "DND4EALTUS.RestLong",
+			2: "DND4EALTUS.RestLongH",
+		}
+	});
 	// /**
 	//  * Option to disable XP bar for session-based or story-based advancement.
 	//  */
@@ -209,6 +243,53 @@ export const registerSystemSettings = function() {
 		config: true,
 		default: false,
 		type: Boolean
+	});
+	
+	game.settings.register("dnd4eAltus", "saveReminders",{
+		name: "SETTINGS.4eSaveRemindersN",
+		hint: "SETTINGS.4eSaveRemindersL",
+		scope: "client",
+		config: true,
+		default: true,
+		type: Boolean
+	});
+	
+	game.settings.register("dnd4eAltus", "autoDoTs",{
+		name: "SETTINGS.4eAutoDoTsN",
+		hint: "SETTINGS.4eAutoDoTsL",
+		scope: "client",
+		config: true,
+		default: "apply",
+		type: String,
+		choices: {
+			"none": "DND4EALTUS.None",
+			"apply": "SETTINGS.4eAutoDoTsApply",
+			"notify": "SETTINGS.4eAutoDoTsNotify"
+		}
+	});
+	
+	game.settings.register("dnd4eAltus", "autoDoTsPublic",{
+		name: "SETTINGS.4eAutoDoTsPublicN",
+		hint: "SETTINGS.4eAutoDoTsPublicL",
+		scope: "world",
+		config: true,
+		default: "all",
+		type: String,
+		choices: {
+			"all": "SETTINGS.4eAutoDoTsPublicAll",
+			"none": "SETTINGS.4eAutoDoTsPublicNone",
+			"pcs": "SETTINGS.4eAutoDoTsPublicPCs"
+		}
+	});
+	
+	game.settings.register("dnd4eAltus", "darkMode",{
+		name: "SETTINGS.4eDarkModeN",
+		hint: "SETTINGS.4eDarkModeL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean,
+		onChange: debouncedReload
 	});
 
 	game.keybindings.register("dnd4eAltus", "permShowPlayer", {

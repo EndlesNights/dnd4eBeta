@@ -1,7 +1,7 @@
-<section class="flexrow section--attributes" style="border:none;">
+<section class="flexrow section--attributes">
 	{{!-- Custom Resources --}}
 	{{#each system.resources as |res|}}
-	<div class="attributes attribute-health">
+	<div class="attributes resource-tracker">
 		<h4 class="resource-name">
 			<input name="system.resources.{{res.name}}.label" type="text" value="{{res.label}}"
 				   placeholder="{{res.placeholder}}" />
@@ -22,68 +22,80 @@
 	{{/each}}
 </section>
 
-<div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
-	<label for="gender">{{localize 'DND4EALTUS.Gender'}}:</label>
-	<input style="flex:1; text-align: right;" id="gender" type="text" name="system.details.gender" value="{{system.details.gender}}" title="{{localize 'DND4EALTUS.Gender'}}"  placeholder="{{localize 'DND4EALTUS.Gender'}}" onClick="this.select();"/>
-</div>
-<div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
-	<label for="age">{{localize 'DND4EALTUS.Age'}}:</label>
-	<input style="flex:1; text-align: right;" id="age" type="text" name="system.details.age" value="{{system.details.age}}" title="{{localize 'DND4EALTUS.Age'}}"  placeholder="{{localize 'DND4EALTUS.Age'}}" onClick="this.select();"/>
-</div>
-<div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
-	<label for="alignment">{{localize 'DND4EALTUS.Alignment'}}:</label>
-	<input style="flex:1; text-align: right;" id="alignment" type="text" name="system.details.alignment" value="{{system.details.alignment}}" title="{{localize 'DND4EALTUS.Alignment'}}"  placeholder="{{localize 'DND4EALTUS.Alignment'}}" onClick="this.select();"/>
-</div>
-<div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
-	<label for="height">{{localize 'DND4EALTUS.Height'}}:</label>
-	<input style="flex:1; text-align: right;" id="height" type="text" name="system.details.height" value="{{system.details.height}}" title="{{localize 'DND4EALTUS.Height'}}"  placeholder="{{localize 'DND4EALTUS.Height'}}" onClick="this.select();"/>
-</div>
-<div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
-	<label for="weight">{{localize 'DND4EALTUS.Weight'}}:</label>
-	<input style="flex:1; text-align: right;" id="weight" type="text" name="system.details.weight" value="{{system.details.weight}}" title="{{localize 'DND4EALTUS.Weight'}}"  placeholder="{{localize 'DND4EALTUS.Weight'}}" onClick="this.select();"/>
-</div>
-<div class="form-group" style="padding: 3px;">
-	<label style="font-weight: normal;">{{localize "DND4EALTUS.Size"}}:</label>
-	<select class="actor-size" name="system.details.size">
-		{{#select system.details.size}}
-		{{#each config.actorSizes as |label size|}}
-			<option value="{{size}}">{{label}}</option>
-		{{/each}}
-		{{/select}}
-	</select>
-</div>
-<div class="form-group" style="padding: 3px;">
-	<label style="font-weight: normal;">{{localize "DND4EALTUS.CreatureOrigin"}}:</label>
-	<select class="actor-origin" name="system.details.origin">
-		{{#select system.details.origin}}
-		{{#each config.creatureOrigin as |label origin|}}
-			<option value="{{origin}}">{{label}}</option>
-		{{/each}}
-		{{/select}}
-	</select>
-</div>
-<div class="form-group" style="padding: 3px;">
-	<label style="font-weight: normal;">{{localize "DND4EALTUS.CreatureType"}}:</label>
-	<select class="actor-type" name="system.details.type">
-		{{#select system.details.type}}
-		{{#each config.creatureType as |label type|}}
-			<option value="{{type}}">{{label}}</option>
-		{{/each}}
-		{{/select}}
-	</select>
-</div>
-<div style="display:flex;flex-direction:row; align-items: baseline; padding: 3px;">
-	<label for="subtypes">{{localize 'DND4EALTUS.CreatureSubtypes'}}:</label>
-	<input style="flex:1; text-align: right;" id="other" type="text" name="system.details.other" value="{{system.details.other}}" title="{{localize 'DND4EALTUS.CreatureSubtypes'}}"  placeholder="{{localize 'DND4EALTUS.CreatureSubtypes'}}" onClick="this.select();"/>
-</div>			
+{{!-- Biographical Details --}}
+<section class="flexrow section--details">
+
+	<div class="flexcol details-fluff">
+		<div class="detail gender">
+			<label for="gender">{{localize 'DND4EALTUS.Gender'}}:</label>
+			<input id="gender" type="text" name="system.details.gender" value="{{system.details.gender}}" data-tooltip="{{localize 'DND4EALTUS.Gender'}}"  placeholder="{{localize 'DND4EALTUS.Gender'}}" onClick="this.select();"/>
+		</div>
+		<div class="detail age">
+			<label for="age">{{localize 'DND4EALTUS.Age'}}:</label>
+			<input id="age" type="text" name="system.details.age" value="{{system.details.age}}" data-tooltip="{{localize 'DND4EALTUS.Age'}}"  placeholder="{{localize 'DND4EALTUS.Age'}}" onClick="this.select();"/>
+		</div>
+		<div class="detail alignment">
+			<label for="alignment">{{localize 'DND4EALTUS.Alignment'}}:</label>
+			<input id="alignment" type="text" name="system.details.alignment" value="{{system.details.alignment}}" data-tooltip="{{localize 'DND4EALTUS.Alignment'}}"  placeholder="{{localize 'DND4EALTUS.Alignment'}}" onClick="this.select();"/>
+		</div>
+		<div class="detail height">
+			<label for="height">{{localize 'DND4EALTUS.Height'}}:</label>
+			<input id="height" type="text" name="system.details.height" value="{{system.details.height}}" data-tooltip="{{localize 'DND4EALTUS.Height'}}"  placeholder="{{localize 'DND4EALTUS.Height'}}" onClick="this.select();"/>
+		</div>
+		<div class="detail weight">
+			<label for="weight">{{localize 'DND4EALTUS.Weight'}}:</label>
+			<input id="weight" type="text" name="system.details.weight" value="{{system.details.weight}}" data-tooltip="{{localize 'DND4EALTUS.Weight'}}"  placeholder="{{localize 'DND4EALTUS.Weight'}}" onClick="this.select();"/>
+		</div>
+	</div>
+	
+	<div class="flexcol details-mechanical">
+		<div class="detail form-group size">
+			<label>{{localize "DND4EALTUS.Size"}}:</label>
+			<select class="actor-size" name="system.details.size">
+				{{#select system.details.size}}
+				{{#each config.actorSizes as |label size|}}
+					<option value="{{size}}">{{label}}</option>
+				{{/each}}
+				{{/select}}
+			</select>
+		</div>
+		<div class="detail form-group origin">
+			<label>{{localize "DND4EALTUS.CreatureOrigin"}}:</label>
+			<select class="actor-origin" name="system.details.origin">
+				{{#select system.details.origin}}
+				{{#each config.creatureOrigin as |label origin|}}
+					<option value="{{origin}}">{{label}}</option>
+				{{/each}}
+				{{/select}}
+			</select>
+		</div>
+		<div class="detail form-group creature-type">
+			<label>{{localize "DND4EALTUS.CreatureType"}}:</label>
+			<select class="actor-type" name="system.details.type">
+				{{#select system.details.type}}
+				{{#each config.creatureType as |label type|}}
+					<option value="{{type}}">{{label}}</option>
+				{{/each}}
+				{{/select}}
+			</select>
+		</div>
+		<div class="detail subtypes">
+			<label for="subtypes">{{localize 'DND4EALTUS.CreatureSubtypes'}}:</label>
+			<input id="other" type="text" name="system.details.other" value="{{system.details.other}}" data-tooltip="{{localize 'DND4EALTUS.CreatureSubtypes'}}"  placeholder="{{localize 'DND4EALTUS.CreatureSubtypes'}}" onClick="this.select();"/>
+		</div>
+	</div>
+	
+</section>
+
+
 {{!-- Proficiency --}}
-<div>
+<div class="proficiencies">
 	<h4 class="attribute-name box-title">{{ localize "DND4EALTUS.Proficiency" }}</h4>
 	<a class="trait-selector" data-options="profArmor" data-target="system.details.armourProf">
 		<span>{{ localize "DND4EALTUS.Armour" }}</span>
 		<i class="fas fa-edit"></i>
 	</a>
-	<ul class="traits-list" style="list-style-type: none;">
+	<ul class="traits-list proficiency armour">
 	{{#each system.details.armourProf.selected as |v k|}}
 		<li class="tag {{k}}">{{v}}</li>
 	{{/each}}
@@ -93,7 +105,7 @@
 		<span>{{ localize "DND4EALTUS.Weapon" }}</span>
 		<i class="fas fa-edit"></i>
 	</a>
-	<ul class="traits-list" style="list-style-type: none;">
+	<ul class="traits-list proficiency weapons">
 	{{#each system.details.weaponProf.selected as |v k|}}
 		<li class="tag {{k}}">{{v}}</li>
 	{{/each}}
@@ -101,13 +113,13 @@
 </div>
 
 {{!-- Languages --}}
-<div>
+<div class="languages">
 	<h4 class="attribute-name box-title">{{ localize "DND4EALTUS.Languages" }}</h4>
 	<a class="trait-selector" data-options="spoken" data-target="system.languages.spoken">
 		<span>{{ localize "DND4EALTUS.Spoken" }}</span>
 		<i class="fas fa-edit"></i>
 	</a>
-	<ul class="traits-list" style="list-style-type: none;">
+	<ul class="traits-list languages spoken" style="list-style-type: none;">
 	{{#each system.languages.spoken.selected as |v k|}}
 		<li class="tag {{k}}">{{v}}</li>
 	{{/each}}
@@ -117,7 +129,7 @@
 		<span>{{ localize "DND4EALTUS.Script" }}</span>
 		<i class="fas fa-edit"></i>
 	</a>
-	<ul class="traits-list" style="list-style-type: none;">
+	<ul class="traits-list languages script" style="list-style-type: none;">
 	{{#each system.languages.script.selected as |v k|}}
 		<li class="tag {{k}}">{{v}}</li>
 	{{/each}}
@@ -125,19 +137,19 @@
 </div>
 
 {{!-- Senses --}}
-<div>
+<div class="senses">
 	<h4 class="attribute-name box-title">{{ localize "DND4EALTUS.SpecialSenses" }}</h4>    
 	<div style="text-align: left;">
 		<a class="trait-selector-senses" data-options="special" data-target="system.senses.special">
 			<span>{{ localize "DND4EALTUS.SpecialSenses" }}</span>
 			<i class="fas fa-edit"></i>
 		</a>
-		<ul class="traits-list" style="list-style-type: none;">
+		<ul class="traits-list senses" style="list-style-type: none;">
 		{{#each system.senses.special.selected as |v k|}}
 			<li class="tag {{k}}">{{v}}</li>
 		{{/each}}
 		</ul>
 
-		<input type="text" name="system.senses.notes" value="{{system.senses.notes}}" title="notes" placeholder="{{localize 'DND4EALTUS.Notes'}}" style="width: 99%;"/>
+		<input class="senses-arbitrary" type="text" name="system.senses.notes" value="{{system.senses.notes}}" data-tooltip="notes" placeholder="{{localize 'DND4EALTUS.Notes'}}" />
 	</div>
 </div>

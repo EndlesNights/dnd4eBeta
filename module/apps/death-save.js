@@ -1,4 +1,6 @@
-export class DeathSaveDialog extends DocumentSheet {
+import DocumentSheet4e from "./DocumentSheet4e.js"
+
+export class DeathSaveDialog extends DocumentSheet4e {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;

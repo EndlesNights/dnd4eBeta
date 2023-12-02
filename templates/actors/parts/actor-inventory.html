@@ -2,31 +2,31 @@
 	<ol class="currency flexrow">
 		<h3>
 			{{localize "DND4EALTUS.Currency"}}
-			<a class="currency-convert" title="{{localize 'DND4EALTUS.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
+			<a class="currency-convert" data-tooltip="{{localize 'DND4EALTUS.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
 		</h3>
 		{{#each system.currency as |v k|}}
-		<label class="denomination {{k}}" title="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
-		<input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" title="{{ localize (lookup ../config.currencies k )}}"/>
+		<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
+		<input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.currencies k )}}"/>
 		{{/each}}
 	</ol>
 
 	<ol class="currency flexrow">
-		<h3 title="{{localize 'DND4EALTUS.RitualComp'}}">{{localize 'DND4EALTUS.RitualComp'}}</h3>
+		<h3 data-tooltip="{{localize 'DND4EALTUS.RitualComp'}}">{{localize 'DND4EALTUS.RitualComp'}}</h3>
 		{{#each system.ritualcomp as |v k|}}
-		<label class="denomination {{k}}" title="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
-		<input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" title="{{ localize (lookup ../config.ritualcomponents k )}}"/>
+		<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
+		<input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}"/>
 		{{/each}}
 	</ol>
 	
-	<div>
-		<div style="display: inline;">
+	<div class="flexrow daily-item-power-use">
+		<div class="daily-item-power-use-counter">
 			<span>{{localize 'DND4EALTUS.ItemUseDaily'}}:</span> 
-			<input style="width: 25px; text-align: right;" type="text" name="system.magicItemUse.dailyuse" value="{{system.magicItemUse.dailyuse}}" title="{{localize 'DND4EALTUS.ItemUseDailyRem'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
-			<span title="{{localize 'DND4EALTUS.ItemUseDaily'}}">/ {{system.magicItemUse.perDay}}</span>
+			<input type="text" name="system.magicItemUse.dailyuse" value="{{system.magicItemUse.dailyuse}}" data-tooltip="{{localize 'DND4EALTUS.ItemUseDailyRem'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
+			<span data-tooltip="{{localize 'DND4EALTUS.ItemUseDaily'}}">/ {{system.magicItemUse.perDay}}</span>
 		</div>
-		<div style="float:right;">
+		<div class="daily-item-power-use-check flexrow">
 			<span>{{localize 'DND4EALTUS.ItemUseDailyEnc'}}</span>
-			<input type="checkbox" name="system.magicItemUse.encounteruse" data-dtype="Boolean" {{checked system.magicItemUse.encounteruse}} title="{{localize 'DND4EALTUS.ItemUseDailyEnc'}}"  style="height: 14px; position: relative; top: 2px;">
+			<input type="checkbox" name="system.magicItemUse.encounteruse" data-dtype="Boolean" {{checked system.magicItemUse.encounteruse}} data-tooltip="{{localize 'DND4EALTUS.ItemUseDailyEnc'}}">
 		</div>
 		
 	</div>
@@ -49,8 +49,8 @@
 		{{/if}}
 
 		{{#if ../owner}}
-		<div class="item-controls" style="width: 90px;">
-			<a class="item-control item-create" title='{{localize "DND4EALTUS.ItemCreate"}}'
+		<div class="item-controls">
+			<a class="item-control item-create" data-tooltip="{{localize "DND4EALTUS.ItemCreate"}}"
 			   {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
 				<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
 			</a>
@@ -66,11 +66,11 @@
 				{{#if section.editableName}}
 				<input type="text" value="{{item.name}}">
 				{{else}}
-				<div class="item-image" style="background-image: url({{item.img}})"></div>
+				<div class="item-image"><img src="{{item.img}}" width="30" height="30"/></div>
 				<h4>
 					{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
 					{{~#if item.isStack}} ({{item.system.quantity}}){{/if}}
-					{{~#if item.system.attuned}} <i class="fas fa-sun attuned" title={{localize "DND4EALTUS.Attuned"}}></i>{{/if}}
+					{{~#if item.system.attuned}} <i class="fas fa-sun attuned" data-tooltip="{{localize "DND4EALTUS.Attuned"}}"></i>{{/if}}
 				</h4>
 				{{/if}}
 			</div>
@@ -114,12 +114,12 @@
 			{{#if ../../owner}}
 			<div class="item-controls">
 				{{#unless @root.isVehicle}}
-				<a class="item-control item-toggle {{item.toggleClass}}" title='{{item.toggleTitle}}'><i class="fas fa-shield-alt"></i></a>
+				<a class="item-control item-toggle {{item.toggleClass}}" data-tooltip="{{item.toggleTitle}}"><i class="fas fa-shield-alt"></i></a>
 				{{/unless}}
 				{{#unless section.editableName}}
-				<a class="item-control item-edit" title='{{localize "DND4EALTUS.ItemEdit"}}'><i class="fas fa-edit"></i></a>
+				<a class="item-control item-edit" data-tooltip="{{localize "DND4EALTUS.ItemEdit"}}"><i class="fas fa-edit"></i></a>
 				{{/unless}}
-				<a class="item-control item-delete" title='{{localize "DND4EALTUS.ItemDelete"}}'><i class="fas fa-trash"></i></a>
+				<a class="item-control item-delete" data-tooltip="{{localize "DND4EALTUS.ItemDelete"}}"><i class="fas fa-trash"></i></a>
 			</div>
 			{{/if}}
 		</li>
@@ -129,10 +129,10 @@
 </ol>
 
 {{#with system.encumbrance}}
-<div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" style="height: 12px;">
-	<span class="encumbrance-bar" style="width:{{pbc}}%; background: #6c8aa5;"></span>
+<div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" data-tooltip="{{localize 'DND4EALTUS.EncumbranceTip'}}">
+	<span class="encumbrance-bar" style="width:{{pbc}}%"></span>
 	{{#if encumbered}}
-		<span class="encumbrance-bar" style="width:{{pec}}%; background: #b72b2b;"></span>
+		<span class="encumbrance-bar encumbered" style="width:{{pec}}%"></span>
 	{{/if}}
 	<span class="encumbrance-label">{{value}} / {{max}} lbs.</span>
 </div>

@@ -1,27 +1,27 @@
 {{!-- Modifiers --}}
 
 {{#if system.modifiers}}
-<div class="attribute-modifiers" style="max-height: 76px; line-height: 22px;">
+<div class="attribute-modifiers">
 	<h4 class="attribute-name box-title">{{localize 'DND4EALTUS.ModifierPlural'}}</h4>
 	<div class="attack-mod flexrow thin" data-modifiers="attack">
 		<span>{{localize 'DND4EALTUS.ModifierAttack'}}: {{system.modifiers.attack.value}}</span>
-		<a class="modifiers-bonus" data-target="system.modifiers" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.ModifierAttack'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.modifiers.attack.bonusValue}}</a>
+		<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.ModifierAttack'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.modifiers.attack.bonusValue}}</a>
 	</div>
 	<div class="damage-mod flexrow thin" data-modifiers="damage">
 		<span>{{localize 'DND4EALTUS.ModifierDamage'}}: {{system.modifiers.damage.value}}</span>
-		<a class="modifiers-bonus" data-target="system.modifiers" title="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.ModifierDamage'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.modifiers.damage.bonusValue}}</a>
+		<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4EALTUS.BonusTo'}} {{localize 'DND4EALTUS.ModifierDamage'}}">{{localize 'DND4EALTUS.Bonus'}}: {{system.modifiers.damage.bonusValue}}</a>
 	</div>
 </div>
 {{/if}}
 
-<ol class="items-list effects-list" style="overflow-y: visible">
+<ol class="items-list effects-list">
 {{#each effects as |section sid|}}
 	<li class="items-header flexrow" data-effect-type="{{section.type}}">
 		<h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
 		<div class="effect-source">{{localize 'DND4EALTUS.Source'}}</div>
 		<div class="effect-source">{{localize 'DND4EALTUS.Duration'}}</div>
 		<div class="item-controls effect-controls flexrow">
-			<a class="effect-control" data-action="create" title="{{localize 'DND4EALTUS.EffectCreate'}}">
+			<a class="effect-control" data-action="create" data-tooltip="{{localize 'DND4EALTUS.EffectCreate'}}">
 				<i class="fas fa-plus"></i> {{localize "DND4EALTUS.Add"}}
 			</a>
 		</div>
@@ -30,26 +30,38 @@
 	<ol class="item-list">
 	{{#each section.effects as |effect|}}
 		<li class="item effect flexrow" data-effect-id="{{effect.id}}">
-			<div class="item-name effect-name flexrow">
+			<div class="item-name effect-name flexrow" data-tooltip="{{effect.name}}">
 				<img class="item-image" src="{{effect.icon}}"/>
 				<h4>{{effect.name}}</h4>
 			</div>
-			<div class="effect-source">{{effect.sourceName}}</div>
+			<div class="effect-source" data-tooltip="{{getSourceName effect}}">{{getSourceName effect}}</div>
 			{{#if effect._getIsSave}}
-				<a class="effect-duration effect-save rollable">{{effect.duration.label}}</a>
+				<a class="effect-duration effect-save rollable" data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}</a>
 			{{else}}
-				<div class="effect-duration">{{effect.duration.label}}</div>
+				<div class="effect-duration" data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}</div>
 			{{/if}}
 			<div class="item-controls effect-controls flexrow">
-				<a class="effect-control" data-action="toggle" title="{{localize 'DND4EALTUS.EffectToggle'}}">
-					<i class="fas fa-circle-notch"></i>
+				<a class="effect-control" data-action="toggle" data-tooltip="{{localize 'DND4EALTUS.EffectToggle'}}">
+					<i class="{{#if (isActive this)}}fas fa-power-off{{else}}fas fa-circle-notch{{/if}}"></i>
 				</a>
-				<a class="effect-control" data-action="edit" title="{{localize 'DND4EALTUS.EffectEdit'}}">
+				<a class="effect-control" data-action="edit" data-tooltip="{{localize 'DND4EALTUS.EffectEdit'}}">
 					<i class="fas fa-edit"></i>
 				</a>
-				<a class="effect-control" data-action="delete" title="{{localize 'DND4EALTUS.EffectDelete'}}">
-					<i class="fas fa-trash"></i>
-				</a>
+				{{#if (isActor ../../this)}}
+					{{#if effect.transfer}}
+						<a class="effect-control" data-action="none" data-tooltip="{{localize 'DND4EALTUS.EffectFromItem'}}">
+							<i class=""></i>
+						</a>
+					{{else}}
+						<a class="effect-control" data-action="delete" data-tooltip="{{localize 'DND4EALTUS.EffectDelete'}}">
+							<i class="fas fa-trash"></i>
+						</a>
+					{{/if}}
+				{{else}}
+					<a class="effect-control" data-action="delete" data-tooltip="{{localize 'DND4EALTUS.EffectDelete'}}">
+						<i class="fas fa-trash"></i>
+					</a>
+				{{/if}}
 			</div>
 		</li>
 	{{/each}}
@@ -66,14 +78,14 @@
 				<h4 class="res-name">{{res.label}}</h4>
 				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
 				<span class="res-armour">{{localize 'DND4EALTUS.Armour'}}: {{res.armour}} </span>
-				<a class="resistances-bonus" data-target="system.resistances" title="{{localize 'DND4EALTUS.BonusesTo'}} {{localize 'DND4EALTUS.DamRes'}}">{{localize 'DND4EALTUS.Bonus'}}: {{res.resBonusValue}}</a>
+				<a class="resistances-bonus" data-target="system.resistances" data-tooltip="{{localize 'DND4EALTUS.BonusesTo'}} {{localize 'DND4EALTUS.DamRes'}}">{{localize 'DND4EALTUS.Bonus'}}: {{res.resBonusValue}}</a>
 				<span class="res-immune">{{localize 'DND4EALTUS.Immunity'}}</span>
-				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} title="{{localize 'DND4EALTUS.Immunity'}}"/>
+				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} data-tooltip="{{localize 'DND4EALTUS.Immunity'}}"/>
 			</li>
 		{{/each}}
 
 		{{!-- Condition & Special Resistances --}}
-		<div style="text-align: left;"> 
+		<div class="resistances-special"> 
 		
 			<a class="list-string-input untyped-resistances" data-options="special" data-target="system.untypedResistances.resistances">
 				<span>{{ localize "DND4EALTUS.UntypedRes" }}</span>

@@ -16,7 +16,7 @@
   <hr/>
   <div class="form-group">
     <label>{{localize 'DND4EALTUS.HealingMenuPresets'}}</label>
-    <a onclick="healingPotionSettingsClicked()" class="fakebutton" title="{{ localize 'DND4EALTUS.HealingMenuHealingPotionSettingsDetails' }}">{{ localize "DND4EALTUS.HealingMenuHealingPotionSettings" }}</a>
+    <a onclick="healingPotionSettingsClicked()" class="fakebutton" data-tooltip="{{ localize 'DND4EALTUS.HealingMenuHealingPotionSettingsDetails' }}">{{ localize "DND4EALTUS.HealingMenuHealingPotionSettings" }}</a>
   </div>
   <hr/>
   <button id="healButton" onclick="healButtonClicked()">{{ localize "DND4EALTUS.HealingMenuHealHP" }}</button>
@@ -59,8 +59,8 @@
         tempHPButtonEnabled = false
         tempHPButtonText = game.i18n.localize("DND4EALTUS.HealingMenuOutOfSurges");
         if (evaluateFurtherHPButton) {
-          hpButtonEnabled = false
-          hpButtonText = game.i18n.localize("DND4EALTUS.HealingMenuOutOfSurges");
+          hpButtonEnabled = true
+          hpButtonText = game.i18n.localize("DND4EALTUS.HealingMenuHealOneHP");
         }
       }
 

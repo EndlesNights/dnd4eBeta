@@ -81,7 +81,7 @@ export default class ActorSheet4e extends ActorSheet {
 
   /** @override */
   get template() {
-    return `systems/dnd4eAltus/templates/actor-sheet.html`;
+	return `systems/dnd4eAltus/templates/actor-sheet.html`;
   }
 
   /* -------------------------------------------- */
@@ -119,11 +119,28 @@ export default class ActorSheet4e extends ActorSheet {
 		
 		// sheetData.config = CONFIG.DND4EALTUS;
 		actorData.size = DND4EALTUS.actorSizes;
+
+
+		//if any custom skills, sort them alphabetically
+		if(Object.entries(game.dnd4eAltus.config.coreSkills).length != Object.entries(actorData.skills).length){
+			const skillNames = Object.keys(actorData.skills);
+
+			// Sort the skill names based on the label property
+			skillNames.sort((a, b) => actorData.skills[a].label?.localeCompare(actorData.skills[b].label));
+			
+			const sortedSkills = skillNames.reduce((acc, skillName) => {
+			  acc[skillName] = actorData.skills[skillName];
+			  return acc;
+			}, {});
+			
+			actorData.skills = sortedSkills;
+		}
+
 		for ( let [s, skl] of Object.entries(actorData.skills)) {
 			// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
-			skl.icon = this._getTrainingIcon(skl.value);
-			skl.hover = game.i18n.localize(DND4EALTUS.trainingLevels[skl.value]);
-			skl.label = game.i18n.localize(DND4EALTUS.skills[s]);
+			skl.icon = this._getTrainingIcon(skl.training);
+			skl.hover = game.i18n.localize(DND4EALTUS.trainingLevels[skl.training]);
+			skl.label = skl.label ? skl.label: game.i18n.localize(DND4EALTUS.skills[s]);
 		}
 		
 		this._prepareDataTraits(actorData.languages, 
@@ -162,7 +179,7 @@ export default class ActorSheet4e extends ActorSheet {
 		
 		// Prepare active effects
 		// data.effects = prepareActiveEffectCategories(this.actor.effects);
-		data.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.effects);
+		data.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.getActiveEffects());
 
 		// Resources
 		actorData.resources = ["primary", "secondary", "tertiary"].reduce((obj, r) => {
@@ -308,12 +325,12 @@ export default class ActorSheet4e extends ActorSheet {
 		this._sortPowers(powers);
 		this._sortFeatures(features);
 
-		data.moveTitle = `
+		data.moveTitle = `<p style="text-align:left">
 ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedWalking")}
-${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedRunning")}
-${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedCharging")}
-${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedClimbing")}
-${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedShifting")}`;
+<br>${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedRunning")}
+<br>${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedCharging")}
+<br>${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedClimbing")}
+<br>${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.MovementUnit")} ${game.i18n.localize("DND4EALTUS.MovementSpeedShifting")}`;
 
 		if(data.system.movement.custom){
 			const moveCustom = [];
@@ -711,11 +728,19 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 		return icons[level];
 	}
 
-  /* -------------------------------------------- */
+	/* -------------------------------------------- */
 
-  /** @override */
+	/** @override */
 	activateListeners(html) {
 		super.activateListeners(html);
+
+		//veiw image
+		html.find('.actor-art').click(this._onDisplayActorArt.bind(this));
+
+		if(this.options.viewPermission){ // With at leaste observation permisions, be able to view item summary
+			// Item summaries
+			html.find('.item .item-name h4').click(event => this._onItemSummary(event));
+		}
 
 		// Everything below here is only needed if the sheet is editable
 		if (!this.options.editable) return;
@@ -732,7 +757,6 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 		const item = this.actor.items.get(li.data("itemId"));
 		item.sheet.render(true);
 		});
-
 
 		if ( this.actor.isOwner ) {	
 			// Roll Skill Checks
@@ -812,10 +836,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 			// Active Effect management
 			// html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
 			html.find(".effect-control").click(event => ActiveEffect4e.onManageActiveEffect(event, this.actor));
-		
-			// Item summaries
-			html.find('.item .item-name h4').click(event => this._onItemSummary(event));		
-			
+				
 			// Item State Toggling
 			html.find('.item-toggle').click(this._onToggleItem.bind(this));
 		
@@ -828,18 +849,39 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 
 			html.find('.effect-save').click(event => this._onRollEffectSave(event));
 
-			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this))
-			
+			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this));
+
+			new ContextMenu(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this)});
+		}
+
+		//Disabels and adds warning to input fields that are being modfied by active effects
+		if (this.isEditable) {
+			for ( const override of this._getActorOverrides() ) {
+				html.find(`input[name="${override}"],select[name="${override}"]`).each((i, el) => {
+					el.disabled = true;
+					el.dataset.tooltip = "DND4EALTUS.ActiveEffectOverrideWarning";
+				});
+			}
 		}
 	}
+	
+	/* -------------------------------------------- */
+	/**
+	 * Retrieve the list of fields that are currently modified by Active Effects on the Actor.
+	 * @returns {string[]}
+	 * @protected
+	 */
+	_getActorOverrides() {
+		return Object.keys(foundry.utils.flattenObject(this.object.overrides || {}));
+	}
 
-  /* -------------------------------------------- */
+	/* -------------------------------------------- */
 
-  /**
-   * Handle input changes to numeric form fields, allowing them to accept delta-typed inputs
-   * @param event
-   * @private
-   */
+	/**
+	 * Handle input changes to numeric form fields, allowing them to accept delta-typed inputs
+	 * @param event
+	 * @private
+	 */
 	_onChangeInputDelta(event) {
 		const input = event.target;
 		const value = input.value;
@@ -875,7 +917,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 	async _onItemSummary(event) {
 		event.preventDefault();
 		const li = $(event.currentTarget).parents(".item")
-	    const itemId = li.data("item-id")
+		const itemId = li.data("item-id")
 	  	if (!itemId)
 		{
 			console.log("got an item summary event for something without an item id.  Assuming its an effect.")
@@ -893,7 +935,12 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 			//generate summary entry here
 			if (item.type === "power") {
 				let div = $(`<div class="item-summary"></div>`);
-				let descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
+				let descrip;
+				if(item.system.autoGenChatPowerCard && chatData.chatFlavor){
+					descrip = $(`<div class="item-description">${chatData.chatFlavor}</div>`);
+				}else{
+					descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
+				}
 				div.append(descrip);
 
 				if(item.system.autoGenChatPowerCard){
@@ -914,6 +961,15 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 		}
 		li.toggleClass("expanded");
 	}
+
+  /* -------------------------------------------- */
+
+	_onDisplayActorArt(event) {
+		event.preventDefault();
+
+		const p = new ImagePopout(this.object.img);
+		p.render(true);
+	}
   
   /* -------------------------------------------- */
 
@@ -930,6 +986,7 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 	const attr = power.includes(item.type) ? "system.prepared" : "system.equipped";
 	return item.update({[attr]: !getProperty(item, attr)});
   }
+
   /* -------------------------------------------- */
 
   /**
@@ -991,11 +1048,11 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 			itemData.data.weaponUse = "none";
 
 			itemData.data.attack = {
-				formula:"@lvhalf",
+				formula:"5 + @atkMod",
 				ability:"form"
 			};
 			itemData.data.hit  = {
-				formula:"@powBase",
+				formula:"@powBase + @dmgMod",
 				critFormula:"@powMax",
 				baseDiceType: "d8",
 				detail: "1d8 damage."
@@ -1037,10 +1094,10 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
    * @private
    */
   _onItemDelete(event) {
-    event.preventDefault();
-    const li = event.currentTarget.closest(".item");
-    const item = this.actor.items.get(li.dataset.itemId);
-    if ( item )  {
+	event.preventDefault();
+	const li = event.currentTarget.closest(".item");
+	const item = this.actor.items.get(li.dataset.itemId);
+	if ( item )  {
 		if (game.settings.get("dnd4eAltus", "itemDeleteConfirmation")) {
 			return Dialog.confirm({
 				title: game.i18n.format("DND4EALTUS.DeleteConfirmTitle", {name: item.name}),
@@ -1504,26 +1561,150 @@ ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4EALTUS.M
 		});	
 	}
 
-  /* -------------------------------------------- */
-  
-  /**
-   * Handle rolling a ability check
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  _onRollAbilityCheck(event) {
-	event.preventDefault();
-	let ability = event.currentTarget.parentElement.dataset.ability;
-	this.actor.rollAbility(ability, {event: event});
-  }
-  
-  /* -------------------------------------------- */
 
-  /**
-   * Handle rolling a defences check
-   * @param {Event} event   The originating click event
-   * @private
-   */
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle activation of a context menu for an embedded Item or ActiveEffect document.
+	 * Dynamically populate the array of context menu options.
+	 * @param {HTMLElement} element       The HTML element for which the context menu is activated
+	 * @protected
+	 */
+	_onItemContext(element) {
+
+		// Active Effects
+		if ( element.classList.contains("effect") ) {
+			const effect = this.actor.effects.get(element.dataset.effectId);
+			if ( !effect ) return;
+			ui.context.menuItems = this._getActiveEffectContextOptions(effect);
+			Hooks.call("DND4EALTUS.getActiveEffectContextOptions", effect, ui.context.menuItems);
+		}
+
+		// Items
+		else {
+			const item = this.actor.items.get(element.dataset.itemId);
+			if ( !item ) return;
+			ui.context.menuItems = this._getItemContextOptions(item);
+			Hooks.call("DND4EALTUS.getItemContextOptions", item, ui.context.menuItems);
+		}
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Prepare an array of context menu options which are available for owned ActiveEffect documents.
+	 * @param {ActiveEffect4e} effect         The ActiveEffect for which the context menu is activated
+	 * @returns {ContextMenuEntry[]}          An array of context menu options offered for the ActiveEffect
+	 * @protected
+	 */	
+
+	/* -------------------------------------------- */
+	_getActiveEffectContextOptions(effect) {
+		return [
+			{
+				name: "DND4EALTUS.ContextMenuActionEdit",
+				icon: "<i class='fas fa-edit fa-fw'></i>",
+				callback: () => effect.sheet.render(true)
+			},
+			{
+				name: "DND4EALTUS.ContextMenuActionDuplicate",
+				icon: "<i class='fas fa-copy fa-fw'></i>",
+				callback: () => effect.clone({name: game.i18n.format("DOCUMENT.CopyOf", {name: effect.name})}, {save: true})
+			},
+			{
+				name: "DND4EALTUS.ContextMenuActionDelete",
+				icon: "<i class='fas fa-trash fa-fw'></i>",
+				callback: () => effect.deleteDialog()
+			},
+			{
+				name: effect.disabled ? "DND4EALTUS.ContextMenuActionEnable" : "DND4EALTUS.ContextMenuActionDisable",
+				icon: effect.disabled ? "<i class='fas fa-check fa-fw'></i>" : "<i class='fas fa-times fa-fw'></i>",
+				callback: () => effect.update({disabled: !effect.disabled})
+			}
+		];
+	}
+
+	/**
+	 * Prepare an array of context menu options which are available for owned Item documents.
+	 * @param {Item4e} item                   The Item for which the context menu is activated
+	 * @returns {ContextMenuEntry[]}          An array of context menu options offered for the Item
+	 * @protected
+	 */
+	_getItemContextOptions(item) {
+		// Standard Options
+		const options = [
+		{
+			name: "DND4EALTUS.ContextMenuActionToChat",
+			icon: "<i class='fas fa-share-from-square fa-fw'></i>",
+			callback: () => item.toChat()
+		},
+		{
+			name: "DND4EALTUS.ContextMenuActionEdit",
+			icon: "<i class='fas fa-edit fa-fw'></i>",
+			callback: () => item.sheet.render(true)
+		},
+		{
+			name: "DND4EALTUS.ContextMenuActionDuplicate",
+			icon: "<i class='fas fa-copy fa-fw'></i>",
+			condition: () => !["race", "background", "class", "subclass"].includes(item.type),
+			callback: () => item.clone({name: game.i18n.format("DOCUMENT.CopyOf", {name: item.name})}, {save: true})
+		},
+		{
+			name: "DND4EALTUS.ContextMenuActionDelete",
+			icon: "<i class='fas fa-trash fa-fw'></i>",
+			callback: () => item.deleteDialog()
+		}
+		];
+
+		// Toggle Attunement State
+		if ( ("attunement" in item.system) && (item.system.attunement !== CONFIG.DND4EALTUS.attunementTypes.NONE) ) {
+			const isAttuned = item.system.attunement === CONFIG.DND4EALTUS.attunementTypes.ATTUNED;
+			options.push({
+				name: isAttuned ? "DND4EALTUS.ContextMenuActionUnattune" : "DND4EALTUS.ContextMenuActionAttune",
+				icon: "<i class='fas fa-sun fa-fw'></i>",
+				callback: () => item.update({
+					"system.attunement": CONFIG.DND4EALTUS.attunementTypes[isAttuned ? "REQUIRED" : "ATTUNED"]
+				})
+			});
+		}
+
+		// Toggle Equipped State
+		if ( "equipped" in item.system ) options.push({
+			name: item.system.equipped ? "DND4EALTUS.ContextMenuActionUnequip" : "DND4EALTUS.ContextMenuActionEquip",
+			icon: "<i class='fas fa-shield-alt fa-fw'></i>",
+			callback: () => item.update({"system.equipped": !item.system.equipped})
+		});
+
+		// Toggle Prepared State
+		if ( ("prepared" in item.system)) options.push({
+			name: item.system?.prepared ? "DND4EALTUS.ContextMenuActionUnprepare" : "DND4EALTUS.ContextMenuActionPrepare",
+			icon: "<i class='fas fa-sun fa-fw'></i>",
+			callback: () => item.update({"system.prepared": !item.system.prepared})
+		});
+
+		return options;
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle rolling a ability check
+	 * @param {Event} event   The originating click event
+	 * @private
+	 */
+	_onRollAbilityCheck(event) {
+		event.preventDefault();
+		let ability = event.currentTarget.parentElement.dataset.ability;
+		this.actor.rollAbility(ability, {event: event});
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle rolling a defences check
+	 * @param {Event} event   The originating click event
+	 * @private
+	 */
 	_onRollDefenceCheck(event) {
 		event.preventDefault();
 		const def = event.currentTarget.parentElement.dataset.defence;

@@ -1,0 +1,41 @@
+<form id="custom-skill-config" class="dialog-content" onsubmit="event.preventDefault();">
+	<ol id="custom-skill-list" class="custom-skill-list">
+
+			{{#each customSkills as |skill s|}}
+			<li class="flexrow custom-skill-line">
+			<div id="{{s}}">
+				<span>{{localize 'DND4EALTUS.SkillLabel'}}</span>
+				<input class="custom-skill-label" disabled type="text" name="label" value="{{skill.label}}" data-dtype="String" />
+				
+				<span>{{localize 'DND4EALTUS.SkillID'}}</span>
+				<input class="custom-skill-id" disabled type="text" name="id" value="{{skill.id}}" data-dtype="String" />
+				
+				<span>{{localize 'DND4EALTUS.Attribute'}}</span>
+
+				<select class="custom-skill-ability" disabled name="ability">
+					<option value="str" {{#if (eq skill.ability "str")}}selected{{/if}}>{{localize 'DND4EALTUS.AbilityStr'}}</option>
+					<option value="con" {{#if (eq skill.ability "con")}}selected{{/if}}>{{localize 'DND4EALTUS.AbilityCon'}}</option>
+					<option value="dex" {{#if (eq skill.ability "dex")}}selected{{/if}}>{{localize 'DND4EALTUS.AbilityDex'}}</option>
+					<option value="int" {{#if (eq skill.ability "int")}}selected{{/if}}>{{localize 'DND4EALTUS.AbilityInt'}}</option>
+					<option value="wis" {{#if (eq skill.ability "wis")}}selected{{/if}}>{{localize 'DND4EALTUS.AbilityWis'}}</option>
+					<option value="cha" {{#if (eq skill.ability "cha")}}selected{{/if}}>{{localize 'DND4EALTUS.AbilityCha'}}</option>
+					<option value="none" {{#if (eq skill.ability "none")}}selected{{/if}}>{{localize 'DND4EALTUS.None'}}</option>
+				</select>
+
+				<span>{{localize 'DND4EALTUS.SkillACPToggle'}}</span>
+				<input class="custom-skill-acp" disabled type="checkbox" name="armourCheck" {{checked skill.armourCheck}} data-dtype="Boolean">
+
+				<a class="custom-skill-control" custom-skill-delete data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	
+			</div>
+			</li>
+
+			{{/each}}
+	</ol>
+
+	<a class="custom-skill-control custom-skill-add" custom-skill-create>{{localize 'DND4EUI.AddNewSkill'}} <i class="fas fa-plus"></i></a>
+
+	<footer class="sheet-footer flexrow">
+		<button type="submit" data-save name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4EALTUS.Save"}}</button>
+		<button type="button" data-cancel name="cancel"><i class="fas fa-ban"></i> {{ localize "DND4EALTUS.Cancel"}}</button>
+	</footer>
+</form>

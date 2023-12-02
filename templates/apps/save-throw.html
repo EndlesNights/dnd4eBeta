@@ -1,8 +1,13 @@
 <form id="save-throw" class="dialog-content" onsubmit="event.preventDefault();">
-	<p>{{localize 'DND4EALTUS.SavePrompt'}}</p>
+	<p>{{#if effectName}}
+		{{localize 'DND4EALTUS.SaveVsPrompt'}} "<strong>{{effectName}}</strong>"
+	{{else}}
+		{{localize 'DND4EALTUS.SavePrompt'}} 
+	{{/if}}
+	</p>
 	<div class="form-group">
 		<label>{{localize 'DND4EALTUS.SaveDCSet'}}:</label>
-		<input type="text" name="dc" value="10" placeholder="" onClick="this.select();"/>
+		<input type="text" name="dc" value="{{#if saveDC}}{{saveDC}}{{else}}10{{/if}}" placeholder="10" onClick="this.select();"/>
 	</div>
 
 	<div class="form-group">

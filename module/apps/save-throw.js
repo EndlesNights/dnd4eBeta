@@ -1,4 +1,6 @@
-export class SaveThrowDialog extends DocumentSheet {
+import DocumentSheet4e from "./DocumentSheet4e.js"
+
+export class SaveThrowDialog extends DocumentSheet4e {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
@@ -11,14 +13,17 @@ export class SaveThrowDialog extends DocumentSheet {
 		});
 	}
 	get title() {
-		return `${this.object.name} - Saving Throw`;
+		return `${this.object.name} - ${game.i18n.format("DND4EALTUS.SavingThrow")}`;
 	}
 
 	/** @override */
 	getData() {
+		const options = this.options;
 		return {
 			system: this.object.system,
-			rollModes: CONFIG.Dice.rollModes
+			rollModes: CONFIG.Dice.rollModes,
+			effectName: ( options.effectSave ? this.object.effects.get(options.effectId).name : null ),
+			saveDC: ( options.effectSave ? this.object.effects.get(options.effectId).flags.dnd4eAltus?.effectData?.saveDC : null )
 		};
 	}
 

@@ -4,12 +4,17 @@
  */
  export default class ActiveEffect4e extends ActiveEffect {
 	constructor(data, context) {
+		if(!data.flags?.dnd4eAltus?.dots){
+			setProperty(data, "flags.dnd4eAltus.dots", new Array);	//Empty array for storing Ongoing Damage instances
+		}
 		if (data.id) {
 		  setProperty(data, "flags.core.statusId", data.id);
 		  delete data.id;
 		}
 		try{
-			if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
+			
+			// if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
+			if(["power", "consumable"].includes(context?.parent?.type)){
 				data.transfer = false;
 			}
 		} catch{
@@ -28,23 +33,100 @@
 
 	/** @inheritdoc */
 	apply(actor, change) {
+
 		if ( this.isSuppressed ) return null;
+		
+		// this.otherActorLink(actor, change);
+		this.safeEvalEffectValue(actor, change);
+
 		return super.apply(actor, change);
+	}
+
+	/* --------------------------------------------- */
+
+	// Work in progress, evaluate from other actors given ID?
+	
+	otherActorLink(actor, change){
+		//Should only be based on terms not the start, cut up the string nad check by terms instead of this garbage
+		if(!change.value.startsWith("@actor.")) return;
+
+		const match = change.value.match(/@actor\.(.*?)\@/);
+
+		if(!match || !match[1]) return;
+		const targetActor = game.actors.get(match[1])
+		if(!targetActor) return;
+
+		change.value.replace(`@actor.${match[1]}@`, '@');
+		actor = targetActor;
+		
+	}
+	/* --------------------------------------------- */
+
+	/**
+	 * Before passing changes to the parent ActiveEffect class,
+	 * we want to make some modifications to make the effect
+	 * rolldata aware.
+	 * 
+	 * @param {*} wrapped   The next call in the libWrapper chain
+	 * @param {Actor} actor     The Actor that is affected by the effect
+	 * @param {Object} change    The changeset to be applied with the Effect
+	 * @returns 
+	 */
+	safeEvalEffectValue(actor, change){
+		const stringDiceFormat = /\d+d\d+/;
+    
+		// If the user wants to use the rolldata format
+		// for grabbing data keys, why stop them?
+		// This is purely syntactic sugar, and for folks
+		// who copy-paste values between the key and value
+		// fields.
+		if (change.key.indexOf('@') === 0)
+		  change.key = change.key.replace('@', '');
+	  
+		// If the user entered a dice formula, I really doubt they're 
+		// looking to add a random number between X and Y every time
+		// the Effect is applied, so we treat dice formulas as normal
+		// strings.
+		// For anything else, we use Roll.replaceFormulaData to handle
+		// fetching of data fields from the actor, as well as math
+		// operations.  
+		if (!change.value.match(stringDiceFormat))
+		  change.value = Roll.replaceFormulaData(game.helper.commonReplace(change.value, actor), actor.getRollData());
+	  
+		// If it'll evaluate, we'll send the evaluated result along 
+		// for the change.
+		// Otherwise we just send along the exact string we were given. 
+		try {
+		  change.value = Roll.safeEval(change.value).toString();
+		} catch (e) { /* noop */ }
 	}
 
 	/** @inheritdoc */
 	async _preCreate(data, options, user) {
 		await super._preCreate(data, options, user);
+		const updates = {};
 
 		// Set initial duration data for Actor-owned effects
 		if ( this.parent instanceof Actor ) {
-			const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
+			// const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
+			updates.duration = {startTime: game.time.worldTime};
+			updates.transfer = false;
+			updates.equippedRec = false
+
 			const combat = game.combat;
 			if (combat?.turn != null && combat.turns && combat.turns[combat.turn]) {//if combat has started - combat.turn for the first character = 0 (so cannot use truthy value).  If there are no combatents combat.turns = []
 				updates.flags = {dnd4eAltus: { effectData: { startTurnInit: combat.turns[combat.turn].initiative ?? 0}}};
 			}
+		}
+
+		if(data.statuses?.length && data.description){
+			updates.description = game.i18n.localize(data.description);
+		}
+
+		if(Object.keys(updates).length){
 			this.updateSource(updates);
 		}
+
 	}
 	/* --------------------------------------------- */
 
@@ -71,7 +153,7 @@
 		if ( !item ) return;
 
 		//types of items that can be equipted
-		const validTypes = ["weapon", "equipment", "consumable", "tool", "loot", "backpack"];
+		const validTypes = ["weapon", "equipment", "tool", "loot", "backpack"];
 		if(validTypes.includes(item.type) && item.system.equipped === false){
 			this.isSuppressed = this.flags.dnd4eAltus?.effectData?.equippedRec || false;
 			return;
@@ -91,12 +173,14 @@
 		event.preventDefault();
 		const a = event.currentTarget;
 		const li = a.closest("li");
-		const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
+		const effects = ["Player Character", "NPC"].includes(owner.type) ? owner.getActiveEffects() : owner.effects.contents;
+		const effect = li.dataset.effectId ? effects.find(e => e._id === li.dataset.effectId) : null;
 		switch ( a.dataset.action ) {
 			case "create":
+				const isActor = owner instanceof Actor;
 				return owner.createEmbeddedDocuments("ActiveEffect", [{
-					name: game.i18n.localize("DND4EALTUS.EffectNew"),
-					icon: "icons/svg/aura.svg",
+					name: isActor ? game.i18n.localize("DND4EALTUS.EffectNew") : owner.name,
+					icon: isActor ? "icons/svg/aura.svg" : owner.img,
 					origin: owner.uuid,
 					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
 					disabled: li.dataset.effectType === "inactive"
@@ -127,7 +211,7 @@
 
 	_prepareDuration(){
 		
-		if(this.parent.type === "power"){
+		if(["power", "consumable"].includes(this.parent.type)){
 			const durationType = this.getFlag("dnd4eAltus", "effectData")?.durationType;
 			if(durationType){
 				return{
@@ -165,7 +249,8 @@
 			return {
 				type: "turns",
 				duration: duration,
-				remaining: remaining,
+				// remaining: remaining,
+				remaining: ((d.rounds == null && d.turns == null && d.seconds == null ) ? null : remaining),
 				label: this._getDurationLabel(d.rounds, d.turns),
 				_combatTime: current
 			  };

@@ -1,6 +1,7 @@
 import {Helper} from "../helper.js";
+import DocumentSheet4e from "./DocumentSheet4e.js"
 
-export class HealMenuDialog extends FormApplication {
+export class HealMenuDialog extends DocumentSheet4e {
 
 	/** @override */
 	static get defaultOptions() {
@@ -14,6 +15,9 @@ export class HealMenuDialog extends FormApplication {
 			closeOnSubmit: true,
 			submitOnClose: false
 		});
+	}
+	get title() {
+		return `${this.object.name} - ${game.i18n.localize( 'DND4EALTUS.Healing')}`;
 	}
 
 	/** @override */
@@ -51,15 +55,24 @@ export class HealMenuDialog extends FormApplication {
 			hpTypeText = game.i18n.localize("DND4EALTUS.TempHPTip")
 			await this.object.applyTempHpChange(healTotal)
 		}
-		else {
+		else if (this.object.system.details.surges.value > 0){
 			await this.object.applyDamage(healTotal, -1)
+		} else if (this.object.system.details.surges.value == 0 && this.object.system.attributes.hp.value <= 0){
+			await this.object.applyDamage(1, -1)
+			surgeValueText = 1;
+		} else {
+			surgeValueText = 0;
 		}
 
 		let healingSurgeText = ""
 		if (formData["spend-healing-surge"] === true) {
-			healingSurgeText = game.i18n.localize("DND4EALTUS.SurgeSpendAnd")
+			if(this.object.system.details.surges.value > 0){
+			    healingSurgeText = game.i18n.localize("DND4EALTUS.SurgeSpendAnd");
+			} else {
+			    healingSurgeText = game.i18n.localize("DND4EALTUS.SurgeNotSpendAnd");
+			}
 			updateData[`system.details.surges.value`] = Math.max(this.object.system.details.surges.value - 1, 0)
-			this.object.update(updateData);
+			await this.object.update(updateData);
 		}
 
 		const rollMessage = formData.bonus && formData.bonus !== "" ? ` + ${roll.total} (${roll.formula} => ${roll.result})` : ""

@@ -1,0 +1,50 @@
+<div class="dnd4eAltus dot-report">
+	<div class="dot-result">
+		<a class="target" data-target-id="{{targetToken}}">{{actorName}}</a>
+		{{#if (eq autoDoTs "apply")}}
+			{{#if (eq dmgImpact "healing")}}
+				{{localize "DND4EALTUS.regained"}} <span class="damage-taken {{dmgImpact}}">{{dmgTaken}}</span> {{localize "DND4EALTUS.of"}} 
+			{{else if (eq dmgImpact "resistant-full")}}
+				<span class="damage-taken {{dmgImpact}}">{{localize "DND4EALTUS.DamResistedCompletely"}}</span> 
+			{{else if (eq dmgImpact "vulnerable")}}
+				{{localize "DND4EALTUS.took"}} <span class="damage-taken {{dmgImpact}}" data-tooltip="{{dot.amount}} + {{dmgDiff}}">{{dmgTaken}}</span> {{localize "DND4EALTUS.of"}}
+			{{else}}
+				{{localize "DND4EALTUS.took"}} <span class="damage-taken {{dmgImpact}}" data-tooltip="{{dot.amount}} - {{dmgDiff}}">{{dmgTaken}}</span> {{localize "DND4EALTUS.of"}} 
+			{{/if}}
+		{{else}}
+			{{#if (eq dmgImpact "healing")}}
+				{{localize "DND4EALTUS.canRegain"}}
+			{{else}}
+				{{localize "DND4EALTUS.isTaking"}}
+			{{/if}}
+		{{/if}}
+			{{dot.amount}}
+			{{#if (eq dmgImpact "healing")}} 
+				{{localize "DND4EALTUS.HP"}}.
+			{{else}} 
+				{{typesFormatted}} {{localize "DND4EALTUS.Damage"}}.
+			{{/if}}
+	</div>
+</div>
+{{#unless (eq autoDoTs "apply")}}
+	<div class="chatDamageButtons">
+	{{#if (eq dmgImpact "healing")}}
+		 <a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="Heal"><i class="fas fa-user-plus fa-fw"></i>{{ localize "DND4EALTUS.ChatContextHealing" }}</a>
+		 <a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="TempHeal"><i class="fas fa-user-clock fa-fw"></i>{{ localize "DND4EALTUS.ChatContextTempHp" }}</a>
+	{{else}}
+		<a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="Damage"><i class="fas fa-user-minus"></i>{{ localize "DND4EALTUS.ChatContextDamage" }}</a>
+		<a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4EALTUS.ChatContextButtonTitle" }}" data-action="HalfDamage"><i class="fas fa-user-shield"></i>{{ localize "DND4EALTUS.ChatContextHalfDamage" }}</a>
+	{{/if}}
+</div>
+<script>
+	function mouseEnter(id) {
+		document.getElementById("form" + id).style.backgroundColor = "#99ccff"
+		document.getElementById("exp" + id).style.backgroundColor = "#99ccff"
+	}
+
+	function mouseLeave(id) {
+		document.getElementById("form" + id).style.backgroundColor = null
+		document.getElementById("exp" + id).style.backgroundColor = null
+	}
+</script>
+{{/unless}}
