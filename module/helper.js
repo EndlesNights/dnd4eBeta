@@ -149,7 +149,7 @@ export class Helper {
 			}
 
 			const effectsToProcess = []
-			const effects = Array.from(actorData.effects.values()).filter((effect) => effect.disabled === false)
+			const effects = actorData.getActiveEffects().filter((effect) => effect.disabled === false)
 			effects.forEach((effect) => {
 				effect.changes.forEach((change => {
 					if (change.key.startsWith(`power.${effectType}`) || (weaponInnerData && change.key.startsWith(`weapon.${effectType}`))) {
@@ -718,7 +718,7 @@ export class Helper {
 				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.  Searching active effects for a suitable variable`)
 			}
 			const resultObject = {}
-			const effects = Array.from(actorData.effects.values()).filter((effect) => effect?.disabled === false);
+			const effects = actorData.getActiveEffects().filter((effect) => effect?.disabled === false);
 			effects.forEach((effect) => {
 				effect.changes.forEach((change => {
 					if (this.variableRegex.test(change.key)) {
