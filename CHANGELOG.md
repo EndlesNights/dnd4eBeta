@@ -5,6 +5,7 @@
 - Moved skill training tracking out of `skills#value` to `skills#training`
 - added `#skillTraining` to the actor template, which can be used to modify skills based on training level. The Jack of All Trades feat can be implemented now with a single effect attribute key of `system.skillTraining.untrained.feat` and a value of `2` 
 - fix minor issue on npc sheet #328
+- fix Bonus processing for v11 ActiveEffects [PR 329](https://github.com/EndlesNights/dnd4eBeta/pull/329) from [wigmeister2000](https://github.com/wigmeister2000)
 
 ## Version 0.4.32
 - Fix actor sheet effects tab for v11 ActiveEffects transfer [PR 326](https://github.com/EndlesNights/dnd4eBeta/pull/326) from [wigmeister2000](https://github.com/wigmeister2000)
