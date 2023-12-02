@@ -126,7 +126,7 @@
 	"secondaryTokenAttribute": "attributes.temphp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dndAltus/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/Altus-0.4.33.zip",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/refs/tags/Altus-0.4.33.zip",
 	"flags": {
 		"needsMigrationVersion": "0.4.33",
 		"compatibleMigrationVersion": "0.2.50"
