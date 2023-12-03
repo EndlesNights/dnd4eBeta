@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.34
+- hotfix to migration
+
 ## Version 0.4.33
 - Added in options to use `item`, `feat`, `power`, and `untyped` suffixes for specific bonuses many actor attributes. This should now be the primary keys used while setting up active effects.
 - Moved skill training tracking out of `skills#value` to `skills#training`

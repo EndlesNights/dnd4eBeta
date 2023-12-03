@@ -2,7 +2,7 @@
 	"id": "dnd4e",
 	"title": "DnD 4th Edition",
 	"description": "An implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.4.33",
+	"version": "0.4.34",
 	"compatibility":{
 		"minimum": 11,
 		"verified": 11,
@@ -126,9 +126,9 @@
 	"secondaryTokenAttribute": "attributes.temphp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.4.33.zip",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.4.34.zip",
 	"flags": {
-		"needsMigrationVersion": "0.4.33",
+		"needsMigrationVersion": "0.4.34",
 		"compatibleMigrationVersion": "0.2.50"
 	}
 }

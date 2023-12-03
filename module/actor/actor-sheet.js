@@ -126,7 +126,7 @@ export default class ActorSheet4e extends ActorSheet {
 			const skillNames = Object.keys(actorData.skills);
 
 			// Sort the skill names based on the label property
-			skillNames.sort((a, b) => actorData.skills[a].label.localeCompare(actorData.skills[b].label));
+			skillNames.sort((a, b) => actorData.skills[a].label?.localeCompare(actorData.skills[b].label));
 			
 			const sortedSkills = skillNames.reduce((acc, skillName) => {
 			  acc[skillName] = actorData.skills[skillName];
