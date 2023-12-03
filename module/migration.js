@@ -2,7 +2,7 @@
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @return {Promise}      A Promise which resolves once the migration is completed
  */
- export const migrateWorld = async function() {
+export const migrateWorld = async function() {
 	const version = game.system.version;
 	ui.notifications.info(game.i18n.format("MIGRATION.4eBegin", {version}), {permanent: true});
 
@@ -323,7 +323,7 @@ function _migrateActorSkills(actorData, updateData){
 	if(! skills) return;
 
 	for( const [id, skl] of Object.entries(skills)){
-		if(skl.training == undefined){
+		if(skl.training == undefined || skl.value){
 			updateData[`system.skills.${id}.training`] = skl.value || 0;
 			updateData[`system.skills.${id}.value`] = 0;
 		}
