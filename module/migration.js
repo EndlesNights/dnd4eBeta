@@ -323,7 +323,7 @@ function _migrateActorSkills(actorData, updateData){
 	if(! skills) return;
 
 	for( const [id, skl] of Object.entries(skills)){
-		if(skl.training == undefined){
+		if(skl.training == undefined || skl.value){
 			updateData[`system.skills.${id}.training`] = skl.value || 0;
 			updateData[`system.skills.${id}.value`] = 0;
 		}
