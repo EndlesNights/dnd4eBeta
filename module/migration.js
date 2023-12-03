@@ -404,32 +404,32 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 	const hp = actorData?.system?.attributes?.hp;
 	if(hp){
 		if(hp.feat == undefined){
-			updateData[`system.attributes.hp.${id}.feat`] = 0;
+			updateData[`system.attributes.hp.feat`] = 0;
 		}
 		if(hp.item == undefined){
-			updateData[`system.attributes.hp.${id}.item`] = 0;
+			updateData[`system.attributes.hp.item`] = 0;
 		}
 		if(hp.power == undefined){
-			updateData[`system.attributes.hp.${id}.power`] = 0;
+			updateData[`system.attributes.hp.power`] = 0;
 		}
 		if(hp.untyped == undefined){
-			updateData[`system.attributes.hp.${id}.untyped`] = 0;
+			updateData[`system.attributes.hp.untyped`] = 0;
 		}
 	}
 
 	const init = actorData?.system?.attributes?.init;
 	if(init){
 		if(init.feat == undefined){
-			updateData[`system.attributes.init.${id}.feat`] = 0;
+			updateData[`system.attributes.init.feat`] = 0;
 		}
 		if(init.item == undefined){
-			updateData[`system.attributes.init.${id}.item`] = 0;
+			updateData[`system.attributes.init.item`] = 0;
 		}
 		if(init.power == undefined){
-			updateData[`system.attributes.init.${id}.power`] = 0;
+			updateData[`system.attributes.init.power`] = 0;
 		}
 		if(init.untyped == undefined){
-			updateData[`system.attributes.init.${id}.untyped`] = 0;
+			updateData[`system.attributes.init.untyped`] = 0;
 		}
 	}
 
@@ -472,78 +472,78 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 	const deathsavebon = actorData?.system?.details?.deathsavebon;
 	if(deathsavebon){
 		if(deathsavebon.feat == undefined){
-			updateData[`system.details.deathsavebon.${id}.feat`] = 0;
+			updateData[`system.details.deathsavebon.feat`] = 0;
 		}
 		if(deathsavebon.item == undefined){
-			updateData[`system.details.deathsavebon.${id}.item`] = 0;
+			updateData[`system.details.deathsavebon.item`] = 0;
 		}
 		if(deathsavebon.power == undefined){
-			updateData[`system.details.deathsavebon.${id}.power`] = 0;
+			updateData[`system.details.deathsavebon.power`] = 0;
 		}
 		if(deathsavebon.untyped == undefined){
-			updateData[`system.details.deathsavebon.${id}.untyped`] = 0;
+			updateData[`system.details.deathsavebon.untyped`] = 0;
 		}
 	}
 
 	const surgeBon = actorData?.system?.details?.surgeBon;
 	if(surgeBon){
 		if(surgeBon.feat == undefined){
-			updateData[`system.details.surgeBon.${id}.feat`] = 0;
+			updateData[`system.details.surgeBon.feat`] = 0;
 		}
 		if(surgeBon.item == undefined){
-			updateData[`system.details.surgeBon.${id}.item`] = 0;
+			updateData[`system.details.surgeBon.item`] = 0;
 		}
 		if(surgeBon.power == undefined){
-			updateData[`system.details.surgeBon.${id}.power`] = 0;
+			updateData[`system.details.surgeBon.power`] = 0;
 		}
 		if(surgeBon.untyped == undefined){
-			updateData[`system.details.surgeBon.${id}.untyped`] = 0;
+			updateData[`system.details.surgeBon.untyped`] = 0;
 		}
 	}
 
 	const surges = actorData?.system?.details?.surges;
 	if(surges){
 		if(surges.feat == undefined){
-			updateData[`system.details.surges.${id}.feat`] = 0;
+			updateData[`system.details.surges.feat`] = 0;
 		}
 		if(surges.item == undefined){
-			updateData[`system.details.surges.${id}.item`] = 0;
+			updateData[`system.details.surges.item`] = 0;
 		}
 		if(surges.power == undefined){
-			updateData[`system.details.surges.${id}.power`] = 0;
+			updateData[`system.details.surges.power`] = 0;
 		}
 		if(surges.untyped == undefined){
-			updateData[`system.details.surges.${id}.untyped`] = 0;
+			updateData[`system.details.surges.untyped`] = 0;
 		}
 	}
 	const surgeEnv = actorData?.system?.details?.surgeEnv;
 	if(surgeEnv){
 		if(surgeEnv.feat == undefined){
-			updateData[`system.details.surgeEnv.${id}.feat`] = 0;
+			updateData[`system.details.surgeEnv.feat`] = 0;
 		}
 		if(surgeEnv.item == undefined){
-			updateData[`system.details.surgeEnv.${id}.item`] = 0;
+			updateData[`system.details.surgeEnv.item`] = 0;
 		}
 		if(surgeEnv.power == undefined){
-			updateData[`system.details.surgeEnv.${id}.power`] = 0;
+			updateData[`system.details.surgeEnv.power`] = 0;
 		}
 		if(surgeEnv.untyped == undefined){
-			updateData[`system.details.surgeEnv.${id}.untyped`] = 0;
+			updateData[`system.details.surgeEnv.untyped`] = 0;
 		}
 	}
 	const secondwindbon = actorData?.system?.details?.secondwindbon;
 	if(secondwindbon){
 		if(secondwindbon.feat == undefined){
-			updateData[`system.details.secondwindbon.${id}.feat`] = 0;
+			updateData[`system.details.secondwindbon.feat`] = 0;
 		}
 		if(secondwindbon.item == undefined){
-			updateData[`system.details.secondwindbon.${id}.item`] = 0;
+			updateData[`system.details.secondwindbon.item`] = 0;
 		}
 		if(secondwindbon.power == undefined){
-			updateData[`system.details.secondwindbon.${id}.power`] = 0;
+			updateData[`system.details.secondwindbon.power`] = 0;
 		}
 		if(secondwindbon.untyped == undefined){
-			updateData[`system.details.secondwindbon.${id}.untyped`] = 0;
+			updateData[`system.details.secondwindbon.untyped`] = 0;
 		}
 	}
 
