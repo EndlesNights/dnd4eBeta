@@ -385,7 +385,7 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 
 	const defences = actorData?.system?.defences;
 	if(defences){
-		for( const [id, def] of Object.entries(skills)){
+		for( const [id, def] of Object.entries(defences)){
 			if(def.feat == undefined){
 				updateData[`system.defences.${id}.feat`] = 0;
 			}
@@ -435,7 +435,7 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 
 	const modifiers = actorData?.system?.modifiers;
 	if(modifiers){
-		for( const [id, mod] of Object.entries(skills)){
+		for( const [id, mod] of Object.entries(modifiers)){
 			if(mod.feat == undefined){
 				updateData[`system.modifiers.${id}.feat`] = 0;
 			}
@@ -453,7 +453,7 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 
 	const movement = actorData?.system?.details?.movement;
 	if(movement){
-		for( const [id, mov] of Object.entries(skills)){
+		for( const [id, mov] of Object.entries(movement)){
 			if(mov.feat == undefined){
 				updateData[`system.details.movement.${id}.feat`] = 0;
 			}
@@ -549,7 +549,7 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 
 	const passive = actorData?.system?.passive;
 	if(passive){
-		for( const [id, pasv] of Object.entries(skills)){
+		for( const [id, pasv] of Object.entries(passive)){
 			if(pasv.feat == undefined){
 				updateData[`system.passive.${id}.feat`] = 0;
 			}
@@ -567,7 +567,7 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 
 	const resistances = actorData?.system?.resistances;
 	if(resistances){
-		for( const [id, res] of Object.entries(skills)){
+		for( const [id, res] of Object.entries(resistances)){
 			if(res.feat == undefined){
 				updateData[`system.resistances.${id}.feat`] = 0;
 			}
