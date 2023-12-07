@@ -1,6 +1,7 @@
 # Changelog
 
 ## Version 0.4.38
+- Effect application from chat card [PR 331](https://github.com/EndlesNights/dnd4eBeta/pull/331) from [wigmeister2000](https://github.com/wigmeister2000)
 - minor fix to NPC defence calculation
 
 ## Version 0.4.37
