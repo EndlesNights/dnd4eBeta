@@ -60,6 +60,12 @@
 			{{/if}}
 			<!-- {{#if hasEffect}}<button data-action="effect">{{ localize "DND4EBETA.Effect" }}</button>{{/if}} -->
 
+			{{#if (needsEffectButton this)}}
+			<button data-action="effect" data-tooltip="{{ localize 'DND4EBETA.EffectApply' }}">
+				{{ localize "DND4EBETA.Effect" }}
+			</button>
+			{{/if}}
+
 			{{#if isVersatile}}
 			<button data-action="versatile">{{ localize "DND4EBETA.Versatile" }}</button>
 			{{/if}}
