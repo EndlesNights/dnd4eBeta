@@ -544,7 +544,8 @@ export default class Item4e extends Item {
 			cardData: cardData,
 			isVersatile: this.isVersatile,
 			hasSave: this.hasSave,
-			hasAreaTarget: this.hasAreaTarget
+			hasAreaTarget: this.hasAreaTarget,
+			isRoll: true
 		};
 		// For feature items, optionally show an ability usage dialog
 		if (this.type === "feat") {
@@ -644,16 +645,17 @@ export default class Item4e extends Item {
 			item: this,
 			system: await this.getChatData(),
 			labels: this.labels,
-			hasAttack: false,
-			isHealing: false,
+			hasAttack: this.hasAttack,
+			isHealing: this.isHealing,
 			isPower: this.type === "power",
-			hasDamage: false,
-			hasHealing: false,
+			hasDamage: this.hasDamage,
+			hasHealing: this.hasHealing,
 			hasEffect: this.hasEffect,
 			cardData: cardData,
 			isVersatile: this.isVersatile,
-			hasSave: false,
-			hasAreaTarget: false
+			hasSave: this.hasSave,
+			hasAreaTarget: this.hasAreaTarget,
+			isRoll: false
 		};
 
 		// Render the chat card template
@@ -661,7 +663,6 @@ export default class Item4e extends Item {
 		if (["tool", "ritual"].includes(this.type)) {
 			templateType = this.type
 			templateData.abilityCheck  = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
-			templateData.system.attribute = ""; // Suppress button
 		}
 		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
 		let html = await renderTemplate(template, templateData);
