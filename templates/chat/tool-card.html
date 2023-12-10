@@ -11,10 +11,12 @@
     <div class="card-content">
 	 
 		<div class="item-summary">{{{system.description.value}}}</div>
-
+    
+		{{#if isRoll}}
 		<div class="card-buttons">
 		  <button data-action="toolCheck" data-ability="{{system.ability.value}}">{{ localize "DND4EBETA.Use" }} {{item.name}}</button>
 		</div>
+		{{/if}}
 
 	</div>
 	
