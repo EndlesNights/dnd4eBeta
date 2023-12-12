@@ -2,7 +2,7 @@
 	"id": "dnd4eAltus",
 	"title": "DnD 4th Edition Altus",
 	"description": "An implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop Altus setting.",
-	"version": "0.4.37",
+	"version": "0.4.39",
 	"compatibility":{
 		"minimum": 11,
 		"verified": 11,
@@ -126,7 +126,7 @@
 	"secondaryTokenAttribute": "attributes.temphp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/dndAltus/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/refs/tags/Altus-0.4.37.zip",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/refs/tags/Altus-0.4.39.zip",
 	"flags": {
 		"needsMigrationVersion": "0.4.37",
 		"compatibleMigrationVersion": "0.2.50"

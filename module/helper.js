@@ -1135,6 +1135,15 @@ export class Helper {
 		}
 	}
 
+	static async applyEffectsToTargets(effects, actor){
+		if (game.user.targets.size){
+			await this.applyEffectsToTokens(effects, game.user.targets, "all", actor);
+			const parentDisposition = actor.token?.disposition || actor.prototypeToken.disposition || null;
+			await this.applyEffectsToTokens(effects, this.filterActorSetByDisposition([game.user.targets], parentDisposition), "allies", actor);
+			await this.applyEffectsToTokens(effects, this.filterActorSetByDisposition([game.user.targets], parentDisposition, false), "enemies", actor);
+		}
+	}
+
 	/**
 	 * Determine if a fastForward key was held during the given click event.
 	 *
@@ -1287,4 +1296,9 @@ Handlebars.registerHelper("isActive", function(effect){
 
 Handlebars.registerHelper("getSourceName", function(effect){
 	return effect.sourceName === "Unknown" ? effect.parent.name : effect.sourceName;
+});
+
+Handlebars.registerHelper("needsEffectButton", function(power){
+	const effects = power.item.effects.contents.filter(e => ["all", "allies", "enemies"].includes(e.flags.dnd4eAltus.effectData.powerEffectTypes));
+	return effects.length > 0;
 });

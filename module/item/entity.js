@@ -544,7 +544,8 @@ export default class Item4e extends Item {
 			cardData: cardData,
 			isVersatile: this.isVersatile,
 			hasSave: this.hasSave,
-			hasAreaTarget: this.hasAreaTarget
+			hasAreaTarget: this.hasAreaTarget,
+			isRoll: true
 		};
 		// For feature items, optionally show an ability usage dialog
 		if (this.type === "feat") {
@@ -573,13 +574,7 @@ export default class Item4e extends Item {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
 
 			Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
-
-			if(game.user.targets.size){
-				Helper.applyEffectsToTokens(this.effects, game.user.targets, "all", this.parent);
-				const parentDisposition = this.parent.token?.disposition || this.parent.prototypeToken.disposition || null;
-				Helper.applyEffectsToTokens(this.effects, Helper.filterActorSetByDisposition([game.user.targets], parentDisposition), "allies", this.parent);
-				Helper.applyEffectsToTokens(this.effects, Helper.filterActorSetByDisposition([game.user.targets], parentDisposition, false), "enemies", this.parent);
-			}
+			Helper.applyEffectsToTargets(this.effects, this.parent);
 		}
 		else if (["weapon", "equipment", "backpack", "tool", "loot"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--item`);
@@ -650,16 +645,17 @@ export default class Item4e extends Item {
 			item: this,
 			system: await this.getChatData(),
 			labels: this.labels,
-			hasAttack: false,
-			isHealing: false,
+			hasAttack: this.hasAttack,
+			isHealing: this.isHealing,
 			isPower: this.type === "power",
-			hasDamage: false,
-			hasHealing: false,
+			hasDamage: this.hasDamage,
+			hasHealing: this.hasHealing,
 			hasEffect: this.hasEffect,
 			cardData: cardData,
 			isVersatile: this.isVersatile,
-			hasSave: false,
-			hasAreaTarget: false
+			hasSave: this.hasSave,
+			hasAreaTarget: this.hasAreaTarget,
+			isRoll: false
 		};
 
 		// Render the chat card template
@@ -667,7 +663,6 @@ export default class Item4e extends Item {
 		if (["tool", "ritual"].includes(this.type)) {
 			templateType = this.type
 			templateData.abilityCheck  = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
-			templateData.system.attribute = ""; // Suppress button
 		}
 		const template = `systems/dnd4eAltus/templates/chat/${templateType}-card.html`;
 		let html = await renderTemplate(template, templateData);
@@ -1815,6 +1810,9 @@ export default class Item4e extends Item {
 		else if ( action === "healing" ) await item.rollHealing({event, spellLevel});
 		else if ( action === "versatile" ) await item.rollDamage({event, spellLevel, versatile: true});
 		else if ( action === "formula" ) await item.rollFormula({event, spellLevel});
+		
+		// Effects
+		else if ( action === "effect" ) Helper.applyEffectsToTargets(item.effects, actor);
 
 		// Saving Throws for card targets
 		else if ( action === "save" ) {

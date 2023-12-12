@@ -33,6 +33,7 @@
 			
 		{{/if}}
 		
+		{{#if isRoll}}
 		<div class="card-buttons">
 
 			{{#if hasAttack}}
@@ -60,6 +61,12 @@
 			{{/if}}
 			<!-- {{#if hasEffect}}<button data-action="effect">{{ localize "DND4EALTUS.Effect" }}</button>{{/if}} -->
 
+			{{#if (needsEffectButton this)}}
+			<button data-action="effect" data-tooltip="{{ localize 'DND4EALTUS.EffectApply' }}">
+				{{ localize "DND4EALTUS.Effect" }}
+			</button>
+			{{/if}}
+
 			{{#if isVersatile}}
 			<button data-action="versatile">{{ localize "DND4EALTUS.Versatile" }}</button>
 			{{/if}}
@@ -78,6 +85,7 @@
 			<button data-action="placeTemplate">{{ localize "DND4EALTUS.PlaceTemplate" }}</button>
 			{{/if}}
 		</div>
+		{{/if}}
 		
 	</div>
 	

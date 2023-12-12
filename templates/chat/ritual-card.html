@@ -12,10 +12,12 @@
 	 
 		<div class="item-summary">{{{system.description.value}}}</div>
 
-		 {{#if system.attribute}}
-		 <div class="card-buttons">
-			  <button data-action="ritualCheck" data-ability="{{system.ability.value}}">{{ abilityCheck }} {{localize 'DND4EALTUS.Check'}}</button>
-		 </div>
+		 {{#if isRoll}}
+		 	{{#if system.attribute}}
+		 	<div class="card-buttons">
+			  	<button data-action="ritualCheck" data-ability="{{system.ability.value}}">{{ abilityCheck }} {{localize 'DND4EALTUS.Check'}}</button>
+		 	</div>
+		 	{{/if}}
 		 {{/if}}
 		 
 	 </div>
