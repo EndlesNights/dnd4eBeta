@@ -39,6 +39,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"misc": 0,
 					"autototal": false,
@@ -55,6 +56,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"notes": ""
 				}
@@ -84,6 +86,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"enhance": 0,
 					"bonus": [{}],
@@ -101,6 +104,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"enhance": 0,
 					"bonus": [{}],
@@ -116,6 +120,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"enhance": 0,
 					"bonus": [{}],
@@ -131,6 +136,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"enhance": 0,
 					"bonus": [{}],
@@ -146,8 +152,8 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
-					"untyped": 0,
 					"race": 0,
+					"untyped": 0,
 					"bonus": [{}]
 				},
 				"damage":{
@@ -156,8 +162,8 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
-					"untyped": 0,
 					"race": 0,
+					"untyped": 0,
 					"bonus": [{}]
 				}
 			},
@@ -190,6 +196,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"value": 0
 				},
@@ -200,6 +207,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"value": 0
 				},
@@ -208,6 +216,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"max": 0
 				},
@@ -216,6 +225,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"value": 0
 				},
@@ -225,6 +235,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"custom": ""
 				},
@@ -271,6 +282,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"temp": 0
 				},
@@ -281,6 +293,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"temp": 0
 				},
@@ -291,6 +304,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"temp": 0
 				},
@@ -301,6 +315,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"misc": 0,
 					"temp": 0
@@ -312,6 +327,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"temp": 0
 				},
@@ -322,6 +338,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"temp": 0
 				},
@@ -355,6 +372,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "dex",
@@ -368,6 +386,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "int",
@@ -381,6 +400,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "str",
@@ -394,6 +414,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "cha",
@@ -407,6 +428,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "cha",
@@ -420,6 +442,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "wis",
@@ -433,6 +456,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "con",
@@ -446,6 +470,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "wis",
@@ -459,6 +484,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "int",
@@ -472,6 +498,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "wis",
@@ -485,6 +512,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "cha",
@@ -498,6 +526,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "wis",
@@ -511,6 +540,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "wis",
@@ -524,6 +554,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "int",
@@ -537,6 +568,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "dex",
@@ -550,6 +582,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "cha",
@@ -563,6 +596,7 @@
 					"item": 0,
 					"power": 0,
 					"training": 0,
+					"race": 0,
 					"untyped": 0,
 					"bonus": [{}],
 					"ability": "dex",
@@ -576,6 +610,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0
 				},
 				"trained":{
@@ -583,6 +618,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0
 				},
 				"expertise":{
@@ -590,6 +626,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0
 				}
 			},
@@ -599,6 +636,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"skill": "prc",
 					"bonus": [{}]
@@ -608,6 +646,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"skill": "ins",
 					"bonus": [{}]
@@ -621,6 +660,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -632,6 +672,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -643,6 +684,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -654,6 +696,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -665,6 +708,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -676,6 +720,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -687,6 +732,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -698,6 +744,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -709,6 +756,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -720,6 +768,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -731,6 +780,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -742,6 +792,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -753,6 +804,7 @@
 					"feat": 0,
 					"item": 0,
 					"power": 0,
+					"race": 0,
 					"untyped": 0,
 					"immune": false,
 					"bonus": [{}]
@@ -858,6 +910,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
+				"race": 0,
 				"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
@@ -876,6 +929,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
+				"race": 0,
 				"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
@@ -892,6 +946,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
+				"race": 0,
 				"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
@@ -908,6 +963,7 @@
 				"feat": 0,
 				"item": 0,
 				"power": 0,
+				"race": 0,
 				"untyped": 0,
 				"enhance": 0,
 				"bonus": [{}],
