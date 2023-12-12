@@ -1,7 +1,8 @@
 # Changelog
 
 ## Version 0.4.39
-Chat cards check for roll [PR 332](https://github.com/EndlesNights/dnd4eBeta/pull/332) from [wigmeister2000](https://github.com/wigmeister2000)
+- Chat cards check for roll [PR 332](https://github.com/EndlesNights/dnd4eBeta/pull/332) from [wigmeister2000](https://github.com/wigmeister2000)
+- `race` bonuses suffixes for specific bonuses many actor attributes. This should now be the primary keys used while setting up active effects.
 
 ## Version 0.4.38
 - Effect application from chat card [PR 331](https://github.com/EndlesNights/dnd4eBeta/pull/331) from [wigmeister2000](https://github.com/wigmeister2000)
