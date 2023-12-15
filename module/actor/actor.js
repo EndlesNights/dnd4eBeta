@@ -73,9 +73,7 @@ export class Actor4e extends Actor {
 
 	/** Get all ActiveEffects stored in the actor or transferred from items */
 	getActiveEffects() {
-		const effects = this.effects.contents; // Effects stored in actor
-		const transferred = this.items.map(item => item.effects.filter(e => e.transfer)).flat(); // Stored in items
-		return effects.concat(transferred);
+		return Array.from(this.allApplicableEffects());
 	}
 
 	/* --------------------------------------------- */
