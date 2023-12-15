@@ -944,7 +944,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EBETA.Mov
 				div.append(descrip);
 
 				if(item.system.autoGenChatPowerCard){
-					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
+					// let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
+					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor)}</div>`);
 					div.append(details);
 				}
 
