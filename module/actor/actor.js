@@ -73,9 +73,7 @@ export class Actor4e extends Actor {
 
 	/** Get all ActiveEffects stored in the actor or transferred from items */
 	getActiveEffects() {
-		const effects = this.effects.contents; // Effects stored in actor
-		const transferred = this.items.map(item => item.effects.filter(e => e.transfer)).flat(); // Stored in items
-		return effects.concat(transferred);
+		return Array.from(this.allApplicableEffects());
 	}
 
 	/* --------------------------------------------- */
@@ -115,7 +113,6 @@ export class Actor4e extends Actor {
 
 	/** @inheritdoc */
 	getRollData() {
-		this.prepareDerivedData();
 		const data = super.getRollData();
 		data["strMod"] = data.abilities["str"].mod
 		data["conMod"] = data.abilities["con"].mod
@@ -137,10 +134,9 @@ export class Actor4e extends Actor {
 		return data;
 	}
 
-	/**
-	 * Currently this only does attributes, but can increase it in future if there are more things we want in effects
-	 */
 	prepareDerivedData() {
+		// Get the Actor's data object
+		const actorData = this;
 		const system = this.system;
 		const bonuses = getProperty(system, "bonuses.abilities") || {};
 
@@ -167,21 +163,7 @@ export class Actor4e extends Actor {
 
 			abl.label = game.i18n.localize(DND4EBETA.abilities[id]);
 		}
-	}
 
-
-	/**
-	 * Augment the basic actor data with additional dynamic data.
-	 */
-	prepareData() {
-		super.prepareData();
-		// Get the Actor's data object
-		const actorData = this;
-		const system = this.system;
-
-		this.prepareDerivedData();
-		this.defaultSecondWindEffect();
-		
 		//HP auto calc
 		if(system.attributes.hp.autototal)
 		{
@@ -637,6 +619,18 @@ export class Actor4e extends Actor {
 		
 		//Magic Items
 		system.magicItemUse.perDay = Math.clamped(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
+	}
+
+
+	/**
+	 * Augment the basic actor data with additional dynamic data.
+	 */
+	prepareData() {
+		super.prepareData(); // calls, in order: data reset (clear active effects),
+		// prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
+		// prepareDerivedData()
+
+		this.defaultSecondWindEffect();
 	}
 
 

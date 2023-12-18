@@ -398,7 +398,7 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@heroicOrParagon", actorInnerData.details.level < 21 ? 1 : 0);
 				newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
 
-				newFormula = newFormula.replaceAll("@bloodied",  actorInnerData.attributes.hp.value <= actorInnerData.attributes.hp.max/2 ? 1 : 0);
+				newFormula = newFormula.replaceAll("@bloodied",  actorInnerData.details.isBloodied ? 1 : 0);
 			}
 			else {
 				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.  Replacing: " + formula)
