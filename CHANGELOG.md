@@ -2,6 +2,7 @@
 
 ## Version 0.4.40
 - fix issue where chart card preview would not generate with macros in text.
+- ActiveEffects access to @bloodied [PR 334](https://github.com/EndlesNights/dnd4eBeta/pull/334) from [wigmeister2000](https://github.com/wigmeister2000)
 
 ## Version 0.4.39
 - Chat cards check for roll [PR 332](https://github.com/EndlesNights/dnd4eBeta/pull/332) from [wigmeister2000](https://github.com/wigmeister2000)
