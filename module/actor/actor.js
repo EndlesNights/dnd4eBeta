@@ -176,11 +176,11 @@ export class Actor4e extends Actor {
 		}
 		
 		// Healing Surges
-		system.details.surges.value += system.details.surges.feat || 0;
-		system.details.surges.value += system.details.surges.item || 0;
-		system.details.surges.value += system.details.surges.power || 0;
-		system.details.surges.value += system.details.surges.race || 0;
-		system.details.surges.value += system.details.surges.untyped || 0;
+		system.details.surges.max += system.details.surges.feat || 0;
+		system.details.surges.max += system.details.surges.item || 0;
+		system.details.surges.max += system.details.surges.power || 0;
+		system.details.surges.max += system.details.surges.race || 0;
+		system.details.surges.max += system.details.surges.untyped || 0;
 
 		//Set Health related values
 		if(!(system.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeBon.bonus[0]))) {
