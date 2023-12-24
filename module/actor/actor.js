@@ -134,14 +134,10 @@ export class Actor4e extends Actor {
 		return data;
 	}
 
-	prepareDerivedData() {
-		// Get the Actor's data object
-		const actorData = this;
+	prepareBaseData(){
+		super.prepareBaseData();
 		const system = this.system;
 		const bonuses = getProperty(system, "bonuses.abilities") || {};
-
-		// this.system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
-		system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
 
 		// Ability modifiers and saves
 		// Character All Ability Check" and All Ability Save bonuses added when rolled since not a fixed value.
@@ -164,6 +160,16 @@ export class Actor4e extends Actor {
 			abl.label = game.i18n.localize(DND4EBETA.abilities[id]);
 		}
 
+	}
+
+	prepareDerivedData() {
+		// Get the Actor's data object
+		const actorData = this;
+		const system = this.system;
+
+		// this.system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
+		system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
+
 		//HP auto calc
 		if(system.attributes.hp.autototal)
 		{
@@ -176,11 +182,11 @@ export class Actor4e extends Actor {
 		}
 		
 		// Healing Surges
-		system.details.surges.value += system.details.surges.feat || 0;
-		system.details.surges.value += system.details.surges.item || 0;
-		system.details.surges.value += system.details.surges.power || 0;
-		system.details.surges.value += system.details.surges.race || 0;
-		system.details.surges.value += system.details.surges.untyped || 0;
+		system.details.surges.max += system.details.surges.feat || 0;
+		system.details.surges.max += system.details.surges.item || 0;
+		system.details.surges.max += system.details.surges.power || 0;
+		system.details.surges.max += system.details.surges.race || 0;
+		system.details.surges.max += system.details.surges.untyped || 0;
 
 		//Set Health related values
 		if(!(system.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeBon.bonus[0]))) {

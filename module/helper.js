@@ -67,7 +67,7 @@ export class Helper {
 		if(itemData.weaponUse === "default" || itemData.weaponUse === "defaultOH") {
 			let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 			let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
-			return actor.itemTypes.weapon.find((i) =>  {
+			return actor.itemTypes.weapon.sort(i => i.system.weaponHand === "hOff" ? 1 : -1).find((i) =>  { // Flush off-hand to the end
 				if(i.system.equipped) {
 
 					if(itemData.weaponType === "any") {
