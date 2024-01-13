@@ -99,15 +99,18 @@ export class Actor4e extends Actor {
 		dhp = Number(dhp);
 		const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
 		for ( let t of tokens ) {
-			const pct = Math.clamped(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
-			canvas.interface.createScrollingText(t.center, dhp.signedString(), {
-				anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
-				fontSize: 16 + (32 * pct), // Range between [16, 48]
-				fill: CONFIG.DND4EBETA.tokenHPColors[dhp < 0 ? "damage" : "healing"],
-				stroke: 0x000000,
-				strokeThickness: 4,
-				jitter: 0.25
-			});
+			console.log(t);
+			if ( !t.document.hidden || game.user.isGM ){
+			    const pct = Math.clamped(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
+			    canvas.interface.createScrollingText(t.center, dhp.signedString(), {
+				    anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
+				    fontSize: 16 + (32 * pct), // Range between [16, 48]
+				    fill: CONFIG.DND4EBETA.tokenHPColors[dhp < 0 ? "damage" : "healing"],
+				    stroke: 0x000000,
+				    strokeThickness: 4,
+				    jitter: 0.25
+			    });
+			}
 		}
 	}
 
