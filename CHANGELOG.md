@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.41
+- Disable input fields if indirectly modified [PR 336](https://github.com/EndlesNights/dnd4eBeta/pull/336) from [wigmeister2000](https://github.com/wigmeister2000)
+- Fixing typo in "invisible"
+
 ## Version 0.4.40
 - fix issue where chart card preview would not generate with macros in text.
 - ActiveEffects access to @bloodied [PR 334](https://github.com/EndlesNights/dnd4eBeta/pull/334) from [wigmeister2000](https://github.com/wigmeister2000)

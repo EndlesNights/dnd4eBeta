@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/Foundry-v10-informational)
+![](https://img.shields.io/badge/Foundry-v11-informational)
 
 # DnD 4th Edition - Beta
 * **Foundry VTT Compatibility**: v11
