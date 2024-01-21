@@ -9,7 +9,7 @@ The icons within the icons/statusEffects and icons/ui folders are by the authors
 * Dying:			https://game-icons.net/1x1/lorc/pummeled.html
 * Restrained:		https://game-icons.net/1x1/lorc/imprisoned.html
 * Immobilized:	https://game-icons.net/1x1/lorc/nailed-foot.html
-* Invisable:		https://game-icons.net/1x1/delapouite/invisible.html
+* Invisible:		https://game-icons.net/1x1/delapouite/invisible.html
 * Petrified:		https://game-icons.net/1x1/skoll/cement-shoes.html
 * Prone:			https://game-icons.net/1x1/sbed/falling.html
 * Removed from:	https://game-icons.net/1x1/lorc/portal.html

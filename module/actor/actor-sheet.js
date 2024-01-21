@@ -856,7 +856,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EALTUS.Mo
 
 		//Disabels and adds warning to input fields that are being modfied by active effects
 		if (this.isEditable) {
-			for ( const override of this._getActorOverrides() ) {
+			for ( const override of this._getAllActorOverrides(["system.details.surges.value"]) ) {
 				html.find(`input[name="${override}"],select[name="${override}"]`).each((i, el) => {
 					el.disabled = true;
 					el.dataset.tooltip = "DND4EALTUS.ActiveEffectOverrideWarning";
@@ -873,6 +873,36 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EALTUS.Mo
 	 */
 	_getActorOverrides() {
 		return Object.keys(foundry.utils.flattenObject(this.object.overrides || {}));
+	}
+
+
+		/* -------------------------------------------- */
+	/**
+	 * Retrieve the list of fields that are directly modified by Active Effects, or indirectly modified via feat, item etc. bonuses.
+	 * @param excluded Array of candidate keys to exclude.
+	 * @returns {string[]}
+	 */
+	_getAllActorOverrides(excluded = []) {
+		const overrides = new Set(this._getActorOverrides());
+		const actorKeys = new Set(Object.keys(foundry.utils.flattenObject(this.actor)));
+		const candidateKeys = new Set();
+		const accumulatorSuffixes = [".value", ".max"]; // Suffixes used for the accumulation of feat, item etc. bonuses.
+		const bonusSuffixes = [/.feat$/, /.item$/, /.power$/, /.race$/, /.untyped$/]; // Suffixes for bonuses.
+
+		// Construct a list of candidate keys
+		for (const key of overrides) {
+			for (const bonus of bonusSuffixes) {
+				accumulatorSuffixes.forEach(accumulator => candidateKeys.add(key.replace(bonus, accumulator)));
+			}
+		}
+
+		// Remove excluded keys
+		for (const key of excluded) {
+			candidateKeys.delete(key);
+		}
+
+		// Return keys that exist in the actor
+		return Array.from(overrides.union(candidateKeys).intersection(actorKeys));
 	}
 
 	/* -------------------------------------------- */
@@ -944,7 +974,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EALTUS.Mo
 				div.append(descrip);
 
 				if(item.system.autoGenChatPowerCard){
-					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
+					// let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
+					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor)}</div>`);
 					div.append(details);
 				}
 

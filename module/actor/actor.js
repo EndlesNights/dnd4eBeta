@@ -73,9 +73,7 @@ export class Actor4e extends Actor {
 
 	/** Get all ActiveEffects stored in the actor or transferred from items */
 	getActiveEffects() {
-		const effects = this.effects.contents; // Effects stored in actor
-		const transferred = this.items.map(item => item.effects.filter(e => e.transfer)).flat(); // Stored in items
-		return effects.concat(transferred);
+		return Array.from(this.allApplicableEffects());
 	}
 
 	/* --------------------------------------------- */
@@ -101,21 +99,23 @@ export class Actor4e extends Actor {
 		dhp = Number(dhp);
 		const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
 		for ( let t of tokens ) {
-			const pct = Math.clamped(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
-			canvas.interface.createScrollingText(t.center, dhp.signedString(), {
-				anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
-				fontSize: 16 + (32 * pct), // Range between [16, 48]
-				fill: CONFIG.DND4EALTUS.tokenHPColors[dhp < 0 ? "damage" : "healing"],
-				stroke: 0x000000,
-				strokeThickness: 4,
-				jitter: 0.25
-			});
+			console.log(t);
+			if ( !t.document.hidden || game.user.isGM ){
+			    const pct = Math.clamped(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
+			    canvas.interface.createScrollingText(t.center, dhp.signedString(), {
+				    anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
+				    fontSize: 16 + (32 * pct), // Range between [16, 48]
+				    fill: CONFIG.DND4EALTUS.tokenHPColors[dhp < 0 ? "damage" : "healing"],
+				    stroke: 0x000000,
+				    strokeThickness: 4,
+				    jitter: 0.25
+			    });
+			}
 		}
 	}
 
 	/** @inheritdoc */
 	getRollData() {
-		this.prepareDerivedData();
 		const data = super.getRollData();
 		data["strMod"] = data.abilities["str"].mod
 		data["conMod"] = data.abilities["con"].mod
@@ -137,15 +137,10 @@ export class Actor4e extends Actor {
 		return data;
 	}
 
-	/**
-	 * Currently this only does attributes, but can increase it in future if there are more things we want in effects
-	 */
-	prepareDerivedData() {
+	prepareBaseData(){
+		super.prepareBaseData();
 		const system = this.system;
 		const bonuses = getProperty(system, "bonuses.abilities") || {};
-
-		// this.system.halfLevelOptions = game.settings.get("dnd4eAltus", "halfLevelOptions");
-		system.halfLevelOptions = game.settings.get("dnd4eAltus", "halfLevelOptions");
 
 		// Ability modifiers and saves
 		// Character All Ability Check" and All Ability Save bonuses added when rolled since not a fixed value.
@@ -167,21 +162,37 @@ export class Actor4e extends Actor {
 
 			abl.label = game.i18n.localize(DND4EALTUS.abilities[id]);
 		}
+
+		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
+		if((system.defences.ac.light || this.checkLightArmour() ) && system.defences.ac.altability !== "none") {
+			system.defences.ac.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
+			if(system.defences.ac.altability != "")
+			{
+				// if(data.abilities[data.defences.ac.altability].value > data.abilities[data.defences.ac.ability].value)
+				{
+					system.defences.ac.ability = system.defences.ac.altability;
+				}
+			}
+		}
+		else {
+			system.defences.ac.ability = "";
+		}
+		
+		//set mods for defences
+		system.defences.fort.ability = (system.abilities.str.value >= system.abilities.con.value) ? "str" : "con";
+		system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
+		system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
+
 	}
 
-
-	/**
-	 * Augment the basic actor data with additional dynamic data.
-	 */
-	prepareData() {
-		super.prepareData();
+	prepareDerivedData() {
 		// Get the Actor's data object
 		const actorData = this;
 		const system = this.system;
 
-		this.prepareDerivedData();
-		this.defaultSecondWindEffect();
-		
+		// this.system.halfLevelOptions = game.settings.get("dnd4eAltus", "halfLevelOptions");
+		system.halfLevelOptions = game.settings.get("dnd4eAltus", "halfLevelOptions");
+
 		//HP auto calc
 		if(system.attributes.hp.autototal)
 		{
@@ -194,11 +205,11 @@ export class Actor4e extends Actor {
 		}
 		
 		// Healing Surges
-		system.details.surges.value += system.details.surges.feat || 0;
-		system.details.surges.value += system.details.surges.item || 0;
-		system.details.surges.value += system.details.surges.power || 0;
-		system.details.surges.value += system.details.surges.race || 0;
-		system.details.surges.value += system.details.surges.untyped || 0;
+		system.details.surges.max += system.details.surges.feat || 0;
+		system.details.surges.max += system.details.surges.item || 0;
+		system.details.surges.max += system.details.surges.power || 0;
+		system.details.surges.max += system.details.surges.race || 0;
+		system.details.surges.max += system.details.surges.untyped || 0;
 
 		//Set Health related values
 		if(!(system.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeBon.bonus[0]))) {
@@ -308,7 +319,7 @@ export class Actor4e extends Actor {
 		//Weight & Encumbrance
 		system.encumbrance = this._computeEncumbrance(actorData.system);
 			
-		// const feats = DND4E.characterFlags;
+		// const feats = DND4EALTUS.characterFlags;
 		// const athlete = flags.remarkableAthlete;
 		// const joat = flags.jackOfAllTrades;
 		// const observant = flags.observantFeat;
@@ -327,26 +338,6 @@ export class Actor4e extends Actor {
 
 		if (system.attributes.temphp.value <= 0 )
 			system.attributes.temphp.value = null;
-
-		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
-		if((system.defences.ac.light || this.checkLightArmour() ) && system.defences.ac.altability !== "none") {
-			system.defences.ac.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
-			if(system.defences.ac.altability != "")
-			{
-				// if(data.abilities[data.defences.ac.altability].value > data.abilities[data.defences.ac.ability].value)
-				{
-					system.defences.ac.ability = system.defences.ac.altability;
-				}
-			}
-		}
-		else {
-			system.defences.ac.ability = "";
-		}
-		
-		//set mods for defences
-		system.defences.fort.ability = (system.abilities.str.value >= system.abilities.con.value) ? "str" : "con";
-		system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
-		system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
 
 		// Skill modifiers
 		//Calc defence stats
@@ -637,6 +628,18 @@ export class Actor4e extends Actor {
 		
 		//Magic Items
 		system.magicItemUse.perDay = Math.clamped(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
+	}
+
+
+	/**
+	 * Augment the basic actor data with additional dynamic data.
+	 */
+	prepareData() {
+		super.prepareData(); // calls, in order: data reset (clear active effects),
+		// prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
+		// prepareDerivedData()
+
+		this.defaultSecondWindEffect();
 	}
 
 

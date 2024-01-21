@@ -333,14 +333,14 @@ export class RollWithOriginalExpression extends Roll {
                         const variable = vars[innerIndex]
                         const spanId = mainIndex + "." + innerIndex
                         if (!this.options.formulaInnerData) {
-                            throw `D&D4eAltus | Roll did not have formulaInnerData set in its options, so cannot substitute and will fall back to expression parts level replacement`
+                            throw `D&D4eBeta | Roll did not have formulaInnerData set in its options, so cannot substitute and will fall back to expression parts level replacement`
                         }
                         let replacementStr = this.options.formulaInnerData[variable.substring(1)]
                         if (!replacementStr) {
                             // may be a complex replacement: e.g. details.level
                             replacementStr = Helper.replaceData(variable, this.options.formulaInnerData)
                             if (!replacementStr) {
-                                throw `D&D4eAltus | Unable to find a value for variable '${variable}' that was part of the formula expression.  It was not added to the rolls data object`
+                                throw `D&D4eBeta | Unable to find a value for variable '${variable}' that was part of the formula expression.  It was not added to the rolls data object`
                             }
                         }
                         // replace the expression variable with the span and mouseover tags
@@ -350,7 +350,7 @@ export class RollWithOriginalExpression extends Roll {
                         const indexOfReplacement = activeFormula.indexOf(replacementStr)
                         if (indexOfReplacement === -1) {
                             // could not find, error out and fall back to default
-                            throw `D&D4eAltus | Unable to find the variable value '${replacementStr}' for variable '${variable}' in remaining part '${activeFormula}' of formula ${formula}`
+                            throw `D&D4eBeta | Unable to find the variable value '${replacementStr}' for variable '${variable}' in remaining part '${activeFormula}' of formula ${formula}`
                         }
 
                         // add in everything prior to the variable

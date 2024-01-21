@@ -42,7 +42,7 @@ import { customSKillSetUp } from "./skills/custom-skills.js";
 /* -------------------------------------------- */
 
 Hooks.once("init", async function() {
-	console.log(`D&D4eAltus | Initializing Dungeons & Dragons 4th Edition System\n${DND4EALTUS.ASCII}`);
+	console.log(`D&D4eBeta | Initializing Dungeons & Dragons 4th Edition System\n${DND4EALTUS.ASCII}`);
 
 	game.dnd4eAltus = {
 		apps: {

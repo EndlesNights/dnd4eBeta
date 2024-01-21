@@ -328,7 +328,7 @@ export default class Item4e extends Item {
 			this.system.consumableType);
 		if ( requireEquipped && (this.system.equipped === false) ) return true;
 
-		return this.system.attunement === CONFIG.DND4E.attunementTypes.REQUIRED;
+		return this.system.attunement === CONFIG.DND4EALTUS.attunementTypes.REQUIRED;
 	}	
 
 	/* -------------------------------------------- */

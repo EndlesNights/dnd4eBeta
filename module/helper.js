@@ -67,7 +67,7 @@ export class Helper {
 		if(itemData.weaponUse === "default" || itemData.weaponUse === "defaultOH") {
 			let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 			let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
-			return actor.itemTypes.weapon.find((i) =>  {
+			return actor.itemTypes.weapon.sort(i => i.system.weaponHand === "hOff" ? 1 : -1).find((i) =>  { // Flush off-hand to the end
 				if(i.system.equipped) {
 
 					if(itemData.weaponType === "any") {
@@ -140,7 +140,7 @@ export class Helper {
 
 
 	static async applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType) {
-		const debug = game.settings.get("dnd4eAltus", "debugEffectBonus") ? `D&D4eAltus |` : ""
+		const debug = game.settings.get("dnd4eAltus", "debugEffectBonus") ? `D&D4eBeta |` : ""
 		if (actorData.effects) {
 			const powerInnerData = powerData.system
 			const weaponInnerData = weaponData?.system
@@ -398,7 +398,7 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@heroicOrParagon", actorInnerData.details.level < 21 ? 1 : 0);
 				newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
 
-				newFormula = newFormula.replaceAll("@bloodied",  actorInnerData.attributes.hp.value <= actorInnerData.attributes.hp.max/2 ? 1 : 0);
+				newFormula = newFormula.replaceAll("@bloodied",  actorInnerData.details.isBloodied ? 1 : 0);
 			}
 			else {
 				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.  Replacing: " + formula)
@@ -713,7 +713,7 @@ export class Helper {
 		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula
 		// having got to the bottom of common replace, check to see if there are any more @variables left.  If there aren't, then don't bother going any further
 		if (actorData?.effects && depth > 0 && newFormula.includes('@')) {
-			const debug = game.settings.get("dnd4eAltus", "debugEffectBonus") ? `D&D4eAltus |` : ""
+			const debug = game.settings.get("dnd4eAltus", "debugEffectBonus") ? `D&D4eBeta |` : ""
 			if (debug) {
 				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.  Searching active effects for a suitable variable`)
 			}

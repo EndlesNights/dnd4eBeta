@@ -941,7 +941,7 @@ DND4EALTUS.saves = {
 /* -------------------------------------------- */
 
 /**
- * The set of skill which can be trained in D&D4eAltus
+ * The set of skill which can be trained in D&D4eBeta
  * @type {Object}
  */
 DND4EALTUS.skills = {
