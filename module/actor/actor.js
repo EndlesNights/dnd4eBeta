@@ -99,15 +99,18 @@ export class Actor4e extends Actor {
 		dhp = Number(dhp);
 		const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
 		for ( let t of tokens ) {
-			const pct = Math.clamped(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
-			canvas.interface.createScrollingText(t.center, dhp.signedString(), {
-				anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
-				fontSize: 16 + (32 * pct), // Range between [16, 48]
-				fill: CONFIG.DND4EBETA.tokenHPColors[dhp < 0 ? "damage" : "healing"],
-				stroke: 0x000000,
-				strokeThickness: 4,
-				jitter: 0.25
-			});
+			console.log(t);
+			if ( !t.document.hidden || game.user.isGM ){
+			    const pct = Math.clamped(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
+			    canvas.interface.createScrollingText(t.center, dhp.signedString(), {
+				    anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
+				    fontSize: 16 + (32 * pct), // Range between [16, 48]
+				    fill: CONFIG.DND4EBETA.tokenHPColors[dhp < 0 ? "damage" : "healing"],
+				    stroke: 0x000000,
+				    strokeThickness: 4,
+				    jitter: 0.25
+			    });
+			}
 		}
 	}
 
@@ -159,6 +162,26 @@ export class Actor4e extends Actor {
 
 			abl.label = game.i18n.localize(DND4EBETA.abilities[id]);
 		}
+
+		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
+		if((system.defences.ac.light || this.checkLightArmour() ) && system.defences.ac.altability !== "none") {
+			system.defences.ac.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
+			if(system.defences.ac.altability != "")
+			{
+				// if(data.abilities[data.defences.ac.altability].value > data.abilities[data.defences.ac.ability].value)
+				{
+					system.defences.ac.ability = system.defences.ac.altability;
+				}
+			}
+		}
+		else {
+			system.defences.ac.ability = "";
+		}
+		
+		//set mods for defences
+		system.defences.fort.ability = (system.abilities.str.value >= system.abilities.con.value) ? "str" : "con";
+		system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
+		system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
 
 	}
 
@@ -315,26 +338,6 @@ export class Actor4e extends Actor {
 
 		if (system.attributes.temphp.value <= 0 )
 			system.attributes.temphp.value = null;
-
-		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
-		if((system.defences.ac.light || this.checkLightArmour() ) && system.defences.ac.altability !== "none") {
-			system.defences.ac.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
-			if(system.defences.ac.altability != "")
-			{
-				// if(data.abilities[data.defences.ac.altability].value > data.abilities[data.defences.ac.ability].value)
-				{
-					system.defences.ac.ability = system.defences.ac.altability;
-				}
-			}
-		}
-		else {
-			system.defences.ac.ability = "";
-		}
-		
-		//set mods for defences
-		system.defences.fort.ability = (system.abilities.str.value >= system.abilities.con.value) ? "str" : "con";
-		system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
-		system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
 
 		// Skill modifiers
 		//Calc defence stats
