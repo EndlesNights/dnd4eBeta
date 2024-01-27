@@ -136,20 +136,10 @@
 	 determineSuppression() {
 		this.isSuppressed = false;
 
-		if ( this.disabled || (this.parent.documentName !== "Actor") ) return;
-
-		const [parentType, parentId, documentType, documentId] = this.origin?.split(".") ?? [];
 		const originArray = this.origin?.split(".");
+		if ( this.disabled || !originArray || originArray[0] !== "Actor" || originArray.indexOf("Item") < 0 ) return;
 
-		// if ( (parentType !== "Actor") || (parentId !== this.parent.id) || (documentType !== "Item") ) return;
-
-		let indexItemID = originArray?.indexOf('Item') > 0 ? originArray.indexOf('Item') + 1 : -1;
-		if(indexItemID < 1){
-			return;
-		}
-		// const item = this.parent.items.get(documentId);
-		const item = this.parent.items.get(originArray[indexItemID]);
-
+		const item = this.parent;
 		if ( !item ) return;
 
 		//types of items that can be equipted
