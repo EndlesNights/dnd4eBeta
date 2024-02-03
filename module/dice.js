@@ -99,6 +99,14 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 	})
 }
 
+// Get the bonus for an attack roll 
+export function getAttackRollBonus({parts=[], partsExpressionReplacements = [], data={}, options= {}}){
+	const roll = new MultiAttackRoll(parts.filterJoin(" + "), data, {});
+	roll.addNewRoll(parts, partsExpressionReplacements, data, options); // Make the roll. Parts must not contain the d20 expression.
+	const bonus = roll.rollArray[0]._total;
+	return bonus;
+}
+
 async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options}) {
 	/*
 	 coming in the parts[] is in one of the following states:
