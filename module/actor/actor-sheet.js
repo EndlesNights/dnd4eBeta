@@ -1410,14 +1410,14 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EBETA.Mov
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 		
-		if (item.type === "power" && item.hasAttack) {
+		if (item && item.type === "power" && item.hasAttack) {
 			const bonus = await item.getAttackBonus();
 
 			const d = {"ac": "AC", "ref": "Reflex", "wil": "Will", "fort": "Fortitude"};
-			const defense = d[item.system.attack.def];
+			const defence = d[item.system.attack.def];
 
-			if (bonus){
-				game.tooltip.activate(event.target, {text: "+" + String(bonus) + " vs. " + defense, direction: "RIGHT"});
+			if (bonus && defence){
+				game.tooltip.activate(event.target, {text: "+" + String(bonus) + " vs. " + defence, direction: "RIGHT"});
 			}
 		}
 	}
