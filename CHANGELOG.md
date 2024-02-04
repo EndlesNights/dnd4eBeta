@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.4.42
+- Fix suppression of transferred effects [PR 338](https://github.com/EndlesNights/dnd4eBeta/pull/338) from [wigmeister2000](https://github.com/wigmeister2000)
+- Attack bonus tooltips [PR 339](https://github.com/EndlesNights/dnd4eBeta/pull/339) from [wigmeister2000](https://github.com/wigmeister2000)
+- Fix locilisation for Light Mace, was usinincoreccetly using the mace key.
+
 ## Version 0.4.41
 - Disable input fields if indirectly modified [PR 336](https://github.com/EndlesNights/dnd4eBeta/pull/336) from [wigmeister2000](https://github.com/wigmeister2000)
 - Fixing typo in "invisible"

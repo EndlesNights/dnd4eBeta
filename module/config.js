@@ -550,7 +550,7 @@ DND4EBETA.simpleM = {
 	dagger:"DND4EBETA.WeaponDagger",
 	greatclub:"DND4EBETA.WeaponGreatclub",
 	javelin:"DND4EBETA.WeaponJavelin",
-	lightMace:"DND4EBETA.WeaponMace",
+	lightMace:"DND4EBETA.WeaponLightMace",
 	mace:"DND4EBETA.WeaponMace",
 	morningstar:"DND4EBETA.WeaponMorningStar",
 	quarterstaff:"DND4EBETA.WeaponQuarterStaff",
