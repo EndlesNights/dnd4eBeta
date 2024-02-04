@@ -845,6 +845,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EBETA.Mov
 			
 			// Item Rolling
 			html.find('.item .item-image').click(event => this._onItemRoll(event));
+			html.find('.item .item-image').hover(event => this._onItemHoverEntry(event), event => this._onItemHoverExit(event));
 			html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
 
 			html.find('.effect-save').click(event => this._onRollEffectSave(event));
@@ -1402,6 +1403,28 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EBETA.Mov
 		}
 		// Otherwise roll the Item directly
 		return item.roll();
+	}
+
+	async _onItemHoverEntry(event) {
+		event.preventDefault();
+		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const item = this.actor.items.get(itemId);
+		
+		if (item && item.type === "power" && item.hasAttack) {
+			const bonus = await item.getAttackBonus();
+
+			const d = {"ac": "AC", "ref": "Reflex", "wil": "Will", "fort": "Fortitude"};
+			const defence = d[item.system.attack.def];
+
+			if (bonus && defence){
+				game.tooltip.activate(event.target, {text: "+" + String(bonus) + " vs. " + defence, direction: "RIGHT"});
+			}
+		}
+	}
+
+	_onItemHoverExit(event) {
+		event.preventDefault();
+		game.tooltip.deactivate();
 	}
 
 	/* -------------------------------------------- */

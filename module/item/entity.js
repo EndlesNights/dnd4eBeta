@@ -1,4 +1,4 @@
-import {d20Roll, damageRoll} from "../dice.js";
+import {d20Roll, damageRoll, getAttackRollBonus} from "../dice.js";
 import AbilityUseDialog from "../apps/ability-use-dialog.js";
 import AbilityTemplate from "../pixi/ability-template.js";
 import { Helper } from "../helper.js"
@@ -1142,6 +1142,92 @@ export default class Item4e extends Item {
 		return roll;
 	}
 
+	async getAttackBonus(options={}) {
+		if (!this.hasAttack) return;
+
+		const itemData = this.system;
+		const actorData = this.actor;
+		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
+
+		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
+			return;
+		}
+
+		const rollData = this.getRollData();
+
+		rollData.isAttackRoll = true;
+		rollData.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
+		rollData["ammo"] = 0;
+
+		// Define Roll bonuses
+		const parts = [];
+		const partsExpressionReplacements = [];
+		if(!!itemData.attack.formula) {		
+			parts.push(Helper.commonReplace(itemData.attack.formula, actorData, this.system, weaponUse? weaponUse.system : null));
+			partsExpressionReplacements.push({value : itemData.attack.formula, target: parts[0]});
+			// add the substitutions that were used in the expression to the data object for later
+			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData, this.system, weaponUse? weaponUse.system : null, 1, true);
+		}
+
+		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
+			if ( consumable?.type === "ammo" ) {
+				if (Helper.isNonEmpty(consumable.target) && Helper.isNonEmpty(consumable.amount))
+				{
+					const ammo = this.actor.items.get(consumable.target);
+					if (ammo) {
+						const ammoCount = ammo.system.quantity;
+						if ( ammoCount && (ammoCount - consumable.amount >= 0) ) {
+							let ammoBonus = ammo.system.attackBonus;
+							if ( ammoBonus ) {
+								onHasBonus(ammo, ammoBonus);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// Ammunition Bonus from power.
+		delete this._ammo;
+		const powerHasAmmoWithBonus = (ammo, ammoBonus) => {
+			parts.push("@ammo");
+			rollData["ammo"] = ammoBonus;
+			title += ` [${ammo.name}]`;
+			this._ammo = ammo;
+		}
+		handlePowerAndWeaponAmmoBonuses(powerHasAmmoWithBonus, itemData.consume, "power");
+	
+		// Ammunition Bonus from weapon.
+		if(weaponUse) {
+			delete weaponUse._ammo;
+			const weaponHasAmmoWithBonus = (ammo, ammoBonus) => {
+				if (parts[parts.length-1] !== "@ammo" ) parts.push("@ammo");
+				rollData["ammo"]? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
+				title += ` [${ammo.name}]`;
+				weaponUse._ammo = ammo;
+			}
+			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
+		}
+		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack");
+
+		// Compose roll options
+		const rollConfig = {
+			parts,
+			partsExpressionReplacements,
+			data: rollData,
+			options
+		};
+
+		if(["power", "consumable"].includes(this.type)){
+			rollConfig.options.powerEffects = this.effects;
+			rollConfig.options.parent = this.parent;
+		}
+
+		// Get the bonus
+		const bonus = getAttackRollBonus(rollConfig);
+
+		return bonus;
+	}
 	/* -------------------------------------------- */
 
 	/**

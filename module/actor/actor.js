@@ -82,7 +82,7 @@ export class Actor4e extends Actor {
 	applyActiveEffects() {
 		// The Active Effects do not have access to their parent at preparation time so we wait until this stage to
 		// determine whether they are suppressed or not.
-		this.effects.forEach(e => e.determineSuppression());
+		this.getActiveEffects().forEach(e => e.determineSuppression());
 		return super.applyActiveEffects();
 	}
 
