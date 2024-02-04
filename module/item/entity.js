@@ -1192,7 +1192,6 @@ export default class Item4e extends Item {
 		const powerHasAmmoWithBonus = (ammo, ammoBonus) => {
 			parts.push("@ammo");
 			rollData["ammo"] = ammoBonus;
-			title += ` [${ammo.name}]`;
 			this._ammo = ammo;
 		}
 		handlePowerAndWeaponAmmoBonuses(powerHasAmmoWithBonus, itemData.consume, "power");
@@ -1203,7 +1202,6 @@ export default class Item4e extends Item {
 			const weaponHasAmmoWithBonus = (ammo, ammoBonus) => {
 				if (parts[parts.length-1] !== "@ammo" ) parts.push("@ammo");
 				rollData["ammo"]? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
-				title += ` [${ammo.name}]`;
 				weaponUse._ammo = ammo;
 			}
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
