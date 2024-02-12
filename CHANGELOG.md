@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.43
+- Minor fix to application of active effects. If a player is the owner of the token / actor, it will no longer require use the socket to apply the effect. 
+
 ## Version 0.4.42
 - Fix suppression of transferred effects [PR 338](https://github.com/EndlesNights/dnd4eBeta/pull/338) from [wigmeister2000](https://github.com/wigmeister2000)
 - Attack bonus tooltips [PR 339](https://github.com/EndlesNights/dnd4eBeta/pull/339) from [wigmeister2000](https://github.com/wigmeister2000)
