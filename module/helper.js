@@ -1118,7 +1118,7 @@ export class Helper {
 						actor = parent;
 					}
 
-					if(game.user.isGM){
+					if(actor.isOwner || game.user.isGM){
 						await actor.newActiveEffect(newEffectData);
 					} else {
 						game.socket.emit('system.dnd4e', {
@@ -1234,6 +1234,8 @@ export async function handleApplyEffectToToken(data){
 	if(!game.user.isGM){
 		return;
 	}
+	console.log(data)
+	console.log(game.scenes.get(data.scene))
 	const effectData = data.effectData;
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
 	await actor.newActiveEffectSocket(effectData);
