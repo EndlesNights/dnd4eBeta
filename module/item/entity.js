@@ -1889,6 +1889,11 @@ export default class Item4e extends Item {
 
 		// Attack and Damage Rolls
 		console.log(action)
+		let effectTargets = game.user.targets // Set
+		if (game.settings.get("dnd4e","applyEffectsToSelection")) {
+			effectTargets = new Set(canvas.tokens.controlled) // Array, convert to set
+		}
+
 		if ( action === "attack" ) await item.rollAttack({event});
 		else if ( action === "damage" ) await item.rollDamage({event, spellLevel});
 		else if ( action === "healing" ) await item.rollHealing({event, spellLevel});
@@ -1896,7 +1901,10 @@ export default class Item4e extends Item {
 		else if ( action === "formula" ) await item.rollFormula({event, spellLevel});
 		
 		// Effects
-		else if ( action === "effect" ) Helper.applyEffectsToTargets(item.effects, actor);
+		else if ( action === "effect" ) Helper.applyAllXEffectsToTokens(item.effects, actor, effectTargets);
+		else if ( action === "hitEffect" ) Helper.applyEffectsToTokens(item.effects, effectTargets, "hit", actor);
+		else if ( action === "missEffect" ) Helper.applyEffectsToTokens(item.effects, effectTargets, "miss", actor);
+		else if ( action === "hitOrMissEffect" ) Helper.applyEffectsToTokens(item.effects, effectTargets, "hitOrMiss", actor);
 
 		// Saving Throws for card targets
 		else if ( action === "save" ) {

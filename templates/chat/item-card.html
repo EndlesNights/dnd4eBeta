@@ -54,16 +54,27 @@
 			</button>
 			{{/if}}
 
-			{{#if hasEffect}}
-			<!-- <div class="card-content">
-				{{localize "DND4EBETA.Effect" }}: {{{data.effect.detail}}}
-			</div> -->
-			{{/if}}
-			<!-- {{#if hasEffect}}<button data-action="effect">{{ localize "DND4EBETA.Effect" }}</button>{{/if}} -->
-
 			{{#if (needsEffectButton this)}}
-			<button data-action="effect" data-tooltip="{{ localize 'DND4EBETA.EffectApply' }}">
-				{{ localize "DND4EBETA.Effect" }}
+			<button data-action="effect" data-tooltip="{{ localize 'DND4EBETA.ApplyEffectTooltip' }}">
+				{{ localize "DND4EBETA.ApplyEffect" }} {{#if (applyEffectsToSelection)}}{{ localize "DND4EBETA.ApplyEffectToSelection" }}{{else}}{{ localize "DND4EBETA.ApplyEffectToTargets" }}{{/if}}
+			</button>
+			{{/if}}
+
+			{{#if (needsHitEffectButton this)}}
+			<button data-action="hitEffect" data-tooltip="{{ localize 'DND4EBETA.ApplyHitEffectTooltip' }}">
+				{{ localize "DND4EBETA.ApplyHitEffect" }} {{#if (applyEffectsToSelection)}}{{ localize "DND4EBETA.ApplyEffectToSelection" }}{{else}}{{ localize "DND4EBETA.ApplyEffectToTargets" }}{{/if}}
+			</button>
+			{{/if}}
+
+			{{#if (needsMissEffectButton this)}}
+			<button data-action="missEffect" data-tooltip="{{ localize 'DND4EBETA.ApplyMissEffectTooltip' }}">
+				{{ localize "DND4EBETA.ApplyMissEffect" }} {{#if (applyEffectsToSelection)}}{{ localize "DND4EBETA.ApplyEffectToSelection" }}{{else}}{{ localize "DND4EBETA.ApplyEffectToTargets" }}{{/if}}
+			</button>
+			{{/if}}
+
+			{{#if (needsHitOrMissEffectButton this)}}
+			<button data-action="hitOrMissEffect" data-tooltip="{{ localize 'DND4EBETA.ApplyHitOrMissEffectTooltip' }}">
+				{{ localize "DND4EBETA.ApplyHitOrMissEffect" }} {{#if (applyEffectsToSelection)}}{{ localize "DND4EBETA.ApplyEffectToSelection" }}{{else}}{{ localize "DND4EBETA.ApplyEffectToTargets" }}{{/if}}
 			</button>
 			{{/if}}
 
