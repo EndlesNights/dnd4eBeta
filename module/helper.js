@@ -708,7 +708,7 @@ export class Helper {
 			}			
 		}
 
-		// this is done at the bottom, because I don't want to iterating the entire actor effects collection unless I have to
+		// this is done at the bottom, because I don't want to be iterating the entire actor effects collection unless I have to
 		// as this could get unnecessarily expensive quickly.
 		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula
 		// having got to the bottom of common replace, check to see if there are any more @variables left.  If there aren't, then don't bother going any further
@@ -723,18 +723,18 @@ export class Helper {
 				effect.changes.forEach((change => {
 					if (this.variableRegex.test(change.key)) {
 						if (debug) {
-							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.label}.  Value: ${change.value}`)
+							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.name}.  Value: ${change.value}`)
 						}
 						const changeValueReplaced = this.commonReplace(change.value, actorData, powerInnerData, weaponInnerData, 0) // set depth to avoid infinite recursion
 						if (!resultObject[change.key]) {
 							resultObject[change.key] = changeValueReplaced
 							if (debug) {
-								console.log(`${debug} Effect: ${effect.label}.  Computed Value: ${change.value} was the first match to ${change.key} `)
+								console.log(`${debug} Effect: ${effect.name}.  Computed Value: ${change.value} was the first match to ${change.key} `)
 							}
 						}
 						else {
 							if (debug) {
-								console.log(`${debug} Effect: ${effect.label}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
+								console.log(`${debug} Effect: ${effect.name}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
 							}
 							if(this._isNumber(resultObject[change.key]) && this._isNumber(changeValueReplaced)){
 								resultObject[change.key] = Number(resultObject[change.key]) + Number(changeValueReplaced)
@@ -1136,11 +1136,22 @@ export class Helper {
 	}
 
 	static async applyEffectsToTargets(effects, actor){
-		if (game.user.targets.size){
-			await this.applyEffectsToTokens(effects, game.user.targets, "all", actor);
+		this.applyAllXEffectsToTokens(effects, actor, game.user.targets)
+	}
+
+	/**
+	 * Apply All / Ally / Enemy effects to the selection
+	 *
+	 * @param {EmbeddedCollection} effects The powers effects
+	 * @param {Actor} actor The source actor
+	 * @param {Set} selection the Tokens to apply to
+	 */
+	static async applyAllXEffectsToTokens(effects, actor, selection){
+		if (selection?.size){
+			await this.applyEffectsToTokens(effects, selection, "all", actor);
 			const parentDisposition = actor.token?.disposition || actor.prototypeToken.disposition || null;
-			await this.applyEffectsToTokens(effects, this.filterActorSetByDisposition([game.user.targets], parentDisposition), "allies", actor);
-			await this.applyEffectsToTokens(effects, this.filterActorSetByDisposition([game.user.targets], parentDisposition, false), "enemies", actor);
+			await this.applyEffectsToTokens(effects, this.filterActorSetByDisposition(selection, parentDisposition), "allies", actor);
+			await this.applyEffectsToTokens(effects, this.filterActorSetByDisposition(selection, parentDisposition, false), "enemies", actor);
 		}
 	}
 
@@ -1221,12 +1232,17 @@ export class Helper {
 			return [];
 		}
 		const filteredSet = new Set();
-		for (const actor of Array.from(game.user.targets)) {
+		for (const actor of actorSet) {
 			if((actor.document?.disposition === disposition) === same) {
 				filteredSet.add(actor);
 			}
 		}
 		return filteredSet;
+	}
+
+	static hasEffects(power, effects) {
+		const foundEffects = power.item.effects.contents.filter(e => effects.includes(e.flags.dnd4e.effectData.powerEffectTypes));
+		return foundEffects.length > 0;
 	}
 }
 
@@ -1301,6 +1317,21 @@ Handlebars.registerHelper("getSourceName", function(effect){
 });
 
 Handlebars.registerHelper("needsEffectButton", function(power){
-	const effects = power.item.effects.contents.filter(e => ["all", "allies", "enemies"].includes(e.flags.dnd4e.effectData.powerEffectTypes));
-	return effects.length > 0;
+	return Helper.hasEffects(power, ["all", "allies", "enemies"])
+});
+
+Handlebars.registerHelper("needsHitEffectButton", function(power){
+	return Helper.hasEffects(power, ["hit"])
+});
+
+Handlebars.registerHelper("needsMissEffectButton", function(power){
+	return Helper.hasEffects(power, ["miss"])
+});
+
+Handlebars.registerHelper("needsHitOrMissEffectButton", function(power){
+	return Helper.hasEffects(power, ["hitOrMiss"])
+});
+
+Handlebars.registerHelper("applyEffectsToSelection", function(){
+	return game.settings.get("dnd4e","applyEffectsToSelection")
 });

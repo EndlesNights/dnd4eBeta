@@ -292,6 +292,15 @@ export const registerSystemSettings = function() {
 		onChange: debouncedReload
 	});
 
+	game.settings.register("dnd4e", "applyEffectsToSelection",{
+		name: "SETTINGS.4eApplyEffectsToSelectionN",
+		hint: "SETTINGS.4eApplyEffectsToSelectionL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean,
+	});
+
 	game.keybindings.register("dnd4e", "permShowPlayer", {
 		name: game.i18n.localize("SETTINGS.4epermShowPlayerN"),
 		hint: game.i18n.localize("SETTINGS.4epermShowPlayerL"),
