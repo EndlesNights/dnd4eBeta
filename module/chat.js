@@ -104,6 +104,7 @@ export const addChatMessageContextOptions = function(html, options) {
 
 	// function canApplyEffect(li, type){
 	let canApplyEffect = (li, type) => {
+		if(!canvas.tokens.controlled.length) return false;
 		const message = game.messages.get(li.data("messageId"));
 		if(!message.isContentVisible) return false;
 
@@ -187,70 +188,17 @@ export const addChatMessageContextOptions = function(html, options) {
 			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 1, true)
 		},
-
-
-		// Apply Power Effects to Select Tokens
-		{
-			name: "All Target Effect",
-			icon: '<i class="fa-regular fa-users"></i>',
-			condition: li => canApplyEffect(li, "all"),
-			callback: li => applyEffectToSelectTokens(li, "all")
-		},
-		{
-			name: "Allies Effect",
-			icon: '<i class="fa-regular fa-users"></i>',
-			condition: li => canApplyEffect(li, "allies"),
-			callback: li => applyEffectToSelectTokens(li, "allies")
-		},
-		{
-			name: "Enemies Effect",
-			icon: '<i class="fa-regular fa-users"></i>',
-			condition: li => canApplyEffect(li, "enemies"),
-			callback: li => applyEffectToSelectTokens(li, "enemies")
-		},
-		{
-			name: "Apply Hit Effect to Selected Token",
-			icon: '<i class="fa-regular fa-users"></i>',
-			condition: li => canApplyEffect(li, "hit"),
-			callback: li => applyEffectToSelectTokens(li, "hit")
-		},
-		{
-			name: "Miss Effect",
-			icon: '<i class="fa-regular fa-users"></i>',
-			condition: li => canApplyEffect(li, "miss"),
-			callback: li => applyEffectToSelectTokens(li, "miss")
-		},
-		{
-			name: "Hit or Miss Effect",
-			icon: '<i class="fa-regular fa-users"></i>',
-			condition: li => canApplyEffect(li, "hitOrMiss"),
-			callback: li => applyEffectToSelectTokens(li, "hitOrMiss")
-		},
-		{
-			name: "Self Effect",
-			icon: '<i class="fa-regular fa-users"></i>',
-			condition: li => canApplyEffect(li, "self"),
-			callback: li => applyEffectToSelectTokens(li, "self")
-		},
-		{
-			name: "Self After Attack Effect",
-			icon: '<i class="fa-regular fa-users"></i>',
-			condition: li => canApplyEffect(li, "selfAfterAttack"),
-			callback: li => applyEffectToSelectTokens(li, "selfAfterAttack")
-		},
-		{
-			name: "Self after Hit Effect",
-			icon: '<i class="fa-regular fa-users"></i>',
-			condition: li => canApplyEffect(li, "selfHit"),
-			callback: li => applyEffectToSelectTokens(li, "selfHit")
-		},
-		{
-			name: "Self after Miss Effect",
-			icon: '<i class="fa-regular fa-users"></i>',
-			condition: li => canApplyEffect(li, "selfMiss"),
-			callback: li => applyEffectToSelectTokens(li, "selfMiss")
-		},
 	);
+
+	// Apply Power Effects to Select Tokens
+	for(const [effectType, l] of Object.entries(game.dnd4eBeta.config.powerEffectTypes)){
+		options.push({
+			name: game.i18n.localize(`DND4EBETA.ChatContextEffect${effectType}`),
+			icon: '<i class="fa-regular fas fa-bolt"></i>',
+			condition: li => canApplyEffect(li, effectType),
+			callback: li => applyEffectToSelectTokens(li, effectType)
+		});
+	}
 	return options;
 };
 
