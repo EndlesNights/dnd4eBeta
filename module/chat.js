@@ -1,3 +1,4 @@
+import { Helper } from "./helper.js";
 import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 
 /**
@@ -101,7 +102,35 @@ export const addChatMessageContextOptions = function(html, options) {
 		return message.isRoll && message.isContentVisible && canvas.tokens.controlled.length;
 	};
 
+	// function canApplyEffect(li, type){
+	let canApplyEffect = (li, type) => {
+		const message = game.messages.get(li.data("messageId"));
+		if(!message.isContentVisible) return false;
+
+		const itemID = li[0].querySelector('[data-item-id]')?.dataset.itemId;
+
+		if(!itemID) return false;
+		
+		const actorID = li[0].querySelector('[data-actor-id]')?.dataset.actorId;
+		const tokenUUID = li[0].querySelector('[data-token-id]')?.dataset.tokenId.split(".");
+
+		const actor = tokenUUID ? game.scenes.get(tokenUUID[1])?.tokens.get(tokenUUID[3])?.actor : game.actors.get(actorID);
+		if(!actor) return false;
+
+		const item = actor.items.get(itemID);
+		if(!item) return false;
+
+		if(!item.effects.size) return false;
+
+		for(const effect of item.effects){
+			if(effect.flags.dnd4e.effectData.powerEffectTypes === type) return true;
+		}
+
+		return false;
+	}
+
 	options.push(
+		// Token Selection Right-Click Options
 		{
 			name: game.i18n.localize("DND4EBETA.SeleteAllTargets"),
 			icon: '<i class="fa-regular fa-users"></i>',
@@ -121,6 +150,7 @@ export const addChatMessageContextOptions = function(html, options) {
 			callback: li => selectTargetTokens(li, "miss")
 		},
 
+		// Damage Right-Click Options
 		{
 			name: game.i18n.localize("DND4EBETA.ChatContextDamage"),
 			icon: '<i class="fas fa-user-minus"></i>',
@@ -156,7 +186,70 @@ export const addChatMessageContextOptions = function(html, options) {
 			icon: '<i class="fa-light fa-user-shield"></i>',
 			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 1, true)
-		}
+		},
+
+
+		// Apply Power Effects to Select Tokens
+		{
+			name: "All Target Effect",
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: li => canApplyEffect(li, "all"),
+			callback: li => applyEffectToSelectTokens(li, "all")
+		},
+		{
+			name: "Allies Effect",
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: li => canApplyEffect(li, "allies"),
+			callback: li => applyEffectToSelectTokens(li, "allies")
+		},
+		{
+			name: "Enemies Effect",
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: li => canApplyEffect(li, "enemies"),
+			callback: li => applyEffectToSelectTokens(li, "enemies")
+		},
+		{
+			name: "Apply Hit Effect to Selected Token",
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: li => canApplyEffect(li, "hit"),
+			callback: li => applyEffectToSelectTokens(li, "hit")
+		},
+		{
+			name: "Miss Effect",
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: li => canApplyEffect(li, "miss"),
+			callback: li => applyEffectToSelectTokens(li, "miss")
+		},
+		{
+			name: "Hit or Miss Effect",
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: li => canApplyEffect(li, "hitOrMiss"),
+			callback: li => applyEffectToSelectTokens(li, "hitOrMiss")
+		},
+		{
+			name: "Self Effect",
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: li => canApplyEffect(li, "self"),
+			callback: li => applyEffectToSelectTokens(li, "self")
+		},
+		{
+			name: "Self After Attack Effect",
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: li => canApplyEffect(li, "selfAfterAttack"),
+			callback: li => applyEffectToSelectTokens(li, "selfAfterAttack")
+		},
+		{
+			name: "Self after Hit Effect",
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: li => canApplyEffect(li, "selfHit"),
+			callback: li => applyEffectToSelectTokens(li, "selfHit")
+		},
+		{
+			name: "Self after Miss Effect",
+			icon: '<i class="fa-regular fa-users"></i>',
+			condition: li => canApplyEffect(li, "selfMiss"),
+			callback: li => applyEffectToSelectTokens(li, "selfMiss")
+		},
 	);
 	return options;
 };
@@ -232,6 +325,33 @@ export const clickRollMessageDamageButtons = function(event) {
 	else if (action === "TempHeal") {
 		applyChatCardTempHpInner(roll)
 	}
+}
+
+
+/* -------------------------------------------- */
+/**
+ *
+ * @param {HTMLElement} li    	The list item clicked, the power card chat message in this case
+ * @param {string} effectType   The Effect Type that is being applied so it can pass through to the apply effect
+ * @return {Promise}
+ */
+function applyEffectToSelectTokens(li, effectType){
+	const itemID = li[0].querySelector('[data-item-id]')?.dataset.itemId;
+
+	if(!itemID) return false;
+	
+	const actorID = li[0].querySelector('[data-actor-id]')?.dataset.actorId;
+	const tokenUUID = li[0].querySelector('[data-token-id]')?.dataset.tokenId.split(".");
+
+	const actor = tokenUUID ? game.scenes.get(tokenUUID[1])?.tokens.get(tokenUUID[3])?.actor : game.actors.get(actorID);
+	if(!actor) return;
+
+	const item = actor.items.get(itemID);
+	if(!item) return;
+
+	const effectTargets = canvas.tokens.controlled // Array
+
+	Helper.applyEffectsToTokens(item.effects, effectTargets, effectType, actor);
 }
 
 /* -------------------------------------------- */
