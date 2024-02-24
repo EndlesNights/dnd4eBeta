@@ -527,11 +527,13 @@ export default class Item4e extends Item {
 				return null;
 			}
 		})();
+
 		// Basic template rendering data
 		const token = this.actor.token;
 		const templateData = {
 			actor: this.actor,
 			tokenId: token ? token.uuid : null,
+			effects: this.effects.size ? this.effects : false,
 			item: this,
 			system: await this.getChatData(),
 			labels: this.labels,

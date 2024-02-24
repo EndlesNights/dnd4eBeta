@@ -3061,3 +3061,64 @@ Vestigial? This class appears in item-sheet.html but I can't find that sheet use
 .dnd4eBeta.chat-card .card-buttons .dnd4e-button-icon img {
 	border: none;
 }
+.dnd4eBeta.chat-card .effects-tray .effects {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 250ms ease;
+}
+.dnd4eBeta.chat-card .effects-tray label .fa-caret-down {
+	transition: all 250ms ease;
+}
+.dnd4eBeta.chat-card .effects-tray.collapsed label .fa-caret-down {
+	transform: rotate(-90deg);
+}
+.dnd4eBeta.chat-card .effects-tray .effects .effect {
+	display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.dnd4eBeta.chat-card .effects-tray .effects .effect > img {
+	width: 32px;
+    height: 32px;
+
+	border: 2px solid #9f9275;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.45);
+    border-radius: 0;
+    background-color: #3d3d3d;
+}
+
+.dnd4eBeta .name-stacked {
+    display: flex;
+    flex-direction: column;
+}
+
+.dnd4eBeta.chat-card .effects-tray .effects .effect .name-stacked {
+    flex: 1;
+}
+
+.dnd4eBeta .name-stacked .title {
+	font-family: "Roboto Slab", serif;
+	font-size: 0.875rem;
+	font-weight: bold;
+}
+.dnd4eBeta .name-stacked .subtitle {
+	font-family: vRoboto, sans-serif;
+	font-size: 0.625rem;
+	color: #666;
+}
+
+.dnd4eBeta.chat-card .effects-tray .effects .effect > button {
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 0 0 4px;
+	font-size: 0.75rem;
+}
+
