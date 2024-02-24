@@ -207,6 +207,11 @@ export function chatMessageListener(html) {
 
 	html.on('click', '.target', this.clickTokenActorName.bind(this));
 	html.on('mouseenter', '.target', this.hoverTokenActorName.bind(this)).on('mouseleave', '.target', this.hoverTokenActorName.bind(this));
+
+	html.find(".description.collapsible").each((i, el) => {
+        el.classList.add("collapsed");
+        el.querySelector(".details").style.height = "0";
+      });
 }
 
 //When clicking on the name of a taget in a chat messages from attack rolls, will select and pan to the highlighted token

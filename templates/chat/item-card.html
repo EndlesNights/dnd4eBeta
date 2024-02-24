@@ -38,23 +38,26 @@
 
 			{{#if hasAttack}}
 			<button data-action="attack" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
+				<span class="dnd4e-button-icon"><img src="systems/dnd4e/icons/ui/attackRoll.svg"></span>
 				{{ localize "DND4EBETA.Attack" }}
 			</button>
 			{{/if}}
 
 			{{#if hasDamage}}
 			<button data-action="damage" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
+				<i class="fas fa-burst"></i>
 				{{localize "DND4EBETA.Damage" }}
 			</button>
 			{{/if}}
 
 			{{#if hasHealing}}
 			<button data-action="healing" data-tooltip="{{ localize 'DND4EBETA.QuickRoll' }}">
+				<span class="dnd4e-button-icon"><img src="systems/dnd4e/icons/ui/healRoll.svg"></span>
 				{{ localize "DND4EBETA.Healing" }}
 			</button>
 			{{/if}}
 
-			{{#if (needsEffectButton this)}}
+			{{!-- {{#if (needsEffectButton this)}}
 			<button data-action="effect" data-tooltip="{{ localize 'DND4EBETA.ApplyEffectTooltip' }}">
 				{{ localize "DND4EBETA.ApplyEffect" }} {{#if (applyEffectsToSelection)}}{{ localize "DND4EBETA.ApplyEffectToSelection" }}{{else}}{{ localize "DND4EBETA.ApplyEffectToTargets" }}{{/if}}
 			</button>
@@ -76,7 +79,7 @@
 			<button data-action="hitOrMissEffect" data-tooltip="{{ localize 'DND4EBETA.ApplyHitOrMissEffectTooltip' }}">
 				{{ localize "DND4EBETA.ApplyHitOrMissEffect" }} {{#if (applyEffectsToSelection)}}{{ localize "DND4EBETA.ApplyEffectToSelection" }}{{else}}{{ localize "DND4EBETA.ApplyEffectToTargets" }}{{/if}}
 			</button>
-			{{/if}}
+			{{/if}} --}}
 
 			{{#if isVersatile}}
 			<button data-action="versatile">{{ localize "DND4EBETA.Versatile" }}</button>
@@ -97,7 +100,7 @@
 			{{/if}}
 		</div>
 		{{/if}}
-		
+
 	</div>
 	
 

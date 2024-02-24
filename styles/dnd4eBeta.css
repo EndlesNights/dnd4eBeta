@@ -2553,20 +2553,28 @@ input[type="text"].dice-count{
 }
 .dnd4eBeta.chat-card .card-buttons{
 	margin:5px 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
 }
-.dnd4eBeta.chat-card .card-buttons span{
+.dnd4eBeta.chat-card .card-buttons span {
 	display:block;
 	line-height:28px;
 	text-align:center;
 	border:1px solid #ccc;
 }
-.dnd4eBeta.chat-card .card-buttons button{
+.dnd4eBeta.chat-card .card-buttons button {
 	font-size:12px;
 	height:24px;
 	line-height:20px;
 	margin:2px 0;
+
+	flex-basis: calc(50% - 2px); 
 }
-.dnd4eBeta.chat-card .card-footer{
+.dnd4eBeta.chat-card .card-buttons button:last-child:nth-child(odd) {
+	flex-basis: 100%;
+}
+.dnd4eBeta.chat-card .card-footer {
 	padding:3px 0 0;
 	border-top:var(--var-border-engraved);
 }
@@ -3002,3 +3010,54 @@ Vestigial? This class appears in item-sheet.html but I can't find that sheet use
 	border-bottom:3px solid #44191A;
 }
 */
+
+.dnd4eBeta.chat-card .effects-tray label,
+.dnd4eBeta.chat-card .card-content .collapsible {
+	cursor: pointer;
+}
+
+.dnd4eBeta .roboto-upper {
+	font-family: Roboto, sans-serif;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.dnd4eBeta.chat-card .effects-tray label {
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	gap: 0.25rem;
+	font-size: var(--font-size-11);
+}
+.dnd4eBeta.chat-card .effects-tray label > span {
+	flex: none;
+}
+.dnd4eBeta.chat-card .effects-tray label .fa-bolt {
+	color: var(--color-text-light-6);
+}
+.dnd4eBeta.chat-card .effects-tray label .fa-caret-down {
+	transition: all 250ms ease;
+}
+
+.dnd4eBeta.chat-card .effects-tray label::before,
+.dnd4eBeta.chat-card .effects-tray label::after {
+  content: "";
+  flex-basis: 50%;
+  border-top: 1px dotted #9f9275;
+  align-self: center;
+}
+
+.dnd4eBeta.chat-card .card-buttons .dnd4e-button-icon {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 0px;
+	/* Adjust the font size and icon size as needed */
+	font-size: 16px;
+	width: 15px;
+	height: 15px;
+	border: none;
+}
+
+.dnd4eBeta.chat-card .card-buttons .dnd4e-button-icon img {
+	border: none;
+}

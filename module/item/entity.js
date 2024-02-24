@@ -1839,8 +1839,31 @@ export default class Item4e extends Item {
 	static chatListeners(html) {
 		html.on('click', '.card-buttons button', this._onChatCardAction.bind(this));
 		html.on('click', '.item-name', this._onChatCardToggleContent.bind(this));
+
+		html.on("click", ".item-name, .collapsible", this._onChatCardEffectCollapsibleToggleContent.bind(this));
 	}
 
+	static _onChatCardEffectCollapsibleToggleContent(event){
+		// If the user is clicking on a link in the collapsible region, don't collapse
+		if ( event.target.closest(":is(.item-name, .collapsible) :is(a, button)") ) return;
+
+		event.preventDefault();
+		const header = event.currentTarget;
+		const card = header.closest(".chat-card");
+		const content = card.querySelector(".card-content:not(.details)");
+		console.log(content)
+		// if ( content ) content.style.display = content.style.display === "none" ? "block" : "none";
+		if ( header.classList.contains("collapsible") ) {
+			header.classList.toggle("collapsed");
+			const collapsed = header.classList.contains("collapsed");
+			const details = header.querySelector(".collapsible-content");
+			details.style.height = collapsed ? "0" : `${details.scrollHeight}px`;
+
+			// Clear the height from the chat popout container so that it appropriately resizes.
+			const popout = header.closest(".chat-popout");
+			if ( popout ) popout.style.height = "";
+		}
+	}
 	/* -------------------------------------------- */
 
 	/**
