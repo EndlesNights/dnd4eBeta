@@ -1839,7 +1839,7 @@ export default class Item4e extends Item {
 	/* -------------------------------------------- */
 
 	static chatListeners(html) {
-		html.on('click', '.card-buttons button', this._onChatCardAction.bind(this));
+		html.on('click', '.card-buttons button, .effects-tray button', this._onChatCardAction.bind(this));
 		html.on('click', '.item-name', this._onChatCardToggleContent.bind(this));
 
 		html.on("click", ".item-name, .collapsible", this._onChatCardEffectCollapsibleToggleContent.bind(this));
@@ -1884,7 +1884,7 @@ export default class Item4e extends Item {
 		const messageId = card.closest(".message").dataset.messageId;
 		const message =  game.messages.get(messageId);
 		const action = button.dataset.action;
-
+		
 		// Validate permission to proceed with the roll
 		const isTargetted = action === "save";
 		if ( !( isTargetted || game.user.isGM || message.isAuthor ) ) return;
@@ -1926,6 +1926,11 @@ export default class Item4e extends Item {
 		else if ( action === "formula" ) await item.rollFormula({event, spellLevel});
 		
 		// Effects
+		else if ( action === "applyEffect" ) {
+			//apply the single effect from button
+			const effect = await fromUuid(button.closest("[data-uuid]")?.dataset.uuid);
+			Helper.applyEffectsToTokens([effect], canvas.tokens.controlled, effect.flags.dnd4e.effectData.powerEffectTypes, actor);
+		} 
 		else if ( action === "effect" ) Helper.applyAllXEffectsToTokens(item.effects, actor, effectTargets);
 		else if ( action === "hitEffect" ) Helper.applyEffectsToTokens(item.effects, effectTargets, "hit", actor);
 		else if ( action === "missEffect" ) Helper.applyEffectsToTokens(item.effects, effectTargets, "miss", actor);
