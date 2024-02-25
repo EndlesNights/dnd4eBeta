@@ -264,7 +264,7 @@
 			if(durationType === "endOfTargetTurn") return  game.i18n.localize("DND4EBETA.DurationEndOfTargetTurnSimp");
 			else if(durationType === "startOfTargetTurn")  return game.i18n.localize("DND4EBETA.DurationStartOfTargetTurnSimp");
 
-			return CONFIG.DND4EBETA.durationType[durationType];
+			return game.i18n.localize(CONFIG.DND4EBETA.durationType[durationType]);
 		}
 
 		return super._getDurationLabel(rounds, turns);

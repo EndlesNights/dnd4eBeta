@@ -157,9 +157,7 @@ Hooks.once("setup", function() {
 			obj[e[0]] = e[1];
 			return obj;
 		}, {});
-	}
-
-
+	}	
 
 });
 Hooks.once("ready",  function() {
