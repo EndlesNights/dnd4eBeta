@@ -3122,3 +3122,6 @@ Vestigial? This class appears in item-sheet.html but I can't find that sheet use
 	font-size: 0.75rem;
 }
 
+ .effect-tooltip {
+	text-align: left;
+}

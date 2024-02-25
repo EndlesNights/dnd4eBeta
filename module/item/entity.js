@@ -549,6 +549,14 @@ export default class Item4e extends Item {
 			hasAreaTarget: this.hasAreaTarget,
 			isRoll: true
 		};
+
+		// Set up html div for effect Tool Tips
+		if(this.effects.size){
+			for(const e of this.effects){
+				e.descriptionToolTip = `<div class="effect-tooltip" >${e.description}</div>`;
+			}
+		}
+
 		// For feature items, optionally show an ability usage dialog
 		if (this.type === "feat") {
 			let configured = await this._rollFeat(configureDialog);
@@ -567,7 +575,7 @@ export default class Item4e extends Item {
 		let templateType = "item"
 		if (["tool", "ritual"].includes(this.type)) {
 			templateType =  this.type
-			templateData.abilityCheck  = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
+			templateData.abilityCheck = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
 		}
 		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
 		let html = await renderTemplate(template, templateData);
