@@ -1765,4 +1765,42 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4EBETA.Mov
 		this.actor.rollDef(def, {event: event});
 	}
 
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle dropping of an item reference or item data onto an Actor Sheet
+	 * @param {DragEvent} event            The concluding DragEvent which contains drop data
+	 * @param {object} data                The data transfer extracted from the event
+	 * @returns {Promise<Item[]|boolean>}  The created or updated Item instances, or false if the drop was not permitted.
+	 * @protected
+	 */
+	async _onDropItem(event, data) {
+
+		// Stack identical consumables
+		const stacked = await this._onDropStackConsumables(await fromUuid(data.uuid));
+		if ( stacked ) return false;
+
+		return super._onDropItem(event, data);
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Stack identical consumables when a new one is dropped rather than creating a duplicate item.
+	 * @param {object} itemData         The item data requested for creation.
+	 * @returns {Promise<Item4e>|null}  If a duplicate was found, returns the adjusted item stack.
+	 */
+	async _onDropStackConsumables(itemData) {
+
+		const droppedSourceId = itemData.flags.core?.sourceId;
+		if ( itemData.type !== "consumable" || !droppedSourceId ) return null;
+		const similarItem = this.actor.items.find(i => {
+			const sourceId = i.getFlag("core", "sourceId");
+			return sourceId && (sourceId === droppedSourceId) && (i.type === "consumable") && (i.name === itemData.name);
+		});
+		if ( !similarItem ) return null;
+		return similarItem.update({
+			"system.quantity": similarItem.system.quantity + Math.max(itemData.system.quantity, 1)
+		});
+	}
 }
