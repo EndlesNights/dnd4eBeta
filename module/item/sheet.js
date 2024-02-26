@@ -29,8 +29,15 @@ export default class ItemSheet4e extends ItemSheet {
 			scrollY: [
 				".tab.details"
 			],
-			tabs: [{navSelector: ".tabs", contentSelector: ".sheet-body", initial: "description"}],
-			dragDrop: [{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},]
+			tabs: [{
+				navSelector: ".tabs",
+				contentSelector: ".sheet-body",
+				// initial: "description" //Done in HTML with the .active class 
+			}],
+			dragDrop: [{
+				dragSelector: "[data-effect-id]",
+				dropSelector: ".effects-list"
+			}]
 		});
 	}
 

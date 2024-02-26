@@ -73,6 +73,9 @@ export default class Item4e extends Item {
 	/** @inheritdoc */
 	async _preCreate(data, options, user) {
 		await super._preCreate(data, options, user);
+
+		this._onCreationName(data)
+
 		if ( !this.isEmbedded) return;
 		const isNPC = this.parent.type === "npc";
 		let updates;
@@ -88,6 +91,19 @@ export default class Item4e extends Item {
 			console.log(updates)
 			return this.updateSource(updates);
 		} 
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Pre-creation logic for setting up name of Items.
+	 *
+	 * @param {object} data       Data for the newly created item.
+	 */ 
+	_onCreationName(data){
+		const updates = {};
+		updates["name"] = game.i18n.format("DND4EBETA.ItemNew", {type: data.type.capitalize()});
+		this.updateSource(updates);
 	}
 
 	/* -------------------------------------------- */
@@ -1861,7 +1877,7 @@ export default class Item4e extends Item {
 		const header = event.currentTarget;
 		const card = header.closest(".chat-card");
 		const content = card.querySelector(".card-content:not(.details)");
-		console.log(content)
+		
 		// if ( content ) content.style.display = content.style.display === "none" ? "block" : "none";
 		if ( header.classList.contains("collapsible") ) {
 			header.classList.toggle("collapsed");
