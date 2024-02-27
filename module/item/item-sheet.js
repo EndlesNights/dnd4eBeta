@@ -32,13 +32,11 @@ export default class ItemSheet4e extends ItemSheet {
 			tabs: [{
 				navSelector: ".tabs",
 				contentSelector: ".sheet-body",
-				// initial: "description" //Done in HTML with the .active class 
+				initial: "description"
 			}],
 			dragDrop: [
-				{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},
-				// {dragSelector: ".item-list .item", dropSelector: null}
-			],
-			// elements: {inventory: "dnd4e-inventory"}
+				{dragSelector: "[data-effect-id]", dropSelector: null},
+			]
 			
 		});
 	}
@@ -55,7 +53,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	async getData(options) {
-		const data = super.getData(options);
+		const data = await super.getData(options);
 		const itemData = data.data;
 
 		data.labels = this.item.labels;
@@ -91,18 +89,6 @@ export default class ItemSheet4e extends ItemSheet {
 				data.isShield = true;
 				data.shieldBaseTypes = CONFIG.DND4E.shield;
 				data.isShieldBaseTypeCustom = (itemData.system.shieldBaseType === "custom");
-			}
-		}
-
-		// Add item List for backpack/container to display
-		if( itemData.type === "backpack" && data.document.contents.size){
-			data.containerContents = data.document.contents;
-
-			// Organize items
-			for ( let i of data.containerContents ) {
-				i.system.quantity = i.system.quantity || 0;
-				i.system.weight = i.system.weight || 0;
-				i.totalWeight = Math.round(i.system.quantity * i.system.weight * 10) / 10;
 			}
 		}
 
@@ -896,8 +882,6 @@ export default class ItemSheet4e extends ItemSheet {
 		switch ( data.type ) {
 		case "ActiveEffect":
 			return this._onDropActiveEffect(event, data);
-		case "Item":
-			if(item.type === "backpack") return this._onDropItemContainer(event, data.uuid, item);		
 		}
 
 	}
@@ -919,42 +903,5 @@ export default class ItemSheet4e extends ItemSheet {
 			...effect.toObject(),
 			origin: this.item.uuid
 		}, {parent: this.item});
-	}
-
-  /* -------------------------------------------- */
-
-	/**
-	 * Handle the dropping of an Item data onto a containerItem Sheet
-	 * @param {DragEvent} event					The concluding DragEvent which contains drop data
-	 * @param {string} droppedItemUUID			The  UUID for the item being dropped
-	 * @param {object} targetItem				The container object
-	 * @returns {Promise<ActiveEffect|boolean>}  The created ActiveEffect object or false if it couldn't be created.
-	 * @protected
-	 */
-
-	async _onDropItemContainer(event, droppedItemUUID, targetItem){
-		console.log(droppedItemUUID)
-		const droppedItem = await fromUuid(droppedItemUUID);
-		const oldContainer = droppedItem.container || false;
-		
-		//Check if the object is a valid "physical" item type
-		if(!["weapon", "equipment", "consumable", "tool", "loot", "backpack", ].includes(droppedItem.type)){
-			console.log("Not phsyical item, can not place in contrainer")
-			return;
-		}
-
-		if(droppedItem.parent === targetItem.parent) {
-			console.log("Parent Match!");
-			await droppedItem.update({"system.container": targetItem.id}); 
-			
-			console.log(targetItem.id)
-		} else {
-			console.log("No Parent Match")
-		}
-
-		// refresh any container sheets if open... TODO, this doesn't refresh the sheet for others veiwing it.
-		oldContainer.sheet.render(oldContainer.sheet.rendered);
-		targetItem.sheet.render(targetItem.sheet.rendered);
-		
 	}
 }

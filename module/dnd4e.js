@@ -11,6 +11,8 @@ import {libWrapper} from './libWrapper-shim.js';
 
 // import { SimpleItemSheet } from "./item-sheet.js";
 import ItemSheet4e from "./item/item-sheet.js";
+import ContainerItemSheet from "./item/container-sheet.js";
+
 import { measureDistances, getBarAttribute } from "./canvas.js";
 import { _getInitiativeFormula } from "./combat.js";
 
@@ -102,7 +104,15 @@ Hooks.once("init", async function() {
 	Items.unregisterSheet("core", ItemSheet);
 	Items.registerSheet("dnd4e", ItemSheet4e, {
 		makeDefault: true,
-		label: game.i18n.localize("SHEET.Item")
+		label: game.i18n.localize("SHEET.Item"),
+		types: ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"]
+
+	});
+	
+	Items.registerSheet("dnd4e", ContainerItemSheet,{
+		makeDefault: true,
+		label: "Container Sheet",//game.i18n.localize("SHEET.Item"),
+		types: ["backpack"]
 	});
 
 
