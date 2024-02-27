@@ -63,7 +63,7 @@
 				{{/each}}
 			</ol>
 			
-			<ol class="items-list effects-list">
+			<ol class="item-list">
 				<li class="items-header flexrow">
 					<h3 class="item-name flexrow">{{localize 'DND4E.Contents'}}</h3>
 						<div class="item-detail item-weight">Weight</div>
@@ -106,7 +106,7 @@
 							<input type="text" value="{{item.system.quantity}}" placeholder="0"/>
 						</div>
 						
-						<div class="item-controls">
+						<div class="item-controls flexrow">
 
 							{{#unless section.editableName}}
 							<a class="item-control item-edit" data-tooltip="{{localize "DND4E.ItemEdit"}}"><i class="fas fa-edit"></i></a>
@@ -116,7 +116,6 @@
 					</li>
 				{{/each}}
 				</ol>
-
 		</div>
 
 		{{!-- Description Tab --}}

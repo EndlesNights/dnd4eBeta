@@ -14,7 +14,7 @@
 </div>
 {{/if}}
 
-<ol class="items-list effects-list">
+<ol class="item-list effects-list">
 {{#each effects as |section sid|}}
 	<li class="items-header flexrow" data-effect-type="{{section.type}}">
 		<h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
@@ -29,7 +29,7 @@
 
 	<ol class="item-list">
 	{{#each section.effects as |effect|}}
-		<li class="item effect flexrow" data-effect-id="{{effect.id}}">
+		<li class="effect effect flexrow" data-effect-id="{{effect.id}}">
 			<div class="item-name effect-name flexrow" data-tooltip="{{effect.name}}">
 				<img class="item-image" src="{{effect.icon}}"/>
 				<h4>{{effect.name}}</h4>

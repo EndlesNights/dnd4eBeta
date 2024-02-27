@@ -168,7 +168,7 @@ form h3.form-header{
 .dnd4e.sheet select{
 	background:#49494b;
 }
-.dnd4e.sheet .items-list .item .item-uses input{
+.dnd4e.sheet .item-list .item .item-uses input{
 	width:24px;
 	text-align:right;
 	color:var(--color-text-light-highlight);
@@ -178,8 +178,8 @@ img[src$="svg"].rollable:hover{
 	-webkit-filter:brightness(255);
 	        filter:brightness(255);
 }
-.dnd4e.sheet .items-list .item .item-image.rollable:hover,
-.dnd4e.sheet .items-list .item .rollable .item-image:hover{
+.dnd4e.sheet .item-list .item .item-image.rollable:hover,
+.dnd4e.sheet .item-list .item .rollable .item-image:hover{
 	background-size:contain;
 	-webkit-filter:brightness(255);
 	        filter:brightness(255);
