@@ -185,6 +185,7 @@ function cleanActorData(actorData) {
 export const migrateItemData = function(item) {
 	const updateData = {};
 	_migrateImplmentKey(item, updateData);
+	_migrateContainerItems(item, updateData);
 	return updateData;
 };
 
@@ -211,7 +212,7 @@ export const migrateItemData = function(item) {
 			t.actorData = {};
 		}
 		else if ( !t.actorLink ) {
-			const actorData = duplicate(t.actorData);
+			const actorData = duplicate(t.delta);
 			actorData.type = token.actor?.type;
 			const update = migrateActorData(actorData, migrationData);
 			["items", "effects"].forEach(embeddedName => {
@@ -224,7 +225,7 @@ export const migrateItemData = function(item) {
 				delete update[embeddedName];
 			});
 
-			mergeObject(t.actorData, update);
+			mergeObject(t.delta, update);
 		}
 		return t;
 	});
@@ -586,6 +587,7 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 
 	return updateData;
 }
+
 /**
  * Migrate any data from the key "implementGroup" to the key of "implment"
  * @param {object} itemData   Item data being migrated.
@@ -600,6 +602,37 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 
 	updateData["system.-=implementGroup"] = null;
 	updateData["system.implement"] = implementData;
+
+	return updateData;
+ }
+
+/**
+ * Migrate backpack/Container items data to include new keys
+ * @param {object} itemData   Item data being migrated.
+ * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+ function _migrateContainerItems(itemData, updateData){
+
+	if(itemData.type === "backpack"){
+		//Add ritual datakeys
+		if(!itemData.system.hasOwnProperty('ritualcomp')){
+			updateData["system.ritualcomp"] = {
+				"ar" : 0,
+				"ms" : 0,
+				"rh" : 0,
+				"si" : 0,
+				"rs" : 0
+			};
+		}
+
+	}
+
+	//only add to phsyical item types
+	if(["weapon", "equipment", "consumable", "tool", "loot", "backpack", ].includes(itemData.type) && !itemData.system.hasOwnProperty('container')){
+		updateData["system.container"] = null;
+	}
 
 	return updateData;
  }
