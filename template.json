@@ -992,7 +992,8 @@
 			"attuned": false,
 			"equipped": false,
 			"rarity": "",
-			"identified": true
+			"identified": true,
+			"container": null
 		},
 		"activatedEffect": {
 			"activation": {
@@ -1106,7 +1107,14 @@
 		"ep": 0,
 		"gp": 0,
 		"pp": 0
-		}
+		},
+		"ritualcomp": {
+			"ar" : 0,
+			"ms" : 0,
+			"rh" : 0,
+			"si" : 0,
+			"rs" : 0
+		}	
 	},
 	"classFeats": {
 		"templates": ["itemDescription", "itemMacro"],
