@@ -1497,13 +1497,6 @@ font-size:12px;
 	min-width:168px;
 	margin-right:2px;
 }
-.dnd4e.sheet .item-list{
-	list-style:none;
-	margin:0;
-	padding:0;
-	overflow-y:auto;
-	scrollbar-width:thin;
-}
 .dnd4e.sheet .item-list .item,
 .dnd4e.sheet.item .item-list .item,
 .dnd4e.sheet.item .item-list .effect {
