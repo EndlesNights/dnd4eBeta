@@ -35,7 +35,7 @@ export default class ItemSheet4e extends ItemSheet {
 				initial: "description"
 			}],
 			dragDrop: [
-				{dragSelector: "[data-effect-id]", dropSelector: null},
+				{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},
 			]
 			
 		});

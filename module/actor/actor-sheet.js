@@ -59,7 +59,7 @@ export default class ActorSheet4e extends ActorSheet {
 				initial: "powers" //initial default tab
 			}],
 			dragDrop: [
-				{dragSelector: "[data-effect-id]", dropSelector: null},
+				{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},
 				{dragSelector: ".item-list .item", dropSelector: null}
 			],
 			scrollY: [
