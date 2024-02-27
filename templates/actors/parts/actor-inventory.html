@@ -45,7 +45,7 @@
 		{{else}}
 			<div class="item-detail item-weight">{{localize "DND4EBETA.Weight"}}</div>
 			<div class="item-detail item-uses">{{localize "DND4EBETA.Charges"}}</div>
-			<div class="item-detail item-action">{{localize "DND4EBETA.Usage"}}</div>
+			<div class="item-detail item-quantity">{{localize "DND4EBETA.Quantity"}}</div>
 		{{/if}}
 
 		{{#if ../owner}}
@@ -69,7 +69,7 @@
 				<div class="item-image"><img src="{{item.img}}" width="30" height="30"/></div>
 				<h4>
 					{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
-					{{~#if item.isStack}} ({{item.system.quantity}}){{/if}}
+					
 					{{~#if item.system.attuned}} <i class="fas fa-sun attuned" data-tooltip="{{localize "DND4EBETA.Attuned"}}"></i>{{/if}}
 				</h4>
 				{{/if}}
@@ -104,10 +104,8 @@
 					{{/if}}
 				</div>
 
-				<div class="item-detail item-action">
-					{{#if item.system.activation.type }}
-						{{item.labels.activation}}
-					{{/if}}
+				<div class="item-detail item-quantity">
+					{{~#if item.isStack}} {{item.system.quantity}}{{/if}}
 				</div>
 			{{/if}}
 
