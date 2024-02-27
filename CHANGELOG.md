@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.4.44
+- Added right Click apply effect options on power card categorized by type.
+- Added Effects drop down menu on power cards for manually application of effects
+- fixed minnor issue where effect durration labels would not localize properly on setup.
+- When creating items within the directory, the default new name should be based on the item type, rather than just be "New Item" 
+- similarconsumable items with the same source
+
 ## Version 0.4.43
 - Minor fix to application of active effects. If a player is the owner of the token / actor, it will no longer require use the socket to apply the effect. 
 
