@@ -6,6 +6,9 @@
 - fixed minnor issue where effect durration labels would not localize properly on setup.
 - When creating items within the directory, the default new name should be based on the item type, rather than just be "New Item" 
 - similarconsumable items with the same source
+- removed all refrences to word beta
+- renamed file `entity.js` to `item-document.js`
+- renamed file `sheet.js` to `item-sheet.js`
 
 ## Version 0.4.43
 - Minor fix to application of active effects. If a player is the owner of the token / actor, it will no longer require use the socket to apply the effect. 
