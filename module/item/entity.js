@@ -101,9 +101,11 @@ export default class Item4e extends Item {
 	 * @param {object} data       Data for the newly created item.
 	 */ 
 	_onCreationName(data){
-		const updates = {};
-		updates["name"] = game.i18n.format("DND4EBETA.ItemNew", {type: data.type.capitalize()});
-		this.updateSource(updates);
+		if(!data.system){
+			const updates = {};
+			updates["name"] = game.i18n.format("DND4EBETA.ItemNew", {type: data.type.capitalize()});
+			this.updateSource(updates);
+		}
 	}
 
 	/* -------------------------------------------- */
@@ -563,7 +565,7 @@ export default class Item4e extends Item {
 			isVersatile: this.isVersatile,
 			hasSave: this.hasSave,
 			hasAreaTarget: this.hasAreaTarget,
-			isRoll: true
+			isRoll: true,
 		};
 
 		// Set up html div for effect Tool Tips
@@ -582,7 +584,7 @@ export default class Item4e extends Item {
 			let configured = await this._rollConsumable(configureDialog);
 			if ( configured === false ) return;
 		}
-
+		
 		// For items which consume a resource, handle that here
 		const allowed = await this._handleResourceConsumption({isCard: true, isAttack: false},this.system);
 		if ( allowed === false ) return;
@@ -2047,5 +2049,43 @@ export default class Item4e extends Item {
 		if(this.system.type !== "recharge") return false;
 
 		return true;
+	}
+
+	/**
+	 * Get all of the items contained in this container. A promise if item is within a compendium.
+	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
+	 */
+	get contents() {
+		const parent = this.parent? this.parent: this;
+
+		if ( !parent ) return new foundry.utils.Collection();
+
+		// If in a compendium, fetch using getDocuments and return a promise
+		if ( parent.pack && !parent.isEmbedded ) {
+			const pack = game.packs.get(parent.pack);
+			return pack.getDocuments({system: { container: parent.id }}).then(d =>
+			new foundry.utils.Collection(d.map(d => [d.id, d]))
+			);
+		}
+
+		// Otherwise use local document collection
+		return (parent.isEmbedded ? parent.actor.items : game.items).reduce((collection, item) => {
+			if ( item.system.container === parent.id ) collection.set(item.id, item);
+			return collection;
+		}, new foundry.utils.Collection());
+	}
+
+	/* --------------------------------------------- */
+
+	/**
+	 * The item that contains this item, if it is in a container. Returns a promise if the item is located
+	 * in a compendium pack.
+	 * @type {Item4e|Promise<Item4e>|void}
+	 */
+	get container() {
+		if ( !this.system.container ) return;
+		if ( this.isEmbedded ) return this.actor.items.get(this.system.container);
+		if ( this.pack ) return game.packs.get(this.pack).getDocument(this.system.container);
+		return game.items.get(this.system.container);
 	}
 }
