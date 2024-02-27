@@ -130,7 +130,8 @@ textarea{
 	background:#cac9be;
 	border:var(--border-faint);
 }
-.dnd4eBeta.sheet input{
+.dnd4eBeta.sheet input,
+.dnd4eBeta.sheet.item .content .currency input[type="text"] {
 	background:none;
 	border-width:0;
 	border-radius:0;
@@ -1387,7 +1388,8 @@ font-size:12px;
 	flex:0 0 20px;
 	justify-content:flex-end;
 }
-.dnd4eBeta.sheet.actor .inventory .currency{
+.dnd4eBeta.sheet.actor .inventory .currency,
+.dnd4eBeta.sheet .item-sheet .currency {
 	flex:0 0 100%;
 	list-style:none;
 	margin:4px 0 8px;
@@ -1395,22 +1397,26 @@ font-size:12px;
 	font-size:12px;
 	align-items:center;
 }
-.dnd4eBeta.sheet.actor .inventory h3{
+.dnd4eBeta.sheet.actor .inventory h3,
+.dnd4eBeta.sheet .item-sheet .currency h3 {
 	border-bottom:0px;
 }
-.dnd4eBeta.sheet.actor .inventory .currency label{
+.dnd4eBeta.sheet.actor .inventory .currency label,
+.dnd4eBeta.sheet .item-sheet .currency label {
 	flex:0;
 	white-space:nowrap;
 	margin-left:0px;
 	text-align:right;
 	line-height:20px;
 }
-.dnd4eBeta.sheet.actor .inventory .currency input[type="text"]{
+.dnd4eBeta.sheet.actor .inventory .currency input[type="text"],
+.dnd4eBeta.sheet .item-sheet .content .currency input[type="text"] {
 	flex:0 0 48px;
 	text-align:center;
 	margin-left:0px;
 	border-bottom:var(--border-normal);
 }
+
 .dnd4eBeta.sheet.actor .daily-item-power-use{
 	justify-content:space-between;
 }
@@ -1498,7 +1504,8 @@ font-size:12px;
 	overflow-y:auto;
 	scrollbar-width:thin;
 }
-.dnd4eBeta.sheet .items-list .item{
+.dnd4eBeta.sheet .items-list .item,
+.dnd4eBeta.sheet.item .item-list .item {
 	line-height:30px;
 	padding:0 2px;
 	border-bottom:var(--border-faint);
@@ -1511,13 +1518,15 @@ font-size:12px;
 .dnd4eBeta.sheet .items-list .item:last-child{
 	border-bottom:none;
 }
-.dnd4eBeta.sheet .items-list .item .item-name{
+.dnd4eBeta.sheet .items-list .item .item-name,
+.dnd4eBeta.sheet.item .item-list .item .item-name {
 	cursor:pointer;
 	max-height:30px;
 	overflow:hidden;
 	height:30px;
 }
-.dnd4eBeta.sheet .items-list .item .item-image{
+.dnd4eBeta.sheet .items-list .item .item-image,
+.dnd4eBeta.sheet .item-list .item .item-image {
 	flex:0 0 30px;
 	max-width:30px;
 	margin-right:5px;
@@ -1557,7 +1566,7 @@ font-size:12px;
 	font-size:11px;
 	white-space:nowrap;
 }
-.dnd4eBeta.sheet .items-list .items-header{
+.dnd4eBeta.sheet .items-list .items-header {
 	margin:2px 0;
 	padding:0;
 	background:var(--color-bg-btn-minor-active);
@@ -1651,6 +1660,22 @@ font-size:12px;
 	flex-wrap:wrap;
 	justify-content:flex-start;
 	justify-content:flex-end;
+}
+.dnd4eBeta.sheet.item .item-list .item-weight {
+	flex:0 0 60px;
+	text-align: center;
+}
+.dnd4eBeta.sheet.item .item-list .item-quantity {
+	flex:0 0 62px;
+	text-align: center;
+}
+.dnd4eBeta.sheet.item .item-list .item-controls {
+	flex:0 0 66px;
+	text-align: center;
+}
+.dnd4eBeta.sheet.item .item-list .item-controls a {
+	font-size: 0.75rem;
+	padding: 5px;
 }
 .dnd4eBeta.sheet .items-list.effects-list{
 	overflow-y:visible;

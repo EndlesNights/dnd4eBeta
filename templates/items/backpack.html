@@ -33,7 +33,8 @@
 
 	{{!-- Item Sheet Navigation --}}
 	<nav class="sheet-navigation tabs" data-group="primary">
-		<a class="item active" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
+		<a class="item active" data-tab="content">{{ localize "DND4EBETA.Content" }}</a>
+		<a class="item" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
 		<a class="item" data-tab="details">{{ localize "DND4EBETA.Details" }}</a>
 		<a class="item" data-tab="effects">{{ localize "DND4EBETA.Effects" }}</a>
         <a class="item" data-tab="macros">{{ localize "DND4EBETA.Macros" }}</a>
@@ -41,6 +42,82 @@
 
 	{{!-- Item Sheet Body --}}
 	<section class="sheet-body">
+		
+		<div class="tab content" data-group="primary" data-tab="content">
+			<ol class="currency flexrow">
+				<h3>
+					{{localize "DND4EBETA.Currency"}}
+					<a class="currency-convert" data-tooltip="{{localize 'DND4EBETA.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
+				</h3>
+				{{#each system.currency as |v k|}}
+				<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
+				<input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.currencies k )}}"/>
+				{{/each}}
+			</ol>
+		
+			<ol class="currency flexrow">
+				<h3 data-tooltip="{{localize 'DND4EBETA.RitualComp'}}">{{localize 'DND4EBETA.RitualComp'}}</h3>
+				{{#each system.ritualcomp as |v k|}}
+				<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
+				<input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}"/>
+				{{/each}}
+			</ol>
+			
+			<ol class="items-list effects-list">
+				<li class="items-header flexrow">
+					<h3 class="item-name flexrow">{{localize 'DND4EBETA.Contents'}}</h3>
+						<div class="item-detail item-weight">Weight</div>
+						<div class="item-detail item-quantity">Quantity</div>
+					<div class="item-controls">
+					</div>
+				</li>
+			</ol>
+
+
+
+			
+			<ol class="item-list">
+				{{#each containerContents as |item iid|}}
+					<li class="item flexrow {{section.css}}"
+						data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
+						<div class="item-name flexrow rollable">
+							{{#if section.editableName}}
+							<input type="text" value="{{item.name}}">
+							{{else}}
+							<div class="item-image"><img src="{{item.img}}" width="30" height="30"/></div>
+							<h4>
+								{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
+								{{~#if item.isStack}} ({{item.system.quantity}}){{/if}}
+								{{~#if item.system.attuned}} <i class="fas fa-sun attuned" data-tooltip="{{localize "DND4EBETA.Attuned"}}"></i>{{/if}}
+							</h4>
+							{{/if}}
+						</div>
+			
+
+						<div class="item-detail item-weight">
+							{{#if item.totalWeight}}
+								<div class="item-detail">
+									{{ item.totalWeight }} {{localize "DND4EBETA.AbbreviationLbs"}}
+								</div>
+							{{/if}}
+						</div>
+		
+						<div class="item-detail item-quantity">
+							<input type="text" value="{{item.system.quantity}}" placeholder="0"/>
+						</div>
+						
+						<div class="item-controls">
+
+							{{#unless section.editableName}}
+							<a class="item-control item-edit" data-tooltip="{{localize "DND4EBETA.ItemEdit"}}"><i class="fas fa-edit"></i></a>
+							{{/unless}}
+							<a class="item-control item-delete" data-tooltip="{{localize "DND4EBETA.ItemDelete"}}"><i class="fas fa-trash"></i></a>
+						</div>
+					</li>
+				{{/each}}
+				</ol>
+
+		</div>
 
 		{{!-- Description Tab --}}
 		{{> "systems/dnd4e/templates/items/parts/item-description.html"}}
@@ -48,6 +125,8 @@
 		{{!-- Details Tab --}}
 		<div class="tab details" data-group="primary" data-tab="details">
 			<h3 class="form-header">{{localize 'DND4EBETA.ItemContainerDetails'}}</h3>
+
+
 
 			<div class="form-group">
 				<label>{{localize 'DND4EBETA.ItemContainerCapacity'}}</label>
