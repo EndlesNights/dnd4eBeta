@@ -9,7 +9,7 @@
 		
 		<div class="header-details flexrow">
 			<h1 class="charname">
-				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EBETA.ClassName' }}"/>
+				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4E.ClassName' }}"/>
 			</h1>
 
 			<div class="item-subtitle">
@@ -19,10 +19,10 @@
 
 			<ul class="summary flexrow">
 				<li>
-					<input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4EBETA.Level' }}"/>
+					<input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4E.Level' }}"/>
 				</li>
 				<li>
-					<input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
+					<input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4E.Source' }}"/>
 				</li>
 			</ul>
 		</div>
@@ -30,10 +30,10 @@
 
 	{{!-- Item Sheet Navigation --}}
 	<nav class="sheet-navigation tabs" data-group="primary">
-		<a class="item active" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
-		<a class="item" data-tab="details">{{ localize "DND4EBETA.Details" }}</a>
-		<a class="item" data-tab="effects">{{ localize "DND4EBETA.Effects" }}</a>
-        <a class="item" data-tab="macros">{{ localize "DND4EBETA.Macros" }}</a>
+		<a class="item active" data-tab="description">{{ localize "DND4E.Description" }}</a>
+		<a class="item" data-tab="details">{{ localize "DND4E.Details" }}</a>
+		<a class="item" data-tab="effects">{{ localize "DND4E.Effects" }}</a>
+        <a class="item" data-tab="macros">{{ localize "DND4E.Macros" }}</a>
 	</nav>
 
 	{{!-- Item Sheet Body --}}
@@ -49,26 +49,26 @@
 
 			{{!-- Hit Points --}}
 			<div class="form-group">
-				<label>{{ localize "DND4EBETA.HPFirst" }}</label>
+				<label>{{ localize "DND4E.HPFirst" }}</label>
 				<div class="form-fields">
 					<input type="text" name="system.hitFistLevel" value="{{system.hitFistLevel}}" data-dtype="Number"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label>{{ localize "DND4EBETA.HPPer" }}</label>
+				<label>{{ localize "DND4E.HPPer" }}</label>
 				<div class="form-fields">
 					<input type="text" name="system.hitPerLevel" value="{{system.hitPerLevel}}" data-dtype="Number"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label>{{ localize "DND4EBETA.HealSurgePer" }}</label>
+				<label>{{ localize "DND4E.HealSurgePer" }}</label>
 				<div class="form-fields">
 					<input type="text" name="system.surgePerDay" value="{{system.surgePerDay}}" data-dtype="Number"/>
 				</div>
 			</div>
 			{{!-- Level 1 skills --}}
 			<div class="form-group">
-				<label>{{localize "DND4EBETA.ClassSkillsNumber"}}</label>
+				<label>{{localize "DND4E.ClassSkillsNumber"}}</label>
 				<div class="form-fields">
 					<input type="text" placeholder="0" name="system.skills.number" value="{{system.skills.number}}" data-dtype="Number"/>
 				</div>
@@ -76,7 +76,7 @@
 
 			<div class="form-group">
 				<label>
-					{{localize "DND4EBETA.ClassSkillsChosen"}}
+					{{localize "DND4E.ClassSkillsChosen"}}
 					{{#if editable }}
 					<a class="trait-selector class-skills" data-edit="system.skills" data-options="skills">
 						<i class="fas fa-edit"></i></a>

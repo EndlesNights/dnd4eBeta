@@ -1,16 +1,16 @@
 /**
- * A simple Beta build of D&D4e game system for the Foundry VTT.
+ * A simple  build of D&D4e game system for the Foundry VTT.
  * Author: EndlesNights
  * Software License: GNU GPLv3
  */
 
 // Import Modules
-import { DND4EBETA } from "./config.js";
+import { DND4E } from "./config.js";
 import { registerSystemSettings } from "./settings.js";
 import {libWrapper} from './libWrapper-shim.js';
 
 // import { SimpleItemSheet } from "./item-sheet.js";
-import ItemSheet4e from "./item/sheet.js";
+import ItemSheet4e from "./item/item-sheet.js";
 import { measureDistances, getBarAttribute } from "./canvas.js";
 import { _getInitiativeFormula } from "./combat.js";
 
@@ -22,7 +22,7 @@ import { preloadHandlebarsTemplates } from "./templates.js";
 import AbilityTemplate from "./pixi/ability-template.js";
 import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
-import Item4e from "./item/entity.js";
+import Item4e from "./item/item-document.js";
 
 import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs } from "./helper.js";
 
@@ -42,13 +42,13 @@ import { customSKillSetUp } from "./skills/custom-skills.js";
 /* -------------------------------------------- */
 
 Hooks.once("init", async function() {
-	console.log(`D&D4eBeta | Initializing Dungeons & Dragons 4th Edition System\n${DND4EBETA.ASCII}`);
+	console.log(`D&D4e | Initializing Dungeons & Dragons 4th Edition System\n${DND4E.ASCII}`);
 
-	game.dnd4eBeta = {
+	game.dnd4e = {
 		apps: {
 			ActiveEffectConfig4e
 		},
-		config: DND4EBETA,
+		config: DND4E,
 		canvas: {
 			AbilityTemplate
 		},
@@ -64,17 +64,17 @@ Hooks.once("init", async function() {
 	game.helper = Helper;
 	
 	// Define custom Entity classes
-	CONFIG.DND4EBETA = DND4EBETA;
+	CONFIG.DND4E = DND4E;
 
-	DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4eBeta", ActiveEffectConfig4e, {makeDefault :true});
-	// DocumentSheetConfig.registerSheet(Actor4e, "dnd4eBeta", ActiveEffectConfig4e, {makeDefault :true});
+	DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4e", ActiveEffectConfig4e, {makeDefault :true});
+	// DocumentSheetConfig.registerSheet(Actor4e, "dnd4e", ActiveEffectConfig4e, {makeDefault :true});
 	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
 	CONFIG.ActiveEffect.legacyTransferral = false;
 	
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
 
-	CONFIG.statusEffects = CONFIG.DND4EBETA.statusEffect;
+	CONFIG.statusEffects = CONFIG.DND4E.statusEffect;
 	
 	// define custom roll extensions
 	CONFIG.Dice.rolls.push(MultiAttackRoll);
@@ -86,12 +86,12 @@ Hooks.once("init", async function() {
 	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
-	Actors.registerSheet("dnd4eBeta", ActorSheet4e, {
+	Actors.registerSheet("dnd4e", ActorSheet4e, {
 		types: ["Player Character"],
 		label: game.i18n.localize("SHEET.Character.Basic"),
 		makeDefault: true
 	});
-	Actors.registerSheet("dnd4eBeta", ActorSheet4eNPC, {
+	Actors.registerSheet("dnd4e", ActorSheet4eNPC, {
 		types: ["NPC"],
 		label: game.i18n.localize("SHEET.NPC"),
 		makeDefault: true
@@ -100,7 +100,7 @@ Hooks.once("init", async function() {
 	
 	// Setup Item Sheet
 	Items.unregisterSheet("core", ItemSheet);
-	Items.registerSheet("dnd4eBeta", ItemSheet4e, {
+	Items.registerSheet("dnd4e", ItemSheet4e, {
 		makeDefault: true,
 		label: game.i18n.localize("SHEET.Item")
 	});
@@ -113,7 +113,7 @@ Hooks.once("init", async function() {
 		var link = document.createElement('link');
 		link.rel = 'stylesheet';
 		link.type = 'text/css';
-		link.href = './systems/dnd4e/styles/dnd4eBeta-DarkMode.css';
+		link.href = './systems/dnd4e/styles/dnd4e-DarkMode.css';
 		//Append link element to HTML head
 		head.appendChild(link);
 	}
@@ -122,9 +122,9 @@ Hooks.once("init", async function() {
 	preloadHandlebarsTemplates();
 
 	// setup methods that allow for easy integration with token hud
-	game.dnd4eBeta.tokenBarHooks = TokenBarHooks
+	game.dnd4e.tokenBarHooks = TokenBarHooks
 	//legacy, remove after some time when its reasonable for people to have updated token bar
-	game.dnd4eBeta.quickSave = (actor) => game.dnd4eBeta.tokenBarHooks.quickSave(actor, null)
+	game.dnd4e.quickSave = (actor) => game.dnd4e.tokenBarHooks.quickSave(actor, null)
 
 	customSKillSetUp();
 });
@@ -149,11 +149,11 @@ Hooks.once("setup", function() {
 	];
 	
 	for ( let o of toLocalize ) {
-		const localized = Object.entries(CONFIG.DND4EBETA[o]).map(e => {
+		const localized = Object.entries(CONFIG.DND4E[o]).map(e => {
 			return [e[0], game.i18n.localize(e[1])];
 		});
 		if ( !noSort.includes(o) ) localized.sort((a, b) => a[1].localeCompare(b[1]));
-		CONFIG.DND4EBETA[o] = localized.reduce((obj, e) => {
+		CONFIG.DND4E[o] = localized.reduce((obj, e) => {
 			obj[e[0]] = e[1];
 			return obj;
 		}, {});

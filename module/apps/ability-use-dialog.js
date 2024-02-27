@@ -5,7 +5,7 @@
 export default class AbilityUseDialog extends Dialog {
   constructor(item, dialogData={}, options={}) {
     super(dialogData, options);
-    this.options.classes = ["dnd4eBeta", "dialog"];
+    this.options.classes = ["dnd4e", "dialog"];
 
     /**
      * Store a reference to the Item entity being used
@@ -38,7 +38,7 @@ export default class AbilityUseDialog extends Dialog {
     // Prepare dialog form data
     const system = {
       item: item.system,
-      title: game.i18n.format("DND4EBETA.AbilityUseHint", item),
+      title: game.i18n.format("DND4E.AbilityUseHint", item),
       note: this._getAbilityUseNote(item, uses, recharge),
       hasLimitedUses: itemData.preparedMaxUses || recharges,
       canUse: recharges ? recharge.charged : (quantity > 0 && !uses.value) || uses.value > 0,
@@ -51,7 +51,7 @@ export default class AbilityUseDialog extends Dialog {
 
     // Create the Dialog and return as a Promise
     const icon = "fa-fist-raised";
-    const label = game.i18n.localize("DND4EBETA.AbilityUseItem");
+    const label = game.i18n.localize("DND4E.AbilityUseItem");
     return new Promise((resolve) => {
       const dlg = new this(item, {
         title: `${item.name}: Usage Configuration`,
@@ -82,11 +82,11 @@ export default class AbilityUseDialog extends Dialog {
 
     // Zero quantity
     const quantity = item.system.quantity;
-    if ( quantity <= 0 ) return game.i18n.localize("DND4EBETA.AbilityUseUnavailableHint");
+    if ( quantity <= 0 ) return game.i18n.localize("DND4E.AbilityUseUnavailableHint");
 
     // Abilities which use Recharge
     if ( !!recharge.value ) {
-      return game.i18n.format(recharge.charged ? "DND4EBETA.AbilityUseChargedHint" : "DND4EBETA.AbilityUseRechargeHint", {
+      return game.i18n.format(recharge.charged ? "DND4E.AbilityUseChargedHint" : "DND4E.AbilityUseRechargeHint", {
         type: item.type,
       })
     }
@@ -96,26 +96,26 @@ export default class AbilityUseDialog extends Dialog {
 
     // Consumables
     if ( item.type === "consumable" ) {
-      let str = "DND4EBETA.AbilityUseNormalHint";
-      if ( uses.value >= 1 ) str = "DND4EBETA.AbilityUseConsumableChargeHint";
-      else if ( item.system.quantity === 1 && uses.autoDestroy ) str = "DND4EBETA.AbilityUseConsumableDestroyHint";
-      else if ( item.system.quantity > 1 ) str = "DND4EBETA.AbilityUseConsumableQuantityHint";
+      let str = "DND4E.AbilityUseNormalHint";
+      if ( uses.value >= 1 ) str = "DND4E.AbilityUseConsumableChargeHint";
+      else if ( item.system.quantity === 1 && uses.autoDestroy ) str = "DND4E.AbilityUseConsumableDestroyHint";
+      else if ( item.system.quantity > 1 ) str = "DND4E.AbilityUseConsumableQuantityHint";
       return game.i18n.format(str, {
         type: item.system.consumableType,
         value: uses.value,
         quantity: item.system.quantity,
         max: item.system.preparedMaxUses,
-        per: CONFIG.DND4EBETA.limitedUsePeriods[uses.per]
+        per: CONFIG.DND4E.limitedUsePeriods[uses.per]
       });
     }
 
     // Other Items
     else {
-      return game.i18n.format("DND4EBETA.AbilityUseNormalHint", {
+      return game.i18n.format("DND4E.AbilityUseNormalHint", {
         type: item.type,
         value: uses.value,
         max: item.system.preparedMaxUses,
-        per: CONFIG.DND4EBETA.limitedUsePeriods[uses.per]
+        per: CONFIG.DND4E.limitedUsePeriods[uses.per]
       });
     }
   }

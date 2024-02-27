@@ -8,7 +8,7 @@ export default class TraitSelectorSave extends FormApplication {
 	static get defaultOptions() {
 	  return mergeObject(super.defaultOptions, {
 	    id: "trait-selector",
-      classes: ["dnd4eBeta"],
+      classes: ["dnd4e"],
       title: "Actor Trait Selection",
       template: "systems/dnd4e/templates/apps/trait-selector-save.html",
       width: 320,

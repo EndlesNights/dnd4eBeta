@@ -1,7 +1,7 @@
 <form id="action-point-hd" class="dialog-content" onsubmit="event.preventDefault();">
-	<p>{{localize 'DND4EBETA.ActionPointUseTo'}}:</p>
+	<p>{{localize 'DND4E.ActionPointUseTo'}}:</p>
 		<ul>
-			<li>{{localize 'DND4EBETA.ActionPointEffect'}}</li>
+			<li>{{localize 'DND4E.ActionPointEffect'}}</li>
 
 			{{#if system.actionpoints.custom}}
 			{{#each extra as |e key|}}
@@ -11,6 +11,6 @@
 		</ul>
 
 	<div class="dialog-buttons">
-		<button type="submit" name="submit">{{localize 'DND4EBETA.ActionPointUse'}}</button>
+		<button type="submit" name="submit">{{localize 'DND4E.ActionPointUse'}}</button>
 	</div>
 </form>

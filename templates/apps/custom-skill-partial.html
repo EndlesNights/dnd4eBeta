@@ -1,25 +1,25 @@
 <li class="flexrow custom-skill-line">
 	<div>
-		<span>{{localize 'DND4EBETA.SkillLabel'}}</span>
+		<span>{{localize 'DND4E.SkillLabel'}}</span>
 		<input class="custom-skill-label" type="text" name="label" value="{{customSkill.label}}" data-dtype="String" style="width: 125px;"/>
 		
-		<span>{{localize 'DND4EBETA.SkillID'}}</span>
+		<span>{{localize 'DND4E.SkillID'}}</span>
 		<input class="custom-skill-id" type="text" name="id" value="{{customSkill.id}}" data-dtype="String" style="width: 105px;"/>
 		
-		<span>{{localize 'DND4EBETA.Attribute'}}</span>
+		<span>{{localize 'DND4E.Attribute'}}</span>
 		<select class="custom-skill-ability" name="ability">
 			{{#select customSkill.ability}}
-			<option value="str" >{{localize 'DND4EBETA.AbilityStr'}}</option>
-			<option value="con" >{{localize 'DND4EBETA.AbilityCon'}}</option>
-			<option value="dex" >{{localize 'DND4EBETA.AbilityDex'}}</option>
-			<option value="int" >{{localize 'DND4EBETA.AbilityInt'}}</option>
-			<option value="wis" >{{localize 'DND4EBETA.AbilityWis'}}</option>
-			<option value="cha" >{{localize 'DND4EBETA.AbilityCha'}}</option>
-			<option value="none" >{{localize 'DND4EBETA.None'}}</option>
+			<option value="str" >{{localize 'DND4E.AbilityStr'}}</option>
+			<option value="con" >{{localize 'DND4E.AbilityCon'}}</option>
+			<option value="dex" >{{localize 'DND4E.AbilityDex'}}</option>
+			<option value="int" >{{localize 'DND4E.AbilityInt'}}</option>
+			<option value="wis" >{{localize 'DND4E.AbilityWis'}}</option>
+			<option value="cha" >{{localize 'DND4E.AbilityCha'}}</option>
+			<option value="none" >{{localize 'DND4E.None'}}</option>
 			{{/select}}
 		</select>
 
-		<span>{{localize 'DND4EBETA.SkillACPToggle'}}</span>
+		<span>{{localize 'DND4E.SkillACPToggle'}}</span>
 		<input class="custom-skill-acp" type="checkbox" name="armourCheck" value="{{customSkill.armourCheck}}" data-dtype="Boolean">
 
 		<a class="custom-skill-control" custom-skill-delete data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>

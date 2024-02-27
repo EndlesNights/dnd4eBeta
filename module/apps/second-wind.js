@@ -6,7 +6,7 @@ export class SecondWindDialog extends DocumentSheet4e {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "second-wind",
-			classes: ["dnd4eBeta", "second-wind"],
+			classes: ["dnd4e", "second-wind"],
 			template: "systems/dnd4e/templates/apps/second-wind.html",
 			width: 500,
 			closeOnSubmit: true

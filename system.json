@@ -21,10 +21,10 @@
 		{ "name": "lib-wrapper" }
 	],
 	"esmodules": [
-		"module/dnd4eBeta.js"
+		"module/dnd4e.js"
 	],
 	"styles": [
-		"styles/dnd4eBeta.css"
+		"styles/dnd4e.css"
 	],
 	"packs": [
 		{

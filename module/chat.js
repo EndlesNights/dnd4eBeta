@@ -45,7 +45,7 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
  * Optionally hide the display of chat card action buttons which cannot be performed by the user
  */
 export const displayChatActionButtons = function(message, html, data) {
-	const chatCard = html.find(".DND4EBETA.chat-card");
+	const chatCard = html.find(".DND4E.chat-card");
 	if ( chatCard.length > 0 ) {
 		const flavor = html.find(".flavor-text");
 		if ( flavor.text() === html.find(".item-name").text() ) flavor.remove();
@@ -133,19 +133,19 @@ export const addChatMessageContextOptions = function(html, options) {
 	options.push(
 		// Token Selection Right-Click Options
 		{
-			name: game.i18n.localize("DND4EBETA.SeleteAllTargets"),
+			name: game.i18n.localize("DND4E.SeleteAllTargets"),
 			icon: '<i class="fa-regular fa-users"></i>',
 			condition: isAttackRoll,
 			callback: li => selectTargetTokens(li, "all")
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.SeleteHitTargets"),
+			name: game.i18n.localize("DND4E.SeleteHitTargets"),
 			icon: '<i class="fa-solid fa-users"></i>',
 			condition: isAttackRoll,
 			callback: li => selectTargetTokens(li, "hit")
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.SeleteMissedTargets"),
+			name: game.i18n.localize("DND4E.SeleteMissedTargets"),
 			icon: '<i class="fa-light fa-users"></i>',
 			condition: isAttackRoll,
 			callback: li => selectTargetTokens(li, "miss")
@@ -153,37 +153,37 @@ export const addChatMessageContextOptions = function(html, options) {
 
 		// Damage Right-Click Options
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextDamage"),
+			name: game.i18n.localize("DND4E.ChatContextDamage"),
 			icon: '<i class="fas fa-user-minus"></i>',
 			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 1)
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextHealing"),
+			name: game.i18n.localize("DND4E.ChatContextHealing"),
 			icon: '<i class="fas fa-user-plus"></i>',
 			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, -1)
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextTempHp"),
+			name: game.i18n.localize("DND4E.ChatContextTempHp"),
 			icon: '<i class="fas fa-user-clock fa-fw"></i>',
 			condition: canApplyDamage,
 			callback: li => applyChatCardTempHp(li)
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextDoubleDamage"),
+			name: game.i18n.localize("DND4E.ChatContextDoubleDamage"),
 			icon: '<i class="fas fa-user-injured"></i>',
 			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 2)
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextHalfDamage"),
+			name: game.i18n.localize("DND4E.ChatContextHalfDamage"),
 			icon: '<i class="fas fa-user-shield"></i>',
 			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 0.5)
 		},
 		{
-			name: game.i18n.localize("DND4EBETA.ChatContextTrueDamage"),
+			name: game.i18n.localize("DND4E.ChatContextTrueDamage"),
 			icon: '<i class="fa-light fa-user-shield"></i>',
 			condition: canApplyDamage,
 			callback: li => applyChatCardDamage(li, 1, true)
@@ -191,9 +191,9 @@ export const addChatMessageContextOptions = function(html, options) {
 	);
 
 	// Apply Power Effects to Select Tokens
-	for(const [effectType, l] of Object.entries(game.dnd4eBeta.config.powerEffectTypes)){
+	for(const [effectType, l] of Object.entries(game.dnd4e.config.powerEffectTypes)){
 		options.push({
-			name: game.i18n.localize(`DND4EBETA.ChatContextEffect${effectType}`),
+			name: game.i18n.localize(`DND4E.ChatContextEffect${effectType}`),
 			icon: '<i class="fa-regular fas fa-bolt"></i>',
 			condition: li => canApplyEffect(li, effectType),
 			callback: li => applyEffectToSelectTokens(li, effectType)
@@ -255,7 +255,7 @@ export const hoverTokenActorName = function(event){
 export const clickRollMessageDamageButtons = function(event) {
 	event.preventDefault();
 	if (canvas.tokens.controlled.length < 1) {
-		ui.notifications.error(game.i18n.localize("DND4EBETA.NeedTokenSelected"))
+		ui.notifications.error(game.i18n.localize("DND4E.NeedTokenSelected"))
 	}
 
 	// Extract card data
@@ -324,7 +324,7 @@ function selectTargetTokens(li, targetType){
 	if(targetType === "hit"){
 		console.log("hit")
 		for(const roll of message.rolls){
-			if([game.i18n.localize("DND4EBETA.AttackRollHit"), game.i18n.localize("DND4EBETA.AttackRollHitCrit")].includes(roll.options.multirollData.hitstate)){
+			if([game.i18n.localize("DND4E.AttackRollHit"), game.i18n.localize("DND4E.AttackRollHitCrit")].includes(roll.options.multirollData.hitstate)){
 				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
 			}
 		}
@@ -332,7 +332,7 @@ function selectTargetTokens(li, targetType){
 	else if(targetType === "miss"){
 		console.log("miss")
 		for(const roll of message.rolls){
-			if([game.i18n.localize("DND4EBETA.AttackRollMiss"), game.i18n.localize("DND4EBETA.AttackRollMissCrit")].includes(roll.options.multirollData.hitstate)){
+			if([game.i18n.localize("DND4E.AttackRollMiss"), game.i18n.localize("DND4E.AttackRollMissCrit")].includes(roll.options.multirollData.hitstate)){
 				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
 			}
 		}

@@ -9,7 +9,7 @@
 
 		<div class="header-details flexrow">
 			<h1 class="charname">
-				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4EBETA.ItemName' }}"/>
+				<input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4E.ItemName' }}"/>
 			</h1>
 
 			<div class="item-subtitle">
@@ -19,13 +19,13 @@
 
 			<ul class="summary flexrow">
 				<li>
-					<input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4EBETA.Level' }}"/>
+					<input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4E.Level' }}"/>
 				</li>
 				<li>
-					<input type="text" name="system.rarity" value="{{system.rarity}}" placeholder="{{ localize 'DND4EBETA.Rarity' }}"/>
+					<input type="text" name="system.rarity" value="{{system.rarity}}" placeholder="{{ localize 'DND4E.Rarity' }}"/>
 				</li>
 				<li>
-					<input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4EBETA.Source' }}"/>
+					<input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4E.Source' }}"/>
 				</li>
 			</ul>
 		</div>
@@ -33,11 +33,11 @@
 
 	{{!-- Item Sheet Navigation --}}
 	<nav class="sheet-navigation tabs" data-group="primary">
-		<a class="item active" data-tab="content">{{ localize "DND4EBETA.Content" }}</a>
-		<a class="item" data-tab="description">{{ localize "DND4EBETA.Description" }}</a>
-		<a class="item" data-tab="details">{{ localize "DND4EBETA.Details" }}</a>
-		<a class="item" data-tab="effects">{{ localize "DND4EBETA.Effects" }}</a>
-        <a class="item" data-tab="macros">{{ localize "DND4EBETA.Macros" }}</a>
+		<a class="item active" data-tab="content">{{ localize "DND4E.Content" }}</a>
+		<a class="item" data-tab="description">{{ localize "DND4E.Description" }}</a>
+		<a class="item" data-tab="details">{{ localize "DND4E.Details" }}</a>
+		<a class="item" data-tab="effects">{{ localize "DND4E.Effects" }}</a>
+        <a class="item" data-tab="macros">{{ localize "DND4E.Macros" }}</a>
 	</nav>
 
 	{{!-- Item Sheet Body --}}
@@ -46,8 +46,8 @@
 		<div class="tab content" data-group="primary" data-tab="content">
 			<ol class="currency flexrow">
 				<h3>
-					{{localize "DND4EBETA.Currency"}}
-					<a class="currency-convert" data-tooltip="{{localize 'DND4EBETA.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
+					{{localize "DND4E.Currency"}}
+					<a class="currency-convert" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
 				</h3>
 				{{#each system.currency as |v k|}}
 				<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
@@ -56,7 +56,7 @@
 			</ol>
 		
 			<ol class="currency flexrow">
-				<h3 data-tooltip="{{localize 'DND4EBETA.RitualComp'}}">{{localize 'DND4EBETA.RitualComp'}}</h3>
+				<h3 data-tooltip="{{localize 'DND4E.RitualComp'}}">{{localize 'DND4E.RitualComp'}}</h3>
 				{{#each system.ritualcomp as |v k|}}
 				<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
 				<input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}"/>
@@ -65,7 +65,7 @@
 			
 			<ol class="items-list effects-list">
 				<li class="items-header flexrow">
-					<h3 class="item-name flexrow">{{localize 'DND4EBETA.Contents'}}</h3>
+					<h3 class="item-name flexrow">{{localize 'DND4E.Contents'}}</h3>
 						<div class="item-detail item-weight">Weight</div>
 						<div class="item-detail item-quantity">Quantity</div>
 					<div class="item-controls">
@@ -88,7 +88,7 @@
 							<h4>
 								{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
 								{{~#if item.isStack}} ({{item.system.quantity}}){{/if}}
-								{{~#if item.system.attuned}} <i class="fas fa-sun attuned" data-tooltip="{{localize "DND4EBETA.Attuned"}}"></i>{{/if}}
+								{{~#if item.system.attuned}} <i class="fas fa-sun attuned" data-tooltip="{{localize "DND4E.Attuned"}}"></i>{{/if}}
 							</h4>
 							{{/if}}
 						</div>
@@ -97,7 +97,7 @@
 						<div class="item-detail item-weight">
 							{{#if item.totalWeight}}
 								<div class="item-detail">
-									{{ item.totalWeight }} {{localize "DND4EBETA.AbbreviationLbs"}}
+									{{ item.totalWeight }} {{localize "DND4E.AbbreviationLbs"}}
 								</div>
 							{{/if}}
 						</div>
@@ -109,9 +109,9 @@
 						<div class="item-controls">
 
 							{{#unless section.editableName}}
-							<a class="item-control item-edit" data-tooltip="{{localize "DND4EBETA.ItemEdit"}}"><i class="fas fa-edit"></i></a>
+							<a class="item-control item-edit" data-tooltip="{{localize "DND4E.ItemEdit"}}"><i class="fas fa-edit"></i></a>
 							{{/unless}}
-							<a class="item-control item-delete" data-tooltip="{{localize "DND4EBETA.ItemDelete"}}"><i class="fas fa-trash"></i></a>
+							<a class="item-control item-delete" data-tooltip="{{localize "DND4E.ItemDelete"}}"><i class="fas fa-trash"></i></a>
 						</div>
 					</li>
 				{{/each}}
@@ -124,12 +124,12 @@
 
 		{{!-- Details Tab --}}
 		<div class="tab details" data-group="primary" data-tab="details">
-			<h3 class="form-header">{{localize 'DND4EBETA.ItemContainerDetails'}}</h3>
+			<h3 class="form-header">{{localize 'DND4E.ItemContainerDetails'}}</h3>
 
 
 
 			<div class="form-group">
-				<label>{{localize 'DND4EBETA.ItemContainerCapacity'}}</label>
+				<label>{{localize 'DND4E.ItemContainerCapacity'}}</label>
 				<div class="form-fields">
 					<input type="text" name="system.capacity.value" value="{{system.capacity.value}}"
 						   data-dtype="Number" placeholder="-">
@@ -137,7 +137,7 @@
 			</div>
 
 			<div class="form-group">
-				<label>{{localize 'DND4EBETA.ItemContainerCapacityType'}}</label>
+				<label>{{localize 'DND4E.ItemContainerCapacityType'}}</label>
 				<select name="system.capacity.type">
 					{{#select system.capacity.type}}
 						{{#each config.itemCapacityTypes}}
@@ -148,10 +148,10 @@
 			</div>
 
 			<div class="form-group stacked">
-				<label>{{localize 'DND4EBETA.ItemContainerProperties'}}</label>
+				<label>{{localize 'DND4E.ItemContainerProperties'}}</label>
 				<label class="checkbox">
 					<input type="checkbox" name="system.capacity.weightless" {{checked system.capacity.weightless}}>
-					{{localize 'DND4EBETA.ItemContainerWeightless'}}
+					{{localize 'DND4E.ItemContainerWeightless'}}
 				</label>
 			</div>
 		</div>

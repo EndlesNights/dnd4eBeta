@@ -46,7 +46,7 @@
 
         {{#if isItemEffect}}
         <div class="form-group">
-            <label>{{localize 'DND4EBETA.EffectWhenEquipped'}}?</label>
+            <label>{{localize 'DND4E.EffectWhenEquipped'}}?</label>
             <div class="form-fields">
                 <input type="checkbox" name="flags.dnd4e.effectData.equippedRec" data-dtype="Boolean" {{checked effect.flags.dnd4e.effectData.equippedRec}}/>
             </div>
@@ -62,7 +62,7 @@
 
         {{#if powerParent}}
         <div class="form-group">
-            <label>{{localize 'DND4EBETA.EffectApply'}}:</label>
+            <label>{{localize 'DND4E.EffectApply'}}:</label>
             <div class="form-fields">
                 <select name="flags.dnd4e.effectData.powerEffectTypes">
                     {{#select effect.flags.dnd4e.effectData.powerEffectTypes}}
@@ -81,7 +81,7 @@
     <!-- Duration Tab -->
     <section class="tab" data-tab="duration">
         <div class="form-group">
-            <label>{{ localize "DND4EBETA.DurationType" }}</label>
+            <label>{{ localize "DND4E.DurationType" }}</label>
             <div class="form-fields">
 					<select class="durationType refreshes" name="flags.dnd4e.effectData.durationType">
 						 {{#select effect.flags.dnd4e.effectData.durationType}}
@@ -92,7 +92,7 @@
 						 {{/select}}
 					</select>
 					{{#if (eq effect.flags.dnd4e.effectData.durationType "saveEnd")}}
-						  <label>{{ localize "DND4EBETA.AbbreviationDC" }}</label>
+						  <label>{{ localize "DND4E.AbbreviationDC" }}</label>
 						  <input type="text" class="number saveDC" name="flags.dnd4e.effectData.saveDC" value="{{#if effect.flags.dnd4e.effectData.saveDC}}{{ effect.flags.dnd4e.effectData.saveDC }}{{else}}10{{/if}}" placeholder="10" data-dtype="number" />
 					{{/if}}
 				</div>
@@ -144,7 +144,7 @@
     <!-- Effects Tab -->
     <section class="tab" data-tab="effects">
 	 
-		  <h3 class="subsection">{{ localize "DND4EBETA.ModifierPlural" }}</h3>
+		  <h3 class="subsection">{{ localize "DND4E.ModifierPlural" }}</h3>
         <header class="effect-change effects-header flexrow">
             <div class="key">{{ localize "EFFECT.ChangeKey" }}</div>
             <div class="mode">{{ localize "EFFECT.ChangeMode" }}</div>
@@ -177,7 +177,7 @@
 		  <br />
 		  
 			<!-- Status conditions attached to this effect -->
-			<h3 class="subsection">{{localize 'DND4EBETA.StatusConditions'}}</h3>
+			<h3 class="subsection">{{localize 'DND4E.StatusConditions'}}</h3>
 			<header class="effect-status effects-header flexrow">
             <div class="status-select">Status</div>
             <div class="status-controls">Replace Effect Details</div>
@@ -218,10 +218,10 @@
 		  <br />
 		  
 		  <!-- Ongoing Damage instances attached to this effect-->
-		  <h3 class="subsection">{{ localize "DND4EBETA.OngoingDamage" }} / {{localize "EFFECT.statusRegen"}}</h3>
+		  <h3 class="subsection">{{ localize "DND4E.OngoingDamage" }} / {{localize "EFFECT.statusRegen"}}</h3>
         <header class="effect-dot effects-header flexrow">
-            <div class="amount">{{ localize "DND4EBETA.Value" }}</div>
-            <div class="type">{{ localize "DND4EBETA.Type" }} ({{ localize "DND4EUI.HowSelectMultiple" }})</div>
+            <div class="amount">{{ localize "DND4E.Value" }}</div>
+            <div class="type">{{ localize "DND4E.Type" }} ({{ localize "DND4EUI.HowSelectMultiple" }})</div>
             <div class="effect-controls">
                 <a class="effect-dot-control" data-action="add"><i class="far fa-plus-square"></i></a>
             </div>

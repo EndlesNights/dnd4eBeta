@@ -11,7 +11,7 @@ export default class DocumentSheet4e extends DocumentSheet {
 			for ( const override of this._getActorOverrides() ) {
 				html.find(`input[name="${override}"],select[name="${override}"]`).each((i, el) => {
 					el.disabled = true;
-					el.dataset.tooltip = "DND4EBETA.ActiveEffectOverrideWarning";
+					el.dataset.tooltip = "DND4E.ActiveEffectOverrideWarning";
 				});
 			}
 		}

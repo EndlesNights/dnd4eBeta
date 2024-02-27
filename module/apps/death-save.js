@@ -6,7 +6,7 @@ export class DeathSaveDialog extends DocumentSheet4e {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "death-save",
-			classes: ["dnd4eBeta", "actor-death-save"],
+			classes: ["dnd4e", "actor-death-save"],
 			template: "systems/dnd4e/templates/apps/death-save.html",
 			width: 500,
 			closeOnSubmit: true

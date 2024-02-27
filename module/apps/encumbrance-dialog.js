@@ -6,14 +6,14 @@ export class EncumbranceDialog extends DocumentSheet4e {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "encumbrance-dialog",
-			classes: ["dnd4eBeta", "encumbrance-dialog"],
+			classes: ["dnd4e", "encumbrance-dialog"],
 			template: "systems/dnd4e/templates/apps/encumbrance-dialog.html",
 			width: 420,
 			closeOnSubmit: false
 		});
 	}
 	get title() {
-		return `${this.object.name} - ${game.i18n.localize( "DND4EBETA.Encumbrance")}`;
+		return `${this.object.name} - ${game.i18n.localize( "DND4E.Encumbrance")}`;
 	}
 
 	/** @override */

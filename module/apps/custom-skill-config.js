@@ -27,14 +27,14 @@ export default class CustomSkillConfig extends FormApplication {
 			return game.settings.set("dnd4e", "custom-skills", {});
 		}
 
-		const coreData = game.dnd4eBeta.config.coreSkills
+		const coreData = game.dnd4e.config.coreSkills
 
 		if(!Array.isArray(formData[Object.keys(formData)[0]])){
 
 			formData = [formData].filter(newObj => {
 				if (coreData[newObj.id]) {
-					console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4eBeta.config.skills[newObj.id]}"</strong>.`);
-					ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4eBeta.config.skills[newObj.id]}"</strong>.`);
+					console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
+					ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
 					return false;
 				}
 				return true;
@@ -54,8 +54,8 @@ export default class CustomSkillConfig extends FormApplication {
 
 		transposedArray = transposedArray.filter(newObj => {
 			if (coreData[newObj.id]) {
-				console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4eBeta.config.skills[newObj.id]}"</strong>.`);
-				ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4eBeta.config.skills[newObj.id]}"</strong>.`);
+				console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
+				ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
 				return false;
 			}
 			return true;
@@ -70,11 +70,11 @@ export default class CustomSkillConfig extends FormApplication {
 
 		if(newDataArray.length){
 			// Check against coreData and remove matching IDs from newData
-			const coreData = game.dnd4eBeta.config.coreSkills
+			const coreData = game.dnd4e.config.coreSkills
 			newDataArray = newDataArray.filter(newObj => {
 				if (coreData[newObj.id]) {
-					console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4eBeta.config.skills[newObj.id]}"</strong>.`);
-					ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4eBeta.config.skills[newObj.id]}"</strong>.`);
+					console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
+					ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
 					return false;
 				}
 				return true;
@@ -133,7 +133,7 @@ export default class CustomSkillConfig extends FormApplication {
 
 	async addCustomSkill(skillData){
 
-		game.dnd4eBeta.config.skills[skillData.id] = skillData.label;
+		game.dnd4e.config.skills[skillData.id] = skillData.label;
 		for(const actor of game.actors){
 			const updateData = {};
 			updateData[`system.skills.${skillData.id}.value`] = 0;
@@ -149,7 +149,7 @@ export default class CustomSkillConfig extends FormApplication {
 
 	async removeCustomSkill(skillData){
 
-		delete game.dnd4eBeta.config.skills[skillData.id];
+		delete game.dnd4e.config.skills[skillData.id];
 		for(const actor of game.actors){
 
 			const updateData = {}

@@ -6,7 +6,7 @@ export default class HPOptions extends DocumentSheet4e {
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 		id: "hp-options",
-		classes: ["dnd4eBeta"],
+		classes: ["dnd4e"],
 		title: "Hit Points Options",
 		template: "systems/dnd4e/templates/apps/hp-options.html",
 		width: 340,

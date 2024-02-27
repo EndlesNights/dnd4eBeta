@@ -1,6 +1,6 @@
 {{!-- Activation Cost --}}
 <div class="form-group input-select">
-    <label>{{ localize "DND4EBETA.ItemActivationCost" }}</label>
+    <label>{{ localize "DND4E.ItemActivationCost" }}</label>
     <div class="form-fields">
         <input type="text" name="system.activation.cost" value="{{system.activation.cost}}" data-dtype="Number" placeholder="-"/>
         <select name="system.activation.type">
@@ -17,7 +17,7 @@
 
 {{!-- Activation Condition --}}
 <div class="form-group">
-    <label>{{ localize "DND4EBETA.ItemActivationCondition" }}</label>
+    <label>{{ localize "DND4E.ItemActivationCondition" }}</label>
     <div class="form-fields">
         <input type="text" name="system.activation.condition" value="{{system.activation.condition}}"/>
     </div>
@@ -25,7 +25,7 @@
 
 {{#if isCrewed}}
 <div class="form-group">
-    <label>{{localize 'DND4EBETA.Cover'}}</label>
+    <label>{{localize 'DND4E.Cover'}}</label>
     <div class="form-fields">
         <select name="system.cover" data-dtype="Number">
             {{#select system.cover}}
@@ -41,7 +41,7 @@
 
 {{!-- Ability Target --}}
 <div class="form-group input-select-select">
-    <label>{{ localize "DND4EBETA.Target" }}</label>
+    <label>{{ localize "DND4E.Target" }}</label>
     <div class="form-fields">
         <input type="text" name="system.target.value" value="{{system.target.value}}" data-dtype="Number" placeholder="-"/>
         <select name="system.target.units">
@@ -65,11 +65,11 @@
 
 {{!-- Ability Range --}}
 <div class="form-group input-select">
-    <label>{{ localize "DND4EBETA.Range" }}</label>
+    <label>{{ localize "DND4E.Range" }}</label>
     <div class="form-fields">
-        <input type="text" name="system.range.value" value="{{system.range.value}}" data-dtype="Number" placeholder="{{ localize 'DND4EBETA.Roll' }}"/>
+        <input type="text" name="system.range.value" value="{{system.range.value}}" data-dtype="Number" placeholder="{{ localize 'DND4E.Roll' }}"/>
         <span class="sep">/</span>
-        <input type="text" name="system.range.long" value="{{system.range.long}}" data-dtype="Number" placeholder="{{ localize 'DND4EBETA.Max' }}"/>
+        <input type="text" name="system.range.long" value="{{system.range.long}}" data-dtype="Number" placeholder="{{ localize 'DND4E.Max' }}"/>
         <select name="system.range.units">
             {{#select system.range.units}}
             <option value=""></option>
@@ -83,7 +83,7 @@
 
 {{!-- Effect Duration --}}
 <div class="form-group input-select">
-    <label>{{ localize "DND4EBETA.Duration" }}</label>
+    <label>{{ localize "DND4E.Duration" }}</label>
     <div class="form-fields">
         <input type="text" name="system.duration.value" value="{{system.duration.value}}" data-dtype="Number" placeholder="-"/>
         <select name="system.duration.units">
@@ -99,10 +99,10 @@
 
 {{!-- Limited Uses --}}
 <div class="form-group uses-per">
-    <label>{{ localize "DND4EBETA.LimitedUses" }}</label>
+    <label>{{ localize "DND4E.LimitedUses" }}</label>
     <div class="form-fields">
         <input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number"/>
-        <span class="sep"> {{ localize "DND4EBETA.of" }} </span>
+        <span class="sep"> {{ localize "DND4E.of" }} </span>
         <input type="text" name="system.uses.max" value="{{system.uses.max}}"/>
         <select name="system.uses.per">
             {{#select system.uses.per}}
@@ -117,7 +117,7 @@
 
 {{!-- Consumption --}}
 <div class="form-group uses-per">
-    <label>{{ localize "DND4EBETA.ConsumeTitle" }}</label>
+    <label>{{ localize "DND4E.ConsumeTitle" }}</label>
     <div class="form-fields">
         <select name="system.consume.type">
             {{#select system.consume.type}}

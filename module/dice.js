@@ -70,7 +70,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 		data: data,
 		rollMode: rollMode,
 		rollModes: CONFIG.Dice.rollModes,
-		config: CONFIG.DND4EBETA,
+		config: CONFIG.DND4E,
 		flavor: newFlavor || flavor,
 		isAttackRoll: isAttackRoll,
 		isD20Roll: true,
@@ -86,7 +86,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 			content: html,
 			buttons: {
 				normal: {
-					label: game.i18n.localize("DND4EBETA.Roll"),
+					label: game.i18n.localize("DND4E.Roll"),
 					callback: html => roll = performD20RollAndCreateMessage(html[0].querySelector("form"), rollConfig)
 				}
 			},
@@ -135,8 +135,8 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	const numberOfTargets = Math.max(1, game.user.targets.size);
 	if (isAttackRoll && form !== null) {
 		// populate the common attack bonuses into data
-		Object.keys(CONFIG.DND4EBETA.commonAttackBonuses).forEach(function(key,index) {
-			data[key] = CONFIG.DND4EBETA.commonAttackBonuses[key].value
+		Object.keys(CONFIG.DND4E.commonAttackBonuses).forEach(function(key,index) {
+			data[key] = CONFIG.DND4E.commonAttackBonuses[key].value
 		});
 		const individualAttack = (Object.entries(form)[6][1].value === "true");
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++ ) {
@@ -156,7 +156,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			}
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
-				targetBonuses.forEach(bonus => total += CONFIG.DND4EBETA.commonAttackBonuses[bonus.substring(1)].value)
+				targetBonuses.forEach(bonus => total += CONFIG.DND4E.commonAttackBonuses[bonus.substring(1)].value)
 				allRollsParts.push(parts.concat([total]))
 			}
 			else {
@@ -182,7 +182,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		const abl = data.abilities[data.ability];
 		if ( abl ) {
 			data.mod = abl.mod;
-			flavor += ` (${CONFIG.DND4EBETA.abilities[data.ability]})`;
+			flavor += ` (${CONFIG.DND4E.abilities[data.ability]})`;
 		}
 	}
 
@@ -359,7 +359,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 	if (healingRoll) {
 		dialogConfig.buttons = {
 			normal: {
-				label: game.i18n.localize("DND4EBETA.Healing"),
+				label: game.i18n.localize("DND4E.Healing"),
 				callback: html => roll = doRoll(html, 'heal')
 			}
 		}
@@ -368,17 +368,17 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 		dialogConfig.buttons = {
 			critical: {
 				condition: allowCritical,
-				label: game.i18n.localize("DND4EBETA.CriticalHit"),
+				label: game.i18n.localize("DND4E.CriticalHit"),
 				callback: html => roll = doRoll(html, 'crit')
 			},
 			normal: {
-				label: game.i18n.localize(allowCritical ? "DND4EBETA.Normal" : "DND4EBETA.Roll"),
+				label: game.i18n.localize(allowCritical ? "DND4E.Normal" : "DND4E.Roll"),
 				callback: html => roll = doRoll(html, 'normal')
 			}
 		}
 		if(data.item.miss.formula){
 			dialogConfig.buttons.miss = {
-				label: game.i18n.localize(allowCritical ? "DND4EBETA.Miss" : "DND4EBETA.Roll"),
+				label: game.i18n.localize(allowCritical ? "DND4E.Miss" : "DND4E.Roll"),
 				callback:  html => roll = doRoll(html, 'miss')
 			}
 		}
@@ -421,17 +421,17 @@ async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, pa
 	else if (hitType === 'crit') {
 		options.hitTypeDamage = true;
 		roll = RollWithOriginalExpression.createRoll(partsCrit, partsCritExpressionReplacement, data, options)
-		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Critical")})`;
+		flavor = `${flavor} (${game.i18n.localize("DND4E.Critical")})`;
 	}
 	else if (hitType === 'miss') {
 		options.hitTypeDamage = true;
 		roll = RollWithOriginalExpression.createRoll(partsMiss, partsMissExpressionReplacement, data, options);
-		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Miss")})`;
+		flavor = `${flavor} (${game.i18n.localize("DND4E.Miss")})`;
 	}
 	else if (hitType === 'heal') {
 		options.hitTypeHealing = true;
 		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
-		flavor = `${flavor} (${game.i18n.localize("DND4EBETA.Healing")})`;
+		flavor = `${flavor} (${game.i18n.localize("DND4E.Healing")})`;
 	} else {
 		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options)
 	}

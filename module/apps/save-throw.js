@@ -6,14 +6,14 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "save-throw",
-			classes: ["dnd4eBeta", "actor-save-throw"],
+			classes: ["dnd4e", "actor-save-throw"],
 			template: "systems/dnd4e/templates/apps/save-throw.html",
 			width: 500,
 			closeOnSubmit: true
 		});
 	}
 	get title() {
-		return `${this.object.name} - ${game.i18n.format("DND4EBETA.SavingThrow")}`;
+		return `${this.object.name} - ${game.i18n.format("DND4E.SavingThrow")}`;
 	}
 
 	/** @override */

@@ -123,9 +123,9 @@ export const registerSystemSettings = function() {
 		default: "short",
 		type: Number,
 		choices: {
-			0: "DND4EBETA.RestShort",
-			1: "DND4EBETA.RestLong",
-			2: "DND4EBETA.RestLongH",
+			0: "DND4E.RestShort",
+			1: "DND4E.RestLong",
+			2: "DND4E.RestLongH",
 		}
 	});
 	// /**
@@ -262,7 +262,7 @@ export const registerSystemSettings = function() {
 		default: "apply",
 		type: String,
 		choices: {
-			"none": "DND4EBETA.None",
+			"none": "DND4E.None",
 			"apply": "SETTINGS.4eAutoDoTsApply",
 			"notify": "SETTINGS.4eAutoDoTsNotify"
 		}

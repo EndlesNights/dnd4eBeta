@@ -162,7 +162,7 @@ function cleanActorData(actorData) {
 	actorData = filterObject(actorData, model);
 
 	// Scrub system flags
-	const allowedFlags = CONFIG.DND4EBETA.allowedActorFlags.reduce((obj, f) => {
+	const allowedFlags = CONFIG.DND4E.allowedActorFlags.reduce((obj, f) => {
 		obj[f] = null;
 		return obj;
 	}, {});

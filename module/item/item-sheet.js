@@ -24,7 +24,7 @@ export default class ItemSheet4e extends ItemSheet {
 		return mergeObject(super.defaultOptions, {
 			width: 585,
 			height: 420,
-			classes: ["dnd4eBeta", "sheet", "item"],
+			classes: ["dnd4e", "sheet", "item"],
 			resizable: true,
 			scrollY: [
 				".tab.details"
@@ -59,7 +59,7 @@ export default class ItemSheet4e extends ItemSheet {
 		const itemData = data.data;
 
 		data.labels = this.item.labels;
-		data.config = CONFIG.DND4EBETA;
+		data.config = CONFIG.DND4E;
 
 		// Item Type, Status, and Details
 		data.itemType = itemData.type.titleCase();
@@ -84,12 +84,12 @@ export default class ItemSheet4e extends ItemSheet {
 
 			if(itemData.system.armour.type === "armour"){
 				data.isArmour = true;
-				data.armourBaseTypes = CONFIG.DND4EBETA[itemData.system.armour.subType];
+				data.armourBaseTypes = CONFIG.DND4E[itemData.system.armour.subType];
 				data.isArmourBaseTypeCustom = (itemData.system.armourBaseType === "custom");
 			}
-			else if(itemData.system.armour.type === "arms" && CONFIG.DND4EBETA.profArmor[itemData.system.armour.subType]){
+			else if(itemData.system.armour.type === "arms" && CONFIG.DND4E.profArmor[itemData.system.armour.subType]){
 				data.isShield = true;
-				data.shieldBaseTypes = CONFIG.DND4EBETA.shield;
+				data.shieldBaseTypes = CONFIG.DND4E.shield;
 				data.isShieldBaseTypeCustom = (itemData.system.shieldBaseType === "custom");
 			}
 		}
@@ -129,7 +129,7 @@ export default class ItemSheet4e extends ItemSheet {
 				}
 			}
 
-			data.weaponBaseTypes = CONFIG.DND4EBETA[itemData.system.weaponType];
+			data.weaponBaseTypes = CONFIG.DND4E[itemData.system.weaponType];
 			data.isWeaponBaseTypeCustom = (itemData.system.weaponBaseType === "custom");
 		}
 
@@ -201,7 +201,7 @@ export default class ItemSheet4e extends ItemSheet {
 	 */
 	_prepareEffectPowersCategories(effectPowers){
 		const categories = {};
-		for (const [key, value] of Object.entries(CONFIG.DND4EBETA.powerEffectTypes)) {
+		for (const [key, value] of Object.entries(CONFIG.DND4E.powerEffectTypes)) {
 			categories[key] = {
 			type:key,
 			label: game.i18n.localize(value),
@@ -211,7 +211,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 		if(effectPowers){
 			for ( let e of effectPowers ) {
-				e.durationTypeLable = `${CONFIG.DND4EBETA.durationType[e.flags.dnd4e.effectData.durationType]}`;
+				e.durationTypeLable = `${CONFIG.DND4E.durationType[e.flags.dnd4e.effectData.durationType]}`;
 				if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hitOrMiss") categories.hitOrMiss.effects.push(e);
@@ -236,7 +236,7 @@ export default class ItemSheet4e extends ItemSheet {
 			case "create":
 				console.log(this)
 				this.item.createEmbeddedDocuments("ActiveEffect", [{
-					label: game.i18n.localize("DND4EBETA.EffectNew"),
+					label: game.i18n.localize("DND4E.EffectNew"),
 					icon: this.item.img || "icons/svg/aura.svg",
 					origin: this.item.uuid,
 					"flags.dnd4e.effectData.powerEffectTypes": li.dataset.effectType,
@@ -411,8 +411,8 @@ export default class ItemSheet4e extends ItemSheet {
 				const uses = i.system.uses || {};
 				if (uses.per && uses.max) {
 					const label = uses.per === "charges" ?
-						` (${game.i18n.format("DND4EBETA.AbilityUseChargesLabel", {value: uses.value})})` :
-						` (${game.i18n.format("DND4EBETA.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
+						` (${game.i18n.format("DND4E.AbilityUseChargesLabel", {value: uses.value})})` :
+						` (${game.i18n.format("DND4E.AbilityUseConsumableLabel", {max: uses.max, per: uses.per})})`;
 					obj[i.id] = i.name + label;
 				}
 				return obj;
@@ -494,13 +494,13 @@ export default class ItemSheet4e extends ItemSheet {
 	 */
 	_getItemStatus(item) {
 		if ( item.type === "spell" ) {
-			return CONFIG.DND4EBETA.spellPreparationModes[item.system.preparation];
+			return CONFIG.DND4E.spellPreparationModes[item.system.preparation];
 		}
 		else if ( ["weapon", "equipment"].includes(item.type) ) {
-			return game.i18n.localize(item.system.equipped ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped");
+			return game.i18n.localize(item.system.equipped ? "DND4E.Equipped" : "DND4E.Unequipped");
 		}
 		else if ( item.type === "tool" ) {
-			return game.i18n.localize(item.system.proficient ? "DND4EBETA.Proficient" : "DND4EBETA.NotProficient");
+			return game.i18n.localize(item.system.proficient ? "DND4E.Proficient" : "DND4E.NotProficient");
 		}
 	}
 
@@ -516,40 +516,40 @@ export default class ItemSheet4e extends ItemSheet {
 		const labels = this.item.labels;
 		if ( item.type === "weapon" ) {
 
-			props.push(CONFIG.DND4EBETA.weaponTypes[item.system.weaponType])
+			props.push(CONFIG.DND4E.weaponTypes[item.system.weaponType])
 
 			props.push(...Object.entries(item.system.properties)
 				.filter(e => e[1] === true)
 				.map(e => {
-					if(e[0] === "bru") return `${CONFIG.DND4EBETA.weaponProperties[e[0]]} ${item.system.brutalNum}`;
-					return CONFIG.DND4EBETA.weaponProperties[e[0]]
+					if(e[0] === "bru") return `${CONFIG.DND4E.weaponProperties[e[0]]} ${item.system.brutalNum}`;
+					return CONFIG.DND4E.weaponProperties[e[0]]
 				})
 			);
 			props.push(...Object.entries(item.system.damageType)
 				.filter(e => e[1] === true)
-				.map(e => CONFIG.DND4EBETA.damageTypes[e[0]])
+				.map(e => CONFIG.DND4E.damageTypes[e[0]])
 			);
 
 			props.push(...Object.entries(item.system.weaponGroup)
 				.filter(e => e[1] === true)
-				.map(e => CONFIG.DND4EBETA.weaponGroup[e[0]])
+				.map(e => CONFIG.DND4E.weaponGroup[e[0]])
 			);
 
 			if(item.system.isRanged)
-				props.push(`${game.i18n.localize("DND4EBETA.Range")}: ${item.system.range.value} / ${item.system.range.long}`);
+				props.push(`${game.i18n.localize("DND4E.Range")}: ${item.system.range.value} / ${item.system.range.long}`);
 		}
 
 		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility","item"].includes(item.system.type)) {
 			props.push(
 				labels.components,
 				labels.materials,
-				// item.system.components.concentration ? game.i18n.localize("DND4EBETA.Concentration") : null,
-				// item.system.components.ritual ? game.i18n.localize("DND4EBETA.Ritual") : null
+				// item.system.components.concentration ? game.i18n.localize("DND4E.Concentration") : null,
+				// item.system.components.ritual ? game.i18n.localize("DND4E.Ritual") : null
 			)
 		}
 
 		else if ( item.type === "equipment" ) {
-			props.push(CONFIG.DND4EBETA.equipmentTypes[item.system.armour.type]);
+			props.push(CONFIG.DND4E.equipmentTypes[item.system.armour.type]);
 			props.push(labels.armour);
 			props.push(labels.fort);
 			props.push(labels.ref);
@@ -562,7 +562,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 		// Action type
 		if ( item.system.actionType ) {
-			props.push(CONFIG.DND4EBETA.itemActionTypes[item.system.actionType]);
+			props.push(CONFIG.DND4E.itemActionTypes[item.system.actionType]);
 		}
 
 		// Action usage
@@ -828,7 +828,7 @@ export default class ItemSheet4e extends ItemSheet {
 	_onConfigureClassSkills(event) {
 		event.preventDefault();
 		const skills = this.item.system.skills;
-		const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.DND4EBETA.skills);
+		const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.DND4E.skills);
 		const a = event.currentTarget;
 		const label = a.parentElement;
 
@@ -836,7 +836,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// new TraitSelector(this.item, {
 			// name: a.dataset.edit,
 			// title: label.innerText,
-			// choices: Object.entries(CONFIG.DND4EBETA.skills).reduce((obj, e) => {
+			// choices: Object.entries(CONFIG.DND4E.skills).reduce((obj, e) => {
 				// if ( choices.includes(e[0] ) ) obj[e[0]] = e[1];
 				// return obj;
 			// }, {}),

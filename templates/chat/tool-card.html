@@ -1,5 +1,5 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
-<div class="dnd4eBeta chat-card item-card tool {{actor.type}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
+<div class="dnd4e chat-card item-card tool {{actor.type}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
 
     <header class="card-header flexrow">
         <img src="{{item.img}}" data-tooltip="{{item.name}}" width="36" height="36"/>
@@ -14,7 +14,7 @@
     
 		{{#if isRoll}}
 		<div class="card-buttons">
-		  <button data-action="toolCheck" data-ability="{{system.ability.value}}">{{ localize "DND4EBETA.Use" }} {{item.name}}</button>
+		  <button data-action="toolCheck" data-ability="{{system.ability.value}}">{{ localize "DND4E.Use" }} {{item.name}}</button>
 		</div>
 		{{/if}}
 

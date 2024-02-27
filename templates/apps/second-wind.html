@@ -1,9 +1,9 @@
 <form id="second-wind-hd" class="dialog-content" onsubmit="event.preventDefault();">
-	<p><strong>{{localize 'DND4EBETA.SecondWindUse'}}?</strong></p>
-	<p>{{localize 'DND4EBETA.SecondWindTip'}}:</p>
+	<p><strong>{{localize 'DND4E.SecondWindUse'}}?</strong></p>
+	<p>{{localize 'DND4E.SecondWindTip'}}:</p>
 	<ul>
-		<li>{{localize 'DND4EBETA.Regain'}} {{system.details.secondWindValue}} {{localize 'DND4EBETA.HP'}}</li>
-		<li>{{localize 'DND4EBETA.SecondWindEffect'}}</li>
+		<li>{{localize 'DND4E.Regain'}} {{system.details.secondWindValue}} {{localize 'DND4E.HP'}}</li>
+		<li>{{localize 'DND4E.SecondWindEffect'}}</li>
 	
 		{{#if system.details.secondwindbon.custom}}
 			{{#each extra as |e key|}}
@@ -12,12 +12,12 @@
 		{{/if}}
 	</ul>
 	<div class="form-group">
-			<label>{{localize 'DND4EBETA.HealingMenuSituational'}}?</label>
-			<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4EBETA.RollExample' }}"/>
+			<label>{{localize 'DND4E.HealingMenuSituational'}}?</label>
+			<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4E.RollExample' }}"/>
 	</div>
 
 	<div class="dialog-buttons">
-	<button id="secondWindButton" type="submit" name="submit">{{localize 'DND4EBETA.SecondWind'}}</button>
+	<button id="secondWindButton" type="submit" name="submit">{{localize 'DND4E.SecondWind'}}</button>
 	</div>
     <input type="hidden" id="surges" value="{{system.details.surges.value}}"/>
 </form>
@@ -26,11 +26,11 @@
 
   function buttonEnabledLogic() {
       let swButtonEnabled = true;
-      let swButtonText = game.i18n.localize("DND4EBETA.SecondWind");
+      let swButtonText = game.i18n.localize("DND4E.SecondWind");
 
       if (Number(document.getElementById('surges').value) <= 0) {
           swButtonEnabled = false;
-          swButtonText = game.i18n.localize("DND4EBETA.HealingMenuOutOfSurges");
+          swButtonText = game.i18n.localize("DND4E.HealingMenuOutOfSurges");
       }
 
       setButton('secondWindButton', swButtonEnabled, swButtonText);

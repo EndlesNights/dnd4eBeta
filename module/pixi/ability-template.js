@@ -1,4 +1,4 @@
-import { DND4EBETA } from "../config.js";
+import { DND4E } from "../config.js";
 
 /**
  * A helper class for building MeasuredTemplates for 4e spells and abilities
@@ -30,7 +30,7 @@ export default class AbilityTemplate extends MeasuredTemplate {
 	 * @return {AbilityTemplate|null}         The template object, or null if the item does not produce a template
 	 */
 	static fromItem(item) {
-		const templateShape = DND4EBETA.areaTargetTypes[item.system.rangeType];
+		const templateShape = DND4E.areaTargetTypes[item.system.rangeType];
 	
 		console.log(item);
 		let distance = this.getDistanceCalc(item);
@@ -227,19 +227,19 @@ export default class AbilityTemplate extends MeasuredTemplate {
 					switch(this.document.flags.dnd4e?.closeBurst){
 						case 'lg':
 							d = Math.max(Math.round((this.document.distance -1.0 )* 10) / 10, 0);
-							text = `${game.i18n.localize('DND4EBETA.rangeCloseBurst')} ${d} \n(${DND4EBETA.actorSizes[this.document.flags.dnd4e.closeBurst]})`;
+							text = `${game.i18n.localize('DND4E.rangeCloseBurst')} ${d} \n(${DND4E.actorSizes[this.document.flags.dnd4e.closeBurst]})`;
 							break;
 						case 'huge':
 							d = Math.max(Math.round((this.document.distance -1.5 )* 10) / 10, 0);
-							text = `${game.i18n.localize('DND4EBETA.rangeCloseBurst')} ${d} \n(${DND4EBETA.actorSizes[this.document.flags.dnd4e.closeBurst]})`;
+							text = `${game.i18n.localize('DND4E.rangeCloseBurst')} ${d} \n(${DND4E.actorSizes[this.document.flags.dnd4e.closeBurst]})`;
 							break;
 						case 'grg':
 							d = Math.max(Math.round((this.document.distance -2.0 )* 10) / 10, 0);
-							text = `${game.i18n.localize('DND4EBETA.rangeCloseBurst')} ${d} \n(${DND4EBETA.actorSizes[this.document.flags.dnd4e.closeBurst]})`;
+							text = `${game.i18n.localize('DND4E.rangeCloseBurst')} ${d} \n(${DND4E.actorSizes[this.document.flags.dnd4e.closeBurst]})`;
 							break;
 						default:
 							d = Math.max(Math.round((this.document.distance -0.5 )* 10) / 10, 0);
-							text = `${game.i18n.localize('DND4EBETA.rangeCloseBurst')} ${d}`;
+							text = `${game.i18n.localize('DND4E.rangeCloseBurst')} ${d}`;
 					}
 				} else {
 					d = Math.max(Math.round((this.document.distance -0.5 )* 10) / 10, 0);

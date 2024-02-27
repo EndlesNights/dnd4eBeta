@@ -1,4 +1,4 @@
-import { DND4EBETA } from "../config.js";
+import { DND4E } from "../config.js";
 
 /**
  * An extension of the default Foundry Roll class for handling multiattack rolls and displaying them in a single chat message
@@ -26,7 +26,7 @@ export class MultiAttackRoll extends Roll {
      *
      * Worked example:
      * Attack roll: which is 1d20 + @wepAttack+@powerMod+@lvhalf+@bonus   {wepAttack: "3 + 1", powerMod: 5, lvhalf: 1, bonus: "1d6" }
-     * by the time this formula reaches out code it has become a parts array like so ["3 + 1 + 5 + 1", "@bonus"]  This is because entity.js calls Helper.commonReplace on the attack formula and performs all the substitutions required
+     * by the time this formula reaches out code it has become a parts array like so ["3 + 1 + 5 + 1", "@bonus"]  This is because item-document.js calls Helper.commonReplace on the attack formula and performs all the substitutions required
      * the @bonus gets added as a new part by the roll helper in dice.js to capture the situational bonus added by the user
      * In order to get a nice expression with highlighting we need to call this method with the following parameters:
      * parts: ["3 + 1 + 5 + 1", "@bonus"]
@@ -74,16 +74,16 @@ export class MultiAttackRoll extends Roll {
 
 	        if(game.settings.get("dnd4e", "automationCombat") && targDefVal !== undefined) {
                 if (critState === " critical"){
-                    hitState = game.i18n.localize("DND4EBETA.AttackRollHitCrit");
+                    hitState = game.i18n.localize("DND4E.AttackRollHitCrit");
                     targDataArray.targetHit.push(targDataArray.targets[i]);
                 } else if (critState === " fumble"){
-                    hitState = game.i18n.localize("DND4EBETA.AttackRollMissCrit");
+                    hitState = game.i18n.localize("DND4E.AttackRollMissCrit");
                     targDataArray.targetMissed.push(targDataArray.targets[i]);
                 } else if (r._total >= targDefVal){
-                    hitState = game.i18n.localize("DND4EBETA.AttackRollHit");
+                    hitState = game.i18n.localize("DND4E.AttackRollHit");
                     targDataArray.targetHit.push(targDataArray.targets[i]);
                 } else {
-                    hitState = game.i18n.localize("DND4EBETA.AttackRollMiss");
+                    hitState = game.i18n.localize("DND4E.AttackRollMiss");
                     targDataArray.targetMissed.push(targDataArray.targets[i]);
                 }
             }

@@ -1,4 +1,4 @@
-import { DND4EBETA } from "../config.js";
+import { DND4E } from "../config.js";
 
 export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 
@@ -17,7 +17,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	async getData(options) {
 		let data = await super.getData(options);
 		
-		data.config = CONFIG.DND4EBETA;
+		data.config = CONFIG.DND4E;
 		data.powerParent = (["power", "consumable"].includes(this.object.parent.type));
 		data.config.statusEffects = CONFIG.statusEffects;
 

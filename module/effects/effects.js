@@ -169,7 +169,7 @@
 			case "create":
 				const isActor = owner instanceof Actor;
 				return owner.createEmbeddedDocuments("ActiveEffect", [{
-					name: isActor ? game.i18n.localize("DND4EBETA.EffectNew") : owner.name,
+					name: isActor ? game.i18n.localize("DND4E.EffectNew") : owner.name,
 					icon: isActor ? "icons/svg/aura.svg" : owner.img,
 					origin: owner.uuid,
 					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
@@ -261,10 +261,10 @@
 	_getDurationLabel(rounds, turns) {
 		const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
 		if(durationType){
-			if(durationType === "endOfTargetTurn") return  game.i18n.localize("DND4EBETA.DurationEndOfTargetTurnSimp");
-			else if(durationType === "startOfTargetTurn")  return game.i18n.localize("DND4EBETA.DurationStartOfTargetTurnSimp");
+			if(durationType === "endOfTargetTurn") return  game.i18n.localize("DND4E.DurationEndOfTargetTurnSimp");
+			else if(durationType === "startOfTargetTurn")  return game.i18n.localize("DND4E.DurationStartOfTargetTurnSimp");
 
-			return game.i18n.localize(CONFIG.DND4EBETA.durationType[durationType]);
+			return game.i18n.localize(CONFIG.DND4E.durationType[durationType]);
 		}
 
 		return super._getDurationLabel(rounds, turns);
@@ -285,24 +285,24 @@
 		const categories = {
 			temporary: {
 				type: "temporary",
-				label: game.i18n.localize("DND4EBETA.EffectTemporary"),
+				label: game.i18n.localize("DND4E.EffectTemporary"),
 				effects: []
 			},
 			passive: {
 				type: "passive",
-				label: game.i18n.localize("DND4EBETA.EffectPassive"),
+				label: game.i18n.localize("DND4E.EffectPassive"),
 				effects: []
 			},
 			inactive: {
 				type: "inactive",
-				label: game.i18n.localize("DND4EBETA.EffectInactive"),
+				label: game.i18n.localize("DND4E.EffectInactive"),
 				effects: []
 			},
 			suppressed: {
 				type: "suppressed",
-				label: game.i18n.localize("DND4EBETA.EffectUnavailable"),
+				label: game.i18n.localize("DND4E.EffectUnavailable"),
 				effects: [],
-				info: [game.i18n.localize("DND4EBETA.EffectUnavailableInfo")]
+				info: [game.i18n.localize("DND4E.EffectUnavailableInfo")]
 			}
 		};
 

@@ -8,7 +8,7 @@ export default class ListStringInput extends FormApplication {
 	static get defaultOptions() {
 	  return mergeObject(super.defaultOptions, {
 		id: "trait-selector",
-		classes: ["dnd4eBeta"],
+		classes: ["dnd4e"],
 		title: "Actor Trait Input",
 		template: "systems/dnd4e/templates/apps/list-string-input.html",
 		width: 320,

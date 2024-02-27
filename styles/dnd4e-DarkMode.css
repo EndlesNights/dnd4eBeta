@@ -148,7 +148,7 @@ form h3.form-header{
 
 /** SHEETS **/
 
-.dnd4eBeta{
+.dnd4e{
 	--border-engraved:2px groove rgba(0,0,0,0.4);
 	--border-normal:1px solid #6f6c66;
 	--border-heavy:3px solid #6f6c66;
@@ -161,31 +161,31 @@ form h3.form-header{
 	--gradient-4e:linear-gradient(90deg, #262626, #474742);
 	--color-label:var(--color-text-light-primary);
 }
-.dnd4eBeta.sheet .editable .rollable:hover,
+.dnd4e.sheet .editable .rollable:hover,
 .rollable:hover{
 	color:#fff;
 }
-.dnd4eBeta.sheet select{
+.dnd4e.sheet select{
 	background:#49494b;
 }
-.dnd4eBeta.sheet .items-list .item .item-uses input{
+.dnd4e.sheet .items-list .item .item-uses input{
 	width:24px;
 	text-align:right;
 	color:var(--color-text-light-highlight);
 }
-.dnd4eBeta.sheet .editable img[src$="svg"].rollable:hover,
+.dnd4e.sheet .editable img[src$="svg"].rollable:hover,
 img[src$="svg"].rollable:hover{
 	-webkit-filter:brightness(255);
 	        filter:brightness(255);
 }
-.dnd4eBeta.sheet .items-list .item .item-image.rollable:hover,
-.dnd4eBeta.sheet .items-list .item .rollable .item-image:hover{
+.dnd4e.sheet .items-list .item .item-image.rollable:hover,
+.dnd4e.sheet .items-list .item .rollable .item-image:hover{
 	background-size:contain;
 	-webkit-filter:brightness(255);
 	        filter:brightness(255);
 	
 }
-.dnd4eBeta.sheet .npc .sheet-header .automath img{
+.dnd4e.sheet .npc .sheet-header .automath img{
 	-webkit-filter:unset;
 	        filter:unset;
 }
@@ -197,7 +197,7 @@ img[src$="svg"].rollable:hover{
 
 /** CHAT **/
 
-.dnd4eBeta.chat-card .card-buttons span{
+.dnd4e.chat-card .card-buttons span{
 	border-color:var(--color-border-light-tertiary);
 }
 a.content-link, a.inline-roll{

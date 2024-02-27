@@ -4,7 +4,7 @@
 	<li class="ability" data-ability="{{a}}">
 		<h4 class="ability-name box-title rollable">{{ability.label}}</h4>
 		<input class="ability-score" name="system.abilities.{{a}}.value" type="Number" value="{{ability.value}}" onClick="this.select();" placeholder="10"/>
-		<span class="ability-mod" data-tooltip="{{localize 'DND4EBETA.Modifier'}}">{{numberFormat ability.mod decimals=0 sign=true}}</span>
+		<span class="ability-mod" data-tooltip="{{localize 'DND4E.Modifier'}}">{{numberFormat ability.mod decimals=0 sign=true}}</span>
 	</li>
 {{/each}}
 </ul>
@@ -19,87 +19,87 @@
 		<h4 class="skill-name rollable">{{skill.label}}</h4>
 		<span class="skill-ability">{{skill.ability}}</span>
 		<a class="training-toggle skill-training" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
-		<a class="skill-mod skill-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.Skill'}}">{{skill.sklBonusValue}}</a>
+		<a class="skill-mod skill-bonus" data-target="system.details" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.Skill'}}">{{skill.sklBonusValue}}</a>
 	</li>
 {{/each}}
-	<a class="custom-roll-descriptions" style="font-size: 11.5px;" data-tooltip="{{localize 'DND4EBETA.CheckDescsLong'}}">{{localize 'DND4EBETA.CheckDescs'}}</a>
+	<a class="custom-roll-descriptions" style="font-size: 11.5px;" data-tooltip="{{localize 'DND4E.CheckDescsLong'}}">{{localize 'DND4E.CheckDescs'}}</a>
 </ul>
 
 {{!-- Attributes --}}
 <ul class="attributes scrollbar">
 	{{!-- Health --}}
 	<li class="attribute-health resource-half">
-		<h4 class="attribute-name box-title">{{localize 'DND4EBETA.Health'}}</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4E.Health'}}</h4>
 		<div class="attribute-value">
-			<input style="width: 100%; text-align: right; padding-right: 4px;" type="text" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" data-tooltip="{{localize 'DND4EBETA.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+			<input style="width: 100%; text-align: right; padding-right: 4px;" type="text" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" data-tooltip="{{localize 'DND4E.HPCurrent'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 			<span class="sep"> / </span>
-			<input style="width: 100%; text-align: left; padding-left: 4px;" type="text" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" data-tooltip="{{localize 'DND4EBETA.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+			<input style="width: 100%; text-align: left; padding-left: 4px;" type="text" name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" data-tooltip="{{localize 'DND4E.HPTotal'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 		</div>
 		<footer class="attribute-footer">
-			<Span>{{localize 'DND4EBETA.TempHP'}}:</Span>
-			<input style="width: 32px; padding: 0px; position: relative; top: -1px;" type="text" name="system.attributes.temphp.value" value="{{system.attributes.temphp.value}}" data-tooltip="{{localize 'DND4EBETA.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
-			<span data-tooltip="{{localize 'DND4EBETA.HPBloodied'}}">{{localize 'DND4EBETA.HPBloodied'}}: {{system.details.bloodied}}</span>
-			<a class="health-option" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.HealthSurgeOptions'}}" style="position: relative; left: -5px; top: 4px;">
+			<Span>{{localize 'DND4E.TempHP'}}:</Span>
+			<input style="width: 32px; padding: 0px; position: relative; top: -1px;" type="text" name="system.attributes.temphp.value" value="{{system.attributes.temphp.value}}" data-tooltip="{{localize 'DND4E.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
+			<span data-tooltip="{{localize 'DND4E.HPBloodied'}}">{{localize 'DND4E.HPBloodied'}}: {{system.details.bloodied}}</span>
+			<a class="health-option" data-target="system.details" data-tooltip="{{localize 'DND4E.HealthSurgeOptions'}}" style="position: relative; left: -5px; top: 4px;">
 				<i class="fas fa-cog"></i>
 			</a>
 		</footer>
 	</li>
 	<li class="attribute-health resource-half">
-		<h4 class="attribute-name box-title">{{localize 'DND4EBETA.Surge'}}</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4E.Surge'}}</h4>
 		<div class="attribute-value">
-			<input type="text" name="system.details.surgeValue" value="{{system.details.surgeValue}}" data-tooltip="{{localize 'DND4EBETA.SurgeValue'}}"  placeholder="{{localize 'DND4EBETA.SurgeValue'}}" data-dtype="Number" onClick="this.select();"/>
+			<input type="text" name="system.details.surgeValue" value="{{system.details.surgeValue}}" data-tooltip="{{localize 'DND4E.SurgeValue'}}"  placeholder="{{localize 'DND4E.SurgeValue'}}" data-dtype="Number" onClick="this.select();"/>
 			<span class="sep">|</span>
-			<input type="text" name="system.details.surges.value" value="{{system.details.surges.value}}" data-tooltip="{{localize 'DND4EBETA.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+			<input type="text" name="system.details.surges.value" value="{{system.details.surges.value}}" data-tooltip="{{localize 'DND4E.SurgeCur'}}"  placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 			<span class="sep">/</span>
-			<input type="text" name="system.details.surges.max" value="{{system.details.surges.max}}" data-tooltip="{{localize 'DND4EBETA.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
+			<input type="text" name="system.details.surges.max" value="{{system.details.surges.max}}" data-tooltip="{{localize 'DND4E.SurgeDay'}}"  placeholder="Total" data-dtype="Number" onClick="this.select();"/>
 		</div>
 		<footer class="attribute-footer flexrow ">
-			<a class="surge-bonus" style="position: relative; top: 4px;" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.SurgeValBon'}}">{{localize 'DND4EBETA.SurgeBon'}}: {{system.details.surgeBon.value}}</a>
-			<a class="envimental-loss-bonus" style="position: relative; top: 4px;" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.SurgeEnv'}}">{{localize 'DND4EBETA.SurgeEnvShort'}}: {{system.details.surgeEnv.value}}</a>
+			<a class="surge-bonus" style="position: relative; top: 4px;" data-target="system.details" data-tooltip="{{localize 'DND4E.SurgeValBon'}}">{{localize 'DND4E.SurgeBon'}}: {{system.details.surgeBon.value}}</a>
+			<a class="envimental-loss-bonus" style="position: relative; top: 4px;" data-target="system.details" data-tooltip="{{localize 'DND4E.SurgeEnv'}}">{{localize 'DND4E.SurgeEnvShort'}}: {{system.details.surgeEnv.value}}</a>
 		</footer>
 	</li>
 	{{!-- Rest and Death --}}
 	<li class="attribute-rest resource-full">
 		<div>
-			<a class="rest second-wind">{{localize 'DND4EBETA.SecondWind'}}</a>
-			<input type="checkbox" name="system.details.secondwind" data-dtype="Boolean" {{checked system.details.secondwind}} data-tooltip="{{localize 'DND4EBETA.SecondWindUsed'}}"/>
-			<a class="secondwind-bonus" style="font-size: 12px;" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.SecondWindBonus'}}">{{localize 'DND4EBETA.Bonus'}}: {{system.details.secondwindbon.value}}</a>
+			<a class="rest second-wind">{{localize 'DND4E.SecondWind'}}</a>
+			<input type="checkbox" name="system.details.secondwind" data-dtype="Boolean" {{checked system.details.secondwind}} data-tooltip="{{localize 'DND4E.SecondWindUsed'}}"/>
+			<a class="secondwind-bonus" style="font-size: 12px;" data-target="system.details" data-tooltip="{{localize 'DND4E.SecondWindBonus'}}">{{localize 'DND4E.Bonus'}}: {{system.details.secondwindbon.value}}</a>
 			
-			<a class="rest short-rest">{{ localize 'DND4EBETA.RestS' }}</a>
-			<a class="rest long-rest">{{ localize 'DND4EBETA.RestL' }}</a>
+			<a class="rest short-rest">{{ localize 'DND4E.RestS' }}</a>
+			<a class="rest long-rest">{{ localize 'DND4E.RestL' }}</a>
 		</div>	
 		<div >	
-			<a class="death death-save">{{ localize 'DND4EBETA.DeathSavingThrow' }}</a>
-			<a class="death-save-bonus" style="font-size: 12px;" data-target="system.details" data-tooltip="{{ localize 'DND4EBETA.DeathSavingThrowBonus' }}">{{localize 'DND4EBETA.Bonus'}}: {{system.details.deathsavebon.value}}</a>
-			<span>{{localize 'DND4EBETA.Failures'}}:</span>
-			<input type="text" name="system.details.deathsavefail" value="{{system.details.deathsavefail}}" data-tooltip="{{localize 'DND4EBETA.DeathSaveFails'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+			<a class="death death-save">{{ localize 'DND4E.DeathSavingThrow' }}</a>
+			<a class="death-save-bonus" style="font-size: 12px;" data-target="system.details" data-tooltip="{{ localize 'DND4E.DeathSavingThrowBonus' }}">{{localize 'DND4E.Bonus'}}: {{system.details.deathsavebon.value}}</a>
+			<span>{{localize 'DND4E.Failures'}}:</span>
+			<input type="text" name="system.details.deathsavefail" value="{{system.details.deathsavefail}}" data-tooltip="{{localize 'DND4E.DeathSaveFails'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 			<i class="fas fa-skull"></i>
 
 		</div>
 	</li>
 	{{!-- Defences --}}
 	<div class="attribute-def resource-full">
-		<h4 class="attribute-name box-title">{{localize 'DND4EBETA.Defences'}}</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4E.Defences'}}</h4>
 		<li class="flexrow" data-defence="ac">
 				<span class="def-value">{{numberFormat system.defences.ac.value decimals=0 sign=true }}</span>
 				<span class="def-name rollable" data-tooltip="{{system.defences.ac.title}}">{{system.defences.ac.label}}</span>
-				<span class="def-armour">{{localize 'DND4EBETA.Armour'}}: {{system.defences.ac.armour}}</span>
-				<a class="defence-bonus" data-target="system.defences" data-tooltip="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.DefenceAC'}}">{{localize 'DND4EBETA.Bonus'}}: {{system.defences.ac.bonusValue}}</a>
-				<span class="def-temp">{{localize 'DND4EBETA.Temp'}}:</span>
-				<input type="text" name="system.defences.ac.temp" value="{{system.defences.ac.temp}}" data-tooltip="{{localize 'DND4EBETA.Temporary'}} {{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.DefenceAC'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+				<span class="def-armour">{{localize 'DND4E.Armour'}}: {{system.defences.ac.armour}}</span>
+				<a class="defence-bonus" data-target="system.defences" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.DefenceAC'}}">{{localize 'DND4E.Bonus'}}: {{system.defences.ac.bonusValue}}</a>
+				<span class="def-temp">{{localize 'DND4E.Temp'}}:</span>
+				<input type="text" name="system.defences.ac.temp" value="{{system.defences.ac.temp}}" data-tooltip="{{localize 'DND4E.Temporary'}} {{localize 'DND4E.BonusTo'}} {{localize 'DND4E.DefenceAC'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 		</li>
 		<li class="attribute-ac">
 				<footer style="text-align: center;">
-					<span>{{localize 'DND4EBETA.EquipmentArmourLight'}}: </span>
-					<input type="checkbox" name="system.defences.ac.light" data-dtype="Boolean" {{checked system.defences.ac.light}} data-tooltip="{{localize 'DND4EBETA.DefenceACLightCheck'}}" />
-					<span>{{localize 'DND4EBETA.DefenceACAltMod'}}: </span>
+					<span>{{localize 'DND4E.EquipmentArmourLight'}}: </span>
+					<input type="checkbox" name="system.defences.ac.light" data-dtype="Boolean" {{checked system.defences.ac.light}} data-tooltip="{{localize 'DND4E.DefenceACLightCheck'}}" />
+					<span>{{localize 'DND4E.DefenceACAltMod'}}: </span>
 					<select name="system.defences.ac.altability">
 						{{#select system.defences.ac.altability}}
 						<option value="" >Default</option>
-						<option value="str" >{{localize 'DND4EBETA.AbilityStr'}}</option>
-						<option value="con" >{{localize 'DND4EBETA.AbilityCon'}}</option>
-						<option value="wis" >{{localize 'DND4EBETA.AbilityWis'}}</option>
-						<option value="cha" >{{localize 'DND4EBETA.AbilityCha'}}</option>
+						<option value="str" >{{localize 'DND4E.AbilityStr'}}</option>
+						<option value="con" >{{localize 'DND4E.AbilityCon'}}</option>
+						<option value="wis" >{{localize 'DND4E.AbilityWis'}}</option>
+						<option value="cha" >{{localize 'DND4E.AbilityCha'}}</option>
 						{{/select}}
 					</select>
 				</footer>						
@@ -108,31 +108,31 @@
 		
 			<span class="def-value">{{numberFormat system.defences.fort.value decimals=0 sign=true }}</span>
 			<span class="def-name rollable" data-tooltip="{{system.defences.fort.title}}">{{system.defences.fort.label}}</span>
-			<span class="def-armour">{{localize 'DND4EBETA.Armour'}}: {{system.defences.fort.armour}}</span>
+			<span class="def-armour">{{localize 'DND4E.Armour'}}: {{system.defences.fort.armour}}</span>
 			<a class="defence-bonus" data-target="system.defences" data-tooltip="Fort Bonus">Bonus: {{system.defences.fort.bonusValue}}</a>
-			<span class="def-temp">{{localize 'DND4EBETA.Temp'}}:</span>
-			<input type="text" name="system.defences.fort.temp" value="{{system.defences.fort.temp}}" data-tooltip="{{localize 'DND4EBETA.Temporary'}} {{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.DefenceFort'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>						
+			<span class="def-temp">{{localize 'DND4E.Temp'}}:</span>
+			<input type="text" name="system.defences.fort.temp" value="{{system.defences.fort.temp}}" data-tooltip="{{localize 'DND4E.Temporary'}} {{localize 'DND4E.BonusTo'}} {{localize 'DND4E.DefenceFort'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>						
 		</li>
 		<li class="flexrow def-ref" data-defence="ref">
 			<span class="def-value">{{numberFormat system.defences.ref.value decimals=0 sign=true }}</span>
 			<span class="def-name rollable" data-tooltip="{{system.defences.ref.title}}">{{system.defences.ref.label}}</span>
-			<span class="def-armour">{{localize 'DND4EBETA.Armour'}}: {{system.defences.ref.armour}}</span>
-			<a class="defence-bonus" data-target="system.defences" data-tooltip="Ref Bonus">{{localize 'DND4EBETA.Bonus'}}: {{system.defences.ref.bonusValue}}</a>
-			<span class="def-temp">{{localize 'DND4EBETA.Temp'}}:</span>
-			<input type="text" name="system.defences.ref.temp" value="{{system.defences.ref.temp}}" data-tooltip="{{localize 'DND4EBETA.Temporary'}} {{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.DefenceRef'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+			<span class="def-armour">{{localize 'DND4E.Armour'}}: {{system.defences.ref.armour}}</span>
+			<a class="defence-bonus" data-target="system.defences" data-tooltip="Ref Bonus">{{localize 'DND4E.Bonus'}}: {{system.defences.ref.bonusValue}}</a>
+			<span class="def-temp">{{localize 'DND4E.Temp'}}:</span>
+			<input type="text" name="system.defences.ref.temp" value="{{system.defences.ref.temp}}" data-tooltip="{{localize 'DND4E.Temporary'}} {{localize 'DND4E.BonusTo'}} {{localize 'DND4E.DefenceRef'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 		</li>
 		<li class="flexrow def-will" data-defence="wil">
 			<span class="def-value">{{numberFormat system.defences.wil.value decimals=0 sign=true }}</span>
 			<span class="def-name rollable" data-tooltip="{{system.defences.wil.title}}">{{system.defences.wil.label}}</span>
-			<span class="def-armour">{{localize 'DND4EBETA.Armour'}}: {{system.defences.wil.armour}}</span>
-			<a class="defence-bonus" data-target="system.defences" data-tooltip="Will Bonus">{{localize 'DND4EBETA.Bonus'}}: {{system.defences.wil.bonusValue}}</a>
-			<span class="def-temp">{{localize 'DND4EBETA.Temp'}}:</span>
-			<input type="text" name="system.defences.wil.temp" value="{{system.defences.wil.temp}}" data-tooltip="{{localize 'DND4EBETA.Temporary'}} {{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.DefenceWil'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
+			<span class="def-armour">{{localize 'DND4E.Armour'}}: {{system.defences.wil.armour}}</span>
+			<a class="defence-bonus" data-target="system.defences" data-tooltip="Will Bonus">{{localize 'DND4E.Bonus'}}: {{system.defences.wil.bonusValue}}</a>
+			<span class="def-temp">{{localize 'DND4E.Temp'}}:</span>
+			<input type="text" name="system.defences.wil.temp" value="{{system.defences.wil.temp}}" data-tooltip="{{localize 'DND4E.Temporary'}} {{localize 'DND4E.BonusTo'}} {{localize 'DND4E.DefenceWil'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 		</li>
 
 		<div style="text-align: left;">
 			<a class="trait-selector-save" data-options="saves" data-target="system.details.saves" >
-				<span>{{localize 'DND4EBETA.SavingThrowMods'}}:</span>
+				<span>{{localize 'DND4E.SavingThrowMods'}}:</span>
 				<i class="fas fa-edit" style="font-size: 12px;"></i>
 			</a>
 			<ul class="traits-list" style="list-style-type: none;">
@@ -146,77 +146,77 @@
 	
 	<div class="attribute-init resource-full">
 		{{!-- Initiative --}}
-		<h4 class="attribute-name box-title">{{localize 'DND4EBETA.Initiative'}}</h4>
-		<span data-tooltip="{{localize 'DND4EBETA.Initiative'}} {{localize 'DND4EBETA.Modifier'}}">{{localize 'DND4EBETA.Initiative'}}:</span>
-		<span data-tooltip="{{localize 'DND4EBETA.Initiative'}} {{localize 'DND4EBETA.Modifier'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</span>
-		<a class="init-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.Initiative'}}">{{localize 'DND4EBETA.Bonus'}}: {{system.attributes.init.bonusValue}}</a>
-		<span data-tooltip="{{localize 'DND4EBETA.Initiative'}} {{localize 'DND4EBETA.Modifier'}}">{{localize 'DND4EBETA.Mod'}}:</span>
+		<h4 class="attribute-name box-title">{{localize 'DND4E.Initiative'}}</h4>
+		<span data-tooltip="{{localize 'DND4E.Initiative'}} {{localize 'DND4E.Modifier'}}">{{localize 'DND4E.Initiative'}}:</span>
+		<span data-tooltip="{{localize 'DND4E.Initiative'}} {{localize 'DND4E.Modifier'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</span>
+		<a class="init-bonus" data-target="system.details" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.Initiative'}}">{{localize 'DND4E.Bonus'}}: {{system.attributes.init.bonusValue}}</a>
+		<span data-tooltip="{{localize 'DND4E.Initiative'}} {{localize 'DND4E.Modifier'}}">{{localize 'DND4E.Mod'}}:</span>
 			<select name="system.attributes.init.ability">
 				{{#select system.attributes.init.ability}}
-				<option value="str" >{{localize 'DND4EBETA.AbilityStr'}}</option>
-				<option value="con" >{{localize 'DND4EBETA.AbilityCon'}}</option>
-				<option value="dex" >{{localize 'DND4EBETA.AbilityDex'}}</option>
-				<option value="int" >{{localize 'DND4EBETA.AbilityInt'}}</option>
-				<option value="wis" >{{localize 'DND4EBETA.AbilityWis'}}</option>
-				<option value="cha" >{{localize 'DND4EBETA.AbilityCha'}}</option>
+				<option value="str" >{{localize 'DND4E.AbilityStr'}}</option>
+				<option value="con" >{{localize 'DND4E.AbilityCon'}}</option>
+				<option value="dex" >{{localize 'DND4E.AbilityDex'}}</option>
+				<option value="int" >{{localize 'DND4E.AbilityInt'}}</option>
+				<option value="wis" >{{localize 'DND4E.AbilityWis'}}</option>
+				<option value="cha" >{{localize 'DND4E.AbilityCha'}}</option>
 				{{/select}}
 			</select>
-		<input type="text" name="system.attributes.init.notes" value="{{system.attributes.init.notes}}" data-tooltip="notes" placeholder="{{localize 'DND4EBETA.Notes'}}" style="width: 99%; text-align: left;"/>
+		<input type="text" name="system.attributes.init.notes" value="{{system.attributes.init.notes}}" data-tooltip="notes" placeholder="{{localize 'DND4E.Notes'}}" style="width: 99%; text-align: left;"/>
 
 	</div>
 	
 	{{!-- Action Point --}}
 	
 	<div class="attribute-init resource-full">
-		<h4 class="attribute-name box-title">{{localize 'DND4EBETA.ActionPoints'}}</h4>
-		<span data-tooltip="{{localize 'DND4EBETA.ActionPoints'}}">{{localize 'DND4EBETA.ActionPoints'}}:</span>
-		<input type="text" name="system.actionpoints.value" value="{{system.actionpoints.value}}" data-tooltip="{{localize 'DND4EBETA.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-		<label for="bonusAction" data-tooltip="{{localize 'DND4EBETA.ActionPointUsed'}}">{{localize 'DND4EBETA.ActionPointUsed'}}:</label>
-		<input class="action-box" id="bonusAction" type="checkbox" name="system.actionpoints.encounteruse" data-dtype="Boolean" {{checked system.actionpoints.encounteruse}} data-tooltip="{{localize 'DND4EBETA.ActionPointUsed'}}"/>
-		<input type="text" name="system.actionpoints.notes" value="{{system.actionpoints.notes}}" data-tooltip="notes" placeholder="{{localize 'DND4EBETA.Notes'}}" style="width: 99%;  text-align: left;"/>
+		<h4 class="attribute-name box-title">{{localize 'DND4E.ActionPoints'}}</h4>
+		<span data-tooltip="{{localize 'DND4E.ActionPoints'}}">{{localize 'DND4E.ActionPoints'}}:</span>
+		<input type="text" name="system.actionpoints.value" value="{{system.actionpoints.value}}" data-tooltip="{{localize 'DND4E.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+		<label for="bonusAction" data-tooltip="{{localize 'DND4E.ActionPointUsed'}}">{{localize 'DND4E.ActionPointUsed'}}:</label>
+		<input class="action-box" id="bonusAction" type="checkbox" name="system.actionpoints.encounteruse" data-dtype="Boolean" {{checked system.actionpoints.encounteruse}} data-tooltip="{{localize 'DND4E.ActionPointUsed'}}"/>
+		<input type="text" name="system.actionpoints.notes" value="{{system.actionpoints.notes}}" data-tooltip="notes" placeholder="{{localize 'DND4E.Notes'}}" style="width: 99%;  text-align: left;"/>
 	</div>
 		
 	{{!-- Movement --}}
 	<div class="attribute-init resource-full movement">
-		<h4 class="attribute-name box-title">{{localize 'DND4EBETA.Movement'}}</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4E.Movement'}}</h4>
 		<div class="basic" data-movement="basic">
-			<span data-tooltip="{{localize 'DND4EBETA.Speed'}}">{{localize 'DND4EBETA.Speed'}}:</span>
-			<span data-tooltip="{{localize 'DND4EBETA.Speed'}}" style="margin-right: 4px;">{{system.movement.basic.value}}</span>
-			<span data-tooltip="{{localize 'DND4EBETA.MovementSpeedBase'}}">{{localize 'DND4EBETA.MovementSpeedBase'}}:</span> 
-			<input type="text" name="system.movement.basic.base" value="{{system.movement.basic.base}}" data-tooltip="{{localize 'DND4EBETA.MovementSpeedBase'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-			<span>{{localize 'DND4EBETA.Armour'}}: {{system.movement.basic.armour}}</span>
-			<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.MovementSpeedBase'}}">{{localize 'DND4EBETA.Bonus'}}: {{system.movement.basic.bonusValue}}</a>
+			<span data-tooltip="{{localize 'DND4E.Speed'}}">{{localize 'DND4E.Speed'}}:</span>
+			<span data-tooltip="{{localize 'DND4E.Speed'}}" style="margin-right: 4px;">{{system.movement.basic.value}}</span>
+			<span data-tooltip="{{localize 'DND4E.MovementSpeedBase'}}">{{localize 'DND4E.MovementSpeedBase'}}:</span> 
+			<input type="text" name="system.movement.basic.base" value="{{system.movement.basic.base}}" data-tooltip="{{localize 'DND4E.MovementSpeedBase'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+			<span>{{localize 'DND4E.Armour'}}: {{system.movement.basic.armour}}</span>
+			<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.MovementSpeedBase'}}">{{localize 'DND4E.Bonus'}}: {{system.movement.basic.bonusValue}}</a>
 		</div>
 		<div class="charge" style="display: inline" data-movement="charge">
-			<span data-tooltip="{{localize 'DND4EBETA.MovementSpeedCharging'}}">{{localize 'DND4EBETA.MovementSpeedCharging'}}:</span>
-			<span data-tooltip="{{localize 'DND4EBETA.MovementSpeedCharging'}}" style="margin-right: 4px;">{{system.movement.charge.value}}</span>
-			<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.MovementSpeedCharging'}}" style="margin-right: 6px;">{{localize 'DND4EBETA.Bonus'}}: {{system.movement.charge.bonusValue}}</a>
+			<span data-tooltip="{{localize 'DND4E.MovementSpeedCharging'}}">{{localize 'DND4E.MovementSpeedCharging'}}:</span>
+			<span data-tooltip="{{localize 'DND4E.MovementSpeedCharging'}}" style="margin-right: 4px;">{{system.movement.charge.value}}</span>
+			<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.MovementSpeedCharging'}}" style="margin-right: 6px;">{{localize 'DND4E.Bonus'}}: {{system.movement.charge.bonusValue}}</a>
 		</div>
 		<div class="run" style="display: inline" data-movement="run">
-			<span data-tooltip="{{localize 'DND4EBETA.MovementSpeedRunning'}}">{{localize 'DND4EBETA.MovementSpeedRunning'}}:</span>
-			<span data-tooltip="{{localize 'DND4EBETA.MovementSpeedRunning'}}" style="margin-right: 4px;">{{system.movement.run.value}}</span>
-			<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.MovementSpeedRunning'}}">{{localize 'DND4EBETA.Bonus'}}: {{system.movement.run.bonusValue}}</a>
+			<span data-tooltip="{{localize 'DND4E.MovementSpeedRunning'}}">{{localize 'DND4E.MovementSpeedRunning'}}:</span>
+			<span data-tooltip="{{localize 'DND4E.MovementSpeedRunning'}}" style="margin-right: 4px;">{{system.movement.run.value}}</span>
+			<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.MovementSpeedRunning'}}">{{localize 'DND4E.Bonus'}}: {{system.movement.run.bonusValue}}</a>
 		</div>
-		<input type="text" name="system.movement.notes" value="{{system.movement.notes}}" data-tooltip="notes" placeholder="{{localize 'DND4EBETA.Notes'}}" style="width: 99%;"/>
+		<input type="text" name="system.movement.notes" value="{{system.movement.notes}}" data-tooltip="notes" placeholder="{{localize 'DND4E.Notes'}}" style="width: 99%;"/>
 	</div>
 	
 	{{!-- Senses --}}
 	<div class="attribute-init resource-full movement">
-		<h4 class="attribute-name box-title">{{localize 'DND4EBETA.Senses'}}</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4E.Senses'}}</h4>
 		<div class="Passive-Per" data-passive="pasprc">
-			<span>{{localize 'DND4EBETA.PasPer'}}:</span>
+			<span>{{localize 'DND4E.PasPer'}}:</span>
 			<span style="margin-right: 4px;">{{system.passive.pasprc.value}}</span>
-			<a class="passive-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.PasPer'}}">{{localize 'DND4EBETA.Bonus'}}: {{system.passive.pasprc.bonusValue}}</a>
+			<a class="passive-bonus" data-target="system.details" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.PasPer'}}">{{localize 'DND4E.Bonus'}}: {{system.passive.pasprc.bonusValue}}</a>
 		</div>
 		<div class="Passive-Ins" data-passive="pasins">
-			<span>{{localize 'DND4EBETA.PasIns'}}:</span>
+			<span>{{localize 'DND4E.PasIns'}}:</span>
 			<span style="margin-right: 4px;">{{system.passive.pasins.value}}</span>
-			<a class="passive-bonus" data-target="system.details" data-tooltip="{{localize 'DND4EBETA.BonusTp'}} {{localize 'DND4EBETA.PasIns'}}">{{localize 'DND4EBETA.Bonus'}}: {{system.passive.pasins.bonusValue}}</a>
+			<a class="passive-bonus" data-target="system.details" data-tooltip="{{localize 'DND4E.BonusTp'}} {{localize 'DND4E.PasIns'}}">{{localize 'DND4E.Bonus'}}: {{system.passive.pasins.bonusValue}}</a>
 		</div>					
 		
 		<div style="text-align: left;">
 			<a class="trait-selector-senses" data-options="vision" data-target="system.senses.vision">
-				<span>{{localize 'DND4EBETA.Vision'}}</span>
+				<span>{{localize 'DND4E.Vision'}}</span>
 				<i class="fas fa-edit"></i>
 			</a>
 			<ul class="traits-list" style="list-style-type: none;">
@@ -226,7 +226,7 @@
 			</ul>
 			
 			<a class="trait-selector-senses" data-options="special" data-target="system.senses.special">
-				<span>{{localize 'DND4EBETA.SpecialSenses'}}</span>
+				<span>{{localize 'DND4E.SpecialSenses'}}</span>
 				<i class="fas fa-edit"></i>
 			</a>
 			<ul class="traits-list" style="list-style-type: none;">
@@ -235,7 +235,7 @@
 			{{/each}}
 			</ul>
 
-			<input type="text" name="system.senses.notes" value="{{system.senses.notes}}" data-tooltip="notes" placeholder="{{localize 'DND4EBETA.Notes'}}" style="width: 99%;"/>
+			<input type="text" name="system.senses.notes" value="{{system.senses.notes}}" data-tooltip="notes" placeholder="{{localize 'DND4E.Notes'}}" style="width: 99%;"/>
 		</div>
 		
 		
@@ -243,9 +243,9 @@
 	
 	{{!-- Languages --}}
 	<div class="attribute-init resource-full languages">
-		<h4 class="attribute-name box-title">{{localize 'DND4EBETA.Languages'}}</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4E.Languages'}}</h4>
 		<a class="trait-selector" data-options="spoken" data-target="system.languages.spoken">
-			<span>{{localize 'DND4EBETA.Spoken'}}</span>
+			<span>{{localize 'DND4E.Spoken'}}</span>
 			<i class="fas fa-edit"></i>
 		</a>
 		<ul class="traits-list" style="list-style-type: none;">
@@ -255,7 +255,7 @@
 		</ul>
 		
 		<a class="trait-selector" data-options="script" data-target="system.languages.script">
-			<span>{{localize 'DND4EBETA.Script'}}</span>
+			<span>{{localize 'DND4E.Script'}}</span>
 			<i class="fas fa-edit"></i>
 		</a>
 		<ul class="traits-list" style="list-style-type: none;">
@@ -267,15 +267,15 @@
 	
 	{{!-- Resistances --}}
 	<div class="attribute-res resource-full">
-		<h4 class="attribute-name box-title">{{localize 'DND4EBETA.DamResVuln'}}</h4>
+		<h4 class="attribute-name box-title">{{localize 'DND4E.DamResVuln'}}</h4>
 		{{#each system.resistances as |res r|}}
 			<li class="skill flexrow" data-res="{{r}}">
 				<h4 class="res-name">{{res.label}}</h4>
 				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
-				<span class="res-armour">{{localize 'DND4EBETA.Armour'}}: {{res.armour}} </span>
-				<a class="resistence-bonus" data-target="system.resistances" data-tooltip="{{localize 'DND4EBETA.BonusTo'}} {{localize 'DND4EBETA.DamRes'}}">{{localize 'DND4EBETA.Bonus'}}: {{res.resBonusValue}}</a>
-				<span class="res-immune">{{localize 'DND4EBETA.Immunity'}}</span>
-				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} data-tooltip="{{localize 'DND4EBETA.Immunity'}}"/>
+				<span class="res-armour">{{localize 'DND4E.Armour'}}: {{res.armour}} </span>
+				<a class="resistence-bonus" data-target="system.resistances" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.DamRes'}}">{{localize 'DND4E.Bonus'}}: {{res.resBonusValue}}</a>
+				<span class="res-immune">{{localize 'DND4E.Immunity'}}</span>
+				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} data-tooltip="{{localize 'DND4E.Immunity'}}"/>
 			</li>
 		{{/each}}					
 	</div>

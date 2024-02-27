@@ -2,7 +2,7 @@ import {d20Roll, damageRoll, getAttackRollBonus} from "../dice.js";
 import AbilityUseDialog from "../apps/ability-use-dialog.js";
 import AbilityTemplate from "../pixi/ability-template.js";
 import { Helper } from "../helper.js"
-import { DND4EBETA } from "../config.js";
+import { DND4E } from "../config.js";
 
 /**
  * Override and extend the basic :class:`Item` implementation
@@ -103,7 +103,7 @@ export default class Item4e extends Item {
 	_onCreationName(data){
 		if(!data.system){
 			const updates = {};
-			updates["name"] = game.i18n.format("DND4EBETA.ItemNew", {type: data.type.capitalize()});
+			updates["name"] = game.i18n.format("DND4E.ItemNew", {type: data.type.capitalize()});
 			this.updateSource(updates);
 		}
 	}
@@ -142,7 +142,7 @@ export default class Item4e extends Item {
 			}
 		}
 
-		if(data.system.armour?.type === "arms" && CONFIG.DND4EBETA.shield[data.system.armour.subType]){
+		if(data.system.armour?.type === "arms" && CONFIG.DND4E.shield[data.system.armour.subType]){
 			if(actorProfs.value.includes(data.system.shieldBaseType)){
 				updates["system.proficient"] = actorProfs.value.includes(data.system.shieldBaseType);
 				console.log("Enters")
@@ -373,15 +373,15 @@ export default class Item4e extends Item {
 		// Get the Item's data
 		const itemData = this;
 		const system = itemData.system;
-		const C = CONFIG.DND4EBETA;
+		const C = CONFIG.DND4E;
 		const labels = {};
 
 		// Equipment Items
 		if ( itemData.type === "equipment" ) {
-			labels.armour = system.armour.ac ? `${system.armour.ac} ${game.i18n.localize("DND4EBETA.AC")}` : "";
-			labels.fort = system.armour.fort ? `${system.armour.fort} ${game.i18n.localize("DND4EBETA.FORT")}` : "";
-			labels.ref = system.armour.ref ? `${system.armour.ref} ${game.i18n.localize("DND4EBETA.REF")}` : "";
-			labels.wil = system.armour.wil ? `${system.armour.wil} ${game.i18n.localize("DND4EBETA.WIL")}` : "";
+			labels.armour = system.armour.ac ? `${system.armour.ac} ${game.i18n.localize("DND4E.AC")}` : "";
+			labels.fort = system.armour.fort ? `${system.armour.fort} ${game.i18n.localize("DND4E.FORT")}` : "";
+			labels.ref = system.armour.ref ? `${system.armour.ref} ${game.i18n.localize("DND4E.REF")}` : "";
+			labels.wil = system.armour.wil ? `${system.armour.wil} ${game.i18n.localize("DND4E.WIL")}` : "";
 		}
 
 		// Activated Items
@@ -411,24 +411,24 @@ export default class Item4e extends Item {
 			let dur = system.duration || {};
 			if (["inst", "perm"].includes(dur.units)) dur.value = null;
 
-			labels.duration = dur.value? `${game.i18n.localize("DND4EBETA.Duration")}: ${[dur.value, C.timePeriods[dur.units]].filterJoin(" ")}` : null;
+			labels.duration = dur.value? `${game.i18n.localize("DND4E.Duration")}: ${[dur.value, C.timePeriods[dur.units]].filterJoin(" ")}` : null;
 
 			// CastTime Label
 			if (system.castTime) {
 				let castTime = system.castTime || {};
 				if (["inst", "perm"].includes(castTime.units)) castTime.value = null;
-				labels.castTime = `${game.i18n.localize("DND4EBETA.CastTime")}: ${[castTime.value, C.timePeriods[castTime.units]].filterJoin(" ")}`;
+				labels.castTime = `${game.i18n.localize("DND4E.CastTime")}: ${[castTime.value, C.timePeriods[castTime.units]].filterJoin(" ")}`;
 			}
 
 
 			// Attribute Label
 			if(system.attribute){
 				const attribute = system.attribute.split('.')[1];
-				if(DND4EBETA.abilities[attribute]){
-					labels.attribute = `${game.i18n.localize("DND4EBETA.Ability")}: ${DND4EBETA.abilities[attribute]}`;
+				if(DND4E.abilities[attribute]){
+					labels.attribute = `${game.i18n.localize("DND4E.Ability")}: ${DND4E.abilities[attribute]}`;
 				}
-				else if(DND4EBETA.skills[attribute]){
-					labels.attribute = `${game.i18n.localize("DND4EBETA.Skill")}: ${DND4EBETA.skills[attribute]}`;
+				else if(DND4E.skills[attribute]){
+					labels.attribute = `${game.i18n.localize("DND4E.Skill")}: ${DND4E.skills[attribute]}`;
 				}
 			}
 
@@ -438,29 +438,29 @@ export default class Item4e extends Item {
 					const resourceTarget = system.consume.target.split('.')[1];
 					let resourceLabel;
 
-					if(DND4EBETA.ritualcomponents[resourceTarget]){
-						resourceLabel = game.i18n.localize(DND4EBETA.ritualcomponents[resourceTarget]);
+					if(DND4E.ritualcomponents[resourceTarget]){
+						resourceLabel = game.i18n.localize(DND4E.ritualcomponents[resourceTarget]);
 					}
-					else if(DND4EBETA.currencyConversion[resourceTarget]){
-						resourceLabel = game.i18n.localize(DND4EBETA.currencies[resourceTarget]);
+					else if(DND4E.currencyConversion[resourceTarget]){
+						resourceLabel = game.i18n.localize(DND4E.currencies[resourceTarget]);
 					}
 					else if(resourceTarget === "hp"){
-						resourceLabel = game.i18n.localize("DND4EBETA.HP");
+						resourceLabel = game.i18n.localize("DND4E.HP");
 					}
 					else if(resourceTarget === "surges"){
-						resourceLabel = game.i18n.localize("DND4EBETA.HealingSurges");
+						resourceLabel = game.i18n.localize("DND4E.HealingSurges");
 					}
 
 					if(resourceLabel){
-						labels.component = `${game.i18n.localize("DND4EBETA.Component")}: ${resourceLabel}`;
-						labels.componentCost = `${game.i18n.localize("DND4EBETA.ComponentCost")}: ${system.consume.amount}`;
+						labels.component = `${game.i18n.localize("DND4E.Component")}: ${resourceLabel}`;
+						labels.componentCost = `${game.i18n.localize("DND4E.ComponentCost")}: ${system.consume.amount}`;
 					}
 				}
 			}
 
 			// Recharge Label
 			let chg = system.recharge || {};
-			labels.recharge = `${game.i18n.localize("DND4EBETA.Recharge")} [${chg.value}${parseInt(chg.value) < 6 ? "+" : ""}]`;
+			labels.recharge = `${game.i18n.localize("DND4E.Recharge")} [${chg.value}${parseInt(chg.value) < 6 ? "+" : ""}]`;
 		}
 
 		// DamageTypes
@@ -469,7 +469,7 @@ export default class Item4e extends Item {
 				let damType = [];
 				for ( let [damage, d] of Object.entries(this.getDamageType())) {
 					if(d){
-						damType.push(`${game.i18n.localize(DND4EBETA.damageTypes[damage])}`);
+						damType.push(`${game.i18n.localize(DND4E.damageTypes[damage])}`);
 					}
 				}
 				labels.damageTypes = damType.join(", ");
@@ -742,7 +742,7 @@ export default class Item4e extends Item {
 		const consume = itemData.consume || {};
 		if ( !consume.type ) return true;
 		const actor = this.actor;
-		const typeLabel = CONFIG.DND4EBETA.abilityConsumptionTypes[consume.type];
+		const typeLabel = CONFIG.DND4E.abilityConsumptionTypes[consume.type];
 		const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 1;
 
 		// Only handle certain types for certain actions
@@ -750,7 +750,7 @@ export default class Item4e extends Item {
 
 		// No consumed target set
 		if ( !consume.target ) {
-			ui.notifications.warn(game.i18n.format("DND4EBETA.ConsumeWarningNoResource", {name: this.name, type: typeLabel}));
+			ui.notifications.warn(game.i18n.format("DND4E.ConsumeWarningNoResource", {name: this.name, type: typeLabel}));
 			return false;
 		}
 
@@ -775,12 +775,12 @@ export default class Item4e extends Item {
 
 		// Verify that the consumed resource is available
 		if ( [null, undefined].includes(consumed) ) {
-			ui.notifications.warn(game.i18n.format("DND4EBETA.ConsumeWarningNoSource", {name: this.name, type: typeLabel}));
+			ui.notifications.warn(game.i18n.format("DND4E.ConsumeWarningNoSource", {name: this.name, type: typeLabel}));
 			return false;
 		}
 		let remaining = quantity - amount;
 		if ( remaining < 0) {
-			ui.notifications.warn(game.i18n.format("DND4EBETA.ConsumeWarningNoQuantity", {name: this.name, type: typeLabel}));
+			ui.notifications.warn(game.i18n.format("DND4E.ConsumeWarningNoQuantity", {name: this.name, type: typeLabel}));
 			return false;
 		}
 
@@ -830,14 +830,14 @@ export default class Item4e extends Item {
 		const current = getProperty(this, "system.uses.value") || 0;
 		if ( consume && charge.value ) {
 			if ( !charge.charged ) {
-				ui.notifications.warn(game.i18n.format("DND4EBETA.ItemNoUses", {name: this.name}));
+				ui.notifications.warn(game.i18n.format("DND4E.ItemNoUses", {name: this.name}));
 				return false;
 			}
 			else await this.update({"system.recharge.charged": false});
 		}
 		else if ( consume && usesCharges ) {
 			if ( uses.value <= 0 ) {
-				ui.notifications.warn(game.i18n.format("DND4EBETA.ItemNoUses", {name: this.name}));
+				ui.notifications.warn(game.i18n.format("DND4E.ItemNoUses", {name: this.name}));
 				return false;
 			}
 			await this.update({"system.uses.value": Math.max(current - 1, 0)});
@@ -885,9 +885,9 @@ export default class Item4e extends Item {
 		// General equipment properties
 		if ( data.hasOwnProperty("equipped") && !["loot", "tool"].includes(this.type) ) {
 			props.push(
-				game.i18n.localize(data.equipped ? "DND4EBETA.Equipped" : "DND4EBETA.Unequipped"),
-				game.i18n.localize(data.proficient ? "DND4EBETA.Proficient" : "DND4EBETA.NotProficient"),
-				game.i18n.localize(data.proficientI ? "DND4EBETA.ProficientI" : ""),
+				game.i18n.localize(data.equipped ? "DND4E.Equipped" : "DND4E.Unequipped"),
+				game.i18n.localize(data.proficient ? "DND4E.Proficient" : "DND4E.NotProficient"),
+				game.i18n.localize(data.proficientI ? "DND4E.ProficientI" : ""),
 			);
 		}
 
@@ -897,7 +897,7 @@ export default class Item4e extends Item {
 				labels.activation + (data.activation?.condition ? ` (${data.activation.condition})` : ""),
 				labels.attribute,
 				labels.target,
-				data.isRanged && labels.range ? `${game.i18n.localize("DND4EBETA.Range")}: ${labels.range}` : "",
+				data.isRanged && labels.range ? `${game.i18n.localize("DND4E.Range")}: ${labels.range}` : "",
 				labels.castTime,
 				labels.duration,
 				labels.component,
@@ -922,12 +922,12 @@ export default class Item4e extends Item {
 	 */
 	_equipmentChatData(data, labels, props) {
 		props.push(
-			CONFIG.DND4EBETA.equipmentTypes[data.armour.type],
+			CONFIG.DND4E.equipmentTypes[data.armour.type],
 			labels.armour || null,
 			labels.fort || null,
 			labels.ref || null,
 			labels.wil || null,
-			data.stealth.value ? game.i18n.localize("DND4EBETA.StealthDisadvantage") : null
+			data.stealth.value ? game.i18n.localize("DND4E.StealthDisadvantage") : null
 		);
 	}
 
@@ -939,7 +939,7 @@ export default class Item4e extends Item {
 	 */
 	_weaponChatData(data, labels, props) {
 		props.push(
-			CONFIG.DND4EBETA.weaponTypes[data.weaponType],
+			CONFIG.DND4E.weaponTypes[data.weaponType],
 		);
 	}
 
@@ -951,8 +951,8 @@ export default class Item4e extends Item {
 	 */
 	_consumableChatData(data, labels, props) {
 		props.push(
-			CONFIG.DND4EBETA.consumableTypes[data.consumableType],
-			data.uses.value + "/" + data.preparedMaxUses + " " + game.i18n.localize("DND4EBETA.Charges")
+			CONFIG.DND4E.consumableTypes[data.consumableType],
+			data.uses.value + "/" + data.preparedMaxUses + " " + game.i18n.localize("DND4E.Charges")
 		);
 		data.hasCharges = data.uses.value >= 0;
 	}
@@ -965,9 +965,9 @@ export default class Item4e extends Item {
 	 */
 	_toolChatData(data, labels, props) {
 		props.push(
-			CONFIG.DND4EBETA.abilities[data.ability] || null,
-			CONFIG.DND4EBETA.skills[data.ability] || null
-			// CONFIG.DND4EBETA.proficiencyLevels[data.proficient || 0]
+			CONFIG.DND4E.abilities[data.ability] || null,
+			CONFIG.DND4E.skills[data.ability] || null
+			// CONFIG.DND4E.proficiencyLevels[data.proficient || 0]
 		);
 	}
 
@@ -979,8 +979,8 @@ export default class Item4e extends Item {
 	 */
 	_lootChatData(data, labels, props) {
 		props.push(
-			game.i18n.localize("DND4EBETA.ItemTypeLoot"),
-			data.weight ? data.weight + " " + game.i18n.localize("DND4EBETA.AbbreviationLbs") : null
+			game.i18n.localize("DND4E.ItemTypeLoot"),
+			data.weight ? data.weight + " " + game.i18n.localize("DND4E.AbbreviationLbs") : null
 		);
 	}
 
@@ -1028,7 +1028,7 @@ export default class Item4e extends Item {
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
-			ui.notifications.error(game.i18n.localize("DND4EBETA.LackRequiredWeapon"));
+			ui.notifications.error(game.i18n.localize("DND4E.LackRequiredWeapon"));
 			return null;
 		}
 
@@ -1036,11 +1036,11 @@ export default class Item4e extends Item {
 			ui.notifications.error("You may not place an Attack Roll with this Item.");
 			return null;
 		}
-		let title = `${this.name} - ${game.i18n.localize("DND4EBETA.AttackRoll")}`;
+		let title = `${this.name} - ${game.i18n.localize("DND4E.AttackRoll")}`;
 		let flavor = title;
 
 		if(itemData.attack.def) {
-			flavor += ` ${game.i18n.localize("DND4EBETA.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
+			flavor += ` ${game.i18n.localize("DND4E.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
 		}
 
 		if(game.user.targets.size) {
@@ -1050,7 +1050,7 @@ export default class Item4e extends Item {
 		const rollData = this.getRollData();
 
 		rollData.isAttackRoll = true;
-		rollData.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
+		rollData.commonAttackBonuses = CONFIG.DND4E.commonAttackBonuses;
 		rollData["ammo"] = 0 // because ammo is added to by weapon use multiple clicks of the button will add it higher
 
 		// Define Roll bonuses
@@ -1138,7 +1138,7 @@ export default class Item4e extends Item {
 				left: window.innerWidth - 710
 			},
 			isAttackRoll: true,
-			messageData: {"flags.dnd4eBeta.roll": {type: "attack", itemId: this.id }},
+			messageData: {"flags.dnd4e.roll": {type: "attack", itemId: this.id }},
 			options
 		};
 
@@ -1184,7 +1184,7 @@ export default class Item4e extends Item {
 		const rollData = this.getRollData();
 
 		rollData.isAttackRoll = true;
-		rollData.commonAttackBonuses = CONFIG.DND4EBETA.commonAttackBonuses;
+		rollData.commonAttackBonuses = CONFIG.DND4E.commonAttackBonuses;
 		rollData["ammo"] = 0;
 
 		// Define Roll bonuses
@@ -1269,7 +1269,7 @@ export default class Item4e extends Item {
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
-			ui.notifications.error(game.i18n.localize("DND4EBETA.LackRequiredWeapon"));
+			ui.notifications.error(game.i18n.localize("DND4E.LackRequiredWeapon"));
 			return null;
 		}
 
@@ -1277,19 +1277,19 @@ export default class Item4e extends Item {
 			ui.notifications.error("You may not make a Damage Roll with this Item.");
 			return null;
 		}
-		const messageData = {"flags.dnd4eBeta.roll": {type: "damage", itemId: this.id }};
+		const messageData = {"flags.dnd4e.roll": {type: "damage", itemId: this.id }};
 
 		// Get roll data
 		const rollData = this.getRollData();
 		if ( spellLevel ) rollData.item.level = spellLevel;
 
 		// Get message labels
-		let title = `${this.name} - ${game.i18n.localize("DND4EBETA.DamageRoll")}`;
+		let title = `${this.name} - ${game.i18n.localize("DND4E.DamageRoll")}`;
 		let flavor = this.labels.damageTypes?.length ? `${title} (${this.labels.damageTypes})` : title;
 
 		// Define Roll  and add seconadry parts
 		const returnDamageRollAndOptionalType = (damageRoll, damageType) => {
-			if (damageType && damageType !== game.i18n.localize(game.dnd4eBeta.config.damageTypes.damage) && damageType !== game.i18n.localize("DND4EBETA.None")) {
+			if (damageType && damageType !== game.i18n.localize(game.dnd4e.config.damageTypes.damage) && damageType !== game.i18n.localize("DND4E.None")) {
 				return `(${damageRoll})[${damageType}]`
 			}
 			else {
@@ -1528,7 +1528,7 @@ export default class Item4e extends Item {
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
-			ui.notifications.error(game.i18n.localize("DND4EBETA.LackRequiredWeapon"));
+			ui.notifications.error(game.i18n.localize("DND4E.LackRequiredWeapon"));
 			return null;
 		}
 
@@ -1536,14 +1536,14 @@ export default class Item4e extends Item {
 			ui.notifications.error("You may not make a Healing Roll with this Item.");
 			return null;
 		}
-		const messageData = {"flags.dnd4eBeta.roll": {type: "healing", itemId: this.id }};
+		const messageData = {"flags.dnd4e.roll": {type: "healing", itemId: this.id }};
 
 		// Get roll data
 		const rollData = this.getRollData();
 		if ( spellLevel ) rollData.item.level = spellLevel;
 
 		// Get message labels
-		const title = `${this.name} - ${game.i18n.localize("DND4EBETA.HealingRoll")}`;
+		const title = `${this.name} - ${game.i18n.localize("DND4E.HealingRoll")}`;
 		let flavor = this.labels.damageTypes?.length ? `${title} (${this.labels.damageTypes})` : title;
 
 		// Define Roll parts
@@ -1581,13 +1581,13 @@ export default class Item4e extends Item {
 		if(weaponUse) {
 			if(weaponUse.system.properties["ver"] && weaponUse.system.weaponHand === "hTwo" ) {
 				parts.push("1");
-				messageData["flags.dnd4eBeta.roll"].versatile = true;
+				messageData["flags.dnd4e.roll"].versatile = true;
 				partsExpressionReplacement.push({target: "1", value: "@versatile"})
 			}
 		}
 		// if ( versatile && itemData.damage.versatile ) {
 			// parts[0] = itemData.damage.versatile;
-			// messageData["flags.dnd4eBeta.roll"].versatile = true;
+			// messageData["flags.dnd4e.roll"].versatile = true;
 		// }
 	
 		// Define Roll Data
@@ -1661,7 +1661,7 @@ export default class Item4e extends Item {
 		// Define Roll Data
 		const rollData = this.getRollData();
 		if ( options.spellLevel ) rollData.item.level = options.spellLevel;
-		const title = `${this.name} - ${game.i18n.localize("DND4EBETA.OtherFormula")}`;
+		const title = `${this.name} - ${game.i18n.localize("DND4E.OtherFormula")}`;
 
 		// Invoke the roll and submit it to chat
 		const roll = await new Roll(rollData.item.formula, rollData).roll({async : true});
@@ -1669,7 +1669,7 @@ export default class Item4e extends Item {
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: this.system.chatFlavor || title,
 			rollMode: game.settings.get("core", "rollMode"),
-			messageData: {"flags.dnd4eBeta.roll": {type: "other", itemId: this.id }}
+			messageData: {"flags.dnd4e.roll": {type: "other", itemId: this.id }}
 		});
 		return roll;
 	}
@@ -1728,7 +1728,7 @@ export default class Item4e extends Item {
 				}
 				// Case 5, item unusable, display warning and do nothing
 				else {
-					ui.notifications.warn(game.i18n.format("DND4EBETA.ItemNoUses", {name: this.name}));
+					ui.notifications.warn(game.i18n.format("DND4E.ItemNoUses", {name: this.name}));
 				}
 			}
 		}
@@ -1758,7 +1758,7 @@ export default class Item4e extends Item {
 
 		// Display a Chat Message
 		const promises = [roll.toMessage({
-			flavor: `${game.i18n.format("DND4EBETA.ItemRechargeCheck", {name: this.name})} - ${game.i18n.localize(success ? "DND4EBETA.ItemRechargeSuccess" : "DND4EBETA.ItemRechargeFailure")}`,
+			flavor: `${game.i18n.format("DND4E.ItemRechargeCheck", {name: this.name})} - ${game.i18n.localize(success ? "DND4E.ItemRechargeSuccess" : "DND4E.ItemRechargeFailure")}`,
 			speaker: ChatMessage.getSpeaker({actor: this.actor, token: this.actor.token})
 		})];
 
@@ -1775,7 +1775,7 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollToolCheck(options={}) {
-		return this.rollToolOrRitualCheck("tool", "DND4EBETA.ToolCheck", options)
+		return this.rollToolOrRitualCheck("tool", "DND4E.ToolCheck", options)
 	}
 
 	/**
@@ -1784,7 +1784,7 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollRitualCheck(options={}) {
-		return this.rollToolOrRitualCheck("ritual", "DND4EBETA.RitualCheck", options)
+		return this.rollToolOrRitualCheck("ritual", "DND4E.RitualCheck", options)
 	}
 
 	rollToolOrRitualCheck(rollType, titleKey, options={}) {
@@ -1825,7 +1825,7 @@ export default class Item4e extends Item {
 				top: options.event ? options.event.clientY - 80 : null,
 				left: window.innerWidth - 710,
 			},
-			messageData: {"flags.dnd4eBeta.roll": {type: rollType, itemId: this.id }}
+			messageData: {"flags.dnd4e.roll": {type: rollType, itemId: this.id }}
 		}, options);
 
 		rollConfig.event = options.event;
@@ -1924,7 +1924,7 @@ export default class Item4e extends Item {
 		const item = storedData ? new this(storedData, {parent: actor}) : actor.items.get(card.dataset.itemId) || storedData;
 
 		if ( !item ) {
-			return ui.notifications.error(game.i18n.format("DND4EBETA.ActionWarningNoItem", {item: card.dataset.itemId, name: actor.name}))
+			return ui.notifications.error(game.i18n.format("DND4E.ActionWarningNoItem", {item: card.dataset.itemId, name: actor.name}))
 		}
 		const spellLevel = parseInt(card.dataset.spellLevel) || null;
 
@@ -1933,7 +1933,7 @@ export default class Item4e extends Item {
 		if ( isTargetted ) {
 			targets = this._getChatCardTargets(card);
 			if ( !targets.length ) {
-				ui.notifications.warn(game.i18n.localize("DND4EBETA.ActionWarningNoToken"));
+				ui.notifications.warn(game.i18n.localize("DND4E.ActionWarningNoToken"));
 				return button.disabled = false;
 			}
 		}
@@ -1976,7 +1976,7 @@ export default class Item4e extends Item {
 
 		// Spell Template Creation
 		else if ( action === "placeTemplate") {
-			// const template = game.dnd4eBeta.canvas.AbilityTemplate.fromItem(item);
+			// const template = game.dnd4e.canvas.AbilityTemplate.fromItem(item);
 			const template = AbilityTemplate.fromItem(item);
 			if ( template ) template.drawPreview(event);
 		}

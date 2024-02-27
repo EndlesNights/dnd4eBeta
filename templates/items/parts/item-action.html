@@ -1,6 +1,6 @@
 {{!-- Action Type --}}
 <div class="form-group select">
-	<label>{{ localize "DND4EBETA.ItemActionType" }}</label>
+	<label>{{ localize "DND4E.ItemActionType" }}</label>
 	<select name="system.actionType">
 		{{#select system.actionType}}
 		<option value=""></option>
@@ -14,10 +14,10 @@
 
 {{!-- Ability Modifier --}}
 <div class="form-group select">
-	<label>{{ localize "DND4EBETA.AbilityModifier" }}</label>
+	<label>{{ localize "DND4E.AbilityModifier" }}</label>
 	<select name="system.ability">
 		{{#select system.ability}}
-		<option value="">{{ localize "DND4EBETA.Default" }}</option>
+		<option value="">{{ localize "DND4E.Default" }}</option>
 		{{#each config.abilities as |ability a|}}
 		<option value="{{a}}">{{ability}}</option>
 		{{/each}}
@@ -28,7 +28,7 @@
 {{!-- Attack Roll Bonus --}}
 {{#if hasAttackRoll }}
 <div class="form-group">
-	<label>{{ localize "DND4EBETA.ItemAttackBonus" }}</label>
+	<label>{{ localize "DND4E.ItemAttackBonus" }}</label>
 	<div class="form-fields">
 		<input type="text" name="system.attackBonus" value="{{system.attackBonus}}" data-dtype="Number"/>
 	</div>
@@ -37,7 +37,7 @@
 
 {{!-- Damage Formula --}}
 <h4 class="damage-header">
-	{{#unless isHealing }}{{ localize "DND4EBETA.Damage" }}{{ else }}{{ localize "DND4EBETA.Healing" }}{{/unless}} {{ localize "DND4EBETA.Formula" }}
+	{{#unless isHealing }}{{ localize "DND4E.Damage" }}{{ else }}{{ localize "DND4E.Healing" }}{{/unless}} {{ localize "DND4E.Formula" }}
 	<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
 </h4>
 <ol class="damage-parts form-group">
@@ -46,7 +46,7 @@
 		<input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this "0"}}"/>
 		<select name="system.damage.parts.{{i}}.1">
 			{{#select (lookup this "1") }}
-			<option value="">{{ localize "DND4EBETA.None" }}</option>
+			<option value="">{{ localize "DND4E.None" }}</option>
 			{{#each ../config.damageTypes as |name type|}}
 			<option value="{{type}}">{{name}}</option>
 			{{/each}}
@@ -63,24 +63,24 @@
 {{!-- Versatile Damage --}}
 {{#if system.damage.parts.length }}
 <div class="form-group">
-	<label>{{ localize "DND4EBETA.VersatileDamage" }}</label>
+	<label>{{ localize "DND4E.VersatileDamage" }}</label>
 	<div class="form-fields">
-		<input type="text" name="system.damage.versatile" value="{{system.damage.versatile}}" placeholder="{{ localize 'DND4EBETA.Formula' }}"/>
+		<input type="text" name="system.damage.versatile" value="{{system.damage.versatile}}" placeholder="{{ localize 'DND4E.Formula' }}"/>
 	</div>
 </div>
 {{/if}}
 
 {{!-- Other Formula --}}
 <div class="form-group">
-	<label>{{ localize "DND4EBETA.OtherFormula" }}</label>
+	<label>{{ localize "DND4E.OtherFormula" }}</label>
 	<div class="form-fields">
-		<input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize 'DND4EBETA.Formula' }}"/>
+		<input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize 'DND4E.Formula' }}"/>
 	</div>
 </div>
 
 {{!-- Saving Throw --}}
 <div class="form-group input-select">
-	<label>{{ localize "DND4EBETA.ActionSave" }}</label>
+	<label>{{ localize "DND4E.ActionSave" }}</label>
 	<div class="form-fields">
 		<select name="system.save.ability">
 			{{#select system.save.ability}}
@@ -90,15 +90,15 @@
 			{{/each}}
 			{{/select}}
 		</select>
-		<span>{{ localize "DND4EBETA.VsDC" }}</span>
-		<input type="text" name="system.save.dc" value="{{#if system.save.dc}}{{system.save.dc}}{{/if}}" data-dtype="Number" placeholder="{{ localize 'DND4EBETA.AbbreviationDC' }}" {{#unless isFlatDC}}disabled{{/unless}}/>
+		<span>{{ localize "DND4E.VsDC" }}</span>
+		<input type="text" name="system.save.dc" value="{{#if system.save.dc}}{{system.save.dc}}{{/if}}" data-dtype="Number" placeholder="{{ localize 'DND4E.AbbreviationDC' }}" {{#unless isFlatDC}}disabled{{/unless}}/>
 		<select name="system.save.scaling">
 			{{#select system.save.scaling}}
-			<option value="spell">{{ localize "DND4EBETA.Spellcasting" }}</option>
+			<option value="spell">{{ localize "DND4E.Spellcasting" }}</option>
 			{{#each config.abilities as |ability a|}}
 			<option value="{{a}}">{{ability}}</option>
 			{{/each}}
-			<option value="flat">{{ localize "DND4EBETA.Flat" }}</option>
+			<option value="flat">{{ localize "DND4E.Flat" }}</option>
 			{{/select}}
 		</select>
 	</div>
@@ -106,7 +106,7 @@
 
 {{!-- Chat Message Flavor --}}
 <div class="form-group stacked">
-	<label>{{ localize "DND4EBETA.ChatFlavor" }}</label>
+	<label>{{ localize "DND4E.ChatFlavor" }}</label>
 	<input type="text" name="system.chatFlavor" value="{{system.chatFlavor}}"/>
 </div>
 {{/if}}

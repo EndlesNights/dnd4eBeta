@@ -7,7 +7,7 @@ export class HealMenuDialog extends DocumentSheet4e {
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			id: "heal-menu-dialog",
-			classes: ["dnd4eBeta"],
+			classes: ["dnd4e"],
 			title: "Healing Menu",
 			template: "systems/dnd4e/templates/apps/heal-menu-dialog.html",
 			width: 500,
@@ -17,7 +17,7 @@ export class HealMenuDialog extends DocumentSheet4e {
 		});
 	}
 	get title() {
-		return `${this.object.name} - ${game.i18n.localize( 'DND4EBETA.Healing')}`;
+		return `${this.object.name} - ${game.i18n.localize( 'DND4E.Healing')}`;
 	}
 
 	/** @override */
@@ -36,7 +36,7 @@ export class HealMenuDialog extends DocumentSheet4e {
 
 		console.log(JSON.stringify(formData))
 
-		let roll = await Helper.rollWithErrorHandling(formData.bonus, { errorMessageKey: "DND4EBETA.InvalidHealingBonus"})
+		let roll = await Helper.rollWithErrorHandling(formData.bonus, { errorMessageKey: "DND4E.InvalidHealingBonus"})
 
 		let surgeValueText = "0"
 		let surgeValue = 0
@@ -48,11 +48,11 @@ export class HealMenuDialog extends DocumentSheet4e {
 		const healTotal = surgeValue + roll.total
 
 		const healType = formData["heal-type"]
-		let healTypeText = game.i18n.localize("DND4EBETA.regains")
-		let hpTypeText = game.i18n.localize("DND4EBETA.HP")
+		let healTypeText = game.i18n.localize("DND4E.regains")
+		let hpTypeText = game.i18n.localize("DND4E.HP")
 		if (healType === "tempHP") {
-			healTypeText = game.i18n.localize("DND4EBETA.gains")
-			hpTypeText = game.i18n.localize("DND4EBETA.TempHPTip")
+			healTypeText = game.i18n.localize("DND4E.gains")
+			hpTypeText = game.i18n.localize("DND4E.TempHPTip")
 			await this.object.applyTempHpChange(healTotal)
 		}
 		else if (this.object.system.details.surges.value > 0){
@@ -67,9 +67,9 @@ export class HealMenuDialog extends DocumentSheet4e {
 		let healingSurgeText = ""
 		if (formData["spend-healing-surge"] === true) {
 			if(this.object.system.details.surges.value > 0){
-			    healingSurgeText = game.i18n.localize("DND4EBETA.SurgeSpendAnd");
+			    healingSurgeText = game.i18n.localize("DND4E.SurgeSpendAnd");
 			} else {
-			    healingSurgeText = game.i18n.localize("DND4EBETA.SurgeNotSpendAnd");
+			    healingSurgeText = game.i18n.localize("DND4E.SurgeNotSpendAnd");
 			}
 			updateData[`system.details.surges.value`] = Math.max(this.object.system.details.surges.value - 1, 0)
 			await this.object.update(updateData);

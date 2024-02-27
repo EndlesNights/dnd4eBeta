@@ -1,12 +1,12 @@
 export function customSKillSetUp(){
-	game.dnd4eBeta.config.coreSkills = foundry.utils.deepClone(game.dnd4eBeta.config.skills); 
+	game.dnd4e.config.coreSkills = foundry.utils.deepClone(game.dnd4e.config.skills); 
 
 	const customSkillsArray = game.settings.get("dnd4e", "custom-skills");
 	
 	if(!customSkillsArray.length) return;
 
 	for(const skill of customSkillsArray){
-		game.dnd4eBeta.config.skills[skill.id] = skill.label;
+		game.dnd4e.config.skills[skill.id] = skill.label;
 	}
 }
 

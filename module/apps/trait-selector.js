@@ -8,7 +8,7 @@ export default class TraitSelector extends FormApplication {
 	static get defaultOptions() {
 	  return mergeObject(super.defaultOptions, {
 	    id: "trait-selector",
-      classes: ["dnd4eBeta"],
+      classes: ["dnd4e"],
       title: "Actor Trait Selection",
       template: "systems/dnd4e/templates/apps/trait-selector.html",
       width: 320,
@@ -48,7 +48,7 @@ export default class TraitSelector extends FormApplication {
 
     if(this.options.datasetOptions == "weaponProf"){
       for ( let [k, v] of Object.entries(choices) ) {
-        const children = CONFIG.DND4EBETA[k] ? duplicate(CONFIG.DND4EBETA[k]) : {};
+        const children = CONFIG.DND4E[k] ? duplicate(CONFIG.DND4E[k]) : {};
         for ( let [kc, vc] of Object.entries(children) ) {
           children[kc] = {
             label: vc,
@@ -57,7 +57,7 @@ export default class TraitSelector extends FormApplication {
         }
 
         choices[k] = {
-          label: game.i18n.localize(`DND4EBETA.Weapon${v}`),
+          label: game.i18n.localize(`DND4E.Weapon${v}`),
           chosen: attr ? attr.value.includes(k) : false,
           children: children
         }

@@ -6,14 +6,14 @@ export class MovementDialog extends DocumentSheet4e {
 		const options = super.defaultOptions;
 		return mergeObject(options, {
 			id: "movement-dialog",
-			classes: ["dnd4eBeta", "movement-dialog"],
+			classes: ["dnd4e", "movement-dialog"],
 			template: "systems/dnd4e/templates/apps/movement-dialog.html",
 			width: 420,
 			closeOnSubmit: false
 		});
 	}
 	get title() {
-		return `${this.object.name} - ${game.i18n.localize( 'DND4EBETA.SpeedAndMove')}`;
+		return `${this.object.name} - ${game.i18n.localize( 'DND4E.SpeedAndMove')}`;
 	}
 
 	/** @override */
