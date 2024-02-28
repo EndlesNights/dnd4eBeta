@@ -9,22 +9,22 @@ import { DND4E } from "./config.js";
 import { registerSystemSettings } from "./settings.js";
 import {libWrapper} from './libWrapper-shim.js';
 
-// import { SimpleItemSheet } from "./item-sheet.js";
+// import Sheets
 import ItemSheet4e from "./item/item-sheet.js";
 import ContainerItemSheet from "./item/container-sheet.js";
-
-import { measureDistances, getBarAttribute } from "./canvas.js";
-import { _getInitiativeFormula } from "./combat.js";
-
 import ActorSheet4e from "./actor/actor-sheet.js";
 import ActorSheet4eNPC from "./actor/npc-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
-// Import Entities
+import { measureDistances, getBarAttribute } from "./canvas.js";
+import { _getInitiativeFormula } from "./combat.js";
+
+// Import Documents
 import AbilityTemplate from "./pixi/ability-template.js";
 import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
+import ItemDirectory4e from "./apps/item/item-directory.js";
 
 import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs } from "./helper.js";
 
@@ -82,6 +82,8 @@ Hooks.once("init", async function() {
 	CONFIG.Dice.rolls.push(MultiAttackRoll);
 	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
 	
+	CONFIG.ui.items = ItemDirectory4e;
+
 	registerSystemSettings();
 
 	CONFIG.Combat.initiative.formula = "1d20 + @attributes.init.value";

@@ -12,6 +12,11 @@ export default class Item4e extends Item {
 	/** @inheritdoc */
 	async _preUpdate(changed, options, user) {
 		await super._preUpdate(changed, options, user);
+
+		if ( foundry.utils.hasProperty(changed, "system.container") ) {
+			options.formerContainer = (await this.container)?.uuid;
+		}
+
 		// Check for implement weapon type and set weapon implement property to true
 		if (this.type === "weapon" && changed.system?.weaponType === "implement"){
 			foundry.utils.setProperty(changed, "system.properties.imp", true);
@@ -2087,5 +2092,127 @@ export default class Item4e extends Item {
 		if ( this.isEmbedded ) return this.actor.items.get(this.system.container);
 		if ( this.pack ) return game.packs.get(this.pack).getDocument(this.system.container);
 		return game.items.get(this.system.container);
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Fetch a specific contained item.
+	 * @param {string} id                 ID of the item to fetch.
+	 * @returns {Item5e|Promise<Item5e>}  Item if found.
+	 */
+	getContainedItem(id) {
+		if ( this.parent?.isEmbedded ) return this.parent.actor.items.get(id);
+		if ( this.parent?.pack ) return game.packs.get(this.parent.pack)?.getDocument(id);
+		return game.items.get(id);
+	}
+
+	/** @inheritdoc */
+	async _handleDroppedEntry(target, data) {
+		if(this.type !== "backpack"){
+			return super._handleDroppedEntry(target, data);
+		}
+
+		// Obtain the dropped Document
+		let item = await this._getDroppedEntryFromData(data);
+		if ( !item ) return;
+
+		const oldContainer = item.container;
+
+
+		// Create item and its contents if it doesn't already exist here
+		if ( !this._entryAlreadyExists(item) ) {
+			const toCreate = await Item4e.createWithContents([item]);
+			const folder = target?.closest("[data-folder-id]")?.dataset.folderId;
+			if ( folder ) toCreate.map(d => d.folder = folder);
+			[item] = await Item4e.createDocuments(toCreate, {keepId: true});
+		}
+		// Otherwise, if it is within a container, take it out
+		else if ( oldContainer ){
+			await item.update({"system.container": null});
+		}
+
+		// refresh any container sheets if open... TODO, this doesn't refresh the sheet for others veiwing it.
+		// if(oldContainer) oldContainer.sheet.render(oldContainer.sheet.rendered);
+
+		// Let parent method perform sorting
+		super._handleDroppedEntry(target, item.toDragData());
+	}
+
+
+
+	/* -------------------------------------------- */
+	/*  Socket Event Handlers                       */
+	/* -------------------------------------------- */
+
+	/**
+	 * Trigger a render on all sheets for items within which this item is contained.
+	 * @param {object} [options={}]
+	 * @param {object} [options.rendering]        Additional rendering options.
+	 * @param {string} [options.formerContainer]  UUID of the former container if this item was moved.
+	 * @protected
+	 */
+	async _renderContainers({ formerContainer, ...rendering }={}) {
+		console.log(this)
+		console.log(formerContainer)
+		// Render this item's container & any containers it is within
+		const parentContainers = await this.allContainers();
+		parentContainers.forEach(c => c.sheet?.render(false, rendering));
+
+		// Render the actor sheet, compendium, or sidebar
+		if ( this.parent?.isEmbedded ) this.parent.actor.sheet?.render(false, rendering);
+		else if ( this.parent?.pack ) game.packs.get(this.parent.pack).apps.forEach(a => a.render(false, rendering));
+		else ui.sidebar.tabs.items.render(false, rendering);
+
+		// Render former container if it was moved between containers
+		if ( formerContainer ) {
+			const former = await fromUuid(formerContainer);
+			former.render(false, rendering);
+			former._renderContainers(rendering);
+		}
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * All of the containers this item is within up to the parent actor or collection.
+	 * @returns {Promise<Item4e[]>}
+	 */
+	async allContainers() {
+		let item = this;
+		let container;
+		let depth = 0;
+		const containers = [];
+		console.log(this)
+		console.log(item)
+		// if(!item) return [];
+		while ( (container = await item.container) && (depth < 5) ) { //MAX_DEPTH 5
+			containers.push(container);
+			item = container;
+			depth++;
+		}
+		return containers;
+	}
+	
+
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	_onCreate(data, options, userId) {
+		this._renderContainers();
+	}
+
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	_onUpdate(changed, options, userId) {
+		this._renderContainers({ formerContainer: options.formerContainer });
+	}
+
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	_onDelete(options, userId) {
+		this._renderContainers();
 	}
 }

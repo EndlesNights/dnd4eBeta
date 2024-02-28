@@ -65,6 +65,28 @@ export default class ContainerItemSheet extends ItemSheet4e {
 
 		return data;
 	}
+
+	/* -------------------------------------------- */
+	/*  Drag & Drop                                 */
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	async _onDragStart(event) {
+		const li = event.currentTarget;
+		if ( event.target.classList.contains("content-link") ) return;
+		if ( !li.dataset.itemId ) return super._onDragStart(event);
+
+		console.log(li)
+		console.log(li.dataset)
+		console.log(li.dataset)
+		const item = await this.item.getContainedItem(li.dataset.itemId);
+		const dragData = item?.toDragData();
+		if ( !dragData ) return;
+
+		// Set data transfer
+		event.dataTransfer.setData("text/plain", JSON.stringify(dragData));
+	}
+
 	/* -------------------------------------------- */
 
 	/** @inheritdoc */
@@ -127,8 +149,9 @@ export default class ContainerItemSheet extends ItemSheet4e {
 		}
 
 		// refresh any container sheets if open... TODO, this doesn't refresh the sheet for others veiwing it.
-		oldContainer.sheet.render(oldContainer.sheet.rendered);
-		targetItem.sheet.render(targetItem.sheet.rendered);
-		
+		// if(oldContainer) oldContainer.sheet.render(oldContainer.sheet.rendered);
+		// targetItem.sheet.render(targetItem.sheet.rendered);
+		// if(oldContainer) oldContainer.refresh();
+		// targetItem.refresh();
 	}
 }
