@@ -472,6 +472,12 @@ DND4E.durationType = {
 
 /* -------------------------------------------- */
 
+DND4E.PhysicalItemTemplate = {
+	MAX_DEPTH: 5
+}
+
+/* -------------------------------------------- */
+
 DND4E.powerEffectTypes = {
 	"all": "DND4E.TargetAll",
 	"allies": "DND4E.TargetAllies",

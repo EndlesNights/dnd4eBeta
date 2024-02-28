@@ -2056,6 +2056,13 @@ export default class Item4e extends Item {
 		return true;
 	}
 
+
+
+
+// Container Functions
+
+
+
 	/**
 	 * Get all of the items contained in this container. A promise if item is within a compendium.
 	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
@@ -2139,7 +2146,33 @@ export default class Item4e extends Item {
 		super._handleDroppedEntry(target, item.toDragData());
 	}
 
+	/* -------------------------------------------- */
 
+	/**
+	 * @typedef {object} Item4eCapacityDescriptor
+	 * @property {number} value	The current total weight or number of items in the container.
+	 * @property {number} max		The maximum total weight or number of items in the container.
+	 * @property {number} pct		The percentage of total capacity.
+	 * @property {string} units	The units label.
+	 */
+
+	/**
+	 * Compute capacity information for this container.
+	 * @returns {Promise<Item4eCapacityDescriptor>}
+	 */
+	async computeCapacity() {
+		const { value, type } = this.system.capacity;
+		const context = { max: value };
+		if ( type === "weight" ) {
+			context.value = await this.contentsWeight;
+			context.units = game.i18n.localize("DND4E.AbbreviationLbs");
+		} else {
+			context.value = await this.contentsCount;
+			context.units = game.i18n.localize("DND4E.ItemContainerCapacityItems");
+		}
+		context.pct = Math.clamped(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
+		return context;
+	}
 
 	/* -------------------------------------------- */
 	/*  Socket Event Handlers                       */
@@ -2153,8 +2186,8 @@ export default class Item4e extends Item {
 	 * @protected
 	 */
 	async _renderContainers({ formerContainer, ...rendering }={}) {
-		console.log(this)
-		console.log(formerContainer)
+		if(!this.container && !formerContainer) return;
+
 		// Render this item's container & any containers it is within
 		const parentContainers = await this.allContainers();
 		parentContainers.forEach(c => c.sheet?.render(false, rendering));
@@ -2183,22 +2216,20 @@ export default class Item4e extends Item {
 		let container;
 		let depth = 0;
 		const containers = [];
-		console.log(this)
-		console.log(item)
 		// if(!item) return [];
-		while ( (container = await item.container) && (depth < 5) ) { //MAX_DEPTH 5
+		while ( (container = await item.container) && (depth < CONFIG.DND4E.PhysicalItemTemplate.MAX_DEPTH) ) {
 			containers.push(container);
 			item = container;
 			depth++;
 		}
 		return containers;
 	}
-	
 
 	/* -------------------------------------------- */
 
 	/** @inheritdoc */
 	_onCreate(data, options, userId) {
+		super._onCreate(data, options, userId);
 		this._renderContainers();
 	}
 
@@ -2206,6 +2237,7 @@ export default class Item4e extends Item {
 
 	/** @inheritdoc */
 	_onUpdate(changed, options, userId) {
+		super._onUpdate(changed, options, userId);
 		this._renderContainers({ formerContainer: options.formerContainer });
 	}
 
@@ -2213,6 +2245,55 @@ export default class Item4e extends Item {
 
 	/** @inheritdoc */
 	_onDelete(options, userId) {
+		super._onDelete(options, userId);
 		this._renderContainers();
 	}
+
+
+	/* -------------------------------------------- */
+	/*	Factory Methods														 */
+	/* -------------------------------------------- */
+
+	/**
+	 * Prepare creation data for the provided items and any items contained within them. The data created by this method
+	 * can be passed to `createDocuments` with `keepId` always set to true to maintain links to container contents.
+	 * @param {Item4e[]} items										 Items to create.
+	 * @param {object} [context={}]								Context for the item's creation.
+	 * @param {Item4e} [context.container]				 Container in which to create the item.
+	 * @param {boolean} [context.keepId=false]		 Should IDs be maintained?
+	 * @param {Function} [context.transformAll]		Method called on provided items and their contents.
+	 * @param {Function} [context.transformFirst]	Method called only on provided items.
+	 * @returns {Promise<object[]>}								Data for items to be created.
+	 */
+	static async createWithContents(items, { container, keepId=false, transformAll, transformFirst }={}) {
+		let depth = 0;
+		if ( container ) {
+			depth = 1 + (await container.allContainers()).length;
+			if ( depth > CONFIG.DND4E.PhysicalItemTemplate.MAX_DEPTH ) {
+				ui.notifications.warn(game.i18n.format("DND4E.ContainerMaxDepth", { depth: CONFIG.DND4E.PhysicalItemTemplate.MAX_DEPTH }));
+				return;
+			}
+		}
+
+		const createItemData = async (item, containerId, depth) => {
+			let newItemData = transformAll ? await transformAll(item) : item;
+			if ( transformFirst && (depth === 0) ) newItemData = await transformFirst(newItemData);
+			if ( !newItemData ) return;
+			if ( newItemData instanceof Item ) newItemData = newItemData.toObject();
+			foundry.utils.mergeObject(newItemData, {"system.container": containerId} );
+			if ( !keepId ) newItemData._id = foundry.utils.randomID();
+
+			created.push(newItemData);
+
+			const contents = await item.contents;
+			if ( contents && (depth < CONFIG.DND4E.PhysicalItemTemplate.MAX_DEPTH) ) {
+				for ( const doc of contents ) await createItemData(doc, newItemData._id, depth + 1);
+			}
+		};
+
+		const created = [];
+		for ( const item of items ) await createItemData(item, container?.id, depth);
+		return created;
+	}
+	
 }

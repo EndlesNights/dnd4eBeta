@@ -904,4 +904,22 @@ export default class ItemSheet4e extends ItemSheet {
 			origin: this.item.uuid
 		}, {parent: this.item});
 	}
+
+
+
+
+
+
+
+  /* -------------------------------------------- */
+
+  /**
+   * IDs for items on the sheet that have been expanded.
+   * @type {Set<string>}
+   * @protected
+   */
+  _expanded = new Set();
+
+  /* -------------------------------------------- */
+
 }

@@ -77,7 +77,7 @@
 
 			
 			<ol class="item-list">
-				{{#each containerContents as |item iid|}}
+				{{#each items as |item iid|}}
 					<li class="item flexrow {{section.css}}"
 						data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
 						<div class="item-name flexrow rollable">

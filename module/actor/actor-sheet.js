@@ -755,9 +755,9 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 		// Update Inventory Item
 		html.find('.item-edit').click(event => {
-		const li = $(event.currentTarget).parents(".item");
-		const item = this.actor.items.get(li.data("itemId"));
-		item.sheet.render(true);
+			const li = $(event.currentTarget).parents(".item");
+			const item = this.actor.items.get(li.data("itemId"));
+			item.sheet.render(true);
 		});
 
 		if ( this.actor.isOwner ) {	
