@@ -54,18 +54,6 @@ export default class ContainerItemSheet extends ItemSheet4e {
 	async getData(options={}) {
 		const data = await super.getData(options);
 
-		// if(data.document.contents.size){
-		// 	data.containerContents = data.document.contents;
-
-		// 	// Organize items
-		// 	for ( let i of data.containerContents ) {
-		// 		i.system.quantity = i.system.quantity || 0;
-		// 		i.system.weight = i.system.weight || 0;
-		// 		i.totalWeight = Math.round(i.system.quantity * i.system.weight * 10) / 10;
-		// 	}
-		// }
-
-
 		data.items = Array.from(await this.item.contents);
 		data.capacity = await this.item.computeCapacity();
 		data.itemData = {};
@@ -139,9 +127,6 @@ export default class ContainerItemSheet extends ItemSheet4e {
 		if ( event.target.classList.contains("content-link") ) return;
 		if ( !li.dataset.itemId ) return super._onDragStart(event);
 
-		console.log(li)
-		console.log(li.dataset)
-		console.log(li.dataset)
 		const item = await this.item.getContainedItem(li.dataset.itemId);
 		const dragData = item?.toDragData();
 		if ( !dragData ) return;
@@ -163,29 +148,6 @@ export default class ContainerItemSheet extends ItemSheet4e {
 
 		if ( data.type === "Folder" ) return this._onDropFolder(event, data);
 		return this._onDropItem(event, data);
-
-		console.log(event)
-		console.log(data)
-		console.log(item)
-
-		/**
-		 * A hook event that fires when some useful data is dropped onto an ItemSheet4e.
-		 * @function dnd4e.dropItemSheetData
-		 * @memberof hookEvents
-		 * @param {Item4e} item                  The Item4e
-		 * @param {ItemSheet4e} sheet            The ItemSheet4e application
-		 * @param {object} data                  The data that has been dropped onto the sheet
-		 * @returns {boolean}                    Explicitly return `false` to prevent normal drop handling.
-		 */
-		const allowed = Hooks.call("dnd4e.dropItemSheetData", item, this, data);
-		if ( allowed === false ) return;
-
-		switch ( data.type ) {
-		case "ActiveEffect":
-			return this._onDropActiveEffect(event, data);
-		case "Item":
-			return this._onDropItemContainer(event, data.uuid, item);		
-		}
 	}
 
 
@@ -217,6 +179,7 @@ export default class ContainerItemSheet extends ItemSheet4e {
 			if ( item.type === "container" ) containers.add(item.id);
 			return item;
 		}));
+
 		items = items.filter(i => i && !containers.has(i.system.container));
 
 		// Display recursive warning, but continue with any remaining items
@@ -250,7 +213,7 @@ export default class ContainerItemSheet extends ItemSheet4e {
 		if ( item.system.container === this.item.id ) {
 			return this._onSortItem(event, item);
 		}
-		console.log(this.item)
+
 		// Prevent dropping containers within themselves
 		const parentContainers = await this.item.allContainers();
 		if ( (this.item.uuid === item.uuid) || parentContainers.includes(item) ) {
@@ -308,36 +271,4 @@ export default class ContainerItemSheet extends ItemSheet4e {
 		Item.updateDocuments(updateData, {pack: this.item.pack, parent: this.item.actor});
 	}
 
-	/* -------------------------------------------- */
-
-	/**
-	 * Handle the dropping of an Item data onto a containerItem Sheet
-	 * @param {DragEvent} event					The concluding DragEvent which contains drop data
-	 * @param {string} droppedItemUUID			The  UUID for the item being dropped
-	 * @param {object} targetItem				The container object
-	 * @returns {Promise<ActiveEffect|boolean>}  The created ActiveEffect object or false if it couldn't be created.
-	 * @protected
-	 */
-
-	async _onDropItemContainer(event, droppedItemUUID, targetItem){
-		console.log(droppedItemUUID)
-		const droppedItem = await fromUuid(droppedItemUUID);
-		const oldContainer = droppedItem.container || false;
-		
-		//Check if the object is a valid "physical" item type
-		if(!["weapon", "equipment", "consumable", "tool", "loot", "backpack", ].includes(droppedItem.type)){
-			console.log("Not phsyical item, can not place in contrainer")
-			return;
-		}
-
-		if(droppedItem.parent === targetItem.parent) {
-			console.log("Parent Match!");
-			await droppedItem.update({"system.container": targetItem.id}); 
-			
-			console.log(targetItem.id)
-		} else {
-			console.log("No Parent Match")
-		}
-
-	}
 }

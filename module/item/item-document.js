@@ -150,7 +150,6 @@ export default class Item4e extends Item {
 		if(data.system.armour?.type === "arms" && CONFIG.DND4E.shield[data.system.armour.subType]){
 			if(actorProfs.value.includes(data.system.shieldBaseType)){
 				updates["system.proficient"] = actorProfs.value.includes(data.system.shieldBaseType);
-				console.log("Enters")
 			}
 			else if(data.system.shieldBaseType === "custom"){
 				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.shieldBaseTypeCustom);
@@ -2068,7 +2067,7 @@ export default class Item4e extends Item {
 	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
 	 */
 	get contents() {
-		const parent = this.parent? this.parent: this;
+		const parent = this;
 
 		if ( !parent ) return new foundry.utils.Collection();
 

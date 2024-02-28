@@ -38,6 +38,7 @@ import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 import {TokenBarHooks} from "./hooks.js";
 import { customSKillSetUp } from "./skills/custom-skills.js";
+import Items4e from "./collection/item-collection.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -72,7 +73,7 @@ Hooks.once("init", async function() {
 	// DocumentSheetConfig.registerSheet(Actor4e, "dnd4e", ActiveEffectConfig4e, {makeDefault :true});
 	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
 	CONFIG.ActiveEffect.legacyTransferral = false;
-	
+	CONFIG.Item.collection = Items4e;
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
 

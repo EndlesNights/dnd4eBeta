@@ -863,10 +863,6 @@ export default class ItemSheet4e extends ItemSheet {
 		const data = TextEditor.getDragEventData(event);
 		const item = this.item;
 
-		console.log(event)
-		console.log(data)
-		console.log(item)
-
 		/**
 		 * A hook event that fires when some useful data is dropped onto an ItemSheet4e.
 		 * @function dnd4e.dropItemSheetData

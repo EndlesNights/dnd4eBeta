@@ -113,7 +113,10 @@ export default class ActorSheet4e extends ActorSheet {
 		data.actor = actor;
 		data.system = actorData;
 
-		data.items = actor.items;
+		data.items = actor.items
+			.filter(i => !actor.items.has(i.system.container))
+			.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+
 		for ( let i of data.items ) {
 			const item = this.actor.items.get(i._id);
 			i.labels = item.labels;
