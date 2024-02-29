@@ -170,9 +170,6 @@ export default class ContainerItemSheet extends ItemSheet4e {
 		return this._onDropItem(event, data);
 	}
 
-
-
-
 	/* -------------------------------------------- */
 
 	/**

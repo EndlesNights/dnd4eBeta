@@ -21,7 +21,7 @@ export default class ItemDirectory4e extends ItemDirectory {
 			[item] = await Item4e.createDocuments(toCreate, {keepId: true});
 		}
 		// Otherwise, if it is within a container, take it out
-		else if ( oldContainer ){
+		if ( oldContainer ){
 			await item.update({"system.container": null});
 		}
 

@@ -1780,6 +1780,16 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 * @protected
 	 */
 	async _onDropItem(event, data) {
+		const item = await Item.implementation.fromDropData(data);
+
+		if(item.container){
+			await item.update({"system.container":null})
+		}
+
+		// If item already exists in this actor, just adjust its sorting
+		if(this.actor.items.get(item.id)) {
+			return super._onDropItem(event, data);
+		}
 
 		// Stack identical consumables
 		const stacked = await this._onDropStackConsumables(await fromUuid(data.uuid));
@@ -1804,6 +1814,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			return sourceId && (sourceId === droppedSourceId) && (i.type === "consumable") && (i.name === itemData.name);
 		});
 		if ( !similarItem ) return null;
+		console.log(similarItem.system.quantity)
+		console.log(itemData.system.quantity)
 		return similarItem.update({
 			"system.quantity": similarItem.system.quantity + Math.max(itemData.system.quantity, 1)
 		});

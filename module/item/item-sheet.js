@@ -901,12 +901,6 @@ export default class ItemSheet4e extends ItemSheet {
 		}, {parent: this.item});
 	}
 
-
-
-
-
-
-
   /* -------------------------------------------- */
 
   /**
