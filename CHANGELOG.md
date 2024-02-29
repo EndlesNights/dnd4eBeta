@@ -3,12 +3,14 @@
 ## Version 0.4.44
 - Added right Click apply effect options on power card categorized by type.
 - Added Effects drop down menu on power cards for manually application of effects
-- fixed minnor issue where effect durration labels would not localize properly on setup.
+- fixed minor issue where effect duration labels would not localize properly on setup.
 - When creating items within the directory, the default new name should be based on the item type, rather than just be "New Item" 
-- similarconsumable items with the same source
-- removed all refrences to word beta
+- similar consumable items with the same source
+- removed all references to word beta
 - renamed file `entity.js` to `item-document.js`
 - renamed file `sheet.js` to `item-sheet.js`
+- added additional layer of sorting, elements that are sorted can further be manually sorted
+- Overhaul to backpack / Container Items. Can now contain sub items, currency and ritual ingredients.
 
 ## Version 0.4.43
 - Minor fix to application of active effects. If a player is the owner of the token / actor, it will no longer require use the socket to apply the effect. 
