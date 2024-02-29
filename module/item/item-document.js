@@ -2174,7 +2174,7 @@ export default class Item4e extends Item {
 	 * @returns {Item4e|Promise<Item4e>}  Item if found.
 	 */
 	getContainedItem(id) {
-		if ( this.parent?.isEmbedded ) return this.parent.actor.items.get(id);
+		if ( this.isEmbedded ) return this.actor.items.get(id);
 		if ( this.parent?.pack ) return game.packs.get(this.parent.pack)?.getDocument(id);
 		return game.items.get(id);
 	}
