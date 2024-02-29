@@ -76,7 +76,7 @@
 
 
 			
-			<ol class="item-list">
+			<ol class="item-list inventory-list">
 				{{#each items as |item iid|}}
 					<li class="item flexrow {{section.css}}"
 						data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
@@ -116,6 +116,16 @@
 					</li>
 				{{/each}}
 				</ol>
+
+				{{#with encumbrance}}
+				<div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" data-tooltip="{{localize 'DND4E.EncumbranceTip'}}">
+					<span class="encumbrance-bar" style="width:{{pbc}}%"></span>
+					{{#if encumbered}}
+						<span class="encumbrance-bar encumbered" style="width:{{pec}}%"></span>
+					{{/if}}
+					<span class="encumbrance-label">{{value}} / {{max}} lbs.</span>
+				</div>
+				{{/with}}
 		</div>
 
 		{{!-- Description Tab --}}
