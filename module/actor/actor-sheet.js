@@ -303,7 +303,7 @@ export default class ActorSheet4e extends ActorSheet {
 		for ( let i of items ) {
 			i.system.quantity = i.system.quantity || 0;
 			i.system.weight = i.system.weight || 0;
-			// i.totalWeight = Math.round(i.system.quantity * i.system.weight * 10) / 10;
+			i.totalWeightLable = i.totalWeight.toNearest(0.01);
 			inventory[i.type].items.push(i);
 		}
 

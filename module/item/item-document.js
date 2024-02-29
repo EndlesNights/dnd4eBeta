@@ -540,10 +540,10 @@ export default class Item4e extends Item {
 		const { value, type } = this.system.capacity;
 		const context = { max: value ?? Infinity };
 		if ( type === "weight" ) {
-			context.value = await this.contentsWeight;
+			context.value = await this.contentsWeight.toNearest(0.01);
 			context.units = game.i18n.localize("DND4E.AbbreviationLbs");
 		} else {
-			context.value = await this.contentsCount;
+			context.value = await this.contentsCount.toNearest(0.01);
 			context.units = game.i18n.localize("DND4E.ItemContainerCapacityItems");
 		}
 		// context.pct = Math.clamped(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
@@ -2240,34 +2240,6 @@ export default class Item4e extends Item {
 			if ( item.type === "container" ) (await item.system.allContainedItems).forEach(i => collection.set(i.id, i));
 			return collection;
 		}, new foundry.utils.Collection());
-	}
-
-	/* -------------------------------------------- */
-
-	/**
-	 * @typedef {object} Item4eCapacityDescriptor
-	 * @property {number} value	The current total weight or number of items in the container.
-	 * @property {number} max		The maximum total weight or number of items in the container.
-	 * @property {number} pct		The percentage of total capacity.
-	 * @property {string} units	The units label.
-	 */
-
-	/**
-	 * Compute capacity information for this container.
-	 * @returns {Promise<Item4eCapacityDescriptor>}
-	 */
-	async computeCapacity() {
-		const { value, type } = this.system.capacity;
-		const context = { max: value };
-		if ( type === "weight" ) {
-			context.value = await this.contentsWeight;
-			context.units = game.i18n.localize("DND4E.AbbreviationLbs");
-		} else {
-			context.value = await this.contentsCount;
-			context.units = game.i18n.localize("DND4E.ItemContainerCapacityItems");
-		}
-		context.pct = Math.clamped(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
-		return context;
 	}
 
 	/* -------------------------------------------- */
