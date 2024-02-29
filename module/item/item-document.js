@@ -366,12 +366,13 @@ export default class Item4e extends Item {
 	}
 
 	/* -------------------------------------------- */
-	/*	Data Preparation														*/
+	/*	Data Preparation							*/
 	/* -------------------------------------------- */
 
 	/**
 	 * Augment the basic Item data model with additional dynamic data.
 	 */
+	/** @inheritdoc */
 	prepareData() {
 		super.prepareData();
 		// Get the Item's data
@@ -506,6 +507,11 @@ export default class Item4e extends Item {
 
 	}
 
+	// /** @inheritdoc */
+	// prepareDerivedData() {
+
+	// }
+
 	/* -------------------------------------------- */
 
 	getDamageType(){
@@ -522,6 +528,27 @@ export default class Item4e extends Item {
 			}
 		}
 		return this.system.damageType;
+	}
+
+/* -------------------------------------------- */
+  /**
+   * Compute capacity information for this container.
+   * @returns {Promise<Item4eCapacityDescriptor>}
+   */
+	async _computeEncumbrance(){
+
+		const { value, type } = this.system.capacity;
+		const context = { max: value ?? Infinity };
+		if ( type === "weight" ) {
+			context.value = await this.contentsWeight;
+			context.units = game.i18n.localize("DND4E.AbbreviationLbs");
+		} else {
+			context.value = await this.contentsCount;
+			context.units = game.i18n.localize("DND4E.ItemContainerCapacityItems");
+		}
+		context.pct = Math.clamped(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
+		return context;
+
 	}
 
 	/* -------------------------------------------- */
@@ -857,7 +884,7 @@ export default class Item4e extends Item {
 	}
 
 	/* -------------------------------------------- */
-	/*  Chat Cards																	*/
+	/*  Chat Cards									*/
 	/* -------------------------------------------- */
 
 	/**
@@ -2056,11 +2083,44 @@ export default class Item4e extends Item {
 	}
 
 
+	/* -------------------------------------------- */
+	/*	Getters										*/
+	/* -------------------------------------------- */
 
+	/**
+	 * Get the weight of all of the currency. Always returns 0 if currency weight is disabled in settings.
+	 * @returns {number}
+	 */
+	get currencyWeight() {
+		if ( !game.settings.get("dnd4e", "currencyWeight") ) return 0;
 
-// Container Functions
+		let weight = 0;
+		for (let [e, v] of Object.entries(this.system.currency)) {
+			weight += (e == "ad" ? v/500 : v/50);
+		}
 
+		return weight;
+	}
 
+	/**
+	 * Get the weight of all of the Ritual Componets. Always returns 0 if currency weight is disabled in settings.
+	 * @returns {number}
+	 */
+	get ritualCompWeight() {
+		if ( !game.settings.get("dnd4e", "currencyWeight") ) return 0;
+
+		let weight = 0;
+		//4e 1gp of residuum weights 0.000002
+		for (let [e, v] of Object.entries(actorData.currency)) {
+			weight += v * 0.000002;
+		}
+
+		return weight;
+	}
+
+	/* -------------------------------------------- */
+	/*				Container Functions				*/
+	/* -------------------------------------------- */
 
 	/**
 	 * Get all of the items contained in this container. A promise if item is within a compendium.
@@ -2105,7 +2165,7 @@ export default class Item4e extends Item {
 	/**
 	 * Fetch a specific contained item.
 	 * @param {string} id                 ID of the item to fetch.
-	 * @returns {Item5e|Promise<Item5e>}  Item if found.
+	 * @returns {Item4e|Promise<Item4e>}  Item if found.
 	 */
 	getContainedItem(id) {
 		if ( this.parent?.isEmbedded ) return this.parent.actor.items.get(id);
@@ -2148,6 +2208,37 @@ export default class Item4e extends Item {
 	/* -------------------------------------------- */
 
 	/**
+	 * Get all of the items in this container and any sub-containers. A promise if item is within a compendium.
+	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
+	 */
+	get allContainedItems() {
+		if ( !this.parent ) return new foundry.utils.Collection();
+		if ( this.parent.pack ) return this.#allContainedItems();
+
+		return this.contents.reduce((collection, item) => {
+			collection.set(item.id, item);
+			if ( item.type === "container" ) item.system.allContainedItems.forEach(i => collection.set(i.id, i));
+			return collection;
+		}, new foundry.utils.Collection());
+	}
+
+	/**
+	 * Asynchronous helper method for fetching all contained items from a compendium.
+	 * @returns {Promise<Collection<Item4e>>}
+	 * @private
+	 */
+	async #allContainedItems() {
+		return (await this.contents).reduce(async (promise, item) => {
+			const collection = await promise;
+			collection.set(item.id, item);
+			if ( item.type === "container" ) (await item.system.allContainedItems).forEach(i => collection.set(i.id, i));
+			return collection;
+		}, new foundry.utils.Collection());
+	}
+
+	/* -------------------------------------------- */
+
+	/**
 	 * @typedef {object} Item4eCapacityDescriptor
 	 * @property {number} value	The current total weight or number of items in the container.
 	 * @property {number} max		The maximum total weight or number of items in the container.
@@ -2172,6 +2263,59 @@ export default class Item4e extends Item {
 		context.pct = Math.clamped(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
 		return context;
 	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Number of items contained in this container including items in sub-containers. Result is a promise if item
+	 * is within a compendium.
+	 * @type {number|Promise<number>}
+	 */
+	get contentsCount() {
+		const reducer = (count, item) => count + item.system.quantity;
+		const items = this.allContainedItems;
+		if ( items instanceof Promise ) return items.then(items => items.reduce(reducer, 0));
+		return items.reduce(reducer, 0);
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Weight of the items in this container. Result is a promise if item is within a compendium.
+	 * @type {number|Promise<number>}
+	 */
+	get contentsWeight() {
+		if ( this.parent?.pack && !this.parent?.isEmbedded ) return this.#contentsWeight();
+		return this.contents.reduce((weight, item) => weight + item.totalWeight, this.currencyWeight);
+	}
+
+	/**
+	 * Asynchronous helper method for calculating the weight of items in a compendium.
+	 * @returns {Promise<number>}
+	 */
+	async #contentsWeight() {
+		const contents = await this.contents;
+		console.log(contents)
+		return contents.reduce(async (weight, item) => await weight + await item.system.totalWeight, this.currencyWeight);
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * The weight of this container with all of its contents. Result is a promise if item is within a compendium.
+	 * @type {number|Promise<number>}
+	 */
+	get totalWeight() {
+		
+		if(this.type !== "backpack"){
+			return (this.system.quantity * this.system.weight).toNearest(0.01);
+		}
+
+		if ( this.system.capacity.weightless ) return this.system.weight;
+		const containedWeight = this.contentsWeight;
+		if ( containedWeight instanceof Promise ) return containedWeight.then(c => this.system.weight + c);
+		return this.system.weight + containedWeight;
+	}	
 
 	/* -------------------------------------------- */
 	/*  Socket Event Handlers                       */
@@ -2250,7 +2394,7 @@ export default class Item4e extends Item {
 
 
 	/* -------------------------------------------- */
-	/*	Factory Methods														 */
+	/*	Factory Methods								*/
 	/* -------------------------------------------- */
 
 	/**

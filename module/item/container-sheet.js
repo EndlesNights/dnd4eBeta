@@ -55,7 +55,8 @@ export default class ContainerItemSheet extends ItemSheet4e {
 		const data = await super.getData(options);
 
 		data.items = Array.from(await this.item.contents);
-		data.capacity = await this.item.computeCapacity();
+		data.encumbrance = await this.item._computeEncumbrance();
+		
 		data.itemData = {};
 
 		for ( const i of data.items ) {
@@ -85,6 +86,7 @@ export default class ContainerItemSheet extends ItemSheet4e {
 		super.activateListeners(html);
 
 		// Update Contents Item
+		html.find('.item .item-image').click(event => this._onItemRoll(event));
 
 		html.find('.item-quantity input').click(event => event.target.select()).change( event => {
 			const li = $(event.currentTarget).parents(".item");
@@ -93,12 +95,14 @@ export default class ContainerItemSheet extends ItemSheet4e {
 		});
 		
 		html.find('.item-edit').click(event => {
+			event.preventDefault();
 			const li = $(event.currentTarget).parents(".item");
 			const item = this.object.contents.get(li.data("itemId"));
 			return item.sheet.render(true);
 		});
 
 		html.find('.item-delete').click(event => {
+			event.preventDefault();
 			const li = $(event.currentTarget).parents(".item");
 			const item = this.object.contents.get(li.data("itemId"));
 			if ( item )  {
@@ -117,6 +121,22 @@ export default class ContainerItemSheet extends ItemSheet4e {
 			}
 		});
 	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
+	 * @private
+	 */
+	_onItemRoll(event) {
+		event.preventDefault();
+		const li = $(event.currentTarget).parents(".item");
+		const item = this.object.contents.get(li.data("itemId"));
+
+		if(item.actor) return item.roll();
+		return false;
+	}
+
 	/* -------------------------------------------- */
 	/*  Drag & Drop                                 */
 	/* -------------------------------------------- */

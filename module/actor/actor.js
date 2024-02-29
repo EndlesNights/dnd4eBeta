@@ -1627,12 +1627,13 @@ export class Actor4e extends Actor {
 		//4e 1gp or residuum weights 0.000002
 		
 		const physicalItems = ["weapon", "equipment", "consumable", "tool", "backpack", "loot"];
-		weight += this.items.reduce((weight, i) => {
-			if ( !physicalItems.includes(i.type) ) return weight;
-				const q = i.system.quantity || 0;
-				const w = i.system.weight || 0;
-				return weight + (q * w);
-			}, 0);
+		weight += this.items
+			.filter(item => !item.container)
+			.reduce((weight, i) => {
+				if ( !physicalItems.includes(i.type) ) return weight;
+					return weight + i.totalWeight;
+				}, 0
+			);
 	  
 
 		//round to nearest 100th.
