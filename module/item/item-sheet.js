@@ -60,6 +60,7 @@ export default class ItemSheet4e extends ItemSheet {
 		data.config = CONFIG.DND4E;
 
 		// Item Type, Status, and Details
+		data.user = game.user;
 		data.itemType = itemData.type.titleCase();
 		data.itemStatus = this._getItemStatus(itemData);
 		data.itemProperties = this._getItemProperties(itemData);
@@ -144,6 +145,20 @@ export default class ItemSheet4e extends ItemSheet {
 			async: true,
 			relativeTo: this.item
 		});
+
+		const descriptionGM = data.system.description.gm || "";
+		const descriptionTextGM = data.system.description.gm ? Helper.commonReplace(descriptionGM, itemActor, itemData.system, weaponUse?.system) : "";
+
+		data.descriptionHTMLGM = await TextEditor.enrichHTML(descriptionTextGM || descriptionGM, {
+			secrets: data.item.isOwner,
+			async: true,
+			relativeTo: this.item,
+			// icon: "fa-regular fa-note-medical"
+		});
+
+		if(data.system.description.gm){
+			data.system.description.gmNotes = true;
+		}
 
 		data.effectDetailHTML = await TextEditor.enrichHTML(data.system.effect?.detail, {
 			secrets: data.item.isOwner,
@@ -652,8 +667,36 @@ export default class ItemSheet4e extends ItemSheet {
 
 			html.find('.powereffect-control').click(this._onPowerEffectControl.bind(this));
 		}
+
+		
+		// Add a link to add GM notes
+		if ( this.isEditable && game.user.isGM && !this.item.system.description.gm) {
+			const descriptionEditors = html.find(".tab[data-tab=description]");
+			const mainEditor = descriptionEditors.find(".main .editor");
+
+			const addGMNotesLink = document.createElement("a");
+			addGMNotesLink.className = "add-gm-notes editor-edit"
+			addGMNotesLink.dataset.action = "add-gm-notes";
+			addGMNotesLink.innerHTML = `<i class="fa-regular fa-note-medical"></i>`;
+			addGMNotesLink.dataset.tooltip = "DND4E.GMNotesAdd";
+			mainEditor.prepend(addGMNotesLink);
+			addGMNotesLink.addEventListener("click", () => {
+				html.find(".gm-notes")?.addClass("has-content");
+				this.activateEditor("system.description.gm");
+			});
+		}
 	}
 
+	async activateEditor(name, options={}, initialContent="") {
+
+		if(name === "system.description.gm"){
+			this.element.find(".description").addClass("editing-gm");
+		}
+		else if(name === "system.description.value"){
+			this.element.find(".description").addClass("editing-main");
+		}
+		return super.activateEditor(name, options, initialContent);
+	}
 
 	/* -------------------------------------------- */
 

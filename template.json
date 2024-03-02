@@ -983,6 +983,9 @@
 				"chat": "",
 				"unidentified": ""
 			},
+			"descriptionGM": {
+				"value": ""
+			},
 			"source": ""
 		},
 		"physicalItem": {

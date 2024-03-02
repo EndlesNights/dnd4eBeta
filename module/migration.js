@@ -186,6 +186,7 @@ export const migrateItemData = function(item) {
 	const updateData = {};
 	_migrateImplmentKey(item, updateData);
 	_migrateContainerItems(item, updateData);
+	_migrateItemsGMDescriptions(item, updateData);
 	return updateData;
 };
 
@@ -613,7 +614,7 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
  * @returns {object}           Modified version of update data.
  * @private
  */
- function _migrateContainerItems(itemData, updateData){
+function _migrateContainerItems(itemData, updateData){
 
 	if(itemData.type === "backpack"){
 		//Add ritual datakeys
@@ -635,7 +636,25 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 	}
 
 	return updateData;
- }
+}
+
+
+/**
+ * Migrate all items data to include new object keys for a GM Description, which will not be visable to normal players
+ * @param {object} itemData   Item data being migrated.
+ * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+function _migrateItemsGMDescriptions(itemData, updateData){
+
+	if(!itemData.system.description.hasOwnProperty('gm')){
+		updateData["system.description.gm"] = "";
+	}
+	
+	return updateData;
+}
+
 /**
  * A general tool to purge flags from all entities in a Compendium pack.
  * @param {Compendium} pack   The compendium pack to clean
