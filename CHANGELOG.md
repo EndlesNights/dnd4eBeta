@@ -11,7 +11,9 @@
 - renamed file `sheet.js` to `item-sheet.js`
 - added additional layer of sorting, elements that are sorted can further be manually sorted
 - Overhaul to backpack / Container Items. Can now contain sub items, currency and ritual ingredients.
-- The details tabs of all item types now support GM Notes. GM Notes are only visable to users with the GM user account.
+- The details tabs of all item types now support GM Notes. GM Notes are only visible to users with the GM user account.
+- Added `AutoApplyEffects` setting to game system. Set to true by default. While turned on, Active Effects will be applied automatically to targets or self when Powers / Attacks are made (as they currently were). While turned off, Active Effects will not be applied automatically to any tokens.
+
 ## Version 0.4.43
 - Minor fix to application of active effects. If a player is the owner of the token / actor, it will no longer require use the socket to apply the effect. 
 

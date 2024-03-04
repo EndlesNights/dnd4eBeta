@@ -637,9 +637,10 @@ export default class Item4e extends Item {
 		
 		if(["power", "consumable"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
-
-			Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
-			Helper.applyEffectsToTargets(this.effects, this.parent);
+			if(game.settings.get("dnd4e", "autoApplyEffects")){
+				Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
+				Helper.applyEffectsToTargets(this.effects, this.parent);
+			}
 		}
 		else if (["weapon", "equipment", "backpack", "tool", "loot"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--item`);
@@ -1157,6 +1158,7 @@ export default class Item4e extends Item {
 			}
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power")
 		}
+		
 		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack")
 
 		// Compose roll options

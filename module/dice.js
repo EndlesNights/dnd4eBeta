@@ -242,20 +242,22 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		roll.populateMultirollData(targetData, critStateArray);			
 		Hooks.callAll("dnd4e.rollAttack", data.item, targetData, speaker);
 	
-		if(targetData.targetHit.length){
-			Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
-			Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hitOrMiss", options.parent);
-			Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfHit", options.parent);
-		}
-		if(targetData.targetMissed.length){
-			Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", options.parent);
-			Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "hitOrMiss", options.parent);
-			Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfMiss", options.parent);
+		if(game.settings.get("dnd4e", "autoApplyEffects")){
+			if(targetData.targetHit.length){
+				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
+				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hitOrMiss", options.parent);
+				Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfHit", options.parent);
+			}
+			if(targetData.targetMissed.length){
+				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", options.parent);
+				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "hitOrMiss", options.parent);
+				Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfMiss", options.parent);
+			}
 		}
 	}
 
 	// Move this so that it only gets called when attacks are made, not all d20 rolls?
-	if(options.powerEffects) {
+	if(options.powerEffects && game.settings.get("dnd4e", "autoApplyEffects")) {
 		// Always apply these effects after the attack, even if the player forgot to select targets
 		Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfAfterAttack", options.parent);
 	}

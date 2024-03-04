@@ -112,6 +112,7 @@ export const registerSystemSettings = function() {
 		default: false,
 		type: Boolean
 	});
+
 	/**
 	 * Determs when Death Saving Throws are reset
 	 */
@@ -128,6 +129,19 @@ export const registerSystemSettings = function() {
 			2: "DND4E.RestLongH",
 		}
 	});
+	
+	/**
+	 * Are Effects Automaticly Applied to targets targets upen using powers / attacks
+	 */
+	game.settings.register("dnd4e", "autoApplyEffects", {
+		name: "SETTINGS.4eAutoApplyEffectsN",
+		hint: "SETTINGS.4eAutoApplyEffectsL",
+		scope: "world",
+		config: true,
+		default: true,
+		type: Boolean
+	});
+
 	// /**
 	//  * Option to disable XP bar for session-based or story-based advancement.
 	//  */

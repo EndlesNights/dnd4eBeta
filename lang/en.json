@@ -1479,6 +1479,8 @@
 "DND4EUI.Yes": "Yes",
 "SETTINGS.4eApplyEffectsToSelectionN": "Buttons to apply effects should apply to SELECTED tokens",
 "SETTINGS.4eApplyEffectsToSelectionL": "If checked, apply effect buttons will work over targets that are SELECTED.  Otherwise will work over tokens that are TARGETED",
+"SETTINGS.4eAutoApplyEffectsL": "Determin if a powers effects/conditions will be autmaticly appled to valid selected targets when a power is used or when an attack roll is made.",
+"SETTINGS.4eAutoApplyEffectsN": "Automaticly Apply Effetcs",
 "SETTINGS.4eAutoCollapseCardL": "Automatically collapse Item Card descriptions in the Chat Log",
 "SETTINGS.4eAutoCollapseCardN": "Collapse Item Cards in Chat",
 "SETTINGS.4eAutoDoTsApply": "Apply automatically",
