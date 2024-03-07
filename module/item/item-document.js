@@ -78,8 +78,8 @@ export default class Item4e extends Item {
 	/** @inheritdoc */
 	async _preCreate(data, options, user) {
 		await super._preCreate(data, options, user);
-
-		this._onCreationName(data)
+		
+		this._onCreationName(data);
 
 		if ( !this.isEmbedded) return;
 		const isNPC = this.parent.type === "npc";
@@ -106,11 +106,26 @@ export default class Item4e extends Item {
 	 * @param {object} data       Data for the newly created item.
 	 */ 
 	_onCreationName(data){
-		if(!data.system){
-			const updates = {};
-			updates["name"] = game.i18n.format("DND4E.ItemNew", {type: data.type.capitalize()});
-			this.updateSource(updates);
-		}
+		if(data.system) return;
+
+		const labeltype = game.i18n.localize("DOCUMENT.Item");
+		const defaultLable = game.i18n.format("DOCUMENT.New", {type: labeltype});
+		const regexPattern = `${defaultLable} \\(\\d+\\)`;
+		const regex = new RegExp(regexPattern, 'g');
+
+		if(data.name !== defaultLable && !regex.test(data.name)) return;
+
+		const updates = {};
+		let count = 0;
+		this.collection.forEach((item) =>{
+			if(item.type == this.type) count ++;
+		})
+		
+		let newName = game.i18n.format("DND4E.ItemNew", {type: data.type.capitalize()})
+		if(count) newName += ` (${count + 1})`;
+		updates["name"] = newName;
+		this.updateSource(updates);
+		
 	}
 
 	/* -------------------------------------------- */
