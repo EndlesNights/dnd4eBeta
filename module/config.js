@@ -426,6 +426,33 @@ DND4E.damageTypes = {
   "thunder": "DND4E.DamageThunder"
 };
 
+
+/* -------------------------------------------- */
+
+/**
+ * Default artwork configuration for each Document type and sub-type.
+ * @type {Record<string, Record<string, string>>}
+ */
+
+//TODO, get icons that are nice
+DND4E.defaultArtwork = {
+	Item: {
+		"backpack": "icons/svg/barrel.svg",
+		"classFeats": "icons/svg/book.svg",
+		"consumable": "icons/svg/tankard.svg",
+		"destinyFeats": "icons/svg/book.svg",
+		"equipment": "icons/svg/shield.svg",
+		"feat": "icons/svg/book.svg",
+		"loot": "icons/svg/chest.svg",
+		"pathFeats": "icons/svg/book.svg",
+		"power": "icons/svg/combat.svg",
+		"raceFeats": "icons/svg/book.svg",
+		"ritual": "icons/svg/statue.svg",
+		"tool": "icons/svg/trap.svg",
+		"weapon": "icons/svg/sword.svg"
+	}
+}
+
 /* -------------------------------------------- */
 
 // Def

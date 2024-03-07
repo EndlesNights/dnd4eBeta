@@ -128,6 +128,11 @@ export default class Item4e extends Item {
 		
 	}
 
+	static getDefaultArtwork(itemData={}) {
+
+		return {img: CONFIG.DND4E.defaultArtwork.Item[itemData.type]} ?? super.getDefaultArtwork(itemData);
+	}
+
 	/* -------------------------------------------- */
 
 	/**
