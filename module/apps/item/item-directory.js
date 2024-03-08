@@ -12,7 +12,6 @@ export default class ItemDirectory4e extends ItemDirectory {
 
 		const oldContainer = item.container;
 
-
 		// Create item and its contents if it doesn't already exist here
 		if ( !this._entryAlreadyExists(item) ) {
 			const toCreate = await Item4e.createWithContents([item]);
@@ -20,13 +19,11 @@ export default class ItemDirectory4e extends ItemDirectory {
 			if ( folder ) toCreate.map(d => d.folder = folder);
 			[item] = await Item4e.createDocuments(toCreate, {keepId: true});
 		}
+
 		// Otherwise, if it is within a container, take it out
 		if ( oldContainer ){
 			await item.update({"system.container": null});
 		}
-
-		// refresh any container sheets if open... TODO, this doesn't refresh the sheet for others veiwing it.
-		// if(oldContainer) oldContainer.sheet.render(oldContainer.sheet.rendered);
 
 		// Let parent method perform sorting
 		super._handleDroppedEntry(target, item.toDragData());

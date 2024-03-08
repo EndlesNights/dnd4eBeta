@@ -20,6 +20,7 @@ import ActiveEffect4e from "../effects/effects.js";
 import HPOptions from "../apps/hp-options.js";
 import { Helper } from "../helper.js";
 import {ActionPointExtraDialog} from "../apps/action-point-extra.js";
+import Item4e from "../item/item-document.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -1780,22 +1781,91 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 * @protected
 	 */
 	async _onDropItem(event, data) {
+		if ( !this.actor.isOwner ) return false;
 		const item = await Item.implementation.fromDropData(data);
 
-		if(item.container){
-			await item.update({"system.container":null})
+		// Handle moving out of container & item sorting
+		if ( this.actor.uuid === item.parent?.uuid ) {
+			if ( item.system.container !== null ) await item.update({"system.container": null});
+			return this._onSortItem(event, item.toObject());
 		}
 
-		// If item already exists in this actor, just adjust its sorting
-		if(this.actor.items.get(item.id)) {
-			return super._onDropItem(event, data);
+		return this._onDropItemCreate(item);
+		// return super._onDropItem(event, data);
+	}
+
+	/** @override */
+	async _onDropFolder(event, data) {
+		// return super._onDropFolder(event, data);
+		
+		if ( !this.actor.isOwner ) return [];
+		const folder = await Folder.implementation.fromDropData(data);
+		if ( folder.type !== "Item" ) return [];
+		const droppedItemData = await Promise.all(folder.contents.map(async item => {
+			if ( !(item instanceof Item) ) item = await fromUuid(item.uuid);
+			return item;
+		}));
+		return this._onDropItemCreate(droppedItemData);
+	}
+
+	/**
+	 * Handle the final creation of dropped Item data on the Actor.
+	 * @param {Item4e[]|Item4e} itemData     The item or items requested for creation
+	 * @returns {Promise<Item4e[]>}
+	 * @protected
+	 */
+	async _onDropItemCreate(itemData) {
+		let items = itemData instanceof Array ? itemData : [itemData];
+		const itemsWithoutAdvancement = items.filter(i => !i.system.advancement?.length);
+		const multipleAdvancements = (items.length - itemsWithoutAdvancement.length) > 1;
+		if ( multipleAdvancements && !game.settings.get("dnd4e", "disableAdvancements") ) {
+			ui.notifications.warn(game.i18n.format("DND4E.WarnCantAddMultipleAdvancements"));
+			items = itemsWithoutAdvancement;
 		}
+	
+		// Filter out items already in containers to avoid creating duplicates
+		const containers = new Set(items.filter(i => i.type === "backpack").map(i => i._id));
+		items = items.filter(i => !containers.has(i.system.container));
+	
+		// Create the owned items & contents as normal
+		const toCreate = await Item4e.createWithContents(items, {
+			transformFirst: item => this._onDropSingleItem(item.toObject())
+		});
+		return Item4e.createDocuments(toCreate, {pack: this.actor.pack, parent: this.actor, keepId: true});
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handles dropping of a single item onto this character sheet.
+	 * @param {object} itemData					The item data to create.
+	 * @returns {Promise<object|boolean>}		The item data to create after processing, or false if the item should not be
+	 * 											created or creation has been otherwise handled.
+	 * @protected
+	 */
+	async _onDropSingleItem(itemData) {
+		// Clean up data
+		this._onDropResetData(itemData);
 
 		// Stack identical consumables
-		const stacked = await this._onDropStackConsumables(await fromUuid(data.uuid));
+		const stacked = this._onDropStackConsumables(itemData);
 		if ( stacked ) return false;
 
-		return super._onDropItem(event, data);
+		return itemData;
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Reset certain pieces of data stored on items when they are dropped onto the actor.
+	 * @param {object} itemData    The item data requested for creation. **Will be mutated.**
+	 */
+	_onDropResetData(itemData) {
+		if ( !itemData.system ) return;
+		// ["equipped", "proficient", "prepared"].forEach(k => delete itemData.system[k]);
+		// if ( "attunement" in itemData.system ) {
+		// 	itemData.system.attunement = Math.min(itemData.system.attunement, CONFIG.DND5E.attunementTypes.REQUIRED);
+		// }
 	}
 
 	/* -------------------------------------------- */
@@ -1805,7 +1875,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 * @param {object} itemData         The item data requested for creation.
 	 * @returns {Promise<Item4e>|null}  If a duplicate was found, returns the adjusted item stack.
 	 */
-	async _onDropStackConsumables(itemData) {
+	_onDropStackConsumables(itemData) {
 
 		const droppedSourceId = itemData.flags.core?.sourceId;
 		if ( itemData.type !== "consumable" || !droppedSourceId ) return null;

@@ -2203,12 +2203,10 @@ export default class Item4e extends Item {
 
 	/** @inheritdoc */
 	async _handleDroppedEntry(target, data) {
-		if(this.type !== "backpack"){
-			return super._handleDroppedEntry(target, data);
-		}
 
 		// Obtain the dropped Document
-		let item = await this._getDroppedEntryFromData(data);
+
+		let item = await Item.fromDropData(data); //this._getDroppedEntryFromData(data);
 		if ( !item ) return;
 
 		const oldContainer = item.container;
@@ -2295,7 +2293,6 @@ export default class Item4e extends Item {
 	 */
 	async #contentsWeight() {
 		const contents = await this.contents;
-		console.log(contents)
 		return contents.reduce(async (weight, item) => await weight + await item.system.totalWeight, this.currencyWeight);
 	}
 
@@ -2359,7 +2356,7 @@ export default class Item4e extends Item {
 		let container;
 		let depth = 0;
 		const containers = [];
-		// if(!item) return [];
+		
 		while ( (container = await item.container) && (depth < CONFIG.DND4E.PhysicalItemTemplate.MAX_DEPTH) ) {
 			containers.push(container);
 			item = container;
@@ -2400,13 +2397,13 @@ export default class Item4e extends Item {
 	/**
 	 * Prepare creation data for the provided items and any items contained within them. The data created by this method
 	 * can be passed to `createDocuments` with `keepId` always set to true to maintain links to container contents.
-	 * @param {Item4e[]} items										 Items to create.
-	 * @param {object} [context={}]								Context for the item's creation.
-	 * @param {Item4e} [context.container]				 Container in which to create the item.
-	 * @param {boolean} [context.keepId=false]		 Should IDs be maintained?
-	 * @param {Function} [context.transformAll]		Method called on provided items and their contents.
-	 * @param {Function} [context.transformFirst]	Method called only on provided items.
-	 * @returns {Promise<object[]>}								Data for items to be created.
+	 * @param {Item4e[]} items								Items to create.
+	 * @param {object} [context={}]							Context for the item's creation.
+	 * @param {Item4e} [context.container]					Container in which to create the item.
+	 * @param {boolean} [context.keepId=false]				Should IDs be maintained?
+	 * @param {Function} [context.transformAll]				Method called on provided items and their contents.
+	 * @param {Function} [context.transformFirst]			Method called only on provided items.
+	 * @returns {Promise<object[]>}							Data for items to be created.
 	 */
 	static async createWithContents(items, { container, keepId=false, transformAll, transformFirst }={}) {
 		let depth = 0;
@@ -2417,9 +2414,10 @@ export default class Item4e extends Item {
 				return;
 			}
 		}
-
+		
 		const createItemData = async (item, containerId, depth) => {
 			let newItemData = transformAll ? await transformAll(item) : item;
+			
 			if ( transformFirst && (depth === 0) ) newItemData = await transformFirst(newItemData);
 			if ( !newItemData ) return;
 			if ( newItemData instanceof Item ) newItemData = newItemData.toObject();
