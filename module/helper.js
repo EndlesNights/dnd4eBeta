@@ -914,7 +914,7 @@ export class Helper {
 		powerDetail += `</span>`;
 
 		if(chatData.requirement) {
-			powerDetail += `<p class="requirements"><strong>${game.i18n.localize("DND4EBETA.Requirements")}:</strong> ${chatData.requirement}</span></p>`;
+			powerDetail += `<p class="requirements"><strong>${game.i18n.localize("DND4EBETA.Requirements")}:</strong> ${chatData.requirement}</p>`;
 		}
 
 		if(chatData.trigger) {
