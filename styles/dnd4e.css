@@ -2650,7 +2650,9 @@ input[type="text"].dice-count{
 
 	flex-basis: calc(50% - 2px); 
 }
-.dnd4e.chat-card .card-buttons button:last-child:nth-child(odd) {
+.dnd4e.chat-card .card-buttons button:last-child:nth-child(odd)
+/* .dnd4e.chat-card .card-buttons button:nth-child(n+3) */
+{
 	flex-basis: 100%;
 }
 .dnd4e.chat-card .card-footer {
