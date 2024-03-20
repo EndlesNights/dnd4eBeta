@@ -560,10 +560,10 @@ export default class Item4e extends Item {
 		const { value, type } = this.system.capacity;
 		const context = { max: value ?? Infinity };
 		if ( type === "weight" ) {
-			context.value = await this.contentsWeight.toNearest(0.01);
+			context.value = this.pack ? await this.contentsWeight : await this.contentsWeight.toNearest(0.01);
 			context.units = game.i18n.localize("DND4E.AbbreviationLbs");
 		} else {
-			context.value = await this.contentsCount.toNearest(0.01);
+			context.value = this.pack ? await this.contentsWeight : await this.contentsCount.toNearest(0.01);
 			context.units = game.i18n.localize("DND4E.ItemContainerCapacityItems");
 		}
 		// context.pct = Math.clamped(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
@@ -2283,7 +2283,7 @@ export default class Item4e extends Item {
 	 * @type {number|Promise<number>}
 	 */
 	get contentsWeight() {
-		if ( this.parent?.pack && !this.parent?.isEmbedded ) return this.#contentsWeight();
+		if ( this.pack && !this.isEmbedded ) return this.#contentsWeight();
 		return this.contents.reduce((weight, item) => weight + item.totalWeight, this.currencyWeight);
 	}
 
