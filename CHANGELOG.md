@@ -15,6 +15,8 @@
 - Added `AutoApplyEffects` setting to game system. Set to true by default. While turned on, Active Effects will be applied automatically to targets or self when Powers / Attacks are made (as they currently were). While turned off, Active Effects will not be applied automatically to any tokens.
 - Added diffrent icons for all item types
 - Added /text option to text helper function. Checks if value in the inline roll is isDeterministic and returns as plain text rather than in a <a> tag
+- fix to chat power card html [PR 347](https://github.com/EndlesNights/dnd4eBeta/pull/347) from [FoxLee](https://github.com/FoxLee) 
+
 ## Version 0.4.43
 - Minor fix to application of active effects. If a player is the owner of the token / actor, it will no longer require use the socket to apply the effect. 
 
