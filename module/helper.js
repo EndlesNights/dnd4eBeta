@@ -754,6 +754,18 @@ export class Helper {
 			}
 		}
 
+		//Temporary, this should be moved into an enrichers class in the future
+		const regexTextPattern = /\[\[\/text\s(.*?)\]\]/g;
+		newFormula = newFormula.replace(regexTextPattern, (text, r) => {
+			let roll = new Roll(`${r}`);
+
+			if(roll.isDeterministic){
+				roll.evaluate({async: false});
+				return roll.total;
+			}
+			return `[[${r}]]`;
+		});
+
 		return newFormula;
 	}
 
