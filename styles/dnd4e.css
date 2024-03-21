@@ -211,18 +211,37 @@ textarea{
 .sheet .sheet-header img{
 	margin-right:0px;
 }
-.dnd4e .sheet-header .profile-img{
+.dnd4e.sheet.actor .sheet-header .profile-img,
+.dnd4e.sheet.actor .image-frame .profile-img,
+.dnd4e.sheet.item .image-frame .profile {
 	flex:0 0 100px;
 	margin-right:0px;
     object-fit:contain;
+
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.dnd4e.sheet.actor .image-frame img {
+	max-height: 100px;
 }
 .image-frame{
 	max-width:100px;
 	max-height:100px;
 	position:relative;
 }
-.dnd4e.sheet.actor .image-frame{
-	margin-left:15px;
+.dnd4e.sheet.actor .image-frame {
+	margin-left:10px;
+	max-width:100px;
+	max-height:100px;
+}
+.dnd4e.sheet.actor.NPC .image-frame {
+	margin-left:3px;
+	margin-right:3px;
+	padding-right:5px;
+	max-width:64px;
+	max-height:64px;
 }
 .dnd4e.sheet.actor{
 	min-width:836px;
