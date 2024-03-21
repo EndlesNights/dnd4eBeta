@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.4.45
+- fixed minor bug where container item sheets could not be opened in compendiums
+- Edited CSS to better center non square image icons for Player Character, and Non Player Character actor sheets, along with item profile icons.
+- minor CSS fix item card buttons 
+
 ## Version 0.4.44
 - Added right Click apply effect options on power card categorized by type.
 - Added Effects drop down menu on power cards for manually application of effects
