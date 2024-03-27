@@ -709,6 +709,7 @@ textarea{
 	flex:2;
 	font-weight:bold;
 	max-width:174px;
+	max-width:174px;
 	color:var(--color-label);
 }
 .dnd4e .form-group.wide label{
@@ -2135,6 +2136,9 @@ font-size:12px;
 	text-align:center;
 	line-height:24px;
 }
+.dnd4e.sheet.item .details .form-group .attack-roll span {
+	flex: 0 0 50px;
+}
 .dnd4e.sheet.item .details .form-group.input-select select{
 	flex:1.8;
 }
@@ -2142,12 +2146,14 @@ font-size:12px;
 	flex:1.5;
 }
 .dnd4e.sheet.item .details .form-group.two-input input{
-	flex:0 0 42px;
+	flex:0.5;
 }
 .dnd4e.sheet.item .details .form-group.two-input span{
 	flex:0 0 16px;
 }
-.dnd4e.sheet.item .details .form-group.two-input select{
+.dnd4e.sheet.item .details .form-group.two-input select,
+.dnd4e.sheet.item .details .form-group .item-range input
+{
 	flex:1;
 }
 .dnd4e.sheet.item .details span.sep{
@@ -2229,7 +2235,7 @@ font-size:12px;
 	opacity:0.75;
 }
 .dnd4e.sheet .item-sheet .form-group .consumption select.consume-type{
-	flex:0.55;
+	flex:0.65;
 }
 .dnd4e.sheet .item-sheet .form-group .consumption select.consume-target{
 	width:80%;
@@ -2238,7 +2244,7 @@ font-size:12px;
 	flex:1 0 6px;
 }
 .dnd4e.sheet .item-sheet .form-group .item-range .range-of{
-	flex:0.6 0 16px;
+	flex:0 0 64px;
 }
 .dnd4e.sheet .item-sheet .form-group label.auto-card{
 	max-width:208px;
@@ -2256,7 +2262,8 @@ font-size:12px;
 	height:100%;
 }
 .dnd4e.sheet .item-sheet .item-damage .dmg-base-qty{
-	min-width:105px;
+	/* min-width:105px; */
+	flex: 0.5 0 0;
 }
 .dnd4e.sheet .item-sheet .weapon-properties label.damage-type{
 	max-width:100%;
