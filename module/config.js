@@ -607,7 +607,6 @@ DND4E.militaryM = {
 	battleaxe:"DND4E.WeaponBattleaxe",
 	broadsword:"DND4E.WeaponBroadsword",
 	carrikal:"DND4E.WeaponCarrikal",
-	chatchka:"DND4E.WeaponChatchka",
 	falchion:"DND4E.WeaponFalchion",
 	flail:"DND4E.WeaponFlail",
 	glaive:"DND4E.WeaponGlaive",
@@ -636,7 +635,8 @@ DND4E.militaryM = {
 };
 DND4E.militaryR = {
 	longbow:"DND4E.WeaponLongbow",
-	shortbow:"DND4E.WeaponShortbow"
+	shortbow:"DND4E.WeaponShortbow",
+	chatchka:"DND4E.WeaponChatchka"
 };
 
 DND4E.superiorM = {
