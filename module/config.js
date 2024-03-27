@@ -515,7 +515,8 @@ DND4E.powerEffectTypes = {
 	"self": "DND4E.TargetSelf",
 	"selfAfterAttack": "DND4E.TargetSelfAfterAttack",
 	"selfHit": "DND4E.TargetSelfHit",
-	"selfMiss": "DND4E.TargetSelfMiss"
+	"selfMiss": "DND4E.TargetSelfMiss",
+	"misc": "DND4E.TargetMisc"
 }
 
 /* -------------------------------------------- */

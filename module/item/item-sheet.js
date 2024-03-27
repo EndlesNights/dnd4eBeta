@@ -222,7 +222,7 @@ export default class ItemSheet4e extends ItemSheet {
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "selfAfterAttack") categories.selfAfterAttack.effects.push(e);
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "allies") categories.allies.effects.push(e);
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "enemies") categories.enemies.effects.push(e);
-				else categories.all.effects.push(e);
+				else categories.misc.effects.push(e);
 			}
 		}
 		return categories;

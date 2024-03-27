@@ -1127,6 +1127,7 @@
 "DND4E.TargetEnemyAdjacent": "Adjacent Enemy",
 "DND4E.TargetLine": "Line",
 "DND4E.TargetObject": "Object",
+"DND4E.TargetMisc": "Misc",
 "DND4E.TargetPersonal": "Personal",
 "DND4E.TargetRadius": "Radius",
 "DND4E.TargetSpace": "Space",
