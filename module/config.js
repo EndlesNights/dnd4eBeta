@@ -608,7 +608,6 @@ DND4E.militaryM = {
 	battleaxe:"DND4E.WeaponBattleaxe",
 	broadsword:"DND4E.WeaponBroadsword",
 	carrikal:"DND4E.WeaponCarrikal",
-	chatchka:"DND4E.WeaponChatchka",
 	falchion:"DND4E.WeaponFalchion",
 	flail:"DND4E.WeaponFlail",
 	glaive:"DND4E.WeaponGlaive",
@@ -637,7 +636,8 @@ DND4E.militaryM = {
 };
 DND4E.militaryR = {
 	longbow:"DND4E.WeaponLongbow",
-	shortbow:"DND4E.WeaponShortbow"
+	shortbow:"DND4E.WeaponShortbow",
+	chatchka:"DND4E.WeaponChatchka"
 };
 
 DND4E.superiorM = {
@@ -1092,11 +1092,13 @@ DND4E.weaponProperties = {
   "imp": "DND4E.WeaponPropertiesImp",
   "lof": "DND4E.WeaponPropertiesLof",
   "lom": "DND4E.WeaponPropertiesLom",
+  "mou": "DND4E.WeaponPropertiesMou",
   "off": "DND4E.WeaponPropertiesOff",
   "rch": "DND4E.WeaponPropertiesRch",
   "rel": "DND4E.WeaponPropertiesRel",
   "sml": "DND4E.WeaponPropertiesSml",
   "spc": "DND4E.WeaponPropertiesSpc",
+  "sto": "DND4E.WeaponPropertiesSto",
   "thv": "DND4E.WeaponPropertiesThv",
   "tlg": "DND4E.WeaponPropertiesTlg",
   "two": "DND4E.WeaponPropertiesTwo",
