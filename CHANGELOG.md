@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.4.46
+- added misc option for Active Effects
+- minor CSS fix to Power Item Details tab
+- weapon type and category fixes [PR 350](https://github.com/EndlesNights/dnd4eBeta/pull/350) from [FoxLee](https://github.com/FoxLee) 
+
 ## Version 0.4.45
 - fixed minor bug where container item sheets could not be opened in compendiums
 - Edited CSS to better center non square image icons for Player Character, and Non Player Character actor sheets, along with item profile icons.
