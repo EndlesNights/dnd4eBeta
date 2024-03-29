@@ -221,6 +221,7 @@ textarea{
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	border-width: 2px;
 }
 
 .dnd4e.sheet.actor .image-frame img {
@@ -1665,7 +1666,7 @@ font-size:12px;
 	flex:0 0 100%;
 }
 .dnd4e.sheet .item-list .item-detail{
-	flex:0 0 62px;
+	flex:0 0 68px;
 	font-size:12px;
 	text-align:center;
 	border-right:var(--border-faint);
@@ -1674,7 +1675,7 @@ font-size:12px;
 	overflow:hidden;
 }
 .dnd4e.sheet .item-list .item-range{
-	flex:0 0 60px;
+	flex:0 0 68px;
 }
 .dnd4e.sheet .item-list .item-range .range-number{
 	background-color:var(--color-bg-input);
@@ -2139,6 +2140,9 @@ font-size:12px;
 .dnd4e.sheet.item .details .form-group .attack-roll span {
 	flex: 0 0 50px;
 }
+.dnd4e.sheet.item .details .form-group .attack-roll select:first-of-type {
+	min-width: 122px;
+}
 .dnd4e.sheet.item .details .form-group.input-select select{
 	flex:1.8;
 }
@@ -2148,8 +2152,18 @@ font-size:12px;
 .dnd4e.sheet.item .details .form-group.two-input input{
 	flex:0.5;
 }
-.dnd4e.sheet.item .details .form-group.two-input span{
+.dnd4e.sheet.item .details .form-group.two-input span {
 	flex:0 0 16px;
+}
+.dnd4e.sheet.item .details .form-group .item-range span:first-of-type {
+	flex:0 0 16px;
+}
+.dnd4e.sheet.item .details .form-group .item-range span:last-of-type {
+	flex:0 0 0px;
+	min-width: 94px;
+}
+.dnd4e.sheet.item .details .form-group .item-range select:first-of-type {
+	min-width: 88px;
 }
 .dnd4e.sheet.item .details .form-group.two-input select,
 .dnd4e.sheet.item .details .form-group .item-range input
