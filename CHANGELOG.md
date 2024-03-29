@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.4.47
+- minor CSS fixes to Power Item Details tab & Actor power table
+- minor fix to loclization text.
+- other minor fixes from [PR 351](https://github.com/EndlesNights/dnd4eBeta/pull/351) from [wigmeister2000](https://github.com/wigmeister2000) 
+	- An empty tooltip showed up when the effect description was empty. This should be suppressed now.
+	- The "apply effects to selected tokens" option in the settings did nothing. This should now toggle between selected and targeted tokens.
+	- When adding "apply to all targets" effects, they showed up in the misc section.
+
 ## Version 0.4.46
 - added misc option for Active Effects
 - minor CSS fix to Power Item Details tab
