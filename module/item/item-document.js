@@ -628,7 +628,9 @@ export default class Item4e extends Item {
 		// Set up html div for effect Tool Tips
 		if(this.effects.size){
 			for(const e of this.effects){
-				e.descriptionToolTip = `<div class="effect-tooltip" >${e.description}</div>`;
+				if (e.description){
+					e.descriptionToolTip = `<div class="effect-tooltip" >${e.description}</div>`;
+				}
 			}
 		}
 
@@ -2014,7 +2016,8 @@ export default class Item4e extends Item {
 		else if ( action === "applyEffect" ) {
 			//apply the single effect from button
 			const effect = await fromUuid(button.closest("[data-uuid]")?.dataset.uuid);
-			Helper.applyEffectsToTokens([effect], canvas.tokens.controlled, effect.flags.dnd4e.effectData.powerEffectTypes, actor);
+			const targets = game.settings.get("dnd4e", "applyEffectsToSelection") ? canvas.tokens.controlled : game.user.targets;
+			Helper.applyEffectsToTokens([effect], targets, effect.flags.dnd4e.effectData.powerEffectTypes, actor);
 		} 
 		else if ( action === "effect" ) Helper.applyAllXEffectsToTokens(item.effects, actor, effectTargets);
 		else if ( action === "hitEffect" ) Helper.applyEffectsToTokens(item.effects, effectTargets, "hit", actor);
