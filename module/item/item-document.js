@@ -628,7 +628,9 @@ export default class Item4e extends Item {
 		// Set up html div for effect Tool Tips
 		if(this.effects.size){
 			for(const e of this.effects){
-				e.descriptionToolTip = `<div class="effect-tooltip" >${e.description}</div>`;
+				if (e.description){
+					e.descriptionToolTip = `<div class="effect-tooltip" >${e.description}</div>`;
+				}
 			}
 		}
 
