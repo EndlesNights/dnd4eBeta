@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.48
+- added common replace helper `@sneak`, which will return the number of dice needed for sneak attack based on character tier.
+- added common replace helper `@scale`, which is a common scale used by many class features that increments at level 6, 11, 16, 21, and 26. 
+
 ## Version 0.4.47
 - minor CSS fixes to Power Item Details tab & Actor power table
 - minor fix to localization text.

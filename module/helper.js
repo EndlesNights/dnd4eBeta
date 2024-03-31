@@ -399,6 +399,9 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
 
 				newFormula = newFormula.replaceAll("@bloodied",  actorInnerData.details.isBloodied ? 1 : 0);
+				
+				newFormula = newFormula.replaceAll("@scale",  this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic));
+				newFormula = newFormula.replaceAll("@sneak",  CONFIG.DND4E.SNEAKSCALE[actorInnerData.details.tier]);
 			}
 			else {
 				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.  Replacing: " + formula)
@@ -1256,6 +1259,41 @@ export class Helper {
 		const foundEffects = power.item.effects.contents.filter(e => effects.includes(e.flags.dnd4e.effectData.powerEffectTypes));
 		return foundEffects.length > 0;
 	}
+
+	/**
+	 * Use to find the value in a given scale
+	 *
+	 * @param {input} number an input value as a number, usely a character or item level
+	 * @param {scale} object an scale in object format, with keys being the miniume level required for each step
+	 * @returns {result} New set of matching disposition
+	 */
+	static findKeyScale(input, scale){
+		let result = 0;
+		// Iterate through the keys of the scale object
+		for (let key in scale) {
+			// Convert key to a number
+			let currentKey = parseInt(key);
+			// Check if input is equal to or higher than current key
+			if (input >= currentKey) {
+				// Check if there's a next key
+				let nextKey = null;
+				for (let next in scale) {
+					let nextNum = parseInt(next);
+					if (nextNum > currentKey) {
+						nextKey = nextNum;
+						break;
+					}
+				}
+				// If there's no next key or input is lower than the next key, assign result
+				if (!nextKey || input < nextKey) {
+					result = scale[key];
+					break;
+				}
+			}
+		}
+		return result;
+	}
+
 }
 
 export async function handleApplyEffectToToken(data){

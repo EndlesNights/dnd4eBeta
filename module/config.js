@@ -1507,8 +1507,25 @@ DND4E.script = {
   "Davek": "DND4E.ScriptDavek",
   "Iokharic": "DND4E.ScriptIokharic",
   "Rellanic": "DND4E.ScriptRellanic",
-
 };
+
+//use @level to derive value
+DND4E.SCALE = {
+	basic: {
+		1: 1,
+		6: 2,
+		11: 3,
+		16: 4,
+		21: 5,
+		26: 6
+	},
+}
+
+DND4E.SNEAKSCALE = {//uses @tier to derive value 
+	1: 2,
+	2: 3,
+	3: 5,
+}
 
 // Character Level XP Requirements
 DND4E.CHARACTER_EXP_LEVELS =  [
