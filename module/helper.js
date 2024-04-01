@@ -399,9 +399,6 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
 
 				newFormula = newFormula.replaceAll("@bloodied",  actorInnerData.details.isBloodied ? 1 : 0);
-				
-				newFormula = newFormula.replaceAll("@scale",  this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic));
-				newFormula = newFormula.replaceAll("@sneak",  CONFIG.DND4E.SNEAKSCALE[actorInnerData.details.tier]);
 			}
 			else {
 				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.  Replacing: " + formula)
@@ -952,27 +949,37 @@ export class Helper {
 		}
 
 		if(chatData.attack.isAttack) {
+			const weaponData = this.getWeaponUse(chatData, actorData);
+			const attackForm = this.commonReplace(chatData.attack.formula, actorData, chatData, weaponData?.system);
+			let attackTotal = attackForm;
+			
+			try {
+				attackTotal = Roll.safeEval(attackForm).toString();
+			} catch (e) { /* noop */ }
+			
+			//if does not start with a number sign add one
+			
+			attackTotal = attackTotal.trim();
+			if(!(attackTotal.startsWith("+") || attackTotal.startsWith("-"))) {
+				attackTotal = '+' + attackTotal;
+			}
+			
+			let atkFormText = this.translateFormula(chatData.attack.formula,CONFIG.DND4E.abilities[chatData.attack?.ability]);
+			
 			if(chatData.attack.ability === "form"){
-				//if does not srtart with a number sign add one
-
-				let attackForm = this.commonReplace(chatData.attack.formula, actorData);
-				try {
-					attackForm = Roll.safeEval(attackForm).toString();
-				} catch (e) { /* noop */ }
-				
-
-				let trimmedForm = attackForm.trim()
-				if(!(trimmedForm.startsWith("+") || trimmedForm.startsWith("-"))) {
-					trimmedForm = '+' + trimmedForm;
-				}
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> ${trimmedForm} ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
+				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> <a class="attack-bonus" data-tooltip="${atkFormText} (${attackForm})">${attackTotal}</a> ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
 			}
 			else if(chatData.attack.ability){
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${CONFIG.DND4E.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
+				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: <a class="attack-bonus" data-tooltip="`;		
+				if(game.settings.get("dnd4e","cardAtkDisplay")=="bonus"){
+					powerDetail += `${atkFormText}">${attackTotal}`;
+				}else{
+					powerDetail += `${attackTotal} (${attackForm})">${CONFIG.DND4E.abilities[chatData.attack.ability]}`;
+				}
+				powerDetail += `</a> ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
 			} else {
 				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")} ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
 			}
-			// powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${CONFIG.DND4E.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
 		}
 
 		let highlight = true;
@@ -1209,13 +1216,12 @@ export class Helper {
 		return ( idOnly ? firstGM.id : firstGM );
 	}
 	
-	
 	/**
-	/* Function to return the sum of the highest positive value 
-	/* and the lowest negative value in a given set.
-	/* Intended for getting the correct value from multiple 
-	/* resistances and vulnerabilities.
-	/*																			*/
+	 * Function to return the sum of the highest positive value 
+	 * and the lowest negative value in a given set.
+	 * Intended for getting the correct value from multiple 
+	 * resistances and vulnerabilities.
+	 */
 	static sumExtremes(values = []){
 		if (!values.length) return;
 		let negatives = [0], positives = [0];
@@ -1232,7 +1238,6 @@ export class Helper {
 		return Math.max(...positives) + Math.min(...negatives);
 	}
 
-	
 	/**
 	 * Determine if a fastForward key was held during the given click event.
 	 *
@@ -1259,41 +1264,36 @@ export class Helper {
 		const foundEffects = power.item.effects.contents.filter(e => effects.includes(e.flags.dnd4e.effectData.powerEffectTypes));
 		return foundEffects.length > 0;
 	}
-
+	
 	/**
-	 * Use to find the value in a given scale
-	 *
-	 * @param {input} number an input value as a number, usely a character or item level
-	 * @param {scale} object an scale in object format, with keys being the miniume level required for each step
-	 * @returns {result} New set of matching disposition
+	 * Function to replace some common variables with
+	 * their names rather than the values.
+	 * Returns a translated string with unrecognised 
+	 * variables translated to plain text (no @ symbol).
+	 * Intended for clarifying what goes into a formula,
+	 * e.g. in chat cards and such.
 	 */
-	static findKeyScale(input, scale){
-		let result = 0;
-		// Iterate through the keys of the scale object
-		for (let key in scale) {
-			// Convert key to a number
-			let currentKey = parseInt(key);
-			// Check if input is equal to or higher than current key
-			if (input >= currentKey) {
-				// Check if there's a next key
-				let nextKey = null;
-				for (let next in scale) {
-					let nextNum = parseInt(next);
-					if (nextNum > currentKey) {
-						nextKey = nextNum;
-						break;
-					}
-				}
-				// If there's no next key or input is lower than the next key, assign result
-				if (!nextKey || input < nextKey) {
-					result = scale[key];
-					break;
-				}
-			}
+	static translateFormula(string,powerMod=null){
+		string = string.replaceAll('*',' &times; ');
+		string = string.replaceAll('/',' &div; ');
+		string = string.replaceAll(',',', ');
+		string = string.replaceAll('@wepAttack',`${game.i18n.localize("DND4E.BonusTypeProficiency")} + ${game.i18n.localize("DND4E.BonusTypeEnhancement")}`);
+		string = string.replaceAll('@lvhalf',game.i18n.localize('DND4E.HalfLVL'));
+		string = string.replaceAll('@atkMod',game.i18n.localize('DND4E.Bonuses'));
+		string = string.replaceAll('@strMod',`${game.i18n.localize('DND4E.AbilStr')} ${game.i18n.localize('DND4E.Mod')}`);
+		string = string.replaceAll('@dexMod',`${game.i18n.localize('DND4E.AbilDex')} ${game.i18n.localize('DND4E.Mod')}`);
+		string = string.replaceAll('@conMod',`${game.i18n.localize('DND4E.AbilCon')} ${game.i18n.localize('DND4E.Mod')}`);
+		string = string.replaceAll('@intMod',`${game.i18n.localize('DND4E.AbilInt')} ${game.i18n.localize('DND4E.Mod')}`);
+		string = string.replaceAll('@wisMod',`${game.i18n.localize('DND4E.AbilWis')} ${game.i18n.localize('DND4E.Mod')}`);
+		string = string.replaceAll('@chaMod',`${game.i18n.localize('DND4E.AbilCha')} ${game.i18n.localize('DND4E.Mod')}`);
+		string = string.replaceAll('@tier',game.i18n.localize('DND4E.Tier'));
+		if(powerMod){
+			string = string.replaceAll('@powerMod',`${powerMod} ${game.i18n.localize('DND4E.Mod')}`);
 		}
-		return result;
+		string = string.replaceAll('@','');
+		return string;
 	}
-
+	
 }
 
 export async function handleApplyEffectToToken(data){
