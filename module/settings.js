@@ -342,4 +342,17 @@ export const registerSystemSettings = function() {
 	// 	],
 	// 	precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL,
 	// });
+	
+	game.settings.register("dnd4e", "cardAtkDisplay",{
+		name: "SETTINGS.4eCardAtkDisplayN",
+		hint: "SETTINGS.4eCardAtkDisplayL",
+		scope: "client",
+		config: true,
+		default: "bonus",
+		type: String,
+		choices: {
+			"bonus": "SETTINGS.4eCardAtkDisplayBonus",
+			"stat": "SETTINGS.4eCardAtkDisplayStat"
+		}
+	});
 };
