@@ -61,7 +61,8 @@ Hooks.once("init", async function() {
 		},
 		macros: macros,
 		migrations: migrations,
-		rollItemMacro: macros.rollItemMacro
+		rollItemMacro: macros.rollItemMacro,
+		toggleEffect: macros.toggleEffect
 	};
 
 	game.helper = Helper;
@@ -175,16 +176,22 @@ Hooks.once("setup", function() {
 });
 Hooks.once("ready",  function() {
 	// Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-	Hooks.on("hotbarDrop", (bar, data, slot) => macros.create4eMacro(data, slot));
+	// Hooks.on("hotbarDrop", (bar, data, slot) => macros.create4eMacro(data, slot));
+	Hooks.on("hotbarDrop", (bar, data, slot) => {
+		if ( ["Item", "ActiveEffect"].includes(data.type) ) {
+			macros.create4eMacro(data, slot);
+			return false;
+		}
+	});
 
-		// Add socket listener for applying activeEffects on targets that users do not own
-		game.socket.on('system.dnd4e', (data) => {
-			if(data.operation === 'applyTokenEffect') handleApplyEffectToToken(data);
-			else if(data.operation === 'deleteTokenEffect') handleDeleteEffectToToken(data);
-			else if(data.operation === 'promptEoTSaves') handlePromptEoTSaves(data);
-			else if(data.operation === 'autoDoTs') handleAutoDoTs(data);
-			else ItemSheet4e._handleShareItem(data);
-		});
+	// Add socket listener for applying activeEffects on targets that users do not own
+	game.socket.on('system.dnd4e', (data) => {
+		if(data.operation === 'applyTokenEffect') handleApplyEffectToToken(data);
+		else if(data.operation === 'deleteTokenEffect') handleDeleteEffectToToken(data);
+		else if(data.operation === 'promptEoTSaves') handlePromptEoTSaves(data);
+		else if(data.operation === 'autoDoTs') handleAutoDoTs(data);
+		else ItemSheet4e._handleShareItem(data);
+	});
 
 	// Determine whether a system migration is required and feasible
 	if ( !game.user.isGM ) return;

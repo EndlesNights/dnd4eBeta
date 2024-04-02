@@ -282,6 +282,7 @@
 "DND4E.ContextMenuActionUnattune": "Unattune",
 "DND4E.ContextMenuActionEnable": "Enable",
 "DND4E.ContextMenuActionDisable": "Disable",
+"DND4E.ControlledNoActor": "No controlled Actor Detected.",
 "DND4E.ConUnconscious": "Unconscious",
 "DND4E.ConWeakened": "Weakened",
 "DND4E.CostGP": "Cost (GP)",
@@ -1480,6 +1481,8 @@
 "DND4EUI.Unknown": "Unknown value",
 "DND4EUI.UnknownCondition.Tip": "No match was found for this id in the current status conditions configuration.",
 "DND4EUI.Yes": "Yes",
+"DND4EUI.AddNewSkill": "Add new Skill",
+
 "SETTINGS.4eApplyEffectsToSelectionN": "Buttons to apply effects should apply to SELECTED tokens",
 "SETTINGS.4eApplyEffectsToSelectionL": "If checked, apply effect buttons will work over targets that are SELECTED.  Otherwise will work over tokens that are TARGETED",
 "SETTINGS.4eAutoApplyEffectsL": "Determin if a powers effects/conditions will be autmaticly appled to valid selected targets when a power is used or when an attack roll is made.",
@@ -1541,7 +1544,9 @@
 "SETTINGS.4eShowCustomSkillH": "Options for adding in custom skills for characters into the game system",
 "SETTINGS.4eShowCustomSkillL": "Custom Skills Configure",
 "SETTINGS.4eShowCustomSkillN": "Custom Skills Configure",
-"DND4EUI.AddNewSkill": "Add new Skill",
+
+"MACRO.4eMissingTargetWarn": "Your controlled actor '{actor}' does not have an {type} with name '{name}'.",
+"MACRO.4eMultipleTargetsWarn": "Your controlled actor '{actor}' has more than one {type} with name '{name}'. The first match will be chosen.",
 
 "MIGRATION.4eBegin": "Applying DnD4E System Migration for version {version}. Please be patient and do not close your game or shut down your server.",
 "MIGRATION.4eComplete": "DnD4E System Migration to version {version} completed!",
