@@ -2688,7 +2688,8 @@ input[type="text"].dice-count{
 	line-height:20px;
 	margin:2px 0;
 
-	flex-basis: calc(50% - 2px); 
+	flex-basis: calc(50% - 2px);
+	overflow: hidden;
 }
 .dnd4e.chat-card .card-buttons button:last-child:nth-child(odd)
 /* .dnd4e.chat-card .card-buttons button:nth-child(n+3) */
