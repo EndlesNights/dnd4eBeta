@@ -596,7 +596,11 @@ export default class Item4e extends Item {
 		const cardData = await ( async () => {
 			if ((this.type === "power" || this.type === "consumable") && this.system.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
-				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor);
+				let attackBonus = null;
+				if(this.hasAttack){
+					attackBonus = await this.getAttackBonus();
+				}
+				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor, attackBonus);
 				return Helper.commonReplace(cardString, this.actor, this, weaponUse? weaponUse.system : null, 1);
 			} else {
 				return null;
@@ -1309,7 +1313,7 @@ export default class Item4e extends Item {
 			rollConfig.options.powerEffects = this.effects;
 			rollConfig.options.parent = this.parent;
 		}
-
+		
 		// Get the bonus
 		const bonus = getAttackRollBonus(rollConfig);
 
