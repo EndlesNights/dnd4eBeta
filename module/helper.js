@@ -853,7 +853,7 @@ export class Helper {
 		}
 	}
 
-	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
+	static _preparePowerCardData(chatData, CONFIG, actorData=null, attackTotal=null) {
 		let powerSource = (chatData.powersource && chatData.powersource !== "") ? `${CONFIG.DND4E.powerSource[`${chatData.powersource}`]}` : "";
 		let powerDetail = `<span class="basics"><span class="usage">${CONFIG.DND4E.powerUseType[`${chatData.useType}`]}</span>`;
 		let tag = [];
@@ -949,37 +949,35 @@ export class Helper {
 		}
 
 		if(chatData.attack.isAttack) {
-			const weaponData = this.getWeaponUse(chatData, actorData);
-			const attackForm = this.commonReplace(chatData.attack.formula, actorData, chatData, weaponData?.system);
-			let attackTotal = attackForm;
-			
-			try {
-				attackTotal = Roll.safeEval(attackForm).toString();
-			} catch (e) { /* noop */ }
-			
-			//if does not start with a number sign add one
-			
-			attackTotal = attackTotal.trim();
-			if(!(attackTotal.startsWith("+") || attackTotal.startsWith("-"))) {
-				attackTotal = '+' + attackTotal;
+			let attackForm = chatData.attack.formula;
+			attackForm = chatData.attack.formula.replaceAll('@powerMod',`@${chatData.attack?.ability}Mod`);
+			const attackValues = this.commonReplace(attackForm, actorData);
+			if(attackTotal){
+				//if does not start with a number sign add one
+				attackTotal = attackTotal.toString();
+				if(!(attackTotal.startsWith("+") || attackTotal.startsWith("-"))) {
+					attackTotal = '+' + attackTotal;
+				}
+			}else if(chatData.attack.ability){
+				attackTotal = CONFIG.DND4E.abilities[chatData.attack.ability];
+			}else{
+				attackTotal = game.i18n.localize("DND4E.Attack");
 			}
 			
-			let atkFormText = this.translateFormula(chatData.attack.formula,CONFIG.DND4E.abilities[chatData.attack?.ability]);
-			
-			if(chatData.attack.ability === "form"){
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> <a class="attack-bonus" data-tooltip="${atkFormText} (${attackForm})">${attackTotal}</a> ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
+			if(chatData.attack.ability === "form"){				
+				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> <a class="attack-bonus" data-tooltip="${attackValues}">${attackTotal}</a>`;
 			}
 			else if(chatData.attack.ability){
 				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: <a class="attack-bonus" data-tooltip="`;		
 				if(game.settings.get("dnd4e","cardAtkDisplay")=="bonus"){
-					powerDetail += `${atkFormText}">${attackTotal}`;
+					powerDetail += `${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackValues})">${attackTotal}</a>`;
 				}else{
-					powerDetail += `${attackTotal} (${attackForm})">${CONFIG.DND4E.abilities[chatData.attack.ability]}`;
+					powerDetail += `${attackTotal} (${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]}</a>`;
 				}
-				powerDetail += `</a> ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
 			} else {
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")} ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
+				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")}`;
 			}
+			powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
 		}
 
 		let highlight = true;
@@ -1263,35 +1261,6 @@ export class Helper {
 	static hasEffects(power, effects) {
 		const foundEffects = power.item.effects.contents.filter(e => effects.includes(e.flags.dnd4e.effectData.powerEffectTypes));
 		return foundEffects.length > 0;
-	}
-	
-	/**
-	 * Function to replace some common variables with
-	 * their names rather than the values.
-	 * Returns a translated string with unrecognised 
-	 * variables translated to plain text (no @ symbol).
-	 * Intended for clarifying what goes into a formula,
-	 * e.g. in chat cards and such.
-	 */
-	static translateFormula(string,powerMod=null){
-		string = string.replaceAll('*',' &times; ');
-		string = string.replaceAll('/',' &div; ');
-		string = string.replaceAll(',',', ');
-		string = string.replaceAll('@wepAttack',`${game.i18n.localize("DND4E.BonusTypeProficiency")} + ${game.i18n.localize("DND4E.BonusTypeEnhancement")}`);
-		string = string.replaceAll('@lvhalf',game.i18n.localize('DND4E.HalfLVL'));
-		string = string.replaceAll('@atkMod',game.i18n.localize('DND4E.Bonuses'));
-		string = string.replaceAll('@strMod',`${game.i18n.localize('DND4E.AbilStr')} ${game.i18n.localize('DND4E.Mod')}`);
-		string = string.replaceAll('@dexMod',`${game.i18n.localize('DND4E.AbilDex')} ${game.i18n.localize('DND4E.Mod')}`);
-		string = string.replaceAll('@conMod',`${game.i18n.localize('DND4E.AbilCon')} ${game.i18n.localize('DND4E.Mod')}`);
-		string = string.replaceAll('@intMod',`${game.i18n.localize('DND4E.AbilInt')} ${game.i18n.localize('DND4E.Mod')}`);
-		string = string.replaceAll('@wisMod',`${game.i18n.localize('DND4E.AbilWis')} ${game.i18n.localize('DND4E.Mod')}`);
-		string = string.replaceAll('@chaMod',`${game.i18n.localize('DND4E.AbilCha')} ${game.i18n.localize('DND4E.Mod')}`);
-		string = string.replaceAll('@tier',game.i18n.localize('DND4E.Tier'));
-		if(powerMod){
-			string = string.replaceAll('@powerMod',`${powerMod} ${game.i18n.localize('DND4E.Mod')}`);
-		}
-		string = string.replaceAll('@','');
-		return string;
 	}
 	
 }
