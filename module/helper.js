@@ -856,7 +856,7 @@ export class Helper {
 		}
 	}
 
-	static _preparePowerCardData(chatData, CONFIG, actorData=null) {
+	static _preparePowerCardData(chatData, CONFIG, actorData=null, attackTotal=null) {
 		let powerSource = (chatData.powersource && chatData.powersource !== "") ? `${CONFIG.DND4E.powerSource[`${chatData.powersource}`]}` : "";
 		let powerDetail = `<span class="basics"><span class="usage">${CONFIG.DND4E.powerUseType[`${chatData.useType}`]}</span>`;
 		let tag = [];
@@ -952,27 +952,35 @@ export class Helper {
 		}
 
 		if(chatData.attack.isAttack) {
-			if(chatData.attack.ability === "form"){
-				//if does not srtart with a number sign add one
-
-				let attackForm = this.commonReplace(chatData.attack.formula, actorData);
-				try {
-					attackForm = Roll.safeEval(attackForm).toString();
-				} catch (e) { /* noop */ }
-				
-
-				let trimmedForm = attackForm.trim()
-				if(!(trimmedForm.startsWith("+") || trimmedForm.startsWith("-"))) {
-					trimmedForm = '+' + trimmedForm;
+			let attackForm = chatData.attack.formula;
+			attackForm = chatData.attack.formula.replaceAll('@powerMod',`@${chatData.attack?.ability}Mod`);
+			const attackValues = this.commonReplace(attackForm, actorData);
+			if(attackTotal){
+				//if does not start with a number sign add one
+				attackTotal = attackTotal.toString();
+				if(!(attackTotal.startsWith("+") || attackTotal.startsWith("-"))) {
+					attackTotal = '+' + attackTotal;
 				}
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> ${trimmedForm} ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
+			}else if(chatData.attack.ability){
+				attackTotal = CONFIG.DND4E.abilities[chatData.attack.ability];
+			}else{
+				attackTotal = game.i18n.localize("DND4E.Attack");
+			}
+			
+			if(chatData.attack.ability === "form"){				
+				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> <a class="attack-bonus" data-tooltip="${attackValues}">${attackTotal}</a>`;
 			}
 			else if(chatData.attack.ability){
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${CONFIG.DND4E.abilities[chatData.attack.ability]} ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
+				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: <a class="attack-bonus" data-tooltip="`;		
+				if(game.settings.get("dnd4e","cardAtkDisplay")=="bonus"){
+					powerDetail += `${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackValues})">${attackTotal}</a>`;
+				}else{
+					powerDetail += `${attackTotal} (${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]}</a>`;
+				}
 			} else {
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")} ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
+				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")}`;
 			}
-			// powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${CONFIG.DND4E.abilities[chatData.attack.ability] || "Attack"} ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
+			powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
 		}
 
 		let highlight = true;
@@ -1209,13 +1217,12 @@ export class Helper {
 		return ( idOnly ? firstGM.id : firstGM );
 	}
 	
-	
 	/**
-	/* Function to return the sum of the highest positive value 
-	/* and the lowest negative value in a given set.
-	/* Intended for getting the correct value from multiple 
-	/* resistances and vulnerabilities.
-	/*																			*/
+	 * Function to return the sum of the highest positive value 
+	 * and the lowest negative value in a given set.
+	 * Intended for getting the correct value from multiple 
+	 * resistances and vulnerabilities.
+	 */
 	static sumExtremes(values = []){
 		if (!values.length) return;
 		let negatives = [0], positives = [0];
@@ -1232,7 +1239,6 @@ export class Helper {
 		return Math.max(...positives) + Math.min(...negatives);
 	}
 
-	
 	/**
 	 * Determine if a fastForward key was held during the given click event.
 	 *
@@ -1259,7 +1265,7 @@ export class Helper {
 		const foundEffects = power.item.effects.contents.filter(e => effects.includes(e.flags.dnd4e.effectData.powerEffectTypes));
 		return foundEffects.length > 0;
 	}
-
+	
 	/**
 	 * Use to find the value in a given scale
 	 *
@@ -1293,7 +1299,7 @@ export class Helper {
 		}
 		return result;
 	}
-
+	
 }
 
 export async function handleApplyEffectToToken(data){

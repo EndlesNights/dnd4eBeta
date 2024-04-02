@@ -982,7 +982,11 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 				if(item.system.autoGenChatPowerCard){
 					// let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
-					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor)}</div>`);
+					let attackBonus = null;
+					if(item.hasAttack){
+						attackBonus = await item.getAttackBonus();
+					}
+					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor, attackBonus)}</div>`);
 					div.append(details);
 				}
 
