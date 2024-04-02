@@ -348,7 +348,7 @@ export const registerSystemSettings = function() {
 		hint: "SETTINGS.4eCardAtkDisplayL",
 		scope: "client",
 		config: true,
-		default: "bonus",
+		default: "stat",
 		type: String,
 		choices: {
 			"bonus": "SETTINGS.4eCardAtkDisplayBonus",
