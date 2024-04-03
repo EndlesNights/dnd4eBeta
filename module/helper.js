@@ -400,8 +400,11 @@ export class Helper {
 
 				newFormula = newFormula.replaceAll("@bloodied",  actorInnerData.details.isBloodied ? 1 : 0);
 				
-				newFormula = newFormula.replaceAll("@scale",  this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic));
 				newFormula = newFormula.replaceAll("@sneak",  CONFIG.DND4E.SNEAKSCALE[actorInnerData.details.tier]);
+
+				//targets @scale plus some #
+				newFormula = newFormula.replace(/@scale(\d*)/g,  (match, number) => {return this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, number-1)});
+
 			}
 			else {
 				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.  Replacing: " + formula)
@@ -1267,13 +1270,15 @@ export class Helper {
 	}
 	
 	/**
-	 * Use to find the value in a given scale
+	 * Use to find the value in a given scale as stored using JavaScript Object Notation.
 	 *
-	 * @param {input} number an input value as a number, usely a character or item level
-	 * @param {scale} object an scale in object format, with keys being the miniume level required for each step
+	 * @param {number} input an input value as a number, usely a character or item level
+	 * @param {object} scale an scale in object format, with keys being the miniume level required for each step
+	 * @param {number} offsetNumber offset value to increase the input to adjust the scale. default value to zero
 	 * @returns {result} New set of matching disposition
 	 */
-	static findKeyScale(input, scale){
+	static findKeyScale(input, scale, offsetNumber=0){
+		input-=offsetNumber;
 		let result = 0;
 		// Iterate through the keys of the scale object
 		for (let key in scale) {
@@ -1297,7 +1302,7 @@ export class Helper {
 				}
 			}
 		}
-		return result;
+		return `${result}`;
 	}
 	
 }
