@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.50
+- changed enhance and enhance implment fields on weapon item cards to accept strings.
+
 ## Version 0.4.49
 - added offset option for scale
 
@@ -61,7 +64,7 @@
 - Fixing typo in "invisible"
 
 ## Version 0.4.40
-- fix issue where chart card preview would not generate with macros in text.
+- fix issue where chat card preview would not generate with macros in text.
 - ActiveEffects access to @bloodied [PR 334](https://github.com/EndlesNights/dnd4eBeta/pull/334) from [wigmeister2000](https://github.com/wigmeister2000)
 
 ## Version 0.4.39

@@ -354,7 +354,7 @@ export class Helper {
 	 * @return {String|{}|number} "0" if called with a depth of <0, A substituted formula string if called with returnDataInsteadOfFormula = false (the default) or an object of {variable = value} if called with returnDataInsteadOfFormula = true
 	 */
 	// DEVELOPER: Remember this call is recursive, if you change the method signature, make sure you update everywhere its used!
-	static commonReplace (formula, actorData, powerInnerData, weaponInnerData=null, depth = 1, returnDataInsteadOfFormula = false) {
+	static commonReplace (formula, actorData, powerInnerData, weaponInnerData=null, depth = 2, returnDataInsteadOfFormula = false) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula.toString(); // just in case integers somehow get passed
 		if (returnDataInsteadOfFormula) {
@@ -370,7 +370,7 @@ export class Helper {
 		}
 
 		if(actorData) {
-			const actorInnerData = actorData.system
+			const actorInnerData = actorData.system;
 			if (actorInnerData) {
 				newFormula = Roll.replaceFormulaData(newFormula, actorInnerData);
 				if(powerInnerData) {
@@ -440,9 +440,9 @@ export class Helper {
 			
 			newFormula = newFormula.replaceAll("@profImpBonus", weaponInnerData.proficientI ? weaponInnerData.profImpBonus || 0 : 0);
 			newFormula = newFormula.replaceAll("@profBonus", weaponInnerData.proficient ? weaponInnerData.profBonus || 0 : 0);
-			newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? weaponInnerData.enhance || 0 : 0);
-			newFormula = newFormula.replaceAll("@enhance", weaponInnerData.enhance || 0);
-			
+
+			newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
+			newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
 
 			newFormula = this.replaceData (newFormula, weaponInnerData);
 			
