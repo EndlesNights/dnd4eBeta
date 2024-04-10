@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.51
+- Added new durationType `endOfUserCurrent`
+
 ## Version 0.4.50
 - changed enhance and enhance implment fields on weapon item cards to accept strings.
 

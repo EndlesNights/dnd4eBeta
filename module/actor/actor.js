@@ -1342,7 +1342,7 @@ export class Actor4e extends Actor {
 		updateData[`system.magicItemUse.encounteruse`] = false;
 		
 		Helper.rechargeItems(this, ["enc", "round"]);
-		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter"]);
+		Helper.endEffects(this, ["endOfTargetTurn","endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter","endOfUserCurrent"]);
 		
 		if(this.type === "Player Character"){
 			console.log(updateData[`system.attributes.hp.value`])
@@ -1417,7 +1417,7 @@ export class Actor4e extends Actor {
 		updateData[`system.magicItemUse.encounteruse`] = false;
 		
 		Helper.rechargeItems(this, ["enc", "day", "round"]);
-		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter", "endOfDay"]);
+		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter","endOfDay","endOfUserCurrent"]);
 
 
 		if(this.type === "Player Character"){

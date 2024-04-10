@@ -408,6 +408,7 @@
 "DND4E.DurationType": "Duration Type",
 "DND4E.DurationEndOfTargetTurn": "End of Target's Next Turn",
 "DND4E.DurationEndOfUserTurn": "End of User's Next Turn",
+"DND4E.DurationEndOfUserCurrent": "End of Current Turn",
 "DND4E.DurationStartOfTargetTurn": "Start of Target's Next Turn",
 "DND4E.DurationStartOfUserTurn": "Start of User's Next Turn",
 "DND4E.DurationEndOfTargetTurnSimp": "End of Next Turn",

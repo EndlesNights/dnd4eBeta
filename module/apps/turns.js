@@ -34,7 +34,7 @@ export class Turns{
 							toDelete.push(e.id);
 					}
 				}
-				else if(durationType === "endOfUserTurn"){
+				else if(durationType === "endOfUserTurn" || durationType === "endOfUserCurrent" ){
 					if(currentInit <= effectData.durationTurnInit && currentRound >= e.duration.rounds){
 							toDelete.push(e.id);
 					}
@@ -45,6 +45,11 @@ export class Turns{
 							toDelete.push(e.id);
 					}
 				}
+				// else if(durationType === "endOfUserCurrent"){
+				// 	if(currentInit < effectData.durationTurnInit && currentRound >= e.duration.rounds){
+				// 		toDelete.push(e.id);
+				// 	}
+				// }
 	
 				if(currentTurn === game.combat.combatants.size){
 					if(durationType === "endOfUserTurn"){

@@ -1120,6 +1120,10 @@ export class Helper {
 						duration.rounds = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
 						flags.dnd4e.effectData.durationTurnInit = userInit;
 					}
+					else if(flags.dnd4e.effectData.durationType === "endOfUserCurrent") {
+						duration.rounds = combat? combat.round : 0;
+						flags.dnd4e.effectData.durationTurnInit = combat? currentInit : 0;
+					}
 
 					const newEffectData = {
 						name: e.name,

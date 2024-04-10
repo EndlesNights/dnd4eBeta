@@ -489,6 +489,7 @@ DND4E.distanceUnits = {
 DND4E.durationType = {
 	"endOfTargetTurn": "DND4E.DurationEndOfTargetTurn",
 	"endOfUserTurn": "DND4E.DurationEndOfUserTurn",
+	"endOfUserCurrent": "DND4E.DurationEndOfUserCurrent",
 	"startOfTargetTurn": "DND4E.DurationStartOfTargetTurn",
 	"startOfUserTurn": "DND4E.DurationStartOfUserTurn",
 	"saveEnd": "DND4E.DurationSaveEnd",
