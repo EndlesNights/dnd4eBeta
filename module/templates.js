@@ -25,6 +25,7 @@ export const preloadHandlebarsTemplates = async function() {
 	"systems/dnd4e/templates/items/parts/item-description.html",
 	"systems/dnd4e/templates/items/parts/item-mountable.html",
 	
+	"systems/dnd4e/templates/items/parts/item-granter.html",
 	"systems/dnd4e/templates/items/parts/item-power-template.html",
 	"systems/dnd4e/templates/items/parts/item-macro.html",
 

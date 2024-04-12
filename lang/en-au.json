@@ -666,6 +666,7 @@
 "DND4E.ItemEquipmentStealthDisav": "Imposes Stealth Disadvantage",
 "DND4E.ItemEquipmentType": "Equipment Type",
 "DND4E.ItemEquipmentUsage": "Equipment Usage",
+"DND4E.ItemGranter": "Item Granter",
 "DND4E.ItemName": "Item Name",
 "DND4E.ItemNew": "New {type}",
 "DND4E.ItemNoUses": "{name} has no available uses remaining.",
