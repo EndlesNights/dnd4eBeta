@@ -2,7 +2,7 @@ export class ItemImporterDialog extends DocumentSheet {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
-		return mergeObject(options, {
+		return foundry.utils.mergeObject(options, {
 			id: "item-importer",
 			classes: ["dnd4e", "item-importer"],
 			template: "systems/dnd4e/templates/apps/item-importer.html",

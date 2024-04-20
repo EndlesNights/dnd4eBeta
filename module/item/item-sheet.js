@@ -21,7 +21,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	static get defaultOptions() {
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 			width: 585,
 			height: 420,
 			classes: ["dnd4e", "sheet", "item"],
@@ -123,7 +123,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// Action Details
 		data.hasAttackRoll = this.item.hasAttack;
 		data.isHealing = itemData.system.actionType === "heal";
-		data.isFlatDC = getProperty(itemData.system, "save.scaling") === "flat";
+		data.isFlatDC = foundry.utils.getProperty(itemData.system, "save.scaling") === "flat";
 
 		// Vehicles
 		data.isCrewed = itemData.system.activation?.type === 'crew';
@@ -568,7 +568,7 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 
 		// Action usage
-		if ( (item.type !== "weapon") && item.system.activation && !isEmpty(item.system.activation) ) {
+		if ( (item.type !== "weapon") && item.system.activation && !foundry.utils.isEmpty(item.system.activation) ) {
 			props.push(
 				labels.attribute,
 				labels.activation,

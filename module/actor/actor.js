@@ -1060,7 +1060,7 @@ export class Actor4e extends Actor {
 		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4e", "reliableTalent"));
 		// Roll and return
 		
-		return d20Roll(mergeObject(options, {
+		return d20Roll(foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
 			title: game.i18n.format("DND4E.SkillPromptTitle", {skill: CONFIG.DND4E.skills[skillId]}),
@@ -1107,7 +1107,7 @@ export class Actor4e extends Actor {
 		flavText = flavText.replace("@label", this.system.abilities[abilityId].label);
 		
 		// Roll and return
-		return d20Roll(mergeObject(options, {
+		return d20Roll(foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
 			title: game.i18n.format("DND4E.AbilityPromptTitle", {ability: CONFIG.DND4E.abilities[label]}),
@@ -1138,7 +1138,7 @@ export class Actor4e extends Actor {
 		flavText = flavText.replace("@title", this.system.defences[defId].title);
 		
 		// Roll and return
-		return d20Roll(mergeObject(options, {
+		return d20Roll(foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
 			title: game.i18n.format("DND4E.DefencePromptTitle", {defences: CONFIG.DND4E.defensives[label]}),
@@ -1190,7 +1190,7 @@ export class Actor4e extends Actor {
 		if ( tiebreaker ) init += this.system.attributes.init.value / 100;
 		const data = {init: init};
 
-		const initRoll = await  d20Roll(mergeObject(options, {
+		const initRoll = await  d20Roll(foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
 			event,
@@ -1219,7 +1219,7 @@ export class Actor4e extends Actor {
 			parts.push(options.save)
 		}
 
-		const rollConfig = mergeObject({
+		const rollConfig = foundry.utils.mergeObject({
 			parts,
 			actor: this,
 			data: {},
@@ -1252,7 +1252,7 @@ export class Actor4e extends Actor {
 		if (options.save) {
 			parts.push(options.save)
 		}
-		const rollConfig = mergeObject({
+		const rollConfig = foundry.utils.mergeObject({
 			parts,
 			actor: this,
 			data: {},
@@ -1545,7 +1545,7 @@ export class Actor4e extends Actor {
 					let initial = {};
 					// if ( t === "weapon" ) initial["system.proficient"] = true;
 					if ( ["weapon", "equipment"].includes(t) ) initial["system.equipped"] = true;
-					mergeObject(datum, initial);
+					foundry.utils.mergeObject(datum, initial);
 				})
 			}
 		}

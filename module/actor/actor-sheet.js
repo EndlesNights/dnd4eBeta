@@ -50,7 +50,7 @@ export default class ActorSheet4e extends ActorSheet {
   
 	/** @override */
 	static get defaultOptions() {
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["dnd4e", "sheet", "actor"],
 			width: 844,
 			height: 915,
@@ -224,7 +224,7 @@ export default class ActorSheet4e extends ActorSheet {
 			if ( trait.custom ) {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
-			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
+			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
 		}
 	}
 
@@ -245,7 +245,7 @@ export default class ActorSheet4e extends ActorSheet {
 			if ( data.custom ) {
 				data.custom.split(";").forEach((c, i) => data.selected[`custom${i+1}`] = c.trim());
 			}
-			data.cssClass = !isEmpty(data.selected) ? "" : "inactive";
+			data.cssClass = !foundry.utils.isEmpty(data.selected) ? "" : "inactive";
 		}
 	}
 
@@ -640,8 +640,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
   _prepareItemToggleState(item) {
 	const power = ["power","atwill","encounter","daily","utility"];
 	if (power.includes(item.type)) {
-	  // const isAlways = getProperty(item.data, "preparation.mode") === "always";
-	  const isPrepared =  getProperty(item.system, "prepared");
+	  // const isAlways = foundry.utils.getProperty(item.data, "preparation.mode") === "always";
+	  const isPrepared =  foundry.utils.getProperty(item.system, "prepared");
 	  item.toggleClass = isPrepared ? "active" : "";
 	  // if ( isAlways ) item.toggleClass = "fixed";
 	  // if ( isAlways ) item.toggleTitle = CONFIG.DND4E.spellPreparationModes.always;
@@ -650,7 +650,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	  else item.toggleTitle = game.i18n.localize("DND4E.PowerUnPrepared");
 	}
 	else {
-	  const isActive = getProperty(item.system, "equipped");
+	  const isActive = foundry.utils.getProperty(item.system, "equipped");
 	  item.toggleClass = isActive ? "active" : "";
 	  item.toggleTitle = game.i18n.localize(isActive ? "DND4E.Equipped" : "DND4E.Unequipped");
 	}
@@ -672,7 +672,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			if ( trait.custom ) {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
-			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
+			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
 			
 		}
 	}
@@ -694,7 +694,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			if ( trait.custom ) {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
-			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
+			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
 			
 		}
 	}
@@ -928,20 +928,20 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		}
 		
 		if(!/^[\-=+ 0-9]+$/.test(value)) {
-			input.value = getProperty(this.actor, input.name)
+			input.value = foundry.utils.getProperty(this.actor, input.name)
 			return;}
 
 		if ( ["+"].includes(value[0]) ) {
 			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
-			input.value = getProperty(this.actor, input.name) + delta || getProperty(this.actor, input.name);
+			input.value = foundry.utils.getProperty(this.actor, input.name) + delta || foundry.utils.getProperty(this.actor, input.name);
 		}
 		else if ( ["-"].includes(value[0]) ) {
 			let delta = parseFloat(-value.replace(/[^0-9]/g, ""));
-			input.value = getProperty(this.actor, input.name) + delta || getProperty(this.actor, input.name);
+			input.value = foundry.utils.getProperty(this.actor, input.name) + delta || foundry.utils.getProperty(this.actor, input.name);
 		} else if ( value[0] === "=" ) {
 			input.value = value.replace(/[^\-0-9]/g, "");
 		} else{
-			input.value = getProperty(this.actor, input.name)
+			input.value = foundry.utils.getProperty(this.actor, input.name)
 		}
 	}
 
@@ -1026,7 +1026,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	const item = this.actor.items.get(itemId);
 	const power = ["power","atwill","encounter","daily","utility"];
 	const attr = power.includes(item.type) ? "system.prepared" : "system.equipped";
-	return item.update({[attr]: !getProperty(item, attr)});
+	return item.update({[attr]: !foundry.utils.getProperty(item, attr)});
   }
 
   /* -------------------------------------------- */

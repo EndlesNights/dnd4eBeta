@@ -823,7 +823,7 @@ export default class Item4e extends Item {
 		let quantity = 0;
 		switch ( consume.type ) {
 			case "attribute":
-				consumed = getProperty(actor.system, consume.target);
+				consumed = foundry.utils.getProperty(actor.system, consume.target);
 				quantity = consumed || 0;
 				break;
 			case "ammo":
@@ -891,7 +891,7 @@ export default class Item4e extends Item {
 		}
 
 		// Update Item data
-		const current = getProperty(this, "system.uses.value") || 0;
+		const current = foundry.utils.getProperty(this, "system.uses.value") || 0;
 		if ( consume && charge.value ) {
 			if ( !charge.charged ) {
 				ui.notifications.warn(game.i18n.format("DND4E.ItemNoUses", {name: this.name}));
@@ -1470,7 +1470,7 @@ export default class Item4e extends Item {
 		}
 	
 		// Define Roll Data
-		const actorBonus = getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
+		const actorBonus = foundry.utils.getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
 		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
 			// parts.push("@dmg");
 			// partsCrit.push("@dmg");
@@ -1656,7 +1656,7 @@ export default class Item4e extends Item {
 		// }
 	
 		// Define Roll Data
-		const actorBonus = getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
+		const actorBonus = foundry.utils.getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
 		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
 			parts.push("@dmg");
 			rollData["dmg"] = actorBonus.damage;
@@ -1879,7 +1879,7 @@ export default class Item4e extends Item {
 
 		const flavor = this.system.chatFlavor ?  `${this.system.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize(titleKey)}  (${label} check)`;
 		// Compose the roll data
-		const rollConfig = mergeObject({
+		const rollConfig = foundry.utils.mergeObject({
 			parts: parts,
 			data: rollData,
 			title: title,

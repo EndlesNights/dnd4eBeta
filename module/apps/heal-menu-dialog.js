@@ -5,7 +5,7 @@ export class HealMenuDialog extends DocumentSheet4e {
 
 	/** @override */
 	static get defaultOptions() {
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 			id: "heal-menu-dialog",
 			classes: ["dnd4e"],
 			title: "Healing Menu",

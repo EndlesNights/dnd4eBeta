@@ -221,12 +221,12 @@ export const migrateItemData = function(item) {
 				const updates = new Map(update[embeddedName].map(u => [u._id, u]));
 				t.actorData[embeddedName].forEach(original => {
 					const update = updates.get(original._id);
-					if (update) mergeObject(original, update);
+					if (update) foundry.utils.mergeObject(original, update);
 				});
 				delete update[embeddedName];
 			});
 
-			mergeObject(t.delta, update);
+			foundry.utils.mergeObject(t.delta, update);
 		}
 		return t;
 	});
