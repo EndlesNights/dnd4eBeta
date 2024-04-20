@@ -303,7 +303,7 @@ export const registerSystemSettings = function() {
 		config: true,
 		default: false,
 		type: Boolean,
-		onChange: debouncedReload
+		onChange: foundry.utils.debouncedReload
 	});
 
 	game.settings.register("dnd4e", "applyEffectsToSelection",{

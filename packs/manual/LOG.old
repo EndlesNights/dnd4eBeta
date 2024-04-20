@@ -1,3 +1,31 @@
-2023/09/24-22:47:41.862 1f1c Recovering log #233
-2023/09/24-22:47:41.998 1f1c Delete type=0 #233
-2023/09/24-22:47:41.999 1f1c Delete type=3 #232
+2023/12/02-14:58:15.690 383c Recovering log #237
+2023/12/02-14:58:15.690 383c Level-0 table #239: started
+2023/12/02-14:58:15.694 383c Level-0 table #239: 101697 bytes OK
+2023/12/02-14:58:15.700 383c Delete type=0 #216
+2023/12/02-14:58:15.701 383c Delete type=2 #218
+2023/12/02-14:58:15.701 383c Delete type=0 #227
+2023/12/02-14:58:15.701 383c Delete type=0 #237
+2023/12/02-14:58:15.701 383c Delete type=3 #214
+2023/12/02-14:58:15.701 383c Delete type=3 #221
+2023/12/02-14:58:15.701 383c Delete type=3 #236
+2023/12/02-15:24:41.055 2ab4 Level-0 table #242: started
+2023/12/02-15:24:41.055 2ab4 Level-0 table #242: 0 bytes OK
+2023/12/02-15:24:41.057 2ab4 Delete type=0 #240
+2023/12/02-15:24:41.058 2ab4 Manual compaction at level-0 from '!journal!PuJCVdkeDHbyFpeT' @ 72057594037927935 : 1 .. '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 0 : 0; will stop at '!journal.pages!PuJCVdkeDHbyFpeT.yvcLeBP3ma2lNrxN' @ 1359 : 1
+2023/12/02-15:24:41.058 2ab4 Compacting 3@0 + 1@1 files
+2023/12/02-15:24:41.077 2ab4 Generated table #243@0: 24 keys, 52024 bytes
+2023/12/02-15:24:41.077 2ab4 Compacted 3@0 + 1@1 files => 52024 bytes
+2023/12/02-15:24:41.078 2ab4 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/12/02-15:24:41.078 2ab4 Delete type=2 #226
+2023/12/02-15:24:41.078 2ab4 Delete type=2 #228
+2023/12/02-15:24:41.079 2ab4 Delete type=2 #230
+2023/12/02-15:24:41.079 2ab4 Delete type=2 #239
+2023/12/02-15:24:41.079 2ab4 Manual compaction at level-0 from '!journal.pages!PuJCVdkeDHbyFpeT.yvcLeBP3ma2lNrxN' @ 1359 : 1 .. '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 0 : 0; will stop at (end)
+2023/12/02-15:24:41.079 2ab4 Manual compaction at level-1 from '!journal!PuJCVdkeDHbyFpeT' @ 72057594037927935 : 1 .. '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 0 : 0; will stop at '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 2252 : 1
+2023/12/02-15:24:41.079 2ab4 Compacting 1@1 + 1@2 files
+2023/12/02-15:24:41.084 2ab4 Generated table #244@1: 22 keys, 51995 bytes
+2023/12/02-15:24:41.084 2ab4 Compacted 1@1 + 1@2 files => 51995 bytes
+2023/12/02-15:24:41.085 2ab4 compacted to: files[ 0 0 1 0 0 0 0 ]
+2023/12/02-15:24:41.085 2ab4 Delete type=2 #224
+2023/12/02-15:24:41.085 2ab4 Delete type=2 #243
+2023/12/02-15:24:41.086 2ab4 Manual compaction at level-1 from '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 2252 : 1 .. '!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw' @ 0 : 0; will stop at (end)

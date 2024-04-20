@@ -1166,7 +1166,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
-		const uses = Math.clamped(0, parseInt(event.target.value), item.system.preparedMaxUses);
+		const uses = Math.clamp(0, parseInt(event.target.value), item.system.preparedMaxUses);
 		event.target.value = uses;
 		return item.update({ 'system.uses.value': uses });
 	}

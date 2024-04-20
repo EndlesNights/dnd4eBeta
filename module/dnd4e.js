@@ -198,11 +198,11 @@ Hooks.once("ready",  function() {
 	const cv = game.settings.get("dnd4e", "systemMigrationVersion") || game.world.flags.dnd4e?.version;
 	const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
 	if ( !cv && totalDocuments === 0 ) return game.settings.set("dnd4e", "systemMigrationVersion", game.system.version);
-	if ( cv && !isNewerVersion(game.system.flags.needsMigrationVersion, cv) ) return;
+	if ( cv && !foundry.utils.isNewerVersion(game.system.flags.needsMigrationVersion, cv) ) return;
   
 	const cmv = game.system.flags.compatibleMigrationVersion || "0.2.85";
 	// Perform the migration
-	if ( cv && isNewerVersion(cmv, cv) ) {
+	if ( cv && foundry.utils.isNewerVersion(cmv, cv) ) {
 	  ui.notifications.error(game.i18n.localize("MIGRATION.4eVersionTooOldWarning"), {permanent: true});
 	}
 	
@@ -238,7 +238,7 @@ Hooks.on("canvasInit", function() {
 
 	// Extend Diagonal Measurement
 	canvas.grid.diagonalRule = game.settings.get("dnd4e", "diagonalMovement");
-	SquareGrid.prototype.measureDistances = measureDistances;
+	foundry.grid.SquareGrid.prototype.measureDistances = measureDistances;
 
 	// Extend Token Resource Bars
 	Token.prototype.getBarAttribute = getBarAttribute;

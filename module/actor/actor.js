@@ -39,7 +39,7 @@ export class Actor4e extends Actor {
 		// Apply changes in Actor size to Token width/height
 		const newSize = data["system.details.size"];
 
-		if ( newSize && (options.forceSizeUpdate === true || (newSize !== getProperty(this, "system.details.size")) )) {
+		if ( newSize && (options.forceSizeUpdate === true || (newSize !== foundry.utils.getProperty(this, "system.details.size")) )) {
 			let size = CONFIG.DND4E.tokenSizes[newSize];
 			if ( this.isToken ) this.token.update({height: size, width: size});
 			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
@@ -49,8 +49,8 @@ export class Actor4e extends Actor {
 		}
 
 		if(data[`system.details.level`]){
-			if(this.system.details.tier != Math.clamped(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3)){
-				this.system.details.tier = Math.clamped(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3);
+			if(this.system.details.tier != Math.clamp(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3)){
+				this.system.details.tier = Math.clamp(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3);
 				data[`system.details.tier`] = this.system.details.tier;
 			}		
 		}
@@ -101,7 +101,7 @@ export class Actor4e extends Actor {
 		for ( let t of tokens ) {
 			console.log(t);
 			if ( !t.document.hidden || game.user.isGM ){
-			    const pct = Math.clamped(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
+			    const pct = Math.clamp(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
 			    canvas.interface.createScrollingText(t.center, dhp.signedString(), {
 				    anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
 				    fontSize: 16 + (32 * pct), // Range between [16, 48]
@@ -140,7 +140,7 @@ export class Actor4e extends Actor {
 	prepareBaseData(){
 		super.prepareBaseData();
 		const system = this.system;
-		const bonuses = getProperty(system, "bonuses.abilities") || {};
+		const bonuses = foundry.utils.getProperty(system, "bonuses.abilities") || {};
 
 		// Ability modifiers and saves
 		// Character All Ability Check" and All Ability Save bonuses added when rolled since not a fixed value.
@@ -627,7 +627,7 @@ export class Actor4e extends Actor {
 		}
 		
 		//Magic Items
-		system.magicItemUse.perDay = Math.clamped(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
+		system.magicItemUse.perDay = Math.clamp(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
 	}
 
 
@@ -994,7 +994,7 @@ export class Actor4e extends Actor {
    */
 	async modifyTokenAttribute(attribute, value, isDelta=false, isBar=true) {
 		if(attribute === 'attributes.hp' && isDelta) {
-			const hp = getProperty(this.system, attribute);
+			const hp = foundry.utils.getProperty(this.system, attribute);
 			const delta = isDelta ? (-1 * value) : (hp.value + hp.temp) - value;
 			return this.applyDamage(delta);
 		}
@@ -1035,7 +1035,7 @@ export class Actor4e extends Actor {
    */
 	rollSkill(skillId, options={}) {
 		const skl = this.system.skills[skillId];
-		const bonuses = getProperty(this.system, "bonuses.abilities") || {};
+		const bonuses = foundry.utils.getProperty(this.system, "bonuses.abilities") || {};
 
 		// Compose roll parts and data
 		const parts = ["@mod"];
@@ -1097,7 +1097,7 @@ export class Actor4e extends Actor {
 		// }
 
 		// Add global actor bonus
-		const bonuses = getProperty(this.system, "bonuses.abilities") || {};
+		const bonuses = foundry.utils.getProperty(this.system, "bonuses.abilities") || {};
 		if ( bonuses.check ) {
 			parts.push("@checkBonus");
 			data.checkBonus = bonuses.check;
@@ -1127,7 +1127,7 @@ export class Actor4e extends Actor {
 		const data = {mod: def.value - 10};
 		
 		// Add global actor bonus
-		const bonuses = getProperty(this.system, "bonuses.defences") || {};
+		const bonuses = foundry.utils.getProperty(this.system, "bonuses.defences") || {};
 		if ( bonuses.check ) {
 			parts.push("@checkBonus");
 			data.checkBonus = bonuses.check;
@@ -1644,9 +1644,9 @@ export class Actor4e extends Actor {
 		const maxMax = eval(Helper.replaceData(actorData.encumbrance.formulaMax, actorData).toString().replace(/[^-()\d/*+. ]/g, ''));
 
 		//set ppc Percentage Base Carry-Capasity
-		const pbc = Math.clamped(weight / max * 100, 0, 99.7);
+		const pbc = Math.clamp(weight / max * 100, 0, 99.7);
 		//set ppc Percentage Encumbranced Capasity
-		const pec =	Math.clamped(weight / (max ) * 100 - 100, 1, 99.7);
+		const pec =	Math.clamp(weight / (max ) * 100 - 100, 1, 99.7);
 		const encumBar = weight > max ? "#b72b2b" : "#6c8aa5";
 
 		return {
@@ -1834,7 +1834,7 @@ export class Actor4e extends Actor {
 		var newHp = hp.value;
 		if (amount > 0) // Damage
 			{
-			newHp = Math.clamped(hp.value - amount, (-1)*this.system.details.bloodied, hp.max);
+			newHp = Math.clamp(hp.value - amount, (-1)*this.system.details.bloodied, hp.max);
 			}
 		else if (amount < 0) // Healing
 			{
@@ -1842,7 +1842,7 @@ export class Actor4e extends Actor {
 				{
 				newHp = 0;
 				}
-			newHp = Math.clamped(newHp - amount, (-1)*this.system.details.bloodied, hp.max);
+			newHp = Math.clamp(newHp - amount, (-1)*this.system.details.bloodied, hp.max);
 			}
 	
 		// Update the Actor

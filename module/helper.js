@@ -793,7 +793,7 @@ export class Helper {
 		// Replace attributes with their numeric equivalents.
 		let dataRgx = this.variableRegex
 		let rollFormula = formula.replace(dataRgx, (match, term) => {
-			let value = getProperty(data, term);
+			let value = foundry.utils.getProperty(data, term);
 			// If there was a value returned, trim and return it.
 			if ( value || value == 0) {
 				return String(value).trim();

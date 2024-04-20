@@ -566,12 +566,12 @@ export default class Item4e extends Item {
 			context.value = this.pack ? await this.contentsWeight : await this.contentsCount.toNearest(0.01);
 			context.units = game.i18n.localize("DND4E.ItemContainerCapacityItems");
 		}
-		// context.pct = Math.clamped(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
+		// context.pct = Math.clamp(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
 
 		//set ppc Percentage Base Carry-Capasity
-		context.pbc = Math.clamped(context.value / context.max * 100, 0, 99.7);
+		context.pbc = Math.clamp(context.value / context.max * 100, 0, 99.7);
 		//set ppc Percentage Encumbranced Capasity
-		context.pec = Math.clamped(context.value / (context.max) * 100 - 100, 1, 99.7);
+		context.pec = Math.clamp(context.value / (context.max) * 100 - 100, 1, 99.7);
 
 		return context;
 
