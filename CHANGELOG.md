@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.52
+- Added global skill bonus which can be acsessed by active effects at `@system.modifiers.skills.type>`
+- fixed some missing i18n
+
 ## Version 0.4.51
 - Added new durationType `endOfUserCurrent`
 
