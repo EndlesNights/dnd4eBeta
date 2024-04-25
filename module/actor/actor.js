@@ -570,7 +570,7 @@ export class Actor4e extends Actor {
 			pas.value = 10 + system.skills[pas.skill].total + passiveBonusValue;
 		}
 
-		//Attack and damage modifiers
+		//Apply Global modifiers to attack, damage and skills
 		for (let [id, mod] of Object.entries(system.modifiers)) {
 			let modifierBonusValue = 0;
 			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
@@ -861,11 +861,11 @@ export class Actor4e extends Actor {
 			skl.mod = system.abilities[skl.ability].mod;
 
 			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-			skl.total += featBonus || 0;
-			skl.total += itemBonus || 0;
-			skl.total += powerBonus || 0;
-			skl.total += raceBonus || 0;
-			skl.total += skl.untyped || 0;
+			skl.total += Math.max(this.system.modifiers.skills.feat, featBonus || 0) ;
+			skl.total += Math.max(this.system.modifiers.skills.item, itemBonus || 0);
+			skl.total += Math.max(this.system.modifiers.skills.power, powerBonus || 0) ;
+			skl.total += Math.max(this.system.modifiers.skills.race, raceBonus || 0);
+			skl.total += this.system.modifiers.skills.untyped + skl.untyped || 0;
 			skl.total += trainingBonus;
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
