@@ -33,7 +33,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 		} else {
 			const sheetBody = this.element.find(".npc-lower");
 			const upper = this.element.find(".npc-upper");
-			const bodyHeight = sheetBody.parent().height() - upper.height() - 5; //extra 5 for the padding
+			const bodyHeight = sheetBody.parent().height() - upper.height() - 15; //extra 15 for the padding
 			sheetBody.css("height", bodyHeight);
 		}
 		return position;

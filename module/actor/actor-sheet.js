@@ -50,10 +50,17 @@ export default class ActorSheet4e extends ActorSheet {
   
 	/** @override */
 	static get defaultOptions() {
+
+		//add offset height options for extra skills
+		let extraHeight = 0;
+		if(game.settings.get("dnd4e", "custom-skills")?.length){
+			extraHeight = game.settings.get("dnd4e", "custom-skills").length * 27;
+		}
+
 		return mergeObject(super.defaultOptions, {
 			classes: ["dnd4e", "sheet", "actor"],
 			width: 844,
-			height: 915,
+			height: 902 + extraHeight,
 			tabs: [{
 				navSelector: ".sheet-tabs",
 				contentSelector: ".sheet-body",
