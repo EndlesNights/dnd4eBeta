@@ -138,14 +138,21 @@ export class Helper {
 		return new RegExp(/@([a-z.0-9_\-]+)/gi);
 	}
 
-
 	static async applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4e |` : ""
 		if (actorData.effects) {
 			const powerInnerData = powerData.system
 			const weaponInnerData = weaponData?.system
+			let enhValue = 0;
 			if (debug) {
 				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.  Supplied Weapon: ${weaponData?.name}`)
+			}
+			
+			//Using inherent enhancements?
+			if(game.settings.get("dnd4e", "inhEnh")) {
+				//If our enhancement is lower than the inherent level, adjust it upward
+				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 3));
+				//console.log(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 3)}' for this level against weapon value of +${weaponInnerData?.enhance})`);
 			}
 
 			const effectsToProcess = []
@@ -187,6 +194,7 @@ export class Helper {
 				if (powerInnerData.secondPowersource) {
 					suitableKeywords.push(powerInnerData.secondPowersource)
 				}
+				
 				if(powerInnerData.weaponType){
 					//Tool-based keywords like implement and weapon belong to the power, so in most cases we do not need to check the weapon to know which ones to use. Mixed melee/ranged weapons are the main exception, so we check the equipped weapon just for those.
 					switch(powerInnerData.weaponType){
@@ -247,6 +255,20 @@ export class Helper {
 						case "touch":
 							suitableKeywords.push("melee");
 							break;
+					}
+				}
+				
+				//Special case for detecting one-handed weapons
+				if(weaponInnerData){
+					if(!weaponInnerData.properties.two){ //Skip if it's tagged two-handed
+						//Make sure it's some kind of weapon
+						const wpnGroupValues = Object.values(weaponInnerData.weaponGroup);
+						const isWeapon = wpnGroupValues.some(function(element){
+							return element;
+						});
+						if(isWeapon){
+							suitableKeywords.push("one");
+						}
 					}
 				}
 
@@ -412,8 +434,16 @@ export class Helper {
 		}
 
 		newFormula = newFormula.replaceAll("@powerLevel", powerInnerData?.level ? powerInnerData.level : 0)
-
+		let enhValue = 0;
+		
 		if(weaponInnerData) {
+			//Using inherent enhancements?
+			if(game.settings.get("dnd4e", "inhEnh")) {
+				//If our enhancement is lower than the inherent level, adjust it upward
+				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 3));
+				//console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 3)} for this level against weapon value of +${weaponInnerData?.enhance}`);
+			}
+			
 			newFormula =  newFormula.replaceAll("@itemLevel", weaponInnerData.level ? weaponInnerData.level : 0)
 
 			if (powerInnerData.weaponType === "implement") {
@@ -441,8 +471,10 @@ export class Helper {
 			newFormula = newFormula.replaceAll("@profImpBonus", weaponInnerData.proficientI ? weaponInnerData.profImpBonus || 0 : 0);
 			newFormula = newFormula.replaceAll("@profBonus", weaponInnerData.proficient ? weaponInnerData.profBonus || 0 : 0);
 
-			newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
-			newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+			//newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
+			newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? this.bracketed(this.commonReplace(enhValue, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
+			//newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+			newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(enhValue, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
 
 			newFormula = this.replaceData (newFormula, weaponInnerData);
 			
@@ -1356,7 +1388,7 @@ export async function handleAutoDoTs(data) {
 *
 *  I don't know why, but meal is apparently the helper object, 
 *  if not given? Not a null, which would have been useful :\
-*  Anyway the type check shoudl take care of it.
+*  Anyway the type check should take care of it.
 /*																			*/
 Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
 	try{
