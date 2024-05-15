@@ -39,7 +39,6 @@
 		<a class="item active" data-tab="description">{{ localize "DND4E.Description" }}</a>
 		<a class="item" data-tab="details">{{ localize "DND4E.Details" }}</a>
 		<a class="item" data-tab="effects">{{ localize "DND4E.Effects" }}</a>
-		<a class="item" data-tab="itemGranter">{{ localize "DND4E.ItemGranter" }}</a>
         <a class="item" data-tab="macros">{{ localize "DND4E.Macros" }}</a>
 	</nav>
 
@@ -137,70 +136,23 @@
 				</label>
 			</div>
 
-			<div class="form-group uses-per">
-				<label>{{ localize "DND4E.LimitedUses"}}</label>
-				<div class="form-fields">
-					<input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number"/>
-					<span class="sep">{{ localize "DND4E.of" }}</span>
-					<input type="text" name="system.uses.max" value="{{system.uses.max}}"/>
-					<span class="sep">{{ localize "DND4E.per" }}</span>
-					<select name="system.uses.per">
-						{{#select system.uses.per}}
-						<option value=""></option>
-						{{#each config.limitedUsePeriods as |name key|}}
-						<option value="{{key}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
-					</select>
-				</div>
-			</div>
-			<div class="form-group uses-per">
-				<label>{{ localize "DND4E.ConsumeTitle" }}</label>
-				<div class="form-fields consumption">
-					<select class="consume-type" name="system.consume.type">
-						{{#select system.consume.type}}
-						<option value=""></option>
-						{{#each config.abilityConsumptionTypes as |name key|}}
-						<option value="{{key}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
-					</select>
-					<select class="consume-target" name="system.consume.target">
-						{{#select system.consume.target}}
-						<option value=""></option>
-						{{#each abilityConsumptionTargets as |name key|}}
-						<option value="{{key}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
-					</select>
-					<input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number"/>
-				</div>
-			</div>
-
-
-
-			{{!-- armour Class --}}
+			{{#if hasBaseProps}}
+			{{!-- Base Properties --}}
+			<h3 class="form-header">{{ localize "DND4E.NonMagicalProperties" }}</h3>
 			<div class="form-group">
-				<label>{{ localize "DND4E.DefenceAC" }}</label>
+				<label class="inline before">{{ localize "DND4E.DefAC" }}</label>
 				<div class="form-fields">
 				   <input type="text" name="system.armour.ac" value="{{system.armour.ac}}" data-dtype="Number"/>
 				</div>
-			</div>
-			<div class="form-group">
-				<label>{{ localize "DND4E.DefenceFort" }}</label>
+				<label class="inline before">{{ localize "DND4E.DefFort" }}</label>
 				<div class="form-fields">
 				   <input type="text" name="system.armour.fort" value="{{system.armour.fort}}" data-dtype="Number"/>
 				</div>
-			</div>
-
-			<div class="form-group">
-				<label>{{ localize "DND4E.DefenceRef" }}</label>
+				<label class="inline before">{{ localize "DND4E.DefRef" }}</label>
 				<div class="form-fields">
 				   <input type="text" name="system.armour.ref" value="{{system.armour.ref}}" data-dtype="Number"/>
 				</div>
-			</div>
-			<div class="form-group">
-				<label>{{ localize "DND4E.DefenceWil" }}</label>
+				<label class="inline before">{{ localize "DND4E.DefWil" }}</label>
 				<div class="form-fields">
 				   <input type="text" name="system.armour.wil" value="{{system.armour.wil}}" data-dtype="Number"/>
 				</div>
@@ -247,16 +199,69 @@
 					{{/each}}
 				</ol>
 			</div>
+			{{/if}}
+			
+			{{#if hasEnhance}}
+			{{!-- Enhancement Bonus --}}
+			<h3 class="form-header">{{ localize "DND4E.Enhancement"}} {{ localize "DND4E.Bonus"}}</h3>
+			<div class="form-group enhance">
+				<label>{{ localize "DND4E.Bonus"}} {{ localize "DND4E.to"}} 
+					{{#if isArmour}} {{ localize "DND4E.DefenceAC"}}
+					{{else}} {{ localize "DND4E.DefFort"}}/{{ localize "DND4E.DefRef"}}/{{ localize "DND4E.DefWil"}}
+				{{/if}}</label> 
+				<div class="form-fields">
+					<input type="text" name="system.armour.enhance" value="{{system.armour.enhance}}" data-dtype="Number"/>
+				</div>
+			</div>
+			{{/if}}
+			
+			{{!-- Usage --}}
+			<h3 class="form-header">{{ localize "DND4E.ItemEquipmentUsage"}}</h3>
+			<div class="form-group uses-per">
+				<label>{{ localize "DND4E.LimitedUses"}}</label>
+				<div class="form-fields">
+					<input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number"/>
+					<span class="sep">{{ localize "DND4E.of" }}</span>
+					<input type="text" name="system.uses.max" value="{{system.uses.max}}"/>
+					<span class="sep">{{ localize "DND4E.per" }}</span>
+					<select name="system.uses.per">
+						{{#select system.uses.per}}
+						<option value=""></option>
+						{{#each config.limitedUsePeriods as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+				</div>
+			</div>
+			<div class="form-group uses-per">
+				<label>{{ localize "DND4E.ConsumeTitle" }}</label>
+				<div class="form-fields consumption">
+					<select class="consume-type" name="system.consume.type">
+						{{#select system.consume.type}}
+						<option value=""></option>
+						{{#each config.abilityConsumptionTypes as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+					<select class="consume-target" name="system.consume.target">
+						{{#select system.consume.target}}
+						<option value=""></option>
+						{{#each abilityConsumptionTargets as |name key|}}
+						<option value="{{key}}">{{name}}</option>
+						{{/each}}
+						{{/select}}
+					</select>
+					<input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number"/>
+				</div>
+			</div>
 		</div>
 
 		{{!-- Effects Tab --}}
 		<div class="tab effects flexcol" data-group="primary" data-tab="effects">
 			{{> "systems/dnd4e/templates/actors/parts/active-effects.html"}}
 		</div>
-		
-		{{!-- Item Granter Tab --}}
-		{{> "systems/dnd4e/templates/items/parts/item-granter.html"}}
-		
 		{{!-- Macros Tab --}}
 <!-- DO NOT INDENT ME:  All of my indentation will be transferred to the macro text every time it is opened, causing each line of the macro to get steadily more tabs in front of it and march across the screen -->
 {{> "systems/dnd4e/templates/items/parts/item-macro.html"}}
