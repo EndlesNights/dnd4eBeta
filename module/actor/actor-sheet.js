@@ -948,7 +948,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
   /* -------------------------------------------- */
 
   /**
-   * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
+   * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to its roll method
    * @private
    */
 	async _onItemSummary(event) {
@@ -962,7 +962,6 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		}
 		const item = this.actor.items.get(itemId)
 		const chatData = await item.getChatData({secrets: this.actor.isOwner});
-
 
 		// Toggle summary
 		if ( li.hasClass("expanded") ) {
@@ -981,12 +980,16 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				div.append(descrip);
 
 				if(item.system.autoGenChatPowerCard){
-					// let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
+					//let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
 					let attackBonus = null;
 					if(item.hasAttack){
 						attackBonus = await item.getAttackBonus();
 					}
-					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor, attackBonus)}</div>`);
+					let detsText = Helper._preparePowerCardData(chatData, CONFIG, this.actor, attackBonus);
+					detsText = await TextEditor.enrichHTML(detsText, {
+						async: true,
+					});
+					const details = $(`<div class="item-details">${detsText}</div>`);
 					div.append(details);
 				}
 
@@ -1203,7 +1206,6 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		const options = {target: `system.details.deathsavebon`, label: "Death Savingthrow Bonus" };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
-	
 	
 	_onSurgeBonus(event) {
 		event.preventDefault();
