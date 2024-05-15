@@ -89,6 +89,7 @@
 					"race": 0,
 					"untyped": 0,
 					"enhance": 0,
+					"shield": 0,
 					"bonus": [{}],
 					"temp": 0,
 					"light": false,
@@ -107,6 +108,7 @@
 					"race": 0,
 					"untyped": 0,
 					"enhance": 0,
+					"shield": 0,
 					"bonus": [{}],
 					"temp": 0,
 					"condition": "Conditional Bonuses.",
@@ -123,6 +125,7 @@
 					"race": 0,
 					"untyped": 0,
 					"enhance": 0,
+					"shield": 0,
 					"bonus": [{}],
 					"temp": 0,
 					"condition": "Conditional Bonuses.",
@@ -139,6 +142,7 @@
 					"race": 0,
 					"untyped": 0,
 					"enhance": 0,
+					"shield": 0,
 					"bonus": [{}],
 					"temp": 0,
 					"condition": "Conditional Bonuses.",
@@ -157,16 +161,6 @@
 					"bonus": [{}]
 				},
 				"damage":{
-					"value": 0,
-					"class": 0,
-					"feat": 0,
-					"item": 0,
-					"power": 0,
-					"race": 0,
-					"untyped": 0,
-					"bonus": [{}]
-				},
-				"skills":{
 					"value": 0,
 					"class": 0,
 					"feat": 0,
@@ -1189,6 +1183,7 @@
 		"armour": {
 			"type": "armour",
 			"subType": "cloth",
+			"enhance": 0,
 			"ac": 0,
 			"fort": 0,
 			"ref": 0,
