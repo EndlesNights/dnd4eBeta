@@ -809,6 +809,46 @@ DND4E.powerGroupTypes = {
 	"powerSubtype": "DND4E.PowerSubtype",
 };
 
+
+// the actual groupings by powerGroupTypes
+DND4E.powerGroupings = {
+	action: {
+		standard: {label: "DND4E.ActionStandard" },
+		move: {label: "DND4E.ActionMove" },
+		minor: {label: "DND4E.ActionMinor" },
+		free: {label: "DND4E.ActionFree" },
+		reaction: {label: "DND4E.ActionReaction" },
+		interrupt: {label: "DND4E.ActionInterrupt" },
+		opportunity: {label: "DND4E.ActionOpportunity" },
+		other: {label: "DND4E.Other" }
+	},
+	type: {
+		inherent: {label: "DND4E.Inherent"},
+		class: {label: "DND4E.Class"},
+		race: {label: "DND4E.Race"},
+		paragon: {label: "DND4E.Paragon"},
+		epic: {label: "DND4E.Epic"},
+		theme: {label: "DND4E.Theme"},
+		feat: {label: "DND4E.Feat"},
+		item: {label: "DND4E.PowerItem"},
+		other: {label: "DND4E.Other"}
+	},
+	powerSubtype: {
+		attack: {label: "DND4E.PowerAttack"},
+		utility: {label: "DND4E.PowerUtil"},
+		feature: {label: "DND4E.PowerFeature"},
+		other: {label: "DND4E.Other"},
+	},
+	usage: {
+		atwill: {label: "DND4E.PowerAt"},
+		encounter: {label: "DND4E.PowerEnc"},
+		daily: {label: "DND4E.PowerDaily"},
+		item: {label: "DND4E.PowerItem"},
+		recharge: {label: "DND4E.PowerRecharge"},
+		other: {label: "DND4E.Other"}
+	}
+};
+
 DND4E.powerSortTypes = {
 	"name": "DND4E.ItemName",
 	"level": "DND4E.Level",
@@ -819,6 +859,25 @@ DND4E.powerSortTypes = {
 	"powerSubtype": "DND4E.PowerSubtype",
 	"none": "DND4E.None",
 };
+
+DND4E.inventoryTypes = {
+	weapon: { label: "DND4E.ItemTypeWeaponPl" },
+	equipment: { label: "DND4E.ItemTypeEquipmentPl" },
+	consumable: { label: "DND4E.ItemTypeConsumablePl" },
+	tool: { label: "DND4E.ItemTypeToolPl" },
+	backpack: { label: "DND4E.ItemTypeContainerPl" },
+	loot: { label: "DND4E.ItemTypeLootPl" }
+};
+
+DND4E.featureTypes = {
+	raceFeats: { label: "DND4E.FeatRace" },
+	classFeats: { label: "DND4E.FeatClass" },
+	pathFeats: { label: "DND4E.FeatPath" },
+	destinyFeats: { label: "DND4E.FeatDestiny" },
+	feat: { label: "DND4E.FeatLevel" },
+	ritual: { label: "DND4E.FeatRitual" }
+};
+
 
 DND4E.powerDiceTypes = {
 	"weapon": "Base Weapon Damage",
@@ -1613,3 +1672,4 @@ DND4E.characterFlags = {
 DND4E.allowedActorFlags = [
   "isPolymorphed", "originalActor"
 ].concat(Object.keys(DND4E.characterFlags));
+

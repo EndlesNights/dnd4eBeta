@@ -257,25 +257,10 @@ export default class ActorSheet4e extends ActorSheet {
 	}
 
 	_prepareItems(data) {
-		//define diffrent item datasets
-		const inventory = {
-			weapon: { label: "DND4E.ItemTypeWeaponPl", items: [], dataset: {type: "weapon"} },
-			equipment: { label: "DND4E.ItemTypeEquipmentPl", items: [], dataset: {type: "equipment"} },
-			consumable: { label: "DND4E.ItemTypeConsumablePl", items: [], dataset: {type: "consumable"} },
-			tool: { label: "DND4E.ItemTypeToolPl", items: [], dataset: {type: "tool"} },
-			backpack: { label: "DND4E.ItemTypeContainerPl", items: [], dataset: {type: "backpack"} },
-			loot: { label: "DND4E.ItemTypeLootPl", items: [], dataset: {type: "loot"} }
-		};
+		//define different item datasets
+		const inventory = this.#configItemToDisplayConfig(DND4E.inventoryTypes);
+		const features = this.#configItemToDisplayConfig(DND4E.featureTypes);
 		const powers = this._generatePowerGroups();
-
-		const features = {
-			raceFeats: { label: "DND4E.FeatRace", items: [], dataset: {type: "raceFeats"} },
-			classFeats: { label: "DND4E.FeatClass", items: [], dataset: {type: "classFeats"} },
-			pathFeats: { label: "DND4E.FeatPath", items: [], dataset: {type: "pathFeats"} },
-			destinyFeats: { label: "DND4E.FeatDestiny", items: [], dataset: {type: "destinyFeats"} },
-			feat: { label: "DND4E.FeatLevel", items: [], dataset: {type: "feat"} },
-			ritual: { label: "DND4E.FeatRitual", items: [], dataset: {type: "ritual"} }
-		};
 		
 		// Partition items by category
 		let [items, pow, feats] = data.items.reduce((arr, item) => {
@@ -477,49 +462,24 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		}
 		return "other";
 	}
+
 	_generatePowerGroups() {
 		const actorData = this.object.system;
-		if(actorData.powerGroupTypes === "action" || actorData.powerGroupTypes == undefined) {
-			return {
-				standard: { label: "DND4E.ActionStandard", items: [], dataset: {type: "standard"} },
-				move: { label: "DND4E.ActionMove", items: [], dataset: {type: "move"} },
-				minor: { label: "DND4E.ActionMinor", items: [], dataset: {type: "minor"} },
-				free: { label: "DND4E.ActionFree", items: [], dataset: {type: "free"} },
-				reaction: { label: "DND4E.ActionReaction", items: [], dataset: {type: "reaction"} },
-				interrupt: { label: "DND4E.ActionInterrupt", items: [], dataset: {type: "interrupt"} },
-				opportunity: { label: "DND4E.ActionOpportunity", items: [], dataset: {type: "opportunity"} },
-				other: { label: "DND4E.Other", items: [], dataset: {type: "other"} },
-			};
+		const powerGroupTypes = actorData.powerGroupTypes ?? "usage"
+		const groups = DND4E.powerGroupings[powerGroupTypes] ?? DND4E.powerGroupings["usage"]  // paranoid defensive, but ensure we always return something
+		return this.#configItemToDisplayConfig(groups)
+	}
+
+	#configItemToDisplayConfig = (config) => {
+		const displayConfig = {}
+		for (const [key, value] of Object.entries(config)) {
+			displayConfig[key] = {
+				...value,
+				items: [],
+				dataset: {type: key}
+			}
 		}
-		else if(actorData.powerGroupTypes === "type") {
-			return {
-				inherent: { label: "DND4E.Inherent", items: [], dataset: {type: "inherent"} },
-				class: { label: "DND4E.Class", items: [], dataset: {type: "class"} },
-				race: { label: "DND4E.Race", items: [], dataset: {type: "race"} },
-				paragon: { label: "DND4E.Paragon", items: [], dataset: {type: "paragon"} },
-				epic: { label: "DND4E.Epic", items: [], dataset: {type: "epic"} },
-				theme: { label: "DND4E.Theme", items: [], dataset: {type: "theme"} },
-				feat: { label: "DND4E.Feat", items: [], dataset: {type: "feat"} },
-				item: { label: "DND4E.PowerItem", items: [], dataset: {type: "item"} },
-				other: { label: "DND4E.Other", items: [], dataset: {type: "other"} },
-			};
-		}
-		else if(actorData.powerGroupTypes === "powerSubtype") {
-			return {
-				attack: { label: "DND4E.PowerAttack", items: [], dataset: {type: "attack"} },
-				utility: { label: "DND4E.PowerUtil", items: [], dataset: {type: "utility"} },
-				feature: { label: "DND4E.PowerFeature", items: [], dataset: {type: "feature"} },
-				other: { label: "DND4E.Other", items: [], dataset: {type: "other"} },
-			};
-		}
-		else return { //"usage"
-			atwill: { label: "DND4E.PowerAt", items: [], dataset: {type: "atwill"} },
-			encounter: { label: "DND4E.PowerEnc", items: [], dataset: {type: "encounter"} },
-			daily: { label: "DND4E.PowerDaily", items: [], dataset: {type: "daily"} },
-			item: { label: "DND4E.PowerItem", items: [], dataset: {type: "item"} },
-			recharge: { label: "DND4E.PowerRecharge", items: [], dataset: {type: "recharge"} },
-			other: { label: "DND4E.Other", items: [], dataset: {type: "other"} },
-		};
+		return displayConfig
 	}
 
 	_checkPowerAvailable(itemData) {
@@ -968,47 +928,49 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			return
 		}
 		const item = this.actor.items.get(itemId)
-		const chatData = await item.getChatData({secrets: this.actor.isOwner});
-
 
 		// Toggle summary
 		if ( li.hasClass("expanded") ) {
 			let summary = li.children(".item-summary");
 			summary.slideUp(200, () => summary.remove());
 		} else {
-			//generate summary entry here
-			if (item.type === "power") {
-				let div = $(`<div class="item-summary"></div>`);
-				let descrip;
-				if(item.system.autoGenChatPowerCard && chatData.chatFlavor){
-					descrip = $(`<div class="item-description">${chatData.chatFlavor}</div>`);
-				}else{
-					descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
-				}
-				div.append(descrip);
-
-				if(item.system.autoGenChatPowerCard){
-					// let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
-					let attackBonus = null;
-					if(item.hasAttack){
-						attackBonus = await item.getAttackBonus();
-					}
-					let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor, attackBonus)}</div>`);
-					div.append(details);
-				}
-
-				li.append(div.hide());
-				div.slideDown(200);
-			} else {
-				let div = $(`<div class="item-summary">${chatData.description.value}</div>`);
-				let props = $(`<div class="item-properties"></div>`);
-				chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
-				div.append(props);
-				li.append(div.hide());
-				div.slideDown(200);
-			}
+			const div = await this._generateItemSummary(item)
+			li.append(div.hide());
+			div.slideDown(200);
 		}
 		li.toggleClass("expanded");
+	}
+
+	async _generateItemSummary(item) {
+		const chatData = await item.getChatData({secrets: this.actor.isOwner});
+		let div;
+		//generate summary entry here
+		if (item.type === "power") {
+			div = $(`<div class="item-summary"></div>`);
+			let descrip;
+			if(item.system.autoGenChatPowerCard && chatData.chatFlavor){
+				descrip = $(`<div class="item-description">${chatData.chatFlavor}</div>`);
+			}else{
+				descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
+			}
+			div.append(descrip);
+
+			if(item.system.autoGenChatPowerCard){
+				// let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
+				let attackBonus = null;
+				if(item.hasAttack){
+					attackBonus = await item.getAttackBonus();
+				}
+				let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor, attackBonus)}</div>`);
+				div.append(details);
+			}
+		} else {
+			div = $(`<div class="item-summary">${chatData.description.value}</div>`);
+			let props = $(`<div class="item-properties"></div>`);
+			chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
+			div.append(props);
+		}
+		return div
 	}
 
   /* -------------------------------------------- */
