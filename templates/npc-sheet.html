@@ -23,11 +23,7 @@
 					
 					<li class="summary-role">
 						<select class="actor-role-prim" name="system.details.role.primary">
-							{{#select system.details.role.primary}}
-							{{#each config.creatureRole as |label role|}}
-								<option value="{{role}}">{{label}}</option>
-							{{/each}}
-							{{/select}}
+							{{selectOptions config.creatureRole selected=system.details.role.primary labelAttr="label"}}
 						</select>
 					</li>
 					<li class="summary-leader">
@@ -43,29 +39,18 @@
 				<ul class="summary flexrow">
 					<li class="summary-size">
 						<select class="actor-size" name="system.details.size">
-							{{#select system.details.size}}
-							{{#each config.actorSizes as |label size|}}
-								<option value="{{size}}">{{label}}</option>
-							{{/each}}
-							{{/select}}
+							{{selectOptions config.actorSizes selected=system.details.size labelAttr="label"}}
 						</select>
 					</li>
 					<li class="summary-origin">
 						<select class="actor-size" name="system.details.origin">
-							{{#select system.details.origin}}
-							{{#each config.creatureOrigin as |label origin|}}
-								<option value="{{origin}}">{{label}}</option>
-							{{/each}}
-							{{/select}}
+							{{selectOptions config.creatureOrigin selected=system.details.origin labelAttr="label"}}
+
 						</select>
 					</li>
 					<li class="summary-type">
 						<select class="actor-size" name="system.details.type">
-							{{#select system.details.type}}
-							{{#each config.creatureType as |label type|}}
-								<option value="{{type}}">{{label}}</option>
-							{{/each}}
-							{{/select}}
+							{{selectOptions config.creatureType selected=system.details.type labelAttr="label"}}
 						</select>
 					</li>
 					<li class="summary-typeother">

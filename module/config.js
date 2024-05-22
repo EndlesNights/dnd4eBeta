@@ -1,3 +1,5 @@
+import { preLocalize } from "./helper.js";
+
 // Namespace D&D4e Configuration Values
 export const DND4E = {};
 
@@ -124,13 +126,33 @@ DND4E.abilityConsumptionTypes = {
 
 // Creature Sizes
 DND4E.actorSizes = {
-	"tiny": "DND4E.SizeTiny",
-	"sm": "DND4E.SizeSmall",
-	"med": "DND4E.SizeMedium",
-	"lg": "DND4E.SizeLarge",
-	"huge": "DND4E.SizeHuge",
-	"grg": "DND4E.SizeGargantuan"
+	tiny: {
+		label: "DND4E.SizeTiny"
+	},
+	sm: {
+		label: "DND4E.SizeSmall"
+	},
+	med: {
+		label: "DND4E.SizeMedium"
+	},
+	lg: {
+		label: "DND4E.SizeLarge"
+	},
+	huge: {
+		label: "DND4E.SizeHuge"
+	},
+	grg: {
+		label: "DND4E.SizeGargantuan"
+	}
+
+//   "tiny": "DND4E.SizeTiny",
+//   "sm": "DND4E.SizeSmall",
+//   "med": "DND4E.SizeMedium",
+//   "lg": "DND4E.SizeLarge",
+//   "huge": "DND4E.SizeHuge",
+//   "grg": "DND4E.SizeGargantuan"
 };
+preLocalize("actorSizes", { keys: ["label"] });
 
 DND4E.tokenSizes = {
 	"tiny": 1,
@@ -293,28 +315,77 @@ DND4E.armourProficiencies = {
 /* -------------------------------------------- */
 
 DND4E.creatureOrigin = {
-	"aberrant": "DND4E.CreatureOriginAberrant",
-	"elemental": "DND4E.CreatureOriginElemental",
-	"fey": "DND4E.CreatureOriginFey",
-	"immortal": "DND4E.CreatureOriginImmortal",
-	"natural": "DND4E.CreatureOriginNatural",
-	"shadow": "DND4E.CreatureOriginShadow",
+	aberrant: {
+		label: "DND4E.CreatureOriginAberrant",
+	},
+	elemental: {
+		label: "DND4E.CreatureOriginElemental",
+	},
+	fey: {
+		label: "DND4E.CreatureOriginFey",
+	},
+	immortal: {
+		label: "DND4E.CreatureOriginImmortal",
+	},
+	natural: {
+		label: "DND4E.CreatureOriginNatural",
+	},
+	shadow: {
+		label: "DND4E.CreatureOriginShadow",
+	},
 
+	// "aberrant": "DND4E.CreatureOriginAberrant",
+	// "elemental": "DND4E.CreatureOriginElemental",
+	// "fey": "DND4E.CreatureOriginFey",
+	// "immortal": "DND4E.CreatureOriginImmortal",
+	// "natural": "DND4E.CreatureOriginNatural",
+	// "shadow": "DND4E.CreatureOriginShadow",
 }
+preLocalize("creatureOrigin", { keys: ["label"] });
+
 
 /* -------------------------------------------- */
 
 DND4E.creatureRole = {
-	"artillery": "DND4E.CreatureRoleArtillery",
-	"brute": "DND4E.CreatureRoleBrute",
-	"controller": "DND4E.CreatureRoleController",
-	"defender": "DND4E.CreatureRoleDefender",
-	"leader": "DND4E.CreatureRoleLeader",
-	"lurker": "DND4E.CreatureRoleLurker",
-	"skirmisher": "DND4E.CreatureRoleSkirmisher",
-	"striker": "DND4E.CreatureRoleStriker",
-	"soldier": "DND4E.CreatureRoleSoldier",
+	artillery: {
+		label: "DND4E.CreatureRoleArtillery",
+	},
+	brute: {
+		label: "DND4E.CreatureRoleBrute",
+	},
+	controller: {
+		label: "DND4E.CreatureRoleController",
+	},
+	defender: {
+		label: "DND4E.CreatureRoleDefender",
+	},
+	leader: {
+		label: "DND4E.CreatureRoleLeader",
+	},
+	lurker: {
+		label: "DND4E.CreatureRoleLurker",
+	},
+	skirmisher: {
+		label: "DND4E.CreatureRoleSkirmisher",
+	},
+	striker: {
+		label: "DND4E.CreatureRoleStriker",
+	},
+	soldier: {
+		label: "DND4E.CreatureRoleSoldier",
+	},
+	
+	// "artillery": "DND4E.CreatureRoleArtillery",
+	// "brute": "DND4E.CreatureRoleBrute",
+	// "controller": "DND4E.CreatureRoleController",
+	// "defender": "DND4E.CreatureRoleDefender",
+	// "leader": "DND4E.CreatureRoleLeader",
+	// "lurker": "DND4E.CreatureRoleLurker",
+	// "skirmisher": "DND4E.CreatureRoleSkirmisher",
+	// "striker": "DND4E.CreatureRoleStriker",
+	// "soldier": "DND4E.CreatureRoleSoldier",
 }
+preLocalize("creatureRole", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
@@ -329,11 +400,24 @@ DND4E.creatureRoleSecond = {
 /* -------------------------------------------- */
 
 DND4E.creatureType = {
-	"animate": "DND4E.CreatureTypeAnimate",
-	"beast": "DND4E.CreatureTypeBeast",
-	"humanoid": "DND4E.CreatureTypeHumanoid",
-	"magical": "DND4E.CreatureTypeMagicalBeaste",
+	animate: {
+		label: "DND4E.CreatureTypeAnimate",
+	},
+	beast: {
+		label: "DND4E.CreatureTypeBeast",
+	},
+	humanoid: {
+		label: "DND4E.CreatureTypeHumanoid",
+	},
+	magical: {
+		label: "DND4E.CreatureTypeMagicalBeaste",
+	},
+	// "animate": "DND4E.CreatureTypeAnimate",
+	// "beast": "DND4E.CreatureTypeBeast",
+	// "humanoid": "DND4E.CreatureTypeHumanoid",
+	// "magical": "DND4E.CreatureTypeMagicalBeaste",
 }
+preLocalize("creatureType", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
