@@ -3,6 +3,20 @@
 ## Version 0.4.52
 - Added global skill bonus which can be acsessed by active effects at `@system.modifiers.skills.<type>`
 - fixed some missing i18n
+- minor CSS fix
+- Refactors for TAH integration [PR 356](https://github.com/EndlesNights/dnd4eBeta/pull/356) from [draconas1](https://github.com/draconas1)
+
+- [PR 355](https://github.com/EndlesNights/dnd4eBeta/pull/356) from [FoxLee](https://github.com/FoxLee)
+	- Updated handling of resistances (#327). The `value` property is now derived from two other properties, `res` and `vuln`. Effects should be directed to modify these properties instead of `value` and respect apply modes. Effects using other keys (like the 4e bonus types) should be updated by the user, but if any are still found they are filtered into `res` or `vuln` based on if they are positive or negative. Manual bonuses (as in, entered through the sheet) are all applied as-is.
+	- Added inherent enhancement bonuses as a game-wide setting (#88). When it's on, the calcs for defences, attack and damage will check against the scaling bonuses suggested in the PHB2/Darksun books and override the existing bonus if it's too low. (PCs only)
+	- Updated equipment model/sheet to separate out enhancement bonuses from non-magical bonuses. Non-magical bonuses and other armour properties are now hidden on non-armour items, and an enhancement bonus section appears for armour and neck items.
+	- I found the migration scripts! So I've included one to add the new properties to older items/actors. It will also look for neck "armour" items with identical fort/ref/will values, and move the shared value to "enhance" instead.
+	- Added "shield" as a bonus type to the template for all defences. The mundane bonuses to defences on shield-typed equipment are now re-routed to this property instead of "armour". (#344)
+	- Added "none" weapon hand option (for slotless implements) (#354)
+	- Plugged the auto-generated power summaries on character sheets into the same "enrichment" function that the description field uses in manual descriptions, in order to benefit from variable substitution and calculation. Astonishingly, it appears to work without issue.
+	- Added a bonus key for one-handed weapons (#353) and updated documentation to include it.
+	- Added the kusari-gama to the base weapons list, which I previously left out for some reason.
+	- Updated Steve, the SRD features compendium, and the Manual compendium accordingly.
 
 ## Version 0.4.51
 - Added new durationType `endOfUserCurrent`
