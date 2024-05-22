@@ -718,6 +718,10 @@ textarea{
 .dnd4e .form-group.wide label{
 	max-width:208px;
 }
+.dnd4e .form-group label.inline.before{
+	text-align:right;
+	margin-right:0.35em;
+}
 .dnd4e .form-group .form-fields{
 	display:flex;
 	flex-direction:row;

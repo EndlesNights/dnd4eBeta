@@ -660,6 +660,7 @@ DND4E.superiorM = {
 	gythka:"DND4E.WeaponGythka",
 	katar:"DND4E.WeaponKatar",
 	kukri:"DND4E.WeaponKukri",
+	kusariGama:"DND4E.WeaponKusariGama",
 	longKnife:"DND4E.WeaponLongKnife",
 	lotulis:"DND4E.WeaponLotulis",
 	mordenkrad:"DND4E.WeaponMordenkrad",
@@ -1062,7 +1063,6 @@ DND4E.skills = {
 DND4E.modifiers ={
 	"attack": "DND4E.ModifierAttack",
 	"damage": "DND4E.ModifierDamage",
-	"skills": "DND4E.ModifierSkills",
 }
 
 /* -------------------------------------------- */
@@ -1129,13 +1129,14 @@ DND4E.weaponTypes = {
 
 
 /**
- * Define the set of hands configurations which a weapon item cantake
+ * Define the set of hands configurations which a weapon item can take
  * @type {Object}
  */
 DND4E.weaponHands = {
   "hMain": "DND4E.HMain",
   "hTwo": "DND4E.HTwo",
   "hOff": "DND4E.HOff",
+  "hNone": "DND4E.HNone"
 };
 
 

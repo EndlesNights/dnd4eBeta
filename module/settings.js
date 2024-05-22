@@ -88,7 +88,7 @@ export const registerSystemSettings = function() {
 	});
 
 	/**
-	 * Determins if the Advanced Math Options for NPC's is set during their generation
+	 * Determines if the Advanced Math Options for NPCs is set during their generation
 	 */
 
 	game.settings.register("dnd4e", "npcMathOptions", {
@@ -112,6 +112,20 @@ export const registerSystemSettings = function() {
 		default: false,
 		type: Boolean
 	});
+
+	/**
+	 * Allows the game to use inherent enhancement bonuses to PC's attack, damage and defences.
+	 */
+
+	game.settings.register("dnd4e", "inhEnh", {
+		name: "SETTINGS.4eInhEnhN",
+		hint: "SETTINGS.4eInhEnhL",
+		scope: "world",
+		config: true,
+		default: false,
+		type: Boolean
+	});
+
 
 	/**
 	 * Determs when Death Saving Throws are reset
