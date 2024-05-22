@@ -140,7 +140,7 @@ export const migrateActorData = function(actor, migrationData) {
 		_migrateActorAddProfKeys(actor, updateData);
 		_migrateActorSkills(actor, updateData);
 		_migrateActorFeatItemPowerBonusSources(actor, updateData);
-
+		_migrateActorDefAndRes(actor, updateData);
 	}
 
 	return updateData;
@@ -187,6 +187,7 @@ export const migrateItemData = function(item) {
 	_migrateImplmentKey(item, updateData);
 	_migrateContainerItems(item, updateData);
 	_migrateItemsGMDescriptions(item, updateData);
+	_migrateNeckGearEnhance(item, updateData);
 	return updateData;
 };
 
@@ -638,7 +639,6 @@ function _migrateContainerItems(itemData, updateData){
 	return updateData;
 }
 
-
 /**
  * Migrate all items data to include new object keys for a GM Description, which will not be visable to normal players
  * @param {object} itemData   Item data being migrated.
@@ -700,4 +700,57 @@ export function removeDeprecatedObjects(data) {
 		}
 	}
 	return data;
+}
+
+ /**
+ * Migrate the actor adding missing keys for defences and resistances (v0.4.6)
+ * @param {object} actorData   Actor data being migrated.
+ * @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+function _migrateActorDefAndRes(actorData, updateData){
+	
+	const defences = actorData?.system?.defences;
+	if(defences){
+		for( const [id, def] of Object.entries(defences)){
+			if(def.shield == undefined){
+				updateData[`system.defences.${id}.shield`] = 0;
+			}
+		}
+	}
+	
+	const resistances = actorData?.system?.resistances;
+	if(resistances){
+		for( const [id, res] of Object.entries(resistances)){
+			if(res.res == undefined){
+				updateData[`system.resistances.${id}.res`] = 0;
+			}
+			if(res.vuln == undefined){
+				updateData[`system.resistances.${id}.vuln`] = 0;
+			}
+		}
+	}
+
+	return updateData;
+}
+
+/**
+ * Migrate neck items from three identical base NADS values to one enhancment value. (v0.4.6)
+ * @param {object} itemData   Item data being migrated.
+ * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+*/
+function _migrateNeckGearEnhance(itemData, updateData){
+if(itemData.type !== "equipment" || itemData.system?.armour.type !== "neck") return;
+	
+	if (itemData.system?.armour.fort !== itemData.system.armour.ref || itemData.system?.armour.fort !== itemData.system?.armour.wil) return;
+	
+	updateData["system.armour.enhance"] = itemData.system.armour.fort;
+	updateData["system.armour.fort"] = 0;
+	updateData["system.armour.ref"] = 0;
+	updateData["system.armour.wil"] = 0;
+
+	return updateData;
 }

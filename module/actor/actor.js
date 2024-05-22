@@ -570,7 +570,7 @@ export class Actor4e extends Actor {
 			pas.value = 10 + system.skills[pas.skill].total + passiveBonusValue;
 		}
 
-		//Apply Global modifiers to attack, damage and skills
+		//Attack and damage modifiers
 		for (let [id, mod] of Object.entries(system.modifiers)) {
 			let modifierBonusValue = 0;
 			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
@@ -592,36 +592,59 @@ export class Actor4e extends Actor {
 			mod.label = game.i18n.localize(DND4E.modifiers[id]);
 		}
 		
-		//Resistances & Weaknesses
+		/* Resistances & Weaknesses
+		   Apr 2024 update - [type].value should be now read as the incoming damage adjustment, 
+		   with the resistance totalled under [type].res and the vulnerabilty under [type].vuln.
+		   This should allow for automation of "reduce resistance by X" type effects without
+		   applying unwanted vulnerabilities.
+		*/
 		for (let [id, res] of Object.entries(system.resistances)) {
+			res.vuln = res.vuln || 0;
+			res.res = res.res || 0;
 
-			let resBonusValue = 0;
+			//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.			
+			//let resBonusValue = 0;
 			if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
 				for( const b of res.bonus) {
 					if(b.active && Helper._isNumber(b.value)) {
-						resBonusValue += parseInt(b.value);
+						res.vuln += Math.min(parseInt(b.value),0);
+						res.res += Math.max(parseInt(b.value),0);
 					}
 					else if(b.active){
 						let val = Helper.replaceData(b.value,system)
 						if(Helper._isNumber(val)){
-							resBonusValue += parseInt(val);
+							res.vuln += Math.min(parseInt(val),0);
+							res.res += Math.max(parseInt(val),0);
 						}
 					}
 				}
 			}
+			//res.resBonusValue = resBonusValue;
+			//res.value += res.armour + resBonusValue;
+			
+			//Normal bonus types are deprecated for resistances, so if they are present we will assign them based on whether they total positive or negative.
+			//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
 			for ( let i of this.items) {
 				if(i.type !="equipment" || !i.system.equipped || i.system.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
 				res.armour += i.system.armour.damageRes.parts.filter(p => p[1] === id)[0][0];
 				break;
 			}
-			res.resBonusValue = resBonusValue;
-			res.value += res.armour + resBonusValue;
-
-			res.value += res.feat || 0;
-			res.value += res.item || 0;
-			res.value += res.power || 0;
-			res.value += res.race || 0;
-			res.value += res.untyped || 0;
+			
+			const damageMods = [res.armour, res.feat || 0, res.item || 0, res.power || 0, res.race || 0, res.untyped || 0];
+			
+			for ( let val of damageMods ) {
+				if ( val < 0 ){
+					//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.vuln}`);
+					res.vuln = Math.min(res.vuln||0,val);
+				} else {
+					//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.res}`);
+					res.res = Math.max(res.res||0,val);
+				}
+			}
+			
+			//Get the final modifier for this type of damage by combining res and vuln numbers.
+			res.value = res.res + res.vuln;
+			//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: final result of ${res.value} from res ${res.res} and vulnerability ${res.vuln}`);
 
 			res.label = game.i18n.localize(DND4E.damageTypes[id]); //.localize("");
 		}
@@ -694,11 +717,22 @@ export class Actor4e extends Actor {
 			}
 			def.bonusValue = defBonusValue;
 			
-			//Get Deff stats from items
+			//Using inherent enhancements?
+			let enhFloor = 0;
+			if(game.settings.get("dnd4e", "inhEnh")) {
+				//console.log(`${id}: Checked inherent defence enhancement of +${Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against item value of +${def.enhance}`);
+				//If our enhancement is lower than the inherent level, adjust it upward
+				enhFloor = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 3);
+			}
+			
+			//Get Def stats from items
 			for ( let i of this.items) {
 				if(i.type !="equipment" || !i.system.equipped ) { continue; };
 				if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
 					if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+					//Re-route base def bonuses on a shield to be shield bonus
+					def.shield = Math.max(def.shield||0,i.system.armour[id]);
+					continue;
 				}
 				else if(i.system.armour.type === "armour" && id === "ref"){
 					if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
@@ -706,16 +740,21 @@ export class Actor4e extends Actor {
 						this.system.modifiers.attack.armourPen =-2;
 					}
 				}
+				else if((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
+					def.enhance = Math.max(def.enhance||0,enhFloor,i.system.armour.enhance);
+				}
 				def.armour += i.system.armour[id];
 			}
 
-			let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
+			let modBonus = def.ability != "" ? data.abilities[def.ability].mod : 0;
 
-			def.value += modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
-			def.value += def.feat|| 0;
-			def.value += def.item|| 0;
+			def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;
+			def.value += def.feat || 0;
+			def.value += def.item || 0;
 			def.value += def.power || 0;
 			def.value += def.race || 0;
+			def.value += def.enhance || 0;
+			def.value += def.shield || 0;
 			def.value += def.untyped || 0;
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
@@ -746,11 +785,14 @@ export class Actor4e extends Actor {
 			}
 			def.bonusValue = defBonusValue;
 			
-			//Get Deff stats from items
+			//Get Def stats from items
 			for ( let i of this.items) {
 				if(i.type !="equipment" || !i.system.equipped ) { continue; };
 				if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
 					if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+					//Re-route base def bonuses on a shield to be shield bonus
+					def.shield = Math.max(def.shield,i.system.armour[id]);
+					continue;
 				}
 				else if(i.system.armour.type === "armour" && id === "ref"){
 					if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
@@ -781,6 +823,8 @@ export class Actor4e extends Actor {
 			def.value += def.power || 0;
 			def.value += def.race || 0;
 			def.value += def.untyped || 0;
+			def.value += def.enhance|| 0;
+			def.value += def.shield|| 0;
 		}
 	}
 
@@ -861,11 +905,11 @@ export class Actor4e extends Actor {
 			skl.mod = system.abilities[skl.ability].mod;
 
 			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-			skl.total += Math.max(this.system.modifiers.skills.feat, featBonus || 0) ;
-			skl.total += Math.max(this.system.modifiers.skills.item, itemBonus || 0);
-			skl.total += Math.max(this.system.modifiers.skills.power, powerBonus || 0) ;
-			skl.total += Math.max(this.system.modifiers.skills.race, raceBonus || 0);
-			skl.total += this.system.modifiers.skills.untyped + skl.untyped || 0;
+			skl.total += featBonus || 0;
+			skl.total += itemBonus || 0;
+			skl.total += powerBonus || 0;
+			skl.total += raceBonus || 0;
+			skl.total += skl.untyped || 0;
 			skl.total += trainingBonus;
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
