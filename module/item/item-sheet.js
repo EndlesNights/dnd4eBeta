@@ -83,13 +83,19 @@ export default class ItemSheet4e extends ItemSheet {
 
 			if(itemData.system.armour.type === "armour"){
 				data.isArmour = true;
+				data.hasEnhance = true;
+				data.hasBaseProps = true;
 				data.armourBaseTypes = CONFIG.DND4E[itemData.system.armour.subType];
 				data.isArmourBaseTypeCustom = (itemData.system.armourBaseType === "custom");
 			}
 			else if(itemData.system.armour.type === "arms" && CONFIG.DND4E.profArmor[itemData.system.armour.subType]){
 				data.isShield = true;
+				data.hasBaseProps = true;
 				data.shieldBaseTypes = CONFIG.DND4E.shield;
 				data.isShieldBaseTypeCustom = (itemData.system.shieldBaseType === "custom");
+			}
+			else if(itemData.system.armour.type === "neck"){
+				data.hasEnhance = true;
 			}
 		}
 
@@ -556,6 +562,17 @@ export default class ItemSheet4e extends ItemSheet {
 			props.push(labels.fort);
 			props.push(labels.ref);
 			props.push(labels.wil);
+			
+			if (item.system?.armour?.enhance){
+				let enhString = `${game.i18n.localize("DND4E.Enhancement")}\n +${item.system.armour.enhance}`;
+				//The strings below begin with a non-breaking space character. Don't delete it unless you want to break the text wrapping!
+				if(item.system.armour.type === "armour"){
+					enhString += ` ${game.i18n.localize("DND4E.DefAC")}`;
+				} else {
+					enhString += ` ${game.i18n.localize("DND4E.DefFort")}/${game.i18n.localize("DND4E.DefRef")}/${game.i18n.localize("DND4E.DefWil")}`;
+				}
+				props.push(enhString);
+			}
 		}
 
 		else if ( item.type === "feat" ) {

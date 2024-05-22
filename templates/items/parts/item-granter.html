@@ -1,0 +1,82 @@
+<div class="tab" data-group="primary" data-tab="itemGranter">
+ITEM GRANTER HERE
+
+
+<ol class="item-list effects-list">
+	<li class="items-header flexrow main-controls">
+		<div class="item-controls flexrow configuration-mode-control">
+		</div>
+		<div class="item-controls flexrow add-button">
+			<a class="item-control" data-action="add" data-tooltip="DND4E.AdvancementControlCreate">
+				<i class="fas fa-plus"></i>
+			</a>
+		</div>
+	</li>
+	
+	{{#each granter as |data level|}}
+	<li class="items-header flexrow" data-level="{{level}}">
+		<h3 class="item-name flexrow">
+			{{#if (eq level "0")}}
+			{{localize "DND4E.AdvancementLevelAnyHeader"}}
+			{{else if (eq level "unconfigured")}}
+			{{localize "DND4E.AdvancementLevelNoneHeader"}}
+			{{else}}
+			{{localize "DND4E.AdvancementLevelHeader" level=level}}
+			{{/if}}
+		</h3>
+
+		{{#if (and @root.editable data.configured (ne level "unconfigured"))}}
+		<div>
+			<a class="item-control" data-action="modify-choices">{{localize "DND4E.AdvancementModifyChoices"}}</a>
+		</div>
+		{{/if}}
+
+		{{#if (eq data.configured "full")}}
+		<div class="item-checkmark" data-tooltip="DND4E.AdvancementConfiguredComplete">
+			<i class="fas fa-check-circle"></i>
+		</div>
+		{{else if (eq data.configured "partial")}}
+		<div class="item-warning" data-tooltip="DND4E.AdvancementConfiguredIncomplete">
+			<i class="fas fa-exclamation-triangle"></i>
+		</div>
+		{{/if}}
+	</li>
+	<ol class="item-list">
+		{{#each data.items}}
+		<li class="advancement-item item flexrow" data-id="{{this.id}}">
+			<div class="item-name flexrow">
+				<div class="item-image" style="background-image: url('{{this.icon}}')"></div>
+				<h4>{{{this.title}}}</h4>
+			</div>
+			{{#if (or @root.advancementEditable (not @root.isEmbedded))}}
+			<div class="flexrow">
+				{{#if (eq this.classRestriction "primary")}}
+					{{localize "DND4E.AdvancementClassRestrictionPrimary"}}
+				{{else if (eq this.classRestriction "secondary")}}
+					{{localize "DND4E.AdvancementClassRestrictionSecondary"}}
+				{{/if}}
+			</div>
+			{{/if}}
+			{{#if @root.advancementEditable}}
+			<div class="item-controls flexrow">
+				<a class="item-control" data-action="edit" data-tooltip="DND4E.AdvancementControlEdit">
+					<i class="fas fa-edit"></i>
+				</a>
+				<a class="item-control" data-action="delete" data-tooltip="DND4E.AdvancementControlDelete">
+					<i class="fas fa-trash"></i>
+				</a>
+			</div>
+			{{/if}}
+			{{#if this.summary}}
+			<div class="item-summary">
+				{{{this.summary}}}
+			</div>
+			{{/if}}
+		</li>
+		{{/each}}
+	</ol>
+	{{/each}}
+
+</ol>
+
+</div>

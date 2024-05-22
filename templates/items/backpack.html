@@ -37,6 +37,7 @@
 		<a class="item" data-tab="description">{{ localize "DND4E.Description" }}</a>
 		<a class="item" data-tab="details">{{ localize "DND4E.Details" }}</a>
 		<a class="item" data-tab="effects">{{ localize "DND4E.Effects" }}</a>
+		<!-- <a class="item" data-tab="itemGranter">{{ localize "DND4E.ItemGranter" }}</a> -->
         <a class="item" data-tab="macros">{{ localize "DND4E.Macros" }}</a>
 	</nav>
 
@@ -169,6 +170,9 @@
 			{{> "systems/dnd4e/templates/actors/parts/active-effects.html"}}
 		</div>
 
+		{{!-- Item Granter Tab --}}
+		{{> "systems/dnd4e/templates/items/parts/item-granter.html"}}
+		
 		{{!-- Macros Tab --}}
 <!-- DO NOT INDENT ME:  All of my indentation will be transferred to the macro text every time it is opened, causing each line of the macro to get steadily more tabs in front of it and march across the screen -->
 {{> "systems/dnd4e/templates/items/parts/item-macro.html"}}
