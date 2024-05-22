@@ -1432,3 +1432,273 @@ Handlebars.registerHelper("needsHitOrMissEffectButton", function(power){
 Handlebars.registerHelper("applyEffectsToSelection", function(){
 	return game.settings.get("dnd4e","applyEffectsToSelection")
 });
+
+
+
+/* -------------------------------------------- */
+/*  Formatters                                  */
+/* -------------------------------------------- */
+  
+  /* -------------------------------------------- */
+  
+  /**
+   * A helper for using Intl.NumberFormat within handlebars.
+   * @param {number} value    The value to format.
+   * @param {object} options  Options forwarded to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat}
+   * @returns {string}
+   */
+  export function formatNumber(value, options) {
+    const formatter = new Intl.NumberFormat(game.i18n.lang, options);
+    return formatter.format(value);
+  }
+  
+  /* -------------------------------------------- */
+  
+  /**
+   * A helper function to format textarea text to HTML with linebreaks.
+   * @param {string} value  The text to format.
+   * @returns {Handlebars.SafeString}
+   */
+  export function formatText(value) {
+    return new Handlebars.SafeString(value?.replaceAll("\n", "<br>") ?? "");
+  }
+   
+  /* -------------------------------------------- */
+  
+  /**
+   * A helper to create a set of <option> elements in a <select> block grouped together
+   * in <optgroup> based on the provided categories.
+   *
+   * @param {SelectChoices} choices          Choices to format.
+   * @param {object} [options]
+   * @param {boolean} [options.localize]     Should the label be localized?
+   * @param {string} [options.blank]         Name for the empty option, if one should be added.
+   * @param {string} [options.labelAttr]     Attribute pointing to label string.
+   * @param {string} [options.chosenAttr]    Attribute pointing to chosen boolean.
+   * @param {string} [options.childrenAttr]  Attribute pointing to array of children.
+   * @returns {Handlebars.SafeString}        Formatted option list.
+   */
+  function groupedSelectOptions(choices, options) {
+    const localize = options.hash.localize ?? false;
+    const blank = options.hash.blank ?? null;
+    const labelAttr = options.hash.labelAttr ?? "label";
+    const chosenAttr = options.hash.chosenAttr ?? "chosen";
+    const childrenAttr = options.hash.childrenAttr ?? "children";
+  
+    // Create an option
+    const option = (name, label, chosen) => {
+      if ( localize ) label = game.i18n.localize(label);
+      html += `<option value="${name}" ${chosen ? "selected" : ""}>${label}</option>`;
+    };
+  
+    // Create a group
+    const group = category => {
+      let label = category[labelAttr];
+      if ( localize ) game.i18n.localize(label);
+      html += `<optgroup label="${label}">`;
+      children(category[childrenAttr]);
+      html += "</optgroup>";
+    };
+  
+    // Add children
+    const children = children => {
+      for ( let [name, child] of Object.entries(children) ) {
+        if ( child[childrenAttr] ) group(child);
+        else option(name, child[labelAttr], child[chosenAttr] ?? false);
+      }
+    };
+  
+    // Create the options
+    let html = "";
+    if ( blank !== null ) option("", blank);
+    children(choices);
+    return new Handlebars.SafeString(html);
+  }
+    
+  
+  /* -------------------------------------------- */
+  
+  /**
+   * Register custom Handlebars helpers used by 4e.
+   */
+  export function registerHandlebarsHelpers() {
+    Handlebars.registerHelper({
+      getProperty: foundry.utils.getProperty,
+      "DND4E-concealSection": concealSection,
+      "DND4E-dataset": dataset,
+      "DND4E-groupedSelectOptions": groupedSelectOptions,
+      "DND4E-linkForUuid": (uuid, options) => linkForUuid(uuid, options.hash),
+      "DND4E-itemContext": itemContext,
+      "DND4E-numberFormat": (context, options) => formatNumber(context, options.hash),
+      "DND4E-textFormat": formatText
+    });
+  }
+  
+  /* -------------------------------------------- */
+  /*  Config Pre-Localization                     */
+  /* -------------------------------------------- */
+  
+  /**
+   * Storage for pre-localization configuration.
+   * @type {object}
+   * @private
+   */
+  const _preLocalizationRegistrations = {};
+  
+  /**
+   * Mark the provided config key to be pre-localized during the init stage.
+   * @param {string} configKeyPath          Key path within `CONFIG.DND4E` to localize.
+   * @param {object} [options={}]
+   * @param {string} [options.key]          If each entry in the config enum is an object,
+   *                                        localize and sort using this property.
+   * @param {string[]} [options.keys=[]]    Array of localization keys. First key listed will be used for sorting
+   *                                        if multiple are provided.
+   * @param {boolean} [options.sort=false]  Sort this config enum, using the key if set.
+   */
+  export function preLocalize(configKeyPath, { key, keys=[], sort=false }={}) {
+    if ( key ) keys.unshift(key);
+    _preLocalizationRegistrations[configKeyPath] = { keys, sort };
+  }
+  
+  /* -------------------------------------------- */
+  
+  /**
+   * Execute previously defined pre-localization tasks on the provided config object.
+   * @param {object} config  The `CONFIG.DND4E` object to localize and sort. *Will be mutated.*
+   */
+  export function performPreLocalization(config) {
+    for ( const [keyPath, settings] of Object.entries(_preLocalizationRegistrations) ) {
+      const target = foundry.utils.getProperty(config, keyPath);
+      if ( !target ) continue;
+      _localizeObject(target, settings.keys);
+      if ( settings.sort ) foundry.utils.setProperty(config, keyPath, sortObjectEntries(target, settings.keys[0]));
+    }
+  
+    // Localize & sort status effects
+    CONFIG.statusEffects.forEach(s => s.name = game.i18n.localize(s.name));
+    // CONFIG.statusEffects.sort((lhs, rhs) =>
+    //   lhs.id === "dead" ? -1 : rhs.id === "dead" ? 1 : lhs.name.localeCompare(rhs.name, game.i18n.lang)
+    // );
+  }
+  
+  /* -------------------------------------------- */
+  
+  /**
+   * Localize the values of a configuration object by translating them in-place.
+   * @param {object} obj       The configuration object to localize.
+   * @param {string[]} [keys]  List of inner keys that should be localized if this is an object.
+   * @private
+   */
+  function _localizeObject(obj, keys) {
+    for ( const [k, v] of Object.entries(obj) ) {
+      const type = typeof v;
+      if ( type === "string" ) {
+        obj[k] = game.i18n.localize(v);
+        continue;
+      }
+  
+      if ( type !== "object" ) {
+        console.error(new Error(
+          `Pre-localized configuration values must be a string or object, ${type} found for "${k}" instead.`
+        ));
+        continue;
+      }
+      if ( !keys?.length ) {
+        console.error(new Error(
+          "Localization keys must be provided for pre-localizing when target is an object."
+        ));
+        continue;
+      }
+  
+      for ( const key of keys ) {
+        const value = foundry.utils.getProperty(v, key);
+        if ( !value ) continue;
+        foundry.utils.setProperty(v, key, game.i18n.localize(value));
+      }
+    }
+  }
+  
+  /* -------------------------------------------- */
+  /*  Localization                                */
+  /* -------------------------------------------- */
+  
+  /**
+   * A cache of already-fetched labels for faster lookup.
+   * @type {Map<string, string>}
+   */
+  const _attributeLabelCache = new Map();
+  
+  /**
+   * Convert an attribute path to a human-readable label.
+   * @param {string} attr              The attribute path.
+   * @param {object} [options]
+   * @param {Actor5e} [options.actor]  An optional reference actor.
+   * @returns {string|void}
+   */
+  export function getHumanReadableAttributeLabel(attr, { actor }={}) {
+    // Check any actor-specific names first.
+    if ( attr.startsWith("resources.") && actor ) {
+      const resource = foundry.utils.getProperty(actor, `system.${attr}`);
+      if ( resource.label ) return resource.label;
+    }
+  
+    if ( (attr === "details.xp.value") && (actor?.type === "npc") ) {
+      return game.i18n.localize("DND4E.ExperiencePointsValue");
+    }
+  
+    if ( attr.startsWith(".") && actor ) {
+      const item = fromUuidSync(attr, { relative: actor });
+      return item?.name ?? attr;
+    }
+  
+    // Check if the attribute is already in cache.
+    let label = _attributeLabelCache.get(attr);
+    if ( label ) return label;
+  
+    // Derived fields.
+    if ( attr === "attributes.init.total" ) label = "DND4E.InitiativeBonus";
+    else if ( attr === "attributes.ac.value" ) label = "DND4E.ArmorClass";
+    else if ( attr === "attributes.spelldc" ) label = "DND4E.SpellDC";
+  
+    // Abilities.
+    else if ( attr.startsWith("abilities.") ) {
+      const [, key] = attr.split(".");
+      label = game.i18n.format("DND4E.AbilityScoreL", { ability: CONFIG.DND4E.abilities[key].label });
+    }
+  
+    // Skills.
+    else if ( attr.startsWith("skills.") ) {
+      const [, key] = attr.split(".");
+      label = game.i18n.format("DND4E.SkillPassiveScore", { skill: CONFIG.DND4E.skills[key].label });
+    }
+  
+    // Spell slots.
+    else if ( attr.startsWith("spells.") ) {
+      const [, key] = attr.split(".");
+      if ( !/spell\d+/.test(key) ) label = `DND4E.SpellSlots${key.capitalize()}`;
+      else {
+        const plurals = new Intl.PluralRules(game.i18n.lang, {type: "ordinal"});
+        const level = Number(key.slice(5));
+        label = game.i18n.format(`DND4E.SpellSlotsN.${plurals.select(level)}`, { n: level });
+      }
+    }
+  
+    // Attempt to find the attribute in a data model.
+    if ( !label ) {
+      const { CharacterData, NPCData, VehicleData, GroupData } = DND4E.dataModels.actor;
+      for ( const model of [CharacterData, NPCData, VehicleData, GroupData] ) {
+        const field = model.schema.getField(attr);
+        if ( field ) {
+          label = field.label;
+          break;
+        }
+      }
+    }
+  
+    if ( label ) {
+      label = game.i18n.localize(label);
+      _attributeLabelCache.set(attr, label);
+    }
+  
+    return label;
+  }
