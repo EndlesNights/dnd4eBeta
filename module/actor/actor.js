@@ -722,7 +722,7 @@ export class Actor4e extends Actor {
 			if(game.settings.get("dnd4e", "inhEnh")) {
 				//console.log(`${id}: Checked inherent defence enhancement of +${Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against item value of +${def.enhance}`);
 				//If our enhancement is lower than the inherent level, adjust it upward
-				enhFloor = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1);
+				enhFloor = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 3);
 			}
 			
 			//Get Def stats from items
