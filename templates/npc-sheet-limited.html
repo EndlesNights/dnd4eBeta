@@ -25,11 +25,7 @@
 					</li>
 					<li class="summary-type">
 						<select class="actor-size" name="data.details.type">
-							{{#select data.details.type}}
-							{{#each config.creatureType as |label type|}}
-								<option value="{{type}}">{{label}}</option>
-							{{/each}}
-							{{/select}}
+							{{selectOptions config.creatureRoleSecond selected=system.details.role.secondary labelAttr="label"}}
 						</select>
 					</li>
 					<li class="summary-typeother">

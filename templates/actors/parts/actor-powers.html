@@ -4,11 +4,7 @@
 			<input type="hidden" name="flags.dnd4e.sheetDisplay.powers.groupBy.value">
 			<label for="power-group">{{localize "DND4EUI.GroupBy"}}</label><br />
 			<select name="system.powerGroupTypes">
-				{{#select system.powerGroupTypes}}
-				{{#each config.powerGroupTypes as |name type|}}
-				<option value="{{type}}">{{name}}</option>
-				{{/each}}
-				{{/select}}
+				{{selectOptions config.powerGroupTypes selected=system.powerGroupTypes labelAttr="label"}}
 			</select>
 		</div>
 
@@ -16,11 +12,7 @@
 			<input type="hidden" name="flags.dnd4e.sheetDisplay.powers.sortBy.value">
 			<label for="power-sort">{{localize "DND4EUI.SortBy"}}</label><br />
 			<select name="system.powerSortTypes">
-				{{#select system.powerSortTypes}}
-				{{#each config.powerSortTypes as |name type|}}
-				<option value="{{type}}">{{name}}</option>
-				{{/each}}
-				{{/select}}
+				{{selectOptions config.powerSortTypes selected=system.powerSortTypes labelAttr="label"}}
 			</select>
 		</div>
 

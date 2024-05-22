@@ -13,11 +13,7 @@
 					</li>
 					<li class="summary-role-second">
 						<select class="actor-role-second" name="system.details.role.secondary">
-							{{#select system.details.role.secondary}}
-							{{#each config.creatureRoleSecond as |label role|}}
-								<option value="{{role}}">{{label}}</option>
-							{{/each}}
-							{{/select}}
+							{{selectOptions config.creatureRoleSecond selected=system.details.role.secondary labelAttr="label"}}
 						</select>
 					</li>
 					

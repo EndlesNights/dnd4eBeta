@@ -390,12 +390,13 @@ preLocalize("creatureRole", { keys: ["label"] });
 /* -------------------------------------------- */
 
 DND4E.creatureRoleSecond = {
-	"standard": "DND4E.CreatureRoleSecStandard",
-	"elite": "DND4E.CreatureRoleSecElite",
-	"solo": "DND4E.CreatureRoleSecSolo",
-	"minion": "DND4E.CreatureRoleSecMinion",
-	"other": "DND4E.CreatureRoleSecOther",
+	"standard": {label: "DND4E.CreatureRoleSecStandard"},
+	"elite": {label: "DND4E.CreatureRoleSecElite"},
+	"solo": {label: "DND4E.CreatureRoleSecSolo"},
+	"minion": {label: "DND4E.CreatureRoleSecMinion"},
+	"other": {label: "DND4E.CreatureRoleSecOther"},
 }
+preLocalize("creatureRoleSecond", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
@@ -842,10 +843,12 @@ DND4E.healingTypes = {
 /* -------------------------------------------- */
 
 DND4E.featureSortTypes = {
-	"name": "DND4E.ItemName",
-	"level": "DND4E.Level",
-	"none": "DND4E.None",
+	"name": {lable: "DND4E.ItemName"},
+	"level": {lable: "DND4E.Level"},
+	"none": {lable: "DND4E.None"},
 };
+preLocalize("featureSortTypes", { keys: ["label"] });
+
 
 /* -------------------------------------------- */
 
@@ -888,12 +891,24 @@ DND4E.powerSource = {
 };
 
 DND4E.powerGroupTypes = {
-	"usage": "DND4E.Usage",
-	"action": "DND4E.Action",
-	"type": "DND4E.Type",
-	"powerSubtype": "DND4E.PowerSubtype",
+	usage: {
+		label: "DND4E.Usage",
+	},
+	action: {
+		label: "DND4E.Action",
+	},
+	type: {
+		label: "DND4E.Type",
+	},
+	powerSubtype: {
+		label: "DND4E.PowerSubtype",
+	},
+	// "usage": "DND4E.Usage",
+	// "action": "DND4E.Action",
+	// "type": "DND4E.Type",
+	// "powerSubtype": "DND4E.PowerSubtype",
 };
-
+preLocalize("powerGroupTypes", { keys: ["label"] });
 
 // the actual groupings by powerGroupTypes
 DND4E.powerGroupings = {
@@ -935,15 +950,17 @@ DND4E.powerGroupings = {
 };
 
 DND4E.powerSortTypes = {
-	"name": "DND4E.ItemName",
-	"level": "DND4E.Level",
-	"actionType": "DND4E.Action",
-	"rangeTextShort": "DND4E.Range",
-	"useType": "DND4E.Usage",
-	"use.value": "DND4E.Used",
-	"powerSubtype": "DND4E.PowerSubtype",
-	"none": "DND4E.None",
+	"name": {label: "DND4E.ItemName"},
+	"level": {label: "DND4E.Level"},
+	"actionType": {label: "DND4E.Action"},
+	"rangeTextShort": {label: "DND4E.Range"},
+	"useType": {label: "DND4E.Usage"},
+	"use.value": {label: "DND4E.Used"},
+	"powerSubtype": {label: "DND4E.PowerSubtype"},
+	"none": {label: "DND4E.None"},
 };
+preLocalize("powerSortTypes", { keys: ["label"] });
+
 
 DND4E.inventoryTypes = {
 	weapon: { label: "DND4E.ItemTypeWeaponPl" },

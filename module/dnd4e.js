@@ -157,10 +157,10 @@ Hooks.once("setup", function() {
 	// Localize CONFIG objects once up-front
 	const toLocalize = [
 	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", 
-	"creatureRoleSecond", "conditionTypes", "consumableTypes", "distanceUnits", "durationType",
+	"conditionTypes", "consumableTypes", "distanceUnits", "durationType",
 	"damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
-	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "featureSortTypes", "healingTypes", "implement", "itemActionTypes",
-	"launchOrder", "limitedUsePeriods", "powerEffectTypes", "powerSource", "powerType", "powerSubtype", "powerUseType", "powerGroupTypes", "powerSortTypes",
+	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "healingTypes", "implement", "itemActionTypes",
+	"launchOrder", "limitedUsePeriods", "powerEffectTypes", "powerSource", "powerType", "powerSubtype", "powerUseType",
 	"profArmor", "cloth", "light", "heavy", "shield",
 	"weaponProficiencies", "simpleM", "simpleR", "militaryM", "militaryR", "superiorM", "superiorR", "improvisedM", "improvisedR","rangeType", "rangeTypeNoWeapon",
 	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
