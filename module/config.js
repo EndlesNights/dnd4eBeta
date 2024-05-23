@@ -45,6 +45,26 @@ DND4E.alignments = {
 	'ce': "DND4E.AlignmentCE"
 };
 
+DND4E.macroScope = {
+	global: {label: "Global"},
+	actors: {label: "Actors"},
+	actor: {label: "Actor"},
+}
+
+DND4E.macroType = {
+	script: {label: "TYPES.Macro.script"},
+	chat: {label: "TYPES.Macro.chat"},
+}
+preLocalize("macroType", { keys: ["label"] });
+
+DND4E.macroLaunchOrder = {
+	"both": {label: "DND4E.LaunchOrderBoth"},
+	"off": {label: "DND4E.LaunchOrderOff"},
+	"pre": {label: "DND4E.LaunchOrderPre"},
+	"post": {label: "DND4E.LaunchOrderPost"},
+	"sub": {label: "DND4E.LaunchOrderSub"}
+}
+preLocalize("macroLaunchOrder", { keys: ["label"] });
 
 DND4E.weaponProficiencies = {
 	"sim": "DND4E.WeaponSimpleProficiency",
@@ -216,16 +236,6 @@ DND4E.limitedUsePeriods = {
 	"charges": "DND4E.Charges",
 	"round": "DND4E.Round"
 };
-
-/* -------------------------------------------- */
-
-DND4E.launchOrder = {
-	"both": "DND4E.LaunchOrderBoth",
-	"off": "DND4E.LaunchOrderOff",
-	"pre": "DND4E.LaunchOrderPre",
-	"post": "DND4E.LaunchOrderPost",
-	"sub": "DND4E.LaunchOrderSub"
-}
 
 /* -------------------------------------------- */
 
