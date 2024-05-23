@@ -257,61 +257,81 @@ DND4E.autoanimationHook = {
  * @type {Object}
  */
 DND4E.equipmentTypes = {
-	// "light": "DND4E.EquipmentLight",
-	// "medium": "DND4E.EquipmentMedium",
-	// "heavy": "DND4E.EquipmentHeavy",
-	// "bonus": "DND4E.EquipmentBonus",
-	// "natural": "DND4E.EquipmentNatural",
-	// "shield": "DND4E.EquipmentShield",
-	// "clothing": "DND4E.EquipmentClothing",
-	// "trinket": "DND4E.EquipmentTrinket"
-	"armour": "DND4E.EquipmentTypeArmour",
-	"arms": "DND4E.EquipmentTypeArms",
-	"feet": "DND4E.EquipmentTypeFeet",
-	"hands": "DND4E.EquipmentTypeHands",
-	"head": "DND4E.EquipmentTypeHead",
-	"neck": "DND4E.EquipmentTypeNeck",
-	"ring": "DND4E.EquipmentTypeRing",
-	"waist": "DND4E.EquipmentTypeWaist",
-	"natural": "DND4E.EquipmentTypeNatural",
-	"other": "DND4E.EquipmentTypeOther",
+	"": {label: "DND4E.None"},
+	"armour": {label: "DND4E.EquipmentTypeArmour"},
+	"arms": {label: "DND4E.EquipmentTypeArms"},
+	"feet": {label: "DND4E.EquipmentTypeFeet"},
+	"hands": {label: "DND4E.EquipmentTypeHands"},
+	"head": {label: "DND4E.EquipmentTypeHead"},
+	"neck": {label: "DND4E.EquipmentTypeNeck"},
+	"ring": {label: "DND4E.EquipmentTypeRing"},
+	"waist": {label: "DND4E.EquipmentTypeWaist"},
+	"natural": {label: "DND4E.EquipmentTypeNatural"},
+	"other": {label: "DND4E.EquipmentTypeOther"},
 };
+preLocalize("equipmentTypes", { keys: ["label"] });
 
 DND4E.equipmentTypesArmour = {
 	//"cloth": "DND4E.EquipmentArmourCloth",
-	"light": "DND4E.EquipmentArmourLight",
-	"heavy": "DND4E.EquipmentArmourHeavy",
-	"natural": "DND4E.EquipmentArmourNatural",
+	"": {label: "DND4E.None"},
+	"light": {label: "DND4E.EquipmentArmourLight"},
+	"heavy": {label: "DND4E.EquipmentArmourHeavy"},
+	"natural": {label: "DND4E.EquipmentArmourNatural"},
+	"other": {label: "DND4E.EquipmentTypeOther"},
 };
-DND4E.equipmentTypesArms = {
-	"light": "DND4E.EquipmentArmsLight",
-	"heavy": "DND4E.EquipmentArmsHeavy",
-	"bracers": "DND4E.EquipmentArmsBracers",
-	"bracelet": "DND4E.EquipmentArmsBracelet",
-};
-DND4E.equipmentTypesFeet = {
-	"shoe": "DND4E.EquipmentFeetShoe",
-	"boot": "DND4E.EquipmentFeetBoot",
-	"greave": "DND4E.EquipmentFeetGreave",
-};
-DND4E.equipmentTypesHands = {
-	"gloves": "DND4E.EquipmentHandsGloves",
-	"gauntlets": "DND4E.EquipmentHandsGauntlets",
-};
-DND4E.equipmentTypesHead = {
-	"hat": "DND4E.EquipmentHeadHat",
-	"helmet": "DND4E.EquipmentHeadHelmet",
-	"eyewear": "DND4E.EquipmentHeadEyewear",
+preLocalize("equipmentTypesArmour", { keys: ["label"] });
 
+DND4E.equipmentTypesArms = {
+	"": {label: "DND4E.None"},
+	"light": {label: "DND4E.EquipmentArmsLight"},
+	"heavy": {label: "DND4E.EquipmentArmsHeavy"},
+	"bracers": {label: "DND4E.EquipmentArmsBracers"},
+	"bracelet": {label: "DND4E.EquipmentArmsBracelet"},
+	"other": {label: "DND4E.EquipmentTypeOther"},
 };
+preLocalize("equipmentTypesArms", { keys: ["label"] });
+
+DND4E.equipmentTypesFeet = {
+	"": {label: "DND4E.None"},
+	"shoe": {label: "DND4E.EquipmentFeetShoe"},
+	"boot": {label: "DND4E.EquipmentFeetBoot"},
+	"greave": {label: "DND4E.EquipmentFeetGreave"},
+	"other": {label: "DND4E.EquipmentTypeOther"},
+};
+preLocalize("equipmentTypesFeet", { keys: ["label"] });
+
+DND4E.equipmentTypesHands = {
+	"": {label: "DND4E.None"},
+	"gloves": {label: "DND4E.EquipmentHandsGloves"},
+	"gauntlets": {label: "DND4E.EquipmentHandsGauntlets"},
+	"other": {label: "DND4E.EquipmentTypeOther"},
+};
+preLocalize("equipmentTypesHands", { keys: ["label"] });
+
+DND4E.equipmentTypesHead = {
+	"": {label: "DND4E.None"},
+	"hat": {label: "DND4E.EquipmentHeadHat"},
+	"helmet": {label: "DND4E.EquipmentHeadHelmet"},
+	"eyewear": {label: "DND4E.EquipmentHeadEyewear"},
+	"other": {label: "DND4E.EquipmentTypeOther"},
+};
+preLocalize("equipmentTypesHead", { keys: ["label"] });
+
 DND4E.equipmentTypesNeck = {
-	"necklace": "DND4E.EquipmentNeckNecklace",
-	"amulet": "DND4E.EquipmentNeckAmulet",
-	"cloak": "DND4E.EquipmentCloak",
+	"": {label: "DND4E.None"},
+	"necklace": {label: "DND4E.EquipmentNeckNecklace"},
+	"amulet": {label: "DND4E.EquipmentNeckAmulet"},
+	"cloak": {label: "DND4E.EquipmentCloak"},
+	"other": {label: "DND4E.EquipmentTypeOther"},
 };
+preLocalize("equipmentTypesNeck", { keys: ["label"] });
+
 DND4E.equipmentTypesWaist = {
-	"belt": "DND4E.EquipmentWaistBelt",
+	"": {label: "DND4E.None"},
+	"belt": {label: "DND4E.EquipmentWaistBelt"},
+	"other": {label: "DND4E.EquipmentTypeOther"},
 };
+preLocalize("equipmentTypesWaist", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
@@ -505,28 +525,36 @@ DND4E.ritualcomponents = {
 
 // Damage Types
 DND4E.damageTypes = {
-	
 	"damage": "DND4E.DamageAll",
 	"ongoing": "DND4E.Ongoing",
 	"acid": "DND4E.DamageAcid",
-	// "bludgeoning": "DND4E.DamageBludgeoning",
-	// "bludgeon": "DND4E.DamageBludgeoning",
 	"cold": "DND4E.DamageCold",
 	"fire": "DND4E.DamageFire",
 	"force": "DND4E.DamageForce",
 	"lightning": "DND4E.DamageLightning",
 	"necrotic": "DND4E.DamageNecrotic",
-	// "pierce": "DND4E.DamagePiercing",
-	// "piercing": "DND4E.DamagePiercing",
 	"physical": "DND4E.Damagephysical",
 	"poison": "DND4E.DamagePoison",
 	"psychic": "DND4E.DamagePsychic",
 	"radiant": "DND4E.DamageRadiant",
-	// "slashing": "DND4E.DamageSlashing",
-	// "slash": "DND4E.DamageSlashing",
 	"thunder": "DND4E.DamageThunder"
 };
-
+// DND4E.damageTypes = {
+// 	"damage": {label: "DND4E.DamageAll"},
+// 	"ongoing": {label: "DND4E.Ongoing"},
+// 	"acid": {label: "DND4E.DamageAcid"},
+// 	"cold": {label: "DND4E.DamageCold"},
+// 	"fire": {label: "DND4E.DamageFire"},
+// 	"force": {label: "DND4E.DamageForce"},
+// 	"lightning": {label: "DND4E.DamageLightning"},
+// 	"necrotic": {label: "DND4E.DamageNecrotic"},
+// 	"physical": {label: "DND4E.Damagephysical"},
+// 	"poison": {label: "DND4E.DamagePoison"},
+// 	"psychic": {label: "DND4E.DamagePsychic"},
+// 	"radiant": {label: "DND4E.DamageRadiant"},
+// 	"thunder": {label: "DND4E.DamageThunder"}
+// };
+// preLocalize("damageTypes", { keys: ["label"] });
 
 /* -------------------------------------------- */
 

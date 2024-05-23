@@ -20,7 +20,11 @@
 
 		<ol class="properties-list">
 			{{#each itemProperties}}
-			<li>{{this}}</li>
+				{{#if this.label}}
+					<li>{{this.label}}</li>
+				{{else}}
+					<li>{{this}}</li>
+				{{/if}}
 			{{/each}}
 		</ol>
 	</div>
