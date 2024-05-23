@@ -622,7 +622,7 @@ export class Actor4e extends Actor {
 			//res.resBonusValue = resBonusValue;
 			//res.value += res.armour + resBonusValue;
 			
-			//Normal bonus types are deprecated for resistances, so if they are present we will assign them based on whether they total positive or negative.
+			//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
 			//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
 			for ( let i of this.items) {
 				if(i.type !="equipment" || !i.system.equipped || i.system.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
@@ -642,8 +642,8 @@ export class Actor4e extends Actor {
 				}
 			}
 			
-			//Get the final modifier for this type of damage by combining res and vuln numbers.
-			res.value = res.res + res.vuln;
+			//Get the final modifier for this type of damage by combining res and vuln numbers. Also make sure that neither one can cross 0 on the number line.
+			res.value = Math.max(res.res,0) + Math.min(res.vuln,0);
 			//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: final result of ${res.value} from res ${res.res} and vulnerability ${res.vuln}`);
 
 			res.label = game.i18n.localize(DND4E.damageTypes[id]); //.localize("");
