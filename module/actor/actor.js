@@ -768,8 +768,6 @@ export class Actor4e extends Actor {
 			
 			def.label = DND4E.defensives[id].abbreviation;
 			def.title = DND4E.defensives[id].label;
-			// def.label = game.i18n.localize(DND4E.def[id]);
-			// def.title = game.i18n.localize(DND4E.defensives[id]);
 						
 			let defBonusValue = 0;
 			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
