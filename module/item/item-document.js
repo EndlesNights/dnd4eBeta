@@ -677,7 +677,7 @@ export default class Item4e extends Item {
 		// Basic chat message data
 		const chatData = {
 			user: game.user.id,
-			type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+			type: CONST.CHAT_MESSAGE_STYLES.OTHER,
 			content: html,
 			speaker: {
 				actor: this.actor.id,
@@ -926,7 +926,7 @@ export default class Item4e extends Item {
 	 * @return {Object}               An object of chat data to render
 	 */
 	async getChatData(htmlOptions={}) {
-		const data = duplicate(this.system);
+		const data = foundry.utils.duplicate(this.system);
 		const labels = this.labels;
 
 		// if(data.chatFlavor) {
@@ -1907,9 +1907,9 @@ export default class Item4e extends Item {
 	getRollData() {
 		if ( !this.actor ) return null;
 		const rollData = this.actor.getRollData();
-		rollData.item = duplicate(this.system);
+		rollData.item = foundry.utils.duplicate(this.system);
 		rollData.item.name = this.name;
-		rollData.item.flags = duplicate(this.flags);
+		rollData.item.flags = foundry.utils.duplicate(this.flags);
 
 		// Include an ability score modifier if one exists
 		const abl = this.abilityMod;
