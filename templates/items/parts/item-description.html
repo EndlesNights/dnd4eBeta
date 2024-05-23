@@ -30,9 +30,9 @@
 	</div>
 
 	<section class="description">
-		{{#if user.isGM}}
+		{{#if userInfo.isGM}}
 		<section class="editor-container gm-notes{{#if system.description.gmNotes}} has-content{{/if}}">
-			{{editor editor-gm descriptionHTMLGM target="system.description.gm" button=true owner=owner editable=editable rollData=rollData  engine="prosemirror"}}
+			{{editor descriptionHTMLGM target="system.description.gm" button=true owner=owner editable=editable rollData=rollData  engine="prosemirror"}}
 		</section>
 		{{/if}}
 
