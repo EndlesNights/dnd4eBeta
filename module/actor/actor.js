@@ -698,8 +698,8 @@ export class Actor4e extends Actor {
 	calcDefenceStatsCharacter(data) {		
 		for (let [id, def] of Object.entries(data.defences)) {
 			
-			def.label = game.i18n.localize(DND4E.def[id]);
-			def.title = game.i18n.localize(DND4E.defensives[id]);
+			def.label = DND4E.defensives[id].abbreviation;
+			def.title = DND4E.defensives[id].label;
 						
 			let defBonusValue = 0;
 			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
@@ -766,8 +766,10 @@ export class Actor4e extends Actor {
 	calcDefenceStatsNPC(data) {
 		for (let [id, def] of Object.entries(data.defences)) {
 			
-			def.label = game.i18n.localize(DND4E.def[id]);
-			def.title = game.i18n.localize(DND4E.defensives[id]);
+			def.label = DND4E.defensives[id].abbreviation;
+			def.title = DND4E.defensives[id].label;
+			// def.label = game.i18n.localize(DND4E.def[id]);
+			// def.title = game.i18n.localize(DND4E.defensives[id]);
 						
 			let defBonusValue = 0;
 			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
@@ -1185,7 +1187,7 @@ export class Actor4e extends Actor {
 		return d20Roll(foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND4E.DefencePromptTitle", {defences: CONFIG.DND4E.defensives[label]}),
+			title: game.i18n.format("DND4E.DefencePromptTitle", {defences: CONFIG.DND4E.defensives[label].label}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
 		}));		

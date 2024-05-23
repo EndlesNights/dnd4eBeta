@@ -111,15 +111,16 @@ DND4E.timePeriods = {
  * @type {Object}
  */
 DND4E.abilityActivationTypes = {
-	"none": "DND4E.NoAction",
-	"standard": "DND4E.ActionStandard",
-	"move": "DND4E.ActionMove",
-	"minor": "DND4E.ActionMinor",
-	"free": "DND4E.ActionFree",
-	"reaction": "DND4E.ActionReaction",
-	"interrupt": "DND4E.ActionInterrupt",
-	"opportunity": "DND4E.ActionOpportunity",
+	"none": {label: "DND4E.NoAction"},
+	"standard": {label: "DND4E.ActionStandard"},
+	"move": {label: "DND4E.ActionMove"},
+	"minor": {label: "DND4E.ActionMinor"},
+	"free": {label: "DND4E.ActionFree"},
+	"reaction": {label: "DND4E.ActionReaction"},
+	"interrupt": {label: "DND4E.ActionInterrupt"},
+	"opportunity": {label: "DND4E.ActionOpportunity"},
 };
+preLocalize("abilityActivationTypes", { keys: ["label"] });
 
 DND4E.abilityActivationTypesShort = {
 	"none": "DND4E.NoActionShort",
@@ -135,12 +136,13 @@ DND4E.abilityActivationTypesShort = {
 
 
 DND4E.abilityConsumptionTypes = {
-	"ammo": "DND4E.ConsumeAmmunition",
-	"attribute": "DND4E.ConsumeAttribute",
-	"material": "DND4E.ConsumeMaterial",
-	"charges": "DND4E.ConsumeCharges"
+	"": {label: "DND4E.None"},
+	"ammo": {label: "DND4E.ConsumeAmmunition"},
+	"attribute": {label: "DND4E.ConsumeAttribute"},
+	"material": {label: "DND4E.ConsumeMaterial"},
+	"charges": {label: "DND4E.ConsumeCharges"}
 };
-
+preLocalize("abilityConsumptionTypes", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
@@ -231,11 +233,12 @@ preLocalize("itemCapacityTypes", { keys: ["label"] });
  * @type {Object}
  */
 DND4E.limitedUsePeriods = {
-	"enc": "DND4E.Encounter",
-	"day": "DND4E.Day",
-	"charges": "DND4E.Charges",
-	"round": "DND4E.Round"
+	"enc": {label: "DND4E.Encounter"},
+	"day": {label: "DND4E.Day"},
+	"charges": {label: "DND4E.Charges"},
+	"round": {label: "DND4E.Round"}
 };
+preLocalize("limitedUsePeriods", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
@@ -439,14 +442,15 @@ preLocalize("creatureType", { keys: ["label"] });
  * @type {Object}
  */
 DND4E.consumableTypes = {
-	"alchemical": "DND4E.ConsumableAlchemical",
-	"ammo": "DND4E.ConsumableAmmunition",
-	"potion": "DND4E.ConsumablePotion",
-	"poison": "DND4E.ConsumablePoison",
-	"food": "DND4E.ConsumableFood",
-	"scroll": "DND4E.ConsumableScroll",
-	"trinket": "DND4E.ConsumableTrinket"
+	"alchemical": {label: "DND4E.ConsumableAlchemical"},
+	"ammo": {label: "DND4E.ConsumableAmmunition"},
+	"potion": {label: "DND4E.ConsumablePotion"},
+	"poison": {label: "DND4E.ConsumablePoison"},
+	"food": {label: "DND4E.ConsumableFood"},
+	"scroll": {label: "DND4E.ConsumableScroll"},
+	"trinket": {label: "DND4E.ConsumableTrinket"}
 };
+preLocalize("consumableTypes", { keys: ["label"] });
 
 /* -------------------------------------------- */
 DND4E.commonAttackBonuses = {
@@ -563,11 +567,24 @@ DND4E.def = {
 
 // Defensives
 DND4E.defensives = {
-	"ac": "DND4E.DefenceAC",
-	"fort": "DND4E.DefenceFort",
-	"ref": "DND4E.DefenceRef",
-	"wil": "DND4E.DefenceWil"
+	ac: {
+		label: "DND4E.DefenceAC",
+		abbreviation: "DND4E.DefAC"
+	},
+	fort: {
+		label: "DND4E.DefenceFort",
+		abbreviation: "DND4E.DefFort"
+	},
+	ref: {
+		label: "DND4E.DefenceRef",
+		abbreviation: "DND4E.DefRef"
+	},
+	wil: {
+		label: "DND4E.DefenceWil",
+		abbreviation: "DND4E.DefWil"
+	}
 };
+preLocalize("defensives", { keys: ["label", "abbreviation"] });
 
 /* -------------------------------------------- */
 
@@ -1036,19 +1053,20 @@ DND4E.weaponType = {
 };
 
 DND4E.rangeType = {
-	"weapon": "DND4E.rangeWeapon",
-	"melee": "DND4E.rangeMelee",
-	"reach": "DND4E.rangeReach",
-	"range" : "DND4E.rangeRanged",
-	"closeBurst": "DND4E.rangeCloseBurst",
-	"closeBlast": "DND4E.rangeCloseBlast",
-	"rangeBurst": "DND4E.rangeBurst",
-	"rangeBlast": "DND4E.rangeBlast",
-	"wall": "DND4E.rangeWall",
-	"personal": "DND4E.rangePersonal",
-	"touch": "DND4E.rangeTouch",
-	"special": "DND4E.rangeSpecial",
+	"weapon": {label: "DND4E.rangeWeapon"},
+	"melee": {label: "DND4E.rangeMelee"},
+	"reach": {label: "DND4E.rangeReach"},
+	"range" : {label: "DND4E.rangeRanged"},
+	"closeBurst": {label: "DND4E.rangeCloseBurst"},
+	"closeBlast": {label: "DND4E.rangeCloseBlast"},
+	"rangeBurst": {label: "DND4E.rangeBurst"},
+	"rangeBlast": {label: "DND4E.rangeBlast"},
+	"wall": {label: "DND4E.rangeWall"},
+	"personal": {label: "DND4E.rangePersonal"},
+	"touch": {label: "DND4E.rangeTouch"},
+	"special": {label: "DND4E.rangeSpecial"},
 };
+preLocalize("rangeType", { keys: ["label"] });
 
 DND4E.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4E.rangeType).filter(function ([key, value]) {
 	return key !== "weapon";

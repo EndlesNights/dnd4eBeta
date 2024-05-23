@@ -226,12 +226,7 @@
 
 			<span>{{ localize "DND4E.VS" }}</span>
 			<select name="system.attack.def">
-				{{#select system.attack.def}}
-				<option value=""></option>
-				{{#each config.def as |name key|}}
-				<option value="{{key}}">{{name}}</option>
-				{{/each}}
-				{{/select}}
+				{{selectOptions config.defensives selected=system.attack.def labelAttr="abbreviation"}}
 			</select>
 		</div>
 	</div>

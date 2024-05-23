@@ -163,19 +163,19 @@ Hooks.once("setup", function() {
 
 	// Localize CONFIG objects once up-front
 	const toLocalize = [
-	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", 
-	"conditionTypes", "consumableTypes", "distanceUnits", "durationType",
-	"damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
+	"abilities", "abilityActivationTypesShort", 
+	"conditionTypes", "distanceUnits", "durationType",
+	"damageTypes", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
 	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "healingTypes", "implement", "itemActionTypes",
-	"limitedUsePeriods", "powerEffectTypes", "powerSource", "powerType", "powerSubtype", "powerUseType",
+	"powerEffectTypes", "powerSource", "powerType", "powerSubtype", "powerUseType",
 	"profArmor", "cloth", "light", "heavy", "shield",
-	"weaponProficiencies", "simpleM", "simpleR", "militaryM", "militaryR", "superiorM", "superiorR", "improvisedM", "improvisedR","rangeType", "rangeTypeNoWeapon",
+	"weaponProficiencies", "simpleM", "simpleR", "militaryM", "militaryR", "superiorM", "superiorR", "improvisedM", "improvisedR",
 	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
 	"weaponTypes", "weaponHands", "autoanimationHook"
 	];
 
 	const noSort = [
-		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "durationType", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerEffectTypes", "powerGroupTypes", "profArmor", "profWeapon","rangeType", "weaponType", "weaponTypes", "weaponHands"
+		"abilities", "currencies", "distanceUnits", "durationType", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerEffectTypes", "powerGroupTypes", "profArmor", "profWeapon", "weaponType", "weaponTypes", "weaponHands"
 	];
 	
 	for ( let o of toLocalize ) {
