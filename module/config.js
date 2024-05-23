@@ -198,9 +198,11 @@ DND4E.itemActionTypes = {
 /* -------------------------------------------- */
 
 DND4E.itemCapacityTypes = {
-	"items": "DND4E.ItemContainerCapacityItems",
-	"weight": "DND4E.ItemContainerCapacityWeight"
+	"items": {label: "DND4E.ItemContainerCapacityItems"},
+	"weight": {label: "DND4E.ItemContainerCapacityWeight"}
 };
+preLocalize("itemCapacityTypes", { keys: ["label"] });
+
 
 /* -------------------------------------------- */
 
