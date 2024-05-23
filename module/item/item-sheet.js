@@ -635,7 +635,7 @@ export default class ItemSheet4e extends ItemSheet {
 	_updateObject(event, formData) {
 
 		// TODO: This can be removed once 0.7.x is release channel
-		if ( !formData.system ) formData = expandObject(formData);
+		if ( !formData.system ) formData = foundry.utils.expandObject(formData);
 
 		// Handle Damage Array
 		const damage = formData.system?.damage;
