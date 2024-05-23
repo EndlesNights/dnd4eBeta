@@ -529,7 +529,8 @@ export class Helper {
 
 				//Just to help keep the rolls cleaner, look for Deterministic elements to remove
 				if(r.isDeterministic){
-					r.evaluate({async: false});
+					// r.evaluate({async: false});
+					r.evaluateSync();
 					quantity = r.total;
 				}
 
@@ -550,7 +551,8 @@ export class Helper {
 						let r2 = new Roll(`${weaponDiceQuantity}`);
 	
 						if(r2.isDeterministic){
-							r2.evaluate({async: false});
+							// r2.evaluate({async: false});
+							r2.evaluateSync();
 							weaponDiceQuantity = r2.total;
 						}
 						if(weaponInnerData.properties.bru) {
@@ -605,7 +607,8 @@ export class Helper {
 				quantity = this.commonReplace(quantity, actorData, powerInnerData, weaponInnerData, 0)
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
-				rQuantity.evaluate({maximize: true, async: false});
+				// rQuantity.evaluate({maximize: true, async: false});
+				rQuantity.evaluateSync({maximize: true});
 
 				//check if is valid number
 				if(this._isNumber(rQuantity.total)){
@@ -683,7 +686,8 @@ export class Helper {
 				let r = new Roll(`${quantity}`);
 				if(r.isDeterministic){
 					console.log("here")
-					r.evaluate({async: false});
+					// r.evaluate({async: false});
+					r.evaluateSync();
 					quantity = r.total;
 				}
 				
@@ -715,7 +719,8 @@ export class Helper {
 				let quantity = powerInnerData.hit.baseQuantity;
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
-				rQuantity.evaluate({maximize: true, async: false});
+				// rQuantity.evaluate({maximize: true, async: false});
+				rQuantity.evaluateSync({maximize: true});
 				
 				if(this._isNumber(rQuantity.result)) {
 					quantity = rQuantity.result;
@@ -798,7 +803,8 @@ export class Helper {
 			let roll = new Roll(`${r}`);
 
 			if(roll.isDeterministic){
-				roll.evaluate({async: false});
+				// roll.evaluate({async: false});
+				roll.evaluateSync();
 				return roll.total;
 			}
 			return `[[${r}]]`;
@@ -928,7 +934,7 @@ export class Helper {
 		tag.sort();
 		if(tag.length > 0) powerDetail += ` ♦ <span class="keywords">${tag.join(', ')}</span>`;
 		
-		powerDetail += `</span><br /><span><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType]}</span> `;
+		powerDetail += `</span><br /><span><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType].label}</span> `;
 
 		if(chatData.rangeType === "weapon") {
 			powerDetail += ` <span class="range-type weapon">${CONFIG.DND4E.weaponType[chatData.weaponType]}</span>`;
@@ -1015,7 +1021,7 @@ export class Helper {
 			} else {
 				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")}`;
 			}
-			powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
+			powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.defensives[chatData.attack.def].abbreviation}</p>`;
 		}
 
 		let highlight = true;
@@ -1042,7 +1048,7 @@ export class Helper {
 		}
 
 		if(chatData.sustain?.actionType !== "none" && chatData.sustain?.actionType) {
-			powerDetail += `<p class="sustain ${highlight? `alt`: ``}"><strong>${game.i18n.localize("DND4E.Sustain")} ${CONFIG.DND4E.abilityActivationTypes[chatData.sustain.actionType]}:</strong> ${chatData.sustain.detail}</p>`;
+			powerDetail += `<p class="sustain ${highlight? `alt`: ``}"><strong>${game.i18n.localize("DND4E.Sustain")} ${CONFIG.DND4E.abilityActivationTypes[chatData.sustain.actionType].label}:</strong> ${chatData.sustain.detail}</p>`;
 		}
 
 		if(actorData){
