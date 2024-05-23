@@ -141,6 +141,13 @@ Hooks.once("init", async function() {
 	game.dnd4e.quickSave = (actor) => game.dnd4e.tokenBarHooks.quickSave(actor, null)
 
 	customSKillSetUp();
+
+	if(!game.modules.get("lib-wrapper")?.active){
+		return console.log("lib-wrapper not active")
+	} else {
+		libWrapperInit();
+	}
+
 });
 
 /* --------------------------------------------- */
@@ -281,8 +288,8 @@ html.find('.effect-control').last().after(message);
 });
 
 
-Hooks.once('init', async function() {
-
+function libWrapperInit() {
+	
 	libWrapper.register(
 		'dnd4e',
 		'MeasuredTemplate.prototype._computeShape',
@@ -318,7 +325,7 @@ Hooks.once('init', async function() {
 		'ChatLog.prototype._processDiceCommand',
 		chat._processDiceCommand
 	)
-});
+}
 
 Hooks.on("getSceneControlButtons", function(controls){
 	//create addtioanl button in measure templates for burst

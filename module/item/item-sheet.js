@@ -37,7 +37,6 @@ export default class ItemSheet4e extends ItemSheet {
 			dragDrop: [
 				{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},
 			]
-			
 		});
 	}
 
@@ -60,7 +59,9 @@ export default class ItemSheet4e extends ItemSheet {
 		data.config = CONFIG.DND4E;
 
 		// Item Type, Status, and Details
-		data.user = game.user;
+		// data.user = game.user; //This is causing a huge error!
+		data.userInfo = game.user;
+
 		data.itemType = itemData.type.titleCase();
 		data.itemStatus = this._getItemStatus(itemData);
 		data.itemProperties = this._getItemProperties(itemData);
