@@ -1352,12 +1352,14 @@ export class Actor4e extends Actor {
 				if(options.bonus != "" ){
 					r = new Roll(options.bonus);
 					try{
-						await r.roll({async : true});
+						// await r.roll({async : true});
+						await r.roll();
 
 					}catch (error){
 						ui.notifications.error(game.i18n.localize("DND4E.InvalidHealingBonus"));
 						r = new Roll("0");
-						await r.roll({async : true});
+						// await r.roll({async : true});
+						await r.roll();
 					}
 				}
 				healamount += this.system.details.surgeValue + (r.total || 0);

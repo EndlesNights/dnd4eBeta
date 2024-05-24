@@ -1017,13 +1017,14 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		const itemData = {
 			name: game.i18n.format("DND4E.ItemNew", {type: type.capitalize()}),
 			type: type,
-			data: duplicate(header.dataset)
+			system: foundry.utils.duplicate(header.dataset)
 		};
 		delete itemData.data["type"];
+		console.log(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
-	async _onItemImport(event) {
+	_onItemImport(event) {
 		event.preventDefault();
 		new ItemImporterDialog(this.actor).render(true);
 	}
@@ -1035,19 +1036,19 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		const itemData = {
 			name: `${game.i18n.format("DND4E.ItemNew", {type: type.capitalize()})} Power`,
 			type: "power",
-			data: duplicate(header.dataset)
+			system: foundry.utils.duplicate(header.dataset)
 		};
 
 		if(this.object.system.powerGroupTypes === "action" || this.object.system.powerGroupTypes == undefined) {
-			itemData.data.actionType = type;
+			itemData.system.actionType = type;
 		}
 		else if(this.object.system.powerGroupTypes === "type") {
-			itemData.data.powerType = type;
+			itemData.system.powerType = type;
 		}
 		else if(this.object.system.powerGroupTypes === "usage") {
-			itemData.data.useType = type;
+			itemData.system.useType = type;
 			if(["encounter", "daily", "recharge", "item"].includes(type)) {
-				itemData.data.uses = {
+				itemData.system.uses = {
 					value: 1,
 					max: 1,
 					per: ["encounter", "charges", "round"].includes(type)  ? "enc" : "day"
@@ -1056,18 +1057,18 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			}
 		}
 
-		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLableOption");
+		itemData.system.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLableOption");
 		
 		if(this.actor.type === "NPC"){
 			
-			itemData.data.weaponType = "none";
-			itemData.data.weaponUse = "none";
+			itemData.system.weaponType = "none";
+			itemData.system.weaponUse = "none";
 
-			itemData.data.attack = {
+			itemData.system.attack = {
 				formula:"5 + @atkMod",
 				ability:"form"
 			};
-			itemData.data.hit  = {
+			itemData.system.hit  = {
 				formula:"@powBase + @dmgMod",
 				critFormula:"@powMax",
 				baseDiceType: "d8",
@@ -1077,14 +1078,15 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 		if(game.settings.get("dnd4e", "halfLevelOptions")){
 			if(this.actor.type === "NPC"){
-				itemData.data.attack.formula = ""; 
+				itemData.system.attack.formula = ""; 
 			} else {
-				itemData.data.attack = {
+				itemData.system.attack = {
 					formula:"@wepAttack + @powerMod + @atkMod"
 				}
 			}
 		}
 		
+		console.log(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
@@ -1427,7 +1429,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	}
 	/* -------------------------------------------- */
 
-	_onItemRecharge(event){
+	async _onItemRecharge(event){
 		event.preventDefault();
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
@@ -1441,7 +1443,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				r.dice[0].options.critical = item.system.rechargeRoll || 6;
 				r.dice[0].options.fumble = r.dice[0].options.critical -1;
 				// r.evaluate({async: false});
-				r.evaluateSync();
+				await r.evaluate();
 	
 				let flav = `${item.name} did not recharge.`;
 				if(r.total >= r.dice[0].options.critical){
@@ -1467,7 +1469,6 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 					flavor: `${item.name} successfully recharged! Due to meeting condition ${item.system.rechargeCondition}`
 				});
 			}
-
 		}
 		return;
 	}
@@ -1496,7 +1497,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
    * @return {Promise<Actor4e>}
    */
   convertCurrency() {
-	const curr = duplicate(this.actor.system.currency);
+	const curr = foundry.utils.duplicate(this.actor.system.currency);
 	const convert = CONFIG.DND4E.currencyConversion;
 	for ( let [c, t] of Object.entries(convert) ) {
 	  let change = Math.floor(curr[c] / t.each);

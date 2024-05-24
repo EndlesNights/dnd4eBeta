@@ -873,16 +873,19 @@ export class Helper {
 		}
 		if (rollString && rollString !== "") {
 			const roll = new Roll(`${rollString}`);
-			return roll.roll({async : true}).catch(err => {
+			// return roll.roll({async : true}).catch(err => {
+			return roll.roll().catch(err => {
 				let msg = context ? `${game.i18n.localize(errorMessageKey)} (in ${context}) : ${rollString}` : `${game.i18n.localize(errorMessageKey)} : ${rollString}`
 				ui.notifications.error(msg);
 				console.log(msg)
 				console.log(err)
-				return new Roll("0").roll({async : true});
+				// return new Roll("0").roll({async : true});
+				return new Roll("0").roll();
 			});
 		}
 		else {
-			return new Roll("0").roll({async : true});
+			// return new Roll("0").roll({async : true});
+			return new Roll("0").roll();
 		}
 	}
 
@@ -952,19 +955,19 @@ export class Helper {
 			powerDetail += ` <span class="range-type ranged">${game.i18n.localize("DND4E.rangeRanged")}</span> <span class="range-size">${chatData.rangePower}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
-			powerDetail += ` <span class="range-type close">${CONFIG.DND4E.rangeType[chatData.rangeType]}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span>`;
+			powerDetail += ` <span class="range-type close">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span>`;
 		}
 		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
-			powerDetail += ` <span class="range-type area">${CONFIG.DND4E.rangeType[chatData.rangeType]}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span> <span class="label-within">${game.i18n.localize("DND4E.RangeWithin")}</span> <span class="range-within">${chatData.rangePower}</span>`;
+			powerDetail += ` <span class="range-type area">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span> <span class="label-within">${game.i18n.localize("DND4E.RangeWithin")}</span> <span class="range-within">${chatData.rangePower}</span>`;
 		}
 		else if (chatData.rangeType === "personal") {
-			powerDetail += ` <span class="range-type personal">${CONFIG.DND4E.rangeType[chatData.rangeType]}</span>`;
+			powerDetail += ` <span class="range-type personal">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span>`;
 		}
 		else if (chatData.rangeType === "special") {
-			powerDetail += ` <span class="range-type special">${CONFIG.DND4E.rangeType[chatData.rangeType]}</span>`;
+			powerDetail += ` <span class="range-type special">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span>`;
 		}
 		else if (chatData.rangeType === "touch") {
-			powerDetail += ` <span class="range-type melee">${game.i18n.localize("DND4E.Melee")}</span> <span class="range-size touch">${CONFIG.DND4E.rangeType[chatData.rangeType]}</span>`;
+			powerDetail += ` <span class="range-type melee">${game.i18n.localize("DND4E.Melee")}</span> <span class="range-size touch">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span>`;
 		}
 		else {
 			powerDetail += `</span>`;

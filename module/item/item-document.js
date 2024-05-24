@@ -128,8 +128,13 @@ export default class Item4e extends Item {
 		
 	}
 
-	static getDefaultArtwork(itemData={}) {
-
+	 /**
+     * Determine default artwork based on the provided item data.
+     * @param {ItemData} itemData  The source item data.
+     * @returns {{img: string}}    Candidate item image.
+     */
+	/** @inheritdoc */
+	static getDefaultArtwork(itemData={}) {		
 		return {img: CONFIG.DND4E.defaultArtwork.Item[itemData.type]} ?? super.getDefaultArtwork(itemData);
 	}
 
@@ -806,6 +811,7 @@ export default class Item4e extends Item {
 		const consume = itemData.consume || {};
 		if ( !consume.type ) return true;
 		const actor = this.actor;
+		consume.log(CONFIG.DND4E.abilityConsumptionTypes[consume.type])
 		const typeLabel = CONFIG.DND4E.abilityConsumptionTypes[consume.type];
 		const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 1;
 
@@ -1729,7 +1735,8 @@ export default class Item4e extends Item {
 		const title = `${this.name} - ${game.i18n.localize("DND4E.OtherFormula")}`;
 
 		// Invoke the roll and submit it to chat
-		const roll = await new Roll(rollData.item.formula, rollData).roll({async : true});
+		// const roll = await new Roll(rollData.item.formula, rollData).roll({async : true});
+		const roll = await new Roll(rollData.item.formula, rollData).roll();
 		roll.toMessage({ 
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: this.system.chatFlavor || title,
@@ -1818,7 +1825,8 @@ export default class Item4e extends Item {
 		if ( !data.recharge.value ) return;
 
 		// Roll the check
-		const roll = await new Roll("1d6").roll({async: true});
+		// const roll = await new Roll("1d6").roll({async: true});
+		const roll = await new Roll("1d6").roll();
 		const success = roll.total >= parseInt(data.recharge.value);
 
 		// Display a Chat Message
