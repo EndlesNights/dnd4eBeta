@@ -233,6 +233,7 @@ preLocalize("itemCapacityTypes", { keys: ["label"] });
  * @type {Object}
  */
 DND4E.limitedUsePeriods = {
+	"": {label: "DND4E.None"},
 	"enc": {label: "DND4E.Encounter"},
 	"day": {label: "DND4E.Day"},
 	"charges": {label: "DND4E.Charges"},
