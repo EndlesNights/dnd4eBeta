@@ -1440,7 +1440,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				r.dice[0].options.recharge = true;
 				r.dice[0].options.critical = item.system.rechargeRoll || 6;
 				r.dice[0].options.fumble = r.dice[0].options.critical -1;
-				r.evaluate({async: false});
+				// r.evaluate({async: false});
+				r.evaluateSync();
 	
 				let flav = `${item.name} did not recharge.`;
 				if(r.total >= r.dice[0].options.critical){

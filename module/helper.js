@@ -499,7 +499,8 @@ export class Helper {
 					let r = new Roll(`${quantity}`);
 
 					if(r.isDeterministic){
-						r.evaluate({async: false});
+						// r.evaluate({async: false});
+						r.evaluateSync();
 						quantity = r.total;
 					}
 
@@ -589,7 +590,8 @@ export class Helper {
 				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 				let r = new Roll(`${dice}`)
 				if(dice){
-					r.evaluate({maximize: true, async: false});
+					// r.evaluate({maximize: true, async: false});
+					r.evaluateSync({maximize: true});
 					newFormula = newFormula.replaceAll("@wepMax", r.result);
 				} else {
 					newFormula = newFormula.replaceAll("@wepMax", dice);

@@ -471,10 +471,11 @@ export async function _processDiceCommand(wrapper, ...args){
 		if ( flavor && !chatData.flavor ) chatData.flavor = flavor;
 		// const roll = Roll.create(formula, rollData);
 		const roll = Roll.create(actor? game.helper.commonReplace(formula,actor) : formula, rollData);
-		await roll.evaluate({async: true});
+		// await roll.evaluate({async: true});
+		await roll.evaluate();
 		rolls.push(roll);
 	}
-	chatData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+	chatData.type = CONST.CHAT_MESSAGE_STYLES.ROLL;
 	chatData.rolls = rolls;
 	chatData.sound = CONFIG.sounds.dice;
 	chatData.content = rolls.reduce((t, r) => t + r.total, 0);
