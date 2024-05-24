@@ -38,7 +38,7 @@ export class ItemImporterDialog extends DocumentSheet {
 			return;
 		}
 		//assign obj ID if one was not made
-		if(!obj._id) { obj._id = randomID(16); }
+		if(!obj._id) { obj._id = foundry.utils.randomID(16); }
 		//generate new item
 		this.object.createEmbeddedDocuments("Item",[obj])
 	}
