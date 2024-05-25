@@ -4,11 +4,7 @@
 			<input type="hidden" name="flags.dnd4e.sheetDisplay.powers.groupBy.value">
 			<label for="power-group">{{localize "DND4EUI.GroupBy"}}</label><br />
 			<select name="system.powerGroupTypes">
-				{{#select system.powerGroupTypes}}
-				{{#each config.powerGroupTypes as |name type|}}
-				<option value="{{type}}">{{name}}</option>
-				{{/each}}
-				{{/select}}
+				{{selectOptions config.powerGroupTypes selected=system.powerGroupTypes labelAttr="label"}}
 			</select>
 		</div>
 
@@ -16,11 +12,7 @@
 			<input type="hidden" name="flags.dnd4e.sheetDisplay.powers.sortBy.value">
 			<label for="power-sort">{{localize "DND4EUI.SortBy"}}</label><br />
 			<select name="system.powerSortTypes">
-				{{#select system.powerSortTypes}}
-				{{#each config.powerSortTypes as |name type|}}
-				<option value="{{type}}">{{name}}</option>
-				{{/each}}
-				{{/select}}
+				{{selectOptions config.powerSortTypes selected=system.powerSortTypes labelAttr="label"}}
 			</select>
 		</div>
 
@@ -73,7 +65,7 @@
 					{{#if section.columns}}
 						{{#each section.columns}}
 						<div class="item-detail {{css}}">
-							{{#with (getProperty item property)}}
+							{{#with (foundry.utils.getProperty item property)}}
 								{{#if ../editable}}
 									<input type="text" value="{{this}}" placeholder="&mdash;"
 										data-dtype="{{../editable}}" data-property="{{../property}}">
@@ -90,12 +82,12 @@
 							<label class="range-number">{{item.system.rangeTextBlock}}</label>
 							{{/if}}
 						</div>
-						<div class="item-detail power-detail item-action" data-tooltip="{{lookup ../../config.abilityActivationTypes item.system.actionType}}">
+						<div class="item-detail power-detail item-action" data-tooltip="{{lookup (lookup ../../config.abilityActivationTypes item.system.actionType) 'label'}}">
 							{{#if item.system.actionType }}
 							{{lookup ../../config.abilityActivationTypesShort item.system.actionType}}
 							{{/if}}
 						</div>
-						<div class="item-detail power-detail item-uses">
+						<div class="item-detail power-detail item-uses" data-tooltip="{{#if system.uses.per}} {{localize 'DND4E.Per'}} {{lookup (lookup ../../config.limitedUsePeriods item.system.uses.per) 'label'}}{{/if}}">
 							{{#if item.system.notAvailable}}
 								{{#if item.system.rechargeRoll}}
 								<a class="item-recharge rollable" data-tooltip="{{localize 'DND4E.PowerRechargeTipCond'}} {{item.system.rechargeRoll}}">Recharge[+{{item.system.rechargeRoll}}]</a>
@@ -127,7 +119,7 @@
 					{{#if section.columns}}
 						{{#each section.columns}}
 							<div class="item-detail {{css}}">
-								{{#with (getProperty item property)}}
+								{{#with (foundry.utils.getProperty item property)}}
 									{{#if ../editable}}
 										<input type="text" value="{{this}}" placeholder="&mdash;"
 											data-dtype="{{../editable}}">

@@ -4,7 +4,7 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 export class EncumbranceDialog extends DocumentSheet4e {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
-		return mergeObject(options, {
+		return foundry.utils.mergeObject(options, {
 			id: "encumbrance-dialog",
 			classes: ["dnd4e", "encumbrance-dialog"],
 			template: "systems/dnd4e/templates/apps/encumbrance-dialog.html",

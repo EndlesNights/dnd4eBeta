@@ -4,7 +4,7 @@ export class ActionPointExtraDialog extends DocumentSheet4e {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
-		return mergeObject(options, {
+		return foundry.utils.mergeObject(options, {
 			id: "action-point-extra",
 			classes: ["action-point"],
 			template: "systems/dnd4e/templates/apps/action-point-extra.html",

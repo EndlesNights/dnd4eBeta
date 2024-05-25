@@ -5,8 +5,8 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 	
 	static get defaultOptions() {
 		const options = super.defaultOptions;
-		return mergeObject(options, {
-			id: `attribute-bonus-${randomID()}`,
+		return foundry.utils.mergeObject(options, {
+			id: `attribute-bonus-${foundry.utils.randomID()}`,
 			classes: ["dnd4e"],
 			template: "systems/dnd4e/templates/apps/attribute-bonuses.html",
 			width: 500,

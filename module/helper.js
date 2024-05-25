@@ -31,7 +31,7 @@ export class Helper {
 	*/
 	static byString(s, o) {
 		s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
-		s = s.replace(/^\./, '');           // strip a leading dot
+		s = s.replace(/^\./, '');					 // strip a leading dot
 		var a = s.split('.');
 		for (var i = 0, n = a.length; i < n; ++i) {
 			var k = a[i];
@@ -67,7 +67,7 @@ export class Helper {
 		if(itemData.weaponUse === "default" || itemData.weaponUse === "defaultOH") {
 			let setMelee = ["melee", "simpleM", "militaryM", "superiorM", "improvM", "naturalM", "siegeM"];
 			let setRanged = ["ranged", "simpleR", "militaryR", "superiorR", "improvR", "naturalR", "siegeR"];
-			return actor.itemTypes.weapon.sort(i => i.system.weaponHand === "hOff" ? 1 : -1).find((i) =>  { // Flush off-hand to the end
+			return actor.itemTypes.weapon.sort(i => i.system.weaponHand === "hOff" ? 1 : -1).find((i) =>	{ // Flush off-hand to the end
 				if(i.system.equipped) {
 
 					if(itemData.weaponType === "any") {
@@ -145,7 +145,7 @@ export class Helper {
 			const weaponInnerData = weaponData?.system
 			let enhValue = weaponInnerData?.enhance||0;
 			if (debug) {
-				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.  Supplied Weapon: ${weaponData?.name}`)
+				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.	Supplied Weapon: ${weaponData?.name}`)
 			}
 			
 			//Using inherent enhancements?
@@ -181,7 +181,7 @@ export class Helper {
 					this._addKeywords(suitableKeywords, weaponInnerData.weaponGroup)
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
 					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
-					this._addKeywords(suitableKeywords, weaponInnerData.implement) // implement group for implement powers.  Bad naming of property, sorry -Drac
+					this._addKeywords(suitableKeywords, weaponInnerData.implement) // implement group for implement powers.	Bad naming of property, sorry -Drac
 
 					if(weaponInnerData.weaponBaseType){
 						suitableKeywords.push(weaponInnerData.weaponBaseType)
@@ -305,7 +305,7 @@ export class Helper {
 							if (newParts["untypedEffectBonus"]) {
 								newParts["untypedEffectBonus"] = newParts["untypedEffectBonus"] + effectValue
 								if (debug) {
-									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Additional untyped Bonus.  They Stack.`)
+									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Additional untyped Bonus.	They Stack.`)
 								}
 							}
 							else {
@@ -365,13 +365,13 @@ export class Helper {
 	}
 
 	/**
-	 * Perform replacement of @variables in the formula involving a power.  This is a recursive function with 2 modes of operation!
+	 * Perform replacement of @variables in the formula involving a power.	This is a recursive function with 2 modes of operation!
 	 *
 	 * @param formula The formula to examine and perform replacements on
-	 * @param actorData The data from the actor to use to resolve variables: `actor.system`.  This may be null
+	 * @param actorData The data from the actor to use to resolve variables: `actor.system`.	This may be null
 	 * @param powerInnerData The data from the power to use to resolve variables. `power.system`
-	 * @param weaponInnerData The data from the weapon to use to resolve variables.  `item.system` This may be null
-	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.  Defaults to 1 which will produce 2 loops.  A depth of 0 will also prevent evaluation of custom effect variables (as that is an infinite hole)
+	 * @param weaponInnerData The data from the weapon to use to resolve variables.	`item.system` This may be null
+	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.	Defaults to 1 which will produce 2 loops.	A depth of 0 will also prevent evaluation of custom effect variables (as that is an infinite hole)
 	 * @param returnDataInsteadOfFormula If set to true it will return a data object of replacement variables instead of the formula string
 	 * @return {String|{}|number} "0" if called with a depth of <0, A substituted formula string if called with returnDataInsteadOfFormula = false (the default) or an object of {variable = value} if called with returnDataInsteadOfFormula = true
 	 */
@@ -420,16 +420,16 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@heroicOrParagon", actorInnerData.details.level < 21 ? 1 : 0);
 				newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
 
-				newFormula = newFormula.replaceAll("@bloodied",  actorInnerData.details.isBloodied ? 1 : 0);
+				newFormula = newFormula.replaceAll("@bloodied",	actorInnerData.details.isBloodied ? 1 : 0);
 				
-				newFormula = newFormula.replaceAll("@sneak",  CONFIG.DND4E.SNEAKSCALE[actorInnerData.details.tier]);
+				newFormula = newFormula.replaceAll("@sneak",	CONFIG.DND4E.SNEAKSCALE[actorInnerData.details.tier]);
 
 				//targets @scale plus some #
-				newFormula = newFormula.replace(/@scale(\d*)/g,  (match, number) => {return this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, number-1)});
+				newFormula = newFormula.replace(/@scale(\d*)/g,	(match, number) => {return this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, number-1)});
 
 			}
 			else {
-				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.  Replacing: " + formula)
+				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.	Replacing: " + formula)
 			}
 		}
 
@@ -444,7 +444,7 @@ export class Helper {
 				//console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 3)} for this level against weapon value of +${weaponInnerData?.enhance}`);
 			}
 			
-			newFormula =  newFormula.replaceAll("@itemLevel", weaponInnerData.level ? weaponInnerData.level : 0)
+			newFormula =	newFormula.replaceAll("@itemLevel", weaponInnerData.level ? weaponInnerData.level : 0)
 
 			if (powerInnerData.weaponType === "implement") {
 				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
@@ -480,7 +480,7 @@ export class Helper {
 			
 			
 			//deprecated, kept for legacy purposes and because it's really handy for High Crit Weapons!
-			// make sure to keep the dice formula same as main.  Definite candidate for a future refactor.
+			// make sure to keep the dice formula same as main.	Definite candidate for a future refactor.
 			if(newFormula.includes("@wepDice")) {
 				let parts = weaponInnerData.damageDice.parts;
 				let indexStart = newFormula.indexOf("@wepDice")+8;
@@ -499,7 +499,8 @@ export class Helper {
 					let r = new Roll(`${quantity}`);
 
 					if(r.isDeterministic){
-						r.evaluate({async: false});
+						// r.evaluate({async: false});
+						r.evaluateSync();
 						quantity = r.total;
 					}
 
@@ -512,7 +513,7 @@ export class Helper {
 					if (i < parts.length - 1) dice += '+';
 				}
 				const possibleDice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
-				dice = possibleDice !== 0 ? possibleDice : dice //there probably shouldn't be any formula left, because @wepDice is a formula contents under our command.  So if we had hit the bottom of the recursion tree, just try the original
+				dice = possibleDice !== 0 ? possibleDice : dice //there probably shouldn't be any formula left, because @wepDice is a formula contents under our command.	So if we had hit the bottom of the recursion tree, just try the original
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
 				newFormula = newFormula.replaceAll("@wepDice", dice);
 			}
@@ -522,14 +523,15 @@ export class Helper {
 			//	-	weapon based damage
 			//	-	flat damage
 			//	-	dice damage
-			// make sure to keep the weapon dice formula same as above.  Definite candidate for a future refactor.
+			// make sure to keep the weapon dice formula same as above.	Definite candidate for a future refactor.
 			if(newFormula.includes("@powBase")) {
 				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorData, powerInnerData, weaponInnerData, depth-1);
 				let r = new Roll(`${quantity}`);
 
 				//Just to help keep the rolls cleaner, look for Deterministic elements to remove
 				if(r.isDeterministic){
-					r.evaluate({async: false});
+					// r.evaluate({async: false});
+					r.evaluateSync();
 					quantity = r.total;
 				}
 
@@ -550,7 +552,8 @@ export class Helper {
 						let r2 = new Roll(`${weaponDiceQuantity}`);
 	
 						if(r2.isDeterministic){
-							r2.evaluate({async: false});
+							// r2.evaluate({async: false});
+							r2.evaluateSync();
 							weaponDiceQuantity = r2.total;
 						}
 						if(weaponInnerData.properties.bru) {
@@ -587,7 +590,8 @@ export class Helper {
 				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 				let r = new Roll(`${dice}`)
 				if(dice){
-					r.evaluate({maximize: true, async: false});
+					// r.evaluate({maximize: true, async: false});
+					r.evaluateSync({maximize: true});
 					newFormula = newFormula.replaceAll("@wepMax", r.result);
 				} else {
 					newFormula = newFormula.replaceAll("@wepMax", dice);
@@ -605,7 +609,8 @@ export class Helper {
 				quantity = this.commonReplace(quantity, actorData, powerInnerData, weaponInnerData, 0)
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
-				rQuantity.evaluate({maximize: true, async: false});
+				// rQuantity.evaluate({maximize: true, async: false});
+				rQuantity.evaluateSync({maximize: true});
 
 				//check if is valid number
 				if(this._isNumber(rQuantity.total)){
@@ -683,7 +688,8 @@ export class Helper {
 				let r = new Roll(`${quantity}`);
 				if(r.isDeterministic){
 					console.log("here")
-					r.evaluate({async: false});
+					// r.evaluate({async: false});
+					r.evaluateSync();
 					quantity = r.total;
 				}
 				
@@ -715,7 +721,8 @@ export class Helper {
 				let quantity = powerInnerData.hit.baseQuantity;
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
-				rQuantity.evaluate({maximize: true, async: false});
+				// rQuantity.evaluate({maximize: true, async: false});
+				rQuantity.evaluateSync({maximize: true});
 				
 				if(this._isNumber(rQuantity.result)) {
 					quantity = rQuantity.result;
@@ -749,11 +756,11 @@ export class Helper {
 		// this is done at the bottom, because I don't want to be iterating the entire actor effects collection unless I have to
 		// as this could get unnecessarily expensive quickly.
 		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula
-		// having got to the bottom of common replace, check to see if there are any more @variables left.  If there aren't, then don't bother going any further
+		// having got to the bottom of common replace, check to see if there are any more @variables left.	If there aren't, then don't bother going any further
 		if (actorData?.effects && depth > 0 && newFormula.includes('@')) {
 			const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4e |` : ""
 			if (debug) {
-				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.  Searching active effects for a suitable variable`)
+				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.	Searching active effects for a suitable variable`)
 			}
 			const resultObject = {}
 			const effects = actorData.getActiveEffects().filter((effect) => effect?.disabled === false);
@@ -761,13 +768,13 @@ export class Helper {
 				effect.changes.forEach((change => {
 					if (this.variableRegex.test(change.key)) {
 						if (debug) {
-							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.name}.  Value: ${change.value}`)
+							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.name}.	Value: ${change.value}`)
 						}
 						const changeValueReplaced = this.commonReplace(change.value, actorData, powerInnerData, weaponInnerData, 0) // set depth to avoid infinite recursion
 						if (!resultObject[change.key]) {
 							resultObject[change.key] = changeValueReplaced
 							if (debug) {
-								console.log(`${debug} Effect: ${effect.name}.  Computed Value: ${change.value} was the first match to ${change.key} `)
+								console.log(`${debug} Effect: ${effect.name}.	Computed Value: ${change.value} was the first match to ${change.key} `)
 							}
 						}
 						else {
@@ -798,7 +805,8 @@ export class Helper {
 			let roll = new Roll(`${r}`);
 
 			if(roll.isDeterministic){
-				roll.evaluate({async: false});
+				// roll.evaluate({async: false});
+				roll.evaluateSync();
 				return roll.total;
 			}
 			return `[[${r}]]`;
@@ -807,16 +815,16 @@ export class Helper {
 		return newFormula;
 	}
 
-  /**
-   * Replace referenced data attributes in the roll formula with the syntax `@attr` with the corresponding key from
-   * the provided `data` object. This is a temporary helper function that will be replaced with Roll.replaceFormulaData()
-   * in Foundry 0.7.1.
-   *
-   * @param {String} formula    The original formula within which to replace.
-   * @param {Object} data       Data object to use for value replacements.
-   * @param {Object} missing    Value to use as missing replacements, such as {missing: "0"}.
-   * @return {String} The formula with attributes replaced with values.
-   */
+	/**
+	 * Replace referenced data attributes in the roll formula with the syntax `@attr` with the corresponding key from
+	 * the provided `data` object. This is a temporary helper function that will be replaced with Roll.replaceFormulaData()
+	 * in Foundry 0.7.1.
+	 *
+	 * @param {String} formula		The original formula within which to replace.
+	 * @param {Object} data			 Data object to use for value replacements.
+	 * @param {Object} missing		Value to use as missing replacements, such as {missing: "0"}.
+	 * @return {String} The formula with attributes replaced with values.
+	 */
 	static replaceData(formula, data, {missing=null, depth=1}={}) {
 		// Exit early if the formula is invalid.
 		if ( typeof formula != "string" || depth < 1) {
@@ -825,7 +833,7 @@ export class Helper {
 		// Replace attributes with their numeric equivalents.
 		let dataRgx = this.variableRegex
 		let rollFormula = formula.replace(dataRgx, (match, term) => {
-			let value = getProperty(data, term);
+			let value = foundry.utils.getProperty(data, term);
 			// If there was a value returned, trim and return it.
 			if ( value || value == 0) {
 				return String(value).trim();
@@ -849,15 +857,15 @@ export class Helper {
 	}
 
 	/**
-	 * Create and evaluate a roll based on the given roll expression string.  If no expression has been provided, evaluate a roll of 0.
+	 * Create and evaluate a roll based on the given roll expression string.	If no expression has been provided, evaluate a roll of 0.
 	 * In the event that the string fails to evaluate, display an error and return a roll of 0.
 	 *
 	 * Note this uses the async roll API so returns a Promise<Roll>
 	 *
-	 * @param {String} rollString    		The roll expression.
-	 * @param {String} errorMessageKey      The key that will be localised for the error message if the roll fails.
+	 * @param {String} rollString				The roll expression.
+	 * @param {String} errorMessageKey			The key that will be localised for the error message if the roll fails.
 	 * @param {String} context				Context on the source of the roll string / where it is being used
-	 * @returns {Promise<Roll>}    			The evaluated Roll instance as a promise
+	 * @returns {Promise<Roll>}					The evaluated Roll instance as a promise
 	 */
 	static async rollWithErrorHandling(rollString, { errorMessageKey = "DND4E.InvalidRollExpression", context = "" }) {
 		if (!errorMessageKey) {
@@ -865,16 +873,19 @@ export class Helper {
 		}
 		if (rollString && rollString !== "") {
 			const roll = new Roll(`${rollString}`);
-			return roll.roll({async : true}).catch(err => {
+			// return roll.roll({async : true}).catch(err => {
+			return roll.roll().catch(err => {
 				let msg = context ? `${game.i18n.localize(errorMessageKey)} (in ${context}) : ${rollString}` : `${game.i18n.localize(errorMessageKey)} : ${rollString}`
 				ui.notifications.error(msg);
 				console.log(msg)
 				console.log(err)
-				return new Roll("0").roll({async : true});
+				// return new Roll("0").roll({async : true});
+				return new Roll("0").roll();
 			});
 		}
 		else {
-			return new Roll("0").roll({async : true});
+			// return new Roll("0").roll({async : true});
+			return new Roll("0").roll();
 		}
 	}
 
@@ -882,12 +893,12 @@ export class Helper {
 		if(chatData.area) {
 			try{
 				let areaForm = this.commonReplace(`${chatData.area}`, actorData);
-				return  Roll.safeEval(areaForm);
+				return	Roll.safeEval(areaForm);
 			} catch (e) {
-				return  chatData.area;
+				return	chatData.area;
 			}
 		} else {
-			return  0;
+			return	0;
 		}
 	}
 
@@ -928,7 +939,7 @@ export class Helper {
 		tag.sort();
 		if(tag.length > 0) powerDetail += ` ♦ <span class="keywords">${tag.join(', ')}</span>`;
 		
-		powerDetail += `</span><br /><span><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType]}</span> `;
+		powerDetail += `</span><br /><span><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType].label}</span> `;
 
 		if(chatData.rangeType === "weapon") {
 			powerDetail += ` <span class="range-type weapon">${CONFIG.DND4E.weaponType[chatData.weaponType]}</span>`;
@@ -944,19 +955,19 @@ export class Helper {
 			powerDetail += ` <span class="range-type ranged">${game.i18n.localize("DND4E.rangeRanged")}</span> <span class="range-size">${chatData.rangePower}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
-			powerDetail += ` <span class="range-type close">${CONFIG.DND4E.rangeType[chatData.rangeType]}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span>`;
+			powerDetail += ` <span class="range-type close">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span>`;
 		}
 		else if (['rangeBurst', 'rangeBlast', 'wall'].includes(chatData.rangeType)) {
-			powerDetail += ` <span class="range-type area">${CONFIG.DND4E.rangeType[chatData.rangeType]}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span> <span class="label-within">${game.i18n.localize("DND4E.RangeWithin")}</span> <span class="range-within">${chatData.rangePower}</span>`;
+			powerDetail += ` <span class="range-type area">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span> <span class="label-within">${game.i18n.localize("DND4E.RangeWithin")}</span> <span class="range-within">${chatData.rangePower}</span>`;
 		}
 		else if (chatData.rangeType === "personal") {
-			powerDetail += ` <span class="range-type personal">${CONFIG.DND4E.rangeType[chatData.rangeType]}</span>`;
+			powerDetail += ` <span class="range-type personal">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span>`;
 		}
 		else if (chatData.rangeType === "special") {
-			powerDetail += ` <span class="range-type special">${CONFIG.DND4E.rangeType[chatData.rangeType]}</span>`;
+			powerDetail += ` <span class="range-type special">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span>`;
 		}
 		else if (chatData.rangeType === "touch") {
-			powerDetail += ` <span class="range-type melee">${game.i18n.localize("DND4E.Melee")}</span> <span class="range-size touch">${CONFIG.DND4E.rangeType[chatData.rangeType]}</span>`;
+			powerDetail += ` <span class="range-type melee">${game.i18n.localize("DND4E.Melee")}</span> <span class="range-size touch">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span>`;
 		}
 		else {
 			powerDetail += `</span>`;
@@ -1015,7 +1026,7 @@ export class Helper {
 			} else {
 				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")}`;
 			}
-			powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
+			powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.defensives[chatData.attack.def].abbreviation}</p>`;
 		}
 
 		let highlight = true;
@@ -1042,7 +1053,7 @@ export class Helper {
 		}
 
 		if(chatData.sustain?.actionType !== "none" && chatData.sustain?.actionType) {
-			powerDetail += `<p class="sustain ${highlight? `alt`: ``}"><strong>${game.i18n.localize("DND4E.Sustain")} ${CONFIG.DND4E.abilityActivationTypes[chatData.sustain.actionType]}:</strong> ${chatData.sustain.detail}</p>`;
+			powerDetail += `<p class="sustain ${highlight? `alt`: ``}"><strong>${game.i18n.localize("DND4E.Sustain")} ${CONFIG.DND4E.abilityActivationTypes[chatData.sustain.actionType].label}:</strong> ${chatData.sustain.detail}</p>`;
 		}
 
 		if(actorData){
@@ -1137,7 +1148,7 @@ export class Helper {
 					const flags = e.flags;
 					duration.combat = combat?.id || "None Combat";
 					duration.startRound = combat?.round || 0;
-					flags.dnd4e.effectData.startTurnInit =  combat?.turns[combat?.turn]?.initiative || 0;
+					flags.dnd4e.effectData.startTurnInit =	combat?.turns[combat?.turn]?.initiative || 0;
 
 					const userTokenId = this.getTokenIdForLinkedActor(parent);
 					const userInit = this.getInitiativeByToken(userTokenId);
@@ -1379,16 +1390,16 @@ export async function handleAutoDoTs(data) {
 
 /* "Contains" Handlebars Helper: checks if a value exists in an array.
 *
-*  @param {String} lunch The value to find
-*  @param {Array} lunchbox The array to search
-*  @param {String} meal (optional) A key to pair with lunch
-*  @returns {boolean} true if lunch exists in lunchbox.
+*	@param {String} lunch The value to find
+*	@param {Array} lunchbox The array to search
+*	@param {String} meal (optional) A key to pair with lunch
+*	@returns {boolean} true if lunch exists in lunchbox.
 *	If meal is provided, lunchbox is assumed to contain objects,
-*  and will search for one where meal = lunch.
+*	and will search for one where meal = lunch.
 *
-*  I don't know why, but meal is apparently the helper object, 
-*  if not given? Not a null, which would have been useful :\
-*  Anyway the type check should take care of it.
+*	I don't know why, but meal is apparently the helper object, 
+*	if not given? Not a null, which would have been useful :\
+*	Anyway the type check should take care of it.
 /*																			*/
 Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
 	try{
@@ -1432,3 +1443,271 @@ Handlebars.registerHelper("needsHitOrMissEffectButton", function(power){
 Handlebars.registerHelper("applyEffectsToSelection", function(){
 	return game.settings.get("dnd4e","applyEffectsToSelection")
 });
+
+/* -------------------------------------------- */
+/*	Formatters																	*/
+/* -------------------------------------------- */
+	
+/* -------------------------------------------- */
+
+/**
+ * A helper for using Intl.NumberFormat within handlebars.
+ * @param {number} value		The value to format.
+ * @param {object} options	Options forwarded to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat}
+ * @returns {string}
+ */
+export function formatNumber(value, options) {
+	const formatter = new Intl.NumberFormat(game.i18n.lang, options);
+	return formatter.format(value);
+}
+
+/* -------------------------------------------- */
+
+/**
+ * A helper function to format textarea text to HTML with linebreaks.
+ * @param {string} value	The text to format.
+ * @returns {Handlebars.SafeString}
+ */
+export function formatText(value) {
+	return new Handlebars.SafeString(value?.replaceAll("\n", "<br>") ?? "");
+}
+	
+/* -------------------------------------------- */
+
+/**
+ * A helper to create a set of <option> elements in a <select> block grouped together
+ * in <optgroup> based on the provided categories.
+ *
+ * @param {SelectChoices} choices					Choices to format.
+ * @param {object} [options]
+ * @param {boolean} [options.localize]		 Should the label be localized?
+ * @param {string} [options.blank]				 Name for the empty option, if one should be added.
+ * @param {string} [options.labelAttr]		 Attribute pointing to label string.
+ * @param {string} [options.chosenAttr]		Attribute pointing to chosen boolean.
+ * @param {string} [options.childrenAttr]	Attribute pointing to array of children.
+ * @returns {Handlebars.SafeString}				Formatted option list.
+ */
+function groupedSelectOptions(choices, options) {
+
+	const localize = options.hash.localize ?? false;
+	const blank = options.hash.blank ?? null;
+	const labelAttr = options.hash.labelAttr ?? "label";
+	const chosenAttr = options.hash.chosenAttr ?? "chosen";
+	const childrenAttr = options.hash.childrenAttr ?? "children";
+
+	// Create an option
+	const option = (name, label, chosen) => {
+		if ( localize ) label = game.i18n.localize(label);
+		html += `<option value="${name}" ${chosen ? "selected" : ""}>${label}</option>`;
+	};
+
+	// Create a group
+	const group = category => {
+		let label = category[labelAttr];
+		if ( localize ) game.i18n.localize(label);
+		html += `<optgroup label="${label}">`;
+		children(category[childrenAttr]);
+		html += "</optgroup>";
+	};
+
+	// Add children
+	const children = children => {
+		for ( let [name, child] of Object.entries(children) ) {
+			if ( child[childrenAttr] ) group(child);
+			else option(name, child[labelAttr], child[chosenAttr] ?? false);
+		}
+	};
+
+	// Create the options
+	let html = "";
+	if ( blank !== null ) option("", blank);
+	children(choices);
+	return new Handlebars.SafeString(html);
+}
+
+	/* -------------------------------------------- */
+	
+	/**
+	 * Register custom Handlebars helpers used by 4e.
+	 */
+export function registerHandlebarsHelpers() {
+	Handlebars.registerHelper({
+		getProperty: foundry.utils.getProperty,
+		"DND4E-concealSection": concealSection,
+		"DND4E-dataset": dataset,
+		"DND4E-groupedSelectOptions": groupedSelectOptions,
+		"DND4E-linkForUuid": (uuid, options) => linkForUuid(uuid, options.hash),
+		"DND4E-itemContext": itemContext,
+		"DND4E-numberFormat": (context, options) => formatNumber(context, options.hash),
+		"DND4E-textFormat": formatText
+	});
+}
+	
+	/* -------------------------------------------- */
+	/*	Config Pre-Localization										 */
+	/* -------------------------------------------- */
+	
+/**
+ * Storage for pre-localization configuration.
+ * @type {object}
+ * @private
+ */
+const _preLocalizationRegistrations = {};
+
+/**
+ * Mark the provided config key to be pre-localized during the init stage.
+ * @param {string} configKeyPath					Key path within `CONFIG.DND4E` to localize.
+ * @param {object} [options={}]
+ * @param {string} [options.key]					If each entry in the config enum is an object,
+ *																				localize and sort using this property.
+	* @param {string[]} [options.keys=[]]		Array of localization keys. First key listed will be used for sorting
+	*																				if multiple are provided.
+	* @param {boolean} [options.sort=false]	Sort this config enum, using the key if set.
+	*/
+export function preLocalize(configKeyPath, { key, keys=[], sort=false }={}) {
+	if ( key ) keys.unshift(key);
+	_preLocalizationRegistrations[configKeyPath] = { keys, sort };
+}
+	
+/* -------------------------------------------- */
+
+/**
+ * Execute previously defined pre-localization tasks on the provided config object.
+ * @param {object} config	The `CONFIG.DND4E` object to localize and sort. *Will be mutated.*
+ */
+export function performPreLocalization(config) {
+	for ( const [keyPath, settings] of Object.entries(_preLocalizationRegistrations) ) {
+		const target = foundry.utils.getProperty(config, keyPath);
+		if ( !target ) continue;
+		_localizeObject(target, settings.keys);
+		if ( settings.sort ) foundry.utils.setProperty(config, keyPath, sortObjectEntries(target, settings.keys[0]));
+	}
+
+	// Localize & sort status effects
+	CONFIG.statusEffects.forEach(s => s.name = game.i18n.localize(s.name));
+	// CONFIG.statusEffects.sort((lhs, rhs) =>
+	//	 lhs.id === "dead" ? -1 : rhs.id === "dead" ? 1 : lhs.name.localeCompare(rhs.name, game.i18n.lang)
+	// );
+}
+	
+/* -------------------------------------------- */
+
+/**
+ * Localize the values of a configuration object by translating them in-place.
+ * @param {object} obj			 The configuration object to localize.
+ * @param {string[]} [keys]	List of inner keys that should be localized if this is an object.
+ * @private
+ */
+function _localizeObject(obj, keys) {
+	for ( const [k, v] of Object.entries(obj) ) {
+		const type = typeof v;
+		if ( type === "string" ) {
+			obj[k] = game.i18n.localize(v);
+			continue;
+		}
+
+		if ( type !== "object" ) {
+			console.error(new Error(
+				`Pre-localized configuration values must be a string or object, ${type} found for "${k}" instead.`
+			));
+			continue;
+		}
+		if ( !keys?.length ) {
+			console.error(new Error(
+				"Localization keys must be provided for pre-localizing when target is an object."
+			));
+			continue;
+		}
+
+		for ( const key of keys ) {
+			const value = foundry.utils.getProperty(v, key);
+			if ( !value ) continue;
+			foundry.utils.setProperty(v, key, game.i18n.localize(value));
+		}
+	}
+}
+	
+	/* -------------------------------------------- */
+	/*	Localization																*/
+	/* -------------------------------------------- */
+	
+/**
+ * A cache of already-fetched labels for faster lookup.
+ * @type {Map<string, string>}
+ */
+const _attributeLabelCache = new Map();
+
+/**
+ * Convert an attribute path to a human-readable label.
+ * @param {string} attr							The attribute path.
+ * @param {object} [options]
+ * @param {Actor5e} [options.actor]	An optional reference actor.
+ * @returns {string|void}
+ */
+export function getHumanReadableAttributeLabel(attr, { actor }={}) {
+	// Check any actor-specific names first.
+	if ( attr.startsWith("resources.") && actor ) {
+		const resource = foundry.utils.getProperty(actor, `system.${attr}`);
+		if ( resource.label ) return resource.label;
+	}
+
+	if ( (attr === "details.xp.value") && (actor?.type === "npc") ) {
+		return game.i18n.localize("DND4E.ExperiencePointsValue");
+	}
+
+	if ( attr.startsWith(".") && actor ) {
+		const item = fromUuidSync(attr, { relative: actor });
+		return item?.name ?? attr;
+	}
+
+	// Check if the attribute is already in cache.
+	let label = _attributeLabelCache.get(attr);
+	if ( label ) return label;
+
+	// Derived fields.
+	if ( attr === "attributes.init.total" ) label = "DND4E.InitiativeBonus";
+	else if ( attr === "attributes.ac.value" ) label = "DND4E.ArmorClass";
+	else if ( attr === "attributes.spelldc" ) label = "DND4E.SpellDC";
+
+	// Abilities.
+	else if ( attr.startsWith("abilities.") ) {
+		const [, key] = attr.split(".");
+		label = game.i18n.format("DND4E.AbilityScoreL", { ability: CONFIG.DND4E.abilities[key].label });
+	}
+
+	// Skills.
+	else if ( attr.startsWith("skills.") ) {
+		const [, key] = attr.split(".");
+		label = game.i18n.format("DND4E.SkillPassiveScore", { skill: CONFIG.DND4E.skills[key].label });
+	}
+
+	// Spell slots.
+	else if ( attr.startsWith("spells.") ) {
+		const [, key] = attr.split(".");
+		if ( !/spell\d+/.test(key) ) label = `DND4E.SpellSlots${key.capitalize()}`;
+		else {
+			const plurals = new Intl.PluralRules(game.i18n.lang, {type: "ordinal"});
+			const level = Number(key.slice(5));
+			label = game.i18n.format(`DND4E.SpellSlotsN.${plurals.select(level)}`, { n: level });
+		}
+	}
+
+	// Attempt to find the attribute in a data model.
+	if ( !label ) {
+		const { CharacterData, NPCData, VehicleData, GroupData } = DND4E.dataModels.actor;
+		for ( const model of [CharacterData, NPCData, VehicleData, GroupData] ) {
+			const field = model.schema.getField(attr);
+			if ( field ) {
+				label = field.label;
+				break;
+			}
+		}
+	}
+
+	if ( label ) {
+		label = game.i18n.localize(label);
+		_attributeLabelCache.set(attr, label);
+	}
+
+	return label;
+}

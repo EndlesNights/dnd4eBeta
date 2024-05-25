@@ -21,7 +21,6 @@ export const preloadHandlebarsTemplates = async function() {
 	
 	// Item Sheet Partials
 	"systems/dnd4e/templates/items/parts/item-action.html",
-	"systems/dnd4e/templates/items/parts/item-activation.html",
 	"systems/dnd4e/templates/items/parts/item-description.html",
 	"systems/dnd4e/templates/items/parts/item-mountable.html",
 	

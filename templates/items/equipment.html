@@ -19,7 +19,9 @@
 
 			<ul class="summary flexrow">
 				<li>
-					{{lookup config.equipmentTypes system.armour.type }}
+					<label>
+						{{lookup (lookup config.equipmentTypes system.armour.type) "label"}}
+					</label>
 				</li>
 				<li>
 					<input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4E.Level' }}"/>
@@ -58,21 +60,13 @@
 				<label>{{ localize "DND4E.ItemEquipmentType" }}</label>
 				<div class="form-fields">
 					<select name="system.armour.type">
-						{{#select system.armour.type}}
-						<option value=""></option>
-						{{#each config.equipmentTypes as |name type|}}
-						<option value="{{type}}">{{localize name}}</option>
-						{{/each}}
-						{{/select}}
+						{{selectOptions config.equipmentTypes selected=system.armour.type labelAttr="label"}}
 					</select>
-					<select name="system.armour.subType">
-						{{#select system.armour.subType}}
-						<option value=""></option>
-						{{#each equipmentSubTypeTargets as |name key|}}
-						<option value="{{key}}">{{localize name}}</option>
-						{{/each}}
-						{{/select}}
-					</select>
+					{{#if equipmentSubTypeTargets}}
+						<select name="system.armour.subType">
+							{{selectOptions equipmentSubTypeTargets selected=system.armour.subType}}
+						</select>
+					{{/if}}
 				</div>
 			</div>
 
@@ -80,13 +74,7 @@
 			<div class="form-group">
 				<label>{{ localize "DND4E.ArmourBase" }}:</label>
 				<select name="system.armourBaseType">
-					{{#select system.armourBaseType}}
-					<option value="">{{ localize 'DND4E.None' }}</option>
-					<option value="custom">{{ localize 'DND4E.Custom' }}</option>
-					{{#each armourBaseTypes as |name type|}}
-					<option value="{{type}}">{{name}}</option>
-					{{/each}}
-					{{/select}}
+					{{selectOptions armourBaseTypes selected=system.armourBaseType}}
 				</select>
 			</div>
 
@@ -102,13 +90,7 @@
 			<div class="form-group">
 				<label>{{ localize "DND4E.ShieldBase" }}:</label>
 				<select name="system.shieldBaseType">
-					{{#select system.shieldBaseType}}
-					<option value="">{{ localize 'DND4E.None' }}</option>
-					<option value="custom">{{ localize 'DND4E.Custom' }}</option>
-					{{#each shieldBaseTypes as |name type|}}
-					<option value="{{type}}">{{name}}</option>
-					{{/each}}
-					{{/select}}
+					{{selectOptions shieldBaseTypes selected=system.shieldBaseType labelAttr="label"}}
 				</select>
 			</div>
 
