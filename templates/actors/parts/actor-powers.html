@@ -82,12 +82,12 @@
 							<label class="range-number">{{item.system.rangeTextBlock}}</label>
 							{{/if}}
 						</div>
-						<div class="item-detail power-detail item-action" data-tooltip="{{lookup ../../config.abilityActivationTypes item.system.actionType}}">
+						<div class="item-detail power-detail item-action" data-tooltip="{{lookup (lookup ../../config.abilityActivationTypes item.system.actionType) 'label'}}">
 							{{#if item.system.actionType }}
 							{{lookup ../../config.abilityActivationTypesShort item.system.actionType}}
 							{{/if}}
 						</div>
-						<div class="item-detail power-detail item-uses">
+						<div class="item-detail power-detail item-uses" data-tooltip="{{#if system.uses.per}} {{localize 'DND4E.Per'}} {{lookup (lookup ../../config.limitedUsePeriods item.system.uses.per) 'label'}}{{/if}}">
 							{{#if item.system.notAvailable}}
 								{{#if item.system.rechargeRoll}}
 								<a class="item-recharge rollable" data-tooltip="{{localize 'DND4E.PowerRechargeTipCond'}} {{item.system.rechargeRoll}}">Recharge[+{{item.system.rechargeRoll}}]</a>
