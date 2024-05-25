@@ -143,7 +143,7 @@ export class Helper {
 		if (actorData.effects) {
 			const powerInnerData = powerData.system
 			const weaponInnerData = weaponData?.system
-			let enhValue = 0;
+			let enhValue = weaponInnerData?.enhance||0;
 			if (debug) {
 				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.	Supplied Weapon: ${weaponData?.name}`)
 			}
@@ -434,7 +434,7 @@ export class Helper {
 		}
 
 		newFormula = newFormula.replaceAll("@powerLevel", powerInnerData?.level ? powerInnerData.level : 0)
-		let enhValue = 0;
+		let enhValue = weaponInnerData?.enhance||0;
 		
 		if(weaponInnerData) {
 			//Using inherent enhancements?
@@ -1444,8 +1444,6 @@ Handlebars.registerHelper("applyEffectsToSelection", function(){
 	return game.settings.get("dnd4e","applyEffectsToSelection")
 });
 
-
-
 /* -------------------------------------------- */
 /*	Formatters																	*/
 /* -------------------------------------------- */
@@ -1526,8 +1524,7 @@ function groupedSelectOptions(choices, options) {
 	children(choices);
 	return new Handlebars.SafeString(html);
 }
-		
-	
+
 	/* -------------------------------------------- */
 	
 	/**

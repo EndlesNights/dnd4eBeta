@@ -2764,6 +2764,33 @@ span.flavor-text.probable-hit,
 span.flavor-text.probable-miss{
 	font-weight:bold;
 }
+.dice-container {
+    cursor: pointer;
+}
+
+.dice-result .dice-total::before,
+.dice-result .dice-total::after  {
+	position: absolute;
+	inset: 5px 0 5px auto;
+}
+.dice-result .dice-total::before {
+	content: "";
+	width: 36px;
+	border-left: 1px solid #666;
+}
+.dice-result .dice-total::after {
+	content: "\f054";
+	font-family: var(--font-awesome);
+	display: grid;
+	place-content: center;
+	padding: 0 0.8125rem;
+	color: var(--color-text-dark-5);
+	font-size: var(--font-size-16);
+	transition: all 250ms ease;
+}
+.dice-formula.expanded ~ .dice-total::after{
+	transform: rotate(-90deg);
+}
 .dice-roll .dice-total.success{
 	color:inherit;
 	background:#c7d0c0;

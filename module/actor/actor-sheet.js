@@ -133,7 +133,6 @@ export default class ActorSheet4e extends ActorSheet {
 		// sheetData.config = CONFIG.DND4E;
 		actorData.size = DND4E.actorSizes;
 
-
 		//if any custom skills, sort them alphabetically
 		if(Object.entries(game.dnd4e.config.coreSkills).length != Object.entries(actorData.skills).length){
 			const skillNames = Object.keys(actorData.skills);
@@ -450,6 +449,15 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_groupPowers(power, powerGroups) {
 		if(this.object.system.powerGroupTypes === "action" || this.object.system.powerGroupTypes == undefined) {
 			if(Object.keys(powerGroups).includes(power.system.actionType) ) return power.system.actionType;
+		}
+		if(this.object.system.powerGroupTypes === "actionMod") {
+			if(power.system.trigger){
+				return "triggered";
+			}
+			else if(Object.keys(powerGroups).includes(power.system.actionType)){
+				return power.system.actionType;
+			}	
+			return "other";
 		}
 		if(this.object.system.powerGroupTypes === "type") {
 			if(Object.keys(powerGroups).includes(power.system.powerType) )return power.system.powerType;
@@ -965,6 +973,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				let detsText = Helper._preparePowerCardData(chatData, CONFIG, this.actor, attackBonus);
 				detsText = await TextEditor.enrichHTML(detsText, {
 					async: true,
+					relativeTo: this.actor
 				});
 				const details = $(`<div class="item-details">${detsText}</div>`);
 				div.append(details);

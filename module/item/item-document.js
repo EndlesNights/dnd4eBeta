@@ -1106,7 +1106,17 @@ export default class Item4e extends Item {
 			ui.notifications.error("You may not place an Attack Roll with this Item.");
 			return null;
 		}
-		let title = `${this.name} - ${game.i18n.localize("DND4E.AttackRoll")}`;
+
+		// let title = `${this.name} - ${game.i18n.localize("DND4E.AttackRoll")}`;
+		let title = `${this.name}`;
+
+		//weapon attack roll check
+		if (weaponUse) {
+			title += ` - ${weaponUse.name}<br>${game.i18n.localize("DND4E.AttackRoll")}`;
+		} else {
+			title += ` - ${game.i18n.localize("DND4E.AttackRoll")}`;
+		}
+
 		let flavor = title;
 
 		if(itemData.attack.def) {
@@ -1218,11 +1228,9 @@ export default class Item4e extends Item {
 			rollConfig.options.parent = this.parent;
 		}
 
-		// Expanded weapon critical threshold
+		// // Expanded weapon critical threshold
 		if (weaponUse) {
 			rollConfig.critical = itemData.weaponType === "implement" ? weaponUse.system.critRangeImp : weaponUse.system.critRange;
-			rollConfig.flavor += ` using ${weaponUse.name}`;
-			rollConfig.title += ` using ${weaponUse.name}`;
 		}
 		// Invoke the d20 roll helper
 		const roll = await d20Roll(rollConfig);

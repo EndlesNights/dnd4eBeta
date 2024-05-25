@@ -709,17 +709,13 @@ DND4E.weaponProficiencies = {
 
 DND4E.weaponProficienciesMap = {
 	simpleM: "SimpleM",
-	simpleR: "SimpleR",
-	
+	simpleR: "SimpleR",	
 	militaryM: "MilitaryM",
 	militaryR: "MilitaryR",
-
 	superiorM: "SuperiorM",
 	superiorR: "SuperiorR",
-
 	improvisedM: "ImprovisedM",
 	improvisedR: "ImprovisedR",
-
 	implement: "Implement"
 };
 
@@ -949,20 +945,14 @@ DND4E.powerSource = {
 };
 
 DND4E.powerGroupTypes = {
-	usage: {
-		label: "DND4E.Usage",
-	},
-	action: {
-		label: "DND4E.Action",
-	},
-	type: {
-		label: "DND4E.Type",
-	},
-	powerSubtype: {
-		label: "DND4E.PowerSubtype",
-	},
+	usage: {label: "DND4E.Usage",},
+	action: {label: "DND4E.Action",},
+	actionMod: {label: "DND4E.PowerGroupingModern",},
+	type: {label: "DND4E.Type",},
+	powerSubtype: {label: "DND4E.PowerSubtype",},
 	// "usage": "DND4E.Usage",
 	// "action": "DND4E.Action",
+  // "actionMod": "DND4E.PowerGroupingModern",
 	// "type": "DND4E.Type",
 	// "powerSubtype": "DND4E.PowerSubtype",
 };
@@ -978,6 +968,13 @@ DND4E.powerGroupings = {
 		reaction: {label: "DND4E.ActionReaction" },
 		interrupt: {label: "DND4E.ActionInterrupt" },
 		opportunity: {label: "DND4E.ActionOpportunity" },
+		other: {label: "DND4E.Other" }
+	},
+	actionMod: {
+		standard: {label: "DND4E.ActionStandard" },
+		move: {label: "DND4E.ActionMove" },
+		minor: {label: "DND4E.ActionMinor" },
+		triggered: {label: "DND4E.ActionTriggered" },
 		other: {label: "DND4E.Other" }
 	},
 	type: {
