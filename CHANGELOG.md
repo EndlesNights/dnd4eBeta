@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.5.0
+- working on that v12 compatibility
+
 ## Version 0.4.53
 - minor html/css tweak to rework Attack Roll chat messages
 - [PR 357](https://github.com/EndlesNights/dnd4eBeta/pull/357) from [FoxLee](https://github.com/FoxLee)
