@@ -20,7 +20,7 @@ import { measureDistances, getBarAttribute } from "./canvas.js";
 import { _getInitiativeFormula } from "./combat.js";
 
 // Import Documents
-import AbilityTemplate from "./pixi/ability-template.js";
+import { MeasuredTemplate4e, MeasuredTemplateDocument4e, TemplateLayer4e} from "./pixi/ability-template.js";
 import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
@@ -53,7 +53,7 @@ Hooks.once("init", async function() {
 		},
 		config: DND4E,
 		canvas: {
-			AbilityTemplate
+			MeasuredTemplate4e
 		},
 		entities: {
 			Actor4e,
@@ -289,25 +289,33 @@ html.find('.effect-control').last().after(message);
 
 
 function libWrapperInit() {
-	
+
+	// Measure Templates
 	libWrapper.register(
 		'dnd4e',
 		'MeasuredTemplate.prototype._computeShape',
-		AbilityTemplate._computeShape
+		MeasuredTemplate4e._computeShape
 	);
-
+	
 	libWrapper.register(
 		'dnd4e',
 		'MeasuredTemplate.prototype._refreshRulerText',
-		AbilityTemplate._refreshRulerBurst
+		MeasuredTemplate4e._refreshRulerText
 	);
-
+	
 	libWrapper.register(
 		'dnd4e',
 		'TemplateLayer.prototype._onDragLeftStart',
-		AbilityTemplate._onDragLeftStart
+		TemplateLayer4e._onDragLeftStart
 	)
-	
+
+	libWrapper.register(
+		'dnd4e',
+		'TemplateLayer.prototype._onDragLeftMove',
+		TemplateLayer4e._onDragLeftMove
+	)
+
+
 	libWrapper.register(
 		'dnd4e',
 		'Combat.prototype.nextTurn',
@@ -329,10 +337,18 @@ function libWrapperInit() {
 
 Hooks.on("getSceneControlButtons", function(controls){
 	//create addtioanl button in measure templates for burst
-	controls[1].tools.splice(controls[2].tools.length-1,0,{
-		name: "rectCenter",
-		title: "Square Template from the Center",
+	controls[1].tools.splice(0,0,{
+		name: "burst",
+		tool: "circle",
+		title: "Area Burst (Square from Center)",
 		icon: "fas fa-external-link-square-alt",
 		onClick: toggled => canvas.templates._setWallCollision = toggled
-  })
+	})
+
+	controls[1].tools.splice(1,0,{
+		name: "blast",
+		title: "Area Blast (Square from corner)",
+		icon: "fas fa-external-link-square-alt",
+		onClick: toggled => canvas.templates._setWallCollision = toggled
+	})
 })

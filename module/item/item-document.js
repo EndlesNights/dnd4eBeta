@@ -1,6 +1,6 @@
 import {d20Roll, damageRoll, getAttackRollBonus} from "../dice.js";
 import AbilityUseDialog from "../apps/ability-use-dialog.js";
-import AbilityTemplate from "../pixi/ability-template.js";
+import {MeasuredTemplate4e} from "../pixi/ability-template.js";
 import { Helper } from "../helper.js"
 import { DND4E } from "../config.js";
 
@@ -915,7 +915,7 @@ export default class Item4e extends Item {
 
 		// Maybe initiate template placement workflow
 		if ( this.hasAreaTarget && placeTemplate ) {
-			const template = AbilityTemplate.fromItem(this);
+			const template = MeasuredTemplate4e.fromItem(this);
 			if ( template ) template.drawPreview(event);
 			if ( this.owner && this.owner.sheet ) this.owner.sheet.minimize();
 		}
@@ -1815,7 +1815,7 @@ export default class Item4e extends Item {
 
 		// Maybe initiate template placement workflow
 		if ( this.hasAreaTarget && placeTemplate ) {
-			const template = AbilityTemplate.fromItem(this);
+			const template = MeasuredTemplate4e.fromItem(this);
 			if ( template ) template.drawPreview(event);
 			if ( this.isEmbedded  && this.parent.sheet ) this.parent.sheet.minimize();
 		}
@@ -2058,8 +2058,7 @@ export default class Item4e extends Item {
 
 		// Spell Template Creation
 		else if ( action === "placeTemplate") {
-			// const template = game.dnd4e.canvas.AbilityTemplate.fromItem(item);
-			const template = AbilityTemplate.fromItem(item);
+			const template = MeasuredTemplate4e.fromItem(item);
 			if ( template ) template.drawPreview(event);
 		}
 

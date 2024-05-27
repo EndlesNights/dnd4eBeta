@@ -1,7 +1,7 @@
 import { d20Roll, damageRoll } from "../dice.js";
 import { DND4E } from "../config.js";
 import { Helper } from "../helper.js"
-import AbilityTemplate from "../pixi/ability-template.js";
+import {MeasuredTemplate4e} from "../pixi/ability-template.js";
 import { SaveThrowDialog } from "../apps/save-throw.js";
 
 /**
@@ -1630,7 +1630,7 @@ export class Actor4e extends Actor {
 			await item.roll();
 
 			if(item.hasAreaTarget){
-				const template = AbilityTemplate.fromItem(item);
+				const template = MeasuredTemplate4e.fromItem(item);
 				if ( template ) template.drawPreview(event);
 			}
 
