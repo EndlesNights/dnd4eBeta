@@ -708,6 +708,9 @@ textarea{
 	font-size:20px;
 	font-weight:700;
 }
+.dnd4e .form-header.enhancement-bonus{
+	margin-top: 5px;
+}
 .dnd4e .form-group label{
 	flex:2;
 	font-weight:bold;
@@ -2214,9 +2217,9 @@ font-size:12px;
 	margin:0;
 	padding:0;
 }
-.dnd4e.sheet.item .damage-parts .damage-part{
+.dnd4e.sheet.item .damage-parts .damage-part {
 	flex:0 0 100%;
-	padding:0;
+	padding: 0 0 2px;
 }
 .dnd4e.sheet.item .res-group{
 	width:60%;
