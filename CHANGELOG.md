@@ -3,6 +3,11 @@
 ## Version 0.5.0
 - working on that v12 compatibility
 
+## Version 0.4.54
+- Fixed inherent enhancement, for real this time.
+- Fixed CSS/HTMl for Equipment Sheets Damage Resistances & Immunity + Enhancement overlap spacing fix
+- change tabs on Item-Sheets should now resize the height correctly. Updating the sheet should no long effect the the height of the sheet.
+
 ## Version 0.4.53
 - minor html/css tweak to rework Attack Roll chat messages
 - [PR 357](https://github.com/EndlesNights/dnd4eBeta/pull/357) from [FoxLee](https://github.com/FoxLee)

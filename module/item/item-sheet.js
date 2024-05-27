@@ -619,12 +619,9 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/* -------------------------------------------- */
 
-	/** @override */
-	setPosition(position={}) {
-		if ( !(this._minimized  || position.height) ) {
-			position.height = (this._tabs[0].active === "details") ? "auto" : Math.max(this.height, this.options.height);
-		}
-		return super.setPosition(position);
+	/** @inheritDoc */
+	_onChangeTab(event, tabs, active) {
+		this.setPosition({ height: "auto" });
 	}
 
 	/* -------------------------------------------- */

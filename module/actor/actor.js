@@ -603,24 +603,19 @@ export class Actor4e extends Actor {
 			res.res = res.res || 0;
 
 			//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.			
-			//let resBonusValue = 0;
+			let resBonusValue = 0;
 			if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
 				for( const b of res.bonus) {
-					if(b.active && Helper._isNumber(b.value)) {
-						res.vuln += Math.min(parseInt(b.value),0);
-						res.res += Math.max(parseInt(b.value),0);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,system)
-						if(Helper._isNumber(val)){
-							res.vuln += Math.min(parseInt(val),0);
-							res.res += Math.max(parseInt(val),0);
-						}
-					}
+
+					if(!b.active) continue;					
+					let val = Helper._isNumber(b.value) ? b.value : Helper.replaceData(b.value,system)
+					res.vuln += Math.min(parseInt(val),0);
+					res.res += Math.max(parseInt(val),0);
+
+					resBonusValue += parseInt(b.value);
 				}
 			}
-			//res.resBonusValue = resBonusValue;
-			//res.value += res.armour + resBonusValue;
+			res.resBonusValue = resBonusValue; // This value is displayed on the actor sheet
 			
 			//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
 			//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
@@ -630,7 +625,7 @@ export class Actor4e extends Actor {
 				break;
 			}
 			
-			const damageMods = [res.armour, res.feat || 0, res.item || 0, res.power || 0, res.race || 0, res.untyped || 0];
+	const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
 			
 			for ( let val of damageMods ) {
 				if ( val < 0 ){
