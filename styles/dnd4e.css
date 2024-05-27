@@ -2219,8 +2219,14 @@ font-size:12px;
 	padding:0;
 }
 .dnd4e.sheet.item .res-group{
-	width:60%;
-	float:right;
+	width:100%;
+}
+.dnd4e.sheet.item .res-group .damage-parts{
+	max-width:24em;
+	margin-left:auto;
+}
+.dnd4e.sheet.item .res-group .damage-parts .damage-part{
+	margin-bottom:6px;
 }
 .dnd4e.sheet.item .damage-parts .damage-part input{
 	flex:3;
@@ -2760,33 +2766,6 @@ span.flavor-text.fumble,
 span.flavor-text.probable-hit,
 span.flavor-text.probable-miss{
 	font-weight:bold;
-}
-.dice-container {
-    cursor: pointer;
-}
-
-.dice-result .dice-total::before,
-.dice-result .dice-total::after  {
-	position: absolute;
-	inset: 5px 0 5px auto;
-}
-.dice-result .dice-total::before {
-	content: "";
-	width: 36px;
-	border-left: 1px solid #666;
-}
-.dice-result .dice-total::after {
-	content: "\f054";
-	font-family: var(--font-awesome);
-	display: grid;
-	place-content: center;
-	padding: 0 0.8125rem;
-	color: var(--color-text-dark-5);
-	font-size: var(--font-size-16);
-	transition: all 250ms ease;
-}
-.dice-formula.expanded ~ .dice-total::after{
-	transform: rotate(-90deg);
 }
 .dice-roll .dice-total.success{
 	color:inherit;
