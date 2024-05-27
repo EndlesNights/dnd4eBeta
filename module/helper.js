@@ -203,10 +203,12 @@ export class Helper {
 							break;
 						case "melee":
 							suitableKeywords.push("weapon");
+							suitableKeywords.push("melee");
 							suitableKeywords.push("meleeWeapon");
 							break;
 						case "ranged":
 							suitableKeywords.push("weapon");
+							suitableKeywords.push("ranged");
 							suitableKeywords.push("rangedWeapon");
 							break;
 						case "meleeRanged":
@@ -214,8 +216,10 @@ export class Helper {
 							if (weaponInnerData){
 								if (weaponInnerData.isRanged){
 									suitableKeywords.push("rangedWeapon");
+									suitableKeywords.push("ranged");
 								} else {
 									suitableKeywords.push("meleeWeapon");
+									suitableKeywords.push("melee");
 								}
 							}
 							break;
