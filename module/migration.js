@@ -745,7 +745,7 @@ function _migrateActorDefAndRes(actorData, updateData){
 function _migrateNeckGearEnhance(itemData, updateData){
 if(itemData.type !== "equipment" || itemData.system?.armour.type !== "neck") return;
 	
-	if (itemData.system?.armour.fort !== itemData.system.armour.ref || itemData.system?.armour.fort !== itemData.system?.armour.wil) return;
+if ((itemData.system?.armour.fort !== itemData.system?.armour.ref || itemData.system?.armour.fort !== itemData.system?.armour.wil) || itemData.system?.armour.fort === 0) return;
 	
 	updateData["system.armour.enhance"] = itemData.system.armour.fort;
 	updateData["system.armour.fort"] = 0;
