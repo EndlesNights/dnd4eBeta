@@ -2119,6 +2119,9 @@ font-size:12px;
 	border-right:var(--border-engraved);
 	line-height:34px;
 }
+.dnd4e.sheet .item-sheet .sheet-header .summary li label {
+	padding-left: 5px;
+}
 .dnd4e.sheet .item-sheet .sheet-header .summary li:last-child{
 	border-right:none;
 }
@@ -2264,7 +2267,7 @@ font-size:12px;
 	opacity:0.75;
 }
 .dnd4e.sheet .item-sheet .form-group .consumption select.consume-type{
-	flex:0.65;
+	flex:1;
 }
 .dnd4e.sheet .item-sheet .form-group .consumption select.consume-target{
 	width:80%;

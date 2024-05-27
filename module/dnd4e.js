@@ -26,7 +26,7 @@ import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
-import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs } from "./helper.js";
+import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs, performPreLocalization} from "./helper.js";
 
 // Import Helpers
 import * as chat from "./chat.js";
@@ -141,25 +141,41 @@ Hooks.once("init", async function() {
 	game.dnd4e.quickSave = (actor) => game.dnd4e.tokenBarHooks.quickSave(actor, null)
 
 	customSKillSetUp();
+
+	if(!game.modules.get("lib-wrapper")?.active){
+		return console.log("lib-wrapper not active")
+	} else {
+		libWrapperInit();
+	}
+
+});
+
+/* --------------------------------------------- */
+
+/**
+ * Perform one-time pre-localization and sorting of some configuration objects
+ */
+Hooks.once("i18nInit", function() {
+	performPreLocalization(CONFIG.DND4E);
 });
 
 Hooks.once("setup", function() {
 
 	// Localize CONFIG objects once up-front
 	const toLocalize = [
-	"abilities", "abilityActivationTypes", "abilityActivationTypesShort", "abilityConsumptionTypes", "actorSizes",
-	"creatureOrigin","creatureRole","creatureRoleSecond","creatureType", "conditionTypes", "consumableTypes", "distanceUnits", "durationType",
-	"damageTypes", "def", "defensives", "effectTypes", "equipmentTypes", "equipmentTypesArmour", "equipmentTypesArms", "equipmentTypesFeet",
-	"equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "featureSortTypes", "healingTypes", "implement", "itemActionTypes",
-	"launchOrder", "limitedUsePeriods", "powerEffectTypes", "powerSource", "powerType", "powerSubtype", "powerUseType", "powerGroupTypes", "powerSortTypes",
+	"abilities", "abilityActivationTypesShort", 
+	"conditionTypes", "distanceUnits", "durationType",
+	"damageTypes", "effectTypes",
+	"healingTypes", "implement", "itemActionTypes",
+	"powerEffectTypes", "powerSource", "powerType", "powerSubtype", "powerUseType",
 	"profArmor", "cloth", "light", "heavy", "shield",
-	"weaponProficiencies", "simpleM", "simpleR", "militaryM", "militaryR", "superiorM", "superiorR", "improvisedM", "improvisedR","rangeType", "rangeTypeNoWeapon",
+	"weaponProficiencies", "simpleM", "simpleR", "militaryM", "militaryR", "superiorM", "superiorR", "improvisedM", "improvisedR",
 	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
 	"weaponTypes", "weaponHands", "autoanimationHook"
 	];
 
 	const noSort = [
-		"abilities", "abilityActivationTypes", "currencies", "distanceUnits", "durationType", "damageTypes", "equipmentTypesArms", "equipmentTypesFeet", "equipmentTypesHands", "equipmentTypesHead", "equipmentTypesNeck", "equipmentTypesWaist", "itemActionTypes", "limitedUsePeriods", "powerEffectTypes", "powerGroupTypes", "profArmor", "profWeapon","rangeType", "weaponType", "weaponTypes", "weaponHands"
+		"abilities", "currencies", "distanceUnits", "durationType", "damageTypes", "itemActionTypes", "limitedUsePeriods", "powerEffectTypes", "powerGroupTypes", "profArmor", "profWeapon", "weaponType", "weaponTypes", "weaponHands"
 	];
 	
 	for ( let o of toLocalize ) {
@@ -198,11 +214,11 @@ Hooks.once("ready",  function() {
 	const cv = game.settings.get("dnd4e", "systemMigrationVersion") || game.world.flags.dnd4e?.version;
 	const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
 	if ( !cv && totalDocuments === 0 ) return game.settings.set("dnd4e", "systemMigrationVersion", game.system.version);
-	if ( cv && !isNewerVersion(game.system.flags.needsMigrationVersion, cv) ) return;
+	if ( cv && !foundry.utils.isNewerVersion(game.system.flags.needsMigrationVersion, cv) ) return;
   
 	const cmv = game.system.flags.compatibleMigrationVersion || "0.2.85";
 	// Perform the migration
-	if ( cv && isNewerVersion(cmv, cv) ) {
+	if ( cv && foundry.utils.isNewerVersion(cmv, cv) ) {
 	  ui.notifications.error(game.i18n.localize("MIGRATION.4eVersionTooOldWarning"), {permanent: true});
 	}
 	
@@ -238,7 +254,7 @@ Hooks.on("canvasInit", function() {
 
 	// Extend Diagonal Measurement
 	canvas.grid.diagonalRule = game.settings.get("dnd4e", "diagonalMovement");
-	SquareGrid.prototype.measureDistances = measureDistances;
+	foundry.grid.SquareGrid.prototype.measureDistances = measureDistances;
 
 	// Extend Token Resource Bars
 	Token.prototype.getBarAttribute = getBarAttribute;
@@ -272,8 +288,8 @@ html.find('.effect-control').last().after(message);
 });
 
 
-Hooks.once('init', async function() {
-
+function libWrapperInit() {
+	
 	libWrapper.register(
 		'dnd4e',
 		'MeasuredTemplate.prototype._computeShape',
@@ -309,7 +325,7 @@ Hooks.once('init', async function() {
 		'ChatLog.prototype._processDiceCommand',
 		chat._processDiceCommand
 	)
-});
+}
 
 Hooks.on("getSceneControlButtons", function(controls){
 	//create addtioanl button in measure templates for burst

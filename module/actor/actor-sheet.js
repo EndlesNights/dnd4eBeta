@@ -57,7 +57,7 @@ export default class ActorSheet4e extends ActorSheet {
 			extraHeight = game.settings.get("dnd4e", "custom-skills").length * 27;
 		}
 
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["dnd4e", "sheet", "actor"],
 			width: 844,
 			height: 902 + extraHeight,
@@ -230,7 +230,7 @@ export default class ActorSheet4e extends ActorSheet {
 			if ( trait.custom ) {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
-			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
+			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
 		}
 	}
 
@@ -251,7 +251,7 @@ export default class ActorSheet4e extends ActorSheet {
 			if ( data.custom ) {
 				data.custom.split(";").forEach((c, i) => data.selected[`custom${i+1}`] = c.trim());
 			}
-			data.cssClass = !isEmpty(data.selected) ? "" : "inactive";
+			data.cssClass = !foundry.utils.isEmpty(data.selected) ? "" : "inactive";
 		}
 	}
 
@@ -615,8 +615,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
   _prepareItemToggleState(item) {
 	const power = ["power","atwill","encounter","daily","utility"];
 	if (power.includes(item.type)) {
-	  // const isAlways = getProperty(item.data, "preparation.mode") === "always";
-	  const isPrepared =  getProperty(item.system, "prepared");
+	  // const isAlways = foundry.utils.getProperty(item.data, "preparation.mode") === "always";
+	  const isPrepared =  foundry.utils.getProperty(item.system, "prepared");
 	  item.toggleClass = isPrepared ? "active" : "";
 	  // if ( isAlways ) item.toggleClass = "fixed";
 	  // if ( isAlways ) item.toggleTitle = CONFIG.DND4E.spellPreparationModes.always;
@@ -625,7 +625,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	  else item.toggleTitle = game.i18n.localize("DND4E.PowerUnPrepared");
 	}
 	else {
-	  const isActive = getProperty(item.system, "equipped");
+	  const isActive = foundry.utils.getProperty(item.system, "equipped");
 	  item.toggleClass = isActive ? "active" : "";
 	  item.toggleTitle = game.i18n.localize(isActive ? "DND4E.Equipped" : "DND4E.Unequipped");
 	}
@@ -647,7 +647,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			if ( trait.custom ) {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
-			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
+			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
 			
 		}
 	}
@@ -669,7 +669,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			if ( trait.custom ) {
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
-			trait.cssClass = !isEmpty(trait.selected) ? "" : "inactive";
+			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
 			
 		}
 	}
@@ -903,20 +903,20 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		}
 		
 		if(!/^[\-=+ 0-9]+$/.test(value)) {
-			input.value = getProperty(this.actor, input.name)
+			input.value = foundry.utils.getProperty(this.actor, input.name)
 			return;}
 
 		if ( ["+"].includes(value[0]) ) {
 			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
-			input.value = getProperty(this.actor, input.name) + delta || getProperty(this.actor, input.name);
+			input.value = foundry.utils.getProperty(this.actor, input.name) + delta || foundry.utils.getProperty(this.actor, input.name);
 		}
 		else if ( ["-"].includes(value[0]) ) {
 			let delta = parseFloat(-value.replace(/[^0-9]/g, ""));
-			input.value = getProperty(this.actor, input.name) + delta || getProperty(this.actor, input.name);
+			input.value = foundry.utils.getProperty(this.actor, input.name) + delta || foundry.utils.getProperty(this.actor, input.name);
 		} else if ( value[0] === "=" ) {
 			input.value = value.replace(/[^\-0-9]/g, "");
 		} else{
-			input.value = getProperty(this.actor, input.name)
+			input.value = foundry.utils.getProperty(this.actor, input.name)
 		}
 	}
 
@@ -1009,7 +1009,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	const item = this.actor.items.get(itemId);
 	const power = ["power","atwill","encounter","daily","utility"];
 	const attr = power.includes(item.type) ? "system.prepared" : "system.equipped";
-	return item.update({[attr]: !getProperty(item, attr)});
+	return item.update({[attr]: !foundry.utils.getProperty(item, attr)});
   }
 
   /* -------------------------------------------- */
@@ -1026,13 +1026,14 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		const itemData = {
 			name: game.i18n.format("DND4E.ItemNew", {type: type.capitalize()}),
 			type: type,
-			data: duplicate(header.dataset)
+			system: foundry.utils.duplicate(header.dataset)
 		};
 		delete itemData.data["type"];
+		console.log(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
-	async _onItemImport(event) {
+	_onItemImport(event) {
 		event.preventDefault();
 		new ItemImporterDialog(this.actor).render(true);
 	}
@@ -1044,19 +1045,19 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		const itemData = {
 			name: `${game.i18n.format("DND4E.ItemNew", {type: type.capitalize()})} Power`,
 			type: "power",
-			data: duplicate(header.dataset)
+			system: foundry.utils.duplicate(header.dataset)
 		};
 
 		if(this.object.system.powerGroupTypes === "action" || this.object.system.powerGroupTypes == undefined) {
-			itemData.data.actionType = type;
+			itemData.system.actionType = type;
 		}
 		else if(this.object.system.powerGroupTypes === "type") {
-			itemData.data.powerType = type;
+			itemData.system.powerType = type;
 		}
 		else if(this.object.system.powerGroupTypes === "usage") {
-			itemData.data.useType = type;
+			itemData.system.useType = type;
 			if(["encounter", "daily", "recharge", "item"].includes(type)) {
-				itemData.data.uses = {
+				itemData.system.uses = {
 					value: 1,
 					max: 1,
 					per: ["encounter", "charges", "round"].includes(type)  ? "enc" : "day"
@@ -1065,18 +1066,18 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			}
 		}
 
-		itemData.data.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLableOption");
+		itemData.system.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLableOption");
 		
 		if(this.actor.type === "NPC"){
 			
-			itemData.data.weaponType = "none";
-			itemData.data.weaponUse = "none";
+			itemData.system.weaponType = "none";
+			itemData.system.weaponUse = "none";
 
-			itemData.data.attack = {
+			itemData.system.attack = {
 				formula:"5 + @atkMod",
 				ability:"form"
 			};
-			itemData.data.hit  = {
+			itemData.system.hit  = {
 				formula:"@powBase + @dmgMod",
 				critFormula:"@powMax",
 				baseDiceType: "d8",
@@ -1086,14 +1087,15 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 		if(game.settings.get("dnd4e", "halfLevelOptions")){
 			if(this.actor.type === "NPC"){
-				itemData.data.attack.formula = ""; 
+				itemData.system.attack.formula = ""; 
 			} else {
-				itemData.data.attack = {
+				itemData.system.attack = {
 					formula:"@wepAttack + @powerMod + @atkMod"
 				}
 			}
 		}
 		
+		console.log(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
@@ -1149,7 +1151,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
-		const uses = Math.clamped(0, parseInt(event.target.value), item.system.preparedMaxUses);
+		const uses = Math.clamp(0, parseInt(event.target.value), item.system.preparedMaxUses);
 		event.target.value = uses;
 		return item.update({ 'system.uses.value': uses });
 	}
@@ -1436,7 +1438,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	}
 	/* -------------------------------------------- */
 
-	_onItemRecharge(event){
+	async _onItemRecharge(event){
 		event.preventDefault();
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
@@ -1449,7 +1451,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				r.dice[0].options.recharge = true;
 				r.dice[0].options.critical = item.system.rechargeRoll || 6;
 				r.dice[0].options.fumble = r.dice[0].options.critical -1;
-				r.evaluate({async: false});
+				// r.evaluate({async: false});
+				await r.evaluate();
 	
 				let flav = `${item.name} did not recharge.`;
 				if(r.total >= r.dice[0].options.critical){
@@ -1475,7 +1478,6 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 					flavor: `${item.name} successfully recharged! Due to meeting condition ${item.system.rechargeCondition}`
 				});
 			}
-
 		}
 		return;
 	}
@@ -1504,7 +1506,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
    * @return {Promise<Actor4e>}
    */
   convertCurrency() {
-	const curr = duplicate(this.actor.system.currency);
+	const curr = foundry.utils.duplicate(this.actor.system.currency);
 	const convert = CONFIG.DND4E.currencyConversion;
 	for ( let [c, t] of Object.entries(convert) ) {
 	  let change = Math.floor(curr[c] / t.each);

@@ -13,6 +13,12 @@ export const TGT_CLEANUP_RE = new RegExp("(^\\['|'\\]$|^\\[\"|\"\\]$)", 'g');
 
 // Main shim code
 Hooks.once('init', () => {
+	
+	// Check if the module is already loaded
+	if(!game.modules.get("lib-wrapper")?.active){
+		return
+	}
+
 	// Check if the real module is already loaded - if so, use it
 	if(globalThis.libWrapper && !(globalThis.libWrapper.is_fallback ?? true)) {
 		libWrapper = globalThis.libWrapper;

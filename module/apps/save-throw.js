@@ -4,7 +4,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
-		return mergeObject(options, {
+		return foundry.utils.mergeObject(options, {
 			id: "save-throw",
 			classes: ["dnd4e", "actor-save-throw"],
 			template: "systems/dnd4e/templates/apps/save-throw.html",

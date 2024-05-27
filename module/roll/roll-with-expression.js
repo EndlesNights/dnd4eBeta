@@ -143,7 +143,8 @@ export class RollWithOriginalExpression extends Roll {
         const isPrivate = chatOptions.isPrivate;
 
         // Execute the roll, if needed
-        if ( !this._evaluated ) await this.evaluate({async: true});
+        // if ( !this._evaluated ) await this.evaluate({async: true});
+        if ( !this._evaluated ) await this.evaluate();
 
         let formulaData = this.getChatData(isPrivate);
 
@@ -193,7 +194,7 @@ export class RollWithOriginalExpression extends Roll {
      */
     surroundFormulaWithExpressionSpanTags(formula, expressionParts) {
         try {
-            const tag = randomID(16) + "." // a random id prefix for the spans so we can refer to them by id in a chat log with many rolls
+            const tag = foundry.utils.randomID(16) + "." // a random id prefix for the spans so we can refer to them by id in a chat log with many rolls
 
             let newFormula = "" //the formula to return
             let newExpression = "" // the expression to return

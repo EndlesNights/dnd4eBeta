@@ -6,7 +6,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 
 	/** @override */
 	static get defaultOptions() {
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ["dnd4e", "sheet", "actor", "NPC"],
 			width: 600,
 			height: 680

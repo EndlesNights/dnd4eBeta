@@ -51,8 +51,8 @@ export class MultiAttackRoll extends Roll {
      * @return {RollWithOriginalExpression} new a new Roll
      *
      */
-    addNewRoll(parts, expressionPartsReplacements, data, options) {
-        const roll = RollWithOriginalExpression.createRoll(parts, expressionPartsReplacements, data, options).roll({async : false});
+    async addNewRoll(parts, expressionPartsReplacements, data, options) {
+        const roll = await RollWithOriginalExpression.createRoll(parts, expressionPartsReplacements, data, options).roll();
         this.rollArray.push(roll);
         return roll;
     }
@@ -121,7 +121,7 @@ export class MultiAttackRoll extends Roll {
         const isPrivate = chatOptions.isPrivate;
 
         // Execute the roll, if needed
-        if (!this._evaluated) await this.evaluate({async : true});
+        if (!this._evaluated) await this.evaluate();
 
         for (let roll of this._multirollData) {
             let parts = roll.parts;
@@ -215,12 +215,13 @@ export class MultiAttackRoll extends Roll {
    async toMessage(messageData={}, {rollMode, create=true}={}) {
 
     // Perform the roll, if it has not yet been rolled
-    if ( !this._evaluated ) await this.evaluate({async: true});
+    // if ( !this._evaluated ) await this.evaluate({async: true});
+    if ( !this._evaluated ) await this.evaluate();
 
     // Prepare chat data
     messageData = foundry.utils.mergeObject({
       user: game.user.id,
-      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+      type: CONST.CHAT_MESSAGE_STYLES.ROLL,
       content: String(this.total),
       sound: CONFIG.sounds.dice,
       flags: {dnd4e:{ [`multi-attack-roll`]: this}},

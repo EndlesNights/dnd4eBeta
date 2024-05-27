@@ -4,7 +4,7 @@ export default class HPOptions extends DocumentSheet4e {
 
   /** @override */
 	static get defaultOptions() {
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 		id: "hp-options",
 		classes: ["dnd4e"],
 		title: "Hit Points Options",

@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.5.0
+- working on that v12 compatibility
+
 ## Version 0.4.54
 - Fixed inherent enhancement, for real this time.
 - Fixed CSS/HTMl for Equipment Sheets Damage Resistances & Immunity + Enhancement overlap spacing fix

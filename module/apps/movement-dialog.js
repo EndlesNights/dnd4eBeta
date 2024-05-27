@@ -4,7 +4,7 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 export class MovementDialog extends DocumentSheet4e {
 	static get defaultOptions() {
 		const options = super.defaultOptions;
-		return mergeObject(options, {
+		return foundry.utils.mergeObject(options, {
 			id: "movement-dialog",
 			classes: ["dnd4e", "movement-dialog"],
 			template: "systems/dnd4e/templates/apps/movement-dialog.html",
