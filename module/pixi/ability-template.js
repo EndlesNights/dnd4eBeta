@@ -224,7 +224,7 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 			return new PIXI.Polygon(canvas.grid.getCone({x: 0, y: 0}, distance, direction, angle));
 		}
 		
-		return (wrapper());
+		return wrapper();
 	}
 	
 	/* -------------------------------------------- */
@@ -261,12 +261,28 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 					d = Math.max(Math.round((this.document.distance -0.5 )* 10) / 10, 0);
 					text = `Burst ${d}`;
 				}
-				console.log(this.ruler)
+
 				this.ruler.text = text;
 				this.ruler.position.set(this.ray.dx + 10, this.ray.dy + 5);
 		} else {
 			return wrapper();
 		}
+	}
+
+	  /**
+   * Refresh the underlying geometric shape of the MeasuredTemplate.
+   * @protected
+   */
+	static _refreshShape(wrapper) {
+		
+		if(!this.document.getFlag("dnd4e", "templateType")){
+			return wrapper();
+		}
+
+		// anchors the point along the edge of the burst/blast
+		let {x, y, direction, distance} = this.document;
+		this.ray = new Ray({x, y}, canvas.grid.getTranslatedPoint({x, y}, direction, distance));
+		this.shape = this._computeShape();
 	}
 }
 

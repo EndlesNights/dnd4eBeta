@@ -302,6 +302,12 @@ function libWrapperInit() {
 		'MeasuredTemplate.prototype._refreshRulerText',
 		MeasuredTemplate4e._refreshRulerText
 	);
+
+	libWrapper.register(
+		'dnd4e',
+		'MeasuredTemplate.prototype._refreshShape',
+		MeasuredTemplate4e._refreshShape
+	);
 	
 	libWrapper.register(
 		'dnd4e',
