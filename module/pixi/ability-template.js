@@ -114,6 +114,7 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 	 * Creates a preview of the spell template
 	 */
 	drawPreview() {
+		console.log("DrawPreveiw")
 		const initialLayer = canvas.activeLayer;
 		this.draw();
 		this.layer.activate();
@@ -260,7 +261,7 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 					d = Math.max(Math.round((this.document.distance -0.5 )* 10) / 10, 0);
 					text = `Burst ${d}`;
 				}
-
+				console.log(this.ruler)
 				this.ruler.text = text;
 				this.ruler.position.set(this.ray.dx + 10, this.ray.dy + 5);
 		} else {
@@ -284,6 +285,8 @@ export class TemplateLayer4e extends TemplateLayer {
 		// Snap the origin to the grid
 		if ( !event.shiftKey ) interaction.origin = this.getSnappedPoint(interaction.origin);
 
+		console.log(event)
+		console.log(interaction)
 		const previewData = {
 			user: game.user.id,
 			t: tool == 'burst' ? 'circle' : 'cone',

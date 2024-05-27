@@ -20,7 +20,7 @@ import { measureDistances, getBarAttribute } from "./canvas.js";
 import { _getInitiativeFormula } from "./combat.js";
 
 // Import Documents
-import { MeasuredTemplate4e, MeasuredTemplateDocument4e, TemplateLayer4e} from "./pixi/ability-template.js";
+import { MeasuredTemplate4e, TemplateLayer4e} from "./pixi/ability-template.js";
 import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
