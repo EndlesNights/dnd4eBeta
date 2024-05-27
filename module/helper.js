@@ -151,8 +151,8 @@ export class Helper {
 			//Using inherent enhancements?
 			if(game.settings.get("dnd4e", "inhEnh")) {
 				//If our enhancement is lower than the inherent level, adjust it upward
-				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 3));
-				//console.log(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 3)}' for this level against weapon value of +${weaponInnerData?.enhance})`);
+				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
+				//console.log(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)}' for this level against weapon value of +${weaponInnerData?.enhance})`);
 			}
 
 			const effectsToProcess = []
@@ -203,10 +203,12 @@ export class Helper {
 							break;
 						case "melee":
 							suitableKeywords.push("weapon");
+							suitableKeywords.push("melee");
 							suitableKeywords.push("meleeWeapon");
 							break;
 						case "ranged":
 							suitableKeywords.push("weapon");
+							suitableKeywords.push("ranged");
 							suitableKeywords.push("rangedWeapon");
 							break;
 						case "meleeRanged":
@@ -214,8 +216,10 @@ export class Helper {
 							if (weaponInnerData){
 								if (weaponInnerData.isRanged){
 									suitableKeywords.push("rangedWeapon");
+									suitableKeywords.push("ranged");
 								} else {
 									suitableKeywords.push("meleeWeapon");
+									suitableKeywords.push("melee");
 								}
 							}
 							break;
@@ -440,8 +444,8 @@ export class Helper {
 			//Using inherent enhancements?
 			if(game.settings.get("dnd4e", "inhEnh")) {
 				//If our enhancement is lower than the inherent level, adjust it upward
-				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 3));
-				//console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 3)} for this level against weapon value of +${weaponInnerData?.enhance}`);
+				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
+				//console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${weaponInnerData?.enhance}`);
 			}
 			
 			newFormula =  newFormula.replaceAll("@itemLevel", weaponInnerData.level ? weaponInnerData.level : 0)
