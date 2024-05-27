@@ -619,8 +619,6 @@ export class Actor4e extends Actor {
 					}
 				}
 			}
-			//res.resBonusValue = resBonusValue;
-			//res.value += res.armour + resBonusValue;
 			
 			//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
 			//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
@@ -630,7 +628,7 @@ export class Actor4e extends Actor {
 				break;
 			}
 			
-			const damageMods = [res.armour, res.feat || 0, res.item || 0, res.power || 0, res.race || 0, res.untyped || 0];
+	const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
 			
 			for ( let val of damageMods ) {
 				if ( val < 0 ){
