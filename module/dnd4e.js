@@ -143,7 +143,7 @@ Hooks.once("init", async function() {
 	customSKillSetUp();
 
 	if(!game.modules.get("lib-wrapper")?.active){
-		return console.log("lib-wrapper not active")
+		return console.log("lib-wrapper not active!")
 	} else {
 		libWrapperInit();
 	}
@@ -334,6 +334,14 @@ function libWrapperInit() {
 		'dnd4e',
 		'ChatLog.prototype._processDiceCommand',
 		chat._processDiceCommand
+	)
+
+	//temporary, until v12.124 release, which should fix inheirtance bug.
+	libWrapper.register(
+		'dnd4e',
+		// 'Item.getDefaultArtwork',
+		'foundry.documents.BaseItem.getDefaultArtwork',
+		Item4e.getDefaultArtworkWrapped
 	)
 }
 

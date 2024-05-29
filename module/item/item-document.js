@@ -128,15 +128,20 @@ export default class Item4e extends Item {
 		
 	}
 
-	 /**
-     * Determine default artwork based on the provided item data.
-     * @param {ItemData} itemData  The source item data.
-     * @returns {{img: string}}    Candidate item image.
-     */
+	/**
+	 * Determine default artwork based on the provided item data.
+	 * @param {ItemData} itemData  The source item data.
+	 * @returns {{img: string}}    Candidate item image.
+	 */
 	/** @inheritdoc */
-	static getDefaultArtwork(itemData={}) {		
+	static getDefaultArtwork(itemData) {
 		return {img: CONFIG.DND4E.defaultArtwork.Item[itemData.type]} ?? super.getDefaultArtwork(itemData);
 	}
+
+		/** @inheritdoc */
+		static getDefaultArtworkWrapped(wrapped, itemData) { //stopgap until v12.124 which should fix getDefaultArtwork
+			return {img: CONFIG.DND4E.defaultArtwork.Item[itemData.type]} ?? super.getDefaultArtwork(itemData);
+		}
 
 	/* -------------------------------------------- */
 
