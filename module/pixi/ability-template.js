@@ -191,7 +191,6 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 	 * Overrides the method to allow for 4e Burst shapes allowing drawing square template from the center.
 	 * @param {wrapper} wrapper    refrence to the original core method
 	 */
-
 	static _computeShape(wrapper){
 
 		if(this.document.flags.dnd4e?.templateType === "burst"
@@ -200,22 +199,6 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 			const {t, distance, direction, angle, width} = this.document;
 			return new PIXI.Polygon(canvas.grid.getCircle({x: 0, y: 0}, distance));
 
-			// let {angle, width, t} = this.document;
-			// const {angle: direction, distance} = this.ray;
-			// width *= canvas.dimensions.distancePixels;
-			
-			// let r = Ray.fromAngle(0, 0, 0, distance),
-			// dx = r.dx - r.dy,
-			// dy = r.dy + r.dx;
-	
-			// const points = [
-			// 	dx, dy,
-			// 	dy, -dx,
-			// 	-dx, -dy,
-			// 	-dy, dx,
-			// 	dx, dy
-			// ];
-			// return new PIXI.Polygon(points);
 		}
 		else if (this.document.flags.dnd4e?.templateType === "blast"
 			|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "blast" && !this.document.flags.dnd4e?.templateType)) {
