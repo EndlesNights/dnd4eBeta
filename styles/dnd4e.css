@@ -2,6 +2,14 @@
 /*  Global Basics
 /* ----------------------------------------- */
 
+.dnd4e-blast-svg {
+	content: url(../icons/ui/blast.svg);
+}
+
+.dnd4e-burst-svg {
+	content: url(../icons/ui/burst.svg);
+}
+
 .flexrow{
 	display:flex;
 	flex-direction:row;

@@ -338,6 +338,10 @@ function libWrapperInit() {
 }
 
 Hooks.on("getSceneControlButtons", function(controls){
+	
+	//sets what the default activeTool is
+	controls[1].activeTool = "burst";
+
 	//create addtioanl buttons in measure templates for Burst and Blast
 	controls[1].tools.splice(0,0,{
 		name: "burst",
