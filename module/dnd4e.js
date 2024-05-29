@@ -341,7 +341,6 @@ Hooks.on("getSceneControlButtons", function(controls){
 	//create addtioanl buttons in measure templates for Burst and Blast
 	controls[1].tools.splice(0,0,{
 		name: "burst",
-		tool: "circle",
 		title: "Area Burst (Square from Center)",
 		icon: "dnd4e-burst-svg",
 		onClick: toggled => canvas.templates._setWallCollision = toggled
@@ -349,7 +348,6 @@ Hooks.on("getSceneControlButtons", function(controls){
 
 	controls[1].tools.splice(1,0,{
 		name: "blast",
-		tool: "circle",
 		title: "Area Blast (Square from corner)",
 		icon: "dnd4e-blast-svg",
 		onClick: toggled => canvas.templates._setWallCollision = toggled
