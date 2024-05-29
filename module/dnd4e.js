@@ -290,31 +290,27 @@ html.find('.effect-control').last().after(message);
 
 function libWrapperInit() {
 
-	// Measure Templates
+	// Collection of Overriders for 4e Measure Templates
 	libWrapper.register(
 		'dnd4e',
 		'MeasuredTemplate.prototype._computeShape',
 		MeasuredTemplate4e._computeShape
 	);
-	
 	libWrapper.register(
 		'dnd4e',
 		'MeasuredTemplate.prototype._refreshRulerText',
 		MeasuredTemplate4e._refreshRulerText
 	);
-
 	libWrapper.register(
 		'dnd4e',
 		'MeasuredTemplate.prototype._refreshShape',
 		MeasuredTemplate4e._refreshShape
 	);
-	
 	libWrapper.register(
 		'dnd4e',
 		'TemplateLayer.prototype._onDragLeftStart',
 		TemplateLayer4e._onDragLeftStart
 	)
-
 	libWrapper.register(
 		'dnd4e',
 		'TemplateLayer.prototype._onDragLeftMove',
@@ -342,19 +338,20 @@ function libWrapperInit() {
 }
 
 Hooks.on("getSceneControlButtons", function(controls){
-	//create addtioanl button in measure templates for burst
+	//create addtioanl buttons in measure templates for Burst and Blast
 	controls[1].tools.splice(0,0,{
 		name: "burst",
 		tool: "circle",
 		title: "Area Burst (Square from Center)",
-		icon: "fas fa-external-link-square-alt",
+		icon: "dnd4e-burst-svg",
 		onClick: toggled => canvas.templates._setWallCollision = toggled
 	})
 
 	controls[1].tools.splice(1,0,{
 		name: "blast",
+		tool: "circle",
 		title: "Area Blast (Square from corner)",
-		icon: "fas fa-external-link-square-alt",
+		icon: "dnd4e-blast-svg",
 		onClick: toggled => canvas.templates._setWallCollision = toggled
 	})
 })
