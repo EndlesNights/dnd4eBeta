@@ -1388,47 +1388,47 @@ font-size:12px;
 	font-size:12px;
 	line-height:18px;
 }
-.dnd4e .description {
+.dnd4e .item-sheet .description {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 	gap: 3px;
 }
-.dnd4e .description.editing-gm,
-.dnd4e .description.editing-main {
+.dnd4e .item-sheet .description.editing-gm,
+.dnd4e .item-sheet .description.editing-main {
 	overflow: hidden;
 }
 
-.dnd4e .description.editing-gm .main,
-.dnd4e .description.editing-main .gm-notes {
+.dnd4e .item-sheet .description.editing-gm .main,
+.dnd4e .item-sheet .description.editing-main .gm-notes {
 	display: none;
 }
 
-.dnd4e .description.editing-gm .editor-container.gm-notes.has-content{
+.dnd4e .item-sheet .description.editing-gm .editor-container.gm-notes.has-content{
 	height: 100%;
 }
-.dnd4e .description .gm-notes.editor-container,
-.dnd4e .description .main.editor-container {
+.dnd4e .item-sheet .description .gm-notes.editor-container,
+.dnd4e .item-sheet .description .main.editor-container {
 	width: 100%;
 	/* display: flex; */
     overflow: hidden;
 }
-.dnd4e .description .gm-notes.editor-container {
+.dnd4e .item-sheet .description .gm-notes.editor-container {
 	background-color: #e8e8ef;
     border: 1px dotted rgba(75, 74, 68, 0.5);
     padding: 0 0.25em;
     flex: 0 0 auto;
 }
-.dnd4e .description .main.editor-container {
+.dnd4e .item-sheet .description .main.editor-container {
 	flex: 1 0 auto;
 }
-.dnd4e .description .editor-container.gm-notes:not(.has-content) {
+.dnd4e .item-sheet .description .editor-container.gm-notes:not(.has-content) {
 	display: none;
 }
-.dnd4e .description a.editor-edit.add-gm-notes {
+.dnd4e .item-sheet .description a.editor-edit.add-gm-notes {
 	right: 35px;
 }
-.dnd4e .description.editing-main a.editor-edit.add-gm-notes {
+.dnd4e .item-sheet .description.editing-main a.editor-edit.add-gm-notes {
 	display: none;
 }
 .dnd4e .editor,
