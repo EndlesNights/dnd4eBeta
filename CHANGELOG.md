@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.4.55
+- Minor change to CSS selector, making item card class selectors slightly more specific as to cause destructive interference with modules. (SPesificly fixed an issue with Monks Enhanced Journal)
+- added tool-tip label to currency that displays sum of coins value in relation to GP
+
 ## Version 0.4.54
 - Fixed inherent enhancement, for real this time.
 - Fixed CSS/HTMl for Equipment Sheets Damage Resistances & Immunity + Enhancement overlap spacing fix

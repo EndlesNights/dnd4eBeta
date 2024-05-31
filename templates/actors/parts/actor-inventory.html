@@ -1,7 +1,7 @@
 <div class="inventory-filters flexrow flexcol">
 	<ol class="currency flexrow">
 		<h3>
-			{{localize "DND4E.Currency"}}
+			<label data-tooltip="{{currencyGoldSum}}">{{localize "DND4E.Currency"}}</label>
 			<a class="currency-convert" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
 		</h3>
 		{{#each system.currency as |v k|}}
