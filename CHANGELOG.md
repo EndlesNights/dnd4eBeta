@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.4.56
+- added error checking to ActorSheet4e#_onConvertCurrency incase of undefined value
+
 ## Version 0.4.55
 - update to french lang
 - Minor change to CSS selector, making item card class selectors slightly more specific as to cause destructive interference with modules. (spesificly fixed an issue with Monks Enhanced Journal)

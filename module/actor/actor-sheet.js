@@ -1507,7 +1507,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_currencyGoldSumLabel(){
 		let goldSum = 0;
 		for(const [type,value] of Object.entries(this.actor.system.currency)){
-			goldSum += value * CONFIG.DND4E.currencyConversion[type].gp;
+			goldSum += value * CONFIG.DND4E.currencyConversion[type]?.gp;
 		}
 		return game.i18n.localize("DND4E.GoldWealth") + (Math.round(goldSum*100)/100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
 	}
