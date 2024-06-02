@@ -3,33 +3,21 @@
 	<div class="form-group">
 		<label>{{ localize "Scope" }}</label>
 		<select name="system.macro.scope" disabled>
-			{{#select system.macro.scope}}
-			<option value="global">{{ localize "Global" }}</option>
-			<option value="actors">{{ localize "Actors" }}</option>
-			<option value="actor">{{ localize "Actor" }}</option>
-			{{/select}}
+			{{selectOptions config.macroScope selected=system.macro.scope labelAttr="label"}}
 		</select>
 	</div>
 
 	<div class="form-group">
 		<label>{{ localize "Type" }}</label>
 		<select name="system.macro.type">
-			{{#select system.macro.type}}
-				<option value="script">{{ localize "Script" }}</option>
-				<option value="chat">{{ localize "Chat" }}</option>
-				<!-- <option value="{{this}}">{{this}}</option> -->
-			{{/select}}
+			{{selectOptions config.macroType selected=system.macro.type labelAttr="label"}}
 		</select>
 	</div>
 
 	<div class="form-group">
 		<label>Launch Order</label>
 		<select name="system.macro.launchOrder">
-			{{#select system.macro.launchOrder}}
-			{{#each config.launchOrder as |name type|}}
-			<option value="{{type}}">{{name}}</option>
-			{{/each}}
-			{{/select}}
+			{{selectOptions config.macroLaunchOrder selected=system.macro.launchOrder labelAttr="label"}}
 		</select>
 	</div>
 

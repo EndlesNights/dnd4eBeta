@@ -4,7 +4,7 @@ export class ShortRestDialog extends DocumentSheet4e {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
-		return mergeObject(options, {
+		return foundry.utils.mergeObject(options, {
 			id: "short-rest",
 			classes: ["dnd4e", "actor-rest"],
 			template: "systems/dnd4e/templates/apps/short-rest.html",

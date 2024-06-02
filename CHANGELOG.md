@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.5.0
+- working on that v12 compatibility
+
 ## Version 0.4.56
 - added error checking to ActorSheet4e#_onConvertCurrency incase of undefined value
 

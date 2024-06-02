@@ -21,7 +21,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @override */
 	static get defaultOptions() {
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 			width: 585,
 			height: 420,
 			classes: ["dnd4e", "sheet", "item"],
@@ -37,7 +37,6 @@ export default class ItemSheet4e extends ItemSheet {
 			dragDrop: [
 				{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},
 			]
-			
 		});
 	}
 
@@ -60,7 +59,9 @@ export default class ItemSheet4e extends ItemSheet {
 		data.config = CONFIG.DND4E;
 
 		// Item Type, Status, and Details
-		data.user = game.user;
+		// data.user = game.user; //This is causing a huge error!
+		data.userInfo = game.user;
+
 		data.itemType = itemData.type.titleCase();
 		data.itemStatus = this._getItemStatus(itemData);
 		data.itemProperties = this._getItemProperties(itemData);
@@ -129,7 +130,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// Action Details
 		data.hasAttackRoll = this.item.hasAttack;
 		data.isHealing = itemData.system.actionType === "heal";
-		data.isFlatDC = getProperty(itemData.system, "save.scaling") === "flat";
+		data.isFlatDC = foundry.utils.getProperty(itemData.system, "save.scaling") === "flat";
 
 		// Vehicles
 		data.isCrewed = itemData.system.activation?.type === 'crew';
@@ -585,7 +586,7 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 
 		// Action usage
-		if ( (item.type !== "weapon") && item.system.activation && !isEmpty(item.system.activation) ) {
+		if ( (item.type !== "weapon") && item.system.activation && !foundry.utils.isEmpty(item.system.activation) ) {
 			props.push(
 				labels.attribute,
 				labels.activation,
@@ -631,7 +632,7 @@ export default class ItemSheet4e extends ItemSheet {
 	_updateObject(event, formData) {
 
 		// TODO: This can be removed once 0.7.x is release channel
-		if ( !formData.system ) formData = expandObject(formData);
+		if ( !formData.system ) formData = foundry.utils.expandObject(formData);
 
 		// Handle Damage Array
 		const damage = formData.system?.damage;
