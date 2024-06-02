@@ -138,11 +138,6 @@ export default class Item4e extends Item {
 		return {img: CONFIG.DND4E.defaultArtwork.Item[itemData.type]} ?? super.getDefaultArtwork(itemData);
 	}
 
-		/** @inheritdoc */
-		static getDefaultArtworkWrapped(wrapped, itemData) { //stopgap until v12.124 which should fix getDefaultArtwork
-			return {img: CONFIG.DND4E.defaultArtwork.Item[itemData.type]} ?? super.getDefaultArtwork(itemData);
-		}
-
 	/* -------------------------------------------- */
 
 	/**

@@ -336,13 +336,6 @@ function libWrapperInit() {
 		chat._processDiceCommand
 	)
 
-	//temporary, until v12.124 release, which should fix inheirtance bug.
-	libWrapper.register(
-		'dnd4e',
-		// 'Item.getDefaultArtwork',
-		'foundry.documents.BaseItem.getDefaultArtwork',
-		Item4e.getDefaultArtworkWrapped
-	)
 }
 
 Hooks.on("getSceneControlButtons", function(controls){
@@ -355,13 +348,11 @@ Hooks.on("getSceneControlButtons", function(controls){
 		name: "burst",
 		title: "Area Burst (Square from Center)",
 		icon: "dnd4e-burst-svg",
-		onClick: toggled => canvas.templates._setWallCollision = toggled
 	})
 
 	controls[1].tools.splice(1,0,{
 		name: "blast",
 		title: "Area Blast (Square from corner)",
 		icon: "dnd4e-blast-svg",
-		onClick: toggled => canvas.templates._setWallCollision = toggled
 	})
 })
