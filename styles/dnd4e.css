@@ -2430,6 +2430,7 @@ font-size:12px;
 	height:26px;
 	line-height:30px;
 	text-align:center;
+	color: #ccc;
 }
 .status-effect-title.active{
 	visibility:visible;
