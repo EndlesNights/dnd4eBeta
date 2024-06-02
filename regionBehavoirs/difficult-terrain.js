@@ -1,0 +1,3 @@
+class DifficultTerrainRegionBehaviorType extends RegionBehaviorType {
+
+}
