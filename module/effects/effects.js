@@ -170,7 +170,7 @@
 				const isActor = owner instanceof Actor;
 				return owner.createEmbeddedDocuments("ActiveEffect", [{
 					name: isActor ? game.i18n.localize("DND4E.EffectNew") : owner.name,
-					icon: isActor ? "icons/svg/aura.svg" : owner.img,
+					img: isActor ? "icons/svg/aura.svg" : owner.img,
 					origin: owner.uuid,
 					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
 					disabled: li.dataset.effectType === "inactive"
@@ -200,8 +200,7 @@
 	}
 
 	_prepareDuration(){
-		
-		if(["power", "consumable"].includes(this.parent.type)){
+		if(["power", "consumable"].includes(this.parent?.type)){
 			const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
 			if(durationType){
 				return{
