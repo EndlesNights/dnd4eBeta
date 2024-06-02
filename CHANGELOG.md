@@ -3,6 +3,14 @@
 ## Version 0.5.0
 - working on that v12 compatibility
 
+## Version 0.4.56
+- added error checking to ActorSheet4e#_onConvertCurrency incase of undefined value
+
+## Version 0.4.55
+- update to french lang
+- Minor change to CSS selector, making item card class selectors slightly more specific as to cause destructive interference with modules. (spesificly fixed an issue with Monks Enhanced Journal)
+- added tool-tip label to currency that displays sum of coins value in relation to GP
+
 ## Version 0.4.54
 - Fixed inherent enhancement, for real this time.
 - Fixed CSS/HTMl for Equipment Sheets Damage Resistances & Immunity + Enhancement overlap spacing fix

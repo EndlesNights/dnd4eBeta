@@ -189,6 +189,9 @@ export default class ActorSheet4e extends ActorSheet {
 		// Prepare owned items
 		this._prepareItems(data);
 		
+
+		data.currencyGoldSum = this._currencyGoldSumLabel();
+
 		// Prepare active effects
 		// data.effects = prepareActiveEffectCategories(this.actor.effects);
 		data.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.getActiveEffects());
@@ -1484,20 +1487,32 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
   /* -------------------------------------------- */
 
-  /**
-   * Handle mouse click events to convert currency to the highest possible denomination
-   * @param {MouseEvent} event    The originating click event
-   * @private
-   */
-  async _onConvertCurrency(event) {
-	event.preventDefault();
-	return Dialog.confirm({
-	  title: `${game.i18n.localize("DND4E.CurrencyConvert")}`,
-	  content: `<p>${game.i18n.localize("DND4E.CurrencyConvertHint")}</p>`,
-	  yes: () => this.convertCurrency()
-	});
-  }
+	/**
+	 * Handle mouse click events to convert currency to the highest possible denomination
+	 * @param {MouseEvent} event    The originating click event
+	 * @private
+	 */
+	async _onConvertCurrency(event) {
+		event.preventDefault();
+		return Dialog.confirm({
+			title: `${game.i18n.localize("DND4E.CurrencyConvert")}`,
+			content: `<p>${game.i18n.localize("DND4E.CurrencyConvertHint")}</p>`,
+			yes: () => this.convertCurrency()
+		});
+	}
 
+
+	/**
+	 * Returns the sum amount in GP that the character is currently holding
+	 * @private
+	 */
+	_currencyGoldSumLabel(){
+		let goldSum = 0;
+		for(const [type,value] of Object.entries(this.actor.system.currency)){
+			goldSum += value * CONFIG.DND4E.currencyConversion[type]?.gp;
+		}
+		return game.i18n.localize("DND4E.GoldWealth") + (Math.round(goldSum*100)/100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+	}
   /* -------------------------------------------- */
 
   /**

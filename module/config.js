@@ -506,10 +506,11 @@ DND4E.currencies = {
  * @type {{string, object}}
  */
 DND4E.currencyConversion = {
-	cp: {into: "sp", each: 10},
-	sp: {into: "gp", each: 10 },
-	gp: {into: "pp", each: 100},
-	pp: {into: "ad", each: 100}
+  cp: {into: "sp", each: 10, gp: 0.01},
+  sp: {into: "gp", each: 10, gp: 0.1},
+  gp: {into: "pp", each: 100, gp: 1},
+  pp: {into: "ad", each: 100, gp: 100},
+  ad: {into: "ad", each: 1, gp: 10000},
 };
 
 /* -------------------------------------------- */
