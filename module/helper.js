@@ -1033,40 +1033,46 @@ export class Helper {
 			powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.defensives[chatData.attack.def].abbreviation}</p>`;
 		}
 
-		let highlight = true;
 		if (chatData.hit.detail){
-			powerDetail += `<p class="hit ${highlight? `alt`: ``}"><strong>${game.i18n.localize("DND4E.Hit")}:</strong> ${chatData.hit.detail}</p>`;
-			highlight = !highlight;
+			powerDetail += `<p class="hit alt-highlight"><strong>${game.i18n.localize("DND4E.Hit")}:</strong> ${chatData.hit.detail}</p>`;
 		}
 
 		if (chatData.miss.detail){
-			powerDetail += `<p class="miss ${highlight? `alt`: ``}"><strong>${game.i18n.localize("DND4E.Miss")}:</strong> ${chatData.miss.detail}</p>`;
-			highlight = !highlight;
+			powerDetail += `<p class="miss alt-highlight"><strong>${game.i18n.localize("DND4E.Miss")}:</strong> ${chatData.miss.detail}</p>`;
 		}
 
 		if(chatData.postEffect && chatData.effect.detail) {
-			powerDetail += `<p class="effect ${highlight? `alt`: ``}"><strong>${game.i18n.localize("DND4E.Effect")}:</strong> ${chatData.effect.detail}</p>`;
-			highlight = !highlight;
+			powerDetail += `<p class="effect alt-highlight"><strong>${game.i18n.localize("DND4E.Effect")}:</strong> ${this.paragraphTrim(chatData.effect.detail)}</p>`;
 		}
 		if(chatData.postSpecial && chatData.special) {
-			powerDetail += `<p class="special ${highlight? `alt`: ``}"><strong>${game.i18n.localize("DND4E.Special")}:</strong> ${chatData.special}</p>`;
-			highlight = !highlight;
+			powerDetail += `<p class="special alt-highlight"><strong>${game.i18n.localize("DND4E.Special")}:</strong> ${chatData.special}</p>`;
 			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
 				powerDetail += `<p>${entry}</p>`;
 			}
 		}
 
 		if(chatData.sustain?.actionType !== "none" && chatData.sustain?.actionType) {
-			powerDetail += `<p class="sustain ${highlight? `alt`: ``}"><strong>${game.i18n.localize("DND4E.Sustain")} ${CONFIG.DND4E.abilityActivationTypes[chatData.sustain.actionType].label}:</strong> ${chatData.sustain.detail}</p>`;
+			powerDetail += `<p class="sustain alt-highlight"><strong>${game.i18n.localize("DND4E.Sustain")} ${CONFIG.DND4E.abilityActivationTypes[chatData.sustain.actionType].label}:</strong> ${chatData.sustain.detail}</p>`;
 		}
 
 		if(actorData){
 			powerDetail = this.commonReplace(powerDetail, actorData);
 		}
-
 		return powerDetail;
 	}
 
+	static paragraphTrim(string){
+		// Check if the string starts with <p>
+		if(string.startsWith('<p>')) {
+			// Remove the first occurrence of <p> and </p>
+			string = string.replace(/<p>(.*?)<\/p>/, '$1');
+		}
+		if(string.endsWith('</p>')){
+			// Removes the last four characters if they are '</p>'
+			string = string.slice(0, -4); 
+		}
+		return string;
+	}
 	static _isNumber(str){
 		return /^-?\d+$/.test(str);
 	}

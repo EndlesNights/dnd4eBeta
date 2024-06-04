@@ -1446,6 +1446,22 @@ font-size:12px;
 	border-radius:6px;
 }
 
+.dnd4e div.tab.details.active div.editor {
+	border: 1px solid #7a7971;
+	border-radius: 2px;
+	height: auto;
+	min-height: 48px;
+	background-color: rgba(0,0,0,0.075);;
+}
+.dnd4e div.tab.details.active div.editor.prosemirror {
+	min-height: 124px;
+	height: auto;
+	resize: vertical;
+}
+.dnd4e div.tab.details.active div.editor .editor-content {
+	margin: 2px;
+}
+
 .dnd4e .item-list{
 	list-style:none;
 	margin:7px 0;
@@ -2773,7 +2789,8 @@ input[type="text"].dice-count{
 	font-weight:bold;
 }
 .dnd4e .item-description,
-.dnd4e .item-details .alt{
+.dnd4e .item-details .alt,
+.dnd4e .item-details .alt-highlight:nth-child(even) {
 	background:var(--gradient-4e);
 }
 span.flavor-text.critical,

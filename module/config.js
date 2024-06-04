@@ -1149,6 +1149,7 @@ DND4E.effectTypes = {
 	"rattling": "DND4E.Rattling",
 	"reliable": "DND4E.Reliable",
 	"runic": "DND4E.Runic",
+	"shadow": "DND4E.Shadow",
 	"sleep": "DND4E.Sleep",
 	"spirit": "DND4E.Spirit",
 	"stance": "DND4E.Stance",

@@ -439,7 +439,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	/* -------------------------------------------- */
 
 	_sortPowers(powers) {
-		const sort = this.object.system.powerSortTypes;
+		const sort = this.object.system.powerSortTypes || "actionType";
 		for (const [keyy, group] of Object.entries(powers)) {
 			if(sort === "none"){
 				group.items.sort((a,b) => a.sort - b.sort);
@@ -450,10 +450,10 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	}
 
 	_groupPowers(power, powerGroups) {
-		if(this.object.system.powerGroupTypes === "action" || this.object.system.powerGroupTypes == undefined) {
+		if(this.object.system.powerGroupTypes === "action" || !this.object.system.powerGroupTypes) {
 			if(Object.keys(powerGroups).includes(power.system.actionType) ) return power.system.actionType;
 		}
-		if(this.object.system.powerGroupTypes === "actionMod") {
+		else if(this.object.system.powerGroupTypes === "actionMod") {
 			if(power.system.trigger){
 				return "triggered";
 			}
@@ -462,13 +462,13 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			}	
 			return "other";
 		}
-		if(this.object.system.powerGroupTypes === "type") {
+		else if(this.object.system.powerGroupTypes === "type") {
 			if(Object.keys(powerGroups).includes(power.system.powerType) )return power.system.powerType;
 		}
-		if(this.object.system.powerGroupTypes === "powerSubtype") {
+		else if(this.object.system.powerGroupTypes === "powerSubtype") {
 			if(Object.keys(powerGroups).includes(power.system.powerSubtype) )return power.system.powerSubtype;
 		}
-		if(this.object.system.powerGroupTypes === "usage") {
+		else if(this.object.system.powerGroupTypes === "usage") {
 			if(Object.keys(powerGroups).includes(power.system.useType) ) return power.system.useType;
 		}
 		return "other";
@@ -1051,7 +1051,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			system: foundry.utils.duplicate(header.dataset)
 		};
 
-		if(this.object.system.powerGroupTypes === "action" || this.object.system.powerGroupTypes == undefined) {
+		if(this.object.system.powerGroupTypes === "action" || !this.object.system.powerGroupTypes) {
 			itemData.system.actionType = type;
 		}
 		else if(this.object.system.powerGroupTypes === "type") {
