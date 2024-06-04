@@ -1,6 +1,7 @@
 # Changelog
 
 ## Version 0.4.57
+- fixed issue with detaul sorting not being working properly, which caused issues with types of item documents being created on actors.
 - added missing keyword "Shadow"
 - minor CSS changes,
 	- edit to power rich editor for effect text 
