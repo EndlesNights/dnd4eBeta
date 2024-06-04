@@ -15,29 +15,17 @@
 				<ul class="summary">
 					<li class="summary-size">
 						<select class="actor-size" name="data.details.size">
-							{{#select data.details.size}}
-							{{#each config.actorSizes as |label size|}}
-								<option value="{{size}}">{{label}}</option>
-							{{/each}}
-							{{/select}}
+							{{selectOptions config.actorSizes selected=system.details.size labelAttr="label"}}
 						</select>
 					</li>
 					<li class="summary-origin">
 						<select class="actor-size" name="data.details.origin">
-							{{#select data.details.origin}}
-							{{#each config.creatureOrigin as |label origin|}}
-								<option value="{{origin}}">{{label}}</option>
-							{{/each}}
-							{{/select}}
+							{{selectOptions config.creatureOrigin selected=system.details.origin labelAttr="label"}}
 						</select>
 					</li>
 					<li class="summary-type">
 						<select class="actor-size" name="data.details.type">
-							{{#select data.details.type}}
-							{{#each config.creatureType as |label type|}}
-								<option value="{{type}}">{{label}}</option>
-							{{/each}}
-							{{/select}}
+							{{selectOptions config.creatureRoleSecond selected=system.details.role.secondary labelAttr="label"}}
 						</select>
 					</li>
 					<li class="summary-typeother">

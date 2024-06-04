@@ -5,10 +5,10 @@
  export default class ActiveEffect4e extends ActiveEffect {
 	constructor(data, context) {
 		if(!data.flags?.dnd4e?.dots){
-			setProperty(data, "flags.dnd4e.dots", new Array);	//Empty array for storing Ongoing Damage instances
+			foundry.utils.setProperty(data, "flags.dnd4e.dots", new Array);	//Empty array for storing Ongoing Damage instances
 		}
 		if (data.id) {
-		  setProperty(data, "flags.core.statusId", data.id);
+		  foundry.utils.setProperty(data, "flags.core.statusId", data.id);
 		  delete data.id;
 		}
 		try{
@@ -170,7 +170,7 @@
 				const isActor = owner instanceof Actor;
 				return owner.createEmbeddedDocuments("ActiveEffect", [{
 					name: isActor ? game.i18n.localize("DND4E.EffectNew") : owner.name,
-					icon: isActor ? "icons/svg/aura.svg" : owner.img,
+					img: isActor ? "icons/svg/aura.svg" : owner.img,
 					origin: owner.uuid,
 					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
 					disabled: li.dataset.effectType === "inactive"
@@ -200,8 +200,7 @@
 	}
 
 	_prepareDuration(){
-		
-		if(["power", "consumable"].includes(this.parent.type)){
+		if(["power", "consumable"].includes(this.parent?.type)){
 			const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
 			if(durationType){
 				return{

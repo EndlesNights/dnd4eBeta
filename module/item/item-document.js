@@ -1,6 +1,6 @@
 import {d20Roll, damageRoll, getAttackRollBonus} from "../dice.js";
 import AbilityUseDialog from "../apps/ability-use-dialog.js";
-import AbilityTemplate from "../pixi/ability-template.js";
+import {MeasuredTemplate4e} from "../pixi/ability-template.js";
 import { Helper } from "../helper.js"
 import { DND4E } from "../config.js";
 
@@ -128,8 +128,13 @@ export default class Item4e extends Item {
 		
 	}
 
-	static getDefaultArtwork(itemData={}) {
-
+	/**
+	 * Determine default artwork based on the provided item data.
+	 * @param {ItemData} itemData  The source item data.
+	 * @returns {{img: string}}    Candidate item image.
+	 */
+	/** @inheritdoc */
+	static getDefaultArtwork(itemData) {
 		return {img: CONFIG.DND4E.defaultArtwork.Item[itemData.type]} ?? super.getDefaultArtwork(itemData);
 	}
 
@@ -566,12 +571,12 @@ export default class Item4e extends Item {
 			context.value = this.pack ? await this.contentsWeight : await this.contentsCount.toNearest(0.01);
 			context.units = game.i18n.localize("DND4E.ItemContainerCapacityItems");
 		}
-		// context.pct = Math.clamped(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
+		// context.pct = Math.clamp(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
 
 		//set ppc Percentage Base Carry-Capasity
-		context.pbc = Math.clamped(context.value / context.max * 100, 0, 99.7);
+		context.pbc = Math.clamp(context.value / context.max * 100, 0, 99.7);
 		//set ppc Percentage Encumbranced Capasity
-		context.pec = Math.clamped(context.value / (context.max) * 100 - 100, 1, 99.7);
+		context.pec = Math.clamp(context.value / (context.max) * 100 - 100, 1, 99.7);
 
 		return context;
 
@@ -677,7 +682,7 @@ export default class Item4e extends Item {
 		// Basic chat message data
 		const chatData = {
 			user: game.user.id,
-			type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+			type: CONST.CHAT_MESSAGE_STYLES.OTHER,
 			content: html,
 			speaker: {
 				actor: this.actor.id,
@@ -771,7 +776,7 @@ export default class Item4e extends Item {
 		// Basic chat message data
 		const chatData = {
 			user: game.user.id,
-			type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+			type: CONST.CHAT_MESSAGE_STYLES.OTHER,
 			content: html,
 			speaker: {
 				actor: this.actor.id,
@@ -806,6 +811,7 @@ export default class Item4e extends Item {
 		const consume = itemData.consume || {};
 		if ( !consume.type ) return true;
 		const actor = this.actor;
+		consume.log(CONFIG.DND4E.abilityConsumptionTypes[consume.type])
 		const typeLabel = CONFIG.DND4E.abilityConsumptionTypes[consume.type];
 		const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 1;
 
@@ -823,7 +829,7 @@ export default class Item4e extends Item {
 		let quantity = 0;
 		switch ( consume.type ) {
 			case "attribute":
-				consumed = getProperty(actor.system, consume.target);
+				consumed = foundry.utils.getProperty(actor.system, consume.target);
 				quantity = consumed || 0;
 				break;
 			case "ammo":
@@ -891,7 +897,7 @@ export default class Item4e extends Item {
 		}
 
 		// Update Item data
-		const current = getProperty(this, "system.uses.value") || 0;
+		const current = foundry.utils.getProperty(this, "system.uses.value") || 0;
 		if ( consume && charge.value ) {
 			if ( !charge.charged ) {
 				ui.notifications.warn(game.i18n.format("DND4E.ItemNoUses", {name: this.name}));
@@ -909,7 +915,7 @@ export default class Item4e extends Item {
 
 		// Maybe initiate template placement workflow
 		if ( this.hasAreaTarget && placeTemplate ) {
-			const template = AbilityTemplate.fromItem(this);
+			const template = MeasuredTemplate4e.fromItem(this);
 			if ( template ) template.drawPreview(event);
 			if ( this.owner && this.owner.sheet ) this.owner.sheet.minimize();
 		}
@@ -926,7 +932,7 @@ export default class Item4e extends Item {
 	 * @return {Object}               An object of chat data to render
 	 */
 	async getChatData(htmlOptions={}) {
-		const data = duplicate(this.system);
+		const data = foundry.utils.duplicate(this.system);
 		const labels = this.labels;
 
 		// if(data.chatFlavor) {
@@ -1478,7 +1484,7 @@ export default class Item4e extends Item {
 		}
 	
 		// Define Roll Data
-		const actorBonus = getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
+		const actorBonus = foundry.utils.getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
 		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
 			// parts.push("@dmg");
 			// partsCrit.push("@dmg");
@@ -1664,7 +1670,7 @@ export default class Item4e extends Item {
 		// }
 	
 		// Define Roll Data
-		const actorBonus = getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
+		const actorBonus = foundry.utils.getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
 		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
 			parts.push("@dmg");
 			rollData["dmg"] = actorBonus.damage;
@@ -1737,7 +1743,8 @@ export default class Item4e extends Item {
 		const title = `${this.name} - ${game.i18n.localize("DND4E.OtherFormula")}`;
 
 		// Invoke the roll and submit it to chat
-		const roll = await new Roll(rollData.item.formula, rollData).roll({async : true});
+		// const roll = await new Roll(rollData.item.formula, rollData).roll({async : true});
+		const roll = await new Roll(rollData.item.formula, rollData).roll();
 		roll.toMessage({ 
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: this.system.chatFlavor || title,
@@ -1808,7 +1815,7 @@ export default class Item4e extends Item {
 
 		// Maybe initiate template placement workflow
 		if ( this.hasAreaTarget && placeTemplate ) {
-			const template = AbilityTemplate.fromItem(this);
+			const template = MeasuredTemplate4e.fromItem(this);
 			if ( template ) template.drawPreview(event);
 			if ( this.isEmbedded  && this.parent.sheet ) this.parent.sheet.minimize();
 		}
@@ -1826,7 +1833,8 @@ export default class Item4e extends Item {
 		if ( !data.recharge.value ) return;
 
 		// Roll the check
-		const roll = await new Roll("1d6").roll({async: true});
+		// const roll = await new Roll("1d6").roll({async: true});
+		const roll = await new Roll("1d6").roll();
 		const success = roll.total >= parseInt(data.recharge.value);
 
 		// Display a Chat Message
@@ -1887,7 +1895,7 @@ export default class Item4e extends Item {
 
 		const flavor = this.system.chatFlavor ?  `${this.system.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize(titleKey)}  (${label} check)`;
 		// Compose the roll data
-		const rollConfig = mergeObject({
+		const rollConfig = foundry.utils.mergeObject({
 			parts: parts,
 			data: rollData,
 			title: title,
@@ -1915,9 +1923,9 @@ export default class Item4e extends Item {
 	getRollData() {
 		if ( !this.actor ) return null;
 		const rollData = this.actor.getRollData();
-		rollData.item = duplicate(this.system);
+		rollData.item = foundry.utils.duplicate(this.system);
 		rollData.item.name = this.name;
-		rollData.item.flags = duplicate(this.flags);
+		rollData.item.flags = foundry.utils.duplicate(this.flags);
 
 		// Include an ability score modifier if one exists
 		const abl = this.abilityMod;
@@ -2050,8 +2058,7 @@ export default class Item4e extends Item {
 
 		// Spell Template Creation
 		else if ( action === "placeTemplate") {
-			// const template = game.dnd4e.canvas.AbilityTemplate.fromItem(item);
-			const template = AbilityTemplate.fromItem(item);
+			const template = MeasuredTemplate4e.fromItem(item);
 			if ( template ) template.drawPreview(event);
 		}
 

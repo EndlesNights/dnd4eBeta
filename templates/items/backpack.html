@@ -149,11 +149,7 @@
 			<div class="form-group">
 				<label>{{localize 'DND4E.ItemContainerCapacityType'}}</label>
 				<select name="system.capacity.type">
-					{{#select system.capacity.type}}
-						{{#each config.itemCapacityTypes}}
-							<option value="{{@key}}">{{localize this}}</option>
-						{{/each}}
-					{{/select}}
+					{{selectOptions config.itemCapacityTypes selected=system.capacity.type labelAttr="label"}}
 				</select>
 			</div>
 

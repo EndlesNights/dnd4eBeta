@@ -19,7 +19,9 @@
 
 			<ul class="summary flexrow">
 				<li>
-					{{lookup config.consumableTypes system.consumableType }}
+					<label>
+						{{lookup (lookup config.consumableTypes system.consumableType) "label"}}
+					</label>
 				</li>
 				<li>
 					<input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4E.Level' }}"/>
@@ -57,11 +59,7 @@
 			<div class="form-group">
 				<label>{{ localize "DND4E.ItemConsumableType" }}</label>
 				<select name="system.consumableType">
-					{{#select system.consumableType}}
-					{{#each config.consumableTypes as |name type|}}
-					<option value="{{type}}">{{name}}</option>
-					{{/each}}
-					{{/select}}
+					{{selectOptions config.consumableTypes selected=system.consumableType labelAttr="label"}}
 				</select>
 			</div>
 
@@ -86,8 +84,6 @@
 				</label>
 			</div>
 
-			{{!-- Item Activation Template --}}
-			<!-- {{> "systems/dnd4e/templates/items/parts/item-activation.html"}} -->
 			{{!-- Limited Uses --}}
 			<div class="form-group uses-per">
 				<label>{{ localize "DND4E.LimitedUses" }}</label>
@@ -96,12 +92,7 @@
 					<span class="sep"> {{ localize "DND4E.of" }} </span>
 					<input type="text" name="system.uses.max" value="{{system.uses.max}}"/>
 					<select name="system.uses.per">
-						{{#select system.uses.per}}
-						<option value=""></option>
-						{{#each config.limitedUsePeriods as |name key|}}
-						<option value="{{key}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
+						{{selectOptions config.limitedUsePeriods selected=system.uses.per labelAttr="label"}}
 					</select>
 				</div>
 			</div>
@@ -111,22 +102,14 @@
 				<label>{{ localize "DND4E.ConsumeTitle" }}</label>
 				<div class="form-fields consumption">
 					<select class="consume-type" name="system.consume.type">
-						{{#select system.consume.type}}
-						<option value=""></option>
-						{{#each config.abilityConsumptionTypes as |name key|}}
-						<option value="{{key}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
+						{{selectOptions config.abilityConsumptionTypes selected=system.consume.type labelAttr="label"}}
 					</select>
-					<select name="system.consume.target">
-						{{#select system.consume.target}}
-						<option value=""></option>
-						{{#each abilityConsumptionTargets as |name key|}}
-						<option value="{{key}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
-					</select>
-					<input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number"/>
+					{{#if system.consume.type}}
+						<select name="system.consume.target">
+							{{selectOptions abilityConsumptionTargets selected=system.consume.target}}
+						</select>
+						<input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number"/>
+					{{/if}}
 				</div>
 			</div>
 
@@ -150,11 +133,7 @@
 			<div class="form-group select">
 				<label>{{ localize "DND4E.ItemActionType" }}</label>
 				<select name="system.actionType">
-					{{#select system.actionType}}
-					{{#each config.abilityActivationTypes as |name type|}}
-					<option value="{{type}}">{{name}}</option>
-					{{/each}}
-					{{/select}}
+					{{selectOptions config.abilityActivationTypes selected=system.actionType labelAttr="label"}}
 				</select>
 			</div>
 
@@ -169,11 +148,7 @@
 				<label>{{ localize "DND4E.Range" }}</label>
 				<div class="form-fields item-range">
 					<select name="system.rangeType">
-						{{#select system.rangeType}}
-						{{#each config.rangeTypeNoWeapon as |name type|}}
-						<option value="{{type}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
+						{{selectOptions config.rangeTypeNoWeapon selected=system.rangeType labelAttr="label"}}
 					</select>
 					{{#if system.isArea}}
 					<span>{{ localize "DND4E.AreaOf" }}</span>
@@ -192,12 +167,7 @@
 				<div class="form-fields">
 					<span>{{ localize "DND4E.VS" }}</span>
 					<select name="system.attack.def">
-						{{#select system.attack.def}}
-						<option value=""></option>
-						{{#each config.def as |name key|}}
-						<option value="{{key}}">{{name}}</option>
-						{{/each}}
-						{{/select}}
+						{{selectOptions config.defensives selected=system.attack.def labelAttr="abbreviation"}}
 					</select>
 				</div>
 			</div>
@@ -287,7 +257,7 @@
 		</div>
 		
 		{{!-- Item Granter Tab --}}
-		{{> "systems/dnd4e/templates/items/parts/item-granter.html"}}
+		<!-- {{> "systems/dnd4e/templates/items/parts/item-granter.html"}} -->
 		
 		{{!-- Macros Tab --}}
 <!-- DO NOT INDENT ME:  All of my indentation will be transferred to the macro text every time it is opened, causing each line of the macro to get steadily more tabs in front of it and march across the screen -->

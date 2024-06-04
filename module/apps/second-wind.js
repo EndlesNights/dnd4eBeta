@@ -4,7 +4,7 @@ export class SecondWindDialog extends DocumentSheet4e {
 
 	static get defaultOptions() {
 		const options = super.defaultOptions;
-		return mergeObject(options, {
+		return foundry.utils.mergeObject(options, {
 			id: "second-wind",
 			classes: ["dnd4e", "second-wind"],
 			template: "systems/dnd4e/templates/apps/second-wind.html",
