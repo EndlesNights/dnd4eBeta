@@ -1022,24 +1022,19 @@ export class Helper {
 			powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.def[chatData.attack.def]}</p>`;
 		}
 
-		let highlight = true;
 		if (chatData.hit.detail){
 			powerDetail += `<p class="hit alt-highlight"><strong>${game.i18n.localize("DND4E.Hit")}:</strong> ${chatData.hit.detail}</p>`;
-			highlight = !highlight;
 		}
 
 		if (chatData.miss.detail){
 			powerDetail += `<p class="miss alt-highlight"><strong>${game.i18n.localize("DND4E.Miss")}:</strong> ${chatData.miss.detail}</p>`;
-			highlight = !highlight;
 		}
 
 		if(chatData.postEffect && chatData.effect.detail) {
 			powerDetail += `<p class="effect alt-highlight"><strong>${game.i18n.localize("DND4E.Effect")}:</strong> ${this.paragraphTrim(chatData.effect.detail)}</p>`;
-			highlight = !highlight;
 		}
 		if(chatData.postSpecial && chatData.special) {
 			powerDetail += `<p class="special alt-highlight"><strong>${game.i18n.localize("DND4E.Special")}:</strong> ${chatData.special}</p>`;
-			highlight = !highlight;
 			for (let [i, entry] of Object.entries(chatData.specialAdd.parts)){
 				powerDetail += `<p>${entry}</p>`;
 			}
@@ -1052,15 +1047,18 @@ export class Helper {
 		if(actorData){
 			powerDetail = this.commonReplace(powerDetail, actorData);
 		}
-
 		return powerDetail;
 	}
 
 	static paragraphTrim(string){
 		// Check if the string starts with <p>
-		if (string.startsWith('<p>')) {
+		if(string.startsWith('<p>')) {
 			// Remove the first occurrence of <p> and </p>
-			return string.replace(/<p>(.*?)<\/p>/, '$1');
+			string = string.replace(/<p>(.*?)<\/p>/, '$1');
+		}
+		if(string.endsWith('</p>')){
+			// Removes the last four characters if they are '</p>'
+			string = string.slice(0, -4); 
 		}
 		return string;
 	}
