@@ -26,6 +26,8 @@ import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
+// import { DifficultTerrainRegionBehaviorType } from "./regionBehavoirs/difficult-terrain.js";
+
 import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs, performPreLocalization} from "./helper.js";
 
 // Import Helpers
@@ -85,6 +87,8 @@ Hooks.once("init", async function() {
 	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
 	
 	CONFIG.ui.items = ItemDirectory4e;
+
+	// foundry.data.regionBehaviors.DifficultTerrainRegionBehaviorType = DifficultTerrainRegionBehaviorType;
 
 	registerSystemSettings();
 
