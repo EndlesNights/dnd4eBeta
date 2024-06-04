@@ -1,4 +1,3 @@
-class DifficultTerrainRegionBehaviorType extends RegionBehaviorType {
-	
+export class DifficultTerrainRegionBehaviorType extends AdjustDarknessLevelRegionBehaviorType {
 
 }
