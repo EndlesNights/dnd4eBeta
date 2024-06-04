@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.4.57
+- minor CSS changes,
+	- edit to power rich editor for effect text 
+	- change to power card highlighting, every element now contains the css class `alt-highlight` which will alternate highlighting
+	- minor change to how effect html rich text is combined into the power cards <p class="effect"> element, with the first paragraph <p> element being merged together as to not create unintended spaces and highlighting  
+
 ## Version 0.4.56
 - added error checking to ActorSheet4e#_onConvertCurrency incase of undefined value
 
