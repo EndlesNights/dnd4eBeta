@@ -19,9 +19,13 @@ export class Actor4e extends Actor {
 			}
 		}
 
+		// set default to sorting
 		if(data.type){
-			if(data?.system?.powerGroupTypes == undefined){
-				this.system.powerGroupTypes = `usage`;
+			if(!data?.system?.powerGroupTypes){
+				data.system.powerGroupTypes = `usage`;
+			}
+			if(!data?.system?.powerSortTypes){
+				data.system.powerSortTypes = `actionType`;
 			}
 		}
 	}
