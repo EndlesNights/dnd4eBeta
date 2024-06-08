@@ -716,13 +716,6 @@ export class Actor4e extends Actor {
 			}
 			def.bonusValue = defBonusValue;
 			
-			//Using inherent enhancements?
-			let enhFloor = 0;
-			if(game.settings.get("dnd4e", "inhEnh")) {
-				//console.log(`${id}: Checked inherent defence enhancement of +${Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against item value of +${def.enhance}`);
-				//If our enhancement is lower than the inherent level, adjust it upward
-				enhFloor = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 3);
-			}
 			
 			//Get Def stats from items
 			for ( let i of this.items) {
@@ -740,9 +733,18 @@ export class Actor4e extends Actor {
 					}
 				}
 				else if((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
-					def.enhance = Math.max(def.enhance||0,enhFloor,i.system.armour.enhance);
+					//console.log(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
+					def.enhance = Math.max(def.enhance,i.system.armour.enhance);
 				}
 				def.armour += i.system.armour[id];
+			}
+			
+			//Using inherent enhancements?
+			if(game.settings.get("dnd4e", "inhEnh")) {
+				//If our enhancement is lower than the inherent level, adjust it upward
+				const enhFloor = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 3);
+				//console.log(`${id}: Checked inherent defence enhancement of +${Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against existing value of +${def.enhance}`);
+				def.enhance = Math.max(def.enhance,enhFloor);
 			}
 
 			let modBonus = def.ability != "" ? data.abilities[def.ability].mod : 0;
