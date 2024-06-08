@@ -2024,7 +2024,7 @@ export class Actor4e extends Actor {
 		if(autoDoTs != "none"){
 			let applicableDoTs = {};
 			
-			for(const e of this.effects){
+			for(const e of this.getActiveEffects()){
 				if(e.flags.dnd4e?.dots.length && e.disabled === false){
 					for (let dot of e.flags.dnd4e.dots){
 						
