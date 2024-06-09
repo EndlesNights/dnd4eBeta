@@ -123,6 +123,11 @@
 		"distance": 1,
 		"units": "sq"
 	},
+	"documentTypes": {
+		"RegionBehavior" : {
+		  "difficultTerrain" :{}
+		}
+	  },
 	"primaryTokenAttribute": "attributes.hp",
 	"secondaryTokenAttribute": "attributes.temphp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",

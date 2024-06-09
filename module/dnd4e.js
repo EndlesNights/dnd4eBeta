@@ -26,7 +26,7 @@ import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
-// import { DifficultTerrainRegionBehaviorType } from "./regionBehavoirs/difficult-terrain.js";
+import { RegionBehavior4e, DifficultTerrainRegionBehaviorType } from "./regionBehavoirs/difficult-terrain.js";
 
 import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs, performPreLocalization} from "./helper.js";
 
@@ -89,6 +89,10 @@ Hooks.once("init", async function() {
 	CONFIG.ui.items = ItemDirectory4e;
 
 	// foundry.data.regionBehaviors.DifficultTerrainRegionBehaviorType = DifficultTerrainRegionBehaviorType;
+	CONFIG.RegionBehavior.documentClass = RegionBehavior4e
+	CONFIG.RegionBehavior.dataModels.difficultTerrain = DifficultTerrainRegionBehaviorType;
+	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";//"DND4E.difficultTerrain.Label";
+	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "fa-regular fa-triangle";
 
 	registerSystemSettings();
 
