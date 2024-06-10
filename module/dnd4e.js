@@ -21,6 +21,7 @@ import { _getInitiativeFormula } from "./combat.js";
 
 // Import Documents
 import { MeasuredTemplate4e, TemplateLayer4e} from "./pixi/ability-template.js";
+import { Ruler4e } from "./pixi/ruler.js";
 import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
@@ -93,6 +94,8 @@ Hooks.once("init", async function() {
 	CONFIG.RegionBehavior.dataModels.difficultTerrain = DifficultTerrainRegionBehaviorType;
 	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";//"DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "fa-regular fa-triangle";
+
+
 
 	registerSystemSettings();
 
@@ -319,6 +322,13 @@ function libWrapperInit() {
 		'dnd4e',
 		'TemplateLayer.prototype._onDragLeftMove',
 		TemplateLayer4e._onDragLeftMove
+	)
+
+	//custom Ruler for difficult terrain
+	libWrapper.register(
+		'dnd4e',
+		'Ruler.prototype._computeDistance',
+		Ruler4e._computeDistance
 	)
 
 

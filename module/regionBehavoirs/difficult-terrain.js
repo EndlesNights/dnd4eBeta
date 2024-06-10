@@ -8,10 +8,10 @@ export class DifficultTerrainRegionBehaviorType extends foundry.data.regionBehav
 	static defineSchema() {
 		return {
 			// events: this._createEventsField(),
-			source: new foundry.data.fields.StringField({
+			terrainMultiplier: new foundry.data.fields.NumberField({
 				// async: true, gmOnly: true,
-				label: "SomeCustom Value",
-				hint: "Hint for Custom Value"
+				label: "Terrain Cost",
+				hint: "How many extra squares of movement cost. "
 			})
 		};
 	}
