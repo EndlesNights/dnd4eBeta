@@ -46,21 +46,26 @@ export class Ruler4e extends Ruler {
 		const gridSize = canvas.scene.grid.size;
 		const gridOffset = canvas.scene.grid.size/2;
 
-		let terrainCost = path.length;
+		let terrainCost = 0;
 		for(const grid of path){
-			let greatestMultiplier = 0
+			let greatestMultiplier;
 
 			for(const region of canvas.regions.documentCollection){
 				// if(region.document.behaviors.filter((b) => b.type == "difficultTerrain"))
 				if(!region.object.polygonTree.testPoint({x:grid.j*gridSize + gridOffset,y:grid.i*gridSize + gridOffset})) continue;
 				region.behaviors.forEach(behavior => {
-					if (behavior.system.terrainMultiplier > greatestMultiplier) {
+					console.log(behavior.system.terrainMultiplier >= (greatestMultiplier ?? 0))
+					if (behavior.system.terrainMultiplier >= (greatestMultiplier ?? 0)) {
 						greatestMultiplier = behavior.system.terrainMultiplier;
 					}
 				});		
 
 			}
-			terrainCost += greatestMultiplier;
+			if(greatestMultiplier === undefined){
+				terrainCost++;
+			} else {
+				terrainCost += 1 * greatestMultiplier; 
+			}
 		}
 
 		return terrainCost;

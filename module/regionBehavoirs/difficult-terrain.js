@@ -10,8 +10,8 @@ export class DifficultTerrainRegionBehaviorType extends foundry.data.regionBehav
 			// events: this._createEventsField(),
 			terrainMultiplier: new foundry.data.fields.NumberField({
 				// async: true, gmOnly: true,
-				label: "Terrain Cost",
-				hint: "How many extra squares of movement cost. "
+				label: "Terrain Multiplier",
+				hint: "Determins the number of square of movment it takes to move through each grid square of terrain."
 			})
 		};
 	}
