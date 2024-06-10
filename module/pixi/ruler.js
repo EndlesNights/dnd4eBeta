@@ -54,7 +54,6 @@ export class Ruler4e extends Ruler {
 				// if(region.document.behaviors.filter((b) => b.type == "difficultTerrain"))
 				if(!region.object.polygonTree.testPoint({x:grid.j*gridSize + gridOffset,y:grid.i*gridSize + gridOffset})) continue;
 				region.behaviors.forEach(behavior => {
-					console.log(behavior.system.terrainMultiplier >= (greatestMultiplier ?? 0))
 					if (behavior.system.terrainMultiplier >= (greatestMultiplier ?? 0)) {
 						greatestMultiplier = behavior.system.terrainMultiplier;
 					}
