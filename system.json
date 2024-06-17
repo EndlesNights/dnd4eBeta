@@ -125,7 +125,7 @@
 	"primaryTokenAttribute": "attributes.hp",
 	"secondaryTokenAttribute": "attributes.temphp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
-	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
+	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/v11-stable/system.json",
 	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.4.58.zip",
 	"flags": {
 		"needsMigrationVersion": "0.4.54",
