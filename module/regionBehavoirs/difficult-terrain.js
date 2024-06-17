@@ -10,14 +10,28 @@ export class DifficultTerrainRegionBehaviorType extends foundry.data.regionBehav
 			// events: this._createEventsField(),
 			terrainMultiplier: new foundry.data.fields.NumberField({
 				// async: true, gmOnly: true,
-				label: "Terrain Multiplier",
-				hint: "Determins the number of square of movment it takes to move through each grid square of terrain."
+				label: game.i18n.localize("DND4E.TerrainMultiplierLabel"),
+				hint: game.i18n.localize("DND4E.TerrainMultiplierHint")
+			}),
+			terrianTexture : new foundry.data.fields.FilePathField({
+				categories: ["IMAGE"],
+				label: game.i18n.localize("DND4E.TerrainMultiplierLabel"),
+				hint: game.i18n.localize("DND4E.TerrainMultiplierHint")
 			})
 		};
 	}
 }
 
-export class DifficultTerrainShader4e extends RegionShader {
+export class Region4e extends Region {
+	static async _draw(wrapped, options){
+		wrapped(options);
+		this.hasDifficultTerrainBehavoir = this.document.behaviors.some(behavior => behavior.type === "difficultTerrain");
+		this.drawTerrianTint = CONFIG.DND4E.difficultTerrain.drawTerrianTint; // set from the Terrian Sheet
+		this.terrianTextureSRC = this.document.behaviors.find(behavior => behavior.system.terrianTexture)?.system.terrianTexture;		
+	}
+}
+
+export class DifficultTerrainShader4e extends HighlightRegionShader {
 
 	/** @override */
 	static vertexShader = `
@@ -30,10 +44,13 @@ export class DifficultTerrainShader4e extends RegionShader {
 		uniform vec2 canvasDimensions;
 		uniform vec4 sceneDimensions;
 		uniform vec2 screenDimensions;
+		uniform mediump float hatchThickness;
 
 		varying vec2 vCanvasCoord; // normalized canvas coordinates
 		varying vec2 vSceneCoord; // normalized scene coordinates
 		varying vec2 vScreenCoord; // normalized screen coordinates
+		varying float vHatchOffset;
+
 
 		void main() {
 			vec2 pixelCoord = aVertexPosition;
@@ -42,6 +59,7 @@ export class DifficultTerrainShader4e extends RegionShader {
 			vec3 tPos = translationMatrix * vec3(aVertexPosition, 1.0);
 			vScreenCoord = tPos.xy / screenDimensions;
 			gl_Position = vec4((projectionMatrix * tPos).xy, 0.0, 1.0);
+			vHatchOffset = (pixelCoord.x + pixelCoord.y) / (1.4142135623730951 * 2.0 * hatchThickness);
 		}
 	`;
 
@@ -49,7 +67,13 @@ export class DifficultTerrainShader4e extends RegionShader {
 	static fragmentShader = `
 		precision ${PIXI.settings.PRECISION_FRAGMENT} float;
 
+		varying float vHatchOffset;
+
 		uniform vec4 tintAlpha;
+		uniform float resolution;
+		uniform bool hatchEnabled;
+		uniform mediump float hatchThickness;
+
 		uniform sampler2D uTexture;
 		uniform vec2 canvasDimensions;
 		uniform float canvasX;
@@ -58,14 +82,27 @@ export class DifficultTerrainShader4e extends RegionShader {
 		uniform float alphaOffset;
 
 		uniform bool drawTerrianTint;
+		uniform bool hasDifficultTerrainBehavoir;
+
 
 		varying vec2 vCanvasCoord; // normalized canvas coordinates
 
 
 		void main() {
+
+			if (!hasDifficultTerrainBehavoir){
+				gl_FragColor = tintAlpha;
+				if ( !hatchEnabled ) return;
+				float x = abs(vHatchOffset - floor(vHatchOffset + 0.5)) * 2.0;
+				float s = hatchThickness * resolution;
+				float y0 = clamp((x + 0.5) * s + 0.5, 0.0, 1.0);
+				float y1 = clamp((x - 0.5) * s + 0.5, 0.0, 1.0);
+				gl_FragColor *= mix(0.3333, 1.0, y0 - y1);
+				return;
+			}
+
 			vec2 textureCoord = fract(vCanvasCoord * vec2(canvasX, canvasY) / canvasGrid);
 			
-
 			vec4 textureColor = texture2D(uTexture, textureCoord);
 			textureColor.a *= alphaOffset;
 			
@@ -88,6 +125,7 @@ export class DifficultTerrainShader4e extends RegionShader {
 		canvasY: 1.0,
 		alphaOffset: 1.0,
 		drawTerrianTint: true,
+		hasDifficultTerrainBehavoir: false,
 		sceneDimensions: [0, 0, 1, 1],
 		screenDimensions: [1, 1],
 		tintAlpha: [1, 1, 1, 1],
@@ -103,14 +141,16 @@ export class DifficultTerrainShader4e extends RegionShader {
 		const dimensions = canvas.dimensions;
 		uniforms.canvasDimensions[0] = dimensions.width;
 		uniforms.canvasDimensions[1] = dimensions.height;
+		
 		uniforms.canvasX = canvas.dimensions.width,
 		uniforms.canvasY = canvas.dimensions.height,
 		uniforms.canvasGrid = canvas.grid.size,
+		uniforms.drawTerrianTint = mesh.region.drawTerrianTint,
+		uniforms.hasDifficultTerrainBehavoir = mesh.region.hasDifficultTerrainBehavoir,
+
 		uniforms.sceneDimensions = dimensions.sceneRect;
 		uniforms.screenDimensions = canvas.screenDimensions;
-
-		uniforms.uTexture = PIXI.Texture.from(CONFIG.DND4E.difficultTerrain.img);
+		uniforms.uTexture = PIXI.Texture.from(mesh.region.terrianTextureSRC || CONFIG.DND4E.difficultTerrain.img);
 		uniforms.alphaOffset = CONFIG.DND4E.difficultTerrain.alpha;
-
 	}
 }

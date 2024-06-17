@@ -15,7 +15,8 @@ __________________________________________________________`;
 
 DND4E.difficultTerrain = {
 	img: "systems/dnd4e/icons/ui/tri.webp",
-	alpha: 1
+	alpha: 1,
+	drawTerrianTint: false
 }
 
 /**

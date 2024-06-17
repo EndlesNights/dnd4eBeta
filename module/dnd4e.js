@@ -27,7 +27,7 @@ import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
-import { RegionBehavior4e, DifficultTerrainRegionBehaviorType, DifficultTerrainShader4e } from "./regionBehavoirs/difficult-terrain.js";
+import { DifficultTerrainRegionBehaviorType, DifficultTerrainShader4e, Region4e } from "./regionBehavoirs/difficult-terrain.js";
 
 import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs, performPreLocalization} from "./helper.js";
 
@@ -90,7 +90,7 @@ Hooks.once("init", async function() {
 	CONFIG.ui.items = ItemDirectory4e;
 
 	// foundry.data.regionBehaviors.DifficultTerrainRegionBehaviorType = DifficultTerrainRegionBehaviorType;
-	CONFIG.RegionBehavior.documentClass = RegionBehavior4e
+	// CONFIG.RegionBehavior.documentClass = RegionBehavior4e
 	CONFIG.RegionBehavior.dataModels.difficultTerrain = DifficultTerrainRegionBehaviorType;
 	HighlightRegionShader = DifficultTerrainShader4e;
 
@@ -333,6 +333,11 @@ function libWrapperInit() {
 		Ruler4e._computeDistance
 	)
 
+	libWrapper.register(
+		'dnd4e',
+		'Region.prototype._draw',
+		Region4e._draw
+	)
 
 	libWrapper.register(
 		'dnd4e',
