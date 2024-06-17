@@ -2,6 +2,14 @@
 /*  Global Basics
 /* ----------------------------------------- */
 
+.dnd4e-blast-svg {
+	content: url(../icons/ui/blast.svg);
+}
+
+.dnd4e-burst-svg {
+	content: url(../icons/ui/burst.svg);
+}
+
 .flexrow{
 	display:flex;
 	flex-direction:row;
@@ -2135,6 +2143,9 @@ font-size:12px;
 	border-right:var(--border-engraved);
 	line-height:34px;
 }
+.dnd4e.sheet .item-sheet .sheet-header .summary li label {
+	padding-left: 5px;
+}
 .dnd4e.sheet .item-sheet .sheet-header .summary li:last-child{
 	border-right:none;
 }
@@ -2280,7 +2291,7 @@ font-size:12px;
 	opacity:0.75;
 }
 .dnd4e.sheet .item-sheet .form-group .consumption select.consume-type{
-	flex:0.65;
+	flex:1;
 }
 .dnd4e.sheet .item-sheet .form-group .consumption select.consume-target{
 	width:80%;
@@ -2435,6 +2446,7 @@ font-size:12px;
 	height:26px;
 	line-height:30px;
 	text-align:center;
+	color: #ccc;
 }
 .status-effect-title.active{
 	visibility:visible;

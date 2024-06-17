@@ -102,9 +102,12 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 // Get the bonus for an attack roll 
 export function getAttackRollBonus({parts=[], partsExpressionReplacements = [], data={}, options= {}}){
 	const roll = new MultiAttackRoll(parts.filterJoin(" + "), data, {});
-	roll.addNewRoll(parts, partsExpressionReplacements, data, options); // Make the roll. Parts must not contain the d20 expression.
-	const bonus = roll.rollArray[0]._total;
-	return bonus;
+	if(roll.isDeterministic){
+		roll.evaluateSync();
+		return roll.total
+	}
+
+	return roll.formula;
 }
 
 async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options}) {
@@ -187,7 +190,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	}
 
 	// time to actually do the roll
-	let roll = new MultiAttackRoll(parts.filterJoin(" + "), data, {}); // initial roll data is never going to be used, but makes foundry happy
+	let roll = await new MultiAttackRoll(parts.filterJoin(" + "), data, {}); // initial roll data is never going to be used, but makes foundry happy
 	const targets = Array.from(game.user.targets);
 	const targetData = {
 		targNameArray: [],
@@ -199,16 +202,17 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	const critStateArray = []
 
 	for (let rollExpressionIdx = 0; rollExpressionIdx < allRollsParts.length; rollExpressionIdx++) {
-		const rollExpression = allRollsParts[rollExpressionIdx]
+		const rollExpression = allRollsParts[rollExpressionIdx];
 		let subroll
 		try {
-			subroll = roll.addNewRoll(rollExpression, partsExpressionReplacements, data, options)
+			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, options);
 		}
 		catch(err) {
 			// let the user know what is going on if the roll doesn't evaluate.
-			ui.notifications.error("Error trying to roll: " + rollExpression.join("+") + ":" + err)
-			throw err
+			ui.notifications.error("Error trying to roll: " + rollExpression.join("+") + ":" + err);
+			throw err;
 		}
+
 		if (isAttackRoll && targets.length > rollExpressionIdx) {
 			let targName = targets[rollExpressionIdx].name;
 			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[options.attackedDef]?.value;
@@ -265,7 +269,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	// Convert the roll to a chat message and return the roll
 	rollMode = form ? form.rollMode.value : rollMode;
 
-	roll.toMessage({
+	await roll.toMessage({
 		speaker: speaker,
 		flavor: flavor,
 	}, { rollMode });

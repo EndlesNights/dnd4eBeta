@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 768 768"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="blast.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="16.388212"
+     inkscape:cx="22.607713"
+     inkscape:cy="19.251643"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" /><defs
+     id="defs1" /><g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"><path
+       style="fill:#c9c7b8;stroke:#c9c7b8;stroke-width:7.04883;fill-opacity:1;stroke-opacity:1"
+       d="M 447.52535,672.63477 263.97876,489.08793 300.34637,452.72028 598.12142,750.49573 319.62852,699.48344 Z"
+       id="path3-6"
+       inkscape:label="pathBottom" /><path
+       style="fill:#c9c7b8;fill-opacity:1;stroke:#c9c7b8;stroke-width:7.04882;paint-order:normal;stroke-opacity:1"
+       d="m 355.87815,366 v 36 h 168.76142 v 67.78761 L 679.15349,385.81217 524.63957,298.6904 524.16073,366 Z"
+       id="path2"
+       sodipodi:nodetypes="cccccccc"
+       inkscape:label="pathCenter" /><path
+       style="fill:#c9c7b8;stroke:#c9c7b8;stroke-width:7.04882;fill-opacity:1;stroke-opacity:1"
+       d="M 447.52576,95.365105 263.97919,278.91168 300.3468,315.27929 598.12181,17.50426 319.62895,68.516538 Z"
+       id="path3"
+       inkscape:label="pathTop" /><ellipse
+       style="fill:#c9c7b8;stroke:#c9c7b8;stroke-width:6.44303;fill-opacity:1;stroke-opacity:1"
+       id="path1"
+       cx="209"
+       cy="384"
+       rx="84.778481"
+       ry="84.778488" /></g></svg>

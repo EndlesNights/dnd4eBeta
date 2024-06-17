@@ -20,15 +20,19 @@
 
 		<ol class="properties-list">
 			{{#each itemProperties}}
-			<li>{{this}}</li>
+				{{#if this.label}}
+					<li>{{this.label}}</li>
+				{{else}}
+					<li>{{this}}</li>
+				{{/if}}
 			{{/each}}
 		</ol>
 	</div>
 
 	<section class="description">
-		{{#if user.isGM}}
+		{{#if userInfo.isGM}}
 		<section class="editor-container gm-notes{{#if system.description.gmNotes}} has-content{{/if}}">
-			{{editor editor-gm descriptionHTMLGM target="system.description.gm" button=true owner=owner editable=editable rollData=rollData  engine="prosemirror"}}
+			{{editor descriptionHTMLGM target="system.description.gm" button=true owner=owner editable=editable rollData=rollData  engine="prosemirror"}}
 		</section>
 		{{/if}}
 

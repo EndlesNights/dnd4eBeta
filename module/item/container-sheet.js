@@ -17,7 +17,7 @@ export default class ContainerItemSheet extends ItemSheet4e {
 
 	/** @override */
 	static get defaultOptions() {
-		return mergeObject(super.defaultOptions, {
+		return foundry.utils.mergeObject(super.defaultOptions, {
 			width: 585,
 			height: 420,
 			classes: ["dnd4e", "sheet", "item"],

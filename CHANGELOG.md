@@ -1,11 +1,15 @@
 # Changelog
 
+## Version 0.5.0
+- working on that v12 compatibility
+
 ## Version 0.4.58
 - Fixed DoTs from transferred effects [PR 373](https://github.com/EndlesNights/dnd4eBeta/pull/373) from [wigmeister2000](https://github.com/wigmeister2000)
 - Another fix of Inherent Enhancements [PR 372](https://github.com/EndlesNights/dnd4eBeta/pull/372) from [FoxLee](https://github.com/FoxLee)
 
-## Version 0.4.57
-- fixed issue with detaul sorting not being working properly, which caused issues with types of item documents being created on actors.
+- ## Version 0.4.57
+- fixed issue with default sorting not being working properly, which caused issues with types of item documents being created on actors.
+
 - added missing keyword "Shadow"
 - minor CSS changes,
 	- edit to power rich editor for effect text 
