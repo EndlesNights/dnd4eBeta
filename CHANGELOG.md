@@ -1,7 +1,10 @@
 # Changelog
 
 ## Version 0.5.0
-- working on that v12 compatibility
+- compadability for Foundry v12
+- added support for Diffualt Terrian regionBehaviorType, which can be used to display areas of Diffutl Terrian to players, as well as inflince the distnace displayed by the ruler tools.
+- Added Blast button to template Measurement Controls pannel
+- Added custom icons for Bust and Blast to template Measurement Controls pannel
 
 ## Version 0.4.58
 - Fixed DoTs from transferred effects [PR 373](https://github.com/EndlesNights/dnd4eBeta/pull/373) from [wigmeister2000](https://github.com/wigmeister2000)
