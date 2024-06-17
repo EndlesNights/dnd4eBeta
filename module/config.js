@@ -13,6 +13,10 @@ ______      ______   ___
 |___/ \\___/\\/___/     |_/\\___\\
 __________________________________________________________`;
 
+DND4E.difficultTerrain = {
+	img: "systems/dnd4e/icons/ui/tri.webp",
+	alpha: 1
+}
 
 /**
  * The set of Ability Scores used within the system
