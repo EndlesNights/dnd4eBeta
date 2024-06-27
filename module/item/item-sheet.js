@@ -86,7 +86,7 @@ export default class ItemSheet4e extends ItemSheet {
 				data.isArmour = true;
 				data.hasEnhance = true;
 				data.hasBaseProps = true;
-				data.armourBaseTypes = CONFIG.DND4E[itemData.system.armour.subType];
+				data.armourBaseTypes = CONFIG.DND4E[itemData.system.armour.subType] || {"": game.i18n.localize("DND4E.None")};
 				data.isArmourBaseTypeCustom = (itemData.system.armourBaseType === "custom");
 			}
 			else if(itemData.system.armour.type === "arms" && CONFIG.DND4E.profArmor[itemData.system.armour.subType]){
