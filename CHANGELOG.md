@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.1
+- fixed handlebars issue when opening equipment, (added a null type check)
+- fixed an issue where item types where being deleted when created on actors 
+
 ## Version 0.5.0
 - comparability for Foundry v12
 - added support for Difficult Terrain regionBehaviorType, which can be used to display areas of Difficult Terrain to players, as well as influence the distance displayed by the ruler tools.
