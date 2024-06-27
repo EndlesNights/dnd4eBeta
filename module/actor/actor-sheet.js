@@ -1031,7 +1031,6 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			type: type,
 			system: foundry.utils.duplicate(header.dataset)
 		};
-		delete itemData.data["type"];
 		console.log(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
