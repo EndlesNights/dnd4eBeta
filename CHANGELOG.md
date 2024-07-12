@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.5.2
+- fix issue where grid distance was not being used properly by ruler
+
 ## Version 0.5.1
 - fixed handlebars issue when opening equipment, (added a null type check)
 - fixed an issue where item types where being deleted when created on actors 
