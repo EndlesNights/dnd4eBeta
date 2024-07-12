@@ -16,23 +16,14 @@ export class Ruler4e extends Ruler {
 			const segment = this.segments[i];
 			const distance = measurements[i].distance;
 			const cost = segment.history ? this.history[i + 1].cost : measurements[i].cost;
-			// this.totalDistance += distance;
-			// this.totalCost += cost;
-			// segment.distance = distance;
-			// segment.cost = cost;
-			// segment.cumulativeDistance = this.totalDistance;
-			// segment.cumulativeCost = this.totalCost;
 
-			let terrainCostCalc = Ruler4e._computeMoveCostSegment4e(segment);
-			
+			const terrainCostCalc = Ruler4e._computeMoveCostSegment4e(segment);			
 			this.totalDistance += terrainCostCalc;
 			this.totalCost += cost;
 			segment.distance = terrainCostCalc;
 			segment.cost = cost;
 			segment.cumulativeDistance = this.totalDistance;
 			segment.cumulativeCost = this.totalCost;
-
-			
 		}
 	}
 
@@ -67,7 +58,7 @@ export class Ruler4e extends Ruler {
 			}
 		}
 
-		return terrainCost;
+		return terrainCost * (canvas.scene.grid?.distance || 1);
 	}
 }
 
