@@ -170,20 +170,10 @@
 		<label>{{ localize "DND4E.ConsumeTitle" }}</label>
 		<div class="form-fields consumption">
 			<select name="system.consume.type" class="consume-type">
-				{{#select system.consume.type}}
-				<option value=""></option>
-				{{#each config.abilityConsumptionTypes as |name key|}}
-				<option value="{{key}}">{{name}}</option>
-				{{/each}}
-				{{/select}}
+				{{selectOptions config.abilityConsumptionTypes selected=system.consume.type labelAttr="label"}}
 			</select>
 			<select name="system.consume.target" class="consume-target">
-				{{#select system.consume.target}}
-				<option value=""></option>
-				{{#each abilityConsumptionTargets as |name key|}}
-				<option value="{{key}}">{{name}}</option>
-				{{/each}}
-				{{/select}}
+				{{selectOptions abilityConsumptionTargets selected=system.consume.target}}
 			</select>
 			<input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number"/>
 		</div>

@@ -376,18 +376,20 @@ export default class ItemSheet4e extends ItemSheet {
 			if (actor) {
 				const attributes = TokenDocument.getTrackedAttributes(actor.system)
 				attributes.bar.forEach(a => a.push("value"));
-				return attributes.bar.concat(attributes.value).reduce((obj, a) => {
+				return {"": game.i18n.localize("DND4E.None"), ...attributes.bar.concat(attributes.value).reduce((obj, a) => {
 					let k = a.join(".");
 					obj[k] = k;
 					return obj;
-				}, {});
+				}, {})};
 			}
 			else {
-				const attributes = game.system.model.Actor['Player Character']
-				return Object.keys(foundry.utils.flattenObject(attributes)).reduce((obj, a) => {
+				const attributes = game.model.Actor['Player Character']
+				const attributeKeys = Object.keys(foundry.utils.flattenObject(attributes)).reduce((obj, a) => {
 					obj[a] = a;
 					return obj;
 				}, {});
+				
+				return {"": game.i18n.localize("DND4E.None"), ...attributeKeys};
 			}
 		}
 
@@ -396,27 +398,27 @@ export default class ItemSheet4e extends ItemSheet {
 
 		// Ammunition
 		else if (consume.type === "ammo") {
-			return actor.itemTypes.consumable.reduce((ammo, i) => {
+			return {"": game.i18n.localize("DND4E.None"), ...actor.itemTypes.consumable.reduce((ammo, i) => {
 				if (i.system.consumableType === "ammo") {
 					ammo[i.id] = `${i.name} (${i.system.quantity})`;
 				}
 				return ammo;
-			}, {});
+			}, {})};
 		}
 
 		// Materials
 		else if (consume.type === "material") {
-			return actor.items.reduce((obj, i) => {
-				if (["consumable", "loot"].includes(i.data.type)) {
+			return {"": game.i18n.localize("DND4E.None"), ...actor.items.reduce((obj, i) => {
+				if (["consumable", "loot"].includes(i.system.type)) {
 					obj[i.id] = `${i.name} (${i.system.quantity})`;
 				}
 				return obj;
-			}, {});
+			}, {})};
 		}
 
 		// Charges
 		else if (consume.type === "charges") {
-			return actor.items.reduce((obj, i) => {
+			return {"": game.i18n.localize("DND4E.None"), ...actor.items.reduce((obj, i) => {
 				const uses = i.system.uses || {};
 				if (uses.per && uses.max) {
 					const label = uses.per === "charges" ?
@@ -425,7 +427,7 @@ export default class ItemSheet4e extends ItemSheet {
 					obj[i.id] = i.name + label;
 				}
 				return obj;
-			}, {})
+			}, {})};
 		}
 		else return {};
 	}
