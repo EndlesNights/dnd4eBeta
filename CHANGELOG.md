@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.5.3
+- fixed handlebars issue for selectOptions of Resource Consumption 
+
 ## Version 0.5.2
 - fix issue where grid distance was not being used properly by ruler
 
