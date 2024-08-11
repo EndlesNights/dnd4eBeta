@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.5.4
+- Added healing option of 'Cost Healing Surge" option to healing. This can be used in examples such as with healing potions which take a healing surge,  but only grant a flat amount of hitpoints. When rolling you can manually include this amount with the tag `[surgeCost]`, this still expand a surge on the take when applied.
+
 ## Version 0.5.3
 - fixed handlebars issue for selectOptions of Resource Consumption 
 
