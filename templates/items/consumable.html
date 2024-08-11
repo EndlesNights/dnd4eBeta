@@ -200,6 +200,30 @@
 				<input type="text" name="system.hit.formula" value="{{system.hit.formula}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}"/>
 			</div>
 
+			<h4 class="damage-header">
+				{{ localize 'DND4E.Secondary' }} {{ localize 'DND4E.FormulaDamage' }}:
+				<a class="damage-control add-damage"><i class="fas fa-plus"></i></a>
+			</h4>
+			<ol class="damage-parts form-group">
+				{{#each system.damage.parts as |part i| }}
+				<li class="damage-part flexrow" data-damage-part="{{i}}">
+					<input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this '0'}}"/>
+					<select name="system.damage.parts.{{i}}.1">
+						{{#select (lookup this "1") }}
+						<option value="">&nbsp;</option>
+						{{#each ../config.damageTypes as |name type|}}
+							{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+							<option value="{{type}}">{{name}}</option>
+							{{/unless}}{{/unless}}
+						{{/each}}
+						{{/select}}
+					</select>
+					<a class="damage-control delete-damage"><i class="fas fa-minus"></i></a>
+				</li>
+				{{/each}}
+			</ol>
+				
+
 			{{!-- Critical --}}
 			<div class="form-group ">
 				<label>{{ localize 'DND4E.Critical' }} {{ localize 'DND4E.FormulaDamage' }}</label>
@@ -225,6 +249,19 @@
 				<label>{{ localize 'DND4E.Healing' }} {{ localize "DND4E.Formula" }}</label>
 				<input type="text" name="system.hit.healFormula" value="{{system.hit.healFormula}}"/>
 			</div>
+
+			<div class="form-group select">
+				<label>{{ localize "DND4E.HealingSurgeSpending" }}</label>
+				<select name="system.hit.healSurge">
+				{{#select system.hit.healSurge}}
+					<option value="">{{ localize "DND4E.None" }}</option>
+					<option value="surge">{{ localize "DND4E.HealingSurgeSpend" }}</option>
+					<option value="surgeCost">{{ localize "DND4E.HealingSurgeCost" }}</option>
+					<option value="surgeValue">{{ localize "DND4E.HealingSurgeValue" }}</option>
+				{{/select}}
+				</select>
+			</div>
+
 			{{/if}}
 
 			{{!-- Other Formula --}}

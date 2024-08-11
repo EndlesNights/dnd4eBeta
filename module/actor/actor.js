@@ -1859,14 +1859,14 @@ export class Actor4e extends Actor {
 				ui.notifications.error(game.i18n.localize("DND4E.HealingSurgeWarning"));
 				return;
 			}
-			else if(this.system.attributes.hp.value >= this.system.attributes.hp.max){
+			else if(this.system.attributes.hp.value >= this.system.attributes.hp.max){ //check to see if the character is already at max HP
 				ui.notifications.error(game.i18n.localize("DND4E.HealingOverWarning"));
 				return;
 			}
-			amount+= this.system.details.surgeValue*surges.surgeAmount*multiplier
+			// amount+= this.system.details.surgeValue*surges.surgeAmount*multiplier; //No longer counts to healing
 		}
 		if(surges.surgeValueAmount){
-			amount+= this.system.details.surgeValue*surges.surgeValueAmount*multiplier
+			amount+= this.system.details.surgeValue*surges.surgeValueAmount*multiplier;
 		}
 		
 		const healFromZero = true; // If true, healing HP starts from zero (the usual for 4e). On false, it follows normal arithmetic

@@ -364,8 +364,8 @@ function applyChatCardDamage(li, multiplier, trueDamage=false) {
 function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	let damageDealt = [];
 	let rollTotalRemain = roll.total;
-	let surgeAmount = 0;
-	let surgeValueAmount = 0;
+	let surgeAmount = 0; //how many healing surges spent
+	let surgeValueAmount = 0; //how many healing surges of healing
 
 	//count surges used, shouldn't be more than 1, but you never know....
 	if(multiplier < 0 ){
@@ -373,8 +373,12 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 			if(e.flavor.includes("surgeValue")){
 				surgeValueAmount++;
 			}
+			else if(e.flavor.includes("surgeCost")){
+				surgeAmount++;
+			}
 			else if(e.flavor.includes("surge")){
 				surgeAmount++;
+				surgeValueAmount++;
 			}
 		});
 	}
