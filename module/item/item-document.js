@@ -811,7 +811,7 @@ export default class Item4e extends Item {
 		const consume = itemData.consume || {};
 		if ( !consume.type ) return true;
 		const actor = this.actor;
-		consume.log(CONFIG.DND4E.abilityConsumptionTypes[consume.type])
+		console.log(CONFIG.DND4E.abilityConsumptionTypes[consume.type])
 		const typeLabel = CONFIG.DND4E.abilityConsumptionTypes[consume.type];
 		const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 1;
 
