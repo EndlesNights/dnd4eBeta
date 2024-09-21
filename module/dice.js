@@ -68,7 +68,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 	let dialogData = {
 		formula: parts.join(" + "),
 		data: data,
-		rollMode: rollMode,
+		rollMode: rollConfig.rollMode,
 		rollModes: CONFIG.Dice.rollModes,
 		config: CONFIG.DND4E,
 		flavor: newFlavor || flavor,
