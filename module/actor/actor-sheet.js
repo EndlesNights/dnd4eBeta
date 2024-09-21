@@ -877,9 +877,16 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		// Construct a list of candidate keys
 		for (const key of overrides) {
 			for (const bonus of bonusSuffixes) {
-				accumulatorSuffixes.forEach(accumulator => candidateKeys.add(key.replace(bonus, accumulator)));
+				// accumulatorSuffixes.forEach(accumulator => candidateKeys.add(key.replace(bonus, accumulator)));
+				console.log(accumulatorSuffixes);
+				if(key.includes("system.attributes.hp.")){ //Exception for HP as to not block 
+					candidateKeys.add(key.replace(bonus, ".max"));
+				} else {
+					accumulatorSuffixes.forEach(accumulator => candidateKeys.add(key.replace(bonus, accumulator)));
+				}
 			}
 		}
+		console.log(candidateKeys);
 
 		// Remove excluded keys
 		for (const key of excluded) {
@@ -887,6 +894,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		}
 
 		// Return keys that exist in the actor
+		console.log(Array.from(overrides.union(candidateKeys).intersection(actorKeys)))
 		return Array.from(overrides.union(candidateKeys).intersection(actorKeys));
 	}
 

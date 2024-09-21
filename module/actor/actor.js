@@ -198,15 +198,14 @@ export class Actor4e extends Actor {
 		system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
 
 		//HP auto calc
-		if(system.attributes.hp.autototal)
-		{
+		if(system.attributes.hp.autototal) {
 			system.attributes.hp.max = system.attributes.hp.perlevel * (system.details.level - 1) + system.attributes.hp.starting + system.attributes.hp.misc + system.abilities.con.value;
-			system.attributes.hp.max += system.attributes.hp.feat || 0;
-			system.attributes.hp.max += system.attributes.hp.item || 0;
-			system.attributes.hp.max += system.attributes.hp.power || 0;
-			system.attributes.hp.max += system.attributes.hp.race || 0;
-			system.attributes.hp.max += system.attributes.hp.untyped || 0;
 		}
+		system.attributes.hp.max += system.attributes.hp.feat || 0;
+		system.attributes.hp.max += system.attributes.hp.item || 0;
+		system.attributes.hp.max += system.attributes.hp.power || 0;
+		system.attributes.hp.max += system.attributes.hp.race || 0;
+		system.attributes.hp.max += system.attributes.hp.untyped || 0;
 		
 		// Healing Surges
 		system.details.surges.max += system.details.surges.feat || 0;
