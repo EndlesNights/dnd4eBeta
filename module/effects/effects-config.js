@@ -8,7 +8,8 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 			classes: ["sheet", "active-effect-sheet"],
 			template: "systems/dnd4e/templates/sheets/active-effect-config.html",
 			width: 580,
-			height: "auto",
+			height: 514,
+			resizable: true,
 			tabs: [{navSelector: ".tabs", contentSelector: "form", initial: "details"}]
 		});
 	}
