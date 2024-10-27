@@ -357,8 +357,7 @@ function selectTargetTokens(li, targetType){
 function applyChatCardDamage(li, multiplier, trueDamage=false) {
 	const message = game.messages.get(li.data("messageId"));
 	const roll = message.rolls[0];
-	console.log(message)
-	applyChatCardDamageInner(roll, multiplier, trueDamage)
+	applyChatCardDamageInner(roll, multiplier, trueDamage);
 }
 
 function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
@@ -370,13 +369,13 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	//count surges used, shouldn't be more than 1, but you never know....
 	if(multiplier < 0 ){
 		roll.terms.forEach(e => {
-			if(e.flavor.includes("surgeValue")){
+			if(e.options.flavor.includes("surgeValue")){
 				surgeValueAmount++;
 			}
-			else if(e.flavor.includes("surgeCost")){
+			else if(e.options.flavor.includes("surgeCost")){
 				surgeAmount++;
 			}
-			else if(e.flavor.includes("surge")){
+			else if(e.options.flavor.includes("surge")){
 				surgeAmount++;
 				surgeValueAmount++;
 			}
@@ -386,16 +385,18 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	if(multiplier < 0 || trueDamage){
 		return Promise.all(canvas.tokens.controlled.map(t => {
 			const a = t.actor;
-			console.log( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealth: ${roll.total}`)
+			console.log( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealt: ${roll.total}`)
 			return a.applyDamage(roll.total, multiplier, {surgeAmount, surgeValueAmount});
 		}));
 	}
-
+	
 	//Sort damage and damage type from roll terms into simpler array
 	roll.terms.forEach(e => {
-		if(typeof e.number === "number"){
-			if(e.flavor){
-				damageDealt.push([e.total,e.flavor]);
+		if(typeof e.roll.terms[0].number === "number"){
+		//Is using [0] here okay? I don't know if there is ever more than one entry.
+			if(e.options.flavor){
+				//console.log(`Damage type found: ${e.options.flavor}`);
+				damageDealt.push([e.total,e.options.flavor]);
 				rollTotalRemain -= e.total;
 			}
 		}
@@ -405,7 +406,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	if(rollTotalRemain){
 		const length = damageDealt.length;
 		if(length === 0){
-			damageDealt.push([rollTotalRemain, 'damage'])
+			damageDealt.push([rollTotalRemain, 'physical'])
 		} else {
 			for(let i = 0; i < length; i++){
 				damageDealt[i][0] += 0|rollTotalRemain/length+(i<rollTotalRemain%length);
