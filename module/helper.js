@@ -275,6 +275,23 @@ export class Helper {
 						}
 					}
 				}
+				
+				if(powerInnerData.attack?.def){
+					switch(powerInnerData.attack.def){
+						case "ac":
+							suitableKeywords.push("vsAC");
+							break;
+						case "fort":
+							suitableKeywords.push("vsFort");
+							break;
+						case "ref":
+							suitableKeywords.push("vsRef");
+							break;
+						case "will":
+							suitableKeywords.push("vsWill");
+							break;
+					}
+				}
 
 				if (debug) {
 					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group, properties and damage type the following effect keys are suitable`)
