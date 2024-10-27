@@ -2334,6 +2334,9 @@ font-size:12px;
 /*  Active Effect Sheets
 /* ----------------------------------------- */
 
+.active-effect-sheet .editor.prosemirror{
+	height:14em;
+}
 .active-effect-sheet input.saveDC{
 	max-width:4em;
 }
