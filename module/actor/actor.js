@@ -600,7 +600,7 @@ export class Actor4e extends Actor {
 		   with the resistance totalled under [type].res and the vulnerabilty under [type].vuln.
 		   This should allow for automation of "reduce resistance by X" type effects without
 		   applying unwanted vulnerabilities.
-		*/
+		*/try{
 		for (let [id, res] of Object.entries(system.resistances)) {
 			res.vuln = res.vuln || 0;
 			res.res = res.res || 0;
@@ -620,7 +620,6 @@ export class Actor4e extends Actor {
 			}
 			res.resBonusValue = resBonusValue; // This value is displayed on the actor sheet
 			
-			//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
 			//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
 			for ( let i of this.items) {
 				if(i.type !="equipment" || !i.system.equipped || i.system.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
@@ -628,7 +627,8 @@ export class Actor4e extends Actor {
 				break;
 			}
 			
-	const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
+			//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
+			const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
 			
 			for ( let val of damageMods ) {
 				if ( val < 0 ){
@@ -645,6 +645,9 @@ export class Actor4e extends Actor {
 			//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: final result of ${res.value} from res ${res.res} and vulnerability ${res.vuln}`);
 
 			res.label = game.i18n.localize(DND4E.damageTypes[id]); //.localize("");
+		}
+	}catch (e){	
+			console.log(e);
 		}
 		
 		//Magic Items
@@ -680,10 +683,10 @@ export class Actor4e extends Actor {
 			disabled:false,
 			description: game.i18n.localize("DND4E.SecondWindEffect"),
 			changes: [
-				{key: "system.defences.ac.value", mode: 2, value: 2},
-				{key: "system.defences.fort.value", mode: 2, value: 2},
-				{key: "system.defences.ref.value", mode: 2, value: 2},
-				{key: "system.defences.wil.value", mode: 2, value: 2},
+				{key: "system.defences.ac.untyped", mode: 2, value: 2},
+				{key: "system.defences.fort.untyped", mode: 2, value: 2},
+				{key: "system.defences.ref.untyped", mode: 2, value: 2},
+				{key: "system.defences.wil.untyped", mode: 2, value: 2},
 			],
 			flags:{dnd4e:{effectData:{durationType:"startOfUserTurn"}}}
 		};
@@ -1729,13 +1732,14 @@ export class Actor4e extends Actor {
 	async calcDamageErrata(damage, multiplier, surges){
 		let totalDamage = 0;
 
-		console.log(damage)
+		//console.log(damage)
 		for(let d of damage){
 			console.log(d);
 			//get all the damageTypes in this term
 			let damageTypesArray = d[1].replace(/ /g,'').split(',');
-
+			console.log(damageTypesArray);
 			const actorRes = this.system.resistances;
+			console.log(actorRes);
 			
 			let resAll = actorRes['damage'].value;
 			let isDamageImmune = actorRes['damage'].immune;
@@ -1749,7 +1753,7 @@ export class Actor4e extends Actor {
 			}
 			
 			let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
-			let lowestRes = Infinity; // will attempt to replace this with the lowest resistance / highest vunrability
+			let lowestRes = Infinity; // will attempt to replace this with the lowest resistance / highest vulnerability
 
 			for(let dt of damageTypesArray){
 				const type = dt && actorRes[dt] ? dt : 'damage';
@@ -1759,9 +1763,9 @@ export class Actor4e extends Actor {
 				//Adjust specific resistance with "resist all" value, according to combining resistance/vulnerability rules
 				const currentRes = Helper.sumExtremes([resAll,actorRes[type]?.value || 0]);
 	
-				if(currentRes !== 0 ){ //if has resistances or vulnerability
-					isImmuneAll=false;
-					//console.log(`Modifier found: ${type}  ${actorRes[type].value}`);
+				if(currentRes !== 0){ //if has resistances or vulnerability
+					isImmuneAll = false;
+					console.log(`Modifier found: ${type} ${actorRes[type].value}`);
 					if(currentRes < lowestRes){
 						lowestRes = currentRes;
 					}
@@ -1782,9 +1786,9 @@ export class Actor4e extends Actor {
 
 			if(!isImmuneAll) {
 				totalDamage += Math.max(0, d[0] - lowestRes);
-				console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}\nLowest Res: ${lowestRes}`);
+				//console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}\nLowest Res: ${lowestRes}`);
 			} else{
-				console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}`);
+				//console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}`);
 			}
 			// console.log(`Lowest Res: ${lowestRes}`)
 		}
