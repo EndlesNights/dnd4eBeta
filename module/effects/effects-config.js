@@ -125,7 +125,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 				effectUpdates.name = game.i18n.localize(statuses[statusIndex].label);
 			}
 			if(scope == "copy-icon" || scope == "copy-all"){
-				effectUpdates.icon = statuses[statusIndex].icon;
+				effectUpdates.img = statuses[statusIndex].img;
 				//console.log(effectUpdates);
 			}
 			if(scope == "copy-desc" || scope == "copy-all"){
