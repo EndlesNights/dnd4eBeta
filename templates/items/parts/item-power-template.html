@@ -9,22 +9,14 @@
 	<div class="form-group short power-source two-input">
 		<label>{{ localize "DND4E.PowerSource" }}</label>
 		<select name="system.powersource">
-			{{#select system.powersource}}
-			<option value=""></option>
-			{{#each config.powerSource as |name type|}}
-			<option value="{{type}}">{{name}}</option>
-			{{/each}}
-			{{/select}}
+			<option value="" {{#if (eq system.powersource null)}}selected{{/if}}>&nbsp;</option>
+			{{selectOptions config.powerSource selected=system.powersource labelAttr="label"}}
 		</select>
 
 		{{#if system.powersource}}
 		<select name="system.secondPowersource">
-			{{#select system.secondPowersource}}
-			<option value=""></option>
-			{{#each config.powerSource as |name type|}}
-			<option value="{{type}}">{{name}}</option>
-			{{/each}}
-			{{/select}}
+			<option value="" {{#if (eq system.secondPowersource null)}}selected{{/if}}>&nbsp;</option>
+			{{selectOptions config.powerSource selected=system.secondPowersource labelAttr="label"}}
 		</select>
 		{{/if}}
 	</div>
@@ -37,30 +29,18 @@
 	<div class="form-group short power-type two-input">
 		<label>{{ localize 'DND4E.PowerType' }}</label>
 		<select name="system.powerType">
-			{{#select system.powerType}}
-			{{#each config.powerType as |name type|}}
-			<option value="{{type}}">{{name}}</option>
-			{{/each}}
-			<option value="other">{{localize 'DND4E.Other'}}</option>
-			{{/select}}
+			{{selectOptions config.powerType selected=system.powerType lableAttr="label"}}
+			<option value="other" {{#if (eq system.powerType "other")}}selected{{/if}}>{{localize "DND4E.Other"}}</option>
 		</select> 
 		<select name="system.powerSubtype">
-			{{#select system.powerSubtype}}
-			{{#each config.powerSubtype as |name type|}}
-			<option value="{{type}}">{{name}}</option>
-			{{/each}}
-			<option value="other">{{localize "DND4E.Other"}}</option>
-			{{/select}}
+			{{selectOptions config.powerSubtype selected=system.powerSubtype labelAttr="label"}}
+			<option value="other" {{#if (eq system.powerSubtype "other")}}selected{{/if}}>{{localize "DND4E.Other"}}</option>
 		</select>
 	</div>
 	<div class="form-group select">
 		<label>{{ localize 'DND4E.Usage' }}</label>
 		<select name="system.useType">
-			{{#select system.useType}}
-			{{#each config.powerUseType as |name type|}}
-			<option value="{{type}}">{{name}}</option>
-			{{/each}}
-			{{/select}}
+			{{selectOptions config.powerUseType selected=system.useType labelAttr="label"}}
 		</select>
 	</div>
 
@@ -76,15 +56,10 @@
 	<div class="form-group short power-weapon two-input">
 		<label>{{ localize "DND4E.WeaponTypeRequired" }}</label>
 		<select name="system.weaponType">
-			{{#select system.weaponType}}
-			{{#each config.weaponType as |name type|}}
-			<option value="{{type}}">{{name}}</option>
-			{{/each}}
-			{{/select}}
+			{{selectOptions config.weaponType selected=system.weaponType labelAttr="label"}}
 		</select>
 
 		{{#if system.weaponType}}
-			<!-- <span>Weapon</span> -->
 			<select name="system.weaponUse">
 				{{#select system.weaponUse}}
 				<option value="default">{{ localize 'DND4E.Default' }}</option>
@@ -109,7 +84,7 @@
 				<input type="text" name="system.area" value="{{system.area}}"/>
 			{{/if}}
 			{{#if system.isRange}}
-				{{#if system.isArea}}<span class="ramge-within-of">{{ localize "DND4E.RangeWithinOf" }}</span>{{/if}}
+				{{#if system.isArea}}<span class="range-within-of">{{ localize "DND4E.RangeWithinOf" }}</span>{{/if}}
 				{{#unless system.isArea}}<span class="range-of">{{ localize "DND4E.RangeOf" }}</span>{{/unless}}
 				<input type="text" name="system.rangePower" value="{{system.rangePower}}" data-dtype="Number"/>
 			{{/if}}
@@ -230,11 +205,7 @@
 		<div class="form-fields item-damage">
 			<input class="dmg-base-qty" type="text" name="system.hit.baseQuantity" value="{{system.hit.baseQuantity}}"/>
 			<select name="system.hit.baseDiceType">
-				{{#select system.hit.baseDiceType}}
-				{{#each config.powerDiceTypes as |name key|}}
-				<option value="{{key}}">{{name}}</option>
-				{{/each}}
-				{{/select}}
+				{{selectOptions config.powerDiceTypes selected=system.hit.baseDiceType labelAttr="label"}}
 			</select>
 		</div>
 	</div>
@@ -299,24 +270,23 @@
 		<input type="text" name="system.miss.formula" value="{{system.miss.formula}}" placeholder="{{ localize 'DND4E.MissFormulaPlaceholder' }}"/>
 	</div>
 
-
 	<div class="form-group stacked weapon-properties">
 		<label class="damage-type" data-tooltip="{{localize 'DND4E.PrimaryDamageType'}}">{{localize "DND4E.PrimaryDamageType"}}: {{system.weaponSourceName}}</label>
 		{{#if system.damageTypeWeapon}}
 			{{#each config.damageTypes as |name type|}}
-				{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+				{{#unless (eq type "ongoing")}}
 				<label class="checkbox">
 					<input disabled="disabled" type="checkbox" name="system.weaponDamageType.{{type}}" {{checked (lookup ../system.weaponDamageType type)}}/> {{ name }}
 				</label>
-				{{/unless}}{{/unless}}
+				{{/unless}}
 			{{/each}}
 		{{else}}
 			{{#each config.damageTypes as |name type|}}
-				{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+				{{#unless (eq type "ongoing")}}
 				<label class="checkbox">
 					<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
 				</label>
-				{{/unless}}{{/unless}}
+				{{/unless}}
 			{{/each}}
 		{{/if}}
 	</div>
@@ -407,6 +377,7 @@
 	<div class="form-group select">
 		<label>{{ localize "DND4E.Sustain" }}</label>
 		<select name="system.sustain.actionType">
+			<option value="" {{#if (eq system.sustain.actionType null)}}selected{{/if}}>&nbsp;</option>
 			{{selectOptions config.abilityActivationTypes selected=system.sustain.actionType labelAttr="label"}}
 		</select>
 	</div>
