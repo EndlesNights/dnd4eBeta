@@ -116,14 +116,46 @@ DND4E.timePeriods = {
  * @type {Object}
  */
 DND4E.abilityActivationTypes = {
-	"none": {label: "DND4E.NoAction"},
-	"standard": {label: "DND4E.ActionStandard"},
-	"move": {label: "DND4E.ActionMove"},
-	"minor": {label: "DND4E.ActionMinor"},
-	"free": {label: "DND4E.ActionFree"},
-	"reaction": {label: "DND4E.ActionReaction"},
-	"interrupt": {label: "DND4E.ActionInterrupt"},
-	"opportunity": {label: "DND4E.ActionOpportunity"},
+	"none": {
+		label: "DND4E.NoAction",
+		labelShort: "DND4E.NoActionShort",
+		abbreviation: "DND4E.NoneShort"
+	},
+	"standard": {
+		label: "DND4E.ActionStandard",
+		labelShort: "DND4E.ActionStandardBrief",
+		abbreviation: "DND4E.ActionStandardShort"
+	},
+	"move": {
+		label: "DND4E.ActionMove",
+		labelShort: "DND4E.ActionMoveBrief",
+		abbreviation: "DND4E.ActionMoveShort"
+	},
+	"minor": {
+		label: "DND4E.ActionMinor",
+		labelShort: "DND4E.ActionMinorBrief",
+		abbreviation: "DND4E.ActionMinorShort"
+	},
+	"free": {
+		label: "DND4E.ActionFree",
+		labelShort: "DND4E.ActionFreeBrief",
+		abbreviation: "DND4E.ActionFreeShort"
+	},
+	"reaction": {
+		label: "DND4E.ActionReaction",
+		labelShort: "DND4E.ActionReactionBrief",
+		abbreviation: "DND4E.ActionFreeShort"
+	},
+	"interrupt": {
+		label: "DND4E.ActionInterrupt",
+		labelShort: "DND4E.ActionInterruptBrief",
+		abbreviation: "DND4E.ActionFreeShort"
+	},
+	"opportunity": {
+		label: "DND4E.ActionOpportunity",
+		labelShort: "DND4E.ActionOpportunityBrief",
+		abbreviation: "DND4E.ActionOpportunityShort"
+	},
 };
 preLocalize("abilityActivationTypes", { keys: ["label"] });
 
