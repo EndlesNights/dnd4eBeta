@@ -342,13 +342,10 @@ export class Actor4e extends Actor {
 		if (system.attributes.temphp.value <= 0 )
 			system.attributes.temphp.value = null;
 
-		// Skill modifiers
-		//Calc defence stats
+		// Calculate Defences
 		if(this.type === "NPC"){
-			this.calcSkillNPC(system);
 			this.calcDefenceStatsNPC(system);
 		} else {
-			this.calcSkillCharacter(system);
 			this.calcDefenceStatsCharacter(system);
 		}
 
@@ -552,28 +549,8 @@ export class Actor4e extends Actor {
 
 		if (system.movement.shift.value < 0)
 			system.movement.shift.value = 0;
-			
-		//Passive Skills
-		for (let [id, pas] of Object.entries(system.passive)) {
-			let passiveBonusValue = 0;
-			if(!(pas.bonus.length === 1 && jQuery.isEmptyObject(pas.bonus[0]))) {
-				for( const b of pas.bonus) {
-					if(b.active && Helper._isNumber(b.value)) {
-						passiveBonusValue += parseInt(b.value);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,system)
-						if(Helper._isNumber(val)){
-							passiveBonusValue += parseInt(val);
-						}
-					}
-				}
-			}
-			pas.bonusValue = passiveBonusValue;
-			pas.value = 10 + system.skills[pas.skill].total + passiveBonusValue;
-		}
 
-		//Attack and damage modifiers
+		//Calculate global attack, damage and skill modifiers
 		for (let [id, mod] of Object.entries(system.modifiers)) {
 			let modifierBonusValue = 0;
 			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
@@ -593,6 +570,33 @@ export class Actor4e extends Actor {
 			mod.bonusValue = modifierBonusValue;
 			mod.value += mod.class + mod.feat + mod.item + mod.power + (mod.untyped) + mod.race + modifierBonusValue + (mod.armourPen || 0);
 			mod.label = game.i18n.localize(DND4E.modifiers[id]);
+		}
+		
+		//Calculate skill modifiers
+		if(this.type === "NPC"){
+			this.calcSkillNPC(system);
+		} else {
+			this.calcSkillCharacter(system);
+		}
+			
+		//Passive Skills
+		for (let [id, pas] of Object.entries(system.passive)) {
+			let passiveBonusValue = 0;
+			if(!(pas.bonus.length === 1 && jQuery.isEmptyObject(pas.bonus[0]))) {
+				for( const b of pas.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						passiveBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,system)
+						if(Helper._isNumber(val)){
+							passiveBonusValue += parseInt(val);
+						}
+					}
+				}
+			}
+			pas.bonusValue = passiveBonusValue;
+			pas.value = 10 + system.skills[pas.skill].total + passiveBonusValue;
 		}
 		
 		/* Resistances & Weaknesses
@@ -832,6 +836,23 @@ export class Actor4e extends Actor {
 	}
 
 	calcSkillCharacter(system){
+		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. Manual (bonus array) bonuses are assumed to total the final bonus value, minus the typed bonuses. */
+		let globalBonus = {};
+		try{
+			globalBonus = {
+				"class": system.modifiers.skills.class || 0,
+				"feat": system.modifiers.skills.feat || 0,
+				"item": system.modifiers.skills.item || 0,
+				"power": system.modifiers.skills.power || 0,
+				"race": system.modifiers.skills.race || 0,
+				"untyped": system.modifiers.skills.untyped || 0,
+				"manual": system.modifiers.skills.value - system.modifiers.skills.class - system.modifiers.skills.feat - system.modifiers.skills.item - system.modifiers.skills.power - system.modifiers.skills.race - system.modifiers.skills.untyped || 0
+			}
+		}catch(e){
+			console.warn(`Global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"manual": 0};
+		}
+		
 		for (const [id, skl] of Object.entries(system.skills)) {
 			skl.value = parseFloat(skl.value || 0);
 
@@ -884,35 +905,38 @@ export class Actor4e extends Actor {
 			switch (skl.training){
 				case 8:
 					trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
-					featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat);
-					itemBonus = Math.max(system.skillTraining.expertise.item, skl.item);
-					powerBonus = Math.max(system.skillTraining.expertise.power, skl.power);
-					raceBonus = Math.max(system.skillTraining.expertise.race, skl.race);
+					featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat,0);
+					itemBonus = Math.max(system.skillTraining.expertise.item, skl.item,0);
+					powerBonus = Math.max(system.skillTraining.expertise.power, skl.power,0);
+					raceBonus = Math.max(system.skillTraining.expertise.race, skl.race,0);
 					break;
 				case 5:
 					trainingBonus = system.skillTraining.trained.value + system.skillTraining.trained.untyped;
-					featBonus = Math.max(system.skillTraining.trained.feat, skl.feat);
-					itemBonus = Math.max(system.skillTraining.trained.item, skl.item);
-					powerBonus = Math.max(system.skillTraining.trained.power, skl.power);
-					raceBonus = Math.max(system.skillTraining.trained.race, skl.race);
+					featBonus = Math.max(system.skillTraining.trained.feat, skl.feat,0);
+					itemBonus = Math.max(system.skillTraining.trained.item, skl.item,0);
+					powerBonus = Math.max(system.skillTraining.trained.power, skl.power,0);
+					raceBonus = Math.max(system.skillTraining.trained.race, skl.race,0);
 					break;
 				case 0:
 					trainingBonus = system.skillTraining.untrained.value + system.skillTraining.untrained.untyped;
-					featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat);
-					itemBonus = Math.max(system.skillTraining.untrained.item, skl.item);
-					powerBonus = Math.max(system.skillTraining.untrained.power, skl.power);
-					raceBonus = Math.max(system.skillTraining.untrained.race, skl.race);
+					featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat,0);
+					itemBonus = Math.max(system.skillTraining.untrained.item, skl.item,0);
+					powerBonus = Math.max(system.skillTraining.untrained.power, skl.power,0);
+					raceBonus = Math.max(system.skillTraining.untrained.race, skl.race,0);
 			}
 
 			// Compute modifier
 			skl.mod = system.abilities[skl.ability].mod;
 
 			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-			skl.total += featBonus || 0;
-			skl.total += itemBonus || 0;
-			skl.total += powerBonus || 0;
-			skl.total += raceBonus || 0;
+			skl.total += Math.max(featBonus || 0, globalBonus.feat);
+			skl.total += Math.max(itemBonus || 0, globalBonus.item);
+			skl.total += Math.max(powerBonus || 0, globalBonus.power);
+			skl.total += Math.max(raceBonus || 0, globalBonus.race);
 			skl.total += skl.untyped || 0;
+			skl.total += globalBonus.untyped;
+			//No way to sort manual bonuses, so they just get added regardless.
+			skl.total += globalBonus.manual;
 			skl.total += trainingBonus;
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
@@ -924,6 +948,23 @@ export class Actor4e extends Actor {
 	}
 
 	calcSkillNPC(system){
+		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. Manual (bonus array) bonuses are assumed to total the final bonus value, minus the typed bonuses. */
+		let globalBonus = {};
+		try{
+			globalBonus = {
+				"class": system.modifiers.skills.class || 0,
+				"feat": system.modifiers.skills.feat || 0,
+				"item": system.modifiers.skills.item || 0,
+				"power": system.modifiers.skills.power || 0,
+				"race": system.modifiers.skills.race || 0,
+				"untyped": system.modifiers.skills.untyped || 0,
+				"manual": system.modifiers.skills.value - system.modifiers.skills.class - system.modifiers.skills.feat - system.modifiers.skills.item - system.modifiers.skills.power - system.modifiers.skills.race - system.modifiers.skills.untyped || 0
+			}
+		}catch(e){
+			console.warn(`Global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"manual": 0};
+		}
+		
 		for (let [id, skl] of Object.entries(system.skills)) {
 			skl.value = parseFloat(skl.value || 0);
 
@@ -967,43 +1008,42 @@ export class Actor4e extends Actor {
 			}
 
 			// Compute modifier
-			skl.mod = system.abilities[skl.ability].mod;
+			let powerBonus = 0;
+			
 			if(system.advancedCals){
-				
-				let trainingBonus = 0;
 				let featBonus = 0;
 				let itemBonus = 0;
-				let powerBonus = 0;
 				let raceBonus = 0;
+				let trainingBonus = 0;
+				skl.mod = system.abilities[skl.ability].mod;
+				
 				switch (skl.training){
 					case 8:
 						trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
-						featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat);
-						itemBonus = Math.max(system.skillTraining.expertise.item, skl.item);
-						powerBonus = Math.max(system.skillTraining.expertise.power, skl.power);
-						raceBonus = Math.max(system.skillTraining.expertise.race, skl.race);
+						featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat,0);
+						itemBonus = Math.max(system.skillTraining.expertise.item, skl.item,0);
+						powerBonus = Math.max(system.skillTraining.expertise.power, skl.power,0);
+						raceBonus = Math.max(system.skillTraining.expertise.race, skl.race,0);
 						break;
 					case 5:
 						trainingBonus = system.skillTraining.trained.value + system.skillTraining.trained.untyped;
-						featBonus = Math.max(system.skillTraining.trained.feat, skl.feat);
-						itemBonus = Math.max(system.skillTraining.trained.item, skl.item);
-						powerBonus = Math.max(system.skillTraining.trained.power, skl.power);
-						raceBonus = Math.max(system.skillTraining.trained.race, skl.race);
+						featBonus = Math.max(system.skillTraining.trained.feat, skl.feat,0);
+						itemBonus = Math.max(system.skillTraining.trained.item, skl.item,0);
+						powerBonus = Math.max(system.skillTraining.trained.power, skl.power,0);
+						raceBonus = Math.max(system.skillTraining.trained.race, skl.race,0);
 						break;
 					case 0:
 						trainingBonus = system.skillTraining.untrained.value + system.skillTraining.untrained.untyped;
-						featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat);
-						itemBonus = Math.max(system.skillTraining.untrained.item, skl.item);
-						powerBonus = Math.max(system.skillTraining.untrained.power, skl.power);
-						raceBonus = Math.max(system.skillTraining.untrained.race, skl.race);
+						featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat,0);
+						itemBonus = Math.max(system.skillTraining.untrained.item, skl.item,0);
+						powerBonus = Math.max(system.skillTraining.untrained.power, skl.power,0);
+						raceBonus = Math.max(system.skillTraining.untrained.race, skl.race,0);
 				}
 
 				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-				skl.total += featBonus || 0;
-				skl.total += itemBonus || 0;
-				skl.total += powerBonus || 0;
-				skl.total += raceBonus || 0;
-				skl.total += skl.untyped || 0;
+				skl.total += Math.max(featBonus || 0, globalBonus.feat);
+				skl.total += Math.max(itemBonus || 0, globalBonus.item);
+				skl.total += Math.max(raceBonus || 0, globalBonus.race);
 				skl.total += trainingBonus;
 	
 				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
@@ -1013,6 +1053,12 @@ export class Actor4e extends Actor {
 			} else {
 				skl.total = skl.base;
 			}
+			
+			skl.total += Math.max(powerBonus || 0, globalBonus.power);
+			skl.total += skl.untyped || 0;
+			skl.total += globalBonus.untyped;
+			//No way to sort manual bonuses, so they just get added regardless.
+			skl.total += globalBonus.manual;
 
 			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
 		}
