@@ -451,6 +451,9 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 			if(mod.untyped == undefined){
 				updateData[`system.modifiers.${id}.untyped`] = 0;
 			}
+			if(mod.bonus == undefined){
+				updateData[`system.modifiers.${id}.bonus`] = [];
+			}
 		}
 	}
 
@@ -568,7 +571,7 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 		}
 	}
 
-	const resistances = actorData?.system?.resistances;
+	/*const resistances = actorData?.system?.resistances;
 	if(resistances){
 		for( const [id, res] of Object.entries(resistances)){
 			if(res.feat == undefined){
@@ -584,8 +587,7 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 				updateData[`system.resistances.${id}.untyped`] = 0;
 			}
 		}
-	}
-
+	}*/
 
 	return updateData;
 }
