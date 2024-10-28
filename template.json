@@ -169,6 +169,16 @@
 						"race": 0,
 						"untyped": 0,
 						"bonus": [{}]
+					},
+					"skills":{
+						"value": 0,
+						"class": 0,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
 					}
 				},
 				"details": {
