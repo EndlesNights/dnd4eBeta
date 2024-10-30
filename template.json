@@ -179,6 +179,16 @@
 						"race": 0,
 						"untyped": 0,
 						"bonus": [{}]
+					},
+					"defences":{
+						"value": 0,
+						"class": 0,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
 					}
 				},
 				"details": {
@@ -1017,6 +1027,7 @@
 				"attack": {
 					"shareAttackRoll": false,
 					"isAttack": true,
+					"isBasic": false,
 					"ability": "str",
 					"abilityBonus": 0,
 					"def": "ac",
