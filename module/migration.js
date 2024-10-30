@@ -141,6 +141,7 @@ export const migrateActorData = function(actor, migrationData) {
 		_migrateActorSkills(actor, updateData);
 		_migrateActorFeatItemPowerBonusSources(actor, updateData);
 		_migrateActorDefAndRes(actor, updateData);
+		_migrateActorGlobalMods(actor, updateData);
 	}
 
 	return updateData;
@@ -188,6 +189,7 @@ export const migrateItemData = function(item) {
 	_migrateContainerItems(item, updateData);
 	_migrateItemsGMDescriptions(item, updateData);
 	_migrateNeckGearEnhance(item, updateData);
+	_migratePowerBasic(item, updateData);
 	return updateData;
 };
 
@@ -753,6 +755,62 @@ if ((itemData.system?.armour.fort !== itemData.system?.armour.ref || itemData.sy
 	updateData["system.armour.fort"] = 0;
 	updateData["system.armour.ref"] = 0;
 	updateData["system.armour.wil"] = 0;
+
+	return updateData;
+}
+
+/**
+ * Migrate powers without "isBasic" toggle (v0.5.5)
+ * @param {object} itemData   Item data being migrated.
+ * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+*/
+function _migratePowerBasic(itemData, updateData){
+	if(itemData.type !== "power") return;
+		
+	if(itemData?.attack?.isBasic == undefined){
+		updateData["system.attack.isBasic"] = false;
+		return updateData;
+	}
+}
+
+/**
+* Migrate the actor adding missing keys for global skill and defence modifiers (v0.5.5)
+* @param {object} actorData   Actor data being migrated.
+* @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
+* @returns {object}           Modified version of update data.
+* @private
+*/
+function _migrateActorGlobalMods(actorData, updateData){
+	
+	const modifiers = actorData?.system?.modifiers;
+	
+	if(modifiers?.skills == undefined){
+		updateData[`system.modifiers.skills`] = {
+			"value": 0,
+			"class": 0,
+			"feat": 0,
+			"item": 0,
+			"power": 0,
+			"race": 0,
+			"untyped": 0,
+			"bonus": [{}]
+		};
+	}
+	
+	if(modifiers?.defences == undefined){
+		updateData[`system.modifiers.defences`] = {
+			"value": 0,
+			"class": 0,
+			"feat": 0,
+			"item": 0,
+			"power": 0,
+			"race": 0,
+			"untyped": 0,
+			"bonus": [{}]
+		};
+	}
 
 	return updateData;
 }
