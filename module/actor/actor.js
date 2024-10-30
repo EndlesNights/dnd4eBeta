@@ -342,12 +342,41 @@ export class Actor4e extends Actor {
 		if (system.attributes.temphp.value <= 0 )
 			system.attributes.temphp.value = null;
 
+		//Calculate global modifiers
+		for (let [id, mod] of Object.entries(system.modifiers)) {
+			let modifierBonusValue = 0;
+			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
+				for( const b of mod.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						modifierBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,system)
+						if(Helper._isNumber(val)){
+							modifierBonusValue += parseInt(val);
+						}
+					}
+				} 
+			}
+
+			mod.bonusValue = modifierBonusValue;
+			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.untyped + mod.race + modifierBonusValue;
+			mod.label = game.i18n.localize(DND4E.modifiers[id]);
+		}
+		
 		// Calculate Defences
 		if(this.type === "NPC"){
 			this.calcDefenceStatsNPC(system);
 		} else {
 			this.calcDefenceStatsCharacter(system);
 		}
+		
+		//Apply armour nonproficiency penalty to global attack mod
+		//This needs to be after defences, but defences need to go after the main global mods calc—so I separated this here.
+		//"Warn" property is to help the sheet deliver a warning.
+		//						- Fox
+		system.modifiers.attack.value += (system.modifiers.attack.armourPen || 0);
+		system.modifiers.attack.warn = system.modifiers.attack.armourPen < 0 ? true : false;
 
 		//calculate initiative
 		let initBonusValue = 0;
@@ -549,28 +578,6 @@ export class Actor4e extends Actor {
 
 		if (system.movement.shift.value < 0)
 			system.movement.shift.value = 0;
-
-		//Calculate global attack, damage and skill modifiers
-		for (let [id, mod] of Object.entries(system.modifiers)) {
-			let modifierBonusValue = 0;
-			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
-				for( const b of mod.bonus) {
-					if(b.active && Helper._isNumber(b.value)) {
-						modifierBonusValue += parseInt(b.value);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,system)
-						if(Helper._isNumber(val)){
-							modifierBonusValue += parseInt(val);
-						}
-					}
-				}
-			}
-
-			mod.bonusValue = modifierBonusValue;
-			mod.value += mod.class + mod.feat + mod.item + mod.power + (mod.untyped) + mod.race + modifierBonusValue + (mod.armourPen || 0);
-			mod.label = game.i18n.localize(DND4E.modifiers[id]);
-		}
 		
 		//Calculate skill modifiers
 		if(this.type === "NPC"){
@@ -700,9 +707,18 @@ export class Actor4e extends Actor {
 
 	/* -------------------------------------------- */
 
-	calcDefenceStatsCharacter(data) {		
+	calcDefenceStatsCharacter(data) {
+		/* Typed bonuses to global defence modifier need to be compared against typed bonuses to the individual defences. */
+		let globalBonus = {};
+		try{
+			globalBonus = data.modifiers.defences;
+		}catch(e){
+			console.warn(`PC global defence calc failed, probably due to an unmigrated actor. Defences will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+		}
+		
 		for (let [id, def] of Object.entries(data.defences)) {
-			
+			def.value = parseFloat(def.value || 0);
 			def.label = DND4E.defensives[id].abbreviation;
 			def.title = DND4E.defensives[id].label;
 						
@@ -756,13 +772,16 @@ export class Actor4e extends Actor {
 			let modBonus = def.ability != "" ? data.abilities[def.ability].mod : 0;
 
 			def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;
-			def.value += def.feat || 0;
-			def.value += def.item || 0;
-			def.value += def.power || 0;
-			def.value += def.race || 0;
+			def.value += Math.max(def.feat || 0, globalBonus.feat);
+			def.value += Math.max(def.item || 0, globalBonus.item);
+			def.value += Math.max(def.power || 0, globalBonus.power);
+			def.value += Math.max(def.race || 0, globalBonus.race);
 			def.value += def.enhance || 0;
 			def.value += def.shield || 0;
 			def.value += def.untyped || 0;
+			def.value += globalBonus.untyped;
+			//No way to sort manual bonuses, so they just get added regardless.
+			def.value += globalBonus.bonusValue;			
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 				def.value += Math.floor(data.details.level / 2);
@@ -771,8 +790,17 @@ export class Actor4e extends Actor {
 	}
 
 	calcDefenceStatsNPC(data) {
+		/* Typed bonuses to global defence modifier need to be compared against typed bonuses to the individual defences. */
+		let globalBonus = {};
+		try{
+			globalBonus = data.modifiers.defences;
+		}catch(e){
+			console.warn(`NPC global defence calc failed, probably due to an unmigrated actor. Defences will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+		}
+		
 		for (let [id, def] of Object.entries(data.defences)) {
-			
+			def.value = parseFloat(def.value || 0);
 			def.label = DND4E.defensives[id].abbreviation;
 			def.title = DND4E.defensives[id].label;
 						
@@ -816,41 +844,38 @@ export class Actor4e extends Actor {
 			if(data.advancedCals){
 				let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
 
-				def.value = def.base + modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
+				def.value += def.base + modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
+				
 				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 					def.value += Math.floor(data.details.level / 2);
 				}
 				
+				//No way to sort manual bonuses, so they just get added regardless.
+				def.value += globalBonus.bonusValue;
+				
 			} else {
-				def.value = def.base;		
+				def.value += def.base;
 			}
 
-			def.value += def.feat|| 0;
-			def.value += def.item|| 0;
-			def.value += def.power || 0;
-			def.value += def.race || 0;
+			def.value += Math.max(def.feat || 0, globalBonus.feat);
+			def.value += Math.max(def.item || 0, globalBonus.item);
+			def.value += Math.max(def.power || 0, globalBonus.power);
+			def.value += Math.max(def.race || 0, globalBonus.race);
+			def.value += def.enhance || 0;
+			def.value += def.shield || 0;
 			def.value += def.untyped || 0;
-			def.value += def.enhance|| 0;
-			def.value += def.shield|| 0;
+			def.value += globalBonus.untyped;
 		}
 	}
 
 	calcSkillCharacter(system){
-		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. Manual (bonus array) bonuses are assumed to total the final bonus value, minus the typed bonuses. */
+		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. */
 		let globalBonus = {};
 		try{
-			globalBonus = {
-				"class": system.modifiers.skills.class || 0,
-				"feat": system.modifiers.skills.feat || 0,
-				"item": system.modifiers.skills.item || 0,
-				"power": system.modifiers.skills.power || 0,
-				"race": system.modifiers.skills.race || 0,
-				"untyped": system.modifiers.skills.untyped || 0,
-				"manual": system.modifiers.skills.value - system.modifiers.skills.class - system.modifiers.skills.feat - system.modifiers.skills.item - system.modifiers.skills.power - system.modifiers.skills.race - system.modifiers.skills.untyped || 0
-			}
+			globalBonus = system.modifiers.skills;
 		}catch(e){
-			console.warn(`Global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
-			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"manual": 0};
+			console.warn(`PC global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
 		}
 		
 		for (const [id, skl] of Object.entries(system.skills)) {
@@ -936,7 +961,7 @@ export class Actor4e extends Actor {
 			skl.total += skl.untyped || 0;
 			skl.total += globalBonus.untyped;
 			//No way to sort manual bonuses, so they just get added regardless.
-			skl.total += globalBonus.manual;
+			skl.total += globalBonus.bonusValue;
 			skl.total += trainingBonus;
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
@@ -948,21 +973,13 @@ export class Actor4e extends Actor {
 	}
 
 	calcSkillNPC(system){
-		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. Manual (bonus array) bonuses are assumed to total the final bonus value, minus the typed bonuses. */
+		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. */
 		let globalBonus = {};
 		try{
-			globalBonus = {
-				"class": system.modifiers.skills.class || 0,
-				"feat": system.modifiers.skills.feat || 0,
-				"item": system.modifiers.skills.item || 0,
-				"power": system.modifiers.skills.power || 0,
-				"race": system.modifiers.skills.race || 0,
-				"untyped": system.modifiers.skills.untyped || 0,
-				"manual": system.modifiers.skills.value - system.modifiers.skills.class - system.modifiers.skills.feat - system.modifiers.skills.item - system.modifiers.skills.power - system.modifiers.skills.race - system.modifiers.skills.untyped || 0
-			}
+			globalBonus = system.modifiers.skills;
 		}catch(e){
-			console.warn(`Global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
-			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"manual": 0};
+			console.warn(`NPC global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
 		}
 		
 		for (let [id, skl] of Object.entries(system.skills)) {
@@ -1009,12 +1026,12 @@ export class Actor4e extends Actor {
 
 			// Compute modifier
 			let powerBonus = 0;
+			let featBonus = 0;
+			let itemBonus = 0;
+			let raceBonus = 0;
+			let trainingBonus = 0;
 			
 			if(system.advancedCals){
-				let featBonus = 0;
-				let itemBonus = 0;
-				let raceBonus = 0;
-				let trainingBonus = 0;
 				skl.mod = system.abilities[skl.ability].mod;
 				
 				switch (skl.training){
@@ -1041,24 +1058,25 @@ export class Actor4e extends Actor {
 				}
 
 				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-				skl.total += Math.max(featBonus || 0, globalBonus.feat);
-				skl.total += Math.max(itemBonus || 0, globalBonus.item);
-				skl.total += Math.max(raceBonus || 0, globalBonus.race);
 				skl.total += trainingBonus;
 	
 				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 					skl.total += Math.floor(system.details.level / 2);
 				}
+				
+				//No way to sort manual bonuses, so they just get added regardless.
+				skl.total += globalBonus.bonusValue;
 
 			} else {
 				skl.total = skl.base;
 			}
 			
+			skl.total += Math.max(featBonus || 0, globalBonus.feat);
+			skl.total += Math.max(itemBonus || 0, globalBonus.item);
+			skl.total += Math.max(raceBonus || 0, globalBonus.race);
 			skl.total += Math.max(powerBonus || 0, globalBonus.power);
 			skl.total += skl.untyped || 0;
 			skl.total += globalBonus.untyped;
-			//No way to sort manual bonuses, so they just get added regardless.
-			skl.total += globalBonus.manual;
 
 			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
 		}
@@ -1380,8 +1398,8 @@ export class Actor4e extends Actor {
 				content:this.name + game.i18n.localize("DND4E.DeathSaveCriticalSuccess")
 			});
 		}
-		console.log(roll.total)
-		console.log(rollConfig.critical)
+		//console.log(roll.total)
+		//console.log(rollConfig.critical)
 		await this.update(updateData);
 	}
 
@@ -1412,9 +1430,9 @@ export class Actor4e extends Actor {
 					}
 				}
 				healamount += this.system.details.surgeValue + (r.total || 0);
-				console.log(`surgeValue:${this.system.details.surgeValue}`)
-				console.log(`total:${r.total}`)
-				console.log(`healamount:${healamount}`)
+				//console.log(`surgeValue:${this.system.details.surgeValue}`)
+				//console.log(`total:${r.total}`)
+				//console.log(`healamount:${healamount}`)
 			}
 
 			if (healamount){
