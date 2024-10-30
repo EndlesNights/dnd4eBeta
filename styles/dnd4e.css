@@ -9,42 +9,42 @@
 .dnd4e-burst-svg {
 	content: url(../icons/ui/burst.svg);
 }
-.dnd4e .flexrow{
+
+.flexrow{
 	display:flex;
 	flex-direction:row;
 	flex-wrap:wrap;
 	justify-content:flex-start;
-	align-items:center;
 }
-.dnd4e .flexrow .thin{
+.flexrow .thin{
 	padding-left:15%;
 	padding-right:15%;
 }
-.dnd4e .flexcol{
+.flexcol{
 	display:flex;
 	flex-direction:column;
 	flex-wrap:nowrap;
 }
-.dnd4e .flexcol>*{
+.flexcol>*{
 	flex:1;
 }
-.dnd4e .flexcol .flex1{
+.flexcol .flex1{
 	flex:1;
 }
-.dnd4e .flexcol .flex2{
+.flexcol .flex2{
 	flex:2;
 }
-.dnd4e .flexcol .flex3{
+.flexcol .flex3{
 	flex:3;
 }
-.dnd4e .flexcol .flex4{
+.flexcol .flex4{
 	flex:4;
 }
-.dnd4e .placeholder{
+.placeholder{
 	position:relative;
 	display:inline-block;
 }
-.dnd4e .placeholder::after{
+.placeholder::after{
 	position:absolute;
 	right:5px;
 	top:9px;
@@ -52,22 +52,22 @@
 	pointer-events:none;
 	font-size:12px;
 }
-.dnd4e select[multiple]{
+select[multiple]{
 	background:#d9d8cc;
 }
-.dnd4e option,select[multiple] option{
+option,select[multiple] option{
 	background:unset;
 }
-.dnd4e option:checked,select[multiple] option:checked{
+option:checked,select[multiple] option:checked{
 	background:#508fff;
 	opacity:1;
 	color:#fff;
 }
-.dnd4e select[multiple] option:hover{
+select[multiple] option:hover{
 	background:#508fff;
 	color:#fff;
 }
-.dnd4e textarea{
+textarea{
 	border:none;
 }
 .dnd4e .window-content{
@@ -495,6 +495,7 @@
 	padding-top:5px; 
 	font-size:16px;
 	max-width:35px;
+	border-left:var(--border-normal);
 }
 .dnd4e .section--skills{
 	margin-right:15px;
@@ -610,9 +611,6 @@
 	overflow-y:auto;
 	align-content:flex-start;
 	scrollbar-width: thin;
-}
-.dnd4e.sheet .window-content .tab[data-tab]:not(.active){
-	display:none;
 }
 .dnd4e.sheet.actor .tab.details .section--attributes{
 	border:unset;
@@ -1163,12 +1161,16 @@ font-size:12px;
 	margin:0;
 	top:2px;
 	position:relative;
+	/* left:1%; */
 }
 .dnd4e .attribute-res{
 	margin:0 0 0 0;
+	/* border:2px groove #eeede0; */
 	border-radius:4px;
 	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
+	height:328px;
 	width:100%;
+	float:left;
 }
 .dnd4e .attribute-res .skill.flexrow{
 	align-items:center;
@@ -1267,6 +1269,16 @@ font-size:12px;
 }
 .dnd4e .attribute-init .init-bonus{
 	width:30px;
+}
+.dnd4e .attribute-modifiers{
+	margin:0 0 0 0;
+	border-radius:4px;
+	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
+	width:100%;
+	max-height:76px;
+	float:left;
+	text-align:center;
+	line-height:22px;
 }
 .dnd4e input.action-box{
 	height:14px;
@@ -1596,12 +1608,12 @@ font-size:12px;
 .dnd4e.sheet .item-list .item,
 .dnd4e.sheet.item .item-list .item,
 .dnd4e.sheet.item .item-list .effect {
-	min-height:30px;
+	line-height:30px;
 	padding:0 2px;
 	border-bottom:var(--border-faint);
 }
 .dnd4e.sheet .item-list .power-list .item{
-	min-height:30px;
+	line-height:30px;
 	padding:0 2px;
 	border-bottom:1px solid transparent;
 }
@@ -1649,7 +1661,6 @@ font-size:12px;
 	margin:0;
 	white-space:nowrap;
 	overflow-x:hidden;
-	text-align:left;
 }
 .dnd4e.sheet .item-list .item .item-uses input{
 	width:24px;
@@ -1770,24 +1781,9 @@ font-size:12px;
 .dnd4e.sheet.item .item-list .item-controls {
 	text-align: center;
 }
+
 .dnd4e.sheet.item .content .item-list .item-controls {
 	flex:0 0 44px;
-}
-.dnd4e .attribute-modifiers{
-	margin:0 0 0 0;
-	border-radius:4px;
-	width:100%;
-	text-align:center;
-}
-.dnd4e.sheet .item-list.modifier-list .global-mod{
-	gap:1em;
-	min-height:1.5em;
-}
-.dnd4e.sheet .item-list.modifier-list .global-mod :first-child{
-	text-align:right;
-}
-.dnd4e.sheet .item-list.modifier-list .global-mod :nth-child(2){
-	text-align:left;
 }
 .dnd4e.sheet .item-list.effects-list{
 	overflow-y:visible;
@@ -2338,8 +2334,27 @@ font-size:12px;
 /*  Active Effect Sheets
 /* ----------------------------------------- */
 
+.active-effect-sheet .tab.active.details {
+    height: calc(100% - 140px);
+}
 .active-effect-sheet .editor.prosemirror{
-	height:14em;
+	/* height:14em; */
+	height: 100%;
+}
+.active-effect-sheet .form-group.editor{
+	height: calc(100% - 138px);
+	overflow: hidden;
+}
+.sheet.active-effect-sheet .prosemirror menu,
+.dnd4e.sheet.actor .prosemirror menu,
+.dnd4e.sheet.item .prosemirror menu {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.sheet.active-effect-sheet .editor.prosemirror,
+.dnd4e.sheet.actor .editor.prosemirror ,
+.dnd4e.sheet.item .editor.prosemirror {
+	background-color: rgba(0, 0, 0, 0.05);
 }
 .active-effect-sheet input.saveDC{
 	max-width:4em;
