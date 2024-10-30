@@ -1259,7 +1259,9 @@ DND4E.skills = {
 DND4E.modifiers ={
 	"attack": "DND4E.ModifierAttack",
 	"damage": "DND4E.ModifierDamage",
-}
+	"skills": "DND4E.ModifierSkills",
+	"defences": "DND4E.ModifierDefences"
+};
 
 /* -------------------------------------------- */
 
