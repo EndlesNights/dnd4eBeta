@@ -160,6 +160,11 @@
 		<label>{{ localize "DND4E.IsAttack" }}</label>
 		<span class="checkbox"><input class="checkbox" type="checkbox" name="system.attack.isAttack" data-dtype="Boolean" {{checked system.attack.isAttack}}/></span>
 	</div>
+		
+	<div class="form-group">
+		<label>{{ localize "DND4E.BasicAttack" }}</label>
+		<span class="checkbox"><input class="checkbox" type="checkbox" name="system.attack.isBasic" data-dtype="Boolean" {{checked system.attack.isBasic}}/></span>
+	</div>
 	
 	{{#if system.attack.isAttack}}
 	{{!-- Attack--}}
