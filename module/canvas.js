@@ -1,10 +1,15 @@
+/**
+ * @deprecated since v12
+ * BaseGrid#measureDistances is deprecated. Use BaseGrid#measurePath instead
+ * @ignore
+ */
 /** @override */
 export const measureDistances = function(segments, options={}) {
   if ( !options.gridSpaces ) return BaseGrid.prototype.measureDistances.call(this, segments, options);
 
   // Track the total number of diagonals
   let nDiagonal = 0;
-  const rule = this.parent.diagonalRule;
+  const rule = this.parent?.diagonalRule;
   const d = canvas.dimensions;
 
   // Iterate over measured segments
