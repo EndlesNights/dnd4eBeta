@@ -23,6 +23,11 @@
 		super(data, context);
 	}
 
+	/* --------------------------------------------- */
+	/**
+	 * Returns a HTML string for the active effect tool-tip
+	 * @type {string}
+	 */
 	get tooltip(){
 		console.log(this)
 		let html = `<div class="effect-tooltip">`;
