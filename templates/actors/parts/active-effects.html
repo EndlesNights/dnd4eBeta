@@ -1,5 +1,4 @@
 {{!-- Modifiers --}}
-
 {{#if system.modifiers}}
 <div class="attribute-modifiers">
 	<h4 class="attribute-name box-title">{{localize 'DND4E.ModifiersGlobal'}}</h4>
@@ -45,8 +44,9 @@
 			</div>
 		</ul>
 	</div>
-	{{/if}}
 </div>
+{{/if}}
+
 <div class="active-effects">
 	<h4 class="attribute-name box-title">{{localize 'DND4E.Effects'}}</h4>
 	<ol class="item-list effects-list">
@@ -64,17 +64,17 @@
 
 		<ol class="item-list">
 			{{#each section.effects as |effect|}}
-			<li class="item effect flexrow" data-effect-id="{{effect.id}}">
-				<div class="item-name effect-name flexrow" data-tooltip="{{effect.name}}">
+			<li class="item effect flexrow" data-effect-id="{{effect.id}}" data-tooltip="{{effect.tooltip}}">
+				<div class="item-name effect-name flexrow">
 					<img class="item-image" src="{{effect.img}}" />
 					<h4>{{effect.name}}</h4>
 				</div>
-				<div class="effect-source" data-tooltip="{{getSourceName effect}}">{{getSourceName effect}}</div>
+				<div class="effect-source">{{getSourceName effect}}</div>
 				{{#if effect._getIsSave}}
 				<a class="effect-duration effect-save rollable"
 					data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}</a>
 				{{else}}
-				<div class="effect-duration" data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}
+				<div class="effect-duration">{{effect.duration.label}}
 				</div>
 				{{/if}}
 				<div class="item-controls effect-controls flexrow">
