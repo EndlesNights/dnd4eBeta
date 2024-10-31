@@ -3,147 +3,171 @@
 {{#if system.modifiers}}
 <div class="attribute-modifiers">
 	<h4 class="attribute-name box-title">{{localize 'DND4E.ModifiersGlobal'}}</h4>
-	
+
 	<div class="global-mods">
-	<ul class="item-list modifier-list">
-		<div class="global-mods-column flexrow">
-			<li class="flexrow global-mod" data-modifiers="attack">
-				<span data-tooltip="{{localize 'DND4E.ModifierAttack'}} <br />{{#if system.modifiers.attack.warn}}({{localize 'DND4E.ModifierAttackNote'}}){{/if}}"><strong>{{localize 'DND4E.Attack'}}:</strong>&nbsp;{{numberFormat system.modifiers.attack.value sign=true}}</span>
-				<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierAttack'}}">{{localize 'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.attack.bonusValue sign=true}}</a>
-			</li>
-			<li class="flexrow global-mod" data-modifiers="damage">
-				<span data-tooltip="{{localize 'DND4E.ModifierDamage'}}"><strong>{{localize 'DND4E.Damage'}}:</strong>&nbsp;{{numberFormat system.modifiers.damage.value sign=true}}</span>
-				<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierDamage'}}">{{localize 'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.damage.bonusValue sign=true}}</a>
-			</li>
-		</div>
-		<div class="global-mods-column flexrow">
-			<li class="flexrow global-mod" data-modifiers="skills">
-				<span data-tooltip="{{localize 'DND4E.ModifierSkills'}}"><strong>{{localize 'DND4E.Skills'}}:</strong>&nbsp;{{numberFormat system.modifiers.skills.value sign=true}}</span>
-				<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierSkills'}}">{{localize 'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.skills.bonusValue sign=true}}</a>
-			</li>
-			<li class="flexrow global-mod" data-modifiers="defences">
-				<span data-tooltip="{{localize 'DND4E.ModifierDefences'}}"><strong>{{localize 'DND4E.Defences'}}:</strong>&nbsp;{{numberFormat system.modifiers.defences.value sign=true}}</span>
-				<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierDefences'}}">{{localize 'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.defences.bonusValue sign=true}}</a>
-			</li>
-		</div>
-	</ul>
-	</div>
-{{/if}}
-
-	<div class="active-effects">
-		<h4 class="attribute-name box-title">{{localize 'DND4E.Effects'}}</h4>
-		<ol class="item-list effects-list">
-		{{#each effects as |section sid|}}
-			<li class="items-header flexrow" data-effect-type="{{section.type}}">
-				<h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
-				<div class="effect-source">{{localize 'DND4E.Source'}}</div>
-				<div class="effect-source">{{localize 'DND4E.Duration'}}</div>
-				<div class="item-controls effect-controls flexrow">
-					<a class="effect-control" data-action="create" data-tooltip="{{localize 'DND4E.EffectCreate'}}">
-						<i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
-					</a>
-				</div>
-			</li>
-
-			<ol class="item-list">
-			{{#each section.effects as |effect|}}
-				<li class="item effect flexrow" data-effect-id="{{effect.id}}">
-					<div class="item-name effect-name flexrow" data-tooltip="{{effect.name}}">
-						<img class="item-image" src="{{effect.img}}"/>
-						<h4>{{effect.name}}</h4>
-					</div>
-					<div class="effect-source" data-tooltip="{{getSourceName effect}}">{{getSourceName effect}}</div>
-					{{#if effect._getIsSave}}
-						<a class="effect-duration effect-save rollable" data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}</a>
-					{{else}}
-						<div class="effect-duration" data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}</div>
-					{{/if}}
-					<div class="item-controls effect-controls flexrow">
-						<a class="effect-control" data-action="toggle" data-tooltip="{{localize 'DND4E.EffectToggle'}}">
-							<i class="{{#if (isActive this)}}fas fa-power-off{{else}}fas fa-circle-notch{{/if}}"></i>
-						</a>
-						<a class="effect-control" data-action="edit" data-tooltip="{{localize 'DND4E.EffectEdit'}}">
-							<i class="fas fa-edit"></i>
-						</a>
-						{{#if (isActor ../../this)}}
-							{{#if effect.transfer}}
-								<a class="effect-control" data-action="none" data-tooltip="{{localize 'DND4E.EffectFromItem'}}">
-									<i class=""></i>
-								</a>
-							{{else}}
-								<a class="effect-control" data-action="delete" data-tooltip="{{localize 'DND4E.EffectDelete'}}">
-									<i class="fas fa-trash"></i>
-								</a>
-							{{/if}}
-						{{else}}
-							<a class="effect-control" data-action="delete" data-tooltip="{{localize 'DND4E.EffectDelete'}}">
-								<i class="fas fa-trash"></i>
-							</a>
-						{{/if}}
-					</div>
+		<ul class="item-list modifier-list">
+			<div class="global-mods-column flexrow">
+				<li class="flexrow global-mod" data-modifiers="attack">
+					<span
+						data-tooltip="{{localize 'DND4E.ModifierAttack'}} <br />{{#if system.modifiers.attack.warn}}({{localize 'DND4E.ModifierAttackNote'}}){{/if}}"><strong>{{localize
+							'DND4E.Attack'}}:</strong>&nbsp;{{numberFormat system.modifiers.attack.value
+						sign=true}}</span>
+					<a class="modifiers-bonus" data-target="system.modifiers"
+						data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierAttack'}}">{{localize
+						'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.attack.bonusValue sign=true}}</a>
 				</li>
-			{{/each}}
-			</ol>
-		{{/each}}
-		</ol>
-	</div>
-</div>
-
-	{{!-- Resistances --}}
-
-	{{#if system.resistances}}
-	<div class="attribute-res resource-full">
-		<h4 class="attribute-name box-title">{{localize 'DND4E.DamResVuln'}}</h4>
-		<ol class="item-list">
-		{{#each system.resistances as |res r|}}
-			<li class="skill flexrow" data-res="{{r}}">
-				<h4 class="res-name">{{res.label}}</h4>
-				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
-				<span class="res-armour">{{localize 'DND4E.Armour'}}: {{res.armour}} </span>
-				<a class="resistances-bonus" data-target="system.resistances" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.DamRes'}}">{{localize 'DND4E.Bonus'}}: {{res.resBonusValue}}</a>
-				<span class="res-immune">{{localize 'DND4E.Immunity'}}</span>
-				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} data-tooltip="{{localize 'DND4E.Immunity'}}"/>
-			</li>
-		{{/each}}
-		</ol>
-
-		{{!-- Condition & Special Resistances --}}
-		<div class="resistances-special"> 
-		
-			<a class="list-string-input untyped-resistances" data-options="special" data-target="system.untypedResistances.resistances">
-				<span>{{ localize "DND4E.UntypedRes" }}</span>
-				<i class="fas fa-edit"></i>
-			</a>
-			
-			<ul class="traits-list" style="list-style-type: none;">
-			{{#each system.untypedResistances.resistances as |v k|}}
-				<li class="tag {{k}}">{{v}}</li>
-			{{/each}}
-			</ul>
-			
-			<a class="list-string-input untyped-resistances" data-options="special" data-target="system.untypedResistances.vulnerabilities">
-				<span>{{ localize "DND4E.UntypedVuln" }}</span>
-				<i class="fas fa-edit"></i>
-			</a>
-				
-			<ul class="traits-list" style="list-style-type: none;">
-			{{#each system.untypedResistances.vulnerabilities as |v k|}}
-				<li class="tag {{k}}">{{v}}</li>
-			{{/each}}
-			</ul>
-			
-			<a class="list-string-input untyped-resistances" data-options="special" data-target="system.untypedResistances.immunities">
-				<span>{{ localize "DND4E.UntypedImm" }}</span>
-				<i class="fas fa-edit"></i>
-			</a>
-			
-			<ul class="traits-list" style="list-style-type: none;">
-			{{#each system.untypedResistances.immunities as |v k|}}
-				<li class="tag {{k}}">{{v}}</li>
-			{{/each}}
-			</ul>
-		</div>
-
+				<li class="flexrow global-mod" data-modifiers="damage">
+					<span data-tooltip="{{localize 'DND4E.ModifierDamage'}}"><strong>{{localize
+							'DND4E.Damage'}}:</strong>&nbsp;{{numberFormat system.modifiers.damage.value
+						sign=true}}</span>
+					<a class="modifiers-bonus" data-target="system.modifiers"
+						data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierDamage'}}">{{localize
+						'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.damage.bonusValue sign=true}}</a>
+				</li>
+			</div>
+			<div class="global-mods-column flexrow">
+				<li class="flexrow global-mod" data-modifiers="skills">
+					<span data-tooltip="{{localize 'DND4E.ModifierSkills'}}"><strong>{{localize
+							'DND4E.Skills'}}:</strong>&nbsp;{{numberFormat system.modifiers.skills.value
+						sign=true}}</span>
+					<a class="modifiers-bonus" data-target="system.modifiers"
+						data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierSkills'}}">{{localize
+						'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.skills.bonusValue sign=true}}</a>
+				</li>
+				<li class="flexrow global-mod" data-modifiers="defences">
+					<span data-tooltip="{{localize 'DND4E.ModifierDefences'}}"><strong>{{localize
+							'DND4E.Defences'}}:</strong>&nbsp;{{numberFormat system.modifiers.defences.value
+						sign=true}}</span>
+					<a class="modifiers-bonus" data-target="system.modifiers"
+						data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierDefences'}}">{{localize
+						'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.defences.bonusValue sign=true}}</a>
+				</li>
+			</div>
+		</ul>
 	</div>
 	{{/if}}
+</div>
+<div class="active-effects">
+	<h4 class="attribute-name box-title">{{localize 'DND4E.Effects'}}</h4>
+	<ol class="item-list effects-list">
+		{{#each effects as |section sid|}}
+		<li class="items-header flexrow" data-effect-type="{{section.type}}">
+			<h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
+			<div class="effect-source">{{localize 'DND4E.Source'}}</div>
+			<div class="effect-source">{{localize 'DND4E.Duration'}}</div>
+			<div class="item-controls effect-controls flexrow">
+				<a class="effect-control" data-action="create" data-tooltip="{{localize 'DND4E.EffectCreate'}}">
+					<i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
+				</a>
+			</div>
+		</li>
+
+		<ol class="item-list">
+			{{#each section.effects as |effect|}}
+			<li class="item effect flexrow" data-effect-id="{{effect.id}}">
+				<div class="item-name effect-name flexrow" data-tooltip="{{effect.name}}">
+					<img class="item-image" src="{{effect.img}}" />
+					<h4>{{effect.name}}</h4>
+				</div>
+				<div class="effect-source" data-tooltip="{{getSourceName effect}}">{{getSourceName effect}}</div>
+				{{#if effect._getIsSave}}
+				<a class="effect-duration effect-save rollable"
+					data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}</a>
+				{{else}}
+				<div class="effect-duration" data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}
+				</div>
+				{{/if}}
+				<div class="item-controls effect-controls flexrow">
+					<a class="effect-control" data-action="toggle" data-tooltip="{{localize 'DND4E.EffectToggle'}}">
+						<i class="{{#if (isActive this)}}fas fa-power-off{{else}}fas fa-circle-notch{{/if}}"></i>
+					</a>
+					<a class="effect-control" data-action="edit" data-tooltip="{{localize 'DND4E.EffectEdit'}}">
+						<i class="fas fa-edit"></i>
+					</a>
+					{{#if (isActor ../../this)}}
+					{{#if effect.transfer}}
+					<a class="effect-control" data-action="none" data-tooltip="{{localize 'DND4E.EffectFromItem'}}">
+						<i class=""></i>
+					</a>
+					{{else}}
+					<a class="effect-control" data-action="delete" data-tooltip="{{localize 'DND4E.EffectDelete'}}">
+						<i class="fas fa-trash"></i>
+					</a>
+					{{/if}}
+					{{else}}
+					<a class="effect-control" data-action="delete" data-tooltip="{{localize 'DND4E.EffectDelete'}}">
+						<i class="fas fa-trash"></i>
+					</a>
+					{{/if}}
+				</div>
+			</li>
+			{{/each}}
+		</ol>
+		{{/each}}
+	</ol>
+</div>
+
+{{!-- Resistances --}}
+
+{{#if system.resistances}}
+<div class="attribute-res resource-full">
+	<h4 class="attribute-name box-title">{{localize 'DND4E.DamResVuln'}}</h4>
+	<ol class="item-list">
+		{{#each system.resistances as |res r|}}
+		<li class="skill flexrow" data-res="{{r}}">
+			<h4 class="res-name">{{res.label}}</h4>
+			<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
+			<span class="res-armour">{{localize 'DND4E.Armour'}}: {{res.armour}} </span>
+			<a class="resistances-bonus" data-target="system.resistances"
+				data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.DamRes'}}">{{localize 'DND4E.Bonus'}}:
+				{{res.resBonusValue}}</a>
+			<span class="res-immune">{{localize 'DND4E.Immunity'}}</span>
+			<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}}
+				data-tooltip="{{localize 'DND4E.Immunity'}}" />
+		</li>
+		{{/each}}
+	</ol>
+
+	{{!-- Condition & Special Resistances --}}
+	<div class="resistances-special">
+
+		<a class="list-string-input untyped-resistances" data-options="special"
+			data-target="system.untypedResistances.resistances">
+			<span>{{ localize "DND4E.UntypedRes" }}</span>
+			<i class="fas fa-edit"></i>
+		</a>
+
+		<ul class="traits-list" style="list-style-type: none;">
+			{{#each system.untypedResistances.resistances as |v k|}}
+			<li class="tag {{k}}">{{v}}</li>
+			{{/each}}
+		</ul>
+
+		<a class="list-string-input untyped-resistances" data-options="special"
+			data-target="system.untypedResistances.vulnerabilities">
+			<span>{{ localize "DND4E.UntypedVuln" }}</span>
+			<i class="fas fa-edit"></i>
+		</a>
+
+		<ul class="traits-list" style="list-style-type: none;">
+			{{#each system.untypedResistances.vulnerabilities as |v k|}}
+			<li class="tag {{k}}">{{v}}</li>
+			{{/each}}
+		</ul>
+
+		<a class="list-string-input untyped-resistances" data-options="special"
+			data-target="system.untypedResistances.immunities">
+			<span>{{ localize "DND4E.UntypedImm" }}</span>
+			<i class="fas fa-edit"></i>
+		</a>
+
+		<ul class="traits-list" style="list-style-type: none;">
+			{{#each system.untypedResistances.immunities as |v k|}}
+			<li class="tag {{k}}">{{v}}</li>
+			{{/each}}
+		</ul>
+	</div>
+
+</div>
+{{/if}}
 </ol>
