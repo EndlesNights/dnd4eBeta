@@ -2334,16 +2334,29 @@ font-size:12px;
 /*  Active Effect Sheets
 /* ----------------------------------------- */
 
-.active-effect-sheet .tab.active.details {
-    height: calc(100% - 140px);
+.active-effect-sheet section[data-tab="details"].tab.active,
+.active-effect-sheet section[data-tab="duration"].tab.active {
+	height: calc(100% - 140px);
+}
+.active-effect-sheet section[data-tab="effects"].tab.active {
+	height: calc(100% - 166px);
 }
 .active-effect-sheet .editor.prosemirror{
 	/* height:14em; */
+	min-height: 10em;
 	height: 100%;
 }
 .active-effect-sheet .form-group.editor{
 	height: calc(100% - 138px);
 	overflow: hidden;
+}
+.active-effect-sheet .form-group.editor.extended{
+	height: calc(100% - 164px);
+}
+
+.active-effect-sheet .sheet-footer{
+	bottom: 0px;
+	position: sticky;
 }
 .sheet.active-effect-sheet .prosemirror menu,
 .dnd4e.sheet.actor .prosemirror menu,
