@@ -1,6 +1,26 @@
 # Changelog
 
 ## Version 0.5.4
+- Many fixes [PR 393](https://github.com/EndlesNights/dnd4eBeta/pull/393) from [FoxLee](https://github.com/FoxLee)
+	- Updated references to certain properties in the damage rolled from chat cards (fixes #390). I also changed the fallback behaviour for unspecified damage, which seemed like it should use physical instead of true damage.
+	- Updated references to certain properties in active effect config (Fixes #383)
+	- Added new logic for bonus keys based on the defence targeted by a power (as suggested by absolitude on the Discord). Yay for low-hanging fruit! :p
+	- Since the v12 editions expand many single-string configs into objects, I took the liberty of adding short and abbreviated labels to ability action types (eg. "Standard" vs. "Standard Action" and "STD."). Also added strings accordingly in the EN and AN-AU lang files, and corrected some mistakes in strings for auto-apply effect settings.
+	- Updated various templates to newer Handlebars. (Not actually required until v14, but I got sick of so many warnings so I got rid of some easy ones while I was working on nearby stuff.)
+	- Increased the height of the description field in active effects config form, to make it a bit more usable (also suggested by absolitude on the Discord).
+		- Addtioanl Change was made so the height should scale with addtional space within the form as it is scaled.
+
+	- Changed effect suppression logic on equipment, which was excluding effects without Actor sources, instead of effects without item sources. (Fixes #387).
+	- Fixed custom skills hook as suggested by ddbrown30 (Fixes #391)
+	- Enabled that "global skill modifier" field that's been floating around on character sheets for a while. (Includes a migration script, so that will need to be activated once merged.)
+
+	- Added a global defences modifier, on the basis that while it's not too hard to add bonuses to four defences manually, it does come up _really_ frequently so it would probably be appreciated. It's compared to the bonus types for individual defences, so should respect 4e stacking rules.
+	- Added an "isBasic" property for attacks, which can be targeted with the "basic" bonus key. I meant to add a marker on the power listing as well, but I forgot. I _did_ also update Steve and the SRD powers compendium, I just haven't uploaded them yet because uploading "packs" is a PITA now and if I untangle the global attack/damage bonus types issue before I'm done on this tear, they'll need updates again anyway.
+
+- css fix encumbrance bar height
+- Rework active effect tooltip on character sheets to show description text.
+
+## Version 0.5.4
 - Added healing option of 'Cost Healing Surge" option to healing. This can be used in examples such as with healing potions which take a healing surge,  but only grant a flat amount of hitpoints. When rolling you can manually include this amount with the tag `[surgeCost]`, this still expand a surge on the take when applied.
 - fixed an issue where the current HP value on character sheets would lock from active effects
 
