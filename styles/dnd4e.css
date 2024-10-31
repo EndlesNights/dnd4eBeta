@@ -1576,7 +1576,7 @@ font-size:12px;
 	scrollbar-width:thin;
 }
 .dnd4e.sheet.actor .inventory .inventory-list {
-	height:calc(100% - 116px);
+	height:calc(100% - 117px);
 }
 .dnd4e.sheet.item .item-list.inventory-list{
 	height:calc(100% - 127px);
