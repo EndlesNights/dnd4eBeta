@@ -16,7 +16,7 @@
     </nav>
 
     <!-- Details Tab -->
-    <section class="tab" data-tab="details">
+    <section class="tab details" data-tab="details">
 
         <div class="form-group">
             <label>{{ localize "EFFECT.Tint" }}</label>
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div class="form-group stacked">
+        <div class="form-group stacked editor {{#if powerParent}}extended{{/if}}">
             <label>{{ localize "EFFECT.Description" }}</label>
             {{editor descriptionHTML target="description" button=false editable=editable engine="prosemirror" collaborate=false}}
         </div>
@@ -198,7 +198,7 @@
 							{{/unless}}
 						{{/unless}}
 						>
-							{{selectOptions ../config.statusEffects selected=status nameAttr="id" labelAttr="label" localize=true blank="none"}}
+							{{selectOptions ../config.statusEffects selected=status valueAttr="id" labelAttr="label" localize=true blank="none"}}
 							{{#unless (eq status "none")}}
 								{{#unless (contains status ../config.statusEffects "id")}}
 								<option value="{{status}}" selected>{{localize 'DND4EUI.UnknownCondition.Label'}}</option>

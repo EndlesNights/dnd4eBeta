@@ -342,15 +342,41 @@ export class Actor4e extends Actor {
 		if (system.attributes.temphp.value <= 0 )
 			system.attributes.temphp.value = null;
 
-		// Skill modifiers
-		//Calc defence stats
+		//Calculate global modifiers
+		for (let [id, mod] of Object.entries(system.modifiers)) {
+			let modifierBonusValue = 0;
+			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
+				for( const b of mod.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						modifierBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,system)
+						if(Helper._isNumber(val)){
+							modifierBonusValue += parseInt(val);
+						}
+					}
+				} 
+			}
+
+			mod.bonusValue = modifierBonusValue;
+			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.untyped + mod.race + modifierBonusValue;
+			mod.label = game.i18n.localize(DND4E.modifiers[id]);
+		}
+		
+		// Calculate Defences
 		if(this.type === "NPC"){
-			this.calcSkillNPC(system);
 			this.calcDefenceStatsNPC(system);
 		} else {
-			this.calcSkillCharacter(system);
 			this.calcDefenceStatsCharacter(system);
 		}
+		
+		//Apply armour nonproficiency penalty to global attack mod
+		//This needs to be after defences, but defences need to go after the main global mods calc—so I separated this here.
+		//"Warn" property is to help the sheet deliver a warning.
+		//						- Fox
+		system.modifiers.attack.value += (system.modifiers.attack.armourPen || 0);
+		system.modifiers.attack.warn = system.modifiers.attack.armourPen < 0 ? true : false;
 
 		//calculate initiative
 		let initBonusValue = 0;
@@ -552,6 +578,13 @@ export class Actor4e extends Actor {
 
 		if (system.movement.shift.value < 0)
 			system.movement.shift.value = 0;
+		
+		//Calculate skill modifiers
+		if(this.type === "NPC"){
+			this.calcSkillNPC(system);
+		} else {
+			this.calcSkillCharacter(system);
+		}
 			
 		//Passive Skills
 		for (let [id, pas] of Object.entries(system.passive)) {
@@ -572,35 +605,13 @@ export class Actor4e extends Actor {
 			pas.bonusValue = passiveBonusValue;
 			pas.value = 10 + system.skills[pas.skill].total + passiveBonusValue;
 		}
-
-		//Attack and damage modifiers
-		for (let [id, mod] of Object.entries(system.modifiers)) {
-			let modifierBonusValue = 0;
-			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
-				for( const b of mod.bonus) {
-					if(b.active && Helper._isNumber(b.value)) {
-						modifierBonusValue += parseInt(b.value);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,system)
-						if(Helper._isNumber(val)){
-							modifierBonusValue += parseInt(val);
-						}
-					}
-				}
-			}
-
-			mod.bonusValue = modifierBonusValue;
-			mod.value += mod.class + mod.feat + mod.item + mod.power + (mod.untyped) + mod.race + modifierBonusValue + (mod.armourPen || 0);
-			mod.label = game.i18n.localize(DND4E.modifiers[id]);
-		}
 		
 		/* Resistances & Weaknesses
 		   Apr 2024 update - [type].value should be now read as the incoming damage adjustment, 
 		   with the resistance totalled under [type].res and the vulnerabilty under [type].vuln.
 		   This should allow for automation of "reduce resistance by X" type effects without
 		   applying unwanted vulnerabilities.
-		*/
+		*/try{
 		for (let [id, res] of Object.entries(system.resistances)) {
 			res.vuln = res.vuln || 0;
 			res.res = res.res || 0;
@@ -620,7 +631,6 @@ export class Actor4e extends Actor {
 			}
 			res.resBonusValue = resBonusValue; // This value is displayed on the actor sheet
 			
-			//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
 			//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
 			for ( let i of this.items) {
 				if(i.type !="equipment" || !i.system.equipped || i.system.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
@@ -628,7 +638,8 @@ export class Actor4e extends Actor {
 				break;
 			}
 			
-	const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
+			//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
+			const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
 			
 			for ( let val of damageMods ) {
 				if ( val < 0 ){
@@ -645,6 +656,9 @@ export class Actor4e extends Actor {
 			//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: final result of ${res.value} from res ${res.res} and vulnerability ${res.vuln}`);
 
 			res.label = game.i18n.localize(DND4E.damageTypes[id]); //.localize("");
+		}
+	}catch (e){	
+			console.log(e);
 		}
 		
 		//Magic Items
@@ -680,10 +694,10 @@ export class Actor4e extends Actor {
 			disabled:false,
 			description: game.i18n.localize("DND4E.SecondWindEffect"),
 			changes: [
-				{key: "system.defences.ac.value", mode: 2, value: 2},
-				{key: "system.defences.fort.value", mode: 2, value: 2},
-				{key: "system.defences.ref.value", mode: 2, value: 2},
-				{key: "system.defences.wil.value", mode: 2, value: 2},
+				{key: "system.defences.ac.untyped", mode: 2, value: 2},
+				{key: "system.defences.fort.untyped", mode: 2, value: 2},
+				{key: "system.defences.ref.untyped", mode: 2, value: 2},
+				{key: "system.defences.wil.untyped", mode: 2, value: 2},
 			],
 			flags:{dnd4e:{effectData:{durationType:"startOfUserTurn"}}}
 		};
@@ -693,9 +707,18 @@ export class Actor4e extends Actor {
 
 	/* -------------------------------------------- */
 
-	calcDefenceStatsCharacter(data) {		
+	calcDefenceStatsCharacter(data) {
+		/* Typed bonuses to global defence modifier need to be compared against typed bonuses to the individual defences. */
+		let globalBonus = {};
+		try{
+			globalBonus = data.modifiers.defences;
+		}catch(e){
+			console.warn(`PC global defence calc failed, probably due to an unmigrated actor. Defences will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+		}
+		
 		for (let [id, def] of Object.entries(data.defences)) {
-			
+			def.value = parseFloat(def.value || 0);
 			def.label = DND4E.defensives[id].abbreviation;
 			def.title = DND4E.defensives[id].label;
 						
@@ -749,13 +772,16 @@ export class Actor4e extends Actor {
 			let modBonus = def.ability != "" ? data.abilities[def.ability].mod : 0;
 
 			def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;
-			def.value += def.feat || 0;
-			def.value += def.item || 0;
-			def.value += def.power || 0;
-			def.value += def.race || 0;
+			def.value += Math.max(def.feat || 0, globalBonus.feat);
+			def.value += Math.max(def.item || 0, globalBonus.item);
+			def.value += Math.max(def.power || 0, globalBonus.power);
+			def.value += Math.max(def.race || 0, globalBonus.race);
 			def.value += def.enhance || 0;
 			def.value += def.shield || 0;
 			def.value += def.untyped || 0;
+			def.value += globalBonus.untyped;
+			//No way to sort manual bonuses, so they just get added regardless.
+			def.value += globalBonus.bonusValue;			
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 				def.value += Math.floor(data.details.level / 2);
@@ -764,8 +790,17 @@ export class Actor4e extends Actor {
 	}
 
 	calcDefenceStatsNPC(data) {
+		/* Typed bonuses to global defence modifier need to be compared against typed bonuses to the individual defences. */
+		let globalBonus = {};
+		try{
+			globalBonus = data.modifiers.defences;
+		}catch(e){
+			console.warn(`NPC global defence calc failed, probably due to an unmigrated actor. Defences will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+		}
+		
 		for (let [id, def] of Object.entries(data.defences)) {
-			
+			def.value = parseFloat(def.value || 0);
 			def.label = DND4E.defensives[id].abbreviation;
 			def.title = DND4E.defensives[id].label;
 						
@@ -809,26 +844,40 @@ export class Actor4e extends Actor {
 			if(data.advancedCals){
 				let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
 
-				def.value = def.base + modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
+				def.value += def.base + modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
+				
 				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 					def.value += Math.floor(data.details.level / 2);
 				}
 				
+				//No way to sort manual bonuses, so they just get added regardless.
+				def.value += globalBonus.bonusValue;
+				
 			} else {
-				def.value = def.base;		
+				def.value += def.base;
 			}
 
-			def.value += def.feat|| 0;
-			def.value += def.item|| 0;
-			def.value += def.power || 0;
-			def.value += def.race || 0;
+			def.value += Math.max(def.feat || 0, globalBonus.feat);
+			def.value += Math.max(def.item || 0, globalBonus.item);
+			def.value += Math.max(def.power || 0, globalBonus.power);
+			def.value += Math.max(def.race || 0, globalBonus.race);
+			def.value += def.enhance || 0;
+			def.value += def.shield || 0;
 			def.value += def.untyped || 0;
-			def.value += def.enhance|| 0;
-			def.value += def.shield|| 0;
+			def.value += globalBonus.untyped;
 		}
 	}
 
 	calcSkillCharacter(system){
+		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. */
+		let globalBonus = {};
+		try{
+			globalBonus = system.modifiers.skills;
+		}catch(e){
+			console.warn(`PC global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+		}
+		
 		for (const [id, skl] of Object.entries(system.skills)) {
 			skl.value = parseFloat(skl.value || 0);
 
@@ -881,35 +930,38 @@ export class Actor4e extends Actor {
 			switch (skl.training){
 				case 8:
 					trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
-					featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat);
-					itemBonus = Math.max(system.skillTraining.expertise.item, skl.item);
-					powerBonus = Math.max(system.skillTraining.expertise.power, skl.power);
-					raceBonus = Math.max(system.skillTraining.expertise.race, skl.race);
+					featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat,0);
+					itemBonus = Math.max(system.skillTraining.expertise.item, skl.item,0);
+					powerBonus = Math.max(system.skillTraining.expertise.power, skl.power,0);
+					raceBonus = Math.max(system.skillTraining.expertise.race, skl.race,0);
 					break;
 				case 5:
 					trainingBonus = system.skillTraining.trained.value + system.skillTraining.trained.untyped;
-					featBonus = Math.max(system.skillTraining.trained.feat, skl.feat);
-					itemBonus = Math.max(system.skillTraining.trained.item, skl.item);
-					powerBonus = Math.max(system.skillTraining.trained.power, skl.power);
-					raceBonus = Math.max(system.skillTraining.trained.race, skl.race);
+					featBonus = Math.max(system.skillTraining.trained.feat, skl.feat,0);
+					itemBonus = Math.max(system.skillTraining.trained.item, skl.item,0);
+					powerBonus = Math.max(system.skillTraining.trained.power, skl.power,0);
+					raceBonus = Math.max(system.skillTraining.trained.race, skl.race,0);
 					break;
 				case 0:
 					trainingBonus = system.skillTraining.untrained.value + system.skillTraining.untrained.untyped;
-					featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat);
-					itemBonus = Math.max(system.skillTraining.untrained.item, skl.item);
-					powerBonus = Math.max(system.skillTraining.untrained.power, skl.power);
-					raceBonus = Math.max(system.skillTraining.untrained.race, skl.race);
+					featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat,0);
+					itemBonus = Math.max(system.skillTraining.untrained.item, skl.item,0);
+					powerBonus = Math.max(system.skillTraining.untrained.power, skl.power,0);
+					raceBonus = Math.max(system.skillTraining.untrained.race, skl.race,0);
 			}
 
 			// Compute modifier
 			skl.mod = system.abilities[skl.ability].mod;
 
 			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-			skl.total += featBonus || 0;
-			skl.total += itemBonus || 0;
-			skl.total += powerBonus || 0;
-			skl.total += raceBonus || 0;
+			skl.total += Math.max(featBonus || 0, globalBonus.feat);
+			skl.total += Math.max(itemBonus || 0, globalBonus.item);
+			skl.total += Math.max(powerBonus || 0, globalBonus.power);
+			skl.total += Math.max(raceBonus || 0, globalBonus.race);
 			skl.total += skl.untyped || 0;
+			skl.total += globalBonus.untyped;
+			//No way to sort manual bonuses, so they just get added regardless.
+			skl.total += globalBonus.bonusValue;
 			skl.total += trainingBonus;
 
 			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
@@ -921,6 +973,15 @@ export class Actor4e extends Actor {
 	}
 
 	calcSkillNPC(system){
+		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. */
+		let globalBonus = {};
+		try{
+			globalBonus = system.modifiers.skills;
+		}catch(e){
+			console.warn(`NPC global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+		}
+		
 		for (let [id, skl] of Object.entries(system.skills)) {
 			skl.value = parseFloat(skl.value || 0);
 
@@ -964,52 +1025,58 @@ export class Actor4e extends Actor {
 			}
 
 			// Compute modifier
-			skl.mod = system.abilities[skl.ability].mod;
+			let powerBonus = 0;
+			let featBonus = 0;
+			let itemBonus = 0;
+			let raceBonus = 0;
+			let trainingBonus = 0;
+			
 			if(system.advancedCals){
+				skl.mod = system.abilities[skl.ability].mod;
 				
-				let trainingBonus = 0;
-				let featBonus = 0;
-				let itemBonus = 0;
-				let powerBonus = 0;
-				let raceBonus = 0;
 				switch (skl.training){
 					case 8:
 						trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
-						featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat);
-						itemBonus = Math.max(system.skillTraining.expertise.item, skl.item);
-						powerBonus = Math.max(system.skillTraining.expertise.power, skl.power);
-						raceBonus = Math.max(system.skillTraining.expertise.race, skl.race);
+						featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat,0);
+						itemBonus = Math.max(system.skillTraining.expertise.item, skl.item,0);
+						powerBonus = Math.max(system.skillTraining.expertise.power, skl.power,0);
+						raceBonus = Math.max(system.skillTraining.expertise.race, skl.race,0);
 						break;
 					case 5:
 						trainingBonus = system.skillTraining.trained.value + system.skillTraining.trained.untyped;
-						featBonus = Math.max(system.skillTraining.trained.feat, skl.feat);
-						itemBonus = Math.max(system.skillTraining.trained.item, skl.item);
-						powerBonus = Math.max(system.skillTraining.trained.power, skl.power);
-						raceBonus = Math.max(system.skillTraining.trained.race, skl.race);
+						featBonus = Math.max(system.skillTraining.trained.feat, skl.feat,0);
+						itemBonus = Math.max(system.skillTraining.trained.item, skl.item,0);
+						powerBonus = Math.max(system.skillTraining.trained.power, skl.power,0);
+						raceBonus = Math.max(system.skillTraining.trained.race, skl.race,0);
 						break;
 					case 0:
 						trainingBonus = system.skillTraining.untrained.value + system.skillTraining.untrained.untyped;
-						featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat);
-						itemBonus = Math.max(system.skillTraining.untrained.item, skl.item);
-						powerBonus = Math.max(system.skillTraining.untrained.power, skl.power);
-						raceBonus = Math.max(system.skillTraining.untrained.race, skl.race);
+						featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat,0);
+						itemBonus = Math.max(system.skillTraining.untrained.item, skl.item,0);
+						powerBonus = Math.max(system.skillTraining.untrained.power, skl.power,0);
+						raceBonus = Math.max(system.skillTraining.untrained.race, skl.race,0);
 				}
 
 				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-				skl.total += featBonus || 0;
-				skl.total += itemBonus || 0;
-				skl.total += powerBonus || 0;
-				skl.total += raceBonus || 0;
-				skl.total += skl.untyped || 0;
 				skl.total += trainingBonus;
 	
 				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
 					skl.total += Math.floor(system.details.level / 2);
 				}
+				
+				//No way to sort manual bonuses, so they just get added regardless.
+				skl.total += globalBonus.bonusValue;
 
 			} else {
 				skl.total = skl.base;
 			}
+			
+			skl.total += Math.max(featBonus || 0, globalBonus.feat);
+			skl.total += Math.max(itemBonus || 0, globalBonus.item);
+			skl.total += Math.max(raceBonus || 0, globalBonus.race);
+			skl.total += Math.max(powerBonus || 0, globalBonus.power);
+			skl.total += skl.untyped || 0;
+			skl.total += globalBonus.untyped;
 
 			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
 		}
@@ -1331,8 +1398,8 @@ export class Actor4e extends Actor {
 				content:this.name + game.i18n.localize("DND4E.DeathSaveCriticalSuccess")
 			});
 		}
-		console.log(roll.total)
-		console.log(rollConfig.critical)
+		//console.log(roll.total)
+		//console.log(rollConfig.critical)
 		await this.update(updateData);
 	}
 
@@ -1363,9 +1430,9 @@ export class Actor4e extends Actor {
 					}
 				}
 				healamount += this.system.details.surgeValue + (r.total || 0);
-				console.log(`surgeValue:${this.system.details.surgeValue}`)
-				console.log(`total:${r.total}`)
-				console.log(`healamount:${healamount}`)
+				//console.log(`surgeValue:${this.system.details.surgeValue}`)
+				//console.log(`total:${r.total}`)
+				//console.log(`healamount:${healamount}`)
 			}
 
 			if (healamount){
@@ -1729,13 +1796,14 @@ export class Actor4e extends Actor {
 	async calcDamageErrata(damage, multiplier, surges){
 		let totalDamage = 0;
 
-		console.log(damage)
+		//console.log(damage)
 		for(let d of damage){
 			console.log(d);
 			//get all the damageTypes in this term
 			let damageTypesArray = d[1].replace(/ /g,'').split(',');
-
+			console.log(damageTypesArray);
 			const actorRes = this.system.resistances;
+			console.log(actorRes);
 			
 			let resAll = actorRes['damage'].value;
 			let isDamageImmune = actorRes['damage'].immune;
@@ -1749,7 +1817,7 @@ export class Actor4e extends Actor {
 			}
 			
 			let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
-			let lowestRes = Infinity; // will attempt to replace this with the lowest resistance / highest vunrability
+			let lowestRes = Infinity; // will attempt to replace this with the lowest resistance / highest vulnerability
 
 			for(let dt of damageTypesArray){
 				const type = dt && actorRes[dt] ? dt : 'damage';
@@ -1759,9 +1827,9 @@ export class Actor4e extends Actor {
 				//Adjust specific resistance with "resist all" value, according to combining resistance/vulnerability rules
 				const currentRes = Helper.sumExtremes([resAll,actorRes[type]?.value || 0]);
 	
-				if(currentRes !== 0 ){ //if has resistances or vulnerability
-					isImmuneAll=false;
-					//console.log(`Modifier found: ${type}  ${actorRes[type].value}`);
+				if(currentRes !== 0){ //if has resistances or vulnerability
+					isImmuneAll = false;
+					console.log(`Modifier found: ${type} ${actorRes[type].value}`);
 					if(currentRes < lowestRes){
 						lowestRes = currentRes;
 					}
@@ -1782,9 +1850,9 @@ export class Actor4e extends Actor {
 
 			if(!isImmuneAll) {
 				totalDamage += Math.max(0, d[0] - lowestRes);
-				console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}\nLowest Res: ${lowestRes}`);
+				//console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}\nLowest Res: ${lowestRes}`);
 			} else{
-				console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}`);
+				//console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}`);
 			}
 			// console.log(`Lowest Res: ${lowestRes}`)
 		}

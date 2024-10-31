@@ -8,7 +8,8 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 			classes: ["sheet", "active-effect-sheet"],
 			template: "systems/dnd4e/templates/sheets/active-effect-config.html",
 			width: 580,
-			height: "auto",
+			height: 514,
+			resizable: true,
 			tabs: [{navSelector: ".tabs", contentSelector: "form", initial: "details"}]
 		});
 	}
@@ -125,7 +126,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 				effectUpdates.name = game.i18n.localize(statuses[statusIndex].label);
 			}
 			if(scope == "copy-icon" || scope == "copy-all"){
-				effectUpdates.icon = statuses[statusIndex].icon;
+				effectUpdates.img = statuses[statusIndex].img;
 				//console.log(effectUpdates);
 			}
 			if(scope == "copy-desc" || scope == "copy-all"){

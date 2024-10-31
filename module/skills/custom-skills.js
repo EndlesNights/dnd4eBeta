@@ -10,7 +10,7 @@ export function customSKillSetUp(){
 	}
 }
 
-Hooks.once("createActor", async function(actor) {
+Hooks.on("createActor", async function(actor) {
 	const customSkillsArray = game.settings.get("dnd4e", "custom-skills");
 
 	if(!customSkillsArray.length) return;

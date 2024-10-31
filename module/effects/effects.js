@@ -111,7 +111,7 @@
 			// const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
 			updates.duration = {startTime: game.time.worldTime};
 			updates.transfer = false;
-			updates.equippedRec = false
+			updates.equippedRec = false;
 
 			const combat = game.combat;
 			if (combat?.turn != null && combat.turns && combat.turns[combat.turn]) {//if combat has started - combat.turn for the first character = 0 (so cannot use truthy value).  If there are no combatents combat.turns = []
@@ -135,14 +135,14 @@
 	 */
 	 determineSuppression() {
 		this.isSuppressed = false;
-
 		const originArray = this.origin?.split(".");
-		if ( this.disabled || !originArray || originArray[0] !== "Actor" || originArray.indexOf("Item") < 0 ) return;
 
+		if ( this.disabled || !originArray || originArray[0] == "Actor" || originArray.indexOf("Item") < 0 ) return;
+		
 		const item = this.parent;
 		if ( !item ) return;
 
-		//types of items that can be equipted
+		//types of items that can be equipped
 		const validTypes = ["weapon", "equipment", "tool", "loot", "backpack"];
 		if(validTypes.includes(item.type) && item.system.equipped === false){
 			this.isSuppressed = this.flags.dnd4e?.effectData?.equippedRec || false;
