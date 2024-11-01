@@ -189,7 +189,7 @@ export const migrateItemData = function(item) {
 	_migrateContainerItems(item, updateData);
 	_migrateItemsGMDescriptions(item, updateData);
 	_migrateNeckGearEnhance(item, updateData);
-	_migratePowerBasic(item, updateData);
+	_migratePowerBasicAndGlobal(item, updateData);
 	return updateData;
 };
 
@@ -760,19 +760,31 @@ if ((itemData.system?.armour.fort !== itemData.system?.armour.ref || itemData.sy
 }
 
 /**
- * Migrate powers without "isBasic" toggle (v0.5.5)
+ * Migrate powers without "isBasic" toggle or manual atkMod/dmgMod usage (v0.5.5)
  * @param {object} itemData   Item data being migrated.
  * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
  * @returns {object}           Modified version of update data.
  * @private
 */
-function _migratePowerBasic(itemData, updateData){
+function _migratePowerBasicAndGlobal(itemData, updateData){
 	if(itemData.type !== "power") return;
 		
-	if(itemData?.attack?.isBasic == undefined){
+	if(itemData.system?.attack?.isBasic == undefined){
 		updateData["system.attack.isBasic"] = false;
-		return updateData;
 	}
+	if(itemData?.system?.attack?.formula){
+		updateData["system.attack.formula"] = itemData.system.attack.formula.replace(/(@atkMod *\+* *)|( *\+* *@atkMod)/g,'');
+	}
+	if(itemData?.system?.hit?.formula){
+		updateData["system.hit.formula"] = itemData.system.hit.formula.replace(/ *\+* *@dmgMod/g,'');
+		updateData["system.hit.critFormula"] = itemData.system.hit.critFormula.replace(/(@dmgMod *\+* *)|( *\+* *@dmgMod)/g,'');
+	}
+	if(itemData?.system?.miss?.formula){
+		updateData["system.miss.formula"] = itemData.system.miss.formula.replace
+		(/(@dmgMod *\+* *)|( *\+* *@dmgMod)/g,'');
+	}
+	
+	return updateData;
 }
 
 /**
