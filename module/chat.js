@@ -392,7 +392,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	
 	//Sort damage and damage type from roll terms into simpler array
 	roll.terms.forEach(e => {
-		if(typeof e.roll.terms[0].number === "number"){
+		if(typeof e.roll?.terms[0].number === "number"){
 		//Is using [0] here okay? I don't know if there is ever more than one entry.
 			if(e.options.flavor){
 				//console.log(`Damage type found: ${e.options.flavor}`);
