@@ -12,6 +12,16 @@ export const _getInitiativeFormula = function() {
 	const tiebreaker = game.settings.get("dnd4e", "initiativeDexTiebreaker");
 	const parts = ["1d20", init,];
 	if ( actor.getFlag("dnd4e", "initiativeAdv") ) parts[0] = "2d20kh";
-	if ( tiebreaker ) parts.push(actor.system.attributes.init.value / 100);
+	
+	if (tiebreaker === false) {
+		//Official system behaviour: append ititiative modifier as tiebreaker
+		parts.push(actor.system.attributes.init.value / 100);
+	} else {
+		//Optional override: append raw dexterity score as tiebreaker
+		parts.push(actor.system.abilities.dex.value / 100);
+	}
+	//Finally, append two extra decimal places at random, to simulate a random tiebreaker.
+	parts.push((Math.random()/100).toFixed(4));
+	
 	return parts.filter(p => p !== null).join(" + ");
 };
