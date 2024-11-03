@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 0.5.4
+## Version 0.5.5
 - Many fixes [PR 393](https://github.com/EndlesNights/dnd4eBeta/pull/393) from [FoxLee](https://github.com/FoxLee)
 	- Updated references to certain properties in the damage rolled from chat cards (fixes #390). I also changed the fallback behaviour for unspecified damage, which seemed like it should use physical instead of true damage.
 	- Updated references to certain properties in active effect config (Fixes #383)
@@ -16,9 +16,18 @@
 
 	- Added a global defences modifier, on the basis that while it's not too hard to add bonuses to four defences manually, it does come up _really_ frequently so it would probably be appreciated. It's compared to the bonus types for individual defences, so should respect 4e stacking rules.
 	- Added an "isBasic" property for attacks, which can be targeted with the "basic" bonus key. I meant to add a marker on the power listing as well, but I forgot. I _did_ also update Steve and the SRD powers compendium, I just haven't uploaded them yet because uploading "packs" is a PITA now and if I untangle the global attack/damage bonus types issue before I'm done on this tear, they'll need updates again anyway.
-
+	
+- Many fixes [PR 396](https://github.com/EndlesNights/dnd4eBeta/pull/396) from [FoxLee](https://github.com/FoxLee)
+	- Updated custom effect handling to apply type stacking rules to global atk/dmg bonuses
+	- Removed `@atkMod` and`@dmgMod` from default formulae, and updated migration to remove them from existing powers.
+	- Updated ongoing damage automation. GM account perform all ongoing damage logic.
+	- Updated document owner detection to prioritise an assigned player before checking owner permissions. This solves an issue I ran into where it would always fall back to a GM if player ownership is all default, even there was a currently assigned player.
+	
 - css fix encumbrance bar height
 - Rework active effect tooltip on character sheets to show description text.
+- fixed issue that was causing Automated Animations to hang up
+
+- updated French Language courtesy of [Gilphe](https://github.com/Gilphe)
 
 ## Version 0.5.4
 - Added healing option of 'Cost Healing Surge" option to healing. This can be used in examples such as with healing potions which take a healing surge,  but only grant a flat amount of hitpoints. When rolling you can manually include this amount with the tag `[surgeCost]`, this still expand a surge on the take when applied.
