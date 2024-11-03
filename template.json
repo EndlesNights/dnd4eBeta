@@ -1032,7 +1032,7 @@
 					"abilityBonus": 0,
 					"def": "ac",
 					"defBonus": 0,
-					"formula": "@wepAttack + @powerMod + @lvhalf + @atkMod",
+					"formula": "@wepAttack + @powerMod + @lvhalf",
 					"damageType": {},
 					"effectType": {}
 				},
@@ -1044,8 +1044,8 @@
 					"baseQuantity": "1",
 					"baseDiceType": "Base Weapon Damage",
 					"detail": "1[W] + Strength modifier damage.",
-					"formula": "@powBase + @powerMod + @wepDamage + @dmgMod",
-					"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus + @dmgMod",
+					"formula": "@powBase + @powerMod + @wepDamage",
+					"critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
 					"healFormula": ""
 				},
 				"miss": {

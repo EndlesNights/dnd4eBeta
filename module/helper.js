@@ -168,13 +168,30 @@ export class Helper {
 					}
 				}))
 			})
+			
+			//Dummy up some extra effects to represent global atk/damage bonuses
+			const globalMods = actorData.system.modifiers;
+			if(globalMods[effectType].value != 0){
+				for (const [key, value] of Object.entries(globalMods[effectType])) {
+					//No way to sort bonus array types, so we'll combine them with untyped before checks.
+					const adjValue = ( key == 'untyped' ? value + globalMods[effectType].bonusValue : value);
+					if(!['value','bonus','warn','bonusValue','label'].includes(key) && adjValue != 0){
+						effectsToProcess.push({
+							name : `Global ${effectType} modifier`,
+							key: `modifiers.${effectType}.global.${key}`,
+							value: adjValue
+						});
+					}
+				}
+			}			
+			
 			if (effectsToProcess.length > 0) {
 				if (debug) {
 					console.log(`${debug} Found the following possible active effects`)
 					effectsToProcess.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
 				}
 
-				const suitableKeywords = []
+				const suitableKeywords = ['global']
 				this._addKeywords(suitableKeywords, powerInnerData.damageType)
 				this._addKeywords(suitableKeywords, powerInnerData.effectType)
 				if (weaponInnerData) {
@@ -292,6 +309,10 @@ export class Helper {
 							break;
 					}
 				}
+				
+				if(powerInnerData.attack?.isBasic){
+					suitableKeywords.push("basic");
+				}
 
 				if (debug) {
 					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group, properties and damage type the following effect keys are suitable`)
@@ -347,7 +368,7 @@ export class Helper {
 								}
 								else {
 									if (debug) {
-										console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : Is not great than existing ${bonusType}, discarding`)
+										console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : Is not greater than existing ${bonusType}, discarding`)
 									}
 								}
 							}
@@ -360,11 +381,11 @@ export class Helper {
 						}
 					}
 					else {
-						ui.notifications.warn(`Tried to process an bonus effect that had too few/many .'s in it: ${effect.key}: ${effect.value}`)
-						console.log(`Tried to process an bonus effect that had too few/many .'s in it: ${effect.key}: ${effect.value}`)
+						ui.notifications.warn(`Tried to process a bonus effect that had too few/many .'s in it: ${effect.key}: ${effect.value}`)
+						console.log(`Tried to process a bonus effect that had too few/many .'s in it: ${effect.key}: ${effect.value}`)
 					}
 				}
-
+				
 				for (const [key, value] of Object.entries(newParts)) {
 					for (const parts of arrayOfParts) {
 						parts.push("@" + key)
@@ -1276,20 +1297,39 @@ export class Helper {
 	/* (pinched from the 5e system for use in the combat loop)
 	/* Returns the player object, or the player's ID if 
 	/* called with idOnly set to "true"
-	/*																			*/
+	/**/
 	static firstOwner(doc,idOnly=false){
 		// null docs could mean an empty lookup, null docs are not owned by anyone
 		if (!doc) return false;
 
-		const playerOwners = Object.entries(doc.ownership)
-		.filter(([id, level]) => (!game.users.get(id)?.isGM && game.users.get(id)?.active) && level === 3)
-		.map(([id, level])=> id);
+		//const playerOwners = owners.filter(([id, level]) => (!game.users.get(id)?.isGM && game.users.get(id)?.active) && level === 3).map(([id, level])=> id);
+		let found;
+		
+		//First check for an assigned character
+		game.users.forEach(function (maybePlayer) {
+			if(maybePlayer.character?.id === doc.id){
+				console.log(`Player found: ${maybePlayer.id}`);
+				found = (idOnly ? maybePlayer.id : maybePlayer );
+				return;
+			}
+		});
+		if(found) return found;
+		
+		//If no assigned character, check for specific player owner
+		const owners = Object.entries(doc.ownership);
+		owners.forEach(function (owner){
+			if(owner[0] !== 'default') {
+				let ownerData = game.users?.get(owner[0]);
+				if(!ownerData?.isGM && ownerData.active && owner.level === 3){
+					console.log(`Owner: ${owner[0]}`);
+					owner = ( idOnly ? owner[0] : ownerData );
+					return;
+				}
+			}
+		});
+		if(found) return found;
 
-		if(playerOwners.length > 0) {
-			return ( idOnly ? playerOwners[0] : game.users.get(playerOwners[0]));
-		}
-
-		// if no online player owns this actor, fall back to first GM
+		// IIf we have no valid player, fall back to first GM
 		const firstGM = game.users.find(u => u.isGM && u.active);
 		return ( idOnly ? firstGM.id : firstGM );
 	}
@@ -1403,13 +1443,14 @@ export async function handleDeleteEffectToToken(data){
 
 export async function handlePromptEoTSaves(data) {
 	//console.log('handler reached');
-	if (!!data.targetUser && game.userId !== data.targetUser) return;
+	if (game.userId !== data?.targetUser) return;
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
 	
 	await actor.promptEoTSavesSocket();
 }
 
 export async function handleAutoDoTs(data) {
+	if(!game.user.isGM) return;
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
 
 	await actor.autoDoTsSocket(data.tokenID);
