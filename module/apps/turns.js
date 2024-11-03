@@ -113,9 +113,9 @@ export class Turns{
 
 		if(nextCombatant){
 			const nextTargetUser = Helper.firstOwner(nextCombatant);
-			if(game.user.isGM && nextTargetUser.isGM){
+			if(game.user.isGM /*&& nextTargetUser.isGM*/){
 				await nextCombatant.autoDoTsSocket(game.combat.turns[nextTurn].tokenId);
-			} else {
+			}/* else {
 				game.socket.emit('system.dnd4e', {
 					actorID: nextCombatant.id,
 					tokenID: game.combat.turns[nextTurn].tokenId,
@@ -125,7 +125,7 @@ export class Turns{
 					targetUser: nextTargetUser.id,
 					//"event":event
 				});
-			}
+			}*/
 		}
 		
 		return wrapped();
