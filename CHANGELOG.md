@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.5.6
+- Hotfix for a bug with situational bonus value #398
+
 ## Version 0.5.5
 - Many fixes [PR 393](https://github.com/EndlesNights/dnd4eBeta/pull/393) from [FoxLee](https://github.com/FoxLee)
 	- Updated references to certain properties in the damage rolled from chat cards (fixes #390). I also changed the fallback behaviour for unspecified damage, which seemed like it should use physical instead of true damage.
