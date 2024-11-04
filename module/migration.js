@@ -493,6 +493,22 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 		}
 	}
 
+	const saves = actorData?.system?.details?.saves;
+	if(saves){
+		if(saves.feat == undefined){
+			updateData[`system.details.saves.feat`] = 0;
+		}
+		if(saves.item == undefined){
+			updateData[`system.details.saves.item`] = 0;
+		}
+		if(saves.power == undefined){
+			updateData[`system.details.saves.power`] = 0;
+		}
+		if(saves.untyped == undefined){
+			updateData[`system.details.saves.untyped`] = 0;
+		}
+	}
+
 	const surgeBon = actorData?.system?.details?.surgeBon;
 	if(surgeBon){
 		if(surgeBon.feat == undefined){
