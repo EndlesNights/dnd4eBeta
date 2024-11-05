@@ -1,7 +1,7 @@
 # Changelog
 
 ## Version 0.5.6
-- Hotfix for a bug with situational bonus value #398
+- Hotfix for a bug with situational bonus value #398 
 
 ## Version 0.5.5
 - Many fixes [PR 393](https://github.com/EndlesNights/dnd4eBeta/pull/393) from [FoxLee](https://github.com/FoxLee)
