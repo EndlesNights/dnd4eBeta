@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.5.7
+- [PR 399](https://github.com/EndlesNights/dnd4eBeta/pull/399) from [FoxLee](https://github.com/FoxLee)
+	- Resolves a problem with initiative where perfect ties could cause incorrect effect expiry
+	- Adds "proficient" bonus key and detection, and improves key application for powers with "any" weapon/implement usage
+	- Activates bonus typing for saving throws and adds appropriate migration
+   
 ## Version 0.5.6
 - Hotfix for a bug with situational bonus value #398
 
