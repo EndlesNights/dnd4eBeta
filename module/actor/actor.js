@@ -279,6 +279,26 @@ export class Actor4e extends Actor {
 		system.details.surgeEnv.value += system.details.surgeEnv.power || 0;
 		system.details.surgeEnv.value += system.details.surgeEnv.race || 0;
 		system.details.surgeEnv.value += system.details.surgeEnv.untyped || 0;
+		
+		//Normal Saving Throw
+		if(!(system.details.saves.bonus.length === 1 && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
+			for( const b of system.details.saves.bonus) {
+				if(b.active && Helper._isNumber(b.value)) {
+					system.details.saves.value += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,system)
+					if(Helper._isNumber(val)){
+						system.details.saves.value += parseInt(val);
+					}
+				}
+			}
+		}
+		system.details.saves.value += system.details.saves?.feat || 0;
+		system.details.saves.value += system.details.saves?.item || 0;
+		system.details.saves.value += system.details.saves?.power || 0;
+		system.details.saves.value += system.details.saves?.race || 0;
+		system.details.saves.value += system.details.saves?.untyped || 0;
 
 		//Death Saving Throw
 		if(!(system.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(system.details.deathsavebon.bonus[0]))) {
@@ -299,25 +319,6 @@ export class Actor4e extends Actor {
 		system.details.deathsavebon.value += system.details.deathsavebon.power || 0;
 		system.details.deathsavebon.value += system.details.deathsavebon.race || 0;
 		system.details.deathsavebon.value += system.details.deathsavebon.untyped || 0;
-
-		if(!(system.details.saves.bonus.length === 1 && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
-			for( const b of system.details.saves.bonus) {
-				if(b.active && Helper._isNumber(b.value)) {
-					system.details.saves.value += parseInt(b.value);
-				}
-				else if(b.active){
-					let val = Helper.replaceData(b.value,system)
-					if(Helper._isNumber(val)){
-						system.details.saves.value += parseInt(val);
-					}
-				}
-			}
-		}
-		system.details.saves.value += system.details.saves.feat || 0;
-		system.details.saves.value += system.details.saves.item || 0;
-		system.details.saves.value += system.details.saves.power || 0;
-		system.details.saves.value += system.details.saves.race || 0;
-		system.details.saves.value += system.details.saves.untyped || 0;
 		
 		//Weight & Encumbrance
 		system.encumbrance = this._computeEncumbrance(actorData.system);
@@ -703,6 +704,7 @@ export class Actor4e extends Actor {
 		};
 
 		this.system.details.secondwindEffect = secondwindEffect;
+		
 	}
 
 	/* -------------------------------------------- */
@@ -803,22 +805,6 @@ export class Actor4e extends Actor {
 			def.value = parseFloat(def.value || 0);
 			def.label = DND4E.defensives[id].abbreviation;
 			def.title = DND4E.defensives[id].label;
-						
-			let defBonusValue = 0;
-			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
-				for( const b of def.bonus) {
-					if(b.active && Helper._isNumber(b.value)) {
-						defBonusValue += parseInt(b.value);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,data)
-						if(Helper._isNumber(val)){
-							defBonusValue += parseInt(val);
-						}
-					}
-				}
-			}
-			def.bonusValue = defBonusValue;
 			
 			//Get Def stats from items
 			for ( let i of this.items) {
@@ -837,11 +823,28 @@ export class Actor4e extends Actor {
 				}
 				def.armour += i.system.armour[id];
 			}
-			if(def.base == undefined){
-				def.base = 10;
-				this.update({[`system.defences[${def}].base`]: 10 });
-			}
-			if(data.advancedCals){
+			
+			if(data.advancedCals){			
+				let defBonusValue = 0;
+				if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
+					for( const b of def.bonus) {
+						if(b.active && Helper._isNumber(b.value)) {
+							defBonusValue += parseInt(b.value);
+						}
+						else if(b.active){
+							let val = Helper.replaceData(b.value,data)
+							if(Helper._isNumber(val)){
+								defBonusValue += parseInt(val);
+							}
+						}
+					}
+				}
+				def.bonusValue = defBonusValue;
+	
+				if(def.base == undefined){
+					def.base = 10;
+					this.update({[`system.defences[${def}].base`]: 10 });
+				}
 				let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
 
 				def.value += def.base + modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
@@ -854,7 +857,7 @@ export class Actor4e extends Actor {
 				def.value += globalBonus.bonusValue;
 				
 			} else {
-				def.value += def.base;
+				def.value = def?.base || 0;
 			}
 
 			def.value += Math.max(def.feat || 0, globalBonus.feat);
@@ -865,6 +868,9 @@ export class Actor4e extends Actor {
 			def.value += def.shield || 0;
 			def.value += def.untyped || 0;
 			def.value += globalBonus.untyped;
+			
+			//console.log(`${def.label} of ${this.name} is calculated as ${def.value} (Advanced calcs ${data.advancedCals}, half-level ${game.settings.get("dnd4e", "halfLevelOptions")})`);
+			
 		}
 	}
 
@@ -2107,9 +2113,8 @@ export class Actor4e extends Actor {
 						const stringDiceFormat = /\d+d\d+/;
 						let parsedAmount = dot.amount;
 
-						if (!parsedAmount.match(stringDiceFormat))
-						  parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
 						try {
+						  parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
 						  parsedAmount = Roll.safeEval(parsedAmount).toString();
 						} catch (e) { /* noop */ }
 						/* End pinched */
