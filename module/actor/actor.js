@@ -193,7 +193,7 @@ export class Actor4e extends Actor {
 		// Get the Actor's data object
 		const actorData = this;
 		const system = this.system;
-
+		
 		// this.system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
 		system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
 
@@ -361,7 +361,7 @@ export class Actor4e extends Actor {
 			}
 
 			mod.bonusValue = modifierBonusValue;
-			mod.value += mod.class + mod.feat + mod.item + mod.power + mod.untyped + mod.race + modifierBonusValue;
+			mod.value += mod?.class||0 + mod?.feat||0 + mod?.item||0 + mod?.power||0 + mod?.untyped||0 + mod?.race||0 + mod.bonusValue;
 			mod.label = game.i18n.localize(DND4E.modifiers[id]);
 		}
 		
@@ -406,8 +406,8 @@ export class Actor4e extends Actor {
 		} else {
 			system.attributes.init.value = system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod + initBonusValue : initBonusValue;
 		}
-		system.attributes.init.value += system.attributes.init.feat|| 0;
-		system.attributes.init.value += system.attributes.init.item|| 0;
+		system.attributes.init.value += system.attributes.init.feat || 0;
+		system.attributes.init.value += system.attributes.init.item || 0;
 		system.attributes.init.value += system.attributes.init.power || 0;
 		system.attributes.init.value += system.attributes.init.race || 0;
 		system.attributes.init.value += system.attributes.init.untyped || 0;
@@ -612,54 +612,55 @@ export class Actor4e extends Actor {
 		   with the resistance totalled under [type].res and the vulnerabilty under [type].vuln.
 		   This should allow for automation of "reduce resistance by X" type effects without
 		   applying unwanted vulnerabilities.
-		*/try{
-		for (let [id, res] of Object.entries(system.resistances)) {
-			res.vuln = res.vuln || 0;
-			res.res = res.res || 0;
+		*/
+		try{
+			for (let [id, res] of Object.entries(system.resistances)) {
+				res.vuln = res.vuln || 0;
+				res.res = res.res || 0;
 
-			//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.			
-			let resBonusValue = 0;
-			if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
-				for( const b of res.bonus) {
+				//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.			
+				let resBonusValue = 0;
+				if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
+					for( const b of res.bonus) {
 
-					if(!b.active) continue;					
-					let val = Helper._isNumber(b.value) ? b.value : Helper.replaceData(b.value,system)
-					res.vuln += Math.min(parseInt(val),0);
-					res.res += Math.max(parseInt(val),0);
+						if(!b.active) continue;					
+						let val = Helper._isNumber(b.value) ? b.value : Helper.replaceData(b.value,system)
+						res.vuln += Math.min(parseInt(val),0);
+						res.res += Math.max(parseInt(val),0);
 
-					resBonusValue += parseInt(b.value);
+						resBonusValue += parseInt(b.value);
+					}
 				}
-			}
-			res.resBonusValue = resBonusValue; // This value is displayed on the actor sheet
-			
-			//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
-			for ( let i of this.items) {
-				if(i.type !="equipment" || !i.system.equipped || i.system.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
-				res.armour += i.system.armour.damageRes.parts.filter(p => p[1] === id)[0][0];
-				break;
-			}
-			
-			//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
-			const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
-			
-			for ( let val of damageMods ) {
-				if ( val < 0 ){
-					//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.vuln}`);
-					res.vuln = Math.min(res.vuln||0,val);
-				} else {
-					//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.res}`);
-					res.res = Math.max(res.res||0,val);
+				res.resBonusValue = resBonusValue; // This value is displayed on the actor sheet
+				
+				//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
+				for ( let i of this.items) {
+					if(i.type !="equipment" || !i.system.equipped || i.system.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
+					res.armour += i.system.armour.damageRes.parts.filter(p => p[1] === id)[0][0];
+					break;
 				}
-			}
-			
-			//Get the final modifier for this type of damage by combining res and vuln numbers. Also make sure that neither one can cross 0 on the number line.
-			res.value = Math.max(res.res,0) + Math.min(res.vuln,0);
-			//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: final result of ${res.value} from res ${res.res} and vulnerability ${res.vuln}`);
+				
+				//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
+				const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
+				
+				for ( let val of damageMods ) {
+					if ( val < 0 ){
+						//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.vuln}`);
+						res.vuln = Math.min(res.vuln||0,val);
+					} else {
+						//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.res}`);
+						res.res = Math.max(res.res||0,val);
+					}
+				}
+				
+				//Get the final modifier for this type of damage by combining res and vuln numbers. Also make sure that neither one can cross 0 on the number line.
+				res.value = Math.max(res.res,0) + Math.min(res.vuln,0);
+				//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: final result of ${res.value} from res ${res.res} and vulnerability ${res.vuln}`);
 
-			res.label = game.i18n.localize(DND4E.damageTypes[id]); //.localize("");
-		}
-	}catch (e){	
-			console.log(e);
+				res.label = game.i18n.localize(DND4E.damageTypes[id]); //.localize("");
+			}
+		}catch (e){	
+			console.err(e);
 		}
 		
 		//Magic Items
@@ -740,7 +741,6 @@ export class Actor4e extends Actor {
 			}
 			def.bonusValue = defBonusValue;
 			
-			
 			//Get Def stats from items
 			for ( let i of this.items) {
 				if(i.type !="equipment" || !i.system.equipped ) { continue; };
@@ -792,6 +792,8 @@ export class Actor4e extends Actor {
 	}
 
 	calcDefenceStatsNPC(data) {
+		const debug = game.settings.get("dnd4e", "debugEffectBonus");
+		
 		/* Typed bonuses to global defence modifier need to be compared against typed bonuses to the individual defences. */
 		let globalBonus = {};
 		try{
@@ -805,6 +807,12 @@ export class Actor4e extends Actor {
 			def.value = parseFloat(def.value || 0);
 			def.label = DND4E.defensives[id].abbreviation;
 			def.title = DND4E.defensives[id].label;
+			def.shortname = DND4E.defensives[id].labelShort;
+			
+			if(debug){
+				console.debug(`Initial ${def.label} value is ${def.value}`);
+				console.debug(globalBonus);
+			}
 			
 			//Get Def stats from items
 			for ( let i of this.items) {
@@ -853,13 +861,10 @@ export class Actor4e extends Actor {
 					def.value += Math.floor(data.details.level / 2);
 				}
 				
-				//No way to sort manual bonuses, so they just get added regardless.
-				def.value += globalBonus.bonusValue;
 				
 			} else {
 				def.value = def?.base || 0;
 			}
-
 			def.value += Math.max(def.feat || 0, globalBonus.feat);
 			def.value += Math.max(def.item || 0, globalBonus.item);
 			def.value += Math.max(def.power || 0, globalBonus.power);
@@ -868,8 +873,12 @@ export class Actor4e extends Actor {
 			def.value += def.shield || 0;
 			def.value += def.untyped || 0;
 			def.value += globalBonus.untyped;
+			//No way to sort manual bonuses, so they just get added regardless. Global is here instead of in the advanced cals section because it DOES display even when they are off, so is probably expected.
+			def.value += globalBonus.bonusValue;
 			
-			//console.log(`${def.label} of ${this.name} is calculated as ${def.value} (Advanced calcs ${data.advancedCals}, half-level ${game.settings.get("dnd4e", "halfLevelOptions")})`);
+			if(debug){			
+				console.debug(`${def.label} of ${this.name} is calculated as ${def.value} (Advanced calcs ${data.advancedCals}, half-level ${game.settings.get("dnd4e", "halfLevelOptions")})`);
+			}
 			
 		}
 	}
@@ -1117,8 +1126,8 @@ export class Actor4e extends Actor {
 		}
 		return super.modifyTokenAttribute(attribute, value, isDelta, isBar);
 	}
-	setConditions(newValue) {
-		
+	
+	setConditions(newValue) {	
 		let newTemp = this.system.attributes.temphp.value;
 		if(newValue < this.system.attributes.hp.value) {
 			let damage = this.system.attributes.hp.value - newValue;
@@ -1304,17 +1313,29 @@ export class Actor4e extends Actor {
 		const parts = ['@init'];
 		let init = this.system.attributes.init.value;
 		const tiebreaker = game.settings.get("dnd4e", "initiativeDexTiebreaker");
-		if ( tiebreaker ) init += this.system.attributes.init.value / 100;
-		const data = {init: init};
-
-		const initRoll = await  d20Roll(foundry.utils.mergeObject(options, {
+		//if ( tiebreaker ) init += this.system.attributes.init.value / 100;
+		if (tiebreaker === 'system') {
+			//Official system behaviour: append initiative modifier as tiebreaker
+			parts.push(this.system.attributes.init.value / 100);
+		} else if (tiebreaker === 'dex') {
+			//Optional override: append raw dexterity score as tiebreaker
+			parts.push(this.system.abilities.dex.value / 100);
+		}
+		//Finally, append two extra decimal places at random, to simulate a random tiebreaker.
+		parts.push((Math.random()/100).toFixed(4));
+		
+		const rollConfig = foundry.utils.mergeObject(options,{
 			parts: parts,
-			data: data,
+			data: {init: init},
 			event,
 			title: `Init Roll`,
 			speaker: ChatMessage.getSpeaker({actor: this}),
-			flavor: isReroll? `${this.name} re-rolls Initiative!` : `${this.name} rolls for Initiative!`,
-		}));
+			flavor: isReroll? `${this.name} ${game.i18n.localize("DND4E.RollsInitReroll")}!` : `${this.name} ${game.i18n.localize("DND4E.RollsInit")}!`,
+			//messageData: {"flags.dnd4e.roll": {type: "init"}},
+			//Why no worky?
+		});
+	
+		const initRoll = await d20Roll(rollConfig);
 
 		if(combatants[0])
 		game.combat.combatants.get(combatants[0]).update({initiative:initRoll.total});
@@ -1343,7 +1364,7 @@ export class Actor4e extends Actor {
 			title: "",
 			flavor: message,
 			speaker: ChatMessage.getSpeaker({actor: this}),
-			messageData: {"flags.dnd4e.roll": {type: "attack", itemId: this.id }},
+			messageData: {"flags.dnd4e.roll": {type: "save", itemId: this.id }},
 			fastForward: true,
 			rollMode: options.rollMode
 		});
@@ -2114,6 +2135,7 @@ export class Actor4e extends Actor {
 						let parsedAmount = dot.amount;
 
 						try {
+						  if (!parsedAmount.match(stringDiceFormat))
 						  parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
 						  parsedAmount = Roll.safeEval(parsedAmount).toString();
 						} catch (e) { /* noop */ }
