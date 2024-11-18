@@ -214,6 +214,7 @@ export class Helper {
 					//Tool-based keywords like implement and weapon belong to the power, so in most cases we do not need to check the weapon to know which ones to use. Melee/ranged weapons and "any" are the exceptions, so we check the equipped weapon just for those.
 					
 					switch(powerInnerData.weaponType){
+						case "none": break;
 						case "implement":
 							suitableKeywords.push("usesImplement");
 							break;
@@ -226,8 +227,6 @@ export class Helper {
 							suitableKeywords.push("weapon");
 							suitableKeywords.push("ranged");
 							suitableKeywords.push("rangedWeapon");
-							break;
-						case "none":
 							break;
 						default:
 							if(weaponInnerData) {
@@ -248,6 +247,7 @@ export class Helper {
 					
 					//Check for proficiency with tool
 					switch(powerInnerData.weaponType){
+						case "none": break;
 						case "implement":
 							if(weaponInnerData.proficientI) suitableKeywords.push('proficient');
 							break;
