@@ -1322,7 +1322,7 @@ export class Actor4e extends Actor {
 			parts.push(this.system.abilities.dex.value / 100);
 		}
 		//Finally, append two extra decimal places at random, to simulate a random tiebreaker.
-		parts.push((Math.random()/100).toFixed(4));
+		parts.push(Math.floor(Math.random()*98+1)/10000);
 		
 		const rollConfig = foundry.utils.mergeObject(options,{
 			parts: parts,
@@ -1331,8 +1331,7 @@ export class Actor4e extends Actor {
 			title: `Init Roll`,
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: isReroll? `${this.name} ${game.i18n.localize("DND4E.RollsInitReroll")}!` : `${this.name} ${game.i18n.localize("DND4E.RollsInit")}!`,
-			//messageData: {"flags.dnd4e.roll": {type: "init"}},
-			//Why no worky?
+			'options.flags.dnd4e.roll.type':'init'
 		});
 	
 		const initRoll = await d20Roll(rollConfig);
