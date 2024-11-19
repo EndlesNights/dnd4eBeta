@@ -1441,6 +1441,38 @@ export class Helper {
 		return `${result}`;
 	}
 	
+	/**
+	 * Helper function to convert an initiative with decimal points to a human-friendly round number with tooltip.
+	 * @param {string} initiative			The roll result
+	 * @returns {string|void}
+	 */
+	static initTooltip(init=null){
+		if(!init) return "";
+		
+		try{
+			let rollparts = init.toString().split('.');
+			
+			if(rollparts.length != 2) return init;
+			
+			rollparts[2] = rollparts[1].substr(2,2);
+			rollparts[1] = rollparts[1].substr(0,2);
+			const tiebreaker = game.settings.get("dnd4e", "initiativeDexTiebreaker");
+			let html = `<span class="init-tiebroken" data-tooltip="${game.i18n.localize("DND4EUI.Tiebreaker")}: `;
+			
+			if (tiebreaker === 'system') {
+				html += `[${game.i18n.localize("DND4E.InitiativeScore")}] ${rollparts[1]}, `;
+			} else if (tiebreaker === 'dex') {
+				html += `[${game.i18n.localize("DND4E.AbilityDex")}] ${rollparts[1]}, `;
+			}
+			html += `[${game.i18n.localize("SETTINGS.4eInitTBRand")}] ${rollparts[2]}">${rollparts[0]}</span>`;
+			
+			return html;
+		}catch(e){
+			console.warn(`Failed to create initiative tooltip: ${e}`);
+			return "";
+		}
+	}
+	
 }
 
 export async function handleApplyEffectToToken(data){
