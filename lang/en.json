@@ -1512,6 +1512,7 @@
 "DND4EUI.ShowImage": "Show image",
 "DND4EUI.SortBy": "Sort By",
 "DND4EUI.StringEnterValues": "Enter values (separate entries with semicolons)",
+"DND4EUI.Tiebreaker": "Tiebreaker",
 "DND4EUI.Unknown": "Unknown value",
 "DND4EUI.UnknownCondition.Tip": "No match was found for this id in the current status conditions configuration.",
 "DND4EUI.Yes": "Yes",
