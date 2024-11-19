@@ -21,7 +21,7 @@ export const _getInitiativeFormula = function() {
 		parts.push(actor.system.abilities.dex.value / 100);
 	}
 	//Finally, append two extra decimal places at random, to simulate a random tiebreaker.
-	parts.push((Math.random()/100).toFixed(4));
+	parts.push(Math.floor(Math.random()*98+1)/10000);
 	
 	return parts.filter(p => p !== null).join(" + ");
 };
