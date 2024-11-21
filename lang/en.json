@@ -37,7 +37,7 @@
 "DND4E.Action": "Action",
 "DND4E.ActionAbil": "Ability Check",
 "DND4E.ActionFree": "Free Action",
-"DND4E.ActionBrief": "Free",
+"DND4E.ActionFreeBrief": "Free",
 "DND4E.ActionFreeShort": "FREE",
 "DND4E.ActionHeal": "Healing",
 "DND4E.ActionInterrupt": "Immediate Interrupt",
