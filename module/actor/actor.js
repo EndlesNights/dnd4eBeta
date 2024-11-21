@@ -1038,17 +1038,17 @@ export class Actor4e extends Actor {
 					skl.effectBonus = 0;
 				}
 			}
-
-			// Compute modifier
-			let powerBonus = 0;
-			let featBonus = 0;
-			let itemBonus = 0;
-			let raceBonus = 0;
-			let trainingBonus = 0;
+			
+			let powerBonus = skl.powerBonus||0;
+			let featBonus = skl.featBonus||0;
+			let itemBonus = skl.itemBonus||0;
+			let raceBonus = skl.raceBonus||0;
+			let trainingBonus = skl.trainingBonus||0;
 			
 			if(system.advancedCals){
 				skl.mod = system.abilities[skl.ability].mod;
-				
+			// Compute modifier
+					
 				switch (skl.training){
 					case 8:
 						trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
@@ -1079,8 +1079,6 @@ export class Actor4e extends Actor {
 					skl.total += Math.floor(system.details.level / 2);
 				}
 				
-				//No way to sort manual bonuses, so they just get added regardless.
-				skl.total += globalBonus.bonusValue;
 
 			} else {
 				skl.total = skl.base;
@@ -1092,7 +1090,9 @@ export class Actor4e extends Actor {
 			skl.total += Math.max(powerBonus || 0, globalBonus.power);
 			skl.total += skl.untyped || 0;
 			skl.total += globalBonus.untyped;
-
+			//No way to sort manual bonuses, so they just get added regardless.
+			skl.total += globalBonus.bonusValue;
+			
 			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
 		}
 	}
