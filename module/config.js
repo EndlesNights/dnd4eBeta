@@ -20,7 +20,7 @@ DND4E.difficultTerrain = {
 }
 
 /**
- * The set of Ability Scores used within the system
+ * The set of Ability Scores used within the system (deprectaed, move to abilityScores where possible)
  * @type {Object}
  */
 DND4E.abilities = {
@@ -32,23 +32,39 @@ DND4E.abilities = {
 	"cha": "DND4E.AbilityCha"
 };
 
-/* -------------------------------------------- */
-
 /**
- * Character alignment options
+ * More detailed Ability Score objects for use in selectOptions etc.
  * @type {Object}
  */
-DND4E.alignments = {
-	'lg': "DND4E.AlignmentLG",
-	'ng': "DND4E.AlignmentNG",
-	'cg': "DND4E.AlignmentCG",
-	'ln': "DND4E.AlignmentLN",
-	'tn': "DND4E.AlignmentTN",
-	'cn': "DND4E.AlignmentCN",
-	'le': "DND4E.AlignmentLE",
-	'ne': "DND4E.AlignmentNE",
-	'ce': "DND4E.AlignmentCE"
+DND4E.abilityScores = {
+	"str": {
+		"label":"DND4E.AbilityStr",
+		"labelShort":"DND4E.AbilStr"
+	},
+	"con": {
+		"label":"DND4E.AbilityCon",
+		"labelShort":"DND4E.AbilCon"
+	},
+	"dex": {
+		"label":"DND4E.AbilityDex",
+		"labelShort":"DND4E.AbilDex"
+	},
+	"int": {
+		"label":"DND4E.AbilityInt",
+		"labelShort":"DND4E.AbilInt"
+	},
+	"wis": {
+		"label":"DND4E.AbilityWis",
+		"labelShort":"DND4E.AbilWis"
+	},
+	"cha": {
+		"label":"DND4E.AbilityCha",
+		"labelShort":"DND4E.AbilCha"
+	}
 };
+preLocalize("abilityScores", { keys: ["label","labelShort"] });
+
+/* -------------------------------------------- */
 
 DND4E.macroScope = {
 	global: {label: "Global"},
@@ -71,6 +87,25 @@ DND4E.macroLaunchOrder = {
 }
 preLocalize("macroLaunchOrder", { keys: ["label"] });
 
+/**
+ * Character alignment options (Not 4e; Unused?)
+ * @type {Object}
+ */
+DND4E.alignments = {
+	'lg': "DND4E.AlignmentLG",
+	'ng': "DND4E.AlignmentNG",
+	'cg': "DND4E.AlignmentCG",
+	'ln': "DND4E.AlignmentLN",
+	'tn': "DND4E.AlignmentTN",
+	'cn': "DND4E.AlignmentCN",
+	'le': "DND4E.AlignmentLE",
+	'ne': "DND4E.AlignmentNE",
+	'ce': "DND4E.AlignmentCE"
+};
+/**
+ * 5e Skill proficiencies (Vestigial/Unused?)
+ * @type {Object}
+ */
 DND4E.weaponProficiencies = {
 	"sim": "DND4E.WeaponSimpleProficiency",
 	"mar": "DND4E.WeaponMartialProficiency"
@@ -239,7 +274,7 @@ DND4E.tokenHPColors = {
 /* -------------------------------------------- */
 
 /**
- * Classification types for item action types
+ * Classification types for item action types (5e/vestigial?)
  * @type {Object}
  */
 DND4E.itemActionTypes = {
@@ -636,22 +671,26 @@ DND4E.def = {
 DND4E.defensives = {
 	ac: {
 		label: "DND4E.DefenceAC",
+		labelShort: "DND4E.DefenceACShort",
 		abbreviation: "DND4E.DefAC"
 	},
 	fort: {
 		label: "DND4E.DefenceFort",
+		labelShort: "DND4E.DefenceFortShort",
 		abbreviation: "DND4E.DefFort"
 	},
 	ref: {
 		label: "DND4E.DefenceRef",
+		labelShort: "DND4E.DefenceRefShort",
 		abbreviation: "DND4E.DefRef"
 	},
 	wil: {
 		label: "DND4E.DefenceWil",
+		labelShort: "DND4E.DefenceWilShort",
 		abbreviation: "DND4E.DefWil"
 	}
 };
-preLocalize("defensives", { keys: ["label", "abbreviation"] });
+preLocalize("defensives", { keys: ["label", "labelShort", "abbreviation"] });
 
 /* -------------------------------------------- */
 
@@ -882,7 +921,7 @@ DND4E.encumbrance = {
 /* -------------------------------------------- */
 
 /**
- * This Object defines the types of single or area targets which can be applied in D&D4e
+ * This Object defines the types of single or area targets which can be applied in D&D4e (Not currently used?)
  * @type {Object}
  */
 DND4E.targetTypes = {
@@ -983,16 +1022,11 @@ DND4E.powerSource = {
 };
 
 DND4E.powerGroupTypes = {
-	usage: {label: "DND4E.Usage",},
-	action: {label: "DND4E.Action",},
-	actionMod: {label: "DND4E.PowerGroupingModern",},
-	type: {label: "DND4E.Type",},
-	powerSubtype: {label: "DND4E.PowerSubtype",},
-	// "usage": "DND4E.Usage",
-	// "action": "DND4E.Action",
-  // "actionMod": "DND4E.PowerGroupingModern",
-	// "type": "DND4E.Type",
-	// "powerSubtype": "DND4E.PowerSubtype",
+	usage: {label: "DND4E.Usage"},
+	action: {label: "DND4E.Action"},
+	actionMod: {label: "DND4E.PowerGroupingModern"},
+	type: {label: "DND4E.Type"},
+	powerSubtype: {label: "DND4E.PowerSubtype"}
 };
 preLocalize("powerGroupTypes", { keys: ["label"] });
 
@@ -1263,8 +1297,11 @@ DND4E.modifiers ={
 	"defences": "DND4E.ModifierDefences"
 };
 
-/* -------------------------------------------- */
 
+/**
+ * Spellcasting progression and modes (5e/Vestigial?)
+ * @type {Object}
+ */
 DND4E.spellPreparationModes = {
 	"always": "DND4E.SpellPrepAlways",
 	"atwill": "DND4E.SpellPrepAtWill",
@@ -1274,7 +1311,6 @@ DND4E.spellPreparationModes = {
 };
 
 DND4E.spellUpcastModes = ["always", "pact", "prepared"];
-
 
 DND4E.spellProgression = {
 	"none": "DND4E.SpellNone",
@@ -1288,7 +1324,7 @@ DND4E.spellProgression = {
 /* -------------------------------------------- */
 
 /**
- * The available choices for how spell damage scaling may be computed
+ * The available choices for how spell damage scaling may be computed (5e/Vestigial?)
  * @type {Object}
  */
 DND4E.spellScalingModes = {
