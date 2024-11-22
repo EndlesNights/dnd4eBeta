@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 0.5.8
+- [PR 404](https://github.com/EndlesNights/dnd4eBeta/pull/404) from [FoxLee](https://github.com/FoxLee)
+  - Fixes a bug where attack rolls from creatures with a global attack bonus throw an error; this was due to a mistake where weapon proficiency was checked even for powers with "none" weapon requirement.
+  - Fixes the bug causing defences of NPCs not using advancedCals to be much too high.
+  - Updates NPC sheet to display current defence values alongside base values.
+  - Fixes an "object Object" dropdown in equipment limited use intervals (#401)
+  - Updates initiative tiebreaker to a selection between init mod (system), dex score (houserule), or random.
+  - Masks decimal places in initiative scores (in roll chat output and in combat tracker), hopefully preventing people from thinking they are in error. Tiebreaker info remains viewable in tooltips and in roll formulae.
+
 ## Version 0.5.7
 - [PR 399](https://github.com/EndlesNights/dnd4eBeta/pull/399) from [FoxLee](https://github.com/FoxLee)
 	- Resolves a problem with initiative where perfect ties could cause incorrect effect expiry
