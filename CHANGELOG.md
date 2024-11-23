@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.5.9
+- [PR 405](https://github.com/EndlesNights/dnd4eBeta/pull/405) from [draconas1](https://github.com/draconas1) Fix: right click Apply Damage/Healing not working 
+
 ## Version 0.5.8
 - [PR 404](https://github.com/EndlesNights/dnd4eBeta/pull/404) from [FoxLee](https://github.com/FoxLee)
   - Fixes a bug where attack rolls from creatures with a global attack bonus throw an error; this was due to a mistake where weapon proficiency was checked even for powers with "none" weapon requirement.
