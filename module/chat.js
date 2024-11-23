@@ -367,15 +367,16 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	let surgeValueAmount = 0; //how many healing surges of healing
 
 	//count surges used, shouldn't be more than 1, but you never know....
+	// flavor can be null
 	if(multiplier < 0 ){
 		roll.terms.forEach(e => {
-			if(e.options.flavor.includes("surgeValue")){
+			if(e.flavor?.includes("surgeValue")){
 				surgeValueAmount++;
 			}
-			else if(e.options.flavor.includes("surgeCost")){
+			else if(e.flavor?.includes("surgeCost")){
 				surgeAmount++;
 			}
-			else if(e.options.flavor.includes("surge")){
+			else if(e.flavor?.includes("surge")){
 				surgeAmount++;
 				surgeValueAmount++;
 			}
@@ -389,12 +390,13 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 			return a.applyDamage(roll.total, multiplier, {surgeAmount, surgeValueAmount});
 		}));
 	}
-	
+
 	//Sort damage and damage type from roll terms into simpler array
+	//there can be multiple different term types, the most common are Die (e.g. 2d10), operator (e.g. +) or numeric (e.g. 10).
+	//They all have a total property which is a numeric in the case of dice and numeric.  See https://foundryvtt.com/api/classes/foundry.dice.terms.RollTerm.html
 	roll.terms.forEach(e => {
-		if(typeof e.roll?.terms[0].number === "number"){
-		//Is using [0] here okay? I don't know if there is ever more than one entry.
-			if(e.options.flavor){
+		if(typeof e.total === "number"){
+			if(e.flavor){
 				//console.log(`Damage type found: ${e.options.flavor}`);
 				damageDealt.push([e.total,e.options.flavor]);
 				rollTotalRemain -= e.total;
