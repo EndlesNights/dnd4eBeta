@@ -255,6 +255,7 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 
 	// Optionally collapse the content
 	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.find(".card-content").hide();
+	
 });
 
 Hooks.on("getChatLogEntryContext", chat.addChatMessageContextOptions);
@@ -377,4 +378,24 @@ Hooks.on("getSceneControlButtons", function(controls){
 		title: "Area Blast (Square from corner)",
 		icon: "dnd4e-blast-svg",
 	})
-})
+});
+
+Hooks.on("renderChatMessage", (message, html, data) => {
+	if(message.flags.core?.initiativeRoll === true || message.flags?.dnd4e?.roll?.type == "init"){
+		if(html){
+			const insertPart = Helper.initTooltip(message.content);
+			html[0].innerHTML = html[0].innerHTML.replace(/(<h4 class=\"dice-total\">)[0-9|.]+(<\/h4>)/g,`$1${insertPart}$2`);
+		}
+	}
+});
+
+Hooks.on('renderCombatTracker', (app,html,context) => {
+    if (!app?.viewed) return // Skip entirely if there's no currently viewed combat
+    html.find('.token-initiative').each((i,el) => {
+        let combatant = app.viewed.combatants.get(el.parentElement.dataset.combatantId);
+		if(combatant?.initiative){
+			const insertPart = Helper.initTooltip(combatant.initiative);
+			el.innerHTML = insertPart;
+		}
+    });
+});

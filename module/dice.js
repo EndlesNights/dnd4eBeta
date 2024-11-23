@@ -34,6 +34,8 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 								  isAttackRoll=false, options= {}}={}) {
 	critical = critical || 20; //ensure that critical always has a value
 	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options }
+	
+	//console.log(rollConfig.options);
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
@@ -272,6 +274,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	await roll.toMessage({
 		speaker: speaker,
 		flavor: flavor,
+		flags: options?.flags
 	}, { rollMode });
 	return roll;
 }

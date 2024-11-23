@@ -71,8 +71,13 @@ export const registerSystemSettings = function() {
 		hint: "SETTINGS.4eInitTBL",
 		scope: "world",
 		config: true,
-		default: true,
-		type: Boolean
+		default: "system",
+		type: String,
+		choices: {
+			"system": "SETTINGS.4eInitTBSys",
+			"dex": "SETTINGS.4eInitTBDex",
+			"random": "SETTINGS.4eInitTBRand"
+		},
 	});
 
 	/**

@@ -1984,7 +1984,16 @@ font-size:12px;
 	flex-grow:0;
 }
 .dnd4e.sheet.actor .npc-upper .basics>.defences:not(.advanced){
-	flex-basis:80px;
+	flex-basis:105px;
+}
+.dnd4e.sheet.actor .npc-upper .basics>.defences:not(.advanced) .defence-value{
+	font-size:1em;
+}
+.dnd4e.sheet.actor .npc-upper .basics>.defences:not(.advanced) .defence-value.bonus{
+	color:var(--color-text-good);
+}
+.dnd4e.sheet.actor .npc-upper .basics>.defences:not(.advanced) .defence-value.penalty{
+	color:var(--color-text-bad);
 }
 .dnd4e.sheet.actor .npc-upper .basics>.defences.advanced{
 	flex-basis:140px;

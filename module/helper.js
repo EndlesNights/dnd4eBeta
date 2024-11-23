@@ -199,7 +199,6 @@ export class Helper {
 					this._addKeywords(suitableKeywords, weaponInnerData.properties)
 					this._addKeywords(suitableKeywords, weaponInnerData.damageType)
 					this._addKeywords(suitableKeywords, weaponInnerData.implement) // implement group for implement powers.	Bad naming of property, sorry -Drac
-
 					if(weaponInnerData.weaponBaseType){
 						suitableKeywords.push(weaponInnerData.weaponBaseType)
 					}
@@ -211,10 +210,11 @@ export class Helper {
 				if (powerInnerData.secondPowersource) {
 					suitableKeywords.push(powerInnerData.secondPowersource)
 				}
-				
 				if(powerInnerData.weaponType){
-					//Tool-based keywords like implement and weapon belong to the power, so in most cases we do not need to check the weapon to know which ones to use. Mixed melee/ranged weapons are the main exception, so we check the equipped weapon just for those.
+					//Tool-based keywords like implement and weapon belong to the power, so in most cases we do not need to check the weapon to know which ones to use. Melee/ranged weapons and "any" are the exceptions, so we check the equipped weapon just for those.
+					
 					switch(powerInnerData.weaponType){
+						case "none": break;
 						case "implement":
 							suitableKeywords.push("usesImplement");
 							break;
@@ -228,18 +228,38 @@ export class Helper {
 							suitableKeywords.push("ranged");
 							suitableKeywords.push("rangedWeapon");
 							break;
-						case "meleeRanged":
-							suitableKeywords.push("weapon");
-							if (weaponInnerData){
-								if (weaponInnerData.isRanged){
+						default:
+							if(weaponInnerData) {
+								 if(weaponInnerData.WeaponType === "implement") {
+									suitableKeywords.push("usesImplement");
+								} else if(weaponInnerData.isRanged) {
+									suitableKeywords.push("weapon");
 									suitableKeywords.push("rangedWeapon");
 									suitableKeywords.push("ranged");
 								} else {
+									suitableKeywords.push("weapon");
 									suitableKeywords.push("meleeWeapon");
 									suitableKeywords.push("melee");
 								}
 							}
 							break;
+					}
+					
+					//Check for proficiency with tool
+					switch(powerInnerData.weaponType){
+						case "none": break;
+						case "implement":
+							if(weaponInnerData.proficientI) suitableKeywords.push('proficient');
+							break;
+						case "any":
+							if(weaponInnerData) {
+								 if(weaponInnerData.WeaponType === "implement") {
+									if(weaponInnerData.proficientI) suitableKeywords.push('proficient');
+									break;
+								}
+							}	
+						default:
+							if(weaponInnerData.proficient) suitableKeywords.push('proficient');
 					}
 				}
 				
@@ -400,7 +420,7 @@ export class Helper {
 		if (keywordsActive) {
 			for (const [key, value] of Object.entries(keywordsActive)) {
 				if (value === true) {
-					suitableKeywords.push(key)
+					suitableKeywords.push(key);
 				}
 			}
 		}
@@ -1251,6 +1271,8 @@ export class Helper {
 							effectData: newEffectData
 						});
 					}
+					
+					//console.log(`Effect setup fired for ${e.name} on ${actor.name}.`);
 				}
 			}
 		}
@@ -1417,6 +1439,38 @@ export class Helper {
 			}
 		}
 		return `${result}`;
+	}
+	
+	/**
+	 * Helper function to convert an initiative with decimal points to a human-friendly round number with tooltip.
+	 * @param {string} initiative			The roll result
+	 * @returns {string|void}
+	 */
+	static initTooltip(init=null){
+		if(!init) return "";
+		
+		try{
+			let rollparts = init.toString().split('.');
+			
+			if(rollparts.length != 2) return init;
+			
+			rollparts[2] = rollparts[1].substr(2,2);
+			rollparts[1] = rollparts[1].substr(0,2);
+			const tiebreaker = game.settings.get("dnd4e", "initiativeDexTiebreaker");
+			let html = `<span class="init-tiebroken" data-tooltip="${game.i18n.localize("DND4EUI.Tiebreaker")}: `;
+			
+			if (tiebreaker === 'system') {
+				html += `[${game.i18n.localize("DND4E.InitiativeScore")}] ${rollparts[1]}, `;
+			} else if (tiebreaker === 'dex') {
+				html += `[${game.i18n.localize("DND4E.AbilityDex")}] ${rollparts[1]}, `;
+			}
+			html += `[${game.i18n.localize("SETTINGS.4eInitTBRand")}] ${rollparts[2]}">${rollparts[0]}</span>`;
+			
+			return html;
+		}catch(e){
+			console.warn(`Failed to create initiative tooltip: ${e}`);
+			return "";
+		}
 	}
 	
 }
