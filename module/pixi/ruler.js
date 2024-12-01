@@ -2,6 +2,10 @@ export class Ruler4e extends Ruler {
 	
 	/** @inheritdoc */
 	static _computeDistance(wrapper) {
+
+		//The current function only works for grids, so just return the default function for now and don't compute on gridless maps
+		if(canvas.scene.grid.type < 1) return wrapper();
+
 		let path = [];
 		if ( this.segments.length ) path.push(this.segments[0].ray.A);
 		for ( const segment of this.segments ) {
@@ -17,7 +21,7 @@ export class Ruler4e extends Ruler {
 			const distance = measurements[i].distance;
 			const cost = segment.history ? this.history[i + 1].cost : measurements[i].cost;
 
-			const terrainCostCalc = Ruler4e._computeMoveCostSegment4e(segment);			
+			const terrainCostCalc = Ruler4e._computeMoveCostSegment4e(segment);
 			this.totalDistance += terrainCostCalc;
 			this.totalCost += cost;
 			segment.distance = terrainCostCalc;
