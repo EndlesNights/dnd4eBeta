@@ -2,6 +2,7 @@
 
 ## Version 0.5.10
 - temp fix for issue #400, disabled check for difficult terrain on gridless maps 
+- fix issue #389, the built in effect for second now properly applies duration for combat.
 
 ## Version 0.5.9
 - [PR 405](https://github.com/EndlesNights/dnd4eBeta/pull/405) from [draconas1](https://github.com/draconas1) Fix: right click Apply Damage/Healing not working 
