@@ -275,6 +275,11 @@ export class TemplateLayer4e extends TemplateLayer {
 	static _onDragLeftStart(wrapper, event){
 		const tool = game.activeTool;
 
+		//unsett this flag, as it is used only for the system spesfic custom messure templates _onDragLeftMove
+		if(event.dnd4e){
+			event.dnd4e.templateType = null;
+		}
+
 		if(!(tool == "blast" || tool == "burst")){
 			return wrapper(event);
 		}
