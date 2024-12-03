@@ -29,7 +29,6 @@
 	 * @type {string}
 	 */
 	get tooltip(){
-		console.log(this)
 		let html = `<div class="effect-tooltip">`;
 		html += `<div><label class="name">${this.name}</label></div>`;
 		if(this._source.name) html += `<div><label class="source">${game.i18n.localize("DND4E.Source")}: ${this._source.name}</label></div>`;

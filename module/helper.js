@@ -1207,7 +1207,6 @@ export class Helper {
 			let e = effect.toObject(); // This is to avoid editing the source effect
 			if(e.flags.dnd4e.effectData.powerEffectTypes === condition){
 				for(let t of tokenTarget){
-					// console.log(e)
 					// let effectData = e.data;
 					// e.sourceName = parent.name;
 					e.origin = parent.uuid;
@@ -1255,7 +1254,7 @@ export class Helper {
 					let actor;
 					if(t?.actor){
 						actor = t.actor;
-					} else { //extra condition for when actors this linked data target self						
+					} else { //extra condition for when actors this linked data target self
 						actor = parent;
 					}
 

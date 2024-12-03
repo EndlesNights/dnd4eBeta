@@ -878,7 +878,6 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		for (const key of overrides) {
 			for (const bonus of bonusSuffixes) {
 				// accumulatorSuffixes.forEach(accumulator => candidateKeys.add(key.replace(bonus, accumulator)));
-				console.log(accumulatorSuffixes);
 				if(key.includes("system.attributes.hp.")){ //Exception for HP as to not block 
 					candidateKeys.add(key.replace(bonus, ".max"));
 				} else {

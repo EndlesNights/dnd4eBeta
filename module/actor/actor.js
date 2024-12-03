@@ -701,11 +701,12 @@ export class Actor4e extends Actor {
 				{key: "system.defences.ref.untyped", mode: 2, value: 2},
 				{key: "system.defences.wil.untyped", mode: 2, value: 2},
 			],
-			flags:{dnd4e:{effectData:{durationType:"startOfUserTurn"}}}
+			flags:{dnd4e:{effectData:{
+				durationType:"startOfUserTurn",
+				powerEffectTypes:"self"
+			}}}
 		};
-
 		this.system.details.secondwindEffect = secondwindEffect;
-		
 	}
 
 	/* -------------------------------------------- */
@@ -1636,9 +1637,11 @@ export class Actor4e extends Actor {
 	 * Creats a new emebeded effect based on data stored in this.system.details.secondwindEffect.
 	 */
 	async applySecondWindEffect(){
-		if(this.system.details.secondwindEffect){
-			await this.createEmbeddedDocuments("ActiveEffect", [this.system.details.secondwindEffect]);
-		}
+		
+		if(!this.system.details.secondwindEffect) return;
+
+		const secondwindEffect = new CONFIG.ActiveEffect.documentClass(this.system.details.secondwindEffect);
+		await Helper.applyEffectsToTokens([secondwindEffect],[null],"self",this);
 	}
 
 	async actionPoint(event, options){
