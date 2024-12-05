@@ -288,9 +288,7 @@ export class TemplateLayer4e extends TemplateLayer {
 
 		// Snap the origin to the grid
 		if ( !event.shiftKey ) interaction.origin = this.getSnappedPoint(interaction.origin);
-
-		console.log(event)
-		console.log(interaction)
+		
 		const previewData = {
 			user: game.user.id,
 			t: tool == 'burst' ? 'circle' : 'cone',
