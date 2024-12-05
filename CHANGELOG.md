@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.5.11
+- ruler refactor, no longer runs though libwrapper. Now is the overrides the default Canvas.rulerClass
+
 ## Version 0.5.10
 - temp fix for issue #400, disabled check for difficult terrain on gridless maps 
 - fix issue #389, the built in effect for second now properly applies duration for combat.
