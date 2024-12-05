@@ -97,7 +97,7 @@ Hooks.once("init", async function() {
 	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";//"DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "fa-regular fa-triangle";
 
-
+	CONFIG.Canvas.rulerClass = Ruler4e;
 
 	registerSystemSettings();
 
@@ -326,13 +326,6 @@ function libWrapperInit() {
 		'dnd4e',
 		'TemplateLayer.prototype._onDragLeftMove',
 		TemplateLayer4e._onDragLeftMove
-	)
-
-	//custom Ruler for difficult terrain
-	libWrapper.register(
-		'dnd4e',
-		'Ruler.prototype._computeDistance',
-		Ruler4e._computeDistance
 	)
 
 	libWrapper.register(
