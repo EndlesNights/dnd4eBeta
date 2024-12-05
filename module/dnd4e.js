@@ -277,7 +277,7 @@ Hooks.on("canvasInit", function() {
 
 
 Hooks.on("renderTokenHUD", (app, html, data) => {
-//Display name of status effect when mousning over
+// inject element and script for displaing name of status effect when mousning over
 const message = `
 <div class="status-effect-title" id="displayStatLine">STATUS EFFECT</div>
 
