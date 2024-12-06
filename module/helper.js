@@ -251,13 +251,12 @@ export class Helper {
 						case "implement":
 							if(weaponInnerData) {
 								if(weaponInnerData.proficientI) suitableKeywords.push('proficient');
-								break;
 							}
+							break;
 						case "any":
 							if(weaponInnerData) {
 								 if(weaponInnerData.WeaponType === "implement") {
 									if(weaponInnerData.proficientI) suitableKeywords.push('proficient');
-									break;
 								}
 							}	
 						default:
@@ -336,12 +335,14 @@ export class Helper {
 				
 				if(powerInnerData.attack?.isBasic){
 					suitableKeywords.push("basic");
+					if(suitableKeywords.includes("melee")) suitableKeywords.push("mBasic");
+					if(suitableKeywords.includes("ranged")) suitableKeywords.push("rBasic");
 				}
 
 				if (debug) {
-					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group, properties and damage type the following effect keys are suitable`)
-					suitableKeywords.sort()
-					console.log(`${debug} ${suitableKeywords.join(", ")}`)
+					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group, properties and damage type the following effect keys are suitable`);
+					console.log(suitableKeywords.sort());
+					console.log(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
 				// filter out to just the relevant effects by keyword
