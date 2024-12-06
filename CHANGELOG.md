@@ -2,6 +2,8 @@
 
 ## Version 0.5.11
 - ruler refactor, no longer runs though libwrapper. Now is the overrides the default Canvas.rulerClass
+- PR #406 from [squagnar](https://github.com/squagnar) added Check weaponInnerData exists when checking for proficiency
+- PR #407 from [FoxLee](https://github.com/FoxLee) Proficiency logic tweak, melee/ranged basic distinctions added
 
 ## Version 0.5.10
 - temp fix for issue #400, disabled check for difficult terrain on gridless maps 
