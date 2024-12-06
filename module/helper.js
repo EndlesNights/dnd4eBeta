@@ -249,8 +249,10 @@ export class Helper {
 					switch(powerInnerData.weaponType){
 						case "none": break;
 						case "implement":
-							if(weaponInnerData.proficientI) suitableKeywords.push('proficient');
-							break;
+							if(weaponInnerData) {
+								if(weaponInnerData.proficientI) suitableKeywords.push('proficient');
+								break;
+							}
 						case "any":
 							if(weaponInnerData) {
 								 if(weaponInnerData.WeaponType === "implement") {
@@ -259,7 +261,9 @@ export class Helper {
 								}
 							}	
 						default:
-							if(weaponInnerData.proficient) suitableKeywords.push('proficient');
+							if(weaponInnerData) {
+								if(weaponInnerData.proficient) suitableKeywords.push('proficient');
+							}
 					}
 				}
 				
