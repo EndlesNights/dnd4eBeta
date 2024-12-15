@@ -116,6 +116,11 @@
 			"lang": "pt-br",
 			"name": "Portugues do Brasil",
 			"path": "lang/pt-br.json"
+		},
+		{
+			"lang": "es",
+			"name": "Español",
+			"path": "lang/es.json"
 		}
 	],
 	"socket": true,
