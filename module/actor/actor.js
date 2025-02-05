@@ -2133,15 +2133,18 @@ export class Actor4e extends Actor {
 						
 						/* Use logic pinched from ActiveEffect4e.safeEvalEffectValue() to 
 						evaluate variables in "amount" string */
-						const stringDiceFormat = /\d+d\d+/;
 						let parsedAmount = dot.amount;
-
 						try {
-						  if (!parsedAmount.match(stringDiceFormat))
-						  parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
-						  parsedAmount = Roll.safeEval(parsedAmount).toString();
+							parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
 						} catch (e) { /* noop */ }
 						/* End pinched */
+						
+						// We must roll any non-fixed damage to find the highest DoT of each type, so evaluate the roll now even if reminders are set to manual
+						let dmgRoll = new Roll(`(${parsedAmount})[${types}]`);
+						//console.debug(dmgRoll);
+						await dmgRoll.roll();
+						parsedAmount = dmgRoll.result.toString();
+						//console.debug(`Parsed damage amount: ${parsedAmount}`);
 						
 						// Only keep the highest DoT of each unique type—
 						// you can only be so much on fire.
@@ -2152,7 +2155,9 @@ export class Actor4e extends Actor {
 								type: ( types == "healing" ? types : types + ',ongoing'), 
 								amount:parsedAmount, 
 								effectId:e.id, 
-								effectName: e.name 
+								effectName:e.name,
+								dmgRoll:dmgRoll,
+								dmgFormula:dot.amount
 							};
 						}
 					}
@@ -2164,7 +2169,7 @@ export class Actor4e extends Actor {
 			if(applicableDoTs.length){
 				for(const dot of applicableDoTs){
 					const dmgTaken = ( dot.type == "healing" ? Math.min(dot.amount, this.system.attributes.hp.max - this.system.attributes.hp.value) : await this.calcDamageInner([[dot.amount,dot.type]]));
-					console.log(this.calcDamageInner([[dot.amount,dot.type]]));
+					//console.debug(this.calcDamageInner([[dot.amount,dot.type]]));
 					let dmgImpact = "neutral";
 					
 					let chatRecipients = [Helper.firstOwner(this)];
@@ -2216,7 +2221,7 @@ export class Actor4e extends Actor {
 						flavor: `${game.i18n.localize ("DND4E.OngoingDamage")}: ${dot.effectName}`,
 						whisper: chatRecipients,
 						//rollMode: "gmroll",
-						rolls: [{
+						/*rolls: [{
 							formula: `(${dot.amount})[${dot.type}]`,
 							terms: [{
 								class: "NumericTerm",
@@ -2228,7 +2233,8 @@ export class Actor4e extends Actor {
 							}],
 							total: dot.amount,
 							evaluated: true
-						}]
+						}]*/
+						rolls: [dot.dmgRoll]
 					});						
 					
 					if (autoDoTs == "apply"){
