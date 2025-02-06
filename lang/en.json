@@ -772,6 +772,7 @@
 "DND4E.MovementSpeedClimbing": "Climb Speed",
 "DND4E.MovementSpeedShifting": "Shift Speed",
 "DND4E.MovementSpeedRunning": "Run Speed",
+"DND4E.MovementSpeedSwimming": "Swim Speed",
 "DND4E.MovementSpeedWalking": "Walk Speed",
 "DND4E.MovementUnit": "sq.",
 "DND4E.Name": "Character Name",
