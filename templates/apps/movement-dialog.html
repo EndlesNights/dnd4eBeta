@@ -42,8 +42,16 @@
 		<span class="temp-label">{{localize 'DND4E.Temp'}}:</span>
 		<input type="text" class="temp-value" name="system.movement.climb.temp" value="{{system.movement.climb.temp}}" data-tooltip="{{localize 'DND4E.MovementSpeedClimbing'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 	</div>
+
+	<div class="form-group base" data-movement="swim">
+		<span class="move-value" data-tooltip="{{localize 'DND4E.MovementSpeedSwimming'}}"><strong>{{system.movement.swim.value}} {{localize 'DND4E.MovementUnit'}}</strong> {{localize 'DND4E.MovementSpeedSwimming'}}:</span>
+		<input type="text" name="system.movement.swim.formula" value="{{system.movement.swim.formula}}" data-tooltip="{{localize 'DND4E.MovementSpeedSwimming'}}" onClick="this.select();" placeholder="0"/>
+		<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4E.MovementSpeedSwimming'}} {{localize 'DND4E.Bonus'}}">{{localize 'DND4E.Bonus'}}: {{system.movement.swim.bonusValue}}</a>
+		<span class="temp-label">{{localize 'DND4E.Temp'}}:</span>
+		<input type="text" class="temp-value" name="system.movement.swim.temp" value="{{system.movement.swim.temp}}" data-tooltip="{{localize 'DND4E.MovementSpeedSwimming'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
+	</div>
 	
-	<div class="form-group base"  data-movement="shift">
+	<div class="form-group base" data-movement="shift">
 		<span class="move-value" data-tooltip="{{localize 'DND4E.MovementSpeedShifting'}}"><strong>{{system.movement.shift.value}} {{localize 'DND4E.MovementUnit'}}</strong> {{localize 'DND4E.MovementSpeedShifting'}}:</span>
 		<input type="text" name="system.movement.shift.formula" value="{{system.movement.shift.formula}}" data-tooltip="{{localize 'DND4E.MovementSpeedShifting'}}" onClick="this.select();" placeholder="0"/>
 		<a class="move-bonus" data-target="system.details" data-tooltip="{{localize 'DND4E.MovementSpeedShifting'}} {{localize 'DND4E.Bonus'}}">{{localize 'DND4E.Bonus'}}: {{system.movement.shift.bonusValue}}</a>
