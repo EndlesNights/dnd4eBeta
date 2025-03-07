@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 0.5.12
+- [PR #408](https://github.com/EndlesNights/dnd4eBeta/pull/408) from @draconas1 Fix: Token Size not being updated
+- [PR #409](https://github.com/EndlesNights/dnd4eBeta/pull/409) from @lderequesensS Add Spanish translation
+- [PR #412](https://github.com/EndlesNights/dnd4eBeta/pull/412) from @FoxLee
+  - Allows dice nottation in ongoing damage values and enhances chat reports for them
+  - Adds special "bonus" keys for `floor`, `ceil` and `override` to allow advanced manipulation of values, and updates documentation accordingly
+  - Adds swim speed to movement modes
+  - Adds chat popout functionality to item cards (fixes [#266](https://github.com/EndlesNights/dnd4eBeta/issues/266))
+  - In character sheets, fixes an untranslated string on the action point checkbox (mentioned in [PR #409](https://github.com/EndlesNights/dnd4eBeta/pull/409)).
+- [PR #415](https://github.com/EndlesNights/dnd4eBeta/pull/415) from @FoxLee Fixes [object Object] appearing in on-sheet item summaries (fixes [#414](https://github.com/EndlesNights/dnd4eBeta/issues/414)) and updates info tags to include more useful properties and fewer irrelevant ones
+
 ## Version 0.5.11
 - ruler refactor, no longer runs though libwrapper. Now is the overrides the default Canvas.rulerClass
 - PR #406 from [squagnar](https://github.com/squagnar) added Check weaponInnerData exists when checking for proficiency
