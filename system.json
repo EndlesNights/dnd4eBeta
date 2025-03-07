@@ -137,7 +137,7 @@
 	"secondaryTokenAttribute": "attributes.temphp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.5.11.zip",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.5.12.zip",
 	"flags": {
 		"needsMigrationVersion": "0.5.11",
 		"compatibleMigrationVersion": "0.2.50",
