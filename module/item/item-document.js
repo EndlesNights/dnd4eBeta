@@ -408,10 +408,59 @@ export default class Item4e extends Item {
 
 		// Equipment Items
 		if ( itemData.type === "equipment" ) {
-			labels.armour = system.armour.ac ? `${system.armour.ac} ${game.i18n.localize("DND4E.AC")}` : "";
-			labels.fort = system.armour.fort ? `${system.armour.fort} ${game.i18n.localize("DND4E.FORT")}` : "";
-			labels.ref = system.armour.ref ? `${system.armour.ref} ${game.i18n.localize("DND4E.REF")}` : "";
-			labels.wil = system.armour.wil ? `${system.armour.wil} ${game.i18n.localize("DND4E.WIL")}` : "";
+			try{
+				labels.armour = system.armour.ac ? `${system.armour.ac} ${game.i18n.localize("DND4E.AC")}` : "";
+				labels.fort = system.armour.fort ? `${system.armour.fort} ${game.i18n.localize("DND4E.FORT")}` : "";
+				labels.ref = system.armour.ref ? `${system.armour.ref} ${game.i18n.localize("DND4E.REF")}` : "";
+				labels.wil = system.armour.wil ? `${system.armour.wil} ${game.i18n.localize("DND4E.WIL")}` : "";
+				labels.move = system.armour.movePen ? `${game.i18n.localize('DND4E.Speed')} ${system.armour.movePenValue}` : "";
+				labels.check = system.armour.skillCheck ? `${game.i18n.localize('DND4E.SkillACPAbbr')} ${system.armour.skillCheckValue}` : "";
+				
+				if(system.armour.type == 'armour'){
+					labels.type = system.armour.subType != "" ? CONFIG.DND4E.equipmentTypesArmour[system.armour.subType].label : "";
+				}else{
+					labels.type = ["","other"].includes(system.armour.type) ? game.i18n.localize('DND4E.EquipmentWondrousItem') :CONFIG.DND4E.equipmentTypes[system.armour.type].label ;
+				}
+				
+			}catch(e){
+				console.error(`Item labels failed for equipment: ${itemData.name}. Item data has been dumped to debug. ${e}`);
+				console.debug(itemData);
+			}
+		}
+		
+		
+		// Weapons
+		if ( itemData.type === "weapon" ) {
+			try{
+				let propCount = 0;
+				for (const [key, value] of Object.entries(system?.properties)){
+					if(value && !(key == 'imp' && system.weaponType == 'implement')){
+						const newKey = `prop${propCount}`;
+						labels[newKey] = game.i18n.localize(CONFIG.DND4E.weaponProperties[key]);
+						propCount++;
+					}
+				}
+				propCount = 0;
+				for (const [key, value] of Object.entries(system?.weaponGroup)){
+					if(value){
+						const newKey = `type${propCount}`;
+						labels[newKey] = game.i18n.localize(CONFIG.DND4E.weaponGroup[key]);
+						propCount++;
+					}
+				}
+				if(system.implement != undefined){	
+					for (const [key, value] of Object.entries(system?.implement)){
+						if(value){
+							const newKey = `type${propCount}`;
+							labels[newKey] = game.i18n.localize(CONFIG.DND4E.implement[key]);
+							propCount++;
+						}
+					}
+				}
+			}catch(e){
+				console.error(`Item labels failed for weapon: ${itemData.name}. Item data has been dumped to debug. ${e}`);
+				console.debug(itemData);
+			}
 		}
 
 		// Activated Items
@@ -455,10 +504,10 @@ export default class Item4e extends Item {
 			if(system.attribute){
 				const attribute = system.attribute.split('.')[1];
 				if(DND4E.abilities[attribute]){
-					labels.attribute = `${game.i18n.localize("DND4E.Ability")}: ${DND4E.abilities[attribute]}`;
+					labels.attribute = `${game.i18n.localize("DND4E.Ability")}: ${game.i18n.localize(DND4E.abilities[attribute])}`;
 				}
 				else if(DND4E.skills[attribute]){
-					labels.attribute = `${game.i18n.localize("DND4E.Skill")}: ${DND4E.skills[attribute]}`;
+					labels.attribute = `${game.i18n.localize("DND4E.Skill")}: ${game.i18n.localize(DND4E.skills[attribute])}`;
 				}
 			}
 
@@ -955,12 +1004,25 @@ export default class Item4e extends Item {
 		const fn = this[`_${this.type}ChatData`];
 		if ( fn ) fn.bind(this)(data, labels, props);
 
-		// General equipment properties
-		if ( data.hasOwnProperty("equipped") && !["loot", "tool"].includes(this.type) ) {
+		// Proficiencies
+		if (data.hasOwnProperty("proficient") && ["equipment","weapon"].includes(this.type)){
+			if( this.type == 'weapon' || (data?.armour.type == 'armour' && ![""].includes(data?.armour.subType)) || (data?.armour.type == 'arms' && ["light","heavy"].includes(data?.armour.subType)) ){
+				if(data?.proficient || (data?.weaponType == 'implement' && data?.proficientI) ){
+					props.push(game.i18n.localize('DND4E.Proficient'));
+				}				
+				if(data?.weaponType != 'implement' && data?.proficientI){
+					props.push(game.i18n.localize("DND4E.ProficiencyI"));
+				}
+				if(!data?.proficient && !(data?.weaponType == 'implement' && data?.proficientI) ){
+					props.push(game.i18n.localize("DND4E.NotProficient"));
+				}
+			}
+		}
+		
+		// Equippables
+		if ( data.hasOwnProperty("equipped") && ["equipment","weapon","container"].includes(this.type) ) {
 			props.push(
-				game.i18n.localize(data.equipped ? "DND4E.Equipped" : "DND4E.Unequipped"),
-				game.i18n.localize(data.proficient ? "DND4E.Proficient" : "DND4E.NotProficient"),
-				game.i18n.localize(data.proficientI ? "DND4E.ProficientI" : ""),
+				game.i18n.localize(data?.equipped ? "DND4E.Equipped" : "DND4E.Unequipped")
 			);
 		}
 
@@ -993,12 +1055,14 @@ export default class Item4e extends Item {
 	 */
 	_equipmentChatData(data, labels, props) {
 		props.push(
-			CONFIG.DND4E.equipmentTypes[data.armour.type],
+			labels.type || null,
 			labels.armour || null,
 			labels.fort || null,
 			labels.ref || null,
 			labels.wil || null,
-			data.stealth.value ? game.i18n.localize("DND4E.StealthDisadvantage") : null
+			labels.move || null,
+			labels.check || null,
+			//data.stealth.value ? game.i18n.localize("DND4E.StealthDisadvantage") : null
 		);
 	}
 
@@ -1009,9 +1073,20 @@ export default class Item4e extends Item {
 	 * @private
 	 */
 	_weaponChatData(data, labels, props) {
+		//console.debug(data);
 		props.push(
-			CONFIG.DND4E.weaponTypes[data.weaponType],
+			game.i18n.localize(CONFIG.DND4E.weaponTypes[data.weaponType])
 		);
+		
+		if(data.weaponHand == "hMain" || data.weaponHand == "hOff"){
+			props.push(game.i18n.localize('DND4E.1H'));
+		}else if(data.weaponHand == "hTwo"){
+			props.push(game.i18n.localize('DND4E.2H'));
+		}
+
+		for (const [key, value] of Object.entries(labels)) {
+			if(key.startsWith("prop") || key.startsWith("type")) props.push(value);
+		}
 	}
 
 	/* -------------------------------------------- */
@@ -1021,10 +1096,12 @@ export default class Item4e extends Item {
 	 * @private
 	 */
 	_consumableChatData(data, labels, props) {
-		props.push(
-			CONFIG.DND4E.consumableTypes[data.consumableType],
-			data.uses.value + "/" + data.preparedMaxUses + " " + game.i18n.localize("DND4E.Charges")
-		);
+		if(data.preparedMaxUses != 0){
+			props.push(
+				CONFIG.DND4E.consumableTypes[data.consumableType].label,
+				data.uses.value + "/" + data.preparedMaxUses + " " + game.i18n.localize("DND4E.Charges")
+			);
+		}
 		data.hasCharges = data.uses.value >= 0;
 	}
 
@@ -1050,8 +1127,8 @@ export default class Item4e extends Item {
 	 */
 	_lootChatData(data, labels, props) {
 		props.push(
-			game.i18n.localize("DND4E.ItemTypeLoot"),
-			data.weight ? data.weight + " " + game.i18n.localize("DND4E.AbbreviationLbs") : null
+			data.weight ? `${data.weight} ${game.i18n.localize("DND4E.AbbreviationLbs")}` : null,
+			data.price ? `${data.price} ${game.i18n.localize("DND4E.GP")}` : null
 		);
 	}
 

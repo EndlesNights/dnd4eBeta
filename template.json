@@ -1167,7 +1167,7 @@
 			"level": "",
 			"armour": {
 				"type": "armour",
-				"subType": "cloth",
+				"subType": "light",
 				"enhance": 0,
 				"ac": 0,
 				"fort": 0,
