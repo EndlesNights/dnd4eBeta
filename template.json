@@ -371,6 +371,17 @@
 						"untyped": 0,
 						"temp": 0
 					},
+					"swim": {
+						"value": 0,
+						"formula": "(@base + @armour)/2",
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"temp": 0
+					},
 					"notes": ""
 				},
 				"resources": {
@@ -1172,8 +1183,8 @@
 				}		
 			},
 			"speed": {
-			"value": null,
-			"conditions": ""
+				"value": null,
+				"conditions": ""
 			},
 			"strength": 0,
 			"stealth": false,

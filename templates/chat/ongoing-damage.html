@@ -18,7 +18,7 @@
 				{{localize "DND4E.isTaking"}}
 			{{/if}}
 		{{/if}}
-			{{dot.amount}}
+			<span class="intended-dmg" data-tooltip="{{dot.dmgFormula}}">{{dot.amount}}</span>
 			{{#if (eq dmgImpact "healing")}} 
 				{{localize "DND4E.HP"}}.
 			{{else}} 

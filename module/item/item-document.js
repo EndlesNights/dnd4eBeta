@@ -689,7 +689,9 @@ export default class Item4e extends Item {
 				token: this.actor.token,
 				alias: this.actor.name
 			},
-			flags: {}
+			flags: {
+			  core: { canPopout: true }
+			}
 		};
 
 		// If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
@@ -783,7 +785,9 @@ export default class Item4e extends Item {
 				token: this.actor.token,
 				alias: this.actor.name
 			},
-			flags: {}
+			flags: {
+			  core: { canPopout: true }
+			}
 		};
 
 		// Create the chat message
@@ -976,8 +980,6 @@ export default class Item4e extends Item {
 			);
 		}
 		
-
-
 		// Filter properties and return
 		data.properties = props.filter(p => !!p);
 		return data;
