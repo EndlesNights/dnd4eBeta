@@ -369,13 +369,25 @@ export default class ItemSheet4e extends ItemSheet {
 
 		const actor = this.item.actor;
 
-		// Attributes
+		// Attributes (and Resources)
 		// this can work separate to an actor as the actors model is known at compile time
 		// if separate from an actor it will default to the PC model, as unlikely to be set with an NPC
-		if (consume.type === "attribute") {
+		if (consume.type === "attribute" || consume.type === "resource") {
 			if (actor) {
 				const attributes = TokenDocument.getTrackedAttributes(actor.system)
 				attributes.bar.forEach(a => a.push("value"));
+				
+				if(consume.type === "resource"){
+					return {"": game.i18n.localize("DND4E.None"), ...attributes.bar.concat(attributes.value).reduce((obj, a) => {
+						console.debug(a);
+						let k = a.join(".");
+						if(k.startsWith("resources") && k.endsWith("value")){
+							obj[k] = a[1];
+						}
+						return obj;
+					}, {})};
+				}
+				
 				return {"": game.i18n.localize("DND4E.None"), ...attributes.bar.concat(attributes.value).reduce((obj, a) => {
 					let k = a.join(".");
 					obj[k] = k;
@@ -384,6 +396,17 @@ export default class ItemSheet4e extends ItemSheet {
 			}
 			else {
 				const attributes = game.model.Actor['Player Character']
+				
+				if(consume.type === "resource"){
+					const resourceKeys = Object.keys(foundry.utils.flattenObject(attributes.resources)).reduce((obj, a) => {
+						//console.debug(obj);
+						if(a.endsWith("value")) obj[`system.resources.${a}`] = a.replace(".value","");
+						return obj;
+					}, {});
+					console.debug(resourceKeys);
+					return {"": game.i18n.localize("DND4E.None"), ...resourceKeys};
+				}
+				
 				const attributeKeys = Object.keys(foundry.utils.flattenObject(attributes)).reduce((obj, a) => {
 					obj[a] = a;
 					return obj;
