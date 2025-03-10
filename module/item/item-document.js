@@ -862,9 +862,10 @@ export default class Item4e extends Item {
 		// const itemData = this.system;
 	
 		const consume = itemData.consume || {};
+		console.debug(consume);
 		if ( !consume.type ) return true;
 		const actor = this.actor;
-		const typeLabel = CONFIG.DND4E.abilityConsumptionTypes[consume.type];
+		const typeLabel = CONFIG.DND4E.abilityConsumptionTypes[consume.type].label;
 		const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 1;
 
 		// Only handle certain types for certain actions
@@ -876,10 +877,11 @@ export default class Item4e extends Item {
 			return false;
 		}
 
-		// Identify the consumed resource and it's quantity
+		// Identify the consumed resource and its quantity
 		let consumed = null;
 		let quantity = 0;
 		switch ( consume.type ) {
+			case "resource":
 			case "attribute":
 				consumed = foundry.utils.getProperty(actor.system, consume.target);
 				quantity = consumed || 0;
@@ -909,7 +911,8 @@ export default class Item4e extends Item {
 		// Update the consumed resource
 		switch ( consume.type ) {
 			case "attribute":
-				await this.actor.update({[`system.${consume.target}`]: remaining});
+			case "resource":
+				await this.actor.update({[`system.${consume.target}`]: `${remaining}`});
 				break;
 			case "ammo":
 			case "material":
