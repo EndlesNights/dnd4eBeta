@@ -862,7 +862,7 @@ export default class Item4e extends Item {
 		// const itemData = this.system;
 	
 		const consume = itemData.consume || {};
-		console.debug(consume);
+		//console.debug(consume);
 		if ( !consume.type ) return true;
 		const actor = this.actor;
 		const typeLabel = CONFIG.DND4E.abilityConsumptionTypes[consume.type].label;
