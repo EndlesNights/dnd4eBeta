@@ -500,11 +500,9 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		
 		//If there's a consumed asset, check its availability	
 		const consume = itemData.system.consume || {};
-		console.debug(consume);
 		if ( consume.type && consume.target && consume.amount) {
-			console.debug(`${itemData.name} has consume type and target: ${consume.type} ${consume.target}`);
+			//console.debug(`${itemData.name} has consume type and target: ${consume.type} ${consume.target}`);
 			const actor = this.actor;
-			console.debug(actor);
 			const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 0;
 
 			// Identify the consumed resource and its quantity
