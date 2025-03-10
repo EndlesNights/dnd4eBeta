@@ -209,10 +209,11 @@ DND4E.abilityActivationTypesShort = {
 
 DND4E.abilityConsumptionTypes = {
 	"": {label: "DND4E.None"},
+	"resource": {label: "DND4E.Resource"},
 	"ammo": {label: "DND4E.ConsumeAmmunition"},
-	"attribute": {label: "DND4E.ConsumeAttribute"},
 	"material": {label: "DND4E.ConsumeMaterial"},
-	"charges": {label: "DND4E.ConsumeCharges"}
+	"charges": {label: "DND4E.ConsumeCharges"},
+	"attribute": {label: "DND4E.ConsumeAttribute"}
 };
 preLocalize("abilityConsumptionTypes", { keys: ["label"] });
 

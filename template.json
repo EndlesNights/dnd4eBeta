@@ -386,22 +386,22 @@
 				},
 				"resources": {
 					"primary": {
-						"value": 0,
-						"max": 0,
-						"sr": 0,
-						"lr": 0
+						"value": "",
+						"max": "",
+						"sr": false,
+						"lr": false
 					},
 					"secondary": {
-						"value": 0,
-						"max": 0,
-						"sr": 0,
-						"lr": 0
+						"value": "",
+						"max": "",
+						"sr": false,
+						"lr": false
 					},
 					"tertiary": {
-						"value": 0,
-						"max": 0,
-						"sr": 0,
-						"lr": 0
+						"value": "",
+						"max": "",
+						"sr": false,
+						"lr": false
 					}
 				},
 				"skills": {
