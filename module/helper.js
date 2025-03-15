@@ -338,9 +338,16 @@ export class Helper {
 					if(suitableKeywords.includes("melee")) suitableKeywords.push("mBasic");
 					if(suitableKeywords.includes("ranged")) suitableKeywords.push("rBasic");
 				}
+				
+				console.debug('fart');
+				console.debug(rollData);
+				
+				if(powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
+				if(powerInnerData.attack?.isOpp || rollData?.isCharge) suitableKeywords.push("opp");
 
 				if (debug) {
-					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group, properties and damage type the following effect keys are suitable`);
+					console.debug(rollData);
+					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group and properties the following effect keys are suitable`);
 					console.log(suitableKeywords.sort());
 					console.log(`${debug} ${suitableKeywords.join(", ")}`);
 				}
@@ -1121,6 +1128,7 @@ export class Helper {
 		if(actorData){
 			powerDetail = this.commonReplace(powerDetail, actorData);
 		}
+		
 		return powerDetail;
 	}
 
@@ -1534,7 +1542,8 @@ Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
 		if(lunchLocation > 0) return true;
 		return false;
 	} catch(err) {
-		return "Contains helper spat up. Did you give it the right parameter types?";
+		console.err("Contains helper spat up. Did you give it the right parameter types?");
+		return false;
 	}
 });
 

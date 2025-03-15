@@ -31,9 +31,12 @@ import { Helper } from "./helper.js"
  */
 export async function d20Roll({parts=[],  partsExpressionReplacements = [], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null,
-								  isAttackRoll=false, options= {}}={}) {
+								  isAttackRoll=false, options={}}={}) {
+	
 	critical = critical || 20; //ensure that critical always has a value
-	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options }
+	const isCharge = options?.variance?.isCharge || false;
+	const isOpp = options?.variance?.isOpp || false;
+	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options, isCharge, isOpp }
 	
 	//console.log(rollConfig.options);
 
@@ -76,6 +79,8 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 		flavor: newFlavor || flavor,
 		isAttackRoll: isAttackRoll,
 		isD20Roll: true,
+		'isCharge': isCharge,
+		'isOpp': isOpp,
 		targetData: targDataArray
 	};
 	const html = await renderTemplate(template, dialogData);
@@ -119,6 +124,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	 - containing some @variables (e.g. @ammo)
 	 - containing some formula that have already been expanded (1+2+3)
 	 */
+	// console.debug(data);
 
 	// define if we are rolling a d20
 	if(!parts.includes("@tool") && !parts.includes("@ritual")) {
@@ -181,6 +187,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	// Optionally include an ability score selection (used for tool checks)
 	// TODO: @Draconas : I think this is a 5e holdover and the entire tools section can be safely removed
 	// also the form doesn't contain ability.
+	// @FoxLee : Can this be repurposed to allow per-use ability mod switching on attacks/skills (eg Deft Blade feat?)
 	const ability = form ? form.ability : null;
 	if ( ability && ability.value ) {
 		data.ability = ability.value;
