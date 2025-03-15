@@ -379,7 +379,7 @@
 
 					{{#if system.damageTypeWeapon}}					
 					<label data-tooltip="{{ localize 'DND4E.PrimaryDamageType' }}">{{ localize 'DND4E.PrimaryDamageType' }}:</label>
-					<pr></pr>
+					 
 					{{#each config.damageTypes as |name type|}}
 					{{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
 						<label class="checkbox">
@@ -390,15 +390,15 @@
 					{{/if}}
 
 					<label>{{ localize "DND4E.ItemWeaponProperties" }}:</label>
-					<pr></pr>
+					 
 					{{#each weaponMetaProperties as |prop p|}}
 						<label class="checkbox">
 							<input type="checkbox" name="system.properties.{{p}}" {{checked prop.checked}} {{#if prop.disabled}}disabled{{/if}} /> {{ prop.propName }}
 						</label>
 					{{/each}}
-					<pr></pr>
+					 
 					<label>{{ localize "DND4E.WeaponGroup" }}:</label>
-					<pr></pr>
+					 
 					{{#each config.weaponGroup as |name group|}}
 					<label class="checkbox">
 						<input type="checkbox" name="system.weaponGroup.{{group}}" {{checked (lookup ../system.weaponGroup group)}}/> {{ name }}
@@ -406,9 +406,9 @@
 					{{/each}}
 
 					{{#if system.properties.imp}}
-					<pr></pr>
+					 
 					<label>{{ localize "DND4E.ImplementGroup" }}:</label>
-					<pr></pr>
+					 
 					{{#each config.implement as |name group|}}
 					<label class="checkbox">
 						<input type="checkbox" name="system.implement.{{group}}" {{checked (lookup ../system.implement group)}}/> {{ name }}
