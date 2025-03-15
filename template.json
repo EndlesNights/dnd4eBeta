@@ -371,26 +371,37 @@
 						"untyped": 0,
 						"temp": 0
 					},
+					"swim": {
+						"value": 0,
+						"formula": "(@base + @armour)/2",
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"temp": 0
+					},
 					"notes": ""
 				},
 				"resources": {
 					"primary": {
-						"value": 0,
-						"max": 0,
-						"sr": 0,
-						"lr": 0
+						"value": "",
+						"max": "",
+						"sr": false,
+						"lr": false
 					},
 					"secondary": {
-						"value": 0,
-						"max": 0,
-						"sr": 0,
-						"lr": 0
+						"value": "",
+						"max": "",
+						"sr": false,
+						"lr": false
 					},
 					"tertiary": {
-						"value": 0,
-						"max": 0,
-						"sr": 0,
-						"lr": 0
+						"value": "",
+						"max": "",
+						"sr": false,
+						"lr": false
 					}
 				},
 				"skills": {
@@ -1033,6 +1044,8 @@
 					"shareAttackRoll": false,
 					"isAttack": true,
 					"isBasic": false,
+					"isCharge": false,
+					"isOpp": false,
 					"ability": "str",
 					"abilityBonus": 0,
 					"def": "ac",
@@ -1156,7 +1169,7 @@
 			"level": "",
 			"armour": {
 				"type": "armour",
-				"subType": "cloth",
+				"subType": "light",
 				"enhance": 0,
 				"ac": 0,
 				"fort": 0,
@@ -1172,8 +1185,8 @@
 				}		
 			},
 			"speed": {
-			"value": null,
-			"conditions": ""
+				"value": null,
+				"conditions": ""
 			},
 			"strength": 0,
 			"stealth": false,
@@ -1233,6 +1246,7 @@
 			},
 			"brutalNum": 1,
 			"weaponGroup": {},
+			"implementGroup": {},
 			"attackForm": "@profBonus+@enhance",
 			"attackFormImp": "@profImpBonus+@enhanceImp",
 			"damageForm": "@enhance",
