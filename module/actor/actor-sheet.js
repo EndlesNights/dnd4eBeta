@@ -330,6 +330,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 <br>${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedRunning")}
 <br>${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedCharging")}
 <br>${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedClimbing")}
+<br>${parseInt(data.system.movement.swim.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedSwimming")}
 <br>${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedShifting")}`;
 
 		if(data.system.movement.custom){
@@ -494,11 +495,46 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	}
 
 	_checkPowerAvailable(itemData) {
-		if( (!itemData.system.uses.value && itemData.system.preparedMaxUses)
-			|| !itemData.system.prepared) {
-				itemData.system.notAvailable = true;
-
+		if( (!itemData.system.uses.value && itemData.system.preparedMaxUses) || !itemData.system.prepared) {
+			itemData.system.notAvailable = true;
 		}
+		
+		//If there's a consumed asset, check its availability	
+		const consume = itemData.system.consume || {};
+		if ( consume.type && consume.target && consume.amount) {
+			//console.debug(`${itemData.name} has consume type and target: ${consume.type} ${consume.target}`);
+			const actor = this.actor;
+			const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 0;
+
+			// Identify the consumed resource and its quantity
+			let consumed = null;
+			let quantity = 0;
+			switch ( consume.type ) {
+				case "resource":
+				case "attribute":
+					consumed = foundry.utils.getProperty(actor.system, consume.target);
+					quantity = consumed || 0;
+					break;
+				case "ammo":
+				case "material":
+					consumed = actor.items.get(consume.target);
+					quantity = consumed ? consumed.system.quantity : 0;
+					break;
+				case "charges":
+					consumed = actor.items.get(consume.target);
+					quantity = consumed ? consumed.system.uses.value : 0;
+					break;
+			}
+
+			// Mark unavailable is the needed resource is insufficient
+			if ( ![null, undefined].includes(consumed) ) {
+				let remaining = quantity - amount;
+				if ( remaining < 0) {
+					itemData.system.notAvailable = true;
+				}
+			}
+		}			
+	
 	}
   /* -------------------------------------------- */
 	/**
