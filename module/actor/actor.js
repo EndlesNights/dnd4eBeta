@@ -46,9 +46,9 @@ export class Actor4e extends Actor {
 		if ( newSize && (options.forceSizeUpdate === true || (newSize !== foundry.utils.getProperty(this, "system.details.size")) )) {
 			let size = CONFIG.DND4E.tokenSizes[newSize];
 			if ( this.isToken ) this.token.update({height: size, width: size});
-			else if ( !data["token.width"] && !hasProperty(data, "token.width") ) {
-				data["token.height"] = size;
-				data["token.width"] = size;
+			else if ( !data["prototypeToken.width"] && !hasProperty(data, "prototypeToken.width") ) {
+				data["prototypeToken.height"] = size;
+				data["prototypeToken.width"] = size;
 			}
 		}
 
@@ -198,60 +198,91 @@ export class Actor4e extends Actor {
 		system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
 
 		//HP auto calc
-		if(system.attributes.hp.autototal) {
-			system.attributes.hp.max = system.attributes.hp.perlevel * (system.details.level - 1) + system.attributes.hp.starting + system.attributes.hp.misc + system.abilities.con.value;
+		if(isNaN(parseInt(system.attributes.hp?.absolute))){ //All logic only required if there is no usable absolute value
+		
+			if(system.attributes.hp.autototal) {
+				system.attributes.hp.max = system.attributes.hp.perlevel * (system.details.level - 1) + system.attributes.hp.starting + system.attributes.hp.misc + system.abilities.con.value;
+			}
+			system.attributes.hp.max += system.attributes.hp.feat || 0;
+			system.attributes.hp.max += system.attributes.hp.item || 0;
+			system.attributes.hp.max += system.attributes.hp.power || 0;
+			system.attributes.hp.max += system.attributes.hp.race || 0;
+			system.attributes.hp.max += system.attributes.hp.untyped || 0;
+			//trim value according to floor and ceil
+			system.attributes.hp.max = Math.max(system.attributes.hp.max,system.attributes.hp?.floor || system.attributes.hp.max-1);
+			system.attributes.hp.max = Math.min(system.attributes.hp.max,system.attributes.hp?.ceil || system.attributes.hp.max+1);
+		}else{
+			system.attributes.hp.max = system.attributes.hp.absolute;
 		}
-		system.attributes.hp.max += system.attributes.hp.feat || 0;
-		system.attributes.hp.max += system.attributes.hp.item || 0;
-		system.attributes.hp.max += system.attributes.hp.power || 0;
-		system.attributes.hp.max += system.attributes.hp.race || 0;
-		system.attributes.hp.max += system.attributes.hp.untyped || 0;
 		
 		// Healing Surges
-		system.details.surges.max += system.details.surges.feat || 0;
-		system.details.surges.max += system.details.surges.item || 0;
-		system.details.surges.max += system.details.surges.power || 0;
-		system.details.surges.max += system.details.surges.race || 0;
-		system.details.surges.max += system.details.surges.untyped || 0;
+		if(isNaN(parseInt(system.details.surges?.absolute))){ //All logic only required if there is no usable absolute value
+			system.details.surges.max += system.details.surges.feat || 0;
+			system.details.surges.max += system.details.surges.item || 0;
+			system.details.surges.max += system.details.surges.power || 0;
+			system.details.surges.max += system.details.surges.race || 0;
+			system.details.surges.max += system.details.surges.untyped || 0;
+			//trim value according to floor and ceil
+			system.details.surges.max = Math.max(system.details.surges.max,system.details.surges?.floor || system.details.surges.max-1);
+			system.details.surges.max = Math.min(system.details.surges.max,system.details.surges?.ceil || system.details.surges.max+1);
+		}else{
+			system.details.surges.max = system.details.surges.absolute;
+		}
 
 		//Set Health related values
-		if(!(system.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeBon.bonus[0]))) {
-			for( const b of system.details.surgeBon.bonus) {
-				if(b.active && Helper._isNumber(b.value)) {
-					system.details.surgeBon.value += parseInt(b.value);
-				}
-				else if(b.active){
-					let val = Helper.replaceData(b.value,system)
-					if(Helper._isNumber(val)){
-						system.details.surgeBon.value += parseInt(val);
-					}
-				}
-			}
-		}
-		system.details.surgeBon.value += system.details.surgeBon.feat || 0;
-		system.details.surgeBon.value += system.details.surgeBon.item || 0;
-		system.details.surgeBon.value += system.details.surgeBon.power || 0;
-		system.details.surgeBon.value += system.details.surgeBon.race || 0;
-		system.details.surgeBon.value += system.details.surgeBon.untyped || 0;
+		if(isNaN(parseInt(system.details.surgeBon?.absolute))){ //All logic only required if there is no usable absolute value
 		
-		if(!(system.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(system.details.secondwindbon.bonus[0]))) {
-			for( const b of system.details.secondwindbon.bonus) {
-				if(b.active && Helper._isNumber(b.value)) {
-					system.details.secondwindbon.value += parseInt(b.value);
-				}
-				else if(b.active){
-					let val = Helper.replaceData(b.value,system)
-					if(Helper._isNumber(val)){
-						system.details.secondwindbon.value += parseInt(val);
+			if(!(system.details.surgeBon.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeBon.bonus[0]))) {
+				for( const b of system.details.surgeBon.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						system.details.surgeBon.value += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,system)
+						if(Helper._isNumber(val)){
+							system.details.surgeBon.value += parseInt(val);
+						}
 					}
 				}
 			}
+			system.details.surgeBon.value += system.details.surgeBon.feat || 0;
+			system.details.surgeBon.value += system.details.surgeBon.item || 0;
+			system.details.surgeBon.value += system.details.surgeBon.power || 0;
+			system.details.surgeBon.value += system.details.surgeBon.race || 0;
+			system.details.surgeBon.value += system.details.surgeBon.untyped || 0;
+			//trim value according to floor and ceil
+			system.details.surgeBon.value = Math.max(system.details.surgeBon.value,system.details.surgeBon?.floor || system.details.surgeBon.value-1);
+			system.details.surgeBon.value = Math.min(system.details.surgeBon.value,system.details.surgeBon?.ceil || system.details.surgeBon.value+1);
+		}else{
+			system.details.surgeBon.value = system.details.surgeBon.absolute;
 		}
-		system.details.secondwindbon.value += system.details.secondwindbon.feat || 0;
-		system.details.secondwindbon.value += system.details.secondwindbon.item || 0;
-		system.details.secondwindbon.value += system.details.secondwindbon.power || 0;
-		system.details.secondwindbon.value += system.details.secondwindbon.race || 0;
-		system.details.secondwindbon.value += system.details.secondwindbon.untyped || 0;
+		
+		if(isNaN(parseInt(system.details.secondwindbon?.absolute))){ //All logic only required if there is no usable absolute value
+		
+			if(!(system.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(system.details.secondwindbon.bonus[0]))) {
+				for( const b of system.details.secondwindbon.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						system.details.secondwindbon.value += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,system)
+						if(Helper._isNumber(val)){
+							system.details.secondwindbon.value += parseInt(val);
+						}
+					}
+				}
+			}
+			system.details.secondwindbon.value += system.details.secondwindbon.feat || 0;
+			system.details.secondwindbon.value += system.details.secondwindbon.item || 0;
+			system.details.secondwindbon.value += system.details.secondwindbon.power || 0;
+			system.details.secondwindbon.value += system.details.secondwindbon.race || 0;
+			system.details.secondwindbon.value += system.details.secondwindbon.untyped || 0;
+			//trim value according to floor and ceil
+			system.details.secondwindbon.value = Math.max(system.details.secondwindbon.value,system.details.secondwindbon?.floor || system.details.secondwindbon.value-1);
+			system.details.secondwindbon.value = Math.min(system.details.secondwindbon.value,system.details.secondwindbon?.ceil || system.details.secondwindbon.value+1);
+		}else{
+			system.details.secondwindbon.value = system.details.secondwindbon.absolute;
+		}
 		
 		system.details.bloodied = Math.floor(system.attributes.hp.max / 2);
 		system.details.surgeValue = Math.floor(system.details.bloodied / 2) + system.details.surgeBon.value;
@@ -260,65 +291,89 @@ export class Actor4e extends Actor {
 
 		//check if bloodied
 		system.details.isBloodied = (system.attributes.hp.value <= system.attributes.hp.max/2);
-
-		if(!(system.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeEnv.bonus[0]))) {
-			for( const b of system.details.surgeEnv.bonus) {
-				if(b.active && Helper._isNumber(b.value)) {
-					system.details.surgeEnv.value += parseInt(b.value);
-				}
-				else if(b.active){
-					let val = Helper.replaceData(b.value,system)
-					if(Helper._isNumber(val)){
-						system.details.surgeEnv.value += parseInt(val);
+		
+		if(isNaN(parseInt(system.details.surgeEnv?.absolute))){ //All logic only required if there is no usable absolute value
+		
+			if(!(system.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeEnv.bonus[0]))) {
+				for( const b of system.details.surgeEnv.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						system.details.surgeEnv.value += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,system)
+						if(Helper._isNumber(val)){
+							system.details.surgeEnv.value += parseInt(val);
+						}
 					}
 				}
 			}
+			system.details.surgeEnv.value += system.details.surgeEnv.feat || 0;
+			system.details.surgeEnv.value += system.details.surgeEnv.item || 0;
+			system.details.surgeEnv.value += system.details.surgeEnv.power || 0;
+			system.details.surgeEnv.value += system.details.surgeEnv.race || 0;
+			system.details.surgeEnv.value += system.details.surgeEnv.untyped || 0;
+			//trim value according to floor and ceil
+			system.details.surgeEnv.value = Math.max(system.details.surgeEnv.value,system.details.surgeEnv?.floor || system.details.surgeEnv.value-1);
+			system.details.surgeEnv.value = Math.min(system.details.surgeEnv.value,system.details.surgeEnv?.ceil || system.details.surgeEnv.value+1);
+		}else{
+			system.details.surgeEnv.value = system.details.surgeEnv.absolute;
 		}
-		system.details.surgeEnv.value += system.details.surgeEnv.feat || 0;
-		system.details.surgeEnv.value += system.details.surgeEnv.item || 0;
-		system.details.surgeEnv.value += system.details.surgeEnv.power || 0;
-		system.details.surgeEnv.value += system.details.surgeEnv.race || 0;
-		system.details.surgeEnv.value += system.details.surgeEnv.untyped || 0;
 		
 		//Normal Saving Throw
-		if(!(system.details.saves.bonus.length === 1 && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
-			for( const b of system.details.saves.bonus) {
-				if(b.active && Helper._isNumber(b.value)) {
-					system.details.saves.value += parseInt(b.value);
-				}
-				else if(b.active){
-					let val = Helper.replaceData(b.value,system)
-					if(Helper._isNumber(val)){
-						system.details.saves.value += parseInt(val);
+		if(isNaN(parseInt(system.details.saves?.absolute))){ //All logic only required if there is no usable absolute value
+		
+			if(!(system.details.saves.bonus.length === 1 && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
+				for( const b of system.details.saves.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						system.details.saves.value += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,system)
+						if(Helper._isNumber(val)){
+							system.details.saves.value += parseInt(val);
+						}
 					}
 				}
 			}
+			system.details.saves.value += system.details.saves?.feat || 0;
+			system.details.saves.value += system.details.saves?.item || 0;
+			system.details.saves.value += system.details.saves?.power || 0;
+			system.details.saves.value += system.details.saves?.race || 0;
+			system.details.saves.value += system.details.saves?.untyped || 0;
+			//trim value according to floor and ceil
+			system.details.saves.value = Math.max(system.details.saves.value,system.details.saves?.floor || system.details.saves.value-1);
+			system.details.saves.value = Math.min(system.details.saves.value,system.details.saves?.ceil || system.details.saves.value+1);
+		}else{
+			system.details.saves.value = system.details.saves.absolute;
 		}
-		system.details.saves.value += system.details.saves?.feat || 0;
-		system.details.saves.value += system.details.saves?.item || 0;
-		system.details.saves.value += system.details.saves?.power || 0;
-		system.details.saves.value += system.details.saves?.race || 0;
-		system.details.saves.value += system.details.saves?.untyped || 0;
 
 		//Death Saving Throw
-		if(!(system.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(system.details.deathsavebon.bonus[0]))) {
-			for( const b of system.details.deathsavebon.bonus) {
-				if(b.active && Helper._isNumber(b.value)) {
-					system.details.deathsavebon.value += parseInt(b.value);
-				}
-				else if(b.active){
-					let val = Helper.replaceData(b.value,system)
-					if(Helper._isNumber(val)){
-						system.details.deathsavebon.value += parseInt(val);
+		if(isNaN(parseInt(system.details.deathsavebon?.absolute))){ //All logic only required if there is no usable absolute value
+		
+			if(!(system.details.deathsavebon.bonus.length === 1 && jQuery.isEmptyObject(system.details.deathsavebon.bonus[0]))) {
+				for( const b of system.details.deathsavebon.bonus) {
+					if(b.active && Helper._isNumber(b.value)) {
+						system.details.deathsavebon.value += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,system)
+						if(Helper._isNumber(val)){
+							system.details.deathsavebon.value += parseInt(val);
+						}
 					}
 				}
 			}
+			system.details.deathsavebon.value += system.details.deathsavebon.feat || 0;
+			system.details.deathsavebon.value += system.details.deathsavebon.item || 0;
+			system.details.deathsavebon.value += system.details.deathsavebon.power || 0;
+			system.details.deathsavebon.value += system.details.deathsavebon.race || 0;
+			system.details.deathsavebon.value += system.details.deathsavebon.untyped || 0;
+			//trim value according to floor and ceil
+			system.details.deathsavebon.value = Math.max(system.details.deathsavebon.value,system.details.deathsavebon?.floor || system.details.deathsavebon.value-1);
+			system.details.deathsavebon.value = Math.min(system.details.deathsavebon.value,system.details.deathsavebon?.ceil || system.details.deathsavebon.value+1);
+		}else{
+			system.details.deathsavebon.value = system.details.deathsavebon.absolute;
 		}
-		system.details.deathsavebon.value += system.details.deathsavebon.feat || 0;
-		system.details.deathsavebon.value += system.details.deathsavebon.item || 0;
-		system.details.deathsavebon.value += system.details.deathsavebon.power || 0;
-		system.details.deathsavebon.value += system.details.deathsavebon.race || 0;
-		system.details.deathsavebon.value += system.details.deathsavebon.untyped || 0;
 		
 		//Weight & Encumbrance
 		system.encumbrance = this._computeEncumbrance(actorData.system);
@@ -345,6 +400,8 @@ export class Actor4e extends Actor {
 
 		//Calculate global modifiers
 		for (let [id, mod] of Object.entries(system.modifiers)) {
+			mod.label = game.i18n.localize(DND4E.modifiers[id]);
+			
 			let modifierBonusValue = 0;
 			if(!(mod.bonus.length === 1 && jQuery.isEmptyObject(mod.bonus[0]))) {
 				for( const b of mod.bonus) {
@@ -361,8 +418,16 @@ export class Actor4e extends Actor {
 			}
 
 			mod.bonusValue = modifierBonusValue;
-			mod.value += mod?.class||0 + mod?.feat||0 + mod?.item||0 + mod?.power||0 + mod?.untyped||0 + mod?.race||0 + mod.bonusValue;
-			mod.label = game.i18n.localize(DND4E.modifiers[id]);
+			
+			if(isNaN(parseInt(mod?.absolute))){ //All logic only required if there is no usable absolute value
+				
+				mod.value += mod?.class||0 + mod?.feat||0 + mod?.item||0 + mod?.power||0 + mod?.untyped||0 + mod?.race||0 + mod.bonusValue;
+				//trim value according to floor and ceil
+				mod.value = Math.max(mod.value,mod?.floor || mod.value-1);
+				mod.value = Math.min(mod.value,mod?.ceil || mod.value+1);
+			}else{
+				mod.value = mod.absolute;
+			}
 		}
 		
 		// Calculate Defences
@@ -380,44 +445,53 @@ export class Actor4e extends Actor {
 		system.modifiers.attack.warn = system.modifiers.attack.armourPen < 0 ? true : false;
 
 		//calculate initiative
-		let initBonusValue = 0;
-		if(!game.settings.get("dnd4e", "halfLevelOptions")){
-			initBonusValue += Math.floor(system.details.level / 2);
-		}
+		if(isNaN(parseInt(system.attributes.init?.absolute))){ //All logic only required if there is no usable absolute value
+			let initBonusValue = 0;
+			if(!game.settings.get("dnd4e", "halfLevelOptions")){
+				initBonusValue += Math.floor(system.details.level / 2);
+			}
 
-		if(!(system.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(system.attributes.init.bonus[0]))) {
-			for( const b of system.attributes.init.bonus) {
-				if(b.active  && Helper._isNumber(b.value)) {
-					initBonusValue += parseInt(b.value);
-				}
-				else if(b.active){
-					let val = Helper.replaceData(b.value,system)
-					if(Helper._isNumber(val)){
-						initBonusValue += parseInt(val);
+			if(!(system.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(system.attributes.init.bonus[0]))) {
+				for( const b of system.attributes.init.bonus) {
+					if(b.active  && Helper._isNumber(b.value)) {
+						initBonusValue += parseInt(b.value);
+					}
+					else if(b.active){
+						let val = Helper.replaceData(b.value,system)
+						if(Helper._isNumber(val)){
+							initBonusValue += parseInt(val);
+						}
 					}
 				}
 			}
-		}
-		//used for effects
-		initBonusValue += system.attributes.init.bonusValue || 0;
+			//used for effects
+			initBonusValue += system.attributes.init.bonusValue || 0;
 
-		if(this.type === "NPC" && !system.advancedCals){
-			system.attributes.init.value = (system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod : 0) + (system.attributes.init.base || 0) + initBonusValue;
-		} else {
-			system.attributes.init.value = system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod + initBonusValue : initBonusValue;
-		}
-		system.attributes.init.value += system.attributes.init.feat || 0;
-		system.attributes.init.value += system.attributes.init.item || 0;
-		system.attributes.init.value += system.attributes.init.power || 0;
-		system.attributes.init.value += system.attributes.init.race || 0;
-		system.attributes.init.value += system.attributes.init.untyped || 0;
+			if(this.type === "NPC" && !system.advancedCals){
+				system.attributes.init.value = (system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod : 0) + (system.attributes.init.base || 0) + initBonusValue;
+			} else {
+				system.attributes.init.value = system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod + initBonusValue : initBonusValue;
+			}
+			system.attributes.init.value += system.attributes.init.feat || 0;
+			system.attributes.init.value += system.attributes.init.item || 0;
+			system.attributes.init.value += system.attributes.init.power || 0;
+			system.attributes.init.value += system.attributes.init.race || 0;
+			system.attributes.init.value += system.attributes.init.untyped || 0;
 
-		if(system.attributes.init.value > 999)
-			system.attributes.init.value = 999;
+			if(system.attributes.init.value > 999)
+				system.attributes.init.value = 999;
+		
+			//trim value according to floor and ceil
+			system.attributes.init.value = Math.max(system.attributes.init.value,system.attributes.init?.floor || system.attributes.init.value-1);
+			system.attributes.init.value = Math.min(system.attributes.init.value,system.attributes.init?.ceil || system.attributes.init.value+1);
+		}else{
+			system.attributes.init.value = system.attributes.init.absolute;
+		}
 		
 		//calc movespeed
-		let baseMoveBonusValue = system.movement.base.bonusValue || 0;
 		
+		//bonus arrays first, since they want to appear on the sheet
+		let baseMoveBonusValue = system.movement.base.bonusValue || 0;
 		if(!(system.movement.base.bonus.length === 1 && jQuery.isEmptyObject(system.movement.base.bonus[0]))) {
 			for( const b of system.movement.base.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
@@ -431,12 +505,6 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		for ( let i of this.items) {
-			if(i.type !="equipment" || !i.system.equipped || !i.system.armour.movePen) { continue; };
-			const absMovePen = Math.abs(i.system.armour.movePenValue)
-			system.movement.base.armour -= absMovePen;
-		}
-		system.movement.base.bonusValue = baseMoveBonusValue;
 		
 		let walkBonusValue = system.movement.walk.bonusValue || 0;
 		if(!(system.movement.walk.bonus.length === 1 && jQuery.isEmptyObject(system.movement.walk.bonus[0]))) {
@@ -452,7 +520,6 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		system.movement.walk.bonusValue = walkBonusValue;	
 
 		let chargeBonusValue = system.movement.charge.bonusValue || 0;
 		if(!(system.movement.charge.bonus.length === 1 && jQuery.isEmptyObject(system.movement.charge.bonus[0]))) {
@@ -468,8 +535,7 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		system.movement.charge.bonusValue = chargeBonusValue;	
-		
+
 		let runBonusValue = system.movement.run.bonusValue || 0;
 		if(!(system.movement.run.bonus.length === 1 && jQuery.isEmptyObject(system.movement.run.bonus[0]))) {
 			for( const b of system.movement.run.bonus) {
@@ -484,8 +550,7 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		system.movement.run.bonusValue = runBonusValue;
-	
+
 		let climbBonusValue = system.movement.climb.bonusValue || 0;
 		if(!(system.movement.climb.bonus.length === 1 && jQuery.isEmptyObject(system.movement.climb.bonus[0]))) {
 			for( const b of system.movement.climb.bonus) {
@@ -500,7 +565,6 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		system.movement.climb.bonusValue = climbBonusValue;	
 
 		let shiftBonusValue = system.movement.shift.bonusValue || 0;
 		if(!(system.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(system.movement.shift.bonus[0]))) {
@@ -516,70 +580,163 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-		system.movement.shift.bonusValue = shiftBonusValue;	
+		
+		let swimBonusValue = system.movement.swim.bonusValue || 0;
+		if(!(system.movement.swim.bonus.length === 1 && jQuery.isEmptyObject(system.movement.swim.bonus[0]))) {
+			for( const b of system.movement.swim.bonus) {
+				if(b.active && Helper._isNumber(b.value)) {
+					swimBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,system)
+					if(Helper._isNumber(val)){
+						swimBonusValue += parseInt(val);
+					}
+				}
+			}
+		}
+			
+		//Base Speed
+		if(isNaN(parseInt(system.movement.base?.absolute))){ //All logic only required if there is no usable absolute value
+		
+			for ( let i of this.items) {
+				if(i.type !="equipment" || !i.system.equipped || !i.system.armour.movePen) { continue; };
+				const absMovePen = Math.abs(i.system.armour.movePenValue)
+				system.movement.base.armour -= absMovePen;
+			}
+			system.movement.base.bonusValue = baseMoveBonusValue;
 
-		system.movement.base.value = system.movement.base.base +  baseMoveBonusValue + system.movement.base.temp;
-		system.movement.base.value += system.movement.base.feat || 0;
-		system.movement.base.value += system.movement.base.item || 0;
-		system.movement.base.value += system.movement.base.power || 0;
-		system.movement.base.value += system.movement.base.race || 0;
-		system.movement.base.value += system.movement.base.untyped || 0;
+			system.movement.base.value = system.movement.base.base +  baseMoveBonusValue + system.movement.base.temp;
+			system.movement.base.value += system.movement.base.feat || 0;
+			system.movement.base.value += system.movement.base.item || 0;
+			system.movement.base.value += system.movement.base.power || 0;
+			system.movement.base.value += system.movement.base.race || 0;
+			system.movement.base.value += system.movement.base.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.base.value = Math.max(system.movement.base.value,system.movement.base?.floor || system.movement.base.value-1);
+			system.movement.base.value = Math.min(system.movement.base.value,system.movement.base?.ceil || system.movement.base.value+1);
+			system.movement.base.value = Math.max(system.movement.base.value,0);
+		}else{
+			system.movement.base.value = Math.max(system.movement.base.absolute,0);
+		}
 		
-		let walkForm = eval(Helper.replaceData(system.movement.walk.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.walk.value += walkForm + walkBonusValue + system.movement.base.temp;
-		system.movement.walk.value += system.movement.walk.feat || 0;
-		system.movement.walk.value += system.movement.walk.item || 0;
-		system.movement.walk.value += system.movement.walk.power || 0;
-		system.movement.walk.value += system.movement.walk.race || 0;
-		system.movement.walk.value += system.movement.walk.untyped || 0;
+		//Speed (Walk)
+		if(isNaN(parseInt(system.movement.walk?.absolute))){ //All logic only required if there is no usable absolute value
 		
-		if (system.movement.walk.value < 0)
-			system.movement.walk.value = 0;
+			system.movement.walk.bonusValue = walkBonusValue;
+			
+			let walkForm = eval(Helper.replaceData(system.movement.walk.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.walk.value += walkForm + walkBonusValue + system.movement.base.temp;
+			system.movement.walk.value += system.movement.walk.feat || 0;
+			system.movement.walk.value += system.movement.walk.item || 0;
+			system.movement.walk.value += system.movement.walk.power || 0;
+			system.movement.walk.value += system.movement.walk.race || 0;
+			system.movement.walk.value += system.movement.walk.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.walk.value = Math.max(system.movement.walk.value,system.movement.walk?.floor || system.movement.walk.value-1);
+			system.movement.walk.value = Math.min(system.movement.walk.value,system.movement.walk?.ceil || system.movement.walk.value+1);
+			system.movement.walk.value = Math.max(system.movement.walk.value,0);
+		}else{
+			system.movement.walk.value = Math.max(system.movement.walk.absolute,0);
+		}
 		
-		let runForm = eval(Helper.replaceData(system.movement.run.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.run.value = runForm + runBonusValue + system.movement.run.temp;
-		system.movement.run.value += system.movement.run.feat || 0;
-		system.movement.run.value += system.movement.run.item || 0;
-		system.movement.run.value += system.movement.run.power || 0;
-		system.movement.run.value += system.movement.run.race || 0;
-		system.movement.run.value += system.movement.run.untyped || 0;
+		//Charge Speed
+		if(isNaN(parseInt(system.movement.charge?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.charge.bonusValue = chargeBonusValue;
+			let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge.temp;
+			system.movement.charge.value += system.movement.charge.feat || 0;
+			system.movement.charge.value += system.movement.charge.item || 0;
+			system.movement.charge.value += system.movement.charge.power || 0;
+			system.movement.charge.value += system.movement.charge.race || 0;
+			system.movement.charge.value += system.movement.charge.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.charge.value = Math.max(system.movement.charge.value,system.movement.charge?.floor || system.movement.charge.value-1);
+			system.movement.charge.value = Math.min(system.movement.charge.value,system.movement.charge?.ceil || system.movement.charge.value+1);
+			system.movement.charge.value = Math.max(system.movement.charge.value,0);
+		}else{
+			system.movement.charge.value = Math.max(system.movement.charge.absolute,0);
+		}
 		
-		if (system.movement.run.value < 0)
-			system.movement.run.value = 0;
-
-		let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge.temp;
-		system.movement.charge.value += system.movement.charge.feat || 0;
-		system.movement.charge.value += system.movement.charge.item || 0;
-		system.movement.charge.value += system.movement.charge.power || 0;
-		system.movement.charge.value += system.movement.charge.race || 0;
-		system.movement.charge.value += system.movement.charge.untyped || 0;
+		//Run Speed
+		if(isNaN(parseInt(system.movement.run?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.run.bonusValue = runBonusValue;
+			let runForm = eval(Helper.replaceData(system.movement.run.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.run.value = runForm + runBonusValue + system.movement.run.temp;
+			system.movement.run.value += system.movement.run.feat || 0;
+			system.movement.run.value += system.movement.run.item || 0;
+			system.movement.run.value += system.movement.run.power || 0;
+			system.movement.run.value += system.movement.run.race || 0;
+			system.movement.run.value += system.movement.run.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.run.value = Math.max(system.movement.run.value,system.movement.run?.floor || system.movement.run.value-1);
+			system.movement.run.value = Math.min(system.movement.run.value,system.movement.run?.ceil || system.movement.run.value+1);
+			system.movement.run.value = Math.max(system.movement.run.value,0);
+		}else{
+			system.movement.run.value = Math.max(system.movement.run.absolute,0);
+		}
 		
-		if (system.movement.charge.value < 0)
-			system.movement.charge.value = 0;
-
-		let climbForm = eval(Helper.replaceData(system.movement.climb.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb.temp;
-		system.movement.climb.value += system.movement.climb.feat || 0;
-		system.movement.climb.value += system.movement.climb.item || 0;
-		system.movement.climb.value += system.movement.climb.power || 0;
-		system.movement.climb.value += system.movement.climb.race || 0;
-		system.movement.climb.value += system.movement.climb.untyped || 0;
+		//Climb Speed
+		if(isNaN(parseInt(system.movement.climb?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.climb.bonusValue = climbBonusValue;
+			let climbForm = eval(Helper.replaceData(system.movement.climb.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb.temp;
+			system.movement.climb.value += system.movement.climb.feat || 0;
+			system.movement.climb.value += system.movement.climb.item || 0;
+			system.movement.climb.value += system.movement.climb.power || 0;
+			system.movement.climb.value += system.movement.climb.race || 0;
+			system.movement.climb.value += system.movement.climb.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.climb.value = Math.max(system.movement.climb.value,system.movement.climb?.floor || system.movement.climb.value-1);
+			system.movement.climb.value = Math.min(system.movement.climb.value,system.movement.climb?.ceil || system.movement.climb.value+1);
+			system.movement.climb.value = Math.max(system.movement.climb.value,0);
+		}else{
+			system.movement.climb.value = Math.max(system.movement.climb.absolute,0);
+		}
 		
-		if (system.movement.climb.value < 0)
-			system.movement.climb.value = 0;
+		//Shift Speed
+		if(isNaN(parseInt(system.movement.shift?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.shift.bonusValue = shiftBonusValue;		
+			let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift.temp;
+			system.movement.shift.value += system.movement.shift.feat || 0;
+			system.movement.shift.value += system.movement.shift.item || 0;
+			system.movement.shift.value += system.movement.shift.power || 0;
+			system.movement.shift.value += system.movement.shift.race || 0;
+			system.movement.shift.value += system.movement.shift.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.shift.value = Math.max(system.movement.shift.value,system.movement.shift?.floor || system.movement.shift.value-1);
+			system.movement.shift.value = Math.min(system.movement.shift.value,system.movement.shift?.ceil || system.movement.shift.value+1);
+			system.movement.shift.value = Math.max(system.movement.shift.value,0);
+		}else{
+			system.movement.shift.value = Math.max(system.movement.shift.absolute,0);
+		}
 		
-		let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
-		system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift.temp;;
-		system.movement.shift.value += system.movement.shift.feat || 0;
-		system.movement.shift.value += system.movement.shift.item || 0;
-		system.movement.shift.value += system.movement.shift.power || 0;
-		system.movement.shift.value += system.movement.shift.race || 0;
-		system.movement.shift.value += system.movement.shift.untyped || 0;
-
-		if (system.movement.shift.value < 0)
-			system.movement.shift.value = 0;
-		
+		//Swim Speed
+		if(isNaN(parseInt(system.movement.swim?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.swim.bonusValue = swimBonusValue;		
+			let swimForm = eval(Helper.replaceData(system.movement.swim.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.swim.value = swimForm + swimBonusValue + system.movement.swim.temp;
+			system.movement.swim.value += system.movement.swim.feat || 0;
+			system.movement.swim.value += system.movement.swim.item || 0;
+			system.movement.swim.value += system.movement.swim.power || 0;
+			system.movement.swim.value += system.movement.swim.race || 0;
+			system.movement.swim.value += system.movement.swim.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.swim.value = Math.max(system.movement.swim.value,system.movement.swim?.floor || system.movement.swim.value-1);
+			system.movement.swim.value = Math.min(system.movement.swim.value,system.movement.swim?.ceil || system.movement.swim.value+1);
+			system.movement.swim.value = Math.max(system.movement.swim.value,0);
+		}else{
+			system.movement.swim.value = Math.max(system.movement.swim.absolute,0);
+		}
+	
 		//Calculate skill modifiers
 		if(this.type === "NPC"){
 			this.calcSkillNPC(system);
@@ -614,50 +771,56 @@ export class Actor4e extends Actor {
 		   applying unwanted vulnerabilities.
 		*/
 		try{
-			for (let [id, res] of Object.entries(system.resistances)) {
+			for (let [id, res] of Object.entries(system.resistances)){
 				res.vuln = res.vuln || 0;
 				res.res = res.res || 0;
+				res.label = game.i18n.localize(DND4E.damageTypes[id]);
 
-				//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.			
-				let resBonusValue = 0;
-				if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
-					for( const b of res.bonus) {
+				if(isNaN(parseInt(res?.absolute))){ //All logic only required if there is no usable absolute value
+				
+					//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.			
+					let resBonusValue = 0;
+					if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
+						for( const b of res.bonus) {
 
-						if(!b.active) continue;					
-						let val = Helper._isNumber(b.value) ? b.value : Helper.replaceData(b.value,system)
-						res.vuln += Math.min(parseInt(val),0);
-						res.res += Math.max(parseInt(val),0);
+							if(!b.active) continue;					
+							let val = Helper._isNumber(b.value) ? b.value : Helper.replaceData(b.value,system)
+							res.vuln += Math.min(parseInt(val),0);
+							res.res += Math.max(parseInt(val),0);
 
-						resBonusValue += parseInt(b.value);
+							resBonusValue += parseInt(b.value);
+						}
 					}
-				}
-				res.resBonusValue = resBonusValue; // This value is displayed on the actor sheet
-				
-				//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
-				for ( let i of this.items) {
-					if(i.type !="equipment" || !i.system.equipped || i.system.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
-					res.armour += i.system.armour.damageRes.parts.filter(p => p[1] === id)[0][0];
-					break;
-				}
-				
-				//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
-				const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
-				
-				for ( let val of damageMods ) {
-					if ( val < 0 ){
-						//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.vuln}`);
-						res.vuln = Math.min(res.vuln||0,val);
-					} else {
-						//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.res}`);
-						res.res = Math.max(res.res||0,val);
+					res.resBonusValue = resBonusValue; // This value is displayed on the actor sheet
+					
+					//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
+					for ( let i of this.items) {
+						if(i.type !="equipment" || !i.system.equipped || i.system.armour.damageRes.parts.filter(p => p[1] === id).length === 0) { continue; };
+						res.armour += i.system.armour.damageRes.parts.filter(p => p[1] === id)[0][0];
+						break;
 					}
-				}
+					
+					//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
+					const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
+					
+					for ( let val of damageMods ) {
+						if ( val < 0 ){
+							//console.debug(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.vuln}`);
+							res.vuln = Math.min(res.vuln||0,val);
+						} else {
+							//console.debug(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.res}`);
+							res.res = Math.max(res.res||0,val);
+						}
+					}
+					
+					//Get the final modifier for this type of damage by combining res and vuln numbers. Also make sure that neither one can cross 0 on the number line.
+					res.value = Math.max(res.res,0) + Math.min(res.vuln,0);
+					//console.debug(`${game.i18n.localize(DND4E.damageTypes[id])}: final result of ${res.value} from res ${res.res} and vulnerability ${res.vuln}`);
 				
-				//Get the final modifier for this type of damage by combining res and vuln numbers. Also make sure that neither one can cross 0 on the number line.
-				res.value = Math.max(res.res,0) + Math.min(res.vuln,0);
-				//console.log(`${game.i18n.localize(DND4E.damageTypes[id])}: final result of ${res.value} from res ${res.res} and vulnerability ${res.vuln}`);
+				}else{
+					res.value = res.absolute;
+				}
 
-				res.label = game.i18n.localize(DND4E.damageTypes[id]); //.localize("");
 			}
 		}catch (e){	
 			console.err(e);
@@ -725,69 +888,77 @@ export class Actor4e extends Actor {
 			def.value = parseFloat(def.value || 0);
 			def.label = DND4E.defensives[id].abbreviation;
 			def.title = DND4E.defensives[id].label;
-						
-			let defBonusValue = 0;
-			if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
-				for( const b of def.bonus) {
-					if(b.active && Helper._isNumber(b.value)) {
-						defBonusValue += parseInt(b.value);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,data)
-						if(Helper._isNumber(val)){
-							defBonusValue += parseInt(val);
+			
+			if(isNaN(parseInt(def?.absolute))){ //All logic only required if there is no usable absolute value
+				let defBonusValue = 0;
+				if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
+					for( const b of def.bonus) {
+						if(b.active && Helper._isNumber(b.value)) {
+							defBonusValue += parseInt(b.value);
+						}
+						else if(b.active){
+							let val = Helper.replaceData(b.value,data)
+							if(Helper._isNumber(val)){
+								defBonusValue += parseInt(val);
+							}
 						}
 					}
 				}
-			}
-			def.bonusValue = defBonusValue;
-			
-			//Get Def stats from items
-			for ( let i of this.items) {
-				if(i.type !="equipment" || !i.system.equipped ) { continue; };
-				if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
-					if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
-					//Re-route base def bonuses on a shield to be shield bonus
-					def.shield = Math.max(def.shield||0,i.system.armour[id]);
-					continue;
-				}
-				else if(i.system.armour.type === "armour" && id === "ref"){
-					if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
-						def.armour -= 2;
-						this.system.modifiers.attack.armourPen =-2;
+				def.bonusValue = defBonusValue;
+				
+				//Get Def stats from items
+				for ( let i of this.items) {
+					if(i.type !="equipment" || !i.system.equipped ) { continue; };
+					if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
+						if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+						//Re-route base def bonuses on a shield to be shield bonus
+						def.shield = Math.max(def.shield||0,i.system.armour[id]);
+						continue;
 					}
+					else if(i.system.armour.type === "armour" && id === "ref"){
+						if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+							def.armour -= 2;
+							this.system.modifiers.attack.armourPen =-2;
+						}
+					}
+					else if((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
+						//console.log(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
+						def.enhance = Math.max(def.enhance,i.system.armour.enhance);
+					}
+					def.armour += i.system.armour[id];
 				}
-				else if((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
-					//console.log(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
-					def.enhance = Math.max(def.enhance,i.system.armour.enhance);
+				
+				//Using inherent enhancements?
+				if(game.settings.get("dnd4e", "inhEnh")) {
+					//If our enhancement is lower than the inherent level, adjust it upward
+					const enhFloor = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 3);
+					//console.debug(`${id}: Checked inherent defence enhancement of +${Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against existing value of +${def.enhance}`);
+					def.enhance = Math.max(def.enhance,enhFloor);
 				}
-				def.armour += i.system.armour[id];
-			}
-			
-			//Using inherent enhancements?
-			if(game.settings.get("dnd4e", "inhEnh")) {
-				//If our enhancement is lower than the inherent level, adjust it upward
-				const enhFloor = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 3);
-				//console.log(`${id}: Checked inherent defence enhancement of +${Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against existing value of +${def.enhance}`);
-				def.enhance = Math.max(def.enhance,enhFloor);
-			}
 
-			let modBonus = def.ability != "" ? data.abilities[def.ability].mod : 0;
+				let modBonus = def.ability != "" ? data.abilities[def.ability].mod : 0;
 
-			def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;
-			def.value += Math.max(def.feat || 0, globalBonus.feat);
-			def.value += Math.max(def.item || 0, globalBonus.item);
-			def.value += Math.max(def.power || 0, globalBonus.power);
-			def.value += Math.max(def.race || 0, globalBonus.race);
-			def.value += def.enhance || 0;
-			def.value += def.shield || 0;
-			def.value += def.untyped || 0;
-			def.value += globalBonus.untyped;
-			//No way to sort manual bonuses, so they just get added regardless.
-			def.value += globalBonus.bonusValue;			
+				def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;
+				def.value += Math.max(def.feat || 0, globalBonus.feat);
+				def.value += Math.max(def.item || 0, globalBonus.item);
+				def.value += Math.max(def.power || 0, globalBonus.power);
+				def.value += Math.max(def.race || 0, globalBonus.race);
+				def.value += def.enhance || 0;
+				def.value += def.shield || 0;
+				def.value += def.untyped || 0;
+				def.value += globalBonus.untyped;
+				//No way to sort manual bonuses, so they just get added regardless.
+				def.value += globalBonus.bonusValue;			
 
-			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
-				def.value += Math.floor(data.details.level / 2);
+				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
+					def.value += Math.floor(data.details.level / 2);
+				}
+				
+				//trim value according to floor and ceil
+				def.value = Math.max(def.value,def?.floor || def.value-1);
+				def.value = Math.min(def.value,def?.ceil || def.value+1);
+			}else{
+				def.value = def.absolute;
 			}
 		}
 	}
@@ -809,78 +980,87 @@ export class Actor4e extends Actor {
 			def.label = DND4E.defensives[id].abbreviation;
 			def.title = DND4E.defensives[id].label;
 			def.shortname = DND4E.defensives[id].labelShort;
-			
+				
 			if(debug){
 				console.debug(`Initial ${def.label} value is ${def.value}`);
 				console.debug(globalBonus);
 			}
-			
-			//Get Def stats from items
-			for ( let i of this.items) {
-				if(i.type !="equipment" || !i.system.equipped ) { continue; };
-				if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
-					if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
-					//Re-route base def bonuses on a shield to be shield bonus
-					def.shield = Math.max(def.shield,i.system.armour[id]);
-					continue;
-				}
-				else if(i.system.armour.type === "armour" && id === "ref"){
-					if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
-						def.armour -= 2;
-						this.system.modifiers.attack.armourPen =-2;
+		
+			if(isNaN(parseInt(def?.absolute))){ //All logic only required if there is no usable absolute value
+				
+				//Get Def stats from items
+				for ( let i of this.items) {
+					if(i.type !="equipment" || !i.system.equipped ) { continue; };
+					if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
+						if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+						//Re-route base def bonuses on a shield to be shield bonus
+						def.shield = Math.max(def.shield,i.system.armour[id]);
+						continue;
 					}
-				}
-				def.armour += i.system.armour[id];
-			}
-			
-			if(data.advancedCals){			
-				let defBonusValue = 0;
-				if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
-					for( const b of def.bonus) {
-						if(b.active && Helper._isNumber(b.value)) {
-							defBonusValue += parseInt(b.value);
+					else if(i.system.armour.type === "armour" && id === "ref"){
+						if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+							def.armour -= 2;
+							this.system.modifiers.attack.armourPen =-2;
 						}
-						else if(b.active){
-							let val = Helper.replaceData(b.value,data)
-							if(Helper._isNumber(val)){
-								defBonusValue += parseInt(val);
+					}
+					def.armour += i.system.armour[id];
+				}
+				
+				if(data.advancedCals){			
+					let defBonusValue = 0;
+					if(!(def.bonus.length === 1 && jQuery.isEmptyObject(def.bonus[0]))) {
+						for( const b of def.bonus) {
+							if(b.active && Helper._isNumber(b.value)) {
+								defBonusValue += parseInt(b.value);
+							}
+							else if(b.active){
+								let val = Helper.replaceData(b.value,data)
+								if(Helper._isNumber(val)){
+									defBonusValue += parseInt(val);
+								}
 							}
 						}
 					}
-				}
-				def.bonusValue = defBonusValue;
-	
-				if(def.base == undefined){
-					def.base = 10;
-					this.update({[`system.defences[${def}].base`]: 10 });
-				}
-				let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
+					def.bonusValue = defBonusValue;
+		
+					if(def.base == undefined){
+						def.base = 10;
+						this.update({[`system.defences[${def}].base`]: 10 });
+					}
+					let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
 
-				def.value = def.base + modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
-				
-				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
-					def.value += Math.floor(data.details.level / 2);
+					def.value = def.base + modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
+					
+					if(!game.settings.get("dnd4e", "halfLevelOptions")) {
+						def.value += Math.floor(data.details.level / 2);
+					}
+					
+					
+				} else {
+					def.value = def?.base || 0;
 				}
+				def.value += Math.max(def.feat || 0, globalBonus.feat);
+				def.value += Math.max(def.item || 0, globalBonus.item);
+				def.value += Math.max(def.power || 0, globalBonus.power);
+				def.value += Math.max(def.race || 0, globalBonus.race);
+				def.value += def.enhance || 0;
+				def.value += def.shield || 0;
+				def.value += def.untyped || 0;
+				def.value += globalBonus.untyped;
+				//No way to sort manual bonuses, so they just get added regardless. Global is here instead of in the advanced cals section because it DOES display even when they are off, so is probably expected.
+				def.value += globalBonus.bonusValue;
 				
-				
-			} else {
-				def.value = def?.base || 0;
+				//trim value according to floor and ceil
+				def.value = Math.max(def.value,def?.floor || def.value-1);
+				def.value = Math.min(def.value,def?.ceil || def.value+1);
+			}else{
+				def.value = def.absolute;
 			}
-			def.value += Math.max(def.feat || 0, globalBonus.feat);
-			def.value += Math.max(def.item || 0, globalBonus.item);
-			def.value += Math.max(def.power || 0, globalBonus.power);
-			def.value += Math.max(def.race || 0, globalBonus.race);
-			def.value += def.enhance || 0;
-			def.value += def.shield || 0;
-			def.value += def.untyped || 0;
-			def.value += globalBonus.untyped;
-			//No way to sort manual bonuses, so they just get added regardless. Global is here instead of in the advanced cals section because it DOES display even when they are off, so is probably expected.
-			def.value += globalBonus.bonusValue;
 			
 			if(debug){			
 				console.debug(`${def.label} of ${this.name} is calculated as ${def.value} (Advanced calcs ${data.advancedCals}, half-level ${game.settings.get("dnd4e", "halfLevelOptions")})`);
 			}
-			
+				
 		}
 	}
 
@@ -895,161 +1075,57 @@ export class Actor4e extends Actor {
 		}
 		
 		for (const [id, skl] of Object.entries(system.skills)) {
-			skl.value = parseFloat(skl.value || 0);
-
-			let sklBonusValue = 0;
-			let sklArmourPenalty = 0;
-
-			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
-				for( const b of skl.bonus) {
-					if(b.active && Helper._isNumber(b.value)) {
-						sklBonusValue += parseInt(b.value);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,system)
-						if(Helper._isNumber(val)){
-							sklBonusValue += parseInt(val);
-						}
-					}
-				}
-			}
-			if (skl.armourCheck) {
-				//Get Skill Check Penalty stats from armour
-				for ( let i of this.items) {
-					if(i.type !="equipment" || !i.system.equipped || !i.system.armour.skillCheck) { continue; };
-					sklArmourPenalty += Math.abs(i.system.armour.skillCheckValue);
-				}
-			}
-			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
-
-			if(skl.base == undefined){
-				skl.base = 0;
-				// this.update({[`system.skills[${skl}].base`]: 0 });
-			}
-
-			if(skl.effectBonus == undefined){
-				skl.effectBonus = 0;
-			} else {
-				if(!isNaN(parseFloat(skl.effectBonus)) && isFinite(skl.effectBonus)){
-					skl.effectBonus = parseFloat(skl.effectBonus);
-				} else {
-					skl.effectBonus = 0;
-				}
-			}
-
-			let trainingBonus = 0;
-			let featBonus = 0;
-			let itemBonus = 0;
-			let powerBonus = 0;
-			let raceBonus = 0;
-			switch (skl.training){
-				case 8:
-					trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
-					featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat,0);
-					itemBonus = Math.max(system.skillTraining.expertise.item, skl.item,0);
-					powerBonus = Math.max(system.skillTraining.expertise.power, skl.power,0);
-					raceBonus = Math.max(system.skillTraining.expertise.race, skl.race,0);
-					break;
-				case 5:
-					trainingBonus = system.skillTraining.trained.value + system.skillTraining.trained.untyped;
-					featBonus = Math.max(system.skillTraining.trained.feat, skl.feat,0);
-					itemBonus = Math.max(system.skillTraining.trained.item, skl.item,0);
-					powerBonus = Math.max(system.skillTraining.trained.power, skl.power,0);
-					raceBonus = Math.max(system.skillTraining.trained.race, skl.race,0);
-					break;
-				case 0:
-					trainingBonus = system.skillTraining.untrained.value + system.skillTraining.untrained.untyped;
-					featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat,0);
-					itemBonus = Math.max(system.skillTraining.untrained.item, skl.item,0);
-					powerBonus = Math.max(system.skillTraining.untrained.power, skl.power,0);
-					raceBonus = Math.max(system.skillTraining.untrained.race, skl.race,0);
-			}
-
-			// Compute modifier
-			skl.mod = system.abilities[skl.ability].mod;
-
-			skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-			skl.total += Math.max(featBonus || 0, globalBonus.feat);
-			skl.total += Math.max(itemBonus || 0, globalBonus.item);
-			skl.total += Math.max(powerBonus || 0, globalBonus.power);
-			skl.total += Math.max(raceBonus || 0, globalBonus.race);
-			skl.total += skl.untyped || 0;
-			skl.total += globalBonus.untyped;
-			//No way to sort manual bonuses, so they just get added regardless.
-			skl.total += globalBonus.bonusValue;
-			skl.total += trainingBonus;
-
-			if(!game.settings.get("dnd4e", "halfLevelOptions")) {
-				skl.total += Math.floor(system.details.level / 2);
-			}
-		
 			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
-		}
-	}
-
-	calcSkillNPC(system){
-		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. */
-		let globalBonus = {};
-		try{
-			globalBonus = system.modifiers.skills;
-		}catch(e){
-			console.warn(`NPC global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
-			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
-		}
-		
-		for (let [id, skl] of Object.entries(system.skills)) {
 			skl.value = parseFloat(skl.value || 0);
+			
+			if(isNaN(parseInt(skl?.absolute))){ //All logic only required if there is no usable absolute value
 
-			let sklBonusValue = 0;
-			let sklArmourPenalty = 0;
-			if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
-				for( const b of skl.bonus) {
-					if(b.active && Helper._isNumber(b.value)) {
-						sklBonusValue += parseInt(b.value);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,system)
-						if(Helper._isNumber(val)){
-							sklBonusValue += parseInt(val);
+				let sklBonusValue = 0;
+				let sklArmourPenalty = 0;
+
+				if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
+					for( const b of skl.bonus) {
+						if(b.active && Helper._isNumber(b.value)) {
+							sklBonusValue += parseInt(b.value);
+						}
+						else if(b.active){
+							let val = Helper.replaceData(b.value,system)
+							if(Helper._isNumber(val)){
+								sklBonusValue += parseInt(val);
+							}
 						}
 					}
 				}
-			}
-			if (skl.armourCheck) {
-				//Get Skill Check Penalty stats from armour
-				for ( let i of this.items) {
-					if(i.type !="equipment" || !i.system.equipped || !i.system.armour.skillCheck) { continue; };
-					sklArmourPenalty += i.system.armour.skillCheckValue;
+				if (skl.armourCheck) {
+					//Get Skill Check Penalty stats from armour
+					for ( let i of this.items) {
+						if(i.type !="equipment" || !i.system.equipped || !i.system.armour.skillCheck) { continue; };
+						sklArmourPenalty += Math.abs(i.system.armour.skillCheckValue);
+					}
 				}
-			}
-			skl.armourPen = sklArmourPenalty;
-			skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
+				skl.armourPen = sklArmourPenalty;
+				skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
 
-			if(skl.base == undefined){
-				skl.base = 0;
-			}
+				if(skl.base == undefined){
+					skl.base = 0;
+					// this.update({[`system.skills[${skl}].base`]: 0 });
+				}
 
-			if(skl.effectBonus == undefined){
-				skl.effectBonus = 0;
-			} else {
-				if(!isNaN(parseFloat(skl.effectBonus)) && isFinite(skl.effectBonus)){
-					skl.effectBonus = parseFloat(skl.effectBonus);
-				} else {
+				if(skl.effectBonus == undefined){
 					skl.effectBonus = 0;
+				} else {
+					if(!isNaN(parseFloat(skl.effectBonus)) && isFinite(skl.effectBonus)){
+						skl.effectBonus = parseFloat(skl.effectBonus);
+					} else {
+						skl.effectBonus = 0;
+					}
 				}
-			}
-			
-			let powerBonus = skl.powerBonus||0;
-			let featBonus = skl.featBonus||0;
-			let itemBonus = skl.itemBonus||0;
-			let raceBonus = skl.raceBonus||0;
-			let trainingBonus = skl.trainingBonus||0;
-			
-			if(system.advancedCals){
-				skl.mod = system.abilities[skl.ability].mod;
-			// Compute modifier
-					
+
+				let trainingBonus = 0;
+				let featBonus = 0;
+				let itemBonus = 0;
+				let powerBonus = 0;
+				let raceBonus = 0;
 				switch (skl.training){
 					case 8:
 						trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
@@ -1073,28 +1149,147 @@ export class Actor4e extends Actor {
 						raceBonus = Math.max(system.skillTraining.untrained.race, skl.race,0);
 				}
 
+				// Compute modifier
+				skl.mod = system.abilities[skl.ability].mod;
+
 				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
+				skl.total += Math.max(featBonus || 0, globalBonus.feat);
+				skl.total += Math.max(itemBonus || 0, globalBonus.item);
+				skl.total += Math.max(powerBonus || 0, globalBonus.power);
+				skl.total += Math.max(raceBonus || 0, globalBonus.race);
+				skl.total += skl.untyped || 0;
+				skl.total += globalBonus.untyped;
+				//No way to sort manual bonuses, so they just get added regardless.
+				skl.total += globalBonus.bonusValue;
 				skl.total += trainingBonus;
-	
+
 				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
-					skl.total += Math.floor(system.details.level / 2);
+				skl.total += Math.floor(system.details.level / 2);
+			}
+		
+				//trim value according to floor and ceil
+				skl.total = Math.max(skl.total,skl?.floor || skl.total-1);
+				skl.total = Math.min(skl.total,skl?.ceil || skl.total+1);
+			}else{
+				skl.total = skl.absolute;
+			}
+		}
+	}
+
+	calcSkillNPC(system){
+		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. */
+		let globalBonus = {};
+		try{
+			globalBonus = system.modifiers.skills;
+		}catch(e){
+			console.warn(`NPC global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+		}
+		
+		for (let [id, skl] of Object.entries(system.skills)) {
+			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
+			skl.value = parseFloat(skl.value || 0);
+
+			if(isNaN(parseInt(skl?.absolute))){ //All logic only required if there is no usable absolute value
+				let sklBonusValue = 0;
+				let sklArmourPenalty = 0;
+				if(!(skl.bonus.length === 1 && jQuery.isEmptyObject(skl.bonus[0]))) {
+					for( const b of skl.bonus) {
+						if(b.active && Helper._isNumber(b.value)) {
+							sklBonusValue += parseInt(b.value);
+						}
+						else if(b.active){
+							let val = Helper.replaceData(b.value,system)
+							if(Helper._isNumber(val)){
+								sklBonusValue += parseInt(val);
+							}
+						}
+					}
+				}
+				if (skl.armourCheck) {
+					//Get Skill Check Penalty stats from armour
+					for ( let i of this.items) {
+						if(i.type !="equipment" || !i.system.equipped || !i.system.armour.skillCheck) { continue; };
+						sklArmourPenalty += i.system.armour.skillCheckValue;
+					}
+				}
+				skl.armourPen = sklArmourPenalty;
+				skl.sklBonusValue = sklBonusValue + sklArmourPenalty;
+
+				if(skl.base == undefined){
+					skl.base = 0;
+				}
+
+				if(skl.effectBonus == undefined){
+					skl.effectBonus = 0;
+				} else {
+					if(!isNaN(parseFloat(skl.effectBonus)) && isFinite(skl.effectBonus)){
+						skl.effectBonus = parseFloat(skl.effectBonus);
+					} else {
+						skl.effectBonus = 0;
+					}
 				}
 				
+				let powerBonus = skl.powerBonus||0;
+				let featBonus = skl.featBonus||0;
+				let itemBonus = skl.itemBonus||0;
+				let raceBonus = skl.raceBonus||0;
+				let trainingBonus = skl.trainingBonus||0;
+				
+				if(system.advancedCals){
+					skl.mod = system.abilities[skl.ability].mod;
+				// Compute modifier
+						
+					switch (skl.training){
+						case 8:
+							trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
+							featBonus = Math.max(system.skillTraining.expertise.feat, skl.feat,0);
+							itemBonus = Math.max(system.skillTraining.expertise.item, skl.item,0);
+							powerBonus = Math.max(system.skillTraining.expertise.power, skl.power,0);
+							raceBonus = Math.max(system.skillTraining.expertise.race, skl.race,0);
+							break;
+						case 5:
+							trainingBonus = system.skillTraining.trained.value + system.skillTraining.trained.untyped;
+							featBonus = Math.max(system.skillTraining.trained.feat, skl.feat,0);
+							itemBonus = Math.max(system.skillTraining.trained.item, skl.item,0);
+							powerBonus = Math.max(system.skillTraining.trained.power, skl.power,0);
+							raceBonus = Math.max(system.skillTraining.trained.race, skl.race,0);
+							break;
+						case 0:
+							trainingBonus = system.skillTraining.untrained.value + system.skillTraining.untrained.untyped;
+							featBonus = Math.max(system.skillTraining.untrained.feat, skl.feat,0);
+							itemBonus = Math.max(system.skillTraining.untrained.item, skl.item,0);
+							powerBonus = Math.max(system.skillTraining.untrained.power, skl.power,0);
+							raceBonus = Math.max(system.skillTraining.untrained.race, skl.race,0);
+					}
 
-			} else {
-				skl.total = skl.base;
+					skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
+					skl.total += trainingBonus;
+		
+					if(!game.settings.get("dnd4e", "halfLevelOptions")) {
+						skl.total += Math.floor(system.details.level / 2);
+					}
+					
+
+				} else {
+					skl.total = skl.base;
+				}
+				
+				skl.total += Math.max(featBonus || 0, globalBonus.feat);
+				skl.total += Math.max(itemBonus || 0, globalBonus.item);
+				skl.total += Math.max(raceBonus || 0, globalBonus.race);
+				skl.total += Math.max(powerBonus || 0, globalBonus.power);
+				skl.total += skl.untyped || 0;
+				skl.total += globalBonus.untyped;
+				//No way to sort manual bonuses, so they just get added regardless.
+				skl.total += globalBonus.bonusValue;
+			
+				//trim value according to floor and ceil
+				skl.total = Math.max(skl.total,skl?.floor || skl.total-1);
+				skl.total = Math.min(skl.total,skl?.ceil || skl.total+1);
+			}else{
+				skl.total = skl.absolute;
 			}
-			
-			skl.total += Math.max(featBonus || 0, globalBonus.feat);
-			skl.total += Math.max(itemBonus || 0, globalBonus.item);
-			skl.total += Math.max(raceBonus || 0, globalBonus.race);
-			skl.total += Math.max(powerBonus || 0, globalBonus.power);
-			skl.total += skl.untyped || 0;
-			skl.total += globalBonus.untyped;
-			//No way to sort manual bonuses, so they just get added regardless.
-			skl.total += globalBonus.bonusValue;
-			
-			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
 		}
 	}
 
@@ -1703,9 +1898,10 @@ export class Actor4e extends Actor {
 	* @param {} options   Options for using the power
 	*/
 	
-	async usePower(item, {configureDialog=true, fastForward=false}={}) {
+	async usePower(item, {configureDialog=true, fastForward=false, variance={} }) {
 		//if not a valid type of item to use
-		console.log("UsePower")
+		//console.debug(variance);
+		
 		if ( item.type !=="power" ) throw new Error("Wrong Item type");
 		const itemData = item.system;
 		//configure Powers data
@@ -1728,7 +1924,7 @@ export class Actor4e extends Actor {
 
 		if(fastForward){
 
-			await item.roll();
+			await item.roll({'variance': variance});
 
 			if(item.hasAreaTarget){
 				const template = MeasuredTemplate4e.fromItem(item);
@@ -1736,19 +1932,19 @@ export class Actor4e extends Actor {
 			}
 
 			if(item.hasAttack){
-				await item.rollAttack({fastForward:true});
+				await item.rollAttack({fastForward:true, 'variance': variance});
 			}
 			if(item.hasDamage){
-				await item.rollDamage({fastForward:true});
+				await item.rollDamage({fastForward:true, 'variance': variance});
 			}
 			if(item.hasHealing){
-				await item.rollHealing({fastForward:true});
+				await item.rollHealing({fastForward:true, 'variance': variance});
 			}
 			return
 		}
 			
 		// Invoke the Item roll
-		return item.roll();
+		return item.roll({'variance': variance});
 	}
 	
 	_computeEncumbrance(actorData) {
@@ -2133,15 +2329,18 @@ export class Actor4e extends Actor {
 						
 						/* Use logic pinched from ActiveEffect4e.safeEvalEffectValue() to 
 						evaluate variables in "amount" string */
-						const stringDiceFormat = /\d+d\d+/;
 						let parsedAmount = dot.amount;
-
 						try {
-						  if (!parsedAmount.match(stringDiceFormat))
-						  parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
-						  parsedAmount = Roll.safeEval(parsedAmount).toString();
+							parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
 						} catch (e) { /* noop */ }
 						/* End pinched */
+						
+						// We must roll any non-fixed damage to find the highest DoT of each type, so evaluate the roll now even if reminders are set to manual
+						let dmgRoll = new Roll(`(${parsedAmount})[${types}]`);
+						//console.debug(dmgRoll);
+						await dmgRoll.roll();
+						parsedAmount = dmgRoll.result.toString();
+						//console.debug(`Parsed damage amount: ${parsedAmount}`);
 						
 						// Only keep the highest DoT of each unique type—
 						// you can only be so much on fire.
@@ -2152,7 +2351,9 @@ export class Actor4e extends Actor {
 								type: ( types == "healing" ? types : types + ',ongoing'), 
 								amount:parsedAmount, 
 								effectId:e.id, 
-								effectName: e.name 
+								effectName:e.name,
+								dmgRoll:dmgRoll,
+								dmgFormula:dot.amount
 							};
 						}
 					}
@@ -2164,7 +2365,7 @@ export class Actor4e extends Actor {
 			if(applicableDoTs.length){
 				for(const dot of applicableDoTs){
 					const dmgTaken = ( dot.type == "healing" ? Math.min(dot.amount, this.system.attributes.hp.max - this.system.attributes.hp.value) : await this.calcDamageInner([[dot.amount,dot.type]]));
-					console.log(this.calcDamageInner([[dot.amount,dot.type]]));
+					//console.debug(this.calcDamageInner([[dot.amount,dot.type]]));
 					let dmgImpact = "neutral";
 					
 					let chatRecipients = [Helper.firstOwner(this)];
@@ -2216,7 +2417,7 @@ export class Actor4e extends Actor {
 						flavor: `${game.i18n.localize ("DND4E.OngoingDamage")}: ${dot.effectName}`,
 						whisper: chatRecipients,
 						//rollMode: "gmroll",
-						rolls: [{
+						/*rolls: [{
 							formula: `(${dot.amount})[${dot.type}]`,
 							terms: [{
 								class: "NumericTerm",
@@ -2228,7 +2429,8 @@ export class Actor4e extends Actor {
 							}],
 							total: dot.amount,
 							evaluated: true
-						}]
+						}]*/
+						rolls: [dot.dmgRoll]
 					});						
 					
 					if (autoDoTs == "apply"){
