@@ -337,10 +337,9 @@ export class Helper {
 					suitableKeywords.push("basic");
 					if(suitableKeywords.includes("melee")) suitableKeywords.push("mBasic");
 					if(suitableKeywords.includes("ranged")) suitableKeywords.push("rBasic");
-				}
+				};
 				
-				console.debug('fart');
-				console.debug(rollData);
+				//console.debug(rollData);
 				
 				if(powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
 				if(powerInnerData.attack?.isOpp || rollData?.isCharge) suitableKeywords.push("opp");
@@ -1537,12 +1536,15 @@ export async function handleAutoDoTs(data) {
 /*																			*/
 Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
 	try{
-		if(typeof meal != "string") return lunchbox.includes(lunch);
+		if(typeof meal != "string") {
+			if(lunchbox instanceof Set) return lunchbox.has(lunch);
+			return lunchbox.includes(lunch);
+		}
 		const lunchLocation = lunchbox.findIndex((x) => x[meal] == lunch);
 		if(lunchLocation > 0) return true;
 		return false;
 	} catch(err) {
-		console.err("Contains helper spat up. Did you give it the right parameter types?");
+		console.error("Contains helper spat up. Did you give it the right parameter types?");
 		return false;
 	}
 });

@@ -30,15 +30,14 @@ import { Helper } from "./helper.js"
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
 export async function d20Roll({parts=[],  partsExpressionReplacements = [], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
-								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null,
+								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null, actor,
 								  isAttackRoll=false, options={}}={}) {
 	
 	critical = critical || 20; //ensure that critical always has a value
 	const isCharge = options?.variance?.isCharge || false;
 	const isOpp = options?.variance?.isOpp || false;
-	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options, isCharge, isOpp }
-	
-	//console.log(rollConfig.options);
+	const userStatus = actor?.statuses || {};
+	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options, isCharge, isOpp, userStatus }
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
@@ -49,25 +48,35 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 
 	// Render modal dialog
 	var targDataArray = {
-		targNameArray: []
+		targNameArray: [],
+		targets: []
 	}
 	if (game.user.targets.size) {
 		const numTargets = game.user.targets.size;
 		const targetArr = Array.from(game.user.targets);
 		targDataArray.hasTarget = true;
 		for (let targ = 0; targ < numTargets; targ++) {
-			let targName = targetArr[targ].name;
+			const targName = targetArr[targ].name;
 			targDataArray.targNameArray.push(targName);
+			targDataArray.targets.push({
+				'name':targetArr[targ].name,
+				'status':targetArr[targ].actor.statuses
+			});
 		}
 	} else {
 		targDataArray.targNameArray.push('');
+		targDataArray.targets.push({
+			'name':'',
+			'status':[]
+		});
 		targDataArray.hasTarget = false;
 	}
-	if (targDataArray.targNameArray.length === 1) {
+	if (targDataArray.targets.length === 1) {
 		targDataArray.multiTargetCheck = false;
 	} else {
 		targDataArray.multiTargetCheck = true;
 	}
+		
 	let newFlavor = "";
 	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
@@ -81,6 +90,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 		isD20Roll: true,
 		'isCharge': isCharge,
 		'isOpp': isOpp,
+		'userStatus': userStatus,
 		targetData: targDataArray
 	};
 	const html = await renderTemplate(template, dialogData);
@@ -117,14 +127,13 @@ export function getAttackRollBonus({parts=[], partsExpressionReplacements = [], 
 	return roll.formula;
 }
 
-async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options}) {
+async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options, userStatus, fastForward}) {
 	/*
 	 coming in the parts[] is in one of the following states:
 	 - Empty
 	 - containing some @variables (e.g. @ammo)
 	 - containing some formula that have already been expanded (1+2+3)
 	 */
-	// console.debug(data);
 
 	// define if we are rolling a d20
 	if(!parts.includes("@tool") && !parts.includes("@ritual")) {
@@ -157,8 +166,8 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 					let tabIndex = v.name.split(".")[0];
 					if((individualAttack && parseInt(tabIndex) === targetIndex) // check if Individual Attack Bonuses
 					|| !individualAttack ) { //otherwise just use Universal Attack Bonuses
-							let bonusName = v.name.split(".")[1];
-							targetBonuses.push(`@${bonusName}`)
+						let bonusName = v.name.split(".")[1];
+						targetBonuses.push(`@${bonusName}`)
 					}
 				}
 				if(!individualAttack && k > 21){
@@ -174,6 +183,49 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				allRollsParts.push(parts.concat(targetBonuses))
 			}
 		}
+	}
+	else if (isAttackRoll && fastForward) {
+	// Logic to infer common bonuses based on user and target status under fast-forward conditions
+		
+		const theTargets = Array.from(game.user.targets);
+		// populate the common attack bonuses into data
+		
+		Object.keys(CONFIG.DND4E.commonAttackBonuses).forEach(function(key,index) {
+			data[key] = CONFIG.DND4E.commonAttackBonuses[key].value
+		});
+		
+		const userStatBonuses = [];
+		// User conditions
+		if(userStatus.has('prone')) userStatBonuses.push('@prone');
+		if(userStatus.has('restrained')) userStatBonuses.push('@restrained');
+		if(userStatus.has('running')) userStatBonuses.push('@running');
+		if(userStatus.has('squeezing')) userStatBonuses.push('@squeez');
+		if(options.isCharge) userStatBonuses.push('@charge');
+				
+		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
+			
+			const targetBonuses = userStatBonuses;
+			if(theTargets.length > 0){
+				const targetStatus = Array.from(theTargets[targetIndex].actor.statuses);
+				
+				//Target conditions
+				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running'].includes(element)).length > 0) targetBonuses.push('@comAdv');
+				
+				if(targetStatus.includes('concealed')) targetBonuses.push('@conceal');		
+				
+				if(targetStatus.includes('concealedTotal')) targetBonuses.push('@concealTotal');
+					
+			}
+			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
+				let total = 0;
+				targetBonuses.forEach(bonus => total += CONFIG.DND4E.commonAttackBonuses[bonus.substring(1)].value)
+				allRollsParts.push(parts.concat([total]));
+			}
+			else {
+				allRollsParts.push(parts.concat(targetBonuses));
+			}
+		}
+		
 	}
 	else {
 		allRollsParts = Array(numberOfTargets).fill(parts);
