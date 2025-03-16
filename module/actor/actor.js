@@ -859,10 +859,7 @@ export class Actor4e extends Actor {
 			disabled:false,
 			description: game.i18n.localize("DND4E.SecondWindEffect"),
 			changes: [
-				{key: "system.defences.ac.untyped", mode: 2, value: 2},
-				{key: "system.defences.fort.untyped", mode: 2, value: 2},
-				{key: "system.defences.ref.untyped", mode: 2, value: 2},
-				{key: "system.defences.wil.untyped", mode: 2, value: 2},
+				{key: "system.modifiers.defences.untyped", mode: 2, value: 2}
 			],
 			flags:{dnd4e:{effectData:{
 				durationType:"startOfUserTurn",
