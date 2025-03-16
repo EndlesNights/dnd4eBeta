@@ -209,10 +209,11 @@ DND4E.abilityActivationTypesShort = {
 
 DND4E.abilityConsumptionTypes = {
 	"": {label: "DND4E.None"},
+	"resource": {label: "DND4E.Resource"},
 	"ammo": {label: "DND4E.ConsumeAmmunition"},
-	"attribute": {label: "DND4E.ConsumeAttribute"},
 	"material": {label: "DND4E.ConsumeMaterial"},
-	"charges": {label: "DND4E.ConsumeCharges"}
+	"charges": {label: "DND4E.ConsumeCharges"},
+	"attribute": {label: "DND4E.ConsumeAttribute"}
 };
 preLocalize("abilityConsumptionTypes", { keys: ["label"] });
 
@@ -1775,6 +1776,18 @@ DND4E.statusEffect = [
 		description: "EFFECTDESC.sneaking"
 	},
 	//row 8
+	{
+		id: "running",
+		label: "EFFECT.statusRunning",
+		img: "systems/dnd4e/icons/statusEffects/running.svg",
+		description: "EFFECTDESC.running"
+	},
+	{
+		id: "squeezing",
+		label: "EFFECT.statusSqueezing",
+		img: "systems/dnd4e/icons/statusEffects/squeezing.svg",
+		description: "EFFECTDESC.squeezing"
+	},
 	{
 		id: "torch",
 		label: "EFFECT.statusTorch",
