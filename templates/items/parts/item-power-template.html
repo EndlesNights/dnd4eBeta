@@ -160,11 +160,6 @@
 		<label>{{ localize "DND4E.IsAttack" }}</label>
 		<span class="checkbox"><input class="checkbox" type="checkbox" name="system.attack.isAttack" data-dtype="Boolean" {{checked system.attack.isAttack}}/></span>
 	</div>
-		
-	<div class="form-group">
-		<label>{{ localize "DND4E.BasicAttack" }}</label>
-		<span class="checkbox"><input class="checkbox" type="checkbox" name="system.attack.isBasic" data-dtype="Boolean" {{checked system.attack.isBasic}}/></span>
-	</div>
 	
 	{{#if system.attack.isAttack}}
 	{{!-- Attack--}}
@@ -185,12 +180,25 @@
 			<select name="system.attack.def">
 				{{selectOptions config.defensives selected=system.attack.def labelAttr="abbreviation"}}
 			</select>
-		</div>
+		</div>		
 	</div>
 
 	<div class="form-group stacked">
 		<label>{{ localize "DND4E.FormulaAttack" }}</label>
 		<input type="text" name="system.attack.formula" value="{{system.attack.formula}}"/>
+	</div>
+	
+	<div class="form-group stacked attack-properties">
+		<label class="damage-type" data-tooltip="{{localize 'DND4E.PrimaryDamageType'}}">{{localize 'DND4EUI.CountsAs'}}:</label>
+		<label class="checkbox">
+			<input class="checkbox" type="checkbox" name="system.attack.isBasic" data-dtype="Boolean" {{checked system.attack.isBasic}} /> {{ localize "DND4E.CommonAttackBasic" }}
+		</label>
+		<label class="checkbox">
+			<input class="checkbox" type="checkbox" name="system.attack.isCharge" data-dtype="Boolean" {{checked system.attack.isCharge}} /> {{ localize "DND4E.CommonAttackCharge" }}
+		</label>
+		<label class="checkbox">
+			<input class="checkbox" type="checkbox" name="system.attack.isOpp" data-dtype="Boolean" {{checked system.attack.isOpp}} /> {{ localize "DND4E.CommonAttackOpportunity" }}
+		</label>
 	</div>
 	{{/if}}
 	<div class="form-group">

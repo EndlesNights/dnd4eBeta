@@ -1,11 +1,10 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
 <div class="dnd4e chat-card item-card {{item.type}}-card {{actor.type}} {{#if isPower}}use-{{item.system.useType}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
 	 {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
-	 
 	<header class="card-header flexrow">
 		<img src="{{item.img}}" data-tooltip="{{item.name}}" width="36" height="36"/>
 		<div class="flexcol item-name ability-usage--">
-			<h3>{{item.name}}</h3>
+			<h3>{{item.name}} {{#if this.system.isCharge}}({{localize 'DND4E.CommonAttackCharge'}}){{/if}} {{#if this.system.isOpp}}({{localize 'DND4E.ActionOpportunityBrief'}}){{/if}}</h3>
 		</div>
 	</header>
 

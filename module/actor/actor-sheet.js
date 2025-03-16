@@ -330,6 +330,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 <br>${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedRunning")}
 <br>${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedCharging")}
 <br>${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedClimbing")}
+<br>${parseInt(data.system.movement.swim.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedSwimming")}
 <br>${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedShifting")}`;
 
 		if(data.system.movement.custom){
@@ -494,11 +495,46 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	}
 
 	_checkPowerAvailable(itemData) {
-		if( (!itemData.system.uses.value && itemData.system.preparedMaxUses)
-			|| !itemData.system.prepared) {
-				itemData.system.notAvailable = true;
-
+		if( (!itemData.system.uses.value && itemData.system.preparedMaxUses) || !itemData.system.prepared) {
+			itemData.system.notAvailable = true;
 		}
+		
+		//If there's a consumed asset, check its availability	
+		const consume = itemData.system.consume || {};
+		if ( consume.type && consume.target && consume.amount) {
+			//console.debug(`${itemData.name} has consume type and target: ${consume.type} ${consume.target}`);
+			const actor = this.actor;
+			const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 0;
+
+			// Identify the consumed resource and its quantity
+			let consumed = null;
+			let quantity = 0;
+			switch ( consume.type ) {
+				case "resource":
+				case "attribute":
+					consumed = foundry.utils.getProperty(actor.system, consume.target);
+					quantity = consumed || 0;
+					break;
+				case "ammo":
+				case "material":
+					consumed = actor.items.get(consume.target);
+					quantity = consumed ? consumed.system.quantity : 0;
+					break;
+				case "charges":
+					consumed = actor.items.get(consume.target);
+					quantity = consumed ? consumed.system.uses.value : 0;
+					break;
+			}
+
+			// Mark unavailable is the needed resource is insufficient
+			if ( ![null, undefined].includes(consumed) ) {
+				let remaining = quantity - amount;
+				if ( remaining < 0) {
+					itemData.system.notAvailable = true;
+				}
+			}
+		}			
+	
 	}
   /* -------------------------------------------- */
 	/**
@@ -1395,14 +1431,20 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
 	 * @private
 	 */
-	_onItemRoll(event) {
+	_onItemRoll(event,variance={}) {
 		event.preventDefault();
+		//console.debug(variance)
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 		
 		if ( item.type === "power") {
 			const fastForward = Helper.isRollFastForwarded(event);
-			return this.actor.usePower(item, {configureDialog: !fastForward, fastForward: fastForward});
+			return this.actor.usePower(item, {
+				'configureDialog': !fastForward, 
+				'fastForward': fastForward,
+				//Temporary traits from special roll modes
+				'variance': variance
+				});
 		}
 		// Otherwise roll the Item directly
 		return item.roll();
@@ -1416,11 +1458,11 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		if (item && item.type === "power" && item.hasAttack) {
 			const bonus = await item.getAttackBonus();
 
-			const d = {"ac": "AC", "ref": "Reflex", "wil": "Will", "fort": "Fortitude"};
+			const d = {"ac": game.i18n.localize('DND4E.DefAC'), "ref": game.i18n.localize('DND4E.DefRef'), "wil": game.i18n.localize('DND4E.DefWill'), "fort": game.i18n.localize('DND4E.DefFort')};
 			const defence = d[item.system.attack.def];
 
 			if (bonus && defence){
-				game.tooltip.activate(event.target, {text: "+" + String(bonus) + " vs. " + defence, direction: "RIGHT"});
+				game.tooltip.activate(event.target, {text: `+ ${String(bonus)} ${game.i18n.localize('DND4E.VS')} ${defence}`, direction: "RIGHT"});
 			}
 		}
 	}
@@ -1750,6 +1792,19 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			icon: "<i class='fas fa-sun fa-fw'></i>",
 			callback: () => item.update({"system.prepared": !item.system.prepared})
 		});
+		
+		// Special Roll Options for Basic Attacks
+		if ( item.type == 'power' && item.system?.attack?.isBasic) {
+			options.unshift({
+				name: "Roll as Opportunity Attack",
+				icon: "<i class='fas fa-triangle-exclamation'></i>",
+				callback: () => this._onItemRoll(event,{isOpp:true})
+			},{
+				name: "Roll as Charge",
+				icon: "<i class='fas fa-angles-right'></i>",
+				callback: () => this._onItemRoll(event,{isCharge:true})
+			});
+		}
 
 		return options;
 	}

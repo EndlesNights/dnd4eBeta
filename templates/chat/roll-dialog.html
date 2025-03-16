@@ -10,7 +10,7 @@
 
 	{{#if isD20Roll}}	
 		<div class="input-group-button">
-			<label>Number of D20 to Roll:</label>
+			<label>{{localize 'DND4E.RollTimes'}}</label>
 			<button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" onclick="minus()">
 				<i class="fa fa-minus" aria-hidden="true"></i>
 			</button>
@@ -39,14 +39,14 @@
 		<div class="multitarget-tab">
 			{{#if ../targetData.hasTarget}}
 			<div>
-				<label id="singleTarget" >Target: {{t}}</label>
+				<label id="singleTarget">{{localize 'DND4E.Target'}}: {{t}}</label>
 			</div>
 			{{/if}}
 			<div class="form-group stacked">
 			{{#each ../data.commonAttackBonuses as | a b |}}
 			<div class="column">
 				<label class="rollable">
-					<input type="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean" value="{{../checked}}"/>{{ localize a.label}} ({{a.value}})
+					<input type="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean" {{#if (eq b 'charge')}}{{#if ../../data.item.attack.isCharge}}checked="true" disabled{{/if}}{{#if ../../isCharge}}checked="true" disabled{{/if}}{{/if}} value="{{../checked}}"/>{{ localize a.label}} ({{a.value}})
 				</label>
 			</div>
 			{{/each}}
@@ -64,16 +64,18 @@
 		</select>
 	</div>
 	<div class="form-group">
-		<label>Flavour Text</label>
-		<input type="text" name="flavor" value="{{newFlavor}}" placeholder="{{flavor}}" data-tooltip="Situational Flavour Text." />
+		<label>{{localize 'DND4E.ChatFlavor'}}</label>
+		<input type="text" name="flavor" value="{{newFlavor}}" placeholder="{{flavor}}" data-tooltip="{{localize 'DND4E.ChatFlavor'}}" />
 	</div>
+	
 </form>
 
 
 <script>
 //Checks if multi target attack that is universal, and display an alternative target dialog with every target's name in it.
+
 if ("{{targetData.multiTargetCheck}}" == "true" && document.getElementById("multibonus-toggle")?.value == "false" && "{{targetData.targNameArray}}"){
-	document.getElementById("multiTarget").innerHTML = "Targets: {{targetData.targNameArray}}";
+	document.getElementById("multiTarget").innerHTML = "{{localize 'DND4E.Targets'}}: {{targetData.targNameArray}}";
 	document.getElementById("singleTarget").style.display = 'none';
 }
 $(document).keydown(function(event){
@@ -107,7 +109,7 @@ var cntrlIsPressed = false;
 
 var currentTab = 0;    // Defines the default current attack bonuses tab to be the first one
 var multiTargetToggle = 0;    // Defines the default state of the multi-target attack bonus toggle state to be in the "universal bonus" state
-var multiTargetToggleString = "Change to Individual Attack Bonuses";    // Defines the initial text for the multiTargetToggleString - assuming there is more than one target
+var multiTargetToggleString = "{{localize 'DND4E.RollMultiIndividualChange'}}";    // Defines the initial text for the multiTargetToggleString - assuming there is more than one target
 showTab(currentTab);    // Show the tabs upon first run
 
 function toggleMultibonus() {
@@ -127,14 +129,14 @@ function toggleMultibonus() {
 	if (document.getElementById("multibonus-toggle").value == "false"){
 		document.getElementById("multibonus-toggle").value = "true";
 		multiTargetToggle = 1;
-		multiTargetToggleString = "Change to Universal Attack Bonuses";
+		multiTargetToggleString = "{{localize 'DND4E.RollMultiUnifiedChange'}}";
 		showTab(currentTab)
 		document.getElementById("multiTarget").style.display = 'none';
 		document.getElementById("singleTarget").style.display = 'block';
 	} else if (document.getElementById("multibonus-toggle").value == "true") {
 		document.getElementById("multibonus-toggle").value = "false";
 		multiTargetToggle = 0;
-		multiTargetToggleString = "Change to Individual Attack Bonuses";
+		multiTargetToggleString = "{{localize 'DND4E.RollMultiIndividualChange'}}";
 		currentTab = 0;
 		showTab(currentTab)
 		document.getElementById("multiTarget").style.display = 'block';
@@ -147,7 +149,7 @@ function showTab(n) {
 	let numTargets = x.length;
 	if (document.getElementById("multibonus-toggle")) {
 		if (numTargets <= 1) {
-			multiTargetToggleString = "Universal Attack Bonuses"
+			multiTargetToggleString = "{{localize 'DND4E.RollMultiUnified'}}"
 			document.getElementById("multibonus-toggle").disabled = true;
 		}
 
