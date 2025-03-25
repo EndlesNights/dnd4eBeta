@@ -1046,6 +1046,8 @@
 					"isBasic": false,
 					"isCharge": false,
 					"isOpp": false,
+					"canCharge": false,
+					"canOpp": false,
 					"ability": "str",
 					"abilityBonus": 0,
 					"def": "ac",
