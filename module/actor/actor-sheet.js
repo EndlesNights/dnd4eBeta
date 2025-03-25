@@ -1793,16 +1793,19 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			callback: () => item.update({"system.prepared": !item.system.prepared})
 		});
 		
-		// Special Roll Options for Basic Attacks
-		if ( item.type == 'power' && item.system?.attack?.isBasic) {
+		// Special Roll Options for Basic and Tagged Attacks
+		if ( item.type == 'power' && (item.system?.attack?.isBasic || item.system?.attack?.canCharge)) {
+			options.unshift({
+				name: "Roll as Charge",
+				icon: "<i class='fas fa-angles-right'></i>",
+				callback: () => this._onItemRoll(event,{isCharge:true})
+			});
+		}
+		if ( item.type == 'power' && (item.system?.attack?.isBasic || item.system?.attack?.canOpp)) {
 			options.unshift({
 				name: "Roll as Opportunity Attack",
 				icon: "<i class='fas fa-triangle-exclamation'></i>",
 				callback: () => this._onItemRoll(event,{isOpp:true})
-			},{
-				name: "Roll as Charge",
-				icon: "<i class='fas fa-angles-right'></i>",
-				callback: () => this._onItemRoll(event,{isCharge:true})
 			});
 		}
 
