@@ -1530,6 +1530,7 @@
 "DND4EUI.Data Type": "Data Type",
 "DND4EUI.Delete": "Delete",
 "DND4EUI.Desc": "Desc",
+"DND4EUI.DeterminedBySetting": "Determined by Setting:",
 "DND4EUI.GroupBy": "Group By",
 "DND4EUI.HowSelectMultiple": "Hold ctrl/cmd to select multiple",
 "DND4EUI.Icon": "Icon",
