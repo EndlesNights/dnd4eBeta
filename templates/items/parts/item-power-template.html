@@ -189,7 +189,7 @@
 	</div>
 	
 	<div class="form-group stacked attack-properties">
-		<label class="damage-type" data-tooltip="{{localize 'DND4E.PrimaryDamageType'}}">{{localize 'DND4EUI.CountsAs'}}:</label>
+		<label data-tooltip="{{localize 'DND4EUI.CountsAsAttackTip'}}">{{localize 'DND4EUI.CountsAs'}}:</label>
 		<label class="checkbox">
 			<input class="checkbox" type="checkbox" name="system.attack.isBasic" data-dtype="Boolean" {{checked system.attack.isBasic}} /> {{ localize "DND4E.CommonAttackBasic" }}
 		</label>
@@ -408,11 +408,29 @@
 		</label>
 		{{/each}}
 	</div>
+	
+	
+	<h3 class="form-header">{{ localize "Display" }}</h3>
 
 	{{!-- Chat Message Flavor --}}
 	<div class="form-group stacked">
 		<label>{{ localize "DND4E.ChatFlavor" }}</label>
 		<input type="text" name="system.chatFlavor" value="{{system.chatFlavor}}" placeholder="{{ localize 'DND4E.ChatFlavorPlaceholder'}}"/>
 	</div>
+	
+	
+	{{#if system.attack.isAttack}}	
+	<div class="form-group stacked roll-variants">
+		<label data-tooltip="{{localize 'DND4EUI.RollVariantsTip'}}">{{localize 'DND4EUI.RollVariants'}}</label>
+		<label class="checkbox">
+			<input class="checkbox" type="checkbox" name="system.attack.canCharge" data-dtype="Boolean" {{checked system.attack.canCharge}} {{#if system.attack.isCharge}}disabled{{/if}} {{#if system.attack.isBasic}}checked="true" disabled data-tooltip="{{localize 'DND4EUI.DeterminedBySetting'}} {{localize 'DND4E.CommonAttackBasic'}}"{{/if}} /> <span{{#if system.attack.isBasic}} data-tooltip="{{localize 'DND4EUI.DeterminedBySetting'}} {{localize 'DND4E.CommonAttackBasic'}}"{{/if}}>{{localize 'DND4E.CommonAttackCharge'}}</span>
+		</label>
+		<label class="checkbox">
+			<input class="checkbox" type="checkbox" name="system.attack.canOpp" data-dtype="Boolean" {{checked system.attack.canOpp}} {{#if system.attack.isOpp}}disabled{{/if}} {{#if system.attack.isBasic}}checked="true" disabled data-tooltip="{{localize 'DND4EUI.DeterminedBySetting'}} {{localize 'DND4E.CommonAttackBasic'}}"{{/if}} /> <span{{#if system.attack.isBasic}} data-tooltip="{{localize 'DND4EUI.DeterminedBySetting'}} {{localize 'DND4E.CommonAttackBasic'}}"{{/if}}>{{localize 'DND4E.CommonAttackOpportunity'}}</span>
+		</label>
+	</div>
+	{{/if}}
+	
+	<br />
 
 </div>
