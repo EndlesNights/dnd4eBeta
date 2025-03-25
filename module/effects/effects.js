@@ -330,4 +330,24 @@
 		categories.suppressed.hidden = !categories.suppressed.effects.length;
 		return categories;
 	}
+	
+	/** Blatantly stolen from Black Flag: fix for core issue
+	*   https://github.com/foundryvtt/foundryvtt/issues/11527
+	*   Can be removed when the system goes V13-only
+	*/	
+	_applyUpgrade(actor, change, current, delta, changes){
+		if (current === null) return this._applyOverride(actor, change, current, delta, changes);
+		
+		let update;
+		const ct = foundry.utils.getType(current);
+		
+		switch (ct){
+			case "boolean":
+			case "number":
+				if (change.mode === CONST.ACTIVE_EFFECT_MODES.UPGRADE && delta > current) update = delta;
+				else if (change.mode === CONST.ACTIVE_EFFECT_MODES.DOWNGRADE && delta < current) update = delta;
+				break;
+		}
+		if (update !== undefined) changes[change.key] = update;
+	}
 }
