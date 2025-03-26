@@ -1,6 +1,7 @@
 # Changelog
 ## Version 0.5.14
 - Fix issue with "Only Apply Effect when Equipped?" option not working correctly.
+- Tool-tip for the apply active effects button on Power chat messages should now properly refrence.
 
 ## Version 0.5.13
 - [PR #412](https://github.com/EndlesNights/dnd4eBeta/pull/420) from [FoxLee](https://github.com/FoxLee)
