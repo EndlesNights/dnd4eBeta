@@ -22,7 +22,6 @@
 "DND4E.AbilityInt": "Intelligence",
 "DND4E.AbilityModifier": "Ability Modifier",
 "DND4E.AbilityPromptText": "What type of {ability} check?",
-"DND4E.AbilityPromptText": "What type of {ability} check?",
 "DND4E.AbilityPromptTitle": "{ability} Check",
 "DND4E.AbilityStr": "Strength",
 "DND4E.AbilityUseChargedHint": "This {type} is charged and ready to use!",
