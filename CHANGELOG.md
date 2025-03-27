@@ -1,6 +1,11 @@
 # Changelog
+
+## Version 0.5.14
+- [PR #421](https://github.com/EndlesNights/dnd4eBeta/pull/421) from [FoxLee](https://github.com/FoxLee)
+  - I'm an idiot who uploads files to the wrong place
+
 ## Version 0.5.13
-- [PR #412](https://github.com/EndlesNights/dnd4eBeta/pull/420) from [FoxLee](https://github.com/FoxLee)
+- [PR #420](https://github.com/EndlesNights/dnd4eBeta/pull/420) from [FoxLee](https://github.com/FoxLee)
   - Fix for core issue https://github.com/foundryvtt/foundryvtt/issues/11527 (fixes #419 and another report I had on Discord of heritage bonuses not stacking correctly). Looks like Foundry intends to fix this only in v13, so I stole this temporary fix from [Black Flag](https://github.com/koboldpress/black-flag/commit/d816b843d6702b0d5cecbdcfc765918002394b4e#diff-be8a125e28ef90b1367be003410b96d6e74779a15771b893370e4b260422d375), blessings upon them.
 
 ## Version 0.5.12
