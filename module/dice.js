@@ -38,7 +38,6 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 	const isOpp = options?.variance?.isOpp || false;
 	const userStatus = actor?.statuses || {};
 	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options, isCharge, isOpp, userStatus }
-
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
 	// If fast-forward requested, perform the roll without a dialog
@@ -153,10 +152,12 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 
 	let allRollsParts = []
 	const numberOfTargets = Math.max(1, game.user.targets.size);
+	//console.debug(data);
+	
 	if (isAttackRoll && form !== null) {
 		// populate the common attack bonuses into data
-		Object.keys(CONFIG.DND4E.commonAttackBonuses).forEach(function(key,index) {
-			data[key] = CONFIG.DND4E.commonAttackBonuses[key].value
+		Object.keys(data.commonAttackBonuses).forEach(function(key,index) {
+			data[key] = data.commonAttackBonuses[key].value
 		});
 		const individualAttack = (Object.entries(form)[6][1].value === "true");
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++ ) {
@@ -165,7 +166,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				if(v.checked) {
 					let tabIndex = v.name.split(".")[0];
 					if((individualAttack && parseInt(tabIndex) === targetIndex) // check if Individual Attack Bonuses
-					|| !individualAttack ) { //otherwise just use Universal Attack Bonuses
+					|| !individualAttack ) { //otherwise just use Unified Attack Bonuses
 						let bonusName = v.name.split(".")[1];
 						targetBonuses.push(`@${bonusName}`)
 					}
@@ -176,7 +177,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			}
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
-				targetBonuses.forEach(bonus => total += CONFIG.DND4E.commonAttackBonuses[bonus.substring(1)].value)
+				targetBonuses.forEach(bonus => total += data.commonAttackBonuses[bonus.substring(1)].value)
 				allRollsParts.push(parts.concat([total]))
 			}
 			else {
@@ -186,21 +187,22 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	}
 	else if (isAttackRoll && fastForward) {
 	// Logic to infer common bonuses based on user and target status under fast-forward conditions
-		
 		const theTargets = Array.from(game.user.targets);
+		
 		// populate the common attack bonuses into data
-		
-		Object.keys(CONFIG.DND4E.commonAttackBonuses).forEach(function(key,index) {
-			data[key] = CONFIG.DND4E.commonAttackBonuses[key].value
+		Object.keys(data.commonAttackBonuses).forEach(function(key,index) {
+			data[key] = data.commonAttackBonuses[key].value
 		});
-		
+				
 		const userStatBonuses = [];
 		// User conditions
 		if(userStatus.has('prone')) userStatBonuses.push('@prone');
 		if(userStatus.has('restrained')) userStatBonuses.push('@restrained');
 		if(userStatus.has('running')) userStatBonuses.push('@running');
 		if(userStatus.has('squeezing')) userStatBonuses.push('@squeez');
-		if(options.isCharge) userStatBonuses.push('@charge');
+		if(userStatus.has('comAdv')) userStatBonuses.push('@comAdv');
+		console.debug(options);
+		if(options?.variance?.isCharge) userStatBonuses.push('@charge');
 				
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
 			
@@ -209,7 +211,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				const targetStatus = Array.from(theTargets[targetIndex].actor.statuses);
 				
 				//Target conditions
-				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running'].includes(element)).length > 0) targetBonuses.push('@comAdv');
+				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
 				
 				if(targetStatus.includes('concealed')) targetBonuses.push('@conceal');		
 				
@@ -218,7 +220,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			}
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
-				targetBonuses.forEach(bonus => total += CONFIG.DND4E.commonAttackBonuses[bonus.substring(1)].value)
+				targetBonuses.forEach(bonus => total += data.commonAttackBonuses[bonus.substring(1)].value)
 				allRollsParts.push(parts.concat([total]));
 			}
 			else {
