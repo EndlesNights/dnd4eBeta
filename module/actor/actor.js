@@ -28,6 +28,7 @@ export class Actor4e extends Actor {
 				data.system.powerSortTypes = `actionType`;
 			}
 		}
+		
 	}
 
 	/** @override */
@@ -828,6 +829,10 @@ export class Actor4e extends Actor {
 		
 		//Magic Items
 		system.magicItemUse.perDay = Math.clamp(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
+		
+		//Actor-specific overide of Conditional Attack Mods
+		this.calcCommonAttackBonuses(system);
+		
 	}
 
 
@@ -1302,6 +1307,58 @@ export class Actor4e extends Actor {
 		return true;
 	}
 
+	calcCommonAttackBonuses(system){
+		const defaultMods = DND4E.commonAttackBonuses;
+		
+		try{
+			for (const [id, condition] of Object.entries(system.commonAttackBonuses)) {
+				console.debug(id);
+				console.debug(defaultMods[id]);
+				condition.label = condition?.label ? condition.label : defaultMods[id].label;
+				condition.value = defaultMods[id].value || 0;
+				
+				if(isNaN(parseInt(condition?.absolute))){ //All logic only required if there is no usable absolute value
+
+					let bonusValue = 0;
+
+					if(!(condition.bonus.length === 1 && jQuery.isEmptyObject(condition.bonus[0]))) {
+						for( const b of condition.bonus) {
+							if(b.active && Helper._isNumber(b.value)) {
+								bonusValue += parseInt(b.value);
+							}
+							else if(b.active){
+								let val = Helper.replaceData(b.value,system)
+								if(Helper._isNumber(val)){
+									bonusValue += parseInt(val);
+								}
+							}
+						}
+					}
+
+					condition.value += condition?.feat || 0;
+					condition.value += condition?.item || 0;
+					condition.value += condition?.power || 0;
+					condition.value += condition?.race || 0;
+					condition.value += condition?.untyped || 0;
+					//No way to sort manual bonuses, so they just get added regardless.
+					condition.value += bonusValue;
+
+					//trim value according to floor and ceil
+					condition.value = Math.max(condition.value,condition?.floor || condition.value-1);
+					condition.value = Math.min(condition.value,condition?.ceil || condition.value+1);
+				}else{
+					condition.value = condition.absolute;
+				}
+				
+				//console.debug(condition);
+			}
+			//console.debug(system.commonAttackBonuses);
+		}catch(e){
+			console.error(`Failed conditional bonus calc. (${e})`)
+		}
+		
+	}
+	
   /**
    * Handle how changes to a Token attribute bar are applied to the Actor.
    * This allows for game systems to override this behavior and deploy special logic.
@@ -1521,7 +1578,7 @@ export class Actor4e extends Actor {
 			parts: parts,
 			data: {init: init},
 			event,
-			title: `Init Roll`,
+			title: game.i18n.localize('DND4E.InitiativeRoll'),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: isReroll? `${this.name} ${game.i18n.localize("DND4E.RollsInitReroll")}!` : `${this.name} ${game.i18n.localize("DND4E.RollsInit")}!`,
 			'options.flags.dnd4e.roll.type':'init'
