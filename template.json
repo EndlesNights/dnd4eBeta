@@ -208,8 +208,7 @@
 					"height": "",
 					"weight": "",
 					"alignment": "",
-					"deity": "",
-					
+					"deity": "",					
 					"secondwind": false,
 					"secondwindEffect": {},
 					"deathsaves": 3,
@@ -824,7 +823,108 @@
 					"rh" : 0,
 					"si" : 0,
 					"rs" : 0
-				}		
+				},
+				"commonAttackBonuses": {
+					"comAdv": {
+						"value": 2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"charge": {
+						"value": 1,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"conceal": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"concealTotal": {
+						"value": -5,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"cover": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"coverSup": {
+						"value": -5,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"longRange": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"prone": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"restrained": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"running": {
+						"value": -5,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"squeez": {
+						"value": -5,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					}
+				}	
 			}
 		},
 		"Player Character": {
