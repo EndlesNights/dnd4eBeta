@@ -1228,7 +1228,8 @@ export default class Item4e extends Item {
 		const rollData = this.getRollData({'variance':options?.variance});
 
 		rollData.isAttackRoll = true;
-		rollData.commonAttackBonuses = CONFIG.DND4E.commonAttackBonuses;
+		rollData.commonAttackBonuses = actorData.system.commonAttackBonuses;
+		//console.debug(rollData.commonAttackBonuses);
 		rollData["ammo"] = 0 // because ammo is added to by weapon use multiple clicks of the button will add it higher
 
 		// Define Roll bonuses
@@ -1361,10 +1362,10 @@ export default class Item4e extends Item {
 		}
 
 		const rollData = this.getRollData(options);
-		//console.debug(rollData);
 
 		rollData.isAttackRoll = true;
-		rollData.commonAttackBonuses = CONFIG.DND4E.commonAttackBonuses;
+		rollData.commonAttackBonuses = actorData.system.commonAttackBonuses;
+		//console.debug(rollData.commonAttackBonuses);
 		rollData["ammo"] = 0;
 
 		// Define Roll bonuses
