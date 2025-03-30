@@ -1206,7 +1206,38 @@ export class Helper {
 		return game.combat? game.combat.turns[game.combat.turn]?.initiative : 0;
 	}
 
+	static async solidifyEffectActorData(effect, parentActor){
+		console.log(effect)
+		console.log(parentActor)
+
+		//dots
+		for(const dot of effect.flags.dnd4e.dots){
+			// dot.amount = await this.parseSolidify(dot.amount, parentActor);
+			dot.amount = dot.amount.replace(/\$solidify\((.*?)\)/g, (match, value) => {
+				return Helper.commonReplace(value, parentActor);
+			});
+		}
+
+		//changes
+		for(const change of effect.changes){
+			// change.value = this.parseSolidify(change.value, parentActor);
+			change.value = change.value.replace(/\$solidify\((.*?)\)/g, (match, value) => {
+				return Helper.commonReplace(value, parentActor);
+			});
+			console.log(change.value);
+		}
+
+	}
+
+	// static async parseSolidify(inputString, parentActor){
+	// 	const newVal =  inputString.replace(/\$solidify\((.*?)\)/g, (match, value) => {
+	// 		return Helper.commonReplace(value, parentActor);
+	// 	});
+	// 	return newVal;
+	// }
+
 	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
+
 		const combat = game.combat;
 		for(let effect of effectMap){
 			let e = effect.toObject(); // This is to avoid editing the source effect
@@ -1215,7 +1246,7 @@ export class Helper {
 					// let effectData = e.data;
 					// e.sourceName = parent.name;
 					e.origin = parent.uuid;
-
+					this.solidifyEffectActorData(e, parent);
 					const duration = e.duration;
 					const flags = e.flags;
 					duration.combat = combat?.id || "None Combat";
