@@ -164,12 +164,8 @@
 						<input type="text" name="system.uses.max" value="{{system.uses.max}}"/>
 						<span class="sep">{{ localize "DND4E.per" }}</span>
 						<select name="system.uses.per">
-							{{#select system.uses.per}}
 							<option value=""></option>
-							{{#each config.limitedUsePeriods as |name key|}}
-							<option value="{{key}}">{{name}}</option>
-							{{/each}}
-							{{/select}}
+							{{selectOptions config.limitedUsePeriods selected=system.uses.per labelAttr="label"}}
 						</select>
 					</div>
 				</div>
