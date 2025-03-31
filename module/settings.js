@@ -1,4 +1,5 @@
 import CustomSkillConfig from "./apps/custom-skill-config.js";
+import { updateApplyEffectsTooltips } from "./chat.js";
 
 export const registerSystemSettings = function() {
 
@@ -332,6 +333,7 @@ export const registerSystemSettings = function() {
 		config: true,
 		default: false,
 		type: Boolean,
+		onChange: updateApplyEffectsTooltips
 	});
 
 	game.keybindings.register("dnd4e", "permShowPlayer", {

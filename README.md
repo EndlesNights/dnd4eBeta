@@ -1,6 +1,6 @@
 ![](https://img.shields.io/badge/Foundry-v12-informational)
 
-# DnD 4th Edition - v0.5.11
+# DnD 4th Edition - v0.5.12
 * **Foundry VTT Compatibility**: v12
 * **Author**: EndlesNights#9000
 * **Contributors**: [draconas1](https://github.com/draconas1), [FoxLee](https://github.com/FoxLee), [ahoward-cf](https://github.com/ahoward-cf), [Marcloure](https://github.com/Marcloure), [kyleady](https://github.com/kyleady), [TheGiddyLimit](https://github.com/TheGiddyLimit), [BadgerKing7](https://github.com/BadgerKing7), [mncimino1993](https://github.com/mncimino1993), [zarick1342](https://github.com/zarick1342), [wigmeister2000](https://github.com/wigmeister2000)
@@ -9,10 +9,10 @@
 - Français, courtoisie de [Gilphe](https://github.com/Gilphe)
 - 中文, 由 扶摇
 - Portugues do Brasil, cortesia de [PilotodeMouse](https://github.com/PilotodeMouse)
-
+- Español, cortesía de [lderequesensS](https://github.com/lderequesensS)
 
 ## Description
-An implementation for the 4th Edition of Everyone's Favourite Cave Spelunking, and Wyvern Slaying, Fantasy Role Playing Game System for [Foundry Virtual Tabletop](https://foundryvtt.com/) in accordance to the [4th Edition System Reference Document](http://weirdzine.com/wp-content/uploads/2015/07/4E_SRD-1.pdf). This system hopes to provide a basis that eases some of the cruncher side of 4th Edition, by providing a feature rich character sheet and some basic automation both inside of and outside of combat.
+An implementation for the 4th Edition of Everyone's Favourite Cave Spelunking, and Wyvern Slaying, Fantasy Role Playing Game System for [Foundry Virtual Tabletop](https://foundryvtt.com/) in accordance to the [4th Edition System Reference Document](http://weirdzine.com/wp-content/uploads/2015/07/4E_SRD-1.pdf). This system hopes to provide a basis that eases some of the crunchier side of 4th Edition, by providing a feature rich character sheet and some basic automation both inside of and outside of combat.
 
 ## Licenses
 The contents of this project is under a number of licenses

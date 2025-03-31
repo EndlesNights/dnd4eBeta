@@ -147,16 +147,22 @@
 	/**
 	 * Determine whether this Active Effect is suppressed or not.
 	 */
-	determineSuppression() {
+	 determineSuppression() {
 		this.isSuppressed = false;
-		if ( this.parent instanceof CONFIG.Item.documentClass ){
-			//types of items that can be equipped
-			const validTypes = ["weapon", "equipment", "tool", "loot", "backpack"];
-			if(validTypes.includes(this.parent.type) && this.parent.system.equipped === false){
-				return this.isSuppressed = this.flags.dnd4e?.effectData?.equippedRec || false;
-			}
-			this.isSuppressed = this.areEffectsSuppressed;
+		const originArray = this.origin?.split(".");
+
+		if ( this.disabled || !originArray || originArray[0] == "Actor" || originArray.indexOf("Item") < 0 ) return;
+		
+		const item = this.parent;
+		if ( !item ) return;
+
+		//types of items that can be equipped
+		const validTypes = ["weapon", "equipment", "tool", "loot", "backpack"];
+		if(validTypes.includes(item.type) && item.system.equipped === false){
+			this.isSuppressed = this.flags.dnd4e?.effectData?.equippedRec || false;
+			return;
 		}
+		this.isSuppressed = item.areEffectsSuppressed;
 	}
 
 	/* --------------------------------------------- */

@@ -1,4 +1,22 @@
 # Changelog
+## Version 0.5.14
+- Fix issue with "Only Apply Effect when Equipped?" option not working correctly.
+- Tool-tip for the apply active effects button on Power chat messages should now properly refrence.
+
+## Version 0.5.13
+- [PR #412](https://github.com/EndlesNights/dnd4eBeta/pull/420) from [FoxLee](https://github.com/FoxLee)
+  - Fix for core issue https://github.com/foundryvtt/foundryvtt/issues/11527 (fixes #419 and another report I had on Discord of heritage bonuses not stacking correctly). Looks like Foundry intends to fix this only in v13, so I stole this temporary fix from [Black Flag](https://github.com/koboldpress/black-flag/commit/d816b843d6702b0d5cecbdcfc765918002394b4e#diff-be8a125e28ef90b1367be003410b96d6e74779a15771b893370e4b260422d375), blessings upon them.
+
+## Version 0.5.12
+- [PR #408](https://github.com/EndlesNights/dnd4eBeta/pull/408) from [draconas1](https://github.com/draconas1) Fix: Token Size not being updated
+- [PR #409](https://github.com/EndlesNights/dnd4eBeta/pull/409) from [lderequesensS](https://github.com/lderequesensS) Add Spanish translation
+- [PR #412](https://github.com/EndlesNights/dnd4eBeta/pull/412) from [FoxLee](https://github.com/FoxLee)
+  - Allows dice notation in ongoing damage values and enhances chat reports for them
+  - Adds special "bonus" keys for `floor`, `ceil` and `override` to allow advanced manipulation of values, and updates documentation accordingly
+  - Adds swim speed to movement modes
+  - Adds chat popout functionality to item cards (fixes [#266](https://github.com/EndlesNights/dnd4eBeta/issues/266))
+  - In character sheets, fixes an untranslated string on the action point checkbox (mentioned in [PR #409](https://github.com/EndlesNights/dnd4eBeta/pull/409)).
+- [PR #415](https://github.com/EndlesNights/dnd4eBeta/pull/415) from [FoxLee](https://github.com/FoxLee) Fixes [object Object] appearing in on-sheet item summaries (fixes [#414](https://github.com/EndlesNights/dnd4eBeta/issues/414)) and updates info tags to include more useful properties and fewer irrelevant ones
 
 ## Version 0.5.11
 - ruler refactor, no longer runs though libwrapper. Now is the overrides the default Canvas.rulerClass

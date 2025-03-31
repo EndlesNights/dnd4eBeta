@@ -142,6 +142,7 @@ export const migrateActorData = function(actor, migrationData) {
 		_migrateActorFeatItemPowerBonusSources(actor, updateData);
 		_migrateActorDefAndRes(actor, updateData);
 		_migrateActorGlobalMods(actor, updateData);
+		_migrateActorSwim(actor, updateData);
 	}
 
 	return updateData;
@@ -196,7 +197,7 @@ export const migrateItemData = function(item) {
 /* -------------------------------------------- */
 
 /**
- * Migrate a single Scene document to incorporate changes to the data model of it's actor data overrides
+ * Migrate a single Scene document to incorporate changes to the data model of its actor data overrides
  * Return an Object of updateData to be applied
  * @param {object} scene            The Scene data to Update
  * @param {object} [migrationData]  Additional data to perform the migration
@@ -589,24 +590,6 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData){
 		}
 	}
 
-	/*const resistances = actorData?.system?.resistances;
-	if(resistances){
-		for( const [id, res] of Object.entries(resistances)){
-			if(res.feat == undefined){
-				updateData[`system.resistances.${id}.feat`] = 0;
-			}
-			if(res.item == undefined){
-				updateData[`system.resistances.${id}.item`] = 0;
-			}
-			if(res.power == undefined){
-				updateData[`system.resistances.${id}.power`] = 0;
-			}
-			if(res.untyped == undefined){
-				updateData[`system.resistances.${id}.untyped`] = 0;
-			}
-		}
-	}*/
-
 	return updateData;
 }
 
@@ -840,5 +823,32 @@ function _migrateActorGlobalMods(actorData, updateData){
 		};
 	}
 
+	return updateData;
+}
+
+/**
+* Migrate actors missing keys for swim speed (v0.5.12)
+* @param {object} actorData   Actor data being migrated.
+* @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
+* @returns {object}           Modified version of update data.
+* @private
+*/
+function _migrateActorSwim(actorData, updateData){
+	
+	const movement = actorData?.system?.movement;
+	
+	if(movement?.swim == undefined){
+		updateData[`system.movement.swim`] = {
+			"value": 0,
+			"formula": "(@base + @armour)/2",
+			"bonus": [{}],
+			"feat": 0,
+			"item": 0,
+			"power": 0,
+			"race": 0,
+			"untyped": 0,
+			"temp": 0
+		};
+	}
 	return updateData;
 }

@@ -263,6 +263,11 @@ Hooks.on("renderChatLog", (app, html, data) => {
 	Item4e.chatListeners(html);
 	chat.chatMessageListener(html);
 });
+// Also activate buttons on popout messages
+Hooks.on("renderChatPopout", (app, html, data) => {
+	Item4e.chatListeners(html);
+	chat.chatMessageListener(html);
+});
 
 Hooks.on("canvasInit", function() {
 
