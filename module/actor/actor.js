@@ -1312,8 +1312,8 @@ export class Actor4e extends Actor {
 		
 		try{
 			for (const [id, condition] of Object.entries(system.commonAttackBonuses)) {
-				console.debug(id);
-				console.debug(defaultMods[id]);
+				//console.debug(id);
+				//console.debug(defaultMods[id]);
 				condition.label = condition?.label ? condition.label : defaultMods[id].label;
 				condition.value = defaultMods[id].value || 0;
 				
@@ -1334,6 +1334,8 @@ export class Actor4e extends Actor {
 							}
 						}
 					}
+					
+					condition.bonusValue = bonusValue;
 
 					condition.value += condition?.feat || 0;
 					condition.value += condition?.item || 0;
@@ -1341,7 +1343,7 @@ export class Actor4e extends Actor {
 					condition.value += condition?.race || 0;
 					condition.value += condition?.untyped || 0;
 					//No way to sort manual bonuses, so they just get added regardless.
-					condition.value += bonusValue;
+					condition.value += condition.bonusValue || 0;
 
 					//trim value according to floor and ceil
 					condition.value = Math.max(condition.value,condition?.floor || condition.value-1);

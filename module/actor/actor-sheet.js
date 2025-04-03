@@ -14,6 +14,7 @@ import { HealMenuDialog } from "../apps/heal-menu-dialog.js";
 import TraitSelector from "../apps/trait-selector.js";
 import TraitSelectorSense from "../apps/trait-selector-sense.js";
 import TraitSelectorSave from "../apps/trait-selector-save.js";
+import ConBonConfig from "../apps/con-bon-config.js";
 import ListStringInput from "../apps/list-string-input.js";
 // import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import ActiveEffect4e from "../effects/effects.js";
@@ -807,7 +808,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			html.find('.modifiers-bonus').click(this._onModifiersBonus.bind(this));
 			html.find('.resistances-bonus').click(this._onResistancesBonus.bind(this));
 			
-			html.find('.movement-dialog').click(this._onMovementDialog.bind(this));		
+			html.find('.movement-dialog').click(this._onMovementDialog.bind(this));
 			
 			html.find('.custom-roll-descriptions').click(this._onCustomRolldDescriptions.bind(this));
 			
@@ -868,10 +869,16 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			html.find('.item .item-image').hover(event => this._onItemHoverEntry(event), event => this._onItemHoverExit(event));
 			html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
 
+			// Effect-Specific Saves
 			html.find('.effect-save').click(event => this._onRollEffectSave(event));
 
+			// Load Options
 			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this));
-
+			
+			// Conditional Attack Mod Config
+			html.find('.con-bon-config').click(this._onConBonConfig.bind(this));
+			
+			// Context Menus
 			new ContextMenu(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this)});
 		}
 
@@ -1223,32 +1230,32 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const skillName = event.currentTarget.parentElement.dataset.skill;
 		const target = `system.skills.${skillName}`;
-		const options = {target: target, label: `${this.actor.system.skills[skillName].label} Skill Bonus`, skill: true };
+		const options = {target: target, label: `${game.i18n.format('DND4E.SkillBonusTitle', { skill: this.actor.system.skills[skillName].label } ) }`, skill: true };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	/* -------------------------------------------- */
 
 	_onDeathSaveBonus(event) {
 		event.preventDefault();
-		const options = {target: `system.details.deathsavebon`, label: "Death Savingthrow Bonus" };
+		const options = {target: `system.details.deathsavebon`, label: game.i18n.localize('DND4E.DeathSavingThrowBonus')};
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onSurgeBonus(event) {
 		event.preventDefault();
-		const options = {target: `system.details.surgeBon`, label: "Healing Surge Bonus" };
+		const options = {target: `system.details.surgeBon`, label: game.i18n.localize('DND4E.HealingSurgeBonus') };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onSurgeEnv(event) {
 		event.preventDefault();
-		const options = {target: `system.details.surgeEnv`, label: "Healing Surges Environmental Losses" };
+		const options = {target: `system.details.surgeEnv`, label: `${game.i18n.localize('DND4E.HealingSurges')} ${game.i18n.localize('DND4E.SurgeEnv')}`};
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 
 	_onSecondWindBonus(event) {
 		event.preventDefault();
-		const options = {target: `system.details.secondwindbon`, label: "Second Wind Bonus", secondWind: true };
+		const options = {target: `system.details.secondwindbon`, label: game.i18n.localize('DND4E.SecondWindBonus'), secondWind: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -1256,13 +1263,13 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const defName = event.currentTarget.parentElement.dataset.defence;
 		const target = `system.defences.${defName}`;
-		const options = {target: target, label: `${this.actor.system.defences[defName].label} Defence Bonus`, ac: (defName ==="ac")  };
+		const options = {target: target, label: `${game.i18n.format('DND4E.DefenceBonus',{def:this.actor.system.defences[defName].label})}`, ac: (defName ==="ac")  };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = {target: `system.attributes.init`, label: "Initiative Bonus", init: true };
+		const options = {target: `system.attributes.init`, label: game.i18n.localize('DND4E.InitiativeBonus'), init: true };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
@@ -1270,13 +1277,18 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `system.movement.${moveName}`;
-		const options = {target: target, label: `${this.actor.system.movement[moveName].label} Movement Bonus` };
+		const options = {target: target, label: `${game.i18n.format('DND4E.MovementBonus',{mode: moveName})}` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onMovementDialog(event) {
 		event.preventDefault();
 		new MovementDialog(this.actor).render(true)
+	}
+	
+	_onConBonConfig(event) {
+		event.preventDefault();
+		new ConBonConfig(this.actor).render(true)
 	}
 
 	_onHealMenuDialog(event) {
@@ -1294,7 +1306,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		const passName = event.currentTarget.parentElement.dataset.passive;
 		const skillName = this.actor.system.passive[passName].skill;
 		const target = `system.passive.${passName}`;
-		const options = {target: target, label: `Passive ${this.actor.system.skills[skillName].label} Bonus` };
+		const options = {target: target, label: `${game.i18n.format('DND4E.PasBonus',{skill: this.actor.system.skills[skillName].label})}` };
 		new AttributeBonusDialog(this.actor, options).render(true);		
 	}	
 
@@ -1302,7 +1314,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const modifierName = event.currentTarget.parentElement.dataset.modifiers;
 		const target = `system.modifiers.${modifierName}`;
-		const options = {target: target, label: `${this.actor.system.modifiers[modifierName].label} Bonus` };
+		const options = {target: target, label: this.actor.system.modifiers[modifierName].label };
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}	
 
@@ -1310,7 +1322,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const resName = event.currentTarget.parentElement.dataset.res;
 		const target = `system.resistances.${resName}`;
-		const options = {target: target, label: `${this.actor.system.resistances[resName].label} Damage Resistances Bonus` };
+		const options = {target: target, label: `${game.i18n.format('DND4E.DamResVulnBonus',{type: this.actor.system.resistances[resName].label})}`};
 		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	
@@ -1401,7 +1413,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 	_onSavingThrowBonus(event) {
 		event.preventDefault();
-		const options = {target: `system.details.saves`, label: "Savingthrow Bonus" };
+		const options = {target: `system.details.saves`, label: game.i18n.localize('DND4E.SavingThrowBonus') };
 		new AttributeBonusDialog(this.actor, options).render(true);	
 	}
 
@@ -1476,16 +1488,16 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 	_onRollEffectSave(event){
 		event.preventDefault();
-		console.log("rollSave Throw v Effect!");
+		//console.debug("roll Save Throw v Effect!");
 
 		const effectId = event.currentTarget.closest(".item").dataset.effectId;
 		const effect = this.actor.effects.get(effectId);
 
 		let save = new SaveThrowDialog(this.actor, {effectSave:true, effectId: effectId}).render(true);
 
-		// console.log(save)
-		// console.log(effectId);
-		// console.log(this.actor.effects.get(effectId));
+		// console.debug(save)
+		// console.debug(effectId);
+		// console.debug(this.actor.effects.get(effectId));
 	}
 	/* -------------------------------------------- */
 
@@ -1505,10 +1517,10 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				// r.evaluate({async: false});
 				await r.evaluate();
 	
-				let flav = `${item.name} did not recharge.`;
+				let flav = `${game.i18n.format('DND4E.PowerRechargeFail',{type: item.name})}`;
 				if(r.total >= r.dice[0].options.critical){
 					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "system.uses.value": item.system.preparedMaxUses}]);
-					flav = `${item.name} successfully recharged!`;
+					flav = `${game.i18n.format('DND4E.PowerRechargeSuccess',{type: item.name})}`;
 				}
 
 				r.toMessage({
@@ -1526,7 +1538,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				ChatMessage.create({
 					user: game.user.id,
 					speaker: {actor: this.object, alias: this.object.name},
-					flavor: `${item.name} successfully recharged! Due to meeting condition ${item.system.rechargeCondition}`
+					flavor: `${item.name}—${game.i18n.localize('DND4E.PowerRecharge')}`,
+					content: `${game.i18n.format('DND4E.PowerRechargeSuccessCondition',{type: item.name,condition:item.system.rechargeCondition})}`
 				});
 			}
 		}
@@ -1668,7 +1681,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		ChatMessage.create({
 			user: game.user.id,
 			speaker: {actor: this.object, alias: this.object.name},
-			content: `Passive ${this.actor.system.skills[skillName].label} Skill Check: <SPAN STYLE="font-weight:bold">${this.object.system.passive[passName].value}`
+			content: `${game.i18n.format('DND4E.PasCheck',{skill:this.actor.system.skills[skillName].label})}: <strong>${this.object.system.passive[passName].value}</strong>`
 		});	
 	}
 
@@ -1796,14 +1809,14 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		// Special Roll Options for Basic and Tagged Attacks
 		if ( item.type == 'power' && (item.system?.attack?.isBasic || item.system?.attack?.canCharge)) {
 			options.unshift({
-				name: "Roll as Charge",
+				name: game.i18n.localize('DND4E.AttackModeCharge'),
 				icon: "<i class='fas fa-angles-right'></i>",
 				callback: () => this._onItemRoll(event,{isCharge:true})
 			});
 		}
 		if ( item.type == 'power' && (item.system?.attack?.isBasic || item.system?.attack?.canOpp)) {
 			options.unshift({
-				name: "Roll as Opportunity Attack",
+				name: game.i18n.localize('DND4E.AttackModeOpp'),
 				icon: "<i class='fas fa-triangle-exclamation'></i>",
 				callback: () => this._onItemRoll(event,{isOpp:true})
 			});
