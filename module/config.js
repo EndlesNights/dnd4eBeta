@@ -346,8 +346,8 @@ DND4E.equipmentTypes = {
 preLocalize("equipmentTypes", { keys: ["label"] });
 
 DND4E.equipmentTypesArmour = {
-	//"cloth": "DND4E.EquipmentArmourCloth",
 	"": {label: "DND4E.None"},
+	"cloth": {label: "DND4E.EquipmentArmourCloth"},
 	"light": {label: "DND4E.EquipmentArmourLight"},
 	"heavy": {label: "DND4E.EquipmentArmourHeavy"},
 	"natural": {label: "DND4E.EquipmentArmourNatural"},
