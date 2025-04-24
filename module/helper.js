@@ -566,7 +566,6 @@ export class Helper {
 					let r = new Roll(`${quantity}`);
 
 					if(r.isDeterministic){
-						// r.evaluate({async: false});
 						r.evaluateSync();
 						quantity = r.total;
 					}
@@ -597,7 +596,6 @@ export class Helper {
 
 				//Just to help keep the rolls cleaner, look for Deterministic elements to remove
 				if(r.isDeterministic){
-					// r.evaluate({async: false});
 					r.evaluateSync();
 					quantity = r.total;
 				}
@@ -619,7 +617,6 @@ export class Helper {
 						let r2 = new Roll(`${weaponDiceQuantity}`);
 	
 						if(r2.isDeterministic){
-							// r2.evaluate({async: false});
 							r2.evaluateSync();
 							weaponDiceQuantity = r2.total;
 						}
@@ -657,7 +654,6 @@ export class Helper {
 				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 				let r = new Roll(`${dice}`)
 				if(dice){
-					// r.evaluate({maximize: true, async: false});
 					r.evaluateSync({maximize: true});
 					newFormula = newFormula.replaceAll("@wepMax", r.result);
 				} else {
@@ -754,8 +750,6 @@ export class Helper {
 
 				let r = new Roll(`${quantity}`);
 				if(r.isDeterministic){
-					console.log("here")
-					// r.evaluate({async: false});
 					r.evaluateSync();
 					quantity = r.total;
 				}
@@ -788,7 +782,6 @@ export class Helper {
 				let quantity = powerInnerData.hit.baseQuantity;
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
-				// rQuantity.evaluate({maximize: true, async: false});
 				rQuantity.evaluateSync({maximize: true});
 				
 				if(this._isNumber(rQuantity.result)) {
@@ -872,7 +865,6 @@ export class Helper {
 			let roll = new Roll(`${r}`);
 
 			if(roll.isDeterministic){
-				// roll.evaluate({async: false});
 				roll.evaluateSync();
 				return roll.total;
 			}
