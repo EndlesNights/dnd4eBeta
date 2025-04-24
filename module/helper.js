@@ -1059,7 +1059,8 @@ export class Helper {
 		if(chatData.attack.isAttack) {
 			let attackForm = chatData.attack.formula;
 			attackForm = chatData.attack.formula.replaceAll('@powerMod',`@${chatData.attack?.ability}Mod`);
-			const attackValues = this.commonReplace(attackForm, actorData);
+			const weapon = Helper.getWeaponUse(chatData, actorData);
+			const attackValues = this.commonReplace(attackForm, actorData, chatData, weapon?.system);
 			if(attackTotal){
 				//if does not start with a number sign add one
 				attackTotal = attackTotal.toString();
@@ -1079,7 +1080,9 @@ export class Helper {
 				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: <a class="attack-bonus" data-tooltip="`;		
 				if(game.settings.get("dnd4e","cardAtkDisplay")=="bonus"){
 					powerDetail += `${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackValues})">${attackTotal}</a>`;
-				}else{
+				} else if (game.settings.get("dnd4e","cardAtkDisplay")=="bothBonus"){
+					powerDetail += `(${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackTotal})</a>`;
+				} else{
 					powerDetail += `${attackTotal} (${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]}</a>`;
 				}
 			} else {

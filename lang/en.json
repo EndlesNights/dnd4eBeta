@@ -1556,6 +1556,7 @@
 "SETTINGS.4eCardAtkDisplayN": "Power card attack display",
 "SETTINGS.4eCardAtkDisplayBonus": "Display bonus (name/formula in tooltip)",
 "SETTINGS.4eCardAtkDisplayStat": "Display name (bonus/formula in tooltip)",
+"SETTINGS.4eCardAtkDisplayBoth": "Display name (bonus) (formula in tooltip)",
 "SETTINGS.4eCollapseSituationalBonusL": "If checked: all common situational modifiers will be computed and added as a single modifier to @bonus.  Otherwise each will be displayed individually in the resulting formula",
 "SETTINGS.4eCollapseSituationalBonusN": "Collapse Common Attack Mods",
 "SETTINGS.4eCurWtL": "Carried currency affects character encumbrance following the rules on PHB pg. 212.",

@@ -373,7 +373,8 @@ export const registerSystemSettings = function() {
 		type: String,
 		choices: {
 			"bonus": "SETTINGS.4eCardAtkDisplayBonus",
-			"stat": "SETTINGS.4eCardAtkDisplayStat"
+			"stat": "SETTINGS.4eCardAtkDisplayStat",
+			"bothBonus": "SETTINGS.4eCardAtkDisplaybothBonus"
 		}
 	});
 };
