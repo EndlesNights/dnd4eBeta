@@ -36,10 +36,11 @@ export class MovementDialog extends DocumentSheet4e {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `system.movement.${moveName}`;
-		console.log(moveName)
-		console.log(event.currentTarget.parentElement.dataset)
-		console.log(event.currentTarget.parentElement)
-		const options = {target: target, label: `${this.object.system.movement[moveName].label} Movement Bonus` };
+		console.debug(moveName);
+		console.debug(event.currentTarget.parentElement.dataset);
+		console.debug(event.currentTarget.parentElement);
+		console.debug(this.object.system.movement[moveName]);
+		const options = {target: target, label: `${game.i18n.format('DND4E.MovementBonus',{mode: moveName})}` };
 		new AttributeBonusDialog(this.object, options).render(true);
 	}
 }

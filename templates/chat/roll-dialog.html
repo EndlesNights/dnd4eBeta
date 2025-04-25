@@ -1,52 +1,93 @@
 <form class="roll-dialogue">
 	<div class="form-group">
-		<label>{{ localize "DND4E.Formula" }}</label>
+		<label class="label">{{ localize "DND4E.Formula" }}</label>
 		<input type="text" name="formula" value="{{formula}}" disabled/>
 	</div>
 	<div class="form-group">
-		<label>{{ localize "DND4E.RollSituationalBonus" }}</label>
+		<label class="label">{{ localize "DND4E.RollSituationalBonus" }}</label>
 		<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4E.RollExample' }}"/>
 	</div>
 
 	{{#if isD20Roll}}	
-		<div class="input-group-button">
-			<label>Number of D20 to Roll:</label>
-			<button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" onclick="minus()">
-				<i class="fa fa-minus" aria-hidden="true"></i>
-			</button>
-			<input class="dice-count" id="d20" type="text" name="d20" value="1" onClick="this.select();"/>
-			<button type="button" class="button hollow circle" data-quantity="plus" data-field="quantity" onclick="plus()">
-				<i class="fa fa-plus" aria-hidden="true"></i>
-			</button>
+		<div class="form-group roll-times flexrow">
+			<label class="label">{{localize 'DND4E.RollTimes'}}</label>
+			<span class="buttons flexrow">
+				<button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" onclick="minus()">
+					<i class="fa fa-minus" aria-hidden="true"></i>
+				</button>
+				<input class="dice-count" id="d20" type="text" name="d20" value="1" onClick="this.select();"/>
+				<button type="button" class="button hollow circle" data-quantity="plus" data-field="quantity" onclick="plus()">
+					<i class="fa fa-plus" aria-hidden="true"></i>
+				</button>
+			</span>
 		</div>
 	{{/if}}
 	
 	<div class="form-group stacked">
 		{{#if isAttackRoll}}
-		<div class="multitarget-np-flex">
+		<h2 class="label">{{localize 'DND4E.CommonAttackBonuses'}}</h2>
+		
+		<div class="multitarget-np-flex{{#if targetData.hasTarget}} has-target{{/if}}{{#if targetData.multiTargetCheck}} has-multi{{/if}}">
 			<button type="button" class="button hollow circle" id="prevBtn" onclick="nextPrev(-1)">
 				<i class="fas fa-arrow-left" aria-hidden="true"></i>
 			</button>
-			<button class="button" type="button" id="multibonus-toggle" onclick="toggleMultibonus()" value="false"></button>
+			<div class="target-label label"><h3 id="targetNameDisplay">{{localize 'DND4E.Target'}}</h3></div>
 			<button type="button" class="button hollow circle" id="nextBtn" onclick="nextPrev(1)">
 				<i class="fas fa-arrow-right" aria-hidden="true"></i>
 			</button>
+			<button class="button" type="button" id="multibonus-toggle" onclick="toggleMultibonus()" data-tooltip="{{localize 'DND4E.RollGroupTip'}}" value="true"></button>
 		</div>
-		{{#if targetData.multiTargetCheck}}
-		<label id="multiTarget"></label>
-		{{/if}}
-		{{#each targetData.targNameArray as | t n |}}
+		
+		{{#each targetData.targets as | t n |}}
 		<div class="multitarget-tab">
-			{{#if ../targetData.hasTarget}}
-			<div>
-				<label id="singleTarget" >Target: {{t}}</label>
+			<div class="target-label" id="targetName-{{n}}" style="display:none">
+			{{#if ../targetData.hasTarget}}{{localize 'DND4E.Target'}}: {{t.name}}{{else}}{{/if}}
 			</div>
-			{{/if}}
+			
 			<div class="form-group stacked">
 			{{#each ../data.commonAttackBonuses as | a b |}}
 			<div class="column">
 				<label class="rollable">
-					<input type="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean" value="{{../checked}}"/>{{ localize a.label}} ({{a.value}})
+					<input type="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean" 
+					
+				{{!-- Try to infer already active bonuses --}}
+				
+					{{#if (eq b 'charge')}}{{#if ../../data.item.attack.isCharge}}checked="true" disabled{{/if}}{{#if ../../isCharge}}checked="true" disabled{{/if}}{{/if}}
+					
+					{{#if (eq b 'prone')}}{{#if (contains 'prone'../../userStatus)}}checked="true"{{/if}}{{/if}}
+					{{#if (eq b 'restrained')}}{{#if (contains 'restrained'../../userStatus)}}checked="true"{{/if}}{{/if}}
+					{{#if (eq b 'squeez')}}{{#if (contains 'squeezing'../../userStatus)}}checked="true"{{/if}}{{/if}}
+					{{#if (eq b 'running')}}{{#if (contains 'running'../../userStatus)}}checked="true"{{/if}}{{/if}}
+					
+					{{!-- Only if targets are provided --}}
+						{{#if ../../targetData.hasTarget}}
+							
+							{{#if (eq b 'comAdv')}}
+								{{#if (contains 'dazed' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'blinded' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'dominated' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'helpless' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'restrained' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'stunned' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'surprised' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'squeezing' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'running' t.status)}}checked="true"{{/if}}
+							{{/if}}
+							
+							{{#if (eq b 'conceal')}}
+								{{#if (contains 'conceal' t.status)}}checked="true"{{/if}}
+							{{/if}}
+							
+							{{#if (eq b 'concealTotal')}}
+								{{#if (contains 'concealTotal' t.status)}}checked="true"{{/if}}
+							{{/if}}
+								
+						{{/if}}
+					{{!-- End targets only --}}
+					
+				{{!-- End already active --}}
+				
+					value="{{../checked}}"/>{{ localize a.label}} ({{a.value}})
 				</label>
 			</div>
 			{{/each}}
@@ -64,18 +105,15 @@
 		</select>
 	</div>
 	<div class="form-group">
-		<label>Flavour Text</label>
-		<input type="text" name="flavor" value="{{newFlavor}}" placeholder="{{flavor}}" data-tooltip="Situational Flavour Text." />
+		<label>{{localize 'DND4E.ChatFlavor'}}</label>
+		<input type="text" name="flavor" value="{{newFlavor}}" placeholder="{{flavor}}" data-tooltip="{{localize 'DND4E.ChatFlavor'}}" />
 	</div>
+	
 </form>
 
 
 <script>
-//Checks if multi target attack that is universal, and display an alternative target dialog with every target's name in it.
-if ("{{targetData.multiTargetCheck}}" == "true" && document.getElementById("multibonus-toggle")?.value == "false" && "{{targetData.targNameArray}}"){
-	document.getElementById("multiTarget").innerHTML = "Targets: {{targetData.targNameArray}}";
-	document.getElementById("singleTarget").style.display = 'none';
-}
+
 $(document).keydown(function(event){
     if(event.which=="17")
         cntrlIsPressed = true;
@@ -106,14 +144,15 @@ var cntrlIsPressed = false;
 	}
 
 var currentTab = 0;    // Defines the default current attack bonuses tab to be the first one
-var multiTargetToggle = 0;    // Defines the default state of the multi-target attack bonus toggle state to be in the "universal bonus" state
-var multiTargetToggleString = "Change to Individual Attack Bonuses";    // Defines the initial text for the multiTargetToggleString - assuming there is more than one target
+var multiTargetToggle = 1;    // Defines the default state of the multi-target attack bonus toggle to be "per-target"
+var multiTargetToggleString = "{{localize 'DND4E.RollMultiSharedChange'}}";    // Defines the initial text for the multiTarget toggle button tooltip - assuming there is more than one target
+var multiTargetToggleIcon = '<i class="fa-solid fa-users-rays"></i>';   // Defines the initial icon for the multiTarget toggle button - assuming there is more than one target
 showTab(currentTab);    // Show the tabs upon first run
 
 function toggleMultibonus() {
 	/*
-	* Function to toggle the state of the attack bonus tabs between Universal and 
-	* Individual attack bonuses based on the current value of the toggle button.
+	* Function to toggle the state of the attack bonus tabs between Shared and 
+	* Per-target attack bonuses based on the current value of the toggle button.
 	*
 	* Each option will update the button value, then update the toggle value, 
 	* then update the button text. 
@@ -127,18 +166,20 @@ function toggleMultibonus() {
 	if (document.getElementById("multibonus-toggle").value == "false"){
 		document.getElementById("multibonus-toggle").value = "true";
 		multiTargetToggle = 1;
-		multiTargetToggleString = "Change to Universal Attack Bonuses";
+		multiTargetToggleString = "{{localize 'DND4E.RollMultiSharedChange'}}";
+		multiTargetToggleIcon = '<i class="fa-solid fa-users-rays"></i>';
 		showTab(currentTab)
-		document.getElementById("multiTarget").style.display = 'none';
-		document.getElementById("singleTarget").style.display = 'block';
 	} else if (document.getElementById("multibonus-toggle").value == "true") {
 		document.getElementById("multibonus-toggle").value = "false";
 		multiTargetToggle = 0;
-		multiTargetToggleString = "Change to Individual Attack Bonuses";
+		multiTargetToggleString = "{{localize 'DND4E.RollMultiIndividualChange'}}";
+		multiTargetToggleIcon = '<i class="fa-solid fa-person-rays"></i>';
 		currentTab = 0;
 		showTab(currentTab)
-		document.getElementById("multiTarget").style.display = 'block';
-		document.getElementById("singleTarget").style.display = 'none';
+		//Checks if multi target attack that is universal, and display an alternative target dialog with every target's name in it.
+		if ("{{targetData.targNameArray}}"){
+			document.getElementById("targetNameDisplay").innerHTML = "All Targets ({{targetData.targNameArray}})";
+		}
 	}
 }
 
@@ -147,19 +188,25 @@ function showTab(n) {
 	let numTargets = x.length;
 	if (document.getElementById("multibonus-toggle")) {
 		if (numTargets <= 1) {
-			multiTargetToggleString = "Universal Attack Bonuses"
+			multiTargetToggleString = ""
 			document.getElementById("multibonus-toggle").disabled = true;
 		}
 
-		document.getElementById("multibonus-toggle").innerHTML = multiTargetToggleString;
-
+		document.getElementById("multibonus-toggle").innerHTML = multiTargetToggleIcon;
+		document.getElementById("multibonus-toggle").setAttribute('data-tooltip',multiTargetToggleString);
+		document.getElementById('targetNameDisplay').innerHTML = document.getElementById('targetName-'+[n]).innerHTML;
+		
+		for(let item of x){
+			item.style.display = "none";
+		}
+		
 		x[n].style.display = "block";
 		if (n <= 0){
 			document.getElementById("prevBtn").disabled = true;
 		} else {
 			document.getElementById("prevBtn").disabled = false;
 		}
-		if (n >= x.length - 1 || multiTargetToggle == 0){
+		if (n >= x.length - 1 || multiTargetToggle == 0 || numTargets <= 1){
 			document.getElementById("nextBtn").disabled = true;
 		} else {
 			document.getElementById("nextBtn").disabled = false;

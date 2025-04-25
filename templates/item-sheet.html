@@ -49,11 +49,12 @@
                     {{/if}}
                     <input class="attribute-label" type="text" name="system.attributes.{{key}}.label" value="{{attr.label}}"/>
                     <select class="attribute-dtype" name="system.attributes.{{key}}.dtype">
-                        {{#select attr.dtype}}
+						{{selectOptions ../dtypes selected=attr.dtype labelAttr="label"}}
+                        {{!--{{#select attr.dtype}}
                         {{#each ../dtypes as |t|}}
                         <option value="{{t}}">{{t}}</option>
                         {{/each}}
-                        {{/select}}
+                        {{/select}}--}}
                     </select>
                     <a class="attribute-control" data-action="delete"><i class="fas fa-trash"></i></a>
                 </li>

@@ -111,11 +111,10 @@ export default class ItemSheet4e extends ItemSheet {
 			itemData.system.isRecharge = itemData.system.useType === "recharge";
 		}
 
-
 		// Weapon Properties
 		if(itemData.type === "weapon"){
 			data.weaponMetaProperties = {};
-			for (let attrib in data.config.weaponProperties) {
+			for (let attrib in data.config?.weaponProperties) {
 				data.weaponMetaProperties[attrib] = {
 						propName: data.config.weaponProperties[attrib], 
 						checked: itemData.system.properties[attrib],
@@ -123,6 +122,7 @@ export default class ItemSheet4e extends ItemSheet {
 				}
 			}
 
+			data.hasEnhance = true;
 			data.weaponBaseTypes = CONFIG.DND4E[itemData.system.weaponType];
 			data.isWeaponBaseTypeCustom = (itemData.system.weaponBaseType === "custom");
 		}
@@ -546,24 +546,38 @@ export default class ItemSheet4e extends ItemSheet {
 	 * @private
 	 */
 	_getItemProperties(item) {
+		console.log(this.item.labels);
 		const props = [];
-		const labels = this.item.labels;
-		if ( item.type === "weapon" ) {
-
-			props.push(CONFIG.DND4E.weaponTypes[item.system.weaponType])
+		const labels = this.item.labels || [];
+		if ( item?.type === "weapon" ) {
+			props.push(CONFIG.DND4E.weaponTypes[item.system.weaponType]);
+			const shortType = item.system.weaponType.substring(0,3) || "";
+			
+			if (item.system.enhance != 0){				
+				props.push(`${game.i18n.localize('DND4E.Enhancement')}\n +${item.system.enhance} ${game.i18n.localize('DND4E.RollsAtkDmg')}`);
+			}
 
 			props.push(...Object.entries(item.system.properties)
-				.filter(e => e[1] === true)
+				.filter(e => e[1] === true && e[0] != shortType)
+				//Second filter avoids double instance of "Implement"
 				.map(e => {
 					if(e[0] === "bru") return `${CONFIG.DND4E.weaponProperties[e[0]]} ${item.system.brutalNum}`;
 					return CONFIG.DND4E.weaponProperties[e[0]]
 				})
 			);
+			
 			props.push(...Object.entries(item.system.damageType)
-				.filter(e => e[1] === true)
+				.filter(e => e[1] === true && e[0] != "physical")
 				.map(e => CONFIG.DND4E.damageTypes[e[0]])
 			);
-
+			
+			if(item.system?.implementGroup){
+				props.push(...Object.entries(item.system?.implementGroup)
+					.filter(e => e[1] === true)
+					.map(e => CONFIG.DND4E.implement[e[0]])
+				);
+			}
+			
 			props.push(...Object.entries(item.system.weaponGroup)
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4E.weaponGroup[e[0]])
@@ -571,6 +585,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 			if(item.system.isRanged)
 				props.push(`${game.i18n.localize("DND4E.Range")}: ${item.system.range.value} / ${item.system.range.long}`);
+
 		}
 
 		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility","item"].includes(item.system.type)) {

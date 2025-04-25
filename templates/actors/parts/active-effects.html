@@ -1,6 +1,6 @@
 {{!-- Modifiers --}}
-{{#if system.modifiers}}
 <div class="attribute-modifiers">
+{{#if system.modifiers}}
 	<h4 class="attribute-name box-title">{{localize 'DND4E.ModifiersGlobal'}}</h4>
 
 	<div class="global-mods">
@@ -44,8 +44,11 @@
 			</div>
 		</ul>
 	</div>
-</div>
 {{/if}}
+
+	<div name="con-bon-config" class="con-bon-config" href="#" data-tooltip="Configure common conditional modifiers for this character">Conditional Modifiers <i class="fas fa-edit"></i></div>
+	
+</div>
 
 <div class="active-effects">
 	<h4 class="attribute-name box-title">{{localize 'DND4E.Effects'}}</h4>
@@ -119,7 +122,7 @@
 			<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
 			<span class="res-armour">{{localize 'DND4E.Armour'}}: {{res.armour}} </span>
 			<a class="resistances-bonus" data-target="system.resistances"
-				data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.DamRes'}}">{{localize 'DND4E.Bonus'}}:
+				data-tooltip="{{localize 'DND4E.DamResVulnBonus' type=res.label}}">{{localize 'DND4E.Bonus'}}:
 				{{res.resBonusValue}}</a>
 			<span class="res-immune">{{localize 'DND4E.Immunity'}}</span>
 			<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}}

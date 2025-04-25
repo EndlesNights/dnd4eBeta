@@ -913,7 +913,7 @@ textarea{
 	margin:4px 8px 2px;
 	font-size:18px;
 	border-bottom:var(--border-normal);
-	text-align:center;
+	text-align:left;
 }
 .dnd4e.sheet.actor .scrollbar{
 	height:100%;
@@ -1275,8 +1275,6 @@ font-size:12px;
 	border-radius:4px;
 	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
 	width:100%;
-	max-height:76px;
-	float:left;
 	text-align:center;
 	line-height:22px;
 }
@@ -2495,12 +2493,67 @@ font-size:12px;
 .status-effect-title.active{
 	visibility:visible;
 }
+/* Roll Dialogue */
+.roll-dialogue h2{
+	font-size:1.2em;
+	font-weight:700;
+	text-decoration:none;
+	margin-top:0.4em;
+	margin-bottom:unset;
+	border-bottom:var(--border-faint);
+}
+.roll-dialogue .roll-times{
+    align-items:center;
+	flex-wrap:nowrap;
+}
+.roll-dialogue .roll-times .label{
+	flex:100%;
+	line-height:1;
+}
+.roll-dialogue .roll-times .buttons{
+	justify-content:flex-end;
+    align-items:center;
+	flex-wrap:nowrap;
+	flex:unset;
+	width:fit-content;
+}
+.roll-dialogue .roll-times .buttons :is(.button,input){
+	flex:2.5em 0 0;
+}
+.roll-dialogue .roll-times .buttons input{
+	height:2.2em;
+}
 .multitarget-tab{
 	display:none;
 }
 .multitarget-np-flex{
 	display:flex;
 	justify-content:space-between;
+	align-items:stretch;
+}
+.multitarget-np-flex:not(.has-target,.has-multi){
+	display:none;
+}
+.multitarget-np-flex.has-target:not(.has-multi) button{
+	display:none;
+}
+.roll-dialogue .multitarget-np-flex .target-label{
+	flex:100% 10 10;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	border:2px groove rgba(0, 0, 0, 0.4);
+}
+.roll-dialogue .multitarget-np-flex .target-label>h3{
+	font-size:1em;
+	text-align:center;
+	font-weight:700;
+	border-bottom:unset;
+	margin-top:0.25em;
+	margin-bottom:0.25em;
+}
+.roll-dialogue .multitarget-np-flex button[id="multibonus-toggle"]{
+	width:fit-content;
 }
 .custom-skill-config .custom-skill-control{
 	margin:0 5px;
@@ -2626,6 +2679,30 @@ input[type="text"].dice-count{
 .roll-dialogue .column input[type="checkbox"]{
 	position:relative;
 	top:5px;
+}
+.dnd4e.con-bon-config h1.dialogue-title{
+	font-size:1.2em;
+    font-weight:700;
+    text-decoration:none;
+    margin-top:0.4em;
+    margin-bottom:unset;
+    border-bottom:var(--border-faint);
+}
+.dnd4e.con-bon-config .condition-row{
+	padding:2px 0.25em;
+	gap:1em;
+	justify-content:space-between;
+}
+.dnd4e.con-bon-config .condition-row .condition-name{
+	font-weight:600;
+	flex:40% 0 10;
+}
+.dnd4e.con-bon-config .condition-row .condition-mod-value{
+	flex:2.5em 0 10;
+	text-align:right;
+}
+.dnd4e.con-bon-config .condition-row .condition-mod-bonus{
+	flex:5em 0 10;
 }
 
 /*  Multiselect styling */

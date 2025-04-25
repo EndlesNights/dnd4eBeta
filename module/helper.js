@@ -337,10 +337,16 @@ export class Helper {
 					suitableKeywords.push("basic");
 					if(suitableKeywords.includes("melee")) suitableKeywords.push("mBasic");
 					if(suitableKeywords.includes("ranged")) suitableKeywords.push("rBasic");
-				}
+				};
+				
+				//console.debug(rollData);
+				
+				if(powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
+				if(powerInnerData.attack?.isOpp || rollData?.isCharge) suitableKeywords.push("opp");
 
 				if (debug) {
-					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group, properties and damage type the following effect keys are suitable`);
+					console.debug(rollData);
+					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group and properties the following effect keys are suitable`);
 					console.log(suitableKeywords.sort());
 					console.log(`${debug} ${suitableKeywords.join(", ")}`);
 				}
@@ -1113,6 +1119,7 @@ export class Helper {
 		if(actorData){
 			powerDetail = this.commonReplace(powerDetail, actorData);
 		}
+		
 		return powerDetail;
 	}
 
@@ -1552,12 +1559,16 @@ export async function handleAutoDoTs(data) {
 /*																			*/
 Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
 	try{
-		if(typeof meal != "string") return lunchbox.includes(lunch);
+		if(typeof meal != "string") {
+			if(lunchbox instanceof Set) return lunchbox.has(lunch);
+			return lunchbox.includes(lunch);
+		}
 		const lunchLocation = lunchbox.findIndex((x) => x[meal] == lunch);
 		if(lunchLocation > 0) return true;
 		return false;
 	} catch(err) {
-		return "Contains helper spat up. Did you give it the right parameter types?";
+		console.error("Contains helper spat up. Did you give it the right parameter types?");
+		return false;
 	}
 });
 

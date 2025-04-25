@@ -1777,6 +1777,18 @@ DND4E.statusEffect = [
 	},
 	//row 8
 	{
+		id: "running",
+		label: "EFFECT.statusRunning",
+		img: "systems/dnd4e/icons/statusEffects/running.svg",
+		description: "EFFECTDESC.running"
+	},
+	{
+		id: "squeezing",
+		label: "EFFECT.statusSqueezing",
+		img: "systems/dnd4e/icons/statusEffects/squeezing.svg",
+		description: "EFFECTDESC.squeezing"
+	},
+	{
 		id: "torch",
 		label: "EFFECT.statusTorch",
 		img: "systems/dnd4e/icons/statusEffects/torch.svg",
