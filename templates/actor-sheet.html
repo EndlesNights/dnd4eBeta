@@ -120,7 +120,7 @@
 					<footer class="attribute-footer attribute-footer--surge flexrow">
 						<span>{{localize 'DND4E.MilestonePlural'}}</span>
 						<input class="milestones" name="system.magicItemUse.milestone" value="{{system.magicItemUse.milestone}}" data-tooltip="{{localize 'DND4E.MilestonePlural'}}"  placeholder="0" data-dtype="Number" onClick="this.select();">
-						<a class="rest action-point-extra" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize "DND4E.ActionPointRiders"}}</a>
+						<a class="rest action-point-extra" data-tooltip="{{localize 'DND4E.ActionPointRiders'}}">{{localize "DND4E.ActionPointRiders"}}</a>
 					</footer>
 					<footer class="attribute-footer attribute-footer--surge flexrow">
 						<a class="rest action-point" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize "DND4E.ActionPointUse"}}</a>
@@ -205,7 +205,7 @@
 				</section>
 				<section class="section section--movement flexcol">
 					<div data-tooltip="{{moveTitle}}">
-						<strong class="movement-dialog rollable">{{numberFormat system.movement.walk.value}} sq.</strong>
+						<strong class="movement-dialog rollable">{{numberFormat system.movement.walk.value}} {{ localize "DND4E.MovementUnit" }}</strong>
 						<label class="movement-dialog rollable">{{localize 'DND4E.Speed'}}</label>
 					</div>
 					<div>

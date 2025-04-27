@@ -5,7 +5,7 @@
 			<a class="currency-convert" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
 		</h3>
 		{{#each system.currency as |v k|}}
-		<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
+		<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{localize (concat (lookup ../config.currencies k) "Short")}}</label>
 		<input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.currencies k )}}"/>
 		{{/each}}
 	</ol>
@@ -13,7 +13,7 @@
 	<ol class="currency flexrow">
 		<h3 data-tooltip="{{localize 'DND4E.RitualComp'}}">{{localize 'DND4E.RitualComp'}}</h3>
 		{{#each system.ritualcomp as |v k|}}
-		<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
+		<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{localize (concat (lookup ../config.ritualcomponents k) "Short")}}</label>
 		<input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}"/>
 		{{/each}}
 	</ol>
@@ -92,7 +92,7 @@
 				<div class="item-detail item-weight">
 					{{#if item.totalWeight}}
 						<div class="item-detail">
-							{{ item.totalWeightLable }} {{localize "DND4E.AbbreviationLbs"}}
+							{{ item.totalWeightLabel }} {{localize "DND4E.AbbreviationLbs"}}
 						</div>
 					{{/if}}
 				</div>
