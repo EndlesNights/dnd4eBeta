@@ -1,6 +1,8 @@
+{{!-- NOTE: Despite being in actor parts, this template is used in item sheets as well! When updating, remember to add handling for separate actor/item behaviours if needed. --}}
+
 {{!-- Modifiers --}}
-<div class="attribute-modifiers">
 {{#if system.modifiers}}
+<div class="attribute-modifiers">
 	<h4 class="attribute-name box-title">{{localize 'DND4E.ModifiersGlobal'}}</h4>
 
 	<div class="global-mods">
@@ -44,11 +46,11 @@
 			</div>
 		</ul>
 	</div>
-{{/if}}
-
+	
 	<div name="con-bon-config" class="con-bon-config" href="#" data-tooltip="Configure common conditional modifiers for this character">Conditional Modifiers <i class="fas fa-edit"></i></div>
 	
 </div>
+{{/if}}
 
 <div class="active-effects">
 	<h4 class="attribute-name box-title">{{localize 'DND4E.Effects'}}</h4>
