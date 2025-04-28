@@ -546,7 +546,7 @@ export default class ItemSheet4e extends ItemSheet {
 	 * @private
 	 */
 	_getItemProperties(item) {
-		console.log(this.item.labels);
+		console.debug(this.item.labels);
 		const props = [];
 		const labels = this.item.labels || [];
 		if ( item?.type === "weapon" ) {
@@ -620,13 +620,23 @@ export default class ItemSheet4e extends ItemSheet {
 			props.push(labels.featType);
 		}
 
+		else if ( item.type === "ritual" ) {
+			if ( item.system?.category ) {
+				try {
+					props.push(`${game.i18n.localize('DND4E.Category')}: ${CONFIG.DND4E.ritualTypes[item.system.category].label}`);
+				} catch(e) {
+					console.error(`Failed to get the category name for this ritual, probably due to an un-migrated item. Manually setting the category should fix this.`);
+				}
+			}
+		}
+		
 		// Action type
-		if ( item.system.actionType ) {
+		if ( item.system?.actionType ) {
 			props.push(CONFIG.DND4E.itemActionTypes[item.system.actionType]);
 		}
 
 		// Action usage
-		if ( (item.type !== "weapon") && item.system.activation && !foundry.utils.isEmpty(item.system.activation) ) {
+		if ( (item.type !== "weapon") && item.system?.activation && !foundry.utils.isEmpty(item.system.activation) ) {
 			props.push(
 				labels.attribute,
 				labels.activation,
