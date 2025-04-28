@@ -143,6 +143,7 @@ DND4E.timePeriods = {
 	"perm": "DND4E.TimePerm",
 	"spec": "DND4E.Special"
 };
+preLocalize("timePeriods");
 
 /* -------------------------------------------- */
 
@@ -755,10 +756,9 @@ DND4E.profArmor = {
 };
 
 DND4E.cloth = {
-	
+	cloth: "DND4E.ArmourProfCloth",
 };
 DND4E.light = {
-	cloth: "DND4E.ArmourProfCloth",
 	leather: "DND4E.ArmourProfLeather",
 	hide: "DND4E.ArmourProfHide",
 };
@@ -975,11 +975,24 @@ DND4E.healingTypes = {
 /* -------------------------------------------- */
 
 DND4E.featureSortTypes = {
-	"name": {lable: "DND4E.ItemName"},
-	"level": {lable: "DND4E.Level"},
-	"none": {lable: "DND4E.None"},
+	"name": {label: "DND4E.Name"},
+	"level": {label: "DND4E.Level"},
+	"none": {label: "DND4E.None"}
 };
 preLocalize("featureSortTypes", { keys: ["label"] });
+
+DND4E.featureType = {
+	"class": {label: "TYPES.Item.classFeats"},
+	"path": {label: "TYPES.Item.pathFeats"},
+	"destiny": {label: "TYPES.Item.destinyFeats"},
+	"feat": {label: "TYPES.Item.feat"},
+	"race": {label: "TYPES.Item.raceFeats"},
+	"theme": {label: "TYPES.Item.themeFeats"},
+	"background": {label: "TYPES.Item.bgFeats"},
+	"trait": {label: "TYPES.Item.trait"},
+	"other": {label: "DND4E.Other"}
+};
+preLocalize("featureType", { keys: ["label"] });
 
 
 /* -------------------------------------------- */
@@ -1099,15 +1112,77 @@ DND4E.inventoryTypes = {
 	loot: { label: "DND4E.ItemTypeLootPl" }
 };
 
-DND4E.featureTypes = {
+/*DND4E.featureTypes = {
 	raceFeats: { label: "DND4E.FeatRace" },
 	classFeats: { label: "DND4E.FeatClass" },
 	pathFeats: { label: "DND4E.FeatPath" },
 	destinyFeats: { label: "DND4E.FeatDestiny" },
 	feat: { label: "DND4E.FeatLevel" },
-	ritual: { label: "DND4E.FeatRitual" }
-};
+	ritual: { label: "DND4E.FeatRitual" },
+	feature: { label: "DND4E.Feature" }
+};*/
 
+DND4E.featureTypes = {
+	"race": { 
+		label: "DND4E.FeatRace",
+		groupLabel: "DND4E.Group.Feat.Race"
+	},
+	"class": {
+		label: "DND4E.FeatClass",
+		groupLabel: "DND4E.Group.Feat.Class"
+	},
+	"feat": {
+		label: "DND4E.Feat",
+		groupLabel: "DND4E.Feats"
+	},
+	"path": {
+		label: "DND4E.FeatPath",
+		groupLabel: "DND4E.Group.Feat.Path"
+	},
+	"destiny": {
+		label: "DND4E.FeatDestiny",
+		groupLabel: "DND4E.Group.Feat.Destiny"
+	},
+	"theme": {
+		label: "DND4E.FeatTheme",
+		groupLabel: "DND4E.Group.Feat.Theme"
+	},
+	"background": {
+		label: "DND4E.FeatBG",
+		groupLabel: "DND4E.Group.Feat.BG"
+	},
+	"trait": {
+		label: "DND4E.FeatTrait",
+		groupLabel: "DND4E.Group.Feat.Trait"
+	},
+	"other": {
+		label: "DND4E.Other",
+		groupLabel: "DND4E.Other"
+	}
+};
+preLocalize("featureTypes", { keys: ["label","groupLabel"] });
+
+DND4E.ritualTypes = {
+	"binding": { label: "DND4E.Group.Ritual.Binding" },
+	"creation": { label: "DND4E.Group.Ritual.Creation" },
+	"deception": { label: "DND4E.Group.Ritual.Deception" },
+	"divination": { label: "DND4E.Group.Ritual.Divination" },
+	"exploration": { label: "DND4E.Group.Ritual.Exploration" },
+	"restoration": { label: "DND4E.Group.Ritual.Restoration" },
+	"scrying": { label: "DND4E.Group.Ritual.Scrying" },
+	"travel": { label: "DND4E.Group.Ritual.Travel" },
+	"warding": { label: "DND4E.Group.Ritual.Warding" },
+	"other": { label: "DND4E.Other" }
+};
+preLocalize("ritualTypes", { keys: ["label"] });
+
+DND4E.ritualSortTypes = {
+	"name": {label: "DND4E.Name"},
+	"level": {label: "DND4E.Level"},
+	"attribute":  {label: "DND4E.Skill"},
+	"none": {label: "DND4E.None"}
+};
+preLocalize("ritualSortTypes", { keys: ["label"] });
 
 DND4E.powerDiceTypes = {
 	"weapon": "Base Weapon Damage",
@@ -1231,6 +1306,10 @@ DND4E.effectTypes = {
 	"zone": "DND4E.Zone",
 };
 
+/**
+ * Save types (5e/Vestigial?)
+ * @type {Object}
+ */
 DND4E.saves = {
 	"Arcane": "DND4E.Arcane",
 	"Divine": "DND4E.Divine",
@@ -1356,8 +1435,7 @@ DND4E.weaponTypes = {
 	"naturalM": "DND4E.WeaponNaturalM",
 	"naturalR": "DND4E.WeaponNaturalR",
 	"improv": "DND4E.WeaponImprov",
-	"other": "DND4E.EquipmentTypeOther",
-
+	"other": "DND4E.EquipmentTypeOther"
 };
 
 /* -------------------------------------------- */
@@ -1842,7 +1920,7 @@ DND4E.CHARACTER_EXP_LEVELS =	[
 	175000, 210000, 255000, 310000, 375000, 450000, 550000, 675000, 825000, 1000000 
 	];
 
-// Configure Optional Character Flags
+// Configure Optional Character Flags (vestigial/5e?)
 DND4E.characterFlags = {
 	"powerfulBuild": {
 		name: "DND4E.FlagsPowerfulBuild",
