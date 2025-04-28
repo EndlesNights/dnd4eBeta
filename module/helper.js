@@ -346,9 +346,9 @@ export class Helper {
 
 				if (debug) {
 					console.debug(rollData);
-					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group and properties the following effect keys are suitable`);
-					console.log(suitableKeywords.sort());
-					console.log(`${debug} ${suitableKeywords.join(", ")}`);
+					console.debug(`${debug} based on power source, effect type, damage type and (if weapon) weapon group and properties the following effect keys are suitable`);
+					console.debug(suitableKeywords.sort());
+					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
 				// filter out to just the relevant effects by keyword
@@ -1364,7 +1364,7 @@ export class Helper {
 		//First check for an assigned character
 		game.users.forEach(function (maybePlayer) {
 			if(maybePlayer.character?.id === doc.id){
-				console.log(`Player found: ${maybePlayer.id}`);
+				console.debug(`Player found: ${maybePlayer.id}`);
 				found = (idOnly ? maybePlayer.id : maybePlayer );
 				return;
 			}
@@ -1372,20 +1372,19 @@ export class Helper {
 		if(found) return found;
 		
 		//If no assigned character, check for specific player owner
-		const owners = Object.entries(doc.ownership);
-		owners.forEach(function (owner){
-			if(owner[0] !== 'default') {
-				let ownerData = game.users?.get(owner[0]);
-				if(!ownerData?.isGM && ownerData.active && owner.level === 3){
-					console.log(`Owner: ${owner[0]}`);
-					owner = ( idOnly ? owner[0] : ownerData );
-					return;
+		const owners = Object.entries(doc.ownership);		
+		for (const [owner, level] of Object.entries(owners)){
+			if (owner !== 'default'){
+				const ownerData = game.users?.get(owner);
+				if(!ownerData?.isGM && ownerData?.active && level === 3){
+					console.debug(`Owner: ${owner}`);
+					found = (idOnly ? owner : ownerData);
 				}
 			}
-		});
+		}
 		if(found) return found;
 
-		// IIf we have no valid player, fall back to first GM
+		// If we have no valid player, fall back to first GM
 		const firstGM = game.users.find(u => u.isGM && u.active);
 		return ( idOnly ? firstGM.id : firstGM );
 	}
