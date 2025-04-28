@@ -1,0 +1,98 @@
+<ol class="item-list inventory-list">
+	<header class="ritual-filters flexrow">
+		<div class="sort-rituals">
+			<input type="hidden" name="flags.dnd4e.sheetDisplay.rituals.sortBy.value">
+			<label for="ritual-sort">{{localize 'DND4EUI.SortBy'}}</label><br />
+			<select name="system.ritualSortTypes">
+				{{selectOptions config.ritualSortTypes selected=system.ritualSortTypes labelAttr="label"}}
+			</select>
+		</div>
+
+		<div class="filter-search-rituals">
+			<label for="ritual-filter-search">{{localize "DND4E.Filter"}}</label>	
+			<br>
+			<input type="text" name="ritual-filter-search" placeholder="{{localize 'DND4EUI.SearchFor'}} {{localize 'DND4E.Ritual'}}..." id="filterInput-ritual" onkeyup="filterRituals()"/>
+		</div>
+	</header>
+
+	{{#each sections as |section sid|}}
+		<li class="items-header flexrow">
+			<h3 class="item-name flexrow">{{localize section.label}}</h3>
+	
+			{{#if section.columns}}
+				{{#each section.columns}}
+					<div class="item-detail {{css}}">{{label}}</div>
+				{{/each}}
+			{{/if}}
+	
+			{{#if ../owner}}
+			<div class="item-controls flexrow">
+				<a class="item-control item-create" data-tooltip="{{localize 'DND4E.RitualAdd'}}" data-type="ritual" {{#each section.dataset as |v k|}}data-subtype="{{v}}"{{/each}}>
+					<i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
+				</a>
+			</div>
+			{{/if}}
+		</li>
+	
+		<ol class="item-list ritual-list">
+		{{#each section.items as |item iid|}}
+			<li class="item flexrow {{#if isDepleted}}depleted{{/if}}" data-item-id="{{item._id}}">
+				<div class="item-name flexrow rollable">
+					<div class="item-image"><img src="{{item.img}}" width="30" height="30"/></div>
+					<h4>{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
+				</div>
+	
+				{{#if section.columns}}
+					{{#each section.columns}}
+						<div class="item-detail {{css}}">
+							{{#with (foundry.utils.getProperty item property)}}
+								{{#if ../editable}}
+									<input type="text" value="{{this}}" placeholder="&mdash;"
+										   data-dtype="{{../editable}}">
+								{{else}}
+									{{this}}
+								{{/if}}
+							{{/with}}
+						</div>
+					{{/each}}
+				{{/if}}
+	
+				{{#if ../../owner}}
+				<div class="item-controls flexrow">
+					{{#if section.crewable}}
+					<a class="item-control item-toggle {{item.toggleClass}}"
+					   data-tooltip="{{item.toggleTitle}}">
+						<i class="fas fa-sun"></i>
+					</a>
+					{{/if}}
+					<a class="item-control item-edit" data-tooltip="{{localize 'DND4E.ItemEdit'}}"><i class="fas fa-edit"></i></a>
+					<a class="item-control item-delete" data-tooltip="{{localize 'DND4E.ItemDelete'}}"><i class="fas fa-trash"></i></a>
+				</div>
+				{{/if}}
+			</li>
+		{{/each}}
+		</ol>
+	{{/each}}
+</ol>
+
+<script>
+	function filterRituals() {
+		let input, filter, ul, li, a, i, txtValue;
+		input = document.getElementById("filterInput-ritual");
+		filter = input.value.toUpperCase();
+		list = document.getElementsByClassName("ritual-list");
+
+		for(i = 0; i < list.length; i++) {
+			li = list[i].getElementsByTagName("li");
+			for (ii = 0; ii < li.length; ii++) {
+				a = li[ii].getElementsByTagName("h4")[0];
+				txtValue = a.textContent || a.innerText;
+				if (txtValue.toUpperCase().indexOf(filter) > -1) {
+					li[ii].style.display = "";
+				} else {
+					li[ii].style.display = "none";
+				}
+			}
+		}
+	}
+</script>
