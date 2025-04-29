@@ -981,18 +981,45 @@ DND4E.featureSortTypes = {
 };
 preLocalize("featureSortTypes", { keys: ["label"] });
 
-DND4E.featureType = {
-	"class": {label: "TYPES.Item.classFeats"},
-	"path": {label: "TYPES.Item.pathFeats"},
-	"destiny": {label: "TYPES.Item.destinyFeats"},
-	"feat": {label: "TYPES.Item.feat"},
-	"race": {label: "TYPES.Item.raceFeats"},
-	"theme": {label: "TYPES.Item.themeFeats"},
-	"background": {label: "TYPES.Item.bgFeats"},
-	"trait": {label: "TYPES.Item.trait"},
-	"other": {label: "DND4E.Other"}
+DND4E.featureTypes = {
+	"race": { 
+		label: "DND4E.FeatRace",
+		groupLabel: "DND4E.Group.Feat.Race"
+	},
+	"class": {
+		label: "DND4E.FeatClass",
+		groupLabel: "DND4E.Group.Feat.Class"
+	},
+	"feat": {
+		label: "DND4E.Feat",
+		groupLabel: "DND4E.Feats"
+	},
+	"path": {
+		label: "DND4E.FeatPath",
+		groupLabel: "DND4E.Group.Feat.Path"
+	},
+	"destiny": {
+		label: "DND4E.FeatDestiny",
+		groupLabel: "DND4E.Group.Feat.Destiny"
+	},
+	"theme": {
+		label: "DND4E.FeatTheme",
+		groupLabel: "DND4E.Group.Feat.Theme"
+	},
+	"background": {
+		label: "DND4E.FeatBG",
+		groupLabel: "DND4E.Group.Feat.BG"
+	},
+	"trait": {
+		label: "DND4E.FeatTrait",
+		groupLabel: "DND4E.Group.Feat.Trait"
+	},
+	"other": {
+		label: "DND4E.Other",
+		groupLabel: "DND4E.Other"
+	}
 };
-preLocalize("featureType", { keys: ["label"] });
+preLocalize("featureTypes", { keys: ["label","groupLabel"] });
 
 
 /* -------------------------------------------- */
@@ -1121,46 +1148,6 @@ DND4E.inventoryTypes = {
 	ritual: { label: "DND4E.FeatRitual" },
 	feature: { label: "DND4E.Feature" }
 };*/
-
-DND4E.featureTypes = {
-	"race": { 
-		label: "DND4E.FeatRace",
-		groupLabel: "DND4E.Group.Feat.Race"
-	},
-	"class": {
-		label: "DND4E.FeatClass",
-		groupLabel: "DND4E.Group.Feat.Class"
-	},
-	"feat": {
-		label: "DND4E.Feat",
-		groupLabel: "DND4E.Feats"
-	},
-	"path": {
-		label: "DND4E.FeatPath",
-		groupLabel: "DND4E.Group.Feat.Path"
-	},
-	"destiny": {
-		label: "DND4E.FeatDestiny",
-		groupLabel: "DND4E.Group.Feat.Destiny"
-	},
-	"theme": {
-		label: "DND4E.FeatTheme",
-		groupLabel: "DND4E.Group.Feat.Theme"
-	},
-	"background": {
-		label: "DND4E.FeatBG",
-		groupLabel: "DND4E.Group.Feat.BG"
-	},
-	"trait": {
-		label: "DND4E.FeatTrait",
-		groupLabel: "DND4E.Group.Feat.Trait"
-	},
-	"other": {
-		label: "DND4E.Other",
-		groupLabel: "DND4E.Other"
-	}
-};
-preLocalize("featureTypes", { keys: ["label","groupLabel"] });
 
 DND4E.ritualTypes = {
 	"binding": { label: "DND4E.Group.Ritual.Binding" },
