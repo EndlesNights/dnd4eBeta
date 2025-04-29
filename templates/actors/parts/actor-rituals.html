@@ -1,3 +1,11 @@
+<ol class="currency flexrow">
+	<h3 data-tooltip="{{localize 'DND4E.RitualComp'}}">{{localize 'DND4E.RitualComp'}}</h3>
+	{{#each system.ritualcomp as |v k|}}
+	<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
+	<input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}"/>
+	{{/each}}
+</ol>
+
 <ol class="item-list inventory-list">
 	<header class="ritual-filters flexrow">
 		<div class="sort-rituals">
@@ -59,12 +67,6 @@
 	
 				{{#if ../../owner}}
 				<div class="item-controls flexrow">
-					{{#if section.crewable}}
-					<a class="item-control item-toggle {{item.toggleClass}}"
-					   data-tooltip="{{item.toggleTitle}}">
-						<i class="fas fa-sun"></i>
-					</a>
-					{{/if}}
 					<a class="item-control item-edit" data-tooltip="{{localize 'DND4E.ItemEdit'}}"><i class="fas fa-edit"></i></a>
 					<a class="item-control item-delete" data-tooltip="{{localize 'DND4E.ItemDelete'}}"><i class="fas fa-trash"></i></a>
 				</div>
