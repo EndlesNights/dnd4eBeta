@@ -145,7 +145,7 @@
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
 	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.5.14.zip",
 	"flags": {
-		"needsMigrationVersion": "0.5.11",
+		"needsMigrationVersion": "0.5.14",
 		"compatibleMigrationVersion": "0.2.50",
 		"hotReload": {
 			"extensions": ["css", "html"],
