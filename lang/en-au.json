@@ -1560,6 +1560,8 @@
 "DND4EUI.AddNew": "Add New",
 "DND4EUI.All": "All",
 "DND4EUI.AttributeKey": "Attribute Key",
+"DND4EUI.ConditionalBonuses": "Conditional Modifiers",
+"DND4EUI.ConditionalBonusesTip": "Configure common conditional modifiers for this character",
 "DND4EUI.ConditionLabFlags": "CL Flags",
 "DND4EUI.CountsAs": "Counts as",
 "DND4EUI.CountsAsAttackTip": "This attack always has the checked qualities. For attacks that are only sometimes rolled as charge or opportunity attacks, see 'Display' at the bottom of the sheet.",
