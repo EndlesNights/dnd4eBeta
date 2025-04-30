@@ -102,15 +102,16 @@ DND4E.alignments = {
 	'ne': "DND4E.AlignmentNE",
 	'ce': "DND4E.AlignmentCE"
 };
-/**
- * 5e Skill proficiencies (Vestigial/Unused?)
- * @type {Object}
- */
+
 DND4E.weaponProficiencies = {
 	"sim": "DND4E.WeaponSimpleProficiency",
 	"mar": "DND4E.WeaponMartialProficiency"
 };
 
+/**
+ * 5e Skill proficiencies (Vestigial/Unused?)
+ * @type {Object}
+ */
 DND4E.toolProficiencies = {
 	"art": "DND4E.ToolArtisans",
 	"disg": "DND4E.ToolDisguiseKit",
@@ -123,7 +124,6 @@ DND4E.toolProficiencies = {
 	"thief": "DND4E.ToolThieves",
 	"vehicle": "DND4E.ToolVehicle"
 };
-
 
 /* -------------------------------------------- */
 
@@ -983,36 +983,36 @@ preLocalize("featureSortTypes", { keys: ["label"] });
 
 DND4E.featureTypes = {
 	"race": { 
-		label: "DND4E.FeatRace",
-		groupLabel: "DND4E.Group.Feat.Race"
+		label: "DND4E.Feature.Race",
+		groupLabel: "DND4E.Group.Feature.Race"
 	},
 	"class": {
-		label: "DND4E.FeatClass",
-		groupLabel: "DND4E.Group.Feat.Class"
+		label: "DND4E.Feature.Class",
+		groupLabel: "DND4E.Group.Feature.Class"
 	},
 	"feat": {
-		label: "DND4E.Feat",
-		groupLabel: "DND4E.Feats"
+		label: "DND4E.Feature.Feat",
+		groupLabel: "DND4E.Group.Feature.Feat"
 	},
 	"path": {
-		label: "DND4E.FeatPath",
-		groupLabel: "DND4E.Group.Feat.Path"
+		label: "DND4E.Feature.Path",
+		groupLabel: "DND4E.Group.Feature.Path"
 	},
 	"destiny": {
-		label: "DND4E.FeatDestiny",
-		groupLabel: "DND4E.Group.Feat.Destiny"
+		label: "DND4E.Feature.Destiny",
+		groupLabel: "DND4E.Group.Feature.Destiny"
 	},
 	"theme": {
-		label: "DND4E.FeatTheme",
-		groupLabel: "DND4E.Group.Feat.Theme"
+		label: "DND4E.Feature.Theme",
+		groupLabel: "DND4E.Group.Feature.Theme"
 	},
 	"background": {
-		label: "DND4E.FeatBG",
-		groupLabel: "DND4E.Group.Feat.BG"
+		label: "DND4E.Feature.BG",
+		groupLabel: "DND4E.Group.Feature.BG"
 	},
 	"trait": {
-		label: "DND4E.FeatTrait",
-		groupLabel: "DND4E.Group.Feat.Trait"
+		label: "DND4E.Feature.Trait",
+		groupLabel: "DND4E.Group.Feature.Trait"
 	},
 	"other": {
 		label: "DND4E.Other",
@@ -1032,7 +1032,7 @@ DND4E.powerType = {
 	"epic": "DND4E.Epic",
 	"theme": "DND4E.Theme",
 	"item": "DND4E.PowerItem",
-	"feat": "DND4E.Feat",
+	"feat": "DND4E.PowerFeat",
 	"skill": "DND4E.Skill",
 	"utility": "DND4E.PowerUtil" //Better keep this for legacy
 };
@@ -1138,16 +1138,6 @@ DND4E.inventoryTypes = {
 	backpack: { label: "DND4E.ItemTypeContainerPl" },
 	loot: { label: "DND4E.ItemTypeLootPl" }
 };
-
-/*DND4E.featureTypes = {
-	raceFeats: { label: "DND4E.FeatRace" },
-	classFeats: { label: "DND4E.FeatClass" },
-	pathFeats: { label: "DND4E.FeatPath" },
-	destinyFeats: { label: "DND4E.FeatDestiny" },
-	feat: { label: "DND4E.FeatLevel" },
-	ritual: { label: "DND4E.FeatRitual" },
-	feature: { label: "DND4E.Feature" }
-};*/
 
 DND4E.ritualTypes = {
 	"binding": { label: "DND4E.Group.Ritual.Binding" },
