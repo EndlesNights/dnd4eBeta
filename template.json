@@ -1421,9 +1421,11 @@
 		"feature": {
 			"templates": ["itemDescription", "activatedEffect", "itemMacro"],
 			"featureType": "other",
-			"featureSource": "",
+			"level": "",
 			"requirements": "",
-			"level": ""
+			"featureSource": "",
+			"featureGroup": "",
+			"aura": ""
 		}
 	}
 }
