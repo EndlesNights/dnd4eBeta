@@ -904,9 +904,11 @@ function _migrateFeature(itemData, updateData){
 			break;
 	}
 	
+	if(!itemData.system?.level) updateData["system.level"] = '';
 	if(!itemData.system?.requirements) updateData["system.requirements"] = '';
-	if(!itemData.system?.level) updateData["system.level"] = '';	
 	updateData["system.featureSource"] = '';
+	updateData["system.featureGroup"] = '';
+	updateData["system.auraSize"] = '';
 	
 	return updateData;
 }
