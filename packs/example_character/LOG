@@ -1,5 +1,3 @@
-2025/04/28-15:19:14.971 3cfc Recovering log #818
-2025/04/28-15:19:14.972 3cfc Level-0 table #820: started
-2025/04/28-15:19:15.016 3cfc Level-0 table #820: 64546 bytes OK
-2025/04/28-15:19:15.123 3cfc Delete type=0 #818
-2025/04/28-15:19:15.124 3cfc Delete type=3 #817
+2025/05/01-12:45:37.063 24d4 Recovering log #845
+2025/05/01-12:45:37.144 24d4 Delete type=0 #845
+2025/05/01-12:45:37.144 24d4 Delete type=3 #843
