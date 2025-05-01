@@ -1266,7 +1266,7 @@
 			}
 		},
 		"equipment": {
-			"templates": ["itemDescription", "physicalItem", "activatedEffect", "mountable", "itemMacro"],
+			"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
 			"level": "",
 			"armour": {
 				"type": "armour",
