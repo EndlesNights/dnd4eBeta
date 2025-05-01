@@ -39,7 +39,8 @@ export default class ActorSheet4e extends ActorSheet {
 		this._filters = {
 			inventory: new Set(),
 			powers: new Set(),
-			features: new Set()
+			features: new Set(),
+			rituals: new Set()
 		};
 	}
 
@@ -264,9 +265,10 @@ export default class ActorSheet4e extends ActorSheet {
 		const inventory = this.#configItemToDisplayConfig(DND4E.inventoryTypes);
 		const features = this.#configItemToDisplayConfig(DND4E.featureTypes);
 		const powers = this._generatePowerGroups();
+		const rituals = this.#configItemToDisplayConfig(DND4E.ritualTypes);
 		
 		// Partition items by category
-		let [items, pow, feats] = data.items.reduce((arr, item) => {
+		let [items, pow, feats, rits] = data.items.reduce((arr, item) => {
 			// Item details
 			item.img = item.img || DEFAULT_TOKEN;
 			item.isStack = Number.isNumeric(item.system.quantity) && (item.system.quantity !== 1);
@@ -285,15 +287,17 @@ export default class ActorSheet4e extends ActorSheet {
 			// Classify items into types
 			if ( Object.keys(inventory).includes(item.type ) ) arr[0].push(item);
 			// else if ( Object.keys(powers).includes(item.type ) ) arr[1].push(item);
-			else if ( item.type === "power") arr[1].push(item);
-			else if ( Object.keys(features).includes(item.type ) ) arr[2].push(item);
+			else if ( item.type === "feature" ) arr[2].push(item);
+			else if ( item.type === "ritual" ) arr[3].push(item);
+			else if ( item.type === "power" ) arr[1].push(item);
 			return arr;
-		}, [[], [], [], []]);
+		}, [[], [], [], [], []]);
 
 		// Apply active item filters
 		items = this._filterItems(items, this._filters.inventory);
 		pow = this._filterItems(pow, this._filters.powers);
 		feats = this._filterItems(feats, this._filters.features);
+		rits = this._filterItems(rits, this._filters.rituals);
 
 		// Organize items
 		for ( let i of items ) {
@@ -304,16 +308,20 @@ export default class ActorSheet4e extends ActorSheet {
 		}
 
 		for ( let f of feats ) {
-			features[f.type].items.push(f);
+			features[f.system.featureType].items.push(f);
 		}
 
 		for ( let p of pow ) {
 			powers[this._groupPowers(p,powers)].items.push(p);
 		}
+		for ( let r of rits ) {
+			rituals[r.system.category].items.push(r);
+		}
 
 		data.inventory = Object.values(inventory);
 		data.powers = Object.values(powers);
 		data.features = Object.values(features);
+		data.rituals = Object.values(rituals);
 
 		for (const [key, group] of Object.entries(powers)) {
 			group.items?.forEach(item => {
@@ -325,6 +333,7 @@ export default class ActorSheet4e extends ActorSheet {
 		this._sortinventory(inventory);
 		this._sortPowers(powers);
 		this._sortFeatures(features);
+		this._sortRituals(rituals);
 
 		data.moveTitle = `<p style="text-align:left">
 ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedWalking")}
@@ -430,10 +439,10 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 	/* -------------------------------------------- */
 
-	_sortFeatures(feats) {
+	_sortFeatures(features) {
 		const sort = this.object.system.featureSortTypes;
 		if(sort === "none") {return;}
-		for (const [keyy, group] of Object.entries(feats)) {
+		for (const [keyy, group] of Object.entries(features)) {
 			group.items.sort(this._compareValues(sort));
 		}
 	}
@@ -450,6 +459,16 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			}
 		}
 	}
+	
+	_sortRituals(rituals) {
+		const sort = this.object.system.ritualSortTypes;
+		if(sort === "none") {return;}
+		for (const [keyy, group] of Object.entries(rituals)) {
+			group.items.sort(this._compareValues(sort));
+		}
+	}
+
+	/* -------------------------------------------- */
 
 	_groupPowers(power, powerGroups) {
 		if(this.object.system.powerGroupTypes === "action" || !this.object.system.powerGroupTypes) {
@@ -1076,12 +1095,18 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const header = event.currentTarget;
 		const type = header.dataset.type;
+		const subType = header.dataset?.subtype || null;
 		const itemData = {
 			name: game.i18n.format("DND4E.ItemNew", {type: type.capitalize()}),
 			type: type,
 			system: foundry.utils.duplicate(header.dataset)
 		};
-		console.log(itemData)
+		if(type === 'feature' && subType){
+			itemData.system.featureType = subType;
+		}else if(type === 'ritual' && subType){
+			itemData.system.category = subType;
+		}
+		//console.debug(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 

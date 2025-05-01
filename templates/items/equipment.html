@@ -78,12 +78,10 @@
 					</select>
 				</div>
 
-				{{#if isArmourBaseTypeCustom}}
-					<div class="form-group">
-						<label>{{ localize "DND4E.ArmourBaseCustom" }}:</label>
-						<input type="text" name="system.armourBaseTypeCustom" value="{{system.armourBaseTypeCustom}}" data-tooltip="{{ localize "DND4E.ArmourBaseCustom" }}" placeholder="{{ localize "DND4E.ArmourBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
-					</div>
-				{{/if}}
+				<div class="form-group">
+					<label>{{ localize "DND4E.ArmourBaseCustom" }}:</label>
+					<input type="text" name="system.armourBaseTypeCustom" value="{{system.armourBaseTypeCustom}}" data-tooltip="{{ localize "DND4E.ArmourBaseCustom" }}" placeholder="{{ localize "DND4E.ArmourBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+				</div>
 			{{/if}}
 
 			{{#if isShield}}

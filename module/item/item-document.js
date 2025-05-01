@@ -2575,4 +2575,24 @@ export default class Item4e extends Item {
 		return created;
 	}
 	
+	
+	/* -------------------------------------------- 
+	/*	HIDE OBSOLETE ITEMS							
+	/*  Transitional tool that removes obsolete item types 
+	/*  from the "create item" dialogue, with the goal of 
+	/*  preventing their creation from now on.  
+	/*  When the obsolete item types are removed from the
+	/*	system template, this override should be removed too.
+	/* -------------------------------------------- */
+	static createDialog(data={}, {parent=null, pack=null, types, ...options}={}) {
+		try{
+			types ??= Item.TYPES.filter(name => !["classFeats","raceFeats","feat","pathFeats","destinyFeats"].includes(name));
+		}catch(e){
+			console.error(`Failed to hide obsolete item types: ${e}`);
+		}
+		return super.createDialog(data, {parent, pack, types, ...options});
+	}
+	
 }
+
+

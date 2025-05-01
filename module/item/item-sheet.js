@@ -69,6 +69,10 @@ export default class ItemSheet4e extends ItemSheet {
 
 		// Potential consumption targets
 		data.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
+		
+		if(itemData.type === "feature"){
+			data.isAura = ( itemData.system?.auraSize >= 0 ? true : false);
+		}
 	
 		if(itemData.type === "power"){
 			data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
@@ -128,9 +132,9 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 
 		// Action Details
-		data.hasAttackRoll = this.item.hasAttack;
-		data.isHealing = itemData.system.actionType === "heal";
-		data.isFlatDC = foundry.utils.getProperty(itemData.system, "save.scaling") === "flat";
+		//data.hasAttackRoll = this.item.hasAttack;
+		//data.isHealing = itemData.system.actionType === "heal";
+		//data.isFlatDC = foundry.utils.getProperty(itemData.system, "save.scaling") === "flat";
 
 		// Vehicles
 		data.isCrewed = itemData.system.activation?.type === 'crew';
@@ -546,7 +550,7 @@ export default class ItemSheet4e extends ItemSheet {
 	 * @private
 	 */
 	_getItemProperties(item) {
-		console.log(this.item.labels);
+		console.debug(this.item.labels);
 		const props = [];
 		const labels = this.item.labels || [];
 		if ( item?.type === "weapon" ) {
@@ -588,13 +592,45 @@ export default class ItemSheet4e extends ItemSheet {
 
 		}
 
-		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility","item"].includes(item.system.type)) {
-			props.push(
-				labels.components,
-				labels.materials,
-				// item.system.components.concentration ? game.i18n.localize("DND4E.Concentration") : null,
-				// item.system.components.ritual ? game.i18n.localize("DND4E.Ritual") : null
-			)
+		else if ( item.type === "power" ) {
+			
+			if(item.system?.level){
+				props.push(`${game.i18n.localize("DND4E.Level")} ${item.system.level}`);
+			}
+			
+			if(item.system?.powerType || item.system?.powerSubtype ){
+				props.push(`${CONFIG.DND4E.powerType[item.system.powerType]} ${CONFIG.DND4E.powerSubtype[item.system.powerSubtype]}`);
+			}
+			
+			if(item.system?.useType){
+				props.push(CONFIG.DND4E.powerUseType[item.system.useType]);
+			}
+			
+			if(item.system?.powersource){
+				if(item.system?.secondPowersource){
+					props.push(`${CONFIG.DND4E.powerSource[item.system.powersource]}, ${CONFIG.DND4E.powerSource[item.system.secondPowersource]}`);
+				}else{
+					props.push(CONFIG.DND4E.powerSource[item.system.powersource]);
+				}
+			}
+			
+			props.push(...Object.entries(item.system.damageType)
+				.filter(e => e[1] === true && e[0] != "physical")
+				.map(e => CONFIG.DND4E.damageTypes[e[0]])
+			);
+			
+			props.push(...Object.entries(item.system.effectType)
+				.filter(e => e[1] === true)
+				.map(e => CONFIG.DND4E.effectTypes[e[0]])
+			);
+			
+			if(item.system?.actionType){
+				props.push(CONFIG.DND4E.abilityActivationTypes[item.system.actionType].label);
+			}
+			
+			if(item.system?.rangeType){
+				props.push(CONFIG.DND4E.rangeType[item.system.rangeType].label);
+			}
 		}
 
 		else if ( item.type === "equipment" ) {
@@ -616,17 +652,49 @@ export default class ItemSheet4e extends ItemSheet {
 			}
 		}
 
-		else if ( item.type === "feat" ) {
-			props.push(labels.featType);
+		else if ( item.type === "feature" ) {
+			if( item.system?.auraSize != "" && item.system?.auraSize >= 0 ){
+				props.push(`${game.i18n.localize('DND4E.Aura')} ${item.system.auraSize}`);
+			}
+			if(item.system.featureType === 'feat'){
+				let tierName;
+				if(item.system.level > 20) {
+					tierName = game.i18n.localize('DND4E.Tier.Epic');
+				} else if(item.system.level > 10) {
+					tierName = game.i18n.localize('DND4E.Tier.Paragon');
+				} else {
+					tierName = game.i18n.localize('DND4E.Tier.Heroic');
+				}
+				props.push(game.i18n.format('DND4E.Tier.TierName', {tier: tierName}));
+			}
+			if(item.system?.featureSource){
+				props.push(` ${item.system.featureSource} ${game.i18n.localize('DND4E.Feature.Feature')}`);
+			}
+			if(item.system?.featureGroup){
+				props.push(`${item.system.featureGroup}`);
+			};
+			if(item.system?.requirements){
+				props.push(`${game.i18n.localize('DND4E.Requires')}: ${item.system.requirements}`);
+			}
 		}
 
+		else if ( item.type === "ritual" ) {
+			if ( item.system?.category ) {
+				try {
+					props.push(`${game.i18n.localize('DND4E.Category')}: ${CONFIG.DND4E.ritualTypes[item.system.category].label}`);
+				} catch(e) {
+					console.error(`Failed to get the category name for this ritual, probably due to an un-migrated item. Manually setting the category should fix this.`);
+				}
+			}
+		}
+		
 		// Action type
-		if ( item.system.actionType ) {
+		if ( item.system?.actionType ) {
 			props.push(CONFIG.DND4E.itemActionTypes[item.system.actionType]);
 		}
 
 		// Action usage
-		if ( (item.type !== "weapon") && item.system.activation && !foundry.utils.isEmpty(item.system.activation) ) {
+		if ( (item.type !== "weapon") && item.system?.activation && !foundry.utils.isEmpty(item.system.activation) ) {
 			props.push(
 				labels.attribute,
 				labels.activation,

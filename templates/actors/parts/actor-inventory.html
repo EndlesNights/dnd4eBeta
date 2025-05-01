@@ -9,14 +9,6 @@
 		<input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.currencies k )}}"/>
 		{{/each}}
 	</ol>
-
-	<ol class="currency flexrow">
-		<h3 data-tooltip="{{localize 'DND4E.RitualComp'}}">{{localize 'DND4E.RitualComp'}}</h3>
-		{{#each system.ritualcomp as |v k|}}
-		<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
-		<input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}"/>
-		{{/each}}
-	</ol>
 	
 	<div class="flexrow daily-item-power-use">
 		<div class="daily-item-power-use-counter">

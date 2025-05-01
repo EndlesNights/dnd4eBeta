@@ -225,7 +225,6 @@ textarea{
 	flex:0 0 100px;
 	margin-right:0px;
     object-fit:contain;
-
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -240,15 +239,14 @@ textarea{
 	max-height:100px;
 	position:relative;
 }
-.dnd4e.sheet.actor .image-frame {
+.dnd4e.sheet.actor .image-frame{
 	margin-left:10px;
 	max-width:100px;
 	max-height:100px;
 }
-.dnd4e.sheet.actor.NPC .image-frame {
+.dnd4e.sheet.actor.NPC .image-frame{
 	margin-left:3px;
-	margin-right:3px;
-	padding-right:5px;
+	margin-right:8px;
 	max-width:64px;
 	max-height:64px;
 }
@@ -1294,9 +1292,6 @@ font-size:12px;
 .dnd4e .languages{
 	text-align:left;
 }
-.dnd4e.sheet.actor .tab.inventory{
-	overflow-y:hidden;
-}
 .dnd4e .sheet-header .char-details-level{
 	height:20px;
 	padding:0px;
@@ -1482,11 +1477,10 @@ font-size:12px;
 	justify-content:flex-end;
 }
 .dnd4e.sheet.actor .inventory{
-	margin:0 2px;
 	flex:0 0 20px;
 	justify-content:flex-end;
 }
-.dnd4e.sheet.actor .inventory .currency,
+.dnd4e.sheet.actor .currency,
 .dnd4e.sheet .item-sheet .currency {
 	flex:0 0 100%;
 	list-style:none;
@@ -1495,11 +1489,11 @@ font-size:12px;
 	font-size:12px;
 	align-items:center;
 }
-.dnd4e.sheet.actor .inventory h3,
+.dnd4e.sheet.actor h3,
 .dnd4e.sheet .item-sheet .currency h3 {
 	border-bottom:0px;
 }
-.dnd4e.sheet.actor .inventory .currency label,
+.dnd4e.sheet.actor .currency label,
 .dnd4e.sheet .item-sheet .currency label {
 	flex:0;
 	white-space:nowrap;
@@ -1507,7 +1501,7 @@ font-size:12px;
 	text-align:right;
 	line-height:20px;
 }
-.dnd4e.sheet.actor .inventory .currency input[type="text"],
+.dnd4e.sheet.actor .currency input[type="text"],
 .dnd4e.sheet .item-sheet .content .currency input[type="text"] {
 	flex:0 0 48px;
 	text-align:center;
@@ -1529,19 +1523,16 @@ font-size:12px;
 .dnd4e.sheet.actor .daily-item-power-use-check input{
 	height:14px;
 }
-.dnd4e.sheet.actor .encumbrance,
-.dnd4e.sheet.item .encumbrance {
+.dnd4e.sheet:is(.actor,.item) .encumbrance{
 	height:12px;
 	cursor:pointer;
-	flex:0 0 12px;
 	background:var(--color-bg-input);
-	margin:1px 15px 0 1px;
+	margin:10px 1px 1px 1px;
 	border:var(--border-normal);
 	border-radius:3px;
 	position:relative;
 }
-.dnd4e.sheet.actor .encumbrance .encumbrance-bar,
-.dnd4e.sheet.item .encumbrance .encumbrance-bar {
+.dnd4e.sheet:is(.actor,.item) .encumbrance .encumbrance-bar{
 	position:absolute;
 	top:1px;
 	left:1px;
@@ -1550,12 +1541,10 @@ font-size:12px;
 	border:1px solid #cde4ff;
 	border-radius:2px;
 }
-.dnd4e.sheet.actor .encumbrance .encumbrance-bar.encumbered,
-.dnd4e.sheet.item .encumbrance .encumbrance-bar.encumbered {
+.dnd4e.sheet:is(.actor,.item) .encumbrance .encumbrance-bar.encumbered{
 	background:#b72b2b;
 }
-.dnd4e.sheet.actor .encumbrance .encumbrance-label,
-.dnd4e.sheet.item .encumbrance .encumbrance-label {
+.dnd4e.sheet:is(.actor,.item) .encumbrance .encumbrance-label{
 	height:10px;
 	padding:0 5px;
 	position:absolute;
@@ -1572,9 +1561,6 @@ font-size:12px;
 	margin:0;
 	overflow-y:auto;
 	scrollbar-width:thin;
-}
-.dnd4e.sheet.actor .inventory .inventory-list {
-	height:calc(100% - 117px);
 }
 .dnd4e.sheet.item .item-list.inventory-list{
 	height:calc(100% - 127px);
@@ -2000,9 +1986,6 @@ font-size:12px;
 	flex-basis:100px;
 	flex-grow:0;
 }
-.dnd4e.sheet.actor .npc .inventory .inventory-list{
-	height:calc(100% - 128px);
-}
 .dnd4e.sheet.actor .npc + a.rest{
 	margin:0px;
 }
@@ -2088,7 +2071,7 @@ font-size:12px;
 }
 .dnd4e.sheet .item-sheet .sheet-header img.profile{
 	flex:0 0 100px;
-	max-width:100px;
+	width:100px;
 	height:100px;
 	object-fit:contain;
 	border:none;
@@ -2096,7 +2079,7 @@ font-size:12px;
 }
 .dnd4e.sheet.actor .item-sheet .sheet-header img.profile{
 	flex:0 0 160px;
-	max-width:160px;
+	width:160px;
 	height:160px;
 }
 .dnd4e.sheet.item .item-sheet .sheet-header img.profile{
@@ -2104,7 +2087,7 @@ font-size:12px;
 }
 .dnd4e.sheet.actor.character .item-sheet .sheet-header img.profile{
 	flex:0 0 160px;
-	max-width:160px;
+	width:160px;
 	height:160px;
 }
 .dnd4e.sheet.actor .item-sheet .sheet-header h1.charname{
