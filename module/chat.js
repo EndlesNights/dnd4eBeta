@@ -488,3 +488,28 @@ export async function _processDiceCommand(wrapper, ...args){
 	chatData.content = rolls.reduce((t, r) => t + r.total, 0);
 	createOptions.rollMode = command;
 }
+
+
+Hooks.on("renderChatMessage", (message, html) => {
+	updateApplyEffectsTooltips(html);
+});
+
+//Function for changing the tooltip of the apply effect button of power cards based on the applyEffectsToSelection functions
+export function updateApplyEffectsTooltips(html={}) {
+
+	const settingValue = game.settings.get("dnd4e", "applyEffectsToSelection");
+	// True -> Selected
+	// False -> Targeted
+	const targetKey = settingValue ? "DND4E.EffectsApplyTokensSelected" : "DND4E.EffectsApplyTokensTargeted";
+
+	const localizedTarget = game.i18n.localize(targetKey);
+	const baseText = game.i18n.localize("DND4E.EffectsApplyTokens");
+	const finalTooltip = baseText.replace("{target}", localizedTarget);
+
+	if(html){
+		html.find("*[data-action=\"applyEffect\"]").attr("data-tooltip", finalTooltip);
+
+	} else {
+		$("[data-action=\"applyEffect\"").attr("data-tooltip", finalTooltip);
+	}
+}
