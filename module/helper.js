@@ -339,10 +339,15 @@ export class Helper {
 					if(suitableKeywords.includes("ranged")) suitableKeywords.push("rBasic");
 				};
 				
-				//console.debug(rollData);
-				
 				if(powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
 				if(powerInnerData.attack?.isOpp || rollData?.isCharge) suitableKeywords.push("opp");
+				
+				if(powerInnerData.attack?.def){
+					suitableKeywords.push(`vs${powerInnerData.attack.def.capitalize()}`);
+				};
+				if(powerInnerData.attack?.ability){
+					suitableKeywords.push(`uses${powerInnerData.attack.ability.capitalize()}`);
+				};
 
 				if (debug) {
 					console.debug(rollData);
