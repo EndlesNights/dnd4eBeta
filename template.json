@@ -1,6 +1,6 @@
 {
 	"Actor": {
-		"types": ["Player Character","NPC","Prop"],
+		"types": ["Player Character","NPC"],
 		"templates":{
 			"common":{
 				"abilities": {
