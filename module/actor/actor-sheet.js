@@ -22,6 +22,10 @@ import { Helper } from "../helper.js";
 import {ActionPointExtraDialog} from "../apps/action-point-extra.js";
 import Item4e from "../item/item-document.js";
 
+const localize = (key) => {
+	return game.i18n.localize(key);
+}
+
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -151,8 +155,8 @@ export default class ActorSheet4e extends ActorSheet {
 		for ( let [s, skl] of Object.entries(actorData.skills)) {
 			// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
 			skl.icon = this._getTrainingIcon(skl.training);
-			skl.hover = game.i18n.localize(DND4E.trainingLevels[skl.training]);
-			skl.label = skl.label ? skl.label: game.i18n.localize(DND4E.skills[s]);
+			skl.hover = localize(DND4E.trainingLevels[skl.training]);
+			skl.label = skl.label ? skl.label: localize(DND4E.skills[s]);
 		}
 		
 		this._prepareDataTraits(actorData.languages, 
@@ -200,7 +204,7 @@ export default class ActorSheet4e extends ActorSheet {
 		actorData.resources = ["primary", "secondary", "tertiary"].reduce((obj, r) => {
 			const res = actorData.resources[r] || {};
 			res.name = r;
-			res.placeholder = game.i18n.localize("DND4E.Resource"+r.titleCase());
+			res.placeholder = localize("DND4E.Resource"+r.titleCase());
 			if (res && res.value === 0) delete res.value;
 			if (res && res.max === 0) delete res.max;
 			obj[r] = res
@@ -298,7 +302,7 @@ export default class ActorSheet4e extends ActorSheet {
 		for ( let i of items ) {
 			i.system.quantity = i.system.quantity || 0;
 			i.system.weight = i.system.weight || 0;
-			i.totalWeightLable = i.totalWeight.toNearest(0.01);
+			i.totalWeightLabel = i.totalWeight.toNearest(0.01);
 			inventory[i.type].items.push(i);
 		}
 
@@ -326,12 +330,12 @@ export default class ActorSheet4e extends ActorSheet {
 		this._sortFeatures(features);
 
 		data.moveTitle = `<p style="text-align:left">
-${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedWalking")}
-<br>${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedRunning")}
-<br>${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedCharging")}
-<br>${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedClimbing")}
-<br>${parseInt(data.system.movement.swim.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedSwimming")}
-<br>${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedShifting")}`;
+${parseInt(data.system.movement.walk.value)} ${localize("DND4E.MovementUnit")} ${localize("DND4E.MovementSpeedWalking")}
+<br>${parseInt(data.system.movement.run.value)} ${localize("DND4E.MovementUnit")} ${localize("DND4E.MovementSpeedRunning")}
+<br>${parseInt(data.system.movement.charge.value)} ${localize("DND4E.MovementUnit")} ${localize("DND4E.MovementSpeedCharging")}
+<br>${parseInt(data.system.movement.climb.value)} ${localize("DND4E.MovementUnit")} ${localize("DND4E.MovementSpeedClimbing")}
+<br>${parseInt(data.system.movement.swim.value)} ${localize("DND4E.MovementUnit")} ${localize("DND4E.MovementSpeedSwimming")}
+<br>${parseInt(data.system.movement.shift.value)} ${localize("DND4E.MovementUnit")} ${localize("DND4E.MovementSpeedShifting")}`;
 
 		if(data.system.movement.custom){
 			const moveCustom = [];
@@ -545,8 +549,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 _preparePowerRangeText(itemData) {
 
 		let area;
-		if(itemData.system.area) {
-			try{
+		if (itemData.system.area) {
+			try {
 				let areaForm = game.helper.commonReplace(`${itemData.system.area}`, this.actor);
 				area = Roll.safeEval(areaForm);
 			} catch (e) {
@@ -556,92 +560,93 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			area = 0;
 		}
 
-		if(itemData.system.rangeType === "range") {
-			itemData.system.rangeText = `Ranged ${itemData.system.rangePower}`
-			itemData.system.rangeTextShort = `R`
-			itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
-		} else if(itemData.system.rangeType === "closeBurst") {
-			itemData.system.rangeText = `Close Burst ${area}`
-			itemData.system.rangeTextShort = "C-BU"
-			itemData.system.rangeTextBlock = `${area}`
-		} else if(itemData.system.rangeType === "rangeBurst") {
-			itemData.system.rangeText = `Area Burst ${area} within ${itemData.system.rangePower}`
-			itemData.system.rangeTextShort = "A-BU"
-			itemData.system.rangeTextBlock = `${area} - ${itemData.system.rangePower}`
-		} else if(itemData.system.rangeType === "closeBlast") {
-			itemData.system.rangeText = `Close Blast ${area}`
-			itemData.system.rangeTextShort = "C-BL"
-			itemData.system.rangeTextBlock = `${area}`
-		} else if(itemData.system.rangeType === "rangeBlast") {
-			itemData.system.rangeText = `Area Blast ${area} within ${itemData.system.rangePower}`
-			itemData.system.rangeTextShort = "A-BL"
-			itemData.system.rangeTextBlock = `${area} - ${itemData.system.rangePower}`
-		} else if(itemData.system.rangeType === "wall") {
-			itemData.system.rangeText = `Area Wall ${area} within ${itemData.system.rangePower}`
-			itemData.system.rangeTextShort = "W"
-			itemData.system.rangeTextBlock = `${area} - ${itemData.system.rangePower}`
-		} else if(itemData.system.rangeType === "personal") {
-			itemData.system.rangeText = "Personal"
-			itemData.system.rangeTextShort = "P"
-		} else if(itemData.system.rangeType === "special") {
-			itemData.system.rangeText = "Special"
-			itemData.system.rangeTextShort = "S"
-		} else if(itemData.system.rangeType === "touch") {
-			itemData.system.rangeTextShort = "M-T";
-			if(itemData.system.rangePower == null){
-				itemData.system.rangeTextBlock = '';
-				itemData.system.rangeText = `Melee Touch`;
-			} else {
-				itemData.system.rangeText = `Melee Touch ${itemData.system.rangePower}`;
-				itemData.system.rangeTextBlock = `${itemData.system.rangePower}`;
-			}
-		} else if(itemData.system.rangeType === "melee"){
-			if(itemData.system.rangePower === undefined || itemData.system.rangePower === null){
-				itemData.system.rangeText = `Melee`;
-				itemData.system.rangeTextShort = `M`;
-			} else {
-				itemData.system.rangeText = `Melee ${itemData.system.rangePower}`;
-				itemData.system.rangeTextShort = `M`;
-				itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
-			}
-		} else if(itemData.system.rangeType === "reach"){
-			itemData.system.rangeText = `Reach ${itemData.system.rangePower}`;
-			itemData.system.rangeTextShort = `R`;
-			itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
-		} else if(itemData.system.rangeType === "weapon") {
+		const rangePower = itemData.system.rangePower ?? '';
 
+		if (itemData.system.rangeType === "range") {
+			itemData.system.rangeText = `${localize("DND4E.rangeRanged")} ${rangePower}`;
+			itemData.system.rangeTextShort = `${localize("DND4E.rangeRangedShort")}`;
+			itemData.system.rangeTextBlock = `${rangePower}`;
+		} else if (itemData.system.rangeType === "closeBurst") {
+			itemData.system.rangeText = `${localize("DND4E.rangeCloseBurst")} ${area}`;
+			itemData.system.rangeTextShort = `${localize("DND4E.rangeCloseBurstShort")}`;
+			itemData.system.rangeTextBlock = `${area}`;
+		} else if (itemData.system.rangeType === "rangeBurst") {
+			itemData.system.rangeText = `${localize("DND4E.rangeBurst")} ${area} ${localize("DND4E.RangeWithin")} ${itemData.system.rangePower}`;
+			itemData.system.rangeTextShort = `${localize("DND4E.rangeBurstShort")}`;
+			itemData.system.rangeTextBlock = `${area} - ${rangePower}`;
+		} else if (itemData.system.rangeType === "closeBlast") {
+			itemData.system.rangeText = `${localize("DND4E.rangeCloseBlast")} ${area}`;
+			itemData.system.rangeTextShort = `${localize("DND4E.rangeCloseBlastShort")}`;
+			itemData.system.rangeTextBlock = `${area}`
+		} else if (itemData.system.rangeType === "rangeBlast") {
+			itemData.system.rangeText = `${localize("DND4E.rangeBlast")} ${area} ${localize("DND4E.RangeWithin")} ${itemData.system.rangePower}`
+			itemData.system.rangeTextShort = `${localize("DND4E.rangeBlastShort")}`
+			itemData.system.rangeTextBlock = `${area} - ${rangePower}`
+		} else if (itemData.system.rangeType === "wall") {
+			itemData.system.rangeText = `${localize("DND4E.rangeWall")} ${area} ${localize("DND4E.RangeWithin")} ${itemData.system.rangePower}`
+			itemData.system.rangeTextShort = `${localize("DND4E.rangeWallShort")}`
+			itemData.system.rangeTextBlock = `${area} - ${rangePower}`
+		} else if (itemData.system.rangeType === "personal") {
+			itemData.system.rangeText = `${localize("DND4E.rangePersonal")}`;
+			itemData.system.rangeTextShort = `${localize("DND4E.rangePersonalShort")}`;
+		} else if (itemData.system.rangeType === "special") {
+			itemData.system.rangeText = `${localize("DND4E.rangeSpecial")}`
+			itemData.system.rangeTextShort =  `${localize("DND4E.rangeSpecialShort")}`
+		} else if (itemData.system.rangeType === "touch") {
+			itemData.system.rangeTextShort = `${localize("DND4E.rangeTouchMeleeShort")}`;
+			if (itemData.system.rangePower == null) {
+				itemData.system.rangeTextBlock = '';
+				itemData.system.rangeText = `${localize("DND4E.rangeTouchMelee")}`;
+			} else {
+				itemData.system.rangeText = `${localize("DND4E.rangeTouchMelee")} ${rangePower}`;
+				itemData.system.rangeTextBlock = `${rangePower}`;
+			}
+		} else if (itemData.system.rangeType === "melee") {
+			if (rangePower === '') {
+				itemData.system.rangeText = `${localize("DND4E.rangeMelee")}`;
+				itemData.system.rangeTextShort = `${localize("DND4E.rangeMeleeShort")}`;
+			} else {
+				itemData.system.rangeText = `${localize("DND4E.rangeMelee")} ${rangePower}`;
+				itemData.system.rangeTextShort = `${localize("DND4E.rangeMeleeShort")}`;
+				itemData.system.rangeTextBlock = `${rangePower}`
+			}
+		} else if (itemData.system.rangeType === "reach") {
+			itemData.system.rangeText = `${localize("DND4E.rangeReach")} ${rangePower}`;
+			itemData.system.rangeTextShort = `${localize("DND4E.rangeReachShort")}`;
+			itemData.system.rangeTextBlock = `${rangePower}`;
+		} else if (itemData.system.rangeType === "weapon") {
 			try {
 				const weaponUse = Helper.getWeaponUse(itemData.system, this.actor);
-				if(weaponUse.system.isRanged) {
-					itemData.system.rangeText = `Range Weapon - ${weaponUse.name}`
-					itemData.system.rangeTextShort = `W-R`
+				if (weaponUse.system.isRanged) {
+					itemData.system.rangeText = `${localize("DND4E.WeaponRanged")} - ${weaponUse.name}`
+					itemData.system.rangeTextShort = `${localize("DND4E.WeaponRangedShort")}`
 					itemData.system.rangeTextBlock = `${weaponUse.system.range.value}/${weaponUse.system.range.long}`
 				} else {
-					itemData.system.rangeText = `Melee Weapon - ${weaponUse.name}`;
-					itemData.system.rangeTextShort = "W-M";
+					itemData.system.rangeText = `${localize("DND4E.WeaponMelee")} - ${weaponUse.name}`;
+					itemData.system.rangeTextShort = `${localize("DND4E.WeaponMeleeShort")}`;
 					
-					if(itemData.system.rangePower == null){
+					if (rangePower === '') {
 						itemData.system.rangeTextBlock = '';
 					} else {
-						itemData.system.rangeTextBlock = `${itemData.system.rangePower}`;
+						itemData.system.rangeTextBlock = `${rangePower}`;
 					}
 				}
 
 			} catch {
-				itemData.system.rangeText = "Weapon";
-				itemData.system.rangeTextShort = "W-M";
-				itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
+				itemData.system.rangeText = `${localize("DND4E.Weapon")}`;
+				itemData.system.rangeTextShort = `${localize("DND4E.WeaponMeleeShort")}`;
+				itemData.system.rangeTextBlock = `${rangePower}`
 
 				if(itemData.system.rangePower == null){
 					itemData.system.rangeTextBlock = '';
 				} else {
-					itemData.system.rangeTextBlock = `${itemData.system.rangePower}`;
+					itemData.system.rangeTextBlock = `${rangePower}`;
 				}
 			}
 
 		} else {
-			itemData.system.rangeText = game.i18n.localize("DND4E.NotAvalible");
-			itemData.system.rangeTextShort = game.i18n.localize("DND4E.NotAvalibleShort");
+			itemData.system.rangeText = localize("DND4E.NotAvalible");
+			itemData.system.rangeTextShort = localize("DND4E.NotAvalibleShort");
 		}
 	}
   /* -------------------------------------------- */
@@ -660,13 +665,13 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	  // if ( isAlways ) item.toggleClass = "fixed";
 	  // if ( isAlways ) item.toggleTitle = CONFIG.DND4E.spellPreparationModes.always;
 	  // else if ( isPrepared ) item.toggleTitle = CONFIG.DND4E.spellPreparationModes.prepared;
-	  if ( isPrepared ) item.toggleTitle = game.i18n.localize("DND4E.PowerPrepared");
-	  else item.toggleTitle = game.i18n.localize("DND4E.PowerUnPrepared");
+	  if ( isPrepared ) item.toggleTitle = localize("DND4E.PowerPrepared");
+	  else item.toggleTitle = localize("DND4E.PowerUnPrepared");
 	}
 	else {
 	  const isActive = foundry.utils.getProperty(item.system, "equipped");
 	  item.toggleClass = isActive ? "active" : "";
-	  item.toggleTitle = game.i18n.localize(isActive ? "DND4E.Equipped" : "DND4E.Unequipped");
+	  item.toggleTitle = localize(isActive ? "DND4E.Equipped" : "DND4E.Unequipped");
 	}
   }
 	_prepareDataSense(data, map) {
@@ -1069,8 +1074,11 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const header = event.currentTarget;
 		const type = header.dataset.type;
+		const localizeItem = (itemType) => {
+			return localize(`TYPES.Item.${itemType}`);
+		}
 		const itemData = {
-			name: game.i18n.format("DND4E.ItemNew", {type: type.capitalize()}),
+			name: game.i18n.format("DND4E.ItemNew", { type: localizeItem(type) }),
 			type: type,
 			system: foundry.utils.duplicate(header.dataset)
 		};
@@ -1087,8 +1095,12 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const header = event.currentTarget;
 		const type = header.dataset.type;
+		const localizePower = (powerType) => {
+			return localize(`DND4E.Power${powerType.capitalize()}`);
+		}
+
 		const itemData = {
-			name: `${game.i18n.format("DND4E.ItemNew", {type: type.capitalize()})} Power`,
+			name: `${game.i18n.format("DND4E.PowerNew", { type: localizePower(type) })}`,
 			type: "power",
 			system: foundry.utils.duplicate(header.dataset)
 		};
@@ -1105,7 +1117,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				itemData.system.uses = {
 					value: 1,
 					max: 1,
-					per: ["encounter", "charges", "round"].includes(type)  ? "enc" : "day"
+					per: ["encounter", "charges", "round"].includes(type) ? "enc" : "day"
 					// per: type === "encounter" ? "enc" : "day"
 				};
 			}
@@ -1114,7 +1126,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		itemData.system.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLableOption");
 		
 		if(this.actor.type === "NPC"){
-			
+
 			itemData.system.weaponType = "none";
 			itemData.system.weaponUse = "none";
 
@@ -1122,7 +1134,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				formula:"5 + @atkMod",
 				ability:"form"
 			};
-			itemData.system.hit  = {
+			itemData.system.hit = {
 				formula:"@powBase + @dmgMod",
 				critFormula:"@powMax",
 				baseDiceType: "d8",
@@ -1537,8 +1549,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	async _onConvertCurrency(event) {
 		event.preventDefault();
 		return Dialog.confirm({
-			title: `${game.i18n.localize("DND4E.CurrencyConvert")}`,
-			content: `<p>${game.i18n.localize("DND4E.CurrencyConvertHint")}</p>`,
+			title: localize("DND4E.CurrencyConvert"),
+			content: `<p>${localize("DND4E.CurrencyConvertHint")}</p>`,
 			yes: () => this.convertCurrency()
 		});
 	}
@@ -1553,7 +1565,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		for(const [type,value] of Object.entries(this.actor.system.currency)){
 			goldSum += value * CONFIG.DND4E.currencyConversion[type]?.gp;
 		}
-		return game.i18n.localize("DND4E.GoldWealth") + (Math.round(goldSum*100)/100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
+		return localize("DND4E.GoldWealth") + (Math.round(goldSum*100)/100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");;
 	}
   /* -------------------------------------------- */
 

@@ -51,7 +51,7 @@
 					<a class="currency-convert" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
 				</h3>
 				{{#each system.currency as |v k|}}
-				<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
+				<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{localize (concat (lookup ../config.currencies k) "Short")}}</label>
 				<input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.currencies k )}}"/>
 				{{/each}}
 			</ol>
@@ -59,7 +59,7 @@
 			<ol class="currency flexrow">
 				<h3 data-tooltip="{{localize 'DND4E.RitualComp'}}">{{localize 'DND4E.RitualComp'}}</h3>
 				{{#each system.ritualcomp as |v k|}}
-				<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
+				<label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{localize (concat (lookup ../config.ritualcomponents k) "Short")}}</label>
 				<input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}"/>
 				{{/each}}
 			</ol>
@@ -67,8 +67,8 @@
 			<ol class="item-list">
 				<li class="items-header flexrow">
 					<h3 class="item-name flexrow">{{localize 'DND4E.Contents'}}</h3>
-						<div class="item-detail item-weight">Weight</div>
-						<div class="item-detail item-quantity">Quantity</div>
+					<div class="item-detail item-weight">{{localize 'DND4E.ItemContainerCapacityWeight'}}</div>
+					<div class="item-detail item-quantity">{{localize 'DND4E.Quantity'}}</div>
 					<div class="item-controls">
 					</div>
 				</li>

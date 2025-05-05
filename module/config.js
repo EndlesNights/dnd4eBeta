@@ -975,9 +975,9 @@ DND4E.healingTypes = {
 /* -------------------------------------------- */
 
 DND4E.featureSortTypes = {
-	"name": {lable: "DND4E.ItemName"},
-	"level": {lable: "DND4E.Level"},
-	"none": {lable: "DND4E.None"},
+	"name": { label: "DND4E.ItemName" },
+	"level": { label: "DND4E.Level" },
+	"none": { label: "DND4E.None" },
 };
 preLocalize("featureSortTypes", { keys: ["label"] });
 
@@ -1003,8 +1003,8 @@ DND4E.powerSubtype = {
 };
 
 DND4E.powerUseType = {
-	"atwill": "DND4E.PowerAt",
-	"encounter": "DND4E.PowerEnc",
+	"atwill": "DND4E.PowerAtwill",
+	"encounter": "DND4E.PowerEncounter",
 	"daily": "DND4E.PowerDaily",
 	"recharge": "DND4E.PowerRecharge",
 	"other": "DND4E.PowerOther",
@@ -1068,8 +1068,8 @@ DND4E.powerGroupings = {
 		other: {label: "DND4E.Other"},
 	},
 	usage: {
-		atwill: {label: "DND4E.PowerAt"},
-		encounter: {label: "DND4E.PowerEnc"},
+		atwill: {label: "DND4E.PowerAtwill"},
+		encounter: {label: "DND4E.PowerEncounter"},
 		daily: {label: "DND4E.PowerDaily"},
 		item: {label: "DND4E.PowerItem"},
 		recharge: {label: "DND4E.PowerRecharge"},
@@ -1098,6 +1098,7 @@ DND4E.inventoryTypes = {
 	backpack: { label: "DND4E.ItemTypeContainerPl" },
 	loot: { label: "DND4E.ItemTypeLootPl" }
 };
+preLocalize("inventoryTypes", { keys: ["label"] });
 
 DND4E.featureTypes = {
 	raceFeats: { label: "DND4E.FeatRace" },
@@ -1107,11 +1108,11 @@ DND4E.featureTypes = {
 	feat: { label: "DND4E.FeatLevel" },
 	ritual: { label: "DND4E.FeatRitual" }
 };
-
+preLocalize("featureTypes", { keys: ["label"] });
 
 DND4E.powerDiceTypes = {
-	"weapon": "Base Weapon Damage",
-	"flat": "Flat Damage",
+	"weapon": { label: "DND4E.PowerDiceWeapon" },
+	"flat": { label: "DND4E.FlatDamage" },
 	"d4": "d4",
 	"d6": "d6",
 	"d8": "d8",
@@ -1119,6 +1120,7 @@ DND4E.powerDiceTypes = {
 	"d12": "d12",
 	"d20": "d20"
 };
+preLocalize("powerDiceTypes", { keys: ["label"] });
 
 /* -------------------------------------------- */
 /**

@@ -10,7 +10,7 @@
 
 	{{#if isD20Roll}}	
 		<div class="input-group-button">
-			<label>Number of D20 to Roll:</label>
+			<label>{{ localize "DND4E.D20ToRoll" }}:</label>
 			<button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" onclick="minus()">
 				<i class="fa fa-minus" aria-hidden="true"></i>
 			</button>
@@ -64,8 +64,8 @@
 		</select>
 	</div>
 	<div class="form-group">
-		<label>Flavour Text</label>
-		<input type="text" name="flavor" value="{{newFlavor}}" placeholder="{{flavor}}" data-tooltip="Situational Flavour Text." />
+		<label>{{ localize "DND4E.FlavourText" }}</label>
+		<input type="text" name="flavor" value="{{newFlavor}}" placeholder="{{flavor}}" data-tooltip="{{ localize 'DND4E.SituationalFlavourText' }}"  />
 	</div>
 </form>
 

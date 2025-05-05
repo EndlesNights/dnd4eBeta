@@ -181,7 +181,7 @@
 					
 					<div data-tooltip="{{moveTitle}}">
 						<label class="movement-dialog rollable">{{localize 'DND4E.Speed'}}</label>
-						<strong class="movement-dialog rollable">{{numberFormat system.movement.walk.value}} sq.</strong>
+						<strong class="movement-dialog rollable">{{numberFormat system.movement.walk.value}} {{ localize "DND4E.MovementUnit" }}</strong>
 						{{#each system.moveCustom as |v k|}}
 						<li class="tag {{k}}">{{v}}</li>
 						{{/each}}
