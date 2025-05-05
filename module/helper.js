@@ -1343,16 +1343,15 @@ export class Helper {
 		
 		//If no assigned character, check for specific player owner
 		const owners = Object.entries(doc.ownership);
-		owners.forEach(function (owner){
-			if(owner[0] !== 'default') {
-				let ownerData = game.users?.get(owner[0]);
-				if(!ownerData?.isGM && ownerData.active && owner.level === 3){
-					console.log(`Owner: ${owner[0]}`);
-					owner = ( idOnly ? owner[0] : ownerData );
-					return;
+		for (const [owner, level] of Object.entries(owners)){
+			if (owner !== 'default'){
+				const ownerData = game.users?.get(owner);
+				if(!ownerData?.isGM && ownerData?.active && level === 3){
+					console.log(`Owner: ${owner}`);
+					found = (idOnly ? owner : ownerData);
 				}
 			}
-		});
+		}
 		if(found) return found;
 
 		// IIf we have no valid player, fall back to first GM
