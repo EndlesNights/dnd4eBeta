@@ -1,8 +1,8 @@
 {
 	"Actor": {
-		"types": ["Player Character","NPC"],
+		"types": ["Player Character","NPC","Hazard"],
 		"templates":{
-			"common":{
+			"combatant":{
 				"abilities": {
 					"str":{
 						"value": 10,
@@ -60,21 +60,13 @@
 						"untyped": 0,
 						"notes": ""
 					}
-				},			
-				"biography": "",		
+				},
 				"actionpoints":	{
 					"value": 1,
 					"encounteruse": false,
 					"effects": "",
 					"notes": "",
 					"custom": ""
-				},
-				"magicItemUse": {
-					"perDay": 1,
-					"bonusValue": 0,
-					"milestone": 0,
-					"dailyuse": 1,
-					"encounteruse": false
 				},
 				"defences": {
 					"ac": {
@@ -188,218 +180,6 @@
 						"race": 0,
 						"untyped": 0,
 						"bonus": [{}]
-					}
-				},
-				"details": {
-					"level": 1,
-					"tier": 1,
-					"exp": 0,
-					"class": "",
-					"paragon": "",
-					"epic": "",
-					"race": "",
-					"size": "med",
-					"origin": "natural",
-					"type": "humanoid",
-					"other": "",
-					"age": "",
-					"gender": "",
-					"height": "",
-					"weight": "",
-					"alignment": "",
-					"deity": "",					
-					"secondwind": false,
-					"secondwindEffect": {},
-					"deathsaves": 3,
-					"deathsavefail": 0,
-					"deathsaveCrit": 20,
-					"deathsavebon": {
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"value": 0
-					},
-					"bloodied": 0,
-					"surgeValue": 0,
-					"surgeBon": {
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"value": 0
-					},
-					"surges": {
-						"value": 0,
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"max": 0
-					},
-					"surgeEnv": {
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"value": 0
-					},
-					"secondwindbon": {
-						"bonus": [{}],
-						"value": 0,
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"custom": ""
-					},
-					"saves": {
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"value": 0
-					},
-					"weaponProf": {
-						"value": [],
-						"custom": ""
-					},
-					"armourProf": {
-						"value": [],
-						"custom": ""
-					}
-				},
-				"languages": {
-					"spoken": {
-						"value": [],
-						"custom": ""
-					},
-					"script": {
-						"value": [],
-						"custom": ""
-					}
-				},
-				"senses": {
-					"vision": {
-						"value": [],
-						"custom": ""
-					},
-					"special": {
-						"value": [],
-						"custom": ""
-					},
-					"notes": ""
-				},
-				"movement": {
-					"base": {
-						"value": 0,
-						"base": 6,
-						"armour": 0,
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"temp": 0
-					},
-					"walk": {
-						"value": 0,
-						"formula": "@base + @armour",
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"temp": 0
-					},
-					"charge": {
-						"value": 0,
-						"formula": "@base + @armour",
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"temp": 0
-					},
-					"run": {
-						"value": 0,
-						"formula": "@base + @armour + 2",
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"misc": 0,
-						"temp": 0
-					},
-					"climb": {
-						"value": 0,
-						"formula": "(@base + @armour)/2",
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"temp": 0
-					},
-					"shift": {
-						"value": 0,
-						"formula": "1",
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"temp": 0
-					},
-					"swim": {
-						"value": 0,
-						"formula": "(@base + @armour)/2",
-						"bonus": [{}],
-						"feat": 0,
-						"item": 0,
-						"power": 0,
-						"race": 0,
-						"untyped": 0,
-						"temp": 0
-					},
-					"notes": ""
-				},
-				"resources": {
-					"primary": {
-						"value": "",
-						"max": "",
-						"sr": false,
-						"lr": false
-					},
-					"secondary": {
-						"value": "",
-						"max": "",
-						"sr": false,
-						"lr": false
-					},
-					"tertiary": {
-						"value": "",
-						"max": "",
-						"sr": false,
-						"lr": false
 					}
 				},
 				"skills": {
@@ -689,6 +469,49 @@
 						"skill": "ins",
 						"bonus": [{}]
 					}
+				},			
+				"details": {
+					"level": 1,
+					"tier": 1,
+					"exp": 0,
+					"bloodied": 0,
+					"surgeValue": 0,
+					"surgeBon": {
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"value": 0
+					},
+					"surges": {
+						"value": 0,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"max": 0
+					},
+					"surgeEnv": {
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"value": 0
+					},
+					"saves": {
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"value": 0
+					}
 				},
 				"resistances": {
 					"damage": {
@@ -802,27 +625,6 @@
 					"vulnerabilities" : [],
 					"immunities" : []
 				},
-				"encumbrance": {
-					"value": null,
-					"max": null,
-					"formulaNorm": "@abilities.str.value * 10",
-					"formulaHeavy": "@abilities.str.value * 20",
-					"formulaMax": "@abilities.str.value * 50"
-				},
-				"currency": {
-					"ad": 0,
-					"pp": 0,
-					"gp": 0,
-					"sp": 0,
-					"cp": 0
-				},
-				"ritualcomp": {
-					"ar" : 0,
-					"ms" : 0,
-					"rh" : 0,
-					"si" : 0,
-					"rs" : 0
-				},
 				"commonAttackBonuses": {
 					"comAdv": {
 						"value": 2,
@@ -923,142 +725,254 @@
 						"untyped": 0,
 						"bonus": [{}]
 					}
-				}	
+				}
+			},
+			"creature":{
+				"biography": "",
+				"details.size": "med",
+				"details.origin": "natural",
+				"details.type": "humanoid",
+				"details.other": "",
+				"details.race": "",
+				"details.age": "",
+				"details.gender": "",
+				"details.height": "",
+				"details.weight": "",
+				"details.alignment": "",
+				"details.deity": "",
+				"languages": {
+					"spoken": {
+						"value": [],
+						"custom": ""
+					},
+					"script": {
+						"value": [],
+						"custom": ""
+					}
+				},
+				"senses": {
+					"vision": {
+						"value": [],
+						"custom": ""
+					},
+					"special": {
+						"value": [],
+						"custom": ""
+					},
+					"notes": ""
+				}
+			},
+			"speed": {
+				"movement": {
+					"base": {
+						"value": 0,
+						"base": 6,
+						"armour": 0,
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"temp": 0
+					},
+					"walk": {
+						"value": 0,
+						"formula": "@base + @armour",
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"temp": 0
+					},
+					"charge": {
+						"value": 0,
+						"formula": "@base + @armour",
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"temp": 0
+					},
+					"run": {
+						"value": 0,
+						"formula": "@base + @armour + 2",
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"misc": 0,
+						"temp": 0
+					},
+					"climb": {
+						"value": 0,
+						"formula": "(@base + @armour)/2",
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"temp": 0
+					},
+					"shift": {
+						"value": 0,
+						"formula": "1",
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"temp": 0
+					},
+					"swim": {
+						"value": 0,
+						"formula": "(@base + @armour)/2",
+						"bonus": [{}],
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"temp": 0
+					},
+					"notes": ""
+				}				
+			},
+			"wealth":{
+				"currency": {
+					"ad": 0,
+					"pp": 0,
+					"gp": 0,
+					"sp": 0,
+					"cp": 0
+				},
+				"ritualcomp": {
+					"ar" : 0,
+					"ms" : 0,
+					"rh" : 0,
+					"si" : 0,
+					"rs" : 0
+				}
 			}
 		},
 		"Player Character": {
-			"templates": ["common"]
-		},
-		"NPC": {
-			"templates": ["common"],
-			"advancedCals": false,
-			"details": {
-				
-				"role": {
-					"primary": "soldier",
-					"secondary": "standard",
-					"leader" : false
+			"templates": ["creature","combatant","wealth","speed"],
+			"details.class": "",
+			"details.paragon": "",
+			"details.epic": "",				
+			"details.secondwind": false,
+			"details.secondwindEffect": {},
+			"details.deathsaves": 3,
+			"details.deathsavefail": 0,
+			"details.deathsaveCrit": 20,
+			"details.deathsavebon": {
+				"bonus": [{}],
+				"feat": 0,
+				"item": 0,
+				"power": 0,
+				"race": 0,
+				"untyped": 0,
+				"value": 0
+			},
+			"details.secondwindbon": {
+				"bonus": [{}],
+				"value": 0,
+				"feat": 0,
+				"item": 0,
+				"power": 0,
+				"race": 0,
+				"untyped": 0,
+				"custom": ""
+			},
+			"details.weaponProf": {
+				"value": [],
+				"custom": ""
+			},
+			"details.armourProf": {
+				"value": [],
+				"custom": ""
+			},
+			"resources": {
+				"primary": {
+					"value": "",
+					"max": "",
+					"sr": false,
+					"lr": false
 				},
-				"level": 1,
-				"tier": 1,
-				"exp": 0,
-				"class": "",
-				"paragon": "",
-				"epic": "",
-				"race": "",
-				"size": "med",
-				"age": "",
-				"gender": "",
-				"height": "",
-				"weight": "",
-				"alignment": "",
-				"deity": "",
-				"equipment": "",
-				
-				"secondwind": false,
-				"deathsaves": 3,
-				"deathsavefail": 0,
-				"deathsaveCrit": 20,
-				"deathsavebon": {
-					"bonus": [{}],
-					"value": 0
+				"secondary": {
+					"value": "",
+					"max": "",
+					"sr": false,
+					"lr": false
 				},
-				"bloodied": 0,
-				"surgeValue": 0,
-				"surgeBon": {
-					"bonus": [{}],
-					"value": 0
-				},
-				"surges": {
-					"value": 0,
-					"max": 0
-				},
-				"surgeEnv": {
-					"bonus": [{}],
-					"value": 0
-				},
-				"secondwindbon": {
-					"bonus": [{}],
-					"value": 0,
-					"custom": ""
-				},
-				"saves": {
-					"bonus": [{}],
-					"value": 0
+				"tertiary": {
+					"value": "",
+					"max": "",
+					"sr": false,
+					"lr": false
 				}
 			},
-			"defences": {
-				"ac": {
-					"value": 10,
-					"base": 10,
-					"ability": "",
-					"armour": 0,
-					"class": 0,
-					"feat": 0,
-					"item": 0,
-					"power": 0,
-					"race": 0,
-					"untyped": 0,
-					"enhance": 0,
-					"bonus": [{}],
-					"temp": 0,
-					"light": false,
-					"altability": "",
-					"condition": "Conditional Bonuses.",
-					"chat": "@name defends with armour."
-				},
-				"fort": {
-					"value": 10,
-					"base": 10,
-					"ability": "",
-					"armour": 0,
-					"class": 0,
-					"feat": 0,
-					"item": 0,
-					"power": 0,
-					"race": 0,
-					"untyped": 0,
-					"enhance": 0,
-					"bonus": [{}],
-					"temp": 0,
-					"condition": "Conditional Bonuses.",
-					"chat": "@name defends with fortitude."
-				},
-				"ref": {
-					"value": 10,
-					"base": 10,
-					"ability": "",
-					"armour": 0,
-					"class": 0,
-					"feat": 0,
-					"item": 0,
-					"power": 0,
-					"race": 0,
-					"untyped": 0,
-					"enhance": 0,
-					"bonus": [{}],
-					"temp": 0,
-					"condition": "Conditional Bonuses.",
-					"chat": "@name defends with reflexes."
-				},
-				"wil": {
-					"value": 10,
-					"base": 10,
-					"ability": "",
-					"armour": 0,
-					"class": 0,
-					"feat": 0,
-					"item": 0,
-					"power": 0,
-					"race": 0,
-					"untyped": 0,
-					"enhance": 0,
-					"bonus": [{}],
-					"temp": 0,
-					"condition": "Conditional Bonuses.",
-					"chat": "@name defends with willpower."
-				}	
-			}
+			"magicItemUse": {
+				"perDay": 1,
+				"bonusValue": 0,
+				"milestone": 0,
+				"dailyuse": 1,
+				"encounteruse": false
+			},
+			"encumbrance": {
+				"value": null,
+				"max": null,
+				"formulaNorm": "@abilities.str.value * 10",
+				"formulaHeavy": "@abilities.str.value * 20",
+				"formulaMax": "@abilities.str.value * 50"
+			}				
+		},
+		"NPC": {
+			"templates": ["creature","combatant","wealth","speed"],
+			"advancedCals": false,
+			"attributes.init.base": 0,
+			"attributes.init.ability": "",
+			"details.role": {
+				"primary": "soldier",
+				"secondary": "standard",
+				"leader" : false
+			},
+			"defences.ac.base": 10,
+			"defences.fort.base": 10,
+			"defences.ref.base": 10,
+			"defences.wil.base": 10
+		},
+		"Hazard": {
+			"templates": ["combatant"],
+			"attributes.init.base": 0,
+			"attributes.init.ability": "",
+			"description": "",
+			"details.detection": "",
+			"details.countermeasures": "",		
+			"details.role": {
+				"primary": "trap",
+				"secondary": "standard",
+				"tertiary": "lurker"
+			},
+			"details.size": "med",
+			"details.bloodied": 0,
+			"details.notes": "",
+			"defences.ac.base": 10,
+			"defences.fort.base": 10,
+			"defences.ref.base": 10,
+			"defences.wil.base": 10,
+			"defences.ac.none": false,
+			"defences.fort.none": false,
+			"defences.ref.none": false,
+			"defences.wil.none": false
 		}
 	},
 	"Item": {
@@ -1151,9 +1065,7 @@
 					"abilityBonus": 0,
 					"def": "ac",
 					"defBonus": 0,
-					"formula": "@wepAttack + @powerMod + @lvhalf",
-					"damageType": {},
-					"effectType": {}
+					"formula": "@wepAttack + @powerMod + @lvhalf"
 				},
 				"hit": {
 					"shareDamageRoll": false,
@@ -1185,7 +1097,8 @@
 				},
 				"damageCritImp": {
 					"parts": []
-				}
+				},
+				"damageType": {}
 			}
 		},
 		"backpack": {
@@ -1416,16 +1329,17 @@
 			"special": "",
 			"specialAdd": {
 				"parts": []
-			}
+			},
+			"effectType": {}
 		},
 		"feature": {
-			"templates": ["itemDescription", "activatedEffect", "itemMacro"],
+			"templates": ["itemDescription","itemMacro"],
 			"featureType": "other",
 			"level": "",
 			"requirements": "",
 			"featureSource": "",
 			"featureGroup": "",
-			"aura": ""
+			"auraSize": ""
 		}
 	}
 }
