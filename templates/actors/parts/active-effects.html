@@ -122,7 +122,11 @@
 		<li class="skill flexrow" data-res="{{r}}">
 			<h4 class="res-name">{{res.label}}</h4>
 			<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
+		{{#if ../this.isCreature}}
+		{{#unless (eq ../system.advancedCals (eq ../isCharacter true))}}
 			<span class="res-armour">{{localize 'DND4E.Armour'}}: {{res.armour}} </span>
+		{{/unless}}
+		{{/if}}
 			<a class="resistances-bonus" data-target="system.resistances"
 				data-tooltip="{{localize 'DND4E.DamResVulnBonus' type=res.label}}">{{localize 'DND4E.Bonus'}}:
 				{{res.resBonusValue}}</a>
