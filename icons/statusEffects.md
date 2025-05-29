@@ -43,6 +43,9 @@ The icons within the icons/statusEffects and icons/ui folders are by the authors
 * Drunk:			https://game-icons.net/1x1/lorc/pouring-chalice.html
 * Sneaking:			https://game-icons.net/1x1/delapouite/robber.html
 
+* Running:			https://game-icons.net/1x1/lorc/run.html
+* Squeezing:		https://game-icons.net/1x1/delapouite/contract.html
+
 UI ICONS:
 * Calc:				https://game-icons.net/1x1/delapouite/calculator.html
 * attackRoll:		https://game-icons.net/1x1/lorc/crossed-swords.html
