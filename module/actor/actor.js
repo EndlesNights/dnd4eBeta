@@ -13,14 +13,14 @@ export class Actor4e extends Actor {
 		super(data, context);
 		
 		//Set default NPC Math Options
-		if(data.type==='NPC'){
+		if(["NPC","Hazard"].includes(data.type)){
 			if(data?.system?.advancedCals == undefined){
 				this.system.advancedCals = game.settings.get("dnd4e", "npcMathOptions");
 			}
 		}
 
 		// set default to sorting
-		if(data.type){
+		if(["NPC","Character","Hazard"].includes(data.type)){
 			if(!data?.system?.powerGroupTypes){
 				data.system.powerGroupTypes = `usage`;
 			}
@@ -28,7 +28,7 @@ export class Actor4e extends Actor {
 				data.system.powerSortTypes = `actionType`;
 			}
 		}
-		
+
 	}
 
 	/** @override */
@@ -122,23 +122,23 @@ export class Actor4e extends Actor {
 	/** @inheritdoc */
 	getRollData() {
 		const data = super.getRollData();
-		data["strMod"] = data.abilities["str"].mod
-		data["conMod"] = data.abilities["con"].mod
-		data["dexMod"] = data.abilities["dex"].mod
-		data["intMod"] = data.abilities["int"].mod
-		data["wisMod"] = data.abilities["wis"].mod
-		data["chaMod"] = data.abilities["cha"].mod
+		data["strMod"] = data?.abilities?.str.mod || 0
+		data["conMod"] = data?.abilities?.con.mod || 0
+		data["dexMod"] = data?.abilities?.dex.mod || 0
+		data["intMod"] = data?.abilities?.int.mod || 0
+		data["wisMod"] = data?.abilities?.wis.mod || 0
+		data["chaMod"] = data?.abilities?.cha.mod || 0
 
-		data["lvhalf"] = Math.floor(data.details.level/2)
-		data["lv"] = data.details.level
-		data["tier"] = data.details.tier
+		data["lvhalf"] = Math.floor(data.details.level/2) || 0
+		data["lv"] = data?.details.level || 0
+		data["tier"] = data?.details.tier || 0
 
-		data["heroic"] = data.details.level < 11 ? 1 : 0
-		data["paragon"] = data.details.level >= 11 && data.details.level < 21 ? 1 : 0
-		data["epic"] = data.details.level >= 21 ? 1 : 0
+		data["heroic"] = data?.details.level < 11 ? 1 : 0
+		data["paragon"] = data?.details.level >= 11 && data.details.level < 21 ? 1 : 0
+		data["epic"] = data?.details.level >= 21 ? 1 : 0
 
-		data["heroicOrParagon"] = data.details.level < 21 ? 1 : 0
-		data["paragonOrEpic"] = data.details.level >= 11 ? 1 : 0
+		data["heroicOrParagon"] = data?.details.level < 21 ? 1 : 0
+		data["paragonOrEpic"] = data?.details.level >= 11 ? 1 : 0
 		return data;
 	}
 
@@ -151,70 +151,101 @@ export class Actor4e extends Actor {
 		// Character All Ability Check" and All Ability Save bonuses added when rolled since not a fixed value.
 		const saveBonus = Number.isNumeric(bonuses.save) ? parseInt(bonuses.save) : 0;
 		const checkBonus = Number.isNumeric(bonuses.check) ? parseInt(bonuses.check) : 0;
-
-		for (let [id, abl] of Object.entries(system.abilities)) {
-			abl.mod = Math.floor((abl.value - 10) / 2);
-			abl.modHalf = abl.mod + Math.floor(system.details.level / 2);
-			abl.prof = (abl.proficient || 0);
-			if(game.settings.get("dnd4e", "halfLevelOptions")) {
-				abl.saveBonus = saveBonus;
-				abl.checkBonus = checkBonus;
-			} else {
-				abl.saveBonus = saveBonus + Math.floor(system.details.level / 2);
-				abl.checkBonus = checkBonus + Math.floor(system.details.level / 2);
-			}
-			abl.save = abl.mod + abl.prof + abl.saveBonus;
-
-			abl.label = game.i18n.localize(DND4E.abilities[id]);
-		}
-
-		//AC mod check, check if light armour (or somthing else that add/negates adding mod)
-		if((system.defences.ac.light || this.checkLightArmour() ) && system.defences.ac.altability !== "none") {
-			system.defences.ac.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
-			if(system.defences.ac.altability != "")
-			{
-				// if(data.abilities[data.defences.ac.altability].value > data.abilities[data.defences.ac.ability].value)
-				{
-					system.defences.ac.ability = system.defences.ac.altability;
-				}
-			}
-		}
-		else {
-			system.defences.ac.ability = "";
-		}
 		
-		//set mods for defences
-		system.defences.fort.ability = (system.abilities.str.value >= system.abilities.con.value) ? "str" : "con";
-		system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
-		system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
+		if(["Player Character","NPC"].includes(this.type)){
+			for (let [id, abl] of Object.entries(system.abilities)) {
+				abl.mod = Math.floor((abl.value - 10) / 2);
+				abl.modHalf = abl.mod + Math.floor(system.details.level / 2);
+				abl.prof = (abl.proficient || 0);
+				if(game.settings.get("dnd4e", "halfLevelOptions")) {
+					abl.saveBonus = saveBonus;
+					abl.checkBonus = checkBonus;
+				} else {
+					abl.saveBonus = saveBonus + Math.floor(system.details.level / 2);
+					abl.checkBonus = checkBonus + Math.floor(system.details.level / 2);
+				}
+				abl.save = abl.mod + abl.prof + abl.saveBonus;
+
+				abl.label = game.i18n.localize(DND4E.abilities[id]);
+			}
+
+			//AC mod check, check if light armour (or somthing else that add/negates adding mod)
+			if((system.defences.ac.light || this.checkLightArmour() ) && system.defences.ac.altability !== "none") {
+				system.defences.ac.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
+				if(system.defences.ac.altability != "") {
+					//if(data.abilities[data.defences.ac.altability].value > data.abilities[data.defences.ac.ability].value)
+						system.defences.ac.ability = system.defences.ac.altability;
+					}
+			} else {
+				system.defences.ac.ability = "";
+			}
+			
+			//set mods for defences
+			system.defences.fort.ability = (system.abilities.str.value >= system.abilities.con.value) ? "str" : "con";
+			system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
+			system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
+			
+		}
 
 	}
 
 	prepareDerivedData() {
 		// Get the Actor's data object
 		const actorData = this;
-		const system = this.system;
-		
+		const system = this.system;		
 		// this.system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
 		system.halfLevelOptions = game.settings.get("dnd4e", "halfLevelOptions");
-
-		this._prepareDerivedDataHitPointAutoCalc(actorData, system);
-		this._prepareDerivedDataHealingSurges(actorData, system);
-		this._prepareDerivedDataHealthValues(actorData, system);
-		this._prepareDerivedDataSavingThrow(actorData, system);
-		this._prepareDerivedDataDeathThrow(actorData, system);
-	
-		//Weight & Encumbrance
-		system.encumbrance = this._computeEncumbrance(actorData.system);
 		
-		this._prepareDerivedDataGlobalValues(actorData, system);
-		this._prepareDerivedDataDefences(actorData, system);
-		this._prepareDerivedDataInitiative(actorData, system);
-		this._prepareDerivedDataMovement(actorData, system);
-		this._prepareDerivedDataSkills(actorData, system);
-		this._prepareDerivedDataSkillsPassive(actorData, system);
-		this._prepareDerivedDataResistancesWeaknesses(actorData, system);
-		this._prepareDerivedDataMagicItemUse(actorData, system);
+		//Get some basic properties to determine what we need to prepare
+		const isCreature = ["Player Character","NPC"].includes(actorData.type);
+		const isCombatant = ["Player Character","NPC","Hazard"].includes(actorData.type);
+		const hasWealth = ["Player Character","NPC"].includes(actorData.type);
+		const hasSpeed = ["Player Character","NPC"].includes(actorData.type);
+		//console.debug(`${actorData.name} is ${actorData.type} (creature: ${isCreature}, combatant:${isCombatant})`);
+		
+		if(actorData.type === "Player Character"){
+			//console.debug('PC');
+			//Weight & Encumbrance
+			system.encumbrance = this._computeEncumbrance(actorData.system);
+			this._prepareDerivedDataDeathThrow(actorData, system);
+			this._prepareDerivedDataMagicItemUse(actorData, system);
+		}
+		
+		if(isCombatant){
+			//console.debug('Combatant');
+			this._prepareDerivedDataHitPointAutoCalc(actorData, system);
+			//console.debug('AutoHP done');
+			this._prepareDerivedDataHealingSurges(actorData, system);
+			//console.debug('Surges done');
+			this._prepareDerivedDataHealthValues(actorData, system);
+			//console.debug('Health done');
+			this._prepareDerivedDataSavingThrow(actorData, system);
+			//console.debug('Saves done');
+			this._prepareDerivedDataGlobalValues(actorData, system);
+			//console.debug('Global done');
+			this._prepareDerivedDataDefences(actorData, system);
+			//console.debug('Defences done');
+			this._prepareDerivedDataInitiative(actorData, system);
+			//console.debug('Initiative done');
+			this._prepareDerivedDataResistancesWeaknesses(actorData, system);
+			//console.debug('Resistance done');
+			//Actor-specific overide of Conditional Attack Mods
+			this.calcCommonAttackBonuses(system);
+			//console.debug('Common Attack Bonuses done');
+		}
+		
+		if(isCreature){
+			//console.debug('Creature');
+			this._prepareDerivedDataSkills(actorData, system);
+			//console.debug('Skills done');
+			this._prepareDerivedDataSkillsPassive(actorData, system);
+			//console.debug('Passives done');
+		}
+		
+		if(hasSpeed) this._prepareDerivedDataMovement(actorData, system);
+		//console.debug('Movement done');
+		
+		//console.debug('End of routine');
 	}
 
 	_prepareDerivedDataHitPointAutoCalc(actorData, system){
@@ -280,68 +311,71 @@ export class Actor4e extends Actor {
 			system.details.surgeBon.value = system.details.surgeBon.absolute;
 		}
 		
-		if(isNaN(parseInt(system.details.secondwindbon?.absolute))){ //All logic only required if there is no usable absolute value
-		
-			if(!(system.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(system.details.secondwindbon.bonus[0]))) {
-				for( const b of system.details.secondwindbon.bonus) {
-					if(b.active && Helper._isNumber(b.value)) {
-						system.details.secondwindbon.value += parseInt(b.value);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,system)
-						if(Helper._isNumber(val)){
-							system.details.secondwindbon.value += parseInt(val);
+		if(actorData.type === "Player Character"){
+			if(isNaN(parseInt(system.details.secondwindbon?.absolute))){ //All logic only required if there is no usable absolute value
+				if(!(system.details.secondwindbon.bonus.length === 1 && jQuery.isEmptyObject(system.details.secondwindbon.bonus[0]))) {
+					for( const b of system.details.secondwindbon.bonus) {
+						if(b.active && Helper._isNumber(b.value)) {
+							system.details.secondwindbon.value += parseInt(b.value);
+						}
+						else if(b.active){
+							let val = Helper.replaceData(b.value,system)
+							if(Helper._isNumber(val)){
+								system.details.secondwindbon.value += parseInt(val);
+							}
 						}
 					}
 				}
+				system.details.secondwindbon.value += system.details.secondwindbon.feat || 0;
+				system.details.secondwindbon.value += system.details.secondwindbon.item || 0;
+				system.details.secondwindbon.value += system.details.secondwindbon.power || 0;
+				system.details.secondwindbon.value += system.details.secondwindbon.race || 0;
+				system.details.secondwindbon.value += system.details.secondwindbon.untyped || 0;
+				//trim value according to floor and ceil
+				system.details.secondwindbon.value = Math.max(system.details.secondwindbon.value,system.details.secondwindbon?.floor || system.details.secondwindbon.value-1);
+				system.details.secondwindbon.value = Math.min(system.details.secondwindbon.value,system.details.secondwindbon?.ceil || system.details.secondwindbon.value+1);
+			}else{
+				system.details.secondwindbon.value = system.details.secondwindbon.absolute;
 			}
-			system.details.secondwindbon.value += system.details.secondwindbon.feat || 0;
-			system.details.secondwindbon.value += system.details.secondwindbon.item || 0;
-			system.details.secondwindbon.value += system.details.secondwindbon.power || 0;
-			system.details.secondwindbon.value += system.details.secondwindbon.race || 0;
-			system.details.secondwindbon.value += system.details.secondwindbon.untyped || 0;
-			//trim value according to floor and ceil
-			system.details.secondwindbon.value = Math.max(system.details.secondwindbon.value,system.details.secondwindbon?.floor || system.details.secondwindbon.value-1);
-			system.details.secondwindbon.value = Math.min(system.details.secondwindbon.value,system.details.secondwindbon?.ceil || system.details.secondwindbon.value+1);
-		}else{
-			system.details.secondwindbon.value = system.details.secondwindbon.absolute;
 		}
 		
 		system.details.bloodied = Math.floor(system.attributes.hp.max / 2);
 		system.details.surgeValue = Math.floor(system.details.bloodied / 2) + system.details.surgeBon.value;
 		system.attributes.hp.min = -system.details.bloodied;
-		system.details.secondWindValue = system.details.surgeValue + system.details.secondwindbon.value;
+		if(actorData.type === "Player Character") system.details.secondWindValue = system.details.surgeValue + system.details.secondwindbon.value;
 
 		//check if bloodied
 		system.details.isBloodied = (system.attributes.hp.value <= system.attributes.hp.max/2);
 		
-		if(isNaN(parseInt(system.details.surgeEnv?.absolute))){ //All logic only required if there is no usable absolute value
-		
-			if(!(system.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeEnv.bonus[0]))) {
-				for( const b of system.details.surgeEnv.bonus) {
-					if(b.active && Helper._isNumber(b.value)) {
-						system.details.surgeEnv.value += parseInt(b.value);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,system)
-						if(Helper._isNumber(val)){
-							system.details.surgeEnv.value += parseInt(val);
+		if(actorData.type === "Player Character"){
+			if(isNaN(parseInt(system.details.surgeEnv?.absolute))){ //All logic only required if there is no usable absolute value
+			
+				if(!(system.details.surgeEnv.bonus.length === 1 && jQuery.isEmptyObject(system.details.surgeEnv.bonus[0]))) {
+					for( const b of system.details.surgeEnv.bonus) {
+						if(b.active && Helper._isNumber(b.value)) {
+							system.details.surgeEnv.value += parseInt(b.value);
+						}
+						else if(b.active){
+							let val = Helper.replaceData(b.value,system)
+							if(Helper._isNumber(val)){
+								system.details.surgeEnv.value += parseInt(val);
+							}
 						}
 					}
 				}
+				system.details.surgeEnv.value += system.details.surgeEnv.feat || 0;
+				system.details.surgeEnv.value += system.details.surgeEnv.item || 0;
+				system.details.surgeEnv.value += system.details.surgeEnv.power || 0;
+				system.details.surgeEnv.value += system.details.surgeEnv.race || 0;
+				system.details.surgeEnv.value += system.details.surgeEnv.untyped || 0;
+				//trim value according to floor and ceil
+				system.details.surgeEnv.value = Math.max(system.details.surgeEnv.value,system.details.surgeEnv?.floor || system.details.surgeEnv.value-1);
+				system.details.surgeEnv.value = Math.min(system.details.surgeEnv.value,system.details.surgeEnv?.ceil || system.details.surgeEnv.value+1);
+			}else{
+				system.details.surgeEnv.value = system.details.surgeEnv.absolute;
 			}
-			system.details.surgeEnv.value += system.details.surgeEnv.feat || 0;
-			system.details.surgeEnv.value += system.details.surgeEnv.item || 0;
-			system.details.surgeEnv.value += system.details.surgeEnv.power || 0;
-			system.details.surgeEnv.value += system.details.surgeEnv.race || 0;
-			system.details.surgeEnv.value += system.details.surgeEnv.untyped || 0;
-			//trim value according to floor and ceil
-			system.details.surgeEnv.value = Math.max(system.details.surgeEnv.value,system.details.surgeEnv?.floor || system.details.surgeEnv.value-1);
-			system.details.surgeEnv.value = Math.min(system.details.surgeEnv.value,system.details.surgeEnv?.ceil || system.details.surgeEnv.value+1);
-		}else{
-			system.details.surgeEnv.value = system.details.surgeEnv.absolute;
 		}
-
+	
 		// const feats = DND4E.characterFlags;
 		// const athlete = flags.remarkableAthlete;
 		// const joat = flags.jackOfAllTrades;
@@ -472,31 +506,38 @@ export class Actor4e extends Actor {
 	_prepareDerivedDataInitiative(actorData, system){
 		//calculate initiative
 		if(isNaN(parseInt(system.attributes.init?.absolute))){ //All logic only required if there is no usable absolute value
-			let initBonusValue = 0;
-			if(!game.settings.get("dnd4e", "halfLevelOptions")){
-				initBonusValue += Math.floor(system.details.level / 2);
-			}
 
-			if(!(system.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(system.attributes.init.bonus[0]))) {
-				for( const b of system.attributes.init.bonus) {
-					if(b.active  && Helper._isNumber(b.value)) {
-						initBonusValue += parseInt(b.value);
-					}
-					else if(b.active){
-						let val = Helper.replaceData(b.value,system)
-						if(Helper._isNumber(val)){
-							initBonusValue += parseInt(val);
+			if(["NPC","Hazard"].includes(this.type) && !system.advancedCals){
+			//If no advancedCalcs, NPCs/Hazards/etc just use base value
+			
+				system.attributes.init.value = (system.attributes.init.base || 0);
+				
+			} else {
+				
+				let initBonusValue = 0;
+				if(!game.settings.get("dnd4e", "halfLevelOptions")){
+					initBonusValue += Math.floor(system.details.level / 2);
+				}
+
+				if(!(system.attributes.init.bonus.length === 1 && jQuery.isEmptyObject(system.attributes.init.bonus[0]))) {
+					for( const b of system.attributes.init.bonus) {
+						if(b.active  && Helper._isNumber(b.value)) {
+							initBonusValue += parseInt(b.value);
+						}
+						else if(b.active){
+							let val = Helper.replaceData(b.value,system)
+							if(Helper._isNumber(val)){
+								initBonusValue += parseInt(val);
+							}
 						}
 					}
 				}
-			}
-			//used for effects
-			initBonusValue += system.attributes.init.bonusValue || 0;
-
-			if(this.type === "NPC" && !system.advancedCals){
-				system.attributes.init.value = (system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod : 0) + (system.attributes.init.base || 0) + initBonusValue;
-			} else {
-				system.attributes.init.value = system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod + initBonusValue : initBonusValue;
+				
+				initBonusValue += system.attributes.init?.bonusValue || 0;
+				initBonusValue += system.attributes.init?.base || 0;
+				
+				system.attributes.init.value = system.attributes.init.ability ? system.abilities[system.attributes.init.ability].mod + initBonusValue : initBonusValue ;
+				
 			}
 			system.attributes.init.value += system.attributes.init.feat || 0;
 			system.attributes.init.value += system.attributes.init.item || 0;
@@ -858,11 +899,7 @@ export class Actor4e extends Actor {
 	}
 	_prepareDerivedDataMagicItemUse(actorData, system){
 		//Magic Items
-		system.magicItemUse.perDay = Math.clamp(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
-		
-		//Actor-specific overide of Conditional Attack Mods
-		this.calcCommonAttackBonuses(system);
-		
+		system.magicItemUse.perDay = Math.clamp(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;	
 	}
 
 	/**
@@ -872,8 +909,10 @@ export class Actor4e extends Actor {
 		super.prepareData(); // calls, in order: data reset (clear active effects),
 		// prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
 		// prepareDerivedData()
-
-		this.defaultSecondWindEffect();
+		
+		if(this.type==="Player Character"){
+			this.defaultSecondWindEffect();
+		}
 	}
 
 
@@ -1600,7 +1639,8 @@ export class Actor4e extends Actor {
 			parts.push(this.system.attributes.init.value / 100);
 		} else if (tiebreaker === 'dex') {
 			//Optional override: append raw dexterity score as tiebreaker
-			parts.push(this.system.abilities.dex.value / 100);
+			const dexScore = this.system.abilities?.dex.value || 0;
+			parts.push(dexScore / 100);
 		}
 		//Finally, append two extra decimal places at random, to simulate a random tiebreaker.
 		parts.push(Math.floor(Math.random()*98+1)/10000);

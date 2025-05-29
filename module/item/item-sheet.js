@@ -65,11 +65,12 @@ export default class ItemSheet4e extends ItemSheet {
 		data.itemType = itemData.type.titleCase();
 		data.itemStatus = this._getItemStatus(itemData);
 		data.itemProperties = this._getItemProperties(itemData);
+		
 		data.isPhysical = itemData.system.hasOwnProperty("quantity");
 
 		// Potential consumption targets
 		data.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
-		
+				
 		if(itemData.type === "feature"){
 			data.isAura = ( itemData.system?.auraSize >= 0 ? true : false);
 		}
@@ -178,7 +179,7 @@ export default class ItemSheet4e extends ItemSheet {
 		});
 
 		data.autoanimationsActive = game.modules.get("autoanimations")?.active;
-
+		
 		return data;
 	}
 
@@ -550,7 +551,7 @@ export default class ItemSheet4e extends ItemSheet {
 	 * @private
 	 */
 	_getItemProperties(item) {
-		console.debug(this.item.labels);
+		//console.debug(this.item.labels);
 		const props = [];
 		const labels = this.item.labels || [];
 		if ( item?.type === "weapon" ) {
@@ -613,7 +614,7 @@ export default class ItemSheet4e extends ItemSheet {
 					props.push(CONFIG.DND4E.powerSource[item.system.powersource]);
 				}
 			}
-			
+						
 			props.push(...Object.entries(item.system.damageType)
 				.filter(e => e[1] === true && e[0] != "physical")
 				.map(e => CONFIG.DND4E.damageTypes[e[0]])
@@ -639,53 +640,19 @@ export default class ItemSheet4e extends ItemSheet {
 			props.push(labels.fort);
 			props.push(labels.ref);
 			props.push(labels.wil);
-			
-			if (item.system?.armour?.enhance){
-				let enhString = `${game.i18n.localize("DND4E.Enhancement")}\n +${item.system.armour.enhance}`;
-				//The strings below begin with a non-breaking space character. Don't delete it unless you want to break the text wrapping!
-				if(item.system.armour.type === "armour"){
-					enhString += ` ${game.i18n.localize("DND4E.DefAC")}`;
-				} else {
-					enhString += ` ${game.i18n.localize("DND4E.DefFort")}/${game.i18n.localize("DND4E.DefRef")}/${game.i18n.localize("DND4E.DefWil")}`;
-				}
-				props.push(enhString);
-			}
+			props.push(labels.enh);
 		}
 
 		else if ( item.type === "feature" ) {
-			if( item.system?.auraSize != "" && item.system?.auraSize >= 0 ){
-				props.push(`${game.i18n.localize('DND4E.Aura')} ${item.system.auraSize}`);
-			}
-			if(item.system.featureType === 'feat'){
-				let tierName;
-				if(item.system.level > 20) {
-					tierName = game.i18n.localize('DND4E.Tier.Epic');
-				} else if(item.system.level > 10) {
-					tierName = game.i18n.localize('DND4E.Tier.Paragon');
-				} else {
-					tierName = game.i18n.localize('DND4E.Tier.Heroic');
-				}
-				props.push(game.i18n.format('DND4E.Tier.TierName', {tier: tierName}));
-			}
-			if(item.system?.featureSource){
-				props.push(` ${item.system.featureSource} ${game.i18n.localize('DND4E.Feature.Feature')}`);
-			}
-			if(item.system?.featureGroup){
-				props.push(`${item.system.featureGroup}`);
-			};
-			if(item.system?.requirements){
-				props.push(`${game.i18n.localize('DND4E.Requires')}: ${item.system.requirements}`);
-			}
+			props.push(labels.aura);
+			props.push(labels.tier);
+			props.push(labels.source);
+			props.push(labels.group);
+			props.push(labels.reqs);
 		}
 
 		else if ( item.type === "ritual" ) {
-			if ( item.system?.category ) {
-				try {
-					props.push(`${game.i18n.localize('DND4E.Category')}: ${CONFIG.DND4E.ritualTypes[item.system.category].label}`);
-				} catch(e) {
-					console.error(`Failed to get the category name for this ritual, probably due to an un-migrated item. Manually setting the category should fix this.`);
-				}
-			}
+			props.push(labels.category);
 		}
 		
 		// Action type

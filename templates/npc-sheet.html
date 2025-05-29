@@ -161,12 +161,22 @@
 					
 					<div>
 						<label class="rollInitiative rollable" >{{localize 'DND4E.Initiative'}}</label>
-						<strong class="init-bonus rollable" data-tooltip="{{localize 'DND4E.InitiativeScore'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</strong>
+						
+						{{#if system.advancedCals}}
+							<strong class="init-bonus rollable" data-tooltip="{{localize 'DND4E.InitiativeScore'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</strong>
+							<label class="def-base">{{localize 'DND4E.Base'}}:</label>
+							<input class="number" name="system.attributes.init.base" value="{{system.attributes.init.base}}" data-dtype="Number" onfocus="this.select()">	
+						{{else}}
+							<input class="number init-base" name="system.attributes.init.base" value="{{system.attributes.init.base}}" data-dtype="Number" onfocus="this.select()">
+							<span class="init-value{{#if (lt system.attributes.init.value system.attributes.init.base)}} penalty{{else if (gt system.attributes.init.value system.attributes.init.base)}} bonus{{/if}}" data-tooltip="{{system.attributes.init.shortname}} {{localize 'DND4EUI.CurrentValue'}}">({{numberFormat system.attributes.init.value decimals=0 sign=true}})</span>
+						
+						{{/if}}
 					</div>
 					
 					<div class="senses-perception" data-skill="prc">
 						<label class="skill-name rollable">{{system.skills.prc.label}}</label>
-						<strong class="skill-mod skill-bonus rollable">{{numberFormat system.skills.prc.total decimals=0 sign=true }}</strong>
+						<strong class="skill-mod {{#if system.advancedCals}}skill-bonus 
+						rollable{{/if}}">{{numberFormat system.skills.prc.total decimals=0 sign=true }}</strong>
 					</div>
 					
 					<div>

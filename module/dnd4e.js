@@ -14,6 +14,7 @@ import ItemSheet4e from "./item/item-sheet.js";
 import ContainerItemSheet from "./item/container-sheet.js";
 import ActorSheet4e from "./actor/actor-sheet.js";
 import ActorSheet4eNPC from "./actor/npc-sheet.js";
+import ActorSheet4eHazard from "./actor/hazard-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 import { measureDistances, getBarAttribute } from "./canvas.js";
@@ -113,6 +114,11 @@ Hooks.once("init", async function() {
 	Actors.registerSheet("dnd4e", ActorSheet4eNPC, {
 		types: ["NPC"],
 		label: game.i18n.localize("SHEET.NPC"),
+		makeDefault: true
+	});
+	Actors.registerSheet("dnd4e", ActorSheet4eHazard, {
+		types: ["Hazard"],
+		label: game.i18n.localize("SHEET.Hazard"),
 		makeDefault: true
 	});
 

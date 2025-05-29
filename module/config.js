@@ -497,8 +497,6 @@ DND4E.creatureRole = {
 }
 preLocalize("creatureRole", { keys: ["label"] });
 
-/* -------------------------------------------- */
-
 DND4E.creatureRoleSecond = {
 	"standard": {label: "DND4E.CreatureRoleSecStandard"},
 	"elite": {label: "DND4E.CreatureRoleSecElite"},
@@ -507,6 +505,24 @@ DND4E.creatureRoleSecond = {
 	"other": {label: "DND4E.CreatureRoleSecOther"},
 }
 preLocalize("creatureRoleSecond", { keys: ["label"] });
+
+/* -------------------------------------------- */
+
+DND4E.hazardRole = {
+	"trap": {label: "DND4E.Role.Hazard.Trap"},
+	"hazard": {label: "DND4E.Role.Hazard.Hazard"},
+	"other": {label: "DND4E.Role.Hazard.Other"}
+}
+preLocalize("hazardRole", { keys: ["label"] });
+
+DND4E.hazardRoleSecond = {
+	"blaster": {label: "DND4E.Role.Hazard.Blaster"},
+	"lurker": {label: "DND4E.Role.Hazard.Lurker"},
+	"obstacle": {label: "DND4E.Role.Hazard.Obstacle"},
+	"warder": {label: "DND4E.Role.Hazard.Warder"},
+	"other": {label: "DND4E.Role.Hazard.Other"},
+}
+preLocalize("hazardRoleSecond", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
@@ -1974,4 +1990,3 @@ DND4E.characterFlags = {
 DND4E.allowedActorFlags = [
 	"isPolymorphed", "originalActor"
 ].concat(Object.keys(DND4E.characterFlags));
-

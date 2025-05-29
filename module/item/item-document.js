@@ -407,16 +407,59 @@ export default class Item4e extends Item {
 		const labels = {};
 
 		// Equipment Items
+		if ( itemData.type === "feature" ) {
+			try{
+				if( system?.auraSize != "" && system?.auraSize >= 0 ){
+					labels.aura = `${game.i18n.localize('DND4E.Aura')} ${system.auraSize}`;
+				}
+				if(system.featureType === 'feat'){
+					let tierName;
+					if(system.level > 20) {
+						tierName = game.i18n.localize('DND4E.Tier.Epic');
+					} else if(system.level > 10) {
+						tierName = game.i18n.localize('DND4E.Tier.Paragon');
+					} else {
+						tierName = game.i18n.localize('DND4E.Tier.Heroic');
+					}
+					labels.tier = game.i18n.format('DND4E.Tier.TierName', {tier: tierName});
+				}
+				if(system?.featureSource){
+					labels.source = `${system.featureSource} ${game.i18n.localize('DND4E.Feature.Feature')}`;
+				}
+				if(system?.featureGroup){
+					labels.group = `${system.featureGroup}`;
+				};
+				if(system?.requirements){
+					labels.reqs = `${game.i18n.localize('DND4E.Requires')}: ${system.requirements}`;
+				}			
+			}catch(e){
+				console.error(`Item labels failed for feature: ${itemData.name}. Item data has been dumped to debug. ${e}`);
+				console.debug(itemData);
+			}
+		}
+		
+		// Equipment Items
 		if ( itemData.type === "equipment" ) {
 			try{
-				labels.armour = system.armour.ac ? `${system.armour.ac} ${game.i18n.localize("DND4E.AC")}` : "";
-				labels.fort = system.armour.fort ? `${system.armour.fort} ${game.i18n.localize("DND4E.FORT")}` : "";
-				labels.ref = system.armour.ref ? `${system.armour.ref} ${game.i18n.localize("DND4E.REF")}` : "";
-				labels.wil = system.armour.wil ? `${system.armour.wil} ${game.i18n.localize("DND4E.WIL")}` : "";
-				labels.move = system.armour.movePen ? `${game.i18n.localize('DND4E.Speed')} ${system.armour.movePenValue}` : "";
-				labels.check = system.armour.skillCheck ? `${game.i18n.localize('DND4E.SkillACPAbbr')} ${system.armour.skillCheckValue}` : "";
+			
+				if (system?.armour?.enhance){
+					let enhString = `${game.i18n.localize("DND4E.Enhancement")} +${system.armour.enhance}`;
+					//The strings below begin with a non-breaking space character. Don't delete it unless you want to break the text wrapping!
+					if(system.armour.type === "armour"){
+						enhString += ` ${game.i18n.localize("DND4E.DefAC")}`;
+					} else {
+						enhString += ` ${game.i18n.localize("DND4E.DefFort")}/${game.i18n.localize("DND4E.DefRef")}/${game.i18n.localize("DND4E.DefWil")}`;
+					}
+					labels.enh = enhString;
+				}
 				
 				if(system.armour.type == 'armour'){
+					labels.armour = system.armour.ac ? `${system.armour.ac} ${game.i18n.localize("DND4E.AC")}` : "";
+					labels.fort = system.armour.fort ? `${system.armour.fort} ${game.i18n.localize("DND4E.FORT")}` : "";
+					labels.ref = system.armour.ref ? `${system.armour.ref} ${game.i18n.localize("DND4E.REF")}` : "";
+					labels.wil = system.armour.wil ? `${system.armour.wil} ${game.i18n.localize("DND4E.WIL")}` : "";
+					labels.move = system.armour.movePen ? `${game.i18n.localize('DND4E.Speed')} ${system.armour.movePenValue}` : "";
+					labels.check = system.armour.skillCheck ? `${game.i18n.localize('DND4E.SkillACPAbbr')} ${system.armour.skillCheckValue}` : "";
 					labels.type = system.armour.subType != "" ? CONFIG.DND4E.equipmentTypesArmour[system.armour.subType].label : "";
 				}else{
 					labels.type = ["","other"].includes(system.armour.type) ? game.i18n.localize('DND4E.EquipmentWondrousItem') :CONFIG.DND4E.equipmentTypes[system.armour.type].label ;
@@ -427,7 +470,6 @@ export default class Item4e extends Item {
 				console.debug(itemData);
 			}
 		}
-		
 		
 		// Weapons
 		if ( itemData.type === "weapon" ) {
@@ -463,8 +505,19 @@ export default class Item4e extends Item {
 			}
 		}
 
+		// Rituals
+		else if ( itemData.type === "ritual" ) {
+			if ( system?.category ) {
+				try {
+					labels.category = `${game.i18n.localize('DND4E.Category')}: ${CONFIG.DND4E.ritualTypes[system.category].label}`;
+				} catch(e) {
+					console.error(`Failed to get the category name for this ritual, probably due to an un-migrated item. Manually setting the category should fix this.`);
+				}
+			}
+		}
+		
 		// Activated Items
-		if ( system.hasOwnProperty("activation") ) {
+		if (system.hasOwnProperty("activation") ) {
 			// Ability Activation Label
 			let act = system.activation || {};
 			if ( act ) labels.activation = [act.cost, C.abilityActivationTypes[act.type]].filterJoin(" ");
@@ -538,8 +591,10 @@ export default class Item4e extends Item {
 			}
 
 			// Recharge Label
-			let chg = system.recharge || {};
-			labels.recharge = `${game.i18n.localize("DND4E.Recharge")} [${chg.value}${parseInt(chg.value) < 6 ? "+" : ""}]`;
+			if(system.recharge?.value){
+				let chg = system.recharge || {};
+				labels.recharge = `${game.i18n.localize("DND4E.Recharge")} [${chg.value}${parseInt(chg.value) < 6 ? "+" : ""}]`;
+			}
 		}
 
 		// DamageTypes
@@ -569,7 +624,7 @@ export default class Item4e extends Item {
 				// non healing damage expressions didn't work anyway
 			}
 		}
-
+		
 		// Assign labels
 		this.labels = labels;
 
@@ -1014,7 +1069,7 @@ export default class Item4e extends Item {
 		const props = [];
 		const fn = this[`_${this.type}ChatData`];
 		if ( fn ) fn.bind(this)(data, labels, props);
-
+		
 		// Proficiencies
 		if (data.hasOwnProperty("proficient") && ["equipment","weapon"].includes(this.type)){
 			if( this.type == 'weapon' || (data?.armour.type == 'armour' && ![""].includes(data?.armour.subType)) || (data?.armour.type == 'arms' && ["light","heavy"].includes(data?.armour.subType)) ){
@@ -1091,7 +1146,6 @@ export default class Item4e extends Item {
 	 * @private
 	 */
 	_weaponChatData(data, labels, props) {
-		//console.debug(data);
 		props.push(
 			game.i18n.localize(CONFIG.DND4E.weaponTypes[data.weaponType])
 		);
@@ -1167,11 +1221,13 @@ export default class Item4e extends Item {
 	/* -------------------------------------------- */
 
 	/**
-	 * Prepare chat card data for items of the "Feat" type
+	 * Prepare chat card data for items of the "Feature" type
 	 * @private
 	 */
-	_featChatData(data, labels, props) {
-		props.push(data.requirements);
+	_featureChatData(data, labels, props) {
+		for (const [key, value] of Object.entries(labels)) {
+			props.push(value);
+		}
 	}
 
 	/* -------------------------------------------- */

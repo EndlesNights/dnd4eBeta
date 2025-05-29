@@ -851,6 +851,7 @@ function _migrateActorGlobalMods(actorData, updateData){
 */
 function _migrateActorSwim(actorData, updateData){
 	
+	if(actorData?.type === "Hazard") return;
 	const movement = actorData?.system?.movement;
 	
 	if(movement?.swim == undefined){
@@ -878,6 +879,17 @@ function _migrateActorSwim(actorData, updateData){
  */
 function _migrateFeature(itemData, updateData){
 	const sourceType = itemData.type;
+	
+	if(sourceType == 'feature'){
+		//Catch any features that were migrated early during beta/testing
+		updateData["system.activation"] = null;
+		updateData["system.duration"] = null;
+		updateData["system.target"] = null;
+		updateData["system.range"] = null;
+		updateData["system.uses"] = null;
+		updateData["system.consume"] = null;
+		return updateData;
+	}	
 	
 	if(!(['classFeats','feat','raceFeats','pathFeats','destinyFeats'].includes(sourceType))) return;
 	
@@ -909,6 +921,14 @@ function _migrateFeature(itemData, updateData){
 	updateData["system.featureSource"] = '';
 	updateData["system.featureGroup"] = '';
 	updateData["system.auraSize"] = '';
+	
+	//Remove obsolete properties
+	updateData["system.activation"] = null;
+	updateData["system.duration"] = null;
+	updateData["system.target"] = null;
+	updateData["system.range"] = null;
+	updateData["system.uses"] = null;
+	updateData["system.consume"] = null;
 	
 	return updateData;
 }
