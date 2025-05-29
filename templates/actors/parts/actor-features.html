@@ -1,8 +1,8 @@
 <ol class="item-list inventory-list">
 	<header class="feature-filters flexrow">
-		<div class="sort-features"">
+		<div class="sort-features">
 			<input type="hidden" name="flags.dnd4e.sheetDisplay.features.sortBy.value">
-			<label for="feature-sort">{{localize 'DND4EUI.SortBy'}}</label><br>
+			<label for="feature-sort">{{localize 'DND4EUI.SortBy'}}</label><br />
 			<select name="system.featureSortTypes">
 				{{selectOptions config.featureSortTypes selected=system.featureSortTypes labelAttr="label"}}
 			</select>
@@ -17,7 +17,7 @@
 
 	{{#each sections as |section sid|}}
 		<li class="items-header flexrow">
-			<h3 class="item-name flexrow">{{localize section.label}}</h3>
+			<h3 class="item-name flexrow">{{localize section.groupLabel}}</h3>
 	
 			{{#if section.hasActions}}
 			<div class="item-detail item-uses">{{localize "DND4E.Uses"}}</div>
@@ -32,7 +32,7 @@
 	
 			{{#if ../owner}}
 			<div class="item-controls flexrow">
-				<a class="item-control item-create" data-tooltip="{{localize 'DND4E.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+				<a class="item-control item-create" data-tooltip="{{localize 'DND4E.FeatureAdd'}}" data-type="feature" {{#each section.dataset as |v k|}}data-subtype="{{v}}"{{/each}}>
 					<i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
 				</a>
 			</div>

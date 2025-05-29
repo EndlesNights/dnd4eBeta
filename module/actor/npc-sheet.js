@@ -26,16 +26,11 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 
 		//TODO fix this monstrosity!
 		//Because I'm bad at CSS and can't find the solution T_T
-		if(this.constructor.name == "Fox4eNPCSheet"){
-			const sheetBody = this.element.find(".sheet-body");
-			const bodyHeight = position.height - 294;
-			sheetBody.css("height", bodyHeight);
-		} else {
-			const sheetBody = this.element.find(".npc-lower");
-			const upper = this.element.find(".npc-upper");
-			const bodyHeight = sheetBody.parent().height() - upper.height() - 15; //extra 15 for the padding
-			sheetBody.css("height", bodyHeight);
-		}
+		const sheetBody = this.element.find(".npc-lower");
+		const upper = this.element.find(".npc-upper");
+		const bodyHeight = sheetBody.parent().height() - upper.height() - 15; //extra 15 for the padding
+		sheetBody.css("height", bodyHeight);
+		
 		return position;
 	}
 }

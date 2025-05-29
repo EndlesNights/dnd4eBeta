@@ -20,6 +20,20 @@ export const migrateWorld = async function() {
 			err.message = `Failed dnd4e system migration for Actor ${a.name}: ${err.message}`;
 			console.error(err);
 		}
+		
+		// Migrate items contained by an actor
+		for ( let i of a.items ) {
+			try {
+				const updatedItem = migrateItemData(i.toObject(), migrationData);
+				if ( !foundry.utils.isEmpty(updatedItem) ) {
+					console.log(`Migrating Item ${i.name} of Actor ${a.name}`);
+					await i.update(updatedItem, {enforceTypes: false});
+				}
+			} catch(err) {
+				err.message = `Failed dnd4e system migration for Item ${i.name} of Actor ${a.name}: ${err.message}`;
+				console.error(err);
+			}
+		}
 	}
 
 	// Migrate World Items
@@ -191,6 +205,8 @@ export const migrateItemData = function(item) {
 	_migrateItemsGMDescriptions(item, updateData);
 	_migrateNeckGearEnhance(item, updateData);
 	_migratePowerBasicAndGlobal(item, updateData);
+	_migrateFeature(item, updateData);
+	_migrateRitualCategory(item, updateData);
 	return updateData;
 };
 
@@ -850,5 +866,71 @@ function _migrateActorSwim(actorData, updateData){
 			"temp": 0
 		};
 	}
+	return updateData;
+}
+
+/**
+ * Migrate featlike items to new "features" type
+ * @param {object} itemData   Item data being migrated.
+ * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+function _migrateFeature(itemData, updateData){
+	const sourceType = itemData.type;
+	
+	if(!(['classFeats','feat','raceFeats','pathFeats','destinyFeats'].includes(sourceType))) return;
+	
+	updateData["type"] = "feature";
+	
+	switch(sourceType){
+		case "classFeats":
+			updateData["system.featureType"] = "class";
+			break;
+		case "feat":
+			updateData["system.featureType"] = "feat";
+			break;
+		case "raceFeats":
+			updateData["system.featureType"] = "race";
+			break;
+		case "pathFeats":
+			updateData["system.featureType"] = "path";
+			break;
+		case "destinyFeats":
+			updateData["system.featureType"] = "destiny";
+			break;
+		default:
+			updateData["system.featureType"] = "other";
+			break;
+	}
+	
+	if(!itemData.system?.level) updateData["system.level"] = '';
+	if(!itemData.system?.requirements) updateData["system.requirements"] = '';
+	updateData["system.featureSource"] = '';
+	updateData["system.featureGroup"] = '';
+	updateData["system.auraSize"] = '';
+	
+	return updateData;
+}
+
+/**
+ * Migrate ritual category text to select text
+ * @param {object} itemData   Item data being migrated.
+ * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+function _migrateRitualCategory(itemData, updateData){	
+	if(!itemData.type === 'ritual') return;
+	
+	updateData["system.category"] = "other";
+	console.debug(CONFIG.DND4E.ritualTypes);
+	for ( const [id, group] of Object.entries(CONFIG.DND4E.ritualTypes)){
+		console.debug(`${id} ${group.label}`);
+		if( itemData.system.category == id || itemData.system.category == group.label ){
+			updateData["system.category"] = id;
+		}	
+	}
+	
 	return updateData;
 }

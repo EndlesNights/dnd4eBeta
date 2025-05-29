@@ -18,6 +18,7 @@ export const preloadHandlebarsTemplates = async function() {
 	"systems/dnd4e/templates/actors/parts/actor-inventory.html",
 	"systems/dnd4e/templates/actors/parts/actor-features.html",
 	"systems/dnd4e/templates/actors/parts/actor-powers.html",
+	"systems/dnd4e/templates/actors/parts/actor-rituals.html",
 	
 	// Item Sheet Partials
 	"systems/dnd4e/templates/items/parts/item-action.html",

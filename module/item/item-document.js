@@ -641,7 +641,8 @@ export default class Item4e extends Item {
 	 *                                        the prepared chat message data (if false).
 	 * @return {Promise}
 	 */
-	async roll({configureDialog=true, rollMode=null, createMessage=true}={}) {
+	async roll({configureDialog=true, rollMode=null, createMessage=true, variance={}}={}) {
+		//console.debug(variance);
 
 		if(["both", "pre", "sub"].includes(this.system.macro?.launchOrder)) {
 			Helper.executeMacro(this)
@@ -652,14 +653,15 @@ export default class Item4e extends Item {
 				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
 				let attackBonus = null;
 				if(this.hasAttack){
-					attackBonus = await this.getAttackBonus();
+					attackBonus = await this.getAttackBonus({'variance':variance});
 				}
-				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor, attackBonus);
+				let cardString = Helper._preparePowerCardData(await this.getChatData({},variance), CONFIG, this.actor, attackBonus);
 				return Helper.commonReplace(cardString, this.actor, this, weaponUse? weaponUse.system : null, 1);
 			} else {
 				return null;
 			}
 		})();
+
 
 		// Basic template rendering data
 		const token = this.actor.token;
@@ -668,7 +670,7 @@ export default class Item4e extends Item {
 			tokenId: token ? token.uuid : null,
 			effects: this.effects.size ? this.effects : false,
 			item: this,
-			system: await this.getChatData(),
+			system: await this.getChatData({},variance),
 			labels: this.labels,
 			hasAttack: this.hasAttack,
 			isHealing: this.isHealing,
@@ -680,7 +682,7 @@ export default class Item4e extends Item {
 			isVersatile: this.isVersatile,
 			hasSave: this.hasSave,
 			hasAreaTarget: this.hasAreaTarget,
-			isRoll: true,
+			isRoll: true
 		};
 
 		// Set up html div for effect Tool Tips
@@ -692,11 +694,12 @@ export default class Item4e extends Item {
 			}
 		}
 
-		// For feature items, optionally show an ability usage dialog
+		/*// For feature items, optionally show an ability usage dialog
+		// @FoxLee Looks like obsolete 5e stuff, but could it be repurposed for modal powers?
 		if (this.type === "feat") {
 			let configured = await this._rollFeat(configureDialog);
 			if ( configured === false ) return;
-		}
+		}*/
 		else if ( this.type === "consumable" ) {
 			let configured = await this._rollConsumable(configureDialog);
 			if ( configured === false ) return;
@@ -742,10 +745,15 @@ export default class Item4e extends Item {
 			  core: { canPopout: true }
 			}
 		};
-
+		
 		// If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
 		if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
 			chatData.flags["dnd4e.itemData"] = templateData.item;
+		}
+		
+		// Embed variance in the chat message, so buttons can be aware of it
+		if (variance) {
+			chatData.flags["dnd4e.variance"] = variance;
 		}
 
 		// Toggle default roll mode
@@ -986,7 +994,7 @@ export default class Item4e extends Item {
 	 * @param {Object} htmlOptions    Options used by the TextEditor.enrichHTML function
 	 * @return {Object}               An object of chat data to render
 	 */
-	async getChatData(htmlOptions={}) {
+	async getChatData(htmlOptions={},variance={}) {
 		const data = foundry.utils.duplicate(this.system);
 		const labels = this.labels;
 
@@ -1047,6 +1055,13 @@ export default class Item4e extends Item {
 		
 		// Filter properties and return
 		data.properties = props.filter(p => !!p);
+		
+		//console.debug(variance);
+		
+		//Temporary states from special usage
+		data.isCharge = variance?.isCharge || false;
+		data.isOpp = variance?.isOpp || false;
+		
 		return data;
 	}
 
@@ -1164,7 +1179,7 @@ export default class Item4e extends Item {
 	/* -------------------------------------------- */
 
 	/**
-	 * Place an attack roll using an item (weapon, feat, spell, or equipment)
+	 * Place an attack roll using an item (weapon, feat, power, or equipment)
 	 * Rely upon the d20Roll logic for the core implementation
 	 *
 	 * @param {object} options        Roll options which are configured and provided to the d20Roll function
@@ -1176,6 +1191,8 @@ export default class Item4e extends Item {
 		// itemData.weaponUse = 2nd dropdown - default/none/weapon
 		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...
 		// find details on the weapon being used, if any.   This is null if no weapon is being used.
+		
+		//console.debug(options);
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
@@ -1201,17 +1218,18 @@ export default class Item4e extends Item {
 		let flavor = title;
 
 		if(itemData.attack.def) {
-			flavor += ` ${game.i18n.localize("DND4E.VS")} <b>${itemData.attack.def.toUpperCase() }</b>`;
+			flavor += ` ${game.i18n.localize("DND4E.VS")} <strong>${itemData.attack.def.toUpperCase() }</strong>`;
 		}
 
 		if(game.user.targets.size) {
 			options.attackedDef = itemData.attack.def; 
 		}
 		
-		const rollData = this.getRollData();
+		const rollData = this.getRollData({'variance':options?.variance});
 
 		rollData.isAttackRoll = true;
-		rollData.commonAttackBonuses = CONFIG.DND4E.commonAttackBonuses;
+		rollData.commonAttackBonuses = actorData.system.commonAttackBonuses;
+		//console.debug(rollData.commonAttackBonuses);
 		rollData["ammo"] = 0 // because ammo is added to by weapon use multiple clicks of the button will add it higher
 
 		// Define Roll bonuses
@@ -1300,6 +1318,8 @@ export default class Item4e extends Item {
 				left: window.innerWidth - 710
 			},
 			isAttackRoll: true,
+			'isCharge': options?.variance?.isCharge || false,
+			'isOpp': options?.variance?.isOpp || false,
 			messageData: {"flags.dnd4e.roll": {type: "attack", itemId: this.id }},
 			options
 		};
@@ -1341,10 +1361,11 @@ export default class Item4e extends Item {
 			return;
 		}
 
-		const rollData = this.getRollData();
+		const rollData = this.getRollData(options);
 
 		rollData.isAttackRoll = true;
-		rollData.commonAttackBonuses = CONFIG.DND4E.commonAttackBonuses;
+		rollData.commonAttackBonuses = actorData.system.commonAttackBonuses;
+		//console.debug(rollData.commonAttackBonuses);
 		rollData["ammo"] = 0;
 
 		// Define Roll bonuses
@@ -1422,7 +1443,7 @@ export default class Item4e extends Item {
 	 *
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
-	async rollDamage({event, spellLevel=null, versatile=false, fastForward=undefined}={}) {
+	async rollDamage({event, spellLevel=null, versatile=false, fastForward=undefined, variance={}}={}) {
 		const itemData = this.system;
 		const actorData = this.actor;
 		const actorInnerData = this.actor.system;
@@ -1440,7 +1461,7 @@ export default class Item4e extends Item {
 		const messageData = {"flags.dnd4e.roll": {type: "damage", itemId: this.id }};
 
 		// Get roll data
-		const rollData = this.getRollData();
+		const rollData = this.getRollData({'variance':variance});
 		if ( spellLevel ) rollData.item.level = spellLevel;
 
 		// Get message labels
@@ -1672,7 +1693,9 @@ export default class Item4e extends Item {
 			},
 			messageData,
 			options,
-			fastForward
+			fastForward,
+			'isCharge': variance?.isCharge || false,
+			'isOpp': variance?.isOpp || false,
 		});
 	}
 
@@ -1974,7 +1997,7 @@ export default class Item4e extends Item {
 
 		const label = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
 
-		const flavor = this.system.chatFlavor ?  `${this.system.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize(titleKey)}  (${label} check)`;
+		const flavor = this.system.chatFlavor ? `${this.system.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize(titleKey)}  (${label} check)`;
 		// Compose the roll data
 		const rollConfig = foundry.utils.mergeObject({
 			parts: parts,
@@ -2001,7 +2024,8 @@ export default class Item4e extends Item {
 	 * Prepare a data object which is passed to any Roll formulas which are created related to this Item
 	 * @private
 	 */
-	getRollData() {
+	getRollData(options={}) {
+		//console.debug(options);
 		if ( !this.actor ) return null;
 		const rollData = this.actor.getRollData();
 		rollData.item = foundry.utils.duplicate(this.system);
@@ -2018,6 +2042,12 @@ export default class Item4e extends Item {
 		// Include a proficiency score
 		// const prof = "proficient" in rollData.item ? (rollData.item.proficient || 0) : 1;
 		// rollData["prof"] = Math.floor(prof * rollData.attributes.prof);
+		
+		// Temporary properties from special modes
+		rollData.isCharge = options?.variance?.isCharge || false;
+		rollData.isOpp = options?.variance?.isOpp || false;
+		
+		//console.debug(rollData);
 		
 		return rollData;
 	}
@@ -2073,6 +2103,8 @@ export default class Item4e extends Item {
 		const message =  game.messages.get(messageId);
 		const action = button.dataset.action;
 		
+		//console.debug(message);
+		
 		// Validate permission to proceed with the roll
 		const isTargetted = action === "save";
 		if ( !( isTargetted || game.user.isGM || message.isAuthor ) ) return;
@@ -2089,6 +2121,9 @@ export default class Item4e extends Item {
 			return ui.notifications.error(game.i18n.format("DND4E.ActionWarningNoItem", {item: card.dataset.itemId, name: actor.name}))
 		}
 		const spellLevel = parseInt(card.dataset.spellLevel) || null;
+		const variance = message.flags?.dnd4e?.variance || {};
+
+		//console.debug(variance);
 
 		// Get card targets
 		let targets = [];
@@ -2107,11 +2142,11 @@ export default class Item4e extends Item {
 			effectTargets = new Set(canvas.tokens.controlled) // Array, convert to set
 		}
 
-		if ( action === "attack" ) await item.rollAttack({event});
-		else if ( action === "damage" ) await item.rollDamage({event, spellLevel});
+		if ( action === "attack" ) await item.rollAttack({event, 'variance':variance});
+		else if ( action === "damage" ) await item.rollDamage({event, spellLevel, 'variance':variance});
 		else if ( action === "healing" ) await item.rollHealing({event, spellLevel});
-		else if ( action === "versatile" ) await item.rollDamage({event, spellLevel, versatile: true});
-		else if ( action === "formula" ) await item.rollFormula({event, spellLevel});
+		else if ( action === "versatile" ) await item.rollDamage({event, spellLevel, versatile: true, 'variance':variance});
+		else if ( action === "formula" ) await item.rollFormula({event, spellLevel, 'variance':variance});
 		
 		// Effects
 		else if ( action === "applyEffect" ) {
@@ -2540,4 +2575,24 @@ export default class Item4e extends Item {
 		return created;
 	}
 	
+	
+	/* -------------------------------------------- 
+	/*	HIDE OBSOLETE ITEMS							
+	/*  Transitional tool that removes obsolete item types 
+	/*  from the "create item" dialogue, with the goal of 
+	/*  preventing their creation from now on.  
+	/*  When the obsolete item types are removed from the
+	/*	system template, this override should be removed too.
+	/* -------------------------------------------- */
+	static createDialog(data={}, {parent=null, pack=null, types, ...options}={}) {
+		try{
+			types ??= Item.TYPES.filter(name => !["classFeats","raceFeats","feat","pathFeats","destinyFeats"].includes(name));
+		}catch(e){
+			console.error(`Failed to hide obsolete item types: ${e}`);
+		}
+		return super.createDialog(data, {parent, pack, types, ...options});
+	}
+	
 }
+
+

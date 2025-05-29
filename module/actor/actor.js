@@ -28,6 +28,7 @@ export class Actor4e extends Actor {
 				data.system.powerSortTypes = `actionType`;
 			}
 		}
+		
 	}
 
 	/** @override */
@@ -858,6 +859,10 @@ export class Actor4e extends Actor {
 	_prepareDerivedDataMagicItemUse(actorData, system){
 		//Magic Items
 		system.magicItemUse.perDay = Math.clamp(Math.floor(( system.details.level - 1 ) /10 + 1),1,3) + system.magicItemUse.bonusValue + system.magicItemUse.milestone;
+		
+		//Actor-specific overide of Conditional Attack Mods
+		this.calcCommonAttackBonuses(system);
+		
 	}
 
 	/**
@@ -888,10 +893,7 @@ export class Actor4e extends Actor {
 			disabled:false,
 			description: game.i18n.localize("DND4E.SecondWindEffect"),
 			changes: [
-				{key: "system.defences.ac.untyped", mode: 2, value: 2},
-				{key: "system.defences.fort.untyped", mode: 2, value: 2},
-				{key: "system.defences.ref.untyped", mode: 2, value: 2},
-				{key: "system.defences.wil.untyped", mode: 2, value: 2},
+				{key: "system.modifiers.defences.untyped", mode: 2, value: 2}
 			],
 			flags:{dnd4e:{effectData:{
 				durationType:"startOfUserTurn",
@@ -1334,6 +1336,60 @@ export class Actor4e extends Actor {
 		return true;
 	}
 
+	calcCommonAttackBonuses(system){
+		const defaultMods = DND4E.commonAttackBonuses;
+		
+		try{
+			for (const [id, condition] of Object.entries(system.commonAttackBonuses)) {
+				//console.debug(id);
+				//console.debug(defaultMods[id]);
+				condition.label = condition?.label ? condition.label : defaultMods[id].label;
+				condition.value = defaultMods[id].value || 0;
+				
+				if(isNaN(parseInt(condition?.absolute))){ //All logic only required if there is no usable absolute value
+
+					let bonusValue = 0;
+
+					if(!(condition.bonus.length === 1 && jQuery.isEmptyObject(condition.bonus[0]))) {
+						for( const b of condition.bonus) {
+							if(b.active && Helper._isNumber(b.value)) {
+								bonusValue += parseInt(b.value);
+							}
+							else if(b.active){
+								let val = Helper.replaceData(b.value,system)
+								if(Helper._isNumber(val)){
+									bonusValue += parseInt(val);
+								}
+							}
+						}
+					}
+					
+					condition.bonusValue = bonusValue;
+
+					condition.value += condition?.feat || 0;
+					condition.value += condition?.item || 0;
+					condition.value += condition?.power || 0;
+					condition.value += condition?.race || 0;
+					condition.value += condition?.untyped || 0;
+					//No way to sort manual bonuses, so they just get added regardless.
+					condition.value += condition.bonusValue || 0;
+
+					//trim value according to floor and ceil
+					condition.value = Math.max(condition.value,condition?.floor || condition.value-1);
+					condition.value = Math.min(condition.value,condition?.ceil || condition.value+1);
+				}else{
+					condition.value = condition.absolute;
+				}
+				
+				//console.debug(condition);
+			}
+			//console.debug(system.commonAttackBonuses);
+		}catch(e){
+			console.error(`Failed conditional bonus calc. (${e})`)
+		}
+		
+	}
+	
   /**
    * Handle how changes to a Token attribute bar are applied to the Actor.
    * This allows for game systems to override this behavior and deploy special logic.
@@ -1553,7 +1609,7 @@ export class Actor4e extends Actor {
 			parts: parts,
 			data: {init: init},
 			event,
-			title: `Init Roll`,
+			title: game.i18n.localize('DND4E.InitiativeRoll'),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: isReroll? `${this.name} ${game.i18n.localize("DND4E.RollsInitReroll")}!` : `${this.name} ${game.i18n.localize("DND4E.RollsInit")}!`,
 			'options.flags.dnd4e.roll.type':'init'
@@ -1927,9 +1983,10 @@ export class Actor4e extends Actor {
 	* @param {} options   Options for using the power
 	*/
 	
-	async usePower(item, {configureDialog=true, fastForward=false}={}) {
+	async usePower(item, {configureDialog=true, fastForward=false, variance={} }) {
 		//if not a valid type of item to use
-		console.log("UsePower")
+		//console.debug(variance);
+		
 		if ( item.type !=="power" ) throw new Error("Wrong Item type");
 		const itemData = item.system;
 		//configure Powers data
@@ -1952,7 +2009,7 @@ export class Actor4e extends Actor {
 
 		if(fastForward){
 
-			await item.roll();
+			await item.roll({'variance': variance});
 
 			if(item.hasAreaTarget){
 				const template = MeasuredTemplate4e.fromItem(item);
@@ -1960,19 +2017,19 @@ export class Actor4e extends Actor {
 			}
 
 			if(item.hasAttack){
-				await item.rollAttack({fastForward:true});
+				await item.rollAttack({fastForward:true, 'variance': variance});
 			}
 			if(item.hasDamage){
-				await item.rollDamage({fastForward:true});
+				await item.rollDamage({fastForward:true, 'variance': variance});
 			}
 			if(item.hasHealing){
-				await item.rollHealing({fastForward:true});
+				await item.rollHealing({fastForward:true, 'variance': variance});
 			}
 			return
 		}
 			
 		// Invoke the Item roll
-		return item.roll();
+		return item.roll({'variance': variance});
 	}
 	
 	_computeEncumbrance(actorData) {

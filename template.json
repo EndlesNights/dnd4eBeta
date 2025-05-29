@@ -1,9 +1,9 @@
 {
 	"Actor": {
-		"types": ["Player Character","NPC"],
+		"types": ["Player Character","NPC","Prop"],
 		"templates":{
 			"common":{
-				"abilities":{
+				"abilities": {
 					"str":{
 						"value": 10,
 						"chat": "@name uses @label."
@@ -60,8 +60,7 @@
 						"untyped": 0,
 						"notes": ""
 					}
-				},
-				
+				},			
 				"biography": "",		
 				"actionpoints":	{
 					"value": 1,
@@ -149,7 +148,7 @@
 						"chat": "@name defends with willpower."
 					}	
 				},
-				"modifiers":{
+				"modifiers": {
 					"attack":{
 						"value": 0,
 						"class": 0,
@@ -208,8 +207,7 @@
 					"height": "",
 					"weight": "",
 					"alignment": "",
-					"deity": "",
-					
+					"deity": "",					
 					"secondwind": false,
 					"secondwindEffect": {},
 					"deathsaves": 3,
@@ -644,8 +642,8 @@
 						"chat": "@name uses @label."
 					}
 				},
-				"skillTraining":{
-					"untrained":{
+				"skillTraining": {
+					"untrained": {
 						"value":0,
 						"feat": 0,
 						"item": 0,
@@ -653,7 +651,7 @@
 						"race": 0,
 						"untyped": 0
 					},
-					"trained":{
+					"trained": {
 						"value":5,
 						"feat": 0,
 						"item": 0,
@@ -661,7 +659,7 @@
 						"race": 0,
 						"untyped": 0
 					},
-					"expertise":{
+					"expertise": {
 						"value":8,
 						"feat": 0,
 						"item": 0,
@@ -824,7 +822,108 @@
 					"rh" : 0,
 					"si" : 0,
 					"rs" : 0
-				}		
+				},
+				"commonAttackBonuses": {
+					"comAdv": {
+						"value": 2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"charge": {
+						"value": 1,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"conceal": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"concealTotal": {
+						"value": -5,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"cover": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"coverSup": {
+						"value": -5,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"longRange": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"prone": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"restrained": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"running": {
+						"value": -5,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
+					"squeez": {
+						"value": -5,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					}
+				}	
 			}
 		},
 		"Player Character": {
@@ -960,10 +1059,10 @@
 					"chat": "@name defends with willpower."
 				}	
 			}
-		}	
+		}
 	},
 	"Item": {
-		"types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"],
+		"types": ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "backpack", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power", "feature"],
 		"templates": {
 			"itemDescription": {
 				"description": {
@@ -1044,6 +1143,10 @@
 					"shareAttackRoll": false,
 					"isAttack": true,
 					"isBasic": false,
+					"isCharge": false,
+					"isOpp": false,
+					"canCharge": false,
+					"canOpp": false,
 					"ability": "str",
 					"abilityBonus": 0,
 					"def": "ac",
@@ -1163,7 +1266,7 @@
 			}
 		},
 		"equipment": {
-			"templates": ["itemDescription", "physicalItem", "activatedEffect", "mountable", "itemMacro"],
+			"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
 			"level": "",
 			"armour": {
 				"type": "armour",
@@ -1244,6 +1347,7 @@
 			},
 			"brutalNum": 1,
 			"weaponGroup": {},
+			"implementGroup": {},
 			"attackForm": "@profBonus+@enhance",
 			"attackFormImp": "@profImpBonus+@enhanceImp",
 			"damageForm": "@enhance",
@@ -1313,6 +1417,15 @@
 			"specialAdd": {
 				"parts": []
 			}
+		},
+		"feature": {
+			"templates": ["itemDescription", "activatedEffect", "itemMacro"],
+			"featureType": "other",
+			"level": "",
+			"requirements": "",
+			"featureSource": "",
+			"featureGroup": "",
+			"aura": ""
 		}
 	}
 }
