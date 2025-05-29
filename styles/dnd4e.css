@@ -2057,6 +2057,9 @@ font-size:12px;
 /*  Hazard Sheets
 /* ----------------------------------------- */
 
+.dnd4e.sheet.actor.Hazard{
+	min-width:452px;
+}
 .dnd4e.sheet .npc.hazard .sheet-header .role-details{
 	justify-content:flex-start;
 }
