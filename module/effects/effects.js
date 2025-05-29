@@ -171,7 +171,7 @@
 		event.preventDefault();
 		const a = event.currentTarget;
 		const li = a.closest("li");
-		const effects = ["Player Character", "NPC"].includes(owner.type) ? owner.getActiveEffects() : owner.effects.contents;
+		const effects = ["Player Character","NPC","Hazard"].includes(owner.type) ? owner.getActiveEffects() : owner.effects.contents;
 		const effect = li.dataset.effectId ? effects.find(e => e._id === li.dataset.effectId) : null;
 		switch ( a.dataset.action ) {
 			case "create":

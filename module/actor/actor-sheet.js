@@ -113,6 +113,10 @@ export default class ActorSheet4e extends ActorSheet {
 			cssClass: isOwner ? "editable" : "locked",
 			isCharacter: this.actor.type === "Player Character",
 			isNPC: this.actor.type === "NPC",
+			isCreature: ["NPC","Player Character"].includes(this.actor.type),
+			isCombatant: ["NPC","Player Character","Hazard"].includes(this.actor.type),
+			hasWealth: ["NPC","Player Character"].includes(this.actor.type),
+			hasSpeed: ["NPC","Player Character"].includes(this.actor.type),
 			config: CONFIG.DND4E,
 			rollData: this.actor.getRollData.bind(this.actor)
 		};
@@ -131,90 +135,99 @@ export default class ActorSheet4e extends ActorSheet {
 			const item = this.actor.items.get(i._id);
 			i.labels = item.labels;
 		}
-		
-		// sheetData.config = CONFIG.DND4E;
-		actorData.size = DND4E.actorSizes;
-
-		//if any custom skills, sort them alphabetically
-		if(Object.entries(game.dnd4e.config.coreSkills).length != Object.entries(actorData.skills).length){
-			const skillNames = Object.keys(actorData.skills);
-
-			// Sort the skill names based on the label property
-			skillNames.sort((a, b) => actorData.skills[a].label?.localeCompare(actorData.skills[b].label));
-			
-			const sortedSkills = skillNames.reduce((acc, skillName) => {
-			  acc[skillName] = actorData.skills[skillName];
-			  return acc;
-			}, {});
-			
-			actorData.skills = sortedSkills;
-		}
-
-		for ( let [s, skl] of Object.entries(actorData.skills)) {
-			// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
-			skl.icon = this._getTrainingIcon(skl.training);
-			skl.hover = game.i18n.localize(DND4E.trainingLevels[skl.training]);
-			skl.label = skl.label ? skl.label: game.i18n.localize(DND4E.skills[s]);
-		}
-		
-		this._prepareDataTraits(actorData.languages, 
-			{"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
-		);
-
-		this._prepareDataProfs(actorData.details.armourProf, 
-			{"profArmor": CONFIG.DND4E.profArmor}
-		);
-
-		this._prepareDataProfs(actorData.details.weaponProf, 
-			{ weapons:Object.assign(
-				CONFIG.DND4E.weaponProficiencies,
-				CONFIG.DND4E.simpleM,
-				CONFIG.DND4E.simpleR,
-				CONFIG.DND4E.militaryM,
-				CONFIG.DND4E.militaryR,
-				CONFIG.DND4E.superiorM,
-				CONFIG.DND4E.superiorR,
-				CONFIG.DND4E.improvisedM,
-				CONFIG.DND4E.improvisedR,
-				CONFIG.DND4E.implement
-			)}
-		);
-		
-		this._prepareDataSense(actorData.senses,
-			{"vision": CONFIG.DND4E.vision, "special": CONFIG.DND4E.special}
-		);
-		
-		this._prepareDataSave(actorData.details,
-			{"saves": CONFIG.DND4E.saves}
-		);
 
 		// Prepare owned items
 		this._prepareItems(data);
 		
-
-		data.currencyGoldSum = this._currencyGoldSumLabel();
-
-		// Prepare active effects
-		// data.effects = prepareActiveEffectCategories(this.actor.effects);
+		// Prepare active effects;
 		data.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.getActiveEffects());
 
-		// Resources
-		actorData.resources = ["primary", "secondary", "tertiary"].reduce((obj, r) => {
-			const res = actorData.resources[r] || {};
-			res.name = r;
-			res.placeholder = game.i18n.localize("DND4E.Resource"+r.titleCase());
-			if (res && res.value === 0) delete res.value;
-			if (res && res.max === 0) delete res.max;
-			obj[r] = res
-			return obj;
-		}, {});
+		if(data.isCombatant){
+			//if any custom skills, sort them alphabetically
+			if(Object.entries(game.dnd4e.config.coreSkills).length != Object.entries(actorData.skills).length){
+				const skillNames = Object.keys(actorData.skills);
 
-		data.biographyHTML = await TextEditor.enrichHTML(data.system.biography, {
-			secrets: isOwner,
-			async: true,
-			relativeTo: this.actor
-		});
+				// Sort the skill names based on the label property
+				skillNames.sort((a, b) => actorData.skills[a].label?.localeCompare(actorData.skills[b].label));
+				
+				const sortedSkills = skillNames.reduce((acc, skillName) => {
+				  acc[skillName] = actorData.skills[skillName];
+				  return acc;
+				}, {});
+				
+				actorData.skills = sortedSkills;
+			}
 
+			for ( let [s, skl] of Object.entries(actorData.skills)) {
+				// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
+				skl.icon = this._getTrainingIcon(skl.training);
+				skl.hover = game.i18n.localize(DND4E.trainingLevels[skl.training]);
+				skl.label = skl.label ? skl.label: game.i18n.localize(DND4E.skills[s]);
+			}
+			
+			this._prepareDataSave(actorData.details,
+				{"saves": CONFIG.DND4E.saves}
+			);
+		}
+		
+		if(data.isCharacter){
+			//Proficiencies
+			this._prepareDataProfs(actorData.details.armourProf, 
+				{"profArmor": CONFIG.DND4E.profArmor}
+			);
+			this._prepareDataProfs(actorData.details.weaponProf, 
+			{ weapons:Object.assign(
+					CONFIG.DND4E.weaponProficiencies,
+					CONFIG.DND4E.simpleM,
+					CONFIG.DND4E.simpleR,
+					CONFIG.DND4E.militaryM,
+					CONFIG.DND4E.militaryR,
+					CONFIG.DND4E.superiorM,
+					CONFIG.DND4E.superiorR,
+					CONFIG.DND4E.improvisedM,
+					CONFIG.DND4E.improvisedR,
+					CONFIG.DND4E.implement
+				)}
+			);
+			
+			// Resources
+			actorData.resources = ["primary", "secondary", "tertiary"].reduce((obj, r) => {
+				const res = actorData.resources[r] || {};
+				res.name = r;
+				res.placeholder = game.i18n.localize("DND4E.Resource"+r.titleCase());
+				if (res && res.value === 0) delete res.value;
+				if (res && res.max === 0) delete res.max;
+				obj[r] = res
+				return obj;
+			}, {});
+		}	
+
+		if(data.hasWealth){
+			data.currencyGoldSum = this._currencyGoldSumLabel();
+		}
+
+		if(data.isCreature){
+			actorData.size = DND4E.actorSizes;
+			
+			this._prepareDataSense(actorData.senses,
+				{"vision": CONFIG.DND4E.vision, "special": CONFIG.DND4E.special}
+			);
+			
+			this._prepareDataTraits(actorData.languages, 
+				{"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
+			);
+	
+			data.biographyHTML = await TextEditor.enrichHTML(data.system.biography, {
+				secrets: isOwner,
+				async: true,
+				relativeTo: this.actor
+			});
+		}
+		
+		if(data.hasSpeed){
+			this._prepareMovement(data);
+		}
+		
 		return data;
 	}
 	
@@ -335,6 +348,10 @@ export default class ActorSheet4e extends ActorSheet {
 		this._sortFeatures(features);
 		this._sortRituals(rituals);
 
+	}
+	
+	_prepareMovement(data) {
+		if (!data.hasSpeed) return;
 		data.moveTitle = `<p style="text-align:left">
 ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedWalking")}
 <br>${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedRunning")}
@@ -349,7 +366,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			data.system.moveCustom = moveCustom;
 			moveCustom.forEach((c) => data.moveTitle += `\n${c.trim()}`);
 		}
-	}
+	}	
 
 	_compareValues(key, order = 'asc') {
 		return function innerSort(a, b) {
