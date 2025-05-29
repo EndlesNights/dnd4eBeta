@@ -29,6 +29,9 @@ export class Actor4e extends Actor {
 			}
 		}
 
+		// set detaul icon for hazard
+		if(this.type == "Hazard") data.img = "icons/svg/trap.svg";
+
 	}
 
 	/** @override */
