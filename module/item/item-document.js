@@ -2162,7 +2162,7 @@ export default class Item4e extends Item {
 		//console.debug(message);
 		
 		// Validate permission to proceed with the roll
-		const isTargetted = action === "save";
+		const isTargetted = action === "save" || action === "applyEffect";
 		if ( !( isTargetted || game.user.isGM || message.isAuthor ) ) return;
 
 		// Get the Actor from a synthetic Token
