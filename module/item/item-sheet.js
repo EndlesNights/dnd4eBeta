@@ -65,10 +65,15 @@ export default class ItemSheet4e extends ItemSheet {
 		data.itemType = itemData.type.titleCase();
 		data.itemStatus = this._getItemStatus(itemData);
 		data.itemProperties = this._getItemProperties(itemData);
+		
 		data.isPhysical = itemData.system.hasOwnProperty("quantity");
 
 		// Potential consumption targets
 		data.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
+				
+		if(itemData.type === "feature"){
+			data.isAura = ( itemData.system?.auraSize >= 0 ? true : false);
+		}
 	
 		if(itemData.type === "power"){
 			data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
@@ -111,11 +116,10 @@ export default class ItemSheet4e extends ItemSheet {
 			itemData.system.isRecharge = itemData.system.useType === "recharge";
 		}
 
-
 		// Weapon Properties
 		if(itemData.type === "weapon"){
 			data.weaponMetaProperties = {};
-			for (let attrib in data.config.weaponProperties) {
+			for (let attrib in data.config?.weaponProperties) {
 				data.weaponMetaProperties[attrib] = {
 						propName: data.config.weaponProperties[attrib], 
 						checked: itemData.system.properties[attrib],
@@ -123,14 +127,15 @@ export default class ItemSheet4e extends ItemSheet {
 				}
 			}
 
+			data.hasEnhance = true;
 			data.weaponBaseTypes = CONFIG.DND4E[itemData.system.weaponType];
 			data.isWeaponBaseTypeCustom = (itemData.system.weaponBaseType === "custom");
 		}
 
 		// Action Details
-		data.hasAttackRoll = this.item.hasAttack;
-		data.isHealing = itemData.system.actionType === "heal";
-		data.isFlatDC = foundry.utils.getProperty(itemData.system, "save.scaling") === "flat";
+		//data.hasAttackRoll = this.item.hasAttack;
+		//data.isHealing = itemData.system.actionType === "heal";
+		//data.isFlatDC = foundry.utils.getProperty(itemData.system, "save.scaling") === "flat";
 
 		// Vehicles
 		data.isCrewed = itemData.system.activation?.type === 'crew';
@@ -174,7 +179,7 @@ export default class ItemSheet4e extends ItemSheet {
 		});
 
 		data.autoanimationsActive = game.modules.get("autoanimations")?.active;
-
+		
 		return data;
 	}
 
@@ -546,24 +551,38 @@ export default class ItemSheet4e extends ItemSheet {
 	 * @private
 	 */
 	_getItemProperties(item) {
+		//console.debug(this.item.labels);
 		const props = [];
-		const labels = this.item.labels;
-		if ( item.type === "weapon" ) {
-
-			props.push(CONFIG.DND4E.weaponTypes[item.system.weaponType])
+		const labels = this.item.labels || [];
+		if ( item?.type === "weapon" ) {
+			props.push(CONFIG.DND4E.weaponTypes[item.system.weaponType]);
+			const shortType = item.system.weaponType.substring(0,3) || "";
+			
+			if (item.system.enhance != 0){				
+				props.push(`${game.i18n.localize('DND4E.Enhancement')}\n +${item.system.enhance} ${game.i18n.localize('DND4E.RollsAtkDmg')}`);
+			}
 
 			props.push(...Object.entries(item.system.properties)
-				.filter(e => e[1] === true)
+				.filter(e => e[1] === true && e[0] != shortType)
+				//Second filter avoids double instance of "Implement"
 				.map(e => {
 					if(e[0] === "bru") return `${CONFIG.DND4E.weaponProperties[e[0]]} ${item.system.brutalNum}`;
 					return CONFIG.DND4E.weaponProperties[e[0]]
 				})
 			);
+			
 			props.push(...Object.entries(item.system.damageType)
-				.filter(e => e[1] === true)
+				.filter(e => e[1] === true && e[0] != "physical")
 				.map(e => CONFIG.DND4E.damageTypes[e[0]])
 			);
-
+			
+			if(item.system?.implementGroup){
+				props.push(...Object.entries(item.system?.implementGroup)
+					.filter(e => e[1] === true)
+					.map(e => CONFIG.DND4E.implement[e[0]])
+				);
+			}
+			
 			props.push(...Object.entries(item.system.weaponGroup)
 				.filter(e => e[1] === true)
 				.map(e => CONFIG.DND4E.weaponGroup[e[0]])
@@ -571,15 +590,48 @@ export default class ItemSheet4e extends ItemSheet {
 
 			if(item.system.isRanged)
 				props.push(`${game.i18n.localize("DND4E.Range")}: ${item.system.range.value} / ${item.system.range.long}`);
+
 		}
 
-		else if ( item.type === "power" || ["power","atwill","encounter","daily","utility","item"].includes(item.system.type)) {
-			props.push(
-				labels.components,
-				labels.materials,
-				// item.system.components.concentration ? game.i18n.localize("DND4E.Concentration") : null,
-				// item.system.components.ritual ? game.i18n.localize("DND4E.Ritual") : null
-			)
+		else if ( item.type === "power" ) {
+			
+			if(item.system?.level){
+				props.push(`${game.i18n.localize("DND4E.Level")} ${item.system.level}`);
+			}
+			
+			if(item.system?.powerType || item.system?.powerSubtype ){
+				props.push(`${CONFIG.DND4E.powerType[item.system.powerType]} ${CONFIG.DND4E.powerSubtype[item.system.powerSubtype]}`);
+			}
+			
+			if(item.system?.useType){
+				props.push(CONFIG.DND4E.powerUseType[item.system.useType]);
+			}
+			
+			if(item.system?.powersource){
+				if(item.system?.secondPowersource){
+					props.push(`${CONFIG.DND4E.powerSource[item.system.powersource]}, ${CONFIG.DND4E.powerSource[item.system.secondPowersource]}`);
+				}else{
+					props.push(CONFIG.DND4E.powerSource[item.system.powersource]);
+				}
+			}
+						
+			props.push(...Object.entries(item.system.damageType)
+				.filter(e => e[1] === true && e[0] != "physical")
+				.map(e => CONFIG.DND4E.damageTypes[e[0]])
+			);
+			
+			props.push(...Object.entries(item.system.effectType)
+				.filter(e => e[1] === true)
+				.map(e => CONFIG.DND4E.effectTypes[e[0]])
+			);
+			
+			if(item.system?.actionType){
+				props.push(CONFIG.DND4E.abilityActivationTypes[item.system.actionType].label);
+			}
+			
+			if(item.system?.rangeType){
+				props.push(CONFIG.DND4E.rangeType[item.system.rangeType].label);
+			}
 		}
 
 		else if ( item.type === "equipment" ) {
@@ -588,30 +640,28 @@ export default class ItemSheet4e extends ItemSheet {
 			props.push(labels.fort);
 			props.push(labels.ref);
 			props.push(labels.wil);
-			
-			if (item.system?.armour?.enhance){
-				let enhString = `${game.i18n.localize("DND4E.Enhancement")}\n +${item.system.armour.enhance}`;
-				//The strings below begin with a non-breaking space character. Don't delete it unless you want to break the text wrapping!
-				if(item.system.armour.type === "armour"){
-					enhString += ` ${game.i18n.localize("DND4E.DefAC")}`;
-				} else {
-					enhString += ` ${game.i18n.localize("DND4E.DefFort")}/${game.i18n.localize("DND4E.DefRef")}/${game.i18n.localize("DND4E.DefWil")}`;
-				}
-				props.push(enhString);
-			}
+			props.push(labels.enh);
 		}
 
-		else if ( item.type === "feat" ) {
-			props.push(labels.featType);
+		else if ( item.type === "feature" ) {
+			props.push(labels.aura);
+			props.push(labels.tier);
+			props.push(labels.source);
+			props.push(labels.group);
+			props.push(labels.reqs);
 		}
 
+		else if ( item.type === "ritual" ) {
+			props.push(labels.category);
+		}
+		
 		// Action type
-		if ( item.system.actionType ) {
+		if ( item.system?.actionType ) {
 			props.push(CONFIG.DND4E.itemActionTypes[item.system.actionType]);
 		}
 
 		// Action usage
-		if ( (item.type !== "weapon") && item.system.activation && !foundry.utils.isEmpty(item.system.activation) ) {
+		if ( (item.type !== "weapon") && item.system?.activation && !foundry.utils.isEmpty(item.system.activation) ) {
 			props.push(
 				labels.attribute,
 				labels.activation,

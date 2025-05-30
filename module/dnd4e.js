@@ -14,6 +14,7 @@ import ItemSheet4e from "./item/item-sheet.js";
 import ContainerItemSheet from "./item/container-sheet.js";
 import ActorSheet4e from "./actor/actor-sheet.js";
 import ActorSheet4eNPC from "./actor/npc-sheet.js";
+import ActorSheet4eHazard from "./actor/hazard-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 import { measureDistances, getBarAttribute } from "./canvas.js";
@@ -114,7 +115,12 @@ Hooks.once("init", async function() {
 		types: ["NPC"],
 		label: game.i18n.localize("SHEET.NPC"),
 		makeDefault: true
-	});		
+	});
+	Actors.registerSheet("dnd4e", ActorSheet4eHazard, {
+		types: ["Hazard"],
+		label: game.i18n.localize("SHEET.Hazard"),
+		makeDefault: true
+	});
 
 	
 	// Setup Item Sheet
@@ -122,7 +128,7 @@ Hooks.once("init", async function() {
 	Items.registerSheet("dnd4e", ItemSheet4e, {
 		makeDefault: true,
 		label: game.i18n.localize("SHEET.Item"),
-		types: ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power"]
+		types: ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power", "feature"]
 
 	});
 	
@@ -379,21 +385,29 @@ Hooks.on("getSceneControlButtons", function(controls){
 });
 
 Hooks.on("renderChatMessage", (message, html, data) => {
-	if(message.flags.core?.initiativeRoll === true || message.flags?.dnd4e?.roll?.type == "init"){
-		if(html){
-			const insertPart = Helper.initTooltip(message.content);
-			html[0].innerHTML = html[0].innerHTML.replace(/(<h4 class=\"dice-total\">)[0-9|.]+(<\/h4>)/g,`$1${insertPart}$2`);
+	try{
+		if(message.flags.core?.initiativeRoll === true || message.flags?.dnd4e?.roll?.type == "init"){
+			if(html){
+				const insertPart = Helper.initTooltip(message.content);
+				html[0].innerHTML = html[0].innerHTML.replace(/(<h4 class=\"dice-total\">)[0-9|.]+(<\/h4>)/g,`$1${insertPart}$2`);
+			}
 		}
+	}catch(e){
+		console.error(`Inititiave display mask failed in chat message. ${e}`);
 	}
 });
 
 Hooks.on('renderCombatTracker', (app,html,context) => {
     if (!app?.viewed) return // Skip entirely if there's no currently viewed combat
-    html.find('.token-initiative').each((i,el) => {
-        let combatant = app.viewed.combatants.get(el.parentElement.dataset.combatantId);
-		if(combatant?.initiative){
-			const insertPart = Helper.initTooltip(combatant.initiative);
-			el.innerHTML = insertPart;
-		}
-    });
+	try{
+		html.find('.token-initiative').each((i,el) => {
+			let combatant = app.viewed.combatants.get(el.parentElement.dataset.combatantId);
+			if(combatant?.initiative){
+				const insertPart = Helper.initTooltip(combatant.initiative);
+				el.innerHTML = insertPart;
+			}
+		});
+	}catch(e){
+		console.error(`Inititiave display mask failed in combat tracker. ${e}`);
+	}
 });

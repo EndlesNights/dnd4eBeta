@@ -22,9 +22,6 @@
 					{{localize "DND4E.Ritual"}}
 				</li>
 				<li>
-					<input type="text" name="system.category" value="{{system.category}}" placeholder="{{ localize 'DND4E.Category' }}"/>
-				</li>
-				<li>
 					<input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4E.Source' }}"/>
 				</li>
 			</ul>
@@ -47,6 +44,13 @@
 
 		{{!-- Details Tab --}}
 		<div class="tab details" data-group="primary" data-tab="details">
+			
+			<div class="form-group select">	
+				<label>{{ localize "DND4E.Category" }}</label>
+				<select name="system.category">
+					{{selectOptions config.ritualTypes selected=system.category labelAttr="label"}}	
+				</select>
+			</div>
 
 			<div class="form-group select">
 				<label>Level</label>

@@ -337,12 +337,23 @@ export class Helper {
 					suitableKeywords.push("basic");
 					if(suitableKeywords.includes("melee")) suitableKeywords.push("mBasic");
 					if(suitableKeywords.includes("ranged")) suitableKeywords.push("rBasic");
-				}
+				};
+				
+				if(powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
+				if(powerInnerData.attack?.isOpp || rollData?.isCharge) suitableKeywords.push("opp");
+				
+				if(powerInnerData.attack?.def){
+					suitableKeywords.push(`vs${powerInnerData.attack.def.capitalize()}`);
+				};
+				if(powerInnerData.attack?.ability){
+					suitableKeywords.push(`uses${powerInnerData.attack.ability.capitalize()}`);
+				};
 
 				if (debug) {
-					console.log(`${debug} based on power source, effect type, damage type and (if weapon) weapon group, properties and damage type the following effect keys are suitable`);
-					console.log(suitableKeywords.sort());
-					console.log(`${debug} ${suitableKeywords.join(", ")}`);
+					console.debug(rollData);
+					console.debug(`${debug} based on power source, effect type, damage type and (if weapon) weapon group and properties the following effect keys are suitable`);
+					console.debug(suitableKeywords.sort());
+					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
 				// filter out to just the relevant effects by keyword
@@ -566,7 +577,6 @@ export class Helper {
 					let r = new Roll(`${quantity}`);
 
 					if(r.isDeterministic){
-						// r.evaluate({async: false});
 						r.evaluateSync();
 						quantity = r.total;
 					}
@@ -597,7 +607,6 @@ export class Helper {
 
 				//Just to help keep the rolls cleaner, look for Deterministic elements to remove
 				if(r.isDeterministic){
-					// r.evaluate({async: false});
 					r.evaluateSync();
 					quantity = r.total;
 				}
@@ -619,7 +628,6 @@ export class Helper {
 						let r2 = new Roll(`${weaponDiceQuantity}`);
 	
 						if(r2.isDeterministic){
-							// r2.evaluate({async: false});
 							r2.evaluateSync();
 							weaponDiceQuantity = r2.total;
 						}
@@ -657,7 +665,6 @@ export class Helper {
 				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
 				let r = new Roll(`${dice}`)
 				if(dice){
-					// r.evaluate({maximize: true, async: false});
 					r.evaluateSync({maximize: true});
 					newFormula = newFormula.replaceAll("@wepMax", r.result);
 				} else {
@@ -754,8 +761,6 @@ export class Helper {
 
 				let r = new Roll(`${quantity}`);
 				if(r.isDeterministic){
-					console.log("here")
-					// r.evaluate({async: false});
 					r.evaluateSync();
 					quantity = r.total;
 				}
@@ -788,7 +793,6 @@ export class Helper {
 				let quantity = powerInnerData.hit.baseQuantity;
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
-				// rQuantity.evaluate({maximize: true, async: false});
 				rQuantity.evaluateSync({maximize: true});
 				
 				if(this._isNumber(rQuantity.result)) {
@@ -872,7 +876,6 @@ export class Helper {
 			let roll = new Roll(`${r}`);
 
 			if(roll.isDeterministic){
-				// roll.evaluate({async: false});
 				roll.evaluateSync();
 				return roll.total;
 			}
@@ -1067,7 +1070,8 @@ export class Helper {
 		if(chatData.attack.isAttack) {
 			let attackForm = chatData.attack.formula;
 			attackForm = chatData.attack.formula.replaceAll('@powerMod',`@${chatData.attack?.ability}Mod`);
-			const attackValues = this.commonReplace(attackForm, actorData);
+			const weapon = Helper.getWeaponUse(chatData, actorData);
+			const attackValues = this.commonReplace(attackForm, actorData, chatData, weapon?.system);
 			if(attackTotal){
 				//if does not start with a number sign add one
 				attackTotal = attackTotal.toString();
@@ -1087,7 +1091,9 @@ export class Helper {
 				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: <a class="attack-bonus" data-tooltip="`;		
 				if(game.settings.get("dnd4e","cardAtkDisplay")=="bonus"){
 					powerDetail += `${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackValues})">${attackTotal}</a>`;
-				}else{
+				} else if (game.settings.get("dnd4e","cardAtkDisplay")=="bothBonus"){
+					powerDetail += `(${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackTotal})</a>`;
+				} else{
 					powerDetail += `${attackTotal} (${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]}</a>`;
 				}
 			} else {
@@ -1121,6 +1127,7 @@ export class Helper {
 		if(actorData){
 			powerDetail = this.commonReplace(powerDetail, actorData);
 		}
+		
 		return powerDetail;
 	}
 
@@ -1206,7 +1213,38 @@ export class Helper {
 		return game.combat? game.combat.turns[game.combat.turn]?.initiative : 0;
 	}
 
+	static async solidifyEffectActorData(effect, parentActor){
+		console.log(effect)
+		console.log(parentActor)
+
+		//dots
+		for(const dot of effect.flags.dnd4e.dots){
+			// dot.amount = await this.parseSolidify(dot.amount, parentActor);
+			dot.amount = dot.amount.replace(/\$solidify\((.*?)\)/g, (match, value) => {
+				return Helper.commonReplace(value, parentActor);
+			});
+		}
+
+		//changes
+		for(const change of effect.changes){
+			// change.value = this.parseSolidify(change.value, parentActor);
+			change.value = change.value.replace(/\$solidify\((.*?)\)/g, (match, value) => {
+				return Helper.commonReplace(value, parentActor);
+			});
+			console.log(change.value);
+		}
+
+	}
+
+	// static async parseSolidify(inputString, parentActor){
+	// 	const newVal =  inputString.replace(/\$solidify\((.*?)\)/g, (match, value) => {
+	// 		return Helper.commonReplace(value, parentActor);
+	// 	});
+	// 	return newVal;
+	// }
+
 	static async applyEffectsToTokens(effectMap, tokenTarget, condition, parent){
+
 		const combat = game.combat;
 		for(let effect of effectMap){
 			let e = effect.toObject(); // This is to avoid editing the source effect
@@ -1215,7 +1253,7 @@ export class Helper {
 					// let effectData = e.data;
 					// e.sourceName = parent.name;
 					e.origin = parent.uuid;
-
+					this.solidifyEffectActorData(e, parent);
 					const duration = e.duration;
 					const flags = e.flags;
 					duration.combat = combat?.id || "None Combat";
@@ -1334,7 +1372,7 @@ export class Helper {
 		//First check for an assigned character
 		game.users.forEach(function (maybePlayer) {
 			if(maybePlayer.character?.id === doc.id){
-				console.log(`Player found: ${maybePlayer.id}`);
+				console.debug(`Player found: ${maybePlayer.id}`);
 				found = (idOnly ? maybePlayer.id : maybePlayer );
 				return;
 			}
@@ -1342,19 +1380,19 @@ export class Helper {
 		if(found) return found;
 		
 		//If no assigned character, check for specific player owner
-		const owners = Object.entries(doc.ownership);
+		const owners = Object.entries(doc.ownership);		
 		for (const [owner, level] of Object.entries(owners)){
 			if (owner !== 'default'){
 				const ownerData = game.users?.get(owner);
 				if(!ownerData?.isGM && ownerData?.active && level === 3){
-					console.log(`Owner: ${owner}`);
+					console.debug(`Owner: ${owner}`);
 					found = (idOnly ? owner : ownerData);
 				}
 			}
 		}
 		if(found) return found;
 
-		// IIf we have no valid player, fall back to first GM
+		// If we have no valid player, fall back to first GM
 		const firstGM = game.users.find(u => u.isGM && u.active);
 		return ( idOnly ? firstGM.id : firstGM );
 	}
@@ -1528,12 +1566,16 @@ export async function handleAutoDoTs(data) {
 /*																			*/
 Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
 	try{
-		if(typeof meal != "string") return lunchbox.includes(lunch);
+		if(typeof meal != "string") {
+			if(lunchbox instanceof Set) return lunchbox.has(lunch);
+			return lunchbox.includes(lunch);
+		}
 		const lunchLocation = lunchbox.findIndex((x) => x[meal] == lunch);
 		if(lunchLocation > 0) return true;
 		return false;
 	} catch(err) {
-		return "Contains helper spat up. Did you give it the right parameter types?";
+		console.error("Contains helper spat up. Did you give it the right parameter types?");
+		return false;
 	}
 });
 

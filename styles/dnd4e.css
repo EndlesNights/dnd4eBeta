@@ -219,40 +219,37 @@ textarea{
 .sheet .sheet-header img{
 	margin-right:0px;
 }
+.image-frame{
+	max-width:100px;
+	max-height:100px;
+	position:relative;
+}
+.dnd4e.sheet.actor .image-frame{
+    flex-grow:0;
+    aspect-ratio:1 / 1;
+    flex-basis:100px;
+}
+.dnd4e.sheet.actor.NPC .image-frame{
+	margin-left:3px;
+	margin-right:8px;
+	max-width:64px;
+	max-height:64px;
+}
+.dnd4e.sheet.actor .image-frame img{
+	max-height:100px;
+}
 .dnd4e.sheet.actor .sheet-header .profile-img,
 .dnd4e.sheet.actor .image-frame .profile-img,
 .dnd4e.sheet.item .image-frame .profile {
 	flex:0 0 100px;
 	margin-right:0px;
     object-fit:contain;
-
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 	border-width: 2px;
 }
-
-.dnd4e.sheet.actor .image-frame img {
-	max-height: 100px;
-}
-.image-frame{
-	max-width:100px;
-	max-height:100px;
-	position:relative;
-}
-.dnd4e.sheet.actor .image-frame {
-	margin-left:10px;
-	max-width:100px;
-	max-height:100px;
-}
-.dnd4e.sheet.actor.NPC .image-frame {
-	margin-left:3px;
-	margin-right:3px;
-	padding-right:5px;
-	max-width:64px;
-	max-height:64px;
-}
-.dnd4e.sheet.actor{
+.dnd4e.sheet.actor:not(.NPC,.Hazard){
 	min-width:836px;
 	min-height:420px;
 }
@@ -913,7 +910,7 @@ textarea{
 	margin:4px 8px 2px;
 	font-size:18px;
 	border-bottom:var(--border-normal);
-	text-align:center;
+	text-align:left;
 }
 .dnd4e.sheet.actor .scrollbar{
 	height:100%;
@@ -1109,16 +1106,11 @@ textarea{
 	border:var(--border-engraved);
 	border-radius:4px;
 	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
-
 	width:100%;
-	/* height:170px; */
-	/* margin-top:10px; */
 	float:left;
-	/* text-align:center; */
 }
 .dnd4e .resource-full input{
 	width:10px;
-	/* height:28px; */
 	top:2px;
 }
 .dnd4e .resource-full input::placeholder{
@@ -1161,11 +1153,9 @@ font-size:12px;
 	margin:0;
 	top:2px;
 	position:relative;
-	/* left:1%; */
 }
 .dnd4e .attribute-res{
 	margin:0 0 0 0;
-	/* border:2px groove #eeede0; */
 	border-radius:4px;
 	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
 	height:328px;
@@ -1275,8 +1265,6 @@ font-size:12px;
 	border-radius:4px;
 	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
 	width:100%;
-	max-height:76px;
-	float:left;
 	text-align:center;
 	line-height:22px;
 }
@@ -1295,9 +1283,6 @@ font-size:12px;
 }
 .dnd4e .languages{
 	text-align:left;
-}
-.dnd4e.sheet.actor .tab.inventory{
-	overflow-y:hidden;
 }
 .dnd4e .sheet-header .char-details-level{
 	height:20px;
@@ -1445,7 +1430,6 @@ font-size:12px;
 	margin-top:0px;
 	border-radius:6px;
 }
-
 .dnd4e div.tab.details.active div.editor {
 	border: 1px solid #7a7971;
 	border-radius: 2px;
@@ -1484,11 +1468,10 @@ font-size:12px;
 	justify-content:flex-end;
 }
 .dnd4e.sheet.actor .inventory{
-	margin:0 2px;
 	flex:0 0 20px;
 	justify-content:flex-end;
 }
-.dnd4e.sheet.actor .inventory .currency,
+.dnd4e.sheet.actor .currency,
 .dnd4e.sheet .item-sheet .currency {
 	flex:0 0 100%;
 	list-style:none;
@@ -1497,11 +1480,11 @@ font-size:12px;
 	font-size:12px;
 	align-items:center;
 }
-.dnd4e.sheet.actor .inventory h3,
+.dnd4e.sheet.actor h3,
 .dnd4e.sheet .item-sheet .currency h3 {
 	border-bottom:0px;
 }
-.dnd4e.sheet.actor .inventory .currency label,
+.dnd4e.sheet.actor .currency label,
 .dnd4e.sheet .item-sheet .currency label {
 	flex:0;
 	white-space:nowrap;
@@ -1509,14 +1492,13 @@ font-size:12px;
 	text-align:right;
 	line-height:20px;
 }
-.dnd4e.sheet.actor .inventory .currency input[type="text"],
+.dnd4e.sheet.actor .currency input[type="text"],
 .dnd4e.sheet .item-sheet .content .currency input[type="text"] {
 	flex:0 0 48px;
 	text-align:center;
 	margin-left:0px;
 	border-bottom:var(--border-normal);
 }
-
 .dnd4e.sheet.actor .daily-item-power-use{
 	justify-content:space-between;
 }
@@ -1531,19 +1513,16 @@ font-size:12px;
 .dnd4e.sheet.actor .daily-item-power-use-check input{
 	height:14px;
 }
-.dnd4e.sheet.actor .encumbrance,
-.dnd4e.sheet.item .encumbrance {
+.dnd4e.sheet:is(.actor,.item) .encumbrance{
 	height:12px;
 	cursor:pointer;
-	flex:0 0 12px;
 	background:var(--color-bg-input);
-	margin:1px 15px 0 1px;
+	margin:10px 1px 1px 1px;
 	border:var(--border-normal);
 	border-radius:3px;
 	position:relative;
 }
-.dnd4e.sheet.actor .encumbrance .encumbrance-bar,
-.dnd4e.sheet.item .encumbrance .encumbrance-bar {
+.dnd4e.sheet:is(.actor,.item) .encumbrance .encumbrance-bar{
 	position:absolute;
 	top:1px;
 	left:1px;
@@ -1552,12 +1531,10 @@ font-size:12px;
 	border:1px solid #cde4ff;
 	border-radius:2px;
 }
-.dnd4e.sheet.actor .encumbrance .encumbrance-bar.encumbered,
-.dnd4e.sheet.item .encumbrance .encumbrance-bar.encumbered {
+.dnd4e.sheet:is(.actor,.item) .encumbrance .encumbrance-bar.encumbered{
 	background:#b72b2b;
 }
-.dnd4e.sheet.actor .encumbrance .encumbrance-label,
-.dnd4e.sheet.item .encumbrance .encumbrance-label {
+.dnd4e.sheet:is(.actor,.item) .encumbrance .encumbrance-label{
 	height:10px;
 	padding:0 5px;
 	position:absolute;
@@ -1574,9 +1551,6 @@ font-size:12px;
 	margin:0;
 	overflow-y:auto;
 	scrollbar-width:thin;
-}
-.dnd4e.sheet.actor .inventory .inventory-list {
-	height:calc(100% - 117px);
 }
 .dnd4e.sheet.item .item-list.inventory-list{
 	height:calc(100% - 127px);
@@ -1873,6 +1847,9 @@ font-size:12px;
 /*  NPC Sheets
 /* ----------------------------------------- */
 
+.dnd4e.sheet.actor.NPC{
+	min-width:655px;
+}
 .dnd4e.sheet .npc .sheet-header .summary-type{
 	flex-basis:114px;
 }
@@ -2002,9 +1979,6 @@ font-size:12px;
 	flex-basis:100px;
 	flex-grow:0;
 }
-.dnd4e.sheet.actor .npc .inventory .inventory-list{
-	height:calc(100% - 128px);
-}
 .dnd4e.sheet.actor .npc + a.rest{
 	margin:0px;
 }
@@ -2015,7 +1989,7 @@ font-size:12px;
 	display:inline-block;
 	text-align:left;
 	max-height:18px;
-	max-width:30px;
+	max-width:1.6em;
 	font-weight:bold;
 }
 .dnd4e.sheet.actor .npc-upper .basics input.number{
@@ -2038,6 +2012,9 @@ font-size:12px;
 	border:unset;
 	flex-grow:0;
 	margin-right:4px;
+}
+.dnd4e.sheet.actor .npc-upper .basics>.defences{
+	flex-grow:0.15;
 }
 .dnd4e.sheet.actor .npc-upper .defence{
 	display:inline-block;
@@ -2077,6 +2054,94 @@ font-size:12px;
 
 
 /* ----------------------------------------- */
+/*  Hazard Sheets
+/* ----------------------------------------- */
+
+.dnd4e.sheet.actor.Hazard{
+	min-width:452px;
+}
+.dnd4e.sheet .npc.hazard .sheet-header .role-details{
+	justify-content:flex-start;
+}
+.dnd4e.sheet .npc.hazard .sheet-header .role-details>.summary-level{
+	flex-basis:100px;
+	flex-grow:0;
+	text-align:right;
+	margin-left:auto;
+}
+.dnd4e.sheet .npc.hazard .sheet-header .summary-exp{
+	flex-grow:0;
+}
+.dnd4e.sheet .npc.hazard .sheet-header .summary-level input{
+	width:50%;
+}
+.dnd4e.sheet .npc.hazard .sheet-header .summary-role,
+.dnd4e.sheet .npc.hazard .sheet-header .summary-role-second,
+.dnd4e.sheet .npc.hazard .sheet-header .summary-role-third{
+	flex-basis:86px;
+	flex-grow:0;
+}
+.dnd4e.sheet .npc.hazard .def-none{
+	position:relative;
+	aspect-ratio:1 / 1;
+	display:inline-block;
+	margin-right:2px;
+}
+.dnd4e.sheet .npc.hazard .def-none input[type='checkbox']{
+    height:100%;
+	width:100%;
+	display:block;
+	margin:0;
+	padding:0;
+	max-height:100%;
+	max-width:100%;
+	opacity:0;
+}
+.dnd4e.sheet .npc.hazard .def-none input[type='checkbox']+.button{
+	position:absolute;
+	left:0;
+    bottom:0;
+    height:100%;
+	width:100%;
+    line-height:1;
+	pointer-events:none;
+}
+.dnd4e.sheet .npc.hazard .def-none input[type='checkbox']:not(:checked)+.button{
+	opacity:40%;
+}
+.dnd4e.sheet .npc.hazard .defence.null :is(.def-name,.attribute-name){
+	opacity:40%;
+}
+.dnd4e.sheet .npc.hazard .combat label.hazard-detection{
+	font-weight:bold;
+}
+.dnd4e.sheet .npc.hazard .combat input[name="system.details.detection"]{
+	max-width:unset;
+	font-family:inherit;
+	font-weight:normal;
+}
+.dnd4e.sheet .npc.hazard .description .editor{
+	margin-bottom:1em;
+}
+.dnd4e.sheet .npc.hazard .description .editor,
+.dnd4e.sheet .npc.hazard .description .editor-content{
+	height:fit-content;
+	min-height:4em;
+}
+.dnd4e.sheet .npc.hazard .description .prosemirror .editor-container{
+	height:fit-content;
+    margin-bottom:4em;
+	min-height:10em;
+}
+.dnd4e.sheet .npc.hazard .global-mods .global-mod[data-modifiers="skills"]{
+	display:none;
+}
+.dnd4e.sheet .npc.hazard .global-mods .global-mods-column:nth-child(2){
+	width:50%;
+}
+
+
+/* ----------------------------------------- */
 /*  Item Sheets
 /* ----------------------------------------- */
 
@@ -2090,7 +2155,7 @@ font-size:12px;
 }
 .dnd4e.sheet .item-sheet .sheet-header img.profile{
 	flex:0 0 100px;
-	max-width:100px;
+	width:100px;
 	height:100px;
 	object-fit:contain;
 	border:none;
@@ -2098,7 +2163,7 @@ font-size:12px;
 }
 .dnd4e.sheet.actor .item-sheet .sheet-header img.profile{
 	flex:0 0 160px;
-	max-width:160px;
+	width:160px;
 	height:160px;
 }
 .dnd4e.sheet.item .item-sheet .sheet-header img.profile{
@@ -2106,7 +2171,7 @@ font-size:12px;
 }
 .dnd4e.sheet.actor.character .item-sheet .sheet-header img.profile{
 	flex:0 0 160px;
-	max-width:160px;
+	width:160px;
 	height:160px;
 }
 .dnd4e.sheet.actor .item-sheet .sheet-header h1.charname{
@@ -2171,7 +2236,6 @@ font-size:12px;
 	width:14%;
 	border:var(--border-normal);
 	background:var(--color-bg-input);
-	/* float:right; */
 }
 .dnd4e.sheet.item .details select{
 	height:24px;
@@ -2327,7 +2391,6 @@ font-size:12px;
 	height:100%;
 }
 .dnd4e.sheet .item-sheet .item-damage .dmg-base-qty{
-	/* min-width:105px; */
 	flex: 0.5 0 0;
 }
 .dnd4e.sheet .item-sheet .weapon-properties label.damage-type{
@@ -2351,7 +2414,6 @@ font-size:12px;
 	height: calc(100% - 166px);
 }
 .active-effect-sheet .editor.prosemirror{
-	/* height:14em; */
 	min-height: 10em;
 	height: 100%;
 }
@@ -2495,12 +2557,67 @@ font-size:12px;
 .status-effect-title.active{
 	visibility:visible;
 }
+/* Roll Dialogue */
+.roll-dialogue h2{
+	font-size:1.2em;
+	font-weight:700;
+	text-decoration:none;
+	margin-top:0.4em;
+	margin-bottom:unset;
+	border-bottom:var(--border-faint);
+}
+.roll-dialogue .roll-times{
+    align-items:center;
+	flex-wrap:nowrap;
+}
+.roll-dialogue .roll-times .label{
+	flex:100%;
+	line-height:1;
+}
+.roll-dialogue .roll-times .buttons{
+	justify-content:flex-end;
+    align-items:center;
+	flex-wrap:nowrap;
+	flex:unset;
+	width:fit-content;
+}
+.roll-dialogue .roll-times .buttons :is(.button,input){
+	flex:2.5em 0 0;
+}
+.roll-dialogue .roll-times .buttons input{
+	height:2.2em;
+}
 .multitarget-tab{
 	display:none;
 }
 .multitarget-np-flex{
 	display:flex;
 	justify-content:space-between;
+	align-items:stretch;
+}
+.multitarget-np-flex:not(.has-target,.has-multi){
+	display:none;
+}
+.multitarget-np-flex.has-target:not(.has-multi) button{
+	display:none;
+}
+.roll-dialogue .multitarget-np-flex .target-label{
+	flex:100% 10 10;
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	border:2px groove rgba(0, 0, 0, 0.4);
+}
+.roll-dialogue .multitarget-np-flex .target-label>h3{
+	font-size:1em;
+	text-align:center;
+	font-weight:700;
+	border-bottom:unset;
+	margin-top:0.25em;
+	margin-bottom:0.25em;
+}
+.roll-dialogue .multitarget-np-flex button[id="multibonus-toggle"]{
+	width:fit-content;
 }
 .custom-skill-config .custom-skill-control{
 	margin:0 5px;
@@ -2626,6 +2743,30 @@ input[type="text"].dice-count{
 .roll-dialogue .column input[type="checkbox"]{
 	position:relative;
 	top:5px;
+}
+.dnd4e.con-bon-config h1.dialogue-title{
+	font-size:1.2em;
+    font-weight:700;
+    text-decoration:none;
+    margin-top:0.4em;
+    margin-bottom:unset;
+    border-bottom:var(--border-faint);
+}
+.dnd4e.con-bon-config .condition-row{
+	padding:2px 0.25em;
+	gap:1em;
+	justify-content:space-between;
+}
+.dnd4e.con-bon-config .condition-row .condition-name{
+	font-weight:600;
+	flex:40% 0 10;
+}
+.dnd4e.con-bon-config .condition-row .condition-mod-value{
+	flex:2.5em 0 10;
+	text-align:right;
+}
+.dnd4e.con-bon-config .condition-row .condition-mod-bonus{
+	flex:5em 0 10;
 }
 
 /*  Multiselect styling */
