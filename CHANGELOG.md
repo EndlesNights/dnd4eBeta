@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 0.6.0
+- [PR #427](https://github.com/EndlesNights/dnd4eBeta/pull/427) from [FoxLee](https://github.com/FoxLee)
+	- unifies classFeats, raceFeats, pathFeats, destinyFeats and feats into a single item type, feature, with a property system.featureType
+	- Rituals moved into seperate tab
+	- Restored armourBaseTypeCustom field on equipment sheet
+	- Added useful properties to item sheet sidebar on powers
+	- Many fixes and updates to lang files
+	- Corrected display of attack bonus config on non-actors
+- [PR #429](https://github.com/EndlesNights/dnd4eBeta/pull/429) from [FoxLee](https://github.com/FoxLee)
+	- Adds a new Actor type, Hazard, which handles the specific behaviours and limitations of Trap/Hazard game entities more effectively than making an NPC.
+
 ## Version 0.5.15
 - Fix issue with "Only Apply Effect when Equipped?" option not working correctly.
 - Tool-tip for the apply active effects button on Power chat messages should now properly refrence.
