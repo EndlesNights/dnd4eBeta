@@ -29,7 +29,7 @@
 	<div class="form-group short power-type two-input">
 		<label>{{ localize 'DND4E.PowerType' }}</label>
 		<select name="system.powerType">
-			{{selectOptions config.powerType selected=system.powerType lableAttr="label"}}
+			{{selectOptions config.powerType selected=system.powerType labelAttr="label"}}
 			<option value="other" {{#if (eq system.powerType "other")}}selected{{/if}}>{{localize "DND4E.Other"}}</option>
 		</select> 
 		<select name="system.powerSubtype">
