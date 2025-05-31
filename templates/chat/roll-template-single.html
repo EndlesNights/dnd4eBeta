@@ -5,24 +5,21 @@
 	<div class="dice-result">
 		
 		{{#if attackRoll}}
+			{{log attackRoll}}
 			<div class="target">
-			<a class="flavor-text target" data-target-id="{{attackRoll.targetID}}"><strong>{{localize 'DND4E.Target'}}:</strong> {{attackRoll.target}}</a>
-			<span class="flavor-text hit-prediction{{attackRoll.critstate}}{{!--
-				--}}{{#if (eq attackRoll.hitstate 'Probable Hit!')}}{{!--
-					--}} probable-hit{{!--
-				--}}{{else if (eq attackRoll.hitstate 'Probable Miss!')}}{{!--
-					--}} probable-miss{{!--
-				--}}{{/if}}{{!--
-			--}}">{{attackRoll.hitstate}}</span>
+			<a class="flavor-text target" data-target-id="{{attackRoll.targetID}}"><strong>{{localize 'DND4E.Target'}}:</strong> {{attackRoll.target}}</a> <span class="mod-vs-def">(<span class="attack-mod">{{attackRoll.modtext}}</span> {{localize 'DND4E.VS'}} <span class="vs-def">{{attackRoll.deftext}}</span>)</span>
 			</div>
+			<div class="flavor-text hit-prediction {{attackRoll.critstate}} {{attackRoll.hitstate}}">{{attackRoll.hittext}}</div>
 		{{/if}}
 		
+		{{#unless attackRoll.immune}}
 		<div class="dice-container">
-			<div class="dice-formula">{{{formula}}}</div>
-			<div class="dice-tooltip dice-formula">{{{expression}}}</div>
-			{{{tooltip}}}
-			<h4 class="dice-total{{attackRoll.critstate}}">{{total}}</h4>
+				<div class="dice-formula">{{{formula}}}</div>
+				<div class="dice-tooltip dice-formula">{{{expression}}}</div>
+				{{{tooltip}}}
+				<h4 class="dice-total {{attackRoll.critstate}}">{{total}}</h4>
 		</div>
+		{{/unless}}
 	</div>
 </div>
 <div class="chatDamageButtons">

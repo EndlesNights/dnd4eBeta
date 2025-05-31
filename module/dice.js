@@ -32,7 +32,6 @@ import { Helper } from "./helper.js"
 export async function d20Roll({parts=[],  partsExpressionReplacements = [], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null, actor,
 								  isAttackRoll=false, options={}}={}) {
-	
 	critical = critical || 20; //ensure that critical always has a value
 	const isCharge = options?.variance?.isCharge || false;
 	const isOpp = options?.variance?.isOpp || false;
@@ -57,9 +56,13 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 		for (let targ = 0; targ < numTargets; targ++) {
 			const targName = targetArr[targ].name;
 			targDataArray.targNameArray.push(targName);
+			//console.debug(data);
 			targDataArray.targets.push({
-				'name':targetArr[targ].name,
-				'status':targetArr[targ].actor.statuses
+				'name': targetArr[targ].name,
+				'status': targetArr[targ].actor.statuses,
+				'attackMod': options.data?.item?.ability,
+				'attackDef': options.attackedDef,
+				'immune': targetArr[targ].actor.system.defences[options.attackedDef]?.none
 			});
 		}
 	} else {
@@ -153,13 +156,14 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	let allRollsParts = []
 	const numberOfTargets = Math.max(1, game.user.targets.size);
 	//console.debug(data);
+	let targetDefArray = [], targetAtkModArray = [];
 	
 	if (isAttackRoll && form !== null) {
 		// populate the common attack bonuses into data
 		Object.keys(data.commonAttackBonuses).forEach(function(key,index) {
 			data[key] = data.commonAttackBonuses[key].value
 		});
-		const individualAttack = (Object.entries(form)[6][1].value === "true");
+		const individualAttack = (Object.entries(form)[7][1].value === "true");
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++ ) {
 			const targetBonuses = []
 			for ( let [k, v] of Object.entries(form) ) {
@@ -184,6 +188,14 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				allRollsParts.push(parts.concat(targetBonuses))
 			}
 		}
+			
+		//Get per-target defence and ability mod
+		for (let [k, v] of Object.entries(form)){
+			if (v.classList.contains('attackDef')) targetDefArray.push(v.value);
+			if (v.classList.contains('attackMod')) targetAtkModArray.push(v.value);			
+		}
+		//console.debug(targetDefArray);
+		//console.debug(targetAtkModArray);
 	}
 	else if (isAttackRoll && fastForward) {
 	// Logic to infer common bonuses based on user and target status under fast-forward conditions
@@ -201,7 +213,6 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		if(userStatus.has('running')) userStatBonuses.push('@running');
 		if(userStatus.has('squeezing')) userStatBonuses.push('@squeez');
 		if(userStatus.has('comAdv')) userStatBonuses.push('@comAdv');
-		console.debug(options);
 		if(options?.variance?.isCharge) userStatBonuses.push('@charge');
 				
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
@@ -242,15 +253,15 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	// TODO: @Draconas : I think this is a 5e holdover and the entire tools section can be safely removed
 	// also the form doesn't contain ability.
 	// @FoxLee : Can this be repurposed to allow per-use ability mod switching on attacks/skills (eg Deft Blade feat?)
-	const ability = form ? form.ability : null;
+	const ability = form ? form.attackMod : null;
 	if ( ability && ability.value ) {
 		data.ability = ability.value;
 		const abl = data.abilities[data.ability];
 		if ( abl ) {
 			data.mod = abl.mod;
-			flavor += ` (${CONFIG.DND4E.abilities[data.ability]})`;
 		}
 	}
+	//console.debug(`Selected ability is ${ability}`);
 
 	// time to actually do the roll
 	let roll = await new MultiAttackRoll(parts.filterJoin(" + "), data, {}); // initial roll data is never going to be used, but makes foundry happy
@@ -258,6 +269,9 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	const targetData = {
 		targNameArray: [],
 		targDefValArray: [],
+		targDefArray: targetDefArray,
+		targAtkModArray: targetAtkModArray,
+		targImmArray: [],
 		targets: [],
 		targetHit: [],
 		targetMissed: []
@@ -276,11 +290,16 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			throw err;
 		}
 
+		let targImmune = false;
+
 		if (isAttackRoll && targets.length > rollExpressionIdx) {
+			const attackedDef = targetData.targDefArray[rollExpressionIdx];
 			let targName = targets[rollExpressionIdx].name;
-			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[options.attackedDef]?.value;
+			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.value;
+			targImmune = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.none;
 			targetData.targNameArray.push(targName);
 			targetData.targDefValArray.push(targDefVal);
+			targetData.targImmArray.push(targImmune);
 			targetData.targets.push(targets[rollExpressionIdx]);
 		}
 		for (let dice of subroll.dice) {
@@ -292,10 +311,12 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		}
 		// Unable to figure out how to use the `chat.highlightCriticalSuccessFailure` function to individually flag rolls in the list of outputs when multiroll
 		// is used instead of a single Roll. Instead, this hacky way seems to work rather well. It has not failed me yet.
-		if (subroll.terms[0].total >= critical) {
-			critStateArray.push(" critical");
+		if (targImmune){
+			critStateArray.push("immune");
+		} else if(subroll.terms[0].total >= critical) {
+			critStateArray.push("critical");
 		} else if (subroll.terms[0].total <= fumble) {
-			critStateArray.push(" fumble");
+			critStateArray.push("fumble");
 		} else {
 			critStateArray.push("");
 		}
@@ -481,10 +502,15 @@ async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, pa
 	} else {
 		if(!fastForward) parts.pop();
 	}
-	console.log(parts)
+	//console.debug(parts);
 
 	let roll;
-	if(hitType === 'normal'){
+	if(hitType === 'immune'){
+		options.hitTypeDamage = false;
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
+		flavor = `${flavor} (${game.i18n.localize("DND4E.Immune")})`;
+	}
+	else if(hitType === 'normal'){
 		options.hitTypeDamage = true;
 		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
 	}

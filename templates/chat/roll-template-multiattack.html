@@ -1,21 +1,10 @@
 <div class="dice-roll">
     {{#each multirollData as |roll|}}
         <div class="dice-result">
-            <a class="flavor-text target" data-target-id="{{roll.target}}"><b>{{localize 'DND4E.Target'}}</b>: {{roll.target}}</a>
-            <div class="dice-flavor">{{roll.flavor}}</div>
-            <span class="flavor-text hit-prediction{{roll.critstate}}{{!--
-				--}}{{#if (eq roll.hitstate 'Probable Hit!')}}{{!--
-						--}} probable-hit{{!--
-					--}}{{else if (eq roll.hitstate 'Probable Miss!')}}{{!--
-						--}} probable-miss{{!--
-					--}}{{/if}}{{!--
-				--}}">{{roll.hitstate}}</span>
-                <div class="dice-container">
-                    <div class="dice-formula">{{{roll.formula}}}</div>
-                    <div class="dice-tooltip dice-formula">{{{roll.expression}}}</div>
-                    {{{roll.tooltip}}}
-                    <h4 class="dice-total{{roll.critstate}}">{{roll.total}}</h4>
-                </div>
+            <a class="flavor-text target" data-target-id="{{roll.target}}"><strong>{{localize 'DND4E.Target'}}</strong>: {{roll.target}}</a>
+            <div class="dice-flavor">{{roll.flavor}}</div> <span class="mod-vs-def">(<span class="attack-mod">{{attackRoll.modText}}</span> {{localize 'DND4E.VS'}} <span class="vs-def">{{attackRoll.defText}}</span>)</span>
+			</div>
+			<div class="flavor-text hit-prediction {{attackRoll.critstate}} {{attackRoll.hitstate}}">{{attackRoll.hittext}}</div>
         </div>
     {{/each}}
 </div>

@@ -23,10 +23,8 @@
 		</div>
 	{{/if}}
 	
-	<div class="form-group stacked">
-		{{#if isAttackRoll}}
-		<h2 class="label">{{localize 'DND4E.CommonAttackBonuses'}}</h2>
-		
+	<div class="form-group target-detail stacked">
+		{{#if isAttackRoll}}		
 		<div class="multitarget-np-flex{{#if targetData.hasTarget}} has-target{{/if}}{{#if targetData.multiTargetCheck}} has-multi{{/if}}">
 			<button type="button" class="button hollow circle" id="prevBtn" onclick="nextPrev(-1)">
 				<i class="fas fa-arrow-left" aria-hidden="true"></i>
@@ -44,6 +42,19 @@
 			{{#if ../targetData.hasTarget}}{{localize 'DND4E.Target'}}: {{t.name}}{{else}}{{/if}}
 			</div>
 			
+			<div class="score-vs-def">
+				<select class="attackMod" name="{{n}}.attackMod" disabled>
+					{{selectOptions ../config.abilityScores selected=t.attackMod labelAttr='labelShort'}}
+				</select> 
+				<label>{{localize 'DND4E.VS'}}</label>
+				<select class="attackDef" name="{{n}}.attackDef">
+					{{selectOptions ../config.defensives selected=t.attackDef labelAttr='abbreviation'}}
+				</select>
+			</div>
+			
+			{{#if t.immune}}<!--<div class="immunity">Target is immune to attacks against this defence.</div>-->{{/if}}
+				
+			<h2 class="label">{{localize 'DND4E.CommonAttackBonuses'}}</h2>
 			<div class="form-group stacked">
 			{{#each ../data.commonAttackBonuses as | a b |}}
 			<div class="column">

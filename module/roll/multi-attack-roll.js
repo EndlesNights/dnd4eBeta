@@ -69,22 +69,33 @@ export class MultiAttackRoll extends Roll {
             let targName = targDataArray.targNameArray[i];
             let targDefVal = targDataArray.targDefValArray[i];
             let critState = critStateArray[i];
+			let vsDef = targDataArray.targDefArray[i];
+			let atkMod = targDataArray.targAtkModArray[i];
 
             let hitState = "";
+            let hitText = "";
 
 	        if(game.settings.get("dnd4e", "automationCombat") && targDefVal !== undefined) {
-                if (critState === " critical"){
-                    hitState = game.i18n.localize("DND4E.AttackRollHitCrit");
-                    targDataArray.targetHit.push(targDataArray.targets[i]);
-                } else if (critState === " fumble"){
-                    hitState = game.i18n.localize("DND4E.AttackRollMissCrit");
+                if (critState === "immune"){
+                    hitText = game.i18n.localize("DND4E.Immune");
                     targDataArray.targetMissed.push(targDataArray.targets[i]);
+					hitState = 'immune';
+				} else if (critState === "critical"){
+                    hitText = game.i18n.localize("DND4E.AttackRollHitCrit");
+                    targDataArray.targetHit.push(targDataArray.targets[i]);
+					hitState = 'critical';
+                } else if (critState === "fumble"){
+                    hitText = game.i18n.localize("DND4E.AttackRollMissCrit");
+                    targDataArray.targetMissed.push(targDataArray.targets[i]);
+					hitState = 'fumble';
                 } else if (r._total >= targDefVal){
-                    hitState = game.i18n.localize("DND4E.AttackRollHit");
+                    hitText = game.i18n.localize("DND4E.AttackRollHit");
                     targDataArray.targetHit.push(targDataArray.targets[i]);
+					hitState = 'hit';
                 } else {
-                    hitState = game.i18n.localize("DND4E.AttackRollMiss");
+                    hitText = game.i18n.localize("DND4E.AttackRollMiss");
                     targDataArray.targetMissed.push(targDataArray.targets[i]);
+					hitState = 'miss';
                 }
             }
 
@@ -99,7 +110,13 @@ export class MultiAttackRoll extends Roll {
                 target : targName,
                 targetID: targDataArray.targets[i].id,
                 hitstate : hitState,
-                critstate : critState
+                critstate : critState,
+                hittext : hitText,
+				def: vsDef,
+				mod: atkMod,
+				deftext: CONFIG.DND4E.defensives[vsDef].abbreviation,
+				modtext: CONFIG.DND4E.abilityScores[atkMod].labelShort,
+				immune: targDataArray?.targImmArray[i] || false,
             });
         };
     }
