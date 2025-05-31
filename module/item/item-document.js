@@ -1262,20 +1262,19 @@ export default class Item4e extends Item {
 		}
 
 		// let title = `${this.name} - ${game.i18n.localize("DND4E.AttackRoll")}`;
-		let title = `${this.name}`;
+		let title = `${game.i18n.localize("DND4E.AttackRoll")}: ${this.name}`;
 
 		//weapon attack roll check
 		if (weaponUse) {
-			title += ` - ${weaponUse.name}<br>${game.i18n.localize("DND4E.AttackRoll")}`;
-		} else {
-			title += ` - ${game.i18n.localize("DND4E.AttackRoll")}`;
+			title += `<br />${weaponUse.name}`;
 		}
 
 		let flavor = title;
 
-		if(itemData.attack.def) {
+		//Defence targeted is now printed per-target
+		/*if(itemData.attack.def) {
 			flavor += ` ${game.i18n.localize("DND4E.VS")} <strong>${itemData.attack.def.toUpperCase() }</strong>`;
-		}
+		}*/
 
 		if(game.user.targets.size) {
 			options.attackedDef = itemData.attack.def; 
@@ -2650,5 +2649,3 @@ export default class Item4e extends Item {
 	}
 	
 }
-
-
