@@ -406,7 +406,7 @@ export default class Item4e extends Item {
 		const C = CONFIG.DND4E;
 		const labels = {};
 
-		// Equipment Items
+		// Feature Items
 		if ( itemData.type === "feature" ) {
 			try{
 				if( system?.auraSize != "" && system?.auraSize >= 0 ){
@@ -430,7 +430,7 @@ export default class Item4e extends Item {
 					labels.group = `${system.featureGroup}`;
 				};
 				if(system?.requirements){
-					labels.reqs = `${game.i18n.localize('DND4E.Requires')}: ${system.requirements}`;
+					labels.reqs = `<strong>${game.i18n.localize('DND4E.Requires')}:</strong> ${system.requirements}`;
 				}			
 			}catch(e){
 				console.error(`Item labels failed for feature: ${itemData.name}. Item data has been dumped to debug. ${e}`);
@@ -509,7 +509,7 @@ export default class Item4e extends Item {
 		else if ( itemData.type === "ritual" ) {
 			if ( system?.category ) {
 				try {
-					labels.category = `${game.i18n.localize('DND4E.Category')}: ${CONFIG.DND4E.ritualTypes[system.category].label}`;
+					labels.category = `<strong>${game.i18n.localize('DND4E.Category')}:</strong> ${CONFIG.DND4E.ritualTypes[system.category].label}`;
 				} catch(e) {
 					console.error(`Failed to get the category name for this ritual, probably due to an un-migrated item. Manually setting the category should fix this.`);
 				}
@@ -543,13 +543,13 @@ export default class Item4e extends Item {
 			let dur = system.duration || {};
 			if (["inst", "perm"].includes(dur.units)) dur.value = null;
 
-			labels.duration = dur.value? `${game.i18n.localize("DND4E.Duration")}: ${[dur.value, C.timePeriods[dur.units]].filterJoin(" ")}` : null;
+			labels.duration = dur.value? `<strong>${game.i18n.localize("DND4E.Duration")}:</strong> ${[dur.value, C.timePeriods[dur.units]].filterJoin(" ")}` : null;
 
 			// CastTime Label
 			if (system.castTime) {
 				let castTime = system.castTime || {};
 				if (["inst", "perm"].includes(castTime.units)) castTime.value = null;
-				labels.castTime = `${game.i18n.localize("DND4E.CastTime")}: ${[castTime.value, C.timePeriods[castTime.units]].filterJoin(" ")}`;
+				labels.castTime = `<strong>${game.i18n.localize("DND4E.CastTime")}:</strong> ${[castTime.value, C.timePeriods[castTime.units]].filterJoin(" ")}`;
 			}
 
 
@@ -557,10 +557,10 @@ export default class Item4e extends Item {
 			if(system.attribute){
 				const attribute = system.attribute.split('.')[1];
 				if(DND4E.abilities[attribute]){
-					labels.attribute = `${game.i18n.localize("DND4E.Ability")}: ${game.i18n.localize(DND4E.abilities[attribute])}`;
+					labels.attribute = `<strong>${game.i18n.localize("DND4E.Ability")}:</strong> ${game.i18n.localize(DND4E.abilities[attribute])}`;
 				}
 				else if(DND4E.skills[attribute]){
-					labels.attribute = `${game.i18n.localize("DND4E.Skill")}: ${game.i18n.localize(DND4E.skills[attribute])}`;
+					labels.attribute = `<strong>${game.i18n.localize("DND4E.Skill")}:</strong> ${game.i18n.localize(DND4E.skills[attribute])}`;
 				}
 			}
 
@@ -584,8 +584,8 @@ export default class Item4e extends Item {
 					}
 
 					if(resourceLabel){
-						labels.component = `${game.i18n.localize("DND4E.Component")}: ${resourceLabel}`;
-						labels.componentCost = `${game.i18n.localize("DND4E.ComponentCost")}: ${system.consume.amount}`;
+						labels.component = `<strong>${game.i18n.localize("DND4E.Component")}:</strong> ${resourceLabel}`;
+						labels.componentCost = `<strong>${game.i18n.localize("DND4E.ComponentCost")}:</strong> ${system.consume.amount}`;
 					}
 				}
 			}
