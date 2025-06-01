@@ -31,7 +31,6 @@ export class Actor4e extends Actor {
 
 		// set detaul icon for hazard
 		if(this.type == "Hazard") data.img = "icons/svg/trap.svg";
-
 	}
 
 	/** @override */
@@ -493,7 +492,7 @@ export class Actor4e extends Actor {
 	}
 	_prepareDerivedDataDefences(actorData, system){
 		// Calculate Defences
-		if(this.type === "NPC"){
+		if(['NPC','Hazard'].includes(this.type)){
 			this.calcDefenceStatsNPC(system);
 		} else {
 			this.calcDefenceStatsCharacter(system);
@@ -1108,6 +1107,9 @@ export class Actor4e extends Actor {
 						def.value += Math.floor(data.details.level / 2);
 					}
 					
+					//No way to sort manual bonuses, so they just get added regardless.
+					//Global is moved here since 0.6.1, because now it DOESN'T display when advanced cals is off, so is probably not expected under those conditions.
+					def.value += globalBonus.bonusValue;
 					
 				} else {
 					def.value = def?.base || 0;
@@ -1120,8 +1122,6 @@ export class Actor4e extends Actor {
 				def.value += def.shield || 0;
 				def.value += def.untyped || 0;
 				def.value += globalBonus.untyped;
-				//No way to sort manual bonuses, so they just get added regardless. Global is here instead of in the advanced cals section because it DOES display even when they are off, so is probably expected.
-				def.value += globalBonus.bonusValue;
 				
 				//trim value according to floor and ceil
 				def.value = Math.max(def.value,def?.floor || def.value-1);

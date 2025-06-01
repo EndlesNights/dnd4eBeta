@@ -324,7 +324,7 @@ function selectTargetTokens(li, targetType){
 	if(targetType === "hit"){
 		console.log("hit")
 		for(const roll of message.rolls){
-			if([game.i18n.localize("DND4E.AttackRollHit"), game.i18n.localize("DND4E.AttackRollHitCrit")].includes(roll.options.multirollData.hitstate)){
+			if(['hit','crit'].includes(roll.options.multirollData.hitstate)){
 				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
 			}
 		}
@@ -332,7 +332,7 @@ function selectTargetTokens(li, targetType){
 	else if(targetType === "miss"){
 		console.log("miss")
 		for(const roll of message.rolls){
-			if([game.i18n.localize("DND4E.AttackRollMiss"), game.i18n.localize("DND4E.AttackRollMissCrit")].includes(roll.options.multirollData.hitstate)){
+			if(['miss','fumble','immune'].includes(roll.options.multirollData.hitstate)){
 				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
 			}
 		}

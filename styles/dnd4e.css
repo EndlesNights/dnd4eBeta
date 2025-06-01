@@ -2587,6 +2587,10 @@ font-size:12px;
 .roll-dialogue .roll-times .buttons input{
 	height:2.2em;
 }
+.roll-dialogue .target-detail{
+	background:var(--color-bg-btn-minor-active);
+	padding:0.3em;
+}
 .multitarget-tab{
 	display:none;
 }
@@ -3000,18 +3004,22 @@ span.flavor-text.probable-miss{
 .dice-roll .dice-total.fumble{
 	color:var(--color-text-bad);
 }
-.dice-roll .hit-prediction::before{
-	content:"\1F894";
-	display:inline-block;
-	margin-right:5px;
+.dice-roll .hit-prediction.immune{
+	text-align:center;
+	line-height:24px;
+	margin-top:3px;
+    background:rgba(0, 0, 0, 0.1);
+    border:1px solid var(--color-border-light-2);
+    border-radius:3px;
+    box-shadow:0 0 2px #fff inset;
 }
 .dice-roll .hit-prediction.fumble,
-.dice-roll .hit-prediction.probable-miss,
+.dice-roll .hit-prediction.miss,
 .dot-report .damage-taken:not(.resistant-full,.healing){
 	color:var(--color-text-bad);
 }
 .dice-roll .hit-prediction.critical,
-.dice-roll .hit-prediction.probable-hit,
+.dice-roll .hit-prediction.hit,
 .dot-report .damage-taken.resistant-full,
 .dot-report .damage-taken.healing{
 	color:var(--color-text-good);
