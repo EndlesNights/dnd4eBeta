@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 0.6.1
+- [PR #431](https://github.com/EndlesNights/dnd4eBeta/pull/431) from [FoxLee](https://github.com/FoxLee)
+  - Fixes some text strings I broke in character sheets and power config
+  - Fixes a bug where Trap/Hazard defence calcs never happened, because they weren't technically NPCs
+  - Moves bonus array for NPC/Hazard def calcs into the advanced calcs section, since the sheet now no longer offers them under basic calcs
+  - Allows changing the targeted defence at roll time, and on a per-target basis
+     - I very much want to implement this for attacking ability score as well, but with the dice logic that's much more difficult so it's disabled for now.
+  - Improves hit state data to prevent comparing translatable string to an absolute value (which broke some informational styles under non-English translations)
+  - Allows detection of immunity to attacks against a particular defence (common for traps/hazards) and alters attack roll chat card accordingly
+    - Currently classifies immunity as a miss for the sake of effects, so needs further work to fix.
+  - Updates item properties to include `strong` tags around labels ("Component Cost:", "Casting Time:" etc)
+
 ## Version 0.6.0
 - [PR #427](https://github.com/EndlesNights/dnd4eBeta/pull/427) from [FoxLee](https://github.com/FoxLee)
 	- unifies classFeats, raceFeats, pathFeats, destinyFeats and feats into a single item type, feature, with a property system.featureType
