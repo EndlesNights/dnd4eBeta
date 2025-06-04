@@ -188,7 +188,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				allRollsParts.push(parts.concat(targetBonuses))
 			}
 		}
-			
+		
 		//Get per-target defence and ability mod
 		for (let [k, v] of Object.entries(form)){
 			if (v.classList.contains('attackDef')) targetDefArray.push(v.value);
@@ -216,6 +216,8 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		if(options?.variance?.isCharge) userStatBonuses.push('@charge');
 				
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
+
+			targetDefArray.push(data.item.attack.def); targetAtkModArray.push(data.item.attack.ability);
 			
 			const targetBonuses = userStatBonuses;
 			if(theTargets.length > 0){
