@@ -1,4 +1,10 @@
 # Changelog
+## Version 0.6.3
+- Fixes a bug where missing SVG sizes could prevent loading a world under Firefox
+- Fixes a bug where fast-forwarded attack rolls with a target could not resolve
+
+## Version 0.6.2
+- Fixes a mistake in the manifest which prevented worlds not younger than v0.5.11 from migrating. This should resolve the major issues people were having with character sheets displaying incorrectly and/or items not loading after 0.6.0. 
 
 ## Version 0.6.1
 - [PR #431](https://github.com/EndlesNights/dnd4eBeta/pull/431) from [FoxLee](https://github.com/FoxLee)
