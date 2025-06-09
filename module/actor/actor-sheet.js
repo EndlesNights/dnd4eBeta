@@ -1512,7 +1512,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		if (item && item.type === "power" && item.hasAttack) {
 			const bonus = await item.getAttackBonus();
 
-			const d = {"ac": game.i18n.localize('DND4E.DefAC'), "ref": game.i18n.localize('DND4E.DefRef'), "wil": game.i18n.localize('DND4E.DefWill'), "fort": game.i18n.localize('DND4E.DefFort')};
+			const d = {"ac": game.i18n.localize('DND4E.DefAC'), "ref": game.i18n.localize('DND4E.DefRef'), "wil": game.i18n.localize('DND4E.DefWil'), "fort": game.i18n.localize('DND4E.DefFort')};
 			const defence = d[item.system.attack.def];
 
 			if (bonus && defence){
