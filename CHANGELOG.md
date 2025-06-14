@@ -1,4 +1,9 @@
 # Changelog
+## Version 0.6.4
+- Adds missing movement to Trap/Hazard actors, and migrates existing actors
+- Fixes a bug where trap/hazard icon would reset to default on sheet update
+- Fixes translation error in Will defence tooltip
+
 ## Version 0.6.3
 - Fixes a bug where missing SVG sizes could prevent loading a world under Firefox
 - Fixes a bug where fast-forwarded attack rolls with a target could not resolve
