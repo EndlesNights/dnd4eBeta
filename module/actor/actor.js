@@ -29,8 +29,12 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		// set detaul icon for hazard
-		if(this.type == "Hazard") data.img = "icons/svg/trap.svg";
+		// set default icon for hazard
+		if(this.type === "Hazard"){
+			if(data?.img == undefined || data?.img =='icons/svg/mystery-man.svg'){
+				data.img = "icons/svg/trap.svg";
+			}
+		}
 	}
 
 	/** @override */
@@ -202,7 +206,7 @@ export class Actor4e extends Actor {
 		const isCreature = ["Player Character","NPC"].includes(actorData.type);
 		const isCombatant = ["Player Character","NPC","Hazard"].includes(actorData.type);
 		const hasWealth = ["Player Character","NPC"].includes(actorData.type);
-		const hasSpeed = ["Player Character","NPC"].includes(actorData.type);
+		const hasSpeed = ["Player Character","NPC","Hazard"].includes(actorData.type);
 		//console.debug(`${actorData.name} is ${actorData.type} (creature: ${isCreature}, combatant:${isCombatant})`);
 		
 		if(actorData.type === "Player Character"){
@@ -676,7 +680,7 @@ export class Actor4e extends Actor {
 			}
 			system.movement.base.bonusValue = baseMoveBonusValue;
 
-			system.movement.base.value = system.movement.base.base +  baseMoveBonusValue + system.movement.base.temp;
+			system.movement.base.value = system.movement.base.base +  baseMoveBonusValue + system.movement.base?.temp || 0;
 			system.movement.base.value += system.movement.base.feat || 0;
 			system.movement.base.value += system.movement.base.item || 0;
 			system.movement.base.value += system.movement.base.power || 0;
@@ -697,7 +701,7 @@ export class Actor4e extends Actor {
 			system.movement.walk.bonusValue = walkBonusValue;
 			
 			let walkForm = eval(Helper.replaceData(system.movement.walk.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-			system.movement.walk.value += walkForm + walkBonusValue + system.movement.base.temp;
+			system.movement.walk.value += walkForm + walkBonusValue + system.movement.base?.temp || 0;
 			system.movement.walk.value += system.movement.walk.feat || 0;
 			system.movement.walk.value += system.movement.walk.item || 0;
 			system.movement.walk.value += system.movement.walk.power || 0;
@@ -716,7 +720,7 @@ export class Actor4e extends Actor {
 		if(isNaN(parseInt(system.movement.charge?.absolute))){ //All logic only required if there is no usable absolute value
 			system.movement.charge.bonusValue = chargeBonusValue;
 			let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-			system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge.temp;
+			system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge?.temp || 0;
 			system.movement.charge.value += system.movement.charge.feat || 0;
 			system.movement.charge.value += system.movement.charge.item || 0;
 			system.movement.charge.value += system.movement.charge.power || 0;
@@ -735,7 +739,7 @@ export class Actor4e extends Actor {
 		if(isNaN(parseInt(system.movement.run?.absolute))){ //All logic only required if there is no usable absolute value
 			system.movement.run.bonusValue = runBonusValue;
 			let runForm = eval(Helper.replaceData(system.movement.run.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-			system.movement.run.value = runForm + runBonusValue + system.movement.run.temp;
+			system.movement.run.value = runForm + runBonusValue + system.movement.run?.temp || 0;
 			system.movement.run.value += system.movement.run.feat || 0;
 			system.movement.run.value += system.movement.run.item || 0;
 			system.movement.run.value += system.movement.run.power || 0;
@@ -754,7 +758,7 @@ export class Actor4e extends Actor {
 		if(isNaN(parseInt(system.movement.climb?.absolute))){ //All logic only required if there is no usable absolute value
 			system.movement.climb.bonusValue = climbBonusValue;
 			let climbForm = eval(Helper.replaceData(system.movement.climb.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-			system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb.temp;
+			system.movement.climb.value = climbForm + climbBonusValue + system.movement.climb?.temp || 0;
 			system.movement.climb.value += system.movement.climb.feat || 0;
 			system.movement.climb.value += system.movement.climb.item || 0;
 			system.movement.climb.value += system.movement.climb.power || 0;
@@ -773,7 +777,7 @@ export class Actor4e extends Actor {
 		if(isNaN(parseInt(system.movement.shift?.absolute))){ //All logic only required if there is no usable absolute value
 			system.movement.shift.bonusValue = shiftBonusValue;		
 			let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
-			system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift.temp;
+			system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift?.temp || 0;
 			system.movement.shift.value += system.movement.shift.feat || 0;
 			system.movement.shift.value += system.movement.shift.item || 0;
 			system.movement.shift.value += system.movement.shift.power || 0;
@@ -792,7 +796,7 @@ export class Actor4e extends Actor {
 		if(isNaN(parseInt(system.movement.swim?.absolute))){ //All logic only required if there is no usable absolute value
 			system.movement.swim.bonusValue = swimBonusValue;		
 			let swimForm = eval(Helper.replaceData(system.movement.swim.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
-			system.movement.swim.value = swimForm + swimBonusValue + system.movement.swim.temp;
+			system.movement.swim.value = swimForm + swimBonusValue + system.movement.swim?.temp || 0;
 			system.movement.swim.value += system.movement.swim.feat || 0;
 			system.movement.swim.value += system.movement.swim.item || 0;
 			system.movement.swim.value += system.movement.swim.power || 0;

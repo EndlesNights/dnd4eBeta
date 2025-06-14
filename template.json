@@ -951,7 +951,7 @@
 			"defences.wil.base": 10
 		},
 		"Hazard": {
-			"templates": ["combatant"],
+			"templates": ["combatant","speed"],
 			"attributes.init.base": 0,
 			"attributes.init.ability": "",
 			"description": "",
@@ -969,10 +969,13 @@
 			"defences.fort.base": 10,
 			"defences.ref.base": 10,
 			"defences.wil.base": 10,
+			"attributes.init.none": false,
 			"defences.ac.none": false,
 			"defences.fort.none": false,
 			"defences.ref.none": false,
-			"defences.wil.none": false
+			"defences.wil.none": false,
+			"movement.none": false,
+			"attributes.hp.none": false
 		}
 	},
 	"Item": {

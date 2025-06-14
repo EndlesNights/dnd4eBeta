@@ -84,70 +84,24 @@
 				</div>
 				
 				<div class="flexcol defences{{#if system.advancedCals}} advanced{{/if}}">
-					
-					<div class="defence{{#if system.defences.ac.none}} null{{/if}}" data-defence="ac">
-						<span class="def-none">
-							<input class="def-none" type="checkbox" name="system.defences.ac.none" data-dtype="Boolean" {{checked system.defences.ac.none}} data-tooltip="{{localize 'DND4E.Hazard.DefenceNullTip' def=system.defences.ac.title}}"/>
-							<span class="button" data-tooltip="{{localize 'DND4E.None'}}">&#128683;&#xFE0E;</span> 
-						</span>
-						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4E.Roll'}} {{system.defences.ac.title}} {{localize 'DND4E.Save'}}">{{system.defences.ac.label}}</label>
-					{{#if system.advancedCals}}
-						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{system.defences.ac.title}}">{{system.defences.ac.value}}</strong>
-						<label class="def-base">{{localize 'DND4E.Base'}}:</label>
-						<input class="number" name="system.defences.ac.base" value="{{system.defences.ac.base}}" data-dtype="Number" onfocus="this.select()">
-					{{else}}
-						<input class="number attribute-name" name="system.defences.ac.base" value="{{system.defences.ac.base}}" data-dtype="Number" onfocus="this.select()">
-						<span class="attribute-name defence-value{{#if (lt system.defences.ac.value system.defences.ac.base)}} penalty{{else if (gt system.defences.ac.value system.defences.ac.base)}} bonus{{/if}}" data-tooltip="{{system.defences.ac.shortname}} {{localize 'DND4EUI.CurrentValue'}}">({{system.defences.ac.value}})</span>
-					{{/if}}
-					</div>
-					
-					<div class="defence{{#if system.defences.fort.none}} null{{/if}}" data-defence="fort">
-						<span class="def-none">
-							<input type="checkbox" name="system.defences.fort.none" data-dtype="Boolean" {{checked system.defences.fort.none}} data-tooltip="{{localize 'DND4E.Hazard.DefenceNullTip' def=system.defences.fort.title}}"/>
-							<span class="button" data-tooltip="{{localize 'DND4E.None'}}">&#128683;&#xFE0E;</span> 
-						</span>
-						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4E.Roll'}} {{system.defences.fort.title}} {{localize 'DND4E.Save'}}">{{system.defences.fort.label}}</label>
-					{{#if system.advancedCals}}
-						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{system.defences.fort.title}}">{{system.defences.fort.value}}</strong>
-						<label class="def-base">{{localize 'DND4E.Base'}}:</label>
-						<input class="number" name="system.defences.fort.base" value="{{system.defences.fort.base}}" data-dtype="Number" onfocus="this.select()">				
-					{{else}}
-						<input class="number attribute-name" name="system.defences.fort.base" value="{{system.defences.fort.base}}" data-dtype="Number" onfocus="this.select()">
-						<span class="attribute-name defence-value{{#if (lt system.defences.fort.value system.defences.fort.base)}} penalty{{else if (gt system.defences.fort.value system.defences.fort.base)}} bonus{{/if}}" data-tooltip="{{system.defences.fort.shortname}} {{localize 'DND4EUI.CurrentValue'}}">({{system.defences.fort.value}})</span>
-					{{/if}}
-					</div>
 						
-					<div class="defence{{#if system.defences.ref.none}} null{{/if}}" data-defence="ref">
+					{{#each system.defences as |def d|}}
+					<div class="defence{{#if def.none}} null{{/if}}" data-defence="ac">
 						<span class="def-none">
-							<input type="checkbox" name="system.defences.ref.none" data-dtype="Boolean" {{checked system.defences.ref.none}} data-tooltip="{{localize 'DND4E.Hazard.DefenceNullTip' def=system.defences.ref.title}}"/>
+							<input class="def-none" type="checkbox" name="system.defences.{{d}}.none" data-dtype="Boolean" {{checked def.none}} data-tooltip="{{localize 'DND4E.Hazard.DefenceNullTip' def=def.title}}"/>
 							<span class="button" data-tooltip="{{localize 'DND4E.None'}}">&#128683;&#xFE0E;</span> 
 						</span>
-						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4E.Roll'}} {{system.defences.ref.title}} {{localize 'DND4E.Save'}}">{{system.defences.ref.label}}</label>
+						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4E.Roll'}} {{def.title}} {{localize 'DND4E.Save'}}">{{def.label}}</label>
 					{{#if system.advancedCals}}
-						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{system.defences.ref.title}}">{{system.defences.ref.value}}</strong>
+						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{def.title}}">{{def.value}}</strong>
 						<label class="def-base">{{localize 'DND4E.Base'}}:</label>
-						<input class="number" name="system.defences.ref.base" value="{{system.defences.ref.base}}" data-dtype="Number" onfocus="this.select()">
+						<input class="number" name="system.defences.{{d}}.base" value="{{def.base}}" data-dtype="Number" onfocus="this.select()">
 					{{else}}
-						<input class="number attribute-name" name="system.defences.ref.base" value="{{system.defences.ref.base}}" data-dtype="Number" onfocus="this.select()">
-						<span class="attribute-name defence-value{{#if (lt system.defences.ref.value system.defences.ref.base)}} penalty{{else if (gt system.defences.ref.value system.defences.ref.base)}} bonus{{/if}}" data-tooltip="{{system.defences.ref.shortname}} {{localize 'DND4EUI.CurrentValue'}}">({{system.defences.ref.value}})</span>
+						<input class="number attribute-name" name="system.defences.{{d}}.base" value="{{def.base}}" data-dtype="Number" onfocus="this.select()">
+						<span class="attribute-name defence-value{{#if (lt def.value def.base)}} penalty{{else if (gt def.value def.base)}} bonus{{/if}}" data-tooltip="{{def.shortname}} {{localize 'DND4EUI.CurrentValue'}}">({{def.value}})</span>
 					{{/if}}
 					</div>
-					
-					<div class="defence{{#if system.defences.wil.none}} null{{/if}}" data-defence="wil">
-						<span class="def-none">
-							<input type="checkbox" name="system.defences.wil.none" data-dtype="Boolean" {{checked system.defences.wil.none}} data-tooltip="{{localize 'DND4E.Hazard.DefenceNullTip' def=system.defences.wil.title}}"/>
-							<span class="button" data-tooltip="{{localize 'DND4E.None'}}">&#128683;&#xFE0E;</span> 
-						</span>
-						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4E.Roll'}} {{system.defences.wil.title}} {{localize 'DND4E.Save'}}">{{system.defences.wil.label}}</label>
-					{{#if system.advancedCals}}
-						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{system.defences.wil.title}}">{{system.defences.wil.value}}</strong>
-						<label class="def-base">{{localize 'DND4E.Base'}}:</label>
-						<input class="number" name="system.defences.wil.base" value="{{system.defences.wil.base}}" data-dtype="Number" onfocus="this.select()">	
-					{{else}}
-						<input class="number attribute-name" name="system.defences.wil.base" value="{{system.defences.wil.base}}" data-dtype="Number" onfocus="this.select()">
-						<span class="attribute-name defence-value{{#if (lt system.defences.wil.value system.defences.wil.base)}} penalty{{else if (gt system.defences.wil.value system.defences.wil.base)}} bonus{{/if}}" data-tooltip="{{system.defences.wil.shortname}} {{localize 'DND4EUI.CurrentValue'}}">({{system.defences.wil.value}})</span>
-					{{/if}}
-					</div>
+					{{/each}}
 						
 				</div>
 
@@ -170,6 +124,14 @@
 					<div>
 						<label class="hazard-detection">{{localize 'DND4E.Hazard.Detection'}}</label>
 						<input name="system.details.detection" value="{{system.details.detection}}" data-dtype="text" onfocus="this.select()" placeholder="{{localize 'DND4E.Hazard.Detection'}}">
+					</div>
+					
+					<div data-tooltip="{{moveTitle}}">
+						<label class="movement-dialog rollable">{{localize 'DND4E.Speed'}}</label>
+						<strong class="movement-dialog rollable">{{numberFormat system.movement.walk.value}} sq.</strong>
+						{{#each system.moveCustom as |v k|}}
+						<li class="tag {{k}}">{{v}}</li>
+						{{/each}}
 					</div>
 					
 				</div>

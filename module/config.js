@@ -671,6 +671,9 @@ DND4E.defaultArtwork = {
 		"ritual": "icons/svg/statue.svg",
 		"tool": "icons/svg/trap.svg",
 		"weapon": "icons/svg/sword.svg"
+	},
+	Actor: {
+		"Hazard": "icons/svg/trap.svg"
 	}
 }
 
