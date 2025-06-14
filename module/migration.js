@@ -157,6 +157,7 @@ export const migrateActorData = function(actor, migrationData) {
 		_migrateActorDefAndRes(actor, updateData);
 		_migrateActorGlobalMods(actor, updateData);
 		_migrateActorSwim(actor, updateData);
+		_migrateHazardSpeed(actor, updateData);
 	}
 
 	return updateData;
@@ -315,6 +316,7 @@ export const getMigrationData = async function() {
  * @private
  */
  function _migrateActorAddProfKeys(actorData, updateData) {
+	if(actorData?.type === "Hazard") return;
 	if(!actorData?.system?.details) return;
 
 	if(actorData.system.details.armourProf == undefined){
@@ -341,6 +343,8 @@ export const getMigrationData = async function() {
  * @private
  */
 function _migrateActorSkills(actorData, updateData){
+	if(actorData?.type === "Hazard") return;
+	
 	const skills = actorData?.system?.skills;
 	if(! skills) return;
 
@@ -944,13 +948,66 @@ function _migrateRitualCategory(itemData, updateData){
 	if(!itemData.type === 'ritual') return;
 	
 	updateData["system.category"] = "other";
-	console.debug(CONFIG.DND4E.ritualTypes);
+	//console.debug(CONFIG.DND4E.ritualTypes);
 	for ( const [id, group] of Object.entries(CONFIG.DND4E.ritualTypes)){
-		console.debug(`${id} ${group.label}`);
+		//console.debug(`${id} ${group.label}`);
 		if( itemData.system.category == id || itemData.system.category == group.label ){
 			updateData["system.category"] = id;
 		}	
 	}
 	
+	return updateData;
+}
+
+/**
+* Migrate hazards without movement
+* @param {object} actorData   Actor data being migrated.
+* @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
+* @returns {object}           Modified version of update data.
+* @private
+*/
+function _migrateHazardSpeed(actorData, updateData){
+	
+	if(actorData?.type != "Hazard") return;
+	console.debug(actorData.system.movement);
+	const moveTemplate = {'base':{},'walk':{},'run':{},'charge':{},'climb':{},'swim':{},'shift':{}};
+	
+	const movement = actorData.system.movement === undefined ? moveTemplate : actorData.system.movement;
+	console.debug(movement);
+	
+	for (const [m, mode] of Object.entries(movement)){
+		console.debug(m);
+		console.debug(mode);	
+		if(['notes','custom','none'].includes(m)) continue;
+		
+		if(mode?.bonus == undefined){			
+			updateData[`system.movement.${m}`] = {
+				"value": mode.value || 0,
+				"bonus": [{}],
+				"feat": mode.feat || 0,
+				"item": mode.item || 0,
+				"power": mode.power || 0,
+				"race": mode.race || 0,
+				"untyped": mode.untyped || 0,
+				"temp": mode.temp || 0
+			};
+			
+			if(m != 'base'){
+				let spdFormula = `@base`;				
+				if(m === 'run') {
+					spdFormula = '@base + 2';
+				}else if(m === 'shift'){
+					spdFormula = '1';
+				}else if(['climb','swim'].includes(m)) {
+					spdFormula = '@base / 2';
+				}
+				updateData[`system.movement.${m}.formula`] = spdFormula;
+			}
+		}
+	}
+	
+	if(movement.none === undefined) updateData['system.movement.none'] = true;
+	
+	console.debug(updateData);
 	return updateData;
 }
