@@ -1072,7 +1072,7 @@ export class Helper {
 			attackForm = chatData.attack.formula.replaceAll('@powerMod',`@${chatData.attack?.ability}Mod`);
 			const weapon = Helper.getWeaponUse(chatData, actorData);
 			const attackValues = this.commonReplace(attackForm, actorData, chatData, weapon?.system);
-			if(attackTotal){
+			if(!(attackTotal == undefined)){
 				//if does not start with a number sign add one
 				attackTotal = attackTotal.toString();
 				if(!(attackTotal.startsWith("+") || attackTotal.startsWith("-"))) {
