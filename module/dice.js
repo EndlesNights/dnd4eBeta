@@ -43,9 +43,6 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 	if ( rollConfig.fastForward ) {
 		return performD20RollAndCreateMessage(null, rollConfig)
 	}
-	
-	console.debug(parts);
-	console.debug(partsExpressionReplacements);
 
 	// Render modal dialog
 	var targDataArray = {
