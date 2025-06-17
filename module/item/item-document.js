@@ -1932,8 +1932,6 @@ export default class Item4e extends Item {
 		const recharge = itemData.recharge || {};
 		const usesRecharge = !!recharge.value;
 		const replenishes = uses.max && ['day','enc','round'].includes(uses.per) && !autoDestroy;
-		
-		console.debug(`Replenishes: ${replenishes}`);
 
 		// Display a configuration dialog to confirm the usage
 		let placeTemplate = false;
@@ -1953,11 +1951,11 @@ export default class Item4e extends Item {
 			else {
 				const q = itemData.quantity;
 				// Case 1, reduce charges
-				if ( remaining || ((q === 1) && !replenishes && (current > 0))) {
+				if ( remaining || ((q === 1) && replenishes && (current > 0)) ) {
 					await this.update({"system.uses.value": remaining});
 				}
 				// Case 2, reduce quantity
-				else if ( q > 1) {
+				else if ( q > 1 && !replenishes ) {
 					await this.update({"system.quantity": q - 1, "system.uses.value": this.preparedMaxUses || 0});
 				}
 				// Case 3, destroy the item
