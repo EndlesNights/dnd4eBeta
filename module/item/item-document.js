@@ -371,7 +371,7 @@ export default class Item4e extends Item {
 	get areEffectsSuppressed() {
 		if(this.type === "power") return true;
 		return false;
-		const requireEquipped = (this.type !== "consumable") || ["rod", "trinket", "wand"].includes(
+		const requireEquipped = (this.type !== "consumable") || ["trinket"].includes(
 			this.system.consumableType);
 		if ( requireEquipped && (this.system.equipped === false) ) return true;
 
@@ -754,8 +754,8 @@ export default class Item4e extends Item {
 		if (this.type === "feat") {
 			let configured = await this._rollFeat(configureDialog);
 			if ( configured === false ) return;
-		}*/
-		else if ( this.type === "consumable" ) {
+		}
+		else*/ if ( this.type === "consumable" ) {
 			let configured = await this._rollConsumable(configureDialog);
 			if ( configured === false ) return;
 		}
@@ -1931,6 +1931,9 @@ export default class Item4e extends Item {
 		let usesCharges = !!uses.per && (this.preparedMaxUses > 0);
 		const recharge = itemData.recharge || {};
 		const usesRecharge = !!recharge.value;
+		const replenishes = uses.max && ['day','enc','round'].includes(uses.per) && !autoDestroy;
+		
+		console.debug(`Replenishes: ${replenishes}`);
 
 		// Display a configuration dialog to confirm the usage
 		let placeTemplate = false;
@@ -1950,11 +1953,11 @@ export default class Item4e extends Item {
 			else {
 				const q = itemData.quantity;
 				// Case 1, reduce charges
-				if ( remaining ) {
+				if ( remaining || ((q === 1) && !replenishes && (current > 0))) {
 					await this.update({"system.uses.value": remaining});
 				}
 				// Case 2, reduce quantity
-				else if ( q > 1 ) {
+				else if ( q > 1) {
 					await this.update({"system.quantity": q - 1, "system.uses.value": this.preparedMaxUses || 0});
 				}
 				// Case 3, destroy the item
@@ -1962,10 +1965,10 @@ export default class Item4e extends Item {
 					await this.actor.deleteEmbeddedDocuments("Item", [this.id]);
 				}
 				// Case 4, reduce item to 0 quantity and 0 charges
-				else if ( (q === 1) ) {
+				else if ( (q === 1) && !replenishes ) {
 					await this.update({"system.quantity": q - 1, "system.uses.value": 0});
 				}
-				// Case 5, item unusable, display warning and do nothing
+				// Failsafe, item unusable, display warning and do nothing
 				else {
 					ui.notifications.warn(game.i18n.format("DND4E.ItemNoUses", {name: this.name}));
 				}
