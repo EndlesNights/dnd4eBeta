@@ -81,19 +81,25 @@ export class Turns{
 			}
 			
 		}
-
+		
 		// Signal the current actor to check end-of-turn saves
-		const currentActor = game.combat.turns[currentTurn].token?.actor
+		//console.log(`Begin autosaves phase`);
+		const currentActor = await game.combat.turns[currentTurn]?.token.actor;
 
 		if(currentActor){
+			//console.log(`Checking for owner of ${currentActor.name}`);
 			const targetUser = Helper.firstOwner(currentActor);
-
-			if(game.user.isGM && targetUser.isGM || game.user == targetUser){
+			
+			//Work out which user makes the save; "game.user" is whoever ended the turn
+			//If game.user is a non-GM with ownership of this actor, it's them
+			//If game.user is a GM and this actor has no specfic owner, it's them
+			//Otherwise, it's the first detected owner of the actor
+			if((currentActor.isOwner && !game.user.isGM) || (game.user.isGM && targetUser.isGM)){
 				await currentActor.promptEoTSavesSocket();
-			} else {
-				game.socket.emit('system.dnd4e', {
+			}else {
+				await game.socket.emit('system.dnd4e', {
 					actorID: currentActor.id,
-					tokenID: game.combat.turns[currentTurn]?.token.id || null,
+					tokenID: game.combat.turns[currentTurn].tokenId,
 					operation: 'promptEoTSaves',
 					user: targetUser.id,
 					scene: canvas.scene.id,
@@ -101,10 +107,10 @@ export class Turns{
 				});
 			}
 		}
-
 		
 		// After EoT durations are resolved, collect ongoing damage instances from effects
-		const nextCombatant = game.combat.turns[nextTurn].token?.actor || null;
+		//console.log(`Begin ongoing damage phase`);
+		const nextCombatant = await game.combat.turns[nextTurn]?.token.actor || null;
 		
 		if(nextCombatant){
 			//Triggers for the beginning of the next turn
@@ -112,11 +118,12 @@ export class Turns{
 		}
 
 		if(nextCombatant){
+			//console.log(`Checking for owner of ${nextCombatant.name}`);
 			const nextTargetUser = Helper.firstOwner(nextCombatant);
-			if(game.user.isGM /*&& nextTargetUser.isGM*/){
+			if(game.user.isGM && nextTargetUser.isGM){
 				await nextCombatant.autoDoTsSocket(game.combat.turns[nextTurn].tokenId);
 			} else {
-				game.socket.emit('system.dnd4e', {
+				await game.socket.emit('system.dnd4e', {
 					actorID: nextCombatant.id,
 					tokenID: game.combat.turns[nextTurn].tokenId,
 					operation: 'autoDoTs',
