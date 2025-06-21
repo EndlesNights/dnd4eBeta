@@ -501,6 +501,9 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@bloodied",	actorInnerData.details.isBloodied ? 1 : 0);
 				
 				newFormula = newFormula.replaceAll("@sneak",	CONFIG.DND4E.SNEAKSCALE[actorInnerData.details.tier]);
+				
+				newFormula = newFormula.replaceAll("@enhArmour", actorInnerData.defences.ac.enhance || 0);
+				newFormula = newFormula.replaceAll("@enhNAD", Math.min(actorInnerData.defences.fort.enhance || 0, actorInnerData.defences.ref.enhance || 0, actorInnerData.defences.wil.enhance || 0));
 
 				//targets @scale plus some #
 				newFormula = newFormula.replace(/@scale(\d*)/g,	(match, number) => {return this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, number-1)});
@@ -1072,7 +1075,7 @@ export class Helper {
 			attackForm = chatData.attack.formula.replaceAll('@powerMod',`@${chatData.attack?.ability}Mod`);
 			const weapon = Helper.getWeaponUse(chatData, actorData);
 			const attackValues = this.commonReplace(attackForm, actorData, chatData, weapon?.system);
-			if(attackTotal){
+			if(!(attackTotal == undefined)){
 				//if does not start with a number sign add one
 				attackTotal = attackTotal.toString();
 				if(!(attackTotal.startsWith("+") || attackTotal.startsWith("-"))) {
@@ -1220,7 +1223,7 @@ export class Helper {
 		//dots
 		for(const dot of effect.flags.dnd4e.dots){
 			// dot.amount = await this.parseSolidify(dot.amount, parentActor);
-			dot.amount = dot.amount.replace(/\$solidify\((.*?)\)/g, (match, value) => {
+			dot.amount = dot.amount.toString().replace(/\$solidify\((.*?)\)/g, (match, value) => {
 				return Helper.commonReplace(value, parentActor);
 			});
 		}
@@ -1369,30 +1372,34 @@ export class Helper {
 		//const playerOwners = owners.filter(([id, level]) => (!game.users.get(id)?.isGM && game.users.get(id)?.active) && level === 3).map(([id, level])=> id);
 		let found;
 		
-		//First check for an assigned character
-		game.users.forEach(function (maybePlayer) {
-			if(maybePlayer.character?.id === doc.id){
-				console.debug(`Player found: ${maybePlayer.id}`);
-				found = (idOnly ? maybePlayer.id : maybePlayer );
+		//First check for an assigned character (but player must be active!)
+		game.users.forEach(function (player) {
+			if(player.active && player.character?.id === doc.id){
+				//console.log(`Player found for ${doc.name}: ${player.id}`);
+				found = (idOnly ? player.id : player );
 				return;
 			}
 		});
 		if(found) return found;
 		
-		//If no assigned character, check for specific player owner
-		const owners = Object.entries(doc.ownership);		
-		for (const [owner, level] of Object.entries(owners)){
-			if (owner !== 'default'){
-				const ownerData = game.users?.get(owner);
-				if(!ownerData?.isGM && ownerData?.active && level === 3){
-					console.debug(`Owner: ${owner}`);
-					found = (idOnly ? owner : ownerData);
+		//If all players have ownership, the GM fallback will be used
+		if(doc.ownership['default'] != 3){
+		//If no assigned character, check for specific (active) player owner
+			const owners = Object.entries(doc.ownership);
+			for (const [i, owner] of Object.entries(owners)){
+				if (1 !== 0){
+					const ownerData = game.users?.get(owner[0]);
+					if(!ownerData?.isGM && ownerData?.active && owner[1] === 3){
+						//console.log(`Owner of ${doc.name}: ${ownerData.name}`);
+						found = (idOnly ? owner : ownerData);
+					}
 				}
 			}
 		}
 		if(found) return found;
 
 		// If we have no valid player, fall back to first GM
+		//console.log(`No valid owner found for ${doc.name}, using GM fallback`);
 		const firstGM = game.users.find(u => u.isGM && u.active);
 		return ( idOnly ? firstGM.id : firstGM );
 	}

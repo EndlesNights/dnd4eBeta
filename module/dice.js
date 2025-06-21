@@ -46,9 +46,10 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 
 	// Render modal dialog
 	var targDataArray = {
-		targNameArray: [],
-		targets: []
+		'targNameArray': [],
+		'targets': []
 	}
+	
 	if (game.user.targets.size) {
 		const numTargets = game.user.targets.size;
 		const targetArr = Array.from(game.user.targets);
@@ -60,16 +61,19 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 			targDataArray.targets.push({
 				'name': targetArr[targ].name,
 				'status': targetArr[targ].actor.statuses,
-				'attackMod': options.data?.item?.ability,
-				'attackDef': options.attackedDef,
-				'immune': targetArr[targ].actor.system.defences[options.attackedDef]?.none
+				'attackMod': data?.item?.attack?.ability || 'str',
+				'attackDef': options.attackedDef || 'ac',
+				'immune': targetArr[targ].actor.system.defences[options.attackedDef]?.none || false
 			});
 		}
 	} else {
 		targDataArray.targNameArray.push('');
 		targDataArray.targets.push({
 			'name':'',
-			'status':[]
+			'status':[],
+			'attackMod': data?.item?.attack?.ability || 'str',
+			'attackDef': data?.item?.attack?.def || 'ac',
+			'immune': false
 		});
 		targDataArray.hasTarget = false;
 	}
@@ -82,18 +86,18 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 	let newFlavor = "";
 	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
-		formula: parts.join(" + "),
-		data: data,
-		rollMode: rollConfig.rollMode,
-		rollModes: CONFIG.Dice.rollModes,
-		config: CONFIG.DND4E,
-		flavor: newFlavor || flavor,
-		isAttackRoll: isAttackRoll,
-		isD20Roll: true,
+		'formula': parts.join(" + "),
+		'data': data,
+		'rollMode': rollConfig.rollMode,
+		'rollModes': CONFIG.Dice.rollModes,
+		'config': CONFIG.DND4E,
+		'flavor': newFlavor || flavor,
+		'isAttackRoll': isAttackRoll,
+		'isD20Roll': true,
 		'isCharge': isCharge,
 		'isOpp': isOpp,
 		'userStatus': userStatus,
-		targetData: targDataArray
+		'targetData': targDataArray
 	};
 	const html = await renderTemplate(template, dialogData);
 
@@ -101,12 +105,12 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 	let roll;
 	return new Promise(resolve => {
 		new Dialog({
-			title: title,
-			content: html,
-			buttons: {
-				normal: {
-					label: game.i18n.localize("DND4E.Roll"),
-					callback: html => roll = performD20RollAndCreateMessage(html[0].querySelector("form"), rollConfig)
+			'title': title,
+			'content': html,
+			'buttons': {
+				'normal': {
+					'label': game.i18n.localize("DND4E.Roll"),
+					'callback': html => roll = performD20RollAndCreateMessage(html[0].querySelector("form"), rollConfig)
 				}
 			},
 			default: "normal",
