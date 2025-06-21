@@ -1223,7 +1223,7 @@ export class Helper {
 		//dots
 		for(const dot of effect.flags.dnd4e.dots){
 			// dot.amount = await this.parseSolidify(dot.amount, parentActor);
-			dot.amount = dot.amount.replace(/\$solidify\((.*?)\)/g, (match, value) => {
+			dot.amount = dot.amount.toString().replace(/\$solidify\((.*?)\)/g, (match, value) => {
 				return Helper.commonReplace(value, parentActor);
 			});
 		}
