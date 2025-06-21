@@ -559,7 +559,8 @@ DND4E.consumableTypes = {
 	"poison": {label: "DND4E.ConsumablePoison"},
 	"food": {label: "DND4E.ConsumableFood"},
 	"scroll": {label: "DND4E.ConsumableScroll"},
-	"trinket": {label: "DND4E.ConsumableTrinket"}
+	"trinket": {label: "DND4E.ConsumableTrinket"},
+	"wondrous": {label: "DND4E.EquipmentWondrousItem"}
 };
 preLocalize("consumableTypes", { keys: ["label"] });
 
