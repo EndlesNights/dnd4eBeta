@@ -1,4 +1,14 @@
 # Changelog
+
+## Version 0.6.5 
+- Huge Fixes to Ongoing Damage and End of Turn Saves Automation that have hopefully FINALLY got them working properly! Includes multiple fixes to the ownership detection function and subsequent logic for assigning saving throw responsibility.
+  - You should still expect a full fail state if no GM is logged in.
+- Updated behaviour of consumables that model rechargeable trinkets, and added "Wondrous Item" category
+- Combat automation: Fixed error with attack stat/target defence detection in roll dialogue (hopefully fixes the problem reported by Nihiladrem on Discord)
+- Chat Cards: Fixed a bug where attack mod display in chat summary would revert to "ability" style if the calculated attack bonus totalled to 0.
+- Variables: Added `@enhArmour` and `@enhNAD` variables to reference the enhancement value of AC and non-AC-Defs respectively.
+- Documentation: Updated character sheet variables with the two above, an also added `@scale` and `@sneak` to the list.
+ 
 ## Version 0.6.4
 - Adds missing movement to Trap/Hazard actors, and migrates existing actors
 - Fixes a bug where trap/hazard icon would reset to default on sheet update
