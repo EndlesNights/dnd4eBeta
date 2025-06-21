@@ -120,7 +120,7 @@ export class Turns{
 		if(nextCombatant){
 			//console.log(`Checking for owner of ${nextCombatant.name}`);
 			const nextTargetUser = Helper.firstOwner(nextCombatant);
-			if(game.user.isGM && nextTargetUser.isGM){
+			if(game.user.isGM){
 				await nextCombatant.autoDoTsSocket(game.combat.turns[nextTurn].tokenId);
 			} else {
 				await game.socket.emit('system.dnd4e', {
