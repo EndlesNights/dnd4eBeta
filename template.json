@@ -1302,6 +1302,7 @@
 			"level": "",
 			"powersource": "martial",
 			"secondPowersource": "",
+			"powersourceName": "",
 			"subName": "",
 			"prepared": true,
 			"powerType": "class",
