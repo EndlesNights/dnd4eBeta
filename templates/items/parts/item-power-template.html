@@ -2,10 +2,6 @@
 	<h3 class="form-header">{{ localize "DND4E.PowerDetails" }}</h3>
 
 	{{!-- Power Source & Keywords --}}
-	<div class="form-group">
-		<label>{{ localize "DND4E.PowerAutoGeneratePowerCardLable" }}</label>
-		<span class="checkbox"><input type="checkbox" name="system.autoGenChatPowerCard" data-dtype="Boolean" {{checked system.autoGenChatPowerCard}}/></span>
-	</div>
 	<div class="form-group short power-source two-input">
 		<label>{{ localize "DND4E.PowerSource" }}</label>
 		<select name="system.powersource">
@@ -21,9 +17,11 @@
 		{{/if}}
 	</div>
 
-	<div class="form-group select">
+	<div class="form-group short two-input">
 		<label>{{ localize 'DND4E.Level' }}</label>
 		<input type="text" name="system.level" value="{{system.level}}"/>
+		<label class="source-name">{{ localize 'DND4E.SourceName' }}</label>
+		<input class="source-name" type="text" name="system.powersourceName" value="{{system.powersourceName}}"/>
 	</div>
 
 	<div class="form-group short power-type two-input">
@@ -84,9 +82,24 @@
 				<input type="text" name="system.area" value="{{system.area}}"/>
 			{{/if}}
 			{{#if system.isRange}}
+			{{#unless (eq system.rangeType 'weapon')}}
 				{{#if system.isArea}}<span class="range-within-of">{{ localize "DND4E.RangeWithinOf" }}</span>{{/if}}
-				{{#unless system.isArea}}<span class="range-of">{{ localize "DND4E.RangeOf" }}</span>{{/unless}}
-				<input type="text" name="system.rangePower" value="{{system.rangePower}}" data-dtype="Number"/>
+				
+				{{#unless system.isArea}}<div class="form-fields">{{/unless}}
+				
+				<input type="text" name="system.rangePower" data-tooltip="{{ localize 'DND4E.WeaponRangeShort' }}: {{ localize 'DND4E.WeaponRangeShortTip' }}" value="{{system.rangePower}}" data-dtype="Number"/>
+				
+				{{#unless system.isArea}}
+					<input class="hidden" type="text" name="system.range.value" value="{{#if system.range.long}}{{system.rangePower}}{{/if}}" data-dtype="Number" />
+					{{#if (eq system.rangeType 'range')}}
+						<span class="sep">/</span>
+						<input type="text" name="system.range.long" value="{{system.range.long}}" data-tooltip="{{ localize 'DND4E.WeaponRangeLong' }}: {{ localize 'DND4E.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4E.WeaponRangeLong' }}" data-dtype="Number" onClick="this.select();"/>
+					{{/if}}
+				{{/unless}}
+				
+				{{#unless system.isArea}}</div>{{/unless}}
+				
+				{{/unless}}
 			{{/if}}
 		</div>
 	</div>
@@ -205,7 +218,7 @@
 		<label>{{ localize "DND4E.IsDamage" }}</label>
 		<span class="checkbox"><input type="checkbox" name="system.hit.isDamage" data-dtype="Boolean" {{checked system.hit.isDamage}}/></span>
 	</div>
-	{{#if system.hit.isDamage}}
+{{#if system.hit.isDamage}}
 	{{!-- Hit Details --}}
 	{{!-- Damage --}}
 	<div class="form-group">
@@ -309,7 +322,8 @@
 		<span class="checkbox"><input type="checkbox" name="system.damageTypeWeapon" data-dtype="Boolean" {{checked system.damageTypeWeapon}}/></span>
 	</div> -->
 
-	{{/if}}
+{{/if}}
+
 	<div class="form-group">
 		<label>{{ localize "DND4E.IsHealing" }}</label>
 		<span class="checkbox"><input type="checkbox" name="system.hit.isHealing" data-dtype="Boolean" {{checked system.hit.isHealing}}/></span>
@@ -399,9 +413,13 @@
 		<input type="text" name="system.sustain.detail" value="{{system.sustain.detail}}" placeholder="{{ localize 'DND4E.PowerTextFieldsPlaceholder'}}"/>
 	</div>
 
+
+
+	<h3 class="form-header">{{ localize "DND4E.Keywords" }}</h3>
+	
 	<div class="form-group stacked weapon-properties">
-		<label data-tooltip="{{ localize 'DND4E.Keywords' }}">{{ localize 'DND4E.Effect' }} {{ localize 'DND4E.Type' }} {{ localize 'DND4E.Keywords' }}</label>
-		<pr></pr>
+		<label>{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Effect')}}</label>
+		<!--<pr></pr>-->
 		{{#each config.effectTypes as |name type|}}
 		<label class="checkbox">
 			<input type="checkbox" name="system.effectType.{{type}}" {{checked (lookup ../system.effectType type)}}/> {{ name }}
@@ -409,8 +427,68 @@
 		{{/each}}
 	</div>
 	
+	{{#unless system.hit.isDamage}} <!--Don't repeat this section if damage has alreday been added -->
+		<div class="form-group stacked weapon-properties">
+			<label class="damage-type">{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Damage')}}</label>
+			{{#if system.damageTypeWeapon}}
+				{{#each config.damageTypes as |name type|}}
+					{{#unless (eq type "ongoing")}}
+					{{#unless (eq type "damage")}}
+					<label class="checkbox">
+						<input disabled="disabled" type="checkbox" name="system.weaponDamageType.{{type}}" {{checked (lookup ../system.weaponDamageType type)}}/> {{ name }}
+					</label>
+					{{/unless}}
+					{{/unless}}
+				{{/each}}
+			{{else}}
+				{{#each config.damageTypes as |name type|}}
+					{{#unless (eq type "ongoing")}}
+					{{#unless (eq type "damage")}}
+					<label class="checkbox">
+						<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
+					</label>
+					{{/unless}}
+					{{/unless}}
+				{{/each}}
+			{{/if}}
+		</div>
+	{{/unless}}
+		
+	<div class="form-group">
+		<label>{{localize 'DND4EUI.AutoFromConfig'}}</label>
+		<ul class="auto-keywords inline-list" data-tooltip="{{localize 'DND4EUI.AutoFromConfigTip'}}">
+		{{#if labels.damageTypes}}
+			<li>{{labels.damageTypes}}</li>
+		{{/if}}		
+		{{#if labels.source}}
+			<li>{{labels.source}}</li>
+		{{/if}}		
+		{{#if labels.source2}}
+			<li>{{labels.source2}}</li>
+		{{/if}}
+		{{#if labels.toolType}}
+			<li>{{labels.toolType}}</li>
+		{{/if}}
+		
+		{{#each system.autoKeys as |kw|}}
+			<li>{{localize kw.label}}</li>
+		{{/each}}
+		
+		</ul>
+	</div>
+	
+	<div class="form-group long">
+		<label>{{ localize "DND4E.Custom" }}</label>
+		<input type="text" name="system.keywordsCustom" value="{{system.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}" />
+	</div>
+
 	
 	<h3 class="form-header">{{ localize "Display" }}</h3>
+	
+	<div class="form-group">
+		<label class="long">{{ localize "DND4E.PowerAutoGeneratePowerCardLable" }}</label>
+		<span class="checkbox"><input type="checkbox" name="system.autoGenChatPowerCard" data-dtype="Boolean" {{checked system.autoGenChatPowerCard}}/></span>
+	</div>
 
 	{{!-- Chat Message Flavor --}}
 	<div class="form-group stacked">
