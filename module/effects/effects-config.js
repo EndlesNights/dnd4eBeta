@@ -32,6 +32,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		super.activateListeners(html);
 		html.find(".effect-dot-control").click(this._onEffectDotControl.bind(this));
 		html.find(".effect-status-control").click(this._onEffectStatusControl.bind(this));
+		html.find(".effect-keyword-control").click(this._onEffectKeywordControl.bind(this));
 		html.find(".refreshes").change(this._refresh.bind(this));
 	}
 
@@ -84,13 +85,31 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	/* ----------------------------------------- */
 
 	/**
+	* Handling for mouse clicks on Keyword control buttons - adapted from _onEffectControl
+	* Delegate responsibility out to action-specific handlers depending on the button action.
+	* @param {MouseEvent} event      The originating click event
+	*/
+	_onEffectKeywordControl(event) {
+		event.preventDefault();
+		const button = event.currentTarget;
+		switch ( button.dataset.action ) {
+			case "add":
+				return this._addEffectKeyword();
+			case "delete":
+				button.closest(".effect-keyword").remove();
+				return this.submit({preventClose: true}).then(() => this.render());
+		}
+	}
+
+	/* ----------------------------------------- */
+	
+	/**
 	* Handle adding a new dot to the dots array - adapted from _addEffectChange
 	*/
 	async _addEffectDot() {
 		const i = this.document.flags.dnd4e.dots.length;
-		//const idx = this.document.flags.dnd4e.dots.length;
 		return this.submit({preventClose: true, updateData: {
-			[`flags.dnd4e.dots.${i}`] : {amount: "", type: "", typesArray: []}
+			[`flags.dnd4e.dots.${i}`] : {'amount': "", 'type': "", 'typesArray': []}
 		}});
 	}
 
@@ -103,6 +122,18 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		const i = this.document.statuses.size;
 		return this.submit({preventClose: true, updateData: {
 			[`statuses.${i}`] : "none"
+		}});
+	}
+
+	/* ----------------------------------------- */
+
+	/**
+	* Handle adding a new dot to the keywords array - adapted from _addEffectChange
+	*/
+	async _addEffectKeyword() {
+		const i = this.document.flags.dnd4e.keywords.length;
+		return this.submit({preventClose: true, updateData: {
+			[`flags.dnd4e.keywords.${i}`] : 'unknown'
 		}});
 	}
 
@@ -160,6 +191,9 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		const fd = new FormDataExtended(this.form, {editors: this.editors});
 		let data = foundry.utils.expandObject(fd.object);
 		if ( updateData ) foundry.utils.mergeObject(data, updateData);
+		
+		console.debug(data);
+		
 		data.changes = Array.from(Object.values(data.changes || {}));
 		data.statuses = Array.from(Object.values(data.statuses || {})).filter(x => x);
 		// The form throws an error if it's updated while there is an unselected status condition row. 
@@ -178,6 +212,10 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 				data.flags.dnd4e.dots[i].typesArray = dot.typesArray.sort();
 			}
 		}
+		
+		data.flags.dnd4e.keywords = Array.from(Object.values(data.flags.dnd4e.keywords || {})).filter(x => x);
+		
+		data.flags.dnd4e.keywordsCustom = data.flags.dnd4e.keywordsCustom;
 		
 		return data;
 	}

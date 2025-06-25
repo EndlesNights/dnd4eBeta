@@ -7,12 +7,14 @@
 		if(!data.flags?.dnd4e?.dots){
 			foundry.utils.setProperty(data, "flags.dnd4e.dots", new Array);	//Empty array for storing Ongoing Damage instances
 		}
+		if(!data.flags?.dnd4e?.keywords){
+			foundry.utils.setProperty(data, "flags.dnd4e.keywords", new Array);	//Empty array for storing Keywords
+		}
 		if (data.id) {
 		  foundry.utils.setProperty(data, "flags.core.statusId", data.id);
 		  delete data.id;
 		}
-		try{
-			
+		try{			
 			// if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
 			if(["power", "consumable"].includes(context?.parent?.type)){
 				data.transfer = false;
@@ -30,13 +32,14 @@
 	 */
 	get tooltip(){
 		let html = `<div class="effect-tooltip">`;
-		html += `<div><label class="name">${this.name}</label></div>`;
+		html += `<div><label class="name">${this.name}</label> [${this.keywords.string}]</div>`;
 		if(this._source.name) html += `<div><label class="source">${game.i18n.localize("DND4E.Source")}: ${this._source.name}</label></div>`;
 		if(this.duration.label) html += `<div><label class="duration">${game.i18n.localize("DND4E.Duration")}: ${this.duration.label}</label></div>`;
 		if(this.description) html += `<div class="description">${this.description}</div>`;
 		html += `</div>`
 		return html;
 	}
+	
 	/**
 	 * Is this active effect currently suppressed?
 	 * @type {boolean}
@@ -344,4 +347,24 @@
 		}
 		if (update !== undefined) changes[change.key] = update;
 	}
+
+
+	/* --------------------------------------------- */
+	/**
+	 * Returns an object with official and custom keywords
+	 * @type {string}
+	 */
+	get keywords(){
+		const systemKeywords = this.flags.dnd4e?.keywords || [];
+		const customString = this.flags.dnd4e?.keywordsCustom || '';
+		const customKeywords = customString.split(';') || [];
+		
+		let keywordLabels = [];
+		if(systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(CONFIG.DND4E.effectTypes[e]));
+		keywordLabels = [...keywordLabels, ...customKeywords];
+		let keywordString = keywordLabels.join(', ');
+		
+		return {'system': systemKeywords,'custom': customKeywords,'string': keywordString};
+	}
+	
 }
