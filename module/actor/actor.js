@@ -2030,7 +2030,7 @@ export class Actor4e extends Actor {
 	* @param {} options   Options for using the power
 	*/
 	
-	async usePower(item, {configureDialog=true, fastForward=false, variance={} }) {
+	async usePower(item, {configureDialog=true, fastForward=false, variance={}}={}) {
 		//if not a valid type of item to use
 		//console.debug(variance);
 		
