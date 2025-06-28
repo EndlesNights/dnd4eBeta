@@ -556,42 +556,52 @@ export default class Item4e extends Item {
 					}else if (system?.rangeType === 'weapon'){
 						labels.toolType = game.i18n.localize('DND4E.Weapon');
 					}
-				}
-				
-				// DamageTypes
-				if(system.hasOwnProperty("damageType")){
-					if(this.getDamageType()){
-						let damType = [];
-						for ( let [damage, d] of Object.entries(this.getDamageType())) {
-							if(d && damage != 'physical'){
-								damType.push(`${game.i18n.localize(DND4E.damageTypes[damage])}`);
-							}
+				}				
+			}catch(e){
+				console.error(`Item labels failed for power: ${itemData.name}. Item data has been dumped to debug. ${e}`);
+				console.debug(itemData);
+			}
+		}
+		
+		// Range, damage, keywords
+		try{
+			// DamageTypes
+			if(system.hasOwnProperty("damageType")){
+				if(this.getDamageType()){
+					let damType = [];
+					for ( let [damage, d] of Object.entries(this.getDamageType())) {
+						if(d && damage != 'physical'){
+							damType.push(`${game.i18n.localize(DND4E.damageTypes[damage])}`);
 						}
-						labels.damageTypes = damType.join(", ");
 					}
+					labels.damageTypes = damType.join(", ");
 				}
+			}
 
-				//Other Keywords
+			//Other Keywords
+			if(system.hasOwnProperty("effectType")){
 				for (const [key, value] of Object.entries(system.effectType)) {
 					if(value){
 						const labelKey = `kw${key}`;
 						labels[labelKey] = `${game.i18n.localize(C.effectTypes[key])}`;
 					}
 				}
-				if(system?.keywordsCustom){
-					const customKeys = system.keywordsCustom.split(';');
-					customKeys.forEach((item) => {
-						const labelKey = `kw${item}`;
-						labels[labelKey] = item;
-					});
-				}
-				
-				//Action
-				if(system?.actionType){
-					labels.action = C.abilityActivationTypes[system.actionType].label;
-				}
-				
-				//Range
+			}
+			if(system?.keywordsCustom){
+				const customKeys = system.keywordsCustom.split(';');
+				customKeys.forEach((item) => {
+					const labelKey = `kw${item}`;
+					labels[labelKey] = item;
+				});
+			}
+			
+			//Action
+			if(system?.actionType){
+				labels.action = C.abilityActivationTypes[system.actionType].label;
+			}
+			
+			//Range
+			if(['power','consumable'].includes(itemData.type) && system?.rangeType){
 				let rangeString = '';
 				if(system?.rangeType){
 					if (system?.rangeType === 'touch'){
@@ -627,15 +637,14 @@ export default class Item4e extends Item {
 					}
 				}
 				if (rangeString != '') labels.range = rangeString;	
-				
-			}catch(e){
-				console.error(`Item labels failed for power: ${itemData.name}. Item data has been dumped to debug. ${e}`);
-				console.debug(itemData);
 			}
+		}catch(e){
+			console.error(`Item labels failed for ${itemData.type}: ${itemData.name}. Item data has been dumped to debug. ${e}`);
+			console.debug(itemData);
 		}
 		
 		// Rituals
-		else if ( itemData.type === "ritual" ) {
+		if ( itemData.type === "ritual" ) {
 			if ( system?.category ) {
 				try {
 					labels.category = `<strong>${game.i18n.localize('DND4E.Category')}:</strong> ${CONFIG.DND4E.ritualTypes[system.category].label}`;
