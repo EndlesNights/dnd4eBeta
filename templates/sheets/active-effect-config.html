@@ -281,16 +281,16 @@
             {{#each effect.flags.dnd4e.keywords as |keyword i|}}
             <li class="effect-keyword flexrow" data-keyword-id="{{keyword}}"  data-index="{{i}}">
 				<select class="refreshes keyword-select" name="flags.dnd4e.keywords.{{i}}" {{#unless (eq keyword "none")}} data-tooltip="{{keyword}}
-					{{#unless (contains keyword ../config.effectTypes)}}: {{localize 'DND4EUI.UnknownCondition.Tip'}}
+					{{#unless (contains keyword ../config.keywords)}}: {{localize 'DND4EUI.UnknownCondition.Tip'}}
 					{{/unless}}"
 				{{/unless}}
 				>
 					{{#unless (eq keyword "none")}}
-						{{#unless (contains keyword ../config.effectTypes)}}
+						{{#unless (contains keyword ../config.keywords)}}
 						<option value="{{keyword}}" selected>{{localize 'DND4EUI.UnknownCondition.Label'}}</option>
 						{{/unless}}
 					{{/unless}}
-					{{selectOptions ../config.effectTypes selected=keyword localize=true blank="none"}}
+					{{selectOptions ../config.keywords selected=keyword localize=true blank="none"}}
 				</select>
                 <div class="effect-controls">
                     <a class="effect-keyword-control" data-action="delete"><i class="fas fa-trash"></i></a>
