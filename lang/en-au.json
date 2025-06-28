@@ -1392,6 +1392,18 @@
 "DND4E.WIL": "WILL",
 "DND4E.Zone": "Zone",
 
+"DND4E.Equipment.Alt.Alt": "Alternative Reward",
+"DND4E.Equipment.Alt.Blessing": "Blessing",
+"DND4E.Equipment.Alt.Boon": "Boon",
+"DND4E.Equipment.Alt.Brand": "Brand",
+"DND4E.Equipment.Alt.Echo": "Echo",
+"DND4E.Equipment.Alt.Gift": "Gift",
+"DND4E.Equipment.Alt.Rune": "Rune",
+"DND4E.Equipment.Alt.Scar": "Scar",
+"DND4E.Equipment.Alt.Secret": "Secret",
+"DND4E.Equipment.Alt.Talent": "Talent",
+"DND4E.Equipment.Alt.Training": "Training",
+
 "DND4E.Feature.Add": "Create Feature",
 "DND4E.Feature.AuraSize": "Aura Size",
 "DND4E.Feature.AuraSizeTip": "If this feature is an aura, enter the size here",
