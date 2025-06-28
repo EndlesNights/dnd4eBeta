@@ -342,6 +342,7 @@ DND4E.equipmentTypes = {
 	"ring": {label: "DND4E.EquipmentTypeRing"},
 	"waist": {label: "DND4E.EquipmentTypeWaist"},
 	"natural": {label: "DND4E.EquipmentTypeNatural"},
+	"alternative": {label: "DND4E.Equipment.Alt.Alt"},
 	"other": {label: "DND4E.EquipmentTypeOther"},
 };
 preLocalize("equipmentTypes", { keys: ["label"] });
@@ -407,6 +408,22 @@ DND4E.equipmentTypesWaist = {
 	"other": {label: "DND4E.EquipmentTypeOther"},
 };
 preLocalize("equipmentTypesWaist", { keys: ["label"] });
+
+DND4E.equipmentTypesAlt = {
+	"": {label: "DND4E.None"},
+	"blessing": {label: "DND4E.Equipment.Alt.Blessing"},
+	"boon": {label: "DND4E.Equipment.Alt.Boon"},
+	"brand": {label: "DND4E.Equipment.Alt.Brand"},
+	"echo": {label: "DND4E.Equipment.Alt.Echo"},
+	"gift": {label: "DND4E.Equipment.Alt.Gift"},
+	"rune": {label: "DND4E.Equipment.Alt.Rune"},
+	"scar": {label: "DND4E.Equipment.Alt.Scar"},
+	"secret": {label: "DND4E.Equipment.Alt.Secret"},
+	"talent": {label: "DND4E.Equipment.Alt.Talent"},
+	"training": {label: "DND4E.Equipment.Alt.Training"},
+	"other": {label: "DND4E.EquipmentTypeOther"},
+};
+preLocalize("equipmentTypesAlt", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
@@ -1054,12 +1071,14 @@ DND4E.powerType = {
 	"item": "DND4E.PowerItem",
 	"feat": "DND4E.PowerFeat",
 	"skill": "DND4E.Skill",
+	"other": "DND4E.Other",
 	"utility": "DND4E.PowerUtil" //Better keep this for legacy
 };
 DND4E.powerSubtype = {
 	"attack": "DND4E.PowerAttack",
 	"utility": "DND4E.PowerUtil",
-	"feature": "DND4E.PowerFeature"
+	"feature": "DND4E.PowerFeature",
+	"other": "DND4E.Other"
 };
 
 DND4E.powerUseType = {
