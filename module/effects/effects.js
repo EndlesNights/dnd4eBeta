@@ -14,7 +14,6 @@
 		try{
 			// if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
 			if(["power", "consumable"].includes(context?.parent?.type)){
-				console.debug(context);
 				data.transfer = false;
 				if(!data.flags?.dnd4e?.keywords){
 					foundry.utils.setProperty(data, "flags.dnd4e.keywords", new Array);	//Empty array for storing Keywords
