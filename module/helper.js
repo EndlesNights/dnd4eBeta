@@ -348,6 +348,11 @@ export class Helper {
 				if(powerInnerData.attack?.ability){
 					suitableKeywords.push(`uses${powerInnerData.attack.ability.capitalize()}`);
 				};
+				
+				if(powerInnerData?.keywordsCustom){
+					const customKeys = powerInnerData.keywordsCustom.split(';');
+					customKeys.forEach((item) => suitableKeywords.push(item));
+				}
 
 				if (debug) {
 					console.debug(rollData);
@@ -1009,7 +1014,14 @@ export class Helper {
 				if(e && CONFIG.DND4E.effectTypes[effect]) tag.push(CONFIG.DND4E.effectTypes[effect])
 			}
 		}
+		
+		if(chatData?.keywordsCustom){
+			const customKeys = chatData.keywordsCustom.split(';');
+			customKeys.forEach((item) => tag.push(item));
+		}
+		
 		tag.sort();
+		
 		if(tag.length > 0) powerDetail += ` ♦ <span class="keywords">${tag.join(', ')}</span>`;
 		
 		powerDetail += `</span><br /><span><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType].label}</span> `;
@@ -1575,10 +1587,10 @@ Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
 	try{
 		if(typeof meal != "string") {
 			if(lunchbox instanceof Set) return lunchbox.has(lunch);
+			if(lunchbox instanceof Object) return lunchbox.hasOwnProperty(lunch);
 			return lunchbox.includes(lunch);
 		}
-		const lunchLocation = lunchbox.findIndex((x) => x[meal] == lunch);
-		if(lunchLocation > 0) return true;
+		if (lunchbox.some(e => e[meal] === lunch)) return true;
 		return false;
 	} catch(err) {
 		console.error("Contains helper spat up. Did you give it the right parameter types?");

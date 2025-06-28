@@ -1179,7 +1179,9 @@
 			"miss": {
 				"detail": "",
 				"formula": ""
-			}
+			},
+			"effectType": {},
+			"keywordsCustom": ""
 		},
 		"equipment": {
 			"templates": ["itemDescription", "physicalItem", "activatedEffect", "itemMacro"],
@@ -1302,6 +1304,7 @@
 			"level": "",
 			"powersource": "martial",
 			"secondPowersource": "",
+			"powersourceName": "",
 			"subName": "",
 			"prepared": true,
 			"powerType": "class",
@@ -1333,7 +1336,8 @@
 			"specialAdd": {
 				"parts": []
 			},
-			"effectType": {}
+			"effectType": {},
+			"keywordsCustom": ""
 		},
 		"feature": {
 			"templates": ["itemDescription","itemMacro"],

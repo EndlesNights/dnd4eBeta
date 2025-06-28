@@ -720,8 +720,10 @@ textarea{
 	flex:2;
 	font-weight:bold;
 	max-width:174px;
-	max-width:174px;
 	color:var(--color-label);
+}
+.dnd4e .form-group label.long{
+	max-width:unset;
 }
 .dnd4e .form-group.wide label{
 	max-width:208px;
@@ -768,6 +770,14 @@ textarea{
 .dnd4e .form-group.stacked label.checkbox{
 	flex:auto;
 	text-align:left;
+}
+.dnd4e .inline-list>li{
+	display:inline-block;
+	padding-right:0.8em;	
+}
+.dnd4e .inline-list>li::before{
+	content:'\2022';
+	padding-right:2px;
 }
 .dnd4e.sheet.actor .traits .form-group,
 .dnd4e.sheet.actor .traits .form-group-stacked{
@@ -2267,7 +2277,7 @@ font-size:12px;
 .dnd4e.sheet.item .details .form-group .item-range span:first-of-type {
 	flex:0 0 16px;
 }
-.dnd4e.sheet.item .details .form-group .item-range span:last-of-type {
+.dnd4e.sheet.item .details .form-group .item-range span:not(.sep):last-of-type {
 	flex:0 0 0px;
 	min-width: 94px;
 }
@@ -2305,6 +2315,21 @@ font-size:12px;
 }
 .dnd4e.sheet.item .weapon-properties label.checkbox{
 	flex:0 0 118px;
+}
+.dnd4e.sheet.item ul.auto-keywords{
+	padding-left:0;
+	font-size:var(--font-size-11);
+	font-weight:bold;
+	color:var(--color-label);
+	line-height:1;
+}
+.dnd4e.sheet.item .details .form-group.two-input label.source-name{
+	max-width:100px;
+	text-align:right;
+	padding-right:0.5em;
+}
+.dnd4e.sheet.item .details .form-group.two-input input.source-name{
+	flex-basis:20%;
 }
 .dnd4e.sheet.item h4.damage-header{
 	margin:0;
@@ -2455,21 +2480,16 @@ font-size:12px;
 .active-effect-sheet .effects-header>:first-child{
 	padding-left:4px;
 }
-.active-effect-sheet .dots-list,
-.active-effect-sheet .statuses-list{
+.active-effect-sheet :is(.dots-list,.statuses-list,.keywords-list){
 	list-style:none;
 	margin:0;
 	padding:0;
-	margin-bottom:2em;
 }
-.active-effect-sheet .effect-dot,
-.active-effect-sheet .effect-status{
+.active-effect-sheet :is(.effect-dot,.effect-status,.effect-keyword){
 	align-items:center;
 	padding:3px 1px;
 }
-.active-effect-sheet .effect-dot:not(:last-child),
-.active-effect-sheet .effect-status:not(:last-child),
-.active-effect-sheet .effect-change:not(:last-child){
+.active-effect-sheet :is(.effect-dot,.effect-status,.effect-change):not(:last-child){
 	border-bottom:1px solid rgba(0,0,0,0.1);
 }
 .active-effect-sheet .effect-status .status-select{
@@ -2488,7 +2508,9 @@ font-size:12px;
 	line-height:1;
 	padding:0.5em;
 }
-
+.active-effect-sheet .keywords-list li.effect-keyword{
+	flex:30% 0 0;
+}
 
 /* ----------------------------------------- */
 /*  Other Dialogues

@@ -72,7 +72,7 @@
 			<li class="item effect flexrow" data-effect-id="{{effect.id}}" data-tooltip="{{effect.tooltip}}">
 				<div class="item-name effect-name flexrow">
 					<img class="item-image" src="{{effect.img}}" />
-					<h4>{{effect.name}}</h4>
+					<h4>{{effect.name}}{{#if effect.keywords.string}} [{{effect.keywords.string}}]{{/if}}</h4>
 				</div>
 				<div class="effect-source">{{getSourceName effect}}</div>
 				{{#if effect._getIsSave}}
