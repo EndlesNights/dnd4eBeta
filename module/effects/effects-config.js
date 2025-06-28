@@ -21,6 +21,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		data.config = CONFIG.DND4E;
 		data.powerParent = (["power", "consumable"].includes(this.object.parent.type));
 		data.config.statusEffects = CONFIG.statusEffects;
+		data.config.keywords = {...data.config.effectTypes,...data.config.damageTypes};
 
 		return data;
 	}

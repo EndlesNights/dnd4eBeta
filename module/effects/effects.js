@@ -7,21 +7,37 @@
 		if(!data.flags?.dnd4e?.dots){
 			foundry.utils.setProperty(data, "flags.dnd4e.dots", new Array);	//Empty array for storing Ongoing Damage instances
 		}
-		if(!data.flags?.dnd4e?.keywords){
-			foundry.utils.setProperty(data, "flags.dnd4e.keywords", new Array);	//Empty array for storing Keywords
-		}
 		if (data.id) {
 		  foundry.utils.setProperty(data, "flags.core.statusId", data.id);
 		  delete data.id;
 		}
-		try{			
+		try{
 			// if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
 			if(["power", "consumable"].includes(context?.parent?.type)){
+				console.debug(context);
 				data.transfer = false;
+				if(!data.flags?.dnd4e?.keywords){
+					foundry.utils.setProperty(data, "flags.dnd4e.keywords", new Array);	//Empty array for storing Keywords
+					if(context.parent.system?.damageType){
+						for (const [key, value] of Object.entries(context.parent.system?.damageType)){
+							if(value) data.flags.dnd4e.keywords.push(key);
+						}
+					}
+					if(context.parent.system?.effectType){
+						for (const [key, value] of Object.entries(context.parent.system?.effectType)){
+							if(value) data.flags.dnd4e.keywords.push(key);
+						}
+					}
+					if(context.parent.system?.keywordsCustom) data.flags.dnd4e.keywordsCustom = context.parent.system?.keywordsCustom;
+				}
 			}
 		} catch{
-
 		}
+		
+		if(!data.flags?.dnd4e?.keywords){
+			foundry.utils.setProperty(data, "flags.dnd4e.keywords", new Array);	//Empty array for storing Keywords
+		}
+		
 		super(data, context);
 	}
 
