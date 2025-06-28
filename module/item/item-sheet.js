@@ -373,6 +373,7 @@ export default class ItemSheet4e extends ItemSheet {
 		else if (item.system.armour.type == "ring") { return null; }
 		else if (item.system.armour.type == "waist") { return config.equipmentTypesWaist; }
 		else if (item.system.armour.type == "natural") { return null; }
+		else if (item.system.armour.type == "alternative") { return config.equipmentTypesAlt; }
 		else if (item.system.armour.type == "other") { return null; }
 		
 		return null;

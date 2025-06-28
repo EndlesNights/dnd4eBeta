@@ -510,40 +510,50 @@ export default class Item4e extends Item {
 			try{				
 				//Summary Line
 				let summaryText = '';
-				if(system.powersourceName && !['feat','item','inherent'].includes(system.powerType)){
+				
+				if(system?.powersourceName && !['feat','item','inherent'].includes(system?.powerType)){
 					summaryText += system.powersourceName;
-				}else if(system.powerType && system.powerType != 'inherent'){
+				}else if(system?.powerType && system?.powerType != 'inherent'){
 					summaryText += game.i18n.localize(C.powerType[system.powerType]);
 				}
-				if(system.powerSubtype){
+				
+				if(system?.powerSubtype && system.powerSubtype != 'other'){
 					summaryText += ` ${game.i18n.localize(C.powerSubtype[system.powerSubtype])}`;
+				}else if(['other'].includes(system?.powerSubtype)){
+					summaryText += ` ${game.i18n.localize('DND4E.Power')}`;
 				}
-				if(system.level){
+				
+				if(system?.level){
 					summaryText += ` ${system.level}`;
+				}else if(['race','class'].includes(system?.powerType)){
+					summaryText += ` ${game.i18n.localize('DND4E.Feature.Feature')}`;
+				}else if(['feature','other'].includes(system?.powerType)){
+					summaryText += ` ${game.i18n.localize('DND4E.Power')}`;
 				}
+				
 				if(summaryText != '') labels.summary = summaryText;
 				
 				//Usage
 				if(system.useType) labels.usage = game.i18n.localize(C.powerUseType[system.useType]);
 				
 				//Source
-				if(system.powersource) labels.source = game.i18n.localize(C.powerSource[system.powersource]);
-				if(system.secondPowersource) labels.source2 = game.i18n.localize(C.powerSource[system.secondPowersource]);
+				if(system?.powersource) labels.source = game.i18n.localize(C.powerSource[system.powersource]);
+				if(system?.secondPowersource) labels.source2 = game.i18n.localize(C.powerSource[system.secondPowersource]);
 								
 				//Tool Used (Weapon/Implement)
-				if (system.weaponType === 'implement'){
+				if (system?.weaponType === 'implement'){
 					labels.toolType = game.i18n.localize('DND4E.WeaponPropertiesImp');
-				}else if (['melee','ranged','meleeRanged'].includes(system.weaponType)){
+				}else if (['melee','ranged','meleeRanged'].includes(system?.weaponType)){
 					labels.toolType = game.i18n.localize('DND4E.Weapon');
-				}else if (system.weaponType === 'any'){
+				}else if (system?.weaponType === 'any'){
 					const weaponUse = (itemData.actor ? Helper.getWeaponUse(system, itemData.actor) : null);
 					if (weaponUse != null){
-						if (weaponUse.system.weaponType === 'implement'){
+						if (weaponUse.system?.weaponType === 'implement'){
 							labels.toolType = game.i18n.localize('DND4E.WeaponPropertiesImp');
 						}else{
 							labels.toolType = game.i18n.localize('DND4E.Weapon');
 						}
-					}else if (system.rangeType === 'weapon'){
+					}else if (system?.rangeType === 'weapon'){
 						labels.toolType = game.i18n.localize('DND4E.Weapon');
 					}
 				}
@@ -577,42 +587,44 @@ export default class Item4e extends Item {
 				}
 				
 				//Action
-				if(system.actionType){
+				if(system?.actionType){
 					labels.action = C.abilityActivationTypes[system.actionType].label;
 				}
 				
 				//Range
 				let rangeString = '';
-				if (system.rangeType === 'touch'){
-					rangeString = `${game.i18n.localize('Melee')} ${game.i18n.localize('Touch')}`;
-				}else if (system.rangeType === 'weapon'){
-					const weaponUse = (itemData.actor ? Helper.getWeaponUse(system, itemData.actor) : null);
-					if (weaponUse != null){
-						if(weaponUse.isRanged){
-							rangeString = `${game.i18n.localize('DND4E.Ranged')} ${weaponUse.system.range.value}/${weaponUse.system.range.value}`;
-						}else{
-							rangeString = game.i18n.localize('DND4E.Melee');
-							if(weaponUse.system.properties.rch){
-								rangeString += ' 2';
+				if(system?.rangeType){
+					if (system?.rangeType === 'touch'){
+						rangeString = `${game.i18n.localize('Melee')} ${game.i18n.localize('Touch')}`;
+					}else if (system?.rangeType === 'weapon'){
+						const weaponUse = (itemData.actor ? Helper.getWeaponUse(system, itemData.actor) : null);
+						if (weaponUse != null){
+							if(weaponUse.isRanged){
+								rangeString = `${game.i18n.localize('DND4E.Ranged')} ${weaponUse.system.range.value}/${weaponUse.system.range.value}`;
 							}else{
-								rangeString += ' 1';
-							}							
+								rangeString = game.i18n.localize('DND4E.Melee');
+								if(weaponUse.system.properties.rch){
+									rangeString += ' 2';
+								}else{
+									rangeString += ' 1';
+								}							
+							}
+						}else{
+							if (system?.weaponType === 'melee'){
+								rangeString = game.i18n.localize('DND4E.WeaponMelee');
+							}else if (system?.weaponType === 'ranged'){
+								rangeString = game.i18n.localize('DND4E.WeaponRanged');
+							}else{
+								rangeString = C.rangeType.weapon.label;
+							}
 						}
 					}else{
-						if (system?.weaponType === 'melee'){
-							rangeString = game.i18n.localize('DND4E.WeaponMelee');
-						}else if (system?.weaponType === 'ranged'){
-							rangeString = game.i18n.localize('DND4E.WeaponRanged');
-						}else{
-							rangeString = C.rangeType.weapon.label;
-						}
+						rangeString += C.rangeType[system.rangeType].label;
+						if (system.area) rangeString += ` ${system.area}`;
+						if (system.isArea) rangeString += ` ${game.i18n.localize('DND4E.RangeWithin')}`;
+						if (system.rangePower) rangeString += ` ${system.rangePower}`;
+						if (system.range.long) rangeString += `/${system.range.long}`;
 					}
-				}else{
-					rangeString += C.rangeType[system.rangeType].label;
-					if (system.area) rangeString += ` ${system.area}`;
-					if (system.isArea) rangeString += ` ${game.i18n.localize('DND4E.RangeWithin')}`;
-					if (system.rangePower) rangeString += ` ${system.rangePower}`;
-					if (system.range.long) rangeString += `/${system.range.long}`;
 				}
 				if (rangeString != '') labels.range = rangeString;	
 				
