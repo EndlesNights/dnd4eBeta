@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 0.6.6
+- Updates power config to allow more control over various setting and keywords (especially for NPC powers) and more useful summary display
+- Substantial effects update
+  - Effects can now have keywords! This should allow for easier interaction with macros and other scripts (for exmaple, handling stances and polymorphs).
+  - New effects on `power` items inherit power keywords upon creation
+  - Makes it so effects created on an `equipment` or `weapon` items are set to "Apply Effect only When Equipped" by default
+- Allows arbitrary keywords on effects and powers; these are entered as text string and should be considered cosmetic at this stage.
+- Finally fixes the "Mark 1 is always Unknown Effect" bug in effect status conditions config!
+- Fix for failing power use macros 
+- Adds the "Alternative Reward" Equipment type to config, and appropriate subtypes (generic'd for legal safety)
+- Adds keywords to consumables
+
 ## Version 0.6.5 
 - Huge Fixes to Ongoing Damage and End of Turn Saves Automation that have hopefully FINALLY got them working properly! Includes multiple fixes to the ownership detection function and subsequent logic for assigning saving throw responsibility.
   - You should still expect a full fail state if no GM is logged in.
