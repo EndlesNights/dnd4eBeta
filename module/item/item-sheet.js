@@ -106,14 +106,31 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 
 		if(itemData.system?.useType) {
-			if(!(itemData.system.rangeType === "personal" || itemData.system.rangeType === "closeBurst" || itemData.system.rangeType === "closeBlast" || itemData.system.rangeType === "")){
-				itemData.system.isRange = true;
-			}
-
-			if(itemData.system.rangeType === "closeBurst" || itemData.system.rangeType === "closeBlast" || itemData.system.rangeType === "rangeBurst" || itemData.system.rangeType === "rangeBlast" || itemData.system.rangeType === "wall" ) { 
-				itemData.system.isArea = true;
-			}
+			if(!["personal","closeBurst","closeBlast","","melee","touch","reach"].includes(itemData.system.rangeType)) itemData.system.isRange = true;
+			if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.system.rangeType)) itemData.system.isArea = true;
+			
 			itemData.system.isRecharge = itemData.system.useType === "recharge";
+			
+			//Setup range and area keys
+			let autoKeys = {};
+			if(["melee","touch","reach"].includes(itemData.system.rangeType)) autoKeys.melee = {label: game.i18n.localize('DND4E.Melee')};
+			if(["range"].includes(itemData.system.rangeType)) autoKeys.ranged = {label: game.i18n.localize('DND4E.rangeRanged')};
+			if(["rangeBurst","rangeBlast","wall"].includes(itemData.system.rangeType))  autoKeys.area = {label: game.i18n.localize('DND4E.rangeArea')};
+			if(["closeBurst","closeBlast"].includes(itemData.system.rangeType)) autoKeys.close = {label: game.i18n.localize('DND4E.rangeClose')};
+			if(["closeBurst","rangeBurst"].includes(itemData.system.rangeType)) autoKeys.burst = {label: game.i18n.localize('DND4E.rangeJustBurst')};
+			if(["closeBlast","rangeBlast"].includes(itemData.system.rangeType)) autoKeys.blast = {label: game.i18n.localize('DND4E.rangeJustBlast')};
+			itemData.system.autoKeys = autoKeys;
+			if(itemData.system.rangeType == 'weapon'){
+				if(itemData.system.weaponType == 'melee') autoKeys.melee = {label: game.i18n.localize('DND4E.Melee')};
+				else if(itemData.system.weaponType == 'ranged') autoKeys.ranged = {label: game.i18n.localize('DND4E.rangeRanged')};
+				else{
+					const weaponUse = (data.document?.parent ? Helper.getWeaponUse(itemData.system, data.document.parent) : null);
+					if(weaponUse != null){
+						if(weaponUse.system.isRanged) autoKeys.ranged = {label: game.i18n.localize('DND4E.rangeRanged')};
+						else autoKeys.melee = {label: game.i18n.localize('DND4E.Melee')};
+					}
+				}
+			}
 		}
 
 		// Weapon Properties
@@ -356,6 +373,7 @@ export default class ItemSheet4e extends ItemSheet {
 		else if (item.system.armour.type == "ring") { return null; }
 		else if (item.system.armour.type == "waist") { return config.equipmentTypesWaist; }
 		else if (item.system.armour.type == "natural") { return null; }
+		else if (item.system.armour.type == "alternative") { return config.equipmentTypesAlt; }
 		else if (item.system.armour.type == "other") { return null; }
 		
 		return null;
@@ -594,43 +612,8 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 
 		else if ( item.type === "power" ) {
-			
-			if(item.system?.level){
-				props.push(`${game.i18n.localize("DND4E.Level")} ${item.system.level}`);
-			}
-			
-			if(item.system?.powerType || item.system?.powerSubtype ){
-				props.push(`${CONFIG.DND4E.powerType[item.system.powerType]} ${CONFIG.DND4E.powerSubtype[item.system.powerSubtype]}`);
-			}
-			
-			if(item.system?.useType){
-				props.push(CONFIG.DND4E.powerUseType[item.system.useType]);
-			}
-			
-			if(item.system?.powersource){
-				if(item.system?.secondPowersource){
-					props.push(`${CONFIG.DND4E.powerSource[item.system.powersource]}, ${CONFIG.DND4E.powerSource[item.system.secondPowersource]}`);
-				}else{
-					props.push(CONFIG.DND4E.powerSource[item.system.powersource]);
-				}
-			}
-						
-			props.push(...Object.entries(item.system.damageType)
-				.filter(e => e[1] === true && e[0] != "physical")
-				.map(e => CONFIG.DND4E.damageTypes[e[0]])
-			);
-			
-			props.push(...Object.entries(item.system.effectType)
-				.filter(e => e[1] === true)
-				.map(e => CONFIG.DND4E.effectTypes[e[0]])
-			);
-			
-			if(item.system?.actionType){
-				props.push(CONFIG.DND4E.abilityActivationTypes[item.system.actionType].label);
-			}
-			
-			if(item.system?.rangeType){
-				props.push(CONFIG.DND4E.rangeType[item.system.rangeType].label);
+			for (const [key, value] of Object.entries(labels)) {
+				props.push(value)
 			}
 		}
 
@@ -656,12 +639,12 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 		
 		// Action type
-		if ( item.system?.actionType ) {
+		if ( (item.type !== "power") && item.system?.actionType ) {
 			props.push(CONFIG.DND4E.itemActionTypes[item.system.actionType]);
 		}
 
 		// Action usage
-		if ( (item.type !== "weapon") && item.system?.activation && !foundry.utils.isEmpty(item.system.activation) ) {
+		if ( !['weapon','power'].includes(item.type) && item.system?.activation && !foundry.utils.isEmpty(item.system.activation) ) {
 			props.push(
 				labels.attribute,
 				labels.activation,
