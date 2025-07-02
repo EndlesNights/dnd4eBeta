@@ -13,7 +13,7 @@
 		}
 		try{
 			// if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
-			if(["power", "consumable"].includes(context?.parent?.type)){
+			if(['power','consumable'].includes(context?.parent?.type)){
 				data.transfer = false;
 				if(!data.flags?.dnd4e?.keywords){
 					foundry.utils.setProperty(data, "flags.dnd4e.keywords", new Array);	//Empty array for storing Keywords
@@ -30,7 +30,11 @@
 					if(context.parent.system?.keywordsCustom) data.flags.dnd4e.keywordsCustom = context.parent.system?.keywordsCustom;
 				}
 			}
-		} catch{
+			if(['equipment','weapon'].includes(context?.parent?.type)){
+				foundry.utils.setProperty(data, "flags.dnd4e.effectData.equippedRec", true);
+			}
+		} catch(e){
+			console.error(`Effect default config failed. Please check parent data! ${e}`)
 		}
 		
 		if(!data.flags?.dnd4e?.keywords){

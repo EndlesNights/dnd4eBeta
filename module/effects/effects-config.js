@@ -193,7 +193,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 		let data = foundry.utils.expandObject(fd.object);
 		if ( updateData ) foundry.utils.mergeObject(data, updateData);
 		
-		console.debug(data);
+		//console.debug(data);
 		
 		data.changes = Array.from(Object.values(data.changes || {}));
 		data.statuses = Array.from(Object.values(data.statuses || {})).filter(x => x);
