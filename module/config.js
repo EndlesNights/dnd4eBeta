@@ -1246,6 +1246,7 @@ DND4E.weaponType = {
 DND4E.rangeType = {
 	"weapon": {label: "DND4E.rangeWeapon"},
 	"melee": {label: "DND4E.rangeMelee"},
+	"touch": {label: "DND4E.rangeTouch"},
 	"reach": {label: "DND4E.rangeReach"},
 	"range" : {label: "DND4E.rangeRanged"},
 	"closeBurst": {label: "DND4E.rangeCloseBurst"},
@@ -1254,7 +1255,6 @@ DND4E.rangeType = {
 	"rangeBlast": {label: "DND4E.rangeBlast"},
 	"wall": {label: "DND4E.rangeWall"},
 	"personal": {label: "DND4E.rangePersonal"},
-	"touch": {label: "DND4E.rangeTouch"},
 	"special": {label: "DND4E.rangeSpecial"},
 };
 preLocalize("rangeType", { keys: ["label"] });

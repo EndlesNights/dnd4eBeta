@@ -105,11 +105,11 @@ export default class ItemSheet4e extends ItemSheet {
 			}
 		}
 
-		if(itemData.system?.useType) {
-			if(!["personal","closeBurst","closeBlast","","melee","touch","reach"].includes(itemData.system.rangeType)) itemData.system.isRange = true;
+		if(itemData.system?.rangeType) {
+			if(!["personal","closeBurst","closeBlast","","touch"].includes(itemData.system.rangeType)) itemData.system.isRange = true;
 			if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.system.rangeType)) itemData.system.isArea = true;
 			
-			itemData.system.isRecharge = itemData.system.useType === "recharge";
+			itemData.system.isRecharge = itemData.system?.useType === "recharge";
 			
 			//Setup range and area keys
 			let autoKeys = {};
