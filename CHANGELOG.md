@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.6.7
+- Fixes a buy reported by Ari on Discord, where melee-range powers had lost their numerical ranged input.
+
 ## Version 0.6.6
 - Updates power config to allow more control over various setting and keywords (especially for NPC powers) and more useful summary display
 - Substantial effects update
