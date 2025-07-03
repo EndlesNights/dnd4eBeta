@@ -603,38 +603,37 @@ export default class Item4e extends Item {
 			//Range
 			if(['power','consumable'].includes(itemData.type) && system?.rangeType){
 				let rangeString = '';
-				if(system?.rangeType){
-					if (system?.rangeType === 'touch'){
-						rangeString = `${game.i18n.localize('Melee')} ${game.i18n.localize('Touch')}`;
-					}else if (system?.rangeType === 'weapon'){
-						const weaponUse = (itemData.actor ? Helper.getWeaponUse(system, itemData.actor) : null);
-						if (weaponUse != null){
-							if(weaponUse.isRanged){
-								rangeString = `${game.i18n.localize('DND4E.Ranged')} ${weaponUse.system.range.value}/${weaponUse.system.range.value}`;
-							}else{
-								rangeString = game.i18n.localize('DND4E.Melee');
-								if(weaponUse.system.properties.rch){
-									rangeString += ' 2';
-								}else{
-									rangeString += ' 1';
-								}							
-							}
+				if (system?.rangeType === 'weapon'){
+					const weaponUse = (itemData.actor ? Helper.getWeaponUse(system, itemData.actor) : null);
+					if (weaponUse != null){
+						if(weaponUse.isRanged){
+							rangeString = `${game.i18n.localize('DND4E.Ranged')} ${weaponUse.system.range.value}/${weaponUse.system.range.value}`;
 						}else{
-							if (system?.weaponType === 'melee'){
-								rangeString = game.i18n.localize('DND4E.WeaponMelee');
-							}else if (system?.weaponType === 'ranged'){
-								rangeString = game.i18n.localize('DND4E.WeaponRanged');
+							rangeString = game.i18n.localize('DND4E.Melee');
+							if(weaponUse.system.properties.rch){
+								rangeString += ' 2';
 							}else{
-								rangeString = C.rangeType.weapon.label;
-							}
+								rangeString += ' 1';
+							}							
 						}
 					}else{
-						rangeString += C.rangeType[system.rangeType].label;
-						if (system.area) rangeString += ` ${system.area}`;
-						if (system.isArea) rangeString += ` ${game.i18n.localize('DND4E.RangeWithin')}`;
-						if (system.rangePower) rangeString += ` ${system.rangePower}`;
-						if (system.range.long) rangeString += `/${system.range.long}`;
+						if (system?.weaponType === 'melee'){
+							rangeString = game.i18n.localize('DND4E.WeaponMelee');
+						}else if (system?.weaponType === 'ranged'){
+							rangeString = game.i18n.localize('DND4E.WeaponRanged');
+						}else{
+							rangeString = C.rangeType.weapon.label;
+						}
 					}
+				}else{
+					const isRange = !["personal","closeBurst","closeBlast","","touch"].includes(itemData.system.rangeType);
+					const isArea = ["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.system.rangeType);
+					
+					rangeString += C.rangeType[system.rangeType].label;
+					if (isArea) rangeString += ` ${system.area}`;
+					if (isArea && isRange) rangeString += ` ${game.i18n.localize('DND4E.RangeWithin')}`;
+					if (isRange) rangeString += ` ${system.rangePower}`;
+					if (isRange && system.range?.long) rangeString += `/${system.range.long}`;
 				}
 				if (rangeString != '') labels.range = rangeString;	
 			}
