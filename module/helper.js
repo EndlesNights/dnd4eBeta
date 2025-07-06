@@ -1586,9 +1586,10 @@ export async function handleAutoDoTs(data) {
 Handlebars.registerHelper('contains', function(lunch, lunchbox, meal) {
 	try{
 		if(typeof meal != "string") {
+			if(lunchbox instanceof Array) return lunchbox.includes(lunch);
 			if(lunchbox instanceof Set) return lunchbox.has(lunch);
+			//Test for object last, because arrays are also objects... heck you too Javascript >:<
 			if(lunchbox instanceof Object) return lunchbox.hasOwnProperty(lunch);
-			return lunchbox.includes(lunch);
 		}
 		if (lunchbox.some(e => e[meal] === lunch)) return true;
 		return false;
