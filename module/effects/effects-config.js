@@ -110,7 +110,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	async _addEffectDot() {
 		const i = this.document.flags.dnd4e.dots.length;
 		return this.submit({preventClose: true, updateData: {
-			[`flags.dnd4e.dots.${i}`] : {'amount': "", 'type': "", 'typesArray': []}
+			[`flags.dnd4e.dots.${i}`] : {'amount': "", 'typesArray': []}
 		}});
 	}
 
