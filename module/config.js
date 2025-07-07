@@ -1244,20 +1244,56 @@ DND4E.weaponType = {
 };
 
 DND4E.rangeType = {
-	"weapon": {label: "DND4E.rangeWeapon"},
-	"melee": {label: "DND4E.rangeMelee"},
-	"touch": {label: "DND4E.rangeTouch"},
-	"reach": {label: "DND4E.rangeReach"},
-	"range" : {label: "DND4E.rangeRanged"},
-	"closeBurst": {label: "DND4E.rangeCloseBurst"},
-	"closeBlast": {label: "DND4E.rangeCloseBlast"},
-	"rangeBurst": {label: "DND4E.rangeBurst"},
-	"rangeBlast": {label: "DND4E.rangeBlast"},
-	"wall": {label: "DND4E.rangeWall"},
-	"personal": {label: "DND4E.rangePersonal"},
-	"special": {label: "DND4E.rangeSpecial"},
+	"weapon": {
+		label: "DND4E.rangeWeapon",
+		abbr: "DND4E.rangeWeaponAbbr"
+	},
+	"melee": {
+		label: "DND4E.rangeMelee",
+		abbr: "DND4E.rangeMeleeAbbr"
+	},
+	"touch": {
+		label: "DND4E.rangeTouch",
+		abbr: "DND4E.rangeTouchAbbr"
+	},
+	"reach": {
+		label: "DND4E.rangeReach",
+		abbr: "DND4E.rangeReachAbbr"
+	},
+	"range" : {
+		label: "DND4E.rangeRanged",
+		abbr: "DND4E.rangeRangedAbbr"
+	},
+	"closeBurst": {
+		label: "DND4E.rangeCloseBurst",
+		abbr: "DND4E.rangeCloseBurstAbbr"
+	},
+	"closeBlast": {
+		label: "DND4E.rangeCloseBlast",
+		abbr: "DND4E.rangeCloseBlastAbbr"
+	},
+	"rangeBurst": {
+		label: "DND4E.rangeBurst",
+		abbr: "DND4E.rangeBurstAbbr"
+	},
+	"rangeBlast": {
+		label: "DND4E.rangeBlast",
+		abbr: "DND4E.rangeBlastAbbr"
+	},
+	"wall": {
+		label: "DND4E.rangeWall",
+		abbr: "DND4E.rangeWallAbbr"
+	},
+	"personal": {
+		label: "DND4E.rangePersonal",
+		abbr: "DND4E.rangePersonalAbbr"
+	},
+	"special": {
+		label: "DND4E.rangeSpecial",
+		abbr: "DND4E.rangeSpecialAbbr"
+	},
 };
-preLocalize("rangeType", { keys: ["label"] });
+preLocalize("rangeType", { keys: ["label","abbr"] });
 
 DND4E.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4E.rangeType).filter(function ([key, value]) {
 	return key !== "weapon";

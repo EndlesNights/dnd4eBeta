@@ -1038,6 +1038,7 @@ export class Helper {
 		}
 		else if (chatData.rangeType === "range") {
 			powerDetail += ` <span class="range-type ranged">${game.i18n.localize("DND4E.rangeRanged")}</span> <span class="range-size">${chatData.rangePower}</span>`;
+			if(chatData.range?.long) powerDetail += `/<span class="range-long">${chatData.range.long}</span>`;
 		}
 		else if (['closeBurst', 'closeBlast'].includes(chatData.rangeType)) {
 			powerDetail += ` <span class="range-type close">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span>`;
@@ -1052,7 +1053,7 @@ export class Helper {
 			powerDetail += ` <span class="range-type special">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span>`;
 		}
 		else if (chatData.rangeType === "touch") {
-			powerDetail += ` <span class="range-type melee">${game.i18n.localize("DND4E.Melee")}</span> <span class="range-size touch">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span>`;
+			powerDetail += ` <span class="range-type melee">${game.i18n.localize("DND4E.Melee")}</span> <span class="range-size touch">${game.i18n.localize("DND4E.DistTouch")}</span>`;
 		}
 		else {
 			powerDetail += `</span>`;
