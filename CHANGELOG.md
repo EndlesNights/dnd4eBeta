@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.6.8
+- Fixes a bug in the contains helper which was messing up ongoing damage instances, causing a game-breaking error when passing the turn. (First reported by Edafosavra o Discord, also described in #443)
+
 ## Version 0.6.7
 - Fixes a buy reported by Ari on Discord, where melee-range powers had lost their numerical ranged input.
 
