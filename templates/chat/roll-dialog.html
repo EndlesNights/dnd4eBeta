@@ -83,6 +83,7 @@
 								{{#if (contains 'surprised' t.status)}}checked="true"{{/if}}
 								{{#if (contains 'squeezing' t.status)}}checked="true"{{/if}}
 								{{#if (contains 'running' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'grantingCA' t.status)}}checked="true"{{/if}}
 							{{/if}}
 							
 							{{#if (eq b 'conceal')}}
@@ -91,6 +92,14 @@
 							
 							{{#if (eq b 'concealTotal')}}
 								{{#if (contains 'concealTotal' t.status)}}checked="true"{{/if}}
+							{{/if}}
+							
+							{{#if (eq b 'cover')}}
+								{{#if (contains 'cover' t.status)}}checked="true"{{/if}}
+							{{/if}}
+							
+							{{#if (eq b 'coverSup')}}
+								{{#if (contains 'coverSup' t.status)}}checked="true"{{/if}}
 							{{/if}}
 								
 						{{/if}}
