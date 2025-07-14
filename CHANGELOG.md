@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.6.9
+- Improves range values in power cards and sheet summaries to match new behaviour (Fixes #442). 
+- Makes the range abbreviations in on-sheet power listings (and the attached tooltips) into translatable strings.
+- Reimplements the "granting combat advantage" status that seems to have gotten lost from th common bonus automation update
+- Adds Cover/Superior Cover statuses, with the description noting "taking cover" to make usage more appropriate
+- Rearranges the statuses list. In an effort to make statuses easier to find, they are now in thematic groups (e.g. deafened and blinded are together, invisible and hidden are together, slowed/immobilised/restrained/grabbed are together, etc.). It's not perfect but hopefully it should be helpful!
+
 ## Version 0.6.8
 - Fixes a bug in the contains helper which was messing up ongoing damage instances, causing a game-breaking error when passing the turn. (First reported by Edafosavra o Discord, also described in #443)
 
