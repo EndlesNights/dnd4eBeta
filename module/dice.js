@@ -228,11 +228,15 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				const targetStatus = Array.from(theTargets[targetIndex].actor.statuses);
 				
 				//Target conditions
-				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
+				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
 				
 				if(targetStatus.includes('concealed')) targetBonuses.push('@conceal');		
 				
 				if(targetStatus.includes('concealedTotal')) targetBonuses.push('@concealTotal');
+				
+				if(targetStatus.includes('cover')) targetBonuses.push('@cover');		
+				
+				if(targetStatus.includes('coverSup')) targetBonuses.push('@coverSup');
 					
 			}
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
