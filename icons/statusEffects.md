@@ -45,6 +45,9 @@ The icons within the icons/statusEffects and icons/ui folders are by the authors
 
 * Running:			https://game-icons.net/1x1/lorc/run.html
 * Squeezing:		https://game-icons.net/1x1/delapouite/contract.html
+* Granting CA:		https://game-icons.net/1x1/lorc/target-dummy.html
+* Cover:			https://game-icons.net/1x1/delapouite/stakes-fence.html
+* Superior Cover:	https://game-icons.net/1x1/delapouite/brick-wall.html
 
 UI ICONS:
 * Calc:				https://game-icons.net/1x1/delapouite/calculator.html
