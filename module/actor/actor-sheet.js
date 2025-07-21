@@ -195,13 +195,11 @@ export default class ActorSheet4e extends ActorSheet {
 				const res = actorData.resources[r] || {};
 				res.name = r;
 				res.placeholder = game.i18n.localize("DND4E.Resource"+r.titleCase());
-				if (res.max <= 0) {
-		                    delete res.max;
-		                    delete res.value;
-		                } else if (res.value < 0) {
-		                    res.value = 0;
-		                } else if (res.value > res.mx) {
-				    res.value = res.max;
+				if (res.max <= 0 && !res.label) {
+					delete res.max;
+					delete res.value;
+				} else if (res.value < 0) {
+					res.value = 0;
 				}
 				obj[r] = res
 				return obj;
