@@ -193,7 +193,6 @@ export default class ActorSheet4e extends ActorSheet {
 			// Resources
 			actorData.resources = ["primary", "secondary", "tertiary"].reduce((obj, r) => {
 				const res = actorData.resources[r] || {};
-				console.debug(res);
 				res.name = r;
 				res.placeholder = game.i18n.localize("DND4E.Resource"+r.titleCase());
 				if (res.max <= 0 && !res.label) {
