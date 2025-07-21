@@ -1824,11 +1824,10 @@ export class Actor4e extends Actor {
 		}
 
 		for (let r of Object.entries(this.system.resources)) {
-			if(r[1].sr && r[1].max) {
+			if(r[1].label && r[1].sr && r[1].max != null) {
 				updateData[`system.resources.${r[0]}.value`] = r[1].max;
 			}
 		}
-
 
 		if(!game.settings.get("dnd4e", "deathSaveRest")){
 			updateData[`system.details.deathsavefail`] = 0;
@@ -1897,7 +1896,7 @@ export class Actor4e extends Actor {
 		}
 		
 		for (let r of Object.entries(this.system.resources)) {
-			if((r[1].sr || r[1].lr) && r[1].max) {
+			if((r[1].sr || r[1].lr) && r[1].label && r[1].max != null) {
 				updateData[`system.resources.${r[0]}.value`] = r[1].max;
 			}
 		}
