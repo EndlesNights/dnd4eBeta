@@ -925,9 +925,7 @@ export default class Item4e extends Item {
 		};
 		
 		// If the Item was destroyed in the process of displaying its card - embed the item data in the chat message
-		if ( (this.type === "consumable") && !this.actor.items.has(this.id) ) {
-			chatData.flags["dnd4e.itemData"] = templateData.item;
-		}
+		chatData.flags["dnd4e.itemData"] = templateData.item;
 		
 		// Embed variance in the chat message, so buttons can be aware of it
 		if (variance) {
