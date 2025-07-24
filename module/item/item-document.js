@@ -1397,13 +1397,13 @@ export default class Item4e extends Item {
 
 		// let title = `${this.name} - ${game.i18n.localize("DND4E.AttackRoll")}`;
 		let title = `${game.i18n.localize("DND4E.AttackRoll")}: ${this.name}`;
-
-		//weapon attack roll check
+        	let flavor = title;
+		
+        	//weapon attack roll check
 		if (weaponUse) {
-			title += `<br />${weaponUse.name}`;
+			title += ` - ${weaponUse.name}`;
+            		flavor += `<br />${weaponUse.name}`;
 		}
-
-		let flavor = title;
 
 		//Defence targeted is now printed per-target
 		/*if(itemData.attack.def) {
