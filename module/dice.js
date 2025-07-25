@@ -193,9 +193,9 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			}
 		}
 		
+		//Get per-target defence and ability mod
 		let attackDef;
 		let attackMod;
-		//Get per-target defence and ability mod
 		for (let [k, v] of Object.entries(form)){
 			if (v.classList.contains('attackDef')) {
 				attackDef = (individualAttack || !attackDef) ? v.value : attackDef;
