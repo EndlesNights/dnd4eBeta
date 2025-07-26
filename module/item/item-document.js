@@ -923,7 +923,7 @@ export default class Item4e extends Item {
 			  core: { canPopout: true }
 			}
 		};
-
+    
 		// In case the Item was destroyed in the process of rolling - embed the item data in the chat message
 		if (!this.actor.items.has(this.id)) {
 			chatData.flags["dnd4e.itemData"] = templateData.item;
