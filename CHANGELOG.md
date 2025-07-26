@@ -1,4 +1,11 @@
 # Changelog
+## Version 0.6.10
+- Improved resource handling at 0 value (Fixes #446). Resources are now "active" based on whether they have a label, regardless of value, and will no longer consider 0 value or max to be the same as null. (SagaTympana/Fox Lee)
+- Embed chat data in non-consumable power cards that have been deleted during usage. This allows the creation of temporary powers by macros and such. (Fox)
+- Fixed exposed HTML tags in dialogue titles (SagaTympana)
+- Fixed a bug where "vs Defence" setting in attack roll dialogue worked incorrectly for multi-targets with a unified attack setting (Fixes #451) (SagaTympana)
+- Adds Martial Practice and the various Alchemical Formula categories for Rituals (Fox)
+- Enables [enhancement] bonus type for global atk/dmg/def/skill modifiers. Used rarely but might as well have it available. (Fox) 
 
 ## Version 0.6.9
 - Improves range values in power cards and sheet summaries to match new behaviour (Fixes #442). 
