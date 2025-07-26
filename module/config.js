@@ -1189,7 +1189,13 @@ DND4E.ritualTypes = {
 	"scrying": { label: "DND4E.Group.Ritual.Scrying" },
 	"travel": { label: "DND4E.Group.Ritual.Travel" },
 	"warding": { label: "DND4E.Group.Ritual.Warding" },
-	"other": { label: "DND4E.Other" }
+	"other": { label: "DND4E.Other" },
+	"martial": { label: "DND4E.Group.Ritual.Martial" },
+	"curative": { label: "DND4E.Group.Ritual.Curative" },
+	"oil": { label: "DND4E.Group.Ritual.Oil" },
+	"poison": { label: "DND4E.Group.Ritual.Poison" },
+	"volatile": { label: "DND4E.Group.Ritual.Volatile" },
+	"alchother": { label: "DND4E.Group.Ritual.AlchOther" }
 };
 preLocalize("ritualTypes", { keys: ["label"] });
 
