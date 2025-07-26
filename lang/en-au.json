@@ -1456,6 +1456,12 @@
 "DND4E.Group.Ritual.Scrying": "Scrying",
 "DND4E.Group.Ritual.Travel": "Travel",
 "DND4E.Group.Ritual.Warding": "Warding",
+"DND4E.Group.Ritual.Martial": "Martial Practice",
+"DND4E.Group.Ritual.Curative": "Curative Formula",
+"DND4E.Group.Ritual.Oil": "Oil Formula",
+"DND4E.Group.Ritual.Poison": "Poison Formula",
+"DND4E.Group.Ritual.Volatile": "Volatile Formula",
+"DND4E.Group.Ritual.AlchOther": "Other Formula",
 
 "DND4E.Hazard.Detection": "Detection",
 "DND4E.Hazard.Counter": "Countermeasures",
