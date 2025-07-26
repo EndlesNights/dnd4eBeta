@@ -484,8 +484,8 @@ export class Actor4e extends Actor {
 			mod.bonusValue = modifierBonusValue;
 			
 			if(isNaN(parseInt(mod?.absolute))){ //All logic only required if there is no usable absolute value
-				
-				mod.value += mod?.class||0 + mod?.feat||0 + mod?.item||0 + mod?.power||0 + mod?.untyped||0 + mod?.race||0 + mod.bonusValue;
+	
+				mod.value += mod?.class||0 + mod?.feat||0 + mod?.item||0 + mod?.power||0 + mod?.untyped||0 + mod?.race||0 + mod?.enhance||0 + mod.bonusValue;
 				//trim value according to floor and ceil
 				mod.value = Math.max(mod.value,mod?.floor || mod.value-1);
 				mod.value = Math.min(mod.value,mod?.ceil || mod.value+1);
@@ -957,7 +957,7 @@ export class Actor4e extends Actor {
 			globalBonus = data.modifiers.defences;
 		}catch(e){
 			console.warn(`PC global defence calc failed, probably due to an unmigrated actor. Defences will function but this bonus will not be correctly applied. (Error message: "${e}")`);
-			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"enhance": 0,"untyped": 0,"bonusValue": 0};
 		}
 		
 		for (let [id, def] of Object.entries(data.defences)) {
@@ -1015,11 +1015,11 @@ export class Actor4e extends Actor {
 				let modBonus = def.ability != "" ? data.abilities[def.ability].mod : 0;
 
 				def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;
-				def.value += Math.max(def.feat || 0, globalBonus.feat);
-				def.value += Math.max(def.item || 0, globalBonus.item);
-				def.value += Math.max(def.power || 0, globalBonus.power);
-				def.value += Math.max(def.race || 0, globalBonus.race);
-				def.value += def.enhance || 0;
+				def.value += Math.max(def.feat || 0, globalBonus.feat || 0);
+				def.value += Math.max(def.item || 0, globalBonus.item || 0);
+				def.value += Math.max(def.power || 0, globalBonus.power || 0);
+				def.value += Math.max(def.race || 0, globalBonus.race || 0);
+				def.value += Math.max(def.enhance || 0, globalBonus.enhance || 0);
 				def.value += def.shield || 0;
 				def.value += def.untyped || 0;
 				def.value += globalBonus.untyped;
@@ -1048,7 +1048,7 @@ export class Actor4e extends Actor {
 			globalBonus = data.modifiers.defences;
 		}catch(e){
 			console.warn(`NPC global defence calc failed, probably due to an unmigrated actor. Defences will function but this bonus will not be correctly applied. (Error message: "${e}")`);
-			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"enhance": 0,"untyped": 0,"bonusValue": 0};
 		}
 		
 		for (let [id, def] of Object.entries(data.defences)) {
@@ -1118,11 +1118,11 @@ export class Actor4e extends Actor {
 				} else {
 					def.value = def?.base || 0;
 				}
-				def.value += Math.max(def.feat || 0, globalBonus.feat);
-				def.value += Math.max(def.item || 0, globalBonus.item);
-				def.value += Math.max(def.power || 0, globalBonus.power);
-				def.value += Math.max(def.race || 0, globalBonus.race);
-				def.value += def.enhance || 0;
+				def.value += Math.max(def.feat || 0, globalBonus.feat || 0);
+				def.value += Math.max(def.item || 0, globalBonus.item || 0);
+				def.value += Math.max(def.power || 0, globalBonus.power || 0);
+				def.value += Math.max(def.race || 0, globalBonus.race || 0);
+				def.value += Math.max(def.enhance || 0, globalBonus.enhance || 0);
 				def.value += def.shield || 0;
 				def.value += def.untyped || 0;
 				def.value += globalBonus.untyped;
@@ -1148,7 +1148,7 @@ export class Actor4e extends Actor {
 			globalBonus = system.modifiers.skills;
 		}catch(e){
 			console.warn(`PC global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
-			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"enhance": 0,"untyped": 0,"bonusValue": 0};
 		}
 		
 		for (const [id, skl] of Object.entries(system.skills)) {
@@ -1203,6 +1203,7 @@ export class Actor4e extends Actor {
 				let itemBonus = 0;
 				let powerBonus = 0;
 				let raceBonus = 0;
+				let enhBonus = 0;
 				switch (skl.training){
 					case 8:
 						trainingBonus = system.skillTraining.expertise.value + system.skillTraining.expertise.untyped;
@@ -1230,12 +1231,13 @@ export class Actor4e extends Actor {
 				skl.mod = system.abilities[skl.ability].mod;
 
 				skl.total = skl.value + skl.base + skl.mod + sklBonusValue + skl.effectBonus - sklArmourPenalty;
-				skl.total += Math.max(featBonus || 0, globalBonus.feat);
-				skl.total += Math.max(itemBonus || 0, globalBonus.item);
-				skl.total += Math.max(powerBonus || 0, globalBonus.power);
-				skl.total += Math.max(raceBonus || 0, globalBonus.race);
+				skl.total += Math.max(featBonus || 0, globalBonus.feat || 0);
+				skl.total += Math.max(itemBonus || 0, globalBonus.item || 0);
+				skl.total += Math.max(powerBonus || 0, globalBonus.power || 0);
+				skl.total += Math.max(raceBonus || 0, globalBonus.race || 0);
+				skl.total += Math.max(enhBonus || 0, globalBonus.enhance || 0);
 				skl.total += skl.untyped || 0;
-				skl.total += globalBonus.untyped;
+				skl.total += globalBonus.untyped || 0;
 				//No way to sort manual bonuses, so they just get added regardless.
 				skl.total += globalBonus.bonusValue;
 				skl.total += trainingBonus;
@@ -1260,7 +1262,7 @@ export class Actor4e extends Actor {
 			globalBonus = system.modifiers.skills;
 		}catch(e){
 			console.warn(`NPC global skill calc failed, probably due to an unmigrated actor. Skills will function but this bonus will not be correctly applied. (Error message: "${e}")`);
-			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"untyped": 0,"bonusValue": 0};
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"enhance": 0,"untyped": 0,"bonusValue": 0};
 		}
 		
 		for (let [id, skl] of Object.entries(system.skills)) {
@@ -1312,6 +1314,7 @@ export class Actor4e extends Actor {
 				let itemBonus = skl.itemBonus||0;
 				let raceBonus = skl.raceBonus||0;
 				let trainingBonus = skl.trainingBonus||0;
+				let enhBonus = skl.enhBonus||0;
 				
 				if(system.advancedCals){
 					skl.mod = system.abilities[skl.ability].mod;
@@ -1352,10 +1355,11 @@ export class Actor4e extends Actor {
 					skl.total = skl.base;
 				}
 				
-				skl.total += Math.max(featBonus || 0, globalBonus.feat);
-				skl.total += Math.max(itemBonus || 0, globalBonus.item);
-				skl.total += Math.max(raceBonus || 0, globalBonus.race);
-				skl.total += Math.max(powerBonus || 0, globalBonus.power);
+				skl.total += Math.max(featBonus || 0, globalBonus.feat || 0);
+				skl.total += Math.max(itemBonus || 0, globalBonus.item || 0);
+				skl.total += Math.max(raceBonus || 0, globalBonus.race || 0);
+				skl.total += Math.max(powerBonus || 0, globalBonus.power || 0);
+				skl.total += Math.max(enhBonus || 0, globalBonus.enhance || 0);
 				skl.total += skl.untyped || 0;
 				skl.total += globalBonus.untyped;
 				//No way to sort manual bonuses, so they just get added regardless.
