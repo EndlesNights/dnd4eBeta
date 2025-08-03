@@ -860,12 +860,19 @@ export class Actor4e extends Actor {
 					if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
 						for( const b of res.bonus) {
 
-							if(!b.active) continue;					
-							let val = Helper._isNumber(b.value) ? b.value : Helper.replaceData(b.value,system)
-							res.vuln += Math.min(parseInt(val),0);
-							res.res += Math.max(parseInt(val),0);
+							if(!b.active) continue;
+							let val;
+							if (Helper._isNumber(b.value)) {
+								val = b.value;
+							}		
+							else {
+								val = Helper.commonReplace(b.value, actorData);
+								val = eval(Helper.replaceData(val, system));
+							}
+							res.vuln += Math.min(val,0);
+							res.res += Math.max(val,0);
 
-							resBonusValue += parseInt(b.value);
+							resBonusValue += val;
 						}
 					}
 					res.resBonusValue = resBonusValue; // This value is displayed on the actor sheet
