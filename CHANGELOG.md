@@ -1,4 +1,12 @@
 # Changelog
+## Version 0.6.11
+- Updated res/vuln evaluation to better observe actor variables (fixes #455). (SagaTympana)
+- Fixed a bug where the word "Feature" would repeat in the property summary for features with a certain combination of traits. (Fox)
+- Enabled short/long range specification for consumables. (Fox)
+- Allowed blank role selection for minion/other NPCs. (Fox)
+- Updated & improved labels/property/keyword evaluation for items. In particular, properties now include their key as a class name in their HTML tag, which will allow for non-language-dependent manipulation via CSS/DOM JS. (Fox)
+- Improved reporting of regeneration in automated chat cards. No more annoying reminders for 0-value regen! (SagaTympana)
+
 ## Version 0.6.10
 - Improved resource handling at 0 value (Fixes #446). Resources are now "active" based on whether they have a label, regardless of value, and will no longer consider 0 value or max to be the same as null. (SagaTympana/Fox Lee)
 - Embed chat data in non-consumable power cards that have been deleted during usage. This allows the creation of temporary powers by macros and such. (Fox)
@@ -1212,3 +1220,4 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
