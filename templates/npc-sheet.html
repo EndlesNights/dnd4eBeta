@@ -19,6 +19,8 @@
 					
 					<li class="summary-role">
 						<select class="actor-role-prim" name="system.details.role.primary">
+							{{#if (eq system.details.role.secondary 'minion')}}<option value=""{{#unless system.details.role}} selected{{/unless}}></option>{{/if}}
+							{{#if (eq system.details.role.secondary 'other')}}<option value=""{{#unless system.details.role}} selected{{/unless}}></option>{{/if}}
 							{{selectOptions config.creatureRole selected=system.details.role.primary labelAttr="label"}}
 						</select>
 					</li>
