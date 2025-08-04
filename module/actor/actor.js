@@ -2550,7 +2550,7 @@ export class Actor4e extends Actor {
 						user: Helper.firstOwner(this),
 						speaker: {actor: this, alias: this.isToken ? this.token.name : this.name},
 						content: html,
-						flavor: `${dot.type === "healing" ? game.i18n.localize ("EFFECT.statusRegen") : game.i18n.localize ("DND4E.OngoingDamage")}: ${dot.effectName}`,
+						flavor: `${dot.type == "healing" ? game.i18n.localize ("EFFECT.statusRegen") : game.i18n.localize ("DND4E.OngoingDamage")}: ${dot.effectName}`,
 						whisper: chatRecipients,
 						//rollMode: "gmroll",
 						/*rolls: [{
