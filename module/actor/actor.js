@@ -2500,7 +2500,8 @@ export class Actor4e extends Actor {
 			if(applicableDoTs.length){
 				for(const dot of applicableDoTs){
 					const dmgTaken = ( dot.type == "healing" ? Math.min(dot.amount, this.system.attributes.hp.max - this.system.attributes.hp.value) : await this.calcDamageInner([[dot.amount,dot.type]]));
-					//console.debug(this.calcDamageInner([[dot.amount,dot.type]]));
+					if (dmgTaken === 0 && dot.type == "healing") continue;
+                    //console.debug(this.calcDamageInner([[dot.amount,dot.type]]));
 					let dmgImpact = "neutral";
 					
 					let chatRecipients = [Helper.firstOwner(this)];
@@ -2549,7 +2550,7 @@ export class Actor4e extends Actor {
 						user: Helper.firstOwner(this),
 						speaker: {actor: this, alias: this.isToken ? this.token.name : this.name},
 						content: html,
-						flavor: `${game.i18n.localize ("DND4E.OngoingDamage")}: ${dot.effectName}`,
+						flavor: `${dot.type === "healing" ? game.i18n.localize ("EFFECT.statusRegen") : game.i18n.localize ("DND4E.OngoingDamage")}: ${dot.effectName}`,
 						whisper: chatRecipients,
 						//rollMode: "gmroll",
 						/*rolls: [{
