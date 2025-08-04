@@ -474,28 +474,23 @@ export default class Item4e extends Item {
 		// Weapons
 		else if ( itemData.type === "weapon" ) {
 			try{
-				let propCount = 0;
 				for (const [key, value] of Object.entries(system?.properties)){
 					if(value && !(key == 'imp' && system.weaponType == 'implement')){
-						const newKey = `prop${propCount}`;
+						const newKey = `props${key}`;
 						labels[newKey] = game.i18n.localize(CONFIG.DND4E.weaponProperties[key]);
-						propCount++;
 					}
 				}
-				propCount = 0;
 				for (const [key, value] of Object.entries(system?.weaponGroup)){
 					if(value){
-						const newKey = `type${propCount}`;
+						const newKey = `types${key}`;
 						labels[newKey] = game.i18n.localize(CONFIG.DND4E.weaponGroup[key]);
-						propCount++;
 					}
 				}
 				if(system.implement != undefined){	
 					for (const [key, value] of Object.entries(system?.implement)){
 						if(value){
-							const newKey = `type${propCount}`;
+							const newKey = `types${key}`;
 							labels[newKey] = game.i18n.localize(CONFIG.DND4E.implement[key]);
-							propCount++;
 						}
 					}
 				}
@@ -525,7 +520,7 @@ export default class Item4e extends Item {
 				
 				if(system?.level){
 					summaryText += ` ${system.level}`;
-				}else if(['race','class'].includes(system?.powerType)){
+				}else if(['race','class'].includes(system?.powerType) && system.powerSubtype != 'feature'){
 					summaryText += ` ${game.i18n.localize('DND4E.Feature.Feature')}`;
 				}else if(['feature','other'].includes(system?.powerType)){
 					summaryText += ` ${game.i18n.localize('DND4E.Power')}`;
@@ -570,7 +565,7 @@ export default class Item4e extends Item {
 				if(this.getDamageType()){
 					let damType = [];
 					for ( let [damage, d] of Object.entries(this.getDamageType())) {
-						if(d && damage != 'physical'){
+						if(d){
 							damType.push(`${game.i18n.localize(DND4E.damageTypes[damage])}`);
 						}
 					}
@@ -630,12 +625,49 @@ export default class Item4e extends Item {
 					const isArea = ["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.system.rangeType);
 					
 					rangeString += C.rangeType[system.rangeType].label;
-					if (isArea) rangeString += ` ${system.area}`;
+					
+					if (isArea){
+						let areaString = system.area || '';
+						if(this.actor && areaString){
+							try{
+								areaString = Helper.commonReplace(areaString, this.actor);
+								if (!Helper._isNumber(areaString)) areaString = Roll.safeEval(areaString);
+							}catch(e){
+								console.error(`Could not evaluate area formula. This is probably due to an unknown key in the formula.`);
+							}
+						}
+						rangeString += ` ${areaString}`;
+					}
+					
 					if (isArea && isRange) rangeString += ` ${game.i18n.localize('DND4E.RangeWithin')}`;
-					if (isRange) rangeString += ` ${system.rangePower}`;
-					if (isRange && system.range?.long) rangeString += `/${system.range.long}`;
+					
+					if (isRange){
+						let rangeValue = system.rangePower || '';
+						if(this.actor && rangeValue){
+							try{
+								rangeValue = Helper.commonReplace(rangeValue, this.actor);
+								if (!Helper._isNumber(rangeValue)) rangeValue = Roll.safeEval(rangeValue);
+							}catch(e){
+								console.error(`Could not evaluate range formula. This is probably due to an unknown key in the formula.`);
+							}
+						}
+						rangeString += ` ${rangeValue}`;
+					}
+					
+					if (isRange && system.range?.long && !isArea){
+						let longRangeValue = system.range.long;
+						if(this.actor){
+							try{
+								longRangeValue = Helper.commonReplace(longRangeValue, this.actor);
+								if (!Helper._isNumber(longRangeValue)) longRangeValue = Roll.safeEval(longRangeValue);
+							}catch(e){
+								console.error(`Could not evaluate long range formula. This is probably due to an unknown key in the formula.`);
+							}
+						}
+						rangeString += `/${longRangeValue}`;
+					}
 				}
-				if (rangeString != '') labels.range = rangeString;	
+				if (rangeString != '') labels.range = rangeString;
 			}
 		}catch(e){
 			console.error(`Item labels failed for ${itemData.type}: ${itemData.name}. Item data has been dumped to debug. ${e}`);
@@ -669,7 +701,7 @@ export default class Item4e extends Item {
 		}	
 		
 		// Activated Items
-		if (itemData.type != 'power' && system.hasOwnProperty("activation") ) {
+		if (!['power','feature'].includes(itemData.type) && system.hasOwnProperty("activation") ) {
 			// Ability Activation Label
 			let act = system.activation || {};
 			if ( act ) labels.activation = [act.cost, C.abilityActivationTypes[act.type]].filterJoin(" ");
@@ -1197,38 +1229,38 @@ export default class Item4e extends Item {
 		if (data.hasOwnProperty("proficient") && ["equipment","weapon"].includes(this.type)){
 			if( this.type == 'weapon' || (data?.armour.type == 'armour' && ![""].includes(data?.armour.subType)) || (data?.armour.type == 'arms' && ["light","heavy"].includes(data?.armour.subType)) ){
 				if(data?.proficient || (data?.weaponType == 'implement' && data?.proficientI) ){
-					props.push(game.i18n.localize('DND4E.Proficient'));
+					props.push(`<li class="proficiency">${game.i18n.localize('DND4E.Proficient')}</li>`);
 				}				
 				if(data?.weaponType != 'implement' && data?.proficientI){
-					props.push(game.i18n.localize("DND4E.ProficiencyI"));
+					props.push(`<li class="proficiency">${game.i18n.localize("DND4E.ProficiencyI")}</li>`);
 				}
 				if(!data?.proficient && !(data?.weaponType == 'implement' && data?.proficientI) ){
-					props.push(game.i18n.localize("DND4E.NotProficient"));
+					props.push(`<li class="proficiency negative">${game.i18n.localize("DND4E.NotProficient")}</li>`);
 				}
 			}
 		}
 		
 		// Equippables
 		if ( data.hasOwnProperty("equipped") && ["equipment","weapon","container"].includes(this.type) ) {
-			props.push(
-				game.i18n.localize(data?.equipped ? "DND4E.Equipped" : "DND4E.Unequipped")
-			);
+			if(data?.equipped){
+				props.push(`<li class="equipped">${game.i18n.localize("DND4E.Equipped")}</li>`);
+			}else{
+				props.push(`<li class="equipped negative">${game.i18n.localize("DND4E.Unequipped")}</li>`);
+			}
 		}
 
 		// Ability activation properties
 		if ( data.hasOwnProperty("activation") ) {
-			props.push(
-				labels.activation + (data.activation?.condition ? ` (${data.activation.condition})` : ""),
-				labels.attribute,
-				labels.target,
-				data.isRanged && labels.range ? `${game.i18n.localize("DND4E.Range")}: ${labels.range}` : "",
-				labels.castTime,
-				labels.duration,
-				labels.component,
-				labels.componentCost,
-				labels.damageTypes,
-				labels.effectType,
-			);
+			if(labels?.activation) props.push(`<li class="activation">${labels.activation} ${data.activation.condition}</li>`);
+			if(labels?.attribute) props.push(`<li class="attribute">${labels.attribute}</li>`);
+			if(labels?.target) props.push(`<li class="target">${labels.target}</li>`);
+			if(data.isRanged && labels?.range) props.push(`<li class="range">${game.i18n.localize("DND4E.Range")}: ${labels.range}</li>`);
+			if(labels?.castTime) props.push(`<li class="cast-time">${labels.castTime}</li>`);
+			if(labels?.duration) props.push(`<li class="duration">${labels.duration}</li>`);
+			if(labels?.component) props.push(`<li class="components">${labels.component}</li>`);
+			if(labels?.componentCost) props.push(`<li class="component-cost">${labels.componentCost}</li>`);
+			if(labels?.damageTypes) props.push(`<li class="keywords damage">${labels.damageTypes}</li>`);
+			if(labels?.effectType) props.push(`<li class="keyword effect">${labels.effectType}</li>`);
 		}
 		
 		// Filter properties and return
@@ -1250,16 +1282,13 @@ export default class Item4e extends Item {
 	 * @private
 	 */
 	_equipmentChatData(data, labels, props) {
-		props.push(
-			labels.type || null,
-			labels.armour || null,
-			labels.fort || null,
-			labels.ref || null,
-			labels.wil || null,
-			labels.move || null,
-			labels.check || null,
-			//data.stealth.value ? game.i18n.localize("DND4E.StealthDisadvantage") : null
-		);
+		if(labels?.type) props.push(`<li class="equipment-type">${labels.type}</li>`);
+		if(labels?.armour) props.push(`<li class="amour-bonus">${labels.armour}</li>`);
+		if(labels?.fort) props.push(`<li class="fort-bonus">${labels.fort}</li>`);
+		if(labels?.ref) props.push(`<li class="ref-bonus">${labels.ref}</li>`);
+		if(labels?.wil) props.push(`<li class="will-bonus">${labels.wil}</li>`);
+		if(labels?.move) props.push(`<li class="move-penalty">${labels.move}</li>`);
+		if(labels?.check) props.push(`<li class="check-penalty">${labels.check}</li>`);
 	}
 
 	/* -------------------------------------------- */
@@ -1269,18 +1298,16 @@ export default class Item4e extends Item {
 	 * @private
 	 */
 	_weaponChatData(data, labels, props) {
-		props.push(
-			game.i18n.localize(CONFIG.DND4E.weaponTypes[data.weaponType])
-		);
+		props.push(`<li class="weapon-type">${game.i18n.localize(CONFIG.DND4E.weaponTypes[data.weaponType])}</li>`);
 		
 		if(data.weaponHand == "hMain" || data.weaponHand == "hOff"){
-			props.push(game.i18n.localize('DND4E.1H'));
+			props.push(`<li class="hands">${game.i18n.localize('DND4E.1H')}</li>`);
 		}else if(data.weaponHand == "hTwo"){
-			props.push(game.i18n.localize('DND4E.2H'));
+			props.push(`<li class="hands">${game.i18n.localize('DND4E.2H')}</li>`);
 		}
 
 		for (const [key, value] of Object.entries(labels)) {
-			if(key.startsWith("prop") || key.startsWith("type")) props.push(value);
+			if(key.startsWith("prop") || key.startsWith("type")) props.push(`<li class="${key}">${value}</li>`);
 		}
 	}
 
@@ -1293,8 +1320,8 @@ export default class Item4e extends Item {
 	_consumableChatData(data, labels, props) {
 		if(data.preparedMaxUses != 0){
 			props.push(
-				CONFIG.DND4E.consumableTypes[data.consumableType].label,
-				data.uses.value + "/" + data.preparedMaxUses + " " + game.i18n.localize("DND4E.Charges")
+				`<li class="consumable-type">${CONFIG.DND4E.consumableTypes[data.consumableType].label}</li>`,
+				`<li class="consumable-type">${data.uses.value}/${data.preparedMaxUses} ${game.i18n.localize("DND4E.Charges")}</li>`
 			);
 		}
 		data.hasCharges = data.uses.value >= 0;
@@ -1308,8 +1335,7 @@ export default class Item4e extends Item {
 	 */
 	_toolChatData(data, labels, props) {
 		props.push(
-			CONFIG.DND4E.abilities[data.ability] || null,
-			CONFIG.DND4E.skills[data.ability] || null
+			`<li class="check">${CONFIG.DND4E.abilities[data.ability] || ''}${CONFIG.DND4E.skills[data.ability] || ''}</li>`
 			// CONFIG.DND4E.proficiencyLevels[data.proficient || 0]
 		);
 	}
@@ -1321,10 +1347,8 @@ export default class Item4e extends Item {
 	 * @private
 	 */
 	_lootChatData(data, labels, props) {
-		props.push(
-			data.weight ? `${data.weight} ${game.i18n.localize("DND4E.AbbreviationLbs")}` : null,
-			data.price ? `${data.price} ${game.i18n.localize("DND4E.GP")}` : null
-		);
+		if(data?.weight) props.push(`<li class="weight">${data.weight} ${game.i18n.localize("DND4E.AbbreviationLbs")}</li>`);
+		if(data?.price) props.push(`<li class="price">${data.price} ${game.i18n.localize("DND4E.GP")}</li>`);
 	}
 
 	/* -------------------------------------------- */
@@ -1335,10 +1359,8 @@ export default class Item4e extends Item {
 	 * @private
 	 */
 	_spellChatData(data, labels, props) {
-		props.push(
-			labels.level,
-			labels.components + (labels.materials ? ` (${labels.materials})` : "")
-		);
+		if(labels?.level) props.push(`<li class="level">${labels.level}</li>`);
+		if(labels?.components) props.push(`<li class="level">${labels.components} ${labels.materials || ''}`);
 	}
 
 	/* -------------------------------------------- */
@@ -1349,7 +1371,7 @@ export default class Item4e extends Item {
 	 */
 	_featureChatData(data, labels, props) {
 		for (const [key, value] of Object.entries(labels)) {
-			props.push(value);
+			props.push(`<li class="${key}">${value}</li>`);
 		}
 	}
 	
@@ -1359,7 +1381,7 @@ export default class Item4e extends Item {
 	 */
 	_powerChatData(data, labels, props) {
 		for (const [key, value] of Object.entries(labels)) {
-			props.push(value);
+			props.push(`<li class="${key}">${value}</li>`);
 		}
 	}
 

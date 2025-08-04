@@ -155,8 +155,8 @@ export default class ItemSheet4e extends ItemSheet {
 		//data.isFlatDC = foundry.utils.getProperty(itemData.system, "save.scaling") === "flat";
 
 		// Vehicles
-		data.isCrewed = itemData.system.activation?.type === 'crew';
-		data.isMountable = this._isItemMountable(itemData);
+		//data.isCrewed = itemData.system.activation?.type === 'crew';
+		//data.isMountable = this._isItemMountable(itemData);
 	
 		// Prepare Active Effects
 		data.effects = ActiveEffect4e.prepareActiveEffectCategories(this.item.effects);
@@ -571,90 +571,89 @@ export default class ItemSheet4e extends ItemSheet {
 	_getItemProperties(item) {
 		//console.debug(this.item.labels);
 		const props = [];
-		const labels = this.item.labels || [];
+		const labels = this.item.labels || {};
+		
 		if ( item?.type === "weapon" ) {
 			props.push(CONFIG.DND4E.weaponTypes[item.system.weaponType]);
 			const shortType = item.system.weaponType.substring(0,3) || "";
 			
 			if (item.system.enhance != 0){				
-				props.push(`${game.i18n.localize('DND4E.Enhancement')}\n +${item.system.enhance} ${game.i18n.localize('DND4E.RollsAtkDmg')}`);
+				props.push(`<li class="enhancement">${game.i18n.localize('DND4E.Enhancement')}\n +${item.system.enhance} ${game.i18n.localize('DND4E.RollsAtkDmg')}</li>`);
 			}
 
 			props.push(...Object.entries(item.system.properties)
 				.filter(e => e[1] === true && e[0] != shortType)
 				//Second filter avoids double instance of "Implement"
 				.map(e => {
-					if(e[0] === "bru") return `${CONFIG.DND4E.weaponProperties[e[0]]} ${item.system.brutalNum}`;
-					return CONFIG.DND4E.weaponProperties[e[0]]
+					if(e[0] === "bru") return `<li class="${e[0]}">${CONFIG.DND4E.weaponProperties[e[0]]} ${item.system.brutalNum}</li>`;
+					return `<li class="${e[0]}">${CONFIG.DND4E.weaponProperties[e[0]]}</li>`
 				})
 			);
 			
 			props.push(...Object.entries(item.system.damageType)
 				.filter(e => e[1] === true && e[0] != "physical")
-				.map(e => CONFIG.DND4E.damageTypes[e[0]])
+				.map(e => `<li class="${e[0]}">${CONFIG.DND4E.damageTypes[e[0]]}</li>`)
 			);
 			
 			if(item.system?.implementGroup){
 				props.push(...Object.entries(item.system?.implementGroup)
 					.filter(e => e[1] === true)
-					.map(e => CONFIG.DND4E.implement[e[0]])
+					.map(e => `<li class="${e[0]}">${CONFIG.DND4E.implement[e[0]]}</li>`)
 				);
 			}
 			
 			props.push(...Object.entries(item.system.weaponGroup)
 				.filter(e => e[1] === true)
-				.map(e => CONFIG.DND4E.weaponGroup[e[0]])
+				.map(e => `<li class="${e[0]}">${CONFIG.DND4E.weaponGroup[e[0]]}</li>`)
 			);
 
 			if(item.system.isRanged)
-				props.push(`${game.i18n.localize("DND4E.Range")}: ${item.system.range.value} / ${item.system.range.long}`);
+				props.push(`<li class="range">${game.i18n.localize("DND4E.Range")}: ${item.system.range.value} / ${item.system.range.long}</li>`);
 
 		}
 
 		else if ( item.type === "power" ) {
 			for (const [key, value] of Object.entries(labels)) {
-				props.push(value)
+				props.push(`<li class="${key}">${value}</li>`)
 			}
 		}
 
 		else if ( item.type === "equipment" ) {
-			props.push(CONFIG.DND4E.equipmentTypes[item.system.armour.type]);
-			props.push(labels.armour);
-			props.push(labels.fort);
-			props.push(labels.ref);
-			props.push(labels.wil);
-			props.push(labels.enh);
+			if(item.system.armour.type) props.push(`<li class="slot">${CONFIG.DND4E.equipmentTypes[item.system.armour.type].label}</li>`);
+			if(labels.armour) props.push(`<li class="ac-bonus">${labels.armour}</li>`);
+			if(labels.fort) props.push(`<li class="fort-bonus">${labels.fort}</li>`);
+			if(labels.ref) props.push(`<li class="ref-bonus">${labels.ref}</li>`);
+			if(labels.wil) props.push(`<li class="will-bonus">${labels.wil}</li>`);
+			if(labels.enh) props.push(`<li class="enhancement">${labels.enh}</li>`);
 		}
 
 		else if ( item.type === "feature" ) {
-			props.push(labels.aura);
-			props.push(labels.tier);
-			props.push(labels.source);
-			props.push(labels.group);
-			props.push(labels.reqs);
+			if(labels.aura) props.push(`<li class="aura-size">${labels.aura}</li>`);
+			if(labels.tier) props.push(`<li class="tier">${labels.tier}</li>`);
+			if(labels.source) props.push(`<li class="source">${labels.source}</li>`);
+			if(labels.group) props.push(`<li class="feature-set">${labels.group}</li>`);
+			if(labels.reqs) props.push(`<li class="reqs">${labels.reqs}</li>`);
 		}
 
 		else if ( item.type === "ritual" ) {
-			props.push(labels.category);
+			if(labels.category) props.push(`<li class="category">${labels.category}</li>`);
 		}
 		
 		// Action type
 		if ( (item.type !== "power") && item.system?.actionType ) {
-			props.push(CONFIG.DND4E.itemActionTypes[item.system.actionType]);
+			if(item.system.actionType) props.push(`<li class="action ${item.system.actionType}">${CONFIG.DND4E.itemActionTypes[item.system.actionType]}</li>`);
 		}
 
 		// Action usage
 		if ( !['weapon','power'].includes(item.type) && item.system?.activation && !foundry.utils.isEmpty(item.system.activation) ) {
-			props.push(
-				labels.attribute,
-				labels.activation,
-				labels.range,
-				labels.target,
-				labels.castTime,
-				labels.duration,
-				labels.component,
-				labels.componentCost
-			)
+			if(labels.attribute) props.push(`<li class="atk-attribute">${labels.attribute}</li>`);
+			if(labels.activation) props.push(`<li class="action">${labels.activation}</li>`);
+			if(labels.range) props.push(`<li class="range">${labels.range}</li>`);
+			if(labels.target) props.push(`<li class="target">${labels.target}</li>`);
+			if(labels.castTime) props.push(`<li class="cast-time">${labels.castTime}</li>`);
+			if(labels.duration) props.push(`<li class="duration">${labels.duration}</li>`);
+			if(labels.component) props.push(`<li class="components">${labels.component}</li>`);
+			if(labels.componentCost) props.push(`<li class="component-cost">${labels.componentCost}</li>`);
 		}
 		return props.filter(p => !!p);
 	}
