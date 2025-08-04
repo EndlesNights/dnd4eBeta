@@ -694,7 +694,10 @@ textarea{
 	margin:0 0 0 0;
 	padding:0 0 0 4px;
 }
-.dnd4e .tag{
+.dnd4e ul.item-properties.tags{
+	padding-left:0;
+}
+.dnd4e ul.item-properties.tags li{
 	display:inline-block;
 	margin:0 2px 0 0;
 	padding:0 3px;
