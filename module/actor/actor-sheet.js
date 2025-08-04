@@ -1072,8 +1072,9 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			}
 		} else {
 			div = $(`<div class="item-summary">${chatData.description.value}</div>`);
-			let props = $(`<div class="item-properties"></div>`);
-			chatData.properties.forEach(p => props.append(`<span class="tag">${p}</span>`));
+			let props = $(`<ul class="item-properties tags"></ul>`);
+			//console.debug(chatData.properties);
+			chatData.properties.forEach(p => props.append(p));
 			div.append(props);
 		}
 		return div

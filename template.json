@@ -941,7 +941,7 @@
 			"attributes.init.base": 0,
 			"attributes.init.ability": "",
 			"details.role": {
-				"primary": "soldier",
+				"primary": "brute",
 				"secondary": "standard",
 				"leader" : false
 			},

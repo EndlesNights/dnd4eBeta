@@ -23,15 +23,15 @@
 		</div>
 		{{/if}}--}}
 
-		<ol class="properties-list">
+		<ul class="properties-list tags">
 			{{#each itemProperties}}
 				{{#if this.label}}
-					<li>{{{this.label}}}</li>
+					{{{this.label}}}
 				{{else}}
-					<li>{{{this}}}</li>
+					{{{this}}}
 				{{/if}}
 			{{/each}}
-		</ol>
+		</ul>
 	</div>
 
 	<section class="description">

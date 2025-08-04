@@ -858,7 +858,7 @@ export class Actor4e extends Actor {
 					//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.			
 					let resBonusValue = 0;
 					if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
-						for( const b of res.bonus) {
+						for(const b of res.bonus) {
 
 							if(!b.active) continue;
 							let val;
@@ -867,7 +867,7 @@ export class Actor4e extends Actor {
 							}		
 							else {
 								val = Helper.commonReplace(b.value, actorData);
-								val = eval(Helper.replaceData(val, system));
+								val = Roll.safeEval(Helper.replaceData(val, system));
 							}
 							res.vuln += Math.min(val,0);
 							res.res += Math.max(val,0);
@@ -907,7 +907,7 @@ export class Actor4e extends Actor {
 
 			}
 		}catch (e){	
-			console.err(e);
+			console.error(e);
 		}
 	}
 	_prepareDerivedDataMagicItemUse(actorData, system){

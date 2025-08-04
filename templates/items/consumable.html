@@ -153,12 +153,26 @@
 					{{#if system.isArea}}
 					<span>{{ localize "DND4E.AreaOf" }}</span>
 					<input type="text" name="system.area" value="{{system.area}}"/>
-					{{/if}}
+					{{/if}}					
+					
 					{{#if system.isRange}}
 					{{#if system.isArea}}<span class="range-within-of">{{ localize "DND4E.RangeWithinOf" }}</span>{{/if}}
-					{{#unless system.isArea}}<span class="range-of">{{ localize "DND4E.RangeOf" }}</span>{{/unless}}
-					<input type="text" name="system.rangePower" value="{{system.rangePower}}" data-dtype="Number"/>
+					
+					{{#unless system.isArea}}<div class="form-fields">{{/unless}}
+					
+					<input type="text" name="system.rangePower" data-tooltip="{{ localize 'DND4E.WeaponRangeShort' }}: {{ localize 'DND4E.WeaponRangeShortTip' }}" value="{{system.rangePower}}" data-dtype="Number"/>
+					
+					{{#unless system.isArea}}
+						<input class="hidden" type="text" name="system.range.value" value="{{#if system.range.long}}{{system.rangePower}}{{/if}}" data-dtype="Number" />
+						{{#if (eq system.rangeType 'range')}}
+							<span class="sep">/</span>
+							<input type="text" name="system.range.long" value="{{system.range.long}}" data-tooltip="{{ localize 'DND4E.WeaponRangeLong' }}: {{ localize 'DND4E.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4E.WeaponRangeLong' }}" data-dtype="Number" onClick="this.select();"/>
+						{{/if}}
+					{{/unless}}
+					
+					{{#unless system.isArea}}</div>{{/unless}}					
 					{{/if}}
+					
 				</div>
 			</div>
 			{{!-- Attack--}}
