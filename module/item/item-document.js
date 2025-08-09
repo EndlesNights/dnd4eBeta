@@ -855,7 +855,7 @@ export default class Item4e extends Item {
 		//console.debug(variance);
 
 		if(["both", "pre", "sub"].includes(this.system.macro?.launchOrder)) {
-			Helper.executeMacro(this)
+			await Helper.executeMacro(this)
 			if (this.system.macro.launchOrder === "sub") return;
 		}
 		const cardData = await ( async () => {
