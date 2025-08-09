@@ -1,6 +1,6 @@
 export class Helper {
 
-	static executeMacro(item) {
+	static async executeMacro(item) {
 		const macro = new Macro ({
 			name : item.name,
 			type : item.system.macro.type,
