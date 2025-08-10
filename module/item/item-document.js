@@ -855,7 +855,7 @@ export default class Item4e extends Item {
 		//console.debug(variance);
 
 		if(["both", "pre", "sub"].includes(this.system.macro?.launchOrder)) {
-			await Helper.executeMacro(this)
+			await Helper.executeMacro(this);
 			if (this.system.macro.launchOrder === "sub") return;
 		}
 		const cardData = await ( async () => {
@@ -956,10 +956,8 @@ export default class Item4e extends Item {
 			}
 		};
     
-		// In case the Item was destroyed in the process of rolling - embed the item data in the chat message
-		if (!this.actor.items.has(this.id)) {
-			chatData.flags["dnd4e.itemData"] = templateData.item;
-		}
+		// In case the Item was destroyed or tweaked in the process of rolling - embed the item data in the chat message
+		chatData.flags["dnd4e.itemData"] = templateData.item;
 		
 		// Embed variance in the chat message, so buttons can be aware of it
 		if (variance) {
@@ -981,7 +979,7 @@ export default class Item4e extends Item {
 			ChatMessage.create(chatData);
 
 			if(["both", "post"].includes(this.system.macro?.launchOrder)) {
-				Helper.executeMacro(this)
+				await Helper.executeMacro(this)
 			}
 		}
 		else return chatData;
