@@ -2361,7 +2361,10 @@ export default class Item4e extends Item {
 		// Effects
 		else if ( action === "applyEffect" ) {
 			//apply the single effect from button
-			const effect = await fromUuid(button.closest("[data-uuid]")?.dataset.uuid);
+			const effectId = button.closest("[data-uuid]")?.dataset.uuid.split('.').pop();
+			//const effect = effects.await fromUuid(button.closest("[data-uuid]")?.dataset.uuid);
+			//Get effect from embedded data, in case the source has been expended/deleted
+			const effect = item.effects.get(effectId);
 			const targets = game.settings.get("dnd4e", "applyEffectsToSelection") ? canvas.tokens.controlled : game.user.targets;
 			Helper.applyEffectsToTokens([effect], targets, effect.flags.dnd4e.effectData.powerEffectTypes, actor);
 		} 
