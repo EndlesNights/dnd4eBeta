@@ -940,7 +940,7 @@ export class Actor4e extends Actor {
 		}
 		const secondwindEffect = {
 			name: game.i18n.localize("DND4E.SecondWind"),
-			icon: "icons/magic/life/heart-glowing-red.webp",
+			img: "icons/magic/life/heart-glowing-red.webp",
 			origin: this.uuid,
 			disabled:false,
 			description: game.i18n.localize("DND4E.SecondWindEffect"),
@@ -2041,9 +2041,9 @@ export class Actor4e extends Actor {
 	*/
 	
 	async usePower(item, {configureDialog=true, fastForward=false, variance={}}={}) {
-		//if not a valid type of item to use
 		//console.debug(variance);
 		
+		//if not a valid type of item to use		
 		if ( item.type !=="power" ) throw new Error("Wrong Item type");
 		const itemData = item.system;
 		//configure Powers data
@@ -2398,12 +2398,12 @@ export class Actor4e extends Actor {
 		return this.createEmbeddedDocuments("ActiveEffect", [{
 			name: effectData.name,
 			description: effectData.description,
-			icon:effectData.icon,
+			img:effectData.img,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
 			statuses: Array.from(effectData.statuses),
 			// duration: effectData.duration, //Not too sure why this fails, but it does
-			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
+			duration: {rounds: effectData.rounds, turns: effectData.turns},
 			tint: effectData.tint,
 			flags: effectData.flags,
 			changes: effectData.changes
@@ -2414,11 +2414,11 @@ export class Actor4e extends Actor {
 		const data = {
 			name: effectData.name,
 			description: effectData.description,
-			icon:effectData.icon,
+			img:effectData.img,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
 			statuses: Array.from(effectData.statuses),
-			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
+			duration: {rounds: effectData.rounds, rounds: effectData.turns},
 			tint: effectData.tint,
 			flags: effectData.flags,
 			changes: effectData.changes
