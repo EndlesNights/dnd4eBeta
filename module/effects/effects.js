@@ -202,7 +202,7 @@
 					name: isActor ? game.i18n.localize("DND4E.EffectNew") : owner.name,
 					img: isActor ? "icons/svg/aura.svg" : owner.img,
 					origin: owner.uuid,
-					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
+					"flags.dnd4e.effectData.durationType": li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined,
 					disabled: li.dataset.effectType === "inactive"
 				}]);
 			case "edit":
@@ -386,4 +386,62 @@
 		return {'system': systemKeywords,'custom': customKeywords,'string': keywordString};
 	}
 	
+	prepareDerivedData() {
+		if(this.flags?.dnd4e?.effectData?.durationType != undefined){
+			// Re-calc duration data for Actor-owned effects
+			try{
+				const combat = game.combat;		
+			
+				if (combat?.turn != null && combat.turns && combat.turns[combat.turn]) {
+				//if combat has started - combat.turn for the first character = 0 (so cannot use truthy value).  If there are no combatents combat.turns = []
+					this.flags.dnd4e.effectData.startTurnInit =	combat?.turns[combat?.turn]?.initiative || 0;
+					const userInit = game.helper.getInitiativeByToken(this.origin);
+					let targetInit = userInit;
+					if(this.parent.id != this.origin){
+						if(typeof this.parent == "item4e"){
+							targetInit = this.parent.parent.token.combatant.initiative;
+						}else{
+							targetInit = this.parent.token.combatant.initiative;
+						}
+					}
+					const currentInit = game.helper.getCurrentTurnInitiative();
+					
+					if(this.flags.dnd4e.effectData.durationType === "endOfTargetTurn" || this.flags.dnd4e.effectData.durationType === "startOfTargetTurn"){
+						this.flags.dnd4e.effectData.durationRound = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
+						this.flags.dnd4e.effectData.durationTurnInit = targetInit;						
+					}
+					else if(this.flags.dnd4e.effectData.durationType === "endOfUserTurn" || this.flags.dnd4e.effectData.durationType === "startOfUserTurn" ){
+						this.flags.dnd4e.effectData.durationRound = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
+						this.flags.dnd4e.effectData.durationTurnInit = userInit;
+					}
+					else if(this.flags.dnd4e.effectData.durationType === "endOfUserCurrent") {
+						this.flags.dnd4e.effectData.durationRound = combat? combat.round : 0;
+						this.flags.dnd4e.effectData.durationTurnInit = combat? currentInit : 0;
+					}
+					else if(this.flags.dnd4e.effectData.durationType === "custom" && (this.duration.rounds || this.duration.turns)){
+						this.flags.dnd4e.effectData.durationRound = this.duration.startRound + (this.duration?.rounds || 0 );
+						if(!this.duration?.turns){
+							this.flags.dnd4e.effectData.durationTurnInit = this.duration.startTurnInit;
+						}else{
+							let initIndex = this.duration.turns - 1;
+							for (const [i, turn] of combat.turns.entries()) {
+								if (turn?.initiative == this.duration.startTurnInit){
+									initIndex += i;
+								}
+							}
+							initIndex = Math.min(Math.max(initIndex,0),combat.turns.length-1);
+							this.flags.dnd4e.effectData.durationTurnInit = combat.turns[initIndex].initiative;
+						}
+					}else{
+						this.flags.dnd4e.effectData.durationRound = '';
+						this.flags.dnd4e.effectData.durationTurnInit = '';
+					}
+				}
+			}catch(e){
+				console.error(`Effect expiry calculation failed. Please check the input data. ${e}`);
+			}
+		}
+		
+		super.prepareDerivedData();
+	}
 }
