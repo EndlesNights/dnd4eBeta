@@ -2394,7 +2394,6 @@ export class Actor4e extends Actor {
 	}
 
 	async newActiveEffect(effectData){
-		console.log(effectData)
 		return this.createEmbeddedDocuments("ActiveEffect", [{
 			name: effectData.name,
 			description: effectData.description,
@@ -2402,10 +2401,10 @@ export class Actor4e extends Actor {
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
 			statuses: Array.from(effectData.statuses),
-			// duration: effectData.duration, //Not too sure why this fails, but it does
-			duration: {rounds: effectData.rounds, turns: effectData.turns},
+			//"duration": effectData.duration, //Not too sure why this fails, but it does
+			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
 			tint: effectData.tint,
-			flags: effectData.flags,
+			"flags": effectData.flags,
 			changes: effectData.changes
 		}]);
 	}
@@ -2418,7 +2417,7 @@ export class Actor4e extends Actor {
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
 			statuses: Array.from(effectData.statuses),
-			duration: {rounds: effectData.rounds, rounds: effectData.turns},
+			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
 			tint: effectData.tint,
 			flags: effectData.flags,
 			changes: effectData.changes
