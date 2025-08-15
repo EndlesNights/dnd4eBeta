@@ -1312,18 +1312,17 @@ export class Helper {
 						img: e.img,
 						origin: parent.uuid,
 						sourceName: parent.name,
-						// duration: duration, //Not too sure why this fails, but it does
-						// duration: {rounds: duration.rounds, startRound: duration.startRound},
-						rounds: e.duration?.rounds || null,
-						turns: e.duration?.turns || null,
+						//"duration": duration, //Not too sure why this fails, but it does
+						"duration": {startRound: duration?.startRound, rounds: duration.rounds, turns: duration.turns},
+						rounds: duration.rounds,
+						turns: duration.turns,
 						startRound: duration.startRound,
 						statuses: e.statuses,
 						tint: e.tint,
-						flags: flags,
+						"flags": flags,
 						changes: e.changes,
 						changesID: e.uuid
 					};
-					//console.debug(newEffectData);
 					
 					let actor;
 					if(t?.actor){
@@ -1345,7 +1344,7 @@ export class Helper {
 						});
 					}
 					
-					//console.log(`Effect setup fired for ${e.name} on ${actor.name}.`);
+					console.log(`Effect setup fired for ${e.name} on ${actor.name}.`);
 				}
 			}
 		}
