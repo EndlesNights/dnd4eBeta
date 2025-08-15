@@ -387,7 +387,7 @@
 	}
 	
 	prepareDerivedData() {
-		if(this.flags?.dnd4e?.effectData?.durationType != undefined){
+		if(!this.flags?.dnd4e?.effectData?.durationType){
 			// Re-calc duration data for Actor-owned effects
 			try{
 				const combat = game.combat;		
@@ -399,9 +399,9 @@
 					let targetInit = userInit;
 					if(this.parent.id != this.origin){
 						if(typeof this.parent == "item4e"){
-							targetInit = this.parent.parent.token.combatant.initiative;
+							targetInit = this.parent.parent?.token?.combatant?.initiative || targetInit;
 						}else{
-							targetInit = this.parent.token.combatant.initiative;
+							targetInit = this.parent?.token?.combatant?.initiative || targetInit;
 						}
 					}
 					const currentInit = game.helper.getCurrentTurnInitiative();
