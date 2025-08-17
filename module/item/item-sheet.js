@@ -271,7 +271,7 @@ export default class ItemSheet4e extends ItemSheet {
 					icon: this.item.img || "icons/svg/aura.svg",
 					origin: this.item.uuid,
 					"flags.dnd4e.effectData.powerEffectTypes": li.dataset.effectType,
-					"duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
+					"flags.dnd4e.effectData.durationType": li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined,
 					disabled: li.dataset.effectType === "inactive"
 				}]);
 				return;

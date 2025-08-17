@@ -1495,7 +1495,7 @@
 "DND4E.Tier.Tier": "Tier",
 "DND4E.Tier.TierName": "{tier} Tier",
 
-"EFFECT.DurationEndInit": "Effect End Time*",
+"EFFECT.DurationEndInit": "Effect End Time",
 "EFFECT.Priority": "Priority",
 "EFFECT.statusAmmoCount": "Ammo Charges",
 "EFFECT.statusAttackDown": "Attack Down",

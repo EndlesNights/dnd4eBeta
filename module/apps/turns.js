@@ -29,31 +29,32 @@ export class Turns{
 					continue;
 				}
 				else if(durationType === "endOfTargetTurn"){
-					if(currentInit <= effectData.durationTurnInit && currentRound >= e.duration.rounds && t.id === game.combat.combatant.id
-						|| (currentRound > e.duration.rounds && t.id === game.combat.combatant.id) ){
+					if(currentInit <= effectData.durationTurnInit && currentRound >= effectData.durationRound && t.id === game.combat.combatant.id
+						|| (currentRound > effectData.durationRound && t.id === game.combat.combatant.id) ){
 							toDelete.push(e.id);
 					}
 				}
 				else if(durationType === "endOfUserTurn" || durationType === "endOfUserCurrent" ){
-					if(currentInit <= effectData.durationTurnInit && currentRound >= e.duration.rounds){
+					if(currentInit <= effectData.durationTurnInit && currentRound >= effectData.durationRound){
 							toDelete.push(e.id);
 					}
 				}
 				else if(durationType === "startOfTargetTurn" || durationType === "startOfUserTurn"){
-					if((nextInit <= effectData.durationTurnInit && currentRound == e.duration.rounds || currentRound > e.duration.rounds)
-					||  (nextTurn <= currentTurn && nextInit <= effectData.durationTurnInit && currentRound+1 == e.duration.rounds)){
+					if((nextInit <= effectData.durationTurnInit && currentRound == effectData.durationRound || currentRound > effectData.durationRound)
+					||  (nextTurn <= currentTurn && nextInit <= effectData.durationTurnInit && currentRound+1 == effectData.durationRound)){
 							toDelete.push(e.id);
 					}
 				}
-				// else if(durationType === "endOfUserCurrent"){
-				// 	if(currentInit < effectData.durationTurnInit && currentRound >= e.duration.rounds){
-				// 		toDelete.push(e.id);
-				// 	}
-				// }
+				
+				if((!durationType || durationType === "custom") && (effectData?.durationRound && effectData?.durationRound)){
+					if(currentInit <= effectData.durationTurnInit && currentRound >= effectData.durationRound){
+							toDelete.push(e.id);
+					}
+				}
 	
 				if(currentTurn === game.combat.combatants.size){
 					if(durationType === "endOfUserTurn"){
-						if(effectData.durationTurnInit < currentInit && e.duration.rounds <= currentRound){
+						if(effectData.durationTurnInit < currentInit && effectData.durationRound <= currentRound){
 							toDelete.push(e.id);
 						}
 					}

@@ -1,6 +1,6 @@
 export class Helper {
 
-	static executeMacro(item) {
+	static async executeMacro(item) {
 		const macro = new Macro ({
 			name : item.name,
 			type : item.system.macro.type,
@@ -1274,6 +1274,7 @@ export class Helper {
 					const flags = e.flags;
 					duration.combat = combat?.id || "None Combat";
 					duration.startRound = combat?.round || 0;
+					/*Removing the initial timing calc after 0.6.11 since it's now redundant with the effect's derived data routine
 					flags.dnd4e.effectData.startTurnInit =	combat?.turns[combat?.turn]?.initiative || 0;
 
 					const userTokenId = this.getTokenIdForLinkedActor(parent);
@@ -1282,34 +1283,47 @@ export class Helper {
 					const currentInit = this.getCurrentTurnInitiative();
 
 					if(flags.dnd4e.effectData.durationType === "endOfTargetTurn" || flags.dnd4e.effectData.durationType === "startOfTargetTurn"){
-						duration.rounds = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
+						flags.dnd4e.effectData.durationRound = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
 						flags.dnd4e.effectData.durationTurnInit = t ? targetInit : userInit;						
 					}
 					else if(flags.dnd4e.effectData.durationType === "endOfUserTurn" || flags.dnd4e.effectData.durationType === "startOfUserTurn" ){
-						duration.rounds = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
+						flags.dnd4e.effectData.durationRound = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
 						flags.dnd4e.effectData.durationTurnInit = userInit;
 					}
 					else if(flags.dnd4e.effectData.durationType === "endOfUserCurrent") {
-						duration.rounds = combat? combat.round : 0;
+						flags.dnd4e.effectData.durationRound = combat? combat.round : 0;
 						flags.dnd4e.effectData.durationTurnInit = combat? currentInit : 0;
 					}
+					else if(flags.dnd4e.effectData.durationType === "custom" && (duration?.rounds || duration?.turns)){
+						flags.dnd4e.effectData.durationRound = duration.startRound + (duration?.rounds || 0);
+						let initCount = duration?.turns || 0;
+						for (const [i, turn] of combat.turns.entries()) {
+							if (turn.initiative == currentInit){
+								initCount += i;
+							}
+						}
+						initCount = Math.min(initCount,this.duration?.turns,combat.turns.length);
+						flags.dnd4e.effectData.durationTurnInit = combat.turns[initCount].initiative;
+					}*/
 
 					const newEffectData = {
 						name: e.name,
 						description: e.description ? e.description : '',
-						icon: e.icon,
+						img: e.img,
 						origin: parent.uuid,
 						sourceName: parent.name,
-						// duration: duration, //Not too sure why this fails, but it does
-						// duration: {rounds: duration.rounds, startRound: duration.startRound},
+						//"duration": duration, //Not too sure why this fails, but it does
+						"duration": {startRound: duration?.startRound, rounds: duration.rounds, turns: duration.turns},
 						rounds: duration.rounds,
+						turns: duration.turns,
 						startRound: duration.startRound,
 						statuses: e.statuses,
 						tint: e.tint,
-						flags: flags,
+						"flags": flags,
 						changes: e.changes,
 						changesID: e.uuid
 					};
+					
 					let actor;
 					if(t?.actor){
 						actor = t.actor;
@@ -1330,7 +1344,7 @@ export class Helper {
 						});
 					}
 					
-					//console.log(`Effect setup fired for ${e.name} on ${actor.name}.`);
+					console.log(`Effect setup fired for ${e.name} on ${actor.name}.`);
 				}
 			}
 		}

@@ -99,7 +99,7 @@ export class MultiAttackRoll extends Roll {
                 }
             }
 
-            const chatData = r.getChatData(false)
+            const chatData = r.getChatData(false);
 
             this._multirollData.push({
                 formula : chatData.formula,
@@ -115,7 +115,7 @@ export class MultiAttackRoll extends Roll {
 				def: vsDef,
 				mod: atkMod,
 				deftext: CONFIG.DND4E.defensives[vsDef].abbreviation,
-				modtext: CONFIG.DND4E.abilityScores[atkMod].labelShort,
+				modtext: CONFIG.DND4E.abilityScores[atkMod]?.labelShort || '',
 				immune: targDataArray?.targImmArray[i] || false,
             });
         };

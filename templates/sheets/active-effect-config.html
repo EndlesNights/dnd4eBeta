@@ -84,20 +84,17 @@
             <label>{{ localize 'DND4E.DurationType' }}</label>
             <div class="form-fields">
 					<select class="durationType refreshes" name="flags.dnd4e.effectData.durationType">
-						 {{#select effect.flags.dnd4e.effectData.durationType}}
+						 {{#selectOptions config.durationType labelAttr='label' selected=effect.flags.dnd4e.effectData.durationType blank=''}}
 						 <option value=""></option>
-						 {{#each config.durationType as |label type|}}
-						 <option value="{{type}}">{{label}}</option>
-						 {{/each}}
-						 {{/select}}
+						 {{/selectOptions}}
 					</select>
 					{{#if (eq effect.flags.dnd4e.effectData.durationType "saveEnd")}}
 						  <label>{{ localize 'DND4E.AbbreviationDC' }}</label>
-						  <input type="text" class="number saveDC" name="flags.dnd4e.effectData.saveDC" value="{{#if effect.flags.dnd4e.effectData.saveDC}}{{ effect.flags.dnd4e.effectData.saveDC }}{{else}}10{{/if}}" placeholder="10" data-dtype="number" />
+						  <input type="text" class="number saveDC" name="flags.dnd4e.effectData.saveDC" value="{{#if effect.flags.dnd4e.effectData.saveDC}}{{effect.flags.dnd4e.effectData.saveDC}}{{else}}10{{/if}}" placeholder="10" data-dtype="number" />
 					{{/if}}
 				</div>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
             <label>{{ localize 'EFFECT.DurationSecs' }}</label>
             <div class="form-fields">
                 <input type="number" name="duration.seconds" value="{{ data.duration.seconds }}"/>
@@ -109,36 +106,64 @@
                 <input type="number" name="duration.startTime" value="{{ data.duration.startTime }}"/>
             </div>
         </div>
-        <hr/>
-        <div class="form-group">
-            <label>{{ localize 'EFFECT.DurationEndInit' }}</label>
-            <div class="form-fields">
-                <label>{{ localize 'COMBAT.Rounds' }}</label>
-                <input type="number" name="duration.rounds" value="{{ data.duration.rounds }}"/>
-                <label>{{ localize 'COMBAT.Turns' }}</label>
-                <!-- <input type="number" name="duration.turns" value="{{ data.duration.turns }}"/> -->
-                <input type="number" step="0.01" name="flags.dnd4e.effectData.durationTurnInit" value="{{ effect.flags.dnd4e.effectData.durationTurnInit }}"/>
-                
-            </div>
-        </div>
-        <div class="form-group">
+        <hr/>-->
+		
+		{{#if (eq effect.flags.dnd4e.effectData.durationType "custom")}}		
+			<div class="form-group effect-duration">
+				<label>{{ localize 'Duration' }}</label>
+				<div class="form-fields">					
+						<label>{{ localize 'COMBAT.Rounds' }}</label>
+						<input class="refreshes" type="number" name="duration.rounds" value="{{data.duration.rounds}}" step="1" />
+						<label>{{ localize 'COMBAT.Turns' }}</label>
+						<input class="refreshes" type="number" name="duration.turns" value="{{data.duration.turns}}" step="1" />                
+				</div>
+			</div>
+		{{/if}}
+
+		{{#if effect.flags.dnd4e.effectData.durationType}}{{!-- Prevents duration display for passive effects --}}
+		{{#if data.duration.startRound}}{{!-- Prevents duration display for power effects which aren't yet applied --}}
+		
+			<div class="form-group effect-start">
+				<label>{{ localize 'EFFECT.StartTime' }}</label>
+				<div class="form-fields">
+					<label>{{ localize 'COMBAT.Round' }}</label>
+					<label>{{data.duration.startRound}}</label>
+					<label>{{ localize 'DND4E.Initiative' }}</label>
+					<label data-tooltip="{{ localize 'DND4EUI.Tiebreaker' }}: {{effect.flags.dnd4e.effectData.startTurnInit}}">{{numberFormat effect.flags.dnd4e.effectData.startTurnInit decimals=0}}</label>
+				</div>
+			</div>
+			
+			{{#unless (eq effect.flags.dnd4e.effectData.durationType "saveEnd")}}
+			{{#unless (eq effect.flags.dnd4e.effectData.durationType "endOfEncounter")}}
+			{{#unless (eq effect.flags.dnd4e.effectData.durationType "endOfDay")}}
+		
+			<div class="form-group effect-end">
+				<label>{{ localize 'EFFECT.DurationEndInit' }}</label>
+				<div class="form-fields">
+					{{#if effect.flags.dnd4e.effectData.durationRound}}
+					<label>{{ localize 'COMBAT.Round' }}</label>
+					<label>{{effect.flags.dnd4e.effectData.durationRound}}</label>
+					{{/if}}
+					{{#if effect.flags.dnd4e.effectData.durationTurnInit}}
+					<label>{{ localize 'DND4E.Initiative' }}</label>
+					<label data-tooltip="{{ localize 'DND4EUI.Tiebreaker' }}: {{effect.flags.dnd4e.effectData.durationTurnInit}}">{{numberFormat effect.flags.dnd4e.effectData.durationTurnInit decimals=0}}</label>
+					{{/if}}			
+				</div>
+			</div>
+			
+			{{/unless}}
+			{{/unless}}
+			{{/unless}}
+			
+		{{/if}}
+		{{/if}}
+		
+        <!--<div class="form-group">
             <label>{{ localize 'EFFECT.Combat' }}</label>
             <div class="form-fields">
                 <input type="text" name="duration.combat" value="{{ data.duration.combat }}" disabled/>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label>{{ localize 'EFFECT.StartTurns' }}</label>
-            <div class="form-fields">
-                <label>{{ localize 'COMBAT.Round' }}</label>
-                <input type="number" name="duration.startRound" value="{{ data.duration.startRound }}"/>
-                <label>{{ localize 'COMBAT.Turn' }}</label>
-                <!-- <input type="number" name="duration.startTurn" value="{{ data.duration.startTurn }}"/> -->
-                <input type="number" step="0.01" name="flags.dnd4e.effectData.startTurnInit" value="{{ effect.flags.dnd4e.effectData.startTurnInit }}"/>
-
-            </div>
-        </div>
+        </div>-->
     </section>
 
     <!-- Effects Tab -->

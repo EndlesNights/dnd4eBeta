@@ -940,7 +940,7 @@ export class Actor4e extends Actor {
 		}
 		const secondwindEffect = {
 			name: game.i18n.localize("DND4E.SecondWind"),
-			icon: "icons/magic/life/heart-glowing-red.webp",
+			img: "icons/magic/life/heart-glowing-red.webp",
 			origin: this.uuid,
 			disabled:false,
 			description: game.i18n.localize("DND4E.SecondWindEffect"),
@@ -1812,40 +1812,38 @@ export class Actor4e extends Actor {
 			
 		}
 		
-		if(!this.system.attributes.hp.temprest)
-			updateData[`system.attributes.temphp.value`] = "";
+		if(!this.system.attributes.hp.temprest) updateData[`system.attributes.temphp.value`] = "";
 		
-		updateData[`system.details.secondwind`] = false;
 		updateData[`system.actionpoints.encounteruse`] = false;
-		updateData[`system.magicItemUse.encounteruse`] = false;
 		
 		Helper.rechargeItems(this, ["enc", "round"]);
 		Helper.endEffects(this, ["endOfTargetTurn","endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter","endOfUserCurrent"]);
 		
 		if(this.type === "Player Character"){
+			updateData[`system.details.secondwind`] = false;
+			updateData[`system.magicItemUse.encounteruse`] = false;
+			
 			console.log(updateData[`system.attributes.hp.value`])
 			console.log(this.system.attributes.hp.value)
+			
 			ChatMessage.create({
 				user: game.user.id,
 				speaker: {actor: this, alias: this.name},
 				content: options.surge >= 1 ? `${this.name} ${game.i18n.localize('DND4E.ShortRestChat')}, ${game.i18n.localize('DND4E.Spending')} ${options.surge} ${game.i18n.localize('DND4E.SurgesSpendRegain')} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize('DND4E.HPShort')}.`
 					: `${this.name} ${game.i18n.localize('DND4E.ShortRestChat')}`
 				
-			});				
-		}
-
-		for (let r of Object.entries(this.system.resources)) {
-			if(r[1].label && r[1].sr && r[1].max != null) {
-				updateData[`system.resources.${r[0]}.value`] = r[1].max;
+			});
+			
+			if(!game.settings.get("dnd4e", "deathSaveRest")){
+				updateData[`system.details.deathsavefail`] = 0;
 			}
-		}
 
-		if(!game.settings.get("dnd4e", "deathSaveRest")){
-			updateData[`system.details.deathsavefail`] = 0;
+			for (let r of Object.entries(this.system.resources)) {
+				if(r[1].label && r[1].sr && r[1].max != null) {
+					updateData[`system.resources.${r[0]}.value`] = r[1].max;
+				}
+			}		
 		}
-
-		// console.log(updateData[`system.attributes.hp.value`]);
-		// console.log(this.system.attributes.hp.value);
 
 		await this.update(updateData);
 	}
@@ -1867,7 +1865,7 @@ export class Actor4e extends Actor {
 				updateData[`system.attributes.hp.value`] = this.system.attributes.hp.max;
 			}
 
-			if (game.settings.get("dnd4e", "deathSaveRest") <= 1){
+			if(this.type === "Player Character" && game.settings.get("dnd4e", "deathSaveRest") <= 1){
 				updateData[`system.details.deathsavefail`] = 0;
 			}
 		}
@@ -1879,36 +1877,36 @@ export class Actor4e extends Actor {
 			updateData[`system.details.surgeEnv.value`] = 0;
 			updateData[`system.details.surgeEnv.bonus`] = [{}];
 
-			if(game.settings.get("dnd4e", "deathSaveRest") <= 2){
+			if(this.type === "Player Character" && game.settings.get("dnd4e", "deathSaveRest") <= 2){
 				updateData[`system.details.deathsavefail`] = 0;
 			}
 		}
 
 		updateData[`system.attributes.temphp.value`] = "";
 		updateData[`system.actionpoints.value`] = 1;
-		updateData[`system.magicItemUse.milestone`] = 0;
-		updateData[`system.magicItemUse.dailyuse`] = this.system.magicItemUse.perDay;
-		
-		updateData[`system.details.secondwind`] = false;
 		updateData[`system.actionpoints.encounteruse`] = false;
-		updateData[`system.magicItemUse.encounteruse`] = false;
 		
 		Helper.rechargeItems(this, ["enc", "day", "round"]);
 		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter","endOfDay","endOfUserCurrent"]);
 
 
 		if(this.type === "Player Character"){
+			updateData[`system.magicItemUse.milestone`] = 0;
+			updateData[`system.magicItemUse.encounteruse`] = false;
+			updateData[`system.magicItemUse.dailyuse`] = this.system.magicItemUse.perDay;
+			updateData[`system.details.secondwind`] = false;
+			
 			ChatMessage.create({
 				user: game.user.id,
 				speaker: {actor: this, alias: this.system.name},
 				// flavor: restFlavor,
 				content: `${this.name} ${game.i18n.localize('DND4E.LongRestResult')}.`
 			});
-		}
 		
-		for (let r of Object.entries(this.system.resources)) {
-			if((r[1].sr || r[1].lr) && r[1].label && r[1].max != null) {
-				updateData[`system.resources.${r[0]}.value`] = r[1].max;
+			for (let r of Object.entries(this.system.resources)) {
+				if((r[1].sr || r[1].lr) && r[1].label && r[1].max != null) {
+					updateData[`system.resources.${r[0]}.value`] = r[1].max;
+				}
 			}
 		}
 
@@ -2041,9 +2039,9 @@ export class Actor4e extends Actor {
 	*/
 	
 	async usePower(item, {configureDialog=true, fastForward=false, variance={}}={}) {
-		//if not a valid type of item to use
 		//console.debug(variance);
 		
+		//if not a valid type of item to use		
 		if ( item.type !=="power" ) throw new Error("Wrong Item type");
 		const itemData = item.system;
 		//configure Powers data
@@ -2394,18 +2392,17 @@ export class Actor4e extends Actor {
 	}
 
 	async newActiveEffect(effectData){
-		console.log(effectData)
 		return this.createEmbeddedDocuments("ActiveEffect", [{
 			name: effectData.name,
 			description: effectData.description,
-			icon:effectData.icon,
+			img:effectData.img,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
 			statuses: Array.from(effectData.statuses),
-			// duration: effectData.duration, //Not too sure why this fails, but it does
-			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
+			//"duration": effectData.duration, //Not too sure why this fails, but it does
+			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
 			tint: effectData.tint,
-			flags: effectData.flags,
+			"flags": effectData.flags,
 			changes: effectData.changes
 		}]);
 	}
@@ -2414,11 +2411,11 @@ export class Actor4e extends Actor {
 		const data = {
 			name: effectData.name,
 			description: effectData.description,
-			icon:effectData.icon,
+			img:effectData.img,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
 			statuses: Array.from(effectData.statuses),
-			duration: {rounds: effectData.rounds, startRound: effectData.startRound},
+			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
 			tint: effectData.tint,
 			flags: effectData.flags,
 			changes: effectData.changes
