@@ -1,4 +1,12 @@
 # Changelog
+
+## Version 0.6.12
+- Improves item macro behaviour & usability, most importantly allowing macros to alter power properties before the chat card is created. Finally, a way to enable modal power behaviour—as in we can do Augmentable now without needing duplicate powers! :D
+- Improves effect duration config by removing irrelevant fields and ambiguity between user-entered custom duration info and system-provided expiry timing.
+  - Also allows durations to be re-calculated when the duration type is changed.
+- Fixes a bug in the multiroll dialogue which caused an error in attacks not based on a stat (ie NPC-style flat formula rolls)
+- Fixes a bug where short/extended rest routines would fail for NPCs using the newer data model
+
 ## Version 0.6.11
 - Updated res/vuln evaluation to better observe actor variables (fixes #455). (SagaTympana)
 - Fixed a bug where the word "Feature" would repeat in the property summary for features with a certain combination of traits. (Fox)
@@ -1220,4 +1228,5 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
