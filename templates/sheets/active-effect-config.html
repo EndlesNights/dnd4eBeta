@@ -120,7 +120,8 @@
 			</div>
 		{{/if}}
 
-		{{#if effect.flags.dnd4e.effectData.durationType}}
+		{{#if effect.flags.dnd4e.effectData.durationType}}{{!-- Prevents duration display for passive effects --}}
+		{{#if data.duration.startRound}}{{!-- Prevents duration display for power effects which aren't yet applied --}}
 		
 			<div class="form-group effect-start">
 				<label>{{ localize 'EFFECT.StartTime' }}</label>
@@ -153,6 +154,8 @@
 			{{/unless}}
 			{{/unless}}
 			{{/unless}}
+			
+		{{/if}}
 		{{/if}}
 		
         <!--<div class="form-group">
