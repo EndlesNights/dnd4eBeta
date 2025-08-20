@@ -73,6 +73,10 @@
 					{{!-- Only if targets are provided --}}
 						{{#if ../../targetData.hasTarget}}
 							
+                            {{#if (eq b 'bloodied')}}
+                                {{#if (contains 'bloodied' t.status)}}checked="true"{{/if}}
+							{{/if}}
+
 							{{#if (eq b 'comAdv')}}
 								{{#if (contains 'dazed' t.status)}}checked="true"{{/if}}
 								{{#if (contains 'blinded' t.status)}}checked="true"{{/if}}
