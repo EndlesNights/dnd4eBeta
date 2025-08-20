@@ -368,10 +368,10 @@ export class Helper {
 						const keywords = keyParts.slice(2, -1);
 						for (const keyword of keywords) {
 							if (!suitableKeywords.includes(keyword)) {
-								return false;
+								return false
 							}
 						}
-						return true;
+						return true
 					}
 				})
 
