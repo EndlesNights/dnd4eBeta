@@ -363,12 +363,16 @@ export class Helper {
 
 				// filter out to just the relevant effects by keyword
 				const matchingEffects = effectsToProcess.filter((effect) => {
-					for (const keyword of suitableKeywords) {
-						if (effect.key.includes(`${effectType}.${keyword}`)) {
-							return true
+					const keyParts = effect.key.split(".")
+					if (keyParts.length >= 4 && keyParts[1] === effectType){
+						const keywords = keyParts.slice(2, -1);
+						for (const keyword of keywords) {
+							if (!suitableKeywords.includes(keyword)) {
+								return false
+							}
 						}
+						return true
 					}
-					return false
 				})
 
 				if (debug) {
@@ -379,8 +383,8 @@ export class Helper {
 				const newParts = {}
 				for (const effect of matchingEffects) {
 					const keyParts = effect.key.split(".")
-					if (keyParts.length === 4) {
-						const bonusType = keyParts[3]
+					if (keyParts.length >= 4) {
+						const bonusType = keyParts[keyParts.length - 1]
 						const effectValueString = this.commonReplace(effect.value, actorData, powerInnerData, weaponInnerData)
 						const effectDice = await this.rollWithErrorHandling(effectValueString, {context : effect.key})
 						const effectValue = effectDice.total
@@ -422,8 +426,8 @@ export class Helper {
 						}
 					}
 					else {
-						ui.notifications.warn(`Tried to process a bonus effect that had too few/many .'s in it: ${effect.key}: ${effect.value}`)
-						console.log(`Tried to process a bonus effect that had too few/many .'s in it: ${effect.key}: ${effect.value}`)
+						ui.notifications.warn(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
+						console.log(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
 					}
 				}
 				
