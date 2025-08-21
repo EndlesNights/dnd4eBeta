@@ -626,6 +626,15 @@
 					"immunities" : []
 				},
 				"commonAttackBonuses": {
+					"bloodied": {
+						"value": 0,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
 					"comAdv": {
 						"value": 2,
 						"feat": 0,

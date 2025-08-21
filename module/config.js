@@ -584,6 +584,7 @@ preLocalize("consumableTypes", { keys: ["label"] });
 
 /* -------------------------------------------- */
 DND4E.commonAttackBonuses = {
+	bloodied: {value: 0, label:"DND4E.CommonAttackBloodied"},
 	comAdv: {value: 2, label:"DND4E.CommonAttackComAdv"},
 	charge: {value: 1, label:"DND4E.CommonAttackCharge"},
 	conceal: {value: -2, label:"DND4E.CommonAttackConceal"},

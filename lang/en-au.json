@@ -209,6 +209,7 @@
 "DND4E.CommonAttackBonusesConfig": "Bonus to attacks—{condition}",
 "DND4E.CommonAttackBonusesConfigTip": "Configure the bonuses and penalties this creature receives for attacking under specific conditions.",
 "DND4E.CommonAttackBasic": "Basic Attack",
+"DND4E.CommonAttackBloodied": "vs Bloodied",
 "DND4E.CommonAttackComAdv": "Combat Advantage",
 "DND4E.CommonAttackCharge": "Charge",
 "DND4E.CommonAttackConceal": "vs Concealment",

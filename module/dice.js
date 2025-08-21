@@ -238,6 +238,8 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				//Target conditions
 				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
 				
+				if(targetStatus.includes('bloodied')) targetBonuses.push('@bloodied');
+
 				if(targetStatus.includes('concealed')) targetBonuses.push('@conceal');		
 				
 				if(targetStatus.includes('concealedTotal')) targetBonuses.push('@concealTotal');
