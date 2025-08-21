@@ -13,7 +13,7 @@ export default class ConBonConfig extends DocumentSheet4e {
 		});
 	}
 	get title() {
-		return `${this.object.name}—${game.i18n.localize( 'DND4E.ConditionalAttackBonuses')}`;
+		return `${this.object.name}—${game.i18n.localize( 'DND4E.CommonAttackBonuses')}`;
 	}
 
 	/** @override */
