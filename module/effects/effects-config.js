@@ -5,7 +5,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	/** @override */
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ["sheet", "active-effect-sheet"],
+			classes: ["sheet", "active-effect-sheet", "dnd4e"],
 			template: "systems/dnd4e/templates/sheets/active-effect-config.html",
 			width: 580,
 			height: 514,

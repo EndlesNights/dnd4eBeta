@@ -143,15 +143,19 @@
 
 		// Set initial duration data for Actor-owned effects
 		if ( this.parent instanceof Actor ) {
-			// const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
-			//updates.duration = {startTime: game.time.worldTime};
+			//const updates = {duration: {startTime: game.time.worldTime}, transfer: false, equippedRec: false};
+			updates.duration = {startTime: game.time.worldTime};
 			updates.transfer = false;
 			updates.equippedRec = false;
 
-			const combat = game.combat;
+			const duration4e = await this._durationFlags4e({...data,...updates});
+			
+			/*const combat = game.combat;
 			if (combat?.turn != null && combat.turns && combat.turns[combat.turn]) {//if combat has started - combat.turn for the first character = 0 (so cannot use truthy value).  If there are no combatents combat.turns = []
 				updates.flags = {dnd4e: { effectData: { startTurnInit: combat.turns[combat.turn].initiative ?? 0}}};
-			}
+			}*/
+			
+			updates.flags = {dnd4e: {effectData: duration4e.flags.dnd4e.effectData}};
 		}
 
 		if(data.statuses?.length && data.description){
@@ -252,7 +256,6 @@
 			const current = this._getCombatTime(c.round, c.turn);
 			const duration = this._getCombatTime(d.rounds, d.turns);
 			const start = this._getCombatTime(d.startRound, d.startTurn, c.nTurns);
-
 
 			// Some number of remaining rounds and turns (possibly zero)
 			const remaining = Math.max(((start + duration) - current).toNearest(0.01), 0);
@@ -385,74 +388,83 @@
 		return {'system': systemKeywords,'custom': customKeywords,'string': keywordString};
 	}
 	
-	prepareDerivedData() {
-		console.debug(this);
-		if(this.flags?.dnd4e?.effectData?.durationType){
+	async _preUpdate(changed,options,user){
+		if(this.modifiesActor && (changed?.flags?.dnd4e?.effectData?.durationType != this?.flags?.dnd4e?.effectData?.durationType || changed?.duration?.turns != this?.duration?.turns || changed?.duration?.rounds != this?.duration?.rounds)){
+			changed = this._durationFlags4e(changed);
+		}
+		return super._preUpdate(changed,options,user);
+	}
+	
+	async _durationFlags4e(updates = {}) {		
+		if(updates.flags?.dnd4e?.effectData?.durationType){
 			// Re-calc duration data for Actor-owned effects
 			try{
-				if(this.duration.startRound){ // Seems to be the most sensible way to check whether the effect is applied
-					const combat = game.combat;		
-				
-					if (combat?.turn != null && combat.turns && combat.turns[combat.turn]) {
-					//if combat has started - combat.turn for the first character = 0 (so cannot use truthy value).  If there are no combatents combat.turns = []
-						if(!this.flags.dnd4e.effectData?.startTurnInit) this.flags.dnd4e.effectData.startTurnInit = combat?.turns[combat?.turn]?.initiative || -1;
-						let userInit;
-						let targetInit;
+				const combat = game.combat;		
+			
+				if (combat?.turn != null && combat.turns && combat.turns[combat.turn]) {
+				//if combat has started - combat.turn for the first character = 0 (so cannot use truthy value).  If there are no combatents combat.turns = []
+					if(!updates.flags.dnd4e.effectData?.startTurnInit) updates.flags.dnd4e.effectData.startTurnInit = combat?.turns[combat?.turn]?.initiative || -1;
+					let userInit;
+					let targetInit;
+					
+					if(this?.origin){
+						if(this.origin.includes('Token')){
+							const originId = this.origin.replace(/.*Token\.([^\.]*)\..*/,'$1');
+							userInit = game.helper.getInitiativeByToken(originId);
+						}else if(this.origin.includes('Actor')){
+							const originId = this.origin.replace(/.*Actor\.([^\.]*)*/,'$1');
+							const combatant = combat.getCombatantsByActor(originId)[0];
+							if(combatant) userInit = combatant.initiative;
+						}
 						
-						if(this?.origin){
-							const originTokenId = this.origin.replace(/.*Token\.([^\.]*)\..*/,'$1');
-							if(originTokenId) userInit = game.helper.getInitiativeByToken(originTokenId);
-							
-							if(this?.parent.id != this?.origin){
-								let targetTokenId;
-								if(this?.parent?.parent instanceof Actor){ //For effects from chat cards, the parent is the item, so we want the grandparent
-									targetTokenId = game.helper.getTokenIdForLinkedActor(this.parent.parent);
-								}else if(this?.parent instanceof Actor){ //Otherwise the parent should be the owner
-									targetTokenId = game.helper.getTokenIdForLinkedActor(this.parent);
-								}
-								if(targetTokenId) targetInit = game.helper.getInitiativeByToken(targetTokenId);
+						if(this?.parent.id != this?.origin){
+							let targetTokenId;
+							if(this?.parent?.parent instanceof Actor){ //For effects from chat cards, the parent is the item, so we want the grandparent
+								targetTokenId = game.helper.getTokenIdForLinkedActor(this.parent.parent);
+							}else if(this?.parent instanceof Actor){ //Otherwise the parent should be the owner
+								targetTokenId = game.helper.getTokenIdForLinkedActor(this.parent);
 							}
+							if(targetTokenId) targetInit = game.helper.getInitiativeByToken(targetTokenId);
 						}
-						
-						const currentInit = game.helper.getCurrentTurnInitiative();
-						
-						if((this.flags.dnd4e.effectData.durationType === "endOfTargetTurn" || this.flags.dnd4e.effectData.durationType === "startOfTargetTurn") && targetInit){
-							this.flags.dnd4e.effectData.durationRound = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
-							this.flags.dnd4e.effectData.durationTurnInit = targetInit;						
-						}
-						else if((this.flags.dnd4e.effectData.durationType === "endOfUserTurn" || this.flags.dnd4e.effectData.durationType === "startOfUserTurn" ) && userInit){
-							this.flags.dnd4e.effectData.durationRound = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
-							this.flags.dnd4e.effectData.durationTurnInit = userInit;
-						}
-						else if(this.flags.dnd4e.effectData.durationType === "endOfUserCurrent" && userInit) {
-							this.flags.dnd4e.effectData.durationRound = combat? combat.round : 0;
-							this.flags.dnd4e.effectData.durationTurnInit = combat? currentInit : 0;
-						}
-						else if(this.flags.dnd4e.effectData.durationType === "custom" && (this.duration.rounds || this.duration.turns)){
-							this.flags.dnd4e.effectData.durationRound = this.duration.startRound + (this.duration.rounds || 0 );
-							if(!this.duration.turns){
-								this.flags.dnd4e.effectData.durationTurnInit = this.flags.dnd4e.effectData.startTurnInit;
-							}else{
-								let initIndex = this.duration.turns - 1;
-								for (const [i, turn] of combat.turns.entries()) {
-									if (turn?.initiative == this.flags.dnd4e.effectData.startTurnInit) initIndex += i;
-								}
-								initIndex = Math.min(Math.max(initIndex,0),combat.turns.length-1);
-								this.flags.dnd4e.effectData.durationTurnInit = combat.turns[initIndex].initiative;
-							}
+					}
+					
+					const currentInit = game.helper.getCurrentTurnInitiative();
+					
+					if((updates.flags.dnd4e.effectData.durationType === "endOfTargetTurn" || updates.flags.dnd4e.effectData.durationType === "startOfTargetTurn") && targetInit){
+						updates.flags.dnd4e.effectData.durationRound = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
+						updates.flags.dnd4e.effectData.durationTurnInit = targetInit;						
+					}
+					else if((updates.flags.dnd4e.effectData.durationType === "endOfUserTurn" || updates.flags.dnd4e.effectData.durationType === "startOfUserTurn" ) && userInit){
+						updates.flags.dnd4e.effectData.durationRound = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
+						updates.flags.dnd4e.effectData.durationTurnInit = userInit;
+					}
+					else if(updates.flags.dnd4e.effectData.durationType === "endOfUserCurrent" && userInit) {
+						updates.flags.dnd4e.effectData.durationRound = combat? combat.round : 0;
+						updates.flags.dnd4e.effectData.durationTurnInit = combat? currentInit : 0;
+					}
+					else if(updates.flags.dnd4e.effectData.durationType === "custom" && (updates.duration.rounds || updates.duration.turns)){
+						updates.flags.dnd4e.effectData.durationRound = (this.duration.startRound || 1) + (updates.duration.rounds || 0 );
+						if(!updates.duration.turns){
+							updates.flags.dnd4e.effectData.durationTurnInit = updates.flags.dnd4e.effectData.startTurnInit;
 						}else{
-							this.flags.dnd4e.effectData.durationRound = '';
-							this.flags.dnd4e.effectData.durationTurnInit = '';
+							let initIndex = updates.duration.turns - 1;
+							for (const [i, turn] of combat.turns.entries()) {
+								if (turn?.initiative == updates.flags.dnd4e.effectData.startTurnInit) initIndex += i;
+							}
+							initIndex = Math.min(Math.max(initIndex,0),combat.turns.length-1);
+							updates.flags.dnd4e.effectData.durationTurnInit = combat.turns[initIndex].initiative;
 						}
+					}else{
+						updates.flags.dnd4e.effectData.durationRound = '';
+						updates.flags.dnd4e.effectData.durationTurnInit = '';
 					}
 				}
 			}catch(e){
 				console.error(`Effect expiry calculation failed. Please check the input data. ${e}`);
-				this.flags.dnd4e.effectData.durationRound = '';
-				this.flags.dnd4e.effectData.durationTurnInit = '';
+				updates.flags.dnd4e.effectData.durationRound = '';
+				updates.flags.dnd4e.effectData.durationTurnInit = '';
 			}
 		}
-		
-		super.prepareDerivedData();
+		return updates;
 	}
 }
