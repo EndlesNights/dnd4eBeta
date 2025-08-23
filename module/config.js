@@ -592,6 +592,7 @@ DND4E.commonAttackBonuses = {
 	cover: {value: -2, label:"DND4E.CommonAttackCover"},
 	coverSup: {value: -5, label:"DND4E.CommonAttackCoverSup"},
 	longRange: {value: -2, label:"DND4E.CommonAttackLongRange"},
+	marked: {value: -2, label:"DND4E.CommonAttackMark"},
 	prone: {value: -2, label:"DND4E.CommonAttackProne"},
 	restrained: {value: -2, label:"DND4E.CommonAttackRestrained"},
 	running: {value: -5, label:"DND4E.CommonAttackRunning"},
