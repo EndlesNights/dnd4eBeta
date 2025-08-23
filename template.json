@@ -698,6 +698,15 @@
 						"untyped": 0,
 						"bonus": [{}]
 					},
+					"marked": {
+						"value": -2,
+						"feat": 0,
+						"item": 0,
+						"power": 0,
+						"race": 0,
+						"untyped": 0,
+						"bonus": [{}]
+					},
 					"prone": {
 						"value": -2,
 						"feat": 0,
@@ -734,7 +743,8 @@
 						"untyped": 0,
 						"bonus": [{}]
 					}
-				}
+				},
+				"marker": null
 			},
 			"creature":{
 				"biography": "",
@@ -1355,7 +1365,10 @@
 			"requirements": "",
 			"featureSource": "",
 			"featureGroup": "",
-			"auraSize": ""
+			"auraSize": "",
+			"effectType": {},
+			"damageType": {},
+			"keywordsCustom": ""
 		}
 	}
 }
