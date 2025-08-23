@@ -514,6 +514,9 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@enhArmour", actorInnerData.defences.ac.enhance || 0);
 				newFormula = newFormula.replaceAll("@enhNAD", Math.min(actorInnerData.defences.fort.enhance || 0, actorInnerData.defences.ref.enhance || 0, actorInnerData.defences.wil.enhance || 0));
 
+				newFormula = newFormula.replaceAll("@ID", actorData.id || 0);
+				newFormula = newFormula.replaceAll("@UUID", actorData.uuid || 0);
+				
 				//targets @scale plus some #
 				newFormula = newFormula.replace(/@scale(\d*)/g,	(match, number) => {return this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, number-1)});
 
@@ -1279,6 +1282,7 @@ export class Helper {
 					duration.combat = combat?.id || "None Combat";
 					duration.startRound = combat?.round || 0;
 					/*Removing the initial timing calc after 0.6.11 since it's now redundant with the effect's derived data routine
+
 					flags.dnd4e.effectData.startTurnInit =	combat?.turns[combat?.turn]?.initiative || 0;
 
 					const userTokenId = this.getTokenIdForLinkedActor(parent);
