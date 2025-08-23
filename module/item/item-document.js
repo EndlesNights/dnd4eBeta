@@ -666,7 +666,6 @@ export default class Item4e extends Item {
 
 		// Damage & Effect Type Keywords
 		try{
-			console.debug(system.hasOwnProperty("damageType"));
 			// DamageTypes
 			if(system.hasOwnProperty("damageType")){
 				if(this.getDamageType()){
@@ -677,7 +676,6 @@ export default class Item4e extends Item {
 						}
 					}
 					labels.damageTypes = damType.join(", ");
-					console.debug(labels.damageTypes);
 				}
 			}
 			//Effect Types
@@ -790,7 +788,7 @@ export default class Item4e extends Item {
 
 		// Assign labels
 		this.labels = labels;
-		console.debug(this.labels);
+		//console.debug(this.labels);
 
 		if(this.isOwned){
 			system.preparedMaxUses = this.preparedMaxUses;
