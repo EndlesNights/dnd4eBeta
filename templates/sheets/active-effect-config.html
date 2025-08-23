@@ -95,11 +95,6 @@
 				</div>
         </div>
         <!--<div class="form-group">
-            <label>{{ localize 'EFFECT.DurationSecs' }}</label>
-            <div class="form-fields">
-                <input type="number" name="duration.seconds" value="{{ data.duration.seconds }}"/>
-            </div>
-        </div>
         <div class="form-group">
             <label>{{ localize 'EFFECT.StartTime' }}</label>
             <div class="form-fields">
@@ -108,14 +103,16 @@
         </div>
         <hr/>-->
 		
-		{{#if (eq effect.flags.dnd4e.effectData.durationType "custom")}}		
+		{{#if (eq effect.flags.dnd4e.effectData.durationType "custom")}}
 			<div class="form-group effect-duration">
 				<label>{{ localize 'Duration' }}</label>
 				<div class="form-fields">					
 						<label>{{ localize 'COMBAT.Rounds' }}</label>
 						<input class="refreshes" type="number" name="duration.rounds" value="{{data.duration.rounds}}" step="1" />
 						<label>{{ localize 'COMBAT.Turns' }}</label>
-						<input class="refreshes" type="number" name="duration.turns" value="{{data.duration.turns}}" step="1" />                
+						<input class="refreshes" type="number" name="duration.turns" value="{{data.duration.turns}}" step="1" />
+						<label>{{ localize 'EFFECT.DurationSeconds' }} <a data-tooltip="{{localize 'EFFECT.DurationSecsTip'}}">*</a></label>
+						<input type="number" name="duration.seconds" value="{{data.duration.seconds}}" />             
 				</div>
 			</div>
 		{{/if}}
