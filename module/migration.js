@@ -158,6 +158,7 @@ export const migrateActorData = function(actor, migrationData) {
 		_migrateActorGlobalMods(actor, updateData);
 		_migrateActorSwim(actor, updateData);
 		_migrateHazardSpeed(actor, updateData);
+		_migrateActorMarker(actor, updateData);
 	}
 
 	return updateData;
@@ -1008,6 +1009,40 @@ function _migrateHazardSpeed(actorData, updateData){
 	
 	if(movement.none === undefined) updateData['system.movement.none'] = true;
 	
-	console.debug(updateData);
 	return updateData;
+}
+
+/**
+* Migrate actors missing marker key (v0.6.13)
+* @param {object} actorData   Actor data being migrated.
+* @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
+* @returns {object}           Modified version of update data.
+* @private
+*/
+function _migrateActorMarker(actorData, updateData){
+	
+	if(!['Player Character','NPC','Hazard'].includes(actorData?.type)) return;
+	const system = actorData.system;
+	
+	if(system?.marker == undefined) updateData['system.marker'] = null;
+	return updateData;
+}
+
+/**
+ * Add keywords & customKeywords properties to features
+ * @param {object} itemData   Item data being migrated.
+ * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+function _migrateFeatureKeywords(itemData, updateData){
+	const sourceType = itemData.type;
+	
+	if(sourceType == 'feature'){
+		//Add new properties from 0.6.13
+		if(system?.effectType == undefined) updateData['system.effectType'] = {};
+		if(system?.damageType == undefined) updateData['system.damageType'] = {};
+		if(system?.customKeywords == undefined) updateData['system.customKeywords'] = "";
+		return updateData;
+	}	
 }
