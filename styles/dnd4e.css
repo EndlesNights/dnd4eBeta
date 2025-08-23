@@ -138,8 +138,8 @@ textarea{
 	background:#cac9be;
 	border:var(--border-faint);
 }
-.dnd4e.sheet input,
-.dnd4e.sheet.item .content .currency input[type="text"] {
+.dnd4e.sheet.actor input,
+.dnd4e.sheet.item .content .currency input[type="text"]{
 	background:none;
 	border-width:0;
 	border-radius:0;
@@ -740,6 +740,9 @@ textarea{
 	flex-direction:row;
 	flex-wrap:wrap;
 	justify-content:flex-start;
+}
+.dnd4e .form-group .form-fields > label{
+	white-space:nowrap;
 }
 .dnd4e.sheet.item .details .form-group span.checkbox{
 	text-align:right;
@@ -2316,7 +2319,7 @@ font-size:12px;
 	flex:0 0 48px;
 	margin-right:10px;
 }
-.dnd4e.sheet.item .weapon-properties label.checkbox{
+.dnd4e.sheet.item :is(.weapon-properties,.feature-keywords) label.checkbox{
 	flex:0 0 118px;
 }
 .dnd4e.sheet.item ul.auto-keywords{
