@@ -226,6 +226,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		if(userStatus.has('squeezing')) userStatBonuses.push('@squeez');
 		if(userStatus.has('comAdv')) userStatBonuses.push('@comAdv');
 		if(options?.variance?.isCharge) userStatBonuses.push('@charge');
+		if(userStatus.includes('mark_1')) userStatBonuses.push('@marked');
 				
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
 
