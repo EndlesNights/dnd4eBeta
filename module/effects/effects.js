@@ -18,7 +18,7 @@
 					foundry.utils.setProperty(data, "flags.dnd4e.keywords", new Array);	//Empty array for storing Keywords
 					if(context.parent.system?.damageType){
 						for (const [key, value] of Object.entries(context.parent.system?.damageType)){
-							if(value) data.flags.dnd4e.keywords.push(key);
+							if(value && !['damage','physical'].includes(value)) data.flags.dnd4e.keywords.push(key);
 						}
 					}
 					if(context.parent.system?.effectType){
