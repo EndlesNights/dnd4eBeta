@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 0.6.13
+- Allows compound conditions in bonus keys (SagaTympana)
+- Minor localisation fixes (SagaTympana)
+- Adds "vs Bloodied" to common attack bonuses (SagaTympana)
+- Fixes for effect duration refresh bug (fixes #466) and resinstate seconds field for module use (fixes #461) (FoxLee)
+- Changed level sorting for powers to return proper numeric order (fixes #428) (FoxLee)
+- Adds `marker` property to actor and "Ignoring Mark" to common attack modifiers, with a view to setting up more complex mark automation at a later stage. For now, you can override this field in effects to set the marking character, and override the "ignoring mark" common attack bonus for effects like Mark of Warding. (FoxLee)
+- Makes keywords available for features (see #440) (FoxLee)
+
 ## Version 0.6.12
 - Improves item macro behaviour & usability, most importantly allowing macros to alter power properties before the chat card is created. Finally, a way to enable modal power behaviour—as in we can do Augmentable now without needing duplicate powers! :D
 - Improves effect duration config by removing irrelevant fields and ambiguity between user-entered custom duration info and system-provided expiry timing.
@@ -1228,5 +1237,6 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
