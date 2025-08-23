@@ -36,6 +36,7 @@
 	<nav class="sheet-navigation tabs" data-group="primary">
 		<a class="item active" data-tab="description">{{ localize "DND4E.Description" }}</a>
 		<a class="item" data-tab="details">{{ localize "DND4E.Details" }}</a>
+		<a class="item" data-tab="keywords">{{ localize "DND4E.Keywords" }}</a>
 		<a class="item" data-tab="effects">{{ localize "DND4E.Effects" }}</a>
 		<!-- <a class="item" data-tab="itemGranter">{{ localize "DND4E.ItemGranter" }}</a> -->
 		<a class="item" data-tab="macros">{{ localize "DND4E.Macros" }}</a>
@@ -77,6 +78,40 @@
 				<input type="text" name="system.auraSize" value="{{system.auraSize}}" placeholder="{{ localize 'DND4E.Feature.AuraSizeTip' }}"/>
 			</div>
 			
+		</div>
+		
+		{{!-- Keywords Tab --}}
+		<div class="tab keywords flexcol" data-group="primary" data-tab="keywords">
+		
+			<div class="form-group stacked feature-keywords">
+				<label>{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Damage')}}</label>
+				{{#each config.damageTypes as |name type|}}
+					{{#unless (eq type "ongoing")}}
+					{{#unless (eq type "all")}}
+					{{#unless (eq type "physical")}}
+					<label class="checkbox">
+						<input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
+					</label>
+					{{/unless}}
+					{{/unless}}
+					{{/unless}}
+				{{/each}}
+			</div>
+			
+			<div class="form-group stacked feature-keywords">
+				<label>{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Effect')}}</label>
+				{{#each config.effectTypes as |name type|}}
+				<label class="checkbox">
+					<input type="checkbox" name="system.effectType.{{type}}" {{checked (lookup ../system.effectType type)}}/> {{ name }}
+				</label>
+				{{/each}}
+			</div>
+			
+			<div class="form-group long">
+				<label>{{ localize "DND4E.Custom" }}</label>
+				<input type="text" name="system.keywordsCustom" value="{{system.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}" />
+			</div>
+		
 		</div>
 
 		{{!-- Effects Tab --}}
