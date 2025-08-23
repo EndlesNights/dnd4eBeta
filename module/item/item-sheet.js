@@ -628,11 +628,9 @@ export default class ItemSheet4e extends ItemSheet {
 		}
 
 		else if ( item.type === "feature" ) {
-			if(labels.aura) props.push(`<li class="aura-size">${labels.aura}</li>`);
-			if(labels.tier) props.push(`<li class="tier">${labels.tier}</li>`);
-			if(labels.source) props.push(`<li class="source">${labels.source}</li>`);
-			if(labels.group) props.push(`<li class="feature-set">${labels.group}</li>`);
-			if(labels.reqs) props.push(`<li class="reqs">${labels.reqs}</li>`);
+			for (const [key, value] of Object.entries(labels)) {
+				props.push(`<li class="${key}">${value}</li>`)
+			}
 		}
 
 		else if ( item.type === "ritual" ) {

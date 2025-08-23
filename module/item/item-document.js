@@ -410,7 +410,7 @@ export default class Item4e extends Item {
 		if ( itemData.type === "feature" ) {
 			try{
 				if( system?.auraSize != "" && system?.auraSize >= 0 ){
-					labels.aura = `${game.i18n.localize('DND4E.Aura')} ${system.auraSize}`;
+					labels.auraSize = `${game.i18n.localize('DND4E.Aura')} ${system.auraSize}`;
 				}
 				if(system.featureType === 'feat'){
 					let tierName;
@@ -424,13 +424,13 @@ export default class Item4e extends Item {
 					labels.tier = game.i18n.format('DND4E.Tier.TierName', {tier: tierName});
 				}
 				if(system?.featureSource){
-					labels.source = `${system.featureSource} ${game.i18n.localize('DND4E.Feature.Feature')}`;
+					labels.featureSource = `${system.featureSource} ${game.i18n.localize('DND4E.Feature.Feature')}`;
 				}
 				if(system?.featureGroup){
-					labels.group = `${system.featureGroup}`;
+					labels.featureSet = `${system.featureGroup}`;
 				};
 				if(system?.requirements){
-					labels.reqs = `<strong>${game.i18n.localize('DND4E.Requires')}:</strong> ${system.requirements}`;
+					labels.PreReqs = `<strong>${game.i18n.localize('DND4E.Requires')}:</strong> ${system.requirements}`;
 				}			
 			}catch(e){
 				console.error(`Item labels failed for feature: ${itemData.name}. Item data has been dumped to debug. ${e}`);
@@ -558,122 +558,6 @@ export default class Item4e extends Item {
 			}
 		}
 		
-		// Range, damage, keywords
-		try{
-			// DamageTypes
-			if(system.hasOwnProperty("damageType")){
-				if(this.getDamageType()){
-					let damType = [];
-					for ( let [damage, d] of Object.entries(this.getDamageType())) {
-						if(d){
-							damType.push(`${game.i18n.localize(DND4E.damageTypes[damage])}`);
-						}
-					}
-					labels.damageTypes = damType.join(", ");
-				}
-			}
-
-			//Other Keywords
-			if(system.hasOwnProperty("effectType")){
-				for (const [key, value] of Object.entries(system.effectType)) {
-					if(value){
-						const labelKey = `kw${key}`;
-						labels[labelKey] = `${game.i18n.localize(C.effectTypes[key])}`;
-					}
-				}
-			}
-			if(system?.keywordsCustom){
-				const customKeys = system.keywordsCustom.split(';');
-				customKeys.forEach((item) => {
-					const labelKey = `kw${item}`;
-					labels[labelKey] = item;
-				});
-			}
-			
-			//Action
-			if(system?.actionType){
-				labels.action = C.abilityActivationTypes[system.actionType].label;
-			}
-			
-			//Range
-			if(['power','consumable'].includes(itemData.type) && system?.rangeType){
-				let rangeString = '';
-				if (system?.rangeType === 'weapon'){
-					const weaponUse = (itemData.actor ? Helper.getWeaponUse(system, itemData.actor) : null);
-					if (weaponUse != null){
-						if(weaponUse.isRanged){
-							rangeString = `${game.i18n.localize('DND4E.Ranged')} ${weaponUse.system.range.value}/${weaponUse.system.range.value}`;
-						}else{
-							rangeString = game.i18n.localize('DND4E.Melee');
-							if(weaponUse.system.properties.rch){
-								rangeString += ' 2';
-							}else{
-								rangeString += ' 1';
-							}							
-						}
-					}else{
-						if (system?.weaponType === 'melee'){
-							rangeString = game.i18n.localize('DND4E.WeaponMelee');
-						}else if (system?.weaponType === 'ranged'){
-							rangeString = game.i18n.localize('DND4E.WeaponRanged');
-						}else{
-							rangeString = C.rangeType.weapon.label;
-						}
-					}
-				}else{
-					const isRange = !["personal","closeBurst","closeBlast","","touch"].includes(itemData.system.rangeType);
-					const isArea = ["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.system.rangeType);
-					
-					rangeString += C.rangeType[system.rangeType].label;
-					
-					if (isArea){
-						let areaString = system.area || '';
-						if(this.actor && areaString){
-							try{
-								areaString = Helper.commonReplace(areaString, this.actor);
-								if (!Helper._isNumber(areaString)) areaString = Roll.safeEval(areaString);
-							}catch(e){
-								console.error(`Could not evaluate area formula. This is probably due to an unknown key in the formula.`);
-							}
-						}
-						rangeString += ` ${areaString}`;
-					}
-					
-					if (isArea && isRange) rangeString += ` ${game.i18n.localize('DND4E.RangeWithin')}`;
-					
-					if (isRange){
-						let rangeValue = system.rangePower || '';
-						if(this.actor && rangeValue){
-							try{
-								rangeValue = Helper.commonReplace(rangeValue, this.actor);
-								if (!Helper._isNumber(rangeValue)) rangeValue = Roll.safeEval(rangeValue);
-							}catch(e){
-								console.error(`Could not evaluate range formula. This is probably due to an unknown key in the formula.`);
-							}
-						}
-						rangeString += ` ${rangeValue}`;
-					}
-					
-					if (isRange && system.range?.long && !isArea){
-						let longRangeValue = system.range.long;
-						if(this.actor){
-							try{
-								longRangeValue = Helper.commonReplace(longRangeValue, this.actor);
-								if (!Helper._isNumber(longRangeValue)) longRangeValue = Roll.safeEval(longRangeValue);
-							}catch(e){
-								console.error(`Could not evaluate long range formula. This is probably due to an unknown key in the formula.`);
-							}
-						}
-						rangeString += `/${longRangeValue}`;
-					}
-				}
-				if (rangeString != '') labels.range = rangeString;
-			}
-		}catch(e){
-			console.error(`Item labels failed for ${itemData.type}: ${itemData.name}. Item data has been dumped to debug. ${e}`);
-			console.debug(itemData);
-		}
-		
 		// Rituals
 		if ( itemData.type === "ritual" ) {
 			if ( system?.category ) {
@@ -780,8 +664,133 @@ export default class Item4e extends Item {
 			}
 		}
 
+		// Damage & Effect Type Keywords
+		try{
+			console.debug(system.hasOwnProperty("damageType"));
+			// DamageTypes
+			if(system.hasOwnProperty("damageType")){
+				if(this.getDamageType()){
+					let damType = [];
+					for ( let [damage, d] of Object.entries(this.getDamageType())) {
+						if(d){
+							damType.push(`${game.i18n.localize(DND4E.damageTypes[damage])}`);
+						}
+					}
+					labels.damageTypes = damType.join(", ");
+					console.debug(labels.damageTypes);
+				}
+			}
+			//Effect Types
+			if(system.hasOwnProperty("effectType")){
+				for (const [key, value] of Object.entries(system.effectType)) {
+					if(value){
+						const labelKey = `kw${key}`;
+						labels[labelKey] = `${game.i18n.localize(C.effectTypes[key])}`;
+					}
+				}
+			}
+			//Custom Keywords
+			if(system?.keywordsCustom){
+				const customKeys = system.keywordsCustom.split(';');
+				customKeys.forEach((item) => {
+					const labelKey = `kw${item}`;
+					labels[labelKey] = item;
+				});
+			}
+		}catch(e){
+			console.error(`Item labels failed for ${itemData.type}: ${itemData.name}. Item data has been dumped to debug. ${e}`);
+			console.debug(itemData);
+		}
+		
+		// Range, action
+		try{
+			//Action
+			if(system?.actionType){
+				labels.action = C.abilityActivationTypes[system.actionType].label;
+			}
+			
+			//Range
+			if(['power','consumable'].includes(itemData.type) && system?.rangeType){
+				let rangeString = '';
+				if (system?.rangeType === 'weapon'){
+					const weaponUse = (itemData.actor ? Helper.getWeaponUse(system, itemData.actor) : null);
+					if (weaponUse != null){
+						if(weaponUse.isRanged){
+							rangeString = `${game.i18n.localize('DND4E.Ranged')} ${weaponUse.system.range.value}/${weaponUse.system.range.value}`;
+						}else{
+							rangeString = game.i18n.localize('DND4E.Melee');
+							if(weaponUse.system.properties.rch){
+								rangeString += ' 2';
+							}else{
+								rangeString += ' 1';
+							}							
+						}
+					}else{
+						if (system?.weaponType === 'melee'){
+							rangeString = game.i18n.localize('DND4E.WeaponMelee');
+						}else if (system?.weaponType === 'ranged'){
+							rangeString = game.i18n.localize('DND4E.WeaponRanged');
+						}else{
+							rangeString = C.rangeType.weapon.label;
+						}
+					}
+				}else{
+					const isRange = !["personal","closeBurst","closeBlast","","touch"].includes(itemData.system.rangeType);
+					const isArea = ["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.system.rangeType);
+					
+					rangeString += C.rangeType[system.rangeType].label;
+					
+					if (isArea){
+						let areaString = system.area || '';
+						if(this.actor && areaString){
+							try{
+								areaString = Helper.commonReplace(areaString, this.actor);
+								if (!Helper._isNumber(areaString)) areaString = Roll.safeEval(areaString);
+							}catch(e){
+								console.error(`Could not evaluate area formula. This is probably due to an unknown key in the formula.`);
+							}
+						}
+						rangeString += ` ${areaString}`;
+					}
+					
+					if (isArea && isRange) rangeString += ` ${game.i18n.localize('DND4E.RangeWithin')}`;
+					
+					if (isRange){
+						let rangeValue = system.rangePower || '';
+						if(this.actor && rangeValue){
+							try{
+								rangeValue = Helper.commonReplace(rangeValue, this.actor);
+								if (!Helper._isNumber(rangeValue)) rangeValue = Roll.safeEval(rangeValue);
+							}catch(e){
+								console.error(`Could not evaluate range formula. This is probably due to an unknown key in the formula.`);
+							}
+						}
+						rangeString += ` ${rangeValue}`;
+					}
+					
+					if (isRange && system.range?.long && !isArea){
+						let longRangeValue = system.range.long;
+						if(this.actor){
+							try{
+								longRangeValue = Helper.commonReplace(longRangeValue, this.actor);
+								if (!Helper._isNumber(longRangeValue)) longRangeValue = Roll.safeEval(longRangeValue);
+							}catch(e){
+								console.error(`Could not evaluate long range formula. This is probably due to an unknown key in the formula.`);
+							}
+						}
+						rangeString += `/${longRangeValue}`;
+					}
+				}
+				if (rangeString != '') labels.range = rangeString;
+			}
+		}catch(e){
+			console.error(`Item labels failed for ${itemData.type}: ${itemData.name}. Item data has been dumped to debug. ${e}`);
+			console.debug(itemData);
+		}
+
 		// Assign labels
 		this.labels = labels;
+		console.debug(this.labels);
 
 		if(this.isOwned){
 			system.preparedMaxUses = this.preparedMaxUses;
@@ -2804,6 +2813,24 @@ export default class Item4e extends Item {
 			console.error(`Failed to hide obsolete item types: ${e}`);
 		}
 		return super.createDialog(data, {parent, pack, types, ...options});
+	}
+	
+	/* --------------------------------------------- */
+	/**
+	 * Returns an object with official and custom keywords
+	 * @type {string}
+	 */
+	get keywords(){
+		const systemKeywords = object.keys(this.system?.damageType).concat(object.keys(this.system?.effectData)) || [];
+		const customString = this.system.keywordsCustom || '';
+		const customKeywords = customString.split(';') || [];
+		
+		let keywordLabels = [];
+		if(systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(CONFIG.DND4E.effectTypes[e]));
+		keywordLabels = [...keywordLabels, ...customKeywords];
+		let keywordString = keywordLabels.join(', ');
+		
+		return {'system': systemKeywords,'custom': customKeywords,'string': keywordString};
 	}
 	
 }
