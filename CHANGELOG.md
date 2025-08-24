@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.6.14
+- Adds optional automation of mark detection and priority which is turned on by default. While activated, the system will add the originating actor's UUID to any effect including a marked status (mark_1 through mark_7) and use it to infer whether the mark is being ignored when attacking with target(s) declared. It will also clear any existing marks on a creature whenever a new mark is added. (SagaTympana & Fox Lee)
+
 ## Version 0.6.13
 - Allows compound conditions in bonus keys (SagaTympana)
 - Minor localisation fixes (SagaTympana)
@@ -1237,6 +1240,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
