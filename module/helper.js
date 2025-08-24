@@ -1114,7 +1114,7 @@ export class Helper {
 				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: <a class="attack-bonus" data-tooltip="`;		
 				if(game.settings.get("dnd4e","cardAtkDisplay")=="bonus"){
 					powerDetail += `${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackValues})">${attackTotal}</a>`;
-				} else if (game.settings.get("dnd4e","cardAtkDisplay")=="bothBonus"){
+				} else if (game.settings.get("dnd4e","cardAtkDisplay")=="both"){
 					powerDetail += `(${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackTotal})</a>`;
 				} else{
 					powerDetail += `${attackTotal} (${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]}</a>`;
@@ -1332,18 +1332,24 @@ export class Helper {
 						changesID: e.uuid
 					};
 
-					// If the effect already has `system.marker` assume it's for a reason
-					if(e.statuses.includes('mark_1') && !e.changes.some(c => c.key === 'system.marker')) {
+					if(e.statuses[0] && game.settings.get("dnd4e","markAutomation")){
+						const marks = new Set(['mark_1','mark_2','mark_3','mark_4','mark_5','mark_6','mark_7']);
+						const hasMark =  marks.intersection(new Set(e.statuses)).size;
+						
+						// If the effect already has `system.marker` assume it's for a reason
+						if(hasMark && !e.changes.some(c => c.key === 'system.marker')) {
+							const changeData = {
+								"key": "system.marker",
+								"mode": 5,
+								"value": e.origin,
+								"priority": null
+							}							
+							newEffectData.changes.push(changeData);
+						}
+						
 						for (let effect of t.actor.allApplicableEffects()) {
-							if (effect.statuses?.has('mark_1')) effect.delete();
+							if (marks.intersection(effect.statuses).size) effect.delete();
 						}
-						const changeData = {
-							"key": "system.marker",
-							"mode": 5,
-							"value": e.origin,
-							"priority": null
-						}
-						newEffectData.changes.push(changeData);
 					}
 
 					let actor;

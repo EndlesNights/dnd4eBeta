@@ -54,8 +54,8 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 		const numTargets = game.user.targets.size;
 		const targetArr = Array.from(game.user.targets);
 		targDataArray.hasTarget = true;
-		if (game.settings.get("dnd4e","markAutomation")) {
-			targDataArray.ignoringMark = userStatus.has('mark_1') && !targetArr.some(t => (t.actor.uuid === data.marker));
+		if (game.settings.get("dnd4e","markAutomation") && actor?.marker) {
+			targDataArray.ignoringMark = targetArr.some(t => (t.actor.uuid === data.marker));
 		}
 		for (let targ = 0; targ < numTargets; targ++) {
 			const targName = targetArr[targ].name;
@@ -229,7 +229,10 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		if(userStatus.has('squeezing')) userStatBonuses.push('@squeez');
 		if(userStatus.has('comAdv')) userStatBonuses.push('@comAdv');
 		if(options?.variance?.isCharge) userStatBonuses.push('@charge');
-		if(game.settings.get("dnd4e","markAutomation") && userStatus.has('mark_1') && !theTargets.some(t => (t.actor.uuid === data.marker))) userStatBonuses.push('@marked');
+		
+		if(game.settings.get("dnd4e","markAutomation") && data?.marker){
+			if(!theTargets.some(t => (t.actor.uuid === data.marker))) userStatBonuses.push('@marked');
+		}
 				
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
 
