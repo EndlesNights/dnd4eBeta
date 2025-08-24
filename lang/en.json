@@ -1699,6 +1699,8 @@
 "SETTINGS.4eInitTBSys": "Initiative mod (system/RAW)",
 "SETTINGS.4eItemDeleteConfirmationN": "Confirm Power & Inventory Deletes?",
 "SETTINGS.4eItemDeleteConfirmationL": "When enabled, a confirmation dialog will display when trying to delete any power or inventory item",
+"SETTINGS.4eMarkAutomationN": "Mark Automation",
+"SETTINGS.4eMarkAutomationL": "When enabled, certain rules surrounding marks will be enforced or automated by the system, such as new marks overwriting older marks and the attack penalty when the marking creature isn't included as a target.",
 "SETTINGS.4eNoExpL": "Remove experience bars from character sheets.",
 "SETTINGS.4eNoExpN": "Disable Experience Tracking",
 "SETTINGS.4eNpcMathOptionsL": "Determines if the Advanced Math Options for NPCs is set during their generation",

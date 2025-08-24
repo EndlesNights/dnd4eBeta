@@ -377,4 +377,13 @@ export const registerSystemSettings = function() {
 			"bothBonus": "SETTINGS.4eCardAtkDisplaybothBonus"
 		}
 	});
+
+    game.settings.register("dnd4e", "markAutomation",{
+		name: "SETTINGS.4eMarkAutomationN",
+		hint: "SETTINGS.4eMarkAutomationL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean
+	});
 };
