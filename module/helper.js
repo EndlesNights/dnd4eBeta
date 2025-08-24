@@ -1318,7 +1318,7 @@ export class Helper {
 						name: e.name,
 						description: e.description ? e.description : '',
 						img: e.img,
-						origin: parent.uuid,
+						origin: e.origin,
 						sourceName: parent.name,
 						//"duration": duration, //Not too sure why this fails, but it does
 						"duration": {startRound: duration?.startRound, rounds: duration.rounds, turns: duration.turns},
@@ -1331,7 +1331,21 @@ export class Helper {
 						changes: e.changes,
 						changesID: e.uuid
 					};
-					
+
+					// If the effect already has `system.marker` assume it's for a reason
+					if(e.statuses.includes('mark_1') && !e.changes.some(c => c.key === 'system.marker')) {
+						for (let effect of t.actor.allApplicableEffects()) {
+							if (effect.statuses?.has('mark_1')) effect.delete();
+						}
+						const changeData = {
+							"key": "system.marker",
+							"mode": 5,
+							"value": e.origin,
+							"priority": null
+						}
+						newEffectData.changes.push(changeData);
+					}
+
 					let actor;
 					if(t?.actor){
 						actor = t.actor;
