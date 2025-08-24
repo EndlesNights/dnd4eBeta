@@ -54,8 +54,8 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 		const numTargets = game.user.targets.size;
 		const targetArr = Array.from(game.user.targets);
 		targDataArray.hasTarget = true;
-		if (game.settings.get("dnd4e","markAutomation") && actor?.marker) {
-			targDataArray.ignoringMark = targetArr.some(t => (t.actor.uuid === data.marker));
+		if (game.settings.get("dnd4e","markAutomation") && actor.system?.marker) {
+			targDataArray.ignoringMark = !targetArr.some(t => (t.actor.uuid === data.marker));
 		}
 		for (let targ = 0; targ < numTargets; targ++) {
 			const targName = targetArr[targ].name;
