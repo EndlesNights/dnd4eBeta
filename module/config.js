@@ -311,7 +311,8 @@ DND4E.limitedUsePeriods = {
 	"enc": {label: "DND4E.Encounter"},
 	"day": {label: "DND4E.Day"},
 	"charges": {label: "DND4E.Charges"},
-	"round": {label: "DND4E.Round"}
+	"round": {label: "DND4E.Round"},
+	"turn": {label: "DND4E.Turn"}
 };
 preLocalize("limitedUsePeriods", { keys: ["label"] });
 
