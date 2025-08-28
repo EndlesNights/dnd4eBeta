@@ -1107,22 +1107,29 @@ export class Helper {
 				attackTotal = game.i18n.localize("DND4E.Attack");
 			}
 			
-			if(chatData.attack.ability === "form"){				
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> <a class="attack-bonus" data-tooltip="${attackValues}">${attackTotal}</a>`;
+			if(chatData.attack.detail) {
+				let attackDetail = chatData.attack.detail.replaceAll('@attackValues', `${attackValues}`);
+				attackDetail = attackDetail.replaceAll('@attackTotal', `${attackTotal}`);
+				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> ${attackDetail}</p>`;
 			}
-			else if(chatData.attack.ability){
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: <a class="attack-bonus" data-tooltip="`;		
-				if(game.settings.get("dnd4e","cardAtkDisplay")=="bonus"){
-					powerDetail += `${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackValues})">${attackTotal}</a>`;
-				} else if (game.settings.get("dnd4e","cardAtkDisplay")=="both"){
-					powerDetail += `(${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackTotal})</a>`;
-				} else{
-					powerDetail += `${attackTotal} (${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]}</a>`;
+			else {
+				if(chatData.attack.ability === "form"){				
+					powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> <a class="attack-bonus" data-tooltip="${attackValues}">${attackTotal}</a>`;
 				}
-			} else {
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")}`;
+				else if(chatData.attack.ability){
+					powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: <a class="attack-bonus" data-tooltip="`;		
+					if(game.settings.get("dnd4e","cardAtkDisplay")=="bonus"){
+						powerDetail += `${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackValues})">${attackTotal}</a>`;
+					} else if (game.settings.get("dnd4e","cardAtkDisplay")=="both"){
+						powerDetail += `(${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackTotal})</a>`;
+					} else{
+						powerDetail += `${attackTotal} (${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]}</a>`;
+					}
+				} else {
+					powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")}`;
+				}
+				powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.defensives[chatData.attack.def].abbreviation}</p>`;
 			}
-			powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.defensives[chatData.attack.def].abbreviation}</p>`;
 		}
 
 		if (chatData.hit.detail){
