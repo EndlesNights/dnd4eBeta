@@ -225,9 +225,9 @@ textarea{
 	position:relative;
 }
 .dnd4e.sheet.actor .image-frame{
-    flex-grow:0;
-    aspect-ratio:1 / 1;
-    flex-basis:100px;
+	flex-grow:0;
+	aspect-ratio:1 / 1;
+	flex-basis:100px;
 }
 .dnd4e.sheet.actor.NPC .image-frame{
 	margin-left:3px;
@@ -243,7 +243,7 @@ textarea{
 .dnd4e.sheet.item .image-frame .profile {
 	flex:0 0 100px;
 	margin-right:0px;
-    object-fit:contain;
+	object-fit:contain;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -586,7 +586,7 @@ textarea{
 }
 .dnd4e :is(.section--saves,.saves) img.rollable[src$="svg"]:hover{
 	-webkit-filter:brightness(0);
-	        filter:brightness(0);
+			filter:brightness(0);
 }
 .dnd4e .section--saves .death-saves-failed{
 	width:40%;
@@ -1420,13 +1420,13 @@ font-size:12px;
 .dnd4e .item-sheet .description .main.editor-container {
 	width: 100%;
 	/* display: flex; */
-    overflow: hidden;
+	overflow: hidden;
 }
 .dnd4e .item-sheet .description .gm-notes.editor-container {
 	background-color: #e8e8ef;
-    border: 1px dotted rgba(75, 74, 68, 0.5);
-    padding: 0 0.25em;
-    flex: 0 0 auto;
+	border: 1px dotted rgba(75, 74, 68, 0.5);
+	padding: 0 0.25em;
+	flex: 0 0 auto;
 }
 .dnd4e .item-sheet .description .main.editor-container {
 	flex: 1 0 auto;
@@ -2104,7 +2104,7 @@ font-size:12px;
 	margin-right:2px;
 }
 .dnd4e.sheet .npc.hazard .def-none input[type='checkbox']{
-    height:100%;
+	height:100%;
 	width:100%;
 	display:block;
 	margin:0;
@@ -2116,10 +2116,10 @@ font-size:12px;
 .dnd4e.sheet .npc.hazard .def-none input[type='checkbox']+.button{
 	position:absolute;
 	left:0;
-    bottom:0;
-    height:100%;
+	bottom:0;
+	height:100%;
 	width:100%;
-    line-height:1;
+	line-height:1;
 	pointer-events:none;
 }
 .dnd4e.sheet .npc.hazard .def-none input[type='checkbox']:not(:checked)+.button{
@@ -2146,7 +2146,7 @@ font-size:12px;
 }
 .dnd4e.sheet .npc.hazard .description .prosemirror .editor-container{
 	height:fit-content;
-    margin-bottom:4em;
+	margin-bottom:4em;
 	min-height:10em;
 }
 .dnd4e.sheet .npc.hazard .global-mods .global-mod[data-modifiers="skills"]{
@@ -2595,7 +2595,7 @@ font-size:12px;
 	border-bottom:var(--border-faint);
 }
 .roll-dialogue .roll-times{
-    align-items:center;
+	align-items:center;
 	flex-wrap:nowrap;
 }
 .roll-dialogue .roll-times .label{
@@ -2604,7 +2604,7 @@ font-size:12px;
 }
 .roll-dialogue .roll-times .buttons{
 	justify-content:flex-end;
-    align-items:center;
+	align-items:center;
 	flex-wrap:nowrap;
 	flex:unset;
 	width:fit-content;
@@ -2778,11 +2778,11 @@ input[type="text"].dice-count{
 }
 .dnd4e.con-bon-config h1.dialogue-title{
 	font-size:1.2em;
-    font-weight:700;
-    text-decoration:none;
-    margin-top:0.4em;
-    margin-bottom:unset;
-    border-bottom:var(--border-faint);
+	font-weight:700;
+	text-decoration:none;
+	margin-top:0.4em;
+	margin-bottom:unset;
+	border-bottom:var(--border-faint);
 }
 .dnd4e.con-bon-config .condition-row{
 	padding:2px 0.25em;
@@ -3016,6 +3016,10 @@ span.flavor-text.probable-hit,
 span.flavor-text.probable-miss{
 	font-weight:bold;
 }
+.dice-roll .dice-tooltip { 
+	display:block;
+	transition: grid-template-rows 250ms ease;
+}
 .dice-roll .dice-total.success{
 	color:inherit;
 	background:#c7d0c0;
@@ -3036,10 +3040,10 @@ span.flavor-text.probable-miss{
 	text-align:center;
 	line-height:24px;
 	margin-top:3px;
-    background:rgba(0, 0, 0, 0.1);
-    border:1px solid var(--color-border-light-2);
-    border-radius:3px;
-    box-shadow:0 0 2px #fff inset;
+	background:rgba(0, 0, 0, 0.1);
+	border:1px solid var(--color-border-light-2);
+	border-radius:3px;
+	box-shadow:0 0 2px #fff inset;
 }
 .dice-roll .hit-prediction.fumble,
 .dice-roll .hit-prediction.miss,
@@ -3054,6 +3058,9 @@ span.flavor-text.probable-miss{
 }
 .dot-report .damage-taken{
 	font-weight:bold;
+}
+span.roll-expression.roll-highlight, span.roll-formula.roll-highlight {
+	background-color: #99ccff;
 }
 
 
@@ -3449,10 +3456,10 @@ Vestigial? This class appears in item-sheet.html but I can't find that sheet use
 	border: none;
 }
 .dnd4e.chat-card .effects-tray .effects {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: all 250ms ease;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	transition: all 250ms ease;
 }
 .dnd4e.chat-card .effects-tray label .fa-caret-down {
 	transition: all 250ms ease;
@@ -3462,30 +3469,30 @@ Vestigial? This class appears in item-sheet.html but I can't find that sheet use
 }
 .dnd4e.chat-card .effects-tray .effects .effect {
 	display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    padding-bottom: 0.25rem;
-    margin-bottom: 0.25rem;
-    border-bottom: 1px solid #ddd;
+	gap: 0.5rem;
+	align-items: center;
+	padding-bottom: 0.25rem;
+	margin-bottom: 0.25rem;
+	border-bottom: 1px solid #ddd;
 }
 
 .dnd4e.chat-card .effects-tray .effects .effect > img {
 	width: 32px;
-    height: 32px;
+	height: 32px;
 
 	border: 2px solid #9f9275;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.45);
-    border-radius: 0;
-    background-color: #3d3d3d;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.45);
+	border-radius: 0;
+	background-color: #3d3d3d;
 }
 
 .dnd4e .name-stacked {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .dnd4e.chat-card .effects-tray .effects .effect .name-stacked {
-    flex: 1;
+	flex: 1;
 }
 
 .dnd4e .name-stacked .title {
@@ -3509,6 +3516,6 @@ Vestigial? This class appears in item-sheet.html but I can't find that sheet use
 	font-size: 0.75rem;
 }
 
- .effect-tooltip {
+.effect-tooltip {
 	text-align: left;
 }

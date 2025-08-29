@@ -232,7 +232,7 @@ export function chatMessageListener(html) {
 	html.querySelectorAll(".description.collapsible").forEach((el) => {
 		el.classList.add("collapsed");
 		el.querySelector(".details").style.height = "0";
-	  });
+	});
 }
 
 //When clicking on the name of a taget in a chat messages from attack rolls, will select and pan to the highlighted token
@@ -511,8 +511,22 @@ export async function _processDiceCommand(wrapper, ...args){
 }
 
 
-Hooks.on("renderChatMessage", (message, html) => {
-	updateApplyEffectsTooltips(html);
+Hooks.on("renderChatMessageHTML", (message, html) => {
+	//updateApplyEffectsTooltips(html);
+
+	const spans = html.querySelectorAll("span.roll-expression");
+	spans.forEach(el => {
+		const trueId = el.id.slice(3);
+		const otherEl = html.querySelector(`#form${trueId}`);
+		el.addEventListener("mouseenter", (event) => {
+			el.classList.toggle("roll-highlight");
+			otherEl?.classList.toggle("roll-highlight");
+		});
+		el.addEventListener("mouseleave", (event) => {
+			el.classList.toggle("roll-highlight");
+			otherEl?.classList.toggle("roll-highlight");
+		});
+	})
 });
 
 //Function for changing the tooltip of the apply effect button of power cards based on the applyEffectsToSelection functions

@@ -194,7 +194,7 @@ export class RollWithOriginalExpression extends Roll {
      */
     surroundFormulaWithExpressionSpanTags(formula, expressionParts) {
         try {
-            const tag = foundry.utils.randomID(16) + "." // a random id prefix for the spans so we can refer to them by id in a chat log with many rolls
+            const tag = foundry.utils.randomID(16)// + "." // a random id prefix for the spans so we can refer to them by id in a chat log with many rolls
 
             let newFormula = "" //the formula to return
             let newExpression = "" // the expression to return
@@ -237,11 +237,11 @@ export class RollWithOriginalExpression extends Roll {
                         }
                         else {
                             // otherwise wrap our active strings in appropreate spans and set them
-                            newFormula += `<span id="form${spanId}">`
+                            newFormula += `<span class="roll-formula" id="form${spanId}">`
                             newFormula += formData.formula
                             newFormula += `</span>`
 
-                            newExpression += `<span id="exp${spanId}" onmouseenter="mouseEnter('${spanId}')" onmouseleave="mouseLeave('${spanId}')">`
+                            newExpression += `<span class="roll-expression" id="exp${spanId}">`
                             newExpression += formData.expression
                             newExpression += `</span>`
                         }
@@ -345,7 +345,7 @@ export class RollWithOriginalExpression extends Roll {
                             }
                         }
                         // replace the expression variable with the span and mouseover tags
-                        activeExpression = activeExpression.replace(variable, `<span id="exp${spanId}" onmouseenter="mouseEnter('${spanId}')" onmouseleave="mouseLeave('${spanId}')">${variable}</span>`)
+                        activeExpression = activeExpression.replace(variable, `<span class="roll-expression" id="exp${spanId}"</span>`)
 
                         // find the value
                         const indexOfReplacement = activeFormula.indexOf(replacementStr)
@@ -357,7 +357,7 @@ export class RollWithOriginalExpression extends Roll {
                         // add in everything prior to the variable
                         newFormula += activeFormula.substring(0, indexOfReplacement)
                         // add in the variable span-et-ised
-                        newFormula += `<span id="form${spanId}">${replacementStr}</span>`
+                        newFormula += `<span class="roll-formula" id="form${spanId}">${replacementStr}</span>`
 
                         // remove everything up to the end of the replacement from our working string
                         // if the replacement is just a number javascript makes it a number and refuses to length it so force it back to a string

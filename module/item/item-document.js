@@ -2300,7 +2300,7 @@ export default class Item4e extends Item {
 		if ( event.target.closest(":is(.item-name, .collapsible) :is(a, button)") ) return;
 
 		event.preventDefault();
-		const header = event.currentTarget;
+		const header = event.target;
 		const card = header.closest(".chat-card");
 		const content = card.querySelector(".card-content:not(.details)");
 		
@@ -2426,7 +2426,7 @@ export default class Item4e extends Item {
 	 */
 	static _onChatCardToggleContent(event) {
 		event.preventDefault();
-		const header = event.currentTarget;
+		const header = event.target;
 		const card = header.closest(".chat-card");
 		const content = card.querySelector(".card-content");
 		content.style.display = content.style.display === "none" ? "block" : "none";
