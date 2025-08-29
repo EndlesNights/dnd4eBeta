@@ -962,7 +962,7 @@ export default class Item4e extends Item {
 			  core: { canPopout: true }
 			}
 		};
-    
+	
 		// In case the Item was destroyed or tweaked in the process of rolling - embed the item data in the chat message
 		chatData.flags["dnd4e.itemData"] = templateData.item;
 		
@@ -1424,12 +1424,12 @@ export default class Item4e extends Item {
 
 		// let title = `${this.name} - ${game.i18n.localize("DND4E.AttackRoll")}`;
 		let title = `${game.i18n.localize("DND4E.AttackRoll")}: ${this.name}`;
-        	let flavor = title;
+			let flavor = title;
 		
-        	//weapon attack roll check
+			//weapon attack roll check
 		if (weaponUse) {
 			title += ` - ${weaponUse.name}`;
-            		flavor += `<br />${weaponUse.name}`;
+					flavor += `<br />${weaponUse.name}`;
 		}
 
 		//Defence targeted is now printed per-target
@@ -2272,12 +2272,27 @@ export default class Item4e extends Item {
 	/* -------------------------------------------- */
 	/*  Chat Message Helpers                        */
 	/* -------------------------------------------- */
-
+	
 	static chatListeners(html) {
-		html.on('click', '.card-buttons button, .effects-tray button', this._onChatCardAction.bind(this));
-		html.on('click', '.item-name', this._onChatCardToggleContent.bind(this));
+		//html.on('click', '.card-buttons button, .effects-tray button', this._onChatCardAction.bind(this));
+		html.addEventListener("click", (event) => {
+			if (!event.target) return;
+			const el = event.target.closest(".card-buttons button, .effects-tray button");
+			if (el) this._onChatCardAction.call(this, event);
+		});
+		//html.on('click', '.item-name', this._onChatCardToggleContent.bind(this));
+		html.addEventListener("click", (event) => {
+			if (!event.target) return;
+			const el = event.target.closest(".item-name");
+			if (el) this._onChatCardToggleContent.call(this, event);
+		});
 
-		html.on("click", ".item-name, .collapsible", this._onChatCardEffectCollapsibleToggleContent.bind(this));
+		//html.on("click", ".item-name, .collapsible", this._onChatCardEffectCollapsibleToggleContent.bind(this));
+		html.addEventListener("click", (event) => {
+			if (!event.target) return;
+			const el = event.target.closest(".item-name, .collapsible");
+			if (el) this._onChatCardEffectCollapsibleToggleContent.call(this, event);
+		});
 	}
 
 	static _onChatCardEffectCollapsibleToggleContent(event){
@@ -2313,7 +2328,7 @@ export default class Item4e extends Item {
 		event.preventDefault();
 		
 		// Extract card data
-		const button = event.currentTarget;
+		const button = event.target;
 		button.disabled = true;
 		const card = button.closest(".chat-card");
 		const messageId = card.closest(".message").dataset.messageId;

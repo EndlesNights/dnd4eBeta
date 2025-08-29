@@ -366,22 +366,27 @@ function libWrapperInit() {
 }
 
 Hooks.on("getSceneControlButtons", function(controls){
-	
 	//sets what the default activeTool is
-	controls[1].activeTool = "burst";
+	const templates = controls.templates;
+    templates.activeTool = "burst";
 
-	//create addtioanl buttons in measure templates for Burst and Blast
-	controls[1].tools.splice(0,0,{
+	//create additional buttons in measure templates for Burst and Blast
+	const tools = templates.tools;
+    for (const key in tools){
+        tools[key].order += 2;
+    }
+    tools.burst = {
 		name: "burst",
+        order: 1,
 		title: "Area Burst (Square from Center)",
 		icon: "dnd4e-burst-svg",
-	})
-
-	controls[1].tools.splice(1,0,{
+	}
+	tools.blast = {
 		name: "blast",
+        order: 2,
 		title: "Area Blast (Square from corner)",
 		icon: "dnd4e-blast-svg",
-	})
+	}
 });
 
 Hooks.on("renderChatMessage", (message, html, data) => {

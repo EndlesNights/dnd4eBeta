@@ -203,15 +203,36 @@ export const addChatMessageContextOptions = function(html, options) {
 };
 
 export function chatMessageListener(html) {
-	html.on('click', '.chat-damage-button', this.clickRollMessageDamageButtons.bind(this));
+	//html.on('click', '.chat-damage-button', this.clickRollMessageDamageButtons.bind(this));
+	html.addEventListener("click", (event) => {
+		if (!event.target) return;
+		const el = event.target.closest(".chat-damage-button");
+		if (el) this.clickRollMessageDamageButtons.call(this, event);
+	});
 
-	html.on('click', '.target', this.clickTokenActorName.bind(this));
-	html.on('mouseenter', '.target', this.hoverTokenActorName.bind(this)).on('mouseleave', '.target', this.hoverTokenActorName.bind(this));
+	//html.on('click', '.target', this.clickTokenActorName.bind(this));
+	html.addEventListener("click", (event) => {
+		if (!event.target) return;
+		const el = event.target.closest(".target");
+		if (el) this.clickTokenActorName.call(this, event);
+	});
+	
+	//html.on('mouseenter', '.target', this.hoverTokenActorName.bind(this)).on('mouseleave', '.target', this.hoverTokenActorName.bind(this));
+	html.addEventListener("mouseenter", (event) => {
+		if (!event.target) return;
+		const el = event.target.closest(".target");
+		if (el) this.hoverTokenActorName.call(this, event);
+	});
+	html.addEventListener("mouseleave", (event) => {
+		if (!event.target) return;
+		const el = event.target.closest(".target");
+		if (el) this.hoverTokenActorName.call(this, event);
+	});
 
-	html.find(".description.collapsible").each((i, el) => {
-        el.classList.add("collapsed");
-        el.querySelector(".details").style.height = "0";
-      });
+	html.querySelectorAll(".description.collapsible").forEach((el) => {
+		el.classList.add("collapsed");
+		el.querySelector(".details").style.height = "0";
+	  });
 }
 
 //When clicking on the name of a taget in a chat messages from attack rolls, will select and pan to the highlighted token
@@ -259,7 +280,7 @@ export const clickRollMessageDamageButtons = function(event) {
 	}
 
 	// Extract card data
-	const button = event.currentTarget;
+	const button = event.target;
 	const messageId = button.closest(".message").dataset.messageId;
 	const message = game.messages.get(messageId);
 	const roll = message.rolls[0];

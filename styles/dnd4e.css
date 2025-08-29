@@ -10,7 +10,7 @@
 	content: url(../icons/ui/burst.svg);
 }
 
-.flexrow{
+/*.flexrow{
 	display:flex;
 	flex-direction:row;
 	flex-wrap:wrap;
@@ -25,7 +25,7 @@
 	flex-direction:column;
 	flex-wrap:nowrap;
 }
-.flexcol>*{
+.flexcol > *{
 	flex:1;
 }
 .flexcol .flex1{
@@ -72,11 +72,11 @@ textarea{
 }
 .dnd4e .window-content{
 	/* overflow-y:hidden; */
-	padding:5px;
+	/*padding:5px;
 }
 :is(input,select,button):disabled{
 	cursor:not-allowed;
-}
+}*/
 
 /* ----------------------------------------- */
 /*  Sheets
