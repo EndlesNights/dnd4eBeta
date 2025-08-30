@@ -476,9 +476,9 @@ export function _onClickDiceRoll(event){
 	// Expand or collapse tooltips
 	const tooltips = roll.querySelectorAll(".dice-tooltip");
 	for ( let tip of tooltips ) {
-	  if ( message._rollExpanded ) $(tip).slideDown(200);
-	  else $(tip).slideUp(200);
-	  tip.classList.toggle("expanded", message._rollExpanded);
+		if ( message._rollExpanded ) $(tip).slideDown(200);
+		else $(tip).slideUp(200);
+		tip.classList.toggle("expanded", message._rollExpanded);
 	}
 }
 
