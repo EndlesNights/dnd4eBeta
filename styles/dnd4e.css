@@ -3519,3 +3519,9 @@ Vestigial? This class appears in item-sheet.html but I can't find that sheet use
 .effect-tooltip {
 	text-align: left;
 }
+
+div.saving-throw, div.death-saves {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}

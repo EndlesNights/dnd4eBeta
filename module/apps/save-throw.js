@@ -21,7 +21,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		const options = this.options;
 		return {
 			system: this.object.system,
-			rollModes: CONFIG.Dice.rollModes,
+			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label),
 			effectName: ( options.effectSave ? this.object.effects.get(options.effectId).name : null ),
 			saveDC: ( options.effectSave ? this.object.effects.get(options.effectId).flags.dnd4e?.effectData?.saveDC : null )
 		};

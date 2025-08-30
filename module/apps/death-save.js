@@ -20,7 +20,7 @@ export class DeathSaveDialog extends DocumentSheet4e {
 	getData() {
 		return {
 			data: this.object.system,
-			rollModes: CONFIG.Dice.rollModes
+			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label)
 		};
 	}
 	async _updateObject(event, formData) {
