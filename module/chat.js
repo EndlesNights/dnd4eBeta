@@ -465,13 +465,21 @@ function applyChatCardTempHpInner(roll){
 	}));
 }
 
-export function _onDiceRollClick(wrapper, event){
-	//stop roll from opening up when clicking the .target 
-	if(event.target.classList.contains("target") || (event.target.tagName.toLowerCase() === 'b' && event.target.parentElement.classList.contains("target"))){
-		return;
-	}
+export function _onClickDiceRoll(event){
+	event.preventDefault();
 
-	return wrapper(event);
+    // Toggle the message flag
+    let roll = event.currentTarget;
+    const message = game.messages.get(roll.closest(".message").dataset.messageId);
+    message._rollExpanded = !message._rollExpanded;
+
+    // Expand or collapse tooltips
+    const tooltips = roll.querySelectorAll(".dice-tooltip");
+    for ( let tip of tooltips ) {
+      if ( message._rollExpanded ) $(tip).slideDown(200);
+      else $(tip).slideUp(200);
+      tip.classList.toggle("expanded", message._rollExpanded);
+    }
 }
 
   /* -------------------------------------------- */
@@ -527,6 +535,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 			otherEl?.classList.toggle("roll-highlight");
 		});
 	})
+
+	html.querySelectorAll(".dice-roll").forEach(el => el.addEventListener("click", _onClickDiceRoll.bind(this)));
 });
 
 //Function for changing the tooltip of the apply effect button of power cards based on the applyEffectsToSelection functions
