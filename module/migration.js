@@ -317,17 +317,23 @@ export const getMigrationData = async function() {
  * @private
  */
  function _migrateActorAddProfKeys(actorData, updateData) {
-	if(actorData?.type === "Hazard") return;
+	if(["Hazard","NPC"].includes(actorData?.type)) return;
 	if(!actorData?.system?.details) return;
 
 	if(actorData.system.details.armourProf == undefined){
-		updateData["system.details"] = {
+		updateData["system.details.armourProf"] = {
 			"value": [],
 			"custom": ""
 		}
 	}
 	if(actorData.system.details.weaponProf == undefined){
-		updateData["system.details"] = {
+		updateData["system.details.weaponProf"] = {
+			"value": [],
+			"custom": ""
+		}
+	}
+	if(actorData.system.details.implementProf == undefined){ //v0.6.15
+		updateData["system.details.implementProf"] = {
 			"value": [],
 			"custom": ""
 		}
