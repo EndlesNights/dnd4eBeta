@@ -834,8 +834,7 @@ DND4E.weaponProficienciesMap = {
 	superiorM: "SuperiorM",
 	superiorR: "SuperiorR",
 	improvisedM: "ImprovisedM",
-	improvisedR: "ImprovisedR",
-	implement: "Implement"
+	improvisedR: "ImprovisedR"
 };
 
 DND4E.simpleM = {
@@ -950,6 +949,20 @@ DND4E.superiorR = {
 
 DND4E.improvisedM = {};
 DND4E.improvisedR = {};
+
+DND4E.implementProficiencies = {
+	"holyS": "DND4E.ImplementHolySymbol",
+	"ki": "DND4E.ImplementKiFocus",
+	"orb": "DND4E.ImplementOrb",
+	"rod": "DND4E.ImplementRod",
+	"staff": "DND4E.ImplementStaff",
+	"tome": "DND4E.ImplementTome",
+	"totem": "DND4E.ImplementTotem",
+	"wand": "DND4E.ImplementWand",
+	"weapons": "DND4E.WeaponsWithProf"
+};
+preLocalize("implementProficiencies");
+
 
 /**
  * Configure aspects of encumbrance calculation so that it could be configured by modules
@@ -1090,8 +1103,8 @@ DND4E.powerUseType = {
 	"encounter": "DND4E.PowerEnc",
 	"daily": "DND4E.PowerDaily",
 	"recharge": "DND4E.PowerRecharge",
-	"other": "DND4E.PowerOther",
 	"item": "DND4E.PowerItem",
+	"other": "DND4E.PowerOther",
 	// "utility": "DND4E.PowerUtil"
 };
 DND4E.powerSource = {
