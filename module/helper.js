@@ -1341,21 +1341,25 @@ export class Helper {
 
 					if(e.statuses[0] && game.settings.get("dnd4e","markAutomation")){
 						const marks = new Set(['mark_1','mark_2','mark_3','mark_4','mark_5','mark_6','mark_7']);
-						const hasMark =  marks.intersection(new Set(e.statuses)).size;
+						const hasMark = marks.intersection(new Set(e.statuses)).size;
 						
-						// If the effect already has `system.marker` assume it's for a reason
-						if(hasMark && !e.changes.some(c => c.key === 'system.marker')) {
-							const changeData = {
-								"key": "system.marker",
-								"mode": 5,
-								"value": e.origin,
-								"priority": null
-							}							
-							newEffectData.changes.push(changeData);
-						}
-						
-						for (let effect of t.actor.allApplicableEffects()) {
-							if (marks.intersection(effect.statuses).size) effect.delete();
+						if(hasMark){
+							// If the effect already has `system.marker` assume it's for a reason
+							if(!e.changes.some(c => c.key === 'system.marker')) {
+								const changeData = {
+									"key": "system.marker",
+									"mode": 5,
+									"value": e.origin,
+									"priority": null
+								}							
+								newEffectData.changes.push(changeData);
+							}
+							
+							if(t?.actor?.allApplicableEffects){
+								for (let effect of t.actor.allApplicableEffects()) {
+									if (marks.intersection(effect.statuses).size) effect.delete();
+								}
+							}
 						}
 					}
 
