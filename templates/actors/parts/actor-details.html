@@ -78,16 +78,7 @@
 
 {{!-- Proficiency --}}
 <div class="proficiencies">
-	<h4 class="attribute-name box-title">{{ localize "DND4E.Proficiency" }}</h4>
-	<a class="trait-selector" data-options="profArmor" data-target="system.details.armourProf">
-		<span>{{ localize "DND4E.Armour" }}</span>
-		<i class="fas fa-edit"></i>
-	</a>
-	<ul class="traits-list proficiency armour">
-	{{#each system.details.armourProf.selected as |v k|}}
-		<li class="tag {{k}}">{{v}}</li>
-	{{/each}}
-	</ul>
+	<h4 class="attribute-name box-title">{{ localize "DND4E.Proficiencies" }}</h4>
 
 	<a class="trait-selector-weapon" data-options="weaponProf" data-target="system.details.weaponProf">
 		<span>{{ localize "DND4E.Weapon" }}</span>
@@ -98,6 +89,27 @@
 		<li class="tag {{k}}">{{v}}</li>
 	{{/each}}
 	</ul>
+	
+	<a class="trait-selector" data-options="implementProficiencies" data-target="system.details.implementProf">
+		<span>{{ localize "DND4E.Implement" }}</span>
+		<i class="fas fa-edit"></i>
+	</a>
+	<ul class="traits-list proficiency implements">
+	{{#each system.details.implementProf.selected as |v k|}}
+		<li class="tag {{k}}">{{v}}</li>
+	{{/each}}
+	</ul>
+	
+	<a class="trait-selector" data-options="profArmor" data-target="system.details.armourProf">
+		<span>{{ localize "DND4E.Armour" }}</span>
+		<i class="fas fa-edit"></i>
+	</a>
+	<ul class="traits-list proficiency armour">
+	{{#each system.details.armourProf.selected as |v k|}}
+		<li class="tag {{k}}">{{v}}</li>
+	{{/each}}
+	</ul>
+	
 </div>
 
 {{!-- Languages --}}
