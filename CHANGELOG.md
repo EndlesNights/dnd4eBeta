@@ -1,16 +1,24 @@
 # Changelog
 
+## Version 0.6.15
+- Powers have a new "Attack Text Detail" field, intended for powers with specialised attack text. If used, this field replaces the text normally provided for the Attack part of auto-generated power cards. The field can include HTML, so experts can use tags to style it precisely as they wish. (SagaTympana)
+- Powers can now select "per Turn" for their usage/recharge interval. Sneak Attackers rejoice! (SagaTympana)
+- Fixes a bug, reported by NightB1ade on Discord, where target-self effects wouldn't apply on power use (Fox)
+- Weapon and implement proficiencies are now separate lists. I have not added superior implements (yet) because they are very annoying, but they could surely be added in a future update. (Fox)
+- The weapon proficiency selector now has collapsible/expandable child lists, rather than displaying the giant multi-level list all at once. (Fox)
+- Common conditional attack modifiers (combat advantage, charge etc) are now included in the documented keys for effects/automation. (Fox)
+
 ## Version 0.6.14
-- Adds optional automation of mark detection and priority which is turned on by default. While activated, the system will add the originating actor's UUID to any effect including a marked status (mark_1 through mark_7) and use it to infer whether the mark is being ignored when attacking with target(s) declared. It will also clear any existing marks on a creature whenever a new mark is added. (SagaTympana & Fox Lee)
+- Adds optional automation of mark detection and priority which is turned on by default. While activated, the system will add the originating actor's UUID to any effect including a marked status (mark_1 through mark_7) and use it to infer whether the mark is being ignored when attacking with target(s) declared. It will also clear any existing marks on a creature whenever a new mark is added. (SagaTympana & Fox)
 
 ## Version 0.6.13
 - Allows compound conditions in bonus keys (SagaTympana)
 - Minor localisation fixes (SagaTympana)
 - Adds "vs Bloodied" to common attack bonuses (SagaTympana)
-- Fixes for effect duration refresh bug (fixes #466) and resinstate seconds field for module use (fixes #461) (FoxLee)
-- Changed level sorting for powers to return proper numeric order (fixes #428) (FoxLee)
-- Adds `marker` property to actor and "Ignoring Mark" to common attack modifiers, with a view to setting up more complex mark automation at a later stage. For now, you can override this field in effects to set the marking character, and override the "ignoring mark" common attack bonus for effects like Mark of Warding. (FoxLee)
-- Makes keywords available for features (see #440) (FoxLee)
+- Fixes for effect duration refresh bug (fixes #466) and resinstate seconds field for module use (fixes #461) (Fox)
+- Changed level sorting for powers to return proper numeric order (fixes #428) (Fox)
+- Adds `marker` property to actor and "Ignoring Mark" to common attack modifiers, with a view to setting up more complex mark automation at a later stage. For now, you can override this field in effects to set the marking character, and override the "ignoring mark" common attack bonus for effects like Mark of Warding. (Fox)
+- Makes keywords available for features (see #440) (Fox)
 
 ## Version 0.6.12
 - Improves item macro behaviour & usability, most importantly allowing macros to alter power properties before the chat card is created. Finally, a way to enable modal power behaviour—as in we can do Augmentable now without needing duplicate powers! :D
@@ -1240,6 +1248,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
