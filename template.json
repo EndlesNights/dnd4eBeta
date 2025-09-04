@@ -1087,6 +1087,7 @@
 					"abilityBonus": 0,
 					"def": "ac",
 					"defBonus": 0,
+					"detail": "",
 					"formula": "@wepAttack + @powerMod + @lvhalf"
 				},
 				"hit": {
