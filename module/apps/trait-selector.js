@@ -48,13 +48,15 @@ export default class TraitSelector extends FormApplication {
 
     if(this.options.datasetOptions == "weaponProf"){
       for ( let [k, v] of Object.entries(choices) ) {
-        const children = CONFIG.DND4E[k] ? duplicate(CONFIG.DND4E[k]) : {};
-        for ( let [kc, vc] of Object.entries(children) ) {
-          children[kc] = {
-            label: vc,
-            chosen: attr ? attr.value.includes(kc) : false
-          }
-        }
+        const children = Object.keys(CONFIG.DND4E[k]).length ? duplicate(CONFIG.DND4E[k]) : null;
+		if(children){
+			for ( let [kc, vc] of Object.entries(children) ) {
+			  children[kc] = {
+				label: vc,
+				chosen: attr ? attr.value.includes(kc) : false
+			  }
+			}
+		}
 
         choices[k] = {
           label: game.i18n.localize(`DND4E.Weapon${v}`),
