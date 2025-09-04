@@ -725,6 +725,10 @@ textarea{
 	max-width:174px;
 	color:var(--color-label);
 }
+.dnd4e .form-group label>.label-hint{
+    font-weight:normal;
+    font-style:oblique;
+}
 .dnd4e .form-group label.long{
 	max-width:unset;
 }
@@ -2537,6 +2541,24 @@ font-size:12px;
 #trait-selector input[type="text"]{
 	height:18px;
 	margin:2px;
+}
+#trait-selector .trait-list .trait.has-children>.expand{
+	font-size:0.8em;
+	opacity:0.75;
+}
+#trait-selector .trait-list .trait.has-children>.expand:focus-within{
+	pointer-events:none;
+}
+#trait-selector .trait-list .trait.has-children>.expand:focus-within.fa-chevron-down::before{
+    content:"\f077";
+}
+#trait-selector .trait-list .trait.has-children>.trait-list{
+	max-height:0;
+	overflow-y:hidden;
+	transition:max-height 0.3s;
+}
+#trait-selector .trait-list .trait.has-children>.expand:focus-within~.trait-list{
+	max-height:calc(100vh + 10em);
 }
 /* Tooltip text */
 .tooltip .tooltipcontent{

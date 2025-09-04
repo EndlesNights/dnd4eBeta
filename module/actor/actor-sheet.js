@@ -172,10 +172,10 @@ export default class ActorSheet4e extends ActorSheet {
 		
 		if(data.isCharacter){
 			//Proficiencies
-			this._prepareDataProfs(actorData.details.armourProf, 
+			this._prepareDataProfs(actorData.details?.armourProf, 
 				{"profArmor": CONFIG.DND4E.profArmor}
 			);
-			this._prepareDataProfs(actorData.details.weaponProf, 
+			this._prepareDataProfs(actorData.details?.weaponProf, 
 			{ weapons:Object.assign(
 					CONFIG.DND4E.weaponProficiencies,
 					CONFIG.DND4E.simpleM,
@@ -185,8 +185,12 @@ export default class ActorSheet4e extends ActorSheet {
 					CONFIG.DND4E.superiorM,
 					CONFIG.DND4E.superiorR,
 					CONFIG.DND4E.improvisedM,
-					CONFIG.DND4E.improvisedR,
-					CONFIG.DND4E.implement
+					CONFIG.DND4E.improvisedR
+				)}
+			);
+			this._prepareDataProfs(actorData.details?.implementProf, 
+			{ implement:Object.assign(
+					CONFIG.DND4E.implementProficiencies
 				)}
 			);
 			
