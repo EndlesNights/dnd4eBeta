@@ -2,6 +2,8 @@
 
 ## Version 0.6.16
 - Fixed keyword retrieval for powers/features and improved it for effects. Good news if the extraneous "," on the end of the keywords list has been bothering you! (Fox)
+- Fixed a bug in item labels where certain damage types would create an empty HTML tag. (Fox)
+- Fixed a bug which caused the mid-length labels for action types to fail translation.
 
 ## Version 0.6.15
 - Powers have a new "Attack Text Detail" field, intended for powers with specialised attack text. If used, this field replaces the text normally provided for the Attack part of auto-generated power cards. The field can include HTML, so experts can use tags to style it precisely as they wish. (SagaTympana)
@@ -1251,6 +1253,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
