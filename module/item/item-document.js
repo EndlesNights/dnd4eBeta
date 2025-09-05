@@ -2819,12 +2819,22 @@ export default class Item4e extends Item {
 	 * @type {string}
 	 */
 	get keywords(){
-		const systemKeywords = object.keys(this.system?.damageType).concat(object.keys(this.system?.effectData)) || [];
+		//Not all items can have keywords
+		if(!this.system?.damageType && !this.system?.effectType && !this.system?.keywordsCustom ) return {'system':{},'custom':{},'string':''};
+		
+		const keysRef = {...CONFIG.DND4E.damageTypes,...CONFIG.DND4E.effectTypes,...CONFIG.DND4E.powerSource};
+		//This will need a revisit when we make keywords customisable, as duplicate property names can cause false negatives. For now, it's just bloody poison causing trouble again.
+		const autoKeys = {...this.system?.damageType,...this.system?.effectType};
+		if (this.system?.effectType.poison || this.system?.damageType.poison) autoKeys.poison = true;
+		
+		const systemKeywords = Object.keys(keysRef).filter(k => autoKeys[k]) || [];
+		if(this.system?.powersource) systemKeywords.push(this.system.powersource);
+		if(this.system?.secondPowersource) systemKeywords.push(this.system.secondPowersource);
 		const customString = this.system.keywordsCustom || '';
-		const customKeywords = customString.split(';') || [];
+		const customKeywords = customString? customString.split(';') : [];
 		
 		let keywordLabels = [];
-		if(systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(CONFIG.DND4E.effectTypes[e]));
+		if(systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(keysRef[e]));
 		keywordLabels = [...keywordLabels, ...customKeywords];
 		let keywordString = keywordLabels.join(', ');
 		
