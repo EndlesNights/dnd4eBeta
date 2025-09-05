@@ -193,7 +193,7 @@ DND4E.abilityActivationTypes = {
 		abbreviation: "DND4E.ActionOpportunityShort"
 	},
 };
-preLocalize("abilityActivationTypes", { keys: ["label","laberShort","abbreviation"] });
+preLocalize("abilityActivationTypes", { keys: ["label","labelShort","abbreviation"] });
 
 DND4E.abilityActivationTypesShort = {
 	"none": "DND4E.NoActionShort",

@@ -671,11 +671,11 @@ export default class Item4e extends Item {
 				if(this.getDamageType()){
 					let damType = [];
 					for ( let [damage, d] of Object.entries(this.getDamageType())) {
-						if(d){
+						if(d && damage !== 'physical'){
 							damType.push(`${game.i18n.localize(DND4E.damageTypes[damage])}`);
 						}
 					}
-					labels.damageTypes = damType.join(", ");
+					if (damType.length) labels.damageTypes = damType.join(", ");
 				}
 			}
 			//Effect Types
