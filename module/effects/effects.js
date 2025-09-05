@@ -376,12 +376,13 @@
 	 * @type {string}
 	 */
 	get keywords(){
+		const keysRef = {...CONFIG.DND4E.damageTypes,...CONFIG.DND4E.effectTypes,...CONFIG.DND4E.powerSource};
 		const systemKeywords = this.flags.dnd4e?.keywords || [];
 		const customString = this.flags.dnd4e?.keywordsCustom || '';
-		const customKeywords = customString.split(';') || [];
+		const customKeywords = customString ? customString.split(';') : [];
 		
 		let keywordLabels = [];
-		if(systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(CONFIG.DND4E.effectTypes[e]));
+		if(systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(keysRef[e]));
 		keywordLabels = [...keywordLabels, ...customKeywords];
 		let keywordString = keywordLabels.join(', ');
 		
