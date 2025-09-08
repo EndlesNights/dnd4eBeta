@@ -514,8 +514,8 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@enhArmour", actorInnerData.defences.ac.enhance || 0);
 				newFormula = newFormula.replaceAll("@enhNAD", Math.min(actorInnerData.defences.fort.enhance || 0, actorInnerData.defences.ref.enhance || 0, actorInnerData.defences.wil.enhance || 0));
 
-				newFormula = newFormula.replaceAll("@ID", actorData.id || 0);
-				newFormula = newFormula.replaceAll("@UUID", actorData.uuid || 0);
+				newFormula = newFormula.replaceAll("@charaID", actorData.id || 0);
+				newFormula = newFormula.replaceAll("@charaUID", actorData.uuid || 0);
 				
 				//targets @scale plus some #
 				newFormula = newFormula.replace(/@scale(\d*)/g,	(match, number) => {return this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, number-1)});
