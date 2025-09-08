@@ -1409,7 +1409,7 @@ export default class Item4e extends Item {
 		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...
 		// find details on the weapon being used, if any.   This is null if no weapon is being used.
 		
-		//console.debug(options);
+		console.debug(options);
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
@@ -1517,6 +1517,7 @@ export default class Item4e extends Item {
 		}
 		
 		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack")
+		
 
 		// Compose roll options
 		const rollConfig = {
@@ -1537,12 +1538,15 @@ export default class Item4e extends Item {
 			'isCharge': options?.variance?.isCharge || false,
 			'isOpp': options?.variance?.isOpp || false,
 			messageData: {"flags.dnd4e.roll": {type: "attack", itemId: this.id }},
-			options
+			options,
 		};
+		
+		//Prevent actor with all its items getting embedded
+		const parentID = this.actor.uuid;
+		rollConfig.options.parent = parentID;
 
 		if(["power", "consumable"].includes(this.type)){
 			rollConfig.options.powerEffects = this.effects;
-			rollConfig.options.parent = this.parent;
 		}
 
 		// // Expanded weapon critical threshold
