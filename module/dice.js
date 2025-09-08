@@ -349,6 +349,8 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		}
 	}
 	
+	const attacker = await fromUuid(options.parent);
+	
 	// if there is only 1 roll, it's not a multi roll
 	if (!isAttackRoll || game.user.targets.size < 1) {
 		roll = roll.rollArray[0];
