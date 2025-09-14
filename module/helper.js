@@ -534,7 +534,7 @@ export class Helper {
 			if(game.settings.get("dnd4e", "inhEnh")) {
 				//If our enhancement is lower than the inherent level, adjust it upward
 				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
-				//console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${weaponInnerData?.enhance}`);
+				console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${weaponInnerData?.enhance}`);
 			}
 			
 			newFormula =	newFormula.replaceAll("@itemLevel", weaponInnerData.level ? weaponInnerData.level : 0)
@@ -565,7 +565,7 @@ export class Helper {
 			newFormula = newFormula.replaceAll("@profBonus", weaponInnerData.proficient ? weaponInnerData.profBonus || 0 : 0);
 
 			//newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
-			newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? this.bracketed(this.commonReplace(enhValue, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
+			newFormula = newFormula.replaceAll("@enhanceImp", (weaponInnerData.type === 'implement' || weaponInnerData.properties.imp) ? this.bracketed(this.commonReplace(enhValue, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
 			//newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
 			newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(enhValue, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
 
