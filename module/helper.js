@@ -514,8 +514,8 @@ export class Helper {
 				newFormula = newFormula.replaceAll("@enhArmour", actorInnerData.defences.ac.enhance || 0);
 				newFormula = newFormula.replaceAll("@enhNAD", Math.min(actorInnerData.defences.fort.enhance || 0, actorInnerData.defences.ref.enhance || 0, actorInnerData.defences.wil.enhance || 0));
 
-				newFormula = newFormula.replaceAll("@ID", actorData.id || 0);
-				newFormula = newFormula.replaceAll("@UUID", actorData.uuid || 0);
+				newFormula = newFormula.replaceAll("@charaID", actorData.id || 0);
+				newFormula = newFormula.replaceAll("@charaUID", actorData.uuid || 0);
 				
 				//targets @scale plus some #
 				newFormula = newFormula.replace(/@scale(\d*)/g,	(match, number) => {return this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, number-1)});
@@ -534,7 +534,7 @@ export class Helper {
 			if(game.settings.get("dnd4e", "inhEnh")) {
 				//If our enhancement is lower than the inherent level, adjust it upward
 				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
-				//console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${weaponInnerData?.enhance}`);
+				console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${weaponInnerData?.enhance}`);
 			}
 			
 			newFormula =	newFormula.replaceAll("@itemLevel", weaponInnerData.level ? weaponInnerData.level : 0)
@@ -565,7 +565,7 @@ export class Helper {
 			newFormula = newFormula.replaceAll("@profBonus", weaponInnerData.proficient ? weaponInnerData.profBonus || 0 : 0);
 
 			//newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
-			newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? this.bracketed(this.commonReplace(enhValue, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
+			newFormula = newFormula.replaceAll("@enhanceImp", (weaponInnerData.type === 'implement' || weaponInnerData.properties.imp) ? this.bracketed(this.commonReplace(enhValue, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
 			//newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
 			newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(enhValue, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
 
@@ -1107,22 +1107,29 @@ export class Helper {
 				attackTotal = game.i18n.localize("DND4E.Attack");
 			}
 			
-			if(chatData.attack.ability === "form"){				
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> <a class="attack-bonus" data-tooltip="${attackValues}">${attackTotal}</a>`;
+			if(chatData.attack.detail) {
+				let attackDetail = chatData.attack.detail.replaceAll('@attackValues', `${attackValues}`);
+				attackDetail = attackDetail.replaceAll('@attackTotal', `${attackTotal}`);
+				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> ${attackDetail}</p>`;
 			}
-			else if(chatData.attack.ability){
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: <a class="attack-bonus" data-tooltip="`;		
-				if(game.settings.get("dnd4e","cardAtkDisplay")=="bonus"){
-					powerDetail += `${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackValues})">${attackTotal}</a>`;
-				} else if (game.settings.get("dnd4e","cardAtkDisplay")=="both"){
-					powerDetail += `(${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackTotal})</a>`;
-				} else{
-					powerDetail += `${attackTotal} (${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]}</a>`;
+			else {
+				if(chatData.attack.ability === "form"){				
+					powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}:</strong> <a class="attack-bonus" data-tooltip="${attackValues}">${attackTotal}</a>`;
 				}
-			} else {
-				powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")}`;
+				else if(chatData.attack.ability){
+					powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: <a class="attack-bonus" data-tooltip="`;		
+					if(game.settings.get("dnd4e","cardAtkDisplay")=="bonus"){
+						powerDetail += `${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackValues})">${attackTotal}</a>`;
+					} else if (game.settings.get("dnd4e","cardAtkDisplay")=="both"){
+						powerDetail += `(${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]} (${attackTotal})</a>`;
+					} else{
+						powerDetail += `${attackTotal} (${attackValues})">${CONFIG.DND4E.abilities[chatData.attack.ability]}</a>`;
+					}
+				} else {
+					powerDetail += `<p class="attack"><strong>${game.i18n.localize("DND4E.Attack")}</strong>: ${game.i18n.localize("DND4E.Attack")}`;
+				}
+				powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.defensives[chatData.attack.def].abbreviation}</p>`;
 			}
-			powerDetail += ` ${game.i18n.localize("DND4E.VS")} ${CONFIG.DND4E.defensives[chatData.attack.def].abbreviation}</p>`;
 		}
 
 		if (chatData.hit.detail){
@@ -1334,21 +1341,25 @@ export class Helper {
 
 					if(e.statuses[0] && game.settings.get("dnd4e","markAutomation")){
 						const marks = new Set(['mark_1','mark_2','mark_3','mark_4','mark_5','mark_6','mark_7']);
-						const hasMark =  marks.intersection(new Set(e.statuses)).size;
+						const hasMark = marks.intersection(new Set(e.statuses)).size;
 						
-						// If the effect already has `system.marker` assume it's for a reason
-						if(hasMark && !e.changes.some(c => c.key === 'system.marker')) {
-							const changeData = {
-								"key": "system.marker",
-								"mode": 5,
-								"value": e.origin,
-								"priority": null
-							}							
-							newEffectData.changes.push(changeData);
-						}
-						
-						for (let effect of t.actor.allApplicableEffects()) {
-							if (marks.intersection(effect.statuses).size) effect.delete();
+						if(hasMark){
+							// If the effect already has `system.marker` assume it's for a reason
+							if(!e.changes.some(c => c.key === 'system.marker')) {
+								const changeData = {
+									"key": "system.marker",
+									"mode": 5,
+									"value": e.origin,
+									"priority": null
+								}							
+								newEffectData.changes.push(changeData);
+							}
+							
+							if(t?.actor?.allApplicableEffects){
+								for (let effect of t.actor.allApplicableEffects()) {
+									if (marks.intersection(effect.statuses).size) effect.delete();
+								}
+							}
 						}
 					}
 

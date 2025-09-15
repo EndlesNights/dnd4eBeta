@@ -193,7 +193,7 @@ DND4E.abilityActivationTypes = {
 		abbreviation: "DND4E.ActionOpportunityShort"
 	},
 };
-preLocalize("abilityActivationTypes", { keys: ["label","laberShort","abbreviation"] });
+preLocalize("abilityActivationTypes", { keys: ["label","labelShort","abbreviation"] });
 
 DND4E.abilityActivationTypesShort = {
 	"none": "DND4E.NoActionShort",
@@ -311,7 +311,8 @@ DND4E.limitedUsePeriods = {
 	"enc": {label: "DND4E.Encounter"},
 	"day": {label: "DND4E.Day"},
 	"charges": {label: "DND4E.Charges"},
-	"round": {label: "DND4E.Round"}
+	"round": {label: "DND4E.Round"},
+	"turn": {label: "DND4E.Turn"}
 };
 preLocalize("limitedUsePeriods", { keys: ["label"] });
 
@@ -833,8 +834,7 @@ DND4E.weaponProficienciesMap = {
 	superiorM: "SuperiorM",
 	superiorR: "SuperiorR",
 	improvisedM: "ImprovisedM",
-	improvisedR: "ImprovisedR",
-	implement: "Implement"
+	improvisedR: "ImprovisedR"
 };
 
 DND4E.simpleM = {
@@ -949,6 +949,20 @@ DND4E.superiorR = {
 
 DND4E.improvisedM = {};
 DND4E.improvisedR = {};
+
+DND4E.implementProficiencies = {
+	"holyS": "DND4E.ImplementHolySymbol",
+	"ki": "DND4E.ImplementKiFocus",
+	"orb": "DND4E.ImplementOrb",
+	"rod": "DND4E.ImplementRod",
+	"staff": "DND4E.ImplementStaff",
+	"tome": "DND4E.ImplementTome",
+	"totem": "DND4E.ImplementTotem",
+	"wand": "DND4E.ImplementWand",
+	"weapons": "DND4E.WeaponsWithProf"
+};
+preLocalize("implementProficiencies");
+
 
 /**
  * Configure aspects of encumbrance calculation so that it could be configured by modules
@@ -1089,8 +1103,8 @@ DND4E.powerUseType = {
 	"encounter": "DND4E.PowerEnc",
 	"daily": "DND4E.PowerDaily",
 	"recharge": "DND4E.PowerRecharge",
-	"other": "DND4E.PowerOther",
 	"item": "DND4E.PowerItem",
+	"other": "DND4E.PowerOther",
 	// "utility": "DND4E.PowerUtil"
 };
 DND4E.powerSource = {

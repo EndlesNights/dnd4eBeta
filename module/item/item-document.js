@@ -671,11 +671,11 @@ export default class Item4e extends Item {
 				if(this.getDamageType()){
 					let damType = [];
 					for ( let [damage, d] of Object.entries(this.getDamageType())) {
-						if(d){
+						if(d && damage !== 'physical'){
 							damType.push(`${game.i18n.localize(DND4E.damageTypes[damage])}`);
 						}
 					}
-					labels.damageTypes = damType.join(", ");
+					if (damType.length) labels.damageTypes = damType.join(", ");
 				}
 			}
 			//Effect Types
@@ -1409,7 +1409,7 @@ export default class Item4e extends Item {
 		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...
 		// find details on the weapon being used, if any.   This is null if no weapon is being used.
 		
-		//console.debug(options);
+		console.debug(options);
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
 
 		if(Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
@@ -1517,6 +1517,7 @@ export default class Item4e extends Item {
 		}
 		
 		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack")
+		
 
 		// Compose roll options
 		const rollConfig = {
@@ -1537,12 +1538,15 @@ export default class Item4e extends Item {
 			'isCharge': options?.variance?.isCharge || false,
 			'isOpp': options?.variance?.isOpp || false,
 			messageData: {"flags.dnd4e.roll": {type: "attack", itemId: this.id }},
-			options
+			options,
 		};
+		
+		//Prevent actor with all its items getting embedded
+		const parentID = this.actor.uuid;
+		rollConfig.options.parent = parentID;
 
 		if(["power", "consumable"].includes(this.type)){
 			rollConfig.options.powerEffects = this.effects;
-			rollConfig.options.parent = this.parent;
 		}
 
 		// // Expanded weapon critical threshold
@@ -2834,12 +2838,22 @@ export default class Item4e extends Item {
 	 * @type {string}
 	 */
 	get keywords(){
-		const systemKeywords = object.keys(this.system?.damageType).concat(object.keys(this.system?.effectData)) || [];
+		//Not all items can have keywords
+		if(!this.system?.damageType && !this.system?.effectType && !this.system?.keywordsCustom ) return {'system':{},'custom':{},'string':''};
+		
+		const keysRef = {...CONFIG.DND4E.damageTypes,...CONFIG.DND4E.effectTypes,...CONFIG.DND4E.powerSource};
+		//This will need a revisit when we make keywords customisable, as duplicate property names can cause false negatives. For now, it's just bloody poison causing trouble again.
+		const autoKeys = {...this.system?.damageType,...this.system?.effectType};
+		if (this.system?.effectType.poison || this.system?.damageType.poison) autoKeys.poison = true;
+		
+		const systemKeywords = Object.keys(keysRef).filter(k => autoKeys[k]) || [];
+		if(this.system?.powersource) systemKeywords.push(this.system.powersource);
+		if(this.system?.secondPowersource) systemKeywords.push(this.system.secondPowersource);
 		const customString = this.system.keywordsCustom || '';
-		const customKeywords = customString.split(';') || [];
+		const customKeywords = customString? customString.split(';') : [];
 		
 		let keywordLabels = [];
-		if(systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(CONFIG.DND4E.effectTypes[e]));
+		if(systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(keysRef[e]));
 		keywordLabels = [...keywordLabels, ...customKeywords];
 		let keywordString = keywordLabels.join(', ');
 		

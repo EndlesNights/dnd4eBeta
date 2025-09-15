@@ -101,12 +101,20 @@
 			<div class="form-group stacked">
 				<label>{{ localize "DND4E.ItemWeaponStatus" }}:</label>
 				<div class="form-fields">
-					<label class="checkbox">
-						<input type="checkbox" name="system.proficient" {{checked system.proficient}}/> {{ localize "DND4E.Proficient" }}
-					</label>
-					<label class="checkbox">
-						<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4E.ProficiencyI" }}
-					</label>
+					{{#unless (eq system.weaponType 'implement')}}
+						<label class="checkbox">
+							<input type="checkbox" name="system.proficient" {{checked system.proficient}}/> {{ localize "DND4E.Proficient" }}
+						</label>
+					{{/unless}}
+					{{#if (eq system.weaponType 'implement')}}
+						<label class="checkbox">
+							<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4E.Proficient" }}
+						</label>
+					{{else if system.properties.imp}}
+						<label class="checkbox">
+							<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4E.ProficiencyI" }}
+						</label>
+					{{/if}}
 					<label class="checkbox">
 						<input type="checkbox" name="system.equipped" {{checked system.equipped}}/> {{ localize "DND4E.Equipped" }}
 					</label>

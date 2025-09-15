@@ -915,6 +915,10 @@
 				"value": [],
 				"custom": ""
 			},
+			"details.implementProf": {
+				"value": [],
+				"custom": ""
+			},
 			"details.armourProf": {
 				"value": [],
 				"custom": ""
@@ -1087,6 +1091,7 @@
 					"abilityBonus": 0,
 					"def": "ac",
 					"defBonus": 0,
+					"detail": "",
 					"formula": "@wepAttack + @powerMod + @lvhalf"
 				},
 				"hit": {
@@ -1286,11 +1291,11 @@
 			"weaponGroup": {},
 			"implementGroup": {},
 			"attackForm": "@profBonus+@enhance",
-			"attackFormImp": "@profImpBonus+@enhanceImp",
+			"attackFormImp": "@profImpBonus+@enhance",
 			"damageForm": "@enhance",
-			"damageFormImp": "@enhanceImp",
+			"damageFormImp": "@enhance",
 			"critDamageForm": "(@enhance)d6",
-			"critDamageFormImp": "(@enhanceImp)d6",
+			"critDamageFormImp": "(@enhance)d6",
 			"critRange": 20,
 			"critRangeImp": 20
 		},

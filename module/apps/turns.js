@@ -14,7 +14,8 @@ export class Turns{
 		
 		//t current turn
 		for(let t of game.combat.turns){
-			
+			Helper.rechargeItems(t.token?.actor, ["turn"]);
+
 			if(!t.token?.actor?.effects){
 				continue;
 			}
