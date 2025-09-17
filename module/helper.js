@@ -811,8 +811,8 @@ export class Helper {
 				let rQuantity = new Roll(`${quantity}`)
 				rQuantity.evaluateSync({maximize: true});
 				
-				if(this._isNumber(rQuantity.result)) {
-					quantity = rQuantity.result;
+				if(this._isNumber(rQuantity.total)) {
+					quantity = rQuantity.total;
 				} else {
 					quantity = 1;
 				}
