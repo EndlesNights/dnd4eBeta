@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.6.19
+- Hotfix for broken sheet rolls caused by 0.6.18. (Fox)
+
 ## Version 0.6.18
 - Fixed `@powMax` variable to return correct values for non-weapon damage. (SagaTympana)
 - Fixed a bug from 0.6.17 where rolled powers no longer had parent actor required for effect application. (SagaTympana & Fox)
@@ -1263,6 +1266,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
