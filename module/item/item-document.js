@@ -938,8 +938,9 @@ export default class Item4e extends Item {
 		if(["power", "consumable"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
 			if(game.settings.get("dnd4e", "autoApplyEffects")){
-				Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
-				Helper.applyEffectsToTargets(this.effects, this.parent);
+				const attacker = await fromUuid(this.parent);
+				Helper.applyEffectsToTokens(this.effects, [attacker], "self", attacker);
+				Helper.applyEffectsToTargets(this.effects, attacker);
 			}
 		}
 		else if (["weapon", "equipment", "backpack", "tool", "loot"].includes(templateData.item.type)) {
