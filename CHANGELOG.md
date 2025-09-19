@@ -1,8 +1,12 @@
 # Changelog
 
+## Version 0.6.18
+- Fixed `@powMax` variable to return correct values for non-weapon damage. (SagaTympana)
+- Fixed a bug from 0.6.17 where rolled powers no longer had parent actor required for effect application. (SagaTympana & Fox)
+
 ## Version 0.6.17
 - Greatly reduced the volume of embedded data in chat messages. Should be a big help for games trying to load a big chat log. (Fox)
-- Fixed a bug where the UUID variable broke compendium links. (PLease update your formulae to `@charaID`/`@charaUID` accordingly!) (Fox)
+- Fixed a bug where the UUID variable broke compendium links. (Please update your formulae to `@charaID`/`@charaUID` accordingly!) (Fox)
 - Updated "Intimidation" string to "Intimidate" (Fox)
 - Improved handling of implements, to mitigate confusion around how weapliments qualify for use with implement powers. Also fixes an oversight where implement enhacement bonus relied on proficiency. (Fox)
 
@@ -1259,6 +1263,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
