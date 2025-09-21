@@ -29,14 +29,14 @@ import { Helper } from "./helper.js"
  *
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
-export async function d20Roll({parts=[],  partsExpressionReplacements = [], power=null, weapon=null, data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
+export async function d20Roll({parts=[],  partsExpressionReplacements = [], item=null, weaponUse=null, data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null, actor,
 								  isAttackRoll=false, options={}}={}) {
 	critical = critical || 20; //ensure that critical always has a value
 	const isCharge = options?.variance?.isCharge || false;
 	const isOpp = options?.variance?.isOpp || false;
 	const userStatus = actor?.statuses || {};
-	const rollConfig = {parts, partsExpressionReplacements, power, weapon, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options, isCharge, isOpp, userStatus }
+	const rollConfig = {parts, partsExpressionReplacements, item, weaponUse, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options, isCharge, isOpp, userStatus }
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
 	// If fast-forward requested, perform the roll without a dialog
@@ -136,7 +136,7 @@ export function getAttackRollBonus({parts=[], partsExpressionReplacements = [], 
 	return roll.formula;
 }
 
-async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, power, weapon, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options, userStatus, fastForward}) {
+async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, item, weaponUse, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options, userStatus, fastForward}) {
 	/*
 	 coming in the parts[] is in one of the following states:
 	 - Empty
@@ -324,7 +324,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			let targName = targets[rollExpressionIdx].name;
 			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.value;
 			const defParts = []
-			await Helper.applyEffects([defParts], data, targets[rollExpressionIdx].actor, power, weapon, "defense");
+			await Helper.applyEffects([defParts], data, targets[rollExpressionIdx].actor, item, weaponUse, "defense");
 			for (let i=0; i < defParts.length; i++) {
 				const key = defParts[i].slice(1);
 				targDefVal += data[key];
