@@ -171,7 +171,7 @@ export class Helper {
 			
 			//Dummy up some extra effects to represent global atk/damage bonuses
 			const globalMods = actorData.system.modifiers;
-			if(globalMods[effectType].value != 0){
+			if(globalMods[effectType]?.value){
 				for (const [key, value] of Object.entries(globalMods[effectType])) {
 					//No way to sort bonus array types, so we'll combine them with untyped before checks.
 					const adjValue = ( key == 'untyped' ? value + globalMods[effectType].bonusValue : value);
@@ -340,7 +340,7 @@ export class Helper {
 				};
 				
 				if(powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
-				if(powerInnerData.attack?.isOpp || rollData?.isCharge) suitableKeywords.push("opp");
+				if(powerInnerData.attack?.isOpp || rollData?.isOpp) suitableKeywords.push("opp");
 				
 				if(powerInnerData.attack?.def){
 					suitableKeywords.push(`vs${powerInnerData.attack.def.capitalize()}`);
