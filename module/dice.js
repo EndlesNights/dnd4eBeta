@@ -61,16 +61,17 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 			const targName = targetArr[targ].name;
 			targDataArray.targNameArray.push(targName);
 			//console.debug(data);
-			if(targetArr[targ].actor.statuses.has('prone') && (item?.system.rangeType === 'melee' || weaponUse?.system.weaponType.slice(-1) === 'M')) {
-				let isThrown = false;
-				if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
-					const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
-					if (Helper.computeDistance(actor, targetArr[targ]) > meleeRange) {
-						isThrown = true;
+			if(targetArr[targ].actor.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
+				targDataArray.meleeVsProne = true;
+				if(item?.system.rangeType === 'weapon'){
+					let isThrown = false;
+					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
+						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
+						if (Helper.computeDistance(actor, targetArr[targ]) > meleeRange) {
+							//Not in melee range so it must have been thrown
+							targDataArray.meleeVsProne = false;
+						}
 					}
-				}
-				if (!isThrown) {
-					targDataArray.meleeVsProne = true;
 				}
 			}
 			targDataArray.targets.push({
