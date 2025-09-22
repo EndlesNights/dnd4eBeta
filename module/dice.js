@@ -75,7 +75,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 					}
 				}
 			}
-			if ((item?.system.rangeType === 'ranged' && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && targetDist > weaponUse?.system.range.value)) {
+			if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.max && targetDist > weaponUse?.system.range.value)) {
 				targDataArray.longRange = true;
 			}
 			targDataArray.targets.push({
@@ -279,7 +279,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 					}
 				}
 
-				if ((item?.system.rangeType === 'ranged' && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && targetDist > weaponUse?.system.range.value)) {
+				if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.max && targetDist > weaponUse?.system.range.value)) {
 					targetBonuses.push('@longRange')
 				}
 
