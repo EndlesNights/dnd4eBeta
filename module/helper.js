@@ -340,7 +340,7 @@ export class Helper {
 				};
 				
 				if(powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
-				if(powerInnerData.attack?.isOpp || rollData?.isCharge) suitableKeywords.push("opp");
+				if(powerInnerData.attack?.isOpp || rollData?.isOpp) suitableKeywords.push("opp");
 				
 				if(powerInnerData.attack?.def){
 					suitableKeywords.push(`vs${powerInnerData.attack.def.capitalize()}`);
