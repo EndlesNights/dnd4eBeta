@@ -324,7 +324,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			let targName = targets[rollExpressionIdx].name;
 			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.value;
 			const defParts = []
-			await Helper.applyEffects([defParts], data, targets[rollExpressionIdx].actor, item, weaponUse, "defense");
+			await Helper.applyEffects([defParts], data, targets[rollExpressionIdx].actor, item, weaponUse, "defence");
 			for (let i=0; i < defParts.length; i++) {
 				const key = defParts[i].slice(1);
 				targDefVal += data[key];
