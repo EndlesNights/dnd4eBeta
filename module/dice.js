@@ -36,7 +36,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 	const isCharge = options?.variance?.isCharge || false;
 	const isOpp = options?.variance?.isOpp || false;
 	const userStatus = actor?.statuses || {};
-	const rollConfig = {parts, partsExpressionReplacements, item, weaponUse, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options, isCharge, isOpp, userStatus }
+	const rollConfig = {parts, partsExpressionReplacements, item, weaponUse, data, speaker, rollMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, fastForward, options, isCharge, isOpp, userStatus }
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
 	// If fast-forward requested, perform the roll without a dialog
@@ -61,6 +61,18 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 			const targName = targetArr[targ].name;
 			targDataArray.targNameArray.push(targName);
 			//console.debug(data);
+			if(targetArr[targ].actor.statuses.has('prone') && (item?.system.rangeType === 'melee' || weaponUse?.system.weaponType.slice(-1) === 'M')) {
+				let isThrown = false
+				if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
+					const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
+					if (Helper.computeDistance(actor, targetArr[targ]) > meleeRange) {
+						isThrown = true;
+					}
+				}
+				if (!isThrown) {
+					targDataArray.meleeVsProne = true;
+				}
+			}
 			targDataArray.targets.push({
 				'name': targetArr[targ].name,
 				'status': targetArr[targ].actor.statuses,
@@ -136,7 +148,7 @@ export function getAttackRollBonus({parts=[], partsExpressionReplacements = [], 
 	return roll.formula;
 }
 
-async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, item, weaponUse, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options, userStatus, fastForward}) {
+async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, item, weaponUse, data, speaker, rollMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, options, userStatus, fastForward}) {
 	/*
 	 coming in the parts[] is in one of the following states:
 	 - Empty
@@ -245,6 +257,19 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				//Target conditions
 				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
 				
+				if(targetStatus.has('prone') && (item?.system.rangeType === 'melee' || weaponUse?.system.weaponType.slice(-1) === 'M')) {
+					let isThrown = false
+					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
+						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
+						if (Helper.computeDistance(actor, targets[rollExpressionIdx]) > meleeRange) {
+							isThrown = true;
+						}
+					}
+					if (!isThrown) {
+						targetBonuses.push('@comAdv')
+					}
+				}
+
 				if(targetStatus.includes('bloodied')) targetBonuses.push('@bloodied');
 
 				if(targetStatus.includes('concealed')) targetBonuses.push('@conceal');		
@@ -328,6 +353,13 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			for (let i=0; i < defParts.length; i++) {
 				const key = defParts[i].slice(1);
 				targDefVal += data[key];
+			}
+			const meleeRange = weaponUse?.system.properties.rch ? 2 : 1;
+			const dist = Helper.computeDistance(actor, targets[rollExpressionIdx])
+			const isThrown = (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) && dist > meleeRange;
+			if (targets[rollExpressionIdx].actor.statuses.has('prone') && (item?.system.rangeType === 'ranged' || weaponUse?.system.weaponType.slice(-1) === 'R' || isThrown) && dist > 1) {
+				const proneDefenseBonusVsRanged = 2; // TODO Make this configurable somehow?
+				targDefVal += proneDefenseBonusVsRanged;
 			}
 			targImmune = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.none;
 			targetData.targNameArray.push(targName);
