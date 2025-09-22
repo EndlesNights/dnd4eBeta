@@ -968,7 +968,7 @@ export default class Item4e extends Item {
 			  core: { canPopout: true }
 			}
 		};
-    
+	
 		// In case the Item was destroyed or tweaked in the process of rolling - embed the item data in the chat message
 		chatData.flags["dnd4e.itemData"] = templateData.item;
 		
@@ -1430,12 +1430,12 @@ export default class Item4e extends Item {
 
 		// let title = `${this.name} - ${game.i18n.localize("DND4E.AttackRoll")}`;
 		let title = `${game.i18n.localize("DND4E.AttackRoll")}: ${this.name}`;
-        	let flavor = title;
+			let flavor = title;
 		
-        	//weapon attack roll check
+			//weapon attack roll check
 		if (weaponUse) {
 			title += ` - ${weaponUse.name}`;
-            		flavor += `<br />${weaponUse.name}`;
+					flavor += `<br />${weaponUse.name}`;
 		}
 
 		//Defence targeted is now printed per-target
@@ -1523,13 +1523,14 @@ export default class Item4e extends Item {
 		}
 		
 		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack")
-		
 
 		// Compose roll options
 		const rollConfig = {
 			parts,
 			partsExpressionReplacements,
 			actor: this.actor,
+			item: this,
+			weaponUse: weaponUse,
 			data: rollData,
 			title,
 			flavor,
