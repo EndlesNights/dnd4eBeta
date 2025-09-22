@@ -938,8 +938,14 @@ export default class Item4e extends Item {
 		if(["power", "consumable"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
 			if(game.settings.get("dnd4e", "autoApplyEffects")){
-				Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
-				Helper.applyEffectsToTargets(this.effects, this.parent);
+				if(typeof this.parent === 'string'){
+					const attacker = await fromUuid(this.parent);
+					Helper.applyEffectsToTokens(this.effects, [attacker.token], "self", attacker);
+					Helper.applyEffectsToTargets(this.effects, attacker);
+				}else{
+					Helper.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
+					Helper.applyEffectsToTargets(this.effects, this.parent);
+				}
 			}
 		}
 		else if (["weapon", "equipment", "backpack", "tool", "loot"].includes(templateData.item.type)) {
@@ -1517,13 +1523,14 @@ export default class Item4e extends Item {
 		}
 		
 		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack")
-		
 
 		// Compose roll options
 		const rollConfig = {
 			parts,
 			partsExpressionReplacements,
 			actor: this.actor,
+			item: this,
+			weaponUse: weaponUse,
 			data: rollData,
 			title,
 			flavor,
@@ -1727,7 +1734,6 @@ export default class Item4e extends Item {
 			}
 		}
 
-
 		primaryDamage = pD.join(', ');
 
 		let damageFormula = '';
@@ -1805,36 +1811,41 @@ export default class Item4e extends Item {
 			}
 		}
 	
+		if(this.system?.hit?.damageBonusNull) console.log(`Ignoring damage bonuses do to power config.`);
+	
 		// Define Roll Data
-		const actorBonus = foundry.utils.getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
-		if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
-			// parts.push("@dmg");
-			// partsCrit.push("@dmg");
-			// rollData["dmg"] = actorBonus.damage;
-			damageFormula += `+ ${actorBonus.damage}`
-			missDamageFormula += `+ ${actorBonus.damage}`
-			critDamageFormula += `+ ${actorBonus.damage}`
-			damageFormulaExpression  += `+ @actorBonusDamage`
-			missDamageFormulaExpression += `+ @actorBonusDamage`
-			critDamageFormulaExpression +=  `+ @actorBonusDamage`
-			options.formulaInnerData.actorBonusDamage = actorBonus.damage
+		if(!this.system?.hit?.damageBonusNull){
+			const actorBonus = foundry.utils.getProperty(actorInnerData, `bonuses.${itemData.actionType}`) || {};
+			if ( actorBonus.damage && parseInt(actorBonus.damage) !== 0 ) {
+				// parts.push("@dmg");
+				// partsCrit.push("@dmg");
+				// rollData["dmg"] = actorBonus.damage;
+				damageFormula += `+ ${actorBonus.damage}`
+				missDamageFormula += `+ ${actorBonus.damage}`
+				critDamageFormula += `+ ${actorBonus.damage}`
+				damageFormulaExpression  += `+ @actorBonusDamage`
+				missDamageFormulaExpression += `+ @actorBonusDamage`
+				critDamageFormulaExpression +=  `+ @actorBonusDamage`
+				options.formulaInnerData.actorBonusDamage = actorBonus.damage
+			}
 		}
-
 
 		// Originally these were a separate part, but then they were not part of the primary damage type
 		// which they should be.  So now appending them to the main expression.
 		const effectDamageParts = []
-		await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse, "damage")
-		effectDamageParts.forEach(part => {
-			const value = rollData[part.substring(1)]
-			damageFormula += `+ ${value}`
-			missDamageFormula += `+ ${value}`
-			critDamageFormula += `+ ${value}`
-			damageFormulaExpression  += `+ ${part}`
-			missDamageFormulaExpression += `+ ${part}`
-			critDamageFormulaExpression += `+ ${part}`
-			options.formulaInnerData[part.substring(1)] = value
-		})
+		if(!this.system?.hit?.damageBonusNull){
+			await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse, "damage")
+			effectDamageParts.forEach(part => {
+				const value = rollData[part.substring(1)]
+				damageFormula += `+ ${value}`
+				missDamageFormula += `+ ${value}`
+				critDamageFormula += `+ ${value}`
+				damageFormulaExpression  += `+ ${part}`
+				missDamageFormulaExpression += `+ ${part}`
+				critDamageFormulaExpression += `+ ${part}`
+				options.formulaInnerData[part.substring(1)] = value
+			})
+		}
 
 		// Ammunition Damage from power
 		if ( this._ammo ) {

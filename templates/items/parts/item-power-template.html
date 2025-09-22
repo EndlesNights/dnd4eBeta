@@ -209,13 +209,13 @@
 	<div class="form-group stacked attack-properties">
 		<label data-tooltip="{{localize 'DND4EUI.CountsAsAttackTip'}}">{{localize 'DND4EUI.CountsAs'}}:</label>
 		<label class="checkbox">
-			<input class="checkbox" type="checkbox" name="system.attack.isBasic" data-dtype="Boolean" {{checked system.attack.isBasic}} /> {{ localize "DND4E.CommonAttackBasic" }}
+			<input class="checkbox" type="checkbox" name="system.attack.isBasic" data-dtype="Boolean" {{checked system.attack.isBasic}} /> {{ localize 'DND4E.CommonAttackBasic' }}
 		</label>
 		<label class="checkbox">
-			<input class="checkbox" type="checkbox" name="system.attack.isCharge" data-dtype="Boolean" {{checked system.attack.isCharge}} /> {{ localize "DND4E.CommonAttackCharge" }}
+			<input class="checkbox" type="checkbox" name="system.attack.isCharge" data-dtype="Boolean" {{checked system.attack.isCharge}} /> {{ localize 'DND4E.CommonAttackCharge' }}
 		</label>
 		<label class="checkbox">
-			<input class="checkbox" type="checkbox" name="system.attack.isOpp" data-dtype="Boolean" {{checked system.attack.isOpp}} /> {{ localize "DND4E.CommonAttackOpportunity" }}
+			<input class="checkbox" type="checkbox" name="system.attack.isOpp" data-dtype="Boolean" {{checked system.attack.isOpp}} /> {{ localize 'DND4E.CommonAttackOpportunity' }}
 		</label>
 	</div>
 	{{/if}}
@@ -227,8 +227,14 @@
 	{{!-- Hit Details --}}
 	{{!-- Damage --}}
 	<div class="form-group">
-		<label>{{ localize "DND4E.PowerDamShared" }}</label>
-		<span class="checkbox"><input type="checkbox" name="system.hit.shareDamageRoll" data-dtype="Boolean" {{checked system.hit.shareDamageRoll}}/></span>
+		<label class="checkbox">
+			<input type="checkbox" name="system.hit.shareDamageRoll" data-dtype="Boolean" {{checked system.hit.shareDamageRoll}}/>
+			<span>{{ localize 'DND4E.PowerDamShared' }}</span>
+		</label>
+		<label class="checkbox" data-tooltip="{{ localize 'DND4E.PowerDamBonusNullTooltip' }}">
+			<input type="checkbox" name="system.hit.damageBonusNull" data-dtype="Boolean" {{checked system.hit.damageBonusNull}}/>
+			<span>{{ localize 'DND4E.PowerDamBonusNull' }}</span>
+		</label>
 	</div>
 	
 	<div class="form-group">

@@ -29,14 +29,14 @@ import { Helper } from "./helper.js"
  *
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
-export async function d20Roll({parts=[],  partsExpressionReplacements = [], data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
+export async function d20Roll({parts=[],  partsExpressionReplacements = [], item=null, weaponUse=null, data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
 								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null, actor,
 								  isAttackRoll=false, options={}}={}) {
 	critical = critical || 20; //ensure that critical always has a value
 	const isCharge = options?.variance?.isCharge || false;
 	const isOpp = options?.variance?.isOpp || false;
 	const userStatus = actor?.statuses || {};
-	const rollConfig = {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, fastForward, options, isCharge, isOpp, userStatus }
+	const rollConfig = {parts, partsExpressionReplacements, item, weaponUse, data, speaker, rollMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, fastForward, options, isCharge, isOpp, userStatus }
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
 	// If fast-forward requested, perform the roll without a dialog
@@ -61,6 +61,19 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], data
 			const targName = targetArr[targ].name;
 			targDataArray.targNameArray.push(targName);
 			//console.debug(data);
+			if(targetArr[targ].actor.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
+				targDataArray.meleeVsProne = true;
+				if(item?.system.rangeType === 'weapon'){
+					let isThrown = false;
+					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
+						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
+						if (Helper.computeDistance(actor, targetArr[targ]) > meleeRange) {
+							//Not in melee range so it must have been thrown
+							targDataArray.meleeVsProne = false;
+						}
+					}
+				}
+			}
 			targDataArray.targets.push({
 				'name': targetArr[targ].name,
 				'status': targetArr[targ].actor.statuses,
@@ -136,7 +149,7 @@ export function getAttackRollBonus({parts=[], partsExpressionReplacements = [], 
 	return roll.formula;
 }
 
-async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, data, speaker, rollMode, flavor, critical, fumble, targetValue, isAttackRoll, options, userStatus, fastForward}) {
+async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, item, weaponUse, data, speaker, rollMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, options, userStatus, fastForward}) {
 	/*
 	 coming in the parts[] is in one of the following states:
 	 - Empty
@@ -245,6 +258,19 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				//Target conditions
 				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
 				
+				if(targetStatus.has('prone') && (item?.system.rangeType === 'melee' || weaponUse?.system.weaponType.slice(-1) === 'M')) {
+					let isThrown = false;
+					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
+						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
+						if (Helper.computeDistance(actor, targets[rollExpressionIdx]) > meleeRange) {
+							isThrown = true;
+						}
+					}
+					if (!isThrown) {
+						targetBonuses.push('@comAdv')
+					}
+				}
+
 				if(targetStatus.includes('bloodied')) targetBonuses.push('@bloodied');
 
 				if(targetStatus.includes('concealed')) targetBonuses.push('@conceal');		
@@ -323,6 +349,19 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			const attackedDef = targetData.targDefArray[rollExpressionIdx];
 			let targName = targets[rollExpressionIdx].name;
 			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.value;
+			const defParts = []
+			await Helper.applyEffects([defParts], data, targets[rollExpressionIdx].actor, item, weaponUse, "defence");
+			for (let i=0; i < defParts.length; i++) {
+				const key = defParts[i].slice(1);
+				targDefVal += data[key];
+			}
+			const meleeRange = weaponUse?.system.properties.rch ? 2 : 1;
+			const dist = Helper.computeDistance(actor, targets[rollExpressionIdx])
+			const isThrown = (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) && dist > meleeRange;
+			if (targets[rollExpressionIdx].actor.statuses.has('prone') && (item?.system.rangeType === 'ranged' || weaponUse?.system.weaponType.slice(-1) === 'R' || isThrown) && dist > 1) {
+				const proneDefenseBonusVsRanged = 2; // TODO Make this configurable somehow?
+				targDefVal += proneDefenseBonusVsRanged;
+			}
 			targImmune = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.none;
 			targetData.targNameArray.push(targName);
 			targetData.targDefValArray.push(targDefVal);
@@ -361,14 +400,14 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	
 		if(game.settings.get("dnd4e", "autoApplyEffects")){
 			if(targetData.targetHit.length){
-				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", options.parent);
-				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hitOrMiss", options.parent);
-				Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfHit", options.parent);
+				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", attacker);
+				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hitOrMiss", attacker);
+				Helper.applyEffectsToTokens(options.powerEffects, [attacker], "selfHit", attacker);
 			}
 			if(targetData.targetMissed.length){
-				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", options.parent);
-				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "hitOrMiss", options.parent);
-				Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfMiss", options.parent);
+				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", attacker);
+				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "hitOrMiss", attacker);
+				Helper.applyEffectsToTokens(options.powerEffects, [attacker], "selfMiss", attacker);
 			}
 		}
 	}
@@ -376,7 +415,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	// Move this so that it only gets called when attacks are made, not all d20 rolls?
 	if(options.powerEffects && game.settings.get("dnd4e", "autoApplyEffects")) {
 		// Always apply these effects after the attack, even if the player forgot to select targets
-		Helper.applyEffectsToTokens(options.powerEffects, [options.parent], "selfAfterAttack", options.parent);
+		Helper.applyEffectsToTokens(options.powerEffects, [attacker], "selfAfterAttack", attacker);
 	}
 
 	// Convert the roll to a chat message and return the roll

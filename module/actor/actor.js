@@ -849,14 +849,15 @@ export class Actor4e extends Actor {
 		*/
 		try{
 			for (let [id, res] of Object.entries(system.resistances)){
-				res.vuln = res.vuln || 0;
-				res.res = res.res || 0;
+				res.vuln = res?.vuln || 0;
+				res.res = res?.res || 0;
 				res.label = game.i18n.localize(DND4E.damageTypes[id]);
 
 				if(isNaN(parseInt(res?.absolute))){ //All logic only required if there is no usable absolute value
 				
-					//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.			
-					let resBonusValue = 0;
+					//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.
+					//We can't make them interact with change modes, so the best we can do is sort them into res/vuln and force upgrade or downgrade as appropriate.
+					let resManual = 0, vulnManual = 0;
 					if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
 						for(const b of res.bonus) {
 
@@ -869,13 +870,11 @@ export class Actor4e extends Actor {
 								val = Helper.commonReplace(b.value, actorData);
 								val = Roll.safeEval(Helper.replaceData(val, system));
 							}
-							res.vuln += Math.min(val,0);
-							res.res += Math.max(val,0);
-
-							resBonusValue += val;
+							vulnManual += Math.min(val,0);
+							resManual += Math.max(val,0);
 						}
 					}
-					res.resBonusValue = resBonusValue; // This value is displayed on the actor sheet
+					res.resBonusValue = resManual + vulnManual; // Total of manual bonuses, to display on actor sheet
 					
 					//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
 					for ( let i of this.items) {
@@ -885,15 +884,15 @@ export class Actor4e extends Actor {
 					}
 					
 					//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
-					const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
+					const damageMods = [vulnManual, resManual, res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
 					
 					for ( let val of damageMods ) {
 						if ( val < 0 ){
 							//console.debug(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.vuln}`);
-							res.vuln = Math.min(res.vuln||0,val);
-						} else {
+							res.vuln = Math.min(res.vuln,val);
+						} else if ( val > 0 ) {
 							//console.debug(`${game.i18n.localize(DND4E.damageTypes[id])}: Checked new value ${val} against existing value ${res?.res}`);
-							res.res = Math.max(res.res||0,val);
+							res.res = Math.max(res.res,val);
 						}
 					}
 					
@@ -1022,13 +1021,13 @@ export class Actor4e extends Actor {
 				let modBonus = def.ability != "" ? data.abilities[def.ability].mod : 0;
 
 				def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;
-				def.value += Math.max(def.feat || 0, globalBonus.feat || 0);
-				def.value += Math.max(def.item || 0, globalBonus.item || 0);
-				def.value += Math.max(def.power || 0, globalBonus.power || 0);
-				def.value += Math.max(def.race || 0, globalBonus.race || 0);
-				def.value += Math.max(def.enhance || 0, globalBonus.enhance || 0);
-				def.value += def.shield || 0;
-				def.value += def.untyped || 0;
+				def.value += Math.max(def?.feat || 0, globalBonus?.feat || 0);
+				def.value += Math.max(def?.item || 0, globalBonus?.item || 0);
+				def.value += Math.max(def?.power || 0, globalBonus?.power || 0);
+				def.value += Math.max(def?.race || 0, globalBonus?.race || 0);
+				def.value += Math.max(def?.enhance || 0, globalBonus?.enhance || 0);
+				def.value += def?.shield || 0;
+				def.value += def?.untyped || 0;
 				def.value += globalBonus.untyped;
 				//No way to sort manual bonuses, so they just get added regardless.
 				def.value += globalBonus.bonusValue;			
@@ -1125,13 +1124,13 @@ export class Actor4e extends Actor {
 				} else {
 					def.value = def?.base || 0;
 				}
-				def.value += Math.max(def.feat || 0, globalBonus.feat || 0);
-				def.value += Math.max(def.item || 0, globalBonus.item || 0);
-				def.value += Math.max(def.power || 0, globalBonus.power || 0);
-				def.value += Math.max(def.race || 0, globalBonus.race || 0);
-				def.value += Math.max(def.enhance || 0, globalBonus.enhance || 0);
-				def.value += def.shield || 0;
-				def.value += def.untyped || 0;
+				def.value += Math.max(def?.feat || 0, globalBonus?.feat || 0);
+				def.value += Math.max(def?.item || 0, globalBonus?.item || 0);
+				def.value += Math.max(def?.power || 0, globalBonus?.power || 0);
+				def.value += Math.max(def?.race || 0, globalBonus?.race || 0);
+				def.value += Math.max(def?.enhance || 0, globalBonus?.enhance || 0);
+				def.value += def?.shield || 0;
+				def.value += def?.untyped || 0;
 				def.value += globalBonus.untyped;
 				
 				//trim value according to floor and ceil

@@ -1095,7 +1095,8 @@
 					"formula": "@wepAttack + @powerMod + @lvhalf"
 				},
 				"hit": {
-					"shareDamageRoll": false,
+					"shareDamageRoll": true,
+					"damageBonusNull": false,
 					"isDamage": true,
 					"isHealing": false,
 					"healSurge": "",

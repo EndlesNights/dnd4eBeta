@@ -1,8 +1,23 @@
 # Changelog
 
+## Version 0.6.20
+- Improved trait selector dropdown. This addresses a bug noted by PuloDoGato on Discord, where you could select the weapon categories but not the individual weapons. (Fox)
+- Fixes a bug where attack bonus automation mistakenly checked opportunity attacks against the wrong key. (SagaTympana)
+- Adds keys for conditional defence modifiers! Custom 4e modifiers can now use the `defence` key to target power/weapon properties of attacks used against the character. (SagaTympana)
+  - Updates the Manual & Help Compendium on custom 4e modifiers. (Fox)
+- Adds the beginning of distance detection in attack automation! This is in the initial stage for now, but lays the groundwork for the much-requested flanking detection, as well as some other neat automation features like range enforcement. For now, enjoy enhanced automation of melee advantage and range penalties against prone targets. (SagaTympana)
+- Gives powers a toggle to ignore all bonus damage from effects and global modifier. Should be very handy for fixed-damage powers like assassin's shroud, non-rolls, and the many "deal XYZ additional damage" style rider effects. (Fox)
+ 
+## Version 0.6.19
+- Hotfix for broken sheet rolls caused by 0.6.18. (Fox)
+
+## Version 0.6.18
+- Fixed `@powMax` variable to return correct values for non-weapon damage. (SagaTympana)
+- Fixed a bug from 0.6.17 where rolled powers no longer had parent actor required for effect application. (SagaTympana & Fox)
+
 ## Version 0.6.17
 - Greatly reduced the volume of embedded data in chat messages. Should be a big help for games trying to load a big chat log. (Fox)
-- Fixed a bug where the UUID variable broke compendium links. (PLease update your formulae to `@charaID`/`@charaUID` accordingly!) (Fox)
+- Fixed a bug where the UUID variable broke compendium links. (Please update your formulae to `@charaID`/`@charaUID` accordingly!) (Fox)
 - Updated "Intimidation" string to "Intimidate" (Fox)
 - Improved handling of implements, to mitigate confusion around how weapliments qualify for use with implement powers. Also fixes an oversight where implement enhacement bonus relied on proficiency. (Fox)
 
@@ -1259,6 +1274,9 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
+
+
 
 
 

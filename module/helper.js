@@ -171,7 +171,7 @@ export class Helper {
 			
 			//Dummy up some extra effects to represent global atk/damage bonuses
 			const globalMods = actorData.system.modifiers;
-			if(globalMods[effectType].value != 0){
+			if(globalMods[effectType]?.value){
 				for (const [key, value] of Object.entries(globalMods[effectType])) {
 					//No way to sort bonus array types, so we'll combine them with untyped before checks.
 					const adjValue = ( key == 'untyped' ? value + globalMods[effectType].bonusValue : value);
@@ -340,7 +340,7 @@ export class Helper {
 				};
 				
 				if(powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
-				if(powerInnerData.attack?.isOpp || rollData?.isCharge) suitableKeywords.push("opp");
+				if(powerInnerData.attack?.isOpp || rollData?.isOpp) suitableKeywords.push("opp");
 				
 				if(powerInnerData.attack?.def){
 					suitableKeywords.push(`vs${powerInnerData.attack.def.capitalize()}`);
@@ -806,12 +806,13 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerInnerData.hit.baseQuantity;
+				quantity = this.commonReplace(quantity, actorData, powerInnerData, weaponInnerData, 0)
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
 				rQuantity.evaluateSync({maximize: true});
 				
-				if(this._isNumber(rQuantity.result)) {
-					quantity = rQuantity.result;
+				if(this._isNumber(rQuantity.total)) {
+					quantity = rQuantity.total;
 				} else {
 					quantity = 1;
 				}
@@ -1586,7 +1587,185 @@ export class Helper {
 			return "";
 		}
 	}
-	
+
+	static tokensForActor(actor) {
+		if (!(actor instanceof Actor))
+			return undefined;
+		if (actor.token)
+			return [actor.token.object];
+		const tokens = actor.getActiveTokens();
+		if (!tokens.length)
+			return undefined;
+		const controlled = tokens.filter(t => t.controlled);
+		return controlled.length ? controlled : tokens;
+	}
+
+	static tokenForActor(actor) {
+		const tokens = this.tokensForActor(actor);
+		if (!tokens)
+			return undefined;
+		return tokens[0];
+	}
+
+	static getPlaceable(tokenRef) {
+		if (!tokenRef)
+			return undefined;
+		if (tokenRef instanceof PlaceableObject)
+			return tokenRef;
+		let entity = tokenRef;
+		if (typeof tokenRef === "string") {
+			entity = fromUuidSync(tokenRef);
+		}
+		if (entity instanceof PlaceableObject)
+			return entity;
+		if (entity.object instanceof PlaceableObject)
+			return entity.object;
+		if (entity instanceof Actor)
+			return this.tokenForActor(entity);
+		if (entity instanceof Item && entity.parent instanceof Actor)
+			return this.tokenForActor(entity.parent);
+		if (entity instanceof ActiveEffect && entity.parent instanceof Actor)
+			return this.tokenForActor(entity.parent);
+		if (entity instanceof ActiveEffect && entity.parent instanceof Item)
+			return this.tokenForActor(entity.parent?.parent);
+		return undefined;
+	}
+
+	static measureDistances(segments, options = {}) {
+		let isGridless = canvas?.grid?.constructor.name === "GridlessGrid";
+		if (!isGridless || !options.gridSpaces || !canvas?.grid) {
+			return segments.map(s => canvas?.grid?.measurePath([s.ray.A, s.ray.B])).map(d => d.distance);
+			;
+		}
+		if (!canvas?.grid)
+			return 0;
+		const diagonals = game.settings.get("core", "gridDiagonals");
+		const canvasGridProxy = new Proxy(canvas.grid, {
+			get: function (target, prop, receiver) {
+				if (foundry.grid.SquareGrid.prototype[prop] instanceof Function) {
+					return foundry.grid.SquareGrid.prototype[prop].bind(canvasGridProxy);
+				}
+				else if (prop === "diagonals") {
+					return diagonals;
+				}
+				else if (prop === "isSquare")
+					return true;
+				else if (prop === "isGridless")
+					return false;
+				else if (prop === "isHex")
+					return false;
+				return Reflect.get(target, prop);
+			}
+		});
+		const GridDiagonals = CONST.GRID_DIAGONALS;
+		// First snap the poins to the nearest center point for equidistant/1,2,1/2,1,2
+		// I expected this would happen automatically in the proxy call - but didn't and not sure why.
+		if ([GridDiagonals.APPROXIMATE, GridDiagonals.EQUIDISTANT, GridDiagonals.ALTERNATING_1, GridDiagonals.ALTERNATING_2].includes(diagonals)) {
+			segments = segments.map(s => {
+				const gridPosA = canvasGridProxy.getOffset(s.ray.A);
+				const aCenter = canvasGridProxy.getCenterPoint(gridPosA);
+				const gridPosB = canvasGridProxy.getOffset(s.ray.B);
+				const bCenter = canvasGridProxy.getCenterPoint(gridPosB);
+				return { ray: new Ray(aCenter, bCenter) };
+			});
+		}
+		let distances = segments.map(s => canvasGridProxy.measurePath([s.ray.A, s.ray.B], {}));
+		return distances = distances.map(d => {
+			let distance = d.distance;
+			switch (diagonals) {
+				case GridDiagonals.EQUIDISTANT:
+				case GridDiagonals.ALTERNATING_1:
+				case GridDiagonals.ALTERNATING_2:
+					// already fudged by snapping so no extra adjustment
+					break;
+				case GridDiagonals.EXACT:
+				case GridDiagonals.RECTILINEAR:
+					distance = Math.max(0, d.distance);
+					break;
+				case GridDiagonals.APPROXIMATE:
+					if (d.diagonals > 0)
+						distance = Math.max(0, d.distance);
+					break;
+				case GridDiagonals.ILLEGAL:
+				default:
+					distance = d.distance;
+			}
+			return distance;
+		});
+	}
+
+	/** takes two tokens of any size and calculates the distance between them
+	*** gets the shortest distance betwen two tokens taking into account both tokens size
+	*** if wallblocking is set then wall are checked
+	**/
+	static computeDistance(t1 /*Token*/, t2 /*Token*/, wallsBlock = false ) {
+		if (!canvas || !canvas.scene)
+			return -1;
+		if (!canvas.grid || !canvas.dimensions)
+			return -1;
+		t1 = this.getPlaceable(t1);
+		t2 = this.getPlaceable(t2);
+		if (!t1 || !t2)
+			return -1;
+		if (!canvas || !canvas.grid || !canvas.dimensions)
+			return -1;
+		let t1DocWidth = t1.document.width ?? 1;
+		let t1DocHeight = t1.document.height ?? 1;
+		let t2DocWidth = t2.document.width ?? 1;
+		let t2DocHeight = t2.document.height ?? 1;
+		const t1StartX = t1DocWidth >= 1 ? 0.5 : t1DocWidth / 2;
+		const t1StartY = t1DocHeight >= 1 ? 0.5 : t1DocHeight / 2;
+		const t2StartX = t2DocWidth >= 1 ? 0.5 : t2DocWidth / 2;
+		const t2StartY = t2DocHeight >= 1 ? 0.5 : t2DocHeight / 2;
+		var x, x1, y, y1, d, r, segments = [], rdistance, distance;
+		if (!(t2.document instanceof WallDocument)) {
+			for (x = t1StartX; x < t1DocWidth; x++) {
+				for (y = t1StartY; y < t1DocHeight; y++) {
+					if (y === t1StartY + 1) {
+						if (x > t1StartX && x < t1DocWidth - t1StartX) {
+							// skip to the last y position;
+							y = t1DocHeight - t1StartY;
+						}
+					}
+					let origin;
+					const point = canvas.grid.getCenterPoint({ x: Math.round(t1.document.x + (canvas.dimensions.size * x)), y: Math.round(t1.document.y + (canvas.dimensions.size * y)) });
+					origin = new PIXI.Point(point.x, point.y);
+					for (x1 = t2StartX; x1 < t2DocWidth; x1++) {
+						for (y1 = t2StartY; y1 < t2DocHeight; y1++) {
+							if (y1 === t2StartY + 1) {
+								if (x1 > t2StartX && x1 < t2DocWidth - t2StartX) {
+									// skip to the last y position;
+									y1 = t2DocHeight - t2StartY;
+								}
+							}
+							const point = canvas.grid.getCenterPoint({ x: Math.round(t2.document.x + (canvas.dimensions.size * x1)), y: Math.round(t2.document.y + (canvas.dimensions.size * y1)) });
+							let dest = new PIXI.Point(point.x, point.y);
+							const r = new Ray(origin, dest);
+							if (wallsBlock) {
+								let collisionCheck;
+								collisionCheck = CONFIG.Canvas.polygonBackends.sight.testCollision(origin, dest, { source: t1.document, mode: "any", type: "sight" });
+								if (collisionCheck)
+									continue;
+								break;
+							}
+							segments.push({ ray: r });
+						}
+					}
+				}
+			}
+			if (segments.length === 0) {
+				return -1;
+			}
+			rdistance = segments.map(ray => this.measureDistances([ray], { gridSpaces: true }));
+			distance = Math.min(...rdistance);
+		}
+		else {
+			const w = t2.document;
+			let closestPoint = foundry.utils.closestPointToSegment(t1.center, w.object.edge.a, w.object.edge.b);
+			distance = this.measureDistances([{ ray: new Ray(t1.center, closestPoint) }], { gridSpaces: true });
+		}
+		return Math.max(distance, 0);
+	}
 }
 
 export async function handleApplyEffectToToken(data){
