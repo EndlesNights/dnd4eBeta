@@ -813,6 +813,8 @@
 "DND4E.PowerBaseDamage": "Base Damage",
 "DND4E.PowerCreate": "Create Power",
 "DND4E.PowerDaily": "Daily",
+"DND4E.PowerDamBonusNull": "Ignores Bonus Damage",
+"DND4E.PowerDamBonusNullTooltip": "System will not add damage bonuses from active effects or global modifiers. (Bonuses from weapon/implement still be applied if @wepDamage appears in the formula.)",
 "DND4E.PowerDamShared": "Shared Damage Roll",
 "DND4E.PowerDelete": "Delete",
 "DND4E.PowerEdit": "Edit Power",
