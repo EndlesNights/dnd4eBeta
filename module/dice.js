@@ -62,7 +62,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 			targDataArray.targNameArray.push(targName);
 			//console.debug(data);
 			if(targetArr[targ].actor.statuses.has('prone') && (item?.system.rangeType === 'melee' || weaponUse?.system.weaponType.slice(-1) === 'M')) {
-				let isThrown = false
+				let isThrown = false;
 				if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
 					const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
 					if (Helper.computeDistance(actor, targetArr[targ]) > meleeRange) {
@@ -258,7 +258,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
 				
 				if(targetStatus.has('prone') && (item?.system.rangeType === 'melee' || weaponUse?.system.weaponType.slice(-1) === 'M')) {
-					let isThrown = false
+					let isThrown = false;
 					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
 						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
 						if (Helper.computeDistance(actor, targets[rollExpressionIdx]) > meleeRange) {
