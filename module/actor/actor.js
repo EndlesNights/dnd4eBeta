@@ -855,8 +855,9 @@ export class Actor4e extends Actor {
 
 				if(isNaN(parseInt(res?.absolute))){ //All logic only required if there is no usable absolute value
 				
-					//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.			
-					let resBonusValue = 0;
+					//Bonuses entered through the sheet are assumed to be managed manually, so we will collect them without biggest/smallest only logic.
+					//We can't make them interact with change modes, so the best we can do is sort them into res/vuln and force upgrade or downgrade as appropriate.
+					let resManual = 0, vulnManual = 0;
 					if(!(res.bonus.length === 1 && jQuery.isEmptyObject(res.bonus[0]))) {
 						for(const b of res.bonus) {
 
@@ -869,13 +870,11 @@ export class Actor4e extends Actor {
 								val = Helper.commonReplace(b.value, actorData);
 								val = Roll.safeEval(Helper.replaceData(val, system));
 							}
-							res.vuln += Math.min(val,0);
-							res.res += Math.max(val,0);
-
-							resBonusValue += val;
+							vulnManual += Math.min(val,0);
+							resManual += Math.max(val,0);
 						}
 					}
-					res.resBonusValue = resBonusValue; // This value is displayed on the actor sheet
+					res.resBonusValue = resManual + vulnManual; // Total of manual bonuses, to display on actor sheet
 					
 					//Armour might grant resistance too; this should never be negative, but if somebody wants to do that we may as well let it work.
 					for ( let i of this.items) {
@@ -885,7 +884,7 @@ export class Actor4e extends Actor {
 					}
 					
 					//4e bonus types shouldn't be used, but may still be present. If they are present we will assign them based on whether they total positive or negative.
-					const damageMods = [res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
+					const damageMods = [vulnManual, resManual, res?.armour || 0, res?.feat || 0, res?.item || 0, res?.power || 0, res?.race || 0, res?.untyped || 0];
 					
 					for ( let val of damageMods ) {
 						if ( val < 0 ){
