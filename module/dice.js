@@ -60,19 +60,23 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 		for (let targ = 0; targ < numTargets; targ++) {
 			const targName = targetArr[targ].name;
 			targDataArray.targNameArray.push(targName);
+			const targetDist = Helper.computeDistance(actor, targetArr[targ]);
 			//console.debug(data);
-			if(targetArr[targ].actor.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
+			if (targetArr[targ].actor.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
 				targDataArray.meleeVsProne = true;
 				if(item?.system.rangeType === 'weapon'){
 					let isThrown = false;
 					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
 						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
-						if (Helper.computeDistance(actor, targetArr[targ]) > meleeRange) {
+						if (targetDist > meleeRange) {
 							//Not in melee range so it must have been thrown
 							targDataArray.meleeVsProne = false;
 						}
 					}
 				}
+			}
+			if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.long && targetDist > weaponUse?.system.range.value)) {
+				targDataArray.longRange = true;
 			}
 			targDataArray.targets.push({
 				'name': targetArr[targ].name,
@@ -258,17 +262,25 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				//Target conditions
 				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
 				
-				if(targetStatus.has('prone') && (item?.system.rangeType === 'melee' || weaponUse?.system.weaponType.slice(-1) === 'M')) {
+				const targetDist = Helper.computeDistance(actor, theTargets[targetIndex]);
+				if(targetStatus.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
 					let isThrown = false;
-					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
-						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
-						if (Helper.computeDistance(actor, targets[rollExpressionIdx]) > meleeRange) {
-							isThrown = true;
+					if(item?.system.rangeType === 'weapon'){
+						if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
+							const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
+							if (targetDist > meleeRange) {
+								//Not in melee range so it must have been thrown
+								isThrown = true;
+							}
 						}
 					}
 					if (!isThrown) {
 						targetBonuses.push('@comAdv')
 					}
+				}
+
+				if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.long && targetDist > weaponUse?.system.range.value)) {
+					targetBonuses.push('@longRange')
 				}
 
 				if(targetStatus.includes('bloodied')) targetBonuses.push('@bloodied');
