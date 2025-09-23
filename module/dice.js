@@ -370,7 +370,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			const meleeRange = weaponUse?.system.properties.rch ? 2 : 1;
 			const dist = Helper.computeDistance(actor, targets[rollExpressionIdx])
 			const isThrown = (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) && dist > meleeRange;
-			if (targets[rollExpressionIdx].actor.statuses.has('prone') && (item?.system.rangeType === 'ranged' || weaponUse?.system.weaponType.slice(-1) === 'R' || isThrown) && dist > 1) {
+			if (targets[rollExpressionIdx].document.actor.statuses.has('prone') && (item?.system.rangeType === 'range' || (item?.system.rangeType === 'weapon' && (weaponUse?.system.weaponType.slice(-1) === 'R' || isThrown))) && dist > 1) {
 				const proneDefenseBonusVsRanged = 2; // TODO Make this configurable somehow?
 				targDefVal += proneDefenseBonusVsRanged;
 			}
