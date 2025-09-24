@@ -65,7 +65,6 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 			if (targetArr[targ].actor.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
 				targDataArray.meleeVsProne = true;
 				if(item?.system.rangeType === 'weapon'){
-					let isThrown = false;
 					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
 						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
 						if (targetDist > meleeRange) {
@@ -77,6 +76,9 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 			}
 			if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.long && targetDist > weaponUse?.system.range.value)) {
 				targDataArray.longRange = true;
+			}
+			if (Helper.computeFlankingStatus(Helper.tokenForActor(actor), targetArr[targ])) {
+				targDataArray.isFlanking = true;
 			}
 			targDataArray.targets.push({
 				'name': targetArr[targ].name,
