@@ -1234,6 +1234,13 @@ DND4E.powerDiceTypes = {
 	"d20": "d20"
 };
 
+DND4E.autoTargetModes = {
+    "none": "None",
+    "all": "All",
+    "allies": "Allies",
+    "enemies": "Enemies"
+}
+
 /* -------------------------------------------- */
 /**
  * Character senses options

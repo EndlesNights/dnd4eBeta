@@ -104,6 +104,17 @@
 		</div>
 	</div>
 
+	{{#if system.isArea}}
+		<div class="form-group short">
+			<label>{{ localize "DND4E.AutoTarget" }}</label>
+			<div class="form-fields auto-target">
+				<select name="system.autoTarget">
+					{{selectOptions config.autoTargetModes selected=system.autoTarget}}
+				</select>
+			</div>
+		</div>
+	{{/if}}
+
 	<div class="form-group">
 		<label>{{ localize "DND4E.Requirements" }}</label>
 		<div class="form-fields">

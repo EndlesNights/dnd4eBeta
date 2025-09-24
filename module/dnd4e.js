@@ -411,3 +411,7 @@ Hooks.on('renderCombatTracker', (app,html,context) => {
 		console.error(`Inititiave display mask failed in combat tracker. ${e}`);
 	}
 });
+
+Hooks.on('createMeasuredTemplate', async (templateDoc) => {
+    // TODO
+});
