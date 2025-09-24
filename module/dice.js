@@ -265,7 +265,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
 				
 				const targetDist = Helper.computeDistance(actor, theTargets[targetIndex]);
-				if(targetStatus.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
+				if(targetStatus.includes('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
 					let isThrown = false;
 					if(item?.system.rangeType === 'weapon'){
 						if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
@@ -276,9 +276,13 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 							}
 						}
 					}
-					if (!isThrown) {
+					if (!isThrown && !targetBonuses.includes('@comAdv')) {
 						targetBonuses.push('@comAdv')
 					}
+				}
+
+				if (!targetBonuses.includes('@comAdv') && Helper.computeFlankingStatus(Helper.tokenForActor(actor), theTargets[targetIndex])) {
+					targetBonuses.push('@comAdv')
 				}
 
 				if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.long && targetDist > weaponUse?.system.range.value)) {
