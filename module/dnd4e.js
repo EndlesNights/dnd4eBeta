@@ -413,6 +413,7 @@ Hooks.on('renderCombatTracker', (app,html,context) => {
 });
 
 Hooks.on('createMeasuredTemplate', async (templateDoc) => {
+	if (game.user.id !== templateDoc.author.id) return;
 	const originUuid = templateDoc.getFlag('dnd4e', 'origin');
 	// Item may be deleted from the actor when we get here, so get the item data from the template if we have to
 	const flagDocument = await fromUuid(originUuid) || templateDoc.getFlag('dnd4e', 'item');
@@ -428,6 +429,8 @@ Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 	}
 	let shape = templateDoc.object?.shape;
 	if (!shape) return;
+	game.user.updateTokenTargets();
+	game.user.broadcastActivity({targets: []});
 	const excludeUser = !flagDocument.system.autoTarget.includeUser || flagDocument.system.autoTarget.mode === 'enemies';
 	for (let token of canvas.tokens.placeables) {
 		if ((excludeUser && token.actor.uuid === actorUuid) || token.actor.statuses.has('dead')) continue;
