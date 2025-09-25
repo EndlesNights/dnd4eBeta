@@ -108,6 +108,7 @@ export default class ItemSheet4e extends ItemSheet {
 		if(itemData.system?.rangeType) {
 			if(!["personal","closeBurst","closeBlast","","touch"].includes(itemData.system.rangeType)) itemData.system.isRange = true;
 			if(["closeBurst","closeBlast","rangeBurst","rangeBlast","wall"].includes(itemData.system.rangeType)) itemData.system.isArea = true;
+			if(["none", "enemies"].includes(itemData.system.autoTarget.mode)) itemData.system.excludeUserFromTargeting = true;
 			
 			itemData.system.isRecharge = itemData.system?.useType === "recharge";
 			

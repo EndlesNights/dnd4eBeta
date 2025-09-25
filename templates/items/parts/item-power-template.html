@@ -104,6 +104,21 @@
 		</div>
 	</div>
 
+	{{#if system.isArea}}
+		<div class="form-group short">
+			<label>{{ localize "DND4E.AutoTarget" }}</label>
+			<div class="form-fields auto-target">
+				<select name="system.autoTarget.mode">
+					{{selectOptions config.autoTargetModes selected=system.autoTarget.mode}}
+				</select>
+				{{#unless system.excludeUserFromTargeting}}
+					<label>{{ localize "DND4E.AutoTargetIncludeSelf" }}</label>
+					<span class="checkbox"><input class="checkbox" type="checkbox" name="system.autoTarget.includeSelf" data-dtype="Boolean" {{checked system.autoTarget.includeSelf}}/></span>
+				{{/unless}}
+			</div>
+		</div>
+	{{/if}}
+
 	<div class="form-group">
 		<label>{{ localize "DND4E.Requirements" }}</label>
 		<div class="form-fields">
