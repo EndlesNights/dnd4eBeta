@@ -112,8 +112,8 @@
 					{{selectOptions config.autoTargetModes selected=system.autoTarget.mode}}
 				</select>
 				{{#unless system.excludeUserFromTargeting}}
-					<label>{{ localize "DND4E.AutoTargetIncludeUser" }}</label>
-					<span class="checkbox"><input class="checkbox" type="checkbox" name="system.autoTarget.includeUser" data-dtype="Boolean" {{checked system.autoTarget.includeUser}}/></span>
+					<label>{{ localize "DND4E.AutoTargetIncludeSelf" }}</label>
+					<span class="checkbox"><input class="checkbox" type="checkbox" name="system.autoTarget.includeSelf" data-dtype="Boolean" {{checked system.autoTarget.includeSelf}}/></span>
 				{{/unless}}
 			</div>
 		</div>

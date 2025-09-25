@@ -1342,7 +1342,7 @@
 			"rangeType": "weapon",
 			"autoTarget": {
 				"mode": "none",
-				"includeUser": true
+				"includeSelf": true
 			},
 			"rangeTextShort": "",
 			"rangeText": "",

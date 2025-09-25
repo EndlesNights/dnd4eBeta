@@ -142,7 +142,7 @@
 "DND4E.Attuned": "Attuned",
 "DND4E.Augmentable": "Augmentable",
 "DND4E.AutoTarget": "Auto Target",
-"DND4E.AutoTargetIncludeUser": "Include User",
+"DND4E.AutoTargetIncludeSelf": "Include Self",
 "DND4E.Aura": "Aura",
 "DND4E.AutoanimationHookAttack": "On Attack",
 "DND4E.AutoanimationHookDamage": "On Damage",
