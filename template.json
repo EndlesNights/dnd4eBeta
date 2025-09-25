@@ -1340,7 +1340,10 @@
 			"weaponType": "melee",
 			"weaponUse": "default",
 			"rangeType": "weapon",
-			"autoTarget": "none",
+			"autoTarget": {
+				"mode": "none",
+				"includeUser": true
+			},
 			"rangeTextShort": "",
 			"rangeText": "",
 			"rangePower": "",

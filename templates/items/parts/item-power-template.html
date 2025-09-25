@@ -108,9 +108,11 @@
 		<div class="form-group short">
 			<label>{{ localize "DND4E.AutoTarget" }}</label>
 			<div class="form-fields auto-target">
-				<select name="system.autoTarget">
-					{{selectOptions config.autoTargetModes selected=system.autoTarget}}
+				<select name="system.autoTarget.mode">
+					{{selectOptions config.autoTargetModes selected=system.autoTarget.mode}}
 				</select>
+				<label>{{ localize "DND4E.AutoTargetIncludeUser" }}</label>
+				<span class="checkbox"><input class="checkbox" type="checkbox" name="system.autoTarget.includeUser" data-dtype="Boolean" {{checked system.autoTarget.includeUser}}/></span>
 			</div>
 		</div>
 	{{/if}}

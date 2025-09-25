@@ -398,7 +398,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
 });
 
 Hooks.on('renderCombatTracker', (app,html,context) => {
-    if (!app?.viewed) return // Skip entirely if there's no currently viewed combat
+	if (!app?.viewed) return // Skip entirely if there's no currently viewed combat
 	try{
 		html.find('.token-initiative').each((i,el) => {
 			let combatant = app.viewed.combatants.get(el.parentElement.dataset.combatantId);
@@ -413,5 +413,87 @@ Hooks.on('renderCombatTracker', (app,html,context) => {
 });
 
 Hooks.on('createMeasuredTemplate', async (templateDoc) => {
-    // TODO
+	// TODO
+	const originUuid = templateDoc.getFlag('dnd4e', 'origin');
+	const flagDocument = await fromUuid(originUuid);
+	if (!flagDocument || flagDocument.system.autoTarget.mode === 'none') return;
+	const actorUuid = flagDocument?.actor?.uuid;
+	if (!actorUuid) return;
+	const token = Helper.tokenForActor(await fromUuid(actorUuid));
+	if (!token) return;
+	const disposition = token.document.disposition;
+	if (!templateDoc.object.shape) {
+		templateDoc.object._refreshShape();
+	}
+	let shape = templateDoc.object?.shape;
+	if (!shape) return;
+	const excludeUser = !flagDocument.system.autoTarget.includeUser || flagDocument.system.autoTarget.mode === 'enemies';
+	for (let token of canvas.tokens.placeables) {
+		if (excludeUser && token.actor.uuid === actorUuid) continue;
+		switch (flagDocument.system.autoTarget.mode) {
+			case 'all':
+				if (shape.contains(token.center.x - templateDoc.x, token.center.y - templateDoc.y)) {
+					token.setTarget(!token.isTargeted, { releaseOthers: false });
+				}
+				break;
+			case 'allies':
+				if (token.document.disposition === disposition) {
+					if (shape.contains(token.center.x - templateDoc.x, token.center.y - templateDoc.y)) {
+						token.setTarget(!token.isTargeted, { releaseOthers: false });
+					}
+				}
+				break;
+			case 'enemies':
+				if (token.document.disposition === -1 * disposition) {
+					if (shape.contains(token.center.x - templateDoc.x, token.center.y - templateDoc.y)) {
+						token.setTarget(!token.isTargeted, { releaseOthers: false });
+					}
+				}
+				break;
+			}
+	}
+	/*let shape = templateDoc.object?.shape;
+	let scene = templateDoc.parent;
+	let tokens = new Set();
+	if (!shape && !scene) return tokens;
+	let {size} = scene.grid;
+	let sceneTokens = scene.tokens;
+	for (let token of sceneTokens) {
+		let {width, height, x: tokX, y: tokY} = token;
+		let startX = width >= 1 ? 0.5 : width / 2;
+		let startY = height >= 1 ? 0.5 : height / 2;
+		for (let x = startX; x < width; x++) {
+			for (let y = startY; y < width; y++) {
+				let curr = {
+					x: tokX + x * size - templateDoc.x,
+					y: tokY + y * size - templateDoc.y
+				};
+				let contains = shape.contains(curr.x, curr.y);
+				let isOn = shape.getBounds().pointIsOn(curr);
+				if (contains && !isOn) {
+					tokens.add(token.object);
+					continue;
+				}
+			}
+		}
+	}
+	if (tokens.size) {
+		for (const token in tokens) {
+			switch (flagDocument.system.autoTarget) {
+				case 'all':
+					game.user.targets.add(token);
+					break;
+				case 'allies':
+					if (token.document.dispoition === disposition) {
+						game.users.targets.add(token);
+					}
+					break;
+				case 'enemies':
+					if (token.document.disposition === -1 * disposition) {
+						game.users.targets.add(token);
+					}
+					break;
+			}
+		}
+	}*/
 });
