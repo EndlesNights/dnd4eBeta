@@ -428,7 +428,7 @@ Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 	if (!shape) return;
 	const excludeUser = !flagDocument.system.autoTarget.includeUser || flagDocument.system.autoTarget.mode === 'enemies';
 	for (let token of canvas.tokens.placeables) {
-		if (excludeUser && token.actor.uuid === actorUuid) continue;
+		if ((excludeUser && token.actor.uuid === actorUuid) || token.actor.statuses.has('dead')) continue;
 		switch (flagDocument.system.autoTarget.mode) {
 			case 'all':
 				if (shape.contains(token.center.x - templateDoc.x, token.center.y - templateDoc.y)) {
