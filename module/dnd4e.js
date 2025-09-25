@@ -423,37 +423,28 @@ Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 	if (!actorUuid) return;
 	const token = Helper.tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;
-	const disposition = token.document.disposition;
-	if (!templateDoc.object.shape) {
-		templateDoc.object._refreshShape();
-	}
-	let shape = templateDoc.object?.shape;
-	if (!shape) return;
 	game.user.updateTokenTargets();
 	game.user.broadcastActivity({targets: []});
+	let tokens = Helper.getTokensInTemplate(templateDoc, true);
+	if (!tokens.size) return;
+	const disposition = token.document.disposition;
 	const excludeUser = !flagDocument.system.autoTarget.includeSelf || flagDocument.system.autoTarget.mode === 'enemies';
-	for (let token of canvas.tokens.placeables) {
-		if ((excludeUser && token.actor.uuid === actorUuid) || token.actor.statuses.has('dead')) continue;
+	for (let targetToken of tokens) {
+		if ((excludeUser && targetToken.actor.uuid === actorUuid) || targetToken.actor.statuses.has('dead')) continue;
 		switch (flagDocument.system.autoTarget.mode) {
 			case 'all':
-				if (shape.contains(token.center.x - templateDoc.x, token.center.y - templateDoc.y)) {
-					token.setTarget(true, { releaseOthers: false });
-				}
+					targetToken.setTarget(true, { releaseOthers: false });
 				break;
 			case 'allies':
-				if (token.document.disposition === disposition) {
-					if (shape.contains(token.center.x - templateDoc.x, token.center.y - templateDoc.y)) {
-						token.setTarget(true, { releaseOthers: false });
-					}
+				if (targetToken.document.disposition === disposition) {
+					targetToken.setTarget(true, { releaseOthers: false });
 				}
 				break;
 			case 'enemies':
-				if (token.document.disposition === -1 * disposition) {
-					if (shape.contains(token.center.x - templateDoc.x, token.center.y - templateDoc.y)) {
-						token.setTarget(true, { releaseOthers: false });
-					}
+				if (targetToken.document.disposition === -1 * disposition) {
+					targetToken.setTarget(true, { releaseOthers: false });
 				}
 				break;
-			}
+		}
 	}
 });
