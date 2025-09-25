@@ -414,9 +414,11 @@ Hooks.on('renderCombatTracker', (app,html,context) => {
 
 Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 	const originUuid = templateDoc.getFlag('dnd4e', 'origin');
-	const flagDocument = await fromUuid(originUuid);
+	// Item may be deleted from the actor when we get here, so get the item data from the template if we have to
+	const flagDocument = await fromUuid(originUuid) || templateDoc.getFlag('dnd4e', 'item');
 	if (!flagDocument || flagDocument.system.autoTarget.mode === 'none') return;
-	const actorUuid = flagDocument?.actor?.uuid;
+	// If we just have the template flag's item data because the item was deleted, we'll need to work backward from the item uuid to get the actor
+	const actorUuid = flagDocument?.actor?.uuid || originUuid.split('.Item')[0];
 	if (!actorUuid) return;
 	const token = Helper.tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;
@@ -432,20 +434,20 @@ Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 		switch (flagDocument.system.autoTarget.mode) {
 			case 'all':
 				if (shape.contains(token.center.x - templateDoc.x, token.center.y - templateDoc.y)) {
-					token.setTarget(!token.isTargeted, { releaseOthers: false });
+					token.setTarget(true, { releaseOthers: false });
 				}
 				break;
 			case 'allies':
 				if (token.document.disposition === disposition) {
 					if (shape.contains(token.center.x - templateDoc.x, token.center.y - templateDoc.y)) {
-						token.setTarget(!token.isTargeted, { releaseOthers: false });
+						token.setTarget(true, { releaseOthers: false });
 					}
 				}
 				break;
 			case 'enemies':
 				if (token.document.disposition === -1 * disposition) {
 					if (shape.contains(token.center.x - templateDoc.x, token.center.y - templateDoc.y)) {
-						token.setTarget(!token.isTargeted, { releaseOthers: false });
+						token.setTarget(true, { releaseOthers: false });
 					}
 				}
 				break;
