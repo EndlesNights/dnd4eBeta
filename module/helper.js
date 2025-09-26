@@ -354,6 +354,11 @@ export class Helper {
 					customKeys.forEach((item) => suitableKeywords.push(item));
 				}
 
+				// Can be done with already with a global bonus of some multiple of @bloodied, but useful for defence bonuses like the Deva's Astral Majesty
+				if(rollData?.details.isBloodied){
+					suitableKeywords.push("bloodied");
+				}
+
 				if (debug) {
 					console.debug(rollData);
 					console.debug(`${debug} based on power source, effect type, damage type and (if weapon) weapon group and properties the following effect keys are suitable`);
