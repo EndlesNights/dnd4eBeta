@@ -1234,6 +1234,17 @@ DND4E.powerDiceTypes = {
 	"d20": "d20"
 };
 
+DND4E.sortValues = {
+	useType: {
+		'atwill': 0,
+		'encounter': 1,
+		'daily': 2,
+		'recharge': 3,
+		'item': 4,
+		'other': 5
+	}
+}
+
 /* -------------------------------------------- */
 /**
  * Character senses options

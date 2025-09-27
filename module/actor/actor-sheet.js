@@ -379,8 +379,16 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_compareValues(key, order = 'asc') {
 		return function innerSort(a, b) {
 			if (a.hasOwnProperty(key) && b.hasOwnProperty(key)) {	
-				const varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
-				const varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
+				let varA;
+				let varB;
+				if (DND4E.sortValues[key]) {
+					varA = DND4E.sortValues[key][a[key]];
+					varB = DND4E.sortValues[key][b[key]];
+				}
+				else {
+					varA = (typeof a[key] === 'string') ? a[key].toUpperCase() : a[key];
+					varB = (typeof b[key] === 'string') ? b[key].toUpperCase() : b[key];
+				}
 	
 				let comparison = 0;
 				if (varA > varB) {
@@ -394,10 +402,16 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				}
 				return (order === 'desc') ? (comparison * -1) : comparison;
 			} else if (a.system.hasOwnProperty(key) && b.system.hasOwnProperty(key)) {
-
-				const varA = (typeof a.system[key] === 'string') ? a.system[key].toUpperCase() : a.system[key];
-				const varB = (typeof b.system[key] === 'string') ? b.system[key].toUpperCase() : b.system[key];
-	
+				let varA;
+				let varB;
+				if (DND4E.sortValues[key]) {
+					varA = DND4E.sortValues[key][a.system[key]];
+					varB = DND4E.sortValues[key][b.system[key]];
+				}
+				else {
+					varA = (typeof a.system[key] === 'string') ? a.system[key].toUpperCase() : a.system[key];
+					varB = (typeof b.system[key] === 'string') ? b.system[key].toUpperCase() : b.system[key];
+				}
 				let comparison = 0;
 				if (varA > varB) {
 					comparison = 1;
