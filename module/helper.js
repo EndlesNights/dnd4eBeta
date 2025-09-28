@@ -1976,6 +1976,7 @@ export class Helper {
 			}
 		}
 		return false;
+	}
 
 	static getTokensInTemplate(templateDoc, wallsBlock = false) {
 		const scene = templateDoc.parent;
