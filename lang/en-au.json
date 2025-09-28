@@ -141,6 +141,8 @@
 "DND4E.Attributes": "Attributes",
 "DND4E.Attuned": "Attuned",
 "DND4E.Augmentable": "Augmentable",
+"DND4E.AutoTarget": "Auto Target",
+"DND4E.AutoTargetIncludeSelf": "Include User",
 "DND4E.Aura": "Aura",
 "DND4E.AutoanimationHookAttack": "On Attack",
 "DND4E.AutoanimationHookDamage": "On Damage",
@@ -1415,6 +1417,11 @@
 "DND4E.Weight": "Weight",
 "DND4E.WIL": "WILL",
 "DND4E.Zone": "Zone",
+
+"DND4E.AutoTargetModes.None": "None",
+"DND4E.AutoTargetModes.All": "All",
+"DND4E.AutoTargetModes.Allies": "Allies",
+"DND4E.AutoTargetModes.Enemies": "Enemies",
 
 "DND4E.Equipment.Alt.Alt": "Alternative Reward",
 "DND4E.Equipment.Alt.Blessing": "Blessing",
