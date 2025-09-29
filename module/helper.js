@@ -1748,10 +1748,9 @@ export class Helper {
 							const r = new Ray(origin, dest);
 							if (wallsBlock) {
 								let collisionCheck;
-								collisionCheck = CONFIG.Canvas.polygonBackends.sight.testCollision(origin, dest, { source: t1.document, mode: "any", type: "sight" });
+								collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, { source: t1.document, mode: "any", type: "move" });
 								if (collisionCheck)
 									continue;
-								break;
 							}
 							segments.push({ ray: r });
 						}
@@ -1770,6 +1769,46 @@ export class Helper {
 			distance = this.measureDistances([{ ray: new Ray(t1.center, closestPoint) }], { gridSpaces: true });
 		}
 		return Math.max(distance, 0);
+	}
+
+	static getTokensInTemplate(templateDoc, wallsBlock = false) {
+		const scene = templateDoc.parent;
+		let {size} = scene.grid;
+		if (!templateDoc.object.shape) {
+			templateDoc.object._refreshShape();
+		}
+		let shape = templateDoc.object?.shape;
+		if (!shape) return;
+		let tokens = new Set();
+		let sceneTokens = scene.tokens;
+		for (let token of sceneTokens) {
+			let {width, height, x: tokX, y: tokY} = token;
+			let startX = width >= 1 ? 0.5 : width / 2;
+			let startY = height >= 1 ? 0.5 : height / 2;
+			for (let x = startX; x < width; x++) {
+				for (let y = startY; y < width; y++) {
+					let curr = {
+						x: tokX + x * size - templateDoc.x,
+						y: tokY + y * size - templateDoc.y
+					};
+					let contains = shape.contains(curr.x, curr.y);
+					let isOn = shape.getBounds().pointIsOn(curr);
+					if (contains && !isOn) {
+						if (wallsBlock) {
+							let collisionCheck;
+							const originPoint = new PIXI.Point(templateDoc.x, templateDoc.y);
+							const targetPoint = new PIXI.Point(tokX + x * size, tokY + y * size);
+							collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(originPoint, targetPoint, { source: templateDoc, mode: "any", type: "move" });
+							if (collisionCheck)
+								continue;
+						}
+						tokens.add(token.object);
+						continue;
+					}
+				}
+			}
+		}
+		return tokens;
 	}
 }
 
