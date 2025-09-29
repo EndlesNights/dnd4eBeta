@@ -1242,8 +1242,14 @@ DND4E.sortValues = {
 		'recharge': 3,
 		'item': 4,
 		'other': 5
-	}
-}
+};
+  
+DND4E.autoTargetModes = {
+    "none": "None",
+    "all": "All",
+    "allies": "Allies",
+    "enemies": "Enemies"
+};
 
 /* -------------------------------------------- */
 /**

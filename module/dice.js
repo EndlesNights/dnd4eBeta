@@ -65,7 +65,6 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 			if (targetArr[targ].actor.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
 				targDataArray.meleeVsProne = true;
 				if(item?.system.rangeType === 'weapon'){
-					let isThrown = false;
 					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
 						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
 						if (targetDist > meleeRange) {
@@ -77,6 +76,9 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 			}
 			if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.long && targetDist > weaponUse?.system.range.value)) {
 				targDataArray.longRange = true;
+			}
+			if (Helper.computeFlankingStatus(Helper.tokenForActor(actor), targetArr[targ])) {
+				targDataArray.isFlanking = true;
 			}
 			targDataArray.targets.push({
 				'name': targetArr[targ].name,
@@ -238,13 +240,14 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			data[key] = data.commonAttackBonuses[key].value
 		});
 				
+        let hasComAdv = false;
 		const userStatBonuses = [];
 		// User conditions
 		if(userStatus.has('prone')) userStatBonuses.push('@prone');
 		if(userStatus.has('restrained')) userStatBonuses.push('@restrained');
 		if(userStatus.has('running')) userStatBonuses.push('@running');
 		if(userStatus.has('squeezing')) userStatBonuses.push('@squeez');
-		if(userStatus.has('comAdv')) userStatBonuses.push('@comAdv');
+		if(userStatus.has('comAdv')) hasComAdv = true;
 		if(options?.variance?.isCharge) userStatBonuses.push('@charge');
 		
 		if(game.settings.get("dnd4e","markAutomation") && data?.marker){
@@ -260,10 +263,10 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				const targetStatus = Array.from(theTargets[targetIndex].actor.statuses);
 				
 				//Target conditions
-				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
+				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) hasComAdv = true;
 				
 				const targetDist = Helper.computeDistance(actor, theTargets[targetIndex]);
-				if(targetStatus.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
+				if(targetStatus.includes('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
 					let isThrown = false;
 					if(item?.system.rangeType === 'weapon'){
 						if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
@@ -275,8 +278,12 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 						}
 					}
 					if (!isThrown) {
-						targetBonuses.push('@comAdv')
+						hasComAdv = true;
 					}
+				}
+
+				if (Helper.computeFlankingStatus(Helper.tokenForActor(actor), theTargets[targetIndex])) {
+					hasComAdv = true;
 				}
 
 				if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.long && targetDist > weaponUse?.system.range.value)) {
@@ -294,6 +301,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				if(targetStatus.includes('coverSup')) targetBonuses.push('@coverSup');
 					
 			}
+            if (hasComAdv) targetBonuses.push('@comAdv');
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
 				targetBonuses.forEach(bonus => total += data.commonAttackBonuses[bonus.substring(1)].value)
