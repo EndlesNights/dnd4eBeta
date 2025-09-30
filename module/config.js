@@ -1235,13 +1235,14 @@ DND4E.powerDiceTypes = {
 };
 
 DND4E.sortValues = {
-	useType: {
-		'atwill': 0,
-		'encounter': 1,
-		'daily': 2,
-		'recharge': 3,
-		'item': 4,
-		'other': 5
+	"useType": {
+		"atwill": 0,
+		"encounter": 1,
+		"daily": 2,
+		"recharge": 3,
+		"item": 4,
+		"other": 5
+	}
 };
   
 DND4E.autoTargetModes = {
@@ -1334,7 +1335,7 @@ DND4E.rangeType = {
 };
 preLocalize("rangeType", { keys: ["label","abbr"] });
 
-DND4E.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4E.rangeType).filter(function ([key, value]) {
+DND4E.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4E.rangeType).filter(function ([key]) {
 	return key !== "weapon";
 }));
 

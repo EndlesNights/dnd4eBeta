@@ -258,7 +258,8 @@ export class Helper {
 								 if(weaponInnerData.WeaponType === "implement") {
 									if(weaponInnerData.proficientI) suitableKeywords.push('proficient');
 								}
-							}	
+							}
+							break;
 						default:
 							if(weaponInnerData) {
 								if(weaponInnerData.proficient) suitableKeywords.push('proficient');
@@ -340,14 +341,9 @@ export class Helper {
 				};
 				
 				if(powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
-				if(powerInnerData.attack?.isOpp || rollData?.isOpp) suitableKeywords.push("opp");
-				
-				if(powerInnerData.attack?.def){
-					suitableKeywords.push(`vs${powerInnerData.attack.def.capitalize()}`);
-				};
-				if(powerInnerData.attack?.ability){
-					suitableKeywords.push(`uses${powerInnerData.attack.ability.capitalize()}`);
-				};
+				if(powerInnerData.attack?.isOpp || rollData?.isOpp) suitableKeywords.push("opp");				
+				if(powerInnerData.attack?.def) suitableKeywords.push(`vs${powerInnerData.attack.def.capitalize()}`);
+				if(powerInnerData.attack?.ability) suitableKeywords.push(`uses${powerInnerData.attack.ability.capitalize()}`);
 				
 				if(powerInnerData?.keywordsCustom){
 					const customKeys = powerInnerData.keywordsCustom.split(';');
@@ -1666,10 +1662,8 @@ export class Helper {
 		let isGridless = canvas?.grid?.constructor.name === "GridlessGrid";
 		if (!isGridless || !options.gridSpaces || !canvas?.grid) {
 			return segments.map(s => canvas?.grid?.measurePath([s.ray.A, s.ray.B])).map(d => d.distance);
-			;
 		}
-		if (!canvas?.grid)
-			return 0;
+		if (!canvas?.grid) return 0;
 		const diagonals = game.settings.get("core", "gridDiagonals");
 		const canvasGridProxy = new Proxy(canvas.grid, {
 			get: function (target, prop, receiver) {
@@ -1819,7 +1813,6 @@ export class Helper {
 			if (!(token instanceof Token)) {
 				throw new Error("find nearby token is not of type token or the token uuid is invalid");
 			}
-			;
 			let relative = options.relative ?? true;
 			let targetDisposition;
 			if (disposition instanceof Array) {
@@ -1976,6 +1969,7 @@ export class Helper {
 			}
 		}
 		return false;
+	}
 
 	static getTokensInTemplate(templateDoc, wallsBlock = false) {
 		const scene = templateDoc.parent;
