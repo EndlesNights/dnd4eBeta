@@ -112,15 +112,15 @@ export class Actor4e extends Actor {
 		for ( let t of tokens ) {
 			console.log(t);
 			if ( !t.document.hidden || game.user.isGM ){
-			    const pct = Math.clamp(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
-			    canvas.interface.createScrollingText(t.center, dhp.signedString(), {
-				    anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
-				    fontSize: 16 + (32 * pct), // Range between [16, 48]
-				    fill: CONFIG.DND4E.tokenHPColors[dhp < 0 ? "damage" : "healing"],
-				    stroke: 0x000000,
-				    strokeThickness: 4,
-				    jitter: 0.25
-			    });
+				const pct = Math.clamp(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
+				canvas.interface.createScrollingText(t.center, dhp.signedString(), {
+					anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
+					fontSize: 16 + (32 * pct), // Range between [16, 48]
+					fill: CONFIG.DND4E.tokenHPColors[dhp < 0 ? "damage" : "healing"],
+					stroke: 0x000000,
+					strokeThickness: 4,
+					jitter: 0.25
+				});
 			}
 		}
 	}
@@ -1800,10 +1800,10 @@ export class Actor4e extends Actor {
 			}
 
 			if (healamount){
-			    updateData[`system.attributes.hp.value`] = Math.min(
-				    (Math.max(0, this.system.attributes.hp.value) + healamount),
-			    	this.system.attributes.hp.max
-			    );
+				updateData[`system.attributes.hp.value`] = Math.min(
+					(Math.max(0, this.system.attributes.hp.value) + healamount),
+					this.system.attributes.hp.max
+				);
 			}
 		
 			if(this.system.details.surges.value > 0)
@@ -1815,7 +1815,7 @@ export class Actor4e extends Actor {
 		
 		updateData[`system.actionpoints.encounteruse`] = false;
 		
-		Helper.rechargeItems(this, ["enc", "round"]);
+		Helper.rechargeItems(this, ["enc", "round", "turn"]);
 		Helper.endEffects(this, ["endOfTargetTurn","endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter","endOfUserCurrent"]);
 		
 		if(this.type === "Player Character"){
@@ -1885,14 +1885,15 @@ export class Actor4e extends Actor {
 		updateData[`system.actionpoints.value`] = 1;
 		updateData[`system.actionpoints.encounteruse`] = false;
 		
-		Helper.rechargeItems(this, ["enc", "day", "round"]);
+		Helper.rechargeItems(this, ["enc", "day", "round", "turn"]);
 		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn","startOfTargetTurn","startOfUserTurn","endOfEncounter","endOfDay","endOfUserCurrent"]);
 
 
 		if(this.type === "Player Character"){
 			updateData[`system.magicItemUse.milestone`] = 0;
 			updateData[`system.magicItemUse.encounteruse`] = false;
-			updateData[`system.magicItemUse.dailyuse`] = this.system.magicItemUse.perDay;
+			updateData[`system.magicItemUse.perDay`] = Math.clamp(Math.floor(( this.system.details.level - 1 ) / 10 + 1), 1, 3) + this.system.magicItemUse.bonusValue;
+			updateData[`system.magicItemUse.dailyuse`] = updateData[`system.magicItemUse.perDay`];
 			updateData[`system.details.secondwind`] = false;
 			
 			ChatMessage.create({
@@ -2504,7 +2505,7 @@ export class Actor4e extends Actor {
 				for(const dot of applicableDoTs){
 					const dmgTaken = ( dot.type == "healing" ? Math.min(dot.amount, this.system.attributes.hp.max - this.system.attributes.hp.value) : await this.calcDamageInner([[dot.amount,dot.type]]));
 					if (dmgTaken === 0 && dot.type == "healing") continue;
-                    //console.debug(this.calcDamageInner([[dot.amount,dot.type]]));
+					//console.debug(this.calcDamageInner([[dot.amount,dot.type]]));
 					let dmgImpact = "neutral";
 					
 					let chatRecipients = [Helper.firstOwner(this)];
