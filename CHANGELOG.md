@@ -1,7 +1,7 @@
 # Changelog
 
 ## Version 0.6.21
-- FLANKING DETECTION  (SagaTympana)
+- FLANKING DETECTION!🎉 Combat advantage will now be predicted during rolls based on the position of attacker and allies. Like other situational modifiers, this will pre-fill the appropriate check mark in roll dialogue, or assume correct inference during fast-forwarded rolls. (SagaTympana)
 - Made "bloodied" key available for custom 4e modifiers in active effects. (SagaTympana)
 - Enabled area powers to auto-target tokens within their placed templates.  (SagaTympana)
 - Updated power sorting so usage is logical, rather than alphabetical. (SagaTympana)
@@ -1283,6 +1283,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
