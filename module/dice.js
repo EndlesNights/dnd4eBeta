@@ -240,7 +240,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			data[key] = data.commonAttackBonuses[key].value
 		});
 				
-        let hasComAdv = false;
+		let hasComAdv = false;
 		const userStatBonuses = [];
 		// User conditions
 		if(userStatus.has('prone')) userStatBonuses.push('@prone');
@@ -301,7 +301,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				if(targetStatus.includes('coverSup')) targetBonuses.push('@coverSup');
 					
 			}
-            if (hasComAdv) targetBonuses.push('@comAdv');
+			if (hasComAdv) targetBonuses.push('@comAdv');
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
 				targetBonuses.forEach(bonus => total += data.commonAttackBonuses[bonus.substring(1)].value)
@@ -373,10 +373,18 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			await Helper.applyEffects([defParts], data, targets[rollExpressionIdx].actor, item, weaponUse, "defence");
 			for (let i=0; i < defParts.length; i++) {
 				const key = defParts[i].slice(1);
-				targDefVal += data[key];
+				const undecoratedKey = key.slice(0, -11);
+				// Any global typed bonus to this defence is already accounted for.
+				let currentBonus = 0;
+				if (undecoratedKey !== 'untyped') {
+					const thisDefenceBonus = targets[rollExpressionIdx].document.actor.system.defences[attackedDef][undecoratedKey];
+					const globalDefenceBonus = targets[rollExpressionIdx].document.actor.system.modifiers.defences[undecoratedKey];
+					currentBonus = Math.max(thisDefenceBonus, globalDefenceBonus);
+				}
+				targDefVal += Math.max(data[key] - currentBonus, 0);
 			}
 			const meleeRange = weaponUse?.system.properties.rch ? 2 : 1;
-			const dist = Helper.computeDistance(actor, targets[rollExpressionIdx])
+			const dist = Helper.computeDistance(actor, targets[rollExpressionIdx]);
 			const isThrown = (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) && dist > meleeRange;
 			if (targets[rollExpressionIdx].document.actor.statuses.has('prone') && (item?.system.rangeType === 'range' || (item?.system.rangeType === 'weapon' && (weaponUse?.system.weaponType.slice(-1) === 'R' || isThrown))) && dist > 1) {
 				const proneDefenseBonusVsRanged = 2; // TODO Make this configurable somehow?
