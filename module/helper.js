@@ -442,6 +442,155 @@ export class Helper {
 		}
 	}
 
+	// A pared down version of applyEffects suitable for determining bonuses to saving throws against effects. Only needs to know
+	// about effect keywords and statuses inflicted by the effect.
+	static async applySaveEffects(arrayOfParts, rollData, actorData, effectData) {
+		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4e |` : ""
+		if (actorData.effects) {
+			if (debug) {
+				console.log(`${debug} Debugging save effects for ${effectData?.name}.`)
+			}
+
+			const effectsToProcess = []
+			const effects = actorData.getActiveEffects().filter((effect) => effect.disabled === false)
+			effects.forEach((effect) => {
+				effect.changes.forEach((change => {
+					if (change.key.startsWith(`effect.save`)) {
+						effectsToProcess.push({
+							name : effect.name,
+							key: change.key,
+							value: change.value
+						})
+					}
+				}))
+			})
+			
+			//Dummy up some extra effects to represent global atk/damage bonuses
+			const globalMods = actorData.system.details.saves;
+			if(globalMods.value){
+				for (const [key, value] of Object.entries(globalMods)) {
+					//No way to sort bonus array types, so we'll combine them with untyped before checks.
+					const adjValue = ( key == 'untyped' ? value + globalMods.bonusValue : value);
+					if(!['value','bonus','warn','bonusValue','label', 'cssClass', 'selected'].includes(key) && adjValue != 0){
+						effectsToProcess.push({
+							name : `Global save modifier`,
+							key: `effect.save.global.${key}`,
+							value: adjValue
+						});
+					}
+				}
+			}			
+			
+			if (effectsToProcess.length > 0) {
+				if (debug) {
+					console.log(`${debug} Found the following possible active effects`)
+					effectsToProcess.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
+				}
+
+				const suitableKeywords = ['global']
+				let keywords = effectData?.flags.dnd4e?.keywords;
+				if (keywords) {
+					keywords.forEach((k) => suitableKeywords.push(k));
+				}
+				
+				let customKeywords = effectData?.flags.dnd4e?.keywordsCustom;
+				if (customKeywords){
+					const customKeys = customKeywords.split(';');
+					customKeys.forEach((k) => suitableKeywords.push(k));
+				}
+
+				let statuses = effectData?.statuses;
+				if (statuses?.size) {
+					statuses.forEach((s) => suitableKeywords.push(s));
+				}
+
+				if (debug) {
+					console.debug(rollData);
+					console.debug(`${debug} based on effect keywords the following effect keys are suitable`);
+					console.debug(suitableKeywords.sort());
+					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
+				}
+
+				// filter out to just the relevant effects by keyword
+				const matchingEffects = effectsToProcess.filter((effect) => {
+					const keyParts = effect.key.split(".")
+					if (keyParts.length >= 4 && keyParts[1] === 'save'){
+						const keywords = keyParts.slice(2, -1);
+						for (const keyword of keywords) {
+							if (!suitableKeywords.includes(keyword)) {
+								return false
+							}
+						}
+						return true
+					}
+				})
+
+				if (debug) {
+					console.log(`${debug} The following effects were deemed suitable by keyword filter`)
+					matchingEffects.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
+				}
+
+				const newParts = {}
+				for (const effect of matchingEffects) {
+					const keyParts = effect.key.split(".")
+					if (keyParts.length >= 4) {
+						const bonusType = keyParts[keyParts.length - 1]
+						const effectValueString = this.commonReplace(effect.value, actorData)
+						const effectDice = await this.rollWithErrorHandling(effectValueString, {context : effect.key})
+						const effectValue = effectDice.total
+						if (bonusType === "untyped") {
+							if (newParts["untypedEffectBonus"]) {
+								newParts["untypedEffectBonus"] = newParts["untypedEffectBonus"] + effectValue
+								if (debug) {
+									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Additional untyped Bonus.	They Stack.`)
+								}
+							}
+							else {
+								newParts["untypedEffectBonus"] = effectValue
+								if (debug) {
+									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: First untyped Bonus`)
+								}
+							}
+						}
+						else {
+							const key = `${bonusType}EffectBonus`
+							if (newParts[key]) {
+								if (newParts[key] < effectValue) {
+									newParts[key] = effectValue
+									if (debug) {
+										console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Is greater than existing ${bonusType}, replacing`)
+									}
+								}
+								else {
+									if (debug) {
+										console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : Is not greater than existing ${bonusType}, discarding`)
+									}
+								}
+							}
+							else {
+								newParts[key] = effectValue
+								if (debug) {
+									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : First ${bonusType} Bonus`)
+								}
+							}
+						}
+					}
+					else {
+						ui.notifications.warn(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
+						console.log(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
+					}
+				}
+				
+				for (const [key, value] of Object.entries(newParts)) {
+					for (const parts of arrayOfParts) {
+						parts.push("@" + key)
+					}
+					rollData[key] = value
+				}
+			}
+		}
+	}
+
 	static _addKeywords(suitableKeywords, keywordsActive) {
 		if (keywordsActive) {
 			for (const [key, value] of Object.entries(keywordsActive)) {

@@ -23,18 +23,18 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		const actor = this.object;
 		if (actor && !options.effectSave) {
 			Array.from(actor.effects).forEach((e) => {
-				if (e.getFlag('dnd4e', 'effectData').durationType === 'saveEnd') savableEffects.push({name: e.name, id: e.id});
+				if (e.flags.dnd4e?.effectData?.durationType === 'saveEnd') savableEffects.push({name: e.name, id: e.id});
 			});
 		}
 		if (savableEffects.length) {
 			savableEffects = [{name: game.i18n.format("DND4E.None"), id:''}].concat(savableEffects);
 		}
 		return {
-			system: this.object.system,
+			system: actor.system,
 			rollModes: CONFIG.Dice.rollModes,
-			effectName: ( options.effectSave ? this.object.effects.get(options.effectId).name : null ),
+			effectName: ( options.effectSave ? actor.effects.get(options.effectId).name : null ),
 			effectId: this.options.saveAgainst,
-			saveDC: ( options.effectSave ? this.object.effects.get(options.effectId).flags.dnd4e?.effectData?.saveDC : this.options.saveDC ),
+			saveDC: ( options.effectSave ? actor.effects.get(options.effectId).flags.dnd4e?.effectData?.saveDC : this.options.saveDC ),
 			savableEffects: savableEffects
 		};
 	}
