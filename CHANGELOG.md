@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 0.6.21
+- FLANKING DETECTION  (SagaTympana)
+- Made "bloodied" key available for custom 4e modifiers in active effects. (SagaTympana)
+- Enabled area powers to auto-target tokens within their placed templates.  (SagaTympana)
+- Updated power sorting so usage is logical, rather than alphabetical. (SagaTympana)
+- Fixed errors in rest & recharge logic. (SagaTympana)
+- Improved bonus stacking rules for defence modifiers in active effects. (SagaTympana)
+- Fixes a bug where wuick rolls failed from sheet and chat cards. (SagaTympana)
+
 ## Version 0.6.20
 - Improved trait selector dropdown. This addresses a bug noted by PuloDoGato on Discord, where you could select the weapon categories but not the individual weapons. (Fox)
 - Fixes a bug where attack bonus automation mistakenly checked opportunity attacks against the wrong key. (SagaTympana)
@@ -1274,6 +1283,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
