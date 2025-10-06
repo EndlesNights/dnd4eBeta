@@ -258,7 +258,8 @@ export class Helper {
 								 if(weaponInnerData.WeaponType === "implement") {
 									if(weaponInnerData.proficientI) suitableKeywords.push('proficient');
 								}
-							}	
+							}
+							break;
 						default:
 							if(weaponInnerData) {
 								if(weaponInnerData.proficient) suitableKeywords.push('proficient');
@@ -340,18 +341,18 @@ export class Helper {
 				};
 				
 				if(powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
-				if(powerInnerData.attack?.isOpp || rollData?.isOpp) suitableKeywords.push("opp");
-				
-				if(powerInnerData.attack?.def){
-					suitableKeywords.push(`vs${powerInnerData.attack.def.capitalize()}`);
-				};
-				if(powerInnerData.attack?.ability){
-					suitableKeywords.push(`uses${powerInnerData.attack.ability.capitalize()}`);
-				};
+				if(powerInnerData.attack?.isOpp || rollData?.isOpp) suitableKeywords.push("opp");				
+				if(powerInnerData.attack?.def) suitableKeywords.push(`vs${powerInnerData.attack.def.capitalize()}`);
+				if(powerInnerData.attack?.ability) suitableKeywords.push(`uses${powerInnerData.attack.ability.capitalize()}`);
 				
 				if(powerInnerData?.keywordsCustom){
 					const customKeys = powerInnerData.keywordsCustom.split(';');
 					customKeys.forEach((item) => suitableKeywords.push(item));
+				}
+
+				// Can be done with already with a global bonus of some multiple of @bloodied, but useful for defence bonuses like the Deva's Astral Majesty
+				if(rollData?.details.isBloodied){
+					suitableKeywords.push("bloodied");
 				}
 
 				if (debug) {
@@ -1607,6 +1608,32 @@ export class Helper {
 		return tokens[0];
 	}
 
+	static getToken(tokenRef) {
+		if (!tokenRef)
+			return undefined;
+		if (tokenRef instanceof Token)
+			return tokenRef;
+		if (tokenRef instanceof TokenDocument)
+			return tokenRef.object ?? undefined;
+		let entity = tokenRef;
+		if (typeof tokenRef === "string") {
+			entity = fromUuidSync(tokenRef);
+		}
+		if (entity instanceof Token)
+			return entity;
+		if (entity instanceof TokenDocument)
+			return entity.object ?? undefined;
+		if (entity instanceof Actor)
+			return this.tokenForActor(entity);
+		if (entity instanceof Item && entity.parent instanceof Actor)
+			return this.tokenForActor(entity.parent);
+		if (entity instanceof ActiveEffect && entity.parent instanceof Actor)
+			return this.tokenForActor(entity.parent);
+		if (entity instanceof ActiveEffect && entity.parent instanceof Item)
+			return this.tokenForActor(entity.parent?.parent);
+		return undefined;
+	}
+
 	static getPlaceable(tokenRef) {
 		if (!tokenRef)
 			return undefined;
@@ -1635,10 +1662,8 @@ export class Helper {
 		let isGridless = canvas?.grid?.constructor.name === "GridlessGrid";
 		if (!isGridless || !options.gridSpaces || !canvas?.grid) {
 			return segments.map(s => canvas?.grid?.measurePath([s.ray.A, s.ray.B])).map(d => d.distance);
-			;
 		}
-		if (!canvas?.grid)
-			return 0;
+		if (!canvas?.grid) return 0;
 		const diagonals = game.settings.get("core", "gridDiagonals");
 		const canvasGridProxy = new Proxy(canvas.grid, {
 			get: function (target, prop, receiver) {
@@ -1743,10 +1768,9 @@ export class Helper {
 							const r = new Ray(origin, dest);
 							if (wallsBlock) {
 								let collisionCheck;
-								collisionCheck = CONFIG.Canvas.polygonBackends.sight.testCollision(origin, dest, { source: t1.document, mode: "any", type: "sight" });
+								collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, { source: t1.document, mode: "any", type: "move" });
 								if (collisionCheck)
 									continue;
-								break;
 							}
 							segments.push({ ray: r });
 						}
@@ -1765,6 +1789,226 @@ export class Helper {
 			distance = this.measureDistances([{ ray: new Ray(t1.center, closestPoint) }], { gridSpaces: true });
 		}
 		return Math.max(distance, 0);
+	}
+
+	static isValidTarget(target /*Token*/) {
+		if (!target.actor)
+			return false; // Tokens without actors are not valid targets
+		if (target.actor.type === "Hazard")
+			return false;
+		if (target.document?.isSecret)
+			return false;
+		if (target.isSecret)
+			return false;
+		return true;
+	}
+
+	static findNearby(disposition, token /*Token | uuuidString */, distance, options = { maxSize: undefined, includeToken: false, relative: true }) {
+		token = this.getToken(token);
+		if (!token)
+			return [];
+		if (!canvas || !canvas.scene)
+			return [];
+		try {
+			if (!(token instanceof Token)) {
+				throw new Error("find nearby token is not of type token or the token uuid is invalid");
+			}
+			let relative = options.relative ?? true;
+			let targetDisposition;
+			if (disposition instanceof Array) {
+				if (disposition.some(s => s === "all"))
+					disposition = [-1, 0, 1];
+				else
+					disposition = disposition.map(s => mapTokenString(s) ?? 0);
+				targetDisposition = disposition.map(i => typeof i === "number" && [-1, 0, 1].includes(i) && relative ? token.document.disposition * i : i);
+			}
+			else if (typeof disposition === "number" && [-1, 0, 1].includes(disposition)) {
+				targetDisposition = relative ? [token.document.disposition * disposition] : [disposition];
+			}
+			else
+				targetDisposition = [CONST.TOKEN_DISPOSITIONS.HOSTILE, CONST.TOKEN_DISPOSITIONS.NEUTRAL, CONST.TOKEN_DISPOSITIONS.FRIENDLY];
+			const canvasPlaceables = canvas.tokens?.placeables ?? [];
+			let nearby = canvasPlaceables?.filter(t => {
+				const tDocument = t.document;
+				if (!this.isValidTarget(t))
+					return false;
+				if (options.maxSize && (tDocument.height ?? 1) * (tDocument.width ?? 1) > options.maxSize)
+					return false;
+				let inRange = false;
+				if (t.actor &&
+					(t.id !== token.id || options?.includeToken) && // not the token
+					(disposition === null || targetDisposition.includes(t.document.disposition))) {
+					const tokenDistance = this.computeDistance(t, token, { wallsBlock: true });
+					inRange = 0 <= tokenDistance && tokenDistance <= distance;
+				}
+				else
+					return false; // wrong disposition
+				return inRange;
+			});
+			return nearby ?? [];
+		}
+		catch (err) {
+			console.error(err);
+			return [];
+		}
+	}
+
+	// Measures distance between an arbitrary point and a token
+	static distancePointToken({ x, y }, token) {
+		if (!canvas || !canvas.scene)
+			return undefined;
+		if (!canvas.grid || !canvas.dimensions)
+			undefined;
+		if (!token || x === undefined || y === undefined)
+			return undefined;
+		if (!canvas || !canvas.grid || !canvas.dimensions)
+			return undefined;
+		const t2StartX = -Math.max(0, token.document.width / 2 - 0.5);
+		const t2StartY = -Math.max(0, token.document.height / 2 - 0.5);
+		//  const [row, col] = canvas.grid?.getGridPositionFromPixels(x, y) || [0, 0];
+		//  const [xBase, yBase] = canvas.grid?.getPixelsFromGridPosition(row, col) || [0, 0];
+		let xc, yc;
+		let distance = +Infinity;
+		for (let xStep = t2StartX; xStep < token.document.width / 2; xStep += 1) {
+			for (let yStep = t2StartY; yStep < token.document.height / 2; yStep += 1) {
+				const xBase = xStep * canvas.grid.size + token.center.x;
+				const yBase = yStep * canvas.grid.size + token.center.y;
+				({ x: xc, y: yc } = canvas.grid.getCenterPoint({ x: xBase, y: yBase }) || { x: 0, y: 0 });
+				// ({ x: xc, y: yc } = canvas.grid.getCenterPoint.bind(canvas.grid)({ x, y }) || { x: 0, y: 0 });
+				const newDistance = canvas.grid.measurePath([new PIXI.Point(x, y), { x: xc, y: yc }], {}).distance;
+
+				if (newDistance < distance)
+					distance = newDistance;
+			}
+		}
+		return distance;
+	}
+
+	static computeFlankingStatus(token, target) {
+		if (!canvas)
+			return false;
+		if (!token)
+			return false;
+		const noFlankConditions = new Set(['blinded','dazed','dead', 'dominated', 'petrified','stunned','surprised','unconscious',]);
+		if (noFlankConditions.intersection(new Set(token.actor.statuses)).size) return false;
+		// For the target see how many square between this token and any friendly targets
+		// Find all tokens hostile to the target
+		if (!target)
+			return false;
+		let range = 1;
+		if (this.computeDistance(token, target, { wallsBlock: true }) > range * (canvas?.dimensions?.distance ?? 1))
+			return false;
+		// an enemy's enemies are my friends.
+		const allies = this.findNearby(-1, target, (canvas?.dimensions?.distance ?? 1));
+		if (!token.document.disposition)
+			return false; // Neutral tokens can't get flanking
+		if (allies.length <= 1)
+			return false; // length 1 means no other allies nearby
+		let gridW;
+		let gridH;
+		let maxDist = (canvas?.dimensions?.distance ?? 5);
+		if (game.settings?.get("core", "gridDiagonals") === 1)
+			maxDist *= Math.sqrt(2);
+		gridW = canvas?.grid?.sizeX ?? 100;
+		gridH = canvas?.grid?.sizeY ?? 100;
+		const tl = { x: target.x, y: target.y };
+		const tr = { x: target.x + target.document.width * gridW, y: target.y };
+		const bl = { x: target.x, y: target.y + target.document.height * gridH };
+		const br = { x: target.x + target.document.width * gridW, y: target.y + target.document.height * gridH };
+		const top = [tl.x, tl.y, tr.x, tr.y];
+		const bottom = [bl.x, bl.y, br.x, br.y];
+		const left = [tl.x, tl.y, bl.x, bl.y];
+		const right = [tr.x, tr.y, br.x, br.y];
+		// Loop through each square covered by attacker and ally
+		const tokenStartX = -Math.max(0, token.document.width / 2 - 0.5);
+		const tokenStartY = -Math.max(0, token.document.height / 2 - 0.5);
+		const tokenPoints = [];
+		for (let x = tokenStartX; x < token.document.width / 2; x++) {
+			for (let y = tokenStartY; y < token.document.height / 2; y++) {
+				let tx = token.center.x + x * gridW;
+				let ty = token.center.y + y * gridH;
+				if ((this.distancePointToken({ x: tx, y: ty, elevation: token.elevation }, target) ?? +Infinity) > maxDist) {
+					continue;
+				}
+				tokenPoints.push({ x: tx, y: ty });
+			}
+		}
+		for (let ally of allies) {
+			if (ally.document.uuid === token.document.uuid)
+				continue;
+			const actor = ally.actor;            
+			const cannotFlank = noFlankConditions.intersection(new Set(actor.statuses)).size;
+			if (cannotFlank)
+				continue;
+			const allyStartX = -Math.max(0, ally.document.width / 2 - 0.5);
+			const allyStartY = -Math.max(0, ally.document.height / 2 - 0.5);
+			const allyPoints = [];
+			for (let x1 = allyStartX; x1 < ally.document.width / 2; x1++) {
+				for (let y1 = allyStartY; y1 < ally.document.height / 2; y1++) {
+					let ax = ally.center.x + x1 * gridW;
+					let ay = ally.center.y + y1 * gridH;
+					if ((this.distancePointToken({ x: ax, y: ay, elevation: ally.elevation }, target) ?? +Infinity) > maxDist) {
+						continue;
+					}
+					allyPoints.push({ x: ax, y: ay });
+				}
+			}
+			for (let tokenPoint of tokenPoints) {
+				for (let allyPoint of allyPoints) {
+					const p1 = canvas.grid?.getCenterPoint(tokenPoint);
+					const p2 = canvas.grid?.getCenterPoint(allyPoint);
+					if (!p1 || !p2)
+						continue;
+					const rayToCheck = new Ray(p1, p2);
+					const flankingTop = rayToCheck.intersectSegment(top) && rayToCheck.intersectSegment(bottom);
+					const flankingLeft = rayToCheck.intersectSegment(left) && rayToCheck.intersectSegment(right);
+					if (flankingLeft || flankingTop) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	static getTokensInTemplate(templateDoc, wallsBlock = false) {
+		const scene = templateDoc.parent;
+		let {size} = scene.grid;
+		if (!templateDoc.object.shape) {
+			templateDoc.object._refreshShape();
+		}
+		let shape = templateDoc.object?.shape;
+		if (!shape) return;
+		let tokens = new Set();
+		let sceneTokens = scene.tokens;
+		for (let token of sceneTokens) {
+			let {width, height, x: tokX, y: tokY} = token;
+			let startX = width >= 1 ? 0.5 : width / 2;
+			let startY = height >= 1 ? 0.5 : height / 2;
+			for (let x = startX; x < width; x++) {
+				for (let y = startY; y < width; y++) {
+					let curr = {
+						x: tokX + x * size - templateDoc.x,
+						y: tokY + y * size - templateDoc.y
+					};
+					let contains = shape.contains(curr.x, curr.y);
+					let isOn = shape.getBounds().pointIsOn(curr);
+					if (contains && !isOn) {
+						if (wallsBlock) {
+							let collisionCheck;
+							const originPoint = new PIXI.Point(templateDoc.x, templateDoc.y);
+							const targetPoint = new PIXI.Point(tokX + x * size, tokY + y * size);
+							collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(originPoint, targetPoint, { source: templateDoc, mode: "any", type: "move" });
+							if (collisionCheck)
+								continue;
+						}
+						tokens.add(token.object);
+						continue;
+					}
+				}
+			}
+		}
+		return tokens;
 	}
 }
 

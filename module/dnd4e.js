@@ -403,7 +403,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
 });
 
 Hooks.on('renderCombatTracker', (app,html,context) => {
-    if (!app?.viewed) return // Skip entirely if there's no currently viewed combat
+	if (!app?.viewed) return // Skip entirely if there's no currently viewed combat
 	try{
 		html.find('.token-initiative').each((i,el) => {
 			let combatant = app.viewed.combatants.get(el.parentElement.dataset.combatantId);
@@ -414,5 +414,42 @@ Hooks.on('renderCombatTracker', (app,html,context) => {
 		});
 	}catch(e){
 		console.error(`Inititiave display mask failed in combat tracker. ${e}`);
+	}
+});
+
+Hooks.on('createMeasuredTemplate', async (templateDoc) => {
+	if (game.user.id !== templateDoc.author.id) return;
+	const originUuid = templateDoc.getFlag('dnd4e', 'origin');
+	// Item may be deleted from the actor when we get here, so get the item data from the template if we have to
+	const flagDocument = await fromUuid(originUuid) || templateDoc.getFlag('dnd4e', 'item');
+	if (!flagDocument || flagDocument.system.autoTarget.mode === 'none') return;
+	// If we just have the template flag's item data because the item was deleted, we'll need to work backward from the item uuid to get the actor
+	const actorUuid = flagDocument?.actor?.uuid || originUuid.split('.Item')[0];
+	if (!actorUuid) return;
+	const token = Helper.tokenForActor(await fromUuid(actorUuid));
+	if (!token) return;
+	game.user.updateTokenTargets();
+	game.user.broadcastActivity({targets: []});
+	let tokens = Helper.getTokensInTemplate(templateDoc, true);
+	if (!tokens.size) return;
+	const disposition = token.document.disposition;
+	const excludeUser = !flagDocument.system.autoTarget.includeSelf || flagDocument.system.autoTarget.mode === 'enemies';
+	for (let targetToken of tokens) {
+		if ((excludeUser && targetToken.actor.uuid === actorUuid) || targetToken.actor.statuses.has('dead')) continue;
+		switch (flagDocument.system.autoTarget.mode) {
+			case 'all':
+					targetToken.setTarget(true, { releaseOthers: false });
+				break;
+			case 'allies':
+				if (targetToken.document.disposition === disposition) {
+					targetToken.setTarget(true, { releaseOthers: false });
+				}
+				break;
+			case 'enemies':
+				if (targetToken.document.disposition === -1 * disposition) {
+					targetToken.setTarget(true, { releaseOthers: false });
+				}
+				break;
+		}
 	}
 });

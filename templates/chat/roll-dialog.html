@@ -66,6 +66,7 @@
 					{{#if (eq b 'charge')}}{{#if ../../data.item.attack.isCharge}}checked="true" disabled{{/if}}{{#if ../../isCharge}}checked="true" disabled{{/if}}{{/if}}
 				
 					{{#if (eq b 'marked')}}{{#if ../../targetData.ignoringMark}}checked="true"{{/if}}{{/if}}
+					{{#if (eq b 'longRange')}}{{#if ../../targetData.longRange}}checked="true"{{/if}}{{/if}}
 				 
 					{{#if (eq b 'prone')}}{{#if (contains 'prone'../../userStatus)}}checked="true"{{/if}}{{/if}}
 					{{#if (eq b 'restrained')}}{{#if (contains 'restrained'../../userStatus)}}checked="true"{{/if}}{{/if}}
@@ -91,6 +92,7 @@
 								{{#if (contains 'running' t.status)}}checked="true"{{/if}}
 								{{#if (contains 'grantingCA' t.status)}}checked="true"{{/if}}
 								{{#if ../../targetData.meleeVsProne}}checked="true"{{/if}}
+								{{#if ../../targetData.isFlanking}}checked="true"{{/if}}
 							{{/if}}
 							
 							{{#if (eq b 'conceal')}}

@@ -60,19 +60,25 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 		for (let targ = 0; targ < numTargets; targ++) {
 			const targName = targetArr[targ].name;
 			targDataArray.targNameArray.push(targName);
+			const targetDist = Helper.computeDistance(actor, targetArr[targ]);
 			//console.debug(data);
-			if(targetArr[targ].actor.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
+			if (targetArr[targ].actor.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
 				targDataArray.meleeVsProne = true;
 				if(item?.system.rangeType === 'weapon'){
-					let isThrown = false;
 					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
 						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
-						if (Helper.computeDistance(actor, targetArr[targ]) > meleeRange) {
+						if (targetDist > meleeRange) {
 							//Not in melee range so it must have been thrown
 							targDataArray.meleeVsProne = false;
 						}
 					}
 				}
+			}
+			if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.long && targetDist > weaponUse?.system.range.value)) {
+				targDataArray.longRange = true;
+			}
+			if (Helper.computeFlankingStatus(Helper.tokenForActor(actor), targetArr[targ])) {
+				targDataArray.isFlanking = true;
 			}
 			targDataArray.targets.push({
 				'name': targetArr[targ].name,
@@ -234,13 +240,14 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			data[key] = data.commonAttackBonuses[key].value
 		});
 				
+		let hasComAdv = false;
 		const userStatBonuses = [];
 		// User conditions
 		if(userStatus.has('prone')) userStatBonuses.push('@prone');
 		if(userStatus.has('restrained')) userStatBonuses.push('@restrained');
 		if(userStatus.has('running')) userStatBonuses.push('@running');
 		if(userStatus.has('squeezing')) userStatBonuses.push('@squeez');
-		if(userStatus.has('comAdv')) userStatBonuses.push('@comAdv');
+		if(userStatus.has('comAdv')) hasComAdv = true;
 		if(options?.variance?.isCharge) userStatBonuses.push('@charge');
 		
 		if(game.settings.get("dnd4e","markAutomation") && data?.marker){
@@ -256,19 +263,31 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				const targetStatus = Array.from(theTargets[targetIndex].actor.statuses);
 				
 				//Target conditions
-				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) targetBonuses.push('@comAdv');
+				if(targetStatus.filter(element => ['blinded','dazed','dominated','helpless','restrained','stunned','surprised','squeezing','running','grantingCA'].includes(element)).length > 0) hasComAdv = true;
 				
-				if(targetStatus.has('prone') && (item?.system.rangeType === 'melee' || weaponUse?.system.weaponType.slice(-1) === 'M')) {
+				const targetDist = Helper.computeDistance(actor, theTargets[targetIndex]);
+				if(targetStatus.includes('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
 					let isThrown = false;
-					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
-						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
-						if (Helper.computeDistance(actor, targets[rollExpressionIdx]) > meleeRange) {
-							isThrown = true;
+					if(item?.system.rangeType === 'weapon'){
+						if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
+							const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
+							if (targetDist > meleeRange) {
+								//Not in melee range so it must have been thrown
+								isThrown = true;
+							}
 						}
 					}
 					if (!isThrown) {
-						targetBonuses.push('@comAdv')
+						hasComAdv = true;
 					}
+				}
+
+				if (Helper.computeFlankingStatus(Helper.tokenForActor(actor), theTargets[targetIndex])) {
+					hasComAdv = true;
+				}
+
+				if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.long && targetDist > weaponUse?.system.range.value)) {
+					targetBonuses.push('@longRange')
 				}
 
 				if(targetStatus.includes('bloodied')) targetBonuses.push('@bloodied');
@@ -282,6 +301,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 				if(targetStatus.includes('coverSup')) targetBonuses.push('@coverSup');
 					
 			}
+			if (hasComAdv) targetBonuses.push('@comAdv');
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
 				targetBonuses.forEach(bonus => total += data.commonAttackBonuses[bonus.substring(1)].value)
@@ -353,12 +373,20 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 			await Helper.applyEffects([defParts], data, targets[rollExpressionIdx].actor, item, weaponUse, "defence");
 			for (let i=0; i < defParts.length; i++) {
 				const key = defParts[i].slice(1);
-				targDefVal += data[key];
+				const undecoratedKey = key.slice(0, -11);
+				// Any global typed bonus to this defence is already accounted for.
+				let currentBonus = 0;
+				if (undecoratedKey !== 'untyped') {
+					const thisDefenceBonus = targets[rollExpressionIdx].document.actor.system.defences[attackedDef][undecoratedKey];
+					const globalDefenceBonus = targets[rollExpressionIdx].document.actor.system.modifiers.defences[undecoratedKey];
+					currentBonus = Math.max(thisDefenceBonus, globalDefenceBonus);
+				}
+				targDefVal += Math.max(data[key] - currentBonus, 0);
 			}
 			const meleeRange = weaponUse?.system.properties.rch ? 2 : 1;
-			const dist = Helper.computeDistance(actor, targets[rollExpressionIdx])
+			const dist = Helper.computeDistance(actor, targets[rollExpressionIdx]);
 			const isThrown = (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) && dist > meleeRange;
-			if (targets[rollExpressionIdx].actor.statuses.has('prone') && (item?.system.rangeType === 'ranged' || weaponUse?.system.weaponType.slice(-1) === 'R' || isThrown) && dist > 1) {
+			if (targets[rollExpressionIdx].document.actor.statuses.has('prone') && (item?.system.rangeType === 'range' || (item?.system.rangeType === 'weapon' && (weaponUse?.system.weaponType.slice(-1) === 'R' || isThrown))) && dist > 1) {
 				const proneDefenseBonusVsRanged = 2; // TODO Make this configurable somehow?
 				targDefVal += proneDefenseBonusVsRanged;
 			}

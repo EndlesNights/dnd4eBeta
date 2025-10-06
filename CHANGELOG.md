@@ -1,12 +1,21 @@
 # Changelog
 
+## Version 0.6.21
+- FLANKING DETECTION!🎉 Combat advantage will now be predicted during rolls based on the position of attacker and allies. Like other situational modifiers, this will pre-fill the appropriate check mark in roll dialogue, or assume correct inference during fast-forwarded rolls. (SagaTympana)
+- Made "bloodied" key available for custom 4e modifiers in active effects. (SagaTympana)
+- Enabled area powers to auto-target tokens within their placed templates.  (SagaTympana)
+- Updated power sorting so usage is logical, rather than alphabetical. (SagaTympana)
+- Fixed errors in rest & recharge logic. (SagaTympana)
+- Improved bonus stacking rules for defence modifiers in active effects. (SagaTympana)
+- Fixes a bug where wuick rolls failed from sheet and chat cards. (SagaTympana)
+
 ## Version 0.6.20
 - Improved trait selector dropdown. This addresses a bug noted by PuloDoGato on Discord, where you could select the weapon categories but not the individual weapons. (Fox)
 - Fixes a bug where attack bonus automation mistakenly checked opportunity attacks against the wrong key. (SagaTympana)
 - Adds keys for conditional defence modifiers! Custom 4e modifiers can now use the `defence` key to target power/weapon properties of attacks used against the character. (SagaTympana)
   - Updates the Manual & Help Compendium on custom 4e modifiers. (Fox)
-- Adds the beginning of distance detection in attack automation! This is in the initial stage for now, but lays the groundwork for the much-requested flanking detection, as well as some other neat automation features like range enforcement. For now, enjoy enhanced automation of melee advantage and range penalties against prone targets. (SagaTympana)
-- Gives powers a toggle to ignore all bonus damage from effects and global modifier. Should be very handy for fixed-damage powers like assassin's shroud, non-rolls, and the many "deal XYZ additional damage" style rider effects. (Fox)
+- Adds distance detection helpers! This is in the initial stage for now, but lays the groundwork for the much-requested flanking detection, as well as some other neat automation options like range enforcement. For now, enjoy enhanced automation of Long Range and "versus Prone" attacks. (SagaTympana + Fox assist)
+- Gives powers a toggle to ignore all bonus damage from effects and global modifier. Should be very handy for fixed-damage powers like _assassin's shroud_, non-rolls, and the many "deal XYZ additional damage" style rider effects. (Fox)
  
 ## Version 0.6.19
 - Hotfix for broken sheet rolls caused by 0.6.18. (Fox)
@@ -1274,6 +1283,9 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
+
+
 
 
 
