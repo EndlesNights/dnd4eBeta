@@ -5,6 +5,20 @@
 		{{localize 'DND4E.SavePrompt'}} 
 	{{/if}}
 	</p>
+	{{#unless effectName}}
+	{{#if savableEffects.length}}
+		<div class="form-group">
+			<label>{{ localize "DND4E.SaveAgainst" }}</label>
+			<select name="saveAgainst">
+			{{#select saveAgainst}}
+			{{#each savableEffects as |effect|}}
+				<option value="{{effect.id}}">{{localize effect.name}}</option>
+			{{/each}}
+			{{/select}}
+			</select>
+		</div>
+	{{/if}}
+	{{/unless}}
 	<div class="form-group">
 		<label>{{localize 'DND4E.SaveDCSet'}}:</label>
 		<input type="text" name="dc" value="{{#if saveDC}}{{saveDC}}{{else}}10{{/if}}" placeholder="10" onClick="this.select();"/>
