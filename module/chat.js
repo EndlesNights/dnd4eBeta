@@ -324,7 +324,7 @@ function selectTargetTokens(li, targetType){
 	if(targetType === "hit"){
 		console.log("hit")
 		for(const roll of message.rolls){
-			if(['hit','crit'].includes(roll.options.multirollData.hitstate)){
+			if(['hit','critical'].includes(roll.options.multirollData.hitstate)){
 				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
 			}
 		}
