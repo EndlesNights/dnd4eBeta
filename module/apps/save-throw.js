@@ -27,15 +27,24 @@ export class SaveThrowDialog extends DocumentSheet4e {
 			});
 		}
 		if (savableEffects.length) {
-			savableEffects = [{name: game.i18n.format("DND4E.None")}].concat(savableEffects);
+			savableEffects = [{name: game.i18n.format("DND4E.None"), id:''}].concat(savableEffects);
 		}
 		return {
 			system: this.object.system,
 			rollModes: CONFIG.Dice.rollModes,
 			effectName: ( options.effectSave ? this.object.effects.get(options.effectId).name : null ),
-			saveDC: ( options.effectSave ? this.object.effects.get(options.effectId).flags.dnd4e?.effectData?.saveDC : null ),
+			effectId: this.options.saveAgainst,
+			saveDC: ( options.effectSave ? this.object.effects.get(options.effectId).flags.dnd4e?.effectData?.saveDC : this.options.saveDC ),
 			savableEffects: savableEffects
 		};
+	}
+
+	async _onChangeInput(event) {
+		const target = event.target;
+		if (target?.name !== "saveAgainst") return;
+		this.options.saveDC = this.object.effects.get(target.value)?.flags.dnd4e?.effectData?.saveDC;
+		this.options.saveAgainst = target.value;
+		this.render();
 	}
 
 	async _updateObject(event, formData) {

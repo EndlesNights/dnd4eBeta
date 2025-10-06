@@ -10,11 +10,7 @@
 		<div class="form-group">
 			<label>{{ localize "DND4E.SaveAgainst" }}</label>
 			<select name="saveAgainst">
-			{{#select saveAgainst}}
-			{{#each savableEffects as |effect|}}
-				<option value="{{effect.id}}">{{localize effect.name}}</option>
-			{{/each}}
-			{{/select}}
+				{{selectOptions savableEffects selected=effectId localise=true valueAttr="id" labelAttr="name"}}
 			</select>
 		</div>
 	{{/if}}
