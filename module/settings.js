@@ -255,7 +255,7 @@ export const registerSystemSettings = function() {
 		type: Boolean
 	});
 
-    // Show defence values in attack roll chat cards
+	// Show defence values in attack roll chat cards
 	game.settings.register("dnd4e", "showDefences",{
 		name: "SETTINGS.4eShowDefencesN",
 		hint: "SETTINGS.4eShowDefencesL",
@@ -320,7 +320,7 @@ export const registerSystemSettings = function() {
 	});
 
 	// Automate universal marking effects
-    game.settings.register("dnd4e", "markAutomation",{
+	game.settings.register("dnd4e", "markAutomation",{
 		name: "SETTINGS.4eMarkAutomationN",
 		hint: "SETTINGS.4eMarkAutomationL",
 		scope: "client",
