@@ -20,7 +20,7 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
 
 		// Highlight successes and failures
 		const critical = d.options.critical || 20;
-		const fumble = d.options.fumble || 1;
+		const fumble = typeof(d.options.fumble) === 'number' ? d.options.fumble : 1;
 		if ( d.total >= critical ) {
 			html.find(`.dice-total`)[i].classList.add("critical");
 		}

@@ -3038,12 +3038,12 @@ span.flavor-text.probable-miss{
 	font-weight:bold;
 }
 .dice-roll .dice-total.success{
-	color:inherit;
+	color:var(--color-text-good);
 	background:#c7d0c0;
 	border:1px solid #006c00;
 }
 .dice-roll .dice-total.failure{
-	color:inherit;
+	color:var(--color-text-bad);
 	background:#ffdddd;
 	border:1px solid #6e0000;
 }
