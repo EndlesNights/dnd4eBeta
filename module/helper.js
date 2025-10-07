@@ -362,82 +362,7 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				// filter out to just the relevant effects by keyword
-				const matchingEffects = effectsToProcess.filter((effect) => {
-					const keyParts = effect.key.split(".")
-					if (keyParts.length >= 4 && keyParts[1] === effectType){
-						const keywords = keyParts.slice(2, -1);
-						for (const keyword of keywords) {
-							if (!suitableKeywords.includes(keyword)) {
-								return false
-							}
-						}
-						return true
-					}
-				})
-
-				if (debug) {
-					console.log(`${debug} The following effects were deemed suitable by keyword filter`)
-					matchingEffects.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
-				}
-
-				const newParts = {}
-				for (const effect of matchingEffects) {
-					const keyParts = effect.key.split(".")
-					if (keyParts.length >= 4) {
-						const bonusType = keyParts[keyParts.length - 1]
-						const effectValueString = this.commonReplace(effect.value, actorData, powerInnerData, weaponInnerData)
-						const effectDice = await this.rollWithErrorHandling(effectValueString, {context : effect.key})
-						const effectValue = effectDice.total
-						if (bonusType === "untyped") {
-							if (newParts["untypedEffectBonus"]) {
-								newParts["untypedEffectBonus"] = newParts["untypedEffectBonus"] + effectValue
-								if (debug) {
-									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Additional untyped Bonus.	They Stack.`)
-								}
-							}
-							else {
-								newParts["untypedEffectBonus"] = effectValue
-								if (debug) {
-									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: First untyped Bonus`)
-								}
-							}
-						}
-						else {
-							const key = `${bonusType}EffectBonus`
-							if (newParts[key]) {
-								if (newParts[key] < effectValue) {
-									newParts[key] = effectValue
-									if (debug) {
-										console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Is greater than existing ${bonusType}, replacing`)
-									}
-								}
-								else {
-									if (debug) {
-										console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : Is not greater than existing ${bonusType}, discarding`)
-									}
-								}
-							}
-							else {
-								newParts[key] = effectValue
-								if (debug) {
-									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : First ${bonusType} Bonus`)
-								}
-							}
-						}
-					}
-					else {
-						ui.notifications.warn(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
-						console.log(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
-					}
-				}
-				
-				for (const [key, value] of Object.entries(newParts)) {
-					for (const parts of arrayOfParts) {
-						parts.push("@" + key)
-					}
-					rollData[key] = value
-				}
+				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, debug);
 			}
 		}
 	}
@@ -511,83 +436,87 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				// filter out to just the relevant effects by keyword
-				const matchingEffects = effectsToProcess.filter((effect) => {
-					const keyParts = effect.key.split(".")
-					if (keyParts.length >= 4 && keyParts[1] === 'save'){
-						const keywords = keyParts.slice(2, -1);
-						for (const keyword of keywords) {
-							if (!suitableKeywords.includes(keyword)) {
-								return false
-							}
-						}
-						return true
+				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, debug);
+			}
+		}
+	}
+
+	static async _applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, debug) {
+		// filter out to just the relevant effects by keyword
+		const matchingEffects = effectsToProcess.filter((effect) => {
+			const keyParts = effect.key.split(".")
+			if (keyParts.length >= 4 && keyParts[1] === 'save'){
+				const keywords = keyParts.slice(2, -1);
+				for (const keyword of keywords) {
+					if (!suitableKeywords.includes(keyword)) {
+						return false
 					}
-				})
-
-				if (debug) {
-					console.log(`${debug} The following effects were deemed suitable by keyword filter`)
-					matchingEffects.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
 				}
+				return true
+			}
+		})
 
-				const newParts = {}
-				for (const effect of matchingEffects) {
-					const keyParts = effect.key.split(".")
-					if (keyParts.length >= 4) {
-						const bonusType = keyParts[keyParts.length - 1]
-						const effectValueString = this.commonReplace(effect.value, actorData)
-						const effectDice = await this.rollWithErrorHandling(effectValueString, {context : effect.key})
-						const effectValue = effectDice.total
-						if (bonusType === "untyped") {
-							if (newParts["untypedEffectBonus"]) {
-								newParts["untypedEffectBonus"] = newParts["untypedEffectBonus"] + effectValue
-								if (debug) {
-									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Additional untyped Bonus.	They Stack.`)
-								}
-							}
-							else {
-								newParts["untypedEffectBonus"] = effectValue
-								if (debug) {
-									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: First untyped Bonus`)
-								}
+		if (debug) {
+			console.log(`${debug} The following effects were deemed suitable by keyword filter`)
+			matchingEffects.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
+		}
+
+		const newParts = {}
+		for (const effect of matchingEffects) {
+			const keyParts = effect.key.split(".")
+			if (keyParts.length >= 4) {
+				const bonusType = keyParts[keyParts.length - 1]
+				const effectValueString = this.commonReplace(effect.value, actorData)
+				const effectDice = await this.rollWithErrorHandling(effectValueString, {context : effect.key})
+				const effectValue = effectDice.total
+				if (bonusType === "untyped") {
+					if (newParts["untypedEffectBonus"]) {
+						newParts["untypedEffectBonus"] = newParts["untypedEffectBonus"] + effectValue
+						if (debug) {
+							console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Additional untyped Bonus.	They Stack.`)
+						}
+					}
+					else {
+						newParts["untypedEffectBonus"] = effectValue
+						if (debug) {
+							console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: First untyped Bonus`)
+						}
+					}
+				}
+				else {
+					const key = `${bonusType}EffectBonus`
+					if (newParts[key]) {
+						if (newParts[key] < effectValue) {
+							newParts[key] = effectValue
+							if (debug) {
+								console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Is greater than existing ${bonusType}, replacing`)
 							}
 						}
 						else {
-							const key = `${bonusType}EffectBonus`
-							if (newParts[key]) {
-								if (newParts[key] < effectValue) {
-									newParts[key] = effectValue
-									if (debug) {
-										console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Is greater than existing ${bonusType}, replacing`)
-									}
-								}
-								else {
-									if (debug) {
-										console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : Is not greater than existing ${bonusType}, discarding`)
-									}
-								}
-							}
-							else {
-								newParts[key] = effectValue
-								if (debug) {
-									console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : First ${bonusType} Bonus`)
-								}
+							if (debug) {
+								console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : Is not greater than existing ${bonusType}, discarding`)
 							}
 						}
 					}
 					else {
-						ui.notifications.warn(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
-						console.log(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
+						newParts[key] = effectValue
+						if (debug) {
+							console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : First ${bonusType} Bonus`)
+						}
 					}
-				}
-				
-				for (const [key, value] of Object.entries(newParts)) {
-					for (const parts of arrayOfParts) {
-						parts.push("@" + key)
-					}
-					rollData[key] = value
 				}
 			}
+			else {
+				ui.notifications.warn(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
+				console.log(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
+			}
+		}
+		
+		for (const [key, value] of Object.entries(newParts)) {
+			for (const parts of arrayOfParts) {
+				parts.push("@" + key)
+			}
+			rollData[key] = value
 		}
 	}
 
