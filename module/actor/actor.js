@@ -2478,6 +2478,7 @@ export class Actor4e extends Actor {
 						
 						// Combine the types array into a usable string
 						let types = (dot.typesArray.includes("healing") ? "healing" : dot.typesArray.join(','));
+						// If no type was assigned, treat as untyped/physical
 						if (!types) types = "physical";
 						
 						/* Use logic pinched from ActiveEffect4e.safeEvalEffectValue() to 
