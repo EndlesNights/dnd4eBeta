@@ -431,6 +431,13 @@ export class Helper {
 
 				if (effectData?.flags.dnd4e?.dots.length) {
 					suitableKeywords.push('ongoing');
+					effectData.flags.dnd4e.dots.forEach((d) => {
+						d.typesArray.forEach((t) => {
+							suitableKeywords.push(t);
+							// Since game text describes this as "untyped" let's allow users to use that language in effect keys.
+							if (t === 'physical') suitableKeywords.push('untyped');
+						})
+					});
 				}
 
 				if (debug) {

@@ -2477,7 +2477,8 @@ export class Actor4e extends Actor {
 					for (let dot of e.flags.dnd4e.dots){
 						
 						// Combine the types array into a usable string
-						const types = (dot.typesArray.includes("healing") ? "healing" : dot.typesArray.join(','));
+						let types = (dot.typesArray.includes("healing") ? "healing" : dot.typesArray.join(','));
+						if (!types) types = "physical";
 						
 						/* Use logic pinched from ActiveEffect4e.safeEvalEffectValue() to 
 						evaluate variables in "amount" string */
