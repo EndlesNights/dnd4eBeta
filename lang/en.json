@@ -1731,6 +1731,8 @@
 "SETTINGS.4eShowCustomSkillH": "Options for adding in custom skills for characters into the game system",
 "SETTINGS.4eShowCustomSkillL": "Custom Skills Configure",
 "SETTINGS.4eShowCustomSkillN": "Custom Skills Configure",
+"SETTINGS.4eShowDefencesN": "Show Defense Values",
+"SETTINGS.4eShowDefencesL": "Determine whether or not to display defense values in attack roll chat cards",
 
 "MACRO.4eMissingTargetWarn": "Your controlled actor '{actor}' does not have an {type} with name '{name}'.",
 "MACRO.4eMultipleTargetsWarn": "Your controlled actor '{actor}' has more than one {type} with name '{name}'. The first match will be chosen.",

@@ -255,6 +255,16 @@ export const registerSystemSettings = function() {
 		type: Boolean
 	});
 
+    // Show defence values in attack roll chat cards
+	game.settings.register("dnd4e", "showDefences",{
+		name: "SETTINGS.4eShowDefencesN",
+		hint: "SETTINGS.4eShowDefencesL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean
+	});
+
 	// Collapse bonuses down when making rolls
 	game.settings.register("dnd4e", "collapseSituationalBonus",{
 		name: "SETTINGS.4eCollapseSituationalBonusN",
