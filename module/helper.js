@@ -362,7 +362,7 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, debug);
+				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug);
 			}
 		}
 	}
@@ -447,16 +447,16 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, debug);
+				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, 'save', debug);
 			}
 		}
 	}
 
-	static async _applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, debug) {
+	static async _applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug) {
 		// filter out to just the relevant effects by keyword
 		const matchingEffects = effectsToProcess.filter((effect) => {
 			const keyParts = effect.key.split(".")
-			if (keyParts.length >= 4 && keyParts[1] === 'save'){
+			if (keyParts.length >= 4 && keyParts[1] === effectType){
 				const keywords = keyParts.slice(2, -1);
 				for (const keyword of keywords) {
 					if (!suitableKeywords.includes(keyword)) {
