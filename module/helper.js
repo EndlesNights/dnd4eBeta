@@ -429,6 +429,10 @@ export class Helper {
 					statuses.forEach((s) => suitableKeywords.push(s));
 				}
 
+				if (effectData?.flags.dnd4e?.dots.length) {
+					suitableKeywords.push('ongoing');
+				}
+
 				if (debug) {
 					console.debug(rollData);
 					console.debug(`${debug} based on effect keywords the following effect keys are suitable`);
