@@ -428,28 +428,28 @@ Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 	if (!actorUuid) return;
 	const token = Helper.tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;
-	game.user.updateTokenTargets();
-	game.user.broadcastActivity({targets: []});
 	let tokens = Helper.getTokensInTemplate(templateDoc, true);
 	if (!tokens.size) return;
 	const disposition = token.document.disposition;
 	const excludeUser = !flagDocument.system.autoTarget.includeSelf || flagDocument.system.autoTarget.mode === 'enemies';
+    const targets = new Set();
 	for (let targetToken of tokens) {
 		if ((excludeUser && targetToken.actor.uuid === actorUuid) || targetToken.actor.statuses.has('dead')) continue;
 		switch (flagDocument.system.autoTarget.mode) {
 			case 'all':
-					targetToken.setTarget(true, { releaseOthers: false });
+					targets.add(targetToken.id);
 				break;
 			case 'allies':
 				if (targetToken.document.disposition === disposition) {
-					targetToken.setTarget(true, { releaseOthers: false });
+					targets.add(targetToken.id);
 				}
 				break;
 			case 'enemies':
 				if (targetToken.document.disposition === -1 * disposition) {
-					targetToken.setTarget(true, { releaseOthers: false });
+					targets.add(targetToken.id);
 				}
 				break;
 		}
 	}
+    canvas.tokens.setTargets(targets);
 });
