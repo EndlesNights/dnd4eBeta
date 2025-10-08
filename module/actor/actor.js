@@ -407,19 +407,22 @@ export class Actor4e extends Actor {
 		//Normal Saving Throw
 		if(isNaN(parseInt(system.details.saves?.absolute))){ //All logic only required if there is no usable absolute value
 	
+			let bonusValue = 0;
 			if(!(system.details.saves.bonus.length === 1 && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
 				for( const b of system.details.saves.bonus) {
 					if(b.active && Helper._isNumber(b.value)) {
-						system.details.saves.value += parseInt(b.value);
+						bonusValue += parseInt(b.value);
 					}
 					else if(b.active){
 						let val = Helper.replaceData(b.value,system)
 						if(Helper._isNumber(val)){
-							system.details.saves.value += parseInt(val);
+							bonusValue += parseInt(val);
 						}
 					}
 				}
 			}
+			system.details.saves.bonusValue = bonusValue;
+			system.details.saves.value += bonusValue;
 			system.details.saves.value += system.details.saves?.feat || 0;
 			system.details.saves.value += system.details.saves?.item || 0;
 			system.details.saves.value += system.details.saves?.power || 0;
@@ -1688,16 +1691,24 @@ export class Actor4e extends Actor {
 		}else{
 			message = `${game.i18n.localize("DND4E.RollSave")} ${message}`;
 		}
-		
-		const parts = [this.system.details.saves.value];
-		if (options.save) {
-			parts.push(options.save)
+
+		const parts = [];
+		const partsExpressionReplacements = [];
+		if(options.save) {		
+			parts.push(Helper.commonReplace(options.save, this));
+			partsExpressionReplacements.push({value : options.save, target: parts[0]});
+			// add the substitutions that were used in the expression to the data object for later
+			options.formulaInnerData = Helper.commonReplace(options.save, this, null, null, 1, true);
 		}
+
+		const rollData = this.getRollData();
+		await Helper.applySaveEffects([parts], rollData, this, this.effects.get(options.effectId));
 
 		const rollConfig = foundry.utils.mergeObject({
 			parts,
+			partsExpressionReplacements,
 			actor: this,
-			data: {},
+			data: rollData,
 			title: "",
 			flavor: message,
 			speaker: ChatMessage.getSpeaker({actor: this}),
@@ -1706,8 +1717,10 @@ export class Actor4e extends Actor {
 			rollMode: options.rollMode
 		});
 		rollConfig.event = event;
-		rollConfig.critical = options.dc - this.system.details.saves.value - options.save || 10;
-		rollConfig.fumble = options.dc -1 - this.system.details.saves.value - options.save || 9;
+		
+		rollConfig.critical = 21;
+		rollConfig.fumble = 0;
+		rollConfig.targetValue = Number(options.dc);
 		
 		const saveDC = options.dc || 10;
 		const r = await d20Roll(rollConfig);
@@ -2464,7 +2477,9 @@ export class Actor4e extends Actor {
 					for (let dot of e.flags.dnd4e.dots){
 						
 						// Combine the types array into a usable string
-						const types = (dot.typesArray.includes("healing") ? "healing" : dot.typesArray.join(','));
+						let types = (dot.typesArray.includes("healing") ? "healing" : dot.typesArray.join(','));
+						// If no type was assigned, treat as untyped/physical
+						if (!types) types = "physical";
 						
 						/* Use logic pinched from ActiveEffect4e.safeEvalEffectValue() to 
 						evaluate variables in "amount" string */

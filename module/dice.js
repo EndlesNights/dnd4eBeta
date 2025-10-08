@@ -62,30 +62,36 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 			targDataArray.targNameArray.push(targName);
 			const targetDist = Helper.computeDistance(actor, targetArr[targ]);
 			//console.debug(data);
+			let meleeVsProne = false
 			if (targetArr[targ].actor.statuses.has('prone') && (['melee','touch','reach'].includes(item?.system.rangeType) || (item?.system.rangeType === 'weapon' && weaponUse?.system.weaponType.slice(-1) === 'M'))) {
-				targDataArray.meleeVsProne = true;
+				meleeVsProne = true;
 				if(item?.system.rangeType === 'weapon'){
 					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
 						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
 						if (targetDist > meleeRange) {
 							//Not in melee range so it must have been thrown
-							targDataArray.meleeVsProne = false;
+							meleeVsProne = false;
 						}
 					}
 				}
 			}
+			let longRange = false;
 			if ((item?.system.rangeType === 'range' && item?.system.range.long && targetDist > item?.system.rangePower) || (item?.system.rangeType === 'weapon' && weaponUse?.system.range.long && targetDist > weaponUse?.system.range.value)) {
-				targDataArray.longRange = true;
+				longRange = true;
 			}
+			let isFlanking = false;
 			if (Helper.computeFlankingStatus(Helper.tokenForActor(actor), targetArr[targ])) {
-				targDataArray.isFlanking = true;
+				isFlanking = true;
 			}
 			targDataArray.targets.push({
 				'name': targetArr[targ].name,
 				'status': targetArr[targ].actor.statuses,
 				'attackMod': data?.item?.attack?.ability || 'str',
 				'attackDef': options.attackedDef || 'ac',
-				'immune': targetArr[targ].actor.system.defences[options.attackedDef]?.none || false
+				'immune': targetArr[targ].actor.system.defences[options.attackedDef]?.none || false,
+				'meleeVsProne': meleeVsProne,
+				'longRange': longRange,
+				'isFlanking': isFlanking
 			});
 		}
 	} else {
