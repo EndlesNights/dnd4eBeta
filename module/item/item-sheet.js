@@ -216,7 +216,7 @@ export default class ItemSheet4e extends ItemSheet {
 	
 		// Export JSON
 		buttons.unshift({
-			label: "Expor JSON",
+			label: "Export JSON",
 			class: "export-json",
 			icon: "fas fa-atlas",
 			onclick: () => this.exportItem()
