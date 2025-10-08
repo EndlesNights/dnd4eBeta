@@ -367,20 +367,20 @@ export class Helper {
 		}
 	}
 
-	// A pared down version of applyEffects suitable for determining bonuses to saving throws against effects. Only needs to know
-	// about effect keywords and statuses inflicted by the effect.
-	static async applySaveEffects(arrayOfParts, rollData, actorData, effectData) {
+	// A pared down version of applyEffects suitable for determining bonuses to saving throws against effects or the DCs of effects. Only needs to know
+	// about effect keywords and statuses inflicted by the effect. effectType can be `save` or `saveDC`.
+	static async applySaveEffects(arrayOfParts, rollData, actorData, effectData, effectType) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4e |` : ""
 		if (actorData.effects) {
 			if (debug) {
-				console.log(`${debug} Debugging save effects for ${effectData?.name}.`)
+				console.log(`${debug} Debugging ${effectType} effects for ${effectData?.name}.`)
 			}
 
 			const effectsToProcess = []
 			const effects = actorData.getActiveEffects().filter((effect) => effect.disabled === false)
 			effects.forEach((effect) => {
 				effect.changes.forEach((change => {
-					if (change.key.startsWith(`effect.save`)) {
+					if (change.key.startsWith(`effect.${effectType}`)) {
 						effectsToProcess.push({
 							name : effect.name,
 							key: change.key,
@@ -390,21 +390,24 @@ export class Helper {
 				}))
 			})
 			
-			//Dummy up some extra effects to represent global atk/damage bonuses
-			const globalMods = actorData.system.details.saves;
-			if(globalMods.value){
-				for (const [key, value] of Object.entries(globalMods)) {
-					//No way to sort bonus array types, so we'll combine them with untyped before checks.
-					const adjValue = ( key == 'untyped' ? value + globalMods.bonusValue : value);
-					if(!['value','bonus','warn','bonusValue','label', 'cssClass', 'selected'].includes(key) && adjValue != 0){
-						effectsToProcess.push({
-							name : `Global save modifier`,
-							key: `effect.save.global.${key}`,
-							value: adjValue
-						});
+			// No global bonuses to save DCs
+			if (effectType === 'save') {
+				//Dummy up some extra effects to represent global atk/damage bonuses
+				const globalMods = actorData.system.details.saves;
+				if(globalMods.value){
+					for (const [key, value] of Object.entries(globalMods)) {
+						//No way to sort bonus array types, so we'll combine them with untyped before checks.
+						const adjValue = ( key == 'untyped' ? value + globalMods.bonusValue : value);
+						if(!['value','bonus','warn','bonusValue','label', 'cssClass', 'selected'].includes(key) && adjValue != 0){
+							effectsToProcess.push({
+								name : `Global save modifier`,
+								key: `effect.save.global.${key}`,
+								value: adjValue
+							});
+						}
 					}
 				}
-			}			
+			}		
 			
 			if (effectsToProcess.length > 0) {
 				if (debug) {
@@ -447,7 +450,7 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, 'save', debug);
+				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug);
 			}
 		}
 	}
@@ -1429,6 +1432,18 @@ export class Helper {
 						changes: e.changes,
 						changesID: e.uuid
 					};
+
+					if(parent && newEffectData.flags.dnd4e.effectData.saveDC) {
+						let dcBonus = 0;
+						const dcParts = []
+						const rollData = parent.getRollData();
+						await Helper.applySaveEffects([dcParts], rollData, parent, newEffectData, "saveDC");
+						for (let i=0; i < dcParts.length; i++) {
+							const key = dcParts[i].slice(1);
+							dcBonus += rollData[key];
+						}
+						newEffectData.flags.dnd4e.effectData.saveDC = String(Number(newEffectData.flags.dnd4e.effectData.saveDC) + dcBonus);
+					}
 
 					if(e.statuses[0] && game.settings.get("dnd4e","markAutomation")){
 						const marks = new Set(['mark_1','mark_2','mark_3','mark_4','mark_5','mark_6','mark_7']);
