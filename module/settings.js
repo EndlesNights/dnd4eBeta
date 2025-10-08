@@ -261,8 +261,14 @@ export const registerSystemSettings = function() {
 		hint: "SETTINGS.4eShowDefencesL",
 		scope: "client",
 		config: true,
-		default: false,
-		type: Boolean
+		default: "none",
+		type: String,
+		choices: {
+			"none": "SETTINGS.4eShowDefencesNone",
+			"pcs": "SETTINGS.4eShowDefencesPCs",
+			"npcs": "SETTINGS.4eShowDefencesNPCs",
+			"all": "SETTINGS.4eShowDefencesAll"
+		}
 	});
 
 	// Collapse bonuses down when making rolls

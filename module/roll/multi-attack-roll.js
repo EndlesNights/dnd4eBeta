@@ -100,7 +100,24 @@ export class MultiAttackRoll extends Roll {
                 }
             }
 
-            if (game.settings.get("dnd4e", "showDefences") && critState !== "immune") {
+            let showDefenceFor = [];
+            switch (game.settings.get("dnd4e", "showDefences")) {
+                case 'pcs':
+                    showDefenceFor.push('Player Character');
+                    break;
+                case 'npcs':
+                    showDefenceFor.push('NPC');
+                    showDefenceFor.push('Hazard');
+                    break;
+                case 'all':
+                    showDefenceFor.push('Player Character');
+                    showDefenceFor.push('NPC');
+                    showDefenceFor.push('Hazard');
+                    break;
+                default:
+                    //Do nothing
+            }
+            if (showDefenceFor.includes(targDataArray.targets[i].actor?.type) && critState !== "immune") {
                 defText += ` ${targDefVal}`;
             }
 
