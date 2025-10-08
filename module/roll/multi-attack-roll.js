@@ -74,6 +74,7 @@ export class MultiAttackRoll extends Roll {
 
             let hitState = "";
             let hitText = "";
+            let defText = CONFIG.DND4E.defensives[vsDef].abbreviation
 
 	        if(game.settings.get("dnd4e", "automationCombat") && targDefVal !== undefined) {
                 if (critState === "immune"){
@@ -99,6 +100,27 @@ export class MultiAttackRoll extends Roll {
                 }
             }
 
+            let showDefenceFor = [];
+            switch (game.settings.get("dnd4e", "showDefences")) {
+                case 'pcs':
+                    showDefenceFor.push('Player Character');
+                    break;
+                case 'npcs':
+                    showDefenceFor.push('NPC');
+                    showDefenceFor.push('Hazard');
+                    break;
+                case 'all':
+                    showDefenceFor.push('Player Character');
+                    showDefenceFor.push('NPC');
+                    showDefenceFor.push('Hazard');
+                    break;
+                default:
+                    //Do nothing
+            }
+            if (showDefenceFor.includes(targDataArray.targets[i].actor?.type) && critState !== "immune") {
+                defText += ` ${targDefVal}`;
+            }
+
             const chatData = r.getChatData(false);
 
             this._multirollData.push({
@@ -114,7 +136,7 @@ export class MultiAttackRoll extends Roll {
                 hittext : hitText,
 				def: vsDef,
 				mod: atkMod,
-				deftext: CONFIG.DND4E.defensives[vsDef].abbreviation,
+				deftext: defText,
 				modtext: CONFIG.DND4E.abilityScores[atkMod]?.labelShort || '',
 				immune: targDataArray?.targImmArray[i] || false,
             });
@@ -267,4 +289,3 @@ export class MultiAttackRoll extends Roll {
     }
   }
 }
-
