@@ -248,7 +248,7 @@ Hooks.once("ready",  function() {
 /*  Other Hooks                                 */
 /* -------------------------------------------- */
 
-Hooks.on("renderChatMessage", (app, html, data) => {
+Hooks.on("renderChatMessageHTML", (app, html, data) => {
 
 	// Display action buttons
 	chat.displayChatActionButtons(app, html, data);
@@ -260,11 +260,11 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 	chat.displayDamageOptionButtons(app, html, data)
 
 	// Optionally collapse the content
-	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.find(".card-content").hide();
+	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.querySelectorAll(".card-content").forEach(el => el.style.display = "none");
 	
 });
 
-Hooks.on("getChatLogEntryContext", chat.addChatMessageContextOptions);
+Hooks.on("getChatMessageContextOptions", chat.addChatMessageContextOptions);
 Hooks.on("renderChatLog", (app, html, data) => {
 	Item4e.chatListeners(html);
 	chat.chatMessageListener(html);
@@ -288,25 +288,37 @@ Hooks.on("canvasInit", function() {
 
 
 Hooks.on("renderTokenHUD", (app, html, data) => {
-// inject element and script for displaing name of status effect when mousning over
-const message = `
-<div class="status-effect-title" id="displayStatLine">STATUS EFFECT</div>
+	// inject element and script for displaing name of status effect when mousning over
+	const messageTemplate = document.createElement("template");
+	messageTemplate.innerHTML = `
+		<div class="status-effect-title" id="displayStatLine">STATUS EFFECT</div>
 
-<script>
-$(".effect-control ").hover(
-	function(eventObj) {
-		document.getElementById("displayStatLine").innerHTML = eventObj.target.getAttribute('data-tooltip');
-		document.getElementById("displayStatLine").classList.add("active");
-	},
-	function(eventObj) {
-		document.getElementById("displayStatLine").innerHTML = '';
-		document.getElementById("displayStatLine").classList.remove("active");
-	}
-);
-</script>
-`
+		<script>
+		$(".effect-control ").hover(
+			function(eventObj) {
+				document.getElementById("displayStatLine").innerHTML = eventObj.target.getAttribute('data-tooltip');
+				document.getElementById("displayStatLine").classList.add("active");
+			},
+			function(eventObj) {
+				document.getElementById("displayStatLine").innerHTML = '';
+				document.getElementById("displayStatLine").classList.remove("active");
+			}
+		);
+		</script>
+		`;
+	const messageElement = messageTemplate.content.children[0];
 
-html.find('.effect-control').last().after(message);
+	html.querySelectorAll(".effect-control").forEach(el => {
+		el.addEventListener("mouseenter", (eventObj) => {
+			messageElement.innerHTML = eventObj.target.getAttribute("data-tooltip-text");
+			messageElement.classList.add("active");
+		});
+		el.addEventListener("mouseleave", (eventObj) => {
+			messageElement.innerHTML = "";
+			messageElement.classList.remove("active");
+		});
+	});
+	[...html.querySelectorAll(".effect-control")].at(-1).after(messageElement);
 });
 
 
@@ -389,12 +401,12 @@ Hooks.on("getSceneControlButtons", function(controls){
 	}
 });
 
-Hooks.on("renderChatMessage", (message, html, data) => {
+Hooks.on("renderChatMessageHTML", (message, html, data) => {
 	try{
 		if(message.flags.core?.initiativeRoll === true || message.flags?.dnd4e?.roll?.type == "init"){
 			if(html){
 				const insertPart = Helper.initTooltip(message.content);
-				html[0].innerHTML = html[0].innerHTML.replace(/(<h4 class=\"dice-total\">)[0-9|.]+(<\/h4>)/g,`$1${insertPart}$2`);
+				html.innerHTML = html.innerHTML.replace(/(<h4 class=\"dice-total\">)[0-9|.]+(<\/h4>)/g,`$1${insertPart}$2`);
 			}
 		}
 	}catch(e){
@@ -405,7 +417,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
 Hooks.on('renderCombatTracker', (app,html,context) => {
 	if (!app?.viewed) return // Skip entirely if there's no currently viewed combat
 	try{
-		html.find('.token-initiative').each((i,el) => {
+		html.querySelectorAll('.token-initiative').forEach((el) => {
 			let combatant = app.viewed.combatants.get(el.parentElement.dataset.combatantId);
 			if(combatant?.initiative){
 				const insertPart = Helper.initTooltip(combatant.initiative);

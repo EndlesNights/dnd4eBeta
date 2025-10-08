@@ -2527,7 +2527,6 @@ font-size:12px;
 /* ----------------------------------------- */
 
 #token-hud .status-effects{
-	width:175px;
 	grid-template-columns:25px 25px 25px 25px 25px 25px 25px
 }
 #trait-selector .trait-list{
@@ -2592,7 +2591,6 @@ font-size:12px;
 	top:-38px;
 	width:175px;
 	font-size:21px;
-	padding:3px;
 	box-sizing:content-box;
 	background:rgba(0, 0, 0, 0.6);
 	box-shadow:0 0 15px #000;

@@ -22,16 +22,16 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
 		const critical = d.options.critical || 20;
 		const fumble = typeof(d.options.fumble) === 'number' ? d.options.fumble : 1;
 		if ( d.total >= critical ) {
-			html.find(`.dice-total`)[i].classList.add("critical");
+			html.querySelectorAll(`.dice-total`)[i].classList.add("critical");
 		}
 		else if ( d.total <= fumble ){ 
-			html.find(`.dice-total`)[i].classList.add("fumble");
+			html.querySelectorAll(`.dice-total`)[i].classList.add("fumble");
 		}
 		else if ( d.options.target ) {
 			if ( roll.total >= d.options.target ){
-				html.find(`.dice-total`)[i].classList.add("success");
+				html.querySelectorAll(`.dice-total`)[i].classList.add("success");
 			} else {
-				html.find(`.dice-total`)[i].classList.add("failure");
+				html.querySelectorAll(`.dice-total`)[i].classList.add("failure");
 			}
 		}
 
@@ -45,10 +45,10 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
  * Optionally hide the display of chat card action buttons which cannot be performed by the user
  */
 export const displayChatActionButtons = function(message, html, data) {
-	const chatCard = html.find(".DND4E.chat-card");
-	if ( chatCard.length > 0 ) {
-		const flavor = html.find(".flavor-text");
-		if ( flavor.text() === html.find(".item-name").text() ) flavor.remove();
+	const chatCard = html.querySelector(".DND4E.chat-card");
+	if ( chatCard ) {
+		const flavor = html.querySelector(".flavor-text");
+		if ( flavor?.textContent === html.querySelector(".item-name")?.textContent ) flavor.remove();
 
 		// If the user is the message author or the actor owner, proceed
 		let actor = game.actors.get(data.message.speaker.actor);
@@ -56,8 +56,8 @@ export const displayChatActionButtons = function(message, html, data) {
 		else if ( game.user.isGM || (data.author.id === game.user.id)) return;
 
 		// Otherwise conceal action buttons except for saving throw
-		const buttons = chatCard.find("button[data-action]");
-		buttons.each((i, btn) => {
+		const buttons = chatCard.querySelectorAll("button[data-action]");
+		buttons.forEach((btn) => {
 			if ( btn.dataset.action === "save" ) return;
 			btn.style.display = "none"
 		});
@@ -73,8 +73,8 @@ export const displayDamageOptionButtons = function(message, html, data) {
 	const d = roll.dice[0];
 	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
 	if ( !isD20 && !d.options.recharge) return;
-	const buttons = html.find(".chatDamageButtons");
-	buttons.each((i, button) => {
+	const buttons = html.querySelectorAll(".chatDamageButtons");
+	buttons.forEach((button) => {
 		button.style.display = "none"
 	})
 };
@@ -93,27 +93,27 @@ export const displayDamageOptionButtons = function(message, html, data) {
 export const addChatMessageContextOptions = function(html, options) {
 
 	let isAttackRoll = li => {
-		const message = game.messages.get(li.data("messageId"));
-		return message.isRoll && message.isContentVisible && li[0].querySelector('.hit-prediction');
+		const message = game.messages.get(li.dataset.messageId);
+		return message.isRoll && message.isContentVisible && li.querySelector('.hit-prediction');
 	};
 	
 	let canApplyDamage = li => {
-		const message = game.messages.get(li.data("messageId"));
+		const message = game.messages.get(li.dataset.messageId);
 		return message.isRoll && message.isContentVisible && canvas.tokens.controlled.length;
 	};
 
 	// function canApplyEffect(li, type){
 	let canApplyEffect = (li, type) => {
 		if(!canvas.tokens.controlled.length) return false;
-		const message = game.messages.get(li.data("messageId"));
+		const message = game.messages.get(li.dataset.messageId);
 		if(!message.isContentVisible) return false;
 
-		const itemID = li[0].querySelector('[data-item-id]')?.dataset.itemId;
+		const itemID = li.querySelector('[data-item-id]')?.dataset.itemId;
 
 		if(!itemID) return false;
 		
-		const actorID = li[0].querySelector('[data-actor-id]')?.dataset.actorId;
-		const tokenUUID = li[0].querySelector('[data-token-id]')?.dataset.tokenId.split(".");
+		const actorID = li.querySelector('[data-actor-id]')?.dataset.actorId;
+		const tokenUUID = li.querySelector('[data-token-id]')?.dataset.tokenId.split(".");
 
 		const actor = tokenUUID ? game.scenes.get(tokenUUID[1])?.tokens.get(tokenUUID[3])?.actor : game.actors.get(actorID);
 		if(!actor) return false;
@@ -310,12 +310,12 @@ export const clickRollMessageDamageButtons = function(event) {
  * @return {Promise}
  */
 function applyEffectToSelectTokens(li, effectType){
-	const itemID = li[0].querySelector('[data-item-id]')?.dataset.itemId;
+	const itemID = li.querySelector('[data-item-id]')?.dataset.itemId;
 
 	if(!itemID) return false;
 	
-	const actorID = li[0].querySelector('[data-actor-id]')?.dataset.actorId;
-	const tokenUUID = li[0].querySelector('[data-token-id]')?.dataset.tokenId.split(".");
+	const actorID = li.querySelector('[data-actor-id]')?.dataset.actorId;
+	const tokenUUID = li.querySelector('[data-token-id]')?.dataset.tokenId.split(".");
 
 	const actor = tokenUUID ? game.scenes.get(tokenUUID[1])?.tokens.get(tokenUUID[3])?.actor : game.actors.get(actorID);
 	if(!actor) return;
@@ -336,7 +336,7 @@ function applyEffectToSelectTokens(li, effectType){
  * @return {Promise}
  */
 function selectTargetTokens(li, targetType){
-	const message = game.messages.get(li.data("messageId"));
+	const message = game.messages.get(li.dataset.messageId);
 
 	if(!event.shiftKey){
 		canvas.tokens.selectObjects();
@@ -376,7 +376,7 @@ function selectTargetTokens(li, targetType){
  * @return {Promise}
  */
 function applyChatCardDamage(li, multiplier, trueDamage=false) {
-	const message = game.messages.get(li.data("messageId"));
+	const message = game.messages.get(li.dataset.messageId);
 	const roll = message.rolls[0];
 	applyChatCardDamageInner(roll, multiplier, trueDamage);
 }
@@ -453,7 +453,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
  * @return {Promise}
  */
 function applyChatCardTempHp(li) {
-	const message = game.messages.get(li.data("messageId"));
+	const message = game.messages.get(li.dataset.messageId);
 	const roll = message.rolls[0];
 	applyChatCardTempHpInner(roll);
 }
@@ -552,9 +552,8 @@ export function updateApplyEffectsTooltips(html={}) {
 	const finalTooltip = baseText.replace("{target}", localizedTarget);
 
 	if(html){
-		html.find("*[data-action=\"applyEffect\"]").attr("data-tooltip", finalTooltip);
-
+		html.querySelectorAll("*[data-action=\"applyEffect\"]").forEach(el => el.setAttribute("data-tooltip", finalTooltip));
 	} else {
-		$("[data-action=\"applyEffect\"").attr("data-tooltip", finalTooltip);
+		document.querySelectorAll("[data-action=\"applyEffect\"").forEach(el => el.setAttribute("data-tooltip", finalTooltip));
 	}
 }

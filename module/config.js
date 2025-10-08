@@ -1647,344 +1647,344 @@ DND4E.statusEffect = [
 	// Row - Marks
 	{
 		id: "mark_1",
-		label: "EFFECT.statusMark",
+		name: "EFFECT.statusMark",
 		img: "systems/dnd4e/icons/statusEffects/mark_1.svg",
 		description: "EFFECTDESC.mark"
 	},
 	{
 		id: "curse",
-		label: "EFFECT.statusCurse",
+		name: "EFFECT.statusCurse",
 		img: "systems/dnd4e/icons/statusEffects/curse.svg",
 		description: "EFFECTDESC.curse"
 	},
 	{
 		id: "oath",
-		label: "EFFECT.statusOath",
+		name: "EFFECT.statusOath",
 		img: "systems/dnd4e/icons/statusEffects/oath.svg",
 		description: "EFFECTDESC.oath"
 	},
 	{
 		id: "hunter_mark",
-		label: "EFFECT.statusHunterMark",
+		name: "EFFECT.statusHunterMark",
 		img: "systems/dnd4e/icons/statusEffects/hunter_mark.svg",
 		description: "EFFECTDESC.huntermark"
 	},
 	// Row - Health
 	{
 		id: "bloodied",
-		label: "EFFECT.statusBloodied",
+		name: "EFFECT.statusBloodied",
 		img: "systems/dnd4e/icons/statusEffects/bloodied.svg",
 		description: "EFFECTDESC.bloodied"
 	},
 	{
 		id: "dying",
-		label: "EFFECT.statusDying",
+		name: "EFFECT.statusDying",
 		img: "systems/dnd4e/icons/statusEffects/dying.svg",
 		description: "EFFECTDESC.dying"
 	},
 	{
 		id: "dead",
-		label: "EFFECT.statusDead",
+		name: "EFFECT.statusDead",
 		img: "icons/svg/skull.svg",
 		description: "EFFECTDESC.dead"
 	},
 	{
 		id: "unconscious",
-		label: "EFFECT.statusUnconscious",
+		name: "EFFECT.statusUnconscious",
 		img: "systems/dnd4e/icons/statusEffects/unconscious.svg",
 		description: "EFFECTDESC.unconscious"
 	},
 	// Row - Action Restrictions
 	{
 		id: "dazed",
-		label: "EFFECT.statusDazed",
+		name: "EFFECT.statusDazed",
 		img: "systems/dnd4e/icons/statusEffects/dazed.svg",
 		description: "EFFECTDESC.dazed"
 	},
 	{
 		id: "stunned",
-		label: "EFFECT.statusStunned",
+		name: "EFFECT.statusStunned",
 		img: "systems/dnd4e/icons/statusEffects/stunned.svg",
 		description: "EFFECTDESC.stunned"
 	},
 	{
 		id: "dominated",
-		label: "EFFECT.statusDominated",
+		name: "EFFECT.statusDominated",
 		img: "systems/dnd4e/icons/statusEffects/dominated.svg",
 		description: "EFFECTDESC.dominated"
 	},
 	{
 		id: "surprised",
-		label: "EFFECT.statusSurprised",
+		name: "EFFECT.statusSurprised",
 		img: "systems/dnd4e/icons/statusEffects/surprised.svg",
 		description: "EFFECTDESC.surprised"
 	},
 	// Row - Movement Restrictions
 	{
 		id: "slowed",
-		label: "EFFECT.statusSlowed",
+		name: "EFFECT.statusSlowed",
 		img: "systems/dnd4e/icons/statusEffects/slowed.svg",
 		description: "EFFECTDESC.slowed"
 	},
 	{
 		id: "immobilized",
-		label: "EFFECT.statusImmobilized",
+		name: "EFFECT.statusImmobilized",
 		img: "systems/dnd4e/icons/statusEffects/immobilized.svg",
 		description: "EFFECTDESC.immobilized"
 	},
 	{
 		id: "restrained",
-		label: "EFFECT.statusRestrained",
+		name: "EFFECT.statusRestrained",
 		img: "systems/dnd4e/icons/statusEffects/restrained.svg",
 		description: "EFFECTDESC.restrained"
 	},
 	{
 		id: "grabbed",
-		label: "EFFECT.statusGrabbed",
+		name: "EFFECT.statusGrabbed",
 		img: "systems/dnd4e/icons/statusEffects/grabbed.svg",
 		description: "EFFECTDESC.grabbed"
 	},
 	// Row - Penalties
 	{
 		id: "prone",
-		label: "EFFECT.statusProne",
+		name: "EFFECT.statusProne",
 		img: "systems/dnd4e/icons/statusEffects/prone.svg",
 		description: "EFFECTDESC.prone"
 	},
 	{
 		id: "weakened",
-		label: "EFFECT.statusWeakened",
+		name: "EFFECT.statusWeakened",
 		img: "systems/dnd4e/icons/statusEffects/weakend.svg",
 		description: "EFFECTDESC.weakened"
 	},
 	{
 		id: "blinded",
-		label: "EFFECT.statusBlind",
+		name: "EFFECT.statusBlind",
 		img: "systems/dnd4e/icons/statusEffects/blinded.svg",
 		description: "EFFECTDESC.blinded"
 	},
 	{
 		id: "deafened",
-		label: "EFFECT.statusDeafened",
+		name: "EFFECT.statusDeafened",
 		img: "systems/dnd4e/icons/statusEffects/deafened.svg",
 		description: "EFFECTDESC.deafened"
 	},
 	// Row - Misc 
 	{
 		id: "insubstantial",
-		label: "EFFECT.statusInsubstantial",
+		name: "EFFECT.statusInsubstantial",
 		img: "systems/dnd4e/icons/statusEffects/insubstantial.svg",
 		description: "EFFECTDESC.insubstantial"
 	},
 	{
 		id: "removed",
-		label: "EFFECT.statusRemoved",
+		name: "EFFECT.statusRemoved",
 		img: "systems/dnd4e/icons/statusEffects/removed.svg",
 		description: "EFFECTDESC.removed"
 	},
 	{
 		id: "petrified",
-		label: "EFFECT.statusPetrified",
+		name: "EFFECT.statusPetrified",
 		img: "systems/dnd4e/icons/statusEffects/petrified.svg",
 		description: "EFFECTDESC.petrified"
 	},
 	{
 		id: "grantingCA",
-		label: "EFFECT.statusGrantingCA",
+		name: "EFFECT.statusGrantingCA",
 		img: "systems/dnd4e/icons/statusEffects/granting-ca.svg",
 		description: "EFFECTDESC.grantingCA"
 	},
 	// Row - Visibility
 	{
 		id: "concealed",
-		label: "EFFECT.statusConceal",
+		name: "EFFECT.statusConceal",
 		img: "systems/dnd4e/icons/statusEffects/concealment.svg",
 		description: "EFFECTDESC.concealed"
 	},
 	{
 		id: "concealedfull",
-		label: "EFFECT.statusConcealFull",
+		name: "EFFECT.statusConcealFull",
 		img: "systems/dnd4e/icons/statusEffects/concealment-full.svg",
 		description: "EFFECTDESC.concealedfull"
 	},
 	{
 		id: "cover",
-		label: "EFFECT.statusCover",
+		name: "EFFECT.statusCover",
 		img: "systems/dnd4e/icons/statusEffects/cover.svg",
 		description: "EFFECTDESC.cover"
 	},
 	{
 		id: "coverSup",
-		label: "EFFECT.statusCoverSup",
+		name: "EFFECT.statusCoverSup",
 		img: "systems/dnd4e/icons/statusEffects/cover-sup.svg",
 		description: "EFFECTDESC.coversup"
 	},
 	// Row - Stealth
 	{
 		id: "invisible",
-		label: "EFFECT.statusInvisible",
+		name: "EFFECT.statusInvisible",
 		img: "systems/dnd4e/icons/statusEffects/invisible.svg",
 		description: "EFFECTDESC.invisible"
 	},
 	{
 		id: "hidden",
-		label: "EFFECT.statusHidden",
+		name: "EFFECT.statusHidden",
 		img: "systems/dnd4e/icons/statusEffects/hidden.svg",
 		description: "EFFECTDESC.hidden"
 	},
 	{
 		id: "sneaking",
-		label: "EFFECT.statusSneaking",
+		name: "EFFECT.statusSneaking",
 		img: "systems/dnd4e/icons/statusEffects/sneaking.svg",
 		description: "EFFECTDESC.sneaking"
 	},
 	{
 		id: "target",
-		label: "EFFECT.statusTarget",
+		name: "EFFECT.statusTarget",
 		img: "systems/dnd4e/icons/statusEffects/target.svg",
 		description: "EFFECTDESC.target"
 	},
 	// Row - Movement
 	{
 		id: "running",
-		label: "EFFECT.statusRunning",
+		name: "EFFECT.statusRunning",
 		img: "systems/dnd4e/icons/statusEffects/running.svg",
 		description: "EFFECTDESC.running"
 	},
 	{
 		id: "squeezing",
-		label: "EFFECT.statusSqueezing",
+		name: "EFFECT.statusSqueezing",
 		img: "systems/dnd4e/icons/statusEffects/squeezing.svg",
 		description: "EFFECTDESC.squeezing"
 	},
 	{
 		id: "mounted",
-		label: "EFFECT.statusMounted",
+		name: "EFFECT.statusMounted",
 		img: "systems/dnd4e/icons/statusEffects/mounted.svg",
 		description: "EFFECTDESC.mounted"
 	},
 	{
 		id: "flying",
-		label: "EFFECT.statusFlying",
+		name: "EFFECT.statusFlying",
 		img: "systems/dnd4e/icons/statusEffects/flying.svg",
 		description: "EFFECTDESC.flying"
 	},
 	// Row - Ongoing
 	{
 		id: "ongoing_1",
-		label: "EFFECT.statusOngoing1",
+		name: "EFFECT.statusOngoing1",
 		img: "systems/dnd4e/icons/statusEffects/ongoing_1.svg",
 		description: "EFFECTDESC.ongoing"
 	},
 	{
 		id: "ongoing_2",
-		label: "EFFECT.statusOngoing2",
+		name: "EFFECT.statusOngoing2",
 		img: "systems/dnd4e/icons/statusEffects/ongoing_2.svg",
 		description: "EFFECTDESC.ongoing"
 	},
 	{
 		id: "ongoing_3",
-		label: "EFFECT.statusOngoing3",
+		name: "EFFECT.statusOngoing3",
 		img: "systems/dnd4e/icons/statusEffects/ongoing_3.svg",
 		description: "EFFECTDESC.ongoing"
 	},
 	{
 		id: "regen",
-		label: "EFFECT.statusRegen",
+		name: "EFFECT.statusRegen",
 		img: "systems/dnd4e/icons/statusEffects/regen.svg",
 		description: "EFFECTDESC.regen"
 	},
 	//Row - Bonuses & Penalties
 	{
 		id: "attack_up",
-		label: "EFFECT.statusAttackUp",
+		name: "EFFECT.statusAttackUp",
 		img: "systems/dnd4e/icons/statusEffects/attack_up.svg",
 		description: "EFFECTDESC.attackUp"
 	},
 	{
 		id: "attack_down",
-		label: "EFFECT.statusAttackDown",
+		name: "EFFECT.statusAttackDown",
 		img: "systems/dnd4e/icons/statusEffects/attack_down.svg",
 		description: "EFFECTDESC.attackDown"
 	},
 	{
 		id: "defUp",
-		label: "EFFECT.statusDefUp",
+		name: "EFFECT.statusDefUp",
 		img: "systems/dnd4e/icons/statusEffects/def_up.svg",
 		description: "EFFECTDESC.defUp"
 	},
 	{
 		id: "defDown",
-		label: "EFFECT.statusDefDown",
+		name: "EFFECT.statusDefDown",
 		img: "systems/dnd4e/icons/statusEffects/def_down.svg",
 		description: "EFFECTDESC.defDown"
 	},
 	//Row - Alt Marks
 	{
 		id: "mark_2",
-		label: "EFFECT.statusMark",
+		name: "EFFECT.statusMark",
 		img: "systems/dnd4e/icons/statusEffects/mark_2.svg",
 		description: "EFFECTDESC.mark"
 	},
 	{
 		id: "mark_3",
-		label: "EFFECT.statusMark",
+		name: "EFFECT.statusMark",
 		img: "systems/dnd4e/icons/statusEffects/mark_3.svg",
 		description: "EFFECTDESC.mark"
 	},
 	{
 		id: "mark_4",
-		label: "EFFECT.statusMark",
+		name: "EFFECT.statusMark",
 		img: "systems/dnd4e/icons/statusEffects/mark_4.svg",
 		description: "EFFECTDESC.mark"
 	},
 	{
 		id: "mark_5",
-		label: "EFFECT.statusMark",
+		name: "EFFECT.statusMark",
 		img: "systems/dnd4e/icons/statusEffects/mark_5.svg",
 		description: "EFFECTDESC.mark"
 	},
 	//Row - Extra Marks + Resources
 	{
 		id: "mark_6",
-		label: "EFFECT.statusMark",
+		name: "EFFECT.statusMark",
 		img: "systems/dnd4e/icons/statusEffects/mark_6.svg",
 		description: "EFFECTDESC.mark"
 	},
 	{
 		id: "mark_7",
-		label: "EFFECT.statusMark",
+		name: "EFFECT.statusMark",
 		img: "systems/dnd4e/icons/statusEffects/mark_7.svg",
 		description: "EFFECTDESC.mark"
 	},
 	{
 		id: "ammo_count",
-		label: "EFFECT.statusAmmoCount",
+		name: "EFFECT.statusAmmoCount",
 		img: "systems/dnd4e/icons/statusEffects/ammo_count.svg",
 		description: "EFFECTDESC.ammoCount"
 	},
 	{
 		id: "torch",
-		label: "EFFECT.statusTorch",
+		name: "EFFECT.statusTorch",
 		img: "systems/dnd4e/icons/statusEffects/torch.svg",
 		description: "EFFECTDESC.torch"
 	},
 	//Row - Narrative Conditions
 	{
 		id: "drunk",
-		label: "EFFECT.statusDrunk",
+		name: "EFFECT.statusDrunk",
 		img: "systems/dnd4e/icons/statusEffects/drunk.svg",
 		description: "EFFECTDESC.drunk"
 	},
 	{
 		id: "sleeping",
-		label: "EFFECT.statusSleeping",
+		name: "EFFECT.statusSleeping",
 		img: "systems/dnd4e/icons/statusEffects/sleeping.svg",
 		description: "EFFECTDESC.sleeping"
 	},
 	{
 		id: "disarmed",
-		label: "EFFECT.statusDisarmed",
+		name: "EFFECT.statusDisarmed",
 		img: "systems/dnd4e/icons/statusEffects/disarmed.svg",
 		description: "EFFECTDESC.disarmed"
 	},
