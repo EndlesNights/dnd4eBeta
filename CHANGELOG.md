@@ -7,9 +7,10 @@
 - Updated power sorting so usage is logical, rather than alphabetical. (SagaTympana)
 - Fixed errors in rest & recharge logic. (SagaTympana)
 - Improved bonus stacking rules for defence modifiers in active effects. (SagaTympana)
-- Fixes a bug where wuick rolls failed from sheet and chat cards. (SagaTympana)
+- Fixes a bug where quick rolls failed from sheet and chat cards. (SagaTympana)
 - Adds the ability to select an active effect to save against, when rolling a save from sheet. (SagaTympana)
-- Provides a new set of bonus keys for custom 4e modifiers beginning with `effect`. You can use them to provide conditional bonuses to saving throws based on effect type and keywords. (SagaTympana)
+- Provides a new set of bonus keys for custom 4e modifiers beginning with `effect`! You can now use `effect.save` to provide bonuses to your saving throws, and `effect.saveDC` to increase the DC of effects created by your powers, with effect types and keywords available as conditions. (SagaTympana)
+- Allows chat cards to display the numerical value of the targeted defence; optional so GMs can keep it secret if desired. (SagaTympana)
 
 ## Version 0.6.20
 - Improved trait selector dropdown. This addresses a bug noted by PuloDoGato on Discord, where you could select the weapon categories but not the individual weapons. (Fox)
@@ -1285,6 +1286,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
