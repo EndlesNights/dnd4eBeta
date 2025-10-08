@@ -155,7 +155,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 			let effectUpdates = {};
 			
 			if(scope == "copy-name" || scope == "copy-all"){
-				effectUpdates.name = game.i18n.localize(statuses[statusIndex].label);
+				effectUpdates.name = game.i18n.localize(statuses[statusIndex].name);
 			}
 			if(scope == "copy-icon" || scope == "copy-all"){
 				effectUpdates.img = statuses[statusIndex].img;
