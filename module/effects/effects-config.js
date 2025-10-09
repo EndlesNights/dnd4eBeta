@@ -224,7 +224,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
       foundry.utils.mergeObject(submitData, updateData, {performDeletions: false});
     }
 
-		// 4e-specific changes start here
+		// CHANGES FROM CORE START HERE
 		submitData.changes = Array.from(Object.values(submitData.changes || {}));
 		submitData.statuses = Array.from(Object.values(submitData.statuses || {})).filter(x => x);
 		// The form throws an error if it's updated while there is an unselected status condition row. 
@@ -247,10 +247,9 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		submitData.flags.dnd4e.keywords = Array.from(Object.values(submitData.flags.dnd4e.keywords || {})).filter(x => x);
 		
 		submitData.flags.dnd4e.keywordsCustom = submitData.flags.dnd4e.keywordsCustom;
+		// CHANGES FROM CORE END HERE
 
-		// 4e-specific changes end here
 		this.document.validate({changes: submitData, clean: true, fallback: false});
-		
 		return submitData;
 	}
 	
