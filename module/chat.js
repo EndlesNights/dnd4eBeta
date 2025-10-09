@@ -484,41 +484,6 @@ export function _onClickDiceRoll(event){
 
   /* -------------------------------------------- */
 
-  /**
-   * Process messages which are posted using a dice-roll command
-   * @param {string} command          The chat command type
-   * @param {RegExpMatchArray[]} matches Multi-line matched roll expressions
-   * @param {Object} chatData         The initial chat data
-   * @param {Object} createOptions    Options used to create the message
-   * @private
-   * 
-   *  Overrides the core class allowing custom 4e system helper functions to be used
-   */
-
-export async function _processDiceCommand(wrapper, ...args){
-	let [command, matches, chatData, createOptions] = args;
-
-	const actor = ChatMessage.getSpeakerActor(chatData.speaker) || game.user.character;
-	const rollData = actor ? actor.getRollData() : {};
-	const rolls = [];
-	for ( const match of matches ) {
-		if ( !match ) continue;
-		const [formula, flavor] = match.slice(2, 4);
-		if ( flavor && !chatData.flavor ) chatData.flavor = flavor;
-		// const roll = Roll.create(formula, rollData);
-		const roll = Roll.create(actor? game.helper.commonReplace(formula,actor) : formula, rollData);
-		// await roll.evaluate({async: true});
-		await roll.evaluate();
-		rolls.push(roll);
-	}
-	chatData.type = CONST.CHAT_MESSAGE_STYLES.ROLL;
-	chatData.rolls = rolls;
-	chatData.sound = CONFIG.sounds.dice;
-	chatData.content = rolls.reduce((t, r) => t + r.total, 0);
-	createOptions.rollMode = command;
-}
-
-
 Hooks.on("renderChatMessageHTML", (message, html) => {
 	//updateApplyEffectsTooltips(html);
 

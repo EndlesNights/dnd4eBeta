@@ -145,6 +145,11 @@ export class Actor4e extends Actor {
 
 		data["heroicOrParagon"] = data?.details.level < 21 ? 1 : 0
 		data["paragonOrEpic"] = data?.details.level >= 11 ? 1 : 0
+
+		data["id"] = this.id;
+		data["uuid"] = this.uuid;
+
+		data["isActor"] = true;
 		return data;
 	}
 
