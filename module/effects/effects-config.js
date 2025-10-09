@@ -1,40 +1,69 @@
 import { DND4E } from "../config.js";
 
-export default class ActiveEffectConfig4e extends ActiveEffectConfig {
+export default class ActiveEffectConfig4e extends foundry.applications.sheets.ActiveEffectConfig {
 
-	/** @override */
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ["sheet", "active-effect-sheet", "dnd4e"],
-			template: "systems/dnd4e/templates/sheets/active-effect-config.html",
+	static DEFAULT_OPTIONS = {
+		classes: ["sheet", "dnd4e"],
+		position: {
 			width: 580,
-			height: 514,
-			resizable: true,
-			tabs: [{navSelector: ".tabs", contentSelector: "form", initial: "details"}]
-		});
-	}
+			height: 514
+		},
+		window: {
+			resizable: true
+		},
+		actions: {
+			addDot: ActiveEffectConfig4e.#onEffectDotControl,
+			deleteDot: ActiveEffectConfig4e.#onEffectDotControl,
+			addStatus: ActiveEffectConfig4e.#onEffectStatusControl,
+			copyAll: ActiveEffectConfig4e.#onEffectStatusControl,
+			copyName: ActiveEffectConfig4e.#onEffectStatusControl,
+			copyIcon: ActiveEffectConfig4e.#onEffectStatusControl,
+			copyDesc: ActiveEffectConfig4e.#onEffectStatusControl,
+			copyMods: ActiveEffectConfig4e.#onEffectStatusControl,
+			copyClFlags: ActiveEffectConfig4e.#onEffectStatusControl,
+			deleteStatus: ActiveEffectConfig4e.#onEffectStatusControl,
+			addKeyword: ActiveEffectConfig4e.#onEffectKeywordControl,
+			deleteKeyword: ActiveEffectConfig4e.#onEffectKeywordControl
+		}
+	};
 
-	/** @override */
-	async getData(options) {
-		let data = await super.getData(options);
+	static PARTS = {
+		header: {template: "templates/sheets/active-effect/header.hbs"},
+		tabs: {template: "templates/generic/tab-navigation.hbs"},
+		details: {template: "systems/dnd4e/templates/sheets/active-effect/details.hbs", scrollable: [""]},
+		duration: {template: "systems/dnd4e/templates/sheets/active-effect/duration.hbs", scrollable: [""]},
+		changes: {template: "systems/dnd4e/templates/sheets/active-effect/changes.hbs", scrollable: ["", "ol"]},
+		footer: {template: "templates/generic/form-footer.hbs"}
+	};
+
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
+
+		context.config = {
+			...CONFIG.DND4E,
+			statusEffects: CONFIG.statusEffects,
+			keywords: {
+				...CONFIG.DND4E.effectTypes,
+				...CONFIG.DND4E.damageTypes,
+				...CONFIG.DND4E.powerSource
+			},
+		};
+		context.powerParent = ["power", "consumable"].includes(this.document.parent.type);
 		
-		data.config = CONFIG.DND4E;
-		data.powerParent = (["power", "consumable"].includes(this.object.parent.type));
-		data.config.statusEffects = CONFIG.statusEffects;
-		data.config.keywords = {...data.config.effectTypes,...data.config.damageTypes,...data.config.powerSource};
+		const damageTypes = {...CONFIG.DND4E.damageTypes};
+		delete damageTypes.ongoing;
+		context.dotDamageTypes = damageTypes;
 
-		return data;
+		context.cltEnabled = context.config.statusEffects !== context.config.statusEffect;
+
+		return context;
 	}
-	
+
 	/* ----------------------------------------- */
 
-	/* Event listener for additional form controls */
-	activateListeners(html) {
-		super.activateListeners(html);
-		html.find(".effect-dot-control").click(this._onEffectDotControl.bind(this));
-		html.find(".effect-status-control").click(this._onEffectStatusControl.bind(this));
-		html.find(".effect-keyword-control").click(this._onEffectKeywordControl.bind(this));
-		html.find(".refreshes").change(this._refresh.bind(this));
+	async _onRender(context, options) {
+		await super._onRender(context, options);
+		this.element.querySelectorAll(".refreshes").forEach(el => el.addEventListener("change", this._refresh.bind(this)));
 	}
 
 	/* ----------------------------------------- */
@@ -42,16 +71,17 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	/**
 	* Handling for mouse clicks on DOT control buttons - adapted from _onEffectControl
 	* Delegate responsibility out to action-specific handlers depending on the button action.
-	* @param {MouseEvent} event      The originating click event
+	* @param {PointerEvent} event      	The originating click event
+	* @param {HTMLElement} target				The target of the event
+	* @this {ActiveEffectConfig4e}
 	*/
-	_onEffectDotControl(event) {
+	static #onEffectDotControl(event, target) {
 		event.preventDefault();
-		const button = event.currentTarget;
-		switch ( button.dataset.action ) {
-			case "add":
+		switch ( target.dataset.action ) {
+			case "addDot":
 				return this._addEffectDot();
-			case "delete":
-				button.closest(".effect-dot").remove();
+			case "deleteDot":
+				target.closest(".effect-dot").remove();
 				return this.submit({preventClose: true}).then(() => this.render());
 		}
 	}
@@ -61,24 +91,25 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	/**
 	* Handling for mouse clicks on status control buttons - adapted from _onEffectControl
 	* Delegate responsibility out to action-specific handlers depending on the button action.
-	* @param {MouseEvent} event      The originating click event
+	* @param {PointerEvent} event      	The originating click event
+	* @param {HTMLElement} target				The target of the event
+	* @this {ActiveEffectConfig4e}
 	*/
-	_onEffectStatusControl(event) {
+	static #onEffectStatusControl(event, target) {
 		event.preventDefault();
-		const button = event.currentTarget;
-		switch ( button.dataset.action ) {
-			case "copy-name":
-			case "copy-icon":
-			case "copy-desc":
-			case "copy-mods":
-			case "copy-cl":
-			case "copy-all":
-				const statusId = button.closest(".effect-status").getAttribute("data-status-id");
-				return this._copyStatusDetails(statusId,button.dataset.action).then(() => this.render());
-			case "add":
+		switch ( target.dataset.action ) {
+			case "copyName":
+			case "copyIcon":
+			case "copyDesc":
+			case "copyMods":
+			case "copyClFlags":
+			case "copyAll":
+				const statusId = target.closest(".effect-status").getAttribute("data-status-id");
+				return this._copyStatusDetails(statusId, target.dataset.action).then(() => this.render());
+			case "addStatus":
 				return this._addEffectStatus();
-			case "delete":
-				button.closest(".effect-status").remove();
+			case "deleteStatus":
+				target.closest(".effect-status").remove();
 				return this.submit({preventClose: true}).then(() => this.render());
 		}
 	}
@@ -88,16 +119,17 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	/**
 	* Handling for mouse clicks on Keyword control buttons - adapted from _onEffectControl
 	* Delegate responsibility out to action-specific handlers depending on the button action.
-	* @param {MouseEvent} event      The originating click event
+	* @param {PointerEvent} event      	The originating click event
+	* @param {HTMLElement} target				The target of the event
+	* @this {ActiveEffectConfig4e}
 	*/
-	_onEffectKeywordControl(event) {
+	static #onEffectKeywordControl(event, target) {
 		event.preventDefault();
-		const button = event.currentTarget;
-		switch ( button.dataset.action ) {
-			case "add":
+		switch ( target.dataset.action ) {
+			case "addKeyword":
 				return this._addEffectKeyword();
-			case "delete":
-				button.closest(".effect-keyword").remove();
+			case "deleteKeyword":
+				target.closest(".effect-keyword").remove();
 				return this.submit({preventClose: true}).then(() => this.render());
 		}
 	}
@@ -122,7 +154,7 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	async _addEffectStatus() {
 		const i = this.document.statuses.size;
 		return this.submit({preventClose: true, updateData: {
-			[`statuses.${i}`] : "none"
+			statuses : [...this.document.statuses, "none"]
 		}});
 	}
 
@@ -154,21 +186,21 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 			const statusIndex = statuses.findIndex((x) => x.id == statusId);
 			let effectUpdates = {};
 			
-			if(scope == "copy-name" || scope == "copy-all"){
+			if(scope == "copyName" || scope == "copyAll"){
 				effectUpdates.name = game.i18n.localize(statuses[statusIndex].name);
 			}
-			if(scope == "copy-icon" || scope == "copy-all"){
+			if(scope == "copyIcon" || scope == "copyAll"){
 				effectUpdates.img = statuses[statusIndex].img;
 				//console.log(effectUpdates);
 			}
-			if(scope == "copy-desc" || scope == "copy-all"){
+			if(scope == "copyDesc" || scope == "copyAll"){
 				effectUpdates.description = game.i18n.localize(statuses[statusIndex].description);
 			}
-			if(scope == "copy-mods" || scope == "copy-all"){
+			if(scope == "copyMods" || scope == "copyAll"){
 				effectUpdates.changes = statuses[statusIndex].changes;
 			}
 			if (game.modules.get("condition-lab-triggler")?.active){
-				if(scope == "copy-flags" || scope == "copy-all"){
+				if(scope == "copyClFlags" || scope == "copyAll"){
 					if(statuses[statusIndex].flags['condition-lab-triggler']){
 						effectUpdates.conditionLab = statuses[statusIndex].flags['condition-lab-triggler'];
 					}
@@ -184,41 +216,42 @@ export default class ActiveEffectConfig4e extends ActiveEffectConfig {
 	}
 
 	/* ----------------------------------------- */
-	/* I'm really worried that I had to override this method from the core class.
-		I'm afraid it might mess up module compatibility or something!
-		If anybody knows a better way, please let me know. - Fox
-	*/
-	_getSubmitData(updateData={}) {
-		const fd = new FormDataExtended(this.form, {editors: this.editors});
-		let data = foundry.utils.expandObject(fd.object);
-		if ( updateData ) foundry.utils.mergeObject(data, updateData);
-		
-		//console.debug(data);
-		
-		data.changes = Array.from(Object.values(data.changes || {}));
-		data.statuses = Array.from(Object.values(data.statuses || {})).filter(x => x);
+
+	_prepareSubmitData(event, form, formData, updateData) {
+		const submitData = this._processFormData(event, form, formData);
+		if ( updateData ) {
+      foundry.utils.mergeObject(submitData, updateData, {performDeletions: true});
+      foundry.utils.mergeObject(submitData, updateData, {performDeletions: false});
+    }
+
+		// 4e-specific changes start here
+		submitData.changes = Array.from(Object.values(submitData.changes || {}));
+		submitData.statuses = Array.from(Object.values(submitData.statuses || {})).filter(x => x);
 		// The form throws an error if it's updated while there is an unselected status condition row. 
 		// I can't find a way to catch it, so instead I'm just trimming - Fox
 		
-		if(data.conditionLab){
+		if(submitData.conditionLab){
 		// This doesn't like merging directly, seemingly because of the hyphens in the property name. 
 		//	Storing it in a separate property and updating manually seems to work. - Fox
-			data.flags['condition-lab-triggler'] = data.conditionLab;
+			submitData.flags['condition-lab-triggler'] = submitData.conditionLab;
 		}
 		
-		data.flags.dnd4e.dots = Array.from(Object.values(data.flags.dnd4e.dots || {}));
-		if (data.flags.dnd4e.dots.length){
-			for (let [i, dot] of data.flags.dnd4e.dots.entries()){
-				data.flags.dnd4e.dots[i].amount = dot.amount;
-				data.flags.dnd4e.dots[i].typesArray = dot.typesArray.sort();
+		submitData.flags.dnd4e.dots = Array.from(Object.values(submitData.flags.dnd4e.dots || {}));
+		if (submitData.flags.dnd4e.dots.length){
+			for (let [i, dot] of submitData.flags.dnd4e.dots.entries()){
+				submitData.flags.dnd4e.dots[i].amount = dot.amount;
+				submitData.flags.dnd4e.dots[i].typesArray = dot.typesArray.sort();
 			}
 		}
 		
-		data.flags.dnd4e.keywords = Array.from(Object.values(data.flags.dnd4e.keywords || {})).filter(x => x);
+		submitData.flags.dnd4e.keywords = Array.from(Object.values(submitData.flags.dnd4e.keywords || {})).filter(x => x);
 		
-		data.flags.dnd4e.keywordsCustom = data.flags.dnd4e.keywordsCustom;
+		submitData.flags.dnd4e.keywordsCustom = submitData.flags.dnd4e.keywordsCustom;
+
+		// 4e-specific changes end here
+		this.document.validate({changes: submitData, clean: true, fallback: false});
 		
-		return data;
+		return submitData;
 	}
 	
 	/* ----------------------------------------- */
