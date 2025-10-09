@@ -1922,38 +1922,38 @@ DND4E.statusEffect = [
 	//Row - Alt Marks
 	{
 		id: "mark_2",
-		name: "EFFECT.statusMark",
+		name: "EFFECT.statusMark2",
 		img: "systems/dnd4e/icons/statusEffects/mark_2.svg",
 		description: "EFFECTDESC.mark"
 	},
 	{
 		id: "mark_3",
-		name: "EFFECT.statusMark",
+		name: "EFFECT.statusMark3",
 		img: "systems/dnd4e/icons/statusEffects/mark_3.svg",
 		description: "EFFECTDESC.mark"
 	},
 	{
 		id: "mark_4",
-		name: "EFFECT.statusMark",
+		name: "EFFECT.statusMark4",
 		img: "systems/dnd4e/icons/statusEffects/mark_4.svg",
 		description: "EFFECTDESC.mark"
 	},
 	{
 		id: "mark_5",
-		name: "EFFECT.statusMark",
+		name: "EFFECT.statusMark5",
 		img: "systems/dnd4e/icons/statusEffects/mark_5.svg",
 		description: "EFFECTDESC.mark"
 	},
 	//Row - Extra Marks + Resources
 	{
 		id: "mark_6",
-		name: "EFFECT.statusMark",
+		name: "EFFECT.statusMark6",
 		img: "systems/dnd4e/icons/statusEffects/mark_6.svg",
 		description: "EFFECTDESC.mark"
 	},
 	{
 		id: "mark_7",
-		name: "EFFECT.statusMark",
+		name: "EFFECT.statusMark7",
 		img: "systems/dnd4e/icons/statusEffects/mark_7.svg",
 		description: "EFFECTDESC.mark"
 	},

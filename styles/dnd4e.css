@@ -135,7 +135,7 @@ textarea{
 }
 .dnd4e.sheet select{
 	font-size:revert;
-	background:#cac9be;
+	/* background:#cac9be; */
 	border:var(--border-faint);
 }
 .dnd4e.sheet.actor input,
@@ -2440,6 +2440,43 @@ font-size:12px;
 /* ----------------------------------------- */
 /*  Active Effect Sheets
 /* ----------------------------------------- */
+
+.dnd4e.active-effect-config .sheet-header {
+	flex: unset;
+}
+.active-effect-config section.tab.changes {
+	header {
+		grid-template-columns: 12fr 7fr 7fr 4fr 1rem;
+	}
+	ol {
+		grid-template-columns: 12fr 7fr 7fr 4fr 1rem;
+	}
+	header.effect-status {
+    grid-template-columns: 2fr 5fr 1rem;
+		&.clt-enabled {
+			grid-template-columns: 2fr 6fr 1rem;
+		}
+	}
+	ol.statuses-list {
+    grid-template-columns: 2fr repeat(5, 1fr) 1rem;
+		&.clt-enabled {
+			grid-template-columns: 2fr repeat(6, 1fr) 1rem;
+		}
+	}
+	header.effect-dot,
+	ol.dots-list {
+		grid-template-columns: 1fr 1fr 1rem;
+	}
+	header.effect-keyword,
+	ol.keywords-list {
+		grid-template-columns: 1fr 1rem;
+	}
+	.dots-list .amount {
+		height: 100%;
+		display: flex;
+		align-items: end;
+	}
+}
 
 .active-effect-sheet section[data-tab="details"].tab.active,
 .active-effect-sheet section[data-tab="duration"].tab.active {
