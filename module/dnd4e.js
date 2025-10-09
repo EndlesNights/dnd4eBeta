@@ -7,7 +7,6 @@
 // Import Modules
 import { DND4E } from "./config.js";
 import { registerSystemSettings } from "./settings.js";
-import {libWrapper} from './libWrapper-shim.js';
 
 // import Sheets
 import ItemSheet4e from "./item/item-sheet.js";
@@ -18,12 +17,11 @@ import ActorSheet4eHazard from "./actor/hazard-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 import { measureDistances, getBarAttribute } from "./canvas.js";
-import { _getInitiativeFormula } from "./combat.js";
+import Combat4e from "./combat.js";
 
 // Import Documents
 import { MeasuredTemplate4e, TemplateLayer4e} from "./pixi/ability-template.js";
 import { Ruler4e } from "./pixi/ruler.js";
-import { Turns } from "./apps/turns.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
@@ -43,6 +41,8 @@ import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 import {TokenBarHooks} from "./hooks.js";
 import { customSKillSetUp } from "./skills/custom-skills.js";
 import Items4e from "./collection/item-collection.js";
+import Combatant4e from "./combatant.js";
+import Roll4e from "./dice/Roll.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -81,10 +81,18 @@ Hooks.once("init", async function() {
 	CONFIG.Item.collection = Items4e;
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
+	CONFIG.Combatant.documentClass = Combatant4e;
+	CONFIG.Combat.documentClass = Combat4e;
+
+	CONFIG.MeasuredTemplate.objectClass = MeasuredTemplate4e;
+	CONFIG.Region.objectClass = Region4e;
+
+	CONFIG.Canvas.layers.templates.layerClass = TemplateLayer4e;
 
 	CONFIG.statusEffects = CONFIG.DND4E.statusEffect;
 	
 	// define custom roll extensions
+	CONFIG.Dice.rolls = [Roll4e];
 	CONFIG.Dice.rolls.push(MultiAttackRoll);
 	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
 	
@@ -93,7 +101,7 @@ Hooks.once("init", async function() {
 	// foundry.data.regionBehaviors.DifficultTerrainRegionBehaviorType = DifficultTerrainRegionBehaviorType;
 	// CONFIG.RegionBehavior.documentClass = RegionBehavior4e
 	CONFIG.RegionBehavior.dataModels.difficultTerrain = DifficultTerrainRegionBehaviorType;
-	HighlightRegionShader = DifficultTerrainShader4e;
+	// HighlightRegionShader = DifficultTerrainShader4e;
 
 	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";//"DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "fa-regular fa-triangle";
@@ -103,7 +111,6 @@ Hooks.once("init", async function() {
 	registerSystemSettings();
 
 	CONFIG.Combat.initiative.formula = "1d20 + @attributes.init.value";
-	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("dnd4e", ActorSheet4e, {
@@ -160,12 +167,6 @@ Hooks.once("init", async function() {
 	game.dnd4e.quickSave = (actor) => game.dnd4e.tokenBarHooks.quickSave(actor, null)
 
 	customSKillSetUp();
-
-	if(!game.modules.get("lib-wrapper")?.active){
-		return console.log("lib-wrapper not active!")
-	} else {
-		libWrapperInit();
-	}
 
 });
 
@@ -320,62 +321,6 @@ Hooks.on("renderTokenHUD", (app, html, data) => {
 	});
 	[...html.querySelectorAll(".effect-control")].at(-1).after(messageElement);
 });
-
-
-function libWrapperInit() {
-
-	// Collection of Overriders for 4e Measure Templates
-	libWrapper.register(
-		'dnd4e',
-		'MeasuredTemplate.prototype._computeShape',
-		MeasuredTemplate4e._computeShape
-	);
-	libWrapper.register(
-		'dnd4e',
-		'MeasuredTemplate.prototype._refreshRulerText',
-		MeasuredTemplate4e._refreshRulerText
-	);
-	libWrapper.register(
-		'dnd4e',
-		'MeasuredTemplate.prototype._refreshShape',
-		MeasuredTemplate4e._refreshShape
-	);
-	libWrapper.register(
-		'dnd4e',
-		'TemplateLayer.prototype._onDragLeftStart',
-		TemplateLayer4e._onDragLeftStart
-	)
-	libWrapper.register(
-		'dnd4e',
-		'TemplateLayer.prototype._onDragLeftMove',
-		TemplateLayer4e._onDragLeftMove
-	)
-
-	libWrapper.register(
-		'dnd4e',
-		'Region.prototype._draw',
-		Region4e._draw
-	)
-
-	libWrapper.register(
-		'dnd4e',
-		'Combat.prototype.nextTurn',
-		Turns._onNextTurn
-	)
-
-	libWrapper.register(
-		'dnd4e',
-		'ChatLog.prototype._onDiceRollClick',
-		chat._onDiceRollClick
-	)
-
-	libWrapper.register(
-		'dnd4e',
-		'ChatLog.prototype._processDiceCommand',
-		chat._processDiceCommand
-	)
-
-}
 
 Hooks.on("getSceneControlButtons", function(controls){
 	//sets what the default activeTool is

@@ -4,7 +4,7 @@ import { DND4E } from "../config.js";
  * A helper class for building MeasuredTemplates for 4e spells and abilities
  * @extends {MeasuredTemplate}
  */
-export class MeasuredTemplate4e extends MeasuredTemplate {
+export class MeasuredTemplate4e extends foundry.canvas.placeables.MeasuredTemplate {
 
 	static getDistanceCalc(item){
 
@@ -187,12 +187,9 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 	/* -------------------------------------------- */
 	
 	/**
-	 * Wrapped computeShape as MeasuredTemplate.#getCircleShape is now private,
 	 * Overrides the method to allow for 4e Burst shapes allowing drawing square template from the center.
-	 * @param {wrapper} wrapper    refrence to the original core method
 	 */
-	static _computeShape(wrapper){
-
+	_computeShape(){
 		if(this.document.flags.dnd4e?.templateType === "burst"
 		|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "burst" && !this.document.flags.dnd4e?.templateType)) {
 			
@@ -206,8 +203,8 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 
 			return new PIXI.Polygon(canvas.grid.getCone({x: 0, y: 0}, distance, direction, angle));
 		}
-		
-		return wrapper();
+
+		return super._computeShape();
 	}
 	
 	/* -------------------------------------------- */
@@ -216,7 +213,7 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 	 * Update the displayed ruler tooltip text
 	 * @protected
 	 */
-	static _refreshRulerText(wrapper){
+	_refreshRulerText(){
 		if( (this.document.flags.dnd4e?.templateType === "burst"  && this.document.t === "circle")
 			|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "burst" && !this.document.flags.dnd4e?.templateType)) {
 				let d;
@@ -248,7 +245,7 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 				this.ruler.text = text;
 				this.ruler.position.set(this.ray.dx + 10, this.ray.dy + 5);
 		} else {
-			return wrapper();
+			return super._refreshRulerText()
 		}
 	}
 
@@ -256,10 +253,10 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
    * Refresh the underlying geometric shape of the MeasuredTemplate.
    * @protected
    */
-	static _refreshShape(wrapper) {
+	_refreshShape() {
 		
 		if(!this.document.getFlag("dnd4e", "templateType")){
-			return wrapper();
+			return super._refreshShape();
 		}
 
 		// anchors the point along the edge of the burst/blast
@@ -272,7 +269,7 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 export class TemplateLayer4e extends TemplateLayer {
 
 	/** @inheritdoc */
-	static _onDragLeftStart(wrapper, event){
+	_onDragLeftStart(event){
 		const tool = game.activeTool;
 
 		//unsett this flag, as it is used only for the system spesfic custom messure templates _onDragLeftMove
@@ -280,8 +277,8 @@ export class TemplateLayer4e extends TemplateLayer {
 			event.dnd4e.templateType = null;
 		}
 
-		if(!(tool == "blast" || tool == "burst")){
-			return wrapper(event);
+		if(!["blast", "burst"].includes(tool)){
+			return super._onDragLeftStart(event);
 		}
 
 		const interaction = event.interactionData;
@@ -311,20 +308,21 @@ export class TemplateLayer4e extends TemplateLayer {
 			event.dnd4e = {templateType: tool}
 		}
 		
-		const cls = getDocumentClass("MeasuredTemplate");
+		const cls = foundry.utils.getDocumentClass("MeasuredTemplate");
 		const doc = new cls(previewData, {parent: canvas.scene});
 	
 		// Create a preview MeasuredTemplate object
 		const template = new this.constructor.placeableClass(doc);
+		doc._object = template;
 		interaction.preview = this.preview.addChild(template);
 		return template.draw();
 	}
 
 	/** @inheritdoc */
-	static _onDragLeftMove(wrapper, event) {
+	_onDragLeftMove(event) {
 		//!event.target.documentCollection[0]?.value.flags.dnd4e.templateType
 		if(!event.dnd4e?.templateType){
-			return wrapper(event);
+			return super._onDragLeftMove(event);
 		}
 
 		const interaction = event.interactionData;
@@ -334,7 +332,7 @@ export class TemplateLayer4e extends TemplateLayer {
 	
 		// Compute the ray
 		const {origin, destination, preview} = interaction;
-		const ray = new Ray(origin, destination);
+		const ray = new foundry.canvas.geometry.Ray(origin, destination);
 		let distance;
 		distance = canvas.grid.measurePath([origin, destination]).distance;
 

@@ -22,16 +22,16 @@ export class DifficultTerrainRegionBehaviorType extends foundry.data.regionBehav
 	}
 }
 
-export class Region4e extends Region {
-	static async _draw(wrapped, options){
-		wrapped(options);
+export class Region4e extends foundry.canvas.placeables.Region {
+	async _draw(options){
+		await super._draw(options);
 		this.hasDifficultTerrainBehavoir = this.document.behaviors.some(behavior => behavior.type === "difficultTerrain");
 		this.drawTerrianTint = CONFIG.DND4E.difficultTerrain.drawTerrianTint; // set from the Terrian Sheet
 		this.terrianTextureSRC = this.document.behaviors.find(behavior => behavior.system.terrianTexture)?.system.terrianTexture;		
 	}
 }
 
-export class DifficultTerrainShader4e extends HighlightRegionShader {
+export class DifficultTerrainShader4e extends foundry.canvas.rendering.shaders.HighlightRegionShader {
 
 	/** @override */
 	static vertexShader = `

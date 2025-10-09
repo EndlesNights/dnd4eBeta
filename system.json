@@ -22,9 +22,6 @@
 			"discord": "theartgremblin"
 		  }
 	],
-	"relationships.requires": [
-		{ "name": "lib-wrapper" }
-	],
 	"esmodules": [
 		"module/dnd4e.js"
 	],
