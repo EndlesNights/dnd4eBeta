@@ -37,6 +37,7 @@ export class MeasuredTemplate4e extends foundry.canvas.placeables.MeasuredTempla
 		let flags = {dnd4e:{templateType:templateShape, item, origin:item.uuid}};
 
 		if(item.system.rangeType === "closeBlast" || item.system.rangeType === "rangeBlast") {
+			flags.dnd4e.templateType = "blast";
 			distance *= Math.sqrt(2);
 		}
 		else if(item.system.rangeType === "rangeBurst") {
@@ -171,9 +172,26 @@ export class MeasuredTemplate4e extends foundry.canvas.placeables.MeasuredTempla
 		handlers.mw = event => {
 			if ( event.ctrlKey ) event.preventDefault(); // Avoid zooming the browser window
 			event.stopPropagation();
-			let delta = canvas.grid.type > CONST.GRID_TYPES.SQUARE ? 30 : 15;
-			let snap = event.shiftKey ? delta : 5;
-			this.document.updateSource({direction: this.document.direction + (snap * Math.sign(event.deltaY))});
+			if (this.document.flags.dnd4e?.templateType === "blast") {
+				const updates = {
+					direction: Math.normalizeDegrees(this.document.direction - Math.sign(event.deltaY) * 315)
+				};
+				if (this.document.t === "rect") {
+					// Rotate and become ray
+					updates.distance = updates.width = this.document.distance / Math.SQRT2;
+					updates.t = "ray";
+				} else {
+					// Rotate and become rect
+					updates.distance = this.document.distance * Math.SQRT2;
+					updates.width = 0;
+					updates.t = "rect";
+				}
+				this.document.updateSource(updates);
+			} else {
+				let delta = canvas.grid.type > CONST.GRID_TYPES.SQUARE ? 30 : 15;
+				let snap = event.shiftKey ? delta : 5
+				this.document.updateSource({direction: this.document.direction + (snap * Math.sign(event.deltaY))});
+			}
 			this.refresh();
 		};
 
@@ -197,11 +215,17 @@ export class MeasuredTemplate4e extends foundry.canvas.placeables.MeasuredTempla
 			return new PIXI.Polygon(canvas.grid.getCircle({x: 0, y: 0}, distance));
 
 		}
-		else if (this.document.flags.dnd4e?.templateType === "blast"
-			|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "blast" && !this.document.flags.dnd4e?.templateType)) {
+		// Freehand blasts
+		else if (!this.document.flags.dnd4e?.templateType && this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "blast") {
 			const {t, distance, direction, angle, width} = this.document;
 
 			return new PIXI.Polygon(canvas.grid.getCone({x: 0, y: 0}, distance, direction, angle));
+		} else if (this.document.t === "rect" && this.document.flags.dnd4e?.templateType === "blast") {
+			const {distance, direction} = this.document;
+
+			const endpoint = foundry.canvas.geometry.Ray.fromAngle(0, 0, Math.toRadians(direction), distance * canvas.dimensions.distancePixels).B;
+
+			return new PIXI.Rectangle(0, 0, endpoint.x, endpoint.y).normalize();
 		}
 
 		return super._computeShape();
@@ -261,7 +285,11 @@ export class MeasuredTemplate4e extends foundry.canvas.placeables.MeasuredTempla
 
 		// anchors the point along the edge of the burst/blast
 		let {x, y, direction, distance} = this.document;
-		this.ray = new Ray({x, y}, canvas.grid.getTranslatedPoint({x, y}, direction, distance));
+		if (this.document.t === "rect" && this.document.getFlag("dnd4e", "templateType") === "blast") {
+			this.ray = foundry.canvas.geometry.Ray.fromAngle(x, y, Math.toRadians(direction), distance * canvas.dimensions.distancePixels);
+		} else {
+			this.ray = new foundry.canvas.geometry.Ray({x, y}, canvas.grid.getTranslatedPoint({x, y}, direction, distance));
+		}
 		this.shape = this._computeShape();
 	}
 }
@@ -340,5 +368,27 @@ export class TemplateLayer4e extends TemplateLayer {
 		preview.document.direction = Math.normalizeDegrees(Math.toDegrees(ray.angle));
 		preview.document.distance = distance;
 		preview.renderFlags.set({refreshShape: true});
+	}
+
+	/** @inheritdoc */
+	_onMouseWheel(event) {
+    const template = this.hover;
+    if (!template || template.isPreview) return;
+		if (template.document.flags.dnd4e?.templateType !== "blast") return super._onMouseWheel(event);
+
+		const updates = {
+			direction: Math.normalizeDegrees(template.document.direction - Math.sign(event.delta) * 315)
+		};
+    if (template.document.t === "rect") {
+			// Rotate and become ray
+			updates.distance = updates.width = template.document.distance / Math.SQRT2;
+			updates.t = "ray";
+		} else {
+			// Rotate and become rect
+			updates.distance = template.document.distance * Math.SQRT2;
+			updates.width = 0;
+			updates.t = "rect";
+		}
+		return template.document.update(updates);
 	}
 }
