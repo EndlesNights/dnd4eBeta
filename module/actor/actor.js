@@ -1702,7 +1702,7 @@ export class Actor4e extends Actor {
 		}
 
 		const rollData = this.getRollData();
-		await Helper.applySaveEffects([parts], rollData, this, this.effects.get(options.effectId));
+		await Helper.applySaveEffects([parts], rollData, this, this.effects.get(options.effectId), "save");
 
 		const rollConfig = foundry.utils.mergeObject({
 			parts,
