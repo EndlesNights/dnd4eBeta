@@ -21,7 +21,7 @@ import Combat4e from "./combat.js";
 
 // Import Documents
 import { MeasuredTemplate4e, TemplateLayer4e} from "./pixi/ability-template.js";
-import { Ruler4e } from "./pixi/ruler.js";
+import { default as TokenRuler4e } from "./pixi/ruler.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
@@ -106,7 +106,7 @@ Hooks.once("init", async function() {
 	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";//"DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "fa-regular fa-triangle";
 
-	CONFIG.Canvas.rulerClass = Ruler4e;
+	CONFIG.Token.rulerClass = TokenRuler4e;
 
 	registerSystemSettings();
 
@@ -325,22 +325,22 @@ Hooks.on("renderTokenHUD", (app, html, data) => {
 Hooks.on("getSceneControlButtons", function(controls){
 	//sets what the default activeTool is
 	const templates = controls.templates;
-    templates.activeTool = "burst";
+	templates.activeTool = "burst";
 
 	//create additional buttons in measure templates for Burst and Blast
 	const tools = templates.tools;
-    for (const key in tools){
-        tools[key].order += 2;
-    }
-    tools.burst = {
+	for (const key in tools){
+		tools[key].order += 2;
+	}
+	tools.burst = {
 		name: "burst",
-        order: 1,
+		order: 1,
 		title: "Area Burst (Square from Center)",
 		icon: "dnd4e-burst-svg",
 	}
 	tools.blast = {
 		name: "blast",
-        order: 2,
+		order: 2,
 		title: "Area Blast (Square from corner)",
 		icon: "dnd4e-blast-svg",
 	}
@@ -389,7 +389,7 @@ Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 	if (!tokens.size) return;
 	const disposition = token.document.disposition;
 	const excludeUser = !flagDocument.system.autoTarget.includeSelf || flagDocument.system.autoTarget.mode === 'enemies';
-    const targets = new Set();
+	const targets = new Set();
 	for (let targetToken of tokens) {
 		if ((excludeUser && targetToken.actor.uuid === actorUuid) || targetToken.actor.statuses.has('dead')) continue;
 		switch (flagDocument.system.autoTarget.mode) {
@@ -408,5 +408,5 @@ Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 				break;
 		}
 	}
-    canvas.tokens.setTargets(targets);
+	canvas.tokens.setTargets(targets);
 });

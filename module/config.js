@@ -1608,6 +1608,17 @@ DND4E.implement = {
 /* -------------------------------------------- */
 
 /**
+ * Colors used to denote movement speed on ruler segments & grid highlighting
+ * @enum {number}
+ */
+DND4E.tokenRulerColors = {
+  walk: 0x00FF00,
+  run: 0xFFFF66,
+  doubleWalk: 0xFF9966,
+  doubleRun: 0xFF99FF
+};
+
+/**
  * Skill, ability, and tool proficiency levels
  * Each level provides a proficiency multiplier
  * @type {Object}
