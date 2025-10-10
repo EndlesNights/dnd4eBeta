@@ -2409,13 +2409,16 @@ export class Actor4e extends Actor {
 		}
 	}
 
+	//TODO: Why do these functions exist? Are they necessary?
 	async newActiveEffect(effectData){
 		return this.createEmbeddedDocuments("ActiveEffect", [{
 			name: effectData.name,
+			type: effectData.type,
 			description: effectData.description,
 			img:effectData.img,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
+			system: effectData.system,
 			statuses: Array.from(effectData.statuses),
 			//"duration": effectData.duration, //Not too sure why this fails, but it does
 			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
@@ -2428,10 +2431,12 @@ export class Actor4e extends Actor {
 	async newActiveEffectSocket(effectData){
 		const data = {
 			name: effectData.name,
+			type: effectData.type,
 			description: effectData.description,
 			img:effectData.img,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
+			system: effectData.system,
 			statuses: Array.from(effectData.statuses),
 			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
 			tint: effectData.tint,

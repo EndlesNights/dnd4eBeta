@@ -410,3 +410,16 @@ Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 	}
 	canvas.tokens.setTargets(targets);
 });
+
+// Compatibility hook for Aura Effects to prevent aura effects from expiring based on aura origin's turn
+Hooks.on('preCreateActiveEffect', async (effect) => {
+	if (effect.flags.auraeffects?.fromAura || effect.flags.ActiveAuras?.applied) {
+		const updates = {
+			'flags.dnd4e.effectData.durationType': "custom",
+			'flags.dnd4e.effectData.startTurnInit': null,
+			'flags.dnd4e.effectData.durationTurnInit': null,
+			'flags.dnd4e.effectData.durationRound': null,
+		};
+		effect.updateSource(updates);
+	}
+});

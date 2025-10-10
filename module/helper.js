@@ -1418,10 +1418,12 @@ export class Helper {
 
 					const newEffectData = {
 						name: e.name,
+						type: e.type,
 						description: e.description ? e.description : '',
 						img: e.img,
 						origin: e.origin,
 						sourceName: parent.name,
+						system: e.system,
 						//"duration": duration, //Not too sure why this fails, but it does
 						"duration": {startRound: duration?.startRound, rounds: duration.rounds, turns: duration.turns},
 						rounds: duration.rounds,
