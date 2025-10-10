@@ -150,7 +150,8 @@ textarea{
 .dnd4e.sheet button{
 	background:var(--color-bg-btn-minor-inactive);
 }
-.dnd4e.sheet .window-content form{
+.dnd4e.sheet .window-content form,
+.dnd4e.sheet .window-content > section{
 	height:100%;
 	overflow:hidden;
 }
@@ -513,6 +514,7 @@ textarea{
 	text-align:left;
 	border-right:var(--border-normal);
 	margin-bottom:0;
+	margin-top:0;
 	font-size:16px;
 	padding-top:3px;
 	padding-left:8px;
@@ -1570,6 +1572,7 @@ font-size:12px;
 	list-style:none;
 	margin:0;
 	overflow-y:auto;
+	overflow-x:hidden;
 	scrollbar-width:thin;
 }
 .dnd4e.sheet.item .item-list.inventory-list{
@@ -1806,12 +1809,36 @@ font-size:12px;
 	font-size:12px;
 	text-align:center;
 }
-.dnd4e.sheet.actor .inventory-list .item-summary{
-	flex:0 0 100%;
-	font-size:14px;
-	line-height:16px;
-	padding:0.25em 0.5em;
-	border-top:var(--border-faint);
+.dnd4e .collapsible {
+	&.collapsed {
+		.fa-caret-down { transform: rotate(-90deg); }
+		.collapsible-content { grid-template-rows: 0fr; }
+	}
+	.fa-caret-down {
+		flex: 0;
+		transition: transform 250ms ease;
+	}
+	.collapsible-content {
+		display: grid;
+		grid-template-rows: 1fr;
+		transition: all 250ms ease;
+		> .wrapper { overflow: hidden; }
+	}
+}
+.dnd4e.sheet.actor .inventory-list .collapsible {
+	&.collapsed {
+		.item-summary {
+			padding: 0em 0em;
+			border-top: 0px solid rgba(0,0,0,0.1);
+		}
+	}
+	.item-summary{
+		flex:0 0 100%;
+		font-size:14px;
+		line-height:16px;
+		padding:0.25em 0.5em;
+		border-top:var(--border-faint);
+	}
 }
 .dnd4e.sheet.actor .inventory .item-controls{
 	flex:0 0 68px;

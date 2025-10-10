@@ -59,7 +59,7 @@
 				</div>
 				<div class="flexrow power-name {{#if item.system.useType }}ability-usage--{{item.system.useType}}{{else}}ability-usage--blank{{/if}} {{#if item.system.notAvailable}}not-available{{/if}}" data-tooltip="{{item.name}}">
 					<div class="item-name flexrow rollable">
-						<h4 class="power-detail">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
+						<h4 data-action="itemSummary" class="power-detail">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
 					</div>
 					
 					{{#if section.columns}}

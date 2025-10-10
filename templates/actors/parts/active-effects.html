@@ -69,7 +69,7 @@
 
 		<ol class="item-list">
 			{{#each section.effects as |effect|}}
-			<li class="item effect flexrow" data-effect-id="{{effect.id}}" data-tooltip="{{effect.tooltip}}">
+			<li class="item effect flexrow" data-effect-id="{{effect.id}}"{{#if effect.source}} data-parent-id="{{effect.source.id}}"{{/if}} data-tooltip="{{effect.tooltip}}">
 				<div class="item-name effect-name flexrow">
 					<img class="item-image" src="{{effect.img}}" />
 					<h4>{{effect.name}}{{#if effect.keywords.string}} [{{effect.keywords.string}}]{{/if}}</h4>
