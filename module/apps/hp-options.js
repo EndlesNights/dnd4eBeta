@@ -15,6 +15,7 @@ export default class HPOptions extends DocumentSheet4e {
 			width: 340,
 			height: "auto",
 		},
+		tag: "form",
 		window: {
 			title: "Hit Points Options",
 		}
@@ -38,4 +39,5 @@ export default class HPOptions extends DocumentSheet4e {
 		const updateData = foundry.utils.expandObject(formData.object);
 		this.document.update(updateData);
 	}
+
 }

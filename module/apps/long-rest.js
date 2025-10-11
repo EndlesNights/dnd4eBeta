@@ -2,30 +2,40 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 
 export class LongRestDialog extends DocumentSheet4e {
 
-	static get defaultOptions() {
-		const options = super.defaultOptions;
-		return foundry.utils.mergeObject(options, {
-			id: "long-rest",
-			classes: ["dnd4e", "actor-rest"],
-			template: "systems/dnd4e/templates/apps/long-rest.html",
+	static DEFAULT_OPTIONS = {
+		id: "long-rest",
+		classes: ["dnd4e", "actor-rest", "standard-form"],
+		form: {
+			closeOnSubmit: true,
+			handler: LongRestDialog.#onSubmit
+		},
+		position: {
 			width: 500,
-			closeOnSubmit: true
-		});
+			height: "auto",
+		},
+		tag: "form"
 	}
 	
 	get title() {
-		return `${this.object.name} - Long Rest`;
+		return `${this.document.name} - Long Rest`;
+	}
+
+	static PARTS = {
+		LongRestDialog: {
+			template: "systems/dnd4e/templates/apps/long-rest.hbs"
+		}
 	}
 
 	/** @override */
-	getData() {
-		return {system: this.object.system}
+	_prepareContext() {
+		return {system: this.document.system}
 	}
 	
-	async _updateObject(event, formData) {
-		const options = this.options;
-		options.envi = formData.envi;
-
-		this.object.longRest(event, options);
+	static async #onSubmit(event, form, formData) {
+		this.document.longRest(event, {
+			...this.options,
+			...{envi: formData.object.envi}
+		});
 	}
+
 }

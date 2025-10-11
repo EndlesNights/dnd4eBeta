@@ -12,7 +12,8 @@ export default class ConBonConfig extends DocumentSheet4e {
 		position: {
 			width: 320,
 			height: "auto"
-		}
+		},
+		tag: "form"
 	}
 
 	get title() {

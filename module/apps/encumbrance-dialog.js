@@ -12,7 +12,8 @@ export class EncumbranceDialog extends DocumentSheet4e {
 		position: {
 			width: 420,
 			height: "auto"
-		}
+		},
+		tag: "form"
 	}
 
 	get title() {

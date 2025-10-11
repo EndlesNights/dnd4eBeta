@@ -14,7 +14,8 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 		position: {
 			width: 510,
 			height: "auto"
-		}
+		},
+		tag: "form"
 	}
 	
 	get title() {		
@@ -47,18 +48,18 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 		}
 		updateData[`${this.options.target}.bonus`] = newBonus;
 		if(this.options?.skill) {
-			updateData[`${this.options.target}.armourCheck`] = bonus["system.armourCheck"];
+			updateData[`${this.options.target}.armourCheck`] = bonus.system?.armourCheck;
 			//this.position.height = Math.max(1, count) * 76 + 119;
 		} else if(this.options?.ac) {
-			updateData[`${this.options.target}.light`] = bonus["system.light"];
-			updateData[`${this.options.target}.altability`] = bonus["system.altability"];
+			updateData[`${this.options.target}.light`] = bonus.system?.light;
+			updateData[`${this.options.target}.altability`] = bonus.system?.altability;
 			//this.position.height = Math.max(1, count) * 76 + 124;
 		} else if(this.options?.init) {
-			updateData[`${this.options.target}.ability`] = bonus["system.ability"];
+			updateData[`${this.options.target}.ability`] = bonus.system?.ability;
 		}
 		else if(this.options?.secondWind){
 			console.log(bonus["custom"])
-			updateData[`${this.options.target}.custom`] = bonus["system.custom"];
+			updateData[`${this.options.target}.custom`] = bonus.system?.custom;
 		} else {
 			//this.position.height = Math.max(1, count) * 76 + 91;
 		}

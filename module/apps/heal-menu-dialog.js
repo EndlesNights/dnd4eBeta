@@ -22,6 +22,7 @@ export class HealMenuDialog extends DocumentSheet4e {
 			width: 500,
 			height: "auto",
 		},
+        tag: "form",
 		window : {
 			title: "Healing Menu"
 		}
@@ -159,4 +160,5 @@ export class HealMenuDialog extends DocumentSheet4e {
 			content: `${this.document.name} ${healingSurgeText} ${healTypeText} ${surgeValueText} ${rollMessage} ${hpTypeText}.`,
 		});
 	}
+
 }

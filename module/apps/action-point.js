@@ -12,7 +12,8 @@ export class ActionPointDialog extends DocumentSheet4e {
 		position: {
 			width: 500,
 			height: "auto"
-		}
+		},
+		tag: "form"
 	}
 	
 	get title() {

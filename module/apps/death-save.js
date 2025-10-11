@@ -12,7 +12,8 @@ export class DeathSaveDialog extends DocumentSheet4e {
 		position: {
 			width: 500,
 			height: "auto"
-		}
+		},
+		tag: "form"
 	}
 
 	get title() {
@@ -38,9 +39,9 @@ export class DeathSaveDialog extends DocumentSheet4e {
 		const options = this.options;
 
 		this.document.rollDeathSave(event, {
-            ...this.options,
-            ...saveData
-        });
+			...this.options,
+			...saveData
+		});
 	}
 
 }
