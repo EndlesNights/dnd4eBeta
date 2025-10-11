@@ -2,29 +2,35 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 
 export class ActionPointExtraDialog extends DocumentSheet4e {
 
-	static get defaultOptions() {
-		const options = super.defaultOptions;
-		return foundry.utils.mergeObject(options, {
-			id: "action-point-extra",
-			classes: ["action-point"],
-			template: "systems/dnd4e/templates/apps/action-point-extra.html",
-			width: 500,
-			closeOnSubmit: true
-		});
-	}
+	static DEFAULT_OPTIONS = {
+        id: "action-point-extra",
+        form: {
+            closeOnSubmit: true,
+        },
+        position: {
+            width: 500,
+            height: "auto"
+        }
+    }
 	
 	get title() {
-		return `${this.object.name} - Action Point Riders`;
+		return `${this.document.name} - Action Point Riders`;
 	}
 
+    static PARTS = {
+        actionPointExtra: {
+            template: "systems/dnd4e/templates/apps/action-point-extra.hbs"
+        }
+    }
+
 	/** @override */
-	getData() {
-		return {system: this.object.system}
+	_prepareContext() {
+		return {system: this.document.system}
 	}
 
 	async _updateObject(event, formData) {
 		const updateData = {};
 		for(let system in formData) { updateData[`${system}`] = formData[`${system}`];}
-		return this.object.update(updateData);
+		return this.document.update(updateData);
 	}
 }

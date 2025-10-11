@@ -1,15 +1,16 @@
-export default class DocumentSheet4e extends DocumentSheet {
+export default class DocumentSheet4e extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.DocumentSheet) {
 
 	/* -------------------------------------------- */
 
 	/** @override */
-	activateListeners(html) {
-		super.activateListeners(html);
+	async _onRender(context, options) {
+		await super._onRender(context, options);
 
-        //Disabels and adds warning to input fields that are being modfied by active effects
+        //Disables and adds warning to input fields that are being modfied by active effects
 		if (this.isEditable) {
 			for ( const override of this._getActorOverrides() ) {
-				html.find(`input[name="${override}"],select[name="${override}"]`).each((i, el) => {
+				//html.find(`input[name="${override}"],select[name="${override}"]`).each((i, el) => {
+                this.element.querySelectorAll(`input[name="${override}"],select[name="${override}"]`).forEach((el) => {
 					el.disabled = true;
 					el.dataset.tooltip = "DND4E.ActiveEffectOverrideWarning";
 				});
@@ -24,7 +25,6 @@ export default class DocumentSheet4e extends DocumentSheet {
 	 * @protected
 	 */
 	_getActorOverrides() {
-		return Object.keys(foundry.utils.flattenObject(this.object.overrides || {}));
+		return Object.keys(foundry.utils.flattenObject(this.document.overrides || {}));
 	}
-
 }
