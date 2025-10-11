@@ -7,7 +7,7 @@ export default class DocumentSheet4e extends foundry.applications.api.Handlebars
 		await super._onRender(context, options);
 
         //Disables and adds warning to input fields that are being modfied by active effects
-		if (this.isEditable) {
+		if (this.document.testUserPermission(game.user, this.options.editPermission)) {
 			for ( const override of this._getActorOverrides() ) {
 				//html.find(`input[name="${override}"],select[name="${override}"]`).each((i, el) => {
                 this.element.querySelectorAll(`input[name="${override}"],select[name="${override}"]`).forEach((el) => {
