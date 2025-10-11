@@ -2,34 +2,43 @@ import { AttributeBonusDialog } from "./attribute-bonuses.js";
 import DocumentSheet4e from "./DocumentSheet4e.js"
 
 export class EncumbranceDialog extends DocumentSheet4e {
-	static get defaultOptions() {
-		const options = super.defaultOptions;
-		return foundry.utils.mergeObject(options, {
-			id: "encumbrance-dialog",
-			classes: ["dnd4e", "encumbrance-dialog"],
-			template: "systems/dnd4e/templates/apps/encumbrance-dialog.html",
-			width: 420,
+
+	static DEFAULT_OPTIONS = {
+		id: "encumbrance-dialog",
+		classes: ["dnd4e", "encumbrance-dialog", "standard-form"],
+		form: {
 			closeOnSubmit: false
-		});
+		},
+		position: {
+			width: 420,
+			height: "auto"
+		}
 	}
+
 	get title() {
-		return `${this.object.name} - ${game.i18n.localize( "DND4E.Encumbrance")}`;
+		return `${this.document.name} - ${game.i18n.localize( "DND4E.Encumbrance")}`;
+	}
+
+	static PARTS = {
+		EncumbranceDialog: {
+			template: "systems/dnd4e/templates/apps/encumbrance-dialog.hbs"
+		}
 	}
 
 	/** @override */
-	getData() {
-		return {system: this.object.system}
+	_prepareContext() {
+		return {system: this.document.system}
 	}
+
 	async _updateObject(event, formData) {
 		const updateData = {};
 		for(let system in formData) { updateData[`${system}`] = formData[`${system}`];}
-		this.object.update(updateData);
+		this.document.update(updateData);
 	}
 
-	activateListeners(html) {
-		super.activateListeners(html);
-		if (!this.options.editable) return;
-		html.find('.move-bonus').click(this._onMovementBonus.bind(this));
+	_onRender(context, options) {
+		if (!this.options.isEditable) return;
+		this.element.querySelector('.move-bonus').addEventListener("click", this._onMovementBonus.bind(this));
 	}
 
 	_onMovementBonus(event) {
@@ -39,7 +48,8 @@ export class EncumbranceDialog extends DocumentSheet4e {
 		console.log(moveName)
 		console.log(event.currentTarget.parentElement.dataset)
 		console.log(event.currentTarget.parentElement)
-		const options = {target: target, label: `${this.object.system.movement[moveName].label} Movement Bonus` };
-		new AttributeBonusDialog(this.object, options).render(true);
+		const options = {document: this.document, target: target, label: `${this.document.system.movement[moveName].label} Movement Bonus` };
+		new AttributeBonusDialog(options).render(true);
 	}
+
 }
