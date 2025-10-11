@@ -12,22 +12,42 @@ export class ShortRestDialog extends DocumentSheet4e {
 			closeOnSubmit: true
 		});
 	}
+
+	static DEFAULT_OPTIONS = {
+		id: "short-rest",
+		classes: ["dnd4e", "actor-rest", "standard-form"],
+		form: {
+			handler: ShortRestDialog.#onSubmit,
+			closeOnSubmit: true,
+		},
+		position: {
+			width: 500,
+			height: "auto",
+		},
+		tag: "form"
+	}
 	
 	get title() {
-		return `${this.object.name} - Short Rest`;
+		return `${this.document.name} - Short Rest`;
+	}
+
+	static PARTS = {
+		ShortRestDialog: {
+			template: "systems/dnd4e/templates/apps/short-rest.hbs"
+		}
 	}
 
 	/** @override */
-	getData() {
-		
-		return {system: this.object.system}
+	_prepareContext() {
+		return {system: this.document.system}
 	}
 	
-	async _updateObject(event, formData) {
-		const options = this.options;
-		options.surge = formData.surge;
-		options.bonus = formData.bonus;
+	static async #onSubmit(event, form, formData) {
+		const restOptions = foundry.utils.expandObject(formData.object);
 
-		this.object.shortRest(event, options);
+		this.document.shortRest(event, {
+			...this.options,
+			...restOptions
+		});
 	}  
 }
