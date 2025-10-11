@@ -37,8 +37,8 @@ export class EncumbranceDialog extends DocumentSheet4e {
 	}
 
 	_onRender(context, options) {
-		if (!this.options.isEditable) return;
-		this.element.querySelector('.move-bonus').addEventListener("click", this._onMovementBonus.bind(this));
+		if (!this.document.testUserPermission(game.user, this.options.editPermission)) return;
+		this.element.querySelector('.move-bonus')?.addEventListener("click", this._onMovementBonus.bind(this));
 	}
 
 	_onMovementBonus(event) {
