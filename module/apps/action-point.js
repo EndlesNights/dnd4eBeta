@@ -4,24 +4,25 @@ export class ActionPointDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "action-point",
-        form: {
-            closeOnSubmit: true
-        },
-        position: {
-            width: 500,
-            height: "auto"
-        }
+		form: {
+			closeOnSubmit: true
+		},
+		classes: ["action-point", "standard-form"],
+		position: {
+			width: 500,
+			height: "auto"
+		}
 	}
 	
 	get title() {
 		return `${this.document.name} - Action Point`;
 	}
 
-    static PARTS = {
-        actionPoint: {
-            template: "systems/dnd4e/templates/apps/action-point.hbs"
-        }
-    }
+	static PARTS = {
+		actionPoint: {
+			template: "systems/dnd4e/templates/apps/action-point.hbs"
+		}
+	}
 
 	/** @override */
 	_prepareContext() {
@@ -35,4 +36,5 @@ export class ActionPointDialog extends DocumentSheet4e {
 
 		this.document.actionPoint(event, options);
 	}
+
 }

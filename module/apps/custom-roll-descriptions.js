@@ -2,31 +2,38 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 
 export class CustomRolldDescriptions extends DocumentSheet4e {
 	
-	static get defaultOptions() {
-		const options = super.defaultOptions;
-		return foundry.utils.mergeObject(options, {
-			id: "custom-roll",
-			classes: ["dnd4e", "actor-rest"],
-			template: "systems/dnd4e/templates/apps/custom-roll-descriptions.html",
-			width: 500,
+    static DEFAULT_OPTIONS = {
+        id: "custom-roll",
+        classes: ["dnd4e", "actor-rest", "standard-form"],
+        form: {
 			closeOnSubmit: false,
-			submitOnClose: true
-		});
-	}
-	
+            submitOnClose: true
+		},
+		position: {
+			width: 500,
+			height: "auto"
+		}
+    }
+
+    static PARTS = {
+        CustomRolldDescriptions: {
+            template: "systems/dnd4e/templates/apps/custom-roll-descriptions.hbs"
+        }
+    }
+
 	get title() {
-		return `${this.object.name} - Customize Roll Descriptions Options`;
+		return `${this.document.name} - Customize Roll Descriptions Options`;
 	}
 	
 	/** @override */
-	getData() {
-		return {system: this.object.system};
+	_prepareContext() {
+		return {system: this.document.system};
 	}
 	
 	async _updateObject(event, formData) {
 		const updateData = {};
 		for(let system in formData) { updateData[`${system}`] = formData[`${system}`];}
-		return this.object.update(updateData);
+		return this.document.update(updateData);
 	}
 	
 }

@@ -4,28 +4,28 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 export class AttributeBonusDialog extends DocumentSheet4e {
 	
 	static DEFAULT_OPTIONS = {
-        id: `attribute-bonus-${foundry.utils.randomID()}`,
-        form: {
-            handler: AttributeBonusDialog.#onSubmit,
-            closeOnSubmit: false,
-            submitOnClose: true
-        },
-        classes: ["dnd4e", "form.standard-form"],
-        position: {
-            width: 510,
-            height: "auto"
-        }
+		id: `attribute-bonus-${foundry.utils.randomID()}`,
+		form: {
+			handler: AttributeBonusDialog.#onSubmit,
+			closeOnSubmit: false,
+			submitOnClose: true
+		},
+		classes: ["dnd4e", "standard-form"],
+		position: {
+			width: 510,
+			height: "auto"
+		}
 	}
 	
 	get title() {		
 		return `${this.document.name} - ${this.options.label}`;
 	}
 
-    static PARTS = {
-        attributeBonus: {
-            template: "systems/dnd4e/templates/apps/attribute-bonuses.hbs"
-        }
-    }
+	static PARTS = {
+		attributeBonus: {
+			template: "systems/dnd4e/templates/apps/attribute-bonuses.hbs"
+		}
+	}
 	
 	/** @override */
 	_prepareContext() {
@@ -35,7 +35,7 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 	
 	static async #onSubmit(event, form, formData) {
 		const bonus = foundry.utils.expandObject(formData.object)
-        const updateData = {};
+		const updateData = {};
 
 		let newBonus = [{}];
 		let count = 0;
@@ -68,13 +68,13 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 
 	/** @override */
 	_onRender(context, options) {
-        if ( this.isEditable ) {
+		if ( this.isEditable ) {
 			this.element.querySelector('.bonus-add').addEventListener("click", (this._onBonusAdd.bind(this)));
 			this.element.querySelectorAll('.bonus-delete').forEach((el) => {
-                el.addEventListener("click", (this._onBonusDelete.bind(this)))
-            });
+				el.addEventListener("click", (this._onBonusDelete.bind(this)))
+			});
 		}
-    }
+	}
 	
 	_onBonusAdd(event) {
 		event.preventDefault();
@@ -92,4 +92,5 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 		//this.position.height -= 76;
 		return this.document.update({[`${this.options.target}.bonus`]: bonus});
 	}
+
 }
