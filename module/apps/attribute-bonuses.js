@@ -5,12 +5,12 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 	
 	static DEFAULT_OPTIONS = {
 		id: `attribute-bonus-${foundry.utils.randomID()}`,
+		classes: ["dnd4e", "standard-form"],
 		form: {
 			handler: AttributeBonusDialog.#onSubmit,
 			closeOnSubmit: false,
 			submitOnClose: true
 		},
-		classes: ["dnd4e", "standard-form"],
 		position: {
 			width: 510,
 			height: "auto"

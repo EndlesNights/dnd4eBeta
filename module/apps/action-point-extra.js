@@ -4,10 +4,10 @@ export class ActionPointExtraDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "action-point-extra",
+		classes: ["action-point", "standard-form"],
 		form: {
 			closeOnSubmit: true,
 		},
-		classes: ["action-point", "standard-form"],
 		position: {
 			width: 500,
 			height: "auto"

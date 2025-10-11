@@ -4,10 +4,11 @@ export class ActionPointDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "action-point",
-		form: {
-			closeOnSubmit: true
-		},
 		classes: ["action-point", "standard-form"],
+		form: {
+			closeOnSubmit: true,
+			handler: this.#onSubmit
+		},
 		position: {
 			width: 500,
 			height: "auto"
@@ -30,10 +31,8 @@ export class ActionPointDialog extends DocumentSheet4e {
 		return { system: this.document.system, extra: extra };
 	}
 
-	async _updateObject(event, formData) {
-		
+	static async #onSubmit(event, form, formData) {
 		const options = this.options;
-
 		this.document.actionPoint(event, options);
 	}
 
