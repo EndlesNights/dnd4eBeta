@@ -1282,7 +1282,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_onHPOptions(event) {
 		event.preventDefault();
 
-		new HPOptions(this.actor).render(true)
+		new HPOptions({ document: this.actor }).render(true)
 	}
 	
 	/* -------------------------------------------- */
