@@ -1294,55 +1294,55 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const skillName = event.currentTarget.parentElement.dataset.skill;
 		const target = `system.skills.${skillName}`;
-		const options = {target: target, label: `${game.i18n.format('DND4E.SkillBonusTitle', { skill: this.actor.system.skills[skillName].label } ) }`, skill: true };
-		new AttributeBonusDialog(this.actor, options).render(true);
+		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.SkillBonusTitle', { skill: this.actor.system.skills[skillName].label } ) }`, skill: true };
+		new AttributeBonusDialog(options).render(true);
 	}
 	/* -------------------------------------------- */
 
 	_onDeathSaveBonus(event) {
 		event.preventDefault();
-		const options = {target: `system.details.deathsavebon`, label: game.i18n.localize('DND4E.DeathSavingThrowBonus')};
-		new AttributeBonusDialog(this.actor, options).render(true);		
+		const options = { document: this.actor, target: `system.details.deathsavebon`, label: game.i18n.localize('DND4E.DeathSavingThrowBonus')};
+		new AttributeBonusDialog(options).render(true);		
 	}
 	
 	_onSurgeBonus(event) {
 		event.preventDefault();
-		const options = {target: `system.details.surgeBon`, label: game.i18n.localize('DND4E.HealingSurgeBonus') };
-		new AttributeBonusDialog(this.actor, options).render(true);		
+		const options = { document: this.actor, target: `system.details.surgeBon`, label: game.i18n.localize('DND4E.HealingSurgeBonus') };
+		new AttributeBonusDialog(options).render(true);		
 	}
 	
 	_onSurgeEnv(event) {
 		event.preventDefault();
-		const options = {target: `system.details.surgeEnv`, label: `${game.i18n.localize('DND4E.HealingSurges')} ${game.i18n.localize('DND4E.SurgeEnv')}`};
-		new AttributeBonusDialog(this.actor, options).render(true);		
+		const options = { document: this.actor, target: `system.details.surgeEnv`, label: `${game.i18n.localize('DND4E.HealingSurges')} ${game.i18n.localize('DND4E.SurgeEnv')}`};
+		new AttributeBonusDialog(options).render(true);		
 	}
 
 	_onSecondWindBonus(event) {
 		event.preventDefault();
-		const options = {target: `system.details.secondwindbon`, label: game.i18n.localize('DND4E.SecondWindBonus'), secondWind: true };
-		new AttributeBonusDialog(this.actor, options).render(true);		
+		const options = { document: this.actor, target: `system.details.secondwindbon`, label: game.i18n.localize('DND4E.SecondWindBonus'), secondWind: true };
+		new AttributeBonusDialog(options).render(true);		
 	}
 	
 	_onDefencesBonus(event) {
 		event.preventDefault();
 		const defName = event.currentTarget.parentElement.dataset.defence;
 		const target = `system.defences.${defName}`;
-		const options = {target: target, label: `${game.i18n.format('DND4E.DefenceBonus',{def:this.actor.system.defences[defName].label})}`, ac: (defName ==="ac")  };
-		new AttributeBonusDialog(this.actor, options).render(true);		
+		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.DefenceBonus',{def:this.actor.system.defences[defName].label})}`, ac: (defName ==="ac")  };
+		new AttributeBonusDialog(options).render(true);		
 	}
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = {target: `system.attributes.init`, label: game.i18n.localize('DND4E.InitiativeBonus'), init: true };
-		new AttributeBonusDialog(this.actor, options).render(true);		
+		const options = { document: this.actor, target: `system.attributes.init`, label: game.i18n.localize('DND4E.InitiativeBonus'), init: true };
+		new AttributeBonusDialog(options).render(true);		
 	}
 	
 	_onMovementBonus(event) {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `system.movement.${moveName}`;
-		const options = {target: target, label: `${game.i18n.format('DND4E.MovementBonus',{mode: moveName})}` };
-		new AttributeBonusDialog(this.actor, options).render(true);		
+		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.MovementBonus',{mode: moveName})}` };
+		new AttributeBonusDialog(options).render(true);		
 	}
 	
 	_onMovementDialog(event) {
@@ -1370,24 +1370,24 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		const passName = event.currentTarget.parentElement.dataset.passive;
 		const skillName = this.actor.system.passive[passName].skill;
 		const target = `system.passive.${passName}`;
-		const options = {target: target, label: `${game.i18n.format('DND4E.PasBonus',{skill: this.actor.system.skills[skillName].label})}` };
-		new AttributeBonusDialog(this.actor, options).render(true);		
+		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.PasBonus',{skill: this.actor.system.skills[skillName].label})}` };
+		new AttributeBonusDialog(options).render(true);		
 	}	
 
 	_onModifiersBonus(event) {
 		event.preventDefault();
 		const modifierName = event.currentTarget.parentElement.dataset.modifiers;
 		const target = `system.modifiers.${modifierName}`;
-		const options = {target: target, label: this.actor.system.modifiers[modifierName].label };
-		new AttributeBonusDialog(this.actor, options).render(true);
+		const options = { document: this.actor, target: target, label: this.actor.system.modifiers[modifierName].label };
+		new AttributeBonusDialog(options).render(true);
 	}	
 
 	_onResistancesBonus(event) {
 		event.preventDefault();
 		const resName = event.currentTarget.parentElement.dataset.res;
 		const target = `system.resistances.${resName}`;
-		const options = {target: target, label: `${game.i18n.format('DND4E.DamResVulnBonus',{type: this.actor.system.resistances[resName].label})}`};
-		new AttributeBonusDialog(this.actor, options).render(true);
+		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.DamResVulnBonus',{type: this.actor.system.resistances[resName].label})}` };
+		new AttributeBonusDialog(options).render(true);
 	}
 	
 	_onCustomRolldDescriptions(event) {
@@ -1477,8 +1477,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 	_onSavingThrowBonus(event) {
 		event.preventDefault();
-		const options = {target: `system.details.saves`, label: game.i18n.localize('DND4E.SavingThrowBonus') };
-		new AttributeBonusDialog(this.actor, options).render(true);	
+		const options = { document: this.actor, target: `system.details.saves`, label: game.i18n.localize('DND4E.SavingThrowBonus') };
+		new AttributeBonusDialog(options).render(true);	
 	}
 
 	_onCycleSkillProficiency(event) {
