@@ -75,7 +75,7 @@ export class HealMenuDialog extends DocumentSheet4e {
 				}
 			}
 		}
-		function setButton(buttonId, enabled, text) {
+		function setButtonEnabled(buttonId, enabled, text) {
 			const button = document.getElementById(buttonId)
 			button.innerHTML = text
 			if (enabled) {
@@ -85,8 +85,8 @@ export class HealMenuDialog extends DocumentSheet4e {
 				button.setAttribute("disabled", "true")
 			}
 		}
-		setButton('healButton', hpButtonEnabled, hpButtonText)
-		setButton('tempHpButton', tempHPButtonEnabled, tempHPButtonText)
+		setButtonEnabled('healButton', hpButtonEnabled, hpButtonText)
+		setButtonEnabled('tempHpButton', tempHPButtonEnabled, tempHPButtonText)
 	}
 
 	static _onHealButtonClicked() {
