@@ -1,4 +1,4 @@
-export default class DocumentSheet4e extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.DocumentSheet) {
+export default class DocumentSheet4e extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.DocumentSheetV2) {
 
 	/* -------------------------------------------- */
 

@@ -1488,8 +1488,8 @@
 "DND4E.Item.Type": "{type} Type",
 
 "DND4E.RegionBehaviors.DifficultTerrain": {
-	"Fields": {
-		 "ignoredDispositions": {
+	"FIELDS": {
+		"ignoredDispositions": {
 			"hint": "Tokens with these dispositions will not be affected by this difficult terrain.",
 			"label": "Ignored Dispositions"
 		},

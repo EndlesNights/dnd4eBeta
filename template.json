@@ -862,6 +862,7 @@
 						"untyped": 0,
 						"temp": 0
 					},
+					"IgnoredDifficultTerrain": [],
 					"notes": ""
 				}				
 			},

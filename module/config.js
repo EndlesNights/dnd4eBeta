@@ -1283,9 +1283,6 @@ DND4E.vision = {
  * @enum {{ label: string }}
  */
 DND4E.difficultTerrainTypes = {
-	all: {
-		label: "DND4E.RegionBehaviors.DifficultTerrain.Type.All"
-	},
 	earth: {
 		label: "DND4E.RegionBehaviors.DifficultTerrain.Type.Earth"
 	},

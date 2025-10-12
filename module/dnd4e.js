@@ -26,7 +26,9 @@ import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
-import { DifficultTerrainRegionBehaviorType, DifficultTerrainShader4e, Region4e } from "./regionBehavoirs/difficult-terrain.js";
+import { default as DifficultTerrainRegionBehaviorType } from "./regionBehavoirs/difficult-terrain.js";
+import { default as TerrainData4e } from "./regionBehavoirs/terrain-data.js";
+import { default as DifficultTerrainConfig} from "./apps/regionBehaviors/difficult-terrain-config.js"
 
 import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs, performPreLocalization} from "./helper.js";
 
@@ -85,7 +87,6 @@ Hooks.once("init", async function() {
 	CONFIG.Combat.documentClass = Combat4e;
 
 	CONFIG.MeasuredTemplate.objectClass = MeasuredTemplate4e;
-	CONFIG.Region.objectClass = Region4e;
 
 	CONFIG.Canvas.layers.templates.layerClass = TemplateLayer4e;
 
@@ -98,15 +99,17 @@ Hooks.once("init", async function() {
 	
 	CONFIG.ui.items = ItemDirectory4e;
 
+	CONFIG.Token.movement.TerrainData = TerrainData4e;
+	CONFIG.Token.rulerClass = TokenRuler4e;
+
 	// foundry.data.regionBehaviors.DifficultTerrainRegionBehaviorType = DifficultTerrainRegionBehaviorType;
 	// CONFIG.RegionBehavior.documentClass = RegionBehavior4e
 	CONFIG.RegionBehavior.dataModels.difficultTerrain = DifficultTerrainRegionBehaviorType;
+	// Object.assign(CONFIG.RegionBehavior.dataModels, { DifficultTerrainRegionBehaviorType });
 	// HighlightRegionShader = DifficultTerrainShader4e;
 
 	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";//"DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "fa-regular fa-triangle";
-
-	CONFIG.Token.rulerClass = TokenRuler4e;
 
 	registerSystemSettings();
 
@@ -127,6 +130,14 @@ Hooks.once("init", async function() {
 		types: ["Hazard"],
 		label: game.i18n.localize("SHEET.Hazard"),
 		makeDefault: true
+	});
+
+	DocumentSheetConfig.unregisterSheet(RegionBehavior, "core", foundry.applications.sheets.RegionBehaviorConfig, {
+		types: ["difficultTerrain"]
+	});
+	DocumentSheetConfig.registerSheet(RegionBehavior, "dnd4e", DifficultTerrainConfig, {
+		label: "DND4E.difficultTerrain.Label",
+		types: ["difficultTerrain"]
 	});
 
 	
