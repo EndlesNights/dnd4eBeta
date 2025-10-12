@@ -595,6 +595,7 @@
 "DND4E.HPTotalAuto": "Total Hit Points (Auto Calculated)",
 "DND4E.HTwo": "Two Handed",
 "DND4E.Identified": "Identified",
+"DND4E.IgnoredDifficultTerrain": "Terrain Walk",
 "DND4E.Illusion": "Illusion",
 "DND4E.Immune": "Immune",
 "DND4E.Immunity": "Immunity",
@@ -1485,6 +1486,32 @@
 "DND4E.Hazard.DefenceNullTip": "Click to toggle immunity to attacks vs. {def}",
 
 "DND4E.Item.Type": "{type} Type",
+
+"DND4E.RegionBehaviors.DifficultTerrain": {
+	"Fields": {
+		 "ignoredDispositions": {
+			"hint": "Tokens with these dispositions will not be affected by this difficult terrain.",
+			"label": "Ignored Dispositions"
+		},
+		"types": {
+			"hint": "Types that best describe the source of this difficult terrain, if any.",
+			"label": "Types"
+		}
+	},
+	"Type": {
+		"Earth": "Rubble, Uneven Stone, or Earth",
+		"Forest": "Trees, Underbrush, Plants, or Natural Growth",
+		"Ice": "Ice or Snow",
+		"Swamp": "Bog, Mud, or Shallow Water"
+	},
+	"Ignored": {
+		"All": "Ignores Difficult Terrain",
+		"Earth": "Earth Walk",
+		"Forest": "Forest Walk",
+		"Ice": "Ice Walk",
+		"Swamp": "Swamp Walk"
+	}
+},
 
 "DND4E.Role.Hazard.Blaster": "Blaster",
 "DND4E.Role.Hazard.Hazard": "Hazard",

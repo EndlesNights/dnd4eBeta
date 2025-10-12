@@ -14,7 +14,7 @@ export class MovementDialog extends DocumentSheet4e {
 			movementBonusClicked: MovementDialog._onMovementBonus
 		},
 		position: {
-			width: 420,
+			width: 500,
 			height: "auto",
 		},
 		tag: "form"
@@ -31,8 +31,11 @@ export class MovementDialog extends DocumentSheet4e {
 	}
 
 	/** @override */
-	_prepareContext() {
-		return {system: this.document.system}
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
+		context.config = CONFIG.DND4E;
+		context.system = this.document.system;
+		return context;
 	}
 
 	static async #onSubmit(event, form, formData) {

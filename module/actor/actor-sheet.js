@@ -368,11 +368,17 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 <br>${parseInt(data.system.movement.swim.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedSwimming")}
 <br>${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedShifting")}`;
 
+		if(data.system.movement.ignoredDifficultTerrain){
+			data.system.movement.ignoredDifficultTerrain.forEach((t) => {
+				const terrainLabel = CONFIG.DND4E.ignoredDifficultTerrainTypes[t].label;
+				data.moveTitle += `<br>${terrainLabel}`
+			})
+		}
 		if(data.system.movement.custom){
 			const moveCustom = [];
 			data.system.movement.custom.split(";").forEach((c, i) => (c ? moveCustom[i] = c.trim() : null) );
 			data.system.moveCustom = moveCustom;
-			moveCustom.forEach((c) => data.moveTitle += `\n${c.trim()}`);
+			moveCustom.forEach((c) => data.moveTitle += `<br>${c.trim()}`);
 		}
 	}	
 

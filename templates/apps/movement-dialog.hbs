@@ -59,6 +59,13 @@
 		<input type="text" class="temp-value" name="system.movement.shift.temp" value="{{system.movement.shift.temp}}" data-tooltip="{{localize 'DND4E.MovementSpeedShifting'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 	</div>
 
+	<fieldset>
+		<legend>{{localize "DND4E.IgnoredDifficultTerrain"}}</legend>
+		<multi-select name="system.movement.ignoredDifficultTerrain" class="refreshes">
+			{{selectOptions config.ignoredDifficultTerrainTypes selected=system.movement.ignoredDifficultTerrain}}
+		</multi-select>
+	</fieldset>
+
 	<move-value>{{ localize "DND4E.TraitSelectorSpecial" }}</move-value>
 	<input type="text" name="system.movement.custom" value="{{system.movement.custom}}" data-dtype="String"/>	
 	<textarea type="text" name="system.movement.notes" value="{{system.movement.notes}}" data-dtype="String" placeholder="{{localize 'DND4E.Notes'}}" contentEditable>{{system.movement.notes}}</textarea>

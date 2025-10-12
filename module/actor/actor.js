@@ -196,6 +196,9 @@ export class Actor4e extends Actor {
 			system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
 			system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
 			
+			if (!system.movement.ignoredDifficultTerrain) {
+				system.movement.ignoredDifficultTerrain = new Set();
+			}
 		}
 
 	}

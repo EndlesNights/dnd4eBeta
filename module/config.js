@@ -1246,10 +1246,10 @@ DND4E.sortValues = {
 };
   
 DND4E.autoTargetModes = {
-    "none": "None",
-    "all": "All",
-    "allies": "Allies",
-    "enemies": "Enemies"
+	"none": "None",
+	"all": "All",
+	"allies": "Allies",
+	"enemies": "Enemies"
 };
 
 /* -------------------------------------------- */
@@ -1273,6 +1273,52 @@ DND4E.vision = {
 	"lv": "DND4E.VisionLowLight",
 	"bv": "DND4E.VisionBlind"
 };
+
+/* -------------------------------------------- */
+/*  Movement                                    */
+/* -------------------------------------------- */
+
+/**
+ * Types of terrain that can cause difficult terrain.
+ * @enum {{ label: string }}
+ */
+DND4E.difficultTerrainTypes = {
+	all: {
+		label: "DND4E.RegionBehaviors.DifficultTerrain.Type.All"
+	},
+	earth: {
+		label: "DND4E.RegionBehaviors.DifficultTerrain.Type.Earth"
+	},
+	forest: {
+		label: "DND4E.RegionBehaviors.DifficultTerrain.Type.Forest"
+	},
+	ice: {
+		label: "DND4E.RegionBehaviors.DifficultTerrain.Type.Ice"
+	},
+	swamp: {
+		label: "DND4E.RegionBehaviors.DifficultTerrain.Type.Swamp"
+	}
+};
+preLocalize("difficultTerrainTypes", { keys: ["label"] });
+
+DND4E.ignoredDifficultTerrainTypes = {
+	all: {
+		label: "DND4E.RegionBehaviors.DifficultTerrain.Ignored.All"
+	},
+	earth: {
+		label: "DND4E.RegionBehaviors.DifficultTerrain.Ignored.Earth"
+	},
+	forest: {
+		label: "DND4E.RegionBehaviors.DifficultTerrain.Ignored.Forest"
+	},
+	ice: {
+		label: "DND4E.RegionBehaviors.DifficultTerrain.Ignored.Ice"
+	},
+	swamp: {
+		label: "DND4E.RegionBehaviors.DifficultTerrain.Ignored.Swamp"
+	}
+};
+preLocalize("ignoredDifficultTerrainTypes", { keys: ["label"] });
 
 DND4E.weaponType = {
 	"melee": "DND4E.WeaponMelee",
