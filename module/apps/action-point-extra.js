@@ -16,7 +16,7 @@ export class ActionPointExtraDialog extends DocumentSheet4e {
 	}
 	
 	get title() {
-		return `${this.document.name} - Action Point Riders`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.ActionPointRiders")}`;
 	}
 
 	static PARTS = {

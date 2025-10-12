@@ -21,7 +21,7 @@ export class MovementDialog extends DocumentSheet4e {
 	}
 
 	get title() {
-		return `${this.document.name} - ${game.i18n.localize( 'DND4E.SpeedAndMove')}`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.SpeedAndMove")}`;
 	}
 
 	static PARTS = {

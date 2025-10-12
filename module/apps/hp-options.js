@@ -16,9 +16,10 @@ export default class HPOptions extends DocumentSheet4e {
 			height: "auto",
 		},
 		tag: "form",
-		window: {
-			title: "Hit Points Options",
-		}
+	}
+
+	get title() {
+		return `${this.document.name} - ${game.i18n.localize("DND4E.HPOptions")}`;
 	}
 
 	static PARTS = {

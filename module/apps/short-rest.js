@@ -28,7 +28,7 @@ export class ShortRestDialog extends DocumentSheet4e {
 	}
 	
 	get title() {
-		return `${this.document.name} - Short Rest`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.ShortRest")}`;
 	}
 
 	static PARTS = {

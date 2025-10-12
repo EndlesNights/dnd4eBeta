@@ -12,7 +12,7 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 			submitOnClose: true
 		},
 		position: {
-			width: 510,
+			width: 550,
 			height: "auto"
 		},
 		tag: "form"

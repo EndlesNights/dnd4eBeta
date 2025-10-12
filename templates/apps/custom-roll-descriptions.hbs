@@ -1,32 +1,36 @@
 <div id="custom-roll-descriptions" class="dialog-content" onsubmit="event.preventDefault();">
-
 	{{!-- Ability --}}
-	<h2>{{localize 'DND4E.Ability'}} {{localize 'DND4E.CheckPlural'}}</h2>
-	{{#each system.abilities as |ability a|}}
-	<div class="ability">
-		<span>{{ability.label}}</span>
-		<input class="stat-chat" name="system.abilities.{{a}}.chat" type="text" value="{{ability.chat}}" onClick="this.select();"/>
-	</div>
-	{{/each}}
+	<fieldset>
+		<legend>{{localize 'DND4E.Ability'}} {{localize 'DND4E.CheckPlural'}}</legend>
+		{{#each system.abilities as |ability a|}}
+		<div class="ability">
+			<span>{{ability.label}}</span>
+			<input class="stat-chat" name="system.abilities.{{a}}.chat" type="text" value="{{ability.chat}}" onClick="this.select();"/>
+		</div>
+		{{/each}}
+	</fieldset>
 
 	{{!-- Skills --}}
-	<h2>{{localize 'DND4E.Skill'}} {{localize 'DND4E.CheckPlural'}}</h2>
-	{{#each system.skills as |skills s|}}
-	<div class="skill">
-		<span>{{skills.label}}</span>
-		<input class="stat-chat" name="system.skills.{{s}}.chat" type="text" value="{{skills.chat}}" onClick="this.select();"/>
-	</div>
-	{{/each}}
+	<fieldset>
+		<legend>{{localize 'DND4E.Skill'}} {{localize 'DND4E.CheckPlural'}}</legend>
+		{{#each system.skills as |skills s|}}
+		<div class="skill">
+			<span>{{skills.label}}</span>
+			<input class="stat-chat" name="system.skills.{{s}}.chat" type="text" value="{{skills.chat}}" onClick="this.select();"/>
+		</div>
+		{{/each}}
+	</fieldset>
 
 	{{!-- Defences --}}
-	<h2>{{localize 'DND4E.Defence'}} {{localize 'DND4E.CheckPlural'}}</h2>
-	{{#each system.defences as |defences d|}}
-	<div class="defence">
-		<span>{{defences.label}}</span>
-		<input class="stat-chat" name="system.defences.{{d}}.chat" type="text" value="{{defences.chat}}" onClick="this.select();"/>
-	</div>
-	{{/each}}
+	<fieldset>
+		<legend>{{localize 'DND4E.Defence'}} {{localize 'DND4E.CheckPlural'}}</legend>
+		{{#each system.defences as |defences d|}}
+		<div class="defence">
+			<span>{{defences.label}}</span>
+			<input class="stat-chat" name="system.defences.{{d}}.chat" type="text" value="{{defences.chat}}" onClick="this.select();"/>
+		</div>
+		{{/each}}
+	</fieldset>
 
 	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4E.Save"}}</button>
-	
 </div>

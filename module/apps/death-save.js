@@ -17,7 +17,7 @@ export class DeathSaveDialog extends DocumentSheet4e {
 	}
 
 	get title() {
-		return `${this.document.name} - Death Saving Throw`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.DeathSaveLongform")}`;
 	}
 
 	static PARTS = {

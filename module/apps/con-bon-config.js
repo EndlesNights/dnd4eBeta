@@ -10,14 +10,14 @@ export default class ConBonConfig extends DocumentSheet4e {
 			closeOnSubmit: false
 		},
 		position: {
-			width: 320,
+			width: 420,
 			height: "auto"
 		},
 		tag: "form"
 	}
 
 	get title() {
-		return `${this.document.name}—${game.i18n.localize( 'DND4E.CommonAttackBonuses')}`;
+		return `${this.document.name} — ${game.i18n.localize("DND4E.CommonAttackBonuses")}`;
 	}
 
 	static PARTS = {
@@ -39,7 +39,7 @@ export default class ConBonConfig extends DocumentSheet4e {
 
 	_onRender(context, options) {
 		if (!this.document.testUserPermission(game.user, this.options.editPermission)) return;
-		this.element.querySelectorAll('.condition-mod-bonus').forEach((el) => {
+		this.element.querySelectorAll(".condition-mod-bonus").forEach((el) => {
 			el.addEventListener("click", (this._onConditionBonus.bind(this)));
 		});
 	}

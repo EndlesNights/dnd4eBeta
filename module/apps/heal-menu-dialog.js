@@ -29,7 +29,7 @@ export class HealMenuDialog extends DocumentSheet4e {
 	}
 
 	get title() {
-		return `${this.document.name} - ${game.i18n.localize( 'DND4E.Healing')}`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.Healing")}`;
 	}
 
 	static PARTS = {

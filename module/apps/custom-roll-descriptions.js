@@ -23,7 +23,7 @@ export class CustomRolldDescriptions extends DocumentSheet4e {
 	}
 
 	get title() {
-		return `${this.document.name} - Customize Roll Descriptions Options`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.CustomizeRollDescriptions")}`;
 	}
 	
 	/** @override */

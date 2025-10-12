@@ -17,7 +17,7 @@ export class SecondWindDialog extends DocumentSheet4e {
 	}
 	
 	get title() {
-		return `${this.document.name} - Second Wind`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.SecondWind")}`;
 	}
 
 	static PARTS = {
