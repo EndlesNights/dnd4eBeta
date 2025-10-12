@@ -58,6 +58,7 @@
 	<fieldset>
 		<legend>{{localize "DND4E.Bonuses"}}</legend>
 		{{#each bonusData as |bonus b|}}
+		<fieldset>
 		<div class="bonus-part" data-bonus-part="{{b}}">
 			<span>{{localize "DND4E.BonusName"}}:</span>
 			<input type="text" name="{{b}}.name" value="{{bonus.name}}" data-dtype="String" style="width: 125px;"/>
@@ -66,8 +67,11 @@
 			<span>{{localize "DND4E.Active"}}: </span>
 			<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} data-tooltip="{{localize "DND4E.BonusToggle"}}">
 			<a class="bonus-control bonus-delete" data-tooltip="{{localize "DND4EUI.Delete"}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
-			<textarea type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none;" placeholder="{{localize "DND4E.Notes"}}" contentEditable>{{bonus.note}}</textarea>
+			<div style="padding-top:20px">
+				<textarea type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none" placeholder="{{localize "DND4E.Notes"}}" contentEditable>{{bonus.note}}</textarea>
+			</div>
 		</div>
+		</fieldset>
 		{{/each}}
 		<div><a class="bonus-control bonus-add">{{localize "DND4EUI.AddNew"}}</a></div>
 	</fieldset>
