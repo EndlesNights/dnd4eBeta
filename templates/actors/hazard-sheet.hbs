@@ -1,9 +1,9 @@
-<form class="{{cssClass}} npc hazard" autocomplete="off">				
+<section class="{{cssClass}} npc hazard flexcol" autocomplete="off">				
 	<section class="npc-upper">
 		{{!-- Sheet Header --}}
-		<header class="sheet-header">
+		<header class="sheet-header flexrow">
 			<div class="image-frame">
-				<img class="profile-img" src="{{actor.img}}" data-edit="img" data-tooltip="{{actor.name}}"/>
+				<img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" data-tooltip="{{actor.name}}"/>
 				<a class="hover-icon actor-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="displayActorArt"><i class="fas fa-image fa-fw"></i></a>
 			</div>
 			<section>
@@ -144,38 +144,35 @@
 	
 	<section class="npc-lower">
 		<section class="section section--tabs flexshrink npc">
-
 			{{!-- Sheet Tab Navigation --}}
-			<nav class="sheet-tabs tabs" data-group="primary">
-				<a class="item" data-tab="description">{{localize 'DND4E.Sheet.Description'}}</a>
-				<a class="item" data-tab="powers">{{localize 'DND4E.Sheet.Powers'}}</a>
-				<a class="item" data-tab="effects">{{localize 'DND4E.Sheet.Effects'}}</a>
-			</nav>
+      {{> "templates/generic/tab-navigation.hbs"}}
 		</section>
 
 		<section class="sheet-body section--tabs-content">
 			{{!-- Description Tab --}}
-			<div class="tab description" data-group="primary" data-tab="description">
+			<div class="tab description{{#if tabs.description.active}} active{{/if}}" data-group="primary" data-tab="description">
 				<h4 class="attribute-name box-title">{{localize 'DND4E.Sheet.Description'}}</h4>
-				{{editor descHTML target="system.description" button=true owner=owner editable=editable rollData=rollData engine="prosemirror"}}
+        <prose-mirror toggled name="system.description" {{disabled (not editable)}} value="{{system.description}}">
+          {{{descHTML}}}
+        </prose-mirror>
 				
 				<h4 class="attribute-name box-title">{{localize 'DND4E.Hazard.Counter'}}</h4>
-				{{editor countersHTML target="system.details.countermeasures" button=true owner=owner editable=editable rollData=rollData engine="prosemirror"}}
+        <prose-mirror toggled name="system.details.countermeasures" {{disabled (not editable)}} value="{{system.details.countermeasures}}">
+          {{{countersHTML}}}
+        </prose-mirror>
 				
 				<h4 class="attribute-name box-title">{{localize 'DND4E.Notes'}}</h4>
-				{{editor notesHTML target="system.details.notes" button=true owner=owner editable=editable rollData=rollData engine="prosemirror"}}
+        <prose-mirror toggled name="system.details.notes" {{disabled (not editable)}} value="{{system.details.notes}}">
+          {{{notesHTML}}}
+        </prose-mirror>
 			</div>
 		
 			{{!-- Powers Tab --}}
-			<div class="tab powers npc" data-group="primary" data-tab="powers">
-				{{> "systems/dnd4e/templates/actors/parts/actor-powers.html" sections=powers}}
-			</div>
+      {{> "systems/dnd4e/templates/actors/tabs/powers.hbs" tab=tabs.powers sections=powers}}
 
 			{{!-- Effects Tab --}}
-			<div class="tab effects flexcol npc" data-group="primary" data-tab="effects">
-				{{> "systems/dnd4e/templates/actors/parts/active-effects.html"}}
-			</div>
+      {{> "systems/dnd4e/templates/actors/tabs/effects.hbs" tab=tabs.effects}}
 		</section>
 	</section>
 
-</form>
+</section>

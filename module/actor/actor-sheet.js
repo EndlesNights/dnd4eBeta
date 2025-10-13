@@ -29,6 +29,7 @@ import Item4e from "../item/item-document.js";
  */
 export default class ActorSheet4e extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheet) {
 	#dragDrop;
+	#expandedItemIds;
 
 	get dragDrop() {
 		return this.#dragDrop;
@@ -49,6 +50,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		};
 
 		this.#dragDrop = this.#createDragDropHandlers();
+		this.#expandedItemIds = new Set();
 	}
 
 	static DEFAULT_OPTIONS = {
@@ -71,6 +73,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			displayActorArt: ActorSheet4e.#onDisplayActorArt,
 			itemSummary: ActorSheet4e.#onItemSummary,
 			cycleSkillProficiency: { handler: ActorSheet4e.#onCycleSkillProficiency, buttons: [0, 2] },
+			editImage: ActorSheet4e.#onEditImage,
 		}
 	}
 
@@ -82,7 +85,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				".features .inventory-list",
 				".powers .inventory-list",
 				".section--sidebar",
-				".section--tabs-content"
+				".section--tabs-content",
+				"section.tab"
 			],
 			templates: [
 				"systems/dnd4e/templates/actors/tabs/biography.hbs",
@@ -135,7 +139,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		// Removed: on focus <input>, auto-select everything in it
 
-		this.element.querySelectorAll('input[data-dtype="Number"]').forEach(el => el.addEventListener("selectionchange", this._onChangeInputDelta.bind(this)))
+		this.element.querySelectorAll('input[data-dtype="Number"]').forEach(el => el.addEventListener("change", this._onChangeInputDelta.bind(this)))
 
 		this.element.querySelector("#filterInput-feat")?.addEventListener("input", (ev) => {
 			this._filterHelper(ev.target, ".feature-list");
@@ -389,6 +393,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					relativeTo: this.actor
 				});
 			}
+			i.collapsed = !this.#expandedItemIds.has(i._id); 
 		}
 
 		this._prepareItems(context);
@@ -1099,7 +1104,6 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				}
 			}
 		}
-		console.log(candidateKeys);
 
 		// Remove excluded keys
 		for (const key of excluded) {
@@ -1107,7 +1111,6 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		}
 
 		// Return keys that exist in the actor
-		console.log(Array.from(overrides.union(candidateKeys).intersection(actorKeys)))
 		return Array.from(overrides.union(candidateKeys).intersection(actorKeys));
 	}
 
@@ -1128,7 +1131,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		
 		if(!/^[\-=+ 0-9]+$/.test(value)) {
 			input.value = foundry.utils.getProperty(this.actor, input.name)
-			return;}
+			return;
+		}
 
 		if ( ["+"].includes(value[0]) ) {
 			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
@@ -1149,12 +1153,20 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
   /**
    * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to its roll method
    * @private
+	 * @this {ActorSheet4e}
    */
 	static async #onItemSummary(event, target) {
 		event.preventDefault();
 		if (!this.options.viewPermission) return;
 		const li = target.closest(".item");
-		li?.classList.toggle("collapsed");
+		if (li) {
+			li.classList.toggle("collapsed");
+			if (li.classList.contains("collapsed")) {
+				this.#expandedItemIds.delete(li.dataset.itemId);
+			} else {
+				this.#expandedItemIds.add(li.dataset.itemId);
+			}
+		}
 	}
 
   /* -------------------------------------------- */
@@ -1164,6 +1176,22 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		p.render(true);
 	}
   
+  /* -------------------------------------------- */
+
+	static async #onEditImage() {
+		const defaultArtwork = this.document.constructor.getDefaultArtwork?.(this.document._source) ?? {};
+		const defaultImage = foundry.utils.getProperty(defaultArtwork, 'img');
+		const fp = new CONFIG.ux.FilePicker({
+			current: this.document.img,
+			type: 'image',
+			redirectToRoot: defaultImage ? [defaultImage] : [],
+			callback: (path) => this.document.update({ img: path }),
+			top: this.position.top + 40,
+			left: this.position.left + 10
+		});
+		await fp.browse();
+	}
+
   /* -------------------------------------------- */
 
   /**

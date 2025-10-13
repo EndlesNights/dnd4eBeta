@@ -20,7 +20,7 @@
       <div class="filter-search-rituals">
         <label for="ritual-filter-search">{{localize "DND4E.Filter"}}</label>	
         <br>
-        <input type="text" name="ritual-filter-search" placeholder="{{localize 'DND4EUI.SearchFor'}} {{localize 'DND4E.Ritual'}}..." id="filterInput-ritual"/>
+        <input type="text" name="ritual-filter-search" placeholder="{{localize 'DND4EUI.SearchFor' term=(localize 'DND4E.Ritual')}}..." id="filterInput-ritual"/>
       </div>
     </header>
 
@@ -45,7 +45,7 @@
     
       <ol class="item-list ritual-list">
       {{#each section.items as |item iid|}}
-        <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible collapsed" data-item-id="{{item._id}}">
+        <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
           <div class="item-name flexrow rollable">
             <div class="item-image"><img src="{{item.img}}" width="30" height="30"/></div>
             <i class="fa-solid fa-caret-down" inert></i>

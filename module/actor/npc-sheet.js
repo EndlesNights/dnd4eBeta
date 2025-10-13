@@ -2,35 +2,64 @@ import ActorSheet4e from "./actor-sheet.js"
 
 export default class ActorSheet4eNPC extends ActorSheet4e {
 
-
-
-	/** @override */
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ["dnd4e", "sheet", "actor", "NPC"],
+	static DEFAULT_OPTIONS = {
+		classes: ["NPC"],
+		position: {
 			width: 600,
 			height: 680
-		});
+		}
+	};
+
+	static PARTS = {
+		sheet: {
+			template: "systems/dnd4e/templates/actors/npc-sheet.hbs",
+			scrollable: [
+				"",
+				".inventory .inventory-list",
+				".features .inventory-list",
+				".powers .inventory-list",
+				".section--sidebar",
+				".section--tabs-content",
+				".section--skills",
+				".tab.active"
+			],
+			templates: [
+				"systems/dnd4e/templates/actors/tabs/biography.hbs",
+				"systems/dnd4e/templates/actors/tabs/inventory.hbs",
+				"systems/dnd4e/templates/actors/tabs/features.hbs",
+				"systems/dnd4e/templates/actors/tabs/powers.hbs",
+				"systems/dnd4e/templates/actors/tabs/effects.hbs",
+				"templates/generic/tab-navigation.hbs"
+			]
+		},
+		limited: {
+			template: "systems/dnd4e/templates/actors/npc-sheet-limited.hbs",
+			templates: [
+				"systems/dnd4e/templates/actors/tabs/biography.hbs"
+			]
+		}
+	};
+
+	static TABS = {
+		primary: {
+			tabs: [
+				{id: "biography", label: "DND4E.Sheet.Biography"},
+				{id: "skills", label: "DND4E.Sheet.Skills"},
+				{id: "inventory", label: "DND4E.Sheet.Inventory"},
+				{id: "features", label: "DND4E.Sheet.Features"},
+				{id: "powers", label: "DND4E.Sheet.Powers"},
+				{id: "effects", label: "DND4E.Sheet.Effects"}
+			],
+			initial: "powers"
+		}
 	}
-	/** @override */
-	get template() {
-		if ( !game.user.isGM && this.actor.limited ) return `systems/dnd4e/templates/npc-sheet-limited.html`;
-		return `systems/dnd4e/templates/npc-sheet.html`;
-	}
 
-	/* -------------------------------------------- */
-
-	/** @override */
-	setPosition(options={}) {
-		const position = super.setPosition(options);
-
-		//TODO fix this monstrosity!
-		//Because I'm bad at CSS and can't find the solution T_T
-		const sheetBody = this.element.find(".npc-lower");
-		const upper = this.element.find(".npc-upper");
-		const bodyHeight = sheetBody.parent().height() - upper.height() - 15; //extra 15 for the padding
-		sheetBody.css("height", bodyHeight);
-		
-		return position;
+	_configureRenderOptions(options) {
+		super._configureRenderOptions(options);
+		if (this.document.limited) {
+			options.parts = ['limited'];
+		} else {
+			options.parts = ['sheet'];
+		}
 	}
 }

@@ -1,4 +1,4 @@
-<section class="tab {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+<section class="tab {{tab.id}}{{#if tab.active}} active{{/if}}{{#if isNPC}} npc{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
   <ol class="item-list inventory-list powers">
     <header class="power-filters flexrow">
       <div class="group-powers">
@@ -23,7 +23,7 @@
           <i class="fas fa-atlas"></i> <span class="import-button">{{localize "DND4E.ImportPowers"}}</span>
         </button>
         <br />
-        <input type="text" class="power-filter-search" name="power-filter-search" placeholder="{{localize 'DND4EUI.SearchFor'}} {{localize 'DND4E.Power'}}..." id="filterInput-power"/>
+        <input type="text" class="power-filter-search" name="power-filter-search" placeholder="{{localize 'DND4EUI.SearchFor' term=(localize 'DND4E.Power')}}..." id="filterInput-power"/>
       </div>
     </header>
 
@@ -54,7 +54,7 @@
     
       <ol class="item-list power-list">
       {{#each section.items as |item iid|}}
-        <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible collapsed" data-item-id="{{item._id}}">
+        <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
           <div class="item-name item-image flexrow rollable">
             <img src="{{item.img}}" width="30" height="30"/>
           </div>

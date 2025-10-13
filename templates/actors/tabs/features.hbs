@@ -1,4 +1,4 @@
-<section class="tab {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+<section class="tab {{tab.id}}{{#if tab.active}} active{{/if}}{{#if isNPC}} npc{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
   <ol class="item-list inventory-list">
     <header class="feature-filters flexrow">
       <div class="sort-features">
@@ -12,7 +12,7 @@
       <div class="filter-search-features">
         <label for="feature-filter-search">{{localize "DND4E.Filter"}}</label>	
         <br>
-        <input type="text" name="feat-filter-search" placeholder="{{localize 'DND4EUI.SearchFor'}} {{localize 'DND4E.Feat'}}..." id="filterInput-feat"/>
+        <input type="text" name="feat-filter-search" placeholder="{{localize 'DND4EUI.SearchFor' term=(localize 'DND4E.Feature.Feature')}}..." id="filterInput-feat"/>
       </div>
     </header>
 
@@ -42,7 +42,7 @@
     
       <ol class="item-list feature-list">
       {{#each section.items as |item iid|}}
-        <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible collapsed" data-item-id="{{item._id}}">
+        <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
           <div class="item-name flexrow rollable">
             <div class="item-image"><img src="{{item.img}}" width="30" height="30"/></div>
             <i class="fa-solid fa-caret-down" inert></i>
