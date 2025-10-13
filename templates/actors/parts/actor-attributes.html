@@ -18,7 +18,7 @@
 		<span class="skill-mod">{{numberFormat skill.total decimals=0 sign=true }}</span>
 		<h4 class="skill-name rollable">{{skill.label}}</h4>
 		<span class="skill-ability">{{skill.ability}}</span>
-		<a class="training-toggle skill-training" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
+		<a class="training-toggle skill-training" data-action="cycleSkillProficiency" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
 		<a class="skill-mod skill-bonus" data-target="system.details" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.Skill'}}">{{skill.sklBonusValue}}</a>
 	</li>
 {{/each}}

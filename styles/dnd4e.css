@@ -96,6 +96,7 @@ textarea{
 	--color-text-good:green;
 	--color-text-bad:red;
 	--gradient-4e:linear-gradient(90deg, #c3c2b7, #c3c2b718);
+	--automath-brightness:0.1;
 	--background-atwill:-o-linear-gradient(45deg, #125f15, #55aa2e);
 	--background-atwill:linear-gradient(45deg, #125f15, #55aa2e);
 	--background-encounter:o-linear-gradient(45deg, #3c0000, #dc0000);
@@ -133,6 +134,11 @@ textarea{
 	--background-other:-o-linear-gradient(45deg, #0d0145, #301c89);
 	--background-other:linear-gradient(45deg, #0d0145, #301c89);
 }
+body.theme-dark .dnd4e:not(.themed.theme-light),
+.dnd4e.themed.theme-dark {
+	--gradient-4e:linear-gradient(90deg, #3c3d48, #3c3d4818);
+	--automath-brightness:0.9
+}
 .dnd4e.sheet select{
 	font-size:revert;
 	/* background:#cac9be; */
@@ -150,7 +156,8 @@ textarea{
 .dnd4e.sheet button{
 	background:var(--color-bg-btn-minor-inactive);
 }
-.dnd4e.sheet .window-content form{
+.dnd4e.sheet .window-content form,
+.dnd4e.sheet .window-content > section{
 	height:100%;
 	overflow:hidden;
 }
@@ -167,6 +174,8 @@ textarea{
 }
 .dnd4e.sheet .sheet-header .summary.flexrow>li{
 	white-space:nowrap;
+	display:flex;
+	align-items:center;
 }
 .dnd4e.sheet .sheet-header .summary input{
 	vertical-align:top;
@@ -223,6 +232,10 @@ textarea{
 	max-width:100px;
 	max-height:100px;
 	position:relative;
+}
+.dnd4e.sheet.actor .npc-upper select {
+	padding: 0px;
+	margin: 0 3px 0 3px;
 }
 .dnd4e.sheet.actor .image-frame{
 	flex-grow:0;
@@ -308,6 +321,9 @@ textarea{
 .dnd4e.sheet.actor .attribute-value input{
 	font-size:18px;
 	font-weight:bold;
+	&[data-dtype="Number"] {
+		text-align: center;
+	}
 }
 .dnd4e.sheet.actor .attribute-value input[type="checkbox"]{
 	margin:2px;
@@ -464,7 +480,7 @@ textarea{
 	border-top:var(--border-normal);
 }
 .dnd4e .section--abilities .ability--score input{
-	max-width:30px;
+	max-width:32px;
 	font-size:16px;
 	text-align:left;
 	font-weight:bold;
@@ -513,6 +529,7 @@ textarea{
 	text-align:left;
 	border-right:var(--border-normal);
 	margin-bottom:0;
+	margin-top:0;
 	font-size:16px;
 	padding-top:3px;
 	padding-left:8px;
@@ -562,7 +579,9 @@ textarea{
 .dnd4e .section--utilities .section--saves div label,
 .dnd4e .section--utilities .section--saves div input{
 	position:relative;
-	top:-5px;
+	&.death-saves-failed {
+		height:20px;
+	}
 }
 .dnd4e .section--utilities .section--saves div input{
 	width:40%;
@@ -1570,6 +1589,7 @@ font-size:12px;
 	list-style:none;
 	margin:0;
 	overflow-y:auto;
+	overflow-x:hidden;
 	scrollbar-width:thin;
 }
 .dnd4e.sheet.item .item-list.inventory-list{
@@ -1579,13 +1599,14 @@ font-size:12px;
 .dnd4e.sheet.actor .inventory-list .item-import.button{
 	min-width:116px;
 	width:calc(100% - 80px);
-	height:17px;
+	height:12px;
 	line-height:normal;
 	border:0px;
 	float:right;
 	margin:2px 2px 2px 0px;
 	font-size:12px;
 	font-weight:bold;
+	min-height:0px;
 }
 .dnd4e.sheet.actor .power-filters :is(.group-powers,.sort-powers,.sort-features){
 	max-width:144px;
@@ -1711,8 +1732,9 @@ font-size:12px;
 	padding-right:2px;
 }
 .dnd4e.sheet .item-list .power-list .item .power-name,
-.dnd4e.sheet .item-list .power-list .item .power-name input{
-	color:var(--color-text-light-1);
+.dnd4e.sheet .item-list .power-list .item .power-name input,
+.dnd4e.sheet .item-list .power-list .item .power-name h4{
+	color:#eee;
 }
 .dnd4e.sheet .item-list .power-detail,
 .dnd4e.sheet.actor .inventory-list .item-controls .power-detail,
@@ -1806,12 +1828,36 @@ font-size:12px;
 	font-size:12px;
 	text-align:center;
 }
-.dnd4e.sheet.actor .inventory-list .item-summary{
-	flex:0 0 100%;
-	font-size:14px;
-	line-height:16px;
-	padding:0.25em 0.5em;
-	border-top:var(--border-faint);
+.dnd4e .collapsible {
+	&.collapsed {
+		.fa-caret-down { transform: rotate(-90deg); }
+		.collapsible-content { grid-template-rows: 0fr; }
+	}
+	.fa-caret-down {
+		flex: 0;
+		transition: transform 250ms ease;
+	}
+	.collapsible-content {
+		display: grid;
+		grid-template-rows: 1fr;
+		transition: all 250ms ease;
+		> .wrapper { overflow: hidden; }
+	}
+}
+.dnd4e.sheet.actor .inventory-list .collapsible {
+	&.collapsed {
+		.item-summary {
+			padding: 0em 0em;
+			border-top: 0px solid rgba(0,0,0,0.1);
+		}
+	}
+	.item-summary{
+		flex:0 0 100%;
+		font-size:14px;
+		line-height:16px;
+		padding:0.25em 0.5em;
+		border-top:var(--border-faint);
+	}
 }
 .dnd4e.sheet.actor .inventory .item-controls{
 	flex:0 0 68px;
@@ -1922,7 +1968,7 @@ font-size:12px;
 	opacity:0;
 }
 .dnd4e.sheet .npc .sheet-header .automath img{
-	filter:brightness(0.1);
+	filter:brightness(var(--automath-brightness));
 	border:unset;
 	pointer-events:none;
 	padding:2px 4px;
@@ -1976,6 +2022,28 @@ font-size:12px;
 	padding-left:0;
 	flex-basis:170px;
 	flex-grow:0;
+	input{
+		text-align:center;
+		padding:0;
+	}
+}
+.dnd4e.sheet.actor .npc-lower {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	.section--tabs { flex: none; }
+	.section--tabs-content {
+		flex: 1;
+		position: relative;
+
+		> .tab {
+			position: absolute;
+			inset: 0;
+		}
+	}
+}
+.dnd4e.sheet.actor .npc-upper li.tag {
+	margin-left:20px;
 }
 .dnd4e.sheet.actor .npc-upper .basics>.defences{
 	flex-grow:0;
@@ -2012,21 +2080,12 @@ font-size:12px;
 	max-width:1.6em;
 	font-weight:bold;
 }
-.dnd4e.sheet.actor .npc-upper .basics input.number{
-	text-align:right;
-}
 .dnd4e.sheet.actor .npc-upper .hitpoints{
 	max-width:180px;
 	font-size:16px;
 }
 .dnd4e.sheet.actor .npc-upper .hitpoints input{
 	text-align:center;
-}
-.dnd4e.sheet.actor .npc-upper .surges input{
-	max-width:1em;
-}
-.dnd4e.sheet.actor .npc-upper .surges label+input{
-	text-align:right;
 }
 .dnd4e.sheet.actor .npc-upper .resources .roll-save{
 	border:unset;
@@ -2147,6 +2206,8 @@ font-size:12px;
 .dnd4e.sheet .npc.hazard .description .editor-content{
 	height:fit-content;
 	min-height:4em;
+	margin-left: 8px;
+	margin-right: 8px;
 }
 .dnd4e.sheet .npc.hazard .description .prosemirror .editor-container{
 	height:fit-content;

@@ -1,18 +1,19 @@
-<form class="{{cssClass}}" autocomplete="off">				
+<section class="{{cssClass}} npc flexcol" autocomplete="off">				
 	<section class="npc-upper">
 		{{!-- SHeet Header --}}
-		<header class="sheet-header">
+		<header class="sheet-header flexrow">
 			<div class="image-frame">
 				<img class="profile-img" src="{{actor.img}}" data-edit="img" data-tooltip="{{actor.name}}" height="64" width="64"/>
-				<a class="hover-icon actor-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="show-image"><i class="fas fa-image fa-fw"></i></a>
-			</div>			<section>
-				<ul class="summary">
+				<a class="hover-icon actor-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="displayActorArt"><i class="fas fa-image fa-fw"></i></a>
+			</div>
+      <section>
+				<ul class="summary flexrow">
 					<li class="summary-name-npc">
 						<input name="name" type="text" value="{{actor.name}}" data-tooltip="{{localize 'DND4E.NameNPC'}}" placeholder="{{localize 'DND4E.NameNPC'}}" onClick="this.select();"/>
 					</li>
 				</ul>
 	
-				<ul class="summary">
+				<ul class="summary flexrow">
 					<li class="summary-size">
 						<select class="actor-size" name="data.details.size">
 							{{selectOptions config.actorSizes selected=system.details.size labelAttr="label"}}
@@ -41,18 +42,13 @@
 	</section>
 
 	<section class="npc-lower">
-		<section class="section section--tabs flexshrink npc">
-
-			{{!-- Sheet Tab Navigation --}}
-			<nav class="sheet-tabs tabs" data-group="primary">
-				<a class="item" data-tab="biography">{{localize 'DND4E.Biography'}}</a>
-			</nav>
-		</section>
 		<section class="sheet-body section--tabs-content">
 			{{!-- Biography Tab --}}
-			<div class="tab biography" data-group="primary" data-tab="biography">
-				{{> "systems/dnd4e/templates/actors/parts/actor-biography.html" sections=biography}}
-			</div>			
+			<section class="tab biography active" data-group="primary" data-tab="biography">
+				<prose-mirror toggled name="system.biography" disabled value="{{system.biography}}">
+          {{{biographyHTML}}}
+        </prose-mirror>
+			</section>			
 		</section>
 	</section>
-</form>
+</section>

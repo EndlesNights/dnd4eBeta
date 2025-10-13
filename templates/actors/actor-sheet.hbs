@@ -1,4 +1,4 @@
-<form class="{{cssClass}}" autocomplete="off">
+<section class="{{cssClass}}" autocomplete="off">
 	<section>
 		{{!-- Sheet Header --}}
 		<header class="sheet-header">
@@ -35,8 +35,8 @@
 		
 		<section class="header-2 flexrow">
 			<div class="image-frame">
-				<img class="profile-img" src="{{actor.img}}" data-edit="img" data-tooltip="{{actor.name}}"/>
-				<a class="hover-icon actor-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="show-image"><i class="fas fa-image fa-fw"></i></a>
+				<img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" data-tooltip="{{actor.name}}"/>
+				<a class="hover-icon actor-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="displayActorArt"><i class="fas fa-image fa-fw"></i></a>
 			</div>
 			{{!-- Attributes --}}
 			<section class="flexrow section--attributes">
@@ -168,7 +168,7 @@
 			<section class="section section--skills">
 				{{#each system.skills as |skill s|}}
 				<div class="skill--block flexrow" data-skill="{{s}}">
-					<a class="training-toggle skill-training" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
+					<a class="training-toggle skill-training" data-action="cycleSkillProficiency" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
 					<h4 class="skill-name rollable">{{skill.label}}</h4>
 					<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
 					<label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
@@ -218,56 +218,34 @@
 			<section class="section section--tabs flexshrink">
 
 				{{!-- Sheet Tab Navigation --}}
-				<nav class="sheet-tabs tabs" data-group="primary">
-					<a class="item" data-tab="biography">{{localize 'DND4E.Sheet.Biography'}}</a>
-					<a class="item" data-tab="details">{{localize 'DND4E.Sheet.Details'}}</a>
-					<a class="item " data-tab="powers">{{localize 'DND4E.Sheet.Powers'}}</a>
-					<a class="item" data-tab="inventory">{{localize 'DND4E.Sheet.Inventory'}}</a>
-					<a class="item" data-tab="features">{{localize 'DND4E.Sheet.Features'}}</a>
-					<a class="item" data-tab="rituals">{{localize 'DND4E.Sheet.Rituals'}}</a>
-					<a class="item" data-tab="effects">{{localize 'DND4E.Sheet.Effects'}}</a>
-				</nav>
+        {{> "templates/generic/tab-navigation.hbs"}}
 			</section>
 
 			{{!-- Sheet Body --}}
 			<section class="sheet-body section--tabs-content">
 
 				{{!-- Biography Tab --}}
-				<div class="tab biography" data-group="primary" data-tab="biography">
-					{{> "systems/dnd4e/templates/actors/parts/actor-biography.html" sections=biography}}
-				</div>
+        {{> "systems/dnd4e/templates/actors/tabs/biography.hbs" tab=tabs.biography}}
 
 				{{!-- Details Tab --}}
-				<div class="tab details" data-group="primary" data-tab="details">
-					{{> "systems/dnd4e/templates/actors/parts/actor-details.html" sections=details}}
-				</div>
+        {{> "systems/dnd4e/templates/actors/tabs/details.hbs" tab=tabs.details}}
 		
 				{{!-- Owned Inventory Tab --}}
-				<div class="tab inventory" data-group="primary" data-tab="inventory">
-					{{> "systems/dnd4e/templates/actors/parts/actor-inventory.html" sections=inventory}}
-				</div>
+        {{> "systems/dnd4e/templates/actors/tabs/inventory.hbs" tab=tabs.inventory sections=inventory}}
 		
 				{{!-- Feat Tab --}}
-				<div class="tab features" data-group="primary" data-tab="features">
-					{{> "systems/dnd4e/templates/actors/parts/actor-features.html" sections=features}}
-				</div>
+        {{> "systems/dnd4e/templates/actors/tabs/features.hbs" tab=tabs.features sections=features}}
 				
 				{{!-- Powers Tab --}}
-				<div class="tab powers " data-group="primary" data-tab="powers">
-					{{> "systems/dnd4e/templates/actors/parts/actor-powers.html" sections=powers}}
-				</div>
+        {{> "systems/dnd4e/templates/actors/tabs/powers.hbs" tab=tabs.powers sections=powers}}
 				
 				{{!-- Rituals Tab --}}
-				<div class="tab rituals" data-group="primary" data-tab="rituals">
-					{{> "systems/dnd4e/templates/actors/parts/actor-rituals.html" sections=rituals}}
-				</div>
+        {{> "systems/dnd4e/templates/actors/tabs/rituals.hbs" tab=tabs.rituals sections=rituals}}
 		
 				{{!-- Effects Tab --}}
-				<div class="tab effects flexcol" data-group="primary" data-tab="effects">
-					{{> "systems/dnd4e/templates/actors/parts/active-effects.html"}}
-				</div>
+        {{> "systems/dnd4e/templates/actors/tabs/effects.hbs" tab=tabs.effects}}
 			</section>
 		</section>
 	</section>
 
-</form>
+</section>

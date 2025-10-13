@@ -1,0 +1,91 @@
+<section class="tab {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+  <ol class="currency flexrow">
+    <h3 data-tooltip="{{localize 'DND4E.RitualComp'}}">{{localize 'DND4E.RitualComp'}}</h3>
+    {{#each system.ritualcomp as |v k|}}
+    <label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
+    <input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}"/>
+    {{/each}}
+  </ol>
+
+  <ol class="item-list inventory-list">
+    <header class="ritual-filters flexrow">
+      <div class="sort-rituals">
+        <input type="hidden" name="flags.dnd4e.sheetDisplay.rituals.sortBy.value">
+        <label for="ritual-sort">{{localize 'DND4EUI.SortBy'}}</label><br />
+        <select name="system.ritualSortTypes">
+          {{selectOptions config.ritualSortTypes selected=system.ritualSortTypes labelAttr="label"}}
+        </select>
+      </div>
+
+      <div class="filter-search-rituals">
+        <label for="ritual-filter-search">{{localize "DND4E.Filter"}}</label>	
+        <br>
+        <input type="text" name="ritual-filter-search" placeholder="{{localize 'DND4EUI.SearchFor' term=(localize 'DND4E.Ritual')}}..." id="filterInput-ritual"/>
+      </div>
+    </header>
+
+    {{#each sections as |section sid|}}
+      <li class="items-header flexrow">
+        <h3 class="item-name flexrow">{{localize section.label}}</h3>
+    
+        {{#if section.columns}}
+          {{#each section.columns}}
+            <div class="item-detail {{css}}">{{label}}</div>
+          {{/each}}
+        {{/if}}
+    
+        {{#if ../owner}}
+        <div class="item-controls flexrow">
+          <a class="item-control item-create" data-tooltip="{{localize 'DND4E.RitualAdd'}}" data-type="ritual" {{#each section.dataset as |v k|}}data-subtype="{{v}}"{{/each}}>
+            <i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
+          </a>
+        </div>
+        {{/if}}
+      </li>
+    
+      <ol class="item-list ritual-list">
+      {{#each section.items as |item iid|}}
+        <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
+          <div class="item-name flexrow rollable">
+            <div class="item-image"><img src="{{item.img}}" width="30" height="30"/></div>
+            <i class="fa-solid fa-caret-down" inert></i>
+            <h4 data-action="itemSummary">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
+          </div>
+    
+          {{#if section.columns}}
+            {{#each section.columns}}
+              <div class="item-detail {{css}}">
+                {{#with (foundry.utils.getProperty item property)}}
+                  {{#if ../editable}}
+                    <input type="text" value="{{this}}" placeholder="&mdash;"
+                        data-dtype="{{../editable}}">
+                  {{else}}
+                    {{this}}
+                  {{/if}}
+                {{/with}}
+              </div>
+            {{/each}}
+          {{/if}}
+    
+          {{#if ../../owner}}
+          <div class="item-controls flexrow">
+            <a class="item-control item-edit" data-tooltip="{{localize 'DND4E.ItemEdit'}}"><i class="fas fa-edit"></i></a>
+            <a class="item-control item-delete" data-tooltip="{{localize 'DND4E.ItemDelete'}}"><i class="fas fa-trash"></i></a>
+          </div>
+          {{/if}}
+          <div class="item-summary collapsible-content">
+            <div class="wrapper">
+              {{{chatData.description.value}}}
+              <ul class="item-properties tags">
+                {{#each chatData.properties as |propertyHTML|}}
+                {{{propertyHTML}}}
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        </li>
+      {{/each}}
+      </ol>
+    {{/each}}
+  </ol>
+</section>

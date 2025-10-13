@@ -332,7 +332,7 @@ export class RollWithOriginalExpression extends Roll {
                 if (!(vars.length === 1 && vars[0] === expression)) {
                     for (let innerIndex = 0; innerIndex < vars.length; innerIndex++) {
                         const variable = vars[innerIndex]
-                        const spanId = mainIndex + "." + innerIndex
+                        const spanId = mainIndex + "-" + innerIndex
                         if (!this.options.formulaInnerData) {
                             throw `D&D4e | Roll did not have formulaInnerData set in its options, so cannot substitute and will fall back to expression parts level replacement`
                         }
