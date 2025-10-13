@@ -36,7 +36,7 @@ export class DeathSaveDialog extends DocumentSheet4e {
 
 	static async #onSubmit(event, form, formData) {
 		const saveData = foundry.utils.expandObject(formData.object);
-		const options = this.options;
+		saveData.rollMode = Object.keys(CONFIG.Dice.rollModes)[saveData.rollMode]
 
 		this.document.rollDeathSave(event, {
 			...this.options,

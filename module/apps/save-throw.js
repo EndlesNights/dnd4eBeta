@@ -59,6 +59,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 
 	static #onSubmit(event, form, formData) {
 		const saveData = foundry.utils.expandObject(formData.object);
+		saveData.rollMode = Object.keys(CONFIG.Dice.rollModes)[saveData.rollMode]
 		if (saveData.saveAgainst) {
 			saveData.effectSave = true;
 			saveData.effectId = saveData.saveAgainst
