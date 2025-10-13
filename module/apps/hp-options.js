@@ -3,34 +3,53 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 export default class HPOptions extends DocumentSheet4e {
 
   /** @override */
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
+	static DEFAULT_OPTIONS = {
 		id: "hp-options",
-		classes: ["dnd4e"],
-		title: "Hit Points Options",
-		template: "systems/dnd4e/templates/apps/hp-options.html",
-		width: 340,
-		height: "auto",
-		closeOnSubmit: false,
-		submitOnClose: false
-    });
+		classes: ["dnd4e", "standard-form"],
+		form: {
+			closeOnSubmit: false,
+			submitOnClose: false,
+			handler: HPOptions.#onSubmit
+		},
+		position: {
+			width: 340,
+			height: "auto",
+		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
+		tag: "form",
+	}
+
+	get title() {
+		return `${this.document.name} - ${game.i18n.localize("DND4E.HPOptions")}`;
+	}
+
+	static PARTS = {
+		HPOptions: {
+			template: "systems/dnd4e/templates/apps/hp-options.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
+		}
 	}
 	
 	/** @override */
-	getData() {
-		return {system: this.object.system}
+	_prepareContext() {
+		return {
+			system: this.document.system,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
+			]
+		}
 	}
 	
 	/* -------------------------------------------- */
 
 	/** @override */
-	_updateObject(event, formData) {
-		const updateData = {};
-		
-		for(let i = 0; i < Object.entries(formData).length; i++) {
-			updateData[Object.entries(formData)[i][0]] = Object.entries(formData)[i][1];
-		}
-
-		this.object.update(updateData);
+	static #onSubmit(event, form, formData) {
+		const updateData = foundry.utils.expandObject(formData.object);
+		this.document.update(updateData);
 	}
+
 }

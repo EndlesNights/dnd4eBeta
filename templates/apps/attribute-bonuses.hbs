@@ -1,0 +1,78 @@
+<div id="attribute-bonuses" class="dialog-content" onsubmit="event.preventDefault();" style="overflow-y: auto; overflow-x: hidden;">
+	<!-- <span>Total Bonus to {{skill}}: SOMENUM</span> -->
+	<!-- <a>+ Add New Bonus Button</a> -->
+	{{#if options.skill}}
+		<fieldset>
+			<legend>{{localize "DND4E.Armour"}}</legend>
+			<div>
+				<span>{{localize "DND4E.SkillACPToggle"}}</span>
+				<input type="checkbox" name="system.armourCheck" data-dtype="Boolean" {{checked system.armourCheck}} data-tooltip="{{localize "DND4E.SkillACPToggle"}}">
+				{{#if system.armourCheck}}
+				<span>{{localize "DND4E.ArmourSkillACP"}}</span>
+				<span>{{system.armourPen}}</span>	
+				{{/if}}
+			</div>
+		</fieldset>
+
+	{{else if options.ac}}
+		<fieldset>
+			<legend data-tooltip="{{localize "DND4E.ACAbilityMod"}}">{{localize "DND4E.AbilityModifier"}}</legend>
+			<span>{{localize "DND4E.DefModUse"}}: </span>
+			<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} data-tooltip="{{localize "DND4E.DefModOverride"}}"/>
+			<span>{{localize "DND4E.DefModOverride"}}: </span>
+			<select name="system.altability">
+				{{#select system.altability}}
+				<option value="" >{{localize "DND4E.Default"}}</option>
+				<option value="none" >{{localize "DND4E.None"}}</option>
+				<option value="str" >{{localize "DND4E.AbilityStr"}}</option>
+				<option value="con" >{{localize "DND4E.AbilityCon"}}</option>
+				<option value="dex" >{{localize "DND4E.AbilityDex"}}</option>
+				<option value="int" >{{localize "DND4E.AbilityInt"}}</option>
+				<option value="wis" >{{localize "DND4E.AbilityWis"}}</option>
+				<option value="cha" >{{localize "DND4E.AbilityCha"}}</option>
+				{{/select}}
+			</select>
+		</fieldset>
+
+	{{else if options.init}}
+	<fieldset>
+		<legend data-tooltip="{{localize "DND4E.InitAbilityMod"}}">{{localize "DND4E.AbilityModifier"}}</legend>
+		<select name="system.ability">
+			{{#select system.ability}}
+			<option value="" >{{localize "DND4E.None"}}</option>
+			<option value="str" >{{localize "DND4E.AbilityStr"}}</option>
+			<option value="con" >{{localize "DND4E.AbilityCon"}}</option>
+			<option value="dex" >{{localize "DND4E.AbilityDex"}}</option>
+			<option value="int" >{{localize "DND4E.AbilityInt"}}</option>
+			<option value="wis" >{{localize "DND4E.AbilityWis"}}</option>
+			<option value="cha" >{{localize "DND4E.AbilityCha"}}</option>
+			{{/select}}
+		</select>
+	</fieldset>
+	{{else if options.secondWind}} 
+	<div class="form-group stacked">
+		<label>{{localize "DND4E.SecondWindSpecial"}}</label>
+		<input type="text" name="system.custom" value="{{system.custom}}" data-dtype="String"/>
+	</div>
+	{{/if}}
+	<fieldset>
+		<legend>{{localize "DND4E.Bonuses"}}</legend>
+		{{#each bonusData as |bonus b|}}
+		<fieldset>
+		<div class="bonus-part" data-bonus-part="{{b}}">
+			<span>{{localize "DND4E.BonusName"}}:</span>
+			<input type="text" name="{{b}}.name" value="{{bonus.name}}" data-dtype="String" style="width: 125px;"/>
+			<span>{{localize "DND4E.Value"}}:</span>
+			<input type="text" name="{{b}}.value" value="{{bonus.value}}" data-dtype="String" style="width: 105px;"/>
+			<span>{{localize "DND4E.Active"}}: </span>
+			<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} data-tooltip="{{localize "DND4E.BonusToggle"}}">
+			<a class="bonus-control bonus-delete" data-tooltip="{{localize "DND4EUI.Delete"}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
+			<div style="padding-top:15px">
+				<textarea type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none" placeholder="{{localize "DND4E.Notes"}}" contentEditable>{{bonus.note}}</textarea>
+			</div>
+		</div>
+		</fieldset>
+		{{/each}}
+		<div><a class="bonus-control bonus-add">{{localize "DND4EUI.AddNew"}}</a></div>
+	</fieldset>
+</div>
