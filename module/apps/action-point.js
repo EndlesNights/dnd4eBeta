@@ -39,7 +39,7 @@ export class ActionPointDialog extends DocumentSheet4e {
 			system: this.document.system,
 			extra: extra,
 			buttons: [
-				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.ActionPointUse" }
+				{ type: "submit", label: "DND4E.ActionPointUse" }
 			]
 		};
 	}

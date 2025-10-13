@@ -22,10 +22,10 @@ export class HealMenuDialog extends DocumentSheet4e {
 			width: 500,
 			height: "auto",
 		},
-        tag: "form",
+		tag: "form",
 		window : {
 			title: "Healing Menu",
-            contentClasses: ["standard-form"]
+			contentClasses: ["standard-form"]
 		}
 	}
 
@@ -36,6 +36,9 @@ export class HealMenuDialog extends DocumentSheet4e {
 	static PARTS = {
 		HealMenuDialog: {
 			template: "systems/dnd4e/templates/apps/heal-menu-dialog.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 
@@ -45,7 +48,15 @@ export class HealMenuDialog extends DocumentSheet4e {
 		const hpMax = this.document.system.attributes.hp.value === this.document.system.attributes.hp.max
 		const surgeValue = this.document.system.details.surgeValue
 		const constHasSurges = this.document.system.details.surges.value > 0
-		return { hpMax, constHasSurges, surgeValue }
+		return {
+			hpMax,
+			constHasSurges,
+			surgeValue,
+			buttons: [
+				{ name: "healButton", type: "heal", action: "healButtonClicked", label: "DND4E.HealingMenuHealHP" },
+				{ name: "tempHPButton", type: "tempHP", action: "tempHPButtonClicked", label: "DND4E.HealingMenuGainTempHP" }
+			]
+		}
 	}
 
 	_onRender(context, options) {
@@ -55,39 +66,39 @@ export class HealMenuDialog extends DocumentSheet4e {
 	}
 
 	static _setButtonEnabledState() {
-		let hpButtonEnabled = true
+		let hpButtonEnabled = true;
 		let hpButtonText = game.i18n.localize("DND4E.HealingMenuHealHP");
-		let tempHPButtonEnabled = true
+		let tempHPButtonEnabled = true;
 		let tempHPButtonText = game.i18n.localize("DND4E.HealingMenuGainTempHP");
-		let evaluateFurtherHPButton = true
+		let evaluateFurtherHPButton = true;
 		if (document.getElementById('hpMax').value === "true") {
-			hpButtonEnabled = false
+			hpButtonEnabled = false;
 			hpButtonText = game.i18n.localize("DND4E.HealingMenuAtMaxHP");
-			evaluateFurtherHPButton = false
+			evaluateFurtherHPButton = false;
 		}
 
 		if (document.getElementById('spend-healing-surge').checked === true) {
 			if (document.getElementById('hasSurges').value === "false") {
-				tempHPButtonEnabled = false
+				tempHPButtonEnabled = false;
 				tempHPButtonText = game.i18n.localize("DND4E.HealingMenuOutOfSurges");
 				if (evaluateFurtherHPButton) {
-				hpButtonEnabled = true
+				hpButtonEnabled = true;
 				hpButtonText = game.i18n.localize("DND4E.HealingMenuHealOneHP");
 				}
 			}
 		}
 		function setButtonEnabled(buttonId, enabled, text) {
-			const button = document.getElementById(buttonId)
-			button.innerHTML = text
+			const button = document.getElementsByName(buttonId)[0];
+			button.innerHTML = text;
 			if (enabled) {
-				button.removeAttribute("disabled")
+				button.removeAttribute("disabled");
 			}
 			else {
-				button.setAttribute("disabled", "true")
+				button.setAttribute("disabled", "true");
 			}
 		}
-		setButtonEnabled('healButton', hpButtonEnabled, hpButtonText)
-		setButtonEnabled('tempHpButton', tempHPButtonEnabled, tempHPButtonText)
+		setButtonEnabled('healButton', hpButtonEnabled, hpButtonText);
+		setButtonEnabled('tempHPButton', tempHPButtonEnabled, tempHPButtonText);
 	}
 
 	static _onHealButtonClicked() {

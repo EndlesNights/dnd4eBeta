@@ -42,7 +42,7 @@ export class MovementDialog extends DocumentSheet4e {
 		context.config = CONFIG.DND4E;
 		context.system = this.document.system;
 		return {
-			context,
+			...context,
 			buttons: [
 				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
 			]

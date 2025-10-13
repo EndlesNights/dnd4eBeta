@@ -39,7 +39,7 @@ export class SecondWindDialog extends DocumentSheet4e {
 			system: this.document.system,
 			extra: extra,
 			buttons: [
-				{ name: "secondWindButton", type: "submit", icon: "fa-solid fa-save", label: "DND4E.SecondWind" }
+				{ name: "secondWindButton", type: "submit", label: "DND4E.SecondWind" }
 			]
 		};
 	}
@@ -58,13 +58,13 @@ export class SecondWindDialog extends DocumentSheet4e {
 		}
 
 		function setButtonEnabled(buttonId, enabled, text) {
-			const button = document.getElementsByName(buttonId)[0]
-			button.innerHTML = text
+			const button = document.getElementsByName(buttonId)[0];
+			button.innerHTML = text;
 			if (enabled) {
-				button.removeAttribute("disabled")
+				button.removeAttribute("disabled");
 			}
 			else {
-				button.setAttribute("disabled", "true")
+				button.setAttribute("disabled", "true");
 			}
 		}
 		setButtonEnabled('secondWindButton', swButtonEnabled, swButtonText);

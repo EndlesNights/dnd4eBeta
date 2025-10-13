@@ -37,7 +37,7 @@ export class LongRestDialog extends DocumentSheet4e {
 		return {
 			system: this.document.system,
 			buttons: [
-				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.LongRestTake" }
+				{ type: "submit", label: "DND4E.LongRestTake" }
 			]
 		}
 	}

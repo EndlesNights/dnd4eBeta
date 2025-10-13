@@ -36,7 +36,7 @@ export class ShortRestDialog extends DocumentSheet4e {
 		return {
 			system: this.document.system,
 			buttons: [
-				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.ShortRestTake" }
+				{ type: "submit", label: "DND4E.ShortRestTake" }
 			]
 		}
 	}
