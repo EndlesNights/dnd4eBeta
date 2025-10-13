@@ -268,8 +268,8 @@ export default class ItemSheet4e extends ItemSheet {
 			case "create":
 				console.log(this)
 				this.item.createEmbeddedDocuments("ActiveEffect", [{
-					label: game.i18n.localize("DND4E.EffectNew"),
-					icon: this.item.img || "icons/svg/aura.svg",
+					name: game.i18n.localize("DND4E.EffectNew"),
+					img: this.item.img || "icons/svg/aura.svg",
 					origin: this.item.uuid,
 					"flags.dnd4e.effectData.powerEffectTypes": li.dataset.effectType,
 					"flags.dnd4e.effectData.durationType": li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined,

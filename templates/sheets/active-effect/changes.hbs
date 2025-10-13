@@ -1,0 +1,123 @@
+<section class="tab changes{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+  <fieldset>
+    <legend>{{localize "DND4E.ModifierPlural"}}</legend>
+    <header>
+      <div class="key">{{localize "EFFECT.ChangeKey"}}</div>
+        <div class="mode">{{localize "EFFECT.ChangeMode"}}</div>
+        <div class="value">{{localize "EFFECT.ChangeValue"}}</div>
+        <div class="priority">{{localize "EFFECT.ChangePriority"}}</div>
+        <div class="controls">
+          <a data-action="addChange"><i class="far fa-plus-square"></i></a>
+        </div>
+    </header>
+    <ol data-changes>
+      {{#each source.changes as |change i|}}
+      {{#with ../fields.changes.element.fields as |changeFields|}}
+      <li data-index="{{i}}">
+        <div class="key">
+          {{formInput changeFields.key name=(concat "changes." i ".key") value=change.key}}
+        </div>
+        <div class="mode">
+          {{formInput changeFields.mode name=(concat "changes." i ".mode") value=change.mode choices=@root.modes}}
+        </div>
+        <div class="value">
+          {{formInput changeFields.value name=(concat "changes." i ".value") value=change.value}}
+        </div>
+        <div class="priority">
+          {{formInput changeFields.priority name=(concat "changes." i ".priority") value=change.priority placeholder=(lookup ../../priorities change.mode)}}
+        </div>
+        <div class="controls">
+          <a data-action="deleteChange"><i class="fas fa-trash"></i></a>
+        </div>
+      </li>
+      {{/with}}
+      {{/each}}
+    </ol>
+  </fieldset>
+
+  {{!-- Status conditions attached to this effect --}}
+  <fieldset>
+    <legend>{{localize "DND4E.StatusConditions"}}</legend>
+		<header class="effect-status effects-header flexrow{{#if cltEnabled}} clt-enabled{{/if}}">
+			<div class="status-select">{{localize 'DND4E.Condition'}}</div>
+			<div class="status-controls">{{localize 'DND4EUI.EffectReplace'}}</div>
+			<div class="effect-controls">
+				<a class="effect-status-control" data-action="addStatus"><i class="far fa-plus-square"></i></a>
+			</div>
+		</header>
+		<ol class="statuses-list{{#if cltEnabled}} clt-enabled{{/if}}">
+			{{#each document.statuses as |status i|}}
+			<li class="effect-status flexrow" data-status-id="{{status}}" data-index="{{i}}">
+				<div class="status-select">
+					<select
+            class="refreshes"
+            name="statuses.{{i}}"
+            {{#unless (eq status "none")}}
+              data-tooltip="{{status}}{{#unless (contains status ../config.statusEffects 'id')}}: {{localize 'DND4EUI.UnknownCondition.Tip'}}{{/unless}}"
+					  {{/unless}}
+					>
+						{{#unless (eq status "none")}}
+							{{#unless (contains status ../config.statusEffects 'id')}}
+							<option value="{{status}}" selected>{{localize 'DND4EUI.UnknownCondition.Label'}}</option>
+							{{/unless}}
+						{{/unless}}
+						{{selectOptions ../config.statusEffects selected=status valueAttr="id" labelAttr="name" sort=true localize=true blank="none"}}
+					</select>
+				</div>
+				<button class="effect-status-control" data-action="copyAll"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.All'}}
+				<button class="effect-status-control" data-action="copyName"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'Name'}}</button>
+				<button class="effect-status-control" data-action="copyIcon"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.Icon'}}</button>
+				<button class="effect-status-control" data-action="copyDesc"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.Desc'}}</button>
+				<button class="effect-status-control" data-action="copyMods"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.Mods'}}</button>
+        {{#if cltEnabled}}
+				<button class="effect-status-control" data-action="copyClFlags"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.ConditionLabFlags'}}</button>
+				{{/if}}
+        <div class="effect-controls">
+					<a class="effect-status-control" data-action="deleteStatus"><i class="fas fa-trash"></i></a>
+				</div>
+			</li>
+			{{/each}}
+		</ol>
+  </fieldset>
+
+  <!-- Ongoing Damage instances attached to this effect-->
+  <fieldset>
+    <legend>{{localize "DND4E.OngoingDamage"}}</legend>
+    <header class="effect-dot effects-header flexrow">
+      <div class="amount">{{ localize "DND4E.Value" }}</div>
+      <div class="type">{{ localize "DND4E.Type" }}</div>
+      <div class="effect-controls">
+        <a class="effect-dot-control" data-action="addDot"><i class="far fa-plus-square"></i></a>
+      </div>
+    </header>
+    <ol class="dots-list">
+      {{#each document.flags.dnd4e.dots as |dot i|}}
+      <li class="effect-dot flexrow" data-index="{{i}}">
+        <div class="amount">
+          <input type="text" name="flags.dnd4e.dots.{{i}}.amount" value="{{dot.amount}}"/>
+        </div>
+        <div class="type damage-type">
+          <multi-select name="flags.dnd4e.dots.{{i}}.typesArray" class="refreshes">
+            {{selectOptions ../dotDamageTypes selected=dot.typesArray}}
+          </multi-select>
+        </div>
+        <div class="effect-controls">
+          <a class="effect-dot-control" data-action="deleteDot"><i class="fas fa-trash"></i></a>
+        </div>
+      </li>
+      {{/each}}
+    </ol>
+  </fieldset>
+
+  <!-- Keywords for this effect -->
+  <fieldset>
+    <legend>{{localize "DND4E.Keywords"}}</legend>
+    <multi-select name="flags.dnd4e.keywords" class="refreshes">
+      {{selectOptions config.keywords selected=document.flags.dnd4e.keywords}}
+    </multi-select>
+    <div class="form-group long">
+      <label>{{ localize "DND4E.Custom" }}</label>
+      <input type="text" name="flags.dnd4e.keywordsCustom" value="{{document.flags.dnd4e.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}" />
+    </div>
+  </fieldset>
+</section>

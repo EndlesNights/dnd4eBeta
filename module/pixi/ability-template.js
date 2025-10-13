@@ -4,7 +4,7 @@ import { DND4E } from "../config.js";
  * A helper class for building MeasuredTemplates for 4e spells and abilities
  * @extends {MeasuredTemplate}
  */
-export class MeasuredTemplate4e extends MeasuredTemplate {
+export class MeasuredTemplate4e extends foundry.canvas.placeables.MeasuredTemplate {
 
 	static getDistanceCalc(item){
 
@@ -37,6 +37,7 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 		let flags = {dnd4e:{templateType:templateShape, item, origin:item.uuid}};
 
 		if(item.system.rangeType === "closeBlast" || item.system.rangeType === "rangeBlast") {
+			flags.dnd4e.templateType = "blast";
 			distance *= Math.sqrt(2);
 		}
 		else if(item.system.rangeType === "rangeBurst") {
@@ -171,9 +172,26 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 		handlers.mw = event => {
 			if ( event.ctrlKey ) event.preventDefault(); // Avoid zooming the browser window
 			event.stopPropagation();
-			let delta = canvas.grid.type > CONST.GRID_TYPES.SQUARE ? 30 : 15;
-			let snap = event.shiftKey ? delta : 5;
-			this.document.updateSource({direction: this.document.direction + (snap * Math.sign(event.deltaY))});
+			if (this.document.flags.dnd4e?.templateType === "blast") {
+				const updates = {
+					direction: Math.normalizeDegrees(this.document.direction - Math.sign(event.deltaY) * 315)
+				};
+				if (this.document.t === "rect") {
+					// Rotate and become ray
+					updates.distance = updates.width = this.document.distance / Math.SQRT2;
+					updates.t = "ray";
+				} else {
+					// Rotate and become rect
+					updates.distance = this.document.distance * Math.SQRT2;
+					updates.width = 0;
+					updates.t = "rect";
+				}
+				this.document.updateSource(updates);
+			} else {
+				let delta = canvas.grid.type > CONST.GRID_TYPES.SQUARE ? 30 : 15;
+				let snap = event.shiftKey ? delta : 5
+				this.document.updateSource({direction: this.document.direction + (snap * Math.sign(event.deltaY))});
+			}
 			this.refresh();
 		};
 
@@ -187,12 +205,9 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 	/* -------------------------------------------- */
 	
 	/**
-	 * Wrapped computeShape as MeasuredTemplate.#getCircleShape is now private,
 	 * Overrides the method to allow for 4e Burst shapes allowing drawing square template from the center.
-	 * @param {wrapper} wrapper    refrence to the original core method
 	 */
-	static _computeShape(wrapper){
-
+	_computeShape(){
 		if(this.document.flags.dnd4e?.templateType === "burst"
 		|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "burst" && !this.document.flags.dnd4e?.templateType)) {
 			
@@ -200,14 +215,20 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 			return new PIXI.Polygon(canvas.grid.getCircle({x: 0, y: 0}, distance));
 
 		}
-		else if (this.document.flags.dnd4e?.templateType === "blast"
-			|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "blast" && !this.document.flags.dnd4e?.templateType)) {
+		// Freehand blasts
+		else if (!this.document.flags.dnd4e?.templateType && this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "blast") {
 			const {t, distance, direction, angle, width} = this.document;
 
 			return new PIXI.Polygon(canvas.grid.getCone({x: 0, y: 0}, distance, direction, angle));
+		} else if (this.document.t === "rect" && this.document.flags.dnd4e?.templateType === "blast") {
+			const {distance, direction} = this.document;
+
+			const endpoint = foundry.canvas.geometry.Ray.fromAngle(0, 0, Math.toRadians(direction), distance * canvas.dimensions.distancePixels).B;
+
+			return new PIXI.Rectangle(0, 0, endpoint.x, endpoint.y).normalize();
 		}
-		
-		return wrapper();
+
+		return super._computeShape();
 	}
 	
 	/* -------------------------------------------- */
@@ -216,7 +237,7 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 	 * Update the displayed ruler tooltip text
 	 * @protected
 	 */
-	static _refreshRulerText(wrapper){
+	_refreshRulerText(){
 		if( (this.document.flags.dnd4e?.templateType === "burst"  && this.document.t === "circle")
 			|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "burst" && !this.document.flags.dnd4e?.templateType)) {
 				let d;
@@ -248,7 +269,7 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 				this.ruler.text = text;
 				this.ruler.position.set(this.ray.dx + 10, this.ray.dy + 5);
 		} else {
-			return wrapper();
+			return super._refreshRulerText()
 		}
 	}
 
@@ -256,15 +277,19 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
    * Refresh the underlying geometric shape of the MeasuredTemplate.
    * @protected
    */
-	static _refreshShape(wrapper) {
+	_refreshShape() {
 		
 		if(!this.document.getFlag("dnd4e", "templateType")){
-			return wrapper();
+			return super._refreshShape();
 		}
 
 		// anchors the point along the edge of the burst/blast
 		let {x, y, direction, distance} = this.document;
-		this.ray = new Ray({x, y}, canvas.grid.getTranslatedPoint({x, y}, direction, distance));
+		if (this.document.t === "rect" && this.document.getFlag("dnd4e", "templateType") === "blast") {
+			this.ray = foundry.canvas.geometry.Ray.fromAngle(x, y, Math.toRadians(direction), distance * canvas.dimensions.distancePixels);
+		} else {
+			this.ray = new foundry.canvas.geometry.Ray({x, y}, canvas.grid.getTranslatedPoint({x, y}, direction, distance));
+		}
 		this.shape = this._computeShape();
 	}
 }
@@ -272,7 +297,7 @@ export class MeasuredTemplate4e extends MeasuredTemplate {
 export class TemplateLayer4e extends TemplateLayer {
 
 	/** @inheritdoc */
-	static _onDragLeftStart(wrapper, event){
+	_onDragLeftStart(event){
 		const tool = game.activeTool;
 
 		//unsett this flag, as it is used only for the system spesfic custom messure templates _onDragLeftMove
@@ -280,8 +305,8 @@ export class TemplateLayer4e extends TemplateLayer {
 			event.dnd4e.templateType = null;
 		}
 
-		if(!(tool == "blast" || tool == "burst")){
-			return wrapper(event);
+		if(!["blast", "burst"].includes(tool)){
+			return super._onDragLeftStart(event);
 		}
 
 		const interaction = event.interactionData;
@@ -311,20 +336,21 @@ export class TemplateLayer4e extends TemplateLayer {
 			event.dnd4e = {templateType: tool}
 		}
 		
-		const cls = getDocumentClass("MeasuredTemplate");
+		const cls = foundry.utils.getDocumentClass("MeasuredTemplate");
 		const doc = new cls(previewData, {parent: canvas.scene});
 	
 		// Create a preview MeasuredTemplate object
 		const template = new this.constructor.placeableClass(doc);
+		doc._object = template;
 		interaction.preview = this.preview.addChild(template);
 		return template.draw();
 	}
 
 	/** @inheritdoc */
-	static _onDragLeftMove(wrapper, event) {
+	_onDragLeftMove(event) {
 		//!event.target.documentCollection[0]?.value.flags.dnd4e.templateType
 		if(!event.dnd4e?.templateType){
-			return wrapper(event);
+			return super._onDragLeftMove(event);
 		}
 
 		const interaction = event.interactionData;
@@ -334,7 +360,7 @@ export class TemplateLayer4e extends TemplateLayer {
 	
 		// Compute the ray
 		const {origin, destination, preview} = interaction;
-		const ray = new Ray(origin, destination);
+		const ray = new foundry.canvas.geometry.Ray(origin, destination);
 		let distance;
 		distance = canvas.grid.measurePath([origin, destination]).distance;
 
@@ -342,5 +368,27 @@ export class TemplateLayer4e extends TemplateLayer {
 		preview.document.direction = Math.normalizeDegrees(Math.toDegrees(ray.angle));
 		preview.document.distance = distance;
 		preview.renderFlags.set({refreshShape: true});
+	}
+
+	/** @inheritdoc */
+	_onMouseWheel(event) {
+    const template = this.hover;
+    if (!template || template.isPreview) return;
+		if (template.document.flags.dnd4e?.templateType !== "blast") return super._onMouseWheel(event);
+
+		const updates = {
+			direction: Math.normalizeDegrees(template.document.direction - Math.sign(event.delta) * 315)
+		};
+    if (template.document.t === "rect") {
+			// Rotate and become ray
+			updates.distance = updates.width = template.document.distance / Math.SQRT2;
+			updates.t = "ray";
+		} else {
+			// Rotate and become rect
+			updates.distance = template.document.distance * Math.SQRT2;
+			updates.width = 0;
+			updates.t = "rect";
+		}
+		return template.document.update(updates);
 	}
 }

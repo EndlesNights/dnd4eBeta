@@ -1,0 +1,13 @@
+<div id="con-bon-config" class="dialog-content" onsubmit="event.preventDefault();">
+	<fieldset>
+		<legend>{{localize 'DND4E.CommonAttackBonuses'}}</legend>
+		<p>{{localize 'DND4E.CommonAttackBonusesConfigTip'}}</p>
+		{{#each system.commonAttackBonuses as |c id|}}
+		<div class="form-group {{id}} condition-row flexrow" data-mod="{{id}}">
+			<span class="condition-name label">{{localize c.label}}:</span>
+			<span class="condition-mod-value">{{numberFormat c.value decimals=0 sign=true}}</span>
+			<a class="condition-mod-bonus" data-target="system.commonAttackBonus.{{id}}" data-tooltip="{{localize c.label}} {{localize 'DND4E.Bonus'}}">{{localize 'DND4E.Bonus'}}: {{c.bonusValue}}</a>
+		</div>
+		{{/each}}
+	</fieldset>
+</div>

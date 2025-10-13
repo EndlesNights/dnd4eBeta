@@ -1,0 +1,30 @@
+<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+  {{formGroup fields.tint value=source.tint rootId=rootId placeholder="#ffffff"}}
+  {{formGroup fields.description value=source.description rootId=rootId classes="stacked editor{{#if powerParent}} extended{{/if}}"}}
+  {{formGroup fields.disabled value=source.disabled rootId=rootId}}
+
+  {{#if isActorEffect}}
+  {{formGroup fields.origin value=source.origin rootId=rootId disabled=true}}
+  {{/if}}
+  {{#if isItemEffect}}
+  <div class="form-group">
+    <label>{{localize "DND4E.EffectWhenEquipped"}}?</label>
+    <div class="form-fields">
+      <input type="checkbox" name="flags.dnd4e.effectData.equippedRec" data-dtype="Boolean" {{checked document.flags.dnd4e.effectData.equippedRec}}/>
+    </div>
+  </div>
+  {{formGroup fields.transfer value=source.transfer rootId=rootId label=legacyTransfer.label hint=legacyTransfer.hint}}
+  {{/if}}
+  {{#if powerParent}}
+  <div class="form-group">
+    <label>{{localize "DND4E.EffectApply"}}</label>
+    <div class="form-fields">
+      <select name="flags.dnd4e.effectData.powerEffectTypes">
+        {{selectOptions config.powerEffectTypes selected=document.flags.dnd4e.effectData.powerEffectTypes blank=""}}
+      </select>
+    </div>
+  </div>
+  {{/if}}
+  <!-- Compatibility note: 4e places statuses on the Effects tab, but some modules rely on this being where it is in the default effect sheet. -->
+  <div class="form-group statuses"></div>
+</section>

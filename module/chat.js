@@ -22,16 +22,16 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
 		const critical = d.options.critical || 20;
 		const fumble = typeof(d.options.fumble) === 'number' ? d.options.fumble : 1;
 		if ( d.total >= critical ) {
-			html.find(`.dice-total`)[i].classList.add("critical");
+			html.querySelectorAll(`.dice-total`)[i].classList.add("critical");
 		}
 		else if ( d.total <= fumble ){ 
-			html.find(`.dice-total`)[i].classList.add("fumble");
+			html.querySelectorAll(`.dice-total`)[i].classList.add("fumble");
 		}
 		else if ( d.options.target ) {
 			if ( roll.total >= d.options.target ){
-				html.find(`.dice-total`)[i].classList.add("success");
+				html.querySelectorAll(`.dice-total`)[i].classList.add("success");
 			} else {
-				html.find(`.dice-total`)[i].classList.add("failure");
+				html.querySelectorAll(`.dice-total`)[i].classList.add("failure");
 			}
 		}
 
@@ -45,10 +45,10 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
  * Optionally hide the display of chat card action buttons which cannot be performed by the user
  */
 export const displayChatActionButtons = function(message, html, data) {
-	const chatCard = html.find(".DND4E.chat-card");
-	if ( chatCard.length > 0 ) {
-		const flavor = html.find(".flavor-text");
-		if ( flavor.text() === html.find(".item-name").text() ) flavor.remove();
+	const chatCard = html.querySelector(".DND4E.chat-card");
+	if ( chatCard ) {
+		const flavor = html.querySelector(".flavor-text");
+		if ( flavor?.textContent === html.querySelector(".item-name")?.textContent ) flavor.remove();
 
 		// If the user is the message author or the actor owner, proceed
 		let actor = game.actors.get(data.message.speaker.actor);
@@ -56,8 +56,8 @@ export const displayChatActionButtons = function(message, html, data) {
 		else if ( game.user.isGM || (data.author.id === game.user.id)) return;
 
 		// Otherwise conceal action buttons except for saving throw
-		const buttons = chatCard.find("button[data-action]");
-		buttons.each((i, btn) => {
+		const buttons = chatCard.querySelectorAll("button[data-action]");
+		buttons.forEach((btn) => {
 			if ( btn.dataset.action === "save" ) return;
 			btn.style.display = "none"
 		});
@@ -73,8 +73,8 @@ export const displayDamageOptionButtons = function(message, html, data) {
 	const d = roll.dice[0];
 	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
 	if ( !isD20 && !d.options.recharge) return;
-	const buttons = html.find(".chatDamageButtons");
-	buttons.each((i, button) => {
+	const buttons = html.querySelectorAll(".chatDamageButtons");
+	buttons.forEach((button) => {
 		button.style.display = "none"
 	})
 };
@@ -93,27 +93,27 @@ export const displayDamageOptionButtons = function(message, html, data) {
 export const addChatMessageContextOptions = function(html, options) {
 
 	let isAttackRoll = li => {
-		const message = game.messages.get(li.data("messageId"));
-		return message.isRoll && message.isContentVisible && li[0].querySelector('.hit-prediction');
+		const message = game.messages.get(li.dataset.messageId);
+		return message.isRoll && message.isContentVisible && li.querySelector('.hit-prediction');
 	};
 	
 	let canApplyDamage = li => {
-		const message = game.messages.get(li.data("messageId"));
+		const message = game.messages.get(li.dataset.messageId);
 		return message.isRoll && message.isContentVisible && canvas.tokens.controlled.length;
 	};
 
 	// function canApplyEffect(li, type){
 	let canApplyEffect = (li, type) => {
 		if(!canvas.tokens.controlled.length) return false;
-		const message = game.messages.get(li.data("messageId"));
+		const message = game.messages.get(li.dataset.messageId);
 		if(!message.isContentVisible) return false;
 
-		const itemID = li[0].querySelector('[data-item-id]')?.dataset.itemId;
+		const itemID = li.querySelector('[data-item-id]')?.dataset.itemId;
 
 		if(!itemID) return false;
 		
-		const actorID = li[0].querySelector('[data-actor-id]')?.dataset.actorId;
-		const tokenUUID = li[0].querySelector('[data-token-id]')?.dataset.tokenId.split(".");
+		const actorID = li.querySelector('[data-actor-id]')?.dataset.actorId;
+		const tokenUUID = li.querySelector('[data-token-id]')?.dataset.tokenId.split(".");
 
 		const actor = tokenUUID ? game.scenes.get(tokenUUID[1])?.tokens.get(tokenUUID[3])?.actor : game.actors.get(actorID);
 		if(!actor) return false;
@@ -203,15 +203,36 @@ export const addChatMessageContextOptions = function(html, options) {
 };
 
 export function chatMessageListener(html) {
-	html.on('click', '.chat-damage-button', this.clickRollMessageDamageButtons.bind(this));
+	//html.on('click', '.chat-damage-button', this.clickRollMessageDamageButtons.bind(this));
+	html.addEventListener("click", (event) => {
+		if (!event.target) return;
+		const el = event.target.closest(".chat-damage-button");
+		if (el) this.clickRollMessageDamageButtons.call(this, event);
+	});
 
-	html.on('click', '.target', this.clickTokenActorName.bind(this));
-	html.on('mouseenter', '.target', this.hoverTokenActorName.bind(this)).on('mouseleave', '.target', this.hoverTokenActorName.bind(this));
+	//html.on('click', '.target', this.clickTokenActorName.bind(this));
+	html.addEventListener("click", (event) => {
+		if (!event.target) return;
+		const el = event.target.closest(".target");
+		if (el) this.clickTokenActorName.call(this, event);
+	});
+	
+	//html.on('mouseenter', '.target', this.hoverTokenActorName.bind(this)).on('mouseleave', '.target', this.hoverTokenActorName.bind(this));
+	html.addEventListener("mouseenter", (event) => {
+		if (!event.target) return;
+		const el = event.target.closest(".target");
+		if (el) this.hoverTokenActorName.call(this, event);
+	});
+	html.addEventListener("mouseleave", (event) => {
+		if (!event.target) return;
+		const el = event.target.closest(".target");
+		if (el) this.hoverTokenActorName.call(this, event);
+	});
 
-	html.find(".description.collapsible").each((i, el) => {
-        el.classList.add("collapsed");
-        el.querySelector(".details").style.height = "0";
-      });
+	html.querySelectorAll(".description.collapsible").forEach((el) => {
+		el.classList.add("collapsed");
+		el.querySelector(".details").style.height = "0";
+	});
 }
 
 //When clicking on the name of a taget in a chat messages from attack rolls, will select and pan to the highlighted token
@@ -259,7 +280,7 @@ export const clickRollMessageDamageButtons = function(event) {
 	}
 
 	// Extract card data
-	const button = event.currentTarget;
+	const button = event.target;
 	const messageId = button.closest(".message").dataset.messageId;
 	const message = game.messages.get(messageId);
 	const roll = message.rolls[0];
@@ -289,12 +310,12 @@ export const clickRollMessageDamageButtons = function(event) {
  * @return {Promise}
  */
 function applyEffectToSelectTokens(li, effectType){
-	const itemID = li[0].querySelector('[data-item-id]')?.dataset.itemId;
+	const itemID = li.querySelector('[data-item-id]')?.dataset.itemId;
 
 	if(!itemID) return false;
 	
-	const actorID = li[0].querySelector('[data-actor-id]')?.dataset.actorId;
-	const tokenUUID = li[0].querySelector('[data-token-id]')?.dataset.tokenId.split(".");
+	const actorID = li.querySelector('[data-actor-id]')?.dataset.actorId;
+	const tokenUUID = li.querySelector('[data-token-id]')?.dataset.tokenId.split(".");
 
 	const actor = tokenUUID ? game.scenes.get(tokenUUID[1])?.tokens.get(tokenUUID[3])?.actor : game.actors.get(actorID);
 	if(!actor) return;
@@ -315,7 +336,7 @@ function applyEffectToSelectTokens(li, effectType){
  * @return {Promise}
  */
 function selectTargetTokens(li, targetType){
-	const message = game.messages.get(li.data("messageId"));
+	const message = game.messages.get(li.dataset.messageId);
 
 	if(!event.shiftKey){
 		canvas.tokens.selectObjects();
@@ -355,7 +376,7 @@ function selectTargetTokens(li, targetType){
  * @return {Promise}
  */
 function applyChatCardDamage(li, multiplier, trueDamage=false) {
-	const message = game.messages.get(li.data("messageId"));
+	const message = game.messages.get(li.dataset.messageId);
 	const roll = message.rolls[0];
 	applyChatCardDamageInner(roll, multiplier, trueDamage);
 }
@@ -432,7 +453,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
  * @return {Promise}
  */
 function applyChatCardTempHp(li) {
-	const message = game.messages.get(li.data("messageId"));
+	const message = game.messages.get(li.dataset.messageId);
 	const roll = message.rolls[0];
 	applyChatCardTempHpInner(roll);
 }
@@ -444,54 +465,43 @@ function applyChatCardTempHpInner(roll){
 	}));
 }
 
-export function _onDiceRollClick(wrapper, event){
-	//stop roll from opening up when clicking the .target 
-	if(event.target.classList.contains("target") || (event.target.tagName.toLowerCase() === 'b' && event.target.parentElement.classList.contains("target"))){
-		return;
-	}
+export function _onClickDiceRoll(event){
+	event.preventDefault();
 
-	return wrapper(event);
+	// Toggle the message flag
+	let roll = event.currentTarget;
+	const message = game.messages.get(roll.closest(".message").dataset.messageId);
+	message._rollExpanded = !message._rollExpanded;
+
+	// Expand or collapse tooltips
+	const tooltips = roll.querySelectorAll(".dice-tooltip");
+	for ( let tip of tooltips ) {
+		if ( message._rollExpanded ) $(tip).slideDown(200);
+		else $(tip).slideUp(200);
+		tip.classList.toggle("expanded", message._rollExpanded);
+	}
 }
 
   /* -------------------------------------------- */
 
-  /**
-   * Process messages which are posted using a dice-roll command
-   * @param {string} command          The chat command type
-   * @param {RegExpMatchArray[]} matches Multi-line matched roll expressions
-   * @param {Object} chatData         The initial chat data
-   * @param {Object} createOptions    Options used to create the message
-   * @private
-   * 
-   *  Overrides the core class allowing custom 4e system helper functions to be used
-   */
+Hooks.on("renderChatMessageHTML", (message, html) => {
+	//updateApplyEffectsTooltips(html);
 
-export async function _processDiceCommand(wrapper, ...args){
-	let [command, matches, chatData, createOptions] = args;
+	const spans = html.querySelectorAll("span.roll-expression");
+	spans.forEach(el => {
+		const trueId = el.id.slice(3);
+		const otherEl = html.querySelector(`#form${trueId}`);
+		el.addEventListener("mouseenter", (event) => {
+			el.classList.toggle("roll-highlight");
+			otherEl?.classList.toggle("roll-highlight");
+		});
+		el.addEventListener("mouseleave", (event) => {
+			el.classList.toggle("roll-highlight");
+			otherEl?.classList.toggle("roll-highlight");
+		});
+	})
 
-	const actor = ChatMessage.getSpeakerActor(chatData.speaker) || game.user.character;
-	const rollData = actor ? actor.getRollData() : {};
-	const rolls = [];
-	for ( const match of matches ) {
-		if ( !match ) continue;
-		const [formula, flavor] = match.slice(2, 4);
-		if ( flavor && !chatData.flavor ) chatData.flavor = flavor;
-		// const roll = Roll.create(formula, rollData);
-		const roll = Roll.create(actor? game.helper.commonReplace(formula,actor) : formula, rollData);
-		// await roll.evaluate({async: true});
-		await roll.evaluate();
-		rolls.push(roll);
-	}
-	chatData.type = CONST.CHAT_MESSAGE_STYLES.ROLL;
-	chatData.rolls = rolls;
-	chatData.sound = CONFIG.sounds.dice;
-	chatData.content = rolls.reduce((t, r) => t + r.total, 0);
-	createOptions.rollMode = command;
-}
-
-
-Hooks.on("renderChatMessage", (message, html) => {
-	updateApplyEffectsTooltips(html);
+	html.querySelectorAll(".dice-roll").forEach(el => el.addEventListener("click", _onClickDiceRoll.bind(this)));
 });
 
 //Function for changing the tooltip of the apply effect button of power cards based on the applyEffectsToSelection functions
@@ -507,9 +517,8 @@ export function updateApplyEffectsTooltips(html={}) {
 	const finalTooltip = baseText.replace("{target}", localizedTarget);
 
 	if(html){
-		html.find("*[data-action=\"applyEffect\"]").attr("data-tooltip", finalTooltip);
-
+		html.querySelectorAll("*[data-action=\"applyEffect\"]").forEach(el => el.setAttribute("data-tooltip", finalTooltip));
 	} else {
-		$("[data-action=\"applyEffect\"").attr("data-tooltip", finalTooltip);
+		document.querySelectorAll("[data-action=\"applyEffect\"").forEach(el => el.setAttribute("data-tooltip", finalTooltip));
 	}
 }

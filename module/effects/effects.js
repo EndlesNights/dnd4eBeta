@@ -102,7 +102,6 @@
 	 * we want to make some modifications to make the effect
 	 * rolldata aware.
 	 * 
-	 * @param {*} wrapped   The next call in the libWrapper chain
 	 * @param {Actor} actor     The Actor that is affected by the effect
 	 * @param {Object} change    The changeset to be applied with the Effect
 	 * @returns 
