@@ -1,11 +1,11 @@
 <div id="save-throw" class="dialog-content" onsubmit="event.preventDefault();">
 	<fieldset>
-		<p>{{#if effectName}}
+		<legend>{{#if effectName}}
 			{{localize 'DND4E.SaveVsPrompt'}} "<strong>{{effectName}}</strong>"
 		{{else}}
 			{{localize 'DND4E.SavePrompt'}} 
 		{{/if}}
-		</p>
+		</legend>
 		{{#unless effectName}}
 		{{#if savableEffects.length}}
 			<div class="form-group">

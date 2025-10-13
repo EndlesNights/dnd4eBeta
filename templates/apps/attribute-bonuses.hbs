@@ -67,7 +67,7 @@
 			<span>{{localize "DND4E.Active"}}: </span>
 			<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} data-tooltip="{{localize "DND4E.BonusToggle"}}">
 			<a class="bonus-control bonus-delete" data-tooltip="{{localize "DND4EUI.Delete"}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
-			<div style="padding-top:20px">
+			<div style="padding-top:15px">
 				<textarea type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none" placeholder="{{localize "DND4E.Notes"}}" contentEditable>{{bonus.note}}</textarea>
 			</div>
 		</div>
@@ -77,5 +77,4 @@
 	</fieldset>
 
 	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4E.Save"}}</button>
-
 </div>

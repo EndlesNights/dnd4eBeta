@@ -61,7 +61,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		const saveData = foundry.utils.expandObject(formData.object);
 		if (saveData.saveAgainst) {
 			saveData.effectSave = true;
-			saveData.effectId = formData.saveAgainst
+			saveData.effectId = saveData.saveAgainst
 		}
 
 		this.document.rollSave(event, {
