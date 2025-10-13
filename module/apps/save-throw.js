@@ -13,6 +13,9 @@ export class SaveThrowDialog extends DocumentSheet4e {
 			width: 500,
 			height: "auto",
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form"
 	}
 
@@ -23,6 +26,9 @@ export class SaveThrowDialog extends DocumentSheet4e {
 	static PARTS = {
 		SaveThrowDialog: {
 			template: "systems/dnd4e/templates/apps/save-throw.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 
@@ -45,7 +51,10 @@ export class SaveThrowDialog extends DocumentSheet4e {
 			effectName: ( options.effectSave ? actor.effects.get(options.effectId).name : null ),
 			effectId: this.options.saveAgainst,
 			saveDC: ( options.effectSave ? actor.effects.get(options.effectId).flags.dnd4e?.effectData?.saveDC : this.options.saveDC ),
-			savableEffects: savableEffects
+			savableEffects: savableEffects,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.SaveRoll" }
+			]
 		};
 	}
 
@@ -70,5 +79,4 @@ export class SaveThrowDialog extends DocumentSheet4e {
 			...saveData
 		});
 	}
-
 }

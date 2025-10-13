@@ -15,6 +15,9 @@ export default class HPOptions extends DocumentSheet4e {
 			width: 340,
 			height: "auto",
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form",
 	}
 
@@ -25,12 +28,20 @@ export default class HPOptions extends DocumentSheet4e {
 	static PARTS = {
 		HPOptions: {
 			template: "systems/dnd4e/templates/apps/hp-options.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 	
 	/** @override */
 	_prepareContext() {
-		return {system: this.document.system}
+		return {
+			system: this.document.system,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
+			]
+		}
 	}
 	
 	/* -------------------------------------------- */

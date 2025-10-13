@@ -13,6 +13,9 @@ export class EncumbranceDialog extends DocumentSheet4e {
 			width: 420,
 			height: "auto"
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form"
 	}
 
@@ -23,12 +26,20 @@ export class EncumbranceDialog extends DocumentSheet4e {
 	static PARTS = {
 		EncumbranceDialog: {
 			template: "systems/dnd4e/templates/apps/encumbrance-dialog.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 
 	/** @override */
 	_prepareContext() {
-		return {system: this.document.system}
+		return {
+			system: this.document.system,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
+			]
+		}
 	}
 
 	async _updateObject(event, formData) {

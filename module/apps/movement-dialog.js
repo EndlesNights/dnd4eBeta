@@ -17,6 +17,9 @@ export class MovementDialog extends DocumentSheet4e {
 			width: 500,
 			height: "auto",
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form"
 	}
 
@@ -27,6 +30,9 @@ export class MovementDialog extends DocumentSheet4e {
 	static PARTS = {
 		MovementDialog: {
 			template: "systems/dnd4e/templates/apps/movement-dialog.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 
@@ -35,7 +41,12 @@ export class MovementDialog extends DocumentSheet4e {
 		const context = await super._prepareContext(options);
 		context.config = CONFIG.DND4E;
 		context.system = this.document.system;
-		return context;
+		return {
+			context,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
+			]
+		};
 	}
 
 	static async #onSubmit(event, form, formData) {

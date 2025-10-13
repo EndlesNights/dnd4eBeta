@@ -12,6 +12,9 @@ export class ActionPointExtraDialog extends DocumentSheet4e {
 			width: 500,
 			height: "auto"
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form"
 	}
 	
@@ -22,12 +25,20 @@ export class ActionPointExtraDialog extends DocumentSheet4e {
 	static PARTS = {
 		actionPointExtra: {
 			template: "systems/dnd4e/templates/apps/action-point-extra.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 
 	/** @override */
 	_prepareContext() {
-		return {system: this.document.system}
+		return {
+			system: this.document.system,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: `${game.i18n.localize("DND4E.Update")} ${game.i18n.localize("DND4E.ActionPointRiders")}` }
+			]
+		}
 	}
 
 	async _updateObject(event, formData) {

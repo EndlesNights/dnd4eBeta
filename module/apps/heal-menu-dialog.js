@@ -24,7 +24,8 @@ export class HealMenuDialog extends DocumentSheet4e {
 		},
         tag: "form",
 		window : {
-			title: "Healing Menu"
+			title: "Healing Menu",
+            contentClasses: ["standard-form"]
 		}
 	}
 

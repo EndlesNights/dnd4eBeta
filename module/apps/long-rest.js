@@ -13,6 +13,9 @@ export class LongRestDialog extends DocumentSheet4e {
 			width: 500,
 			height: "auto",
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form"
 	}
 	
@@ -23,12 +26,20 @@ export class LongRestDialog extends DocumentSheet4e {
 	static PARTS = {
 		LongRestDialog: {
 			template: "systems/dnd4e/templates/apps/long-rest.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 
 	/** @override */
 	_prepareContext() {
-		return {system: this.document.system}
+		return {
+			system: this.document.system,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.LongRestTake" }
+			]
+		}
 	}
 	
 	static async #onSubmit(event, form, formData) {

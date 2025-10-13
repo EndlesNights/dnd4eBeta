@@ -15,6 +15,9 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 			width: 600,
 			height: "auto"
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form"
 	}
 	
@@ -25,13 +28,23 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 	static PARTS = {
 		attributeBonus: {
 			template: "systems/dnd4e/templates/apps/attribute-bonuses.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 	
 	/** @override */
 	_prepareContext() {
 		const system = Helper.byString(this.options.target, this.document);
-		return {bonusData: system.bonus, system: system, options: this.options};
+		return {
+			bonusData: system.bonus,
+			system: system,
+			options: this.options,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
+			]
+		};
 	}
 	
 	static async #onSubmit(event, form, formData) {

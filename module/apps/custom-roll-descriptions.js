@@ -13,12 +13,18 @@ export class CustomRolldDescriptions extends DocumentSheet4e {
 			width: 500,
 			height: "auto"
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form"
 	}
 
 	static PARTS = {
 		CustomRolldDescriptions: {
 			template: "systems/dnd4e/templates/apps/custom-roll-descriptions.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 
@@ -28,7 +34,12 @@ export class CustomRolldDescriptions extends DocumentSheet4e {
 	
 	/** @override */
 	_prepareContext() {
-		return {system: this.document.system};
+		return {
+			system: this.document.system,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
+			]
+		};
 	}
 	
 	async _updateObject(event, formData) {

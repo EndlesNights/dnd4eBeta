@@ -13,6 +13,9 @@ export class SecondWindDialog extends DocumentSheet4e {
 			width: 500,
 			height: "auto",
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form",
 	}
 	
@@ -23,13 +26,22 @@ export class SecondWindDialog extends DocumentSheet4e {
 	static PARTS = {
 		SecondWindDialog: {
 			template: "systems/dnd4e/templates/apps/second-wind.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 
 	/** @override */
 	_prepareContext() {
 		const extra = this.document.system.details.secondwindbon.custom.split(";");
-		return { system: this.document.system, extra: extra };
+		return {
+			system: this.document.system,
+			extra: extra,
+			buttons: [
+				{ name: "secondWindButton", type: "submit", icon: "fa-solid fa-save", label: "DND4E.SecondWind" }
+			]
+		};
 	}
 
 	_onRender(context, options) {
@@ -46,7 +58,7 @@ export class SecondWindDialog extends DocumentSheet4e {
 		}
 
 		function setButtonEnabled(buttonId, enabled, text) {
-			const button = document.getElementById(buttonId)
+			const button = document.getElementsByName(buttonId)[0]
 			button.innerHTML = text
 			if (enabled) {
 				button.removeAttribute("disabled")

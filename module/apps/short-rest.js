@@ -1,18 +1,6 @@
 import DocumentSheet4e from "./DocumentSheet4e.js"
 
 export class ShortRestDialog extends DocumentSheet4e {
-
-	static get defaultOptions() {
-		const options = super.defaultOptions;
-		return foundry.utils.mergeObject(options, {
-			id: "short-rest",
-			classes: ["dnd4e", "actor-rest"],
-			template: "systems/dnd4e/templates/apps/short-rest.html",
-			width: 500,
-			closeOnSubmit: true
-		});
-	}
-
 	static DEFAULT_OPTIONS = {
 		id: "short-rest",
 		classes: ["dnd4e", "actor-rest", "standard-form"],
@@ -24,6 +12,9 @@ export class ShortRestDialog extends DocumentSheet4e {
 			width: 500,
 			height: "auto",
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form"
 	}
 	
@@ -34,12 +25,20 @@ export class ShortRestDialog extends DocumentSheet4e {
 	static PARTS = {
 		ShortRestDialog: {
 			template: "systems/dnd4e/templates/apps/short-rest.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 
 	/** @override */
 	_prepareContext() {
-		return {system: this.document.system}
+		return {
+			system: this.document.system,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.ShortRestTake" }
+			]
+		}
 	}
 	
 	static async #onSubmit(event, form, formData) {

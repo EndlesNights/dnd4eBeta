@@ -13,6 +13,9 @@ export class DeathSaveDialog extends DocumentSheet4e {
 			width: 500,
 			height: "auto"
 		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
 		tag: "form"
 	}
 
@@ -23,6 +26,9 @@ export class DeathSaveDialog extends DocumentSheet4e {
 	static PARTS = {
 		DeathSaveDialog: {
 			template: "systems/dnd4e/templates/apps/death-save.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
 		}
 	}
 
@@ -30,7 +36,10 @@ export class DeathSaveDialog extends DocumentSheet4e {
 	_prepareContext() {
 		return {
 			data: this.document.system,
-			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label)
+			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label),
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.DeathSave" }
+			]
 		};
 	}
 
