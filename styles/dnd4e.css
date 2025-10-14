@@ -2746,6 +2746,9 @@ font-size:12px;
 .roll-dialogue .target-detail{
 	background:var(--color-bg-btn-minor-active);
 	padding:0.3em;
+	.form-group.stacked {
+		gap: 0;
+	}
 }
 .roll-dialogue .form-group {
 	margin-bottom: 0.25rem;
@@ -2755,6 +2758,18 @@ font-size:12px;
 }
 .multitarget-tab{
 	display:none;
+}
+.dnd4e .multitarget-tab .score-vs-def{
+	display:flex;
+	width:100%;
+	align-items:center;
+	select{
+		flex:1;
+	}
+	label{
+		flex:0;
+		padding:0.25rem;
+	}
 }
 .multitarget-np-flex{
 	display:flex;
