@@ -38,7 +38,7 @@ export class DeathSaveDialog extends DocumentSheet4e {
 			data: this.document.system,
 			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label),
 			buttons: [
-				{ type: "submit", label: "DND4E.DeathSave" }
+				{ type: "submit", icon: "fa-solid fa-dice-d20", label: "DND4E.DeathSave" }
 			]
 		};
 	}

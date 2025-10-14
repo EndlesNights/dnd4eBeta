@@ -302,6 +302,7 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 .dnd4e.sheet.actor .resource-tracker{
 	text-align:center;
 	position:relative;
+	margin-top: -7px;
 }
 .dnd4e.sheet.actor .section--attributes .resource-tracker input{
 	border-bottom:var(--border-normal);
@@ -323,6 +324,7 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 	font-weight:bold;
 	&[data-dtype="Number"] {
 		text-align: center;
+		max-height: 26px;
 	}
 }
 .dnd4e.sheet.actor .attribute-value input[type="checkbox"]{
@@ -362,6 +364,7 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 }
 .dnd4e .attributes+.attributes{
 	border-left:var(--border-normal);
+	min-height:90px;
 }
 .dnd4e .attributes .attribute-value{
 	-webkit-box-pack:center;
@@ -505,7 +508,6 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 .dnd4e .section--abilities .ability--score .ability-mod-half{
 	font-weight:bold;
 	text-align:right;
-	padding-top:5px; 
 	font-size:16px;
 	max-width:35px;
 	border-left:var(--border-normal);
@@ -533,13 +535,14 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 	font-size:16px;
 	padding-top:3px;
 	padding-left:8px;
+	font-family: var(--font-body);
+	font-weight: normal;
 }
 .dnd4e .section--skills .skill-mod{
 	text-align:right;
 	font-weight:bold;
 	max-width:35px;
 	font-size:16px;
-	padding-top:5px;
 }
 .dnd4e .section--sidebar .custom-roll-descriptions{
 	font-size:11.5px;
@@ -745,8 +748,8 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 	color:var(--color-label);
 }
 .dnd4e .form-group label>.label-hint{
-    font-weight:normal;
-    font-style:oblique;
+	font-weight:normal;
+	font-style:oblique;
 }
 .dnd4e .form-group label.long{
 	max-width:unset;
@@ -1366,6 +1369,9 @@ font-size:12px;
 	height:40px;
 	border-bottom:var(--border-engraved);
 }
+.dnd4e .tabs .tab{
+	font-family:var(--font-h4)
+}
 .dnd4e .tabs .item{
 	line-height:40px;
 	font-weight:bold;
@@ -1522,6 +1528,8 @@ font-size:12px;
 .dnd4e.sheet.actor h3,
 .dnd4e.sheet .item-sheet .currency h3 {
 	border-bottom:0px;
+	margin-top:15px;
+	font-size:medium;
 }
 .dnd4e.sheet.actor .currency label,
 .dnd4e.sheet .item-sheet .currency label {
@@ -1540,6 +1548,7 @@ font-size:12px;
 }
 .dnd4e.sheet.actor .daily-item-power-use{
 	justify-content:space-between;
+	width:100%;
 }
 .dnd4e.sheet.actor .daily-item-power-use-counter input{
 	width:25px;
@@ -1550,7 +1559,6 @@ font-size:12px;
 	align-items:center;
 }
 .dnd4e.sheet.actor .daily-item-power-use-check input{
-	height:14px;
 }
 .dnd4e.sheet:is(.actor,.item) .encumbrance{
 	height:12px;
@@ -1676,6 +1684,10 @@ font-size:12px;
 	margin:0;
 	white-space:nowrap;
 	overflow-x:hidden;
+	font-family:var(--font-body);
+	font-weight:normal;
+	font-size:medium;
+	overflow:hidden;
 }
 .dnd4e.sheet .item-list .item .item-uses input{
 	width:24px;
@@ -2513,13 +2525,13 @@ font-size:12px;
 		grid-template-columns: 12fr 7fr 7fr 4fr 1rem;
 	}
 	header.effect-status {
-    grid-template-columns: 2fr 5fr 1rem;
+	grid-template-columns: 2fr 5fr 1rem;
 		&.clt-enabled {
 			grid-template-columns: 2fr 6fr 1rem;
 		}
 	}
 	ol.statuses-list {
-    grid-template-columns: 2fr repeat(5, 1fr) 1rem;
+	grid-template-columns: 2fr repeat(5, 1fr) 1rem;
 		&.clt-enabled {
 			grid-template-columns: 2fr repeat(6, 1fr) 1rem;
 		}
@@ -2647,7 +2659,7 @@ font-size:12px;
 	opacity:0.75;
 }
 #trait-selector .trait-list .trait.has-children>.expand.fa-chevron-down.toggle-on::before{
-    content:"\f077";
+	content:"\f077";
 }
 #trait-selector .trait-list .trait.has-children .trait{
 	display:none;
@@ -3638,7 +3650,7 @@ Vestigial? This class appears in item-sheet.html but I can't find that sheet use
 }
 
 div.saving-throw, div.death-saves {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
 }

@@ -6,7 +6,7 @@
 			<legend>{{localize "DND4E.Armour"}}</legend>
 			<div>
 				<span>{{localize "DND4E.SkillACPToggle"}}</span>
-				<input type="checkbox" name="system.armourCheck" data-dtype="Boolean" {{checked system.armourCheck}} data-tooltip="{{localize "DND4E.SkillACPToggle"}}">
+				<input type="checkbox" name="system.armourCheck" data-dtype="Boolean" {{checked system.armourCheck}} style="vertical-align: middle;">
 				{{#if system.armourCheck}}
 				<span>{{localize "DND4E.ArmourSkillACP"}}</span>
 				<span>{{system.armourPen}}</span>	
@@ -17,8 +17,8 @@
 	{{else if options.ac}}
 		<fieldset>
 			<legend data-tooltip="{{localize "DND4E.ACAbilityMod"}}">{{localize "DND4E.AbilityModifier"}}</legend>
-			<span>{{localize "DND4E.DefModUse"}}: </span>
-			<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} data-tooltip="{{localize "DND4E.DefModOverride"}}"/>
+			<span>{{localize "DND4E.DefModUse"}} </span>
+			<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} style="vertical-align: middle;"/>
 			<span>{{localize "DND4E.DefModOverride"}}: </span>
 			<select name="system.altability">
 				{{#select system.altability}}
@@ -65,8 +65,8 @@
 			<span>{{localize "DND4E.Value"}}:</span>
 			<input type="text" name="{{b}}.value" value="{{bonus.value}}" data-dtype="String" style="width: 105px;"/>
 			<span>{{localize "DND4E.Active"}}: </span>
-			<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} data-tooltip="{{localize "DND4E.BonusToggle"}}">
-			<a class="bonus-control bonus-delete" data-tooltip="{{localize "DND4EUI.Delete"}}" style="margin: 0 5px; position: relative; top: -4px;" ><i class="fas fa-trash"></i></a>
+			<input type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} data-tooltip="{{localize "DND4E.BonusToggle"}}" style="vertical-align: middle;">
+			<a class="bonus-control bonus-delete" data-tooltip="{{localize "DND4EUI.Delete"}}" style="margin: 0 5px; vertical-align: middle;" ><i class="fas fa-trash"></i></a>
 			<div style="padding-top:15px">
 				<textarea type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" style="width: 100%; min-height: 1em; resize: vertical; border: none" placeholder="{{localize "DND4E.Notes"}}" contentEditable>{{bonus.note}}</textarea>
 			</div>

@@ -57,7 +57,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		classes: ["dnd4e", "sheet", "actor"],
 		position: {
 			width: 844,
-			height: 938
+			height: 967
 		},
 		window: {
 			resizable: true

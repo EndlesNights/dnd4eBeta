@@ -5,7 +5,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 	static DEFAULT_OPTIONS = {
 		classes: ["NPC"],
 		position: {
-			width: 600,
+			width: 680,
 			height: 680
 		}
 	};

@@ -53,7 +53,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 			saveDC: ( options.effectSave ? actor.effects.get(options.effectId).flags.dnd4e?.effectData?.saveDC : this.options.saveDC ),
 			savableEffects: savableEffects,
 			buttons: [
-				{ type: "submit", label: "DND4E.SaveRoll" }
+				{ type: "submit", icon: "fa-solid fa-dice-d20", label: "DND4E.SaveRoll" }
 			]
 		};
 	}
