@@ -1,0 +1,143 @@
+<section class="roll-dialogue">
+	<div class="form-group">
+		<label class="label">{{ localize "DND4E.Formula" }}</label>
+		<input type="text" name="formula" value="{{formula}}" disabled/>
+	</div>
+	<div class="form-group">
+		<label class="label">{{ localize "DND4E.RollSituationalBonus" }}</label>
+		<input type="text" name="bonus" value="" placeholder="{{ localize 'DND4E.RollExample' }}"/>
+	</div>
+
+	{{#if isD20Roll}}	
+		<div class="form-group roll-times flexrow">
+			<label class="label">{{localize 'DND4E.RollTimes'}}</label>
+			<span class="buttons flexrow">
+				<button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" data-action="minus">
+					<i class="fa fa-minus" aria-hidden="true"></i>
+				</button>
+				<input class="dice-count" id="d20" type="text" name="d20" value="1" onClick="this.select();"/>
+				<button type="button" class="button hollow circle" data-quantity="plus" data-field="quantity" data-action="plus">
+					<i class="fa fa-plus" aria-hidden="true"></i>
+				</button>
+			</span>
+		</div>
+	{{/if}}
+	
+	<div class="form-group target-detail stacked">
+		{{#if isAttackRoll}}		
+		<div class="multitarget-np-flex{{#if targetData.hasTarget}} has-target{{/if}}{{#if targetData.multiTargetCheck}} has-multi{{/if}}">
+			<button type="button" class="button hollow circle" id="prevBtn" data-action="prev">
+				<i class="fas fa-arrow-left" aria-hidden="true"></i>
+			</button>
+			<div class="target-label label"><h3 id="targetNameDisplay" style="font-size:medium;">{{localize 'DND4E.Target'}}</h3></div>
+			<button type="button" class="button hollow circle" id="nextBtn" data-action="next">
+				<i class="fas fa-arrow-right" aria-hidden="true"></i>
+			</button>
+			<button class="button" type="button" id="multibonus-toggle" data-action="toggleMultiBonus" data-tooltip="{{localize 'DND4E.RollGroupTip'}}" value="true"></button>
+		</div>
+		
+		{{#each targetData.targets as | t n |}}
+		<div class="multitarget-tab">
+			<div class="target-label" id="targetName-{{n}}" style="display:none">
+			{{#if ../targetData.hasTarget}}{{localize 'DND4E.Target'}}: {{t.name}}{{else}}{{/if}}
+			</div>
+			
+			<div class="score-vs-def">
+				<select class="attackMod" name="{{n}}.attackMod" disabled>
+					{{selectOptions ../config.abilityScores selected=t.attackMod labelAttr='labelShort'}}
+				</select> 
+				<label>{{localize 'DND4E.VS'}}</label>
+				<select class="attackDef" name="{{n}}.attackDef">
+					{{selectOptions ../config.defensives selected=t.attackDef labelAttr='abbreviation'}}
+				</select>
+			</div>
+			
+			{{#if t.immune}}<!--<div class="immunity">Target is immune to attacks against this defence.</div>-->{{/if}}
+				
+			<h2 class="label">{{localize 'DND4E.CommonAttackBonuses'}}</h2>
+			<div class="form-group stacked">
+			{{#each ../data.commonAttackBonuses as | a b |}}
+			<div class="column">
+				<label class="rollable">
+					<input type="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean" 
+					
+				{{!-- Try to infer already active bonuses --}}
+				
+					{{#if (eq b 'charge')}}{{#if ../../data.item.attack.isCharge}}checked="true" disabled{{/if}}{{#if ../../isCharge}}checked="true" disabled{{/if}}{{/if}}
+				
+					{{#if (eq b 'marked')}}{{#if ../../targetData.ignoringMark}}checked="true"{{/if}}{{/if}}
+				 
+					{{#if (eq b 'prone')}}{{#if (contains 'prone'../../userStatus)}}checked="true"{{/if}}{{/if}}
+					{{#if (eq b 'restrained')}}{{#if (contains 'restrained'../../userStatus)}}checked="true"{{/if}}{{/if}}
+					{{#if (eq b 'squeez')}}{{#if (contains 'squeezing'../../userStatus)}}checked="true"{{/if}}{{/if}}
+					{{#if (eq b 'running')}}{{#if (contains 'running'../../userStatus)}}checked="true"{{/if}}{{/if}}
+					
+					{{!-- Only if targets are provided --}}
+						{{#if ../../targetData.hasTarget}}
+							
+							{{#if (eq b 'bloodied')}}
+								{{#if (contains 'bloodied' t.status)}}checked="true"{{/if}}
+							{{/if}}
+
+							{{#if (eq b 'comAdv')}}
+								{{#if (contains 'dazed' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'blinded' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'dominated' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'helpless' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'restrained' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'stunned' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'surprised' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'squeezing' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'running' t.status)}}checked="true"{{/if}}
+								{{#if (contains 'grantingCA' t.status)}}checked="true"{{/if}}
+								{{#if t.meleeVsProne}}checked="true"{{/if}}
+								{{#if t.isFlanking}}checked="true"{{/if}}
+							{{/if}}
+							
+							{{#if (eq b 'conceal')}}
+								{{#if (contains 'conceal' t.status)}}checked="true"{{/if}}
+							{{/if}}
+							
+							{{#if (eq b 'concealTotal')}}
+								{{#if (contains 'concealTotal' t.status)}}checked="true"{{/if}}
+							{{/if}}
+							
+							{{#if (eq b 'cover')}}
+								{{#if (contains 'cover' t.status)}}checked="true"{{/if}}
+							{{/if}}
+							
+							{{#if (eq b 'coverSup')}}
+								{{#if (contains 'coverSup' t.status)}}checked="true"{{/if}}
+							{{/if}}
+
+							{{#if (eq b 'longRange')}}
+								{{#if t.longRange}}checked="true"{{/if}}
+							{{/if}}
+								
+						{{/if}}
+					{{!-- End targets only --}}
+					
+				{{!-- End already active --}}
+				
+					value="{{../checked}}"/>{{ localize a.label}} ({{a.value}})
+				</label>
+			</div>
+			{{/each}}
+			</div>
+		</div>
+		{{/each}}
+		{{/if}}
+	</div>
+
+
+	<div class="form-group">
+		<label>{{ localize "DND4E.RollMode" }}</label>
+		<select name="rollMode">
+			{{selectOptions rollModes selected=rollMode localize=true}}
+		</select>
+	</div>
+	<div class="form-group">
+		<label>{{localize 'DND4E.ChatFlavor'}}</label>
+		<input type="text" name="flavor" value="{{newFlavor}}" placeholder="{{flavor}}" data-tooltip="{{localize 'DND4E.ChatFlavor'}}" />
+	</div>
+</section>
