@@ -1553,12 +1553,11 @@ font-size:12px;
 .dnd4e.sheet.actor .daily-item-power-use-counter input{
 	width:25px;
 	text-align:right;
+	margin-right: -8px;
 }
 .dnd4e.sheet.actor .daily-item-power-use-check{
 	text-align:right;
 	align-items:center;
-}
-.dnd4e.sheet.actor .daily-item-power-use-check input{
 }
 .dnd4e.sheet:is(.actor,.item) .encumbrance{
 	height:12px;
