@@ -132,15 +132,17 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 	// Create the Dialog window
 	let roll;
 	return new Promise(resolve => {
-		new Dialog({
-			'title': title,
-			'content': html,
-			'buttons': {
-				'normal': {
+		new foundry.applications.api.Dialog({
+			window: {'title': title},
+			content: html,
+			buttons: [
+				{
+                    'action': 'normal',
 					'label': game.i18n.localize("DND4E.Roll"),
-					'callback': html => roll = performD20RollAndCreateMessage(html[0].querySelector("form"), rollConfig)
+                    'icon': 'fa-solid fa-dice-d20',
+					'callback': (event, button, dialog) => roll = performD20RollAndCreateMessage(button.closest("form"), rollConfig)
 				}
-			},
+            ],
 			default: "normal",
 			close: html => {
 				if (onClose) onClose(html, parts, data);
@@ -536,44 +538,50 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 	// this roll object will be set if any of the buttons are pressed
 	let roll;
 	// helper function for running the roll, as all the dialogs do basically the same thing
-	const doRoll = (html, hitType) =>  {
+	const doRoll = (event, button, dialog, hitType) =>  {
 		rollConfig.hitType = hitType
-		return performDamageRollAndCreateChatMessage(html[0].querySelector("form"), rollConfig)
+		return performDamageRollAndCreateChatMessage(button.closest("form"), rollConfig)
 	}
 	// common dialog configuration
 	const dialogConfig = {
-		title: title,
+		window: {title: title},
+        position: {width:500},
 		content: html,
-		buttons: {
-		},
-		default: "normal"
+		buttons: [
+		]
 	}
 	// add the buttons
 	if (healingRoll) {
-		dialogConfig.buttons = {
-			normal: {
+		dialogConfig.buttons = [
+			{
+                action: "normal",
 				label: game.i18n.localize("DND4E.Healing"),
-				callback: html => roll = doRoll(html, 'heal')
-			}
-		}
+                default: true,
+				callback: (event, button, dialog) => roll = doRoll(event, button, dialog, 'heal')
+            }
+        ]
 	}
 	else {
-		dialogConfig.buttons = {
-			critical: {
-				condition: allowCritical,
+		dialogConfig.buttons = [
+			{
+				action: "critical",
+                condition: allowCritical,
 				label: game.i18n.localize("DND4E.CriticalHit"),
-				callback: html => roll = doRoll(html, 'crit')
+				callback: (event, button, dialog) => roll = doRoll(event, button, dialog, 'crit')
 			},
-			normal: {
-				label: game.i18n.localize(allowCritical ? "DND4E.Normal" : "DND4E.Roll"),
-				callback: html => roll = doRoll(html, 'normal')
+			{
+				action: "normal",
+                label: game.i18n.localize(allowCritical ? "DND4E.Normal" : "DND4E.Roll"),
+                default: true,
+				callback: (event, button, dialog) => roll = doRoll(event, button, dialog, 'normal')
 			}
-		}
+        ]
 		if(data.item.miss.formula){
-			dialogConfig.buttons.miss = {
-				label: game.i18n.localize(allowCritical ? "DND4E.Miss" : "DND4E.Roll"),
-				callback:  html => roll = doRoll(html, 'miss')
-			}
+			dialogConfig.buttons.add({
+				action: "miss",
+                label: game.i18n.localize(allowCritical ? "DND4E.Miss" : "DND4E.Roll"),
+				callback:  (event, button, dialog) => roll = doRoll(event, button, dialog, 'miss')
+			});
 		}
 	}
 	// render the dialog
@@ -583,7 +591,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 			resolve(roll !== undefined ? roll : false);
 		}
 
-		new Dialog(dialogConfig, dialogOptions).render(true);
+		new foundry.applications.api.Dialog(dialogConfig, dialogOptions).render(true);
 	});
 }
 
