@@ -5,7 +5,7 @@ const { BooleanField, NumberField, SchemaField, StringField } = foundry.data.fie
 
 export default class AttributesField {
   static get common() {
-    const numberConfig = {required: true, nullable: false, integer: true, min: 0};
+    const numberConfig = {required: true, nullable: false, integer: true};
     return {
       hp: new Dnd4eBonusesField({
         value: new NumberField({...numberConfig, initial: 10}),

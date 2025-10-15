@@ -9,7 +9,7 @@ const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foun
 
 export default class CombatantTemplate extends SpeedTemplate {
   static get defences() {
-    const numberConfig = {required: true, nullable: false, integer: true, min: 0};
+    const numberConfig = {required: true, nullable: false, integer: true};
     return {
       value: new NumberField({...numberConfig, initial: 10}),
       ability: new StringField({initial: ""}),
@@ -28,10 +28,10 @@ export default class CombatantTemplate extends SpeedTemplate {
 
 
   static defineSchema() {
-    const numberConfig = {required: true, nullable: false, integer: true, min: 0};
+    const numberConfig = {required: true, nullable: false, integer: true};
     return {
       abilities: new MappingField(new SchemaField({
-        value: new NumberField({...numberConfig, initial: 10}),
+        value: new NumberField({...numberConfig, initial: 10,}),
         chat: new StringField({required: true, nullable: false, initial: "@name uses @label."})
       }), {initialKeys: CONFIG.DND4E.abilities, initialKeysOnly: true, label: "DND4E.AbilityScores"}),
       attributes: new SchemaField(AttributesField.common),

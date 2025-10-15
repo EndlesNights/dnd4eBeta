@@ -21,7 +21,7 @@ export default class DetailsField {
   }
 
   static get combatant() {
-    const numberConfig = {required: true, nullable: false, integer: true, min: 0};
+    const numberConfig = {required: true, nullable: false, integer: true};
     return {
       level: new NumberField({...numberConfig, initial: 1}),
       tier: new NumberField({...numberConfig, initial: 1}),

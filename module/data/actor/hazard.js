@@ -11,7 +11,7 @@ const { BooleanField, HTMLField, NumberField, StringField, SchemaField } = found
 
 export default class HazardData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
-    const numberConfig = {required: true, nullable: false, integer: true, min: 0};
+    const numberConfig = {required: true, nullable: false, integer: true};
     const {details: combatantDetails, defences, ...combatantSchema} = CombatantTemplate.defineSchema();
     return {
       ...combatantSchema,
