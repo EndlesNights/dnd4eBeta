@@ -47,6 +47,9 @@ import { customSKillSetUp } from "./skills/custom-skills.js";
 import Items4e from "./collection/item-collection.js";
 import Combatant4e from "./combatant.js";
 import Roll4e from "./dice/Roll.js";
+import CharacterData from "./data/actor/character.js";
+import NPCData from "./data/actor/npc.js";
+import HazardData from "./data/actor/hazard.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -92,7 +95,14 @@ Hooks.once("init", async function() {
 
 	CONFIG.Canvas.layers.templates.layerClass = TemplateLayer4e;
 
-	CONFIG.statusEffects = CONFIG.DND4E.statusEffect;
+	CONFIG.statusEffects = Object.entries(CONFIG.DND4E.statusEffect).reduce((arr, [id, data]) => {
+		const newEffect = {
+			id,
+			...data
+		};
+		arr.push(newEffect);
+		return arr;
+	}, []);
 	
 	// define custom roll extensions
 	CONFIG.Dice.rolls = [Roll4e];
@@ -105,6 +115,13 @@ Hooks.once("init", async function() {
 	CONFIG.Token.documentClass = TokenDocument4e;
 	CONFIG.Token.movement.TerrainData = TerrainData4e;
 	CONFIG.Token.rulerClass = TokenRuler4e;
+
+	// System data types
+	CONFIG.Actor.dataModels = {
+		"Player Character": CharacterData,
+		NPC: NPCData,
+		Hazard: HazardData
+	}
 
 	// foundry.data.regionBehaviors.DifficultTerrainRegionBehaviorType = DifficultTerrainRegionBehaviorType;
 	// CONFIG.RegionBehavior.documentClass = RegionBehavior4e
@@ -194,37 +211,6 @@ Hooks.once("i18nInit", function() {
 	performPreLocalization(CONFIG.DND4E);
 });
 
-Hooks.once("setup", function() {
-
-	// Localize CONFIG objects once up-front
-	const toLocalize = [
-	"abilities", "abilityActivationTypesShort", 
-	"conditionTypes", "distanceUnits", "durationType",
-	"damageTypes", "effectTypes",
-	"healingTypes", "implement", "itemActionTypes",
-	"powerEffectTypes", "powerSource", "powerType", "powerSubtype", "powerUseType",
-	"profArmor", "cloth", "light", "heavy", "shield",
-	"weaponProficiencies", "simpleM", "simpleR", "militaryM", "militaryR", "superiorM", "superiorR", "improvisedM", "improvisedR",
-	"saves", "special", "spoken", "script", "skills", "targetTypes", "timePeriods", "vision", "weaponGroup", "weaponProperties", "weaponType",
-	"weaponTypes", "weaponHands", "autoanimationHook"
-	];
-
-	const noSort = [
-		"abilities", "currencies", "distanceUnits", "durationType", "damageTypes", "itemActionTypes", "limitedUsePeriods", "powerEffectTypes", "powerGroupTypes", "profArmor", "profWeapon", "weaponType", "weaponTypes", "weaponHands"
-	];
-	
-	for ( let o of toLocalize ) {
-		const localized = Object.entries(CONFIG.DND4E[o]).map(e => {
-			return [e[0], game.i18n.localize(e[1])];
-		});
-		if ( !noSort.includes(o) ) localized.sort((a, b) => a[1].localeCompare(b[1]));
-		CONFIG.DND4E[o] = localized.reduce((obj, e) => {
-			obj[e[0]] = e[1];
-			return obj;
-		}, {});
-	}	
-
-});
 Hooks.once("ready",  function() {
 	// Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
 	// Hooks.on("hotbarDrop", (bar, data, slot) => macros.create4eMacro(data, slot));

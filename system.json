@@ -132,10 +132,21 @@
 		"units": "sq"
 	},
 	"documentTypes": {
+		"Actor": {
+			"Player Character": {
+				"htmlFields": ["biography"]
+			},
+			"NPC": {
+				"htmlFields": ["biography"]
+			},
+			"Hazard": {
+				"htmlFields": ["description"]
+			}
+		},
 		"RegionBehavior" : {
 		  "difficultTerrain" :{}
 		}
-	  },
+	},
 	"primaryTokenAttribute": "attributes.hp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
