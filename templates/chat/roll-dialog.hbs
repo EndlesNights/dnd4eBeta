@@ -1,4 +1,4 @@
-<form class="roll-dialogue">
+<section class="roll-dialogue">
 	<div class="form-group">
 		<label class="label">{{ localize "DND4E.Formula" }}</label>
 		<input type="text" name="formula" value="{{formula}}" disabled/>
@@ -12,11 +12,11 @@
 		<div class="form-group roll-times flexrow">
 			<label class="label">{{localize 'DND4E.RollTimes'}}</label>
 			<span class="buttons flexrow">
-				<button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" onclick="minus()">
+				<button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" data-action="minus">
 					<i class="fa fa-minus" aria-hidden="true"></i>
 				</button>
 				<input class="dice-count" id="d20" type="text" name="d20" value="1" onClick="this.select();"/>
-				<button type="button" class="button hollow circle" data-quantity="plus" data-field="quantity" onclick="plus()">
+				<button type="button" class="button hollow circle" data-quantity="plus" data-field="quantity" data-action="plus">
 					<i class="fa fa-plus" aria-hidden="true"></i>
 				</button>
 			</span>
@@ -26,14 +26,14 @@
 	<div class="form-group target-detail stacked">
 		{{#if isAttackRoll}}		
 		<div class="multitarget-np-flex{{#if targetData.hasTarget}} has-target{{/if}}{{#if targetData.multiTargetCheck}} has-multi{{/if}}">
-			<button type="button" class="button hollow circle" id="prevBtn" onclick="nextPrev(-1)">
+			<button type="button" class="button hollow circle" id="prevBtn" data-action="prev">
 				<i class="fas fa-arrow-left" aria-hidden="true"></i>
 			</button>
 			<div class="target-label label"><h3 id="targetNameDisplay" style="font-size:medium;">{{localize 'DND4E.Target'}}</h3></div>
-			<button type="button" class="button hollow circle" id="nextBtn" onclick="nextPrev(1)">
+			<button type="button" class="button hollow circle" id="nextBtn" data-action="next">
 				<i class="fas fa-arrow-right" aria-hidden="true"></i>
 			</button>
-			<button class="button" type="button" id="multibonus-toggle" onclick="toggleMultibonus()" data-tooltip="{{localize 'DND4E.RollGroupTip'}}" value="true"></button>
+			<button class="button" type="button" id="multibonus-toggle" data-action="toggleMultiBonus" data-tooltip="{{localize 'DND4E.RollGroupTip'}}" value="true"></button>
 		</div>
 		
 		{{#each targetData.targets as | t n |}}
@@ -140,116 +140,4 @@
 		<label>{{localize 'DND4E.ChatFlavor'}}</label>
 		<input type="text" name="flavor" value="{{newFlavor}}" placeholder="{{flavor}}" data-tooltip="{{localize 'DND4E.ChatFlavor'}}" />
 	</div>
-	
-</form>
-
-
-<script>
-
-$(document).keydown(function(event){
-	if(event.which=="17")
-		cntrlIsPressed = true;
-});
-
-$(document).keyup(function(){
-	cntrlIsPressed = false;
-});
-
-var cntrlIsPressed = false;
-
-	function minus(){
-		input = document.getElementById("d20");
-		if(cntrlIsPressed) {
-			input.value = -2;
-		} else {
-			input.value --;
-		}
-	}
-
-	function plus(){
-		input = document.getElementById("d20");
-		if(cntrlIsPressed) {
-			input.value = 2;
-		} else {
-			input.value ++;
-		}
-	}
-
-var currentTab = 0;    // Defines the default current attack bonuses tab to be the first one
-var multiTargetToggle = 1;    // Defines the default state of the multi-target attack bonus toggle to be "per-target"
-var multiTargetToggleString = "{{localize 'DND4E.RollMultiSharedChange'}}";    // Defines the initial text for the multiTarget toggle button tooltip - assuming there is more than one target
-var multiTargetToggleIcon = '<i class="fa-solid fa-users-rays"></i>';   // Defines the initial icon for the multiTarget toggle button - assuming there is more than one target
-showTab(currentTab);    // Show the tabs upon first run
-
-function toggleMultibonus() {
-	/*
-	* Function to toggle the state of the attack bonus tabs between Shared and 
-	* Per-target attack bonuses based on the current value of the toggle button.
-	*
-	* Each option will update the button value, then update the toggle value, 
-	* then update the button text. 
-	*
-	* The condition for toggling from true to false then sets the current tab index
-	* to 0 to show only the first tab.
-	* 
-	* Both conditions then call the showTab function to update the currently
-	* displayed tab.
-	*/
-	if (document.getElementById("multibonus-toggle").value == "false"){
-		document.getElementById("multibonus-toggle").value = "true";
-		multiTargetToggle = 1;
-		multiTargetToggleString = "{{localize 'DND4E.RollMultiSharedChange'}}";
-		multiTargetToggleIcon = '<i class="fa-solid fa-users-rays"></i>';
-		showTab(currentTab)
-	} else if (document.getElementById("multibonus-toggle").value == "true") {
-		document.getElementById("multibonus-toggle").value = "false";
-		multiTargetToggle = 0;
-		multiTargetToggleString = "{{localize 'DND4E.RollMultiIndividualChange'}}";
-		multiTargetToggleIcon = '<i class="fa-solid fa-person-rays"></i>';
-		currentTab = 0;
-		showTab(currentTab)
-		//Checks if multi target attack that is universal, and display an alternative target dialog with every target's name in it.
-		if ("{{targetData.targNameArray}}"){
-			document.getElementById("targetNameDisplay").innerHTML = "All Targets ({{targetData.targNameArray}})";
-		}
-	}
-}
-
-function showTab(n) {
-	let x = document.getElementsByClassName("multitarget-tab");
-	let numTargets = x.length;
-	if (document.getElementById("multibonus-toggle")) {
-		if (numTargets <= 1) {
-			multiTargetToggleString = ""
-			document.getElementById("multibonus-toggle").disabled = true;
-		}
-
-		document.getElementById("multibonus-toggle").innerHTML = multiTargetToggleIcon;
-		document.getElementById("multibonus-toggle").setAttribute('data-tooltip',multiTargetToggleString);
-		document.getElementById('targetNameDisplay').innerHTML = document.getElementById('targetName-'+[n]).innerHTML;
-		
-		for(let item of x){
-			item.style.display = "none";
-		}
-		
-		x[n].style.display = "block";
-		if (n <= 0){
-			document.getElementById("prevBtn").disabled = true;
-		} else {
-			document.getElementById("prevBtn").disabled = false;
-		}
-		if (n >= x.length - 1 || multiTargetToggle == 0 || numTargets <= 1){
-			document.getElementById("nextBtn").disabled = true;
-		} else {
-			document.getElementById("nextBtn").disabled = false;
-		}
-	}
-}
-
-function nextPrev(n) {
-	let x = document.getElementsByClassName("multitarget-tab");
-	x[currentTab].style.display = "none";
-	currentTab = currentTab + n;
-	showTab(currentTab);
-}
-</script>
+</section>
