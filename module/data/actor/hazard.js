@@ -1,6 +1,6 @@
 import BonusField from "./fields/bonus-field.js";
 import Dnd4eBonusesField from "./fields/dnd4e-bonuses-field.js";
-import MappingField from "./fields/mapping-field.js";
+import MappingField from "../fields/mapping-field.js";
 import AttributesField from "./templates/attributes.js";
 import CombatantTemplate from "./templates/combatant.js";
 import DetailsField from "./templates/details.js";

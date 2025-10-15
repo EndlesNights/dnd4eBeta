@@ -50,6 +50,15 @@ import Roll4e from "./dice/Roll.js";
 import CharacterData from "./data/actor/character.js";
 import NPCData from "./data/actor/npc.js";
 import HazardData from "./data/actor/hazard.js";
+import BackpackData from "./data/item/backpack.js";
+import ConsumableData from "./data/item/consumable.js";
+import EquipmentData from "./data/item/equipment.js";
+import FeatureData from "./data/item/feature.js";
+import LootData from "./data/item/loot.js";
+import PowerData from "./data/item/power.js";
+import RitualData from "./data/item/ritual.js";
+import ToolData from "./data/item/tool.js";
+import WeaponData from "./data/item/weapon.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -121,7 +130,18 @@ Hooks.once("init", async function() {
 		"Player Character": CharacterData,
 		NPC: NPCData,
 		Hazard: HazardData
-	}
+	};
+	CONFIG.Item.dataModels = {
+		backpack: BackpackData,
+		consumable: ConsumableData,
+		equipment: EquipmentData,
+		feature: FeatureData,
+		loot: LootData,
+		power: PowerData,
+		ritual: RitualData,
+		tool: ToolData,
+		weapon: WeaponData
+	};
 
 	// foundry.data.regionBehaviors.DifficultTerrainRegionBehaviorType = DifficultTerrainRegionBehaviorType;
 	// CONFIG.RegionBehavior.documentClass = RegionBehavior4e
@@ -167,15 +187,15 @@ Hooks.once("init", async function() {
 	Items.registerSheet("dnd4e", ItemSheet4e, {
 		makeDefault: true,
 		label: game.i18n.localize("SHEET.Item"),
-		types: ["weapon", "equipment", "consumable", "tool", "loot", "classFeats", "feat", "raceFeats", "pathFeats", "destinyFeats", "ritual", "power", "feature"]
+		types: ["weapon", "equipment", "consumable", "tool", "loot", "ritual", "power", "feature"]
 
 	});
 	
-	Items.registerSheet("dnd4e", ContainerItemSheet,{
-		makeDefault: true,
-		label: "Container Sheet",//game.i18n.localize("SHEET.Item"),
-		types: ["backpack"]
-	});
+	// Items.registerSheet("dnd4e", ContainerItemSheet,{
+	// 	makeDefault: true,
+	// 	label: "Container Sheet",//game.i18n.localize("SHEET.Item"),
+	// 	types: ["backpack"]
+	// });
 
 
 	// Add conditional CSS

@@ -1,4 +1,4 @@
-<div class="tab flexrow active" data-group="primary" data-tab="description">
+<section class="tab flexrow scrollable {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
 	<div class="item-properties">
 		{{#if isPhysical}}
@@ -35,14 +35,19 @@
 	</div>
 
 	<section class="description">
+		<label>{{localize "DND4E.Sheet.Description"}}</label>
+		<section class="main editor-container">
+      <prose-mirror toggled name="system.description.value" {{disabled (not editable)}} value="{{system.description.value}}">
+        {{{descriptionHTML}}}
+      </prose-mirror>
+		</section>
 		{{#if userInfo.isGM}}
+		<label>{{localize "DND4E.GMNotesAdd"}}</label>
 		<section class="editor-container gm-notes{{#if system.description.gmNotes}} has-content{{/if}}">
-			{{editor descriptionHTMLGM target="system.description.gm" button=true owner=owner editable=editable rollData=rollData  engine="prosemirror"}}
+      <prose-mirror toggled name="system.description.gm" {{disabled (not editable)}} value="{{system.description.gm}}">
+        {{{descriptionHTMLGM}}}
+      </prose-mirror>
 		</section>
 		{{/if}}
-
-		<section class="main editor-container">
-			{{editor descriptionHTML target="system.description.value" button=true owner=owner editable=editable rollData=rollData  engine="prosemirror"}}
-		</section>
 	</section>
-</div>
+</section>

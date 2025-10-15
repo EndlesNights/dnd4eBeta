@@ -100,6 +100,71 @@ export default class Item4e extends Item {
 
 	/* -------------------------------------------- */
 
+	static migrateData(data) {
+		super.migrateData(data);
+		this.#migrateOldFeatures(data);
+		return data;
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Migrate source data from old feat-types to feature type
+	 * @param {object} data	The source data from which to migrate, mutated here
+	 */
+	static #migrateOldFeatures(data) {
+		const sourceType = data.type;
+		if(!(['classFeats','feat','raceFeats','pathFeats','destinyFeats'].includes(sourceType))) return;
+		foundry.utils.setProperty(data, "flags.dnd4e.migrateType", true);
+		data.type = "feature";
+		data.system ??= {};
+		switch(sourceType){
+			case "classFeats":
+				data.system.featureType = "class";
+				delete data.system.class;
+				delete data.system.hitFistLevel;
+				delete data.system.surgePerDay;
+				delete data.system.skills;
+				delete data.system.def;
+				delete data.system.proficiencies;
+				break;
+			case "feat":
+				data.system.featureType = "feat";
+				delete data.system.recharge;
+				break;
+			case "raceFeats":
+				data.system.featureType = "race";
+				break;
+			case "pathFeats":
+				data.system.featureType = "path";
+				break;
+			case "destinyFeats":
+				data.system.featureType = "destiny";
+				break;
+			default:
+				data.system.featureType = "other";
+		}
+		
+		data.system.level ??= "";
+		data.system.requirements ??= "";
+		data.system.featureSource = "";
+		data.system.featureGroup = "";
+		data.system.auraSize = "";
+		data.system.effectType = {};
+		data.system.damageType = {};
+		data.system.keywordsCustom = "";
+		
+		// Remove obsolete properties
+		delete data.system.activation;
+		delete data.system.duration;
+		delete data.system.target;
+		delete data.system.range;
+		delete data.system.uses;
+		delete data.system.consume;
+	}
+
+	/* -------------------------------------------- */
+
 	/**
 	 * Pre-creation logic for setting up name of Items.
 	 *
