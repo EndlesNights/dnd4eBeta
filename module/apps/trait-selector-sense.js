@@ -42,7 +42,7 @@ export default class TraitSelector extends FormApplication {
 	
     // Get current values
     let attr = foundry.utils.getProperty(this.object, this.attribute) || {};
-    attr.value = attr.value || [];
+    attr.value = Array.from(attr.value ?? []);
 	
 	// Populate choices
     let choices = duplicate(this.options.choices);

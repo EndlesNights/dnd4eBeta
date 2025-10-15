@@ -1310,13 +1310,6 @@ DND4E.special = {
 };
 preLocalize("special", { sort: true });
 
-DND4E.vision = {
-	"nv": "DND4E.VisionNormal",
-	"lv": "DND4E.VisionLowLight",
-	"bv": "DND4E.VisionBlind"
-};
-preLocalize("vision", { sort: true });
-
 /* -------------------------------------------- */
 /*  Movement                                    */
 /* -------------------------------------------- */
