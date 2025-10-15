@@ -1,5 +1,6 @@
 // import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import ActiveEffect4e from "../effects/effects.js";
+import { default as TokenDocument4e } from "../documents/token.js"
 import {Helper} from "../helper.js";
 
 /**
@@ -398,7 +399,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// if separate from an actor it will default to the PC model, as unlikely to be set with an NPC
 		if (consume.type === "attribute" || consume.type === "resource") {
 			if (actor) {
-				const attributes = TokenDocument.getTrackedAttributes(actor.system)
+				const attributes = TokenDocument4e.getTrackedAttributes(actor.system)
 				attributes.bar.forEach(a => a.push("value"));
 				
 				if(consume.type === "resource"){

@@ -1,6 +1,6 @@
 import {d20Roll, damageRoll, getAttackRollBonus} from "../dice.js";
 import AbilityUseDialog from "../apps/ability-use-dialog.js";
-import {MeasuredTemplate4e} from "../pixi/ability-template.js";
+import {MeasuredTemplate4e} from "../canvas/ability-template.js";
 import { Helper } from "../helper.js"
 import { DND4E } from "../config.js";
 

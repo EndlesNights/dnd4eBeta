@@ -743,7 +743,6 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 }
 .dnd4e .form-group label{
 	flex:2;
-	font-weight:bold;
 	max-width:174px;
 	color:var(--color-label);
 }
@@ -1691,6 +1690,7 @@ font-size:12px;
 .dnd4e.sheet .item-list .item .item-uses input{
 	width:24px;
 	text-align:right;
+	margin-right:-6px;
 }
 .dnd4e.sheet .item-list .item .item-properties{
 	margin-top:3px;
@@ -2715,6 +2715,7 @@ font-size:12px;
 }
 /* Roll Dialogue */
 .roll-dialogue h2{
+	font-family:var(--font-body);
 	font-size:1.2em;
 	font-weight:700;
 	text-decoration:none;
@@ -2765,6 +2766,7 @@ font-size:12px;
 	align-items:center;
 	select{
 		flex:1;
+		max-width:60px;
 	}
 	label{
 		flex:0;

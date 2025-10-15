@@ -1,7 +1,7 @@
 import { d20Roll, damageRoll } from "../dice.js";
 import { DND4E } from "../config.js";
 import { Helper } from "../helper.js"
-import {MeasuredTemplate4e} from "../pixi/ability-template.js";
+import { MeasuredTemplate4e } from "../canvas/ability-template.js";
 import { SaveThrowDialog } from "../apps/save-throw.js";
 
 /**
@@ -34,6 +34,18 @@ export class Actor4e extends Actor {
 			if(data?.img == undefined || data?.img =='icons/svg/mystery-man.svg'){
 				data.img = "icons/svg/trap.svg";
 			}
+		}
+	}
+
+	/* -------------------------------------------- */
+
+	/** @inheritDoc */
+	async _preUpdate(changed, options, user) {
+		if ( (await super._preUpdate(changed, options, user)) === false ) return false;
+
+		// Store hp
+		if ( "hp" in (this.system.attributes || {}) ) {
+			foundry.utils.setProperty(options, "dnd4e.hp", { hp: this.system.attributes.hp.value, temp: this.system.attributes.temphp.value || 0 });
 		}
 	}
 
@@ -79,7 +91,22 @@ export class Actor4e extends Actor {
 	/** @inheritdoc */
 	_onUpdate(data, options, userId) {
 		super._onUpdate(data, options, userId);
-		this._displayScrollingDamage(options.dhp);
+
+		const hp = options.dnd4e?.hp;
+		const isHpUpdate = !!data.system?.attributes?.hp || !!data.system?.attributes?.temphp;
+		if ( isHpUpdate && hp ) {
+			const currHP = this.system.attributes.hp.value;
+			const currTemp = this.system.attributes.temphp.value || 0;
+			const changes = {
+				hp: currHP - hp.hp,
+				temp: currTemp - hp.temp
+			};
+			changes.total = changes.hp + changes.temp;
+
+			if ( Number.isInteger(changes.total) && (changes.total !== 0) ) {
+				this._displayTokenEffect(changes);
+			}
+		}
 	}
 
 	/** Get all ActiveEffects stored in the actor or transferred from items */
@@ -100,30 +127,51 @@ export class Actor4e extends Actor {
 	/* -------------------------------------------- */
 
 	/**
-	 * Display changes to health as scrolling combat text.
-	 * Adapt the font size relative to the Actor's HP total to emphasize more significant blows.
-	 * @param {number} dhp      The change in hit points that was applied
-	 * @private
+	 * Flash ring & display changes to health as scrolling combat text.
+	 * @param {object} changes          Object of changes to hit points.
+	 * @param {number} changes.hp       Changes to `hp.value`.
+	 * @param {number} changes.temp     The change to `hp.temp`.
+	 * @param {number} changes.total    The total change to hit points.
+	 * @protected
 	 */
-	_displayScrollingDamage(dhp) {
-		if ( !dhp ) return;
-		dhp = Number(dhp);
-		const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
-		for ( let t of tokens ) {
-			console.log(t);
-			if ( !t.document.hidden || game.user.isGM ){
-				const pct = Math.clamp(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
-				canvas.interface.createScrollingText(t.center, dhp.signedString(), {
-					anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
-					fontSize: 16 + (32 * pct), // Range between [16, 48]
-					fill: CONFIG.DND4E.tokenHPColors[dhp < 0 ? "damage" : "healing"],
-					stroke: 0x000000,
-					strokeThickness: 4,
-					jitter: 0.25
-				});
-			}
+	_displayTokenEffect(changes) {
+		let key;
+		let value;
+		if ( changes.hp < 0 ) {
+			key = "damage";
+			value = changes.total;
+		} else if ( changes.hp > 0 ) {
+			key = "healing";
+			value = changes.total;
+		} else if ( changes.temp ) {
+			key = "temp";
+			value = changes.temp;
+		}
+		if ( !key || !value ) return;
+
+		const tokens = this.isToken ? [this.token] : this.getActiveTokens(true, true);
+		if ( !tokens.length ) return;
+
+		const pct = Math.clamp(Math.abs(value) / this.system.attributes.hp.max, 0, 1);
+		const fill = CONFIG.DND4E.tokenHPColors[key];
+
+		for ( const token of tokens ) {
+			if ( !token.object?.visible || token.isSecret ) continue;
+			if ( token.hasDynamicRing ) token.flashRing(key, pct, value < 0);
+			const t = token.object;
+			canvas.interface.createScrollingText(t.center, value.signedString(), {
+				anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
+				// Adapt the font size relative to the Actor's HP total to emphasize more significant blows
+				fontSize: 16 + (32 * pct), // Range between [16, 48]
+				fill: fill,
+				stroke: 0x000000,
+				strokeThickness: 4,
+				jitter: 0.25
+			});
 		}
 	}
+
+	/* -------------------------------------------- */
 
 	/** @inheritdoc */
 	getRollData() {

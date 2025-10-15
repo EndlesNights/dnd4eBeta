@@ -20,9 +20,11 @@ import { measureDistances, getBarAttribute } from "./canvas.js";
 import Combat4e from "./combat.js";
 
 // Import Documents
-import { MeasuredTemplate4e, TemplateLayer4e} from "./pixi/ability-template.js";
-import { default as TokenRuler4e } from "./pixi/ruler.js";
+import { MeasuredTemplate4e, TemplateLayer4e} from "./canvas/ability-template.js";
+import { default as TokenRuler4e } from "./canvas/ruler.js";
 import { Actor4e } from "./actor/actor.js";
+import { default as TokenDocument4e } from "./documents/token.js";
+import { default as Token4e } from "./canvas/token.js";
 import Item4e from "./item/item-document.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
@@ -99,6 +101,8 @@ Hooks.once("init", async function() {
 	
 	CONFIG.ui.items = ItemDirectory4e;
 
+	CONFIG.Token.objectClass = Token4e;
+	CONFIG.Token.documentClass = TokenDocument4e;
 	CONFIG.Token.movement.TerrainData = TerrainData4e;
 	CONFIG.Token.rulerClass = TokenRuler4e;
 
@@ -433,4 +437,14 @@ Hooks.on('preCreateActiveEffect', async (effect) => {
 		};
 		effect.updateSource(updates);
 	}
+});
+
+Hooks.on("targetToken", Token4e.onTargetToken);
+
+// TODO: Remove when Foundry bug is fixed
+Hooks.on("deleteCombat", combat => {
+  if ( !canvas.ready ) return;
+  const token = combat.combatant?.token;
+  if ( !token?.rendered ) return;
+  token.object.renderFlags.set({refreshTurnMarker: true});
 });

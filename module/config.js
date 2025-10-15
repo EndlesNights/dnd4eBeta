@@ -14,7 +14,7 @@ ______      ______   ___
 __________________________________________________________`;
 
 DND4E.difficultTerrain = {
-	img: "systems/dnd4e/icons/ui/tri.webp",
+	img: "systems/dnd4e/icons/ui/tri.svg",
 	alpha: 1,
 	drawTerrianTint: false
 }
@@ -257,20 +257,6 @@ DND4E.tokenSizes = {
 	"lg": 2,
 	"huge": 3,
 	"grg": 4
-};
-
-/* -------------------------------------------- */
-
-/**
- * Colors used to visualize temporary and temporary maximum HP in token health bars.
- * @enum {number}
- */
-DND4E.tokenHPColors = {
-	damage: 0xFF0000,
-	healing: 0x00FF00,
-	temp: 0x66CCFF,
-	tempmax: 0x440066,
-	negmax: 0x550000
 };
 
 /* -------------------------------------------- */
@@ -1648,6 +1634,29 @@ DND4E.implement = {
 	"wand": "DND4E.ImplementWand"
 };
 
+/**
+ * Colors used to visualize temporary HP in token health bars.
+ * @enum {number}
+ */
+DND4E.tokenHPColors = {
+	damage: 0xFF0000,
+	healing: 0x00FF00,
+	temp: 0x66CCFF
+};
+
+/* -------------------------------------------- */
+
+/**
+ * Colors used when a dynamic token ring effects.
+ * @enum {number}
+ */
+DND4E.tokenRingColors = {
+	damage: 0xFF0000,
+	defeated: 0x000000,
+	healing: 0x00FF00,
+	temp: 0x33AAFF
+};
+
 /* -------------------------------------------- */
 
 /**
@@ -1655,11 +1664,13 @@ DND4E.implement = {
  * @enum {number}
  */
 DND4E.tokenRulerColors = {
-  walk: 0x00FF00,
-  run: 0xFFFF66,
-  doubleWalk: 0xFF9966,
-  doubleRun: 0xFF99FF
+	walk: 0x00FF00,
+	run: 0xFFFF66,
+	doubleWalk: 0xFF9966,
+	doubleRun: 0xFF99FF
 };
+
+/* -------------------------------------------- */
 
 /**
  * Skill, ability, and tool proficiency levels

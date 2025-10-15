@@ -1,6 +1,8 @@
 // Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
 
 export default class TokenRuler4e extends foundry.canvas.placeables.tokens.TokenRuler {
+	static WAYPOINT_LABEL_TEMPLATE = "systems/dnd4e/templates/hud/waypoint-label.hbs";
+	
 	/** @inheritDoc */
 	_getWaypointStyle(waypoint) {
 		if ( !waypoint.explicit && waypoint.next && waypoint.previous && waypoint.actionConfig.visualize
@@ -39,6 +41,9 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 		uiScale: canvas.dimensions.uiScale,
 		position: { x: ray.B.x, y: ray.B.y + (next ? 0 : 0.5 * this.token.h) + (16 * canvas.dimensions.uiScale) }
 		};
+
+		// Difficult Terrain
+		if (waypoint.terrain?.difficultTerrain) context.terrain = { difficult: true, icon: CONFIG.DND4E.difficultTerrain.img }
 
 		// Segment Distance
 		context.distance = { total: waypoint.measurement.distance.toNearest(0.01).toLocaleString(game.i18n.lang) };
