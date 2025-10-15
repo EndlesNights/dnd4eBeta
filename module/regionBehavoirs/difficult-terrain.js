@@ -78,7 +78,7 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 
   /** @override */
   _getTerrainEffects(token, segment) {
-    const ignoredTypes = new Set(token.actor?.system.movement?.ignoredDifficultTerrain);
+    const ignoredTypes = token.actor?.system.movement?.ignoredDifficultTerrain;
     if ( segment.action === "blink" || this.ignoredDispositions.has(token.disposition) || ignoredTypes.has("all")
       || (this.types.size && !this.types.difference(ignoredTypes).size) ) return [];
     return [{ name: "difficultTerrain" }];

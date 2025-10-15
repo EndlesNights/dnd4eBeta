@@ -161,8 +161,8 @@ export default class Item4e extends Item {
 		updates["system.proficient"] = false;
 
 		if(data.system.armour?.type === "armour" ){
-			if(actorProfs.value.includes(data.system.armourBaseType)){
-				updates["system.proficient"] = actorProfs.value.includes(data.system.armourBaseType);
+			if(actorProfs.value.has(data.system.armourBaseType)){
+				updates["system.proficient"] = actorProfs.value.has(data.system.armourBaseType);
 			}
 			else if(data.system.armourBaseType === "custom"){
 				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.armourBaseTypeCustom);
@@ -173,8 +173,8 @@ export default class Item4e extends Item {
 		}
 
 		if(data.system.armour?.type === "arms" && CONFIG.DND4E.shield[data.system.armour.subType]){
-			if(actorProfs.value.includes(data.system.shieldBaseType)){
-				updates["system.proficient"] = actorProfs.value.includes(data.system.shieldBaseType);
+			if(actorProfs.value.has(data.system.shieldBaseType)){
+				updates["system.proficient"] = actorProfs.value.has(data.system.shieldBaseType);
 			}
 			else if(data.system.shieldBaseType === "custom"){
 				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.shieldBaseTypeCustom);
@@ -207,13 +207,13 @@ export default class Item4e extends Item {
 		const actorProfs = this.parent.system.details.weaponProf;
 		updates["system.proficient"] = false;
 
-		if(actorProfs.value.includes(data.system.weaponType)){
-			updates["system.proficient"] = actorProfs.value.includes(data.system.weaponType);
+		if(actorProfs.value.has(data.system.weaponType)){
+			updates["system.proficient"] = actorProfs.value.has(data.system.weaponType);
 		}
 		else if(data.system.weaponBaseType === "custom"){
 			updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.weaponBaseTypeCustom);
 		} else {
-			updates["system.proficient"] = actorProfs.value.includes(data.system.weaponBaseType);
+			updates["system.proficient"] = actorProfs.value.has(data.system.weaponBaseType);
 		}
 		return updates;
 	}
@@ -627,7 +627,7 @@ export default class Item4e extends Item {
 					labels.attribute = `<strong>${game.i18n.localize("DND4E.Ability")}:</strong> ${game.i18n.localize(DND4E.abilities[attribute])}`;
 				}
 				else if(DND4E.skills[attribute]){
-					labels.attribute = `<strong>${game.i18n.localize("DND4E.Skill")}:</strong> ${game.i18n.localize(DND4E.skills[attribute])}`;
+					labels.attribute = `<strong>${game.i18n.localize("DND4E.Skill")}:</strong> ${DND4E.skills[attribute]?.label}`;
 				}
 			}
 
@@ -1346,7 +1346,7 @@ export default class Item4e extends Item {
 	 */
 	_toolChatData(data, labels, props) {
 		props.push(
-			`<li class="check">${CONFIG.DND4E.abilities[data.ability] || ''}${CONFIG.DND4E.skills[data.ability] || ''}</li>`
+			`<li class="check">${CONFIG.DND4E.abilities[data.ability] || ''}${CONFIG.DND4E.skills[data.ability]?.label || ''}</li>`
 			// CONFIG.DND4E.proficiencyLevels[data.proficient || 0]
 		);
 	}

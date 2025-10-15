@@ -54,7 +54,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		delete damageTypes.ongoing;
 		context.dotDamageTypes = damageTypes;
 
-		context.cltEnabled = context.config.statusEffects !== context.config.statusEffect;
+		context.cltEnabled = context.config.statusEffects.length !== Object.keys(context.config.statusEffect).length;
 
 		return context;
 	}

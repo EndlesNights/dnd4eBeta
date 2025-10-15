@@ -20,7 +20,7 @@ export class Actor4e extends Actor {
 		}
 
 		// set default to sorting
-		if(["NPC","Character","Hazard"].includes(data.type)){
+		if(["NPC","Player Character","Hazard"].includes(data.type)){
 			if(!data?.system?.powerGroupTypes){
 				data.system.powerGroupTypes = `usage`;
 			}
@@ -243,10 +243,6 @@ export class Actor4e extends Actor {
 			system.defences.fort.ability = (system.abilities.str.value >= system.abilities.con.value) ? "str" : "con";
 			system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
 			system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
-			
-			if (!system.movement.ignoredDifficultTerrain) {
-				system.movement.ignoredDifficultTerrain = [];
-			}
 		}
 
 	}
@@ -1217,7 +1213,7 @@ export class Actor4e extends Actor {
 		}
 		
 		for (const [id, skl] of Object.entries(system.skills)) {
-			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
+			skl.label = skl.label? skl.label : DND4E.skills[id]?.label;
 			skl.value = parseFloat(skl.value || 0);
 			
 			if(isNaN(parseInt(skl?.absolute))){ //All logic only required if there is no usable absolute value
@@ -1331,7 +1327,7 @@ export class Actor4e extends Actor {
 		}
 		
 		for (let [id, skl] of Object.entries(system.skills)) {
-			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
+			skl.label = skl.label? skl.label : DND4E.skills[id]?.label;
 			skl.value = parseFloat(skl.value || 0);
 
 			if(isNaN(parseInt(skl?.absolute))){ //All logic only required if there is no usable absolute value
@@ -1585,7 +1581,7 @@ export class Actor4e extends Actor {
 		return d20Roll(foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND4E.SkillPromptTitle", {skill: CONFIG.DND4E.skills[skillId]}),
+			title: game.i18n.format("DND4E.SkillPromptTitle", {skill: CONFIG.DND4E.skills[skillId]?.label}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
 		}));

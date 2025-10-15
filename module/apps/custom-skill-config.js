@@ -33,8 +33,8 @@ export default class CustomSkillConfig extends FormApplication {
 
 			formData = [formData].filter(newObj => {
 				if (coreData[newObj.id]) {
-					console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
-					ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
+					console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id].label}"</strong>.`);
+					ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id].label}"</strong>.`);
 					return false;
 				}
 				return true;
@@ -54,8 +54,8 @@ export default class CustomSkillConfig extends FormApplication {
 
 		transposedArray = transposedArray.filter(newObj => {
 			if (coreData[newObj.id]) {
-				console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
-				ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
+				console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id].label}"</strong>.`);
+				ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id].label}"</strong>.`);
 				return false;
 			}
 			return true;
@@ -73,8 +73,8 @@ export default class CustomSkillConfig extends FormApplication {
 			const coreData = game.dnd4e.config.coreSkills
 			newDataArray = newDataArray.filter(newObj => {
 				if (coreData[newObj.id]) {
-					console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
-					ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id]}"</strong>.`);
+					console.log(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id].label}"</strong>.`);
+					ui.notifications.warn(`Aborted Custom Skill creation of <strong>"${newObj.label}"</strong>, for matching id of <strong>"${newObj.id}"</strong> with core skill <strong>"${game.dnd4e.config.skills[newObj.id].label}"</strong>.`);
 					return false;
 				}
 				return true;
@@ -133,7 +133,11 @@ export default class CustomSkillConfig extends FormApplication {
 
 	async addCustomSkill(skillData){
 
-		game.dnd4e.config.skills[skillData.id] = skillData.label;
+		game.dnd4e.config.skills[skillData.id] = {
+			label: skillData.label,
+			ability: skillData.ability,
+			armourCheck: skillData.armourCheck
+		};
 		for(const actor of game.actors){
 			const updateData = {};
 			updateData[`system.skills.${skillData.id}.value`] = 0;

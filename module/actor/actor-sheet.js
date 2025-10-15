@@ -345,19 +345,15 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	/** @override */
 	async _prepareContext(options) {
-		// TODO: This function should _not_ modify any actor data itself. It should purely
-		// collect data for the template(s) to use. Any actor data prep that needs to happen
-		// should be happening in actor.js, not here.
-
 		const context = await super._prepareContext(options);
-		const actor = this.actor;
+		const actor = this.actor.toObject(false);
 		const actorData = actor.system;
 
 		const isOwner = actor.isOwner;
 
 		foundry.utils.mergeObject(context, {
 			owner: isOwner,
-			limited: actor.limited,
+			limited: this.actor.limited,
 			options: this.options,
 			editable: this.isEditable,
 			cssClass: isOwner ? "editable" : "locked",
@@ -368,18 +364,18 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			hasWealth: ["NPC","Player Character"].includes(actor.type),
 			hasSpeed: ["NPC","Player Character"].includes(actor.type),
 			config: CONFIG.DND4E,
-			rollData: actor.getRollData.bind(actor),
+			// rollData: this.actor.getRollData(),
 			actor,
 			actorData,
 			system: actorData
 		});
 
 		context.items = actor.items
-			.filter(i => !actor.items.has(i.system.container))
+			.filter(i => !this.actor.items.has(i.system.container))
 			.sort((a, b) => (a.sort || 0) - (b.sort || 0));
 
 		for (let i of context.items) {
-			const item = actor.items.get(i._id);
+			const item = this.actor.items.get(i._id);
 			i.labels = item.labels;
 			i.chatData = await item.getChatData({secrets: this.actor.isOwner})
 			if (item.type === "power" && item.system.autoGenChatPowerCard) {
@@ -398,7 +394,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		this._prepareItems(context);
 
-		context.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.getActiveEffects());
+		context.effects = ActiveEffect4e.prepareActiveEffectCategories(this.actor.getActiveEffects());
 
 		if (context.isCombatant) {
 			if(Object.entries(game.dnd4e.config.coreSkills).length != Object.entries(actorData.skills).length){
@@ -419,7 +415,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
 				skl.icon = this._getTrainingIcon(skl.training);
 				skl.hover = game.i18n.localize(DND4E.trainingLevels[skl.training]);
-				skl.label = skl.label ? skl.label: game.i18n.localize(DND4E.skills[s]);
+				skl.label = skl.label ? skl.label: DND4E.skills[s]?.label;
 			}
 			
 			this._prepareDataSave(actorData.details,
@@ -579,9 +575,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		// Organize items
 		for ( let i of items ) {
+			const item = this.actor.items.get(i._id);
 			i.system.quantity = i.system.quantity || 0;
 			i.system.weight = i.system.weight || 0;
-			i.totalWeightLable = i.totalWeight.toNearest(0.01);
+			i.totalWeightLable = item.totalWeight.toNearest(0.01);
 			inventory[i.type].items.push(i);
 		}
 

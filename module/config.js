@@ -31,6 +31,7 @@ DND4E.abilities = {
 	"wis": "DND4E.AbilityWis",
 	"cha": "DND4E.AbilityCha"
 };
+preLocalize("abilities");
 
 /**
  * More detailed Ability Score objects for use in selectOptions etc.
@@ -102,11 +103,13 @@ DND4E.alignments = {
 	'ne': "DND4E.AlignmentNE",
 	'ce': "DND4E.AlignmentCE"
 };
+preLocalize("alignments");
 
 DND4E.weaponProficiencies = {
 	"sim": "DND4E.WeaponSimpleProficiency",
 	"mar": "DND4E.WeaponMartialProficiency"
 };
+preLocalize("weaponProficiencies");
 
 /**
  * 5e Skill proficiencies (Vestigial/Unused?)
@@ -124,6 +127,7 @@ DND4E.toolProficiencies = {
 	"thief": "DND4E.ToolThieves",
 	"vehicle": "DND4E.ToolVehicle"
 };
+preLocalize("toolProficiencies", {sort: true});
 
 /* -------------------------------------------- */
 
@@ -143,7 +147,7 @@ DND4E.timePeriods = {
 	"perm": "DND4E.TimePerm",
 	"spec": "DND4E.Special"
 };
-preLocalize("timePeriods");
+preLocalize("timePeriods", { sort: true });
 
 /* -------------------------------------------- */
 
@@ -205,6 +209,7 @@ DND4E.abilityActivationTypesShort = {
 	"interrupt": "DND4E.ActionInterruptShort",
 	"opportunity": "DND4E.ActionOpportunityShort",
 };
+preLocalize("abilityActivationTypesShort", {sort: true});
 /* -------------------------------------------- */
 
 
@@ -276,6 +281,7 @@ DND4E.itemActionTypes = {
 	"util": "DND4E.ActionUtil",
 	"other": "DND4E.ActionOther"
 };
+preLocalize("itemActionTypes");
 
 /* -------------------------------------------- */
 
@@ -311,6 +317,7 @@ DND4E.autoanimationHook = {
 	"usePower": "DND4E.AutoanimationHookUsePower",
 	"template": "DND4E.AutoanimationHookTemplate",
 };
+preLocalize("autoanimationHook");
 
 /* -------------------------------------------- */
 
@@ -332,7 +339,7 @@ DND4E.equipmentTypes = {
 	"alternative": {label: "DND4E.Equipment.Alt.Alt"},
 	"other": {label: "DND4E.EquipmentTypeOther"},
 };
-preLocalize("equipmentTypes", { keys: ["label"] });
+preLocalize("equipmentTypes", { keys: ["label"], sort: true });
 
 DND4E.equipmentTypesArmour = {
 	"": {label: "DND4E.None"},
@@ -410,7 +417,7 @@ DND4E.equipmentTypesAlt = {
 	"training": {label: "DND4E.Equipment.Alt.Training"},
 	"other": {label: "DND4E.EquipmentTypeOther"},
 };
-preLocalize("equipmentTypesAlt", { keys: ["label"] });
+preLocalize("equipmentTypesAlt", { keys: ["label"], sort: true });
 
 /* -------------------------------------------- */
 
@@ -424,6 +431,7 @@ DND4E.armourProficiencies = {
 	"hvy": "DND4E.equipmentTypes.heavy",
 	"shl": "DND4E.EquipmentShieldProficiency"
 };
+preLocalize("armourProficiencies");
 
 
 /* -------------------------------------------- */
@@ -499,7 +507,7 @@ DND4E.creatureRole = {
 	// "striker": "DND4E.CreatureRoleStriker",
 	// "soldier": "DND4E.CreatureRoleSoldier",
 }
-preLocalize("creatureRole", { keys: ["label"] });
+preLocalize("creatureRole", { keys: ["label"], sort: true });
 
 DND4E.creatureRoleSecond = {
 	"standard": {label: "DND4E.CreatureRoleSecStandard"},
@@ -508,7 +516,7 @@ DND4E.creatureRoleSecond = {
 	"minion": {label: "DND4E.CreatureRoleSecMinion"},
 	"other": {label: "DND4E.CreatureRoleSecOther"},
 }
-preLocalize("creatureRoleSecond", { keys: ["label"] });
+preLocalize("creatureRoleSecond", { keys: ["label"], sort: true });
 
 /* -------------------------------------------- */
 
@@ -517,7 +525,7 @@ DND4E.hazardRole = {
 	"hazard": {label: "DND4E.Role.Hazard.Hazard"},
 	"other": {label: "DND4E.Role.Hazard.Other"}
 }
-preLocalize("hazardRole", { keys: ["label"] });
+preLocalize("hazardRole", { keys: ["label"], sort: true });
 
 DND4E.hazardRoleSecond = {
 	"blaster": {label: "DND4E.Role.Hazard.Blaster"},
@@ -526,7 +534,7 @@ DND4E.hazardRoleSecond = {
 	"warder": {label: "DND4E.Role.Hazard.Warder"},
 	"other": {label: "DND4E.Role.Hazard.Other"},
 }
-preLocalize("hazardRoleSecond", { keys: ["label"] });
+preLocalize("hazardRoleSecond", { keys: ["label"], sort: true });
 
 /* -------------------------------------------- */
 
@@ -548,7 +556,7 @@ DND4E.creatureType = {
 	// "humanoid": "DND4E.CreatureTypeHumanoid",
 	// "magical": "DND4E.CreatureTypeMagicalBeaste",
 }
-preLocalize("creatureType", { keys: ["label"] });
+preLocalize("creatureType", { keys: ["label"], sort: true });
 
 /* -------------------------------------------- */
 
@@ -567,7 +575,7 @@ DND4E.consumableTypes = {
 	"wondrous": {label: "DND4E.EquipmentWondrousItem"},
 	"other": {label: "DND4E.EquipmentTypeOther"}
 };
-preLocalize("consumableTypes", { keys: ["label"] });
+preLocalize("consumableTypes", { keys: ["label"], sort: true });
 
 /* -------------------------------------------- */
 DND4E.commonAttackBonuses = {
@@ -585,6 +593,7 @@ DND4E.commonAttackBonuses = {
 	running: {value: -5, label:"DND4E.CommonAttackRunning"},
 	squeez: {value: -5, label:"DND4E.CommonAttackSqueez"},
 }
+preLocalize("commonAttackBonuses", { keys: ["label"], sort: true });
 /* -------------------------------------------- */
 
 /**
@@ -598,6 +607,7 @@ DND4E.currencies = {
 	"sp": "DND4E.CurrencySP",
 	"cp": "DND4E.CurrencyCP"
 };
+preLocalize("currencies");
 
 /**
  * Define the upwards-conversion rules for registered currency types
@@ -620,6 +630,7 @@ DND4E.ritualcomponents = {
 	"si": "DND4E.RitualCompSI",
 	"rs": "DND4E.RitualCompRS"
 };
+preLocalize("ritualComponents");
 
 /* -------------------------------------------- */
 
@@ -639,6 +650,7 @@ DND4E.damageTypes = {
 	"radiant": "DND4E.DamageRadiant",
 	"thunder": "DND4E.DamageThunder"
 };
+preLocalize("damageTypes");
 // DND4E.damageTypes = {
 // 	"damage": {label: "DND4E.DamageAll"},
 // 	"ongoing": {label: "DND4E.Ongoing"},
@@ -693,7 +705,10 @@ DND4E.def = {
 	"fort": "DND4E.DefFort",
 	"ref": "DND4E.DefRef",
 	"wil": "DND4E.DefWil"
-};/* -------------------------------------------- */
+};
+preLocalize("def");
+
+/* -------------------------------------------- */
 
 
 // Defensives
@@ -701,22 +716,26 @@ DND4E.defensives = {
 	ac: {
 		label: "DND4E.DefenceAC",
 		labelShort: "DND4E.DefenceACShort",
-		abbreviation: "DND4E.DefAC"
+		abbreviation: "DND4E.DefAC",
+		chat: "@name defends with armour"
 	},
 	fort: {
 		label: "DND4E.DefenceFort",
 		labelShort: "DND4E.DefenceFortShort",
-		abbreviation: "DND4E.DefFort"
+		abbreviation: "DND4E.DefFort",
+		chat: "@name defends with fortitude"
 	},
 	ref: {
 		label: "DND4E.DefenceRef",
 		labelShort: "DND4E.DefenceRefShort",
-		abbreviation: "DND4E.DefRef"
+		abbreviation: "DND4E.DefRef",
+		chat: "@name defends with reflex"
 	},
 	wil: {
 		label: "DND4E.DefenceWil",
 		labelShort: "DND4E.DefenceWilShort",
-		abbreviation: "DND4E.DefWil"
+		abbreviation: "DND4E.DefWil",
+		chat: "@name defends with will"
 	}
 };
 preLocalize("defensives", { keys: ["label", "labelShort", "abbreviation"] });
@@ -732,6 +751,7 @@ DND4E.distanceUnits = {
 	"spec": "DND4E.Special",
 	"any": "DND4E.DistAny"
 };
+preLocalize("distanceUnits");
 
 /* -------------------------------------------- */
 
@@ -746,6 +766,7 @@ DND4E.durationType = {
 	"endOfDay": "DND4E.DurationEndOfDay",
 	"custom": "DND4E.DurationCustom",
 }
+preLocalize("durationType");
 
 /* -------------------------------------------- */
 
@@ -768,6 +789,7 @@ DND4E.powerEffectTypes = {
 	"selfMiss": "DND4E.TargetSelfMiss",
 	"misc": "DND4E.TargetMisc"
 }
+preLocalize("powerEffectTypes");
 
 /* -------------------------------------------- */
 
@@ -781,19 +803,23 @@ DND4E.profArmor = {
 	light: "DND4E.ArmourProfShieldLight",
 	heavy: "DND4E.ArmourProfShieldHeavy",
 };
+preLocalize("profArmor");
 
 DND4E.cloth = {
 	cloth: "DND4E.ArmourProfCloth",
 };
+preLocalize("cloth");
 DND4E.light = {
 	leather: "DND4E.ArmourProfLeather",
 	hide: "DND4E.ArmourProfHide",
 };
+preLocalize("light");
 DND4E.heavy = {
 	chain: "DND4E.ArmourProfChain",
 	scale: "DND4E.ArmourProfScale",
 	plate: "DND4E.ArmourProfPlate",
 };
+preLocalize("heavy");
 DND4E.natural = {
 
 };
@@ -801,6 +827,7 @@ DND4E.shield = {
 	light: "DND4E.ArmourProfShieldLight",
 	heavy: "DND4E.ArmourProfShieldHeavy",
 };
+preLocalize("shield");
 DND4E.weaponProficiencies = {
 	simpleM: "DND4E.WeaponSimpleM",
 	simpleR: "DND4E.WeaponSimpleR",
@@ -811,6 +838,7 @@ DND4E.weaponProficiencies = {
 	improvisedM: "DND4E.WeaponImprovisedM",
 	improvisedR: "DND4E.WeaponImprovisedR",
 };
+preLocalize("weaponProficiencies", { sort: true });
 
 DND4E.weaponProficienciesMap = {
 	simpleM: "SimpleM",
@@ -839,6 +867,8 @@ DND4E.simpleM = {
 	spikeGauntlet:"DND4E.WeaponSpikeGauntlet",
 	wristRazor:"DND4E.WeaponWristRazor"
 };
+preLocalize("simpleM", { sort: true });
+
 DND4E.simpleR = {
 	crossbow:"DND4E.WeaponCrossbow",
 	dejada:"DND4E.WeaponDejada",
@@ -846,6 +876,7 @@ DND4E.simpleR = {
 	repeatCrossbow:"DND4E.WeaponRepeatCrossbow",
 	sling:"DND4E.WeaponSling"
 };
+preLocalize("simpleR", { sort: true });
 
 DND4E.militaryM = {
 	alhulak:"DND4E.WeaponAlhulak",
@@ -878,11 +909,14 @@ DND4E.militaryM = {
 	warhammer:"DND4E.WeaponWarhammer",
 	warpick:"DND4E.WeaponWarpick"
 };
+preLocalize("militaryM", { sort: true });
+
 DND4E.militaryR = {
 	longbow:"DND4E.WeaponLongbow",
 	shortbow:"DND4E.WeaponShortbow",
 	chatchka:"DND4E.WeaponChatchka"
 };
+preLocalize("militaryR", { sort: true });
 
 DND4E.superiorM = {
 	bastardsword:"DND4E.WeaponBastardsword",
@@ -924,6 +958,8 @@ DND4E.superiorM = {
 	zadatl:"DND4E.WeaponZadatl",
 	zulaat:"DND4E.WeaponZulaat"
 };
+preLocalize("superiorM", { sort: true });
+
 DND4E.superiorR = {
 	boomerang:"DND4E.WeaponBoomerang",
 	bola:"DND4E.WeaponBola",
@@ -932,9 +968,13 @@ DND4E.superiorR = {
 	shuriken:"DND4E.WeaponShuriken",
 	superCrossbow:"DND4E.WeaponSuperCrossbow"
 };
+preLocalize("superiorR", { sort: true });
 
 DND4E.improvisedM = {};
+preLocalize("improvisedM", { sort: true });
+
 DND4E.improvisedR = {};
+preLocalize("improvisedR", { sort: true });
 
 DND4E.implementProficiencies = {
 	"holyS": "DND4E.ImplementHolySymbol",
@@ -947,7 +987,7 @@ DND4E.implementProficiencies = {
 	"wand": "DND4E.ImplementWand",
 	"weapons": "DND4E.WeaponsWithProf"
 };
-preLocalize("implementProficiencies");
+preLocalize("implementProficiencies", { sort: true });
 
 
 /**
@@ -978,6 +1018,7 @@ DND4E.targetTypes = {
 	"creatureA": "DND4E.TargetCreatureAdjacent",
 	"enemyA": "DND4E.TargetEnemyAdjacent",
 };
+preLocalize("targetTypes", { sort: true });
 
 
 /* -------------------------------------------- */
@@ -1011,6 +1052,7 @@ DND4E.healingTypes = {
 	"healing": "DND4E.Healing",
 	"temphp": "DND4E.HealingTemp"
 };
+preLocalize("healingTypes");
 
 /* -------------------------------------------- */
 
@@ -1077,12 +1119,15 @@ DND4E.powerType = {
 	"other": "DND4E.Other",
 	"utility": "DND4E.PowerUtil" //Better keep this for legacy
 };
+preLocalize("powerType", { sort: true });
+
 DND4E.powerSubtype = {
 	"attack": "DND4E.PowerAttack",
 	"utility": "DND4E.PowerUtil",
 	"feature": "DND4E.PowerFeature",
 	"other": "DND4E.Other"
 };
+preLocalize("powerSubtype", { sort: true });
 
 DND4E.powerUseType = {
 	"atwill": "DND4E.PowerAt",
@@ -1093,6 +1138,8 @@ DND4E.powerUseType = {
 	"other": "DND4E.PowerOther",
 	// "utility": "DND4E.PowerUtil"
 };
+preLocalize("powerUseType", { sort: true });
+
 DND4E.powerSource = {
 	"arcane": "DND4E.Arcane",
 	"divine": "DND4E.Divine",
@@ -1103,6 +1150,7 @@ DND4E.powerSource = {
 	"psionic": "DND4E.Psionic",
 	"shadow": "DND4E.Shadow",
 };
+preLocalize("powerSource", { sort: true });
 
 DND4E.powerGroupTypes = {
 	usage: {label: "DND4E.Usage"},
@@ -1158,6 +1206,11 @@ DND4E.powerGroupings = {
 		other: {label: "DND4E.Other"}
 	}
 };
+preLocalize("powerGroupings.action", { key: "label", sort: true });
+preLocalize("powerGroupings.actionMod", { key: "label", sort: true });
+preLocalize("powerGroupings.type", { key: "label", sort: true });
+preLocalize("powerGroupings.powerSubtype", { key: "label", sort: true });
+preLocalize("powerGroupings.usage", { key: "label", sort: true });
 
 DND4E.powerSortTypes = {
 	"name": {label: "DND4E.ItemName"},
@@ -1180,6 +1233,7 @@ DND4E.inventoryTypes = {
 	backpack: { label: "DND4E.ItemTypeContainerPl" },
 	loot: { label: "DND4E.ItemTypeLootPl" }
 };
+preLocalize("inventoryTypes", { key: "label" });
 
 DND4E.ritualTypes = {
 	"binding": { label: "DND4E.Group.Ritual.Binding" },
@@ -1199,7 +1253,7 @@ DND4E.ritualTypes = {
 	"volatile": { label: "DND4E.Group.Ritual.Volatile" },
 	"alchother": { label: "DND4E.Group.Ritual.AlchOther" }
 };
-preLocalize("ritualTypes", { keys: ["label"] });
+preLocalize("ritualTypes", { keys: ["label"], sort: true });
 
 DND4E.ritualSortTypes = {
 	"name": {label: "DND4E.Name"},
@@ -1232,11 +1286,12 @@ DND4E.sortValues = {
 };
   
 DND4E.autoTargetModes = {
-	"none": "None",
-	"all": "All",
-	"allies": "Allies",
-	"enemies": "Enemies"
+	"none": "DND4E.AutoTargetModes.None",
+	"all": "DND4E.AutoTargetModes.All",
+	"allies": "DND4E.AutoTargetModes.Allies",
+	"enemies": "DND4E.AutoTargetModes.Enemies"
 };
+preLocalize("autoTargetModes");
 
 /* -------------------------------------------- */
 /**
@@ -1253,12 +1308,14 @@ DND4E.special = {
 	"ts": "DND4E.SpecialSensesTS",
 	"tr": "DND4E.SpecialSensesTR"
 };
+preLocalize("special", { sort: true });
 
 DND4E.vision = {
 	"nv": "DND4E.VisionNormal",
 	"lv": "DND4E.VisionLowLight",
 	"bv": "DND4E.VisionBlind"
 };
+preLocalize("vision", { sort: true });
 
 /* -------------------------------------------- */
 /*  Movement                                    */
@@ -1311,6 +1368,7 @@ DND4E.weaponType = {
 	"none": "DND4E.None",
 	"any": "DND4E.AnyW",
 };
+preLocalize("weaponType");
 
 DND4E.rangeType = {
 	"weapon": {
@@ -1367,6 +1425,7 @@ preLocalize("rangeType", { keys: ["label","abbr"] });
 DND4E.rangeTypeNoWeapon = Object.fromEntries(Object.entries(DND4E.rangeType).filter(function ([key]) {
 	return key !== "weapon";
 }));
+preLocalize("rangeTypeNoWeapon", { keys: ["label","abbr"] });
 
 // Bonus keys for tool required by a power—NOT the same as the keywords pulled from the weapon.
 DND4E.toolKeys = {
@@ -1375,6 +1434,7 @@ DND4E.toolKeys = {
 	"weapon": "DND4E.Weapon",
 	"usesImplement": "DND4E.WeaponPropertiesImp"
 };
+preLocalize("toolKeys");
 
 // Bonus keys for range/shape—NOT the same as the plain range values.
 DND4E.rangeKeys = {
@@ -1390,6 +1450,7 @@ DND4E.rangeKeys = {
 	"areaBlast": "DND4E.rangeBlast",
 	"wall": "DND4E.rangeWall"
 };
+preLocalize("rangeKeys");
 
 DND4E.effectTypes = {
 	"augmentable": "DND4E.Augmentable",
@@ -1427,6 +1488,7 @@ DND4E.effectTypes = {
 	"transmutation": "DND4E.Transmutation",
 	"zone": "DND4E.Zone",
 };
+preLocalize("effectTypes", { sort: true });
 
 /**
  * Save types (5e/Vestigial?)
@@ -1465,6 +1527,8 @@ DND4E.saves = {
 	"Spirit": "DND4E.Spirit",
 	"Teleportation": "DND4E.Teleportation"
 };
+preLocalize("saves", { sort: true });
+
 /* -------------------------------------------- */
 
 /**
@@ -1472,24 +1536,93 @@ DND4E.saves = {
  * @type {Object}
  */
 DND4E.skills = {
-	"acr": "DND4E.SkillAcr",
-	"arc": "DND4E.SkillArc",
-	"ath": "DND4E.SkillAth",
-	"blu": "DND4E.SkillBlu",
-	"dip": "DND4E.SkillDip",
-	"dun": "DND4E.SkillDun",
-	"end": "DND4E.SkillEnd",
-	"hea": "DND4E.SkillHea",
-	"his": "DND4E.SkillHis",
-	"ins": "DND4E.SkillIns",
-	"itm": "DND4E.SkillItm",
-	"nat": "DND4E.SkillNat",
-	"prc": "DND4E.SkillPrc",
-	"rel": "DND4E.SkillRel",
-	"stl": "DND4E.SkillStl",
-	"stw": "DND4E.SkillStw",
-	"thi": "DND4E.SkillThi"
+	"acr": {
+		ability: "dex",
+		armourCheck: false,
+		label: "DND4E.SkillAcr"
+	},
+	"arc": {
+		ability: "int",
+		armourCheck: false,
+		label: "DND4E.SkillArc"
+	},
+	"ath": {
+		ability: "str",
+		armourCheck: true,
+		label: "DND4E.SkillAth"
+	},
+	"blu": {
+		ability: "cha",
+		armourCheck: false,
+		label: "DND4E.SkillBlu"
+	},
+	"dip": {
+		ability: "cha",
+		armourCheck: false,
+		label: "DND4E.SkillDip"
+	},
+	"dun": {
+		ability: "wis",
+		armourCheck: false,
+		label: "DND4E.SkillDun"
+	},
+	"end": {
+		ability: "con",
+		armourCheck: true,
+		label: "DND4E.SkillEnd"
+	},
+	"hea": {
+		ability: "wis",
+		armourCheck: false,
+		label: "DND4E.SkillHea"
+	},
+	"his": {
+		ability: "int",
+		armourCheck: false,
+		label: "DND4E.SkillHis"
+	},
+	"ins": {
+		ability: "wis",
+		armourCheck: false,
+		label: "DND4E.SkillIns"
+	},
+	"itm": {
+		ability: "cha",
+		armourCheck: false,
+		label: "DND4E.SkillItm"
+	},
+	"nat": {
+		ability: "wis",
+		armourCheck: false,
+		label: "DND4E.SkillNat"
+	},
+	"prc": {
+		ability: "int",
+		armourCheck: false,
+		label: "DND4E.SkillPrc"
+	},
+	"rel": {
+		ability: "int",
+		armourCheck: false,
+		label: "DND4E.SkillRel"
+	},
+	"stl": {
+		ability: "dex",
+		armourCheck: true,
+		label: "DND4E.SkillStl"
+	},
+	"stw": {
+		ability: "cha",
+		armourCheck: false,
+		label: "DND4E.SkillStw"
+	},
+	"thi": {
+		ability: "dex",
+		armourCheck: true,
+		label: "DND4E.SkillThi"
+	}
 };
+preLocalize("skills", { keys: ["label"], sort: true });
 
 /* -------------------------------------------- */
 DND4E.modifiers ={
@@ -1498,7 +1631,7 @@ DND4E.modifiers ={
 	"skills": "DND4E.ModifierSkills",
 	"defences": "DND4E.ModifierDefences"
 };
-
+preLocalize("modifiers");
 
 /**
  * Spellcasting progression and modes (5e/Vestigial?)
@@ -1511,6 +1644,7 @@ DND4E.spellPreparationModes = {
 	"pact": "DND4E.PactMagic",
 	"prepared": "DND4E.SpellPrepPrepared"
 };
+preLocalize("spellPreparationModes");
 
 DND4E.spellUpcastModes = ["always", "pact", "prepared"];
 
@@ -1522,6 +1656,7 @@ DND4E.spellProgression = {
 	"pact": "DND4E.SpellProgPact",
 	"artificer": "DND4E.SpellProgArt"
 };
+preLocalize("spellProgression");
 
 /* -------------------------------------------- */
 
@@ -1534,6 +1669,7 @@ DND4E.spellScalingModes = {
 	"cantrip": "DND4E.SpellCantrip",
 	"level": "DND4E.SpellLevel"
 };
+preLocalize("spellScalingModes");
 
 /* -------------------------------------------- */
 
@@ -1559,6 +1695,7 @@ DND4E.weaponTypes = {
 	"improv": "DND4E.WeaponImprov",
 	"other": "DND4E.EquipmentTypeOther"
 };
+preLocalize("weaponTypes");
 
 /* -------------------------------------------- */
 
@@ -1573,6 +1710,7 @@ DND4E.weaponHands = {
 	"hOff": "DND4E.HOff",
 	"hNone": "DND4E.HNone"
 };
+preLocalize("weaponHands");
 
 
 /* -------------------------------------------- */
@@ -1601,6 +1739,7 @@ DND4E.weaponProperties = {
 	"two": "DND4E.WeaponPropertiesTwo",
 	"ver": "DND4E.WeaponPropertiesVer"
 };
+preLocalize("weaponProperties", { sort: true });
 
 DND4E.weaponGroup = {
 	"axe": "DND4E.WeaponGroupAxe",
@@ -1622,6 +1761,7 @@ DND4E.weaponGroup = {
 	"unarm": "DND4E.WeaponGroupUnarm",
 	"whip": "DND4E.WeaponGroupWhip"
 };
+preLocalize("weaponGroup", { sort: true });
 
 DND4E.implement = {
 	"holyS": "DND4E.ImplementHolySymbol",
@@ -1633,6 +1773,7 @@ DND4E.implement = {
 	"totem": "DND4E.ImplementTotem",
 	"wand": "DND4E.ImplementWand"
 };
+preLocalize("implement", { sort: true });
 
 /**
  * Colors used to visualize temporary HP in token health bars.
@@ -1683,6 +1824,7 @@ DND4E.trainingLevels = {
 	5: "DND4E.Trained",
 	8: "DND4E.FocusTrained"
 };
+preLocalize("trainingLevels");
 /* -------------------------------------------- */
 
 // Condition Types
@@ -1706,354 +1848,299 @@ DND4E.conditionTypes = {
 	"unconscious": "DND4E.ConUnconscious",
 	"weakened": "DND4E.ConWeakened",
 };
+preLocalize("conditionTypes", { sort: true });
 
-
-DND4E.statusEffect = [
+DND4E.statusEffect = {
 	// Row - Marks
-	{
-		id: "mark_1",
+	mark_1: {
 		name: "EFFECT.statusMark",
 		img: "systems/dnd4e/icons/statusEffects/mark_1.svg",
 		description: "EFFECTDESC.mark"
 	},
-	{
-		id: "curse",
+	curse: {
 		name: "EFFECT.statusCurse",
 		img: "systems/dnd4e/icons/statusEffects/curse.svg",
 		description: "EFFECTDESC.curse"
 	},
-	{
-		id: "oath",
+	oath: {
 		name: "EFFECT.statusOath",
 		img: "systems/dnd4e/icons/statusEffects/oath.svg",
 		description: "EFFECTDESC.oath"
 	},
-	{
-		id: "hunter_mark",
+	hunter_mark: {
 		name: "EFFECT.statusHunterMark",
 		img: "systems/dnd4e/icons/statusEffects/hunter_mark.svg",
 		description: "EFFECTDESC.huntermark"
 	},
 	// Row - Health
-	{
-		id: "bloodied",
+	bloodied: {
 		name: "EFFECT.statusBloodied",
 		img: "systems/dnd4e/icons/statusEffects/bloodied.svg",
 		description: "EFFECTDESC.bloodied"
 	},
-	{
-		id: "dying",
+	dying: {
 		name: "EFFECT.statusDying",
 		img: "systems/dnd4e/icons/statusEffects/dying.svg",
 		description: "EFFECTDESC.dying"
 	},
-	{
-		id: "dead",
+	dead: {
 		name: "EFFECT.statusDead",
 		img: "icons/svg/skull.svg",
 		description: "EFFECTDESC.dead"
 	},
-	{
-		id: "unconscious",
+	unconscious: {
 		name: "EFFECT.statusUnconscious",
 		img: "systems/dnd4e/icons/statusEffects/unconscious.svg",
 		description: "EFFECTDESC.unconscious"
 	},
 	// Row - Action Restrictions
-	{
-		id: "dazed",
+	dazed: {
 		name: "EFFECT.statusDazed",
 		img: "systems/dnd4e/icons/statusEffects/dazed.svg",
 		description: "EFFECTDESC.dazed"
 	},
-	{
-		id: "stunned",
+	stunned: {
 		name: "EFFECT.statusStunned",
 		img: "systems/dnd4e/icons/statusEffects/stunned.svg",
 		description: "EFFECTDESC.stunned"
 	},
-	{
-		id: "dominated",
+	donimated: {
 		name: "EFFECT.statusDominated",
 		img: "systems/dnd4e/icons/statusEffects/dominated.svg",
 		description: "EFFECTDESC.dominated"
 	},
-	{
-		id: "surprised",
+	surprised: {
 		name: "EFFECT.statusSurprised",
 		img: "systems/dnd4e/icons/statusEffects/surprised.svg",
 		description: "EFFECTDESC.surprised"
 	},
 	// Row - Movement Restrictions
-	{
-		id: "slowed",
+	slowed: {
 		name: "EFFECT.statusSlowed",
 		img: "systems/dnd4e/icons/statusEffects/slowed.svg",
 		description: "EFFECTDESC.slowed"
 	},
-	{
-		id: "immobilized",
+	immobilized: {
 		name: "EFFECT.statusImmobilized",
 		img: "systems/dnd4e/icons/statusEffects/immobilized.svg",
 		description: "EFFECTDESC.immobilized"
 	},
-	{
-		id: "restrained",
+	restrained: {
 		name: "EFFECT.statusRestrained",
 		img: "systems/dnd4e/icons/statusEffects/restrained.svg",
 		description: "EFFECTDESC.restrained"
 	},
-	{
-		id: "grabbed",
+	grabbed: {
 		name: "EFFECT.statusGrabbed",
 		img: "systems/dnd4e/icons/statusEffects/grabbed.svg",
 		description: "EFFECTDESC.grabbed"
 	},
 	// Row - Penalties
-	{
-		id: "prone",
+	prone: {
 		name: "EFFECT.statusProne",
 		img: "systems/dnd4e/icons/statusEffects/prone.svg",
 		description: "EFFECTDESC.prone"
 	},
-	{
-		id: "weakened",
+	weakened: {
 		name: "EFFECT.statusWeakened",
 		img: "systems/dnd4e/icons/statusEffects/weakend.svg",
 		description: "EFFECTDESC.weakened"
 	},
-	{
-		id: "blinded",
+	blinded: {
 		name: "EFFECT.statusBlind",
 		img: "systems/dnd4e/icons/statusEffects/blinded.svg",
 		description: "EFFECTDESC.blinded"
 	},
-	{
-		id: "deafened",
+	deafened: {
 		name: "EFFECT.statusDeafened",
 		img: "systems/dnd4e/icons/statusEffects/deafened.svg",
 		description: "EFFECTDESC.deafened"
 	},
 	// Row - Misc 
-	{
-		id: "insubstantial",
+	insubstantial: {
 		name: "EFFECT.statusInsubstantial",
 		img: "systems/dnd4e/icons/statusEffects/insubstantial.svg",
 		description: "EFFECTDESC.insubstantial"
 	},
-	{
-		id: "removed",
+	removed: {
 		name: "EFFECT.statusRemoved",
 		img: "systems/dnd4e/icons/statusEffects/removed.svg",
 		description: "EFFECTDESC.removed"
 	},
-	{
-		id: "petrified",
+	petrified: {
 		name: "EFFECT.statusPetrified",
 		img: "systems/dnd4e/icons/statusEffects/petrified.svg",
 		description: "EFFECTDESC.petrified"
 	},
-	{
-		id: "grantingCA",
+	grantingCA: {
 		name: "EFFECT.statusGrantingCA",
 		img: "systems/dnd4e/icons/statusEffects/granting-ca.svg",
 		description: "EFFECTDESC.grantingCA"
 	},
 	// Row - Visibility
-	{
-		id: "concealed",
+	concealed: {
 		name: "EFFECT.statusConceal",
 		img: "systems/dnd4e/icons/statusEffects/concealment.svg",
 		description: "EFFECTDESC.concealed"
 	},
-	{
-		id: "concealedfull",
+	concealedFull: {
 		name: "EFFECT.statusConcealFull",
 		img: "systems/dnd4e/icons/statusEffects/concealment-full.svg",
 		description: "EFFECTDESC.concealedfull"
 	},
-	{
-		id: "cover",
+	cover: {
 		name: "EFFECT.statusCover",
 		img: "systems/dnd4e/icons/statusEffects/cover.svg",
 		description: "EFFECTDESC.cover"
 	},
-	{
-		id: "coverSup",
+	coverSup: {
 		name: "EFFECT.statusCoverSup",
 		img: "systems/dnd4e/icons/statusEffects/cover-sup.svg",
 		description: "EFFECTDESC.coversup"
 	},
 	// Row - Stealth
-	{
-		id: "invisible",
+	invisible: {
 		name: "EFFECT.statusInvisible",
 		img: "systems/dnd4e/icons/statusEffects/invisible.svg",
 		description: "EFFECTDESC.invisible"
 	},
-	{
-		id: "hidden",
+	hidden: {
 		name: "EFFECT.statusHidden",
 		img: "systems/dnd4e/icons/statusEffects/hidden.svg",
 		description: "EFFECTDESC.hidden"
 	},
-	{
-		id: "sneaking",
+	sneaking: {
 		name: "EFFECT.statusSneaking",
 		img: "systems/dnd4e/icons/statusEffects/sneaking.svg",
 		description: "EFFECTDESC.sneaking"
 	},
-	{
-		id: "target",
+	target: {
 		name: "EFFECT.statusTarget",
 		img: "systems/dnd4e/icons/statusEffects/target.svg",
 		description: "EFFECTDESC.target"
 	},
 	// Row - Movement
-	{
-		id: "running",
+	running: {
 		name: "EFFECT.statusRunning",
 		img: "systems/dnd4e/icons/statusEffects/running.svg",
 		description: "EFFECTDESC.running"
 	},
-	{
-		id: "squeezing",
+	squeezing: {
 		name: "EFFECT.statusSqueezing",
 		img: "systems/dnd4e/icons/statusEffects/squeezing.svg",
 		description: "EFFECTDESC.squeezing"
 	},
-	{
-		id: "mounted",
+	mounted: {
 		name: "EFFECT.statusMounted",
 		img: "systems/dnd4e/icons/statusEffects/mounted.svg",
 		description: "EFFECTDESC.mounted"
 	},
-	{
-		id: "flying",
+	flying: {
 		name: "EFFECT.statusFlying",
 		img: "systems/dnd4e/icons/statusEffects/flying.svg",
 		description: "EFFECTDESC.flying"
 	},
 	// Row - Ongoing
-	{
-		id: "ongoing_1",
+	ongoing_1: {
 		name: "EFFECT.statusOngoing1",
 		img: "systems/dnd4e/icons/statusEffects/ongoing_1.svg",
 		description: "EFFECTDESC.ongoing"
 	},
-	{
-		id: "ongoing_2",
+	ongoing_2: {
 		name: "EFFECT.statusOngoing2",
 		img: "systems/dnd4e/icons/statusEffects/ongoing_2.svg",
 		description: "EFFECTDESC.ongoing"
 	},
-	{
-		id: "ongoing_3",
+	ongoing_3: {
 		name: "EFFECT.statusOngoing3",
 		img: "systems/dnd4e/icons/statusEffects/ongoing_3.svg",
 		description: "EFFECTDESC.ongoing"
 	},
-	{
-		id: "regen",
+	regen: {
 		name: "EFFECT.statusRegen",
 		img: "systems/dnd4e/icons/statusEffects/regen.svg",
 		description: "EFFECTDESC.regen"
 	},
 	//Row - Bonuses & Penalties
-	{
-		id: "attack_up",
+	attack_up: {
 		name: "EFFECT.statusAttackUp",
 		img: "systems/dnd4e/icons/statusEffects/attack_up.svg",
 		description: "EFFECTDESC.attackUp"
 	},
-	{
-		id: "attack_down",
+	attack_down: {
 		name: "EFFECT.statusAttackDown",
 		img: "systems/dnd4e/icons/statusEffects/attack_down.svg",
 		description: "EFFECTDESC.attackDown"
 	},
-	{
-		id: "defUp",
+	defUp: {
 		name: "EFFECT.statusDefUp",
 		img: "systems/dnd4e/icons/statusEffects/def_up.svg",
 		description: "EFFECTDESC.defUp"
 	},
-	{
-		id: "defDown",
+	defDown: {
 		name: "EFFECT.statusDefDown",
 		img: "systems/dnd4e/icons/statusEffects/def_down.svg",
 		description: "EFFECTDESC.defDown"
 	},
 	//Row - Alt Marks
-	{
-		id: "mark_2",
+	mark_2: {
 		name: "EFFECT.statusMark2",
 		img: "systems/dnd4e/icons/statusEffects/mark_2.svg",
 		description: "EFFECTDESC.mark"
 	},
-	{
-		id: "mark_3",
+	mark_3: {
 		name: "EFFECT.statusMark3",
 		img: "systems/dnd4e/icons/statusEffects/mark_3.svg",
 		description: "EFFECTDESC.mark"
 	},
-	{
-		id: "mark_4",
+	mark_4: {
 		name: "EFFECT.statusMark4",
 		img: "systems/dnd4e/icons/statusEffects/mark_4.svg",
 		description: "EFFECTDESC.mark"
 	},
-	{
-		id: "mark_5",
+	mark_5: {
 		name: "EFFECT.statusMark5",
 		img: "systems/dnd4e/icons/statusEffects/mark_5.svg",
 		description: "EFFECTDESC.mark"
 	},
 	//Row - Extra Marks + Resources
-	{
-		id: "mark_6",
+	mark_6: {
 		name: "EFFECT.statusMark6",
 		img: "systems/dnd4e/icons/statusEffects/mark_6.svg",
 		description: "EFFECTDESC.mark"
 	},
-	{
-		id: "mark_7",
+	mark_7: {
 		name: "EFFECT.statusMark7",
 		img: "systems/dnd4e/icons/statusEffects/mark_7.svg",
 		description: "EFFECTDESC.mark"
 	},
-	{
-		id: "ammo_count",
+	ammo_count: {
 		name: "EFFECT.statusAmmoCount",
 		img: "systems/dnd4e/icons/statusEffects/ammo_count.svg",
 		description: "EFFECTDESC.ammoCount"
 	},
-	{
-		id: "torch",
+	torch: {
 		name: "EFFECT.statusTorch",
 		img: "systems/dnd4e/icons/statusEffects/torch.svg",
 		description: "EFFECTDESC.torch"
 	},
 	//Row - Narrative Conditions
-	{
-		id: "drunk",
+	drunk: {
 		name: "EFFECT.statusDrunk",
 		img: "systems/dnd4e/icons/statusEffects/drunk.svg",
 		description: "EFFECTDESC.drunk"
 	},
-	{
-		id: "sleeping",
+	sleeping: {
 		name: "EFFECT.statusSleeping",
 		img: "systems/dnd4e/icons/statusEffects/sleeping.svg",
 		description: "EFFECTDESC.sleeping"
 	},
-	{
-		id: "disarmed",
+	disarmed: {
 		name: "EFFECT.statusDisarmed",
 		img: "systems/dnd4e/icons/statusEffects/disarmed.svg",
 		description: "EFFECTDESC.disarmed"
 	},
-];
+};
 
 // Languages
 DND4E.spoken = {
@@ -2068,6 +2155,8 @@ DND4E.spoken = {
 	"Primordial": "DND4E.SpokenPrimordial",
 	"Supernal": "DND4E.SpokenSupernal",
 };
+preLocalize("spoken", { sort: true });
+
 DND4E.script = {
 	"Common": "DND4E.ScriptCommon",
 	"Barazhad": "DND4E.ScriptBarazhad",
@@ -2075,6 +2164,7 @@ DND4E.script = {
 	"Iokharic": "DND4E.ScriptIokharic",
 	"Rellanic": "DND4E.ScriptRellanic",
 };
+preLocalize("script", { sort: true });
 
 //use @level to derive value
 DND4E.SCALE = {
@@ -2173,6 +2263,7 @@ DND4E.characterFlags = {
 		placeholder: 20
 	}
 };
+preLocalize("characterFlags", { keys: ["name", "hint"], sort: true });
 
 // Configure allowed status flags
 DND4E.allowedActorFlags = [

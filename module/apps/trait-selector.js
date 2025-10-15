@@ -53,14 +53,14 @@ export default class TraitSelector extends FormApplication {
 			for ( let [kc, vc] of Object.entries(children) ) {
 			  children[kc] = {
 				label: vc,
-				chosen: attr ? attr.value.includes(kc) : false
+				chosen: attr ? attr.value.has(kc) : false
 			  }
 			}
 		}
 
         choices[k] = {
           label: game.i18n.localize(`DND4E.Weapon${v}`),
-          chosen: attr ? attr.value.includes(k) : false,
+          chosen: attr ? attr.value.has(k) : false,
           children: children
         }
       }
@@ -68,7 +68,7 @@ export default class TraitSelector extends FormApplication {
       for ( let [k, v] of Object.entries(choices) ) {
         choices[k] = {
           label: v,
-          chosen: attr ? attr.value.includes(k) : false
+          chosen: attr ? attr.value.has(k) : false
         }
       }
     }

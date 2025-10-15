@@ -2360,6 +2360,23 @@ export function performPreLocalization(config) {
 	//	 lhs.id === "dead" ? -1 : rhs.id === "dead" ? 1 : lhs.name.localeCompare(rhs.name, game.i18n.lang)
 	// );
 }
+
+/* -------------------------------------------- */
+
+/**
+ * Sort the provided object by its values or by an inner sortKey.
+ * @param {object} obj                 The object to sort.
+ * @param {string|Function} [sortKey]  An inner key upon which to sort or sorting function.
+ * @returns {object}                   A copy of the original object that has been sorted.
+ */
+export function sortObjectEntries(obj, sortKey) {
+  let sorted = Object.entries(obj);
+  const sort = (lhs, rhs) => foundry.utils.getType(lhs) === "string" ? lhs.localeCompare(rhs, game.i18n.lang) : lhs - rhs;
+  if ( foundry.utils.getType(sortKey) === "function" ) sorted = sorted.sort((lhs, rhs) => sortKey(lhs[1], rhs[1]));
+  else if ( sortKey ) sorted = sorted.sort((lhs, rhs) => sort(lhs[1][sortKey], rhs[1][sortKey]));
+  else sorted = sorted.sort((lhs, rhs) => sort(lhs[1], rhs[1]));
+  return Object.fromEntries(sorted);
+}
 	
 /* -------------------------------------------- */
 
