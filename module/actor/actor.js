@@ -650,6 +650,21 @@ export class Actor4e extends Actor {
 			}
 		}
 
+		let runBonusValue = system.movement.run.bonusValue || 0;
+		if(!(system.movement.run.bonus.length === 1 && jQuery.isEmptyObject(system.movement.run.bonus[0]))) {
+			for( const b of system.movement.run.bonus) {
+				if(b.active && Helper._isNumber(b.value)) {
+					runBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,system)
+					if(Helper._isNumber(val)){
+						runBonusValue += parseInt(val);
+					}
+				}
+			}
+		}
+
 		let chargeBonusValue = system.movement.charge.bonusValue || 0;
 		if(!(system.movement.charge.bonus.length === 1 && jQuery.isEmptyObject(system.movement.charge.bonus[0]))) {
 			for( const b of system.movement.charge.bonus) {
@@ -665,16 +680,31 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		let runBonusValue = system.movement.run.bonusValue || 0;
-		if(!(system.movement.run.bonus.length === 1 && jQuery.isEmptyObject(system.movement.run.bonus[0]))) {
-			for( const b of system.movement.run.bonus) {
+		let shiftBonusValue = system.movement.shift.bonusValue || 0;
+		if(!(system.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(system.movement.shift.bonus[0]))) {
+			for( const b of system.movement.shift.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
-					runBonusValue += parseInt(b.value);
+					shiftBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
 					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
-						runBonusValue += parseInt(val);
+						shiftBonusValue += parseInt(val);
+					}
+				}
+			}
+		}
+
+		let burrowBonusValue = system.movement.burrow.bonusValue || 0;
+		if(!(system.movement.burrow.bonus.length === 1 && jQuery.isEmptyObject(system.movement.burrow.bonus[0]))) {
+			for( const b of system.movement.burrow.bonus) {
+				if(b.active && Helper._isNumber(b.value)) {
+					burrowBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,system)
+					if(Helper._isNumber(val)){
+						burrowBonusValue += parseInt(val);
 					}
 				}
 			}
@@ -695,20 +725,20 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		let shiftBonusValue = system.movement.shift.bonusValue || 0;
-		if(!(system.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(system.movement.shift.bonus[0]))) {
-			for( const b of system.movement.shift.bonus) {
+		let flyBonusValue = system.movement.fly.bonusValue || 0;
+		if(!(system.movement.fly.bonus.length === 1 && jQuery.isEmptyObject(system.movement.fly.bonus[0]))) {
+			for( const b of system.movement.fly.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
-					shiftBonusValue += parseInt(b.value);
+					flyBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
 					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
-						shiftBonusValue += parseInt(val);
+						flyBonusValue += parseInt(val);
 					}
 				}
 			}
-		}
+		}        
 		
 		let swimBonusValue = system.movement.swim.bonusValue || 0;
 		if(!(system.movement.swim.bonus.length === 1 && jQuery.isEmptyObject(system.movement.swim.bonus[0]))) {
@@ -720,6 +750,21 @@ export class Actor4e extends Actor {
 					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
 						swimBonusValue += parseInt(val);
+					}
+				}
+			}
+		}
+
+		let teleportBonusValue = system.movement.teleport.bonusValue || 0;
+		if(!(system.movement.teleport.bonus.length === 1 && jQuery.isEmptyObject(system.movement.teleport.bonus[0]))) {
+			for( const b of system.movement.teleport.bonus) {
+				if(b.active && Helper._isNumber(b.value)) {
+					teleportBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,system)
+					if(Helper._isNumber(val)){
+						teleportBonusValue += parseInt(val);
 					}
 				}
 			}
@@ -770,26 +815,7 @@ export class Actor4e extends Actor {
 		}else{
 			system.movement.walk.value = Math.max(system.movement.walk.absolute,0);
 		}
-		
-		//Charge Speed
-		if(isNaN(parseInt(system.movement.charge?.absolute))){ //All logic only required if there is no usable absolute value
-			system.movement.charge.bonusValue = chargeBonusValue;
-			let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-			system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge?.temp || 0;
-			system.movement.charge.value += system.movement.charge.feat || 0;
-			system.movement.charge.value += system.movement.charge.item || 0;
-			system.movement.charge.value += system.movement.charge.power || 0;
-			system.movement.charge.value += system.movement.charge.race || 0;
-			system.movement.charge.value += system.movement.charge.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.charge.value = Math.max(system.movement.charge.value,system.movement.charge?.floor || system.movement.charge.value-1);
-			system.movement.charge.value = Math.min(system.movement.charge.value,system.movement.charge?.ceil || system.movement.charge.value+1);
-			system.movement.charge.value = Math.max(system.movement.charge.value,0);
-		}else{
-			system.movement.charge.value = Math.max(system.movement.charge.absolute,0);
-		}
-		
+
 		//Run Speed
 		if(isNaN(parseInt(system.movement.run?.absolute))){ //All logic only required if there is no usable absolute value
 			system.movement.run.bonusValue = runBonusValue;
@@ -809,6 +835,63 @@ export class Actor4e extends Actor {
 			system.movement.run.value = Math.max(system.movement.run.absolute,0);
 		}
 		
+		//Charge Speed
+		if(isNaN(parseInt(system.movement.charge?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.charge.bonusValue = chargeBonusValue;
+			let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge?.temp || 0;
+			system.movement.charge.value += system.movement.charge.feat || 0;
+			system.movement.charge.value += system.movement.charge.item || 0;
+			system.movement.charge.value += system.movement.charge.power || 0;
+			system.movement.charge.value += system.movement.charge.race || 0;
+			system.movement.charge.value += system.movement.charge.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.charge.value = Math.max(system.movement.charge.value,system.movement.charge?.floor || system.movement.charge.value-1);
+			system.movement.charge.value = Math.min(system.movement.charge.value,system.movement.charge?.ceil || system.movement.charge.value+1);
+			system.movement.charge.value = Math.max(system.movement.charge.value,0);
+		}else{
+			system.movement.charge.value = Math.max(system.movement.charge.absolute,0);
+		}
+
+		//Shift Speed
+		if(isNaN(parseInt(system.movement.shift?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.shift.bonusValue = shiftBonusValue;		
+			let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift?.temp || 0;
+			system.movement.shift.value += system.movement.shift.feat || 0;
+			system.movement.shift.value += system.movement.shift.item || 0;
+			system.movement.shift.value += system.movement.shift.power || 0;
+			system.movement.shift.value += system.movement.shift.race || 0;
+			system.movement.shift.value += system.movement.shift.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.shift.value = Math.max(system.movement.shift.value,system.movement.shift?.floor || system.movement.shift.value-1);
+			system.movement.shift.value = Math.min(system.movement.shift.value,system.movement.shift?.ceil || system.movement.shift.value+1);
+			system.movement.shift.value = Math.max(system.movement.shift.value,0);
+		}else{
+			system.movement.shift.value = Math.max(system.movement.shift.absolute,0);
+		}
+
+		//Burrow Speed
+		if(isNaN(parseInt(system.movement.burrow?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.burrow.bonusValue = burrowBonusValue;
+			let burrowForm = eval(Helper.replaceData(system.movement.burrow.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.burrow.value = burrowForm + burrowBonusValue + system.movement.burrow?.temp || 0;
+			system.movement.burrow.value += system.movement.burrow.feat || 0;
+			system.movement.burrow.value += system.movement.burrow.item || 0;
+			system.movement.burrow.value += system.movement.burrow.power || 0;
+			system.movement.burrow.value += system.movement.burrow.race || 0;
+			system.movement.burrow.value += system.movement.burrow.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.burrow.value = Math.max(system.movement.burrow.value,system.movement.burrow?.floor || system.movement.burrow.value-1);
+			system.movement.burrow.value = Math.min(system.movement.burrow.value,system.movement.burrow?.ceil || system.movement.burrow.value+1);
+			system.movement.burrow.value = Math.max(system.movement.burrow.value,0);
+		}else{
+			system.movement.burrow.value = Math.max(system.movement.burrow.absolute,0);
+		}
+
 		//Climb Speed
 		if(isNaN(parseInt(system.movement.climb?.absolute))){ //All logic only required if there is no usable absolute value
 			system.movement.climb.bonusValue = climbBonusValue;
@@ -827,24 +910,43 @@ export class Actor4e extends Actor {
 		}else{
 			system.movement.climb.value = Math.max(system.movement.climb.absolute,0);
 		}
-		
-		//Shift Speed
-		if(isNaN(parseInt(system.movement.shift?.absolute))){ //All logic only required if there is no usable absolute value
-			system.movement.shift.bonusValue = shiftBonusValue;		
-			let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
-			system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift?.temp || 0;
-			system.movement.shift.value += system.movement.shift.feat || 0;
-			system.movement.shift.value += system.movement.shift.item || 0;
-			system.movement.shift.value += system.movement.shift.power || 0;
-			system.movement.shift.value += system.movement.shift.race || 0;
-			system.movement.shift.value += system.movement.shift.untyped || 0;
+
+		//Burrow Speed
+		if(isNaN(parseInt(system.movement.burrow?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.burrow.bonusValue = burrowBonusValue;
+			let burrowForm = eval(Helper.replaceData(system.movement.burrow.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.burrow.value = burrowForm + burrowBonusValue + system.movement.burrow?.temp || 0;
+			system.movement.burrow.value += system.movement.burrow.feat || 0;
+			system.movement.burrow.value += system.movement.burrow.item || 0;
+			system.movement.burrow.value += system.movement.burrow.power || 0;
+			system.movement.burrow.value += system.movement.burrow.race || 0;
+			system.movement.burrow.value += system.movement.burrow.untyped || 0;
 			
 			//trim value according to floor and ceil
-			system.movement.shift.value = Math.max(system.movement.shift.value,system.movement.shift?.floor || system.movement.shift.value-1);
-			system.movement.shift.value = Math.min(system.movement.shift.value,system.movement.shift?.ceil || system.movement.shift.value+1);
-			system.movement.shift.value = Math.max(system.movement.shift.value,0);
+			system.movement.burrow.value = Math.max(system.movement.burrow.value,system.movement.burrow?.floor || system.movement.burrow.value-1);
+			system.movement.burrow.value = Math.min(system.movement.burrow.value,system.movement.burrow?.ceil || system.movement.burrow.value+1);
+			system.movement.burrow.value = Math.max(system.movement.burrow.value,0);
 		}else{
-			system.movement.shift.value = Math.max(system.movement.shift.absolute,0);
+			system.movement.burrow.value = Math.max(system.movement.burrow.absolute,0);
+		}
+
+		//Fly Speed
+		if(isNaN(parseInt(system.movement.fly?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.fly.bonusValue = flyBonusValue;
+			let flyForm = eval(Helper.replaceData(system.movement.fly.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.fly.value = flyForm + flyBonusValue + system.movement.fly?.temp || 0;
+			system.movement.fly.value += system.movement.fly.feat || 0;
+			system.movement.fly.value += system.movement.fly.item || 0;
+			system.movement.fly.value += system.movement.fly.power || 0;
+			system.movement.fly.value += system.movement.fly.race || 0;
+			system.movement.fly.value += system.movement.fly.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.fly.value = Math.max(system.movement.fly.value,system.movement.fly?.floor || system.movement.fly.value-1);
+			system.movement.fly.value = Math.min(system.movement.fly.value,system.movement.fly?.ceil || system.movement.fly.value+1);
+			system.movement.fly.value = Math.max(system.movement.fly.value,0);
+		}else{
+			system.movement.fly.value = Math.max(system.movement.fly.absolute,0);
 		}
 		
 		//Swim Speed
@@ -864,6 +966,25 @@ export class Actor4e extends Actor {
 			system.movement.swim.value = Math.max(system.movement.swim.value,0);
 		}else{
 			system.movement.swim.value = Math.max(system.movement.swim.absolute,0);
+		}
+
+		//Teleport Speed
+		if(isNaN(parseInt(system.movement.teleport?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.teleport.bonusValue = teleportBonusValue;		
+			let teleportForm = eval(Helper.replaceData(system.movement.teleport.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.teleport.value = teleportForm + teleportBonusValue + system.movement.teleport?.temp || 0;
+			system.movement.teleport.value += system.movement.teleport.feat || 0;
+			system.movement.teleport.value += system.movement.teleport.item || 0;
+			system.movement.teleport.value += system.movement.teleport.power || 0;
+			system.movement.teleport.value += system.movement.teleport.race || 0;
+			system.movement.teleport.value += system.movement.teleport.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.teleport.value = Math.max(system.movement.teleport.value,system.movement.teleport?.floor || system.movement.teleport.value-1);
+			system.movement.teleport.value = Math.min(system.movement.teleport.value,system.movement.teleport?.ceil || system.movement.teleport.value+1);
+			system.movement.teleport.value = Math.max(system.movement.teleport.value,0);
+		}else{
+			system.movement.teleport.value = Math.max(system.movement.teleport.absolute,0);
 		}
 	}
 	_prepareDerivedDataSkills(actorData, system){

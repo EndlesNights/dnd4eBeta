@@ -116,6 +116,47 @@ Hooks.once("init", async function() {
 	CONFIG.Token.movement.TerrainData = TerrainData4e;
 	CONFIG.Token.rulerClass = TokenRuler4e;
 
+	CONFIG.Token.movement.actions.charge = {
+		"label": "DND4E.TOKEN.MOVEMENT.ACTIONS.charge.label",
+		"icon": "fa-solid fa-person-walking",
+		"img": "systems/dnd4e/icons/ui/charging-bull.svg",
+		"order": 1,
+		"teleport": false,
+		"measure": true,
+		"walls": "move",
+		"visualize": true,
+		"deriveTerrainDifficulty": null
+	},
+	CONFIG.Token.movement.actions.shift = {
+		"label": "DND4E.TOKEN.MOVEMENT.ACTIONS.shift.label",
+		"icon": "fa-solid fa-person-walking",
+		"img": "systems/dnd4e/icons/ui/suspicious.svg",
+		"order": 2,
+		"teleport": false,
+		"measure": true,
+		"walls": "move",
+		"visualize": true,
+		"deriveTerrainDifficulty": null
+	},
+	CONFIG.Token.movement.actions.crawl.order = 3
+	CONFIG.Token.movement.actions.climb.order = 4;
+	CONFIG.Token.movement.actions.swim.order = 5;
+	CONFIG.Token.movement.actions.burrow.order = 6;
+	CONFIG.Token.movement.actions.fly.order = 7;
+	CONFIG.Token.movement.actions.teleport = {
+		"label": "DND4E.TOKEN.MOVEMENT.ACTIONS.teleport.label",
+		"icon": "fa-solid fa-person-from-portal",
+		"img": "icons/svg/teleport.svg",
+		"order": 8,
+		"teleport": true,
+		"measure": true,
+		"walls": "move",
+		"visualize": true
+	},
+	CONFIG.Token.movement.actions.displace.order = 9;
+	delete CONFIG.Token.movement.actions.blink;
+	delete CONFIG.Token.movement.actions.jump;
+
 	// System data types
 	CONFIG.Actor.dataModels = {
 		"Player Character": CharacterData,
@@ -200,6 +241,13 @@ Hooks.once("init", async function() {
 
 	customSKillSetUp();
 
+	 // Set up token movement actions
+  	TokenDocument4e.registerMovementActions();
+	
+	// Custom movement cost aggregator
+	CONFIG.Token.movement.costAggregator = (results, distance, segment) => {
+		return Math.max(...results.map(i => i.cost));
+	};
 });
 
 /* --------------------------------------------- */

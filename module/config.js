@@ -1322,6 +1322,43 @@ preLocalize("vision", { sort: true });
 /* -------------------------------------------- */
 
 /**
+ * Types of movement supported by creature actors in the system.
+ * @enum {MovementTypeConfig}
+ */
+DND4E.movementTypes = {
+	burrow: {
+		label: "DND4E.MovementBurrowing"
+	},
+	climb: {
+		label: "DND4E.MovementClimbing",
+		walkFallback: true
+	},
+	crawl: {
+		label: "TOKEN.MOVEMENT.ACTIONS.crawl.label",
+		walkFallback: true
+	},
+	fly: {
+		label: "DND4E.MovementFlying"
+	},
+	shift: {
+		label: "DND4E.MovementShifting"
+	},
+	swim: {
+		label: "DND4E.MovementSwimming",
+		walkFallback: true
+	},
+	teleport: {
+		label: "DND4E.MovementTeleporting"
+	},
+	walk: {
+		label: "DND4E.MovementWalking"
+	}
+};
+preLocalize("movementTypes", { key: "label" });
+
+/* -------------------------------------------- */
+
+/**
  * Types of terrain that can cause difficult terrain.
  * @enum {{ label: string }}
  */

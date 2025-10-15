@@ -100,15 +100,22 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 		// Get actor's movement speed for currently selected token movement action
 		const movement = this.token.actor?.system.movement;
 		if ( !movement ) return style;
-		let currActionSpeed = movement.walk.value;
-		let runSpeed = movement.run.value;
+		let currActionSpeed = movement[waypoint.action]?.value ?? 0;
+		let runBonus = !['crawl', 'shift', 'teleport'].includes(waypoint.action) ? movement.run.value : 0;
+		let runSpeed = currActionSpeed + runBonus;
 
-		// Color `normal` if <= max speed, else `double` if <= double max speed, else `triple`
+		// If current action can fall back to walk, treat "max" speed as maximum between current & walk
+		if ( CONFIG.DND4E.movementTypes[waypoint.action]?.walkFallback
+			|| !CONFIG.DND4E.movementTypes[waypoint.action] ) {
+			currActionSpeed = Math.max(currActionSpeed, (movement.walk.value + runSpeed) / 2);
+		}
+
+		// Color `walk` if <= max speed, else `run` if <= max speed + run bonus, else `doubleWalk` if <= 2 * max speed, else `doubleRun`
 		const { walk, run, doubleWalk, doubleRun } = CONFIG.DND4E.tokenRulerColors;
 		const increment = (waypoint.measurement.cost - .1);
 		if ( increment <= currActionSpeed ) style.color = walk;
-		else if ( increment <= runSpeed ) style.color = run;
-		else if (increment <= 2 * currActionSpeed) style.color = doubleWalk;
+		else if ( runBonus && increment <= runSpeed ) style.color = run;
+		else if ( !runBonus || increment <= 2 * currActionSpeed ) style.color = doubleWalk;
 		else style.color = doubleRun;
 		return style;
 	}

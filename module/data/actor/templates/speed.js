@@ -37,11 +37,14 @@ export default class SpeedTemplate extends foundry.abstract.DataModel {
         temp: new NumberField({...numberConfig}),
       }, {label: "DND4E.MovementSpeedBase"}),
       walk: new MovementField({}, {label: "DND4E.MovementSpeedWalking"}),
+      run: new MovementField({}, {formulaString: "2", label: "DND4E.MovementSpeedRunning"}),
       charge: new MovementField({}, {label: "DND4E.MovementSpeedCharging"}),
-      run: new MovementField({}, {formulaString: "@base + @armour + 2", label: "DND4E.MovementSpeedRunning"}),
-      climb: new MovementField({}, {formulaString: "(@base + @armour) / 2", label: "DND4E.MovementSpeedClimbing"}),
       shift: new MovementField({}, {formulaString: "1", label: "DND4E.MovementSpeedShifting"}),
-      swim: new MovementField({}, {formulaString: "(@base + @armour) / 2", label: "DND4E.MovementSpeedSwimming"}),
+      burrow: new MovementField({}, {formulaString: "", label: "DND4E.MovementSpeedBurrowing"}),
+      climb: new MovementField({}, {formulaString: "", label: "DND4E.MovementSpeedClimbing"}),
+      fly: new MovementField({}, {formulaString: "", label: "DND4E.MovementSpeedFlying"}),
+      swim: new MovementField({}, {formulaString: "", label: "DND4E.MovementSpeedSwimming"}),
+      teleport: new MovementField({}, {formulaString: "", label: "DND4E.MovementSpeedTeleporting"}),
       ignoredDifficultTerrain: new SetField(new StringField(), {label: "DND4E.IgnoredDifficultTerrain"}),
       notes: new StringField({initial: ""})
     };

@@ -564,6 +564,7 @@
 "DND4E.HealingMenuSpendHealingSurge": "Spend a healing surge",
 "DND4E.HealingMenuSpendHealingSurgeDesc": "Some healing does not need you to spend surges. (E.g. Paladin's lay on hands ability)",
 "DND4E.HealingRoll": "Healing Roll",
+"DND4E.HealingSettings": "Healing Settings",
 "DND4E.HealingTemp": "Healing (Temporary)",
 "DND4E.HealingSurges": "Healing Surges",
 "DND4E.HealingSurgesShort": "Surges",
@@ -751,13 +752,19 @@
 "DND4E.Mount": "Mount",
 "DND4E.Movement": "Movement",
 "DND4E.MovementBonus": "Bonuses to {mode} speed",
+"DND4E.MovementModes": "Movement Modes",
+"DND4E.MovementSpecialSpeeds": "Special Movement",
 "DND4E.MovementSpeedBase": "Base Speed",
+"DND4E.MovementSpeedBurrowing": "Burrow Speed",
 "DND4E.MovementSpeedCharging": "Charge Speed",
 "DND4E.MovementSpeedClimbing": "Climb Speed",
+"DND4E.MovementSpeedFlying": "Fly Speed",
+"DND4E.MovementSpeedRunning": "Run Bonus",
 "DND4E.MovementSpeedShifting": "Shift Speed",
-"DND4E.MovementSpeedRunning": "Run Speed",
 "DND4E.MovementSpeedSwimming": "Swim Speed",
+"DND4E.MovementSpeedTeleporting": "Teleport Speed",
 "DND4E.MovementSpeedWalking": "Walk Speed",
+"DND4E.MovementStandardSpeeds": "Standard Movement",
 "DND4E.MovementUnit": "sq.",
 "DND4E.Name": "Name",
 "DND4E.NameNPC": "Non Player Character Name",
@@ -1545,6 +1552,18 @@
 "DND4E.Tier.ParagonPath": "Paragon Path",
 "DND4E.Tier.Tier": "Tier",
 "DND4E.Tier.TierName": "{tier} Tier",
+
+"DND4E.TOKEN.MOVEMENT.ACTIONS": {
+    "charge": {
+        "label": "Charge"
+    },
+    "shift": {
+        "label": "Shift"
+    },
+    "teleport": {
+        "label": "Teleport"
+    }
+},
 
 "EFFECT.DurationEndInit": "Effect End Time",
 "EFFECT.DurationSeconds": "Seconds",
