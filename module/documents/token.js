@@ -26,14 +26,15 @@ export default class TokenDocument4e extends TokenDocument {
 	 */
 	static registerMovementActions() {
 		for ( const type of Object.keys(CONFIG.DND4E.movementTypes) ) {
-		const actionConfig = CONFIG.Token.movement.actions[type];
-		if ( !actionConfig ) continue;
-		actionConfig.getAnimationOptions = token => {
-			const actorMovement = token?.actor?.system.movement ?? {};
-			if ( !(type in actorMovement) || actorMovement[type]?.value ) return {};
-			return { movementSpeed: CONFIG.Token.movement.defaultSpeed / 2 };
-		};
-		actionConfig.getCostFunction = (...args) => this.getMovementActionCostFunction(type, ...args);
+            const actionConfig = CONFIG.Token.movement.actions[type];
+            if ( !actionConfig ) continue;
+            actionConfig.getAnimationOptions = token => {
+                if (type === 'teleport') return { duration: 0 };
+                const actorMovement = token?.actor?.system.movement ?? {};
+                if ( !(type in actorMovement) || actorMovement[type]?.value ) return {};
+                return { movementSpeed: CONFIG.Token.movement.defaultSpeed / 2 };
+            };
+            actionConfig.getCostFunction = (...args) => this.getMovementActionCostFunction(type, ...args);
 		}
 		CONFIG.Token.movement.actions.crawl.getCostFunction = token => {
 		const { actor } = token;
