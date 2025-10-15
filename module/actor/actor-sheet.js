@@ -468,9 +468,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (context.isCreature) {
 			actorData.size = DND4E.actorSizes;
 
-			this._prepareDataSense(actorData.senses,
-				{"vision": CONFIG.DND4E.vision, "special": CONFIG.DND4E.special}
-			);
+			this._prepareDataSense(actorData.senses);
 			
 			this._prepareDataTraits(actorData.languages, 
 				{"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
@@ -987,8 +985,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	  item.toggleTitle = game.i18n.localize(isActive ? "DND4E.Equipped" : "DND4E.Unequipped");
 	}
   }
-	_prepareDataSense(data, map) {
-		
+	_prepareDataSense(data) {
+		const map = {special: CONFIG.DND4E.special};
 		for ( let [l, choices] of Object.entries(map) ) {
 			const trait = data[l];
 			if ( !trait ) continue;

@@ -1,7 +1,7 @@
 import SimpleTraitField from "../fields/simple-trait-field.js";
 import DetailsField from "./details.js";
 
-const { HTMLField, SchemaField, StringField } = foundry.data.fields;
+const { ArrayField, HTMLField, SchemaField, SetField, StringField } = foundry.data.fields;
 
 export default class CreatureTemplate extends foundry.abstract.DataModel {
   static defineSchema() {
@@ -13,8 +13,10 @@ export default class CreatureTemplate extends foundry.abstract.DataModel {
         script: new SimpleTraitField({}, {label: "DND4E.Script"})
       }, {label: "DND4E.Languages"}),
       senses: new SchemaField({
-        vision: new SimpleTraitField(),
-        special: new SimpleTraitField({}, {label: "DND4E.SpecialSenses"}),
+        special: new SchemaField({
+          value: new SetField(new ArrayField(new StringField()), {initial: []}),
+          custom: new StringField({required: true, initial: ""})
+        }),
         notes: new StringField({initial: ""})
       }, {label: "DND4E.Senses"})
     }
