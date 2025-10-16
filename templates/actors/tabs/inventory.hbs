@@ -55,13 +55,13 @@
     {{#each section.items as |item iid|}}
       <li class="item flexrow {{section.css}} collapsible{{#if collapsed}} collapsed{{/if}}"
         data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
-        <div class="item-name flexrow rollable">
+        <div class="item-name flexrow rollable" data-action="itemSummary">
           {{#if section.editableName}}
           <input type="text" value="{{item.name}}">
           {{else}}
           <div class="item-image"><img src="{{item.img}}" width="30" height="30"/></div>
           <i class="fa-solid fa-caret-down" inert></i>
-          <h4 data-action="itemSummary">
+          <h4>
             {{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
             
             {{~#if item.system.attuned}} <i class="fas fa-sun attuned" data-tooltip="{{localize "DND4E.Attuned"}}"></i>{{/if}}

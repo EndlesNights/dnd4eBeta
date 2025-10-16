@@ -46,10 +46,10 @@
       <ol class="item-list ritual-list">
       {{#each section.items as |item iid|}}
         <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
-          <div class="item-name flexrow rollable">
+          <div class="item-name flexrow rollable" data-action="itemSummary">
             <div class="item-image"><img src="{{item.img}}" width="30" height="30"/></div>
             <i class="fa-solid fa-caret-down" inert></i>
-            <h4 data-action="itemSummary">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
+            <h4>{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
           </div>
     
           {{#if section.columns}}
