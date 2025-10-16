@@ -85,12 +85,9 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         formulaNorm: new StringField({initial: "@abilities.str.value * 10"}),
         formulaHeavy: new StringField({initial: "@abilities.str.value * 20"}),
         formulaMax: new StringField({initial: "@abilities.str.value * 50"}),
-        encumBar: new StringField({required: false}),
         encumbered: new BooleanField({required: false}),
         maxHeavy: new NumberField({required: false}),
-        maxMax: new NumberField({required: false}),
-        pbc: new NumberField({required: false}),
-        pec: new NumberField({required: false})
+        maxMax: new NumberField({required: false})
       })
     }
   }

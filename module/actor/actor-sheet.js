@@ -81,9 +81,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		sheet: {
 			template: "systems/dnd4e/templates/actors/actor-sheet.hbs",
 			scrollable: [
-				".inventory .inventory-list",
-				".features .inventory-list",
-				".powers .inventory-list",
+				".inventory",
+				".features",
+				".powers",
 				".section--sidebar",
 				".section--tabs-content",
 				"section.tab"
@@ -485,6 +485,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			this._prepareMovement(context);
 		}
 
+		const {value, max} = actorData.encumbrance;
+		actorData.encumbrance = {
+			...actorData.encumbrance,
+			pbc: Math.clamp((value / max) * 100, 0, 99.7),
+			pec: Math.clamp((value / max) * 100 - 100, 1, 99.7),
+			encumBar: value > max ? "#b72b2b" : "#6c8aa5"
+		};
+
 		context.system = actorData;
 
 		return context;
@@ -542,11 +550,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		// Partition items by category
 		let [items, pow, feats, rits] = data.items.reduce((arr, item) => {
 			// Item details
-			item.img = item.img || DEFAULT_TOKEN;
+			item.img ||= DEFAULT_TOKEN;
 			item.isStack = Number.isNumeric(item.system.quantity) && (item.system.quantity !== 1);
 
-			// Item usage
-			item.hasUses = item.system.uses && (item.system.preparedMaxUses > 0);
 			// item.isOnCooldown = item.system.recharge && !!item.system.recharge.value && (item.system.recharge.charged === false);
 			item.isDepleted = item.isOnCooldown && (item.system.uses?.per && (item.system.uses?.value > 0));
 			//Causing error in v10, only getter no setter now.
@@ -576,7 +582,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			const item = this.actor.items.get(i._id);
 			i.system.quantity = i.system.quantity || 0;
 			i.system.weight = i.system.weight || 0;
-			i.totalWeightLable = item.totalWeight.toNearest(0.01);
+			i.totalWeight = item.totalWeight;
+			i.totalWeightLable = i.totalWeight.toNearest(0.01);
+			i.system.preparedMaxUses = item.system.preparedMaxUses;
+			i.hasUses = item.system.uses && (item.system.preparedMaxUses > 0);
 			inventory[i.type].items.push(i);
 		}
 

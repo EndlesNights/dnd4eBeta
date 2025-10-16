@@ -1784,7 +1784,7 @@ font-size:12px;
 }
 .dnd4e.sheet .item-list .item-list{
 	list-style:none;
-	margin:0;
+	margin:0 -2px 0 0;
 	padding:0;
 }
 .dnd4e.sheet .item-list .item-controls{
