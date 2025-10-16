@@ -271,7 +271,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			html.querySelectorAll('.con-bon-config').forEach(el => el.addEventListener("click", this._onConBonConfig.bind(this)));
 			
 			// Context Menus
-			new foundry.applications.ux.ContextMenu.implementation(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this)});
+			new CONFIG.ux.ContextMenu(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this), jQuery: false, fixed: true});
 		}
 	
 		//Disabels and adds warning to input fields that are being modfied by active effects

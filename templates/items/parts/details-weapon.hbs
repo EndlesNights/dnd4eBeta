@@ -1,0 +1,374 @@
+<h3 class="form-header">{{ localize "DND4E.ItemWeaponDetails" }}</h3>
+{{!-- Weapon Type --}}
+<div class="form-group">
+  <label>{{ localize "DND4E.ItemWeaponType" }}:</label>
+  <select name="system.weaponType">
+    {{#select system.weaponType}}
+    {{#each config.weaponTypes as |name type|}}
+    <option value="{{type}}">{{name}}</option>
+    {{/each}}
+    {{/select}}
+  </select>
+</div>
+
+{{!-- Weapon Hand --}}
+<div class="form-group">
+  <label>{{ localize "DND4E.ItemWeaponHand" }}:</label>
+  <select name="system.weaponHand">
+    {{#select system.weaponHand}}
+    {{#each config.weaponHands as |name hand|}}
+    <option value="{{hand}}">{{name}}</option>
+    {{/each}}
+    {{/select}}
+  </select>
+</div>
+
+<div class="form-group">
+  <label>{{ localize "DND4E.WeaponBase" }}:</label>
+  <select name="system.weaponBaseType">
+    {{#select system.weaponBaseType}}
+    <option value="">{{ localize 'DND4E.None' }}</option>
+    <option value="custom">{{ localize 'DND4E.Custom' }}</option>
+    {{#each weaponBaseTypes as |name type|}}
+    <option value="{{type}}">{{name}}</option>
+    {{/each}}
+    {{/select}}
+  </select>
+</div>
+
+{{#if isWeaponBaseTypeCustom}}
+<div class="form-group">
+  <label>{{ localize "DND4E.WeaponBaseCustom" }}:</label>
+  <input type="text" name="system.weaponBaseTypeCustom" value="{{system.weaponBaseTypeCustom}}" data-tooltip="{{ localize 'DND4E.WeaponBaseCustom' }}" placeholder="{{ localize 'DND4E.WeaponBaseCustom' }}" data-dtype="String" onClick="this.select();"/>
+</div>
+{{/if}}
+
+{{!-- Weapon Status --}}
+<div class="form-group stacked">
+  <label>{{ localize "DND4E.ItemWeaponStatus" }}:</label>
+  <div class="form-fields">
+    {{#unless (eq system.weaponType 'implement')}}
+      <label class="checkbox">
+        <input type="checkbox" name="system.proficient" {{checked system.proficient}}/> {{ localize "DND4E.Proficient" }}
+      </label>
+    {{/unless}}
+    {{#if (eq system.weaponType 'implement')}}
+      <label class="checkbox">
+        <input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4E.Proficient" }}
+      </label>
+    {{else if system.properties.imp}}
+      <label class="checkbox">
+        <input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4E.ProficiencyI" }}
+      </label>
+    {{/if}}
+    <label class="checkbox">
+      <input type="checkbox" name="system.equipped" {{checked system.equipped}}/> {{ localize "DND4E.Equipped" }}
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" name="system.identified" {{checked system.identified}}/> {{ localize "DND4E.Identified" }}
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" name="system.attuned" {{checked system.attuned}}/> {{ localize "DND4E.Attuned" }}
+    </label>
+  </div>
+</div>
+
+{{!-- Weapon Properties --}}
+<div class="">
+  {{#unless (eq system.weaponType "implement")}}
+  <h3 class="form-header">{{ localize 'DND4E.ItemWeaponStats' }}</h3>
+  <div class="form-group">
+    <label data-tooltip="{{ localize 'DND4E.BonusTypeProficiency' }}">{{ localize 'DND4E.BonusTypeProficiency' }}:</label>
+    <div class="form-fields">
+      <input type="text" name="system.profBonus" value="{{system.profBonus}}" data-tooltip="{{ localize 'DND4E.BonusTypeProficiency' }}" placeholder="0" data-dtype="Number" onClick="this.select();"/>
+    </div>
+  </div>
+  {{/unless}}
+  <div class="form-group">
+    <label data-tooltip="{{ localize 'DND4E.WeaponImplement' }} {{ localize 'DND4E.BonusTypeProficiency' }}">{{ localize 'DND4E.WeaponImplement' }} {{ localize 'DND4E.BonusTypeProficiency' }}:</label>
+    <div class="form-fields">
+      <input type="text" name="system.profImpBonus" value="{{system.profImpBonus}}" data-tooltip="{{ localize 'DND4E.WeaponImplement' }} {{ localize 'DND4E.BonusTypeProficiency' }}" placeholder="0" data-dtype="String" onClick="this.select();"/>
+    </div>
+  </div>
+  <div class="form-group">    
+    <label data-tooltip="{{ localize 'DND4E.BonusTypeEnhancement' }}">{{ localize 'DND4E.BonusTypeEnhancement' }}:</label>
+    <div class="form-fields">
+      <input type="text" name="system.enhance" value="{{system.enhance}}" data-tooltip="{{ localize 'DND4E.BonusTypeEnhancement' }}" placeholder="0" data-dtype="String" onClick="this.select();"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label data-tooltip="{{ localize 'DND4E.WeaponRanged' }}?">{{ localize 'DND4E.WeaponRanged' }}?</label>
+    <input type="checkbox" name="system.isRanged" data-dtype="Boolean" {{checked system.isRanged}}/>
+    <div>
+      {{#if system.isRanged}}
+      <div class="form-fields">
+        <span data-tooltip="{{ localize 'DND4E.WeaponRangeTip' }}">{{ localize 'DND4E.rangeWeapon' }}:</span>
+        <input type="text" name="system.range.value" value="{{system.range.value}}" data-tooltip="{{ localize 'DND4E.WeaponRangeShort' }}: {{ localize 'DND4E.WeaponRangeShortTip' }}" placeholder="{{ localize 'DND4E.WeaponRangeShort' }}" data-dtype="Number" onClick="this.select();"/>
+        <span class="sep">/</span>
+        <input type="text" name="system.range.long" value="{{system.range.long}}" data-tooltip="{{ localize 'DND4E.WeaponRangeLong' }}: {{ localize 'DND4E.WeaponRangeLongTip' }}" placeholder="{{ localize 'DND4E.WeaponRangeLong' }}" data-dtype="Number" onClick="this.select();"/>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+  <div class="form-group uses-per">
+    <label>{{ localize "DND4E.LimitedUses"}}:</label>
+    <div class="form-fields">
+      <input type="text" name="system.uses.value" value="{{system.uses.value}}" data-dtype="Number"/>
+      <span class="sep">{{ localize "DND4E.of" }}</span>
+      <input type="text" name="system.uses.max" value="{{system.uses.max}}"/>
+      <span class="sep">{{ localize "DND4E.per" }}</span>
+      <select name="system.uses.per">
+        <option value=""></option>
+        {{selectOptions config.limitedUsePeriods selected=system.uses.per labelAttr="label"}}
+      </select>
+    </div>
+  </div>
+  <div class="form-group uses-per">
+    <label>{{ localize "DND4E.ConsumeTitle" }}:</label>
+    <div class="form-fields consumption">
+      <select class="consume-type" name="system.consume.type">
+        {{selectOptions config.abilityConsumptionTypes selected=system.consume.type labelAttr="label"}}
+      </select>
+      <select class="conusme-target" name="system.consume.target">
+        {{selectOptions abilityConsumptionTargets selected=system.consume.target}}
+      </select>
+      <input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number"/>
+    </div>
+  </div>
+  
+  <h4 class="damage-header"data-tooltip="{{ localize 'DND4E.DiceWeapon' }}: {{ localize 'DND4E.DiceWeaponTip' }}" for="damageDice">{{ localize "DND4E.DiceWeapon"}}<a class="damage-control" data-action="addDice"><i class="fas fa-plus"></i></a></h4>
+  
+  <ol class="damage-parts form-group">
+    {{#each system.damageDice.parts as |part i| }}
+    <li class="damage-part" data-damage-part="{{i}}">
+      <label>{{ localize "DND4E.DiceNumber"}}</label>
+      <input type="text" name="system.damageDice.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+      <label>{{ localize "DND4E.DiceSize"}}</label>
+      <input type="text" name="system.damageDice.parts.{{i}}.1" value="{{lookup this "1"}}"/>
+      <label>{{ localize "DND4E.DiceExtra"}}</label>
+      <input type="text" name="system.damageDice.parts.{{i}}.2" value="{{lookup this "2"}}"/>
+      <a class="damage-control" data-action="deleteDice"><i class="fas fa-minus"></i></a>
+    </li>
+    {{/each}}
+  </ol>
+
+  {{#if system.properties.bru}}
+  <div class="form-group">
+    <label data-tooltip="{{ localize "DND4E.DiceBrutalTitle"}}" for="brutal">{{ localize "DND4E.DiceBrutal"}}</label>
+    <div class="form-fields">
+      <input type="text" name="system.brutal" id="brutal" value="{{system.brutal}}" data-tooltip="{{ localize 'DND4E.DiceBrutalTitle'}}" placeholder="{{ localize "DND4E.DiceBrutalPlaceholder"}}" onClick="this.select();" data-dtype="Number"/>
+    </div>
+  </div>
+  {{/if}}
+
+  {{#unless (eq system.weaponType "implement")}}
+  <div class="form-group">
+    <label data-tooltip="{{ localize 'DND4E.CriticalHitTitle'}}">{{#if system.properties.imp}}{{ localize 'DND4E.Weapon' }}{{/if}} {{ localize 'DND4E.CriticalHit'}}:</label>
+    <div class="form-fields">
+      <input type="text" name ="system.critRange" value="{{system.critRange}}" data-tooltip="{{ localize 'DND4E.CriticalHitTitle'}}" placeholder="{{ localize 'DND4E.CriticalHitPlaceholder'}}" data-dtype="Number" onClick="this.select();"/>
+    </div>
+  </div>
+  {{/unless}}
+
+  {{#if system.properties.imp}}
+  <div class="form-group">
+    <label data-tooltip="{{ localize 'DND4E.CriticalHitTitle'}}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4E.WeaponImplement'}}{{/unless}} {{ localize 'DND4E.CriticalHit'}}:</label>
+    <div class="form-fields">
+      <input type="text" name ="system.critRangeImp" value="{{system.critRangeImp}}" data-tooltip="{{ localize 'DND4E.CriticalHitTitle'}}" placeholder="20" data-dtype="Number" onClick="this.select();"/>
+    </div>
+  </div>
+  {{/if}}
+
+  {{!-- Attack  Formula--}}
+  {{#unless (eq system.weaponType "implement")}}
+  <div class="form-group stacked">
+    <h4 class="damage-header" data-tooltip="{{ localize 'DND4E.FormulaAttackBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4E.Weapon' }}{{/if}} {{ localize 'DND4E.FormulaAttackBonus' }}:</h4>
+    <input type="text" name="system.attackForm" value="{{system.attackForm}}" data-tooltip="{{ localize 'DND4E.FormulaAttackBonusTip' }}" data-dtype="String"/>
+  </div>
+  
+  {{!-- Damage Formula --}}
+  <div class="form-group stacked">
+    <h4 class="damage-header" data-tooltip="{{ localize 'DND4E.FormulaDamageBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4E.Weapon' }}{{/if}} {{ localize 'DND4E.FormulaDamageBonusPrimary' }}:</h4>
+    <input type="text" name="system.damageForm" value="{{system.damageForm}}" data-tooltip="{{ localize 'DND4E.FormulaDamageBonusTip' }}" data-dtype="String"/>
+  </div>				
+  <h4 class="damage-header">
+    {{#unless isHealing }}{{#if system.properties.imp}}{{ localize 'DND4E.Weapon' }}{{/if}} {{ localize 'DND4E.Secondary' }} {{ localize "DND4E.Damage" }}{{ else }}{{ localize "DND4E.Healing" }}{{/unless}} {{ localize "DND4E.Formula" }}:
+    <a class="damage-control" data-action="addDamage"><i class="fas fa-plus"></i></a>
+  </h4>
+  <ol class="damage-parts form-group">
+    {{#each system.damage.parts as |part i| }}
+    <li class="damage-part flexrow" data-damage-part="{{i}}">
+      <input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+      <select name="system.damage.parts.{{i}}.1">
+        {{#select (lookup this "1") }}
+          <option value="">&nbsp;</option>
+          {{#each ../config.damageTypes as |name type|}}
+            {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+            <option value="{{type}}">{{name}}</option>
+            {{/unless}}{{/unless}}
+          {{/each}}
+          {{#each ../config.healingTypes as |name type|}}
+          <option value="{{type}}">{{name}}</option>
+          {{/each}}
+        {{/select}}
+      </select>
+      <a class="damage-control" data-action="deleteDamage"><i class="fas fa-minus"></i></a>
+    </li>
+    {{/each}}
+  </ol>
+
+  {{!-- Critical Damage Formula --}}
+  <div class="form-group stacked">
+    <h4 class="damage-header" data-tooltip="{{ localize 'DND4E.FormulaCritBonusTip' }}">{{#if system.properties.imp}}{{ localize 'DND4E.Weapon' }}{{/if}} {{ localize 'DND4E.FormulaCritBonus' }}:</h4>
+    <input type="text" name="system.critDamageForm" value="{{system.critDamageForm}}" data-tooltip="{{ localize 'DND4E.FormulaCritBonusTip' }}" data-dtype="String"/>
+  </div>				
+  <h4 class="damage-header">
+    {{#if system.properties.imp}}{{ localize 'DND4E.Weapon' }}{{/if}} {{ localize 'DND4E.Secondary' }} {{ localize 'DND4E.FormulaCritBonus' }}:
+    <a class="damage-control" data-action="addCriticalDamage"><i class="fas fa-plus"></i></a>
+  </h4>
+  <ol class="damage-parts form-group">
+    {{#each system.damageCrit.parts as |part i| }}
+    <li class="damage-part flexrow" data-damage-part="{{i}}">
+      <input type="text" name="system.damageCrit.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+      <select name="system.damageCrit.parts.{{i}}.1">
+        {{#select (lookup this "1") }}
+          <option value="">&nbsp;</option>
+          {{#each ../config.damageTypes as |name type|}}
+          {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+            <option value="{{type}}">{{name}}</option>
+          {{/unless}}{{/unless}}
+          {{/each}}
+          {{#each ../config.healingTypes as |name type|}}
+          <option value="{{type}}">{{name}}</option>
+          {{/each}}
+        {{/select}}
+      </select>
+      <a class="damage-control" data-action="deleteCriticalDamage"><i class="fas fa-minus"></i></a>
+    </li>
+    {{/each}}
+  </ol>
+  {{/unless}}
+  
+  {{!-- Attack Formula for Implement--}}
+  {{#if system.properties.imp}}
+  <div class="form-group stacked">
+    <h4 class="damage-header" data-tooltip="{{ localize 'DND4E.FormulaAttackBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4E.WeaponImplement' }}{{/unless}} {{ localize 'DND4E.FormulaAttackBonus' }}:</h4>
+    <input type="text" name="system.attackFormImp" value="{{system.attackFormImp}}" data-tooltip="Formula used for Attack Rolls." data-dtype="String"/>
+  </div>
+  
+  {{!-- Damage Formula for Implement--}}
+  <div class="form-group stacked">
+    <h4 class="damage-header" data-tooltip="{{ localize 'DND4E.FormulaDamageBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4E.WeaponImplement' }}{{/unless}} {{ localize 'DND4E.FormulaDamageBonusPrimary' }}:</h4>
+    <input type="text" name="system.damageFormImp" value="{{system.damageFormImp}}" data-tooltip="{{ localize 'DND4E.FormulaDamageBonusTip' }}" data-dtype="String"/>
+  </div>	
+  
+  <h4 class="damage-header">
+    {{#unless isHealing }}{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4E.WeaponImplement' }}{{/unless}} {{ localize 'DND4E.Secondary' }} {{ localize 'DND4E.FormulaDamageBonus' }}{{ else }}{{ localize "DND4E.Healing" }}{{/unless}} {{ localize "DND4E.Formula" }}:
+    <a class="damage-control" data-action="addDamageImp"><i class="fas fa-plus"></i></a>
+  </h4>
+  <ol class="damage-parts form-group">
+    {{#each system.damageImp.parts as |part i| }}
+    <li class="damage-part flexrow" data-damage-part="{{i}}">
+      <input type="text" name="system.damageImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+      <select name="system.damageImp.parts.{{i}}.1">
+        {{#select (lookup this "1") }}
+          <option value="">&nbsp;</option>
+          {{#each ../config.damageTypes as |name type|}}
+          {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+            <option value="{{type}}">{{name}}</option>
+          {{/unless}}{{/unless}}
+          {{/each}}
+          {{#each ../config.healingTypes as |name type|}}
+          <option value="{{type}}">{{name}}</option>
+          {{/each}}
+        {{/select}}
+      </select>
+      <a class="damage-control" data-action="deleteDamageImp"><i class="fas fa-minus"></i></a>
+    </li>
+    {{/each}}
+  </ol>
+
+  {{!-- Critical Damage Formula for Implement --}}
+  <div class="form-group stacked">
+    <h4 class="damage-header" data-tooltip="{{ localize 'DND4E.FormulaCritBonusTip' }}">{{#unless (eq system.weaponType "implement")}}{{ localize 'DND4E.WeaponImplement' }}{{/unless}} {{ localize 'DND4E.FormulaCritBonus' }}:</h4>
+    <input type="text" name="system.critDamageFormImp" value="{{system.critDamageFormImp}}" data-tooltip="{{ localize 'DND4E.FormulaCritBonusTip' }}" data-dtype="String"/>
+  </div>	
+  <h4 class="damage-header">
+    {{#unless (eq system.weaponType "implement")}}{{ localize 'DND4E.WeaponImplement' }}{{/unless}} {{ localize 'DND4E.Secondary' }} {{ localize 'DND4E.FormulaCritBonus' }}:
+    <a class="damage-control" data-action="addCriticalDamageImp"><i class="fas fa-plus"></i></a>
+  </h4>
+  <ol class="damage-parts form-group">
+    {{#each system.damageCritImp.parts as |part i| }}
+    <li class="damage-part flexrow" data-damage-part="{{i}}">
+      <input type="text" name="system.damageCritImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+      <select name="system.damageCritImp.parts.{{i}}.1">
+        {{#select (lookup this "1") }}
+          <option value="">&nbsp;</option>
+          {{#each ../config.damageTypes as |name type|}}
+          {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+            <option value="{{type}}">{{name}}</option>
+          {{/unless}}{{/unless}}
+          {{/each}}
+          {{#each ../config.healingTypes as |name type|}}
+          <option value="{{type}}">{{name}}</option>
+          {{/each}}
+        {{/select}}
+      </select>
+      <a class="damage-control" data-action="deleteCriticalDamageImp"><i class="fas fa-minus"></i></a>
+    </li>
+    {{/each}}
+  </ol>
+
+  {{/if}}
+
+  <div class="form-group stacked weapon-properties">
+    <div class="form-group">
+      <label class="damage-override">{{localize 'DND4E.DamageTypeFromWeapon'}}</label>
+      <span class="checkbox"><input type="checkbox" name="system.damageTypeWeapon" data-dtype="Boolean" {{checked system.damageTypeWeapon}}/></span>
+    </div>
+
+    {{#if system.damageTypeWeapon}}					
+    <label data-tooltip="{{ localize 'DND4E.PrimaryDamageType' }}">{{ localize 'DND4E.PrimaryDamageType' }}:</label>
+      
+    {{#each config.damageTypes as |name type|}}
+    {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+      <label class="checkbox">
+        <input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
+      </label>
+    {{/unless}}{{/unless}}
+    {{/each}}
+    {{/if}}
+
+    <label>{{ localize "DND4E.ItemWeaponProperties" }}:</label>
+      
+    {{#each weaponMetaProperties as |prop p|}}
+      <label class="checkbox">
+        <input type="checkbox" name="system.properties.{{p}}" {{checked prop.checked}} {{#if prop.disabled}}disabled{{/if}} /> {{ prop.propName }}
+      </label>
+    {{/each}}
+      
+    <label>{{ localize "DND4E.WeaponGroup" }}:</label>
+      
+    {{#each config.weaponGroup as |name group|}}
+    <label class="checkbox">
+      <input type="checkbox" name="system.weaponGroup.{{group}}" {{checked (lookup ../system.weaponGroup group)}}/> {{ name }}
+    </label>
+    {{/each}}
+
+    {{#if system.properties.imp}}
+      
+    <label>{{ localize "DND4E.ImplementGroup" }}:</label>
+      
+    {{#each config.implement as |name group|}}
+    <label class="checkbox">
+      <input type="checkbox" name="system.implement.{{group}}" {{checked (lookup ../system.implement group)}}/> {{ name }}
+    </label>
+    {{/each}}
+    {{/if}}
+  </div>
+</div>
+{{!-- Chat Message Flavor --}}
+<div class="form-group stacked">
+  <label>{{ localize "DND4E.ChatFlavor" }}</label>
+  <input type="text" name="system.chatFlavor" value="{{system.chatFlavor}}"/>
+</div>
