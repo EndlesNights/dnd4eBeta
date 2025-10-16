@@ -485,13 +485,15 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			this._prepareMovement(context);
 		}
 
-		const {value, max} = actorData.encumbrance;
-		actorData.encumbrance = {
-			...actorData.encumbrance,
-			pbc: Math.clamp((value / max) * 100, 0, 99.7),
-			pec: Math.clamp((value / max) * 100 - 100, 1, 99.7),
-			encumBar: value > max ? "#b72b2b" : "#6c8aa5"
-		};
+		if (actorData.encumbrance) {
+			const {value, max} = actorData.encumbrance;
+			actorData.encumbrance = {
+				...actorData.encumbrance,
+				pbc: Math.clamp((value / max) * 100, 0, 99.7),
+				pec: Math.clamp((value / max) * 100 - 100, 1, 99.7),
+				encumBar: value > max ? "#b72b2b" : "#6c8aa5"
+			};
+		}
 
 		context.system = actorData;
 

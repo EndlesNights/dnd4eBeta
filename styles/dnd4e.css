@@ -1612,6 +1612,9 @@ font-size:12px;
 	font-weight:bold;
 	min-height:0px;
 }
+.dnd4e.sheet.actor .power-filters > div{
+	margin:0.25rem;
+}
 .dnd4e.sheet.actor .power-filters :is(.group-powers,.sort-powers,.sort-features){
 	max-width:144px;
 }
