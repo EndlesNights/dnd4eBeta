@@ -2407,6 +2407,9 @@ font-size:12px;
 .dnd4e.sheet.item :is(.weapon-properties,.feature-keywords) label.checkbox{
 	flex:0 0 118px;
 }
+.dnd4e.sheet.item input[type="checkbox"]{
+	line-height: var(--checkbox-size);
+}
 .dnd4e.sheet.item ul.auto-keywords{
 	padding-left:0;
 	font-size:var(--font-size-11);
