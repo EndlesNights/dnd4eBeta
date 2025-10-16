@@ -1,0 +1,24 @@
+<h3 class="form-header">{{localize 'DND4E.ItemContainerDetails'}}</h3>
+
+<div class="form-group">
+  <label>{{localize 'DND4E.ItemContainerCapacity'}}</label>
+  <div class="form-fields">
+    <input type="text" name="system.capacity.value" value="{{system.capacity.value}}"
+          data-dtype="Number" placeholder="-">
+  </div>
+</div>
+
+<div class="form-group">
+  <label>{{localize 'DND4E.ItemContainerCapacityType'}}</label>
+  <select name="system.capacity.type">
+    {{selectOptions config.itemCapacityTypes selected=system.capacity.type labelAttr="label"}}
+  </select>
+</div>
+
+<div class="form-group stacked">
+  <label>{{localize 'DND4E.ItemContainerProperties'}}</label>
+  <label class="checkbox">
+    <input type="checkbox" name="system.capacity.weightless" {{checked system.capacity.weightless}}>
+    {{localize 'DND4E.ItemContainerWeightless'}}
+  </label>
+</div>

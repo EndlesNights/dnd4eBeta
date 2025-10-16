@@ -1,0 +1,81 @@
+<section class="tab scrollable {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+  <ol class="currency flexrow">
+    <h3>
+      {{localize "DND4E.Currency"}}
+      <a class="currency-convert" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
+    </h3>
+    {{#each system.currency as |v k|}}
+    <label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
+    <input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.currencies k )}}"/>
+    {{/each}}
+  </ol>
+
+  <ol class="currency flexrow">
+    <h3 data-tooltip="{{localize 'DND4E.RitualComp'}}">{{localize 'DND4E.RitualComp'}}</h3>
+    {{#each system.ritualcomp as |v k|}}
+    <label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
+    <input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}"/>
+    {{/each}}
+  </ol>
+  
+  <ol class="item-list">
+    <li class="items-header flexrow">
+      <h3 class="item-name flexrow">{{localize 'DND4E.Contents'}}</h3>
+        <div class="item-detail item-weight">Weight</div>
+        <div class="item-detail item-quantity">Quantity</div>
+      <div class="item-controls">
+      </div>
+    </li>
+  </ol>
+  
+  <ol class="item-list inventory-list">
+    {{#each itemData as |item iid|}}
+      <li class="item flexrow {{section.css}}"
+        data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
+        <div class="item-name flexrow rollable">
+          {{#if section.editableName}}
+          <input type="text" value="{{item.name}}">
+          {{else}}
+          <div class="item-image" data-action="itemRoll"><img src="{{item.img}}" width="30" height="30"/></div>
+          <h4>
+            {{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
+            {{~#if item.isStack}} ({{item.system.quantity}}){{/if}}
+            {{~#if item.system.attuned}} <i class="fas fa-sun attuned" data-tooltip="{{localize "DND4E.Attuned"}}"></i>{{/if}}
+          </h4>
+          {{/if}}
+        </div>
+  
+
+        <div class="item-detail item-weight">
+          {{#if item.totalWeight}}
+            <div class="item-detail">
+              {{ item.totalWeight }} {{localize "DND4E.AbbreviationLbs"}}
+            </div>
+          {{/if}}
+        </div>
+
+        <div class="item-detail item-quantity">
+          <input type="text" value="{{item.system.quantity}}" placeholder="0"/>
+        </div>
+        
+        <div class="item-controls flexrow">
+
+          {{#unless section.editableName}}
+          <a class="item-control" data-action="editItem" data-tooltip="{{localize "DND4E.ItemEdit"}}"><i class="fas fa-edit"></i></a>
+          {{/unless}}
+          <a class="item-control" data-action="deleteItem" data-tooltip="{{localize "DND4E.ItemDelete"}}"><i class="fas fa-trash"></i></a>
+        </div>
+      </li>
+    {{/each}}
+  </ol>
+
+  {{#with encumbrance}}
+  <div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" data-tooltip="{{localize 'DND4E.ItemContainerCapacity'}}">
+    <span class="encumbrance-bar" style="width:{{pbc}}%"></span>
+    {{#if encumbered}}
+      <span class="encumbrance-bar encumbered" style="width:{{pec}}%"></span>
+    {{/if}}
+    <span class="encumbrance-label">{{value}} / {{max}} {{units}}</span>
+  </div>
+  {{/with}}
+</section>

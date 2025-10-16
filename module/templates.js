@@ -20,6 +20,7 @@ export const preloadHandlebarsTemplates = async function() {
 		"systems/dnd4e/templates/items/parts/details-ritual.hbs",
 		"systems/dnd4e/templates/items/parts/details-tool.hbs",
 		"systems/dnd4e/templates/items/parts/details-weapon.hbs",
+		"systems/dnd4e/templates/items/parts/details-backpack.hbs",
 
 		"systems/dnd4e/templates/items/parts/target-effects.hbs"
 	];

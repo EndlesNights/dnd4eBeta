@@ -10,7 +10,6 @@ import { registerSystemSettings } from "./settings.js";
 
 // import Sheets
 import ItemSheet4e from "./item/item-sheet.js";
-import ContainerItemSheet from "./item/container-sheet.js";
 import ActorSheet4e from "./actor/actor-sheet.js";
 import ActorSheet4eNPC from "./actor/npc-sheet.js";
 import ActorSheet4eHazard from "./actor/hazard-sheet.js";
@@ -187,7 +186,7 @@ Hooks.once("init", async function() {
 	Items.registerSheet("dnd4e", ItemSheet4e, {
 		makeDefault: true,
 		label: game.i18n.localize("SHEET.Item"),
-		types: ["weapon", "equipment", "consumable", "tool", "loot", "ritual", "power", "feature"]
+		types: ["weapon", "equipment", "consumable", "tool", "loot", "ritual", "power", "feature", "backpack"]
 
 	});
 	

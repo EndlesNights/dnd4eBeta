@@ -896,10 +896,10 @@ export default class Item4e extends Item {
 		const { value, type } = this.system.capacity;
 		const context = { max: value ?? Infinity };
 		if ( type === "weight" ) {
-			context.value = this.pack ? await this.contentsWeight : await this.contentsWeight.toNearest(0.01);
+			context.value = (await this.contentsWeight).toNearest(0.01);
 			context.units = game.i18n.localize("DND4E.AbbreviationLbs");
 		} else {
-			context.value = this.pack ? await this.contentsWeight : await this.contentsCount.toNearest(0.01);
+			context.value = (await this.contentsCount).toNearest(0.01);
 			context.units = game.i18n.localize("DND4E.ItemContainerCapacityItems");
 		}
 		// context.pct = Math.clamp(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
@@ -908,6 +908,8 @@ export default class Item4e extends Item {
 		context.pbc = Math.clamp(context.value / context.max * 100, 0, 99.7);
 		//set ppc Percentage Encumbranced Capasity
 		context.pec = Math.clamp(context.value / (context.max) * 100 - 100, 1, 99.7);
+
+		context.encumbered = context.value > context.max;
 
 		return context;
 
@@ -2691,8 +2693,7 @@ export default class Item4e extends Item {
 	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
 	 */
 	get allContainedItems() {
-		if ( !this.parent ) return new foundry.utils.Collection();
-		if ( this.parent.pack ) return this.#allContainedItems();
+		if ( this.parent?.pack ) return this.#allContainedItems();
 
 		return this.contents.reduce((collection, item) => {
 			collection.set(item.id, item);
@@ -2788,7 +2789,7 @@ export default class Item4e extends Item {
 		// Render the actor sheet, compendium, or sidebar
 		if ( this.parent?.isEmbedded ) this.parent.actor.sheet?.render(false, rendering);
 		else if ( this.parent?.pack ) game.packs.get(this.parent.pack).apps.forEach(a => a.render(false, rendering));
-		else ui.sidebar.tabs.items.render(false, rendering);
+		else ui.items.render(false);
 
 		// Render former container if it was moved between containers
 		if ( formerContainer ) {

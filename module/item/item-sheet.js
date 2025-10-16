@@ -34,7 +34,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			closeOnSubmit: false
 		},
 		dragDrop: [
-			{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"}
+			{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},
+			{dragSelector: ".item-list .item", dropSelector: null}
 		],
 		actions: {
 			showImage: ItemSheet4e.#onDisplayItemArt,
@@ -56,7 +57,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			configureClassSkills: ItemSheet4e.#onConfigureClassSkills,
 			createPowerEffect: ItemSheet4e.#onPowerEffectControl,
 			editPowerEffect: ItemSheet4e.#onPowerEffectControl,
-			deletePowerEffect: ItemSheet4e.#onPowerEffectControl
+			deletePowerEffect: ItemSheet4e.#onPowerEffectControl,
+			// Container actions
+			itemRoll: ItemSheet4e.#onItemRoll,
+			editItem: ItemSheet4e.#onItemControl,
+			deleteItem: ItemSheet4e.#onItemControl
 		}
 	}
 
@@ -66,6 +71,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		},
 		tabs: {
 			template: "templates/generic/tab-navigation.hbs"
+		},
+		content: {
+			template: "systems/dnd4e/templates/items/tabs/content.hbs",
+			scrollable: [""]
 		},
 		description: {
 			template: "systems/dnd4e/templates/items/tabs/description.hbs",
@@ -93,6 +102,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		primary: {
 			tabs: [
 				{
+					id: "content",
+					label: "DND4E.Content",
+					condition: (item) => item.type === "backpack"
+				},
+				{
 					id: "description",
 					label: "DND4E.Sheet.Description"
 				},
@@ -119,7 +133,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 					label: "DND4E.Macros"
 				}
 			],
-			initial: "description"
+			// initial: "description"
 		}
 	}
 
@@ -183,6 +197,14 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/* -------------------------------------------- */
 
+	async _onFirstRender(context, options) {
+		await super._onFirstRender(context, options);
+		if (!this.tabGroups.primary) {
+			if (this.item.type === "backpack") this.changeTab("content", "primary");
+			else this.changeTab("description", "primary");
+		}
+	}
+
 	/* -------------------------------------------- */
 
 	/** @override */
@@ -193,11 +215,12 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		// TODO: AppV2 this stuff properly (add to `DEFAULT_OPTIONS.actions` and set `data-action on the proper elements)
 		if ( this.isEditable ) {
-			// html.find(".effect-control").click(event => {
-			// 	if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
-			// 		ActiveEffect4e.onManageActiveEffect(event, this.item);
-			// });
 			this.element.querySelectorAll(".effect-control").forEach(el => el.addEventListener("click", (event => { ActiveEffect4e.onManageActiveEffect(event, this.item);})));
+			this.element.querySelectorAll(".item-quantity input").forEach(el => el.addEventListener("change", (event) => {
+				const li = event.target.closest(".item");
+				const item = this.item.contents.get(li?.dataset.itemId);
+				return item?.update({"system.quantity": event.target.value});
+			}));
 		}
 	}
 
@@ -270,6 +293,31 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				context.hasEnhance = true;
 			}
 			context.summaryLabel = CONFIG.DND4E.equipmentTypes[itemData.system.armour.type]?.label;
+		}
+
+		if(itemData.type === "backpack"){
+			const items = Array.from(await this.item.contents);
+			context.encumbrance = await this.item._computeEncumbrance();
+
+			context.itemData = [];
+
+			for (const i of items) {
+				const d = i.toObject(false);
+				d.totalWeight = (i.system.quantity * i.system.weight).toNearest(0.1);
+				d.isExpanded = this._expanded.has(i.id);
+				d.isStack = i.system.quantity > 1;
+				d.expanded = d.isExpanded ? await i.getChatData({secrets: this.item.isOwner}) : null;
+				context.itemData.push(d);
+			}
+			context.isContainer = true;
+			// context.inventory = {
+			// 	contents: {
+			// 		label: "DND4E.Contents",
+			// 		items: context.items
+			// 	}
+			// };
+
+			context.itemData = context.itemData.toSorted((a, b) => (a.sort || 0) - (b.sort || 0));
 		}
 
 		if(itemData.system?.rangeType) {
@@ -455,6 +503,40 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	}
 
+	/**
+	 * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to its roll method
+	 */
+	static #onItemRoll(event, target) {
+		const li = target.closest(".item");
+		const item = this.item.contents.get(li?.dataset.itemId);
+
+		if(item?.actor) return item.roll();
+		return false;
+	}
+
+	static #onItemControl(event, target) {
+		const li = target.closest(".item");
+		const item = this.item.contents.get(li?.dataset.itemId);
+		if (!item) return;
+		if (target.dataset.action === "editItem") {
+			return item.sheet.render({ force: true });
+		}
+		if (game.settings.get("dnd4e", "itemDeleteConfirmation")) {
+			return foundry.applications.api.Dialog.confirm({
+				window: {
+					title: game.i18n.format("DND4E.DeleteConfirmTitle", {name: item.name})
+				},
+				content: game.i18n.format("DND4E.DeleteConfirmContent", {name: item.name}),
+				yes: {
+					default: true,
+					callback: () => { return item.delete() }
+				}
+			})
+		} else {
+			return item.delete();
+		}
+	}
+
 	async shareItem() {
 		let changeBack = false
 		//set the default permsion to be vieable for all players if it it not already higher
@@ -504,7 +586,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	  }
 
 	exportItem() {
-		const jsonString = JSON.stringify(this.object._source);
+		const jsonString = JSON.stringify(this.item._source);
 
 		// TODO: Can this reasonably ever error?
 		try {
@@ -908,7 +990,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/* -------------------------------------------- */
 
 	static #onDisplayItemArt() {
-		const p = new foundry.applications.apps.ImagePopout({src: this.object.img});
+		const p = new foundry.applications.apps.ImagePopout({src: this.item.img});
 		p.render(true);
 	}	
 	/* -------------------------------------------- */
@@ -1087,12 +1169,16 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		// Create drag data
 		let dragData;
 
+		// Container Item
+		if ( li.dataset.itemId ) {
+			const item = await this.item.getContainedItem(li.dataset.itemId);
+			dragData = item?.toDragData();
 		// Active Effect
-		if ( li.dataset.effectId ) {
-		const effect = this.item.effects.get(li.dataset.effectId);
-		dragData = effect.toDragData();
+		} else if ( li.dataset.effectId ) {
+			const effect = this.item.effects.get(li.dataset.effectId);
+			dragData = effect.toDragData();
 		} else if ( li.classList.contains("advancement-item") ) {
-		dragData = this.item.advancement.byId[li.dataset.id]?.toDragData();
+			dragData = this.item.advancement.byId[li.dataset.id]?.toDragData();
 		}
 
 		if ( !dragData ) return;
@@ -1121,8 +1207,12 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		if ( allowed === false ) return;
 
 		switch ( data.type ) {
-		case "ActiveEffect":
-			return this._onDropActiveEffect(event, data);
+			case "ActiveEffect":
+				return this._onDropActiveEffect(event, data);
+			case "Folder":
+				return this._onDropFolder(event, data);
+			case "Item":
+				return this._onDropItem(event, data);
 		}
 
 	}
@@ -1147,6 +1237,124 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	}
 
   /* -------------------------------------------- */
+
+	/**
+	 * Handle the dropping of Folder data onto the Container sheet.
+	 * @param {DragEvent} event							The concluding DragEvent which contains the drop data.
+	 * @param {object} data									The data transfer extracted from the event.
+	 * @returns {Promise<Item4e[]>}					The created Item objects.
+	 */
+	async _onDropFolder(event, data) {
+		const folder = await Folder.implementation.fromDropData(data);
+		if ( !this.item.isOwner || (folder.type !== "Item") ) return [];
+
+		let recursiveWarning = false;
+		const parentContainers = await this.item.allContainers();
+		const containers = new Set();
+
+		let items = await Promise.all(folder.contents.map(async item => {
+			if ( !(item instanceof Item) ) item = await fromUuid(item.uuid);
+			if ( item.system.container === this.item.id ) return;
+			if ( (this.item.uuid === item.uuid) || parentContainers.includes(item) ) {
+				recursiveWarning = true;
+				return;
+			}
+			if ( item.type === "container" ) containers.add(item.id);
+			return item;
+		}));
+
+		items = items.filter(i => i && !containers.has(i.system.container));
+
+		// Display recursive warning, but continue with any remaining items
+		if ( recursiveWarning ) ui.notifications.warn("DND4E.ContainerRecursiveError", { localize: true });
+		if ( !items.length ) return [];
+
+		// Create any remaining items
+		const toCreate = await Item4e.createWithContents(items, {
+			container: this.item,
+			// transformAll: itemData
+			transformAll: itemData => itemData.type === "spell" ? Item4e.createScrollFromSpell(itemData) : itemData
+		});
+		if ( this.item.folder ) toCreate.forEach(d => d.folder = this.item.folder.id);
+		return Item4e.createDocuments(toCreate, {pack: this.item.pack, parent: this.item.parent, keepId: true});
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle the dropping of Item data onto an Item Sheet.
+	 * @param {DragEvent} event							The concluding DragEvent which contains the drop data.
+	 * @param {object} data									The data transfer extracted from the event.
+	 * @returns {Promise<Item4e[]|boolean>}	The created Item objects or `false` if it couldn't be created.
+	 * @protected
+	 */
+	async _onDropItem(event, data) {
+		const item = await Item.implementation.fromDropData(data);
+		if ( !this.item.isOwner || !item ) return false;
+
+		// If item already exists in this container, just adjust its sorting
+		if ( item.system.container === this.item.id ) {
+			return this._onSortItem(event, item);
+		}
+
+		// Prevent dropping containers within themselves
+		const parentContainers = await this.item.allContainers();
+		if ( (this.item.uuid === item.uuid) || parentContainers.includes(item) ) {
+			ui.notifications.error("DND4E.ContainerRecursiveError", { localize: true });
+			return;
+		}
+
+		// If item already exists in same DocumentCollection, just adjust its container property
+		if ( (item.actor === this.item.actor) && (item.pack === this.item.pack) ) {
+			return item.update({folder: this.item.folder, "system.container": this.item.id});
+		}
+
+		// Otherwise, create a new item & contents in this context
+		const toCreate = await Item4e.createWithContents([item], {
+			container: this.item,
+			transformAll: itemData => itemData.type === "spell" ? Item4e.createScrollFromSpell(itemData) : itemData
+		});
+		if ( this.item.folder ) toCreate.forEach(d => d.folder = this.item.folder.id);
+		return Item4e.createDocuments(toCreate, {pack: this.item.pack, parent: this.item.actor, keepId: true});
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle a drop event for an existing contained Item to sort it relative to its siblings.
+	 * @param {DragEvent} event	The concluding DragEvent.
+	 * @param {Item4e} item			The item that needs to be sorted.
+	 * @protected
+	 */
+	async _onSortItem(event, item) {
+		const dropTarget = event.target.closest("[data-item-id]");
+		if ( !dropTarget ) return;
+		const contents = await this.item.contents;
+		const target = contents.get(dropTarget.dataset.itemId);
+
+		// Don't sort on yourself
+		if ( item.id === target.id ) return;
+
+		// Identify sibling items based on adjacent HTML elements
+		const siblings = [];
+		for ( const el of dropTarget.parentElement.children ) {
+			const siblingId = el.dataset.itemId;
+			if ( siblingId && (siblingId !== item.id) ) siblings.push(contents.get(siblingId));
+		}
+
+		// Perform the sort
+		const sortUpdates = SortingHelpers.performIntegerSort(item, {target, siblings});
+		const updateData = sortUpdates.map(u => {
+			const update = u.update;
+			update._id = u.target.id;
+			return update;
+		});
+
+		// Perform the update
+		Item.updateDocuments(updateData, {pack: this.item.pack, parent: this.item.actor});
+	}
+
+	/* -------------------------------------------- */
 
   /**
    * IDs for items on the sheet that have been expanded.

@@ -1599,10 +1599,6 @@ font-size:12px;
 	overflow-x:hidden;
 	scrollbar-width:thin;
 }
-.dnd4e.sheet.item .item-list.inventory-list{
-	height:calc(100% - 127px);
-	overflow: auto;
-}
 .dnd4e.sheet.actor .inventory-list .item-import.button{
 	min-width:116px;
 	width:calc(100% - 80px);
