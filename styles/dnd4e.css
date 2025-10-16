@@ -1517,8 +1517,8 @@ font-size:12px;
 	justify-content:flex-end;
 }
 .dnd4e.sheet.actor .currency,
-.dnd4e.sheet .item-sheet .currency {
-	flex:0 0 100%;
+.dnd4e.sheet.item .currency {
+	flex:0;
 	list-style:none;
 	margin:4px 0 8px;
 	padding:0;
@@ -1526,13 +1526,13 @@ font-size:12px;
 	align-items:center;
 }
 .dnd4e.sheet.actor h3,
-.dnd4e.sheet .item-sheet .currency h3 {
+.dnd4e.sheet.item .currency h3 {
 	border-bottom:0px;
-	margin-top:15px;
+	margin:0 8px;
 	font-size:medium;
 }
 .dnd4e.sheet.actor .currency label,
-.dnd4e.sheet .item-sheet .currency label {
+.dnd4e.sheet.item .currency label {
 	flex:0;
 	white-space:nowrap;
 	margin-left:0px;
@@ -1540,7 +1540,7 @@ font-size:12px;
 	line-height:20px;
 }
 .dnd4e.sheet.actor .currency input[type="text"],
-.dnd4e.sheet .item-sheet .content .currency input[type="text"] {
+.dnd4e.sheet.item .content .currency input[type="text"] {
 	flex:0 0 48px;
 	text-align:center;
 	margin-left:0px;
@@ -2258,6 +2258,9 @@ font-size:12px;
 	.description{
 		height: 100%;
 	}
+}
+.dnd4e.sheet.item .tab.content{
+	gap:0.5rem;
 }
 .dnd4e.sheet.actor .item-sheet .sheet-header img.profile{
 	flex:0 0 160px;

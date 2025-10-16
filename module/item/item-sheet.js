@@ -24,7 +24,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		classes: ["dnd4e", "sheet", "item", "standard-form"],
 		position: {
 			width: 585,
-			height: 420
+			height: 450
 		},
 		window: {
 			resizable: true
