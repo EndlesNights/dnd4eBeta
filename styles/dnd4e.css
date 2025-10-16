@@ -2411,7 +2411,7 @@ font-size:12px;
 .dnd4e.sheet.item :is(.weapon-properties,.feature-keywords) label.checkbox{
 	flex:0 0 118px;
 }
-.dnd4e.sheet input[type="checkbox"]{
+.dnd4e input[type="checkbox"]{
 	line-height: var(--checkbox-size);
 }
 .dnd4e.sheet.item ul.auto-keywords{
@@ -2664,7 +2664,6 @@ font-size:12px;
 }
 #trait-selector input[type="text"]{
 	height:18px;
-	margin:2px;
 }
 #trait-selector .trait.has-children .trait-list{
 	columns:2;
@@ -2675,9 +2674,6 @@ font-size:12px;
 }
 #trait-selector .trait-list .trait.has-children>.expand.fa-chevron-down.toggle-on::before{
 	content:"\f077";
-}
-#trait-selector .trait-list .trait.has-children .trait{
-	display:none;
 }
 #trait-selector .trait-list .trait.has-children>.expand.toggle-on~.trait-list .trait,
 #trait-selector .trait-list .trait.has-children .trait.toggle-on{
@@ -2820,6 +2816,7 @@ font-size:12px;
 }
 .custom-skill-config .custom-skill-control{
 	margin:0 5px;
+	flex:0;
 }
 #movement-dialog .move-bonus{
 	max-width:60px;

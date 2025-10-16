@@ -1,10 +1,10 @@
-<form autocomplete="off" onsubmit="event.preventDefault();">
+<section>
 	<ol class="trait-list">
 		{{#each choices as |choice key|}}
 		<li>
 			<label class="checkbox">
 				<input type="checkbox" name="{{key}}" data-dtype="Boolean" {{checked choice.chosen}}>
-				<input class="checkbox-rider" type="text" name="{{key}}" value="{{choice.value}}" data-tooltip="{{localize 'DND4E.SpecialSensesRange'}}" onClick="this.select();" placeholder="" />
+				<input class="checkbox-rider" type="text" name="{{key}}" value="{{choice.value}}" data-tooltip="{{localize 'DND4E.SpecialSensesRange'}}" placeholder="" />
 				{{choice.label}}
 			</label>
 		</li>
@@ -16,5 +16,4 @@
 		<input type="text" name="custom" value="{{custom}}" data-dtype="String"/>
 	</div>
 	{{/if}}
-	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "DND4E.TraitSave"}}</button>
-</form>
+</section>
