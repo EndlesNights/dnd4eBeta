@@ -27,7 +27,7 @@ export const migrateWorld = async function() {
 				const updatedItem = migrateItemData(i.toObject(), migrationData);
 				if ( !foundry.utils.isEmpty(updatedItem) ) {
 					console.log(`Migrating Item ${i.name} of Actor ${a.name}`);
-					const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.-=migrateType") !== null;
+					const diff = foundry.utils.getProperty(updatedItem, "flags.dnd4e.-=migrateType") !== null;
 					await i.update(updatedItem, {enforceTypes: false, diff});
 				}
 			} catch(err) {
