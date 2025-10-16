@@ -349,7 +349,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const actor = this.actor.toObject(false);
 		const actorData = actor.system;
 
-		const isOwner = actor.isOwner;
+		const isOwner = this.actor.isOwner;
 
 		foundry.utils.mergeObject(context, {
 			owner: isOwner,
