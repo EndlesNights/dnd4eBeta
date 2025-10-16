@@ -307,7 +307,7 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 	position:relative;
 	margin-top: -7px;
 }
-.dnd4e.sheet.actor .section--attributes .resource-tracker input{
+.dnd4e.sheet.actor .section--attributes .resource-tracker input[type="text"]{
 	border-bottom:var(--border-normal);
 	font-size:18px;
 	font-weight:bold;
@@ -636,6 +636,7 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 }
 .dnd4e.sheet.actor .tab.details .section--attributes{
 	border:unset;
+	margin-top: 10px;
 }
 .dnd4e.sheet.actor .section--details .detail{
 	display:flex;
