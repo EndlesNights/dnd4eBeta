@@ -138,23 +138,22 @@ Hooks.once("init", async function() {
 		"visualize": true,
 		"deriveTerrainDifficulty": null
 	},
-	CONFIG.Token.movement.actions.crawl.order = 3
-	CONFIG.Token.movement.actions.climb.order = 4;
-	CONFIG.Token.movement.actions.swim.order = 5;
-	CONFIG.Token.movement.actions.burrow.order = 6;
-	CONFIG.Token.movement.actions.fly.order = 7;
+	CONFIG.Token.movement.actions.climb.order = 3;
+	CONFIG.Token.movement.actions.swim.order = 4;
+	CONFIG.Token.movement.actions.burrow.order = 5;
+	CONFIG.Token.movement.actions.fly.order = 6;
 	CONFIG.Token.movement.actions.teleport = {
 		"label": "DND4E.TOKEN.MOVEMENT.ACTIONS.teleport.label",
 		"icon": "fa-solid fa-person-from-portal",
 		"img": "icons/svg/teleport.svg",
-		"order": 8,
+		"order": 7,
 		"teleport": true,
 		"measure": true,
 		"walls": "move",
 		"visualize": true
 	},
-	CONFIG.Token.movement.actions.displace.order = 9;
 	delete CONFIG.Token.movement.actions.blink;
+	delete CONFIG.Token.movement.actions.crawl;
 	delete CONFIG.Token.movement.actions.jump;
 
 	// System data types

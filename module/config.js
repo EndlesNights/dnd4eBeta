@@ -1326,10 +1326,6 @@ DND4E.movementTypes = {
 		label: "DND4E.MovementClimbing",
 		walkFallback: true
 	},
-	crawl: {
-		label: "TOKEN.MOVEMENT.ACTIONS.crawl.label",
-		walkFallback: true
-	},
 	fly: {
 		label: "DND4E.MovementFlying"
 	},
@@ -1838,7 +1834,8 @@ DND4E.tokenRulerColors = {
 	walk: 0x00FF00,
 	run: 0xFFFF66,
 	doubleWalk: 0xFF9966,
-	doubleRun: 0xFF99FF
+	doubleRun: 0xFF99FF,
+	cannotReach: 0xFF0000
 };
 
 /* -------------------------------------------- */

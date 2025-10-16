@@ -26,24 +26,17 @@ export default class TokenDocument4e extends TokenDocument {
 	 */
 	static registerMovementActions() {
 		for ( const type of Object.keys(CONFIG.DND4E.movementTypes) ) {
-            const actionConfig = CONFIG.Token.movement.actions[type];
-            if ( !actionConfig ) continue;
-            actionConfig.getAnimationOptions = token => {
-                if (type === 'teleport') return { duration: 0 };
-                const actorMovement = token?.actor?.system.movement ?? {};
-                if ( !(type in actorMovement) || actorMovement[type]?.value ) return {};
-                return { movementSpeed: CONFIG.Token.movement.defaultSpeed / 2 };
-            };
-            actionConfig.getCostFunction = (...args) => this.getMovementActionCostFunction(type, ...args);
+			const actionConfig = CONFIG.Token.movement.actions[type];
+			if ( !actionConfig ) continue;
+			actionConfig.getAnimationOptions = token => {
+				if (type === 'teleport') return { duration: 0 };
+				if (token?.actor?.statuses.has('prone')) return { movementSpeed: CONFIG.Token.movement.defaultSpeed / 2 };
+				const actorMovement = token?.actor?.system.movement ?? {};
+				if ( !(type in actorMovement) || actorMovement[type]?.value ) return {};
+				return { movementSpeed: CONFIG.Token.movement.defaultSpeed / 2 };
+			};
+			actionConfig.getCostFunction = (...args) => this.getMovementActionCostFunction(type, ...args);
 		}
-		CONFIG.Token.movement.actions.crawl.getCostFunction = token => {
-		const { actor } = token;
-		const actorMovement = actor?.system.attributes?.movement;
-		const hasMovement = actorMovement !== undefined;
-		return !actor?.system.isCreature || !hasMovement
-			? cost => cost
-			: (cost, _from, _to, distance) => cost + distance;
-		};
 	}
 
 	/* -------------------------------------------- */

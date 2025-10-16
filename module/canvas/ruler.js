@@ -100,23 +100,36 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 		// Get actor's movement speed for currently selected token movement action
 		const movement = this.token.actor?.system.movement;
 		if ( !movement ) return style;
-		let currActionSpeed = movement[waypoint.action]?.value ?? 0;
-		let runBonus = !['crawl', 'shift', 'teleport'].includes(waypoint.action) ? movement.run.value : 0;
-		let runSpeed = currActionSpeed + runBonus;
+		let currActionSpeed, runBonus;
+		
+		if ( waypoint.action === 'walk' && this.token?.actor?.statuses.has('prone') ) {
+			runBonus = 0;
+			currActionSpeed = (movement.walk.value + runBonus) / 2;
+		}
+		else {
+			currActionSpeed = movement[waypoint.action]?.value ?? 0;
 
-		// If current action can fall back to walk, treat "max" speed as maximum between current & walk
-		if ( CONFIG.DND4E.movementTypes[waypoint.action]?.walkFallback
-			|| !CONFIG.DND4E.movementTypes[waypoint.action] ) {
-			currActionSpeed = Math.max(currActionSpeed, (movement.walk.value + runSpeed) / 2);
+			// If current action can fall back to walk, treat "max" speed as maximum between current & walk
+			if ( CONFIG.DND4E.movementTypes[waypoint.action]?.walkFallback
+				|| !CONFIG.DND4E.movementTypes[waypoint.action] ) {
+				currActionSpeed = Math.max(currActionSpeed, movement.walk.value);
+			}
+
+			if (['shift', 'teleport'].includes(waypoint.action) || this.token?.actor?.statuses.has('prone')) {
+				runBonus = ['shift', 'teleport'].includes(waypoint.action) || this.token?.actor?.statuses.has('prone') ? 0 : movement.run.value;
+			}
 		}
 
-		// Color `walk` if <= max speed, else `run` if <= max speed + run bonus, else `doubleWalk` if <= 2 * max speed, else `doubleRun`
-		const { walk, run, doubleWalk, doubleRun } = CONFIG.DND4E.tokenRulerColors;
+		let runSpeed = currActionSpeed + runBonus;
+
+		// Color `walk` if <= max speed, else `run` if <= max speed + run bonus, else `doubleWalk` if <= 2 * max speed, else if <= 2 * run speed `doubleRun`, else `cannotReach`
+		const { walk, run, doubleWalk, doubleRun, cannotReach } = CONFIG.DND4E.tokenRulerColors;
 		const increment = (waypoint.measurement.cost - .1);
 		if ( increment <= currActionSpeed ) style.color = walk;
 		else if ( runBonus && increment <= runSpeed ) style.color = run;
-		else if ( !runBonus || increment <= 2 * currActionSpeed ) style.color = doubleWalk;
-		else style.color = doubleRun;
+		else if ( increment <= 2 * currActionSpeed ) style.color = doubleWalk;
+		else if ( runBonus && increment <= 2 * runSpeed ) style.color = doubleRun;
+		else style.color = cannotReach;
 		return style;
 	}
 }
