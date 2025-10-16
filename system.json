@@ -143,6 +143,17 @@
 				"htmlFields": ["description"]
 			}
 		},
+		"Item": {
+			"backpack": {},
+			"consumable": {},
+			"equipment": {},
+			"feature": {},
+			"loot": {},
+			"power": {},
+			"ritual": {},
+			"tool": {},
+			"weapon": {}
+		},
 		"RegionBehavior" : {
 		  "difficultTerrain" :{}
 		}
@@ -152,7 +163,7 @@
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
 	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.6.21.zip",
 	"flags": {
-		"needsMigrationVersion": "0.6.14",
+		"needsMigrationVersion": "0.6.21",
 		"compatibleMigrationVersion": "0.2.50",
 		"hotReload": {
 			"extensions": ["css", "html"],

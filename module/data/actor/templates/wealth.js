@@ -1,4 +1,4 @@
-import MappingField from "../fields/mapping-field.js";
+import MappingField from "../../fields/mapping-field.js";
 const { NumberField } = foundry.data.fields;
 
 export default class WealthTemplate extends foundry.abstract.DataModel {

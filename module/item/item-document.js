@@ -100,6 +100,71 @@ export default class Item4e extends Item {
 
 	/* -------------------------------------------- */
 
+	static migrateData(data) {
+		super.migrateData(data);
+		this.#migrateOldFeatures(data);
+		return data;
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Migrate source data from old feat-types to feature type
+	 * @param {object} data	The source data from which to migrate, mutated here
+	 */
+	static #migrateOldFeatures(data) {
+		const sourceType = data.type;
+		if(!(['classFeats','feat','raceFeats','pathFeats','destinyFeats'].includes(sourceType))) return;
+		foundry.utils.setProperty(data, "flags.dnd4e.migrateType", true);
+		data.type = "feature";
+		data.system ??= {};
+		switch(sourceType){
+			case "classFeats":
+				data.system.featureType = "class";
+				delete data.system.class;
+				delete data.system.hitFistLevel;
+				delete data.system.surgePerDay;
+				delete data.system.skills;
+				delete data.system.def;
+				delete data.system.proficiencies;
+				break;
+			case "feat":
+				data.system.featureType = "feat";
+				delete data.system.recharge;
+				break;
+			case "raceFeats":
+				data.system.featureType = "race";
+				break;
+			case "pathFeats":
+				data.system.featureType = "path";
+				break;
+			case "destinyFeats":
+				data.system.featureType = "destiny";
+				break;
+			default:
+				data.system.featureType = "other";
+		}
+		
+		data.system.level ??= "";
+		data.system.requirements ??= "";
+		data.system.featureSource = "";
+		data.system.featureGroup = "";
+		data.system.auraSize = "";
+		data.system.effectType = {};
+		data.system.damageType = {};
+		data.system.keywordsCustom = "";
+		
+		// Remove obsolete properties
+		delete data.system.activation;
+		delete data.system.duration;
+		delete data.system.target;
+		delete data.system.range;
+		delete data.system.uses;
+		delete data.system.consume;
+	}
+
+	/* -------------------------------------------- */
+
 	/**
 	 * Pre-creation logic for setting up name of Items.
 	 *
@@ -831,10 +896,10 @@ export default class Item4e extends Item {
 		const { value, type } = this.system.capacity;
 		const context = { max: value ?? Infinity };
 		if ( type === "weight" ) {
-			context.value = this.pack ? await this.contentsWeight : await this.contentsWeight.toNearest(0.01);
+			context.value = (await this.contentsWeight).toNearest(0.01);
 			context.units = game.i18n.localize("DND4E.AbbreviationLbs");
 		} else {
-			context.value = this.pack ? await this.contentsWeight : await this.contentsCount.toNearest(0.01);
+			context.value = (await this.contentsCount).toNearest(0.01);
 			context.units = game.i18n.localize("DND4E.ItemContainerCapacityItems");
 		}
 		// context.pct = Math.clamp(context.max ? (context.value / context.max) * 100 : 0, 0, 100);
@@ -843,6 +908,8 @@ export default class Item4e extends Item {
 		context.pbc = Math.clamp(context.value / context.max * 100, 0, 99.7);
 		//set ppc Percentage Encumbranced Capasity
 		context.pec = Math.clamp(context.value / (context.max) * 100 - 100, 1, 99.7);
+
+		context.encumbered = context.value > context.max;
 
 		return context;
 
@@ -2626,8 +2693,7 @@ export default class Item4e extends Item {
 	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
 	 */
 	get allContainedItems() {
-		if ( !this.parent ) return new foundry.utils.Collection();
-		if ( this.parent.pack ) return this.#allContainedItems();
+		if ( this.parent?.pack ) return this.#allContainedItems();
 
 		return this.contents.reduce((collection, item) => {
 			collection.set(item.id, item);
@@ -2723,7 +2789,7 @@ export default class Item4e extends Item {
 		// Render the actor sheet, compendium, or sidebar
 		if ( this.parent?.isEmbedded ) this.parent.actor.sheet?.render(false, rendering);
 		else if ( this.parent?.pack ) game.packs.get(this.parent.pack).apps.forEach(a => a.render(false, rendering));
-		else ui.sidebar.tabs.items.render(false, rendering);
+		else ui.items.render(false);
 
 		// Render former container if it was moved between containers
 		if ( formerContainer ) {

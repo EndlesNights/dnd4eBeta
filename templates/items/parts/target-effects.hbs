@@ -1,5 +1,4 @@
 {{!-- Modifiers --}}
-
 {{#if system.modifiers}}
 <div class="attribute-modifiers">
 	<h4 class="attribute-name box-title">{{localize 'DND4E.ModifierPlural'}}</h4>
@@ -27,7 +26,7 @@
 			<!-- <div class="effect-source" style="width:150%;">Duration Type</div> -->
 			<div class="effect-source">{{localize 'DND4E.Duration'}}:</div>
 			<div class="item-controls effect-controls flexrow">
-				<a class="powereffect-control" data-action="create" data-tooltip="{{localize 'DND4E.EffectCreate'}}">
+				<a class="powereffect-control" data-action="createPowerEffect" data-tooltip="{{localize 'DND4E.EffectCreate'}}">
 					<i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
 				</a>
 			</div>
@@ -47,10 +46,10 @@
 					<a class="effect-control" data-action="toggle" data-tooltip="{{localize 'DND4E.EffectToggle'}}">
 						<i class="fas fa-circle-notch"></i>
 					</a>
-					<a class="powereffect-control" data-action="edit" data-tooltip="{{localize 'DND4E.EffectEdit'}}">
+					<a class="powereffect-control" data-action="editPowerEffect" data-tooltip="{{localize 'DND4E.EffectEdit'}}">
 						<i class="fas fa-edit"></i>
 					</a>
-					<a class="powereffect-control" data-action="delete" data-tooltip="{{localize 'DND4E.EffectDelete'}}">
+					<a class="powereffect-control" data-action="deletePowerEffect" data-tooltip="{{localize 'DND4E.EffectDelete'}}">
 						<i class="fas fa-trash"></i>
 					</a>
 				</div>

@@ -1,0 +1,7 @@
+<section class="tab scrollable {{tab.id}} flexcol{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+  {{#if (or (eq system.type "consumable") (eq system.type "power"))}}
+    {{> "dnd4e.target-effects"}}
+  {{else}}
+    {{> "dnd4e.self-effects"}}
+  {{/if}}
+</section>

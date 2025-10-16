@@ -1,4 +1,4 @@
-<div class="tab" data-group="primary" data-tab="macros">
+<section class="tab scrollable {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
 	<div class="form-group">
 		<label>{{ localize "Scope" }}</label>
@@ -40,12 +40,15 @@
 	</div>-->
 
 	<div class="form-group stacked macro-text">
-		<textarea name="system.macro.command">{{system.macro.command}}</textarea>
+		{{!-- <textarea name="system.macro.command">{{system.macro.command}}</textarea> --}}
+    <code-mirror name="system.macro.command" language="{{editorLanguage}}">
+      {{~ system.macro.command ~}}
+    </code-mirror>
 	</div>
 
 	<footer class="sheet-footer flexrow">
 		<!-- <button type="submit"><i class="fas fa-save"></i> {{ localize "MACRO.Save" }}</button> -->
-		<button class="execute" type="button"><i class="fas fa-dice-d20"></i> {{ localize "MACRO.Execute" }}</button>
+		<button class="execute" data-action="executeMacro" type="button"><i class="fas fa-dice-d20"></i> {{ localize "MACRO.Execute" }}</button>
 	</footer>
 
-</div>
+</section>
