@@ -1,7 +1,6 @@
 <div class="waypoint-label {{cssClass}}">
     {{#if terrain.difficult}}
-    {{!<img class="img" srcset="terrain.icon"></img>}}
-    <i class="icon fa-solid fa-mountain"></i>
+    <img class="img" srcset={{terrain.icon}}></img>
     {{/if}}
     {{#if action.img}}
     <div class="img" style="background-image: url('{{ action.img }}');"></div>

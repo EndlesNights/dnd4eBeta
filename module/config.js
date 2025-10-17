@@ -14,7 +14,7 @@ ______      ______   ___
 __________________________________________________________`;
 
 DND4E.difficultTerrain = {
-	img: "systems/dnd4e/icons/ui/tri.svg",
+	img: "systems/dnd4e/icons/ui/difficultTerrain.svg",
 	alpha: 1,
 	drawTerrianTint: false
 }

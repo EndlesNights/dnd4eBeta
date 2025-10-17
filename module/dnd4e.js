@@ -189,7 +189,7 @@ Hooks.once("init", async function() {
 	// HighlightRegionShader = DifficultTerrainShader4e;
 
 	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";//"DND4E.difficultTerrain.Label";
-	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "fa-regular fa-triangle";
+	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "systems/dnd4e/icons/ui/difficultTerrain.svg";
 
 	registerSystemSettings();
 
