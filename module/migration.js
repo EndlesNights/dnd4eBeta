@@ -241,7 +241,7 @@ export const migrateItemData = function(item) {
 			t.actorData = {};
 		}
 		else if ( !t.actorLink ) {
-			const actorData = duplicate(t.delta);
+			const actorData = foundry.utils.duplicate(t.delta);
 			actorData.type = token.actor?.type;
 			const update = migrateActorData(actorData, migrationData);
 			["items", "effects"].forEach(embeddedName => {

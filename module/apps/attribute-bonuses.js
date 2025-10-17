@@ -101,7 +101,7 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 	_onBonusDelete(event) {
 		event.preventDefault();
 		const div = event.currentTarget.closest(".bonus-part");
-		const bonus = duplicate(Helper.byString(this.options.target, this.document).bonus);
+		const bonus = foundry.utils.duplicate(Helper.byString(this.options.target, this.document).bonus);
 		bonus.splice(Number(div.dataset.bonusPart), 1);
 		//this.position.height -= 76;
 		return this.document.update({[`${this.options.target}.bonus`]: bonus});

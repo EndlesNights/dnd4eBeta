@@ -54,7 +54,7 @@ export default class TraitSelector extends foundry.applications.api.HandlebarsAp
     const attr = foundry.utils.getProperty(this.document, this.attribute) || {};
 
 	  // Populate choices
-    const choices = duplicate(this.options.choices);
+    const choices = foundry.utils.duplicate(this.options.choices);
 
     if(this.options.datasetOptions == "weaponProf"){
       for ( let [k, v] of Object.entries(choices) ) {
