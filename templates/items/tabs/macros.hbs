@@ -25,12 +25,8 @@
 	<div class="form-group">
 		<label>Autoanimation Hook</label>
 		<select name="system.macro.autoanimationHook">
-			{{#select system.macro.autoanimationHook}}
-			<option value="">Automatic</option>
-			{{#each config.autoanimationHook as |name type|}}
-			<option value="{{type}}">{{name}}</option>
-			{{/each}}
-			{{/select}}
+			<option value=""{{#if (eq system.macro.autoanimationHoo "")}}selected{{/if}}>Automatic</option>
+            {{selectOptions config.autoanimationHook selected=system.macro.autoanimationHook localize=true}}
 		</select>
 	</div>
 	{{/if}}

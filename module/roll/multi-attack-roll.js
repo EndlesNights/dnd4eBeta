@@ -164,7 +164,7 @@ export class MultiAttackRoll extends Roll {
 
         for (let roll of this._multirollData) {
             let parts = roll.parts;
-            roll.tooltip = await renderTemplate(this.constructor.TOOLTIP_TEMPLATE, { parts });
+            roll.tooltip = await foundry.applications.handlebars.renderTemplate(this.constructor.TOOLTIP_TEMPLATE, { parts });
         };
 
         // Define chat data
@@ -178,7 +178,7 @@ export class MultiAttackRoll extends Roll {
         };
 
         // Render the roll display template
-        return renderTemplate(chatOptions.template, chatData);
+        return foundry.applications.handlebars.renderTemplate(chatOptions.template, chatData);
     }
 
     /**

@@ -33,15 +33,17 @@ export class SecondWindDialog extends DocumentSheet4e {
 	}
 
 	/** @override */
-	_prepareContext() {
-		const extra = this.document.system.details.secondwindbon.custom.split(";");
-		return {
+	async _prepareContext() {
+		const context = await super._prepareContext(options);
+        const extra = this.document.system.details.secondwindbon.custom.split(";");
+		foundry.utils.mergeObject(context, {
 			system: this.document.system,
 			extra: extra,
 			buttons: [
 				{ name: "secondWindButton", type: "submit", label: "DND4E.SecondWind" }
 			]
-		};
+		});
+        return context;
 	}
 
 	_onRender(context, options) {

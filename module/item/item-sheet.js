@@ -261,9 +261,29 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			context.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
 			context.showLevel = false;
 			context.showRarity = false;
+			context.surgeOptions = {
+				"": "DND4E.None",
+				surge: "DND4E.HealingSurgeSpend",
+				surgeCost: "DND4E.HealingSurgeCost",
+				surgeValue: "DND4E.HealingSurgeValue"
+			}
 		}
 
 		if(itemData.type === "ritual"){
+			let attributeOptions = {}
+			for (const [key, value] of Object.entries(CONFIG.DND4E.abilityScores)) {
+				attributeOptions[key] = {
+					value: "abilities." + key + ".check.total",
+					label: value.label
+				};
+			};
+			for (const [key, value] of Object.entries(CONFIG.DND4E.skills)) {
+				attributeOptions[key] = {
+					value: "skills." + key + ".total",
+					label: value.label
+				};
+			};
+			context.attributeOptions = attributeOptions;
 			context.showLevel = false;
 			context.showRarity = false;
 		}
@@ -293,6 +313,23 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				context.hasEnhance = true;
 			}
 			context.summaryLabel = CONFIG.DND4E.equipmentTypes[itemData.system.armour.type]?.label;
+		}
+
+		if(itemData.type === "tool"){
+			let attributeOptions = {}
+			for (const [key, value] of Object.entries(CONFIG.DND4E.abilityScores)) {
+				attributeOptions[key] = {
+					value: "abilities." + key + ".check.total",
+					label: value.label
+				};
+			};
+			for (const [key, value] of Object.entries(CONFIG.DND4E.skills)) {
+				attributeOptions[key] = {
+					value: "skills." + key + ".total",
+					label: value.label
+				};
+			};
+			context.attributeOptions = attributeOptions;
 		}
 
 		if(itemData.type === "backpack"){
@@ -386,7 +423,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		const weaponUse = this.actor ? Helper.getWeaponUse(itemData.system, this.actor) : null;
 		const itemActor = this.item.actor || null;
 		const descriptionText = description.value ? Helper.commonReplace(description.value, itemActor, itemData.system, weaponUse?.system) : "";
-		context.descriptionHTML = await TextEditor.enrichHTML(descriptionText || description, {
+		context.descriptionHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText || description, {
 			secrets: context.item.isOwner,
 			async: true,
 			relativeTo: this.item
@@ -395,7 +432,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		const descriptionGM = context.system.description.gm || "";
 		const descriptionTextGM = context.system.description.gm ? Helper.commonReplace(descriptionGM, itemActor, itemData.system, weaponUse?.system) : "";
 
-		context.descriptionHTMLGM = await TextEditor.enrichHTML(descriptionTextGM || descriptionGM, {
+		context.descriptionHTMLGM = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionTextGM || descriptionGM, {
 			secrets: context.item.isOwner,
 			async: true,
 			relativeTo: this.item,
@@ -406,7 +443,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			context.system.description.gmNotes = true;
 		}
 
-		context.effectDetailHTML = await TextEditor.enrichHTML(context.system.effect?.detail, {
+		context.effectDetailHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.effect?.detail, {
 			secrets: context.item.isOwner,
 			async: true,
 			relativeTo: this.item
@@ -673,7 +710,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				}, {})};
 			}
 			else {
-				const attributes = game.model.Actor['Player Character']
+				const attributes = CONFIG.Actor.dataModels['Player Character'].schema.getInitialValue();
 				
 				if(consume.type === "resource"){
 					const resourceKeys = Object.keys(foundry.utils.flattenObject(attributes.resources)).reduce((obj, a) => {
@@ -1191,7 +1228,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/** @inheritdoc */
 	_onDrop(event) {
-		const data = TextEditor.getDragEventData(event);
+		const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
 		const item = this.item;
 
 		/**

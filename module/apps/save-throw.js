@@ -33,8 +33,9 @@ export class SaveThrowDialog extends DocumentSheet4e {
 	}
 
 	/** @override */
-	_prepareContext() {
-		const options = this.options;
+	async _prepareContext() {
+		const context = await super._prepareContext(options);
+        const options = this.options;
 		let savableEffects = [];
 		const actor = this.document;
 		if (actor && !options.effectSave) {
@@ -45,7 +46,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		if (savableEffects.length) {
 			savableEffects = [{name: game.i18n.format("DND4E.None"), id:''}].concat(savableEffects);
 		}
-		return {
+		foundry.utils.mergeObject(context, {
 			system: actor.system,
 			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label),
 			effectName: ( options.effectSave ? actor.effects.get(options.effectId).name : null ),
@@ -55,7 +56,8 @@ export class SaveThrowDialog extends DocumentSheet4e {
 			buttons: [
 				{ type: "submit", icon: "fa-solid fa-dice-d20", label: "DND4E.SaveRoll" }
 			]
-		};
+		});
+        return context;
 	}
 
 	async _onChangeInput(event) {

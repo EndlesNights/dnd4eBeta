@@ -29,7 +29,7 @@ export default class ActivatedEffectTemplate extends foundry.abstract.DataModel 
         per: new StringField({nullable: true, initial: null})
       }),
       consume: new SchemaField({
-        type: new StringField({initial: null}),
+        type: new StringField({nullable: true, initial: null}),
         target: new StringField({nullable: true, initial: null}),
         amount: new StringField({nullable: true, initial: null})
       })

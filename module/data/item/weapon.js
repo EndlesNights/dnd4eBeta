@@ -27,6 +27,7 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
       level: new StringField({initial: ""}),
       weaponType: new StringField({initial: "simpleM"}),
       weaponHand: new StringField({initial: "HMain"}),
+      weaponBaseType: new StringField({initial: ""}),
       properties: new MappingField(new BooleanField({initial: false}), {
         initialKeys: CONFIG.DND4E.weaponProperties,
         initialKeysOnly: true

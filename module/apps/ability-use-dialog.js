@@ -50,7 +50,7 @@ export default class AbilityUseDialog extends foundry.applications.api.Dialog {
     };
 
     // Render the ability usage template
-    const html = await renderTemplate("systems/dnd4e/templates/apps/ability-use.html", system);
+    const html = await foundry.applications.handlebars.renderTemplate("systems/dnd4e/templates/apps/ability-use.html", system);
 
     // Create the Dialog and return as a Promise
     const icon = "fa-fist-raised";

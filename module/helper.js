@@ -1798,7 +1798,7 @@ export class Helper {
 				const aCenter = canvasGridProxy.getCenterPoint(gridPosA);
 				const gridPosB = canvasGridProxy.getOffset(s.ray.B);
 				const bCenter = canvasGridProxy.getCenterPoint(gridPosB);
-				return { ray: new Ray(aCenter, bCenter) };
+				return { ray: new foundry.canvas.geometry.Ray(aCenter, bCenter) };
 			});
 		}
 		let distances = segments.map(s => canvasGridProxy.measurePath([s.ray.A, s.ray.B], {}));
@@ -1872,7 +1872,7 @@ export class Helper {
 							}
 							const point = canvas.grid.getCenterPoint({ x: Math.round(t2.document.x + (canvas.dimensions.size * x1)), y: Math.round(t2.document.y + (canvas.dimensions.size * y1)) });
 							let dest = new PIXI.Point(point.x, point.y);
-							const r = new Ray(origin, dest);
+							const r = new foundry.canvas.geometry.Ray(origin, dest);
 							if (wallsBlock) {
 								let collisionCheck;
 								collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, { source: t1.document, mode: "any", type: "move" });
@@ -1893,7 +1893,7 @@ export class Helper {
 		else {
 			const w = t2.document;
 			let closestPoint = foundry.utils.closestPointToSegment(t1.center, w.object.edge.a, w.object.edge.b);
-			distance = this.measureDistances([{ ray: new Ray(t1.center, closestPoint) }], { gridSpaces: true });
+			distance = this.measureDistances([{ ray: new foundry.canvas.geometry.Ray(t1.center, closestPoint) }], { gridSpaces: true });
 		}
 		return Math.max(distance, 0);
 	}
@@ -2066,7 +2066,7 @@ export class Helper {
 					const p2 = canvas.grid?.getCenterPoint(allyPoint);
 					if (!p1 || !p2)
 						continue;
-					const rayToCheck = new Ray(p1, p2);
+					const rayToCheck = new foundry.canvas.geometry.Ray(p1, p2);
 					const flankingTop = rayToCheck.intersectSegment(top) && rayToCheck.intersectSegment(bottom);
 					const flankingLeft = rayToCheck.intersectSegment(left) && rayToCheck.intersectSegment(right);
 					if (flankingLeft || flankingTop) {

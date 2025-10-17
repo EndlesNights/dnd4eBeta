@@ -179,7 +179,7 @@ export const migrateActorData = function(actor, migrationData) {
 function cleanActorData(actorData) {
 
 	// Scrub system data
-	const model = game.model.Actor[actorData.type];
+	const model = CONFIG.Actor.dataModels[actorData.type].schema.getInitialValue();
 	actorData = filterObject(actorData, model);
 
 	// Scrub system flags

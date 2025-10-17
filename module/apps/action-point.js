@@ -33,15 +33,17 @@ export class ActionPointDialog extends DocumentSheet4e {
 	}
 
 	/** @override */
-	_prepareContext() {
+	async _prepareContext() {
+		const context = await super._prepareContext(options);
 		const extra = this.document.system.actionpoints.custom !== "" ? this.document.system.actionpoints.custom.split("\n") : "";
-		return { 
+		foundry.utils.mergeObject(context, { 
 			system: this.document.system,
 			extra: extra,
 			buttons: [
 				{ type: "submit", label: "DND4E.ActionPointUse" }
 			]
-		};
+		});
+		return context;
 	}
 
 	static async #onSubmit(event, form, formData) {

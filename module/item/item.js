@@ -1000,7 +1000,7 @@ export default class Item4e extends Item {
 			templateData.abilityCheck = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
 		}
 		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
-		let html = await renderTemplate(template, templateData);
+		let html = await foundry.applications.handlebars.renderTemplate(template, templateData);
 		
 		if(["power", "consumable"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
@@ -1109,7 +1109,7 @@ export default class Item4e extends Item {
 			templateData.abilityCheck  = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
 		}
 		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
-		let html = await renderTemplate(template, templateData);
+		let html = await foundry.applications.handlebars.renderTemplate(template, templateData);
 		
 		if(["power", "consumable"].includes(templateData.item.type)) {
 			html = html.replace("ability-usage--", `ability-usage--${templateData.system.useType}`);
@@ -2531,7 +2531,7 @@ export default class Item4e extends Item {
 			if (!scene) return null;
 			const tokenData = scene.getEmbeddedDocument("Token", tokenId);
 			if (!tokenData) return null;
-			const token = new Token(tokenData);
+			const token = new foundry.canvas.placeables.Token(tokenData);
 			return token.actor;
 		}
 

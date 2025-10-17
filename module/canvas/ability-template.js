@@ -209,14 +209,14 @@ export class MeasuredTemplate4e extends foundry.canvas.placeables.MeasuredTempla
 	 */
 	_computeShape(){
 		if(this.document.flags.dnd4e?.templateType === "burst"
-		|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "burst" && !this.document.flags.dnd4e?.templateType)) {
+		|| (this.document.t === "circle" && ui.controls.control.name === "measure" && ui.controls.activeTool === "burst" && !this.document.flags.dnd4e?.templateType)) {
 			
 			const {t, distance, direction, angle, width} = this.document;
 			return new PIXI.Polygon(canvas.grid.getCircle({x: 0, y: 0}, distance));
 
 		}
 		// Freehand blasts
-		else if (!this.document.flags.dnd4e?.templateType && this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "blast") {
+		else if (!this.document.flags.dnd4e?.templateType && this.document.t === "circle" && ui.controls.control.name === "measure" && ui.controls.activeTool === "blast") {
 			const {t, distance, direction, angle, width} = this.document;
 
 			return new PIXI.Polygon(canvas.grid.getCone({x: 0, y: 0}, distance, direction, angle));
@@ -239,7 +239,7 @@ export class MeasuredTemplate4e extends foundry.canvas.placeables.MeasuredTempla
 	 */
 	_refreshRulerText(){
 		if( (this.document.flags.dnd4e?.templateType === "burst"  && this.document.t === "circle")
-			|| (this.document.t === "circle" && ui.controls.activeControl === "measure" && ui.controls.activeTool === "burst" && !this.document.flags.dnd4e?.templateType)) {
+			|| (this.document.t === "circle" && ui.controls.control.name === "measure" && ui.controls.activeTool === "burst" && !this.document.flags.dnd4e?.templateType)) {
 				let d;
 				let text;
 	

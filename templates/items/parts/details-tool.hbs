@@ -13,14 +13,7 @@
 <div class="form-group">
   <label>{{ localize "DND4E.DefaultAbilitySkillCheck" }}</label>
   <select name="system.attribute">
-    {{#select system.attribute}}
-    {{#each config.abilities as |name a|}}
-    <option value="abilities.{{a}}.mod">{{name}}</option>
-    {{/each}}
-    {{#each config.skills as |name s|}}
-    <option value="skills.{{s}}.total">{{name}}</option>
-    {{/each}}
-    {{/select}}
+    {{selectOptions attributeOptions selected=system.attribute valueAttr="value" labelAttr="label"}}
   </select>
 </div>
 

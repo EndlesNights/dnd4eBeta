@@ -58,14 +58,10 @@
 
   {{#if system.weaponType}}
     <select name="system.weaponUse">
-      {{#select system.weaponUse}}
       <option value="default">{{ localize 'DND4E.Default' }}</option>
       <option value="defaultOH">{{ localize 'DND4E.Default' }} {{ localize 'DND4E.HOff' }}</option>
       <option value="none">{{ localize 'DND4E.None' }}</option>
-      {{#each powerWeaponUseTargets as |name key|}}
-      <option value="{{key}}">{{name}}</option>
-      {{/each}}
-      {{/select}}
+      {{selectOptions powerWeaponUseTargets selected=value localize=true}}
     </select>
   {{/if}}
 </div>
@@ -194,13 +190,9 @@
   <label>{{ localize "DND4E.Attack" }}</label>
   <div class="form-fields attack-roll">
     <select name="system.attack.ability">
-      {{#select system.attack.ability}}
       <option value=""></option>
-      {{#each config.abilities as |name key|}}
-      <option value="{{key}}">{{name}}</option>
-      {{/each}}
-      <option value="form">{{ localize "DND4E.FormulaAttack" }}</option>
-      {{/select}}
+      {{selectOptions config.abilityScores selected=system.attack.ability labelAttr=value.label}}
+      <option value="form" {{#if (eq system.attack.ability "form")}}selected{{/if}}>{{ localize "DND4E.FormulaAttack" }}</option>
     </select>
 
     <span>{{ localize "DND4E.VS" }}</span>
@@ -363,12 +355,7 @@
 <div class="form-group select">
   <label>{{ localize "DND4E.HealingSurgeSpending" }}</label>
   <select name="system.hit.healSurge">
-  {{#select system.hit.healSurge}}
-    <option value="">{{ localize "DND4E.None" }}</option>
-    <option value="surge">{{ localize "DND4E.HealingSurgeSpend" }}</option>
-    <option value="surgeCost">{{ localize "DND4E.HealingSurgeCost" }}</option>
-    <option value="surgeValue">{{ localize "DND4E.HealingSurgeValue" }}</option>
-  {{/select}}
+    {{selectOptions surgeOptions selected=system.hit.healSurge localize=true}}
   </select>
 </div>
 {{/if}}

@@ -17,36 +17,23 @@
 	{{else if options.ac}}
 		<fieldset>
 			<legend data-tooltip="{{localize "DND4E.ACAbilityMod"}}">{{localize "DND4E.AbilityModifier"}}</legend>
-			<span>{{localize "DND4E.DefModUse"}} </span>
-			<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} style="vertical-align: middle;"/>
-			<span>{{localize "DND4E.DefModOverride"}}: </span>
-			<select name="system.altability">
-				{{#select system.altability}}
-				<option value="" >{{localize "DND4E.Default"}}</option>
-				<option value="none" >{{localize "DND4E.None"}}</option>
-				<option value="str" >{{localize "DND4E.AbilityStr"}}</option>
-				<option value="con" >{{localize "DND4E.AbilityCon"}}</option>
-				<option value="dex" >{{localize "DND4E.AbilityDex"}}</option>
-				<option value="int" >{{localize "DND4E.AbilityInt"}}</option>
-				<option value="wis" >{{localize "DND4E.AbilityWis"}}</option>
-				<option value="cha" >{{localize "DND4E.AbilityCha"}}</option>
-				{{/select}}
-			</select>
+			<div class="flexrow">
+				<span style="flex: 1.6">{{localize "DND4E.DefModUse"}} </span>
+				<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} style="vertical-align: middle; flex: auto"/>
+				<span style="flex: 2.6">{{localize "DND4E.DefModOverride"}}: </span>
+				<select name="system.altability" style="flex: 2">
+					<option value="">{{localize "DND4E.Default"}}</option>
+					{{selectOptions config.abilities selected=system.altability}}
+				</select>
+			</div>
 		</fieldset>
 
 	{{else if options.init}}
 	<fieldset>
 		<legend data-tooltip="{{localize "DND4E.InitAbilityMod"}}">{{localize "DND4E.AbilityModifier"}}</legend>
 		<select name="system.ability">
-			{{#select system.ability}}
-			<option value="" >{{localize "DND4E.None"}}</option>
-			<option value="str" >{{localize "DND4E.AbilityStr"}}</option>
-			<option value="con" >{{localize "DND4E.AbilityCon"}}</option>
-			<option value="dex" >{{localize "DND4E.AbilityDex"}}</option>
-			<option value="int" >{{localize "DND4E.AbilityInt"}}</option>
-			<option value="wis" >{{localize "DND4E.AbilityWis"}}</option>
-			<option value="cha" >{{localize "DND4E.AbilityCha"}}</option>
-			{{/select}}
+			<option value="">{{localize "DND4E.None"}}</option>
+			{{selectOptions config.abilities selected=system.ability}}
 		</select>
 	</fieldset>
 	{{else if options.secondWind}} 

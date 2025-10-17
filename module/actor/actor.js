@@ -2757,7 +2757,7 @@ export class Actor4e extends Actor {
 						targetToken: tokenId
 					}
 					
-					const html = await renderTemplate(
+					const html = await foundry.applications.handlebars.renderTemplate(
 						'systems/dnd4e/templates/chat/ongoing-damage.html',chatData 
 					);
 										
