@@ -3710,5 +3710,5 @@ div.saving-throw, div.death-saves {
 	filter: var(--white-svg-filter);
 	height: 1em;
 	position: relative;
-	top: 0.5px;
+	top: 2px;
 }
