@@ -38,7 +38,7 @@ jobs:
 
       - name: Load manifest
         id: manifest
-        uses: ActionTools/read-json-action@main
+        uses: ActionsTools/read-json-action@main
         with:
           file_path: "./system.json"
 
