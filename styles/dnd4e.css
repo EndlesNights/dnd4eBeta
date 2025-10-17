@@ -138,7 +138,7 @@ body {
 	--white-svg-filter: brightness(0) saturate(100%) invert(9%) sepia(1%) saturate(0%) hue-rotate(147deg) brightness(99%) contrast(89%);
 }
 body.theme-dark {
-	--white-svg-filter: brightness(0) saturate(100%) invert(93%) sepia(16%) saturate(428%) hue-rotate(319deg) brightness(105%) contrast(87%);
+	--white-svg-filter: brightness(0) saturate(100%) invert(91%) sepia(17%) saturate(207%) hue-rotate(345deg) brightness(103%) contrast(87%);;
 }
 body.theme-dark .dnd4e:not(.themed.theme-light),
 .dnd4e.themed.theme-dark {
