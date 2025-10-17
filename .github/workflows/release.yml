@@ -23,6 +23,7 @@ jobs:
       - name: Set up variables
         id: get_vars
         run: |
+          echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
           echo "FOUNDRY_DOWNLOAD=https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/system.zip" >> $GITHUB_ENV
 
       - name: Install Dependencies
@@ -40,6 +41,7 @@ jobs:
         env:
           flags.hotReload: false
           download: "${{ env.FOUNDRY_DOWNLOAD }}"
+          version: "${{ env.VERSION }}"
 
       - name: Zip package
         run: zip -r ./system.zip system.json icons lang module packs styles templates LICENSE.txt README.md
@@ -60,18 +62,21 @@ jobs:
     runs-on: ubuntu-latest
     environment: publish
     steps:
+      - uses: actions/checkout@v4
+
       - name: Set up variables
         id: get_vars
         run: |
           echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
           echo "FOUNDRY_MANIFEST=https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/system.json" >> $GITHUB_ENV
-          echo "CHANGELOG=https://github.com/${{github.repository}}/blob/master/CHANGELOG.md"
+          echo "CHANGELOG=https://github.com/${{github.repository}}/blob/master/CHANGELOG.md" >> $GITHUB_ENV
 
       - name: Load manifest
         id: manifest
         uses: ActionsTools/read-json-action@main
         with:
           file_path: "./system.json"
+          prop_path: "compatibility"
 
       - name: publish
         uses: fjogeleit/http-request-action@v1
@@ -80,4 +85,4 @@ jobs:
           url: 'https://foundryvtt.com/_api/packages/release_version/'
           method: 'POST'
           customHeaders: '{"Content-Type": "application/json", "Authorization" : "${{ secrets.FOUNDRY_KEY }}"}'
-          data: '{"dry_run": false, "id" : "dnd4e", "release": {"version" :  "${{ env.VERSION }}", "manifest": "${{ env.FOUNDRY_MANIFEST }}", "notes" : "${{ env.CHANGELOG }}", "compatibility" : {"minimum": "${{ steps.manifest.outputs.compatibility.minimum }}", "verified": "${{ steps.manifest.outputs.compatibility.verified }}", "maximum": "${{ steps.manifest.outputs.compatibility.maximum }}"} } }'
+          data: '{"dry_run": false, "id" : "dnd4e", "release": {"version" :  "${{ env.VERSION }}", "manifest": "${{ env.FOUNDRY_MANIFEST }}", "notes" : "${{ env.CHANGELOG }}", "compatibility" : {"minimum": "${{ steps.manifest.outputs.minimum }}", "verified": "${{ steps.manifest.outputs.verified }}", "maximum": "${{ steps.manifest.outputs.maximum }}"} } }'
