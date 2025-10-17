@@ -9,13 +9,10 @@ import { AttributeBonusDialog } from "../apps/attribute-bonuses.js";
 import { CustomRolldDescriptions } from "../apps/custom-roll-descriptions.js";
 import { MovementDialog } from "../apps/movement-dialog.js";
 import { EncumbranceDialog } from "../apps/encumbrance-dialog.js";
-import { ItemImporterDialog} from "../apps/item-importer.js"
 import { HealMenuDialog } from "../apps/heal-menu-dialog.js";
 import TraitSelector from "../apps/trait-selector.js";
-import TraitSelectorSense from "../apps/trait-selector-sense.js";
-import TraitSelectorSave from "../apps/trait-selector-save.js";
+import TraitSelectorValues from "../apps/trait-selector-sense.js";
 import ConBonConfig from "../apps/con-bon-config.js";
-import ListStringInput from "../apps/list-string-input.js";
 // import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import ActiveEffect4e from "../effects/effects.js";
 import HPOptions from "../apps/hp-options.js";
@@ -228,9 +225,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			html.querySelectorAll('.trait-selector-weapon').forEach(el => el.addEventListener("click", this._onTraitSelectorWeapon.bind(this)));
 			html.querySelectorAll('.trait-selector-senses').forEach(el => el.addEventListener("click", this._onTraitSelectorSense.bind(this)));
 			html.querySelectorAll('.list-string-input').forEach(el => el.addEventListener("click", this._onListStringInput.bind(this)));
-			
-			//save throw bonus
-			html.querySelectorAll('.trait-selector-save').forEach(el => el.addEventListener("click", this._onTraitSelectorSaveThrow.bind(this)));
 			
 			//Inventory & Item management
 			html.querySelectorAll('.item-create').forEach(el => el.addEventListener("click", this._onItemCreate.bind(this)));
@@ -496,6 +490,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 
 		context.system = actorData;
+
+		context.systemFields = this.actor.system.schema.fields;
 
 		return context;
 	}
@@ -1243,9 +1239,31 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
-	_onItemImport(event) {
+	async _onItemImport(event) {
 		event.preventDefault();
-		new ItemImporterDialog(this.actor).render(true);
+		const {json=null} = await foundry.applications.api.Dialog.input({
+			window: {
+				title: `${this.actor.name} - JSON Item Importer`
+			},
+			content: `<p>${game.i18n.localize("DND4EUI.ImportJSONInput")}</p>
+			<input name=json type="text"/>`,
+			ok: {
+				label: "DND4EUI.ImportJSONUpload"
+			}
+		});
+		if (!json) return;
+		let obj;
+		try {
+			obj = JSON.parse(json);
+		} catch(err) {
+			console.error(err);
+			return ui.notifications.error("Invalid input, JSON formatting did not validate!");
+		}
+		if (!Item.TYPES.includes(obj.type)) {
+			return ui.notifications.error(`Invalid Item type of "${obj.type}"`);
+		}
+		obj._id ??= foundry.utils.randomID(16);
+		await this.actor.createEmbeddedDocuments("Item", [obj]);
 	}
 
 	_onPowerItemCreate(event) {
@@ -1602,6 +1620,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 */
 	_onItemRoll(event,variance={}) {
 		event.preventDefault();
+		event.stopPropagation();
 		//console.debug(variance)
 		const itemId = event.currentTarget.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
@@ -1759,19 +1778,19 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_onTraitSelector(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.parentElement.querySelector("h4");
+		const label = a.querySelector("span");
 		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, title: label.innerText, choices};
-		new TraitSelector(this.actor, options).render(true);
+		const options = { name: a.dataset.target, window: {title: label.innerText}, choices};
+		new TraitSelector({document: this.actor, ...options}).render(true);
 	}
 
 	_onTraitSelectorWeapon(event){
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.parentElement.querySelector("h4");
+		const label = a.querySelector("span");
 		const choices = CONFIG.DND4E.weaponProficienciesMap;
-		const options = { name: a.dataset.target, title: label.innerText, choices, datasetOptions: a.dataset.options, config:CONFIG};
-		new TraitSelector(this.actor, options).render(true);
+		const options = { name: a.dataset.target, window: {title: label.innerText}, choices, datasetOptions: a.dataset.options, config:CONFIG};
+		new TraitSelector({document: this.actor, ...options}).render(true);
 	}
 
 	_onTraitSelectorSense(event) {
@@ -1780,24 +1799,41 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		// const label = a.parentElement.parentElement.querySelector("h4");
 		const label = a.parentElement.querySelector("span");
 		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, title: label.innerText, choices };
-		new TraitSelectorSense(this.actor, options).render(true);
+		const options = { name: a.dataset.target, window: {title: label.innerText}, choices };
+		new TraitSelectorValues({document: this.actor, ...options}).render(true);
 	}
 	
-	_onListStringInput(event) {
+	async _onListStringInput(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
 		const label = a.parentElement.querySelector("span");
-		const options = { name: a.dataset.target, title: label.innerText};
-		new ListStringInput(this.actor, options).render(true);
-	}
-	
-	_onTraitSelectorSaveThrow(event) {
-		event.preventDefault();
-		const a = event.currentTarget;
-		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, title: "Saving Throw Mods", choices };
-		new TraitSelectorSave(this.actor, options).render(true);
+		const currValue = foundry.utils.getProperty(this.actor, a.dataset.target) ?? [];
+		const {traits=null} = await foundry.applications.api.Dialog.input({
+			id: "trait-selector",
+			classes: ["dnd4e"],
+			window: {
+				title: `${this.actor.name} - ${label.innerText}`
+			},
+			position: {
+				width: 320,
+				height: "auto"
+			},
+			content: `
+			<div class="form-group stacked">
+				<label>${game.i18n.localize("DND4EUI.StringEnterValues")}:</label>
+				<input type="text" name="traits" value="${currValue.join(";")}" data-dtype="String"/>
+			</div>
+			`,
+			ok: {
+				label: "DND4E.TraitSave",
+				icon: "far fa-save"
+			}
+		});
+		if (traits === null) return;
+		const newValue = traits.split(";").map(i => i.trim()).filter(i => i);
+		await this.actor.update({
+			[a.dataset.target]: newValue
+		});
 	}
 
   /* -------------------------------------------- */
