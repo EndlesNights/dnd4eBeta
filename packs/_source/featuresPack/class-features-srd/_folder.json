@@ -1,0 +1,21 @@
+{
+  "name": "Class Features (SRD)",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "4OBbdiQfugXxFAPH",
+  "sort": 100000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": null,
+    "systemVersion": null,
+    "coreVersion": "12.331",
+    "createdTime": null,
+    "modifiedTime": 1745817871185,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null
+  },
+  "description": "",
+  "_key": "!folders!4OBbdiQfugXxFAPH"
+}

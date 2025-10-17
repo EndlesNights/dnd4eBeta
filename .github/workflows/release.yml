@@ -1,0 +1,79 @@
+name: Release Creation
+
+env:
+  NODE_VERSION: 22
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Set up variables
+        id: get_vars
+        run: |
+          echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+          echo "FOUNDRY_MANIFEST=https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.json" >> $GITHUB_ENV
+          echo "FOUNDRY_DOWNLOAD=https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip" >> $GITHUB_ENV
+          echo "CHANGE_LOG=https://github.com/${{github.repository}}/blob/master/CHANGELOG.md"
+
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build Compendia
+        run: |
+          npm run build
+          rm -rf packs/_source
+
+      - name: Load manifest
+        id: manifest
+        uses: ActionTools/read-json-action@main
+        with:
+          file_path: "./system.json"
+
+      - name: Adjust manifest
+        uses: TomaszKandula/variable-substitution@v1.0.2
+        with:
+          files: "system.json"
+        env:
+          flags.hotReload: false
+          download: "${{ env.FOUNDRY_DOWNLOAD }}"
+
+      - name: Zip package
+        run: zip -r ./system.zip system.json icons lang module packs styles templates LICENSE.txt README.md
+
+      - name: Update release with files
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          name: ${{ github.event.release.name }}
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: './system.json, ./system.zip'
+          tag: ${{ github.event.release.tag_name }}
+          body: ${{ github.event.release.body }}
+  publish:
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment: publish
+    steps:
+      - name: publish
+        uses: fjogeleit/http-request-action@v1
+        continue-on-error: true
+        with:
+          url: 'https://foundryvtt.com/_api/packages/release_version/'
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json", "Authorization" : "${{ secrets.FOUNDRY_KEY }}"}'
+          data: '{"dry_run": false, "id" : "dnd4e", "release": {"version" :  "${{ env.VERSION }}", "manifest": "${{ env.FOUNDRY_MANIFEST }}", "notes" : "${{ env.CHANGELOG }}", "compatibility" : {"minimum": "${{ steps.manifest.outputs.compatibility.minimum }}", "verified": "${{ steps.manifest.outputs.compatibility.verified }}", "maximum": "${{ steps.manifest.outputs.compatibility.maximum }}"} } }'

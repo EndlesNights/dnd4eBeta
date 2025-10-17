@@ -1,0 +1,144 @@
+{
+  "name": "Blinding Dazzle Grenade (lvl 3)",
+  "type": "consumable",
+  "img": "icons/magic/light/explosion-star-blue-large.webp",
+  "effects": [],
+  "folder": "PIKifUmTjsyxJmS3",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><em>While not particulally destructive, the substance in this grenade burns so bright as to dazzle anyone too close.&nbsp;&nbsp;</em></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "AV p. 26",
+    "quantity": 1,
+    "weight": 0,
+    "price": 30,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "Common",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": "",
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "charges",
+      "autoDestroy": false
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": true,
+      "isBasic": false,
+      "isCharge": false,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "",
+      "abilityBonus": 0,
+      "def": "fort",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "6",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": false,
+      "isHealing": false,
+      "healSurge": "",
+      "baseQuantity": 1,
+      "baseDiceType": "Base Weapon Damage",
+      "detail": "The target treats all nonadjacent creatures as having concealment until the end of your next turn.  <br/> Creatures that do not rely on sight to detect other creatures are immune to this effect.",
+      "formula": "",
+      "critFormula": "",
+      "healFormula": ""
+    },
+    "miss": {
+      "detail": "",
+      "formula": "@damageFormula/2"
+    },
+    "effect": {
+      "detail": ""
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {},
+    "level": 3,
+    "consumableType": "alchemical",
+    "autoGenChatPowerCard": true,
+    "useType": "item",
+    "actionType": "standard",
+    "rangeType": "rangeBurst",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "effectType": {},
+    "keywordsCustom": "",
+    "formula": "",
+    "postEffect": false,
+    "effectHTML": false,
+    "rangePower": 10,
+    "area": 1
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686093638920,
+    "modifiedTime": 1686093638920,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "GZrwSXvsNximvRzw",
+  "sort": 0,
+  "_key": "!items!GZrwSXvsNximvRzw"
+}

@@ -1,0 +1,61 @@
+{
+  "_id": "b8GUBexZW4N4mWWV",
+  "name": "Deities List",
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "pages": [
+    {
+      "name": "Deities List",
+      "type": "text",
+      "title": {
+        "show": false,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h2>Good, Lawful Good, and Unaligned Deities</h2><table><thead><tr><th>Deity</th><th>Alignment</th><th>Areas of Influence</th></tr></thead><tbody><tr><td>Avandra</td><td>Good</td><td>Change, Luck, Trade, Travel</td></tr><tr><td>Bahamut</td><td>Lawful Good</td><td>Justice, Honor, Nobility, Protection</td></tr><tr><td>Corellon</td><td>Unaligned</td><td>Arcane Magic, Spring, Beauty, the Arts</td></tr><tr><td>Erathis</td><td>Unaligned</td><td>Civilization, Invetions, Laws</td></tr><tr><td>Ioun</td><td>Unaligned</td><td>Knowledge, Prophecy, Skill</td></tr><tr><td>Kord</td><td>Unaligned</td><td>Storms, Strength, Battle</td></tr><tr><td>Melora</td><td>Lawful Good</td><td>Creation, Artisans, Family</td></tr><tr><td>Pelor</td><td>Good</td><td>Sun, Summer, Agriculture, Time</td></tr><tr><td>Raven Queen</td><td>Unaligned</td><td>Death, Fate, Winter</td></tr><tr><td>Sehanime</td><td>Unaligned</td><td>Trickery, Moon, Love, Autumn</td></tr></tbody></table><h2>Evil and Chaotic Evil Deities</h2><table><thead><tr><th>Deity</th><th>Alignment</th><th>Areas of Influence</th></tr></thead><tbody><tr><td>Asmodeus</td><td>Evil</td><td>Power, Domination, Tyranny</td></tr><tr><td>Bane</td><td>Evil</td><td>War, Conquest</td></tr><tr><td>Gruumsh</td><td>Chaotic Evil</td><td>Turmoil, Destruction</td></tr><tr><td>Lolth</td><td>Chaotic Evil</td><td>Spiders, Shadows, Lies</td></tr><tr><td>Tiamat</td><td>Evil</td><td>Wealth, Greed, Vengeance</td></tr><tr><td>Torog</td><td>Evil</td><td>Underdark, Imprisonment</td></tr><tr><td>Vecna</td><td>Evil</td><td>Undeath, Secrets</td></tr><tr><td>Zehir</td><td>Evil</td><td>Darkness, Poison, Serpents</td></tr></tbody></table>"
+      },
+      "_stats": {
+        "coreVersion": "13.350",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": 1759984831719,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "CKflq5NWpx9iSEhl",
+      "system": {},
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "sort": 0,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "category": null,
+      "_key": "!journal.pages!b8GUBexZW4N4mWWV.CKflq5NWpx9iSEhl"
+    }
+  ],
+  "_stats": {
+    "coreVersion": "13.350",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": 1759984576113,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "categories": [],
+  "_key": "!journal!b8GUBexZW4N4mWWV"
+}

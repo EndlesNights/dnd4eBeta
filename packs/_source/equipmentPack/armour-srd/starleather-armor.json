@@ -1,0 +1,120 @@
+{
+  "name": "Starleather armor",
+  "type": "equipment",
+  "img": "icons/equipment/chest/breastplate-banded-leather-purple.webp",
+  "effects": [],
+  "folder": "676N3JsB3VGN4pMD",
+  "flags": {
+    "cf": {
+      "id": "temp_jcnv5z4tev",
+      "path": "Leather Armor",
+      "color": "#000000"
+    }
+  },
+  "system": {
+    "description": {
+      "value": "<p>Minimum Enhancement Bonus: +6</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB p.2.14",
+    "quantity": 1,
+    "weight": 15,
+    "price": null,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "level": null,
+    "armour": {
+      "type": "armour",
+      "subType": "light",
+      "enhance": 0,
+      "ac": 4,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0,
+      "dex": null,
+      "movePen": false,
+      "movePenValue": 0,
+      "skillCheck": false,
+      "skillCheckValue": 0,
+      "damageRes": {
+        "parts": []
+      },
+      "value": 10
+    },
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "stealth": false,
+    "proficient": true,
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "armourBaseType": "leather"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686094176732,
+    "modifiedTime": 1686094176732,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "qWdhY2vi7qH4SE5q",
+  "sort": 0,
+  "_key": "!items!qWdhY2vi7qH4SE5q"
+}

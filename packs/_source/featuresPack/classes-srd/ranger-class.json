@@ -1,0 +1,196 @@
+{
+  "name": "Ranger Class",
+  "type": "feature",
+  "img": "icons/skills/ranged/arrow-flying-poisoned-green.webp",
+  "effects": [
+    {
+      "_id": "1p6p0WuIhmuyPC8A",
+      "changes": [
+        {
+          "key": "system.attributes.hp.starting",
+          "mode": 5,
+          "value": "12",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.perlevel",
+          "mode": 5,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.details.surges.max",
+          "mode": 2,
+          "value": "6+@conMod",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.autototal",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.defences.fort.value",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.defences.ref.value",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "cloth",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "leather",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "hide",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "simpleM",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "militaryM",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "simpleR",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "militaryR",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.QNJ5gAjk4WGupWTm",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          },
+          "dots": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Ranger Class Stats",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/ranged/arrow-flying-poisoned-green.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!KQO8QzAn5PqncsfV.1p6p0WuIhmuyPC8A"
+    }
+  ],
+  "folder": "LzEqWjfE9D4FpBrt",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><strong>Role:</strong> Striker. You concentrate on either ranged attacks or two-weapon melee fighting to deal a lot of damage to one enemy at a time. Your attacks rely on speed and mobility, since you prefer to use hit-andrun tactics whenever possible.</p>\n<p><strong>Power Source: </strong>Martial. Your talents depend on extensive training and practice, inner confidence, and natural proficiency</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Strength</li>\n<li>Dexterity</li>\n<li>Wisdom</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.kVD04UqK9Yx6GeRA]{Hide armor}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li style=\"box-sizing: border-box; user-select: text;\">@Compendium[dnd4e.srd_rules.4vItzLTePIjC1MbI]{Simple Melee Weapons}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@Compendium[dnd4e.srd_rules.oRfaQkmDSxWMx5Ln]{Military Melee Weapons}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@Compendium[dnd4e.srd_rules.XKgEgbttyURcvqns]{Simple Ranged Weapons}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@Compendium[dnd4e.srd_rules.xttyKhBLZaMknOGm]{Military Ranged Weapons}</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+1 Fortitude</li>\n<li>+1 Reflex</li>\n</ul>\n<p><strong>Hit Points at 1st Level</strong><strong>:</strong> [[12]] + Con Score</p>\n<p><strong>Hit Points&nbsp;</strong><strong>per Level Gained:</strong> [[5]]</p>\n<p><strong>Base&nbsp;</strong><strong>Healing</strong><strong> Surges per Day:</strong> [[6]] + Con Mod</p>\n<p><strong>Skill Training:</strong>&nbsp;Dungeoneering or Nature, choose four more from the following list:</p>\n<ul>\n<li>Acrobatics (Dex)</li>\n<li>Athletics (Str)</li>\n<li>Endurance (Con)</li>\n<li>Healing (Wis)</li>\n<li>Perception (Wis)</li>\n<li>Stealth (Dex)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>Hunter&rsquo;s Quarry</li>\n<li>Prime Shot</li>\n</ul>\n<p><strong>Choose one of the following&nbsp;Fighting Style:</strong></p>\n<ul>\n<li>Archer Fighting Style</li>\n<li>Two-Blade Righting Style</li>\n</ul>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg.103",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "class",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Ranger",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "class": "",
+    "hitFistLevel": 12,
+    "hitPerLevel": 5,
+    "surgePerDay": 6,
+    "skills": "<i class=\"fas fa-edit\"></i>",
+    "def": {
+      "ac": 0,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0
+    },
+    "proficiencies": {
+      "weapons": [],
+      "armour": []
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094209234,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "KQO8QzAn5PqncsfV",
+  "sort": 0,
+  "_key": "!items!KQO8QzAn5PqncsfV"
+}

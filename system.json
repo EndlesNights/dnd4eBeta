@@ -76,7 +76,7 @@
 			"name": "srd_rules",
 			"label": "SRD Rules",
 			"system": "dnd4e",
-			"path": "./packs/srd_rules.db",
+			"path": "./packs/srd_rules",
 			"type": "JournalEntry"
 		}
 	],
