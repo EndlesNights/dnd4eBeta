@@ -1654,6 +1654,7 @@ preLocalize("skills", { keys: ["label"], sort: true });
 DND4E.modifiers ={
 	"attack": "DND4E.ModifierAttack",
 	"damage": "DND4E.ModifierDamage",
+	"abilities": "DND4E.ModifierAbilities",
 	"skills": "DND4E.ModifierSkills",
 	"defences": "DND4E.ModifierDefences"
 };

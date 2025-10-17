@@ -143,6 +143,7 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 	font-size:revert;
 	/* background:#cac9be; */
 	border:var(--border-faint);
+	flex: 1;
 }
 .dnd4e.sheet.actor input,
 .dnd4e.sheet.item .content .currency input[type="text"]{
@@ -630,9 +631,10 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 }
 .dnd4e.sheet .window-content .tab{
 	height:100%;
-	overflow-y:auto;
+	overflow:hidden auto;
 	align-content:flex-start;
-	scrollbar-width: thin;
+	scrollbar-width:thin;
+	scrollbar-gutter:stable;
 }
 .dnd4e.sheet.actor .tab.details .section--attributes{
 	border:unset;
@@ -645,9 +647,11 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 }
 .dnd4e.sheet.actor .section--details .detail input{
 	text-align:right;
+	flex: 1;
 }
 .dnd4e.sheet.actor .section--details .detail label{
 	font-weight:normal;
+	flex: 1;
 }
 .dnd4e.sheet.actor .section--details .details-mechanical{
 	margin-left:0.5em;
@@ -2434,6 +2438,8 @@ font-size:12px;
 	padding:0;
 	font-weight:bold;
 	line-height:24px;
+	font-family:var(--font-body);
+	font-size:medium;
 }
 .dnd4e.sheet.item .damage-parts{
 	list-style:none;

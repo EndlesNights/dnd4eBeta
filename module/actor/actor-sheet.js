@@ -183,6 +183,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			html.querySelectorAll('.health-option').forEach(el => el.addEventListener("click", this._onHPOptions.bind(this)));
 			
 			//Open Skill-Bonus
+			html.querySelectorAll('.ability-mod-half').forEach(el => el.addEventListener("click", this._onAbilityBonus.bind(this)));
 			html.querySelectorAll('.skill-bonus').forEach(el => el.addEventListener("click", this._onSkillBonus.bind(this)));
 			html.querySelectorAll('.death-save-bonus').forEach(el => el.addEventListener("click", this._onDeathSaveBonus.bind(this)));
 			html.querySelectorAll('.roll-save-bonus').forEach(el => el.addEventListener("click", this._onSavingThrowBonus.bind(this)));
@@ -1391,6 +1392,14 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		new AttributeBonusDialog(options).render(true);
 	}
 	/* -------------------------------------------- */
+
+	_onAbilityBonus(event) {
+		event.preventDefault();
+		const abilityId = event.currentTarget.parentElement.dataset.ability;
+		const target = `system.abilities.${abilityId}.check`;
+		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.AbilityCheckBonusTitle', { ability: this.actor.system.abilities[abilityId].label } ) }` };
+		new AttributeBonusDialog(options).render(true);
+	}
 
 	_onDeathSaveBonus(event) {
 		event.preventDefault();

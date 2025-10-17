@@ -139,7 +139,7 @@
 					
 
 					{{#unless system.halfLevelOptions}}
-					<label>+{{localize 'DND4E.HalfLVL'}}</label>
+					<label style="text-transform:uppercase">{{localize 'DND4E.Check'}}</label>
 					{{/unless}}
 
 				</div>
@@ -158,7 +158,7 @@
 						<input class="ability-score" name="system.abilities.{{a}}.value" type="text" data-dtype="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
 						<label class="ability-name rollable" data-tooltip="{{ability.label }}">{{ability.label}}</label>
 						<label class="attribute-display ability-mod" data-tooltip="{{ability.label}}">{{numberFormat ability.mod decimals=0 sign=true}}</label>
-						<label class="attribute-display ability-mod-half" data-tooltip="{{ability.label }}">{{numberFormat ability.modHalf decimals=0 sign=true}}</label>
+						<label class="attribute-display ability-mod-half rollable" data-tooltip="{{ability.label }}">{{numberFormat ability.check.total decimals=0 sign=true}}</label>
 					</div>
 					{{/each}}
 				{{/if}}

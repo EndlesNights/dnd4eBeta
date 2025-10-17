@@ -31,7 +31,11 @@ export default class CombatantTemplate extends SpeedTemplate {
     const numberConfig = {required: true, nullable: false, integer: true};
     return {
       abilities: new MappingField(new SchemaField({
-        value: new NumberField({...numberConfig, initial: 10,}),
+        value: new NumberField({...numberConfig, initial: 10}),
+        check: new Dnd4eBonusesField({
+            value: new NumberField({...numberConfig, initial: 0}),
+            bonus: new BonusField()
+        }),
         chat: new StringField({required: true, nullable: false, initial: "@name uses @label."})
       }), {initialKeys: CONFIG.DND4E.abilities, initialKeysOnly: true, label: "DND4E.AbilityScores"}),
       attributes: new SchemaField(AttributesField.common),

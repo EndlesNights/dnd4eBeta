@@ -933,13 +933,13 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/* -------------------------------------------- */
 
 	/** @inheritDoc */
-	// changeTab(...args) {
-	// 	const autoPos = {...this.position, height: "auto"};
-	// 	this.setPosition(autoPos);
-	// 	super.changeTab(...args);
-	// 	const newPos = {...this.position, height: this.element.scrollHeight};
-	// 	this.setPosition(newPos);
-	// }
+	changeTab(...args) {
+		const autoPos = {...this.position, height: "auto"};
+		this.setPosition(autoPos);
+		super.changeTab(...args);
+		const newPos = {...this.position, height: this.element.scrollHeight};
+		this.setPosition(newPos);
+	}
 
 	/* -------------------------------------------- */
 	/*  Form Submission                             */

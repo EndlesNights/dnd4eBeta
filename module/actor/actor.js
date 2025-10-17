@@ -204,27 +204,11 @@ export class Actor4e extends Actor {
 	prepareBaseData(){
 		super.prepareBaseData();
 		const system = this.system;
-		const bonuses = foundry.utils.getProperty(system, "bonuses.abilities") || {};
-
-		// Ability modifiers and saves
-		// Character All Ability Check" and All Ability Save bonuses added when rolled since not a fixed value.
-		const saveBonus = Number.isNumeric(bonuses.save) ? parseInt(bonuses.save) : 0;
-		const checkBonus = Number.isNumeric(bonuses.check) ? parseInt(bonuses.check) : 0;
 		
 		if(["Player Character","NPC"].includes(this.type)){
 			for (let [id, abl] of Object.entries(system.abilities)) {
 				abl.mod = Math.floor((abl.value - 10) / 2);
 				abl.modHalf = abl.mod + Math.floor(system.details.level / 2);
-				abl.prof = (abl.proficient || 0);
-				if(game.settings.get("dnd4e", "halfLevelOptions")) {
-					abl.saveBonus = saveBonus;
-					abl.checkBonus = checkBonus;
-				} else {
-					abl.saveBonus = saveBonus + Math.floor(system.details.level / 2);
-					abl.checkBonus = checkBonus + Math.floor(system.details.level / 2);
-				}
-				abl.save = abl.mod + abl.prof + abl.saveBonus;
-
 				abl.label = game.i18n.localize(DND4E.abilities[id]);
 			}
 
@@ -294,6 +278,8 @@ export class Actor4e extends Actor {
 		
 		if(isCreature){
 			//console.debug('Creature');
+			this._prepareDerivedDataAbilities(actorData, system);
+			//console.debug('Abilities done');
 			this._prepareDerivedDataSkills(actorData, system);
 			//console.debug('Skills done');
 			this._prepareDerivedDataSkillsPassive(actorData, system);
@@ -987,6 +973,69 @@ export class Actor4e extends Actor {
 			system.movement.teleport.value = Math.max(system.movement.teleport.absolute,0);
 		}
 	}
+	_prepareDerivedDataAbilities(actorData, system){
+		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. */
+		let globalBonus = {};
+		try{
+			globalBonus = system.modifiers.abilities;
+		}catch(e){
+			console.warn(`PC global ability calc failed, probably due to an unmigrated actor. Abilities will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"enhance": 0,"untyped": 0,"bonusValue": 0};
+		}
+		
+		for (const [id, abl] of Object.entries(system.abilities)) {
+			abl.label = abl.label? abl.label : DND4E.abilityScores[id]?.label;
+			abl.check.value = parseFloat(abl.check.value || 0);
+			
+			if(isNaN(parseInt(abl?.check?.absolute))){ //All logic only required if there is no usable absolute value
+
+				let ablBonusValue = 0;
+
+				if(!(abl.check.bonus.length === 1 && jQuery.isEmptyObject(abl.check.bonus[0]))) {
+					for( const b of abl.check.bonus) {
+						if(b.active && Helper._isNumber(b.value)) {
+							ablBonusValue += parseInt(b.value);
+						}
+						else if(b.active){
+							let val = Helper.replaceData(b.value,system)
+							if(Helper._isNumber(val)){
+								ablBonusValue += parseInt(val);
+							}
+						}
+					}
+				}
+				abl.ablBonusValue = ablBonusValue;
+
+				if(abl.check.base == undefined){
+					abl.check.base = 0;
+					// this.update({[`system.skills[${skl}].base`]: 0 });
+				}
+
+				let featBonus = 0;
+				let itemBonus = 0;
+				let powerBonus = 0;
+				let raceBonus = 0;
+				let enhBonus = 0;
+
+				abl.check.total = abl.check.value + abl.check.base + abl.mod + ablBonusValue;
+				abl.check.total += Math.max(featBonus || 0, globalBonus.feat || 0);
+				abl.check.total += Math.max(itemBonus || 0, globalBonus.item || 0);
+				abl.check.total += Math.max(powerBonus || 0, globalBonus.power || 0);
+				abl.check.total += Math.max(raceBonus || 0, globalBonus.race || 0);
+				abl.check.total += Math.max(enhBonus || 0, globalBonus.enhance || 0);
+				abl.check.total += abl.check.untyped || 0;
+				abl.check.total += globalBonus.untyped || 0;
+				//No way to sort manual bonuses, so they just get added regardless.
+				abl.check.total += globalBonus.bonusValue;
+
+				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
+					abl.check.total += Math.floor(system.details.level / 2);
+				}
+			}else{
+				abl.check.total = abl.check.absolute;
+			}
+		}
+	}
 	_prepareDerivedDataSkills(actorData, system){
 		//Calculate skill modifiers
 		if(this.type === "NPC"){
@@ -1674,23 +1723,10 @@ export class Actor4e extends Actor {
    */
 	rollSkill(skillId, options={}) {
 		const skl = this.system.skills[skillId];
-		const bonuses = foundry.utils.getProperty(this.system, "bonuses.abilities") || {};
 
 		// Compose roll parts and data
 		const parts = ["@mod"];
 		const data = {mod: skl.total};
-		
-		// Ability test bonus
-		if ( bonuses.check ) {
-			data["checkBonus"] = bonuses.check;
-			parts.push("@checkBonus");
-		}
-
-		// Skill check bonus
-		if ( bonuses.skill ) {
-			data["skillBonus"] = bonuses.skill;
-			parts.push("@skillBonus");
-		}
 
 		let flavText = this.system.skills[skillId].chat.replace("@name", this.name);
 		flavText = flavText.replace("@label", this.system.skills[skillId].label);
@@ -1721,26 +1757,8 @@ export class Actor4e extends Actor {
 		const abl = this.system.abilities[abilityId];
 
 		// Construct parts
-		const parts = game.settings.get("dnd4e", "halfLevelOptions") ? ["@mod"] : ["@mod", "@halfLevel"];
-		const data = game.settings.get("dnd4e", "halfLevelOptions") ? {mod: abl.mod} : {mod: abl.mod, halfLevel: Math.floor(this.system.details.level / 2)};
-
-		// Add feat-related proficiency bonuses
-		// const feats = this.data.flags.dnd4e || {};
-		// if ( feats.remarkableAthlete && DND4E.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
-			// parts.push("@proficiency");
-			// data.proficiency = Math.ceil(0.5 * this.system.attributes.prof);
-		// }
-		// else if ( feats.jackOfAllTrades ) {
-			// parts.push("@proficiency");
-			// data.proficiency = Math.floor(0.5 * this.system.attributes.prof);
-		// }
-
-		// Add global actor bonus
-		const bonuses = foundry.utils.getProperty(this.system, "bonuses.abilities") || {};
-		if ( bonuses.check ) {
-			parts.push("@checkBonus");
-			data.checkBonus = bonuses.check;
-		}
+		const parts = ["@mod"];
+		const data = {mod: abl.check.total};
 		
 		let flavText = this.system.abilities[abilityId].chat.replace("@name", this.name);
 		flavText = flavText.replace("@label", this.system.abilities[abilityId].label);

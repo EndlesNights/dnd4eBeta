@@ -25,6 +25,14 @@
         </li>
       </div>
       <div class="global-mods-column flexrow">
+        <li class="flexrow global-mod" data-modifiers="abilities">
+          <span data-tooltip="{{localize 'DND4E.ModifierAbilities'}}"><strong>{{localize
+              'DND4E.AbilityChecks'}}:</strong>&nbsp;{{numberFormat system.modifiers.abilities.value
+            sign=true}}</span>
+          <a class="modifiers-bonus" data-target="system.modifiers"
+            data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierAbillities'}}">{{localize
+            'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.abilities.bonusValue sign=true}}</a>
+        </li>
         <li class="flexrow global-mod" data-modifiers="skills">
           <span data-tooltip="{{localize 'DND4E.ModifierSkills'}}"><strong>{{localize
               'DND4E.Skills'}}:</strong>&nbsp;{{numberFormat system.modifiers.skills.value
@@ -32,7 +40,9 @@
           <a class="modifiers-bonus" data-target="system.modifiers"
             data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierSkills'}}">{{localize
             'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.skills.bonusValue sign=true}}</a>
-        </li>
+        </li>       
+      </div>
+      <div class="global-mods-column flexrow">
         <li class="flexrow global-mod" data-modifiers="defences">
           <span data-tooltip="{{localize 'DND4E.ModifierDefences'}}"><strong>{{localize
               'DND4E.Defences'}}:</strong>&nbsp;{{numberFormat system.modifiers.defences.value
@@ -41,6 +51,7 @@
             data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierDefences'}}">{{localize
             'DND4E.Bonus'}}:&nbsp;{{numberFormat system.modifiers.defences.bonusValue sign=true}}</a>
         </li>
+        <div></div>
       </div>
     </ul>
   </div>
