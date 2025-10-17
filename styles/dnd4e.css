@@ -134,6 +134,12 @@ textarea{
 	--background-other:-o-linear-gradient(45deg, #0d0145, #301c89);
 	--background-other:linear-gradient(45deg, #0d0145, #301c89);
 }
+body {
+	--white-svg-filter: invert(1);
+}
+body.theme-dark {
+	--white-svg-filter: invert(0);
+}
 body.theme-dark .dnd4e:not(.themed.theme-light),
 .dnd4e.themed.theme-dark {
 	--gradient-4e:linear-gradient(90deg, #3c3d48, #3c3d4818);
@@ -3694,4 +3700,15 @@ div.saving-throw, div.death-saves {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
+}
+.region-behavior-config i.difficult-terrain-icon {
+	content: url("/systems/dnd4e/icons/ui/difficultTerrain.svg");
+	height: 1em;
+}
+.region-config i.difficult-terrain-icon {
+	content: url("/systems/dnd4e/icons/ui/difficultTerrain.svg");
+	filter: var(--white-svg-filter);
+	height: 1em;
+	position: relative;
+	top: 0.5px;
 }
