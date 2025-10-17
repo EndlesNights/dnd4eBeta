@@ -135,10 +135,10 @@ textarea{
 	--background-other:linear-gradient(45deg, #0d0145, #301c89);
 }
 body {
-	--white-svg-filter: invert(1);
+	--white-svg-filter: brightness(0) saturate(100%) invert(9%) sepia(1%) saturate(0%) hue-rotate(147deg) brightness(99%) contrast(89%);
 }
 body.theme-dark {
-	--white-svg-filter: invert(0);
+	--white-svg-filter: brightness(0) saturate(100%) invert(93%) sepia(16%) saturate(428%) hue-rotate(319deg) brightness(105%) contrast(87%);
 }
 body.theme-dark .dnd4e:not(.themed.theme-light),
 .dnd4e.themed.theme-dark {
