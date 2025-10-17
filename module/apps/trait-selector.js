@@ -1,24 +1,35 @@
 /**
  * A specialized form used to select from a checklist of attributes, traits, or properties
- * @extends {FormApplication}
  */
-export default class TraitSelector extends FormApplication {
+export default class TraitSelector extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.DocumentSheet) {
 
-  /** @override */
-	static get defaultOptions() {
-	  return foundry.utils.mergeObject(super.defaultOptions, {
-	    id: "trait-selector",
-      classes: ["dnd4e"],
-      title: "Actor Trait Selection",
-      template: "systems/dnd4e/templates/apps/trait-selector.html",
+  static DEFAULT_OPTIONS = {
+    id: "trait-selector",
+    classes: ["dnd4e", "standard-form"],
+    window: {
+      title: "Actor Trait Selection"
+    },
+    position: {
       width: 320,
-      height: "auto",
-      choices: {},
-      allowCustom: true,
-      minimum: 0,
-      maximum: null
-    });
-  }
+      height: "auto"
+    },
+    form: {
+      submitOnChange: false,
+      closeOnSubmit: true
+    },
+    allowCustom: true,
+    minimum: 0,
+    maximum: null,
+    choices: {},
+    actions: {
+      toggle: TraitSelector.#onToggle
+    }
+  };
+
+  static PARTS = {
+    main: { template: "systems/dnd4e/templates/apps/trait-selector.hbs" },
+    footer: { template: "templates/generic/form-footer.hbs" }
+  };
 
   /* -------------------------------------------- */
 
@@ -31,17 +42,16 @@ export default class TraitSelector extends FormApplication {
   }
 
 	get title() {
-		const name = this.options.name.substring(this.options.name.lastIndexOf(".") + 1);
-		return `${this.object.name} - ${super.title} - ${name}`;
+		return `${this.document.name} - ${this.options.window.title}`;
 	}
   /* -------------------------------------------- */
 
   /** @override */
-  getData() {
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
 
     // Get current values
-    let attr = foundry.utils.getProperty(this.object, this.attribute) || {};
-    attr.value = attr.value || [];
+    const attr = foundry.utils.getProperty(this.document, this.attribute) || {};
 
 	  // Populate choices
     const choices = duplicate(this.options.choices);
@@ -49,20 +59,20 @@ export default class TraitSelector extends FormApplication {
     if(this.options.datasetOptions == "weaponProf"){
       for ( let [k, v] of Object.entries(choices) ) {
         const children = Object.keys(CONFIG.DND4E[k]).length ? duplicate(CONFIG.DND4E[k]) : null;
-		if(children){
-			for ( let [kc, vc] of Object.entries(children) ) {
-			  children[kc] = {
-				label: vc,
-				chosen: attr ? attr.value.has(kc) : false
-			  }
-			}
-		}
+        if(children){
+          for ( let [kc, vc] of Object.entries(children) ) {
+            children[kc] = {
+              label: vc,
+              chosen: attr ? attr.value.has(kc) : false
+            };
+          }
+        }
 
         choices[k] = {
           label: game.i18n.localize(`DND4E.Weapon${v}`),
           chosen: attr ? attr.value.has(k) : false,
           children: children
-        }
+        };
       }
     } else {
       for ( let [k, v] of Object.entries(choices) ) {
@@ -74,19 +84,23 @@ export default class TraitSelector extends FormApplication {
     }
 
 
+    context.allowCustom = this.options.allowCustom;
+    context.choices = choices;
+    context.custom = attr ? attr.custom : "";
+    context.buttons = [{type: "submit", icon: "far fa-save", label: "DND4E.Save"}];
+    
     // Return data
-	  return {
-      allowCustom: this.options.allowCustom,
-	    choices: choices,
-      custom: attr ? attr.custom : ""
-    }
+	  return context;
   }
 
   /* -------------------------------------------- */
 
   /** @override */
-  _updateObject(event, formData) {
+  _processFormData(event, form, formData) {
     const updateData = {};
+
+    formData = foundry.utils.expandObject(formData.object);
+
     // Obtain choices
     const chosen = [];
     for ( let [k, v] of Object.entries(formData) ) {
@@ -108,16 +122,24 @@ export default class TraitSelector extends FormApplication {
     }
 
     // Update the object
-    this.object.update(updateData);
+    return foundry.utils.expandObject(updateData);
+  }
+
+  /* -------------------------------------------- */
+
+  static #onToggle(event, target) {
+    event.preventDefault();
+    event.stopPropagation();
+    const li = target.closest("li.collapsible");
+    li?.classList.toggle("collapsed");
   }
 
   /* -------------------------------------------- */
 
   /** @inheritdoc */
-  activateListeners(html) {
-    super.activateListeners(html);
-
-    for ( const checkbox of html[0].querySelectorAll("input[type='checkbox']") ) {
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    for ( const checkbox of this.element.querySelectorAll("input[type='checkbox']") ) {
       if ( checkbox.checked ) this._onToggleCategory(checkbox);
     }
   }
@@ -125,10 +147,9 @@ export default class TraitSelector extends FormApplication {
   /* -------------------------------------------- */
 
   /** @inheritdoc */
-  async _onChangeInput(event) {
-    super._onChangeInput(event);
-
-    if ( event.target.tagName === "INPUT" ) this._onToggleCategory(event.target);
+  _onChangeForm(formConfig, event) {
+    super._onChangeForm(formConfig, event);
+    if ( event.target.type === "checkbox" ) this._onToggleCategory(event.target);
   }
 
   /* -------------------------------------------- */

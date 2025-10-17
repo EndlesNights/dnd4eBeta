@@ -1,0 +1,31 @@
+<section>
+    {{#*inline "traitList"}}
+    <ol class="trait-list">
+        {{#each choices as |choice key|}}
+        <li class="trait{{#if choice.children}} collapsible has-children collapsed{{/if}}" tabindex="-1">
+            <label class="checkbox">
+                <input type="checkbox" name="{{key}}" data-dtype="Boolean" {{checked choice.chosen}}>
+                <div{{#if choice.children}} data-action="toggle"{{/if}}>{{choice.label}}</div>
+                {{#if choice.children}}<i class="fa-solid fa-caret-down" data-action="toggle"></i>{{/if}}
+            </label>
+            {{#if choice.children}}
+			  {{!-- <i tabindex="1" class="expand fa-solid fa-chevron-down toggleable" data-action="toggle"></i> --}}
+              <div class="collapsible-content">
+                <div class="wrapper">
+                    {{> traitList choices=choice.children}}
+                </div>
+              </div>
+            {{/if}}
+        </li>
+        {{/each}}
+    </ol>
+    {{/inline}}
+
+    {{> traitList}}
+    {{#if allowCustom}}
+    <div class="form-group stacked">
+        <label>{{ localize "DND4E.TraitSelectorSpecial" }}</label>
+        <input type="text" name="custom" value="{{custom}}" data-dtype="String"/>
+    </div>
+    {{/if}}
+</section>
