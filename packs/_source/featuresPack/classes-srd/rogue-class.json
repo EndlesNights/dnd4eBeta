@@ -1,0 +1,190 @@
+{
+  "name": "Rogue Class",
+  "type": "feature",
+  "img": "icons/skills/melee/strike-sword-stabbed-brown.webp",
+  "effects": [
+    {
+      "_id": "PRmeomffrJkg09Bc",
+      "changes": [
+        {
+          "key": "system.attributes.hp.starting",
+          "mode": 5,
+          "value": "12",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.perlevel",
+          "mode": 5,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.details.surges.max",
+          "mode": 2,
+          "value": "6+@conMod",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.autototal",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.defences.ref.value",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "cloth",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "leather",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "dagger",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "handcrossbow",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "shuriken",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "sling",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "shortsword",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.TquD7nKfjgTno6cF",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          },
+          "dots": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Rogue Class Stats",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/melee/strike-sword-stabbed-brown.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!12v0QOIjkNfzOZvH.PRmeomffrJkg09Bc"
+    }
+  ],
+  "folder": "LzEqWjfE9D4FpBrt",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><strong>Role:</strong>&nbsp;Striker. You dart in to attack, do massive damage, and then retreat to safety. You do best when teamed with a defender to flank enemies.</p>\n<p><strong>Power Source:&nbsp;</strong> Martial. Your talents depend on extensive training and constant practice, innate skill, and natural coordination</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Dexterity</li>\n<li>Strength</li>\n<li>Charisma</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.4JEjuSyMmf6FxmGS]{Dagger}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.8JyDOEsRGAo0qLcN]{Hand Crossbow}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.8suLj8aO9ijycfJO]{Shuriken}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.qvdaVQkpFjDEzCeP]{Sling}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.BC3aiO0JwB0OYXp5]{Short Sword}</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+2 Reflex</li>\n</ul>\n<p><strong>Hit Points at 1st Level</strong><strong>:</strong> [[12]] + Con Score</p>\n<p><strong>Hit Points&nbsp;</strong><strong>per Level Gained:</strong> [[5]]</p>\n<p><strong>Base&nbsp;</strong><strong>Healing</strong><strong>&nbsp;Surges per Day:</strong> [[6]] + Con Mod</p>\n<p><strong>Skill Training: </strong>Stealth and Thievery, choose four more from the following list:</p>\n<ul>\n<li>Acrobatics (Dex)</li>\n<li>Athletics (Str)</li>\n<li>Bluff (Cha)</li>\n<li>Dungeoneering (Wis)</li>\n<li>Insight (wis)</li>\n<li>Intimidate (Cha)</li>\n<li>Perception (Wis)</li>\n<li>Streetwise (Cha)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>First Strike</li>\n<li>Rogue Weapon Talent</li>\n<li>Sneak Attack</li>\n</ul>\n<p><strong>Choose one of the following&nbsp;Rogue Tactics:</strong></p>\n<ul>\n<li>Artful Doger</li>\n<li>Brutal Scoundrel</li>\n</ul>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg,116",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "class",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Rogue",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "class": "",
+    "hitFistLevel": 12,
+    "hitPerLevel": 5,
+    "surgePerDay": 6,
+    "skills": "<i class=\"fas fa-edit\"></i>",
+    "def": {
+      "ac": 0,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0
+    },
+    "proficiencies": {
+      "weapons": [],
+      "armour": []
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094209994,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "12v0QOIjkNfzOZvH",
+  "sort": 0,
+  "_key": "!items!12v0QOIjkNfzOZvH"
+}

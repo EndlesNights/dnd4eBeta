@@ -1,0 +1,160 @@
+{
+  "name": "Tough",
+  "type": "feature",
+  "img": "icons/skills/melee/unarmed-punch-fist.webp",
+  "effects": [
+    {
+      "_id": "CjpzuzKFRCfqBMm6",
+      "changes": [
+        {
+          "key": "system.attributes.hp.untyped",
+          "mode": 2,
+          "value": "@details.tier * 5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.G2zIJb0tbc12PfFK",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "dots": [],
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          }
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Tough Feat",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/melee/unarmed-punch-fist.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!w6kVSNawY1wiqRr9.CjpzuzKFRCfqBMm6"
+    }
+  ],
+  "folder": "3WBJGLs24aDlvlbA",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p>You gain an additioanl 5 Hitpoits per tier.</p>\n<p>Level 1 to 10: +5 HP</p>\n<p>Level 11 to 20: +10 HP</p>\n<p>Level 21 to 30: +15 HP</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg. 201",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "feat",
+    "level": "",
+    "requirements": "",
+    "featureSource": "",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686093879508,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "w6kVSNawY1wiqRr9",
+  "sort": 300000,
+  "_key": "!items!w6kVSNawY1wiqRr9"
+}

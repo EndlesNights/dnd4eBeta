@@ -1,0 +1,141 @@
+{
+  "name": "Combat Weapon Talent - One Handed",
+  "type": "feature",
+  "img": "icons/skills/melee/maneuver-daggers-paired-orange.webp",
+  "effects": [
+    {
+      "_id": "VUrhXpp7IzkUPlg9",
+      "changes": [
+        {
+          "key": "weapon.attack.one.untyped",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Compendium.dnd4e.class_features.LyGfDZrbzt7kQgVT",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          },
+          "dots": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Combat Weapon Talent Bonus",
+      "description": "<p>You gain a +1 bonus to attack rolls with attacks made with a one-handed weapon.</p>",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": "dnd4e",
+        "systemVersion": "0.5.5",
+        "createdTime": null,
+        "modifiedTime": 1730443109241,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/melee/maneuver-daggers-paired-orange.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!kgR65PH0ZQwSU3Lw.VUrhXpp7IzkUPlg9"
+    }
+  ],
+  "folder": "4OBbdiQfugXxFAPH",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p>You gain a +1 bonus to attack rolls with attacks made with a one-handed weapon.</p>\n<p>This feat contains an effect that automatically adds +1 untyped bonus to all rolls made with a weapon that lacks the \"<code>Two Handed</code>\" property.</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg.76",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "class",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Fighter",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "class": "",
+    "hitFistLevel": 10,
+    "hitPerLevel": 5,
+    "surgePerDay": 5,
+    "skills": "<i class=\"fas fa-edit\"></i>",
+    "def": {
+      "ac": 0,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0
+    },
+    "proficiencies": {
+      "weapons": [],
+      "armour": []
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094093866,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "kgR65PH0ZQwSU3Lw",
+  "sort": 0,
+  "_key": "!items!kgR65PH0ZQwSU3Lw"
+}

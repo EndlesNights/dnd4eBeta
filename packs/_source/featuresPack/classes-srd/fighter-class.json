@@ -1,0 +1,214 @@
+{
+  "name": "Fighter Class",
+  "type": "feature",
+  "img": "icons/skills/melee/hand-grip-sword-red.webp",
+  "effects": [
+    {
+      "_id": "RLxHGW7cSnR5of8Q",
+      "changes": [
+        {
+          "key": "system.attributes.hp.starting",
+          "mode": 5,
+          "value": "15",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.perlevel",
+          "mode": 5,
+          "value": "6",
+          "priority": null
+        },
+        {
+          "key": "system.details.surges.max",
+          "mode": 2,
+          "value": "9+@conMod",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.autototal",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.defences.fort.value",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "cloth",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "leather",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "hide",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "chain",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "scale",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "light",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "heavy",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "simpleM",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "militaryM",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "simpleR",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "militaryR",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.emOJRrgVW8p7n18c",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          },
+          "dots": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Fighter Class Stats",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/melee/hand-grip-sword-red.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!Wcn3QrxgUIQGwteG.RLxHGW7cSnR5of8Q"
+    }
+  ],
+  "folder": "LzEqWjfE9D4FpBrt",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><strong>Role:</strong> Defender. You are very tough and have the exceptional ability to contain enemies in melee</p>\n<p><strong>Power Source:</strong> Martial. You have become a master of combat through endless hours of practice, determination, and your own sheer physical toughness.</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Strength</li>\n<li>Dexterity</li>\n<li>Wisdom</li>\n<li>Constitution</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.kVD04UqK9Yx6GeRA]{Hide armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.LEPCRMtCimzvXr25]{Chainmail}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.cCQ2LmmlBGYPf2KB]{Scale armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.7OaRnh5zUoThmChj]{Light Shield}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.bWxWgBpsJHWeTeIU]{Heavy Shield}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li>@Compendium[dnd4e.srd_rules.4vItzLTePIjC1MbI]{Simple Melee Weapons}</li>\n<li>@Compendium[dnd4e.srd_rules.oRfaQkmDSxWMx5Ln]{Military Melee Weapons}</li>\n<li>@Compendium[dnd4e.srd_rules.XKgEgbttyURcvqns]{Simple Ranged Weapons}</li>\n<li>@Compendium[dnd4e.srd_rules.xttyKhBLZaMknOGm]{Military Ranged Weapons}</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+2 Fort&nbsp;</li>\n</ul>\n<p><strong>Hit Points at 1st Level:</strong>&nbsp;[[15]] + Con Score</p>\n<p><strong>Hit Points </strong><strong>per Level Gained: </strong>[[6]]</p>\n<p><strong>Base </strong><strong>Healing</strong><strong>&nbsp;Surges per Day: </strong>[[9]] + Con Mod</p>\n<p><strong>Skill Training:</strong> Choose three from the following list:</p>\n<ul>\n<li>Athletics (Str)</li>\n<li>Endurance (Con)</li>\n<li>Healing (Wis)</li>\n<li>Intimidate (Cha)</li>\n<li>Streetwise (Cha)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.featuresPack.Item.7ADj4OuVS1704rgz]{Fighter Challenge}</li>\n<li>@UUID[Compendium.dnd4e.featuresPack.Item.IaRTeKkrO7uREL1v]{Fighter Superiority}</li>\n</ul>\n<p><strong>Choose one of the following Combat Weapon Talent:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.featuresPack.Item.kgR65PH0ZQwSU3Lw]{Combat Weapon Talent - One Handed}</li>\n<li>@UUID[Compendium.dnd4e.featuresPack.Item.4OewAM0fKxcFbS8k]{Combat Weapon Talent - Two Handed}</li>\n</ul>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg.75",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "class",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Fighter",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "class": "",
+    "hitFistLevel": 15,
+    "hitPerLevel": 6,
+    "surgePerDay": 9,
+    "skills": "<i class=\"fas fa-edit\"></i>",
+    "def": {
+      "ac": 0,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0
+    },
+    "proficiencies": {
+      "weapons": [],
+      "armour": []
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094207414,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "Wcn3QrxgUIQGwteG",
+  "sort": 75000,
+  "_key": "!items!Wcn3QrxgUIQGwteG"
+}

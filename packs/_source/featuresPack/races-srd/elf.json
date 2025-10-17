@@ -1,0 +1,270 @@
+{
+  "name": "Elf",
+  "type": "feature",
+  "img": "icons/environment/settlement/gazebo.webp",
+  "effects": [
+    {
+      "_id": "3EMvMImQN7LPGvCt",
+      "changes": [
+        {
+          "key": "system.skills.nat.race",
+          "mode": 4,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.skills.prc.race",
+          "mode": 4,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.9P0cdugZxgit3P7P",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "dots": [],
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          }
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Skill Bonuses",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/social/theft-pickpocket-bribery-brown.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!N6thgoqZ80K3BbTn.3EMvMImQN7LPGvCt"
+    },
+    {
+      "_id": "xrbxKYBs9veYsBUa",
+      "changes": [
+        {
+          "key": "system.movement.base.base",
+          "mode": 5,
+          "value": "7",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.9P0cdugZxgit3P7P",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "dots": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Base Movement",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/movement/feet-bladed-boots-fire.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!N6thgoqZ80K3BbTn.xrbxKYBs9veYsBUa"
+    },
+    {
+      "name": "Elven Weapon Proficiency",
+      "origin": "Compendium.dnd4e.featuresPack.Item.N6thgoqZ80K3BbTn",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "flags": {
+        "dnd4e": {
+          "dots": [],
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          }
+        }
+      },
+      "_id": "QZZXP7OAINMbBoi3",
+      "changes": [
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "shortbow",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "longbow",
+          "priority": null
+        }
+      ],
+      "description": "<p>You gain proficiency with the @UUID[Compendium.dnd4e.equipmentPack.Item.HBrp8DJ5C5UIsVxu]{Longbow} and the @UUID[Compendium.dnd4e.equipmentPack.Item.wh0LNBWMhsKypI16]{Shortbow}.</p>",
+      "transfer": true,
+      "statuses": [],
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/environment/settlement/gazebo.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!N6thgoqZ80K3BbTn.QZZXP7OAINMbBoi3"
+    }
+  ],
+  "folder": "hE67zu2JDa7VFd5I",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><strong>Average Height:</strong> 5´ 4˝–6´ 0˝</p><p><strong>Average Weight:</strong> 130–170 lb.</p><p><strong>Ability Scores:</strong></p><ul><li>+2 Dexterity</li><li>+2 Wisdom</li></ul><p><strong>Size:</strong> Medium</p><p><strong>Speed:</strong> 7 squares</p><p><strong>Vision:</strong> Low-light</p><p><strong>Languages:</strong></p><ul><li>Common</li><li>Elven</li></ul><p><strong>Skill Bonuses:</strong></p><ul><li>+2 Nature</li><li>+2 Perception</li></ul><p><strong>Elven Weapon Proficiency:</strong> You gain proficiency with the @UUID[Compendium.dnd4e.equipmentPack.Item.HBrp8DJ5C5UIsVxu]{Longbow} and the @UUID[Compendium.dnd4e.equipmentPack.Item.wh0LNBWMhsKypI16]{Shortbow}.</p><p><strong>Fey Origin:</strong> Your ancestors were native to the Feywild, so you are considered a fey creature for the purpose of effects that relate to creature origin.</p><p><strong>Group Awareness:</strong> You grant non-elf allies within 5 squares of you a +1 racial bonus to Perception checks.</p><p><strong>Wild Step:</strong> You ignore difficult terrain when you shift (even if you have a power that allows you to shift multiple squares).</p><p><strong>Elven Accuracy:</strong> You can use @Compendium[dnd4e.example_powers.WBvdhN64QkvTm5gd]{Elven Accuracy} as an encounter power</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg. 40",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "race",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Elf",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094306369,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "N6thgoqZ80K3BbTn",
+  "sort": 0,
+  "_key": "!items!N6thgoqZ80K3BbTn"
+}

@@ -1,0 +1,202 @@
+{
+  "name": "Warlord Class",
+  "type": "feature",
+  "img": "icons/sundries/flags/banner-standard-moon.webp",
+  "effects": [
+    {
+      "_id": "MCxZ8MPvfvC6k3bh",
+      "changes": [
+        {
+          "key": "system.attributes.hp.starting",
+          "mode": 5,
+          "value": "12",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.perlevel",
+          "mode": 5,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.details.surges.max",
+          "mode": 2,
+          "value": "7+@conMod",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.autototal",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.defences.fort.value",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.defences.wil.value",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "cloth",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "leather",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "hide",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "chain",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "light",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "simpleM",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "militaryM",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "simpleR",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.ozpd1Rne2AxwdbtG",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          },
+          "dots": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Warlord Class Stat",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/sundries/flags/banner-standard-moon.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!43WEG22qI8LWmXiO.MCxZ8MPvfvC6k3bh"
+    }
+  ],
+  "folder": "LzEqWjfE9D4FpBrt",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><strong>Role:</strong> Leader. You are an inspiring commander and a master of battle tactics</p>\n<p><strong>Power Source:</strong> Martial. You have become an expert in tactics through endless hours of training and practice, personal determination, and your own sheer physical toughness.</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Strength</li>\n<li>Intelligence</li>\n<li>Charisma</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.kVD04UqK9Yx6GeRA]{Hide armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.LEPCRMtCimzvXr25]{Chainmail}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.7OaRnh5zUoThmChj]{Light Shield}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li>@Compendium[dnd4e.srd_rules.4vItzLTePIjC1MbI]{Simple Melee Weapons}</li>\n<li>@Compendium[dnd4e.srd_rules.oRfaQkmDSxWMx5Ln]{Military Melee Weapons}</li>\n<li>@Compendium[dnd4e.srd_rules.XKgEgbttyURcvqns]{Simple Ranged Weapons}</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+1 Fort</li>\n<li>+1 Will&nbsp;</li>\n</ul>\n<p><strong>Hit Points at 1st Level:</strong>&nbsp;[[12]] + Con Score</p>\n<p><strong>Hit Points&nbsp;</strong><strong>per Level Gained:</strong> [[5]]</p>\n<p><strong>Base&nbsp;</strong><strong>Healing</strong><strong> Surges per Day:</strong> [[7]] + Con Mod</p>\n<p><strong>Skill Training:</strong> Choose three from the following list:</p>\n<ul>\n<li>Athletics (Str)</li>\n<li>Diplomacy (Cha)</li>\n<li>Endurance (Con)</li>\n<li>Healing (Wis)</li>\n<li>History (Int)</li>\n<li>Intimidate (Cha)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>Combat Leader</li>\n<li>Inspiring Word</li>\n</ul>\n<p><strong>Choose one of the following Commanding Presence benefits:</strong></p>\n<ul>\n<li>Inspiring Presence</li>\n<li>Tactical Presence</li>\n</ul>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg.143",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "class",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Warlord",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "class": "",
+    "hitFistLevel": 12,
+    "hitPerLevel": 5,
+    "surgePerDay": 7,
+    "skills": "<i class=\"fas fa-edit\"></i>",
+    "def": {
+      "ac": 0,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0
+    },
+    "proficiencies": {
+      "weapons": [],
+      "armour": []
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094211587,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "43WEG22qI8LWmXiO",
+  "sort": 0,
+  "_key": "!items!43WEG22qI8LWmXiO"
+}

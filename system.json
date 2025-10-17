@@ -4,9 +4,9 @@
 	"description": "An implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
 	"version": "0.7.0",
 	"compatibility":{
-		"minimum": 13,
-		"verified": 13.350,
-		"maximum": 13
+		"minimum": "13",
+		"verified": "13.350",
+		"maximum": "13"
 	},
 	"authors": [
 		{
@@ -76,7 +76,7 @@
 			"name": "srd_rules",
 			"label": "SRD Rules",
 			"system": "dnd4e",
-			"path": "./packs/srd_rules.db",
+			"path": "./packs/srd_rules",
 			"type": "JournalEntry"
 		}
 	],

@@ -1,0 +1,119 @@
+{
+  "name": "Fine Clothing",
+  "type": "equipment",
+  "img": "icons/equipment/chest/robe-layered-teal.webp",
+  "effects": [],
+  "folder": "sHigNBQwx1ybBq5A",
+  "flags": {
+    "cf": {
+      "id": "temp_pclik18cys",
+      "path": "Cloth Armour",
+      "color": "#000000"
+    }
+  },
+  "system": {
+    "description": {
+      "value": "<p>Elegent cloth designed to signify wealth and status in society.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg.222",
+    "quantity": 1,
+    "weight": 6,
+    "price": 30,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "level": "",
+    "armour": {
+      "type": "armour",
+      "subType": "cloth",
+      "enhance": 0,
+      "ac": 0,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0,
+      "dex": null,
+      "movePen": false,
+      "movePenValue": 0,
+      "skillCheck": false,
+      "skillCheckValue": 0,
+      "damageRes": {
+        "parts": []
+      },
+      "value": 10
+    },
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "stealth": false,
+    "proficient": true,
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686094243891,
+    "modifiedTime": 1686094243891,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "wYRO3XR3Hq5n21xl",
+  "sort": 0,
+  "_key": "!items!wYRO3XR3Hq5n21xl"
+}

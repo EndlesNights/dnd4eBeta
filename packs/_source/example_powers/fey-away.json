@@ -1,0 +1,213 @@
+{
+  "_id": "3AoHYQ57TiNA3NG2",
+  "name": "Fey Away",
+  "type": "power",
+  "img": "icons/magic/air/fog-gas-smoke-dense-gray.webp",
+  "effects": [],
+  "folder": null,
+  "sort": 200000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.348",
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "createdTime": null,
+    "modifiedTime": 1745816275190,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": {
+      "value": "<p>In response to danger, you turn invisable.</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB2 pg.10",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": "",
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": false,
+      "isBasic": false,
+      "isCharge": false,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "str",
+      "abilityBonus": 0,
+      "def": "ac",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "@wepAttack + @powerMod + @lvhalf",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": false,
+      "isHealing": false,
+      "healSurge": "",
+      "baseQuantity": "1",
+      "baseDiceType": "weapon",
+      "detail": "",
+      "formula": "@powBase + @powerMod + @wepDamage",
+      "critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
+      "healFormula": ""
+    },
+    "miss": {
+      "detail": "",
+      "formula": "@damageFormula/2"
+    },
+    "effect": {
+      "detail": "You become invisible until you attack or until the end of your next turn."
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "keyWords": [
+      ""
+    ],
+    "level": "",
+    "powersource": "",
+    "secondPowersource": "",
+    "powersourceName": "",
+    "subName": "Gnome Racial",
+    "prepared": true,
+    "powerType": "race",
+    "powerSubtype": "utility",
+    "useType": "encounter",
+    "actionType": "reaction",
+    "requirements": "",
+    "weaponType": "none",
+    "weaponUse": "none",
+    "rangeType": "personal",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "rangeTextShort": "",
+    "rangeText": "",
+    "rangePower": null,
+    "area": 0,
+    "rechargeRoll": "",
+    "rechargeCondition": "",
+    "damageShare": false,
+    "postEffect": true,
+    "postSpecial": true,
+    "autoGenChatPowerCard": true,
+    "sustain": {
+      "actionType": "",
+      "detail": ""
+    },
+    "trigger": "You take damage",
+    "requirement": "",
+    "special": "",
+    "specialAdd": {
+      "parts": []
+    },
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": true,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false,
+      "shadow": false
+    },
+    "keywordsCustom": "",
+    "effectHTML": false,
+    "chatFlavor": "",
+    "category": "other"
+  },
+  "_key": "!items!3AoHYQ57TiNA3NG2"
+}

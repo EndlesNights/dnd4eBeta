@@ -1,0 +1,143 @@
+{
+  "name": "Carrion Crawler Brain Extract",
+  "type": "consumable",
+  "img": "icons/skills/toxins/poison-bottle-corked-fire-green.webp",
+  "effects": [],
+  "folder": "X50ukKorZKXdDrH7",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><em>There is debate about whether the paralysis caused by this green liquid is from its effect on the body or its horrible smell.&nbsp;&nbsp;</em></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "DMG p.51",
+    "quantity": 1,
+    "weight": 0,
+    "price": 250,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": "",
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "charges",
+      "autoDestroy": false
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": true,
+      "isBasic": false,
+      "isCharge": false,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "",
+      "abilityBonus": 0,
+      "def": "fort",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "8",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": false,
+      "isHealing": false,
+      "healSurge": "",
+      "baseQuantity": 1,
+      "baseDiceType": "Base Weapon Damage",
+      "detail": "Ongoing 5 poison damage and slowed (save ends both)",
+      "formula": "",
+      "critFormula": "",
+      "healFormula": ""
+    },
+    "miss": {
+      "detail": "",
+      "formula": ""
+    },
+    "effect": {
+      "detail": "<p><strong>First Failed Saving Throw:</strong>&nbsp;The target is immobilized instead of slowed (save ends).<br /><strong>Second Failed Saving Throw:</strong>&nbsp;The target is stunned instead of immobilized (save ends).</p>"
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {},
+    "level": 5,
+    "consumableType": "poison",
+    "autoGenChatPowerCard": true,
+    "useType": "item",
+    "actionType": "none",
+    "rangeType": "personal",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "effectType": {},
+    "keywordsCustom": "",
+    "formula": "",
+    "postEffect": true,
+    "effectHTML": true,
+    "rangePower": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686093916761,
+    "modifiedTime": 1686093916761,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "zBGH9J2qiWcVGosv",
+  "sort": 0,
+  "_key": "!items!zBGH9J2qiWcVGosv"
+}

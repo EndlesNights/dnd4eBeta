@@ -1,0 +1,213 @@
+{
+  "_id": "d6Gnx3ZTRBcxqDQf",
+  "name": "Move Grabbed Target",
+  "type": "power",
+  "img": "icons/skills/melee/hand-grip-staff-yellow-brown.webp",
+  "effects": [],
+  "folder": null,
+  "sort": 1400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.348",
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "createdTime": null,
+    "modifiedTime": 1745816275190,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": {
+      "value": "<p>You drag your foe, kicking and screaming.</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg. 290",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": "Grabbed Creature",
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": true,
+      "isBasic": false,
+      "isCharge": false,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "str",
+      "abilityBonus": 0,
+      "def": "fort",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "@powerMod+@lvhalf",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": false,
+      "isHealing": false,
+      "healSurge": "",
+      "baseQuantity": "1",
+      "baseDiceType": "weapon",
+      "detail": "You may move upto half your speed and pull the grabbed target with you",
+      "formula": "@powBase + @powerMod + @wepDamage",
+      "critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
+      "healFormula": ""
+    },
+    "miss": {
+      "detail": "",
+      "formula": ""
+    },
+    "effect": {
+      "detail": "<p>If you pull the target, you and the target do not provoke opportunity attacks from each other, and the target doesn&rsquo;t provoke opportunity attacks from adjacent enemies.&nbsp;</p>\t\t<p>However, if you leave a square adjacent to an enemy, that enemy can make an opportunity attack against you.</p>"
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "keyWords": [
+      ""
+    ],
+    "level": "",
+    "powersource": "",
+    "secondPowersource": "",
+    "powersourceName": "",
+    "subName": "None",
+    "prepared": true,
+    "powerType": "inherent",
+    "powerSubtype": "attack",
+    "useType": "atwill",
+    "actionType": "standard",
+    "requirements": "",
+    "weaponType": "none",
+    "weaponUse": "none",
+    "rangeType": "touch",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "rangeTextShort": "",
+    "rangeText": "",
+    "rangePower": null,
+    "area": 0,
+    "rechargeRoll": "",
+    "rechargeCondition": "",
+    "damageShare": false,
+    "postEffect": true,
+    "postSpecial": true,
+    "autoGenChatPowerCard": true,
+    "sustain": {
+      "actionType": "",
+      "detail": ""
+    },
+    "trigger": "",
+    "requirement": "The target must be grabbed by you",
+    "special": "",
+    "specialAdd": {
+      "parts": []
+    },
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false,
+      "enchantment": false,
+      "shadow": false
+    },
+    "keywordsCustom": "",
+    "chatFlavor": "",
+    "effectHTML": false,
+    "category": "other"
+  },
+  "_key": "!items!d6Gnx3ZTRBcxqDQf"
+}
