@@ -15,7 +15,7 @@ import ActorSheet4eNPC from "./actor/npc-sheet.js";
 import ActorSheet4eHazard from "./actor/hazard-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
-import { measureDistances, getBarAttribute } from "./canvas.js";
+import { measureDistances } from "./canvas.js";
 import Combat4e from "./combat.js";
 
 // Import Documents
@@ -24,7 +24,7 @@ import { default as TokenRuler4e } from "./canvas/ruler.js";
 import { Actor4e } from "./actor/actor.js";
 import { default as TokenDocument4e } from "./documents/token.js";
 import { default as Token4e } from "./canvas/token.js";
-import Item4e from "./item/item-document.js";
+import Item4e from "./item/item.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
 import { default as DifficultTerrainRegionBehaviorType } from "./regionBehavoirs/difficult-terrain.js";
@@ -89,7 +89,7 @@ Hooks.once("init", async function() {
 	// Define custom Entity classes
 	CONFIG.DND4E = DND4E;
 
-	DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4e", ActiveEffectConfig4e, {makeDefault :true});
+	foundry.applications.apps.DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4e", ActiveEffectConfig4e, {makeDefault :true});
 	// DocumentSheetConfig.registerSheet(Actor4e, "dnd4e", ActiveEffectConfig4e, {makeDefault :true});
 	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
 	CONFIG.ActiveEffect.legacyTransferral = false;
@@ -195,35 +195,35 @@ Hooks.once("init", async function() {
 
 	CONFIG.Combat.initiative.formula = "1d20 + @attributes.init.value";
 	// Register sheet application classes
-	Actors.unregisterSheet("core", ActorSheet);
-	Actors.registerSheet("dnd4e", ActorSheet4e, {
+	foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
+	foundry.documents.collections.Actors.registerSheet("dnd4e", ActorSheet4e, {
 		types: ["Player Character"],
 		label: game.i18n.localize("SHEET.Character.Basic"),
 		makeDefault: true
 	});
-	Actors.registerSheet("dnd4e", ActorSheet4eNPC, {
+	foundry.documents.collections.Actors.registerSheet("dnd4e", ActorSheet4eNPC, {
 		types: ["NPC"],
 		label: game.i18n.localize("SHEET.NPC"),
 		makeDefault: true
 	});
-	Actors.registerSheet("dnd4e", ActorSheet4eHazard, {
+	foundry.documents.collections.Actors.registerSheet("dnd4e", ActorSheet4eHazard, {
 		types: ["Hazard"],
 		label: game.i18n.localize("SHEET.Hazard"),
 		makeDefault: true
 	});
 
-	DocumentSheetConfig.unregisterSheet(RegionBehavior, "core", foundry.applications.sheets.RegionBehaviorConfig, {
+	foundry.applications.apps.DocumentSheetConfig.unregisterSheet(RegionBehavior, "core", foundry.applications.sheets.RegionBehaviorConfig, {
 		types: ["difficultTerrain"]
 	});
-	DocumentSheetConfig.registerSheet(RegionBehavior, "dnd4e", DifficultTerrainConfig, {
+	foundry.applications.apps.DocumentSheetConfig.registerSheet(RegionBehavior, "dnd4e", DifficultTerrainConfig, {
 		label: "DND4E.difficultTerrain.Label",
 		types: ["difficultTerrain"]
 	});
 
 	
 	// Setup Item Sheet
-	Items.unregisterSheet("core", ItemSheet);
-	Items.registerSheet("dnd4e", ItemSheet4e, {
+	foundry.documents.collections.Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
+	foundry.documents.collections.Items.registerSheet("dnd4e", ItemSheet4e, {
 		makeDefault: true,
 		label: game.i18n.localize("SHEET.Item"),
 		types: ["weapon", "equipment", "consumable", "tool", "loot", "ritual", "power", "feature", "backpack"]
@@ -349,9 +349,6 @@ Hooks.on("canvasInit", function() {
 	canvas.grid.diagonalRule = game.settings.get("dnd4e", "diagonalMovement");
 	//BaseGrid#measureDistances is deprecated. Use BaseGrid#measurePath instead
 	foundry.grid.SquareGrid.prototype.measureDistances = measureDistances;
-
-	// Extend Token Resource Bars
-	Token.prototype.getBarAttribute = getBarAttribute;
 });
 
 

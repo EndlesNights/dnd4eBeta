@@ -54,7 +54,7 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
     attr.value = Array.from(attr.value ?? []);
 	
 	  // Populate choices
-    let choices = duplicate(this.options.choices);
+    let choices = foundry.utils.duplicate(this.options.choices);
 		
     for ( let [k, v] of Object.entries(choices) ) {
       let i = -1;

@@ -1296,7 +1296,7 @@ export default class Item4e extends Item {
 
 		// Rich text description
 		htmlOptions.async = true; //TextEditor.enrichHTML is becoming asynchronous. In the short term you may pass async=true or async=false as an option to nominate your preferred behavior.
-		data.description.value = await TextEditor.enrichHTML(descriptionText || ``, htmlOptions);
+		data.description.value = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText || ``, htmlOptions);
 
 		// Item type specific properties
 		const props = [];

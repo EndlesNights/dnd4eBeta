@@ -161,7 +161,7 @@ export class RollWithOriginalExpression extends Roll {
             attackRoll: this.options?.multirollData,
         };
         // Render the roll display template
-        return renderTemplate(chatOptions.template, chatData);
+        return foundry.applications.handlebars.renderTemplate(chatOptions.template, chatData);
     }
 
    getChatData(isPrivate = false) {

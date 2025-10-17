@@ -294,7 +294,7 @@ export class MeasuredTemplate4e extends foundry.canvas.placeables.MeasuredTempla
 	}
 }
 
-export class TemplateLayer4e extends TemplateLayer {
+export class TemplateLayer4e extends foundry.canvas.layers.TemplateLayer {
 
 	/** @inheritdoc */
 	_onDragLeftStart(event){

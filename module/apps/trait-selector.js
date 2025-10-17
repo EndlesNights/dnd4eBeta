@@ -58,7 +58,7 @@ export default class TraitSelector extends foundry.applications.api.HandlebarsAp
 
     if(this.options.datasetOptions == "weaponProf"){
       for ( let [k, v] of Object.entries(choices) ) {
-        const children = Object.keys(CONFIG.DND4E[k]).length ? duplicate(CONFIG.DND4E[k]) : null;
+        const children = Object.keys(CONFIG.DND4E[k]).length ? foundry.utils.duplicate(CONFIG.DND4E[k]) : null;
         if(children){
           for ( let [kc, vc] of Object.entries(children) ) {
             children[kc] = {

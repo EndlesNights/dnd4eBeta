@@ -18,7 +18,7 @@ import ActiveEffect4e from "../effects/effects.js";
 import HPOptions from "../apps/hp-options.js";
 import { Helper } from "../helper.js";
 import {ActionPointExtraDialog} from "../apps/action-point-extra.js";
-import Item4e from "../item/item-document.js";
+import Item4e from "../item/item.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -469,7 +469,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				{"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
 			);
 	
-			context.biographyHTML = await TextEditor.enrichHTML(context.system.biography, {
+			context.biographyHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.biography, {
 				secrets: isOwner,
 				async: true,
 				relativeTo: this.actor
