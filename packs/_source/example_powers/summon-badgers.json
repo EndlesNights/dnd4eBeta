@@ -1,0 +1,85 @@
+{
+  "name": "Summon Badgers",
+  "type": "ritual",
+  "img": "icons/magic/symbols/triangle-glowing-green.webp",
+  "effects": [],
+  "folder": null,
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><em>Nobody is entirely sure why this ritual was created, probably a druidic prank.</em></p><p>On completion of this ritual [[/roll 1d4]] @UUID[Compendium.dnd4e.example_character.Actor.n1LXn8qhWKAwCErL]{Badgers} appear in the square occupied by the caster.</p><p>The ritual does not give caster any ability to command or communicate with the summoned badgers.</p><p>The summoning process appears to put the badgers into a foul mood, which will be directed at the nearest thing to them, usually the caster. The nature check result is used to determine their reaction to summoning.</p><table><thead><tr><th style=\"width:4em\"><p>Check Result</p></th><th><p>Badger Reaction</p></th></tr></thead><tbody><tr><td><p>15</p></td><td><p>Enraged: Will immediately attack the summoner.</p></td></tr><tr><td><p>15-24</p></td><td><p>Grumpy: Will attack if threatened, provoked or looked at funny. Otherwise will wander off.</p></td></tr><tr><td><p>25+</p></td><td><p>Annoyed: Will wander off unless attacked or provoked.</p></td></tr></tbody></table>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "Homebrew",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": "perm"
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "attribute",
+      "target": "ritualcomp.rh",
+      "amount": 30
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "requirements": "",
+    "level": "1",
+    "chatFlavor": "",
+    "attribute": "skills.nat.total",
+    "formula": "",
+    "category": "exploration",
+    "market": "50gp",
+    "castTime": {
+      "value": 10,
+      "units": "minute"
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "duplicateSource": null,
+    "coreVersion": "13.348",
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "createdTime": 1730442738539,
+    "modifiedTime": 1745816275190,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "exportSource": null
+  },
+  "_id": "7UcrtgsEjvHp4mRg",
+  "sort": 500000,
+  "_key": "!items!7UcrtgsEjvHp4mRg"
+}

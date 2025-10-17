@@ -1,0 +1,281 @@
+{
+  "_id": "B4KJ0ewlrw0I3BUS",
+  "name": "Grab",
+  "type": "power",
+  "img": "icons/skills/melee/hand-grip-staff-yellow-brown.webp",
+  "effects": [
+    {
+      "origin": "Item.7ELszI3jayHsSllX",
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "powerEffectTypes": "hit",
+            "equippedRec": false,
+            "durationType": "endOfUserTurn",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          },
+          "dots": []
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "name": "Grabbed",
+      "img": "systems/dnd4e/icons/statusEffects/grabbed.svg",
+      "transfer": false,
+      "_id": "RL11xRnS29CPuXDh",
+      "type": "base",
+      "system": {},
+      "changes": [],
+      "description": "<ul><li>The creature is immobilised.</li><li>The creature can attempt to escape as a move action.</li><li>The grab ends immediately if the grabber is subjected to an effect that prevents it from taking actions, or if the creature ends up outside the range of the grabbing power or effect.</li></ul>",
+      "tint": "#ffffff",
+      "statuses": [
+        "grabbed"
+      ],
+      "sort": 0,
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "13.348",
+        "systemId": "dnd4e",
+        "systemVersion": "0.5.14",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!B4KJ0ewlrw0I3BUS.RL11xRnS29CPuXDh"
+    }
+  ],
+  "folder": null,
+  "sort": 800000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.348",
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "createdTime": null,
+    "modifiedTime": 1745816275190,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": {
+      "value": "<p>You seize your enemy and prevent them from moving</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg. 290",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": "One Creature no more than 1 size category larger than you",
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": true,
+      "isBasic": false,
+      "isCharge": false,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "str",
+      "abilityBonus": 0,
+      "def": "ref",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "@powerMod+@lvhalf",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": false,
+      "isHealing": false,
+      "healSurge": "",
+      "baseQuantity": "1",
+      "baseDiceType": "weapon",
+      "detail": "You grab the target until the end of your next turn.  You can end the grab as a free action.",
+      "formula": "@powBase + @powerMod + @wepDamage",
+      "critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
+      "healFormula": ""
+    },
+    "miss": {
+      "detail": "",
+      "formula": ""
+    },
+    "effect": {
+      "detail": "<p>If you are affected by a condition that prevents you from taking opportunity actions, you immediately let go of a grabbed enemy.&nbsp;</p>\n<p>If you move away from the creature you&rsquo;re grabbing, you let go and the grab ends. If a pull, a push, or a slide moves you or the creature you&rsquo;re grabbing out of your reach, the grab ends.</p>\n<p>You can end a grab as a free action.</p>"
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "keyWords": [
+      ""
+    ],
+    "level": "",
+    "powersource": "",
+    "secondPowersource": "",
+    "powersourceName": "",
+    "subName": "None",
+    "prepared": true,
+    "powerType": "inherent",
+    "powerSubtype": "attack",
+    "useType": "atwill",
+    "actionType": "standard",
+    "requirements": "",
+    "weaponType": "none",
+    "weaponUse": "none",
+    "rangeType": "touch",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "rangeTextShort": "",
+    "rangeText": "",
+    "rangePower": null,
+    "area": 0,
+    "rechargeRoll": "",
+    "rechargeCondition": "",
+    "damageShare": false,
+    "postEffect": true,
+    "postSpecial": true,
+    "autoGenChatPowerCard": true,
+    "sustain": {
+      "actionType": "minor",
+      "detail": "The grab persists until the end of your next turn"
+    },
+    "trigger": "",
+    "requirement": "You must have one hand free",
+    "special": "You can attempt to move the grabbed target with a strength vs fort attack.",
+    "specialAdd": {
+      "parts": []
+    },
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false,
+      "enchantment": false,
+      "shadow": false
+    },
+    "keywordsCustom": "",
+    "chatFlavor": "",
+    "effectHTML": true,
+    "category": "other"
+  },
+  "_key": "!items!B4KJ0ewlrw0I3BUS"
+}

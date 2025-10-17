@@ -1,0 +1,120 @@
+{
+  "name": "Wyrmscale armor",
+  "type": "equipment",
+  "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+  "effects": [],
+  "folder": "676N3JsB3VGN4pMD",
+  "flags": {
+    "cf": {
+      "id": "temp_qpzs7v74l9c",
+      "path": "Scale Armor",
+      "color": "#000000"
+    }
+  },
+  "system": {
+    "description": {
+      "value": "<p><span style=\"color: #191813;\">Minimum Enhancement Bonus: +4</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB p.2.14",
+    "quantity": 1,
+    "weight": 45,
+    "price": null,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "level": null,
+    "armour": {
+      "type": "armour",
+      "subType": "heavy",
+      "enhance": 0,
+      "ac": 10,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0,
+      "dex": null,
+      "movePen": true,
+      "movePenValue": -1,
+      "skillCheck": false,
+      "skillCheckValue": -1,
+      "damageRes": {
+        "parts": []
+      },
+      "value": 10
+    },
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "stealth": false,
+    "proficient": true,
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "armourBaseType": "scale"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686094179726,
+    "modifiedTime": 1686094179726,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "TIQYNqp9lilWxkDG",
+  "sort": 0,
+  "_key": "!items!TIQYNqp9lilWxkDG"
+}

@@ -1,0 +1,184 @@
+{
+  "name": "Wizard Class",
+  "type": "feature",
+  "img": "icons/weapons/wands/wand-carved-pink.webp",
+  "effects": [
+    {
+      "_id": "FfU7lTlZ7RbrcqDo",
+      "changes": [
+        {
+          "key": "system.attributes.hp.starting",
+          "mode": 5,
+          "value": "10",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.perlevel",
+          "mode": 5,
+          "value": "4",
+          "priority": null
+        },
+        {
+          "key": "system.details.surges.max",
+          "mode": 2,
+          "value": "6+@conMod",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.autototal",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.defences.wil.value",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "cloth",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "dagger",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "quaterstaff",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "orb",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "staff",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "wand",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.udqNtqOeYVp8qu5W",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          },
+          "dots": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Wizard Class Stats",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/weapons/wands/wand-carved-pink.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!hzKIVXbkZBsejWCA.FfU7lTlZ7RbrcqDo"
+    }
+  ],
+  "folder": "LzEqWjfE9D4FpBrt",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><strong>Role:</strong> Controller. You exert control through magical effects that cover large areas&mdash;sometimes hindering foes, sometimes consuming them with fire</p>\n<p><strong>Power Source: </strong>Arcane. You channel arcane forces through extensive study, hidden knowledge, and intricate preparation. To you, magic is an art form, an expressive and powerful method by which you seek to control the world around you.</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Intelligence</li>\n<li>Wisdom</li>\n<li>Dexterity</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.4JEjuSyMmf6FxmGS]{Dagger}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.VBEmZHSsHPmHxcXS]{Quarterstaff}</li>\n</ul>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813;\"><strong style=\"box-sizing: border-box; user-select: text;\">Implements:</strong></p>\n<ul style=\"box-sizing: border-box; user-select: text; color: #191813;\">\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.3YQgnHBtAKH1o28c]{Orb}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.vu6lVEBahrmh5L3O]{Staff}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.BGZ4QKJlyb1ebEXv]{Wand}</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+2 Will</li>\n</ul>\n<p><strong>Hit Points at 1st Level:</strong>&nbsp;[[10]] + Con Score</p>\n<p><strong>Hit Points&nbsp;</strong><strong>per Level Gained:</strong> [[4]]</p>\n<p><strong>Base&nbsp;</strong><strong>Healing</strong><strong>&nbsp;Surges per Day:</strong> [[6]] + Con Mod</p>\n<p><strong>Skill Training: </strong>Arcana, choose three more from the following list:</p>\n<ul>\n<li>Diplomacy (Cha)</li>\n<li>Dungeoneering (Wis)</li>\n<li>History (Int)</li>\n<li>Insight (Wis)</li>\n<li>Nature (Int)</li>\n<li>Religion (Int)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>Cantrips</li>\n<li>Ritual Casting</li>\n<li>Spellbook</li>\n</ul>\n<p><strong>Choose one of the following&nbsp;Arcane Implement Mastery</strong><strong>:</strong></p>\n<ul>\n<li>Orb of Imposition</li>\n<li>Staff of Defense</li>\n<li>Wand of Accuracy</li>\n</ul>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg. 156",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "class",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Wizard",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "class": "",
+    "hitFistLevel": 10,
+    "hitPerLevel": 4,
+    "surgePerDay": 6,
+    "skills": "<i class=\"fas fa-edit\"></i>",
+    "def": {
+      "ac": 0,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0
+    },
+    "proficiencies": {
+      "weapons": [],
+      "armour": []
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094212318,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "hzKIVXbkZBsejWCA",
+  "sort": 0,
+  "_key": "!items!hzKIVXbkZBsejWCA"
+}

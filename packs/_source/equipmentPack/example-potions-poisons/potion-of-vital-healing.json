@@ -1,0 +1,148 @@
+{
+  "name": "Potion of Vital Healing",
+  "type": "consumable",
+  "img": "icons/consumables/potions/bottle-corked-red.webp",
+  "effects": [],
+  "folder": "X50ukKorZKXdDrH7",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><em>This foul smelling potion will quickly heal&nbsp;</em><em>serious injury and even help curtail other minor afflictions.</em></p>\n<p>&nbsp;</p>\n<p><em style=\"box-sizing: border-box; user-select: text; color: #191813;\"><span style=\"box-sizing: border-box; user-select: text; font-style: normal;\">Minor Action:&nbsp;</span></em><span style=\"box-sizing: border-box; user-select: text; color: #191813;\"><span style=\"box-sizing: border-box; user-select: text;\">Drink this potion and spend a healing surge. You do not regain hit points as normal. Instead,&nbsp;</span><em style=\"box-sizing: border-box; user-select: text; font-family: var(--font-primary); font-size: var(--font-size-14);\"><span style=\"box-sizing: border-box; user-select: text; font-style: normal;\">regain <strong>25 </strong></span><span style=\"box-sizing: border-box; user-select: text; font-style: normal;\">hit points a</span></em></span><span style=\"box-sizing: border-box; user-select: text; color: #191813; font-family: var(--font-primary); font-size: var(--font-size-14);\">nd make a saving throw against each effect on you that a save can end.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB p. 255",
+    "quantity": 1,
+    "weight": 0,
+    "price": 1000,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "Common",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "charges",
+      "autoDestroy": false
+    },
+    "consume": {
+      "type": "attribute",
+      "target": "",
+      "amount": 4
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": false,
+      "isBasic": false,
+      "isCharge": false,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "",
+      "abilityBonus": 0,
+      "def": "ac",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": false,
+      "isHealing": true,
+      "healSurge": "",
+      "baseQuantity": 1,
+      "baseDiceType": "Base Weapon Damage",
+      "detail": "",
+      "formula": "",
+      "critFormula": "",
+      "healFormula": "25"
+    },
+    "miss": {
+      "detail": "",
+      "formula": ""
+    },
+    "effect": {
+      "detail": ""
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {},
+    "level": 15,
+    "consumableType": "potion",
+    "autoGenChatPowerCard": false,
+    "useType": "item",
+    "actionType": "minor",
+    "rangeType": "",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "effectType": {},
+    "keywordsCustom": "",
+    "attackBonus": null,
+    "formula": "",
+    "postEffect": false,
+    "effectHTML": false
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686093922767,
+    "modifiedTime": 1686093922767,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "MXbTtYxg1mG3NtTP",
+  "sort": 0,
+  "_key": "!items!MXbTtYxg1mG3NtTP"
+}

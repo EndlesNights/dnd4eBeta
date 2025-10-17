@@ -1,0 +1,166 @@
+{
+  "name": "Flames of the 9 Hells",
+  "type": "feature",
+  "img": "icons/magic/fire/elemental-fire-flying.webp",
+  "effects": [
+    {
+      "_id": "UNjaAg3O096MfzYe",
+      "changes": [
+        {
+          "key": "power.attack.fire.feat",
+          "mode": 4,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "power.damage.fire.feat",
+          "mode": 4,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.FBHWeKmJiqhtTFy2",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "dots": [],
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          }
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Flames of the 9 Hells",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/magic/fire/elemental-fire-flying.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!7iYPVSJz89ItDtyl.UNjaAg3O096MfzYe"
+    }
+  ],
+  "folder": "3WBJGLs24aDlvlbA",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><em>Tapping your infernal blood has some useful side effects.&nbsp;&nbsp;</em></p>\n<ul>\n<li><strong>+1 feat</strong> bonus to attack rolls on fire powers.</li>\n<li><strong>+2 feat</strong> bonus to damage rolls on fire powers.</li>\n</ul>\n<p>This feat demonstrates an effect that automatically adds the attack and damage bonuses to any power that has the <strong>fire </strong>property</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "Homebrew",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "feat",
+    "level": null,
+    "requirements": "Tiefling",
+    "featureSource": "",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "recharge": {
+      "value": null,
+      "charged": false
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686093877711,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "7iYPVSJz89ItDtyl",
+  "sort": 100000,
+  "_key": "!items!7iYPVSJz89ItDtyl"
+}

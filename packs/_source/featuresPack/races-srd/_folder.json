@@ -1,0 +1,21 @@
+{
+  "name": "Races (SRD)",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "hE67zu2JDa7VFd5I",
+  "sort": 400000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": null,
+    "systemVersion": null,
+    "coreVersion": "12.331",
+    "createdTime": null,
+    "modifiedTime": 1745817871185,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null
+  },
+  "description": "",
+  "_key": "!folders!hE67zu2JDa7VFd5I"
+}
