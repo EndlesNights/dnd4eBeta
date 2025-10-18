@@ -303,11 +303,11 @@
     <label data-tooltip="{{ localize 'DND4E.PrimaryDamageType' }}">{{ localize 'DND4E.PrimaryDamageType' }}:</label>
       
     {{#each config.damageTypes as |name type|}}
-    {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
+    {{#unless (or (eq type "ongoing") (eq type "damage"))}}
       <label class="checkbox">
         <input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
       </label>
-    {{/unless}}{{/unless}}
+    {{/unless}}
     {{/each}}
     {{/if}}
 
