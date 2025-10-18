@@ -182,14 +182,12 @@
     <li class="damage-part flexrow" data-damage-part="{{i}}">
       <input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this '0'}}"/>
       <select name="system.damage.parts.{{i}}.1">
-        {{#select (lookup this "1") }}
-        <option value="">&nbsp;</option>
+        <option value=""{{#if (eq (lookup part 1) "")}} selected{{/if}}></option>
         {{#each ../config.damageTypes as |name type|}}
-          {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
-          <option value="{{type}}">{{name}}</option>
-          {{/unless}}{{/unless}}
+          {{#unless (or (eq type "ongoing") (eq type damage))}}
+          <option value="{{type}}"{{#if (eq (lookup part "1") type)}} selected{{/if}}>{{name}}</option>
+          {{/unless}}
         {{/each}}
-        {{/select}}
       </select>
       <a class="damage-control" data-action="deleteDamage"><i class="fas fa-minus"></i></a>
     </li>

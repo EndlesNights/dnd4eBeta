@@ -526,10 +526,17 @@ export class Actor4e extends Actor {
 			
 			if(isNaN(parseInt(mod?.absolute))){ //All logic only required if there is no usable absolute value
 	
-				mod.value += mod?.class||0 + mod?.feat||0 + mod?.item||0 + mod?.power||0 + mod?.untyped||0 + mod?.race||0 + mod?.enhance||0 + mod.bonusValue;
+				mod.value += mod.class || 0;
+				mod.value += mod.feat || 0;
+				mod.value += mod.item || 0;
+				mod.value += mod.power || 0;
+				mod.value += mod.untyped || 0;
+				mod.value += mod.race || 0;
+				mod.value += mod.enhance || 0;
+				mod.value += mod.bonusValue || 0;
 				//trim value according to floor and ceil
-				mod.value = Math.max(mod.value,mod?.floor || mod.value-1);
-				mod.value = Math.min(mod.value,mod?.ceil || mod.value+1);
+				mod.value = Math.max(mod.value,mod.floor || mod.value-1);
+				mod.value = Math.min(mod.value,mod.ceil || mod.value+1);
 			}else{
 				mod.value = mod.absolute;
 			}

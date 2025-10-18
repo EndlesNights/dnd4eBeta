@@ -106,17 +106,11 @@
   <ol class="damage-parts form-group">
     {{#each system.armour.damageRes.parts as |part i| }}
     <li class="damage-part flexrow" data-damage-part="{{i}}">
-      <input class="damage-res" type="number" name="system.armour.damageRes.parts.{{i}}.0" value="{{lookup this "0"}}"/>
-      <select class="damage-res" name="system.armour.damageRes.parts.{{i}}.1">
-        {{#select (lookup this "1") }}
-          <option value="">{{ localize "DND4E.None" }}</option>
-          {{#each ../config.damageTypes as |name type|}}
-          <option value="{{type}}">{{name}}</option>
-          {{/each}}
-          {{#each ../config.healingTypes as |name type|}}
-          <option value="{{type}}">{{name}}</option>
-          {{/each}}
-        {{/select}}
+      <input type="number" name="system.armour.damageRes.parts.{{i}}.0" value="{{lookup this "0"}}"/>
+      <select name="system.armour.damageRes.parts.{{i}}.1">
+          <option value=""{{#if (eq (lookup part "1") "none")}}selected{{/if}}>{{ localize "DND4E.None" }}</option>
+          {{selectOptions ../config.damageTypes selected=(lookup part "1") localize="true"}}
+          {{selectOptions ../config.healingTypes selected=(lookup part "1") localize="true"}}
       </select>
       <a class="damage-control" data-action="deleteDamageRes"><i class="fas fa-minus"></i></a>
     </li>

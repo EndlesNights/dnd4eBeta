@@ -188,17 +188,13 @@
     <li class="damage-part flexrow" data-damage-part="{{i}}">
       <input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this "0"}}"/>
       <select name="system.damage.parts.{{i}}.1">
-        {{#select (lookup this "1") }}
-          <option value="">&nbsp;</option>
-          {{#each ../config.damageTypes as |name type|}}
-            {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
-            <option value="{{type}}">{{name}}</option>
-            {{/unless}}{{/unless}}
-          {{/each}}
-          {{#each ../config.healingTypes as |name type|}}
-          <option value="{{type}}">{{name}}</option>
-          {{/each}}
-        {{/select}}
+        <option value=""{{#if (eq (lookup part "1") "")}}selected{{/if}}>&nbsp;</option>
+        {{#each ../config.damageTypes as |name type|}}
+          {{#unless (or (eq type "ongoing") (eq type "damage"))}}
+          <option value="{{type}}"{{#if (eq (lookup part "1") type)}}selected{{/if}}>{{name}}</option>
+          {{/unless}}
+        {{/each}}
+        {{selectOptions ../config.healingTypes selected=(lookup part "1") localize=true}}
       </select>
       <a class="damage-control" data-action="deleteDamage"><i class="fas fa-minus"></i></a>
     </li>
@@ -219,17 +215,13 @@
     <li class="damage-part flexrow" data-damage-part="{{i}}">
       <input type="text" name="system.damageCrit.parts.{{i}}.0" value="{{lookup this "0"}}"/>
       <select name="system.damageCrit.parts.{{i}}.1">
-        {{#select (lookup this "1") }}
-          <option value="">&nbsp;</option>
-          {{#each ../config.damageTypes as |name type|}}
-          {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
-            <option value="{{type}}">{{name}}</option>
-          {{/unless}}{{/unless}}
-          {{/each}}
-          {{#each ../config.healingTypes as |name type|}}
-          <option value="{{type}}">{{name}}</option>
-          {{/each}}
-        {{/select}}
+        <option value=""{{#if (eq (lookup part "1") "")}}selected{{/if}}>&nbsp;</option>
+        {{#each ../config.damageTypes as |name type|}}
+          {{#unless (or (eq type "ongoing") (eq type "damage"))}}
+          <option value="{{type}}"{{#if (eq (lookup part "1") type)}}selected{{/if}}>{{name}}</option>
+          {{/unless}}
+        {{/each}}
+        {{selectOptions ../config.healingTypes selected=(lookup part "1") localize=true}}
       </select>
       <a class="damage-control" data-action="deleteCriticalDamage"><i class="fas fa-minus"></i></a>
     </li>
@@ -259,17 +251,13 @@
     <li class="damage-part flexrow" data-damage-part="{{i}}">
       <input type="text" name="system.damageImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
       <select name="system.damageImp.parts.{{i}}.1">
-        {{#select (lookup this "1") }}
-          <option value="">&nbsp;</option>
-          {{#each ../config.damageTypes as |name type|}}
-          {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
-            <option value="{{type}}">{{name}}</option>
-          {{/unless}}{{/unless}}
-          {{/each}}
-          {{#each ../config.healingTypes as |name type|}}
-          <option value="{{type}}">{{name}}</option>
-          {{/each}}
-        {{/select}}
+        <option value=""{{#if (eq (lookup part "1") "")}}selected{{/if}}>&nbsp;</option>
+        {{#each ../config.damageTypes as |name type|}}
+          {{#unless (or (eq type "ongoing") (eq type "damage"))}}
+          <option value="{{type}}"{{#if (eq (lookup part "1") type)}}selected{{/if}}>{{name}}</option>
+          {{/unless}}
+        {{/each}}
+        {{selectOptions ../config.healingTypes selected=(lookup part "1") localize=true}}
       </select>
       <a class="damage-control" data-action="deleteDamageImp"><i class="fas fa-minus"></i></a>
     </li>
@@ -290,17 +278,13 @@
     <li class="damage-part flexrow" data-damage-part="{{i}}">
       <input type="text" name="system.damageCritImp.parts.{{i}}.0" value="{{lookup this "0"}}"/>
       <select name="system.damageCritImp.parts.{{i}}.1">
-        {{#select (lookup this "1") }}
-          <option value="">&nbsp;</option>
-          {{#each ../config.damageTypes as |name type|}}
-          {{#unless (eq type "ongoing")}}{{#unless (eq type "damage")}}
-            <option value="{{type}}">{{name}}</option>
-          {{/unless}}{{/unless}}
-          {{/each}}
-          {{#each ../config.healingTypes as |name type|}}
-          <option value="{{type}}">{{name}}</option>
-          {{/each}}
-        {{/select}}
+        <option value=""{{#if (eq (lookup part "1") "")}}selected{{/if}}>&nbsp;</option>
+        {{#each ../config.damageTypes as |name type|}}
+          {{#unless (or (eq type "ongoing") (eq type "damage"))}}
+          <option value="{{type}}"{{#if (eq (lookup part "1") type)}}selected{{/if}}>{{name}}</option>
+          {{/unless}}
+        {{/each}}
+        {{selectOptions ../config.healingTypes selected=(lookup part "1") localize=true}}
       </select>
       <a class="damage-control" data-action="deleteCriticalDamageImp"><i class="fas fa-minus"></i></a>
     </li>

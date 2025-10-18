@@ -49,6 +49,9 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
       damage: new SchemaField({
         parts: new ArrayField(new ArrayField(new StringField(), {min: 2, max: 2, initial: ["", ""]}), {initial: []})
       }),
+      damageCrit: new SchemaField({
+        parts: new ArrayField(new ArrayField(new StringField(), {min: 2, max: 2, initial: ["", ""]}), {initial: []})
+      }),
       damageCritImp: new SchemaField({
         parts: new ArrayField(new ArrayField(new StringField(), {min: 2, max: 2, initial: ["", ""]}), {initial: []})
       }),

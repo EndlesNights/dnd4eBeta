@@ -963,7 +963,7 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 	height:18px;
 	line-height:16px;
 	margin:4px 8px 2px;
-	font-size:18px;
+	font-size:22px;
 	border-bottom:var(--border-normal);
 	text-align:left;
 }
@@ -1222,6 +1222,8 @@ font-size:12px;
 }
 .dnd4e.sheet.actor ul.attributes .attribute-res .res-name{
 	flex:0.9;
+	font-family: var(--font-body);
+	font-size: medium;
 }
 .dnd4e.sheet.actor ul.attributes .attribute-res .res-mod{
 	flex:0.6;
@@ -1322,6 +1324,9 @@ font-size:12px;
 	width:100%;
 	text-align:center;
 	line-height:22px;
+}
+.dnd4e .attribute-modifiers .name-label{
+	text-align:right;
 }
 .dnd4e input.action-box{
 	height:14px;
@@ -2346,12 +2351,6 @@ font-size:12px;
 }
 .dnd4e.sheet.item .details input[type="text"],
 .dnd4e.sheet.item .details input[type="textarea"],
-.dnd4e.sheet.item .details .damage-res{
-	height:24px;
-	width:14%;
-	border:var(--border-normal);
-	background:var(--color-bg-input);
-}
 .dnd4e.sheet.item .details select{
 	height:24px;
 	width:14%;

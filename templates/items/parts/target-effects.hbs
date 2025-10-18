@@ -3,15 +3,15 @@
 <div class="attribute-modifiers">
 	<h4 class="attribute-name box-title">{{localize 'DND4E.ModifierPlural'}}</h4>
 	<div class="attack-mod flexrow thin" data-modifiers="attack">
-		<span>{{localize 'DND4E.ModifierAttack'}}: {{system.modifiers.attack.value}}</span>
+		<span class="name-label">{{localize 'DND4E.ModifierAttack'}}: {{system.modifiers.attack.value}}</span>
 		<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.ModifierAttack'}}">{{localize 'DND4E.Bonus'}}: {{system.modifiers.attack.bonusValue}}</a>
 	</div>
 	<div class="damage-mod flexrow thin" data-modifiers="damage">
-		<span>{{localize 'DND4E.ModifierDamage'}}: {{system.modifiers.damage.value}}</span>
+		<spanclass="name-label">{{localize 'DND4E.ModifierDamage'}}: {{system.modifiers.damage.value}}</span>
 		<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.ModifierDamage'}}">{{localize 'DND4E.Bonus'}}: {{system.modifiers.damage.bonusValue}}</a>
 	</div>
 	<div class="skills-mod flexrow thin" data-modifiers="skills">
-		<span>{{localize 'DND4E.ModifierSkills'}}: {{system.modifiers.skills.value}}</span>
+		<spanclass="name-label">{{localize 'DND4E.ModifierSkills'}}: {{system.modifiers.skills.value}}</span>
 		<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.ModifierSkills'}}">{{localize 'DND4E.Bonus'}}: {{system.modifiers.skills.bonusValue}}</a>
 	</div>
 </div>
@@ -65,7 +65,7 @@
 		<h4 class="attribute-name box-title">{{localize 'DND4E.DamResVuln'}}</h4>
 		{{#each system.resistances as |res r|}}
 			<li class="skill flexrow" data-res="{{r}}">
-				<h4 class="res-name">{{res.label}}</h4>
+				<h4 class="res-name" style="margin-bottom: 0; font-family: var(--font-body); font-size: medium">{{res.label}}</h4>
 				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
 				<span class="res-armour">{{localize 'DND4E.Armour'}}: {{res.armour}} </span>
 				<a class="resistances-bonus" data-target="system.resistances" data-tooltip="Resistance Bonus">{{localize 'DND4E.Bonus'}}: {{res.resBonusValue}}</a>

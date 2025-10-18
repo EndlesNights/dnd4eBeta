@@ -397,6 +397,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				}
 			}
 
+			context.damageTypeOptions = { ...CONFIG.DND4E.damageTypes };
+			delete context.damageTypeOptions.damage;
+			delete context.damageTypeOptions.ongoing;
+
 			context.hasEnhance = true;
 			context.weaponBaseTypes = CONFIG.DND4E[itemData.system.weaponType];
 			context.isWeaponBaseTypeCustom = (itemData.system.weaponBaseType === "custom");
