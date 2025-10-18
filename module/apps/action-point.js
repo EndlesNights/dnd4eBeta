@@ -2,30 +2,51 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 
 export class ActionPointDialog extends DocumentSheet4e {
 
-	static get defaultOptions() {
-		const options = super.defaultOptions;
-		return foundry.utils.mergeObject(options, {
-			id: "action-point",
-			classes: ["action-point"],
-			template: "systems/dnd4e/templates/apps/action-point.html",
+	static DEFAULT_OPTIONS = {
+		id: "action-point",
+		classes: ["action-point", "standard-form"],
+		form: {
+			closeOnSubmit: true,
+			handler: this.#onSubmit
+		},
+		position: {
 			width: 500,
-			closeOnSubmit: true
-		});
+			height: "auto"
+		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
+		tag: "form"
 	}
 	
 	get title() {
-		return `${this.object.name} - Action Point`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.ActionPoint")}`;
+	}
+
+	static PARTS = {
+		actionPoint: {
+			template: "systems/dnd4e/templates/apps/action-point.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
+		}
 	}
 
 	/** @override */
-	getData() {
-		const extra = this.object.system.actionpoints.custom !== "" ? this.object.system.actionpoints.custom.split("\n") : "";
-		return { system: this.object.system, extra: extra };
+	_prepareContext() {
+		const extra = this.document.system.actionpoints.custom !== "" ? this.document.system.actionpoints.custom.split("\n") : "";
+		return { 
+			system: this.document.system,
+			extra: extra,
+			buttons: [
+				{ type: "submit", label: "DND4E.ActionPointUse" }
+			]
+		};
 	}
-	async _updateObject(event, formData) {
-		
-		const options = this.options;
 
-		this.object.actionPoint(event, options);
+	static async #onSubmit(event, form, formData) {
+		const options = this.options;
+		this.document.actionPoint(event, options);
 	}
+
 }

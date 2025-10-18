@@ -1,33 +1,52 @@
 import DocumentSheet4e from "./DocumentSheet4e.js"
 
 export class ShortRestDialog extends DocumentSheet4e {
-
-	static get defaultOptions() {
-		const options = super.defaultOptions;
-		return foundry.utils.mergeObject(options, {
-			id: "short-rest",
-			classes: ["dnd4e", "actor-rest"],
-			template: "systems/dnd4e/templates/apps/short-rest.html",
+	static DEFAULT_OPTIONS = {
+		id: "short-rest",
+		classes: ["dnd4e", "actor-rest", "standard-form"],
+		form: {
+			handler: ShortRestDialog.#onSubmit,
+			closeOnSubmit: true,
+		},
+		position: {
 			width: 500,
-			closeOnSubmit: true
-		});
+			height: "auto",
+		},
+		window: {
+			contentClasses: ["standard-form"]
+		},
+		tag: "form"
 	}
 	
 	get title() {
-		return `${this.object.name} - Short Rest`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.ShortRest")}`;
+	}
+
+	static PARTS = {
+		ShortRestDialog: {
+			template: "systems/dnd4e/templates/apps/short-rest.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
+		}
 	}
 
 	/** @override */
-	getData() {
-		
-		return {system: this.object.system}
+	_prepareContext() {
+		return {
+			system: this.document.system,
+			buttons: [
+				{ type: "submit", label: "DND4E.ShortRestTake" }
+			]
+		}
 	}
 	
-	async _updateObject(event, formData) {
-		const options = this.options;
-		options.surge = formData.surge;
-		options.bonus = formData.bonus;
+	static async #onSubmit(event, form, formData) {
+		const restOptions = foundry.utils.expandObject(formData.object);
 
-		this.object.shortRest(event, options);
+		this.document.shortRest(event, {
+			...this.options,
+			...restOptions
+		});
 	}  
 }

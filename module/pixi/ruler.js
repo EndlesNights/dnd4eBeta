@@ -1,88 +1,110 @@
-export class Ruler4e extends Ruler {
-	
+// Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
 
-	/** @inheritdoc */
-	_startMeasurement(...args){
-		this.isDragMeasuring = true;
-		return super._startMeasurement(...args);
+export default class TokenRuler4e extends foundry.canvas.placeables.tokens.TokenRuler {
+	/** @inheritDoc */
+	_getWaypointStyle(waypoint) {
+		if ( !waypoint.explicit && waypoint.next && waypoint.previous && waypoint.actionConfig.visualize
+		&& waypoint.next.actionConfig.visualize && (waypoint.action === waypoint.next.action)
+		&& (waypoint.unreachable || !waypoint.next.unreachable) ) return { radius: 0 };
+		const user = game.users.get(waypoint.userId);
+		const scale = canvas.dimensions.uiScale;
+		const style = {radius: 6 * scale, color: user?.color ?? 0x000000, alpha: waypoint.explicit ? 1 : 0.5};
+		return this.#getSpeedBasedStyle(waypoint, style);
 	}
 
-	/** @inheritdoc */
-	_endMeasurement(...args){
-		this.isDragMeasuring = false;
-		return super._endMeasurement(...args);
-	}
+	/* -------------------------------------------- */
 
-	/** @inheritdoc */
-	_getCostFunction(){
-		if (!this.isDragMeasuring || canvas.regions.placeables.length === 0) {
-            return;
-        }
-
-		return (_from, to, distance) => {
-            const token = canvas.controls.ruler.token;
-            if (!token) return 0;
-
-            const toPoint = canvas.grid.getTopLeftPoint(to);
-            const difficultBehaviors = canvas.regions.placeables
-                .filter(
-                    (r) =>
-                        r.document.behaviors.some(
-                            (b) => !b.disabled && b.type === "difficultTerrain" && typeof b.system.terrainMultiplier === "number",
-                        ) && token.testInsideRegion(r, toPoint),
-                )
-                .flatMap((r) =>
-                    r.document.behaviors.filter(
-                        (b) =>
-                            !b.disabled && b.type === "difficultTerrain" && typeof b.system.terrainMultiplier === "number",
-                    ),
-                );
-            return difficultBehaviors.length > 0
-                ? difficultBehaviors.reduce((sum, b) => {
-					if (typeof b.system.terrainMultiplier === "number") {
-						return sum + b.system.terrainMultiplier;
-					}
-					return sum;
-				}, 0)
-                : distance;
-        };
-	}
-
-	/** @inheritdoc */
-	_getSegmentLabel(segment) {
-		if (segment.teleport) return "";
-
-		function getString(value) {
-			return `${Math.round(value * 100) / 100}`
+	/** @override */
+	_getWaypointLabelContext(waypoint, state) {
+		const { index, elevation, explicit, next, previous, ray } = waypoint;
+		state.hasElevation ||= (elevation !== 0);
+		if ( !previous ) {
+			state.previousElevation = elevation;
+			return;
 		}
+		if ( !explicit && next && waypoint.actionConfig.visualize && next.actionConfig.visualize
+		&& (waypoint.action === next.action) && (waypoint.unreachable || !waypoint.next.unreachable) ) return;
+		if ( (ray.distance === 0) && (elevation === previous.elevation) ) return;
 
-		const actor = this.token?.actor;
-		if(!actor) return super._getSegmentLabel(segment);
-		
-		const units = canvas.grid.units
-		let label = !true
-		  ? getString(segment.distance)
-		  : segment.distance == segment.cost
-		  ? getString(segment.distance)
-		//   : `${getString(segment.cost)} / ${getString(segment.distance)}`
-		  : `${getString(segment.cost)}`
-		if (units) label += ` ${units}`
-	
-		if (segment.last) {
-		  if (true && segment.cumulativeDistance != segment.cumulativeCost ) {
-			label = "△ " + label //⚠
-		  }
-	
-		  label += !true
-			? ` [${getString(segment.cumulativeDistance)}`
-			: segment.cumulativeDistance == segment.cumulativeCost
-			? ` [${getString(segment.cumulativeDistance)}`
-			// : ` [${getString(segment.cumulativeCost)} / ${getString(segment.cumulativeDistance)}`
-			: ` [${getString(segment.cumulativeCost)}`
-		  if (units) label += ` ${units}`
-		  label += "]"	
-		}
-	
-		return label
+		// Prepare data structure
+		const context = {
+		action: waypoint.actionConfig,
+		cssClass: [
+			waypoint.hidden ? "secret" : "",
+			waypoint.next ? "" : "last",
+			explicit ? "" : "nonexplicit"
+		].filterJoin(" "),
+		secret: waypoint.hidden,
+		units: canvas.grid.units,
+		uiScale: canvas.dimensions.uiScale,
+		position: { x: ray.B.x, y: ray.B.y + (next ? 0 : 0.5 * this.token.h) + (16 * canvas.dimensions.uiScale) }
+		};
+
+		// Segment Distance
+		context.distance = { total: waypoint.measurement.distance.toNearest(0.01).toLocaleString(game.i18n.lang) };
+		if ( index >= 2 ) context.distance.delta = waypoint.measurement.backward.distance.toNearest(0.01).signedString();
+
+		// Segment Cost
+		const cost = waypoint.measurement.cost;
+		const deltaCost = waypoint.cost;
+		context.cost = {
+		total: Number.isFinite(cost) ? cost.toNearest(0.01).toLocaleString(game.i18n.lang) : "∞",
+		units: canvas.grid.units
+		};
+		if ( index >= 2 ) context.cost.delta = Number.isFinite(deltaCost) ? deltaCost.toNearest(0.01).signedString() : "∞";
+
+		// Elevation
+		const deltaElevation = elevation - state.previousElevation;
+		context.elevation = { total: elevation, icon: "fa-solid fa-arrows-up-down", hidden: !state.hasElevation };
+		if ( deltaElevation !== 0 ) context.elevation.delta = deltaElevation.signedString();
+		state.previousElevation = elevation;
+
+		return context;
+	}
+
+	/* -------------------------------------------- */
+
+	/** @override */
+	_getSegmentStyle(waypoint) {
+		const style = super._getSegmentStyle(waypoint);
+		return this.#getSpeedBasedStyle(waypoint, style);
+	}
+
+	/* -------------------------------------------- */
+
+	/** @override */
+	_getGridHighlightStyle(waypoint, offset) {
+		const style = super._getGridHighlightStyle(waypoint, offset);
+		return this.#getSpeedBasedStyle(waypoint, style);
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Modify segment or grid-highlighting style based on movement speed
+	 * @param {TokenRulerWaypoint} waypoint The waypoint
+	 * @param {object} style                The default styling of the segment/grid-highlight
+	 * @returns {object} The adjusted style, or existing style if no adjustment is necessary
+	 */
+	#getSpeedBasedStyle(waypoint, style) {
+		// If movement automation disabled, or if showing a different client's measurement, use default style
+		const noAutomation = false//game.settings.get("dnd5e", "disableMovementAutomation");
+		const isSameClient = game.user.id in this.token._plannedMovement;
+		if ( noAutomation || !isSameClient || CONFIG.Token.movement.actions[waypoint.action]?.teleport ) return style;
+
+		// Get actor's movement speed for currently selected token movement action
+		const movement = this.token.actor?.system.movement;
+		if ( !movement ) return style;
+		let currActionSpeed = movement.walk.value;
+		let runSpeed = movement.run.value;
+
+		// Color `normal` if <= max speed, else `double` if <= double max speed, else `triple`
+		const { walk, run, doubleWalk, doubleRun } = CONFIG.DND4E.tokenRulerColors;
+		const increment = (waypoint.measurement.cost - .1);
+		if ( increment <= currActionSpeed ) style.color = walk;
+		else if ( increment <= runSpeed ) style.color = run;
+		else if (increment <= 2 * currActionSpeed) style.color = doubleWalk;
+		else style.color = doubleRun;
+		return style;
 	}
 }

@@ -7,7 +7,6 @@
 // Import Modules
 import { DND4E } from "./config.js";
 import { registerSystemSettings } from "./settings.js";
-import {libWrapper} from './libWrapper-shim.js';
 
 // import Sheets
 import ItemSheet4e from "./item/item-sheet.js";
@@ -18,17 +17,18 @@ import ActorSheet4eHazard from "./actor/hazard-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
 import { measureDistances, getBarAttribute } from "./canvas.js";
-import { _getInitiativeFormula } from "./combat.js";
+import Combat4e from "./combat.js";
 
 // Import Documents
 import { MeasuredTemplate4e, TemplateLayer4e} from "./pixi/ability-template.js";
-import { Ruler4e } from "./pixi/ruler.js";
-import { Turns } from "./apps/turns.js";
+import { default as TokenRuler4e } from "./pixi/ruler.js";
 import { Actor4e } from "./actor/actor.js";
 import Item4e from "./item/item-document.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
-import { DifficultTerrainRegionBehaviorType, DifficultTerrainShader4e, Region4e } from "./regionBehavoirs/difficult-terrain.js";
+import { default as DifficultTerrainRegionBehaviorType } from "./regionBehavoirs/difficult-terrain.js";
+import { default as TerrainData4e } from "./regionBehavoirs/terrain-data.js";
+import { default as DifficultTerrainConfig} from "./apps/regionBehaviors/difficult-terrain-config.js"
 
 import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs, performPreLocalization} from "./helper.js";
 
@@ -43,6 +43,8 @@ import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 import {TokenBarHooks} from "./hooks.js";
 import { customSKillSetUp } from "./skills/custom-skills.js";
 import Items4e from "./collection/item-collection.js";
+import Combatant4e from "./combatant.js";
+import Roll4e from "./dice/Roll.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -81,29 +83,37 @@ Hooks.once("init", async function() {
 	CONFIG.Item.collection = Items4e;
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
+	CONFIG.Combatant.documentClass = Combatant4e;
+	CONFIG.Combat.documentClass = Combat4e;
+
+	CONFIG.MeasuredTemplate.objectClass = MeasuredTemplate4e;
+
+	CONFIG.Canvas.layers.templates.layerClass = TemplateLayer4e;
 
 	CONFIG.statusEffects = CONFIG.DND4E.statusEffect;
 	
 	// define custom roll extensions
+	CONFIG.Dice.rolls = [Roll4e];
 	CONFIG.Dice.rolls.push(MultiAttackRoll);
 	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
 	
 	CONFIG.ui.items = ItemDirectory4e;
 
+	CONFIG.Token.movement.TerrainData = TerrainData4e;
+	CONFIG.Token.rulerClass = TokenRuler4e;
+
 	// foundry.data.regionBehaviors.DifficultTerrainRegionBehaviorType = DifficultTerrainRegionBehaviorType;
 	// CONFIG.RegionBehavior.documentClass = RegionBehavior4e
 	CONFIG.RegionBehavior.dataModels.difficultTerrain = DifficultTerrainRegionBehaviorType;
-	HighlightRegionShader = DifficultTerrainShader4e;
+	// Object.assign(CONFIG.RegionBehavior.dataModels, { DifficultTerrainRegionBehaviorType });
+	// HighlightRegionShader = DifficultTerrainShader4e;
 
 	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";//"DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "fa-regular fa-triangle";
 
-	CONFIG.Canvas.rulerClass = Ruler4e;
-
 	registerSystemSettings();
 
 	CONFIG.Combat.initiative.formula = "1d20 + @attributes.init.value";
-	Combatant.prototype._getInitiativeFormula = _getInitiativeFormula;
 	// Register sheet application classes
 	Actors.unregisterSheet("core", ActorSheet);
 	Actors.registerSheet("dnd4e", ActorSheet4e, {
@@ -120,6 +130,14 @@ Hooks.once("init", async function() {
 		types: ["Hazard"],
 		label: game.i18n.localize("SHEET.Hazard"),
 		makeDefault: true
+	});
+
+	DocumentSheetConfig.unregisterSheet(RegionBehavior, "core", foundry.applications.sheets.RegionBehaviorConfig, {
+		types: ["difficultTerrain"]
+	});
+	DocumentSheetConfig.registerSheet(RegionBehavior, "dnd4e", DifficultTerrainConfig, {
+		label: "DND4E.difficultTerrain.Label",
+		types: ["difficultTerrain"]
 	});
 
 	
@@ -160,12 +178,6 @@ Hooks.once("init", async function() {
 	game.dnd4e.quickSave = (actor) => game.dnd4e.tokenBarHooks.quickSave(actor, null)
 
 	customSKillSetUp();
-
-	if(!game.modules.get("lib-wrapper")?.active){
-		return console.log("lib-wrapper not active!")
-	} else {
-		libWrapperInit();
-	}
 
 });
 
@@ -248,7 +260,7 @@ Hooks.once("ready",  function() {
 /*  Other Hooks                                 */
 /* -------------------------------------------- */
 
-Hooks.on("renderChatMessage", (app, html, data) => {
+Hooks.on("renderChatMessageHTML", (app, html, data) => {
 
 	// Display action buttons
 	chat.displayChatActionButtons(app, html, data);
@@ -260,11 +272,11 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 	chat.displayDamageOptionButtons(app, html, data)
 
 	// Optionally collapse the content
-	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.find(".card-content").hide();
+	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.querySelectorAll(".card-content").forEach(el => el.style.display = "none");
 	
 });
 
-Hooks.on("getChatLogEntryContext", chat.addChatMessageContextOptions);
+Hooks.on("getChatMessageContextOptions", chat.addChatMessageContextOptions);
 Hooks.on("renderChatLog", (app, html, data) => {
 	Item4e.chatListeners(html);
 	chat.chatMessageListener(html);
@@ -288,108 +300,69 @@ Hooks.on("canvasInit", function() {
 
 
 Hooks.on("renderTokenHUD", (app, html, data) => {
-// inject element and script for displaing name of status effect when mousning over
-const message = `
-<div class="status-effect-title" id="displayStatLine">STATUS EFFECT</div>
+	// inject element and script for displaing name of status effect when mousning over
+	const messageTemplate = document.createElement("template");
+	messageTemplate.innerHTML = `
+		<div class="status-effect-title" id="displayStatLine">STATUS EFFECT</div>
 
-<script>
-$(".effect-control ").hover(
-	function(eventObj) {
-		document.getElementById("displayStatLine").innerHTML = eventObj.target.getAttribute('data-tooltip');
-		document.getElementById("displayStatLine").classList.add("active");
-	},
-	function(eventObj) {
-		document.getElementById("displayStatLine").innerHTML = '';
-		document.getElementById("displayStatLine").classList.remove("active");
-	}
-);
-</script>
-`
+		<script>
+		$(".effect-control ").hover(
+			function(eventObj) {
+				document.getElementById("displayStatLine").innerHTML = eventObj.target.getAttribute('data-tooltip');
+				document.getElementById("displayStatLine").classList.add("active");
+			},
+			function(eventObj) {
+				document.getElementById("displayStatLine").innerHTML = '';
+				document.getElementById("displayStatLine").classList.remove("active");
+			}
+		);
+		</script>
+		`;
+	const messageElement = messageTemplate.content.children[0];
 
-html.find('.effect-control').last().after(message);
+	html.querySelectorAll(".effect-control").forEach(el => {
+		el.addEventListener("mouseenter", (eventObj) => {
+			messageElement.innerHTML = eventObj.target.getAttribute("data-tooltip-text");
+			messageElement.classList.add("active");
+		});
+		el.addEventListener("mouseleave", (eventObj) => {
+			messageElement.innerHTML = "";
+			messageElement.classList.remove("active");
+		});
+	});
+	[...html.querySelectorAll(".effect-control")].at(-1).after(messageElement);
 });
-
-
-function libWrapperInit() {
-
-	// Collection of Overriders for 4e Measure Templates
-	libWrapper.register(
-		'dnd4e',
-		'MeasuredTemplate.prototype._computeShape',
-		MeasuredTemplate4e._computeShape
-	);
-	libWrapper.register(
-		'dnd4e',
-		'MeasuredTemplate.prototype._refreshRulerText',
-		MeasuredTemplate4e._refreshRulerText
-	);
-	libWrapper.register(
-		'dnd4e',
-		'MeasuredTemplate.prototype._refreshShape',
-		MeasuredTemplate4e._refreshShape
-	);
-	libWrapper.register(
-		'dnd4e',
-		'TemplateLayer.prototype._onDragLeftStart',
-		TemplateLayer4e._onDragLeftStart
-	)
-	libWrapper.register(
-		'dnd4e',
-		'TemplateLayer.prototype._onDragLeftMove',
-		TemplateLayer4e._onDragLeftMove
-	)
-
-	libWrapper.register(
-		'dnd4e',
-		'Region.prototype._draw',
-		Region4e._draw
-	)
-
-	libWrapper.register(
-		'dnd4e',
-		'Combat.prototype.nextTurn',
-		Turns._onNextTurn
-	)
-
-	libWrapper.register(
-		'dnd4e',
-		'ChatLog.prototype._onDiceRollClick',
-		chat._onDiceRollClick
-	)
-
-	libWrapper.register(
-		'dnd4e',
-		'ChatLog.prototype._processDiceCommand',
-		chat._processDiceCommand
-	)
-
-}
 
 Hooks.on("getSceneControlButtons", function(controls){
-	
 	//sets what the default activeTool is
-	controls[1].activeTool = "burst";
+	const templates = controls.templates;
+	templates.activeTool = "burst";
 
-	//create addtioanl buttons in measure templates for Burst and Blast
-	controls[1].tools.splice(0,0,{
+	//create additional buttons in measure templates for Burst and Blast
+	const tools = templates.tools;
+	for (const key in tools){
+		tools[key].order += 2;
+	}
+	tools.burst = {
 		name: "burst",
+		order: 1,
 		title: "Area Burst (Square from Center)",
 		icon: "dnd4e-burst-svg",
-	})
-
-	controls[1].tools.splice(1,0,{
+	}
+	tools.blast = {
 		name: "blast",
+		order: 2,
 		title: "Area Blast (Square from corner)",
 		icon: "dnd4e-blast-svg",
-	})
+	}
 });
 
-Hooks.on("renderChatMessage", (message, html, data) => {
+Hooks.on("renderChatMessageHTML", (message, html, data) => {
 	try{
 		if(message.flags.core?.initiativeRoll === true || message.flags?.dnd4e?.roll?.type == "init"){
 			if(html){
 				const insertPart = Helper.initTooltip(message.content);
-				html[0].innerHTML = html[0].innerHTML.replace(/(<h4 class=\"dice-total\">)[0-9|.]+(<\/h4>)/g,`$1${insertPart}$2`);
+				html.innerHTML = html.innerHTML.replace(/(<h4 class=\"dice-total\">)[0-9|.]+(<\/h4>)/g,`$1${insertPart}$2`);
 			}
 		}
 	}catch(e){
@@ -400,7 +373,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
 Hooks.on('renderCombatTracker', (app,html,context) => {
 	if (!app?.viewed) return // Skip entirely if there's no currently viewed combat
 	try{
-		html.find('.token-initiative').each((i,el) => {
+		html.querySelectorAll('.token-initiative').forEach((el) => {
 			let combatant = app.viewed.combatants.get(el.parentElement.dataset.combatantId);
 			if(combatant?.initiative){
 				const insertPart = Helper.initTooltip(combatant.initiative);
@@ -423,28 +396,41 @@ Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 	if (!actorUuid) return;
 	const token = Helper.tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;
-	game.user.updateTokenTargets();
-	game.user.broadcastActivity({targets: []});
 	let tokens = Helper.getTokensInTemplate(templateDoc, true);
 	if (!tokens.size) return;
 	const disposition = token.document.disposition;
 	const excludeUser = !flagDocument.system.autoTarget.includeSelf || flagDocument.system.autoTarget.mode === 'enemies';
+	const targets = new Set();
 	for (let targetToken of tokens) {
 		if ((excludeUser && targetToken.actor.uuid === actorUuid) || targetToken.actor.statuses.has('dead')) continue;
 		switch (flagDocument.system.autoTarget.mode) {
 			case 'all':
-					targetToken.setTarget(true, { releaseOthers: false });
+					targets.add(targetToken.id);
 				break;
 			case 'allies':
 				if (targetToken.document.disposition === disposition) {
-					targetToken.setTarget(true, { releaseOthers: false });
+					targets.add(targetToken.id);
 				}
 				break;
 			case 'enemies':
 				if (targetToken.document.disposition === -1 * disposition) {
-					targetToken.setTarget(true, { releaseOthers: false });
+					targets.add(targetToken.id);
 				}
 				break;
 		}
+	}
+	canvas.tokens.setTargets(targets);
+});
+
+// Compatibility hook for Aura Effects to prevent aura effects from expiring based on aura origin's turn
+Hooks.on('preCreateActiveEffect', async (effect) => {
+	if (effect.flags.auraeffects?.fromAura || effect.flags.ActiveAuras?.applied) {
+		const updates = {
+			'flags.dnd4e.effectData.durationType': "custom",
+			'flags.dnd4e.effectData.startTurnInit': null,
+			'flags.dnd4e.effectData.durationTurnInit': null,
+			'flags.dnd4e.effectData.durationRound': null,
+		};
+		effect.updateSource(updates);
 	}
 });

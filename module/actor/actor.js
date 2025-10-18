@@ -145,6 +145,11 @@ export class Actor4e extends Actor {
 
 		data["heroicOrParagon"] = data?.details.level < 21 ? 1 : 0
 		data["paragonOrEpic"] = data?.details.level >= 11 ? 1 : 0
+
+		data["id"] = this.id;
+		data["uuid"] = this.uuid;
+
+		data["isActor"] = true;
 		return data;
 	}
 
@@ -191,6 +196,9 @@ export class Actor4e extends Actor {
 			system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
 			system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
 			
+			if (!system.movement.ignoredDifficultTerrain) {
+				system.movement.ignoredDifficultTerrain = [];
+			}
 		}
 
 	}
@@ -2404,13 +2412,16 @@ export class Actor4e extends Actor {
 		}
 	}
 
+	//TODO: Why do these functions exist? Are they necessary?
 	async newActiveEffect(effectData){
 		return this.createEmbeddedDocuments("ActiveEffect", [{
 			name: effectData.name,
+			type: effectData.type,
 			description: effectData.description,
 			img:effectData.img,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
+			system: effectData.system,
 			statuses: Array.from(effectData.statuses),
 			//"duration": effectData.duration, //Not too sure why this fails, but it does
 			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
@@ -2423,10 +2434,12 @@ export class Actor4e extends Actor {
 	async newActiveEffectSocket(effectData){
 		const data = {
 			name: effectData.name,
+			type: effectData.type,
 			description: effectData.description,
 			img:effectData.img,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
+			system: effectData.system,
 			statuses: Array.from(effectData.statuses),
 			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
 			tint: effectData.tint,
@@ -2459,7 +2472,7 @@ export class Actor4e extends Actor {
 				if(isFF) {
 					let save = await this.rollSave(event, {effectSave:true, effectId:i});
 				} else {
-					let save = await new SaveThrowDialog(this, {effectSave:true,effectId:i}).render(true);
+					let save = await new SaveThrowDialog({document: this, effectSave: true, effectId: i}).render(true);
 				}
 			}
 		}

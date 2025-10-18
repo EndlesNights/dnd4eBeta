@@ -2287,12 +2287,27 @@ export default class Item4e extends Item {
 	/* -------------------------------------------- */
 	/*  Chat Message Helpers                        */
 	/* -------------------------------------------- */
-
+	
 	static chatListeners(html) {
-		html.on('click', '.card-buttons button, .effects-tray button', this._onChatCardAction.bind(this));
-		html.on('click', '.item-name', this._onChatCardToggleContent.bind(this));
+		//html.on('click', '.card-buttons button, .effects-tray button', this._onChatCardAction.bind(this));
+		html.addEventListener("click", (event) => {
+			if (!event.target) return;
+			const el = event.target.closest(".card-buttons button, .effects-tray button");
+			if (el) this._onChatCardAction.call(this, event);
+		});
+		//html.on('click', '.item-name', this._onChatCardToggleContent.bind(this));
+		html.addEventListener("click", (event) => {
+			if (!event.target) return;
+			const el = event.target.closest(".item-name");
+			if (el) this._onChatCardToggleContent.call(this, event);
+		});
 
-		html.on("click", ".item-name, .collapsible", this._onChatCardEffectCollapsibleToggleContent.bind(this));
+		//html.on("click", ".item-name, .collapsible", this._onChatCardEffectCollapsibleToggleContent.bind(this));
+		html.addEventListener("click", (event) => {
+			if (!event.target) return;
+			const el = event.target.closest(".item-name, .collapsible");
+			if (el) this._onChatCardEffectCollapsibleToggleContent.call(this, event);
+		});
 	}
 
 	static _onChatCardEffectCollapsibleToggleContent(event){
@@ -2300,7 +2315,7 @@ export default class Item4e extends Item {
 		if ( event.target.closest(":is(.item-name, .collapsible) :is(a, button)") ) return;
 
 		event.preventDefault();
-		const header = event.currentTarget;
+		const header = event.target;
 		const card = header.closest(".chat-card");
 		const content = card.querySelector(".card-content:not(.details)");
 		
@@ -2328,7 +2343,7 @@ export default class Item4e extends Item {
 		event.preventDefault();
 		
 		// Extract card data
-		const button = event.currentTarget;
+		const button = event.target;
 		button.disabled = true;
 		const card = button.closest(".chat-card");
 		const messageId = card.closest(".message").dataset.messageId;
@@ -2426,7 +2441,7 @@ export default class Item4e extends Item {
 	 */
 	static _onChatCardToggleContent(event) {
 		event.preventDefault();
-		const header = event.currentTarget;
+		const header = event.target;
 		const card = header.closest(".chat-card");
 		const content = card.querySelector(".card-content");
 		content.style.display = content.style.display === "none" ? "block" : "none";
