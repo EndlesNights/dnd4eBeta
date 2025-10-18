@@ -35,10 +35,10 @@ export class SaveThrowDialog extends DocumentSheet4e {
 	/** @override */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
-        const options = this.options;
+        const saveOptions = this.options;
 		let savableEffects = [];
 		const actor = this.document;
-		if (actor && !options.effectSave) {
+		if (actor && !saveOptions.effectSave) {
 			Array.from(actor.effects).forEach((e) => {
 				if (e.flags.dnd4e?.effectData?.durationType === 'saveEnd') savableEffects.push({name: e.name, id: e.id});
 			});
@@ -49,9 +49,9 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		foundry.utils.mergeObject(context, {
 			system: actor.system,
 			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label),
-			effectName: ( options.effectSave ? actor.effects.get(options.effectId).name : null ),
-			effectId: this.options.saveAgainst,
-			saveDC: ( options.effectSave ? actor.effects.get(options.effectId).flags.dnd4e?.effectData?.saveDC : this.options.saveDC ),
+			effectName: ( saveOptions.effectSave ? actor.effects.get(saveOptions.effectId).name : null ),
+			effectId: saveOptions.saveAgainst,
+			saveDC: ( saveOptions.effectSave ? actor.effects.get(saveOptions.effectId).flags.dnd4e?.effectData?.saveDC : saveOptions.saveDC ),
 			savableEffects: savableEffects,
 			buttons: [
 				{ type: "submit", icon: "fa-solid fa-dice-d20", label: "DND4E.SaveRoll" }
