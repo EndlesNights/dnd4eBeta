@@ -1,5 +1,24 @@
 # Changelog
 
+## Version 0.7.0 BETA
+Our first v13-compatible release! Note that while this release seems stable and complete, it could still have undetected issues that might break your game. We appreciate testing, but please treat this as a beta release; we don't recommend using it in your live game environment. Please report any errors on the [GitHub issues page](https://github.com/EndlesNights/dnd4eBeta/).
+### Player-Facing Changes
+- Compatibility with V13 (duh)
+- **New difficult terrain implementation:** the difficult terrain region behavior now supports (but doesn't require) the assignment of specific terrain types. These align with the various types of Terrain Walk features that 4e monsters have.
+  -  Difficult terrain already exists in V12, but it only affects V12's core ruler tool, which can even be undesirable when you just want to know the straight line distance between two tokens (e.g., a ranged power's range doesn't care about difficult terrain).
+  -  Also allows actors to ignore certain difficult terrain types (Terrain Walk) or to ignore difficult terrain in general. This is done in the Movement config.
+ - **Token Ruler:** V13 adds a native token ruler (think Drag Ruler, but core). 4e's Token Ruler is aware of difficult terrain and of 4e's movement rules with regard to running, climbing, and swimming, and will colorize the plotted path based on path cost, which is calculated based on the actor's speed, the token's current movement mode, and any difficult terrain the path may pass through.
+   - In support of this, the Run speed has been reinterpreted as a bonus rather than entire value in and of itself, since the Run action can be taken with any movement mode. Its default has been adjusted to simply 2.
+   -  Likewise, since the additional cost of swimming or climbing is built into the movement mode itself, the default for those extra speeds is now 0 and should only be filled in for creatures that actually possess those speeds. It felt too invasive to try to change existing actors in a migration script, but perhaps it'd be a good idea to include a macro that could be run to make the adjustments if the user wishes.
+- Adds ability check bonuses (global and ability specific, with handling for typed bonuses).
+- Adds dynamic token ring effects for damage, healing, temp hp gain/loss, and targeting.
+- Adds temporary hit points overlay atop the standard hp bar.
+
+### Under the hood/dev stuff
+- Moved everything to modern data models; this shouldn't affect how any data is interacted with, but it makes adding new fields and such safer and easier, allows for more advanced data options like sets (as seen in the ignored difficult terrain), and should prevent actors from just completely breaking if someone accidentally gives them a bonus to a skill that doesn't exist.
+- **AppV2ed everything:** all the sheets and dialogs are AppV2 now, so they're not in danger of Foundry taking them out behind the barn (at least unless they do an AppV3). This WILL require some work for any modules that use the system's sheets and dialogs (for example, Fox's 4e Styling character sheet inherits from ActorSheet4e, which is now structured differently).
+- New release pipeline (see: https://github.com/SagaTympana/dnd4eBeta/pull/17).
+
 ## Version 0.6.21
 - FLANKING DETECTION!🎉 Combat advantage will now be predicted during rolls based on the position of attacker and allies. Like other situational modifiers, this will pre-fill the appropriate check mark in roll dialogue, or assume correct inference during fast-forwarded rolls. (SagaTympana)
 - Made "bloodied" key available for custom 4e modifiers in active effects. (SagaTympana)
@@ -1288,6 +1307,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
