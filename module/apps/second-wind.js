@@ -33,7 +33,7 @@ export class SecondWindDialog extends DocumentSheet4e {
 	}
 
 	/** @override */
-	async _prepareContext() {
+	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
         const extra = this.document.system.details.secondwindbon.custom.split(";");
 		foundry.utils.mergeObject(context, {

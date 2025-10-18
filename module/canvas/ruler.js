@@ -115,9 +115,7 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 				currActionSpeed = Math.max(currActionSpeed, movement.walk.value);
 			}
 
-			if (['shift', 'teleport'].includes(waypoint.action) || this.token?.actor?.statuses.has('prone')) {
-				runBonus = ['shift', 'teleport'].includes(waypoint.action) || this.token?.actor?.statuses.has('prone') ? 0 : movement.run.value;
-			}
+            runBonus = ['shift', 'teleport'].includes(waypoint.action) || this.token?.actor?.statuses.has('prone') ? 0 : movement.run.value;
 		}
 
 		let runSpeed = currActionSpeed + runBonus;

@@ -33,7 +33,7 @@ export class EncumbranceDialog extends DocumentSheet4e {
 	}
 
 	/** @override */
-	async _prepareContext() {
+	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
         foundry.utils.mergeObject(context, {
 			system: this.document.system,
