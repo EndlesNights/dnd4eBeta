@@ -27,7 +27,8 @@ export const migrateWorld = async function() {
 				const updatedItem = migrateItemData(i.toObject(), migrationData);
 				if ( !foundry.utils.isEmpty(updatedItem) ) {
 					console.log(`Migrating Item ${i.name} of Actor ${a.name}`);
-					await i.update(updatedItem, {enforceTypes: false});
+					const diff = foundry.utils.getProperty(updatedItem, "flags.dnd4e.-=migrateType") !== null;
+					await i.update(updatedItem, {enforceTypes: false, diff});
 				}
 			} catch(err) {
 				err.message = `Failed dnd4e system migration for Item ${i.name} of Actor ${a.name}: ${err.message}`;
@@ -42,7 +43,8 @@ export const migrateWorld = async function() {
 			const updateData = migrateItemData(i.toObject(), migrationData);
 			if ( !foundry.utils.isEmpty(updateData) ) {
 				console.log(`Migrating Item document ${i.name}`);
-				await i.update(updateData, {enforceTypes: false});
+				const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.-=migrateType") !== null;
+				await i.update(updateData, {enforceTypes: false, diff});
 			}
 		} catch(err) {
 			err.message = `Failed dnd4e system migration for Item ${i.name}: ${err.message}`;
@@ -119,7 +121,8 @@ export const migrateCompendium = async function(pack) {
 
 			// Save the entry, if data was changed
 			if ( foundry.utils.isEmpty(updateData) ) continue;
-			await doc.update(updateData);
+			const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.-=migrateType") !== null;
+			await doc.update(updateData, {diff});
 			console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
 		}
 
@@ -176,7 +179,7 @@ export const migrateActorData = function(actor, migrationData) {
 function cleanActorData(actorData) {
 
 	// Scrub system data
-	const model = game.model.Actor[actorData.type];
+	const model = CONFIG.Actor.dataModels[actorData.type].schema.getInitialValue();
 	actorData = filterObject(actorData, model);
 
 	// Scrub system flags
@@ -209,6 +212,9 @@ export const migrateItemData = function(item) {
 	_migratePowerBasicAndGlobal(item, updateData);
 	_migrateFeature(item, updateData);
 	_migrateRitualCategory(item, updateData);
+
+	// Always do this last, as it clobbers `system` updates
+	_migrateType(item, updateData);
 	return updateData;
 };
 
@@ -235,7 +241,7 @@ export const migrateItemData = function(item) {
 			t.actorData = {};
 		}
 		else if ( !t.actorLink ) {
-			const actorData = duplicate(t.delta);
+			const actorData = foundry.utils.duplicate(t.delta);
 			actorData.type = token.actor?.type;
 			const update = migrateActorData(actorData, migrationData);
 			["items", "effects"].forEach(embeddedName => {
@@ -892,6 +898,7 @@ function _migrateFeature(itemData, updateData){
 	const sourceType = itemData.type;
 	
 	if(sourceType == 'feature'){
+		if(!["activation", "duration", "target", "range", "uses", "consume"].some(i => itemData.system[i])) return updateData;
 		//Catch any features that were migrated early during beta/testing
 		updateData["system.activation"] = null;
 		updateData["system.duration"] = null;
@@ -963,6 +970,22 @@ function _migrateRitualCategory(itemData, updateData){
 		}	
 	}
 	
+	return updateData;
+}
+
+/**
+ * Migrate any document flagged with `flags.dnd4e.migrateType`
+ * @param {object} documentData	Document data being migrated
+ * @param {object} updateData		Existing updated being applied to document. *Will be mutated.*
+ * @returns {object} 						Modified version of update data.
+ */
+function _migrateType(documentData, updateData) {
+	if (!foundry.utils.getProperty(documentData, "flags.dnd4e.migrateType")) return;
+	const newUpdateData = foundry.utils.mergeObject(documentData, updateData, {inplace: false});
+	foundry.utils.mergeObject(updateData, newUpdateData);
+	updateData["==system"] = updateData.system;
+	foundry.utils.setProperty(updateData, "flags.dnd4e.-=migrateType", null);
+	delete updateData.system;
 	return updateData;
 }
 

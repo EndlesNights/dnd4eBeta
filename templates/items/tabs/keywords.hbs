@@ -1,0 +1,30 @@
+<section class="tab scrollable {{tab.id}} flexcol{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+  <div class="form-group stacked feature-keywords">
+    <label>{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Damage')}}</label>
+    {{#each config.damageTypes as |name type|}}
+      {{#unless (eq type "ongoing")}}
+      {{#unless (eq type "all")}}
+      {{#unless (eq type "physical")}}
+      <label class="checkbox">
+        <input type="checkbox" name="system.damageType.{{type}}" {{checked (lookup ../system.damageType type)}}/> {{ name }}
+      </label>
+      {{/unless}}
+      {{/unless}}
+      {{/unless}}
+    {{/each}}
+  </div>
+  
+  <div class="form-group stacked feature-keywords">
+    <label>{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Effect')}}</label>
+    {{#each config.effectTypes as |name type|}}
+    <label class="checkbox">
+      <input type="checkbox" name="system.effectType.{{type}}" {{checked (lookup ../system.effectType type)}}/> {{ name }}
+    </label>
+    {{/each}}
+  </div>
+  
+  <div class="form-group long">
+    <label>{{ localize "DND4E.Custom" }}</label>
+    <input type="text" name="system.keywordsCustom" value="{{system.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}" />
+  </div>
+</section>

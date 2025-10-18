@@ -1,0 +1,148 @@
+{
+  "name": "Potion of Life Recovery",
+  "type": "consumable",
+  "img": "icons/consumables/potions/flask-corked-red-glow.webp",
+  "effects": [],
+  "folder": "X50ukKorZKXdDrH7",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><em>This fabled potion not only smells awful, and taste awful but will heals mortally wounded.</em></p>\n<p>&nbsp;</p>\n<p><span style=\"color: #191813;\">Standard Action.&nbsp;</span><span style=\"color: #191813;\">If this potion is administered to a character who died since the end of your last turn, that character is restored to life at <strong>50</strong> hit points.</span></p>\n<p><span style=\"color: #191813;\">Minor Action: If consumed by a living creature, this potion instead functions as a @Compendium[dnd4e.example_potions.X37mnx1VHwQMWGRG]{Potion of Rejuvenation}.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB p. 255",
+    "quantity": 1,
+    "weight": 0,
+    "price": 125000,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "Common",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "charges",
+      "autoDestroy": true
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": false,
+      "isBasic": false,
+      "isCharge": false,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "",
+      "abilityBonus": 0,
+      "def": "ac",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": false,
+      "isHealing": true,
+      "healSurge": "",
+      "baseQuantity": 1,
+      "baseDiceType": "Base Weapon Damage",
+      "detail": "",
+      "formula": "",
+      "critFormula": "",
+      "healFormula": "50"
+    },
+    "miss": {
+      "detail": "",
+      "formula": ""
+    },
+    "effect": {
+      "detail": ""
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {},
+    "level": 30,
+    "consumableType": "potion",
+    "autoGenChatPowerCard": false,
+    "useType": "item",
+    "actionType": "standard",
+    "rangeType": "",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "effectType": {},
+    "keywordsCustom": "",
+    "attackBonus": null,
+    "formula": "",
+    "postEffect": false,
+    "effectHTML": false
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686093919874,
+    "modifiedTime": 1686093919874,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "NBZNVd07XNL568Ak",
+  "sort": 0,
+  "_key": "!items!NBZNVd07XNL568Ak"
+}

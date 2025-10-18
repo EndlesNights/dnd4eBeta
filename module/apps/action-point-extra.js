@@ -32,13 +32,15 @@ export class ActionPointExtraDialog extends DocumentSheet4e {
 	}
 
 	/** @override */
-	_prepareContext() {
-		return {
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
+		foundry.utils.mergeObject(context, {
 			system: this.document.system,
 			buttons: [
 				{ type: "submit", icon: "fa-solid fa-save", label: `${game.i18n.localize("DND4E.Update")} ${game.i18n.localize("DND4E.ActionPointRiders")}` }
 			]
-		}
+		});
+		return context;
 	}
 
 	async _updateObject(event, formData) {

@@ -1,11 +1,10 @@
 /**
  * A specialized Dialog subclass for ability usage
- * @type {Dialog}
+ * @type {foundry.applications.api.Dialog}
  */
-export default class AbilityUseDialog extends Dialog {
-  constructor(item, dialogData={}, options={}) {
-    super(dialogData, options);
-    this.options.classes = ["dnd4e", "dialog"];
+export default class AbilityUseDialog extends foundry.applications.api.Dialog {
+  constructor({item, ...options}) {
+    super(options);
 
     /**
      * Store a reference to the Item entity being used
@@ -13,6 +12,10 @@ export default class AbilityUseDialog extends Dialog {
      */
     this.item = item;
   }
+
+  static DEFAULT_OPTIONS = {
+    classes: ["dnd4e", "dialog"]
+  };
 
   /* -------------------------------------------- */
   /*  Rendering                                   */
@@ -25,7 +28,7 @@ export default class AbilityUseDialog extends Dialog {
    * @return {Promise}
    */
   static async create(item) {
-    if ( !item.isOwned ) throw new Error("You cannot display an ability usage dialog for an unkowned item");
+    if ( !item.isOwned ) throw new Error("You cannot display an ability usage dialog for an unowned item");
 
     // Prepare data
     const actorData = item.actor.system;
@@ -47,23 +50,27 @@ export default class AbilityUseDialog extends Dialog {
     };
 
     // Render the ability usage template
-    const html = await renderTemplate("systems/dnd4e/templates/apps/ability-use.html", system);
+    const html = await foundry.applications.handlebars.renderTemplate("systems/dnd4e/templates/apps/ability-use.hbs", system);
 
     // Create the Dialog and return as a Promise
     const icon = "fa-fist-raised";
     const label = game.i18n.localize("DND4E.AbilityUseItem");
     return new Promise((resolve) => {
-      const dlg = new this(item, {
-        title: `${item.name}: Usage Configuration`,
-        content: html,
-        buttons: {
-          use: {
-            icon: `<i class="fas ${icon}"></i>`,
-            label: label,
-            callback: html => resolve(new FormData(html[0].querySelector("form")))
-          }
+      const dlg = new this({
+        item,
+        window: {
+          title: `${item.name}: Usage Configuration`
         },
-        default: "use",
+        content: html,
+        buttons: [
+          {
+            action: "use",
+            label,
+            icon: `fa-solid ${icon}`,
+            callback: (event, button, dialog) => resolve(new FormData(dialog.element.querySelector("form"))),
+            default: true
+          }
+        ],
         close: () => resolve(null)
       });
       dlg.render(true);

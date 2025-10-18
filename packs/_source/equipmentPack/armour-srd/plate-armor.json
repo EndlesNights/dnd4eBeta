@@ -1,0 +1,120 @@
+{
+  "name": "Plate armor",
+  "type": "equipment",
+  "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+  "effects": [],
+  "folder": "676N3JsB3VGN4pMD",
+  "flags": {
+    "cf": {
+      "id": "temp_fnagaznip1",
+      "path": "Plate Armor",
+      "color": "#000000"
+    }
+  },
+  "system": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB p.2.14",
+    "quantity": 1,
+    "weight": 50,
+    "price": 50,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "level": null,
+    "armour": {
+      "type": "armour",
+      "subType": "heavy",
+      "enhance": 0,
+      "ac": 8,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0,
+      "dex": null,
+      "movePen": true,
+      "movePenValue": -1,
+      "skillCheck": true,
+      "skillCheckValue": -2,
+      "damageRes": {
+        "parts": []
+      },
+      "value": 10
+    },
+    "speed": {
+      "value": null,
+      "conditions": ""
+    },
+    "strength": 0,
+    "stealth": false,
+    "proficient": true,
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "armourBaseType": "plate"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686094169642,
+    "modifiedTime": 1686094169642,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "FSZe1mCaGtv0dhFu",
+  "sort": 0,
+  "_key": "!items!FSZe1mCaGtv0dhFu"
+}

@@ -35,16 +35,19 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 	}
 	
 	/** @override */
-	_prepareContext() {
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
 		const system = Helper.byString(this.options.target, this.document);
-		return {
+		foundry.utils.mergeObject(context, {
 			bonusData: system.bonus,
 			system: system,
 			options: this.options,
+			config: CONFIG.DND4E,
 			buttons: [
 				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
 			]
-		};
+		});
+		return context;
 	}
 	
 	static async #onSubmit(event, form, formData) {
@@ -101,7 +104,7 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 	_onBonusDelete(event) {
 		event.preventDefault();
 		const div = event.currentTarget.closest(".bonus-part");
-		const bonus = duplicate(Helper.byString(this.options.target, this.document).bonus);
+		const bonus = foundry.utils.duplicate(Helper.byString(this.options.target, this.document).bonus);
 		bonus.splice(Number(div.dataset.bonusPart), 1);
 		//this.position.height -= 76;
 		return this.document.update({[`${this.options.target}.bonus`]: bonus});

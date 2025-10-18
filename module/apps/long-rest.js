@@ -33,13 +33,15 @@ export class LongRestDialog extends DocumentSheet4e {
 	}
 
 	/** @override */
-	_prepareContext() {
-		return {
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
+        foundry.utils.mergeObject(context, {
 			system: this.document.system,
 			buttons: [
 				{ type: "submit", label: "DND4E.LongRestTake" }
 			]
-		}
+		});
+        return context;
 	}
 	
 	static async #onSubmit(event, form, formData) {

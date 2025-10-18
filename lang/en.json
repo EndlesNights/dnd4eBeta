@@ -8,6 +8,7 @@
 "DND4E.AbbreviationLR": "XR",
 "DND4E.AbbreviationSR": "SR",
 "DND4E.Ability": "Ability",
+"DND4E.AbilityChecks": "Ability Checks",
 "DND4E.AbilityScore": "Ability Score",
 "DND4E.AbilityScores": "Ability Scores",
 "DND4E.AbilStr": "Str",
@@ -17,6 +18,7 @@
 "DND4E.AbilWis": "Wis",
 "DND4E.AbilCha": "Cha",
 "DND4E.AbilityCha": "Charisma",
+"DND4E.AbilityCheckBonusTitle": "Bonuses to {ability} Checks",
 "DND4E.AbilityCon": "Constitution",
 "DND4E.AbilityDex": "Dexterity",
 "DND4E.AbilityInt": "Intelligence",
@@ -753,13 +755,18 @@
 "DND4E.Movement": "Movement",
 "DND4E.MovementBonus": "Bonuses to {mode} speed",
 "DND4E.MovementModes": "Movement Modes",
+"DND4E.MovementSpecialSpeeds": "Special Movement",
 "DND4E.MovementSpeedBase": "Base Speed",
-"DND4E.MovementSpeedCharging": "Charge Speed",
+"DND4E.MovementSpeedBurrowing": "Burrow Speed",
+"DND4E.MovementSpeedCharging": "Charge",
 "DND4E.MovementSpeedClimbing": "Climb Speed",
-"DND4E.MovementSpeedShifting": "Shift Speed",
-"DND4E.MovementSpeedRunning": "Run Speed",
+"DND4E.MovementSpeedFlying": "Fly Speed",
+"DND4E.MovementSpeedRunning": "Run Bonus",
+"DND4E.MovementSpeedShifting": "Shift",
 "DND4E.MovementSpeedSwimming": "Swim Speed",
+"DND4E.MovementSpeedTeleporting": "Teleport Speed",
 "DND4E.MovementSpeedWalking": "Walk Speed",
+"DND4E.MovementStandardSpeeds": "Standard Movement",
 "DND4E.MovementUnit": "sq.",
 "DND4E.Name": "Name",
 "DND4E.NameNPC": "Non Player Character Name",
@@ -1547,6 +1554,18 @@
 "DND4E.Tier.ParagonPath": "Paragon Path",
 "DND4E.Tier.Tier": "Tier",
 "DND4E.Tier.TierName": "{tier} Tier",
+
+"DND4E.TOKEN.MOVEMENT.ACTIONS": {
+    "charge": {
+        "label": "Charge"
+    },
+    "shift": {
+        "label": "Shift"
+    },
+    "teleport": {
+        "label": "Teleport"
+    }
+},
 
 "EFFECT.DurationEndInit": "Effect End Time",
 "EFFECT.DurationSeconds": "Seconds",

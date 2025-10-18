@@ -206,17 +206,6 @@ export const registerSystemSettings = function() {
 /**   DISPLAY OPTIONS   **/
 /*************************/
 
-	// Use dark mode
-	game.settings.register("dnd4e", "darkMode",{
-		name: "SETTINGS.4eDarkModeN",
-		hint: "SETTINGS.4eDarkModeL",
-		scope: "client",
-		config: true,
-		default: false,
-		type: Boolean,
-		onChange: foundry.utils.debouncedReload
-	});
-	
 	// Collapse Item Card descriptions by default
 	game.settings.register("dnd4e", "autoCollapseItemCards", {
 		name: "SETTINGS.4eAutoCollapseCardN",

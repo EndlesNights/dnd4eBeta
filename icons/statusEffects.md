@@ -1,4 +1,4 @@
-The icons within the icons/statusEffects and icons/ui folders are by the authors of [Game-icons.net](https://game-icons.net/) are licensed under [CC BY 3.0.](https://creativecommons.org/licenses/by/3.0/legalcode).
+Most of the icons within the icons/statusEffects and icons/ui folders are by the authors of [Game-icons.net](https://game-icons.net/) are licensed under [CC BY 3.0.](https://creativecommons.org/licenses/by/3.0/legalcode).
 
 
 * Blinded:			https://game-icons.net/1x1/skoll/sight-disabled.html
@@ -53,3 +53,7 @@ UI ICONS:
 * Calc:				https://game-icons.net/1x1/delapouite/calculator.html
 * attackRoll:		https://game-icons.net/1x1/lorc/crossed-swords.html
 * healRoll:			https://game-icons.net/1x1/delapouite/caduceus.html
+* Charge:           https://game-icons.net/1x1/delapouite/charging-bull.html
+* Shift:            https://game-icons.net/1x1/lorc/suspicious.html
+
+* difficultTerrain  ©Carly Thomas

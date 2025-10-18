@@ -2,11 +2,11 @@
 	"id": "dnd4e",
 	"title": "DnD 4th Edition",
 	"description": "An implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.6.21",
+	"version": "0.7.0",
 	"compatibility":{
-		"minimum": 12,
-		"verified": 12.343,
-		"maximum": 13
+		"minimum": "13",
+		"verified": "13.350",
+		"maximum": "13"
 	},
 	"authors": [
 		{
@@ -76,7 +76,7 @@
 			"name": "srd_rules",
 			"label": "SRD Rules",
 			"system": "dnd4e",
-			"path": "./packs/srd_rules.db",
+			"path": "./packs/srd_rules",
 			"type": "JournalEntry"
 		}
 	],
@@ -132,17 +132,38 @@
 		"units": "sq"
 	},
 	"documentTypes": {
+		"Actor": {
+			"Player Character": {
+				"htmlFields": ["biography"]
+			},
+			"NPC": {
+				"htmlFields": ["biography"]
+			},
+			"Hazard": {
+				"htmlFields": ["description"]
+			}
+		},
+		"Item": {
+			"backpack": {},
+			"consumable": {},
+			"equipment": {},
+			"feature": {},
+			"loot": {},
+			"power": {},
+			"ritual": {},
+			"tool": {},
+			"weapon": {}
+		},
 		"RegionBehavior" : {
 		  "difficultTerrain" :{}
 		}
-	  },
+	},
 	"primaryTokenAttribute": "attributes.hp",
-	"secondaryTokenAttribute": "attributes.temphp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
 	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
 	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.6.21.zip",
 	"flags": {
-		"needsMigrationVersion": "0.6.14",
+		"needsMigrationVersion": "0.7.0",
 		"compatibleMigrationVersion": "0.2.50",
 		"hotReload": {
 			"extensions": ["css", "html"],
@@ -150,14 +171,3 @@
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-

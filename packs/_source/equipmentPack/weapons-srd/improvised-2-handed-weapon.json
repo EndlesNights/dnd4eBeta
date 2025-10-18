@@ -1,0 +1,189 @@
+{
+  "name": "Improvised 2 Handed Weapon",
+  "type": "weapon",
+  "img": "icons/weapons/clubs/club-barbed-square-black.webp",
+  "effects": [],
+  "folder": "dWLppDFl034QPEFN",
+  "flags": {
+    "cf": {
+      "id": "temp_afnan0k895u",
+      "path": "Improvised Weapons & Unarmed",
+      "color": "#000000"
+    }
+  },
+  "system": {
+    "description": {
+      "value": "",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB p.219",
+    "quantity": 1,
+    "weight": 12,
+    "price": 0,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": 10,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "armour": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "level": "",
+    "weaponType": "improvM",
+    "weaponHand": "hTwo",
+    "properties": {
+      "amm": false,
+      "bru": false,
+      "def": false,
+      "hic": false,
+      "imp": false,
+      "lof": false,
+      "lom": false,
+      "off": false,
+      "rch": false,
+      "rel": false,
+      "sml": false,
+      "spc": false,
+      "thv": false,
+      "tlg": false,
+      "two": true,
+      "ver": false
+    },
+    "proficient": false,
+    "proficientI": false,
+    "profBonus": 0,
+    "profImpBonus": 0,
+    "enhance": 0,
+    "isRanged": false,
+    "damageDice": {
+      "parts": [
+        [
+          "1",
+          "8",
+          ""
+        ]
+      ]
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {
+      "physical": true,
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "brutalNum": 1,
+    "weaponGroup": {
+      "axe": false,
+      "blowgun": false,
+      "bow": false,
+      "cbow": false,
+      "dragon": false,
+      "flail": false,
+      "garrote": false,
+      "ham": false,
+      "bladeH": false,
+      "bladeL": false,
+      "mace": false,
+      "pik": false,
+      "pole": false,
+      "sling": false,
+      "spear": false,
+      "staff": false,
+      "unarm": false,
+      "whip": false
+    },
+    "implementGroup": {},
+    "attackForm": "@profBonus+@enhance",
+    "attackFormImp": "@profImpBonus+@enhanceImp",
+    "damageForm": "@enhance",
+    "damageFormImp": "@enhanceImp",
+    "critDamageForm": "(@enhance)d6",
+    "critDamageFormImp": "(@enhanceImp)d6",
+    "critRange": 20,
+    "critRangeImp": 20,
+    "chatFlavor": ""
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686094362998,
+    "modifiedTime": 1686094362998,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "c6EGTIA5mpCxwHWp",
+  "sort": 0,
+  "_key": "!items!c6EGTIA5mpCxwHWp"
+}

@@ -1798,7 +1798,7 @@ export class Helper {
 				const aCenter = canvasGridProxy.getCenterPoint(gridPosA);
 				const gridPosB = canvasGridProxy.getOffset(s.ray.B);
 				const bCenter = canvasGridProxy.getCenterPoint(gridPosB);
-				return { ray: new Ray(aCenter, bCenter) };
+				return { ray: new foundry.canvas.geometry.Ray(aCenter, bCenter) };
 			});
 		}
 		let distances = segments.map(s => canvasGridProxy.measurePath([s.ray.A, s.ray.B], {}));
@@ -1872,7 +1872,7 @@ export class Helper {
 							}
 							const point = canvas.grid.getCenterPoint({ x: Math.round(t2.document.x + (canvas.dimensions.size * x1)), y: Math.round(t2.document.y + (canvas.dimensions.size * y1)) });
 							let dest = new PIXI.Point(point.x, point.y);
-							const r = new Ray(origin, dest);
+							const r = new foundry.canvas.geometry.Ray(origin, dest);
 							if (wallsBlock) {
 								let collisionCheck;
 								collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, { source: t1.document, mode: "any", type: "move" });
@@ -1893,7 +1893,7 @@ export class Helper {
 		else {
 			const w = t2.document;
 			let closestPoint = foundry.utils.closestPointToSegment(t1.center, w.object.edge.a, w.object.edge.b);
-			distance = this.measureDistances([{ ray: new Ray(t1.center, closestPoint) }], { gridSpaces: true });
+			distance = this.measureDistances([{ ray: new foundry.canvas.geometry.Ray(t1.center, closestPoint) }], { gridSpaces: true });
 		}
 		return Math.max(distance, 0);
 	}
@@ -2066,7 +2066,7 @@ export class Helper {
 					const p2 = canvas.grid?.getCenterPoint(allyPoint);
 					if (!p1 || !p2)
 						continue;
-					const rayToCheck = new Ray(p1, p2);
+					const rayToCheck = new foundry.canvas.geometry.Ray(p1, p2);
 					const flankingTop = rayToCheck.intersectSegment(top) && rayToCheck.intersectSegment(bottom);
 					const flankingLeft = rayToCheck.intersectSegment(left) && rayToCheck.intersectSegment(right);
 					if (flankingLeft || flankingTop) {
@@ -2359,6 +2359,23 @@ export function performPreLocalization(config) {
 	// CONFIG.statusEffects.sort((lhs, rhs) =>
 	//	 lhs.id === "dead" ? -1 : rhs.id === "dead" ? 1 : lhs.name.localeCompare(rhs.name, game.i18n.lang)
 	// );
+}
+
+/* -------------------------------------------- */
+
+/**
+ * Sort the provided object by its values or by an inner sortKey.
+ * @param {object} obj                 The object to sort.
+ * @param {string|Function} [sortKey]  An inner key upon which to sort or sorting function.
+ * @returns {object}                   A copy of the original object that has been sorted.
+ */
+export function sortObjectEntries(obj, sortKey) {
+  let sorted = Object.entries(obj);
+  const sort = (lhs, rhs) => foundry.utils.getType(lhs) === "string" ? lhs.localeCompare(rhs, game.i18n.lang) : lhs - rhs;
+  if ( foundry.utils.getType(sortKey) === "function" ) sorted = sorted.sort((lhs, rhs) => sortKey(lhs[1], rhs[1]));
+  else if ( sortKey ) sorted = sorted.sort((lhs, rhs) => sort(lhs[1][sortKey], rhs[1][sortKey]));
+  else sorted = sorted.sort((lhs, rhs) => sort(lhs[1], rhs[1]));
+  return Object.fromEntries(sorted);
 }
 	
 /* -------------------------------------------- */

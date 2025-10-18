@@ -33,14 +33,16 @@ export class DeathSaveDialog extends DocumentSheet4e {
 	}
 
 	/** @override */
-	_prepareContext() {
-		return {
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
+        foundry.utils.mergeObject(context, {
 			data: this.document.system,
 			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label),
 			buttons: [
-				{ type: "submit", label: "DND4E.DeathSave" }
+				{ type: "submit", icon: "fa-solid fa-dice-d20", label: "DND4E.DeathSave" }
 			]
-		};
+		});
+        return context;
 	}
 
 	static async #onSubmit(event, form, formData) {

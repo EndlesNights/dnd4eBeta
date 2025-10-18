@@ -1,0 +1,190 @@
+{
+  "name": "Cleric Class",
+  "type": "feature",
+  "img": "icons/commodities/treasure/token-gold-cross.webp",
+  "effects": [
+    {
+      "_id": "eV56EdW7sjo4Bgne",
+      "changes": [
+        {
+          "key": "system.attributes.hp.starting",
+          "mode": 5,
+          "value": "12",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.perlevel",
+          "mode": 5,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.details.surges.max",
+          "mode": 2,
+          "value": "7+@conMod",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.autototal",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.defences.wil.value",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "cloth",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "leather",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "hide",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "chain",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "simpleM",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "simpleR",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "holyS",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.ArOvSHGS6NP5pAD5",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          },
+          "dots": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Cleric Class Stats",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/commodities/treasure/token-gold-cross.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!39IxNoOvaZYlFuBB.eV56EdW7sjo4Bgne"
+    }
+  ],
+  "folder": "LzEqWjfE9D4FpBrt",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><strong>Role:</strong> Leader. You lead by shielding allies with your prayers, healing, and using powers that improve your allies&rsquo; attacks.</p>\n<p><strong>Power Source:</strong> Divine. You have been invested with the authority to wield divine power on behalf of a deity, faith, or philosophy.</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Wisdom</li>\n<li>Strength</li>\n<li>Charisma</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.kVD04UqK9Yx6GeRA]{Hide armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.LEPCRMtCimzvXr25]{Chainmail}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li>@Compendium[dnd4e.srd_rules.4vItzLTePIjC1MbI]{Simple Melee Weapons}</li>\n<li>@Compendium[dnd4e.srd_rules.XKgEgbttyURcvqns]{Simple Ranged Weapons}</li>\n</ul>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813;\"><strong style=\"box-sizing: border-box; user-select: text;\">Implements:</strong></p>\n<ul style=\"box-sizing: border-box; user-select: text; color: #191813;\">\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.NZq50Sq6slOAaX29]{Holy Symbol}</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+2 Will</li>\n</ul>\n<p><strong>Hit Points at 1st Level:</strong><strong>&nbsp;[[12]] + Con Score</strong></p>\n<p><strong>Hit Points&nbsp;</strong><strong>per Level Gained: [[5]]</strong></p>\n<p><strong>Base&nbsp;</strong><strong>Healing</strong><strong> Surges per Day: [[7]] + Con Mod</strong></p>\n<p><strong>Skill Training: </strong>Religion, choose three more from the following list:</p>\n<ul>\n<li>Arcana (Int)</li>\n<li>Diplomacy(Cha)</li>\n<li>Healing (Wis)</li>\n<li>History (Int)</li>\n<li>Insight (Wis)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>Channel Divinity</li>\n<li>Healer's Lore</li>\n<li>Healing Word</li>\n<li>Ritual Casting</li>\n</ul>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg.60",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "class",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Cleric",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "class": "",
+    "hitFistLevel": 12,
+    "hitPerLevel": 5,
+    "surgePerDay": 7,
+    "skills": "<i class=\"fas fa-edit\"></i>",
+    "def": {
+      "ac": 0,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0
+    },
+    "proficiencies": {
+      "weapons": [],
+      "armour": []
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094205533,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "39IxNoOvaZYlFuBB",
+  "sort": 0,
+  "_key": "!items!39IxNoOvaZYlFuBB"
+}

@@ -2,63 +2,71 @@ import ActorSheet4e from "./actor-sheet.js"
 
 export default class ActorSheet4eHazard extends ActorSheet4e {
 
-	/** @override */
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ["dnd4e", "sheet", "actor", "Hazard"],
+	static DEFAULT_OPTIONS = {
+		classes: ["Hazard"],
+		position: {
 			width: 510,
 			height: 680
-		});
-	}
-	
-	/** @override */
-	get template() {
-		return `systems/dnd4e/templates/hazard-sheet.html`;
-	}
-	
-	/** @override */
-	async getData(options) {
+		}
+	};
 
-		const coreData = await super.getData(options);
+	static PARTS = {
+		sheet: {
+			template: "systems/dnd4e/templates/actors/hazard-sheet.hbs",
+			scrollable: [
+				"",
+				".inventory .inventory-list",
+				".features .inventory-list",
+				".powers .inventory-list",
+				".section--sidebar",
+				".section--tabs-content",
+				".section--skills",
+				".tab.active"
+			],
+			templates: [
+				"systems/dnd4e/templates/actors/tabs/powers.hbs",
+				"systems/dnd4e/templates/actors/tabs/effects.hbs",
+				"templates/generic/tab-navigation.hbs"
+			]
+		}
+	}
+
+	static TABS = {
+		primary: {
+			tabs: [
+				{id: "description", label: "DND4E.Sheet.Description"},
+				{id: "powers", label: "DND4E.Sheet.Powers"},
+				{id: "effects", label: "DND4E.Sheet.Effects"}
+			],
+			initial: "powers"
+		}
+	}
+
+	/** @override */
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
 		//console.debug(coreData);
 		let hazardData = {};
 		
-		hazardData.descHTML = await TextEditor.enrichHTML(coreData.system.description, {
-			secrets: coreData.owner,
+		hazardData.descHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.description, {
+			secrets: context.owner,
 			async: true,
 			relativeTo: this.actor
 		});
 		
-		hazardData.countersHTML = await TextEditor.enrichHTML(coreData.system.details.countermeasures, {
-			secrets: coreData.owner,
+		hazardData.countersHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.details.countermeasures, {
+			secrets: context.owner,
 			async: true,
 			relativeTo: this.actor
 		});
 		
-		hazardData.notesHTML = await TextEditor.enrichHTML(coreData.system.details.notes, {
-			secrets: coreData.owner,
+		hazardData.notesHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.details.notes, {
+			secrets: context.owner,
 			async: true,
 			relativeTo: this.actor
 		});
 		
-		let combinedData = {...coreData,...hazardData};		
+		let combinedData = {...context,...hazardData};		
 		return combinedData;
 	}
-
-	/* -------------------------------------------- */
-
-	/** @override */
-	setPosition(options={}) {
-		const position = super.setPosition(options);
-
-		//TODO fix this monstrosity!
-		//Because I'm bad at CSS and can't find the solution T_T
-		const sheetBody = this.element.find(".npc-lower");
-		const upper = this.element.find(".npc-upper");
-		const bodyHeight = sheetBody.parent().height() - upper.height() - 15; //extra 15 for the padding
-		sheetBody.css("height", bodyHeight);
-		
-		return position;
-	}
-
 }

@@ -1,25 +1,33 @@
 /**
- * A specialized form used to select from a checklist of attributes, traits, or properties
- * @extends {FormApplication}
+ * A specialized form used to select from a checklist of attributes, traits, or properties that each have an associated value
  */
-export default class TraitSelector extends FormApplication {
+export default class TraitSelectorValues extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.DocumentSheet) {
 
-  /** @override */
-	static get defaultOptions() {
-	  return foundry.utils.mergeObject(super.defaultOptions, {
-	    id: "trait-selector",
-      classes: ["dnd4e"],
-      title: "Actor Trait Selection",
-      template: "systems/dnd4e/templates/apps/trait-selector-sense.html",
+  static DEFAULT_OPTIONS = {
+    id: "trait-selector",
+    classes: ["dnd4e", "standard-form"],
+    window: {
+      title: "Actor Trait Selection"
+    },
+    position: {
       width: 320,
-      height: "auto",
-      choices: {},
-      allowCustom: true,
-      minimum: 0,
-      maximum: null
-    });
-  }
+      height: "auto"
+    },
+    form: {
+      submitOnChange: false,
+      closeOnSubmit: true
+    },
+    allowCustom: true,
+    minimum: 0,
+    maximum: null,
+    choices: {}
+  };
 
+  static PARTS = {
+    main: { template: "systems/dnd4e/templates/apps/trait-selector-values.hbs" },
+    footer: { template: "templates/generic/form-footer.hbs" }
+  };
+  
   /* -------------------------------------------- */
 
   /**
@@ -33,49 +41,52 @@ export default class TraitSelector extends FormApplication {
 	get title() {
 		// const name = this.options.name.substring(this.options.name.lastIndexOf(".") + 1);
 		// return `${this.object.name} - ${super.title} - ${name}`;
-		return `${this.object.name} - ${super.title}`;
+		return `${this.document.name} - ${this.options.window.title}`;
 	}
   /* -------------------------------------------- */
 
   /** @override */
-  getData() {
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
 	
     // Get current values
-    let attr = foundry.utils.getProperty(this.object, this.attribute) || {};
-    attr.value = attr.value || [];
+    const attr = foundry.utils.getProperty(this.document, this.attribute) || {};
+    attr.value = Array.from(attr.value ?? []);
 	
-	// Populate choices
-    let choices = duplicate(this.options.choices);
+	  // Populate choices
+    let choices = foundry.utils.duplicate(this.options.choices);
 		
     for ( let [k, v] of Object.entries(choices) ) {
-		let i = -1;
-		
-		for(let index = 0; index < attr.value.length; index++)
-		{
-			if(attr.value[index][0].includes(k))
-				i = index;
-		}
+      let i = -1;
+      
+      for(let index = 0; index < attr.value.length; index++)
+      {
+        if(attr.value[index][0].includes(k)) i = index;
+      }
 		
       choices[k] = {
         label: v,
-		chosen: attr && i != -1 ? true : false,
-		value: attr && i != -1 ? attr.value[i][1] : null 
-      }
+        chosen: attr && i != -1 ? true : false,
+        value: attr && i != -1 ? attr.value[i][1] : null 
+      };
     }
+
+    context.allowCustom = this.options.allowCustom;
+    context.choices = choices;
+    context.custom = attr ? attr.custom : "";
+    context.buttons = [{type: "submit", icon: "far fa-save", label: "DND4E.Save"}];
 	
     // Return data
-	  return {
-      allowCustom: this.options.allowCustom,
-	    choices: choices,
-      custom: attr ? attr.custom : ""
-    }
+	  return context;
   }
 
   /* -------------------------------------------- */
 
   /** @override */
-  _updateObject(event, formData) {	  
+  _processFormData(event, form, formData) {
     const updateData = {};
+
+    formData = foundry.utils.expandObject(formData.object);
 
     // Obtain choices
     const chosen = [];
@@ -97,7 +108,6 @@ export default class TraitSelector extends FormApplication {
       updateData[`${this.attribute}.custom`] = formData.custom;
     }
 
-    // Update the object
-    this.object.update(updateData);
+    return foundry.utils.expandObject(updateData);
   }
 }

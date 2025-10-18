@@ -1,108 +1,360 @@
 // import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import ActiveEffect4e from "../effects/effects.js";
+import { default as TokenDocument4e } from "../documents/token.js"
 import {Helper} from "../helper.js";
 
 /**
  * Override and extend the core ItemSheet implementation to handle specific item types
  * @extends {ItemSheet}
  */
-export default class ItemSheet4e extends ItemSheet {
+export default class ItemSheet4e extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheet) {
+	#dragDrop;
+
+	get dragDrop() {
+		return this.#dragDrop;
+	}
+
 	constructor(...args) {
 		super(...args);
-		// Expand the default size of the class sheet
-		if ( this.object.type === "class" ) {
-			this.options.resizable = true;
-			this.options.width =  600;
-			this.options.height = 680;
+
+		this.#dragDrop = this.#createDragDropHandlers();
+	}
+
+	static DEFAULT_OPTIONS = {
+		classes: ["dnd4e", "sheet", "item", "standard-form"],
+		position: {
+			width: 585,
+			height: 450
+		},
+		window: {
+			resizable: true
+		},
+		form: {
+			submitOnChange: true,
+			closeOnSubmit: false
+		},
+		dragDrop: [
+			{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},
+			{dragSelector: ".item-list .item", dropSelector: null}
+		],
+		actions: {
+			showImage: ItemSheet4e.#onDisplayItemArt,
+			executeMacro: ItemSheet4e.#onExecuteMacro,
+			addDamage: ItemSheet4e.#onDamageControl,
+			deleteDamage: ItemSheet4e.#onDamageControl,
+			addCriticalDamage: ItemSheet4e.#onDamageControl,
+			deleteCriticalDamage: ItemSheet4e.#onDamageControl,
+			addDamageImp: ItemSheet4e.#onDamageControl,
+			deleteDamageImp: ItemSheet4e.#onDamageControl,
+			addCriticalDamageImp: ItemSheet4e.#onDamageControl,
+			deleteCriticalDamageImp: ItemSheet4e.#onDamageControl,
+			addDamageRes: ItemSheet4e.#onDamageControl,
+			deleteDamageRes: ItemSheet4e.#onDamageControl,
+			addDice: ItemSheet4e.#onDamageControl,
+			deleteDice: ItemSheet4e.#onDamageControl,
+			addSpecial: ItemSheet4e.#onOneTextControl,
+			deleteSpecial: ItemSheet4e.#onOneTextControl,
+			configureClassSkills: ItemSheet4e.#onConfigureClassSkills,
+			createPowerEffect: ItemSheet4e.#onPowerEffectControl,
+			editPowerEffect: ItemSheet4e.#onPowerEffectControl,
+			deletePowerEffect: ItemSheet4e.#onPowerEffectControl,
+			// Container actions
+			itemRoll: ItemSheet4e.#onItemRoll,
+			editItem: ItemSheet4e.#onItemControl,
+			deleteItem: ItemSheet4e.#onItemControl
+		}
+	}
+
+	static PARTS = {
+		header: {
+			template: "systems/dnd4e/templates/items/parts/header.hbs"
+		},
+		tabs: {
+			template: "templates/generic/tab-navigation.hbs"
+		},
+		content: {
+			template: "systems/dnd4e/templates/items/tabs/content.hbs",
+			scrollable: [""]
+		},
+		description: {
+			template: "systems/dnd4e/templates/items/tabs/description.hbs",
+			scrollable: [""]
+		},
+		details: {
+			template: "systems/dnd4e/templates/items/tabs/details.hbs",
+			scrollable: [""]
+		},
+		keywords: {
+			template: "systems/dnd4e/templates/items/tabs/keywords.hbs",
+			scrollable: [""]
+		},
+		effects: {
+			template: "systems/dnd4e/templates/items/tabs/effects.hbs",
+			scrollable: [""]
+		},
+		macros: {
+			template: "systems/dnd4e/templates/items/tabs/macros.hbs",
+			scrollable: [""]
+		}
+	}
+
+	static TABS = {
+		primary: {
+			tabs: [
+				{
+					id: "content",
+					label: "DND4E.Content",
+					condition: (item) => item.type === "backpack"
+				},
+				{
+					id: "description",
+					label: "DND4E.Sheet.Description"
+				},
+				{
+					id: "details",
+					label: "DND4E.Sheet.Details",
+					// Custom logic, not core
+					condition: (item) => item.type !== "loot"
+				},
+				{
+					id: "keywords",
+					label: "DND4E.Keywords",
+					// Custom logic, not core
+					condition: (item) => item.type === "feature"
+				},
+				{
+					id: "effects",
+					label: "DND4E.Sheet.Effects",
+					// Custom logic, not core
+					condition: (item) => item.type !== "ritual"
+				},
+				{
+					id: "macros",
+					label: "DND4E.Macros"
+				}
+			],
+			// initial: "description"
 		}
 	}
 
 	/* -------------------------------------------- */
 
-	/** @override */
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			width: 585,
-			height: 420,
-			classes: ["dnd4e", "sheet", "item"],
-			resizable: true,
-			scrollY: [
-				".tab.details"
-			],
-			tabs: [{
-				navSelector: ".tabs",
-				contentSelector: ".sheet-body",
-				initial: "description"
-			}],
-			dragDrop: [
-				{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},
-			]
+	_configureRenderParts(options) {
+		const parts = super._configureRenderParts(options);
+		for (const key of Object.keys(parts)) {
+			const tab = ItemSheet4e.TABS.primary.tabs.find(t => t.id === key);
+			if (tab?.condition && !tab.condition(this.document)) delete parts[key];
+		}
+		return parts;
+	}
+
+	/* -------------------------------------------- */
+
+	async _preparePartContext(partId, context) {
+		const partContext = await super._preparePartContext(partId, context);
+		if (partId in partContext.tabs) partContext.tab = partContext.tabs[partId];
+		return partContext;
+	}
+
+	/* -------------------------------------------- */
+
+	_initializeApplicationOptions(options) {
+		options = super._initializeApplicationOptions(options);
+		if (options.document.type === "class") {
+			options.position.width = 600;
+			options.position.height = 680;
+		}
+		return options;
+	}
+
+	/* -------------------------------------------- */
+
+	#createDragDropHandlers() {
+		return (this.options.dragDrop ?? []).map((d) => {
+			d.permissions = {
+				dragstart: this._canDragStart.bind(this),
+				drop: this._canDragDrop.bind(this),
+			};
+			d.callbacks = {
+				dragstart: this._onDragStart.bind(this),
+				drop: this._onDrop.bind(this),
+			};
+			return new foundry.applications.ux.DragDrop.implementation(d);
 		});
 	}
 
 	/* -------------------------------------------- */
 
-	/** @override */
-	get template() {
-		const path = "systems/dnd4e/templates/items/";
-		return `${path}/${this.item.type}.html`;
+	_canDragStart(selector) {
+		return this.isEditable;
+	}
+
+	/* -------------------------------------------- */
+
+	_canDragDrop(selector) {
+		return this.isEditable;
+	}
+
+	/* -------------------------------------------- */
+
+	async _onFirstRender(context, options) {
+		await super._onFirstRender(context, options);
+		if (!this.tabGroups.primary) {
+			if (this.item.type === "backpack") this.changeTab("content", "primary");
+			else this.changeTab("description", "primary");
+		}
 	}
 
 	/* -------------------------------------------- */
 
 	/** @override */
-	async getData(options) {
-		const data = await super.getData(options);
-		const itemData = data.data;
+	async _onRender(context, options) {
+		await super._onRender(context, options);
 
-		data.labels = this.item.labels;
-		data.config = CONFIG.DND4E;
+		this.#dragDrop.forEach((d) => d.bind(this.element));
+
+		// TODO: AppV2 this stuff properly (add to `DEFAULT_OPTIONS.actions` and set `data-action on the proper elements)
+		if ( this.isEditable ) {
+			this.element.querySelectorAll(".effect-control").forEach(el => el.addEventListener("click", (event => { ActiveEffect4e.onManageActiveEffect(event, this.item);})));
+			this.element.querySelectorAll(".item-quantity input").forEach(el => el.addEventListener("change", (event) => {
+				const li = event.target.closest(".item");
+				const item = this.item.contents.get(li?.dataset.itemId);
+				return item?.update({"system.quantity": event.target.value});
+			}));
+		}
+	}
+
+	/* -------------------------------------------- */
+
+	/** @override */
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
+		const itemData = this.item.toObject(false);
+
+		context.labels = this.item.labels;
+		context.config = CONFIG.DND4E;
 
 		// Item Type, Status, and Details
 		// data.user = game.user; //This is causing a huge error!
-		data.userInfo = game.user;
+		context.userInfo = game.user;
 
-		data.itemType = itemData.type.titleCase();
-		data.itemStatus = this._getItemStatus(itemData);
-		data.itemProperties = this._getItemProperties(itemData);
+		context.itemType = itemData.type.titleCase();
+		context.itemStatus = this._getItemStatus(itemData);
+		context.itemProperties = this._getItemProperties(itemData);
 		
-		data.isPhysical = itemData.system.hasOwnProperty("quantity");
+		context.isPhysical = itemData.system.hasOwnProperty("quantity");
+
+		context.showLevel = true;
+		context.showRarity = true;
 
 		// Potential consumption targets
-		data.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
+		context.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
 				
 		if(itemData.type === "feature"){
-			data.isAura = ( itemData.system?.auraSize >= 0 ? true : false);
+			context.isAura = ( itemData.system?.auraSize >= 0 ? true : false);
+			context.summaryLabel = CONFIG.DND4E.featureTypes[itemData.system.featureType]?.label;
+			context.showRarity = false;
 		}
 	
 		if(itemData.type === "power"){
-			data.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
-			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
+			context.powerWeaponUseTargets = this._getItemsWeaponUseTargets(itemData);
+			context.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
+			context.showLevel = false;
+			context.showRarity = false;
+			context.surgeOptions = {
+				"": "DND4E.None",
+				surge: "DND4E.HealingSurgeSpend",
+				surgeCost: "DND4E.HealingSurgeCost",
+				surgeValue: "DND4E.HealingSurgeValue"
+			}
+		}
+
+		if(itemData.type === "ritual"){
+			let attributeOptions = {}
+			for (const [key, value] of Object.entries(CONFIG.DND4E.abilityScores)) {
+				attributeOptions[key] = {
+					value: "abilities." + key + ".check.total",
+					label: value.label
+				};
+			};
+			for (const [key, value] of Object.entries(CONFIG.DND4E.skills)) {
+				attributeOptions[key] = {
+					value: "skills." + key + ".total",
+					label: value.label
+				};
+			};
+			context.attributeOptions = attributeOptions;
+			context.showLevel = false;
+			context.showRarity = false;
 		}
 
 		if(itemData.type === "consumable"){
-			data.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
+			context.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
+			context.summaryLabel = CONFIG.DND4E.consumableTypes[itemData.system.consumableType]?.label;
 		}
 
 		if(itemData.type === "equipment"){
-			data.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, data.config);
+			context.equipmentSubTypeTargets = this._getItemEquipmentSubTypeTargets(itemData, context.config);
 
 			if(itemData.system.armour.type === "armour"){
-				data.isArmour = true;
-				data.hasEnhance = true;
-				data.hasBaseProps = true;
-				data.armourBaseTypes = CONFIG.DND4E[itemData.system.armour.subType] || {"": game.i18n.localize("DND4E.None")};
-				data.isArmourBaseTypeCustom = (itemData.system.armourBaseType === "custom");
+				context.isArmour = true;
+				context.hasEnhance = true;
+				context.hasBaseProps = true;
+				context.armourBaseTypes = CONFIG.DND4E[itemData.system.armour.subType] || {"": game.i18n.localize("DND4E.None")};
+				context.isArmourBaseTypeCustom = (itemData.system.armourBaseType === "custom");
 			}
 			else if(itemData.system.armour.type === "arms" && CONFIG.DND4E.profArmor[itemData.system.armour.subType]){
-				data.isShield = true;
-				data.hasBaseProps = true;
-				data.shieldBaseTypes = CONFIG.DND4E.shield;
-				data.isShieldBaseTypeCustom = (itemData.system.shieldBaseType === "custom");
+				context.isShield = true;
+				context.hasBaseProps = true;
+				context.shieldBaseTypes = CONFIG.DND4E.shield;
+				context.isShieldBaseTypeCustom = (itemData.system.shieldBaseType === "custom");
 			}
 			else if(itemData.system.armour.type === "neck"){
-				data.hasEnhance = true;
+				context.hasEnhance = true;
 			}
+			context.summaryLabel = CONFIG.DND4E.equipmentTypes[itemData.system.armour.type]?.label;
+		}
+
+		if(itemData.type === "tool"){
+			let attributeOptions = {}
+			for (const [key, value] of Object.entries(CONFIG.DND4E.abilityScores)) {
+				attributeOptions[key] = {
+					value: "abilities." + key + ".check.total",
+					label: value.label
+				};
+			};
+			for (const [key, value] of Object.entries(CONFIG.DND4E.skills)) {
+				attributeOptions[key] = {
+					value: "skills." + key + ".total",
+					label: value.label
+				};
+			};
+			context.attributeOptions = attributeOptions;
+		}
+
+		if(itemData.type === "backpack"){
+			const items = Array.from(await this.item.contents);
+			context.encumbrance = await this.item._computeEncumbrance();
+
+			context.itemData = [];
+
+			for (const i of items) {
+				const d = i.toObject(false);
+				d.totalWeight = (i.system.quantity * i.system.weight).toNearest(0.1);
+				d.isExpanded = this._expanded.has(i.id);
+				d.isStack = i.system.quantity > 1;
+				d.expanded = d.isExpanded ? await i.getChatData({secrets: this.item.isOwner}) : null;
+				context.itemData.push(d);
+			}
+			context.isContainer = true;
+			// context.inventory = {
+			// 	contents: {
+			// 		label: "DND4E.Contents",
+			// 		items: context.items
+			// 	}
+			// };
+
+			context.itemData = context.itemData.toSorted((a, b) => (a.sort || 0) - (b.sort || 0));
 		}
 
 		if(itemData.system?.rangeType) {
@@ -125,7 +377,7 @@ export default class ItemSheet4e extends ItemSheet {
 				if(itemData.system.weaponType == 'melee') autoKeys.melee = {label: game.i18n.localize('DND4E.Melee')};
 				else if(itemData.system.weaponType == 'ranged') autoKeys.ranged = {label: game.i18n.localize('DND4E.rangeRanged')};
 				else{
-					const weaponUse = (data.document?.parent ? Helper.getWeaponUse(itemData.system, data.document.parent) : null);
+					const weaponUse = (context.document?.parent ? Helper.getWeaponUse(itemData.system, context.document.parent) : null);
 					if(weaponUse != null){
 						if(weaponUse.system.isRanged) autoKeys.ranged = {label: game.i18n.localize('DND4E.rangeRanged')};
 						else autoKeys.melee = {label: game.i18n.localize('DND4E.Melee')};
@@ -136,18 +388,23 @@ export default class ItemSheet4e extends ItemSheet {
 
 		// Weapon Properties
 		if(itemData.type === "weapon"){
-			data.weaponMetaProperties = {};
-			for (let attrib in data.config?.weaponProperties) {
-				data.weaponMetaProperties[attrib] = {
-						propName: data.config.weaponProperties[attrib], 
+			context.weaponMetaProperties = {};
+			for (let attrib in context.config?.weaponProperties) {
+				context.weaponMetaProperties[attrib] = {
+						propName: context.config.weaponProperties[attrib], 
 						checked: itemData.system.properties[attrib],
 						disabled: (attrib === "imp" && itemData.system.weaponType === "implement")
 				}
 			}
 
-			data.hasEnhance = true;
-			data.weaponBaseTypes = CONFIG.DND4E[itemData.system.weaponType];
-			data.isWeaponBaseTypeCustom = (itemData.system.weaponBaseType === "custom");
+			context.damageTypeOptions = { ...CONFIG.DND4E.damageTypes };
+			delete context.damageTypeOptions.damage;
+			delete context.damageTypeOptions.ongoing;
+
+			context.hasEnhance = true;
+			context.weaponBaseTypes = CONFIG.DND4E[itemData.system.weaponType];
+			context.isWeaponBaseTypeCustom = (itemData.system.weaponBaseType === "custom");
+			context.summaryLabel = CONFIG.DND4E.weaponTypes[itemData.system.weaponType];
 		}
 
 		// Action Details
@@ -160,69 +417,74 @@ export default class ItemSheet4e extends ItemSheet {
 		//data.isMountable = this._isItemMountable(itemData);
 	
 		// Prepare Active Effects
-		data.effects = ActiveEffect4e.prepareActiveEffectCategories(this.item.effects);
+		context.effects = ActiveEffect4e.prepareActiveEffectCategories(this.item.effects);
 
 		// Re-define the template data references (backwards compatible)
-		data.item = itemData;
-		data.system = itemData.system;
+		context.item = itemData;
+		context.system = itemData.system;
 
-		const description = data.system.description;
+		const description = context.system.description;
 		const weaponUse = this.actor ? Helper.getWeaponUse(itemData.system, this.actor) : null;
 		const itemActor = this.item.actor || null;
 		const descriptionText = description.value ? Helper.commonReplace(description.value, itemActor, itemData.system, weaponUse?.system) : "";
-		data.descriptionHTML = await TextEditor.enrichHTML(descriptionText || description, {
-			secrets: data.item.isOwner,
+		context.descriptionHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText || description, {
+			secrets: context.item.isOwner,
 			async: true,
 			relativeTo: this.item
 		});
 
-		const descriptionGM = data.system.description.gm || "";
-		const descriptionTextGM = data.system.description.gm ? Helper.commonReplace(descriptionGM, itemActor, itemData.system, weaponUse?.system) : "";
+		const descriptionGM = context.system.description.gm || "";
+		const descriptionTextGM = context.system.description.gm ? Helper.commonReplace(descriptionGM, itemActor, itemData.system, weaponUse?.system) : "";
 
-		data.descriptionHTMLGM = await TextEditor.enrichHTML(descriptionTextGM || descriptionGM, {
-			secrets: data.item.isOwner,
+		context.descriptionHTMLGM = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionTextGM || descriptionGM, {
+			secrets: context.item.isOwner,
 			async: true,
 			relativeTo: this.item,
 			// icon: "fa-regular fa-note-medical"
 		});
 
-		if(data.system.description.gm){
-			data.system.description.gmNotes = true;
+		if(context.system.description.gm){
+			context.system.description.gmNotes = true;
 		}
 
-		data.effectDetailHTML = await TextEditor.enrichHTML(data.system.effect?.detail, {
-			secrets: data.item.isOwner,
+		context.effectDetailHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.effect?.detail, {
+			secrets: context.item.isOwner,
 			async: true,
 			relativeTo: this.item
 		});
 
-		data.autoanimationsActive = game.modules.get("autoanimations")?.active;
+		context.autoanimationsActive = game.modules.get("autoanimations")?.active;
+		context.detailsPartial = `dnd4e.details-${itemData.type}`;
+
+		for (const key of Object.keys(context.tabs)) {
+			const tab = context.tabs[key];
+			if (tab?.condition && !tab.condition(this.document)) delete context.tabs[key];
+		}
+
+		context.editorLang = this.document.system.macro.type === "script" ? "javascript" : "";
 		
-		return data;
+		return context;
 	}
 
-	_getHeaderButtons(){
-		let buttons = super._getHeaderButtons();
+	_getHeaderControls(){
+		let controls = super._getHeaderControls();
 	
 		// Share Entry
-		if (game.user.isGM) {
-			buttons.unshift({
-				label: "Show Players",
-				class: "share-image",
-				icon: "fas fa-eye",
-				onclick: () => this.shareItem()
-			});
-		}
+		controls.push({
+			icon: "fa-solid fa-eye",
+			label: "Show Players",
+			visible: game.user.isGM,
+			onClick: () => this.shareItem()
+		});
 	
 		// Export JSON
-		buttons.unshift({
+		controls.push({
+			icon: "fa-solid fa-atlas",
 			label: "Export JSON",
-			class: "export-json",
-			icon: "fas fa-atlas",
-			onclick: () => this.exportItem()
+			onClick: () => this.exportItem()
 		});
 
-		return buttons;
+		return controls;
 	}
 
 	/**
@@ -259,13 +521,11 @@ export default class ItemSheet4e extends ItemSheet {
 		return categories;
 	}
 
-	async _onPowerEffectControl(event) {
-		event.preventDefault();
-		const a = event.currentTarget;
-		const li = a.closest("li");
+	static async #onPowerEffectControl(event, target) {
+		const li = target.closest("li");
 		const effect = li.dataset.effectId ? this.item.effects.get(li.dataset.effectId) : null;
-		switch(a.dataset.action){
-			case "create":
+		switch(target.dataset.action){
+			case "createPowerEffect":
 				console.log(this)
 				this.item.createEmbeddedDocuments("ActiveEffect", [{
 					name: game.i18n.localize("DND4E.EffectNew"),
@@ -276,12 +536,46 @@ export default class ItemSheet4e extends ItemSheet {
 					disabled: li.dataset.effectType === "inactive"
 				}]);
 				return;
-			case "edit":
+			case "editPowerEffect":
 				return effect.sheet.render(true);
-			case "delete":
+			case "deletePowerEffect":
 				return effect.delete();
 		}
 
+	}
+
+	/**
+	 * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to its roll method
+	 */
+	static #onItemRoll(event, target) {
+		const li = target.closest(".item");
+		const item = this.item.contents.get(li?.dataset.itemId);
+
+		if(item?.actor) return item.roll();
+		return false;
+	}
+
+	static #onItemControl(event, target) {
+		const li = target.closest(".item");
+		const item = this.item.contents.get(li?.dataset.itemId);
+		if (!item) return;
+		if (target.dataset.action === "editItem") {
+			return item.sheet.render({ force: true });
+		}
+		if (game.settings.get("dnd4e", "itemDeleteConfirmation")) {
+			return foundry.applications.api.Dialog.confirm({
+				window: {
+					title: game.i18n.format("DND4E.DeleteConfirmTitle", {name: item.name})
+				},
+				content: game.i18n.format("DND4E.DeleteConfirmContent", {name: item.name}),
+				yes: {
+					default: true,
+					callback: () => { return item.delete() }
+				}
+			})
+		} else {
+			return item.delete();
+		}
 	}
 
 	async shareItem() {
@@ -333,8 +627,9 @@ export default class ItemSheet4e extends ItemSheet {
 	  }
 
 	exportItem() {
-		const jsonString = JSON.stringify(this.object._source);
+		const jsonString = JSON.stringify(this.item._source);
 
+		// TODO: Can this reasonably ever error?
 		try {
 			navigator.clipboard.writeText(jsonString)
 			ui.notifications.info("JSON data copied to clipboard");
@@ -398,7 +693,7 @@ export default class ItemSheet4e extends ItemSheet {
 		// if separate from an actor it will default to the PC model, as unlikely to be set with an NPC
 		if (consume.type === "attribute" || consume.type === "resource") {
 			if (actor) {
-				const attributes = TokenDocument.getTrackedAttributes(actor.system)
+				const attributes = TokenDocument4e.getTrackedAttributes(actor.system)
 				attributes.bar.forEach(a => a.push("value"));
 				
 				if(consume.type === "resource"){
@@ -419,7 +714,7 @@ export default class ItemSheet4e extends ItemSheet {
 				}, {})};
 			}
 			else {
-				const attributes = game.model.Actor['Player Character']
+				const attributes = CONFIG.Actor.dataModels['Player Character'].schema.getInitialValue();
 				
 				if(consume.type === "resource"){
 					const resourceKeys = Object.keys(foundry.utils.flattenObject(attributes.resources)).reduce((obj, a) => {
@@ -640,7 +935,10 @@ export default class ItemSheet4e extends ItemSheet {
 		
 		// Action type
 		if ( (item.type !== "power") && item.system?.actionType ) {
-			if(item.system.actionType) props.push(`<li class="action ${item.system.actionType}">${CONFIG.DND4E.itemActionTypes[item.system.actionType]}</li>`);
+			if(item.system.actionType) {
+				const actionTypeLabel = CONFIG.DND4E.itemActionTypes[item.system.actionType] ?? CONFIG.DND4E.abilityActivationTypes[item.system.actionType]?.label;
+				props.push(`<li class="action ${item.system.actionType}">${actionTypeLabel ?? item.system.actionType}</li>`);
+			}
 		}
 
 		// Action usage
@@ -676,14 +974,19 @@ export default class ItemSheet4e extends ItemSheet {
 	/* -------------------------------------------- */
 
 	/** @inheritDoc */
-	_onChangeTab(event, tabs, active) {
-		this.setPosition({ height: "auto" });
+	changeTab(...args) {
+		const autoPos = {...this.position, height: "auto"};
+		this.setPosition(autoPos);
+		super.changeTab(...args);
+		const newPos = {...this.position, height: this.element.scrollHeight};
+		this.setPosition(newPos);
 	}
 
 	/* -------------------------------------------- */
 	/*  Form Submission                             */
 	/* -------------------------------------------- */
 
+	// TODO: What's up with this
 	/** @override */
 	_updateObject(event, formData) {
 
@@ -714,51 +1017,6 @@ export default class ItemSheet4e extends ItemSheet {
 		super._updateObject(event, formData);
 	}
 
-	/* -------------------------------------------- */
-
-	/** @override */
-	activateListeners(html) {
-		super.activateListeners(html);
-
-		//veiw image
-		html.find('.item-art').click(this._onDisplayItemArt.bind(this));
-
-		if ( this.isEditable ) {
-			html.find("button.execute").click(this._onExecute.bind(this));
-
-			html.find(".damage-control").click(this._onDamageControl.bind(this));
-			html.find(".onetext-control").click(this._onOnetextControl.bind(this));
-			html.find('.trait-selector.class-skills').click(this._onConfigureClassSkills.bind(this));
-
-			// html.find(".effect-control").click(event => {
-			// 	if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.")
-			// 		ActiveEffect4e.onManageActiveEffect(event, this.item);
-			// });
-			html.find(".effect-control").click(event => { ActiveEffect4e.onManageActiveEffect(event, this.item);});
-
-
-			html.find('.powereffect-control').click(this._onPowerEffectControl.bind(this));
-		}
-
-		
-		// Add a link to add GM notes
-		if ( this.isEditable && game.user.isGM && !this.item.system.description.gm) {
-			const descriptionEditors = html.find(".tab[data-tab=description]");
-			const mainEditor = descriptionEditors.find(".main .editor");
-
-			const addGMNotesLink = document.createElement("a");
-			addGMNotesLink.className = "add-gm-notes editor-edit"
-			addGMNotesLink.dataset.action = "add-gm-notes";
-			addGMNotesLink.innerHTML = `<i class="fa-regular fa-note-medical"></i>`;
-			addGMNotesLink.dataset.tooltip = "DND4E.GMNotesAdd";
-			mainEditor.prepend(addGMNotesLink);
-			addGMNotesLink.addEventListener("click", () => {
-				html.find(".gm-notes")?.addClass("has-content");
-				this.activateEditor("system.description.gm");
-			});
-		}
-	}
-
 	async activateEditor(name, options={}, initialContent="") {
 
 		if(name === "system.description.gm"){
@@ -772,17 +1030,14 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/* -------------------------------------------- */
 
-	_onDisplayItemArt(event) {
-		event.preventDefault();
-
-		const p = new ImagePopout(this.object.img);
+	static #onDisplayItemArt() {
+		const p = new foundry.applications.apps.ImagePopout({src: this.item.img});
 		p.render(true);
 	}	
 	/* -------------------------------------------- */
 	
-	async _onExecute(event) {
-		event.preventDefault();
-		await this._onSubmit(event, {preventClose: true});
+	static async #onExecuteMacro() {
+		await this.submit({preventClose: true});
 		return Helper.executeMacro(this.document)
 	}
 	
@@ -790,103 +1045,102 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/**
 	 * Add or remove a damage part from the damage formula
-	 * @param {Event} event     The original click event
+	 * @param {Event} event     		The original click event
+	 * @param {HTMLElement} target	The target of the event
 	 * @return {Promise}
-	 * @private
+	 * @this {ItemSheet4e}
 	 */
-	async _onDamageControl(event) {
-		event.preventDefault();
-		const a = event.currentTarget;
-
+	static async #onDamageControl(event, target) {
+		const action = target.dataset.action;
 		// Add new damage component
-		if ( a.classList.contains("add-damage") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
+		if ( action === "addDamage" ) {
+			await this.submit(event);  // Submit any unsaved changes
 			const damage = this.item.system.damage;
 			return this.item.update({"system.damage.parts": damage.parts.concat([["", ""]])});
 		}
 
 		// Remove a damage component
-		if ( a.classList.contains("delete-damage") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
-			const li = a.closest(".damage-part");
-			const damage = duplicate(this.item.system.damage);
+		if ( action === "deleteDamage" ) {
+			await this.submit(event);  // Submit any unsaved changes
+			const li = target.closest(".damage-part");
+			const damage = foundry.utils.duplicate(this.item.system.damage);
 			damage.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"system.damage.parts": damage.parts});
 		}
 	
 		// Add new critical damage component
-		if ( a.classList.contains("add-criticalDamage") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
+		if ( action === "addCriticalDamage" ) {
+			await this.submit(event);  // Submit any unsaved changes
 			const damageCrit = this.item.system.damageCrit;
 			return this.item.update({"system.damageCrit.parts": damageCrit.parts.concat([["", ""]])});
 		}
 
 		// Remove a critical damage component
-		if ( a.classList.contains("delete-criticalDamage") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
-			const li = a.closest(".damage-part");
-			const damageCrit = duplicate(this.item.system.damageCrit);
+		if ( action === "deleteCriticalDamage" ) {
+			await this.submit(event);  // Submit any unsaved changes
+			const li = target.closest(".damage-part");
+			const damageCrit = foundry.utils.duplicate(this.item.system.damageCrit);
 			damageCrit.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"system.damageCrit.parts": damageCrit.parts});
 		}
 
 		// Add new implement damage component
-		if ( a.classList.contains("add-damage-imp") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
+		if ( action === "addDamageImp" ) {
+			await this.submit(event);  // Submit any unsaved changes
 			const damageImp = this.item.system.damageImp;
 			return this.item.update({"system.damageImp.parts": damageImp.parts.concat([["", ""]])});
 		}
 
 		// Remove a implement damage component
-		if ( a.classList.contains("delete-damage-imp") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
-			const li = a.closest(".damage-part");
-			const damageImp = duplicate(this.item.system.damageImp);
+		if ( action === "deleteDamageImp" ) {
+			await this.submit(event);  // Submit any unsaved changes
+			const li = target.closest(".damage-part");
+			const damageImp = foundry.utils.duplicate(this.item.system.damageImp);
 			damageImp.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"system.damageImp.parts": damageImp.parts});
 		}
 	
 		// Add new implement critical damage component
-		if ( a.classList.contains("add-criticalDamage-imp") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
+		if ( action === "addCriticalDamageImp" ) {
+			await this.submit(event);  // Submit any unsaved changes
 			const damageCritImp = this.item.system.damageCritImp;
 			return this.item.update({"system.damageCritImp.parts": damageCritImp.parts.concat([["", ""]])});
 		}
 
 		// Remove a implement critical damage component
-		if ( a.classList.contains("delete-criticalDamage-imp") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
-			const li = a.closest(".damage-part");
-			const damageCritImp = duplicate(this.item.system.damageCritImp);
+		if ( action === "deleteCriticalDamageImp" ) {
+			await this.submit(event);  // Submit any unsaved changes
+			const li = target.closest(".damage-part");
+			const damageCritImp = foundry.utils.duplicate(this.item.system.damageCritImp);
 			damageCritImp.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"system.damageCritImp.parts": damageCritImp.parts});
 		}
 		// Add new damage res
-		if ( a.classList.contains("add-damageRes") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
+		if ( action === "addDamageRes" ) {
+			await this.submit(event);  // Submit any unsaved changes
 			const damageRes = this.item.system.armour.damageRes;
 			return this.item.update({"system.armour.damageRes.parts": damageRes.parts.concat([["", ""]])});
 		}
 
 		// Remove a damage res
-		if ( a.classList.contains("delete-damageRes") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
-			const li = a.closest(".damage-part");
-			const damageRes = duplicate(this.item.system.armour.damageRes);
+		if ( action === "deleteDamageRes" ) {
+			await this.submit(event);  // Submit any unsaved changes
+			const li = target.closest(".damage-part");
+			const damageRes = foundry.utils.duplicate(this.item.system.armour.damageRes);
 			damageRes.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"system.armour.damageRes.parts": damageRes.parts});
 		}
 
-		if(a.classList.contains("add-dice")) {
-			await this._onSubmit(event); // Submit any unsaved changes
-			const damageDice = duplicate(this.item.system.damageDice);
+		if(action === "addDice") {
+			await this.submit(event); // Submit any unsaved changes
+			const damageDice = foundry.utils.duplicate(this.item.system.damageDice);
 			return this.item.update({"system.damageDice.parts": damageDice.parts.concat([["","",""]])});
 		}
 
-		if ( a.classList.contains("delete-dice") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
-			const li = a.closest(".damage-part");
-			const damageDice = duplicate(this.item.system.damageDice);
+		if ( action === "deleteDice" ) {
+			await this.submit(event);  // Submit any unsaved changes
+			const li = target.closest(".damage-part");
+			const damageDice = foundry.utils.duplicate(this.item.system.damageDice);
 			damageDice.parts.splice(Number(li.dataset.damagePart), 1);
 			return this.item.update({"system.damageDice.parts": damageDice.parts});
 		}
@@ -894,26 +1148,26 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/**
 	 * Add or remove a damage part from the damage formula
-	 * @param {Event} event     The original click event
+	 * @param {Event} event     		The original click event
+	 * @param {HTMLElement} target	The target of the event
 	 * @return {Promise}
-	 * @private
+	 * @this {ItemSheet4e}
 	 */
-	async _onOnetextControl(event) {
-		event.preventDefault();
-		const a = event.currentTarget;
+	static async #onOneTextControl(event, target) {
+		const action = target.dataset.action;
 
 		// Add new special component
-		if ( a.classList.contains("add-special") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
+		if ( action === "addSpecial" ) {
+			await this.submit(event);  // Submit any unsaved changes
 			const special = this.item.system.specialAdd;
 			return this.item.update({"system.specialAdd.parts": special.parts.concat([[""]])});
 		}
 
 		// Remove a special component
-		if ( a.classList.contains("delete-special") ) {
-			await this._onSubmit(event);  // Submit any unsaved changes
-			const li = a.closest(".onetext-part");
-			const special = duplicate(this.item.system.specialAdd);
+		if ( action === "deleteSpecial" ) {
+			await this.submit(event);  // Submit any unsaved changes
+			const li = target.closest(".onetext-part");
+			const special = foundry.utils.duplicate(this.item.system.specialAdd);
 			special.parts.splice(Number(li.dataset.specialPart), 1);
 			return this.item.update({"system.specialAdd.parts": special.parts});
 		}
@@ -923,15 +1177,14 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/**
 	 * Handle spawning the TraitSelector application which allows a checkbox of multiple trait options
-	 * @param {Event} event   The click event which originated the selection
+	 * @param {Event} event   			The click event which originated the selection
+	 * @param {HTMLElement} target	The target of the click event
 	 * @private
 	 */
-	_onConfigureClassSkills(event) {
-		event.preventDefault();
+	static #onConfigureClassSkills(event, target) {
 		const skills = this.item.system.skills;
 		const choices = skills.choices && skills.choices.length ? skills.choices : Object.keys(CONFIG.DND4E.skills);
-		const a = event.currentTarget;
-		const label = a.parentElement;
+		const label = target.parentElement;
 
 		// Render the Trait Selector dialog
 		// new TraitSelector(this.item, {
@@ -957,12 +1210,16 @@ export default class ItemSheet4e extends ItemSheet {
 		// Create drag data
 		let dragData;
 
+		// Container Item
+		if ( li.dataset.itemId ) {
+			const item = await this.item.getContainedItem(li.dataset.itemId);
+			dragData = item?.toDragData();
 		// Active Effect
-		if ( li.dataset.effectId ) {
-		const effect = this.item.effects.get(li.dataset.effectId);
-		dragData = effect.toDragData();
+		} else if ( li.dataset.effectId ) {
+			const effect = this.item.effects.get(li.dataset.effectId);
+			dragData = effect.toDragData();
 		} else if ( li.classList.contains("advancement-item") ) {
-		dragData = this.item.advancement.byId[li.dataset.id]?.toDragData();
+			dragData = this.item.advancement.byId[li.dataset.id]?.toDragData();
 		}
 
 		if ( !dragData ) return;
@@ -975,7 +1232,7 @@ export default class ItemSheet4e extends ItemSheet {
 
 	/** @inheritdoc */
 	_onDrop(event) {
-		const data = TextEditor.getDragEventData(event);
+		const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
 		const item = this.item;
 
 		/**
@@ -991,8 +1248,12 @@ export default class ItemSheet4e extends ItemSheet {
 		if ( allowed === false ) return;
 
 		switch ( data.type ) {
-		case "ActiveEffect":
-			return this._onDropActiveEffect(event, data);
+			case "ActiveEffect":
+				return this._onDropActiveEffect(event, data);
+			case "Folder":
+				return this._onDropFolder(event, data);
+			case "Item":
+				return this._onDropItem(event, data);
 		}
 
 	}
@@ -1017,6 +1278,124 @@ export default class ItemSheet4e extends ItemSheet {
 	}
 
   /* -------------------------------------------- */
+
+	/**
+	 * Handle the dropping of Folder data onto the Container sheet.
+	 * @param {DragEvent} event							The concluding DragEvent which contains the drop data.
+	 * @param {object} data									The data transfer extracted from the event.
+	 * @returns {Promise<Item4e[]>}					The created Item objects.
+	 */
+	async _onDropFolder(event, data) {
+		const folder = await Folder.implementation.fromDropData(data);
+		if ( !this.item.isOwner || (folder.type !== "Item") ) return [];
+
+		let recursiveWarning = false;
+		const parentContainers = await this.item.allContainers();
+		const containers = new Set();
+
+		let items = await Promise.all(folder.contents.map(async item => {
+			if ( !(item instanceof Item) ) item = await fromUuid(item.uuid);
+			if ( item.system.container === this.item.id ) return;
+			if ( (this.item.uuid === item.uuid) || parentContainers.includes(item) ) {
+				recursiveWarning = true;
+				return;
+			}
+			if ( item.type === "container" ) containers.add(item.id);
+			return item;
+		}));
+
+		items = items.filter(i => i && !containers.has(i.system.container));
+
+		// Display recursive warning, but continue with any remaining items
+		if ( recursiveWarning ) ui.notifications.warn("DND4E.ContainerRecursiveError", { localize: true });
+		if ( !items.length ) return [];
+
+		// Create any remaining items
+		const toCreate = await Item4e.createWithContents(items, {
+			container: this.item,
+			// transformAll: itemData
+			transformAll: itemData => itemData.type === "spell" ? Item4e.createScrollFromSpell(itemData) : itemData
+		});
+		if ( this.item.folder ) toCreate.forEach(d => d.folder = this.item.folder.id);
+		return Item4e.createDocuments(toCreate, {pack: this.item.pack, parent: this.item.parent, keepId: true});
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle the dropping of Item data onto an Item Sheet.
+	 * @param {DragEvent} event							The concluding DragEvent which contains the drop data.
+	 * @param {object} data									The data transfer extracted from the event.
+	 * @returns {Promise<Item4e[]|boolean>}	The created Item objects or `false` if it couldn't be created.
+	 * @protected
+	 */
+	async _onDropItem(event, data) {
+		const item = await Item.implementation.fromDropData(data);
+		if ( !this.item.isOwner || !item ) return false;
+
+		// If item already exists in this container, just adjust its sorting
+		if ( item.system.container === this.item.id ) {
+			return this._onSortItem(event, item);
+		}
+
+		// Prevent dropping containers within themselves
+		const parentContainers = await this.item.allContainers();
+		if ( (this.item.uuid === item.uuid) || parentContainers.includes(item) ) {
+			ui.notifications.error("DND4E.ContainerRecursiveError", { localize: true });
+			return;
+		}
+
+		// If item already exists in same DocumentCollection, just adjust its container property
+		if ( (item.actor === this.item.actor) && (item.pack === this.item.pack) ) {
+			return item.update({folder: this.item.folder, "system.container": this.item.id});
+		}
+
+		// Otherwise, create a new item & contents in this context
+		const toCreate = await Item4e.createWithContents([item], {
+			container: this.item,
+			transformAll: itemData => itemData.type === "spell" ? Item4e.createScrollFromSpell(itemData) : itemData
+		});
+		if ( this.item.folder ) toCreate.forEach(d => d.folder = this.item.folder.id);
+		return Item4e.createDocuments(toCreate, {pack: this.item.pack, parent: this.item.actor, keepId: true});
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Handle a drop event for an existing contained Item to sort it relative to its siblings.
+	 * @param {DragEvent} event	The concluding DragEvent.
+	 * @param {Item4e} item			The item that needs to be sorted.
+	 * @protected
+	 */
+	async _onSortItem(event, item) {
+		const dropTarget = event.target.closest("[data-item-id]");
+		if ( !dropTarget ) return;
+		const contents = await this.item.contents;
+		const target = contents.get(dropTarget.dataset.itemId);
+
+		// Don't sort on yourself
+		if ( item.id === target.id ) return;
+
+		// Identify sibling items based on adjacent HTML elements
+		const siblings = [];
+		for ( const el of dropTarget.parentElement.children ) {
+			const siblingId = el.dataset.itemId;
+			if ( siblingId && (siblingId !== item.id) ) siblings.push(contents.get(siblingId));
+		}
+
+		// Perform the sort
+		const sortUpdates = SortingHelpers.performIntegerSort(item, {target, siblings});
+		const updateData = sortUpdates.map(u => {
+			const update = u.update;
+			update._id = u.target.id;
+			return update;
+		});
+
+		// Perform the update
+		Item.updateDocuments(updateData, {pack: this.item.pack, parent: this.item.actor});
+	}
+
+	/* -------------------------------------------- */
 
   /**
    * IDs for items on the sheet that have been expanded.

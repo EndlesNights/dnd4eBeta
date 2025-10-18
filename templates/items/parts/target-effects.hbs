@@ -1,0 +1,78 @@
+{{!-- Modifiers --}}
+{{#if system.modifiers}}
+<div class="attribute-modifiers">
+	<h4 class="attribute-name box-title">{{localize 'DND4E.ModifierPlural'}}</h4>
+	<div class="attack-mod flexrow thin" data-modifiers="attack">
+		<span class="name-label">{{localize 'DND4E.ModifierAttack'}}: {{system.modifiers.attack.value}}</span>
+		<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.ModifierAttack'}}">{{localize 'DND4E.Bonus'}}: {{system.modifiers.attack.bonusValue}}</a>
+	</div>
+	<div class="damage-mod flexrow thin" data-modifiers="damage">
+		<spanclass="name-label">{{localize 'DND4E.ModifierDamage'}}: {{system.modifiers.damage.value}}</span>
+		<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.ModifierDamage'}}">{{localize 'DND4E.Bonus'}}: {{system.modifiers.damage.bonusValue}}</a>
+	</div>
+	<div class="skills-mod flexrow thin" data-modifiers="skills">
+		<spanclass="name-label">{{localize 'DND4E.ModifierSkills'}}: {{system.modifiers.skills.value}}</span>
+		<a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusTo'}} {{localize 'DND4E.ModifierSkills'}}">{{localize 'DND4E.Bonus'}}: {{system.modifiers.skills.bonusValue}}</a>
+	</div>
+</div>
+{{/if}}
+
+<ol class="item-list effects-list">
+
+	{{#each effectsPowers as |section sid|}}
+		<li class="items-header flexrow" data-effect-type="{{section.type}}">
+			<h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
+			<div class="effect-source">{{localize 'DND4E.Source'}}:</div>
+			<!-- <div class="effect-source" style="width:150%;">Duration Type</div> -->
+			<div class="effect-source">{{localize 'DND4E.Duration'}}:</div>
+			<div class="item-controls effect-controls flexrow">
+				<a class="powereffect-control" data-action="createPowerEffect" data-tooltip="{{localize 'DND4E.EffectCreate'}}">
+					<i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
+				</a>
+			</div>
+		</li>
+
+		<ol class="item-list">
+		{{#each section.effects as |effect|}}
+			<li class="item effect flexrow" data-effect-id="{{effect.id}}">
+				<div class="item-name effect-name flexrow">
+					<img class="item-image" src="{{effect.icon}}"/>
+					<h4>{{effect.name}}</h4>
+				</div>
+				<div class="effect-source">{{effect.sourceName}}</div>
+				<!-- <div class="effect-duration" style="width:150%;">{{effect.durationTypeLable}}</div> -->
+				<div class="effect-duration">{{effect.duration.label}}</div>
+				<div class="item-controls effect-controls flexrow">
+					<a class="effect-control" data-action="toggle" data-tooltip="{{localize 'DND4E.EffectToggle'}}">
+						<i class="fas fa-circle-notch"></i>
+					</a>
+					<a class="powereffect-control" data-action="editPowerEffect" data-tooltip="{{localize 'DND4E.EffectEdit'}}">
+						<i class="fas fa-edit"></i>
+					</a>
+					<a class="powereffect-control" data-action="deletePowerEffect" data-tooltip="{{localize 'DND4E.EffectDelete'}}">
+						<i class="fas fa-trash"></i>
+					</a>
+				</div>
+			</li>
+		{{/each}}
+		</ol>
+	{{/each}}
+
+	{{!-- Resistances --}}
+
+	{{#if system.resistances}}
+	<div class="attribute-res resource-full">
+		<h4 class="attribute-name box-title">{{localize 'DND4E.DamResVuln'}}</h4>
+		{{#each system.resistances as |res r|}}
+			<li class="skill flexrow" data-res="{{r}}">
+				<h4 class="res-name" style="margin-bottom: 0; font-family: var(--font-body); font-size: medium">{{res.label}}</h4>
+				<span class="res-mod">{{numberFormat res.value decimals=0 sign=true }}</span>
+				<span class="res-armour">{{localize 'DND4E.Armour'}}: {{res.armour}} </span>
+				<a class="resistances-bonus" data-target="system.resistances" data-tooltip="Resistance Bonus">{{localize 'DND4E.Bonus'}}: {{res.resBonusValue}}</a>
+				<span class="res-immune">{{localize 'DND4E.Immunity'}}</span>
+				<input type="checkbox" name="system.resistances.{{r}}.immune" data-dtype="Boolean" {{checked res.immune}} data-tooltip="Immune"/>
+			</li>
+		{{/each}}
+	</div>
+	{{/if}}
+</ol>
