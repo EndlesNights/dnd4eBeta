@@ -238,7 +238,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		// data.user = game.user; //This is causing a huge error!
 		context.userInfo = game.user;
 
-		context.itemType = itemData.type.titleCase();
+		context.itemType = itemData.type;
+		context.itemTypeLabel = itemData.type.titleCase();
 		context.itemStatus = this._getItemStatus(itemData);
 		context.itemProperties = this._getItemProperties(itemData);
 		

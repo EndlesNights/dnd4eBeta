@@ -277,6 +277,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			});
 		}
 	}
+	_processFormData(event, form, formData) {
+		const flat = foundry.utils.flattenObject(formData.object);
+		for (const key of this._getActorOverrides()) {
+			delete flat[key];
+		}
+		return foundry.utils.expandObject(flat);
+	}
 	_initializeApplicationOptions(options) {
 		options = super._initializeApplicationOptions(options);
 		const numCustomSkills = game.settings.get("dnd4e", "custom-skills")?.length;
@@ -579,10 +586,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		// Organize items
 		for ( let i of items ) {
 			const item = this.actor.items.get(i._id);
-			i.system.quantity = i.system.quantity || 0;
-			i.system.weight = i.system.weight || 0;
+			i.system.quantity = item.system.quantity || 0;
+			i.system.weight = item.system.weight || 0;
 			i.totalWeight = item.totalWeight;
-			i.totalWeightLable = i.totalWeight.toNearest(0.01);
+			i.totalWeightLabel = i.totalWeight.toNearest(0.01);
 			i.system.preparedMaxUses = item.system.preparedMaxUses;
 			i.hasUses = item.system.uses && (item.system.preparedMaxUses > 0);
 			inventory[i.type].items.push(i);
@@ -593,6 +600,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 
 		for ( let p of pow ) {
+			const power = this.actor.items.get(p._id);
+			p.system.preparedMaxUses = power.system.preparedMaxUses;
+			p.hasUses = power.system.uses && (power.system.preparedMaxUses > 0);
 			powers[this._groupPowers(p,powers)].items.push(p);
 		}
 		for ( let r of rits ) {
@@ -1117,7 +1127,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		}
 
 		// Return keys that exist in the actor
-		return Array.from(overrides.union(candidateKeys).intersection(actorKeys));
+		return Array.from((overrides.union(candidateKeys)).intersection(actorKeys));
 	}
 
 	/* -------------------------------------------- */
@@ -1467,22 +1477,22 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	
 	_onMovementDialog(event) {
 		event.preventDefault();
-		new MovementDialog(this.actor).render(true)
+		new MovementDialog({document: this.actor}).render(true)
 	}
 	
 	_onConBonConfig(event) {
 		event.preventDefault();
-		new ConBonConfig(this.actor).render(true)
+		new ConBonConfig({document: this.actor}).render(true)
 	}
 
 	_onHealMenuDialog(event) {
 		event.preventDefault();
-		new HealMenuDialog(this.actor).render(true)
+		new HealMenuDialog({document: this.actor}).render(true)
 	}
 
 	_onEncumbranceDialog(event) {
 		event.preventDefault();
-		new EncumbranceDialog(this.actor).render(true);
+		new EncumbranceDialog({document: this.actor}).render(true);
 	}
 
 	_onPassiveBonus(event) {
@@ -1513,7 +1523,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_onCustomRolldDescriptions(event) {
 		event.preventDefault();
 		const options = {data: this.actor};
-		new CustomRolldDescriptions(this.actor).render(true, options);
+		new CustomRolldDescriptions({document: this.actor}).render(true, options);
 	}
 	/**
 	* Opens dialog window to spend Second Wind

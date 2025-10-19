@@ -1206,11 +1206,11 @@ DND4E.powerGroupings = {
 		other: {label: "DND4E.Other"}
 	}
 };
-preLocalize("powerGroupings.action", { key: "label", sort: true });
-preLocalize("powerGroupings.actionMod", { key: "label", sort: true });
-preLocalize("powerGroupings.type", { key: "label", sort: true });
-preLocalize("powerGroupings.powerSubtype", { key: "label", sort: true });
-preLocalize("powerGroupings.usage", { key: "label", sort: true });
+preLocalize("powerGroupings.action", { key: "label" });
+preLocalize("powerGroupings.actionMod", { key: "label" });
+preLocalize("powerGroupings.type", { key: "label" });
+preLocalize("powerGroupings.powerSubtype", { key: "label" });
+preLocalize("powerGroupings.usage", { key: "label" });
 
 DND4E.powerSortTypes = {
 	"name": {label: "DND4E.ItemName"},
@@ -1218,7 +1218,6 @@ DND4E.powerSortTypes = {
 	"actionType": {label: "DND4E.Action"},
 	"rangeTextShort": {label: "DND4E.Range"},
 	"useType": {label: "DND4E.Usage"},
-	"use.value": {label: "DND4E.Used"},
 	"powerSubtype": {label: "DND4E.PowerSubtype"},
 	"none": {label: "DND4E.None"},
 };

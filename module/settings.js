@@ -244,22 +244,6 @@ export const registerSystemSettings = function() {
 		type: Boolean
 	});
 
-	// Show defence values in attack roll chat cards
-	game.settings.register("dnd4e", "showDefences",{
-		name: "SETTINGS.4eShowDefencesN",
-		hint: "SETTINGS.4eShowDefencesL",
-		scope: "client",
-		config: true,
-		default: "none",
-		type: String,
-		choices: {
-			"none": "SETTINGS.4eShowDefencesNone",
-			"pcs": "SETTINGS.4eShowDefencesPCs",
-			"npcs": "SETTINGS.4eShowDefencesNPCs",
-			"all": "SETTINGS.4eShowDefencesAll"
-		}
-	});
-
 	// Collapse bonuses down when making rolls
 	game.settings.register("dnd4e", "collapseSituationalBonus",{
 		name: "SETTINGS.4eCollapseSituationalBonusN",
@@ -301,6 +285,22 @@ export const registerSystemSettings = function() {
 		type: Boolean,
 		onChange: s => {
 			ui.chat.render();
+		}
+	});
+
+	// Show defence values in attack roll chat cards
+	game.settings.register("dnd4e", "showDefences",{
+		name: "SETTINGS.4eShowDefencesN",
+		hint: "SETTINGS.4eShowDefencesL",
+		scope: "client",
+		config: true,
+		default: "none",
+		type: String,
+		choices: {
+			"none": "SETTINGS.4eShowDefencesNone",
+			"pcs": "SETTINGS.4eShowDefencesPCs",
+			"npcs": "SETTINGS.4eShowDefencesNPCs",
+			"all": "SETTINGS.4eShowDefencesAll"
 		}
 	});
 
