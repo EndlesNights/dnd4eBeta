@@ -1720,7 +1720,7 @@
       },
       "run": {
         "value": 0,
-        "formula": "@base + @armour + 2",
+        "formula": "2",
         "bonus": [
           {}
         ],
@@ -1734,7 +1734,7 @@
       },
       "climb": {
         "value": 0,
-        "formula": "(@base + @armour)/2",
+        "formula": "",
         "bonus": [
           {}
         ],
@@ -1760,7 +1760,7 @@
       },
       "swim": {
         "value": 0,
-        "formula": "(@base + @armour)/2",
+        "formula": "",
         "bonus": [
           {}
         ],
@@ -1772,7 +1772,10 @@
         "temp": 0
       },
       "notes": "",
-      "custom": "Burrow 2 Sq.;"
+      "custom": "",
+      "burrow": {
+        "formula": "2"
+      }
     },
     "advancedCals": true,
     "magicItemUse": {
@@ -1913,11 +1916,11 @@
   },
   "_stats": {
     "duplicateSource": null,
-    "coreVersion": "13.348",
+    "coreVersion": "13.350",
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
+    "systemVersion": "0.7.0",
     "createdTime": 1730440963063,
-    "modifiedTime": 1745816242598,
+    "modifiedTime": 1760845760971,
     "lastModifiedBy": "dnd4ebuilder0000",
     "exportSource": {
       "worldId": "module-test",
