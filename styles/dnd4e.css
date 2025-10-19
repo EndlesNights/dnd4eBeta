@@ -824,6 +824,15 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 	content:'\2022';
 	padding-right:2px;
 }
+.dnd4e.sheet.actor .traits{
+	padding-left:20px;
+}
+.dnd4e.sheet.actor .traits .group-header{
+	margin-left:-20px;
+}
+.dnd4e.sheet.actor .traits .subgroup-header{
+	margin-left:-10px;
+}
 .dnd4e.sheet.actor .traits .form-group,
 .dnd4e.sheet.actor .traits .form-group-stacked{
 	margin:0 0 3px 0;
