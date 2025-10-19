@@ -589,7 +589,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			i.system.quantity = item.system.quantity || 0;
 			i.system.weight = item.system.weight || 0;
 			i.totalWeight = item.totalWeight;
-			i.totalWeightLable = i.totalWeight.toNearest(0.01);
+			i.totalWeightLabel = i.totalWeight.toNearest(0.01);
 			i.system.preparedMaxUses = item.system.preparedMaxUses;
 			i.hasUses = item.system.uses && (item.system.preparedMaxUses > 0);
 			inventory[i.type].items.push(i);
