@@ -350,6 +350,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const context = await super._prepareContext(options);
 		const actor = this.actor.toObject(false);
 		const actorData = actor.system;
+		actorData.details.isBloodied = this.actor.system.details.isBloodied;
 
 		const isOwner = this.actor.isOwner;
 

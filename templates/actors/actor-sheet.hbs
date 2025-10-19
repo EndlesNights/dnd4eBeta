@@ -47,7 +47,7 @@
 						<i class="fas fa-cog"></i>
 					</a>
 					<div class="attribute-value flexrow">
-						<input {{#if system.details.isBloodied}} class="bloodied" {{/if}} type="text" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" data-tooltip="{{localize 'DND4E.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
+						<input {{#if system.details.isBloodied}}class="bloodied" {{/if}}type="text" name="system.attributes.hp.value" value="{{system.attributes.hp.value}}" data-tooltip="{{localize 'DND4E.HPCurrent'}}" placeholder="Current" data-dtype="Number" onClick="this.select();"/>
 						<span class="sep">/</span>
 						{{#if system.attributes.hp.autototal}}
 						<input type="text" disabled name="system.attributes.hp.max" value="{{system.attributes.hp.max}}" data-tooltip="DND4E.HPTotalAuto" placeholder="Total" data-dtype="Number" onClick="this.select();"/>
