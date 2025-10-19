@@ -20,6 +20,10 @@
 			"url": "https://www.invincible.ink",
 			"email": "fox@munchlax.org",
 			"discord": "theartgremblin"
+		  },
+		{
+			"name": "SagaTympana",
+			"discord": "sagatympana"
 		  }
 	],
 	"esmodules": [
@@ -170,4 +174,5 @@
 			"paths": ["styles/", "templates/"]
 		}
 	}
+
 }
