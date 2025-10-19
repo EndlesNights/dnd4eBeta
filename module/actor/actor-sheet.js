@@ -586,8 +586,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		// Organize items
 		for ( let i of items ) {
 			const item = this.actor.items.get(i._id);
-			i.system.quantity = i.system.quantity || 0;
-			i.system.weight = i.system.weight || 0;
+			i.system.quantity = item.system.quantity || 0;
+			i.system.weight = item.system.weight || 0;
 			i.totalWeight = item.totalWeight;
 			i.totalWeightLable = i.totalWeight.toNearest(0.01);
 			i.system.preparedMaxUses = item.system.preparedMaxUses;
@@ -600,6 +600,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 
 		for ( let p of pow ) {
+			const power = this.actor.items.get(p._id);
+			p.system.preparedMaxUses = power.system.preparedMaxUses;
+			p.hasUses = power.system.uses && (power.system.preparedMaxUses > 0);
 			powers[this._groupPowers(p,powers)].items.push(p);
 		}
 		for ( let r of rits ) {
