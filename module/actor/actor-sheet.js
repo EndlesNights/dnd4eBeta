@@ -277,6 +277,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			});
 		}
 	}
+	_processFormData(event, form, formData) {
+		const flat = foundry.utils.flattenObject(formData.object);
+		for (const key of this._getActorOverrides()) {
+			delete flat[key];
+		}
+		return foundry.utils.expandObject(flat);
+	}
 	_initializeApplicationOptions(options) {
 		options = super._initializeApplicationOptions(options);
 		const numCustomSkills = game.settings.get("dnd4e", "custom-skills")?.length;
@@ -1117,7 +1124,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		}
 
 		// Return keys that exist in the actor
-		return Array.from(overrides.union(candidateKeys).intersection(actorKeys));
+		return Array.from((overrides.union(candidateKeys)).intersection(actorKeys));
 	}
 
 	/* -------------------------------------------- */

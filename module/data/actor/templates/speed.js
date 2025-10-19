@@ -41,6 +41,7 @@ export default class SpeedTemplate extends foundry.abstract.DataModel {
       fly: new MovementField({}, {formulaString: "", label: "DND4E.MovementSpeedFlying"}),
       swim: new MovementField({}, {formulaString: "", label: "DND4E.MovementSpeedSwimming"}),
       teleport: new MovementField({}, {formulaString: "", label: "DND4E.MovementSpeedTeleporting"}),
+      custom: new StringField({initial: ""}),
       ignoredDifficultTerrain: new SetField(new StringField(), {label: "DND4E.IgnoredDifficultTerrain"}),
       notes: new StringField({initial: ""})
     };
