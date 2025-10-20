@@ -269,20 +269,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			new CONFIG.ux.ContextMenu(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this), jQuery: false, fixed: true});
 		}
 	
-		//Disabels and adds warning to input fields that are being modfied by active effects
+		//Disables and adds warning to input fields that are being modfied by active effects
 		for ( const override of this._getAllActorOverrides(["system.details.surges.value"]) ) {
 			html.querySelectorAll(`input[name="${override}"],select[name="${override}"]`).forEach((el) => {
 				el.disabled = true;
 				el.dataset.tooltip = "DND4E.ActiveEffectOverrideWarning";
 			});
 		}
-	}
-	_processFormData(event, form, formData) {
-		const flat = foundry.utils.flattenObject(formData.object);
-		for (const key of this._getActorOverrides()) {
-			delete flat[key];
-		}
-		return foundry.utils.expandObject(flat);
 	}
 	_initializeApplicationOptions(options) {
 		options = super._initializeApplicationOptions(options);
@@ -1105,7 +1098,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 */
 	_getAllActorOverrides(excluded = []) {
 		const overrides = new Set(this._getActorOverrides());
-		const actorKeys = new Set(Object.keys(foundry.utils.flattenObject(this.actor)));
+		const actorKeys = new Set(Object.keys(foundry.utils.flattenObject(this.actor.toObject(false))));
 		const candidateKeys = new Set();
 		const accumulatorSuffixes = [".value", ".max"]; // Suffixes used for the accumulation of feat, item etc. bonuses.
 		const bonusSuffixes = [/.feat$/, /.item$/, /.power$/, /.race$/, /.untyped$/]; // Suffixes for bonuses.
@@ -1117,7 +1110,9 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				if(key.includes("system.attributes.hp.")){ //Exception for HP as to not block 
 					candidateKeys.add(key.replace(bonus, ".max"));
 				} else {
-					accumulatorSuffixes.forEach(accumulator => candidateKeys.add(key.replace(bonus, accumulator)));
+					accumulatorSuffixes.forEach(accumulator => {
+						candidateKeys.add(key.replace(bonus, accumulator))
+					});
 				}
 			}
 		}
