@@ -51,7 +51,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 		'targets': []
 	}
 	
-	if (game.user.targets.size) {
+	if (actor && game.user.targets.size) {
 		const numTargets = game.user.targets.size;
 		const targetArr = Array.from(game.user.targets);
 		targDataArray.hasTarget = true;

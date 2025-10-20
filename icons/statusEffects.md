@@ -56,4 +56,4 @@ UI ICONS:
 * Charge:           https://game-icons.net/1x1/delapouite/charging-bull.html
 * Shift:            https://game-icons.net/1x1/lorc/suspicious.html
 
-* difficultTerrain  ©Carly Thomas
+* difficultTerrain: ©Carly Thomas

@@ -950,7 +950,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 			try {
 				const weaponUse = Helper.getWeaponUse(itemData.system, this.actor);
-				if(weaponUse.system.isRanged) {
+				if(weaponUse.system.isRanged && itemData.system.weaponType !== 'melee') {
 					itemData.system.rangeText = `${game.i18n.localize('DND4E.rangeWeaponRanged')} - ${weaponUse.name}`
 					itemData.system.rangeTextShort = game.i18n.localize('DND4E.rangeWeaponRangedAbbr')
 					itemData.system.rangeTextBlock = `${weaponUse.system.range.value}/${weaponUse.system.range.long}`
