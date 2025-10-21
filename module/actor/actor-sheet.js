@@ -268,7 +268,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			// Context Menus
 			new CONFIG.ux.ContextMenu(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this), jQuery: false, fixed: true});
 		}
-	
+
 		//Disables and adds warning to input fields that are being modfied by active effects
 		for ( const override of this._getAllActorOverrides(["system.details.surges.value"]) ) {
 			html.querySelectorAll(`input[name="${override}"],select[name="${override}"]`).forEach((el) => {
@@ -875,105 +875,10 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
    * @private
    */
 	 _preparePowerRangeText(itemData) {
-
-		const C = CONFIG.DND4E; 
-		let area;
-		if(itemData.system.area) {
-			try{
-				let areaForm = game.helper.commonReplace(`${itemData.system.area}`, this.actor);
-				area = Roll.safeEval(areaForm);
-			} catch (e) {
-				area = itemData.system.area;
-			}
-		} else {
-			area = 0;
-		}
-
-		if(itemData.system.rangeType === "range") {
-			itemData.system.rangeText = `${C.rangeType.range.label} ${itemData.system.rangePower}`
-			itemData.system.rangeTextShort = C.rangeType.range.abbr
-			itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
-			if(itemData.system.range.long) {
-				itemData.system.rangeText += `/${itemData.system.range.long}`
-				itemData.system.rangeTextBlock += `/${itemData.system.range.long}`
-			}
-		} else if(itemData.system.rangeType === "closeBurst") {
-			itemData.system.rangeText = `${C.rangeType.closeBurst.label} ${area}`
-			itemData.system.rangeTextShort = C.rangeType.closeBurst.abbr
-			itemData.system.rangeTextBlock = `${area}`
-		} else if(itemData.system.rangeType === "rangeBurst") {
-			itemData.system.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${itemData.system.rangePower}`
-			itemData.system.rangeTextShort = C.rangeType.rangeBurst.abbr
-			itemData.system.rangeTextBlock = `${area}(${itemData.system.rangePower})`
-		} else if(itemData.system.rangeType === "closeBlast") {
-			itemData.system.rangeText = `${C.rangeType.closeBlast.label} ${area}`
-			itemData.system.rangeTextShort = C.rangeType.closeBlast.abbr
-			itemData.system.rangeTextBlock = `${area}`
-		} else if(itemData.system.rangeType === "rangeBlast") {
-			itemData.system.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${itemData.system.rangePower}`
-			itemData.system.rangeTextShort = C.rangeType.rangeBlast.abbr
- 			itemData.system.rangeTextBlock = `${area}(${itemData.system.rangePower})`
-		} else if(itemData.system.rangeType === "wall") {
-			itemData.system.rangeText = `${C.rangeType.wall.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${itemData.system.rangePower}`
-			itemData.system.rangeTextShort = C.rangeType.wall.abbr
-			itemData.system.rangeTextBlock = `${area}(${itemData.system.rangePower})`
-		} else if(itemData.system.rangeType === "personal") {
-			itemData.system.rangeText = C.rangeType.personal.label
-			itemData.system.rangeTextShort = C.rangeType.personal.abbr
-		} else if(itemData.system.rangeType === "special") {
-			itemData.system.rangeText = C.rangeType.special.label
-			itemData.system.rangeTextShort = C.rangeType.special.abbr
-		} else if(itemData.system.rangeType === "touch") {
-			itemData.system.rangeTextShort = C.rangeType.touch.abbr;
-			itemData.system.rangeText = C.rangeType.touch.label;
-		} else if(itemData.system.rangeType === "melee"){
-			itemData.system.rangeTextShort = C.rangeType.melee.abbr;
-			if(itemData.system.rangePower === undefined || itemData.system.rangePower === null){
-				itemData.system.rangeText = C.rangeType.melee.label;
-			} else {
-				itemData.system.rangeText = `${C.rangeType.melee.label} ${itemData.system.rangePower}`;
-				itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
-			}
-		} else if(itemData.system.rangeType === "reach"){
-			itemData.system.rangeText = `${C.rangeType.reach.label} ${itemData.system.rangePower}`;
-			itemData.system.rangeTextShort = C.rangeType.reach.abbr;
-			itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
-			
-		} else if(itemData.system.rangeType === "weapon") {
-
-			try {
-				const weaponUse = Helper.getWeaponUse(itemData.system, this.actor);
-				if(weaponUse.system.isRanged && itemData.system.weaponType !== 'melee') {
-					itemData.system.rangeText = `${game.i18n.localize('DND4E.rangeWeaponRanged')} - ${weaponUse.name}`
-					itemData.system.rangeTextShort = game.i18n.localize('DND4E.rangeWeaponRangedAbbr')
-					itemData.system.rangeTextBlock = `${weaponUse.system.range.value}/${weaponUse.system.range.long}`
-				} else {
-					itemData.system.rangeText = `${game.i18n.localize('DND4E.rangeWeaponMelee')} - ${weaponUse.name}`;
-					itemData.system.rangeTextShort = game.i18n.localize('DND4E.rangeWeaponMeleeAbbr');
-					
-					if(itemData.system.rangePower == null){
-						itemData.system.rangeTextBlock = (weaponUse.system.properties.rch ? '2' : '')
-					} else {
-						itemData.system.rangeTextBlock = `${itemData.system.rangePower}`;
-					}
-				}
-
-			} catch {
-				itemData.system.rangeText = "Weapon";
-				itemData.system.rangeTextShort = game.i18n.localize('DND4E.rangeWeaponMeleeAbbr')
-				itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
-
-				if(itemData.system.rangePower == null){
-					itemData.system.rangeTextBlock = '';
-				} else {
-					itemData.system.rangeTextBlock = `${itemData.system.rangePower}`;
-				}
-			}
-
-		} else {
-			itemData.system.rangeText = game.i18n.localize("DND4E.NotAvalible");
-			itemData.system.rangeTextShort = game.i18n.localize("DND4E.NotAvalibleShort");
-		}
+		const rangeData = this.actor.items.get(itemData._id).rangeData();
+		itemData.system.rangeText = rangeData.rangeText;
+		itemData.system.rangeTextShort = rangeData.rangeTextShort;
+		itemData.system.rangeTextBlock = rangeData.rangeTextBlock;
 	}
   /* -------------------------------------------- */
 
