@@ -2492,7 +2492,7 @@ export default class Item4e extends Item {
 		if ( event.target.closest(":is(.item-name, .collapsible) :is(a, button)") ) return;
 
 		event.preventDefault();
-		const header = event.target;
+		const header = event.target.closest("div");
 		const card = header.closest(".chat-card");
 		const content = card.querySelector(".card-content:not(.details)");
 		
