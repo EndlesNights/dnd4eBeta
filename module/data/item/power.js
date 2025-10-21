@@ -46,7 +46,7 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
         actionType: new StringField({initial: ""}),
         detail: new StringField({initial: ""})
       }),
-      target: new StringField({initial: "One Creature"}),
+      target: new StringField({initial: "One creature"}),
       trigger: new StringField({initial: ""}),
       requirement: new StringField({initial: ""}),
       special: new StringField({initial: ""}),

@@ -1729,6 +1729,110 @@ export default class Item4e extends Item {
 
 		return bonus;
 	}
+
+	rangeData() {
+		const C = CONFIG.DND4E; 
+		let rangeData = {};
+		let area;
+		if(this.system.area) {
+			try{
+				let areaForm = game.helper.commonReplace(`${this.system.area}`, this.actor);
+				area = Roll.safeEval(areaForm);
+			} catch (e) {
+				area = this.system.area;
+			}
+		} else {
+			area = 0;
+		}
+
+		if(this.system.rangeType === "range") {
+			rangeData.rangeText = `${C.rangeType.range.label} ${this.system.rangePower}`
+			rangeData.rangeTextShort = C.rangeType.range.abbr
+			rangeData.rangeTextBlock = `${this.system.rangePower}`
+			if(this.system.range.long) {
+				rangeData.rangeText += `/${this.system.range.long}`
+				rangeData.rangeTextBlock += `/${this.system.range.long}`
+			}
+		} else if(this.system.rangeType === "closeBurst") {
+			rangeData.rangeText = `${C.rangeType.closeBurst.label} ${area}`
+			rangeData.rangeTextShort = C.rangeType.closeBurst.abbr
+			rangeData.rangeTextBlock = `${area}`
+		} else if(this.system.rangeType === "rangeBurst") {
+			rangeData.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${this.system.rangePower}`
+			rangeData.rangeTextShort = C.rangeType.rangeBurst.abbr
+			rangeData.rangeTextBlock = `${area}(${this.system.rangePower})`
+		} else if(this.system.rangeType === "closeBlast") {
+			rangeData.rangeText = `${C.rangeType.closeBlast.label} ${area}`
+			rangeData.rangeTextShort = C.rangeType.closeBlast.abbr
+			rangeData.rangeTextBlock = `${area}`
+		} else if(this.system.rangeType === "rangeBlast") {
+			rangeData.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${this.system.rangePower}`
+			rangeData.rangeTextShort = C.rangeType.rangeBlast.abbr
+ 			rangeData.rangeTextBlock = `${area}(${this.system.rangePower})`
+		} else if(this.system.rangeType === "wall") {
+			rangeData.rangeText = `${C.rangeType.wall.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${this.system.rangePower}`
+			rangeData.rangeTextShort = C.rangeType.wall.abbr
+			rangeData.rangeTextBlock = `${area}(${this.system.rangePower})`
+		} else if(this.system.rangeType === "personal") {
+			rangeData.rangeText = C.rangeType.personal.label
+			rangeData.rangeTextShort = C.rangeType.personal.abbr
+		} else if(this.system.rangeType === "special") {
+			rangeData.rangeText = C.rangeType.special.label
+			rangeData.rangeTextShort = C.rangeType.special.abbr
+		} else if(this.system.rangeType === "touch") {
+			rangeData.rangeTextShort = C.rangeType.touch.abbr;
+			rangeData.rangeText = C.rangeType.touch.label;
+		} else if(this.system.rangeType === "melee"){
+			rangeData.rangeTextShort = C.rangeType.melee.abbr;
+			if(this.system.rangePower === undefined || this.system.rangePower === null){
+				rangeData.rangeText = C.rangeType.melee.label;
+			} else {
+				rangeData.rangeText = `${C.rangeType.melee.label} ${this.system.rangePower}`;
+				rangeData.rangeTextBlock = `${this.system.rangePower}`
+			}
+		} else if(this.system.rangeType === "reach"){
+			rangeData.rangeText = `${C.rangeType.reach.label} ${this.system.rangePower}`;
+			rangeData.rangeTextShort = C.rangeType.reach.abbr;
+			rangeData.rangeTextBlock = `${this.system.rangePower}`
+			
+		} else if(this.system.rangeType === "weapon") {
+
+			try {
+				const weaponUse = Helper.getWeaponUse(this.system, this.actor);
+				if(weaponUse.system.isRanged && this.system.weaponType !== 'melee') {
+					rangeData.rangeText = `${game.i18n.localize('DND4E.rangeWeaponRanged')} - ${weaponUse.name}`
+					rangeData.rangeTextShort = game.i18n.localize('DND4E.rangeWeaponRangedAbbr')
+					rangeData.rangeTextBlock = `${weaponUse.system.range.value}/${weaponUse.system.range.long}`
+				} else {
+					rangeData.rangeText = `${game.i18n.localize('DND4E.rangeWeaponMelee')} - ${weaponUse.name}`;
+					rangeData.rangeTextShort = game.i18n.localize('DND4E.rangeWeaponMeleeAbbr');
+					
+					if(this.system.rangePower == null){
+						rangeData.rangeTextBlock = (weaponUse.system.properties.rch ? '2' : '')
+					} else {
+						rangeData.rangeTextBlock = `${this.system.rangePower}`;
+					}
+				}
+
+			} catch {
+				rangeData.rangeText = "Weapon";
+				rangeData.rangeTextShort = game.i18n.localize('DND4E.rangeWeaponMeleeAbbr')
+				rangeData.rangeTextBlock = `${this.system.rangePower}`
+
+				if(this.system.rangePower == null){
+					rangeData.rangeTextBlock = '';
+				} else {
+					rangeData.rangeTextBlock = `${this.system.rangePower}`;
+				}
+			}
+
+		} else {
+			rangeData.rangeText = game.i18n.localize("DND4E.NotAvailable");
+			rangeData.rangeTextShort = game.i18n.localize("DND4E.NotAvailableShort");
+		}
+
+		return rangeData;
+	}
 	/* -------------------------------------------- */
 
 	/**
@@ -1818,7 +1922,7 @@ export default class Item4e extends Item {
 				return  Helper.commonReplace(formula, actorData, this.system, weaponUse?.system);
 			}
 			damageFormula = formulaHelper(itemData.hit.formula)
-			missDamageFormula =formulaHelper(itemData.miss.formula)
+			missDamageFormula = formulaHelper(itemData.miss.formula)
 			critDamageFormula = formulaHelper(itemData.hit.critFormula)
 			damageFormulaExpression = itemData.hit.formula
 			missDamageFormulaExpression = itemData.miss.formula
@@ -1951,6 +2055,12 @@ export default class Item4e extends Item {
 		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 		// Call the roll helper utility
 		
+		if(itemData.attack.isAttack && actorData.statuses.has('weakened')){
+			damageFormula = `floor((${damageFormula})/2)`;
+			missDamageFormula = `floor((${missDamageFormula})/2)`
+			critDamageFormula = `floor((${critDamageFormula})/2)`
+		}
+
 		if(missDamageFormula.includes('@damageFormula')){
 			missDamageFormula = missDamageFormula.replace('@damageFormula', Helper.bracketed(damageFormula));
 		}
@@ -2382,7 +2492,7 @@ export default class Item4e extends Item {
 		if ( event.target.closest(":is(.item-name, .collapsible) :is(a, button)") ) return;
 
 		event.preventDefault();
-		const header = event.target;
+		const header = event.target.closest("div");
 		const card = header.closest(".chat-card");
 		const content = card.querySelector(".card-content:not(.details)");
 		

@@ -7,3 +7,5 @@
 # Build Artifacts
 packs/*
 !packs/_source/
+
+dnd4e.lock

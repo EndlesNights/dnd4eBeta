@@ -56,7 +56,7 @@ export class Actor4e extends Actor {
 		//used to call changes to HP scrolling text
 		if(data[`system.attributes.hp.value`] != undefined && data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
 			options.dhp = data[`system.attributes.hp.value`] - this.system.attributes.hp.value;
-			data[`system.details.isBloodied`] = data[`system.attributes.hp.value`] <= this.system.attributes.hp.max/2;
+			data[`system.details.isBloodied`] = data[`system.attributes.hp.value`] <= (this.system.details.bloodied ?? this.system.attributes.hp.max/2);
 		}
 
 		// Apply changes in Actor size to Token width/height
@@ -384,12 +384,12 @@ export class Actor4e extends Actor {
 		}
 		
 		system.details.bloodied = Math.floor(system.attributes.hp.max / 2);
-		system.details.surgeValue = Math.floor(system.details.bloodied / 2) + system.details.surgeBon.value;
+		system.details.surgeValue = Math.floor(system.attributes.hp.max / 4) + system.details.surgeBon.value;
 		system.attributes.hp.min = -system.details.bloodied;
 		if(actorData.type === "Player Character") system.details.secondWindValue = system.details.surgeValue + system.details.secondwindbon.value;
 
 		//check if bloodied
-		system.details.isBloodied = (system.attributes.hp.value <= system.attributes.hp.max/2);
+		system.details.isBloodied = (system.attributes.hp.value <= system.details.bloodied) || this.statuses.has('bloodied');
 		
 		if(actorData.type === "Player Character"){
 			if(isNaN(parseInt(system.details.surgeEnv?.absolute))){ //All logic only required if there is no usable absolute value

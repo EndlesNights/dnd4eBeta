@@ -39,6 +39,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		],
 		actions: {
 			showImage: ItemSheet4e.#onDisplayItemArt,
+			editImage: ItemSheet4e.#onEditImage,
 			executeMacro: ItemSheet4e.#onExecuteMacro,
 			addDamage: ItemSheet4e.#onDamageControl,
 			deleteDamage: ItemSheet4e.#onDamageControl,
@@ -1034,9 +1035,26 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	static #onDisplayItemArt() {
 		const p = new foundry.applications.apps.ImagePopout({src: this.item.img});
 		p.render(true);
-	}	
+	}
+
 	/* -------------------------------------------- */
-	
+
+	static async #onEditImage() {
+		const defaultArtwork = this.document.constructor.getDefaultArtwork?.(this.document._source) ?? {};
+		const defaultImage = foundry.utils.getProperty(defaultArtwork, 'img');
+		const fp = new CONFIG.ux.FilePicker({
+			current: this.document.img,
+			type: 'image',
+			redirectToRoot: defaultImage ? [defaultImage] : [],
+			callback: (path) => this.document.update({ img: path }),
+			top: this.position.top + 40,
+			left: this.position.left + 10
+		});
+		await fp.browse();
+	}
+
+	/* -------------------------------------------- */
+
 	static async #onExecuteMacro() {
 		await this.submit({preventClose: true});
 		return Helper.executeMacro(this.document)

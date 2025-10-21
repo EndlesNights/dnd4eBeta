@@ -266,13 +266,15 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 .dnd4e.sheet.item .image-frame .profile {
 	flex:0 0 100px;
 	margin-right:0px;
-	object-fit:contain;
+	object-fit: cover;
+	object-position: top;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 	border-width: 2px;
+	border: 2px solid var(--color-text-primary);
 }
-.dnd4e.sheet.actor:not(.NPC,.Hazard){
+.dnd4e.sheet.actor:not(.NPC,.Hazard,.minimized){
 	min-width:836px;
 	min-height:420px;
 }
@@ -1949,7 +1951,7 @@ font-size:12px;
 /*  NPC Sheets
 /* ----------------------------------------- */
 
-.dnd4e.sheet.actor.NPC{
+.dnd4e.sheet.actor.NPC:not(.minimized){
 	min-width:655px;
 }
 .dnd4e.sheet .npc .sheet-header .summary-type{
@@ -2172,7 +2174,7 @@ font-size:12px;
 /*  Hazard Sheets
 /* ----------------------------------------- */
 
-.dnd4e.sheet.actor.Hazard{
+.dnd4e.sheet.actor.Hazard:not(.minimized){
 	min-width:452px;
 }
 .dnd4e.sheet .npc.hazard .sheet-header .role-details{
@@ -2262,7 +2264,7 @@ font-size:12px;
 /*  Item Sheets
 /* ----------------------------------------- */
 
-.dnd4e.sheet.item{
+.dnd4e.sheet.item:not(.minimized){
 	min-width:460px;
 	min-height:400px;
 }
