@@ -1827,7 +1827,7 @@ export default class Item4e extends Item {
 			}
 
 		} else {
-			rangeData.rangeText = game.i18n.localize("DND4E.NotAvalible");
+			rangeData.rangeText = game.i18n.localize("DND4E.NotAvailable");
 			rangeData.rangeTextShort = game.i18n.localize("DND4E.NotAvailableShort");
 		}
 
