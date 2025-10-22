@@ -2662,7 +2662,7 @@ export class Actor4e extends Actor {
 				if(isFF) {
 					let save = await this.rollSave(event, {effectSave:true, effectId:i});
 				} else {
-					let save = await new SaveThrowDialog({document: this, effectSave: true, effectId: i}).render(true);
+					let save = await SaveThrowDialog.create({document: this, effectSave: true, effectId: i});
 				}
 			}
 		}

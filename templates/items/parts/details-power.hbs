@@ -58,10 +58,10 @@
 
   {{#if system.weaponType}}
     <select name="system.weaponUse">
-      <option value="default">{{ localize 'DND4E.Default' }}</option>
-      <option value="defaultOH">{{ localize 'DND4E.Default' }} {{ localize 'DND4E.HOff' }}</option>
-      <option value="none">{{ localize 'DND4E.None' }}</option>
-      {{selectOptions powerWeaponUseTargets selected=value localize=true}}
+      <option value="default"{{#if (eq system.weaponUse "default")}} selected{{/if}}>{{ localize 'DND4E.Default' }}</option>
+      <option value="defaultOH"{{#if (eq system.weaponUse "defaultOH")}} selected{{/if}}>{{ localize 'DND4E.Default' }} {{ localize 'DND4E.HOff' }}</option>
+      <option value="none"{{#if (eq system.weaponUse "none")}} selected{{/if}}>{{ localize 'DND4E.None' }}</option>
+      {{selectOptions powerWeaponUseTargets selected=system.weaponUse localize=true}}
     </select>
   {{/if}}
 </div>
@@ -190,7 +190,7 @@
   <label>{{ localize "DND4E.Attack" }}</label>
   <div class="form-fields attack-roll">
     <select name="system.attack.ability">
-      <option value=""></option>
+      <option value="" {{#if (eq system.attack.ability "")}}selected{{/if}}></option>
       {{selectOptions config.abilityScores selected=system.attack.ability labelAttr=value.label}}
       <option value="form" {{#if (eq system.attack.ability "form")}}selected{{/if}}>{{ localize "DND4E.FormulaAttack" }}</option>
     </select>

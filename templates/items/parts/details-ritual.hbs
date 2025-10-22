@@ -21,7 +21,7 @@
   <div class="form-fields">
     <input type="text" name="system.castTime.value" value="{{system.castTime.value}}" data-dtype="Number" placeholder="-"/>
     <select name="system.castTime.units">
-      <option value=""></option>
+      <option value=""{{#if (eq system.castTime.units "")}}selected{{/if}}></option>
       {{selectOptions config.timePeriods selected=system.castTime.units localize=true}}
     </select>
   </div>
@@ -33,7 +33,7 @@
   <div class="form-fields">
     <input type="text" name="system.duration.value" value="{{system.duration.value}}" data-dtype="Number" placeholder="-"/>
     <select name="system.duration.units">
-      <option value=""></option>
+      <option value=""{{#if (eq system.castTime.value "")}}selected{{/if}}></option>
       {{selectOptions config.timePeriods selected=system.duration.units localize=true}}
     </select>
   </div>
