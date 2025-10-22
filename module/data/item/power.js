@@ -50,6 +50,7 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
       trigger: new StringField({initial: ""}),
       requirement: new StringField({initial: ""}),
       special: new StringField({initial: ""}),
+      chatFlavor: new StringField({initial: ""}),
       specialAdd: new SchemaField({
         parts: new ArrayField(new StringField({initial: ""}), {initial: []})
       }),
