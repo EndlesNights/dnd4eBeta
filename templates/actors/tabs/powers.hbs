@@ -152,7 +152,7 @@
           <div class="item-summary collapsible-content">
             <div class="wrapper">
               {{#if item.system.autoGenChatPowerCard}}
-              {{#if chatData.chatFlavor}}<div class="item-description">{{{chatData.chatFlavor}}}</div>{{/if}}
+              <div class="item-description">{{#if chatData.chatFlavor}}{{{chatData.chatFlavor}}}{{else}}{{{chatData.description.value}}}{{/if}}</div>
               <div class="item-details">
                 {{{detailsText}}}
               </div>

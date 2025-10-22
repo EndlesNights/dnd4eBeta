@@ -140,7 +140,7 @@ body {
 body.theme-dark {
 	--white-svg-filter: brightness(0) saturate(100%) invert(91%) sepia(17%) saturate(207%) hue-rotate(345deg) brightness(103%) contrast(87%);;
 }
-body.theme-dark .dnd4e:not(.themed.theme-light),
+body.theme-dark .dnd4e.sheet:not(.themed.theme-light),
 .dnd4e.themed.theme-dark {
 	--gradient-4e:linear-gradient(90deg, #3c3d48, #3c3d4818);
 	--automath-brightness:0.9
