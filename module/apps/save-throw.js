@@ -35,7 +35,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 	/** @override */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
-        const saveOptions = this.options;
+		const saveOptions = this.options;
 		let savableEffects = [];
 		const actor = this.document;
 		if (actor && !saveOptions.effectSave) {
@@ -57,7 +57,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 				{ type: "submit", icon: "fa-solid fa-dice-d20", label: "DND4E.SaveRoll" }
 			]
 		});
-        return context;
+		return context;
 	}
 
 	async _onChangeInput(event) {
@@ -66,6 +66,14 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		this.options.saveDC = this.document.effects.get(target.value)?.flags.dnd4e?.effectData?.saveDC;
 		this.options.saveAgainst = target.value;
 		this.render();
+	}
+
+	static async create(options) {
+		const { promise, resolve } = Promise.withResolvers();
+		const application = new this(options);
+		application.addEventListener("close", () => resolve(application.document), { once: true });
+		application.render({ force: true });
+		return promise;
 	}
 
 	static #onSubmit(event, form, formData) {
