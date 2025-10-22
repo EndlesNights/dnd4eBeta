@@ -106,7 +106,7 @@
       <input type="text" name="system.uses.max" value="{{system.uses.max}}"/>
       <span class="sep">{{ localize "DND4E.per" }}</span>
       <select name="system.uses.per">
-        <option value=""></option>
+        <option value=""{{#if (eq system.uses.per "")}}selected{{/if}}></option>
         {{selectOptions config.limitedUsePeriods selected=system.uses.per labelAttr="label"}}
       </select>
     </div>

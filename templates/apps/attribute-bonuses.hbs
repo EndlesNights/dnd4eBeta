@@ -22,7 +22,7 @@
 				<input type="checkbox" name="system.light" data-dtype="Boolean" {{checked system.light}} style="vertical-align: middle; flex: auto"/>
 				<span style="flex: 2.6">{{localize "DND4E.DefModOverride"}}: </span>
 				<select name="system.altability" style="flex: 2">
-					<option value="">{{localize "DND4E.Default"}}</option>
+					<option value=""{{#if (eq system.altability "")}} selected{{/if}}>{{localize "DND4E.Default"}}</option>
 					{{selectOptions config.abilities selected=system.altability}}
 				</select>
 			</div>
@@ -32,7 +32,7 @@
 	<fieldset>
 		<legend data-tooltip="{{localize "DND4E.InitAbilityMod"}}">{{localize "DND4E.AbilityModifier"}}</legend>
 		<select name="system.ability">
-			<option value="">{{localize "DND4E.None"}}</option>
+			<option value=""{{#if (eq system.ability "")}} selected{{/if}}>{{localize "DND4E.None"}}</option>
 			{{selectOptions config.abilities selected=system.ability}}
 		</select>
 	</fieldset>

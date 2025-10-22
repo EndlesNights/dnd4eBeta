@@ -224,11 +224,10 @@
   <div class="form-group select">
     <label>{{ localize "DND4E.HealingSurgeSpending" }}</label>
     <select name="system.hit.healSurge">
-      <option value="">{{ localize "DND4E.None" }}</option>
-      <option value="surge">{{ localize "DND4E.HealingSurgeSpend" }}</option>
-      <option value="surgeCost">{{ localize "DND4E.HealingSurgeCost" }}</option>
-      <option value="surgeValue">{{ localize "DND4E.HealingSurgeValue" }}</option>
-      {{selectOptions selected=system.hit.healSurge}}
+      <option value=""{{#if (eq system.hit.healSurge "")}} selected{{/if}}>{{ localize "DND4E.None" }}</option>
+      <option value="surge"{{#if (eq system.hit.healSurge "surge")}} selected{{/if}}>{{ localize "DND4E.HealingSurgeSpend" }}</option>
+      <option value="surgeCost"{{#if (eq system.hit.healSurge "surgeCost")}} selected{{/if}}>{{ localize "DND4E.HealingSurgeCost" }}</option>
+      <option value="surgeValue"{{#if (eq system.hit.healSurge "surgeValue")}} selected{{/if}}>{{ localize "DND4E.HealingSurgeValue" }}</option>
     </select>
   </div>
 
