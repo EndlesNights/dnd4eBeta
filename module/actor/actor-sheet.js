@@ -249,7 +249,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			html.querySelectorAll('.currency-convert').forEach(el => el.addEventListener("click", this._onConvertCurrency.bind(this)));
 			
 			// Item Rolling
-			html.querySelectorAll('.item .item-image').forEach(el => el.addEventListener("click", event => this._onItemRoll(event)));
+			html.querySelectorAll('.item .item-image').forEach(el => el.addEventListener("click", event => {
+				event.preventDefault();
+				event.stopPropagation();
+				const itemId = event.currentTarget.closest(".item").dataset.itemId;
+				const item = this.actor.items.get(itemId);
+				this._onItemRoll(item);
+			}));
 			html.querySelectorAll('.item .item-image').forEach(el => {
 				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
 				el.addEventListener("mouseleave", this._onItemHoverExit.bind(this));
@@ -1538,13 +1544,9 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
 	 * @private
 	 */
-	_onItemRoll(event,variance={}) {
-		event.preventDefault();
-		event.stopPropagation();
+	_onItemRoll(item, variance={}) {
 		//console.debug(variance)
-		const itemId = event.currentTarget.closest(".item").dataset.itemId;
-		const item = this.actor.items.get(itemId);
-		
+
 		if ( item.type === "power") {
 			const fastForward = Helper.isRollFastForwarded(event);
 			return this.actor.usePower(item, {
@@ -1552,7 +1554,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				'fastForward': fastForward,
 				//Temporary traits from special roll modes
 				'variance': variance
-				});
+			});
 		}
 		// Otherwise roll the Item directly
 		return item.roll();
@@ -1924,14 +1926,14 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			options.unshift({
 				name: game.i18n.localize('DND4E.AttackModeCharge'),
 				icon: "<i class='fas fa-angles-right'></i>",
-				callback: () => this._onItemRoll(event,{isCharge:true})
+				callback: () => this._onItemRoll(item, {isCharge:true})
 			});
 		}
 		if ( item.type == 'power' && (item.system?.attack?.isBasic || item.system?.attack?.canOpp)) {
 			options.unshift({
 				name: game.i18n.localize('DND4E.AttackModeOpp'),
 				icon: "<i class='fas fa-triangle-exclamation'></i>",
-				callback: () => this._onItemRoll(event,{isOpp:true})
+				callback: () => this._onItemRoll(item, {isOpp:true})
 			});
 		}
 
