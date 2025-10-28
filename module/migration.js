@@ -212,6 +212,7 @@ export const migrateItemData = function(item) {
 	_migratePowerBasicAndGlobal(item, updateData);
 	_migrateFeature(item, updateData);
 	_migrateRitualCategory(item, updateData);
+	_migrateFlavourText(item, updateData);
 
 	// Always do this last, as it clobbers `system` updates
 	_migrateType(item, updateData);
@@ -1069,9 +1070,20 @@ function _migrateFeatureKeywords(itemData, updateData){
 	
 	if(sourceType == 'feature'){
 		//Add new properties from 0.6.13
-		if(system?.effectType == undefined) updateData['system.effectType'] = {};
-		if(system?.damageType == undefined) updateData['system.damageType'] = {};
-		if(system?.customKeywords == undefined) updateData['system.customKeywords'] = "";
+		if(itemData.system?.effectType == undefined) updateData['system.effectType'] = {};
+		if(itemData.system?.damageType == undefined) updateData['system.damageType'] = {};
+		if(itemData.system?.customKeywords == undefined) updateData['system.customKeywords'] = "";
 		return updateData;
 	}	
+}
+
+/**
+ * Move `chatFlavor` field to `description.chat`
+ * @param {object} itemData   Item data being migrated.
+ * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {object}           Modified version of update data.
+ * @private
+ */
+function _migrateFlavourText(itemData, updateData){
+	if(itemData.system?.chatFlavor) updateData['system.description.chat'] = itemData.system.chatFlavor;
 }
