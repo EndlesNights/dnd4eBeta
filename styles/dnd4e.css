@@ -2,12 +2,15 @@
 /*  Global Basics
 /* ----------------------------------------- */
 
-.dnd4e-blast-svg {
-	content: url(../icons/ui/blast.svg);
+.dnd4e-blast-svg{
+	content:url(../icons/ui/blast.svg);
 }
 
-.dnd4e-burst-svg {
-	content: url(../icons/ui/burst.svg);
+.dnd4e-burst-svg{
+	content:url(../icons/ui/burst.svg);
+}
+.standard-form{
+	gap:0;
 }
 
 /*.flexrow{
@@ -140,7 +143,7 @@ body {
 body.theme-dark {
 	--white-svg-filter: brightness(0) saturate(100%) invert(91%) sepia(17%) saturate(207%) hue-rotate(345deg) brightness(103%) contrast(87%);;
 }
-body.theme-dark .dnd4e.sheet:not(.themed.theme-light),
+body.theme-dark .dnd4e:not(.themed.theme-light),
 .dnd4e.themed.theme-dark {
 	--gradient-4e:linear-gradient(90deg, #3c3d48, #3c3d4818);
 	--automath-brightness:0.9
@@ -233,7 +236,10 @@ body.theme-dark .dnd4e.sheet:not(.themed.theme-light),
 	align-items:center;
 }
 .dnd4e.sheet.item .sheet-header{
-	flex: none;
+	flex:none;
+}
+.dnd4e.sheet.item .header-2{
+	align-items:stretch;
 }
 .sheet .sheet-header img{
 	margin-right:0px;
@@ -294,8 +300,6 @@ body.theme-dark .dnd4e.sheet:not(.themed.theme-light),
 .dnd4e.sheet.actor .section--attributes{
 	border-top:var(--border-heavy);
 	border-bottom:var(--border-heavy);
-	margin:10px;
-	margin-top:0px;
 	max-height:100px;
 }
 .dnd4e.sheet.actor:not(.NPC) .attributes span.sep{
@@ -314,7 +318,6 @@ body.theme-dark .dnd4e.sheet:not(.themed.theme-light),
 .dnd4e.sheet.actor .resource-tracker{
 	text-align:center;
 	position:relative;
-	margin-top: -7px;
 }
 .dnd4e.sheet.actor .section--attributes .resource-tracker input[type="text"]{
 	border-bottom:var(--border-normal);
@@ -732,6 +735,12 @@ body.theme-dark .dnd4e.sheet:not(.themed.theme-light),
 	margin:0 0 0 0;
 	padding:0 0 0 4px;
 }
+.dnd4e .traits-list>li{
+	display:inline-block;
+}
+.dnd4e .traits-list>li:not(:last-child)::after{
+	content:', ';
+}
 .dnd4e ul.item-properties.tags{
 	padding-left:0;
 }
@@ -754,6 +763,9 @@ body.theme-dark .dnd4e.sheet:not(.themed.theme-light),
 	font-size:20px;
 	font-weight:700;
 }
+.dnd4e.sheet .tab{
+	gap:0.5rem;
+}
 .dnd4e .form-header.enhancement-bonus{
 	margin-top: 5px;
 }
@@ -761,6 +773,7 @@ body.theme-dark .dnd4e.sheet:not(.themed.theme-light),
 	flex:2;
 	max-width:174px;
 	color:var(--color-label);
+	line-height:1;
 }
 .dnd4e .form-group label>.label-hint{
 	font-weight:normal;
@@ -817,6 +830,7 @@ body.theme-dark .dnd4e.sheet:not(.themed.theme-light),
 .dnd4e .form-group.stacked label.checkbox{
 	flex:auto;
 	text-align:left;
+	line-height:1;
 }
 .dnd4e .inline-list>li{
 	display:inline-block;
@@ -1656,7 +1670,7 @@ font-size:12px;
 .dnd4e.sheet .item-list .item,
 .dnd4e.sheet.item .item-list .item,
 .dnd4e.sheet.item .item-list .effect {
-	line-height:30px;
+	line-height:1;
 	padding:0 2px;
 	border-bottom:var(--border-faint);
 }
@@ -1892,9 +1906,7 @@ font-size:12px;
 	.item-summary{
 		flex:0 0 100%;
 		font-size:14px;
-		line-height:16px;
-		padding:0.25em 0.5em;
-		border-top:var(--border-faint);
+		line-height:1;
 	}
 }
 .dnd4e.sheet.actor .inventory .item-controls{
@@ -3089,28 +3101,26 @@ input[type="text"].dice-count{
 .dnd4e.chat-card .card-header h3:hover{
 	text-shadow:0 0 10px red;
 }
-.dnd4e.chat-card .card-content{
+.dnd4e .card-content{
 	margin:0;
 	padding:0;
 }
-.dnd4e.chat-card .card-content .chat-flavour,
-.dnd4e.chat-card .card-content .flavour,
-.dnd4e.chat-card .card-content .item-summary>p,
-.dnd4e.chat-card:not(.autogen) .card-content p{
+.dnd4e .card-content .flavour,
+.dnd4e .card-content .item-summary>p,
+.dnd4e .card-content:not(.autogen) p{
 	padding:2px 4px;
 	margin:0;
 }
-.dnd4e.chat-card .card-content .chat-flavour,
-.dnd4e.chat-card .card-content .flavour,
-.dnd4e.chat-card .card-content .item-summary>:not(.item-details){
+.dnd4e .card-content .flavour,
+.dnd4e .card-content .item-summary>:not(.item-details){
 	background:var(--gradient-4e);
 }
-.dnd4e.chat-card .card-content h3{
+.dnd4e .card-content h3{
 	font-size:12px;
 	margin:0;
 	font-weight:bold;
 }
-.dnd4e.chat-card .card-content > *{
+.dnd4e .card-content > *{
 	-webkit-user-select:text;
 	-moz-user-select:text;
 	-ms-user-select:text;
@@ -3172,28 +3182,28 @@ input[type="text"].dice-count{
 .dnd4e .item-details span{
 	margin:1px;
 }
-.dnd4e .item-details>span,
-.dnd4e .item-details p,
-.dnd4e .item-description{
+.dnd4e .card-content :is(.item-details,.flavour)>span,
+.dnd4e .card-content :is(.item-details,.flavour) p,
+.dnd4e .card-content .item-description{
 	padding-left:3px;
 	padding-right:3px;
 	margin:1px 0;
 }
-.dnd4e .item-description p{
+.dnd4e .card-content .item-description p{
 	margin:1px 0;
 }
-.dnd4e .item-details .action+.range-type{
+.dnd4e .card-content .item-details .action+.range-type{
 	padding-left:1em;
 }
-.dnd4e .item-details .usage,
-.dnd4e .item-details .keywords,
-.dnd4e .item-details .action,
-.dnd4e .item-details .range-type{
+.dnd4e .card-content .item-details .usage,
+.dnd4e .card-content .item-details .keywords,
+.dnd4e .card-content .item-details .action,
+.dnd4e .card-content .item-details .range-type{
 	font-weight:bold;
 }
-.dnd4e .item-description,
-.dnd4e .item-details .alt,
-.dnd4e .item-details .alt-highlight:nth-child(even) {
+.dnd4e .card-content .item-description,
+.dnd4e .card-content .item-details .alt,
+.dnd4e .card-content .item-details .alt-highlight:nth-child(even) {
 	background:var(--gradient-4e);
 }
 span.flavor-text.critical,
