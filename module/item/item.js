@@ -1285,10 +1285,6 @@ export default class Item4e extends Item {
 	async getChatData(htmlOptions={},variance={}) {
 		const data = foundry.utils.duplicate(this.system);
 		const labels = this.labels;
-
-		// if(data.chatFlavor) {
-		// 	data.description.value = data.chatFlavor;
-		// }
 			
 		const description = data.description;
 		const weaponUse = Helper.getWeaponUse(data, this.actor);
@@ -2259,7 +2255,7 @@ export default class Item4e extends Item {
 		const roll = await new Roll(rollData.item.formula, rollData).roll();
 		roll.toMessage({ 
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
-			flavor: this.system.chatFlavor || title,
+			flavor: this.system.description.chat || title,
 			rollMode: game.settings.get("core", "rollMode"),
 			messageData: {"flags.dnd4e.roll": {type: "other", itemId: this.id }}
 		});
@@ -2406,14 +2402,14 @@ export default class Item4e extends Item {
 
 		const label = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
 
-		const flavor = this.system.chatFlavor ? `${this.system.chatFlavor} (${label} check)` : `${this.name} - ${game.i18n.localize(titleKey)}  (${label} check)`;
+		const flavour = this.system.description.chat ? `${this.system.description.chat} (${label} check)` : `${this.name} - ${game.i18n.localize(titleKey)}  (${label} check)`;
 		// Compose the roll data
 		const rollConfig = foundry.utils.mergeObject({
 			parts: parts,
 			data: rollData,
 			title: title,
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
-			flavor: flavor,
+			flavor: flavour,
 			dialogOptions: {
 				width: 400,
 				top: options.event ? options.event.clientY - 80 : null,
