@@ -88,6 +88,7 @@ textarea{
 :root{
 	--border-engraved:2px groove #eeede0;
 	--border-heavy:3px solid #7a7971;
+	--border-medium:2px solid #7a7971;
 	--border-normal:1px solid #7a7971;
 	--border-faint:1px solid rgba(0,0,0,0.1);
 	--color-bg-btn-minor-inactive:rgba(0,0,0,0.075);
@@ -278,7 +279,7 @@ body.theme-dark .dnd4e:not(.themed.theme-light),
 	margin-left: auto;
 	margin-right: auto;
 	border-width: 2px;
-	border: 2px solid var(--color-text-primary);
+	border: var(--border-medium);
 }
 .dnd4e.sheet.actor:not(.NPC,.Hazard,.minimized){
 	min-width:836px;
