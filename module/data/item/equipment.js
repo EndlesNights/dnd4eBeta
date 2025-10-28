@@ -12,6 +12,7 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
       ...PhysicalItemTemplate.defineSchema(),
       ...ActivatedEffectTemplate.defineSchema(),
       ...ItemMacroTemplate.defineSchema(),
+      armourBaseType: new StringField({initial: ""}),
       level: new StringField({initial: ""}),
       armour: new SchemaField({
         type: new StringField({initial: "armour"}),
