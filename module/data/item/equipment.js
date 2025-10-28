@@ -12,7 +12,6 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
       ...PhysicalItemTemplate.defineSchema(),
       ...ActivatedEffectTemplate.defineSchema(),
       ...ItemMacroTemplate.defineSchema(),
-      armourBaseType: new StringField({initial: ""}),
       level: new StringField({initial: ""}),
       armour: new SchemaField({
         type: new StringField({initial: "armour"}),
@@ -35,6 +34,7 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
           }), {initial: []})
         })
       }),
+      armourBaseType: new StringField({initial: ""}),
       // TODO: is this actually used anywhere?
       speed: new SchemaField({
         value: new StringField({nullable: true, initial: null}),
