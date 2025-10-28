@@ -50,7 +50,6 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
       trigger: new StringField({initial: ""}),
       requirement: new StringField({initial: ""}),
       special: new StringField({initial: ""}),
-      chatFlavor: new StringField({initial: ""}),
       specialAdd: new SchemaField({
         parts: new ArrayField(new StringField({initial: ""}), {initial: []})
       }),
@@ -58,7 +57,8 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
         initialKeys: CONFIG.DND4E.effectTypes,
         initialKeysOnly: true
       }),
-      keywordsCustom: new StringField({initial: ""})
+      keywordsCustom: new StringField({initial: ""}),
+      chatFlavor: new StringField({initial: ""})
     }
   }
 }
