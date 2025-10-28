@@ -8,22 +8,24 @@
 		</div>
 	</header>
 
-	<div class="card-content">
+	<div class="card-content{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}">
 	
 		{{#if item.system.autoGenChatPowerCard}}
 		
-			{{#if item.system.chatFlavor}}
-				<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+			{{#if item.system.description.chat}}
+				<div class="flavour">
+					<p>{{{item.system.description.chat}}}</p>
+				</div>
 			{{else}}
-				{{#unless (eq actor.type "NPC")}}<!-- For NPCs, flavour text display shouldn't be conditional on the presence of flavour text, because almost all NPC powers lack flavour text -->
-					{{{system.description.value}}}
+				{{#unless (eq actor.type "NPC")}}{{!-- For NPCs, flavour text display shouldn't be conditional on the presence of flavour text, because almost all NPC powers lack flavour text --}}
+					<div class="flavour">
+						{{{system.description.value}}}
+					</div>
 				{{/unless}}
 			{{/if}}
 			
-			<div class="item-summary">
-				<div class="item-details">
-					{{{cardData}}}
-				</div>
+			<div class="item-details">
+				{{{cardData}}}
 			</div>
 			
 		{{else}}

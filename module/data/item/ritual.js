@@ -16,7 +16,7 @@ export default class RitualData extends foundry.abstract.TypeDataModel {
       }),
       requirements: new StringField({initial: ""}),
       level: new StringField({initial: ""}),
-      market: new NumberField({initial: 0, min: 0}),
+      market: new StringField({initial:""}),
       chatFlavor: new StringField({initial: ""}),
       attribute: new StringField({initial: "skills.arc.total"}),
       formula: new StringField({initial: ""}),
