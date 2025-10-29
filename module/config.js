@@ -1622,7 +1622,7 @@ DND4E.skills = {
 		label: "DND4E.SkillNat"
 	},
 	"prc": {
-		ability: "int",
+		ability: "wis",
 		armourCheck: false,
 		label: "DND4E.SkillPrc"
 	},
