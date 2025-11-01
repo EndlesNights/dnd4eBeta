@@ -1083,8 +1083,11 @@ export class Helper {
 	}
 
 	static _preparePowerCardData(chatData, CONFIG, actorData=null, attackTotal=null) {
+		
+		let powerDetail = `<div class="basics">`; //Open the white section between flavour and effects
+		
 		let powerSource = (chatData.powersource && chatData.powersource !== "") ? `${CONFIG.DND4E.powerSource[`${chatData.powersource}`]}` : "";
-		let powerDetail = `<span class="basics"><span class="usage">${CONFIG.DND4E.powerUseType[`${chatData.useType}`]}</span>`;
+		powerDetail += `<span class="usage">${CONFIG.DND4E.powerUseType[`${chatData.useType}`]}</span>`;
 		let tag = [];
 		
 		if(chatData.powersource) tag.push(powerSource);
@@ -1126,7 +1129,7 @@ export class Helper {
 		
 		if(tag.length > 0) powerDetail += ` ♦ <span class="keywords">${tag.join(', ')}</span>`;
 		
-		powerDetail += `</span><br /><span><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType].label}</span> `;
+		powerDetail += `<br /><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType].label}</span>`;
 
 		if(chatData.rangeType === "weapon") {
 			powerDetail += ` <span class="range-type weapon">${CONFIG.DND4E.weaponType[chatData.weaponType]}</span>`;
@@ -1161,6 +1164,7 @@ export class Helper {
 			powerDetail += `</span>`;
 		}
 		powerDetail += `</span>`;
+		powerDetail += `</div>`; //Close basics
 
 		if(chatData.requirement) {
 			powerDetail += `<p class="requirements"><strong>${game.i18n.localize("DND4E.Requirements")}:</strong> ${chatData.requirement}</p>`;
