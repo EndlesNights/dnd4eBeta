@@ -3183,15 +3183,11 @@ input[type="text"].dice-count{
 .dnd4e .item-details span{
 	margin:1px;
 }
-.dnd4e .card-content :is(.item-details,.flavour)>span,
-.dnd4e .card-content :is(.item-details,.flavour) p,
+.dnd4e .card-content :is(.item-details,.flavour,.item-description)>span,
+.dnd4e .card-content :is(.item-details,.flavour,.item-description) p,
 .dnd4e .card-content .item-description{
-	padding-left:3px;
-	padding-right:3px;
-	margin:1px 0;
-}
-.dnd4e .card-content .item-description p{
-	margin:1px 0;
+	padding:1px 3px;
+	margin:0;
 }
 .dnd4e .card-content .item-details .action+.range-type{
 	padding-left:1em;
