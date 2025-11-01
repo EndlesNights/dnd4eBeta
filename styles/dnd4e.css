@@ -1693,8 +1693,7 @@ font-size:12px;
 	height:30px;
 }
 .dnd4e.sheet .item-list .effect .item-image,
-.dnd4e.sheet .item-list .item .item-image,
-.dnd4e.sheet .item-list .item .item-image {
+.dnd4e.sheet .item-list .item .item-image{
 	flex:0 0 30px;
 	max-width:30px;
 	margin-right:5px;
@@ -3072,11 +3071,6 @@ input[type="text"].dice-count{
 	font-style:normal;
 	font-size:14px;
 }
-.dnd4e.chat-card .card-header{
-	padding:3px 0;
-	border-top:var(--border-engraved);
-	border-bottom:var(--border-engraved);
-}
 .dnd4e.chat-card .card-header img{
 	flex:0 0 36px;
 	margin-right:5px;
@@ -3095,7 +3089,7 @@ input[type="text"].dice-count{
 	font-family:"Modesto Condensed", "Palatino Linotype", serif;
 	font-size:20px;
 	font-weight:700;
-	color:var(--color-text-light-0);
+	color:var(--color-light-1);
 	border-bottom:0px;
 	padding-left:3px;
 }
