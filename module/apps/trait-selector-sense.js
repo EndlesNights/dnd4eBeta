@@ -5,7 +5,7 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 
   static DEFAULT_OPTIONS = {
     id: "trait-selector",
-    classes: ["dnd4e", "standard-form"],
+    classes: ["dnd4e","standard-form","default"],
     window: {
       title: "Actor Trait Selection"
     },

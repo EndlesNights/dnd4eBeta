@@ -5,7 +5,7 @@ export class MovementDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "movement-dialog",
-		classes: ["dnd4e", "movement-dialog", "standard-form"],
+		classes: ["dnd4e","movement-dialog","standard-form","default"],
 		form: {
 			closeOnSubmit: false,
 			handler: MovementDialog.#onSubmit

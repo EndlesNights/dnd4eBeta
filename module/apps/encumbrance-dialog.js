@@ -5,7 +5,7 @@ export class EncumbranceDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "encumbrance-dialog",
-		classes: ["dnd4e", "encumbrance-dialog", "standard-form"],
+		classes: ["dnd4e","encumbrance-dialog","standard-form","default"],
 		form: {
 			closeOnSubmit: false
 		},

@@ -4,7 +4,7 @@ export class DeathSaveDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "death-save",
-		classes: ["dnd4e", "actor-death-save", "standard-form"],
+		classes: ["dnd4e","actor-death-save","standard-form","default"],
 		form: {
 			closeOnSubmit: true,
 			handler: DeathSaveDialog.#onSubmit

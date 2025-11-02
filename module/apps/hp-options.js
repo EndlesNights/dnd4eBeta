@@ -5,7 +5,7 @@ export default class HPOptions extends DocumentSheet4e {
   /** @override */
 	static DEFAULT_OPTIONS = {
 		id: "hp-options",
-		classes: ["dnd4e", "standard-form"],
+		classes: ["dnd4e","standard-form","default"],
 		form: {
 			closeOnSubmit: false,
 			submitOnClose: false,

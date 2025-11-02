@@ -6,7 +6,7 @@ export class HealMenuDialog extends DocumentSheet4e {
 	/** @override */
 	static DEFAULT_OPTIONS = {
 		id: "heal-menu-dialog",
-		classes: ["dnd4e", "standard-form"],
+		classes: ["dnd4e","standard-form","default"],
 		form: {
 			closeOnSubmit: true,
 			submitOnClose: false,
