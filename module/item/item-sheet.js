@@ -21,7 +21,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	}
 
 	static DEFAULT_OPTIONS = {
-		classes: ["dnd4e", "sheet", "item", "standard-form"],
+		classes: ["dnd4e", "sheet", "item", "standard-form", "default"],
 		position: {
 			width: 585,
 			height: 450
