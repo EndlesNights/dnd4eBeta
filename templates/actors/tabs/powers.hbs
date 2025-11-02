@@ -55,10 +55,10 @@
       <ol class="item-list power-list">
       {{#each section.items as |item iid|}}
         <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
-          <div class="item-name item-image flexrow rollable">
+          <div class="item-name item-image item-roll flexrow rollable">
             <img src="{{item.img}}" width="30" height="30"/>
           </div>
-          <div class="flexrow power-name {{#if item.system.useType }}ability-usage--{{item.system.useType}}{{else}}ability-usage--blank{{/if}} {{#if item.system.notAvailable}}not-available{{/if}}" data-tooltip="{{item.name}}">
+          <div class="flexrow power-name{{#if item.system.useType}} ability-usage--{{item.system.useType}}{{else}}ability-usage--blank{{/if}}{{#if item.system.notAvailable}} not-available{{/if}}" data-tooltip="{{item.name}}">
             <div class="item-name flexrow rollable" data-action="itemSummary">
               <h4 class="power-detail">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
             </div>
