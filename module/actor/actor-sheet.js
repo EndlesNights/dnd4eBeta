@@ -9,28 +9,25 @@ import { AttributeBonusDialog } from "../apps/attribute-bonuses.js";
 import { CustomRolldDescriptions } from "../apps/custom-roll-descriptions.js";
 import { MovementDialog } from "../apps/movement-dialog.js";
 import { EncumbranceDialog } from "../apps/encumbrance-dialog.js";
+import { ItemImporterDialog} from "../apps/item-importer.js"
 import { HealMenuDialog } from "../apps/heal-menu-dialog.js";
 import TraitSelector from "../apps/trait-selector.js";
-import TraitSelectorValues from "../apps/trait-selector-sense.js";
+import TraitSelectorSense from "../apps/trait-selector-sense.js";
+import TraitSelectorSave from "../apps/trait-selector-save.js";
 import ConBonConfig from "../apps/con-bon-config.js";
+import ListStringInput from "../apps/list-string-input.js";
 // import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import ActiveEffect4e from "../effects/effects.js";
 import HPOptions from "../apps/hp-options.js";
 import { Helper } from "../helper.js";
 import {ActionPointExtraDialog} from "../apps/action-point-extra.js";
-import Item4e from "../item/item.js";
+import Item4e from "../item/item-document.js";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export default class ActorSheet4e extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2) {
-	#dragDrop;
-	#expandedItemIds;
-
-	get dragDrop() {
-		return this.#dragDrop;
-	}
+export default class ActorSheet4e extends ActorSheet {
 
 	constructor(...args) {
 		super(...args);
@@ -45,297 +42,45 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			features: new Set(),
 			rituals: new Set()
 		};
-
-		this.#dragDrop = this.#createDragDropHandlers();
-		this.#expandedItemIds = new Set();
 	}
 
-	static DEFAULT_OPTIONS = {
-		classes: ["dnd4e","actor","default"],
-		position: {
+
+	  /** @inheritdoc */
+	  async _updateObject(event, formData) {
+		return super._updateObject(event, formData);
+	  }
+  
+	/** @override */
+	static get defaultOptions() {
+
+		//add offset height options for extra skills
+		let extraHeight = 0;
+		if(game.settings.get("dnd4e", "custom-skills")?.length){
+			extraHeight = game.settings.get("dnd4e", "custom-skills").length * 27;
+		}
+
+		return foundry.utils.mergeObject(super.defaultOptions, {
+			classes: ["dnd4e", "sheet", "actor"],
 			width: 844,
-			height: 967
-		},
-		window: {
-			resizable: true
-		},
-		form: {
-			submitOnChange: true,
-			closeOnSubmit: false
-		},
-		dragDrop: [
-			{dragSelector: ".item-list .item", dropSelector: null}
-		],
-		actions: {
-			displayActorArt: ActorSheet4e.#onDisplayActorArt,
-			itemSummary: ActorSheet4e.#onItemSummary,
-			cycleSkillProficiency: { handler: ActorSheet4e.#onCycleSkillProficiency, buttons: [0, 2] },
-			editImage: ActorSheet4e.#onEditImage,
-		}
-	}
+			height: 902 + extraHeight,
+			tabs: [{
+				navSelector: ".sheet-tabs",
+				contentSelector: ".sheet-body",
+				initial: "powers" //initial default tab
+			}],
+			dragDrop: [
+				{dragSelector: ".item-list .item", dropSelector: null}
+			],
+			scrollY: [
+				".inventory .inventory-list",
+				".features .inventory-list",
+				".powers .inventory-list",
 
-	static PARTS = {
-		sheet: {
-			template: "systems/dnd4e/templates/actors/actor-sheet.hbs",
-			scrollable: [
-				".inventory",
-				".features",
-				".powers",
 				".section--sidebar",
-				".section--tabs-content",
-				"section.tab"
-			],
-			templates: [
-				"systems/dnd4e/templates/actors/tabs/biography.hbs",
-				"systems/dnd4e/templates/actors/tabs/details.hbs",
-				"systems/dnd4e/templates/actors/tabs/inventory.hbs",
-				"systems/dnd4e/templates/actors/tabs/features.hbs",
-				"systems/dnd4e/templates/actors/tabs/powers.hbs",
-				"systems/dnd4e/templates/actors/tabs/rituals.hbs",
-				"systems/dnd4e/templates/actors/tabs/effects.hbs",
-				"templates/generic/tab-navigation.hbs"
+				".section--tabs-content"
 			]
-		}
-	}
-
-	static TABS = {
-		primary: {
-			tabs: [
-				{id: "biography", label: "DND4E.Sheet.Biography"},
-				{id: "details", label: "DND4E.Sheet.Details"},
-				{id: "inventory", label: "DND4E.Sheet.Inventory"},
-				{id: "features", label: "DND4E.Sheet.Features"},
-				{id: "powers", label: "DND4E.Sheet.Powers"},
-				{id: "rituals", label: "DND4E.Sheet.Rituals"},
-				{id: "effects", label: "DND4E.Sheet.Effects"}
-			],
-			initial: "powers"
-		}
-	}
-
-	/* -------------------------------------------- */
-
-	_filterHelper(target, listSelector) {
-		const filter = target.value.toUpperCase();
-		const lists = this.element.querySelectorAll(listSelector);
-
-		for (const list of lists) {
-			const lis = list.querySelectorAll("li");
-			for (const li of lis) {
-				const el = li.querySelector("h4");
-				const textValue = (el?.textContent || el?.innerText) ?? "";
-				li.style.display = textValue.toUpperCase().includes(filter) ? "" : "none";
-			}
-		}
-	}
-
-	async _onRender(context, options) {
-		await super._onRender(context, options);
-
-		this.#dragDrop.forEach((d) => d.bind(this.element));
-
-		// Removed: on focus <input>, auto-select everything in it
-
-		this.element.querySelectorAll('input[data-dtype="Number"]').forEach(el => el.addEventListener("change", this._onChangeInputDelta.bind(this)))
-
-		this.element.querySelector("#filterInput-feat")?.addEventListener("input", (ev) => {
-			this._filterHelper(ev.target, ".feature-list");
 		});
-
-		this.element.querySelector("#filterInput-power")?.addEventListener("input", (ev) => {
-			this._filterHelper(ev.target, ".power-list");
-		});
-
-		this.element.querySelector("#filterInput-ritual")?.addEventListener("input", (ev) => {
-			this._filterHelper(ev.target, ".ritual-list")
-		})
-
-		// TODO: AppV2 this stuff properly (add to `DEFAULT_OPTIONS.actions` and set `data-action` on the proper elements)
-
-		// Everything below here is only needed if the sheet is editable
-		if (!this.isEditable) return;
-
-		const html = this.element;
-	
-		// Update Inventory Item
-		html.querySelectorAll('.item-edit').forEach(el => el.addEventListener("click", event => {
-			const li = event.currentTarget.closest("li.item");
-			const item = this.actor.items.get(li.dataset.itemId);
-			item.sheet.render(true);
-		}));
-	
-		if ( this.actor.isOwner ) {	
-			// Roll Skill Checks
-			html.querySelectorAll('.skill-name').forEach(el => el.addEventListener("click", this._onRollSkillCheck.bind(this)));
-	
-			html.querySelectorAll('.passive-message').forEach(el => el.addEventListener("click", this._onRollPassiveCheck.bind(this)));
-			
-			//Roll Abillity Checks
-			html.querySelectorAll('.ability-name').forEach(el => el.addEventListener("click", this._onRollAbilityCheck.bind(this)));
-			
-			//Roll Defence Checks
-			html.querySelectorAll('.def-name').forEach(el => el.addEventListener("click", this._onRollDefenceCheck.bind(this)));
-			
-			//Open HP-Options
-			html.querySelectorAll('.health-option').forEach(el => el.addEventListener("click", this._onHPOptions.bind(this)));
-			
-			//Open Skill-Bonus
-			html.querySelectorAll('.ability-mod-half').forEach(el => el.addEventListener("click", this._onAbilityBonus.bind(this)));
-			html.querySelectorAll('.skill-bonus').forEach(el => el.addEventListener("click", this._onSkillBonus.bind(this)));
-			html.querySelectorAll('.death-save-bonus').forEach(el => el.addEventListener("click", this._onDeathSaveBonus.bind(this)));
-			html.querySelectorAll('.roll-save-bonus').forEach(el => el.addEventListener("click", this._onSavingThrowBonus.bind(this)));
-			html.querySelectorAll('.surge-bonus').forEach(el => el.addEventListener("click", this._onSurgeBonus.bind(this)));
-			html.querySelectorAll('.envimental-loss-bonus').forEach(el => el.addEventListener("click", this._onSurgeEnv.bind(this)));
-			html.querySelectorAll('.secondwind-bonus').forEach(el => el.addEventListener("click", this._onSecondWindBonus.bind(this)));
-			html.querySelectorAll('.defence-bonus').forEach(el => el.addEventListener("click", this._onDefencesBonus.bind(this)));
-			html.querySelectorAll('.init-bonus').forEach(el => el.addEventListener("click", this._onInitiativeBonus.bind(this)));
-			html.querySelectorAll('.move-bonus').forEach(el => el.addEventListener("click", this._onMovementBonus.bind(this)));
-			html.querySelectorAll('.passive-bonus').forEach(el => el.addEventListener("click", this._onPassiveBonus.bind(this)));
-			html.querySelectorAll('.modifiers-bonus').forEach(el => el.addEventListener("click", this._onModifiersBonus.bind(this)));
-			html.querySelectorAll('.resistances-bonus').forEach(el => el.addEventListener("click", this._onResistancesBonus.bind(this)));
-			
-			html.querySelectorAll('.movement-dialog').forEach(el => el.addEventListener("click", this._onMovementDialog.bind(this)));
-			
-			html.querySelectorAll('.custom-roll-descriptions').forEach(el => el.addEventListener("click", this._onCustomRolldDescriptions.bind(this)));
-			
-			//second wind
-			html.querySelectorAll('.second-wind').forEach(el => el.addEventListener("click", this._onSecondWind.bind(this)));
-	
-			// heal menu
-			html.querySelectorAll('.heal-menu').forEach(el => el.addEventListener("click", this._onHealMenuDialog.bind(this)));
-	
-			//action point
-			html.querySelectorAll('.action-point').forEach(el => el.addEventListener("click", this._onActionPointDialog.bind(this)));
-			html.querySelectorAll('.action-point-extra').forEach(el => el.addEventListener("click", this._onActionPointExtraDialog.bind(this)));
-			
-			//short rest
-			html.querySelectorAll('.short-rest').forEach(el => el.addEventListener("click", this._onShortRest.bind(this)));
-			
-			//long rest
-			html.querySelectorAll('.long-rest').forEach(el => el.addEventListener("click", this._onLongRest.bind(this)));		
-			
-			//death save
-			html.querySelectorAll('.death-save').forEach(el => el.addEventListener("click", this._onDeathSave.bind(this)));
-			html.querySelectorAll('.roll-save').forEach(el => el.addEventListener("click", this._onSavingThrow.bind(this)));
-	
-			//roll init
-			html.querySelectorAll('.rollInitiative').forEach(el => el.addEventListener("click", this._onrollInitiative.bind(this)));
-			
-			// Trait Selector
-			html.querySelectorAll('.trait-selector').forEach(el => el.addEventListener("click", this._onTraitSelector.bind(this)));
-			html.querySelectorAll('.trait-selector-weapon').forEach(el => el.addEventListener("click", this._onTraitSelectorWeapon.bind(this)));
-			html.querySelectorAll('.trait-selector-senses').forEach(el => el.addEventListener("click", this._onTraitSelectorSense.bind(this)));
-			html.querySelectorAll('.list-string-input').forEach(el => el.addEventListener("click", this._onListStringInput.bind(this)));
-			
-			//Inventory & Item management
-			html.querySelectorAll('.item-create').forEach(el => el.addEventListener("click", this._onItemCreate.bind(this)));
-			html.querySelectorAll('.item-edit').forEach(el => el.addEventListener("click", this._onItemEdit.bind(this)));
-			html.querySelectorAll('.item-delete').forEach(el => el.addEventListener("click", this._onItemDelete.bind(this)));
-			html.querySelectorAll('.item-uses input').forEach(el => el.addEventListener("change", this._onUsesChange.bind(this)));
-
-
-			html.querySelectorAll('.power-create').forEach(el => el.addEventListener("click", this._onPowerItemCreate.bind(this)));
-	
-			html.querySelectorAll('.item-import').forEach(el => el.addEventListener("click", this._onItemImport.bind(this)));
-	
-			// Active Effect management
-			// html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
-			html.querySelectorAll('.effect-control').forEach(el => el.addEventListener("click", event => ActiveEffect4e.onManageActiveEffect(event, this.actor)));
-				
-			// Item State Toggling
-			html.querySelectorAll('.item-toggle').forEach(el => el.addEventListener("click", this._onToggleItem.bind(this)));
-		
-			//convert currency to it's largest form to save weight.
-			html.querySelectorAll('.currency-convert').forEach(el => el.addEventListener("click", this._onConvertCurrency.bind(this)));
-			
-			// Item Rolling
-			html.querySelectorAll('.item .item-image').forEach(el => el.addEventListener("click", event => {
-				event.preventDefault();
-				event.stopPropagation();
-				const itemId = event.currentTarget.closest(".item").dataset.itemId;
-				const item = this.actor.items.get(itemId);
-				this._onItemRoll(item);
-			}));
-			html.querySelectorAll('.item .item-image').forEach(el => {
-				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
-				el.addEventListener("mouseleave", this._onItemHoverExit.bind(this));
-			});
-			
-			// Item Recharge
-			html.querySelectorAll('.item .item-recharge').forEach(el => el.addEventListener("click", event => this._onItemRecharge(event)));
-	
-			// Effect-Specific Saves
-			html.querySelectorAll('.effect-save').forEach(el => el.addEventListener("click", event => this._onRollEffectSave(event)));
-	
-			// Load Options
-			html.querySelectorAll('.encumbrance-options').forEach(el => el.addEventListener("click", this._onEncumbranceDialog.bind(this)));
-			
-			// Conditional Attack Mod Config
-			html.querySelectorAll('.con-bon-config').forEach(el => el.addEventListener("click", this._onConBonConfig.bind(this)));
-			
-			// Context Menus
-			new CONFIG.ux.ContextMenu(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this), jQuery: false, fixed: true});
-		}
-
-		//Disables and adds warning to input fields that are being modfied by active effects
-		for ( const override of this._getAllActorOverrides(["system.details.surges.value"]) ) {
-			html.querySelectorAll(`input[name="${override}"],select[name="${override}"]`).forEach((el) => {
-				el.disabled = true;
-				el.dataset.tooltip = "DND4E.ActiveEffectOverrideWarning";
-			});
-		}
-	}
-	
-	_initializeApplicationOptions(options) {
-		options = super._initializeApplicationOptions(options);
-		const numCustomSkills = game.settings.get("dnd4e", "custom-skills")?.length;
-		if (numCustomSkills) {
-			options.position.height += numCustomSkills * 27;
-		}
-		return options;
-	}
-
-	#createDragDropHandlers() {
-		return (this.options.dragDrop ?? []).map((d) => {
-			d.permissions = {
-				dragstart: this._canDragStart.bind(this),
-				drop: this._canDragDrop.bind(this),
-			};
-			d.callbacks = {
-				dragstart: this._onDragStart.bind(this),
-				dragover: this._onDragOver.bind(this),
-				drop: this._onDrop.bind(this),
-			};
-			return new foundry.applications.ux.DragDrop.implementation(d);
-		});
-	}
-
-	_onDragStart(event) {
-		const docRow = event.currentTarget.closest("li");
-		if ("link" in event.target.dataset) return;
-
-		if (!docRow) return;
-
-		const dragData = this._getEmbeddedDocument(docRow)?.toDragData();
-		if (!dragData) return;
-
-		event.dataTransfer?.setData("text/plain", JSON.stringify(dragData));
-	}
-
-	_getEmbeddedDocument(target) {
-		const docRow = target.closest("li[data-item-id], li[data-effect-id]");
-		if (!docRow) return;
-		if (docRow.dataset.itemId) {
-			return this.document.items.get(docRow.dataset.itemId);
-		} else {
-			const parentId = docRow.dataset.parentId;
-			const parent =
-				parentId && (parentId !== this.document.id)
-					? this.document.items.get(parentId)
-					: this.document;
-			return parent.effects.get(docRow.dataset.effectId);
-		}
-	}
+  }
 
   /* -------------------------------------------- */
 
@@ -344,64 +89,61 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @type {Set<string>}
    */
    static unsupportedItemTypes = new Set();
+  /* -------------------------------------------- */
+
+  /** @override */
+  get template() {
+	return `systems/dnd4e/templates/actor-sheet.html`;
+  }
 
   /* -------------------------------------------- */
 
 	/** @override */
-	async _prepareContext(options) {
-		const context = await super._prepareContext(options);
-		const actor = this.actor.toObject(false);
-		const actorData = actor.system;
-		actorData.details.isBloodied = this.actor.system.details.isBloodied;
+	async getData(options) {
 
-		const isOwner = this.actor.isOwner;
+		let isOwner = this.actor.isOwner;
 
-		foundry.utils.mergeObject(context, {
+		// const sheetData = super.getData();
+
+		const data = {
 			owner: isOwner,
 			limited: this.actor.limited,
 			options: this.options,
 			editable: this.isEditable,
 			cssClass: isOwner ? "editable" : "locked",
-			isCharacter: actor.type === "Player Character",
-			isNPC: actor.type === "NPC",
-			isCreature: ["NPC","Player Character"].includes(actor.type),
-			isCombatant: ["NPC","Player Character","Hazard"].includes(actor.type),
-			hasWealth: ["NPC","Player Character"].includes(actor.type),
-			hasSpeed: ["NPC","Player Character"].includes(actor.type),
+			isCharacter: this.actor.type === "Player Character",
+			isNPC: this.actor.type === "NPC",
+			isCreature: ["NPC","Player Character"].includes(this.actor.type),
+			isCombatant: ["NPC","Player Character","Hazard"].includes(this.actor.type),
+			hasWealth: ["NPC","Player Character"].includes(this.actor.type),
+			hasSpeed: ["NPC","Player Character"].includes(this.actor.type),
 			config: CONFIG.DND4E,
-			// rollData: this.actor.getRollData(),
-			actor,
-			actorData,
-			system: actorData
-		});
+			rollData: this.actor.getRollData.bind(this.actor)
+		};
 
-		context.items = actor.items
-			.filter(i => !this.actor.items.has(i.system.container))
+		// The Actor's data
+		const actor = this.actor
+		const actorData = actor.system;
+		data.actor = actor;
+		data.system = actorData;
+
+		data.items = actor.items
+			.filter(i => !actor.items.has(i.system.container))
 			.sort((a, b) => (a.sort || 0) - (b.sort || 0));
 
-		for (let i of context.items) {
+		for ( let i of data.items ) {
 			const item = this.actor.items.get(i._id);
 			i.labels = item.labels;
-			i.chatData = await item.getChatData({secrets: this.actor.isOwner})
-			if (item.type === "power" && item.system.autoGenChatPowerCard) {
-				let attackBonus = null;
-				if(item.hasAttack){
-					attackBonus = await item.getAttackBonus();
-				}
-				let detailsText = Helper._preparePowerCardData(i.chatData, CONFIG, this.actor, attackBonus);
-				i.detailsText = await foundry.applications.ux.TextEditor.implementation.enrichHTML(detailsText, {
-					async: true,
-					relativeTo: this.actor
-				});
-			}
-			i.collapsed = !this.#expandedItemIds.has(i._id); 
 		}
 
-		this._prepareItems(context);
+		// Prepare owned items
+		this._prepareItems(data);
+		
+		// Prepare active effects;
+		data.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.getActiveEffects());
 
-		context.effects = ActiveEffect4e.prepareActiveEffectCategories(this.actor.getActiveEffects());
-
-		if (context.isCombatant) {
+		if(data.isCombatant){
+			//if any custom skills, sort them alphabetically
 			if(Object.entries(game.dnd4e.config.coreSkills).length != Object.entries(actorData.skills).length){
 				const skillNames = Object.keys(actorData.skills);
 
@@ -420,20 +162,21 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
 				skl.icon = this._getTrainingIcon(skl.training);
 				skl.hover = game.i18n.localize(DND4E.trainingLevels[skl.training]);
-				skl.label = skl.label ? skl.label: DND4E.skills[s]?.label;
+				skl.label = skl.label ? skl.label: game.i18n.localize(DND4E.skills[s]);
 			}
 			
 			this._prepareDataSave(actorData.details,
 				{"saves": CONFIG.DND4E.saves}
 			);
 		}
-
-		if (context.isCharacter) {
-			this._prepareDataProfs(actorData.details?.armourProf,
+		
+		if(data.isCharacter){
+			//Proficiencies
+			this._prepareDataProfs(actorData.details?.armourProf, 
 				{"profArmor": CONFIG.DND4E.profArmor}
 			);
-			this._prepareDataProfs(actorData.details?.weaponProf,
-				{ weapons:Object.assign(
+			this._prepareDataProfs(actorData.details?.weaponProf, 
+			{ weapons:Object.assign(
 					CONFIG.DND4E.weaponProficiencies,
 					CONFIG.DND4E.simpleM,
 					CONFIG.DND4E.simpleR,
@@ -450,6 +193,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					CONFIG.DND4E.implementProficiencies
 				)}
 			);
+			
 			// Resources
 			actorData.resources = ["primary", "secondary", "tertiary"].reduce((obj, r) => {
 				const res = actorData.resources[r] || {};
@@ -464,47 +208,35 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				obj[r] = res
 				return obj;
 			}, {});
+		}	
+
+		if(data.hasWealth){
+			data.currencyGoldSum = this._currencyGoldSumLabel();
 		}
 
-		if (context.hasWealth) {
-			context.currencyGoldSum = this._currencyGoldSumLabel();
-		}
-
-		if (context.isCreature) {
+		if(data.isCreature){
 			actorData.size = DND4E.actorSizes;
-
-			this._prepareDataSense(actorData.senses);
+			
+			this._prepareDataSense(actorData.senses,
+				{"vision": CONFIG.DND4E.vision, "special": CONFIG.DND4E.special}
+			);
 			
 			this._prepareDataTraits(actorData.languages, 
 				{"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
 			);
 	
-			context.biographyHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.biography, {
+			data.biographyHTML = await TextEditor.enrichHTML(data.system.biography, {
 				secrets: isOwner,
 				async: true,
 				relativeTo: this.actor
 			});
 		}
-
-		if (context.hasSpeed) {
-			this._prepareMovement(context);
+		
+		if(data.hasSpeed){
+			this._prepareMovement(data);
 		}
-
-		if (actorData.encumbrance) {
-			const {value, max} = actorData.encumbrance;
-			actorData.encumbrance = {
-				...actorData.encumbrance,
-				pbc: Math.clamp((value / max) * 100, 0, 99.7),
-				pec: Math.clamp((value / max) * 100 - 100, 1, 99.7),
-				encumBar: value > max ? "#b72b2b" : "#6c8aa5"
-			};
-		}
-
-		context.system = actorData;
-
-		context.systemFields = this.actor.system.schema.fields;
-
-		return context;
+		
+		return data;
 	}
 	
 	_prepareDataTraits(data, map) {
@@ -559,9 +291,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		// Partition items by category
 		let [items, pow, feats, rits] = data.items.reduce((arr, item) => {
 			// Item details
-			item.img ||= DEFAULT_TOKEN;
+			item.img = item.img || DEFAULT_TOKEN;
 			item.isStack = Number.isNumeric(item.system.quantity) && (item.system.quantity !== 1);
 
+			// Item usage
+			item.hasUses = item.system.uses && (item.system.preparedMaxUses > 0);
 			// item.isOnCooldown = item.system.recharge && !!item.system.recharge.value && (item.system.recharge.charged === false);
 			item.isDepleted = item.isOnCooldown && (item.system.uses?.per && (item.system.uses?.value > 0));
 			//Causing error in v10, only getter no setter now.
@@ -588,13 +322,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		// Organize items
 		for ( let i of items ) {
-			const item = this.actor.items.get(i._id);
-			i.system.quantity = item.system.quantity || 0;
-			i.system.weight = item.system.weight || 0;
-			i.totalWeight = item.totalWeight;
-			i.totalWeightLabel = i.totalWeight.toNearest(0.01);
-			i.system.preparedMaxUses = item.system.preparedMaxUses;
-			i.hasUses = item.system.uses && (item.system.preparedMaxUses > 0);
+			i.system.quantity = i.system.quantity || 0;
+			i.system.weight = i.system.weight || 0;
+			i.totalWeightLable = i.totalWeight.toNearest(0.01);
 			inventory[i.type].items.push(i);
 		}
 
@@ -603,9 +333,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 
 		for ( let p of pow ) {
-			const power = this.actor.items.get(p._id);
-			p.system.preparedMaxUses = power.system.preparedMaxUses;
-			p.hasUses = power.system.uses && (power.system.preparedMaxUses > 0);
 			powers[this._groupPowers(p,powers)].items.push(p);
 		}
 		for ( let r of rits ) {
@@ -635,26 +362,17 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (!data.hasSpeed) return;
 		data.moveTitle = `<p style="text-align:left">
 ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedWalking")}
-<br>+${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedRunning")}
+<br>${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedRunning")}
 <br>${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedCharging")}
+<br>${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedClimbing")}
+<br>${parseInt(data.system.movement.swim.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedSwimming")}
 <br>${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedShifting")}`;
-		if(data.system.movement.burrow.value) data.moveTitle += `<br>${parseInt(data.system.movement.burrow.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedBurrowing")}`;
-		if(data.system.movement.climb.value) data.moveTitle += `<br>${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedClimbing")}`;
-		if(data.system.movement.fly.value) data.moveTitle += `<br>${parseInt(data.system.movement.fly.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedFlying")}`;
-		if(data.system.movement.swim.value) data.moveTitle += `<br>${parseInt(data.system.movement.swim.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedSwimming")}`
-		if(data.system.movement.teleport.value) data.moveTitle += `<br>${parseInt(data.system.movement.teleport.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedTeleporting")}`;
 
 		if(data.system.movement.custom){
 			const moveCustom = [];
 			data.system.movement.custom.split(";").forEach((c, i) => (c ? moveCustom[i] = c.trim() : null) );
 			data.system.moveCustom = moveCustom;
-			moveCustom.forEach((c) => data.moveTitle += `<br>${c.trim()}`);
-		}
-		if(data.system.movement.ignoredDifficultTerrain){
-			data.system.movement.ignoredDifficultTerrain.forEach((t) => {
-				const terrainLabel = CONFIG.DND4E.ignoredDifficultTerrainTypes[t].label;
-				data.moveTitle += `<br>${terrainLabel}`
-			})
+			moveCustom.forEach((c) => data.moveTitle += `\n${c.trim()}`);
 		}
 	}	
 
@@ -751,7 +469,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	/* -------------------------------------------- */
 
 	_sortinventory(inventory) {
-		const sort = this.document.system.featureSortTypes;
+		const sort = this.object.system.featureSortTypes;
 		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(inventory)) {
 			group.items.sort((a,b) => a.sort - b.sort);
@@ -761,7 +479,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	/* -------------------------------------------- */
 
 	_sortFeatures(features) {
-		const sort = this.document.system.featureSortTypes;
+		const sort = this.object.system.featureSortTypes;
 		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(features)) {
 			group.items.sort(this._compareValues(sort));
@@ -771,7 +489,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	/* -------------------------------------------- */
 
 	_sortPowers(powers) {
-		const sort = this.document.system.powerSortTypes || "actionType";
+		const sort = this.object.system.powerSortTypes || "actionType";
 		for (const [keyy, group] of Object.entries(powers)) {
 			if(sort === "none"){
 				group.items.sort((a,b) => a.sort - b.sort);
@@ -782,7 +500,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	}
 	
 	_sortRituals(rituals) {
-		const sort = this.document.system.ritualSortTypes;
+		const sort = this.object.system.ritualSortTypes;
 		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(rituals)) {
 			group.items.sort(this._compareValues(sort));
@@ -792,10 +510,10 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	/* -------------------------------------------- */
 
 	_groupPowers(power, powerGroups) {
-		if(this.document.system.powerGroupTypes === "action" || !this.document.system.powerGroupTypes) {
+		if(this.object.system.powerGroupTypes === "action" || !this.object.system.powerGroupTypes) {
 			if(Object.keys(powerGroups).includes(power.system.actionType) ) return power.system.actionType;
 		}
-		else if(this.document.system.powerGroupTypes === "actionMod") {
+		else if(this.object.system.powerGroupTypes === "actionMod") {
 			if(power.system.trigger){
 				return "triggered";
 			}
@@ -804,20 +522,20 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			}	
 			return "other";
 		}
-		else if(this.document.system.powerGroupTypes === "type") {
+		else if(this.object.system.powerGroupTypes === "type") {
 			if(Object.keys(powerGroups).includes(power.system.powerType) )return power.system.powerType;
 		}
-		else if(this.document.system.powerGroupTypes === "powerSubtype") {
+		else if(this.object.system.powerGroupTypes === "powerSubtype") {
 			if(Object.keys(powerGroups).includes(power.system.powerSubtype) )return power.system.powerSubtype;
 		}
-		else if(this.document.system.powerGroupTypes === "usage") {
+		else if(this.object.system.powerGroupTypes === "usage") {
 			if(Object.keys(powerGroups).includes(power.system.useType) ) return power.system.useType;
 		}
 		return "other";
 	}
 
 	_generatePowerGroups() {
-		const actorData = this.document.system;
+		const actorData = this.object.system;
 		const powerGroupTypes = actorData.powerGroupTypes ?? "usage"
 		const groups = DND4E.powerGroupings[powerGroupTypes] ?? DND4E.powerGroupings["usage"]  // paranoid defensive, but ensure we always return something
 		return this.#configItemToDisplayConfig(groups)
@@ -884,10 +602,105 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
    * @private
    */
 	 _preparePowerRangeText(itemData) {
-		const rangeData = this.actor.items.get(itemData._id).rangeData();
-		itemData.system.rangeText = rangeData.rangeText;
-		itemData.system.rangeTextShort = rangeData.rangeTextShort;
-		itemData.system.rangeTextBlock = rangeData.rangeTextBlock;
+
+		const C = CONFIG.DND4E; 
+		let area;
+		if(itemData.system.area) {
+			try{
+				let areaForm = game.helper.commonReplace(`${itemData.system.area}`, this.actor);
+				area = Roll.safeEval(areaForm);
+			} catch (e) {
+				area = itemData.system.area;
+			}
+		} else {
+			area = 0;
+		}
+
+		if(itemData.system.rangeType === "range") {
+			itemData.system.rangeText = `${C.rangeType.range.label} ${itemData.system.rangePower}`
+			itemData.system.rangeTextShort = C.rangeType.range.abbr
+			itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
+			if(itemData.system.range.long) {
+				itemData.system.rangeText += `/${itemData.system.range.long}`
+				itemData.system.rangeTextBlock += `/${itemData.system.range.long}`
+			}
+		} else if(itemData.system.rangeType === "closeBurst") {
+			itemData.system.rangeText = `${C.rangeType.closeBurst.label} ${area}`
+			itemData.system.rangeTextShort = C.rangeType.closeBurst.abbr
+			itemData.system.rangeTextBlock = `${area}`
+		} else if(itemData.system.rangeType === "rangeBurst") {
+			itemData.system.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${itemData.system.rangePower}`
+			itemData.system.rangeTextShort = C.rangeType.rangeBurst.abbr
+			itemData.system.rangeTextBlock = `${area}(${itemData.system.rangePower})`
+		} else if(itemData.system.rangeType === "closeBlast") {
+			itemData.system.rangeText = `${C.rangeType.closeBlast.label} ${area}`
+			itemData.system.rangeTextShort = C.rangeType.closeBlast.abbr
+			itemData.system.rangeTextBlock = `${area}`
+		} else if(itemData.system.rangeType === "rangeBlast") {
+			itemData.system.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${itemData.system.rangePower}`
+			itemData.system.rangeTextShort = C.rangeType.rangeBlast.abbr
+ 			itemData.system.rangeTextBlock = `${area}(${itemData.system.rangePower})`
+		} else if(itemData.system.rangeType === "wall") {
+			itemData.system.rangeText = `${C.rangeType.wall.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${itemData.system.rangePower}`
+			itemData.system.rangeTextShort = C.rangeType.wall.abbr
+			itemData.system.rangeTextBlock = `${area}(${itemData.system.rangePower})`
+		} else if(itemData.system.rangeType === "personal") {
+			itemData.system.rangeText = C.rangeType.personal.label
+			itemData.system.rangeTextShort = C.rangeType.personal.abbr
+		} else if(itemData.system.rangeType === "special") {
+			itemData.system.rangeText = C.rangeType.special.label
+			itemData.system.rangeTextShort = C.rangeType.special.abbr
+		} else if(itemData.system.rangeType === "touch") {
+			itemData.system.rangeTextShort = C.rangeType.touch.abbr;
+			itemData.system.rangeText = C.rangeType.touch.label;
+		} else if(itemData.system.rangeType === "melee"){
+			itemData.system.rangeTextShort = C.rangeType.melee.abbr;
+			if(itemData.system.rangePower === undefined || itemData.system.rangePower === null){
+				itemData.system.rangeText = C.rangeType.melee.label;
+			} else {
+				itemData.system.rangeText = `${C.rangeType.melee.label} ${itemData.system.rangePower}`;
+				itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
+			}
+		} else if(itemData.system.rangeType === "reach"){
+			itemData.system.rangeText = `${C.rangeType.reach.label} ${itemData.system.rangePower}`;
+			itemData.system.rangeTextShort = C.rangeType.reach.abbr;
+			itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
+			
+		} else if(itemData.system.rangeType === "weapon") {
+
+			try {
+				const weaponUse = Helper.getWeaponUse(itemData.system, this.actor);
+				if(weaponUse.system.isRanged) {
+					itemData.system.rangeText = `${game.i18n.localize('DND4E.rangeWeaponRanged')} - ${weaponUse.name}`
+					itemData.system.rangeTextShort = game.i18n.localize('DND4E.rangeWeaponRangedAbbr')
+					itemData.system.rangeTextBlock = `${weaponUse.system.range.value}/${weaponUse.system.range.long}`
+				} else {
+					itemData.system.rangeText = `${game.i18n.localize('DND4E.rangeWeaponMelee')} - ${weaponUse.name}`;
+					itemData.system.rangeTextShort = game.i18n.localize('DND4E.rangeWeaponMeleeAbbr');
+					
+					if(itemData.system.rangePower == null){
+						itemData.system.rangeTextBlock = (weaponUse.system.properties.rch ? '2' : '')
+					} else {
+						itemData.system.rangeTextBlock = `${itemData.system.rangePower}`;
+					}
+				}
+
+			} catch {
+				itemData.system.rangeText = "Weapon";
+				itemData.system.rangeTextShort = game.i18n.localize('DND4E.rangeWeaponMeleeAbbr')
+				itemData.system.rangeTextBlock = `${itemData.system.rangePower}`
+
+				if(itemData.system.rangePower == null){
+					itemData.system.rangeTextBlock = '';
+				} else {
+					itemData.system.rangeTextBlock = `${itemData.system.rangePower}`;
+				}
+			}
+
+		} else {
+			itemData.system.rangeText = game.i18n.localize("DND4E.NotAvalible");
+			itemData.system.rangeTextShort = game.i18n.localize("DND4E.NotAvalibleShort");
+		}
 	}
   /* -------------------------------------------- */
 
@@ -914,8 +727,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	  item.toggleTitle = game.i18n.localize(isActive ? "DND4E.Equipped" : "DND4E.Unequipped");
 	}
   }
-	_prepareDataSense(data) {
-		const map = {special: CONFIG.DND4E.special};
+	_prepareDataSense(data, map) {
+		
 		for ( let [l, choices] of Object.entries(map) ) {
 			const trait = data[l];
 			if ( !trait ) continue;
@@ -992,6 +805,150 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			};
 		return icons[level];
 	}
+
+	/* -------------------------------------------- */
+
+	/** @override */
+	activateListeners(html) {
+		super.activateListeners(html);
+
+		//veiw image
+		html.find('.actor-art').click(this._onDisplayActorArt.bind(this));
+
+		if(this.options.viewPermission){ // With at leaste observation permisions, be able to view item summary
+			// Item summaries
+			html.find('.item .item-name h4').click(event => this._onItemSummary(event));
+		}
+
+		// Everything below here is only needed if the sheet is editable
+		if (!this.options.editable) return;
+
+		const inputs = html.find("input");
+		inputs.focus(event => event.currentTarget.select());
+		inputs.addBack().find('[data-dtype="Number"]').change(this._onChangeInputDelta.bind(this));
+
+		html.find('.skill-training').on("click contextmenu", this._onCycleSkillProficiency.bind(this));
+
+		// Update Inventory Item
+		html.find('.item-edit').click(event => {
+			const li = $(event.currentTarget).parents(".item");
+			const item = this.actor.items.get(li.data("itemId"));
+			item.sheet.render(true);
+		});
+
+		if ( this.actor.isOwner ) {	
+			// Roll Skill Checks
+			html.find('.skill-name').click(this._onRollSkillCheck.bind(this));
+
+			html.find('.passive-message').click(this._onRollPassiveCheck.bind(this));
+			
+			//Roll Abillity Checks
+			html.find('.ability-name').click(this._onRollAbilityCheck.bind(this));
+			
+			//Roll Defence Checks
+			html.find('.def-name').click(this._onRollDefenceCheck.bind(this));
+			
+			//Open HP-Options
+			html.find('.health-option').click(this._onHPOptions.bind(this));
+			
+			//Open Skill-Bonus
+			html.find('.skill-bonus').click(this._onSkillBonus.bind(this));
+			html.find('.death-save-bonus').click(this._onDeathSaveBonus.bind(this));
+			html.find('.roll-save-bonus').click(this._onSavingThrowBonus.bind(this));
+			html.find('.surge-bonus').click(this._onSurgeBonus.bind(this));
+			html.find('.envimental-loss-bonus').click(this._onSurgeEnv.bind(this));
+			html.find('.secondwind-bonus').click(this._onSecondWindBonus.bind(this));
+			html.find('.defence-bonus').click(this._onDefencesBonus.bind(this));
+			html.find('.init-bonus').click(this._onInitiativeBonus.bind(this));
+			html.find('.move-bonus').click(this._onMovementBonus.bind(this));
+			html.find('.passive-bonus').click(this._onPassiveBonus.bind(this));
+			html.find('.modifiers-bonus').click(this._onModifiersBonus.bind(this));
+			html.find('.resistances-bonus').click(this._onResistancesBonus.bind(this));
+			
+			html.find('.movement-dialog').click(this._onMovementDialog.bind(this));
+			
+			html.find('.custom-roll-descriptions').click(this._onCustomRolldDescriptions.bind(this));
+			
+			//second wind
+			html.find('.second-wind').click(this._onSecondWind.bind(this));
+
+			// heal menu
+			html.find('.heal-menu').click(this._onHealMenuDialog.bind(this));
+
+			//action point
+			html.find('.action-point').click(this._onActionPointDialog.bind(this));
+			html.find('.action-point-extra').click(this._onActionPointExtraDialog.bind(this));
+			
+			//short rest
+			html.find('.short-rest').click(this._onShortRest.bind(this));
+			
+			//long rest
+			html.find('.long-rest').click(this._onLongRest.bind(this));		
+			
+			//death save
+			html.find('.death-save').click(this._onDeathSave.bind(this));
+			html.find('.roll-save').click(this._onSavingThrow.bind(this));
+
+			//roll init
+			html.find('.rollInitiative').click(this._onrollInitiative.bind(this));
+			
+			// Trait Selector
+			html.find('.trait-selector').click(this._onTraitSelector.bind(this));
+			html.find('.trait-selector-weapon').click(this._onTraitSelectorWeapon.bind(this));
+			html.find('.trait-selector-senses').click(this._onTraitSelectorSense.bind(this));
+			html.find('.list-string-input').click(this._onListStringInput.bind(this));
+			
+			//save throw bonus
+			html.find(`.trait-selector-save`).click(this._onTraitSelectorSaveThrow.bind(this));
+			
+			//Inventory & Item management
+			html.find('.item-create').click(this._onItemCreate.bind(this));
+			html.find('.item-edit').click(this._onItemEdit.bind(this));
+			html.find('.item-delete').click(this._onItemDelete.bind(this));
+			html.find('.item-uses input').click(event => event.target.select()).change(this._onUsesChange.bind(this));
+
+			html.find('.power-create').click(this._onPowerItemCreate.bind(this));
+
+			html.find('.item-import').click(this._onItemImport.bind(this));
+
+			// Active Effect management
+			// html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
+			html.find(".effect-control").click(event => ActiveEffect4e.onManageActiveEffect(event, this.actor));
+				
+			// Item State Toggling
+			html.find('.item-toggle').click(this._onToggleItem.bind(this));
+		
+			//convert currency to it's largest form to save weight.
+			html.find(".currency-convert").click(this._onConvertCurrency.bind(this));
+			
+			// Item Rolling
+			html.find('.item .item-image').click(event => this._onItemRoll(event));
+			html.find('.item .item-image').hover(event => this._onItemHoverEntry(event), event => this._onItemHoverExit(event));
+			html.find('.item .item-recharge').click(event => this._onItemRecharge(event));
+
+			// Effect-Specific Saves
+			html.find('.effect-save').click(event => this._onRollEffectSave(event));
+
+			// Load Options
+			html.find('.encumbrance-options').click(this._onEncumbranceDialog.bind(this));
+			
+			// Conditional Attack Mod Config
+			html.find('.con-bon-config').click(this._onConBonConfig.bind(this));
+			
+			// Context Menus
+			new ContextMenu(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this)});
+		}
+
+		//Disabels and adds warning to input fields that are being modfied by active effects
+		if (this.isEditable) {
+			for ( const override of this._getAllActorOverrides(["system.details.surges.value"]) ) {
+				html.find(`input[name="${override}"],select[name="${override}"]`).each((i, el) => {
+					el.disabled = true;
+					el.dataset.tooltip = "DND4E.ActiveEffectOverrideWarning";
+				});
+			}
+		}
+	}
 	
 	/* -------------------------------------------- */
 	/**
@@ -1000,7 +957,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 * @protected
 	 */
 	_getActorOverrides() {
-		return Object.keys(foundry.utils.flattenObject(this.document.overrides || {}));
+		return Object.keys(foundry.utils.flattenObject(this.object.overrides || {}));
 	}
 
 
@@ -1012,7 +969,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 */
 	_getAllActorOverrides(excluded = []) {
 		const overrides = new Set(this._getActorOverrides());
-		const actorKeys = new Set(Object.keys(foundry.utils.flattenObject(this.actor.toObject(false))));
+		const actorKeys = new Set(Object.keys(foundry.utils.flattenObject(this.actor)));
 		const candidateKeys = new Set();
 		const accumulatorSuffixes = [".value", ".max"]; // Suffixes used for the accumulation of feat, item etc. bonuses.
 		const bonusSuffixes = [/.feat$/, /.item$/, /.power$/, /.race$/, /.untyped$/]; // Suffixes for bonuses.
@@ -1024,12 +981,11 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				if(key.includes("system.attributes.hp.")){ //Exception for HP as to not block 
 					candidateKeys.add(key.replace(bonus, ".max"));
 				} else {
-					accumulatorSuffixes.forEach(accumulator => {
-						candidateKeys.add(key.replace(bonus, accumulator))
-					});
+					accumulatorSuffixes.forEach(accumulator => candidateKeys.add(key.replace(bonus, accumulator)));
 				}
 			}
 		}
+		console.log(candidateKeys);
 
 		// Remove excluded keys
 		for (const key of excluded) {
@@ -1037,7 +993,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		}
 
 		// Return keys that exist in the actor
-		return Array.from((overrides.union(candidateKeys)).intersection(actorKeys));
+		console.log(Array.from(overrides.union(candidateKeys).intersection(actorKeys)))
+		return Array.from(overrides.union(candidateKeys).intersection(actorKeys));
 	}
 
 	/* -------------------------------------------- */
@@ -1057,8 +1014,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		
 		if(!/^[\-=+ 0-9]+$/.test(value)) {
 			input.value = foundry.utils.getProperty(this.actor, input.name)
-			return;
-		}
+			return;}
 
 		if ( ["+"].includes(value[0]) ) {
 			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
@@ -1079,45 +1035,78 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
   /**
    * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to its roll method
    * @private
-	 * @this {ActorSheet4e}
    */
-	static async #onItemSummary(event, target) {
+	async _onItemSummary(event) {
 		event.preventDefault();
-		if (!this.options.viewPermission) return;
-		const li = target.closest(".item");
-		if (li) {
-			li.classList.toggle("collapsed");
-			if (li.classList.contains("collapsed")) {
-				this.#expandedItemIds.delete(li.dataset.itemId);
-			} else {
-				this.#expandedItemIds.add(li.dataset.itemId);
-			}
+		const li = $(event.currentTarget).parents(".item")
+		const itemId = li.data("item-id")
+	  	if (!itemId)
+		{
+			console.log("got an item summary event for something without an item id.  Assuming its an effect.")
+			return
 		}
+		const item = this.actor.items.get(itemId)
+		const chatData = await item.getChatData({secrets: this.actor.isOwner});
+
+		// Toggle summary
+		if ( li.hasClass("expanded") ) {
+			let summary = li.children(".item-summary");
+			summary.slideUp(200, () => summary.remove());
+		} else {
+			const div = await this._generateItemSummary(item)
+			li.append(div.hide());
+			div.slideDown(200);
+		}
+		li.toggleClass("expanded");
+	}
+
+	async _generateItemSummary(item) {
+		const chatData = await item.getChatData({secrets: this.actor.isOwner});
+		let div;
+		//generate summary entry here
+		if (item.type === "power") {
+			div = $(`<div class="item-summary"></div>`);
+			let descrip;
+			if(item.system.autoGenChatPowerCard && chatData.chatFlavor){
+				descrip = $(`<div class="item-description">${chatData.chatFlavor}</div>`);
+			}else{
+				descrip = $(`<div class="item-description">${chatData.description.value}</div>`);
+			}
+			div.append(descrip);
+
+			if(item.system.autoGenChatPowerCard){
+				// let details = $(`<div class="item-details">${Helper._preparePowerCardData(chatData, CONFIG, this.actor.toObject(false))}</div>`);
+				let attackBonus = null;
+				if(item.hasAttack){
+					attackBonus = await item.getAttackBonus();
+				}
+				let detsText = Helper._preparePowerCardData(chatData, CONFIG, this.actor, attackBonus);
+				detsText = await TextEditor.enrichHTML(detsText, {
+					async: true,
+					relativeTo: this.actor
+				});
+				const details = $(`<div class="item-details">${detsText}</div>`);
+				div.append(details);
+			}
+		} else {
+			div = $(`<div class="item-summary">${chatData.description.value}</div>`);
+			let props = $(`<ul class="item-properties tags"></ul>`);
+			//console.debug(chatData.properties);
+			chatData.properties.forEach(p => props.append(p));
+			div.append(props);
+		}
+		return div
 	}
 
   /* -------------------------------------------- */
 
-	static #onDisplayActorArt() {
-		const p = new foundry.applications.apps.ImagePopout({src: this.document.img});
+	_onDisplayActorArt(event) {
+		event.preventDefault();
+
+		const p = new ImagePopout(this.object.img);
 		p.render(true);
 	}
   
-  /* -------------------------------------------- */
-
-	static async #onEditImage() {
-		const defaultArtwork = this.document.constructor.getDefaultArtwork?.(this.document._source) ?? {};
-		const defaultImage = foundry.utils.getProperty(defaultArtwork, 'img');
-		const fp = new CONFIG.ux.FilePicker({
-			current: this.document.img,
-			type: 'image',
-			redirectToRoot: defaultImage ? [defaultImage] : [],
-			callback: (path) => this.document.update({ img: path }),
-			top: this.position.top + 40,
-			left: this.position.left + 10
-		});
-		await fp.browse();
-	}
-
   /* -------------------------------------------- */
 
   /**
@@ -1126,12 +1115,12 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
    * @private
    */
   _onToggleItem(event) {
-		event.preventDefault();
-		const itemId = event.currentTarget.closest(".item").dataset.itemId;
-		const item = this.actor.items.get(itemId);
-		const power = ["power","atwill","encounter","daily","utility"];
-		const attr = power.includes(item.type) ? "system.prepared" : "system.equipped";
-		return item.update({[attr]: !foundry.utils.getProperty(item, attr)});
+	event.preventDefault();
+	const itemId = event.currentTarget.closest(".item").dataset.itemId;
+	const item = this.actor.items.get(itemId);
+	const power = ["power","atwill","encounter","daily","utility"];
+	const attr = power.includes(item.type) ? "system.prepared" : "system.equipped";
+	return item.update({[attr]: !foundry.utils.getProperty(item, attr)});
   }
 
   /* -------------------------------------------- */
@@ -1160,31 +1149,9 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
-	async _onItemImport(event) {
+	_onItemImport(event) {
 		event.preventDefault();
-		const {json=null} = await foundry.applications.api.Dialog.input({
-			window: {
-				title: `${this.actor.name} - JSON Item Importer`
-			},
-			content: `<p>${game.i18n.localize("DND4EUI.ImportJSONInput")}</p>
-			<input name=json type="text"/>`,
-			ok: {
-				label: "DND4EUI.ImportJSONUpload"
-			}
-		});
-		if (!json) return;
-		let obj;
-		try {
-			obj = JSON.parse(json);
-		} catch(err) {
-			console.error(err);
-			return ui.notifications.error("Invalid input, JSON formatting did not validate!");
-		}
-		if (!Item.TYPES.includes(obj.type)) {
-			return ui.notifications.error(`Invalid Item type of "${obj.type}"`);
-		}
-		obj._id ??= foundry.utils.randomID(16);
-		await this.actor.createEmbeddedDocuments("Item", [obj]);
+		new ItemImporterDialog(this.actor).render(true);
 	}
 
 	_onPowerItemCreate(event) {
@@ -1197,13 +1164,13 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			system: foundry.utils.duplicate(header.dataset)
 		};
 
-		if(this.document.system.powerGroupTypes === "action" || !this.document.system.powerGroupTypes) {
+		if(this.object.system.powerGroupTypes === "action" || !this.object.system.powerGroupTypes) {
 			itemData.system.actionType = type;
 		}
-		else if(this.document.system.powerGroupTypes === "type") {
+		else if(this.object.system.powerGroupTypes === "type") {
 			itemData.system.powerType = type;
 		}
-		else if(this.document.system.powerGroupTypes === "usage") {
+		else if(this.object.system.powerGroupTypes === "usage") {
 			itemData.system.useType = type;
 			if(["encounter", "daily", "recharge", "item"].includes(type)) {
 				itemData.system.uses = {
@@ -1256,10 +1223,10 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
    * @private
    */
   _onItemEdit(event) {
-		event.preventDefault();
-		const li = event.currentTarget.closest(".item");
-		const item = this.actor.items.get(li.dataset.itemId);
-		item.sheet.render(true);
+	event.preventDefault();
+	const li = event.currentTarget.closest(".item");
+	const item = this.actor.items.get(li.dataset.itemId);
+	item.sheet.render(true);
   }
 
   /* -------------------------------------------- */
@@ -1269,23 +1236,24 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
    * @param {Event} event   The originating click event
    * @private
    */
-  async _onItemDelete(event) {
-		event.preventDefault();
-		const li = event.currentTarget.closest(".item");
-		const item = this.actor.items.get(li.dataset.itemId);
-		if ( item )  {
-			let shouldDelete = true;
-			if (game.settings.get("dnd4e", "itemDeleteConfirmation")) {
-				shouldDelete = await foundry.applications.api.Dialog.confirm({
-					window: {
-						title: game.i18n.format("DND4E.DeleteConfirmTitle", {name: item.name}),
-					},
-					content: game.i18n.format("DND4E.DeleteConfirmContent", {name: item.name}),
-					yes: {default: true}
-				});
-			}
-			if (shouldDelete) return item.delete();
+  _onItemDelete(event) {
+	event.preventDefault();
+	const li = event.currentTarget.closest(".item");
+	const item = this.actor.items.get(li.dataset.itemId);
+	if ( item )  {
+		if (game.settings.get("dnd4e", "itemDeleteConfirmation")) {
+			return Dialog.confirm({
+				title: game.i18n.format("DND4E.DeleteConfirmTitle", {name: item.name}),
+				content: game.i18n.format("DND4E.DeleteConfirmContent", {name: item.name}),
+				yes: () => { return item.delete() },
+				no: () => {},
+				defaultYes: true
+			});
 		}
+		else {
+			return item.delete();
+		}
+	}
   }
   
   /* -------------------------------------------- */
@@ -1314,7 +1282,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_onHPOptions(event) {
 		event.preventDefault();
 
-		new HPOptions({ document: this.actor }).render(true)
+		new HPOptions(this.actor).render(true)
 	}
 	
 	/* -------------------------------------------- */
@@ -1326,83 +1294,75 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const skillName = event.currentTarget.parentElement.dataset.skill;
 		const target = `system.skills.${skillName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.SkillBonusTitle', { skill: this.actor.system.skills[skillName].label } ) }`, skill: true };
-		new AttributeBonusDialog(options).render(true);
+		const options = {target: target, label: `${game.i18n.format('DND4E.SkillBonusTitle', { skill: this.actor.system.skills[skillName].label } ) }`, skill: true };
+		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	/* -------------------------------------------- */
 
-	_onAbilityBonus(event) {
-		event.preventDefault();
-		const abilityId = event.currentTarget.parentElement.dataset.ability;
-		const target = `system.abilities.${abilityId}.check`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.AbilityCheckBonusTitle', { ability: this.actor.system.abilities[abilityId].label } ) }` };
-		new AttributeBonusDialog(options).render(true);
-	}
-
 	_onDeathSaveBonus(event) {
 		event.preventDefault();
-		const options = { document: this.actor, target: `system.details.deathsavebon`, label: game.i18n.localize('DND4E.DeathSavingThrowBonus')};
-		new AttributeBonusDialog(options).render(true);		
+		const options = {target: `system.details.deathsavebon`, label: game.i18n.localize('DND4E.DeathSavingThrowBonus')};
+		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onSurgeBonus(event) {
 		event.preventDefault();
-		const options = { document: this.actor, target: `system.details.surgeBon`, label: game.i18n.localize('DND4E.HealingSurgeBonus') };
-		new AttributeBonusDialog(options).render(true);		
+		const options = {target: `system.details.surgeBon`, label: game.i18n.localize('DND4E.HealingSurgeBonus') };
+		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onSurgeEnv(event) {
 		event.preventDefault();
-		const options = { document: this.actor, target: `system.details.surgeEnv`, label: `${game.i18n.localize('DND4E.HealingSurges')} ${game.i18n.localize('DND4E.SurgeEnv')}`};
-		new AttributeBonusDialog(options).render(true);		
+		const options = {target: `system.details.surgeEnv`, label: `${game.i18n.localize('DND4E.HealingSurges')} ${game.i18n.localize('DND4E.SurgeEnv')}`};
+		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 
 	_onSecondWindBonus(event) {
 		event.preventDefault();
-		const options = { document: this.actor, target: `system.details.secondwindbon`, label: game.i18n.localize('DND4E.SecondWindBonus'), secondWind: true };
-		new AttributeBonusDialog(options).render(true);		
+		const options = {target: `system.details.secondwindbon`, label: game.i18n.localize('DND4E.SecondWindBonus'), secondWind: true };
+		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onDefencesBonus(event) {
 		event.preventDefault();
 		const defName = event.currentTarget.parentElement.dataset.defence;
 		const target = `system.defences.${defName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.DefenceBonus',{def:this.actor.system.defences[defName].label})}`, ac: (defName ==="ac")  };
-		new AttributeBonusDialog(options).render(true);		
+		const options = {target: target, label: `${game.i18n.format('DND4E.DefenceBonus',{def:this.actor.system.defences[defName].label})}`, ac: (defName ==="ac")  };
+		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onInitiativeBonus(event) {
 		event.preventDefault();
-		const options = { document: this.actor, target: `system.attributes.init`, label: game.i18n.localize('DND4E.InitiativeBonus'), init: true };
-		new AttributeBonusDialog(options).render(true);		
+		const options = {target: `system.attributes.init`, label: game.i18n.localize('DND4E.InitiativeBonus'), init: true };
+		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onMovementBonus(event) {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `system.movement.${moveName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.MovementBonus',{mode: moveName})}` };
-		new AttributeBonusDialog(options).render(true);		
+		const options = {target: target, label: `${game.i18n.format('DND4E.MovementBonus',{mode: moveName})}` };
+		new AttributeBonusDialog(this.actor, options).render(true);		
 	}
 	
 	_onMovementDialog(event) {
 		event.preventDefault();
-		new MovementDialog({document: this.actor}).render(true)
+		new MovementDialog(this.actor).render(true)
 	}
 	
 	_onConBonConfig(event) {
 		event.preventDefault();
-		new ConBonConfig({document: this.actor}).render(true)
+		new ConBonConfig(this.actor).render(true)
 	}
 
 	_onHealMenuDialog(event) {
 		event.preventDefault();
-		new HealMenuDialog({document: this.actor}).render(true)
+		new HealMenuDialog(this.actor).render(true)
 	}
 
 	_onEncumbranceDialog(event) {
 		event.preventDefault();
-		new EncumbranceDialog({document: this.actor}).render(true);
+		new EncumbranceDialog(this.actor).render(true);
 	}
 
 	_onPassiveBonus(event) {
@@ -1410,30 +1370,30 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		const passName = event.currentTarget.parentElement.dataset.passive;
 		const skillName = this.actor.system.passive[passName].skill;
 		const target = `system.passive.${passName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.PasBonus',{skill: this.actor.system.skills[skillName].label})}` };
-		new AttributeBonusDialog(options).render(true);		
+		const options = {target: target, label: `${game.i18n.format('DND4E.PasBonus',{skill: this.actor.system.skills[skillName].label})}` };
+		new AttributeBonusDialog(this.actor, options).render(true);		
 	}	
 
 	_onModifiersBonus(event) {
 		event.preventDefault();
 		const modifierName = event.currentTarget.parentElement.dataset.modifiers;
 		const target = `system.modifiers.${modifierName}`;
-		const options = { document: this.actor, target: target, label: this.actor.system.modifiers[modifierName].label };
-		new AttributeBonusDialog(options).render(true);
+		const options = {target: target, label: this.actor.system.modifiers[modifierName].label };
+		new AttributeBonusDialog(this.actor, options).render(true);
 	}	
 
 	_onResistancesBonus(event) {
 		event.preventDefault();
 		const resName = event.currentTarget.parentElement.dataset.res;
 		const target = `system.resistances.${resName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.DamResVulnBonus',{type: this.actor.system.resistances[resName].label})}` };
-		new AttributeBonusDialog(options).render(true);
+		const options = {target: target, label: `${game.i18n.format('DND4E.DamResVulnBonus',{type: this.actor.system.resistances[resName].label})}`};
+		new AttributeBonusDialog(this.actor, options).render(true);
 	}
 	
 	_onCustomRolldDescriptions(event) {
 		event.preventDefault();
 		const options = {data: this.actor};
-		new CustomRolldDescriptions({document: this.actor}).render(true, options);
+		new CustomRolldDescriptions(this.actor).render(true, options);
 	}
 	/**
 	* Opens dialog window to spend Second Wind
@@ -1517,28 +1477,28 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 	_onSavingThrowBonus(event) {
 		event.preventDefault();
-		const options = { document: this.actor, target: `system.details.saves`, label: game.i18n.localize('DND4E.SavingThrowBonus') };
-		new AttributeBonusDialog(options).render(true);	
+		const options = {target: `system.details.saves`, label: game.i18n.localize('DND4E.SavingThrowBonus') };
+		new AttributeBonusDialog(this.actor, options).render(true);	
 	}
 
-	static #onCycleSkillProficiency(event, target) {
+	_onCycleSkillProficiency(event) {
 		event.preventDefault();
-		const field = target.parentNode.querySelector('input[type="hidden"]');
+		const field = $(event.currentTarget).siblings('input[type="hidden"]');
 
 		// Get the current level and the array of levels
-		const level = parseFloat(field.value);
+		const level = parseFloat(field.val());
 		const levels = [0, 5, 8];
 		let idx = levels.indexOf(level);
 
 		// Toggle next level - forward on click, backwards on right
-		if ( event.button === 0 ) {
-			field.value = levels[(idx === levels.length - 1) ? 0 : idx + 1];
-		} else {
-			field.value = levels[(idx === 0) ? levels.length - 1 : idx - 1];
+		if ( event.type === "click" ) {
+			field.val(levels[(idx === levels.length - 1) ? 0 : idx + 1]);
+		} else if ( event.type === "contextmenu" ) {
+			field.val(levels[(idx === 0) ? levels.length - 1 : idx - 1]);
 		}
 
 		// Update the field value and save the form
-		this.submit({preventClose: true});
+		this._onSubmit(event);
 	}
 
 	/* -------------------------------------------- */
@@ -1547,9 +1507,12 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to it's roll method
 	 * @private
 	 */
-	_onItemRoll(item, variance={}) {
+	_onItemRoll(event,variance={}) {
+		event.preventDefault();
 		//console.debug(variance)
-
+		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const item = this.actor.items.get(itemId);
+		
 		if ( item.type === "power") {
 			const fastForward = Helper.isRollFastForwarded(event);
 			return this.actor.usePower(item, {
@@ -1557,7 +1520,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 				'fastForward': fastForward,
 				//Temporary traits from special roll modes
 				'variance': variance
-			});
+				});
 		}
 		// Otherwise roll the Item directly
 		return item.roll();
@@ -1620,13 +1583,13 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	
 				let flav = `${game.i18n.format('DND4E.PowerRechargeFail',{type: item.name})}`;
 				if(r.total >= r.dice[0].options.critical){
-					this.document.updateEmbeddedDocuments("Item", [{_id:itemId, "system.uses.value": item.system.preparedMaxUses}]);
+					this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "system.uses.value": item.system.preparedMaxUses}]);
 					flav = `${game.i18n.format('DND4E.PowerRechargeSuccess',{type: item.name})}`;
 				}
 
 				r.toMessage({
 					user: game.user.id,
-					speaker: {actor: this.document, alias: this.document.name},
+					speaker: {actor: this.object, alias: this.object.name},
 					flavor: flav,
 					rollMode: game.settings.get("core", "rollMode"),
 					messageData: {"flags.dnd4e.roll": {type: "other", itemId: this.id }}
@@ -1634,11 +1597,11 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 			} else if (item.system.rechargeCondition) {
 
-				this.document.updateEmbeddedDocuments("Item", [{_id:itemId, "system.uses.value": item.system.preparedMaxUses}]);
+				this.object.updateEmbeddedDocuments("Item", [{_id:itemId, "system.uses.value": item.system.preparedMaxUses}]);
 
 				ChatMessage.create({
 					user: game.user.id,
-					speaker: {actor: this.document, alias: this.document.name},
+					speaker: {actor: this.object, alias: this.object.name},
 					flavor: `${item.name}—${game.i18n.localize('DND4E.PowerRecharge')}`,
 					content: `${game.i18n.format('DND4E.PowerRechargeSuccessCondition',{type: item.name,condition:item.system.rechargeCondition})}`
 				});
@@ -1656,11 +1619,11 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	 */
 	async _onConvertCurrency(event) {
 		event.preventDefault();
-		let shouldConvert = await foundry.applications.api.Dialog.confirm({
-			window: {title: `${game.i18n.localize("DND4E.CurrencyConvert")}`},
-			content: `<p>${game.i18n.localize("DND4E.CurrencyConvertHint")}</p>`
+		return Dialog.confirm({
+			title: `${game.i18n.localize("DND4E.CurrencyConvert")}`,
+			content: `<p>${game.i18n.localize("DND4E.CurrencyConvertHint")}</p>`,
+			yes: () => this.convertCurrency()
 		});
-		if (shouldConvert) return this.convertCurrency();
 	}
 
 
@@ -1683,14 +1646,14 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
    * @return {Promise<Actor4e>}
    */
   convertCurrency() {
-		const curr = foundry.utils.duplicate(this.actor.system.currency);
-		const convert = CONFIG.DND4E.currencyConversion;
-		for ( let [c, t] of Object.entries(convert) ) {
-			let change = Math.floor(curr[c] / t.each);
-			curr[c] -= (change * t.each);
-			curr[t.into] += change;
-		}
-		return this.document.update({"system.currency": curr});
+	const curr = foundry.utils.duplicate(this.actor.system.currency);
+	const convert = CONFIG.DND4E.currencyConversion;
+	for ( let [c, t] of Object.entries(convert) ) {
+	  let change = Math.floor(curr[c] / t.each);
+	  curr[c] -= (change * t.each);
+	  curr[t.into] += change;
+	}
+	return this.object.update({"system.currency": curr});
   }
   
   /* -------------------------------------------- */
@@ -1703,19 +1666,19 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_onTraitSelector(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.querySelector("span");
+		const label = a.parentElement.querySelector("h4");
 		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, window: {title: label.innerText}, choices};
-		new TraitSelector({document: this.actor, ...options}).render(true);
+		const options = { name: a.dataset.target, title: label.innerText, choices};
+		new TraitSelector(this.actor, options).render(true);
 	}
 
 	_onTraitSelectorWeapon(event){
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.querySelector("span");
+		const label = a.parentElement.querySelector("h4");
 		const choices = CONFIG.DND4E.weaponProficienciesMap;
-		const options = { name: a.dataset.target, window: {title: label.innerText}, choices, datasetOptions: a.dataset.options, config:CONFIG};
-		new TraitSelector({document: this.actor, ...options}).render(true);
+		const options = { name: a.dataset.target, title: label.innerText, choices, datasetOptions: a.dataset.options, config:CONFIG};
+		new TraitSelector(this.actor, options).render(true);
 	}
 
 	_onTraitSelectorSense(event) {
@@ -1724,41 +1687,24 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		// const label = a.parentElement.parentElement.querySelector("h4");
 		const label = a.parentElement.querySelector("span");
 		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, window: {title: label.innerText}, choices };
-		new TraitSelectorValues({document: this.actor, ...options}).render(true);
+		const options = { name: a.dataset.target, title: label.innerText, choices };
+		new TraitSelectorSense(this.actor, options).render(true);
 	}
 	
-	async _onListStringInput(event) {
+	_onListStringInput(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
 		const label = a.parentElement.querySelector("span");
-		const currValue = foundry.utils.getProperty(this.actor, a.dataset.target) ?? [];
-		const {traits=null} = await foundry.applications.api.Dialog.input({
-			id: "trait-selector",
-			classes: ["dnd4e"],
-			window: {
-				title: `${this.actor.name} - ${label.innerText}`
-			},
-			position: {
-				width: 320,
-				height: "auto"
-			},
-			content: `
-			<div class="form-group stacked">
-				<label>${game.i18n.localize("DND4EUI.StringEnterValues")}:</label>
-				<input type="text" name="traits" value="${currValue.join(";")}" data-dtype="String"/>
-			</div>
-			`,
-			ok: {
-				label: "DND4E.TraitSave",
-				icon: "far fa-save"
-			}
-		});
-		if (traits === null) return;
-		const newValue = traits.split(";").map(i => i.trim()).filter(i => i);
-		await this.actor.update({
-			[a.dataset.target]: newValue
-		});
+		const options = { name: a.dataset.target, title: label.innerText};
+		new ListStringInput(this.actor, options).render(true);
+	}
+	
+	_onTraitSelectorSaveThrow(event) {
+		event.preventDefault();
+		const a = event.currentTarget;
+		const choices = CONFIG.DND4E[a.dataset.options];
+		const options = { name: a.dataset.target, title: "Saving Throw Mods", choices };
+		new TraitSelectorSave(this.actor, options).render(true);
 	}
 
   /* -------------------------------------------- */
@@ -1798,8 +1744,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 		ChatMessage.create({
 			user: game.user.id,
-			speaker: {actor: this.document, alias: this.document.name},
-			content: `${game.i18n.format('DND4E.PasCheck',{skill:this.actor.system.skills[skillName].label})}: <strong>${this.document.system.passive[passName].value}</strong>`
+			speaker: {actor: this.object, alias: this.object.name},
+			content: `${game.i18n.format('DND4E.PasCheck',{skill:this.actor.system.skills[skillName].label})}: <strong>${this.object.system.passive[passName].value}</strong>`
 		});	
 	}
 
@@ -1929,14 +1875,14 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			options.unshift({
 				name: game.i18n.localize('DND4E.AttackModeCharge'),
 				icon: "<i class='fas fa-angles-right'></i>",
-				callback: () => this._onItemRoll(item, {isCharge:true})
+				callback: () => this._onItemRoll(event,{isCharge:true})
 			});
 		}
 		if ( item.type == 'power' && (item.system?.attack?.isBasic || item.system?.attack?.canOpp)) {
 			options.unshift({
 				name: game.i18n.localize('DND4E.AttackModeOpp'),
 				icon: "<i class='fas fa-triangle-exclamation'></i>",
-				callback: () => this._onItemRoll(item, {isOpp:true})
+				callback: () => this._onItemRoll(event,{isOpp:true})
 			});
 		}
 
