@@ -47,7 +47,7 @@
       {{#each section.items as |item iid|}}
         <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
           <div class="item-name flexrow rollable" data-action="itemSummary">
-            <div class="item-image"><img src="{{item.img}}" width="30" height="30"/></div>
+            <div class="item-image item-roll"><img src="{{item.img}}" width="30" height="30"/></div>
             <h4>{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
           </div>
     
