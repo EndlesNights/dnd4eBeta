@@ -24,7 +24,7 @@ import Item4e from "../item/item.js";
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export default class ActorSheet4e extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2) {
+export default class ActorSheet4e extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheet) {
 	#dragDrop;
 	#expandedItemIds;
 
@@ -51,7 +51,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	static DEFAULT_OPTIONS = {
-		classes: ["dnd4e","actor","default"],
+		classes: ["dnd4e", "sheet", "actor"],
 		position: {
 			width: 844,
 			height: 967
@@ -249,20 +249,18 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			html.querySelectorAll('.currency-convert').forEach(el => el.addEventListener("click", this._onConvertCurrency.bind(this)));
 			
 			// Item Rolling
-			html.querySelectorAll('.item-roll').forEach(el => el.addEventListener("click", event => {
+			html.querySelectorAll('.item .item-image').forEach(el => el.addEventListener("click", event => {
 				event.preventDefault();
 				event.stopPropagation();
 				const itemId = event.currentTarget.closest(".item").dataset.itemId;
 				const item = this.actor.items.get(itemId);
 				this._onItemRoll(item);
 			}));
-			html.querySelectorAll('.item-roll').forEach(el => {
+			html.querySelectorAll('.item .item-image').forEach(el => {
 				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
 				el.addEventListener("mouseleave", this._onItemHoverExit.bind(this));
 			});
-			
-			// Item Recharge
-			html.querySelectorAll('.item-recharge').forEach(el => el.addEventListener("click", event => this._onItemRecharge(event)));
+			html.querySelectorAll('.item .item-recharge').forEach(el => el.addEventListener("click", event => this._onItemRecharge(event)));
 	
 			// Effect-Specific Saves
 			html.querySelectorAll('.effect-save').forEach(el => el.addEventListener("click", event => this._onRollEffectSave(event)));
@@ -285,7 +283,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			});
 		}
 	}
-	
 	_initializeApplicationOptions(options) {
 		options = super._initializeApplicationOptions(options);
 		const numCustomSkills = game.settings.get("dnd4e", "custom-skills")?.length;
