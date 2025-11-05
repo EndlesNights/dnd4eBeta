@@ -82,7 +82,7 @@ export default class Item4e extends Item {
 		this._onCreationName(data);
 
 		if ( !this.isEmbedded) return;
-		const isNPC = this.parent.type === "npc";
+		const isNPC = this.parent.type === "NPC";
 		let updates;
 		switch (data.type) {
 			case "equipment":
