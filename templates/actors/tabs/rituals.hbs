@@ -1,26 +1,25 @@
 <section class="tab {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+
   <ol class="currency flexrow">
     <h3 data-tooltip="{{localize 'DND4E.RitualComp'}}">{{localize 'DND4E.RitualComp'}}</h3>
     {{#each system.ritualcomp as |v k|}}
-    <label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}">{{k}}</label>
-    <input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualcomponents k )}}"/>
+    <label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.ritualComponents k )}}">{{k}}</label>
+    <input type="text" name="system.ritualcomp.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.ritualComponents k )}}"/>
     {{/each}}
   </ol>
 
   <ol class="item-list inventory-list">
     <header class="ritual-filters flexrow">
-      <div class="sort-rituals">
-        <input type="hidden" name="flags.dnd4e.sheetDisplay.rituals.sortBy.value">
-        <label for="ritual-sort">{{localize 'DND4EUI.SortBy'}}</label><br />
+      <div class="sorting sort-rituals">
+        <label for="system.ritualSortTypes">{{localize 'DND4EUI.SortBy'}}</label><br />
         <select name="system.ritualSortTypes">
           {{selectOptions config.ritualSortTypes selected=system.ritualSortTypes labelAttr="label"}}
         </select>
       </div>
 
       <div class="filter-search-rituals">
-        <label for="ritual-filter-search">{{localize "DND4E.Filter"}}</label>	
-        <br>
-        <input type="text" name="ritual-filter-search" placeholder="{{localize 'DND4EUI.SearchFor' term=(localize 'DND4E.Ritual')}}..." id="filterInput-ritual"/>
+        <label for="ritual-filter-search">{{localize 'DND4E.Filter'}}</label>
+        <input type="text" class="search" name="ritual-filter-search" placeholder="{{localize 'DND4EUI.SearchFor' term=(localize 'DND4E.Ritual')}}..." id="filterInput-ritual" />
       </div>
     </header>
 
@@ -37,7 +36,7 @@
         {{#if ../owner}}
         <div class="item-controls flexrow">
           <a class="item-control item-create" data-tooltip="{{localize 'DND4E.RitualAdd'}}" data-type="ritual" {{#each section.dataset as |v k|}}data-subtype="{{v}}"{{/each}}>
-            <i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
+            <i class="fas fa-plus"></i> {{localize 'DND4E.Add'}}
           </a>
         </div>
         {{/if}}
@@ -45,10 +44,10 @@
     
       <ol class="item-list ritual-list">
       {{#each section.items as |item iid|}}
-        <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
+        <li class="item flexrow{{#if isUnavailable}} unavailable{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
           <div class="item-name flexrow rollable" data-action="itemSummary">
             <div class="item-image item-roll"><img src="{{item.img}}" width="30" height="30"/></div>
-            <h4>{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
+            <h4 class="item-title">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
           </div>
     
           {{#if section.columns}}
@@ -74,13 +73,15 @@
           {{/if}}
           <div class="item-summary collapsible-content">
             <div class="wrapper">
-              {{{chatData.description.value}}}
-              <ul class="item-properties tags">
-                {{#each chatData.properties as |propertyHTML|}}
-                {{{propertyHTML}}}
-                {{/each}}
-              </ul>
-            </div>
+              <div class="card-content">
+                {{{chatData.description.value}}}
+                <ul class="item-properties tags">
+                  {{#each chatData.properties as |propertyHTML|}}
+                    {{{propertyHTML}}}
+                  {{/each}}
+                </ul>
+			  </div>
+			</div>
           </div>
         </li>
       {{/each}}

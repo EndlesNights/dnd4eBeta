@@ -2,25 +2,23 @@
   <ol class="item-list inventory-list powers">
     <header class="power-filters flexrow">
       <div class="group-powers">
-        <input type="hidden" name="flags.dnd4e.sheetDisplay.powers.groupBy.value">
-        <label for="power-group">{{localize "DND4EUI.GroupBy"}}</label><br />
+        <label for="system.powerGroupTypes">{{localize 'DND4EUI.GroupBy'}}</label><br />
         <select name="system.powerGroupTypes">
           {{selectOptions config.powerGroupTypes selected=system.powerGroupTypes labelAttr="label"}}
         </select>
       </div>
 
       <div class="sort-powers">
-        <input type="hidden" name="flags.dnd4e.sheetDisplay.powers.sortBy.value">
-        <label for="power-sort">{{localize "DND4EUI.SortBy"}}</label><br />
+        <label for="system.powerSortTypes">{{localize 'DND4EUI.SortBy'}}</label><br />
         <select name="system.powerSortTypes">
           {{selectOptions config.powerSortTypes selected=system.powerSortTypes labelAttr="label"}}
         </select>
       </div>
 
       <div class="filter-search-powers">
-        <label for="power-filter-search">{{localize "DND4E.Filter"}}</label>
+        <label for="power-filter-search">{{localize 'DND4E.Filter'}}</label>
         <button class="item-import button" data-tooltip="{{localize 'DND4E.PowerCreate'}}" data-item-type="power" data-type="power" type="button">
-          <i class="fas fa-atlas"></i> <span class="import-button">{{localize "DND4E.ImportPowers"}}</span>
+          <i class="fas fa-atlas"></i> <span class="import-button">{{localize 'DND4E.ImportPowers'}}</span>
         </button>
         <br />
         <input type="text" class="power-filter-search" name="power-filter-search" placeholder="{{localize 'DND4EUI.SearchFor' term=(localize 'DND4E.Power')}}..." id="filterInput-power"/>
@@ -39,14 +37,14 @@
         {{else}}
           <div class="item-detail item-range">{{localize 'DND4E.Range'}}</div>
           <div class="item-detail item-action" data-tooltip="{{localize 'DND4E.Action'}}">{{localize 'DND4E.ActionShort'}}</div>
-          <div class="item-detail item-uses">{{localize "DND4E.Charges"}}</div>
+          <div class="item-detail item-uses">{{localize 'DND4E.Charges'}}</div>
         {{/if}}
           <div class="item-detail item-prep" data-tooltip="{{localize 'DND4E.PowerPrepared'}}">{{localize 'DND4E.PowerPreparedShort'}}</div>
         {{#if ../owner}}
         <div class="item-controls">
-          <a class="item-control power-create" data-tooltip="{{localize "DND4E.ItemCreate"}}"
+          <a class="item-control power-create" data-tooltip="{{localize 'DND4E.ItemCreate'}}"
             {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-            <i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
+            <i class="fas fa-plus"></i> {{localize 'DND4E.Add'}}
           </a>
         </div>
         {{/if}}
@@ -54,13 +52,13 @@
     
       <ol class="item-list power-list">
       {{#each section.items as |item iid|}}
-        <li class="item flexrow{{#if isDepleted}} depleted{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
+        <li class="item flexrow{{#if isUnavailable}} unavailable{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
           <div class="item-name item-image item-roll flexrow rollable">
             <img src="{{item.img}}" width="30" height="30"/>
           </div>
-          <div class="flexrow power-name{{#if item.system.useType}} ability-usage--{{item.system.useType}}{{else}}ability-usage--blank{{/if}}{{#if item.system.notAvailable}} not-available{{/if}}" data-tooltip="{{item.name}}">
+          <div class="flexrow power-name{{#if item.system.useType}} ability-usage--{{item.system.useType}}{{else}}ability-usage--blank{{/if}}{{#if item.system.notAvailable}} unavailable{{/if}}" data-tooltip="{{item.name}}">
             <div class="item-name flexrow rollable" data-action="itemSummary">
-              <h4 class="power-detail">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
+              <h4 class="power-detail item-title">{{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name}}</h4>
             </div>
             
             {{#if section.columns}}
@@ -112,7 +110,7 @@
             {{#if ../owner}}
             <div class="item-controls flexrow">
               <a class="item-control item-create" data-tooltip="{{localize 'DND4E.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
-                <i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
+                <i class="fas fa-plus"></i> {{localize 'DND4E.Add'}}
               </a>
             </div>
             {{/if}}
@@ -149,31 +147,33 @@
             {{/if}}
           </div>
           <div class="item-summary collapsible-content">
-            <div class="wrapper card-content">
-              {{#if item.system.autoGenChatPowerCard}}
+            <div class="wrapper">
+			  <div class="card-content">
+				{{#if item.system.autoGenChatPowerCard}}
 				<div class="flavour">
-				{{#if chatData.description.chat}}
+				  {{#if chatData.description.chat}}
 					<p>{{{chatData.description.chat}}}</p>
-				{{else}}
+				  {{else}}
 					{{{chatData.description.value}}}
-				{{/if}}
+				  {{/if}}
 				</div>
 							
-                <div class="item-details">
-                  {{{detailsText}}}
-                </div>
-				
-              {{else}}
-			  
-                <div class="item-description">{{{chatData.description.value}}}</div>
-				
-              {{/if}}
-              <ul class="item-properties tags">
-                {{#each chatData.properties as |propertyHTML|}}
-                {{{propertyHTML}}}
-                {{/each}}
-              </ul>
-            </div>
+				<div class="item-details">
+				  {{{detailsText}}}
+				</div>
+					
+				{{else}}
+				  
+				  <div class="item-description">{{{chatData.description.value}}}</div>
+					
+				{{/if}}
+			  </div>
+		      <ul class="item-properties tags">
+			    {{#each chatData.properties as |propertyHTML|}}
+				  {{{propertyHTML}}}
+			    {{/each}}
+		      </ul>
+			</div>
           </div>
         </li>
       {{/each}}

@@ -14,10 +14,10 @@
       </div>
       <footer class="attribute-footer flexrow" style="padding-left:9px">
         <label class="recharge checkbox">
-          {{ localize "DND4E.AbbreviationSR" }} <input name="system.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
+          {{ localize 'DND4E.AbbreviationSR' }} <input name="system.resources.{{res.name}}.sr" type="checkbox" {{checked res.sr}}/>
         </label>
         <label class="recharge checkbox">
-          {{ localize "DND4E.AbbreviationLR" }} <input name="system.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
+          {{ localize 'DND4E.AbbreviationLR' }} <input name="system.resources.{{res.name}}.lr" type="checkbox" {{checked res.lr}}/>
         </label>		</footer>
     </div>
     {{/each}}
@@ -51,19 +51,19 @@
     
     <div class="flexcol details-mechanical">
       <div class="detail form-group size">
-        <label>{{localize "DND4E.Size"}}:</label>
+        <label>{{localize 'DND4E.Size'}}:</label>
         <select class="actor-size" name="system.details.size">
           {{selectOptions config.actorSizes selected=system.details.size labelAttr="label"}}
         </select>
       </div>
       <div class="detail form-group origin">
-        <label>{{localize "DND4E.CreatureOrigin"}}:</label>
+        <label>{{localize 'DND4E.CreatureOrigin'}}:</label>
         <select class="actor-origin" name="system.details.origin">
           {{selectOptions config.creatureOrigin selected=system.details.origin labelAttr="label"}}
         </select>
       </div>
       <div class="detail form-group creature-type">
-        <label>{{localize "DND4E.CreatureType"}}:</label>
+        <label>{{localize 'DND4E.CreatureType'}}:</label>
         <select class="actor-type" name="system.details.type">
           {{selectOptions config.creatureType selected=system.details.type labelAttr="label"}}
         </select>
@@ -79,10 +79,10 @@
 
   {{!-- Proficiency --}}
   <div class="traits proficiencies">
-    <h4 class="attribute-name box-title group-header">{{ localize "DND4E.Proficiencies" }}</h4>
+    <h4 class="attribute-name box-title group-header">{{ localize 'DND4E.Proficiencies' }}</h4>
 
     <a class="trait-selector-weapon" data-options="weaponProf" data-target="system.details.weaponProf">
-      <span class="subgroup-header">{{ localize "DND4E.Weapon" }}</span>
+      <span class="subgroup-header list-label">{{ localize 'DND4E.Weapon' }}</span>
       <i class="fas fa-edit"></i>
     </a>
     <ul class="traits-list proficiency weapons">
@@ -92,7 +92,7 @@
     </ul>
     
     <a class="trait-selector" data-options="implementProficiencies" data-target="system.details.implementProf">
-      <span class="subgroup-header">{{ localize "DND4E.Implement" }}</span>
+      <span class="subgroup-header list-label">{{ localize 'DND4E.Implement' }}</span>
       <i class="fas fa-edit"></i>
     </a>
     <ul class="traits-list proficiency implements">
@@ -102,7 +102,7 @@
     </ul>
     
     <a class="trait-selector" data-options="profArmor" data-target="system.details.armourProf">
-      <span class="subgroup-header">{{ localize "DND4E.Armour" }}</span>
+      <span class="subgroup-header list-label">{{ localize 'DND4E.Armour' }}</span>
       <i class="fas fa-edit"></i>
     </a>
     <ul class="traits-list proficiency armour">
@@ -115,22 +115,22 @@
 
   {{!-- Languages --}}
   <div class="traits languages">
-    <h4 class="attribute-name box-title group-header">{{ localize "DND4E.Languages" }}</h4>
+    <h4 class="attribute-name box-title group-header">{{ localize 'DND4E.Languages' }}</h4>
     <a class="trait-selector" data-options="spoken" data-target="system.languages.spoken">
-      <span class="subgroup-header">{{ localize "DND4E.Spoken" }}</span>
+      <span class="subgroup-header list-label">{{ localize 'DND4E.Spoken' }}</span>
       <i class="fas fa-edit"></i>
     </a>
-    <ul class="traits-list languages spoken" style="list-style-type: none;">
+    <ul class="traits-list languages spoken">
     {{#each system.languages.spoken.selected as |v k|}}
       <li class="tag {{k}}">{{v}}</li>
     {{/each}}
     </ul>
     
     <a class="trait-selector" data-options="script" data-target="system.languages.script">
-      <span class="subgroup-header">{{ localize "DND4E.Script" }}</span>
+      <span class="subgroup-header list-label">{{ localize 'DND4E.Script' }}</span>
       <i class="fas fa-edit"></i>
     </a>
-    <ul class="traits-list languages script" style="list-style-type: none;">
+    <ul class="traits-list languages script">
     {{#each system.languages.script.selected as |v k|}}
       <li class="tag {{k}}">{{v}}</li>
     {{/each}}
@@ -139,13 +139,13 @@
 
   {{!-- Senses --}}
   <div class="traits senses">
-    <h4 class="attribute-name box-title group-header">{{ localize "DND4E.SpecialSenses" }}</h4>    
+    <h4 class="attribute-name box-title group-header">{{ localize 'DND4E.SpecialSenses' }}</h4>    
     <div style="text-align: left;">
       <a class="trait-selector-senses" data-options="special" data-target="system.senses.special">
-        <span class="subgroup-header">{{ localize "DND4E.SpecialSenses" }}</span>
+        <span class="subgroup-header list-label">{{ localize 'DND4E.SpecialSenses' }}</span>
         <i class="fas fa-edit"></i>
       </a>
-      <ul class="traits-list senses" style="list-style-type: none;">
+      <ul class="traits-list senses">
       {{#each system.senses.special.selected as |v k|}}
         <li class="tag {{k}}">{{v}}</li>
       {{/each}}

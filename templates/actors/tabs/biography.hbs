@@ -1,5 +1,5 @@
 <section class="tab {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
-  <prose-mirror toggled name="system.biography" {{disabled (not editable)}} value="{{system.biography}}">
+  <prose-mirror class="{{#if system.biography}}has-content{{/if}}" toggled name="system.biography" {{disabled (not editable)}} value="{{system.biography}}">
     {{{biographyHTML}}}
   </prose-mirror>
 </section>
