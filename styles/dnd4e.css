@@ -1,19 +1,59 @@
 /* ----------------------------------------- */
 /*  Global Basics
 /* ----------------------------------------- */
-
 .dnd4e-blast-svg{
-	content:url(../icons/ui/blast.svg);
+	content:url('../icons/ui/blast.svg');
+}
+.dnd4e-burst-svg{
+	content:url('../icons/ui/burst.svg');
+}
+.colorBlindRG .dnd4e{
+	--background-atwill:-o-linear-gradient(45deg, #003c15, #087830);
+	--background-atwill:linear-gradient(45deg, #003c15, #087830);
+	--background-encounter:-o-linear-gradient(45deg, #003854, #89cdef);
+	--background-encounter:linear-gradient(45deg, #003854, #89cdef);
+	--background-daily:-o-linear-gradient(45deg, #005748, #42ac9a);
+	--background-daily:linear-gradient(45deg, #005748, #42ac9a);
+	--background-recharge:-o-linear-gradient(45deg, #695702, #decd78);
+	--background-recharge:linear-gradient(45deg, #695702, #decd78);
+	--background-other:-o-linear-gradient(45deg, #0d0145, #301c89);
+	--background-other:linear-gradient(45deg, #0d0145, #301c89);
+}
+.colorBlindBY .dnd4e{
+	--background-atwill:-o-linear-gradient(45deg, #796501, #efde89);
+	--background-atwill:linear-gradient(45deg, #796501, #efde89);
+	--background-encounter:-o-linear-gradient(45deg, #4e0129, #891c54);
+	--background-encounter:linear-gradient(45deg, #4e0129, #891c54);
+	--background-daily:-o-linear-gradient(45deg, #333300, #9a9a30);
+	--background-daily:linear-gradient(45deg, #333300, #9a9a30);
+	--background-recharge:-o-linear-gradient(45deg, #01536e, #66cdef);
+	--background-recharge:linear-gradient(45deg, #01536e, #66cdef);
+	--background-other:-o-linear-gradient(45deg, #0d0145, #301c89);
+	--background-other:linear-gradient(45deg, #0d0145, #301c89);
+}
+body.theme-dark {
+	--white-svg-filter: brightness(0) saturate(100%) invert(91%) sepia(17%) saturate(207%) hue-rotate(345deg) brightness(103%) contrast(87%);
+	--border-engraved:2px groove #000;
+	--input-background-color:var(--color-cool-4);
+    &.application,
+	.application{
+        --background:#221d21;
+    }
+}
+body.theme-dark .dnd4e:not(.themed.theme-light),
+.dnd4e.themed.theme-dark{
+	--gradient-4e:linear-gradient(90deg,#3c3d48,#3c3d4818);
+	--automath-brightness:0.9;
+	--border-engraved:2px groove #000;
+	--input-background-color:var(--color-cool-4);
+    &.application,
+	.application{
+        --background:#221d21;
+    }
 }
 
-.dnd4e-burst-svg{
-	content:url(../icons/ui/burst.svg);
-}
-.standard-form{
-	gap:0;
-}
 .dnd4e{
-	--border-engraved:2px groove #eeede0;
+	--border-engraved:2px groove var(--color-text-subtle);
 	--border-heavy:3px solid #7a7971;
 	--border-medium:2px solid #7a7971;
 	--border-normal:1px solid #7a7971;
@@ -40,2524 +80,2380 @@
 	--background-other:linear-gradient(45deg, #25003c, #dc9ff1a6);
 	--background-item:-o-linear-gradient(45deg, #6a581c, #d4af37);
 	--background-item:linear-gradient(45deg, #6a581c, #d4af37);
-}
-.colorBlindRG .dnd4e{
-	--background-atwill:-o-linear-gradient(45deg, #003c15, #087830);
-	--background-atwill:linear-gradient(45deg, #003c15, #087830);
-	--background-encounter:-o-linear-gradient(45deg, #003854, #89cdef);
-	--background-encounter:linear-gradient(45deg, #003854, #89cdef);
-	--background-daily:-o-linear-gradient(45deg, #005748, #42ac9a);
-	--background-daily:linear-gradient(45deg, #005748, #42ac9a);
-	--background-recharge:-o-linear-gradient(45deg, #695702, #decd78);
-	--background-recharge:linear-gradient(45deg, #695702, #decd78);
-	--background-other:-o-linear-gradient(45deg, #0d0145, #301c89);
-	--background-other:linear-gradient(45deg, #0d0145, #301c89);
-}
-.colorBlindBY .dnd4e{
-	--background-atwill:-o-linear-gradient(45deg, #796501, #efde89);
-	--background-atwill:linear-gradient(45deg, #796501, #efde89);
-	--background-encounter:-o-linear-gradient(45deg, #4e0129, #891c54);
-	--background-encounter:linear-gradient(45deg, #4e0129, #891c54);
-	--background-daily:-o-linear-gradient(45deg, #333300, #9a9a30);
-	--background-daily:linear-gradient(45deg, #333300, #9a9a30);
-	--background-recharge:-o-linear-gradient(45deg, #01536e, #66cdef);
-	--background-recharge:linear-gradient(45deg, #01536e, #66cdef);
-	--background-other:-o-linear-gradient(45deg, #0d0145, #301c89);
-	--background-other:linear-gradient(45deg, #0d0145, #301c89);
-}
-body {
+	--input-height:2em;
 	--white-svg-filter: brightness(0) saturate(100%) invert(9%) sepia(1%) saturate(0%) hue-rotate(147deg) brightness(99%) contrast(89%);
-}
-body.theme-dark {
-	--white-svg-filter: brightness(0) saturate(100%) invert(91%) sepia(17%) saturate(207%) hue-rotate(345deg) brightness(103%) contrast(87%);;
-}
-body.theme-dark .dnd4e:not(.themed.theme-light),
-.dnd4e.themed.theme-dark {
-	--gradient-4e:linear-gradient(90deg, #3c3d48, #3c3d4818);
-	--automath-brightness:0.9
+	
+	&.standard-form{
+		gap:0;
+	}
+	.window-content{
+		padding:0.5em;
+	}
+	.fakebutton{
+		width:100%;
+		border:var(--border-engraved);
+		border-radius:2px;
+		background:var(--color-bg-btn-minor-active);
+		padding:1px 3px;
+		margin:0 3px;
+		text-align:center;
+		font-size:14px;
+	}
+	.ability-usage--atwill{
+		background:var(--background-atwill);
+	}
+	.force-ability-usage--atwill{
+		background:var(--background-atwill) !important;
+	}
+	.ability-usage--encounter{
+		background:var(--background-encounter);
+	}
+	.force-ability-usage--encounter{
+		background:var(--background-encounter) !important;
+	}
+	.ability-usage--daily{
+		background:var(--background-daily);
+	}
+	.force-ability-usage--daily{
+		background:var(--background-daily) !important;
+	}
+	.ability-usage--recharge{
+		background:var(--background-recharge);
+	}
+	.force-ability-usage--recharge{
+		background:var(--background-recharge) !important;
+	}
+	.ability-usage--other{
+		background:var(--background-other);
+	}
+	.force-ability-usage--other{
+		background:var(--background-other)!important;
+	}
+	.ability-usage--item{
+		background:var(--background-item);
+	}
+	.force-ability-usage--item{
+		background:var(--background-item) !important;
+	}
+	.effect-tooltip{
+		text-align:left;
+	}
+	.region-behavior-config i.difficult-terrain-icon{
+		content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
+		height:1em;
+	}
+	.region-config i.difficult-terrain-icon{
+		content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
+		filter:var(--white-svg-filter);
+		height:1em;
+		position:relative;
+		top:2px;
+	}
 }
 
-/*.flexrow{
-	display:flex;
-	flex-direction:row;
-	flex-wrap:wrap;
-	justify-content:flex-start;
-}
-.flexrow .thin{
-	padding-left:15%;
-	padding-right:15%;
-}
-.flexcol{
-	display:flex;
-	flex-direction:column;
-	flex-wrap:nowrap;
-}
-.flexcol > *{
-	flex:1;
-}
-.flexcol .flex1{
-	flex:1;
-}
-.flexcol .flex2{
-	flex:2;
-}
-.flexcol .flex3{
-	flex:3;
-}
-.flexcol .flex4{
-	flex:4;
-}
-.placeholder{
-	position:relative;
-	display:inline-block;
-}
-.placeholder::after{
-	position:absolute;
-	right:5px;
-	top:9px;
-	content:attr(data-placeholder);
-	pointer-events:none;
-	font-size:12px;
-}
-select[multiple]{
-	background:#d9d8cc;
-}
-option,select[multiple] option{
-	background:unset;
-}
-option:checked,select[multiple] option:checked{
-	background:#508fff;
-	opacity:1;
-	color:#fff;
-}
-select[multiple] option:hover{
-	background:#508fff;
-	color:#fff;
-}
-textarea{
-	border:none;
-}
-.dnd4e .window-content{
-	/* overflow-y:hidden; */
-	/*padding:5px;
-}
-:is(input,select,button):disabled{
-	cursor:not-allowed;
-}*/
 
 /* ----------------------------------------- */
 /*  Sheets
 /* ----------------------------------------- */
 
-.dnd4e.sheet.default select{
-	font-size:revert;
-	/* background:#cac9be; */
-	border:var(--border-faint);
-	flex: 1;
-}
-.dnd4e.sheet.actor.default input,
-.dnd4e.sheet.item.default .content .currency input[type="text"]{
-	background:none;
-	border-width:0;
-	border-radius:0;
-}
-.dnd4e.sheet.default input::placeholder{
-	opacity:0.4;
-}
-.dnd4e.sheet.default button{
-	background:var(--color-bg-btn-minor-inactive);
-}
-.dnd4e.sheet.default .window-content form,
-.dnd4e.sheet.default .window-content > section{
-	height:100%;
-	overflow:hidden;
-}
-.dnd4e.sheet.default .sheet-header .summary{
-	flex:0 0 100%;
-	height:40px;
-	margin:0;
-	padding:0;
-	list-style:none;
-}
-.dnd4e.sheet.default .sheet-header .summary.flexrow{
-	justify-content:space-between;
-	align-items:center;
-}
-.dnd4e.sheet.default .sheet-header .summary.flexrow>li{
-	white-space:nowrap;
-	display:flex;
-	align-items:center;
-}
-.dnd4e.sheet.default .sheet-header .summary input{
-	vertical-align:top;
-	background:none;
-	border-width:0;
-	position:relative;
-	border-bottom:var(--border-normal);
-	padding:2px;
-}
-.dnd4e.sheet.default .sheet-header .summary label{
-	flex-basis:30px;
-}
-.dnd4e.sheet.default .sheet-header .summary-name{
-	flex-basis:calc(46% - 34px);
-}
-.dnd4e.sheet.default .sheet-header .summary-race,
-.dnd4e.sheet.default .sheet-header .summary-class{
-	flex-basis:calc(26% - 34px);
-}
-.dnd4e.sheet.default .sheet-header .summary-level{
-	flex-basis:98px;
-}
-.dnd4e.sheet.default .sheet-header .summary-level label{
-	width:50%;
-}
-.dnd4e.sheet.default .sheet-header .summary-level input{
-	text-align:center;
-	width:35%;
-	padding:0%;
-}
-.dnd4e.sheet.default .sheet-header .summary-path{
-	flex-basis:calc(49% - 68px);
-}
-.dnd4e.sheet.default .sheet-header .summary-exp{
-	flex-basis:135px;
-}
-.dnd4e.sheet.default .sheet-header .summary-exp label{
-	width:50%;
-}
-.dnd4e.sheet.default .sheet-header .summary-exp input{
-	text-align:center;
-	width:65%;
-	padding:0%;
-}
-.dnd4e .sheet-header{
-	flex:0 0 100%;
-	font-size:20px;
-	align-items:center;
-}
-.dnd4e.sheet.item .sheet-header{
-	flex:none;
-}
-.dnd4e.sheet.item .header-2{
-	align-items:stretch;
-}
-.sheet .sheet-header img{
-	margin-right:0px;
-}
-.image-frame{
-	max-width:100px;
-	max-height:100px;
-	position:relative;
-}
-.dnd4e.sheet.actor.default .npc-upper select {
-	padding: 0px;
-	margin: 0 3px 0 3px;
-}
-.dnd4e.sheet.actor.default .image-frame{
-	flex-grow:0;
-	aspect-ratio:1 / 1;
-	flex-basis:100px;
-}
-.dnd4e.sheet.actor.default.NPC .image-frame{
-	margin-left:3px;
-	margin-right:8px;
-	max-width:64px;
-	max-height:64px;
-}
-.dnd4e.sheet.actor.default .image-frame img{
-	max-height:100px;
-}
-.dnd4e.sheet.actor.default .sheet-header .profile-img,
-.dnd4e.sheet.actor.default .image-frame .profile-img,
-.dnd4e.sheet.item .image-frame .profile {
-	flex:0 0 100px;
-	margin-right:0px;
-	object-fit: cover;
-	object-position: top;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	border-width: 2px;
-	border: var(--border-medium);
-}
-.dnd4e.sheet.actor.default:not(.NPC,.Hazard,.minimized){
-	min-width:836px;
-	min-height:420px;
-}
-.dnd4e.sheet.actor.default .image-frame:hover .hover-icon,
-.dnd4e.sheet.item .image-frame:hover .hover-icon{
-	display:block;
-}
-.dnd4e.sheet.actor.default .image-frame .hover-icon,
-.dnd4e.sheet.item .image-frame .hover-icon{
-	display:none;
-	position:absolute;
-	right:2px;
-	bottom:0px;
-	text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-	color:#fff;
-}
-.dnd4e.sheet.actor.default .section--attributes{
-	border-top:var(--border-heavy);
-	border-bottom:var(--border-heavy);
-	max-height:100px;
-}
-.dnd4e.sheet.actor.default:not(.NPC) .attributes span.sep{
-	max-width:20px;
-	font-size:22px;
-}
-.dnd4e.sheet.actor.default .attributes .attribute{
-	border-right:var(--border-normal);
-	-webkit-box-flex:0;
-	-ms-flex:0 0 25%;
-	flex:0 0 25%;
-	height:72px;
-	margin:4px 0;
-	padding:0 4px;
-}
-.dnd4e.sheet.actor.default .resource-tracker{
-	text-align:center;
-	position:relative;
-}
-.dnd4e.sheet.actor.default .section--attributes .resource-tracker input[type="text"]{
-	border-bottom:var(--border-normal);
-	font-size:18px;
-	font-weight:bold;
-}
-.dnd4e.sheet.actor.default input.bloodied,
-.dnd4e.sheet.actor.default .attribute-health input.bloodied{
-	color:#d41111;
-}
-.dnd4e.sheet.actor.default .attributes.attribute-surge{
-	min-width: 187px;
-}
-.dnd4e.sheet.actor.default a.rest.second-wind{
-	min-width:78px;
-}
-.dnd4e.sheet.actor.default .attribute-value input{
-	font-size:18px;
-	font-weight:bold;
-	&[data-dtype="Number"] {
-		text-align: center;
-		max-height: 26px;
+.dnd4e.sheet.default .window-content{
+	.inline-list>li{
+		display:inline-block;
+		padding-right:0.8em;	
 	}
-}
-.dnd4e.sheet.actor.default .attribute-value input[type="checkbox"]{
-	margin:2px;
-}
-.dnd4e.sheet.actor.default:not(.NPC) .attribute-input{
-	min-width:32px;
-}
-.dnd4e.sheet.actor.default .attribute-sub strong{
-	display:inline-block;
-	margin-top:2px;
-	margin-bottom:2px;
-}
-.dnd4e.sheet.actor.default:not(.NPC) .attributes .attribute-display{
-	border-top:var(--border-normal);
-	margin-left:2px;
-	margin-right:2px;
-}
-.dnd4e.sheet.actor.default .attribute-name,
-.dnd4e.sheet.actor.default .resource-name{
-	font-size:18px;
-	height:22px;
-	line-height:22px;
-	margin:0 0 0px;
-	position:relative;
-	text-align:center;
-	margin-top:-3px;
-	margin-bottom:-3px;
-}
-.dnd4e.sheet.actor.default .resource-name{
-	height:28px;
-}
-.dnd4e:not(.NPC) .attributes{
-	max-height:90px;
-	padding:2px;
-	margin:2px;
-}
-.dnd4e.sheet.actor.default .attributes+.attributes{
-	border-left:var(--border-normal);
-	min-height:90px;
-}
-.dnd4e.sheet.actor.default .attributes .attribute-value{
-	-webkit-box-pack:center;
-	-ms-flex-pack:center;
-	justify-content:center;
-	text-align:center;
-}
-.dnd4e.sheet.actor.default .attribute-footer--temp-hp{
-	margin:auto;
-	text-align:center;
-	align-items:center;
-	display:inline;
-}
-.dnd4e.sheet.actor.default .attribute-footer--temp-hp span,
-.dnd4e.sheet.actor.default .attribute-footer--temp-hp input{
-	max-width:40%;
-	text-align:center;
-}
-.dnd4e.sheet.actor.default a.rest{
-	border:var(--border-faint);
-	border-radius:2px;
-	background:var(--color-bg-btn-minor-active);
-	padding:0 3px;
-	margin:0 3px;
-	font-size:10px;
-	text-align:center;
-	min-width:38px;
-}
-.dnd4e.sheet.actor.default .attribute-footer--surge>span{
-	font-size:10px;
-	max-width:48px;
-}
-.dnd4e.sheet.actor.default ul.attributes{
-	flex:0 0 60px;
-	list-style:none;
-	margin:0;
-	padding:0;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute{
-	height:60px;
-	margin:0 5px 0 0;
-	border:var(--border-engraved);
-	border-radius:4px;
-	text-align:center;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute:last-child{
-	margin:0;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute .attribute-value{
-	display:flex;
-	justify-content:center;
-	align-items:center;
-	height:28px;
-	line-height:28px;
-	font-family:"Modesto Condensed", "Palatino Linotype", serif;
-	font-size:20px;
-	font-weight:700;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute .attribute-value > *{
-	font-weight:400;
-	font-size:24px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute .attribute-value.multiple input{
-	flex:0 0 33%;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute .attribute-footer{
-	flex:0 0 18px;
-	margin-top:-1px;
-	line-height:18px;
-	font-size:12px;
-	font-weight:400;
-	white-space:nowrap;
-}
-.dnd4e.sheet.actor.default.character .resource .attribute-value label.recharge{
-	height:32px;
-	position:relative;
-	font-family:"Signika", sans-serif;
-	font-size:11px;
-	text-align:center;
-	color:var(--color-label);
-}
-.fakebutton{
-	width:100%;
-	border:var(--border-engraved);
-	border-radius:2px;
-	background:var(--color-bg-btn-minor-active);
-	padding:1px 3px;
-	margin:0 3px;
-	text-align:center;
-	font-size:14px;
-}
-.dnd4e .container--bottom{
-	height:calc(100% - 190px);
-}
-.dnd4e .section--sidebar{
-	max-width:260px;
-	margin-left:15px;
-	border-right:var(--border-heavy);
-	height:100%;
-	overflow-y:auto;
-	scrollbar-width: thin;
-}
-.dnd4e.sheet.actor.default .section--abilities{
-	margin-right:15px;
-	padding-bottom:10px;
-	border-bottom:var(--border-heavy);
-}
-.dnd4e.sheet.actor.default .section--abilities .ability-header{
-	text-align:right;
-	font-size:9px;
-}
-.dnd4e.sheet.actor.default .section--abilities .ability-header label{
-	margin-left:18px;
-}
-.dnd4e.sheet.actor.default .section--abilities .ability--score + .ability--score{
-	border-top:var(--border-normal);
-}
-.dnd4e.sheet.actor.default .section--abilities .ability--score input{
-	max-width:32px;
-	font-size:16px;
-	text-align:left;
-	font-weight:bold;
-}
-.dnd4e.sheet.actor.default .section--abilities .ability--score .ability-name{
-	display:flex;
-	align-items:center;
-	min-width:140px;
-	font-size:16px;
-}
-.dnd4e.sheet.actor.default .ability-name{
-	display:inline-block;
-	min-width:24px;
-}
-.dnd4e.sheet.actor.default .section--abilities .ability--score .ability-mod{
-	display:flex;
-	align-items:center;
-	border-right:var(--border-normal);
-	font-weight:bold;
-	font-size:16px;
-}
-.dnd4e.sheet.actor.default .section--abilities .ability--score .ability-mod-half{
-	font-weight:bold;
-	text-align:right;
-	font-size:16px;
-	max-width:35px;
-	border-left:var(--border-normal);
-}
-.dnd4e.sheet.actor.default .section--skills{
-	margin-right:15px;
-	margin-top:10px;
-}
-.dnd4e.sheet.actor.default .section--skills .skill--block{
-	min-height:27px;
-}
-.dnd4e.sheet.actor.default .section--skills .skill--block + .skill--block{
-	border-top:var(--border-normal);
-}
-.dnd4e.sheet.actor.default .section--skills .skill-training{
-	max-width:18px;
-	padding-top:5px;
-	opacity:0.3;
-}
-.dnd4e.sheet.actor.default .section--skills .skill-name{
-	text-align:left;
-	border-right:var(--border-normal);
-	margin-bottom:0;
-	margin-top:0;
-	font-size:16px;
-	padding-top:3px;
-	padding-left:8px;
-	font-family: var(--font-body);
-	font-weight: normal;
-}
-.dnd4e.sheet.actor.default .section--skills .skill-mod{
-	text-align:right;
-	font-weight:bold;
-	max-width:35px;
-	font-size:16px;
-}
-.dnd4e.sheet.actor.default .section--sidebar .custom-roll-descriptions{
-	font-size:11.5px;
-}
-.dnd4e .section--main{
-	height: 100%;
-	margin-left:15px;
-	margin-right:15px;
-}
-.dnd4e .section--utilities{
-	border-bottom:var(--border-heavy);
-	max-height:80px;
-	text-transform:uppercase;
-	font-size:16px;
-}
-.dnd4e .denomination{
-	text-transform:uppercase;
-}
-.dnd4e .section--utilities section{
-	margin-bottom:5px;
-}
-.dnd4e .section--utilities section+section{
-	border-left:var(--border-normal);
-}
-.dnd4e.sheet.actor.default .section--utilities .section--saves div,
-.dnd4e.sheet.actor.default .section--utilities .section--passives div,
-.dnd4e.sheet.actor.default .section--utilities .section--movement div{
-	margin-left:5px;
-	margin-right:5px;
-	padding-top:5px;
-}
-.dnd4e.sheet.actor.default .section--utilities .section--saves div+div,
-.dnd4e.sheet.actor.default .section--utilities .section--passives div+div,
-.dnd4e.sheet.actor.default .section--utilities .section--movement div+div{
-	border-top:var(--border-normal);
-}
-.dnd4e.sheet.actor.default .section--utilities .section--saves div label,
-.dnd4e.sheet.actor.default .section--utilities .section--saves div input{
-	position:relative;
-	&.death-saves-failed {
-		height:20px;
+	.inline-list>li::before{
+		content:'\2022';
+		padding-right:2px;
 	}
-}
-.dnd4e.sheet.actor.default .section--utilities .section--saves div input{
-	width:40%;
-	text-align:center;
-	border-bottom:var(--border-normal);
-}
-.dnd4e.sheet.actor.default .section--utilities .section--saves{
-	min-width:143px;
-}
-.dnd4e.sheet.actor.default div.saving-throw,
-.dnd4e.sheet.actor.default div.death-saves{
-	display:flex;
-	flex-wrap:wrap;
-	align-items:center;
-}
-.dnd4e.sheet.actor.default .section--utilities .section--passives{
-	min-width:190px;
-}
-.dnd4e.sheet.actor.default .section--utilities .section--movement{
-	min-width:105px;
-}
-.dnd4e.sheet.actor.default .section--utilities .section--movement .movement-dialog{
-	text-transform:initial;
-}
-.dnd4e.sheet.actor.default .section--saves .rollable{
-	border:unset;
-}
-.dnd4e.sheet.actor.default :is(.section--saves,.saves) img.rollable[src$="svg"]:hover{
-	-webkit-filter:brightness(0);
-			filter:brightness(0);
-}
-.dnd4e.sheet.actor.default .section--saves .death-saves-failed{
-	width:40%;
-	border-bottom:var(--border-normal);
-	text-align:center;
-}
-.dnd4e.sheet.actor.default .section--tabs{
-	flex:0;
-}
-.dnd4e.sheet.actor.default .section--tabs nav.sheet-tabs{
-	border-top:0px;
-	border-bottom:var(--border-normal);
-}
-.dnd4e.sheet.actor.default .tab.attributes{
-	overflow:hidden;
-}
-.dnd4e.sheet.actor.default .window-content .tab{
-	height:100%;
-	overflow:hidden auto;
-	align-content:flex-start;
-	scrollbar-width:thin;
-	scrollbar-gutter:stable;
-}
-.dnd4e.sheet.actor.default .tab.details .section--attributes{
-	border:unset;
-	margin-top: 10px;
-}
-.dnd4e.sheet.actor.default .section--details .detail{
-	display:flex;
-	align-items:baseline;
-	padding:3px;
-}
-.dnd4e.sheet.actor.default .section--details .detail input{
-	text-align:right;
-	flex: 1;
-}
-.dnd4e.sheet.actor.default .section--details .detail label{
-	font-weight:normal;
-	flex: 1;
-}
-.dnd4e.sheet.actor.default .section--details .details-mechanical{
-	margin-left:0.5em;
-	border-left:var(--border-normal);
-	padding-left:0.5em;
-}
-.dnd4e.sheet.actor.default .tab.details h4.box-title{
-	margin-top:1em;
-}
-.ability-usage--atwill{
-	background:var(--background-atwill);
-}
-.force-ability-usage--atwill{
-	background:var(--background-atwill) !important;
-}
-.ability-usage--encounter{
-	background:var(--background-encounter);
-}
-.force-ability-usage--encounter{
-	background:var(--background-encounter) !important;
-}
-.ability-usage--daily{
-	background:var(--background-daily);
-}
-.force-ability-usage--daily{
-	background:var(--background-daily) !important;
-}
-.ability-usage--recharge{
-	background:var(--background-recharge);
-}
-.force-ability-usage--recharge{
-	background:var(--background-recharge) !important;
-}
-.ability-usage--other{
-	background:var(--background-other);
-}
-.force-ability-usage--other{
-	background:var(--background-other)!important;
-}
-.ability-usage--item{
-	background:var(--background-item);
-}
-.force-ability-usage--item{
-	background:var(--background-item) !important;
-}
-.dnd4e .sheet-header .header-fields{
-	flex:1;
-	height:99px;
-}
-.dnd4e.sheet.actor.default .sheet-header .charname{
-	padding:0;
-	margin:0;
-}
-.dnd4e.sheet.actor.default .sheet-header .charname input{
-	padding:0;
-	margin:5px;
-	font-size:36px;
-	height:44px;
-	width:95%;
-}
-.dnd4e.sheet.actor.default .sheet-header .charlevel{
-	width:100%;
-	flex:0 0 180px;
-	height:60px;
-	margin:0;
-	padding:2px;
-	text-align:right;
-}
-.dnd4e.sheet.actor.default .traits-list{
-	margin:0 0 0 0;
-	padding:0 0 0 4px;
-}
-.dnd4e.sheet.actor.default .traits-list>li{
-	display:inline-block;
-}
-.dnd4e.sheet.actor.default .traits-list>li:not(:last-child)::after{
-	content:', ';
-}
-.dnd4e.sheet.actor.default ul.item-properties.tags{
-	padding-left:0;
-}
-.dnd4e.sheet.actor.default ul.item-properties.tags li{
-	display:inline-block;
-	margin:0 2px 0 0;
-	padding:0 3px;
-	font-size:10px;
-	line-height:16px;
-	border:var(--border-normal);
-	border-radius:3px;
-	background:var(--color-bg-btn-minor-active);
-}
-.dnd4e .form-header{
-	margin:0 0 0.25em 0;
-	padding:2px 0;
-	border-top:var(--border-engraved);
-	border-bottom:var(--border-engraved);
-	font-family:"Modesto Condensed","Palatino Linotype",serif;
-	font-size:20px;
-	font-weight:700;
-}
-.dnd4e.sheet.default .tab{
-	gap:0.5rem;
-}
-.dnd4e .form-header.enhancement-bonus{
-	margin-top: 5px;
-}
-.dnd4e .form-group label{
-	flex:2;
-	max-width:174px;
-	color:var(--color-label);
-	line-height:1;
-}
-.dnd4e .form-group label>.label-hint{
-	font-weight:normal;
-	font-style:oblique;
-}
-.dnd4e .form-group label.long{
-	max-width:unset;
-}
-.dnd4e .form-group.wide label{
-	max-width:208px;
-}
-.dnd4e .form-group label.inline.before{
-	text-align:right;
-	margin-right:0.35em;
-}
-.dnd4e .form-group .form-fields{
-	display:flex;
-	flex-direction:row;
-	flex-wrap:wrap;
-	justify-content:flex-start;
-}
-.dnd4e .form-group .form-fields > label{
-	white-space:nowrap;
-}
-.dnd4e.sheet.item .details .form-group span.checkbox{
-	text-align:right;
-}
-.dnd4e .form-group .form-fields > *{
-	flex:1;
-}
-.dnd4e .form-group .form-fields .flex1{
-	flex:1;
-}
-.dnd4e .form-group .form-fields .flex2{
-	flex:2;
-}
-.dnd4e .form-group .form-fields .flex3{
-	flex:3;
-}
-.dnd4e .form-group .form-fields .flex4{
-	flex:4;
-}
-.dnd4e .form-group .form-fields > *{
-	margin:0 3px 0 0;
-}
-.dnd4e .form-group .form-fields > *:last-child{
-	margin-right:0;
-}
-.dnd4e .form-group.stacked label{
-	flex:0 0 100%;
-	margin:0;
-	max-width:100%;
-}
-.dnd4e .form-group.stacked label.checkbox{
-	flex:auto;
-	text-align:left;
-	line-height:1;
-}
-.dnd4e .inline-list>li{
-	display:inline-block;
-	padding-right:0.8em;	
-}
-.dnd4e .inline-list>li::before{
-	content:'\2022';
-	padding-right:2px;
-}
-.dnd4e.sheet.actor.default .traits{
-	padding-left:20px;
-}
-.dnd4e.sheet.actor.default .traits .group-header{
-	margin-left:-20px;
-}
-.dnd4e.sheet.actor.default .traits .subgroup-header{
-	margin-left:-10px;
-}
-.dnd4e.sheet.actor.default .traits .form-group,
-.dnd4e.sheet.actor.default .traits .form-group-stacked{
-	margin:0 0 3px 0;
-	justify-content:space-between;
-}
-.dnd4e.default .form-header{
-	margin:0 0 0.25em 0;
-	padding:2px 0;
-	border-top:var(--border-engraved);
-	border-bottom:var(--border-engraved);
-	font-family:"Modesto Condensed", "Palatino Linotype", serif;
-	font-size:20px;
-	font-weight:700;
-}
-.dnd4e.sheet.default .sheet-header .header-details .summary input{
-	border:0;
-	vertical-align:bottom;
-}
-.dnd4e.sheet.actor.default input.milestones{
-	width:18px;
-	border-bottom:var(--border-normal);
-	max-width:9%;
-	height:14px;
-}
-.dnd4e.sheet.default .editable .rollable:hover,
-.rollable:hover{
-	text-shadow:0 0 10px red;
-	cursor:pointer;
-}
-.dnd4e.sheet.actor.default:not(.NPC) .ability-scores{
-	flex:0 0 100px;
-	height:429px;
-	list-style:none;
-	margin:0;
-	padding:0;
-	font-size:20px;
-	border:var(--border-engraved);
-	border-radius:3px;
-}
-.dnd4e.sheet.actor.default .ability-scores .ability{
-	height:67px;
-	text-align:center;
-	border-bottom:var(--border-engraved);
-}
-.dnd4e.sheet.actor.default .ability-scores .ability:last-child{
-	border-bottom:none;
-	margin-bottom:-10px;
-}
-.dnd4e.sheet.actor.default .ability-scores .ability input.ability-score{
-	height:30px;
-	width:36px;
-	margin:0 auto;
-	line-height:32px;
-	font-size:24px;
-}
-.dnd4e.sheet.actor.default .ability-scores .ability .ability-modifiers{
-	height:24px;
-	margin:-8px 0 0;
-}
-.dnd4e.sheet.actor.default .ability-scores .ability .ability-modifiers span.ability-mod,
-.dnd4e.sheet.actor.default .ability-scores .ability .ability-modifiers span.ability-save{
-	flex:0 0 24px;
-	height:22px;
-	line-height:22px;
-	font-size:16px;
-	border-top:var(--border-engraved);
-}
-.dnd4e.sheet.actor.default .ability-scores .ability .ability-modifiers span.ability-mod{
-	border-right:var(--border-engraved);
-}
-.dnd4e.sheet.actor.default .ability-scores .ability .ability-modifiers .ability-proficiency{
-	line-height:30px;
-}
-.dnd4e.sheet.actor.default .ability-scores .ability .ability-modifiers span.ability-save{
-	border-left:var(--border-engraved);
-}
-.dnd4e.sheet.actor.default ul.skills-list{
-	flex:0 0 200px;
-	height:412px;
-	list-style:none;
-	margin:0 5px 0;
-	padding:3px 0 2px;
-	border:var(--border-engraved);
-	border-radius:3px;
-}
-.dnd4e.sheet.actor.default ul.skills-list li.skill{
-	height:24px;
-	padding:3px 2px;
-}
-.dnd4e.sheet.actor.default ul.skills-list li.skill:nth-child(even){
-	background:rgba(0, 0, 0, 0.05);
-}
-.dnd4e.sheet.actor.default ul.skills-list li.skill h4{
-	flex:1px;
-	margin:0;
-	font-size:11px;
-	line-height:18px;
-}
-.dnd4e.sheet.actor.default ul.skills-list li.skill .skill-training{
-	flex:0 0 16px;
-	line-height:18px;
-}
-.dnd4e.sheet.actor.default ul.skills-list li.skill .skill-ability{
-	flex:0 0 28px;
-}
-.dnd4e.sheet.actor.default ul.skills-list li.skill .skill-mod{
-	flex:0 0 25px;
-}
-.dnd4e.sheet.actor.default ul.skills-list li.skill .skill-bonus{
-	text-align:right;
-	padding-right:4px;
-}
-.dnd4e.sheet.actor.default ul.skills-list input.skill-mod{
-	position:relative;
-	top:-5px;
-	background:none;
-	border-width:0;
-}
-.dnd4e.sheet.actor.default .training-toggle{
-	font-size:12px;
-	padding-left:7px;
-}
-.dnd4e.sheet.actor.default .locked .training-toggle{
-	text-shadow:none;
-	cursor:default;
-}
-.dnd4e.sheet.actor.default .center-pane{
-	height:100%;
-	padding:0 5px 0 3px;
-	/* overflow-y:auto; */
-	/* scrollbar-width:thin; */
-}
-.dnd4e.sheet.actor.default .attributes input.temphp{
-	width:48%;
-}
-.dnd4e.sheet.actor.default h4.box-title{
-	height:18px;
-	line-height:16px;
-	margin:4px 8px 2px;
-	font-size:22px;
-	border-bottom:var(--border-normal);
-	text-align:left;
-}
-.dnd4e.sheet.actor.default .scrollbar{
-	height:100%;
-	overflow-y:scroll;
-	scrollbar-width:thin;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-health{
-	height:80px;
-	margin:0 0 0 0;
-	border:var(--border-engraved);
-	border-radius:4px;
-	font-size:20px;
-	text-align:center;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-health:last-child{
-	margin:0;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-health .attribute-value{
-	display:flex;
-	justify-content:center;
-	align-items:center;
-	height:28px;
-	line-height:28px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-health .attribute-value input{
-	width:100%;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-health .attribute-value input:first-child{
-	text-align:right;
-	padding-right:4px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-health .attribute-value input:not(:first-child){
-	text-align:left;
-	padding-left:4px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-health .attribute-value > *{
-	font-size:24px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-health .attribute-value.multiple input{
-	flex:0 0 33%;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-health .attribute-footer{
-	flex:0 0 18px;
-	margin-top:-1px;
-	line-height:18px;
-	font-size:12px;
-	display:flex;
-	justify-content:space-between;
-}
-.dnd4e.sheet.actor.default .resource-half{
-	width:50%;
-	height:40px;
-	margin-top:10px;
-	float:left;
-	/* text-align:center; */
-}
-.dnd4e.sheet.actor.default .resource-half input{
-	width:54px;
-	height:28px;
-}
-.dnd4e.sheet.actor.default .resource-half input::placeholder{
-	font-size:12px;
-	opacity:0.75;
-}
-.dnd4e.sheet.actor.default .resource-half .attribute-footer span{
-	position:relative;
-	top:5px;
-}
-.dnd4e.sheet.actor.default .box-title-hit{
-	text-align:center;
-	height:18px;
-	line-height:16px;
-	margin:4px 8px 2px;
-	font-size:18px;
-	border-bottom:var(--border-normal);	
-	display:inline;
-	/* width:50%; */
-	/* text-align:center; */
-	/* height:18px; */
-	/* float:left; */
-	/* line-height:16px; */
-	/* padding:0 3px; */
-	/* border-bottom:1px solid #c9c7b8; */
-	/* line-height:24px; */
-	/* color:var(--color-text-dark-secondary);	 */
-}
-.dnd4e.sheet.actor.default .hitdata{
-	display:flex;
-	justify-content:center;
-	align-items:center;
-	height:28px;
-	line-height:28px;	
-	flex:0 0 100%;
-	width:50%;
-	/* height:60px; */
-	/* margin:0; */
-	/* padding:0; */
-	/* list-style:none; */
-	/* border-top:2px groove #eeede0; */
-	/* border-bottom:none; */
-	/* position:relative; */
-	/* top:16px; */
-}
-.dnd4e.sheet.actor.default .hitdata input{
-	text-align:center;
-	font-size:24px
-}
-.dnd4e.sheet.actor.default .hitdata .left input{
-	display:flex;
-	justify-content:center;
-	align-items:center;
-	height:28px;
-	line-height:28px;
-	text-align:right;
-	font-size:24px
-}
-.dnd4e.sheet.actor.default .hitdata .right input{
-	display:flex;
-	justify-content:center;
-	align-items:center;
-	height:28px;
-	line-height:28px;
-	text-align:left;
-	font-size:24px
-}
-.dnd4e.sheet.actor.default .hitdata input::placeholder{
-	font-size:16px;
-	color:#7a7971;
-}
-.dnd4e.sheet.actor.default .hitdata .slash{
-	font-size:28px;
-	color:#7a7971;
-}
-.dnd4e.sheet.actor.default .half{
-	width:50%;
-}
-.dnd4e.sheet.default .sheet-header .hitdata input{
-	vertical-align:top;
-}
-.dnd4e.sheet.default .sheet-header .hitdata .left{
-	width:30%;
-	float:left;
-	height:24px;
-	padding:0 3px;
-	/* border-left:2px groove #eeede0; */
-	border-right:var(--border-engraved);
-	border-bottom:var(--border-engraved);
-	line-height:24px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest{
-	margin:0 0 0 0;
-	border:var(--border-engraved);
-	border-radius:4px;
-	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
-	width:100%;
-	height:120px;
-	/* margin-top:10px; */
-	float:left;
-	/* text-align:center; */
-	height:60px;
-	margin:0 0 0 0;
-	border:var(--border-engraved);
-	border-radius:4px;
-	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
-	font-size:20px;
-	text-align:center;	
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest:last-child{
-	margin:0;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest .attribute-value{
-	display:flex;
-	justify-content:center;
-	align-items:center;
-	height:28px;
-	line-height:28px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest .attribute-value > *{
-	font-size:24px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest .attribute-value.multiple input{
-	flex:0 0 33%;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest .attribute-footer{
-	flex:0 0 18px;
-	margin-top:-1px;
-	line-height:18px;
-	font-family:"Signika", "Palatino Linotype", serif;
-	font-size:12px;
-}
-.dnd4e.sheet.actor.default .attribute-def{
-	margin:0 0 0 0;
-	border:var(--border-engraved);
-	border-radius:4px;
-	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
-	width:100%;
-	float:left;
-}
-.dnd4e.sheet.actor.default .resource-full input{
-	width:10px;
-	top:2px;
-}
-.dnd4e.sheet.actor.default .resource-full input::placeholder{
-	font-size:12px;
-	color:#7a7971;
-}
-.dnd4e.sheet.actor.default .resource-full .attribute-footer span{
-	position:relative;
-	top:5px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest a.rest{
-	border:1px solid #b5b3a4;
-	border-radius:2px;
-	background:var(--color-bg-btn-minor-active);
-	padding:0 3px;
-	margin:0 3px;
-	font-size:12px;
-	text-align:left;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest a.death{
-	content:"\A";
-	white-space:pre;
-	border:1px solid #b5b3a4;
-	border-radius:2px;
-	background:var(--color-bg-btn-minor-active);
-	padding:0 3px;
-	margin:0 3px;
-	font-size:12px;
-	text-align:left;
-} 
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest input{
-font-size:12px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest span{
-font-size:12px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-rest input[type="checkbox"]{
-	height:14px;
-	width:14px;
-	margin:0;
-	top:2px;
-	position:relative;
-}
-.dnd4e.sheet.actor.default .attribute-res{
-	margin:0 0 0 0;
-	border-radius:4px;
-	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
-	height:328px;
-	width:100%;
-	float:left;
-}
-.dnd4e.sheet.actor.default .attribute-res .skill.flexrow{
-	align-items:center;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-res .res-name{
-	flex:0.9;
-	font-family: var(--font-body);
-	font-size: medium;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-res .res-mod{
-	flex:0.6;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-res .res-armour{
-	flex:1;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-res .res-immune{
-	flex:0.8;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-res input[type="text"]{
-	flex:0.3;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-res input{
-	position:relative;
-	top:-6px;
-}
-.dnd4e.sheet.actor.default.character .resource .attribute-value input{
-	flex:0 0 25%;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-def{
-	height:100px;
-	margin:0 0 0 0;
-	border:var(--border-engraved);
-	border-radius:4px;
-	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
-	font-size:20px;
-	text-align:left;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-ac{
-	height:16px;
-	position:relative;
-	top:-8px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-ac span{
-	position:relative;
-	top:-7px;
-	font-size:12px;
-}
-.dnd4e.sheet.actor.default ul.attributes li.attribute-ac select{
-	position:relative;
-	top:-7px;
-	left:4px;
-	font-size:12px;
-	height:20px;
-	text-align:center;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-def .def-value{
-	flex:0 0 25px;
-	font-size:16px;
-	position:relative;
-	top:-1px;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-def .def-name{
-	flex:1px;
-	margin:0;
-	font-size:16px;
-	line-height:18px;
-	width:50px;
-	position:relative;
-	left:8px;
-	text-align:left;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-def input[type="text"]{
-	position:relative;
-	top:-4px;
-	flex:0.5;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-def .def-name{
-	flex:0.4;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-def .def-armour{
-	flex:0.8;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-def .defence-bonus{
-	flex:0.8;
-}
-.dnd4e.sheet.actor.default ul.attributes .attribute-def .def-temp{
-	flex:0.4;
-}
-.dnd4e.sheet.actor.default .attribute-init{
-	margin:0 0 0 0;
-	border:var(--border-engraved);
-	border-radius:4px;
-	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
-	width:100%;
-	float:left;
-	text-align:center;
-	line-height:32px;
-}
-.dnd4e.sheet.actor.default .attribute-init .init-bonus{
-	width:30px;
-}
-.dnd4e.sheet.actor.default .attribute-modifiers{
-	margin:0 0 0 0;
-	border-radius:4px;
-	font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
-	width:100%;
-	text-align:center;
-	line-height:22px;
-}
-.dnd4e.sheet.actor.default .attribute-modifiers .name-label{
-	text-align:right;
-}
-.dnd4e input.action-box{
-	height:14px;
-	width:14px;
-	position:relative;
-	top:3px;
-}
-.dnd4e ul.attributes .movement input{
-	width:28px;
-	text-align:left;
-}
-.dnd4e ul.attributes .movement{
-	text-align:center;
-}
-.dnd4e .languages{
-	text-align:left;
-}
-.dnd4e.sheet.actor.default .sheet-header .char-details-level{
-	height:20px;
-	padding:0px;
-	margin:5px 0;
-	border-bottom:0;
-	font-size:16px;
-	display:inline-block;
-}
-.dnd4e.sheet.actor.default .sheet-header .char-details-level input{
-	width:50px;
-	height:100%;
-	margin:0;
-	font-size:16px;
-	text-align:center;
-}
-
-.dnd4e.sheet.actor.default .sheet-header .char-details-exp{
-	height:20px;
-	padding:0px;
-	margin:5px 0;
-	border-bottom:0;
-	font-size:16px;
-	display:inline-block
-}
-.dnd4e.sheet.actor.default .sheet-header .char-details-exp input{
-	width:70px;
-	height:100%;
-	margin:0;
-	font-size:16px;
-	text-align:center;
-}
-.dnd4e.sheet.actor.default .sheet-header .char-details-class{
-	height:20px;
-	padding:0px;
-	margin:5px 0;
-	border-bottom:0;
-	font-size:16px;
-	display:inline-block
-}
-.dnd4e .tabs{
-	height:40px;
-	border-bottom:var(--border-engraved);
-}
-.dnd4e .tabs .tab{
-	font-family:var(--font-h4)
-}
-.dnd4e .tabs .item{
-	line-height:40px;
-	font-weight:bold;
-}
-.dnd4e .tabs .item.active{
-	text-decoration:underline;
-	text-shadow:none;
-}
-.dnd4e .sheet-body{
-	flex:1;
-	overflow:hidden;
-}
-.dnd4e .sheet-body .tab{
-	height:100%;
-	overflow-y:auto;
-}
-.dnd4e.sheet.item .window-content section{
-	overflow:hidden;
-	padding:0 5px;
-	overflow-y:auto;
-}
-.dnd4e.sheet.item .window-content section .item-properties{
-	flex:0 0 120px;
-	margin:5px 5px 5px 0;
-	padding-right:5px;
-	border-right:var(--border-engraved);
-
-	height: calc(100% - 10px);
-}
-.dnd4e.sheet.item .window-content section .item-properties .form-group{
-	margin:0;
-}
-.dnd4e.sheet.item .window-content section .item-properties .form-group label{
-	line-height:20px;
-}
-.dnd4e.sheet.item .window-content section .item-properties .form-group input{
-	text-align:right;
-}
-.dnd4e.sheet.item .window-content section .item-properties .properties-list{
-	list-style:none;
-	margin:0;
-	padding:0;
-}
-.dnd4e.sheet.item .window-content section .item-properties .properties-list li{
-	margin:3px 0;
-	padding:0 2px;
-	background:rgba(0, 0, 0, 0.05);
-	border:var(--border-engraved);
-	text-align:center;
-	font-size:12px;
-	line-height:18px;
-}
-.dnd4e .item-sheet .description {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	gap: 3px;
-}
-.dnd4e .item-sheet .description.editing-gm,
-.dnd4e .item-sheet .description.editing-main {
-	overflow: hidden;
-}
-
-.dnd4e .item-sheet .description.editing-gm .main,
-.dnd4e .item-sheet .description.editing-main .gm-notes {
-	display: none;
-}
-
-.dnd4e .item-sheet .description.editing-gm .editor-container.gm-notes.has-content{
-	height: 100%;
-}
-.dnd4e .item-sheet .description .gm-notes.editor-container,
-.dnd4e .item-sheet .description .main.editor-container {
-	width: 100%;
-	/* display: flex; */
-	overflow: hidden;
-}
-.dnd4e .item-sheet .description .gm-notes.editor-container {
-	background-color: #e8e8ef;
-	border: 1px dotted rgba(75, 74, 68, 0.5);
-	padding: 0 0.25em;
-	flex: 0 0 auto;
-}
-.dnd4e .item-sheet .description .main.editor-container {
-	flex: 1 0 auto;
-}
-.dnd4e .item-sheet .description .editor-container.gm-notes:not(.has-content) {
-	display: none;
-}
-.dnd4e .item-sheet .description a.editor-edit.add-gm-notes {
-	right: 35px;
-}
-.dnd4e .item-sheet .description.editing-main a.editor-edit.add-gm-notes {
-	display: none;
-}
-.dnd4e .editor,
-.dnd4e .editor-content{
-	height:100%;
-	margin-top:0px;
-	border-radius:6px;
-}
-.dnd4e div.tab.details.active div.editor {
-	border: 1px solid #7a7971;
-	border-radius: 2px;
-	height: auto;
-	min-height: 48px;
-	background-color: rgba(0,0,0,0.075);;
-}
-.dnd4e div.tab.details.active div.editor.prosemirror {
-	min-height: 124px;
-	height: auto;
-	resize: vertical;
-}
-.dnd4e div.tab.details.active div.editor .editor-content {
-	margin: 2px;
-}
-
-.dnd4e .item-list{
-	list-style:none;
-	margin:7px 0;
-	padding:0;
-}
-.dnd4e .item-list .item img{
-	flex:0 0 24px;
-	margin-right:5px;
-	border:unset;
-}
-.dnd4e .item-list .item-name{
-	margin:0;
-}
-.dnd4e .item-list .item-controls{
-	flex:0 0 36px;
-}
-.dnd4e.sheet.actor.default .inventory-filters{
-	margin:0 2px;
-	flex:0 0 20px;
-	justify-content:flex-end;
-}
-.dnd4e.sheet.actor.default .inventory{
-	flex:0 0 20px;
-	justify-content:flex-end;
-}
-.dnd4e.sheet:is(.actor,.item).default .currency{
-	flex:0;
-	list-style:none;
-	margin:4px 0 8px;
-	padding:0;
-	font-size:12px;
-	align-items:center;
-}
-.dnd4e.sheet:is(.actor,.item).default h3{
-	border-bottom:0px;
-	margin:0 8px;
-	font-size:medium;
-}
-.dnd4e.sheet:is(.actor,.item).default .currency label{
-	flex:0;
-	white-space:nowrap;
-	margin-left:0px;
-	text-align:right;
-	line-height:20px;
-}
-.dnd4e.sheet:is(.actor,.item).default .currency input[type="text"]{
-	flex:0 0 48px;
-	text-align:center;
-	margin-left:0px;
-	border-bottom:var(--border-normal);
-}
-.dnd4e.sheet.actor.default .daily-item-power-use{
-	justify-content:space-between;
-	width:100%;
-}
-.dnd4e.sheet.actor.default .daily-item-power-use-counter input{
-	width:25px;
-	text-align:right;
-	margin-right: -8px;
-}
-.dnd4e.sheet.actor.default .daily-item-power-use-check{
-	text-align:right;
-	align-items:center;
-}
-.dnd4e.sheet:is(.actor,.item).default .encumbrance{
-	height:12px;
-	cursor:pointer;
-	background:var(--color-bg-input);
-	margin:10px 1px 1px 1px;
-	border:var(--border-normal);
-	border-radius:3px;
-	position:relative;
-}
-.dnd4e.sheet:is(.actor,.item).default .encumbrance .encumbrance-bar{
-	position:absolute;
-	top:1px;
-	left:1px;
-	height:8px;
-	background:#6c8aa5;
-	border:1px solid #cde4ff;
-	border-radius:2px;
-}
-.dnd4e.sheet:is(.actor,.item).default .encumbrance .encumbrance-bar.encumbered{
-	background:#b72b2b;
-}
-.dnd4e.sheet:is(.actor,.item).default .encumbrance .encumbrance-label{
-	height:10px;
-	padding:0 5px;
-	position:absolute;
-	top:0;
-	right:0;
-	font-size:13px;
-	line-height:12px;
-	text-align:right;
-	color:#eee;
-	text-shadow:0 0 5px #000;
-}
-.dnd4e.sheet.actor.default .inventory-list{
-	list-style:none;
-	margin:0;
-	overflow-y:auto;
-	overflow-x:hidden;
-	scrollbar-width:thin;
-}
-.dnd4e.sheet.actor.default .inventory-list .item-import.button{
-	min-width:116px;
-	width:calc(100% - 80px);
-	height:12px;
-	line-height:normal;
-	border:0px;
-	float:right;
-	margin:2px 2px 2px 0px;
-	font-size:12px;
-	font-weight:bold;
-	min-height:0px;
-}
-.dnd4e.sheet.actor.default .power-filters > div{
-	margin:0.25rem;
-}
-.dnd4e.sheet.actor.default .power-filters :is(.group-powers,.sort-powers,.sort-features){
-	max-width:144px;
-}
-.dnd4e.sheet.actor.default select:is([name="system.powerGroupTypes"],[name="system.powerSortTypes"],[name="system.featureSortTypes"]){
-	min-width:128px;
-}
-.dnd4e.sheet.actor.default input.power-filter-search,
-.dnd4e.sheet.actor.default .filter-search-features input{
-	background:var(--color-bg-input);
-	min-width:168px;
-	margin-right:2px;
-}
-.dnd4e.sheet.default .item-list .item,
-.dnd4e.sheet.item .item-list .item,
-.dnd4e.sheet.item .item-list .effect {
-	line-height:1;
-	padding:0 2px;
-	border-bottom:var(--border-faint);
-}
-.dnd4e.sheet.actor.default .item-list .power-list .item{
-	line-height:30px;
-	padding:0 2px;
-	border-bottom:1px solid transparent;
-}
-.dnd4e.sheet.default .item-list .item:last-child,
-.dnd4e.sheet.default .item-list .effect:last-child{
-	border-bottom:none;
-}
-.dnd4e.sheet.default .item-list .effect .item-name,
-.dnd4e.sheet.default .item-list .item .item-name,
-.dnd4e.sheet.item.default .item-list .item .item-name {
-	cursor:pointer;
-	max-height:30px;
-	overflow:hidden;
-	height:30px;
-}
-.dnd4e.sheet.default .item-list .effect .item-image,
-.dnd4e.sheet.default .item-list .item .item-image{
-	flex:0 0 30px;
-	max-width:30px;
-	margin-right:5px;
-	border:unset;
-}
-.dnd4e.sheet.default .item-list .item:hover .rollable .item-image,
-.dnd4e.sheet.default .item-list .item:hover .item-image.rollable{
-	background:url("/icons/svg/d20-grey.svg") no-repeat;
-	background-size:contain;
-}
-.dnd4e.sheet.default .item-list .effect .item-image.rollable:hover,
-.dnd4e.sheet.default .item-list .effect .rollable .item-image:hover,
-.dnd4e.sheet.default .item-list .item .item-image.rollable:hover,
-.dnd4e.sheet.default .item-list .item .rollable .item-image:hover{
-	background:url("/icons/svg/d20-black.svg") no-repeat;
-	background-size:contain;
-}
-.dnd4e.sheet.default .item-list .item:hover .rollable .item-image img,
-.dnd4e.sheet.default .item-list .item:hover .item-image.rollable img,
-.dnd4e.sheet.default .item-list .item .item-image.rollable:hover img,
-.dnd4e.sheet.default .item-list .item .rollable .item-image:hover img,
-.dnd4e.sheet.default .item-list .effect .item-image.rollable:hover img,
-.dnd4e.sheet.default .item-list .effect .rollable .item-image:hover img{
-	opacity:0;
-}
-.dnd4e.sheet.default .item-list .item .item-name h4{
-	margin:0;
-	white-space:nowrap;
-	overflow-x:hidden;
-	font-family:var(--font-body);
-	font-weight:normal;
-	font-size:medium;
-	overflow:hidden;
-}
-.dnd4e.sheet.default .item-list .item .item-uses input{
-	width:24px;
-	text-align:right;
-	margin-right:-6px;
-}
-.dnd4e.sheet.default .item-list .item .item-properties{
-	margin-top:3px;
-}
-.dnd4e.sheet.default .item-list .item .item-recharge{
-	flex:0 0 80px;
-	text-align:right;
-	font-size:11px;
-	white-space:nowrap;
-}
-.dnd4e.sheet.default .item-list .items-header {
-	margin:2px 0;
-	padding:0;
-	background:var(--color-bg-btn-minor-active);
-	border-bottom:var(--border-engraved);
-	font-weight:bold;
-	line-height:24px;
-}
-.dnd4e.sheet.default .item-list .items-header .item-name{
-	font-family:"Modesto Condensed", "Palatino Linotype", serif;
-	margin:0 -5px 0 0;
-	padding-left:5px;
-	font-weight:700;
-	font-size:16px;
-	border-bottom:0px;
-}
-.dnd4e.sheet.default .item-list .items-header .item-controls{
-	width:90px;
-}
-.dnd4e.sheet.default .item-list .items-header .item-controls a.item-create,
-.dnd4e.sheet.default .item-list .items-header .item-controls a.power-create{
-	flex:0 0 100%;
-}
-.dnd4e.sheet.default .item-list .item-detail{
-	flex:0 0 68px;
-	font-size:12px;
-	text-align:center;
-	border-right:var(--border-faint);
-	word-break:break-word;
-	white-space:nowrap;
-	overflow:hidden;
-}
-.dnd4e.sheet.default .item-list .item-range{
-	flex:0 0 68px;
-}
-.dnd4e.sheet.default .item-list .item-range .range-number{
-	background-color:var(--color-bg-input);
-	border-radius:2px;
-	padding-left:2px;
-	padding-right:2px;
-}
-.dnd4e.sheet.default .item-list .power-list .item .power-name,
-.dnd4e.sheet.default .item-list .power-list .item .power-name input,
-.dnd4e.sheet.default .item-list .power-list .item .power-name h4{
-	color:#eee;
-}
-.dnd4e.sheet.default .item-list .power-detail,
-.dnd4e.sheet.actor.default .inventory-list .item-controls .power-detail,
-.dnd4e.sheet.actor.default .inventory-list .item-controls .power-detail.active{
-	padding-left:3px;
-	border:unset;
-}
-.dnd4e.sheet.default .item-list .not-available .power-detail, 
-.dnd4e.sheet.actor.default .inventory .item-controls .item-toggle {
-	opacity:0.5;
-}
-
-.dnd4e.sheet.actor.default .inventory .item-controls a.item-control.item-toggle.active {
-	opacity:1;
-}
-
-.dnd4e.sheet.default .item-list .item-detail:last-child{
-	border-right:none;
-}
-.dnd4e.sheet.default .item-list .item-detail.item-action{
-	flex:0 0 40px;
-}
-.dnd4e.sheet.default .item-list .power .item-detail.item-action{
-	text-transform:uppercase;
-}
-.dnd4e.sheet.default .item-list .item-detail.item-prep{
-	flex:0 0 34px;
-}
-.dnd4e.sheet.default .item-list .item-weight{
-	flex:0 0 60px;
-	border-left:var(--border-faint);
-	border-right:var(--border-faint);
-}
-.dnd4e.sheet.default .item-list .power-target{
-	flex:0 0 86px;
-	border-left:var(--border-faint);
-	border-right:var(--border-faint);
-}
-.dnd4e.sheet.default .item-list .item-list{
-	list-style:none;
-	margin:0 -2px 0 0;
-	padding:0;
-}
-.dnd4e.sheet.default .item-list .item-controls{
-	flex:0 0 66px;
-	display:flex;
-	flex-direction:row;
-	flex-wrap:wrap;
-	justify-content:flex-start;
-	justify-content:flex-end;
-}
-.dnd4e.sheet.item .item-list .item-weight {
-	flex:0 0 60px;
-	text-align: center;
-}
-.dnd4e.sheet.item .item-list .item-quantity {
-	flex:0 0 62px;
-	text-align: center;
-}
-.dnd4e.sheet.item .item-list .item-controls {
-	text-align: center;
-}
-
-.dnd4e.sheet.item .content .item-list .item-controls {
-	flex:0 0 44px;
-}
-.dnd4e.sheet.default .item-list.effects-list{
-	overflow-y:visible;
-}
-.dnd4e.sheet.default .attribute-res .resistances-special{
-	text-align:left;
-	height: 62px;
-}
-.dnd4e.sheet.actor.default .inventory-list .item-controls > *{
-	flex:1;
-}
-.dnd4e.sheet.actor.default .inventory-list .item-controls .flex1{
-	flex:1;
-}
-.dnd4e.sheet.actor.default .inventory-list .item-controls .flex2{
-	flex:2;
-}
-.dnd4e.sheet.actor.default .inventory-list .item-controls .flex3{
-	flex:3;
-}
-.dnd4e.sheet.actor.default .inventory-list .item-controls .flex4{
-	flex:4;
-}
-.dnd4e.sheet.actor.default .inventory-list .item-controls a{
-	flex:0 0 22px;
-	font-size:12px;
-	text-align:center;
-}
-.dnd4e.default .collapsible {
-	&.collapsed {
-		.fa-caret-down { transform: rotate(-90deg); }
-		.collapsible-content { grid-template-rows: 0fr; }
-	}
-	.fa-caret-down {
-		flex: 0;
-		transition: transform 250ms ease;
-	}
-	.collapsible-content {
-		display: grid;
-		grid-template-rows: 1fr;
-		transition: all 250ms ease;
-		> .wrapper { overflow: hidden; }
-	}
-}
-.dnd4e.sheet.actor.default .inventory-list .collapsible {
-	&.collapsed {
-		.item-summary {
-			padding: 0em 0em;
-			border-top: 0px solid rgba(0,0,0,0.1);
+	.collapsible{
+		&.collapsed{
+			.fa-caret-down{
+				transform:rotate(-90deg);
+			}
+			.collapsible-content{
+				grid-template-rows:0fr;
+			}
+		}
+		.fa-caret-down{
+			flex:0;
+			transition:transform 250ms ease;
+		}
+		.collapsible-content{
+			display:grid;
+			grid-template-rows:1fr;
+			transition:all 250ms ease;
+			> .wrapper{
+				overflow:hidden;
+			}
 		}
 	}
-	.item-summary{
-		flex:0 0 100%;
-		font-size:14px;
-		line-height:1;
+	.section--tabs{
+		flex:0;
+	}
+	.section--tabs nav.sheet-tabs{
+		border-top:0px;
+		border-bottom:var(--border-normal);
+	}
+	.form-header{
+		margin:0 0 0.25em 0;
+		padding:2px 0;
+		border-top:var(--border-engraved);
+		border-bottom:var(--border-engraved);
+		font-family:"Modesto Condensed", "Palatino Linotype", serif;
+		font-size:20px;
+		font-weight:700;
+	}
+	input.action-box{
+		height:14px;
+		width:14px;
+		position:relative;
+		top:3px;
+	}
+	ul.attributes .movement input{
+		width:28px;
+		text-align:left;
+	}
+	ul.attributes .movement{
+		text-align:center;
+	}
+	.languages{
+		text-align:left;
+	}
+	.tabs{
+		height:40px;
+		border-bottom:var(--border-engraved);
+		border-top:unset;
+		.tab{
+			font-family:var(--font-h4)
+		}
+		.item{
+			line-height:40px;
+			font-weight:bold;
+		}
+		.item.active{
+			text-decoration:underline;
+			text-shadow:none;
+		}
+	}
+	.sheet-body{
+		flex:1;
+		overflow:hidden;
+		.tab{
+			height:100%;
+			overflow:hidden auto;
+			align-content:flex-start;
+			scrollbar-width:thin;
+			scrollbar-gutter:stable;
+		}
+	}
+	input::placeholder{
+		opacity:0.4;
+	}
+	select{
+		font-size:revert;
+		border:var(--border-faint);
+		flex:1;
+	}
+	form,
+	> section{
+		height:100%;
+		overflow:hidden;
+	}
+	.container--bottom{
+		height:calc(100% - 190px);
+	}
+	.section--sidebar{
+		max-width:260px;
+		margin-left:15px;
+		border-right:var(--border-heavy);
+		height:100%;
+		overflow-y:auto;
+		scrollbar-width: thin;
+	} 
+	.section--main{
+		height:100%;
+	}
+	.section--utilities{
+		border-bottom:var(--border-heavy);
+		max-height:80px;
+		text-transform:uppercase;
+		font-size:16px;
+	}
+	.denomination{
+		text-transform:uppercase;
+	}
+	.form-header{
+		margin:0 0 0.25em 0;
+		padding:2px 0;
+		border-top:var(--border-engraved);
+		border-bottom:var(--border-engraved);
+		font-family:"Modesto Condensed","Palatino Linotype",serif;
+		font-size:20px;
+		font-weight:700;
+		
+		&.enhancement-bonus{
+			margin-top:5px;
+		}
+	}
+	.form-group{
+		label{
+			flex:2;
+			max-width:174px;
+			color:var(--color-label);
+			line-height:1;
+			
+			>.label-hint{
+				font-weight:normal;
+				font-style:oblique;
+			}
+			&.long{
+				max-width:unset;
+			}
+			&.inline.before{
+				text-align:right;
+				margin-right:0.35em;
+			}
+		}
+		&.wide label{
+			max-width:208px;
+		}
+		.form-fields{
+			display:flex;
+			flex-direction:row;
+			flex-wrap:wrap;
+			justify-content:flex-start;
+			
+			> label{
+				white-space:nowrap;
+			}
+			> *{
+				margin:0 3px 0 0;
+				flex:1;
+			}
+			> *:last-child{
+				margin-right:0;
+			}
+			.flex1{
+				flex:1;
+			}
+			.flex2{
+				flex:2;
+			}
+			.flex3{
+				flex:3;
+			}
+			.flex4{
+				flex:4;
+			}
+		}
+		.form-group.stacked label{
+			flex:0 0 100%;
+			margin:0;
+			max-width:100%;
+		}
+		.form-group.stacked label.checkbox{
+			flex:auto;
+			text-align:left;
+			line-height:1;
+		}
+	}
+	.section--utilities section{
+		margin-bottom:5px;
+	}
+	.section--utilities section+section{
+		border-left:var(--border-normal);
+	}
+	.image-frame{
+		max-width:100px;
+		max-height:100px;
+		position:relative;
+		
+		.profile{
+			flex:0 0 100px;
+			margin-right:0px;
+			object-fit:cover;
+			object-position:top;
+			display:block;
+			margin-left:auto;
+			margin-right:auto;
+			border-width:2px;
+			border:var(--border-medium);
+		}
+		.hover-icon{
+			display:none;
+			position:absolute;
+			right:2px;
+			bottom:0px;
+			text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+			color:#fff;
+		}
+		&:hover .hover-icon{
+			display:block;
+		}
+	}
+	.sheet-header{
+		.summary{
+			flex:0 0 100%;
+			height:40px;
+			margin:0;
+			padding:0;
+			list-style:none;
+			
+			&.flexrow{
+				justify-content:space-between;
+				align-items:center;
+				
+				>li{
+				white-space:nowrap;
+					display:flex;
+					align-items:center;
+					margin:2px;
+				}
+			}
+			label{
+				flex-basis:30px;
+			}
+		}
+		img{
+			margin-right:0px;
+		}
+		.summary-name{
+			flex-basis:calc(46% - 34px);
+		}
+		.summary-race,
+		.summary-class{
+			flex-basis:calc(26% - 34px);
+		}
+		.summary-level{
+			flex-basis:98px;
+		}
+		.summary-level label{
+			width:50%;
+		}
+		.summary-level input{
+			text-align:center;
+			width:35%;
+			padding:0%;
+		}
+		.summary-path{
+			flex-basis:calc(49% - 68px);
+		}
+		.summary-exp{
+			flex-basis:135px;
+		}
+		.summary-exp label{
+			width:50%;
+		}
+		.summary-exp input{
+			text-align:center;
+			width:65%;
+			padding:0%;
+		}
+		.header-fields{
+			flex:1;
+			height:99px;
+		}
+		.header-details .summary input{
+			border:0;
+			vertical-align:bottom;
+			height:1.3em;
+		}
+		.hitdata input{
+			vertical-align:top;
+		}
+		.hitdata .left{
+			width:30%;
+			float:left;
+			height:24px;
+			padding:0 3px;
+			border-right:var(--border-engraved);
+			border-bottom:var(--border-engraved);
+			line-height:24px;
+		}
+		.header-details{
+			margin-left:0.5em;
+		}
+		.header-details h1{
+			font-size:1.5em;
+			margin-bottom:0;
+			height:100%;
+			--input-height:1.8em;
+		}
+		.header-details{
+			font-family:"Modesto Condensed", "Palatino Linotype", serif;
+			font-size:20px;
+			font-weight:700;
+		}
+	}	
+	.item-list{
+		list-style:none;
+		margin:7px 0;
+		padding:0;
+		
+		.item img{
+			flex:0 0 24px;
+			margin-right:5px;
+			border:unset;
+		}
+		.item-name{
+			margin:0;
+		}
+		.item-controls{
+			flex:0 0 36px;
+		}
+		:is(.item,.effect){
+			line-height:1;
+			padding:0 2px;
+			border-bottom:var(--border-faint);
+		}
+		.item:last-child,
+		.effect:last-child{
+			border-bottom:none;
+		}
+		.effect .item-name,
+		.item .item-name{
+			cursor:pointer;
+			max-height:30px;
+			overflow:hidden;
+			height:30px;
+		}
+		.effect .item-image,
+		.item .item-image{
+			flex:0 0 30px;
+			max-width:30px;
+			margin-right:5px;
+			border:unset;
+		}
+		.item:hover .rollable .item-image,
+		.item:hover .item-image.rollable{
+			background:url("/icons/svg/d20-grey.svg") no-repeat;
+			background-size:contain;
+		}
+		.effect .item-image.rollable:hover,
+		.effect .rollable .item-image:hover,
+		.item .item-image.rollable:hover,
+		.item .rollable .item-image:hover{
+			background:url("/icons/svg/d20-black.svg") no-repeat;
+			background-size:contain;
+		}
+		.item:hover .rollable .item-image img,
+		.item:hover .item-image.rollable img,
+		.item .item-image.rollable:hover img,
+		.item .rollable .item-image:hover img,
+		.effect .item-image.rollable:hover img,
+		.effect .rollable .item-image:hover img{
+			opacity:0;
+		}
+		.item .item-name h4{
+			margin:0;
+			white-space:nowrap;
+			overflow-x:hidden;
+			font-family:var(--font-body);
+			font-weight:normal;
+			font-size:medium;
+			overflow:hidden;
+		}
+		.item .item-uses input{
+			width:24px;
+			text-align:right;
+			margin-right:-6px;
+		}
+		.item .item-properties{
+			margin-top:3px;
+		}
+		.item .item-recharge{
+			flex:0 0 80px;
+			text-align:right;
+			font-size:11px;
+			white-space:nowrap;
+		}
+		.items-header {
+			margin:2px 0;
+			padding:0;
+			background:var(--color-bg-btn-minor-active);
+			border-bottom:var(--border-engraved);
+			font-weight:bold;
+			line-height:24px;
+		}
+		.items-header .item-name{
+			font-family:"Modesto Condensed", "Palatino Linotype", serif;
+			margin:0 -5px 0 0;
+			padding-left:5px;
+			font-weight:700;
+			font-size:16px;
+			border-bottom:0px;
+		}
+		.items-header .item-controls{
+			width:90px;
+		}
+		.items-header .item-controls a.item-create,
+		.items-header .item-controls a.power-create{
+			flex:0 0 100%;
+		}
+		.item-detail{
+			flex:0 0 68px;
+			font-size:12px;
+			text-align:center;
+			border-right:var(--border-faint);
+			word-break:break-word;
+			white-space:nowrap;
+			overflow:hidden;
+		}
+		.item-range{
+			flex:0 0 68px;
+		}
+		.item-range .range-number{
+			background-color:var(--color-bg-input);
+			border-radius:2px;
+			padding-left:2px;
+			padding-right:2px;
+		}
+		.power-list .item .power-name,
+		.power-list .item .power-name input,
+		.power-list .item .power-name h4{
+			color:#eee;
+		}
+		.power-detail{
+			padding-left:3px;
+			border:unset;
+		}
+		.unavailable :is(.item-detail,.item-title){
+			opacity:0.5;
+		}
+		.item-detail:last-child{
+			border-right:none;
+		}
+		.item-detail.item-action{
+			flex:0 0 40px;
+		}
+		.power .item-detail.item-action{
+			text-transform:uppercase;
+		}
+		.item-detail.item-prep{
+			flex:0 0 34px;
+		}
+		.item-weight{
+			flex:0 0 60px;
+			border-left:var(--border-faint);
+			border-right:var(--border-faint);
+		}
+		.power-target{
+			flex:0 0 86px;
+			border-left:var(--border-faint);
+			border-right:var(--border-faint);
+		}
+		.item-list{
+			list-style:none;
+			margin:0 -2px 0 0;
+			padding:0;
+		}
+		.item-controls{
+			flex:0 0 66px;
+			display:flex;
+			flex-direction:row;
+			flex-wrap:wrap;
+			justify-content:flex-start;
+			justify-content:flex-end;
+		}
+		.item-list.effects-list{
+			overflow-y:visible;
+		}
+	}
+	.currency{
+		flex:0;
+		list-style:none;
+		margin:4px 0 8px;
+		padding:0;
+		font-size:12px;
+		align-items:center;
+		
+		label{
+			flex:0;
+			white-space:nowrap;
+			margin-left:0px;
+			text-align:right;
+			line-height:20px;
+		}
+		input[type="text"]{
+			flex:0 0 48px;
+			text-align:center;
+			margin-left:0px;
+			border-bottom:var(--border-normal);
+		}
+	}	
+	.encumbrance{
+		height:12px;
+		cursor:pointer;
+		background:var(--color-bg-input);
+		margin:10px 1px 1px 1px;
+		border:var(--border-normal);
+		border-radius:3px;
+		position:relative;
+		
+		.encumbrance-bar{
+			position:absolute;
+			top:1px;
+			left:1px;
+			height:8px;
+			background:#6c8aa5;
+			border:1px solid #cde4ff;
+			border-radius:2px;			
+			&.encumbered{
+				background:#b72b2b;
+			}
+		}
+		.encumbrance-label{
+			height:10px;
+			padding:0 5px;
+			position:absolute;
+			top:0;
+			right:0;
+			font-size:13px;
+			line-height:12px;
+			text-align:right;
+			color:#eee;
+			text-shadow:0 0 5px #000;
+		}
+	}
+	.tab{
+		gap:0.5rem;
+	}
+	.editable .rollable:hover,
+	.rollable:hover{
+		text-shadow:0 0 10px red;
+		cursor:pointer;
+	}
+	.attribute-res .resistances-special{
+		text-align:left;
+		height: 62px;
+	}
+	.sheet-navigation{
+		flex:0 0 30px;
+		margin-bottom:5px;
+		font-family:"Modesto Condensed", "Palatino Linotype", serif;
+		font-size:20px;
+		font-weight:700;
+	}
+	.sheet-navigation .item{
+		height:30px;
+		line-height:32px;
+		margin:0 24px;
+		border-bottom:var(--border-heavy);
+	}
+	.sheet-navigation .item.active{
+		border-bottom:var(--border-heavy);
+	}
+	input[type="checkbox"]{
+		line-height:var(--checkbox-size);
+	}
+	prose-mirror.active{
+		min-height:20em;
+	}
+	prose-mirror.inactive{
+		min-height:2em;
+		.editor-content{
+			position:relative;
+		}
+	}
+	prose-mirror.inactive .editor-content{
+		height:fit-content;
 	}
 }
-.dnd4e.sheet.actor.default .inventory .item-controls{
-	flex:0 0 68px;
-}
-.dnd4e.sheet.actor.default .powers .item-controls{
-	flex:0 0 48px;
-}
-.dnd4e.sheet.actor.default .inventory .item-controls .item-toggle.fixed:hover,
-.dnd4e.sheet.actor.default .powers .item-controls .item-toggle.fixed:hover{
-	text-shadow:none;
-}
-.dnd4e.sheet.default .sheet-header .header-details{
-	font-family:"Modesto Condensed", "Palatino Linotype", serif;
-	font-size:20px;
-	font-weight:700;
-}
-.dnd4e.sheet.default .sheet-navigation{
-	flex:0 0 30px;
-	margin-bottom:5px;
-	font-family:"Modesto Condensed", "Palatino Linotype", serif;
-	font-size:20px;
-	font-weight:700;
-}
-.dnd4e.sheet.default .sheet-navigation .item{
-	height:30px;
-	line-height:32px;
-	margin:0 24px;
-	border-bottom:var(--border-heavy);
-}
-.dnd4e.sheet.default .sheet-navigation .item.active{
-	border-bottom:var(--border-heavy);
-}
-.dnd4e.sheet.actor.default .health-option:hover + .config-button,
-.dnd4e.sheet.actor.default .config-button:hover{
-	display:block;
-}
-.dnd4e.sheet.actor.default .config-button{
-  position:absolute;
-  top:2px;
-  right:0px;
-  display:none;
-}
 
-.dnd4e.sheet.actor.default .prosemirror menu {
-	padding: 2px 4px;
-}
-
-.dnd4e.sheet.actor.default .prosemirror menu > li {
-	margin: 6px 1.5px;
-}
-
-/* ----------------------------------------- */
-/*  NPC Sheets
-/* ----------------------------------------- */
-
-.dnd4e.sheet.actor.default.NPC:not(.minimized){
-	min-width:655px;
-}
-.dnd4e.sheet.default .npc .sheet-header .summary-type{
-	flex-basis:114px;
-}
-.dnd4e.sheet.default .npc .sheet-header .summary-typeother{
-	flex-basis:calc(100% - 472px);
-	flex-shrink:2;
-}
-.dnd4e.sheet.default .npc .sheet-header .summary-leader{
-	flex-basis:98px;
-}
-.dnd4e.sheet.default .npc .sheet-header .summary-role{
-	flex-basis:98px;
-}
-.dnd4e.sheet.default .npc .sheet-header .summary-role-second{
-	flex-basis:86px;
-}
-.dnd4e.sheet.default .npc .sheet-header .summary-size{
-	flex-basis:102px;
-}
-.dnd4e.sheet.default .npc .sheet-header .summary-origin{
-	flex-basis:90px;
-}
-.dnd4e.sheet.default .sheet-header .summary-name-npc{
-	flex-basis:calc(100% - 380px);
-}
-.dnd4e.sheet.default .npc  .sheet-header .summary-exp input{
-	width:75%;
-	text-align:left;
-}
-.dnd4e.sheet.default .npc .sheet-header .automath{
-	flex-grow:0;
-	position:relative;
-	height:80%;
-	flex-basis:1.45em;
-	border:var(--border-engraved);
-	border-radius:4px;
-}
-.dnd4e.sheet.default .npc .sheet-header .automath .label{
-	display:none;
-}
-.dnd4e.sheet.default .npc .sheet-header .automath input[type="checkbox"],
-.dnd4e.sheet.default .npc .sheet-header .automath img{
-	position:absolute;
-	height:100%;
-	width:100%;
-}
-.dnd4e.sheet.default .npc .sheet-header .automath input[type="checkbox"]{
-	margin:0;
-	padding:0;
-	opacity:0;
-}
-.dnd4e.sheet.actor.default .npc .sheet-header .automath img{
-	filter:brightness(var(--automath-brightness));
-	border:unset;
-	pointer-events:none;
-	padding:2px 4px;
-	margin:0;
-	opacity:0.4;
-}
-.dnd4e.sheet.actor.default .npc .sheet-header .automath input[type="checkbox"]:checked+img{
-	opacity:1;
-}
-.dnd4e.sheet.actor.default .npc .tabs{
-	height:20px;
-}
-.dnd4e.sheet.actor.default .npc .tabs .item{
-	line-height:0px;
-}
-.dnd4e.sheet.actor.default .npc-lower .sheet-body{
-	height:calc(100% - 20px);
-}
-.dnd4e.sheet.actor.default .npc .image-frame{
-	max-width:64px;
-	max-height:64px;
-	margin-left:0px;
-	margin-right:6px;
-	margin-bottom:6px;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics{
-	border-top:var(--border-heavy);
-	border-bottom:var(--border-heavy);
-	margin-bottom:1em;
-	justify-content:flex-start;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.flexcol{
-	flex-grow:1;
-	padding:2px;
-	margin:2px;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.flexcol:not(:last-child,:nth-child(4)){
-	border-right:var(--border-normal);
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.flexcol:last-child{
-	padding-left:0;
-	padding-right:0.5em;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.flexcol:nth-child(4){
-	padding-right:0;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.flexcol>*{
-	flex-grow:0;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.resources{
-	padding-left:0;
-	flex-basis:170px;
-	flex-grow:0;
+.dnd4e.sheet.actor.default .window-content{
 	input{
+		background:none;
+		border-width:0;
+		border-radius:0;
+		&.ability-score{
+			height:30px;
+			width:36px;
+			margin:0 auto;
+			line-height:32px;
+			font-size:24px;
+		}
+		&.skill-mod{
+			position:relative;
+			top:-5px;
+			background:none;
+			border-width:0;
+		}
+	}
+	&:not(.NPC,.Hazard,.minimized){
+		min-width:836px;
+		min-height:420px;
+	}
+	.sheet-header{
+		flex:0 0 100%;
+		font-size:20px;
+		align-items:center;
+		.summary input{
+			vertical-align:top;
+			background:none;
+			border-width:0;
+			position:relative;
+			border-bottom:var(--border-normal);
+			padding:2px;
+		}
+		.charname{
+			padding:0;
+			margin:0;
+		}
+		.charname input{
+			padding:0;
+			margin:5px;
+			font-size:36px;
+			height:44px;
+			width:95%;
+		}
+		.charlevel{
+			width:100%;
+			flex:0 0 180px;
+			height:60px;
+			margin:0;
+			padding:2px;
+			text-align:right;
+		}
+	}
+	.npc-upper select{
+		padding:0px;
+		margin:0 3px 0 3px;
+	}
+	.image-frame{
+		flex-grow:0;
+		aspect-ratio:1 / 1;
+		flex-basis:100px;
+	}
+	&.NPC .image-frame{
+		margin-left:3px;
+		margin-right:8px;
+		max-width:64px;
+		max-height:64px;
+	}
+	.image-frame img{
+		max-height:100px;
+	}
+	.sheet-header .profile-img,
+	.image-frame .profile-img{
+		flex:0 0 100px;
+		margin-right:0px;
+		object-fit:cover;
+		object-position:top;
+		display:block;
+		margin-left:auto;
+		margin-right:auto;
+		border-width:2px;
+		border:var(--border-medium);
+	}
+	.section--attributes{
+		border-top:var(--border-heavy);
+		border-bottom:var(--border-heavy);
+		max-height:100px;
+	}
+	&:not(.NPC) .attributes span.sep{
+		max-width:20px;
+		font-size:22px;
+	}
+	.attributes .attribute{
+		border-right:var(--border-normal);
+		-webkit-box-flex:0;
+		-ms-flex:0 0 25%;
+		flex:0 0 25%;
+		height:72px;
+		margin:4px 0;
+		padding:0 4px;
+	}
+	.resource-tracker{
 		text-align:center;
+		position:relative;
+	}
+	.section--attributes .resource-tracker input[type="text"]{
+		border-bottom:var(--border-normal);
+		font-size:18px;
+		font-weight:bold;
+	}
+	input.bloodied,
+	.attribute-health input.bloodied{
+		color:#d41111;
+	}
+	.attributes.attribute-surge{
+		min-width: 187px;
+	}
+	a.rest.second-wind{
+		min-width:78px;
+	}
+	.attribute-value input{
+		font-size:18px;
+		font-weight:bold;
+		&[data-dtype="Number"]{
+			text-align:center;
+			max-height:26px;
+		}
+	}
+	.attribute-value input[type="checkbox"]{
+		margin:2px;
+	}
+	.attribute-sub strong{
+		display:inline-block;
+		margin-top:2px;
+		margin-bottom:2px;
+	}
+	&:not(.NPC) .attribute-input{
+		min-width:32px;
+	}
+	&:not(.NPC) .attributes{
+		max-height:90px;
+		padding:2px;
+		margin:2px;
+	}
+	&:not(.NPC) .attributes .attribute-display{
+		border-top:var(--border-normal);
+		margin-left:2px;
+		margin-right:2px;
+	}
+	.attribute-name,
+	.resource-name{
+		font-size:18px;
+		height:22px;
+		line-height:22px;
+		margin:0 0 0px;
+		position:relative;
+		text-align:center;
+		margin-top:-3px;
+		margin-bottom:-3px;
+	}
+	.resource-name{
+		height:28px;
+	}
+	.attributes+.attributes{
+		border-left:var(--border-normal);
+		min-height:90px;
+	}
+	.attributes .attribute-value{
+		-webkit-box-pack:center;
+		-ms-flex-pack:center;
+		justify-content:center;
+		text-align:center;
+	}
+	.attribute-footer--temp-hp{
+		margin:auto;
+		text-align:center;
+		align-items:center;
+		display:inline;
+	}
+	.attribute-footer--temp-hp span,
+	.attribute-footer--temp-hp input{
+		max-width:40%;
+		text-align:center;
+	}
+	a.rest{
+		border:var(--border-faint);
+		border-radius:2px;
+		background:var(--color-bg-btn-minor-active);
+		padding:0 3px;
+		margin:0 3px;
+		font-size:10px;
+		text-align:center;
+		min-width:38px;
+	}
+	.attribute-footer--surge>span{
+		font-size:10px;
+		max-width:48px;
+	}
+	.resource .attribute-value label.recharge{
+		height:32px;
+		position:relative;
+		font-family:"Signika", sans-serif;
+		font-size:11px;
+		text-align:center;
+		color:var(--color-label);
+	}
+	.section--abilities{
+		margin-right:15px;
+		padding-bottom:10px;
+		border-bottom:var(--border-heavy);
+	}
+	.section--abilities .ability-header{
+		text-align:right;
+		font-size:9px;
+	}
+	.section--abilities .ability-header label{
+		margin-left:18px;
+	}
+	.section--abilities .ability--score + .ability--score{
+		border-top:var(--border-normal);
+	}
+	.section--abilities .ability--score input{
+		max-width:32px;
+		font-size:16px;
+		text-align:left;
+		font-weight:bold;
+	}
+	.section--abilities .ability--score .ability-name{
+		display:flex;
+		align-items:center;
+		min-width:140px;
+		font-size:16px;
+	}
+	.ability-name{
+		display:inline-block;
+		min-width:24px;
+	}
+	.section--abilities .ability--score .ability-mod{
+		display:flex;
+		align-items:center;
+		border-right:var(--border-normal);
+		font-weight:bold;
+		font-size:16px;
+	}
+	.section--abilities .ability--score .ability-mod-half{
+		font-weight:bold;
+		text-align:right;
+		font-size:16px;
+		max-width:35px;
+		border-left:var(--border-normal);
+	}
+	.section--skills{
+		margin-right:15px;
+		margin-top:10px;
+	}
+	.section--skills .skill--block{
+		min-height:27px;
+	}
+	.section--skills .skill--block + .skill--block{
+		border-top:var(--border-normal);
+	}
+	.section--skills .skill-training{
+		max-width:18px;
+		padding-top:5px;
+		opacity:0.3;
+	}
+	.section--skills .skill-name{
+		text-align:left;
+		border-right:var(--border-normal);
+		margin-bottom:0;
+		margin-top:0;
+		font-size:16px;
+		padding-top:3px;
+		padding-left:8px;
+		font-family: var(--font-body);
+		font-weight: normal;
+	}
+	.section--skills .skill-mod{
+		text-align:right;
+		font-weight:bold;
+		max-width:35px;
+		font-size:16px;
+	}
+	.section--sidebar .custom-roll-descriptions{
+		font-size:11.5px;
+	}
+	.section--utilities .section--saves div,
+	.section--utilities .section--passives div,
+	.section--utilities .section--movement div{
+		margin-left:5px;
+		margin-right:5px;
+		padding-top:5px;
+	}
+	.section--utilities .section--saves div+div,
+	.section--utilities .section--passives div+div,
+	.section--utilities .section--movement div+div{
+		border-top:var(--border-normal);
+	}
+	.section--utilities .section--saves div label,
+	.section--utilities .section--saves div input{
+		position:relative;
+		&.death-saves-failed{
+			height:20px;
+		}
+	}
+	.section--utilities .section--saves div input{
+		width:40%;
+		text-align:center;
+		border-bottom:var(--border-normal);
+	}
+	.section--utilities .section--saves{
+		min-width:143px;
+	}
+	div.saving-throw,
+	div.death-saves{
+		display:flex;
+		flex-wrap:wrap;
+		align-items:center;
+	}
+	.section--utilities .section--passives{
+		min-width:190px;
+	}
+	.section--utilities .section--movement{
+		min-width:105px;
+	}
+	.section--utilities .section--movement .movement-dialog{
+		text-transform:initial;
+	}
+	.section--saves .rollable{
+		border:unset;
+	}
+	:is(.section--saves,.saves) img.rollable[src$="svg"]:hover{
+		-webkit-filter:brightness(0);
+				filter:brightness(0);
+	}
+	.section--saves .death-saves-failed{
+		width:40%;
+		border-bottom:var(--border-normal);
+		text-align:center;
+	}
+	.tab{
+        margin-left:1em;
+	}
+	.tab.attributes{
+		overflow:hidden;
+	}
+	.tab.details .section--attributes{
+		border:unset;
+		margin-top:10px;
+	}
+	.section--details .detail{
+		display:flex;
+		align-items:baseline;
+		padding:3px;
+	}
+	.section--details .detail input{
+		text-align:right;
+		flex:1;
+	}
+	.section--details .detail label{
+		font-weight:normal;
+		flex:1;
+	}
+	.section--details .details-mechanical{
+		margin-left:0.5em;
+		border-left:var(--border-normal);
+		padding-left:0.5em;
+	}
+	.tab.details h4.box-title{
+		margin-top:1em;
+	}
+	.traits-list{
+		margin:0 0 0 0;
+		padding:0 0 0 4px;
+	}
+	.traits-list>li{
+		display:inline-block;
+	}
+	.traits-list>li:not(:last-child)::after{
+		content:', ';
+	}
+	ul.item-properties.tags{
+		padding-left:0;
+	}
+	ul.item-properties.tags li{
+		display:inline-block;
+		margin:0 2px 0 0;
+		padding:0 3px;
+		font-size:10px;
+		line-height:16px;
+		border:var(--border-normal);
+		border-radius:3px;
+		background:var(--color-bg-btn-minor-active);
+	}
+	.traits{
+		padding-left:20px;
+		.group-header{
+			margin-left:-20px;
+		}
+		.subgroup-header{
+			margin-left:-10px;
+		}
+		.form-group,
+		.form-group-stacked{
+			margin:0 0 3px 0;
+			justify-content:space-between;
+		}
+
+	}
+	input.milestones{
+		width:18px;
+		border-bottom:var(--border-normal);
+		max-width:9%;
+		height:14px;
+	}
+	&:not(.NPC) .ability-scores{
+		flex:0 0 100px;
+		height:429px;
+		list-style:none;
+		margin:0;
+		padding:0;
+		font-size:20px;
+		border:var(--border-engraved);
+		border-radius:3px;
+	}
+	.ability-scores .ability{
+		height:67px;
+		text-align:center;
+		border-bottom:var(--border-engraved);
+		&:last-child{
+			border-bottom:none;
+			margin-bottom:-10px;
+		}
+		.ability-modifiers{
+			height:24px;
+			margin:-8px 0 0;
+			span:is(.ability-mod,.ability-save){
+				flex:0 0 24px;
+				height:22px;
+				line-height:22px;
+				font-size:16px;
+				border-top:var(--border-engraved);
+			}
+			span.ability-mod{
+				border-right:var(--border-engraved);
+			}
+			.ability-proficiency{
+				line-height:30px;
+			}
+			span.ability-save{
+				border-left:var(--border-engraved);
+			}
+		}
+	}
+	ul.skills-list{
+		flex:0 0 200px;
+		height:412px;
+		list-style:none;
+		margin:0 5px 0;
+		padding:3px 0 2px;
+		border:var(--border-engraved);
+		border-radius:3px;
+		li.skill{
+			height:24px;
+			padding:3px 2px;
+			&:nth-child(even){
+				background:rgba(0, 0, 0, 0.05);
+			}
+			h4{
+				flex:1px;
+				margin:0;
+				font-size:11px;
+				line-height:18px;
+			}
+			.skill-training{
+				flex:0 0 16px;
+				line-height:18px;
+			}
+			.skill-ability{
+				flex:0 0 28px;
+			}
+			.skill-mod{
+				flex:0 0 25px;
+			}
+			.skill-bonus{
+				text-align:right;
+				padding-right:4px;
+			}
+		}
+	}
+	.training-toggle{
+		font-size:12px;
+		padding-left:7px;
+	}
+	.locked .training-toggle{
+		text-shadow:none;
+		cursor:default;
+	}
+	.center-pane{
+		height:100%;
+		padding:0 5px 0 3px;
+	}
+	.attributes input.temphp{
+		width:48%;
+	}
+	h4.box-title{
+		height:18px;
+		line-height:16px;
+		margin:4px 8px 2px;
+		font-size:22px;
+		border-bottom:var(--border-normal);
+		text-align:left;
+	}
+	.scrollbar{
+		height:100%;
+		overflow-y:scroll;
+		scrollbar-width:thin;
+	}
+	.resource-half{
+		width:50%;
+		height:40px;
+		margin-top:10px;
+		float:left;
+		input{
+			width:54px;
+			height:28px;
+		}
+		input::placeholder{
+			font-size:12px;
+			opacity:0.75;
+		}
+		.attribute-footer span{
+			position:relative;
+			top:5px;
+		}
+	}
+	.box-title-hit{
+		text-align:center;
+		height:18px;
+		line-height:16px;
+		margin:4px 8px 2px;
+		font-size:18px;
+		border-bottom:var(--border-normal);	
+		display:inline;
+	}
+	.hitdata{
+		display:flex;
+		justify-content:center;
+		align-items:center;
+		height:28px;
+		line-height:28px;	
+		flex:0 0 100%;
+		width:50%;
+		input{
+			text-align:center;
+			font-size:24px
+		}
+		.left input{
+			display:flex;
+			justify-content:center;
+			align-items:center;
+			height:28px;
+			line-height:28px;
+			text-align:right;
+			font-size:24px
+		}
+		.right input{
+			display:flex;
+			justify-content:center;
+			align-items:center;
+			height:28px;
+			line-height:28px;
+			text-align:left;
+			font-size:24px
+		}
+		input::placeholder{
+			font-size:16px;
+			color:#7a7971;
+		}
+		.slash{
+			font-size:28px;
+			color:#7a7971;
+		}
+	}
+	.half{
+		width:50%;
+	}
+	ul.attributes{
+		flex:0 0 60px;
+		list-style:none;
+		margin:0;
+		padding:0;
+		li.attribute-health{
+			height:80px;
+			margin:0 0 0 0;
+			border:var(--border-engraved);
+			border-radius:4px;
+			font-size:20px;
+			text-align:center;
+			&:last-child{
+				margin:0;
+			}
+			.attribute-value{
+				display:flex;
+				justify-content:center;
+				align-items:center;
+				height:28px;
+				line-height:28px;
+			}
+			.attribute-value input{
+				width:100%;
+			}
+			.attribute-value input:first-child{
+				text-align:right;
+				padding-right:4px;
+			}
+			.attribute-value input:not(:first-child){
+				text-align:left;
+				padding-left:4px;
+			}
+			.attribute-value > *{
+				font-size:24px;
+			}
+			.attribute-value.multiple input{
+				flex:0 0 33%;
+			}
+			.attribute-footer{
+				flex:0 0 18px;
+				margin-top:-1px;
+				line-height:18px;
+				font-size:12px;
+				display:flex;
+				justify-content:space-between;
+			}
+		}
+		li.attribute{
+			height:60px;
+			margin:0 5px 0 0;
+			border:var(--border-engraved);
+			border-radius:4px;
+			text-align:center;
+		}
+		li.attribute:last-child{
+			margin:0;
+		}
+		li.attribute .attribute-value{
+			display:flex;
+			justify-content:center;
+			align-items:center;
+			height:28px;
+			line-height:28px;
+			font-family:"Modesto Condensed", "Palatino Linotype", serif;
+			font-size:20px;
+			font-weight:700;
+		}
+		li.attribute .attribute-value > *{
+			font-weight:400;
+			font-size:24px;
+		}
+		li.attribute .attribute-value.multiple input{
+			flex:0 0 33%;
+		}
+		li.attribute .attribute-footer{
+			flex:0 0 18px;
+			margin-top:-1px;
+			line-height:18px;
+			font-size:12px;
+			font-weight:400;
+			white-space:nowrap;
+		}
+		li.attribute-rest{
+			margin:0 0 0 0;
+			border:var(--border-engraved);
+			border-radius:4px;
+			font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
+			width:100%;
+			height:120px;
+			/* margin-top:10px; */
+			float:left;
+			/* text-align:center; */
+			height:60px;
+			margin:0 0 0 0;
+			border:var(--border-engraved);
+			border-radius:4px;
+			font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
+			font-size:20px;
+			text-align:center;	
+		}
+		li.attribute-rest:last-child{
+			margin:0;
+		}
+		li.attribute-rest .attribute-value{
+			display:flex;
+			justify-content:center;
+			align-items:center;
+			height:28px;
+			line-height:28px;
+		}
+		li.attribute-rest .attribute-value > *{
+			font-size:24px;
+		}
+		li.attribute-rest .attribute-value.multiple input{
+			flex:0 0 33%;
+		}
+		li.attribute-rest .attribute-footer{
+			flex:0 0 18px;
+			margin-top:-1px;
+			line-height:18px;
+			font-family:"Signika", "Palatino Linotype", serif;
+			font-size:12px;
+		}
+		li.attribute-rest a.rest{
+			border:1px solid #b5b3a4;
+			border-radius:2px;
+			background:var(--color-bg-btn-minor-active);
+			padding:0 3px;
+			margin:0 3px;
+			font-size:12px;
+			text-align:left;
+		}
+		li.attribute-rest a.death{
+			content:"\A";
+			white-space:pre;
+			border:1px solid #b5b3a4;
+			border-radius:2px;
+			background:var(--color-bg-btn-minor-active);
+			padding:0 3px;
+			margin:0 3px;
+			font-size:12px;
+			text-align:left;
+		} 
+		li.attribute-rest input{
+			font-size:12px;
+		}
+		li.attribute-rest span{
+			font-size:12px;
+		}
+		li.attribute-rest input[type="checkbox"]{
+			height:14px;
+			width:14px;
+			margin:0;
+			top:2px;
+			position:relative;
+		}
+		.attribute-res .res-name{
+			flex:0.9;
+			font-family: var(--font-body);
+			font-size: medium;
+		}
+		.attribute-res .res-mod{
+			flex:0.6;
+		}
+		.attribute-res .res-armour{
+			flex:1;
+		}
+		.attribute-res .res-immune{
+			flex:0.8;
+		}
+		.attribute-res input[type="text"]{
+			flex:0.3;
+		}
+		.attribute-res input{
+			position:relative;
+			top:-6px;
+		}
+		li.attribute-def{
+			height:100px;
+			margin:0 0 0 0;
+			border:var(--border-engraved);
+			border-radius:4px;
+			font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
+			font-size:20px;
+			text-align:left;
+		}
+		li.attribute-ac{
+			height:16px;
+			position:relative;
+			top:-8px;
+		}
+		li.attribute-ac span{
+			position:relative;
+			top:-7px;
+			font-size:12px;
+		}
+		li.attribute-ac select{
+			position:relative;
+			top:-7px;
+			left:4px;
+			font-size:12px;
+			height:20px;
+			text-align:center;
+		}
+		.attribute-def .def-value{
+			flex:0 0 25px;
+			font-size:16px;
+			position:relative;
+			top:-1px;
+		}
+		.attribute-def .def-name{
+			flex:1px;
+			margin:0;
+			font-size:16px;
+			line-height:18px;
+			width:50px;
+			position:relative;
+			left:8px;
+			text-align:left;
+		}
+		.attribute-def input[type="text"]{
+			position:relative;
+			top:-4px;
+			flex:0.5;
+		}
+		.attribute-def .def-name{
+			flex:0.4;
+		}
+		.attribute-def .def-armour{
+			flex:0.8;
+		}
+		ul.attributes .attribute-def .defence-bonus{
+			flex:0.8;
+		}
+		ul.attributes .attribute-def .def-temp{
+			flex:0.4;
+		}
+	}
+	.attribute-def{
+		margin:0 0 0 0;
+		border:var(--border-engraved);
+		border-radius:4px;
+		font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
+		width:100%;
+		float:left;
+	}
+	.resource-full input{
+		width:10px;
+		top:2px;
+	}
+	.resource-full input::placeholder{
+		font-size:12px;
+		color:#7a7971;
+	}
+	.resource-full .attribute-footer span{
+		position:relative;
+		top:5px;
+	}
+	.attribute-res{
+		margin:0 0 0 0;
+		border-radius:4px;
+		font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
+		height:328px;
+		width:100%;
+		float:left;
+	}
+	.attribute-res .skill.flexrow{
+		align-items:center;
+	}
+	&.character .resource .attribute-value input{
+		flex:0 0 25%;
+	}	.attribute-init{
+		margin:0 0 0 0;
+		border:var(--border-engraved);
+		border-radius:4px;
+		font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
+		width:100%;
+		float:left;
+		text-align:center;
+		line-height:32px;
+	}
+	.attribute-init .init-bonus{
+		width:30px;
+	}
+	.attribute-modifiers{
+		margin:0 0 0 0;
+		border-radius:4px;
+		font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
+		width:100%;
+		text-align:center;
+		line-height:22px;
+	}
+	.attribute-modifiers .name-label{
+		text-align:right;
+	}
+	.sheet-header .char-details-level{
+		height:20px;
+		padding:0px;
+		margin:5px 0;
+		border-bottom:0;
+		font-size:16px;
+		display:inline-block;
+	}
+	.sheet-header .char-details-level input{
+		width:50px;
+		height:100%;
+		margin:0;
+		font-size:16px;
+		text-align:center;
+	}
+	.sheet-header .char-details-exp{
+		height:20px;
+		padding:0px;
+		margin:5px 0;
+		border-bottom:0;
+		font-size:16px;
+		display:inline-block
+	}
+	.sheet-header .char-details-exp input{
+		width:70px;
+		height:100%;
+		margin:0;
+		font-size:16px;
+		text-align:center;
+	}
+	.sheet-header .char-details-class{
+		height:20px;
+		padding:0px;
+		margin:5px 0;
+		border-bottom:0;
+		font-size:16px;
+		display:inline-block
+	}
+	.inventory-filters{
+		margin:0 2px;
+		flex:0 0 20px;
+		justify-content:flex-end;
+	}
+	.inventory{
+		flex:0 0 20px;
+		justify-content:flex-end;
+	}
+	h3{
+		border-bottom:0px;
+		margin:0 8px;
+		font-size:medium;
+	}
+	.daily-item-power-use{
+		justify-content:space-between;
+		width:100%;
+	}
+	.daily-item-power-use-counter input{
+		width:25px;
+		text-align:right;
+		margin-right: -8px;
+	}
+	.daily-item-power-use-check{
+		text-align:right;
+		align-items:center;
+	}
+	.inventory-list{
+		list-style:none;
+		margin:0;
+		overflow-y:auto;
+		overflow-x:hidden;
+		scrollbar-width:thin;
+	}
+	.inventory-list .item-import.button{
+		min-width:116px;
+		width:calc(100% - 80px);
+		height:12px;
+		line-height:normal;
+		border:0px;
+		float:right;
+		margin:2px 2px 2px 0px;
+		font-size:12px;
+		font-weight:bold;
+		min-height:0px;
+	}
+	.power-filters > div{
+		margin:0.25rem;
+	}
+	.power-filters :is(.group-powers,.sort-powers,.sort-features){
+		max-width:144px;
+	}
+	select:is([name="system.powerGroupTypes"],[name="system.powerSortTypes"],[name="system.featureSortTypes"]){
+		min-width:128px;
+	}
+	input.power-filter-search,
+	.filter-search-features input{
+		background:var(--color-bg-input);
+		min-width:168px;
+		margin-right:2px;
+	}
+	.power-list .item{
+		line-height:30px;
+		padding:0 2px;
+		border-bottom:1px solid transparent;
+	}
+	.inventory-list .item-controls .power-detail,
+	.inventory-list .item-controls .power-detail.active{
+		padding-left:3px;
+		border:unset;
+	}
+	.inventory .item-controls .item-toggle {
+		opacity:0.5;
+	}
+	.inventory .item-controls a.item-control.item-toggle.active {
+		opacity:1;
+	}
+	.inventory-list .item-controls > *{
+		flex:1;
+	}
+	.inventory-list .item-controls .flex1{
+		flex:1;
+	}
+	.inventory-list .item-controls .flex2{
+		flex:2;
+	}
+	.inventory-list .item-controls .flex3{
+		flex:3;
+	}
+	.inventory-list .item-controls .flex4{
+		flex:4;
+	}
+	.inventory-list .item-controls a{
+		flex:0 0 22px;
+		font-size:12px;
+		text-align:center;
+	}
+	.inventory-list .collapsible {
+		&.collapsed {
+			.item-summary {
+				padding: 0em 0em;
+				border-top: 0px solid rgba(0,0,0,0.1);
+			}
+		}
+		.item-summary{
+			flex:0 0 100%;
+			font-size:14px;
+			line-height:1;
+		}
+	}
+	.inventory .item-controls{
+		flex:0 0 68px;
+	}
+	.powers .item-controls{
+		flex:0 0 48px;
+	}
+	.inventory .item-controls .item-toggle.fixed:hover,
+	.powers .item-controls .item-toggle.fixed:hover{
+		text-shadow:none;
+	}
+	.health-option:hover + .config-button,
+	.config-button:hover{
+		display:block;
+	}
+	.config-button{
+	  position:absolute;
+	  top:2px;
+	  right:0px;
+	  display:none;
+	}
+	.sheet-header img.profile{
+		flex:0 0 160px;
+		width:160px;
+		height:160px;
+	}
+	&.character .item-sheet .sheet-header img.profile{
+		flex:0 0 160px;
+		width:160px;
+		height:160px;
+	}
+	.sheet-header h1.charname{
+		flex:1;
+		height:60px;
 		padding:0;
 	}
-}
-.dnd4e.sheet.actor.default .npc-lower {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	.section--tabs { flex: none; }
-	.section--tabs-content {
-		flex: 1;
-		position: relative;
-
-		> .tab {
-			position: absolute;
-			inset: 0;
+	.sheet-header h1.charname input{
+		height:40px;
+		margin:10px 0;
+	}
+	prose-mirror[name='system.biography']{
+		height:100%;		
+	}
+	
+	/* ------------ NPC Sheets ---------- */
+	&.NPC{
+		&:not(.minimized){
+			min-width:655px;
+		}
+		.sheet-header .summary-type{
+			flex-basis:114px;
+		}
+		.sheet-header .summary-typeother{
+			flex-basis:calc(100% - 472px);
+			flex-shrink:2;
+		}
+		.sheet-header .summary-leader{
+			flex-basis:98px;
+		}
+		.sheet-header .summary-role{
+			flex-basis:98px;
+		}
+		.sheet-header .summary-role-second{
+			flex-basis:86px;
+		}
+		.sheet-header .summary-size{
+			flex-basis:102px;
+		}
+		.sheet-header .summary-origin{
+			flex-basis:90px;
+		}
+		.sheet-header .summary-name-npc{
+			flex-basis:calc(100% - 380px);
+		}
+		.sheet-header .summary-exp input{
+			width:75%;
+			text-align:left;
+		}
+		.sheet-header .automath{
+			flex-grow:0;
+			position:relative;
+			height:80%;
+			flex-basis:1.45em;
+			border:var(--border-engraved);
+			border-radius:4px;
+		}
+		.sheet-header .automath .label{
+			display:none;
+		}
+		.sheet-header .automath input[type="checkbox"],
+		.sheet-header .automath img{
+			position:absolute;
+			height:100%;
+			width:100%;
+		}
+		.sheet-header .automath input[type="checkbox"]{
+			margin:0;
+			padding:0;
+			opacity:0;
+		}
+		.sheet-header .automath img{
+			filter:brightness(var(--automath-brightness));
+			border:unset;
+			pointer-events:none;
+			padding:2px 4px;
+			margin:0;
+			opacity:0.4;
+		}
+		.sheet-header .automath input[type="checkbox"]:checked+img{
+			opacity:1;
+		}
+		.tabs{
+			height:20px;
+		}
+		.tabs .item{
+			line-height:0px;
+		}
+		.npc-lower .sheet-body{
+			height:calc(100% - 20px);
+		}
+		.image-frame{
+			max-width:64px;
+			max-height:64px;
+			margin-left:0px;
+			margin-right:6px;
+			margin-bottom:6px;
+		}
+		.npc-upper .basics{
+			border-top:var(--border-heavy);
+			border-bottom:var(--border-heavy);
+			margin-bottom:1em;
+			justify-content:flex-start;
+		}
+		.npc-upper .basics>.flexcol{
+			flex-grow:1;
+			padding:2px;
+			margin:2px;
+		}
+		.npc-upper .basics>.flexcol:not(:last-child,:nth-child(4)){
+			border-right:var(--border-normal);
+		}
+		.npc-upper .basics>.flexcol:last-child{
+			padding-left:0;
+			padding-right:0.5em;
+		}
+		.npc-upper .basics>.flexcol:nth-child(4){
+			padding-right:0;
+		}
+		.npc-upper .basics>.flexcol>*{
+			flex-grow:0;
+		}
+		.npc-upper .basics>.resources{
+			padding-left:0;
+			flex-basis:170px;
+			flex-grow:0;
+			input{
+				text-align:center;
+				padding:0;
+			}
+		}
+		.npc-lower {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			.section--tabs {
+				flex: none;
+			}
+			.section--tabs-content {
+				flex: 1;
+				position: relative;
+				> .tab {
+					position: absolute;
+					inset: 0;
+				}
+			}
+		}
+		.npc-upper li.tag {
+			margin-left:20px;
+		}
+		.npc-upper .basics>.defences{
+			flex-grow:0;
+		}
+		.npc-upper .basics>.defences:not(.advanced){
+			flex-basis:105px;
+		}
+		.npc-upper .basics>.defences:not(.advanced) .defence-value{
+			font-size:1em;
+		}
+		.npc-upper .basics>.defences:not(.advanced) .defence-value.bonus{
+			color:var(--color-text-good);
+		}
+		.npc-upper .basics>.defences:not(.advanced) .defence-value.penalty{
+			color:var(--color-text-bad);
+		}
+		.npc-upper .basics>.defences.advanced{
+			flex-basis:140px;
+		}
+		.npc-upper .basics>.ability-scores{
+			flex-basis:100px;
+			flex-grow:0;
+		}
+		+ a.rest{
+			margin:0px;
+		}
+		.npc-upper .basics{
+			line-height:1.4;
+		}
+		.npc-upper .basics input{
+			display:inline-block;
+			text-align:left;
+			max-height:18px;
+			max-width:1.6em;
+			font-weight:bold;
+		}
+		.npc-upper .hitpoints{
+			max-width:180px;
+			font-size:16px;
+		}
+		.npc-upper .hitpoints input{
+			text-align:center;
+		}
+		.npc-upper .resources .roll-save{
+			border:unset;
+			flex-grow:0;
+			margin-right:4px;
+		}
+		.npc-upper .basics>.defences{
+			flex-grow:0.15;
+		}
+		.npc-upper .defence{
+			display:inline-block;
+			position:relative;
+			top:-2px;
+		}
+		.npc-upper .senses .skill-name{
+			max-width:120px;
+		}
+		.npc-upper .def-name{
+			font-size:16px;
+			display:inline-block;
+			width:2em;
+		}
+		.npc-upper label.def-base{
+			margin-left:6px;
+		}
+		.npc-upper .basics .alignment input{
+			max-width:120px;
+		}
+		.section--skills .skill-name{
+			flex-basis:300px;
+			max-width:10em;
+		}
+		.section--skills .skill--block{
+			flex-wrap:nowrap;
+		}
+		label.skill-mod{
+			max-width:4em;
+		}
+		label.skill-base{
+			border-left:var(--border-normal);
+			margin-left:1em;
+			padding-left:1em;
+			max-width:8em;
+		}
+	}
+						
+	/* ------------ Hazard Sheets -------------- */
+	&.Hazard{
+		&:not(.minimized){
+			min-width:452px;
+		}
+		.sheet-header .role-details{
+			justify-content:flex-start;
+		}
+		.sheet-header .role-details>.summary-level{
+			flex-basis:100px;
+			flex-grow:0;
+			text-align:right;
+			margin-left:auto;
+		}
+		.sheet-header .summary-exp{
+			flex-grow:0;
+		}
+		.sheet-header .summary-level input{
+			width:50%;
+		}
+		.sheet-header .summary-role,
+		.sheet-header .summary-role-second,
+		.sheet-header .summary-role-third{
+			flex-basis:86px;
+			flex-grow:0;
+		}
+		.def-none{
+			position:relative;
+			aspect-ratio:1 / 1;
+			display:inline-block;
+			margin-right:2px;
+		}
+		.def-none input[type='checkbox']{
+			height:100%;
+			width:100%;
+			display:block;
+			margin:0;
+			padding:0;
+			max-height:100%;
+			max-width:100%;
+			opacity:0;
+		}
+		.def-none input[type='checkbox']+.button{
+			position:absolute;
+			left:0;
+			bottom:0;
+			height:100%;
+			width:100%;
+			line-height:1;
+			pointer-events:none;
+		}
+		.def-none input[type='checkbox']:not(:checked)+.button{
+			opacity:40%;
+		}
+		.defence.null :is(.def-name,.attribute-name){
+			opacity:40%;
+		}
+		.combat label.hazard-detection{
+			font-weight:bold;
+		}
+		.combat input[name="system.details.detection"]{
+			max-width:unset;
+			font-family:inherit;
+			font-weight:normal;
+		}
+		.description{
+		}
+		.global-mods .global-mod[data-modifiers="skills"]{
+			display:none;
+		}
+		.global-mods .global-mods-column:nth-child(2){
+			width:50%;
 		}
 	}
 }
-.dnd4e.sheet.actor.default .npc-upper li.tag {
-	margin-left:20px;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.defences{
-	flex-grow:0;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.defences:not(.advanced){
-	flex-basis:105px;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.defences:not(.advanced) .defence-value{
-	font-size:1em;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.defences:not(.advanced) .defence-value.bonus{
-	color:var(--color-text-good);
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.defences:not(.advanced) .defence-value.penalty{
-	color:var(--color-text-bad);
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.defences.advanced{
-	flex-basis:140px;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.ability-scores{
-	flex-basis:100px;
-	flex-grow:0;
-}
-.dnd4e.sheet.actor.default .npc + a.rest{
-	margin:0px;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics{
-	line-height:1.4;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics input{
-	display:inline-block;
-	text-align:left;
-	max-height:18px;
-	max-width:1.6em;
-	font-weight:bold;
-}
-.dnd4e.sheet.actor.default .npc-upper .hitpoints{
-	max-width:180px;
-	font-size:16px;
-}
-.dnd4e.sheet.actor.default .npc-upper .hitpoints input{
-	text-align:center;
-}
-.dnd4e.sheet.actor.default .npc-upper .resources .roll-save{
-	border:unset;
-	flex-grow:0;
-	margin-right:4px;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics>.defences{
-	flex-grow:0.15;
-}
-.dnd4e.sheet.actor.default .npc-upper .defence{
-	display:inline-block;
-	position:relative;
-	top:-2px;
-}
-.dnd4e.sheet.actor.default .npc-upper .senses .skill-name{
-	max-width:120px;
-}
-.dnd4e.sheet.actor.default .npc-upper .def-name{
-	font-size:16px;
-	display:inline-block;
-	width:2em;
-}
-.dnd4e.sheet.actor.default .npc-upper label.def-base{
-	margin-left:6px;
-}
-.dnd4e.sheet.actor.default .npc-upper .basics .alignment input{
-	max-width:120px;
-}
-.dnd4e.sheet.actor.default .npc .section--skills .skill-name{
-	flex-basis:300px;
-	max-width:10em;
-}
-.dnd4e.sheet.actor.default .npc .section--skills .skill--block{
-	flex-wrap:nowrap;
-}
-.dnd4e.sheet.actor.default .npc label.skill-mod{
-	max-width:4em;
-}
-.dnd4e.sheet.actor.default .npc label.skill-base{
-	border-left:var(--border-normal);
-	margin-left:1em;
-	padding-left:1em;
-	max-width:8em;
-}
 
-
-/* ----------------------------------------- */
-/*  Hazard Sheets
-/* ----------------------------------------- */
-
-.dnd4e.sheet.actor.default.Hazard:not(.minimized){
-	min-width:452px;
-}
-.dnd4e.sheet.default .npc.hazard .sheet-header .role-details{
-	justify-content:flex-start;
-}
-.dnd4e.sheet.default .npc.hazard .sheet-header .role-details>.summary-level{
-	flex-basis:100px;
-	flex-grow:0;
-	text-align:right;
-	margin-left:auto;
-}
-.dnd4e.sheet.default .npc.hazard .sheet-header .summary-exp{
-	flex-grow:0;
-}
-.dnd4e.sheet.default .npc.hazard .sheet-header .summary-level input{
-	width:50%;
-}
-.dnd4e.sheet.default .npc.hazard .sheet-header .summary-role,
-.dnd4e.sheet.default .npc.hazard .sheet-header .summary-role-second,
-.dnd4e.sheet.default .npc.hazard .sheet-header .summary-role-third{
-	flex-basis:86px;
-	flex-grow:0;
-}
-.dnd4e.sheet.default .npc.hazard .def-none{
-	position:relative;
-	aspect-ratio:1 / 1;
-	display:inline-block;
-	margin-right:2px;
-}
-.dnd4e.sheet.default .npc.hazard .def-none input[type='checkbox']{
-	height:100%;
-	width:100%;
-	display:block;
-	margin:0;
-	padding:0;
-	max-height:100%;
-	max-width:100%;
-	opacity:0;
-}
-.dnd4e.sheet.default .npc.hazard .def-none input[type='checkbox']+.button{
-	position:absolute;
-	left:0;
-	bottom:0;
-	height:100%;
-	width:100%;
-	line-height:1;
-	pointer-events:none;
-}
-.dnd4e.sheet.default .npc.hazard .def-none input[type='checkbox']:not(:checked)+.button{
-	opacity:40%;
-}
-.dnd4e.sheet.default .npc.hazard .defence.null :is(.def-name,.attribute-name){
-	opacity:40%;
-}
-.dnd4e.sheet.default .npc.hazard .combat label.hazard-detection{
-	font-weight:bold;
-}
-.dnd4e.sheet.default .npc.hazard .combat input[name="system.details.detection"]{
-	max-width:unset;
-	font-family:inherit;
-	font-weight:normal;
-}
-.dnd4e.sheet.default .npc.hazard .description .editor{
-	margin-bottom:1em;
-}
-.dnd4e.sheet.default .npc.hazard .description .editor,
-.dnd4e.sheet.default .npc.hazard .description .editor-content{
-	height:fit-content;
-	min-height:4em;
-	margin-left: 8px;
-	margin-right: 8px;
-}
-.dnd4e.sheet.default .npc.hazard .description .prosemirror .editor-container{
-	height:fit-content;
-	margin-bottom:4em;
-	min-height:10em;
-}
-.dnd4e.sheet.default .npc.hazard .global-mods .global-mod[data-modifiers="skills"]{
-	display:none;
-}
-.dnd4e.sheet.default .npc.hazard .global-mods .global-mods-column:nth-child(2){
-	width:50%;
-}
-
-
-/* ----------------------------------------- */
-/*  Item Sheets
-/* ----------------------------------------- */
-
-.dnd4e.sheet.item:not(.minimized){
-	min-width:460px;
-	min-height:400px;
-}
-.dnd4e.sheet.default .item-sheet .sheet-header{
-	flex:0 0 100px;
-	border-bottom:var(--border-engraved);
-}
-.dnd4e.sheet.default .item-sheet .sheet-header img.profile{
-	flex:0 0 100px;
-	width:100px;
-	height:100px;
-	object-fit:contain;
-	border:none;
-	border-right:var(--border-engraved);
-}
-.dnd4e.sheet.item .tab.description{
-	flex-direction: row;
-	.item-properties{
-		flex:0 0 25%;
+/* ------------- Item Sheets --------------- */
+.dnd4e.sheet.item.default .window-content{
+	.content .currency input[type="text"]{
+		background:none;
+		border-width:0;
+		border-radius:0;
 	}
-	.description{
-		height: 100%;
+	.sheet-header{
+		flex:none;
 	}
-}
-.dnd4e.sheet.item .tab.content{
-	gap:0.5rem;
-}
-.dnd4e.sheet.actor.default .item-sheet .sheet-header img.profile{
-	flex:0 0 160px;
-	width:160px;
-	height:160px;
-}
-.dnd4e.sheet.item .item-sheet .sheet-header img.profile{
-	border:2px solid #000;
-}
-.dnd4e.sheet.actor.default.character .item-sheet .sheet-header img.profile{
-	flex:0 0 160px;
-	width:160px;
-	height:160px;
-}
-.dnd4e.sheet.actor.default .item-sheet .sheet-header h1.charname{
-	flex:1;
-	height:60px;
-	padding:0;
-}
-.dnd4e.sheet.actor.default .item-sheet .sheet-header h1.charname input{
-	height:40px;
-	margin:10px 0;
-}
-.dnd4e.sheet.item .sheet-header .item-subtitle{
-	flex:0 0 80px;
-	height:60px;
-	margin:0;
-	padding:5px;
-	text-align:right;
-}
-.dnd4e.sheet.item .sheet-header .item-subtitle .item-type{
-	font-size:24px;
-	line-height:26px;
-	margin:0;
-}
-.dnd4e.sheet.item .sheet-header .item-subtitle .item-status{
-	font-size:16px;
-	line-height:24px;
-}
-.dnd4e.sheet.default .item-sheet .sheet-header .summary{
-	flex:0 0 100%;
-	height:40px;
-	margin:0;
-	padding:0;
-	list-style:none;
-	border-top:var(--border-engraved);
-	border-bottom:none;
-	position:static;
-}
-.dnd4e.sheet.default .item-sheet .sheet-header .summary li{
-	height:calc(100% - 6px);
-	float:left;
-	margin:2px 0;
-	padding:0;
-	border-right:var(--border-engraved);
-	line-height:34px;
-}
-.dnd4e.sheet.default .item-sheet .sheet-header .summary li label {
-	padding-left: 5px;
-}
-.dnd4e.sheet.default .item-sheet .sheet-header .summary li:last-child{
-	border-right:none;
-}
-.dnd4e.sheet.item .sheet-navigation{
-	margin-bottom:5px;
-}
-.dnd4e.sheet.item .sheet-navigation .item{
-	font-size:18px;
-}
-.dnd4e.sheet.item .details input[type="text"],
-.dnd4e.sheet.item .details input[type="textarea"],
-.dnd4e.sheet.item .details select{
-	height:24px;
-	width:14%;
-	border:var(--border-normal);
-}
-.dnd4e.sheet.item .details .form-group span{
-	text-align:center;
-	line-height:24px;
-}
-.dnd4e.sheet.item .details .form-group .attack-roll span {
-	flex: 0 0 50px;
-}
-.dnd4e.sheet.item .details .form-group .attack-roll select:first-of-type {
-	min-width: 122px;
-}
-.dnd4e.sheet.item .details .form-group.input-select select{
-	flex:1.8;
-}
-.dnd4e.sheet.item .details .form-group.input-select-select select{
-	flex:1.5;
-}
-.dnd4e.sheet.item .details .form-group.two-input input{
-	flex:0.5;
-}
-.dnd4e.sheet.item .details .form-group.two-input span {
-	flex:0 0 16px;
-}
-.dnd4e.sheet.item .details .form-group .item-range span:first-of-type {
-	flex:0 0 16px;
-}
-.dnd4e.sheet.item .details .form-group .item-range span:not(.sep):last-of-type {
-	flex:0 0 0px;
-	min-width: 94px;
-}
-.dnd4e.sheet.item .details .form-group .item-range select:first-of-type {
-	min-width: 88px;
-}
-.dnd4e.sheet.item .details .form-group.two-input select,
-.dnd4e.sheet.item .details .form-group .item-range input
-{
-	flex:1;
-}
-.dnd4e.sheet.item .details span.sep{
-	flex:0 0 8px;
-}
-.dnd4e.sheet.item .details .prepared{
-	flex:1.3 !important;
-	text-align:right;
-	padding-right:10px;
-}
-.dnd4e.sheet.item .details .spell-materials{
-	flex:0 0 100%;
-	margin:0.25em 0;
-	justify-content:flex-end;
-}
-.dnd4e.sheet.item .details .spell-materials label{
-	flex:0 0 64px;
-	text-align:right;
-	margin-right:5px;
-	font-size:12px;
-	line-height:24px;
-}
-.dnd4e.sheet.item .details .spell-materials input[type="text"]{
-	flex:0 0 48px;
-	margin-right:10px;
-}
-.dnd4e.sheet.item :is(.weapon-properties,.feature-keywords) label.checkbox{
-	flex:0 0 118px;
-}
-.dnd4e.default input[type="checkbox"]{
-	line-height: var(--checkbox-size);
-}
-.dnd4e.sheet.item ul.auto-keywords{
-	padding-left:0;
-	font-size:var(--font-size-11);
-	font-weight:bold;
-	color:var(--color-label);
-	line-height:1;
-}
-.dnd4e.sheet.item .details .form-group.two-input label.source-name{
-	max-width:100px;
-	text-align:right;
-	padding-right:0.5em;
-}
-.dnd4e.sheet.item .details .form-group.two-input input.source-name{
-	flex-basis:20%;
-}
-.dnd4e.sheet.item h4.damage-header{
-	margin:0;
-	padding:0;
-	font-weight:bold;
-	line-height:24px;
-	font-family:var(--font-body);
-	font-size:medium;
-}
-.dnd4e.sheet.item .damage-parts{
-	list-style:none;
-	margin:0;
-	padding:0;
-}
-.dnd4e.sheet.item .damage-parts .damage-part {
-	flex:0 0 100%;
-	padding: 0 0 2px;
-}
-.dnd4e.sheet.item .res-group{
-	width:100%;
-}
-.dnd4e.sheet.item .res-group .damage-parts{
-	max-width:24em;
-	margin-left:auto;
-}
-.dnd4e.sheet.item .res-group .damage-parts .damage-part{
-	margin-bottom:6px;
-}
-.dnd4e.sheet.item .damage-parts .damage-part input{
-	flex:3;
-}
-.dnd4e.sheet.item .damage-parts .damage-part select{
-	margin-left:5px;
-	flex:1;
-}
-.dnd4e.sheet.item .damage-control{
-	width:18px;
-	flex:0 0 18px;
-	line-height:24px;
-	float:right;
-	text-align:right;
-	opacity:0.75;
-}
-.dnd4e.sheet.item .onetext-parts{
-	list-style:none;
-	margin:0;
-	padding:0;
-}
-.dnd4e.sheet.item .onetext-parts .onetext-part{
-	flex:0 0 100%;
-	padding:0;
-}
-.dnd4e.sheet.item .onetext-control{
-	width:18px;
-	flex:0 0 18px;
-	line-height:24px;
-	float:right;
-	text-align:right;
-	opacity:0.75;
-}
-.dnd4e.sheet.default .item-sheet .form-group .consumption select.consume-type{
-	flex:1;
-}
-.dnd4e.sheet.default .item-sheet .form-group .consumption select.consume-target{
-	width:80%;
-}
-.dnd4e.sheet.default .item-sheet .form-group .item-range .range-within-of{
-	flex:1 0 6px;
-}
-.dnd4e.sheet.default .item-sheet .form-group .item-range .range-of{
-	flex:0 0 64px;
-}
-.dnd4e.sheet.default .item-sheet .form-group label.auto-card{
-	max-width:208px;
-}
-.dnd4e.sheet.default .item-sheet.consumable .form-group :is(.display-effect,.effect-html){
-	text-align:right;
-}
-.dnd4e.sheet.default .item-sheet.weapon label.damage-override{
-	max-width:250px;
-}
-.dnd4e.sheet.default .item-sheet .macro-text{
-	height:calc(100% - 132px);
-}
-.dnd4e.sheet.default .item-sheet .macro-text textarea{
-	height:100%;
-}
-.dnd4e.sheet.default .item-sheet .item-damage .dmg-base-qty{
-	flex: 0.5 0 0;
-}
-.dnd4e.sheet.default .item-sheet .weapon-properties label.damage-type{
-	max-width:100%;
-}
-.dnd4e.sheet.default .item-sheet .attribute-modifiers{
-	max-height:76px;
-	line-height:22px;
+	.header-2{
+		align-items:stretch;
+	}
+	section{
+		overflow:hidden;
+		overflow-y:auto;
+	}
+	section .item-properties{
+		flex:0 0 120px;
+		margin:5px 5px 5px 0;
+		padding-right:5px;
+		border-right:var(--border-engraved);
+
+		height: calc(100% - 10px);
+	}
+	section .item-properties .form-group{
+		margin:0.25em 0;
+	}
+	section .item-properties .form-group label{
+		line-height:20px;
+	}
+	section .item-properties .form-group input{
+		text-align:right;
+	}
+	section .item-properties .properties-list{
+		list-style:none;
+		margin:0;
+		padding:0;
+	}
+	section .item-properties .properties-list li{
+		margin:3px 0;
+		padding:0 2px;
+		background:rgba(0, 0, 0, 0.05);
+		border:var(--border-engraved);
+		text-align:center;
+		font-size:12px;
+		line-height:18px;
+	}
+	.item-list .item-weight {
+		flex:0 0 60px;
+		text-align: center;
+	}
+	.item-list .item-quantity {
+		flex:0 0 62px;
+		text-align: center;
+	}
+	.item-list .item-controls {
+		text-align: center;
+	}
+	.content .item-list .item-controls {
+		flex:0 0 44px;
+	}
+	&:not(.minimized){
+		min-width:460px;
+		min-height:400px;
+	}
+	.sheet-header{
+		flex:0 0 100px;
+		border-bottom:var(--border-engraved);
+	}
+	.sheet-header img.profile{
+		flex:0 0 100px;
+		width:100px;
+		height:100px;
+		object-fit:contain;
+		border:none;
+		border-right:var(--border-engraved);
+	}
+	.tab.description{
+		flex-direction:row;
+        align-items:stretch;
+		overflow:hidden;
+		.item-properties{
+			flex:0 0 25%;
+		}
+		.description-main{
+			padding-right:calc(0 - var(--scroll-margin));
+			label{
+				color:var(--color-text-subtle);
+			}	
+			.multi-editor-wrapper{
+				height:100%;
+				display:flex;
+				flex-direction:column;
+				prose-mirror[name='system.description.value']{
+					flex-basis:100%;
+				}
+				prose-mirror[name='system.description.gm'].inactive .editor-content{
+					background:var(--input-background-color);
+				}
+			}
+		}
+	}
+	.tab.content{
+		gap:0.5rem;
+	}
+	.sheet-header{
+		img.profile{
+			border:2px solid #000;
+		}
+		.item-subtitle{
+			flex:0 0 80px;
+			height:60px;
+			margin:0;
+			padding:5px;
+			text-align:right;
+		}
+		.item-subtitle .item-type{
+			font-size:24px;
+			line-height:26px;
+			margin:0;
+		}
+		.item-subtitle .item-status{
+			font-size:16px;
+			line-height:24px;
+		}
+	}
+	.sheet-navigation{
+		margin-bottom:5px;
+	}
+	.sheet-navigation .item{
+		font-size:18px;
+	}
+	.details{
+		.form-group{
+			span{
+				text-align:center;
+				line-height:24px;
+			}
+			span.checkbox{
+				text-align:right;
+			}
+			.attack-roll span{
+				flex: 0 0 50px;
+			}
+			.attack-roll select:first-of-type {
+				min-width: 122px;
+			}
+			.item-range span:first-of-type{
+				flex:0 0 16px;
+			}
+			.item-range span:not(.sep):last-of-type{
+				flex:0 0 0px;
+				min-width: 94px;
+			}
+			.item-range select:first-of-type{
+				min-width: 88px;
+			}
+			&.input-select select{
+				flex:1.8;
+			}
+			&.input-select-select select{
+				flex:1.5;
+			}
+			&.two-input input{
+				flex:0.5;
+			}
+			&.two-input span {
+				flex:0 0 16px;
+			}
+			&.two-input select,
+			.item-range input{
+				flex:1;
+			}
+			&.two-input label.source-name{
+				max-width:100px;
+				text-align:right;
+				padding-right:0.5em;
+			}
+			&.two-input input.source-name{
+				flex-basis:20%;
+			}
+			&:is(.weapon-properties,.feature-keywords) label.checkbox{
+				flex:0 0 118px;
+			}
+			&:is(.weapon-properties,.feature-keywords) label:not(.checkbox,.damage-override){
+				flex:100% 0 0;
+				max-width:unset;
+			}
+		}
+		span.sep{
+			flex:0 0 8px;
+		}
+		.prepared{
+			flex:1.3 !important;
+			text-align:right;
+			padding-right:10px;
+		}
+		.spell-materials{
+			flex:0 0 100%;
+			margin:0.25em 0;
+			justify-content:flex-end;
+		}
+		.spell-materials label{
+			flex:0 0 64px;
+			text-align:right;
+			margin-right:5px;
+			font-size:12px;
+			line-height:24px;
+		}
+		.spell-materials input[type="text"]{
+			flex:0 0 48px;
+			margin-right:10px;
+		}
+	}
+	ul.auto-keywords{
+		padding-left:0;
+		font-size:var(--font-size-11);
+		font-weight:bold;
+		color:var(--color-label);
+		line-height:1;
+	}
+	h4.damage-header{
+		margin:0;
+		padding:0;
+		font-weight:bold;
+		line-height:24px;
+		font-family:var(--font-body);
+		font-size:medium;
+	}
+	.damage-parts{
+		list-style:none;
+		margin:0;
+		padding:0;
+	}
+	.damage-parts .damage-part {
+		flex:0 0 100%;
+		padding: 0 0 2px;
+	}
+	.res-group{
+		width:100%;
+	}
+	.res-group .damage-parts{
+		max-width:24em;
+		margin-left:auto;
+	}
+	.res-group .damage-parts .damage-part{
+		margin-bottom:6px;
+	}
+	.damage-parts .damage-part input{
+		flex:3;
+	}
+	.damage-parts .damage-part select{
+		margin-left:5px;
+		flex:1;
+	}
+	.damage-control{
+		width:18px;
+		flex:0 0 18px;
+		line-height:24px;
+		float:right;
+		text-align:right;
+		opacity:0.75;
+	}
+	.onetext-parts{
+		list-style:none;
+		margin:0;
+		padding:0;
+	}
+	.onetext-parts .onetext-part{
+		flex:0 0 100%;
+		padding:0;
+	}
+	.onetext-control{
+		width:18px;
+		flex:0 0 18px;
+		line-height:24px;
+		float:right;
+		text-align:right;
+		opacity:0.75;
+	}
+	.form-group{
+		.consumption select.consume-type{
+			flex:1;
+		}
+		.consumption select.consume-target{
+			width:80%;
+		}
+		.item-range .range-within-of{
+			flex:1 0 6px;
+		}
+		.item-range .range-of{
+			flex:0 0 64px;
+		}
+		label.auto-card{
+			max-width:208px;
+		}
+	}
+	.item-sheet.consumable .form-group :is(.display-effect,.effect-html){
+		text-align:right;
+	}
+	.item-sheet.weapon label.damage-override{
+		max-width:250px;
+	}
+	.macro-text{
+		height:calc(100% - 132px);
+	}
+	.macro-text textarea{
+		height:100%;
+	}
+	.item-damage .dmg-base-qty{
+		flex: 0.5 0 0;
+	}
+	.weapon-properties label.damage-type{
+		max-width:100%;
+	}
+	.attribute-modifiers{
+		max-height:76px;
+		line-height:22px;
+	}
 }
 
 
@@ -2601,86 +2497,79 @@ font-size:12px;
 		align-items: end;
 	}
 }
-
-.active-effect-sheet section[data-tab="details"].tab.active,
-.active-effect-sheet section[data-tab="duration"].tab.active {
-	height: calc(100% - 140px);
-}
-.active-effect-sheet section[data-tab="effects"].tab.active {
-	height: calc(100% - 166px);
-}
-.active-effect-sheet .editor.prosemirror{
-	min-height: 10em;
-	height: 100%;
-}
-.active-effect-sheet .form-group.editor{
-	height: calc(100% - 138px);
-	overflow: hidden;
-}
-.active-effect-sheet .form-group.editor.extended{
-	height: calc(100% - 164px);
-}
-
-.active-effect-sheet .sheet-footer{
-	bottom: 0px;
-	position: sticky;
-}
-.sheet.active-effect-sheet .prosemirror menu,
-.dnd4e.sheet.actor.default .prosemirror menu,
-.dnd4e.sheet.item .prosemirror menu {
-	background-color: rgba(0, 0, 0, 0.05);
-}
-
-.sheet.active-effect-sheet .editor.prosemirror,
-.dnd4e.sheet.actor.default .editor.prosemirror ,
-.dnd4e.sheet.item .editor.prosemirror {
-	background-color: rgba(0, 0, 0, 0.05);
-}
-.active-effect-sheet input.saveDC{
-	max-width:4em;
-}
-.active-effect-sheet h3.subsection{
-	font-size:1em;
-	margin:0 0 0.2rem;
-	border-bottom:unset;
-	font-weight:bold;
-}
-.active-effect-sheet .effects-header>div{
-   padding:0 2px;
-}
-.active-effect-sheet .effects-header>:first-child{
-	padding-left:4px;
-}
-.active-effect-sheet :is(.dots-list,.statuses-list,.keywords-list){
-	list-style:none;
-	margin:0;
-	padding:0;
-}
-.active-effect-sheet :is(.effect-dot,.effect-status,.effect-keyword){
-	align-items:center;
-	padding:3px 1px;
-}
-.active-effect-sheet :is(.effect-dot,.effect-status,.effect-change):not(:last-child){
-	border-bottom:1px solid rgba(0,0,0,0.1);
-}
-.active-effect-sheet .effect-status .status-select{
-	flex-basis:8.5em;
-	margin-right:4px;
-}
-.active-effect-sheet .effect-status .status-controls{
-	flex-basis:19.5em;
-}
-.active-effect-sheet .effect-status .status-select select{
-	width:100%;
-}
-.active-effect-sheet .effect-status button{
-	border-radius:3px;
-	font-size:80%;
-	line-height:1;
-	padding:0.5em;
-}
-.active-effect-sheet .keywords-list li.effect-keyword{
-	flex:30% 0 0;
+.active-effect-sheet{
+	section[data-tab="details"].tab.active,
+	section[data-tab="duration"].tab.active{
+		height:calc(100% - 140px);
+	}
+	section[data-tab="effects"].tab.active{
+		height:calc(100% - 166px);
+	}
+	.editor.prosemirror{
+		min-height:10em;
+		height:100%;
+	}
+	.form-group.editor{
+		height:calc(100% - 138px);
+		overflow:hidden;
+	}
+	.form-group.editor.extended{
+		height:calc(100% - 164px);
+	}
+	.sheet-footer{
+		bottom:0px;
+		position:sticky;
+	}
+	.prosemirror menu,
+	.editor.prosemirror{
+		background-color:rgba(0, 0, 0, 0.05);
+	}
+	input.saveDC{
+		max-width:4em;
+	}
+	h3.subsection{
+		font-size:1em;
+		margin:0 0 0.2rem;
+		border-bottom:unset;
+		font-weight:bold;
+	}
+	.effects-header>div{
+	   padding:0 2px;
+	}
+	.effects-header>:first-child{
+		padding-left:4px;
+	}
+	:is(.dots-list,.statuses-list,.keywords-list){
+		list-style:none;
+		margin:0;
+		padding:0;
+	}
+	:is(.effect-dot,.effect-status,.effect-keyword){
+		align-items:center;
+		padding:3px 1px;
+	}
+	:is(.effect-dot,.effect-status,.effect-change):not(:last-child){
+		border-bottom:1px solid rgba(0,0,0,0.1);
+	}
+	.effect-status .status-select{
+		flex-basis:8.5em;
+		margin-right:4px;
+	}
+	.effect-status .status-controls{
+		flex-basis:19.5em;
+	}
+	.effect-status .status-select select{
+		width:100%;
+	}
+	.effect-status button{
+		border-radius:3px;
+		font-size:80%;
+		line-height:1;
+		padding:0.5em;
+	}
+	.keywords-list li.effect-keyword{
+		flex:30% 0 0;
+	}
 }
 
 /* ----------------------------------------- */
@@ -2690,30 +2579,41 @@ font-size:12px;
 #token-hud .status-effects{
 	grid-template-columns:25px 25px 25px 25px 25px 25px 25px
 }
-#trait-selector .trait-list{
-	list-style:none;
-	margin:0;
-	padding:0;
-}
-#trait-selector .trait-list .trait-list{
-	padding-left:20px;
-}
-#trait-selector input[type="text"]{
-	height:18px;
-}
-#trait-selector .trait.has-children .trait-list{
-	columns:2;
-}
-#trait-selector .trait-list .trait.has-children>.expand{
-	font-size:0.8em;
-	opacity:0.75;
-}
-#trait-selector .trait-list .trait.has-children>.expand.fa-chevron-down.toggle-on::before{
-	content:"\f077";
-}
-#trait-selector .trait-list .trait.has-children>.expand.toggle-on~.trait-list .trait,
-#trait-selector .trait-list .trait.has-children .trait.toggle-on{
-	display:block;
+#trait-selector{
+	.trait.has-children .trait-list{
+		columns:2;
+	}
+	.trait-list{
+		list-style:none;
+		margin:0;
+		padding:0;
+		.trait-list{
+			padding-left:20px;
+		}
+		.trait.has-children{
+			>.expand{
+				font-size:0.8em;
+				opacity:0.75;
+				&.fa-chevron-down.toggle-on{
+					~.trait-list .trait{
+						display:block;
+					}
+					&::before{
+						content:"\f077";
+					}
+				}
+			}
+			.trait.toggle-on{
+				display:block;
+			}
+		}
+	}
+	input[type="text"]{
+		height:18px;
+	}
+	.form-group.stacked label{
+		max-width:none;
+	}
 }
 /* Tooltip text */
 .tooltip .tooltipcontent{
@@ -2763,128 +2663,135 @@ font-size:12px;
 }
 
 /* Roll Dialogue */
-.dnd4e.roll-dialogue.default h2{
-	font-family:var(--font-body);
-	font-size:1.2em;
-	font-weight:700;
-	text-decoration:none;
-	margin-top:0.4em;
-	margin-bottom:unset;
-	border-bottom:var(--border-faint);
-}
-.dnd4e.roll-dialogue.default .roll-times{
-	align-items:center;
-	flex-wrap:nowrap;
-}
-.dnd4e.roll-dialogue.default .roll-times .label{
-	flex:100%;
-	line-height:1;
-}
-.dnd4e.roll-dialogue.default .roll-times .buttons{
-	justify-content:flex-end;
-	align-items:center;
-	flex-wrap:nowrap;
-	flex:unset;
-	width:fit-content;
-}
-.dnd4e.roll-dialogue.default .roll-times .buttons :is(.button,input){
-	flex:2.5em 0 0;
-}
-.dnd4e.roll-dialogue.default .roll-times .buttons input{
-	height:2.2em;
-}
-.dnd4e.roll-dialogue.default .target-detail{
-	background:var(--color-bg-btn-minor-active);
-	padding:0.3em;
-	.form-group.stacked {
-		gap: 0;
+.dnd4e.roll-dialogue.default{
+	h2{
+		font-family:var(--font-body);
+		font-size:1.2em;
+		font-weight:700;
+		text-decoration:none;
+		margin-top:0.4em;
+		margin-bottom:unset;
+		border-bottom:var(--border-faint);
+	}
+	.roll-times{
+		align-items:center;
+		flex-wrap:nowrap;
+	}
+	.roll-times .label{
+		flex:100%;
+		line-height:1;
+	}
+	.roll-times .buttons{
+		justify-content:flex-end;
+		align-items:center;
+		flex-wrap:nowrap;
+		flex:unset;
+		width:fit-content;
+	}
+	.roll-times .buttons :is(.button,input){
+		flex:2.5em 0 0;
+	}
+	.roll-times .buttons input{
+		height:2.2em;
+	}
+	.target-detail{
+		background:var(--color-bg-btn-minor-active);
+		padding:0.3em;
+		.form-group.stacked {
+			gap: 0;
+		}
+	}
+	.form-group {
+		margin-bottom: 0.25rem;
+		&.roll-times .label {
+			max-width: unset;
+		}
+	}
+	.multitarget-tab{
+		display:none;
+	}
+	.multitarget-tab .score-vs-def{
+		display:flex;
+		width:100%;
+		align-items:center;
+		select{
+			flex:1;
+			max-width:60px;
+		}
+		label{
+			flex:0;
+			padding:0.25rem;
+		}
+	}
+	.multitarget-np-flex{
+		display:flex;
+		justify-content:space-between;
+		align-items:stretch;
+	}
+	.multitarget-np-flex:not(.has-target,.has-multi){
+		display:none;
+	}
+	.multitarget-np-flex.has-target:not(.has-multi) button{
+		display:none;
+	}
+	.roll-dialogue .multitarget-np-flex .target-label{
+		flex:100% 10 10;
+		display:flex;
+		flex-direction:column;
+		justify-content:center;
+		border:2px groove rgba(0, 0, 0, 0.4);
+	}
+	.roll-dialogue .multitarget-np-flex .target-label>h3{
+		font-size:1em;
+		text-align:center;
+		font-weight:700;
+		border-bottom:unset;
+		margin-top:0.25em;
+		margin-bottom:0.25em;
+	}
+	.multitarget-np-flex button[id="multibonus-toggle"]{
+		width:fit-content;
 	}
 }
-.dnd4e.roll-dialogue.default .form-group {
-	margin-bottom: 0.25rem;
-	&.roll-times .label {
-		max-width: unset;
-	}
-}
-.dnd4e.roll-dialogue.default .multitarget-tab{
-	display:none;
-}
-.dnd4e.roll-dialogue.default .multitarget-tab .score-vs-def{
-	display:flex;
-	width:100%;
-	align-items:center;
-	select{
-		flex:1;
-		max-width:60px;
-	}
-	label{
-		flex:0;
-		padding:0.25rem;
-	}
-}
-.dnd4e.roll-dialogue.default .multitarget-np-flex{
-	display:flex;
-	justify-content:space-between;
-	align-items:stretch;
-}
-.dnd4e.roll-dialogue.default .multitarget-np-flex:not(.has-target,.has-multi){
-	display:none;
-}
-.dnd4e.roll-dialogue.default .multitarget-np-flex.has-target:not(.has-multi) button{
-	display:none;
-}
-.dnd4e.roll-dialogue.default .roll-dialogue .multitarget-np-flex .target-label{
-	flex:100% 10 10;
-	display:flex;
-	flex-direction:column;
-	justify-content:center;
-	border:2px groove rgba(0, 0, 0, 0.4);
-}
-.dnd4e.roll-dialogue.default .roll-dialogue .multitarget-np-flex .target-label>h3{
-	font-size:1em;
-	text-align:center;
-	font-weight:700;
-	border-bottom:unset;
-	margin-top:0.25em;
-	margin-bottom:0.25em;
-}
-.dnd4e.roll-dialogue.default .multitarget-np-flex button[id="multibonus-toggle"]{
-	width:fit-content;
-}
+
 .custom-skill-config .custom-skill-control{
 	margin:0 5px;
 	flex:0;
 }
-.dnd4e.movement-dialog.default .move-bonus{
-	max-width:60px;
-	padding:0px 3px 0px 3px;
+
+.dnd4e.movement-dialog.default{
+	.move-bonus{
+		max-width:60px;
+		padding:0px 3px 0px 3px;
+	}
+	.move-bonus-temp{
+		max-width:40px;
+		padding-right:3px;
+	}
+	.form-group .move-value:not(:first-child){
+	 margin-right:4px;
+	}
+	.form-group .move-bonus{
+		max-width:60px;
+		padding:0px 3px 0px 3px;	
+	}
+	.form-group .temp-label{
+		max-width:40px;
+		padding-right:3px;
+	}
+	.form-group .temp-value{
+		max-width:30px;
+		padding:0px 3px 0px 3px;
+		text-align:center;
+	}
+	textarea[name="system.movement.notes"]{
+		width:100%;
+		min-height:1em;
+		resize:vertical;
+		border:none;
+	}
 }
-.dnd4e.movement-dialog.default .move-bonus-temp{
-	max-width:40px;
-	padding-right:3px;
-}
-.dnd4e.movement-dialog.default .form-group .move-value:not(:first-child){
- margin-right:4px;
-}
-.dnd4e.movement-dialog.default .form-group .move-bonus{
-	max-width:60px;
-	padding:0px 3px 0px 3px;	
-}
-.dnd4e.movement-dialog.default .form-group .temp-label{
-	max-width:40px;
-	padding-right:3px;
-}
-.dnd4e.movement-dialog.default .form-group .temp-value{
-	max-width:30px;
-	padding:0px 3px 0px 3px;
-	text-align:center;
-}
-.dnd4e.movement-dialog.default textarea[name="system.movement.notes"]{
-	width:100%;
-	min-height:1em;
-	resize:vertical;
-	border:none;
-}
+
 #action-point-hd textarea{
 	width:100%;
 	min-height:10em;
@@ -2900,24 +2807,24 @@ font-size:12px;
 	align-items:center;
 	justify-content:flex-start;
 	margin-bottom:1px;
-}
-.bonus-main label{
-	white-space:nowrap;
-	margin-right:2px;
-}
-.bonus-main input[type="text"].bonus-name{
-	flex-basis:125px;
-	margin-right:0.5em;
-}
-.bonus-main input[type="text"].bonus-value{
-	flex-basis:80px;
-	margin-right:0.5em;
-}
-.bonus-main :is(.bonus-delete,.bonus-active){
-	flex-grow:0;
-}
-.bonus-main .bonus-active{
-	margin-left:0;
+	label{
+		white-space:nowrap;
+		margin-right:2px;
+	}
+	input[type="text"].bonus-name{
+		flex-basis:125px;
+		margin-right:0.5em;
+	}
+	input[type="text"].bonus-value{
+		flex-basis:80px;
+		margin-right:0.5em;
+	}
+	:is(.bonus-delete,.bonus-active){
+		flex-grow:0;
+	}
+	.bonus-active{
+		margin-left:0;
+	}
 }
 .bonus-note{
 	width:100%;
@@ -2955,9 +2862,6 @@ input[type="text"].custom-skill-id{
 input[type="text"].hp-con{
 	border-bottom:1px dotted #000;
 }
-#trait-selector .form-group.stacked label{
-	max-width:none;
-}
 input[type="text"].checkbox-rider{
 	width:15%;
 }
@@ -2977,93 +2881,33 @@ input[type="text"].dice-count{
 	position:relative;
 	top:5px;
 }
-.dnd4e.con-bon-config h1.dialogue-title{
-	font-size:1.2em;
-	font-weight:700;
-	text-decoration:none;
-	margin-top:0.4em;
-	margin-bottom:unset;
-	border-bottom:var(--border-faint);
-}
-.dnd4e.con-bon-config .condition-row{
-	padding:2px 0.25em;
-	gap:1em;
-	justify-content:space-between;
-}
-.dnd4e.con-bon-config .condition-row .condition-name{
-	font-weight:600;
-	flex:40% 0 10;
-}
-.dnd4e.con-bon-config .condition-row .condition-mod-value{
-	flex:2.5em 0 10;
-	text-align:right;
-}
-.dnd4e.con-bon-config .condition-row .condition-mod-bonus{
-	flex:5em 0 10;
-}
 
-/*  Multiselect styling */
-/*  Class and proximity-based; should be reusable */
-.multiselect{
-	position:relative;
+.dnd4e.con-bon-config{
+	h1.dialogue-title{
+		font-size:1.2em;
+		font-weight:700;
+		text-decoration:none;
+		margin-top:0.4em;
+		margin-bottom:unset;
+		border-bottom:var(--border-faint);
+	}
+	.condition-row{
+		padding:2px 0.25em;
+		gap:1em;
+		justify-content:space-between;
+	}
+	.condition-row .condition-name{
+		font-weight:600;
+		flex:40% 0 10;
+	}
+	.condition-row .condition-mod-value{
+		flex:2.5em 0 10;
+		text-align:right;
+	}
+	.condition-row .condition-mod-bonus{
+		flex:5em 0 10;
+	}
 }
-.multiselect .toggle{
-	display:flex;
-	width:calc(100% - 2px);
-	min-width:20px;
-	height:var(--form-field-height);
-	background:rgba(0, 0, 0, 0.05);
-	padding:3px 3px;
-	margin:0;
-	color:var(--color-text-dark-primary);
-	font-family:inherit;
-	font-size:inherit;
-	text-align:inherit;
-	line-height:inherit;
-	border:1px solid var(--color-border-light-tertiary);
-	border-radius:3px;
-	align-items:center;
-	justify-content:space-between;
-}
-.multiselect select[multiple]{
-	height:0;
-	padding:0;
-	border:unset;
-	position:fixed;
-	z-index:1;
-	width:inherit;
-	max-width:inherit;
-	margin-bottom:2em;
-}
-.multiselect .toggle:focus-within+select[multiple],
-.multiselect .toggle:focus+select[multiple],
-.multiselect select[multiple]:focus,
-.multiselect select[multiple]:focus-within{
-	height:auto;
-	padding:3px;
-	border:1px solid var(--color-border-light-tertiary);
-}
-.multiselect .toggle:focus-within,
-.multiselect .toggle:focus{
-	pointer-events:none;
-}
-.multiselect .toggle .fa-chevron-down,
-.multiselect .toggle .fa-chevron-up{
-	font-size:0.65rem;
-	line-height:0;
-	font-weight:400;
-	margin-right:0.25em;
-}
-.multiselect .toggle .fa-chevron-up,
-.multiselect .toggle:focus-within .fa-chevron-down,
-.multiselect .toggle:focus .fa-chevron-down{
-	display:none;
-}
-.multiselect .toggle:focus-within .fa-chevron-up,
-.multiselect .toggle:focus .fa-chevron-up{
-	display:block;
-}
-/* End Multiselect*/
 
 
 /* ----------------------------------------- */
@@ -3073,209 +2917,258 @@ input[type="text"].dice-count{
 .dnd4e.chat-card{
 	font-style:normal;
 	font-size:14px;
+	
+	.card-header img{
+		flex:0 0 36px;
+		margin-right:5px;
+		display:flex;
+		flex-direction:row;
+		flex-wrap:wrap;
+		justify-content:flex-start;
+	}
+	.card-header .item-name{
+		justify-content:center;
+	}
+	.card-header h3{
+		flex-grow:0;
+		margin:0;
+		line-height:1;
+		font-family:"Modesto Condensed", "Palatino Linotype", serif;
+		font-size:20px;
+		font-weight:700;
+		color:var(--color-light-1);
+		border-bottom:0px;
+		padding-left:3px;
+	}
+	.card-header h3:hover{
+		text-shadow:0 0 10px red;
+	}
+	.card-buttons{
+		margin:5px 0;
+		display:flex;
+		flex-wrap:wrap;
+		justify-content:space-between;
+	}
+	.card-buttons span {
+		display:block;
+		line-height:28px;
+		text-align:center;
+		border:1px solid #ccc;
+	}
+	.card-buttons button {
+		font-size:12px;
+		height:24px;
+		line-height:20px;
+		margin:2px 0;
+
+		flex-basis:calc(50% - 2px);
+		overflow:hidden;
+	}
+	.card-buttons button:last-child:nth-child(odd){
+		flex-basis:100%;
+	}
+	.card-footer{
+		padding:3px 0 0;
+		border-top:var(--var-border-engraved);
+	}
+	.card-footer span{
+		border-right:var(--var-border-engraved);
+		padding:0 5px 0 0;
+		font-size:10px;
+	}
+	.card-footer span:last-child{
+		border-right:none;
+		padding-right:0;
+	}
+	.chatDamageButtons{
+		font-size:var(--font-size-12);
+		display:flex;
+	}
+	.fakechatbutton{
+		width:100%;
+		border:var(--border-engraved);
+		border-radius:3px;
+		background:var(--color-bg-btn-minor-active);
+		padding:3px 3px;
+		margin:2px 1px;
+		text-align:center;
+		flex-grow:1;
+	}
+	.effects-tray label,
+	.card-content .collapsible{
+		cursor:pointer;
+	}
+	.roboto-upper{
+		font-family:Roboto, sans-serif;
+		font-weight:bold;
+		text-transform:uppercase;
+	}
+	.effects-tray label{
+		cursor:pointer;
+		display:flex;
+		justify-content:center;
+		gap:0.25rem;
+		font-size:var(--font-size-11);
+	}
+	.effects-tray label > span{
+		flex:none;
+	}
+	.effects-tray label .fa-bolt{
+		color:var(--color-text-light-6);
+	}
+	.effects-tray label .fa-caret-down{
+		transition:all 250ms ease;
+	}
+	.effects-tray label::before,
+	.effects-tray label::after{
+	  content:"";
+	  flex-basis:50%;
+	  border-top:1px dotted #9f9275;
+	  align-self:center;
+	}
+	.card-buttons .dnd4e-button-icon{
+		display:inline-block;
+		vertical-align:middle;
+		line-height:0px;
+		font-size:16px;
+		width:15px;
+		height:15px;
+		border:none;
+	}
+	.card-buttons .dnd4e-button-icon img{
+		border:none;
+	}
+	.effects-tray .effects{
+		display:flex;
+		flex-direction:column;
+		overflow:hidden;
+		transition:all 250ms ease;
+	}
+	.effects-tray label .fa-caret-down{
+		transition:all 250ms ease;
+	}
+	.effects-tray.collapsed label .fa-caret-down{
+		transform:rotate(-90deg);
+	}
+	.effects-tray .effects .effect{
+		display:flex;
+		gap:0.5rem;
+		align-items:center;
+		padding-bottom:0.25rem;
+		margin-bottom:0.25rem;
+		border-bottom:1px solid #ddd;
+	}
+	.effects-tray .effects .effect > img{
+		width:32px;
+		height:32px;
+		border:2px solid #9f9275;
+		box-shadow:0 0 4px rgba(0, 0, 0, 0.45);
+		border-radius:0;
+		background-color:#3d3d3d;
+	}
+	.name-stacked{
+		display:flex;
+		flex-direction:column;
+	}
+	.effects-tray .effects .effect .name-stacked{
+		flex: 1;
+	}
+	.name-stacked .title{
+		font-family:"Roboto Slab", serif;
+		font-size:0.875rem;
+		font-weight:bold;
+	}
+	.name-stacked .subtitle{
+		font-family:vRoboto, sans-serif;
+		font-size:0.625rem;
+		color:#666;
+	}
+	.effects-tray .effects .effect > button{
+		width:28px;
+		height:28px;
+		display:flex;
+		align-items:center;
+		justify-content:center;
+		padding:0 0 0 4px;
+		font-size:0.75rem;
+	}
 }
-.dnd4e.chat-card .card-header img{
-	flex:0 0 36px;
-	margin-right:5px;
-	display:flex;
-	flex-direction:row;
-	flex-wrap:wrap;
-	justify-content:flex-start;
-}
-.dnd4e.chat-card .card-header .item-name{
-	justify-content:center;
-}
-.dnd4e.chat-card .card-header h3{
-	flex-grow:0;
-	margin:0;
-	line-height:1;
-	font-family:"Modesto Condensed", "Palatino Linotype", serif;
-	font-size:20px;
-	font-weight:700;
-	color:var(--color-light-1);
-	border-bottom:0px;
-	padding-left:3px;
-}
-.dnd4e.chat-card .card-header h3:hover{
-	text-shadow:0 0 10px red;
-}
+
 .dnd4e .card-content{
 	margin:0;
 	padding:0;
-}
-.dnd4e .card-content .flavour,
-.dnd4e .card-content .item-summary>p,
-.dnd4e .card-content:not(.autogen) p{
-	padding:2px 4px;
-	margin:0;
-}
-.dnd4e .card-content .flavour,
-.dnd4e .card-content .item-summary>:not(.item-details){
-	background:var(--gradient-4e);
-}
-.dnd4e .card-content h3{
-	font-size:12px;
-	margin:0;
-	font-weight:bold;
-}
-.dnd4e .card-content > *{
-	-webkit-user-select:text;
-	-moz-user-select:text;
-	-ms-user-select:text;
-	user-select:text;
-}
-.dnd4e.chat-card .card-buttons{
-	margin:5px 0;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-}
-.dnd4e.chat-card .card-buttons span {
-	display:block;
-	line-height:28px;
-	text-align:center;
-	border:1px solid #ccc;
-}
-.dnd4e.chat-card .card-buttons button {
-	font-size:12px;
-	height:24px;
-	line-height:20px;
-	margin:2px 0;
-
-	flex-basis: calc(50% - 2px);
-	overflow: hidden;
-}
-.dnd4e.chat-card .card-buttons button:last-child:nth-child(odd)
-/* .dnd4e.chat-card .card-buttons button:nth-child(n+3) */
-{
-	flex-basis: 100%;
-}
-.dnd4e.chat-card .card-footer {
-	padding:3px 0 0;
-	border-top:var(--var-border-engraved);
-}
-.dnd4e.chat-card .card-footer span{
-	border-right:var(--var-border-engraved);
-	padding:0 5px 0 0;
-	font-size:10px;
-}
-.dnd4e.chat-card .card-footer span:last-child{
-	border-right:none;
-	padding-right:0;
-}
-.chatDamageButtons{
-	font-size:var(--font-size-12);
-	display:flex;
-}
-.fakechatbutton{
-	width:100%;
-	border:var(--border-engraved);
-	border-radius:3px;
-	background:var(--color-bg-btn-minor-active);
-	padding:3px 3px;
-	margin:2px 1px;
-	text-align:center;
-	flex-grow:1;
-}
-.dnd4e .card-content .item-details span{
-	margin:1px;
-}
-.dnd4e .card-content :is(.item-details,.flavour,.item-description)>span,
-.dnd4e .card-content :is(.item-details,.flavour,.item-description) p,
-.dnd4e .card-content .item-description{
-	padding:1px 3px;
-	margin:0;
-}
-.dnd4e .card-content .item-details .action+.range-type{
-	padding-left:1em;
-}
-.dnd4e .card-content .item-details .usage,
-.dnd4e .card-content .item-details .keywords,
-.dnd4e .card-content .item-details .action,
-.dnd4e .card-content .item-details .range-type{
-	font-weight:bold;
-}
-.dnd4e .card-content .item-description,
-.dnd4e .card-content .item-details .alt,
-.dnd4e .card-content .item-details .alt-highlight:nth-child(even) {
-	background:var(--gradient-4e);
-}
-span.flavor-text.critical,
-span.flavor-text.fumble,
-span.flavor-text.probable-hit,
-span.flavor-text.probable-miss{
-	font-weight:bold;
-}
-.dice-roll .dice-tooltip { 
-	display:block;
-	transition: grid-template-rows 250ms ease;
-}
-.dice-roll .dice-total.success{
-	color:var(--color-text-good);
-	background:#c7d0c0;
-	border:1px solid #006c00;
-}
-.dice-roll .dice-total.failure{
-	color:var(--color-text-bad);
-	background:#ffdddd;
-	border:1px solid #6e0000;
-}
-.dice-roll .dice-total.critical{
-	color:var(--color-text-good);
-}
-.dice-roll .dice-total.fumble{
-	color:var(--color-text-bad);
-}
-.dice-roll .hit-prediction.immune{
-	text-align:center;
-	line-height:24px;
-	margin-top:3px;
-	background:rgba(0, 0, 0, 0.1);
-	border:1px solid var(--color-border-light-2);
-	border-radius:3px;
-	box-shadow:0 0 2px #fff inset;
-}
-.dice-roll .hit-prediction.fumble,
-.dice-roll .hit-prediction.miss,
-.dot-report .damage-taken:not(.resistant-full,.healing){
-	color:var(--color-text-bad);
-}
-.dice-roll .hit-prediction.critical,
-.dice-roll .hit-prediction.hit,
-.dot-report .damage-taken.resistant-full,
-.dot-report .damage-taken.healing{
-	color:var(--color-text-good);
-}
-.dot-report .damage-taken{
-	font-weight:bold;
-}
-span.roll-expression.roll-highlight, span.roll-formula.roll-highlight {
-	background-color: #99ccff;
+	
+	&:not(.autogen) p,
+	.item-summary>p,
+	.flavour{
+		padding:2px 4px;
+		margin:0;
+	}
+	.flavour,
+	.item-summary>:not(.item-details){
+		background:var(--gradient-4e);
+	}
+	h3{
+		font-size:12px;
+		margin:0;
+		font-weight:bold;
+	}
+	> *{
+		-webkit-user-select:text;
+		-moz-user-select:text;
+		-ms-user-select:text;
+		user-select:text;
+	}
+	.item-details span{
+		margin:1px;
+	}
+	:is(.item-details,.flavour,.item-description)>span,
+	:is(.item-details,.flavour,.item-description) p,
+	.item-description{
+		padding:1px 3px;
+		margin:0;
+	}
+	.item-details .action+.range-type{
+		padding-left:1em;
+	}
+	.item-details :is(.usage,.keywords,.action,.range-type){
+		font-weight:bold;
+	}
+	.item-description,
+	.item-details .alt,
+	.item-details .alt-highlight:nth-child(even) {
+		background:var(--gradient-4e);
+	}
 }
 
 
 /* ----------------------------------------- */
 /* Journals
 /* ----------------------------------------- */
-.sheet.journal-entry .journal-entry-page :is(h1, h2, h3, h4, h5, h6):not(:first-child){
-	margin-top:1.5rem;
+.sheet.journal-entry{
+	.journal-entry-page{
+		:is(h1, h2, h3, h4, h5, h6):not(:first-child){
+			margin-top:1.5rem;
+		}
+		h4{
+			font-size:1.15em;
+			font-style:italic;
+		}
+		h5{
+			font-size:1.1em;
+			font-weight:bold;
+			font-style:italic;
+		}
+		h5{
+			font-size:1em;
+			font-weight:bold;
+			font-style:italic;
+		}
+	}
 }
-.sheet.journal-entry .journal-entry-page h4{
-	font-size:1.15em;
-	font-style:italic;
-}
-.sheet.journal-entry .journal-entry-page h5{
-	font-size:1.1em;
-	font-weight:bold;
-	font-style:italic;
-}
-.sheet.journal-entry .journal-entry-page h5{
-	font-size:1em;
-	font-weight:bold;
-	font-style:italic;
-}
+
 .journal-page-content table,
-.editor-content[data-engine="prosemirror"] table,
+.editor-content table,
 .editor-enriched table{
 	box-sizing:border-box;
 	user-select:text;	
@@ -3283,31 +3176,31 @@ span.roll-expression.roll-highlight, span.roll-formula.roll-highlight {
 	border:unset;
 }
 .journal-page-content table thead,
-.editor-content[data-engine="prosemirror"] table thead,
+.editor-content table thead,
 .editor-enriched table thead{
 	color:#fff;
 }
 .journal-page-content table tbody,
-.editor-content[data-engine="prosemirror"] table tbody,
+.editor-content table tbody,
 .editor-enriched table tbody{
 	border-bottom:1px solid var(--color-border-light-tertiary);
 }
 .journal-page-content table th,
 .journal-page-content table td,
-.editor-content[data-engine="prosemirror"] th,
-.editor-content[data-engine="prosemirror"] td,
+.editor-content th,
+.editor-content td,
 .editor-enriched th,
 .editor-enriched td{
 	border:unset;
 	padding:0.5em;
 }
 .journal-page-content table tbody tr:nth-child(odd),
-.editor-content[data-engine="prosemirror"] table tbody tr:nth-child(odd),
+.editor-content table tbody tr:nth-child(odd),
 .editor-enriched table tbody tr:nth-child(odd){
 	background:rgba(0, 0, 0, 0.05);
 }
 .journal-page-content table tfoot,
-.editor-content[data-engine="prosemirror"] table tfoot,
+.editor-content table tfoot,
 .editor-enriched table tfoot{
 	font-size:80%;
 	background-color:#dedede;
@@ -3316,121 +3209,72 @@ span.roll-expression.roll-highlight, span.roll-formula.roll-highlight {
 /* ----------------------------------------- */
 /* Chat Messages
 /* ----------------------------------------- */
-.dnd4e.chat-card .effects-tray label,
-.dnd4e.chat-card .card-content .collapsible {
-	cursor: pointer;
-}
-.dnd4e.chat-card .roboto-upper {
-	font-family: Roboto, sans-serif;
-	font-weight: bold;
-	text-transform: uppercase;
-}
-.dnd4e.chat-card .effects-tray label {
-	cursor: pointer;
-	display: flex;
-	justify-content: center;
-	gap: 0.25rem;
-	font-size: var(--font-size-11);
-}
-.dnd4e.chat-card .effects-tray label > span {
-	flex: none;
-}
-.dnd4e.chat-card .effects-tray label .fa-bolt {
-	color: var(--color-text-light-6);
-}
-.dnd4e.chat-card .effects-tray label .fa-caret-down {
-	transition: all 250ms ease;
-}
-.dnd4e.chat-card .effects-tray label::before,
-.dnd4e.chat-card .effects-tray label::after {
-  content: "";
-  flex-basis: 50%;
-  border-top: 1px dotted #9f9275;
-  align-self: center;
-}
-.dnd4e.chat-card .card-buttons .dnd4e-button-icon {
-	display: inline-block;
-	vertical-align: middle;
-	line-height: 0px;
-	/* Adjust the font size and icon size as needed */
-	font-size: 16px;
-	width: 15px;
-	height: 15px;
-	border: none;
-}
-.dnd4e.chat-card .card-buttons .dnd4e-button-icon img {
-	border: none;
-}
-.dnd4e.chat-card .effects-tray .effects {
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-	transition: all 250ms ease;
-}
-.dnd4e.chat-card .effects-tray label .fa-caret-down {
-	transition: all 250ms ease;
-}
-.dnd4e.chat-card .effects-tray.collapsed label .fa-caret-down {
-	transform: rotate(-90deg);
-}
-.dnd4e.chat-card .effects-tray .effects .effect {
-	display: flex;
-	gap: 0.5rem;
-	align-items: center;
-	padding-bottom: 0.25rem;
-	margin-bottom: 0.25rem;
-	border-bottom: 1px solid #ddd;
-}
-.dnd4e.chat-card .effects-tray .effects .effect > img {
-	width: 32px;
-	height: 32px;
 
-	border: 2px solid #9f9275;
-	box-shadow: 0 0 4px rgba(0, 0, 0, 0.45);
-	border-radius: 0;
-	background-color: #3d3d3d;
+.flavor-text:is(.critical,.fumble,.probable-hit,.probable-miss){
+	font-weight:bold;
 }
-.dnd4e.chat-card .name-stacked{
-	display: flex;
-	flex-direction: column;
-}
-.dnd4e.chat-card .effects-tray .effects .effect .name-stacked {
-	flex: 1;
-}
-.dnd4e.chat-card .name-stacked .title {
-	font-family: "Roboto Slab", serif;
-	font-size: 0.875rem;
-	font-weight: bold;
-}
-.dnd4e .name-stacked .subtitle {
-	font-family: vRoboto, sans-serif;
-	font-size: 0.625rem;
-	color: #666;
-}
-.dnd4e.chat-card .effects-tray .effects .effect > button {
-	width: 28px;
-	height: 28px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 0 0 0 4px;
-	font-size: 0.75rem;
+:is(.roll-expression,.roll-formula).roll-highlight{
+	background-color:#99ccff;
 }
 
-/* ----------------------------------------- */
-/* Misc
-/* ----------------------------------------- */
-.effect-tooltip{
-	text-align: left;
+.dice-roll{
+	.dice-tooltip{ 
+		display:block;
+		transition:grid-template-rows 250ms ease;
+	}
+	.dice-total.success{
+		color:var(--color-text-good);
+		background:#c7d0c0;
+		border:1px solid #006c00;
+	}
+	.dice-total.failure{
+		color:var(--color-text-bad);
+		background:#ffdddd;
+		border:1px solid #6e0000;
+	}
+	.dice-total.critical{
+		color:var(--color-text-good);
+	}
+	.dice-total.fumble{
+		color:var(--color-text-bad);
+	}
+	.hit-prediction.immune{
+		text-align:center;
+		line-height:24px;
+		margin-top:3px;
+		background:rgba(0, 0, 0, 0.1);
+		border:1px solid var(--color-border-light-2);
+		border-radius:3px;
+		box-shadow:0 0 2px #fff inset;
+	}
+	.hit-prediction.fumble,
+	.dice-roll .hit-prediction.miss{
+		color:var(--color-text-bad);
+	}
+	.hit-prediction.critical,
+	.hit-prediction.hit{
+		color:var(--color-text-good)
+	}
 }
-.region-behavior-config i.difficult-terrain-icon {
-	content: url("/systems/dnd4e/icons/ui/difficultTerrain.svg");
-	height: 1em;
+
+.dot-report{
+	.damage-taken{
+		font-weight:bold;
+	}
+	.damage-taken:not(.resistant-full,.healing){
+		color:var(--color-text-bad);
+	}
+	.damage-taken.resistant-full,
+	.damage-taken.healing{
+		color:var(--color-text-good);
+	}
 }
-.region-config i.difficult-terrain-icon {
-	content: url("/systems/dnd4e/icons/ui/difficultTerrain.svg");
-	filter: var(--white-svg-filter);
-	height: 1em;
-	position: relative;
-	top: 2px;
+
+
+
+@media (prefers-reduced-transparency){
+    body.theme-dark .application,
+	body.theme-dark.application{
+        --background:#221d21;
+    }
 }
