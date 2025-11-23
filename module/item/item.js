@@ -702,8 +702,8 @@ export default class Item4e extends Item {
 					const resourceTarget = system.consume.target.split('.')[1];
 					let resourceLabel;
 
-					if(DND4E.ritualcomponents[resourceTarget]){
-						resourceLabel = game.i18n.localize(DND4E.ritualcomponents[resourceTarget]);
+					if(DND4E.ritualComponents[resourceTarget]){
+						resourceLabel = game.i18n.localize(DND4E.ritualComponents[resourceTarget]);
 					}
 					else if(DND4E.currencyConversion[resourceTarget]){
 						resourceLabel = game.i18n.localize(DND4E.currencies[resourceTarget]);
@@ -1158,7 +1158,7 @@ export default class Item4e extends Item {
 		// const itemData = this.system;
 	
 		const consume = itemData.consume || {};
-		//console.debug(consume);
+		console.debug(consume);
 		if ( !consume.type ) return true;
 		const actor = this.actor;
 		const typeLabel = CONFIG.DND4E.abilityConsumptionTypes[consume.type].label;
@@ -1179,7 +1179,9 @@ export default class Item4e extends Item {
 		switch ( consume.type ) {
 			case "resource":
 			case "attribute":
-				consumed = foundry.utils.getProperty(actor.system, consume.target);
+			case "currency":
+			case "ritualcomp":
+				consumed = foundry.utils.getProperty(actor, consume.target);
 				quantity = consumed || 0;
 				break;
 			case "ammo":
@@ -1208,7 +1210,9 @@ export default class Item4e extends Item {
 		switch ( consume.type ) {
 			case "attribute":
 			case "resource":
-				await this.actor.update({[`system.${consume.target}`]: `${remaining}`});
+			case "currency":
+			case "ritualcomp":
+				await this.actor.update({[consume.target]: `${remaining}`});
 				break;
 			case "ammo":
 			case "material":
@@ -2662,7 +2666,7 @@ export default class Item4e extends Item {
 		return targets;
 	}
 
-
+	//SPECIFICALLY for detecting if a power needs a recharge roll
 	isOnCooldown(){
 		if(this.type !== "power") return false;
 		if(this.system.uses.value || (!this.system.uses.value && !this.system.uses.max)) return false;
