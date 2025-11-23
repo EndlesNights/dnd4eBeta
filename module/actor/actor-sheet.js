@@ -122,7 +122,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		for (const list of lists) {
 			const lis = list.querySelectorAll("li");
 			for (const li of lis) {
-				const el = li.querySelector("h4");
+				const el = li.querySelector(".item-title");
 				const textValue = (el?.textContent || el?.innerText) ?? "";
 				li.style.display = textValue.toUpperCase().includes(filter) ? "" : "none";
 			}
@@ -562,11 +562,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			item.img ||= DEFAULT_TOKEN;
 			item.isStack = Number.isNumeric(item.system.quantity) && (item.system.quantity !== 1);
 
-			// item.isOnCooldown = item.system.recharge && !!item.system.recharge.value && (item.system.recharge.charged === false);
-			item.isDepleted = item.isOnCooldown && (item.system.uses?.per && (item.system.uses?.value > 0));
 			//Causing error in v10, only getter no setter now.
 			// item.hasTarget = !!item.data.target && !(["none",""].includes(item.data.target.type));
 			// item.hasTarget = !!item.system.target && !(["none",""].includes(item.system.target.type));
+			
+			//item.isDepleted = item.isOnCooldown && (item.system.uses?.per && (item.system.uses?.value > 0));
 
 			// Item toggle state
 			this._prepareItemToggleState(item);
@@ -594,7 +594,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			i.totalWeight = item.totalWeight;
 			i.totalWeightLabel = i.totalWeight.toNearest(0.01);
 			i.system.preparedMaxUses = item.system.preparedMaxUses;
-			i.hasUses = item.system.uses && (item.system.preparedMaxUses > 0);
+			this._checkItemAvailable(item);
+			i.hasUses = item.system.uses && (item.system.preparedMaxUses > 0) && (item.system.uses.per != '');
+			i.isDepleted = i.hasUses && (item.system.uses.value === 0);
+			i.isUnavailable = i.isDepleted || i.system.notAvailable || (['weapon','equipment'].includes(item.type) && !item.system.equipped) ;
 			inventory[i.type].items.push(i);
 		}
 
@@ -604,11 +607,18 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		for ( let p of pow ) {
 			const power = this.actor.items.get(p._id);
+			this._checkItemAvailable(power);
 			p.system.preparedMaxUses = power.system.preparedMaxUses;
-			p.hasUses = power.system.uses && (power.system.preparedMaxUses > 0);
+			p.hasUses = power.system.uses && (power.system.preparedMaxUses > 0) && (power.system.uses.per != '');
+			p.isDepleted = p.hasUses && p.system.uses.value === 0;
+			p.isUnavailable = p.isDepleted || p.system.notAvailable;
 			powers[this._groupPowers(p,powers)].items.push(p);
 		}
+		
 		for ( let r of rits ) {
+			const ritual = this.actor.items.get(r._id);
+			this._checkItemAvailable(ritual);
+			r.isUnavailable = ritual.system?.notAvailable || false;
 			rituals[r.system.category].items.push(r);
 		}
 
@@ -620,11 +630,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		for (const [key, group] of Object.entries(powers)) {
 			group.items?.forEach(item => {
 				this._preparePowerRangeText(item);
-				this._checkPowerAvailable(item);
 			});
 		}
 
-		this._sortinventory(inventory);
+		this._sortInventory(inventory);
 		this._sortPowers(powers);
 		this._sortFeatures(features);
 		this._sortRituals(rituals);
@@ -750,8 +759,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 
 	/* -------------------------------------------- */
 
-	_sortinventory(inventory) {
-		const sort = this.document.system.featureSortTypes;
+	_sortInventory(inventory) {
+		const sort = this.document.system?.inventorySortTypes || "level";
 		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(inventory)) {
 			group.items.sort((a,b) => a.sort - b.sort);
@@ -782,7 +791,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	}
 	
 	_sortRituals(rituals) {
-		const sort = this.document.system.ritualSortTypes;
+		const sort = this.document.system.ritualSortTypes || "level";
 		if(sort === "none") {return;}
 		for (const [keyy, group] of Object.entries(rituals)) {
 			group.items.sort(this._compareValues(sort));
@@ -835,8 +844,8 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		return displayConfig
 	}
 
-	_checkPowerAvailable(itemData) {
-		if( (!itemData.system.uses.value && itemData.system.preparedMaxUses) || !itemData.system.prepared) {
+	_checkItemAvailable(itemData) {
+		if( (!itemData.system.uses.value && itemData.system.preparedMaxUses) || (itemData.type === 'power' && !itemData.system.prepared)) {
 			itemData.system.notAvailable = true;
 		}
 		
@@ -846,14 +855,20 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			//console.debug(`${itemData.name} has consume type and target: ${consume.type} ${consume.target}`);
 			const actor = this.actor;
 			const amount =  parseInt(consume.amount) || parseInt(consume.amount) === 0 ? parseInt(consume.amount) : 0;
+			//console.debug(`${itemData.name} has consume amount: ${amount}`);
 
 			// Identify the consumed resource and its quantity
 			let consumed = null;
 			let quantity = 0;
 			switch ( consume.type ) {
-				case "resource":
 				case "attribute":
 					consumed = foundry.utils.getProperty(actor.system, consume.target);
+					quantity = consumed || 0;
+					break;
+				case "resource":
+				case "currency":
+				case "ritualcomp":
+					consumed = foundry.utils.getProperty(actor, consume.target);
 					quantity = consumed || 0;
 					break;
 				case "ammo":
@@ -867,10 +882,10 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 					break;
 			}
 
-			// Mark unavailable is the needed resource is insufficient
+			// Mark unavailable if the needed resource is insufficient
 			if ( ![null, undefined].includes(consumed) ) {
 				let remaining = quantity - amount;
-				if ( remaining < 0) {
+				if ( remaining < 0 ) {
 					itemData.system.notAvailable = true;
 				}
 			}
@@ -914,6 +929,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	  item.toggleTitle = game.i18n.localize(isActive ? "DND4E.Equipped" : "DND4E.Unequipped");
 	}
   }
+  
 	_prepareDataSense(data) {
 		const map = {special: CONFIG.DND4E.special};
 		for ( let [l, choices] of Object.entries(map) ) {
@@ -935,6 +951,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 			
 		}
 	}
+	
 	_prepareDataSave(data, map) {
 		
 		for ( let [l, choices] of Object.entries(map) ) {
@@ -1703,7 +1720,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_onTraitSelector(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.querySelector("span");
+		const label = a.querySelector(".list-label");
 		const choices = CONFIG.DND4E[a.dataset.options];
 		const options = { name: a.dataset.target, window: {title: label.innerText}, choices};
 		new TraitSelector({document: this.actor, ...options}).render(true);
@@ -1712,7 +1729,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_onTraitSelectorWeapon(event){
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.querySelector("span");
+		const label = a.querySelector(".list-label");
 		const choices = CONFIG.DND4E.weaponProficienciesMap;
 		const options = { name: a.dataset.target, window: {title: label.innerText}, choices, datasetOptions: a.dataset.options, config:CONFIG};
 		new TraitSelector({document: this.actor, ...options}).render(true);
@@ -1722,7 +1739,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		event.preventDefault();
 		const a = event.currentTarget;
 		// const label = a.parentElement.parentElement.querySelector("h4");
-		const label = a.parentElement.querySelector("span");
+		const label = a.parentElement.querySelector(".list-label");
 		const choices = CONFIG.DND4E[a.dataset.options];
 		const options = { name: a.dataset.target, window: {title: label.innerText}, choices };
 		new TraitSelectorValues({document: this.actor, ...options}).render(true);
