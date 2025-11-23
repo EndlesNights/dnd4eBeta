@@ -693,48 +693,86 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		// Attributes (and Resources)
 		// this can work separate to an actor as the actors model is known at compile time
 		// if separate from an actor it will default to the PC model, as unlikely to be set with an NPC
-		if (consume.type === "attribute" || consume.type === "resource") {
-			if (actor) {
-				const attributes = TokenDocument4e.getTrackedAttributes(actor.system)
-				attributes.bar.forEach(a => a.push("value"));
-				
-				if(consume.type === "resource"){
-					return {"": game.i18n.localize("DND4E.None"), ...attributes.bar.concat(attributes.value).reduce((obj, a) => {
-						console.debug(a);
-						let k = a.join(".");
-						if(k.startsWith("resources") && k.endsWith("value")){
-							obj[k] = a[1];
-						}
-						return obj;
-					}, {})};
-				}
-				
+		if (consume.type === "attribute" || consume.type === "resource" || consume.type === "currency" || consume.type === "ritualcomp") {
+			
+		/* Removed the logic to use token bar attributes in v13, as this was no longer returning the full set of attributes. Insetad using the actor model for all cases. - Fox
+		if (actor) {
+			const attributes = TokenDocument4e.getTrackedAttributes(actor.system)
+			attributes.bar.forEach(a => a.push("value"));
+			console.debug(attributes);
+			
+			if(consume.type === "resource"){
 				return {"": game.i18n.localize("DND4E.None"), ...attributes.bar.concat(attributes.value).reduce((obj, a) => {
 					let k = a.join(".");
-					obj[k] = k;
+					if(k.startsWith("resources") && k.endsWith("value")){
+						obj[k] = a[1];
+					}
 					return obj;
 				}, {})};
 			}
-			else {
-				const attributes = CONFIG.Actor.dataModels['Player Character'].schema.getInitialValue();
-				
-				if(consume.type === "resource"){
-					const resourceKeys = Object.keys(foundry.utils.flattenObject(attributes.resources)).reduce((obj, a) => {
-						//console.debug(obj);
-						if(a.endsWith("value")) obj[`system.resources.${a}`] = a.replace(".value","");
-						return obj;
-					}, {});
-					console.debug(resourceKeys);
-					return {"": game.i18n.localize("DND4E.None"), ...resourceKeys};
-				}
-				
-				const attributeKeys = Object.keys(foundry.utils.flattenObject(attributes)).reduce((obj, a) => {
-					obj[a] = a;
+			
+			if(consume.type === "currency"){
+				return {"": game.i18n.localize("DND4E.None"), ...attributes.bar.concat(attributes.value).reduce((obj, a) => {
+					console.debug(a);
+					let k = a.join(".");
+					if(k.startsWith("currency")){
+						obj[k] = a[1];
+					}
+					return obj;
+				}, {})};
+			}
+			
+			return {"": game.i18n.localize("DND4E.None"), ...attributes.bar.concat(attributes.value).reduce((obj, a) => {
+				let k = a.join(".");
+				obj[k] = k;
+				return obj;
+			}, {})};
+		}
+		else {*/
+			const attributes = CONFIG.Actor.dataModels['Player Character'].schema.getInitialValue();
+			//console.debug(attributes);
+			
+			if(consume.type === "resource"){
+				const resourceLabels = {
+					'primary': (actor ? actor.system.resources.primary.label : game.i18n.localize('DND4E.ResourcePrimary')),
+					'secondary': (actor ? actor.system.resources.secondary.label : game.i18n.localize('DND4E.ResourceSecondary')),
+					'tertiary': (actor ? actor.system.resources.tertiary.label : game.i18n.localize('DND4E.ResourceTertiary'))
+				};
+				//console.debug(resourceLabels);
+				const resourceKeys = Object.keys(foundry.utils.flattenObject(attributes.resources)).reduce((obj, a) => {
+					if(a.endsWith("value")) {
+						const rKey = a.replace(".value","");
+						obj[`system.resources.${a}`] = resourceLabels[rKey] || rKey;
+					}
 					return obj;
 				}, {});
-				
-				return {"": game.i18n.localize("DND4E.None"), ...attributeKeys};
+				//console.debug(resourceKeys);
+				return {"": game.i18n.localize("DND4E.None"), ...resourceKeys};
 			}
+			
+			if(consume.type === "currency"){
+				const currencyKeys = Object.keys(foundry.utils.flattenObject(attributes.currency)).reduce((obj, a) => {
+					obj[`system.currency.${a}`] = CONFIG.DND4E.currencies[a];
+					return obj;
+				}, {});
+				return {"": game.i18n.localize("DND4E.None"), ...currencyKeys};
+			}
+			
+			if(consume.type === "ritualcomp"){
+				const ritualcompKeys = Object.keys(foundry.utils.flattenObject(attributes.ritualcomp)).reduce((obj, a) => {
+					obj[`system.ritualcomp.${a}`] = CONFIG.DND4E.ritualComponents[a];
+					return obj;
+				}, {});
+				return {"": game.i18n.localize("DND4E.None"), ...ritualcompKeys};
+			}
+			
+			const attributeKeys = Object.keys(foundry.utils.flattenObject(attributes)).reduce((obj, a) => {
+				obj[`system.${a}`] = a;
+				return obj;
+			}, {});
+			
+			return {"": game.i18n.localize("DND4E.None"), ...attributeKeys};
+		/*}*/
 		}
 
 		// All the rest of them require the actor, because they are very tied to that individual actors stuff
