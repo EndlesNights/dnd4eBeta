@@ -118,8 +118,11 @@ export default class CombatantTemplate extends SpeedTemplate {
         label: "DND4E.CommonAttackBonuses"
       }),
       marker: new StringField({required: true, nullable: true, initial: null}),
-      powerGroupTypes: new StringField({initial: "usage"}),
-      powerSortTypes: new StringField({initial: "actionType"})
+      powerGroupTypes: new StringField({initial: "actionMod"}),
+      powerSortTypes: new StringField({initial: "actionType"}),
+      ritualSortTypes: new StringField({initial: "level"}),
+      featureSortTypes: new StringField({initial: "level"}),
+      inventorySortTypes: new StringField({initial: "level"})
     }
   }
 
