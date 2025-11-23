@@ -216,6 +216,8 @@ preLocalize("abilityActivationTypesShort", {sort: true});
 DND4E.abilityConsumptionTypes = {
 	"": {label: "DND4E.None"},
 	"resource": {label: "DND4E.Resource"},
+	"ritualcomp": {label: "DND4E.RitualComp"},
+	"currency": {label: "DND4E.Currency"},
 	"ammo": {label: "DND4E.ConsumeAmmunition"},
 	"material": {label: "DND4E.ConsumeMaterial"},
 	"charges": {label: "DND4E.ConsumeCharges"},
@@ -623,7 +625,7 @@ DND4E.currencyConversion = {
 
 /* -------------------------------------------- */
 
-DND4E.ritualcomponents = {
+DND4E.ritualComponents = {
 	"ar": "DND4E.RitualCompAR",
 	"ms": "DND4E.RitualCompMS",
 	"rh": "DND4E.RitualCompRH",
