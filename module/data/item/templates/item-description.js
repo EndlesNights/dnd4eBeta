@@ -6,7 +6,8 @@ export default class ItemDescriptionTemplate extends foundry.abstract.DataModel 
       description: new SchemaField({
         value: new StringField({initial: ""}),
         chat: new StringField({initial: ""}),
-        unidentified: new StringField({initial: ""})
+        unidentified: new StringField({initial: ""}),
+        gm: new StringField({initial: ""})
       }),
       descriptionGM: new SchemaField({
         value: new StringField({initial: ""})
