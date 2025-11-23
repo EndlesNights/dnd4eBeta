@@ -1,19 +1,19 @@
-<section class="tab flexrow scrollable {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+<section class="tab flexrow {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
 	<div class="item-properties">
 		{{#if isPhysical}}
 		<div class="form-group">
-			<label>{{ localize "DND4E.Quantity" }}</label>
+			<label>{{ localize 'DND4E.Quantity' }}</label>
 			<input type="text" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
 		</div>
 
 		<div class="form-group">
-			<label>{{ localize "DND4E.Weight" }}</label>
+			<label>{{ localize 'DND4E.Weight' }}</label>
 			<input type="text" name="system.weight" value="{{system.weight}}" data-dtype="Number"/>
 		</div>
 
 		<div class="form-group">
-			<label>{{ localize "DND4E.Price" }}</label>
+			<label>{{ localize 'DND4E.Price' }}</label>
 			<input type="text" name="system.price" value="{{system.price}}" data-dtype="Number"/>
 		</div>
 		{{/if}}
@@ -34,20 +34,18 @@
 		</ul>
 	</div>
 
-	<section class="description">
-		<label>{{localize "DND4E.Sheet.Description"}}</label>
-		<section class="main editor-container">
-      <prose-mirror toggled name="system.description.value" {{disabled (not editable)}} value="{{system.description.value}}">
-        {{{descriptionHTML}}}
-      </prose-mirror>
-		</section>
-		{{#if userInfo.isGM}}
-		<label>{{localize "DND4E.GMNotesAdd"}}</label>
-		<section class="editor-container gm-notes{{#if system.description.gmNotes}} has-content{{/if}}">
-      <prose-mirror toggled name="system.description.gm" {{disabled (not editable)}} value="{{system.description.gm}}">
-        {{{descriptionHTMLGM}}}
-      </prose-mirror>
-		</section>
-		{{/if}}
+	<section class="description-main scrollable">
+		<div class="multi-editor-wrapper">
+			<prose-mirror class="main-description{{#if system.description.value}} has-content{{/if}}" toggled name="system.description.value" {{disabled (not editable)}} value="{{system.description.value}}">
+			{{#unless system.description.value}}<label>{{localize 'DND4E.Sheet.Description'}}</label>{{/unless}}
+				{{{descriptionHTML}}}
+			</prose-mirror>
+			{{#if userInfo.isGM}}
+				<prose-mirror class="gm-notes{{#if system.description.gm}} has-content{{/if}}" toggled name="system.description.gm" {{disabled (not editable)}} value="{{system.description.gm}}">
+				{{#unless system.description.gm}}<label>{{localize 'DND4E.GMNotesAdd'}}</label>{{/unless}}
+					{{{descriptionHTMLGM}}}
+				</prose-mirror>
+			{{/if}}
+		</div>
 	</section>
 </section>
