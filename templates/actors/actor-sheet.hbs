@@ -35,7 +35,7 @@
 		
 		<section class="header-2 flexrow">
 			<div class="image-frame">
-				<img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" data-tooltip="{{actor.name}}" style="width: 100px; height: 100px"/>
+				<img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" data-tooltip="{{actor.name}}" width="100" height="100" />
 				<a class="hover-icon actor-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="displayActorArt"><i class="fas fa-image fa-fw"></i></a>
 			</div>
 			{{!-- Attributes --}}
@@ -113,7 +113,7 @@
 							<div class="attribute-display" data-tooltip="{{localize 'DND4E.ActionPointsRemain'}}">{{localize 'DND4E.Remaining'}}</div>
 						</div>
 						<div class="attribute-sub">
-							<input type="checkbox" type="checkbox" name="system.actionpoints.encounteruse" data-dtype="Boolean" {{checked system.actionpoints.encounteruse}} data-tooltip="{{localize 'DND4E.ActionPointUsed'}}"/>
+							<input type="checkbox" name="system.actionpoints.encounteruse" data-dtype="Boolean" {{checked system.actionpoints.encounteruse}} data-tooltip="{{localize 'DND4E.ActionPointUsed'}}"/>
 							<div class="attribute-display-check" data-tooltip="{{localize 'DND4E.ActionPointUsed'}}">{{localize 'DND4E.Used'}}</div>
 						</div>
 					</div>
@@ -215,35 +215,26 @@
 				</section>
 			</section>
 
+			{{!-- Sheet Tab Navigation --}}
 			<section class="section section--tabs flexshrink">
-
-				{{!-- Sheet Tab Navigation --}}
-        {{> "templates/generic/tab-navigation.hbs"}}
+				{{> "templates/generic/tab-navigation.hbs"}}
 			</section>
 
 			{{!-- Sheet Body --}}
 			<section class="sheet-body section--tabs-content">
+				{{> "systems/dnd4e/templates/actors/tabs/biography.hbs" tab=tabs.biography}}
 
-				{{!-- Biography Tab --}}
-        {{> "systems/dnd4e/templates/actors/tabs/biography.hbs" tab=tabs.biography}}
-
-				{{!-- Details Tab --}}
-        {{> "systems/dnd4e/templates/actors/tabs/details.hbs" tab=tabs.details}}
-		
-				{{!-- Owned Inventory Tab --}}
-        {{> "systems/dnd4e/templates/actors/tabs/inventory.hbs" tab=tabs.inventory sections=inventory}}
-		
-				{{!-- Feat Tab --}}
-        {{> "systems/dnd4e/templates/actors/tabs/features.hbs" tab=tabs.features sections=features}}
+				{{> "systems/dnd4e/templates/actors/tabs/details.hbs" tab=tabs.details}}
 				
-				{{!-- Powers Tab --}}
-        {{> "systems/dnd4e/templates/actors/tabs/powers.hbs" tab=tabs.powers sections=powers}}
+				{{> "systems/dnd4e/templates/actors/tabs/inventory.hbs" tab=tabs.inventory sections=inventory}}
 				
-				{{!-- Rituals Tab --}}
-        {{> "systems/dnd4e/templates/actors/tabs/rituals.hbs" tab=tabs.rituals sections=rituals}}
-		
-				{{!-- Effects Tab --}}
-        {{> "systems/dnd4e/templates/actors/tabs/effects.hbs" tab=tabs.effects}}
+				{{> "systems/dnd4e/templates/actors/tabs/features.hbs" tab=tabs.features sections=features}}
+				
+				{{> "systems/dnd4e/templates/actors/tabs/powers.hbs" tab=tabs.powers sections=powers}}
+				
+				{{> "systems/dnd4e/templates/actors/tabs/rituals.hbs" tab=tabs.rituals sections=rituals}}
+				
+				{{> "systems/dnd4e/templates/actors/tabs/effects.hbs" tab=tabs.effects}}
 			</section>
 		</section>
 	</section>
