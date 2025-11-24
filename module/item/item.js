@@ -649,7 +649,7 @@ export default class Item4e extends Item {
 			}
 		}	
 		
-		// Activated Items
+		// Activated Items other than powers/features
 		if (!['power','feature'].includes(itemData.type) && system.hasOwnProperty("activation") ) {
 			// Ability Activation Label
 			let act = system.activation || {};
@@ -698,26 +698,34 @@ export default class Item4e extends Item {
 
 			//Component type + cost Label
 			if(itemData.type === "ritual"){
-				if(system.consume?.amount && system.consume?.type === "attribute" ){
-					const resourceTarget = system.consume.target.split('.')[1];
+				if(system.consume?.amount && system.consume?.type){
 					let resourceLabel;
+					if(['ritualcomp','currency'].includes(system.consume.type)){
+						const resourceTarget = system.consume.target.split('.')[2];
+						if(system.consume?.type === "ritualcomp" ){
+							resourceLabel = DND4E.ritualComponents[resourceTarget];
+						}else if(system.consume?.type === "currency" ){
+							resourceLabel = DND4E.currencies[resourceTarget];
+						}
+					}
+					else if(system.consume?.type === "attribute" ){
+						const resourceTarget = system.consume.target.split('.')[1];
 
-					if(DND4E.ritualComponents[resourceTarget]){
-						resourceLabel = game.i18n.localize(DND4E.ritualComponents[resourceTarget]);
+						if(DND4E.ritualComponents[resourceTarget]){
+							resourceLabel = DND4E.ritualComponents[resourceTarget];
+						}
+						else if(DND4E.currencyConversion[resourceTarget]){
+							resourceLabel = DND4E.currencies[resourceTarget];
+						}
+						else if(resourceTarget === "hp"){
+							resourceLabel = game.i18n.localize("DND4E.HP");
+						}
+						else if(resourceTarget === "surges"){
+							resourceLabel = game.i18n.localize("DND4E.HealingSurges");
+						}
 					}
-					else if(DND4E.currencyConversion[resourceTarget]){
-						resourceLabel = game.i18n.localize(DND4E.currencies[resourceTarget]);
-					}
-					else if(resourceTarget === "hp"){
-						resourceLabel = game.i18n.localize("DND4E.HP");
-					}
-					else if(resourceTarget === "surges"){
-						resourceLabel = game.i18n.localize("DND4E.HealingSurges");
-					}
-
 					if(resourceLabel){
-						labels.component = `<strong>${game.i18n.localize("DND4E.Component")}:</strong> ${resourceLabel}`;
-						labels.componentCost = `<strong>${game.i18n.localize("DND4E.ComponentCost")}:</strong> ${system.consume.amount}`;
+						labels.component = `<strong>${game.i18n.localize("DND4E.Component")}:</strong> ${resourceLabel} (${system.consume.amount})`;
 					}
 				}
 			}
