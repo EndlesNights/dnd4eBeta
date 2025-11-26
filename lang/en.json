@@ -1537,6 +1537,7 @@
 "DND4E.Role.Hazard.Warder": "Warder",
 "DND4E.Role.Hazard.Other": "Other",
 
+"DND4E.Sheet.Activation": "Activation",
 "DND4E.Sheet.Biography": "Biography",
 "DND4E.Sheet.Description": "Description",
 "DND4E.Sheet.Details": "Details",
@@ -1684,6 +1685,7 @@
 "ERROR.4eCopyStatusDetails": "Could not copy status details. This is expected if you have changed the standard list of status conditions since adding one to this effect.",
 
 "DND4EUI.AddNew": "Add New",
+"DND4EUI.AddNewSkill": "Add new Skill",
 "DND4EUI.All": "All",
 "DND4EUI.AttributeKey": "Attribute Key",
 "DND4EUI.AutoFromConfig": "Automatic (from Config)",
@@ -1719,7 +1721,6 @@
 "DND4EUI.UnknownCondition.Label": "Unknown value",
 "DND4EUI.UnknownCondition.Tip": "No match was found for this id in the current status conditions configuration.",
 "DND4EUI.Yes": "Yes",
-"DND4EUI.AddNewSkill": "Add new Skill",
 
 "SETTINGS.4eApplyEffectsToSelectionN": "Buttons to apply effects should apply to SELECTED tokens",
 "SETTINGS.4eApplyEffectsToSelectionL": "If checked, apply effect buttons will work over targets that are SELECTED.  Otherwise will work over tokens that are TARGETED",
