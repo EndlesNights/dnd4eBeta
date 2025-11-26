@@ -32,7 +32,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		tabs: {template: "templates/generic/tab-navigation.hbs"},
 		description: {template: "systems/dnd4e/templates/sheets/active-effect/description.hbs", scrollable: [".scrollable"]},
 		details: {template: "systems/dnd4e/templates/sheets/active-effect/details.hbs", scrollable: [".scrollable"]},
-		duration: {template: "systems/dnd4e/templates/sheets/active-effect/duration.hbs", scrollable: [".scrollable"]},
+		activation: {template: "systems/dnd4e/templates/sheets/active-effect/activation.hbs", scrollable: [".scrollable"]},
 		changes: {template: "systems/dnd4e/templates/sheets/active-effect/changes.hbs", scrollable: [".scrollable"]},
 		footer: {template: "templates/generic/form-footer.hbs"}
 	};
@@ -44,7 +44,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				{id: "description", label: "Description" },
 				{id: "details", label: "Details" },
 				{id: "changes", label: "Changes" },
-				{id: "duration", label: "Duration" }
+				{id: "activation", label: "Activation" }
 			],
 			initial: "details"
 		}
