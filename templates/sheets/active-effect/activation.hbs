@@ -80,12 +80,12 @@
   {{/if}}
   {{/if}}
   
-  
   {{formGroup fields.disabled value=source.disabled rootId=rootId}}
 
   {{#if isActorEffect}}
   {{formGroup fields.origin value=source.origin rootId=rootId disabled=true}}
   {{/if}}
+  
   {{#if isItemEffect}}
   <div class="form-group">
     <label>{{localize 'DND4E.EffectWhenEquipped'}}?</label>
