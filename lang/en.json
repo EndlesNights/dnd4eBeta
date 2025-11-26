@@ -462,7 +462,7 @@
 "DND4E.EffectEdit": "Edit Effect",
 "DND4E.EffectDelete": "Delete Effect",
 "DND4E.EffectFromItem": "Transferred from Item",
-"DND4E.EffectWhenEquipped": "Only Apply Effect when Equipped",
+"DND4E.EffectWhenEquipped": "Only While Equipped",
 "DND4E.EffectUnavailable": "Unavailable Effect",
 "DND4E.Elemental": "Elemental",
 "DND4E.Enchantment": "Enchantment",
@@ -1537,6 +1537,7 @@
 "DND4E.Role.Hazard.Warder": "Warder",
 "DND4E.Role.Hazard.Other": "Other",
 
+"DND4E.Sheet.Activation": "Activation",
 "DND4E.Sheet.Biography": "Biography",
 "DND4E.Sheet.Description": "Description",
 "DND4E.Sheet.Details": "Details",
@@ -1684,6 +1685,7 @@
 "ERROR.4eCopyStatusDetails": "Could not copy status details. This is expected if you have changed the standard list of status conditions since adding one to this effect.",
 
 "DND4EUI.AddNew": "Add New",
+"DND4EUI.AddNewSkill": "Add new Skill",
 "DND4EUI.All": "All",
 "DND4EUI.AttributeKey": "Attribute Key",
 "DND4EUI.AutoFromConfig": "Automatic (from Config)",
@@ -1699,6 +1701,7 @@
 "DND4EUI.Desc": "Desc",
 "DND4EUI.DeterminedBySetting": "Determined by Setting",
 "DND4EUI.EffectReplace": "Replace Effect Details",
+"DND4EUI.EffectReplaceTip": "If this effect should match the system-defined data for a status condition, you can copy in the relevant field(s) using the provided buttons.<br />This will overwite any data you have already entered in the copied fields, and cannot be undone.<br />This is a one-way transfer; you can make changes to your effect afterwards without affecting the system conditons.",
 "DND4EUI.GroupBy": "Group By",
 "DND4EUI.HowSelectMultiple": "Hold ctrl/cmd to select multiple",
 "DND4EUI.Icon": "Icon",
@@ -1718,7 +1721,6 @@
 "DND4EUI.UnknownCondition.Label": "Unknown value",
 "DND4EUI.UnknownCondition.Tip": "No match was found for this id in the current status conditions configuration.",
 "DND4EUI.Yes": "Yes",
-"DND4EUI.AddNewSkill": "Add new Skill",
 
 "SETTINGS.4eApplyEffectsToSelectionN": "Buttons to apply effects should apply to SELECTED tokens",
 "SETTINGS.4eApplyEffectsToSelectionL": "If checked, apply effect buttons will work over targets that are SELECTED.  Otherwise will work over tokens that are TARGETED",

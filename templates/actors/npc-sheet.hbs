@@ -3,7 +3,7 @@
 		{{!-- Sheet Header --}}
 		<header class="sheet-header flexrow">
 			<div class="image-frame">
-				<img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" data-tooltip="{{actor.name}}" style="width: 70px; height: 70px"/>
+				<img class="profile-img" src="{{actor.img}}" data-action="editImage" data-edit="img" data-tooltip="{{actor.name}}" width="70" height="70" />
 				<a class="hover-icon actor-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="displayActorArt"><i class="fas fa-image fa-fw"></i></a>
 			</div>
 			<section>
@@ -84,8 +84,8 @@
 					<div class="hitpoints-temp">
 						<label data-tooltip="{{localize 'DND4E.TempHPTip'}}">{{localize 'DND4E.Temp'}}</label>
 						<input class="number" type="text" name="system.attributes.temphp.value" value="{{system.attributes.temphp.value}}" data-tooltip="{{localize 'DND4E.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
-						<a class="rest short-rest npc" data-tooltip="{{localize 'DND4E.RestShort'}}">{{ localize "DND4E.RestS" }}</a>
-						<a class="rest long-rest npc" data-tooltip="{{localize 'DND4E.RestLong'}}">{{ localize "DND4E.RestL" }}</a>
+						<a class="rest short-rest npc" data-tooltip="{{localize 'DND4E.RestShort'}}">{{ localize 'DND4E.RestS' }}</a>
+						<a class="rest long-rest npc" data-tooltip="{{localize 'DND4E.RestLong'}}">{{ localize 'DND4E.RestL' }}</a>
 					</div>
 					
 					<div class="surges">
@@ -101,7 +101,7 @@
 					</div>
 
 					<div class="action-points">
-						<label class="rest action-point rollable" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize "DND4E.ActionPoints"}}</label>
+						<label class="rest action-point rollable" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize 'DND4E.ActionPoints'}}</label>
 						<input class="number" type="text" name="system.actionpoints.value" value="{{system.actionpoints.value}}" data-tooltip="{{localize 'DND4E.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 					</div>
 					
@@ -148,7 +148,7 @@
 					
 					<div>
 						<a class="trait-selector-senses" data-options="special" data-target="system.senses.special">
-							<span class="label">{{ localize "DND4E.Senses" }}</span>
+							<span class="label">{{ localize 'DND4E.Senses' }}</span>
 							<i class="fas fa-edit"></i>
 						</a>
 						{{#each system.senses.special.selected as |v k|}}
@@ -246,7 +246,7 @@
 						<div class="languages">
 							<h4 hidden class="attribute-name box-title">{{localize 'DND4E.SpokenLanguage'}}</h4>
 							<a class="trait-selector" data-options="spoken" data-target="system.languages.spoken">
-								<span class="label">{{ localize "DND4E.Languages" }}</span>
+								<span class="label">{{ localize 'DND4E.Languages' }}</span>
 								<i class="fas fa-edit"></i>
 							</a>
 							{{#each system.languages.spoken.selected as |v k|}}
@@ -266,54 +266,47 @@
 	
 	<section class="npc-lower">
 		<section class="section section--tabs flexshrink npc">
-			{{!-- Sheet Tab Navigation --}}
-      {{> "templates/generic/tab-navigation.hbs"}}
+			{{> "templates/generic/tab-navigation.hbs"}}
 		</section>
 
 		<section class="sheet-body section--tabs-content">
-			{{!-- Biography Tab --}}
-      {{> "systems/dnd4e/templates/actors/tabs/biography.hbs" tab=tabs.biography}}
+			{{> "systems/dnd4e/templates/actors/tabs/biography.hbs" tab=tabs.biography}}
 
-			{{!-- Skills Tab --}}
 			<section class="tab skills{{#if tabs.skills.active}} active{{/if}}" data-group="primary" data-tab="skills">
-					<section class="section section--skills">
+				<section class="section section--skills">
 
-						{{#if system.advancedCals}}
-							{{#each system.skills as |skill s|}}
-							<div class="skill--block flexrow" data-skill="{{s}}">
-								<a class="training-toggle skill-training" data-action="cycleSkillProficiency" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
-								<h4 class="skill-name rollable">{{skill.label}}</h4>
-								<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
-								<label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
-								<label class="skill-base">Base 
-									<input class="skill-mod" name="system.skills.{{s}}.base" value="{{skill.base}}" data-dtype="Number">
-								</label>
-							</div>
-							{{/each}}
-						{{else}}
-							{{#each system.skills as |skill s|}}
-							<div class="skill--block flexrow" data-skill="{{s}}">
-								<h4 class="skill-name rollable">{{skill.label}}</h4>
-								<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
+					{{#if system.advancedCals}}
+						{{#each system.skills as |skill s|}}
+						<div class="skill--block flexrow" data-skill="{{s}}">
+							<a class="training-toggle skill-training" data-action="cycleSkillProficiency" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
+							<h4 class="skill-name rollable">{{skill.label}}</h4>
+							<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
+							<label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
+							<label class="skill-base">Base 
 								<input class="skill-mod" name="system.skills.{{s}}.base" value="{{skill.base}}" data-dtype="Number">
-							</div>
-							{{/each}}
-						{{/if}}
-					</section>
+							</label>
+						</div>
+						{{/each}}
+					{{else}}
+						{{#each system.skills as |skill s|}}
+						<div class="skill--block flexrow" data-skill="{{s}}">
+							<h4 class="skill-name rollable">{{skill.label}}</h4>
+							<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
+							<input class="skill-mod" name="system.skills.{{s}}.base" value="{{skill.base}}" data-dtype="Number">
+						</div>
+						{{/each}}
+					{{/if}}
+				</section>
 			</section>
 
-			{{!-- Owned Inventory Tab --}}
-      {{> "systems/dnd4e/templates/actors/tabs/inventory.hbs" tab=tabs.inventory sections=inventory}}
+			{{> "systems/dnd4e/templates/actors/tabs/inventory.hbs" tab=tabs.inventory sections=inventory}}
 
-			{{!-- Feat Tab --}}
-      {{> "systems/dnd4e/templates/actors/tabs/features.hbs" tab=tabs.features sections=features}}
-			
-			{{!-- Powers Tab --}}
-      {{> "systems/dnd4e/templates/actors/tabs/powers.hbs" tab=tabs.powers sections=powers}}
+			{{> "systems/dnd4e/templates/actors/tabs/features.hbs" tab=tabs.features sections=features}}
 
-			{{!-- Effects Tab --}}
-      {{> "systems/dnd4e/templates/actors/tabs/effects.hbs" tab=tabs.effects}}
-			</div>
+			{{> "systems/dnd4e/templates/actors/tabs/powers.hbs" tab=tabs.powers sections=powers}}
+
+			{{> "systems/dnd4e/templates/actors/tabs/effects.hbs" tab=tabs.effects}}
+		  
 		</section>
 	</section>
 

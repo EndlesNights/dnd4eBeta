@@ -1127,9 +1127,9 @@ export class Helper {
 		
 		tag.sort();
 		
-		if(tag.length > 0) powerDetail += ` ♦ <span class="keywords">${tag.join(', ')}</span>`;
+		if(tag.length > 0) powerDetail += `<span class="sep">♦</span><span class="keywords">${tag.join(', ')}</span>`;
 		
-		powerDetail += `<br /><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType].label}</span>`;
+		powerDetail += `<br /><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType].label}</span> <span class="sep">&nbsp;</span>`;
 
 		if(chatData.rangeType === "weapon") {
 			powerDetail += ` <span class="range-type weapon">${CONFIG.DND4E.weaponType[chatData.weaponType]}</span>`;
@@ -2457,31 +2457,22 @@ export function getHumanReadableAttributeLabel(attr, { actor }={}) {
 	if ( label ) return label;
 
 	// Derived fields.
-	if ( attr === "attributes.init.total" ) label = "DND4E.InitiativeBonus";
-	else if ( attr === "attributes.ac.value" ) label = "DND4E.ArmorClass";
-	else if ( attr === "attributes.spelldc" ) label = "DND4E.SpellDC";
+	if ( attr === "attributes.init.total" ) label = "DND4E.InitiativeScore";
+	else if ( attr === "defences.ac.value" ) label = "DND4E.DefenceACShort";
+	else if ( attr === "defences.fort.value" ) label = "DND4E.DefenceFortShort";
+	else if ( attr === "defences.ref.value" ) label = "DND4E.DefenceRefShort";
+	else if ( attr === "defences.wil.value" ) label = "DND4E.DefenceWillShort";
 
 	// Abilities.
 	else if ( attr.startsWith("abilities.") ) {
 		const [, key] = attr.split(".");
-		label = game.i18n.format("DND4E.AbilityScoreL", { ability: CONFIG.DND4E.abilities[key].label });
+		label = CONFIG.DND4E.abilityScores[key].label;
 	}
 
 	// Skills.
 	else if ( attr.startsWith("skills.") ) {
 		const [, key] = attr.split(".");
-		label = game.i18n.format("DND4E.SkillPassiveScore", { skill: CONFIG.DND4E.skills[key].label });
-	}
-
-	// Spell slots.
-	else if ( attr.startsWith("spells.") ) {
-		const [, key] = attr.split(".");
-		if ( !/spell\d+/.test(key) ) label = `DND4E.SpellSlots${key.capitalize()}`;
-		else {
-			const plurals = new Intl.PluralRules(game.i18n.lang, {type: "ordinal"});
-			const level = Number(key.slice(5));
-			label = game.i18n.format(`DND4E.SpellSlotsN.${plurals.select(level)}`, { n: level });
-		}
+		label = game.i18n.format("DND4E.PasCheck", { skill: CONFIG.DND4E.skills[key].label });
 	}
 
 	// Attempt to find the attribute in a data model.

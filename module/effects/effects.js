@@ -50,7 +50,8 @@
 	 */
 	get tooltip(){
 		let html = `<div class="effect-tooltip">`;
-		html += `<div><label class="name">${this.name}</label> [${this.keywords.string}]</div>`;
+		html += `<div><label class="name">${this.name}</label> `;
+		if(this?.keywords?.string) html+= `[${this.keywords.string}]</div>`;
 		if(this._source.name) html += `<div><label class="source">${game.i18n.localize("DND4E.Source")}: ${this._source.name}</label></div>`;
 		if(this.duration.label) html += `<div><label class="duration">${game.i18n.localize("DND4E.Duration")}: ${this.duration.label}</label></div>`;
 		if(this.description) html += `<div class="description">${this.description}</div>`;

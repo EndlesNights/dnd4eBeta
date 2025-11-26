@@ -4,7 +4,7 @@ export class SecondWindDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "second-wind",
-		classes: ["dnd4e", "second-wind", "standard-form"],
+		classes: ["dnd4e","second-wind","standard-form","default"],
 		form: {
 			handler: SecondWindDialog.#onSubmit,
 			closeOnSubmit: true,

@@ -5,7 +5,7 @@ export default class ConBonConfig extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "con-bon-config",
-		classes: ["dnd4e", "con-bon-config", "standard-form"],
+		classes: ["dnd4e","con-bon-config","standard-form","default"],
 		form: {
 			closeOnSubmit: false
 		},

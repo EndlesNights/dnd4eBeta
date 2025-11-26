@@ -4,7 +4,7 @@ export class LongRestDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "long-rest",
-		classes: ["dnd4e", "actor-rest", "standard-form"],
+		classes: ["dnd4e","actor-rest","standard-form","default"],
 		form: {
 			closeOnSubmit: true,
 			handler: LongRestDialog.#onSubmit

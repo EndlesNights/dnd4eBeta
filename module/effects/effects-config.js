@@ -3,7 +3,7 @@ import { DND4E } from "../config.js";
 export default class ActiveEffectConfig4e extends foundry.applications.sheets.ActiveEffectConfig {
 
 	static DEFAULT_OPTIONS = {
-		classes: ["sheet", "dnd4e"],
+		classes: ["sheet", "dnd4e", "default"],
 		position: {
 			width: 580,
 			height: 514
@@ -30,11 +30,36 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	static PARTS = {
 		header: {template: "templates/sheets/active-effect/header.hbs"},
 		tabs: {template: "templates/generic/tab-navigation.hbs"},
-		details: {template: "systems/dnd4e/templates/sheets/active-effect/details.hbs", scrollable: [""]},
-		duration: {template: "systems/dnd4e/templates/sheets/active-effect/duration.hbs", scrollable: [""]},
-		changes: {template: "systems/dnd4e/templates/sheets/active-effect/changes.hbs", scrollable: ["", "ol"]},
+		description: {
+			template: "systems/dnd4e/templates/sheets/active-effect/description.hbs",
+			scrollable: [".scrollable"]
+		},
+		details: {
+			template: "systems/dnd4e/templates/sheets/active-effect/details.hbs", 
+			scrollable: [".scrollable"]
+		},
+		activation: {
+			template: "systems/dnd4e/templates/sheets/active-effect/activation.hbs",
+			scrollable: [".scrollable"]
+		},
+		changes: {
+			template: "systems/dnd4e/templates/sheets/active-effect/changes.hbs", 
+			scrollable: [".scrollable"]
+		},
 		footer: {template: "templates/generic/form-footer.hbs"}
 	};
+	
+	static TABS = {
+		primary: {
+			tabs: [
+				{id: "description", label: "DND4E.Sheet.Description" },
+				{id: "details", label: "DND4E.Sheet.Details" },
+				{id: "changes", label: "EFFECT.TABS.changes" },
+				{id: "activation", label: "DND4E.Sheet.Activation" }
+			],
+			initial: "details"
+		}
+	}
 
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);

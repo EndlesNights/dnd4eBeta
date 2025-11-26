@@ -4,7 +4,7 @@ export class CustomRolldDescriptions extends DocumentSheet4e {
 	
 	static DEFAULT_OPTIONS = {
 		id: "custom-roll",
-		classes: ["dnd4e", "actor-rest", "standard-form"],
+		classes: ["dnd4e","actor-rest","standard-form","default"],
 		form: {
 			closeOnSubmit: false,
 			submitOnClose: true

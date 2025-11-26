@@ -1,30 +1,90 @@
-<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
-  {{formGroup fields.tint value=source.tint rootId=rootId placeholder="#ffffff"}}
-  {{formGroup fields.description value=source.description rootId=rootId classes="stacked editor{{#if powerParent}} extended{{/if}}"}}
-  {{formGroup fields.disabled value=source.disabled rootId=rootId}}
-
-  {{#if isActorEffect}}
-  {{formGroup fields.origin value=source.origin rootId=rootId disabled=true}}
-  {{/if}}
-  {{#if isItemEffect}}
-  <div class="form-group">
-    <label>{{localize "DND4E.EffectWhenEquipped"}}?</label>
-    <div class="form-fields">
-      <input type="checkbox" name="flags.dnd4e.effectData.equippedRec" data-dtype="Boolean" {{checked document.flags.dnd4e.effectData.equippedRec}}/>
+<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">  
+  <!-- Keywords for this effect -->
+  <fieldset class="keywords">
+    <legend>{{localize 'DND4E.Keywords'}}</legend>
+    <multi-select name="flags.dnd4e.keywords" class="refreshes">
+      {{selectOptions config.keywords selected=document.flags.dnd4e.keywords}}
+    </multi-select>
+    <div class="form-group long">
+      <label>{{ localize 'DND4E.Custom' }}</label>
+      <input type="text" name="flags.dnd4e.keywordsCustom" value="{{document.flags.dnd4e.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}" />
     </div>
-  </div>
-  {{formGroup fields.transfer value=source.transfer rootId=rootId label=legacyTransfer.label hint=legacyTransfer.hint}}
-  {{/if}}
-  {{#if powerParent}}
-  <div class="form-group">
-    <label>{{localize "DND4E.EffectApply"}}</label>
-    <div class="form-fields">
-      <select name="flags.dnd4e.effectData.powerEffectTypes">
-        {{selectOptions config.powerEffectTypes selected=document.flags.dnd4e.effectData.powerEffectTypes blank=""}}
-      </select>
-    </div>
-  </div>
-  {{/if}}
-  <!-- Compatibility note: 4e places statuses on the Effects tab, but some modules rely on this being where it is in the default effect sheet. -->
-  <div class="form-group statuses"></div>
+  </fieldset>
+  
+  {{!-- Status conditions attached to this effect --}}
+  <fieldset class="form-group statuses">
+    <legend>{{localize 'DND4E.StatusConditions'}}</legend>
+		<header class="effect-status effects-header flexrow{{#if cltEnabled}} clt-enabled{{/if}}">
+			<div class="status-select">{{localize 'DND4E.Condition'}}</div>
+			<div class="status-controls">{{localize 'DND4EUI.EffectReplace'}} <i class="fa-regular fa-circle-info" data-tooltip="{{localize 'DND4EUI.EffectReplaceTip'}}"></i></div>
+			<div class="effect-controls">
+				<a class="effect-status-control" data-action="addStatus"><i class="far fa-plus-square"></i></a>
+			</div>
+		</header>
+		<ol class="statuses-list{{#if cltEnabled}} clt-enabled{{/if}}">
+			{{#each document.statuses as |status i|}}
+			<li class="effect-status flexrow" data-status-id="{{status}}" data-index="{{i}}">
+				<div class="status-select">
+					<select
+            class="refreshes"
+            name="statuses.{{i}}"
+            {{#unless (eq status "none")}}
+              data-tooltip="{{status}}{{#unless (contains status ../config.statusEffects 'id')}}: {{localize 'DND4EUI.UnknownCondition.Tip'}}{{/unless}}"
+					  {{/unless}}
+					>
+						{{#unless (eq status "none")}}
+							{{#unless (contains status ../config.statusEffects 'id')}}
+							<option value="{{status}}" selected>{{localize 'DND4EUI.UnknownCondition.Label'}}</option>
+							{{/unless}}
+						{{/unless}}
+						{{selectOptions ../config.statusEffects selected=status valueAttr="id" labelAttr="name" sort=true localize=true blank="none"}}
+					</select>
+				</div>
+				<div class="copy-buttons flexrow">
+					<button class="effect-status-control" data-action="copyAll"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.All'}}
+					<button class="effect-status-control" data-action="copyName"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'Name'}}</button>
+					<button class="effect-status-control" data-action="copyIcon"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.Icon'}}</button>
+					<button class="effect-status-control" data-action="copyDesc"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.Desc'}}</button>
+					<button class="effect-status-control" data-action="copyMods"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.Mods'}}</button>
+				{{#if cltEnabled}}
+					<button class="effect-status-control" data-action="copyClFlags"{{#unless (contains status ../config.statusEffects "id")}} disabled{{/unless}}>{{localize 'DND4EUI.ConditionLabFlags'}}</button>
+				{{/if}}
+				</div>
+				<div class="effect-controls">
+					<a class="effect-status-control" data-action="deleteStatus"><i class="fas fa-trash"></i></a>
+				</div>
+			</li>
+			{{/each}}
+		</ol>
+  </fieldset>
+  
+  <!-- Ongoing Damage instances attached to this effect-->
+  <fieldset class="dots">
+    <legend>{{localize 'DND4E.OngoingDamage'}}</legend>
+    <header class="effect-dot effects-header flexrow">
+      <div class="amount">{{ localize 'DND4E.Value' }}</div>
+      <div class="type">{{ localize 'DND4E.Type' }}</div>
+      <div class="effect-controls">
+        <a class="effect-dot-control" data-action="addDot"><i class="far fa-plus-square"></i></a>
+      </div>
+    </header>
+    <ol class="dots-list">
+      {{#each document.flags.dnd4e.dots as |dot i|}}
+      <li class="effect-dot flexrow" data-index="{{i}}">
+        <div class="amount">
+          <input type="text" name="flags.dnd4e.dots.{{i}}.amount" value="{{dot.amount}}"/>
+        </div>
+        <div class="type damage-type">
+          <multi-select name="flags.dnd4e.dots.{{i}}.typesArray" class="refreshes">
+            {{selectOptions ../dotDamageTypes selected=dot.typesArray}}
+          </multi-select>
+        </div>
+        <div class="effect-controls">
+          <a class="effect-dot-control" data-action="deleteDot"><i class="fas fa-trash"></i></a>
+        </div>
+      </li>
+      {{/each}}
+    </ol>
+  </fieldset>
+  
 </section>

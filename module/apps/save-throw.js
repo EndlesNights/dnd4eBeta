@@ -4,7 +4,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "save-throw",
-		classes: ["dnd4e", "actor-save-throw", "standard-form"],
+		classes: ["dnd4e","actor-save-throw","standard-form","default"],
 		form: {
 			closeOnSubmit: true,
 			handler: SaveThrowDialog.#onSubmit

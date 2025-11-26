@@ -9,7 +9,7 @@ export default class WealthTemplate extends foundry.abstract.DataModel {
       }), {initialKeys: CONFIG.DND4E.currencies, initialKeysOnly: true, label: "DND4E.Currency"}),
       ritualcomp: new MappingField(new NumberField({
         required: true, nullable: false, integer: true, min: 0, initial: 0
-      }), {initialKeys: CONFIG.DND4E.ritualcomponents, initialKeysOnly: true, label: "DND4E.RitualComp"})
+      }), {initialKeys: CONFIG.DND4E.ritualComponents, initialKeysOnly: true, label: "DND4E.RitualComp"})
     }
   }
 }

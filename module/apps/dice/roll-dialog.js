@@ -1,6 +1,6 @@
 export default class RollDialog extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   static DEFAULT_OPTIONS = {
-    classes: ["dnd4e", "standard-form"],
+    classes: ["dnd4e","standard-form","default","roll-dialogue"],
     tag: "form",
     position: {
       width: 500

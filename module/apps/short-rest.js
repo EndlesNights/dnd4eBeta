@@ -3,7 +3,7 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 export class ShortRestDialog extends DocumentSheet4e {
 	static DEFAULT_OPTIONS = {
 		id: "short-rest",
-		classes: ["dnd4e", "actor-rest", "standard-form"],
+		classes: ["dnd4e","actor-rest","standard-form","default"],
 		form: {
 			handler: ShortRestDialog.#onSubmit,
 			closeOnSubmit: true,

@@ -14,7 +14,7 @@ export default class AbilityUseDialog extends foundry.applications.api.Dialog {
   }
 
   static DEFAULT_OPTIONS = {
-    classes: ["dnd4e", "dialog"]
+    classes: ["dnd4e","dialog","default"]
   };
 
   /* -------------------------------------------- */
