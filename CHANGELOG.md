@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 0.7.2 BETA
+Further v13 bugfixes from SagaTympana and Fox. Fox has also used the need for appV2 updates to throw in some improvements to various sheets.
+### Player-Facing Changes
+- Broad visual tweaks to improve default styling off apps and sheets, and make alternate styling easier. (Fox)
+- Active Effect sheets have had a big overhaul, changing up the tabs. Hopefully this will make them easier to use and better facilitate the additions made by other modules. (Fox)
+- Fixed a bug where attribute-based consumption targets were messed up on itemns that had a parent actor. (Fox)
+  - Added "Ritual Component" and "Currency" as first-level categories for consumption targets.
+- Fixed a bug preventing item sorting from working on anything other than powers. (Fox)
+- Fixed a bug preventing weapons/equipment being added to NPC sheets. (SagaTympana)
+
+## Version 0.7.1 BETA
+A few more rounds of sweeping v13 bugfixes from SagaTympana.
+
 ## Version 0.7.0 BETA
 Our first v13-compatible release! Note that while this release seems stable and complete, it could still have undetected issues that might break your game. We appreciate testing, but please treat this as a beta release; we don't recommend using it in your live game environment. Please report any errors on the [GitHub issues page](https://github.com/EndlesNights/dnd4eBeta/).
 ### Player-Facing Changes
@@ -1307,6 +1320,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
