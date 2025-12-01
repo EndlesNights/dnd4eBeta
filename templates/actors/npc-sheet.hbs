@@ -25,12 +25,18 @@
 						</select>
 					</li>
 					<li class="summary-leader">
-						<label>{{localize 'DND4E.CreatureRoleLeader'}}:</label>
+						<label>{{localize 'DND4E.CreatureRoleLeader'}}</label> 
 						<input type="checkbox" name="system.details.role.leader" data-dtype="Boolean" {{checked system.details.role.leader}} data-tooltip="{{localize 'DND4E.CreatureRoleLeader'}}"/>
 					</li>
 					<li class="summary-level">
 						<label>{{localize 'DND4E.Level'}}</label>
 						<input type="text" name="system.details.level" value="{{system.details.level}}" data-tooltip="{{localize 'DND4E.Level'}}" data-dtype="Number" onClick="this.select();"/>
+					</li>
+
+					<li class="automath">
+						<span class="label" data-tooltip="{{localize 'DND4E.NPCAutoMathTip'}}">{{localize 'DND4E.NPCAutoMath'}}</span> 
+						<input type="checkbox" name="system.advancedCals" data-dtype="Boolean" {{checked system.advancedCals}} data-tooltip="{{localize 'DND4E.NPCAutoMathTip'}}"/>
+						<img class="button" src="/systems/dnd4e/icons/ui/calc.svg" height="40" width="30" />
 					</li>
 				</ul>
 	
@@ -58,12 +64,6 @@
 					<li class="summary-exp">
 						<label>{{localize 'DND4E.Exp'}}</label>
 						<input type="text" name="system.details.exp" value="{{system.details.exp}}" data-tooltip="{{localize 'DND4E.Exp'}}" data-dtype="Number" onClick="this.select();"/>
-					</li>
-
-					<li class="automath">
-						<span class="label" data-tooltip="{{localize 'DND4E.NPCAutoMathTip'}}">{{localize 'DND4E.NPCAutoMath'}}</span> 
-						<input type="checkbox" name="system.advancedCals" data-dtype="Boolean" {{checked system.advancedCals}} data-tooltip="{{localize 'DND4E.NPCAutoMathTip'}}"/>
-						<img class="button" src="/systems/dnd4e/icons/ui/calc.svg" height="40" width="30" />
 					</li>
 				</ul>
 			</section>
@@ -148,12 +148,14 @@
 					
 					<div>
 						<a class="trait-selector-senses" data-options="special" data-target="system.senses.special">
-							<span class="label">{{ localize 'DND4E.Senses' }}</span>
+							<span class="subgroup-header list-label label">{{ localize 'DND4E.Senses' }}</span>
 							<i class="fas fa-edit"></i>
 						</a>
+						<ul class="traits-list senses">
 						{{#each system.senses.special.selected as |v k|}}
 							<li class="tag {{k}}">{{v}}</li>
 						{{/each}}
+						<ul>
 					</div>
 					
 					<div data-tooltip="{{moveTitle}}">
@@ -246,12 +248,14 @@
 						<div class="languages">
 							<h4 hidden class="attribute-name box-title">{{localize 'DND4E.SpokenLanguage'}}</h4>
 							<a class="trait-selector" data-options="spoken" data-target="system.languages.spoken">
-								<span class="label">{{ localize 'DND4E.Languages' }}</span>
+								<span class="subgroup-header list-label label">{{ localize 'DND4E.Languages' }}</span>
 								<i class="fas fa-edit"></i>
 							</a>
+							<ul class="traits-list languages spoken">
 							{{#each system.languages.spoken.selected as |v k|}}
 								<li class="tag {{k}}">{{v}}</li>
 							{{/each}}
+							</ul>
 						</div>
 
 					</div>
