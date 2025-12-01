@@ -193,6 +193,16 @@ body.theme-light .dnd4e.default{
 /*  Sheets
 /* ----------------------------------------- */
 
+/* ------------ Sheet Dimensions ---------- */
+.dnd4e.sheet.actor.default:not(.NPC,.Hazard,.minimized){
+	min-width:836px;
+	min-height:420px;
+}
+.dnd4e.sheet.actor.default.NPC:not(.minimized){
+	min-width:655px;
+}
+
+/* ------------ All Sheets ---------- */
 .dnd4e.sheet.default .window-content{
 	--input-height:2em;
 	--checkbox-size:1.75rem;
@@ -838,13 +848,6 @@ body.theme-light .dnd4e.default{
 		background:none;
 		border-width:0;
 		border-radius:0;
-		&.ability-score{
-			height:30px;
-			width:36px;
-			margin:0 auto;
-			line-height:32px;
-			font-size:24px;
-		}
 		&.skill-mod{
 			position:relative;
 			top:-5px;
@@ -852,15 +855,10 @@ body.theme-light .dnd4e.default{
 			border-width:0;
 		}
 	}
-	&:not(.NPC,.Hazard,.minimized){
-		min-width:836px;
-		min-height:420px;
-	}
 	.sheet-header{
-		flex:0 0 100%;
-		font-size:20px;
 		align-items:center;
-		.summary input{
+		border-bottom:unset;
+		.summary input:not([type='checkbox'],[type='radio']){
 			vertical-align:top;
 			background:none;
 			border-width:0;
@@ -897,12 +895,6 @@ body.theme-light .dnd4e.default{
 		aspect-ratio:1 / 1;
 		flex-basis:100px;
 	}
-	&.NPC .image-frame{
-		margin-left:3px;
-		margin-right:8px;
-		max-width:64px;
-		max-height:64px;
-	}
 	.image-frame img{
 		max-height:100px;
 	}
@@ -922,10 +914,6 @@ body.theme-light .dnd4e.default{
 		border-top:var(--border-heavy);
 		border-bottom:var(--border-heavy);
 		max-height:100px;
-	}
-	&:not(.NPC) .attributes span.sep{
-		max-width:20px;
-		font-size:22px;
 	}
 	.attributes .attribute{
 		border-right:var(--border-normal);
@@ -970,19 +958,6 @@ body.theme-light .dnd4e.default{
 		display:inline-block;
 		margin-top:2px;
 		margin-bottom:2px;
-	}
-	&:not(.NPC) .attribute-input{
-		min-width:32px;
-	}
-	&:not(.NPC) .attributes{
-		max-height:90px;
-		padding:2px;
-		margin:2px;
-	}
-	&:not(.NPC) .attributes .attribute-display{
-		border-top:var(--border-normal);
-		margin-left:2px;
-		margin-right:2px;
 	}
 	.attribute-name,
 	.resource-name{
@@ -1249,16 +1224,6 @@ body.theme-light .dnd4e.default{
 		border-bottom:var(--border-normal);
 		max-width:9%;
 		height:14px;
-	}
-	&:not(.NPC) .ability-scores{
-		flex:0 0 100px;
-		height:429px;
-		list-style:none;
-		margin:0;
-		padding:0;
-		font-size:20px;
-		border:var(--border-engraved);
-		border-radius:3px;
 	}
 	.ability-scores .ability{
 		height:67px;
@@ -1692,9 +1657,7 @@ body.theme-light .dnd4e.default{
 	.attribute-res .skill.flexrow{
 		align-items:center;
 	}
-	&.character .resource .attribute-value input{
-		flex:0 0 25%;
-	}	.attribute-init{
+	.attribute-init{
 		margin:0 0 0 0;
 		border:var(--border-engraved);
 		border-radius:4px;
@@ -1891,11 +1854,6 @@ body.theme-light .dnd4e.default{
 		width:160px;
 		height:160px;
 	}
-	&.character .item-sheet .sheet-header img.profile{
-		flex:0 0 160px;
-		width:160px;
-		height:160px;
-	}
 	.sheet-header h1.charname{
 		flex:1;
 		height:60px;
@@ -1908,11 +1866,55 @@ body.theme-light .dnd4e.default{
 	prose-mirror[name='system.biography']{
 		height:100%;		
 	}
-	
+
+	/* ------------ PC Sheets ---------- */
+	> .pc{
+		.sheet-header{
+			font-size:20px;
+		}
+		input.ability-score{
+			height:30px;
+			width:36px;
+			margin:0 auto;
+			line-height:32px;
+			font-size:24px;
+		}
+		.attributes span.sep{
+			max-width:20px;
+			font-size:22px;
+		}
+		.attribute-input{
+			min-width:32px;
+		}
+		.attributes{
+			max-height:90px;
+			padding:2px;
+			margin:2px;
+		}
+		.attributes .attribute-display{
+			border-top:var(--border-normal);
+			margin-left:2px;
+			margin-right:2px;
+		}
+		.ability-scores{
+			flex:0 0 100px;
+			height:429px;
+			list-style:none;
+			margin:0;
+			padding:0;
+			font-size:20px;
+			border:var(--border-engraved);
+			border-radius:3px;
+		}
+		.resource .attribute-value input{
+			flex:0 0 25%;
+		}
+	}
+
 	/* ------------ NPC Sheets ---------- */
-	&.NPC{
-		&:not(.minimized){
-			min-width:655px;
+	> .npc{
+		.sheet-header .summary.flexrow{
+			flex-wrap:nowrap;
 		}
 		.sheet-header .summary-type{
 			flex-basis:114px;
@@ -1986,11 +1988,8 @@ body.theme-light .dnd4e.default{
 			height:calc(100% - 20px);
 		}
 		.image-frame{
-			max-width:64px;
-			max-height:64px;
-			margin-left:0px;
 			margin-right:6px;
-			margin-bottom:6px;
+			flex-basis:fit-content;
 		}
 		.npc-upper .basics{
 			border-top:var(--border-heavy);
@@ -2041,8 +2040,8 @@ body.theme-light .dnd4e.default{
 				}
 			}
 		}
-		.npc-upper li.tag {
-			margin-left:20px;
+		.npc-upper li.tag{
+			margin-bottom:0;
 		}
 		.npc-upper .basics>.defences{
 			flex-grow:0;
@@ -2130,9 +2129,9 @@ body.theme-light .dnd4e.default{
 			max-width:8em;
 		}
 	}
-						
+	
 	/* ------------ Hazard Sheets -------------- */
-	&.Hazard{
+	> .hazard{
 		&:not(.minimized){
 			min-width:452px;
 		}
@@ -2206,6 +2205,7 @@ body.theme-light .dnd4e.default{
 		}
 	}
 }
+
 
 /* ------------- Item Sheets --------------- */
 .dnd4e.sheet.item.default .window-content{
