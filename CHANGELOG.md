@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.7.2.1 BETA
+Just a hotfix from Fox for the NPC sheets she broke in the last beta!
+
 ## Version 0.7.2 BETA
 Further v13 bugfixes from SagaTympana and Fox. Fox has also used the need for appV2 updates to throw in some improvements to various sheets.
 ### Player-Facing Changes
@@ -1320,6 +1323,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
