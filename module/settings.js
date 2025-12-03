@@ -21,22 +21,6 @@ export const registerSystemSettings = function() {
 /**     HOUSE RULES     **/
 /*************************/
 
-	// Diagonal movement rule setting
-	game.settings.register("dnd4e", "diagonalMovement", {
-		name: "SETTINGS.4eDiagN",
-		hint: "SETTINGS.4eDiagL",
-		scope: "world",
-		config: true,
-		default: "555",
-		type: String,
-		choices: {
-			"555": "SETTINGS.4eDiagPHB",
-			"5105": "SETTINGS.4eDiagDMG",
-			"EUCL": "SETTINGS.4eDiagEuclidean",
-		},
-		onChange: rule => canvas.grid.diagonalRule = rule
-	});
-
 	// Resistances/vulnerabilities damage rule setting
 	 game.settings.register("dnd4e", "damageCalcRules", {
 		name: "SETTINGS.4eDamageCalcN",
