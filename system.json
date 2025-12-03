@@ -4,9 +4,9 @@
 	"description": "An implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
 	"version": "0.6.21",
 	"compatibility":{
-		"minimum": 12,
-		"verified": 12.343,
-		"maximum": 12
+		"minimum": 13,
+		"verified": 13.341,
+		"maximum": 13
 	},
 	"authors": [
 		{

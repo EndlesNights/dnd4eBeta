@@ -17,7 +17,7 @@ import ActorSheet4eNPC from "./actor/npc-sheet.js";
 import ActorSheet4eHazard from "./actor/hazard-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
-import { measureDistances, getBarAttribute } from "./canvas.js";
+import { measurePath, getBarAttribute } from "./canvas.js";
 import { _getInitiativeFormula } from "./combat.js";
 
 // Import Documents
@@ -279,8 +279,8 @@ Hooks.on("canvasInit", function() {
 
 	// Extend Diagonal Measurement
 	canvas.grid.diagonalRule = game.settings.get("dnd4e", "diagonalMovement");
-	//BaseGrid#measureDistances is deprecated. Use BaseGrid#measurePath instead
-	foundry.grid.SquareGrid.prototype.measureDistances = measureDistances;
+	// Override measurePath for custom diagonal movement rules (v13 compatible)
+	foundry.grid.SquareGrid.prototype.measurePath = measurePath;
 
 	// Extend Token Resource Bars
 	Token.prototype.getBarAttribute = getBarAttribute;

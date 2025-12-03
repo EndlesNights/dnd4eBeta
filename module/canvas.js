@@ -1,45 +1,57 @@
 /**
- * @deprecated since v12
- * BaseGrid#measureDistances is deprecated. Use BaseGrid#measurePath instead
- * @ignore
+ * Override measurePath to support custom diagonal movement rules for D&D 4e
+ * @override
  */
-/** @override */
-export const measureDistances = function(segments, options={}) {
-  if ( !options.gridSpaces ) return BaseGrid.prototype.measureDistances.call(this, segments, options);
-
-  // Track the total number of diagonals
-  let nDiagonal = 0;
+export const measurePath = function(points, options={}) {
+  // If no custom diagonal rule, use default implementation
   const rule = this.parent?.diagonalRule;
+  if (!rule || rule === "555") {
+    return foundry.grid.BaseGrid.prototype.measurePath.call(this, points, options);
+  }
+
+  // Calculate distance using custom rules
   const d = canvas.dimensions;
+  let totalDistance = 0;
+  let nDiagonal = 0;
 
-  // Iterate over measured segments
-  return segments.map(s => {
-    let r = s.ray;
-
+  // Iterate over point pairs
+  for (let i = 0; i < points.length - 1; i++) {
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    
     // Determine the total distance traveled
-    let nx = Math.abs(Math.ceil(r.dx / d.size));
-    let ny = Math.abs(Math.ceil(r.dy / d.size));
+    let nx = Math.abs(Math.ceil((p2.x - p1.x) / d.size));
+    let ny = Math.abs(Math.ceil((p2.y - p1.y) / d.size));
 
     // Determine the number of straight and diagonal moves
     let nd = Math.min(nx, ny);
     let ns = Math.abs(ny - nx);
     nDiagonal += nd;
 
+    let segmentDistance;
+
     // Alternative DMG Movement
     if (rule === "5105") {
       let nd10 = Math.floor(nDiagonal / 2) - Math.floor((nDiagonal - nd) / 2);
       let spaces = (nd10 * 2) + (nd - nd10) + ns;
-      return spaces * canvas.dimensions.distance;
+      segmentDistance = spaces * canvas.dimensions.distance;
     }
-
     // Euclidean Measurement
     else if (rule === "EUCL") {
-      return Math.round(Math.hypot(nx, ny) * canvas.scene.grid.distance);
+      segmentDistance = Math.round(Math.hypot(nx, ny) * canvas.scene.grid.distance);
+    }
+    // Standard PHB Movement (shouldn't reach here due to early return, but kept for safety)
+    else {
+      segmentDistance = (ns + nd) * canvas.scene.grid.distance;
     }
 
-    // Standard PHB Movement
-    else return (ns + nd) * canvas.scene.grid.distance;
-  });
+    totalDistance += segmentDistance;
+  }
+
+  return {
+    distance: totalDistance,
+    segments: points.length - 1
+  };
 };
 
 /* -------------------------------------------- */
