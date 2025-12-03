@@ -15,7 +15,6 @@ import ActorSheet4eNPC from "./actor/npc-sheet.js";
 import ActorSheet4eHazard from "./actor/hazard-sheet.js";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
-import { measureDistances } from "./canvas.js";
 import Combat4e from "./combat.js";
 
 // Import Documents
@@ -332,14 +331,6 @@ Hooks.on("renderChatLog", (app, html, data) => {
 Hooks.on("renderChatPopout", (app, html, data) => {
 	Item4e.chatListeners(html);
 	chat.chatMessageListener(html);
-});
-
-Hooks.on("canvasInit", function() {
-
-	// Extend Diagonal Measurement
-	canvas.grid.diagonalRule = game.settings.get("dnd4e", "diagonalMovement");
-	//BaseGrid#measureDistances is deprecated. Use BaseGrid#measurePath instead
-	foundry.grid.SquareGrid.prototype.measureDistances = measureDistances;
 });
 
 
