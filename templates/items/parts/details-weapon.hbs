@@ -296,10 +296,10 @@
   <div class="form-group stacked weapon-properties">
     <div class="form-group">
       <label class="damage-override">{{localize 'DND4E.DamageTypeFromWeapon'}}</label>
-      <span class="checkbox"><input type="checkbox" name="system.damageTypeWeapon" data-dtype="Boolean" {{checked system.damageTypeWeapon}}/></span>
+      <span class="checkbox"><input type="checkbox" name="system.damageTypeOverride" data-dtype="Boolean" {{checked system.damageTypeOverride}}/></span>
     </div>
 
-    {{#if system.damageTypeWeapon}}					
+    {{#if system.damageTypeOverride}}					
     <label data-tooltip="{{ localize 'DND4E.PrimaryDamageType' }}">{{ localize 'DND4E.PrimaryDamageType' }}:</label>
       
     {{#each config.damageTypes as |name type|}}

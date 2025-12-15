@@ -270,7 +270,7 @@
   {{#unless system.hit.isDamage}} <!--Don't repeat this section if damage has alreday been added -->
     <div class="form-group stacked weapon-properties">
       <label class="damage-type">{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Damage')}}</label>
-      {{#if system.damageTypeWeapon}}
+      {{#if system.damageTypeOverride}}
         {{#each config.damageTypes as |name type|}}
           {{#unless (eq type "ongoing")}}
           {{#unless (eq type "damage")}}

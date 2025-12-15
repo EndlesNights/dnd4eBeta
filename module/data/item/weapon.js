@@ -62,8 +62,10 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
       damageCritImp: new SchemaField({
         parts: new ArrayField(new ArrayField(new StringField(), {min: 2, max: 2, initial: ["", ""]}), {initial: []})
       }),
-      damageType: new SchemaField({
-        physical: new BooleanField({initial: true})
+      damageTypeOverride: new BooleanField({initial: false}),
+      damageType: new MappingField(new BooleanField({initial: false}), {
+        initialKeys: CONFIG.DND4E.damageTypes,
+        initialKeysOnly: true
       }),
       brutalNum: new NumberField({initial: 1, integer: true}),
       weaponGroup: new MappingField(new BooleanField({initial: false}), {
