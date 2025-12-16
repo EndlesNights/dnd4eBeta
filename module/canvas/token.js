@@ -68,7 +68,14 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 		bar.beginFill(blk, 0.5).lineStyle(bs, blk, 1.0).drawRoundedRect(0, 0, bw, bh, 3 * s);
 
 		// Health bar
-		bar.beginFill(hpColor, 1.0).lineStyle(bs, blk, 1.0).drawRoundedRect(0, 0, colorPct * bw, bh, 2 * s);
+		if ( value >= 0 ) {
+			bar.beginFill(hpColor, 1.0).lineStyle(bs, blk, 1.0).drawRoundedRect(0, 0, colorPct * bw, bh, 2 * s);
+		} else {
+			let bloodied = this.document.actor.system.details.bloodied;
+			const dyingPct = Math.clamp(Math.abs(value), 0, bloodied) / bloodied;
+			const dyingColor = Color.fromRGB([(1-(dyingPct/(1.5))), 0, 0])
+			bar.beginFill(dyingColor, 1.0).lineStyle(bs, blk, 1.0).drawRoundedRect(0, 0, dyingPct * bw, bh, 2 * s);
+		}
 
 		// Temporary hit points
 		if ( temp > 0 ) {

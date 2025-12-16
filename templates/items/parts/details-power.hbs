@@ -311,7 +311,7 @@
 
 <div class="form-group stacked weapon-properties">
   <label class="damage-type" data-tooltip="{{localize 'DND4E.PrimaryDamageType'}}">{{localize "DND4E.PrimaryDamageType"}}: {{system.weaponSourceName}}</label>
-  {{#if system.damageTypeWeapon}}
+  {{#if system.damageTypeOverride}}
     {{#each config.damageTypes as |name type|}}
       {{#unless (eq type "ongoing")}}
       <label class="checkbox">
@@ -332,7 +332,7 @@
 
 <!-- <div class="form-group">
   <label>{{localize 'DND4E.DamageTypeFromWeapon'}}</label>
-  <span class="checkbox"><input type="checkbox" name="system.damageTypeWeapon" data-dtype="Boolean" {{checked system.damageTypeWeapon}}/></span>
+  <span class="checkbox"><input type="checkbox" name="system.damageTypeOverride" data-dtype="Boolean" {{checked system.damageTypeOverride}}/></span>
 </div> -->
 
 {{/if}}
@@ -438,7 +438,7 @@
 {{#unless system.hit.isDamage}} <!--Don't repeat this section if damage has alreday been added -->
   <div class="form-group stacked weapon-properties">
     <label class="damage-type">{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Damage')}}</label>
-    {{#if system.damageTypeWeapon}}
+    {{#if system.damageTypeOverride}}
       {{#each config.damageTypes as |name type|}}
         {{#unless (eq type "ongoing")}}
         {{#unless (eq type "damage")}}
