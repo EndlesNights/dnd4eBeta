@@ -1,7 +1,7 @@
 import BonusField from "../fields/bonus-field.js";
 import Dnd4eBonusesField from "../fields/dnd4e-bonuses-field.js";
 
-const { NumberField, StringField } = foundry.data.fields;
+const { BooleanField, NumberField, StringField } = foundry.data.fields;
 
 export default class DetailsField {
   static get creature() {
@@ -27,6 +27,7 @@ export default class DetailsField {
       tier: new NumberField({...numberConfig, initial: 1}),
       exp: new NumberField({...numberConfig, initial: 0}),
       bloodied: new NumberField({...numberConfig, initial: 0}),
+      isBloodied: new BooleanField({initial: false}),
       surgeValue: new NumberField({...numberConfig, initial: 0}),
       surgeBon: new Dnd4eBonusesField({
         bonus: new BonusField(),
