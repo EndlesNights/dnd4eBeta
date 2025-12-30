@@ -256,6 +256,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				const item = this.actor.items.get(itemId);
 				this._onItemRoll(item);
 			}));
+			
 			html.querySelectorAll('.item-roll').forEach(el => {
 				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
 				el.addEventListener("mouseleave", this._onItemHoverExit.bind(this));
@@ -1750,7 +1751,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		const a = event.currentTarget;
 		const label = a.parentElement.querySelector("span");
 		const currValue = foundry.utils.getProperty(this.actor, a.dataset.target) ?? [];
-		const {traits=null} = await foundry.applications.api.Dialog.input({
+		const {traits=""} = await foundry.applications.api.Dialog.input({
 			id: "trait-selector",
 			classes: ["dnd4e"],
 			window: {
