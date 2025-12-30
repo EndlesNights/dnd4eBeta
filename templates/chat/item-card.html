@@ -34,6 +34,17 @@
 			
 		{{/if}}
 		
+		{{#unless isPower}}
+		<ul class="properties tags">
+		{{#each data.properties}}
+			{{{this}}}
+		{{/each}}
+		{{#if data.materials.value}}
+			<li class="materials"><strong>{{ localize "DND4E.RequiredMaterials" }}:</strong> {{data.materials.value}}</li>
+		{{/if}}
+		</ul>
+		{{/unless}}
+		
 		{{#if isRoll}}
 		<div class="card-buttons">
 
@@ -133,15 +144,7 @@
 
 	</div>
 	
-
-	{{#unless isPower}}
 	<footer class="card-footer">
-		{{#each data.properties}}
-		<span>{{this}}</span>
-		{{/each}}
-		{{#if data.materials.value}}
-		<p><strong>{{ localize "DND4E.RequiredMaterials" }}:</strong> {{data.materials.value}}</p>
-		{{/if}}
 	</footer>
-	{{/unless}}
+	
 </div>
