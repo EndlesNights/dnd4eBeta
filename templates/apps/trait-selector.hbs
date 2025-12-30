@@ -1,4 +1,4 @@
-<section>
+<section class="dialogue-content">
     {{#*inline "traitList"}}
     <ol class="trait-list">
         {{#each choices as |choice key|}}
@@ -23,7 +23,7 @@
 
     {{> traitList}}
     {{#if allowCustom}}
-    <div class="form-group stacked">
+    <div class="form-group vertical">
         <label>{{ localize "DND4E.TraitSelectorSpecial" }}</label>
         <input type="text" name="custom" value="{{custom}}" data-dtype="String"/>
     </div>
