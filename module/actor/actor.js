@@ -54,38 +54,34 @@ export class Actor4e extends Actor {
 		if(!data) { return super.update(data, options); }
 		
 		//used to call changes to HP scrolling text
-		const newHp = foundry.utils.getProperty(data, "system.attributes.hp.value") ?? this.system.attributes.hp.value;
-		if (newHp != this.system.attributes.hp.value) {			
-			options.dhp = newHp - this.system.attributes.hp.value;
-			//data.system.details.isBloodied = newHp <= (this.system.details.bloodied ?? this.system.attributes.hp.max/2) || this.statuses.has('bloodied');
-			let isBloodied = newHp <= (this.system.details.bloodied ?? this.system.attributes.hp.max/2) || this.statuses.has('bloodied');
-			data["system.details.isBloodied"] = isBloodied;
+		if(data[`system.attributes.hp.value`] != undefined && data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
+			options.dhp = data[`system.attributes.hp.value`] - this.system.attributes.hp.value;
+			data[`system.details.isBloodied`] = data[`system.attributes.hp.value`] <= (this.system.details.bloodied ?? this.system.attributes.hp.max/2);
 		}
 
 		// Apply changes in Actor size to Token width/height
-		const newSize = foundry.utils.getProperty(data, "system.details.size");
+		const newSize = data["system.details.size"];
 
 		if ( newSize && (options.forceSizeUpdate === true || (newSize !== foundry.utils.getProperty(this, "system.details.size")) )) {
 			let size = CONFIG.DND4E.tokenSizes[newSize];
 			if ( this.isToken ) this.token.update({height: size, width: size});
-			else if ( !foundry.utils.hasProperty(data, "prototypeToken.width") && !foundry.utils.hasProperty(data, "prototypeToken.width") ) {
+			else if ( !data["prototypeToken.width"] && !hasProperty(data, "prototypeToken.width") ) {
 				data["prototypeToken.height"] = size;
 				data["prototypeToken.width"] = size;
 			}
 		}
 
-		if (foundry.utils.hasProperty(data, "system.details.level")) {
-			if (this.system.details.tier != Math.clamp(Math.floor(( data.system.details.level - 1 ) /10 + 1),1,3)) {
-				this.system.details.tier = Math.clamp(Math.floor(( data.system.details.level - 1 ) /10 + 1),1,3);
-				data["system.details.tier"] = this.system.details.tier;
+		if(data[`system.details.level`]){
+			if(this.system.details.tier != Math.clamp(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3)){
+				this.system.details.tier = Math.clamp(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3);
+				data[`system.details.tier`] = this.system.details.tier;
 			}		
 		}
 
 		for (let [id, abl] of Object.entries(this.system.abilities)){
-			const ablValue = foundry.utils.getProperty(data, `system.abilities.${id}.value`);
-			if (ablValue) {				
-				if (this.system.abilities[id].mod != Math.floor((ablValue - 10) / 2)) {
-					data[`system.abilities[${id}].mod`] = Math.floor((ablValue - 10) / 2);
+			if(data[`system.abilities.${id}.value`]){
+				if(this.system.abilities[id].mod != Math.floor((data[`system.abilities.${id}.value`] - 10) / 2)){
+					data[`system.abilities.${id}.mod`] = Math.floor((data[`system.abilities.${id}.value`] - 10) / 2) 
 				}
 			}
 		}
@@ -126,16 +122,6 @@ export class Actor4e extends Actor {
 		// determine whether they are suppressed or not.
 		this.getActiveEffects().forEach(e => e.determineSuppression());
 		return super.applyActiveEffects();
-	}
-
-	/* -------------------------------------------- */
-
-	/** @override */
-	toggleStatusEffect(statusId, {active, overlay=false}={}) {
-		if (statusId === "bloodied") {
-			this.update({"system.details.isBloodied": this.system.attributes.hp.value <= (this.system.details.bloodied ?? this.system.attributes.hp.max/2) || active});
-		}
-		return super.toggleStatusEffect(statusId, {active, overlay=false}={});
 	}
 
 	/* -------------------------------------------- */
@@ -623,9 +609,8 @@ export class Actor4e extends Actor {
 			system.attributes.init.value = system.attributes.init.absolute;
 		}
 	}
-	_prepareDerivedDataMovement(actorData, system){
-		//calc movespeed
-		
+	
+	_prepareDerivedDataMovement(actorData, system){	//calc movespeed	
 		//bonus arrays first, since they want to appear on the sheet
 		let baseMoveBonusValue = system.movement.base.bonusValue || 0;
 		if(!(system.movement.base.bonus.length === 1 && jQuery.isEmptyObject(system.movement.base.bonus[0]))) {
@@ -2173,18 +2158,18 @@ export class Actor4e extends Actor {
 			extra = extra.replace(/;/g,'</li><li>');
 			extra = "<li>" + extra + "</li>";
 		}
+		
+		const hpGain = updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value);
 
 		ChatMessage.create({
 			user: game.user.id,
 			speaker: {actor: this, alias: this.name},
-			// flavor: restFlavor,
-			content: `${this.name} ${game.i18n.localize("DND4E.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize("DND4E.HPShort")} ${game.i18n.localize("DND4E.SecondWindChatEffect")}
-				<ul>
-					<li>${game.i18n.localize("DND4E.SecondWindEffect")}</li>
-					${extra}
-				</ul>`,
-				// content: this.system.name + " uses Second Wind, healing for " + (updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
-			//game.i18n.format("DND4E.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+			flavor: game.i18n.localize("DND4E.SecondWind"),
+			content: `${game.i18n.format("DND4E.SecondWindChat",{"name":this.name,"number":hpGain})}
+			<ul>
+				<li>${game.i18n.localize("DND4E.SecondWindEffect")}</li>
+				${extra}
+			</ul>`
 		});		
 	
 		this.applySecondWindEffect();
