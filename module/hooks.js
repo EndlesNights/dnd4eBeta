@@ -56,5 +56,5 @@ TokenBarHooks.powersBySheetGroup = (actor) => {
 }
 
 //v3 hook.  _generateItemSummary returns a jquery selector that the sheet wants.  Give the caller back just the html.
-TokenBarHooks.generateItemTooltip = async (actor, item) => (await actor._sheet._generateItemSummary(item)).get(0).outerHTML
+TokenBarHooks.generateItemTooltip = async (actor, item) => ""
 
