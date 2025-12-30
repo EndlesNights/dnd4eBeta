@@ -7,7 +7,7 @@ import {Helper} from "../helper.js";
  * Override and extend the core ItemSheet implementation to handle specific item types
  * @extends {ItemSheet}
  */
-export default class ItemSheet4e extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheet) {
+export default class ItemSheet4e extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ItemSheetV2) {
 	#dragDrop;
 
 	get dragDrop() {
@@ -104,7 +104,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			tabs: [
 				{
 					id: "content",
-					label: "DND4E.Content",
+					label: "DND4E.Contents",
 					condition: (item) => item.type === "backpack"
 				},
 				{
@@ -159,6 +159,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/* -------------------------------------------- */
 
+	/* Looks like 5e stuff, since we don't have a "class" type? - Fox
 	_initializeApplicationOptions(options) {
 		options = super._initializeApplicationOptions(options);
 		if (options.document.type === "class") {
@@ -166,7 +167,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			options.position.height = 680;
 		}
 		return options;
-	}
+	}*/
 
 	/* -------------------------------------------- */
 
@@ -886,14 +887,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	 * @private
 	 */
 	_getItemStatus(item) {
-		if ( item.type === "spell" ) {
-			return CONFIG.DND4E.spellPreparationModes[item.system.preparation];
-		}
-		else if ( ["weapon", "equipment"].includes(item.type) ) {
+		if ( ["weapon", "equipment"].includes(item.type) ) {
 			return game.i18n.localize(item.system.equipped ? "DND4E.Equipped" : "DND4E.Unequipped");
 		}
-		else if ( item.type === "tool" ) {
-			return game.i18n.localize(item.system.proficient ? "DND4E.Proficient" : "DND4E.NotProficient");
+		else {
+			return null;
 		}
 	}
 

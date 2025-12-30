@@ -39,6 +39,7 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
       rechargeRoll: new StringField({initial: ""}),
       rechargeCondition: new StringField({initial: ""}),
       damageShare: new BooleanField({initial: false}),
+	  effectHTML: new BooleanField({initial: false}),
       postEffect: new BooleanField({initial: true}),
       postSpecial: new BooleanField({initial: true}),
       autoGenChatPowerCard: new BooleanField({initial: true}),

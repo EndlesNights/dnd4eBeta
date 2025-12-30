@@ -495,7 +495,7 @@ export default class Item4e extends Item {
 					labels.featureSet = `${system.featureGroup}`;
 				};
 				if(system?.requirements){
-					labels.PreReqs = `<strong>${game.i18n.localize('DND4E.Requires')}:</strong> ${system.requirements}`;
+					labels.PreReqs = `<strong>${game.i18n.localize('DND4E.Prerequisite')}:</strong> ${system.requirements}`;
 				}			
 			}catch(e){
 				console.error(`Item labels failed for feature: ${itemData.name}. Item data has been dumped to debug. ${e}`);
@@ -881,7 +881,6 @@ export default class Item4e extends Item {
 	getDamageType(){
 		if(this.type == "power" && this.actor){
 			const weapon = Helper.getWeaponUse(this.system, this.actor);
-			// if(this.system.damageTypeOverride && weapon){
 			if(weapon && weapon.system.damageTypeOverride){
 				this.system.damageTypeOverride = true;
 				this.system.weaponDamageType = weapon.system.damageType;

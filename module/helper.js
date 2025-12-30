@@ -571,7 +571,7 @@ export class Helper {
 			return result
 		}
 
-		const actorInnerData = actorOrData?.getRollData?.() ?? actorOrData?.system.toObject() ?? actorOrData;
+		const actorInnerData = actorOrData?.getRollData?.() ?? actorOrData?.system ?? actorOrData;
 		if (actorInnerData) {
 			newFormula = Roll.replaceFormulaData(newFormula, actorInnerData);
 			if(powerInnerData) {
@@ -1167,7 +1167,7 @@ export class Helper {
 		powerDetail += `</div>`; //Close basics
 
 		if(chatData.requirement) {
-			powerDetail += `<p class="requirements"><strong>${game.i18n.localize("DND4E.Requirements")}:</strong> ${chatData.requirement}</p>`;
+			powerDetail += `<p class="requirement"><strong>${game.i18n.localize("DND4E.Requirement")}:</strong> ${chatData.requirement}</p>`;
 		}
 
 		if(chatData.trigger) {

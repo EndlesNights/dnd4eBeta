@@ -50,7 +50,6 @@
 	--color-text-good:green;
 	--color-text-bad:red;
 	--input-box-shadow:none;
-	--automath-brightness:0.1;
 	
 	.window-content{
 		padding:0.5em;
@@ -62,15 +61,11 @@
 	&.standard-form{
 		gap:0;
 	}
-	input[type=checkbox],
-	input[type=radio]{
-		--checkbox-size:1.75em);
-	}
 	input[type="checkbox"]::before,
 	input[type="radio"]::before,
 	input[type="checkbox"]::after,
 	input[type="radio"]::after{
-		line-height:1;
+		display:inline-block;
 	}
 	code:not(.block){
 		display:inline;
@@ -140,11 +135,23 @@
 }
 
 body.theme-dark .dnd4e.default{
-	--input-background-color:var(--color-cool-4);
 	--border-engraved:2px groove #000;
+	--border-heavy:3px solid #453832;
+	--border-medium:2px solid #453832;
+	--border-normal:1px solid #453832;
+	--border-faint:1px solid #453832;
 	--background:#221d21;
 	--color-form-hint:var(--color-text-subtle);
 	--white-svg-filter:brightness(0) saturate(100%) invert(91%) sepia(17%) saturate(207%) hue-rotate(345deg) brightness(103%) contrast(87%);
+	--automath-brightness:1;
+	--input-background-color:var(--color-cool-4);
+	--input-border-color:var(--border-faint);
+	--input-box-shadow:none;
+	--input-text-color:inherit;
+	--checkbox-font-weight:bold;
+	--checkbox-background-color:var(--color-cool-4);
+	--checkbox-checked-color:#253c5e;
+	--checkbox-checkmark-color:#fff;
 	
 	input,select,textarea,code-mirror{
 		--input-background-color:var(--color-cool-4);
@@ -154,24 +161,32 @@ body.theme-dark .dnd4e.default{
 	}
 	input[type=checkbox],
 	input[type=radio]{
-		--checkbox-font-weight:200;
+		--checkbox-font-weight:bold;
 		--checkbox-background-color:var(--color-cool-4);
 		--checkbox-checked-color:#253c5e;
 		--checkbox-checkmark-color:#fff;
 	}
 }
 body.theme-light .dnd4e.default{
-	--color-form-hint:var(--color-text-subtle);
-	--input-background-color:rgba(0,0,0,0.05);
 	--border-engraved:2px groove #fff;
 	--border-heavy:3px solid var(--color-text-subtle);
 	--border-medium:2px solid var(--color-text-subtle);
 	--border-normal:1px solid var(--color-text-subtle);
 	--border-faint:1px solid #c3b3ae;
+	--color-form-hint:var(--color-text-subtle);
 	--color-bg-btn-minor-inactive:rgba(255,255,255,0);
 	--color-bg-btn-minor-active:rgba(0,0,0,0.05);
 	--color-bg-option:unset;
 	--white-svg-filter:brightness(0) saturate(100%) invert(9%) sepia(1%) saturate(0%) hue-rotate(147deg) brightness(99%) contrast(89%);
+	--automath-brightness:0.1;
+	--input-background-color:rgba(0,0,0,0.05);
+	--input-border-color:#c3b3ae;
+	--input-box-shadow:none;
+	--input-text-color:inherit;
+	--checkbox-font-weight:400;
+	--checkbox-background-color:#c3b3ae;
+	--checkbox-checked-color:#253c5e;
+	--checkbox-checkmark-color:#fff;
 	
 	input,select,textarea,code-mirror{
 		--input-background-color:rgba(0,0,0,0.05);
@@ -211,13 +226,16 @@ body.theme-light .dnd4e.default{
 		padding:2px 1em 1em;
 		gap:2px;
 	}
-	.inline-list>li{
-		display:inline-block;
-		padding-right:0.8em;	
-	}
-	.inline-list>li::before{
-		content:'\2022';
-		padding-right:2px;
+	.inline-list{
+		margin:0;
+		> li{
+			display:inline-block;
+			padding-right:0.8em;	
+		}
+		> li::before{
+			content:'\2022';
+			padding-right:2px;
+		}
 	}
 	.collapsible{
 		&.collapsed{
@@ -260,6 +278,10 @@ body.theme-light .dnd4e.default{
 		&.enhancement-bonus{
 			margin-top:5px;
 		}
+		&.checkbox>input[type="checkbox"]{
+			flex-grow:0;
+			margin-left:auto;
+		}
 	}
 	a.button,button{
 		border:var(--border-faint);
@@ -300,10 +322,14 @@ body.theme-light .dnd4e.default{
 			text-shadow:none;
 		}
 	}
+	section.tab{
+		padding-top:0.5em;
+	}
 	.sheet-body{
 		flex:1;
 		overflow:hidden;
-		.tab{
+		
+		.tab{	
 			height:100%;
 			overflow:hidden auto;
 			align-content:flex-start;
@@ -319,6 +345,7 @@ body.theme-light .dnd4e.default{
 	input[type=time],input[type=datetime-local],
 	input[type=search],input[type=file],select{
 		border:var(--border-faint);
+        line-height:1;
 	}
 	multi-select>.tags.input-element-tags{
 		justify-content:flex-start;
@@ -328,6 +355,24 @@ body.theme-light .dnd4e.default{
 		height:var(--input-height);
 		border:var(--border-faint);
 		background:var(--input-background-color);
+	}
+	multi-select.inline{
+		flex-direction:row;
+		justify-content:flex-start;
+		flex-wrap:wrap;
+		
+		> .tags.input-element-tags{
+			flex:fit-content 0 0;
+		}
+		> select{
+			flex:fit-content 100 0;
+		}
+	}
+	textarea.no-mono{
+		height:3.2em;
+		min-height:3.2em;
+		flex:unset;
+		font-family:inherit;
 	}
 	form,
 	> section{
@@ -339,7 +384,6 @@ body.theme-light .dnd4e.default{
 	}
 	.section--sidebar{
 		max-width:260px;
-		margin-left:15px;
 		border-right:var(--border-heavy);
 		height:100%;
 		overflow-y:auto;
@@ -364,10 +408,6 @@ body.theme-light .dnd4e.default{
 			color:var(--color-label);
 			line-height:1;
 			
-			>.label-hint{
-				font-weight:normal;
-				font-style:oblique;
-			}
 			&.long{
 				max-width:unset;
 			}
@@ -375,6 +415,9 @@ body.theme-light .dnd4e.default{
 				text-align:right;
 				margin-right:0.35em;
 			}
+		}
+		.label{
+			font-weight:bold;
 		}
 		&.wide label{
 			max-width:208px;
@@ -407,19 +450,42 @@ body.theme-light .dnd4e.default{
 			.flex4{
 				flex:4;
 			}
+			.tight{
+				width:fit-content;
+                flex:fit-content 0 0;
+			}
 		}
-		&.stacked label{
-			flex:0 0 100%;
-			margin:0;
-			max-width:100%;
+		&.vertical{
+			flex-direction:column;
+			flex-wrap:nowrap;
+			gap:0.1rem;
+			align-items:stretch;
 			
-			&.checkbox{
+			label.checkbox{
 				flex:auto;
 				text-align:left;
 				line-height:1;
 			}
+			input[type=text],input[type=number],
+			input[type=password],input[type=date],
+			input[type=time],input[type=datetime-local],
+			input[type=search],input[type=file],select{
+				min-height:2em;
+			}
+			label{
+				flex:1;
+				max-width:unset;
+			}
 		}
-			
+	}
+	.rich-effect{
+		border:1px solid var(--input-border-color);
+		background:var(--input-background-color);
+		border-radius:4px;
+	}
+	.label-hint{
+		font-weight:normal;
+		font-style:oblique;
 	}
 	.section--utilities section{
 		margin-bottom:5px;
@@ -743,7 +809,14 @@ body.theme-light .dnd4e.default{
 			margin-left:0px;
 			border-bottom:var(--border-normal);
 		}
-	}	
+		h3{
+			font-size:medium;
+			margin:0;
+		}
+	}
+	ol.currency+ol.currency{
+		margin-top:-0.5rem;
+	}
 	.encumbrance{
 		height:12px;
 		cursor:pointer;
@@ -813,7 +886,7 @@ body.theme-light .dnd4e.default{
 	}
 	label.checkbox>input[type=checkbox],
 	label.checkbox>input[type=radio]{
-		--checkbox-size:1.75em;
+		--checkbox-size:1.2rem;
 	}
 	prose-mirror.active{
 		min-height:20em;
@@ -848,12 +921,6 @@ body.theme-light .dnd4e.default{
 		background:none;
 		border-width:0;
 		border-radius:0;
-		&.skill-mod{
-			position:relative;
-			top:-5px;
-			background:none;
-			border-width:0;
-		}
 	}
 	.sheet-header{
 		align-items:center;
@@ -1032,16 +1099,14 @@ body.theme-light .dnd4e.default{
 		border-top:var(--border-normal);
 	}
 	.section--abilities .ability--score input{
-		max-width:32px;
 		font-size:16px;
 		text-align:left;
 		font-weight:bold;
+		flex-basis:32px;
 	}
 	.section--abilities .ability--score .ability-name{
-		display:flex;
-		align-items:center;
-		min-width:140px;
 		font-size:16px;
+		margin-right:auto;
 	}
 	.ability-name{
 		display:inline-block;
@@ -1149,9 +1214,6 @@ body.theme-light .dnd4e.default{
 		width:40%;
 		border-bottom:var(--border-normal);
 		text-align:center;
-	}
-	.tab{
-        margin-left:1em;
 	}
 	.tab.attributes{
 		overflow:hidden;
@@ -1872,12 +1934,8 @@ body.theme-light .dnd4e.default{
 		.sheet-header{
 			font-size:20px;
 		}
-		input.ability-score{
-			height:30px;
-			width:36px;
-			margin:0 auto;
-			line-height:32px;
-			font-size:24px;
+		.tab{
+			margin-left:2px;
 		}
 		.attributes span.sep{
 			max-width:20px;
@@ -1896,15 +1954,24 @@ body.theme-light .dnd4e.default{
 			margin-left:2px;
 			margin-right:2px;
 		}
-		.ability-scores{
-			flex:0 0 100px;
-			height:429px;
-			list-style:none;
-			margin:0;
-			padding:0;
-			font-size:20px;
-			border:var(--border-engraved);
-			border-radius:3px;
+		.section--abilities{	
+			padding-top:2px;
+		
+			input.ability-score{
+				font-size:24px;
+				max-height:30px;
+				flex:44px 0 0;
+				margin:0 auto;
+			}			
+			.ability--score .ability-mod{
+				flex:2em 0 0;
+			}
+		}
+		input.skill-mod{
+			position:relative;
+			top:-5px;
+			background:none;
+			border-width:0;
 		}
 		.resource .attribute-value input{
 			flex:0 0 25%;
@@ -1949,7 +2016,7 @@ body.theme-light .dnd4e.default{
 			flex-grow:0;
 			position:relative;
 			height:80%;
-			flex-basis:1.45em;
+			flex-basis:2em;
 			border:var(--border-engraved);
 			border-radius:4px;
 		}
@@ -2339,92 +2406,109 @@ body.theme-light .dnd4e.default{
 	.sheet-navigation .item{
 		font-size:18px;
 	}
-	.details{
-		.form-group{
-			span{
-				text-align:center;
-			}
-			span.checkbox{
-				display:flex;
-				align-items:center;
-				justify-content:flex-start;
-			}
-			.attack-roll span{
-				flex: 0 0 50px;
-			}
-			.attack-roll select:first-of-type {
-				min-width: 122px;
-			}
-			.item-range span:first-of-type{
-				flex:0 0 16px;
-			}
-			.item-range span:not(.sep):last-of-type{
-				flex:0 0 0px;
-				min-width: 94px;
-			}
-			.item-range select:first-of-type{
-				min-width: 88px;
-			}
-			&.input-select select{
-				flex:1.8;
-			}
-			&.input-select-select select{
-				flex:1.5;
-			}
-			&.two-input input{
-				flex:0.5;
-			}
-			&.two-input span {
-				flex:0 0 16px;
-			}
-			&.two-input select,
-			.item-range input{
-				flex:1;
-			}
-			&.two-input label.source-name{
-				max-width:100px;
-				text-align:right;
-				padding-right:0.5em;
-			}
-			&.two-input input.source-name{
-				flex-basis:20%;
-			}
-			&:is(.weapon-properties,.feature-keywords) label.checkbox{
-				flex:0 0 118px;
-			}
-			&:is(.weapon-properties,.feature-keywords) label:not(.checkbox,.damage-override){
-				flex:100% 0 0;
-				max-width:unset;
-			}
+	.form-group{
+		span{
+			text-align:center;
 		}
-		span.sep{
-			flex:0 0 8px;
+		span.checkbox{
+			display:flex;
+			align-items:center;
+			justify-content:flex-start;
 		}
-		.prepared{
-			flex:1.3 !important;
+		.attack-roll span{
+			flex: 0 0 50px;
+		}
+		.attack-roll select:first-of-type {
+			min-width: 122px;
+		}
+		.item-range span:first-of-type{
+			flex:0 0 16px;
+		}
+		.item-range span:not(.sep):last-of-type{
+			flex:0 0 0px;
+			min-width: 94px;
+		}
+		.item-range select:first-of-type{
+			min-width: 88px;
+		}
+		.consumption select.consume-type{
+			flex:1;
+		}
+		.consumption select.consume-target{
+			width:80%;
+		}
+		.item-range .range-within-of{
+			flex:1 0 6px;
+		}
+		.item-range .range-of{
+			flex:0 0 64px;
+		}
+		&.input-select select{
+			flex:1.8;
+		}
+		&.input-select-select select{
+			flex:1.5;
+		}
+		&.two-input input{
+			flex:0.5;
+		}
+		&.two-input span {
+			flex:0 0 16px;
+		}
+		&.two-input select,
+		.item-range input{
+			flex:1;
+		}
+		&.two-input label.source-name{
+			max-width:100px;
 			text-align:right;
-			padding-right:10px;
+			padding-right:0.5em;
 		}
-		.spell-materials{
-			flex:0 0 100%;
-			margin:0.25em 0;
+		&.two-input input.source-name{
+			flex-basis:20%;
+		}
+		&.columns-4 label.checkbox{
+			flex:0 0 118px;
+		}
+		&.columns-4 label:not(.checkbox,.damage-override){
+			flex:100% 0 0;
+			max-width:unset;
+		}
+		&.right{
 			justify-content:flex-end;
 		}
-		.spell-materials label{
-			flex:0 0 64px;
-			text-align:right;
-			margin-right:5px;
-			font-size:12px;
-			line-height:24px;
+		&.right>label{
+			flex-grow:0;
+			flex-basis:fit-content;
 		}
-		.spell-materials input[type="text"]{
-			flex:0 0 48px;
-			margin-right:10px;
-		}
+	}
+	span.sep{
+		flex:0 0 8px;
+	}
+	.prepared{
+		flex:1.3 !important;
+		text-align:right;
+		padding-right:10px;
+	}
+	.spell-materials{
+		flex:0 0 100%;
+		margin:0.25em 0;
+		justify-content:flex-end;
+	}
+	.spell-materials label{
+		flex:0 0 64px;
+		text-align:right;
+		margin-right:5px;
+		font-size:12px;
+		line-height:24px;
+	}
+	.spell-materials input[type="text"]{
+		flex:0 0 48px;
+		margin-right:10px;
 	}
 	ul.auto-keywords{
 		padding-left:0;
-		font-size:var(--font-size-11);
+		font-size:var(--font-size-12);
 		font-weight:bold;
 		color:var(--color-label);
 		line-height:1;
@@ -2442,9 +2526,28 @@ body.theme-light .dnd4e.default{
 		margin:0;
 		padding:0;
 	}
-	.damage-parts .damage-part {
+	.damage-parts .damage-part{
 		flex:0 0 100%;
-		padding: 0 0 2px;
+		padding:0 0 2px;
+		gap:0.25rem;
+	}
+	.damage-parts .damage-part label{
+		font-weight:600;
+		text-align:right;
+	}
+	.damage-parts .damage-part input{
+		flex:2;
+	}
+	.damage-parts .damage-part select{
+		margin-left:5px;
+		flex:1;
+	}
+	.damage-control{
+		width:18px;
+		flex:0 0 18px;
+		float:right;
+		text-align:right;
+		opacity:0.75;
 	}
 	.res-group{
 		width:100%;
@@ -2455,21 +2558,6 @@ body.theme-light .dnd4e.default{
 	}
 	.res-group .damage-parts .damage-part{
 		margin-bottom:6px;
-	}
-	.damage-parts .damage-part input{
-		flex:3;
-	}
-	.damage-parts .damage-part select{
-		margin-left:5px;
-		flex:1;
-	}
-	.damage-control{
-		width:18px;
-		flex:0 0 18px;
-		line-height:24px;
-		float:right;
-		text-align:right;
-		opacity:0.75;
 	}
 	.onetext-parts{
 		list-style:none;
@@ -2488,29 +2576,6 @@ body.theme-light .dnd4e.default{
 		text-align:right;
 		opacity:0.75;
 	}
-	.form-group{
-		.consumption select.consume-type{
-			flex:1;
-		}
-		.consumption select.consume-target{
-			width:80%;
-		}
-		.item-range .range-within-of{
-			flex:1 0 6px;
-		}
-		.item-range .range-of{
-			flex:0 0 64px;
-		}
-		label.auto-card{
-			max-width:208px;
-		}
-	}
-	.item-sheet.consumable .form-group :is(.display-effect,.effect-html){
-		text-align:right;
-	}
-	.item-sheet.weapon label.damage-override{
-		max-width:250px;
-	}
 	.macro-text{
 		height:calc(100% - 132px);
 	}
@@ -2528,6 +2593,12 @@ body.theme-light .dnd4e.default{
 		line-height:22px;
 	}
 }
+	.item-sheet.consumable .form-group :is(.display-effect,.effect-html){
+		text-align:right;
+	}
+	.item-sheet.weapon label.damage-override{
+		max-width:250px;
+	}
 
 
 /* ----------------------------------------- */
@@ -2539,8 +2610,6 @@ body.theme-light .dnd4e.default{
 }
 .dnd4e.active-effect-config.default .window-content{
 	section.tab{
-		padding-top:0.5em;
-		
 		header.effect-status{
 			display:grid;
 			grid-template-columns: 2fr 5fr 1rem;
@@ -2626,18 +2695,6 @@ body.theme-light .dnd4e.default{
 		.form-group.statuses{
 			display:grid;
 		}
-		fieldset:is(.dots,.keywords) multi-select{
-			flex-direction:row;
-			justify-content:flex-start;
-			flex-wrap:wrap;
-			
-			> .tags.input-element-tags{
-				flex:fit-content 0 0;
-			}
-			> select{
-				flex:fit-content 100 0;
-			}
-		}
 		&.scrollable{
 			height:100%;
 			overflow-y:auto;
@@ -2666,7 +2723,7 @@ body.theme-light .dnd4e.default{
 #token-hud .status-effects{
 	grid-template-columns:25px 25px 25px 25px 25px 25px 25px
 }
-#trait-selector{
+#trait-selector .window-content{
 	.trait.has-children .trait-list{
 		columns:2;
 	}
@@ -2699,6 +2756,27 @@ body.theme-light .dnd4e.default{
 		height:18px;
 	}
 }
+section.dialogue-content{
+	display:flex;
+	flex-direction:column;
+	padding-top:0.5em;
+	gap:0.5em;
+	header{
+		display:flex;
+		justify-content:space-between;
+		align-items:center;
+		font-weight:600;
+		> h1{
+			font-size:x-large;
+			margin-bottom:0;
+		}
+	}
+	+footer{
+		padding-top:0.5em;
+	}
+}
+section.dialogue-content
+section.dialogue-content
 
 /* Tooltip text */
 .tooltip .tooltipcontent{
@@ -3128,6 +3206,7 @@ input[type="text"].dice-count{
 		flex-direction:column;
 		overflow:hidden;
 		transition:all 250ms ease;
+		padding:0;
 	}
 	.effects-tray label .fa-caret-down{
 		transition:all 250ms ease;
@@ -3176,6 +3255,12 @@ input[type="text"].dice-count{
 		justify-content:center;
 		padding:0 0 0 4px;
 		font-size:0.75rem;
+	}
+	&:is(.feature-card,.ritual-card) .card-header{
+		background:var(--background-other);
+	}
+	&:is(.consumable-card,.loot-card,.equipment-card,.weapon-card,.backpack-card,.tool-card) .card-header{
+		background:var(--background-item);
 	}
 }
 

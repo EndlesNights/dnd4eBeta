@@ -62,7 +62,7 @@
 {{/if}}
 
 <div class="active-effects">
-  <h4 class="attribute-name box-title">{{localize 'DND4E.Effects'}}</h4>
+  {{#if system.resistances}}<h4 class="attribute-name box-title">{{localize 'DND4E.Effects'}}</h4>{{/if}}
   <ol class="item-list effects-list">
     {{#each effects as |section sid|}}
     <li class="items-header flexrow" data-effect-type="{{section.type}}">

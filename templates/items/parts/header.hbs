@@ -1,4 +1,4 @@
-<header class="sheet-header flexrow">
+<header class="sheet-header flexrow item-{{item.type}}">
   <div class="image-frame">
     <img class="profile" src="{{item.img}}" data-tooltip="{{item.name}}" data-action="editImage" data-edit="img" height="100" width="100" />
     <a class="hover-icon item-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="showImage"><i class="fas fa-image fa-fw"></i></a>
@@ -11,31 +11,31 @@
 
     <div class="item-subtitle">
       <h4 class="item-type">{{itemTypeLabel}}</h4>
-      <span class="item-status">{{itemStatus}}</span>
+      {{#if itemStatus}}<span class="item-status">{{itemStatus}}</span>  {{/if}}
     </div>
 
-    <ul class="summary flexrow">
-      {{#if summaryLabel}}
+    <ul class="summary flexrow">{{log this}}
+      {{#if this.summaryLabel}}
         <li>
           <label>{{summaryLabel}}</label>
         </li>
       {{/if}}
-      {{#if (eq system.type "power")}}
+      {{#if (eq this.itemType "power")}}
         <li>
           <input type="text" name="system.subName" value="{{system.subName}}" placeholder="{{ localize 'DND4E.SubName' }}"/>
         </li>
       {{/if}}
-      {{#if (eq system.type "ritual")}}
+      {{#if (eq this.itemType "ritual")}}
         <li>
           {{localize 'DND4E.Ritual'}}
         </li>
       {{/if}}
-      {{#if showLevel}}
+      {{#if this.showLevel}}
         <li>
           <input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4E.Level' }}"/>
         </li>
       {{/if}}
-      {{#if showRarity}}
+      {{#if this.showRarity}}
         <li>
           <input type="text" name="system.rarity" value="{{system.rarity}}" placeholder="{{ localize 'DND4E.Rarity' }}"/>
         </li>
