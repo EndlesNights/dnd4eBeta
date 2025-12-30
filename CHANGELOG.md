@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.7.3 BETA
+- Major item sheet overhauls, with the goal of making data input more simple. (Fox)
+- General CSS fixes and cleanups to make stuff look better under v13 defaults. (Fox)
+- Various text corrections, updates, rewording, typo fixes and other revisions to improve game language & translateability. (Fox)
+- Restored some fields and behaviors that were lost or broken under v13. (Fox)
+- TAH compatibility update. (Draconas)
+
 ## Version 0.7.2.1 BETA
 Just a hotfix from Fox for the NPC sheets she broke in the last beta!
 
@@ -1323,6 +1330,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
