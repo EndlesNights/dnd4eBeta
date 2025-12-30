@@ -1,9 +1,8 @@
 {{!-- Tool Proficiency --}}
 <div class="form-group">
-  <label>{{ localize "DND4E.RollFormula" }}</label>
-  <input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize "DND4E.RollPlaceholderTool"}}"/>
+  <label>{{ localize "DND4E.RollFormula" }} <i data-tooltip="{{ localize 'DND4E.ToolFormulaDescription'}}" class="fa-solid fa-circle-question"></i></label>
+  <input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize 'DND4E.RollPlaceholderTool'}}" />
 </div>
-<label>{{ localize "DND4E.ToolFormulaDescription"}}</label>
 <div class="form-group">
   <label>{{ localize "DND4E.RollBonus" }}</label>
   <input type="text" name="system.bonus" value="{{system.bonus}}"/>
@@ -18,7 +17,7 @@
 </div>
 
 {{!-- Chat Message Flavor --}}
-<div class="form-group stacked">
-  <label>{{ localize "DND4E.ChatFlavor" }}</label>
-  <input type="text" name="system.description.chat" value="{{system.description.chat}}" placeholder="{{ localize 'DND4E.ChatFlavorPlaceholder'}}"/>
+<div class="form-group vertical">
+  <label>{{ localize "DND4EUI.ChatFlavor" }}</label>
+  <textarea class="no-mono" name="system.description.chat" placeholder="{{ localize 'DND4EUI.ChatFlavorPlaceholder'}}">{{system.description.chat}}</textarea>
 </div>
