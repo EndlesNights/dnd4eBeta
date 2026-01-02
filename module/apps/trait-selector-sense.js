@@ -7,10 +7,11 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
     id: "trait-selector",
     classes: ["dnd4e","standard-form","default"],
     window: {
-      title: "Actor Trait Selection"
+      title: "Actor Trait Selection",
+	  resizable: true
     },
     position: {
-      width: 320,
+      width: 340,
       height: "auto"
     },
     form: {

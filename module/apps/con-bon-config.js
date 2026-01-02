@@ -14,7 +14,8 @@ export default class ConBonConfig extends DocumentSheet4e {
 			height: "auto"
 		},
 		window: {
-			contentClasses: ["standard-form"]
+			contentClasses: ["standard-form"],
+			resizable: true
 		},
 		tag: "form"
 	}

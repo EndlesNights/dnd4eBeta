@@ -16,7 +16,8 @@ export default class HPOptions extends DocumentSheet4e {
 			height: "auto",
 		},
 		window: {
-			contentClasses: ["standard-form"]
+			contentClasses: ["standard-form"],
+			resizable: true
 		},
 		tag: "form",
 	}
