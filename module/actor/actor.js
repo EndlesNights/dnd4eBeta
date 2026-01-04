@@ -157,7 +157,11 @@ export class Actor4e extends Actor {
 
 		for ( const token of tokens ) {
 			if ( !token.object?.visible || token.isSecret ) continue;
-			if ( token.hasDynamicRing ) token.flashRing(key, pct, value < 0);
+			if ( token.hasDynamicRing ) {
+				token.flashRing(key, pct, value < 0).then(() => {
+					token.object?.renderFlags.set({ refreshRingVisuals: true });
+				});
+			}
 			const t = token.object;
 			canvas.interface.createScrollingText(t.center, value.signedString(), {
 				anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
