@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.7.4
+- Another round of general styling updates, this time focused on system dialogues for rolls and character config. (Fox)
+- Fixes a bug introduced in v13 updates, where saving throws against a specific effect no longer worked. They should now function correctly for both direct rolls (from the effect list) and for effects selected after opening the general save dialogue. (Fox)
+
 ## Version 0.7.3 BETA
 - Major item sheet overhauls, with the goal of making data input more simple. (Fox)
 - General CSS fixes and cleanups to make stuff look better under v13 defaults. (Fox)
@@ -1330,6 +1334,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
