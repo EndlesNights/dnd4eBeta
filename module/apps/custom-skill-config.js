@@ -13,13 +13,13 @@ export default class CustomSkillConfig extends foundry.applications.api.Handleba
 
 	static DEFAULT_OPTIONS = {
 		id: "config-custom-skill-config",
-		classes: ["custom-skill-config","standard-form","default"],
+		classes: ["dnd4e","custom-skill-config","standard-form","default"],
 		window: {
-			title: "SETTINGS.4eShowCustomSkillL",
+			title: "SETTINGS.4eCustomSkillsL",
 			resizable: true
 		},
 		position: {
-			width: 835,
+			width: 480,
 			height: "auto"
 		},
 		tag: "form",

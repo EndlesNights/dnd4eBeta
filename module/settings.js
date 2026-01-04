@@ -107,9 +107,9 @@ export const registerSystemSettings = function() {
 	
 	// Custom Skills
 	game.settings.registerMenu("dnd4e", "show-custom-skill", {
-		name: "SETTINGS.4eShowCustomSkillN",
-		label: "SETTINGS.4eShowCustomSkillL",
-		hint: "SETTINGS.4eShowCustomSkillH",
+		name: "SETTINGS.4eCustomSkillsN",
+		label: "SETTINGS.4eCustomSkillsL",
+		hint: "SETTINGS.4eCustomSkillsH",
 		icon: 'fas fa-cog',
 		type: CustomSkillConfig,
 		restricted: true,

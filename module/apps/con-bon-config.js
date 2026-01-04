@@ -14,13 +14,14 @@ export default class ConBonConfig extends DocumentSheet4e {
 			height: "auto"
 		},
 		window: {
-			contentClasses: ["standard-form"]
+			contentClasses: ["standard-form"],
+			resizable: true
 		},
 		tag: "form"
 	}
 
 	get title() {
-		return `${this.document.name} — ${game.i18n.localize("DND4E.CommonAttackBonuses")}`;
+		return `${this.document.name} — ${game.i18n.localize("DND4EUI.ConditionalAtkMods")}`;
 	}
 
 	static PARTS = {

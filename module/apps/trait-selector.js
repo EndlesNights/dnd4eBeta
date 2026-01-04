@@ -7,10 +7,11 @@ export default class TraitSelector extends foundry.applications.api.HandlebarsAp
     id: "trait-selector",
     classes: ["dnd4e","standard-form","default"],
     window: {
-      title: "Actor Trait Selection"
+      title: "Actor Trait Selection",
+	  resizable: true
     },
     position: {
-      width: 320,
+      width: 340,
       height: "auto"
     },
     form: {
@@ -83,11 +84,11 @@ export default class TraitSelector extends foundry.applications.api.HandlebarsAp
       }
     }
 
-
     context.allowCustom = this.options.allowCustom;
     context.choices = choices;
     context.custom = attr ? attr.custom : "";
     context.buttons = [{type: "submit", icon: "far fa-save", label: "DND4E.Save"}];
+	context.heading = this.options.window.title;
     
     // Return data
 	  return context;

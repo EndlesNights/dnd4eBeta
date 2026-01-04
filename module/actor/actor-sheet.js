@@ -1530,7 +1530,7 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		if(isFF){
 			return this.actor.rollSave(event,{isFF});
 		}
-		return new SaveThrowDialog(this.actor).render(true);
+		return new SaveThrowDialog({document: this.actor}).render(true);
 	}
 
 	_onSavingThrowBonus(event) {
@@ -1608,11 +1608,16 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_onRollEffectSave(event){
 		event.preventDefault();
 		//console.debug("roll Save Throw v Effect!");
-
 		const effectId = event.currentTarget.closest(".item").dataset.effectId;
-		const effect = this.actor.effects.get(effectId);
+		const effect = this.actor.effects.get(effectId);	
+		const saveDC = effect.flags.dnd4e?.effectData?.saveDC || 10;
+		const isFF = Helper.isRollFastForwarded(event);
+		
+		if(isFF){
+			return this.actor.rollSave(event,{isFF,"effectSave":true,"dc":saveDC,"effectId":effectId});
+		}
 
-		let save = new SaveThrowDialog(this.actor, {effectSave:true, effectId: effectId}).render(true);
+		let save = new SaveThrowDialog({"document":this.actor,"effectSave":true,"saveDC":saveDC,"effectId":effectId}).render(true);
 
 		// console.debug(save)
 		// console.debug(effectId);
@@ -1721,41 +1726,41 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 	_onTraitSelector(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.querySelector(".list-label");
+		const label = a.getAttribute('data-app-title') || "Label error";
 		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, window: {title: label.innerText}, choices};
+		const options = { name: a.dataset.target, window: {title: label}, choices};
 		new TraitSelector({document: this.actor, ...options}).render(true);
 	}
 
 	_onTraitSelectorWeapon(event){
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.querySelector(".list-label");
+		const label = a.getAttribute('data-app-title') || "Label error";
 		const choices = CONFIG.DND4E.weaponProficienciesMap;
-		const options = { name: a.dataset.target, window: {title: label.innerText}, choices, datasetOptions: a.dataset.options, config:CONFIG};
+		const options = { name: a.dataset.target, window: {title: label}, choices, datasetOptions: a.dataset.options, config:CONFIG};
 		new TraitSelector({document: this.actor, ...options}).render(true);
 	}
 
 	_onTraitSelectorSense(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		// const label = a.parentElement.parentElement.querySelector("h4");
-		const label = a.parentElement.querySelector(".list-label");
+		const label = a.getAttribute('data-app-title') || "Label error";
 		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, window: {title: label.innerText}, choices };
+		const options = { name: a.dataset.target, window: {title: label}, choices };
 		new TraitSelectorValues({document: this.actor, ...options}).render(true);
 	}
 	
 	async _onListStringInput(event) {
 		event.preventDefault();
 		const a = event.currentTarget;
-		const label = a.parentElement.querySelector("span");
+		const label = a.getAttribute('data-app-title') || "Label error";
 		const currValue = foundry.utils.getProperty(this.actor, a.dataset.target) ?? [];
 		const {traits=""} = await foundry.applications.api.Dialog.input({
 			id: "trait-selector",
 			classes: ["dnd4e"],
 			window: {
-				title: `${this.actor.name} - ${label.innerText}`
+				title: `${this.actor.name} - ${label}`,
+				resizable: true
 			},
 			position: {
 				width: 320,

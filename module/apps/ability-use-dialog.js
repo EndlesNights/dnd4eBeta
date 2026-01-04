@@ -59,7 +59,8 @@ export default class AbilityUseDialog extends foundry.applications.api.Dialog {
       const dlg = new this({
         item,
         window: {
-          title: `${item.name}: Usage Configuration`
+          title: `${item.name}: Usage Configuration`,
+		  resizable: true
         },
         content: html,
         buttons: [

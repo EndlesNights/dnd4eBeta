@@ -1,4 +1,6 @@
-<section class="dialogue-content">
+<div class="dialogue-content">
+	<h1 class="form-title">{{heading}}</h1>
+
     {{#*inline "traitList"}}
     <ol class="trait-list">
         {{#each choices as |choice key|}}
@@ -28,4 +30,4 @@
         <input type="text" name="custom" value="{{custom}}" data-dtype="String"/>
     </div>
     {{/if}}
-</section>
+</div>

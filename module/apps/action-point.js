@@ -4,7 +4,7 @@ export class ActionPointDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "action-point",
-		classes: ["action-point","standard-form","default"],
+		classes: ["dnd4e","action-point","standard-form","default"],
 		form: {
 			closeOnSubmit: true,
 			handler: this.#onSubmit
@@ -14,7 +14,8 @@ export class ActionPointDialog extends DocumentSheet4e {
 			height: "auto"
 		},
 		window: {
-			contentClasses: ["standard-form"]
+			contentClasses: ["standard-form"],
+			resizable: true
 		},
 		tag: "form"
 	}
