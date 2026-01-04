@@ -134,7 +134,16 @@
 	}
 }
 
-body.theme-dark .dnd4e.default{
+.sheet.standard-form{
+	gap:0;
+	.window-content,
+	&.window-content{
+		padding:0.5em;
+		gap:0;
+	}
+}
+
+body.theme-dark .dnd4e:is(.default,.standard-form){
 	--border-engraved:2px groove #000;
 	--border-heavy:3px solid #453832;
 	--border-medium:2px solid #453832;
@@ -167,7 +176,7 @@ body.theme-dark .dnd4e.default{
 		--checkbox-checkmark-color:#fff;
 	}
 }
-body.theme-light .dnd4e.default{
+body.theme-light .dnd4e:is(.default,.standard-form){
 	--border-engraved:2px groove #fff;
 	--border-heavy:3px solid var(--color-text-subtle);
 	--border-medium:2px solid var(--color-text-subtle);
@@ -218,12 +227,12 @@ body.theme-light .dnd4e.default{
 }
 
 /* ------------ All Sheets ---------- */
-.dnd4e.sheet.default .window-content{
+.dnd4e:is(.default,.standard-form) .window-content{
 	--input-height:2em;
 	--checkbox-size:1.75rem;
 	
 	fieldset{
-		padding:2px 1em 1em;
+		padding:0.5em 1em 1em;
 		gap:2px;
 	}
 	.inline-list{
@@ -238,18 +247,6 @@ body.theme-light .dnd4e.default{
 		}
 	}
 	.collapsible{
-		&.collapsed{
-			.fa-caret-down{
-				transform:rotate(-90deg);
-			}
-			.collapsible-content{
-				grid-template-rows:0fr;
-			}
-		}
-		.fa-caret-down{
-			flex:0;
-			transition:transform 250ms ease;
-		}
 		.collapsible-content{
 			display:grid;
 			grid-template-rows:1fr;
@@ -258,16 +255,28 @@ body.theme-light .dnd4e.default{
 				overflow:hidden;
 			}
 		}
+		.fa-caret-down{
+			flex:0;
+			transition:transform 250ms ease;
+		}
+		&.collapsed{
+			.fa-caret-down{
+				transform:rotate(-90deg);
+			}
+			.collapsible-content{
+				grid-template-rows:0fr;
+			}
+		}
 	}
 	.section--tabs{
 		flex:0;
 	}
 	.section--tabs nav.sheet-tabs{
-		border-top:0px;
+		border-top:0;
 		border-bottom:var(--border-normal);
 	}
 	.form-header{
-		margin:0.5em 0 0 0;
+		margin:0.5em 0 0;
 		padding:2px 0;
 		border-top:var(--border-engraved);
 		border-bottom:var(--border-engraved);
@@ -278,9 +287,17 @@ body.theme-light .dnd4e.default{
 		&.enhancement-bonus{
 			margin-top:5px;
 		}
-		&.checkbox>input[type="checkbox"]{
+		&.checkbox{
+			justify-content:space-between;
+		}
+		&.checkbox>*:last-child{
 			flex-grow:0;
 			margin-left:auto;
+		}
+		&.checkbox>label{
+			flex:fit-content 0 0;
+			font-family:var(--font-body);
+			font-size:0.68em;
 		}
 	}
 	a.button,button{
@@ -340,10 +357,10 @@ body.theme-light .dnd4e.default{
 	input::placeholder{
 		opacity:0.4;
 	}
-	input[type=text],input[type=number],
-	input[type=password],input[type=date],
-	input[type=time],input[type=datetime-local],
-	input[type=search],input[type=file],select{
+	input[type='text'],input[type='number'],
+	input[type='password'],input[type='date'],
+	input[type='time'],input[type='datetime-local'],
+	input[type='search'],input[type='file'],select{
 		border:var(--border-faint);
         line-height:1;
 	}
@@ -404,23 +421,36 @@ body.theme-light .dnd4e.default{
 	.form-group{
 		label{
 			flex:2;
+			line-height:1;
 			max-width:174px;
 			color:var(--color-label);
-			line-height:1;
 			
 			&.long{
 				max-width:unset;
 			}
-			&.inline.before{
+			&.inline::before{
 				text-align:right;
 				margin-right:0.35em;
 			}
-		}
-		.label{
-			font-weight:bold;
-		}
+			&.checkbox{
+				font-size:1em;
+				
+				>input[type='checkbox'],
+				>input[type='radio']{
+					--checkbox-size:1.2rem;
+				}
+			}
+		}			
 		&.wide label{
 			max-width:208px;
+		}
+		&.columns-4 label.checkbox{
+			flex:0 0 118px;
+			font-size:0.9em;
+		}
+		&.columns-4 label:not(.checkbox,.damage-override){
+			flex:100% 0 0;
+			max-width:unset;
 		}
 		.form-fields{
 			display:flex;
@@ -455,28 +485,50 @@ body.theme-light .dnd4e.default{
                 flex:fit-content 0 0;
 			}
 		}
-		&.vertical{
-			flex-direction:column;
-			flex-wrap:nowrap;
-			gap:0.1rem;
-			align-items:stretch;
-			
-			label.checkbox{
-				flex:auto;
-				text-align:left;
-				line-height:1;
-			}
-			input[type=text],input[type=number],
-			input[type=password],input[type=date],
-			input[type=time],input[type=datetime-local],
-			input[type=search],input[type=file],select{
-				min-height:2em;
-			}
-			label{
-				flex:1;
-				max-width:unset;
-			}
+	}
+	.vertical{
+		flex-direction:column;
+		flex-wrap:nowrap;
+		gap:0.1rem;
+		align-items:stretch;
+		
+		label.checkbox{
+			flex:auto;
+			text-align:left;
+			line-height:1;
 		}
+		input[type='text'],input[type='number'],
+		input[type='password'],input[type='date'],
+		input[type='time'],input[type='datetime-local'],
+		input[type='search'],input[type='file'],select{
+			min-height:2em;
+		}
+		label{
+			flex:1;
+			max-width:unset;
+		}
+	}
+	.loose{
+		justify-content:space-between;
+		flex-wrap:nowrap;
+		
+		>*{
+			flex:fit-content;
+		}
+	}
+	.right{
+		justify-content:flex-end;
+		
+		>label{
+			flex-grow:0;
+			flex-basis:fit-content;
+		}
+	}
+	.label,.list-label{
+		font-weight:bold;
+	}
+	:not(.form-group,.form-header)>.checkbox .label{
+		font-weight:bold;
 	}
 	.rich-effect{
 		border:1px solid var(--input-border-color);
@@ -491,7 +543,7 @@ body.theme-light .dnd4e.default{
 		margin-bottom:5px;
 	}
 	.section--utilities section+section{
-		border-left:var(--border-normal);
+		border-left:var(--border-faint);
 	}
 	.image-frame{
 		max-width:100px;
@@ -500,7 +552,6 @@ body.theme-light .dnd4e.default{
 		
 		.profile{
 			flex:0 0 100px;
-			margin-right:0px;
 			object-fit:cover;
 			object-position:top;
 			display:block;
@@ -513,7 +564,7 @@ body.theme-light .dnd4e.default{
 			display:none;
 			position:absolute;
 			right:2px;
-			bottom:0px;
+			bottom:0;
 			text-shadow:-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 			color:#fff;
 		}
@@ -545,7 +596,7 @@ body.theme-light .dnd4e.default{
 			}
 		}
 		img{
-			margin-right:0px;
+			margin-right:0;
 		}
 		.summary-name{
 			flex-basis:calc(46% - 34px);
@@ -601,17 +652,15 @@ body.theme-light .dnd4e.default{
 		}
 		.header-details{
 			margin-left:0.5em;
+			font-family:"Modesto Condensed", "Palatino Linotype", serif;
+			font-size:20px;
+			font-weight:700;
 		}
 		.header-details h1{
 			font-size:1.5em;
 			margin-bottom:0;
 			height:100%;
 			--input-height:1.8em;
-		}
-		.header-details{
-			font-family:"Modesto Condensed", "Palatino Linotype", serif;
-			font-size:20px;
-			font-weight:700;
 		}
 	}	
 	.item-list{
@@ -630,71 +679,64 @@ body.theme-light .dnd4e.default{
 		.item-controls{
 			flex:0 0 36px;
 		}
-		:is(.item,.effect){
+		.item{
 			line-height:1;
 			padding:0 2px;
 			border-bottom:var(--border-faint);
-		}
-		.item:last-child,
-		.effect:last-child{
-			border-bottom:none;
-		}
-		.effect .item-name,
-		.item .item-name{
-			cursor:pointer;
-			max-height:30px;
-			overflow:hidden;
-			height:30px;
-		}
-		.effect .item-image,
-		.item .item-image{
-			flex:0 0 30px;
-			max-width:30px;
-			margin-right:5px;
-			border:unset;
-		}
-		.item:hover .rollable .item-image,
-		.item:hover .item-image.rollable{
-			background:url("/icons/svg/d20-grey.svg") no-repeat;
-			background-size:contain;
-		}
-		.effect .item-image.rollable:hover,
-		.effect .rollable .item-image:hover,
-		.item .item-image.rollable:hover,
-		.item .rollable .item-image:hover{
-			background:url("/icons/svg/d20-black.svg") no-repeat;
-			background-size:contain;
-		}
-		.item:hover .rollable .item-image img,
-		.item:hover .item-image.rollable img,
-		.item .item-image.rollable:hover img,
-		.item .rollable .item-image:hover img,
-		.effect .item-image.rollable:hover img,
-		.effect .rollable .item-image:hover img{
-			opacity:0;
-		}
-		.item .item-name h4{
-			margin:0;
-			white-space:nowrap;
-			overflow-x:hidden;
-			font-family:var(--font-body);
-			font-weight:normal;
-			font-size:medium;
-			overflow:hidden;
-		}
-		.item .item-uses input{
-			width:24px;
-			text-align:right;
-			margin-right:-6px;
-		}
-		.item .item-properties{
-			margin-top:3px;
-		}
-		.item .item-recharge{
-			flex:0 0 80px;
-			text-align:right;
-			font-size:11px;
-			white-space:nowrap;
+			
+			&:last-child{
+				border-bottom:none;
+			}
+			.item-name{
+				cursor:pointer;
+				max-height:30px;
+				overflow:hidden;
+				height:30px;
+			}
+			.item-image{
+				flex:0 0 30px;
+				max-width:30px;
+				margin-right:5px;
+				border:unset;
+			}
+			&:hover .rollable .item-image,
+			&:hover .item-image.rollable{
+				background:url("/icons/svg/d20-grey.svg") no-repeat;
+				background-size:contain;
+			}
+			.item-image.rollable:hover,
+			.rollable .item-image:hover{
+				background:url("/icons/svg/d20-black.svg") no-repeat;
+				background-size:contain;
+			}
+			&:hover .rollable .item-image img,
+			&:hover .item-image.rollable img,
+			.item-image.rollable:hover img,
+			.rollable .item-image:hover img{
+				opacity:0;
+			}
+			.item-name h4{
+				margin:0;
+				white-space:nowrap;
+				overflow:hidden;
+				font-family:var(--font-body);
+				font-weight:normal;
+				font-size:medium;
+			}
+			.item-uses input{
+				width:24px;
+				text-align:right;
+				margin-right:-6px;
+			}
+			.item-properties{
+				margin-top:3px;
+			}
+			.item-recharge{
+				flex:0 0 80px;
+				text-align:right;
+				font-size:11px;
+				white-space:nowrap;
+			}
 		}
 		.items-header {
 			margin:2px 0;
@@ -702,22 +744,24 @@ body.theme-light .dnd4e.default{
 			background:var(--color-bg-btn-minor-active);
 			border-bottom:var(--border-engraved);
 			font-weight:bold;
-			line-height:24px;
-		}
-		.items-header .item-name{
-			font-family:"Modesto Condensed", "Palatino Linotype", serif;
-			margin:0 -5px 0 0;
-			padding-left:5px;
-			font-weight:700;
-			font-size:16px;
-			border-bottom:0px;
-		}
-		.items-header .item-controls{
-			width:90px;
-		}
-		.items-header .item-controls a.item-create,
-		.items-header .item-controls a.power-create{
-			flex:0 0 100%;
+			
+			.item-name{
+				font-family:"Modesto Condensed", "Palatino Linotype", serif;
+				margin:0 -5px 0 0;
+				padding-left:5px;
+				font-weight:700;
+				font-size:16px;
+				border-bottom:0;
+			}
+			.item-controls{
+				width:90px;
+                text-align:right;
+				
+				a.item-create,
+				a.power-create{
+					flex:0 0 100%;
+				}
+			}
 		}
 		.item-detail{
 			flex:0 0 68px;
@@ -780,12 +824,15 @@ body.theme-light .dnd4e.default{
 			flex:0 0 66px;
 			display:flex;
 			flex-direction:row;
-			flex-wrap:wrap;
-			justify-content:flex-start;
+			flex-wrap:nowrap;
 			justify-content:flex-end;
 		}
 		.item-list.effects-list{
 			overflow-y:visible;
+		}
+		header{
+			margin:0.25rem;
+			gap:0.25rem;
 		}
 	}
 	.currency{
@@ -803,10 +850,10 @@ body.theme-light .dnd4e.default{
 			text-align:right;
 			line-height:20px;
 		}
-		input[type="text"]{
+		input[type='text']{
 			flex:0 0 48px;
 			text-align:center;
-			margin-left:0px;
+			margin-left:0;
 			border-bottom:var(--border-normal);
 		}
 		h3{
@@ -884,10 +931,6 @@ body.theme-light .dnd4e.default{
         margin:0;
 		height:fit-content;
 	}
-	label.checkbox>input[type=checkbox],
-	label.checkbox>input[type=radio]{
-		--checkbox-size:1.2rem;
-	}
 	prose-mirror.active{
 		min-height:20em;
 	}
@@ -912,6 +955,72 @@ body.theme-light .dnd4e.default{
 		font-weight:bold;
 		font-size:0.7em;
 		text-transform:uppercase;
+	}	
+	.form-group{
+		span.checkbox{
+			display:flex;
+			align-items:center;
+			justify-content:flex-start;
+		}		
+		label.checkbox.small{
+			font-size:0.9em;
+		}
+		ul,ol{
+			margin-top:0;
+		}
+	}
+	.right{
+		margin-left:auto;
+	}
+	table{
+		margin:0;
+		
+		thead,tfoot{
+			border:unset;
+		}
+		th,td{
+			padding:0.2em;
+			
+			input:not([type="radio"],[type="checkbox"]){
+				width:100%;
+			}
+		}
+	}
+	.disallowed{
+		cursor:not-allowed;
+		opacity:0.25;
+		
+		&:is(:hover,:active,:focus){
+			text-shadow:unset;
+		}
+	}
+	.active-effects .item-list.effects-list{
+		.item.effect{
+			font-size:0.9em;
+			.item-name h4{
+				font-size:1.1em;
+			}
+		}
+		.items-header,.item{
+			gap:0.5em;
+			.effect-duration{
+				flex:0.5 0 0;
+			}
+			.effect-source{
+				flex:0.6 0 0;
+			}
+			.item-controls,.effect-detail{
+				font-size:12px;
+				padding:0 0.5em;
+				&:not(:first-child){
+					border-left:var(--border-faint);
+					.effect-delete:not([data-action='delete']){
+						opacity:0.2;
+						cursor:not-allowed;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -952,35 +1061,26 @@ body.theme-light .dnd4e.default{
 			padding:2px;
 			text-align:right;
 		}
-	}
-	.npc-upper select{
-		padding:0px;
-		margin:0 3px 0 3px;
-	}
-	.image-frame{
-		flex-grow:0;
-		aspect-ratio:1 / 1;
-		flex-basis:100px;
-	}
-	.image-frame img{
-		max-height:100px;
+		.image-frame{
+			flex:fit-content 0 0;
+			aspect-ratio:1 / 1;	
+		}
 	}
 	.sheet-header .profile-img,
 	.image-frame .profile-img{
-		flex:0 0 100px;
-		margin-right:0px;
+		aspect-ratio:1 / 1;
+		margin-right:0;
+		margin-left:0;
 		object-fit:cover;
 		object-position:top;
 		display:block;
-		margin-left:auto;
-		margin-right:auto;
-		border-width:2px;
-		border:var(--border-medium);
+		border:var(--border-normal);
 	}
 	.section--attributes{
 		border-top:var(--border-heavy);
 		border-bottom:var(--border-heavy);
 		max-height:100px;
+		align-items:stretch;
 	}
 	.attributes .attribute{
 		border-right:var(--border-normal);
@@ -990,15 +1090,6 @@ body.theme-light .dnd4e.default{
 		height:72px;
 		margin:4px 0;
 		padding:0 4px;
-	}
-	.resource-tracker{
-		text-align:center;
-		position:relative;
-	}
-	.section--attributes .resource-tracker input[type="text"]{
-		border-bottom:var(--border-normal);
-		font-size:18px;
-		font-weight:bold;
 	}
 	input.bloodied,
 	.attribute-health input.bloodied{
@@ -1037,12 +1128,8 @@ body.theme-light .dnd4e.default{
 		margin-top:-3px;
 		margin-bottom:-3px;
 	}
-	.resource-name{
-		height:28px;
-	}
-	.attributes+.attributes{
-		border-left:var(--border-normal);
-		min-height:90px;
+	.attributes:not(:first-child){
+		border-left:var(--border-faint);
 	}
 	.attributes .attribute-value{
 		-webkit-box-pack:center;
@@ -1075,6 +1162,157 @@ body.theme-light .dnd4e.default{
 		font-size:10px;
 		max-width:48px;
 	}
+	.section--abilities{
+		margin-right:15px;
+		padding-bottom:10px;
+		border-bottom:var(--border-heavy);
+		
+		.ability-header{
+			text-align:right;
+			font-size:9px;
+		}
+		.ability-header label{
+			margin-left:18px;
+		}
+		.ability--score + .ability--score{
+			border-top:var(--border-faint);
+		}
+		.ability--score input{
+			font-size:16px;
+			text-align:left;
+			font-weight:bold;
+			flex-basis:32px;
+		}
+		.ability--score .ability-name{
+			font-size:16px;
+			margin-right:auto;
+		}
+		.ability-name{
+			display:inline-block;
+			min-width:24px;
+		}
+		.ability--score .ability-mod{
+			display:flex;
+			align-items:center;
+			border-right:var(--border-faint);
+			font-weight:bold;
+			font-size:16px;
+		}
+		.ability--score .ability-mod-half{
+			font-weight:bold;
+			text-align:right;
+			font-size:16px;
+			max-width:35px;
+			border-left:var(--border-faint);
+		}
+	}
+	.section--skills{
+		margin-right:15px;
+		margin-top:10px;
+		
+		.skill--block{
+			min-height:27px;
+		}
+		.skill--block + .skill--block{
+			border-top:var(--border-faint);
+		}
+		.skill-training{
+			max-width:18px;
+			padding-top:5px;
+			opacity:0.3;
+		}
+		.skill-name{
+			text-align:left;
+			border-right:var(--border-faint);
+			margin-bottom:0;
+			margin-top:0;
+			font-size:16px;
+			padding-top:3px;
+			padding-left:8px;
+			font-family: var(--font-body);
+			font-weight: normal;
+		}
+		.skill-mod{
+			text-align:right;
+			font-weight:bold;
+			max-width:35px;
+			font-size:16px;
+		}
+	}
+	.section--sidebar .custom-roll-descriptions{
+		font-size:11.5px;
+	}
+	.section--utilities{
+		.section--saves div,
+		.section--passives div,
+		.section--movement div{
+			margin-left:5px;
+			margin-right:5px;
+			padding-top:5px;
+            padding-bottom: 5px;
+		}
+		.section--saves div+div,
+		.section--passives div+div,
+		.section--movement div+div{
+			border-top:var(--border-faint);
+			padding-bottom:0;
+		}
+		.section--saves div label,
+		.section--saves div input{
+			position:relative;
+			&.death-saves-failed{
+				height:20px;
+			}
+		}
+		.section--saves div input{
+			width:40%;
+			text-align:center;
+			border-bottom:var(--border-normal);
+		}
+		.section--saves{
+			min-width:143px;
+		}
+		.section--passives{
+			min-width:190px;
+		}
+		.section--movement{
+			min-width:105px;
+		}
+		.section--movement .movement-dialog{
+			text-transform:initial;
+		}
+		.section--saves .rollable{
+			border:unset;
+		}
+		:is(.section--saves,.saves) img.rollable[src$="svg"]:hover{
+			-webkit-filter:brightness(0);
+					filter:brightness(0);
+		}
+		.section--saves .death-saves-failed{
+			width:40%;
+			border-bottom:var(--border-normal);
+			text-align:center;
+		}
+		div.saving-throw,
+		div.death-saves{
+			display:flex;
+			flex-wrap:wrap;
+			align-items:center;
+		}
+	}
+	.tab.attributes{
+		overflow:hidden;
+	}
+	.resource-tracker{
+		text-align:center;
+		position:relative;
+	}
+	.resource-tracker input[type="text"]{
+		border-bottom:var(--border-normal);
+		font-size:18px;
+		font-weight:bold;
+        text-align:center;
+	}
 	.resource .attribute-value label.recharge{
 		height:32px;
 		position:relative;
@@ -1083,169 +1321,48 @@ body.theme-light .dnd4e.default{
 		text-align:center;
 		color:var(--color-label);
 	}
-	.section--abilities{
-		margin-right:15px;
-		padding-bottom:10px;
-		border-bottom:var(--border-heavy);
-	}
-	.section--abilities .ability-header{
-		text-align:right;
-		font-size:9px;
-	}
-	.section--abilities .ability-header label{
-		margin-left:18px;
-	}
-	.section--abilities .ability--score + .ability--score{
-		border-top:var(--border-normal);
-	}
-	.section--abilities .ability--score input{
-		font-size:16px;
-		text-align:left;
-		font-weight:bold;
-		flex-basis:32px;
-	}
-	.section--abilities .ability--score .ability-name{
-		font-size:16px;
-		margin-right:auto;
-	}
-	.ability-name{
-		display:inline-block;
-		min-width:24px;
-	}
-	.section--abilities .ability--score .ability-mod{
-		display:flex;
-		align-items:center;
-		border-right:var(--border-normal);
-		font-weight:bold;
-		font-size:16px;
-	}
-	.section--abilities .ability--score .ability-mod-half{
-		font-weight:bold;
-		text-align:right;
-		font-size:16px;
-		max-width:35px;
-		border-left:var(--border-normal);
-	}
-	.section--skills{
-		margin-right:15px;
-		margin-top:10px;
-	}
-	.section--skills .skill--block{
-		min-height:27px;
-	}
-	.section--skills .skill--block + .skill--block{
-		border-top:var(--border-normal);
-	}
-	.section--skills .skill-training{
-		max-width:18px;
-		padding-top:5px;
-		opacity:0.3;
-	}
-	.section--skills .skill-name{
-		text-align:left;
-		border-right:var(--border-normal);
-		margin-bottom:0;
-		margin-top:0;
-		font-size:16px;
-		padding-top:3px;
-		padding-left:8px;
-		font-family: var(--font-body);
-		font-weight: normal;
-	}
-	.section--skills .skill-mod{
-		text-align:right;
-		font-weight:bold;
-		max-width:35px;
-		font-size:16px;
-	}
-	.section--sidebar .custom-roll-descriptions{
-		font-size:11.5px;
-	}
-	.section--utilities .section--saves div,
-	.section--utilities .section--passives div,
-	.section--utilities .section--movement div{
-		margin-left:5px;
-		margin-right:5px;
-		padding-top:5px;
-	}
-	.section--utilities .section--saves div+div,
-	.section--utilities .section--passives div+div,
-	.section--utilities .section--movement div+div{
-		border-top:var(--border-normal);
-	}
-	.section--utilities .section--saves div label,
-	.section--utilities .section--saves div input{
-		position:relative;
-		&.death-saves-failed{
-			height:20px;
+	.section--details{
+		padding-top:0.5em;
+		.details-columns{
+			align-items:stretch;
+		}		
+		.detail{
+			display:flex;
+			align-items:baseline;
+			padding:3px;
 		}
+		.detail input{
+			text-align:right;
+			flex:1;
+		}
+		.detail label{
+			font-weight:bold;
+			flex:5em 0 1;
+		}
+		.details-mechanical{
+			margin-left:0.5em;
+			border-left:var(--border-faint);
+			padding-left:0.5em;
+			
+			.detail>*{
+				flex-basis:50%;
+			}
+		}	
 	}
-	.section--utilities .section--saves div input{
-		width:40%;
-		text-align:center;
-		border-bottom:var(--border-normal);
+	.traits:is(.proficiencies,.languages,.senses){
+		padding:0.2em;
 	}
-	.section--utilities .section--saves{
-		min-width:143px;
-	}
-	div.saving-throw,
-	div.death-saves{
-		display:flex;
-		flex-wrap:wrap;
-		align-items:center;
-	}
-	.section--utilities .section--passives{
-		min-width:190px;
-	}
-	.section--utilities .section--movement{
-		min-width:105px;
-	}
-	.section--utilities .section--movement .movement-dialog{
-		text-transform:initial;
-	}
-	.section--saves .rollable{
-		border:unset;
-	}
-	:is(.section--saves,.saves) img.rollable[src$="svg"]:hover{
-		-webkit-filter:brightness(0);
-				filter:brightness(0);
-	}
-	.section--saves .death-saves-failed{
-		width:40%;
-		border-bottom:var(--border-normal);
-		text-align:center;
-	}
-	.tab.attributes{
-		overflow:hidden;
-	}
-	.tab.details .section--attributes{
-		border:unset;
-		margin-top:10px;
-	}
-	.section--details .detail{
-		display:flex;
-		align-items:baseline;
-		padding:3px;
-	}
-	.section--details .detail input{
-		text-align:right;
-		flex:1;
-	}
-	.section--details .detail label{
-		font-weight:normal;
-		flex:1;
-	}
-	.section--details .details-mechanical{
-		margin-left:0.5em;
-		border-left:var(--border-normal);
-		padding-left:0.5em;
-	}
-	.tab.details h4.box-title{
-		margin-top:1em;
+	.group-header{
+		margin:0.2em 0 0.1em;
+		border-bottom:var(--border-faint);
+		font-size:22px;
+		height:22px;
+		line-height:22px;
 	}
 	.traits-list{
 		margin:0 0 0 0;
 		padding:0 0 0 4px;
+		display:inline;
 	}
 	.traits-list>li{
 		display:inline-block;
@@ -1265,27 +1382,6 @@ body.theme-light .dnd4e.default{
 		border:var(--border-normal);
 		border-radius:3px;
 		background:var(--color-bg-btn-minor-active);
-	}
-	.traits{
-		padding-left:20px;
-		.group-header{
-			margin-left:-20px;
-		}
-		.subgroup-header{
-			margin-left:-10px;
-		}
-		.form-group,
-		.form-group-stacked{
-			margin:0 0 3px 0;
-			justify-content:space-between;
-		}
-
-	}
-	input.milestones{
-		width:18px;
-		border-bottom:var(--border-normal);
-		max-width:9%;
-		height:14px;
 	}
 	.ability-scores .ability{
 		height:67px;
@@ -1606,27 +1702,6 @@ body.theme-light .dnd4e.default{
 			top:2px;
 			position:relative;
 		}
-		.attribute-res .res-name{
-			flex:0.9;
-			font-family: var(--font-body);
-			font-size: medium;
-		}
-		.attribute-res .res-mod{
-			flex:0.6;
-		}
-		.attribute-res .res-armour{
-			flex:1;
-		}
-		.attribute-res .res-immune{
-			flex:0.8;
-		}
-		.attribute-res input[type="text"]{
-			flex:0.3;
-		}
-		.attribute-res input{
-			position:relative;
-			top:-6px;
-		}
 		li.attribute-def{
 			height:100px;
 			margin:0 0 0 0;
@@ -1732,17 +1807,6 @@ body.theme-light .dnd4e.default{
 	.attribute-init .init-bonus{
 		width:30px;
 	}
-	.attribute-modifiers{
-		margin:0 0 0 0;
-		border-radius:4px;
-		font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
-		width:100%;
-		text-align:center;
-		line-height:22px;
-	}
-	.attribute-modifiers .name-label{
-		text-align:right;
-	}
 	.sheet-header .char-details-level{
 		height:20px;
 		padding:0px;
@@ -1827,9 +1891,6 @@ body.theme-light .dnd4e.default{
 		font-weight:bold;
 		min-height:0px;
 	}
-	.power-filters > div{
-		margin:0.25rem;
-	}
 	.power-filters :is(.group-powers,.sort-powers,.sort-features){
 		max-width:144px;
 	}
@@ -1855,7 +1916,7 @@ body.theme-light .dnd4e.default{
 	.inventory .item-controls .item-toggle {
 		opacity:0.5;
 	}
-	.inventory .item-controls a.item-control.item-toggle.active {
+	.inventory .item-controls a.item-control.item-toggle.active{
 		opacity:1;
 	}
 	.inventory-list .item-controls > *{
@@ -1877,8 +1938,9 @@ body.theme-light .dnd4e.default{
 		flex:0 0 22px;
 		font-size:12px;
 		text-align:center;
+		white-space:nowrap;
 	}
-	.inventory-list .collapsible {
+	.inventory-list .collapsible{
 		&.collapsed {
 			.item-summary {
 				padding: 0em 0em;
@@ -1911,22 +1973,64 @@ body.theme-light .dnd4e.default{
 	  right:0px;
 	  display:none;
 	}
-	.sheet-header img.profile{
-		flex:0 0 160px;
-		width:160px;
-		height:160px;
+	.config-link{
+		cursor:var(--cursor-pointer);
+		font-weight:bold;
 	}
-	.sheet-header h1.charname{
-		flex:1;
-		height:60px;
-		padding:0;
-	}
-	.sheet-header h1.charname input{
-		height:40px;
-		margin:10px 0;
+	.config-link:is(:hover,:active,:focus){
+		text-shadow:0 0 8px var(--color-shadow-primary);
 	}
 	prose-mirror[name='system.biography']{
 		height:100%;		
+	}
+	.global-mods .modifier-list{
+		align-items:stretch;
+		justify-content:space-between;
+		flex-wrap:nowrap;
+		
+		.global-mods-column{
+			flex-basis:fit-content;
+			
+			.modifiers-total{
+				flex-basis:5em;
+			}
+			.modifiers-bonus{
+				flex-basis:3em;
+			}
+		}
+	}
+	.senses-arbitrary{
+		width:100%;
+	}
+	.global-modifiers{
+		margin:0 0 0 0;
+		border-radius:4px;
+		font-family:"Nodesto", "Signika", "Palatino Linotype", serif;
+		width:100%;
+		text-align:center;
+		line-height:22px;
+		
+		 .name-label{
+			text-align:right;
+		 }
+	}
+	.resistance{
+		h4.res-name{
+			flex:0.9;
+			font-family:var(--font-body);
+			font-size:medium;
+			margin-bottom:0;
+			line-height:1.25;
+		}
+		.res-mod{
+			flex:0.6;
+		}
+		.res-armour{
+			flex:1;
+		}
+		.res-immune{
+			flex:0.8;
+		}
 	}
 
 	/* ------------ PC Sheets ---------- */
@@ -1934,6 +2038,24 @@ body.theme-light .dnd4e.default{
 		.sheet-header{
 			font-size:20px;
 		}
+		.sheet-header h1.charname{
+			flex:1;
+			height:60px;
+			padding:0;
+		}
+		.sheet-header h1.charname input{
+			height:40px;
+			margin:10px 0;
+		}
+		.sheet-header .profile-img,
+		.image-frame .profile-img{
+			border:var(--border-medium);
+		}
+		.sheet-header img.profile{
+			flex:0 0 160px;
+			width:160px;
+			height:160px;
+		}		
 		.tab{
 			margin-left:2px;
 		}
@@ -1976,10 +2098,46 @@ body.theme-light .dnd4e.default{
 		.resource .attribute-value input{
 			flex:0 0 25%;
 		}
+		input.milestones{
+			width:18px;
+			border-bottom:var(--border-normal);
+			max-width:9%;
+			height:14px;
+		}
+		.section--resources{
+			.resource-tracker{
+				padding:0 0.5em;
+				margin:0;
+			}
+			.resource-tracker .resource-name input[type="text"]{
+				height:unset;
+				padding:unset;
+				text-align:center;
+				border-bottom:unset;
+			}
+			.resource-footer{
+				justify-content:center;
+				gap:1em;
+				margin-top:0.2em;
+			}
+			.resource-footer .checkbox{
+				flex:fit-content 0 0;
+			}
+			.resource-tracker.sep{		
+				flex:fit-content 0 0;
+			}
+		}
+		.section--movement .movement-dialog{
+			text-transform:uppercase;
+		}
 	}
 
 	/* ------------ NPC Sheets ---------- */
 	> .npc{
+		.npc-upper select{
+			padding:0px;
+			margin:0 3px 0 3px;
+		}
 		.sheet-header .summary.flexrow{
 			flex-wrap:nowrap;
 		}
@@ -2045,24 +2203,18 @@ body.theme-light .dnd4e.default{
 		.sheet-header .automath input[type="checkbox"]:checked+img{
 			opacity:1;
 		}
-		.tabs{
-			height:20px;
-		}
-		.tabs .item{
-			line-height:0px;
-		}
 		.npc-lower .sheet-body{
 			height:calc(100% - 20px);
 		}
 		.image-frame{
 			margin-right:6px;
-			flex-basis:fit-content;
 		}
 		.npc-upper .basics{
 			border-top:var(--border-heavy);
 			border-bottom:var(--border-heavy);
-			margin-bottom:1em;
+			line-height:1.4;
 			justify-content:flex-start;
+			align-items:stretch;
 		}
 		.npc-upper .basics>.flexcol{
 			flex-grow:1;
@@ -2116,7 +2268,7 @@ body.theme-light .dnd4e.default{
 		.npc-upper .basics>.defences:not(.advanced){
 			flex-basis:105px;
 		}
-		.npc-upper .basics>.defences:not(.advanced) .defence-value{
+		.npc-upper .basics>.defences .defence-value{
 			font-size:1em;
 		}
 		.npc-upper .basics>.defences:not(.advanced) .defence-value.bonus{
@@ -2134,9 +2286,6 @@ body.theme-light .dnd4e.default{
 		}
 		+ a.rest{
 			margin:0px;
-		}
-		.npc-upper .basics{
-			line-height:1.4;
 		}
 		.npc-upper .basics input{
 			display:inline-block;
@@ -2410,11 +2559,6 @@ body.theme-light .dnd4e.default{
 		span{
 			text-align:center;
 		}
-		span.checkbox{
-			display:flex;
-			align-items:center;
-			justify-content:flex-start;
-		}
 		.attack-roll span{
 			flex: 0 0 50px;
 		}
@@ -2467,21 +2611,7 @@ body.theme-light .dnd4e.default{
 		&.two-input input.source-name{
 			flex-basis:20%;
 		}
-		&.columns-4 label.checkbox{
-			flex:0 0 118px;
 		}
-		&.columns-4 label:not(.checkbox,.damage-override){
-			flex:100% 0 0;
-			max-width:unset;
-		}
-		&.right{
-			justify-content:flex-end;
-		}
-		&.right>label{
-			flex-grow:0;
-			flex-basis:fit-content;
-		}
-	}
 	span.sep{
 		flex:0 0 8px;
 	}
@@ -2593,13 +2723,9 @@ body.theme-light .dnd4e.default{
 		line-height:22px;
 	}
 }
-	.item-sheet.consumable .form-group :is(.display-effect,.effect-html){
-		text-align:right;
-	}
-	.item-sheet.weapon label.damage-override{
-		max-width:250px;
-	}
-
+.sheet.default .item-consumable .form-group :is(.display-effect,.effect-html){
+	text-align:right;
+}
 
 /* ----------------------------------------- */
 /*  Active Effect Sheets
@@ -2755,12 +2881,15 @@ body.theme-light .dnd4e.default{
 	input[type="text"]{
 		height:18px;
 	}
+	label.checkbox{
+		font-size:inherit;
+	}
 }
-section.dialogue-content{
+.dialogue-content{
 	display:flex;
 	flex-direction:column;
-	padding-top:0.5em;
 	gap:0.5em;
+	/*
 	header{
 		display:flex;
 		justify-content:space-between;
@@ -2770,13 +2899,17 @@ section.dialogue-content{
 			font-size:x-large;
 			margin-bottom:0;
 		}
+	}*/
+	h1.form-title{
+		font-size:medium;
+		padding:0;
+		margin:0;
+		font-family:var(--font-body);
 	}
-	+footer{
+	+footer,+.form-footer{
 		padding-top:0.5em;
 	}
 }
-section.dialogue-content
-section.dialogue-content
 
 /* Tooltip text */
 .tooltip .tooltipcontent{
@@ -2825,7 +2958,6 @@ section.dialogue-content
 	visibility:visible;
 }
 
-/* Roll Dialogue */
 .dnd4e.roll-dialogue.default{
 	h2{
 		font-family:var(--font-body);
@@ -2916,12 +3048,10 @@ section.dialogue-content
 		width:fit-content;
 	}
 }
-
 .custom-skill-config .custom-skill-control{
 	margin:0 5px;
 	flex:0;
 }
-
 .dnd4e.movement-dialog.default{
 	.move-bonus{
 		max-width:60px;
@@ -2954,7 +3084,6 @@ section.dialogue-content
 		border:none;
 	}
 }
-
 #action-point-hd textarea{
 	width:100%;
 	min-height:10em;
@@ -3009,14 +3138,23 @@ section.dialogue-content
 #custom-roll-descriptions h2{
 	margin-top:0.5em;
 }
-.custom-skill-list{
-	padding:unset;
+.dnd4e:is(.default, .standard-form) .window-content table.custom-skill-list th{
+	padding:0.2em 0.5em;
 }
-input[type="text"].custom-skill-label{
-	width:125px;
+:is(th,td).custom-skill-id{
+	width:7em;
 }
-input[type="text"].custom-skill-id{
-	width:105px;
+:is(th,td).custom-skill-ability{
+	width:9em;
+}
+:is(th,td).custom-skill-control{
+	width:2em;
+}
+:is(th,td).custom-skill-acp{
+	text-align:center;
+}
+:is(th,td).custom-skill-control{
+	text-align:right;
 }
 .hitpoint-config input[type="text"]{
 	width:40px;
@@ -3036,15 +3174,14 @@ input[type="text"].dice-count{
 	width:12.5%;
 	text-align:center;
 }
-.roll-dialogue .column{
+.roll-dialogue .form-group.bonus{
 	max-width:50%;
 	margin:0;
 }
-.roll-dialogue .column input[type="checkbox"]{
-	position:relative;
-	top:5px;
+.roll-dialogue .form-group.bonus .checkbox{
+	font-size:1em;
+	line-height:1;
 }
-
 .dnd4e.con-bon-config{
 	h1.dialogue-title{
 		font-size:1.2em;
@@ -3329,7 +3466,7 @@ input[type="text"].dice-count{
 			font-weight:bold;
 			font-style:italic;
 		}
-		h5{
+		h6{
 			font-size:1em;
 			font-weight:bold;
 			font-style:italic;
