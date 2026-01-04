@@ -1,4 +1,5 @@
-<div id="heal-menu-dialog" class="dialog-content">
+<div id="heal-menu-dialog" class="dialogue-content">
+
 	<fieldset>
 		<legend>{{localize "DND4E.HealingSettings"}}</legend>
 		<div class="form-group">
@@ -16,13 +17,16 @@
 			<input type="text" id="bonus" name="bonus" value="" placeholder="{{ localize 'DND4E.RollExample' }}"/>
 		</div>
 	</fieldset>
-	<hr/>
-	<div class="form-group">
-		<label>{{localize 'DND4E.HealingMenuPresets'}}</label>
-		<a data-action="healingPotionSettingsClicked" class="fakebutton" data-tooltip="{{ localize 'DND4E.HealingMenuHealingPotionSettingsDetails' }}">{{ localize "DND4E.HealingMenuHealingPotionSettings" }}</a>
-	</div>
-	<hr/>
-	<input type="hidden" id="hpMax" value="{{hpMax}}"/>
-	<input type="hidden" id="hasSurges" value="{{constHasSurges}}"/>
-	<input type="hidden" id="heal-type" name="heal-type" value="heal">
+	
+	<fieldset>
+		<legend>{{localize 'DND4E.HealingMenuPresets'}}</legend>
+		<div class="form-group">
+			<a data-action="healingPotionSettingsClicked" class="fakebutton" data-tooltip="{{ localize 'DND4E.HealingMenuHealingPotionSettingsDetails' }}">{{ localize "DND4E.HealingMenuHealingPotionSettings" }}</a>
+		</div>
+		<input type="hidden" id="hpMax" value="{{hpMax}}"/>
+		<input type="hidden" id="hasSurges" value="{{constHasSurges}}"/>
+		<input type="hidden" id="heal-type" name="heal-type" value="heal">
+	</fieldset>
+	
+	
 </div>

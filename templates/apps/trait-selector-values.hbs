@@ -1,19 +1,25 @@
-<section class="dialogue-content">
-	<ol class="trait-list">
-		{{#each choices as |choice key|}}
-		<li>
-			<label class="checkbox">
-				<input type="checkbox" name="{{key}}" data-dtype="Boolean" {{checked choice.chosen}}>
-				<input class="checkbox-rider" type="text" name="{{key}}" value="{{choice.value}}" data-tooltip="{{localize 'DND4E.SpecialSensesRange'}}" placeholder="" />
-				{{choice.label}}
-			</label>
-		</li>
-		{{/each}}
-	</ol>
+<div class="dialogue-content">
+	<h1 class="form-title">{{heading}}</h1>
+
+	<div class="form-group vertical">
+		<ol class="trait-list">
+			{{#each choices as |choice key|}}
+			<li>
+				<label class="checkbox">
+					<input type="checkbox" name="{{key}}" data-dtype="Boolean" {{checked choice.chosen}}>
+					<input class="checkbox-rider" type="text" name="{{key}}" value="{{choice.value}}" data-tooltip="{{localize 'DND4E.SpecialSensesRange'}}" />
+					{{choice.label}}
+				</label>
+			</li>
+			{{/each}}
+		</ol>
+	</div>
+	
 	{{#if allowCustom}}
 	<div class="form-group vertical">
 		<label>{{ localize "DND4E.TraitSelectorSpecial" }}</label>
 		<input type="text" name="custom" value="{{custom}}" data-dtype="String"/>
 	</div>
 	{{/if}}
-</section>
+	
+</div>

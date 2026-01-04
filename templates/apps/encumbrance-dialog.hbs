@@ -1,5 +1,9 @@
-<div id="encumbrance-dialog" class="dialog-content" onsubmit="event.preventDefault();">
+<div id="encumbrance-dialog" class="dialogue-content" onsubmit="event.preventDefault();">
+	
+	<h1 class="form-title">{{localize 'DND4E.Encumbrance'}}</h1>
+	<p>{{localize 'DND4EUI.LoadLimitsTip'}}</p>
 	<fieldset>
+		<legend>{{localize 'DND4EUI.LoadLimits'}}</legend>
 		<div class="form-group base"  data-movement="walk">
 			<span data-tooltip="{{localize 'DND4E.LoadNormalTip'}}"><strong>{{system.encumbrance.max}} {{localize 'DND4E.AbbreviationLbs'}}</strong> {{localize 'DND4E.LoadNormal'}}:</span>
 			<input type="text" name="system.encumbrance.formulaNorm" value="{{system.encumbrance.formulaNorm}}" data-tooltip="{{localize 'DND4E.LoadNormalTip'}}" placeholder="0"/>
@@ -10,10 +14,10 @@
 			<input type="text" name="system.encumbrance.formulaHeavy" value="{{system.encumbrance.formulaHeavy}}" data-tooltip="{{localize 'DND4E.LoadHeavyTip'}}" placeholder="0"/>
 		</div>
 
-
 		<div class="form-group base"  data-movement="walk">
 			<span data-tooltip="{{localize 'DND4E.LoadDragTip'}}"><strong>{{system.encumbrance.maxMax}} {{localize 'DND4E.AbbreviationLbs'}}</strong> {{localize 'DND4E.LoadDrag'}}:</span>
 			<input type="text" name="system.encumbrance.formulaMax" value="{{system.encumbrance.formulaMax}}" data-tooltip="{{localize 'DND4E.LoadDragTip'}}" placeholder="0"/>
 		</div>
 	</fieldset>
+	
 </div>

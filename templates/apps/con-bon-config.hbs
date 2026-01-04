@@ -1,6 +1,7 @@
-<div id="con-bon-config" class="dialog-content" onsubmit="event.preventDefault();">
+<div id="con-bon-config" class="dialogue-content" onsubmit="event.preventDefault();">
+
 	<fieldset>
-		<legend>{{localize 'DND4E.CommonAttackBonuses'}}</legend>
+		<legend>{{localize 'DND4EUI.ConditionalAtkMods'}}</legend>
 		<p>{{localize 'DND4E.CommonAttackBonusesConfigTip'}}</p>
 		{{#each system.commonAttackBonuses as |c id|}}
 		<div class="form-group {{id}} condition-row flexrow" data-mod="{{id}}">
@@ -10,4 +11,5 @@
 		</div>
 		{{/each}}
 	</fieldset>
+	
 </div>

@@ -1,30 +1,56 @@
-<section id="custom-skill-config" class="dialog-content" onsubmit="event.preventDefault();">
-	<ol id="custom-skill-list" class="custom-skill-list">
-			{{#each customSkills as |skill s|}}
-				<li class="flexrow custom-skill-line" data-row-id="{{s}}">
-					<div class="flexcol">
-						<label for="custom-skill-label-{{s}}">{{localize 'DND4E.SkillLabel'}}</label>
-						<input id="custom-skill-label-{{s}}" class="custom-skill-label" type="text" name="label" value="{{skill.label}}" data-dtype="String" {{disabled (contains skill.id ../originalIds)}}/>
-					</div>
-					<div class="flexcol">
-						<label for="custom-skill-id-{{s}}">{{localize 'DND4E.SkillID'}}</label>
-						<input id="custom-skill-id-{{s}}" class="custom-skill-id" type="text" name="id" value="{{skill.id}}" data-dtype="String" {{disabled (contains skill.id ../originalIds)}}/>
-					</div>
-					<div class="flexcol">
-						<label for="custom-skill-attribute-{{s}}" >{{localize 'DND4E.Attribute'}}</label>
-						<select id="custom-skill-attribute-{{s}}" class="custom-skill-ability" name="ability" {{disabled (contains skill.id ../originalIds)}}>
-							{{selectOptions ../abilities selected=skill.ability}}
-							<option value="none" {{#if (eq skill.ability "none")}}selected{{/if}}>{{localize 'DND4E.None'}}</option>
-						</select>
-					</div>
-					<div class="flexcol">
-						<label for="custom-skill-acp-{{s}}" style="flex: 3;">{{localize 'DND4E.SkillACPToggle'}}</label>
-						<input id="custom-skill-acp-{{s}}" class="custom-skill-acp" type="checkbox" name="armourCheck" {{checked skill.armourCheck}} data-dtype="Boolean"{{disabled (contains skill.id ../originalIds)}}>
-					</div>
+<div id="custom-skill-config" class="dialogue-content" onsubmit="event.preventDefault();">
+	
+	<div class="form-group vertical">
+		<h1 class="form-title">{{localize 'SETTINGS.4eCustomSkillsN'}}</h1>
+		<p>{{localize 'SETTINGS.4eCustomSkillsH'}}</p>
+	</div>
+	
+	<table id="custom-skill-list" class="custom-skill-list">
+		<thead>
+			<tr class="custom-skill-line" data-row-id="{{s}}">
+				<th class="custom-skill-label">
+					{{localize 'DND4E.SkillLabel'}}
+				</th>
+				<th class="custom-skill-id">
+					{{localize 'DND4E.SkillID'}}
+				</th>
+				<th class="custom-skill-ability">
+					{{localize 'DND4E.Attribute'}}
+				</th>
+				<th class="custom-skill-acp">
+					{{localize 'DND4E.SkillACPAbbr'}}
+				</th>
+				<th class="custom-skill-control">
+				</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+		{{#each customSkills as |skill s|}}
+			<tr class="custom-skill-line" data-row-id="{{s}}">
+				<td class="custom-skill-label">
+					<input id="custom-skill-label-{{s}}" class="custom-skill-label" type="text" name="label" value="{{skill.label}}" data-dtype="String" {{disabled (contains skill.id ../originalIds)}} placeholder="{{localize 'DND4E.SkillLabel'}}" />
+				</td>
+				<td class="custom-skill-id">
+					<input id="custom-skill-id-{{s}}" class="custom-skill-id" type="text" name="id" value="{{skill.id}}" data-dtype="String" {{disabled (contains skill.id ../originalIds)}} placeholder="{{localize 'DND4E.SkillID'}}" />
+				</td>
+				<td class="custom-skill-ability">
+					<select id="custom-skill-attribute-{{s}}" class="custom-skill-ability" name="ability" {{disabled (contains skill.id ../originalIds)}}>
+						{{selectOptions ../abilities selected=skill.ability}}
+						<option value="none" {{#if (eq skill.ability "none")}}selected{{/if}}>{{localize 'DND4E.None'}}</option>
+					</select>
+				</td>
+				<td class="custom-skill-acp">
+					<input id="custom-skill-acp-{{s}}" class="custom-skill-acp" type="checkbox" name="armourCheck" {{checked skill.armourCheck}} data-dtype="Boolean"{{disabled (contains skill.id ../originalIds)}} data-tooltip="{{localize 'DND4E.Attribute'}}" />
+				</td>
+				<td class="custom-skill-control">
 					<a class="custom-skill-control" data-action="deleteSkill" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>	
-				</li>
-			{{/each}}
-	</ol>
+				</td>
+			</tr>
+		{{/each}}
+		</tbody>
+	</table>
 
-	<a class="custom-skill-control custom-skill-add" data-action="createSkill">{{localize 'DND4EUI.AddNewSkill'}} <i class="fas fa-plus"></i></a>
-</section>
+	<a class="custom-skill-control custom-skill-add right label" data-action="createSkill">{{localize 'DND4EUI.AddNewSkill'}} <i class="fas fa-plus"></i></a>
+	
+</div>
