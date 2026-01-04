@@ -1,4 +1,31 @@
-<h3 class="form-header">{{ localize "DND4E.ItemWeaponDetails" }}</h3>
+{{!-- Weapon Status --}}
+<fieldset name="weapon-status" class="weapon-status form-group stacked">
+	<legend>{{ localize "DND4E.ItemWeaponStatus" }}</legend>  
+	{{#unless (eq system.weaponType 'implement')}}
+		<label class="checkbox small">
+			<input type="checkbox" name="system.proficient" {{checked system.proficient}}/> {{ localize "DND4E.Proficient" }}
+		</label>
+	{{/unless}}
+	{{#if (eq system.weaponType 'implement')}}
+		<label class="checkbox small">
+			<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4E.Proficient" }}
+		</label>
+	{{else if system.properties.imp}}
+		<label class="checkbox small">
+			<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4E.ProficiencyI" }}
+		</label>
+	{{/if}}
+	<label class="checkbox small">
+		<input type="checkbox" name="system.equipped" {{checked system.equipped}}/> {{ localize "DND4E.Equipped" }}
+	</label>
+	<label class="checkbox small">
+		<input type="checkbox" name="system.identified" {{checked system.identified}}/> {{ localize "DND4E.Identified" }}
+	</label>
+	<label class="checkbox small">
+		<input type="checkbox" name="system.attuned" {{checked system.attuned}}/> {{ localize "DND4E.Attuned" }}
+	</label>
+</fieldset>
+
 {{!-- Weapon Type --}}
 <div class="form-group">
   <label>{{ localize "DND4E.ItemWeaponType" }}:</label>
@@ -55,34 +82,6 @@
 	</div>
 </div>
 {{/unless}}
-
-{{!-- Weapon Status --}}
-<fieldset name="weapon-status" class="weapon-status form-group stacked">
-	<legend>{{ localize "DND4E.ItemWeaponStatus" }}</legend>  
-	{{#unless (eq system.weaponType 'implement')}}
-		<label class="checkbox">
-			<input type="checkbox" name="system.proficient" {{checked system.proficient}}/> {{ localize "DND4E.Proficient" }}
-	</label>
-	{{/unless}}
-	{{#if (eq system.weaponType 'implement')}}
-		<label class="checkbox">
-			<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4E.Proficient" }}
-		</label>
-	{{else if system.properties.imp}}
-		<label class="checkbox">
-			<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4E.ProficiencyI" }}
-		</label>
-	{{/if}}
-	<label class="checkbox">
-		<input type="checkbox" name="system.equipped" {{checked system.equipped}}/> {{ localize "DND4E.Equipped" }}
-	</label>
-	<label class="checkbox">
-		<input type="checkbox" name="system.identified" {{checked system.identified}}/> {{ localize "DND4E.Identified" }}
-	</label>
-	<label class="checkbox">
-		<input type="checkbox" name="system.attuned" {{checked system.attuned}}/> {{ localize "DND4E.Attuned" }}
-	</label>
-</fieldset>
 
 
 {{!------------------- ATTACK ------------------}}
@@ -207,9 +206,10 @@
 		{{/each}}
 	</div>
 	
-	<div class="form-group damage-override">
-		<label class=" checkbox">{{localize 'DND4E.DamageTypeFromWeapon'}}</label> <span class="checkbox"><input type="checkbox" name="system.damageTypeOverride" data-dtype="Boolean" {{checked system.damageTypeOverride}}/></span>
-	</div>	
+	<label class="checkbox right">
+		<input type="checkbox" name="system.damageTypeOverride" data-dtype="Boolean" {{checked system.damageTypeOverride}}/> 
+		<span class="label">{{localize 'DND4E.DamageTypeFromWeapon'}}</span>
+	</label>
 </fieldset>
   
 <fieldset class="weapon-damage" name="extra-damage">
