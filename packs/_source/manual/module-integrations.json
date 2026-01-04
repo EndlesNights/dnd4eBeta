@@ -1,0 +1,62 @@
+{
+  "name": "Module Integrations",
+  "pages": [
+    {
+      "sort": 100000,
+      "name": "Module Integrations",
+      "type": "text",
+      "title": {
+        "show": false,
+        "level": 1
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>There are several modules that work well with 4E and generally enhance your game.</p><p>Most of these modules can be found in the Foundry module browser.</p><h2>Active Auras</h2><p><a href=\"https://foundryvtt.com/packages/ActiveAuras\">https://foundryvtt.com/packages/ActiveAuras</a></p><p>Allows you to turn an Active Effect into an Aura, imposing almost any valid Active Effect onto character within the specified radius.</p><p>Features integration contributed by Fox Lee to use the correct 4e distance measurement, and check creature type/origin/subtype when determining targets from the user-specified list.</p><h2>Autocomplete Inline Properties</h2><p><a href=\"https://github.com/ghost-fvtt/FVTT-Autocomplete-Inline-Properties\">https://foundryvtt.com/packages/autocomplete-inline-properties</a></p><p>We highly recommend Autocomplete Inline Properties if you are using effects in 4E</p><p>Drac’s Foundry 4E Tools includes an integration with Autocomplete properties for effects.</p><p>Provided Drac’s tools is active you will get an auto-complete selection when creating effects. Further integration in other fields may happen later.</p><h2>Automated Animation</h2><p><a href=\"https://foundryvtt.com/packages/package/autoanimations\">https://foundryvtt.com/packages/package/autoanimations</a></p><p>Automated Animations provides a UI interface for compiling Sequences (Sequencer Module) to be automatically played in your game system based on name recognition through the Global Automatic Recognition menu. The in-built select menus are populated with JB2A animation choices, but any animation can be set with the Custom field.</p><p><a href=\"https://www.youtube.com/watch?v=5kriFWQHLh0&amp;ab_channel=cespinar\">Example Video </a>#1</p><p><a href=\"https://cdn.discordapp.com/attachments/800019673713606717/1122318272000442438/2023-06-24_20-09-43.mp4\">Example Video </a>#2</p><h2>Drac’s Foundry 4E Tools</h2><p><a href=\"https://foundryvtt.com/packages/foundry-4e-tools\">https://foundryvtt.com/packages/foundry-4e-tools</a></p><p>This is an enhancement module for the D&amp;D 4E system that contains a number of useful helpers, utilities and examples.</p><p><strong>Auto-bloodied / dead status:</strong></p><p>If a token is reduced to bloodied HP it gets the bloodied icon. Similarly if it gets killed, it gets a dead icon. PC’s get dying icons initially.</p><p><strong>Creature Importer from Masterplan:</strong></p><p>Allows the GM to import creatures from the Masterplan application. Creatures import with all stats, powers, auras and ready to go chat descriptions for knowledges</p><p><strong>Sample Macros (Compendium):</strong></p><p>A collection of sample Macros for things that people have frequently asked about.</p><h2>Drag Ruler</h2><p><a href=\"https://github.com/draconas1/foundry-4e-tools\">https://foundryvtt.com/packages/drag-ruler</a></p><p>Drac’s Foundry 4E Tools includes an integration with Drag ruler. Provided Drac’s tools is active the ruler will show walk, run, double walk and double run.</p><h2>Easy Target</h2><p><a href=\"https://foundryvtt.com/packages/easy-target\">https://foundryvtt.com/packages/easy-target</a></p><p>Lets you quickly target counters under Measured Templates for AOE</p><h2>Fox's 4e Styling</h2><p><a href=\"https://github.com/FoxLee/fox-4e-styling\">https://github.com/FoxLee/fox-4e-styling</a></p><p>Restyles almost the entire system to use the same styling as the D&amp;D 4e books.</p><p>Chat Cards look like the power cards in 4e books</p><p>Journals use the same style and fonts as 4e books</p><p>Entirely new monster sheet that lays out monster info as per MM3. (switch between using the \"sheet\" option in the top right)</p><h2>Inkpot - Icons</h2><p><a href=\"https://github.com/kyleady/inkpot-icons\">https://github.com/kyleady/inkpot-icons</a></p><p>A module that contains ~50,000 dalle-mini generated icons specifically for D&amp;D4e.</p><h2>Inkpot - Power Roll</h2><p><a href=\"https://github.com/kyleady/inkpot-powerroll\">https://github.com/kyleady/inkpot-powerroll</a></p><p>A module made specifically for D&amp;D4e that can make inline rollable links when inside double square brackets with a /p at the start</p><ul><li>[[/p Dex vs AC]]</li><li>[[/p 1[W] + Constitution radiant and necrotic damage]]</li><li>[[/p spend a healing surge and regain an additional d6 hit points]]</li><li>[[/p Petrified (save ends)]]</li><li>[[/p Augment 1]]</li></ul><h2>Item Piles</h2><p><a href=\"https://foundryvtt.com/packages/package/item-piles\">https://foundryvtt.com/packages/package/item-piles</a></p><p>Have you ever wished you could represent items in your scenes? A pile of items, something to interact with - or perhaps chests whose appearance changes depending on what happens to it, whether it's open, closed, full, or empty. Do you want an easy way to split loot between players? Do you want easy to use merchants with great UIs?</p><p>Then you need <strong>Item Piles</strong>!</p><h2>Party Overview</h2><p><a href=\"https://github.com/draconas1/foundry-4e-tools\">https://foundryvtt.com/packages/party-overview</a></p><p>Has built in 4E integration</p><h2>Token Action HUD Classic</h2><p><a href=\"https://github.com/Drental/fvtt-tokenactionhud\">https://foundryvtt.com/packages/token-action-hud</a></p><p>Has an inbuilt integration written by Draconas</p><p>For rolling checks you can shift-click on the token action button to get a quick roll.</p><p>Right clicking on conditions get the condition as a big icon</p><p>Right clicking on powers and features gets the popup, left click rolls.</p><p>There are many settings to configure your D&amp;D 4E Token Action HUD experience. They are hard to spot as token Action HUD does not separate its settings. Under module settings, look for:</p><ul><li>Show Conditions Category</li><li>Hide Used Powers</li><li>Colour Powers by Use</li><li>Hide Unequipped Inventory</li><li>Hide Inventory with quantity of 0</li><li><p>Visible Inventory Categories</p><ul><li>The complete list is: 'weapon, equipment, consumable, tool, backpack, loot, alchemical, ammo, potion, poison, food, scroll, trinket'</li></ul></li></ul><p><em><strong>Note</strong>: Token Action HUD Classic is no longer being actively developed for new versions of foundry. It does currently work with the latest version (V11) and at the moment the 4e system does not have a module developed for Token Action HUD Core.</em></p>",
+        "markdown": ""
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "dnd4e",
+        "systemVersion": "0.4.24",
+        "coreVersion": "13.348",
+        "createdTime": 1688200300772,
+        "modifiedTime": 1695477800548,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_id": "4DbUYT9a4DdmUAaw",
+      "category": null,
+      "_key": "!journal.pages!pSOFSTYYchdZ0rZB.4DbUYT9a4DdmUAaw"
+    }
+  ],
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.24",
+    "coreVersion": "13.348",
+    "createdTime": 1664834465177,
+    "modifiedTime": 1695477800548,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "folder": null,
+  "sort": 0,
+  "_id": "pSOFSTYYchdZ0rZB",
+  "categories": [],
+  "_key": "!journal!pSOFSTYYchdZ0rZB"
+}

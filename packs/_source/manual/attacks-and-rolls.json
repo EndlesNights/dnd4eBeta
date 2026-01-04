@@ -1,0 +1,61 @@
+{
+  "name": "Attacks and Rolls",
+  "_id": "SzCSgM25qVHZ05UW",
+  "pages": [
+    {
+      "sort": 100000,
+      "name": "Attacks and Rolls",
+      "type": "text",
+      "_id": "JtzvbMWXzDG70VF2",
+      "title": {
+        "show": false,
+        "level": 1
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<h2>Rolling Multiple D20’s</h2><p>The roll dialog gives you an option of how many D20’s to roll. 1 is the normal number.</p><p>However the setting also supports rolling multiple and keeping the highest (similar to 5th edition's Advantage mechanic); simply increase the number of dice to roll.</p><p>It also supports rolling multiple and keeping the lowest (similar to 5E’s disadvantage), to do that set the number of d20’s to roll to a negative number.</p><p>User may be able to quickly swap between setting up the dice to rolling two dice by holding down CTRL + Left Clicking either the plus or minus buttons, which will immediately set the value to either -2 or +2</p><p>With a value of zero set for the number of D20's to be rolled, no D20's will be rolled, and the results will derive only from the bonuses associated with the roll.</p><h2>General roll bonuses</h2><p>The bonus dialog appears for almost all rolls and allows you to enter a formula for a situational bonus. This can be a full formula - e.g. “1d6 -2 + 5 + 1d10” but should not include other <code>@variable’</code>s. It is referred to in formula as <code>@bonus</code></p><p>Despite what the sample text shows, you do not need to prefix with a +, the system will do that for you (it won’t hurt if you do but you will get a double + + in the display)</p><h2>Quick rolls</h2><p>If you hold shift, ctrl or alt when clicking the “attack roll” or “damage roll” button, it will just make the roll for you, without popping up the circumstance modifier window.</p><h2>Multi-Target Powers</h2><p>If your power can target multiple enemies, make sure you target them first using either the Select Targets selection box, double-right-clicking, or mousing over the token &amp; pressing the 'T' key and selecting the target option on them. (<em>Note:</em> you must Target the tokens. Merely selecting them is not sufficient).</p><p>The Easy Target Module can help with with targeting everything in your AOE templates. (See @Compendium[dnd4e.manual.pSOFSTYYchdZ0rZB]{Module Integrations})</p><p>When you roll to attack, you will automatically get one attack for each target. Via the attack roll dialog you can opt to either have all of them use the same situational modifiers or select individual modifiers for each one. (the @bonus is shared between all of them)</p><h2>Taking Damage</h2><p>If you right click on a damage result whilst having a token you control selected. (<em>Note:</em> selected, not targeted) you will get a little dropdown to apply that result as damage:</p><table><thead><tr><th>Option</th><th>Description</th></tr></thead><tbody><tr><td>Apply Damage</td><td>Applies the value as damage. This accounts for the selected actor's resistances (compared to the power's damage types) and reduces temp HP before reducing actual HP.</td></tr><tr><td>Apply Healing</td><td>Applies the value as healing. This respects the actor's max HP.</td></tr><tr><td>Apply Temporary HP</td><td>Applies the value as temporary HP. This respects that temp HP don’t stack, and so sets the actor's temp HP to this value only if it is larger than their current temp HP.</td></tr><tr><td>Apply double damage</td><td>As apply damage, but with double damage—ouch!</td></tr><tr><td>Apply half damage</td><td>As apply damage, but with half damage—useful as many On Miss powers apply half damage</td></tr><tr><td>True Damage</td><td>As apply damage, but this bypasses the actor's resistances.</td></tr></tbody></table>"
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "dnd4e",
+        "systemVersion": "0.4.24",
+        "coreVersion": "13.348",
+        "createdTime": 1695459843430,
+        "modifiedTime": 1695460109598,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "_key": "!journal.pages!SzCSgM25qVHZ05UW.JtzvbMWXzDG70VF2"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.24",
+    "coreVersion": "13.348",
+    "createdTime": 1695459835965,
+    "modifiedTime": 1695460109598,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "categories": [],
+  "_key": "!journal!SzCSgM25qVHZ05UW"
+}

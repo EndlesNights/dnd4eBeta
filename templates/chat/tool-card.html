@@ -1,9 +1,9 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
 <div class="dnd4e chat-card item-card tool {{actor.type}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
 
-    <header class="card-header flexrow">
+    <header class="card-header flexrow ability-usage--">
         <img src="{{item.img}}" data-tooltip="{{item.name}}" width="36" height="36"/>
-			<div class="flexcol item-name ability-usage--">
+			<div class="flexcol item-name">
 				<h3>{{item.name}}</h3>
 		  </div>
     </header>
@@ -11,18 +11,21 @@
     <div class="card-content">
 	 
 		<div class="item-summary">{{{system.description.value}}}</div>
-    
+		
+		<ul class="properties tags">
+        {{#each system.properties}}
+			{{{this}}}
+        {{/each}}
+		</ul>
+		
 		{{#if isRoll}}
 		<div class="card-buttons">
 		  <button data-action="toolCheck" data-ability="{{system.ability.value}}">{{ localize "DND4E.Use" }} {{item.name}}</button>
 		</div>
 		{{/if}}
-
+		
 	</div>
 	
     <footer class="card-footer">
-        {{#each system.properties}}
-        <span>{{this}}</span>
-        {{/each}}
     </footer>
 </div>

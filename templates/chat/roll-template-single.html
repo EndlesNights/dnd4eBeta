@@ -5,7 +5,6 @@
 	<div class="dice-result">
 		
 		{{#if attackRoll}}
-			{{log attackRoll}}
 			<div class="target">
 			<a class="flavor-text target" data-target-id="{{attackRoll.targetID}}"><strong>{{localize 'DND4E.Target'}}:</strong> {{attackRoll.target}}</a> <span class="mod-vs-def">(<span class="attack-mod">{{attackRoll.modtext}}</span> {{localize 'DND4E.VS'}} <span class="vs-def">{{attackRoll.deftext}}</span>)</span>
 			</div>

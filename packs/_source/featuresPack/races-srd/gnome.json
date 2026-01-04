@@ -1,0 +1,193 @@
+{
+  "name": "Gnome",
+  "type": "feature",
+  "img": "icons/magic/nature/meteorite-purple.webp",
+  "effects": [
+    {
+      "_id": "wTBALslFFhoKd2mR",
+      "changes": [
+        {
+          "key": "system.skills.arc.race",
+          "mode": 4,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.skills.stl.race",
+          "mode": 4,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.wk3oa5sZGD9c1kTD",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          },
+          "dots": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Skill Bonuses",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": "dnd4e",
+        "systemVersion": "0.5.5",
+        "createdTime": null,
+        "modifiedTime": 1730442956337,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/social/theft-pickpocket-bribery-brown.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!9BFiyQ1Iib3wzx6j.wTBALslFFhoKd2mR"
+    },
+    {
+      "_id": "2mwIBpaTxldLI64q",
+      "changes": [
+        {
+          "key": "system.movement.base.base",
+          "mode": 5,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.wk3oa5sZGD9c1kTD",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "dots": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Base Movement",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/movement/feet-bladed-boots-fire.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!9BFiyQ1Iib3wzx6j.2mwIBpaTxldLI64q"
+    }
+  ],
+  "folder": "hE67zu2JDa7VFd5I",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><strong>Average Height:</strong> 3&acute; 4˝&ndash;3&acute; 8˝</p>\n<p><strong>Average Weight:</strong> 50&ndash;75 lb.</p>\n<p><strong>Ability Scores:</strong></p>\n<ul>\n<li>+2 Intelligence</li>\n<li>+2 Charisma</li>\n</ul>\n<p><strong>Size:</strong> Small</p>\n<p><strong>Speed:</strong> 5 squares</p>\n<p><strong>Vision:</strong> Low-light</p>\n<p><strong>Languages:</strong></p>\n<ul>\n<li>Common</li>\n<li>Elven</li>\n</ul>\n<p><strong>Skill Bonuses:</strong></p>\n<ul>\n<li>+2 Arcana</li>\n<li>+2 Stealth</li>\n</ul>\n<p><strong>Fey Origin:</strong> Your ancestors were native to the Feywild, so you are considered a fey creature for the purpose of effects that relate to creature origin.</p>\n<p><strong>Master Trickster:</strong> Once per encounter, you can use the wizard cantrip ghost sound (Player&rsquo;s Handbook, page 158) as a minor action.</p>\n<p><strong>Reactive Stealth:</strong> If you have any cover or concealment when you make an initiative check, you can make a Stealth check.</p>\n<p><strong>Trickster&rsquo;s Cunning:</strong> You have a +5 racial bonus to saving throws against illusions.</p>\n<p><strong>Fade Away:</strong> You have the @Compendium[dnd4e.example_powers.3AoHYQ57TiNA3NG2]{fade away} power.</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB2 pg.10",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "race",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Gnome",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094307658,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "9BFiyQ1Iib3wzx6j",
+  "sort": 0,
+  "_key": "!items!9BFiyQ1Iib3wzx6j"
+}

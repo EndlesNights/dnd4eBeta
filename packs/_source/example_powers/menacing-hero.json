@@ -1,0 +1,213 @@
+{
+  "_id": "KfgywDABkm2soezh",
+  "name": "Menacing Hero",
+  "type": "power",
+  "img": "icons/skills/melee/strike-axe-blood-red.webp",
+  "effects": [],
+  "folder": null,
+  "sort": 1600000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.348",
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "createdTime": null,
+    "modifiedTime": 1745816275190,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": {
+      "value": "<p>With great ferocity, you pursue your foe with ever strengthening blows</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB. pg 78",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": "One creature",
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "day"
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": true,
+      "isBasic": false,
+      "isCharge": false,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "str",
+      "abilityBonus": 0,
+      "def": "ac",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "@wepAttack+@powerMod+@lvhalf",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": true,
+      "isHealing": false,
+      "healSurge": "",
+      "baseQuantity": "2",
+      "baseDiceType": "weapon",
+      "detail": "2[W] + Strength modifier damage. Until the end of the encounter, you gain a <strong>+2</strong> bonus to attacks, and <strong>+4</strong> bonus to damage rolls against the target.",
+      "formula": "@powBase + @powerMod + @wepDamage",
+      "critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
+      "healFormula": ""
+    },
+    "miss": {
+      "detail": "Until the end of the encounter, you gain a <strong>+1</strong> bonus to attacks, and <strong>+2</strong> bonus to damage rolls against the target.",
+      "formula": ""
+    },
+    "effect": {
+      "detail": ""
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": true,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "keyWords": [
+      ""
+    ],
+    "level": "1",
+    "powersource": "martial",
+    "secondPowersource": "",
+    "powersourceName": "",
+    "subName": "Fighter",
+    "prepared": true,
+    "powerType": "class",
+    "powerSubtype": "attack",
+    "useType": "daily",
+    "actionType": "standard",
+    "requirements": "",
+    "weaponType": "melee",
+    "weaponUse": "default",
+    "rangeType": "weapon",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "rangeTextShort": "",
+    "rangeText": "",
+    "rangePower": null,
+    "area": 0,
+    "rechargeRoll": "",
+    "rechargeCondition": "",
+    "damageShare": false,
+    "postEffect": true,
+    "postSpecial": true,
+    "autoGenChatPowerCard": true,
+    "sustain": {
+      "actionType": "",
+      "detail": ""
+    },
+    "trigger": "",
+    "requirement": "",
+    "special": "",
+    "specialAdd": {
+      "parts": []
+    },
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false,
+      "enchantment": false,
+      "shadow": false
+    },
+    "keywordsCustom": "",
+    "chatFlavor": "",
+    "effectHTML": false,
+    "category": "other"
+  },
+  "_key": "!items!KfgywDABkm2soezh"
+}

@@ -1,0 +1,17 @@
+<div id="action-point-hd" class="dialogue-content" onsubmit="event.preventDefault();">
+
+	<div class="form-group vertical">
+        <h1 class="form-title">{{localize "DND4E.ActionPointSpend"}}</h1>
+		<p>{{localize 'DND4E.ActionPointUseTo'}}:</p>
+		<ul>
+			<li>{{localize 'DND4E.ActionPointEffect'}}</li>
+
+			{{#if system.actionpoints.custom}}
+			{{#each extra as |e key|}}
+			<li>{{e}}</li>
+			{{/each}}
+			{{/if}}
+		</ul>
+	</div>
+	
+</div>

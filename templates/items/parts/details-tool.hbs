@@ -1,0 +1,23 @@
+{{!-- Tool Proficiency --}}
+<div class="form-group">
+  <label>{{ localize "DND4E.RollFormula" }} <i data-tooltip="{{ localize 'DND4E.ToolFormulaDescription'}}" class="fa-solid fa-circle-question"></i></label>
+  <input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize 'DND4E.RollPlaceholderTool'}}" />
+</div>
+<div class="form-group">
+  <label>{{ localize "DND4E.RollBonus" }}</label>
+  <input type="text" name="system.bonus" value="{{system.bonus}}"/>
+</div>
+
+{{!-- Ability Check --}}
+<div class="form-group">
+  <label>{{ localize "DND4E.DefaultAbilitySkillCheck" }}</label>
+  <select name="system.attribute">
+    {{selectOptions attributeOptions selected=system.attribute valueAttr="value" labelAttr="label"}}
+  </select>
+</div>
+
+{{!-- Chat Message Flavor --}}
+<div class="form-group vertical">
+  <label>{{ localize "DND4EUI.ChatFlavor" }}</label>
+  <textarea class="no-mono" name="system.description.chat" placeholder="{{ localize 'DND4EUI.ChatFlavorPlaceholder'}}">{{system.description.chat}}</textarea>
+</div>

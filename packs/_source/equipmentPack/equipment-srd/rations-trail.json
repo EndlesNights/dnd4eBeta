@@ -1,0 +1,155 @@
+{
+  "name": "Rations, trail",
+  "type": "consumable",
+  "img": "icons/consumables/grains/bread-loaf-boule-rustic-brown.webp",
+  "effects": [],
+  "folder": "sHigNBQwx1ybBq5A",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p>A mix of dried and well preserved food that trades flavor for compactness and is best suited for extended travel.</span></p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg.222",
+    "quantity": 10,
+    "weight": 1,
+    "price": 0.5,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "Common",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": 1,
+      "per": "charges",
+      "autoDestroy": false
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": 0
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": false,
+      "isBasic": false,
+      "isCharge": false,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "",
+      "abilityBonus": 0,
+      "def": "ac",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": false,
+      "isHealing": false,
+      "healSurge": "",
+      "baseQuantity": "1",
+      "baseDiceType": "Base Weapon Damage",
+      "detail": "",
+      "formula": "",
+      "critFormula": "",
+      "healFormula": ""
+    },
+    "miss": {
+      "detail": "",
+      "formula": ""
+    },
+    "effect": {
+      "detail": ""
+    },
+    "damage": {
+      "parts": [],
+      "versatile": ""
+    },
+    "damageCrit": {
+      "parts": [],
+      "versatile": ""
+    },
+    "damageImp": {
+      "parts": [],
+      "versatile": ""
+    },
+    "damageCritImp": {
+      "parts": [],
+      "versatile": ""
+    },
+    "damageType": {},
+    "level": "",
+    "consumableType": "food",
+    "autoGenChatPowerCard": false,
+    "useType": "item",
+    "actionType": "",
+    "rangeType": "",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "effectType": {},
+    "keywordsCustom": "",
+    "save": {
+      "ability": "",
+      "dc": null,
+      "scaling": "spell"
+    },
+    "attackBonus": null,
+    "formula": ""
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686094262877,
+    "modifiedTime": 1686094262877,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "x9ehuGSJIC9fkGB7",
+  "sort": 0,
+  "_key": "!items!x9ehuGSJIC9fkGB7"
+}

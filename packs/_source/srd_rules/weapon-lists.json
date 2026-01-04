@@ -1,0 +1,246 @@
+{
+  "name": "Weapon Lists",
+  "_id": "p9xY7n4f0uabD02e",
+  "pages": [
+    {
+      "sort": 100000,
+      "name": "Simple Melee Weapons",
+      "type": "text",
+      "_id": "kjW9S8gIQ0LBMF53",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<table><thead><tr><th colspan=\"8\">One-Handed</th></tr><tr><th>Weapon</th><th>Prof.</th><th>Damage</th><th>Range</th><th>Price</th><th>Weight</th><th>Group</th><th>Properties</th></tr></thead><tbody><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.nWMMc9EIvgiH97L7]{Club}</td><td>+2</td><td>1d6</td><td>-</td><td>1 gp</td><td>3 lb.</td><td>Mace</td><td>-</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.4JEjuSyMmf6FxmGS]{Dagger}</td><td>+3</td><td>1d4</td><td>5/10</td><td>1 gp</td><td>1 lb.</td><td>Light Blade</td><td>Off-Hand, Light Thrown</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.REVY0n0zYC9HAHUM]{Javelin}</td><td>+2</td><td>1d6</td><td>10/20</td><td>5 gp</td><td>2 lb.</td><td>Spear</td><td>Heavy Thrown</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.hZglIVKWkDhR3U3D]{Mace}</td><td>+2</td><td>1d8</td><td>-</td><td>5gp</td><td>6 lb.</td><td>Mace</td><td>Versatile</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.FtEEEYvgSF8A22jh]{Sickle}</td><td>+2</td><td>1d6</td><td>-</td><td>2 gp</td><td>2 lb.</td><td>Light Blade</td><td>Off-Hand</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.ONZYejJN069k2T3Z]{Spear}</td><td>+2</td><td>1d8</td><td>-</td><td>5 gp</td><td>6 lb.</td><td>Spear</td><td>Versatile</td></tr></tbody></table><table><thead><tr><th colspan=\"8\">Two-Handed</th></tr><tr><th>Weapon</th><th>Prof.</th><th>Damage</th><th>Range</th><th>Price</th><th>Weight</th><th>Group</th><th>Properties</th></tr></thead><tbody><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.ZhbWhEIul5zKzafB]{Greatclub}</td><th>+2</th><th>2d4</th><th>-</th><td>1 gp</td><td>10 lb.</td><td>Mace</td><td>-</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.k1ZIzT9bNOWsACY4]{Morningstar}</td><th>+2</th><th>1d10</th><th>-</th><td>10 gp</td><td>8 lb.</td><td>Mace</td><td>-</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.VBEmZHSsHPmHxcXS]{Quarterstaff}</td><th>+2</th><th>1d8</th><th>-</th><td>5 gp</td><td>4 lb.</td><td>Staff</td><td>-</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.KE63THWYh2I9coOu]{Scythe}</td><th>+2</th><th>2d4</th><th>-</th><td>5 gp</td><td>10 lb.</td><td>Heavy Blade</td><td>-</td></tr></tbody></table>"
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "dnd4e",
+        "systemVersion": "0.4.2",
+        "coreVersion": "13.350",
+        "createdTime": 1686103600409,
+        "modifiedTime": 1759985239463,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "_key": "!journal.pages!p9xY7n4f0uabD02e.kjW9S8gIQ0LBMF53"
+    },
+    {
+      "name": "Superior Melee Weapons",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "text": {
+        "format": 1,
+        "content": "<table><thead><tr><th colspan=\"8\">One-Handed</th></tr><tr><th>Weapon</th><th>Prof.</th><th>Damage</th><th>Range</th><th>Price</th><th>Weight</th><th>Group</th><th>Properties</th></tr></thead><tbody><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.K2Px0ngqKRZZZuVw]{Bastard Sword}</td><td>+3</td><td>1d10</td><td>-</td><td>30 gp</td><td>6 lb.</td><td>Heavy Blade</td><td>Versatile</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.55LNLX26zeY1M7zp]{Katar}</td><td>+3</td><td>1d6</td><td>-</td><td>3 gp</td><td>1 lb.</td><td>Light Blade</td><td>Off-Hand, High Crit</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.PNDfFFzURDp3ghAP]{Rapier}</td><td>+3</td><td>1d8</td><td>-</td><td>25 gp</td><td>2 lb.</td><td>Light Blade</td><td>-</td></tr></tbody></table><table><thead><tr><th colspan=\"8\">Two-Handed</th></tr><tr><th>Weapon</th><th>Prof.</th><th>Damage</th><th>Range</th><th>Price</th><th>Weight</th><th>Group</th><th>Properties</th></tr></thead><tbody><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.XnYHAPIp2qVYi4qh]{Spiked Chain}</td><td>+3</td><td>2d4</td><td>-</td><td>30 gp</td><td>10 lb.</td><td>Flail</td><td>Reach</td></tr></tbody></table>"
+      },
+      "_id": "7fSE977RAkZZVBDh",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 300000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "dnd4e",
+        "systemVersion": "0.4.2",
+        "coreVersion": "13.350",
+        "createdTime": 1686103274069,
+        "modifiedTime": 1759985780483,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "_key": "!journal.pages!p9xY7n4f0uabD02e.7fSE977RAkZZVBDh"
+    },
+    {
+      "name": "Simple Ranged Weapons",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "text": {
+        "format": 1,
+        "content": "<table><thead><tr><th colspan=\"8\">One-Handed</th></tr><tr><th>Weapon</th><th>Prof.</th><th>Damage</th><th>Range</th><th>Price</th><th>Weight</th><th>Group</th><th>Properties</th></tr></thead><tbody><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.8JyDOEsRGAo0qLcN]{Hand Crossbow}</td><td>+2</td><td>1d6</td><td>10/20</td><td>25 gp</td><td>2 lb.</td><td>Crossbow</td><td>Load Free</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.qvdaVQkpFjDEzCeP]{Sling}</td><td>+2</td><td>1d6</td><td>10/20</td><td>1 gp</td><td>0 lb.</td><td>Sling</td><td>Load Free</td></tr></tbody></table><table><thead><tr><th colspan=\"8\">Two-Handed</th></tr><tr><th>Weapon</th><th>Prof.</th><th>Damage</th><th>Range</th><th>Price</th><th>Weight</th><th>Group</th><th>Properties</th></tr></thead><tbody><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.JNTQgYtE0vRd0kzV]{Crossbow}</td><td>+2</td><td>1d8</td><td>15/30</td><td>25 gp</td><td>4 lb.</td><td>Crossbow</td><td>Load Minor</td></tr></tbody></table>"
+      },
+      "_id": "G50MDDGV8v1NRT9u",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 400000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "dnd4e",
+        "systemVersion": "0.4.2",
+        "coreVersion": "13.350",
+        "createdTime": 1686103282665,
+        "modifiedTime": 1759985841138,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "_key": "!journal.pages!p9xY7n4f0uabD02e.G50MDDGV8v1NRT9u"
+    },
+    {
+      "name": "Military Melee Weapons",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "text": {
+        "format": 1,
+        "content": "<table><thead><tr><th colspan=\"8\">One-Handed</th></tr><tr><th>Weapon</th><th>Prof.</th><th>Damage</th><th>Range</th><th>Price</th><th>Weight</th><th>Group</th><th>Properties</th></tr></thead><tbody><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.dieIY3XNSzPWoYMj]{Battleaxe}</td><td>+2</td><td>1d10</td><td>-</td><td>15 gp</td><td>6 lb.</td><td>Axe</td><td>Versatile</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.2kxPPnbcdmxurdbb]{Flail}</td><td>+2</td><td>1d10</td><td>-</td><td>10 gp</td><td>5 lb.</td><td>Flail</td><td>Versatile</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.BznXwlyRw1Fp7rOO]{Handaxe}</td><td>+2</td><td>1d6</td><td>5/10</td><td>5 gp</td><td>3 lb.</td><td>Axe</td><td>Off-Hand, Heavy Throw</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.c4LxUUvwXHV0Mjrt]{Longsword}</td><td>+3</td><td>1d8</td><td>-</td><td>15gp</td><td>4 lb.</td><td>Heavy Blade</td><td>Versatile</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.YzRMzxEh3Hqr8Vnw]{Scimitar}</td><td>+2</td><td>1d8</td><td>-</td><td>10 gp</td><td>4 lb.</td><td>Heavy Blade</td><td>High-Crit</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.BC3aiO0JwB0OYXp5]{Short Sword}</td><td>+3</td><td>1d6</td><td>-</td><td>10 gp</td><td>2 lb.</td><td>Light Blade</td><td>Off-Hand</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.mrQq7VReo4sRAQmZ]{Throwing Hammer}</td><td>+3</td><td>1d6</td><td>5/10</td><td>5 gp</td><td>2 lb.</td><td>Hammer</td><td>Off-Hand, Heavy Thrown</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.yRUWjn2ooggvBe39]{Warhammer}</td><td>+3</td><td>1d10</td><td>-</td><td>15 gp</td><td>5 lb.</td><td>Hammer</td><td>Versatile</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.c819DjmqIEtKvhaV]{War Pick}</td><td>+3</td><td>1d8</td><td>-</td><td>15 gp</td><td>6 lb.</td><td>Pick</td><td>High Crit, Versatile</td></tr></tbody></table><table><thead><tr><th colspan=\"8\">Two-Handed</th></tr><tr><th>Weapon</th><th>Prof.</th><th>Damage</th><th>Range</th><th>Price</th><th>Weight</th><th>Group</th><th>Properties</th></tr></thead><tbody><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.hRJrW1FAjc8dj4W4]{Falchion}</td><td>+3</td><td>2d4</td><td>-</td><td>25 gp</td><td>7 lb.</td><td>Heavy Blade</td><td>High Crit</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.0up3Qa29OpScE7DR]{Glaive}</td><td>+2</td><td>1d10</td><td>-</td><td>25 gp</td><td>10 lb.</td><td>Heavy Blade, Polearm</td><td>Reach</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.0cIZroroggsXLsGX]{Greataxe}</td><td>+2</td><td>1d12</td><td>-</td><td>30 gp</td><td>12 lb.</td><td>Axe</td><td>High-Crit</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.91VXVaUVrIGEIKZC]{Greatsword}</td><td>+3</td><td>1d10</td><td>-</td><td>30 gp</td><td>8 lb.</td><td>Heavy Blade</td><td>-</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.Advz9xlCDpgHb1TP]{Halberd}</td><td>+2</td><td>1d10</td><td>-</td><td>25 gp</td><td>12 lb.</td><td>Axe, Polearm</td><td>Reach</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.E8sQmiH5lj7ue0e0]{Heavy Flail}</td><td>+2</td><td>2d6</td><td>-</td><td>25 gp</td><td>10 lb.</td><td>Flail</td><td>-</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.vMCe4bHt2cqEETuM]{Longspear}</td><td>+2</td><td>1d10</td><td>-</td><td>10 gp</td><td>9 lb.</td><td>Polearm, Spear</td><td>Reach</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.UmdAzJ0aWtt7UwJa]{Maul}</td><td>+2</td><td>2d6</td><td>-</td><td>30 gp</td><td>12 lb.</td><td>Hammer</td><td>-</td></tr></tbody></table>"
+      },
+      "_id": "ezGAD5rtV5TLGhDQ",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 200000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "dnd4e",
+        "systemVersion": "0.4.2",
+        "coreVersion": "13.350",
+        "createdTime": 1686103264989,
+        "modifiedTime": 1759985704658,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "_key": "!journal.pages!p9xY7n4f0uabD02e.ezGAD5rtV5TLGhDQ"
+    },
+    {
+      "name": "Military Ranged Weapons",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "text": {
+        "format": 1,
+        "content": "<table><thead><tr><th colspan=\"8\">Two-Handed</th></tr><tr><th>Weapon</th><th>Prof.</th><th>Damage</th><th>Range</th><th>Price</th><th>Weight</th><th>Group</th><th>Properties</th></tr></thead><tbody><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.wh0LNBWMhsKypI16]{Shortbow}</td><td>+2</td><td>1d8</td><td>15/30</td><td>25 gp</td><td>2 lb.</td><td>Bow</td><td>Load Free, Small</td></tr><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.HBrp8DJ5C5UIsVxu]{Longbow}</td><td>+2</td><td>1d10</td><td>20/40</td><td>30 gp</td><td>3 lb.</td><td>Bow</td><td>Load Free</td></tr></tbody></table>"
+      },
+      "_id": "X6ukbUgTQolHx7PO",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 400000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "dnd4e",
+        "systemVersion": "0.4.2",
+        "coreVersion": "13.350",
+        "createdTime": 1686103287368,
+        "modifiedTime": 1759985933141,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "_key": "!journal.pages!p9xY7n4f0uabD02e.X6ukbUgTQolHx7PO"
+    },
+    {
+      "name": "Superior Ranged Weapons",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 2
+      },
+      "text": {
+        "format": 1,
+        "content": "<table><thead><tr><th colspan=\"8\">One-Handed</th></tr><tr><th>Weapon</th><th>Prof.</th><th>Damage</th><th>Range</th><th>Price</th><th>Weight</th><th>Group</th><th>Properties</th></tr></thead><tbody><tr><td>@UUID[Compendium.dnd4e.equipmentPack.Item.8suLj8aO9ijycfJO]{Shuriken}</td><td>+3</td><td>1dd</td><td>6/12</td><td>1 gp</td><td>0.5 lb.</td><td>Light Blade</td><td>Light Thrown</td></tr></tbody></table>"
+      },
+      "_id": "Qg1UbXui1XhwxIBW",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 400000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "dnd4e",
+        "systemVersion": "0.4.2",
+        "coreVersion": "13.350",
+        "createdTime": 1686103292337,
+        "modifiedTime": 1759985991965,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "_key": "!journal.pages!p9xY7n4f0uabD02e.Qg1UbXui1XhwxIBW"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.350",
+    "createdTime": 1686103587017,
+    "modifiedTime": 1759984569600,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "categories": [],
+  "_key": "!journal!p9xY7n4f0uabD02e"
+}

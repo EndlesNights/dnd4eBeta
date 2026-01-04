@@ -1,0 +1,144 @@
+<section class="tab {{tab.id}}{{#if tab.active}} active{{/if}}{{#if isNPC}} npc{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+  <div class="inventory-filters flexrow flexcol">
+    <ol class="currency flexrow">
+      <h3>
+        <label data-tooltip="{{currencyGoldSum}}">{{localize 'DND4E.Currency'}}</label>
+        <a class="currency-convert" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
+      </h3>
+      {{#each system.currency as |v k|}}
+      <label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
+      <input type="text" name="system.currency.{{k}}" value="{{v}}" data-dtype="Number" data-tooltip="{{ localize (lookup ../config.currencies k )}}"/>
+      {{/each}}
+    </ol>
+	
+    {{#unless isNPC}}
+    <div class="flexrow daily-item-power-use">
+      <div class="daily-item-power-use-counter">
+        <span>{{localize 'DND4E.ItemUseDaily'}}:</span> 
+        <input type="text" name="system.magicItemUse.dailyuse" value="{{system.magicItemUse.dailyuse}}" data-tooltip="{{localize 'DND4E.ItemUseDailyRem'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>    
+        <span data-tooltip="{{localize 'DND4E.ItemUseDaily'}}">/ {{system.magicItemUse.perDay}}</span>
+      </div>
+      <div class="daily-item-power-use-check flexrow">
+        <span>{{localize 'DND4E.ItemUseDailyEnc'}}</span>
+        <input type="checkbox" name="system.magicItemUse.encounteruse" data-dtype="Boolean" {{checked system.magicItemUse.encounteruse}} data-tooltip="{{localize 'DND4E.ItemUseDailyEnc'}}">
+      </div>      
+    </div>
+	{{/unless}}
+	
+  </div>
+
+
+  <ol class="item-list inventory-list">
+  {{#each sections as |section sid|}}
+    <li class="items-header flexrow">
+      <h3 class="item-name flexrow">{{localize section.label}}</h3>
+
+      {{#if section.columns}}
+        {{#each section.columns}}
+          <div class="item-detail {{css}}">{{label}}</div>
+        {{/each}}
+      {{else}}
+        <div class="item-detail item-weight">{{localize 'DND4E.Weight'}}</div>
+        <div class="item-detail item-uses">{{localize 'DND4E.Charges'}}</div>
+        <div class="item-detail item-quantity">{{localize 'DND4E.Quantity'}}</div>
+      {{/if}}
+
+      {{#if ../owner}}
+      <div class="item-controls">
+        <a class="item-control item-create" data-tooltip="{{localize 'DND4E.ItemCreate'}}"
+          {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+          <i class="fas fa-plus"></i> {{localize 'DND4E.Add'}}
+        </a>
+      </div>
+      {{/if}}
+    </li>
+
+    <ol class="item-list">
+    {{#each section.items as |item iid|}}
+      <li class="item flexrow {{section.css}} collapsible{{#if collapsed}} collapsed{{/if}}{{#if isUnavailable}} unavailable{{/if}}"
+        data-item-id="{{#if section.editableName}}{{iid}}{{else}}{{item._id}}{{/if}}">
+        <div class="item-name flexrow rollable" data-action="itemSummary">
+          {{#if section.editableName}}
+          <input type="text" value="{{item.name}}">
+          {{else}}
+          <div class="item-image item-roll"><img src="{{item.img}}" width="30" height="30"/></div>
+          <h4 class="item-title">
+            {{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
+            
+            {{~#if item.system.attuned}} <i class="fas fa-sun attuned" data-tooltip="{{localize 'DND4E.Attuned'}}"></i>{{/if}}
+          </h4>
+          {{/if}}
+        </div>
+
+        {{#if section.columns}}
+          {{#each section.columns}}
+            <div class="item-detail {{css}}">
+              {{#with (foundry.utils.getProperty item property)}}
+                {{#if ../editable}}
+                  <input type="text" value="{{this}}" placeholder="&mdash;"
+                      data-dtype="{{../editable}}" data-property="{{../property}}">
+                {{else}}
+                  {{this}}
+                {{/if}}
+              {{/with}}
+            </div>
+          {{/each}}
+        {{else}}
+          <div class="item-detail item-weight">
+            {{#if item.totalWeight}}
+              <div class="item-detail">
+                {{ item.totalWeightLabel }} {{localize 'DND4E.AbbreviationLbs'}}
+              </div>
+            {{/if}}
+          </div>
+
+          <div class="item-detail item-uses">
+            {{#if item.hasUses }}
+              <input type="text" value="{{item.system.uses.value}}" placeholder="0"/>/ {{item.system.preparedMaxUses}}
+            {{/if}}
+          </div>
+
+          <div class="item-detail item-quantity">
+            {{~#if item.isStack}} {{item.system.quantity}}{{/if}}
+          </div>
+        {{/if}}
+
+        {{#if ../../owner}}
+        <div class="item-controls">
+          {{#unless @root.isVehicle}}
+          <a class="item-control item-toggle {{item.toggleClass}}" data-tooltip="{{item.toggleTitle}}"><i class="fas fa-shield-alt"></i></a>
+          {{/unless}}
+          {{#unless section.editableName}}
+          <a class="item-control item-edit" data-tooltip="{{localize 'DND4E.ItemEdit'}}"><i class="fas fa-edit"></i></a>
+          {{/unless}}
+          <a class="item-control item-delete" data-tooltip="{{localize 'DND4E.ItemDelete'}}"><i class="fas fa-trash"></i></a>
+        </div>
+        {{/if}}
+        <div class="item-summary collapsible-content">
+          <div class="wrapper">
+		    <div class="card-content">
+              {{{chatData.description.value}}}
+		    </div>
+            <ul class="item-properties tags">
+              {{#each chatData.properties as |propertyHTML|}}
+                {{{propertyHTML}}}
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      </li>
+    {{/each}}
+    </ol>
+  {{/each}}
+  </ol>
+
+  {{#with system.encumbrance}}
+  <div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" data-tooltip="{{localize 'DND4E.EncumbranceTip'}}">
+    <span class="encumbrance-bar" style="width:{{pbc}}%"></span>
+    {{#if encumbered}}
+      <span class="encumbrance-bar encumbered" style="width:{{pec}}%"></span>
+    {{/if}}
+    <span class="encumbrance-label">{{value}} / {{max}} lbs.</span>
+  </div>
+  {{/with}}
+</section>

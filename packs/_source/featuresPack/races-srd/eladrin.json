@@ -1,0 +1,216 @@
+{
+  "name": "Eladrin",
+  "type": "feature",
+  "img": "icons/skills/trades/academics-astronomy-navigation-blue.webp",
+  "effects": [
+    {
+      "_id": "AqzmEczMbRhSDVzE",
+      "changes": [
+        {
+          "key": "system.skills.arc.base",
+          "mode": 4,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.skills.his.base",
+          "mode": 4,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.qM20drGGWWSzvLWG",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "dots": [],
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          }
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Skill Bonuses",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/social/theft-pickpocket-bribery-brown.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!vC5GOVi3zlsd9STm.AqzmEczMbRhSDVzE"
+    },
+    {
+      "name": "Eladrin Weapon Proficiency",
+      "origin": "Compendium.dnd4e.featuresPack.Item.vC5GOVi3zlsd9STm",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "flags": {
+        "dnd4e": {
+          "dots": [],
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          }
+        }
+      },
+      "_id": "Z9PA2e7dVWtnR41h",
+      "changes": [
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "longsword",
+          "priority": null
+        }
+      ],
+      "description": "<p>You gain proficiency with @UUID[Compendium.dnd4e.equipmentPack.Item.c4LxUUvwXHV0Mjrt]{Longsword}</p>",
+      "transfer": true,
+      "statuses": [],
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/trades/academics-astronomy-navigation-blue.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!vC5GOVi3zlsd9STm.Z9PA2e7dVWtnR41h"
+    }
+  ],
+  "folder": "hE67zu2JDa7VFd5I",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><strong>Average Height:</strong> 5´ 5˝–6´ 1˝</p><p><strong>Average Weight:</strong> 130–180 lb.</p><p><strong>Ability Scores:</strong></p><ul><li>+2 Dexterity</li><li>+2 Intelligence</li></ul><p><strong>Size:</strong> Medium</p><p><strong>Speed:</strong> 6 squares</p><p><strong>Vision:</strong> Low-light</p><p><strong>Languages:</strong></p><ul><li>Common</li><li>Elven</li></ul><p><strong>Skill Bonuses:</strong></p><ul><li>+2 Arcana</li><li>+2 History</li></ul><p><strong>Eladrin Education:</strong> You gain training in one additional skill selected from the skill list in Chapter 5.</p><p><strong>Eladrin Weapon Proficiency:</strong> You gain proficiency with @UUID[Compendium.dnd4e.equipmentPack.Item.c4LxUUvwXHV0Mjrt]{Longsword}</p><p><strong>Eladrin Will:</strong> You gain a +1 racial bonus to your Will defense. In addition, you gain a +5 racial bonus to saving throws against charm effects.</p><p><strong>Fey Origin:</strong> Your ancestors were native to the Feywild, so you are considered a fey creature for the purpose of effects that relate to creature origin.</p><p><strong>Trance:</strong> Rather than sleep, eladrin enter a meditative state known as trance. You need to spend 4 hours in this state to gain the same benefits other races gain from taking a 6-hour extended rest. While in a trance, you are fully aware of your surroundings and notice approaching enemies and other events as normal.</p><p><strong>Fey Step:</strong> You can use @Compendium[dnd4e.example_powers.2fVzL6ET569pKLg0]{Fey Step} as an encounter power</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg.38",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "race",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Eladrin",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094305355,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "vC5GOVi3zlsd9STm",
+  "sort": 0,
+  "_key": "!items!vC5GOVi3zlsd9STm"
+}

@@ -1,0 +1,43 @@
+<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">  
+  <!-- Keywords for this effect -->
+  <fieldset class="keywords">
+    <legend>{{localize 'DND4E.Keywords'}}</legend>
+    <multi-select name="flags.dnd4e.keywords" class="inline">
+      {{selectOptions config.keywords selected=document.flags.dnd4e.keywords}}
+    </multi-select>
+    <div class="form-group long">
+      <label>{{ localize 'DND4E.Custom' }}</label>
+      <input type="text" name="flags.dnd4e.keywordsCustom" value="{{document.flags.dnd4e.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}" />
+    </div>
+  </fieldset>
+  
+  <!-- Ongoing Damage instances attached to this effect-->
+  <fieldset class="dots">
+    <legend>{{localize 'DND4E.OngoingDamage'}}</legend>
+    <header class="effect-dot effects-header flexrow">
+      <div class="amount">{{ localize 'DND4E.Value' }}</div>
+      <div class="type">{{ localize 'DND4E.Type' }}</div>
+      <div class="effect-controls">
+        <a class="effect-dot-control" data-action="addDot"><i class="far fa-plus-square"></i></a>
+      </div>
+    </header>
+    <ol class="dots-list">
+      {{#each document.flags.dnd4e.dots as |dot i|}}
+      <li class="effect-dot flexrow" data-index="{{i}}">
+        <div class="amount">
+          <input type="text" name="flags.dnd4e.dots.{{i}}.amount" value="{{dot.amount}}"/>
+        </div>
+        <div class="type damage-type">
+          <multi-select name="flags.dnd4e.dots.{{i}}.typesArray" class="inline">
+            {{selectOptions ../dotDamageTypes selected=dot.typesArray}}
+          </multi-select>
+        </div>
+        <div class="effect-controls">
+          <a class="effect-dot-control" data-action="deleteDot"><i class="fas fa-trash"></i></a>
+        </div>
+      </li>
+      {{/each}}
+    </ol>
+  </fieldset>
+  
+</section>

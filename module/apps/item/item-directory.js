@@ -1,9 +1,9 @@
-import Item4e from "../../item/item-document.js";
+import Item4e from "../../item/item.js";
 
 /**
  * Items sidebar with added support for item containers.
  */
-export default class ItemDirectory4e extends ItemDirectory {
+export default class ItemDirectory4e extends foundry.applications.sidebar.tabs.ItemDirectory {
 	/** @inheritdoc */
 	async _handleDroppedEntry(target, data) {
 		// Obtain the dropped Document

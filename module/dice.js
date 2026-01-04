@@ -1,6 +1,7 @@
 import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
 import {RollWithOriginalExpression} from "./roll/roll-with-expression.js";
 import { Helper } from "./helper.js"
+import RollDialog from "./apps/dice/roll-dialog.js";
 
 /**
  * A standardized helper function for managing core 4e "d20 rolls"
@@ -50,7 +51,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 		'targets': []
 	}
 	
-	if (game.user.targets.size) {
+	if (actor && game.user.targets.size) {
 		const numTargets = game.user.targets.size;
 		const targetArr = Array.from(game.user.targets);
 		targDataArray.hasTarget = true;
@@ -111,15 +112,13 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 		targDataArray.multiTargetCheck = true;
 	}
 		
-	let newFlavor = "";
-	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
 		'formula': parts.join(" + "),
 		'data': data,
 		'rollMode': rollConfig.rollMode,
 		'rollModes': CONFIG.Dice.rollModes,
 		'config': CONFIG.DND4E,
-		'flavor': newFlavor || flavor,
+		'flavor': flavor ?? "",
 		'isAttackRoll': isAttackRoll,
 		'isD20Roll': true,
 		'isCharge': isCharge,
@@ -127,27 +126,13 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 		'userStatus': userStatus,
 		'targetData': targDataArray
 	};
-	const html = await renderTemplate(template, dialogData);
-
-	// Create the Dialog window
-	let roll;
-	return new Promise(resolve => {
-		new Dialog({
-			'title': title,
-			'content': html,
-			'buttons': {
-				'normal': {
-					'label': game.i18n.localize("DND4E.Roll"),
-					'callback': html => roll = performD20RollAndCreateMessage(html[0].querySelector("form"), rollConfig)
-				}
-			},
-			default: "normal",
-			close: html => {
-				if (onClose) onClose(html, parts, data);
-				resolve(roll !== undefined ? roll : false) // check roll here as that was assigned on the active thread, not an async function
-			}
-		}, dialogOptions).render(true);
-	})
+	let buttons = [{
+		action: 'normal',
+		icon: 'fa-solid fa-dice-d20',
+		label: game.i18n.localize('DND4E.Roll'),
+		type: 'submit'
+	}];
+	return RollDialog.asPromise({dialogData, rollConfig, buttons, window: {title}, callbackFn: performD20RollAndCreateMessage});
 }
 
 // Get the bonus for an attack roll 
@@ -195,7 +180,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 		Object.keys(data.commonAttackBonuses).forEach(function(key,index) {
 			data[key] = data.commonAttackBonuses[key].value
 		});
-		const individualAttack = (Object.entries(form)[7][1].value === "true");
+		const individualAttack = (form.querySelector("#multibonus-toggle")?.value === "true");
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++ ) {
 			const targetBonuses = []
 			for ( let [k, v] of Object.entries(form) ) {
@@ -523,68 +508,53 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 	// If they didn't want fast forward, then we need to display the rolls bonus input dialog.
 
 	// Render modal dialog
-	template = template || "systems/dnd4e/templates/chat/roll-dialog.html";
 	let dialogData = {
 		formula: "@damage + @bonus",
 		data: data,
 		rollMode: rollMode,
 		rollModes: CONFIG.Dice.rollModes
 	};
-	const html = await renderTemplate(template, dialogData);
 
-	// Create the Dialog window
-	// this roll object will be set if any of the buttons are pressed
-	let roll;
-	// helper function for running the roll, as all the dialogs do basically the same thing
-	const doRoll = (html, hitType) =>  {
-		rollConfig.hitType = hitType
-		return performDamageRollAndCreateChatMessage(html[0].querySelector("form"), rollConfig)
-	}
 	// common dialog configuration
 	const dialogConfig = {
-		title: title,
-		content: html,
-		buttons: {
-		},
-		default: "normal"
+		window: {title},
+		position: {width:500}
 	}
+	const buttons = [];
 	// add the buttons
 	if (healingRoll) {
-		dialogConfig.buttons = {
-			normal: {
-				label: game.i18n.localize("DND4E.Healing"),
-				callback: html => roll = doRoll(html, 'heal')
-			}
-		}
+		buttons.push({
+			action: "heal",
+			// icon: "fa-solid fa-dice-d20",
+			label: game.i18n.localize("DND4E.Healing"),
+			type: "submit"
+		});
 	}
 	else {
-		dialogConfig.buttons = {
-			critical: {
-				condition: allowCritical,
+		if (allowCritical) {
+			buttons.push({
+				action: "crit",
+				// icon: "fa-solid fa-dice-d20",
 				label: game.i18n.localize("DND4E.CriticalHit"),
-				callback: html => roll = doRoll(html, 'crit')
-			},
-			normal: {
-				label: game.i18n.localize(allowCritical ? "DND4E.Normal" : "DND4E.Roll"),
-				callback: html => roll = doRoll(html, 'normal')
-			}
+				type: "submit"
+			});
 		}
-		if(data.item.miss.formula){
-			dialogConfig.buttons.miss = {
+		buttons.push({
+			action: "normal",
+			// icon: "fa-solid fa-dice-d20",
+			label: game.i18n.localize(allowCritical ? "DND4E.Normal" : "DND4E.Roll"),
+			type: "submit"
+		});
+		if (data.item.miss.formula) {
+			buttons.push({
+				action: "miss",
+				// icon: "fa-solid fa-dice-d20",
 				label: game.i18n.localize(allowCritical ? "DND4E.Miss" : "DND4E.Roll"),
-				callback:  html => roll = doRoll(html, 'miss')
-			}
+				type: "submit"
+			})
 		}
 	}
-	// render the dialog
-	return new Promise(resolve => {
-		dialogConfig.close = html => {
-			if (onClose) onClose(html, parts, data);
-			resolve(roll !== undefined ? roll : false);
-		}
-
-		new Dialog(dialogConfig, dialogOptions).render(true);
-	});
+	return RollDialog.asPromise({dialogData, rollConfig, buttons, ...dialogConfig, callbackFn: performDamageRollAndCreateChatMessage});
 }
 
 async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, partsMiss, data, hitType, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options, fastForward}) {

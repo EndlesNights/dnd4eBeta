@@ -1,0 +1,141 @@
+{
+  "name": "Combat Weapon Talent - Two Handed",
+  "type": "feature",
+  "img": "icons/skills/melee/maneuver-sword-katana-yellow.webp",
+  "effects": [
+    {
+      "_id": "PjZaPxRTsrL8FllU",
+      "changes": [
+        {
+          "key": "weapon.attack.two.untyped",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Compendium.dnd4e.class_features.7rpBJ6SFiJpZYHtS",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "dots": [],
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          }
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Combat Weapon Talent",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/melee/maneuver-sword-katana-yellow.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!4OewAM0fKxcFbS8k.PjZaPxRTsrL8FllU"
+    }
+  ],
+  "folder": "4OBbdiQfugXxFAPH",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p>You gain a +1 bonus to attack rolls with attacks made with a two-handed weapon.</p>\n<p>This feat contains an effect that automatically adds +1 untyped bonus to all rolls made with a weapon that has the \"<code>Two Handed</code>\" property.</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "class",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Fighter",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "class": "",
+    "hitFistLevel": 10,
+    "hitPerLevel": 5,
+    "surgePerDay": 5,
+    "skills": "<i class=\"fas fa-edit\"></i>",
+    "def": {
+      "ac": 0,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0
+    },
+    "proficiencies": {
+      "weapons": [],
+      "armour": []
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094095048,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "4OewAM0fKxcFbS8k",
+  "sort": 0,
+  "_key": "!items!4OewAM0fKxcFbS8k"
+}

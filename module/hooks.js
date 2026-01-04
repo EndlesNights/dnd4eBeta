@@ -12,10 +12,10 @@ export const TokenBarHooks = {
 
 TokenBarHooks.generatePowerGroups = (actor) => actor.sheet._generatePowerGroups()
 
-TokenBarHooks.updatePowerAvailable = (actor, power) =>  actor.sheet._checkPowerAvailable(power)
+TokenBarHooks.updatePowerAvailable = (actor, power) =>  actor.sheet._checkItemAvailable(power)
 
 TokenBarHooks.isPowerAvailable = (actor, power) => {
-    actor.sheet._checkPowerAvailable(power)
+    actor.sheet._checkItemAvailable(power)
     return !power.system.notAvailable
 }
 
@@ -56,5 +56,5 @@ TokenBarHooks.powersBySheetGroup = (actor) => {
 }
 
 //v3 hook.  _generateItemSummary returns a jquery selector that the sheet wants.  Give the caller back just the html.
-TokenBarHooks.generateItemTooltip = async (actor, item) => (await actor._sheet._generateItemSummary(item)).get(0).outerHTML
+TokenBarHooks.generateItemTooltip = async (actor, item) => ""
 
