@@ -1,7 +1,16 @@
 import DocumentSheet4e from "./DocumentSheet4e.js"
 
 export class SaveThrowDialog extends DocumentSheet4e {
-
+	
+	constructor(...args) {
+		super(...args);
+		this.saveOptions = {
+			"effectId": this.options?.effectId || ``,
+			"effectSave": this.options.effectSave || false,
+			"saveDC": this.options.saveDC || 10
+		};
+	}
+	
 	static DEFAULT_OPTIONS = {
 		id: "save-throw",
 		classes: ["dnd4e","actor-save-throw","standard-form","default"],
@@ -36,9 +45,11 @@ export class SaveThrowDialog extends DocumentSheet4e {
 	/** @override */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
-		const saveOptions = this.options;
+		const saveOptions = this.saveOptions;
 		let savableEffects = [];
+		
 		const actor = this.document;
+		
 		if (actor && !saveOptions.effectSave) {
 			Array.from(actor.effects).forEach((e) => {
 				if (e.flags.dnd4e?.effectData?.durationType === 'saveEnd') savableEffects.push({name: e.name, id: e.id});
@@ -47,12 +58,15 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		if (savableEffects.length) {
 			savableEffects = [{name: game.i18n.format("DND4E.None"), id:''}].concat(savableEffects);
 		}
+		
+		let saveEffect = ((actor && saveOptions.effectSave) ? actor.effects.get(saveOptions.effectId) : null);
+		
 		foundry.utils.mergeObject(context, {
 			system: actor.system,
 			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label),
-			effectName: ( saveOptions.effectSave ? actor.effects.get(saveOptions.effectId).name : null ),
-			effectId: saveOptions.saveAgainst,
-			saveDC: ( saveOptions.effectSave ? actor.effects.get(saveOptions.effectId).flags.dnd4e?.effectData?.saveDC : saveOptions.saveDC ),
+			effectName: ( saveOptions.effectSave ? saveEffect.name : null ),
+			effectId: saveOptions?.effectId,
+			saveDC: saveOptions.saveDC,
 			savableEffects: savableEffects,
 			buttons: [
 				{ type: "submit", icon: "fa-solid fa-dice-d20", label: "DND4E.SaveRoll" }
@@ -60,12 +74,18 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		});
 		return context;
 	}
+	
+	async _onRender(context, options) {
+		await super._onRender(context, options);
+		this.element.querySelector("[name='saveAgainst']")?.addEventListener("change",this._onChooseEffect.bind(this));
+	}
 
-	async _onChangeInput(event) {
-		const target = event.target;
-		if (target?.name !== "saveAgainst") return;
-		this.options.saveDC = this.document.effects.get(target.value)?.flags.dnd4e?.effectData?.saveDC;
-		this.options.saveAgainst = target.value;
+	_onChooseEffect(event) {
+		const targetEffect = this.document.effects.get(event.target.value);
+		
+		this.saveOptions.saveDC = targetEffect?.flags.dnd4e?.effectData?.saveDC;
+		this.saveOptions.effectId = targetEffect?.id || ``;
+		
 		this.render();
 	}
 

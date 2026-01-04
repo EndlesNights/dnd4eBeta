@@ -84,11 +84,11 @@ export default class TraitSelector extends foundry.applications.api.HandlebarsAp
       }
     }
 
-
     context.allowCustom = this.options.allowCustom;
     context.choices = choices;
     context.custom = attr ? attr.custom : "";
     context.buttons = [{type: "submit", icon: "far fa-save", label: "DND4E.Save"}];
+	context.heading = this.options.window.title;
     
     // Return data
 	  return context;

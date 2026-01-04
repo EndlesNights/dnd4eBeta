@@ -76,6 +76,7 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
     context.choices = choices;
     context.custom = attr ? attr.custom : "";
     context.buttons = [{type: "submit", icon: "far fa-save", label: "DND4E.Save"}];
+	context.heading = this.options.window.title;
 	
     // Return data
 	  return context;

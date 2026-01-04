@@ -21,7 +21,7 @@ export default class ConBonConfig extends DocumentSheet4e {
 	}
 
 	get title() {
-		return `${this.document.name} — ${game.i18n.localize("DND4E.CommonAttackBonuses")}`;
+		return `${this.document.name} — ${game.i18n.localize("DND4EUI.ConditionalAtkMods")}`;
 	}
 
 	static PARTS = {
