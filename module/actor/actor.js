@@ -1,7 +1,7 @@
 import { d20Roll, damageRoll } from "../dice.js";
 import { DND4E } from "../config.js";
 import { Helper } from "../helper.js"
-import {MeasuredTemplate4e} from "../pixi/ability-template.js";
+import { MeasuredTemplate4e } from "../canvas/ability-template.js";
 import { SaveThrowDialog } from "../apps/save-throw.js";
 
 /**
@@ -20,7 +20,7 @@ export class Actor4e extends Actor {
 		}
 
 		// set default to sorting
-		if(["NPC","Character","Hazard"].includes(data.type)){
+		if(["NPC","Player Character","Hazard"].includes(data.type)){
 			if(!data?.system?.powerGroupTypes){
 				data.system.powerGroupTypes = `usage`;
 			}
@@ -37,6 +37,18 @@ export class Actor4e extends Actor {
 		}
 	}
 
+	/* -------------------------------------------- */
+
+	/** @inheritDoc */
+	async _preUpdate(changed, options, user) {
+		if ( (await super._preUpdate(changed, options, user)) === false ) return false;
+
+		// Store hp
+		if ( "hp" in (this.system.attributes || {}) ) {
+			foundry.utils.setProperty(options, "dnd4e.hp", { hp: this.system.attributes.hp.value, temp: this.system.attributes.temphp.value || 0 });
+		}
+	}
+
 	/** @override */
 	async update(data, options={}) {
 		if(!data) { return super.update(data, options); }
@@ -44,7 +56,7 @@ export class Actor4e extends Actor {
 		//used to call changes to HP scrolling text
 		if(data[`system.attributes.hp.value`] != undefined && data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
 			options.dhp = data[`system.attributes.hp.value`] - this.system.attributes.hp.value;
-			data[`system.details.isBloodied`] = data[`system.attributes.hp.value`] <= this.system.attributes.hp.max/2;
+			data[`system.details.isBloodied`] = data[`system.attributes.hp.value`] <= (this.system.details.bloodied ?? this.system.attributes.hp.max/2);
 		}
 
 		// Apply changes in Actor size to Token width/height
@@ -79,7 +91,22 @@ export class Actor4e extends Actor {
 	/** @inheritdoc */
 	_onUpdate(data, options, userId) {
 		super._onUpdate(data, options, userId);
-		this._displayScrollingDamage(options.dhp);
+
+		const hp = options.dnd4e?.hp;
+		const isHpUpdate = !!data.system?.attributes?.hp || !!data.system?.attributes?.temphp;
+		if ( isHpUpdate && hp ) {
+			const currHP = this.system.attributes.hp.value;
+			const currTemp = this.system.attributes.temphp.value || 0;
+			const changes = {
+				hp: currHP - hp.hp,
+				temp: currTemp - hp.temp
+			};
+			changes.total = changes.hp + changes.temp;
+
+			if ( Number.isInteger(changes.total) && (changes.total !== 0) ) {
+				this._displayTokenEffect(changes);
+			}
+		}
 	}
 
 	/** Get all ActiveEffects stored in the actor or transferred from items */
@@ -100,30 +127,51 @@ export class Actor4e extends Actor {
 	/* -------------------------------------------- */
 
 	/**
-	 * Display changes to health as scrolling combat text.
-	 * Adapt the font size relative to the Actor's HP total to emphasize more significant blows.
-	 * @param {number} dhp      The change in hit points that was applied
-	 * @private
+	 * Flash ring & display changes to health as scrolling combat text.
+	 * @param {object} changes          Object of changes to hit points.
+	 * @param {number} changes.hp       Changes to `hp.value`.
+	 * @param {number} changes.temp     The change to `hp.temp`.
+	 * @param {number} changes.total    The total change to hit points.
+	 * @protected
 	 */
-	_displayScrollingDamage(dhp) {
-		if ( !dhp ) return;
-		dhp = Number(dhp);
-		const tokens = this.isToken ? [this.token?.object] : this.getActiveTokens(true);
-		for ( let t of tokens ) {
-			console.log(t);
-			if ( !t.document.hidden || game.user.isGM ){
-				const pct = Math.clamp(Math.abs(dhp) / this.system.attributes.hp.max, 0, 1);
-				canvas.interface.createScrollingText(t.center, dhp.signedString(), {
-					anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
-					fontSize: 16 + (32 * pct), // Range between [16, 48]
-					fill: CONFIG.DND4E.tokenHPColors[dhp < 0 ? "damage" : "healing"],
-					stroke: 0x000000,
-					strokeThickness: 4,
-					jitter: 0.25
-				});
-			}
+	_displayTokenEffect(changes) {
+		let key;
+		let value;
+		if ( changes.hp < 0 ) {
+			key = "damage";
+			value = changes.total;
+		} else if ( changes.hp > 0 ) {
+			key = "healing";
+			value = changes.total;
+		} else if ( changes.temp ) {
+			key = "temp";
+			value = changes.temp;
+		}
+		if ( !key || !value ) return;
+
+		const tokens = this.isToken ? [this.token] : this.getActiveTokens(true, true);
+		if ( !tokens.length ) return;
+
+		const pct = Math.clamp(Math.abs(value) / this.system.attributes.hp.max, 0, 1);
+		const fill = CONFIG.DND4E.tokenHPColors[key];
+
+		for ( const token of tokens ) {
+			if ( !token.object?.visible || token.isSecret ) continue;
+			if ( token.hasDynamicRing ) token.flashRing(key, pct, value < 0);
+			const t = token.object;
+			canvas.interface.createScrollingText(t.center, value.signedString(), {
+				anchor: CONST.TEXT_ANCHOR_POINTS.TOP,
+				// Adapt the font size relative to the Actor's HP total to emphasize more significant blows
+				fontSize: 16 + (32 * pct), // Range between [16, 48]
+				fill: fill,
+				stroke: 0x000000,
+				strokeThickness: 4,
+				jitter: 0.25
+			});
 		}
 	}
+
+	/* -------------------------------------------- */
 
 	/** @inheritdoc */
 	getRollData() {
@@ -145,33 +193,22 @@ export class Actor4e extends Actor {
 
 		data["heroicOrParagon"] = data?.details.level < 21 ? 1 : 0
 		data["paragonOrEpic"] = data?.details.level >= 11 ? 1 : 0
+
+		data["id"] = this.id;
+		data["uuid"] = this.uuid;
+
+		data["isActor"] = true;
 		return data;
 	}
 
 	prepareBaseData(){
 		super.prepareBaseData();
 		const system = this.system;
-		const bonuses = foundry.utils.getProperty(system, "bonuses.abilities") || {};
-
-		// Ability modifiers and saves
-		// Character All Ability Check" and All Ability Save bonuses added when rolled since not a fixed value.
-		const saveBonus = Number.isNumeric(bonuses.save) ? parseInt(bonuses.save) : 0;
-		const checkBonus = Number.isNumeric(bonuses.check) ? parseInt(bonuses.check) : 0;
 		
 		if(["Player Character","NPC"].includes(this.type)){
 			for (let [id, abl] of Object.entries(system.abilities)) {
 				abl.mod = Math.floor((abl.value - 10) / 2);
 				abl.modHalf = abl.mod + Math.floor(system.details.level / 2);
-				abl.prof = (abl.proficient || 0);
-				if(game.settings.get("dnd4e", "halfLevelOptions")) {
-					abl.saveBonus = saveBonus;
-					abl.checkBonus = checkBonus;
-				} else {
-					abl.saveBonus = saveBonus + Math.floor(system.details.level / 2);
-					abl.checkBonus = checkBonus + Math.floor(system.details.level / 2);
-				}
-				abl.save = abl.mod + abl.prof + abl.saveBonus;
-
 				abl.label = game.i18n.localize(DND4E.abilities[id]);
 			}
 
@@ -190,7 +227,6 @@ export class Actor4e extends Actor {
 			system.defences.fort.ability = (system.abilities.str.value >= system.abilities.con.value) ? "str" : "con";
 			system.defences.ref.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
 			system.defences.wil.ability = (system.abilities.wis.value >= system.abilities.cha.value) ? "wis" : "cha";
-			
 		}
 
 	}
@@ -242,6 +278,8 @@ export class Actor4e extends Actor {
 		
 		if(isCreature){
 			//console.debug('Creature');
+			this._prepareDerivedDataAbilities(actorData, system);
+			//console.debug('Abilities done');
 			this._prepareDerivedDataSkills(actorData, system);
 			//console.debug('Skills done');
 			this._prepareDerivedDataSkillsPassive(actorData, system);
@@ -346,12 +384,12 @@ export class Actor4e extends Actor {
 		}
 		
 		system.details.bloodied = Math.floor(system.attributes.hp.max / 2);
-		system.details.surgeValue = Math.floor(system.details.bloodied / 2) + system.details.surgeBon.value;
+		system.details.surgeValue = Math.floor(system.attributes.hp.max / 4) + system.details.surgeBon.value;
 		system.attributes.hp.min = -system.details.bloodied;
 		if(actorData.type === "Player Character") system.details.secondWindValue = system.details.surgeValue + system.details.secondwindbon.value;
 
 		//check if bloodied
-		system.details.isBloodied = (system.attributes.hp.value <= system.attributes.hp.max/2);
+		system.details.isBloodied = (system.attributes.hp.value <= system.details.bloodied) || this.statuses.has('bloodied');
 		
 		if(actorData.type === "Player Character"){
 			if(isNaN(parseInt(system.details.surgeEnv?.absolute))){ //All logic only required if there is no usable absolute value
@@ -488,10 +526,17 @@ export class Actor4e extends Actor {
 			
 			if(isNaN(parseInt(mod?.absolute))){ //All logic only required if there is no usable absolute value
 	
-				mod.value += mod?.class||0 + mod?.feat||0 + mod?.item||0 + mod?.power||0 + mod?.untyped||0 + mod?.race||0 + mod?.enhance||0 + mod.bonusValue;
+				mod.value += mod.class || 0;
+				mod.value += mod.feat || 0;
+				mod.value += mod.item || 0;
+				mod.value += mod.power || 0;
+				mod.value += mod.untyped || 0;
+				mod.value += mod.race || 0;
+				mod.value += mod.enhance || 0;
+				mod.value += mod.bonusValue || 0;
 				//trim value according to floor and ceil
-				mod.value = Math.max(mod.value,mod?.floor || mod.value-1);
-				mod.value = Math.min(mod.value,mod?.ceil || mod.value+1);
+				mod.value = Math.max(mod.value,mod.floor || mod.value-1);
+				mod.value = Math.min(mod.value,mod.ceil || mod.value+1);
 			}else{
 				mod.value = mod.absolute;
 			}
@@ -564,9 +609,8 @@ export class Actor4e extends Actor {
 			system.attributes.init.value = system.attributes.init.absolute;
 		}
 	}
-	_prepareDerivedDataMovement(actorData, system){
-		//calc movespeed
-		
+	
+	_prepareDerivedDataMovement(actorData, system){	//calc movespeed	
 		//bonus arrays first, since they want to appear on the sheet
 		let baseMoveBonusValue = system.movement.base.bonusValue || 0;
 		if(!(system.movement.base.bonus.length === 1 && jQuery.isEmptyObject(system.movement.base.bonus[0]))) {
@@ -598,6 +642,21 @@ export class Actor4e extends Actor {
 			}
 		}
 
+		let runBonusValue = system.movement.run.bonusValue || 0;
+		if(!(system.movement.run.bonus.length === 1 && jQuery.isEmptyObject(system.movement.run.bonus[0]))) {
+			for( const b of system.movement.run.bonus) {
+				if(b.active && Helper._isNumber(b.value)) {
+					runBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,system)
+					if(Helper._isNumber(val)){
+						runBonusValue += parseInt(val);
+					}
+				}
+			}
+		}
+
 		let chargeBonusValue = system.movement.charge.bonusValue || 0;
 		if(!(system.movement.charge.bonus.length === 1 && jQuery.isEmptyObject(system.movement.charge.bonus[0]))) {
 			for( const b of system.movement.charge.bonus) {
@@ -613,16 +672,31 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		let runBonusValue = system.movement.run.bonusValue || 0;
-		if(!(system.movement.run.bonus.length === 1 && jQuery.isEmptyObject(system.movement.run.bonus[0]))) {
-			for( const b of system.movement.run.bonus) {
+		let shiftBonusValue = system.movement.shift.bonusValue || 0;
+		if(!(system.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(system.movement.shift.bonus[0]))) {
+			for( const b of system.movement.shift.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
-					runBonusValue += parseInt(b.value);
+					shiftBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
 					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
-						runBonusValue += parseInt(val);
+						shiftBonusValue += parseInt(val);
+					}
+				}
+			}
+		}
+
+		let burrowBonusValue = system.movement.burrow.bonusValue || 0;
+		if(!(system.movement.burrow.bonus.length === 1 && jQuery.isEmptyObject(system.movement.burrow.bonus[0]))) {
+			for( const b of system.movement.burrow.bonus) {
+				if(b.active && Helper._isNumber(b.value)) {
+					burrowBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,system)
+					if(Helper._isNumber(val)){
+						burrowBonusValue += parseInt(val);
 					}
 				}
 			}
@@ -643,20 +717,20 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		let shiftBonusValue = system.movement.shift.bonusValue || 0;
-		if(!(system.movement.shift.bonus.length === 1 && jQuery.isEmptyObject(system.movement.shift.bonus[0]))) {
-			for( const b of system.movement.shift.bonus) {
+		let flyBonusValue = system.movement.fly.bonusValue || 0;
+		if(!(system.movement.fly.bonus.length === 1 && jQuery.isEmptyObject(system.movement.fly.bonus[0]))) {
+			for( const b of system.movement.fly.bonus) {
 				if(b.active && Helper._isNumber(b.value)) {
-					shiftBonusValue += parseInt(b.value);
+					flyBonusValue += parseInt(b.value);
 				}
 				else if(b.active){
 					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
-						shiftBonusValue += parseInt(val);
+						flyBonusValue += parseInt(val);
 					}
 				}
 			}
-		}
+		}        
 		
 		let swimBonusValue = system.movement.swim.bonusValue || 0;
 		if(!(system.movement.swim.bonus.length === 1 && jQuery.isEmptyObject(system.movement.swim.bonus[0]))) {
@@ -668,6 +742,21 @@ export class Actor4e extends Actor {
 					let val = Helper.replaceData(b.value,system)
 					if(Helper._isNumber(val)){
 						swimBonusValue += parseInt(val);
+					}
+				}
+			}
+		}
+
+		let teleportBonusValue = system.movement.teleport.bonusValue || 0;
+		if(!(system.movement.teleport.bonus.length === 1 && jQuery.isEmptyObject(system.movement.teleport.bonus[0]))) {
+			for( const b of system.movement.teleport.bonus) {
+				if(b.active && Helper._isNumber(b.value)) {
+					teleportBonusValue += parseInt(b.value);
+				}
+				else if(b.active){
+					let val = Helper.replaceData(b.value,system)
+					if(Helper._isNumber(val)){
+						teleportBonusValue += parseInt(val);
 					}
 				}
 			}
@@ -718,26 +807,7 @@ export class Actor4e extends Actor {
 		}else{
 			system.movement.walk.value = Math.max(system.movement.walk.absolute,0);
 		}
-		
-		//Charge Speed
-		if(isNaN(parseInt(system.movement.charge?.absolute))){ //All logic only required if there is no usable absolute value
-			system.movement.charge.bonusValue = chargeBonusValue;
-			let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
-			system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge?.temp || 0;
-			system.movement.charge.value += system.movement.charge.feat || 0;
-			system.movement.charge.value += system.movement.charge.item || 0;
-			system.movement.charge.value += system.movement.charge.power || 0;
-			system.movement.charge.value += system.movement.charge.race || 0;
-			system.movement.charge.value += system.movement.charge.untyped || 0;
-			
-			//trim value according to floor and ceil
-			system.movement.charge.value = Math.max(system.movement.charge.value,system.movement.charge?.floor || system.movement.charge.value-1);
-			system.movement.charge.value = Math.min(system.movement.charge.value,system.movement.charge?.ceil || system.movement.charge.value+1);
-			system.movement.charge.value = Math.max(system.movement.charge.value,0);
-		}else{
-			system.movement.charge.value = Math.max(system.movement.charge.absolute,0);
-		}
-		
+
 		//Run Speed
 		if(isNaN(parseInt(system.movement.run?.absolute))){ //All logic only required if there is no usable absolute value
 			system.movement.run.bonusValue = runBonusValue;
@@ -757,6 +827,63 @@ export class Actor4e extends Actor {
 			system.movement.run.value = Math.max(system.movement.run.absolute,0);
 		}
 		
+		//Charge Speed
+		if(isNaN(parseInt(system.movement.charge?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.charge.bonusValue = chargeBonusValue;
+			let chargeForm = eval(Helper.replaceData(system.movement.charge.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.charge.value = chargeForm + chargeBonusValue + system.movement.charge?.temp || 0;
+			system.movement.charge.value += system.movement.charge.feat || 0;
+			system.movement.charge.value += system.movement.charge.item || 0;
+			system.movement.charge.value += system.movement.charge.power || 0;
+			system.movement.charge.value += system.movement.charge.race || 0;
+			system.movement.charge.value += system.movement.charge.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.charge.value = Math.max(system.movement.charge.value,system.movement.charge?.floor || system.movement.charge.value-1);
+			system.movement.charge.value = Math.min(system.movement.charge.value,system.movement.charge?.ceil || system.movement.charge.value+1);
+			system.movement.charge.value = Math.max(system.movement.charge.value,0);
+		}else{
+			system.movement.charge.value = Math.max(system.movement.charge.absolute,0);
+		}
+
+		//Shift Speed
+		if(isNaN(parseInt(system.movement.shift?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.shift.bonusValue = shiftBonusValue;		
+			let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift?.temp || 0;
+			system.movement.shift.value += system.movement.shift.feat || 0;
+			system.movement.shift.value += system.movement.shift.item || 0;
+			system.movement.shift.value += system.movement.shift.power || 0;
+			system.movement.shift.value += system.movement.shift.race || 0;
+			system.movement.shift.value += system.movement.shift.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.shift.value = Math.max(system.movement.shift.value,system.movement.shift?.floor || system.movement.shift.value-1);
+			system.movement.shift.value = Math.min(system.movement.shift.value,system.movement.shift?.ceil || system.movement.shift.value+1);
+			system.movement.shift.value = Math.max(system.movement.shift.value,0);
+		}else{
+			system.movement.shift.value = Math.max(system.movement.shift.absolute,0);
+		}
+
+		//Burrow Speed
+		if(isNaN(parseInt(system.movement.burrow?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.burrow.bonusValue = burrowBonusValue;
+			let burrowForm = eval(Helper.replaceData(system.movement.burrow.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.burrow.value = burrowForm + burrowBonusValue + system.movement.burrow?.temp || 0;
+			system.movement.burrow.value += system.movement.burrow.feat || 0;
+			system.movement.burrow.value += system.movement.burrow.item || 0;
+			system.movement.burrow.value += system.movement.burrow.power || 0;
+			system.movement.burrow.value += system.movement.burrow.race || 0;
+			system.movement.burrow.value += system.movement.burrow.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.burrow.value = Math.max(system.movement.burrow.value,system.movement.burrow?.floor || system.movement.burrow.value-1);
+			system.movement.burrow.value = Math.min(system.movement.burrow.value,system.movement.burrow?.ceil || system.movement.burrow.value+1);
+			system.movement.burrow.value = Math.max(system.movement.burrow.value,0);
+		}else{
+			system.movement.burrow.value = Math.max(system.movement.burrow.absolute,0);
+		}
+
 		//Climb Speed
 		if(isNaN(parseInt(system.movement.climb?.absolute))){ //All logic only required if there is no usable absolute value
 			system.movement.climb.bonusValue = climbBonusValue;
@@ -775,24 +902,43 @@ export class Actor4e extends Actor {
 		}else{
 			system.movement.climb.value = Math.max(system.movement.climb.absolute,0);
 		}
-		
-		//Shift Speed
-		if(isNaN(parseInt(system.movement.shift?.absolute))){ //All logic only required if there is no usable absolute value
-			system.movement.shift.bonusValue = shiftBonusValue;		
-			let shiftForm = eval(Helper.replaceData(system.movement.shift.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
-			system.movement.shift.value = shiftForm + shiftBonusValue + system.movement.shift?.temp || 0;
-			system.movement.shift.value += system.movement.shift.feat || 0;
-			system.movement.shift.value += system.movement.shift.item || 0;
-			system.movement.shift.value += system.movement.shift.power || 0;
-			system.movement.shift.value += system.movement.shift.race || 0;
-			system.movement.shift.value += system.movement.shift.untyped || 0;
+
+		//Burrow Speed
+		if(isNaN(parseInt(system.movement.burrow?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.burrow.bonusValue = burrowBonusValue;
+			let burrowForm = eval(Helper.replaceData(system.movement.burrow.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.burrow.value = burrowForm + burrowBonusValue + system.movement.burrow?.temp || 0;
+			system.movement.burrow.value += system.movement.burrow.feat || 0;
+			system.movement.burrow.value += system.movement.burrow.item || 0;
+			system.movement.burrow.value += system.movement.burrow.power || 0;
+			system.movement.burrow.value += system.movement.burrow.race || 0;
+			system.movement.burrow.value += system.movement.burrow.untyped || 0;
 			
 			//trim value according to floor and ceil
-			system.movement.shift.value = Math.max(system.movement.shift.value,system.movement.shift?.floor || system.movement.shift.value-1);
-			system.movement.shift.value = Math.min(system.movement.shift.value,system.movement.shift?.ceil || system.movement.shift.value+1);
-			system.movement.shift.value = Math.max(system.movement.shift.value,0);
+			system.movement.burrow.value = Math.max(system.movement.burrow.value,system.movement.burrow?.floor || system.movement.burrow.value-1);
+			system.movement.burrow.value = Math.min(system.movement.burrow.value,system.movement.burrow?.ceil || system.movement.burrow.value+1);
+			system.movement.burrow.value = Math.max(system.movement.burrow.value,0);
 		}else{
-			system.movement.shift.value = Math.max(system.movement.shift.absolute,0);
+			system.movement.burrow.value = Math.max(system.movement.burrow.absolute,0);
+		}
+
+		//Fly Speed
+		if(isNaN(parseInt(system.movement.fly?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.fly.bonusValue = flyBonusValue;
+			let flyForm = eval(Helper.replaceData(system.movement.fly.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour), system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.fly.value = flyForm + flyBonusValue + system.movement.fly?.temp || 0;
+			system.movement.fly.value += system.movement.fly.feat || 0;
+			system.movement.fly.value += system.movement.fly.item || 0;
+			system.movement.fly.value += system.movement.fly.power || 0;
+			system.movement.fly.value += system.movement.fly.race || 0;
+			system.movement.fly.value += system.movement.fly.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.fly.value = Math.max(system.movement.fly.value,system.movement.fly?.floor || system.movement.fly.value-1);
+			system.movement.fly.value = Math.min(system.movement.fly.value,system.movement.fly?.ceil || system.movement.fly.value+1);
+			system.movement.fly.value = Math.max(system.movement.fly.value,0);
+		}else{
+			system.movement.fly.value = Math.max(system.movement.fly.absolute,0);
 		}
 		
 		//Swim Speed
@@ -812,6 +958,88 @@ export class Actor4e extends Actor {
 			system.movement.swim.value = Math.max(system.movement.swim.value,0);
 		}else{
 			system.movement.swim.value = Math.max(system.movement.swim.absolute,0);
+		}
+
+		//Teleport Speed
+		if(isNaN(parseInt(system.movement.teleport?.absolute))){ //All logic only required if there is no usable absolute value
+			system.movement.teleport.bonusValue = teleportBonusValue;		
+			let teleportForm = eval(Helper.replaceData(system.movement.teleport.formula.replace(/@base/g,system.movement.base.value).replace(/@armour/g,system.movement.base.armour),system).replace(/[^-()\d/*+. ]/g, ''));
+			system.movement.teleport.value = teleportForm + teleportBonusValue + system.movement.teleport?.temp || 0;
+			system.movement.teleport.value += system.movement.teleport.feat || 0;
+			system.movement.teleport.value += system.movement.teleport.item || 0;
+			system.movement.teleport.value += system.movement.teleport.power || 0;
+			system.movement.teleport.value += system.movement.teleport.race || 0;
+			system.movement.teleport.value += system.movement.teleport.untyped || 0;
+			
+			//trim value according to floor and ceil
+			system.movement.teleport.value = Math.max(system.movement.teleport.value,system.movement.teleport?.floor || system.movement.teleport.value-1);
+			system.movement.teleport.value = Math.min(system.movement.teleport.value,system.movement.teleport?.ceil || system.movement.teleport.value+1);
+			system.movement.teleport.value = Math.max(system.movement.teleport.value,0);
+		}else{
+			system.movement.teleport.value = Math.max(system.movement.teleport.absolute,0);
+		}
+	}
+	_prepareDerivedDataAbilities(actorData, system){
+		/* Typed bonuses to global skill modifiers need to be compared against typed bonuses to the individual skill. */
+		let globalBonus = {};
+		try{
+			globalBonus = system.modifiers.abilities;
+		}catch(e){
+			console.warn(`PC global ability calc failed, probably due to an unmigrated actor. Abilities will function but this bonus will not be correctly applied. (Error message: "${e}")`);
+			globalBonus = {"class": 0,"feat": 0,"item": 0,"power": 0,"race": 0,"enhance": 0,"untyped": 0,"bonusValue": 0};
+		}
+		
+		for (const [id, abl] of Object.entries(system.abilities)) {
+			abl.label = abl.label? abl.label : DND4E.abilityScores[id]?.label;
+			abl.check.value = parseFloat(abl.check.value || 0);
+			
+			if(isNaN(parseInt(abl?.check?.absolute))){ //All logic only required if there is no usable absolute value
+
+				let ablBonusValue = 0;
+
+				if(!(abl.check.bonus.length === 1 && jQuery.isEmptyObject(abl.check.bonus[0]))) {
+					for( const b of abl.check.bonus) {
+						if(b.active && Helper._isNumber(b.value)) {
+							ablBonusValue += parseInt(b.value);
+						}
+						else if(b.active){
+							let val = Helper.replaceData(b.value,system)
+							if(Helper._isNumber(val)){
+								ablBonusValue += parseInt(val);
+							}
+						}
+					}
+				}
+				abl.ablBonusValue = ablBonusValue;
+
+				if(abl.check.base == undefined){
+					abl.check.base = 0;
+					// this.update({[`system.skills[${skl}].base`]: 0 });
+				}
+
+				let featBonus = 0;
+				let itemBonus = 0;
+				let powerBonus = 0;
+				let raceBonus = 0;
+				let enhBonus = 0;
+
+				abl.check.total = abl.check.value + abl.check.base + abl.mod + ablBonusValue;
+				abl.check.total += Math.max(featBonus || 0, globalBonus.feat || 0);
+				abl.check.total += Math.max(itemBonus || 0, globalBonus.item || 0);
+				abl.check.total += Math.max(powerBonus || 0, globalBonus.power || 0);
+				abl.check.total += Math.max(raceBonus || 0, globalBonus.race || 0);
+				abl.check.total += Math.max(enhBonus || 0, globalBonus.enhance || 0);
+				abl.check.total += abl.check.untyped || 0;
+				abl.check.total += globalBonus.untyped || 0;
+				//No way to sort manual bonuses, so they just get added regardless.
+				abl.check.total += globalBonus.bonusValue;
+
+				if(!game.settings.get("dnd4e", "halfLevelOptions")) {
+					abl.check.total += Math.floor(system.details.level / 2);
+				}
+			}else{
+				abl.check.total = abl.check.absolute;
+			}
 		}
 	}
 	_prepareDerivedDataSkills(actorData, system){
@@ -1161,7 +1389,7 @@ export class Actor4e extends Actor {
 		}
 		
 		for (const [id, skl] of Object.entries(system.skills)) {
-			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
+			skl.label = skl.label? skl.label : DND4E.skills[id]?.label;
 			skl.value = parseFloat(skl.value || 0);
 			
 			if(isNaN(parseInt(skl?.absolute))){ //All logic only required if there is no usable absolute value
@@ -1275,7 +1503,7 @@ export class Actor4e extends Actor {
 		}
 		
 		for (let [id, skl] of Object.entries(system.skills)) {
-			skl.label = skl.label? skl.label : game.i18n.localize(DND4E.skills[id]);
+			skl.label = skl.label? skl.label : DND4E.skills[id]?.label;
 			skl.value = parseFloat(skl.value || 0);
 
 			if(isNaN(parseInt(skl?.absolute))){ //All logic only required if there is no usable absolute value
@@ -1501,23 +1729,10 @@ export class Actor4e extends Actor {
    */
 	rollSkill(skillId, options={}) {
 		const skl = this.system.skills[skillId];
-		const bonuses = foundry.utils.getProperty(this.system, "bonuses.abilities") || {};
 
 		// Compose roll parts and data
 		const parts = ["@mod"];
 		const data = {mod: skl.total};
-		
-		// Ability test bonus
-		if ( bonuses.check ) {
-			data["checkBonus"] = bonuses.check;
-			parts.push("@checkBonus");
-		}
-
-		// Skill check bonus
-		if ( bonuses.skill ) {
-			data["skillBonus"] = bonuses.skill;
-			parts.push("@skillBonus");
-		}
 
 		let flavText = this.system.skills[skillId].chat.replace("@name", this.name);
 		flavText = flavText.replace("@label", this.system.skills[skillId].label);
@@ -1529,7 +1744,7 @@ export class Actor4e extends Actor {
 		return d20Roll(foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
-			title: game.i18n.format("DND4E.SkillPromptTitle", {skill: CONFIG.DND4E.skills[skillId]}),
+			title: game.i18n.format("DND4E.SkillPromptTitle", {skill: CONFIG.DND4E.skills[skillId]?.label}),
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			flavor: flavText,
 		}));
@@ -1548,26 +1763,8 @@ export class Actor4e extends Actor {
 		const abl = this.system.abilities[abilityId];
 
 		// Construct parts
-		const parts = game.settings.get("dnd4e", "halfLevelOptions") ? ["@mod"] : ["@mod", "@halfLevel"];
-		const data = game.settings.get("dnd4e", "halfLevelOptions") ? {mod: abl.mod} : {mod: abl.mod, halfLevel: Math.floor(this.system.details.level / 2)};
-
-		// Add feat-related proficiency bonuses
-		// const feats = this.data.flags.dnd4e || {};
-		// if ( feats.remarkableAthlete && DND4E.characterFlags.remarkableAthlete.abilities.includes(abilityId) ) {
-			// parts.push("@proficiency");
-			// data.proficiency = Math.ceil(0.5 * this.system.attributes.prof);
-		// }
-		// else if ( feats.jackOfAllTrades ) {
-			// parts.push("@proficiency");
-			// data.proficiency = Math.floor(0.5 * this.system.attributes.prof);
-		// }
-
-		// Add global actor bonus
-		const bonuses = foundry.utils.getProperty(this.system, "bonuses.abilities") || {};
-		if ( bonuses.check ) {
-			parts.push("@checkBonus");
-			data.checkBonus = bonuses.check;
-		}
+		const parts = ["@mod"];
+		const data = {mod: abl.check.total};
 		
 		let flavText = this.system.abilities[abilityId].chat.replace("@name", this.name);
 		flavText = flavText.replace("@label", this.system.abilities[abilityId].label);
@@ -1961,18 +2158,18 @@ export class Actor4e extends Actor {
 			extra = extra.replace(/;/g,'</li><li>');
 			extra = "<li>" + extra + "</li>";
 		}
+		
+		const hpGain = updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value);
 
 		ChatMessage.create({
 			user: game.user.id,
 			speaker: {actor: this, alias: this.name},
-			// flavor: restFlavor,
-			content: `${this.name} ${game.i18n.localize("DND4E.SecondWindChat")} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize("DND4E.HPShort")} ${game.i18n.localize("DND4E.SecondWindChatEffect")}
-				<ul>
-					<li>${game.i18n.localize("DND4E.SecondWindEffect")}</li>
-					${extra}
-				</ul>`,
-				// content: this.system.name + " uses Second Wind, healing for " + (updateData[`system.attributes.hp.value`] - this.system.attributes.hp.value) + " HP, and gaining a +2 to all defences until the stars of their next turn."
-			//game.i18n.format("DND4E.ShortRestResult", {name: this.name, dice: -dhd, health: dhp})
+			flavor: game.i18n.localize("DND4E.SecondWind"),
+			content: `${game.i18n.format("DND4E.SecondWindChat",{"name":this.name,"number":hpGain})}
+			<ul>
+				<li>${game.i18n.localize("DND4E.SecondWindEffect")}</li>
+				${extra}
+			</ul>`
 		});		
 	
 		this.applySecondWindEffect();
@@ -2404,13 +2601,16 @@ export class Actor4e extends Actor {
 		}
 	}
 
+	//TODO: Why do these functions exist? Are they necessary?
 	async newActiveEffect(effectData){
 		return this.createEmbeddedDocuments("ActiveEffect", [{
 			name: effectData.name,
+			type: effectData.type,
 			description: effectData.description,
 			img:effectData.img,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
+			system: effectData.system,
 			statuses: Array.from(effectData.statuses),
 			//"duration": effectData.duration, //Not too sure why this fails, but it does
 			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
@@ -2423,10 +2623,12 @@ export class Actor4e extends Actor {
 	async newActiveEffectSocket(effectData){
 		const data = {
 			name: effectData.name,
+			type: effectData.type,
 			description: effectData.description,
 			img:effectData.img,
 			origin: effectData.origin,
 			sourceName: effectData.sourceName,
+			system: effectData.system,
 			statuses: Array.from(effectData.statuses),
 			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
 			tint: effectData.tint,
@@ -2459,7 +2661,7 @@ export class Actor4e extends Actor {
 				if(isFF) {
 					let save = await this.rollSave(event, {effectSave:true, effectId:i});
 				} else {
-					let save = await new SaveThrowDialog(this, {effectSave:true,effectId:i}).render(true);
+					let save = await SaveThrowDialog.create({document: this, effectSave: true, effectId: i});
 				}
 			}
 		}
@@ -2561,7 +2763,7 @@ export class Actor4e extends Actor {
 						targetToken: tokenId
 					}
 					
-					const html = await renderTemplate(
+					const html = await foundry.applications.handlebars.renderTemplate(
 						'systems/dnd4e/templates/chat/ongoing-damage.html',chatData 
 					);
 										

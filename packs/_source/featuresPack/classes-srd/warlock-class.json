@@ -1,0 +1,190 @@
+{
+  "name": "Warlock Class",
+  "type": "feature",
+  "img": "icons/magic/unholy/strike-hand-glow-pink.webp",
+  "effects": [
+    {
+      "_id": "zajHZQ5XO6em7fnx",
+      "changes": [
+        {
+          "key": "system.attributes.hp.starting",
+          "mode": 5,
+          "value": "12",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.perlevel",
+          "mode": 5,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.details.surges.max",
+          "mode": 2,
+          "value": "6+@conMod",
+          "priority": null
+        },
+        {
+          "key": "system.attributes.hp.autototal",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.defences.ref.value",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.defences.wil.value",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "cloth",
+          "priority": null
+        },
+        {
+          "key": "system.details.armourProf.value",
+          "mode": 2,
+          "value": "leather",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "simpleM",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "simpleR",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "rod",
+          "priority": null
+        },
+        {
+          "key": "system.details.weaponProf.value",
+          "mode": 2,
+          "value": "wand",
+          "priority": null
+        }
+      ],
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "origin": "Item.p6rCpnBIc8MlPj4Y",
+      "transfer": true,
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "equippedRec": false,
+            "durationType": "",
+            "durationTurnInit": null,
+            "startTurnInit": null
+          },
+          "dots": []
+        }
+      },
+      "tint": "#ffffff",
+      "name": "Warlock Class Stats",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.348",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/magic/unholy/strike-hand-glow-pink.webp",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!cG1tQyBwm96C6lBM.zajHZQ5XO6em7fnx"
+    }
+  ],
+  "folder": "LzEqWjfE9D4FpBrt",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><strong>Role:</strong>&nbsp;Striker. Your attack powers are highly damaging and often weaken or hamper the target in some way. You can elude attacks by flying, teleporting, or turning invisible</p>\n<p><strong>Power Source:</strong>&nbsp; Arcane. You gain your magical power from a pact you forge with a powerful, supernatural force or an unnamed entity.</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Charisma</li>\n<li>Constitution</li>\n<li>Intelligence</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li>@Compendium[dnd4e.srd_rules.4vItzLTePIjC1MbI]{Simple Melee Weapons}</li>\n<li>@Compendium[dnd4e.srd_rules.XKgEgbttyURcvqns]{Simple Ranged Weapons}</li>\n</ul>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813;\"><strong style=\"box-sizing: border-box; user-select: text;\">Implements:</strong></p>\n<ul style=\"box-sizing: border-box; user-select: text; color: #191813;\">\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.qbmKTq9NKDp8babL]{Rod}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.BGZ4QKJlyb1ebEXv]{Wand}</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+1 Reflex</li>\n<li>+1 Will</li>\n</ul>\n<p><strong>Hit Points at 1st Level:</strong>&nbsp;[[12]] + Con Score</p>\n<p><strong>Hit Points&nbsp;</strong><strong>per Level Gained:</strong> [[5]]</p>\n<p><strong>Base&nbsp;</strong><strong>Healing</strong><strong> Surges per Day:</strong> [[6]] + Con Mod</p>\n<p><strong>Skill Training:</strong> Choose four from the following list:</p>\n<ul>\n<li>Arcana (Int)</li>\n<li>Bluff (Cha)</li>\n<li>History (Int)</li>\n<li>Insight (Wis)</li>\n<li>Intimidate (Cha)</li>\n<li>Religion (Int)</li>\n<li>Streetwise (Cha)</li>\n<li>Thievery (Dex)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>Eldritch blast</li>\n<li>Prime Shot</li>\n<li>Shadow Walk</li>\n<li>Warlock's Curse</li>\n</ul>\n<p><strong>Choose one of the following </strong><strong>Eldritch Pacts:</strong></p>\n<ul>\n<li>Fey Pact</li>\n<li>Infernal Pact</li>\n<li>Star Pact</li>\n</ul>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg. 129",
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "featureType": "class",
+    "level": null,
+    "requirements": "",
+    "featureSource": "Warlock",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "class": "",
+    "hitFistLevel": 12,
+    "hitPerLevel": 5,
+    "surgePerDay": 6,
+    "skills": "<i class=\"fas fa-edit\"></i>",
+    "def": {
+      "ac": 0,
+      "fort": 0,
+      "ref": 0,
+      "wil": 0
+    },
+    "proficiencies": {
+      "weapons": [],
+      "armour": []
+    },
+    "category": "other"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "coreVersion": "13.348",
+    "createdTime": 1686094210760,
+    "modifiedTime": 1745817871227,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "cG1tQyBwm96C6lBM",
+  "sort": 0,
+  "_key": "!items!cG1tQyBwm96C6lBM"
+}

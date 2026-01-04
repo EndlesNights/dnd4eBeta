@@ -1,0 +1,143 @@
+{
+  "name": "Thassil Root Powder",
+  "type": "consumable",
+  "img": "icons/commodities/materials/bowl-powder-blue.webp",
+  "effects": [],
+  "folder": "X50ukKorZKXdDrH7",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p><em>This blue powder rapidly dissolves in water is is almost completely flavourless.</em></p>\n<p>&nbsp;</p>\n<p>Thassil Root can be delivered only by way of food or drink. It makes its first attack [[2d6]] minutes after its victim consumes it.</p>\n<p>All saving throws against this poison are made with a -2 penalty.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "DMG p. 51",
+    "quantity": 1,
+    "weight": 0,
+    "price": 250,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": "",
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 1,
+      "max": "1",
+      "per": "charges",
+      "autoDestroy": false
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": true,
+      "isBasic": false,
+      "isCharge": false,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "",
+      "abilityBonus": 0,
+      "def": "fort",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "8",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": false,
+      "isHealing": false,
+      "healSurge": "",
+      "baseQuantity": 1,
+      "baseDiceType": "Base Weapon Damage",
+      "detail": "Target is slowed (save ends).",
+      "formula": "",
+      "critFormula": "",
+      "healFormula": ""
+    },
+    "miss": {
+      "detail": "",
+      "formula": ""
+    },
+    "effect": {
+      "detail": "<p><strong>First Failed Saving Throw:&nbsp;</strong>The target is immobilized instead of slowed (save ends).<br /><strong>Second Failed Saving Throw:&nbsp;</strong>The target is unconscious for 1d4 hours.</p>"
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {},
+    "level": 5,
+    "consumableType": "poison",
+    "autoGenChatPowerCard": true,
+    "useType": "item",
+    "actionType": "none",
+    "rangeType": "personal",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "effectType": {},
+    "keywordsCustom": "",
+    "formula": "",
+    "postEffect": true,
+    "effectHTML": true,
+    "rangePower": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686093924525,
+    "modifiedTime": 1686093924525,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "UwmOQPaouMLlU8w1",
+  "sort": 0,
+  "_key": "!items!UwmOQPaouMLlU8w1"
+}

@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build": "npm run build:db",
+    "build:db": "node ./utils/packs.mjs package pack",
+    "build:json": "node ./utils/packs.mjs package unpack",
+    "build:clean": "node ./utils/packs.mjs package clean"
+  },
+  "devDependencies": {
+    "@foundryvtt/foundryvtt-cli": "^3.0.0",
+    "yargs": "^18.0.0"
+  }
+}

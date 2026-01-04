@@ -1,29 +1,31 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
-<div class="dnd4e chat-card item-card {{item.type}}-card {{actor.type}} {{#if isPower}}use-{{item.system.useType}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
+<div class="dnd4e chat-card item-card {{item.type}}-card {{actor.type}}{{#if isPower}} use-{{item.system.useType}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}"
 	 {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}} {{#if isSpell}}data-spell-level="{{item.data.level}}"{{/if}}>
-	<header class="card-header flexrow">
+	<header class="card-header flexrow{{#if isPower}} ability-usage--{{/if}}">
 		<img src="{{item.img}}" data-tooltip="{{item.name}}" width="36" height="36"/>
-		<div class="flexcol item-name ability-usage--">
+		<div class="flexcol item-name">
 			<h3>{{item.name}} {{#if this.system.isCharge}}({{localize 'DND4E.CommonAttackCharge'}}){{/if}} {{#if this.system.isOpp}}({{localize 'DND4E.ActionOpportunityBrief'}}){{/if}}</h3>
 		</div>
 	</header>
 
-	<div class="card-content">
+	<div class="card-content{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}">
 	
 		{{#if item.system.autoGenChatPowerCard}}
 		
-			{{#if item.system.chatFlavor}}
-				<p class="chat-flavour">{{{item.system.chatFlavor}}}</p>
+			{{#if item.system.description.chat}}
+				<div class="flavour">
+					<p>{{{item.system.description.chat}}}</p>
+				</div>
 			{{else}}
-				{{#unless (eq actor.type "NPC")}}<!-- For NPCs, flavour text display shouldn't be conditional on the presence of flavour text, because almost all NPC powers lack flavour text -->
-					{{{system.description.value}}}
+				{{#unless (eq actor.type "NPC")}}{{!-- For NPCs, flavour text display shouldn't be conditional on the presence of flavour text, because almost all NPC powers lack flavour text --}}
+					<div class="flavour">
+						{{{system.description.value}}}
+					</div>
 				{{/unless}}
 			{{/if}}
 			
-			<div class="item-summary">
-				<div class="item-details">
-					{{{cardData}}}
-				</div>
+			<div class="item-details">
+				{{{cardData}}}
 			</div>
 			
 		{{else}}
@@ -31,6 +33,17 @@
 			{{{system.description.value}}}
 			
 		{{/if}}
+		
+		{{#unless isPower}}
+		<ul class="properties tags">
+		{{#each data.properties}}
+			{{{this}}}
+		{{/each}}
+		{{#if data.materials.value}}
+			<li class="materials"><strong>{{ localize "DND4E.RequiredMaterials" }}:</strong> {{data.materials.value}}</li>
+		{{/if}}
+		</ul>
+		{{/unless}}
 		
 		{{#if isRoll}}
 		<div class="card-buttons">
@@ -131,15 +144,7 @@
 
 	</div>
 	
-
-	{{#unless isPower}}
 	<footer class="card-footer">
-		{{#each data.properties}}
-		<span>{{this}}</span>
-		{{/each}}
-		{{#if data.materials.value}}
-		<p><strong>{{ localize "DND4E.RequiredMaterials" }}:</strong> {{data.materials.value}}</p>
-		{{/if}}
 	</footer>
-	{{/unless}}
+	
 </div>

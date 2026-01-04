@@ -1,0 +1,21 @@
+{
+  "name": "Racial Features (SRD)",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "NMrUgPwFPL5SkAon",
+  "sort": 500000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": null,
+    "systemVersion": null,
+    "coreVersion": "12.331",
+    "createdTime": null,
+    "modifiedTime": 1745817871185,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null
+  },
+  "description": "",
+  "_key": "!folders!NMrUgPwFPL5SkAon"
+}

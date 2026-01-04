@@ -2,30 +2,83 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 
 export class SecondWindDialog extends DocumentSheet4e {
 
-	static get defaultOptions() {
-		const options = super.defaultOptions;
-		return foundry.utils.mergeObject(options, {
-			id: "second-wind",
-			classes: ["dnd4e", "second-wind"],
-			template: "systems/dnd4e/templates/apps/second-wind.html",
+	static DEFAULT_OPTIONS = {
+		id: "second-wind",
+		classes: ["dnd4e","second-wind","standard-form","default"],
+		form: {
+			handler: SecondWindDialog.#onSubmit,
+			closeOnSubmit: true,
+		},
+		position: {
 			width: 500,
-			closeOnSubmit: true
-		});
+			height: "auto",
+		},
+		window: {
+			contentClasses: ["standard-form"],
+			resizable: true
+		},
+		tag: "form",
 	}
 	
 	get title() {
-		return `${this.object.name} - Second Wind`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.SecondWind")}`;
+	}
+
+	static PARTS = {
+		SecondWindDialog: {
+			template: "systems/dnd4e/templates/apps/second-wind.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
+		}
 	}
 
 	/** @override */
-	getData() {
-		const extra = this.object.system.details.secondwindbon.custom.split(";");
-		return { system: this.object.system, extra: extra };
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
+        const extra = this.document.system.details.secondwindbon.custom.split(";");
+		foundry.utils.mergeObject(context, {
+			system: this.document.system,
+			extra: extra,
+			buttons: [
+				{ name: "secondWindButton", type: "submit", label: "DND4E.SecondWind" }
+			]
+		});
+        return context;
 	}
-	async _updateObject(event, formData) {
-		const options = this.options;
-		options.bonus = formData.bonus;
 
-		this.object.secondWind(event, options);
+	_onRender(context, options) {
+		this._setButtonEnabledState();
+	}
+
+	_setButtonEnabledState() {
+		let swButtonEnabled = true;
+		let swButtonText = game.i18n.localize("DND4E.SecondWind");
+
+		if (Number(document.getElementById('surges').value) <= 0) {
+			swButtonEnabled = false;
+			swButtonText = game.i18n.localize("DND4E.HealingMenuOutOfSurges");
+		}
+
+		function setButtonEnabled(buttonId, enabled, text) {
+			const button = document.getElementsByName(buttonId)[0];
+			button.innerHTML = text;
+			if (enabled) {
+				button.removeAttribute("disabled");
+			}
+			else {
+				button.setAttribute("disabled", "true");
+			}
+		}
+		setButtonEnabled('secondWindButton', swButtonEnabled, swButtonText);
+	}
+
+	static async #onSubmit(event, form, formData) {
+		const secondWindData = foundry.utils.expandObject(formData.object);
+
+		this.document.secondWind(event, {
+			...this.options,
+			...secondWindData
+		});
 	}
 }

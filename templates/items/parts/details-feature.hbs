@@ -1,0 +1,28 @@
+<div class="flexcol tab">
+  <div class="form-group feature-type">
+    <label>{{ localize "DND4E.Item.Type" type=(localize "DND4E.Feature.Feature")}}</label>
+    <select name="system.featureType">
+      {{selectOptions config.featureTypes selected=system.featureType labelAttr="label"}}	
+    </select>
+  </div>
+  
+  <div class="form-group feature-requirements">
+    <label>{{ localize "DND4E.Prerequisite" }}</label>
+    <input type="text" name="system.requirements" value="{{system.requirements}}" placeholder="{{ localize 'DND4E.Prerequisite' }}"/>
+  </div>
+  
+  <div class="form-group feature-source">
+    <label>{{ localize "DND4E.Feature.GrantedBy" }}</label>
+    <input type="text" name="system.featureSource" value="{{system.featureSource}}" placeholder="{{ localize 'DND4E.Feature.SourceTip' }}"/>
+  </div>
+  
+  <div class="form-group feature-group">
+    <label>{{ localize "DND4E.Feature.Group" }}</label>
+    <input type="text" name="system.featureGroup" value="{{system.featureGroup}}" placeholder="{{ localize 'DND4E.Feature.GroupTip' }}"/>
+  </div>
+  
+  <div class="form-group feature-aura">
+    <label>{{ localize "DND4E.Feature.AuraSize" }}</label>
+    <input type="text" name="system.auraSize" value="{{system.auraSize}}" placeholder="{{ localize 'DND4E.Feature.AuraSizeTip' }}"/>
+  </div>
+</div>

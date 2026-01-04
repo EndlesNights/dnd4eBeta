@@ -1,0 +1,32 @@
+<div id="heal-menu-dialog" class="dialogue-content">
+
+	<fieldset>
+		<legend>{{localize "DND4E.HealingSettings"}}</legend>
+		<div class="form-group">
+			<input data-action="spendSurgesChecked" type="checkbox" id="spend-healing-surge" name="spend-healing-surge" checked>
+			<label for="spend-healing-surge">{{localize "DND4E.HealingMenuSpendHealingSurge"}}</label>
+		</div>
+		<p>{{localize "DND4E.HealingMenuSpendHealingSurgeDesc"}}</p>
+		<div class="form-group">
+			<input type="checkbox" id="gain-healing-surge-value" name="gain-healing-surge-value" checked>
+			<label for="gain-healing-surge-value">{{localize "DND4E.HealingMenuGainSurgeValue"}}</label>({{surgeValue}})
+		</div>
+		<p>{{localize "DND4E.HealingMenuGainSurgeValueDesc"}}</p>
+		<div class="form-group">
+			<label>{{localize 'DND4E.HealingMenuSituational'}}</label>
+			<input type="text" id="bonus" name="bonus" value="" placeholder="{{ localize 'DND4E.RollExample' }}"/>
+		</div>
+	</fieldset>
+	
+	<fieldset>
+		<legend>{{localize 'DND4E.HealingMenuPresets'}}</legend>
+		<div class="form-group">
+			<a data-action="healingPotionSettingsClicked" class="fakebutton" data-tooltip="{{ localize 'DND4E.HealingMenuHealingPotionSettingsDetails' }}">{{ localize "DND4E.HealingMenuHealingPotionSettings" }}</a>
+		</div>
+		<input type="hidden" id="hpMax" value="{{hpMax}}"/>
+		<input type="hidden" id="hasSurges" value="{{constHasSurges}}"/>
+		<input type="hidden" id="heal-type" name="heal-type" value="heal">
+	</fieldset>
+	
+	
+</div>

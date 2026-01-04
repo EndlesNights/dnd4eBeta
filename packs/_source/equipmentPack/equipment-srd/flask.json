@@ -1,0 +1,101 @@
+{
+  "name": "Flask",
+  "type": "backpack",
+  "img": "icons/sundries/survival/horn-drinking-corked.webp",
+  "effects": [],
+  "folder": "sHigNBQwx1ybBq5A",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p>A small flask that can contain roughly 8 oz. of liquid.</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "Flask",
+    "quantity": 1,
+    "weight": 1,
+    "price": 0.03,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "Common",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": 0,
+      "per": null
+    },
+    "consume": {
+      "type": "",
+      "target": null,
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "level": "",
+    "capacity": {
+      "type": "weight",
+      "value": 0,
+      "weightless": false
+    },
+    "currency": {
+      "cp": 0,
+      "sp": 0,
+      "ep": 0,
+      "gp": 0,
+      "pp": 0
+    },
+    "ritualcomp": {
+      "ar": 0,
+      "ms": 0,
+      "rh": 0,
+      "si": 0,
+      "rs": 0
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.2",
+    "coreVersion": "13.348",
+    "createdTime": 1686094246079,
+    "modifiedTime": 1686094246079,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "U9rLI8f970kQpt6V",
+  "sort": 0,
+  "_key": "!items!U9rLI8f970kQpt6V"
+}

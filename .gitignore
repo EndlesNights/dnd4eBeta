@@ -4,5 +4,8 @@
 /node_modules
 /packs/dist/*
 
-# Level DB is complicated, and the only thing we can safely ignore is the .old files.
-packs/**/*.old
+# Build Artifacts
+packs/*
+!packs/_source/
+
+dnd4e.lock

@@ -1,0 +1,1936 @@
+{
+  "name": "Badger",
+  "type": "NPC",
+  "img": "icons/creatures/mammals/wolf-shadow-black.webp",
+  "items": [
+    {
+      "_id": "iTekLaBn2vKhviW3",
+      "name": "Bite",
+      "type": "power",
+      "img": "icons/creatures/abilities/mouth-teeth-sharp.webp",
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "13.348",
+        "systemId": "dnd4e",
+        "systemVersion": "0.5.5",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0
+      },
+      "system": {
+        "description": {
+          "value": "<p><em>Arg! It's got my leg! Get it off! Get it off!</em></p>",
+          "chat": "",
+          "unidentified": "",
+          "gm": ""
+        },
+        "descriptionGM": {
+          "value": ""
+        },
+        "source": "",
+        "activation": {
+          "type": "",
+          "cost": 0,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": ""
+        },
+        "target": "One creature",
+        "range": {
+          "value": null,
+          "long": null,
+          "units": ""
+        },
+        "uses": {
+          "value": null,
+          "max": "",
+          "per": ""
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "macro": {
+          "type": "script",
+          "scope": "global",
+          "launchOrder": "off",
+          "command": "",
+          "author": "",
+          "autoanimationHook": ""
+        },
+        "attack": {
+          "shareAttackRoll": false,
+          "isAttack": true,
+          "isBasic": true,
+          "isCharge": false,
+          "isOpp": false,
+          "canCharge": false,
+          "canOpp": false,
+          "ability": "form",
+          "abilityBonus": 0,
+          "def": "ac",
+          "defBonus": 0,
+          "detail": "",
+          "formula": "7",
+          "damageType": {},
+          "effectType": {}
+        },
+        "hit": {
+          "shareDamageRoll": false,
+          "damageBonusNull": false,
+          "isDamage": true,
+          "isHealing": false,
+          "healSurge": "",
+          "baseQuantity": "1",
+          "baseDiceType": "weapon",
+          "detail": "1d6 + 5 Damage",
+          "formula": "1d6+5",
+          "critFormula": "1*6+5",
+          "healFormula": ""
+        },
+        "miss": {
+          "detail": "",
+          "formula": ""
+        },
+        "effect": {
+          "detail": ""
+        },
+        "damage": {
+          "parts": []
+        },
+        "damageCrit": {
+          "parts": []
+        },
+        "damageImp": {
+          "parts": []
+        },
+        "damageCritImp": {
+          "parts": []
+        },
+        "damageType": {
+          "physical": true,
+          "damage": false,
+          "acid": false,
+          "cold": false,
+          "fire": false,
+          "force": false,
+          "lightning": false,
+          "necrotic": false,
+          "poison": false,
+          "psychic": false,
+          "radiant": false,
+          "thunder": false
+        },
+        "keyWords": [
+          ""
+        ],
+        "level": "",
+        "powersource": "",
+        "secondPowersource": "",
+        "powersourceName": "",
+        "subName": "Basic Attack",
+        "prepared": true,
+        "powerType": "inherent",
+        "powerSubtype": "attack",
+        "useType": "atwill",
+        "actionType": "standard",
+        "requirements": "",
+        "weaponType": "none",
+        "weaponUse": "none",
+        "rangeType": "melee",
+        "autoTarget": {
+          "mode": "none",
+          "includeSelf": true
+        },
+        "rangeTextShort": "Melee",
+        "rangeText": "Melee",
+        "rangePower": 0,
+        "area": 0,
+        "rechargeRoll": null,
+        "rechargeCondition": "",
+        "damageShare": false,
+        "postEffect": true,
+        "postSpecial": true,
+        "autoGenChatPowerCard": true,
+        "sustain": {
+          "actionType": "",
+          "detail": ""
+        },
+        "trigger": "",
+        "requirement": "",
+        "special": "",
+        "specialAdd": {
+          "parts": []
+        },
+        "effectType": {
+          "augmentable": false,
+          "aura": false,
+          "beast": false,
+          "beastForm": false,
+          "channelDiv": false,
+          "charm": false,
+          "conjuration": false,
+          "disease": false,
+          "elemental": false,
+          "enchantment": false,
+          "evocation": false,
+          "fear": false,
+          "fullDis": false,
+          "gaze": false,
+          "healing": false,
+          "illusion": false,
+          "invigorating": false,
+          "mount": false,
+          "necro": false,
+          "nether": false,
+          "poison": false,
+          "polymorph": false,
+          "rage": false,
+          "rattling": false,
+          "reliable": false,
+          "runic": false,
+          "sleep": false,
+          "spirit": false,
+          "stance": false,
+          "summoning": false,
+          "teleportation": false,
+          "transmutation": false,
+          "zone": false,
+          "shadow": false
+        },
+        "keywordsCustom": "",
+        "keywords": [],
+        "chatFlavor": "",
+        "effectHTML": false,
+        "category": "other"
+      },
+      "_key": "!actors.items!n1LXn8qhWKAwCErL.iTekLaBn2vKhviW3"
+    },
+    {
+      "_id": "blY52ZuPbtGqlyGb",
+      "name": "Rage",
+      "type": "power",
+      "img": "icons/svg/aura.svg",
+      "effects": [],
+      "folder": null,
+      "sort": 100000,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Actor.UmSJ4HoqnPHDS28w.Item.blY52ZuPbtGqlyGb",
+        "duplicateSource": null,
+        "coreVersion": "13.348",
+        "systemId": "dnd4e",
+        "systemVersion": "0.5.5",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0
+      },
+      "system": {
+        "description": {
+          "value": "<p><em>The badger flies into a berserk rage, clawing and biting madly until either it or its opponent is dead.&nbsp;</em></p>",
+          "chat": "",
+          "unidentified": "",
+          "gm": ""
+        },
+        "descriptionGM": {
+          "value": ""
+        },
+        "source": "",
+        "activation": {
+          "type": "",
+          "cost": 0,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": ""
+        },
+        "target": "",
+        "range": {
+          "value": null,
+          "long": null,
+          "units": ""
+        },
+        "uses": {
+          "value": 1,
+          "max": "1",
+          "per": "enc"
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "macro": {
+          "type": "script",
+          "scope": "global",
+          "launchOrder": "off",
+          "command": "",
+          "author": "",
+          "autoanimationHook": ""
+        },
+        "attack": {
+          "shareAttackRoll": false,
+          "isAttack": false,
+          "isBasic": false,
+          "isCharge": false,
+          "isOpp": false,
+          "canCharge": false,
+          "canOpp": false,
+          "ability": "form",
+          "abilityBonus": 0,
+          "def": null,
+          "defBonus": 0,
+          "detail": "",
+          "formula": null,
+          "damageType": {},
+          "effectType": {}
+        },
+        "hit": {
+          "shareDamageRoll": false,
+          "damageBonusNull": false,
+          "isDamage": false,
+          "isHealing": false,
+          "healSurge": "",
+          "baseQuantity": 1,
+          "baseDiceType": "Base Weapon Damage",
+          "detail": "",
+          "formula": null,
+          "critFormula": null,
+          "healFormula": ""
+        },
+        "miss": {
+          "detail": "",
+          "formula": ""
+        },
+        "effect": {
+          "detail": "The badger makes a bite attack against the damaging enemy, and then must continue to attack that creature every round until death."
+        },
+        "damage": {
+          "parts": []
+        },
+        "damageCrit": {
+          "parts": []
+        },
+        "damageImp": {
+          "parts": []
+        },
+        "damageCritImp": {
+          "parts": []
+        },
+        "damageType": {},
+        "keyWords": [
+          ""
+        ],
+        "level": "",
+        "powersource": "",
+        "secondPowersource": "",
+        "powersourceName": "",
+        "subName": "",
+        "prepared": true,
+        "powerType": "inherent",
+        "powerSubtype": "attack",
+        "useType": "encounter",
+        "actionType": "free",
+        "requirements": "",
+        "weaponType": "none",
+        "weaponUse": "none",
+        "rangeType": "personal",
+        "autoTarget": {
+          "mode": "none",
+          "includeSelf": true
+        },
+        "rangeTextShort": "The damaging enemy",
+        "rangeText": "The damaging enemy",
+        "rangePower": 1,
+        "area": 0,
+        "rechargeRoll": null,
+        "rechargeCondition": "",
+        "damageShare": false,
+        "postEffect": true,
+        "postSpecial": true,
+        "autoGenChatPowerCard": true,
+        "sustain": {
+          "actionType": "",
+          "detail": ""
+        },
+        "trigger": "On taking damage",
+        "requirement": "",
+        "special": "",
+        "specialAdd": {
+          "parts": []
+        },
+        "effectType": {
+          "augmentable": false,
+          "aura": false,
+          "beast": false,
+          "beastForm": false,
+          "channelDiv": false,
+          "charm": false,
+          "conjuration": false,
+          "disease": false,
+          "elemental": false,
+          "enchantment": false,
+          "evocation": false,
+          "fear": false,
+          "fullDis": false,
+          "gaze": false,
+          "healing": false,
+          "illusion": false,
+          "invigorating": false,
+          "mount": false,
+          "necro": false,
+          "nether": false,
+          "poison": false,
+          "polymorph": false,
+          "rage": false,
+          "rattling": false,
+          "reliable": false,
+          "runic": false,
+          "sleep": false,
+          "spirit": false,
+          "stance": false,
+          "summoning": false,
+          "teleportation": false,
+          "transmutation": false,
+          "zone": false,
+          "shadow": false
+        },
+        "keywordsCustom": "",
+        "keywords": [],
+        "chatFlavor": "",
+        "effectHTML": false,
+        "category": "other",
+        "container": null
+      },
+      "_key": "!actors.items!n1LXn8qhWKAwCErL.blY52ZuPbtGqlyGb"
+    },
+    {
+      "name": "Monster Knowledge (med)",
+      "type": "feature",
+      "img": "icons/svg/book.svg",
+      "system": {
+        "description": {
+          "value": "<h1>Badger</h1>\n<p><b>Role: </b>level 2 Tiny  brute</p>\n<p><b>Type: </b>natural beast</p>\n<p><b>Typical Alignment:</b> Neutral</p>\n<p>Ask your DM for typical temperament</p>\n",
+          "chat": "",
+          "unidentified": "",
+          "gm": ""
+        },
+        "descriptionGM": {
+          "value": ""
+        },
+        "source": "",
+        "macro": {
+          "type": "script",
+          "scope": "global",
+          "launchOrder": "off",
+          "command": "",
+          "author": "",
+          "autoanimationHook": ""
+        },
+        "featureType": "other",
+        "level": null,
+        "requirements": "",
+        "featureSource": "",
+        "featureGroup": "",
+        "auraSize": "",
+        "effectType": {},
+        "damageType": {},
+        "keywordsCustom": "",
+        "activation": {
+          "type": "",
+          "cost": 0,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": ""
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": ""
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": ""
+        },
+        "uses": {
+          "value": 0,
+          "max": 0,
+          "per": null
+        },
+        "consume": {
+          "type": "",
+          "target": null,
+          "amount": null
+        },
+        "category": "other"
+      },
+      "_id": "5893lXTphVotsLpt",
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Actor.5GyGd3HmvJuMIok3.Item.A5gGH9SxHqnwdfJK",
+        "duplicateSource": null,
+        "coreVersion": "13.348",
+        "systemId": "dnd4e",
+        "systemVersion": "0.5.5",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!n1LXn8qhWKAwCErL.5893lXTphVotsLpt"
+    },
+    {
+      "name": "Monster Knowledge (hard)",
+      "type": "feature",
+      "img": "icons/svg/book.svg",
+      "system": {
+        "description": {
+          "value": "<h1>Badger</h1><p><strong>Role: </strong>level 2 Tiny brute</p><p><strong>Type: </strong>natural beast</p><p><strong>Typical Alignment:</strong> Neutral</p><p>Ask your DM for typical temperament</p><h2>Powers</h2><p><strong>Bite</strong><br>Standard, Basic, Melee, 7 vs AC</p><p><strong>Rage</strong><br>Free, Encounter, (when taking damage); The badger makes a bite attack against the damaging enemy, and then must continue to attack that creature every round until death.</p>",
+          "chat": "",
+          "unidentified": "",
+          "gm": ""
+        },
+        "descriptionGM": {
+          "value": ""
+        },
+        "source": "",
+        "macro": {
+          "type": "script",
+          "scope": "global",
+          "launchOrder": "off",
+          "command": "",
+          "author": "",
+          "autoanimationHook": ""
+        },
+        "featureType": "other",
+        "level": null,
+        "requirements": "",
+        "featureSource": "",
+        "featureGroup": "",
+        "auraSize": "",
+        "effectType": {},
+        "damageType": {},
+        "keywordsCustom": "",
+        "activation": {
+          "type": "",
+          "cost": 0,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": ""
+        },
+        "target": {
+          "value": null,
+          "width": null,
+          "units": "",
+          "type": ""
+        },
+        "range": {
+          "value": null,
+          "long": null,
+          "units": ""
+        },
+        "uses": {
+          "value": 0,
+          "max": 0,
+          "per": null
+        },
+        "consume": {
+          "type": "",
+          "target": null,
+          "amount": null
+        },
+        "category": "other"
+      },
+      "_id": "pg85XAO58kzYqrI0",
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Actor.5GyGd3HmvJuMIok3.Item.vk3flHY7a5n4jphH",
+        "duplicateSource": null,
+        "coreVersion": "13.348",
+        "systemId": "dnd4e",
+        "systemVersion": "0.5.5",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!n1LXn8qhWKAwCErL.pg85XAO58kzYqrI0"
+    }
+  ],
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "dnd4eBeta": {
+      "sheetDisplay": {
+        "features": {
+          "sortBy": {
+            "value": ""
+          }
+        },
+        "powers": {
+          "groupBy": {
+            "value": ""
+          },
+          "sortBy": {
+            "value": ""
+          }
+        }
+      }
+    },
+    "dnd4e": {
+      "sheetDisplay": {
+        "features": {
+          "sortBy": {
+            "value": ""
+          }
+        },
+        "powers": {
+          "groupBy": {
+            "value": ""
+          },
+          "sortBy": {
+            "value": ""
+          }
+        }
+      }
+    }
+  },
+  "system": {
+    "biography": "<p>The badger is a furry animal with a squat, powerful body.&nbsp; It's fur is mostly black with a while stripe running down its nose and face. Its strong forelimbs are armed with long claws for digging.</p>\n<p>An adult badger is 2 to 3 feet long (0.75 - 1m) and weighs 25 to 35 pounds. (10 - 15Kg)</p>",
+    "details": {
+      "size": "tiny",
+      "origin": "natural",
+      "type": "beast",
+      "other": "",
+      "race": "",
+      "age": "",
+      "gender": "",
+      "height": "",
+      "weight": "",
+      "alignment": "Neutral",
+      "deity": "",
+      "level": 2,
+      "tier": 1,
+      "exp": 125,
+      "bloodied": 22,
+      "surgeValue": 0,
+      "surgeBon": {
+        "bonus": [
+          {}
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "value": 0
+      },
+      "surges": {
+        "value": 1,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "max": 1
+      },
+      "surgeEnv": {
+        "bonus": [
+          {}
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "value": 0
+      },
+      "saves": {
+        "bonus": [],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "value": 0
+      },
+      "role": {
+        "primary": "brute",
+        "secondary": "standard",
+        "leader": false
+      },
+      "class": "",
+      "paragon": "",
+      "epic": "",
+      "secondwind": false,
+      "secondwindEffect": {},
+      "deathsaves": 3,
+      "deathsavefail": 0,
+      "deathsaveCrit": 20,
+      "deathsavebon": {
+        "bonus": [
+          {}
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "value": 0
+      },
+      "secondwindbon": {
+        "bonus": [
+          {}
+        ],
+        "value": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "custom": ""
+      },
+      "weaponProf": {
+        "value": [],
+        "custom": ""
+      },
+      "armourProf": {
+        "value": [],
+        "custom": ""
+      },
+      "equipment": ""
+    },
+    "languages": {
+      "spoken": {
+        "value": [],
+        "custom": ""
+      },
+      "script": {
+        "value": [],
+        "custom": ""
+      }
+    },
+    "senses": {
+      "vision": {
+        "value": [],
+        "custom": null
+      },
+      "special": {
+        "value": [
+          [
+            "dv",
+            ""
+          ]
+        ],
+        "custom": ""
+      },
+      "notes": ""
+    },
+    "abilities": {
+      "str": {
+        "value": 14,
+        "chat": "@name uses @label."
+      },
+      "con": {
+        "value": 14,
+        "chat": "@name uses @label."
+      },
+      "dex": {
+        "value": 13,
+        "chat": "@name uses @label."
+      },
+      "int": {
+        "value": 2,
+        "chat": "@name uses @label."
+      },
+      "wis": {
+        "value": 12,
+        "chat": "@name uses @label."
+      },
+      "cha": {
+        "value": 8,
+        "chat": "@name uses @label."
+      }
+    },
+    "attributes": {
+      "hp": {
+        "value": 44,
+        "min": 0,
+        "max": 44,
+        "starting": 0,
+        "perlevel": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "misc": 0,
+        "autototal": false,
+        "temprest": false
+      },
+      "temphp": {
+        "value": 0,
+        "max": 10
+      },
+      "init": {
+        "value": 3,
+        "ability": "dex",
+        "bonus": [],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "notes": "",
+        "base": 0
+      }
+    },
+    "actionpoints": {
+      "value": 0,
+      "encounteruse": false,
+      "effects": "",
+      "notes": "",
+      "custom": ""
+    },
+    "defences": {
+      "ac": {
+        "value": 13,
+        "ability": "",
+        "armour": 0,
+        "class": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "enhance": 0,
+        "shield": 0,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "light": false,
+        "altability": "",
+        "condition": "Conditional Bonuses.",
+        "chat": "@name defends with armour.",
+        "base": 13
+      },
+      "fort": {
+        "value": 13,
+        "ability": "",
+        "armour": 0,
+        "class": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "enhance": 0,
+        "shield": 0,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "condition": "Conditional Bonuses.",
+        "chat": "@name defends with fortitude.",
+        "base": 13
+      },
+      "ref": {
+        "value": 12,
+        "ability": "",
+        "armour": 0,
+        "class": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "enhance": 0,
+        "shield": 0,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "condition": "Conditional Bonuses.",
+        "chat": "@name defends with reflexes.",
+        "base": 12
+      },
+      "wil": {
+        "value": 10,
+        "ability": "",
+        "armour": 0,
+        "class": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "enhance": 0,
+        "shield": 0,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "condition": "Conditional Bonuses.",
+        "chat": "@name defends with willpower.",
+        "base": 10
+      }
+    },
+    "modifiers": {
+      "attack": {
+        "value": 0,
+        "class": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "damage": {
+        "value": 0,
+        "class": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "skills": {
+        "value": 0,
+        "class": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "defences": {
+        "value": 0,
+        "class": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      }
+    },
+    "skills": {
+      "acr": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "dex",
+        "armourCheck": true,
+        "chat": "@name uses @label."
+      },
+      "arc": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "int",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "ath": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "str",
+        "armourCheck": true,
+        "chat": "@name uses @label."
+      },
+      "blu": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "cha",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "dip": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "cha",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "dun": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "wis",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "end": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "con",
+        "armourCheck": true,
+        "chat": "@name uses @label."
+      },
+      "hea": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "wis",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "his": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "int",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "ins": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "wis",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "itm": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "cha",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "nat": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "wis",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "prc": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "wis",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "rel": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "int",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "stl": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "dex",
+        "armourCheck": true,
+        "chat": "@name uses @label."
+      },
+      "stw": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "cha",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      },
+      "thi": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "training": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "dex",
+        "armourCheck": true,
+        "chat": "@name uses @label."
+      },
+      "com": {
+        "value": 0,
+        "base": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "untyped": 0,
+        "training": 0,
+        "bonus": [
+          {}
+        ],
+        "ability": "wis",
+        "armourCheck": false,
+        "chat": "@name uses @label."
+      }
+    },
+    "skillTraining": {
+      "untrained": {
+        "value": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "trained": {
+        "value": 5,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "expertise": {
+        "value": 8,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      }
+    },
+    "passive": {
+      "pasprc": {
+        "value": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "skill": "prc",
+        "bonus": [
+          {}
+        ]
+      },
+      "pasins": {
+        "value": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "skill": "ins",
+        "bonus": [
+          {}
+        ]
+      }
+    },
+    "resistances": {
+      "damage": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "physical": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "ongoing": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "acid": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "cold": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "fire": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "force": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "lightning": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "necrotic": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "poison": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "psychic": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "radiant": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      },
+      "thunder": {
+        "value": 0,
+        "res": 0,
+        "vuln": 0,
+        "armour": 0,
+        "immune": false,
+        "bonus": [
+          {}
+        ],
+        "temp": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0
+      }
+    },
+    "untypedResistances": {
+      "resistances": [],
+      "vulnerabilities": [],
+      "immunities": []
+    },
+    "commonAttackBonuses": {
+      "bloodied": {
+        "value": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "comAdv": {
+        "value": 2,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "charge": {
+        "value": 1,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "conceal": {
+        "value": -2,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "concealTotal": {
+        "value": -5,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "cover": {
+        "value": -2,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "coverSup": {
+        "value": -5,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "longRange": {
+        "value": -2,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "marked": {
+        "value": -2,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "prone": {
+        "value": -2,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "restrained": {
+        "value": -2,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "running": {
+        "value": -5,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      },
+      "squeez": {
+        "value": -5,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "bonus": [
+          {}
+        ]
+      }
+    },
+    "marker": null,
+    "currency": {
+      "ad": 0,
+      "pp": 0,
+      "gp": 0,
+      "sp": 0,
+      "cp": 0
+    },
+    "ritualcomp": {
+      "ar": 0,
+      "ms": 0,
+      "rh": 0,
+      "si": 0,
+      "rs": 0
+    },
+    "movement": {
+      "base": {
+        "value": 4,
+        "base": 4,
+        "armour": 0,
+        "bonus": [
+          {}
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0
+      },
+      "walk": {
+        "value": 0,
+        "formula": "@base + @armour",
+        "bonus": [
+          {}
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0
+      },
+      "charge": {
+        "value": 0,
+        "formula": "@base + @armour",
+        "bonus": [
+          {}
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0
+      },
+      "run": {
+        "value": 0,
+        "formula": "2",
+        "bonus": [
+          {}
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "misc": 0,
+        "temp": 0
+      },
+      "climb": {
+        "value": 0,
+        "formula": "",
+        "bonus": [
+          {}
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0
+      },
+      "shift": {
+        "value": 0,
+        "formula": "1",
+        "bonus": [
+          {}
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0
+      },
+      "swim": {
+        "value": 0,
+        "formula": "",
+        "bonus": [
+          {}
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0
+      },
+      "notes": "",
+      "custom": "",
+      "burrow": {
+        "formula": "2"
+      }
+    },
+    "advancedCals": true,
+    "magicItemUse": {
+      "perDay": 1,
+      "bonusValue": 0,
+      "milestone": 0,
+      "dailyuse": 1,
+      "encounteruse": false
+    },
+    "resources": {
+      "primary": {
+        "value": 0,
+        "max": 0,
+        "sr": 0,
+        "lr": 0
+      },
+      "secondary": {
+        "value": 0,
+        "max": 0,
+        "sr": 0,
+        "lr": 0
+      },
+      "tertiary": {
+        "value": 0,
+        "max": 0,
+        "sr": 0,
+        "lr": 0
+      }
+    },
+    "encumbrance": {
+      "value": null,
+      "max": null,
+      "formulaNorm": "@abilities.str.value * 10",
+      "formulaHeavy": "@abilities.str.value * 20",
+      "formulaMax": "@abilities.str.value * 50"
+    },
+    "name": "Badger",
+    "featureSortTypes": "name",
+    "powerGroupTypes": "usage",
+    "powerSortTypes": "actionType"
+  },
+  "ownership": {
+    "default": 0
+  },
+  "prototypeToken": {
+    "actorLink": false,
+    "displayBars": 40,
+    "flags": {},
+    "name": "Badger",
+    "displayName": 30,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "color": null,
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0
+    },
+    "disposition": -1,
+    "bar1": {
+      "attribute": "attributes.hp"
+    },
+    "bar2": {
+      "attribute": "attributes.temphp"
+    },
+    "randomImg": false,
+    "texture": {
+      "src": "icons/creatures/mammals/wolf-shadow-black.webp",
+      "tint": "#ffffff",
+      "scaleX": 1,
+      "scaleY": 1,
+      "offsetX": 0,
+      "offsetY": 0,
+      "rotation": 0,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": true,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0,
+      "color": null
+    },
+    "appendNumber": true,
+    "prependAdjective": false,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    },
+    "turnMarker": {
+      "mode": 1,
+      "animation": null,
+      "src": null,
+      "disposition": false
+    },
+    "movementAction": null
+  },
+  "_stats": {
+    "duplicateSource": null,
+    "coreVersion": "13.350",
+    "systemId": "dnd4e",
+    "systemVersion": "0.7.0",
+    "createdTime": 1730440963063,
+    "modifiedTime": 1760845760971,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "exportSource": {
+      "worldId": "module-test",
+      "uuid": null,
+      "coreVersion": "12.331",
+      "systemId": "dnd4e",
+      "systemVersion": "0.5.5"
+    }
+  },
+  "_id": "n1LXn8qhWKAwCErL",
+  "sort": 300000,
+  "_key": "!actors!n1LXn8qhWKAwCErL"
+}

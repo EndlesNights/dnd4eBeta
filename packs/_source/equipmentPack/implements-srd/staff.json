@@ -1,0 +1,193 @@
+{
+  "name": "Staff",
+  "type": "weapon",
+  "img": "icons/weapons/staves/staff-simple.webp",
+  "effects": [],
+  "folder": "zgYxyfpIqGhWAHKq",
+  "flags": {},
+  "system": {
+    "description": {
+      "value": "<p>Good for walking, casting spells, and bonking skulls</p>",
+      "chat": "",
+      "unidentified": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg.222",
+    "quantity": 1,
+    "weight": 4,
+    "price": 5,
+    "attuned": false,
+    "equipped": false,
+    "rarity": "",
+    "identified": true,
+    "container": null,
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": {
+      "value": null,
+      "width": null,
+      "units": "",
+      "type": ""
+    },
+    "range": {
+      "value": 5,
+      "long": 10,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "armour": {
+      "value": 10
+    },
+    "hp": {
+      "value": 0,
+      "max": 0,
+      "dt": null,
+      "conditions": ""
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "level": "",
+    "weaponType": "simpleM",
+    "weaponHand": "hTwo",
+    "properties": {
+      "amm": false,
+      "bru": false,
+      "def": false,
+      "hic": false,
+      "imp": true,
+      "lof": false,
+      "lom": false,
+      "off": false,
+      "rch": false,
+      "rel": false,
+      "sml": false,
+      "spc": false,
+      "thv": false,
+      "tlg": false,
+      "two": false,
+      "ver": false
+    },
+    "proficient": true,
+    "proficientI": true,
+    "profBonus": 2,
+    "profImpBonus": 0,
+    "enhance": 0,
+    "isRanged": false,
+    "damageDice": {
+      "parts": [
+        [
+          "1",
+          "8",
+          ""
+        ]
+      ]
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {
+      "physical": true,
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "brutalNum": 1,
+    "weaponGroup": {
+      "axe": false,
+      "blowgun": false,
+      "bow": false,
+      "cbow": false,
+      "dragon": false,
+      "flail": false,
+      "garrote": false,
+      "ham": false,
+      "bladeH": false,
+      "bladeL": false,
+      "mace": false,
+      "pik": false,
+      "pole": false,
+      "sling": false,
+      "spear": false,
+      "staff": true,
+      "unarm": false,
+      "whip": false
+    },
+    "implementGroup": {},
+    "attackForm": "@profBonus+@enhance",
+    "attackFormImp": "@profImpBonus+@enhanceImp",
+    "damageForm": "@enhance",
+    "damageFormImp": "@enhanceImp",
+    "critDamageForm": "(@enhance)d6",
+    "critDamageFormImp": "(@enhanceImp)d6",
+    "critRange": 20,
+    "critRangeImp": 20,
+    "chatFlavor": "",
+    "implement": {
+      "holyS": false,
+      "ki": false,
+      "orb": false,
+      "rod": false,
+      "staff": true,
+      "tome": false,
+      "totem": false,
+      "wand": false
+    }
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.10",
+    "coreVersion": "13.348",
+    "createdTime": 1686094274461,
+    "modifiedTime": 1688160139773,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "vu6lVEBahrmh5L3O",
+  "sort": 200000,
+  "_key": "!items!vu6lVEBahrmh5L3O"
+}

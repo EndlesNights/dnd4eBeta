@@ -21,22 +21,6 @@ export const registerSystemSettings = function() {
 /**     HOUSE RULES     **/
 /*************************/
 
-	// Diagonal movement rule setting
-	game.settings.register("dnd4e", "diagonalMovement", {
-		name: "SETTINGS.4eDiagN",
-		hint: "SETTINGS.4eDiagL",
-		scope: "world",
-		config: true,
-		default: "555",
-		type: String,
-		choices: {
-			"555": "SETTINGS.4eDiagPHB",
-			"5105": "SETTINGS.4eDiagDMG",
-			"EUCL": "SETTINGS.4eDiagEuclidean",
-		},
-		onChange: rule => canvas.grid.diagonalRule = rule
-	});
-
 	// Resistances/vulnerabilities damage rule setting
 	 game.settings.register("dnd4e", "damageCalcRules", {
 		name: "SETTINGS.4eDamageCalcN",
@@ -123,9 +107,9 @@ export const registerSystemSettings = function() {
 	
 	// Custom Skills
 	game.settings.registerMenu("dnd4e", "show-custom-skill", {
-		name: "SETTINGS.4eShowCustomSkillN",
-		label: "SETTINGS.4eShowCustomSkillL",
-		hint: "SETTINGS.4eShowCustomSkillH",
+		name: "SETTINGS.4eCustomSkillsN",
+		label: "SETTINGS.4eCustomSkillsL",
+		hint: "SETTINGS.4eCustomSkillsH",
 		icon: 'fas fa-cog',
 		type: CustomSkillConfig,
 		restricted: true,
@@ -206,17 +190,6 @@ export const registerSystemSettings = function() {
 /**   DISPLAY OPTIONS   **/
 /*************************/
 
-	// Use dark mode
-	game.settings.register("dnd4e", "darkMode",{
-		name: "SETTINGS.4eDarkModeN",
-		hint: "SETTINGS.4eDarkModeL",
-		scope: "client",
-		config: true,
-		default: false,
-		type: Boolean,
-		onChange: foundry.utils.debouncedReload
-	});
-	
 	// Collapse Item Card descriptions by default
 	game.settings.register("dnd4e", "autoCollapseItemCards", {
 		name: "SETTINGS.4eAutoCollapseCardN",
@@ -253,22 +226,6 @@ export const registerSystemSettings = function() {
 		config: true,
 		default: true,
 		type: Boolean
-	});
-
-	// Show defence values in attack roll chat cards
-	game.settings.register("dnd4e", "showDefences",{
-		name: "SETTINGS.4eShowDefencesN",
-		hint: "SETTINGS.4eShowDefencesL",
-		scope: "client",
-		config: true,
-		default: "none",
-		type: String,
-		choices: {
-			"none": "SETTINGS.4eShowDefencesNone",
-			"pcs": "SETTINGS.4eShowDefencesPCs",
-			"npcs": "SETTINGS.4eShowDefencesNPCs",
-			"all": "SETTINGS.4eShowDefencesAll"
-		}
 	});
 
 	// Collapse bonuses down when making rolls
@@ -312,6 +269,22 @@ export const registerSystemSettings = function() {
 		type: Boolean,
 		onChange: s => {
 			ui.chat.render();
+		}
+	});
+
+	// Show defence values in attack roll chat cards
+	game.settings.register("dnd4e", "showDefences",{
+		name: "SETTINGS.4eShowDefencesN",
+		hint: "SETTINGS.4eShowDefencesL",
+		scope: "client",
+		config: true,
+		default: "none",
+		type: String,
+		choices: {
+			"none": "SETTINGS.4eShowDefencesNone",
+			"pcs": "SETTINGS.4eShowDefencesPCs",
+			"npcs": "SETTINGS.4eShowDefencesNPCs",
+			"all": "SETTINGS.4eShowDefencesAll"
 		}
 	});
 

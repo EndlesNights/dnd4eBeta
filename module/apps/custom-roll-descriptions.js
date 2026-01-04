@@ -2,31 +2,53 @@ import DocumentSheet4e from "./DocumentSheet4e.js"
 
 export class CustomRolldDescriptions extends DocumentSheet4e {
 	
-	static get defaultOptions() {
-		const options = super.defaultOptions;
-		return foundry.utils.mergeObject(options, {
-			id: "custom-roll",
-			classes: ["dnd4e", "actor-rest"],
-			template: "systems/dnd4e/templates/apps/custom-roll-descriptions.html",
-			width: 500,
+	static DEFAULT_OPTIONS = {
+		id: "custom-roll",
+		classes: ["dnd4e","actor-rest","standard-form","default"],
+		form: {
 			closeOnSubmit: false,
 			submitOnClose: true
-		});
+		},
+		position: {
+			width: 500,
+			height: "auto"
+		},
+		window: {
+			contentClasses: ["standard-form"],
+			resizable: true
+		},
+		tag: "form"
 	}
-	
+
+	static PARTS = {
+		CustomRolldDescriptions: {
+			template: "systems/dnd4e/templates/apps/custom-roll-descriptions.hbs"
+		},
+		footer: {
+			template: "templates/generic/form-footer.hbs",
+		}
+	}
+
 	get title() {
-		return `${this.object.name} - Customize Roll Descriptions Options`;
+		return `${this.document.name} - ${game.i18n.localize("DND4E.CustomizeRollDescriptions")}`;
 	}
 	
 	/** @override */
-	getData() {
-		return {system: this.object.system};
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
+        foundry.utils.mergeObject(context, {
+			system: this.document.system,
+			buttons: [
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
+			]
+		});
+        return context;
 	}
 	
 	async _updateObject(event, formData) {
 		const updateData = {};
 		for(let system in formData) { updateData[`${system}`] = formData[`${system}`];}
-		return this.object.update(updateData);
+		return this.document.update(updateData);
 	}
 	
 }

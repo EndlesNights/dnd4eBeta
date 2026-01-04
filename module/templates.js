@@ -6,32 +6,31 @@
 export const preloadHandlebarsTemplates = async function() {
 
 	// Define template paths to load
-	const templatePaths = [
+	const partials = [
+		// "systems/dnd4e/templates/items/parts/item-granter.html",
 
-	// Shared Partials
-	"systems/dnd4e/templates/actors/parts/active-effects.html",
-	"systems/dnd4e/templates/items/parts/power-effects.html",
-	// Actor Sheet Partials
-	"systems/dnd4e/templates/actors/parts/actor-attributes.html",
-	"systems/dnd4e/templates/actors/parts/actor-biography.html",
-	"systems/dnd4e/templates/actors/parts/actor-details.html",
-	"systems/dnd4e/templates/actors/parts/actor-inventory.html",
-	"systems/dnd4e/templates/actors/parts/actor-features.html",
-	"systems/dnd4e/templates/actors/parts/actor-powers.html",
-	"systems/dnd4e/templates/actors/parts/actor-rituals.html",
-	
-	// Item Sheet Partials
-	"systems/dnd4e/templates/items/parts/item-action.html",
-	"systems/dnd4e/templates/items/parts/item-description.html",
-	"systems/dnd4e/templates/items/parts/item-mountable.html",
-	
-	"systems/dnd4e/templates/items/parts/item-granter.html",
-	"systems/dnd4e/templates/items/parts/item-power-template.html",
-	"systems/dnd4e/templates/items/parts/item-macro.html",
+		// Shared Partials
+		"systems/dnd4e/templates/shared/self-effects.hbs",
+		
+		// Item Sheet Partials	
+		"systems/dnd4e/templates/items/parts/details-consumable.hbs",
+		"systems/dnd4e/templates/items/parts/details-equipment.hbs",
+		"systems/dnd4e/templates/items/parts/details-feature.hbs",
+		"systems/dnd4e/templates/items/parts/details-power.hbs",
+		"systems/dnd4e/templates/items/parts/details-ritual.hbs",
+		"systems/dnd4e/templates/items/parts/details-tool.hbs",
+		"systems/dnd4e/templates/items/parts/details-weapon.hbs",
+		"systems/dnd4e/templates/items/parts/details-backpack.hbs",
 
-	// Config Settings
+		"systems/dnd4e/templates/items/parts/target-effects.hbs"
 	];
 
+	const paths = {};
+  for ( const path of partials ) {
+    paths[path.replace(".hbs", ".html")] = path;
+    paths[`dnd4e.${path.split("/").pop().replace(".hbs", "")}`] = path;
+  }
+	
 	// Load the template parts
-	return loadTemplates(templatePaths);
+  return foundry.applications.handlebars.loadTemplates(paths);
 };

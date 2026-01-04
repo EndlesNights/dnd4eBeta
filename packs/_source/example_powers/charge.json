@@ -1,0 +1,213 @@
+{
+  "_id": "E7LejdvEdDC3FcOL",
+  "name": "Charge",
+  "type": "power",
+  "img": "icons/skills/melee/unarmed-punch-fist-yellow-red.webp",
+  "effects": [],
+  "folder": null,
+  "sort": 1000000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "13.348",
+    "systemId": "dnd4e",
+    "systemVersion": "0.5.14",
+    "createdTime": null,
+    "modifiedTime": 1745816275190,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "system": {
+    "description": {
+      "value": "<p>You throw yourself into battle, dashing forward and attacking your foe</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": "PHB pg. 287",
+    "activation": {
+      "type": "",
+      "cost": 0,
+      "condition": ""
+    },
+    "duration": {
+      "value": null,
+      "units": ""
+    },
+    "target": "One creature",
+    "range": {
+      "value": null,
+      "long": null,
+      "units": ""
+    },
+    "uses": {
+      "value": 0,
+      "max": "0",
+      "per": ""
+    },
+    "consume": {
+      "type": "",
+      "target": "",
+      "amount": null
+    },
+    "macro": {
+      "type": "script",
+      "scope": "global",
+      "launchOrder": "off",
+      "command": "",
+      "author": "",
+      "autoanimationHook": ""
+    },
+    "attack": {
+      "shareAttackRoll": false,
+      "isAttack": false,
+      "isBasic": false,
+      "isCharge": true,
+      "isOpp": false,
+      "canCharge": false,
+      "canOpp": false,
+      "ability": "str",
+      "abilityBonus": 0,
+      "def": "fort",
+      "defBonus": 0,
+      "detail": "",
+      "formula": "@powerMod+@lvhalf",
+      "damageType": {},
+      "effectType": {}
+    },
+    "hit": {
+      "shareDamageRoll": false,
+      "damageBonusNull": false,
+      "isDamage": false,
+      "isHealing": false,
+      "healSurge": "",
+      "baseQuantity": "1",
+      "baseDiceType": "weapon",
+      "detail": "",
+      "formula": "@powBase + @powerMod + @wepDamage",
+      "critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
+      "healFormula": ""
+    },
+    "miss": {
+      "detail": "",
+      "formula": ""
+    },
+    "effect": {
+      "detail": "<p>Move your speed as part of the charge and make a melee basic attack or a bull rush at the end of your move.</p>\t\t<p>You gain a +1 bonus to the attack roll of your basic attack or bull rush.</p>\t\t<p>If you leave a square adjacent to an enemy, that enemy can make an opportunity attack against you.</p>\t\t<p>After you resolve a charge attack, you can&rsquo;t take any further actions this turn, except free actions</p>"
+    },
+    "damage": {
+      "parts": []
+    },
+    "damageCrit": {
+      "parts": []
+    },
+    "damageImp": {
+      "parts": []
+    },
+    "damageCritImp": {
+      "parts": []
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "keyWords": [
+      ""
+    ],
+    "level": "",
+    "powersource": "",
+    "secondPowersource": "",
+    "powersourceName": "",
+    "subName": "None",
+    "prepared": true,
+    "powerType": "inherent",
+    "powerSubtype": "attack",
+    "useType": "atwill",
+    "actionType": "standard",
+    "requirements": "",
+    "weaponType": "none",
+    "weaponUse": "none",
+    "rangeType": "personal",
+    "autoTarget": {
+      "mode": "none",
+      "includeSelf": true
+    },
+    "rangeTextShort": "",
+    "rangeText": "",
+    "rangePower": null,
+    "area": 0,
+    "rechargeRoll": "",
+    "rechargeCondition": "",
+    "damageShare": false,
+    "postEffect": true,
+    "postSpecial": true,
+    "autoGenChatPowerCard": true,
+    "sustain": {
+      "actionType": "",
+      "detail": ""
+    },
+    "trigger": "",
+    "requirement": "Each square of movement must bring you closer to the target, and you must end the move at least 2 squares away from your starting position.",
+    "special": "",
+    "specialAdd": {
+      "parts": []
+    },
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false,
+      "enchantment": false,
+      "shadow": false
+    },
+    "keywordsCustom": "",
+    "chatFlavor": "",
+    "effectHTML": false,
+    "category": "other"
+  },
+  "_key": "!items!E7LejdvEdDC3FcOL"
+}

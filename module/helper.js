@@ -548,7 +548,7 @@ export class Helper {
 	 * Perform replacement of @variables in the formula involving a power.	This is a recursive function with 2 modes of operation!
 	 *
 	 * @param formula The formula to examine and perform replacements on
-	 * @param actorData The data from the actor to use to resolve variables: `actor.system`.	This may be null
+	 * @param actorOrData The actor or data from the actor to use to resolve variables: `actor.system`.	This may be null
 	 * @param powerInnerData The data from the power to use to resolve variables. `power.system`
 	 * @param weaponInnerData The data from the weapon to use to resolve variables.	`item.system` This may be null
 	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.	Defaults to 1 which will produce 2 loops.	A depth of 0 will also prevent evaluation of custom effect variables (as that is an infinite hole)
@@ -556,7 +556,7 @@ export class Helper {
 	 * @return {String|{}|number} "0" if called with a depth of <0, A substituted formula string if called with returnDataInsteadOfFormula = false (the default) or an object of {variable = value} if called with returnDataInsteadOfFormula = true
 	 */
 	// DEVELOPER: Remember this call is recursive, if you change the method signature, make sure you update everywhere its used!
-	static commonReplace (formula, actorData, powerInnerData, weaponInnerData=null, depth = 2, returnDataInsteadOfFormula = false) {
+	static commonReplace (formula, actorOrData, powerInnerData, weaponInnerData=null, depth = 2, returnDataInsteadOfFormula = false) {
 		if (depth < 0 ) return 0;
 		let newFormula = formula.toString(); // just in case integers somehow get passed
 		if (returnDataInsteadOfFormula) {
@@ -565,58 +565,56 @@ export class Helper {
 			if (variables) {
 				variables.forEach(variable => {
 					// get the value for that variable - call this method with just the variable and with return data off
-					result[variable.substring(1)] = this.commonReplace(variable, actorData, powerInnerData, weaponInnerData, depth, false) // trim off the leading @
+					result[variable.substring(1)] = this.commonReplace(variable, actorOrData, powerInnerData, weaponInnerData, depth, false) // trim off the leading @
 				})
 			}
 			return result
 		}
 
-		if(actorData) {
-			const actorInnerData = actorData.system;
-			if (actorInnerData) {
-				newFormula = Roll.replaceFormulaData(newFormula, actorInnerData);
-				if(powerInnerData) {
-					newFormula = newFormula.replaceAll("@powerMod", !!(actorInnerData.abilities[powerInnerData.attack?.ability])? actorInnerData.abilities[powerInnerData.attack.ability].mod : "");
-				}
-
-				newFormula = newFormula.replaceAll("@strMod", actorInnerData.abilities["str"].mod);
-				newFormula = newFormula.replaceAll("@conMod", actorInnerData.abilities["con"].mod);
-				newFormula = newFormula.replaceAll("@dexMod", actorInnerData.abilities["dex"].mod);
-				newFormula = newFormula.replaceAll("@intMod", actorInnerData.abilities["int"].mod);
-				newFormula = newFormula.replaceAll("@wisMod", actorInnerData.abilities["wis"].mod);
-				newFormula = newFormula.replaceAll("@chaMod", actorInnerData.abilities["cha"].mod);
-
-				newFormula = newFormula.replaceAll("@lvhalf", Math.floor(actorInnerData.details.level/2));
-				newFormula = newFormula.replaceAll("@lv", actorInnerData.details.level);
-				newFormula = newFormula.replaceAll("@tier", actorInnerData.details.tier);
-
-				newFormula = newFormula.replaceAll("@atkMod", actorInnerData.modifiers.attack.value);
-				newFormula = newFormula.replaceAll("@dmgMod", actorInnerData.modifiers.damage.value);
-
-				newFormula = newFormula.replaceAll("@heroic", actorInnerData.details.level < 11 ? 1 : 0);
-				newFormula = newFormula.replaceAll("@paragon", actorInnerData.details.level >= 11 && actorInnerData.details.level < 21 ? 1 : 0);
-				newFormula = newFormula.replaceAll("@epic", actorInnerData.details.level >= 21 ? 1 : 0);
-
-				newFormula = newFormula.replaceAll("@heroicOrParagon", actorInnerData.details.level < 21 ? 1 : 0);
-				newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
-
-				newFormula = newFormula.replaceAll("@bloodied",	actorInnerData.details.isBloodied ? 1 : 0);
-				
-				newFormula = newFormula.replaceAll("@sneak",	CONFIG.DND4E.SNEAKSCALE[actorInnerData.details.tier]);
-				
-				newFormula = newFormula.replaceAll("@enhArmour", actorInnerData.defences.ac.enhance || 0);
-				newFormula = newFormula.replaceAll("@enhNAD", Math.min(actorInnerData.defences.fort.enhance || 0, actorInnerData.defences.ref.enhance || 0, actorInnerData.defences.wil.enhance || 0));
-
-				newFormula = newFormula.replaceAll("@charaID", actorData.id || 0);
-				newFormula = newFormula.replaceAll("@charaUID", actorData.uuid || 0);
-				
-				//targets @scale plus some #
-				newFormula = newFormula.replace(/@scale(\d*)/g,	(match, number) => {return this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, number-1)});
-
+		const actorInnerData = actorOrData?.getRollData?.() ?? actorOrData?.system ?? actorOrData;
+		if (actorInnerData) {
+			newFormula = Roll.replaceFormulaData(newFormula, actorInnerData);
+			if(powerInnerData) {
+				newFormula = newFormula.replaceAll("@powerMod", !!(actorInnerData.abilities[powerInnerData.attack?.ability])? actorInnerData.abilities[powerInnerData.attack.ability].mod : "");
 			}
-			else {
-				console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.	Replacing: " + formula)
-			}
+
+			newFormula = newFormula.replaceAll("@strMod", actorInnerData.abilities["str"].mod);
+			newFormula = newFormula.replaceAll("@conMod", actorInnerData.abilities["con"].mod);
+			newFormula = newFormula.replaceAll("@dexMod", actorInnerData.abilities["dex"].mod);
+			newFormula = newFormula.replaceAll("@intMod", actorInnerData.abilities["int"].mod);
+			newFormula = newFormula.replaceAll("@wisMod", actorInnerData.abilities["wis"].mod);
+			newFormula = newFormula.replaceAll("@chaMod", actorInnerData.abilities["cha"].mod);
+
+			newFormula = newFormula.replaceAll("@lvhalf", Math.floor(actorInnerData.details.level/2));
+			newFormula = newFormula.replaceAll("@lv", actorInnerData.details.level);
+			newFormula = newFormula.replaceAll("@tier", actorInnerData.details.tier);
+
+			newFormula = newFormula.replaceAll("@atkMod", actorInnerData.modifiers.attack.value);
+			newFormula = newFormula.replaceAll("@dmgMod", actorInnerData.modifiers.damage.value);
+
+			newFormula = newFormula.replaceAll("@heroic", actorInnerData.details.level < 11 ? 1 : 0);
+			newFormula = newFormula.replaceAll("@paragon", actorInnerData.details.level >= 11 && actorInnerData.details.level < 21 ? 1 : 0);
+			newFormula = newFormula.replaceAll("@epic", actorInnerData.details.level >= 21 ? 1 : 0);
+
+			newFormula = newFormula.replaceAll("@heroicOrParagon", actorInnerData.details.level < 21 ? 1 : 0);
+			newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
+
+			newFormula = newFormula.replaceAll("@bloodied",	actorInnerData.details.isBloodied ? 1 : 0);
+			
+			newFormula = newFormula.replaceAll("@sneak",	CONFIG.DND4E.SNEAKSCALE[actorInnerData.details.tier]);
+			
+			newFormula = newFormula.replaceAll("@enhArmour", actorInnerData.defences.ac.enhance || 0);
+			newFormula = newFormula.replaceAll("@enhNAD", Math.min(actorInnerData.defences.fort.enhance || 0, actorInnerData.defences.ref.enhance || 0, actorInnerData.defences.wil.enhance || 0));
+
+			newFormula = newFormula.replaceAll("@charaID", actorInnerData.id || 0);
+			newFormula = newFormula.replaceAll("@charaUID", actorInnerData.uuid || 0);
+			
+			//targets @scale plus some #
+			newFormula = newFormula.replace(/@scale(\d*)/g,	(match, number) => {return this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, number-1)});
+
+		}
+		else {
+			console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.	Replacing: " + formula)
 		}
 
 		newFormula = newFormula.replaceAll("@powerLevel", powerInnerData?.level ? powerInnerData.level : 0)
@@ -626,30 +624,30 @@ export class Helper {
 			//Using inherent enhancements?
 			if(game.settings.get("dnd4e", "inhEnh")) {
 				//If our enhancement is lower than the inherent level, adjust it upward
-				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
-				console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${weaponInnerData?.enhance}`);
+				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, 1));
+				console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${weaponInnerData?.enhance}`);
 			}
 			
 			newFormula =	newFormula.replaceAll("@itemLevel", weaponInnerData.level ? weaponInnerData.level : 0)
 
 			if (powerInnerData.weaponType === "implement") {
-				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponInnerData.damageFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponInnerData.damageFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
 			}
 			else {
-				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackForm, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponInnerData.damageForm, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageForm, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackForm, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponInnerData.damageForm, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
+				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageForm, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
 			}
 
-			newFormula = newFormula.replaceAll("@impCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+			newFormula = newFormula.replaceAll("@impCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
 
-			newFormula = newFormula.replaceAll("@impAttackO", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0 ));
-			newFormula = newFormula.replaceAll("@impDamageO", this.bracketed(this.commonReplace(weaponInnerData.damageFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0 ));
+			newFormula = newFormula.replaceAll("@impAttackO", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0 ));
+			newFormula = newFormula.replaceAll("@impDamageO", this.bracketed(this.commonReplace(weaponInnerData.damageFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0 ));
 
-			newFormula = newFormula.replaceAll("@impAttack", this.bracketed(weaponInnerData.proficientI ? this.commonReplace(weaponInnerData.attackFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0 : 0));
-			newFormula = newFormula.replaceAll("@impDamage", this.bracketed(weaponInnerData.proficientI ? this.commonReplace(weaponInnerData.damageFormImp, actorData, powerInnerData, weaponInnerData, depth-1) || 0 : 0));
+			newFormula = newFormula.replaceAll("@impAttack", this.bracketed(weaponInnerData.proficientI ? this.commonReplace(weaponInnerData.attackFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0 : 0));
+			newFormula = newFormula.replaceAll("@impDamage", this.bracketed(weaponInnerData.proficientI ? this.commonReplace(weaponInnerData.damageFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0 : 0));
 
 			newFormula = newFormula.replaceAll("@profBonusO",weaponInnerData.profBonus || 0);
 			newFormula = newFormula.replaceAll("@profImpBonusO", weaponInnerData.profImpBonus || 0);
@@ -658,9 +656,9 @@ export class Helper {
 			newFormula = newFormula.replaceAll("@profBonus", weaponInnerData.proficient ? weaponInnerData.profBonus || 0 : 0);
 
 			//newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
-			newFormula = newFormula.replaceAll("@enhanceImp", (weaponInnerData.type === 'implement' || weaponInnerData.properties.imp) ? this.bracketed(this.commonReplace(enhValue, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
+			newFormula = newFormula.replaceAll("@enhanceImp", (weaponInnerData.type === 'implement' || weaponInnerData.properties.imp) ? this.bracketed(this.commonReplace(enhValue, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
 			//newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
-			newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(enhValue, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
+			newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(enhValue, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
 
 			newFormula = this.replaceData (newFormula, weaponInnerData);
 			
@@ -681,7 +679,7 @@ export class Helper {
 				for(let i = 0; i< parts.length; i++) {
 					if(!parts[i][0] || !parts[i][1]) continue;
 
-					let quantity = this.commonReplace(parts[i][0], actorData, powerInnerData, weaponInnerData, depth-1);
+					let quantity = this.commonReplace(parts[i][0], actorOrData, powerInnerData, weaponInnerData, depth-1);
 					let r = new Roll(`${quantity}`);
 
 					if(r.isDeterministic){
@@ -697,7 +695,7 @@ export class Helper {
 					}
 					if (i < parts.length - 1) dice += '+';
 				}
-				const possibleDice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
+				const possibleDice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1)
 				dice = possibleDice !== 0 ? possibleDice : dice //there probably shouldn't be any formula left, because @wepDice is a formula contents under our command.	So if we had hit the bottom of the recursion tree, just try the original
 				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
 				newFormula = newFormula.replaceAll("@wepDice", dice);
@@ -710,7 +708,7 @@ export class Helper {
 			//	-	dice damage
 			// make sure to keep the weapon dice formula same as above.	Definite candidate for a future refactor.
 			if(newFormula.includes("@powBase")) {
-				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorData, powerInnerData, weaponInnerData, depth-1);
+				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorOrData, powerInnerData, weaponInnerData, depth-1);
 				let r = new Roll(`${quantity}`);
 
 				//Just to help keep the rolls cleaner, look for Deterministic elements to remove
@@ -732,7 +730,7 @@ export class Helper {
 
 						if(!parts[i][0] || !parts[i][1]) continue;
 
-						let weaponDiceQuantity = this.commonReplace(`(${quantity}) * (${parts[i][0]})`, actorData, powerInnerData, weaponInnerData, depth-1);
+						let weaponDiceQuantity = this.commonReplace(`(${quantity}) * (${parts[i][0]})`, actorOrData, powerInnerData, weaponInnerData, depth-1);
 						let r2 = new Roll(`${weaponDiceQuantity}`);
 	
 						if(r2.isDeterministic){
@@ -758,7 +756,7 @@ export class Helper {
 					dice += `${quantity}${diceType}`;
 				}
 
-				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1);
+				dice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1);
 				newFormula = newFormula.replaceAll("@powBase", dice);
 			}
 
@@ -770,7 +768,7 @@ export class Helper {
 					dice += `(${parts[i][0]} * ${parts[i][1]})`
 					if (i < parts.length - 1) dice += '+';
 				}
-				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
+				dice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1)
 				let r = new Roll(`${dice}`)
 				if(dice){
 					r.evaluateSync({maximize: true});
@@ -788,7 +786,7 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerInnerData.hit.baseQuantity;
-				quantity = this.commonReplace(quantity, actorData, powerInnerData, weaponInnerData, 0)
+				quantity = this.commonReplace(quantity, actorOrData, powerInnerData, weaponInnerData, 0)
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
 				// rQuantity.evaluate({maximize: true, async: false});
@@ -820,7 +818,7 @@ export class Helper {
 					let diceValue = diceType.match(/\d+/g).join('');
 					dice += `${quantity} * ${diceValue}`;
 				}
-				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
+				dice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1)
 				newFormula = newFormula.replaceAll("@powMax", dice);
 			}
 		}
@@ -864,7 +862,7 @@ export class Helper {
 			}
 
 			if(newFormula.includes("@powBase")) {
-				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorData, powerInnerData, weaponInnerData, depth-1);
+				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorOrData, powerInnerData, weaponInnerData, depth-1);
 				let diceType = powerInnerData.hit.baseDiceType;
 
 				let r = new Roll(`${quantity}`);
@@ -889,7 +887,7 @@ export class Helper {
 						dice += `${quantity}${diceType}`;
 					}
 	
-					dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
+					dice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1)
 					newFormula = newFormula.replaceAll("@powBase", dice);
 				}
 
@@ -899,7 +897,7 @@ export class Helper {
 			if(newFormula.includes("@powMax")) {
 				let dice = "";
 				let quantity = powerInnerData.hit.baseQuantity;
-				quantity = this.commonReplace(quantity, actorData, powerInnerData, weaponInnerData, 0)
+				quantity = this.commonReplace(quantity, actorOrData, powerInnerData, weaponInnerData, 0)
 				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
 				let rQuantity = new Roll(`${quantity}`)
 				rQuantity.evaluateSync({maximize: true});
@@ -928,7 +926,7 @@ export class Helper {
 					let diceValue = diceType.match(/\d+/g)?.join('');
 					dice += `${quantity} * ${diceValue}`;
 				}
-				dice = this.commonReplace(dice, actorData, powerInnerData, weaponInnerData, depth-1)
+				dice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1)
 				newFormula = newFormula.replaceAll("@powMax", dice);
 			}			
 		}
@@ -937,20 +935,23 @@ export class Helper {
 		// as this could get unnecessarily expensive quickly.
 		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula
 		// having got to the bottom of common replace, check to see if there are any more @variables left.	If there aren't, then don't bother going any further
-		if (actorData?.effects && depth > 0 && newFormula.includes('@')) {
+		let maybeEffects = actorOrData?.effects;
+		let maybeActor = actorOrData;
+		if (maybeActor && !maybeEffects) maybeActor = fromUuidSync(maybeActor.uuid);
+		if (maybeActor?.effects && depth > 0 && newFormula.includes('@')) {
 			const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4e |` : ""
 			if (debug) {
 				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.	Searching active effects for a suitable variable`)
 			}
 			const resultObject = {}
-			const effects = actorData.getActiveEffects().filter((effect) => effect?.disabled === false);
+			const effects = maybeActor.getActiveEffects().filter((effect) => effect?.disabled === false);
 			effects.forEach((effect) => {
 				effect.changes.forEach((change => {
 					if (this.variableRegex.test(change.key)) {
 						if (debug) {
 							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.name}.	Value: ${change.value}`)
 						}
-						const changeValueReplaced = this.commonReplace(change.value, actorData, powerInnerData, weaponInnerData, 0) // set depth to avoid infinite recursion
+						const changeValueReplaced = this.commonReplace(change.value, actorOrData, powerInnerData, weaponInnerData, 0) // set depth to avoid infinite recursion
 						if (!resultObject[change.key]) {
 							resultObject[change.key] = changeValueReplaced
 							if (debug) {
@@ -1082,8 +1083,11 @@ export class Helper {
 	}
 
 	static _preparePowerCardData(chatData, CONFIG, actorData=null, attackTotal=null) {
+		
+		let powerDetail = `<div class="basics">`; //Open the white section between flavour and effects
+		
 		let powerSource = (chatData.powersource && chatData.powersource !== "") ? `${CONFIG.DND4E.powerSource[`${chatData.powersource}`]}` : "";
-		let powerDetail = `<span class="basics"><span class="usage">${CONFIG.DND4E.powerUseType[`${chatData.useType}`]}</span>`;
+		powerDetail += `<span class="usage">${CONFIG.DND4E.powerUseType[`${chatData.useType}`]}</span>`;
 		let tag = [];
 		
 		if(chatData.powersource) tag.push(powerSource);
@@ -1123,9 +1127,9 @@ export class Helper {
 		
 		tag.sort();
 		
-		if(tag.length > 0) powerDetail += ` ♦ <span class="keywords">${tag.join(', ')}</span>`;
+		if(tag.length > 0) powerDetail += `<span class="sep">♦</span><span class="keywords">${tag.join(', ')}</span>`;
 		
-		powerDetail += `</span><br /><span><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType].label}</span> `;
+		powerDetail += `<br /><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType].label}</span> <span class="sep">&nbsp;</span>`;
 
 		if(chatData.rangeType === "weapon") {
 			powerDetail += ` <span class="range-type weapon">${CONFIG.DND4E.weaponType[chatData.weaponType]}</span>`;
@@ -1160,9 +1164,10 @@ export class Helper {
 			powerDetail += `</span>`;
 		}
 		powerDetail += `</span>`;
+		powerDetail += `</div>`; //Close basics
 
 		if(chatData.requirement) {
-			powerDetail += `<p class="requirements"><strong>${game.i18n.localize("DND4E.Requirements")}:</strong> ${chatData.requirement}</p>`;
+			powerDetail += `<p class="requirement"><strong>${game.i18n.localize("DND4E.Requirement")}:</strong> ${chatData.requirement}</p>`;
 		}
 
 		if(chatData.trigger) {
@@ -1417,10 +1422,12 @@ export class Helper {
 
 					const newEffectData = {
 						name: e.name,
+						type: e.type,
 						description: e.description ? e.description : '',
 						img: e.img,
 						origin: e.origin,
 						sourceName: parent.name,
+						system: e.system,
 						//"duration": duration, //Not too sure why this fails, but it does
 						"duration": {startRound: duration?.startRound, rounds: duration.rounds, turns: duration.turns},
 						rounds: duration.rounds,
@@ -1795,7 +1802,7 @@ export class Helper {
 				const aCenter = canvasGridProxy.getCenterPoint(gridPosA);
 				const gridPosB = canvasGridProxy.getOffset(s.ray.B);
 				const bCenter = canvasGridProxy.getCenterPoint(gridPosB);
-				return { ray: new Ray(aCenter, bCenter) };
+				return { ray: new foundry.canvas.geometry.Ray(aCenter, bCenter) };
 			});
 		}
 		let distances = segments.map(s => canvasGridProxy.measurePath([s.ray.A, s.ray.B], {}));
@@ -1869,7 +1876,7 @@ export class Helper {
 							}
 							const point = canvas.grid.getCenterPoint({ x: Math.round(t2.document.x + (canvas.dimensions.size * x1)), y: Math.round(t2.document.y + (canvas.dimensions.size * y1)) });
 							let dest = new PIXI.Point(point.x, point.y);
-							const r = new Ray(origin, dest);
+							const r = new foundry.canvas.geometry.Ray(origin, dest);
 							if (wallsBlock) {
 								let collisionCheck;
 								collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(origin, dest, { source: t1.document, mode: "any", type: "move" });
@@ -1890,7 +1897,7 @@ export class Helper {
 		else {
 			const w = t2.document;
 			let closestPoint = foundry.utils.closestPointToSegment(t1.center, w.object.edge.a, w.object.edge.b);
-			distance = this.measureDistances([{ ray: new Ray(t1.center, closestPoint) }], { gridSpaces: true });
+			distance = this.measureDistances([{ ray: new foundry.canvas.geometry.Ray(t1.center, closestPoint) }], { gridSpaces: true });
 		}
 		return Math.max(distance, 0);
 	}
@@ -2063,7 +2070,7 @@ export class Helper {
 					const p2 = canvas.grid?.getCenterPoint(allyPoint);
 					if (!p1 || !p2)
 						continue;
-					const rayToCheck = new Ray(p1, p2);
+					const rayToCheck = new foundry.canvas.geometry.Ray(p1, p2);
 					const flankingTop = rayToCheck.intersectSegment(top) && rayToCheck.intersectSegment(bottom);
 					const flankingLeft = rayToCheck.intersectSegment(left) && rayToCheck.intersectSegment(right);
 					if (flankingLeft || flankingTop) {
@@ -2357,6 +2364,23 @@ export function performPreLocalization(config) {
 	//	 lhs.id === "dead" ? -1 : rhs.id === "dead" ? 1 : lhs.name.localeCompare(rhs.name, game.i18n.lang)
 	// );
 }
+
+/* -------------------------------------------- */
+
+/**
+ * Sort the provided object by its values or by an inner sortKey.
+ * @param {object} obj                 The object to sort.
+ * @param {string|Function} [sortKey]  An inner key upon which to sort or sorting function.
+ * @returns {object}                   A copy of the original object that has been sorted.
+ */
+export function sortObjectEntries(obj, sortKey) {
+  let sorted = Object.entries(obj);
+  const sort = (lhs, rhs) => foundry.utils.getType(lhs) === "string" ? lhs.localeCompare(rhs, game.i18n.lang) : lhs - rhs;
+  if ( foundry.utils.getType(sortKey) === "function" ) sorted = sorted.sort((lhs, rhs) => sortKey(lhs[1], rhs[1]));
+  else if ( sortKey ) sorted = sorted.sort((lhs, rhs) => sort(lhs[1][sortKey], rhs[1][sortKey]));
+  else sorted = sorted.sort((lhs, rhs) => sort(lhs[1], rhs[1]));
+  return Object.fromEntries(sorted);
+}
 	
 /* -------------------------------------------- */
 
@@ -2419,7 +2443,7 @@ export function getHumanReadableAttributeLabel(attr, { actor }={}) {
 		if ( resource.label ) return resource.label;
 	}
 
-	if ( (attr === "details.xp.value") && (actor?.type === "npc") ) {
+	if ( (attr === "details.xp.value") && (actor?.type === "NPC") ) {
 		return game.i18n.localize("DND4E.ExperiencePointsValue");
 	}
 
@@ -2433,31 +2457,22 @@ export function getHumanReadableAttributeLabel(attr, { actor }={}) {
 	if ( label ) return label;
 
 	// Derived fields.
-	if ( attr === "attributes.init.total" ) label = "DND4E.InitiativeBonus";
-	else if ( attr === "attributes.ac.value" ) label = "DND4E.ArmorClass";
-	else if ( attr === "attributes.spelldc" ) label = "DND4E.SpellDC";
+	if ( attr === "attributes.init.total" ) label = "DND4E.InitiativeScore";
+	else if ( attr === "defences.ac.value" ) label = "DND4E.DefenceACShort";
+	else if ( attr === "defences.fort.value" ) label = "DND4E.DefenceFortShort";
+	else if ( attr === "defences.ref.value" ) label = "DND4E.DefenceRefShort";
+	else if ( attr === "defences.wil.value" ) label = "DND4E.DefenceWillShort";
 
 	// Abilities.
 	else if ( attr.startsWith("abilities.") ) {
 		const [, key] = attr.split(".");
-		label = game.i18n.format("DND4E.AbilityScoreL", { ability: CONFIG.DND4E.abilities[key].label });
+		label = CONFIG.DND4E.abilityScores[key].label;
 	}
 
 	// Skills.
 	else if ( attr.startsWith("skills.") ) {
 		const [, key] = attr.split(".");
-		label = game.i18n.format("DND4E.SkillPassiveScore", { skill: CONFIG.DND4E.skills[key].label });
-	}
-
-	// Spell slots.
-	else if ( attr.startsWith("spells.") ) {
-		const [, key] = attr.split(".");
-		if ( !/spell\d+/.test(key) ) label = `DND4E.SpellSlots${key.capitalize()}`;
-		else {
-			const plurals = new Intl.PluralRules(game.i18n.lang, {type: "ordinal"});
-			const level = Number(key.slice(5));
-			label = game.i18n.format(`DND4E.SpellSlotsN.${plurals.select(level)}`, { n: level });
-		}
+		label = game.i18n.format("DND4E.PasCheck", { skill: CONFIG.DND4E.skills[key].label });
 	}
 
 	// Attempt to find the attribute in a data model.
