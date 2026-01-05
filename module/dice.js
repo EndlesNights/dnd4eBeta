@@ -87,7 +87,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 			targDataArray.targets.push({
 				'name': targetArr[targ].name,
 				'status': targetArr[targ].actor.statuses,
-				'attackMod': data?.item?.attack?.ability || 'str',
+				'attackMod': data?.item?.attack?.ability || '',
 				'attackDef': options.attackedDef || 'ac',
 				'immune': targetArr[targ].actor.system.defences[options.attackedDef]?.none || false,
 				'meleeVsProne': meleeVsProne,
@@ -100,7 +100,7 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 		targDataArray.targets.push({
 			'name':'',
 			'status':[],
-			'attackMod': data?.item?.attack?.ability || 'str',
+			'attackMod': data?.item?.attack?.ability || '',
 			'attackDef': data?.item?.attack?.def || 'ac',
 			'immune': false
 		});

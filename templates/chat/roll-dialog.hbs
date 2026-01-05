@@ -49,7 +49,9 @@
 				<label>{{localize 'DND4EUI.AttackVersus'}}</label>
 				<div class="score-vs-def">
 					<select class="attackMod" name="{{n}}.attackMod" disabled>
+						<option value="" {{#if (eq t.attackMod "")}}selected{{/if}}></option>
 						{{selectOptions ../config.abilityScores selected=t.attackMod labelAttr='labelShort'}}
+						<option value="form" {{#if (eq t.attackMod "form")}}selected{{/if}}>{{ localize "DND4E.FormulaAttackShort" }}</option>
 					</select> 
 					<label>{{localize 'DND4E.VS'}}</label>
 					<select class="attackDef" name="{{n}}.attackDef">

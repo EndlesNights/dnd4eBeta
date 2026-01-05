@@ -107,6 +107,6 @@ export default class TokenDocument4e extends TokenDocument {
 		else {
 			options.easing = foundry.canvas.placeables.tokens.TokenRing.easePingPong;
 		}
-		this.object.ring?.flashColor(Color.from(color), options);
+		return this.object.ring?.flashColor(Color.from(color), options);
 	}
 }
