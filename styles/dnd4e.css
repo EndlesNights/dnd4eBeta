@@ -3011,7 +3011,7 @@ body.theme-light .dnd4e:is(.default,.standard-form){
 		align-items:center;
 		select{
 			flex:1;
-			max-width:60px;
+			max-width:65px;
 		}
 		label{
 			flex:0;

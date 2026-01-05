@@ -520,6 +520,7 @@
 "DND4E.FormulaAttack": "Attack Formula",
 "DND4E.FormulaAttackBonus": "Attack Bonus Formula",
 "DND4E.FormulaAttackBonusTip": "Formula for the bonus added to attack rolls",
+"DND4E.FormulaAttackShort": "Atk",
 "DND4E.FormulaDamage": "Damage Formula",
 "DND4E.FormulaDamageBonus": "Damage Bonus Formula",
 "DND4E.FormulaDamageBonusPrimary": "Primary Damage Bonus Formula",
