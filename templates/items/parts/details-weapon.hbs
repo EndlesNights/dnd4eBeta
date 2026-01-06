@@ -47,7 +47,9 @@
   <select name="system.weaponBaseType">
     <option value=""{{#if (eq ../system.weaponBaseType '')}} selected{{/if}}>{{ localize 'DND4E.None' }}</option>
     <option value="custom"{{#if (eq ../system.weaponBaseType 'custom')}} selected{{/if}}>{{ localize 'DND4E.Custom' }}</option>
+    {{#if weaponBaseTypes}}
     {{selectOptions weaponBaseTypes selected=system.weaponBaseType localize=true}}
+    {{/if}}
   </select>
 </div>
 
