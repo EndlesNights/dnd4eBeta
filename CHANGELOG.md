@@ -1,7 +1,9 @@
 # Changelog
 
 ## Version 0.7.4.1 Hotfix
-- Fixes an issue where certain weapon types caused a catastrophic failure during item config. (SagaTympana)
+- Fixes a bug where certain weapon types caused a catastrophic failure during item config. (SagaTympana)
+- Improves token ring colouration behaviour. (SagaTympana)
+- Fixes incorrect "attack versus" display for roll dialogue with fixed-bonus attacks. (SagaTympana)
 
 ## Version 0.7.4
 - Another round of general styling updates, this time focused on system dialogues for rolls and character config. (Fox)
@@ -1337,6 +1339,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
