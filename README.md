@@ -3,7 +3,7 @@
 # DnD 4th Edition - v0.7
 * **Foundry VTT Compatibility**: v13
 * **Author**: EndlesNights#9000
-* **Contributors**: [draconas1](https://github.com/draconas1), [FoxLee](https://github.com/FoxLee), [SagaTympana](https://github.com/SagaTympana), [ahoward-cf](https://github.com/ahoward-cf), [Marcloure](https://github.com/Marcloure), [kyleady](https://github.com/kyleady), [TheGiddyLimit](https://github.com/TheGiddyLimit), [BadgerKing7](https://github.com/BadgerKing7), [mncimino1993](https://github.com/mncimino1993), [zarick1342](https://github.com/zarick1342), [wigmeister2000](https://github.com/wigmeister2000)
+* **Contributors**: [draconas1](https://github.com/draconas1), [FoxLee](https://github.com/FoxLee), [SagaTympana](https://github.com/SagaTympana), [roth-michael](https://github.com/roth-michael), [ahoward-cf](https://github.com/ahoward-cf), [Marcloure](https://github.com/Marcloure), [kyleady](https://github.com/kyleady), [TheGiddyLimit](https://github.com/TheGiddyLimit), [BadgerKing7](https://github.com/BadgerKing7), [mncimino1993](https://github.com/mncimino1993), [zarick1342](https://github.com/zarick1342), [wigmeister2000](https://github.com/wigmeister2000)
 
 ## **Language Support** 
 - Français, courtoisie de [Gilphe](https://github.com/Gilphe)
@@ -21,7 +21,7 @@ The contents of this project is under a number of licenses
 
 ## Installation
 * Open the Foundry application and click **"Install System"** in the **"Game Systems"** tab.
-* Paste the following link: https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json
+* Paste the following link: https://github.com/EndlesNights/dnd4eBeta/releases/latest/download/system.json
 * Click "Install"
 * When creating a new Game World, select **"DnD 4th Edition"** under **Game Systems**.
 
