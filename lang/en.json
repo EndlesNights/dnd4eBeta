@@ -58,8 +58,6 @@
 "DND4E.ActionMove": "Move Action",
 "DND4E.ActionMoveBrief": "Move",
 "DND4E.ActionMoveShort": "MOV",
-"DND4E.ActionMSAK": "Melee Spell Attack",
-"DND4E.ActionMWAK": "Melee Weapon Attack",
 "DND4E.ActionOpportunity": "Opportunity Action",
 "DND4E.ActionOpportunityBrief": "Opportunity",
 "DND4E.ActionOpportunityShort": "OP-A",
@@ -79,8 +77,6 @@
 "DND4E.ActionReaction": "Immediate Reaction",
 "DND4E.ActionReactionBrief": "Reaction",
 "DND4E.ActionReactionShort": "I-RE",
-"DND4E.ActionRSAK": "Ranged Spell Attack",
-"DND4E.ActionRWAK": "Ranged Weapon Attack",
 "DND4E.ActionSave": "Saving Throw",
 "DND4E.ActionShort": "Act.",
 "DND4E.ActionStandard": "Standard Action",
@@ -766,7 +762,7 @@
 "DND4E.NoSpellLevels": "This character has no spellcaster levels, but you may add spells manually.",
 "DND4E.NotAvailable": "Not Available",
 "DND4E.NotAvailableShort": "NA",
-"DND4E.Notes": "Other",
+"DND4E.Notes": "Notes",
 "DND4E.NotProficient": "Not Proficient",
 "DND4E.NotTrained": "Not Trained",
 "DND4E.NPCAutoMath": "Advanced Math Options",
@@ -1201,8 +1197,6 @@
 "DND4E.WeaponGroupUnarm": "Unarmed",
 "DND4E.WeaponGroupWhip": "Whip",
 "DND4E.WeaponImplement": "Implement",
-"DND4E.WeaponImplementA": "Arcane Implement",
-"DND4E.WeaponImplementD": "Divine Implement",
 "DND4E.WeaponImprov": "Improvised",
 "DND4E.WeaponImprovisedM": "Improvised Melee",
 "DND4E.WeaponImprovisedR": "Improvised Ranged",
@@ -1421,6 +1415,14 @@
 		"Poison": "Poison Formula",
 		"Volatile": "Volatile Formula",
 		"AlchOther": "Other Formula"
+	},
+	"Actions": {
+		"Free": "Free Actions",
+		"Minor": "Minor Actions",
+		"Move": "Move Actions",
+		"Other": "Other",
+		"Standard": "Standard Actions",
+		"Triggered": "Triggered Actions"
 	}
 },
 
