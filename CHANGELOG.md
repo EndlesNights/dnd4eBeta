@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.7.4.2 Hotfix
+- A tiny bugfix for sheet item lists, and an update to power group labels to match official. (Fox)
+
 ## Version 0.7.4.1 Hotfix
 - Fixes a bug where certain weapon types caused a catastrophic failure during item config. (SagaTympana)
 - Improves token ring colouration behaviour. (SagaTympana)
@@ -1339,6 +1342,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 

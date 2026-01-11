@@ -382,6 +382,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		for (let i of context.items) {
 			const item = this.actor.items.get(i._id);
+			i.keywords = item.keywords;
 			i.labels = item.labels;
 			i.chatData = await item.getChatData({secrets: this.actor.isOwner})
 			if (item.type === "power" && item.system.autoGenChatPowerCard) {

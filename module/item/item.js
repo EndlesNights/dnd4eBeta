@@ -455,6 +455,38 @@ export default class Item4e extends Item {
 		let uses = this.system.uses || {};
 		return !!chg.value || (!!uses.per && (this.preparedMaxUses > 0));
 	}
+	
+	/* --------------------------------------------- */
+	/**
+	 * Returns an object with official and custom keywords
+	 * @type {string}
+	 */
+	get keywords(){
+		//Not all items can have keywords		
+		try{
+			if(!this.system.hasOwnProperty('damageType') && !this.system.hasOwnProperty('effectType') && !this.system?.keywordsCustom ) return {'system':{},'custom':{},'string':''};
+			
+			const keysRef = {...CONFIG.DND4E.damageTypes,...CONFIG.DND4E.effectTypes,...CONFIG.DND4E.powerSource};
+			//This will need a revisit when we make keywords customisable, as duplicate property names can cause false negatives. For now, it's just bloody poison causing trouble again.
+			const autoKeys = {...this.system?.damageType,...this.system?.effectType};
+			if (this.system?.effectType?.poison || this.system?.damageType?.poison) autoKeys.poison = true;
+			
+			const systemKeywords = Object.keys(keysRef).filter(k => autoKeys[k]) || [];
+			if(this.system?.powersource) systemKeywords.push(this.system.powersource);
+			if(this.system?.secondPowersource) systemKeywords.push(this.system.secondPowersource);
+			const customString = this.system.keywordsCustom || '';
+			const customKeywords = customString? customString.split(';') : [];
+			
+			let keywordLabels = [];
+			if(systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(keysRef[e]));
+			keywordLabels = [...keywordLabels, ...customKeywords];
+			let keywordString = keywordLabels.join(', ');
+			
+			return {'system': systemKeywords,'custom': customKeywords,'string': keywordString};
+		}catch(e){
+			console.error('System or item error: Failed to gather keywords correctly.');return {'system':{},'custom':{},'string':''};		
+		}
+	}
 
 	/* -------------------------------------------- */
 	/*	Data Preparation							*/
@@ -868,7 +900,7 @@ export default class Item4e extends Item {
 		}
 
 		itemData.system.isOnCooldown = this.isOnCooldown();
-
+		
 	}
 
 	// /** @inheritdoc */
@@ -1165,7 +1197,7 @@ export default class Item4e extends Item {
 		// const itemData = this.system;
 	
 		const consume = itemData.consume || {};
-		console.debug(consume);
+		//console.debug(consume);
 		if ( !consume.type ) return true;
 		const actor = this.actor;
 		const typeLabel = CONFIG.DND4E.abilityConsumptionTypes[consume.type].label;
@@ -3026,32 +3058,5 @@ export default class Item4e extends Item {
 		return super.createDialog(data, {parent, pack, types, ...options});
 	}
 	
-	/* --------------------------------------------- */
-	/**
-	 * Returns an object with official and custom keywords
-	 * @type {string}
-	 */
-	get keywords(){
-		//Not all items can have keywords
-		if(!this.system?.damageType && !this.system?.effectType && !this.system?.keywordsCustom ) return {'system':{},'custom':{},'string':''};
-		
-		const keysRef = {...CONFIG.DND4E.damageTypes,...CONFIG.DND4E.effectTypes,...CONFIG.DND4E.powerSource};
-		//This will need a revisit when we make keywords customisable, as duplicate property names can cause false negatives. For now, it's just bloody poison causing trouble again.
-		const autoKeys = {...this.system?.damageType,...this.system?.effectType};
-		if (this.system?.effectType.poison || this.system?.damageType.poison) autoKeys.poison = true;
-		
-		const systemKeywords = Object.keys(keysRef).filter(k => autoKeys[k]) || [];
-		if(this.system?.powersource) systemKeywords.push(this.system.powersource);
-		if(this.system?.secondPowersource) systemKeywords.push(this.system.secondPowersource);
-		const customString = this.system.keywordsCustom || '';
-		const customKeywords = customString? customString.split(';') : [];
-		
-		let keywordLabels = [];
-		if(systemKeywords) systemKeywords.forEach((e) => keywordLabels.push(keysRef[e]));
-		keywordLabels = [...keywordLabels, ...customKeywords];
-		let keywordString = keywordLabels.join(', ');
-		
-		return {'system': systemKeywords,'custom': customKeywords,'string': keywordString};
-	}
 	
 }

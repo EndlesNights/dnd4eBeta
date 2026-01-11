@@ -1176,11 +1176,11 @@ DND4E.powerGroupings = {
 		other: {label: "DND4E.Other" }
 	},
 	actionMod: {
-		standard: {label: "DND4E.ActionStandard" },
-		move: {label: "DND4E.ActionMove" },
-		minor: {label: "DND4E.ActionMinor" },
-		triggered: {label: "DND4E.ActionTriggered" },
-		other: {label: "DND4E.Other" }
+		standard: {label: "DND4E.Group.Actions.Standard" },
+		move: {label: "DND4E.Group.Actions.Move" },
+		minor: {label: "DND4E.Group.Actions.Minor" },
+		triggered: {label: "DND4E.Group.Actions.Triggered" },
+		other: {label: "DND4E.Group.Actions.Other" }
 	},
 	type: {
 		inherent: {label: "DND4E.Inherent"},
