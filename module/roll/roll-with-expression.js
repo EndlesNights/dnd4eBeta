@@ -107,9 +107,14 @@ export class RollWithOriginalExpression extends Roll {
             })
         }
         let expression = tempExpression.join(" + ")
-        const divisor = options.divisors[options.hitType];
+        const divisor = options.divisors[options.hitType]
         if (typeof divisor === "number" && divisor != 1) {
-            expression = `floor((${expression}) / ${options.divisors[options.hitType]})`
+            options.originalExpression = expression
+			expression = `floor((${expression}) / ${options.divisors[options.hitType]})`
+			/*parts.unshift('floor((')
+			expressionPartsReplacements.unshift({target : '', value: ''})
+			parts.push(') / ${options.divisors[options.hitType]})')
+			expressionPartsReplacements.push({target : '', value: ''})*/
         }
         options.parts = parts
         options.expressionArr = this._createExpression(parts, expressionPartsReplacements)
@@ -170,7 +175,7 @@ export class RollWithOriginalExpression extends Roll {
 
    getChatData(isPrivate = false) {
        if (!isPrivate && game.settings.get("dnd4e", "showRollExpression")) {
-           return this.surroundFormulaWithExpressionSpanTags(this._formula, this.options.expressionArr)
+           return this.surroundFormulaWithExpressionSpanTags(this._formula, this.options.expressionArr, this.options.originalExpression)
        }
        else {
            return {
@@ -196,18 +201,19 @@ export class RollWithOriginalExpression extends Roll {
      * @param expressionParts the array of individual parts of the expression that created the formula
      * @return {{expression: string, formula: string}}
      */
-    surroundFormulaWithExpressionSpanTags(formula, expressionParts) {
+    surroundFormulaWithExpressionSpanTags(formula, expressionParts, originalFormula) {
         try {
             const tag = foundry.utils.randomID(16)// + "." // a random id prefix for the spans so we can refer to them by id in a chat log with many rolls
 
+			let relevantFormula = originalFormula ? originalFormula : formula //The formula substring we actually care about
             let newFormula = "" //the formula to return
             let newExpression = "" // the expression to return
 
             let openBracket = 0; //current number of unclosed ( we have encountered
             let expressionIdx = 0; // the index of which part of the expression array is being processed
             let workingFormula = "" // the piece of the formula string we are actively processing
-            for (let i = 0; i < formula.length; i++) {
-                const char = formula.charAt(i)
+            for (let i = 0; i < relevantFormula.length; i++) {
+                const char = relevantFormula.charAt(i)
                 if (char === '(') {
                     if (openBracket === 0) {
                         // this is a new outer-most bracket, and therefore corresponds to the active part of the expression array
@@ -232,7 +238,7 @@ export class RollWithOriginalExpression extends Roll {
                         const formData = this.replaceInnerVariables(workingFormula, expressionParts[expressionIdx], spanId)
 
                         // check to see if this was a synthetic bracket or a bracket around a damage type term that functioned like a synthetic bracket for us
-                        formData.formula = this.includeOuterBracketsIfFormulaIsFlavoured(formula, i, formData.formula)
+                        formData.formula = this.includeOuterBracketsIfFormulaIsFlavoured(relevantFormula, i, formData.formula)
 
                         // if the helper has done a load of work to the expression and formula, just use that
                         if (formData.changed) {
@@ -262,8 +268,9 @@ export class RollWithOriginalExpression extends Roll {
                 workingFormula += char // its a non bracket, append it to the current working substring
             }
 
+			let returnFormula = originalFormula ? formula.replace(relevantFormula, newFormula + workingFormula) : newFormula + workingFormula
             return {
-                formula: newFormula + workingFormula, // return the new formula
+                formula: returnFormula, // return the new formula
                 expression: newExpression.substring(0, newExpression.length - 3) // trim a trailing " + " off the end
             }
         }
