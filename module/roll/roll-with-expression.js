@@ -112,10 +112,6 @@ export class RollWithOriginalExpression extends Roll {
             options.originalExpression = expression
 			const divisorReasons = divisor.reason.join(",")
 			expression = `floor((${expression}) / ${divisor.value}[${divisorReasons}])`
-			/*parts.unshift('floor((')
-			expressionPartsReplacements.unshift({target : '', value: ''})
-			parts.push(') / ${options.divisors[options.hitType]})')
-			expressionPartsReplacements.push({target : '', value: ''})*/
         }
         options.parts = parts
         options.expressionArr = this._createExpression(parts, expressionPartsReplacements)
