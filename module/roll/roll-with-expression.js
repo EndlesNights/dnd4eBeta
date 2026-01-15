@@ -108,9 +108,10 @@ export class RollWithOriginalExpression extends Roll {
         }
         let expression = tempExpression.join(" + ")
         const divisor = options.divisors[options.hitType]
-        if (typeof divisor === "number" && divisor != 1) {
+        if (typeof divisor.value === "number" && divisor.value != 1) {
             options.originalExpression = expression
-			expression = `floor((${expression}) / ${options.divisors[options.hitType]})`
+			const divisorReasons = divisor.reason.join(",")
+			expression = `floor((${expression}) / ${divisor.value}[${divisorReasons}])`
 			/*parts.unshift('floor((')
 			expressionPartsReplacements.unshift({target : '', value: ''})
 			parts.push(') / ${options.divisors[options.hitType]})')

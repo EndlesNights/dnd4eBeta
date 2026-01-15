@@ -1915,7 +1915,7 @@ export default class Item4e extends Item {
 			}
 
 		}
-		const options = { formulaInnerData: {}, divisors: {normal: 1, miss: 1, crit: 1} }
+		const options = { formulaInnerData: {}, divisors: {normal: {value: 1, reason: []}, miss: {value: 1, reason: []}, crit: {value: 1, reason: []}} }
 		const secondaryPartsHelper = (formula, damageType) => {
 			// store the values that were used to sub in any formulas
 			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.system, weaponUse?.system, 1, true))
@@ -2117,9 +2117,12 @@ export default class Item4e extends Item {
 		// Call the roll helper utility
 		
 		if(itemData.attack.isAttack && actorData.statuses.has('weakened')){
-			options.divisors.normal *= 2;
-			options.divisors.miss *= 2;
-			options.divisors.crit *= 2;
+			options.divisors.normal.value *= 2;
+			options.divisors.normal.reason.push(game.i18n.localize("EFFECT.statusWeakened"));
+			options.divisors.crit.value *= 2;
+			options.divisors.crit.reason.push(game.i18n.localize("EFFECT.statusWeakened"));
+			options.divisors.miss.value *= 2;
+			options.divisors.miss.reason.push(game.i18n.localize("EFFECT.statusWeakened"));
 		}
 
 		if(missDamageFormula.includes('@damageFormula')){
@@ -2128,7 +2131,8 @@ export default class Item4e extends Item {
 
 		if(missDamageFormula.includes('@halfDamageFormula')){
 			missDamageFormula = missDamageFormula.replace('@halfDamageFormula', Helper.bracketed(damageFormula));
-			options.divisors.miss *= 2;
+			options.divisors.miss.value *= 2;
+			options.divisors.miss.reason.push(game.i18n.localize("DND4E.Miss"))
 		}
 
 		const primaryDamageStr = primaryDamage ? `[${primaryDamage}]` : ""
