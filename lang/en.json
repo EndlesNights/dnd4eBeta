@@ -717,6 +717,8 @@
 "DND4E.Milestone": "Milestone",
 "DND4E.MilestonePlural": "Milestones",
 "DND4E.Miss": "Miss",
+"DND4E.MissHalfDamage": "Half Damage on Miss?",
+"DND4E.MissHalfDamageTooltip": "If enabled, a miss will deal half the total damage, after all other modifiers are applied",
 "DND4E.Modifier": "Modifier",
 "DND4E.ModifierPlural": "Modifiers",
 "DND4E.ModifierAbilities": "Global Ability Check Modifier",

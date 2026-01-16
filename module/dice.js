@@ -545,7 +545,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 			label: game.i18n.localize(allowCritical ? "DND4E.Normal" : "DND4E.Roll"),
 			type: "submit"
 		});
-		if (data.item.miss.formula) {
+		if (data.item.miss.halfDamage || data.item.miss.formula) {
 			buttons.push({
 				action: "miss",
 				// icon: "fa-solid fa-dice-d20",

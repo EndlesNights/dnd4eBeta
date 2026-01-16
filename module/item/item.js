@@ -2116,6 +2116,12 @@ export default class Item4e extends Item {
 		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 		// Call the roll helper utility
 		
+		if(itemData.miss.halfDamage){
+			options.divisors.miss.value *= 2;
+			options.divisors.miss.reason.push(game.i18n.localize("DND4E.Miss"))
+			missDamageFormula = damageFormula;
+		}
+
 		if(itemData.attack.isAttack && actorData.statuses.has('weakened')){
 			options.divisors.normal.value *= 2;
 			options.divisors.normal.reason.push(game.i18n.localize("EFFECT.statusWeakened"));
@@ -2130,9 +2136,7 @@ export default class Item4e extends Item {
 		}
 
 		if(missDamageFormula.includes('@halfDamageFormula')){
-			missDamageFormula = missDamageFormula.replace('@halfDamageFormula', Helper.bracketed(damageFormula));
-			options.divisors.miss.value *= 2;
-			options.divisors.miss.reason.push(game.i18n.localize("DND4E.Miss"))
+			missDamageFormula = missDamageFormula.replace('@halfDamageFormula', Helper.bracketed(`${damageFormula}/2`));
 		}
 
 		const primaryDamageStr = primaryDamage ? `[${primaryDamage}]` : ""

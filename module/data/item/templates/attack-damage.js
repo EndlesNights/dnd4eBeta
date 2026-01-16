@@ -40,6 +40,7 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
       attack: new SchemaField(this.attack),
       hit: new SchemaField(this.damage),
       miss: new SchemaField({
+        halfDamage: new BooleanField({initial: false}),
         detail: new StringField({initial: ""}),
         formula: new StringField({initial: ""})
       }),
