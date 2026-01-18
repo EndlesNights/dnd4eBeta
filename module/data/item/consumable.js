@@ -33,6 +33,8 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
         mode: new StringField({initial: "none"}),
         includeSelf: new BooleanField({initial: true})
       }),
+      rangePower: new StringField({initial: ""}),
+      area: new StringField({initial: "0"}),
       attack: new SchemaField({
         ...AttackAndDamageTemplate.attack,
         isAttack: new BooleanField({initial: false}),
