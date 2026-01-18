@@ -1173,7 +1173,7 @@ DND4E.powerGroupings = {
 		reaction: {label: "DND4E.ActionReaction" },
 		interrupt: {label: "DND4E.ActionInterrupt" },
 		opportunity: {label: "DND4E.ActionOpportunity" },
-		other: {label: "DND4E.Other" }
+		none: {label: "DND4E.Other" }
 	},
 	actionMod: {
 		standard: {label: "DND4E.Group.Actions.Standard" },
