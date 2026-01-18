@@ -1915,7 +1915,7 @@ export default class Item4e extends Item {
 			}
 
 		}
-		const options = { formulaInnerData: {} }
+		const options = { formulaInnerData: {}, divisors: {normal: {value: 1, reason: []}, miss: {value: 1, reason: []}, crit: {value: 1, reason: []}} }
 		const secondaryPartsHelper = (formula, damageType) => {
 			// store the values that were used to sub in any formulas
 			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.system, weaponUse?.system, 1, true))
@@ -2043,8 +2043,9 @@ export default class Item4e extends Item {
 		// Originally these were a separate part, but then they were not part of the primary damage type
 		// which they should be.  So now appending them to the main expression.
 		const effectDamageParts = []
+		const extraDamageParts = []
 		if(!this.system?.hit?.damageBonusNull){
-			await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse, "damage")
+			await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse, "damage", extraDamageParts)
 			effectDamageParts.forEach(part => {
 				const value = rollData[part.substring(1)]
 				damageFormula += `+ ${value}`
@@ -2058,7 +2059,7 @@ export default class Item4e extends Item {
 		}
 
 		// Ammunition Damage from power
-		if ( this._ammo ) {
+		if(this._ammo) {
 			parts.push("@ammo");
 			partsCrit.push("@ammo");
 
@@ -2088,16 +2089,46 @@ export default class Item4e extends Item {
 			title += ` with ${weaponUse.name}`
 			flavor += ` with ${weaponUse.name}`
 		}
+
+		// Extra damage
+		if(extraDamageParts.length) {
+			for(const part of extraDamageParts) {
+				parts.push(part);
+				partsExpressionReplacement.unshift({target : part, value: '@extraDamage'});
+
+				if (critDamageFormula) {
+					const maxRoll = await new Roll(part).evaluate({maximize: true});
+					let critPart = `(${maxRoll.total})`;
+					if (maxRoll.terms[0].flavor) critPart += `[${maxRoll.terms[0].flavor}]`;
+					partsCrit.push(critPart);
+					partsCritExpressionReplacement.unshift({target : critPart, value: '@extraDamage'});
+				}
+				if (missDamageFormula) {
+					partsMiss.push(part);
+					partsMissExpressionReplacement.unshift({target : part, value: '@extraDamage'});
+				}
+			}
+		}
+
 		//Add powers text to message.
 		// if(itemData.hit?.detail) flavor += '<br>Hit: ' + itemData.hit.detail
 		// if(itemData.miss?.detail) flavor += '<br>Miss: ' + itemData.miss.detail
 		// if(itemData.effect?.detail) flavor += '<br>Effect: ' + itemData.effect.detail;
 		// Call the roll helper utility
 		
+		if(itemData.miss.halfDamage){
+			options.divisors.miss.value *= 2;
+			options.divisors.miss.reason.push(game.i18n.localize("DND4E.Miss"))
+			missDamageFormula = damageFormula;
+		}
+
 		if(itemData.attack.isAttack && actorData.statuses.has('weakened')){
-			damageFormula = `floor((${damageFormula})/2)`;
-			missDamageFormula = `floor((${missDamageFormula})/2)`
-			critDamageFormula = `floor((${critDamageFormula})/2)`
+			options.divisors.normal.value *= 2;
+			options.divisors.normal.reason.push(game.i18n.localize("EFFECT.statusWeakened"));
+			options.divisors.crit.value *= 2;
+			options.divisors.crit.reason.push(game.i18n.localize("EFFECT.statusWeakened"));
+			options.divisors.miss.value *= 2;
+			options.divisors.miss.reason.push(game.i18n.localize("EFFECT.statusWeakened"));
 		}
 
 		if(missDamageFormula.includes('@damageFormula')){

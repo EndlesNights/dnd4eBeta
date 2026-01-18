@@ -285,10 +285,11 @@ export const clickRollMessageDamageButtons = function(event) {
 	const message = game.messages.get(messageId);
 	const roll = message.rolls[0];
 	const action = button.dataset.action;
+	const divisor = roll.options.divisors[roll.options.hitType].value;
 
 	// Apply
 	if (action === "Damage") {
-		applyChatCardDamageInner(roll, 1, false)
+		applyChatCardDamageInner(roll, 1 / divisor, false)
 	}
 	else if (action === "HalfDamage") {
 		applyChatCardDamageInner(roll, 0.5, false)

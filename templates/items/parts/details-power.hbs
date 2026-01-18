@@ -340,8 +340,13 @@
 </fieldset>
 
 <div class="form-group vertical">
+  <label class="checkbox">
+    <input type="checkbox" name="system.miss.halfDamage" data-dtype="Boolean" {{checked system.miss.halfDamage}} data-tooltip="{{ localize 'DND4E.MissHalfDamageTooltip'}}">{{ localize "DND4E.MissHalfDamage" }}
+  </label>
+  {{#unless system.miss.halfDamage}}
   <label>{{ localize 'DND4E.Miss' }} {{ localize 'DND4E.FormulaDamage' }}</label>
   <input type="text" name="system.miss.formula" value="{{system.miss.formula}}" placeholder="@halfDamageFormula" />
+  {{/unless}}
 </div>
 
 {{/if}}

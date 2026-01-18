@@ -545,7 +545,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 			label: game.i18n.localize(allowCritical ? "DND4E.Normal" : "DND4E.Roll"),
 			type: "submit"
 		});
-		if (data.item.miss.formula) {
+		if (data.item.miss.halfDamage || data.item.miss.formula) {
 			buttons.push({
 				action: "miss",
 				// icon: "fa-solid fa-dice-d20",
@@ -584,15 +584,18 @@ async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, pa
 	}
 	else if(hitType === 'normal'){
 		options.hitTypeDamage = true;
+		options.hitType = hitType;
 		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
 	}
 	else if (hitType === 'crit') {
 		options.hitTypeDamage = true;
+		options.hitType = hitType;
 		roll = RollWithOriginalExpression.createRoll(partsCrit, partsCritExpressionReplacement, data, options)
 		flavor = `${flavor} (${game.i18n.localize("DND4E.Critical")})`;
 	}
 	else if (hitType === 'miss') {
 		options.hitTypeDamage = true;
+		options.hitType = hitType;
 		roll = RollWithOriginalExpression.createRoll(partsMiss, partsMissExpressionReplacement, data, options);
 		flavor = `${flavor} (${game.i18n.localize("DND4E.Miss")})`;
 	}

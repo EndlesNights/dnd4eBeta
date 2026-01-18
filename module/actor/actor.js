@@ -2436,6 +2436,7 @@ export class Actor4e extends Actor {
 			// console.log(`Lowest Res: ${lowestRes}`)
 		}
 
+		if(this.statuses.has("insubstantial")) totalDamage = Math.floor(totalDamage / 2);
 		//console.log(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`)
 		return totalDamage;
 	}
@@ -2491,6 +2492,7 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+		if(this.statuses.has("insubstantial")) totalDamage = Math.floor(totalDamage / 2);
 		console.log(damageDealt);
 		console.log(`Total Damage: ${totalDamage}`)
 		return totalDamage;

@@ -106,7 +106,7 @@ export class RollWithOriginalExpression extends Roll {
                 return `(${part})`
             })
         }
-        const expression = tempExpression.join(" + ")
+        let expression = tempExpression.join(" + ")
         options.parts = parts
         options.expressionArr = this._createExpression(parts, expressionPartsReplacements)
         options.expression = options.expressionArr.join(" + ")
@@ -147,6 +147,12 @@ export class RollWithOriginalExpression extends Roll {
         if ( !this._evaluated ) await this.evaluate();
 
         let formulaData = this.getChatData(isPrivate);
+        const divisor = this.options.divisors[this.options.hitType].value
+        let divisorString = "";
+        if (divisor != 1) {
+            const divisorReasons = this.options.divisors[this.options.hitType].reason.join(", ");
+            divisorString = `/ ${divisor}[${divisorReasons}]`;
+        }
 
         // Define chat data
         const chatData = {
@@ -159,6 +165,7 @@ export class RollWithOriginalExpression extends Roll {
             hitTypeDamage: this.options?.hitTypeDamage,
             hitTypeHealing: this.options?.hitTypeHealing,
             attackRoll: this.options?.multirollData,
+            divisorString: divisorString
         };
         // Render the roll display template
         return foundry.applications.handlebars.renderTemplate(chatOptions.template, chatData);
@@ -257,7 +264,6 @@ export class RollWithOriginalExpression extends Roll {
                 }
                 workingFormula += char // its a non bracket, append it to the current working substring
             }
-
             return {
                 formula: newFormula + workingFormula, // return the new formula
                 expression: newExpression.substring(0, newExpression.length - 3) // trim a trailing " + " off the end
