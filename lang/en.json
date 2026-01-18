@@ -1484,7 +1484,8 @@
 	"Rituals": "Rituals",
 	"Skills": "Skills",
 	"SecondaryDamageForm": "Secondary Damage Instances",
-	"SecondaryDamageTip": "Additional instances of damage to include on a normal damage roll"
+	"SecondaryDamageTip": "Additional instances of damage to include on a normal damage roll",
+	"MissFormulaTip": "Custom formula for powers with miss damage other than the standard \"half damage\". Leave blank for any other power."
 },
 
 "DND4E.Tier": {
