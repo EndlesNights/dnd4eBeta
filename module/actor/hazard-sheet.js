@@ -32,7 +32,7 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 	}
 
 	static TABS = {
-		primary: {
+		sheet: {
 			tabs: [
 				{id: "description", label: "DND4E.Sheet.Description"},
 				{id: "powers", label: "DND4E.Sheet.Powers"},

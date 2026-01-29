@@ -41,7 +41,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 	};
 
 	static TABS = {
-		primary: {
+		sheet: {
 			tabs: [
 				{id: "biography", label: "DND4E.Sheet.Biography"},
 				{id: "skills", label: "DND4E.Sheet.Skills"},

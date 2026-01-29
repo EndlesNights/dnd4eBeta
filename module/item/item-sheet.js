@@ -100,7 +100,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	}
 
 	static TABS = {
-		primary: {
+		sheet: {
 			tabs: [
 				{
 					id: "content",
@@ -143,7 +143,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	_configureRenderParts(options) {
 		const parts = super._configureRenderParts(options);
 		for (const key of Object.keys(parts)) {
-			const tab = ItemSheet4e.TABS.primary.tabs.find(t => t.id === key);
+			const tab = ItemSheet4e.TABS.sheet.tabs.find(t => t.id === key);
 			if (tab?.condition && !tab.condition(this.document)) delete parts[key];
 		}
 		return parts;
@@ -201,9 +201,9 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	async _onFirstRender(context, options) {
 		await super._onFirstRender(context, options);
-		if (!this.tabGroups.primary) {
-			if (this.item.type === "backpack") this.changeTab("content", "primary");
-			else this.changeTab("description", "primary");
+		if (!this.tabGroups.sheet) {
+			if (this.item.type === "backpack") this.changeTab("content", "sheet");
+			else this.changeTab("description", "sheet");
 		}
 	}
 
