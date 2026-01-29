@@ -50,7 +50,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	};
 	
 	static TABS = {
-		primary: {
+		sheet: {
 			tabs: [
 				{id: "description", label: "DND4E.Sheet.Description" },
 				{id: "details", label: "DND4E.Sheet.Details" },

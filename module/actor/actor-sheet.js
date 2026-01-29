@@ -99,7 +99,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	static TABS = {
-		primary: {
+		sheet: {
 			tabs: [
 				{id: "biography", label: "DND4E.Sheet.Biography"},
 				{id: "details", label: "DND4E.Sheet.Details"},
