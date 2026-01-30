@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.7.5
+- **NEW:** The much-requested ability to add bonus damage with a die value instead of a fixed value! You can also add a damage type. (SagaTympana)
+  - **Known Issue:** Currently, the bonus damage roll will not be combined with the base damage even if they share a type, so it may double-dip on resistances/vulnerabilities. We aim to fix this soon!
+- Some under-the-hood sheet tweaks to improve compatibility with system-agnostic modules; in particular, this should help issues folks have reported with the Aura Effects module. (SagaTympana)
+- Updated effects documentation for new features. (Fox)
+- Fixes a bug where area and range values for consumables would delete themselves on update—thanks Winter! (Fox)
+- Fixes a bug where trying to create a new power from the character sheet would brick the sheet under specific grouping/sorting conditions—thanks Winter! (Fox)
+
 ## Version 0.7.4.2 Hotfix
 - A tiny bugfix for sheet item lists, and an update to power group labels to match official. (Fox)
 
@@ -1342,6 +1350,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
