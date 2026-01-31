@@ -285,7 +285,7 @@ export const clickRollMessageDamageButtons = function(event) {
 	const message = game.messages.get(messageId);
 	const roll = message.rolls[0];
 	const action = button.dataset.action;
-	const divisor = roll.options.divisors[roll.options.hitType].value;
+	const divisor = ("divisors" in roll.options) ? roll.options.divisors[roll.options.hitType].value : 1;
 
 	// Apply
 	if (action === "Damage") {
