@@ -147,7 +147,7 @@ export class RollWithOriginalExpression extends Roll {
         if ( !this._evaluated ) await this.evaluate();
 
         let formulaData = this.getChatData(isPrivate);
-        const divisor = this.options.divisors[this.options.hitType].value
+        const divisor = ("divisors" in this.options) ? this.options.divisors[this.options.hitType].value : 1;
         let divisorString = "";
         if (divisor != 1) {
             const divisorReasons = this.options.divisors[this.options.hitType].reason.join(", ");
