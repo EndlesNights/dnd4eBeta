@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.7.5.1 Hotfix
+- Fixes a bug that prevented attack and heal rolls from displaying in chat, and prevented healing from being applied properly. (Aniather) 
+
 ## Version 0.7.5
 - **NEW:** The much-requested ability to add bonus damage with a die value instead of a fixed value! You can also add a damage type. (SagaTympana)
   - **Known Issue:** Currently, the bonus damage roll will not be combined with the base damage even if they share a type, so it may double-dip on resistances/vulnerabilities. We aim to fix this soon!
@@ -1350,6 +1353,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
