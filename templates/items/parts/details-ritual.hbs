@@ -1,66 +1,79 @@
 <div class="form-group select">	
-  <label>{{ localize "DND4E.Category" }}</label>
-  <select name="system.category">
-    {{selectOptions config.ritualTypes selected=system.category labelAttr="label"}}	
-  </select>
+	<label>{{ localize 'DND4E.Category' }}</label>
+	<select name="system.category">
+		{{selectOptions config.ritualTypes selected=system.category labelAttr="label"}}	
+	</select>
 </div>
 
 <div class="form-group select">
-  <label>Level</label>
-  <input type="text" name="system.level" value="{{system.level}}"/>
+	<label>Level</label>
+	<input type="text" name="system.level" value="{{system.level}}"/>
 </div>
 <div class="form-group select">
-  <label>Market Price</label>
-  <input type="text" name="system.market" value="{{system.market}}"/>
+	<label>Market Price</label>
+	<input type="text" name="system.market" value="{{system.market}}"/>
 </div>
 
 
 {{!-- Cast Time --}}
 <div class="form-group input-select">
-  <label>Cast Time</label>
-  <div class="form-fields">
-    <input type="text" name="system.castTime.value" value="{{system.castTime.value}}" data-dtype="Number" placeholder="-"/>
-    <select name="system.castTime.units">
-      <option value=""{{#if (eq system.castTime.units "")}}selected{{/if}}></option>
-      {{selectOptions config.timePeriods selected=system.castTime.units localize=true}}
-    </select>
-  </div>
+	<label>Cast Time</label>
+	<div class="form-fields">
+		<input type="text" name="system.castTime.value" value="{{system.castTime.value}}" data-dtype="Number" placeholder="-" />
+		<select name="system.castTime.units">
+			<option value=""{{#if (eq system.castTime.units "")}}selected{{/if}}></option>
+			{{selectOptions config.timePeriods selected=system.castTime.units localize=true}}
+		</select>
+	</div>
 </div>
 
 {{!-- Effect Duration --}}
 <div class="form-group input-select">
-  <label>{{ localize "DND4E.Duration" }}</label>
-  <div class="form-fields">
-    <input type="text" name="system.duration.value" value="{{system.duration.value}}" data-dtype="Number" placeholder="-"/>
-    <select name="system.duration.units">
-      <option value=""{{#if (eq system.castTime.value "")}}selected{{/if}}></option>
-      {{selectOptions config.timePeriods selected=system.duration.units localize=true}}
-    </select>
-  </div>
+	<label>{{ localize "DND4E.Duration" }}</label>
+	<div class="form-fields">
+		<input type="text" name="system.duration.value" value="{{system.duration.value}}" data-dtype="Number" placeholder="-"/>
+		<select name="system.duration.units">
+			<option value=""{{#if (eq system.castTime.value "")}}selected{{/if}}></option>
+			{{selectOptions config.timePeriods selected=system.duration.units localize=true}}
+		</select>
+	</div>
 </div>
 
 {{!-- Ability Check --}}
 <div class="form-group">
-  <label>{{ localize "DND4E.DefaultAbilitySkillCheck" }}</label>
-  <select name="system.attribute">
-    {{selectOptions attributeOptions selected=system.attribute valueAttr="value" labelAttr="label"}}
-  </select>
+	<label>{{ localize 'DND4E.DefaultAbilitySkillCheck' }}</label>
+	<select name="system.attribute">
+		{{selectOptions attributeOptions selected=system.attribute valueAttr="value" labelAttr="label"}}
+	</select>
 </div>
 
 <div class="form-group">
-  <label>{{ localize "DND4E.RollFormula" }}</label>
-  <input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize "DND4E.RollPlaceholderRitual"}}"/>
+	<label>{{ localize "DND4E.RollFormula" }}</label>
+	<input type="text" name="system.formula" value="{{system.formula}}" placeholder="{{ localize 'DND4E.RollPlaceholderRitual'}}" />
 </div>
 
 <div class="form-group uses-per">
-  <label>{{ localize "DND4E.ConsumeTitle" }}</label>
-  <div class="form-fields consumption">
-    <select class="consume-type" name="system.consume.type">
-      {{selectOptions config.abilityConsumptionTypes selected=system.consume.type labelAttr="label"}}
-    </select>
-    <select class="consume-target" name="system.consume.target">
-      {{selectOptions abilityConsumptionTargets selected=system.consume.target}}
-    </select>
-    <input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number"/>
-  </div>
-</div>	
+	<label>{{ localize 'DND4E.ConsumeTitle' }}</label>
+	<div class="form-fields consumption">
+		<select class="consume-type" name="system.consume.type">
+			{{selectOptions config.abilityConsumptionTypes selected=system.consume.type labelAttr="label"}}
+		</select>
+		<select class="consume-target" name="system.consume.target">
+			{{selectOptions abilityConsumptionTargets selected=system.consume.target}}
+		</select>
+		<input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number" />
+	</div>
+</div>
+
+<div class="form-group vertical">
+
+	<div class="form-group">
+		<label>{{ localize 'DND4EUI.ChatFlavor' }}</label>
+		<label class="checkbox right">
+			<span class="label">{{ localize "DND4EUI.PowerCardAuto" }} <i data-tooltip="{{localize 'DND4EUI.AutoCardTip'}}" class="fa-solid fa-circle-question"></i></span>
+			<input type="checkbox" name="system.autoCard" data-dtype="Boolean" {{checked system.autoCard}}/>
+		</label>
+	</div>
+	
+	<textarea type="text" name="system.description.chat" placeholder="{{ localize 'DND4EUI.ChatFlavor' }}" />{{system.description.chat}}</textarea>
+</div>

@@ -3399,6 +3399,9 @@ input[type="text"].dice-count{
 	&:is(.consumable-card,.loot-card,.equipment-card,.weapon-card,.backpack-card,.tool-card) .card-header{
 		background:var(--background-item);
 	}
+	&.collapsed>:not(header.card-header){
+		display:none;
+	}
 }
 
 .dnd4e .card-content{
