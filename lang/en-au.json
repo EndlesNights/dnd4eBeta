@@ -1482,10 +1482,7 @@
 	"Inventory": "Inventory",
 	"Powers": "Powers",
 	"Rituals": "Rituals",
-	"Skills": "Skills",
-	"SecondaryDamageForm": "Secondary Damage Instances",
-	"SecondaryDamageTip": "Additional instances of damage to include on a normal damage roll",
-	"MissFormulaTip": "Custom formula for powers with miss damage other than the standard \"half damage\". Leave blank for any other power."
+	"Skills": "Skills"
 },
 
 "DND4E.Tier": {
@@ -1676,6 +1673,7 @@
 	"LoadLimits": "Load Limits",
 	"LoadLimitsTip": "Configure how much this character can lift or drag without penalty.",
 	"MissDetailsText": "Miss Text",
+	"MissFormulaTip": "Custom formula for powers with miss damage other than the standard \"half damage\". Leave blank for any other power.",
 	"Mods": "Mods",
 	"No": "No",
 	"PowerCardAuto": "Automatic Chat Card",
@@ -1685,10 +1683,10 @@
 	"RollVariants": "Variant Roll Modes",
 	"RollVariantsTip": "Adds extra context menu options to roll this attack in a special way. When rolled this way, the attack will gain the specified property and activate any associated bonuses/penalties.",
 	"SearchFor": "Search for {term}",
-	"SecondaryCritForm": "Secondary Critical Damage Instances",
-	"SecondaryCritTip": "Additional instances of damage to include on a critical hit",
-	"SecondaryDamageForm": "Secondary Damage Instances",
-	"SecondaryDamageTip": "Additional instances of damage to include on a normal damage roll",
+	"SecondaryCritForm": "Secondary Crit Damage Rolls",
+	"SecondaryCritTip": "Extra damage added here will be included when rolling critical damage",
+	"SecondaryDamageForm": "Secondary Damage Rolls",
+	"SecondaryDamageTip": "Extra damage added here will be included when rolling normal damage",
 	"ShowImage": "Show image",
 	"SortBy": "Sort By",
 	"SpecialFields": "Special Field(s)",
