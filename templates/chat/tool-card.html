@@ -8,24 +8,22 @@
 		  </div>
     </header>
 
-    <div class="card-content">
-	 
-		<div class="item-summary">{{{system.description.value}}}</div>
+    <div class="card-content">	 
+		<div class="item-details">{{{system.description.value}}}</div>
 		
 		<ul class="properties tags">
         {{#each system.properties}}
 			{{{this}}}
         {{/each}}
-		</ul>
-		
+		</ul>		
+	</div>
+	
+    <footer class="card-footer">		
 		{{#if isRoll}}
 		<div class="card-buttons">
 		  <button data-action="toolCheck" data-ability="{{system.ability.value}}">{{ localize "DND4E.Use" }} {{item.name}}</button>
 		</div>
 		{{/if}}
-		
-	</div>
-	
-    <footer class="card-footer">
     </footer>
+	
 </div>

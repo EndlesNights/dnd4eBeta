@@ -1,5 +1,5 @@
 <!-- note here actor == the actor instance (thus must us .id), item == item.data instance (thus should use ._id) -->
-<div class="dnd4e chat-card item-card ritual {{actor.type}}{{#if item.system.autoGenChatPowerCard}} autogen{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
+<div class="dnd4e chat-card item-card ritual {{actor.type}}{{#if item.system.autoCard}} autogen{{/if}}" data-actor-id="{{actor.id}}" data-item-id="{{item._id}}" {{#if tokenId}}data-token-id="{{tokenId}}"{{/if}}>
 
     <header class="card-header flexrow ability-usage--">
         <img src="{{item.img}}" data-tooltip="{{item.name}}" width="36" height="36"/>
@@ -8,16 +8,36 @@
 			</div>
     </header>
 
-    <div class="card-content">
-	 
-		<div class="item-summary">{{{system.description.value}}}</div>
-
-		<ul class="properties tags">
-		{{#each system.properties}}
-			{{{this}}}
-		{{/each}}
-		</ul>
+    <div class="card-content">	 
+		{{#if item.system.autoCard}}
 		
+			<div class="flavour">
+			{{#if item.system.description.chat}}
+				<p>{{{item.system.description.chat}}}</p>
+			{{else}}
+				{{{system.description.value}}}
+			{{/if}}
+			</div>
+			
+			<ul class="properties tags">
+			{{#each system.properties}}
+				{{{this}}}
+			{{/each}}
+			</ul>
+			
+			<div class="item-details">
+				{{{system.description.value}}}
+			</div>
+			
+		{{else}}
+		
+			{{{system.description.value}}}
+			
+		{{/if}}
+		 
+	</div>
+
+    <footer class="card-footer">		
 		 {{#if isRoll}}
 		 	{{#if system.attribute}}
 		 	<div class="card-buttons">
@@ -25,9 +45,5 @@
 		 	</div>
 		 	{{/if}}
 		 {{/if}}
-		 
-	 </div>
-
-    <footer class="card-footer">
     </footer>
 </div>
