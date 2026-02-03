@@ -53,6 +53,8 @@ export class Actor4e extends Actor {
 	async update(data, options={}) {
 		if(!data) { return super.update(data, options); }
 		
+		data = foundry.utils.flattenObject(data);
+
 		//used to call changes to HP scrolling text
 		if(data[`system.attributes.hp.value`] != undefined && data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
 			options.dhp = data[`system.attributes.hp.value`] - this.system.attributes.hp.value;
