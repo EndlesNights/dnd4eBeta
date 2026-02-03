@@ -71,10 +71,10 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		if(data[`system.details.level`]){
-			if(this.system.details.tier != Math.clamp(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3)){
-				this.system.details.tier = Math.clamp(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3);
-				data[`system.details.tier`] = this.system.details.tier;
+		if(data.system.details.level){
+			if(this.system.details.tier != Math.clamp(Math.floor(( data.system.details.level - 1 ) /10 + 1),1,3)){
+				this.system.details.tier = Math.clamp(Math.floor(( data.system.details.level - 1 ) /10 + 1),1,3);
+				data.system.details.tier = this.system.details.tier;
 			}		
 		}
 
