@@ -53,7 +53,13 @@ export class Actor4e extends Actor {
 	async update(data, options={}) {
 		if(!data) { return super.update(data, options); }
 		
+		console.debug('fart');
+		console.debug(this);
+		console.debug(data);
 		data = foundry.utils.flattenObject(data);
+		console.debug(data);
+		//console.debug(data);		
+		console.debug('fart');
 		
 		//used to call changes to HP scrolling text
 		if(data[`system.attributes.hp.value`] != undefined && data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
@@ -73,10 +79,10 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		if(data.system.details.level){
-			if(this.system.details.tier != Math.clamp(Math.floor(( data.system.details.level - 1 ) /10 + 1),1,3)){
-				this.system.details.tier = Math.clamp(Math.floor(( data.system.details.level - 1 ) /10 + 1),1,3);
-				data.system.details.tier = this.system.details.tier;
+		if(data[`system.details.level`]){
+			if(this.system.details.tier != Math.clamp(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3)){
+				this.system.details.tier = Math.clamp(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3);
+				data[`system.details.tier`] = this.system.details.tier;
 			}		
 		}
 
