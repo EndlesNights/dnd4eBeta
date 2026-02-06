@@ -4,7 +4,7 @@
 	<header class="card-header flexrow{{#if isPower}} ability-usage--{{/if}}">
 		<img src="{{item.img}}" data-tooltip="{{item.name}}" width="36" height="36"/>
 		<div class="flexcol item-name">
-			<h3>{{item.name}} {{#if this.system.isCharge}}({{localize 'DND4E.CommonAttackCharge'}}){{/if}} {{#if this.system.isOpp}}({{localize 'DND4E.ActionOpportunityBrief'}}){{/if}}</h3>
+			<h3>{{item.name}}{{#if this.system.isCharge}} <span class="extra">({{localize 'DND4E.CommonAttackCharge'}})</span>{{/if}}{{#if this.system.isOpp}} <span class="extra">({{localize 'DND4E.ActionOpportunityBrief'}})</span>{{/if}}{{#if this.system.auraSize}} <span class="sep">&#10022;</span> <span class="extra">{{localize 'DND4E.Aura'}} {{this.system.auraSize}}</span>{{/if}}</h3>
 		</div>
 	</header>
 

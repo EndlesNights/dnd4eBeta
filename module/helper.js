@@ -1143,7 +1143,7 @@ export class Helper {
 		
 		tag.sort();
 		
-		if(tag.length > 0) powerDetail += `<span class="sep">♦</span><span class="keywords">${tag.join(', ')}</span>`;
+		if(tag.length > 0) powerDetail += `<span class="sep">&#10022;</span><span class="keywords">${tag.join(', ')}</span>`;
 		
 		powerDetail += `<br /><span class="action">${CONFIG.DND4E.abilityActivationTypes[chatData.actionType].label}</span> <span class="sep">&nbsp;</span>`;
 

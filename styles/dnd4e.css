@@ -3441,6 +3441,9 @@ input[type="text"].dice-count{
 		padding:1px 3px;
 		margin:0;
 	}
+	.flavour{
+		font-style:italic;
+	}
 	.item-details .action+.range-type{
 		padding-left:1em;
 	}
