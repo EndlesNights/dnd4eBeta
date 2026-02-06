@@ -54,7 +54,7 @@ export class Actor4e extends Actor {
 		if(!data) { return super.update(data, options); }
 		
 		data = foundry.utils.flattenObject(data);
-
+		
 		//used to call changes to HP scrolling text
 		if(data[`system.attributes.hp.value`] != undefined && data[`system.attributes.hp.value`] != this.system.attributes.hp.value){
 			options.dhp = data[`system.attributes.hp.value`] - this.system.attributes.hp.value;
@@ -1938,21 +1938,20 @@ export class Actor4e extends Actor {
 	async rollDeathSave(event, options){
 		const updateData = {};
 		
-		let message = game.i18n.localize("DND4E.RollDeathSave");
 		const parts = [this.system.details.deathsavebon.value]
 		if (options.save) {
 			parts.push(options.save)
 		}
 		const rollConfig = foundry.utils.mergeObject({
 			parts,
-			actor: this,
-			data: {},
-			title: "",
-			flavor: message,
-			speaker: ChatMessage.getSpeaker({actor: this}),
-			messageData: {"flags.dnd4e.roll": {type: "save", itemId: this.id }},
-			fastForward: true,
-			rollMode: options.rollMode
+			'actor': this,
+			'data': {},
+			'title': "",
+			'flavor': game.i18n.localize('DND4E.RollDeathSave'),
+			'speaker': ChatMessage.getSpeaker({actor: this}),
+			'messageData': {"flags.dnd4e.roll": {type: "save", itemId: this.id }},
+			'fastForward': true,
+			'rollMode': options.rollMode
 		});
 		rollConfig.event = event;
 		rollConfig.critical = this.system.details.deathsaveCrit || 20;
@@ -1966,16 +1965,18 @@ export class Actor4e extends Actor {
 		if( roll.total < 10 && this.system.details.deathsavefail + 1 >= this.system.details.deathsaves)
 		{
 			await ChatMessage.create({
-				user: game.user.id,
-				speaker: ChatMessage.getSpeaker(),
-				content:this.name + game.i18n.localize("DND4E.DeathSaveFailure")
+				'user': game.user.id,
+				'speaker': ChatMessage.getSpeaker(),
+				'flavor': game.i18n.localize('DND4E.DeathSave'),
+				'content': game.i18n.format("DND4E.DeathSaveFailure",{'name':this.name})
 			});
 		}
 		else if(roll.total >= rollConfig.critical) {
 			await ChatMessage.create({
-				user: game.user.id,
-				speaker: ChatMessage.getSpeaker(),
-				content:this.name + game.i18n.localize("DND4E.DeathSaveCriticalSuccess")
+				'user': game.user.id,
+				'speaker': ChatMessage.getSpeaker(),
+				'flavor': game.i18n.localize('DND4E.DeathSave'),
+				'content': game.i18n.format("DND4E.DeathSaveCriticalSuccess",{'name':this.name})
 			});
 		}
 		//console.log(roll.total)
@@ -2044,9 +2045,8 @@ export class Actor4e extends Actor {
 			ChatMessage.create({
 				user: game.user.id,
 				speaker: {actor: this, alias: this.name},
-				content: options.surge >= 1 ? `${this.name} ${game.i18n.localize('DND4E.ShortRestChat')}, ${game.i18n.localize('DND4E.Spending')} ${options.surge} ${game.i18n.localize('DND4E.SurgesSpendRegain')} ${(updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value))} ${game.i18n.localize('DND4E.HPShort')}.`
-					: `${this.name} ${game.i18n.localize('DND4E.ShortRestChat')}`
-				
+				flavor: game.i18n.localize('DND4E.ShortRest'),
+				content: options.surge >= 1 ? game.i18n.format('DND4E.ShortRestResult',{'name':this.name,'surges':options.surge,'healing':updateData[`system.attributes.hp.value`] - Math.max(0, this.system.attributes.hp.value)}) : game.i18n.format('DND4E.ShortRestChat',{'name':this.name})				
 			});
 			
 			if(!game.settings.get("dnd4e", "deathSaveRest")){
@@ -2115,8 +2115,8 @@ export class Actor4e extends Actor {
 			ChatMessage.create({
 				user: game.user.id,
 				speaker: {actor: this, alias: this.system.name},
-				// flavor: restFlavor,
-				content: `${this.name} ${game.i18n.localize('DND4E.LongRestResult')}.`
+				flavor: game.i18n.localize('DND4E.LongRest'),
+				content: game.i18n.format('DND4E.LongRestResult',{'name':this.name})
 			});
 		
 			for (let r of Object.entries(this.system.resources)) {

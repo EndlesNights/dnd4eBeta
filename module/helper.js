@@ -362,7 +362,8 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				await this._applyEffectsInternal(arrayOfParts, rollData, powerData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage);
+				//await this._applyEffectsInternal(arrayOfParts, rollData, powerData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage);
+				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage);
 			}
 		}
 	}
@@ -450,12 +451,13 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				await this._applyEffectsInternal(arrayOfParts, rollData, powerData, effectsToProcess, suitableKeywords, actorData, effectType, debug);
+				//await this._applyEffectsInternal(arrayOfParts, rollData, powerData, effectsToProcess, suitableKeywords, actorData, effectType, debug);
+				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug);
 			}
 		}
 	}
 
-	static async _applyEffectsInternal(arrayOfParts, rollData, powerData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage = []) {
+	static async _applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage = []) {
 		// filter out to just the relevant effects by keyword
 		const matchingEffects = effectsToProcess.filter((effect) => {
 			const keyParts = effect.key.split(".")
