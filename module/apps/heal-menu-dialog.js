@@ -123,54 +123,49 @@ export class HealMenuDialog extends DocumentSheet4e {
 	static async #onSubmit(event, form, formData) {
 		const updateData = {};
 		const healData = foundry.utils.expandObject(formData.object);
+		const charName = this.document.name;
+		const healType = healData['heal-type'];
 
-		console.log(JSON.stringify(healData))
+		console.debug(JSON.stringify(healData));
 
-		let roll = await Helper.rollWithErrorHandling(healData.bonus, { errorMessageKey: "DND4E.InvalidHealingBonus"})
-
-		let surgeValueText = "0"
-		let surgeValue = 0
-		if (healData["gain-healing-surge-value"] === true) {
-			surgeValue = this.document.system.details.surgeValue
-			surgeValueText = surgeValue
-		}
-
-		const healTotal = surgeValue + roll.total
-
-		const healType = healData["heal-type"]
-		let healTypeText = game.i18n.localize("DND4E.regains")
-		let hpTypeText = game.i18n.localize("DND4E.HP")
+		let roll = await Helper.rollWithErrorHandling(healData.bonus, { errorMessageKey: "DND4E.InvalidHealingBonus"});
+		
+		const surgeValue = healData['gain-healing-surge-value'] ? this.document.system.details.surgeValue : 0;
+		let healTotal = this.document.system.details.surges.value > 0 ? surgeValue + roll.total : roll.total;
+		
 		if (healType === "tempHP") {
-			healTypeText = game.i18n.localize("DND4E.gains")
-			hpTypeText = game.i18n.localize("DND4E.TempHPTip")
-			await this.document.applyTempHpChange(healTotal)
-		}
-		else if (this.document.system.details.surges.value > 0){
-			await this.document.applyDamage(healTotal, -1)
-		} else if (this.document.system.details.surges.value == 0 && this.document.system.attributes.hp.value <= 0){
-			await this.document.applyDamage(1, -1)
-			surgeValueText = 1;
+			await this.document.applyTempHpChange(healTotal);
+		} else if (healData['spend-healing-surge'] && this.document.system.details.surges.value == 0 && this.document.system.attributes.hp.value <= 0){
+			await this.document.applyDamage(1, -1);
+			healTotal = 1;
 		} else {
-			surgeValueText = 0;
+			await this.document.applyDamage(healTotal, -1);
 		}
 
-		let healingSurgeText = ""
-		if (healData["spend-healing-surge"] === true) {
-			if(this.document.system.details.surges.value > 0){
-				healingSurgeText = game.i18n.localize("DND4E.SurgeSpendAnd");
+		const rollText = healData?.bonus && healData?.bonus !== "" ? ` ${healTotal} (${roll.formula} => ${roll.result})` : healTotal;
+
+		let messageText = "";
+		if(healData['spend-healing-surge'] && this.document.system.details.surges.value > 0){
+			if (healType === "tempHP") {
+				messageText = game.i18n.format("DND4E.HealingResultSurgeTemp",{'name':charName,'temps':rollText});	
 			} else {
-				healingSurgeText = game.i18n.localize("DND4E.SurgeNotSpendAnd");
+				messageText = game.i18n.format("DND4E.HealingResultSurge",{'name':charName,'healing':rollText});		
 			}
-			updateData[`system.details.surges.value`] = Math.max(this.document.system.details.surges.value - 1, 0)
+			updateData[`system.details.surges.value`] = Math.max(this.document.system.details.surges.value - 1, 0);
 			await this.document.update(updateData);
+		}else{
+			if (healType === "tempHP") {
+				messageText = game.i18n.format("DND4E.HealingResultTemp",{'name':charName,'temps':rollText});
+			} else {
+				messageText = game.i18n.format("DND4E.HealingResult",{'name':charName,'healing':rollText});
+			}			
 		}
-
-		const rollMessage = healData.bonus && healData.bonus !== "" ? ` + ${roll.total} (${roll.formula} => ${roll.result})` : ""
 
 		ChatMessage.create({
-			user: game.user.id,
-			speaker: {actor: this.object, alias: this.document.name},
-			content: `${this.document.name} ${healingSurgeText} ${healTypeText} ${surgeValueText} ${rollMessage} ${hpTypeText}.`,
+			'user': game.user.id,
+			'flavor': game.i18n.localize('DND4E.Healing'),
+			'speaker': {actor: this.object, alias: this.document.name},
+			'content': messageText
 		});
 	}
 
