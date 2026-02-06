@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.7.6
+- Fixed a bug where character tier was not updating. (Aniather, SagaTympana, Fox)
+- Fixed a bug reported by Aniather on Discord, which caused die rolls in chat to be expanded instead of collapsed by default. (Fox)
+- Fixes a bug where saving throws could fail to roll due to missing powerData. (Fox)
+- Improved Ritual summaries. (Fox)
+- Improved the chat messages generated for saves, death saves, rests and healing. (Fox)
+- Improved item chat card appearance and card collapse behaviour. (Fox)
+
 ## Version 0.7.5.1 Hotfix
 - Fixes a bug that prevented attack and heal rolls from displaying in chat, and prevented healing from being applied properly. (Aniather) 
 
@@ -1353,6 +1361,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
