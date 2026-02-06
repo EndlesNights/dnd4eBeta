@@ -2743,6 +2743,9 @@ body.theme-light .dnd4e:is(.default,.standard-form){
 				grid-template-columns: 2fr 6fr 1rem;
 			}
 		}
+		ol.statuses-list{
+			display:block;
+		}
 		ol.statuses-list li{
 			display:grid;
 			grid-template-columns:2fr 5fr 1rem;
@@ -3529,7 +3532,6 @@ input[type="text"].dice-count{
 
 .dice-roll{
 	.dice-tooltip{ 
-		display:block;
 		transition:grid-template-rows 250ms ease;
 	}
 	.dice-total.success{
@@ -3564,6 +3566,16 @@ input[type="text"].dice-count{
 	.hit-prediction.critical,
 	.hit-prediction.hit{
 		color:var(--color-text-good)
+	}
+	&.expanded{
+		.dice-tooltip{
+			display:block;
+		}
+	}
+	&:not(.expanded){
+		.dice-tooltip{
+			display:none;
+		}
 	}
 }
 
