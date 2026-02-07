@@ -29,7 +29,8 @@
         </div>
         <div class="type damage-type">
           <multi-select name="flags.dnd4e.dots.{{i}}.typesArray" class="inline">
-            {{selectOptions ../dotDamageTypes selected=dot.typesArray}}
+            {{selectOptions ../dotDamageTypes selected=dot.typesArray}}			
+			<option value="healing" {{#if (contains "healing" dot.typesArray)}}selected{{/if}}>[{{localize "EFFECT.statusRegen"}}]</option>
           </multi-select>
         </div>
         <div class="effect-controls">
