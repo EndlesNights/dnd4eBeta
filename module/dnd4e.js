@@ -333,7 +333,6 @@ Hooks.on("renderChatPopout", (app, html, data) => {
 	chat.chatMessageListener(html);
 });
 
-
 Hooks.on("renderTokenHUD", (app, html, data) => {
 	// inject element and script for displaing name of status effect when mousning over
 	const messageTemplate = document.createElement("template");
@@ -478,4 +477,21 @@ Hooks.on("deleteCombat", combat => {
   const token = combat.combatant?.token;
   if ( !token?.rendered ) return;
   token.object.renderFlags.set({refreshTurnMarker: true});
+});
+
+// Revert Foundy's bizarre decision to force light theme in chat
+Hooks.on("renderChatLog", (app,html,context) => {
+	try{
+		const colourScheme = game.settings.get(`core`,`uiConfig`).colorScheme.interface;
+		//console.debug(`fart: ${colourScheme}`);
+		//console.debug(html);
+		if(colourScheme == 'dark'){			
+			const newHTML = html.innerHTML.replace(/<ol class=\"chat-log plain themed theme-light/g,'<ol class=\"chat-log plain themed theme-dark');
+			if(newHTML != html.innerHTML){
+				html.innerHTML = newHTML;
+			}
+		}
+	}catch(e){
+		console.error(`Failed to update chat log theme. ${e}`);
+	}
 });
