@@ -306,27 +306,56 @@ Hooks.once("ready",  function() {
 /*  Other Hooks                                 */
 /* -------------------------------------------- */
 
-Hooks.on("renderChatMessageHTML", (app, html, data) => {
-
+Hooks.on("renderChatMessageHTML", (message, html, data) => {
 	// Display action buttons
-	chat.displayChatActionButtons(app, html, data);
+	chat.displayChatActionButtons(message, html, data);
 
 	// Highlight critical success or failure die
-	chat.highlightCriticalSuccessFailure(app, html, data);
+	chat.highlightCriticalSuccessFailure(message, html, data);
 
 	// hide damage buttons on d20 rolls
-	chat.displayDamageOptionButtons(app, html, data)
+	chat.displayDamageOptionButtons(message, html, data)
 
 	// Optionally collapse the content
-	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.querySelectorAll(".card-content").forEach(el => el.style.display = "none");
-	
+	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.querySelectorAll(".card-content").forEach(el => el.style.display = "none");	
+
+	// Mask tiebreaker digits in initiave roll display
+	try{
+		if(message.flags.core?.initiativeRoll === true || message.flags?.dnd4e?.roll?.type == "init"){
+			if(html){
+				const insertPart = Helper.initTooltip(message.content);
+				html.innerHTML = html.innerHTML.replace(/(<h4 class=\"dice-total\">)[0-9|.]+(<\/h4>)/g,`$1${insertPart}$2`);
+			}
+		}
+	}catch(e){
+		console.error(`Inititiave display mask failed in chat message. ${e}`);
+	}
+
 });
 
 Hooks.on("getChatMessageContextOptions", chat.addChatMessageContextOptions);
-Hooks.on("renderChatLog", (app, html, data) => {
+
+Hooks.on("renderChatLog", (app, html, context) => {
+	// Revert Foundy's bizarre decision to force light theme in chat
+	try{
+		const colourScheme = game.settings.get(`core`,`uiConfig`).colorScheme?.interface || null;
+		//console.debug(`fart: ${colourScheme}`);
+		//console.debug(html);
+		if(colourScheme === 'dark'){			
+			const newHTML = html.innerHTML.replace(/<ol class=\"chat-log plain themed theme-light/g,'<ol class=\"chat-log plain themed theme-dark');
+			if(newHTML != html.innerHTML){
+				html.innerHTML = newHTML;
+			}
+		}
+	}catch(e){
+		console.error(`Failed to update chat log theme. ${e}`);
+	}
+	
+	//Item listeners
 	Item4e.chatListeners(html);
-	chat.chatMessageListener(html);
+	chat.chatMessageListener(html);	
 });
+
 // Also activate buttons on popout messages
 Hooks.on("renderChatPopout", (app, html, data) => {
 	Item4e.chatListeners(html);
@@ -334,7 +363,7 @@ Hooks.on("renderChatPopout", (app, html, data) => {
 });
 
 Hooks.on("renderTokenHUD", (app, html, data) => {
-	// inject element and script for displaing name of status effect when mousning over
+	// inject element and script for displaying name of status effect when mousing over
 	const messageTemplate = document.createElement("template");
 	messageTemplate.innerHTML = `
 		<div class="status-effect-title" id="displayStatLine">STATUS EFFECT</div>
@@ -391,20 +420,8 @@ Hooks.on("getSceneControlButtons", function(controls){
 	}
 });
 
-Hooks.on("renderChatMessageHTML", (message, html, data) => {
-	try{
-		if(message.flags.core?.initiativeRoll === true || message.flags?.dnd4e?.roll?.type == "init"){
-			if(html){
-				const insertPart = Helper.initTooltip(message.content);
-				html.innerHTML = html.innerHTML.replace(/(<h4 class=\"dice-total\">)[0-9|.]+(<\/h4>)/g,`$1${insertPart}$2`);
-			}
-		}
-	}catch(e){
-		console.error(`Inititiave display mask failed in chat message. ${e}`);
-	}
-});
-
 Hooks.on('renderCombatTracker', (app,html,context) => {
+	// Mask initaitive tiebreaker digits in combat tracker
 	if (!app?.viewed) return // Skip entirely if there's no currently viewed combat
 	try{
 		html.querySelectorAll('.token-initiative').forEach((el) => {
@@ -477,21 +494,4 @@ Hooks.on("deleteCombat", combat => {
   const token = combat.combatant?.token;
   if ( !token?.rendered ) return;
   token.object.renderFlags.set({refreshTurnMarker: true});
-});
-
-// Revert Foundy's bizarre decision to force light theme in chat
-Hooks.on("renderChatLog", (app,html,context) => {
-	try{
-		const colourScheme = game.settings.get(`core`,`uiConfig`).colorScheme.interface;
-		//console.debug(`fart: ${colourScheme}`);
-		//console.debug(html);
-		if(colourScheme == 'dark'){			
-			const newHTML = html.innerHTML.replace(/<ol class=\"chat-log plain themed theme-light/g,'<ol class=\"chat-log plain themed theme-dark');
-			if(newHTML != html.innerHTML){
-				html.innerHTML = newHTML;
-			}
-		}
-	}catch(e){
-		console.error(`Failed to update chat log theme. ${e}`);
-	}
 });
