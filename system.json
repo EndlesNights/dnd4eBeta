@@ -121,7 +121,7 @@
 			"path": "lang/en-au.json"
 		},
 		{
-			"lang": "pt-br",
+			"lang": "pt-BR",
 			"name": "Portugues do Brasil",
 			"path": "lang/pt-br.json"
 		},
@@ -177,6 +177,7 @@
 	}
 
 }
+
 
 
 
