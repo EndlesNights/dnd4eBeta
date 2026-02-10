@@ -339,8 +339,6 @@ Hooks.on("renderChatLog", (app, html, context) => {
 	// Revert Foundy's bizarre decision to force light theme in chat
 	try{
 		const colourScheme = game.settings.get(`core`,`uiConfig`).colorScheme?.interface || null;
-		//console.debug(`fart: ${colourScheme}`);
-		//console.debug(html);
 		if(colourScheme === 'dark'){			
 			const newHTML = html.innerHTML.replace(/<ol class=\"chat-log plain themed theme-light/g,'<ol class=\"chat-log plain themed theme-dark');
 			if(newHTML != html.innerHTML){
