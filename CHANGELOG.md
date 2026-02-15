@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.7.7
+- Added light/dark mode selection for chat, and fixed a number of style and label errors. (Fox)
+
 ## Version 0.7.6
 - Fixed a bug where character tier was not updating. (Aniather, SagaTympana, Fox)
 - Fixed a bug reported by Aniather on Discord, which caused die rolls in chat to be expanded instead of collapsed by default. (Fox)
@@ -1361,6 +1364,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
