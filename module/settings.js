@@ -196,7 +196,7 @@ export const registerSystemSettings = function() {
 		hint: "SETTINGS.4eChatSchemeL",
 		scope: "client",
 		config: true,
-		default: "light",
+		default: "auto",
 		type: String,
 		choices: {
 			"light": `SETTINGS.UI.FIELDS.colorScheme.choices.light`,
