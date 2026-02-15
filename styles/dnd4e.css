@@ -61,12 +61,6 @@
 	&.standard-form{
 		gap:0;
 	}
-	input[type="checkbox"]::before,
-	input[type="radio"]::before,
-	input[type="checkbox"]::after,
-	input[type="radio"]::after{
-		display:inline-block;
-	}
 	code:not(.block){
 		display:inline;
 		background:unset;
@@ -232,7 +226,6 @@
 /* ------------ All Sheets ---------- */
 .dnd4e:is(.default,.standard-form) .window-content{
 	--input-height:2em;
-	--checkbox-size:1.75rem;
 	
 	fieldset{
 		padding:0.5em 1em 1em;
@@ -434,14 +427,6 @@
 			&.inline::before{
 				text-align:right;
 				margin-right:0.35em;
-			}
-			&.checkbox{
-				font-size:1em;
-				
-				>input[type='checkbox'],
-				>input[type='radio']{
-					--checkbox-size:1.2rem;
-				}
 			}
 		}			
 		&.wide label{
@@ -928,11 +913,6 @@
 	}
 	.sheet-navigation .item.active{
 		border-bottom:var(--border-heavy);
-	}
-	input[type="checkbox"]{
-        line-height:1;
-        margin:0;
-		height:fit-content;
 	}
 	prose-mirror.active{
 		min-height:20em;
