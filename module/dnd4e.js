@@ -335,24 +335,23 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
 
 Hooks.on("getChatMessageContextOptions", chat.addChatMessageContextOptions);
 
-Hooks.on("renderChatLog", (app, html, context) => {
+Hooks.on("renderChatLog", (app, element, context) => {
 	// Revert Foundy's bizarre decision to force light theme in chat
 	try{
 		const chatScheme = game.settings.get(`dnd4e`,`chatScheme`);
 		const UIchoice = game.settings.get(`core`,`uiConfig`).colorScheme?.interface || null;
-		if(chatScheme === 'dark' || (chatScheme === 'auto' && UIchoice === 'dark')){			
-			const newHTML = html.innerHTML.replace(/<ol class=\"chat-log plain themed theme-light/g,'<ol class=\"chat-log plain themed theme-dark');
-			if(newHTML != html.innerHTML){
-				html.innerHTML = newHTML;
-			}
+		if(chatScheme === 'dark' || (chatScheme === 'auto' && UIchoice === 'dark')){
+			const chatLog = element.querySelector('.chat-log');
+			chatLog.classList.add("theme-dark");
+			chatLog.classList.remove("theme-light");
 		}
 	}catch(e){
 		console.error(`Failed to update chat log theme. ${e}`);
 	}
 	
 	//Item listeners
-	Item4e.chatListeners(html);
-	chat.chatMessageListener(html);	
+	Item4e.chatListeners(element);
+	chat.chatMessageListener(element);	
 });
 
 // Also activate buttons on popout messages
