@@ -129,7 +129,7 @@ export const registerSystemSettings = function() {
 /*************************/
 /** DEFAULT BEHAVIOURS  **/
 /*************************/
-
+	
 	// Is Advanced Math Option for NPCs true for new actors
 	game.settings.register("dnd4e", "npcMathOptions", {
 		name: "SETTINGS.4eNpcMathOptionsN",
@@ -189,6 +189,24 @@ export const registerSystemSettings = function() {
 /*************************/
 /**   DISPLAY OPTIONS   **/
 /*************************/
+
+	// Light/Dark Chat Mode
+	game.settings.register("dnd4e", "chatScheme", {
+		name: "SETTINGS.4eChatSchemeN",
+		hint: "SETTINGS.4eChatSchemeL",
+		scope: "client",
+		config: true,
+		default: "light",
+		type: String,
+		choices: {
+			"light": `SETTINGS.UI.FIELDS.colorScheme.choices.light`,
+			"dark": `SETTINGS.UI.FIELDS.colorScheme.choices.dark`,
+			"auto": `SETTINGS.4eChatSchemeAuto`
+		},
+		onChange: s => {
+			ui.chat.render();
+		}
+	});
 
 	// Collapse Item Card descriptions by default
 	game.settings.register("dnd4e", "autoCollapseItemCards", {
