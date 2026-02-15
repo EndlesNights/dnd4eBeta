@@ -61,12 +61,6 @@
 	&.standard-form{
 		gap:0;
 	}
-	input[type="checkbox"]::before,
-	input[type="radio"]::before,
-	input[type="checkbox"]::after,
-	input[type="radio"]::after{
-		display:inline-block;
-	}
 	code:not(.block){
 		display:inline;
 		background:unset;
@@ -232,7 +226,6 @@
 /* ------------ All Sheets ---------- */
 .dnd4e:is(.default,.standard-form) .window-content{
 	--input-height:2em;
-	--checkbox-size:1.75rem;
 	
 	fieldset{
 		padding:0.5em 1em 1em;
@@ -434,14 +427,6 @@
 			&.inline::before{
 				text-align:right;
 				margin-right:0.35em;
-			}
-			&.checkbox{
-				font-size:1em;
-				
-				>input[type='checkbox'],
-				>input[type='radio']{
-					--checkbox-size:1.2rem;
-				}
 			}
 		}			
 		&.wide label{
@@ -928,11 +913,6 @@
 	}
 	.sheet-navigation .item.active{
 		border-bottom:var(--border-heavy);
-	}
-	input[type="checkbox"]{
-        line-height:1;
-        margin:0;
-		height:fit-content;
 	}
 	prose-mirror.active{
 		min-height:20em;
@@ -3531,7 +3511,8 @@ input[type="text"].dice-count{
 
 .chat-log{
 	--gradient-4e:linear-gradient(90deg,#c3c2b7,#c3c2b718);
-	--border-faint:1px solid #c3b3ae;
+	--border-faint:1px solid #c3b3ae;	
+	--item-piles-text-light-highlight:var(--table-row-color-even);
 }
 .chat-log.themed.theme-dark,
 .chat-log.themed.theme-dark .chat-message{
@@ -3545,79 +3526,83 @@ input[type="text"].dice-count{
     background:var(--chat-message-background);
     border:2px solid var(--chat-message-border-color);
     color:var(--color-text-primary);
-}
-.chat-message .message-header{
-	color:var(--color-text-secondary);
-}
-.flavor-text:is(.critical,.fumble,.probable-hit,.probable-miss){
-	font-weight:bold;
-}
-:is(.roll-expression,.roll-formula).roll-highlight{
-	background-color:#99ccff;
-}
 
-.dice-roll{
-	.dice-tooltip{ 
-		transition:grid-template-rows 250ms ease;
+	.message-header{
+		color:var(--color-text-secondary);
 	}
-	.dice-total.success{
-		color:var(--color-text-good);
-		background:var(--button-background-color);
-		border:1px solid #006c00;
-	}
-	.dice-total.failure{
-		color:var(--color-text-bad);
-		background:var(--button-background-color);
-		border:1px solid #6e0000;
-	}
-	.dice-total.critical{
-		color:var(--color-text-good);
-	}
-	.dice-total.fumble{
-		color:var(--color-text-bad);
-	}
-	.hit-prediction.immune{
-		text-align:center;
-		line-height:24px;
-		margin-top:3px;
-		background:rgba(0, 0, 0, 0.1);
-		border:1px solid var(--color-border-light-2);
-		border-radius:3px;
-		box-shadow:0 0 2px #fff inset;
-	}
-	.hit-prediction.fumble,
-	.dice-roll .hit-prediction.miss{
-		color:var(--color-text-bad);
-	}
-	.hit-prediction.critical,
-	.hit-prediction.hit{
-		color:var(--color-text-good)
-	}
-	&.expanded{
-		.dice-tooltip{
-			display:block;
-		}
-	}
-	&:not(.expanded){
-		.dice-tooltip{
-			display:none;
-		}
-	}
-}
-
-.dot-report{
-	.damage-taken{
+	.flavor-text:is(.critical,.fumble,.probable-hit,.probable-miss){
 		font-weight:bold;
 	}
-	.damage-taken:not(.resistant-full,.healing){
-		color:var(--color-text-bad);
+	:is(.roll-expression,.roll-formula).roll-highlight{
+		background-color:#99ccff;
 	}
-	.damage-taken.resistant-full,
-	.damage-taken.healing{
-		color:var(--color-text-good);
+	.dice-roll{
+		.dice-tooltip{ 
+			transition:grid-template-rows 250ms ease;
+		}
+		.dice-total.success{
+			color:var(--color-text-good);
+			background:var(--button-background-color);
+			border:1px solid #006c00;
+		}
+		.dice-total.failure{
+			color:var(--color-text-bad);
+			background:var(--button-background-color);
+			border:1px solid #6e0000;
+		}
+		.dice-total.critical{
+			color:var(--color-text-good);
+		}
+		.dice-total.fumble{
+			color:var(--color-text-bad);
+		}
+		.hit-prediction.immune{
+			text-align:center;
+			line-height:24px;
+			margin-top:3px;
+			background:rgba(0, 0, 0, 0.1);
+			border:1px solid var(--color-border-light-2);
+			border-radius:3px;
+			box-shadow:0 0 2px #fff inset;
+		}
+		.hit-prediction.fumble,
+		.dice-roll .hit-prediction.miss{
+			color:var(--color-text-bad);
+		}
+		.hit-prediction.critical,
+		.hit-prediction.hit{
+			color:var(--color-text-good)
+		}
+		&.expanded{
+			.dice-tooltip{
+				display:block;
+			}
+		}
+		&:not(.expanded){
+			.dice-tooltip{
+				display:none;
+			}
+		}
+	}
+	.table-draw{
+		color:inherit;
+		.table-description{
+			color:inherit;
+		}
+	}
+	.dot-report{
+		.damage-taken{
+			font-weight:bold;
+		}
+		.damage-taken:not(.resistant-full,.healing){
+			color:var(--color-text-bad);
+		}
+		.damage-taken.resistant-full,
+		.damage-taken.healing{
+			color:var(--color-text-good);
+		}
 	}
 }
-
 
 @media (prefers-reduced-transparency){
 	.themed.theme-dark,

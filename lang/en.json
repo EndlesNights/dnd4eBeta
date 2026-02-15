@@ -1703,8 +1703,8 @@
 	"Yes": "Yes"
 },
 
-"SETTINGS.4eApplyEffectsToSelectionN": "Buttons to apply effects should apply to SELECTED tokens",
-"SETTINGS.4eApplyEffectsToSelectionL": "If checked, apply effect buttons will work over targets that are SELECTED.  Otherwise will work over tokens that are TARGETED",
+"SETTINGS.4eApplyEffectsToSelectionN": "Select \"Apply Effects\" tokens",
+"SETTINGS.4eApplyEffectsToSelectionL": "Normally, Apply Effect buttons in chat use TARGETED tokens as their subjects. When this setting is on, they instead work on SELECTED tokens.",
 "SETTINGS.4eAutoApplyEffectsL": "When checked, power effects/conditions are applied automatically to valid selected targets when an attack roll is made (for non-attacks, when a power is used).",
 "SETTINGS.4eAutoApplyEffectsN": "Automatically Apply Effects",
 "SETTINGS.4eAutoCollapseCardL": "Automatically collapse Item Card descriptions in the Chat Log",
@@ -1727,6 +1727,9 @@
 "SETTINGS.4eCardAtkDisplayBonus": "Display bonus (name/formula in tooltip)",
 "SETTINGS.4eCardAtkDisplayBoth": "Display name and bonus (formula in tooltip)",
 "SETTINGS.4eCardAtkDisplayStat": "Display name (bonus/formula in tooltip)",
+"SETTINGS.4eChatSchemeL": "Choose light/dark chat log, or follow core UI setting",
+"SETTINGS.4eChatSchemeN": "Chat Log Colour Scheme",
+"SETTINGS.4eChatSchemeAuto": "Match UI (default)",
 "SETTINGS.4eCollapseSituationalBonusL": "If checked: all common situational modifiers will be computed and added as a single modifier to @bonus.  Otherwise each will be displayed individually in the resulting formula",
 "SETTINGS.4eCollapseSituationalBonusN": "Collapse Common Attack Mods",
 "SETTINGS.4eCurWtL": "Carried currency affects character load following the rules on PHB pg. 212.",
