@@ -30,7 +30,7 @@ export class CustomRolldDescriptions extends DocumentSheet4e {
 	}
 
 	get title() {
-		return `${this.document.name} - ${game.i18n.localize("DND4E.CustomizeRollDescriptions")}`;
+		return `${this.document.name} - ${game.i18n.localize('DND4EUI.CustomizeRollDescriptions')}`;
 	}
 	
 	/** @override */
