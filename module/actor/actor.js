@@ -76,7 +76,8 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		if(data[`system.details.level`]){
+		// Use an undefined-check (not a truthy check) so a valid 0 won't be skipped.
+		if(data[`system.details.level`] !== undefined){
 			if(this.system.details.tier != Math.clamp(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3)){
 				this.system.details.tier = Math.clamp(Math.floor(( data[`system.details.level`] - 1 ) /10 + 1),1,3);
 				data[`system.details.tier`] = this.system.details.tier;
@@ -84,7 +85,8 @@ export class Actor4e extends Actor {
 		}
 
 		for (let [id, abl] of Object.entries(this.system.abilities)){
-			if(data[`system.abilities.${id}.value`]){
+			// Use an undefined-check (not a truthy check) so a valid 0 won't be skipped.
+			if(data[`system.abilities.${id}.value`] !== undefined){
 				if(this.system.abilities[id].mod != Math.floor((data[`system.abilities.${id}.value`] - 10) / 2)){
 					data[`system.abilities.${id}.mod`] = Math.floor((data[`system.abilities.${id}.value`] - 10) / 2) 
 				}
