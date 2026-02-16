@@ -170,6 +170,15 @@ body.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form){
 		--checkbox-checked-color:#253c5e;
 		--checkbox-checkmark-color:#fff;
 	}
+	a.button,button,kbd{
+		--button-background-color:var(--color-cool-5-50);
+		--button-border-color:var(--color-light-5);
+		--button-text-color:var(--color-light-3);
+		--button-focus-outline-color:var(--color-warm-2);
+		--button-hover-background-color:var(--color-warm-2);
+		--button-hover-border-color:var(--color-light-3);
+		--button-hover-text-color:var(--color-light-1);
+	}
 }
 .themed.theme-light,
 .themed.theme-light :is(.application,.app).dnd4e:is(.default,.standard-form),
@@ -208,6 +217,14 @@ body.theme-light :is(.application,.app).dnd4e:is(.default,.standard-form){
 		--checkbox-background-color:#c3b3ae;
 		--checkbox-checked-color:#253c5e;
 		--checkbox-checkmark-color:#fff;
+	}
+	a.button,button,kbd{
+		--button-background-color:rgba(0 0 0 / 10%);
+		--button-border-color:var(--color-dark-5);
+		--button-text-color:var(--color-dark-1);
+		--button-focus-outline-color:var(--color-warm-2);
+		--button-hover-background-color:var(--color-warm-2);
+		--button-hover-text-color:var(--color-light-1);
 	}
 }
 
@@ -3199,9 +3216,8 @@ input[type="text"].dice-count{
 
 
 /* ----------------------------------------- */
-/*  Chat Cards
+/*  Chat Cards								 */
 /* ----------------------------------------- */
-
 .dnd4e.chat-card{
 	font-style:normal;
 	font-size:14px;
@@ -3231,29 +3247,9 @@ input[type="text"].dice-count{
 	.card-header h3:hover{
 		text-shadow:0 0 10px red;
 	}
-	.card-buttons{
-		margin:5px 0;
-		display:flex;
-		flex-wrap:wrap;
-		justify-content:space-between;
-	}
-	.card-buttons span {
-		display:block;
-		line-height:28px;
-		text-align:center;
-		border:1px solid #ccc;
-	}
-	.card-buttons button {
-		font-size:12px;
-		height:24px;
-		line-height:20px;
-		margin:2px 0;
-
-		flex-basis:calc(50% - 2px);
-		overflow:hidden;
-	}
-	.card-buttons button:last-child:nth-child(odd){
-		flex-basis:100%;
+	.effects-tray label,
+	.card-content .collapsible{
+		cursor:pointer;
 	}
 	.card-footer{
 		padding:3px 0 0;
@@ -3271,20 +3267,6 @@ input[type="text"].dice-count{
 	.chatDamageButtons{
 		font-size:var(--font-size-12);
 		display:flex;
-	}
-	.fakechatbutton{
-		width:100%;
-		border:var(--border-engraved);
-		border-radius:3px;
-		background:var(--color-bg-btn-minor-active);
-		padding:3px 3px;
-		margin:2px 1px;
-		text-align:center;
-		flex-grow:1;
-	}
-	.effects-tray label,
-	.card-content .collapsible{
-		cursor:pointer;
 	}
 	.roboto-upper{
 		font-family:Roboto, sans-serif;
@@ -3313,18 +3295,6 @@ input[type="text"].dice-count{
 	  flex-basis:50%;
 	  border-top:1px dotted #9f9275;
 	  align-self:center;
-	}
-	.card-buttons .dnd4e-button-icon{
-		display:inline-block;
-		vertical-align:middle;
-		line-height:0px;
-		font-size:16px;
-		width:15px;
-		height:15px;
-		border:none;
-	}
-	.card-buttons .dnd4e-button-icon img{
-		border:none;
 	}
 	.effects-tray .effects{
 		display:flex;
@@ -3442,9 +3412,50 @@ input[type="text"].dice-count{
 	}
 }
 
+.card-buttons,.chatDamageButtons{
+	margin:5px 0;
+	display:flex;
+	flex-wrap:wrap;
+	justify-content:space-between;
+	
+	span{
+		display:block;
+		line-height:28px;
+		text-align:center;
+		border:1px solid #ccc;
+	}
+	button{
+		--button-size:2rem;
+		font-size:12px;
+		height:24px;
+		line-height:1;
+		margin:2px 0;
+		flex-basis:calc(50% - 2px);
+		overflow:hidden;
+	}
+	button:last-child:nth-child(odd){
+		flex-basis:100%;
+	}
+	.dnd4e-button-icon{
+		display:inline-block;
+		vertical-align:middle;
+		line-height:0px;
+		font-size:16px;
+		width:15px;
+		height:15px;
+		border:none;
+	}
+	.dnd4e-button-icon img{
+		border:none;
+	}
+	.dnd4e-button-icon img:is(:hover,:active,:focus){
+        filter:invert(1);
+	}
+}
+
 
 /* ----------------------------------------- */
-/* Journals
+/* Journals									 */
 /* ----------------------------------------- */
 .sheet.journal-entry{
 	.journal-entry-page{
