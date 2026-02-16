@@ -1653,7 +1653,10 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 					speaker: {actor: this.document, alias: this.document.name},
 					flavor: flav,
 					rollMode: game.settings.get("core", "rollMode"),
-					messageData: {"flags.dnd4e.roll": {type: "other", itemId: this.id }}
+					'flags.dnd4e':{
+						'roll':{'type': "other", 'itemId': this.id},
+						'messageType': `recharge`
+					}
 				});
 
 			} else if (item.system.rechargeCondition) {
@@ -1664,7 +1667,10 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 					user: game.user.id,
 					speaker: {actor: this.document, alias: this.document.name},
 					flavor: `${item.name}—${game.i18n.localize('DND4E.PowerRecharge')}`,
-					content: `${game.i18n.format('DND4E.PowerRechargeSuccessCondition',{type: item.name,condition:item.system.rechargeCondition})}`
+					content: `${game.i18n.format('DND4E.PowerRechargeSuccessCondition',{type: item.name,condition:item.system.rechargeCondition})}`,
+					'flags.dnd4e':{
+						'messageType': `recharge`
+					}
 				});
 			}
 		}

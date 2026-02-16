@@ -33,7 +33,7 @@
 	--background-other:linear-gradient(45deg, #0d0145, #301c89);
 }
 
-.dnd4e{
+.dnd4e,.chat-log{
 	--background-atwill:-o-linear-gradient(45deg, #125f15, #55aa2e);
 	--background-atwill:linear-gradient(45deg, #125f15, #55aa2e);
 	--background-encounter:o-linear-gradient(45deg, #3c0000, #dc0000);
@@ -51,31 +51,6 @@
 	--color-text-bad:red;
 	--input-box-shadow:none;
 	
-	.window-content{
-		padding:0.5em;
-		
-		&.standard-form{
-			gap:0;
-		}
-	}
-	&.standard-form{
-		gap:0;
-	}
-	code:not(.block){
-		display:inline;
-		background:unset;
-		border:unset;
-	}
-	.fakebutton{
-		width:100%;
-		border:var(--border-engraved);
-		border-radius:2px;
-		background:var(--color-bg-btn-minor-active);
-		padding:1px 3px;
-		margin:0 3px;
-		text-align:center;
-		font-size:14px;
-	}
 	.ability-usage--atwill{
 		background:var(--background-atwill);
 	}
@@ -112,6 +87,52 @@
 	.force-ability-usage--item{
 		background:var(--background-item) !important;
 	}
+	a.button,button,kbd{
+		--button-background-color:var(--override-button-background-color);
+		--button-border-color:var(--override-button-border-color);
+		--button-text-color:var(--override-button-text-color);
+		--button-focus-outline-color:var(--override-button-focus-outline-color);
+		--button-hover-background-color:var(--override-button-hover-background-color);
+		--button-hover-border-color:var(--override-button-hover-border-color);
+		--button-hover-text-color:var(--override-button-hover-text-color);
+		background:var(--override-button-background-color);
+		border:1px solid var(--override-button-border-color);
+		color:var(--override-button-text-color);
+		
+		&:is(:hover,:focus,:active){
+			background:var(--button-hover-background-color);
+			color:var(--button-hover-text-color);
+			border-color:var(--button-hover-border-color);
+		}
+	}
+}
+
+.dnd4e{
+	.window-content{
+		padding:0.5em;
+		
+		&.standard-form{
+			gap:0;
+		}
+	}
+	&.standard-form{
+		gap:0;
+	}
+	code:not(.block){
+		display:inline;
+		background:unset;
+		border:unset;
+	}
+	.fakebutton{
+		width:100%;
+		border:var(--border-engraved);
+		border-radius:2px;
+		background:var(--color-bg-btn-minor-active);
+		padding:1px 3px;
+		margin:0 3px;
+		text-align:center;
+		font-size:14px;
+	}
 	.effect-tooltip{
 		text-align:left;
 	}
@@ -126,6 +147,19 @@
 		position:relative;
 		top:2px;
 	}
+	input,select,textarea,code-mirror{
+		--input-background-color:var(--override-input-background-color);
+		--input-border-color:var(--override-input-border-color);
+		--input-box-shadow:var(--override-input-box-shadow);
+		--input-text-color:var(--override-input-text-color);
+	}
+	input[type=checkbox],
+	input[type=radio]{
+		--checkbox-font-weight:var(--override-checkbox-font-weight);
+		--checkbox-background-color:var(--override-checkbox-background-color);
+		--checkbox-checked-color:var(--override-checkbox-checked-color);
+		--checkbox-checkmark-color:var(--override-checkbox-checkmark-color);
+	}
 }
 .sheet.standard-form{
 	gap:0;
@@ -136,7 +170,8 @@
 	}
 }
 .themed.theme-dark,
-.themed.theme-dark application.dnd4e:is(.default,.standard-form){
+.themed.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form):not(.themed),
+body.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form):not(.themed){
 	--background:#221d21;
 	--gradient-4e:linear-gradient(90deg,#494949,#00000000);
 	--border-engraved:2px groove #000;
@@ -147,6 +182,9 @@
 	--white-svg-filter:brightness(0) saturate(100%) invert(91%) sepia(17%) saturate(207%) hue-rotate(345deg) brightness(103%) contrast(87%);
 	--automath-brightness:1;
 	--color-form-hint:var(--color-text-subtle);
+	--color-bg-btn-minor-inactive:rgba(0,0,0,0);
+	--color-bg-btn-minor-active:var(--color-cool-5-50);
+	--color-bg-option:unset;
 	--input-background-color:var(--color-cool-4);
 	--input-border-color:var(--border-faint);
 	--input-box-shadow:none;
@@ -155,23 +193,26 @@
 	--checkbox-background-color:var(--color-cool-4);
 	--checkbox-checked-color:#253c5e;
 	--checkbox-checkmark-color:#fff;
-	
-	input,select,textarea,code-mirror{
-		--input-background-color:var(--color-cool-4);
-		--input-border-color:var(--border-faint);
-		--input-box-shadow:none;
-		--input-text-color:inherit;
-	}
-	input[type=checkbox],
-	input[type=radio]{
-		--checkbox-font-weight:bold;
-		--checkbox-background-color:var(--color-cool-4);
-		--checkbox-checked-color:#253c5e;
-		--checkbox-checkmark-color:#fff;
-	}
+	/* Handle light/dakr mode for buttons and stuff. My god why does Foundry set the variables in the elemenets themselves*/
+	--override-input-background-color:var(--color-cool-4);
+	--override-input-border-color:var(--border-faint);
+	--override-input-box-shadow:none;
+	--override-input-text-color:inherit;
+	--override-checkbox-font-weight:bold;
+	--override-checkbox-background-color:var(--color-cool-4);
+	--override-checkbox-checked-color:#253c5e;
+	--override-checkbox-checkmark-color:#fff;
+	--override-button-background-color:var(--color-cool-5-50);
+	--override-button-border-color:var(--color-light-5);
+	--override-button-text-color:var(--color-light-3);
+	--override-button-focus-outline-color:var(--color-warm-2);
+	--override-button-hover-background-color:var(--color-warm-2);
+	--override-button-hover-border-color:var(--color-light-3);
+	--override-button-hover-text-color:var(--color-light-1);
 }
 .themed.theme-light,
-.themed.theme-light application.dnd4e:is(.default,.standard-form){
+.themed.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.themed),
+body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.themed){
 	--background:url('../../../../ui/parchment.jpg') repeat;
 	--gradient-4e:linear-gradient(90deg,#c3c2b7,#c3c2b718);
 	--border-engraved:2px groove #fff;
@@ -193,20 +234,21 @@
 	--checkbox-background-color:#c3b3ae;
 	--checkbox-checked-color:#253c5e;
 	--checkbox-checkmark-color:#fff;
-	
-	input,select,textarea,code-mirror{
-		--input-background-color:rgba(0,0,0,0.05);
-		--input-border-color:#c3b3ae;
-		--input-box-shadow:none;
-		--input-text-color:inherit;
-	}
-	input[type=checkbox],
-	input[type=radio]{
-		--checkbox-font-weight:400;
-		--checkbox-background-color:#c3b3ae;
-		--checkbox-checked-color:#253c5e;
-		--checkbox-checkmark-color:#fff;
-	}
+	/* Handle light/dakr mode for buttons and stuff. My god why does Foundry set the variables in the elemenets themselves*/
+	--override-input-background-color:rgba(0,0,0,0.05);
+	--override-input-border-color:#c3b3ae;
+	--override-input-box-shadow:none;
+	--override-input-text-color:inherit;
+	--override-checkbox-font-weight:400;
+	--override-checkbox-background-color:#c3b3ae;
+	--override-checkbox-checked-color:#253c5e;
+	--override-checkbox-checkmark-color:#fff;
+	--override-button-background-color:rgba(0 0 0 / 10%);
+	--override-button-border-color:var(--color-dark-5);
+	--override-button-text-color:var(--color-dark-1);
+	--override-button-focus-outline-color:var(--color-warm-2);
+	--override-button-hover-background-color:var(--color-warm-2);
+	--override-button-hover-text-color:var(--color-light-1);
 }
 
 
@@ -3197,9 +3239,8 @@ input[type="text"].dice-count{
 
 
 /* ----------------------------------------- */
-/*  Chat Cards
+/*  Chat Cards								 */
 /* ----------------------------------------- */
-
 .dnd4e.chat-card{
 	font-style:normal;
 	font-size:14px;
@@ -3229,29 +3270,9 @@ input[type="text"].dice-count{
 	.card-header h3:hover{
 		text-shadow:0 0 10px red;
 	}
-	.card-buttons{
-		margin:5px 0;
-		display:flex;
-		flex-wrap:wrap;
-		justify-content:space-between;
-	}
-	.card-buttons span {
-		display:block;
-		line-height:28px;
-		text-align:center;
-		border:1px solid #ccc;
-	}
-	.card-buttons button {
-		font-size:12px;
-		height:24px;
-		line-height:20px;
-		margin:2px 0;
-
-		flex-basis:calc(50% - 2px);
-		overflow:hidden;
-	}
-	.card-buttons button:last-child:nth-child(odd){
-		flex-basis:100%;
+	.effects-tray label,
+	.card-content .collapsible{
+		cursor:pointer;
 	}
 	.card-footer{
 		padding:3px 0 0;
@@ -3269,20 +3290,6 @@ input[type="text"].dice-count{
 	.chatDamageButtons{
 		font-size:var(--font-size-12);
 		display:flex;
-	}
-	.fakechatbutton{
-		width:100%;
-		border:var(--border-engraved);
-		border-radius:3px;
-		background:var(--color-bg-btn-minor-active);
-		padding:3px 3px;
-		margin:2px 1px;
-		text-align:center;
-		flex-grow:1;
-	}
-	.effects-tray label,
-	.card-content .collapsible{
-		cursor:pointer;
 	}
 	.roboto-upper{
 		font-family:Roboto, sans-serif;
@@ -3311,18 +3318,6 @@ input[type="text"].dice-count{
 	  flex-basis:50%;
 	  border-top:1px dotted #9f9275;
 	  align-self:center;
-	}
-	.card-buttons .dnd4e-button-icon{
-		display:inline-block;
-		vertical-align:middle;
-		line-height:0px;
-		font-size:16px;
-		width:15px;
-		height:15px;
-		border:none;
-	}
-	.card-buttons .dnd4e-button-icon img{
-		border:none;
 	}
 	.effects-tray .effects{
 		display:flex;
@@ -3440,9 +3435,50 @@ input[type="text"].dice-count{
 	}
 }
 
+.card-buttons,.chatDamageButtons{
+	margin:5px 0;
+	display:flex;
+	flex-wrap:wrap;
+	justify-content:space-between;
+	
+	span{
+		display:block;
+		line-height:28px;
+		text-align:center;
+		border:1px solid #ccc;
+	}
+	button{
+		--button-size:2rem;
+		font-size:12px;
+		height:24px;
+		line-height:1;
+		margin:2px 0;
+		flex-basis:calc(50% - 2px);
+		overflow:hidden;
+	}
+	button:last-child:nth-child(odd){
+		flex-basis:100%;
+	}
+	.dnd4e-button-icon{
+		display:inline-block;
+		vertical-align:middle;
+		line-height:0px;
+		font-size:16px;
+		width:15px;
+		height:15px;
+		border:none;
+	}
+	.dnd4e-button-icon img{
+		border:none;
+	}
+	.dnd4e-button-icon img:is(:hover,:active,:focus){
+        filter:invert(1);
+	}
+}
+
 
 /* ----------------------------------------- */
-/* Journals
+/* Journals									 */
 /* ----------------------------------------- */
 .sheet.journal-entry{
 	.journal-entry-page{
@@ -3506,7 +3542,7 @@ input[type="text"].dice-count{
 }
 
 /* ----------------------------------------- */
-/* Chat Messages
+/* Chat Messages							 */
 /* ----------------------------------------- */
 
 .chat-log{
@@ -3606,7 +3642,8 @@ input[type="text"].dice-count{
 
 @media (prefers-reduced-transparency){
 	.themed.theme-dark,
-	.themed.theme-dark application.dnd4e:is(.default,.standard-form){
+	.themed.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form):not(.themed),
+	body.theme-dark :is(.application,.app):is(.default,.standard-form):not(.themed){
         --background:#221d21;
     }
 }
