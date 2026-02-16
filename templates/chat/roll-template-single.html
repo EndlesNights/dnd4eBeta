@@ -23,11 +23,11 @@
 </div>
 <div class="chatDamageButtons">
 	{{#if hitTypeDamage}}
-	<a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4E.ChatContextButtonTitle" }}" data-action="Damage"><i class="fas fa-user-minus"></i>{{ localize "DND4E.ChatContextDamage" }}</a>
-	<a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4E.ChatContextButtonTitle" }}" data-action="HalfDamage"><i class="fas fa-user-shield"></i>{{ localize "DND4E.ChatContextHalfDamage" }}</a>
+	<button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="Damage"><i class="fas fa-user-minus"></i>{{ localize "DND4E.ChatContextDamage" }}</button>
+	<button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="HalfDamage"><i class="fas fa-user-shield"></i>{{ localize "DND4E.ChatContextHalfDamage" }}</button>
 	{{else if hitTypeHealing}}
-	<a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4E.ChatContextButtonTitle" }}" data-action="Heal"><i class="fas fa-user-plus fa-fw"></i>{{ localize "DND4E.ChatContextHealing" }}</a>
-	<a class="fakechatbutton chat-damage-button" data-tooltip="{{ localize "DND4E.ChatContextButtonTitle" }}" data-action="TempHeal"><i class="fas fa-user-clock fa-fw"></i>{{ localize "DND4E.ChatContextTempHp" }}</a>
+	<button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="Heal"><i class="fas fa-user-plus fa-fw"></i>{{ localize "DND4E.ChatContextHealing" }}</button>
+	<button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="TempHeal"><i class="fas fa-user-clock fa-fw"></i>{{ localize "DND4E.ChatContextTempHp" }}</button>
 	{{/if}}
 </div>
 <script>
