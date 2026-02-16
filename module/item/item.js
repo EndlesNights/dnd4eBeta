@@ -2645,12 +2645,26 @@ export default class Item4e extends Item {
 		// Effects
 		else if ( action === "applyEffect" ) {
 			//apply the single effect from button
-			const effectId = button.closest("[data-uuid]")?.dataset.uuid.split('.').pop();
+			// Guard: chat cards can become stale or malformed; ensure uuid exists before parsing.
+			const uuid = button.closest("[data-uuid]")?.dataset?.uuid;
+			if ( !uuid ) {
+				ui.notifications.warn(game.i18n.localize("DND4E.ActionWarningNoItem"));
+				button.disabled = false;
+				return;
+			}
+			const effectId = uuid.split('.').pop();
 			//const effect = effects.await fromUuid(button.closest("[data-uuid]")?.dataset.uuid);
 			//Get effect from embedded data, in case the source has been expended/deleted
 			const effect = item.effects.get(effectId);
+			// Guard: effect might no longer exist on the item (deleted/changed since the message was created).
+			if ( !effect ) {
+				ui.notifications.warn(game.i18n.localize("DND4E.ActionWarningNoItem"));
+				button.disabled = false;
+				return;
+			}
 			const targets = game.settings.get("dnd4e", "applyEffectsToSelection") ? canvas.tokens.controlled : game.user.targets;
-			Helper.applyEffectsToTokens([effect], targets, effect.flags.dnd4e.effectData.powerEffectTypes, actor);
+			// Use optional chaining to avoid hard-crashing if flags are missing.
+			Helper.applyEffectsToTokens([effect], targets, effect.flags?.dnd4e?.effectData?.powerEffectTypes, actor);
 		} 
 		else if ( action === "effect" ) Helper.applyAllXEffectsToTokens(item.effects, actor, effectTargets);
 		else if ( action === "hitEffect" ) Helper.applyEffectsToTokens(item.effects, effectTargets, "hit", actor);
