@@ -136,8 +136,8 @@
 	}
 }
 .themed.theme-dark,
-.themed.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form),
-body.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form){
+.themed.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form):not(.themed),
+body.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form):not(.themed){
 	--background:#221d21;
 	--gradient-4e:linear-gradient(90deg,#494949,#00000000);
 	--border-engraved:2px groove #000;
@@ -181,8 +181,8 @@ body.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form){
 	}
 }
 .themed.theme-light,
-.themed.theme-light :is(.application,.app).dnd4e:is(.default,.standard-form),
-body.theme-light :is(.application,.app).dnd4e:is(.default,.standard-form){
+.themed.theme-light :is(.application,.app).dnd4e:is(.default,.standard-form):not(.themed),
+body.theme-light :is(.application,.app).dnd4e:is(.default,.standard-form):not(.themed){
 	--background:url('../../../../ui/parchment.jpg') repeat;
 	--gradient-4e:linear-gradient(90deg,#c3c2b7,#c3c2b718);
 	--border-engraved:2px groove #fff;
@@ -3619,8 +3619,8 @@ input[type="text"].dice-count{
 
 @media (prefers-reduced-transparency){
 	.themed.theme-dark,
-	.themed.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form),
-	body.theme-dark :is(.application,.app):is(.default,.standard-form){
+	.themed.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form):not(.themed),
+	body.theme-dark :is(.application,.app):is(.default,.standard-form):not(.themed){
         --background:#221d21;
     }
 }
