@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.7.8
+- Some additional safety checks and unexpected behaviours (nameearly)
+- Fixed flags on the message generated for recharge rolls (Fox)
+- Further (hopefully the LAST!) light/dark mode tweaks (Fox)
+- Made "fakechatbutton" elements in damage roll message into real buttons. They've earned it. (Fox)
+
 ## Version 0.7.7
 - Added light/dark mode selection for chat, and fixed a number of style and label errors. (Fox)
 
@@ -1364,6 +1370,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
