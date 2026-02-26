@@ -61,7 +61,6 @@ TokenBarHooks.powersBySheetGroup = (actor) => {
  * @param {Actor4e} actor 
  * @param {Item4e} item 
  */
-//v3 hook.  _generateItemSummary returns a jquery selector that the sheet wants.  Give the caller back just the html.
 TokenBarHooks.generateItemTooltip = async (actor, item) => {
     //see actor-sheet.js line 383
     const chatdata = await item.getChatData({secrets: actor.isOwner})
