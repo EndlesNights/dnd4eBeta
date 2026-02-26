@@ -1,5 +1,6 @@
-import {SaveThrowDialog} from "./apps/save-throw.js";
+import { Actor4e } from "./actor/actor.js";
 import {Helper} from "./helper.js";
+import Item4e from "./item/item.js";
 
 /**
  * These methods are all called by https://github.com/Drental/fvtt-tokenactionhud, their method signature should not be changed without a code change there.
@@ -19,7 +20,7 @@ TokenBarHooks.isPowerAvailable = (actor, power) => {
     return !power.system.notAvailable
 }
 
-TokenBarHooks.quickSave = (actor, event) => new SaveThrowDialog(actor)._updateObject(event, {save : 0, dc: 10})
+TokenBarHooks.quickSave = (actor, event) => actor.rollSave(event, {isFF : true});
 
 TokenBarHooks.saveDialog = (actor, event) =>  actor.sheet._onSavingThrow(event)
 
@@ -55,6 +56,31 @@ TokenBarHooks.powersBySheetGroup = (actor) => {
     return powersByGroup;
 }
 
+/**
+ * 
+ * @param {Actor4e} actor 
+ * @param {Item4e} item 
+ */
 //v3 hook.  _generateItemSummary returns a jquery selector that the sheet wants.  Give the caller back just the html.
-TokenBarHooks.generateItemTooltip = async (actor, item) => ""
+TokenBarHooks.generateItemTooltip = async (actor, item) => {
+    //see actor-sheet.js line 383
+    const chatdata = await item.getChatData({secrets: actor.isOwner})
+    console.log(chatdata)
+    if (item.type === "power" && item.system.autoGenChatPowerCard) {
+        let attackBonus = null;
+        if(item.hasAttack){
+            attackBonus = await item.getAttackBonus();
+        }
+        let detailsText = Helper._preparePowerCardData(chatdata, CONFIG, actor, attackBonus);
+        const enrichedDetailsText = await foundry.applications.ux.TextEditor.implementation.enrichHTML(detailsText, {
+            async: true,
+            relativeTo: actor
+        });
+        console.log(enrichedDetailsText)
+        return enrichedDetailsText
+    }
+    else {
+        return chatdata.description.value
+    }
+}
 
