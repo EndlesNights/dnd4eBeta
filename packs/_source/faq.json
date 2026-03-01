@@ -1,0 +1,62 @@
+{
+  "name": "FAQ",
+  "folder": null,
+  "flags": {},
+  "pages": [
+    {
+      "name": "FAQ",
+      "type": "text",
+      "title": {
+        "show": false,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h2>Is this official?</h2><p>No, it is not official, or endorsed by Wizards of the Coast.</p><h2>Who makes it?</h2><p>The system owner is known as EndlesNights and there are several others who contribute. You can see the license and changelog on the github.</p><h2>Where can I get help?</h2><h3>4e Discord</h3><p>The best place by far is the 4e Discord server here: <a href=\"https://discord.com/invite/hhVXjtJ\">https://discord.com/invite/hhVXjtJ</a></p><p>Head to the <strong><code>Virtual Tabletops</code></strong> Channel. This is a channel for all VTT's playing 4e - so you may see stuff related to Roll20 or MapTool. Most of the system authors and many people who have done fantastic integrations hang out there.</p><p><strong>CHECK THE PINNED POSTS.</strong> FAQ and useful information is pinned there and may answer your question straight off.</p><p>Even if it does, by all means say hi, we like hearing about more people playing 4e!</p><p><em>A reminder that the people who work on the system are volunteers who are doing it in their spare time because they love playing 4E.</em></p><h3>Project Github</h3><p>You can also raise issues on the project github here: <a href=\"https://github.com/EndlesNights/dnd4eBeta\">https://github.com/EndlesNights/dnd4eBeta</a></p><h3>Main Foundry Discord</h3><p>You can chat and ask questions on the #dnd-other channel on the foundry discord, but not so many 4e users and players hang out there, you are better off asking on the 4e discord. <a href=\"https://discord.gg/foundryvtt\">https://discord.gg/foundryvtt</a></p><h2>Why don't you have more powers/classes/feats/gear?</h2><p>We are not allowed to. The 4E SRD is much more restrictive on what we can distribute than 3.5/5th. It allows a certain number of things to be distributed as references to the relevant D&amp;D sourcebook. It allows very few things (primarily the weapon, armour and basic equipment in the PHB and class and race mechanics) to have their mechanical details exactly distributed (at least as is found in certain tables).</p><p>Where we can reproduce things exactly, we have, in addition we have created a number of example items and powers in compendiums and referenced their inspiring D&amp;D item. The names, descriptions and flavour text are all slightly different to avoid reproducing WotC content.</p><h2>Surely WotC don't care?</h2><p>Maybe not, but Foundry VTT very much does and insists that its platform is not used to distribute infringing or potentially infringing content.</p><h2>There is an “Import Data” button, where can I get JSON to import powers from?</h2><p>Not from us, sorry! - See the bits above.</p><p>The import / export lets you easily share powers with the rest of your game without needing to be the GM, and lets you easily send us powers that are bugged / have errors.</p><h2>Can I import my Characters from Character Builder?</h2><p>Not out of the box, as well as being very difficult to write, because of how CBuilder stores data, in order to do a general importer we would have to distribute material that is non SRD and thus WotC copyrighted.</p><p>One of the 4e community has written a converter between CBuilder and Foundry, letting you take your character and import it into Foundry. You can find instructions on how to import Character Builder content that you have created on the 4e discord.</p><h2>What about Monsters? I’ve heard there is an importer?</h2><p>Drac has written a tool to convert data from Masterplan into Foundry data which lets GM’s who are set up with masterplan to easily convert their encounters to Foundry. Have a look at Drac's Tool's in<span style=\"font-family:var(--font-primary)\">@Compendium[dnd4e.manual.pSOFSTYYchdZ0rZB]{Module Integrations}</span></p><p>For GM’s who are curious about how Masterplan can help setting up encounters quickly and easily we suggest joining the 4E discord and seeing their resources section</p><h2>I have a global penalty to attacks and I don't know why?</h2><p>If you have an armour equipped in which you are not proficient it applies a penalty to your attack modifier, check that your armour is set to proficient</p><h2>STEVE!</h2><p>Steve is the example character, you can find him here: @UUID[Compendium.dnd4e.example_character.Actor.iK3UnA8rC1xbJ1Ap]{Steve, The Example Character} in the Example Character compendium entry.</p><p>Steve demonstrates many useful things and is well worth a look:</p><ul><li><p>Dual Wielding Strike (Primary) has a macro to trigger the secondary attack into chat automatically</p></li><li><p>His potion of minor healing consumes one of itself when used and also consumes 1 of his healing surges.</p></li><li><p>He has a number of active effects to simulate the effects of feats and classes</p></li></ul><p>These manuals will either describe or link to things on Steve for examples.</p>",
+        "markdown": ""
+      },
+      "_id": "7aJPKP0gTbB4Rtaa",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 0,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "dnd4e",
+        "systemVersion": "0.4.51",
+        "coreVersion": "13.351",
+        "createdTime": null,
+        "modifiedTime": 1771988119913,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "category": null,
+      "_key": "!journal.pages!ilOmhgH00gm0ruEO.7aJPKP0gTbB4Rtaa"
+    }
+  ],
+  "ownership": {
+    "default": 0
+  },
+  "_stats": {
+    "systemId": "dnd4e",
+    "systemVersion": "0.4.51",
+    "coreVersion": "13.348",
+    "createdTime": 1688154177513,
+    "modifiedTime": 1715741345097,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "ilOmhgH00gm0ruEO",
+  "sort": 0,
+  "categories": [],
+  "_key": "!journal!ilOmhgH00gm0ruEO"
+}
