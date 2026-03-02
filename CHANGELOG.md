@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.7.9.1 Hotfix
+- ACTUALLY Updated documentation compendium this time. (Fox)
+
 ## Version 0.7.9
 - Fixed tooltip API that got broken in v13; should help restore TAH tooltip functionality. (Draconas)
 - Updated documentation compendium for v13, and restored some earlier info that apparently got lost somewhere along the way. (Fox)
@@ -1375,6 +1378,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
