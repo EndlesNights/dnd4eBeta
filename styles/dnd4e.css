@@ -3203,7 +3203,8 @@ input[type="text"].dice-count{
 	text-align:center;
 }
 .roll-dialogue .form-group.bonus{
-	max-width:50%;
+	flex:11em 1 1;
+	max-width:calc(50% - 1.5rem);
 	margin:0;
 }
 .roll-dialogue .form-group.bonus .checkbox{
