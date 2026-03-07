@@ -1,5 +1,18 @@
 # Changelog
 
+## Version 0.7.10
+- Fix for a CSS issue with attack roll dialogue. (Fox)
+- Fixes a bug where the toggle for using an ability score on AC was ignored. (Bonus: Now we can aut9mate `altability`!) (Fox)
+
+## Version 0.7.9.1 Hotfix
+- ACTUALLY Updated documentation compendium this time. (Fox)
+- Potential fix for a CSS issue with attack roll dialogue. (Fox)
+
+## Version 0.7.9
+- Fixed tooltip API that got broken in v13; should help restore TAH tooltip functionality. (Draconas)
+- Updated documentation compendium for v13, and restored some earlier info that apparently got lost somewhere along the way. (Fox)
+- Fixed a typo in the system conditions list (you may need to update effects which refer to "donimate"). (Fox) 
+
 ## Version 0.7.8
 - Some additional safety checks and unexpected behaviours (nameearly)
 - Fixed flags on the message generated for recharge rolls (Fox)
@@ -1370,6 +1383,10 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
+
+
+
 
 
 

@@ -1933,7 +1933,7 @@ DND4E.statusEffect = {
 		img: "systems/dnd4e/icons/statusEffects/stunned.svg",
 		description: "EFFECTDESC.stunned"
 	},
-	donimated: {
+	dominated: {
 		name: "EFFECT.statusDominated",
 		img: "systems/dnd4e/icons/statusEffects/dominated.svg",
 		description: "EFFECTDESC.dominated"
