@@ -1246,6 +1246,7 @@ export class Actor4e extends Actor {
 						}
 					}
 					else if((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
+						if(id=== 'ac' && i.system.armour.subType === "heavy") def.light = false;
 						//console.log(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
 						def.enhance = Math.max(def.enhance,i.system.armour.enhance);
 					}
@@ -1260,7 +1261,12 @@ export class Actor4e extends Actor {
 					def.enhance = Math.max(def.enhance,enhFloor);
 				}
 
-				let modBonus = def.ability != "" ? data.abilities[def.ability].mod : 0;
+				console.debug(id);
+				console.debug(def);
+				
+				let usedAbility = def?.ability || '';
+				if(def.altability != '') usedAbility = def.altability;
+				const modBonus = !(id === "ac" && !def.light) ? data.abilities[usedAbility].mod : 0;
 
 				def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;
 				def.value += Math.max(def?.feat || 0, globalBonus?.feat || 0);
@@ -1351,7 +1357,7 @@ export class Actor4e extends Actor {
 						def.base = 10;
 						this.update({[`system.defences[${def}].base`]: 10 });
 					}
-					let modBonus =  def.ability != "" ? data.abilities[def.ability].mod : 0;
+					let modBonus = def.ability != "" ? data.abilities[def.ability].mod : 0;
 
 					def.value = def.base + modBonus + def.armour + def.class + def.enhance + def.temp + defBonusValue;
 					
