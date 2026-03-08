@@ -1261,9 +1261,6 @@ export class Actor4e extends Actor {
 					def.enhance = Math.max(def.enhance,enhFloor);
 				}
 
-				console.debug(id);
-				console.debug(def);
-				
 				let usedAbility = def?.ability || '';
 				if(def.altability != '') usedAbility = def.altability;
 				const modBonus = !(id === "ac" && !def.light) ? data.abilities[usedAbility].mod : 0;
