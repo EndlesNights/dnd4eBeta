@@ -1321,30 +1321,30 @@ preLocalize("special", { sort: true });
  */
 DND4E.movementTypes = {
 	burrow: {
-		label: "DND4E.MovementBurrowing"
+		label: "DND4E.Movement.Burrow",
 	},
 	climb: {
-		label: "DND4E.MovementClimbing",
+		label: "DND4E.Movement.Climb",
 		walkFallback: true
 	},
 	fly: {
-		label: "DND4E.MovementFlying"
+		label: "DND4E.Movement.Fly"
 	},
 	shift: {
-		label: "DND4E.MovementShifting"
+		label: "DND4E.Movement.Shift"
 	},
 	swim: {
-		label: "DND4E.MovementSwimming",
+		label: "DND4E.Movement.Swim",
 		walkFallback: true
 	},
 	teleport: {
-		label: "DND4E.MovementTeleporting"
+		label: "DND4E.Movement.Teleport"
 	},
 	walk: {
-		label: "DND4E.MovementWalking"
+		label: "DND4E.Movement.Walk"
 	}
 };
-preLocalize("movementTypes", { key: "label" });
+preLocalize("movementTypes", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
