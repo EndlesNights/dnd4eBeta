@@ -644,27 +644,47 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	
 	_prepareMovement(data) {
 		if (!data.hasSpeed) return;
-		data.moveTitle = `<p style="text-align:left">
-${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedWalking")}
-<br>+${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedRunning")}
-<br>${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedCharging")}
-<br>${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedShifting")}`;
-		if(data.system.movement.burrow.value) data.moveTitle += `<br>${parseInt(data.system.movement.burrow.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedBurrowing")}`;
-		if(data.system.movement.climb.value) data.moveTitle += `<br>${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedClimbing")}`;
-		if(data.system.movement.fly.value) data.moveTitle += `<br>${parseInt(data.system.movement.fly.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedFlying")}`;
-		if(data.system.movement.swim.value) data.moveTitle += `<br>${parseInt(data.system.movement.swim.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedSwimming")}`
-		if(data.system.movement.teleport.value) data.moveTitle += `<br>${parseInt(data.system.movement.teleport.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedTeleporting")}`;
+		data.moveDisplay = `${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movement.Unit")}`;
+		data.moveTip = `<p style="text-align:left">
+		${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize("DND4E.Movement.Walk")})}
+		<br />+${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.localize("DND4E.Movement.RunBonus")}
+		<br />${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize("DND4E.Movement.Charge")})}
+		<br />${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize("DND4E.Movement.Shift")})}`;
+		/*if(data.system.movement.burrow.value) data.moveTip += `<br>${parseInt(data.system.movement.burrow.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedBurrowing")}`;
+		if(data.system.movement.climb.value) data.moveTip += `<br>${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedClimbing")}`;
+		if(data.system.movement.fly.value) data.moveTip += `<br>${parseInt(data.system.movement.fly.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedFlying")}`;
+		if(data.system.movement.swim.value) data.moveTip += `<br>${parseInt(data.system.movement.swim.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedSwimming")}`
+		if(data.system.movement.teleport.value) data.moveTip += `<br>${parseInt(data.system.movement.teleport.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedTeleporting")}`*/;
+
+		const moveModes = ['burrow','climb','fly','swim','teleport'];
+		for (let m of moveModes){
+			if(data.system.movement[m].value > 0){
+				data.moveTip += `<br />${parseInt(data.system.movement[m].value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: CONFIG.DND4E.movementTypes[m].label})}`;
+				if(this.actor.type != "Player Character") data.moveDisplay += `, <span class="move-mode">${CONFIG.DND4E.movementTypes[m].label} ${parseInt(data.system.movement[m].value)}${game.i18n.localize("DND4E.Movement.Unit")}</span>`;
+			}
+		}
+		if(this.actor.type != "Player Character" && data.system.movement.shift.value > 1) data.moveDisplay += `, <span class="move-mode">${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize('DND4E.Movement.Shift')})} ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.Movement.Unit")}</span>`;
 
 		if(data.system.movement.custom){
 			const moveCustom = [];
 			data.system.movement.custom.split(";").forEach((c, i) => (c ? moveCustom[i] = c.trim() : null) );
 			data.moveCustom = moveCustom;
-			moveCustom.forEach((c) => data.moveTitle += `<br>${c.trim()}`);
+			moveCustom.forEach((c) => {
+				if(this.actor.type === "Player Character"){
+					data.moveTip += `<br>${c.trim()}`
+				}else{
+					data.moveDisplay += `, <span class="move-extra">${c.trim()}</span>`;
+				}
+			});
 		}
 		if(data.system.movement.ignoredDifficultTerrain){
 			data.system.movement.ignoredDifficultTerrain.forEach((t) => {
 				const terrainLabel = CONFIG.DND4E.ignoredDifficultTerrainTypes[t].label;
-				data.moveTitle += `<br>${terrainLabel}`
+				if(this.actor.type === "Player Character"){
+					data.moveTip += `<br>${terrainLabel}`
+				}else{					
+					data.moveDisplay += `, <span class="move-modifier">${terrainLabel}</span>`
+				}
 			})
 		}
 	}	
