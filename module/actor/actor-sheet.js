@@ -658,7 +658,9 @@ ${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movemen
 		if(data.system.movement.custom){
 			const moveCustom = [];
 			data.system.movement.custom.split(";").forEach((c, i) => (c ? moveCustom[i] = c.trim() : null) );
-			data.system.moveCustom = moveCustom;
+			console.debug(moveCustom);
+			data.moveCustom = moveCustom;
+			console.debug(data.system.moveCustom);
 			moveCustom.forEach((c) => data.moveTitle += `<br>${c.trim()}`);
 		}
 		if(data.system.movement.ignoredDifficultTerrain){
