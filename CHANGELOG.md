@@ -1,8 +1,9 @@
 # Changelog
 
 ## Version 0.7.10
-- Fix for a CSS issue with attack roll dialogue. (Fox)
-- Fixes a bug where the toggle for using an ability score on AC was ignored. (Bonus: Now we can automate `altability`!) (Fox)
+- Fixed a CSS issue with attack roll dialogue. (Fox)
+- Fixed a bug where the toggle for using an ability score on AC was ignored. (Bonus: Now we can automate `altability`!) (Fox)
+- Fixed a bug where special movement modes stopped displaying for NPCs, and improved movement display/toolip. (Fox)
 
 ## Version 0.7.9.1 Hotfix
 - ACTUALLY Updated documentation compendium this time. (Fox)
@@ -1383,6 +1384,7 @@ It should be noted this is still a risk with hp-auto calc and the bonus field.
 
 ## Version 0.0.0
 - Initial commit
+
 
 
 
