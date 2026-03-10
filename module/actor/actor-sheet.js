@@ -660,7 +660,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		for (let m of moveModes){
 			if(data.system.movement[m].value > 0){
 				data.moveTip += `<br />${parseInt(data.system.movement[m].value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: CONFIG.DND4E.movementTypes[m].label})}`;
-				if(this.actor.type != "Player Character") data.moveDisplay += `, <span class="move-mode">${CONFIG.DND4E.movementTypes[m].label} ${parseInt(data.system.movement[m].value)}${game.i18n.localize("DND4E.Movement.Unit")}</span>`;
+				if(this.actor.type != "Player Character") data.moveDisplay += `, <span class="move-mode">${CONFIG.DND4E.movementTypes[m].label} ${parseInt(data.system.movement[m].value)} ${game.i18n.localize("DND4E.Movement.Unit")}</span>`;
 			}
 		}
 		if(this.actor.type != "Player Character" && data.system.movement.shift.value > 1) data.moveDisplay += `, <span class="move-mode">${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize('DND4E.Movement.Shift')})} ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.Movement.Unit")}</span>`;
