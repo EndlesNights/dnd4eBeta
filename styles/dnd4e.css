@@ -2353,6 +2353,9 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		.npc-upper .basics .alignment input{
 			max-width:120px;
 		}
+		.npc-upper .movement-dialog span{
+			font-weight:normal;
+		}
 		.section--skills .skill-name{
 			flex-basis:300px;
 			max-width:10em;
