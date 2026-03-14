@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.7.11
+- Added a trait field to each movement mode, and updated movement/speed config to show the expected defaults under v13. (Fox)
+
 ## Version 0.7.10
 - Fixed a CSS issue with attack roll dialogue. (Fox)
 - Fixed a bug where the toggle for using an ability score on AC was ignored. (Bonus: Now we can automate `altability`!) (Fox)
