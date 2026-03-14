@@ -646,10 +646,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (!data.hasSpeed) return;
 		data.moveDisplay = `${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movement.Unit")}`;
 		data.moveTip = `<p style="text-align:left">
-		${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize("DND4E.Movement.Walk")})}
-		<br />+${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.localize("DND4E.Movement.RunBonus")}
-		<br />${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize("DND4E.Movement.Charge")})}
-		<br />${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize("DND4E.Movement.Shift")})}`;
+		${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize("DND4E.Movement.Walk")})}`;
+		if(data.system.movement.walk?.traits) data.moveTip += ` (${data.system.movement.walk.traits})`;
+		data.moveTip += `<br />+${parseInt(data.system.movement.run.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.localize("DND4E.Movement.Run")}`;
+		if(data.system.movement.run?.traits) data.moveTip += ` (${data.system.movement.run.traits})`;
+		data.moveTip += `<br />${parseInt(data.system.movement.charge.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize("DND4E.Movement.Charge")})}`;
+		if(data.system.movement.charge?.traits) data.moveTip += ` (${data.system.movement.charge.traits})`;
+		data.moveTip += `<br />${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize("DND4E.Movement.Shift")})}`;
+		if(data.system.movement.shift?.traits) data.moveTip += ` (${data.system.movement.shift.traits})`;
 		/*if(data.system.movement.burrow.value) data.moveTip += `<br>${parseInt(data.system.movement.burrow.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedBurrowing")}`;
 		if(data.system.movement.climb.value) data.moveTip += `<br>${parseInt(data.system.movement.climb.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedClimbing")}`;
 		if(data.system.movement.fly.value) data.moveTip += `<br>${parseInt(data.system.movement.fly.value)} ${game.i18n.localize("DND4E.MovementUnit")} ${game.i18n.localize("DND4E.MovementSpeedFlying")}`;
@@ -660,10 +664,15 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		for (let m of moveModes){
 			if(data.system.movement[m].value > 0){
 				data.moveTip += `<br />${parseInt(data.system.movement[m].value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: CONFIG.DND4E.movementTypes[m].label})}`;
-				if(this.actor.type != "Player Character") data.moveDisplay += `, <span class="move-mode">${CONFIG.DND4E.movementTypes[m].label} ${parseInt(data.system.movement[m].value)} ${game.i18n.localize("DND4E.Movement.Unit")}</span>`;
+				if(data.system.movement[m]?.traits) data.moveTip += ` (${data.system.movement[m].traits})`;
+				if(this.actor.type != "Player Character"){
+					data.moveDisplay += `, <span class="move-mode">${CONFIG.DND4E.movementTypes[m].label} ${parseInt(data.system.movement[m].value)} ${game.i18n.localize("DND4E.Movement.Unit")}`;
+					if(data.system.movement[m]?.traits) data.moveDisplay += ` (${data.system.movement[m].traits})`;
+					data.moveDisplay += `</span>`;
+				}
 			}
 		}
-		if(this.actor.type != "Player Character" && data.system.movement.shift.value > 1) data.moveDisplay += `, <span class="move-mode">${game.i18n.localize('DND4E.Movement.Shift')} ${parseInt(data.system.movement.shift.value)} ${game.i18n.localize("DND4E.Movement.Unit")}</span>`;
+		if(this.actor.type != "Player Character" && data.system.movement.shift.value > 1) data.moveDisplay += `, <span class="move-mode">${game.i18n.localize('DND4E.Movement.Shift')} ${parseInt(data.system.movement.shift.value)} ${data.system.movement.shift.traits ? data.system.movement.shift.traits : '' }</span>`;
 
 		if(data.system.movement.custom){
 			const moveCustom = [];
@@ -671,21 +680,30 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			data.moveCustom = moveCustom;
 			moveCustom.forEach((c) => {
 				if(this.actor.type === "Player Character"){
-					data.moveTip += `<br>${c.trim()}`
+					data.moveTip += `<br />${c.trim()}`;
 				}else{
 					data.moveDisplay += `, <span class="move-extra">${c.trim()}</span>`;
 				}
 			});
 		}
 		if(data.system.movement.ignoredDifficultTerrain){
+			let terrainString = '';
 			data.system.movement.ignoredDifficultTerrain.forEach((t) => {
 				const terrainLabel = CONFIG.DND4E.ignoredDifficultTerrainTypes[t].label;
+				if(terrainString !='') terrainString += `, `;
 				if(this.actor.type === "Player Character"){
-					data.moveTip += `<br>${terrainLabel}`
-				}else{					
-					data.moveDisplay += `, <span class="move-modifier">${terrainLabel}</span>`
+					terrainString += `${terrainLabel}`;
+				}else{
+					terrainString += `<span class="move-modifier">${terrainLabel}</span>`;
 				}
-			})
+			});
+			if(terrainString !=''){
+				if(this.actor.type === "Player Character"){
+					data.moveTip += `<br />(${terrainString})`;
+				}else{					
+					data.moveDisplay += ` (${terrainString})`;
+				}
+			}
 		}
 	}	
 

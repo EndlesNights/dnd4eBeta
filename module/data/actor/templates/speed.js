@@ -15,7 +15,8 @@ class MovementField extends SchemaField {
       power: new NumberField({...numberConfig}),
       race: new NumberField({...numberConfig}),
       untyped: new NumberField({...numberConfig}),
-      temp: new NumberField({...numberConfig})
+      temp: new NumberField({...numberConfig}),
+      traits: new StringField({initial: ""})
     }
     super(fields, options);
   }
