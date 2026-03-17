@@ -2,6 +2,7 @@
 
 ## Version 0.7.11
 - Added a trait field to each movement mode, and updated movement/speed config to show the expected defaults under v13. (Fox)
+- Fixed a bug where dropping an effect onto an item sheet would create two copies. (SagaTympana)
 
 ## Version 0.7.10
 - Fixed a CSS issue with attack roll dialogue. (Fox)
