@@ -34,7 +34,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			closeOnSubmit: false
 		},
 		dragDrop: [
-			{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},
+			/*{dragSelector: "[data-effect-id]", dropSelector: ".effects-list"},*/
 			{dragSelector: ".item-list .item", dropSelector: null}
 		],
 		actions: {
