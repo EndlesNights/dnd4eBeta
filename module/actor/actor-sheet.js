@@ -645,6 +645,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	_prepareMovement(data) {
 		if (!data.hasSpeed) return;
 		data.moveDisplay = `${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movement.Unit")}`;
+		if(data.system.movement.walk?.traits && this.actor.type != "Player Character") data.moveDisplay += ` (${data.system.movement.walk.traits})`;
 		data.moveTip = `<p style="text-align:left">
 		${parseInt(data.system.movement.walk.value)} ${game.i18n.localize("DND4E.Movement.Unit")} ${game.i18n.format('DND4E.Movement.SpeedType',{mode: game.i18n.localize("DND4E.Movement.Walk")})}`;
 		if(data.system.movement.walk?.traits) data.moveTip += ` (${data.system.movement.walk.traits})`;
