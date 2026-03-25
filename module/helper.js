@@ -704,7 +704,7 @@ export class Helper {
 					}
 
 					if(weaponInnerData.properties.bru) {
-						dice += `(${quantity}*${weaponNum})d${parts[i][1]}rr<=${weaponInnerData.brutal || 1}`;
+						dice += `(${quantity}*${weaponNum})d${parts[i][1]}rr<=${weaponInnerData.brutalNum || 1}`;
 					}
 					else{
 						dice += `(${quantity}*${weaponNum})d${parts[i][1]}`;
@@ -754,7 +754,7 @@ export class Helper {
 							weaponDiceQuantity = r2.total;
 						}
 						if(weaponInnerData.properties.bru) {
-							dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2]}rr<=${weaponInnerData.brutal || 1}`;
+							dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2]}rr<=${weaponInnerData.brutalNum || 1}`;
 						}
 						else{
 							dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2] || ``}`;// added a null check to i2 hotfix
