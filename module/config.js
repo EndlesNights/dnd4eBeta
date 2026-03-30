@@ -1565,7 +1565,7 @@ preLocalize("saves", { sort: true });
 DND4E.skills = {
 	"acr": {
 		ability: "dex",
-		armourCheck: false,
+		armourCheck: true,
 		label: "DND4E.SkillAcr"
 	},
 	"arc": {
