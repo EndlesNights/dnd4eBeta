@@ -2646,7 +2646,7 @@
             {
               "key": "system.resistances.fire.res",
               "mode": 4,
-              "value": "5 + @lvHalf",
+              "value": "5 + @lvhalf",
               "priority": null
             }
           ],

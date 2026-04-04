@@ -260,7 +260,7 @@ export class MultiAttackRoll extends Roll {
     // Prepare chat data
     messageData = foundry.utils.mergeObject({
       user: game.user.id,
-      type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+      style: CONST.CHAT_MESSAGE_STYLES.ROLL,
       content: String(this.total),
       sound: CONFIG.sounds.dice,
       flags: {dnd4e:{ [`multi-attack-roll`]: this}},
