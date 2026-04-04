@@ -52,6 +52,8 @@ export class Actor4e extends Actor {
 	/** @override */
 	async update(data, options={}) {
 		if(!data) { return super.update(data, options); }
+
+		data = foundry.utils.flattenObject(data);
 		
 		//console.debug(this);
 		//console.debug(data);
@@ -92,6 +94,8 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
+
+		data = foundry.utils.expandObject(data);
 		return super.update(data, options);
 	}
 
@@ -2382,68 +2386,89 @@ export class Actor4e extends Actor {
 		}
 	}
 
-	async calcDamageErrata(damage, multiplier, surges){
+	calcTotalInner(damage, typesSet, isOngoing=false){
 		let totalDamage = 0;
+		const actorRes = this.system.resistances;
+		const isDamageImmune = actorRes['damage'].immune;
+		const resAll = isOngoing ? Helper.sumExtremes([resAll,actorRes['ongoing'].value] || 0) : actorRes['damage'].value;
 
-		//console.log(damage)
-		for(let d of damage){
-			console.log(d);
-			//get all the damageTypes in this term
-			let damageTypesArray = d[1].replace(/ /g,'').split(',');
-			console.log(damageTypesArray);
-			const actorRes = this.system.resistances;
-			console.log(actorRes);
-			
-			let resAll = actorRes['damage'].value;
-			let isDamageImmune = actorRes['damage'].immune;
-			
-			/* Special logic for ongoing damage.
-				Compare our "ongoing" res/immunity to our "all" res/immunity and use the best/highest value */
-			if ( damageTypesArray.includes("ongoing") ){
-				if (actorRes['ongoing'].immune) isDamageImmune = actorRes['ongoing'].immune;
+		let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
+		let lowestRes = Infinity; // will attempt to replace this with the lowest resistance / highest vulnerability
 
-				resAll = Helper.sumExtremes([resAll,actorRes['ongoing'].value] || 0);
-			}
-			
-			let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
-			let lowestRes = Infinity; // will attempt to replace this with the lowest resistance / highest vulnerability
-
-			for(let dt of damageTypesArray){
-				const type = dt && actorRes[dt] ? dt : 'damage';
-				//Skip if we're immune, or if the current type is ongoing (that's handled in a special way later)
-				if( dt == "ongoing" || actorRes[type]?.immune ) continue;
-				
-				//Adjust specific resistance with "resist all" value, according to combining resistance/vulnerability rules
-				const currentRes = Helper.sumExtremes([resAll,actorRes[type]?.value || 0]);
-	
-				if(currentRes !== 0){ //if has resistances or vulnerability
-					isImmuneAll = false;
-					console.log(`Modifier found: ${type} ${actorRes[type].value}`);
-					if(currentRes < lowestRes){
-						lowestRes = currentRes;
+		for (let dt of typesSet) {
+			const currentRes = Helper.sumExtremes([resAll,actorRes[dt]?.value || 0]);
+			if(currentRes !== 0){ //if has resistances or vulnerability
+				isImmuneAll = false;
+				console.log(`Modifier found: ${dt} ${actorRes[dt].value}`);
+				if(currentRes < lowestRes){
+					lowestRes = currentRes;
+				}
+			} else {
+				if(!isDamageImmune) {
+					isImmuneAll=false;
+					if(resAll){ //"Resist all" will stand in for any other damage that does not have a value
+						if(resAll < lowestRes){
+							lowestRes = resAll || 0;
+						}
 					}
-				} else {
-					if(!isDamageImmune) {
-						isImmuneAll=false;
-						if(resAll){ //"Resist all" will stand in for any other damage that does not have a value
-							if(resAll < lowestRes){
-								lowestRes = resAll || 0;
-							}
-						}
-						else if(currentRes < lowestRes){
-							lowestRes = currentRes || 0;
-						}
+					else if(currentRes < lowestRes){
+						lowestRes = currentRes || 0;
 					}
 				}
 			}
+		}
+		if(!isImmuneAll) {
+			totalDamage += Math.max(0, damage - lowestRes);
+		}
+		return totalDamage;
+	}
 
-			if(!isImmuneAll) {
-				totalDamage += Math.max(0, d[0] - lowestRes);
-				//console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}\nLowest Res: ${lowestRes}`);
-			} else{
-				//console.log(`DamagePart:${d[0]}, DamageTypes: ${damageTypesArray.join(',')}\nImmuneto All? ${isImmuneAll}`);
+	async calcDamageErrata(damage, multiplier, surges){
+		let totalDamage = 0;
+		let disjointDamageArray = [];
+		let combinedDamageTypes = new Set();
+		let combinedDamage = 0
+		let combinedOngoingDamageTypes = new Set();
+		let combinedOngoingDamage = 0;
+
+		for (let d of damage) {
+			//get all the damageTypes in this term
+			let typesArray = d[1].replace(/ /g,'').split(',');
+			let typesSet = new Set(typesArray);
+			if (typesSet.has('ongoing')){
+				combinedOngoingDamageTypes = new Set([...combinedOngoingDamageTypes, ...typesSet]);
+				combinedOngoingDamage += d[0];
 			}
-			// console.log(`Lowest Res: ${lowestRes}`)
+			else {
+				combinedDamageTypes = new Set([...combinedDamageTypes, ...typesSet]);
+				combinedDamage += d[0];
+			}
+			let existingDisjointDamage = disjointDamageArray.find(d => (d.types.isSubsetOf(typesSet) || typesSet.isSubsetOf(d.types)) && ((typesSet.union(d.types).has('ongoing')) || !(typesSet.has('ongoing') || d.types.has('ongoing'))));
+			if (existingDisjointDamage) {
+				existingDisjointDamage.value += d[0];
+			}
+			else {
+				let disjointDamage = {
+					types: typesSet,
+					value: d[0]
+				}
+				disjointDamageArray.push(disjointDamage);
+			}
+		}
+
+		if (game.settings.get("dnd4e", "compoundDamageTypes") === "allInclusive") {
+			if (combinedDamageTypes.size) {
+				totalDamage += this.calcTotalInner(combinedDamage, combinedDamageTypes)
+			}
+			if (combinedOngoingDamageTypes.size) {
+				const IS_ONGOING = true;
+				totalDamage += this.calcTotalInner(combinedOngoingDamage, combinedOngoingDamageTypes, IS_ONGOING)
+			}
+		}
+		else {
+			for (let d of disjointDamageArray){
+				totalDamage += this.calcTotalInner(d.value, d.types);
+			}
 		}
 
 		if(this.statuses.has("insubstantial")) totalDamage = Math.floor(totalDamage / 2);
