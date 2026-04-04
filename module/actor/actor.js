@@ -52,8 +52,6 @@ export class Actor4e extends Actor {
 	/** @override */
 	async update(data, options={}) {
 		if(!data) { return super.update(data, options); }
-
-		data = foundry.utils.flattenObject(data);
 		
 		//console.debug(this);
 		//console.debug(data);
@@ -95,7 +93,6 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		data = foundry.utils.expandObject(data);
 		return super.update(data, options);
 	}
 
