@@ -92,7 +92,6 @@ export class Actor4e extends Actor {
 				}
 			}
 		}
-
 		return super.update(data, options);
 	}
 
