@@ -32,9 +32,12 @@ export default class CombatantTemplate extends SpeedTemplate {
     return {
       abilities: new MappingField(new SchemaField({
         value: new NumberField({...numberConfig, initial: 10}),
+        mod: new NumberField({...numberConfig, initial: 0, persisted: false}),
+        modHalf: new NumberField({...numberConfig, initial: 0, persisted: false}),
         check: new Dnd4eBonusesField({
             value: new NumberField({...numberConfig, initial: 0}),
-            bonus: new BonusField()
+            bonus: new BonusField(),
+            total: new NumberField({...numberConfig, initial: 0, persisted: false})
         }),
         chat: new StringField({required: true, nullable: false, initial: "@name uses @label."})
       }), {initialKeys: CONFIG.DND4E.abilities, initialKeysOnly: true, label: "DND4E.AbilityScores"}),
@@ -55,14 +58,16 @@ export default class CombatantTemplate extends SpeedTemplate {
       modifiers: new MappingField(new Dnd4eBonusesField({
         value: new NumberField({...numberConfig, initial: 0}),
         class: new NumberField({...numberConfig, initial: 0}),
-        bonus: new BonusField()
+        bonus: new BonusField(),
+        bonusValue: new NumberField({...numberConfig, initial: 0, persisted: false})
       }), {initialKeys: CONFIG.DND4E.modifiers, initialKeysOnly: true, label: "DND4E.Modifiers"}),
       skills: new MappingField(new Dnd4eBonusesField({
         value: new NumberField({...numberConfig, initial: 0}),
         base: new NumberField({...numberConfig, initial: 0}),
         training: new NumberField({...numberConfig, initial: 0}),
         bonus: new BonusField(),
-        ability: new StringField({initial: ""}),
+        total: new NumberField({...numberConfig, initial: 0, persisted: false}),
+        ability: new StringField({initial: "int"}),
         armourCheck: new BooleanField({initial: false}),
         chat: new StringField({initial: "@name uses @label."})
       }), {

@@ -418,6 +418,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				actorData.skills = sortedSkills;
 			}
 
+            for ( let [d, def] of Object.entries(actorData.defences)) {
+				def.label = def.label ? def.label: DND4E.defensives[d].abbreviation;
+			}
+
+            for ( let [a, abl] of Object.entries(actorData.abilities)) {
+				abl.label = abl.label ? abl.label: DND4E.abilities[a];
+			}
+
 			for ( let [s, skl] of Object.entries(actorData.skills)) {
 				// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
 				skl.icon = this._getTrainingIcon(skl.training);
@@ -1581,19 +1589,22 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static #onCycleSkillProficiency(event, target) {
 		event.preventDefault();
-		const field = target.parentNode.querySelector('input[type="hidden"]');
+        const skillId = target.parentElement.dataset.skill;
 
 		// Get the current level and the array of levels
-		const level = parseFloat(field.value);
+		const level = this.document.system.skills[skillId].training;
 		const levels = [0, 5, 8];
 		let idx = levels.indexOf(level);
 
+        let value;
 		// Toggle next level - forward on click, backwards on right
 		if ( event.button === 0 ) {
-			field.value = levels[(idx === levels.length - 1) ? 0 : idx + 1];
+			value = levels[(idx === levels.length - 1) ? 0 : idx + 1];
 		} else {
-			field.value = levels[(idx === 0) ? levels.length - 1 : idx - 1];
+			value = levels[(idx === 0) ? levels.length - 1 : idx - 1];
 		}
+
+        this.document.update({[`system.skills.${skillId}.training`] : value});
 
 		// Update the field value and save the form
 		this.submit({preventClose: true});

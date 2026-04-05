@@ -26,19 +26,18 @@
  * @property {boolean} [initialKeysOnly=false]  Should the keys in the initialized data be limited to the keys provided
  *                                              by `options.initialKeys`?
  */
-export default class MappingField extends foundry.data.fields.ObjectField {
-  constructor(model, options) {
+export default class MappingField extends foundry.data.fields.TypedObjectField {
+  constructor(model, options, context) {
     if ( !(model instanceof foundry.data.fields.DataField) ) {
       throw new Error("MappingField must have a DataField as its contained element");
     }
-    super(options);
+    super(model, options, context);
 
     /**
      * The embedded DataField definition which is contained in this field.
      * @type {DataField}
      */
-    this.model = model;
-    model.parent = this;
+    this.model = this.element;
   }
 
   /* -------------------------------------------- */
@@ -48,7 +47,8 @@ export default class MappingField extends foundry.data.fields.ObjectField {
     return foundry.utils.mergeObject(super._defaults, {
       initialKeys: null,
       initialValue: null,
-      initialKeysOnly: false
+      initialKeysOnly: false,
+      expandKeys: false
     });
   }
 
@@ -91,37 +91,6 @@ export default class MappingField extends foundry.data.fields.ObjectField {
   /* -------------------------------------------- */
 
   /** @override */
-  _validateType(value, options={}) {
-    if ( foundry.utils.getType(value) !== "Object" ) throw new Error("must be an Object");
-    const errors = this._validateValues(value, options);
-    if ( !foundry.utils.isEmpty(errors) ) {
-      const failure = new foundry.data.validation.DataModelValidationFailure();
-      failure.elements = Object.entries(errors).map(([id, failure]) => ({ id, failure }));
-      throw failure.asError();
-    }
-  }
-
-  /* -------------------------------------------- */
-
-  /**
-   * Validate each value of the object.
-   * @param {object} value     The object to validate.
-   * @param {object} options   Validation options.
-   * @returns {Record<string, Error>}  An object of value-specific errors by key.
-   */
-  _validateValues(value, options) {
-    const errors = {};
-    for ( const [k, v] of Object.entries(value) ) {
-      if ( k.startsWith("-=") ) continue;
-      const error = this.model.validate(v, options);
-      if ( error ) errors[k] = error;
-    }
-    return errors;
-  }
-
-  /* -------------------------------------------- */
-
-  /** @override */
   initialize(value, model, options={}) {
     if ( !value ) return value;
     const obj = {};
@@ -137,10 +106,10 @@ export default class MappingField extends foundry.data.fields.ObjectField {
   /* -------------------------------------------- */
 
   /** @inheritDoc */
-  _getField(path) {
+  _getField(path, options={}) {
     if ( path.length === 0 ) return this;
-    else if ( path.length === 1 ) return this.model;
-    path.shift();
-    return this.model._getField(path);
+    if ( game.release.generation < 14 ) path.shift();
+    else path.pop();
+    return this.model._getField(path, options);
   }
 }

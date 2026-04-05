@@ -67,8 +67,8 @@
 					<div class="attribute-value flexrow">
 						{{#each system.defences as | def d|}}
 						<div class="attribute-sub" data-defence="{{d}}">
-							<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{def.title}}">{{def.value}}</strong>
-							<div class="attribute-display def-name rollable" data-tooltip="{{localize 'DND4E.Roll'}} {{def.title}} {{localize 'DND4E.Save'}}">{{def.label}}</div>
+							<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{def.label}}">{{def.value}}</strong>
+							<div class="attribute-display def-name rollable" data-tooltip="{{localize 'DND4E.Roll'}} {{def.label}} {{localize 'DND4E.Save'}}">{{def.label}}</div>
 						</div>
 						{{/each}}
 					</div>
@@ -170,7 +170,6 @@
 				<div class="skill--block flexrow" data-skill="{{s}}">
 					<a class="training-toggle skill-training" data-action="cycleSkillProficiency" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
 					<h4 class="skill-name rollable">{{skill.label}}</h4>
-					<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
 					<label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
 				</div>
 				{{/each}}

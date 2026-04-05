@@ -2124,7 +2124,7 @@
           "whip": false
         },
         "implementGroup": {},
-        "attackForm": "@profBonus+@enhance+@CombatTalent",
+        "attackForm": "@profBonus+@enhance",
         "attackFormImp": "@profImpBonus+@enhanceImp",
         "damageForm": "@enhance",
         "damageFormImp": "@enhanceImp",

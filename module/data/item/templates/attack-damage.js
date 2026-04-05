@@ -62,4 +62,20 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
       })
     }
   }
+
+  
+  /* -------------------------------------------- */
+  /*  Helpers                                     */
+  /* -------------------------------------------- */
+
+  /**
+   * Prepare a data object which defines the data schema used by dice roll commands against this Item.
+   * @param {RollDataOptions} [options]
+   * @returns {ItemRollData}
+   */
+  getRollData() {
+    const data = { ...this };
+
+    return data;
+  }
 }
