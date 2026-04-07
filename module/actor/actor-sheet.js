@@ -136,8 +136,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		// Removed: on focus <input>, auto-select everything in it
 
-		this.element.querySelectorAll('input[data-dtype="Number"]').forEach(el => el.addEventListener("change", this._onChangeInputDelta.bind(this)))
-
 		this.element.querySelector("#filterInput-feat")?.addEventListener("input", (ev) => {
 			this._filterHelper(ev.target, ".feature-list");
 		});
@@ -337,6 +335,37 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			return parent.effects.get(docRow.dataset.effectId);
 		}
 	}
+
+    _onChangeForm(formConfig, event) {
+        const input = event.target;
+        if (input.dataset?.dtype !== "Number") {
+            return super._onChangeForm(formConfig, event);
+        }
+
+		const value = input.value;
+
+		if(/^[0-9]+$/.test(value)) {
+			return super._onChangeForm(formConfig, event);
+		}
+		
+		if(!/^[\-=+ 0-9]+$/.test(value)) {
+			input.value = foundry.utils.getProperty(this.actor, input.name)
+			return super._onChangeForm(formConfig, event);
+		}
+
+		if ( ["+"].includes(value[0]) ) {
+			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
+			input.value = foundry.utils.getProperty(this.actor, input.name) + delta ?? foundry.utils.getProperty(this.actor, input.name);
+		} else if ( ["-"].includes(value[0]) ) {
+			let delta = parseFloat(-value.replace(/[^0-9]/g, ""));
+			input.value = foundry.utils.getProperty(this.actor, input.name) + delta ?? foundry.utils.getProperty(this.actor, input.name);
+		} else if ( value[0] === "=" ) {
+			input.value = value.replace(/[^\-0-9]/g, "");
+		} else{
+			input.value = foundry.utils.getProperty(this.actor, input.name)
+		}
+        return super._onChangeForm(formConfig, event);
+    }
 
   /* -------------------------------------------- */
 
@@ -1104,40 +1133,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		// Return keys that exist in the actor
 		return Array.from((overrides.union(candidateKeys)).intersection(actorKeys));
-	}
-
-	/* -------------------------------------------- */
-
-	/**
-	 * Handle input changes to numeric form fields, allowing them to accept delta-typed inputs
-	 * @param event
-	 * @private
-	 */
-	_onChangeInputDelta(event) {
-		const input = event.target;
-		const value = input.value;
-
-		if(/^[0-9]+$/.test(value)) {
-			return;
-		}
-		
-		if(!/^[\-=+ 0-9]+$/.test(value)) {
-			input.value = foundry.utils.getProperty(this.actor, input.name)
-			return;
-		}
-
-		if ( ["+"].includes(value[0]) ) {
-			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
-			input.value = foundry.utils.getProperty(this.actor, input.name) + delta || foundry.utils.getProperty(this.actor, input.name);
-		}
-		else if ( ["-"].includes(value[0]) ) {
-			let delta = parseFloat(-value.replace(/[^0-9]/g, ""));
-			input.value = foundry.utils.getProperty(this.actor, input.name) + delta || foundry.utils.getProperty(this.actor, input.name);
-		} else if ( value[0] === "=" ) {
-			input.value = value.replace(/[^\-0-9]/g, "");
-		} else{
-			input.value = foundry.utils.getProperty(this.actor, input.name)
-		}
 	}
 
   /* -------------------------------------------- */
