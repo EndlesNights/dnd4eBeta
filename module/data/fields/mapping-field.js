@@ -55,17 +55,6 @@ export default class MappingField extends foundry.data.fields.TypedObjectField {
   /* -------------------------------------------- */
 
   /** @inheritDoc */
-  _cleanType(value, options, _state) {
-    Object.entries(value).forEach(([k, v]) => {
-      if ( k.startsWith("-=") ) return;
-      value[k] = this.model.clean(v, options, _state);
-    });
-    return value;
-  }
-
-  /* -------------------------------------------- */
-
-  /** @inheritDoc */
   getInitialValue(data) {
     let keys = this.initialKeys;
     const initial = super.getInitialValue(data);
