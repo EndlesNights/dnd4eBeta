@@ -1,7 +1,6 @@
 import { d20Roll, damageRoll } from "../dice.js";
 import { DND4E } from "../config.js";
 import { Helper } from "../helper.js"
-import { MeasuredTemplate4e } from "../canvas/ability-template.js";
 import { SaveThrowDialog } from "../apps/save-throw.js";
 
 /**
@@ -2291,8 +2290,7 @@ export class Actor4e extends Actor {
 			await item.roll({'variance': variance});
 
 			if(item.hasAreaTarget){
-				const template = MeasuredTemplate4e.fromItem(item);
-				if ( template ) template.drawPreview(event);
+				await item.placeTemplate();
 			}
 
 			if(item.hasAttack){

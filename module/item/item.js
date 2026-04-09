@@ -1,6 +1,5 @@
 import {d20Roll, damageRoll, getAttackRollBonus} from "../dice.js";
 import AbilityUseDialog from "../apps/ability-use-dialog.js";
-import {MeasuredTemplate4e} from "../canvas/ability-template.js";
 import { Helper } from "../helper.js"
 import { DND4E } from "../config.js";
 
@@ -1309,9 +1308,8 @@ export default class Item4e extends Item {
 
 		// Maybe initiate template placement workflow
 		if ( this.hasAreaTarget && placeTemplate ) {
-			const template = MeasuredTemplate4e.fromItem(this);
-			if ( template ) template.drawPreview(event);
 			if ( this.owner && this.owner.sheet ) this.owner.sheet.minimize();
+			await this.placeTemplate();
 		}
 		return true;
 	}
@@ -1872,6 +1870,101 @@ export default class Item4e extends Item {
 
 		return rangeData;
 	}
+
+	/* -------------------------------------------------- */
+
+	/**
+	 * Create a region template based on this ability's distance data.
+	 * @param {RegionPlacementOptions} [options={}] Options to forward to canvas.regions.placeRegion.
+	 * @returns {Promise<RegionDocument>} The Region document that was placed or null if
+	 *  - the placements of all shapes were skipped,
+	 *  - the dismiss key was pressed,
+	 *  - the game is paused and the user is not a GM, or
+	 *  - the Region creation was rejected by preCreate.
+	 */
+	async placeTemplate(options = {}) {
+		if (!this.hasAreaTarget) {
+			const msg = "This item does not have an area target.";
+			ui.notifications.error(msg, { console: false });
+			throw new Error(msg);
+		}
+
+		// Special case
+		//if (this.distance.type === "aura") options.attachToToken ??= true;
+
+		/** @type {TokenDocument4e} */
+		const tokenInfo = this.actor.token ?? this.actor.getActiveTokens(true, true)[0];
+
+		const { type, count, ...shapeProperties } = CONFIG.DND4E.rangeType[this.system.rangeType].area;
+
+		const shapeCount = typeof count === "string" ? this.system[count] : 1;
+
+		const shapes = Array.fromRange(shapeCount).map(() => {
+			const shapeData = { type, gridBased: true, x: 0, y: 0 };
+			for (const [key, path] of Object.entries(shapeProperties)) {
+				shapeData[key] = this.system[path] * canvas.dimensions.distancePixels;
+			}
+			switch (this.system.rangeType) {
+				case "closeBlast":
+					shapeData.anchorX = 0.5;
+					shapeData.anchorY = 1;
+					break;
+				case "closeBurst":
+					shapeData.base = {
+						hole: !this.system.autoTarget.includeSelf,
+						type: "token",
+						x: 0,
+						y: 0,
+						width: tokenInfo.width,
+						height: tokenInfo.width,
+						shape: tokenInfo.shape,
+					};
+					options.attachToToken ??= true;             
+					break;
+				case "rangeBurst":
+					shapeData.base = {
+						hole: false,
+						type: "rectangle",
+						x: 0,
+						y: 0,
+						width: canvas.dimensions.distancePixels,
+						height: canvas.dimensions.distancePixels,
+						shape: "rectangle",
+						anchorX: 0.5,
+						anchorY: 0.5
+					}
+					break;
+				case "wall": // Special wall handling since it's a bunch of 1 x 1 spots.
+					shapeData.width ??= canvas.dimensions.distancePixels;
+					shapeData.height ??= canvas.dimensions.distancePixels;
+					shapeData.anchorX = 0.5;
+					shapeData.anchorY = 0.5;
+					break;
+			}
+
+			return shapeData;
+		});
+
+		const regionData = {
+			shapes,
+			name: this.parent.name,
+			color: game.user.color,
+			levels: [canvas.level.id],
+			highlightMode: "coverage",
+			displayMeasurements: true,
+			restriction: { enabled: true },
+			visibility: CONST.REGION_VISIBILITY.OBSERVER,
+			ownership: { [game.user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER },
+			flags: {
+				["dnd4e"]: {
+					origin: this.uuid,
+				},
+			},
+		};
+
+		return canvas.regions.placeRegion(regionData, options);
+	}
+
 	/* -------------------------------------------- */
 
 	/**
@@ -2398,9 +2491,8 @@ export default class Item4e extends Item {
 
 		// Maybe initiate template placement workflow
 		if ( this.hasAreaTarget && placeTemplate ) {
-			const template = MeasuredTemplate4e.fromItem(this);
-			if ( template ) template.drawPreview(event);
 			if ( this.isEmbedded  && this.parent.sheet ) this.parent.sheet.minimize();
+			await this.placeTemplate();
 		}
 		return true;
 	}
@@ -2435,7 +2527,7 @@ export default class Item4e extends Item {
 
 	/**
 	 * Roll a Tool Check. Rely upon the d20Roll logic for the core implementation
-	 * @prarm {Object} options   Roll configuration options provided to the d20Roll function
+	 * @param {Object} options   Roll configuration options provided to the d20Roll function
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollToolCheck(options={}) {
@@ -2444,7 +2536,7 @@ export default class Item4e extends Item {
 
 	/**
 	 * Roll a Ritual Check. Rely upon the d20Roll logic for the core implementation
-	 * @prarm {Object} options   Roll configuration options provided to the d20Roll function
+	 * @param {Object} options   Roll configuration options provided to the d20Roll function
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollRitualCheck(options={}) {
@@ -2685,8 +2777,7 @@ export default class Item4e extends Item {
 
 		// Spell Template Creation
 		else if ( action === "placeTemplate") {
-			const template = MeasuredTemplate4e.fromItem(item);
-			if ( template ) template.drawPreview(event);
+			if ( item.hasAreaTarget ) await item.placeTemplate();
 		}
 
 		// Re-enable the button

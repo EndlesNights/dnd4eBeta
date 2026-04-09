@@ -107,6 +107,30 @@
 	}
 }
 
+.region-behavior-config i.difficult-terrain-icon{
+    content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
+    height:1em;
+    position:relative;
+    top:-1px;
+    display:inline-block;
+    width:16.25px;
+}
+.region-behavior-config i.difficult-terrain-icon::before{
+    content:"";
+}
+.region-config i.difficult-terrain-icon{
+    content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
+    filter:var(--white-svg-filter);
+    height:1em;
+    position:relative;
+    top:2px;
+    display:inline-block;
+    width: 17.5px;
+}
+.region-config i.difficult-terrain-icon::before{
+    content:"";
+}
+
 .dnd4e{
 	.window-content{
 		padding:0.5em;
@@ -135,17 +159,6 @@
 	}
 	.effect-tooltip{
 		text-align:left;
-	}
-	.region-behavior-config i.difficult-terrain-icon{
-		content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
-		height:1em;
-	}
-	.region-config i.difficult-terrain-icon{
-		content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
-		filter:var(--white-svg-filter);
-		height:1em;
-		position:relative;
-		top:2px;
 	}
 	input,select,textarea,code-mirror{
 		--input-background-color:var(--override-input-background-color);

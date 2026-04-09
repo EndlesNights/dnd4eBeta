@@ -18,7 +18,6 @@ import { preloadHandlebarsTemplates } from "./templates.js";
 import Combat4e from "./combat.js";
 
 // Import Documents
-import { MeasuredTemplate4e, TemplateLayer4e} from "./canvas/ability-template.js";
 import { default as TokenRuler4e } from "./canvas/ruler.js";
 import { Actor4e } from "./actor/actor.js";
 import { default as TokenDocument4e } from "./documents/token.js";
@@ -70,9 +69,6 @@ Hooks.once("init", async function() {
 			ActiveEffectConfig4e
 		},
 		config: DND4E,
-		canvas: {
-			MeasuredTemplate4e
-		},
 		entities: {
 			Actor4e,
 			Item4e,
@@ -97,10 +93,6 @@ Hooks.once("init", async function() {
 	CONFIG.Item.documentClass = Item4e;
 	CONFIG.Combatant.documentClass = Combatant4e;
 	CONFIG.Combat.documentClass = Combat4e;
-
-	CONFIG.MeasuredTemplate.objectClass = MeasuredTemplate4e;
-
-	CONFIG.Canvas.layers.templates.layerClass = TemplateLayer4e;
 
 	CONFIG.statusEffects = Object.entries(CONFIG.DND4E.statusEffect).reduce((arr, [id, data]) => {
 		const newEffect = {
@@ -434,18 +426,21 @@ Hooks.on('renderCombatTracker', (app,html,context) => {
 	}
 });
 
-Hooks.on('createMeasuredTemplate', async (templateDoc) => {
-	if (game.user.id !== templateDoc.author.id) return;
-	const originUuid = templateDoc.getFlag('dnd4e', 'origin');
+Hooks.on('createRegion', async (regionDoc) => {
+	if (!regionDoc.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER)) return;
+	const originUuid = regionDoc.getFlag('dnd4e', 'origin');
 	// Item may be deleted from the actor when we get here, so get the item data from the template if we have to
-	const flagDocument = await fromUuid(originUuid) || templateDoc.getFlag('dnd4e', 'item');
+	const flagDocument = await fromUuid(originUuid) || regionDoc.getFlag('dnd4e', 'item');
 	if (!flagDocument || flagDocument.system.autoTarget.mode === 'none') return;
 	// If we just have the template flag's item data because the item was deleted, we'll need to work backward from the item uuid to get the actor
 	const actorUuid = flagDocument?.actor?.uuid || originUuid.split('.Item')[0];
 	if (!actorUuid) return;
 	const token = Helper.tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;
-	let tokens = Helper.getTokensInTemplate(templateDoc, true);
+	let tokens = new Set();
+	for ( const token of canvas.scene.tokens ) {
+		if ( token.testInsideRegion(regionDoc) ) tokens.add(token);
+	}
 	if (!tokens.size) return;
 	const disposition = token.document.disposition;
 	const excludeUser = !flagDocument.system.autoTarget.includeSelf || flagDocument.system.autoTarget.mode === 'enemies';

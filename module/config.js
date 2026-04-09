@@ -1025,30 +1025,6 @@ preLocalize("targetTypes", { sort: true });
 
 /* -------------------------------------------- */
 
-
-/**
- * Map the subset of target types which produce a template area of effect
- * The keys are DND4E target types and the values are MeasuredTemplate shape types
- * @type {Object}
- */
-DND4E.areaTargetTypes = {
-	cone: "cone",
-	cube: "rect",
-	cylinder: "circle",
-	line: "ray",
-	radius: "circle",
-	sphere: "circle",
-	square: "rect",
-	wall: "ray",
-	closeBlast: "rect",
-	closeBurst: "circle",
-	rangeBlast: "rect",
-	rangeBurst: "circle",
-};
-
-
-/* -------------------------------------------- */
-
 // Healing Types
 DND4E.healingTypes = {
 	"healing": "DND4E.Healing",
@@ -1420,23 +1396,45 @@ DND4E.rangeType = {
 	},
 	"closeBurst": {
 		label: "DND4E.rangeCloseBurst",
-		abbr: "DND4E.rangeCloseBurstAbbr"
+		abbr: "DND4E.rangeCloseBurstAbbr",
+		area: {
+			type: "emanation",
+			radius: "area"
+		}
 	},
 	"closeBlast": {
 		label: "DND4E.rangeCloseBlast",
-		abbr: "DND4E.rangeCloseBlastAbbr"
+		abbr: "DND4E.rangeCloseBlastAbbr",
+		area: {
+			type: "rectangle",
+			width: "area",
+			height: "area"
+		}
 	},
 	"rangeBurst": {
 		label: "DND4E.rangeBurst",
-		abbr: "DND4E.rangeBurstAbbr"
+		abbr: "DND4E.rangeBurstAbbr",
+		area: {
+			type: "emanation",
+			radius: "area"
+		}
 	},
 	"rangeBlast": {
 		label: "DND4E.rangeBlast",
-		abbr: "DND4E.rangeBlastAbbr"
+		abbr: "DND4E.rangeBlastAbbr",
+		area: {
+			type: "rectangle",
+			width: "area",
+			height: "area"
+		}
 	},
 	"wall": {
 		label: "DND4E.rangeWall",
-		abbr: "DND4E.rangeWallAbbr"
+		abbr: "DND4E.rangeWallAbbr",
+		area: {
+			type: "rectangle",
+			count: "area"
+		}
 	},
 	"personal": {
 		label: "DND4E.rangePersonal",
