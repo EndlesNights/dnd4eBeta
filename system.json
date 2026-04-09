@@ -2,10 +2,10 @@
 	"id": "dnd4e",
 	"title": "DnD 4th Edition",
 	"description": "An implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.7.11",
+	"version": "0.8.0",
 	"compatibility":{
-		"minimum": "13",
-		"verified": "13.351",
+		"minimum": "14",
+		"verified": "14.359",
 		"maximum": "14"
 	},
 	"authors": [
