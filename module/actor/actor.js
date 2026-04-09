@@ -2473,58 +2473,72 @@ export class Actor4e extends Actor {
 	}
 
 	async calcDamagePHB(damage, multiplier, surges){
-		let damageDealt = {};
 		let totalDamage = 0;
-		const actorRes = this.system.resistances;
-		console.log(damage);
+		let disjointDamageArray = [];
+		let combinedDamageTypes = new Set();
+		let combinedDamage = 0
+		let combinedOngoingDamageTypes = new Set();
+		let combinedOngoingDamage = 0;
 
-		for(let d of damage){
-			// Check if "ongoing" is in our types array, and if so remove it before dividing up the damage.
-			const isOngoing = d[1].includes("ongoing");
-			if(isOngoing) d[1] = d[1].replaceAll(/(,| )*ongoing(,| )*/g,"");
-			
-			let damageTypesArray = d[1].replace(/ /g,'').split(',');
-
-			let i = 0;
-			for(let dt of damageTypesArray){
-				if(damageDealt[dt] === undefined){
-					damageDealt[dt] = 0|d[0]/damageTypesArray.length+(i<d[0]%damageTypesArray.length);
-				} else{
-					damageDealt[dt] += 0|d[0]/damageTypesArray.length+(i<d[0]%damageTypesArray.length);
-				}
-				i++;
+		for (let d of damage) {
+			//get all the damageTypes in this term
+			let typesArray = d[1].replace(/ /g,'').split(',');
+			let typesSet = new Set(typesArray);
+			if (typesSet.has('ongoing')){
+				combinedOngoingDamageTypes = new Set([...combinedOngoingDamageTypes, ...typesSet]);
+				combinedOngoingDamage += d[0];
 			}
-
-			let resAll = actorRes['damage'].value;
-			let isDamageImmune = actorRes['damage'].immune;
-			
-			/* Special logic for ongoing damage.
-			Compare our "ongoing" res/immunity to our "all" res/immunity and use the best/highest value */
-			if ( isOngoing ){
-				if (actorRes['ongoing'].immune) isDamageImmune = actorRes['ongoing'].immune;
-
-				resAll = Helper.sumExtremes([resAll,actorRes['ongoing']?.value] || 0);
+			else {
+				combinedDamageTypes = new Set([...combinedDamageTypes, ...typesSet]);
+				combinedDamage += d[0];
 			}
-
-			//If we have immune all, skip the resistance comparisons
-			if ( !isDamageImmune) {
-				for(const d in damageDealt){
-					const damagetype = actorRes[d] ? d : 'damage';
-					if(actorRes[damagetype].immune) continue; //No damage to immune types
-					//if(isDamageImmune && !actorRes[damagetype].value) continue;
-					let res = Helper.sumExtremes([resAll,actorRes[damagetype]?.value || 0]);
-
-					/*Should be unnecessary when adjusting resistances in the previous step
-					if(!res && resAll){
-						res = resAll;
-					}*/
-					
-					totalDamage += Math.max(0, damageDealt[d]-res);
+			let existingDisjointDamage = disjointDamageArray.find(d => (d.types.isSubsetOf(typesSet) || typesSet.isSubsetOf(d.types)) && ((typesSet.union(d.types).has('ongoing')) || !(typesSet.has('ongoing') || d.types.has('ongoing'))));
+			if (existingDisjointDamage) {
+				existingDisjointDamage.value += d[0];
+			}
+			else {
+				let disjointDamage = {
+					types: typesSet,
+					value: d[0]
 				}
+				disjointDamageArray.push(disjointDamage);
 			}
 		}
+
+        if (game.settings.get("dnd4e", "compoundDamageTypes") === "allInclusive") {
+			if (combinedDamageTypes.size) {
+				const damageTypesArray = Array.from(combinedDamageTypes);
+                let i = 0;
+                for (let dt of damageTypesArray) {
+                    let typedDamage = 0 | combinedDamage / damageTypesArray.length + (i < combinedDamage % damageTypesArray.length);
+                    totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+                    i++;
+                }
+			}
+			if (combinedOngoingDamageTypes.size) {
+				const ongoingDamageTypesArray = Array.from(combinedOngoingDamageTypes);
+                const IS_ONGOING = true;
+                let i = 0;
+                for (let dt of ongoingDamageTypesArray) {
+                    let typedDamage = 0 | combinedDamage / damageTypesArray.length + (i < combinedDamage % damageTypesArray.length);
+                    totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+                    i++;
+                }
+			}
+		}
+		else {
+			for (let d of disjointDamageArray){
+				const damageTypesArray = Array.from(d.types);
+                let i = 0;
+                for (let dt of damageTypesArray) {
+                    let typedDamage = 0 | d.value / damageTypesArray.length + (i < d.value % damageTypesArray.length);
+                    totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+                    i++;
+                }
+			}
+		}
+
 		if(this.statuses.has("insubstantial")) totalDamage = Math.floor(totalDamage / 2);
-		console.log(damageDealt);
 		console.log(`Total Damage: ${totalDamage}`)
 		return totalDamage;
 	}
