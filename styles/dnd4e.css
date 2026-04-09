@@ -107,29 +107,7 @@
 	}
 }
 
-.region-behavior-config i.difficult-terrain-icon{
-    content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
-    height:1em;
-    position:relative;
-    top:-1px;
-    display:inline-block;
-    width:16.25px;
-}
-.region-behavior-config i.difficult-terrain-icon::before{
-    content:"";
-}
-.region-config i.difficult-terrain-icon{
-    content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
-    filter:var(--white-svg-filter);
-    height:1em;
-    position:relative;
-    top:2px;
-    display:inline-block;
-    width: 17.5px;
-}
-.region-config i.difficult-terrain-icon::before{
-    content:"";
-}
+
 
 .dnd4e{
 	.window-content{
@@ -172,6 +150,17 @@
 		--checkbox-background-color:var(--override-checkbox-background-color);
 		--checkbox-checked-color:var(--override-checkbox-checked-color);
 		--checkbox-checkmark-color:var(--override-checkbox-checkmark-color);
+	}
+	.region-behavior-config i.difficult-terrain-icon{
+		content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
+		height:1em;
+	}
+	.region-config i.difficult-terrain-icon{
+		content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
+		filter:var(--white-svg-filter);
+		height:1em;
+		position:relative;
+		top:2px;
 	}
 }
 .sheet.standard-form{
@@ -413,7 +402,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	input[type='time'],input[type='datetime-local'],
 	input[type='search'],input[type='file'],select{
 		border:var(--border-faint);
-        line-height:1;
+		line-height:1;
 	}
 	multi-select>.tags.input-element-tags{
 		justify-content:flex-start;
@@ -525,7 +514,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			}
 			.tight{
 				width:fit-content;
-                flex:fit-content 0 0;
+				flex:fit-content 0 0;
 			}
 		}
 	}
@@ -798,7 +787,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			}
 			.item-controls{
 				width:90px;
-                text-align:right;
+				text-align:right;
 				
 				a.item-create,
 				a.power-create{
@@ -1287,7 +1276,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			margin-left:5px;
 			margin-right:5px;
 			padding-top:5px;
-            padding-bottom: 5px;
+			padding-bottom: 5px;
 		}
 		.section--saves div+div,
 		.section--passives div+div,
@@ -1349,7 +1338,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		border-bottom:var(--border-normal);
 		font-size:18px;
 		font-weight:bold;
-        text-align:center;
+		text-align:center;
 	}
 	.resource .attribute-value label.recharge{
 		height:32px;
@@ -2543,7 +2532,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	}
 	.tab.description{
 		flex-direction:row;
-        align-items:stretch;
+		align-items:stretch;
 		overflow:hidden;
 		.item-properties{
 			flex:0 0 25%;
@@ -2856,7 +2845,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 				font-size:80%;
 				line-height:1;
 				padding:0.5em;
-                height:100%;
+				height:100%;
 			}
 		}
 		.keywords-list li.effect-keyword{
@@ -3525,7 +3514,7 @@ input[type="text"].dice-count{
 		border:none;
 	}
 	.dnd4e-button-icon img:is(:hover,:active,:focus){
-        filter:invert(1);
+		filter:invert(1);
 	}
 }
 
@@ -3612,9 +3601,9 @@ input[type="text"].dice-count{
 	--chat-message-background:url('../../../ui/parchment.jpg') repeat;
 }
 .chat-message{
-    background:var(--chat-message-background);
-    border:2px solid var(--chat-message-border-color);
-    color:var(--color-text-primary);
+	background:var(--chat-message-background);
+	border:2px solid var(--chat-message-border-color);
+	color:var(--color-text-primary);
 
 	.message-header{
 		color:var(--color-text-secondary);
@@ -3697,6 +3686,6 @@ input[type="text"].dice-count{
 	.themed.theme-dark,
 	.themed.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form):not(.themed),
 	body.theme-dark :is(.application,.app):is(.default,.standard-form):not(.themed){
-        --background:#221d21;
-    }
+		--background:#221d21;
+	}
 }
