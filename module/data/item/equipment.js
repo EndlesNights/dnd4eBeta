@@ -35,6 +35,7 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
         })
       }),
       armourBaseType: new StringField({initial: ""}),
+      armourBaseTypeCustom: new StringField({initial: ""}),
       // TODO: is this actually used anywhere?
       speed: new SchemaField({
         value: new StringField({nullable: true, initial: null}),
