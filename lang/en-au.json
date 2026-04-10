@@ -1508,15 +1508,15 @@
 },
 
 "DND4E.TOKEN.MOVEMENT.ACTIONS": {
-    "charge": {
-        "label": "Charge"
-    },
-    "shift": {
-        "label": "Shift"
-    },
-    "teleport": {
-        "label": "Teleport"
-    }
+	"charge": {
+		"label": "Charge"
+	},
+	"shift": {
+		"label": "Shift"
+	},
+	"teleport": {
+		"label": "Teleport"
+	}
 },
 
 "EFFECT.DurationEndInit": "Effect End Time",
@@ -1742,6 +1742,10 @@
 "SETTINGS.4eChatSchemeAuto": "Match UI (default)",
 "SETTINGS.4eCollapseSituationalBonusL": "If checked: all common situational modifiers will be computed and added as a single modifier to @bonus. Otherwise each will be displayed individually in the resulting formula",
 "SETTINGS.4eCollapseSituationalBonusN": "Collapse Common Attack Mods",
+"SETTINGS.4eCompoundDamageTypesN": "Compound damage types rule",
+"SETTINGS.4eCompoundDamageTypesL": "Determine how compound damage types are combined. All-inclusive considers that an entire damage roll has all of its terms' types, while Disjoint combines terms that have any types in common but leaves separate terms that share no types.",
+"SETTINGS.4eCompoundDamageAllInclusive": "All-inclusive",
+"SETTINGS.4eCompoundDamageDisjoint": "Disjoint",
 "SETTINGS.4eCurWtL": "Carried currency affects character load following the rules on PHB pg. 212.",
 "SETTINGS.4eCurWtN": "Apply Currency Weight",
 "SETTINGS.4eCustomSkillsL": "Configure Custom Skills",

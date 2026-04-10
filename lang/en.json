@@ -1508,15 +1508,15 @@
 },
 
 "DND4E.TOKEN.MOVEMENT.ACTIONS": {
-    "charge": {
-        "label": "Charge"
-    },
-    "shift": {
-        "label": "Shift"
-    },
-    "teleport": {
-        "label": "Teleport"
-    }
+	"charge": {
+		"label": "Charge"
+	},
+	"shift": {
+		"label": "Shift"
+	},
+	"teleport": {
+		"label": "Teleport"
+	}
 },
 
 "EFFECT.DurationEndInit": "Effect End Time",
@@ -1740,8 +1740,12 @@
 "SETTINGS.4eChatSchemeL": "Choose light/dark chat log, or follow core UI setting",
 "SETTINGS.4eChatSchemeN": "Chat Log Color Scheme",
 "SETTINGS.4eChatSchemeAuto": "Match UI (default)",
-"SETTINGS.4eCollapseSituationalBonusL": "If checked: all common situational modifiers will be computed and added as a single modifier to @bonus.  Otherwise each will be displayed individually in the resulting formula",
+"SETTINGS.4eCollapseSituationalBonusL": "If checked: all common situational modifiers will be computed and added as a single modifier to @bonus. Otherwise each will be displayed individually in the resulting formula",
 "SETTINGS.4eCollapseSituationalBonusN": "Collapse Common Attack Mods",
+"SETTINGS.4eCompoundDamageTypesN": "Compound damage types rule",
+"SETTINGS.4eCompoundDamageTypesL": "Determine how compound damage types are combined. All-inclusive considers that an entire damage roll has all of its terms' types, while Disjoint combines terms that have any types in common but leaves separate terms that share no types.",
+"SETTINGS.4eCompoundDamageAllInclusive": "All-inclusive",
+"SETTINGS.4eCompoundDamageDisjoint": "Disjoint",
 "SETTINGS.4eCurWtL": "Carried currency affects character load following the rules on PHB pg. 212.",
 "SETTINGS.4eCurWtN": "Apply Currency Weight",
 "SETTINGS.4eCustomSkillsL": "Configure Custom Skills",
@@ -1753,7 +1757,7 @@
 "SETTINGS.4eDamageCalcPHB": "PHB Damage Rules",
 "SETTINGS.4eDeathSaveRestL": "Choose a reset condition for failed death saves. Useful if you want to run a more deadly campaign than the default of \"short rest\" provides.",
 "SETTINGS.4eDeathSaveRestN": "Death Saving Throw Reset",
-"SETTINGS.4eDebugPowerEffectsL": "Will output a lot of debug information to the console when attempting to apply effects to power attack and damage rolls.  Useful to see why a given effect is applying at a given value",
+"SETTINGS.4eDebugPowerEffectsL": "Will output a lot of debug information to the console when attempting to apply effects to power attack and damage rolls. Useful to see why a given effect is applying at a given value",
 "SETTINGS.4eDebugPowerEffectsN": "Debug Power Effects",
 "SETTINGS.4eFastFowardSettingsL": "All rolls and actions buttons will now default to using the fast-forward option that skips dialog boxes. To have the roll dialog box while in this mode, use the key binds normally associated with fast-forward",
 "SETTINGS.4eFastFowardSettingsN": "Fast Forward Default",

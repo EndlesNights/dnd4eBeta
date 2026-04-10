@@ -25,6 +25,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 			],
 			templates: [
 				"systems/dnd4e/templates/actors/tabs/biography.hbs",
+                "systems/dnd4e/templates/actors/tabs/skills.hbs",
 				"systems/dnd4e/templates/actors/tabs/inventory.hbs",
 				"systems/dnd4e/templates/actors/tabs/features.hbs",
 				"systems/dnd4e/templates/actors/tabs/powers.hbs",
