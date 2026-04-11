@@ -1757,6 +1757,8 @@
 "SETTINGS.4eDamageCalcPHB": "PHB Damage Rules",
 "SETTINGS.4eDeathSaveRestL": "Choose a reset condition for failed death saves. Useful if you want to run a more deadly campaign than the default of \"short rest\" provides.",
 "SETTINGS.4eDeathSaveRestN": "Death Saving Throw Reset",
+"SETTINGS.4eDebugLoggingL": "Will output a lot of debug information to the console",
+"SETTINGS.4eDebugLoggingN": "Debug Logging",
 "SETTINGS.4eDebugPowerEffectsL": "Will output a lot of debug information to the console when attempting to apply effects to power attack and damage rolls. Useful to see why a given effect is applying at a given value",
 "SETTINGS.4eDebugPowerEffectsN": "Debug Power Effects",
 "SETTINGS.4eFastFowardSettingsL": "All rolls and actions buttons will now default to using the fast-forward option that skips dialog boxes. To have the roll dialog box while in this mode, use the key binds normally associated with fast-forward",

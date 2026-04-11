@@ -216,7 +216,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			}
 			if(scope == "copyIcon" || scope == "copyAll"){
 				effectUpdates.img = statuses[statusIndex].img;
-				//console.log(effectUpdates);
+				Helper.debugLog(effectUpdates);
 			}
 			if(scope == "copyDesc" || scope == "copyAll"){
 				effectUpdates.description = game.i18n.localize(statuses[statusIndex].description);
@@ -236,7 +236,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			
 		} catch(err) {
 			ui.notifications.error(game.i18n.localize('ERROR.4eCopyStatusDetails'));
-			console.log(err);
+			Helper.debugLog(err);
 		}
 	}
 

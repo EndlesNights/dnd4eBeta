@@ -75,7 +75,7 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 			updateData[`${this.options.target}.ability`] = bonus.system?.ability;
 		}
 		else if(this.options?.secondWind){
-			console.log(bonus["custom"])
+			Helper.debugLog(bonus["custom"])
 			updateData[`${this.options.target}.custom`] = bonus.system?.custom;
 		} else {
 			//this.position.height = Math.max(1, count) * 76 + 91;

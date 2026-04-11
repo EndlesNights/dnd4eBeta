@@ -64,7 +64,7 @@ TokenBarHooks.powersBySheetGroup = (actor) => {
 TokenBarHooks.generateItemTooltip = async (actor, item) => {
     //see actor-sheet.js line 383
     const chatdata = await item.getChatData({secrets: actor.isOwner})
-    console.log(chatdata)
+    Helper.debugLog(chatdata)
     if (item.type === "power" && item.system.autoGenChatPowerCard) {
         let attackBonus = null;
         if(item.hasAttack){
@@ -75,7 +75,7 @@ TokenBarHooks.generateItemTooltip = async (actor, item) => {
             async: true,
             relativeTo: actor
         });
-        console.log(enrichedDetailsText)
+        Helper.debugLog(enrichedDetailsText)
         return enrichedDetailsText
     }
     else {

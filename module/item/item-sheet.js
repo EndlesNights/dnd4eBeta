@@ -529,7 +529,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		const effect = li.dataset.effectId ? this.item.effects.get(li.dataset.effectId) : null;
 		switch(target.dataset.action){
 			case "createPowerEffect":
-				console.log(this)
+				Helper.debugLog(this)
 				this.item.createEmbeddedDocuments("ActiveEffect", [{
 					name: game.i18n.localize("DND4E.EffectNew"),
 					img: this.item.img || "icons/svg/aura.svg",

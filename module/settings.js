@@ -371,7 +371,17 @@ export const registerSystemSettings = function() {
 /** DEVELOPER SETTINGS  **/
 /*************************/
 
-	// Debug power attack/damage effect bonuses
+    // Enable/disable debug logging
+	game.settings.register("dnd4e", "debugLogging",{
+		name: "SETTINGS.4eDebugLoggingN",
+		hint: "SETTINGS.4eDebugLoggingL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean
+	});	
+
+    // Debug power attack/damage effect bonuses
 	game.settings.register("dnd4e", "debugEffectBonus",{
 		name: "SETTINGS.4eDebugPowerEffectsN",
 		hint: "SETTINGS.4eDebugPowerEffectsL",

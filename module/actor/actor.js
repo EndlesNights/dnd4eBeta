@@ -1246,7 +1246,7 @@ export class Actor4e extends Actor {
 					}
 					else if((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
 						if(id=== 'ac' && i.system.armour.subType === "heavy") def.light = false;
-						//console.log(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
+						Helper.debugLog(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
 						def.enhance = Math.max(def.enhance,i.system.armour.enhance);
 					}
 					def.armour += i.system.armour[id];
@@ -1986,8 +1986,8 @@ export class Actor4e extends Actor {
 				'content': game.i18n.format("DND4E.DeathSaveCriticalSuccess",{'name':this.name})
 			});
 		}
-		//console.log(roll.total)
-		//console.log(rollConfig.critical)
+		Helper.debugLog(roll.total)
+		Helper.debugLog(rollConfig.critical)
 		await this.update(updateData);
 	}
 
@@ -2018,9 +2018,9 @@ export class Actor4e extends Actor {
 					}
 				}
 				healamount += this.system.details.surgeValue + (r.total || 0);
-				//console.log(`surgeValue:${this.system.details.surgeValue}`)
-				//console.log(`total:${r.total}`)
-				//console.log(`healamount:${healamount}`)
+				Helper.debugLog(`surgeValue:${this.system.details.surgeValue}`)
+				Helper.debugLog(`total:${r.total}`)
+				Helper.debugLog(`healamount:${healamount}`)
 			}
 
 			if (healamount){
@@ -2046,8 +2046,8 @@ export class Actor4e extends Actor {
 			updateData[`system.details.secondwind`] = false;
 			updateData[`system.magicItemUse.encounteruse`] = false;
 			
-			console.log(updateData[`system.attributes.hp.value`])
-			console.log(this.system.attributes.hp.value)
+			Helper.debugLog(updateData[`system.attributes.hp.value`])
+			Helper.debugLog(this.system.attributes.hp.value)
 			
 			ChatMessage.create({
 				user: game.user.id,
@@ -2318,7 +2318,7 @@ export class Actor4e extends Actor {
 				weight += (e == "ad" ? v/500 : v/50);
 			}
 		}
-		// console.log(game.settings.get("dnd4e", "currencyWeight"))
+		Helper.debugLog(game.settings.get("dnd4e", "currencyWeight"))
 		//Weight Ritual Components
 		for (let [e, v] of Object.entries(actorData.ritualcomp)) {
 			// weight += v/100 * 2.205;
@@ -2393,7 +2393,7 @@ export class Actor4e extends Actor {
 			const currentRes = Helper.sumExtremes([resAll,actorRes[dt]?.value || 0]);
 			if(currentRes !== 0){ //if has resistances or vulnerability
 				isImmuneAll = false;
-				console.log(`Modifier found: ${dt} ${actorRes[dt].value}`);
+				Helper.debugLog(`Modifier found: ${dt} ${actorRes[dt].value}`);
 				if(currentRes < lowestRes){
 					lowestRes = currentRes;
 				}
@@ -2466,7 +2466,7 @@ export class Actor4e extends Actor {
 		}
 
 		if(this.statuses.has("insubstantial")) totalDamage = Math.floor(totalDamage / 2);
-		//console.log(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`)
+		Helper.debugLog(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`)
 		return totalDamage;
 	}
 
@@ -2537,7 +2537,7 @@ export class Actor4e extends Actor {
 		}
 
 		if(this.statuses.has("insubstantial")) totalDamage = Math.floor(totalDamage / 2);
-		console.log(`Total Damage: ${totalDamage}`)
+		Helper.debugLog(`Total Damage: ${totalDamage}`)
 		return totalDamage;
 	}
 
@@ -2611,7 +2611,7 @@ export class Actor4e extends Actor {
 		}
 
 		const hp = this.system.attributes.hp;
-		console.log(hp)
+		Helper.debugLog(hp)
 
 		// calculate existing temp hp
 		const tmp = parseInt(this.system.attributes.temphp.value) || 0;
@@ -2693,7 +2693,7 @@ export class Actor4e extends Actor {
 	}
 
 	async promptEoTSavesSocket(){
-		//console.log('socket reached');
+		Helper.debugLog('socket reached');
 		const saveReminders = game.settings.get("dnd4e","saveReminders");
 		if(!saveReminders) return;
 		
@@ -2718,7 +2718,7 @@ export class Actor4e extends Actor {
 	}
 
 	async autoDoTsSocket(tokenId){
-		//console.log(tokenId);
+		Helper.debugLog(tokenId);
 		const autoDoTs = game.settings.get("dnd4e","autoDoTs");
 		if(autoDoTs != "none"){
 			let applicableDoTs = {};

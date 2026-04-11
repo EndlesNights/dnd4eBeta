@@ -60,9 +60,9 @@ export class EncumbranceDialog extends DocumentSheet4e {
 		event.preventDefault();
 		const moveName = event.currentTarget.parentElement.dataset.movement;
 		const target = `system.movement.${moveName}`;
-		console.log(moveName)
-		console.log(event.currentTarget.parentElement.dataset)
-		console.log(event.currentTarget.parentElement)
+		Helper.debugLog(moveName)
+		Helper.debugLog(event.currentTarget.parentElement.dataset)
+		Helper.debugLog(event.currentTarget.parentElement)
 		const options = {document: this.document, target: target, label: `${this.document.system.movement[moveName].label} Movement Bonus` };
 		new AttributeBonusDialog(options).render(true);
 	}

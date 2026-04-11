@@ -85,11 +85,11 @@ export default class Combat4e extends Combat {
 		}
 		
 		// Signal the current actor to check end-of-turn saves
-		//console.log(`Begin autosaves phase`);
+		Helper.debugLog(`Begin autosaves phase`);
 		const currentActor = await this.turns[currentTurn]?.token.actor;
 
 		if(currentActor){
-			//console.log(`Checking for owner of ${currentActor.name}`);
+			Helper.debugLog(`Checking for owner of ${currentActor.name}`);
 			const targetUser = Helper.firstOwner(currentActor);
 			
 			//Work out which user makes the save; "game.user" is whoever ended the turn
@@ -111,7 +111,7 @@ export default class Combat4e extends Combat {
 		}
 		
 		// After EoT durations are resolved, collect ongoing damage instances from effects
-		//console.log(`Begin ongoing damage phase`);
+		Helper.debugLog(`Begin ongoing damage phase`);
 		const nextCombatant = await this.turns[nextTurn]?.token.actor || null;
 		
 		if(nextCombatant){
@@ -120,7 +120,7 @@ export default class Combat4e extends Combat {
 		}
 
 		if(nextCombatant){
-			//console.log(`Checking for owner of ${nextCombatant.name}`);
+			Helper.debugLog(`Checking for owner of ${nextCombatant.name}`);
 			const nextTargetUser = Helper.firstOwner(nextCombatant);
 			if(game.user.isGM){
 				await nextCombatant.autoDoTsSocket(this.turns[nextTurn].tokenId);

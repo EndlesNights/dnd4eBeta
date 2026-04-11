@@ -25,7 +25,7 @@ export default class Item4e extends Item {
 			const system = this.system
 			// does it have an old damage expression
 			if (system.damage.parts?.length > 0) {
-				console.log("DnD4e: Updating an obsolete consumable that somehow still had a parts roll")
+				Helper.debugLog("DnD4e: Updating an obsolete consumable that somehow still had a parts roll")
 				// ok so need to fix it
 				if (system.damage.parts.map(d => d[1]).includes("healing") && !changed.system.hit?.healFormula) {
 					foundry.utils.setProperty(changed, "system.hit.healFormula", system.damage.parts[0][0])
@@ -35,7 +35,7 @@ export default class Item4e extends Item {
 				// non healing damage expressions didn't work anyway
 			}
 			if (system.oldConsumableNeedsUpdate === true) {
-				console.log("DnD4e: Updating an obsolete consumable")
+				Helper.debugLog("DnD4e: Updating an obsolete consumable")
 				foundry.utils.setProperty(changed, "system.damage.parts", [])
 				foundry.utils.setProperty(changed, "system.hit.healFormula", system.hit.healFormula)
 				foundry.utils.setProperty(changed, "system.hit.isHealing", system.hit.isHealing)
@@ -46,7 +46,7 @@ export default class Item4e extends Item {
 		if (this.system.type === "ritual") {
 			const system = this.system
 			if (system.oldRitualNeedsUpdating === true) {
-				console.log("DnD4e: Updating an obsolete ritual")
+				Helper.debugLog("DnD4e: Updating an obsolete ritual")
 				foundry.utils.setProperty(changed, "system.formula", "@attribute")
 				delete system.oldRitualNeedsUpdating
 			}
@@ -92,7 +92,7 @@ export default class Item4e extends Item {
 				break;
 		}
 		if ( updates ){
-			console.log(updates)
+			Helper.debugLog(updates)
 			return this.updateSource(updates);
 		} 
 	}
@@ -2114,7 +2114,7 @@ export default class Item4e extends Item {
 			}
 		}
 	
-		if(this.system?.hit?.damageBonusNull) console.log(`Ignoring damage bonuses do to power config.`);
+		if(this.system?.hit?.damageBonusNull) Helper.debugLog(`Ignoring damage bonuses due to power config.`);
 	
 		// Define Roll Data
 		if(!this.system?.hit?.damageBonusNull){
@@ -2563,7 +2563,7 @@ export default class Item4e extends Item {
 				rollData[rollType]+= `${trimmedbonus}`;
 			}
 		}
-		console.log(rollData[rollType])
+		Helper.debugLog(rollData[rollType])
 		const title = `${this.name} - ${game.i18n.localize(titleKey)}`;
 
 		const label = Helper.byString(this.system.attribute.replace(".mod",".label").replace(".total",".label"), this.actor.system);
@@ -2722,7 +2722,7 @@ export default class Item4e extends Item {
 		}
 
 		// Attack and Damage Rolls
-		console.log(action)
+		Helper.debugLog(action)
 		let effectTargets = game.user.targets // Set
 		if (game.settings.get("dnd4e","applyEffectsToSelection")) {
 			effectTargets = new Set(canvas.tokens.controlled) // Array, convert to set

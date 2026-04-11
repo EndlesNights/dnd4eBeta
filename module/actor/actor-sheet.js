@@ -1305,7 +1305,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 		}
 		
-		console.log(itemData)
+		Helper.debugLog(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
@@ -2157,8 +2157,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			return sourceId && (sourceId === droppedSourceId) && (i.type === "consumable") && (i.name === itemData.name);
 		});
 		if ( !similarItem ) return null;
-		console.log(similarItem.system.quantity)
-		console.log(itemData.system.quantity)
+		Helper.debugLog(similarItem.system.quantity)
+		Helper.debugLog(itemData.system.quantity)
 		return similarItem.update({
 			"system.quantity": similarItem.system.quantity + Math.max(itemData.system.quantity, 1)
 		});
