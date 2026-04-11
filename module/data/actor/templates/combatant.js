@@ -67,7 +67,7 @@ export default class CombatantTemplate extends SpeedTemplate {
         training: new NumberField({...numberConfig, initial: 0}),
         bonus: new BonusField(),
         total: new NumberField({...numberConfig, initial: 0, persisted: false}),
-        ability: new StringField({initial: "int"}),
+        ability: new StringField({initial: ""}),
         armourCheck: new BooleanField({initial: false}),
         chat: new StringField({initial: "@name uses @label."})
       }), {

@@ -186,28 +186,86 @@ export class Actor4e extends Actor {
 	/** @inheritdoc */
 	getRollData() {
 		const data = super.getRollData();
-		data["strMod"] = data?.abilities?.str.mod || 0
-		data["conMod"] = data?.abilities?.con.mod || 0
-		data["dexMod"] = data?.abilities?.dex.mod || 0
-		data["intMod"] = data?.abilities?.int.mod || 0
-		data["wisMod"] = data?.abilities?.wis.mod || 0
-		data["chaMod"] = data?.abilities?.cha.mod || 0
+		data.strMod = data?.abilities?.str.mod || 0;
+		data.conMod = data?.abilities?.con.mod || 0;
+		data.dexMod = data?.abilities?.dex.mod || 0;
+		data.intMod = data?.abilities?.int.mod || 0;
+		data.wisMod = data?.abilities?.wis.mod || 0;
+		data.chaMod = data?.abilities?.cha.mod || 0;
 
-		data["lvhalf"] = Math.floor(data.details.level/2) || 0
-		data["lv"] = data?.details.level || 0
-		data["tier"] = data?.details.tier || 0
+		data.lvhalf = Math.floor(data.details.level/2) || 0;
+		data.lv = data?.details.level || 0;
+		data.tier = data?.details.tier || 0;
 
-		data["heroic"] = data?.details.level < 11 ? 1 : 0
-		data["paragon"] = data?.details.level >= 11 && data.details.level < 21 ? 1 : 0
-		data["epic"] = data?.details.level >= 21 ? 1 : 0
+		data.heroic = data?.details.level < 11 ? 1 : 0;
+		data.paragon = data?.details.level >= 11 && data.details.level < 21 ? 1 : 0;
+		data.epic = data?.details.level >= 21 ? 1 : 0;
 
-		data["heroicOrParagon"] = data?.details.level < 21 ? 1 : 0
-		data["paragonOrEpic"] = data?.details.level >= 11 ? 1 : 0
+		data.heroicOrParagon = data?.details.level < 21 ? 1 : 0;
+		data.paragonOrEpic = data?.details.level >= 11 ? 1 : 0;
 
-		data["id"] = this.id;
-		data["uuid"] = this.uuid;
+		data.bloodied = data.details.isBloodied ? 1 : 0;
 
-		data["isActor"] = true;
+		data.sneak = CONFIG.DND4E.SNEAKSCALE[data.details.tier];
+			
+		data.enhArmour = data.defences.ac.enhance || 0;
+		data.enhNAD = Math.min(data.defences.fort.enhance || 0, data.defences.ref.enhance || 0, data.defences.wil.enhance || 0);
+
+		data.charaID = this.id;
+		data.charaUID = this.uuid;
+
+		for(let level = 2; level < CONFIG.DND4E.CHARACTER_EXP_LEVELS.length; level++){
+			data[`scale${level}`] = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, level-1);
+		}
+
+		// this is done at the bottom, because I don't want to be iterating the entire actor effects collection unless I have to
+		// as this could get unnecessarily expensive quickly.
+		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula
+		// having got to the bottom of common replace, check to see if there are any more @variables left.	If there aren't, then don't bother going any further
+		let effects = Array.from(this.allApplicableEffects());
+		if (effects.length) {
+			const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4e |` : ""
+			if (debug) {
+				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.	Searching active effects for a suitable variable`)
+			}
+			const resultObject = {}
+			const enabledEffects = effects.filter((effect) => effect?.disabled === false);
+			enabledEffects.forEach((effect) => {
+				effect.changes.forEach((change => {
+					if (Helper.variableRegex.test(change.key)) {
+						if (debug) {
+							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.name}.	Value: ${change.value}`)
+						}
+						const changeValueReplaced = Roll.replaceFormulaData(String(change.value), this.system, {recursive: true}); // set depth to avoid infinite recursion
+						if (!resultObject[change.key]) {
+							resultObject[change.key] = changeValueReplaced
+							if (debug) {
+								console.log(`${debug} Effect: ${effect.name}.	Computed Value: ${change.value} was the first match to ${change.key} `)
+							}
+						}
+						else {
+							if (debug) {
+								console.log(`${debug} Effect: ${effect.name}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
+							}
+							if(Helper._isNumber(resultObject[change.key]) && Helper._isNumber(changeValueReplaced)){
+								resultObject[change.key] = Number(resultObject[change.key]) + Number(changeValueReplaced)
+							} else {
+								resultObject[change.key] = `${resultObject[change.key]} + ${changeValueReplaced}`
+							}
+						}
+					}
+				}))
+			})
+
+			if (debug) {
+				console.log(`${debug} Discovered custom variable values in effects to substitute into formula (${newFormula}): ${JSON.stringify(resultObject)}`)
+			}
+			for (const [key, value] of Object.entries(resultObject)) {
+				data[key.slice(1)] = value;
+			}
+		}
+
+		data.isActor = true;
 		return data;
 	}
 

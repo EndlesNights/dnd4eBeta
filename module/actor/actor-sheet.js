@@ -336,11 +336,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 	}
 
-    _onChangeForm(formConfig, event) {
-        const input = event.target;
-        if (input.dataset?.dtype !== "Number") {
-            return super._onChangeForm(formConfig, event);
-        }
+	_onChangeForm(formConfig, event) {
+		const input = event.target;
+		if (input.dataset?.dtype !== "Number") {
+			return super._onChangeForm(formConfig, event);
+		}
 
 		const value = input.value;
 
@@ -364,8 +364,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		} else{
 			input.value = foundry.utils.getProperty(this.actor, input.name)
 		}
-        return super._onChangeForm(formConfig, event);
-    }
+		return super._onChangeForm(formConfig, event);
+	}
 
   /* -------------------------------------------- */
 
@@ -447,11 +447,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				actorData.skills = sortedSkills;
 			}
 
-            for ( let [d, def] of Object.entries(actorData.defences)) {
+			for ( let [d, def] of Object.entries(actorData.defences)) {
 				def.label = def.label ? def.label: DND4E.defensives[d].abbreviation;
 			}
 
-            for ( let [a, abl] of Object.entries(actorData.abilities)) {
+			for ( let [a, abl] of Object.entries(actorData.abilities)) {
 				abl.label = abl.label ? abl.label: DND4E.abilities[a];
 			}
 
@@ -1584,14 +1584,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static #onCycleSkillProficiency(event, target) {
 		event.preventDefault();
-        const skillId = target.parentElement.dataset.skill;
+		const skillId = target.parentElement.dataset.skill;
 
 		// Get the current level and the array of levels
 		const level = this.document.system.skills[skillId].training;
 		const levels = [0, 5, 8];
 		let idx = levels.indexOf(level);
 
-        let value;
+		let value;
 		// Toggle next level - forward on click, backwards on right
 		if ( event.button === 0 ) {
 			value = levels[(idx === levels.length - 1) ? 0 : idx + 1];
@@ -1599,7 +1599,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			value = levels[(idx === 0) ? levels.length - 1 : idx - 1];
 		}
 
-        this.document.update({[`system.skills.${skillId}.training`] : value});
+		this.document.update({[`system.skills.${skillId}.training`] : value});
 
 		// Update the field value and save the form
 		this.submit({preventClose: true});

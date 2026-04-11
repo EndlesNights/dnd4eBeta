@@ -1773,7 +1773,7 @@ export default class Item4e extends Item {
 		let area;
 		if(this.system.area) {
 			try{
-				let areaForm = game.helper.commonReplace(`${this.system.area}`, this.actor);
+				let areaForm = Roll.replaceFormulaData(String(this.system.area), this.getRollData());
 				area = Roll.safeEval(areaForm);
 			} catch (e) {
 				area = this.system.area;
@@ -1783,33 +1783,33 @@ export default class Item4e extends Item {
 		}
 
 		if(this.system.rangeType === "range") {
-			rangeData.rangeText = `${C.rangeType.range.label} ${this.system.rangePower}`
+			rangeData.rangeText = `${C.rangeType.range.label} ${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())}`
 			rangeData.rangeTextShort = C.rangeType.range.abbr
-			rangeData.rangeTextBlock = `${this.system.rangePower}`
+			rangeData.rangeTextBlock = `${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())}`
 			if(this.system.range.long) {
-				rangeData.rangeText += `/${this.system.range.long}`
-				rangeData.rangeTextBlock += `/${this.system.range.long}`
+				rangeData.rangeText += `/${Roll.replaceFormulaData(this.system.rangeLong, this.getRollData())}`
+				rangeData.rangeTextBlock += `/${Roll.replaceFormulaData(this.system.rangeLong, this.getRollData())}`
 			}
 		} else if(this.system.rangeType === "closeBurst") {
 			rangeData.rangeText = `${C.rangeType.closeBurst.label} ${area}`
 			rangeData.rangeTextShort = C.rangeType.closeBurst.abbr
 			rangeData.rangeTextBlock = `${area}`
 		} else if(this.system.rangeType === "rangeBurst") {
-			rangeData.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${this.system.rangePower}`
+			rangeData.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())}`
 			rangeData.rangeTextShort = C.rangeType.rangeBurst.abbr
-			rangeData.rangeTextBlock = `${area}(${this.system.rangePower})`
+			rangeData.rangeTextBlock = `${area}(${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())})`
 		} else if(this.system.rangeType === "closeBlast") {
 			rangeData.rangeText = `${C.rangeType.closeBlast.label} ${area}`
 			rangeData.rangeTextShort = C.rangeType.closeBlast.abbr
 			rangeData.rangeTextBlock = `${area}`
 		} else if(this.system.rangeType === "rangeBlast") {
-			rangeData.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${this.system.rangePower}`
+			rangeData.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())}`
 			rangeData.rangeTextShort = C.rangeType.rangeBlast.abbr
- 			rangeData.rangeTextBlock = `${area}(${this.system.rangePower})`
+ 			rangeData.rangeTextBlock = `${area}(${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())})`
 		} else if(this.system.rangeType === "wall") {
-			rangeData.rangeText = `${C.rangeType.wall.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${this.system.rangePower}`
+			rangeData.rangeText = `${C.rangeType.wall.label} ${area} ${game.i18n.localize('DND4E.RangeWithin')} ${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())}`
 			rangeData.rangeTextShort = C.rangeType.wall.abbr
-			rangeData.rangeTextBlock = `${area}(${this.system.rangePower})`
+			rangeData.rangeTextBlock = `${area}(${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())})`
 		} else if(this.system.rangeType === "personal") {
 			rangeData.rangeText = C.rangeType.personal.label
 			rangeData.rangeTextShort = C.rangeType.personal.abbr
@@ -1821,16 +1821,16 @@ export default class Item4e extends Item {
 			rangeData.rangeText = C.rangeType.touch.label;
 		} else if(this.system.rangeType === "melee"){
 			rangeData.rangeTextShort = C.rangeType.melee.abbr;
-			if(this.system.rangePower === undefined || this.system.rangePower === null){
+			if(Roll.replaceFormulaData(this.system.rangePower, this.getRollData()) === undefined || Roll.replaceFormulaData(this.system.rangePower, this.getRollData()) === null){
 				rangeData.rangeText = C.rangeType.melee.label;
 			} else {
-				rangeData.rangeText = `${C.rangeType.melee.label} ${this.system.rangePower}`;
-				rangeData.rangeTextBlock = `${this.system.rangePower}`
+				rangeData.rangeText = `${C.rangeType.melee.label} ${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())}`;
+				rangeData.rangeTextBlock = `${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())}`
 			}
 		} else if(this.system.rangeType === "reach"){
-			rangeData.rangeText = `${C.rangeType.reach.label} ${this.system.rangePower}`;
+			rangeData.rangeText = `${C.rangeType.reach.label} ${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())}`;
 			rangeData.rangeTextShort = C.rangeType.reach.abbr;
-			rangeData.rangeTextBlock = `${this.system.rangePower}`
+			rangeData.rangeTextBlock = `${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())}`
 			
 		} else if(this.system.rangeType === "weapon") {
 
@@ -1918,8 +1918,7 @@ export default class Item4e extends Item {
 						width: tokenInfo.width,
 						height: tokenInfo.width,
 						shape: tokenInfo.shape,
-					};
-					options.attachToToken ??= true;             
+					};         
 					break;
 				case "rangeBurst":
 					shapeData.base = {
@@ -2591,23 +2590,267 @@ export default class Item4e extends Item {
 
 	/* -------------------------------------------- */
 
+	getWepDice() {
+		if (!["power", "weapon"].includes(this.type)) return 0;
+
+		const weaponData = this.type === "weapon" ? this.system : (this.type == "power" ? Helper.getWeaponUse(this.system, this.actor)?.system : null);
+		if (!weaponData) return 0;
+
+		let parts = weaponData.damageDice.parts;
+		//let indexStart = newFormula.indexOf("@wepDice")+8;
+
+		let weaponNum = 1//newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
+		//weaponNum = eval(weaponNum.replaceAll(/[a-z]/gi, ''));
+
+		if(typeof(weaponNum) !== "number") weaponNum = 1;
+
+		let dice = "";
+		for (let i = 0; i< parts.length; i++) {
+			if(!parts[i][0] || !parts[i][1]) continue;
+
+			let quantity = Roll.replaceFormulaData(parts[i][0], this.actor.getRollData(), {recursive: true});
+			let r = new Roll(`${quantity}`);
+
+			if(r.isDeterministic){
+				r.evaluateSync();
+				quantity = r.total;
+			}
+
+			if(weaponData.properties.bru) {
+				dice += `(${quantity}*${weaponNum})d${parts[i][1]}rr<=${weaponData.brutalNum || 1}`;
+			}
+			else{
+				dice += `(${quantity}*${weaponNum})d${parts[i][1]}`;
+			}
+			if (i < parts.length - 1) dice += '+';
+		}
+		const possibleDice = Roll.replaceFormulaData(dice, this.actor.getRollData(), {recursive: true});
+		dice = possibleDice !== 0 ? possibleDice : dice //there probably shouldn't be any formula left, because @wepDice is a formula contents under our command.	So if we had hit the bottom of the recursion tree, just try the original
+		return dice;
+	}
+
+	getWepMax() {
+		if (!["power", "weapon"].includes(this.type)) return 0;
+
+		const weaponData = this.type === "weapon" ? this.system : (this.type == "power" ? Helper.getWeaponUse(this.system, this.actor)?.system : null);
+		if (!weaponData) return 0;
+
+		let parts = weaponData.damageDice.parts;
+		let dice = "";
+		for(let i = 0; i< parts.length; i++) {
+			if(!parts[i][0] || !parts[i][1]) continue;
+			dice += `(${parts[i][0]} * ${parts[i][1]})`
+			if (i < parts.length - 1) dice += '+';
+		}
+		dice = Roll.replaceFormulaData(dice, this.actor.getRollData(), {recursive: true});
+		let r = new Roll(`${dice}`)
+		if(dice){
+			r.evaluateSync({maximize: true});
+			return r.result;
+		} else {
+			return dice;
+		}
+	}
+
+	getPowBase() {
+		if (this.type !== "power") return 0;
+		let powerData = this.system;
+		let quantity = Roll.replaceFormulaData(powerData.hit.baseQuantity, this.actor.getRollData(), {recursive: true});
+		let r = new Roll(`${quantity}`);
+
+		//Just to help keep the rolls cleaner, look for Deterministic elements to remove
+		if(r.isDeterministic){
+			r.evaluateSync();
+			quantity = r.total;
+		}
+
+		let diceType = powerData.hit.baseDiceType.toLowerCase();
+		
+		if(quantity === "") quantity = 1;
+		
+		let dice = "";
+		
+		// Handle Weapon Type Damage
+		if(diceType.includes("weapon")){
+			const weaponData = Helper.getWeaponUse(this.system, this.actor)?.system;
+			if (weaponData) {
+				let parts = weaponData.damageDice.parts;
+				for(let i = 0; i< parts.length; i++) {
+
+					if(!parts[i][0] || !parts[i][1]) continue;
+
+					let weaponDiceQuantity = Roll.replaceFormulaData(`(${quantity}) * (${parts[i][0]})`, this.actor.getRollData(), {recursive: true});
+					let r2 = new Roll(`${weaponDiceQuantity}`);
+
+					if(r2.isDeterministic){
+						r2.evaluateSync();
+						weaponDiceQuantity = r2.total;
+					}
+					if(weaponData.properties.bru) {
+						dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2]}rr<=${weaponData.brutalNum || 1}`;
+					}
+					else{
+						dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2] || ``}`;// added a null check to i2 hotfix
+					}
+
+					if (i < parts.length - 1) dice += '+';
+				}
+			} else {
+				return "0";
+			}
+		}
+		// Handle Flat Type Damage
+		else if(diceType.includes("flat")) {
+			dice += `${quantity}`;
+		}
+		// Handle Dice Type Damage
+		else{
+			dice += `${quantity}${diceType}`;
+		}
+
+		dice = Roll.replaceFormulaData(dice, this.actor.getRollData(), {recursive: true});
+		return dice;
+	}
+
+	getPowMax() {
+		let dice = "";
+		let quantity = this.system.hit.baseQuantity;
+		quantity = Roll.replaceFormulaData(quantity, this.actor.getRollData(), {recursive: true});
+		let diceType = this.system.hit.baseDiceType.toLowerCase();
+		let rQuantity = new Roll(`${quantity}`)
+		// rQuantity.evaluate({maximize: true, async: false});
+		rQuantity.evaluateSync({maximize: true});
+
+		//check if is valid number
+		if(Helper._isNumber(rQuantity.total)){
+			quantity = rQuantity.total;
+		} else {
+			quantity = 1;
+		}
+		
+
+		// Handle Weapon Type Damage
+		if(diceType.includes("weapon")){
+			const weaponData = Helper.getWeaponUse(this.system, this.actor)?.system;
+			if (weaponData) {
+				let parts = weaponData.damageDice.parts;
+				for(let i = 0; i< parts.length; i++) {
+					if(!parts[i][0] || !parts[i][1]) continue;
+					dice += `(${quantity} * ${parts[i][0]} * ${parts[i][1]})`
+					if (i < parts.length - 1) dice += '+';
+				}
+			} else {
+				return 0;
+			}
+		}
+		// Handle Flat Type Damage
+		else if(diceType.includes("flat")) {
+			dice += `${quantity}`;
+		}
+		// Handle Dice Type Damage
+		else{
+			let diceValue = diceType.match(/\d+/g).join('');
+			dice += `${quantity} * ${diceValue}`;
+		}
+		dice = Roll.replaceFormulaData(dice, this.actor.getRollData(), {recursive: true});
+		return dice;
+	}
+
 	/**
 	 * Prepare a data object which is passed to any Roll formulas which are created related to this Item
 	 * @private
 	 */
 	getRollData(options={}) {
+		//return super.getRollData();
 		//console.debug(options);
 		if ( !this.actor ) return null;
-		const rollData = this.actor.getRollData();
-		rollData.item = foundry.utils.duplicate(this.system);
-		rollData.item.name = this.name;
-		rollData.item.flags = foundry.utils.duplicate(this.flags);
+		const data = this.actor.getRollData();
+		data.item = super.getRollData();
+		data.item.name = this.name;
+		data.item.flags = foundry.utils.duplicate(this.flags);
 
 		// Include an ability score modifier if one exists
 		const abl = this.abilityMod;
 		if ( abl ) {
-			const ability = rollData.abilities[abl];
-			rollData["mod"] = ability.mod || 0;
+			const ability = data.abilities[abl];
+			data.mod = ability.mod || 0;
+		}
+
+		// Power-specific data for use in formulae
+		if (this.type === "power") {
+			data.powerMod = Object.keys(data.abilities).includes(data.item.attack?.ability) ? data.abilities[data.item.attack.ability].mod : 0;
+			data.powerLevel = data.item.level || 0;
+			// If this power is being used with a weapon or implement, its level will overwrite this value
+			data.itemLevel = data.powerLevel;
+		}
+
+		// Weapon/Implement properties:
+		const weaponData = this.type === "weapon" ? this.system : (this.type == "power" ? Helper.getWeaponUse(this.system, this.actor)?.system : null);
+		if(weaponData){
+			let enhValue = weaponData.enhance || 0;
+			
+			//Using inherent enhancements?
+			if(game.settings.get("dnd4e", "inhEnh")) {
+				//If our enhancement is lower than the inherent level, adjust it upward
+				enhValue = Math.max(enhValue, Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1));
+				console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${enhValue}`);
+			}
+
+			data.enhanceImp = (weaponData.type === 'implement' || weaponData.properties.imp) ? Helper.bracketed(Roll.replaceFormulaData(String(enhValue), data, {recursive: true}) || 0) : 0;
+			data.enhance = Helper.bracketed(Roll.replaceFormulaData(String(enhValue), data, {recursive: true}) || 0);
+			
+			data.itemLevel = weaponData.level || 0;
+
+			data.profBonusO = weaponData.profBonus || 0;
+			data.profImpBonusO = weaponData.profImpBonus || 0;
+
+			data.profImpBonus = weaponData.proficientI ? weaponData.profImpBonus || 0 : 0;
+			data.profBonus = weaponData.proficient ? weaponData.profBonus || 0 : 0;
+
+			if (weaponData.weaponType === "implement") {
+				data.wepAttack = Helper.bracketed(Roll.replaceFormulaData(weaponData.attackFormImp, data, {recursive: true}) || 0);
+				data.wepDamage = Helper.bracketed(Roll.replaceFormulaData(weaponData.damageFormImp, data, {recursive: true}) || 0);
+				data.wepCritBonus = Helper.bracketed(Roll.replaceFormulaData(weaponData.critDamageFormImp, data, {recursive: true}) || 0);
+			}
+			else {
+				data.wepAttack = Helper.bracketed(Roll.replaceFormulaData(weaponData.attackForm, data, {recursive: true}) || 0);
+				data.wepDamage = Helper.bracketed(Roll.replaceFormulaData(weaponData.damageForm, data, {recursive: true}) || 0);
+				data.wepCritBonus = Helper.bracketed(Roll.replaceFormulaData(weaponData.critDamageForm, data, {recursive: true}) || 0);
+			}
+
+			data.impCritBonus = Helper.bracketed(Roll.replaceFormulaData(weaponData.critDamageFormImp, data, {recursive: true}) || 0);
+
+			data.impAttackO = Helper.bracketed(Roll.replaceFormulaData(weaponData.attackFormImp, data, {recursive: true}) || 0);
+			data.impDamageO = Helper.bracketed(Roll.replaceFormulaData(weaponData.damageFormImp, data, {recursive: true}) || 0);
+
+			data.impAttack = Helper.bracketed(weaponData.proficientI ? Roll.replaceFormulaData(weaponData.attackFormImp, data, {recursive: true}) || 0 : 0);
+			data.impDamage = Helper.bracketed(weaponData.proficientI ? Roll.replaceFormulaData(weaponData.damageFormImp, data, {recursive: true}) || 0 : 0);			
+		} else{
+			data.profBonusO = 0;
+			data.profImpBonusO = 0;
+			
+			data.profImpBonus = 0;
+			data.profBonus = 0;
+			
+			data.wepAttack = 0;
+			data.wepDamage = 0;
+			data.wepCritBonus = 0;
+			data.impCritBonus = 0;
+
+			data.impAttackO = 0;
+			data.impDamageO = 0;
+
+			data.impAttack = 0;
+			data.impDamage = 0;
+		}
+
+		if (["power", "weapon"].includes(this.type)) {
+			data.wepDice = this.getWepDice();
+			data.wepMax = this.getWepMax();
+		}
+		if (this.type === "power") {
+			data.powBase = this.getPowBase();
+			data.powMax = this.getPowMax();
 		}
 
 		// Include a proficiency score
@@ -2615,12 +2858,12 @@ export default class Item4e extends Item {
 		// rollData["prof"] = Math.floor(prof * rollData.attributes.prof);
 		
 		// Temporary properties from special modes
-		rollData.isCharge = options?.variance?.isCharge || false;
-		rollData.isOpp = options?.variance?.isOpp || false;
+		data.isCharge = options?.variance?.isCharge || false;
+		data.isOpp = options?.variance?.isOpp || false;
 		
-		//console.debug(rollData);
+		//console.debug(data);
 		
-		return rollData;
+		return data;
 	}
 
 	/* -------------------------------------------- */
