@@ -380,9 +380,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	/** @override */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
-		const actor = this.actor.toObject(false);
+		const actor = this.actor;
 		const actorData = actor.system;
-		actorData.details.isBloodied = this.actor.system.details.isBloodied;
+		actorData.details.isBloodied = actor.system.details.isBloodied;
 
 		const isOwner = this.actor.isOwner;
 
@@ -407,22 +407,23 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		context.items = actor.items
 			.filter(i => !this.actor.items.has(i.system.container))
-			.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+			.sort((a, b) => (a.sort || 0) - (b.sort || 0))
+			.map(i => i.toObject(false));
 
 		for (let i of context.items) {
-			const item = this.actor.items.get(i._id);
+			const item = actor.items.get(i._id);
 			i.keywords = item.keywords;
 			i.labels = item.labels;
-			i.chatData = await item.getChatData({secrets: this.actor.isOwner})
+			i.chatData = await item.getChatData({secrets: actor.isOwner})
 			if (item.type === "power" && item.system.autoGenChatPowerCard) {
 				let attackBonus = null;
 				if(item.hasAttack){
 					attackBonus = await item.getAttackBonus();
 				}
-				let detailsText = Helper._preparePowerCardData(i.chatData, CONFIG, this.actor, attackBonus);
+				let detailsText = Helper._preparePowerCardData(i.chatData, CONFIG, actor, attackBonus);
 				i.detailsText = await foundry.applications.ux.TextEditor.implementation.enrichHTML(detailsText, {
 					async: true,
-					relativeTo: this.actor
+					relativeTo: actor
 				});
 			}
 			i.collapsed = !this.#expandedItemIds.has(i._id); 
@@ -430,21 +431,23 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		this._prepareItems(context);
 
-		context.effects = ActiveEffect4e.prepareActiveEffectCategories(this.actor.getActiveEffects());
+		context.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.getActiveEffects());
 
 		if (context.isCombatant) {
-			if(Object.entries(game.dnd4e.config.coreSkills).length != Object.entries(actorData.skills).length){
-				const skillNames = Object.keys(actorData.skills);
+			context.skills = this._prepareSkills();
+			
+			if(Object.entries(game.dnd4e.config.coreSkills).length != Object.entries(context.skills).length){
+				const skillNames = Object.keys(context.skills);
 
 				// Sort the skill names based on the label property
-				skillNames.sort((a, b) => actorData.skills[a].label?.localeCompare(actorData.skills[b].label));
+				skillNames.sort((a, b) => context.skills[a].label?.localeCompare(context.skills[b].label));
 				
 				const sortedSkills = skillNames.reduce((acc, skillName) => {
-				  acc[skillName] = actorData.skills[skillName];
+				  acc[skillName] = context.skills[skillName];
 				  return acc;
 				}, {});
 				
-				actorData.skills = sortedSkills;
+				context.skills = sortedSkills;
 			}
 
 			for ( let [d, def] of Object.entries(actorData.defences)) {
@@ -453,13 +456,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 			for ( let [a, abl] of Object.entries(actorData.abilities)) {
 				abl.label = abl.label ? abl.label: DND4E.abilities[a];
-			}
-
-			for ( let [s, skl] of Object.entries(actorData.skills)) {
-				// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
-				skl.icon = this._getTrainingIcon(skl.training);
-				skl.hover = game.i18n.localize(DND4E.trainingLevels[skl.training]);
-				skl.label = skl.label ? skl.label: DND4E.skills[s]?.label;
 			}
 			
 			this._prepareDataSave(actorData.details,
@@ -521,7 +517,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			context.biographyHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.biography, {
 				secrets: isOwner,
 				async: true,
-				relativeTo: this.actor
+				relativeTo: actor
 			});
 		}
 
@@ -541,7 +537,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		context.system = actorData;
 
-		context.systemFields = this.actor.system.schema.fields;
+		context.systemFields = actor.system.schema.fields;
 
 		return context;
 	}
@@ -677,6 +673,15 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		this._sortFeatures(features);
 		this._sortRituals(rituals);
 
+	}
+
+	_prepareSkills() {
+		return Object.entries(this.actor.system.skills).map(([s, skl]) => ({
+			...skl,
+			icon: this._getTrainingIcon(skl.training),
+			hover: game.i18n.localize(DND4E.trainingLevels[skl.training]),
+			label: skl.label ?? DND4E.skills[s]?.label
+		}));
 	}
 	
 	_prepareMovement(data) {

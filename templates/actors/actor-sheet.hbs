@@ -166,7 +166,7 @@
 			</section>
 			{{!-- Skills --}}
 			<section class="section section--skills">
-				{{#each system.skills as |skill s|}}
+				{{#each skills as |skill s|}}
 				<div class="skill--block flexrow" data-skill="{{s}}">
 					<a class="training-toggle skill-training" data-action="cycleSkillProficiency" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
 					<h4 class="skill-name rollable">{{skill.label}}</h4>
