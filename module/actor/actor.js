@@ -163,6 +163,7 @@ export class Actor4e extends Actor {
 
 		for ( const token of tokens ) {
 			if ( !token.object?.visible || token.isSecret ) continue;
+            token.object?.renderFlags.set({ refreshBars: true })
 			if ( token.hasDynamicRing ) {
 				token.flashRing(key, pct, value < 0).then(() => {
 					token.object?.renderFlags.set({ refreshRingVisuals: true });
