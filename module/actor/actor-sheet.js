@@ -508,7 +508,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (context.isCreature) {
 			actorData.size = DND4E.actorSizes;
 
-			this._prepareDataSense(actorData.senses);
+			context.senses = this._prepareDataSense();
 			
 			this._prepareDataTraits(actorData.languages, 
 				{"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
@@ -1013,17 +1013,16 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
   }
   
-	_prepareDataSense(data) {
+	_prepareDataSense() {
 		const map = {special: CONFIG.DND4E.special};
+		const senses = foundry.utils.deepClone(this.actor.system.senses);
 		for ( let [l, choices] of Object.entries(map) ) {
-			const trait = data[l];
+			const trait = senses[l];
 			if ( !trait ) continue;
-			let values = [];
-			if ( trait.value ) {
-				values = trait.value instanceof Array ? trait.value : [trait.value];
-			}
+			let values = Object.keys(trait).map((key) => [key, trait[key]])
 			trait.selected = values.reduce((obj, l) => {
-				obj[l] = l[1] != "" ? `${choices[l[0]]} ${l[1]} sq` : choices[l[0]];
+				if (!l[1].value) return obj;
+                obj[l[0]] = l[1].range != "" ? `${choices[l[0]]} ${l[1].range} sq` : choices[l[0]];
 				return obj;
 			}, {});
 			// Add custom entry
@@ -1031,8 +1030,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
 			}
 			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
-			
 		}
+		return senses
 	}
 	
 	_prepareDataSave(data, map) {

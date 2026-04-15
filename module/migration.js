@@ -162,6 +162,7 @@ export const migrateActorData = function(actor, migrationData) {
 		_migrateActorSwim(actor, updateData);
 		_migrateHazardSpeed(actor, updateData);
 		_migrateActorMarker(actor, updateData);
+        _migrateActorSenses(actor, updateData);
 	}
 
 	return updateData;
@@ -1056,6 +1057,21 @@ function _migrateActorMarker(actorData, updateData){
 	
 	if(system?.marker == undefined) updateData['system.marker'] = null;
 	return updateData;
+}
+
+/**
+* Migrate actors sense (v0.8.0)
+* @param {object} actorData   Actor data being migrated.
+* @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
+* @returns {object}           Modified version of update data.
+* @private
+*/
+function _migrateActorSenses(actorData, updateData){
+    const oldSenses = Array.from(actorData.system.senses?.special.value)
+    updateData["system.senses.special.value"] = null;
+    for (sense in oldSenses) {
+        updateData[`system.senses.special[${sense[0]}]`] = {value: true, range: sense[1]};
+    }
 }
 
 /**
