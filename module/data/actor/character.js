@@ -1,7 +1,8 @@
+import AttributesField from "./templates/attributes.js";
 import BonusField from "./fields/bonus-field.js";
 import Dnd4eBonusesField from "./fields/dnd4e-bonuses-field.js";
+import FormulaField from "../fields/formula-field.js";
 import SimpleTraitField from "./fields/simple-trait-field.js";
-import AttributesField from "./templates/attributes.js";
 import CombatantTemplate from "./templates/combatant.js";
 import CreatureTemplate from "./templates/creature.js";
 import DetailsField from "./templates/details.js";
@@ -51,21 +52,21 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         primary: new SchemaField({
           label: new StringField({initial: ""}),
           value: new StringField({initial: ""}),
-          max: new StringField({initial: ""}),
+          max: new FormulaField({initial: "", deterministic: true}),
           sr: new BooleanField({initial: false}),
           lr: new BooleanField({initial: false})
         }),
         secondary: new SchemaField({
           label: new StringField({initial: ""}),
           value: new StringField({initial: ""}),
-          max: new StringField({initial: ""}),
+          max: new FormulaField({initial: "", deterministic: true}),
           sr: new BooleanField({initial: false}),
           lr: new BooleanField({initial: false})
         }),
         tertiary: new SchemaField({
           label: new StringField({initial: ""}),
           value: new StringField({initial: ""}),
-          max: new StringField({initial: ""}),
+          max: new FormulaField({initial: "", deterministic: true}),
           sr: new BooleanField({initial: false}),
           lr: new BooleanField({initial: false})
         })
@@ -82,9 +83,9 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       encumbrance: new SchemaField({
         value: new NumberField({required: true, nullable: true, initial: null}),
         max: new NumberField({required: true, nullable: true, initial: null}),
-        formulaNorm: new StringField({initial: "@abilities.str.value * 10"}),
-        formulaHeavy: new StringField({initial: "@abilities.str.value * 20"}),
-        formulaMax: new StringField({initial: "@abilities.str.value * 50"}),
+        formulaNorm: new FormulaField({initial: "@abilities.str.value * 10", deterministic: true}),
+        formulaHeavy: new FormulaField({initial: "@abilities.str.value * 20", deterministic: true}),
+        formulaMax: new FormulaField({initial: "@abilities.str.value * 50", deterministic: true}),
         encumbered: new BooleanField({required: false}),
         maxHeavy: new NumberField({required: false}),
         maxMax: new NumberField({required: false})

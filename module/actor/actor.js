@@ -215,7 +215,7 @@ export class Actor4e extends Actor {
 		data.charaID = this.id;
 		data.charaUID = this.uuid;
 
-		for(let level = 2; level < CONFIG.DND4E.CHARACTER_EXP_LEVELS.length; level++){
+		for(let level = 1; level < CONFIG.DND4E.CHARACTER_EXP_LEVELS.length; level++){
 			data[`scale${level}`] = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, level-1);
 		}
 

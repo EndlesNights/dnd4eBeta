@@ -1,3 +1,4 @@
+import FormulaField from "../fields/formula-field.js";
 import MappingField from "../fields/mapping-field.js";
 import ActivatedEffectTemplate from "./templates/activated-effect.js";
 import AttackAndDamageTemplate from "./templates/attack-damage.js";
@@ -34,7 +35,7 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
         includeSelf: new BooleanField({initial: true})
       }),
       rangePower: new StringField({initial: ""}),
-      area: new StringField({initial: "0"}),
+      area: new FormulaField({initial: "0", deterministic: true}),
       attack: new SchemaField({
         ...AttackAndDamageTemplate.attack,
         isAttack: new BooleanField({initial: false}),
