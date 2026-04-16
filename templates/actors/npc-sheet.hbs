@@ -84,8 +84,8 @@
 					<div class="hitpoints-temp">
 						<label data-tooltip="{{localize 'DND4E.TempHPTip'}}">{{localize 'DND4E.Temp'}}</label>
 						<input class="number" type="text" name="system.attributes.temphp.value" value="{{system.attributes.temphp.value}}" data-tooltip="{{localize 'DND4E.TempHPTip'}}"  placeholder=0 data-dtype="Number" onClick="this.select();"/>
-						<a class="rest short-rest npc" data-tooltip="{{localize 'DND4E.RestShort'}}">{{ localize 'DND4E.RestS' }}</a>
-						<a class="rest long-rest npc" data-tooltip="{{localize 'DND4E.RestLong'}}">{{ localize 'DND4E.RestL' }}</a>
+						<a class="rest short-rest npc" data-action="shortRest" data-tooltip="{{localize 'DND4E.RestShort'}}">{{ localize 'DND4E.RestS' }}</a>
+						<a class="rest long-rest npc" data-action="longRest" data-tooltip="{{localize 'DND4E.RestLong'}}">{{ localize 'DND4E.RestL' }}</a>
 					</div>
 					
 					<div class="surges">
@@ -101,7 +101,7 @@
 					</div>
 
 					<div class="action-points">
-						<label class="rest action-point rollable" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize 'DND4E.ActionPoints'}}</label>
+						<label class="rest action-point rollable" data-action="actionPoint" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize 'DND4E.ActionPoints'}}</label>
 						<input class="number" type="text" name="system.actionpoints.value" value="{{system.actionpoints.value}}" data-tooltip="{{localize 'DND4E.ActionPointsRemain'}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
 					</div>
 					
@@ -159,8 +159,8 @@
 					</div>
 					
 					<div data-tooltip="{{moveTip}}">
-						<label class="movement-dialog rollable">{{localize 'DND4E.Speed'}}</label>
-						<strong class="movement-dialog rollable">{{{moveDisplay}}}</strong>
+						<label class="movement-dialog rollable" data-action="movementDialog">{{localize 'DND4E.Speed'}}</label>
+						<strong class="movement-dialog rollable" data-action="movementDialog">{{{moveDisplay}}}</strong>
 					</div>
 					
 				</div>

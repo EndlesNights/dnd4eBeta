@@ -97,10 +97,10 @@
 						</div>
 					</div>
 					<footer class="attribute-footer attribute-footer--surge flexrow">
-						<a class="rest short-rest" data-tooltip="{{localize 'DND4E.RestShort'}}">{{ localize "DND4E.RestS" }}</a>
-						<a class="rest second-wind" data-tooltip="{{localize 'DND4E.SecondWind'}}">{{localize "DND4E.SecondWind"}}</a>
-						<a class="rest long-rest" data-tooltip="{{localize 'DND4E.RestLong'}}">{{ localize "DND4E.RestL" }}</a>
-						<a class="rest heal-menu" data-tooltip="{{localize 'DND4E.HealingMenu'}}">{{localize "DND4E.HealingMenu"}}</a>
+						<a class="rest short-rest" data-action="shortRest" data-tooltip="{{localize 'DND4E.RestShort'}}">{{ localize "DND4E.RestS" }}</a>
+						<a class="rest second-wind" data-action="secondWind" data-tooltip="{{localize 'DND4E.SecondWind'}}">{{localize "DND4E.SecondWind"}}</a>
+						<a class="rest long-rest" data-action="longRest" data-tooltip="{{localize 'DND4E.RestLong'}}">{{ localize "DND4E.RestL" }}</a>
+						<a class="rest heal-menu" data-action="healMenu" data-tooltip="{{localize 'DND4E.HealingMenu'}}">{{localize "DND4E.HealingMenu"}}</a>
 					</footer>
 				</div>
 
@@ -120,10 +120,10 @@
 					<footer class="attribute-footer attribute-footer--surge flexrow">
 						<span>{{localize 'DND4E.MilestonePlural'}}</span>
 						<input class="milestones" name="system.magicItemUse.milestone" value="{{system.magicItemUse.milestone}}" data-tooltip="{{localize 'DND4E.MilestonePlural'}}"  placeholder="0" data-dtype="Number" onClick="this.select();">
-						<a class="rest action-point-extra" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize "DND4E.ActionPointRiders"}}</a>
+						<a class="rest action-point-extra" data-action="actionPointExtra" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize "DND4E.ActionPointRiders"}}</a>
 					</footer>
 					<footer class="attribute-footer attribute-footer--surge flexrow">
-						<a class="rest action-point" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize "DND4E.ActionPointUse"}}</a>
+						<a class="rest action-point" data-action="actionPoint" data-tooltip="{{localize 'DND4E.ActionPointUse'}}">{{localize "DND4E.ActionPointUse"}}</a>
 					</footer>
 				</div>
 			</section>
@@ -173,7 +173,7 @@
 					<label class="skill-mod skill-bonus rollable" data-action="skillBonus">{{numberFormat skill.total decimals=0 sign=true }}</label>
 				</div>
 				{{/each}}
-				<a class="custom-roll-descriptions" data-tooltip="{{localize 'DND4E.CheckDescsLong'}}">{{localize 'DND4E.CheckDescs'}}</a>
+				<a class="custom-roll-descriptions" data-action="customRollDescriptions" data-tooltip="{{localize 'DND4E.CheckDescsLong'}}">{{localize 'DND4E.CheckDescs'}}</a>
 
 			</section>
 
@@ -204,8 +204,8 @@
 				</section>
 				<section class="section section--movement flexcol">
 					<div data-tooltip="{{moveTip}}">
-						<strong class="movement-dialog rollable">{{{moveDisplay}}}</strong>
-						<label class="movement-dialog rollable">{{localize 'DND4E.Speed'}}</label>
+						<strong class="movement-dialog rollable" data-action="movementDialog">{{{moveDisplay}}}</strong>
+						<label class="movement-dialog rollable" data-action="movementDialog">{{localize 'DND4E.Speed'}}</label>
 					</div>
 					<div>
 						<strong class="init-bonus rollable" data-action="initiativeBonus" data-tooltip="{{localize 'DND4E.InitiativeScore'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</strong>

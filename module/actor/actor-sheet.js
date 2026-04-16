@@ -88,6 +88,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			passiveBonus: ActorSheet4e.#onPassiveBonus,
 			modifiersBonus: ActorSheet4e.#onModifiersBonus,
 			resistancesBonus: ActorSheet4e.#onResistancesBonus,
+            movementDialog: ActorSheet4e.#onMovementDialog,
+            customRollDescriptions: ActorSheet4e.#onCustomRolldDescriptions,
+            secondWind: ActorSheet4e.#onSecondWind,
+            healMenu: ActorSheet4e.#onHealMenuDialog,
+            actionPoint: ActorSheet4e.#onActionPointDialog,
+            actionPointExtra: ActorSheet4e.#onActionPointExtraDialog,
+            shortRest: ActorSheet4e.#onShortRest,
+            longRest: ActorSheet4e.#onLongRest,
 			itemEdit: ActorSheet4e.#onItemEdit,
 			itemDelete: ActorSheet4e.#onItemDelete
 		}
@@ -175,26 +183,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const html = this.element;
 	
 		if ( this.actor.isOwner ) {
-			html.querySelectorAll('.movement-dialog').forEach(el => el.addEventListener("click", this._onMovementDialog.bind(this)));
-			
-			html.querySelectorAll('.custom-roll-descriptions').forEach(el => el.addEventListener("click", this._onCustomRolldDescriptions.bind(this)));
-			
-			//second wind
-			html.querySelectorAll('.second-wind').forEach(el => el.addEventListener("click", this._onSecondWind.bind(this)));
-	
-			// heal menu
-			html.querySelectorAll('.heal-menu').forEach(el => el.addEventListener("click", this._onHealMenuDialog.bind(this)));
-	
-			//action point
-			html.querySelectorAll('.action-point').forEach(el => el.addEventListener("click", this._onActionPointDialog.bind(this)));
-			html.querySelectorAll('.action-point-extra').forEach(el => el.addEventListener("click", this._onActionPointExtraDialog.bind(this)));
-			
-			//short rest
-			html.querySelectorAll('.short-rest').forEach(el => el.addEventListener("click", this._onShortRest.bind(this)));
-			
-			//long rest
-			html.querySelectorAll('.long-rest').forEach(el => el.addEventListener("click", this._onLongRest.bind(this)));		
-			
 			//death save
 			html.querySelectorAll('.death-save').forEach(el => el.addEventListener("click", this._onDeathSave.bind(this)));
 			html.querySelectorAll('.roll-save').forEach(el => el.addEventListener("click", this._onSavingThrow.bind(this)));
@@ -1437,23 +1425,27 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
-	_onMovementDialog(event) {
-		event.preventDefault();
+	static #onMovementDialog(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		new MovementDialog({document: this.actor}).render(true)
 	}
 	
 	_onConBonConfig(event) {
-		event.preventDefault();
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		new ConBonConfig({document: this.actor}).render(true)
 	}
 
-	_onHealMenuDialog(event) {
-		event.preventDefault();
+	static #onHealMenuDialog(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		new HealMenuDialog({document: this.actor}).render(true)
 	}
 
 	_onEncumbranceDialog(event) {
-		event.preventDefault();
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		new EncumbranceDialog({document: this.actor}).render(true);
 	}
 
@@ -1485,16 +1477,18 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new AttributeBonusDialog(options).render(true);
 	}
 	
-	_onCustomRolldDescriptions(event) {
-		event.preventDefault();
+	static #onCustomRolldDescriptions(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const options = {data: this.actor};
 		new CustomRolldDescriptions({document: this.actor}).render(true, options);
 	}
 	/**
 	* Opens dialog window to spend Second Wind
 	*/
-	_onSecondWind(event) {
-		event.preventDefault();
+	static #onSecondWind(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.secondWind(event,{isFF});
@@ -1504,8 +1498,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	
 	/* -------------------------------------------- */
 
-	_onActionPointDialog(event) {
-		event.preventDefault();
+	static #onActionPointDialog(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.actionPoint(event,{isFF});
@@ -1513,8 +1508,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new ActionPointDialog(this.actor).render(true);
 	}
 
-	_onActionPointExtraDialog(event) {
-		event.preventDefault();
+	static #onActionPointExtraDialog(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		new ActionPointExtraDialog(this.actor).render(true);
 	}
 
@@ -1523,8 +1519,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	*Spend n number of healin surges,
 	*reset encounter powers, action point ussage, second wind ussage.
 	*/
-	_onShortRest(event) {
-		event.preventDefault();
+	static #onShortRest(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.shortRest(event,{isFF});
@@ -1538,8 +1535,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	*Opens dialog window to long rest.
 	*reset HP, surges, encounter powers, daily powers, magic item use, actions points set to default.
 	*/
-	_onLongRest(event) {
-		event.preventDefault();
+	static #onLongRest(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.longRest(event,{isFF});
@@ -1548,7 +1546,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	_onDeathSave(event) {
-		event.preventDefault();
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.rollDeathSave(event,{isFF});
@@ -1557,12 +1556,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	_onrollInitiative(event) {
-		event.preventDefault();
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		return this.actor.rollInitiative({createCombatants: true},{event: event});
 	}
 
 	_onSavingThrow(event) {
-		event.preventDefault();
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.rollSave(event,{isFF});
