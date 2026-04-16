@@ -71,6 +71,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			itemSummary: ActorSheet4e.#onItemSummary,
 			cycleSkillProficiency: { handler: ActorSheet4e.#onCycleSkillProficiency, buttons: [0, 2] },
 			editImage: ActorSheet4e.#onEditImage,
+            rollSkillCheck: ActorSheet4e.#onRollSkillCheck
 		}
 	}
 
@@ -163,9 +164,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}));
 	
 		if ( this.actor.isOwner ) {	
-			// Roll Skill Checks
-			html.querySelectorAll('.skill-name').forEach(el => el.addEventListener("click", this._onRollSkillCheck.bind(this)));
-	
 			html.querySelectorAll('.passive-message').forEach(el => el.addEventListener("click", this._onRollPassiveCheck.bind(this)));
 			
 			//Roll Abillity Checks
@@ -700,12 +698,12 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	_prepareSkills() {
-		return Object.entries(this.actor.system.skills).map(([s, skl]) => ({
+		return Object.fromEntries(Object.entries(this.actor.system.skills).map(([s, skl]) => ([s, {
 			...skl,
 			icon: this._getTrainingIcon(skl.training),
 			hover: game.i18n.localize(DND4E.trainingLevels[skl.training]),
 			label: skl.label ?? DND4E.skills[s]?.label
-		}));
+		}])));
 	}
 	
 	_prepareMovement(data) {
@@ -1861,10 +1859,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @param {Event} event   The originating click event
 	 * @private
 	 */
-	_onRollSkillCheck(event) {
+	static #onRollSkillCheck(event, target) {
 		event.preventDefault();
-		const skill = event.currentTarget.parentElement.dataset.skill;
-		this.actor.rollSkill(skill, {event: event});
+		const skillId = target.parentElement.dataset.skill;
+		this.actor.rollSkill(skillId, {event: event});
 	}
   /* -------------------------------------------- */
   
