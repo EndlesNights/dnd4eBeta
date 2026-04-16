@@ -96,6 +96,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
             actionPointExtra: ActorSheet4e.#onActionPointExtraDialog,
             shortRest: ActorSheet4e.#onShortRest,
             longRest: ActorSheet4e.#onLongRest,
+            deathSave: ActorSheet4e.#onDeathSave,
+            savingThrow: ActorSheet4e.#onSavingThrow,
+            rollInitiative: ActorSheet4e.#onrollInitiative,
 			itemEdit: ActorSheet4e.#onItemEdit,
 			itemDelete: ActorSheet4e.#onItemDelete
 		}
@@ -183,13 +186,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const html = this.element;
 	
 		if ( this.actor.isOwner ) {
-			//death save
-			html.querySelectorAll('.death-save').forEach(el => el.addEventListener("click", this._onDeathSave.bind(this)));
-			html.querySelectorAll('.roll-save').forEach(el => el.addEventListener("click", this._onSavingThrow.bind(this)));
-	
-			//roll init
-			html.querySelectorAll('.rollInitiative').forEach(el => el.addEventListener("click", this._onrollInitiative.bind(this)));
-			
 			// Trait Selector
 			html.querySelectorAll('.trait-selector').forEach(el => el.addEventListener("click", this._onTraitSelector.bind(this)));
 			html.querySelectorAll('.trait-selector-weapon').forEach(el => el.addEventListener("click", this._onTraitSelectorWeapon.bind(this)));
@@ -1545,7 +1541,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new LongRestDialog(this.actor).render(true)
 	}
 
-	_onDeathSave(event) {
+	static #onDeathSave(event, target) {
 		if (!this.actor.isOwner) return;
         event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
@@ -1555,13 +1551,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new DeathSaveDialog(this.actor).render(true);
 	}
 
-	_onrollInitiative(event) {
+	static #onrollInitiative(event, target) {
 		if (!this.actor.isOwner) return;
         event.preventDefault();
 		return this.actor.rollInitiative({createCombatants: true},{event: event});
 	}
 
-	_onSavingThrow(event) {
+	static #onSavingThrow(event, target) {
 		if (!this.actor.isOwner) return;
         event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);

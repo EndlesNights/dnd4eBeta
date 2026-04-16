@@ -183,11 +183,11 @@
 			<section class="section section--utilities flexrow">
 				<section class="section section--saves flexcol">
 					<div class="saving-throw">
-						<img class="roll-save rollable" src="icons/svg/d20-grey.svg" width="20" height="20" data-tooltip="{{localize 'DND4E.SavingThrow'}}"/>
+						<img class="roll-save rollable" src="icons/svg/d20-grey.svg" width="20" height="20" data-action="savingThrow" data-tooltip="{{localize 'DND4E.SavingThrow'}}"/>
 						<label class="roll-save-bonus rollable" data-action="savingThrowBonus" data-tooltip="{{localize 'DND4E.SavingThrowBonus'}}">{{localize 'DND4E.ActionSave'}}</label>
 					</div>
 					<div class="death-saves">
-						<img class="death-save rollable" src="icons/svg/d20-grey.svg" width="20" height="20" data-tooltip="{{localize 'DND4E.DeathSavingThrow'}}"/>
+						<img class="death-save rollable" src="icons/svg/d20-grey.svg" width="20" height="20" data-action="deathSave" data-tooltip="{{localize 'DND4E.DeathSavingThrow'}}"/>
 						<label class="death-save-bonus rollable" data-action="deathSaveBonus" data-tooltip="{{localize 'DND4E.DeathSavingThrowBonus'}}" >{{localize 'DND4E.Death'}}</label>
 						<input class="death-saves-failed" type="text" name="system.details.deathsavefail" value="{{system.details.deathsavefail}}" data-tooltip="{{localize 'DND4E.DeathSaveFails'}}"  placeholder="0" data-dtype="Number" onClick="this.select();"/>
 					</div>
@@ -209,7 +209,7 @@
 					</div>
 					<div>
 						<strong class="init-bonus rollable" data-action="initiativeBonus" data-tooltip="{{localize 'DND4E.InitiativeScore'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</strong>
-						<label class="rollInitiative rollable" >{{localize 'DND4E.Initiative'}}</label>
+						<label class="rollInitiative rollable" data-action="rollInitiative">{{localize 'DND4E.Initiative'}}</label>
 					</div>
 				</section>
 			</section>

@@ -72,7 +72,7 @@
 					</div>
 
 					<div class="saves flexrow">
-						<img class="roll-save rollable" src="icons/svg/d20-grey.svg" width="20" height="20" data-tooltip="{{localize 'DND4E.SavingThrow'}}"/>
+						<img class="roll-save rollable" src="icons/svg/d20-grey.svg" width="20" height="20" data-action="savingThrow" data-tooltip="{{localize 'DND4E.SavingThrow'}}"/>
 						<label class="roll-save-bonus rollable" data-action="savingThrowBonus" data-tooltip="{{localize 'DND4E.SavingThrowBonus'}}">{{localize 'DND4E.ActionSave'}}</label>
 					</div>
 
@@ -108,7 +108,7 @@
 				<div class="flexcol combat">
 					
 					<div>
-						<label class="rollInitiative rollable" >{{localize 'DND4E.Initiative'}}</label>
+						<label class="rollInitiative rollable" data-action="rollInitiative">{{localize 'DND4E.Initiative'}}</label>
 						
 						{{#if system.advancedCals}}
 							<strong class="init-bonus rollable" data-action="initiativeBonus" data-tooltip="{{localize 'DND4E.InitiativeScore'}}">{{numberFormat system.attributes.init.value decimals=0 sign=true }}</strong>
