@@ -464,10 +464,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 
 		if (context.isCharacter) {
-			this._prepareDataProfs(actorData.details?.armourProf,
+			context.armourProfs = this._prepareDataProfs(actorData.details?.armourProf,
 				{"profArmor": CONFIG.DND4E.profArmor}
 			);
-			this._prepareDataProfs(actorData.details?.weaponProf,
+			context.weaponProfs = this._prepareDataProfs(actorData.details?.weaponProf,
 				{ weapons:Object.assign(
 					CONFIG.DND4E.weaponProficiencies,
 					CONFIG.DND4E.simpleM,
@@ -480,7 +480,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					CONFIG.DND4E.improvisedR
 				)}
 			);
-			this._prepareDataProfs(actorData.details?.implementProf, 
+			context.implementProfs = this._prepareDataProfs(actorData.details?.implementProf, 
 			{ implement:Object.assign(
 					CONFIG.DND4E.implementProficiencies
 				)}
@@ -508,11 +508,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (context.isCreature) {
 			actorData.size = DND4E.actorSizes;
 
-			context.senses = this._prepareDataSense();
+			context.senses = this._prepareDataSenses();
 			
-			this._prepareDataTraits(actorData.languages, 
-				{"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
-			);
+			context.languages = this._prepareDataLanguages();
 	
 			context.biographyHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.biography, {
 				secrets: isOwner,
@@ -541,14 +539,37 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		return context;
 	}
-	
-	_prepareDataTraits(data, map) {
+
+	_prepareDataSenses() {
+		const map = {special: CONFIG.DND4E.special};
+		const senses = foundry.utils.deepClone(this.actor.system.senses);
 		for ( let [l, choices] of Object.entries(map) ) {
-			const trait = data[l];
+			const trait = senses[l];
+			if ( !trait ) continue;
+			let values = Object.keys(trait).map((key) => [key, trait[key]])
+			trait.selected = values.reduce((obj, l) => {
+				if (!l[1].value) return obj;
+                obj[l[0]] = l[1].range != "" ? `${choices[l[0]]} ${l[1].range} sq` : choices[l[0]];
+				return obj;
+			}, {});
+			// Add custom entry
+			if ( trait.custom ) {
+				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
+			}
+			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
+		}
+		return senses;
+	}
+	
+	_prepareDataLanguages() {
+		const map = {"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
+        const languages = foundry.utils.deepClone(this.actor.system.languages);
+        for ( let [l, choices] of Object.entries(map) ) {
+			const trait = languages[l];
 			if ( !trait ) continue;
 			let values = [];
 			if ( trait.value ) {
-				values = trait.value instanceof Array ? trait.value : [trait.value];
+				values = Array.from(trait.value);
 			}
 			trait.selected = values.reduce((obj, l) => {
 				obj[l] = choices[l];
@@ -561,27 +582,30 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
 		}
+        return languages;
 	}
 
 	_prepareDataProfs(data, map){
-		for ( let [l, choices] of Object.entries(map) ) {
+		const profs = foundry.utils.deepClone(data);
+        for ( let [l, choices] of Object.entries(map) ) {
 
 			let values = [];
-			if ( data.value ) {
-				values = data.value instanceof Array ? data.value : [data.value];
+			if ( profs.value ) {
+				values = Array.from(profs.value);
 			}
-			data.selected = values.reduce((obj, l) => {
+			profs.selected = values.reduce((obj, l) => {
 				obj[l] = choices[l];
 				return obj;
 			}, {});
-			data.selected
+			profs.selected
 
 			// Add custom entry
-			if ( data.custom ) {
-				data.custom.split(";").forEach((c, i) => data.selected[`custom${i+1}`] = c.trim());
+			if ( profs.custom ) {
+				profs.custom.split(";").forEach((c, i) => profs.selected[`custom${i+1}`] = c.trim());
 			}
-			data.cssClass = !foundry.utils.isEmpty(data.selected) ? "" : "inactive";
+			profs.cssClass = !foundry.utils.isEmpty(profs.selected) ? "" : "inactive";
 		}
+        return profs;
 	}
 
 	_prepareItems(data) {
@@ -1012,27 +1036,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	  item.toggleTitle = game.i18n.localize(isActive ? "DND4E.Equipped" : "DND4E.Unequipped");
 	}
   }
-  
-	_prepareDataSense() {
-		const map = {special: CONFIG.DND4E.special};
-		const senses = foundry.utils.deepClone(this.actor.system.senses);
-		for ( let [l, choices] of Object.entries(map) ) {
-			const trait = senses[l];
-			if ( !trait ) continue;
-			let values = Object.keys(trait).map((key) => [key, trait[key]])
-			trait.selected = values.reduce((obj, l) => {
-				if (!l[1].value) return obj;
-                obj[l[0]] = l[1].range != "" ? `${choices[l[0]]} ${l[1].range} sq` : choices[l[0]];
-				return obj;
-			}, {});
-			// Add custom entry
-			if ( trait.custom ) {
-				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
-			}
-			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
-		}
-		return senses
-	}
 	
 	_prepareDataSave(data, map) {
 		
