@@ -1060,21 +1060,6 @@ function _migrateActorMarker(actorData, updateData){
 }
 
 /**
-* Migrate actors sense (v0.8.0)
-* @param {object} actorData   Actor data being migrated.
-* @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
-* @returns {object}           Modified version of update data.
-* @private
-*/
-function _migrateActorSenses(actorData, updateData){
-    const oldSenses = Array.from(actorData.system.senses?.special.value)
-    updateData["system.senses.special.value"] = null;
-    for (sense in oldSenses) {
-        updateData[`system.senses.special[${sense[0]}]`] = {value: true, range: sense[1]};
-    }
-}
-
-/**
  * Add keywords & customKeywords properties to features
  * @param {object} itemData   Item data being migrated.
  * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*

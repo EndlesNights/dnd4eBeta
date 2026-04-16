@@ -27,7 +27,7 @@ export default class SensesTemplate extends foundry.abstract.DataModel {
           range: new StringField({initial: ""})
         }, {label: "DND4E.VisionLowLight"}),
         nv: new SchemaField({
-          value: new BooleanField({initial: true}),
+          value: new BooleanField({initial: false}),
           range: new StringField({initial: ""})
         }, {label: "DND4E.VisionNormal"}),
         tr: new SchemaField({

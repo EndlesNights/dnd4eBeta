@@ -53,4 +53,21 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
       })
     }
   }
+
+  /* -------------------------------------------- */
+  /*  Data Migration                              */
+  /* -------------------------------------------- */
+
+  /** @inheritdoc */
+  static migrateData(source){
+    const oldSenses = Array.from(source.senses?.special.value)
+    if (!oldSenses.length) return super.migrateData(source);
+    const flattenedSource = foundry.utils.flattenObject(source)
+    flattenedSource["senses.special.value"] = null;
+    for (const sense of oldSenses) {
+      flattenedSource[`senses.special.${sense[0]}`] = {value: true, range: sense[1]};
+    }
+
+    return super.migrateData(foundry.utils.expandObject(flattenedSource));
+  }
 }

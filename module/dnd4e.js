@@ -290,7 +290,7 @@ Hooks.once("ready",  function() {
 	if ( cv && foundry.utils.isNewerVersion(cmv, cv) ) {
 	  ui.notifications.error(game.i18n.localize("MIGRATION.4eVersionTooOldWarning"), {permanent: true});
 	}
-	
+
 	migrations.migrateWorld();
 });
 
