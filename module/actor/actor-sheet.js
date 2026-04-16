@@ -71,12 +71,25 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			itemSummary: ActorSheet4e.#onItemSummary,
 			cycleSkillProficiency: { handler: ActorSheet4e.#onCycleSkillProficiency, buttons: [0, 2] },
 			editImage: ActorSheet4e.#onEditImage,
-            rollSkillCheck: ActorSheet4e.#onRollSkillCheck,
-            rollPassiveCheck: ActorSheet4e.#onRollPassiveCheck,
-            rollAbilityCheck: ActorSheet4e.#onRollAbilityCheck,
-            rollDefenceCheck: ActorSheet4e.#onRollDefenceCheck,
-            itemEdit: ActorSheet4e.#onItemEdit,
-            itemDelete: ActorSheet4e.#onItemDelete
+			rollSkillCheck: ActorSheet4e.#onRollSkillCheck,
+			rollPassiveCheck: ActorSheet4e.#onRollPassiveCheck,
+			rollAbilityCheck: ActorSheet4e.#onRollAbilityCheck,
+			rollDefenceCheck: ActorSheet4e.#onRollDefenceCheck,
+			hpOptions: ActorSheet4e.#onHPOptions,
+			abilityBonus: ActorSheet4e.#onAbilityBonus,
+			skillBonus: ActorSheet4e.#onSkillBonus,
+			deathSaveBonus: ActorSheet4e.#onDeathSaveBonus,
+			savingThrowBonus: ActorSheet4e.#onSavingThrowBonus,
+			surgeBonus: ActorSheet4e.#onSurgeBonus,
+			surgeEnv: ActorSheet4e.#onSurgeEnv,
+			secondWindBonus: ActorSheet4e.#onSecondWindBonus,
+			defencesBonus: ActorSheet4e.#onDefencesBonus,
+			initiativeBonus: ActorSheet4e.#onInitiativeBonus,
+			passiveBonus: ActorSheet4e.#onPassiveBonus,
+			modifiersBonus: ActorSheet4e.#onModifiersBonus,
+			resistancesBonus: ActorSheet4e.#onResistancesBonus,
+			itemEdit: ActorSheet4e.#onItemEdit,
+			itemDelete: ActorSheet4e.#onItemDelete
 		}
 	}
 
@@ -162,24 +175,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const html = this.element;
 	
 		if ( this.actor.isOwner ) {
-			//Open HP-Options
-			html.querySelectorAll('.health-option').forEach(el => el.addEventListener("click", this._onHPOptions.bind(this)));
-			
-			//Open Skill-Bonus
-			html.querySelectorAll('.ability-mod-half').forEach(el => el.addEventListener("click", this._onAbilityBonus.bind(this)));
-			html.querySelectorAll('.skill-bonus').forEach(el => el.addEventListener("click", this._onSkillBonus.bind(this)));
-			html.querySelectorAll('.death-save-bonus').forEach(el => el.addEventListener("click", this._onDeathSaveBonus.bind(this)));
-			html.querySelectorAll('.roll-save-bonus').forEach(el => el.addEventListener("click", this._onSavingThrowBonus.bind(this)));
-			html.querySelectorAll('.surge-bonus').forEach(el => el.addEventListener("click", this._onSurgeBonus.bind(this)));
-			html.querySelectorAll('.envimental-loss-bonus').forEach(el => el.addEventListener("click", this._onSurgeEnv.bind(this)));
-			html.querySelectorAll('.secondwind-bonus').forEach(el => el.addEventListener("click", this._onSecondWindBonus.bind(this)));
-			html.querySelectorAll('.defence-bonus').forEach(el => el.addEventListener("click", this._onDefencesBonus.bind(this)));
-			html.querySelectorAll('.init-bonus').forEach(el => el.addEventListener("click", this._onInitiativeBonus.bind(this)));
-			html.querySelectorAll('.move-bonus').forEach(el => el.addEventListener("click", this._onMovementBonus.bind(this)));
-			html.querySelectorAll('.passive-bonus').forEach(el => el.addEventListener("click", this._onPassiveBonus.bind(this)));
-			html.querySelectorAll('.modifiers-bonus').forEach(el => el.addEventListener("click", this._onModifiersBonus.bind(this)));
-			html.querySelectorAll('.resistances-bonus').forEach(el => el.addEventListener("click", this._onResistancesBonus.bind(this)));
-			
 			html.querySelectorAll('.movement-dialog').forEach(el => el.addEventListener("click", this._onMovementDialog.bind(this)));
 			
 			html.querySelectorAll('.custom-roll-descriptions').forEach(el => el.addEventListener("click", this._onCustomRolldDescriptions.bind(this)));
@@ -535,7 +530,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			let values = Object.keys(trait).map((key) => [key, trait[key]])
 			trait.selected = values.reduce((obj, l) => {
 				if (!l[1].value) return obj;
-                obj[l[0]] = l[1].range != "" ? `${choices[l[0]]} ${l[1].range} sq` : choices[l[0]];
+				obj[l[0]] = l[1].range != "" ? `${choices[l[0]]} ${l[1].range} sq` : choices[l[0]];
 				return obj;
 			}, {});
 			// Add custom entry
@@ -549,8 +544,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	
 	_prepareDataLanguages() {
 		const map = {"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
-        const languages = foundry.utils.deepClone(this.actor.system.languages);
-        for ( let [l, choices] of Object.entries(map) ) {
+		const languages = foundry.utils.deepClone(this.actor.system.languages);
+		for ( let [l, choices] of Object.entries(map) ) {
 			const trait = languages[l];
 			if ( !trait ) continue;
 			let values = [];
@@ -568,12 +563,12 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
 		}
-        return languages;
+		return languages;
 	}
 
 	_prepareDataProfs(data, map){
 		const profs = foundry.utils.deepClone(data);
-        for ( let [l, choices] of Object.entries(map) ) {
+		for ( let [l, choices] of Object.entries(map) ) {
 
 			let values = [];
 			if ( profs.value ) {
@@ -591,7 +586,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 			profs.cssClass = !foundry.utils.isEmpty(profs.selected) ? "" : "inactive";
 		}
-        return profs;
+		return profs;
 	}
 
 	_prepareItems(data) {
@@ -1311,7 +1306,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    */
   static #onItemEdit(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const li = target.closest(".item");
 		const item = this.actor.items.get(li.dataset.itemId);
 		item.sheet.render(true);
@@ -1325,8 +1320,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @private
    */
   static async #onItemDelete(event, target) {
-	    if (!this.actor.isOwner) return;	
-        event.preventDefault();
+		if (!this.actor.isOwner) return;	
+		event.preventDefault();
 		const li = target.closest(".item");
 		const item = this.actor.items.get(li.dataset.itemId);
 		if ( item )  {
@@ -1367,7 +1362,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	*turns on/off auto calculation of HP based on class stats
 	*keep or reset tempHP on short rest.
 	*/
-	_onHPOptions(event) {
+	static #onHPOptions(event) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 
 		new HPOptions({ document: this.actor }).render(true)
@@ -1378,66 +1374,66 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	* Opens bonuses dialog config window for selected Skills
 	*/
 	
-	_onSkillBonus(event) {
+	static #onSkillBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const skillName = event.currentTarget.parentElement.dataset.skill;
-		const target = `system.skills.${skillName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.SkillBonusTitle', { skill: this.actor.system.skills[skillName].label } ) }`, skill: true };
+		const skillName = target.parentElement.dataset.skill;
+		const targetSkill = `system.skills.${skillName}`;
+		const options = { document: this.actor, target: targetSkill, label: `${game.i18n.format('DND4E.SkillBonusTitle', { skill: this.actor.system.skills[skillName].label } ) }`, skill: true };
 		new AttributeBonusDialog(options).render(true);
 	}
 	/* -------------------------------------------- */
 
-	_onAbilityBonus(event) {
+	static #onAbilityBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const abilityId = event.currentTarget.parentElement.dataset.ability;
-		const target = `system.abilities.${abilityId}.check`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.AbilityCheckBonusTitle', { ability: this.actor.system.abilities[abilityId].label } ) }` };
+		const abilityId = target.parentElement.dataset.ability;
+		const targetAbility = `system.abilities.${abilityId}.check`;
+		const options = { document: this.actor, target: targetAbility, label: `${game.i18n.format('DND4E.AbilityCheckBonusTitle', { ability: this.actor.system.abilities[abilityId].label } ) }` };
 		new AttributeBonusDialog(options).render(true);
 	}
 
-	_onDeathSaveBonus(event) {
+	static #onDeathSaveBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.deathsavebon`, label: game.i18n.localize('DND4E.DeathSavingThrowBonus')};
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
-	_onSurgeBonus(event) {
+	static #onSurgeBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.surgeBon`, label: game.i18n.localize('DND4E.HealingSurgeBonus') };
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
-	_onSurgeEnv(event) {
+	static #onSurgeEnv(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.surgeEnv`, label: `${game.i18n.localize('DND4E.HealingSurges')} ${game.i18n.localize('DND4E.SurgeEnv')}`};
 		new AttributeBonusDialog(options).render(true);		
 	}
 
-	_onSecondWindBonus(event) {
+	static #onSecondWindBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.secondwindbon`, label: game.i18n.localize('DND4E.SecondWindBonus'), secondWind: true };
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
-	_onDefencesBonus(event) {
+	static #onDefencesBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const defName = event.currentTarget.parentElement.dataset.defence;
-		const target = `system.defences.${defName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.DefenceBonus',{def:this.actor.system.defences[defName].label})}`, ac: (defName ==="ac")  };
+		const defName = target.parentElement.dataset.defence;
+		const targetDef = `system.defences.${defName}`;
+		const options = { document: this.actor, target: targetDef, label: `${game.i18n.format('DND4E.DefenceBonus',{def:this.actor.system.defences[defName].label})}`, ac: (defName ==="ac")  };
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
-	_onInitiativeBonus(event) {
+	static #onInitiativeBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.attributes.init`, label: game.i18n.localize('DND4E.InitiativeBonus'), init: true };
-		new AttributeBonusDialog(options).render(true);		
-	}
-	
-	_onMovementBonus(event) {
-		event.preventDefault();
-		const moveName = event.currentTarget.parentElement.dataset.movement;
-		const target = `system.movement.${moveName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.MovementBonus',{mode: moveName})}` };
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
@@ -1461,28 +1457,31 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new EncumbranceDialog({document: this.actor}).render(true);
 	}
 
-	_onPassiveBonus(event) {
+	static #onPassiveBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const passName = event.currentTarget.parentElement.dataset.passive;
+		const passName = target.parentElement.dataset.passive;
 		const skillName = this.actor.system.passive[passName].skill;
-		const target = `system.passive.${passName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.PasBonus',{skill: this.actor.system.skills[skillName].label})}` };
+		const targetPassive = `system.passive.${passName}`;
+		const options = { document: this.actor, target: targetPassive, label: `${game.i18n.format('DND4E.PasBonus',{skill: this.actor.system.skills[skillName].label})}` };
 		new AttributeBonusDialog(options).render(true);		
 	}	
 
-	_onModifiersBonus(event) {
+	static #onModifiersBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const modifierName = event.currentTarget.parentElement.dataset.modifiers;
-		const target = `system.modifiers.${modifierName}`;
-		const options = { document: this.actor, target: target, label: this.actor.system.modifiers[modifierName].label };
+		const modifierName = target.parentElement.dataset.modifiers;
+		const targetMod = `system.modifiers.${modifierName}`;
+		const options = { document: this.actor, target: targetMod, label: this.actor.system.modifiers[modifierName].label };
 		new AttributeBonusDialog(options).render(true);
 	}	
 
-	_onResistancesBonus(event) {
+	static #onResistancesBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const resName = event.currentTarget.parentElement.dataset.res;
-		const target = `system.resistances.${resName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.DamResVulnBonus',{type: this.actor.system.resistances[resName].label})}` };
+		const resName = target.parentElement.dataset.res;
+		const targetRes = `system.resistances.${resName}`;
+		const options = { document: this.actor, target: targetRes, label: `${game.i18n.format('DND4E.DamResVulnBonus',{type: this.actor.system.resistances[resName].label})}` };
 		new AttributeBonusDialog(options).render(true);
 	}
 	
@@ -1571,7 +1570,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		return new SaveThrowDialog({document: this.actor}).render(true);
 	}
 
-	_onSavingThrowBonus(event) {
+	static #onSavingThrowBonus(event) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.saves`, label: game.i18n.localize('DND4E.SavingThrowBonus') };
 		new AttributeBonusDialog(options).render(true);	
@@ -1851,7 +1851,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 */
 	static #onRollSkillCheck(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const skillId = target.parentElement.dataset.skill;
 		this.actor.rollSkill(skillId, {event: event});
 	}
@@ -1864,7 +1864,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    */
 	static #onRollPassiveCheck(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const passName = target.parentElement.dataset.passive;
 		const skillName = this.actor.system.passive[passName].skill;
 
@@ -2024,7 +2024,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 */
 	static #onRollAbilityCheck(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		let ability = target.parentElement.dataset.ability;
 		this.actor.rollAbility(ability, {event: event});
 	}
@@ -2038,7 +2038,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 */
 	static #onRollDefenceCheck(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const def = target.parentElement.dataset.defence;
 		this.actor.rollDef(def, {event: event});
 	}

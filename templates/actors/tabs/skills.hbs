@@ -6,7 +6,7 @@
             <div class="skill--block flexrow" data-skill="{{s}}">
                 <a class="training-toggle skill-training" data-action="cycleSkillProficiency" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
                 <h4 class="skill-name rollable">{{skill.label}}</h4>
-                <label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
+                <label class="skill-mod skill-bonus rollable" data-action="skillBonus">{{numberFormat skill.total decimals=0 sign=true }}</label>
                 <label class="skill-base">Base 
                     <input class="skill-mod" name="system.skills.{{s}}.base" value="{{skill.base}}" data-dtype="Number">
                 </label>

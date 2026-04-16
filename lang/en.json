@@ -736,6 +736,7 @@
 "DND4E.Mod": "Mod",
 "DND4E.MOD": "MOD",
 "DND4E.Mount": "Mount",
+"DND4E.MovementBonus": "Bonuses to Movement",
 "DND4E.Name": "Name",
 "DND4E.NameNPC": "NPC Name",
 "DND4E.NamePC": "Character Name",
