@@ -1787,8 +1787,8 @@ export default class Item4e extends Item {
 			rangeData.rangeTextShort = C.rangeType.range.abbr
 			rangeData.rangeTextBlock = `${Roll.replaceFormulaData(this.system.rangePower, this.getRollData())}`
 			if(this.system.range.long) {
-				rangeData.rangeText += `/${Roll.replaceFormulaData(this.system.rangeLong, this.getRollData())}`
-				rangeData.rangeTextBlock += `/${Roll.replaceFormulaData(this.system.rangeLong, this.getRollData())}`
+				rangeData.rangeText += `/${Roll.replaceFormulaData(this.system.range.long, this.getRollData())}`
+				rangeData.rangeTextBlock += `/${Roll.replaceFormulaData(this.system.range.long, this.getRollData())}`
 			}
 		} else if(this.system.rangeType === "closeBurst") {
 			rangeData.rangeText = `${C.rangeType.closeBurst.label} ${area}`
