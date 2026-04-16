@@ -68,7 +68,7 @@
 						{{#each system.defences as | def d|}}
 						<div class="attribute-sub" data-defence="{{d}}">
 							<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{def.label}}">{{def.value}}</strong>
-							<div class="attribute-display def-name rollable" data-tooltip="{{localize 'DND4E.Roll'}} {{def.label}} {{localize 'DND4E.Save'}}">{{def.label}}</div>
+							<div class="attribute-display def-name rollable" data-action="rollDefenceCheck" data-tooltip="{{localize 'DND4E.Roll'}} {{def.label}} {{localize 'DND4E.Save'}}">{{def.label}}</div>
 						</div>
 						{{/each}}
 					</div>
@@ -148,7 +148,7 @@
 					{{#each system.abilities as | ability a|}}
 					<div class="ability--score flexrow" data-ability="{{a}}">
 						<input class="ability-score" name="system.abilities.{{a}}.value" type="text" data-dtype="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
-						<label class="ability-name rollable" data-tooltip="{{ability.label }}">{{ability.label}}</label>
+						<label class="ability-name rollable" data-action="rollAbilityCheck" data-tooltip="{{ability.label }}">{{ability.label}}</label>
 						<label class="attribute-display ability-mod-half" data-tooltip="{{ability.label}}">{{numberFormat ability.mod decimals=0 sign=true}}</label>
 					</div>
 					{{/each}}
@@ -156,7 +156,7 @@
 					{{#each system.abilities as | ability a|}}
 					<div class="ability--score flexrow" data-ability="{{a}}">
 						<input class="ability-score" name="system.abilities.{{a}}.value" type="text" data-dtype="Number" value="{{ability.value}}" onfocus="this.select()" placeholder="10"/>
-						<label class="ability-name rollable" data-tooltip="{{ability.label }}">{{ability.label}}</label>
+						<label class="ability-name rollable" data-action="rollAbilityCheck" data-tooltip="{{ability.label }}">{{ability.label}}</label>
 						<label class="attribute-display ability-mod" data-tooltip="{{ability.label}}">{{numberFormat ability.mod decimals=0 sign=true}}</label>
 						<label class="attribute-display ability-mod-half rollable" data-tooltip="{{ability.label }}">{{numberFormat ability.check.total decimals=0 sign=true}}</label>
 					</div>
@@ -195,11 +195,11 @@
 				<section class="section section--passives flexcol">
 					<div data-passive="pasprc">
 						<strong class="passive-bonus rollable">{{system.passive.pasprc.value}}</strong>
-						<label class="passive-message rollable">{{localize 'DND4E.PasPer'}}</label>
+						<label class="passive-message rollable" data-action="rollPassiveCheck">{{localize 'DND4E.PasPer'}}</label>
 					</div>
 					<div data-passive="pasins">
 						<strong class="passive-bonus rollable">{{system.passive.pasins.value}}</strong>
-						<label class="passive-message rollable">{{localize 'DND4E.PasIns'}}</label>
+						<label class="passive-message rollable" data-action="rollPassiveCheck">{{localize 'DND4E.PasIns'}}</label>
 					</div>
 				</section>
 				<section class="section section--movement flexcol">

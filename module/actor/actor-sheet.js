@@ -71,7 +71,12 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			itemSummary: ActorSheet4e.#onItemSummary,
 			cycleSkillProficiency: { handler: ActorSheet4e.#onCycleSkillProficiency, buttons: [0, 2] },
 			editImage: ActorSheet4e.#onEditImage,
-            rollSkillCheck: ActorSheet4e.#onRollSkillCheck
+            rollSkillCheck: ActorSheet4e.#onRollSkillCheck,
+            rollPassiveCheck: ActorSheet4e.#onRollPassiveCheck,
+            rollAbilityCheck: ActorSheet4e.#onRollAbilityCheck,
+            rollDefenceCheck: ActorSheet4e.#onRollDefenceCheck,
+            itemEdit: ActorSheet4e.#onItemEdit,
+            itemDelete: ActorSheet4e.#onItemDelete
 		}
 	}
 
@@ -156,22 +161,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		const html = this.element;
 	
-		// Update Inventory Item
-		html.querySelectorAll('.item-edit').forEach(el => el.addEventListener("click", event => {
-			const li = event.currentTarget.closest("li.item");
-			const item = this.actor.items.get(li.dataset.itemId);
-			item.sheet.render(true);
-		}));
-	
-		if ( this.actor.isOwner ) {	
-			html.querySelectorAll('.passive-message').forEach(el => el.addEventListener("click", this._onRollPassiveCheck.bind(this)));
-			
-			//Roll Abillity Checks
-			html.querySelectorAll('.ability-name').forEach(el => el.addEventListener("click", this._onRollAbilityCheck.bind(this)));
-			
-			//Roll Defence Checks
-			html.querySelectorAll('.def-name').forEach(el => el.addEventListener("click", this._onRollDefenceCheck.bind(this)));
-			
+		if ( this.actor.isOwner ) {
 			//Open HP-Options
 			html.querySelectorAll('.health-option').forEach(el => el.addEventListener("click", this._onHPOptions.bind(this)));
 			
@@ -225,8 +215,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			
 			//Inventory & Item management
 			html.querySelectorAll('.item-create').forEach(el => el.addEventListener("click", this._onItemCreate.bind(this)));
-			html.querySelectorAll('.item-edit').forEach(el => el.addEventListener("click", this._onItemEdit.bind(this)));
-			html.querySelectorAll('.item-delete').forEach(el => el.addEventListener("click", this._onItemDelete.bind(this)));
 			html.querySelectorAll('.item-uses input').forEach(el => el.addEventListener("change", this._onUsesChange.bind(this)));
 
 
@@ -1321,9 +1309,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The originating click event
    * @private
    */
-  _onItemEdit(event) {
-		event.preventDefault();
-		const li = event.currentTarget.closest(".item");
+  static #onItemEdit(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
+		const li = target.closest(".item");
 		const item = this.actor.items.get(li.dataset.itemId);
 		item.sheet.render(true);
   }
@@ -1335,9 +1324,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The originating click event
    * @private
    */
-  async _onItemDelete(event) {
-		event.preventDefault();
-		const li = event.currentTarget.closest(".item");
+  static async #onItemDelete(event, target) {
+	    if (!this.actor.isOwner) return;	
+        event.preventDefault();
+		const li = target.closest(".item");
 		const item = this.actor.items.get(li.dataset.itemId);
 		if ( item )  {
 			let shouldDelete = true;
@@ -1860,7 +1850,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @private
 	 */
 	static #onRollSkillCheck(event, target) {
-		event.preventDefault();
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const skillId = target.parentElement.dataset.skill;
 		this.actor.rollSkill(skillId, {event: event});
 	}
@@ -1871,9 +1862,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The originating click event
    * @private
    */
-	_onRollPassiveCheck(event) {
-		event.preventDefault();
-		const passName = event.currentTarget.parentElement.dataset.passive;
+	static #onRollPassiveCheck(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
+		const passName = target.parentElement.dataset.passive;
 		const skillName = this.actor.system.passive[passName].skill;
 
 		ChatMessage.create({
@@ -2030,9 +2022,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @param {Event} event   The originating click event
 	 * @private
 	 */
-	_onRollAbilityCheck(event) {
-		event.preventDefault();
-		let ability = event.currentTarget.parentElement.dataset.ability;
+	static #onRollAbilityCheck(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
+		let ability = target.parentElement.dataset.ability;
 		this.actor.rollAbility(ability, {event: event});
 	}
 
@@ -2043,9 +2036,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @param {Event} event   The originating click event
 	 * @private
 	 */
-	_onRollDefenceCheck(event) {
-		event.preventDefault();
-		const def = event.currentTarget.parentElement.dataset.defence;
+	static #onRollDefenceCheck(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
+		const def = target.parentElement.dataset.defence;
 		this.actor.rollDef(def, {event: event});
 	}
 

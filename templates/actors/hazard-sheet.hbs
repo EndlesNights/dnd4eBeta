@@ -91,7 +91,7 @@
 							<input class="def-none" type="checkbox" name="system.defences.{{d}}.none" data-dtype="Boolean" {{checked def.none}} data-tooltip="{{localize 'DND4E.Hazard.DefenceNullTip' def=def.title}}"/>
 							<span class="button" data-tooltip="{{localize 'DND4E.None'}}">&#128683;&#xFE0E;</span> 
 						</span>
-						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4E.Roll'}} {{def.title}} {{localize 'DND4E.Save'}}">{{def.label}}</label>
+						<label class="number attribute-display def-name rollable" data-action="rollDefenceCheck" data-tooltip="{{localize 'DND4E.Roll'}} {{def.title}} {{localize 'DND4E.Save'}}">{{def.label}}</label>
 					{{#if system.advancedCals}}
 						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{def.title}}">{{def.value}}</strong>
 						<label class="def-base">{{localize 'DND4E.Base'}}:</label>

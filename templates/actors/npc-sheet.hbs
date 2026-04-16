@@ -109,8 +109,8 @@
 				
 				<div class="flexcol defences{{#if system.advancedCals}} advanced{{/if}}">
 					{{#each system.defences as |def d|}}
-					<div class="defence" data-defence="ac">
-						<label class="number attribute-display def-name rollable" data-tooltip="{{localize 'DND4E.Roll'}} {{def.title}} {{localize 'DND4E.Save'}}">{{def.label}}</label>
+					<div class="defence" data-defence={{d}}>
+						<label class="number attribute-display def-name rollable" data-action="rollDefenceCheck" data-tooltip="{{localize 'DND4E.Roll'}} {{def.title}} {{localize 'DND4E.Save'}}">{{def.label}}</label>
 					{{#if system.advancedCals}}
 						<strong class="attribute-name defence-bonus rollable" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{def.title}}">{{def.value}}</strong>
 						<label class="def-base">{{localize 'DND4E.Base'}}:</label>
@@ -170,7 +170,7 @@
 					<div class="flexrow ability-scores">
 						<div class="flexcol ability-scores-left">
 							<div class="ability--score" data-ability="str">
-								<label class="ability-name rollable" data-tooltip="{{system.abilities.str.label }}">{{localize 'DND4E.AbilStr'}}</label>
+								<label class="ability-name rollable" data-action="rollAbilityCheck" data-tooltip="{{system.abilities.str.label }}">{{localize 'DND4E.AbilStr'}}</label>
 								<input class="number ability-score" name="system.abilities.str.value" data-dtype="Number" value="{{system.abilities.str.value}}" onfocus="this.select()" placeholder="10"/>
 								{{#if system.halfLevelOptions}}
 								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.str.label }}">{{numberFormat system.abilities.str.mod decimals=0 sign=true}}</label>
@@ -180,7 +180,7 @@
 							</div>
 							
 							<div class="ability--score" data-ability="dex">
-								<label class="ability-name rollable" data-tooltip="{{system.abilities.dex.label }}">{{localize 'DND4E.AbilDex'}}</label>
+								<label class="ability-name rollable" data-action="rollAbilityCheck" data-tooltip="{{system.abilities.dex.label }}">{{localize 'DND4E.AbilDex'}}</label>
 								<input class="number ability-score" name="system.abilities.dex.value" data-dtype="Number" value="{{system.abilities.dex.value}}" onfocus="this.select()" placeholder="10"/>
 								{{#if system.halfLevelOptions}}
 								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.dex.label }}">{{numberFormat system.abilities.dex.mod decimals=0 sign=true}}</label>
@@ -190,7 +190,7 @@
 							</div>
 
 							<div class="ability--score" data-ability="con">
-								<label class="ability-name rollable" data-tooltip="{{system.abilities.con.label }}">{{localize 'DND4E.AbilCon'}}</label>
+								<label class="ability-name rollable" data-action="rollAbilityCheck" data-tooltip="{{system.abilities.con.label }}">{{localize 'DND4E.AbilCon'}}</label>
 								<input class="number ability-score" name="system.abilities.con.value" data-dtype="Number" value="{{system.abilities.con.value}}" onfocus="this.select()" placeholder="10"/>
 								{{#if system.halfLevelOptions}}
 								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.con.label }}">{{numberFormat system.abilities.con.mod decimals=0 sign=true}}</label>
@@ -202,7 +202,7 @@
 						
 						<div class="flexcol ability-scores-right">
 							<div class="ability--score" data-ability="int">
-								<label class="ability-name rollable" data-tooltip="{{system.abilities.int.label }}">{{localize 'DND4E.AbilInt'}}</label>
+								<label class="ability-name rollable" data-action="rollAbilityCheck" data-tooltip="{{system.abilities.int.label }}">{{localize 'DND4E.AbilInt'}}</label>
 								<input class="number ability-score" name="system.abilities.int.value" data-dtype="Number" value="{{system.abilities.int.value}}" onfocus="this.select()" placeholder="10"/>
 								{{#if system.halfLevelOptions}}
 								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.int.label }}">{{numberFormat system.abilities.int.mod decimals=0 sign=true}}</label>
@@ -212,7 +212,7 @@
 							</div>
 
 							<div class="ability--score" data-ability="wis">
-								<label class="ability-name rollable" data-tooltip="{{system.abilities.wis.label }}">{{localize 'DND4E.AbilWis'}}</label>
+								<label class="ability-name rollable" data-action="rollAbilityCheck" data-tooltip="{{system.abilities.wis.label }}">{{localize 'DND4E.AbilWis'}}</label>
 								<input class="number ability-score" name="system.abilities.wis.value" data-dtype="Number" value="{{system.abilities.wis.value}}" onfocus="this.select()" placeholder="10"/>
 								{{#if system.halfLevelOptions}}
 								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.wis.label }}">{{numberFormat system.abilities.wis.mod decimals=0 sign=true}}</label>
@@ -222,7 +222,7 @@
 							</div>
 
 							<div class="ability--score" data-ability="cha">
-								<label class="ability-name rollable" data-tooltip="{{system.abilities.cha.label }}">{{localize 'DND4E.AbilCha'}}</label>
+								<label class="ability-name rollable" data-action="rollAbilityCheck" data-tooltip="{{system.abilities.cha.label }}">{{localize 'DND4E.AbilCha'}}</label>
 								<input class="number ability-score" name="system.abilities.cha.value" data-dtype="Number" value="{{system.abilities.cha.value}}" onfocus="this.select()" placeholder="10"/>
 								{{#if system.halfLevelOptions}}
 								<label class="attribute-display ability-mod-half" data-tooltip="{{system.abilities.cha.label }}">{{numberFormat system.abilities.cha.mod decimals=0 sign=true}}</label>
