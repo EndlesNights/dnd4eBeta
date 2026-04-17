@@ -11,6 +11,10 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 			closeOnSubmit: false,
 			submitOnClose: true
 		},
+        actions: {
+            bonusAdd: AttributeBonusDialog.#onBonusAdd,
+            bonusDelete: AttributeBonusDialog.#onBonusDelete
+        },
 		position: {
 			width: 600,
 			height: "auto"
@@ -83,28 +87,20 @@ export class AttributeBonusDialog extends DocumentSheet4e {
 
 		this.document.update(updateData);
 	}
-
-	/** @override */
-	_onRender(context, options) {
-		if ( this.isEditable ) {
-			this.element.querySelector('.bonus-add').addEventListener("click", (this._onBonusAdd.bind(this)));
-			this.element.querySelectorAll('.bonus-delete').forEach((el) => {
-				el.addEventListener("click", (this._onBonusDelete.bind(this)))
-			});
-		}
-	}
 	
-	_onBonusAdd(event) {
-		event.preventDefault();
+	static #onBonusAdd(event, target) {
+		if (!this.isEditable) return;
+        event.preventDefault();
 		const bonusData = Helper.byString(this.options.target, this.document).bonus;
 		const newBonus =[{}];
 		//this.position.height += 76;
 		return this.document.update({[`${this.options.target}.bonus`]: bonusData.concat(newBonus)});
 	}
 	
-	_onBonusDelete(event) {
-		event.preventDefault();
-		const div = event.currentTarget.closest(".bonus-part");
+	static #onBonusDelete(event, target) {
+		if (!this.isEditable) return;
+        event.preventDefault();
+		const div = target.closest(".bonus-part");
 		const bonus = foundry.utils.duplicate(Helper.byString(this.options.target, this.document).bonus);
 		bonus.splice(Number(div.dataset.bonusPart), 1);
 		//this.position.height -= 76;

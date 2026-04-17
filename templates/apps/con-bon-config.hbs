@@ -7,7 +7,7 @@
 		<div class="form-group {{id}} condition-row flexrow" data-mod="{{id}}">
 			<span class="condition-name label">{{localize c.label}}:</span>
 			<span class="condition-mod-value">{{numberFormat c.value decimals=0 sign=true}}</span>
-			<a class="condition-mod-bonus" data-target="system.commonAttackBonus.{{id}}" data-tooltip="{{localize c.label}} {{localize 'DND4E.Bonus'}}">{{localize 'DND4E.Bonus'}}: {{c.bonusValue}}</a>
+			<a class="condition-mod-bonus" data-action="conditionBonus" data-target="system.commonAttackBonus.{{id}}" data-tooltip="{{localize c.label}} {{localize 'DND4E.Bonus'}}">{{localize 'DND4E.Bonus'}}: {{c.bonusValue}}</a>
 		</div>
 		{{/each}}
 	</fieldset>

@@ -50,21 +50,4 @@ export class EncumbranceDialog extends DocumentSheet4e {
 		for(let system in formData) { updateData[`${system}`] = formData[`${system}`];}
 		this.document.update(updateData);
 	}
-
-	_onRender(context, options) {
-		if (!this.document.testUserPermission(game.user, this.options.editPermission)) return;
-		this.element.querySelector('.move-bonus')?.addEventListener("click", this._onMovementBonus.bind(this));
-	}
-
-	_onMovementBonus(event) {
-		event.preventDefault();
-		const moveName = event.currentTarget.parentElement.dataset.movement;
-		const target = `system.movement.${moveName}`;
-		Helper.debugLog(moveName)
-		Helper.debugLog(event.currentTarget.parentElement.dataset)
-		Helper.debugLog(event.currentTarget.parentElement)
-		const options = {document: this.document, target: target, label: `${this.document.system.movement[moveName].label} Movement Bonus` };
-		new AttributeBonusDialog(options).render(true);
-	}
-
 }

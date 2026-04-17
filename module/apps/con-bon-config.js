@@ -9,6 +9,9 @@ export default class ConBonConfig extends DocumentSheet4e {
 		form: {
 			closeOnSubmit: false
 		},
+        actions: {
+            conditionBonus: ConBonConfig.#onConditionBonus
+        },
 		position: {
 			width: 420,
 			height: "auto"
@@ -51,18 +54,12 @@ export default class ConBonConfig extends DocumentSheet4e {
 		this.document.update(updateData);
 	}
 
-	_onRender(context, options) {
+	static #onConditionBonus(event, target) {
 		if (!this.document.testUserPermission(game.user, this.options.editPermission)) return;
-		this.element.querySelectorAll(".condition-mod-bonus").forEach((el) => {
-			el.addEventListener("click", (this._onConditionBonus.bind(this)));
-		});
-	}
-
-	_onConditionBonus(event) {
-		event.preventDefault();
-		const conditionId = event.currentTarget.parentElement.dataset.mod;
-		const target = `system.commonAttackBonuses.${conditionId}`;
-		const options = { document: this.document, target: target, label: `${game.i18n.format('DND4E.CommonAttackBonusesConfig', {condition:game.i18n.localize(this.document.system.commonAttackBonuses[conditionId].label)})}` };
+        event.preventDefault();
+		const conditionId = target.parentElement.dataset.mod;
+		const targetBonus = `system.commonAttackBonuses.${conditionId}`;
+		const options = { document: this.document, target: targetBonus, label: `${game.i18n.format('DND4E.CommonAttackBonusesConfig', {condition:game.i18n.localize(this.document.system.commonAttackBonuses[conditionId].label)})}` };
 		new AttributeBonusDialog(options).render(true);
 	}
 

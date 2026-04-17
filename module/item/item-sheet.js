@@ -60,6 +60,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			createPowerEffect: ItemSheet4e.#onPowerEffectControl,
 			editPowerEffect: ItemSheet4e.#onPowerEffectControl,
 			deletePowerEffect: ItemSheet4e.#onPowerEffectControl,
+            manageActiveEffect: ItemSheet4e.#onManageActiveEffect,
 			// Container actions
 			itemRoll: ItemSheet4e.#onItemRoll,
 			editItem: ItemSheet4e.#onItemControl,
@@ -219,7 +220,6 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		// TODO: AppV2 this stuff properly (add to `DEFAULT_OPTIONS.actions` and set `data-action on the proper elements)
 		if ( this.isEditable ) {
-			this.element.querySelectorAll(".effect-control").forEach(el => el.addEventListener("click", (event => { ActiveEffect4e.onManageActiveEffect(event, this.item);})));
 			this.element.querySelectorAll(".item-quantity input").forEach(el => el.addEventListener("change", (event) => {
 				const li = event.target.closest(".item");
 				const item = this.item.contents.get(li?.dataset.itemId);
@@ -548,6 +548,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		}
 
 	}
+
+    static #onManageActiveEffect(event, target) {
+        if (!this.item.actor.isOwner) return;
+        ActiveEffect4e.onManageActiveEffect(event, target, this.item)
+    }
 
 	/**
 	 * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to its roll method

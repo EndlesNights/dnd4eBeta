@@ -77,14 +77,14 @@
 					<input class="checkbox" type="checkbox" name="{{b}}.active" data-dtype="Boolean" {{checked bonus.active}} data-tooltip="{{localize 'DND4E.BonusToggle'}}" /> 
 					<span class="label">{{localize "DND4E.Active"}}</span>
 				</label>
-				<a class="bonus-control bonus-delete right" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>
+				<a class="bonus-control bonus-delete right" data-action="bonusDelete" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>
 			</div>
 			<textarea class="no-mono" type="text" name="{{b}}.note" value="{{bonus.note}}" data-dtype="String" placeholder="{{localize 'DND4E.Notes'}}" contentEditable>{{bonus.note}}</textarea>
 		</fieldset>
 		{{/each}}
 		
 		<div class="form-group right">
-			<a class="bonus-control bonus-add label">{{localize "DND4EUI.AddNew"}}</a>
+			<a class="bonus-control bonus-add label" data-action="bonusAdd">{{localize "DND4EUI.AddNew"}}</a>
 		</div>
 	</fieldset>
 	
