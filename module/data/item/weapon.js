@@ -1,3 +1,4 @@
+import FormulaField from "../fields/formula-field.js";
 import MappingField from "../fields/mapping-field.js";
 import ActivatedEffectTemplate from "./templates/activated-effect.js";
 import ItemDescriptionTemplate from "./templates/item-description.js";
@@ -28,6 +29,7 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
       weaponType: new StringField({initial: "simpleM"}),
       weaponHand: new StringField({initial: "HMain"}),
       weaponBaseType: new StringField({initial: ""}),
+      weaponBaseTypeCustom: new StringField({initial: ""}),
       properties: new MappingField(new BooleanField({initial: false}), {
         initialKeys: CONFIG.DND4E.weaponProperties,
         initialKeysOnly: true
@@ -76,12 +78,12 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
         initialKeys: CONFIG.DND4E.implement,
         initialKeysOnly: true
       }),
-      attackForm: new StringField({initial: "@profBonus+@enhance"}),
-      attackFormImp: new StringField({initial: "@profImpBonus+@enhance"}),
-      damageForm: new StringField({initial: "@enhance"}),
-      damageFormImp: new StringField({initial: "@enhance"}),
-      critDamageForm: new StringField({initial: "(@enhance)d6"}),
-      critDamageFormImp: new StringField({initial: "(@enhance)d6"}),
+      attackForm: new FormulaField({initial: "@profBonus+@enhance"}),
+      attackFormImp: new FormulaField({initial: "@profImpBonus+@enhance"}),
+      damageForm: new FormulaField({initial: "@enhance"}),
+      damageFormImp: new FormulaField({initial: "@enhance"}),
+      critDamageForm: new FormulaField({initial: "(@enhance)d6"}),
+      critDamageFormImp: new FormulaField({initial: "(@enhance)d6"}),
       critRange: new NumberField({initial: 20, integer: true, max: 21, min: 0}),
       critRangeImp: new NumberField({initial: 20, integer: true, max: 21, min: 0})
     }
