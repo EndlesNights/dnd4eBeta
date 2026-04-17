@@ -54,7 +54,7 @@
             {{#if section.hasActions}}
             <div class="item-detail item-uses">
               {{#if item.isOnCooldown}}
-              <a class="item-recharge rollable">{{item.labels.recharge}}</a>
+              <a class="item-recharge rollable" data-action="itemRecharge">{{item.labels.recharge}}</a>
               {{else if item.system.recharge.value}}
               {{localize 'DND4E.Charged'}}
       

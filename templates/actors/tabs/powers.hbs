@@ -87,13 +87,13 @@
                 {{/if}}
               </div>
               <div class="item-detail power-detail item-uses" data-tooltip="{{#if system.uses.per}} {{localize 'DND4E.Per'}} {{lookup (lookup ../../config.limitedUsePeriods item.system.uses.per) 'label'}}{{/if}}">
-                {{#if item.system.notAvailable}}
+                {{#if item.isUnavailable}}
                   {{#if item.system.rechargeRoll}}
-                  <a class="item-recharge rollable" data-tooltip="{{localize 'DND4E.PowerRechargeTipCond'}} {{item.system.rechargeRoll}}">Recharge[+{{item.system.rechargeRoll}}]</a>
+                  <a class="item-recharge rollable" data-action="itemRecharge" data-tooltip="{{localize 'DND4E.PowerRechargeTipCond'}} {{item.system.rechargeRoll}}">Recharge[+{{item.system.rechargeRoll}}]</a>
                   {{else if item.system.rechargeCondition}}
-                  <a class="item-recharge rollable" data-tooltip="{{localize 'DND4E.PowerRechargeTipCond'}} &quot;{{item.system.rechargeCondition}}&quot;">Recharge[C]</a>
+                  <a class="item-recharge rollable" data-action="itemRecharge" data-tooltip="{{localize 'DND4E.PowerRechargeTipCond'}} &quot;{{item.system.rechargeCondition}}&quot;">Recharge[C]</a>
                   {{else if item.system.isOnCooldown}}
-                  <a class="item-recharge rollable" data-tooltip="{{localize 'DND4E.PowerRechargeTipRoll'}} {{item.system.rechargeRoll}}">Recharge[+6]</a>
+                  <a class="item-recharge rollable" data-action="itemRecharge" data-tooltip="{{localize 'DND4E.PowerRechargeTipRoll'}} {{item.system.rechargeRoll}}">Recharge[+6]</a>
                   {{else}}
                     {{#if item.hasUses}}
                     <input type="text" value="{{item.system.uses.value}}" placeholder="0"/>/ {{item.system.preparedMaxUses}}

@@ -109,6 +109,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			itemImport: ActorSheet4e.#onItemImport,
 			itemToggle: ActorSheet4e.#onItemToggle,
 			itemRoll: ActorSheet4e.#onItemRoll,
+			itemRecharge: ActorSheet4e.#onItemRecharge,
 			powerCreate: ActorSheet4e.#onPowerCreate,
 			manageActiveEffect: ActorSheet4e.#onManageActiveEffect,
 			convertCurrency: ActorSheet4e.#onConvertCurrency
@@ -204,9 +205,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
 				el.addEventListener("mouseleave", this._onItemHoverExit.bind(this));
 			});
-			
-			// Item Recharge
-			html.querySelectorAll('.item-recharge').forEach(el => el.addEventListener("click", event => this._onItemRecharge(event)));
 	
 			// Effect-Specific Saves
 			html.querySelectorAll('.effect-save').forEach(el => el.addEventListener("click", event => this._onRollEffectSave(event)));
@@ -598,7 +596,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			i.totalWeight = item.totalWeight;
 			i.totalWeightLabel = i.totalWeight.toNearest(0.01);
 			i.system.preparedMaxUses = item.system.preparedMaxUses;
-			this._checkItemAvailable(item);
+			this._checkItemAvailable(i);
 			i.hasUses = item.system.uses && (item.system.preparedMaxUses > 0) && (item.system.uses.per != '');
 			i.isDepleted = i.hasUses && (item.system.uses.value === 0);
 			i.isUnavailable = i.isDepleted || i.system.notAvailable || (['weapon','equipment'].includes(item.type) && !item.system.equipped) ;
@@ -611,8 +609,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		for ( let p of pow ) {
 			const power = this.actor.items.get(p._id);
-			this._checkItemAvailable(power);
 			p.system.preparedMaxUses = power.system.preparedMaxUses;
+			this._checkItemAvailable(p);
 			p.hasUses = power.system.uses && (power.system.preparedMaxUses > 0) && (power.system.uses.per != '');
 			p.isDepleted = p.hasUses && p.system.uses.value === 0;
 			p.isUnavailable = p.isDepleted || p.system.notAvailable;
@@ -621,8 +619,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		
 		for ( let r of rits ) {
 			const ritual = this.actor.items.get(r._id);
-			this._checkItemAvailable(ritual);
-			r.isUnavailable = ritual.system?.notAvailable || false;
+			this._checkItemAvailable(r);
+			r.isUnavailable = r.system?.notAvailable || false;
 			rituals[r.system.category].items.push(r);
 		}
 
@@ -1661,9 +1659,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 	/* -------------------------------------------- */
 
-	async _onItemRecharge(event){
+	static async #onItemRecharge(event, target){
 		event.preventDefault();
-		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const itemId = target.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 
 		if ( item.type === "power") {
