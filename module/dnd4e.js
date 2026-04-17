@@ -25,6 +25,7 @@ import { default as Token4e } from "./canvas/token.js";
 import Item4e from "./item/item.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
+import { default as ApplyActiveEffect4eRegionBehaviorType } from "./regionBehavoirs/apply-active-effect.js"
 import { default as DifficultTerrainRegionBehaviorType } from "./regionBehavoirs/difficult-terrain.js";
 import { default as TerrainData4e } from "./regionBehavoirs/terrain-data.js";
 import { default as DifficultTerrainConfig} from "./apps/regionBehaviors/difficult-terrain-config.js"
@@ -173,13 +174,12 @@ Hooks.once("init", async function() {
 		weapon: WeaponData
 	};
 
-	// foundry.data.regionBehaviors.DifficultTerrainRegionBehaviorType = DifficultTerrainRegionBehaviorType;
-	// CONFIG.RegionBehavior.documentClass = RegionBehavior4e
+	CONFIG.RegionBehavior.dataModels.applyActiveEffect4e = ApplyActiveEffect4eRegionBehaviorType;
 	CONFIG.RegionBehavior.dataModels.difficultTerrain = DifficultTerrainRegionBehaviorType;
-	// Object.assign(CONFIG.RegionBehavior.dataModels, { DifficultTerrainRegionBehaviorType });
-	// HighlightRegionShader = DifficultTerrainShader4e;
 
-	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";//"DND4E.difficultTerrain.Label";
+	CONFIG.RegionBehavior.typeLabels.applyActiveEffect4e = "DND4E.applyActiveEffect4e.Label";
+	CONFIG.RegionBehavior.typeIcons.applyActiveEffect4e = "fa-solid fa-person-rays";
+	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "difficult-terrain-icon";
 
 	registerSystemSettings();

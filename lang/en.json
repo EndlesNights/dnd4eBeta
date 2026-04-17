@@ -101,6 +101,7 @@
 "DND4E.AlignmentTN": "True Neutral",
 "DND4E.AlignmentUN": "Unaligned",
 "DND4E.AnyW": "Any Weapon",
+"DND4E.applyActiveEffect4e.Label": "Apply Active Effect (4e)",
 "DND4E.ApplyEffect": "(All/Ally/Enemy) Effects",
 "DND4E.ApplyEffectTooltip": "Applies the power's (All/Ally/Enemy) Effects to the targeted/selected tokens (change between targeted/selected in game options)",
 "DND4E.ApplyHitEffect": "Hit Effects",
@@ -1449,29 +1450,51 @@
 	"Walk": "Walk"
 },
 
-"DND4E.RegionBehaviors.DifficultTerrain": {
-	"FIELDS": {
-		"ignoredDispositions": {
-			"hint": "Tokens with these dispositions will not be affected by this difficult terrain.",
-			"label": "Ignored Dispositions"
+"DND4E.RegionBehaviors": {
+	"DifficultTerrain": {
+		"FIELDS": {
+			"ignoredDispositions": {
+				"hint": "Tokens with these dispositions will not be affected by this difficult terrain.",
+				"label": "Ignored Dispositions"
+			},
+			"types": {
+				"hint": "Types that best describe the source of this difficult terrain, if any.",
+				"label": "Types"
+			}
 		},
-		"types": {
-			"hint": "Types that best describe the source of this difficult terrain, if any.",
-			"label": "Types"
+		"Type": {
+			"Earth": "Rubble, Uneven Stone, or Earth",
+			"Forest": "Trees, Underbrush, Plants, or Natural Growth",
+			"Ice": "Ice or Snow",
+			"Swamp": "Bog, Mud, or Shallow Water"
+		},
+		"Ignored": {
+			"All": "Ignores Difficult Terrain",
+			"Earth": "Earth Walk",
+			"Forest": "Forest Walk",
+			"Ice": "Ice Walk",
+			"Swamp": "Swamp Walk"
 		}
 	},
-	"Type": {
-		"Earth": "Rubble, Uneven Stone, or Earth",
-		"Forest": "Trees, Underbrush, Plants, or Natural Growth",
-		"Ice": "Ice or Snow",
-		"Swamp": "Bog, Mud, or Shallow Water"
-	},
-	"Ignored": {
-		"All": "Ignores Difficult Terrain",
-		"Earth": "Earth Walk",
-		"Forest": "Forest Walk",
-		"Ice": "Ice Walk",
-		"Swamp": "Swamp Walk"
+	"ApplyActiveEffect": {
+		"FIELDS": {
+			"dispositions": {
+				"hint": "If set, only apply effects to Tokens with these dispositions.",
+				"label": "Dispositions"
+			},
+			"effects": {
+				"hint": "The effects that are applied to Tokens within the Region.",
+				"label": "Effects"
+			},
+			"origins": {
+				"hint": "If set, only apply effects to Tokens with these creature origins.",
+				"label": "Origins"
+			},
+			"types": {
+				"hint": "If set, only apply effects to Tokens with these creature types.",
+				"label": "Types"
+			}
+		}
 	}
 },
 
