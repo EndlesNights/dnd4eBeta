@@ -109,7 +109,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			itemImport: ActorSheet4e.#onItemImport,
 			itemToggle: ActorSheet4e.#onItemToggle,
 			powerCreate: ActorSheet4e.#onPowerCreate,
-			manageActiveEffect: ActorSheet4e.#onManageActiveEffect
+			manageActiveEffect: ActorSheet4e.#onManageActiveEffect,
+			convertCurrency: ActorSheet4e.#onConvertCurrency
 		}
 	}
 
@@ -197,9 +198,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if ( this.actor.isOwner ) {
 			//Inventory & Item management
 			html.querySelectorAll('.item-uses input').forEach(el => el.addEventListener("change", this._onUsesChange.bind(this)));
-		
-			//convert currency to it's largest form to save weight.
-			html.querySelectorAll('.currency-convert').forEach(el => el.addEventListener("click", this._onConvertCurrency.bind(this)));
 			
 			// Item Rolling
 			html.querySelectorAll('.item-roll').forEach(el => el.addEventListener("click", event => {
@@ -1720,7 +1718,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @param {MouseEvent} event    The originating click event
 	 * @private
 	 */
-	async _onConvertCurrency(event) {
+	static async #onConvertCurrency(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		let shouldConvert = await foundry.applications.api.Dialog.confirm({
 			window: {title: `${game.i18n.localize("DND4E.CurrencyConvert")}`},

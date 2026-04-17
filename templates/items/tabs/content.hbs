@@ -2,7 +2,7 @@
   <ol class="currency flexrow">
     <h3>
       {{localize "DND4E.Currency"}}
-      <a class="currency-convert" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
+      <a class="currency-convert" data-action="convertCurrency" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
     </h3>
     {{#each system.currency as |v k|}}
     <label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>

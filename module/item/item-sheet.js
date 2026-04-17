@@ -2,6 +2,7 @@
 import ActiveEffect4e from "../effects/effects.js";
 import { default as TokenDocument4e } from "../documents/token.js"
 import {Helper} from "../helper.js";
+import ActorSheet4e from "../actor/actor-sheet.js";
 
 /**
  * Override and extend the core ItemSheet implementation to handle specific item types
@@ -62,7 +63,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			// Container actions
 			itemRoll: ItemSheet4e.#onItemRoll,
 			editItem: ItemSheet4e.#onItemControl,
-			deleteItem: ItemSheet4e.#onItemControl
+			deleteItem: ItemSheet4e.#onItemControl,
+			convertCurrency: ItemSheet4e.#onConvertCurrency
 		}
 	}
 
@@ -579,6 +581,32 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		} else {
 			return item.delete();
 		}
+	}
+
+	/**
+	* Convert all carried currency to the highest possible denomination to reduce the number of raw coins being
+	* carried by an Actor.
+	* @return {Promise<Actor4e>}
+	*/
+	convertCurrency() {
+		const curr = foundry.utils.duplicate(this.document.system.currency);
+		const convert = CONFIG.DND4E.currencyConversion;
+		for ( let [c, t] of Object.entries(convert) ) {
+			let change = Math.floor(curr[c] / t.each);
+			curr[c] -= (change * t.each);
+			curr[t.into] += change;
+		}
+		return this.document.update({"system.currency": curr});
+	}
+
+	static async #onConvertCurrency(event, target) {
+		if (!this.item.actor.isOwner) return;
+		event.preventDefault();
+		let shouldConvert = await foundry.applications.api.Dialog.confirm({
+			window: {title: `${game.i18n.localize("DND4E.CurrencyConvert")}`},
+			content: `<p>${game.i18n.localize("DND4E.CurrencyConvertHint")}</p>`
+		});
+		if (shouldConvert) return this.convertCurrency();
 	}
 
 	async shareItem() {
