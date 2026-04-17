@@ -88,27 +88,28 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			passiveBonus: ActorSheet4e.#onPassiveBonus,
 			modifiersBonus: ActorSheet4e.#onModifiersBonus,
 			resistancesBonus: ActorSheet4e.#onResistancesBonus,
-            movementDialog: ActorSheet4e.#onMovementDialog,
-            customRollDescriptions: ActorSheet4e.#onCustomRolldDescriptions,
-            secondWind: ActorSheet4e.#onSecondWind,
-            healMenu: ActorSheet4e.#onHealMenuDialog,
-            actionPoint: ActorSheet4e.#onActionPointDialog,
-            actionPointExtra: ActorSheet4e.#onActionPointExtraDialog,
-            shortRest: ActorSheet4e.#onShortRest,
-            longRest: ActorSheet4e.#onLongRest,
-            deathSave: ActorSheet4e.#onDeathSave,
-            savingThrow: ActorSheet4e.#onSavingThrow,
-            rollInitiative: ActorSheet4e.#onrollInitiative,
-            traitSelector: ActorSheet4e.#onTraitSelector,
-            traitSelectorWeapon: ActorSheet4e.#onTraitSelectorWeapon,
-            traitSelectorSenses: ActorSheet4e.#onTraitSelectorSenses,
-            listStringInput: ActorSheet4e.#onListStringInput,
-            itemCreate: ActorSheet4e.#onItemCreate,
+			movementDialog: ActorSheet4e.#onMovementDialog,
+			customRollDescriptions: ActorSheet4e.#onCustomRolldDescriptions,
+			secondWind: ActorSheet4e.#onSecondWind,
+			healMenu: ActorSheet4e.#onHealMenuDialog,
+			actionPoint: ActorSheet4e.#onActionPointDialog,
+			actionPointExtra: ActorSheet4e.#onActionPointExtraDialog,
+			shortRest: ActorSheet4e.#onShortRest,
+			longRest: ActorSheet4e.#onLongRest,
+			deathSave: ActorSheet4e.#onDeathSave,
+			savingThrow: ActorSheet4e.#onSavingThrow,
+			rollInitiative: ActorSheet4e.#onrollInitiative,
+			traitSelector: ActorSheet4e.#onTraitSelector,
+			traitSelectorWeapon: ActorSheet4e.#onTraitSelectorWeapon,
+			traitSelectorSenses: ActorSheet4e.#onTraitSelectorSenses,
+			listStringInput: ActorSheet4e.#onListStringInput,
+			itemCreate: ActorSheet4e.#onItemCreate,
 			itemEdit: ActorSheet4e.#onItemEdit,
 			itemDelete: ActorSheet4e.#onItemDelete,
-            itemImport: ActorSheet4e.#onItemImport,
-            powerCreate: ActorSheet4e.#onPowerCreate,
-            manageActiveEffect: ActorSheet4e.#onManageActiveEffect
+			itemImport: ActorSheet4e.#onItemImport,
+			itemToggle: ActorSheet4e.#onItemToggle,
+			powerCreate: ActorSheet4e.#onPowerCreate,
+			manageActiveEffect: ActorSheet4e.#onManageActiveEffect
 		}
 	}
 
@@ -196,9 +197,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if ( this.actor.isOwner ) {
 			//Inventory & Item management
 			html.querySelectorAll('.item-uses input').forEach(el => el.addEventListener("change", this._onUsesChange.bind(this)));
-				
-			// Item State Toggling
-			html.querySelectorAll('.item-toggle').forEach(el => el.addEventListener("click", this._onToggleItem.bind(this)));
 		
 			//convert currency to it's largest form to save weight.
 			html.querySelectorAll('.currency-convert').forEach(el => el.addEventListener("click", this._onConvertCurrency.bind(this)));
@@ -1130,6 +1128,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
   /* -------------------------------------------- */
 
 	static async #onEditImage() {
+		if (!this.actor.isOwner) return;
 		const defaultArtwork = this.document.constructor.getDefaultArtwork?.(this.document._source) ?? {};
 		const defaultImage = foundry.utils.getProperty(defaultArtwork, 'img');
 		const fp = new CONFIG.ux.FilePicker({
@@ -1150,9 +1149,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The triggering click event
    * @private
    */
-  _onToggleItem(event) {
+  static #onItemToggle(event, target) {
+		if (!this.actor.isOwner) return;	
 		event.preventDefault();
-		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const itemId = target.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 		const power = ["power","atwill","encounter","daily","utility"];
 		const attr = power.includes(item.type) ? "system.prepared" : "system.equipped";
@@ -1168,7 +1168,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    */
 	static #onItemCreate(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const type = target.dataset.type;
 		const subType = target.dataset?.subtype || null;
 		const itemData = {
@@ -1187,7 +1187,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static async #onItemImport(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const {json=null} = await foundry.applications.api.Dialog.input({
 			window: {
 				title: `${this.actor.name} - JSON Item Importer`
@@ -1215,7 +1215,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static #onPowerCreate(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const type = target.dataset.type;
 		const itemData = {
 			name: `${game.i18n.format("DND4E.ItemNew", {type: type.capitalize()})} Power`,
@@ -1274,10 +1274,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
-    static #onManageActiveEffect(event, target) {
-        if (!this.actor.isOwner) return;
-        ActiveEffect4e.onManageActiveEffect(event, target, this.actor)
-    }
+	static #onManageActiveEffect(event, target) {
+		if (!this.actor.isOwner) return;
+		ActiveEffect4e.onManageActiveEffect(event, target, this.actor)
+	}
 
   /* -------------------------------------------- */
 
@@ -1421,25 +1421,25 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	
 	static #onMovementDialog(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		new MovementDialog({document: this.actor}).render(true)
 	}
 	
 	_onConBonConfig(event) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		new ConBonConfig({document: this.actor}).render(true)
 	}
 
 	static #onHealMenuDialog(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		new HealMenuDialog({document: this.actor}).render(true)
 	}
 
 	_onEncumbranceDialog(event) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		new EncumbranceDialog({document: this.actor}).render(true);
 	}
 
@@ -1473,7 +1473,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	
 	static #onCustomRolldDescriptions(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const options = {data: this.actor};
 		new CustomRolldDescriptions({document: this.actor}).render(true, options);
 	}
@@ -1482,7 +1482,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	*/
 	static #onSecondWind(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.secondWind(event,{isFF});
@@ -1494,7 +1494,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static #onActionPointDialog(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.actionPoint(event,{isFF});
@@ -1504,7 +1504,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static #onActionPointExtraDialog(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		new ActionPointExtraDialog(this.actor).render(true);
 	}
 
@@ -1515,7 +1515,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	*/
 	static #onShortRest(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.shortRest(event,{isFF});
@@ -1531,7 +1531,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	*/
 	static #onLongRest(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.longRest(event,{isFF});
@@ -1541,7 +1541,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static #onDeathSave(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.rollDeathSave(event,{isFF});
@@ -1551,13 +1551,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static #onrollInitiative(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		return this.actor.rollInitiative({createCombatants: true},{event: event});
 	}
 
 	static #onSavingThrow(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
 			return this.actor.rollSave(event,{isFF});
@@ -1574,7 +1574,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static #onCycleSkillProficiency(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const skillId = target.parentElement.dataset.skill;
 
 		// Get the current level and the array of levels
@@ -1768,7 +1768,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    */
 	static #onTraitSelector(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const label = target.getAttribute('data-app-title') || "Label error";
 		const choices = CONFIG.DND4E[target.dataset.options];
 		const options = { name: target.dataset.target, window: {title: label}, choices};
@@ -1777,7 +1777,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static #onTraitSelectorWeapon(event, target){
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const label = target.getAttribute('data-app-title') || "Label error";
 		const choices = CONFIG.DND4E.weaponProficienciesMap;
 		const options = { name: target.dataset.target, window: {title: label}, choices, datasetOptions: target.dataset.options, config:CONFIG};
@@ -1786,7 +1786,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	static #onTraitSelectorSenses(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const label = target.getAttribute('data-app-title') || "Label error";
 		const choices = CONFIG.DND4E[target.dataset.options];
 		const options = { name: target.dataset.target, window: {title: label}, choices };
@@ -1795,7 +1795,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	
 	static async #onListStringInput(event, target) {
 		if (!this.actor.isOwner) return;
-        event.preventDefault();
+		event.preventDefault();
 		const label = target.getAttribute('data-app-title') || "Label error";
 		const currValue = foundry.utils.getProperty(this.actor, target.dataset.target) ?? [];
 		const {traits=""} = await foundry.applications.api.Dialog.input({

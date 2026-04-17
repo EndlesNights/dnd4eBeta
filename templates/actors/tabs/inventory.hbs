@@ -106,7 +106,7 @@
         {{#if ../../owner}}
         <div class="item-controls">
           {{#unless @root.isVehicle}}
-          <a class="item-control item-toggle {{item.toggleClass}}" data-tooltip="{{item.toggleTitle}}"><i class="fas fa-shield-alt"></i></a>
+          <a class="item-control item-toggle {{item.toggleClass}}" data-action="itemToggle" data-tooltip="{{item.toggleTitle}}"><i class="fas fa-shield-alt"></i></a>
           {{/unless}}
           {{#unless section.editableName}}
           <a class="item-control item-edit" data-action="itemEdit" data-tooltip="{{localize 'DND4E.ItemEdit'}}"><i class="fas fa-edit"></i></a>
