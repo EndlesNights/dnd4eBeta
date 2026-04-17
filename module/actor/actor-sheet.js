@@ -114,7 +114,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			manageActiveEffect: ActorSheet4e.#onManageActiveEffect,
 			convertCurrency: ActorSheet4e.#onConvertCurrency,
 			// TODO V14: Test this when the Active Effect sheet is updated:
-			rollEffectSave: ActorSheet4e.#onRollEffectSave
+			rollEffectSave: ActorSheet4e.#onRollEffectSave,
+			encumbranceDialog: ActorSheet4e.#onEncumbranceDialog
 		}
 	}
 
@@ -207,9 +208,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
 				el.addEventListener("mouseleave", this._onItemHoverExit.bind(this));
 			});
-	
-			// Load Options
-			html.querySelectorAll('.encumbrance-options').forEach(el => el.addEventListener("click", this._onEncumbranceDialog.bind(this)));
 			
 			// Conditional Attack Mod Config
 			html.querySelectorAll('.con-bon-config').forEach(el => el.addEventListener("click", this._onConBonConfig.bind(this)));
@@ -1424,7 +1422,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new HealMenuDialog({document: this.actor}).render(true)
 	}
 
-	_onEncumbranceDialog(event) {
+	static #onEncumbranceDialog(event) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		new EncumbranceDialog({document: this.actor}).render(true);

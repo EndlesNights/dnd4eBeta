@@ -133,7 +133,7 @@
   </ol>
 
   {{#with system.encumbrance}}
-  <div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" data-tooltip="{{localize 'DND4E.EncumbranceTip'}}">
+  <div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" data-action="encumbranceDialog" data-tooltip="{{localize 'DND4E.EncumbranceTip'}}">
     <span class="encumbrance-bar" style="width:{{pbc}}%"></span>
     {{#if encumbered}}
       <span class="encumbrance-bar encumbered" style="width:{{pec}}%"></span>
