@@ -103,8 +103,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
             traitSelectorWeapon: ActorSheet4e.#onTraitSelectorWeapon,
             traitSelectorSenses: ActorSheet4e.#onTraitSelectorSenses,
             listStringInput: ActorSheet4e.#onListStringInput,
+            itemCreate: ActorSheet4e.#onItemCreate,
 			itemEdit: ActorSheet4e.#onItemEdit,
-			itemDelete: ActorSheet4e.#onItemDelete
+			itemDelete: ActorSheet4e.#onItemDelete,
+            itemImport: ActorSheet4e.#onItemImport,
+            powerCreate: ActorSheet4e.#onPowerCreate
 		}
 	}
 
@@ -191,13 +194,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	
 		if ( this.actor.isOwner ) {
 			//Inventory & Item management
-			html.querySelectorAll('.item-create').forEach(el => el.addEventListener("click", this._onItemCreate.bind(this)));
 			html.querySelectorAll('.item-uses input').forEach(el => el.addEventListener("change", this._onUsesChange.bind(this)));
-
-
-			html.querySelectorAll('.power-create').forEach(el => el.addEventListener("click", this._onPowerItemCreate.bind(this)));
-	
-			html.querySelectorAll('.item-import').forEach(el => el.addEventListener("click", this._onItemImport.bind(this)));
 	
 			// Active Effect management
 			// html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
@@ -1172,15 +1169,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The originating click event
    * @private
    */
-	_onItemCreate(event) {
+	static #onItemCreate(event, target) {
 		event.preventDefault();
-		const header = event.currentTarget;
-		const type = header.dataset.type;
-		const subType = header.dataset?.subtype || null;
+		const type = target.dataset.type;
+		const subType = target.dataset?.subtype || null;
 		const itemData = {
 			name: game.i18n.format("DND4E.ItemNew", {type: type.capitalize()}),
 			type: type,
-			system: foundry.utils.duplicate(header.dataset)
+			system: foundry.utils.duplicate(target.dataset)
 		};
 		if(type === 'feature' && subType){
 			itemData.system.featureType = subType;
@@ -1191,7 +1187,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
-	async _onItemImport(event) {
+	static async #onItemImport(event, target) {
 		event.preventDefault();
 		const {json=null} = await foundry.applications.api.Dialog.input({
 			window: {
@@ -1218,14 +1214,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		await this.actor.createEmbeddedDocuments("Item", [obj]);
 	}
 
-	_onPowerItemCreate(event) {
+	static #onPowerCreate(event, target) {
 		event.preventDefault();
-		const header = event.currentTarget;
-		const type = header.dataset.type;
+		const type = target.dataset.type;
 		const itemData = {
 			name: `${game.i18n.format("DND4E.ItemNew", {type: type.capitalize()})} Power`,
 			type: "power",
-			system: foundry.utils.duplicate(header.dataset)
+			system: foundry.utils.duplicate(target.dataset)
 		};
 
 		if(this.document.system.powerGroupTypes === "action" || !this.document.system.powerGroupTypes) {

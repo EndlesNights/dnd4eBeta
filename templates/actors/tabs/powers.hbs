@@ -17,7 +17,7 @@
 
       <div class="filter-search-powers">
         <label for="power-filter-search">{{localize 'DND4E.Filter'}}</label>
-        <button class="item-import button" data-tooltip="{{localize 'DND4E.PowerCreate'}}" data-item-type="power" data-type="power" type="button">
+        <button class="item-import button" data-action="itemImport" data-tooltip="{{localize 'DND4E.PowerCreate'}}" data-item-type="power" data-type="power" type="button">
           <i class="fas fa-atlas"></i> <span class="import-button">{{localize 'DND4E.ImportPowers'}}</span>
         </button>
         <br />
@@ -42,7 +42,7 @@
           <div class="item-detail item-prep" data-tooltip="{{localize 'DND4E.PowerPrepared'}}">{{localize 'DND4E.PowerPreparedShort'}}</div>
         {{#if ../owner}}
         <div class="item-controls">
-          <a class="item-control power-create" data-tooltip="{{localize 'DND4E.ItemCreate'}}"
+          <a class="item-control power-create" data-action="powerCreate" data-tooltip="{{localize 'DND4E.ItemCreate'}}"
             {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
             <i class="fas fa-plus"></i> {{localize 'DND4E.Add'}}
           </a>
@@ -109,7 +109,7 @@
         
             {{#if ../owner}}
             <div class="item-controls flexrow">
-              <a class="item-control item-create" data-tooltip="{{localize 'DND4E.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
+              <a class="item-control item-create" data-action="itemCreate" data-tooltip="{{localize 'DND4E.FeatureAdd'}}" {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
                 <i class="fas fa-plus"></i> {{localize 'DND4E.Add'}}
               </a>
             </div>

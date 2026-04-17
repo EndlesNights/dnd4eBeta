@@ -45,7 +45,7 @@
 
       {{#if ../owner}}
       <div class="item-controls">
-        <a class="item-control item-create" data-tooltip="{{localize 'DND4E.ItemCreate'}}"
+        <a class="item-control item-create" data-action="itemCreate" data-tooltip="{{localize 'DND4E.ItemCreate'}}"
           {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
           <i class="fas fa-plus"></i> {{localize 'DND4E.Add'}}
         </a>
