@@ -99,6 +99,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
             deathSave: ActorSheet4e.#onDeathSave,
             savingThrow: ActorSheet4e.#onSavingThrow,
             rollInitiative: ActorSheet4e.#onrollInitiative,
+            traitSelector: ActorSheet4e.#onTraitSelector,
+            traitSelectorWeapon: ActorSheet4e.#onTraitSelectorWeapon,
+            traitSelectorSenses: ActorSheet4e.#onTraitSelectorSenses,
+            listStringInput: ActorSheet4e.#onListStringInput,
 			itemEdit: ActorSheet4e.#onItemEdit,
 			itemDelete: ActorSheet4e.#onItemDelete
 		}
@@ -186,12 +190,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const html = this.element;
 	
 		if ( this.actor.isOwner ) {
-			// Trait Selector
-			html.querySelectorAll('.trait-selector').forEach(el => el.addEventListener("click", this._onTraitSelector.bind(this)));
-			html.querySelectorAll('.trait-selector-weapon').forEach(el => el.addEventListener("click", this._onTraitSelectorWeapon.bind(this)));
-			html.querySelectorAll('.trait-selector-senses').forEach(el => el.addEventListener("click", this._onTraitSelectorSense.bind(this)));
-			html.querySelectorAll('.list-string-input').forEach(el => el.addEventListener("click", this._onListStringInput.bind(this)));
-			
 			//Inventory & Item management
 			html.querySelectorAll('.item-create').forEach(el => el.addEventListener("click", this._onItemCreate.bind(this)));
 			html.querySelectorAll('.item-uses input').forEach(el => el.addEventListener("change", this._onUsesChange.bind(this)));
@@ -1575,7 +1573,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	static #onCycleSkillProficiency(event, target) {
-		event.preventDefault();
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const skillId = target.parentElement.dataset.skill;
 
 		// Get the current level and the array of levels
@@ -1767,38 +1766,38 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The click event which originated the selection
    * @private
    */
-	_onTraitSelector(event) {
-		event.preventDefault();
-		const a = event.currentTarget;
-		const label = a.getAttribute('data-app-title') || "Label error";
-		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, window: {title: label}, choices};
+	static #onTraitSelector(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
+		const label = target.getAttribute('data-app-title') || "Label error";
+		const choices = CONFIG.DND4E[target.dataset.options];
+		const options = { name: target.dataset.target, window: {title: label}, choices};
 		new TraitSelector({document: this.actor, ...options}).render(true);
 	}
 
-	_onTraitSelectorWeapon(event){
-		event.preventDefault();
-		const a = event.currentTarget;
-		const label = a.getAttribute('data-app-title') || "Label error";
+	static #onTraitSelectorWeapon(event, target){
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
+		const label = target.getAttribute('data-app-title') || "Label error";
 		const choices = CONFIG.DND4E.weaponProficienciesMap;
-		const options = { name: a.dataset.target, window: {title: label}, choices, datasetOptions: a.dataset.options, config:CONFIG};
+		const options = { name: target.dataset.target, window: {title: label}, choices, datasetOptions: target.dataset.options, config:CONFIG};
 		new TraitSelector({document: this.actor, ...options}).render(true);
 	}
 
-	_onTraitSelectorSense(event) {
-		event.preventDefault();
-		const a = event.currentTarget;
-		const label = a.getAttribute('data-app-title') || "Label error";
-		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, window: {title: label}, choices };
+	static #onTraitSelectorSenses(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
+		const label = target.getAttribute('data-app-title') || "Label error";
+		const choices = CONFIG.DND4E[target.dataset.options];
+		const options = { name: target.dataset.target, window: {title: label}, choices };
 		new TraitSelectorValues({document: this.actor, ...options}).render(true);
 	}
 	
-	async _onListStringInput(event) {
-		event.preventDefault();
-		const a = event.currentTarget;
-		const label = a.getAttribute('data-app-title') || "Label error";
-		const currValue = foundry.utils.getProperty(this.actor, a.dataset.target) ?? [];
+	static async #onListStringInput(event, target) {
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
+		const label = target.getAttribute('data-app-title') || "Label error";
+		const currValue = foundry.utils.getProperty(this.actor, target.dataset.target) ?? [];
 		const {traits=""} = await foundry.applications.api.Dialog.input({
 			id: "trait-selector",
 			classes: ["dnd4e"],
@@ -1824,7 +1823,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (traits === null) return;
 		const newValue = traits.split(";").map(i => i.trim()).filter(i => i);
 		await this.actor.update({
-			[a.dataset.target]: newValue
+			[target.dataset.target]: newValue
 		});
 	}
 

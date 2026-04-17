@@ -85,7 +85,7 @@
     <h4 class="group-header">{{ localize 'DND4E.Proficiencies' }}</h4>
 
 	<div class="traits-row" data-tooltip="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Weapon')}}">
-		<a class="trait-selector-weapon" data-options="weaponProf" data-target="system.details.weaponProf" data-app-title="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Weapon')}}">
+		<a class="trait-selector-weapon" data-action="traitSelectorWeapon" data-options="weaponProf" data-target="system.details.weaponProf" data-app-title="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Weapon')}}">
 		  <span class="subgroup-header label">{{ localize 'DND4E.Weapon' }}</span>
 		  <i class="fas fa-edit"></i>
 		</a>
@@ -97,7 +97,7 @@
 	</div>
     
 	<div class="traits-row" data-tooltip="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Implement')}}">
-		<a class="trait-selector" data-options="implementProficiencies" data-target="system.details.implementProf" data-app-title="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Implement')}}">
+		<a class="trait-selector" data-action="traitSelector" data-options="implementProficiencies" data-target="system.details.implementProf" data-app-title="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Implement')}}">
 		  <span class="subgroup-header label">{{ localize 'DND4E.Implement' }}</span>
 		  <i class="fas fa-edit"></i>
 		</a>
@@ -109,7 +109,7 @@
 	</div>
     
 	<div class="traits-row" data-tooltip="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Armour')}}">
-		<a class="trait-selector" data-options="profArmor" data-target="system.details.armourProf" data-app-title="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Armour')}}">
+		<a class="trait-selector" data-action="traitSelector" data-options="profArmor" data-target="system.details.armourProf" data-app-title="{{ localize 'DND4E.ProficienciesVar' type=(localize 'DND4E.Armour')}}">
 		  <span class="subgroup-header label">{{ localize 'DND4E.Armour' }}</span>
 		  <i class="fas fa-edit"></i>
 		</a>
@@ -127,7 +127,7 @@
     <h4 class="group-header">{{ localize 'DND4E.Languages' }}</h4>
 	
 	<div class="traits-row">
-		<a class="trait-selector" data-options="spoken" data-target="system.languages.spoken" data-app-title="{{ localize 'DND4E.Spoken' }} {{ localize 'DND4E.Languages' }}">
+		<a class="trait-selector" data-action="traitSelector" data-options="spoken" data-target="system.languages.spoken" data-app-title="{{ localize 'DND4E.Spoken' }} {{ localize 'DND4E.Languages' }}">
 		  <span class="subgroup-header label">{{ localize 'DND4E.Spoken' }}</span>
 		  <i class="fas fa-edit"></i>
 		</a>
@@ -139,7 +139,7 @@
 	</div>
     
 	<div class="traits-row">
-		<a class="trait-selector" data-options="script" data-target="system.languages.script" data-app-title="{{ localize 'DND4E.Script' }} {{ localize 'DND4E.Languages' }}">
+		<a class="trait-selector" data-action="traitSelector" data-options="script" data-target="system.languages.script" data-app-title="{{ localize 'DND4E.Script' }} {{ localize 'DND4E.Languages' }}">
 		  <span class="subgroup-header label">{{ localize 'DND4E.Script' }}</span>
 		  <i class="fas fa-edit"></i>
 		</a>
@@ -156,7 +156,7 @@
   <div class="traits senses">
     <h4 class="group-header">{{ localize 'DND4E.SpecialSenses' }}</h4>    
 	<div class="traits-row">
-      <a class="trait-selector-senses" data-options="special" data-target="system.senses.special" data-app-title="{{ localize 'DND4E.SpecialSenses' }}">
+      <a class="trait-selector-senses" data-action="traitSelectorSenses" data-options="special" data-target="system.senses.special" data-app-title="{{ localize 'DND4E.SpecialSenses' }}">
         <span class="subgroup-header label">{{ localize 'DND4E.SpecialSenses' }}</span>
         <i class="fas fa-edit"></i>
       </a>
