@@ -61,7 +61,7 @@
           {{#if section.editableName}}
           <input type="text" value="{{item.name}}">
           {{else}}
-          <div class="item-image item-roll"><img src="{{item.img}}" width="30" height="30"/></div>
+          <div class="item-image item-roll" data-action="itemRoll"><img src="{{item.img}}" width="30" height="30"/></div>
           <h4 class="item-title">
             {{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
             

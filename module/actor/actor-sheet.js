@@ -108,6 +108,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			itemDelete: ActorSheet4e.#onItemDelete,
 			itemImport: ActorSheet4e.#onItemImport,
 			itemToggle: ActorSheet4e.#onItemToggle,
+			itemRoll: ActorSheet4e.#onItemRoll,
 			powerCreate: ActorSheet4e.#onPowerCreate,
 			manageActiveEffect: ActorSheet4e.#onManageActiveEffect,
 			convertCurrency: ActorSheet4e.#onConvertCurrency
@@ -198,15 +199,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if ( this.actor.isOwner ) {
 			//Inventory & Item management
 			html.querySelectorAll('.item-uses input').forEach(el => el.addEventListener("change", this._onUsesChange.bind(this)));
-			
-			// Item Rolling
-			html.querySelectorAll('.item-roll').forEach(el => el.addEventListener("click", event => {
-				event.preventDefault();
-				event.stopPropagation();
-				const itemId = event.currentTarget.closest(".item").dataset.itemId;
-				const item = this.actor.items.get(itemId);
-				this._onItemRoll(item);
-			}));
 			
 			html.querySelectorAll('.item-roll').forEach(el => {
 				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
@@ -1594,6 +1586,15 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		this.submit({preventClose: true});
 	}
 
+	static #onItemRoll(event, target) {
+		if (!this.actor.isOwner) return;
+		event.preventDefault();
+		event.stopPropagation();
+		const itemId = target.closest(".item").dataset.itemId;
+		const item = this.actor.items.get(itemId);
+		this._onItemRoll(item);
+	}
+
 	/* -------------------------------------------- */
 
 	/**
@@ -1601,7 +1602,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @private
 	 */
 	_onItemRoll(item, variance={}) {
-		//console.debug(variance)
+		console.debug(variance)
 
 		if ( item.type === "power") {
 			const fastForward = Helper.isRollFastForwarded(event);
