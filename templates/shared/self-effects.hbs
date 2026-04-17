@@ -97,7 +97,7 @@
 		{{#if (isActor ../../this)}}
         <div class="effect-detail effect-source">{{getSourceName effect}}</div>
 		
-        <a class="effect-detail effect-duration {{#if effect._getIsSave}}effect-save rollable{{/if}}" data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}
+        <a class="effect-detail effect-duration {{#if effect._getIsSave}}effect-save rollable{{/if}}" {{#if effect._getIsSave}}data-action="rollEffectSave"{{/if}} data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}
 		</a>
         {{/if}}
 		

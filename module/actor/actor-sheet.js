@@ -112,7 +112,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			itemRecharge: ActorSheet4e.#onItemRecharge,
 			powerCreate: ActorSheet4e.#onPowerCreate,
 			manageActiveEffect: ActorSheet4e.#onManageActiveEffect,
-			convertCurrency: ActorSheet4e.#onConvertCurrency
+			convertCurrency: ActorSheet4e.#onConvertCurrency,
+			// TODO V14: Test this when the Active Effect sheet is updated:
+			rollEffectSave: ActorSheet4e.#onRollEffectSave
 		}
 	}
 
@@ -205,9 +207,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
 				el.addEventListener("mouseleave", this._onItemHoverExit.bind(this));
 			});
-	
-			// Effect-Specific Saves
-			html.querySelectorAll('.effect-save').forEach(el => el.addEventListener("click", event => this._onRollEffectSave(event)));
 	
 			// Load Options
 			html.querySelectorAll('.encumbrance-options').forEach(el => el.addEventListener("click", this._onEncumbranceDialog.bind(this)));
@@ -1639,10 +1638,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	/* -------------------------------------------- */
 
-	_onRollEffectSave(event){
+	static #onRollEffectSave(event, target){
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		//console.debug("roll Save Throw v Effect!");
-		const effectId = event.currentTarget.closest(".item").dataset.effectId;
+		console.debug("roll Save Throw v Effect!");
+		const effectId = target.closest(".item").dataset.effectId;
 		const effect = this.actor.effects.get(effectId);	
 		const saveDC = effect.flags.dnd4e?.effectData?.saveDC || 10;
 		const isFF = Helper.isRollFastForwarded(event);
