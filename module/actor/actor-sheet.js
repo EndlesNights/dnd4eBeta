@@ -115,7 +115,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			convertCurrency: ActorSheet4e.#onConvertCurrency,
 			// TODO V14: Test this when the Active Effect sheet is updated:
 			rollEffectSave: ActorSheet4e.#onRollEffectSave,
-			encumbranceDialog: ActorSheet4e.#onEncumbranceDialog
+			encumbranceDialog: ActorSheet4e.#onEncumbranceDialog,
+			conBonConfig: ActorSheet4e.#onConBonConfig
 		}
 	}
 
@@ -208,9 +209,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
 				el.addEventListener("mouseleave", this._onItemHoverExit.bind(this));
 			});
-			
-			// Conditional Attack Mod Config
-			html.querySelectorAll('.con-bon-config').forEach(el => el.addEventListener("click", this._onConBonConfig.bind(this)));
 			
 			// Context Menus
 			new CONFIG.ux.ContextMenu(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this), jQuery: false, fixed: true});
@@ -1329,7 +1327,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	*turns on/off auto calculation of HP based on class stats
 	*keep or reset tempHP on short rest.
 	*/
-	static #onHPOptions(event) {
+	static #onHPOptions(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 
@@ -1410,7 +1408,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new MovementDialog({document: this.actor}).render(true)
 	}
 	
-	_onConBonConfig(event) {
+	static #onConBonConfig(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		new ConBonConfig({document: this.actor}).render(true)
@@ -1422,7 +1420,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new HealMenuDialog({document: this.actor}).render(true)
 	}
 
-	static #onEncumbranceDialog(event) {
+	static #onEncumbranceDialog(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		new EncumbranceDialog({document: this.actor}).render(true);
@@ -1550,7 +1548,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		return new SaveThrowDialog({document: this.actor}).render(true);
 	}
 
-	static #onSavingThrowBonus(event) {
+	static #onSavingThrowBonus(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.saves`, label: game.i18n.localize('DND4E.SavingThrowBonus') };
