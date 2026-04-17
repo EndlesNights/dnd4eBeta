@@ -1040,7 +1040,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 				padding:0 0.5em;
 				&:not(:first-child){
 					border-left:var(--border-faint);
-					.effect-delete:not([data-action='delete']){
+					.effect-delete:not([data-activity='delete']){
 						opacity:0.2;
 						cursor:not-allowed;
 					}

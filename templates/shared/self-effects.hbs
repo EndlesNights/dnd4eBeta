@@ -79,7 +79,7 @@
       {{/if}}
       <div class="effect-detail effect-duration">{{localize 'DND4E.Duration'}}</div>
       <div class="item-controls effect-controls flexrow">
-        <a class="effect-control" data-action="create" data-tooltip="{{localize 'DND4E.EffectCreate'}}">
+        <a class="effect-control" data-action="manageActiveEffect" data-activity="create" data-tooltip="{{localize 'DND4E.EffectCreate'}}">
           <i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
         </a>
       </div>
@@ -102,13 +102,13 @@
         {{/if}}
 		
         <div class="item-controls effect-controls flexrow">
-          <a class="effect-control" data-action="toggle" data-tooltip="{{localize 'DND4E.EffectToggle'}}">
+          <a class="effect-control" data-action="manageActiveEffect" data-activity="toggle" data-tooltip="{{localize 'DND4E.EffectToggle'}}">
             <i class="{{#if (isActive this)}}fas fa-power-off{{else}}fas fa-circle-notch{{/if}}"></i>
           </a>
-          <a class="effect-control" data-action="edit" data-tooltip="{{localize 'DND4E.EffectEdit'}}">
+          <a class="effect-control" data-action="manageActiveEffect" data-activity="edit" data-tooltip="{{localize 'DND4E.EffectEdit'}}">
             <i class="fas fa-edit"></i>
           </a>
-          <a class="effect-control effect-delete" {{#if (isActor ../../this)}}{{#unless effect.transfer}} data-action="delete"{{/unless}}{{else}} data-action="delete"{{/if}} data-tooltip="{{localize 'DND4E.EffectDelete'}}">
+          <a class="effect-control effect-delete" {{#if (isActor ../../this)}}{{#unless effect.transfer}} data-action="manageActiveEffect" data-activity="delete"{{/unless}}{{else}} data-action="manageActiveEffect" data-activity="delete"{{/if}} data-tooltip="{{localize 'DND4E.EffectDelete'}}">
             <i class="fas fa-trash"></i>
           </a>
         </div>

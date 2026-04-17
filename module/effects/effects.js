@@ -192,13 +192,12 @@
 	 * @param {Actor|Item} owner      The owning document which manages this effect
 	 * @returns {Promise|null}        Promise that resolves when the changes are complete.
 	 */
-	static onManageActiveEffect(event, owner) {
+	static onManageActiveEffect(event, target, owner) {
 		event.preventDefault();
-		const a = event.currentTarget;
-		const li = a.closest("li");
+		const li = target.closest("li");
 		const effects = ["Player Character","NPC","Hazard"].includes(owner.type) ? owner.getActiveEffects() : owner.effects.contents;
 		const effect = li.dataset.effectId ? effects.find(e => e._id === li.dataset.effectId) : null;
-		switch ( a.dataset.action ) {
+		switch ( target.dataset.activity ) {
 			case "create":
 				const isActor = owner instanceof Actor;
 				return owner.createEmbeddedDocuments("ActiveEffect", [{

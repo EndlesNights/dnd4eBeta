@@ -107,7 +107,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			itemEdit: ActorSheet4e.#onItemEdit,
 			itemDelete: ActorSheet4e.#onItemDelete,
             itemImport: ActorSheet4e.#onItemImport,
-            powerCreate: ActorSheet4e.#onPowerCreate
+            powerCreate: ActorSheet4e.#onPowerCreate,
+            manageActiveEffect: ActorSheet4e.#onManageActiveEffect
 		}
 	}
 
@@ -195,10 +196,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if ( this.actor.isOwner ) {
 			//Inventory & Item management
 			html.querySelectorAll('.item-uses input').forEach(el => el.addEventListener("change", this._onUsesChange.bind(this)));
-	
-			// Active Effect management
-			// html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
-			html.querySelectorAll('.effect-control').forEach(el => el.addEventListener("click", event => ActiveEffect4e.onManageActiveEffect(event, this.actor)));
 				
 			// Item State Toggling
 			html.querySelectorAll('.item-toggle').forEach(el => el.addEventListener("click", this._onToggleItem.bind(this)));
@@ -1170,7 +1167,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @private
    */
 	static #onItemCreate(event, target) {
-		event.preventDefault();
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const type = target.dataset.type;
 		const subType = target.dataset?.subtype || null;
 		const itemData = {
@@ -1188,7 +1186,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	static async #onItemImport(event, target) {
-		event.preventDefault();
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const {json=null} = await foundry.applications.api.Dialog.input({
 			window: {
 				title: `${this.actor.name} - JSON Item Importer`
@@ -1215,7 +1214,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 
 	static #onPowerCreate(event, target) {
-		event.preventDefault();
+		if (!this.actor.isOwner) return;
+        event.preventDefault();
 		const type = target.dataset.type;
 		const itemData = {
 			name: `${game.i18n.format("DND4E.ItemNew", {type: type.capitalize()})} Power`,
@@ -1273,6 +1273,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		Helper.debugLog(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
+
+    static #onManageActiveEffect(event, target) {
+        if (!this.actor.isOwner) return;
+        ActiveEffect4e.onManageActiveEffect(event, target, this.actor)
+    }
 
   /* -------------------------------------------- */
 
@@ -1879,7 +1884,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		// Active Effects
 		if ( element.classList.contains("effect") ) {
-			const effect = this.actor.effects.get(element.dataset.effectId);
+			const effect = Array.from(this.actor.allApplicableEffects()).find( e => e.id === element.dataset.effectId);
 			if ( !effect ) return;
 			ui.context.menuItems = this._getActiveEffectContextOptions(effect);
 			Hooks.call("DND4E.getActiveEffectContextOptions", effect, ui.context.menuItems);
