@@ -37,6 +37,7 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
       rangeText: new StringField({initial: ""}),
       rangePower: new StringField({initial: ""}),
       area: new FormulaField({initial: "0", deterministic: true}),
+      auraSize: new FormulaField({initial: "", deterministic: true}),
       rechargeRoll: new StringField({initial: ""}),
       rechargeCondition: new StringField({initial: ""}),
       damageShare: new BooleanField({initial: false}),

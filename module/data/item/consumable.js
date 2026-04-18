@@ -36,6 +36,7 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
       }),
       rangePower: new StringField({initial: ""}),
       area: new FormulaField({initial: "0", deterministic: true}),
+      auraSize: new FormulaField({initial: "", deterministic: true}),
       attack: new SchemaField({
         ...AttackAndDamageTemplate.attack,
         isAttack: new BooleanField({initial: false}),

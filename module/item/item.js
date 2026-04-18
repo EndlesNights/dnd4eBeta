@@ -424,7 +424,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasAreaTarget() {
-		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.system.rangeType);
+		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.system.rangeType) || (this.system.effectType.aura && this.system.auraSize);
 	}
 
   /* -------------------------------------------- */
@@ -1894,15 +1894,38 @@ export default class Item4e extends Item {
 
 		/** @type {TokenDocument4e} */
 		const tokenInfo = this.actor.token ?? this.actor.getActiveTokens(true, true)[0];
+		const isAura = this.system.effectType.aura;
+		const areaType = isAura ? "aura" : this.system.rangeType;
 
-		const { type, count, ...shapeProperties } = CONFIG.DND4E.rangeType[this.system.rangeType].area;
+		const auraProperties = {
+			type: "emanation",
+			radius: "auraSize"
+		}
+
+		// Special case
+		if (isAura) options.attachToToken ??= true;
+
+		const { type, count, ...shapeProperties } = isAura ? auraProperties : CONFIG.DND4E.rangeType[areaType].area;
 
 		const shapeCount = typeof count === "string" ? this.system[count] : 1;
 
 		const shapes = Array.fromRange(shapeCount).map(() => {
 			const shapeData = { type, gridBased: true, x: 0, y: 0 };
 			for (const [key, path] of Object.entries(shapeProperties)) {
-				shapeData[key] = this.system[path] * canvas.dimensions.distancePixels;
+				shapeData[key] = Roll.safeEval(Roll.replaceFormulaData(this.system[path], this.actor.getRollData())) * canvas.dimensions.distancePixels;
+			}
+
+			// Special case
+			if (isAura) {
+				shapeData.base = {
+					hole: false,
+					type: "token",
+					x: 0,
+					y: 0,
+					width: tokenInfo.width,
+					height: tokenInfo.width,
+					shape: tokenInfo.shape,
+				};
 			}
 			switch (this.system.rangeType) {
 				case "closeBlast":

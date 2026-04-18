@@ -145,6 +145,7 @@
 "DND4E.AutoTarget": "Auto Target",
 "DND4E.AutoTargetIncludeSelf": "Include Self",
 "DND4E.Aura": "Aura",
+"DND4E.AuraSize": "Aura Size",
 "DND4E.AutoanimationHookAttack": "On Attack",
 "DND4E.AutoanimationHookDamage": "On Damage",
 "DND4E.AutoanimationHookHealing": "On Healing",
@@ -1359,7 +1360,6 @@
 
 "DND4E.Feature": {
 	"Add": "Create Feature",
-	"AuraSize": "Aura Size",
 	"AuraSizeTip": "If this feature is an aura, enter the size here",
 	"BG": "Background Feature",
 	"Class": "Class Feature",
