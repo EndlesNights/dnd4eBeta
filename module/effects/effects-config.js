@@ -224,9 +224,8 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	* Handle adding a new dot to the dots array - adapted from _addEffectChange
 	*/
 	async _addEffectDot() {
-		const i = this.document.flags.dnd4e.dots.length;
 		return this.submit({preventClose: true, updateData: {
-			[`flags.dnd4e.dots.${i}`] : {'amount': "", 'typesArray': []}
+			[`system.dots`] : [{'amount': 0, 'types': new Set()}]
 		}});
 	}
 
@@ -248,9 +247,8 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	* Handle adding a new dot to the keywords array - adapted from _addEffectChange
 	*/
 	async _addEffectKeyword() {
-		const i = this.document.flags.dnd4e.keywords.length;
 		return this.submit({preventClose: true, updateData: {
-			[`flags.dnd4e.keywords.${i}`] : 'unknown'
+			[`system.keywords`] : ['unknown']
 		}});
 	}
 
@@ -320,17 +318,17 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			submitData.flags['condition-lab-triggler'] = submitData.conditionLab;
 		}
 		
-		submitData.flags.dnd4e.dots = Array.from(Object.values(submitData.flags.dnd4e.dots || {}));
-		if (submitData.flags.dnd4e.dots.length){
-			for (let [i, dot] of submitData.flags.dnd4e.dots.entries()){
-				submitData.flags.dnd4e.dots[i].amount = dot.amount;
-				submitData.flags.dnd4e.dots[i].typesArray = dot.typesArray.sort();
+		submitData.system.dots = Array.from(Object.values(submitData.system.dots || {}));
+		if (submitData.system.dots.length){
+			for (let [i, dot] of submitData.system.dots.entries()){
+				submitData.system.dots[i].amount = dot.amount;
+				submitData.system.dots[i].types = dot.types.sort();
 			}
 		}
 		
-		submitData.flags.dnd4e.keywords = Array.from(Object.values(submitData.flags.dnd4e.keywords || {})).filter(x => x);
+		submitData.system.keywords = Array.from(Object.values(submitData.system.keywords || {})).filter(x => x);
 		
-		submitData.flags.dnd4e.keywordsCustom = submitData.flags.dnd4e.keywordsCustom;
+		submitData.system.keywordsCustom = submitData.system.keywordsCustom;
 		// CHANGES FROM CORE END HERE
 
 		this.document.validate({changes: submitData, clean: true, fallback: false});

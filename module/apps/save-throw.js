@@ -83,7 +83,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 	_onChooseEffect(event) {
 		const targetEffect = this.document.effects.get(event.target.value);
 		
-		this.saveOptions.saveDC = targetEffect?.flags.dnd4e?.effectData?.saveDC;
+		this.saveOptions.saveDC = targetEffect?.system.saveDC;
 		this.saveOptions.effectId = targetEffect?.id || ``;
 		
 		this.render();

@@ -4,7 +4,6 @@
  */
  export default class ActiveEffect4e extends ActiveEffect {
 	constructor(data, context) {
-		if(!data.flags?.dnd4e?.dots) foundry.utils.setProperty(data, "flags.dnd4e.dots", new Array);	//Empty array for storing Ongoing Damage instances
 		if(!data.flags?.dnd4e?.effectData?.durationType) foundry.utils.setProperty(data, "flags.dnd4e.effectData.durationType", '');
 		if (data.id) {
 		  foundry.utils.setProperty(data, "flags.core.statusId", data.id);
@@ -14,30 +13,25 @@
 			// if(context?.parent?.type === "power"){ //this will not work outside of try catch while initilising
 			if(['power','consumable'].includes(context?.parent?.type)){
 				data.transfer = false;
-				if(!data.flags?.dnd4e?.keywords){
-					foundry.utils.setProperty(data, "flags.dnd4e.keywords", new Array);	//Empty array for storing Keywords
-					if(context.parent.system?.damageType){
-						for (const [key, value] of Object.entries(context.parent.system?.damageType)){
-							if(value && !['damage','physical'].includes(value)) data.flags.dnd4e.keywords.push(key);
-						}
+
+				if(context.parent.system?.damageType){
+					for (const [key, value] of Object.entries(context.parent.system?.damageType)){
+						if(value && !['damage','physical'].includes(value)) data.system.keywords.push(key);
 					}
-					if(context.parent.system?.effectType){
-						for (const [key, value] of Object.entries(context.parent.system?.effectType)){
-							if(value) data.flags.dnd4e.keywords.push(key);
-						}
-					}
-					if(context.parent.system?.keywordsCustom) data.flags.dnd4e.keywordsCustom = context.parent.system?.keywordsCustom;
 				}
-			}
-			if(['equipment','weapon'].includes(context?.parent?.type)){
-				foundry.utils.setProperty(data, "flags.dnd4e.effectData.equippedRec", true);
+				if(context.parent.system?.effectType){
+					for (const [key, value] of Object.entries(context.parent.system?.effectType)){
+						if(value) data.system.keywords.push(key);
+					}
+				}
+				if(context.parent.system?.keywordsCustom) data.system.keywordsCustom = context.parent.system?.keywordsCustom;
+
+				if(['equipment','weapon'].includes(context?.parent?.type)){
+					foundry.utils.setProperty(data, "flags.dnd4e.effectData.equippedRec", true);
+				}
 			}
 		} catch(e){
 			console.error(`Effect default config failed. Please check parent data! ${e}`)
-		}
-		
-		if(!data.flags?.dnd4e?.keywords){
-			foundry.utils.setProperty(data, "flags.dnd4e.keywords", new Array);	//Empty array for storing Keywords
 		}
 		
 		super(data, context);
@@ -109,7 +103,7 @@
 	 */
 	safeEvalEffectValue(actor, change){
 		const stringDiceFormat = /\d+d\d+/;
-    
+	
 		// If the user wants to use the rolldata format
 		// for grabbing data keys, why stop them?
 		// This is purely syntactic sugar, and for folks
@@ -467,4 +461,46 @@
 		}
 		return updates;
 	}
+
+  /* -------------------------------------------- */
+  /*  Data Migration                              */
+  /* -------------------------------------------- */
+
+  /** @inheritdoc */
+  static migrateData(source){
+	const flags = source.flags.dnd4e;
+
+	if (flags.keywords?.length) {
+		let keywords = []
+		for (const keyword of flags.keywords) {
+			keywords.push(keyword)
+		}
+		source.system.keywords = keywords;
+	}
+	delete flags.keywords;
+
+	if (flags.dots?.length) {
+		let dots = []
+		for (const dot of flags.dots) {
+			dots.push({
+				amount: dot.amount,
+				types: new Set(dot.typesArray)
+			})
+		}
+		source.system.dots = dots;
+	}
+	delete flags.dots;
+
+	if (flags.keywordsCustom) {
+		source.system.keywordsCustom = flags.keywordsCustom;
+	}
+	delete flags.keywordsCustom;
+
+	if (flags.effectData.saveDC) {
+		source.system.saveDC = flags.effectData.saveDC;
+	}
+	delete flags.effectData.saveDC;
+
+	return super.migrateData(source);
+  }
 }

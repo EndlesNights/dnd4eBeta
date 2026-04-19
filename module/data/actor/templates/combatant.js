@@ -5,7 +5,7 @@ import SpeedTemplate from "./speed.js";
 import DetailsField from "./details.js";
 import AttributesField from "./attributes.js";
 
-const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
+const { ArrayField, BooleanField, DocumentUUIDField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
 export default class CombatantTemplate extends SpeedTemplate {
   static get defences() {
@@ -118,7 +118,7 @@ export default class CombatantTemplate extends SpeedTemplate {
         initialValue: this._initialCabValue,
         label: "DND4E.CommonAttackBonuses"
       }),
-      marker: new StringField({required: true, nullable: true, initial: null}),
+      marker: new DocumentUUIDField({type: "Actor", required: true, nullable: true, initial: null}),
       powerGroupTypes: new StringField({initial: "actionMod"}),
       powerSortTypes: new StringField({initial: "actionType"}),
       ritualSortTypes: new StringField({initial: "level"}),

@@ -2783,11 +2783,11 @@ export class Actor4e extends Actor {
 			let applicableDoTs = {};
 			
 			for(const e of this.getActiveEffects()){
-				if(e.flags.dnd4e?.dots.length && e.disabled === false){
-					for (let dot of e.flags.dnd4e.dots){
+				if(e.system.dots.length && e.disabled === false){
+					for (let dot of e.system.dots){
 						
 						// Combine the types array into a usable string
-						let types = (dot.typesArray.includes("healing") ? "healing" : dot.typesArray.join(','));
+						let types = (dot.types.has("healing") ? "healing" : [...dot.types].join(','));
 						// If no type was assigned, treat as untyped/physical
 						if (!types) types = "physical";
 						

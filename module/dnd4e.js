@@ -45,6 +45,7 @@ import { customSKillSetUp } from "./skills/custom-skills.js";
 import Items4e from "./collection/item-collection.js";
 import Combatant4e from "./combatant.js";
 import Roll4e from "./dice/Roll.js";
+import ActiveEffectData from "./data/active-effect/active-effect.js";
 import CharacterData from "./data/actor/character.js";
 import NPCData from "./data/actor/npc.js";
 import HazardData from "./data/actor/hazard.js";
@@ -157,6 +158,9 @@ Hooks.once("init", async function() {
 	delete CONFIG.Token.movement.actions.jump;
 
 	// System data types
+	CONFIG.ActiveEffect.dataModels = {
+		base: ActiveEffectData
+	}
 	CONFIG.Actor.dataModels = {
 		"Player Character": CharacterData,
 		NPC: NPCData,

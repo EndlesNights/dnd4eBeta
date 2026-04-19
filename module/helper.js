@@ -417,12 +417,12 @@ export class Helper {
 				}
 
 				const suitableKeywords = ['global']
-				let keywords = effectData?.flags.dnd4e?.keywords;
+				let keywords = effectData?.system.keywords;
 				if (keywords) {
 					keywords.forEach((k) => suitableKeywords.push(k));
 				}
 				
-				let customKeywords = effectData?.flags.dnd4e?.keywordsCustom;
+				let customKeywords = effectData?.system.keywordsCustom;
 				if (customKeywords){
 					const customKeys = customKeywords.split(';');
 					customKeys.forEach((k) => suitableKeywords.push(k));
@@ -433,9 +433,9 @@ export class Helper {
 					statuses.forEach((s) => suitableKeywords.push(s));
 				}
 
-				if (effectData?.flags.dnd4e?.dots.length) {
+				if (effectData?.system.dots.length) {
 					suitableKeywords.push('ongoing');
-					effectData.flags.dnd4e.dots.forEach((d) => {
+					effectData.system.dots.forEach((d) => {
 						d.typesArray.forEach((t) => {
 							suitableKeywords.push(t);
 							// Since game text describes this as "untyped" let's allow users to use that language in effect keys.
@@ -954,7 +954,7 @@ export class Helper {
 		debugLog(parentActor)
 
 		//dots
-		for(const dot of effect.flags.dnd4e.dots){
+		for(const dot of effect.system.dots){
 			// dot.amount = await this.parseSolidify(dot.amount, parentActor);
 			dot.amount = dot.amount.toString().replace(/\$solidify\((.*?)\)/g, (match, value) => {
 				return Helper.commonReplace(value, parentActor);
@@ -962,7 +962,7 @@ export class Helper {
 		}
 
 		//changes
-		for(const change of effect.changes){
+		for(const change of effect.system.changes){
 			// change.value = this.parseSolidify(change.value, parentActor);
 			change.value = change.value.replace(/\$solidify\((.*?)\)/g, (match, value) => {
 				return Helper.commonReplace(value, parentActor);
@@ -1047,7 +1047,7 @@ export class Helper {
 						changesID: e.uuid
 					};
 
-					if(parent && newEffectData.flags.dnd4e.effectData.saveDC) {
+					if(parent && newEffectData.system.saveDC) {
 						let dcBonus = 0;
 						const dcParts = []
 						const rollData = parent.getRollData();
@@ -1056,7 +1056,7 @@ export class Helper {
 							const key = dcParts[i].slice(1);
 							dcBonus += rollData[key];
 						}
-						newEffectData.flags.dnd4e.effectData.saveDC = String(Number(newEffectData.flags.dnd4e.effectData.saveDC) + dcBonus);
+						newEffectData.system.saveDC = String(Number(newEffectData.system.saveDC) + dcBonus);
 					}
 
 					if(e.statuses[0] && game.settings.get("dnd4e","markAutomation")){

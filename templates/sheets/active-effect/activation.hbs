@@ -19,7 +19,7 @@
       </select>
       {{#if (eq document.flags.dnd4e.effectData.durationType "saveEnd")}}
         <label>{{localize 'DND4E.AbbreviationDC'}}</label>
-        <input type="text" class="number saveDC" name="flags.dnd4e.effectData.saveDC" value="{{ifThen document.flags.dnd4e.effectData.saveDC document.flags.dnd4e.effectData.saveDC '10'}}" placeholder="10" data-dtype="number"/>
+        <input type="text" class="number saveDC" name="system.saveDC" value="{{ifThen document.system.saveDC document.system.saveDC '10'}}" placeholder="10" data-dtype="number"/>
       {{/if}}
     </div>
   </div>

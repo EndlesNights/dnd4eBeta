@@ -2,12 +2,12 @@
   <!-- Keywords for this effect -->
   <fieldset class="keywords">
     <legend>{{localize 'DND4E.Keywords'}}</legend>
-    <multi-select name="flags.dnd4e.keywords" class="inline">
-      {{selectOptions config.keywords selected=document.flags.dnd4e.keywords}}
+    <multi-select name="system.keywords" class="inline">
+      {{selectOptions config.keywords selected=document.system.keywords}}
     </multi-select>
     <div class="form-group long">
       <label>{{ localize 'DND4E.Custom' }}</label>
-      <input type="text" name="flags.dnd4e.keywordsCustom" value="{{document.flags.dnd4e.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}" />
+      <input type="text" name="system.keywordsCustom" value="{{document.system.keywordsCustom}}" placeholder="{{ localize 'DND4EUI.StringEnterValues'}}" data-tooltip="{{ localize 'DND4EUI.StringEnterValues'}}" />
     </div>
   </fieldset>
   
@@ -22,15 +22,15 @@
       </div>
     </header>
     <ol class="dots-list">
-      {{#each document.flags.dnd4e.dots as |dot i|}}
+      {{#each document.system.dots as |dot i|}}
       <li class="effect-dot flexrow" data-index="{{i}}">
         <div class="amount">
-          <input type="text" name="flags.dnd4e.dots.{{i}}.amount" value="{{dot.amount}}"/>
+          <input type="text" name="system.dots.{{i}}.amount" value="{{dot.amount}}"/>
         </div>
         <div class="type damage-type">
-          <multi-select name="flags.dnd4e.dots.{{i}}.typesArray" class="inline">
-            {{selectOptions ../dotDamageTypes selected=dot.typesArray}}			
-			<option value="healing" {{#if (contains "healing" dot.typesArray)}}selected{{/if}}>[{{localize "EFFECT.statusRegen"}}]</option>
+          <multi-select name="system.dots.{{i}}.types" class="inline">
+            {{selectOptions ../dotDamageTypes selected=dot.types}}			
+			<option value="healing" {{#if (contains "healing" dot.types)}}selected{{/if}}>[{{localize "EFFECT.statusRegen"}}]</option>
           </multi-select>
         </div>
         <div class="effect-controls">
