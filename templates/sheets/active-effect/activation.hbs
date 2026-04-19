@@ -84,15 +84,13 @@
 
   {{#if isActorEffect}}
   {{formGroup fields.origin value=source.origin rootId=rootId disabled=true}}
-  {{/if}}
-  
-  {{#if isItemEffect}}
+  {{else if isItemEffect}}
   <div class="form-group">
     <label>{{localize 'DND4E.EffectWhenEquipped'}}?</label>
     <div class="form-fields">
       <input type="checkbox" name="flags.dnd4e.effectData.equippedRec" data-dtype="Boolean" {{checked document.flags.dnd4e.effectData.equippedRec}}/>
     </div>
   </div>
-  {{formGroup fields.transfer value=source.transfer rootId=rootId label=legacyTransfer.label hint=legacyTransfer.hint}}
+  {{formGroup fields.transfer value=source.transfer rootId=rootId}}
   {{/if}}
 </section>

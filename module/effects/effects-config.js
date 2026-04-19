@@ -1,4 +1,5 @@
 import { DND4E } from "../config.js";
+import ActiveEffect4e from "../effects/effects.js";
 
 export default class ActiveEffectConfig4e extends foundry.applications.sheets.ActiveEffectConfig {
 
@@ -61,9 +62,13 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		}
 	}
 
-	async _prepareContext(options) {
-		const context = await super._prepareContext(options);
+	  /* ----------------------------------------- */
 
+	/** @inheritDoc */
+	async _preparePartContext(partId, context) {
+		const partContext = await super._preparePartContext(partId, context);
+		if ( partId in partContext.tabs ) partContext.tab = partContext.tabs[partId];
+		const effect = this.document;
 		context.config = {
 			...CONFIG.DND4E,
 			statusEffects: CONFIG.statusEffects,
@@ -73,15 +78,69 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				...CONFIG.DND4E.powerSource
 			},
 		};
-		context.powerParent = ["power", "consumable"].includes(this.document.parent.type);
-		
-		const damageTypes = {...CONFIG.DND4E.damageTypes};
-		delete damageTypes.ongoing;
-		context.dotDamageTypes = damageTypes;
-
-		context.cltEnabled = context.config.statusEffects.length !== Object.keys(context.config.statusEffect).length;
-
-		return context;
+		switch ( partId ) {
+			case "description":
+				partContext.showIconOptions = Object.entries(CONST.ACTIVE_EFFECT_SHOW_ICON).map(([k, value]) => ({
+					value, label: _loc(`EFFECT.SHOW_ICON.${k.toLowerCase()}`)
+				})).reverse();
+				break;
+			case "details":
+				partContext.isActorEffect = effect.parent?.documentName === "Actor";
+				partContext.isItemEffect = effect.parent?.documentName === "Item";
+				const damageTypes = {...CONFIG.DND4E.damageTypes};
+				delete damageTypes.ongoing;
+				context.dotDamageTypes = damageTypes;
+				break;
+			case "activation": {
+				partContext.powerParent = ["power", "consumable"].includes(this.document.parent.type);
+				partContext.start = await this._prepareStartContext();
+				partContext.hasDuration = typeof context.source.duration.value === "number";
+				const groups = {
+					time: _loc("EFFECT.DURATION.UNITS.GROUPS.time"),
+					combat: _loc("EFFECT.DURATION.UNITS.GROUPS.combat")
+				};
+				partContext.durationUnits = CONST.ACTIVE_EFFECT_DURATION_UNITS.map(
+					value => ({
+						value,
+						label: _loc(`EFFECT.DURATION.UNITS.${value}`),
+						group: CONST.ACTIVE_EFFECT_TIME_DURATION_UNITS.includes(value) ? groups.time : groups.combat
+					})
+				);
+				partContext.expiryEvents = Object.entries(ActiveEffect4e.EXPIRY_EVENTS)
+					.map(([value, label]) => ({value, label: _loc(label)}))
+					.sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang))
+					.reduce((events, {value, label}) => {
+						events[value] = label;
+						return events;
+					}, {});
+				break;
+			}
+			case "changes": {
+				const fields = effect.system.schema.fields.changes.element.fields;
+				const changeTypes = Object.entries(ActiveEffect4e.CHANGE_TYPES)
+					.map(([type, {label}]) => ({type, label: _loc(label)}))
+					.sort((a, b) => a.label.localeCompare(b.label, game.i18n.lang))
+					.reduce((types, {type, label}) => {
+						types[type] = label;
+						return types;
+					}, {});
+				partContext.changes = await Promise.all(foundry.utils.deepClone(context.source.changes).map((change, index) => {
+					const defaultPriority = ActiveEffect4e.CHANGE_TYPES[change.type]?.defaultPriority;
+					return this._renderChange({change, index, fields, defaultPriority, changeTypes});
+				}));
+				partContext.cltEnabled = context.config.statusEffects.length !== Object.keys(context.config.statusEffect).length;
+				partContext.statuses = Object.values(CONFIG.statusEffects)
+					.map(s => ({value: s.id, label: _loc(s.name)}));
+				break;
+			}
+			case "footer":
+				partContext.buttons = [{type: "submit", icon: "fa-solid fa-floppy-disk", label: "EFFECT.Submit"}];
+				break;
+			case "tabs":
+				partContext.tabClasses = "top-tabs";
+				break;
+		}
+		return partContext;
 	}
 
 	/* ----------------------------------------- */
@@ -245,9 +304,9 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	_prepareSubmitData(event, form, formData, updateData) {
 		const submitData = this._processFormData(event, form, formData);
 		if ( updateData ) {
-      foundry.utils.mergeObject(submitData, updateData, {performDeletions: true});
-      foundry.utils.mergeObject(submitData, updateData, {performDeletions: false});
-    }
+	  foundry.utils.mergeObject(submitData, updateData, {performDeletions: true});
+	  foundry.utils.mergeObject(submitData, updateData, {performDeletions: false});
+	}
 
 		// CHANGES FROM CORE START HERE
 		submitData.changes = Array.from(Object.values(submitData.changes || {}));

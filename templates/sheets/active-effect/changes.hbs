@@ -2,36 +2,18 @@
   <fieldset>
     <legend>{{localize 'DND4E.ModifierPlural'}}</legend>
     <header>
-      <div class="key">{{localize 'EFFECT.ChangeKey'}}</div>
-        <div class="mode">{{localize 'EFFECT.ChangeMode'}}</div>
-        <div class="value">{{localize 'EFFECT.ChangeValue'}}</div>
-        <div class="priority">{{localize 'EFFECT.ChangePriority'}}</div>
+        <div class="key">{{localize "EFFECT.FIELDS.changes.element.key.label"}}</div>
+        <div class="type">{{localize "EFFECT.FIELDS.changes.element.type.label"}}</div>
+        <div class="value">{{localize "EFFECT.FIELDS.changes.element.value.label"}}</div>
+        <div class="priority">{{localize "EFFECT.FIELDS.changes.element.priority.label"}}</div>
         <div class="controls">
-          <a data-action="addChange"><i class="far fa-plus-square"></i></a>
+            <button type="button" class="inline-control icon fa-regular fa-square-plus" data-action="addChange"></button>
         </div>
     </header>
-    <ol data-changes>
-      {{#each source.changes as |change i|}}
-      {{#with ../fields.changes.element.fields as |changeFields|}}
-      <li data-index="{{i}}">
-        <div class="key">
-          {{formInput changeFields.key name=(concat "changes." i ".key") value=change.key}}
-        </div>
-        <div class="mode">
-          {{formInput changeFields.mode name=(concat "changes." i ".mode") value=change.mode choices=@root.modes}}
-        </div>
-        <div class="value">
-          {{formInput changeFields.value name=(concat "changes." i ".value") value=change.value}}
-        </div>
-        <div class="priority">
-          {{formInput changeFields.priority name=(concat "changes." i ".priority") value=change.priority placeholder=(lookup ../../priorities change.mode)}}
-        </div>
-        <div class="controls">
-          <a data-action="deleteChange"><i class="fas fa-trash"></i></a>
-        </div>
-      </li>
-      {{/with}}
-      {{/each}}
+    <ol class="scrollable" data-changes>
+        {{#each changes as |change|}}
+        {{{change}}}
+        {{/each}}
     </ol>
   </fieldset>
   
