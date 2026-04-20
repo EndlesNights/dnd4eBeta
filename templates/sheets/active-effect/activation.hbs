@@ -14,17 +14,17 @@
   <div class="form-group">
     <label>{{localize 'DND4E.DurationType'}}</label>
     <div class="form-fields">
-      <select class="durationType refreshes" name="flags.dnd4e.effectData.durationType">
-        {{selectOptions config.durationType selected=document.flags.dnd4e.effectData.durationType blank=""}}
+      <select class="durationType refreshes" name="system.durationType">
+        {{selectOptions config.durationType selected=document.system.durationType blank=""}}
       </select>
-      {{#if (eq document.flags.dnd4e.effectData.durationType "saveEnd")}}
+      {{#if (eq document.system.durationType "saveEnd")}}
         <label>{{localize 'DND4E.AbbreviationDC'}}</label>
         <input type="text" class="number saveDC" name="system.saveDC" value="{{ifThen document.system.saveDC document.system.saveDC '10'}}" placeholder="10" data-dtype="number"/>
       {{/if}}
     </div>
   </div>
   
-  {{#if (eq document.flags.dnd4e.effectData.durationType "custom")}}
+  {{#if (eq document.system.durationType "custom")}}
     <div class="form-group effect-duration">
       <label>{{localize 'DND4E.Duration'}}</label>
       <div class="form-fields">
@@ -41,7 +41,7 @@
   {{/if}}
 
   {{!-- Prevent duration display for passive effects --}}
-  {{#if effect.flags.dnd4e.effectData.durationType}}
+  {{#if effect.system.durationType}}
   {{!-- Prevent duration display for power effects which aren't yet applied --}}
   {{#if source.duration.startRound}}
     <div class="form-group effect-start">
@@ -56,9 +56,9 @@
       </div>
     </div>
 
-    {{#unless (eq document.flags.dnd4e.effectData.durationType 'saveEnd')}}
-    {{#unless (eq document.flags.dnd4e.effectData.durationType 'endOfEncounter')}}
-    {{#unless (eq document.flags.dnd4e.effectData.durationType 'endOfDay')}}
+    {{#unless (eq document.system.durationType 'saveEnd')}}
+    {{#unless (eq document.system.durationType 'endOfEncounter')}}
+    {{#unless (eq document.system.durationType 'endOfDay')}}
       <div class="form-group effect-end">
         <label>{{localize 'EFFECT.DurationEndInit'}}</label>
         <div class="form-fields">

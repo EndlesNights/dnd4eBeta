@@ -155,9 +155,9 @@ export const registerSystemSettings = function() {
 	});
 	
 	// Is Auto Generate Power Card Details true for new powers
-	 game.settings.register("dnd4e", "powerAutoGenerateLableOption", {
-		name: "SETTINGS.4ePowerAutoGenerateLableOptionN",
-		hint: "SETTINGS.4ePowerAutoGenerateLableOptionL",
+	 game.settings.register("dnd4e", "powerAutoGenerateLabelOption", {
+		name: "SETTINGS.4ePowerAutoGenerateLabelOptionN",
+		hint: "SETTINGS.4ePowerAutoGenerateLabelOptionL",
 		scope: "client",
 		config: true,
 		default: true,

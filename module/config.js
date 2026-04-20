@@ -758,17 +758,72 @@ preLocalize("distanceUnits");
 /* -------------------------------------------- */
 
 DND4E.durationType = {
-	"endOfTargetTurn": "DND4E.DurationEndOfTargetTurn",
-	"endOfUserTurn": "DND4E.DurationEndOfUserTurn",
-	"endOfUserCurrent": "DND4E.DurationEndOfUserCurrent",
-	"startOfTargetTurn": "DND4E.DurationStartOfTargetTurn",
-	"startOfUserTurn": "DND4E.DurationStartOfUserTurn",
-	"saveEnd": "DND4E.DurationSaveEnd",
-	"endOfEncounter": "DND4E.DurationEndOfEnc",
-	"endOfDay": "DND4E.DurationEndOfDay",
-	"custom": "DND4E.DurationCustom",
+	endOfTargetTurn: {
+        label: "DND4E.DurationEndOfTargetTurn",
+        duration: {
+            value: 0,
+            units: "turns",
+            expiry: "turnEnd"
+        }
+    },
+	endOfUserTurn: {
+        label: "DND4E.DurationEndOfUserTurn",
+        duration: {
+            value: 1,
+            units: "turns",
+            expiry: "turnEnd"
+        }
+    },
+	endOfUserCurrent: {
+        label: "DND4E.DurationEndOfUserCurrent",
+        duration: {
+            value: 0,
+            units: "turns",
+            expiry: "turnEnd"
+        }
+    },
+	startOfTargetTurn: {
+        label: "DND4E.DurationStartOfTargetTurn",
+        duration: {
+            value: 0,
+            units: "turns",
+            expiry: "turnStart"
+        }
+    },
+	startOfUserTurn: {
+        label: "DND4E.DurationStartOfUserTurn",
+        duration: {
+            value: 0,
+            units: "turns",
+            expiry: "turnStart"
+        }
+    },
+	saveEnd: {
+        label: "DND4E.DurationSaveEnd",
+        duration: {
+            expiry: "save"
+        }
+    },
+	endOfEncounter: {
+        label: "DND4E.DurationEndOfEnc",
+        duration: {
+            expiry: "combatEnd"
+        }
+    },
+	endOfDay: { //Extended Rest
+        label: "DND4E.DurationEndOfDay",
+        duration: {
+            expiry: "dayEnd"
+        }
+    },
+	custom: {
+        label: "DND4E.DurationCustom",
+        duration: {
+            expiry: "custom"
+        }
+    }
 }
-preLocalize("durationType");
+preLocalize("durationType", { keys: ["label"] });
 
 /* -------------------------------------------- */
 

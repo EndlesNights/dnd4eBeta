@@ -509,7 +509,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		if(effectPowers){
 			for ( let e of effectPowers ) {
-				e.durationTypeLable = `${CONFIG.DND4E.durationType[e.flags.dnd4e.effectData.durationType]}`;
+				e.durationTypeLabel = `${CONFIG.DND4E.durationType[e.system.durationType].label}`;
 				if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hitOrMiss") categories.hitOrMiss.effects.push(e);
@@ -537,7 +537,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 					img: this.item.img || "icons/svg/aura.svg",
 					origin: this.item.uuid,
 					"flags.dnd4e.effectData.powerEffectTypes": li.dataset.effectType,
-					"flags.dnd4e.effectData.durationType": li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined,
+					system: { durationType: li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined },
 					disabled: li.dataset.effectType === "inactive"
 				}]);
 				return;

@@ -11,6 +11,7 @@ const { ArrayField, NumberField, SchemaField, SetField, StringField } = foundry.
 /**
  * @typedef ActiveEffectSystemData
  * @property {EffectChangeData[]} changes  Changes to apply to the actor.
+ * @property {String} durationType         4e-specific duration type for this effect.
  * @property {DOT[]} dots                  Ongoing damage attached to this effect.
  * @property {Set<string>} keywords        Keywords this effect possesses.
  * @property {String} keywordsCustom       Custom keywords this effect possesses.
@@ -32,7 +33,9 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
 
   /* -------------------------------------------- */
 
-  /** @override */
+  /** @override
+   * @returns {ActiveEffectSystemData}
+  */
   static defineSchema() {
     const keywords = {
         ...CONFIG.DND4E.effectTypes,
@@ -41,6 +44,7 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
     }
     return {
       ...super.defineSchema(),
+      durationType: new StringField({initial: ""}),
       dots: new ArrayField(new SchemaField({
         amount: new NumberField({initial: 0}),
         types: new SetField(new StringField({initial: ""}))

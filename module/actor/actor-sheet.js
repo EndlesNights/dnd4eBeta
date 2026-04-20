@@ -1224,7 +1224,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 		}
 
-		itemData.system.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLableOption");
+		itemData.system.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLabelOption");
 		
 		if(this.actor.type === "NPC"){
 			

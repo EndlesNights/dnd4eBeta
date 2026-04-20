@@ -4,7 +4,6 @@
  */
  export default class ActiveEffect4e extends ActiveEffect {
 	constructor(data, context) {
-		if(!data.flags?.dnd4e?.effectData?.durationType) foundry.utils.setProperty(data, "flags.dnd4e.effectData.durationType", '');
 		if (data.id) {
 		  foundry.utils.setProperty(data, "flags.core.statusId", data.id);
 		  delete data.id;
@@ -161,22 +160,6 @@
 		}
 
 	}
-	/* --------------------------------------------- */
-
-	/**
-	 * Determine whether this Active Effect is suppressed or not.
-	 */
-	determineSuppression() {
-		this.isSuppressed = false;
-		if ( this.parent instanceof CONFIG.Item.documentClass ){
-			//types of items that can be equipped
-			const validTypes = ["weapon", "equipment", "tool", "loot", "backpack"];
-			if(validTypes.includes(this.parent.type) && this.parent.system.equipped === false){
-				return this.isSuppressed = this.flags.dnd4e?.effectData?.equippedRec || false;
-			}
-			this.isSuppressed = this.areEffectsSuppressed;
-		}
-	}
 
 	/* --------------------------------------------- */
 
@@ -190,7 +173,8 @@
 		event.preventDefault();
 		const li = target.closest("li");
 		const effects = ["Player Character","NPC","Hazard"].includes(owner.type) ? owner.getActiveEffects() : owner.effects.contents;
-		const effect = li.dataset.effectId ? effects.find(e => e._id === li.dataset.effectId) : null;
+
+        const effect = li.dataset.effectId ? effects.find(e => e._id === li.dataset.effectId) : null;
 		switch ( target.dataset.activity ) {
 			case "create":
 				const isActor = owner instanceof Actor;
@@ -198,7 +182,7 @@
 					name: isActor ? game.i18n.localize("DND4E.EffectNew") : owner.name,
 					img: isActor ? "icons/svg/aura.svg" : owner.img,
 					origin: owner.uuid,
-					"flags.dnd4e.effectData.durationType": li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined,
+					system: { durationType: li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined },
 					disabled: li.dataset.effectType === "inactive"
 				}]);
 			case "edit":
@@ -217,7 +201,7 @@
 	 * @type {boolean}
 	 */
 	get isTemporary() {
-		const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
+		const durationType = this.system.durationType;
 		if(durationType){
 			return !!durationType;
 		}
@@ -225,9 +209,25 @@
 		return super.isTemporary;
 	}
 
+    /**
+	 * Describe whether the ActiveEffect is suppressed.
+	 * @type {boolean}
+	 */
+    get isSuppressed() {
+        if (super.isSuppressed) return true;
+        if ( this.parent instanceof CONFIG.Item.documentClass ){
+            //types of items that can be equipped
+            const validTypes = ["weapon", "equipment", "tool", "loot", "backpack"];
+            if(validTypes.includes(this.parent.type) && this.parent.system.equipped === false){
+                return this.flags.dnd4e?.effectData?.equippedRec || false;
+            }
+            return this.areEffectsSuppressed;
+        }
+    }
+
 	_prepareDuration(){
 		if(["power", "consumable"].includes(this.parent?.type)){
-			const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
+			const durationType = this.system.durationType;
 			if(durationType){
 				return{
 					label: this._getDurationLabel(0,0)
@@ -235,7 +235,7 @@
 			}
 		}
 		
-		const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
+		const durationType = this.system.durationType;
 		if(durationType){
 
 			const d = this.duration;
@@ -283,19 +283,19 @@
 	 * @private
 	 */
 	_getDurationLabel(rounds, turns) {
-		const durationType = this.getFlag("dnd4e", "effectData")?.durationType;
+		const durationType = this.system.durationType;
 		if(durationType){
 			if(durationType === "endOfTargetTurn") return  game.i18n.localize("DND4E.DurationEndOfTargetTurnSimp");
 			else if(durationType === "startOfTargetTurn")  return game.i18n.localize("DND4E.DurationStartOfTargetTurnSimp");
 
-			return game.i18n.localize(CONFIG.DND4E.durationType[durationType]);
+			return game.i18n.localize(CONFIG.DND4E.durationType[durationType].label);
 		}
 
 		return super._getDurationLabel(rounds, turns);
 	}
 
 	_getIsSave() {
-		return this.getFlag("dnd4e", "effectData")?.durationType === "saveEnd";
+		return this.system.durationType === "saveEnd";
 	}
 	/* --------------------------------------------- */
 
@@ -468,7 +468,14 @@
 
   /** @inheritdoc */
   static migrateData(source){
-	const flags = source.flags.dnd4e;
+	const flags = source.flags?.dnd4e;
+
+	if (!flags) return super.migrateData(source);
+
+	if (flags.effectData?.durationType) {
+		source.system.durationType = flags.effectData.durationType;
+	}
+	delete flags.effectData?.durationType;
 
 	if (flags.keywords?.length) {
 		let keywords = []

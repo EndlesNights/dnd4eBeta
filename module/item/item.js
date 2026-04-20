@@ -173,11 +173,11 @@ export default class Item4e extends Item {
 		if(data.system) return;
 
 		const labeltype = game.i18n.localize("DOCUMENT.Item");
-		const defaultLable = game.i18n.format("DOCUMENT.New", {type: labeltype});
-		const regexPattern = `${defaultLable} \\(\\d+\\)`;
+		const defaultLabel = game.i18n.format("DOCUMENT.New", {type: labeltype});
+		const regexPattern = `${defaultLabel} \\(\\d+\\)`;
 		const regex = new RegExp(regexPattern, 'g');
 
-		if(data.name !== defaultLable && !regex.test(data.name)) return;
+		if(data.name !== defaultLabel && !regex.test(data.name)) return;
 
 		const updates = {};
 		let count = 0;
