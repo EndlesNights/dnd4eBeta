@@ -5,29 +5,12 @@
   "effects": [
     {
       "_id": "AyzrUW5ZqYNxZ0zy",
-      "changes": [
-        {
-          "key": "system.skills.blu.race",
-          "mode": 4,
-          "value": "2",
-          "priority": null
-        },
-        {
-          "key": "system.skills.stl.race",
-          "mode": 4,
-          "value": "2",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.y257KtPJ1TEVFIzc",
       "transfer": true,
@@ -47,7 +30,7 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": "dnd4e",
         "systemVersion": "0.5.5",
         "createdTime": null,
@@ -59,29 +42,36 @@
       },
       "img": "icons/skills/social/theft-pickpocket-bribery-brown.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.skills.blu.race",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade"
+          },
+          {
+            "key": "system.skills.stl.race",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!NAIdYGuARc0asb9g.AyzrUW5ZqYNxZ0zy"
     },
     {
       "_id": "dLlvu23ACkzsXvsO",
-      "changes": [
-        {
-          "key": "system.resistances.fire.res",
-          "mode": 4,
-          "value": "5 + @lvhalf",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.y257KtPJ1TEVFIzc",
       "transfer": true,
@@ -101,7 +91,7 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
@@ -113,8 +103,20 @@
       },
       "img": "icons/skills/social/intimidation-impressing.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.resistances.fire.res",
+            "value": "5 + @lvhalf",
+            "priority": null,
+            "type": "upgrade"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!NAIdYGuARc0asb9g.dLlvu23ACkzsXvsO"
     }
   ],
@@ -186,7 +188,7 @@
   "_stats": {
     "systemId": "dnd4e",
     "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "coreVersion": "14.359",
     "createdTime": 1686094314044,
     "modifiedTime": 1745817871227,
     "lastModifiedBy": "dnd4ebuilder0000",

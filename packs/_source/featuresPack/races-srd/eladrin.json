@@ -5,29 +5,12 @@
   "effects": [
     {
       "_id": "AqzmEczMbRhSDVzE",
-      "changes": [
-        {
-          "key": "system.skills.arc.base",
-          "mode": 4,
-          "value": "2",
-          "priority": null
-        },
-        {
-          "key": "system.skills.his.base",
-          "mode": 4,
-          "value": "2",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.qM20drGGWWSzvLWG",
       "transfer": true,
@@ -64,7 +47,7 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
@@ -76,21 +59,36 @@
       },
       "img": "icons/skills/social/theft-pickpocket-bribery-brown.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.skills.arc.base",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade"
+          },
+          {
+            "key": "system.skills.his.base",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!vC5GOVi3zlsd9STm.AqzmEczMbRhSDVzE"
     },
     {
       "name": "Eladrin Weapon Proficiency",
       "origin": "Compendium.dnd4e.featuresPack.Item.vC5GOVi3zlsd9STm",
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "disabled": false,
       "flags": {
@@ -105,20 +103,12 @@
         }
       },
       "_id": "Z9PA2e7dVWtnR41h",
-      "changes": [
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "longsword",
-          "priority": null
-        }
-      ],
       "description": "<p>You gain proficiency with @UUID[Compendium.dnd4e.equipmentPack.Item.c4LxUUvwXHV0Mjrt]{Longsword}</p>",
       "transfer": true,
       "statuses": [],
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
@@ -130,8 +120,20 @@
       },
       "img": "icons/skills/trades/academics-astronomy-navigation-blue.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "longsword",
+            "priority": null,
+            "type": "add"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!vC5GOVi3zlsd9STm.Z9PA2e7dVWtnR41h"
     }
   ],
@@ -203,7 +205,7 @@
   "_stats": {
     "systemId": "dnd4e",
     "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "coreVersion": "14.359",
     "createdTime": 1686094305355,
     "modifiedTime": 1745817871227,
     "lastModifiedBy": "dnd4ebuilder0000",

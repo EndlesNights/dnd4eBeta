@@ -965,7 +965,8 @@ export class Helper {
 		for(const change of effect.system.changes){
 			// change.value = this.parseSolidify(change.value, parentActor);
 			change.value = change.value.replace(/\$solidify\((.*?)\)/g, (match, value) => {
-				return Helper.commonReplace(value, parentActor);
+				foundry.utils.logCompatibilityWarning("Use of $solidify() in Active Effect values is deprecated since 0.8.0; use regular rollData instead.")
+                return Helper.commonReplace(value, parentActor);
 			});
 			Helper.debugLog(change.value);
 		}

@@ -5,29 +5,12 @@
   "effects": [
     {
       "_id": "6JvzCB8arU0jV8Is",
-      "changes": [
-        {
-          "key": "system.skills.acr.race",
-          "mode": 4,
-          "value": "2",
-          "priority": null
-        },
-        {
-          "key": "system.skills.thi.race",
-          "mode": 4,
-          "value": "2",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.XqSV4V2pVb4b4Oi6",
       "transfer": true,
@@ -47,7 +30,7 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": "dnd4e",
         "systemVersion": "0.5.5",
         "createdTime": null,
@@ -59,8 +42,26 @@
       },
       "img": "icons/skills/social/theft-pickpocket-bribery-brown.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.skills.acr.race",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade"
+          },
+          {
+            "key": "system.skills.thi.race",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!seioslOA4HvRZ3CK.6JvzCB8arU0jV8Is"
     }
   ],
@@ -132,7 +133,7 @@
   "_stats": {
     "systemId": "dnd4e",
     "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "coreVersion": "14.359",
     "createdTime": 1686094311926,
     "modifiedTime": 1745817871227,
     "lastModifiedBy": "dnd4ebuilder0000",

@@ -99,10 +99,10 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
 
   /** @inheritdoc */
   static migrateData(source){
-    if (!source.senses?.special.value) return super.migrateData(source);
+    if (!source.senses?.special?.value) return super.migrateData(source);
 
-    const oldSenses = Array.from(source.senses?.special.value)
-    delete source.senses.special.value;
+    const oldSenses = Array.from(source.senses?.special?.value)
+    delete source.senses?.special?.value;
     if (!oldSenses.length) return super.migrateData(source);
 
     const flattenedSource = foundry.utils.flattenObject(source)

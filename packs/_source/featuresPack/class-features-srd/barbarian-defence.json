@@ -5,29 +5,12 @@
   "effects": [
     {
       "_id": "me5az4Yzd4HSjrOB",
-      "changes": [
-        {
-          "key": "system.defences.ac.value",
-          "mode": 2,
-          "value": "@details.tier",
-          "priority": null
-        },
-        {
-          "key": "system.defences.ref.value",
-          "mode": 2,
-          "value": "@details.tier",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.IuhWX3dT42S1Cgfi",
       "transfer": true,
@@ -64,7 +47,7 @@
       "description": "<p>Gain +1 Bonus to AC and Reflex Defence per tier while you are not wearing heavy armour.</p>",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
@@ -76,8 +59,26 @@
       },
       "img": "icons/skills/movement/figure-running-gray.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.defences.ac.value",
+            "value": "@details.tier",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.defences.ref.value",
+            "value": "@details.tier",
+            "priority": null,
+            "type": "add"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!LEMFQnzJ3g1EPMcy.me5az4Yzd4HSjrOB"
     }
   ],
@@ -134,7 +135,7 @@
   "_stats": {
     "systemId": "dnd4e",
     "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "coreVersion": "14.359",
     "createdTime": 1686094091629,
     "modifiedTime": 1745817871227,
     "lastModifiedBy": "dnd4ebuilder0000",

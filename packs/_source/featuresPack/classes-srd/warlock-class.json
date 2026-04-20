@@ -5,89 +5,12 @@
   "effects": [
     {
       "_id": "zajHZQ5XO6em7fnx",
-      "changes": [
-        {
-          "key": "system.attributes.hp.starting",
-          "mode": 5,
-          "value": "12",
-          "priority": null
-        },
-        {
-          "key": "system.attributes.hp.perlevel",
-          "mode": 5,
-          "value": "5",
-          "priority": null
-        },
-        {
-          "key": "system.details.surges.max",
-          "mode": 2,
-          "value": "6+@conMod",
-          "priority": null
-        },
-        {
-          "key": "system.attributes.hp.autototal",
-          "mode": 5,
-          "value": "true",
-          "priority": null
-        },
-        {
-          "key": "system.defences.ref.value",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        },
-        {
-          "key": "system.defences.wil.value",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "cloth",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "leather",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "simpleM",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "simpleR",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "rod",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "wand",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.p6rCpnBIc8MlPj4Y",
       "transfer": true,
@@ -107,7 +30,7 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
@@ -119,8 +42,86 @@
       },
       "img": "icons/magic/unholy/strike-hand-glow-pink.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.attributes.hp.starting",
+            "value": 12,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.attributes.hp.perlevel",
+            "value": 5,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.details.surges.max",
+            "value": "6+@conMod",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.attributes.hp.autototal",
+            "value": true,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.defences.ref.value",
+            "value": 1,
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.defences.wil.value",
+            "value": 1,
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "cloth",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "leather",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "simpleM",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "simpleR",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "rod",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "wand",
+            "priority": null,
+            "type": "add"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!cG1tQyBwm96C6lBM.zajHZQ5XO6em7fnx"
     }
   ],
@@ -177,7 +178,7 @@
   "_stats": {
     "systemId": "dnd4e",
     "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "coreVersion": "14.359",
     "createdTime": 1686094210760,
     "modifiedTime": 1745817871227,
     "lastModifiedBy": "dnd4ebuilder0000",

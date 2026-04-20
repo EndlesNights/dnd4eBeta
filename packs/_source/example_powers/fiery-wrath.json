@@ -44,13 +44,10 @@
         }
       },
       "duration": {
-        "rounds": null,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "disabled": false,
       "name": "Ongoing 5 fire",
@@ -58,8 +55,9 @@
       "transfer": false,
       "_id": "ITHl26Owv21S10Rf",
       "type": "base",
-      "system": {},
-      "changes": [],
+      "system": {
+        "changes": []
+      },
       "description": "",
       "tint": "#ffffff",
       "statuses": [],
@@ -67,7 +65,7 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": "dnd4e",
         "systemVersion": "0.5.14",
         "createdTime": null,
@@ -75,6 +73,9 @@
         "lastModifiedBy": null,
         "exportSource": null
       },
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!bSUhfYLTUAJjz9Fi.ITHl26Owv21S10Rf"
     }
   ],
@@ -82,7 +83,7 @@
   "sort": 1300000,
   "flags": {},
   "_stats": {
-    "coreVersion": "13.348",
+    "coreVersion": "14.359",
     "systemId": "dnd4e",
     "systemVersion": "0.5.14",
     "createdTime": null,

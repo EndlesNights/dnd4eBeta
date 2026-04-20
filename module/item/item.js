@@ -2127,13 +2127,19 @@ export default class Item4e extends Item {
 	
 		// Adjust damage from versatile usage
 		if(weaponUse) {
-			if(weaponUse.system.properties["ver"] && weaponUse.system.weaponHand === "hTwo" ) {
+			if (weaponUse.system.properties["ver"] && weaponUse.system.weaponHand === "hTwo") {
 				damageFormula += `+ 1`;
 				critDamageFormula += `+ 1`;
 				damageFormulaExpression  += `+ @versatile`;
 				critDamageFormulaExpression += `+ @versatile`;
 				options.formulaInnerData.versatile = 1
 			}
+            if (weaponUse.system.properties["hic"]) {
+                let weaponDice = weaponUse.getWepDice(this.actor.getRollData().epic ? 2 : 1);
+
+                critDamageFormula += ` + ${weaponDice}`;
+                critDamageFormulaExpression += " + @highCrit";
+            }
 		}
 	
 		if(this.system?.hit?.damageBonusNull) Helper.debugLog(`Ignoring damage bonuses due to power config.`);
@@ -2613,7 +2619,7 @@ export default class Item4e extends Item {
 
 	/* -------------------------------------------- */
 
-	getWepDice() {
+	getWepDice(weaponNum) {
 		if (!["power", "weapon"].includes(this.type)) return 0;
 
 		const weaponData = this.type === "weapon" ? this.system : (this.type == "power" ? Helper.getWeaponUse(this.system, this.actor)?.system : null);
@@ -2622,7 +2628,7 @@ export default class Item4e extends Item {
 		let parts = weaponData.damageDice.parts;
 		//let indexStart = newFormula.indexOf("@wepDice")+8;
 
-		let weaponNum = 1//newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
+		weaponNum = weaponNum || 1//newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
 		//weaponNum = eval(weaponNum.replaceAll(/[a-z]/gi, ''));
 
 		if(typeof(weaponNum) !== "number") weaponNum = 1;

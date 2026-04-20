@@ -8,13 +8,10 @@
       "img": "icons/skills/wounds/blood-drip-droplet-red.webp",
       "origin": "Actor.c47kggIezZJvadnl.Item.RRi8y9Jm72Mqxcr7",
       "duration": {
-        "rounds": null,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "disabled": true,
       "flags": {
@@ -47,15 +44,16 @@
       },
       "_id": "kL9gLMBj86D901ff",
       "type": "base",
-      "system": {},
-      "changes": [
-        {
-          "key": "system.modifiers.attack.untyped",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        }
-      ],
+      "system": {
+        "changes": [
+          {
+            "key": "system.modifiers.attack.untyped",
+            "value": 1,
+            "priority": null,
+            "type": "add"
+          }
+        ]
+      },
       "description": "<p>[[+1]] bonus to attack rolls made against bloodied targets.</p>",
       "tint": "#ffffff",
       "transfer": true,
@@ -64,7 +62,7 @@
       "_stats": {
         "compendiumSource": "Actor.c47kggIezZJvadnl.Item.RRi8y9Jm72Mqxcr7.ActiveEffect.kL9gLMBj86D901ff",
         "duplicateSource": null,
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": "dnd4e",
         "systemVersion": "0.5.14",
         "createdTime": null,
@@ -72,6 +70,9 @@
         "lastModifiedBy": null,
         "exportSource": null
       },
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!YVyfBmcrLW74Aj6t.kL9gLMBj86D901ff"
     }
   ],
@@ -146,7 +147,7 @@
   "_stats": {
     "systemId": "dnd4e",
     "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "coreVersion": "14.359",
     "createdTime": 1686094125284,
     "modifiedTime": 1745817871227,
     "lastModifiedBy": "dnd4ebuilder0000",

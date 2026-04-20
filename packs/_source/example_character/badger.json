@@ -15,7 +15,7 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": "dnd4e",
         "systemVersion": "0.5.5",
         "createdTime": null,
@@ -230,7 +230,7 @@
       "_stats": {
         "compendiumSource": "Actor.UmSJ4HoqnPHDS28w.Item.blY52ZuPbtGqlyGb",
         "duplicateSource": null,
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": "dnd4e",
         "systemVersion": "0.5.5",
         "createdTime": null,
@@ -496,7 +496,7 @@
       "_stats": {
         "compendiumSource": "Actor.5GyGd3HmvJuMIok3.Item.A5gGH9SxHqnwdfJK",
         "duplicateSource": null,
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": "dnd4e",
         "systemVersion": "0.5.5",
         "createdTime": null,
@@ -581,7 +581,7 @@
       "_stats": {
         "compendiumSource": "Actor.5GyGd3HmvJuMIok3.Item.vk3flHY7a5n4jphH",
         "duplicateSource": null,
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": "dnd4e",
         "systemVersion": "0.5.5",
         "createdTime": null,
@@ -757,7 +757,10 @@
             ""
           ]
         ],
-        "custom": ""
+        "custom": "",
+        "lv": {
+          "value": false
+        }
       },
       "notes": ""
     },
@@ -1869,9 +1872,6 @@
       "tint": "#ffffff",
       "scaleX": 1,
       "scaleY": 1,
-      "offsetX": 0,
-      "offsetY": 0,
-      "rotation": 0,
       "anchorX": 0.5,
       "anchorY": 0.5,
       "fit": "contain",
@@ -1890,7 +1890,7 @@
     },
     "appendNumber": true,
     "prependAdjective": false,
-    "detectionModes": [],
+    "detectionModes": {},
     "occludable": {
       "radius": 0
     },
@@ -1912,15 +1912,16 @@
       "src": null,
       "disposition": false
     },
-    "movementAction": null
+    "movementAction": null,
+    "depth": 1
   },
   "_stats": {
     "duplicateSource": null,
-    "coreVersion": "13.350",
+    "coreVersion": "14.360",
     "systemId": "dnd4e",
-    "systemVersion": "0.7.0",
+    "systemVersion": "0.8.0",
     "createdTime": 1730440963063,
-    "modifiedTime": 1760845760971,
+    "modifiedTime": 1776726457233,
     "lastModifiedBy": "dnd4ebuilder0000",
     "exportSource": {
       "worldId": "module-test",

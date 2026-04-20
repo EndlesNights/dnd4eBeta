@@ -5,29 +5,12 @@
   "effects": [
     {
       "_id": "wTBALslFFhoKd2mR",
-      "changes": [
-        {
-          "key": "system.skills.arc.race",
-          "mode": 4,
-          "value": "2",
-          "priority": null
-        },
-        {
-          "key": "system.skills.stl.race",
-          "mode": 4,
-          "value": "2",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.wk3oa5sZGD9c1kTD",
       "transfer": true,
@@ -47,7 +30,7 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": "dnd4e",
         "systemVersion": "0.5.5",
         "createdTime": null,
@@ -59,29 +42,36 @@
       },
       "img": "icons/skills/social/theft-pickpocket-bribery-brown.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.skills.arc.race",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade"
+          },
+          {
+            "key": "system.skills.stl.race",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!9BFiyQ1Iib3wzx6j.wTBALslFFhoKd2mR"
     },
     {
       "_id": "2mwIBpaTxldLI64q",
-      "changes": [
-        {
-          "key": "system.movement.base.base",
-          "mode": 5,
-          "value": "5",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.wk3oa5sZGD9c1kTD",
       "transfer": true,
@@ -95,7 +85,7 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.359",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
@@ -107,8 +97,20 @@
       },
       "img": "icons/skills/movement/feet-bladed-boots-fire.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.movement.base.base",
+            "value": 5,
+            "priority": null,
+            "type": "override"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!9BFiyQ1Iib3wzx6j.2mwIBpaTxldLI64q"
     }
   ],
@@ -180,7 +182,7 @@
   "_stats": {
     "systemId": "dnd4e",
     "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "coreVersion": "14.359",
     "createdTime": 1686094307658,
     "modifiedTime": 1745817871227,
     "lastModifiedBy": "dnd4ebuilder0000",
