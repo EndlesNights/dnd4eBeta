@@ -899,7 +899,7 @@ export class Helper {
 	static async endEffects(actor, targetArray){
 		const effects = [];
 		for(let e of actor.effects){
-			if(targetArray.includes(e.flags.dnd4e?.effectData?.durationType)){
+			if(targetArray.includes(e.system.durationType)){
 				effects.push(e.id);
 			}
 		}

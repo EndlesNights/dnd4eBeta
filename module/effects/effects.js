@@ -365,8 +365,8 @@
 	 */
 	get keywords(){
 		const keysRef = {...CONFIG.DND4E.damageTypes,...CONFIG.DND4E.effectTypes,...CONFIG.DND4E.powerSource};
-		const systemKeywords = this.flags.dnd4e?.keywords || [];
-		const customString = this.flags.dnd4e?.keywordsCustom || '';
+		const systemKeywords = this.system.keywords;
+		const customString = this.system.keywordsCustom;
 		const customKeywords = customString ? customString.split(';') : [];
 		
 		let keywordLabels = [];

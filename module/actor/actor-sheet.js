@@ -1640,7 +1640,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		console.debug("roll Save Throw v Effect!");
 		const effectId = target.closest(".item").dataset.effectId;
 		const effect = this.actor.effects.get(effectId);	
-		const saveDC = effect.flags.dnd4e?.effectData?.saveDC || 10;
+		const saveDC = effect.system.saveDC || 10;
 		const isFF = Helper.isRollFastForwarded(event);
 		
 		if(isFF){

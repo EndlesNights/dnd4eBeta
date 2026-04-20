@@ -52,7 +52,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		
 		if (actor && !saveOptions.effectSave) {
 			Array.from(actor.effects).forEach((e) => {
-				if (e.flags.dnd4e?.effectData?.durationType === 'saveEnd') savableEffects.push({name: e.name, id: e.id});
+				if (e.system.durationType === 'saveEnd') savableEffects.push({name: e.name, id: e.id});
 			});
 		}
 		if (savableEffects.length) {
