@@ -105,7 +105,9 @@ Hooks.once("init", async function() {
 		return arr;
 	}, []);
 	
-	CONFIG.ActiveEffect.expiryEvents.dayEnd = "endOfDay";
+	CONFIG.ActiveEffect.expiryAction = "delete";
+	CONFIG.ActiveEffect.expiryEvents.dayEnd = "DND4E.DurationEndOfDay";
+	CONFIG.ActiveEffect.expiryEvents.save = "DND4E.DurationSaveEnd";
 
 	// define custom roll extensions
 	CONFIG.Dice.rolls = [Roll4e];

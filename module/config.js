@@ -761,8 +761,8 @@ DND4E.durationType = {
 	endOfTargetTurn: {
         label: "DND4E.DurationEndOfTargetTurn",
         duration: {
-            value: 0,
-            units: "turns",
+            value: 1,
+            units: "rounds",
             expiry: "turnEnd"
         }
     },
@@ -770,7 +770,7 @@ DND4E.durationType = {
         label: "DND4E.DurationEndOfUserTurn",
         duration: {
             value: 1,
-            units: "turns",
+            units: "rounds",
             expiry: "turnEnd"
         }
     },
@@ -785,16 +785,16 @@ DND4E.durationType = {
 	startOfTargetTurn: {
         label: "DND4E.DurationStartOfTargetTurn",
         duration: {
-            value: 0,
-            units: "turns",
+            value: 1,
+            units: "rounds",
             expiry: "turnStart"
         }
     },
 	startOfUserTurn: {
         label: "DND4E.DurationStartOfUserTurn",
         duration: {
-            value: 0,
-            units: "turns",
+            value: 1,
+            units: "rounds",
             expiry: "turnStart"
         }
     },

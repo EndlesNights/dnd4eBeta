@@ -950,8 +950,8 @@ export class Helper {
 	}
 
 	static async solidifyEffectActorData(effect, parentActor){
-		debugLog(effect)
-		debugLog(parentActor)
+		Helper.debugLog(effect)
+		Helper.debugLog(parentActor)
 
 		//dots
 		for(const dot of effect.system.dots){
@@ -990,42 +990,7 @@ export class Helper {
 					// e.sourceName = parent.name;
 					e.origin = parent.uuid;
 					this.solidifyEffectActorData(e, parent);
-					const duration = e.duration;
 					const flags = e.flags;
-					duration.combat = combat?.id || "None Combat";
-					duration.startRound = combat?.round || 0;
-					/*Removing the initial timing calc after 0.6.11 since it's now redundant with the effect's derived data routine
-
-					flags.dnd4e.effectData.startTurnInit =	combat?.turns[combat?.turn]?.initiative || 0;
-
-					const userTokenId = this.getTokenIdForLinkedActor(parent);
-					const userInit = this.getInitiativeByToken(userTokenId);
-					const targetInit = t ? this.getInitiativeByToken(t.id) : userInit;
-					const currentInit = this.getCurrentTurnInitiative();
-
-					if(flags.dnd4e.effectData.durationType === "endOfTargetTurn" || flags.dnd4e.effectData.durationType === "startOfTargetTurn"){
-						flags.dnd4e.effectData.durationRound = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
-						flags.dnd4e.effectData.durationTurnInit = t ? targetInit : userInit;						
-					}
-					else if(flags.dnd4e.effectData.durationType === "endOfUserTurn" || flags.dnd4e.effectData.durationType === "startOfUserTurn" ){
-						flags.dnd4e.effectData.durationRound = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
-						flags.dnd4e.effectData.durationTurnInit = userInit;
-					}
-					else if(flags.dnd4e.effectData.durationType === "endOfUserCurrent") {
-						flags.dnd4e.effectData.durationRound = combat? combat.round : 0;
-						flags.dnd4e.effectData.durationTurnInit = combat? currentInit : 0;
-					}
-					else if(flags.dnd4e.effectData.durationType === "custom" && (duration?.rounds || duration?.turns)){
-						flags.dnd4e.effectData.durationRound = duration.startRound + (duration?.rounds || 0);
-						let initCount = duration?.turns || 0;
-						for (const [i, turn] of combat.turns.entries()) {
-							if (turn.initiative == currentInit){
-								initCount += i;
-							}
-						}
-						initCount = Math.min(initCount,this.duration?.turns,combat.turns.length);
-						flags.dnd4e.effectData.durationTurnInit = combat.turns[initCount].initiative;
-					}*/
 
 					const newEffectData = {
 						name: e.name,
@@ -1035,16 +1000,11 @@ export class Helper {
 						origin: e.origin,
 						sourceName: parent.name,
 						system: e.system,
-						//"duration": duration, //Not too sure why this fails, but it does
-						"duration": {startRound: duration?.startRound, rounds: duration.rounds, turns: duration.turns},
-						rounds: duration.rounds,
-						turns: duration.turns,
-						startRound: duration.startRound,
 						statuses: e.statuses,
 						tint: e.tint,
 						"flags": flags,
-						changes: e.changes,
-						changesID: e.uuid
+						changesID: e.uuid,
+                        showIcon: e.showIcon
 					};
 
 					if(parent && newEffectData.system.saveDC) {
@@ -1103,7 +1063,7 @@ export class Helper {
 						});
 					}
 					
-					debugLog(`Effect setup fired for ${e.name} on ${actor.name}.`);
+					Helper.debugLog(`Effect setup fired for ${e.name} on ${actor.name}.`);
 				}
 			}
 		}

@@ -509,7 +509,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		if(effectPowers){
 			for ( let e of effectPowers ) {
-				e.durationTypeLabel = `${CONFIG.DND4E.durationType[e.system.durationType].label}`;
+				e.durationTypeLabel = `${CONFIG.DND4E.durationType[e.system.durationType]?.label}`;
 				if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
 				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hitOrMiss") categories.hitOrMiss.effects.push(e);

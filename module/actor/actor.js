@@ -1987,7 +1987,7 @@ export class Actor4e extends Actor {
 		/* Changed the roll comparison to DC from rollConfig.critical, to fix discrepancy 
 		between success/fail and effect removal when the actor has a save bonus  */
 		if(options.effectSave && r.total >= saveDC){
-			await this.effects.get(options.effectId).delete();
+			ActiveEffect.registry.refresh("save", { effect: options.effectId});
 		}
 	}
 
@@ -2182,6 +2182,7 @@ export class Actor4e extends Actor {
 			}
 		}
 
+        ActiveEffect.registry.refresh("dayEnd", { actor: this.uuid});
 		await this.update(updateData);
 	}
 
@@ -2710,11 +2711,10 @@ export class Actor4e extends Actor {
 			sourceName: effectData.sourceName,
 			system: effectData.system,
 			statuses: Array.from(effectData.statuses),
-			//"duration": effectData.duration, //Not too sure why this fails, but it does
-			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
+			duration: effectData.duration,
 			tint: effectData.tint,
-			"flags": effectData.flags,
-			changes: effectData.changes
+			flags: effectData.flags,
+            showIcon: effectData.showIcon
 		}]);
 	}
 
@@ -2748,7 +2748,7 @@ export class Actor4e extends Actor {
 		
 		let toSave = [];
 		for (const e of this.effects){
-			if(e.flags.dnd4e?.effectData?.durationType === "saveEnd"){
+			if(e.system.durationType === "saveEnd"){
 				toSave.push(e.id);
 			}
 		}
