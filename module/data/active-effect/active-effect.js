@@ -4,7 +4,7 @@ const { ArrayField, NumberField, SchemaField, SetField, StringField } = foundry.
  * Data structure for a standard actor trait.
  *
  * @typedef {object} DOT
- * @property {Number} amount               Amount of damage this DOT does per turn.
+ * @property {String} amount               Amount of damage this DOT does per turn.
  * @property {Set<String>} types           Damage types of this DOT's damage.
  */
 
@@ -46,7 +46,7 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
       ...super.defineSchema(),
       durationType: new StringField({initial: ""}),
       dots: new ArrayField(new SchemaField({
-        amount: new NumberField({initial: 0}),
+        amount: new StringField({initial: 0}),
         types: new SetField(new StringField({initial: ""}))
       })),
       keywords: new SetField(new StringField({ choices: keywords })),

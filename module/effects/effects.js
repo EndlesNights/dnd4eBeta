@@ -290,6 +290,7 @@
 	_getIsSave() {
 		return this.system.durationType === "saveEnd";
 	}
+
 	/* --------------------------------------------- */
 
 	/**
@@ -334,29 +335,9 @@
 		categories.suppressed.hidden = !categories.suppressed.effects.length;
 		return categories;
 	}
-	
-	/** Blatantly stolen from Black Flag: fix for core issue
-	*   https://github.com/foundryvtt/foundryvtt/issues/11527
-	*   Can be removed when the system goes V13-only
-	*/	
-	_applyUpgrade(actor, change, current, delta, changes){
-		if (current === null) return this._applyOverride(actor, change, current, delta, changes);
-		
-		let update;
-		const ct = foundry.utils.getType(current);
-		
-		switch (ct){
-			case "boolean":
-			case "number":
-				if (change.mode === CONST.ACTIVE_EFFECT_MODES.UPGRADE && delta > current) update = delta;
-				else if (change.mode === CONST.ACTIVE_EFFECT_MODES.DOWNGRADE && delta < current) update = delta;
-				break;
-		}
-		if (update !== undefined) changes[change.key] = update;
-	}
-
 
 	/* --------------------------------------------- */
+
 	/**
 	 * Returns an object with official and custom keywords
 	 * @type {string}
@@ -375,52 +356,52 @@
 		return {'system': systemKeywords,'custom': customKeywords,'string': keywordString};
 	}
 
-  /* -------------------------------------------- */
-  /*  Data Migration                              */
-  /* -------------------------------------------- */
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
 
-  /** @inheritdoc */
-  static migrateData(source){
-	const flags = source.flags?.dnd4e;
+	/** @inheritdoc */
+	static migrateData(source){
+		const flags = source.flags?.dnd4e;
 
-	if (!flags) return super.migrateData(source);
+		if (!flags) return super.migrateData(source);
 
-	if (flags.effectData?.durationType) {
-		source.system.durationType = flags.effectData.durationType;
-	}
-	delete flags.effectData?.durationType;
-
-	if (flags.keywords?.length) {
-		let keywords = []
-		for (const keyword of flags.keywords) {
-			keywords.push(keyword)
+		if (flags.effectData?.durationType) {
+			source.system.durationType = flags.effectData.durationType;
 		}
-		source.system.keywords = keywords;
-	}
-	delete flags.keywords;
+		delete flags.effectData?.durationType;
 
-	if (flags.dots?.length) {
-		let dots = []
-		for (const dot of flags.dots) {
-			dots.push({
-				amount: dot.amount,
-				types: new Set(dot.typesArray)
-			})
+		if (flags.keywords?.length) {
+			let keywords = []
+			for (const keyword of flags.keywords) {
+				keywords.push(keyword)
+			}
+			source.system.keywords = keywords;
 		}
-		source.system.dots = dots;
-	}
-	delete flags.dots;
+		delete flags.keywords;
 
-	if (flags.keywordsCustom) {
-		source.system.keywordsCustom = flags.keywordsCustom;
-	}
-	delete flags.keywordsCustom;
+		if (flags.dots?.length) {
+			let dots = []
+			for (const dot of flags.dots) {
+				dots.push({
+					amount: dot.amount,
+					types: new Set(dot.typesArray)
+				})
+			}
+			source.system.dots = dots;
+		}
+		delete flags.dots;
 
-	if (flags.effectData.saveDC) {
-		source.system.saveDC = flags.effectData.saveDC;
-	}
-	delete flags.effectData.saveDC;
+		if (flags.keywordsCustom) {
+			source.system.keywordsCustom = flags.keywordsCustom;
+		}
+		delete flags.keywordsCustom;
 
-	return super.migrateData(source);
-  }
+		if (flags.effectData?.saveDC) {
+			source.system.saveDC = flags.effectData.saveDC;
+		}
+		delete flags.effectData?.saveDC;
+
+		return super.migrateData(source);
+	}
 }
