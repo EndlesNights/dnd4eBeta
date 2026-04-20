@@ -14,7 +14,7 @@ import RollDialog from "./apps/dice/roll-dialog.js";
  *                                 Each element should be in the form of { target: 'Text To Replace', value: 'text to replace with' }
  * @param {Object} data            Actor or item data against which to parse the roll
  * @param {Event|object} event     The triggering event which initiated the roll
- * @param {string} messageMode        A specific roll mode to apply as the default for the resulting roll
+ * @param {string} messageMode     A specific message mode to apply as the default for the resulting roll
  * @param {string|null} template   The HTML template used to render the roll dialog
  * @param {string|null} title      The dice roll UI window title
  * @param {Object} speaker         The ChatMessage speaker to pass when creating the chat
@@ -468,7 +468,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
  * @param {Actor} actor           The Actor making the damage roll
  * @param {Object} data           Actor or item data against which to parse the roll
  * @param {Event|object} event    The triggering event which initiated the roll
- * @param {string} messageMode       A specific roll mode to apply as the default for the resulting roll
+ * @param {string} messageMode    A specific message mode to apply as the default for the resulting roll
  * @param {String} template       The HTML template used to render the roll dialog
  * @param {String} title          The dice roll UI window title
  * @param {Object} speaker        The ChatMessage speaker to pass when creating the chat
