@@ -159,7 +159,7 @@
 					const combatant = this.start.combat.getCombatantsByActor(relevantActor)[0];
 					if ( combatant && (combatant.turnNumber !== null) ) updates.start = {combatant: combatant.id};
 					const decreaseDuration = combatant.turnNumber > this.start.combat.turn;
-    				if ( decreaseDuration ) updates["duration.value"] = durationConfig.value - 1;
+					if ( decreaseDuration ) updates["duration.value"] = durationConfig.value - 1;
 				}
 			}
 			
@@ -256,13 +256,11 @@
 	}
 
 	_prepareDuration(){
-		if(["power", "consumable"].includes(this.parent?.type)){
-			const durationType = this.system.durationType;
-			if(durationType){
-				return{
-					label: this._getDurationLabel(0,0)
-				};
-			}
+		const durationType = this.system.durationType;
+		if(durationType){
+			return{
+				label: this._getDurationLabel(0,0)
+			};
 		}
 		return super._prepareDuration();
 	}

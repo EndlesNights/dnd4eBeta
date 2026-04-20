@@ -2,15 +2,8 @@ import { Helper } from "./helper.js";
 
 export default class Combat4e extends Combat {
 	async nextTurn() {
-		const currentRound = this.round;
-		const currentTurn = this.turn;
-		const currentInit = this.turns[currentTurn].initiative;
-	
+		const currentTurn = this.turn;	
 		const nextTurn = currentTurn + 1 < this.turns.length? currentTurn + 1 : 0;
-		const nextInit = currentTurn + 1 < this.turns.length? this.turns[currentTurn + 1].initiative :  this.turns[0].initiative;
-		
-		//Moved to happen after the loop deletes end-of-turn effects
-		//Helper.rechargeItems(this.turns[nextTurn].actor, ["round"])
 		
 		//t current turn
 		for(let t of this.turns){
