@@ -38,7 +38,7 @@ export class DeathSaveDialog extends DocumentSheet4e {
 		const context = await super._prepareContext(options);
         foundry.utils.mergeObject(context, {
 			data: this.document.system,
-			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label),
+			messageModes: Object.keys(CONFIG.ChatMessage.modes).map(key => CONFIG.ChatMessage.modes[key].label),
 			buttons: [
 				{ type: "submit", icon: "fa-solid fa-dice-d20", label: "DND4E.DeathSave" }
 			]
@@ -48,7 +48,7 @@ export class DeathSaveDialog extends DocumentSheet4e {
 
 	static async #onSubmit(event, form, formData) {
 		const saveData = foundry.utils.expandObject(formData.object);
-		saveData.rollMode = Object.keys(CONFIG.Dice.rollModes)[saveData.rollMode]
+		saveData.messageMode = Object.keys(CONFIG.ChatMessage.modes)[saveData.messageMode]
 
 		this.document.rollDeathSave(event, {
 			...this.options,

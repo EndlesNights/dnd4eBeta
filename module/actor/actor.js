@@ -1973,7 +1973,7 @@ export class Actor4e extends Actor {
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			messageData: {"flags.dnd4e.roll": {type: "save", itemId: this.id }},
 			fastForward: true,
-			rollMode: options.rollMode
+			messageMode: options.messageMode
 		});
 		rollConfig.event = event;
 		
@@ -2007,7 +2007,7 @@ export class Actor4e extends Actor {
 			'speaker': ChatMessage.getSpeaker({actor: this}),
 			'messageData': {"flags.dnd4e.roll": {type: "save", itemId: this.id }},
 			'fastForward': true,
-			'rollMode': options.rollMode
+			'messageMode': options.messageMode
 		});
 		rollConfig.event = event;
 		rollConfig.critical = this.system.details.deathsaveCrit || 20;
@@ -2871,7 +2871,7 @@ export class Actor4e extends Actor {
 						content: html,
 						flavor: `${dot.type == "healing" ? game.i18n.localize ("EFFECT.statusRegen") : game.i18n.localize ("DND4E.OngoingDamage")}: ${dot.effectName}`,
 						whisper: chatRecipients,
-						//rollMode: "gmroll",
+						//messageMode: "gmroll",
 						/*rolls: [{
 							formula: `(${dot.amount})[${dot.type}]`,
 							terms: [{

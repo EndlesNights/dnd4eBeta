@@ -958,12 +958,12 @@ export default class Item4e extends Item {
 	/**
 	 * Roll the item to Chat, creating a chat card which contains follow up attack or damage roll options
 	 * @param {boolean} [configureDialog]     Display a configuration dialog for the item roll, if applicable?
-	 * @param {string} [rollMode]             The roll display mode with which to display (or not) the card
+	 * @param {string} [messageMode]             The roll display mode with which to display (or not) the card
 	 * @param {boolean} [createMessage]       Whether to automatically create a chat message (if true) or simply return
 	 *                                        the prepared chat message data (if false).
 	 * @return {Promise}
 	 */
-	async roll({configureDialog=true, rollMode=null, createMessage=true, variance={}}={}) {
+	async roll({configureDialog=true, messageMode=null, createMessage=true, variance={}}={}) {
 		//console.debug(variance);
 
 		if(["both", "pre", "sub"].includes(this.system.macro?.launchOrder)) {
@@ -1082,10 +1082,10 @@ export default class Item4e extends Item {
 			chatData.flags["dnd4e.variance"] = variance;
 		}
 
-		// Toggle default roll mode
-		rollMode = rollMode || game.settings.get("core", "rollMode");
-		if ( ["gmroll", "blindroll"].includes(rollMode) ) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
-		if ( rollMode === "blindroll" ) chatData["blind"] = true;
+		// Toggle default message mode
+		messageMode = messageMode || game.settings.get("core", "messageMode");
+		if ( ["gmroll", "blindroll"].includes(messageMode) ) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
+		if ( messageMode === "blindroll" ) chatData["blind"] = true;
 
 		// Create the chat message
 		if ( createMessage ) {
@@ -2451,7 +2451,7 @@ export default class Item4e extends Item {
 		roll.toMessage({ 
 			speaker: ChatMessage.getSpeaker({actor: this.actor}),
 			flavor: this.system.description.chat || title,
-			rollMode: game.settings.get("core", "rollMode"),
+			messageMode: game.settings.get("core", "messageMode"),
 			messageData: {"flags.dnd4e.roll": {type: "other", itemId: this.id }}
 		});
 		return roll;

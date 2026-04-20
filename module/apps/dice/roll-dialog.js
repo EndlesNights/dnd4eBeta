@@ -51,7 +51,7 @@ export default class RollDialog extends foundry.applications.api.HandlebarsAppli
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     foundry.utils.mergeObject(context, {
-      rollModes: CONFIG.Dice.rollModes,
+      messageModes: CONFIG.ChatMessage.modes,
       config: CONFIG.DND4E,
       buttons: this.buttons,
       ...this.dialogData

@@ -1681,7 +1681,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					user: game.user.id,
 					speaker: {actor: this.document, alias: this.document.name},
 					flavor: flav,
-					rollMode: game.settings.get("core", "rollMode"),
+					messageMode: game.settings.get("core", "messageMode"),
 					'flags.dnd4e':{
 						'roll':{'type': "other", 'itemId': this.id},
 						'messageType': `recharge`

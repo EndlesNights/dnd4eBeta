@@ -14,7 +14,7 @@ import RollDialog from "./apps/dice/roll-dialog.js";
  *                                 Each element should be in the form of { target: 'Text To Replace', value: 'text to replace with' }
  * @param {Object} data            Actor or item data against which to parse the roll
  * @param {Event|object} event     The triggering event which initiated the roll
- * @param {string} rollMode        A specific roll mode to apply as the default for the resulting roll
+ * @param {string} messageMode        A specific roll mode to apply as the default for the resulting roll
  * @param {string|null} template   The HTML template used to render the roll dialog
  * @param {string|null} title      The dice roll UI window title
  * @param {Object} speaker         The ChatMessage speaker to pass when creating the chat
@@ -30,16 +30,16 @@ import RollDialog from "./apps/dice/roll-dialog.js";
  *
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
-export async function d20Roll({parts=[],  partsExpressionReplacements = [], item=null, weaponUse=null, data={}, event={}, rollMode=null, template=null, title=null, speaker=null,
+export async function d20Roll({parts=[],  partsExpressionReplacements = [], item=null, weaponUse=null, data={}, event={}, messageMode=null, template=null, title=null, speaker=null,
 								  flavor=null, fastForward=null, onClose, dialogOptions, critical=20, fumble=1, targetValue=null, actor,
 								  isAttackRoll=false, options={}}={}) {
 	critical = critical || 20; //ensure that critical always has a value
 	const isCharge = options?.variance?.isCharge || false;
 	const isOpp = options?.variance?.isOpp || false;
 	const userStatus = actor?.statuses || {};
-	const rollConfig = {parts, partsExpressionReplacements, item, weaponUse, data, speaker, rollMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, fastForward, options, isCharge, isOpp, userStatus }
+	const rollConfig = {parts, partsExpressionReplacements, item, weaponUse, data, speaker, messageMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, fastForward, options, isCharge, isOpp, userStatus }
 	// handle input arguments
-	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
+	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, messageMode, title, speaker, flavor, fastForward)
 	// If fast-forward requested, perform the roll without a dialog
 	if ( rollConfig.fastForward ) {
 		return performD20RollAndCreateMessage(null, rollConfig)
@@ -115,8 +115,8 @@ export async function d20Roll({parts=[],  partsExpressionReplacements = [], item
 	let dialogData = {
 		'formula': parts.join(" + "),
 		'data': data,
-		'rollMode': rollConfig.rollMode,
-		'rollModes': CONFIG.Dice.rollModes,
+		'messageMode': rollConfig.messageMode,
+		'messageModes': CONFIG.ChatMessage.modes,
 		'config': CONFIG.DND4E,
 		'flavor': flavor ?? "",
 		'isAttackRoll': isAttackRoll,
@@ -146,7 +146,7 @@ export function getAttackRollBonus({parts=[], partsExpressionReplacements = [], 
 	return roll.formula;
 }
 
-async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, item, weaponUse, data, speaker, rollMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, options, userStatus, fastForward}) {
+async function performD20RollAndCreateMessage(form, {parts, partsExpressionReplacements, item, weaponUse, data, speaker, messageMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, options, userStatus, fastForward}) {
 	/*
 	 coming in the parts[] is in one of the following states:
 	 - Empty
@@ -438,13 +438,13 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
 	}
 
 	// Convert the roll to a chat message and return the roll
-	rollMode = form ? form.rollMode.value : rollMode;
+	messageMode = form ? form.messageMode.value : messageMode;
 
 	await roll.toMessage({
 		speaker: speaker,
 		flavor: flavor,
 		flags: options?.flags
-	}, { rollMode });
+	}, { messageMode });
 	return roll;
 }
 
@@ -468,7 +468,7 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
  * @param {Actor} actor           The Actor making the damage roll
  * @param {Object} data           Actor or item data against which to parse the roll
  * @param {Event|object} event    The triggering event which initiated the roll
- * @param {string} rollMode       A specific roll mode to apply as the default for the resulting roll
+ * @param {string} messageMode       A specific roll mode to apply as the default for the resulting roll
  * @param {String} template       The HTML template used to render the roll dialog
  * @param {String} title          The dice roll UI window title
  * @param {Object} speaker        The ChatMessage speaker to pass when creating the chat
@@ -484,14 +484,14 @@ async function performD20RollAndCreateMessage(form, {parts, partsExpressionRepla
  * @return {Promise}              A Promise which resolves once the roll workflow has completed
  */
 export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionReplacement  = [], partsCritExpressionReplacement= [], partsMissExpressionReplacement= [], actor,
-								data, event={}, rollMode=null, template, title, speaker, flavor, allowCritical=true,
+								data, event={}, messageMode=null, template, title, speaker, flavor, allowCritical=true,
 								critical=false, fastForward=null, onClose, dialogOptions, healingRoll, options}) {
 									
 	// First configure the Roll
-	const rollConfig = {parts, partsCrit, partsMiss, data, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: 'normal', fastForward, options}
+	const rollConfig = {parts, partsCrit, partsMiss, data, flavor, messageMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: 'normal', fastForward, options}
 
 	// handle input arguments
-	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward)
+	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, messageMode, title, speaker, flavor, fastForward)
 
 	// crit and miss need a @bonus as well as parts
 	rollConfig.partsCrit = partsCrit?.concat(["@bonus"]);
@@ -511,8 +511,8 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 	let dialogData = {
 		formula: "@damage + @bonus",
 		data: data,
-		rollMode: rollMode,
-		rollModes: CONFIG.Dice.rollModes
+		messageMode: messageMode,
+		messageModes: CONFIG.ChatMessage.modes
 	};
 
 	// common dialog configuration
@@ -557,7 +557,7 @@ export async function damageRoll({parts, partsCrit, partsMiss, partsExpressionRe
 	return RollDialog.asPromise({dialogData, rollConfig, buttons, ...dialogConfig, callbackFn: performDamageRollAndCreateChatMessage});
 }
 
-async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, partsMiss, data, hitType, flavor, rollMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options, fastForward}) {
+async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, partsMiss, data, hitType, flavor, messageMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options, fastForward}) {
 	manageBonusInParts(parts, form, data)
 	manageBonusInParts(partsCrit, form, data)
 	manageBonusInParts(partsMiss, form, data)
@@ -611,23 +611,23 @@ async function performDamageRollAndCreateChatMessage(form, {parts, partsCrit, pa
 		flavor = form.flavor.value || flavor;
 	}
 	// Convert the roll to a chat message
-	rollMode = form ? form.rollMode.value : rollMode;
+	messageMode = form ? form.messageMode.value : messageMode;
 	roll.toMessage({
 		speaker,
 		flavor
-	}, { rollMode });
+	}, { messageMode });
 	return roll;
 }
 
 
 // General helper functions for both attack and damage rolls
 
-function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, rollMode, title, speaker, flavor, fastForward) {
+function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, messageMode, title, speaker, flavor, fastForward) {
 	// Handle input arguments
 	rollConfig.flavor = flavor || title;
 	rollConfig.speaker = speaker || ChatMessage.getSpeaker();
 	rollConfig.parts = parts.concat(["@bonus"]);
-	rollConfig.rollMode = rollMode || game.settings.get("core", "rollMode");
+	rollConfig.messageMode = messageMode || game.settings.get("core", "messageMode");
 
 	// Determine whether the roll can be fast-forward, make explicit comparison here as it might be set as false, so no falsey checks
 	if ( fastForward === null || fastForward === undefined) {

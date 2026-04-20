@@ -63,7 +63,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 		
 		foundry.utils.mergeObject(context, {
 			system: actor.system,
-			rollModes: Object.keys(CONFIG.Dice.rollModes).map(key => CONFIG.Dice.rollModes[key].label),
+			messageModes: Object.keys(CONFIG.ChatMessage.modes).map(key => CONFIG.ChatMessage.modes[key].label),
 			effectName: ( saveOptions.effectSave ? saveEffect.name : null ),
 			effectId: saveOptions?.effectId,
 			saveDC: saveOptions.saveDC,
@@ -99,7 +99,7 @@ export class SaveThrowDialog extends DocumentSheet4e {
 
 	static #onSubmit(event, form, formData) {
 		const saveData = foundry.utils.expandObject(formData.object);
-		saveData.rollMode = Object.keys(CONFIG.Dice.rollModes)[saveData.rollMode]
+		saveData.messageMode = Object.keys(CONFIG.ChatMessage.modes)[saveData.messageMode]
 		if (saveData.saveAgainst) {
 			saveData.effectSave = true;
 			saveData.effectId = saveData.saveAgainst
