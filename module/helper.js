@@ -145,14 +145,14 @@ export class Helper {
 			const weaponInnerData = weaponData?.system
 			let enhValue = weaponInnerData?.enhance||0;
 			if (debug) {
-				debugLog(`${debug} Debugging ${effectType} effects for ${powerData.name}.	Supplied Weapon: ${weaponData?.name}`)
+				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.	Supplied Weapon: ${weaponData?.name}`)
 			}
 			
 			//Using inherent enhancements?
 			if(game.settings.get("dnd4e", "inhEnh")) {
 				//If our enhancement is lower than the inherent level, adjust it upward
 				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
-				debugLog(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)}' for this level against weapon value of +${weaponInnerData?.enhance})`);
+				Helper.debugLog(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)}' for this level against weapon value of +${weaponInnerData?.enhance})`);
 			}
 
 			const effectsToProcess = []
@@ -374,7 +374,7 @@ export class Helper {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4e |` : ""
 		if (actorData.effects) {
 			if (debug) {
-				debugLog(`${debug} Debugging ${effectType} effects for ${effectData?.name}.`)
+				Helper.debugLog(`${debug} Debugging ${effectType} effects for ${effectData?.name}.`)
 			}
 
 			const effectsToProcess = []
@@ -412,8 +412,8 @@ export class Helper {
 			
 			if (effectsToProcess.length > 0) {
 				if (debug) {
-					debugLog(`${debug} Found the following possible active effects`)
-					effectsToProcess.forEach((effect) => debugLog(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
+					console.log(`${debug} Found the following possible active effects`)
+					effectsToProcess.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
 				}
 
 				const suitableKeywords = ['global']
@@ -473,8 +473,8 @@ export class Helper {
 		})
 
 		if (debug) {
-			debugLog(`${debug} The following effects were deemed suitable by keyword filter`)
-			matchingEffects.forEach((effect) => debugLog(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
+			console.log(`${debug} The following effects were deemed suitable by keyword filter`)
+			matchingEffects.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`))
 		}
 
 		const newParts = {}
@@ -503,13 +503,13 @@ export class Helper {
 					if (newParts["untypedEffectBonus"]) {
 						newParts["untypedEffectBonus"] = newParts["untypedEffectBonus"] + effectValue
 						if (debug) {
-							debugLog(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Additional untyped Bonus.	They Stack.`)
+							console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Additional untyped Bonus.	They Stack.`)
 						}
 					}
 					else {
 						newParts["untypedEffectBonus"] = effectValue
 						if (debug) {
-							debugLog(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: First untyped Bonus`)
+							console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: First untyped Bonus`)
 						}
 					}
 				}
@@ -519,26 +519,26 @@ export class Helper {
 						if (newParts[key] < effectValue) {
 							newParts[key] = effectValue
 							if (debug) {
-								debugLog(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Is greater than existing ${bonusType}, replacing`)
+								console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Is greater than existing ${bonusType}, replacing`)
 							}
 						}
 						else {
 							if (debug) {
-								debugLog(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : Is not greater than existing ${bonusType}, discarding`)
+								console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : Is not greater than existing ${bonusType}, discarding`)
 							}
 						}
 					}
 					else {
 						newParts[key] = effectValue
 						if (debug) {
-							debugLog(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : First ${bonusType} Bonus`)
+							console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : First ${bonusType} Bonus`)
 						}
 					}
 				}
 			}
 			else {
 				ui.notifications.warn(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
-				debugLog(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
+				Helper.debugLog(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
 			}
 		}
 		
@@ -664,8 +664,8 @@ export class Helper {
 			return roll.roll().catch(err => {
 				let msg = context ? `${game.i18n.localize(errorMessageKey)} (in ${context}) : ${rollString}` : `${game.i18n.localize(errorMessageKey)} : ${rollString}`
 				ui.notifications.error(msg);
-				debugLog(msg)
-				debugLog(err)
+				Helper.debugLog(msg)
+				Helper.debugLog(err)
 				// return new Roll("0").roll({async : true});
 				return new Roll("0").roll();
 			});
@@ -967,7 +967,7 @@ export class Helper {
 			change.value = change.value.replace(/\$solidify\((.*?)\)/g, (match, value) => {
 				return Helper.commonReplace(value, parentActor);
 			});
-			debugLog(change.value);
+			Helper.debugLog(change.value);
 		}
 
 	}
@@ -1649,6 +1649,8 @@ export class Helper {
 		return false;
 	}
 
+    /* -------------------------------------------- */
+
     /** 
      * @param {String} msg  Text to print to the console
     */
@@ -1664,8 +1666,8 @@ export async function handleApplyEffectToToken(data){
 	if(!game.user.isGM){
 		return;
 	}
-	debugLog(data)
-	debugLog(game.scenes.get(data.scene))
+	Helper.debugLog(data)
+	Helper.debugLog(game.scenes.get(data.scene))
 	const effectData = data.effectData;
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
 	await actor.newActiveEffectSocket(effectData);
