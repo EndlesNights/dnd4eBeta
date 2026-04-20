@@ -2135,7 +2135,7 @@ export default class Item4e extends Item {
 				options.formulaInnerData.versatile = 1
 			}
             if (weaponUse.system.properties["hic"]) {
-                let weaponDice = weaponUse.getWepDice(this.actor.getRollData().epic ? 2 : 1);
+                let weaponDice = weaponUse.getWepDice(this.actor.system.tier);
 
                 critDamageFormula += ` + ${weaponDice}`;
                 critDamageFormulaExpression += " + @highCrit";
