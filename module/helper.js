@@ -1235,6 +1235,18 @@ export class Helper {
 		}
 		return `${result}`;
 	}
+
+    /**
+	 * Wrapper for findKeyScale(level, CONFIG.DND4E.SCALE.basic) for use in dice formulas.
+	 *
+     * @param {number} level Level to scale from, as we don't have access to any rollData in here. Default 1.
+	 * @param {number} offset Offset value to increase the input to adjust the scale. Default 0.
+	 * @returns {result} New set of matching disposition
+	 */
+
+    static scaleFn(level = 1, offset = 0) {
+        return Helper.findKeyScale(level, CONFIG.DND4E.SCALE.basic, offset)
+    }
 	
 	/**
 	 * Helper function to convert an initiative with decimal points to a human-friendly round number with tooltip.

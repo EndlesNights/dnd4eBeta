@@ -847,6 +847,7 @@ export default class Item4e extends Item {
 						if(this.actor && areaString){
 							try{
 								areaString = Helper.commonReplace(areaString, this.actor);
+                                areaString = Roll.replaceFormulaData(areaString, this.actor.getRollData());
 								if (!Helper._isNumber(areaString)) areaString = Roll.safeEval(areaString);
 							}catch(e){
 								console.error(`Could not evaluate area formula. This is probably due to an unknown key in the formula.`);

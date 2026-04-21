@@ -113,6 +113,7 @@ Hooks.once("init", async function() {
 	CONFIG.Dice.rolls = [Roll4e];
 	CONFIG.Dice.rolls.push(MultiAttackRoll);
 	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
+    CONFIG.Dice.functions.scale = Helper.scaleFn;
 	
 	CONFIG.ui.items = ItemDirectory4e;
 
