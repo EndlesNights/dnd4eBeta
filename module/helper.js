@@ -1244,8 +1244,8 @@ export class Helper {
 	 * @returns {result} New set of matching disposition
 	 */
 
-    static scaleFn(level = 1, offset = 0) {
-        return Helper.findKeyScale(level, CONFIG.DND4E.SCALE.basic, offset)
+    static scaleFn(level = 1, offset = 1) {
+        return Helper.findKeyScale(level, CONFIG.DND4E.SCALE.basic, offset - 1)
     }
 	
 	/**
