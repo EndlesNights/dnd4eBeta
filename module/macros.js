@@ -1,3 +1,4 @@
+import { Helper } from "./helper.js";
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
