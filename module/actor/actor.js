@@ -153,7 +153,7 @@ export class Actor4e extends Actor {
 
 		for ( const token of tokens ) {
 			if ( !token.object?.visible || token.isSecret ) continue;
-            token.object?.renderFlags.set({ refreshBars: true })
+			token.object?.renderFlags.set({ refreshBars: true })
 			if ( token.hasDynamicRing ) {
 				token.flashRing(key, pct, value < 0).then(() => {
 					token.object?.renderFlags.set({ refreshRingVisuals: true });
@@ -1277,7 +1277,7 @@ export class Actor4e extends Actor {
 				}
 				def.bonusValue = defBonusValue;
 				
-                let light = true;
+				let light = true;
 				//Get Def stats from items
 				for (let i of this.items) {
 					if (i.type !="equipment" || !i.system.equipped ) { continue; };
@@ -1300,8 +1300,7 @@ export class Actor4e extends Actor {
 					}
 					def.armour += i.system.armour[id];
 				}
-
-                if (id === 'ac') def.light = light;
+				if (id === 'ac') def.light = light;
 				
 				//Using inherent enhancements?
 				if (game.settings.get("dnd4e", "inhEnh")) {
@@ -1955,7 +1954,7 @@ export class Actor4e extends Actor {
 
 		const parts = [];
 		const partsExpressionReplacements = [];
-        const rollData = this.getRollData();
+		const rollData = this.getRollData();
 		if(options.save) {		
 			parts.push(Roll.replaceFormulaData(options.save, rollData));
 			partsExpressionReplacements.push({value : options.save, target: parts[0]});
@@ -2184,7 +2183,7 @@ export class Actor4e extends Actor {
 			}
 		}
 
-        ActiveEffect.registry.refresh("dayEnd", { actor: this.uuid});
+		ActiveEffect.registry.refresh("dayEnd", { actor: this.uuid});
 		await this.update(updateData);
 	}
 
@@ -2555,36 +2554,36 @@ export class Actor4e extends Actor {
 			}
 		}
 
-        if (game.settings.get("dnd4e", "compoundDamageTypes") === "allInclusive") {
+		if (game.settings.get("dnd4e", "compoundDamageTypes") === "allInclusive") {
 			if (combinedDamageTypes.size) {
 				const damageTypesArray = Array.from(combinedDamageTypes);
-                let i = 0;
-                for (let dt of damageTypesArray) {
-                    let typedDamage = 0 | combinedDamage / damageTypesArray.length + (i < combinedDamage % damageTypesArray.length);
-                    totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
-                    i++;
-                }
+				let i = 0;
+				for (let dt of damageTypesArray) {
+					let typedDamage = 0 | combinedDamage / damageTypesArray.length + (i < combinedDamage % damageTypesArray.length);
+					totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+					i++;
+				}
 			}
 			if (combinedOngoingDamageTypes.size) {
 				const ongoingDamageTypesArray = Array.from(combinedOngoingDamageTypes);
-                const IS_ONGOING = true;
-                let i = 0;
-                for (let dt of ongoingDamageTypesArray) {
-                    let typedDamage = 0 | combinedDamage / damageTypesArray.length + (i < combinedDamage % damageTypesArray.length);
-                    totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
-                    i++;
-                }
+				const IS_ONGOING = true;
+				let i = 0;
+				for (let dt of ongoingDamageTypesArray) {
+					let typedDamage = 0 | combinedDamage / damageTypesArray.length + (i < combinedDamage % damageTypesArray.length);
+					totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+					i++;
+				}
 			}
 		}
 		else {
 			for (let d of disjointDamageArray){
 				const damageTypesArray = Array.from(d.types);
-                let i = 0;
-                for (let dt of damageTypesArray) {
-                    let typedDamage = 0 | d.value / damageTypesArray.length + (i < d.value % damageTypesArray.length);
-                    totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
-                    i++;
-                }
+				let i = 0;
+				for (let dt of damageTypesArray) {
+					let typedDamage = 0 | d.value / damageTypesArray.length + (i < d.value % damageTypesArray.length);
+					totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+					i++;
+				}
 			}
 		}
 
@@ -2716,7 +2715,7 @@ export class Actor4e extends Actor {
 			duration: effectData.duration,
 			tint: effectData.tint,
 			flags: effectData.flags,
-            showIcon: effectData.showIcon
+			showIcon: effectData.showIcon
 		}]);
 	}
 
