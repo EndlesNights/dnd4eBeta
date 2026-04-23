@@ -62,7 +62,6 @@ export default class Item4e extends Item {
 		if (this.isOwned && !Number.isNumeric(max)) {
 		  if (this.actor.system === undefined) return null;
 		  try {
-			max = Helper.commonReplace(max, this.actor);
 			max = Roll.replaceFormulaData(max, this.actor.getRollData(), {missing: 0, warn: true});
 			max = Roll.safeEval(max);
 		  } catch(e) {
@@ -424,7 +423,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasAreaTarget() {
-		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.system.rangeType) || (this.system.effectType.aura && this.system.auraSize);
+		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.system.rangeType) || (this.system.effectType?.aura && this.system.auraSize);
 	}
 
   /* -------------------------------------------- */
@@ -846,7 +845,6 @@ export default class Item4e extends Item {
 						let areaString = system.area || '';
 						if(this.actor && areaString){
 							try{
-								areaString = Helper.commonReplace(areaString, this.actor);
                                 areaString = Roll.replaceFormulaData(areaString, this.actor.getRollData());
 								if (!Helper._isNumber(areaString)) areaString = Roll.safeEval(areaString);
 							}catch(e){
@@ -862,7 +860,7 @@ export default class Item4e extends Item {
 						let rangeValue = system.rangePower || '';
 						if(this.actor && rangeValue){
 							try{
-								rangeValue = Helper.commonReplace(rangeValue, this.actor);
+								rangeValue = Roll.replaceFormulaData(rangeValue, this.actor.getRollData());
 								if (!Helper._isNumber(rangeValue)) rangeValue = Roll.safeEval(rangeValue);
 							}catch(e){
 								console.error(`Could not evaluate range formula. This is probably due to an unknown key in the formula.`);
@@ -875,7 +873,7 @@ export default class Item4e extends Item {
 						let longRangeValue = system.range.long;
 						if(this.actor){
 							try{
-								longRangeValue = Helper.commonReplace(longRangeValue, this.actor);
+								longRangeValue = Roll.replaceFormulaData(longRangeValue, this.actor.getRollData());
 								if (!Helper._isNumber(longRangeValue)) longRangeValue = Roll.safeEval(longRangeValue);
 							}catch(e){
 								console.error(`Could not evaluate long range formula. This is probably due to an unknown key in the formula.`);
@@ -979,7 +977,7 @@ export default class Item4e extends Item {
 					attackBonus = await this.getAttackBonus({'variance':variance});
 				}
 				let cardString = Helper._preparePowerCardData(await this.getChatData({},variance), CONFIG, this.actor, attackBonus);
-				return Helper.commonReplace(cardString, this.actor, this, weaponUse? weaponUse.system : null, 1);
+				return Helper.commonReplace(cardString, this.actor.getRollData(), this, weaponUse? weaponUse.system : null, 1);
 			} else {
 				return null;
 			}
@@ -1085,8 +1083,8 @@ export default class Item4e extends Item {
 
 		// Toggle default message mode
 		messageMode = messageMode || game.settings.get("core", "messageMode");
-		if ( ["gmroll", "blindroll"].includes(messageMode) ) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
-		if ( messageMode === "blindroll" ) chatData["blind"] = true;
+		if ( ["gm", "blind"].includes(messageMode) ) chatData["whisper"] = ChatMessage.getWhisperRecipients("GM");
+		if ( messageMode === "blind" ) chatData["blind"] = true;
 
 		// Create the chat message
 		if ( createMessage ) {
@@ -1114,7 +1112,7 @@ export default class Item4e extends Item {
 			if ((this.type === "power" || this.type === "consumable") && this.system.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
 				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor);
-				return Helper.commonReplace(cardString, this.actor, this, weaponUse? weaponUse.system : null, 1);
+				return Helper.commonReplace(cardString, this.actor.getRollData(), this, weaponUse? weaponUse.system : null, 1);
 			} else {
 				return null;
 			}
@@ -1330,7 +1328,7 @@ export default class Item4e extends Item {
 			
 		const description = data.description.value || '';
 		const weaponUse = Helper.getWeaponUse(data, this.actor);
-		const descriptionText = description ? Helper.commonReplace(description, this.actor, this.system, weaponUse?.system) : description;
+		const descriptionText = description ? Roll.replaceFormulaData(description, this.getRollData()) : description;
 
 		// Rich text description
 		htmlOptions.async = true; //TextEditor.enrichHTML is becoming asynchronous. In the short term you may pass async=true or async=false as an option to nominate your preferred behavior.
@@ -1563,10 +1561,10 @@ export default class Item4e extends Item {
 		const parts = [];
 		const partsExpressionReplacements = [];
 		if(!!itemData.attack.formula) {		
-			parts.push(Helper.commonReplace(itemData.attack.formula, actorData, this.system, weaponUse? weaponUse.system : null))
+			parts.push(Roll.replaceFormulaData(itemData.attack.formula, this.getRollData()))
 			partsExpressionReplacements.push({value : itemData.attack.formula, target: parts[0]})
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData, this.system, weaponUse? weaponUse.system : null, 1, true)
+			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData.getRollData(), this.system, weaponUse? weaponUse.system : null, 1, true)
 		}
 
 		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
@@ -1704,10 +1702,10 @@ export default class Item4e extends Item {
 		const parts = [];
 		const partsExpressionReplacements = [];
 		if(!!itemData.attack.formula) {		
-			parts.push(Helper.commonReplace(itemData.attack.formula, actorData, this.system, weaponUse? weaponUse.system : null));
+			parts.push(Roll.replaceFormulaData(itemData.attack.formula, this.getRollData()));
 			partsExpressionReplacements.push({value : itemData.attack.formula, target: parts[0]});
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData, this.system, weaponUse? weaponUse.system : null, 1, true);
+			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData.getRollData(), this.system, weaponUse? weaponUse.system : null, 1, true);
 		}
 
 		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
@@ -2034,9 +2032,9 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData: {}, divisors: {normal: {value: 1, reason: []}, miss: {value: 1, reason: []}, crit: {value: 1, reason: []}} }
 		const secondaryPartsHelper = (formula, damageType) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.system, weaponUse?.system, 1, true))
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData.getRollData(), this.system, weaponUse?.system, 1, true))
 			// convert formula and type into a single string of "substituted formula [type]"
-			return returnDamageRollAndOptionalType(Helper.commonReplace(formula, actorData, this.system, weaponUse?.system), damageType)
+			return returnDamageRollAndOptionalType(Roll.replaceFormulaData(formula, this.getRollData), damageType)
 		}
 		const parts = itemData.damage.parts.map(d => secondaryPartsHelper(d[0], d[1]));
 		const partsMiss = itemData.damage.parts.map(d => secondaryPartsHelper(d[0], d[1]));
@@ -2072,9 +2070,9 @@ export default class Item4e extends Item {
 		if(!!itemData.hit?.formula) {
 			const formulaHelper = (formula) => {
 				// store the values that were used to sub in any formulas
-				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.system, weaponUse?.system, 1, true))
+				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData.getRollData(), this.system, weaponUse?.system, 1, true))
 				// convert formula and type into a single string of "substituted formula [type]"
-				return  Helper.commonReplace(formula, actorData, this.system, weaponUse?.system);
+				return  Roll.replaceFormulaData(formula, this.getRollData());
 			}
 			damageFormula = formulaHelper(itemData.hit.formula)
 			missDamageFormula = formulaHelper(itemData.miss.formula)
@@ -2088,8 +2086,8 @@ export default class Item4e extends Item {
 			//Add seconadary weapons damage into parts
 			const secondaryDamageExpressionHelper = (oldParts, expressionParts, newPartsArr) => {
 				const newParts = newPartsArr.map(d =>  {
-					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(d[0], actorData, this.system, weaponUse?.system, 1, true))
-					const formula = Helper.commonReplace(d[0], actorData, this.system, weaponUse?.system);
+					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(d[0], actorData.getRollData(), this.system, weaponUse?.system, 1, true))
+					const formula = Roll.replaceFormulaData(d[0], this.getRollData());
 					if (d.length >= 2) {
 						return returnDamageRollAndOptionalType(formula, d[1])
 					}
@@ -2336,9 +2334,9 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData : {} }
 		const formulaHelper = (formula) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData, this.system, weaponUse?.system, 1, true))
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData.getRollData(), this.getRollData(), weaponUse?.getRollData(), 1, true))
 			// convert formula and type into a single string of "substituted formula [type]"
-			return  Helper.commonReplace(formula, actorData, this.system, weaponUse?.system);
+			return  Roll.replaceFormulaData(formula, this.getRollData());
 		}
 
 		//Add power healing into parts
@@ -2580,7 +2578,7 @@ export default class Item4e extends Item {
 		const parts = ["@" + rollType];
 
 		if(this.system.formula) {
-			rollData[rollType] = Helper.commonReplace(this.system.formula.replace("@attribute", Helper.byString(this.system.attribute, this.actor.system)), this.actor.system, this.system);
+			rollData[rollType] = Roll.replaceFormulaData(this.system.formula.replace("@attribute", Helper.byString(this.system.attribute, this.actor.system)), this.getRollData());
 		} else {
 			rollData[rollType] = `1d20 + ${Helper.byString(this.system.attribute, this.actor.system)}`; 
 			if(this.system.bonus){

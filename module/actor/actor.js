@@ -1157,8 +1157,7 @@ export class Actor4e extends Actor {
 								val = b.value;
 							}		
 							else {
-								val = Helper.commonReplace(b.value, actorData);
-								val = Roll.safeEval(Helper.replaceData(val, system));
+								val = Roll.safeEval(Roll.replaceFormulaData(val, system));
 							}
 							vulnManual += Math.min(val,0);
 							resManual += Math.max(val,0);
@@ -1953,14 +1952,14 @@ export class Actor4e extends Actor {
 
 		const parts = [];
 		const partsExpressionReplacements = [];
+        const rollData = this.getRollData();
 		if(options.save) {		
-			parts.push(Helper.commonReplace(options.save, this));
+			parts.push(Roll.replaceFormulaData(options.save, rollData));
 			partsExpressionReplacements.push({value : options.save, target: parts[0]});
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = Helper.commonReplace(options.save, this, null, null, 1, true);
+			options.formulaInnerData = Helper.commonReplace(options.save, rollData, null, null, 1, true);
 		}
-
-		const rollData = this.getRollData();
+		
 		await Helper.applySaveEffects([parts], rollData, this, this.effects.get(options.effectId), "save");
 
 		const rollConfig = foundry.utils.mergeObject({
@@ -2871,7 +2870,7 @@ export class Actor4e extends Actor {
 						content: html,
 						flavor: `${dot.type == "healing" ? game.i18n.localize ("EFFECT.statusRegen") : game.i18n.localize ("DND4E.OngoingDamage")}: ${dot.effectName}`,
 						whisper: chatRecipients,
-						//messageMode: "gmroll",
+						//messageMode: "gm",
 						/*rolls: [{
 							formula: `(${dot.amount})[${dot.type}]`,
 							terms: [{

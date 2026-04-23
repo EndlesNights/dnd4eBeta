@@ -581,7 +581,7 @@ export class Helper {
 			if (variables) {
 				variables.forEach(variable => {
 					// get the value for that variable - call this method with just the variable and with return data off
-					result[variable.substring(1)] = this.commonReplace(variable, actorOrData, powerInnerData, weaponInnerData, depth, false) // trim off the leading @
+					result[variable.substring(1)] = Roll.replaceFormulaData(variable, actorOrData) // trim off the leading @
 				})
 			}
 			return result
@@ -590,7 +590,7 @@ export class Helper {
 		//Temporary, this should be moved into an enrichers class in the future
 		const regexTextPattern = /\[\[\/text\s(.*?)\]\]/g;
 		newFormula = newFormula.replace(regexTextPattern, (text, r) => {
-			let roll = new Roll(`${r}`);
+			let roll = new Roll(`${r}`, actorOrData);
 
 			if(roll.isDeterministic){
 				roll.evaluateSync();
@@ -799,8 +799,7 @@ export class Helper {
 		if(chatData.attack.isAttack) {
 			let attackForm = chatData.attack.formula;
 			attackForm = chatData.attack.formula.replaceAll('@powerMod',`@${chatData.attack?.ability}Mod`);
-			const weapon = Helper.getWeaponUse(chatData, actorData);
-			const attackValues = this.commonReplace(attackForm, actorData, chatData, weapon?.system);
+			const attackValues = Roll.replaceFormulaData(attackForm, actorData.getRollData());
 			if(!(attackTotal == undefined)){
 				//if does not start with a number sign add one
 				attackTotal = attackTotal.toString();
@@ -861,7 +860,7 @@ export class Helper {
 		}
 
 		if(actorData){
-			powerDetail = this.commonReplace(powerDetail, actorData);
+			powerDetail = Roll.replaceFormulaData(powerDetail, actorData.getRollData());
 		}
 		
 		return powerDetail;
@@ -957,7 +956,7 @@ export class Helper {
 		for(const dot of effect.system.dots){
 			// dot.amount = await this.parseSolidify(dot.amount, parentActor);
 			dot.amount = dot.amount.toString().replace(/\$solidify\((.*?)\)/g, (match, value) => {
-				return Helper.commonReplace(value, parentActor);
+				return Roll.replaceFormulaData(value, parentActor.getRollData());
 			});
 		}
 
@@ -966,7 +965,7 @@ export class Helper {
 			// change.value = this.parseSolidify(change.value, parentActor);
 			change.value = change.value.replace(/\$solidify\((.*?)\)/g, (match, value) => {
 				foundry.utils.logCompatibilityWarning("Use of $solidify() in Active Effect values is deprecated since 0.8.0; use regular rollData instead.")
-                return Helper.commonReplace(value, parentActor);
+                return Roll.replaceFormulaData(value, parentActor.getRollData());
 			});
 			Helper.debugLog(change.value);
 		}

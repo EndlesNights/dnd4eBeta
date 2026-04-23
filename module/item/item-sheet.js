@@ -431,7 +431,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		const description = context.system.description;
 		const weaponUse = this.actor ? Helper.getWeaponUse(itemData.system, this.actor) : null;
 		const itemActor = this.item.actor || null;
-		const descriptionText = description.value ? Helper.commonReplace(description.value, itemActor, itemData.system, weaponUse?.system) : "";
+		const descriptionText = description.value ? Roll.replaceFormulaData(description.value, this.item.getRollData()) : "";
 		context.descriptionHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText || description, {
 			secrets: context.item.isOwner,
 			async: true,
@@ -439,7 +439,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		});
 
 		const descriptionGM = context.system.description.gm || "";
-		const descriptionTextGM = context.system.description.gm ? Helper.commonReplace(descriptionGM, itemActor, itemData.system, weaponUse?.system) : "";
+		const descriptionTextGM = context.system.description.gm ? Roll.replaceFormulaData(descriptionGM, this.item.getRollData()) : "";
 
 		context.descriptionHTMLGM = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionTextGM || descriptionGM, {
 			secrets: context.item.isOwner,
