@@ -736,22 +736,6 @@
 "DND4E.Mod": "Mod",
 "DND4E.MOD": "MOD",
 "DND4E.Mount": "Mount",
-"DND4E.Movement": "Movement",
-"DND4E.MovementBonus": "Bonuses to {mode} speed",
-"DND4E.MovementModes": "Movement Modes",
-"DND4E.MovementSpecialSpeeds": "Special Movement",
-"DND4E.MovementSpeedBase": "Base Speed",
-"DND4E.MovementSpeedBurrowing": "Burrow Speed",
-"DND4E.MovementSpeedCharging": "Charge",
-"DND4E.MovementSpeedClimbing": "Climb Speed",
-"DND4E.MovementSpeedFlying": "Fly Speed",
-"DND4E.MovementSpeedRunning": "Run Bonus",
-"DND4E.MovementSpeedShifting": "Shift",
-"DND4E.MovementSpeedSwimming": "Swim Speed",
-"DND4E.MovementSpeedTeleporting": "Teleport Speed",
-"DND4E.MovementSpeedWalking": "Walk Speed",
-"DND4E.MovementStandardSpeeds": "Standard Movement",
-"DND4E.MovementUnit": "sq.",
 "DND4E.Name": "Name",
 "DND4E.NameNPC": "NPC Name",
 "DND4E.NamePC": "Character Name",
@@ -1438,6 +1422,31 @@
 
 "DND4E.Item.Type": "{type} Type",
 
+"DND4E.Movement":{
+	"Base": "Base",
+	"Bonus": "Bonuses to {mode} speed",
+	"Burrow": "Burrow",
+	"Charge": "Charge",
+	"Climb": "Climb",
+	"Fly": "Fly",
+	"Move": "Move",
+	"Movement": "Movement",
+	"Mode": "Mode",
+	"Modes": "Movement Modes",
+	"Run": "Run Bonus",
+	"Shift": "Shift",
+	"Special": "Special Movement Modes",
+	"Standard": "Standard Movement",
+	"Speed": "Speed",
+	"SpeedType": "{mode} speed",
+	"Swim": "Swim",
+	"Teleport": "Teleport",
+	"Traits": "Trait(s)",
+	"TraitsPlaceholder": "e.g. clumsy, hover",
+	"Unit": "sq.",
+	"Walk": "Walk"
+},
+
 "DND4E.RegionBehaviors.DifficultTerrain": {
 	"FIELDS": {
 		"ignoredDispositions": {
@@ -1498,15 +1507,15 @@
 },
 
 "DND4E.TOKEN.MOVEMENT.ACTIONS": {
-    "charge": {
-        "label": "Charge"
-    },
-    "shift": {
-        "label": "Shift"
-    },
-    "teleport": {
-        "label": "Teleport"
-    }
+	"charge": {
+		"label": "Charge"
+	},
+	"shift": {
+		"label": "Shift"
+	},
+	"teleport": {
+		"label": "Teleport"
+	}
 },
 
 "EFFECT.DurationEndInit": "Effect End Time",
@@ -1692,7 +1701,7 @@
 	"ShowImage": "Show image",
 	"SortBy": "Sort By",
 	"SpecialFields": "Special Field(s)",
-	"SpeedConfigTip": "Totals include any modifiers from Active Effects, and {penalty} penalty from armour.",
+	"SpeedConfigTip": "Total including any modifiers from Active Effects",
 	"StringEnterValues": "Enter values (separate entries with semicolons)",
 	"SustainText": "Sustain Text",
 	"TargetText": "Target Text",
@@ -1732,6 +1741,10 @@
 "SETTINGS.4eChatSchemeAuto": "Match UI (default)",
 "SETTINGS.4eCollapseSituationalBonusL": "If checked: all common situational modifiers will be computed and added as a single modifier to @bonus. Otherwise each will be displayed individually in the resulting formula",
 "SETTINGS.4eCollapseSituationalBonusN": "Collapse Common Attack Mods",
+"SETTINGS.4eCompoundDamageTypesN": "Compound damage types rule",
+"SETTINGS.4eCompoundDamageTypesL": "Determine how compound damage types are combined. All-inclusive considers that an entire damage roll has all of its terms' types, while Disjoint combines terms that have any types in common but leaves separate terms that share no types.",
+"SETTINGS.4eCompoundDamageAllInclusive": "All-inclusive",
+"SETTINGS.4eCompoundDamageDisjoint": "Disjoint",
 "SETTINGS.4eCurWtL": "Carried currency affects character load following the rules on PHB pg. 212.",
 "SETTINGS.4eCurWtN": "Apply Currency Weight",
 "SETTINGS.4eCustomSkillsL": "Configure Custom Skills",

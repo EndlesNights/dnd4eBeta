@@ -158,12 +158,9 @@
 						<ul>
 					</div>
 					
-					<div data-tooltip="{{moveTitle}}">
+					<div data-tooltip="{{moveTip}}">
 						<label class="movement-dialog rollable">{{localize 'DND4E.Speed'}}</label>
-						<strong class="movement-dialog rollable">{{numberFormat system.movement.walk.value}} sq.</strong>
-						{{#each system.moveCustom as |v k|}}
-						<li class="tag {{k}}">{{v}}</li>
-						{{/each}}
+						<strong class="movement-dialog rollable">{{{moveDisplay}}}</strong>
 					</div>
 					
 				</div>
@@ -276,32 +273,7 @@
 		<section class="sheet-body section--tabs-content">
 			{{> "systems/dnd4e/templates/actors/tabs/biography.hbs" tab=tabs.biography}}
 
-			<section class="tab skills{{#if tabs.skills.active}} active{{/if}}" data-group="primary" data-tab="skills">
-				<section class="section section--skills">
-
-					{{#if system.advancedCals}}
-						{{#each system.skills as |skill s|}}
-						<div class="skill--block flexrow" data-skill="{{s}}">
-							<a class="training-toggle skill-training" data-action="cycleSkillProficiency" data-tooltip="{{skill.hover}}">{{{skill.icon}}}</a>
-							<h4 class="skill-name rollable">{{skill.label}}</h4>
-							<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
-							<label class="skill-mod skill-bonus rollable">{{numberFormat skill.total decimals=0 sign=true }}</label>
-							<label class="skill-base">Base 
-								<input class="skill-mod" name="system.skills.{{s}}.base" value="{{skill.base}}" data-dtype="Number">
-							</label>
-						</div>
-						{{/each}}
-					{{else}}
-						{{#each system.skills as |skill s|}}
-						<div class="skill--block flexrow" data-skill="{{s}}">
-							<h4 class="skill-name rollable">{{skill.label}}</h4>
-							<input type="hidden" name="system.skills.{{s}}.training" value="{{skill.training}}" data-dtype="Number">
-							<input class="skill-mod" name="system.skills.{{s}}.base" value="{{skill.base}}" data-dtype="Number">
-						</div>
-						{{/each}}
-					{{/if}}
-				</section>
-			</section>
+			{{> "systems/dnd4e/templates/actors/tabs/skills.hbs" tab=tabs.skills}}
 
 			{{> "systems/dnd4e/templates/actors/tabs/inventory.hbs" tab=tabs.inventory sections=inventory}}
 

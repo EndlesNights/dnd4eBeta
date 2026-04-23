@@ -126,12 +126,9 @@
 						<input name="system.details.detection" value="{{system.details.detection}}" data-dtype="text" onfocus="this.select()" placeholder="{{localize 'DND4E.Hazard.Detection'}}">
 					</div>
 					
-					<div data-tooltip="{{moveTitle}}">
+					<div data-tooltip="{{moveTip}}">
 						<label class="movement-dialog rollable">{{localize 'DND4E.Speed'}}</label>
-						<strong class="movement-dialog rollable">{{numberFormat system.movement.walk.value}} sq.</strong>
-						{{#each system.moveCustom as |v k|}}
-						<li class="tag {{k}}">{{v}}</li>
-						{{/each}}
+						<strong class="movement-dialog rollable">{{{moveDisplay}}}</strong>
 					</div>
 					
 				</div>

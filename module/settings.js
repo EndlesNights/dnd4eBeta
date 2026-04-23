@@ -34,6 +34,20 @@ export const registerSystemSettings = function() {
 			"phb": "SETTINGS.4eDamageCalcPHB",
 		},
 	});
+
+	// Combined damage type rule setting
+	 game.settings.register("dnd4e", "compoundDamageTypes", {
+		name: "SETTINGS.4eCompoundDamageTypesN",
+		hint: "SETTINGS.4eCompoundDamageTypesL",
+		scope: "world",
+		config: true,
+		default: "disjoint",
+		type: String,
+		choices: {
+			"allInclusive": "SETTINGS.4eCompoundDamageAllInclusive",
+			"disjoint": "SETTINGS.4eCompoundDamageDisjoint",
+		},
+	});
 	
 	// Initiative tiebreaker setting
 	game.settings.register("dnd4e", "initiativeDexTiebreaker", {

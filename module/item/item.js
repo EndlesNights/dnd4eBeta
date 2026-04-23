@@ -1329,13 +1329,13 @@ export default class Item4e extends Item {
 		const data = foundry.utils.duplicate(this.system);
 		const labels = this.labels;
 			
-		const description = data.description;
+		const description = data.description.value || '';
 		const weaponUse = Helper.getWeaponUse(data, this.actor);
-		const descriptionText = description.value ? Helper.commonReplace(description.value, this.actor, this.system, weaponUse?.system) : "";
+		const descriptionText = description ? Helper.commonReplace(description, this.actor, this.system, weaponUse?.system) : description;
 
 		// Rich text description
 		htmlOptions.async = true; //TextEditor.enrichHTML is becoming asynchronous. In the short term you may pass async=true or async=false as an option to nominate your preferred behavior.
-		data.description.value = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText || ``, htmlOptions);
+		data.description.value = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText, htmlOptions);
 
 		// Item type specific properties
 		const props = [];
