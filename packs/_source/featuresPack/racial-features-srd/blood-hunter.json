@@ -13,7 +13,7 @@
         "expiry": null,
         "expired": false
       },
-      "disabled": true,
+      "disabled": false,
       "flags": {
         "dnd4e": {
           "dots": [],
@@ -47,10 +47,11 @@
       "system": {
         "changes": [
           {
-            "key": "system.modifiers.attack.untyped",
+            "key": "system.commonAttackBonuses.bloodied.untyped",
+            "type": "add",
             "value": 1,
-            "priority": null,
-            "type": "add"
+            "phase": "initial",
+            "priority": null
           }
         ]
       },
@@ -62,12 +63,12 @@
       "_stats": {
         "compendiumSource": "Actor.c47kggIezZJvadnl.Item.RRi8y9Jm72Mqxcr7.ActiveEffect.kL9gLMBj86D901ff",
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.360",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1776987088831,
+        "modifiedTime": 1776987193103,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "start": null,
@@ -83,7 +84,7 @@
       "value": "<p>[[+1]] bonus to attack rolls made against bloodied targets.</p>",
       "chat": "",
       "unidentified": "",
-      "gm": "<p>This feature can toggled on or off according to the status of the target.</p>"
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
@@ -103,8 +104,55 @@
     "featureSource": "Tiefling",
     "featureGroup": "",
     "auraSize": "",
-    "effectType": {},
-    "damageType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
     "keywordsCustom": "",
     "activation": {
       "type": "",
@@ -146,10 +194,10 @@
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "14.359",
+    "systemVersion": "0.8.0",
+    "coreVersion": "14.360",
     "createdTime": 1686094125284,
-    "modifiedTime": 1745817871227,
+    "modifiedTime": 1776987205841,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

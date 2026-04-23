@@ -1232,13 +1232,12 @@ export class Actor4e extends Actor {
 			origin: this.uuid,
 			disabled:false,
 			description: game.i18n.localize("DND4E.SecondWindEffect"),
-			changes: [
-				{key: "system.modifiers.defences.untyped", mode: 2, value: 2}
-			],
-			flags:{dnd4e:{effectData:{
-				durationType:"startOfUserTurn",
-				powerEffectTypes:"self"
-			}}}
+			system: {
+				changes: [
+					{key: "system.modifiers.defences.untyped", mode: 2, value: 2}
+				],
+				powerEffectType:"self"
+			}
 		};
 		this.system.details.secondwindEffect = secondwindEffect;
 	}

@@ -65,12 +65,12 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.360",
         "systemId": "dnd4e",
         "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "createdTime": 1776986599634,
+        "modifiedTime": 1776986602288,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "start": null,
@@ -83,11 +83,11 @@
   "sort": 1300000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.359",
+    "coreVersion": "14.360",
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "createdTime": null,
-    "modifiedTime": 1745816275190,
+    "systemVersion": "0.8.0",
+    "createdTime": 1776986353176,
+    "modifiedTime": 1776986354159,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

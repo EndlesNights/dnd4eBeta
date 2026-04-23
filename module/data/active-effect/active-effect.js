@@ -45,8 +45,9 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
     return {
       ...super.defineSchema(),
       durationType: new StringField({initial: ""}),
+      powerEffectType: new StringField({initial: "misc"}),
       dots: new ArrayField(new SchemaField({
-        amount: new StringField({initial: 0}),
+        amount: new StringField({initial: "0"}),
         types: new SetField(new StringField({initial: ""}))
       })),
       keywords: new SetField(new StringField({ choices: keywords })),

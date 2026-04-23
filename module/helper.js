@@ -984,7 +984,7 @@ export class Helper {
 		const combat = game.combat;
 		for(let effect of effectMap){
 			let e = effect.toObject(); // This is to avoid editing the source effect
-			if(e.flags.dnd4e.effectData.powerEffectTypes === condition){
+			if(e.system.powerEffectType === condition){
 				for(let t of tokenTarget){
 					// let effectData = e.data;
 					// e.sourceName = parent.name;
@@ -1195,7 +1195,7 @@ export class Helper {
 	}
 
 	static hasEffects(power, effects) {
-		const foundEffects = power.item.effects.contents.filter(e => effects.includes(e.flags.dnd4e.effectData.powerEffectTypes));
+		const foundEffects = power.item.effects.contents.filter(e => effects.includes(e.system.powerEffectType));
 		return foundEffects.length > 0;
 	}
 	

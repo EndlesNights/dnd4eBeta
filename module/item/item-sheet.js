@@ -510,16 +510,16 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		if(effectPowers){
 			for ( let e of effectPowers ) {
 				e.durationTypeLabel = `${CONFIG.DND4E.durationType[e.system.durationType]?.label}`;
-				if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hitOrMiss") categories.hitOrMiss.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "self") categories.self.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "selfHit") categories.selfHit.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "selfMiss") categories.selfMiss.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "selfAfterAttack") categories.selfAfterAttack.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "allies") categories.allies.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "enemies") categories.enemies.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "all") categories.all.effects.push(e);
+				if(e.system.powerEffectType === "hit") categories.hit.effects.push(e);
+				else if(e.system.powerEffectType === "miss") categories.miss.effects.push(e);
+				else if(e.system.powerEffectType === "hitOrMiss") categories.hitOrMiss.effects.push(e);
+				else if(e.system.powerEffectType === "self") categories.self.effects.push(e);
+				else if(e.system.powerEffectType === "selfHit") categories.selfHit.effects.push(e);
+				else if(e.system.powerEffectType === "selfMiss") categories.selfMiss.effects.push(e);
+				else if(e.system.powerEffectType === "selfAfterAttack") categories.selfAfterAttack.effects.push(e);
+				else if(e.system.powerEffectType === "allies") categories.allies.effects.push(e);
+				else if(e.system.powerEffectType === "enemies") categories.enemies.effects.push(e);
+				else if(e.system.powerEffectType === "all") categories.all.effects.push(e);
 				else categories.misc.effects.push(e);
 			}
 		}
@@ -536,8 +536,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 					name: game.i18n.localize("DND4E.EffectNew"),
 					img: this.item.img || "icons/svg/aura.svg",
 					origin: this.item.uuid,
-					"flags.dnd4e.effectData.powerEffectTypes": li.dataset.effectType,
-					system: { durationType: li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined },
+					system: { durationType: li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined, powerEffectType: li.dataset.effectType },
 					disabled: li.dataset.effectType === "inactive"
 				}]);
 				return;
@@ -550,7 +549,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	}
 
     static #onManageActiveEffect(event, target) {
-        if (!this.item.actor.isOwner) return;
+        if (!this.document.testUserPermission(game.user, this.options.editPermission)) return;
         ActiveEffect4e.onManageActiveEffect(event, target, this.item)
     }
 

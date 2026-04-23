@@ -371,6 +371,13 @@
 		}
 		delete flags.effectData?.durationType;
 
+        if (flags.effectData?.powerEffectTypes) {
+            source.system.powerEffectType = flags.effectData.powerEffectTypes;
+        }
+        delete flags.effectData?.durationType;
+
+        if (flags.effectData != null && !flags.effectData) delete flags.effectData;
+
 		if (flags.keywords?.length) {
 			let keywords = []
 			for (const keyword of flags.keywords) {

@@ -124,7 +124,7 @@ export const addChatMessageContextOptions = function(html, options) {
 		if(!item.effects.size) return false;
 
 		for(const effect of item.effects){
-			if(effect.flags.dnd4e.effectData.powerEffectTypes === type) return true;
+			if(effect.system.powerEffectType === type) return true;
 		}
 
 		return false;

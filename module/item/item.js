@@ -3029,7 +3029,7 @@ export default class Item4e extends Item {
 			}
 			const targets = game.settings.get("dnd4e", "applyEffectsToSelection") ? canvas.tokens.controlled : game.user.targets;
 			// Use optional chaining to avoid hard-crashing if flags are missing.
-			Helper.applyEffectsToTokens([effect], targets, effect.flags?.dnd4e?.effectData?.powerEffectTypes, actor);
+			Helper.applyEffectsToTokens([effect], targets, effect.system.powerEffectType, actor);
 		} 
 		else if ( action === "effect" ) Helper.applyAllXEffectsToTokens(item.effects, actor, effectTargets);
 		else if ( action === "hitEffect" ) Helper.applyEffectsToTokens(item.effects, effectTargets, "hit", actor);
