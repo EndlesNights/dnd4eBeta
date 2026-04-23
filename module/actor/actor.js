@@ -1277,31 +1277,34 @@ export class Actor4e extends Actor {
 				}
 				def.bonusValue = defBonusValue;
 				
+                let light = true;
 				//Get Def stats from items
-				for ( let i of this.items) {
-					if(i.type !="equipment" || !i.system.equipped ) { continue; };
-					if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
+				for (let i of this.items) {
+					if (i.type !="equipment" || !i.system.equipped ) { continue; };
+					if (i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
 						if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
 						//Re-route base def bonuses on a shield to be shield bonus
 						def.shield = Math.max(def.shield||0,i.system.armour[id]);
 						continue;
 					}
-					else if(i.system.armour.type === "armour" && id === "ref"){
-						if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+					else if (i.system.armour.type === "armour" && id === "ref"){
+						if (!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
 							def.armour -= 2;
 							this.system.modifiers.attack.armourPen =-2;
 						}
 					}
-					else if((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
-						if(id=== 'ac' && i.system.armour.subType === "heavy") def.light = false;
+					else if ((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
+						if (id === 'ac' && i.system.armour.subType === "heavy") light = false;
 						Helper.debugLog(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
 						def.enhance = Math.max(def.enhance,i.system.armour.enhance);
 					}
 					def.armour += i.system.armour[id];
 				}
+
+                if (id === 'ac') def.light = light;
 				
 				//Using inherent enhancements?
-				if(game.settings.get("dnd4e", "inhEnh")) {
+				if (game.settings.get("dnd4e", "inhEnh")) {
 					//If our enhancement is lower than the inherent level, adjust it upward
 					const enhFloor = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 3);
 					//console.debug(`${id}: Checked inherent defence enhancement of +${Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against existing value of +${def.enhance}`);
@@ -1309,7 +1312,7 @@ export class Actor4e extends Actor {
 				}
 
 				let usedAbility = def?.ability || '';
-				if(def.altability != '') usedAbility = def.altability;
+				if (def.altability != '') usedAbility = def.altability;
 				const modBonus = !(id === "ac" && !def.light) ? data.abilities[usedAbility].mod : 0;
 
 				def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;

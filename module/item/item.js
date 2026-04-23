@@ -2683,6 +2683,7 @@ export default class Item4e extends Item {
 	getPowBase() {
 		if (this.type !== "power") return 0;
 		let powerData = this.system;
+        if (!powerData.hit?.baseQuantity) return;
 		let quantity = Roll.replaceFormulaData(powerData.hit.baseQuantity, this.actor.getRollData(), {recursive: true});
 		let r = new Roll(`${quantity}`);
 
@@ -2741,10 +2742,11 @@ export default class Item4e extends Item {
 	}
 
 	getPowMax() {
-		let dice = "";
-		let quantity = this.system.hit.baseQuantity;
-		quantity = Roll.replaceFormulaData(quantity, this.actor.getRollData(), {recursive: true});
-		let diceType = this.system.hit.baseDiceType.toLowerCase();
+		if (this.type !== "power") return 0;
+		let powerData = this.system;
+        if (!powerData.hit?.baseQuantity) return;
+		let quantity = Roll.replaceFormulaData(powerData.hit.baseQuantity, this.actor.getRollData(), {recursive: true});
+		let diceType = powerData.hit.baseDiceType.toLowerCase();
 		let rQuantity = new Roll(`${quantity}`)
 		// rQuantity.evaluate({maximize: true, async: false});
 		rQuantity.evaluateSync({maximize: true});
@@ -2756,10 +2758,10 @@ export default class Item4e extends Item {
 			quantity = 1;
 		}
 		
-
+        let dice = "";
 		// Handle Weapon Type Damage
 		if(diceType.includes("weapon")){
-			const weaponData = Helper.getWeaponUse(this.system, this.actor)?.system;
+			const weaponData = Helper.getWeaponUse(powerData, this.actor)?.system;
 			if (weaponData) {
 				let parts = weaponData.damageDice.parts;
 				for(let i = 0; i< parts.length; i++) {
