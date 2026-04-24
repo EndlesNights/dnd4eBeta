@@ -19,7 +19,7 @@ export default class CombatantTemplate extends SpeedTemplate {
       shield: new NumberField({...numberConfig, initial: 0}),
       bonus: new BonusField(),
       temp: new NumberField({...numberConfig, initial: 0}),
-      light: new BooleanField({initial: false}),
+      light: new StringField({initial: "auto"}),
       altability: new StringField({initial: ""}),
       condition: new StringField({initial: "Conditional Bonuses."}),
       chat: new StringField({initial: "@name defends"})

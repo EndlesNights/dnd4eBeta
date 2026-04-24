@@ -68,4 +68,14 @@ export default class HazardData extends foundry.abstract.TypeDataModel {
       })
     }
   }
+
+  /* -------------------------------------------- */
+  /*  Data Migration                              */
+  /* -------------------------------------------- */
+
+  /** @inheritdoc */
+  static migrateData(source){
+    if (typeof source.defences?.ac?.light === "boolean") source.defences.ac.light = "auto";
+    return super.migrateData(source);
+  }
 }

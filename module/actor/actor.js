@@ -272,7 +272,7 @@ export class Actor4e extends Actor {
 			}
 
 			//AC mod check, check if light armour (or somthing else that add/negates adding mod)
-			if((system.defences.ac.light || this.checkLightArmour() ) && system.defences.ac.altability !== "none") {
+			if(this.shouldUseACAbilityMod() && system.defences.ac.altability !== "none") {
 				system.defences.ac.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
 				if(system.defences.ac.altability != "") {
 					//if(data.abilities[data.defences.ac.altability].value > data.abilities[data.defences.ac.ability].value)
@@ -1276,7 +1276,6 @@ export class Actor4e extends Actor {
 				}
 				def.bonusValue = defBonusValue;
 				
-				let light = true;
 				//Get Def stats from items
 				for (let i of this.items) {
 					if (i.type !="equipment" || !i.system.equipped ) { continue; };
@@ -1293,13 +1292,11 @@ export class Actor4e extends Actor {
 						}
 					}
 					else if ((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
-						if (id === 'ac' && i.system.armour.subType === "heavy") light = false;
 						Helper.debugLog(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
 						def.enhance = Math.max(def.enhance,i.system.armour.enhance);
 					}
 					def.armour += i.system.armour[id];
 				}
-				if (id === 'ac') def.light = light;
 				
 				//Using inherent enhancements?
 				if (game.settings.get("dnd4e", "inhEnh")) {
@@ -1311,7 +1308,7 @@ export class Actor4e extends Actor {
 
 				let usedAbility = def?.ability || '';
 				if (def.altability != '') usedAbility = def.altability;
-				const modBonus = !(id === "ac" && !def.light) ? data.abilities[usedAbility].mod : 0;
+				const modBonus = !(id === "ac" && !this.shouldUseACAbilityMod()) ? data.abilities[usedAbility].mod : 0;
 
 				def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;
 				def.value += Math.max(def?.feat || 0, globalBonus?.feat || 0);
@@ -1683,6 +1680,18 @@ export class Actor4e extends Actor {
 			}
 		}
 		return true;
+	}
+
+	shouldUseACAbilityMod(){
+		const ACAbilityModUse = this.system.defences.ac.light;
+		switch (ACAbilityModUse) {
+			case "yes":
+				return true;
+			case "no":
+				return false;
+			case "auto":
+				return this.checkLightArmour();
+		}
 	}
 
 	calcCommonAttackBonuses(system){

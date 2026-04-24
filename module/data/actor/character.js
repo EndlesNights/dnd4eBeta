@@ -99,17 +99,21 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
 
   /** @inheritdoc */
   static migrateData(source){
-    if (!source.senses?.special?.value) return super.migrateData(source);
+    const needsACMigration = typeof source.defences?.ac?.light === "boolean";
+    
+    if (!source.senses?.special?.value && !needsACMigration) return super.migrateData(source);
 
     const oldSenses = Array.from(source.senses?.special?.value)
     delete source.senses?.special?.value;
-    if (!oldSenses.length) return super.migrateData(source);
+    if (!oldSenses.length && !needsACMigration) return super.migrateData(source);
 
-    const flattenedSource = foundry.utils.flattenObject(source)
+    const flattenedSource = foundry.utils.flattenObject(source);
     delete flattenedSource["senses.special.value"];    
     for (const sense of oldSenses) {
       flattenedSource[`senses.special.${sense[0]}`] = {value: true, range: sense[1]};
     }
+
+    if (needsACMigration) flattenedSource["defences.ac.light"] = "auto";
 
     return super.migrateData(foundry.utils.expandObject(flattenedSource));
   }

@@ -850,6 +850,13 @@ preLocalize("powerEffectTypes");
 
 /* -------------------------------------------- */
 
+DND4E.armorAbilityMod = {
+    "yes": "DND4EUI.Yes",
+    "no": "DND4EUI.No",
+    "auto": "DND4EUI.Auto"
+}
+preLocalize("armorAbilityMod");
+
 DND4E.profArmor = {
 	cloth: "DND4E.ArmourProfCloth",
 	leather: "DND4E.ArmourProfLeather",

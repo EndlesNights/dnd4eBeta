@@ -1671,6 +1671,7 @@
 	"AttackDetailsTextHint": "Only required for powers with special attack text. If provided, the power card's attack field will use this string instead of the normal pattern (e.g. \"Str vs AC\" or \"+12 vs AC\") selected in system config.",
 	"AttackVersus": "Attack versus",
 	"AttributeKey": "Attribute Key",
+    "Auto": "Auto",
 	"AutoCardTip": "<strong>ON:</strong> The chat card will be generated from the provided Details, with styling applied automatically. If no flavour text is provided, the Description text will be used in its place.<br /><strong>OFF:</strong> The chat card will only use the Description text. Styling is up to the user.",
 	"AutoFromConfig": "Automatic (from Config)",
 	"AutoFromConfigTip": "These keywords have been inferred from the power's settings. If something looks wrong, the config may need updating!",
