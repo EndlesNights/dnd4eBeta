@@ -1276,6 +1276,7 @@ export class Actor4e extends Actor {
 				}
 				def.bonusValue = defBonusValue;
 				
+				let light = true;
 				//Get Def stats from items
 				for (let i of this.items) {
 					if (i.type !="equipment" || !i.system.equipped ) { continue; };
@@ -1297,6 +1298,7 @@ export class Actor4e extends Actor {
 					}
 					def.armour += i.system.armour[id];
 				}
+				if(id === 'ac') def.light = light;
 				
 				//Using inherent enhancements?
 				if (game.settings.get("dnd4e", "inhEnh")) {
