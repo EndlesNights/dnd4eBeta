@@ -1230,6 +1230,7 @@ export class Actor4e extends Actor {
 				}
 				def.bonusValue = defBonusValue;
 				
+				let light = true;
 				//Get Def stats from items
 				for ( let i of this.items) {
 					if(i.type !="equipment" || !i.system.equipped ) { continue; };
@@ -1246,12 +1247,13 @@ export class Actor4e extends Actor {
 						}
 					}
 					else if((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
-						if(id=== 'ac' && i.system.armour.subType === "heavy") def.light = false;
+						if(id === 'ac' && i.system.armour.subType === "heavy") light = false;
 						//console.log(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
 						def.enhance = Math.max(def.enhance,i.system.armour.enhance);
 					}
 					def.armour += i.system.armour[id];
 				}
+				if(id === 'ac') def.light = light;
 				
 				//Using inherent enhancements?
 				if(game.settings.get("dnd4e", "inhEnh")) {
@@ -2505,36 +2507,36 @@ export class Actor4e extends Actor {
 			}
 		}
 
-        if (game.settings.get("dnd4e", "compoundDamageTypes") === "allInclusive") {
+		if (game.settings.get("dnd4e", "compoundDamageTypes") === "allInclusive") {
 			if (combinedDamageTypes.size) {
 				const damageTypesArray = Array.from(combinedDamageTypes);
-                let i = 0;
-                for (let dt of damageTypesArray) {
-                    let typedDamage = 0 | combinedDamage / damageTypesArray.length + (i < combinedDamage % damageTypesArray.length);
-                    totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
-                    i++;
-                }
+				let i = 0;
+				for (let dt of damageTypesArray) {
+					let typedDamage = 0 | combinedDamage / damageTypesArray.length + (i < combinedDamage % damageTypesArray.length);
+					totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+					i++;
+				}
 			}
 			if (combinedOngoingDamageTypes.size) {
 				const ongoingDamageTypesArray = Array.from(combinedOngoingDamageTypes);
-                const IS_ONGOING = true;
-                let i = 0;
-                for (let dt of ongoingDamageTypesArray) {
-                    let typedDamage = 0 | combinedDamage / damageTypesArray.length + (i < combinedDamage % damageTypesArray.length);
-                    totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
-                    i++;
-                }
+				const IS_ONGOING = true;
+				let i = 0;
+				for (let dt of ongoingDamageTypesArray) {
+					let typedDamage = 0 | combinedDamage / damageTypesArray.length + (i < combinedDamage % damageTypesArray.length);
+					totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+					i++;
+				}
 			}
 		}
 		else {
 			for (let d of disjointDamageArray){
 				const damageTypesArray = Array.from(d.types);
-                let i = 0;
-                for (let dt of damageTypesArray) {
-                    let typedDamage = 0 | d.value / damageTypesArray.length + (i < d.value % damageTypesArray.length);
-                    totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
-                    i++;
-                }
+				let i = 0;
+				for (let dt of damageTypesArray) {
+					let typedDamage = 0 | d.value / damageTypesArray.length + (i < d.value % damageTypesArray.length);
+					totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+					i++;
+				}
 			}
 		}
 
