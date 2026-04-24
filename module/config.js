@@ -850,6 +850,13 @@ preLocalize("powerEffectTypes");
 
 /* -------------------------------------------- */
 
+DND4E.proficiency = {
+    "yes": "DND4EUI.Yes",
+    "no": "DND4EUI.No",
+    "auto": "DND4EUI.Auto"
+}
+preLocalize("proficiency");
+
 DND4E.armorAbilityMod = {
     "yes": "DND4EUI.Yes",
     "no": "DND4EUI.No",

@@ -1280,13 +1280,13 @@ export class Actor4e extends Actor {
 				for (let i of this.items) {
 					if (i.type !="equipment" || !i.system.equipped ) { continue; };
 					if (i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
-						if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+						if(!i.isActorProficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
 						//Re-route base def bonuses on a shield to be shield bonus
 						def.shield = Math.max(def.shield||0,i.system.armour[id]);
 						continue;
 					}
 					else if (i.system.armour.type === "armour" && id === "ref"){
-						if (!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+						if (!i.isActorProficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
 							def.armour -= 2;
 							this.system.modifiers.attack.armourPen =-2;
 						}
@@ -1364,13 +1364,13 @@ export class Actor4e extends Actor {
 				for ( let i of this.items) {
 					if(i.type !="equipment" || !i.system.equipped ) { continue; };
 					if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
-						if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+						if(!i.isActorProficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
 						//Re-route base def bonuses on a shield to be shield bonus
 						def.shield = Math.max(def.shield,i.system.armour[id]);
 						continue;
 					}
 					else if(i.system.armour.type === "armour" && id === "ref"){
-						if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+						if(!i.isActorProficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
 							def.armour -= 2;
 							this.system.modifiers.attack.armourPen =-2;
 						}

@@ -34,7 +34,7 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
         initialKeys: CONFIG.DND4E.weaponProperties,
         initialKeysOnly: true
       }),
-      proficient: new BooleanField({initial: true}),
+      proficient: new StringField({initial: "auto"}),
       proficientI: new BooleanField({initial: false}),
       profBonus: new NumberField({initial: 0, integer: true}),
       profImpBonus: new NumberField({initial: 0, integer: true}),
@@ -87,5 +87,15 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
       critRange: new NumberField({initial: 20, integer: true, max: 21, min: 0}),
       critRangeImp: new NumberField({initial: 20, integer: true, max: 21, min: 0})
     }
+  }
+
+  /* -------------------------------------------- */
+  /*  Data Migration                              */
+  /* -------------------------------------------- */
+
+  /** @inheritdoc */
+  static migrateData(source){
+    if (typeof source.proficient === "boolean") source.proficient = "auto";
+    return super.migrateData(source);
   }
 }

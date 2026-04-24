@@ -36,6 +36,8 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
       }),
       armourBaseType: new StringField({initial: ""}),
       armourBaseTypeCustom: new StringField({initial: ""}),
+      shieldBaseType: new StringField({initial: ""}),
+      shieldBaseTypeCustom: new StringField({initial: ""}),
       // TODO: is this actually used anywhere?
       speed: new SchemaField({
         value: new StringField({nullable: true, initial: null}),
@@ -43,7 +45,17 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
       }),
       strength: new NumberField({initial: 0, min: 0, integer: true}),
       stealth: new BooleanField({initial: false}),
-      proficient: new BooleanField({initial: true})
+      proficient: new StringField({initial: "auto"})
     }
+  }
+
+  /* -------------------------------------------- */
+  /*  Data Migration                              */
+  /* -------------------------------------------- */
+
+  /** @inheritdoc */
+  static migrateData(source){
+    if (typeof source.proficient === "boolean") source.proficient = "auto";
+    return super.migrateData(source);
   }
 }

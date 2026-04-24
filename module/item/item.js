@@ -215,36 +215,8 @@ export default class Item4e extends Item {
 		if ( isNPC ) {
 			const updates = {};
 			if ( !foundry.utils.hasProperty(data, "system.equipped") ) updates["system.equipped"] = true;
-			if ( !foundry.utils.hasProperty(data, "system.proficient") ) updates["system.proficient"] = true;
 			return updates;
 		}
-
-		const updates = {};
-		const actorProfs = this.parent.system.details.armourProf;
-		updates["system.proficient"] = false;
-
-		if(data.system.armour?.type === "armour" ){
-			if(actorProfs.value.has(data.system.armourBaseType)){
-				updates["system.proficient"] = actorProfs.value.has(data.system.armourBaseType);
-			}
-			else if(data.system.armourBaseType === "custom"){
-				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.armourBaseTypeCustom);
-			}
-			else if(data.system.armourBaseType === "cloth"){
-				updates["system.proficient"] = true; //everyone is proficient with cloth.
-			}
-		}
-
-		if(data.system.armour?.type === "arms" && CONFIG.DND4E.shield[data.system.armour.subType]){
-			if(actorProfs.value.has(data.system.shieldBaseType)){
-				updates["system.proficient"] = actorProfs.value.has(data.system.shieldBaseType);
-			}
-			else if(data.system.shieldBaseType === "custom"){
-				updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.shieldBaseTypeCustom);
-			}
-		}
-
-		return updates;
 	}
 
 	/* -------------------------------------------- */
@@ -261,24 +233,8 @@ export default class Item4e extends Item {
 		if ( isNPC ) {
 			const updates = {};
 			if ( !foundry.utils.hasProperty(data, "system.equipped") ) updates["system.equipped"] = true;
-			if ( !foundry.utils.hasProperty(data, "system.proficient") ) updates["system.proficient"] = true;
 			return updates;
 		}
-		if(data.system?.proficient === undefined ) return {};
-
-		const updates = {};
-		const actorProfs = this.parent.system.details.weaponProf;
-		updates["system.proficient"] = false;
-
-		if(actorProfs.value.has(data.system.weaponType)){
-			updates["system.proficient"] = actorProfs.value.has(data.system.weaponType);
-		}
-		else if(data.system.weaponBaseType === "custom"){
-			updates["system.proficient"] = actorProfs.custom.split(";").includes(data.system.weaponBaseTypeCustom);
-		} else {
-			updates["system.proficient"] = actorProfs.value.has(data.system.weaponBaseType);
-		}
-		return updates;
 	}
 
 	/* -------------------------------------------- */
@@ -328,6 +284,77 @@ export default class Item4e extends Item {
 		// Case 3 - unknown
 		return null
 	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Is the item's actor proficient with the item?
+	 * @type {boolean}
+	 */
+	get isActorProficient() {
+		if (!this.actor) return false;
+        if (this.actor.type === "npc") return true; // Assume the NPC is proficient with all their stuff.
+        if (this.actor.type !== "Player Character") return false;
+
+        switch (this.system.proficient) {
+            case "yes":
+                return true;
+            case "no":
+                return false;
+            case "auto":
+                switch (this.type) {
+                    case "equipment":
+                        if (this.system.armour?.type === "armour") { // Armor
+                            return this.actor.system.details.armourProf.value.has(this.system.armourBaseType) ?? this.actor.system.details.armourProf.custom.split(";").includes(this.system.armourBaseTypeCustom);
+                        } else if (this.system.armour?.type === "arms") { // Shield
+                            return this.actor.system.details.armourProf.value.has(this.system.shieldBaseType) ?? this.actor.system.details.armourProf.custom.split(";").includes(this.system.shieldBaseTypeCustom);
+                        } else {
+                            return false;
+                        }
+                    case "weapon":
+                        switch (this.system.weaponType) {
+                            case "simpleM":
+                            case "militaryM":
+                            case "superiorM":
+                            case "simpleR":
+                            case "militaryR":
+                            case "superiorR":
+                            case "siegeM":
+                            case "siegeR":
+                                return (this.actor.system.details.weaponProf.value.has(this.system.weaponType) || this.actor.system.details.weaponProf.value.has(this.system.weaponBaseType)) ?? this.actor.system.details.weaponProf.custom.split(";").includes(data.system.weaponBaseTypeCustom);
+                            case "implement":
+                                return (this.actor.system.details.implementProf.value.has(this.system.weaponType) || this.actor.system.details.implementProf.value.has(this.system.weaponBaseType)) ?? this.actor.system.details.implementProf.custom.split(";").includes(data.system.weaponBaseTypeCustom);
+                            case "naturalM":
+                            case "naturalR":
+                                return true;
+                            case "improvM":
+                            case "improvR":
+                            case "improv":
+                            case "other":
+                                return false;
+                        }
+                    default:
+                        return true; // Arbitrary default, but true just felt like the better user experience.
+                }
+            default:
+                return false;
+        }
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+	 * Is the item's actor proficient with the item as an implement?
+	 * @type {boolean}
+	 */
+    get isActorImplementProficient() {
+        if (!this.actor) return false;
+        if (this.actor.type === "npc") return true; // Assume the NPC is proficient with all their stuff.
+        if (this.actor.type !== "character") return false;
+        if (this.type !== "weapon") return false;
+        if (this.system.weaponType === "implement") return this.isActorProficient();
+        return this.system.proficientI;        
+    }
 
 	/* -------------------------------------------- */
 
@@ -1340,19 +1367,11 @@ export default class Item4e extends Item {
 		if ( fn ) fn.bind(this)(data, labels, props);
 		
 		// Proficiencies
-		if (data.hasOwnProperty("proficient") && ["equipment","weapon"].includes(this.type)){
-			if( this.type == 'weapon' || (data?.armour.type == 'armour' && ![""].includes(data?.armour.subType)) || (data?.armour.type == 'arms' && ["light","heavy"].includes(data?.armour.subType)) ){
-				if(data?.proficient || (data?.weaponType == 'implement' && data?.proficientI) ){
-					props.push(`<li class="proficiency">${game.i18n.localize('DND4E.Proficient')}</li>`);
-				}				
-				if(data?.weaponType != 'implement' && data?.proficientI){
-					props.push(`<li class="proficiency">${game.i18n.localize("DND4E.ProficiencyI")}</li>`);
-				}
-				if(!data?.proficient && !(data?.weaponType == 'implement' && data?.proficientI) ){
-					props.push(`<li class="proficiency negative">${game.i18n.localize("DND4E.NotProficient")}</li>`);
-				}
-			}
-		}
+		if (this.isActorProficient) {
+            props.push(`<li class="proficiency">${game.i18n.localize('DND4E.Proficient')}</li>`);
+        }	else {			
+            props.push(`<li class="proficiency negative">${game.i18n.localize("DND4E.NotProficient")}</li>`);   
+        }
 		
 		// Equippables
 		if ( data.hasOwnProperty("equipped") && ["equipment","weapon","container"].includes(this.type) ) {
@@ -2108,17 +2127,17 @@ export default class Item4e extends Item {
 					secondaryDamageExpressionHelper(partsCrit, partsCritExpressionReplacement, weaponUse.system.damageCrit.parts)
 				}
 
-				if(itemData.hit.formula.includes("@impDamage") && weaponUse.system.proficientI && weaponUse.system.damageImp.parts.length > 0) {
+				if(itemData.hit.formula.includes("@impDamage") && weaponUse.isActorImplementProficient && weaponUse.system.damageImp.parts.length > 0) {
 					secondaryDamageExpressionHelper(parts, partsExpressionReplacement, weaponUse.system.damageImp.parts)
 				}
-				if(itemData.hit.critFormula.includes("@impCritBonus") && weaponUse.system.proficientI && weaponUse.system.damageCritImp.parts.length > 0) {
+				if(itemData.hit.critFormula.includes("@impCritBonus") && weaponUse.isActorImplementProficient && weaponUse.system.damageCritImp.parts.length > 0) {
 					secondaryDamageExpressionHelper(partsCrit, partsCritExpressionReplacement, weaponUse.system.damageCritImp.parts)
 				}
 
 				if(itemData.miss.formula.includes("@wepDamage") && weaponUse.system.damage.parts.length > 0) {
 					secondaryDamageExpressionHelper(partsMiss, partsMissExpressionReplacement, weaponUse.system.damage.parts)
 				}
-				if(itemData.miss.formula.includes("@impDamage") && weaponUse.system.proficientI && weaponUse.system.damageImp.parts.length > 0) {
+				if(itemData.miss.formula.includes("@impDamage") && weaponUse.isActorImplementProficient && weaponUse.system.damageImp.parts.length > 0) {
 					secondaryDamageExpressionHelper(partsMiss, partsMissExpressionReplacement, weaponUse.system.damageImp.parts)
 				}
 			}
@@ -2352,7 +2371,7 @@ export default class Item4e extends Item {
 				Array.prototype.push.apply(partsExpressionReplacement, weaponUse.system.damage.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
 			}
 			
-			if(itemData.hit.healFormula.includes("@impDamage") && weaponUse.system.proficientI && weaponUse.system.damageImp.parts.length > 0) {
+			if(itemData.hit.healFormula.includes("@impDamage") && weaponUse.isActorImplementProficient && weaponUse.system.damageImp.parts.length > 0) {
 				Array.prototype.push.apply(parts, weaponUse.system.damageImp.parts.map(d => formulaHelper(d[0])))
 				Array.prototype.push.apply(partsExpressionReplacement, weaponUse.system.damageImp.parts.map(part => { return {target: part[0], value: "@wep2ndryDamage"}}))
 			}
@@ -2815,7 +2834,8 @@ export default class Item4e extends Item {
 		}
 
 		// Weapon/Implement properties:
-		const weaponData = this.type === "weapon" ? this.system : (this.type == "power" ? Helper.getWeaponUse(this.system, this.actor)?.system : null);
+        const weapon = this.type === "weapon" ? this : (this.type == "power" ? Helper.getWeaponUse(this.system, this.actor) : null);
+		const weaponData = weapon ? weapon.system : null;
 		if(weaponData){
 			let enhValue = weaponData.enhance || 0;
 			
@@ -2834,8 +2854,8 @@ export default class Item4e extends Item {
 			data.profBonusO = weaponData.profBonus || 0;
 			data.profImpBonusO = weaponData.profImpBonus || 0;
 
-			data.profImpBonus = weaponData.proficientI ? weaponData.profImpBonus || 0 : 0;
-			data.profBonus = weaponData.proficient ? weaponData.profBonus || 0 : 0;
+			data.profImpBonus = weapon.isActorImplementProficient ? weaponData.profImpBonus || 0 : 0;
+			data.profBonus = weapon.isActorProficient ? weaponData.profBonus || 0 : 0;
 
 			if (weaponData.weaponType === "implement") {
 				data.wepAttack = Helper.bracketed(Roll.replaceFormulaData(weaponData.attackFormImp, data, {recursive: true}) || 0);
@@ -2853,8 +2873,8 @@ export default class Item4e extends Item {
 			data.impAttackO = Helper.bracketed(Roll.replaceFormulaData(weaponData.attackFormImp, data, {recursive: true}) || 0);
 			data.impDamageO = Helper.bracketed(Roll.replaceFormulaData(weaponData.damageFormImp, data, {recursive: true}) || 0);
 
-			data.impAttack = Helper.bracketed(weaponData.proficientI ? Roll.replaceFormulaData(weaponData.attackFormImp, data, {recursive: true}) || 0 : 0);
-			data.impDamage = Helper.bracketed(weaponData.proficientI ? Roll.replaceFormulaData(weaponData.damageFormImp, data, {recursive: true}) || 0 : 0);			
+			data.impAttack = Helper.bracketed(weapon.isActorImplementProficient ? Roll.replaceFormulaData(weaponData.attackFormImp, data, {recursive: true}) || 0 : 0);
+			data.impDamage = Helper.bracketed(weapon.isActorImplementProficient ? Roll.replaceFormulaData(weaponData.damageFormImp, data, {recursive: true}) || 0 : 0);			
 		} else{
 			data.profBonusO = 0;
 			data.profImpBonusO = 0;

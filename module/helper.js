@@ -58,7 +58,7 @@ export class Helper {
 	 * Either the specified weapon, or a weapon that matches the itemData.weaponType category if itemData.weaponUse is set to default
 	 * @param itemData The Power being used
 	 * @param actor The actor that owns the power
-	 * @returns {null|*} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
+	 * @returns {Item4e|null} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
 	 */
 	static getWeaponUse(itemData, actor) {
 		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length === 0)) return null;

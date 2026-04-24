@@ -22,17 +22,19 @@
     </select>
   </div>
 
-  <div class="form-group">
-    <label>{{ localize "DND4E.ArmourBaseCustom" }}:</label>
-    <input type="text" name="system.armourBaseTypeCustom" value="{{system.armourBaseTypeCustom}}" data-tooltip="{{ localize "DND4E.ArmourBaseCustom" }}" placeholder="{{ localize "DND4E.ArmourBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
-  </div>
+  {{#if isArmourBaseTypeCustom}}
+    <div class="form-group">
+      <label>{{ localize "DND4E.ArmourBaseCustom" }}:</label>
+      <input type="text" name="system.armourBaseTypeCustom" value="{{system.armourBaseTypeCustom}}" data-tooltip="{{ localize "DND4E.ArmourBaseCustom" }}" placeholder="{{ localize "DND4E.ArmourBaseCustom" }}" data-dtype="String" onClick="this.select();"/>
+    </div>
+  {{/if}}
 {{/if}}
 
 {{#if isShield}}
   <div class="form-group">
     <label>{{ localize "DND4E.ShieldBase" }}:</label>
     <select name="system.shieldBaseType">
-      {{selectOptions shieldBaseTypes selected=system.shieldBaseType labelAttr="label"}}
+      {{selectOptions shieldBaseTypes selected=system.shieldBaseType}}
     </select>
   </div>
 
@@ -47,9 +49,12 @@
 {{!-- Equipment Status --}}
 <div class="form-group stacked">
   <label>{{ localize "DND4E.ItemEquipmentStatus" }}</label>
-  <label class="checkbox">
-    <input type="checkbox" name="system.proficient" {{checked system.proficient}}/> {{ localize "DND4E.Proficient" }}
-  </label>
+  <div class="form-group">
+    <label>{{localize "DND4E.Proficient"}} </label>
+    <select name="system.proficient">
+      {{selectOptions config.proficiency selected=system.proficient}}
+    </select>
+  </div>
   <label class="checkbox">
     <input type="checkbox" name="system.equipped" {{checked system.equipped}}/> {{ localize "DND4E.Equipped" }}
   </label>

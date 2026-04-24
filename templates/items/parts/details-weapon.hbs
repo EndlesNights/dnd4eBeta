@@ -1,11 +1,12 @@
 {{!-- Weapon Status --}}
 <fieldset name="weapon-status" class="weapon-status form-group stacked">
 	<legend>{{ localize "DND4E.ItemWeaponStatus" }}</legend>  
-	{{#unless (eq system.weaponType 'implement')}}
-		<label class="checkbox small">
-			<input type="checkbox" name="system.proficient" {{checked system.proficient}}/> {{ localize "DND4E.Proficient" }}
-		</label>
-	{{/unless}}
+	<div class="form-group">
+		<label>{{localize "DND4E.Proficient"}} </label>
+		<select name="system.proficient">
+			{{selectOptions config.proficiency selected=system.proficient}}
+		</select>
+	</div>
 	{{#if (eq system.weaponType 'implement')}}
 		<label class="checkbox small">
 			<input type="checkbox" name="system.proficientI" {{checked system.proficientI}}/> {{ localize "DND4E.Proficient" }}
@@ -30,7 +31,7 @@
 <div class="form-group">
   <label>{{ localize "DND4E.ItemWeaponType" }}:</label>
   <select name="system.weaponType">
-    {{selectOptions config.weaponTypes selected=system.weaponType localize=true}}
+	{{selectOptions config.weaponTypes selected=system.weaponType localize=true}}
   </select>
 </div>
 
@@ -38,18 +39,18 @@
 <div class="form-group">
   <label>{{ localize "DND4E.ItemWeaponHand" }}:</label>
   <select name="system.weaponHand">
-    {{selectOptions config.weaponHands selected=system.weaponHand localize=true}}
+	{{selectOptions config.weaponHands selected=system.weaponHand localize=true}}
   </select>
 </div>
 
 <div class="form-group">
   <label>{{ localize "DND4E.WeaponBase" }}:</label>
   <select name="system.weaponBaseType">
-    <option value=""{{#if (eq system.weaponBaseType '')}} selected{{/if}}>{{ localize 'DND4E.None' }}</option>
-    <option value="custom"{{#if (eq system.weaponBaseType 'custom')}} selected{{/if}}>{{ localize 'DND4E.Custom' }}</option>
-    {{#if weaponBaseTypes}}
-    {{selectOptions weaponBaseTypes selected=system.weaponBaseType localize=true}}
-    {{/if}}
+	<option value=""{{#if (eq system.weaponBaseType '')}} selected{{/if}}>{{ localize 'DND4E.None' }}</option>
+	<option value="custom"{{#if (eq system.weaponBaseType 'custom')}} selected{{/if}}>{{ localize 'DND4E.Custom' }}</option>
+	{{#if weaponBaseTypes}}
+	{{selectOptions weaponBaseTypes selected=system.weaponBaseType localize=true}}
+	{{/if}}
   </select>
 </div>
 
