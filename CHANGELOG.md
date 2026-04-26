@@ -1,5 +1,16 @@
 # Changelog
 
+## Version 0.7.12
+- Fixed an oversight where walk trait(s) were omitted from speed display for NPCs (Fox)
+- Fixed a bug where brutal value was ignored (SagaTympana)
+- Fixed a misconfiguration where acrobatics has no armour check penalty by default (SagaTympana)
+- Improved Damage calculation (SagaTympana)
+- Restored Difficult Terrain icon that got dropped in v13 (SagaTympana)
+- Fixed a bug that messed up the NPC sheet skills tab (SagaTympana)
+- Fixed a bug where custom weapon/armour base value was being dropped from equipment config (FoxLee)
+- Cleaned up old console log calls (Draconas)
+- Improved light/heavy armour detection (SagaTympana)
+
 ## Version 0.7.11
 - Added a trait field to each movement mode, and updated movement/speed config to show the expected defaults under v13. (Fox)
 - Fixed a bug where dropping an effect onto an item sheet would create two copies. (SagaTympana)
