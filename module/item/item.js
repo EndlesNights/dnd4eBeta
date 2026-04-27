@@ -293,52 +293,52 @@ export default class Item4e extends Item {
 	 */
 	get isActorProficient() {
 		if (!this.actor) return false;
-        if (this.actor.type === "npc") return true; // Assume the NPC is proficient with all their stuff.
-        if (this.actor.type !== "Player Character") return false;
+		if (this.actor.type === "npc") return true; // Assume the NPC is proficient with all their stuff.
+		if (this.actor.type !== "Player Character") return false;
 
-        switch (this.system.proficient) {
-            case "yes":
-                return true;
-            case "no":
-                return false;
-            case "auto":
-                switch (this.type) {
-                    case "equipment":
-                        if (this.system.armour?.type === "armour") { // Armor
-                            return this.actor.system.details.armourProf.value.has(this.system.armourBaseType) ?? this.actor.system.details.armourProf.custom.split(";").includes(this.system.armourBaseTypeCustom);
-                        } else if (this.system.armour?.type === "arms") { // Shield
-                            return this.actor.system.details.armourProf.value.has(this.system.shieldBaseType) ?? this.actor.system.details.armourProf.custom.split(";").includes(this.system.shieldBaseTypeCustom);
-                        } else {
-                            return false;
-                        }
-                    case "weapon":
-                        switch (this.system.weaponType) {
-                            case "simpleM":
-                            case "militaryM":
-                            case "superiorM":
-                            case "simpleR":
-                            case "militaryR":
-                            case "superiorR":
-                            case "siegeM":
-                            case "siegeR":
-                                return (this.actor.system.details.weaponProf.value.has(this.system.weaponType) || this.actor.system.details.weaponProf.value.has(this.system.weaponBaseType)) ?? this.actor.system.details.weaponProf.custom.split(";").includes(data.system.weaponBaseTypeCustom);
-                            case "implement":
-                                return (this.actor.system.details.implementProf.value.has(this.system.weaponType) || this.actor.system.details.implementProf.value.has(this.system.weaponBaseType)) ?? this.actor.system.details.implementProf.custom.split(";").includes(data.system.weaponBaseTypeCustom);
-                            case "naturalM":
-                            case "naturalR":
-                                return true;
-                            case "improvM":
-                            case "improvR":
-                            case "improv":
-                            case "other":
-                                return false;
-                        }
-                    default:
-                        return true; // Arbitrary default, but true just felt like the better user experience.
-                }
-            default:
-                return false;
-        }
+		switch (this.system.proficient) {
+			case "yes":
+				return true;
+			case "no":
+				return false;
+			case "auto":
+				switch (this.type) {
+					case "equipment":
+						if (this.system.armour?.type === "armour") { // Armor
+							return this.actor.system.details.armourProf.value.has(this.system.armourBaseType) ?? this.actor.system.details.armourProf.custom.split(";").includes(this.system.armourBaseTypeCustom);
+						} else if (this.system.armour?.type === "arms") { // Shield
+							return this.actor.system.details.armourProf.value.has(this.system.shieldBaseType) ?? this.actor.system.details.armourProf.custom.split(";").includes(this.system.shieldBaseTypeCustom);
+						} else {
+							return false;
+						}
+					case "weapon":
+						switch (this.system.weaponType) {
+							case "simpleM":
+							case "militaryM":
+							case "superiorM":
+							case "simpleR":
+							case "militaryR":
+							case "superiorR":
+							case "siegeM":
+							case "siegeR":
+								return (this.actor.system.details.weaponProf.value.has(this.system.weaponType) || this.actor.system.details.weaponProf.value.has(this.system.weaponBaseType)) ?? this.actor.system.details.weaponProf.custom.split(";").includes(data.system.weaponBaseTypeCustom);
+							case "implement":
+								return (this.actor.system.details.implementProf.value.has(this.system.weaponType) || this.actor.system.details.implementProf.value.has(this.system.weaponBaseType)) ?? this.actor.system.details.implementProf.custom.split(";").includes(data.system.weaponBaseTypeCustom);
+							case "naturalM":
+							case "naturalR":
+								return true;
+							case "improvM":
+							case "improvR":
+							case "improv":
+							case "other":
+								return false;
+						}
+					default:
+						return true; // Arbitrary default, but true just felt like the better user experience.
+				}
+			default:
+				return false;
+		}
 	}
 
 	/* -------------------------------------------- */
@@ -347,14 +347,14 @@ export default class Item4e extends Item {
 	 * Is the item's actor proficient with the item as an implement?
 	 * @type {boolean}
 	 */
-    get isActorImplementProficient() {
-        if (!this.actor) return false;
-        if (this.actor.type === "npc") return true; // Assume the NPC is proficient with all their stuff.
-        if (this.actor.type !== "character") return false;
-        if (this.type !== "weapon") return false;
-        if (this.system.weaponType === "implement") return this.isActorProficient();
-        return this.system.proficientI;        
-    }
+	get isActorImplementProficient() {
+		if (!this.actor) return false;
+		if (this.actor.type === "npc") return true; // Assume the NPC is proficient with all their stuff.
+		if (this.actor.type !== "character") return false;
+		if (this.type !== "weapon") return false;
+		if (this.system.weaponType === "implement") return this.isActorProficient();
+		return this.system.proficientI;        
+	}
 
 	/* -------------------------------------------- */
 
@@ -582,7 +582,7 @@ export default class Item4e extends Item {
 					labels.wil = system.armour.wil ? `${system.armour.wil} ${game.i18n.localize("DND4E.WIL")}` : "";
 					labels.move = system.armour.movePen ? `${game.i18n.localize('DND4E.Speed')} ${system.armour.movePenValue}` : "";
 					labels.check = system.armour.skillCheck ? `${game.i18n.localize('DND4E.SkillACPAbbr')} ${system.armour.skillCheckValue}` : "";
-					labels.type = system.armour.subType != "" ? CONFIG.DND4E.equipmentTypesArmour[system.armour.subType].label : "";
+					labels.type = system.armour.subtype != "" ? CONFIG.DND4E.equipmentTypesArmour[system.armour.subtype].label : "";
 				}else{
 					labels.type = ["","other"].includes(system.armour.type) ? game.i18n.localize('DND4E.EquipmentWondrousItem') :CONFIG.DND4E.equipmentTypes[system.armour.type].label ;
 				}
@@ -872,7 +872,7 @@ export default class Item4e extends Item {
 						let areaString = system.area || '';
 						if(this.actor && areaString){
 							try{
-                                areaString = Roll.replaceFormulaData(areaString, this.actor.getRollData());
+								areaString = Roll.replaceFormulaData(areaString, this.actor.getRollData());
 								if (!Helper._isNumber(areaString)) areaString = Roll.safeEval(areaString);
 							}catch(e){
 								console.error(`Could not evaluate area formula. This is probably due to an unknown key in the formula.`);
@@ -1354,7 +1354,6 @@ export default class Item4e extends Item {
 		const labels = this.labels;
 			
 		const description = data.description.value || '';
-		const weaponUse = Helper.getWeaponUse(data, this.actor);
 		const descriptionText = description ? Roll.replaceFormulaData(description, this.getRollData()) : description;
 
 		// Rich text description
@@ -1367,17 +1366,19 @@ export default class Item4e extends Item {
 		if ( fn ) fn.bind(this)(data, labels, props);
 		
 		// Proficiencies
-		if (this.isActorProficient) {
-            props.push(`<li class="proficiency">${game.i18n.localize('DND4E.Proficient')}</li>`);
-        }	else {			
-            props.push(`<li class="proficiency negative">${game.i18n.localize("DND4E.NotProficient")}</li>`);   
-        }
+		if (["light", "heavy"].includes(this.system.armour?.subtype) || this.type === "weapon") {
+			if (this.isActorProficient) {
+				props.push(`<li class="proficiency">${game.i18n.localize('DND4E.Proficient')}</li>`);
+			} else {			
+				props.push(`<li class="proficiency negative">${game.i18n.localize("DND4E.NotProficient")}</li>`);   
+			}
+		}
 		
 		// Equippables
-		if ( data.hasOwnProperty("equipped") && ["equipment","weapon","container"].includes(this.type) ) {
-			if(data?.equipped){
+		if (data.hasOwnProperty("equipped") && ["equipment","weapon","container"].includes(this.type)) {
+			if (data?.equipped) {
 				props.push(`<li class="equipped">${game.i18n.localize("DND4E.Equipped")}</li>`);
-			}else{
+			} else{
 				props.push(`<li class="equipped negative">${game.i18n.localize("DND4E.Unequipped")}</li>`);
 			}
 		}
@@ -2152,12 +2153,12 @@ export default class Item4e extends Item {
 				critDamageFormulaExpression += `+ @versatile`;
 				options.formulaInnerData.versatile = 1
 			}
-            if (weaponUse.system.properties["hic"]) {
-                let weaponDice = weaponUse.getWepDice(this.actor.system.tier);
+			if (weaponUse.system.properties["hic"]) {
+				let weaponDice = weaponUse.getWepDice(this.actor.system.tier);
 
-                critDamageFormula += ` + ${weaponDice}`;
-                critDamageFormulaExpression += " + @highCrit";
-            }
+				critDamageFormula += ` + ${weaponDice}`;
+				critDamageFormulaExpression += " + @highCrit";
+			}
 		}
 	
 		if(this.system?.hit?.damageBonusNull) Helper.debugLog(`Ignoring damage bonuses due to power config.`);
@@ -2702,7 +2703,7 @@ export default class Item4e extends Item {
 	getPowBase() {
 		if (this.type !== "power") return 0;
 		let powerData = this.system;
-        if (!powerData.hit?.baseQuantity) return;
+		if (!powerData.hit?.baseQuantity) return;
 		let quantity = Roll.replaceFormulaData(powerData.hit.baseQuantity, this.actor.getRollData(), {recursive: true});
 		let r = new Roll(`${quantity}`);
 
@@ -2763,7 +2764,7 @@ export default class Item4e extends Item {
 	getPowMax() {
 		if (this.type !== "power") return 0;
 		let powerData = this.system;
-        if (!powerData.hit?.baseQuantity) return;
+		if (!powerData.hit?.baseQuantity) return;
 		let quantity = Roll.replaceFormulaData(powerData.hit.baseQuantity, this.actor.getRollData(), {recursive: true});
 		let diceType = powerData.hit.baseDiceType.toLowerCase();
 		let rQuantity = new Roll(`${quantity}`)
@@ -2777,7 +2778,7 @@ export default class Item4e extends Item {
 			quantity = 1;
 		}
 		
-        let dice = "";
+		let dice = "";
 		// Handle Weapon Type Damage
 		if(diceType.includes("weapon")){
 			const weaponData = Helper.getWeaponUse(powerData, this.actor)?.system;
@@ -2834,7 +2835,7 @@ export default class Item4e extends Item {
 		}
 
 		// Weapon/Implement properties:
-        const weapon = this.type === "weapon" ? this : (this.type == "power" ? Helper.getWeaponUse(this.system, this.actor) : null);
+		const weapon = this.type === "weapon" ? this : (this.type == "power" ? Helper.getWeaponUse(this.system, this.actor) : null);
 		const weaponData = weapon ? weapon.system : null;
 		if(weaponData){
 			let enhValue = weaponData.enhance || 0;

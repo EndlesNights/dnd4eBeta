@@ -1153,16 +1153,16 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const type = target.dataset.type;
-		const subType = target.dataset?.subtype || null;
+		const subtype = target.dataset?.subtype || null;
 		const itemData = {
 			name: game.i18n.format("DND4E.ItemNew", {type: type.capitalize()}),
 			type: type,
 			system: foundry.utils.duplicate(target.dataset)
 		};
-		if(type === 'feature' && subType){
-			itemData.system.featureType = subType;
-		}else if(type === 'ritual' && subType){
-			itemData.system.category = subType;
+		if(type === 'feature' && subtype){
+			itemData.system.featureType = subtype;
+		}else if(type === 'ritual' && subtype){
+			itemData.system.category = subtype;
 		}
 		//console.debug(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);

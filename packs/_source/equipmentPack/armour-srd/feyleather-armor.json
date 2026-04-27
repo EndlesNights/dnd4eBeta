@@ -70,7 +70,7 @@
     "level": null,
     "armour": {
       "type": "armour",
-      "subType": "light",
+      "subtype": "light",
       "enhance": 0,
       "ac": 3,
       "fort": 0,

@@ -305,10 +305,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				context.isArmour = true;
 				context.hasEnhance = true;
 				context.hasBaseProps = true;
-				context.armourBaseTypes = CONFIG.DND4E[itemData.system.armour.subType] ? {...CONFIG.DND4E[itemData.system.armour.subType], ...{"custom": game.i18n.localize("DND4E.Custom")}} : {"": game.i18n.localize("DND4E.None")};
+				context.armourBaseTypes = CONFIG.DND4E[itemData.system.armour.subtype] ? {...CONFIG.DND4E[itemData.system.armour.subtype], ...{"custom": game.i18n.localize("DND4E.Custom")}} : {"": game.i18n.localize("DND4E.None")};
 				context.isArmourBaseTypeCustom = (itemData.system.armourBaseType === "custom");
 			}
-			else if(itemData.system.armour.type === "arms" && CONFIG.DND4E.profArmor[itemData.system.armour.subType]){
+			else if(itemData.system.armour.type === "arms" && CONFIG.DND4E.profArmor[itemData.system.armour.subtype]){
 				context.isShield = true;
 				context.hasBaseProps = true;
 				context.shieldBaseTypes = {...CONFIG.DND4E.shield, ...{"custom": game.i18n.localize("DND4E.Custom")}};

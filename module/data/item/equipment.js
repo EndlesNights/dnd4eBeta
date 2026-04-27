@@ -15,7 +15,7 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
       level: new StringField({initial: ""}),
       armour: new SchemaField({
         type: new StringField({initial: "armour"}),
-        subType: new StringField({initial: "light"}),
+        subtype: new StringField({initial: ""}),
         enhance: new NumberField({initial: 0, integer: true}),
         ac: new NumberField({initial: 0, integer: true}),
         fort: new NumberField({initial: 0, integer: true}),
@@ -56,6 +56,10 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
   /** @inheritdoc */
   static migrateData(source){
     if (typeof source.proficient === "boolean") source.proficient = "auto";
+    if (source.armour.subType) {
+      source.armour.subtype = source.armour.subType;
+      delete source.armour.subType;
+    } 
     return super.migrateData(source);
   }
 }

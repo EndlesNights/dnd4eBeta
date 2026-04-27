@@ -583,7 +583,7 @@
         "level": null,
         "armour": {
           "type": "armour",
-          "subType": "heavy",
+          "subtype": "heavy",
           "enhance": 0,
           "ac": 7,
           "fort": 0,
@@ -706,7 +706,7 @@
         "level": null,
         "armour": {
           "type": "armour",
-          "subType": "cloth",
+          "subtype": "cloth",
           "enhance": 0,
           "ac": 0,
           "fort": 0,
@@ -829,7 +829,7 @@
         "level": null,
         "armour": {
           "type": "arms",
-          "subType": "light",
+          "subtype": "light",
           "enhance": 0,
           "ac": 1,
           "fort": 0,

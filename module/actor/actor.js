@@ -1279,7 +1279,7 @@ export class Actor4e extends Actor {
 				//Get Def stats from items
 				for (let i of this.items) {
 					if (i.type !="equipment" || !i.system.equipped ) { continue; };
-					if (i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
+					if (i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subtype)){
 						if(!i.isActorProficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
 						//Re-route base def bonuses on a shield to be shield bonus
 						def.shield = Math.max(def.shield||0,i.system.armour[id]);
@@ -1363,7 +1363,7 @@ export class Actor4e extends Actor {
 				//Get Def stats from items
 				for ( let i of this.items) {
 					if(i.type !="equipment" || !i.system.equipped ) { continue; };
-					if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
+					if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subtype)){
 						if(!i.isActorProficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
 						//Re-route base def bonuses on a shield to be shield bonus
 						def.shield = Math.max(def.shield,i.system.armour[id]);
@@ -1675,7 +1675,7 @@ export class Actor4e extends Actor {
 			if(i.type !="equipment" || !i.system.equipped ) { 
 				continue;
 			}
-			if(i.system.armour.type === "armour" && i.system.armour.subType === "heavy"){
+			if(i.system.armour.type === "armour" && i.system.armour.subtype === "heavy"){
 				return false;
 			}
 		}
