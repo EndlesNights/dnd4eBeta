@@ -421,20 +421,6 @@ DND4E.equipmentTypesAlt = {
 };
 preLocalize("equipmentTypesAlt", { keys: ["label"], sort: true });
 
-/* -------------------------------------------- */
-
-/**
- * The set of armour Proficiencies which a character may have
- * @type {Object}
- */
-DND4E.armourProficiencies = {
-	"lgt": "DND4E.equipmentTypes.light",
-	"med": "DND4E.equipmentTypes.medium",
-	"hvy": "DND4E.equipmentTypes.heavy",
-	"shl": "DND4E.EquipmentShieldProficiency"
-};
-preLocalize("armourProficiencies");
-
 
 /* -------------------------------------------- */
 
@@ -876,12 +862,9 @@ DND4E.profArmor = {
 };
 preLocalize("profArmor");
 
-DND4E.cloth = {
-	cloth: "DND4E.ArmourProfCloth",
-};
-preLocalize("cloth");
 DND4E.light = {
-	leather: "DND4E.ArmourProfLeather",
+	cloth: "DND4E.ArmourProfCloth",
+    leather: "DND4E.ArmourProfLeather",
 	hide: "DND4E.ArmourProfHide",
 };
 preLocalize("light");
