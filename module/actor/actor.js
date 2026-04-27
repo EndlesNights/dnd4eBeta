@@ -1967,7 +1967,7 @@ export class Actor4e extends Actor {
 			parts.push(Roll.replaceFormulaData(options.save, rollData));
 			partsExpressionReplacements.push({value : options.save, target: parts[0]});
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = Helper.commonReplace(options.save, rollData, null, null, 1, true);
+			options.formulaInnerData = Roll.replaceFormulaData(options.save, rollData);
 		}
 		
 		await Helper.applySaveEffects([parts], rollData, this, this.effects.get(options.effectId), "save");
@@ -2794,7 +2794,7 @@ export class Actor4e extends Actor {
 						evaluate variables in "amount" string */
 						let parsedAmount = dot.amount;
 						try {
-							parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
+							parsedAmount = Roll.replaceFormulaData(parsedAmount, this.getRollData());
 						} catch (e) { /* noop */ }
 						/* End pinched */
 						

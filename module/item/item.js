@@ -1004,7 +1004,7 @@ export default class Item4e extends Item {
 					attackBonus = await this.getAttackBonus({'variance':variance});
 				}
 				let cardString = Helper._preparePowerCardData(await this.getChatData({},variance), CONFIG, this.actor, attackBonus);
-				return Helper.commonReplace(cardString, this.actor.getRollData(), this, weaponUse? weaponUse.system : null, 1);
+				return Roll.replaceFormulaData(cardString, this.getRollData());
 			} else {
 				return null;
 			}
@@ -1139,7 +1139,7 @@ export default class Item4e extends Item {
 			if ((this.type === "power" || this.type === "consumable") && this.system.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
 				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor);
-				return Helper.commonReplace(cardString, this.actor.getRollData(), this, weaponUse? weaponUse.system : null, 1);
+				return Roll.replaceFormulaData(cardString, this.getRollData());
 			} else {
 				return null;
 			}
@@ -1584,7 +1584,7 @@ export default class Item4e extends Item {
 			parts.push(Roll.replaceFormulaData(itemData.attack.formula, this.getRollData()))
 			partsExpressionReplacements.push({value : itemData.attack.formula, target: parts[0]})
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData.getRollData(), this.system, weaponUse? weaponUse.system : null, 1, true)
+			options.formulaInnerData = Helper.getDataObject(itemData.attack.formula, actorData.getRollData())
 		}
 
 		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
@@ -1725,7 +1725,7 @@ export default class Item4e extends Item {
 			parts.push(Roll.replaceFormulaData(itemData.attack.formula, this.getRollData()));
 			partsExpressionReplacements.push({value : itemData.attack.formula, target: parts[0]});
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = Helper.commonReplace(itemData.attack.formula, actorData.getRollData(), this.system, weaponUse? weaponUse.system : null, 1, true);
+			options.formulaInnerData = Helper.getDataObject(itemData.attack.formula, actorData.getRollData());
 		}
 
 		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
@@ -2052,7 +2052,7 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData: {}, divisors: {normal: {value: 1, reason: []}, miss: {value: 1, reason: []}, crit: {value: 1, reason: []}} }
 		const secondaryPartsHelper = (formula, damageType) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData.getRollData(), this.system, weaponUse?.system, 1, true))
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData()))
 			// convert formula and type into a single string of "substituted formula [type]"
 			return returnDamageRollAndOptionalType(Roll.replaceFormulaData(formula, this.getRollData), damageType)
 		}
@@ -2090,7 +2090,7 @@ export default class Item4e extends Item {
 		if(!!itemData.hit?.formula) {
 			const formulaHelper = (formula) => {
 				// store the values that were used to sub in any formulas
-				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData.getRollData(), this.system, weaponUse?.system, 1, true))
+				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData()))
 				// convert formula and type into a single string of "substituted formula [type]"
 				return  Roll.replaceFormulaData(formula, this.getRollData());
 			}
@@ -2106,7 +2106,7 @@ export default class Item4e extends Item {
 			//Add seconadary weapons damage into parts
 			const secondaryDamageExpressionHelper = (oldParts, expressionParts, newPartsArr) => {
 				const newParts = newPartsArr.map(d =>  {
-					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(d[0], actorData.getRollData(), this.system, weaponUse?.system, 1, true))
+					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(d[0], actorData.getRollData()))
 					const formula = Roll.replaceFormulaData(d[0], this.getRollData());
 					if (d.length >= 2) {
 						return returnDamageRollAndOptionalType(formula, d[1])
@@ -2354,7 +2354,7 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData : {} }
 		const formulaHelper = (formula) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.commonReplace(formula, actorData.getRollData(), this.getRollData(), weaponUse?.getRollData(), 1, true))
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData(), this.getRollData()))
 			// convert formula and type into a single string of "substituted formula [type]"
 			return  Roll.replaceFormulaData(formula, this.getRollData());
 		}

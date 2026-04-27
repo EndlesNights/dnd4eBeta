@@ -482,7 +482,7 @@ export class Helper {
 			const keyParts = effect.key.split(".")
 			if (keyParts.length >= 4) {
 				const bonusType = keyParts[keyParts.length - 1]
-				const effectValueString = this.commonReplace(effect.value, actorData)
+				const effectValueString = Roll.replaceFormulaData(String(effect.value), actorData.getRollData())
 				const effectDice = await this.rollWithErrorHandling(effectValueString, {context : effect.key})
 				const effectValue = effectDice.total
 				if (bonusType === "roll") {
@@ -563,43 +563,20 @@ export class Helper {
 	/**
 	 * Perform replacement of @variables in the formula involving a power.	This is a recursive function with 2 modes of operation!
 	 *
-	 * @param formula The formula to examine and perform replacements on
-	 * @param actorOrData The actor or data from the actor to use to resolve variables: `actor.system`.	This may be null
-	 * @param powerInnerData The data from the power to use to resolve variables. `power.system`
-	 * @param weaponInnerData The data from the weapon to use to resolve variables.	`item.system` This may be null
-	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.	Defaults to 1 which will produce 2 loops.	A depth of 0 will also prevent evaluation of custom effect variables (as that is an infinite hole)
-	 * @param returnDataInsteadOfFormula If set to true it will return a data object of replacement variables instead of the formula string
-	 * @return {String|{}|number} "0" if called with a depth of <0, A substituted formula string if called with returnDataInsteadOfFormula = false (the default) or an object of {variable = value} if called with returnDataInsteadOfFormula = true
+	 * @param formula The formula to examine and perform replacements on.
+	 * @param rollData Roll data from the actor or item to use to resolve variables.
+	 * @return {object} An object of {variable = value}. TODO: Is this not just getRollData?
 	 */
-	// DEVELOPER: Remember this call is recursive, if you change the method signature, make sure you update everywhere its used!
-	static commonReplace (formula, actorOrData, powerInnerData, weaponInnerData=null, depth = 2, returnDataInsteadOfFormula = false) {
-		if (depth < 0 ) return 0;
-		let newFormula = formula.toString(); // just in case integers somehow get passed
-		if (returnDataInsteadOfFormula) {
-			const result = {}
-			const variables = formula.match(this.variableRegex)
-			if (variables) {
-				variables.forEach(variable => {
-					// get the value for that variable - call this method with just the variable and with return data off
-					result[variable.substring(1)] = Roll.replaceFormulaData(variable, actorOrData) // trim off the leading @
-				})
-			}
-			return result
+	static getDataObject(formula, rollData) {
+		const result = {}
+		const variables = formula.match(this.variableRegex)
+		if (variables) {
+			variables.forEach(variable => {
+				// get the value for that variable - call this method with just the variable and with return data off
+				result[variable.substring(1)] = Roll.replaceFormulaData(variable, rollData) // trim off the leading @
+			})
 		}
-
-		//Temporary, this should be moved into an enrichers class in the future
-		const regexTextPattern = /\[\[\/text\s(.*?)\]\]/g;
-		newFormula = newFormula.replace(regexTextPattern, (text, r) => {
-			let roll = new Roll(`${r}`, actorOrData);
-
-			if(roll.isDeterministic){
-				roll.evaluateSync();
-				return roll.total;
-			}
-			return `[[${r}]]`;
-		});
-
-		return newFormula;
+		return result
 	}
 
 	/**
@@ -679,7 +656,7 @@ export class Helper {
 	static _areaValue(chatData, actorData){
 		if(chatData.area) {
 			try{
-				let areaForm = this.commonReplace(`${chatData.area}`, actorData);
+				let areaForm = Roll.replaceFormulaData(`${chatData.area}`, actorData);
 				return	Roll.safeEval(areaForm);
 			} catch (e) {
 				return	chatData.area;

@@ -302,8 +302,8 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	_prepareSubmitData(event, form, formData, updateData) {
 		const submitData = this._processFormData(event, form, formData);
 		if ( updateData ) {
-	  foundry.utils.mergeObject(submitData, updateData, {performDeletions: true});
-	  foundry.utils.mergeObject(submitData, updateData, {performDeletions: false});
+		foundry.utils.mergeObject(submitData, updateData, {applyOperators: true});
+		foundry.utils.mergeObject(submitData, updateData, {applyOperators: false});
 	}
 
 		// CHANGES FROM CORE START HERE
@@ -322,7 +322,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		if (submitData.system.dots.length){
 			for (let [i, dot] of submitData.system.dots.entries()){
 				submitData.system.dots[i].amount = dot.amount;
-				submitData.system.dots[i].types = dot.types.sort();
+				submitData.system.dots[i].types = new Set(Array.from(dot.types).sort());
 			}
 		}
 		
