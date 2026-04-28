@@ -59,20 +59,20 @@
 			</select>
 		  </div>
 		  <div class="detail form-group origin">
-			<label>{{localize 'DND4E.CreatureOrigin'}}:</label>
+			<label>{{localize 'DND4E.Origin.ThingOrigin' thing=(localize 'DND4E.Creature')}}:</label>
 			<select class="actor-origin" name="system.details.origin">
 			  {{selectOptions config.creatureOrigin selected=system.details.origin labelAttr="label"}}
 			</select>
 		  </div>
 		  <div class="detail form-group creature-type">
-			<label>{{localize 'DND4E.CreatureType'}}:</label>
+			<label>{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Creature')}}:</label>
 			<select class="actor-type" name="system.details.type">
 			  {{selectOptions config.creatureType selected=system.details.type labelAttr="label"}}
 			</select>
 		  </div>
 		  <div class="detail subtypes">
-			<label for="subtypes">{{localize 'DND4E.CreatureSubtypes'}}:</label>
-			<input id="other" type="text" name="system.details.other" value="{{system.details.other}}" data-tooltip="{{localize 'DND4E.CreatureSubtypes'}}"  placeholder="{{localize 'DND4E.CreatureSubtypes'}}" onClick="this.select();"/>
+			<label for="subtypes">{{localize 'DND4E.ThingSubtypes' thing=(localize 'DND4E.Creature')}}:</label>
+			<input id="other" type="text" name="system.details.other" value="{{system.details.other}}" data-tooltip="{{localize 'DND4E.ThingSubtypes' thing=(localize 'DND4E.Creature')}}"  placeholder="{{localize 'DND4E.ThingSubtypes' thing=(localize 'DND4E.Creature')}}" onClick="this.select();"/>
 		  </div>
 		</div>
 		

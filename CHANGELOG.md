@@ -10,6 +10,8 @@
 - Fixed a bug where custom weapon/armour base value was being dropped from equipment config (FoxLee)
 - Cleaned up old console log calls (Draconas)
 - Improved light/heavy armour detection (SagaTympana)
+- Added a "source" field for monsters (Fox)
+- Added some new fields & lists to better facilitate NPC companions (Fox)
 
 ## Version 0.7.11
 - Added a trait field to each movement mode, and updated movement/speed config to show the expected defaults under v13. (Fox)

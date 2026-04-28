@@ -29,7 +29,9 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
           primary: new StringField({initial: "brute"}),
           secondary: new StringField({initial: "standard"}),
           leader: new BooleanField({initial: false})
-        })
+        }),
+        source: new StringField({initial: ""}),
+        controller: new StringField({initial: ""})
       }),
       advancedCals: new BooleanField({initial: false}),
       attributes: new SchemaField({
