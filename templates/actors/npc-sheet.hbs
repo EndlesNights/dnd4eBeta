@@ -12,22 +12,29 @@
 						<input name="name" type="text" value="{{actor.name}}" data-tooltip="{{localize 'DND4E.NameNPC'}}" placeholder="{{localize 'DND4E.NameNPC'}}" onClick="this.select();"/>
 					</li>
 					<li class="summary-role-second">
-						<select class="actor-role-second" name="system.details.role.secondary">
+						<select class="actor-role-second" name="system.details.role.secondary" data-tooltip="{{localize 'DND4E.ThingType' thing=(localize 'TYPES.Actor.NPC')}}">
 							{{selectOptions config.creatureRoleSecond selected=system.details.role.secondary labelAttr="label"}}
 						</select>
 					</li>
 					
-					<li class="summary-role">
-						<select class="actor-role-prim" name="system.details.role.primary">
-							{{#if (eq system.details.role.secondary 'minion')}}<option value=""{{#unless system.details.role}} selected{{/unless}}></option>{{/if}}
-							{{#if (eq system.details.role.secondary 'other')}}<option value=""{{#unless system.details.role}} selected{{/unless}}></option>{{/if}}
-							{{selectOptions config.creatureRole selected=system.details.role.primary labelAttr="label"}}
+					<li class="summary-role">				
+						<select class="actor-role-prim" name="system.details.role.primary" data-tooltip="{{#if (eq system.details.role.secondary 'companion')}}{{localize 'DND4E.Role.ThingRole' thing=(localize 'DND4E.Role.Companion')}}{{else}}{{localize 'DND4E.Role.ThingRole' thing=(localize 'DND4E.Creature')}}{{/if}}">
+							<option value=""{{#unless system.details.role}} selected{{/unless}}></option>
+							{{#if (eq system.details.role.secondary "companion")}}
+								{{selectOptions config.companionType selected=system.details.role.primary labelAttr="label"}}					
+							{{else}}
+								{{selectOptions config.creatureRole selected=system.details.role.primary labelAttr="label"}}
+							{{/if}}
 						</select>
 					</li>
+					
+					{{#unless (eq system.details.role.secondary 'companion')}}
 					<li class="summary-leader">
-						<label>{{localize 'DND4E.CreatureRoleLeader'}}</label> 
-						<input type="checkbox" name="system.details.role.leader" data-dtype="Boolean" {{checked system.details.role.leader}} data-tooltip="{{localize 'DND4E.CreatureRoleLeader'}}"/>
+						<label>{{localize 'DND4E.Role.Leader'}}</label> 
+						<input type="checkbox" name="system.details.role.leader" data-dtype="Boolean" {{checked system.details.role.leader}} data-tooltip="{{localize 'DND4E.Role.Leader'}}"/>
 					</li>
+					{{/unless}}
+					
 					<li class="summary-level">
 						<label>{{localize 'DND4E.Level'}}</label>
 						<input type="text" name="system.details.level" value="{{system.details.level}}" data-tooltip="{{localize 'DND4E.Level'}}" data-dtype="Number" onClick="this.select();"/>
@@ -41,24 +48,24 @@
 				</ul>
 	
 				<ul class="summary flexrow">
-					<li class="summary-size">
+					<li class="summary-size" data-tooltip="{{localize 'DND4E.Size'}}">
 						<select class="actor-size" name="system.details.size">
 							{{selectOptions config.actorSizes selected=system.details.size labelAttr="label"}}
 						</select>
 					</li>
-					<li class="summary-origin">
-						<select class="actor-size" name="system.details.origin">
+					<li class="summary-origin" data-tooltip="{{localize 'DND4E.Origin.ThingOrigin' thing=(localize 'DND4E.Creature')}}">
+						<select class="actor-origin" name="system.details.origin">
 							{{selectOptions config.creatureOrigin selected=system.details.origin labelAttr="label"}}
 
 						</select>
 					</li>
-					<li class="summary-type">
-						<select class="actor-size" name="system.details.type">
+					<li class="summary-type"data-tooltip="{{localize 'DND4E.ThingType' thing=(localize 'DND4E.Creature')}}">
+						<select class="actor-type" name="system.details.type">
 							{{selectOptions config.creatureType selected=system.details.type labelAttr="label"}}
 						</select>
 					</li>
 					<li class="summary-typeother">
-						<input name="system.details.other" type="text" value="{{system.details.other}}" data-tooltip="{{localize 'DND4E.CreatureSubtypes'}}" placeholder="{{localize 'DND4E.CreatureSubtypes'}}" onClick="this.select();"/>
+						<input name="system.details.other" type="text" value="{{system.details.other}}" data-tooltip="{{localize 'DND4E.ThingSubtypes' thing=(localize 'DND4E.Creature')}}" placeholder="{{localize 'DND4E.ThingSubtypes' thing=(localize 'DND4E.Creature')}}" onClick="this.select();" />
 					</li>
 				
 					<li class="summary-exp">

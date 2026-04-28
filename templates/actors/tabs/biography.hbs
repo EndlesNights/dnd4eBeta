@@ -2,4 +2,17 @@
   <prose-mirror class="{{#if system.biography}}has-content{{/if}}" toggled name="system.biography" {{disabled (not editable)}} value="{{system.biography}}">
     {{{biographyHTML}}}
   </prose-mirror>
+  
+  {{#if isNPC}}
+  <div class="npc-details flexrow">
+	{{#if (eq system.details.role.secondary 'companion')}}
+	<div class="npc-controller flexrow">
+		<label>{{localize 'DND4E.ControllingActor'}}:</label> <input name="system.details.controller" type="text" value="{{system.details.controller}}" placeholder="{{localize 'DND4E.ControllingActor'}}" data-tooltip="{{localize 'DND4E.ControllingActor'}}" />
+	</div>
+	{{/if}}
+	<div class="npc-source flexrow">
+		<label>{{localize 'DND4E.Source'}}:</label> <input name="system.details.source" type="text" value="{{system.details.source}}" data-tooltip="{{localize 'DND4E.Source'}}" placeholder="{{localize 'DND4E.Source'}}" />
+	</div>
+  </div>
+  {{/if}}
 </section>

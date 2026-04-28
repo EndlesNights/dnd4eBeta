@@ -161,6 +161,11 @@
 		--checkbox-checked-color:var(--override-checkbox-checked-color);
 		--checkbox-checkmark-color:var(--override-checkbox-checkmark-color);
 	}
+	hr{
+		height:0;
+		margin:0.5em 0;
+		border-bottom:var(--border-normal);
+	}
 }
 .sheet.standard-form{
 	gap:0;
@@ -2351,8 +2356,13 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		.npc-upper label.def-base{
 			margin-left:6px;
 		}
+		.npc-upper .basics .alignment{
+			display:flex;
+		}
 		.npc-upper .basics .alignment input{
-			max-width:120px;
+			flex:fit-content 5 5;
+			font-weight:normal;
+			max-width:unset;
 		}
 		.npc-upper .movement-dialog span{
 			font-weight:normal;
@@ -2372,6 +2382,33 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			margin-left:1em;
 			padding-left:1em;
 			max-width:8em;
+		}
+		.tab.biography{
+			& prose-mirror[name='system.biography']{
+				height:calc(100% - 2em);
+			}
+			& .npc-details{
+				height:2em;
+				justify-content:space-between;
+				align-items:center;
+				
+				& label,input[type="text"]{
+                    flex-basis:fit-content;
+                    flex-grow:0;
+                    padding:0 1em;
+				}
+				& label{
+					font-weight:bold;
+				}
+				& .npc-source{
+					justify-content:flex-end;
+					align-items:center;
+				}
+				& .npc-controller{
+					justify-content:flex-start;
+					align-items:center;
+				}
+			}
 		}
 	}
 	

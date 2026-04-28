@@ -293,37 +293,12 @@
 "DND4E.ContextMenuActionUnattune": "Unattune",
 "DND4E.ContextMenuActionEnable": "Enable",
 "DND4E.ContextMenuActionDisable": "Disable",
+"DND4E.ControllingActor": "Controlling Character",
 "DND4E.ControlledNoActor": "No controlled Actor Detected.",
 "DND4E.ConUnconscious": "Unconscious",
 "DND4E.ConWeakened": "Weakened",
 "DND4E.CostGP": "Cost (GP)",
-"DND4E.CreatureOrigin": "Origin",
-"DND4E.CreatureOriginAberrant": "Aberrant",
-"DND4E.CreatureOriginElemental": "Elemental",
-"DND4E.CreatureOriginFey": "Fey",
-"DND4E.CreatureOriginImmortal": "Immortal",
-"DND4E.CreatureOriginNatural": "Natural",
-"DND4E.CreatureOriginShadow": "Shadow",
-"DND4E.CreatureRoleArtillery": "Artillery",
-"DND4E.CreatureRoleBrute": "Brute",
-"DND4E.CreatureRoleController": "Controller",
-"DND4E.CreatureRoleDefender": "Defender",
-"DND4E.CreatureRoleLeader": "Leader",
-"DND4E.CreatureRoleLurker": "Lurker",
-"DND4E.CreatureRoleSkirmisher": "Skirmisher",
-"DND4E.CreatureRoleStriker": "Striker",
-"DND4E.CreatureRoleSoldier": "Soldier",
-"DND4E.CreatureRoleSecStandard": "Standard",
-"DND4E.CreatureRoleSecElite": "Elite",
-"DND4E.CreatureRoleSecSolo": "Solo",
-"DND4E.CreatureRoleSecMinion": "Minion",
-"DND4E.CreatureRoleSecOther": "Other",
-"DND4E.CreatureSubtypes": "Creature Subtypes",
-"DND4E.CreatureType": "Creature Type",
-"DND4E.CreatureTypeAnimate": "Animate",
-"DND4E.CreatureTypeBeast": "Beast",
-"DND4E.CreatureTypeHumanoid": "Humanoid",
-"DND4E.CreatureTypeMagicalBeaste": "Magical Beast",
+"DND4E.Creature": "Creature",
 "DND4E.Critical": "Critical",
 "DND4E.CriticalHit": "Critical Hit",
 "DND4E.CriticalHitTitle": "Natural D20 Dice roll required for a hit to be considered a critical hit.",
@@ -1121,6 +1096,7 @@
 "DND4E.TerrainMultiplierHint": "Determines the number of squares of movement it takes to move through each grid square of terrain.",
 "DND4E.Theme": "Theme",
 "DND4E.ThingType": "{thing} Type",
+"DND4E.ThingSubtypes": "{thing} Subtypes",
 "DND4E.TimeDay": "Days",
 "DND4E.TimeHour": "Hours",
 "DND4E.TimeInst": "Instantaneous",
@@ -1340,6 +1316,12 @@
 "DND4E.AutoTargetModes.Allies": "Allies",
 "DND4E.AutoTargetModes.Enemies": "Enemies",
 
+"DND4E.CreatureType": {
+	"Animate": "Animate",
+	"Beast": "Beast",
+	"Humanoid": "Humanoid",
+	"MagicalBeast": "Magical Beast"
+},
 "DND4E.Equipment.Alt": {
 	"Alt": "Alternative Reward",
 	"Blessing": "Blessing",
@@ -1420,8 +1402,6 @@
 	"DefenceNullTip": "Click to toggle immunity to attacks vs. {def}"
 },
 
-"DND4E.Item.Type": "{type} Type",
-
 "DND4E.Movement":{
 	"Base": "Base",
 	"Bonus": "Bonuses to {mode} speed",
@@ -1447,6 +1427,15 @@
 	"Walk": "Walk"
 },
 
+"DND4E.Origin": { 
+	"ThingOrigin": "{thing} Origin",
+	"Aberrant": "Aberrant",
+	"Elemental": "Elemental",
+	"Fey": "Fey",
+	"Immortal": "Immortal",
+	"Natural": "Natural",
+	"Shadow": "Shadow"
+},
 "DND4E.RegionBehaviors.DifficultTerrain": {
 	"FIELDS": {
 		"ignoredDispositions": {
@@ -1473,14 +1462,47 @@
 	}
 },
 
-"DND4E.Role.Hazard": {
+"DND4E.Role": {
+	"ThingRole": "{thing} Role",
+	"Role": "Role",
+	"Other": "Other",
+	
+	"Elite": "Elite",
+	"Companion": "Companion",
+	"Minion": "Minion",
+	"Solo": "Solo",
+	"Standard": "Standard",
+	
+	"Artillery": "Artillery",
+	"Brute": "Brute",
+	"Controller": "Controller",
+	"Leader": "Leader",
+	"Lurker": "Lurker",
+	"Skirmisher": "Skirmisher",
+	"Soldier": "Soldier",
+	
+	"Controller": "Controller",
+	"Defender": "Defender",
+	"Leader": "Leader",
+	"Striker": "Striker",
+	
+	"Animal": "Animal Companion",
+	"Beast": "Beast Companion",
+	"Companion": "Companion",
+	"Elemental": "Elemental Companion",
+	"Familiar": "Arcane Familiar",
+	"FeyBeast": "Fey Beast Companion",
+	"Hireling": "Hireling",
+	"Mount": "Mount",
+	"Pet": "Pet",
+	"Summon": "Summoned Creature",
+	
 	"Blaster": "Blaster",
 	"Hazard": "Hazard",
 	"Lurker":"Lurker",
 	"Obstacle": "Obstacle",
 	"Trap": "Trap",
-	"Warder": "Warder",
-	"Other": "Other"
+	"Warder": "Warder"
 },
 
 "DND4E.Sheet": {
