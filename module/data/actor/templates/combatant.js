@@ -34,8 +34,7 @@ export default class CombatantTemplate extends SpeedTemplate {
         value: new NumberField({...numberConfig, initial: 10}),
         check: new Dnd4eBonusesField({
             value: new NumberField({...numberConfig, initial: 0}),
-            bonus: new BonusField(),
-            total: new NumberField({...numberConfig, initial: 0, persisted: false})
+            bonus: new BonusField()
         }),
         chat: new StringField({required: true, nullable: false, initial: "@name uses @label."})
       }), {initialKeys: CONFIG.DND4E.abilities, initialKeysOnly: true, label: "DND4E.AbilityScores"}),
