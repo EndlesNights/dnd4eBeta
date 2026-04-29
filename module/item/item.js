@@ -3188,32 +3188,6 @@ export default class Item4e extends Item {
 	/* -------------------------------------------- */
 
 	/**
-	 * Get all of the items contained in this container. A promise if item is within a compendium.
-	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
-	 */
-	get contents() {
-		const parent = this;
-
-		if ( !parent ) return new foundry.utils.Collection();
-
-		// If in a compendium, fetch using getDocuments and return a promise
-		if ( parent.pack && !parent.isEmbedded ) {
-			const pack = game.packs.get(parent.pack);
-			return pack.getDocuments({system: { container: parent.id }}).then(d =>
-			new foundry.utils.Collection(d.map(d => [d.id, d]))
-			);
-		}
-
-		// Otherwise use local document collection
-		return (parent.isEmbedded ? parent.actor.items : game.items).reduce((collection, item) => {
-			if ( item.system.container === parent.id ) collection.set(item.id, item);
-			return collection;
-		}, new foundry.utils.Collection());
-	}
-
-	/* --------------------------------------------- */
-
-	/**
 	 * The item that contains this item, if it is in a container. Returns a promise if the item is located
 	 * in a compendium pack.
 	 * @type {Item4e|Promise<Item4e>|void}
@@ -3226,6 +3200,22 @@ export default class Item4e extends Item {
 	}
 
 	/* -------------------------------------------- */
+
+    /**
+	 * Get all of the items in this container and any sub-containers. A promise if item is within a compendium.
+	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
+	 */
+	get allContainedItems() {
+		if ( this.parent?.pack ) return this.#allContainedItems();
+
+		return this.contents.reduce((collection, item) => {
+			collection.set(item.id, item);
+			if ( item.type === "container" ) item.system.allContainedItems.forEach(i => collection.set(i.id, i));
+			return collection;
+		}, new foundry.utils.Collection());
+	}
+
+    /* -------------------------------------------- */
 
 	/**
 	 * Fetch a specific contained item.
@@ -3269,20 +3259,6 @@ export default class Item4e extends Item {
 	}
 
 	/* -------------------------------------------- */
-
-	/**
-	 * Get all of the items in this container and any sub-containers. A promise if item is within a compendium.
-	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
-	 */
-	get allContainedItems() {
-		if ( this.parent?.pack ) return this.#allContainedItems();
-
-		return this.contents.reduce((collection, item) => {
-			collection.set(item.id, item);
-			if ( item.type === "container" ) item.system.allContainedItems.forEach(i => collection.set(i.id, i));
-			return collection;
-		}, new foundry.utils.Collection());
-	}
 
 	/**
 	 * Asynchronous helper method for fetching all contained items from a compendium.
