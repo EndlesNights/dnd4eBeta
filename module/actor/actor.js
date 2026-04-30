@@ -205,10 +205,6 @@ export class Actor4e extends Actor {
 		data.charaID = this.id;
 		data.charaUID = this.uuid;
 
-		for(let level = 1; level < CONFIG.DND4E.CHARACTER_EXP_LEVELS.length; level++){
-			data[`scale${level}`] = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, level-1);
-		}
-
 		// this is done at the bottom, because I don't want to be iterating the entire actor effects collection unless I have to
 		// as this could get unnecessarily expensive quickly.
 		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula

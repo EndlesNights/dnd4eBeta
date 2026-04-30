@@ -21,6 +21,25 @@ export default class FormulaField extends foundry.data.fields.StringField {
   /* -------------------------------------------- */
 
   /** @inheritDoc */
+  clean(value, options={}, _state={}) {
+    if (value && typeof(value) === "string") {
+      const wepDiceRegex = /@wepDice\(.*\)/gm
+      if (wepDiceRegex.test(value)) {
+        // Clean out old "@wepDice(x)" usage; replace with just "0".
+        value = value.replace(wepDiceRegex, "0");
+      }
+      if (value.includes("@scale")) {
+        // Convert @scaleX to scale(@level, X).
+        value = value.replace(/@scale(\d*)/gm, "(scale(@level, $1))");
+        value = value.replace(/@scale/gm, "(scale(@level))");
+      }
+    }
+    return super.clean(value, options, _state);
+  }
+
+  /* -------------------------------------------- */
+
+  /** @inheritDoc */
   _validateType(value) {
     const roll = new Roll(value.replace(/@([a-z.0-9_-]+)/gi, "1"));
     roll.evaluateSync({ strict: false });
