@@ -2052,9 +2052,9 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData: {}, divisors: {normal: {value: 1, reason: []}, miss: {value: 1, reason: []}, crit: {value: 1, reason: []}} }
 		const secondaryPartsHelper = (formula, damageType) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData()))
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, rollData))
 			// convert formula and type into a single string of "substituted formula [type]"
-			return returnDamageRollAndOptionalType(Roll.replaceFormulaData(formula, this.getRollData), damageType)
+			return returnDamageRollAndOptionalType(Roll.replaceFormulaData(formula, rollData), damageType)
 		}
 		const parts = itemData.damage.parts.map(d => secondaryPartsHelper(d[0], d[1]));
 		const partsMiss = itemData.damage.parts.map(d => secondaryPartsHelper(d[0], d[1]));
@@ -2090,9 +2090,9 @@ export default class Item4e extends Item {
 		if(!!itemData.hit?.formula) {
 			const formulaHelper = (formula) => {
 				// store the values that were used to sub in any formulas
-				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData()))
+				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, rollData))
 				// convert formula and type into a single string of "substituted formula [type]"
-				return  Roll.replaceFormulaData(formula, this.getRollData());
+				return  Roll.replaceFormulaData(formula, rollData);
 			}
 			damageFormula = formulaHelper(itemData.hit.formula)
 			missDamageFormula = formulaHelper(itemData.miss.formula)
@@ -2106,8 +2106,8 @@ export default class Item4e extends Item {
 			//Add seconadary weapons damage into parts
 			const secondaryDamageExpressionHelper = (oldParts, expressionParts, newPartsArr) => {
 				const newParts = newPartsArr.map(d =>  {
-					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(d[0], actorData.getRollData()))
-					const formula = Roll.replaceFormulaData(d[0], this.getRollData());
+					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(d[0], rollData))
+					const formula = Roll.replaceFormulaData(d[0], rollData);
 					if (d.length >= 2) {
 						return returnDamageRollAndOptionalType(formula, d[1])
 					}
