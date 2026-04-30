@@ -61,8 +61,11 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
     else if (this.damageTypes.has("temphp")) damageTypes = "temphp";
     else damageTypes = [...this.damageTypes].join(",");
 
-    const damageRoll = new Roll(`(${this.damage})[${damageTypes}]`);
-    await damageRoll.roll();
+    const originUuid =  this.parent?.parent?.getFlag("dnd4e", "origin")
+    const damageExpression = Roll.replaceFormulaData(this.damage, fromUuidSync(originUuid)?.getRollData());
+
+    const damageRoll = new Roll(`(${damageExpression})[${damageTypes}]`);
+    await damageRoll.evaluate();
     const damageTotal = damageRoll.result.toString();
 
     let damageTaken = 0
@@ -86,7 +89,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
     }
 
     const chatData = {
-      dot: { amount: damageTotal, dmgFormula: this.damage},
+      dot: { amount: damageTotal, dmgFormula: damageExpression },
       autoDoTs: game.settings.get("dnd4e","autoDoTs"),
       dmgTaken: damageTaken,
       dmgDiff: Math.max(damageTotal, damageTaken) - Math.min(damageTotal, damageTaken),
