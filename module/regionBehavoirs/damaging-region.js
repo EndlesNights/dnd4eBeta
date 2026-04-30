@@ -30,7 +30,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
     const dispositions = { ...foundry.applications.sheets.TokenConfig.TOKEN_DISPOSITIONS };
     delete dispositions[CONST.TOKEN_DISPOSITIONS.SECRET];
     const damageTypes = { ...CONFIG.DND4E.damageTypes, ...CONFIG.DND4E.healingTypes };
-    delete damageTypes["All"];
+    delete damageTypes["damage"];
     delete damageTypes["ongoing"];
     return {
       events: this._createEventsField(),
