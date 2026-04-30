@@ -25,7 +25,8 @@ import { default as Token4e } from "./canvas/token.js";
 import Item4e from "./item/item.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
-import { default as ApplyActiveEffect4eRegionBehaviorType } from "./regionBehavoirs/apply-active-effect.js"
+import { default as ApplyActiveEffect4eRegionBehaviorType } from "./regionBehavoirs/apply-active-effect.js";
+import { default as DamagingRegionRegionBehaviorType } from "./regionBehavoirs/damaging-region.js";
 import { default as DifficultTerrainRegionBehaviorType } from "./regionBehavoirs/difficult-terrain.js";
 import { default as TerrainData4e } from "./regionBehavoirs/terrain-data.js";
 import { default as DifficultTerrainConfig} from "./apps/regionBehaviors/difficult-terrain-config.js"
@@ -184,10 +185,13 @@ Hooks.once("init", async function() {
 	};
 
 	CONFIG.RegionBehavior.dataModels.applyActiveEffect4e = ApplyActiveEffect4eRegionBehaviorType;
+    CONFIG.RegionBehavior.dataModels.damagingRegion = DamagingRegionRegionBehaviorType;
 	CONFIG.RegionBehavior.dataModels.difficultTerrain = DifficultTerrainRegionBehaviorType;
 
 	CONFIG.RegionBehavior.typeLabels.applyActiveEffect4e = "DND4E.applyActiveEffect4e.Label";
 	CONFIG.RegionBehavior.typeIcons.applyActiveEffect4e = "fa-solid fa-person-rays";
+    CONFIG.RegionBehavior.typeLabels.damagingRegion = "DND4E.damagingRegion.Label";
+	CONFIG.RegionBehavior.typeIcons.damagingRegion = "fas fa-burst";
 	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "difficult-terrain-icon";
 

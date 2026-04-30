@@ -329,6 +329,7 @@
 "DND4E.DamageRoll": "Damage Roll",
 "DND4E.DamageThunder": "Thunder",
 "DND4E.DamageTypeFromWeapon": "Override Power Damage Type(s)",
+"DND4E.damagingRegion.Label": "Damaging Region",
 "DND4E.DamImm": "Damage Immunities",
 "DND4E.DamRes": "Damage Resistances",
 "DND4E.DamVuln": "Damage Vulnerabilities",
@@ -505,6 +506,7 @@
 "DND4E.FormulaDamageCritExample": "e.g. 6",
 "DND4E.FORT": "FORT",
 "DND4E.FullDis": "Full Discipline",
+"DND4E.gained": "gained",
 "DND4E.gains": "gains",
 "DND4E.Gaze": "Gaze",
 "DND4E.Gender": "Gender",
@@ -1327,6 +1329,7 @@
 	"Humanoid": "Humanoid",
 	"MagicalBeast": "Magical Beast"
 },
+
 "DND4E.Equipment.Alt": {
 	"Alt": "Alternative Reward",
 	"Blessing": "Blessing",
@@ -1442,6 +1445,50 @@
 },
 
 "DND4E.RegionBehaviors": {
+	"ApplyActiveEffect": {
+		"FIELDS": {
+			"dispositions": {
+				"hint": "If set, only apply effects to Tokens with these dispositions.",
+				"label": "Dispositions"
+			},
+			"effects": {
+				"hint": "The effects that are applied to Tokens within the Region.",
+				"label": "Effects"
+			},
+			"origins": {
+				"hint": "If set, only apply effects to Tokens with these creature origins.",
+				"label": "Origins"
+			},
+			"types": {
+				"hint": "If set, only apply effects to Tokens with these creature types.",
+				"label": "Types"
+			}
+		}
+	},
+	"DamagingRegion": {
+		"FIELDS": {
+			"damage": {
+				"hint": "Damage to be done to tokens within this region.",
+				"label": "Damage"
+			},
+			"damageTypes": {
+				"hint": "Damage types done by this region behavior.",
+				"label": "Damage Types"
+			},
+			"dispositions": {
+				"hint": "If set, only damage Tokens with these dispositions.",
+				"label": "Dispositions"
+			},
+			"origins": {
+				"hint": "If set, only damage Tokens with these creature origins.",
+				"label": "Origins"
+			},
+			"types": {
+				"hint": "If set, only damage Tokens with these creature types.",
+				"label": "Types"
+			}
+		}
+	},
 	"DifficultTerrain": {
 		"FIELDS": {
 			"ignoredDispositions": {
@@ -1465,26 +1512,6 @@
 			"Forest": "Forest Walk",
 			"Ice": "Ice Walk",
 			"Swamp": "Swamp Walk"
-		}
-	},
-	"ApplyActiveEffect": {
-		"FIELDS": {
-			"dispositions": {
-				"hint": "If set, only apply effects to Tokens with these dispositions.",
-				"label": "Dispositions"
-			},
-			"effects": {
-				"hint": "The effects that are applied to Tokens within the Region.",
-				"label": "Effects"
-			},
-			"origins": {
-				"hint": "If set, only apply effects to Tokens with these creature origins.",
-				"label": "Origins"
-			},
-			"types": {
-				"hint": "If set, only apply effects to Tokens with these creature types.",
-				"label": "Types"
-			}
 		}
 	}
 },

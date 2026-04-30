@@ -49,6 +49,7 @@
 	--color-label:var(--color-text-secondary);
 	--color-text-good:green;
 	--color-text-bad:red;
+    --color-text-special:#4d9ac0;
 	--input-box-shadow:none;
 	
 	.ability-usage--atwill{
@@ -3708,13 +3709,16 @@ input[type="text"].dice-count{
 		.damage-taken{
 			font-weight:bold;
 		}
-		.damage-taken:not(.resistant-full,.healing){
+		.damage-taken:not(.resistant-full,.healing,.temphp){
 			color:var(--color-text-bad);
 		}
 		.damage-taken.resistant-full,
 		.damage-taken.healing{
 			color:var(--color-text-good);
 		}
+        .damage-taken.temphp{
+            color:var(--color-text-special)
+        }
 	}
 }
 

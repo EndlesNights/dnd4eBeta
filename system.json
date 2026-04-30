@@ -160,8 +160,9 @@
 			"weapon": {}
 		},
 		"RegionBehavior" : {
-          "applyActiveEffect4e": {},
-          "difficultTerrain" :{}
+			"applyActiveEffect4e": {},
+			"damagingRegion": {},
+			"difficultTerrain" :{}
 		}
 	},
 	"primaryTokenAttribute": "attributes.hp",

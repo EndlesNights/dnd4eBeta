@@ -6,7 +6,6 @@ const { DocumentUUIDField, NumberField, SetField, StringField } = foundry.data.f
  * @typedef ApplyActiveEffectRegionBehaviorSystemData
  * @property {Set<string>} effects       UUIDs of effects to apply.
  * @property {Set<number>} dispositions  If not empty, only apply effects to tokens with these dispositions.
- * @property {Set<string>} sizes         If not empty, only apply effects to tokens with these sizes.
  * @property {Set<string>} origins       If not empty, only apply effects to tokens with these creature origins.
  * @property {Set<string>} types         If not empty, only apply effects to tokens with these creature types.
  */

@@ -3,7 +3,9 @@
 		<a class="target" data-target-id="{{targetToken}}">{{actorName}}</a>
 		{{#if (eq autoDoTs "apply")}}
 			{{#if (eq dmgImpact "healing")}}
-				{{localize "DND4E.regained"}} <span class="damage-taken {{dmgImpact}}">{{dmgTaken}}</span> {{localize "DND4E.of"}} 
+				{{localize "DND4E.regained"}} <span class="damage-taken {{dmgImpact}}">{{dmgTaken}}</span> {{localize "DND4E.of"}}
+            {{else if (eq dmgImpact "temphp")}}
+                {{localize "DND4E.gained"}} <span class="damage-taken {{dmgImpact}}">{{dmgTaken}}</span> {{localize "DND4E.of"}}
 			{{else if (eq dmgImpact "resistant-full")}}
 				<span class="damage-taken {{dmgImpact}}">{{localize "DND4E.DamResistedCompletely"}}</span> 
 			{{else if (eq dmgImpact "vulnerable")}}
@@ -21,6 +23,8 @@
 			<span class="intended-dmg" data-tooltip="{{dot.dmgFormula}}">{{dot.amount}}</span>
 			{{#if (eq dmgImpact "healing")}} 
 				{{localize "DND4E.HP"}}.
+            {{else if (eq dmgImpact "temphp")}}
+                {{localize "DND4E.TempHPTip"}}
 			{{else}} 
 				{{typesFormatted}} {{localize "DND4E.Damage"}}.
 			{{/if}}
