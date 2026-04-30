@@ -81,7 +81,7 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
   /* -------------------------------------------- */
 
   /**
-   * Keywords which this effect is has (including custom keywords), if any.
+   * Keywords which this effect has (including custom keywords), if any.
    * @type {Set<String>}
    */
   get allKeywords() {
