@@ -22,7 +22,7 @@ export default class PhysicalItemTemplate extends foundry.abstract.DataModel {
         },
         validationError: "Item must be a power.",
         strict: true
-      }))
+      }), {label: "DND4E.Powers", hint: "DND4E.ItemPowersHint"})
     }
   }
 }
