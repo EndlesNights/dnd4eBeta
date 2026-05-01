@@ -54,7 +54,7 @@ export default class Item4e extends Item {
 					const [power] = await this.actor.createEmbeddedDocuments("Item", [powerData]);
 					powerIds.push(power.id);
 				}
-				const newPowerIds = this.getFlag("dnd4e", "concreteItemPowerIds").concat(powerIds);
+				const newPowerIds = this.getFlag("dnd4e", "concreteItemPowerIds")?.concat(powerIds) ?? powerIds;
 				foundry.utils.setProperty(changed, "flags.dnd4e.concreteItemPowerIds", newPowerIds);
 			}
 		}
