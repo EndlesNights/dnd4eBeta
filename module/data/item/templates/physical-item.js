@@ -1,4 +1,4 @@
-const { BooleanField, ForeignDocumentField, NumberField, StringField } = foundry.data.fields;
+const { BooleanField, DocumentUUIDField, ForeignDocumentField, NumberField, SetField, StringField } = foundry.data.fields;
 
 export default class PhysicalItemTemplate extends foundry.abstract.DataModel {
   static defineSchema() {
@@ -12,7 +12,17 @@ export default class PhysicalItemTemplate extends foundry.abstract.DataModel {
       identified: new BooleanField({initial: true}),
       container: new ForeignDocumentField(foundry.documents.BaseItem, {
         idOnly: true
-      })
+      }),
+      itemPowers: new SetField(new DocumentUUIDField({
+        type: "Item",
+        nullable: false,
+        validate: uuid => {
+          const item = fromUuidSync(uuid, { strict: false });
+          return !item || (item.type === "power");
+        },
+        validationError: "Item must be a power.",
+        strict: true
+      }))
     }
   }
 }

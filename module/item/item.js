@@ -12,7 +12,54 @@ export default class Item4e extends Item {
 	async _preUpdate(changed, options, user) {
 		await super._preUpdate(changed, options, user);
 
-		if ( foundry.utils.hasProperty(changed, "system.container") ) {
+		if (foundry.utils.hasProperty(changed, "system.equipped") && changed.system.equipped !== this.system.equipped) {
+			if (changed.system.equipped && this.system.itemPowers) {
+				const powerIds = [];
+				for (const powerId of this.system.itemPowers) {
+					const powerData = (await fromUuid(powerId)).toObject();
+					foundry.utils.setProperty(powerData, "flags.dnd4e.originItem", this.uuid);
+					foundry.utils.setProperty(powerData, "flags.dnd4e.sourceId", powerId);
+
+					const [power] = await this.actor.createEmbeddedDocuments("Item", [powerData]);
+					powerIds.push(power.id);
+				}
+				foundry.utils.setProperty(changed, "flags.dnd4e.concreteItemPowerIds", powerIds);
+			} else if (this.getFlag("dnd4e", "concreteItemPowerIds")?.length) {
+				const powerIdsToDelete = this.getFlag("dnd4e", "concreteItemPowerIds").filter(id => this.actor.items.some(i => i.id === id));
+				for (const powerId of powerIdsToDelete) {
+					const powerToDelete = this.actor.items.get(powerId);
+					await powerToDelete.setFlag("dnd4e", "isUnequipping", true);
+				}
+				await this.actor.deleteEmbeddedDocuments("Item", powerIdsToDelete)
+				foundry.utils.setProperty(changed, "flags.dnd4e.concreteItemPowerIds", _del);
+			}
+		}
+		
+		if (foundry.utils.hasProperty(changed, "system.itemPowers")) {
+			const changedPowerSourceIds = this.system.itemPowers.symmetricDifference(new Set(changed.system.itemPowers));
+			if (this.system.itemPowers.intersection(changedPowerSourceIds).size) {
+				const powerIdsToDelete = Array.from(this.actor.items).filter(i => i.getFlag("dnd4e", "originItem") === this.uuid && changedPowerSourceIds.has(i.getFlag("dnd4e", "sourceId"))).map(i => i.id);
+				for (const powerId of powerIdsToDelete) {
+					const powerToDelete = this.actor.items.get(powerId);
+					await powerToDelete.setFlag("dnd4e", "deletingFromOrigin", true);
+				}
+				await this.actor.deleteEmbeddedDocuments("Item", powerIdsToDelete);
+			} else if (this.system.equipped) {
+				const powerIds = [];
+				for (const powerId of changedPowerSourceIds) {
+					const powerData = (await fromUuid(powerId)).toObject();
+					foundry.utils.setProperty(powerData, "flags.dnd4e.originItem", this.uuid);
+					foundry.utils.setProperty(powerData, "flags.dnd4e.sourceId", powerId);
+
+					const [power] = await this.actor.createEmbeddedDocuments("Item", [powerData]);
+					powerIds.push(power.id);
+				}
+				const newPowerIds = this.getFlag("dnd4e", "concreteItemPowerIds").concat(powerIds);
+				foundry.utils.setProperty(changed, "flags.dnd4e.concreteItemPowerIds", newPowerIds);
+			}
+		}
+
+		if (foundry.utils.hasProperty(changed, "system.container")) {
 			options.formerContainer = (await this.container)?.uuid;
 		}
 
@@ -49,6 +96,23 @@ export default class Item4e extends Item {
 				Helper.debugLog("DnD4e: Updating an obsolete ritual")
 				foundry.utils.setProperty(changed, "system.formula", "@attribute")
 				delete system.oldRitualNeedsUpdating
+			}
+		}
+	}
+
+	async _preDelete(options, user) {
+		await super._preDelete(options, user);
+		if (this.getFlag("dnd4e", "concreteItemPowerIds")?.length) {
+			const powerIdsToDelete = this.getFlag("dnd4e", "concreteItemPowerIds").filter(id => this.actor.items.some(i => i.id === id));
+			await this.actor.deleteEmbeddedDocuments("Item", powerIdsToDelete)
+		}
+		const originItem = fromUuidSync(this.getFlag("dnd4e", "originItem"));
+		if (originItem) {	
+			const sourceId = this.getFlag("dnd4e", "sourceId");
+			const isUnequipping = this.getFlag("dnd4e", "isUnequipping");
+			const isDeletingFromOrigin = this.getFlag("dnd4e", "deletingFromOrigin");
+			if (sourceId && !isUnequipping && !isDeletingFromOrigin) {
+				await originItem.update({"system.itemPowers": Array.from(originItem.system.itemPowers).filter(id => id !== sourceId)});
 			}
 		}
 	}
@@ -3201,7 +3265,7 @@ export default class Item4e extends Item {
 
 	/* -------------------------------------------- */
 
-    /**
+	/**
 	 * Get all of the items contained in this container. A promise if item is within a compendium.
 	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
 	 */
@@ -3227,7 +3291,7 @@ export default class Item4e extends Item {
 
 	/* --------------------------------------------- */
 
-    /**
+	/**
 	 * Get all of the items in this container and any sub-containers. A promise if item is within a compendium.
 	 * @type {Collection<Item4e>|Promise<Collection<Item4e>>}
 	 */
@@ -3241,7 +3305,7 @@ export default class Item4e extends Item {
 		}, new foundry.utils.Collection());
 	}
 
-    /* -------------------------------------------- */
+	/* -------------------------------------------- */
 
 	/**
 	 * Fetch a specific contained item.

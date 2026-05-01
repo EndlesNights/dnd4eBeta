@@ -1,8 +1,7 @@
 // import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import ActiveEffect4e from "../effects/effects.js";
-import { default as TokenDocument4e } from "../documents/token.js"
 import {Helper} from "../helper.js";
-import ActorSheet4e from "../actor/actor-sheet.js";
+import Item4e from "./item.js";
 
 /**
  * Override and extend the core ItemSheet implementation to handle specific item types
@@ -411,6 +410,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			context.isWeaponBaseTypeCustom = (itemData.system.weaponBaseType === "custom");
 			context.summaryLabel = CONFIG.DND4E.weaponTypes[itemData.system.weaponType];
 		}
+
+        if(context.isPhysical){
+            context.itemPowersField = this.document.system.schema.getField("itemPowers");
+        }
 
 		// Action Details
 		//data.hasAttackRoll = this.item.hasAttack;
@@ -1417,7 +1420,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	 * @protected
 	 */
 	async _onDropItem(event, data) {
-		const item = await Item.implementation.fromDropData(data);
+		if (this.document.type !== "backpack") return false;
+        const item = await Item.implementation.fromDropData(data);
 		if ( !this.item.isOwner || !item ) return false;
 
 		// If item already exists in this container, just adjust its sorting

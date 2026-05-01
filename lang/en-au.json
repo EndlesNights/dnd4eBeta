@@ -634,6 +634,8 @@
 "DND4E.ItemName": "Item Name",
 "DND4E.ItemNew": "New {type}",
 "DND4E.ItemNoUses": "{name} has no available uses remaining.",
+"DND4E.ItemPowers": "Item Powers",
+"DND4E.ItemPowersHint": "Powers to be added when this item is equipped.",
 "DND4E.ItemRequiredStr": "Required Strength",
 "DND4E.ItemTypeClass": "Class",
 "DND4E.ItemTypeConsumable": "Consumable",

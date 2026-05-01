@@ -112,13 +112,26 @@
             <i class="fas fa-trash"></i>
           </a>
         </div>
-		
       </li>
       {{/each}}
     </ol>
     {{/each}}
   </ol>
 </div>
+
+{{#if isPhysical}}
+  <fieldset>
+    <legend>{{localize 'DND4E.ItemPowers'}}</legend>
+    <div class="form-group">
+      <label>{{localize 'DND4E.Powers'}}</label>
+      <div class="form-fields">
+        {{formField itemPowersField value=system.itemPowers localize=true model=../../model}}
+      </div>
+      
+    </div>
+    <p class="hint">{{localize 'DND4E.ItemPowersHint'}}</p>
+  </fieldset>
+{{/if}}
 
 {{!-- Resistances --}}
 
