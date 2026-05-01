@@ -25,10 +25,10 @@ import { default as Token4e } from "./canvas/token.js";
 import Item4e from "./item/item.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
-import { default as ApplyActiveEffect4eRegionBehaviorType } from "./regionBehavoirs/apply-active-effect.js";
-import { default as DamagingRegionRegionBehaviorType } from "./regionBehavoirs/damaging-region.js";
-import { default as DifficultTerrainRegionBehaviorType } from "./regionBehavoirs/difficult-terrain.js";
-import { default as TerrainData4e } from "./regionBehavoirs/terrain-data.js";
+import { default as ApplyActiveEffect4eRegionBehaviorType } from "./regionBehaviors/apply-active-effect.js";
+import { default as DamagingRegionRegionBehaviorType } from "./regionBehaviors/damaging-region.js";
+import { default as DifficultTerrainRegionBehaviorType } from "./regionBehaviors/difficult-terrain.js";
+import { default as TerrainData4e } from "./regionBehaviors/terrain-data.js";
 import { default as DifficultTerrainConfig} from "./apps/regionBehaviors/difficult-terrain-config.js"
 
 import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs, performPreLocalization} from "./helper.js";
