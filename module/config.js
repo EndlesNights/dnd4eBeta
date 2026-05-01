@@ -440,30 +440,23 @@ preLocalize("armourProficiencies");
 
 DND4E.creatureOrigin = {
 	aberrant: {
-		label: "DND4E.CreatureOriginAberrant",
+		label: "DND4E.Origin.Aberrant",
 	},
 	elemental: {
-		label: "DND4E.CreatureOriginElemental",
+		label: "DND4E.Origin.Elemental",
 	},
 	fey: {
-		label: "DND4E.CreatureOriginFey",
+		label: "DND4E.Origin.Fey",
 	},
 	immortal: {
-		label: "DND4E.CreatureOriginImmortal",
+		label: "DND4E.Origin.Immortal",
 	},
 	natural: {
-		label: "DND4E.CreatureOriginNatural",
+		label: "DND4E.Origin.Natural",
 	},
 	shadow: {
-		label: "DND4E.CreatureOriginShadow",
+		label: "DND4E.Origin.Shadow",
 	},
-
-	// "aberrant": "DND4E.CreatureOriginAberrant",
-	// "elemental": "DND4E.CreatureOriginElemental",
-	// "fey": "DND4E.CreatureOriginFey",
-	// "immortal": "DND4E.CreatureOriginImmortal",
-	// "natural": "DND4E.CreatureOriginNatural",
-	// "shadow": "DND4E.CreatureOriginShadow",
 }
 preLocalize("creatureOrigin", { keys: ["label"] });
 
@@ -472,91 +465,96 @@ preLocalize("creatureOrigin", { keys: ["label"] });
 
 DND4E.creatureRole = {
 	artillery: {
-		label: "DND4E.CreatureRoleArtillery",
+		label: "DND4E.Role.Artillery",
 	},
 	brute: {
-		label: "DND4E.CreatureRoleBrute",
+		label: "DND4E.Role.Brute",
 	},
 	controller: {
-		label: "DND4E.CreatureRoleController",
-	},
-	defender: {
-		label: "DND4E.CreatureRoleDefender",
-	},
-	leader: {
-		label: "DND4E.CreatureRoleLeader",
+		label: "DND4E.Role.Controller",
 	},
 	lurker: {
-		label: "DND4E.CreatureRoleLurker",
+		label: "DND4E.Role.Lurker",
 	},
 	skirmisher: {
-		label: "DND4E.CreatureRoleSkirmisher",
-	},
-	striker: {
-		label: "DND4E.CreatureRoleStriker",
+		label: "DND4E.Role.Skirmisher",
 	},
 	soldier: {
-		label: "DND4E.CreatureRoleSoldier",
+		label: "DND4E.Role.Soldier",
 	},
-	
-	// "artillery": "DND4E.CreatureRoleArtillery",
-	// "brute": "DND4E.CreatureRoleBrute",
-	// "controller": "DND4E.CreatureRoleController",
-	// "defender": "DND4E.CreatureRoleDefender",
-	// "leader": "DND4E.CreatureRoleLeader",
-	// "lurker": "DND4E.CreatureRoleLurker",
-	// "skirmisher": "DND4E.CreatureRoleSkirmisher",
-	// "striker": "DND4E.CreatureRoleStriker",
-	// "soldier": "DND4E.CreatureRoleSoldier",
+	controller: {
+		label: "DND4E.Role.Controller",
+	},
+	defender: {
+		label: "DND4E.Role.Defender",
+	},
+	leader: {
+		label: "DND4E.Role.Leader",
+	},
+	striker: {
+		label: "DND4E.Role.Striker",
+	}
 }
-preLocalize("creatureRole", { keys: ["label"], sort: true });
+preLocalize("creatureRole", { keys: ["label"], sort: false });
 
 DND4E.creatureRoleSecond = {
-	"standard": {label: "DND4E.CreatureRoleSecStandard"},
-	"elite": {label: "DND4E.CreatureRoleSecElite"},
-	"solo": {label: "DND4E.CreatureRoleSecSolo"},
-	"minion": {label: "DND4E.CreatureRoleSecMinion"},
-	"other": {label: "DND4E.CreatureRoleSecOther"},
+	"standard": {label: "DND4E.Role.Standard"},
+	"elite": {label: "DND4E.Role.Elite"},
+	"solo": {label: "DND4E.Role.Solo"},
+	"minion": {label: "DND4E.Role.Minion"},
+	"companion": {label: "DND4E.Role.Companion"},
+	"other": {label: "DND4E.Role.Other"},
 }
-preLocalize("creatureRoleSecond", { keys: ["label"], sort: true });
+preLocalize("creatureRoleSecond", { keys: ["label"], sort: false });
+
+DND4E.companionType = {
+	"companion": {label: "DND4E.Role.Companion"},
+	"summon": {label: "DND4E.Role.Summon"},
+	"familiar": {label: "DND4E.Role.Familiar"},
+	"beast": {label: "DND4E.Role.Beast"},
+	"animal": {label: "DND4E.Role.Animal"},
+	"elemental": {label: "DND4E.Role.Elemental"},
+	"feybeast": {label: "DND4E.Role.FeyBeast"},
+	"hireling": {label: "DND4E.Role.Hireling"},
+	"mount": {label: "DND4E.Role.Mount"},
+	"pet": {label: "DND4E.Role.Pet"},
+	"other": {label: "DND4E.Role.Other"},
+}
+preLocalize("companionType", { keys: ["label"], sort: false });
 
 /* -------------------------------------------- */
 
 DND4E.hazardRole = {
-	"trap": {label: "DND4E.Role.Hazard.Trap"},
-	"hazard": {label: "DND4E.Role.Hazard.Hazard"},
-	"other": {label: "DND4E.Role.Hazard.Other"}
+	"trap": {label: "DND4E.Role.Trap"},
+	"hazard": {label: "DND4E.Role.Hazard"},
+	"other": {label: "DND4E.Role.Other"}
 }
-preLocalize("hazardRole", { keys: ["label"], sort: true });
+preLocalize("hazardRole", { keys: ["label"], sort: false });
 
 DND4E.hazardRoleSecond = {
-	"blaster": {label: "DND4E.Role.Hazard.Blaster"},
-	"lurker": {label: "DND4E.Role.Hazard.Lurker"},
-	"obstacle": {label: "DND4E.Role.Hazard.Obstacle"},
-	"warder": {label: "DND4E.Role.Hazard.Warder"},
-	"other": {label: "DND4E.Role.Hazard.Other"},
+	"blaster": {label: "DND4E.Role.Blaster"},
+	"lurker": {label: "DND4E.Role.Lurker"},
+	"obstacle": {label: "DND4E.Role.Obstacle"},
+	"warder": {label: "DND4E.Role.Warder"},
+	"other": {label: "DND4E.Role.Other"},
 }
-preLocalize("hazardRoleSecond", { keys: ["label"], sort: true });
+preLocalize("hazardRoleSecond", { keys: ["label"], sort: false });
 
 /* -------------------------------------------- */
 
 DND4E.creatureType = {
 	animate: {
-		label: "DND4E.CreatureTypeAnimate",
+		label: "DND4E.CreatureType.Animate",
 	},
 	beast: {
-		label: "DND4E.CreatureTypeBeast",
+		label: "DND4E.CreatureType.Beast",
 	},
 	humanoid: {
-		label: "DND4E.CreatureTypeHumanoid",
+		label: "DND4E.CreatureType.Humanoid",
 	},
 	magical: {
-		label: "DND4E.CreatureTypeMagicalBeaste",
+		label: "DND4E.CreatureType.MagicalBeast",
 	},
-	// "animate": "DND4E.CreatureTypeAnimate",
-	// "beast": "DND4E.CreatureTypeBeast",
-	// "humanoid": "DND4E.CreatureTypeHumanoid",
-	// "magical": "DND4E.CreatureTypeMagicalBeaste",
 }
 preLocalize("creatureType", { keys: ["label"], sort: true });
 
@@ -577,7 +575,7 @@ DND4E.consumableTypes = {
 	"wondrous": {label: "DND4E.EquipmentWondrousItem"},
 	"other": {label: "DND4E.EquipmentTypeOther"}
 };
-preLocalize("consumableTypes", { keys: ["label"], sort: true });
+preLocalize("consumableTypes", { keys: ["label"], sort: false });
 
 /* -------------------------------------------- */
 DND4E.commonAttackBonuses = {
