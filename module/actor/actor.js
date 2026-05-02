@@ -2532,11 +2532,13 @@ export class Actor4e extends Actor {
 		}
 		else {
 			for (let d of disjointDamageArray){
+				const isOngoing = d.types.has("ongoing");
+				if (isOngoing) d.types.delete("ongoing");
 				const damageTypesArray = Array.from(d.types);
 				let i = 0;
 				for (let dt of damageTypesArray) {
 					let typedDamage = 0 | d.value / damageTypesArray.length + (i < d.value % damageTypesArray.length);
-					totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+					totalDamage += this.calcTotalInner(typedDamage, new Set([dt]), isOngoing);
 					i++;
 				}
 			}
