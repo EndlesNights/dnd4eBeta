@@ -2440,6 +2440,7 @@ export class Actor4e extends Actor {
 		const actorRes = this.system.resistances;
 		const isDamageImmune = actorRes['damage'].immune;
 		const resAll = isOngoing ? Helper.sumExtremes([resAll,actorRes['ongoing'].value] || 0) : actorRes['damage'].value;
+		if (isOngoing) typesSet.delete("ongoing");
 
 		let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
 		let lowestRes = Infinity; // will attempt to replace this with the lowest resistance / highest vulnerability
@@ -2516,7 +2517,8 @@ export class Actor4e extends Actor {
 		}
 		else {
 			for (let d of disjointDamageArray){
-				totalDamage += this.calcTotalInner(d.value, d.types);
+				const isOngoing = !!combinedOngoingDamageTypes.size;
+				totalDamage += this.calcTotalInner(d.value, d.types, isOngoing);
 			}
 		}
 
@@ -2581,11 +2583,13 @@ export class Actor4e extends Actor {
 		}
 		else {
 			for (let d of disjointDamageArray){
+				const isOngoing = d.types.has("ongoing");
+				if (isOngoing) d.types.delete("ongoing");
 				const damageTypesArray = Array.from(d.types);
 				let i = 0;
 				for (let dt of damageTypesArray) {
 					let typedDamage = 0 | d.value / damageTypesArray.length + (i < d.value % damageTypesArray.length);
-					totalDamage += this.calcTotalInner(typedDamage, new Set([dt]));
+					totalDamage += this.calcTotalInner(typedDamage, new Set([dt]), isOngoing);
 					i++;
 				}
 			}
