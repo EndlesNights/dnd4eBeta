@@ -1,4 +1,5 @@
 import { DND4E } from "../config.js";
+import { Helper } from "../helper.js";
 import ActiveEffect4e from "../effects/effects.js";
 
 export default class ActiveEffectConfig4e extends foundry.applications.sheets.ActiveEffectConfig {
@@ -92,7 +93,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				context.dotDamageTypes = damageTypes;
 				break;
 			case "activation": {
-				partContext.powerParent = ["power", "consumable"].includes(this.document.parent.type);
+				partContext.powerParent = ["power", "consumable"].includes(this.document.parent?.type);
 				partContext.start = await this._prepareStartContext();
 				partContext.hasDuration = typeof context.source.duration.value === "number";
 				const groups = {
