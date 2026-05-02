@@ -52,23 +52,16 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 	
     // Get current values
     const attr = foundry.utils.getProperty(this.document, this.attribute) || {};
-    attr.value = Array.from(attr.value ?? []);
+    let values = Object.keys(attr).map((key) => [key, attr[key]])
 	
 	  // Populate choices
     let choices = foundry.utils.duplicate(this.options.choices);
 		
     for ( let [k, v] of Object.entries(choices) ) {
-      let i = -1;
-      
-      for(let index = 0; index < attr.value.length; index++)
-      {
-        if(attr.value[index][0].includes(k)) i = index;
-      }
-		
-      choices[k] = {
+        choices[k] = {
         label: v,
-        chosen: attr && i != -1 ? true : false,
-        value: attr && i != -1 ? attr.value[i][1] : null 
+        chosen: attr[k].value,
+        value: attr[k].value ? attr[k].range : null 
       };
     }
 
@@ -91,18 +84,8 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
     formData = foundry.utils.expandObject(formData.object);
 
     // Obtain choices
-    const chosen = [];
     for ( let [k, v] of Object.entries(formData) ) {
-      if ( (k !== "custom") && v[0] ) chosen.push([k,v[1]]);
-    }
-    updateData[`${this.attribute}.value`] = chosen;
-
-    // Validate the number chosen
-    if ( this.options.minimum && (chosen.length < this.options.minimum) ) {
-      return ui.notifications.error(`You must choose at least ${this.options.minimum} options`);
-    }
-    if ( this.options.maximum && (chosen.length > this.options.maximum) ) {
-      return ui.notifications.error(`You may choose no more than ${this.options.maximum} options`);
+      if (k !== "custom") updateData[`${this.attribute}.${k}`] = {value: v[0], range: v[0] ? v[1] : ""};
     }
 
     // Include custom

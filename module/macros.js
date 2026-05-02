@@ -1,3 +1,4 @@
+import { Helper } from "./helper.js";
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
@@ -15,7 +16,7 @@ export async function create4eMacro(dropData, slot) {
 
 	if(dropData.type === "Item") {
 		const itemData = await Item.implementation.fromDropData(dropData);
-		console.log(itemData)
+		Helper.debugLog(itemData)
 		if ( !itemData ) {
 			ui.notifications.warn("MACRO.4eUnownedWarn", {localize: true});
 			return null;
@@ -96,7 +97,7 @@ export function toggleEffect(effectName, type="DOCUMENT.ActiveEffect") {
 	const collection = Array.from(actor.allApplicableEffects());
 
 	const documents =  collection.filter(i => i.name === effectName);
-	console.log(effectName)
+	Helper.debugLog(effectName)
 	if(documents.length === 1){
 		const effect = documents[0]
 		return effect?.update({disabled: !effect.disabled});

@@ -101,6 +101,7 @@
 "DND4E.AlignmentTN": "True Neutral",
 "DND4E.AlignmentUN": "Unaligned",
 "DND4E.AnyW": "Any Weapon",
+"DND4E.applyActiveEffect4e.Label": "Apply Active Effect (4e)",
 "DND4E.ApplyEffect": "(All/Ally/Enemy) Effects",
 "DND4E.ApplyEffectTooltip": "Applies the power's (All/Ally/Enemy) Effects to the targeted/selected tokens (change between targeted/selected in game options)",
 "DND4E.ApplyHitEffect": "Hit Effects",
@@ -144,6 +145,7 @@
 "DND4E.AutoTarget": "Auto Target",
 "DND4E.AutoTargetIncludeSelf": "Include Self",
 "DND4E.Aura": "Aura",
+"DND4E.AuraSize": "Aura Size",
 "DND4E.AutoanimationHookAttack": "On Attack",
 "DND4E.AutoanimationHookDamage": "On Damage",
 "DND4E.AutoanimationHookHealing": "On Healing",
@@ -327,6 +329,7 @@
 "DND4E.DamageRoll": "Damage Roll",
 "DND4E.DamageThunder": "Thunder",
 "DND4E.DamageTypeFromWeapon": "Override Power Damage Type(s)",
+"DND4E.damagingRegion.Label": "Damaging Region",
 "DND4E.DamImm": "Damage Immunities",
 "DND4E.DamRes": "Damage Resistances",
 "DND4E.DamVuln": "Damage Vulnerabilities",
@@ -503,6 +506,7 @@
 "DND4E.FormulaDamageCritExample": "e.g. 6",
 "DND4E.FORT": "FORT",
 "DND4E.FullDis": "Full Discipline",
+"DND4E.gained": "gained",
 "DND4E.gains": "gains",
 "DND4E.Gaze": "Gaze",
 "DND4E.Gender": "Gender",
@@ -630,6 +634,8 @@
 "DND4E.ItemName": "Item Name",
 "DND4E.ItemNew": "New {type}",
 "DND4E.ItemNoUses": "{name} has no available uses remaining.",
+"DND4E.ItemPowers": "Item Powers",
+"DND4E.ItemPowersHint": "Powers to be added when this item is equipped.",
 "DND4E.ItemRequiredStr": "Required Strength",
 "DND4E.ItemTypeClass": "Class",
 "DND4E.ItemTypeConsumable": "Consumable",
@@ -711,6 +717,7 @@
 "DND4E.Mod": "Mod",
 "DND4E.MOD": "MOD",
 "DND4E.Mount": "Mount",
+"DND4E.MovementBonus": "Bonuses to Movement",
 "DND4E.Name": "Name",
 "DND4E.NameNPC": "NPC Name",
 "DND4E.NamePC": "Character Name",
@@ -744,6 +751,7 @@
 "DND4E.PasIns": "Passive Insight",
 "DND4E.PasPer": "Passive Perception",
 "DND4E.per": "per",
+"DND4E.Per": "Per",
 "DND4E.PlaceTemplate": "Place Measured Template",
 "DND4E.Polymorph": "Polymorph",
 "DND4E.PolymorphAcceptSettings": "Custom Settings",
@@ -766,7 +774,7 @@
 "DND4E.PolymorphTokens": "Transform all linked tokens?",
 "DND4E.PolymorphWarn": "You are not allowed to polymorph this actor!",
 "DND4E.PolymorphWildShape": "Wild Shape",
-"DND4E.PowerAutoGenerateImageLable": "Auto Generate Icons Details",
+"DND4E.PowerAutoGenerateImageLabel": "Auto Generate Icons Details",
 "DND4E.Power": "Power",
 "DND4E.PowerAreaTexture": "Area Power Texture",
 "DND4E.PowerAt": "At-Will",
@@ -1016,7 +1024,7 @@
 "DND4E.Special": "Special",
 "DND4E.SpecialRequirements": "Special Requirements",
 "DND4E.SpecialSenses": "Special Senses",
-"DND4E.SpecialSensesAA": "All Around Vision",
+"DND4E.SpecialSensesAA": "All-Around Vision",
 "DND4E.SpecialSensesBS": "Blindsight",
 "DND4E.SpecialSensesDV": "Darkvision",
 "DND4E.SpecialSensesTR": "Truesight",
@@ -1108,6 +1116,7 @@
 "DND4E.TimeYear": "Years",
 "DND4E.to": "to",
 "DND4E.took": "took",
+"DND4E.ToolCheck": "Tool Check",
 "DND4E.ToolFormulaDescription": "Leave this blank and it will roll 1d20 + (selected skill or ability bonus) + (tool bonus)",
 "DND4E.Trained": "Trained",
 "DND4E.TraitarmourProf": "Armour Proficiencies",
@@ -1322,6 +1331,7 @@
 	"Humanoid": "Humanoid",
 	"MagicalBeast": "Magical Beast"
 },
+
 "DND4E.Equipment.Alt": {
 	"Alt": "Alternative Reward",
 	"Blessing": "Blessing",
@@ -1338,7 +1348,6 @@
 
 "DND4E.Feature": {
 	"Add": "Create Feature",
-	"AuraSize": "Aura Size",
 	"AuraSizeTip": "If this feature is an aura, enter the size here",
 	"BG": "Background Feature",
 	"Class": "Class Feature",
@@ -1436,29 +1445,76 @@
 	"Natural": "Natural",
 	"Shadow": "Shadow"
 },
-"DND4E.RegionBehaviors.DifficultTerrain": {
-	"FIELDS": {
-		"ignoredDispositions": {
-			"hint": "Tokens with these dispositions will not be affected by this difficult terrain.",
-			"label": "Ignored Dispositions"
-		},
-		"types": {
-			"hint": "Types that best describe the source of this difficult terrain, if any.",
-			"label": "Types"
+
+"DND4E.RegionBehaviors": {
+	"ApplyActiveEffect": {
+		"FIELDS": {
+			"dispositions": {
+				"hint": "If set, only apply effects to Tokens with these dispositions.",
+				"label": "Dispositions"
+			},
+			"effects": {
+				"hint": "The effects that are applied to Tokens within the Region.",
+				"label": "Effects"
+			},
+			"origins": {
+				"hint": "If set, only apply effects to Tokens with these creature origins.",
+				"label": "Origins"
+			},
+			"types": {
+				"hint": "If set, only apply effects to Tokens with these creature types.",
+				"label": "Types"
+			}
 		}
 	},
-	"Type": {
-		"Earth": "Rubble, Uneven Stone, or Earth",
-		"Forest": "Trees, Underbrush, Plants, or Natural Growth",
-		"Ice": "Ice or Snow",
-		"Swamp": "Bog, Mud, or Shallow Water"
+	"DamagingRegion": {
+		"FIELDS": {
+			"damage": {
+				"hint": "Damage to be done to tokens within this region.",
+				"label": "Damage"
+			},
+			"damageTypes": {
+				"hint": "Damage types done by this region behavior.",
+				"label": "Damage Types"
+			},
+			"dispositions": {
+				"hint": "If set, only damage Tokens with these dispositions.",
+				"label": "Dispositions"
+			},
+			"origins": {
+				"hint": "If set, only damage Tokens with these creature origins.",
+				"label": "Origins"
+			},
+			"types": {
+				"hint": "If set, only damage Tokens with these creature types.",
+				"label": "Types"
+			}
+		}
 	},
-	"Ignored": {
-		"All": "Ignores Difficult Terrain",
-		"Earth": "Earth Walk",
-		"Forest": "Forest Walk",
-		"Ice": "Ice Walk",
-		"Swamp": "Swamp Walk"
+	"DifficultTerrain": {
+		"FIELDS": {
+			"ignoredDispositions": {
+				"hint": "Tokens with these dispositions will not be affected by this difficult terrain.",
+				"label": "Ignored Dispositions"
+			},
+			"types": {
+				"hint": "Types that best describe the source of this difficult terrain, if any.",
+				"label": "Types"
+			}
+		},
+		"Type": {
+			"Earth": "Rubble, Uneven Stone, or Earth",
+			"Forest": "Trees, Underbrush, Plants, or Natural Growth",
+			"Ice": "Ice or Snow",
+			"Swamp": "Bog, Mud, or Shallow Water"
+		},
+		"Ignored": {
+			"All": "Ignores Difficult Terrain",
+			"Earth": "Earth Walk",
+			"Forest": "Forest Walk",
+			"Ice": "Ice Walk",
+			"Swamp": "Swamp Walk"
+		}
 	}
 },
 
@@ -1667,6 +1723,7 @@
 	"AttackDetailsTextHint": "Only required for powers with special attack text. If provided, the power card's attack field will use this string instead of the normal pattern (e.g. \"Str vs AC\" or \"+12 vs AC\") selected in system config.",
 	"AttackVersus": "Attack versus",
 	"AttributeKey": "Attribute Key",
+    "Auto": "Auto",
 	"AutoCardTip": "<strong>ON:</strong> The chat card will be generated from the provided Details, with styling applied automatically. If no flavour text is provided, the Description text will be used in its place.<br /><strong>OFF:</strong> The chat card will only use the Description text. Styling is up to the user.",
 	"AutoFromConfig": "Automatic (from Config)",
 	"AutoFromConfigTip": "These keywords have been inferred from the power's settings. If something looks wrong, the config may need updating!",
@@ -1778,6 +1835,8 @@
 "SETTINGS.4eDamageCalcPHB": "PHB Damage Rules",
 "SETTINGS.4eDeathSaveRestL": "Choose a reset condition for failed death saves. Useful if you want to run a more deadly campaign than the default of \"short rest\" provides.",
 "SETTINGS.4eDeathSaveRestN": "Death Saving Throw Reset",
+"SETTINGS.4eDebugLoggingL": "Will output a lot of debug information to the console",
+"SETTINGS.4eDebugLoggingN": "Debug Logging",
 "SETTINGS.4eDebugPowerEffectsL": "Will output a lot of debug information to the console when attempting to apply effects to power attack and damage rolls. Useful to see why a given effect is applying at a given value",
 "SETTINGS.4eDebugPowerEffectsN": "Debug Power Effects",
 "SETTINGS.4eFastFowardSettingsL": "All rolls and actions buttons will now default to using the fast-forward option that skips dialogue boxes. To have the roll dialogue box while in this mode, use the key binds normally associated with fast-forward",
@@ -1801,8 +1860,8 @@
 "SETTINGS.4eNpcMathOptionsN": "NPC Stats Calculate",
 "SETTINGS.4epermShowPlayerL": "When clicking the show player button on an item while holding this key, it will permanently give all players permission to see the item rather then them only being shown the item temporarily.",
 "SETTINGS.4epermShowPlayerN": "Show Players Item Permanently",
-"SETTINGS.4ePowerAutoGenerateLableOptionN": "Automatic Power Card Default",
-"SETTINGS.4ePowerAutoGenerateLableOptionL": "When creating a new power, determine if the option to \"Auto Generate Power Card Details\" is set.",
+"SETTINGS.4ePowerAutoGenerateLabelOptionN": "Automatic Power Card Default",
+"SETTINGS.4ePowerAutoGenerateLabelOptionL": "When creating a new power, determine if the option to \"Auto Generate Power Card Details\" is set.",
 "SETTINGS.4eSaveRemindersN": "Trigger End-of-Turn Saves Automatically",
 "SETTINGS.4eSaveRemindersL": "Each \"save ends\" effect on a creature prompts for a saving throw at the end of their turn, or rolls a save automatically if Fast-Forward is enabled.",
 "SETTINGS.4eShowRollExpressionN": "Show Roll Formula",

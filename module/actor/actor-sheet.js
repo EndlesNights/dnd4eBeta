@@ -71,6 +71,52 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			itemSummary: ActorSheet4e.#onItemSummary,
 			cycleSkillProficiency: { handler: ActorSheet4e.#onCycleSkillProficiency, buttons: [0, 2] },
 			editImage: ActorSheet4e.#onEditImage,
+			rollSkillCheck: ActorSheet4e.#onRollSkillCheck,
+			rollPassiveCheck: ActorSheet4e.#onRollPassiveCheck,
+			rollAbilityCheck: ActorSheet4e.#onRollAbilityCheck,
+			rollDefenceCheck: ActorSheet4e.#onRollDefenceCheck,
+			hpOptions: ActorSheet4e.#onHPOptions,
+			abilityBonus: ActorSheet4e.#onAbilityBonus,
+			skillBonus: ActorSheet4e.#onSkillBonus,
+			deathSaveBonus: ActorSheet4e.#onDeathSaveBonus,
+			savingThrowBonus: ActorSheet4e.#onSavingThrowBonus,
+			surgeBonus: ActorSheet4e.#onSurgeBonus,
+			surgeEnv: ActorSheet4e.#onSurgeEnv,
+			secondWindBonus: ActorSheet4e.#onSecondWindBonus,
+			defencesBonus: ActorSheet4e.#onDefencesBonus,
+			initiativeBonus: ActorSheet4e.#onInitiativeBonus,
+			passiveBonus: ActorSheet4e.#onPassiveBonus,
+			modifiersBonus: ActorSheet4e.#onModifiersBonus,
+			resistancesBonus: ActorSheet4e.#onResistancesBonus,
+			movementDialog: ActorSheet4e.#onMovementDialog,
+			customRollDescriptions: ActorSheet4e.#onCustomRolldDescriptions,
+			secondWind: ActorSheet4e.#onSecondWind,
+			healMenu: ActorSheet4e.#onHealMenuDialog,
+			actionPoint: ActorSheet4e.#onActionPointDialog,
+			actionPointExtra: ActorSheet4e.#onActionPointExtraDialog,
+			shortRest: ActorSheet4e.#onShortRest,
+			longRest: ActorSheet4e.#onLongRest,
+			deathSave: ActorSheet4e.#onDeathSave,
+			savingThrow: ActorSheet4e.#onSavingThrow,
+			rollInitiative: ActorSheet4e.#onrollInitiative,
+			traitSelector: ActorSheet4e.#onTraitSelector,
+			traitSelectorWeapon: ActorSheet4e.#onTraitSelectorWeapon,
+			traitSelectorSenses: ActorSheet4e.#onTraitSelectorSenses,
+			listStringInput: ActorSheet4e.#onListStringInput,
+			itemCreate: ActorSheet4e.#onItemCreate,
+			itemEdit: ActorSheet4e.#onItemEdit,
+			itemDelete: ActorSheet4e.#onItemDelete,
+			itemImport: ActorSheet4e.#onItemImport,
+			itemToggle: ActorSheet4e.#onItemToggle,
+			itemRoll: ActorSheet4e.#onItemRoll,
+			itemRecharge: ActorSheet4e.#onItemRecharge,
+			powerCreate: ActorSheet4e.#onPowerCreate,
+			manageActiveEffect: ActorSheet4e.#onManageActiveEffect,
+			convertCurrency: ActorSheet4e.#onConvertCurrency,
+			// TODO V14: Test this when the Active Effect sheet is updated:
+			rollEffectSave: ActorSheet4e.#onRollEffectSave,
+			encumbranceDialog: ActorSheet4e.#onEncumbranceDialog,
+			conBonConfig: ActorSheet4e.#onConBonConfig
 		}
 	}
 
@@ -136,8 +182,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		// Removed: on focus <input>, auto-select everything in it
 
-		this.element.querySelectorAll('input[data-dtype="Number"]').forEach(el => el.addEventListener("change", this._onChangeInputDelta.bind(this)))
-
 		this.element.querySelector("#filterInput-feat")?.addEventListener("input", (ev) => {
 			this._filterHelper(ev.target, ".feature-list");
 		});
@@ -157,122 +201,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		const html = this.element;
 	
-		// Update Inventory Item
-		html.querySelectorAll('.item-edit').forEach(el => el.addEventListener("click", event => {
-			const li = event.currentTarget.closest("li.item");
-			const item = this.actor.items.get(li.dataset.itemId);
-			item.sheet.render(true);
-		}));
-	
-		if ( this.actor.isOwner ) {	
-			// Roll Skill Checks
-			html.querySelectorAll('.skill-name').forEach(el => el.addEventListener("click", this._onRollSkillCheck.bind(this)));
-	
-			html.querySelectorAll('.passive-message').forEach(el => el.addEventListener("click", this._onRollPassiveCheck.bind(this)));
-			
-			//Roll Abillity Checks
-			html.querySelectorAll('.ability-name').forEach(el => el.addEventListener("click", this._onRollAbilityCheck.bind(this)));
-			
-			//Roll Defence Checks
-			html.querySelectorAll('.def-name').forEach(el => el.addEventListener("click", this._onRollDefenceCheck.bind(this)));
-			
-			//Open HP-Options
-			html.querySelectorAll('.health-option').forEach(el => el.addEventListener("click", this._onHPOptions.bind(this)));
-			
-			//Open Skill-Bonus
-			html.querySelectorAll('.ability-mod-half').forEach(el => el.addEventListener("click", this._onAbilityBonus.bind(this)));
-			html.querySelectorAll('.skill-bonus').forEach(el => el.addEventListener("click", this._onSkillBonus.bind(this)));
-			html.querySelectorAll('.death-save-bonus').forEach(el => el.addEventListener("click", this._onDeathSaveBonus.bind(this)));
-			html.querySelectorAll('.roll-save-bonus').forEach(el => el.addEventListener("click", this._onSavingThrowBonus.bind(this)));
-			html.querySelectorAll('.surge-bonus').forEach(el => el.addEventListener("click", this._onSurgeBonus.bind(this)));
-			html.querySelectorAll('.envimental-loss-bonus').forEach(el => el.addEventListener("click", this._onSurgeEnv.bind(this)));
-			html.querySelectorAll('.secondwind-bonus').forEach(el => el.addEventListener("click", this._onSecondWindBonus.bind(this)));
-			html.querySelectorAll('.defence-bonus').forEach(el => el.addEventListener("click", this._onDefencesBonus.bind(this)));
-			html.querySelectorAll('.init-bonus').forEach(el => el.addEventListener("click", this._onInitiativeBonus.bind(this)));
-			html.querySelectorAll('.move-bonus').forEach(el => el.addEventListener("click", this._onMovementBonus.bind(this)));
-			html.querySelectorAll('.passive-bonus').forEach(el => el.addEventListener("click", this._onPassiveBonus.bind(this)));
-			html.querySelectorAll('.modifiers-bonus').forEach(el => el.addEventListener("click", this._onModifiersBonus.bind(this)));
-			html.querySelectorAll('.resistances-bonus').forEach(el => el.addEventListener("click", this._onResistancesBonus.bind(this)));
-			
-			html.querySelectorAll('.movement-dialog').forEach(el => el.addEventListener("click", this._onMovementDialog.bind(this)));
-			
-			html.querySelectorAll('.custom-roll-descriptions').forEach(el => el.addEventListener("click", this._onCustomRolldDescriptions.bind(this)));
-			
-			//second wind
-			html.querySelectorAll('.second-wind').forEach(el => el.addEventListener("click", this._onSecondWind.bind(this)));
-	
-			// heal menu
-			html.querySelectorAll('.heal-menu').forEach(el => el.addEventListener("click", this._onHealMenuDialog.bind(this)));
-	
-			//action point
-			html.querySelectorAll('.action-point').forEach(el => el.addEventListener("click", this._onActionPointDialog.bind(this)));
-			html.querySelectorAll('.action-point-extra').forEach(el => el.addEventListener("click", this._onActionPointExtraDialog.bind(this)));
-			
-			//short rest
-			html.querySelectorAll('.short-rest').forEach(el => el.addEventListener("click", this._onShortRest.bind(this)));
-			
-			//long rest
-			html.querySelectorAll('.long-rest').forEach(el => el.addEventListener("click", this._onLongRest.bind(this)));		
-			
-			//death save
-			html.querySelectorAll('.death-save').forEach(el => el.addEventListener("click", this._onDeathSave.bind(this)));
-			html.querySelectorAll('.roll-save').forEach(el => el.addEventListener("click", this._onSavingThrow.bind(this)));
-	
-			//roll init
-			html.querySelectorAll('.rollInitiative').forEach(el => el.addEventListener("click", this._onrollInitiative.bind(this)));
-			
-			// Trait Selector
-			html.querySelectorAll('.trait-selector').forEach(el => el.addEventListener("click", this._onTraitSelector.bind(this)));
-			html.querySelectorAll('.trait-selector-weapon').forEach(el => el.addEventListener("click", this._onTraitSelectorWeapon.bind(this)));
-			html.querySelectorAll('.trait-selector-senses').forEach(el => el.addEventListener("click", this._onTraitSelectorSense.bind(this)));
-			html.querySelectorAll('.list-string-input').forEach(el => el.addEventListener("click", this._onListStringInput.bind(this)));
-			
+		if ( this.actor.isOwner ) {
 			//Inventory & Item management
-			html.querySelectorAll('.item-create').forEach(el => el.addEventListener("click", this._onItemCreate.bind(this)));
-			html.querySelectorAll('.item-edit').forEach(el => el.addEventListener("click", this._onItemEdit.bind(this)));
-			html.querySelectorAll('.item-delete').forEach(el => el.addEventListener("click", this._onItemDelete.bind(this)));
 			html.querySelectorAll('.item-uses input').forEach(el => el.addEventListener("change", this._onUsesChange.bind(this)));
-
-
-			html.querySelectorAll('.power-create').forEach(el => el.addEventListener("click", this._onPowerItemCreate.bind(this)));
-	
-			html.querySelectorAll('.item-import').forEach(el => el.addEventListener("click", this._onItemImport.bind(this)));
-	
-			// Active Effect management
-			// html.find(".effect-control").click(event => onManageActiveEffect(event, this.actor));
-			html.querySelectorAll('.effect-control').forEach(el => el.addEventListener("click", event => ActiveEffect4e.onManageActiveEffect(event, this.actor)));
-				
-			// Item State Toggling
-			html.querySelectorAll('.item-toggle').forEach(el => el.addEventListener("click", this._onToggleItem.bind(this)));
-		
-			//convert currency to it's largest form to save weight.
-			html.querySelectorAll('.currency-convert').forEach(el => el.addEventListener("click", this._onConvertCurrency.bind(this)));
-			
-			// Item Rolling
-			html.querySelectorAll('.item-roll').forEach(el => el.addEventListener("click", event => {
-				event.preventDefault();
-				event.stopPropagation();
-				const itemId = event.currentTarget.closest(".item").dataset.itemId;
-				const item = this.actor.items.get(itemId);
-				this._onItemRoll(item);
-			}));
 			
 			html.querySelectorAll('.item-roll').forEach(el => {
 				el.addEventListener("mouseenter", this._onItemHoverEntry.bind(this));
 				el.addEventListener("mouseleave", this._onItemHoverExit.bind(this));
 			});
-			
-			// Item Recharge
-			html.querySelectorAll('.item-recharge').forEach(el => el.addEventListener("click", event => this._onItemRecharge(event)));
-	
-			// Effect-Specific Saves
-			html.querySelectorAll('.effect-save').forEach(el => el.addEventListener("click", event => this._onRollEffectSave(event)));
-	
-			// Load Options
-			html.querySelectorAll('.encumbrance-options').forEach(el => el.addEventListener("click", this._onEncumbranceDialog.bind(this)));
-			
-			// Conditional Attack Mod Config
-			html.querySelectorAll('.con-bon-config').forEach(el => el.addEventListener("click", this._onConBonConfig.bind(this)));
 			
 			// Context Menus
 			new CONFIG.ux.ContextMenu(html, ".item-list .item", [], {onOpen: this._onItemContext.bind(this), jQuery: false, fixed: true});
@@ -338,6 +274,37 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 	}
 
+	_onChangeForm(formConfig, event) {
+		const input = event.target;
+		if (input.dataset?.dtype !== "Number") {
+			return super._onChangeForm(formConfig, event);
+		}
+
+		const value = input.value;
+
+		if(/^[0-9]+$/.test(value)) {
+			return super._onChangeForm(formConfig, event);
+		}
+		
+		if(!/^[\-=+ 0-9]+$/.test(value)) {
+			input.value = foundry.utils.getProperty(this.actor, input.name)
+			return super._onChangeForm(formConfig, event);
+		}
+
+		if ( ["+"].includes(value[0]) ) {
+			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
+			input.value = foundry.utils.getProperty(this.actor, input.name) + delta ?? foundry.utils.getProperty(this.actor, input.name);
+		} else if ( ["-"].includes(value[0]) ) {
+			let delta = parseFloat(-value.replace(/[^0-9]/g, ""));
+			input.value = foundry.utils.getProperty(this.actor, input.name) + delta ?? foundry.utils.getProperty(this.actor, input.name);
+		} else if ( value[0] === "=" ) {
+			input.value = value.replace(/[^\-0-9]/g, "");
+		} else{
+			input.value = foundry.utils.getProperty(this.actor, input.name)
+		}
+		return super._onChangeForm(formConfig, event);
+	}
+
   /* -------------------------------------------- */
 
   /**
@@ -351,9 +318,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	/** @override */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
-		const actor = this.actor.toObject(false);
+		const actor = this.actor;
 		const actorData = actor.system;
-		actorData.details.isBloodied = this.actor.system.details.isBloodied;
+		actorData.details.isBloodied = actor.system.details.isBloodied;
 
 		const isOwner = this.actor.isOwner;
 
@@ -378,22 +345,23 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		context.items = actor.items
 			.filter(i => !this.actor.items.has(i.system.container))
-			.sort((a, b) => (a.sort || 0) - (b.sort || 0));
+			.sort((a, b) => (a.sort || 0) - (b.sort || 0))
+			.map(i => i.toObject(false));
 
 		for (let i of context.items) {
-			const item = this.actor.items.get(i._id);
+			const item = actor.items.get(i._id);
 			i.keywords = item.keywords;
 			i.labels = item.labels;
-			i.chatData = await item.getChatData({secrets: this.actor.isOwner})
+			i.chatData = await item.getChatData({secrets: actor.isOwner})
 			if (item.type === "power" && item.system.autoGenChatPowerCard) {
 				let attackBonus = null;
 				if(item.hasAttack){
 					attackBonus = await item.getAttackBonus();
 				}
-				let detailsText = Helper._preparePowerCardData(i.chatData, CONFIG, this.actor, attackBonus);
+				let detailsText = Helper._preparePowerCardData(i.chatData, CONFIG, actor, attackBonus);
 				i.detailsText = await foundry.applications.ux.TextEditor.implementation.enrichHTML(detailsText, {
 					async: true,
-					relativeTo: this.actor
+					relativeTo: actor
 				});
 			}
 			i.collapsed = !this.#expandedItemIds.has(i._id); 
@@ -401,28 +369,31 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		this._prepareItems(context);
 
-		context.effects = ActiveEffect4e.prepareActiveEffectCategories(this.actor.getActiveEffects());
+		context.effects = ActiveEffect4e.prepareActiveEffectCategories(actor.getActiveEffects());
 
 		if (context.isCombatant) {
-			if(Object.entries(game.dnd4e.config.coreSkills).length != Object.entries(actorData.skills).length){
-				const skillNames = Object.keys(actorData.skills);
+			context.skills = this._prepareSkills();
+			
+			if(Object.entries(game.dnd4e.config.coreSkills).length != Object.entries(context.skills).length){
+				const skillNames = Object.keys(context.skills);
 
 				// Sort the skill names based on the label property
-				skillNames.sort((a, b) => actorData.skills[a].label?.localeCompare(actorData.skills[b].label));
+				skillNames.sort((a, b) => context.skills[a].label?.localeCompare(context.skills[b].label));
 				
 				const sortedSkills = skillNames.reduce((acc, skillName) => {
-				  acc[skillName] = actorData.skills[skillName];
+				  acc[skillName] = context.skills[skillName];
 				  return acc;
 				}, {});
 				
-				actorData.skills = sortedSkills;
+				context.skills = sortedSkills;
 			}
 
-			for ( let [s, skl] of Object.entries(actorData.skills)) {
-				// skl.ability = actorData.abilities[skl.ability].label.substring(0, 3).toLowerCase(); //what was this even used for again? I think it was some cobweb from 5e, can probably be safly deleted
-				skl.icon = this._getTrainingIcon(skl.training);
-				skl.hover = game.i18n.localize(DND4E.trainingLevels[skl.training]);
-				skl.label = skl.label ? skl.label: DND4E.skills[s]?.label;
+			for ( let [d, def] of Object.entries(actorData.defences)) {
+				def.label = def.label ? def.label: DND4E.defensives[d].abbreviation;
+			}
+
+			for ( let [a, abl] of Object.entries(actorData.abilities)) {
+				abl.label = abl.label ? abl.label: DND4E.abilities[a];
 			}
 			
 			this._prepareDataSave(actorData.details,
@@ -431,10 +402,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		}
 
 		if (context.isCharacter) {
-			this._prepareDataProfs(actorData.details?.armourProf,
+			context.armourProfs = this._prepareDataProfs(actorData.details?.armourProf,
 				{"profArmor": CONFIG.DND4E.profArmor}
 			);
-			this._prepareDataProfs(actorData.details?.weaponProf,
+			context.weaponProfs = this._prepareDataProfs(actorData.details?.weaponProf,
 				{ weapons:Object.assign(
 					CONFIG.DND4E.weaponProficiencies,
 					CONFIG.DND4E.simpleM,
@@ -447,7 +418,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					CONFIG.DND4E.improvisedR
 				)}
 			);
-			this._prepareDataProfs(actorData.details?.implementProf, 
+			context.implementProfs = this._prepareDataProfs(actorData.details?.implementProf, 
 			{ implement:Object.assign(
 					CONFIG.DND4E.implementProficiencies
 				)}
@@ -475,16 +446,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (context.isCreature) {
 			actorData.size = DND4E.actorSizes;
 
-			this._prepareDataSense(actorData.senses);
+			context.senses = this._prepareDataSenses();
 			
-			this._prepareDataTraits(actorData.languages, 
-				{"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
-			);
+			context.languages = this._prepareDataLanguages();
 	
 			context.biographyHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.biography, {
 				secrets: isOwner,
 				async: true,
-				relativeTo: this.actor
+				relativeTo: actor
 			});
 		}
 
@@ -504,18 +473,41 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		context.system = actorData;
 
-		context.systemFields = this.actor.system.schema.fields;
+		context.systemFields = actor.system.schema.fields;
 
 		return context;
 	}
-	
-	_prepareDataTraits(data, map) {
+
+	_prepareDataSenses() {
+		const map = {special: CONFIG.DND4E.special};
+		const senses = foundry.utils.deepClone(this.actor.system.senses);
 		for ( let [l, choices] of Object.entries(map) ) {
-			const trait = data[l];
+			const trait = senses[l];
+			if ( !trait ) continue;
+			let values = Object.keys(trait).map((key) => [key, trait[key]])
+			trait.selected = values.reduce((obj, l) => {
+				if (!l[1].value) return obj;
+				obj[l[0]] = l[1].range != "" ? `${choices[l[0]]} ${l[1].range} sq` : choices[l[0]];
+				return obj;
+			}, {});
+			// Add custom entry
+			if ( trait.custom ) {
+				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
+			}
+			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
+		}
+		return senses;
+	}
+	
+	_prepareDataLanguages() {
+		const map = {"spoken": CONFIG.DND4E.spoken, "script": CONFIG.DND4E.script}
+		const languages = foundry.utils.deepClone(this.actor.system.languages);
+		for ( let [l, choices] of Object.entries(map) ) {
+			const trait = languages[l];
 			if ( !trait ) continue;
 			let values = [];
 			if ( trait.value ) {
-				values = trait.value instanceof Array ? trait.value : [trait.value];
+				values = Array.from(trait.value);
 			}
 			trait.selected = values.reduce((obj, l) => {
 				obj[l] = choices[l];
@@ -528,27 +520,30 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
 		}
+		return languages;
 	}
 
 	_prepareDataProfs(data, map){
+		const profs = foundry.utils.deepClone(data);
 		for ( let [l, choices] of Object.entries(map) ) {
 
 			let values = [];
-			if ( data.value ) {
-				values = data.value instanceof Array ? data.value : [data.value];
+			if ( profs.value ) {
+				values = Array.from(profs.value);
 			}
-			data.selected = values.reduce((obj, l) => {
+			profs.selected = values.reduce((obj, l) => {
 				obj[l] = choices[l];
 				return obj;
 			}, {});
-			data.selected
+			profs.selected
 
 			// Add custom entry
-			if ( data.custom ) {
-				data.custom.split(";").forEach((c, i) => data.selected[`custom${i+1}`] = c.trim());
+			if ( profs.custom ) {
+				profs.custom.split(";").forEach((c, i) => profs.selected[`custom${i+1}`] = c.trim());
 			}
-			data.cssClass = !foundry.utils.isEmpty(data.selected) ? "" : "inactive";
+			profs.cssClass = !foundry.utils.isEmpty(profs.selected) ? "" : "inactive";
 		}
+		return profs;
 	}
 
 	_prepareItems(data) {
@@ -596,7 +591,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			i.totalWeight = item.totalWeight;
 			i.totalWeightLabel = i.totalWeight.toNearest(0.01);
 			i.system.preparedMaxUses = item.system.preparedMaxUses;
-			this._checkItemAvailable(item);
+			this._checkItemAvailable(i);
 			i.hasUses = item.system.uses && (item.system.preparedMaxUses > 0) && (item.system.uses.per != '');
 			i.isDepleted = i.hasUses && (item.system.uses.value === 0);
 			i.isUnavailable = i.isDepleted || i.system.notAvailable || (['weapon','equipment'].includes(item.type) && !item.system.equipped) ;
@@ -609,8 +604,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		for ( let p of pow ) {
 			const power = this.actor.items.get(p._id);
-			this._checkItemAvailable(power);
 			p.system.preparedMaxUses = power.system.preparedMaxUses;
+			this._checkItemAvailable(p);
 			p.hasUses = power.system.uses && (power.system.preparedMaxUses > 0) && (power.system.uses.per != '');
 			p.isDepleted = p.hasUses && p.system.uses.value === 0;
 			p.isUnavailable = p.isDepleted || p.system.notAvailable;
@@ -619,8 +614,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		
 		for ( let r of rits ) {
 			const ritual = this.actor.items.get(r._id);
-			this._checkItemAvailable(ritual);
-			r.isUnavailable = ritual.system?.notAvailable || false;
+			this._checkItemAvailable(r);
+			r.isUnavailable = r.system?.notAvailable || false;
 			rituals[r.system.category].items.push(r);
 		}
 
@@ -640,6 +635,15 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		this._sortFeatures(features);
 		this._sortRituals(rituals);
 
+	}
+
+	_prepareSkills() {
+		return Object.fromEntries(Object.entries(this.actor.system.skills).map(([s, skl]) => ([s, {
+			...skl,
+			icon: this._getTrainingIcon(skl.training),
+			hover: game.i18n.localize(DND4E.trainingLevels[skl.training]),
+			label: skl.label ?? DND4E.skills[s]?.label
+		}])));
 	}
 	
 	_prepareMovement(data) {
@@ -970,28 +974,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	  item.toggleTitle = game.i18n.localize(isActive ? "DND4E.Equipped" : "DND4E.Unequipped");
 	}
   }
-  
-	_prepareDataSense(data) {
-		const map = {special: CONFIG.DND4E.special};
-		for ( let [l, choices] of Object.entries(map) ) {
-			const trait = data[l];
-			if ( !trait ) continue;
-			let values = [];
-			if ( trait.value ) {
-				values = trait.value instanceof Array ? trait.value : [trait.value];
-			}
-			trait.selected = values.reduce((obj, l) => {
-				obj[l] = l[1] != "" ? `${choices[l[0]]} ${l[1]} sq` : choices[l[0]];
-				return obj;
-			}, {});
-			// Add custom entry
-			if ( trait.custom ) {
-				trait.custom.split(";").forEach((c, i) => trait.selected[`custom${i+1}`] = c.trim());
-			}
-			trait.cssClass = !foundry.utils.isEmpty(trait.selected) ? "" : "inactive";
-			
-		}
-	}
 	
 	_prepareDataSave(data, map) {
 		
@@ -1098,40 +1080,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		return Array.from((overrides.union(candidateKeys)).intersection(actorKeys));
 	}
 
-	/* -------------------------------------------- */
-
-	/**
-	 * Handle input changes to numeric form fields, allowing them to accept delta-typed inputs
-	 * @param event
-	 * @private
-	 */
-	_onChangeInputDelta(event) {
-		const input = event.target;
-		const value = input.value;
-
-		if(/^[0-9]+$/.test(value)) {
-			return;
-		}
-		
-		if(!/^[\-=+ 0-9]+$/.test(value)) {
-			input.value = foundry.utils.getProperty(this.actor, input.name)
-			return;
-		}
-
-		if ( ["+"].includes(value[0]) ) {
-			let delta = parseFloat(value.replace(/[^0-9]/g, ""));
-			input.value = foundry.utils.getProperty(this.actor, input.name) + delta || foundry.utils.getProperty(this.actor, input.name);
-		}
-		else if ( ["-"].includes(value[0]) ) {
-			let delta = parseFloat(-value.replace(/[^0-9]/g, ""));
-			input.value = foundry.utils.getProperty(this.actor, input.name) + delta || foundry.utils.getProperty(this.actor, input.name);
-		} else if ( value[0] === "=" ) {
-			input.value = value.replace(/[^\-0-9]/g, "");
-		} else{
-			input.value = foundry.utils.getProperty(this.actor, input.name)
-		}
-	}
-
   /* -------------------------------------------- */
 
   /**
@@ -1163,6 +1111,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
   /* -------------------------------------------- */
 
 	static async #onEditImage() {
+		if (!this.actor.isOwner) return;
 		const defaultArtwork = this.document.constructor.getDefaultArtwork?.(this.document._source) ?? {};
 		const defaultImage = foundry.utils.getProperty(defaultArtwork, 'img');
 		const fp = new CONFIG.ux.FilePicker({
@@ -1183,9 +1132,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The triggering click event
    * @private
    */
-  _onToggleItem(event) {
+  static #onItemToggle(event, target) {
+		if (!this.actor.isOwner) return;	
 		event.preventDefault();
-		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const itemId = target.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 		const power = ["power","atwill","encounter","daily","utility"];
 		const attr = power.includes(item.type) ? "system.prepared" : "system.equipped";
@@ -1199,26 +1149,27 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The originating click event
    * @private
    */
-	_onItemCreate(event) {
+	static #onItemCreate(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const header = event.currentTarget;
-		const type = header.dataset.type;
-		const subType = header.dataset?.subtype || null;
+		const type = target.dataset.type;
+		const subtype = target.dataset?.subtype || null;
 		const itemData = {
 			name: game.i18n.format("DND4E.ItemNew", {type: type.capitalize()}),
 			type: type,
-			system: foundry.utils.duplicate(header.dataset)
+			system: foundry.utils.duplicate(target.dataset)
 		};
-		if(type === 'feature' && subType){
-			itemData.system.featureType = subType;
-		}else if(type === 'ritual' && subType){
-			itemData.system.category = subType;
+		if(type === 'feature' && subtype){
+			itemData.system.featureType = subtype;
+		}else if(type === 'ritual' && subtype){
+			itemData.system.category = subtype;
 		}
 		//console.debug(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
-	async _onItemImport(event) {
+	static async #onItemImport(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const {json=null} = await foundry.applications.api.Dialog.input({
 			window: {
@@ -1245,14 +1196,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		await this.actor.createEmbeddedDocuments("Item", [obj]);
 	}
 
-	_onPowerItemCreate(event) {
+	static #onPowerCreate(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const header = event.currentTarget;
-		const type = header.dataset.type;
+		const type = target.dataset.type;
 		const itemData = {
 			name: `${game.i18n.format("DND4E.ItemNew", {type: type.capitalize()})} Power`,
 			type: "power",
-			system: foundry.utils.duplicate(header.dataset)
+			system: foundry.utils.duplicate(target.dataset)
 		};
 
 		if(this.document.system.powerGroupTypes === "action" || !this.document.system.powerGroupTypes) {
@@ -1273,7 +1224,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 		}
 
-		itemData.system.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLableOption");
+		itemData.system.autoGenChatPowerCard = game.settings.get("dnd4e", "powerAutoGenerateLabelOption");
 		
 		if(this.actor.type === "NPC"){
 			
@@ -1302,8 +1253,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 		}
 		
-		console.log(itemData)
+		Helper.debugLog(itemData)
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
+	}
+
+	static #onManageActiveEffect(event, target) {
+		if (!this.actor.isOwner) return;
+		ActiveEffect4e.onManageActiveEffect(event, target, this.actor)
 	}
 
   /* -------------------------------------------- */
@@ -1313,9 +1269,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The originating click event
    * @private
    */
-  _onItemEdit(event) {
+  static #onItemEdit(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const li = event.currentTarget.closest(".item");
+		const li = target.closest(".item");
 		const item = this.actor.items.get(li.dataset.itemId);
 		item.sheet.render(true);
   }
@@ -1327,9 +1284,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The originating click event
    * @private
    */
-  async _onItemDelete(event) {
+  static async #onItemDelete(event, target) {
+		if (!this.actor.isOwner) return;	
 		event.preventDefault();
-		const li = event.currentTarget.closest(".item");
+		const li = target.closest(".item");
 		const item = this.actor.items.get(li.dataset.itemId);
 		if ( item )  {
 			let shouldDelete = true;
@@ -1369,7 +1327,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	*turns on/off auto calculation of HP based on class stats
 	*keep or reset tempHP on short rest.
 	*/
-	_onHPOptions(event) {
+	static #onHPOptions(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 
 		new HPOptions({ document: this.actor }).render(true)
@@ -1380,115 +1339,123 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	* Opens bonuses dialog config window for selected Skills
 	*/
 	
-	_onSkillBonus(event) {
+	static #onSkillBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const skillName = event.currentTarget.parentElement.dataset.skill;
-		const target = `system.skills.${skillName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.SkillBonusTitle', { skill: this.actor.system.skills[skillName].label } ) }`, skill: true };
+		const skillName = target.parentElement.dataset.skill;
+		const targetSkill = `system.skills.${skillName}`;
+		const options = { document: this.actor, target: targetSkill, label: `${game.i18n.format('DND4E.SkillBonusTitle', { skill: this.actor.system.skills[skillName].label } ) }`, skill: true };
 		new AttributeBonusDialog(options).render(true);
 	}
 	/* -------------------------------------------- */
 
-	_onAbilityBonus(event) {
+	static #onAbilityBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const abilityId = event.currentTarget.parentElement.dataset.ability;
-		const target = `system.abilities.${abilityId}.check`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.AbilityCheckBonusTitle', { ability: this.actor.system.abilities[abilityId].label } ) }` };
+		const abilityId = target.parentElement.dataset.ability;
+		const targetAbility = `system.abilities.${abilityId}.check`;
+		const options = { document: this.actor, target: targetAbility, label: `${game.i18n.format('DND4E.AbilityCheckBonusTitle', { ability: this.actor.system.abilities[abilityId].label } ) }` };
 		new AttributeBonusDialog(options).render(true);
 	}
 
-	_onDeathSaveBonus(event) {
+	static #onDeathSaveBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.deathsavebon`, label: game.i18n.localize('DND4E.DeathSavingThrowBonus')};
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
-	_onSurgeBonus(event) {
+	static #onSurgeBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.surgeBon`, label: game.i18n.localize('DND4E.HealingSurgeBonus') };
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
-	_onSurgeEnv(event) {
+	static #onSurgeEnv(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.surgeEnv`, label: `${game.i18n.localize('DND4E.HealingSurges')} ${game.i18n.localize('DND4E.SurgeEnv')}`};
 		new AttributeBonusDialog(options).render(true);		
 	}
 
-	_onSecondWindBonus(event) {
+	static #onSecondWindBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.secondwindbon`, label: game.i18n.localize('DND4E.SecondWindBonus'), secondWind: true };
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
-	_onDefencesBonus(event) {
+	static #onDefencesBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const defName = event.currentTarget.parentElement.dataset.defence;
-		const target = `system.defences.${defName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.DefenceBonus',{def:this.actor.system.defences[defName].label})}`, ac: (defName ==="ac")  };
+		const defName = target.parentElement.dataset.defence;
+		const targetDef = `system.defences.${defName}`;
+		const options = { document: this.actor, target: targetDef, label: `${game.i18n.format('DND4E.DefenceBonus',{def:this.actor.system.defences[defName].label})}`, ac: (defName ==="ac")  };
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
-	_onInitiativeBonus(event) {
+	static #onInitiativeBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.attributes.init`, label: game.i18n.localize('DND4E.InitiativeBonus'), init: true };
 		new AttributeBonusDialog(options).render(true);		
 	}
 	
-	_onMovementBonus(event) {
-		event.preventDefault();
-		const moveName = event.currentTarget.parentElement.dataset.movement;
-		const target = `system.movement.${moveName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.MovementBonus',{mode: moveName})}` };
-		new AttributeBonusDialog(options).render(true);		
-	}
-	
-	_onMovementDialog(event) {
+	static #onMovementDialog(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		new MovementDialog({document: this.actor}).render(true)
 	}
 	
-	_onConBonConfig(event) {
+	static #onConBonConfig(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		new ConBonConfig({document: this.actor}).render(true)
 	}
 
-	_onHealMenuDialog(event) {
+	static #onHealMenuDialog(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		new HealMenuDialog({document: this.actor}).render(true)
 	}
 
-	_onEncumbranceDialog(event) {
+	static #onEncumbranceDialog(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		new EncumbranceDialog({document: this.actor}).render(true);
 	}
 
-	_onPassiveBonus(event) {
+	static #onPassiveBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const passName = event.currentTarget.parentElement.dataset.passive;
+		const passName = target.parentElement.dataset.passive;
 		const skillName = this.actor.system.passive[passName].skill;
-		const target = `system.passive.${passName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.PasBonus',{skill: this.actor.system.skills[skillName].label})}` };
+		const targetPassive = `system.passive.${passName}`;
+		const options = { document: this.actor, target: targetPassive, label: `${game.i18n.format('DND4E.PasBonus',{skill: this.actor.system.skills[skillName].label})}` };
 		new AttributeBonusDialog(options).render(true);		
 	}	
 
-	_onModifiersBonus(event) {
+	static #onModifiersBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const modifierName = event.currentTarget.parentElement.dataset.modifiers;
-		const target = `system.modifiers.${modifierName}`;
-		const options = { document: this.actor, target: target, label: this.actor.system.modifiers[modifierName].label };
+		const modifierName = target.parentElement.dataset.modifiers;
+		const targetMod = `system.modifiers.${modifierName}`;
+		const options = { document: this.actor, target: targetMod, label: this.actor.system.modifiers[modifierName].label };
 		new AttributeBonusDialog(options).render(true);
 	}	
 
-	_onResistancesBonus(event) {
+	static #onResistancesBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const resName = event.currentTarget.parentElement.dataset.res;
-		const target = `system.resistances.${resName}`;
-		const options = { document: this.actor, target: target, label: `${game.i18n.format('DND4E.DamResVulnBonus',{type: this.actor.system.resistances[resName].label})}` };
+		const resName = target.parentElement.dataset.res;
+		const targetRes = `system.resistances.${resName}`;
+		const options = { document: this.actor, target: targetRes, label: `${game.i18n.format('DND4E.DamResVulnBonus',{type: this.actor.system.resistances[resName].label})}` };
 		new AttributeBonusDialog(options).render(true);
 	}
 	
-	_onCustomRolldDescriptions(event) {
+	static #onCustomRolldDescriptions(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = {data: this.actor};
 		new CustomRolldDescriptions({document: this.actor}).render(true, options);
@@ -1496,7 +1463,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	/**
 	* Opens dialog window to spend Second Wind
 	*/
-	_onSecondWind(event) {
+	static #onSecondWind(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
@@ -1507,7 +1475,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	
 	/* -------------------------------------------- */
 
-	_onActionPointDialog(event) {
+	static #onActionPointDialog(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
@@ -1516,7 +1485,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new ActionPointDialog(this.actor).render(true);
 	}
 
-	_onActionPointExtraDialog(event) {
+	static #onActionPointExtraDialog(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		new ActionPointExtraDialog(this.actor).render(true);
 	}
@@ -1526,7 +1496,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	*Spend n number of healin surges,
 	*reset encounter powers, action point ussage, second wind ussage.
 	*/
-	_onShortRest(event) {
+	static #onShortRest(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
@@ -1541,7 +1512,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	*Opens dialog window to long rest.
 	*reset HP, surges, encounter powers, daily powers, magic item use, actions points set to default.
 	*/
-	_onLongRest(event) {
+	static #onLongRest(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
@@ -1550,7 +1522,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new LongRestDialog(this.actor).render(true)
 	}
 
-	_onDeathSave(event) {
+	static #onDeathSave(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
@@ -1559,12 +1532,14 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		new DeathSaveDialog(this.actor).render(true);
 	}
 
-	_onrollInitiative(event) {
+	static #onrollInitiative(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		return this.actor.rollInitiative({createCombatants: true},{event: event});
 	}
 
-	_onSavingThrow(event) {
+	static #onSavingThrow(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const isFF = Helper.isRollFastForwarded(event);
 		if(isFF){
@@ -1573,30 +1548,44 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		return new SaveThrowDialog({document: this.actor}).render(true);
 	}
 
-	_onSavingThrowBonus(event) {
+	static #onSavingThrowBonus(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		const options = { document: this.actor, target: `system.details.saves`, label: game.i18n.localize('DND4E.SavingThrowBonus') };
 		new AttributeBonusDialog(options).render(true);	
 	}
 
 	static #onCycleSkillProficiency(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const field = target.parentNode.querySelector('input[type="hidden"]');
+		const skillId = target.parentElement.dataset.skill;
 
 		// Get the current level and the array of levels
-		const level = parseFloat(field.value);
+		const level = this.document.system.skills[skillId].training;
 		const levels = [0, 5, 8];
 		let idx = levels.indexOf(level);
 
+		let value;
 		// Toggle next level - forward on click, backwards on right
 		if ( event.button === 0 ) {
-			field.value = levels[(idx === levels.length - 1) ? 0 : idx + 1];
+			value = levels[(idx === levels.length - 1) ? 0 : idx + 1];
 		} else {
-			field.value = levels[(idx === 0) ? levels.length - 1 : idx - 1];
+			value = levels[(idx === 0) ? levels.length - 1 : idx - 1];
 		}
+
+		this.document.update({[`system.skills.${skillId}.training`] : value});
 
 		// Update the field value and save the form
 		this.submit({preventClose: true});
+	}
+
+	static #onItemRoll(event, target) {
+		if (!this.actor.isOwner) return;
+		event.preventDefault();
+		event.stopPropagation();
+		const itemId = target.closest(".item").dataset.itemId;
+		const item = this.actor.items.get(itemId);
+		this._onItemRoll(item);
 	}
 
 	/* -------------------------------------------- */
@@ -1606,7 +1595,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @private
 	 */
 	_onItemRoll(item, variance={}) {
-		//console.debug(variance)
+		console.debug(variance)
 
 		if ( item.type === "power") {
 			const fastForward = Helper.isRollFastForwarded(event);
@@ -1645,12 +1634,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	/* -------------------------------------------- */
 
-	_onRollEffectSave(event){
+	static #onRollEffectSave(event, target){
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		//console.debug("roll Save Throw v Effect!");
-		const effectId = event.currentTarget.closest(".item").dataset.effectId;
+		console.debug("roll Save Throw v Effect!");
+		const effectId = target.closest(".item").dataset.effectId;
 		const effect = this.actor.effects.get(effectId);	
-		const saveDC = effect.flags.dnd4e?.effectData?.saveDC || 10;
+		const saveDC = effect.system.saveDC || 10;
 		const isFF = Helper.isRollFastForwarded(event);
 		
 		if(isFF){
@@ -1665,9 +1655,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	}
 	/* -------------------------------------------- */
 
-	async _onItemRecharge(event){
+	static async #onItemRecharge(event, target){
 		event.preventDefault();
-		const itemId = event.currentTarget.closest(".item").dataset.itemId;
+		const itemId = target.closest(".item").dataset.itemId;
 		const item = this.actor.items.get(itemId);
 
 		if ( item.type === "power") {
@@ -1691,7 +1681,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					user: game.user.id,
 					speaker: {actor: this.document, alias: this.document.name},
 					flavor: flav,
-					rollMode: game.settings.get("core", "rollMode"),
+					messageMode: game.settings.get("core", "messageMode"),
 					'flags.dnd4e':{
 						'roll':{'type': "other", 'itemId': this.id},
 						'messageType': `recharge`
@@ -1723,7 +1713,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @param {MouseEvent} event    The originating click event
 	 * @private
 	 */
-	async _onConvertCurrency(event) {
+	static async #onConvertCurrency(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
 		let shouldConvert = await foundry.applications.api.Dialog.confirm({
 			window: {title: `${game.i18n.localize("DND4E.CurrencyConvert")}`},
@@ -1769,38 +1760,38 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The click event which originated the selection
    * @private
    */
-	_onTraitSelector(event) {
+	static #onTraitSelector(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const a = event.currentTarget;
-		const label = a.getAttribute('data-app-title') || "Label error";
-		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, window: {title: label}, choices};
+		const label = target.getAttribute('data-app-title') || "Label error";
+		const choices = CONFIG.DND4E[target.dataset.options];
+		const options = { name: target.dataset.target, window: {title: label}, choices};
 		new TraitSelector({document: this.actor, ...options}).render(true);
 	}
 
-	_onTraitSelectorWeapon(event){
+	static #onTraitSelectorWeapon(event, target){
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const a = event.currentTarget;
-		const label = a.getAttribute('data-app-title') || "Label error";
+		const label = target.getAttribute('data-app-title') || "Label error";
 		const choices = CONFIG.DND4E.weaponProficienciesMap;
-		const options = { name: a.dataset.target, window: {title: label}, choices, datasetOptions: a.dataset.options, config:CONFIG};
+		const options = { name: target.dataset.target, window: {title: label}, choices, datasetOptions: target.dataset.options, config:CONFIG};
 		new TraitSelector({document: this.actor, ...options}).render(true);
 	}
 
-	_onTraitSelectorSense(event) {
+	static #onTraitSelectorSenses(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const a = event.currentTarget;
-		const label = a.getAttribute('data-app-title') || "Label error";
-		const choices = CONFIG.DND4E[a.dataset.options];
-		const options = { name: a.dataset.target, window: {title: label}, choices };
+		const label = target.getAttribute('data-app-title') || "Label error";
+		const choices = CONFIG.DND4E[target.dataset.options];
+		const options = { name: target.dataset.target, window: {title: label}, choices };
 		new TraitSelectorValues({document: this.actor, ...options}).render(true);
 	}
 	
-	async _onListStringInput(event) {
+	static async #onListStringInput(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const a = event.currentTarget;
-		const label = a.getAttribute('data-app-title') || "Label error";
-		const currValue = foundry.utils.getProperty(this.actor, a.dataset.target) ?? [];
+		const label = target.getAttribute('data-app-title') || "Label error";
+		const currValue = foundry.utils.getProperty(this.actor, target.dataset.target) ?? [];
 		const {traits=""} = await foundry.applications.api.Dialog.input({
 			id: "trait-selector",
 			classes: ["dnd4e"],
@@ -1826,7 +1817,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (traits === null) return;
 		const newValue = traits.split(";").map(i => i.trim()).filter(i => i);
 		await this.actor.update({
-			[a.dataset.target]: newValue
+			[target.dataset.target]: newValue
 		});
 	}
 
@@ -1848,10 +1839,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @param {Event} event   The originating click event
 	 * @private
 	 */
-	_onRollSkillCheck(event) {
+	static #onRollSkillCheck(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const skill = event.currentTarget.parentElement.dataset.skill;
-		this.actor.rollSkill(skill, {event: event});
+		const skillId = target.parentElement.dataset.skill;
+		this.actor.rollSkill(skillId, {event: event});
 	}
   /* -------------------------------------------- */
   
@@ -1860,9 +1852,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
    * @param {Event} event   The originating click event
    * @private
    */
-	_onRollPassiveCheck(event) {
+	static #onRollPassiveCheck(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const passName = event.currentTarget.parentElement.dataset.passive;
+		const passName = target.parentElement.dataset.passive;
 		const skillName = this.actor.system.passive[passName].skill;
 
 		ChatMessage.create({
@@ -1885,7 +1878,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 		// Active Effects
 		if ( element.classList.contains("effect") ) {
-			const effect = this.actor.effects.get(element.dataset.effectId);
+			const effect = Array.from(this.actor.allApplicableEffects()).find( e => e.id === element.dataset.effectId);
 			if ( !effect ) return;
 			ui.context.menuItems = this._getActiveEffectContextOptions(effect);
 			Hooks.call("DND4E.getActiveEffectContextOptions", effect, ui.context.menuItems);
@@ -2019,9 +2012,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @param {Event} event   The originating click event
 	 * @private
 	 */
-	_onRollAbilityCheck(event) {
+	static #onRollAbilityCheck(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		let ability = event.currentTarget.parentElement.dataset.ability;
+		let ability = target.parentElement.dataset.ability;
 		this.actor.rollAbility(ability, {event: event});
 	}
 
@@ -2032,9 +2026,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	 * @param {Event} event   The originating click event
 	 * @private
 	 */
-	_onRollDefenceCheck(event) {
+	static #onRollDefenceCheck(event, target) {
+		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const def = event.currentTarget.parentElement.dataset.defence;
+		const def = target.parentElement.dataset.defence;
 		this.actor.rollDef(def, {event: event});
 	}
 
@@ -2151,8 +2146,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			return sourceId && (sourceId === droppedSourceId) && (i.type === "consumable") && (i.name === itemData.name);
 		});
 		if ( !similarItem ) return null;
-		console.log(similarItem.system.quantity)
-		console.log(itemData.system.quantity)
+		Helper.debugLog(similarItem.system.quantity)
+		Helper.debugLog(itemData.system.quantity)
 		return similarItem.update({
 			"system.quantity": similarItem.system.quantity + Math.max(itemData.system.quantity, 1)
 		});

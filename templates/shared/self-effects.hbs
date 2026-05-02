@@ -11,7 +11,7 @@
 			<span class="label">{{localize 'DND4E.Attack'}}:</span> 
 			<span class="value">{{numberFormat system.modifiers.attack.value sign=true}}</span>
 		  </span>
-          <a class="modifiers-bonus" data-target="system.modifiers"
+          <a class="modifiers-bonus" data-action="modifiersBonus" data-target="system.modifiers"
             data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierAttack'}}">
 			<span class="label">{{localize 'DND4E.Bonus'}}:</span> 
 			<span class="value">{{numberFormat system.modifiers.attack.bonusValue sign=true}}</span>
@@ -22,7 +22,7 @@
 		    <span class="label">{{localize 'DND4E.Damage'}}:</span> 
 			<span class="value">{{numberFormat system.modifiers.damage.value sign=true}}</span>
 		  </span>
-          <a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierDamage'}}">
+          <a class="modifiers-bonus" data-action="modifiersBonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierDamage'}}">
 		    <span class="label">{{localize 'DND4E.Bonus'}}:</span> 
 			<span class="value">{{numberFormat system.modifiers.damage.bonusValue sign=true}}</span>
 		  </a>
@@ -32,7 +32,7 @@
 		    <span class="label">{{localize 'DND4E.Defences'}}:</span>
 			<span class="value">{{numberFormat system.modifiers.defences.value sign=true}}</span>
 		  </span>
-          <a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierDefences'}}">
+          <a class="modifiers-bonus" data-action="modifiersBonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierDefences'}}">
 		    <span class="label">{{localize 'DND4E.Bonus'}}:</span>
 			<span class="value">{{numberFormat system.modifiers.defences.bonusValue sign=true}}</span>
 		  </a>
@@ -44,7 +44,7 @@
 		    <span class="label">{{localize 'DND4E.Skills'}}:</span>
 			<span class="value">{{numberFormat system.modifiers.skills.value sign=true}}</span>
 		  </span>
-          <a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierSkills'}}">
+          <a class="modifiers-bonus" data-action="modifiersBonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierSkills'}}">
 		    <span class="label">{{localize 'DND4E.Bonus'}}:</span>
 			<span class="value">{{numberFormat system.modifiers.skills.bonusValue sign=true}}</span>
 		  </a>
@@ -54,7 +54,7 @@
 		    <span class="label">{{localize 'DND4E.AbilityChecks'}}:</span>
 			<span class="value">{{numberFormat system.modifiers.abilities.value sign=true}}</span>
 		  </span>
-          <a class="modifiers-bonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierAbillities'}}">
+          <a class="modifiers-bonus" data-action="modifiersBonus" data-target="system.modifiers" data-tooltip="{{localize 'DND4E.BonusesTo'}} {{localize 'DND4E.ModifierAbilities'}}">
 			<span class="label">{{localize 'DND4E.Bonus'}}:</span>&nbsp;
 			<span class="value">{{numberFormat system.modifiers.abilities.bonusValue sign=true}}</span>
 		  </a>
@@ -63,7 +63,7 @@
     </ul>
   </div>
   
-  <div name="con-bon-config" class="con-bon-config config-link label" data-tooltip="{{localize 'DND4EUI.ConditionalBonusesTip'}}">{{localize 'DND4EUI.ConditionalAtkMods'}} <i class="fas fa-edit"></i></div>
+  <div name="con-bon-config" class="con-bon-config config-link label" data-action="conBonConfig" data-tooltip="{{localize 'DND4EUI.ConditionalBonusesTip'}}">{{localize 'DND4EUI.ConditionalAtkMods'}} <i class="fas fa-edit"></i></div>
   
 </section>
 {{/if}}
@@ -79,7 +79,7 @@
       {{/if}}
       <div class="effect-detail effect-duration">{{localize 'DND4E.Duration'}}</div>
       <div class="item-controls effect-controls flexrow">
-        <a class="effect-control" data-action="create" data-tooltip="{{localize 'DND4E.EffectCreate'}}">
+        <a class="effect-control" data-action="manageActiveEffect" data-activity="create" data-tooltip="{{localize 'DND4E.EffectCreate'}}">
           <i class="fas fa-plus"></i> {{localize "DND4E.Add"}}
         </a>
       </div>
@@ -97,28 +97,36 @@
 		{{#if (isActor ../../this)}}
         <div class="effect-detail effect-source">{{getSourceName effect}}</div>
 		
-        <a class="effect-detail effect-duration {{#if effect._getIsSave}}effect-save rollable{{/if}}" data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}
+        <a class="effect-detail effect-duration {{#if effect._getIsSave}}effect-save rollable{{/if}}" {{#if effect._getIsSave}}data-action="rollEffectSave"{{/if}} data-tooltip="{{effect.duration.label}}">{{effect.duration.label}}
 		</a>
         {{/if}}
 		
         <div class="item-controls effect-controls flexrow">
-          <a class="effect-control" data-action="toggle" data-tooltip="{{localize 'DND4E.EffectToggle'}}">
+          <a class="effect-control" data-action="manageActiveEffect" data-activity="toggle" data-tooltip="{{localize 'DND4E.EffectToggle'}}">
             <i class="{{#if (isActive this)}}fas fa-power-off{{else}}fas fa-circle-notch{{/if}}"></i>
           </a>
-          <a class="effect-control" data-action="edit" data-tooltip="{{localize 'DND4E.EffectEdit'}}">
+          <a class="effect-control" data-action="manageActiveEffect" data-activity="edit" data-tooltip="{{localize 'DND4E.EffectEdit'}}">
             <i class="fas fa-edit"></i>
           </a>
-          <a class="effect-control effect-delete" {{#if (isActor ../../this)}}{{#unless effect.transfer}} data-action="delete"{{/unless}}{{else}} data-action="delete"{{/if}} data-tooltip="{{localize 'DND4E.EffectDelete'}}">
+          <a class="effect-control effect-delete" {{#if (isActor ../../this)}}{{#unless effect.transfer}} data-action="manageActiveEffect" data-activity="delete"{{/unless}}{{else}} data-action="manageActiveEffect" data-activity="delete"{{/if}} data-tooltip="{{localize 'DND4E.EffectDelete'}}">
             <i class="fas fa-trash"></i>
           </a>
         </div>
-		
       </li>
       {{/each}}
     </ol>
     {{/each}}
   </ol>
 </div>
+
+{{#if isPhysical}}
+  <fieldset>
+    <legend>{{localize 'DND4E.ItemPowers'}}</legend>
+    <div class="form-group">
+        {{formField itemPowersField value=system.itemPowers localize=true model=../../model}}
+    </div>
+  </fieldset>
+{{/if}}
 
 {{!-- Resistances --}}
 
@@ -138,7 +146,7 @@
 	  </span>
     {{/unless}}
     {{/if}}
-      <a class="resistances-bonus" data-target="system.resistances" data-tooltip="{{localize 'DND4E.DamResVulnBonus' type=res.label}}">
+      <a class="resistances-bonus" data-target="system.resistances" data-action="resistancesBonus" data-tooltip="{{localize 'DND4E.DamResVulnBonus' type=res.label}}">
 		<label span class="label">{{localize 'DND4E.Bonus'}}:</label> 
 		<span class="value">{{res.resBonusValue}}</span>
 	  </a>
@@ -154,7 +162,7 @@
   <div class="resistances-special">
 
 	<div class="traits-row">
-		<a class="list-string-input untyped-resistances" data-options="special"
+		<a class="list-string-input untyped-resistances" data-action="listStringInput" data-options="special"
 		  data-target="system.untypedResistances.resistances" data-app-title="{{ localize 'DND4E.UntypedRes' }}">
 		  <span class="label">{{ localize "DND4E.UntypedRes" }}</span>
 		  <i class="fas fa-edit"></i>
@@ -167,7 +175,7 @@
 	</div>
 
 	<div class="traits-row">
-		<a class="list-string-input untyped-resistances" data-options="special"
+		<a class="list-string-input untyped-resistances" data-action="listStringInput" data-options="special"
 		  data-target="system.untypedResistances.vulnerabilities" data-app-title="{{ localize 'DND4E.UntypedVuln' }}">
 		  <span class="label">{{ localize "DND4E.UntypedVuln" }}</span>
 		  <i class="fas fa-edit"></i>
@@ -181,7 +189,7 @@
 	</div>
 
 	<div class="traits-row">
-		<a class="list-string-input untyped-resistances" data-options="special"
+		<a class="list-string-input untyped-resistances" data-action="listStringInput" data-options="special"
 		  data-target="system.untypedResistances.immunities" data-app-title="{{ localize 'DND4E.UntypedImm' }}">
 		  <span class="label">{{ localize "DND4E.UntypedImm" }}</span>
 		  <i class="fas fa-edit"></i>

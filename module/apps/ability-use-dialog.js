@@ -45,7 +45,7 @@ export default class AbilityUseDialog extends foundry.applications.api.Dialog {
       note: this._getAbilityUseNote(item, uses, recharge),
       hasLimitedUses: itemData.preparedMaxUses || recharges,
       canUse: recharges ? recharge.charged : (quantity > 0 && !uses.value) || uses.value > 0,
-      hasPlaceableTemplate: game.user.can("TEMPLATE_CREATE") && item.hasAreaTarget,
+      hasPlaceableTemplate: game.user.can("REGION_CREATE") && item.hasAreaTarget,
       errors: []
     };
 

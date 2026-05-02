@@ -33,7 +33,7 @@
     
         {{#if ../owner}}
         <div class="item-controls flexrow">
-          <a class="item-control item-create" data-tooltip="{{localize 'DND4E.Feature.Add'}}" data-type="feature" {{#each section.dataset as |v k|}}data-subtype="{{v}}"{{/each}}>
+          <a class="item-control item-create" data-action="itemCreate" data-tooltip="{{localize 'DND4E.Feature.Add'}}" data-type="feature" {{#each section.dataset as |v k|}}data-subtype="{{v}}"{{/each}}>
             <i class="fas fa-plus"></i> {{localize 'DND4E.Add'}}
           </a>
         </div>
@@ -43,7 +43,7 @@
       <ol class="item-list feature-list">
       {{#each section.items as |item iid|}}
         <li class="item flexrow{{#if isUnavailable}} unavailable{{/if}} collapsible{{#if collapsed}} collapsed{{/if}}" data-item-id="{{item._id}}">
-          <div class="item-name item-image item-roll flexrow rollable">
+          <div class="item-name item-image item-roll flexrow rollable" data-action="itemRoll">
             <img src="{{item.img}}" width="30" height="30"/>
           </div>
           <div class="flexrow feature-name">
@@ -54,7 +54,7 @@
             {{#if section.hasActions}}
             <div class="item-detail item-uses">
               {{#if item.isOnCooldown}}
-              <a class="item-recharge rollable">{{item.labels.recharge}}</a>
+              <a class="item-recharge rollable" data-action="itemRecharge">{{item.labels.recharge}}</a>
               {{else if item.system.recharge.value}}
               {{localize 'DND4E.Charged'}}
       
@@ -96,12 +96,13 @@
             <div class="item-controls flexrow">
               {{#if section.crewable}}
               <a class="item-control item-toggle {{item.toggleClass}}"
+                data-action="itemToggle"
                 data-tooltip="{{item.toggleTitle}}">
                 <i class="fas fa-sun"></i>
               </a>
               {{/if}}
-              <a class="item-control item-edit" data-tooltip="{{localize 'DND4E.ItemEdit'}}"><i class="fas fa-edit"></i></a>
-              <a class="item-control item-delete" data-tooltip="{{localize 'DND4E.ItemDelete'}}"><i class="fas fa-trash"></i></a>
+              <a class="item-control item-edit" data-action="itemEdit" data-tooltip="{{localize 'DND4E.ItemEdit'}}"><i class="fas fa-edit"></i></a>
+              <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'DND4E.ItemDelete'}}"><i class="fas fa-trash"></i></a>
             </div>
           {{/if}}
           </div>

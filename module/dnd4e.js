@@ -18,7 +18,6 @@ import { preloadHandlebarsTemplates } from "./templates.js";
 import Combat4e from "./combat.js";
 
 // Import Documents
-import { MeasuredTemplate4e, TemplateLayer4e} from "./canvas/ability-template.js";
 import { default as TokenRuler4e } from "./canvas/ruler.js";
 import { Actor4e } from "./actor/actor.js";
 import { default as TokenDocument4e } from "./documents/token.js";
@@ -26,8 +25,10 @@ import { default as Token4e } from "./canvas/token.js";
 import Item4e from "./item/item.js";
 import ItemDirectory4e from "./apps/item/item-directory.js";
 
-import { default as DifficultTerrainRegionBehaviorType } from "./regionBehavoirs/difficult-terrain.js";
-import { default as TerrainData4e } from "./regionBehavoirs/terrain-data.js";
+import { default as ApplyActiveEffect4eRegionBehaviorType } from "./regionBehaviors/apply-active-effect.js";
+import { default as DamagingRegionRegionBehaviorType } from "./regionBehaviors/damaging-region.js";
+import { default as DifficultTerrainRegionBehaviorType } from "./regionBehaviors/difficult-terrain.js";
+import { default as TerrainData4e } from "./regionBehaviors/terrain-data.js";
 import { default as DifficultTerrainConfig} from "./apps/regionBehaviors/difficult-terrain-config.js"
 
 import { Helper, handleApplyEffectToToken, handleDeleteEffectToToken, handlePromptEoTSaves, handleAutoDoTs, performPreLocalization} from "./helper.js";
@@ -45,6 +46,7 @@ import { customSKillSetUp } from "./skills/custom-skills.js";
 import Items4e from "./collection/item-collection.js";
 import Combatant4e from "./combatant.js";
 import Roll4e from "./dice/Roll.js";
+import ActiveEffectData from "./data/active-effect/active-effect.js";
 import CharacterData from "./data/actor/character.js";
 import NPCData from "./data/actor/npc.js";
 import HazardData from "./data/actor/hazard.js";
@@ -70,9 +72,6 @@ Hooks.once("init", async function() {
 			ActiveEffectConfig4e
 		},
 		config: DND4E,
-		canvas: {
-			MeasuredTemplate4e
-		},
 		entities: {
 			Actor4e,
 			Item4e,
@@ -98,10 +97,6 @@ Hooks.once("init", async function() {
 	CONFIG.Combatant.documentClass = Combatant4e;
 	CONFIG.Combat.documentClass = Combat4e;
 
-	CONFIG.MeasuredTemplate.objectClass = MeasuredTemplate4e;
-
-	CONFIG.Canvas.layers.templates.layerClass = TemplateLayer4e;
-
 	CONFIG.statusEffects = Object.entries(CONFIG.DND4E.statusEffect).reduce((arr, [id, data]) => {
 		const newEffect = {
 			id,
@@ -111,10 +106,15 @@ Hooks.once("init", async function() {
 		return arr;
 	}, []);
 	
+	CONFIG.ActiveEffect.expiryAction = "delete";
+	CONFIG.ActiveEffect.expiryEvents.dayEnd = "DND4E.DurationEndOfDay";
+	CONFIG.ActiveEffect.expiryEvents.save = "DND4E.DurationSaveEnd";
+
 	// define custom roll extensions
 	CONFIG.Dice.rolls = [Roll4e];
 	CONFIG.Dice.rolls.push(MultiAttackRoll);
 	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
+    CONFIG.Dice.functions.scale = Helper.scaleFn;
 	
 	CONFIG.ui.items = ItemDirectory4e;
 
@@ -164,6 +164,9 @@ Hooks.once("init", async function() {
 	delete CONFIG.Token.movement.actions.jump;
 
 	// System data types
+	CONFIG.ActiveEffect.dataModels = {
+		base: ActiveEffectData
+	}
 	CONFIG.Actor.dataModels = {
 		"Player Character": CharacterData,
 		NPC: NPCData,
@@ -181,13 +184,15 @@ Hooks.once("init", async function() {
 		weapon: WeaponData
 	};
 
-	// foundry.data.regionBehaviors.DifficultTerrainRegionBehaviorType = DifficultTerrainRegionBehaviorType;
-	// CONFIG.RegionBehavior.documentClass = RegionBehavior4e
+	CONFIG.RegionBehavior.dataModels.applyActiveEffect4e = ApplyActiveEffect4eRegionBehaviorType;
+    CONFIG.RegionBehavior.dataModels.damagingRegion = DamagingRegionRegionBehaviorType;
 	CONFIG.RegionBehavior.dataModels.difficultTerrain = DifficultTerrainRegionBehaviorType;
-	// Object.assign(CONFIG.RegionBehavior.dataModels, { DifficultTerrainRegionBehaviorType });
-	// HighlightRegionShader = DifficultTerrainShader4e;
 
-	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";//"DND4E.difficultTerrain.Label";
+	CONFIG.RegionBehavior.typeLabels.applyActiveEffect4e = "DND4E.applyActiveEffect4e.Label";
+	CONFIG.RegionBehavior.typeIcons.applyActiveEffect4e = "fa-solid fa-person-rays";
+    CONFIG.RegionBehavior.typeLabels.damagingRegion = "DND4E.damagingRegion.Label";
+	CONFIG.RegionBehavior.typeIcons.damagingRegion = "fas fa-burst";
+	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "difficult-terrain-icon";
 
 	registerSystemSettings();
@@ -298,7 +303,7 @@ Hooks.once("ready",  function() {
 	if ( cv && foundry.utils.isNewerVersion(cmv, cv) ) {
 	  ui.notifications.error(game.i18n.localize("MIGRATION.4eVersionTooOldWarning"), {permanent: true});
 	}
-	
+
 	migrations.migrateWorld();
 });
 
@@ -434,18 +439,21 @@ Hooks.on('renderCombatTracker', (app,html,context) => {
 	}
 });
 
-Hooks.on('createMeasuredTemplate', async (templateDoc) => {
-	if (game.user.id !== templateDoc.author.id) return;
-	const originUuid = templateDoc.getFlag('dnd4e', 'origin');
+Hooks.on('createRegion', async (regionDoc) => {
+	if (!regionDoc.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER)) return;
+	const originUuid = regionDoc.getFlag('dnd4e', 'origin');
 	// Item may be deleted from the actor when we get here, so get the item data from the template if we have to
-	const flagDocument = await fromUuid(originUuid) || templateDoc.getFlag('dnd4e', 'item');
+	const flagDocument = await fromUuid(originUuid) || regionDoc.getFlag('dnd4e', 'item');
 	if (!flagDocument || flagDocument.system.autoTarget.mode === 'none') return;
 	// If we just have the template flag's item data because the item was deleted, we'll need to work backward from the item uuid to get the actor
 	const actorUuid = flagDocument?.actor?.uuid || originUuid.split('.Item')[0];
 	if (!actorUuid) return;
 	const token = Helper.tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;
-	let tokens = Helper.getTokensInTemplate(templateDoc, true);
+	let tokens = new Set();
+	for ( const token of canvas.scene.tokens ) {
+		if ( token.testInsideRegion(regionDoc) ) tokens.add(token);
+	}
 	if (!tokens.size) return;
 	const disposition = token.document.disposition;
 	const excludeUser = !flagDocument.system.autoTarget.includeSelf || flagDocument.system.autoTarget.mode === 'enemies';
@@ -469,19 +477,6 @@ Hooks.on('createMeasuredTemplate', async (templateDoc) => {
 		}
 	}
 	canvas.tokens.setTargets(targets);
-});
-
-// Compatibility hook for Aura Effects to prevent aura effects from expiring based on aura origin's turn
-Hooks.on('preCreateActiveEffect', async (effect) => {
-	if (effect.flags.auraeffects?.fromAura || effect.flags.ActiveAuras?.applied) {
-		const updates = {
-			'flags.dnd4e.effectData.durationType': "custom",
-			'flags.dnd4e.effectData.startTurnInit': null,
-			'flags.dnd4e.effectData.durationTurnInit': null,
-			'flags.dnd4e.effectData.durationRound': null,
-		};
-		effect.updateSource(updates);
-	}
 });
 
 Hooks.on("targetToken", Token4e.onTargetToken);

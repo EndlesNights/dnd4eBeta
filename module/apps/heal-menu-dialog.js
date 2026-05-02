@@ -13,10 +13,10 @@ export class HealMenuDialog extends DocumentSheet4e {
 			handler: HealMenuDialog.#onSubmit
 		},
 		actions: {
-			spendSurgesChecked: HealMenuDialog._setButtonEnabledState,
-			healButtonClicked: HealMenuDialog._onHealButtonClicked,
-			tempHPButtonClicked: HealMenuDialog._onTempHPButtonClicked,
-			healingPotionSettingsClicked: HealMenuDialog._onHealingPotionSettingsClicked
+			spendSurgesChecked: HealMenuDialog.#setButtonEnabledState,
+			healButtonClicked: HealMenuDialog.#onHealButtonClicked,
+			tempHPButtonClicked: HealMenuDialog.#onTempHPButtonClicked,
+			healingPotionSettingsClicked: HealMenuDialog.#onHealingPotionSettingsClicked
 		},
 		position: {
 			width: 500,
@@ -62,11 +62,10 @@ export class HealMenuDialog extends DocumentSheet4e {
 
 	_onRender(context, options) {
 		if (!this.document.testUserPermission(game.user, this.options.editPermission)) return;
-		this.element.querySelector('.heal-button')?.addEventListener("click", this._onHealButton.bind(this));
-		HealMenuDialog._setButtonEnabledState();
+		HealMenuDialog.#setButtonEnabledState();
 	}
 
-	static _setButtonEnabledState() {
+	static #setButtonEnabledState(event, target) {
 		let hpButtonEnabled = true;
 		let hpButtonText = game.i18n.localize("DND4E.HealingMenuHealHP");
 		let tempHPButtonEnabled = true;
@@ -102,15 +101,15 @@ export class HealMenuDialog extends DocumentSheet4e {
 		setButtonEnabled('tempHPButton', tempHPButtonEnabled, tempHPButtonText);
 	}
 
-	static _onHealButtonClicked() {
+	static #onHealButtonClicked(event, target) {
 		document.getElementById("heal-type").value = "heal";
 	}
 
-	static _onTempHPButtonClicked() {
+	static #onTempHPButtonClicked(event, target) {
 		document.getElementById("heal-type").value = "tempHP";
 	}
 
-	static _onHealingPotionSettingsClicked() {
+	static #onHealingPotionSettingsClicked(event, target) {
 		document.getElementById("spend-healing-surge").checked = true
 		document.getElementById("gain-healing-surge-value").checked = false
 		document.getElementById("bonus").value = 10

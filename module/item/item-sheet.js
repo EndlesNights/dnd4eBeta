@@ -1,7 +1,7 @@
 // import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import ActiveEffect4e from "../effects/effects.js";
-import { default as TokenDocument4e } from "../documents/token.js"
 import {Helper} from "../helper.js";
+import Item4e from "./item.js";
 
 /**
  * Override and extend the core ItemSheet implementation to handle specific item types
@@ -59,10 +59,12 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			createPowerEffect: ItemSheet4e.#onPowerEffectControl,
 			editPowerEffect: ItemSheet4e.#onPowerEffectControl,
 			deletePowerEffect: ItemSheet4e.#onPowerEffectControl,
+            manageActiveEffect: ItemSheet4e.#onManageActiveEffect,
 			// Container actions
 			itemRoll: ItemSheet4e.#onItemRoll,
 			editItem: ItemSheet4e.#onItemControl,
-			deleteItem: ItemSheet4e.#onItemControl
+			deleteItem: ItemSheet4e.#onItemControl,
+			convertCurrency: ItemSheet4e.#onConvertCurrency
 		}
 	}
 
@@ -217,7 +219,6 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		// TODO: AppV2 this stuff properly (add to `DEFAULT_OPTIONS.actions` and set `data-action on the proper elements)
 		if ( this.isEditable ) {
-			this.element.querySelectorAll(".effect-control").forEach(el => el.addEventListener("click", (event => { ActiveEffect4e.onManageActiveEffect(event, this.item);})));
 			this.element.querySelectorAll(".item-quantity input").forEach(el => el.addEventListener("change", (event) => {
 				const li = event.target.closest(".item");
 				const item = this.item.contents.get(li?.dataset.itemId);
@@ -303,13 +304,13 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				context.isArmour = true;
 				context.hasEnhance = true;
 				context.hasBaseProps = true;
-				context.armourBaseTypes = CONFIG.DND4E[itemData.system.armour.subType] || {"": game.i18n.localize("DND4E.None")};
+				context.armourBaseTypes = CONFIG.DND4E[itemData.system.armour.subtype] ? {...CONFIG.DND4E[itemData.system.armour.subtype], ...{"custom": game.i18n.localize("DND4E.Custom")}} : {"": game.i18n.localize("DND4E.None")};
 				context.isArmourBaseTypeCustom = (itemData.system.armourBaseType === "custom");
 			}
-			else if(itemData.system.armour.type === "arms" && CONFIG.DND4E.profArmor[itemData.system.armour.subType]){
+			else if(itemData.system.armour.type === "arms" && CONFIG.DND4E.profArmor[itemData.system.armour.subtype]){
 				context.isShield = true;
 				context.hasBaseProps = true;
-				context.shieldBaseTypes = CONFIG.DND4E.shield;
+				context.shieldBaseTypes = {...CONFIG.DND4E.shield, ...{"custom": game.i18n.localize("DND4E.Custom")}};
 				context.isShieldBaseTypeCustom = (itemData.system.shieldBaseType === "custom");
 			}
 			else if(itemData.system.armour.type === "neck"){
@@ -410,6 +411,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			context.summaryLabel = CONFIG.DND4E.weaponTypes[itemData.system.weaponType];
 		}
 
+        if(context.isPhysical){
+            context.itemPowersField = this.document.system.schema.getField("itemPowers");
+        }
+
 		// Action Details
 		//data.hasAttackRoll = this.item.hasAttack;
 		//data.isHealing = itemData.system.actionType === "heal";
@@ -429,7 +434,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		const description = context.system.description;
 		const weaponUse = this.actor ? Helper.getWeaponUse(itemData.system, this.actor) : null;
 		const itemActor = this.item.actor || null;
-		const descriptionText = description.value ? Helper.commonReplace(description.value, itemActor, itemData.system, weaponUse?.system) : "";
+		const descriptionText = description.value ? Roll.replaceFormulaData(description.value, this.item.getRollData()) : "";
 		context.descriptionHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText || description, {
 			secrets: context.item.isOwner,
 			async: true,
@@ -437,7 +442,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		});
 
 		const descriptionGM = context.system.description.gm || "";
-		const descriptionTextGM = context.system.description.gm ? Helper.commonReplace(descriptionGM, itemActor, itemData.system, weaponUse?.system) : "";
+		const descriptionTextGM = context.system.description.gm ? Roll.replaceFormulaData(descriptionGM, this.item.getRollData()) : "";
 
 		context.descriptionHTMLGM = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionTextGM || descriptionGM, {
 			secrets: context.item.isOwner,
@@ -507,17 +512,17 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		if(effectPowers){
 			for ( let e of effectPowers ) {
-				e.durationTypeLable = `${CONFIG.DND4E.durationType[e.flags.dnd4e.effectData.durationType]}`;
-				if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hit") categories.hit.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "miss") categories.miss.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "hitOrMiss") categories.hitOrMiss.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "self") categories.self.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "selfHit") categories.selfHit.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "selfMiss") categories.selfMiss.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "selfAfterAttack") categories.selfAfterAttack.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "allies") categories.allies.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "enemies") categories.enemies.effects.push(e);
-				else if(e.flags.dnd4e?.effectData?.powerEffectTypes === "all") categories.all.effects.push(e);
+				e.durationTypeLabel = `${CONFIG.DND4E.durationType[e.system.durationType]?.label}`;
+				if(e.system.powerEffectType === "hit") categories.hit.effects.push(e);
+				else if(e.system.powerEffectType === "miss") categories.miss.effects.push(e);
+				else if(e.system.powerEffectType === "hitOrMiss") categories.hitOrMiss.effects.push(e);
+				else if(e.system.powerEffectType === "self") categories.self.effects.push(e);
+				else if(e.system.powerEffectType === "selfHit") categories.selfHit.effects.push(e);
+				else if(e.system.powerEffectType === "selfMiss") categories.selfMiss.effects.push(e);
+				else if(e.system.powerEffectType === "selfAfterAttack") categories.selfAfterAttack.effects.push(e);
+				else if(e.system.powerEffectType === "allies") categories.allies.effects.push(e);
+				else if(e.system.powerEffectType === "enemies") categories.enemies.effects.push(e);
+				else if(e.system.powerEffectType === "all") categories.all.effects.push(e);
 				else categories.misc.effects.push(e);
 			}
 		}
@@ -529,13 +534,12 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		const effect = li.dataset.effectId ? this.item.effects.get(li.dataset.effectId) : null;
 		switch(target.dataset.action){
 			case "createPowerEffect":
-				console.log(this)
+				Helper.debugLog(this)
 				this.item.createEmbeddedDocuments("ActiveEffect", [{
 					name: game.i18n.localize("DND4E.EffectNew"),
 					img: this.item.img || "icons/svg/aura.svg",
 					origin: this.item.uuid,
-					"flags.dnd4e.effectData.powerEffectTypes": li.dataset.effectType,
-					"flags.dnd4e.effectData.durationType": li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined,
+					system: { durationType: li.dataset.effectType === "temporary" ? "endOfUserTurn" : undefined, powerEffectType: li.dataset.effectType },
 					disabled: li.dataset.effectType === "inactive"
 				}]);
 				return;
@@ -546,6 +550,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		}
 
 	}
+
+    static #onManageActiveEffect(event, target) {
+        if (!this.document.testUserPermission(game.user, this.options.editPermission)) return;
+        ActiveEffect4e.onManageActiveEffect(event, target, this.item)
+    }
 
 	/**
 	 * Handle rolling of an item from the Actor sheet, obtaining the Item instance and dispatching to its roll method
@@ -579,6 +588,32 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		} else {
 			return item.delete();
 		}
+	}
+
+	/**
+	* Convert all carried currency to the highest possible denomination to reduce the number of raw coins being
+	* carried by an Actor.
+	* @return {Promise<Actor4e>}
+	*/
+	convertCurrency() {
+		const curr = foundry.utils.duplicate(this.document.system.currency);
+		const convert = CONFIG.DND4E.currencyConversion;
+		for ( let [c, t] of Object.entries(convert) ) {
+			let change = Math.floor(curr[c] / t.each);
+			curr[c] -= (change * t.each);
+			curr[t.into] += change;
+		}
+		return this.document.update({"system.currency": curr});
+	}
+
+	static async #onConvertCurrency(event, target) {
+		if (!this.item.actor.isOwner) return;
+		event.preventDefault();
+		let shouldConvert = await foundry.applications.api.Dialog.confirm({
+			window: {title: `${game.i18n.localize("DND4E.CurrencyConvert")}`},
+			content: `<p>${game.i18n.localize("DND4E.CurrencyConvertHint")}</p>`
+		});
+		if (shouldConvert) return this.convertCurrency();
 	}
 
 	async shareItem() {
@@ -1385,7 +1420,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	 * @protected
 	 */
 	async _onDropItem(event, data) {
-		const item = await Item.implementation.fromDropData(data);
+		if (this.document.type !== "backpack") return false;
+        const item = await Item.implementation.fromDropData(data);
 		if ( !this.item.isOwner || !item ) return false;
 
 		// If item already exists in this container, just adjust its sorting

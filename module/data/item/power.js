@@ -1,3 +1,4 @@
+import FormulaField from "../fields/formula-field.js";
 import MappingField from "../fields/mapping-field.js";
 import ActivatedEffectTemplate from "./templates/activated-effect.js";
 import AttackAndDamageTemplate from "./templates/attack-damage.js";
@@ -35,7 +36,8 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
       rangeTextShort: new StringField({initial: ""}),
       rangeText: new StringField({initial: ""}),
       rangePower: new StringField({initial: ""}),
-      area: new StringField({initial: "0"}),
+      area: new FormulaField({initial: "0", deterministic: true}),
+      auraSize: new FormulaField({initial: "", deterministic: true}),
       rechargeRoll: new StringField({initial: ""}),
       rechargeCondition: new StringField({initial: ""}),
       damageShare: new BooleanField({initial: false}),

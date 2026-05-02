@@ -421,20 +421,6 @@ DND4E.equipmentTypesAlt = {
 };
 preLocalize("equipmentTypesAlt", { keys: ["label"], sort: true });
 
-/* -------------------------------------------- */
-
-/**
- * The set of armour Proficiencies which a character may have
- * @type {Object}
- */
-DND4E.armourProficiencies = {
-	"lgt": "DND4E.equipmentTypes.light",
-	"med": "DND4E.equipmentTypes.medium",
-	"hvy": "DND4E.equipmentTypes.heavy",
-	"shl": "DND4E.EquipmentShieldProficiency"
-};
-preLocalize("armourProficiencies");
-
 
 /* -------------------------------------------- */
 
@@ -756,17 +742,72 @@ preLocalize("distanceUnits");
 /* -------------------------------------------- */
 
 DND4E.durationType = {
-	"endOfTargetTurn": "DND4E.DurationEndOfTargetTurn",
-	"endOfUserTurn": "DND4E.DurationEndOfUserTurn",
-	"endOfUserCurrent": "DND4E.DurationEndOfUserCurrent",
-	"startOfTargetTurn": "DND4E.DurationStartOfTargetTurn",
-	"startOfUserTurn": "DND4E.DurationStartOfUserTurn",
-	"saveEnd": "DND4E.DurationSaveEnd",
-	"endOfEncounter": "DND4E.DurationEndOfEnc",
-	"endOfDay": "DND4E.DurationEndOfDay",
-	"custom": "DND4E.DurationCustom",
+	endOfTargetTurn: {
+        label: "DND4E.DurationEndOfTargetTurn",
+        duration: {
+            value: 1,
+            units: "rounds",
+            expiry: "turnEnd"
+        }
+    },
+	endOfUserTurn: {
+        label: "DND4E.DurationEndOfUserTurn",
+        duration: {
+            value: 1,
+            units: "rounds",
+            expiry: "turnEnd"
+        }
+    },
+	endOfUserCurrent: {
+        label: "DND4E.DurationEndOfUserCurrent",
+        duration: {
+            value: 0,
+            units: "turns",
+            expiry: "turnEnd"
+        }
+    },
+	startOfTargetTurn: {
+        label: "DND4E.DurationStartOfTargetTurn",
+        duration: {
+            value: 1,
+            units: "rounds",
+            expiry: "turnStart"
+        }
+    },
+	startOfUserTurn: {
+        label: "DND4E.DurationStartOfUserTurn",
+        duration: {
+            value: 1,
+            units: "rounds",
+            expiry: "turnStart"
+        }
+    },
+	saveEnd: {
+        label: "DND4E.DurationSaveEnd",
+        duration: {
+            expiry: "save"
+        }
+    },
+	endOfEncounter: {
+        label: "DND4E.DurationEndOfEnc",
+        duration: {
+            expiry: "combatEnd"
+        }
+    },
+	endOfDay: { //Extended Rest
+        label: "DND4E.DurationEndOfDay",
+        duration: {
+            expiry: "dayEnd"
+        }
+    },
+	custom: {
+        label: "DND4E.DurationCustom",
+        duration: {
+            expiry: "custom"
+        }
+    }
 }
-preLocalize("durationType");
+preLocalize("durationType", { keys: ["label"] });
 
 /* -------------------------------------------- */
 
@@ -793,6 +834,20 @@ preLocalize("powerEffectTypes");
 
 /* -------------------------------------------- */
 
+DND4E.proficiency = {
+    "yes": "DND4EUI.Yes",
+    "no": "DND4EUI.No",
+    "auto": "DND4EUI.Auto"
+}
+preLocalize("proficiency");
+
+DND4E.armorAbilityMod = {
+    "yes": "DND4EUI.Yes",
+    "no": "DND4EUI.No",
+    "auto": "DND4EUI.Auto"
+}
+preLocalize("armorAbilityMod");
+
 DND4E.profArmor = {
 	cloth: "DND4E.ArmourProfCloth",
 	leather: "DND4E.ArmourProfLeather",
@@ -805,12 +860,9 @@ DND4E.profArmor = {
 };
 preLocalize("profArmor");
 
-DND4E.cloth = {
-	cloth: "DND4E.ArmourProfCloth",
-};
-preLocalize("cloth");
 DND4E.light = {
-	leather: "DND4E.ArmourProfLeather",
+	cloth: "DND4E.ArmourProfCloth",
+    leather: "DND4E.ArmourProfLeather",
 	hide: "DND4E.ArmourProfHide",
 };
 preLocalize("light");
@@ -1019,30 +1071,6 @@ DND4E.targetTypes = {
 	"enemyA": "DND4E.TargetEnemyAdjacent",
 };
 preLocalize("targetTypes", { sort: true });
-
-
-/* -------------------------------------------- */
-
-
-/**
- * Map the subset of target types which produce a template area of effect
- * The keys are DND4E target types and the values are MeasuredTemplate shape types
- * @type {Object}
- */
-DND4E.areaTargetTypes = {
-	cone: "cone",
-	cube: "rect",
-	cylinder: "circle",
-	line: "ray",
-	radius: "circle",
-	sphere: "circle",
-	square: "rect",
-	wall: "ray",
-	closeBlast: "rect",
-	closeBurst: "circle",
-	rangeBlast: "rect",
-	rangeBurst: "circle",
-};
 
 
 /* -------------------------------------------- */
@@ -1418,23 +1446,45 @@ DND4E.rangeType = {
 	},
 	"closeBurst": {
 		label: "DND4E.rangeCloseBurst",
-		abbr: "DND4E.rangeCloseBurstAbbr"
+		abbr: "DND4E.rangeCloseBurstAbbr",
+		area: {
+			type: "emanation",
+			radius: "area"
+		}
 	},
 	"closeBlast": {
 		label: "DND4E.rangeCloseBlast",
-		abbr: "DND4E.rangeCloseBlastAbbr"
+		abbr: "DND4E.rangeCloseBlastAbbr",
+		area: {
+			type: "rectangle",
+			width: "area",
+			height: "area"
+		}
 	},
 	"rangeBurst": {
 		label: "DND4E.rangeBurst",
-		abbr: "DND4E.rangeBurstAbbr"
+		abbr: "DND4E.rangeBurstAbbr",
+		area: {
+			type: "emanation",
+			radius: "area"
+		}
 	},
 	"rangeBlast": {
 		label: "DND4E.rangeBlast",
-		abbr: "DND4E.rangeBlastAbbr"
+		abbr: "DND4E.rangeBlastAbbr",
+		area: {
+			type: "rectangle",
+			width: "area",
+			height: "area"
+		}
 	},
 	"wall": {
 		label: "DND4E.rangeWall",
-		abbr: "DND4E.rangeWallAbbr"
+		abbr: "DND4E.rangeWallAbbr",
+		area: {
+			type: "rectangle",
+			count: "area"
+		}
 	},
 	"personal": {
 		label: "DND4E.rangePersonal",

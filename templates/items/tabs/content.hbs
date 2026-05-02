@@ -2,7 +2,7 @@
   <ol class="currency flexrow">
     <h3>
       {{localize "DND4E.Currency"}}
-      <a class="currency-convert" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
+      <a class="currency-convert" data-action="convertCurrency" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
     </h3>
     {{#each system.currency as |v k|}}
     <label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
@@ -66,7 +66,7 @@
   </ol>
 
   {{#with encumbrance}}
-  <div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" data-tooltip="{{localize 'DND4E.ItemContainerCapacity'}}">
+  <div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" data-action="encumbranceDialog" data-tooltip="{{localize 'DND4E.ItemContainerCapacity'}}">
     <span class="encumbrance-bar" style="width:{{pbc}}%"></span>
     {{#if encumbered}}
       <span class="encumbrance-bar encumbered" style="width:{{pec}}%"></span>

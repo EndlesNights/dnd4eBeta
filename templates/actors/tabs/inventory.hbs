@@ -3,7 +3,7 @@
     <ol class="currency flexrow">
       <h3>
         <label data-tooltip="{{currencyGoldSum}}">{{localize 'DND4E.Currency'}}</label>
-        <a class="currency-convert" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
+        <a class="currency-convert" data-action="convertCurrency" data-tooltip="{{localize 'DND4E.CurrencyConvert'}}"><i class="fas fa-coins"></i></a>
       </h3>
       {{#each system.currency as |v k|}}
       <label class="denomination {{k}}" data-tooltip="{{ localize (lookup ../config.currencies k )}}">{{k}}</label>
@@ -45,7 +45,7 @@
 
       {{#if ../owner}}
       <div class="item-controls">
-        <a class="item-control item-create" data-tooltip="{{localize 'DND4E.ItemCreate'}}"
+        <a class="item-control item-create" data-action="itemCreate" data-tooltip="{{localize 'DND4E.ItemCreate'}}"
           {{#each section.dataset as |v k|}}data-{{k}}="{{v}}"{{/each}}>
           <i class="fas fa-plus"></i> {{localize 'DND4E.Add'}}
         </a>
@@ -61,7 +61,7 @@
           {{#if section.editableName}}
           <input type="text" value="{{item.name}}">
           {{else}}
-          <div class="item-image item-roll"><img src="{{item.img}}" width="30" height="30"/></div>
+          <div class="item-image item-roll" data-action="itemRoll"><img src="{{item.img}}" width="30" height="30"/></div>
           <h4 class="item-title">
             {{#if item.system.level}}[{{item.system.level}}]{{/if}}{{item.name~}}
             
@@ -106,12 +106,12 @@
         {{#if ../../owner}}
         <div class="item-controls">
           {{#unless @root.isVehicle}}
-          <a class="item-control item-toggle {{item.toggleClass}}" data-tooltip="{{item.toggleTitle}}"><i class="fas fa-shield-alt"></i></a>
+          <a class="item-control item-toggle {{item.toggleClass}}" data-action="itemToggle" data-tooltip="{{item.toggleTitle}}"><i class="fas fa-shield-alt"></i></a>
           {{/unless}}
           {{#unless section.editableName}}
-          <a class="item-control item-edit" data-tooltip="{{localize 'DND4E.ItemEdit'}}"><i class="fas fa-edit"></i></a>
+          <a class="item-control item-edit" data-action="itemEdit" data-tooltip="{{localize 'DND4E.ItemEdit'}}"><i class="fas fa-edit"></i></a>
           {{/unless}}
-          <a class="item-control item-delete" data-tooltip="{{localize 'DND4E.ItemDelete'}}"><i class="fas fa-trash"></i></a>
+          <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'DND4E.ItemDelete'}}"><i class="fas fa-trash"></i></a>
         </div>
         {{/if}}
         <div class="item-summary collapsible-content">
@@ -133,7 +133,7 @@
   </ol>
 
   {{#with system.encumbrance}}
-  <div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" data-tooltip="{{localize 'DND4E.EncumbranceTip'}}">
+  <div class="encumbrance {{#if encumbered}}encumbered{{/if}} encumbrance-options" data-action="encumbranceDialog" data-tooltip="{{localize 'DND4E.EncumbranceTip'}}">
     <span class="encumbrance-bar" style="width:{{pbc}}%"></span>
     {{#if encumbered}}
       <span class="encumbrance-bar encumbered" style="width:{{pec}}%"></span>

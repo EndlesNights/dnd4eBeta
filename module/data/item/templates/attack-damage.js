@@ -1,3 +1,4 @@
+import FormulaField from "../../fields/formula-field.js";
 import MappingField from "../../fields/mapping-field.js";
 
 const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
@@ -17,7 +18,7 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
       def: new StringField({initial: "ac"}),
       defBonus: new NumberField({initial: 0, integer: true}),
       detail: new StringField({initial: ""}),
-      formula: new StringField({initial: "@wepAttack + @powerMod + @lvhalf"})
+      formula: new FormulaField({initial: "@wepAttack + @powerMod + @lvhalf"})
     };
   }
   static get damage() {
@@ -27,12 +28,12 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
       isDamage: new BooleanField({initial: true}),
       isHealing: new BooleanField({initial: false}),
       healSurge: new StringField({initial: ""}),
-      baseQuantity: new StringField({initial: "1"}),
+      baseQuantity: new FormulaField({initial: "1", deterministic: true}),
       baseDiceType: new StringField({initial: "Base Weapon Damage"}),
       detail: new StringField({initial: "1[W] + Strength modifier damage."}),
-      formula: new StringField({initial: "@powBase + @powMod + @wepDamage"}),
-      critFormula: new StringField({initial: "@powMax + @powerMod + @wepDamage + @wepCritBonus"}),
-      healFormula: new StringField({initial: ""})
+      formula: new FormulaField({initial: "@powBase + @powMod + @wepDamage"}),
+      critFormula: new FormulaField({initial: "@powMax + @powerMod + @wepDamage + @wepCritBonus"}),
+      healFormula: new FormulaField({initial: ""})
     }
   }
   static defineSchema() {
@@ -42,7 +43,7 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
       miss: new SchemaField({
         halfDamage: new BooleanField({initial: false}),
         detail: new StringField({initial: ""}),
-        formula: new StringField({initial: ""})
+        formula: new FormulaField({initial: ""})
       }),
       effect: new SchemaField({
         detail: new StringField({initial: ""})

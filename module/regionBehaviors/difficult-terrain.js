@@ -3,6 +3,13 @@
 const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields;
 
 /**
+ * @typedef DifficultTerrainRegionBehaviorSystemData
+ * @property {boolean} magical                  This difficult terrain is caused by magic.
+ * @property {Set<string>} types                Types of difficult terrain represented.
+ * @property {Set<number>} ignoredDispositions  Token dispositions that won't be affected by this difficult terrain.
+ */
+
+/**
  * The data model for a region behavior that represents an area of difficult terrain.
  */
 export default class DifficultTerrainRegionBehaviorType extends foundry.data.regionBehaviors.RegionBehaviorType {

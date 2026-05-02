@@ -124,7 +124,7 @@ export const addChatMessageContextOptions = function(html, options) {
 		if(!item.effects.size) return false;
 
 		for(const effect of item.effects){
-			if(effect.flags.dnd4e.effectData.powerEffectTypes === type) return true;
+			if(effect.system.powerEffectType === type) return true;
 		}
 
 		return false;
@@ -344,7 +344,7 @@ function selectTargetTokens(li, targetType){
 	}
 
 	if(targetType === "hit"){
-		console.log("hit")
+		Helper.debugLog("hit")
 		for(const roll of message.rolls){
 			if(['hit','critical'].includes(roll.options.multirollData.hitstate)){
 				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
@@ -352,7 +352,7 @@ function selectTargetTokens(li, targetType){
 		}
 	}
 	else if(targetType === "miss"){
-		console.log("miss")
+		Helper.debugLog("miss")
 		for(const roll of message.rolls){
 			if(['miss','fumble','immune'].includes(roll.options.multirollData.hitstate)){
 				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
@@ -408,7 +408,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	if(multiplier < 0 || trueDamage){
 		return Promise.all(canvas.tokens.controlled.map(t => {
 			const a = t.actor;
-			console.log( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealt: ${roll.total}`)
+			Helper.debugLog( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealt: ${roll.total}`)
 			return a.applyDamage(roll.total, multiplier, {surgeAmount, surgeValueAmount});
 		}));
 	}
@@ -419,7 +419,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	roll.terms.forEach(e => {
 		if(typeof e.total === "number"){
 			if(e.flavor){
-				//console.log(`Damage type found: ${e.options.flavor}`);
+				Helper.debugLog(`Damage type found: ${e.options.flavor}`);
 				damageDealt.push([e.total,e.options.flavor]);
 				rollTotalRemain -= e.total;
 			}

@@ -1,7 +1,6 @@
 import { d20Roll, damageRoll } from "../dice.js";
 import { DND4E } from "../config.js";
 import { Helper } from "../helper.js"
-import { MeasuredTemplate4e } from "../canvas/ability-template.js";
 import { SaveThrowDialog } from "../apps/save-throw.js";
 
 /**
@@ -121,16 +120,6 @@ export class Actor4e extends Actor {
 		return Array.from(this.allApplicableEffects());
 	}
 
-	/* --------------------------------------------- */
-
-	/** @override */
-	applyActiveEffects() {
-		// The Active Effects do not have access to their parent at preparation time so we wait until this stage to
-		// determine whether they are suppressed or not.
-		this.getActiveEffects().forEach(e => e.determineSuppression());
-		return super.applyActiveEffects();
-	}
-
 	/* -------------------------------------------- */
 
 	/**
@@ -164,6 +153,7 @@ export class Actor4e extends Actor {
 
 		for ( const token of tokens ) {
 			if ( !token.object?.visible || token.isSecret ) continue;
+			token.object?.renderFlags.set({ refreshBars: true })
 			if ( token.hasDynamicRing ) {
 				token.flashRing(key, pct, value < 0).then(() => {
 					token.object?.renderFlags.set({ refreshRingVisuals: true });
@@ -187,28 +177,82 @@ export class Actor4e extends Actor {
 	/** @inheritdoc */
 	getRollData() {
 		const data = super.getRollData();
-		data["strMod"] = data?.abilities?.str.mod || 0
-		data["conMod"] = data?.abilities?.con.mod || 0
-		data["dexMod"] = data?.abilities?.dex.mod || 0
-		data["intMod"] = data?.abilities?.int.mod || 0
-		data["wisMod"] = data?.abilities?.wis.mod || 0
-		data["chaMod"] = data?.abilities?.cha.mod || 0
+		data.strMod = data?.abilities?.str.mod || 0;
+		data.conMod = data?.abilities?.con.mod || 0;
+		data.dexMod = data?.abilities?.dex.mod || 0;
+		data.intMod = data?.abilities?.int.mod || 0;
+		data.wisMod = data?.abilities?.wis.mod || 0;
+		data.chaMod = data?.abilities?.cha.mod || 0;
 
-		data["lvhalf"] = Math.floor(data.details.level/2) || 0
-		data["lv"] = data?.details.level || 0
-		data["tier"] = data?.details.tier || 0
+		data.lvhalf = Math.floor(data.details.level/2) || 0;
+		data.lv = data?.details.level || 0;
+		data.tier = data?.details.tier || 0;
 
-		data["heroic"] = data?.details.level < 11 ? 1 : 0
-		data["paragon"] = data?.details.level >= 11 && data.details.level < 21 ? 1 : 0
-		data["epic"] = data?.details.level >= 21 ? 1 : 0
+		data.heroic = data?.details.level < 11 ? 1 : 0;
+		data.paragon = data?.details.level >= 11 && data.details.level < 21 ? 1 : 0;
+		data.epic = data?.details.level >= 21 ? 1 : 0;
 
-		data["heroicOrParagon"] = data?.details.level < 21 ? 1 : 0
-		data["paragonOrEpic"] = data?.details.level >= 11 ? 1 : 0
+		data.heroicOrParagon = data?.details.level < 21 ? 1 : 0;
+		data.paragonOrEpic = data?.details.level >= 11 ? 1 : 0;
 
-		data["id"] = this.id;
-		data["uuid"] = this.uuid;
+		data.bloodied = data.details.isBloodied ? 1 : 0;
 
-		data["isActor"] = true;
+		data.sneak = CONFIG.DND4E.SNEAKSCALE[data.details.tier];
+			
+		data.enhArmour = data.defences.ac.enhance || 0;
+		data.enhNAD = Math.min(data.defences.fort.enhance || 0, data.defences.ref.enhance || 0, data.defences.wil.enhance || 0);
+
+		data.charaID = this.id;
+		data.charaUID = this.uuid;
+
+		// this is done at the bottom, because I don't want to be iterating the entire actor effects collection unless I have to
+		// as this could get unnecessarily expensive quickly.
+		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula
+		// having got to the bottom of common replace, check to see if there are any more @variables left.	If there aren't, then don't bother going any further
+		let effects = Array.from(this.allApplicableEffects());
+		if (effects.length) {
+			const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4e |` : ""
+			if (debug) {
+				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.	Searching active effects for a suitable variable`)
+			}
+			const resultObject = {}
+			const enabledEffects = effects.filter((effect) => effect?.disabled === false);
+			enabledEffects.forEach((effect) => {
+				effect.changes.forEach((change => {
+					if (Helper.variableRegex.test(change.key)) {
+						if (debug) {
+							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.name}.	Value: ${change.value}`)
+						}
+						const changeValueReplaced = Roll.replaceFormulaData(String(change.value), this.system, {recursive: true}); // set depth to avoid infinite recursion
+						if (!resultObject[change.key]) {
+							resultObject[change.key] = changeValueReplaced
+							if (debug) {
+								console.log(`${debug} Effect: ${effect.name}.	Computed Value: ${change.value} was the first match to ${change.key} `)
+							}
+						}
+						else {
+							if (debug) {
+								console.log(`${debug} Effect: ${effect.name}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
+							}
+							if(Helper._isNumber(resultObject[change.key]) && Helper._isNumber(changeValueReplaced)){
+								resultObject[change.key] = Number(resultObject[change.key]) + Number(changeValueReplaced)
+							} else {
+								resultObject[change.key] = `${resultObject[change.key]} + ${changeValueReplaced}`
+							}
+						}
+					}
+				}))
+			})
+
+			if (debug) {
+				console.log(`${debug} Discovered custom variable values in effects to substitute into formula (${newFormula}): ${JSON.stringify(resultObject)}`)
+			}
+			for (const [key, value] of Object.entries(resultObject)) {
+				data[key.slice(1)] = value;
+			}
+		}
+
+		data.isActor = true;
 		return data;
 	}
 
@@ -224,7 +268,7 @@ export class Actor4e extends Actor {
 			}
 
 			//AC mod check, check if light armour (or somthing else that add/negates adding mod)
-			if((system.defences.ac.light || this.checkLightArmour() ) && system.defences.ac.altability !== "none") {
+			if(this.shouldUseACAbilityMod() && system.defences.ac.altability !== "none") {
 				system.defences.ac.ability = (system.abilities.dex.value >= system.abilities.int.value) ? "dex" : "int";
 				if(system.defences.ac.altability != "") {
 					//if(data.abilities[data.defences.ac.altability].value > data.abilities[data.defences.ac.ability].value)
@@ -1109,8 +1153,7 @@ export class Actor4e extends Actor {
 								val = b.value;
 							}		
 							else {
-								val = Helper.commonReplace(b.value, actorData);
-								val = Roll.safeEval(Helper.replaceData(val, system));
+								val = Roll.safeEval(Roll.replaceFormulaData(val, system));
 							}
 							vulnManual += Math.min(val,0);
 							resManual += Math.max(val,0);
@@ -1185,13 +1228,12 @@ export class Actor4e extends Actor {
 			origin: this.uuid,
 			disabled:false,
 			description: game.i18n.localize("DND4E.SecondWindEffect"),
-			changes: [
-				{key: "system.modifiers.defences.untyped", mode: 2, value: 2}
-			],
-			flags:{dnd4e:{effectData:{
-				durationType:"startOfUserTurn",
-				powerEffectTypes:"self"
-			}}}
+			system: {
+				changes: [
+					{key: "system.modifiers.defences.untyped", mode: 2, value: 2}
+				],
+				powerEffectType:"self"
+			}
 		};
 		this.system.details.secondwindEffect = secondwindEffect;
 	}
@@ -1230,33 +1272,30 @@ export class Actor4e extends Actor {
 				}
 				def.bonusValue = defBonusValue;
 				
-				let light = true;
 				//Get Def stats from items
-				for ( let i of this.items) {
-					if(i.type !="equipment" || !i.system.equipped ) { continue; };
-					if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
-						if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+				for (let i of this.items) {
+					if (i.type !="equipment" || !i.system.equipped ) { continue; };
+					if (i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subtype)){
+						if(!i.isActorProficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
 						//Re-route base def bonuses on a shield to be shield bonus
 						def.shield = Math.max(def.shield||0,i.system.armour[id]);
 						continue;
 					}
-					else if(i.system.armour.type === "armour" && id === "ref"){
-						if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+					else if (i.system.armour.type === "armour" && id === "ref"){
+						if (!i.isActorProficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
 							def.armour -= 2;
 							this.system.modifiers.attack.armourPen =-2;
 						}
 					}
-					else if((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
-						if(id === 'ac' && i.system.armour.subType === "heavy") light = false;
-						//console.log(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
+					else if ((i.system.armour.type === "armour" && id === "ac")||(i.system.armour.type === "neck" && ["fort","ref","wil"].includes(id))){
+						Helper.debugLog(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
 						def.enhance = Math.max(def.enhance,i.system.armour.enhance);
 					}
 					def.armour += i.system.armour[id];
 				}
-				if(id === 'ac') def.light = light;
 				
 				//Using inherent enhancements?
-				if(game.settings.get("dnd4e", "inhEnh")) {
+				if (game.settings.get("dnd4e", "inhEnh")) {
 					//If our enhancement is lower than the inherent level, adjust it upward
 					const enhFloor = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 3);
 					//console.debug(`${id}: Checked inherent defence enhancement of +${Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against existing value of +${def.enhance}`);
@@ -1264,8 +1303,8 @@ export class Actor4e extends Actor {
 				}
 
 				let usedAbility = def?.ability || '';
-				if(def.altability != '') usedAbility = def.altability;
-				const modBonus = !(id === "ac" && !def.light) ? data.abilities[usedAbility].mod : 0;
+				if (def.altability != '') usedAbility = def.altability;
+				const modBonus = !(id === "ac" && !this.shouldUseACAbilityMod()) ? data.abilities[usedAbility].mod : 0;
 
 				def.value += modBonus + def.armour + def.class + def.temp + defBonusValue;
 				def.value += Math.max(def?.feat || 0, globalBonus?.feat || 0);
@@ -1320,14 +1359,14 @@ export class Actor4e extends Actor {
 				//Get Def stats from items
 				for ( let i of this.items) {
 					if(i.type !="equipment" || !i.system.equipped ) { continue; };
-					if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subType)){
-						if(!i.system.proficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
+					if(i.system.armour.type === "arms" && ["light", "heavy"].includes(i.system.armour.subtype)){
+						if(!i.isActorProficient) {continue;} //if not proficient with a shield you do not gain any of its benefits
 						//Re-route base def bonuses on a shield to be shield bonus
 						def.shield = Math.max(def.shield,i.system.armour[id]);
 						continue;
 					}
 					else if(i.system.armour.type === "armour" && id === "ref"){
-						if(!i.system.proficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
+						if(!i.isActorProficient) { //if not proficient with armour you have -2 to Ref def and -2 to attack rolls
 							def.armour -= 2;
 							this.system.modifiers.attack.armourPen =-2;
 						}
@@ -1632,11 +1671,23 @@ export class Actor4e extends Actor {
 			if(i.type !="equipment" || !i.system.equipped ) { 
 				continue;
 			}
-			if(i.system.armour.type === "armour" && i.system.armour.subType === "heavy"){
+			if(i.system.armour.type === "armour" && i.system.armour.subtype === "heavy"){
 				return false;
 			}
 		}
 		return true;
+	}
+
+	shouldUseACAbilityMod(){
+		const ACAbilityModUse = this.system.defences.ac.light;
+		switch (ACAbilityModUse) {
+			case "yes":
+				return true;
+			case "no":
+				return false;
+			case "auto":
+				return this.checkLightArmour();
+		}
 	}
 
 	calcCommonAttackBonuses(system){
@@ -1907,14 +1958,14 @@ export class Actor4e extends Actor {
 
 		const parts = [];
 		const partsExpressionReplacements = [];
+		const rollData = this.getRollData();
 		if(options.save) {		
-			parts.push(Helper.commonReplace(options.save, this));
+			parts.push(Roll.replaceFormulaData(options.save, rollData));
 			partsExpressionReplacements.push({value : options.save, target: parts[0]});
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = Helper.commonReplace(options.save, this, null, null, 1, true);
+			options.formulaInnerData = Roll.replaceFormulaData(options.save, rollData);
 		}
-
-		const rollData = this.getRollData();
+		
 		await Helper.applySaveEffects([parts], rollData, this, this.effects.get(options.effectId), "save");
 
 		const rollConfig = foundry.utils.mergeObject({
@@ -1927,7 +1978,7 @@ export class Actor4e extends Actor {
 			speaker: ChatMessage.getSpeaker({actor: this}),
 			messageData: {"flags.dnd4e.roll": {type: "save", itemId: this.id }},
 			fastForward: true,
-			rollMode: options.rollMode
+			messageMode: options.messageMode
 		});
 		rollConfig.event = event;
 		
@@ -1941,7 +1992,7 @@ export class Actor4e extends Actor {
 		/* Changed the roll comparison to DC from rollConfig.critical, to fix discrepancy 
 		between success/fail and effect removal when the actor has a save bonus  */
 		if(options.effectSave && r.total >= saveDC){
-			await this.effects.get(options.effectId).delete();
+			ActiveEffect.registry.refresh("save", { effect: options.effectId});
 		}
 	}
 
@@ -1961,7 +2012,7 @@ export class Actor4e extends Actor {
 			'speaker': ChatMessage.getSpeaker({actor: this}),
 			'messageData': {"flags.dnd4e.roll": {type: "save", itemId: this.id }},
 			'fastForward': true,
-			'rollMode': options.rollMode
+			'messageMode': options.messageMode
 		});
 		rollConfig.event = event;
 		rollConfig.critical = this.system.details.deathsaveCrit || 20;
@@ -1989,8 +2040,8 @@ export class Actor4e extends Actor {
 				'content': game.i18n.format("DND4E.DeathSaveCriticalSuccess",{'name':this.name})
 			});
 		}
-		//console.log(roll.total)
-		//console.log(rollConfig.critical)
+		Helper.debugLog(roll.total)
+		Helper.debugLog(rollConfig.critical)
 		await this.update(updateData);
 	}
 
@@ -2021,9 +2072,9 @@ export class Actor4e extends Actor {
 					}
 				}
 				healamount += this.system.details.surgeValue + (r.total || 0);
-				//console.log(`surgeValue:${this.system.details.surgeValue}`)
-				//console.log(`total:${r.total}`)
-				//console.log(`healamount:${healamount}`)
+				Helper.debugLog(`surgeValue:${this.system.details.surgeValue}`)
+				Helper.debugLog(`total:${r.total}`)
+				Helper.debugLog(`healamount:${healamount}`)
 			}
 
 			if (healamount){
@@ -2049,8 +2100,8 @@ export class Actor4e extends Actor {
 			updateData[`system.details.secondwind`] = false;
 			updateData[`system.magicItemUse.encounteruse`] = false;
 			
-			console.log(updateData[`system.attributes.hp.value`])
-			console.log(this.system.attributes.hp.value)
+			Helper.debugLog(updateData[`system.attributes.hp.value`])
+			Helper.debugLog(this.system.attributes.hp.value)
 			
 			ChatMessage.create({
 				user: game.user.id,
@@ -2136,6 +2187,7 @@ export class Actor4e extends Actor {
 			}
 		}
 
+		ActiveEffect.registry.refresh("dayEnd", { actor: this.uuid});
 		await this.update(updateData);
 	}
 
@@ -2293,8 +2345,7 @@ export class Actor4e extends Actor {
 			await item.roll({'variance': variance});
 
 			if(item.hasAreaTarget){
-				const template = MeasuredTemplate4e.fromItem(item);
-				if ( template ) template.drawPreview(event);
+				await item.placeTemplate();
 			}
 
 			if(item.hasAttack){
@@ -2322,7 +2373,7 @@ export class Actor4e extends Actor {
 				weight += (e == "ad" ? v/500 : v/50);
 			}
 		}
-		// console.log(game.settings.get("dnd4e", "currencyWeight"))
+		Helper.debugLog(game.settings.get("dnd4e", "currencyWeight"))
 		//Weight Ritual Components
 		for (let [e, v] of Object.entries(actorData.ritualcomp)) {
 			// weight += v/100 * 2.205;
@@ -2397,7 +2448,7 @@ export class Actor4e extends Actor {
 			const currentRes = Helper.sumExtremes([resAll,actorRes[dt]?.value || 0]);
 			if(currentRes !== 0){ //if has resistances or vulnerability
 				isImmuneAll = false;
-				console.log(`Modifier found: ${dt} ${actorRes[dt].value}`);
+				Helper.debugLog(`Modifier found: ${dt} ${actorRes[dt].value}`);
 				if(currentRes < lowestRes){
 					lowestRes = currentRes;
 				}
@@ -2470,7 +2521,7 @@ export class Actor4e extends Actor {
 		}
 
 		if(this.statuses.has("insubstantial")) totalDamage = Math.floor(totalDamage / 2);
-		//console.log(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`)
+		Helper.debugLog(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`)
 		return totalDamage;
 	}
 
@@ -2541,7 +2592,7 @@ export class Actor4e extends Actor {
 		}
 
 		if(this.statuses.has("insubstantial")) totalDamage = Math.floor(totalDamage / 2);
-		console.log(`Total Damage: ${totalDamage}`)
+		Helper.debugLog(`Total Damage: ${totalDamage}`)
 		return totalDamage;
 	}
 
@@ -2615,7 +2666,7 @@ export class Actor4e extends Actor {
 		}
 
 		const hp = this.system.attributes.hp;
-		console.log(hp)
+		Helper.debugLog(hp)
 
 		// calculate existing temp hp
 		const tmp = parseInt(this.system.attributes.temphp.value) || 0;
@@ -2665,11 +2716,10 @@ export class Actor4e extends Actor {
 			sourceName: effectData.sourceName,
 			system: effectData.system,
 			statuses: Array.from(effectData.statuses),
-			//"duration": effectData.duration, //Not too sure why this fails, but it does
-			"duration": {"rounds": effectData.duration.rounds, "turns": effectData.duration.turns, "startRound": effectData.duration.startRound},
+			duration: effectData.duration,
 			tint: effectData.tint,
-			"flags": effectData.flags,
-			changes: effectData.changes
+			flags: effectData.flags,
+			showIcon: effectData.showIcon
 		}]);
 	}
 
@@ -2697,13 +2747,13 @@ export class Actor4e extends Actor {
 	}
 
 	async promptEoTSavesSocket(){
-		//console.log('socket reached');
+		Helper.debugLog('socket reached');
 		const saveReminders = game.settings.get("dnd4e","saveReminders");
 		if(!saveReminders) return;
 		
 		let toSave = [];
 		for (const e of this.effects){
-			if(e.flags.dnd4e?.effectData?.durationType === "saveEnd"){
+			if(e.system.durationType === "saveEnd"){
 				toSave.push(e.id);
 			}
 		}
@@ -2722,17 +2772,17 @@ export class Actor4e extends Actor {
 	}
 
 	async autoDoTsSocket(tokenId){
-		//console.log(tokenId);
+		Helper.debugLog(tokenId);
 		const autoDoTs = game.settings.get("dnd4e","autoDoTs");
 		if(autoDoTs != "none"){
 			let applicableDoTs = {};
 			
 			for(const e of this.getActiveEffects()){
-				if(e.flags.dnd4e?.dots.length && e.disabled === false){
-					for (let dot of e.flags.dnd4e.dots){
+				if(e.system.dots.length && e.disabled === false){
+					for (let dot of e.system.dots){
 						
 						// Combine the types array into a usable string
-						let types = (dot.typesArray.includes("healing") ? "healing" : dot.typesArray.join(','));
+						let types = (dot.types.has("healing") ? "healing" : [...dot.types].join(','));
 						// If no type was assigned, treat as untyped/physical
 						if (!types) types = "physical";
 						
@@ -2740,7 +2790,7 @@ export class Actor4e extends Actor {
 						evaluate variables in "amount" string */
 						let parsedAmount = dot.amount;
 						try {
-							parsedAmount = Roll.replaceFormulaData(game.helper.commonReplace(parsedAmount, this), this.getRollData());
+							parsedAmount = Roll.replaceFormulaData(parsedAmount, this.getRollData());
 						} catch (e) { /* noop */ }
 						/* End pinched */
 						
@@ -2826,7 +2876,7 @@ export class Actor4e extends Actor {
 						content: html,
 						flavor: `${dot.type == "healing" ? game.i18n.localize ("EFFECT.statusRegen") : game.i18n.localize ("DND4E.OngoingDamage")}: ${dot.effectName}`,
 						whisper: chatRecipients,
-						//rollMode: "gmroll",
+						//messageMode: "gm",
 						/*rolls: [{
 							formula: `(${dot.amount})[${dot.type}]`,
 							terms: [{

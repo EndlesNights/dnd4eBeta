@@ -162,6 +162,7 @@ export const migrateActorData = function(actor, migrationData) {
 		_migrateActorSwim(actor, updateData);
 		_migrateHazardSpeed(actor, updateData);
 		_migrateActorMarker(actor, updateData);
+        _migrateActorSenses(actor, updateData);
 	}
 
 	return updateData;

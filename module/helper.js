@@ -58,7 +58,7 @@ export class Helper {
 	 * Either the specified weapon, or a weapon that matches the itemData.weaponType category if itemData.weaponUse is set to default
 	 * @param itemData The Power being used
 	 * @param actor The actor that owns the power
-	 * @returns {null|*} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
+	 * @returns {Item4e|null} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
 	 */
 	static getWeaponUse(itemData, actor) {
 		if(itemData.weaponUse === "none" || (itemData.weaponType === "none" && actor.itemTypes.weapon.length === 0)) return null;
@@ -152,7 +152,7 @@ export class Helper {
 			if(game.settings.get("dnd4e", "inhEnh")) {
 				//If our enhancement is lower than the inherent level, adjust it upward
 				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
-				//console.log(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)}' for this level against weapon value of +${weaponInnerData?.enhance})`);
+				Helper.debugLog(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)}' for this level against weapon value of +${weaponInnerData?.enhance})`);
 			}
 
 			const effectsToProcess = []
@@ -374,7 +374,7 @@ export class Helper {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4e |` : ""
 		if (actorData.effects) {
 			if (debug) {
-				console.log(`${debug} Debugging ${effectType} effects for ${effectData?.name}.`)
+				Helper.debugLog(`${debug} Debugging ${effectType} effects for ${effectData?.name}.`)
 			}
 
 			const effectsToProcess = []
@@ -417,12 +417,12 @@ export class Helper {
 				}
 
 				const suitableKeywords = ['global']
-				let keywords = effectData?.flags.dnd4e?.keywords;
+				let keywords = effectData?.system.keywords;
 				if (keywords) {
 					keywords.forEach((k) => suitableKeywords.push(k));
 				}
 				
-				let customKeywords = effectData?.flags.dnd4e?.keywordsCustom;
+				let customKeywords = effectData?.system.keywordsCustom;
 				if (customKeywords){
 					const customKeys = customKeywords.split(';');
 					customKeys.forEach((k) => suitableKeywords.push(k));
@@ -433,9 +433,9 @@ export class Helper {
 					statuses.forEach((s) => suitableKeywords.push(s));
 				}
 
-				if (effectData?.flags.dnd4e?.dots.length) {
+				if (effectData?.system.dots.length) {
 					suitableKeywords.push('ongoing');
-					effectData.flags.dnd4e.dots.forEach((d) => {
+					effectData.system.dots.forEach((d) => {
 						d.typesArray.forEach((t) => {
 							suitableKeywords.push(t);
 							// Since game text describes this as "untyped" let's allow users to use that language in effect keys.
@@ -482,7 +482,7 @@ export class Helper {
 			const keyParts = effect.key.split(".")
 			if (keyParts.length >= 4) {
 				const bonusType = keyParts[keyParts.length - 1]
-				const effectValueString = this.commonReplace(effect.value, actorData)
+				const effectValueString = Roll.replaceFormulaData(String(effect.value), actorData.getRollData())
 				const effectDice = await this.rollWithErrorHandling(effectValueString, {context : effect.key})
 				const effectValue = effectDice.total
 				if (bonusType === "roll") {
@@ -538,7 +538,7 @@ export class Helper {
 			}
 			else {
 				ui.notifications.warn(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
-				console.log(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
+				Helper.debugLog(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`)
 			}
 		}
 		
@@ -563,452 +563,20 @@ export class Helper {
 	/**
 	 * Perform replacement of @variables in the formula involving a power.	This is a recursive function with 2 modes of operation!
 	 *
-	 * @param formula The formula to examine and perform replacements on
-	 * @param actorOrData The actor or data from the actor to use to resolve variables: `actor.system`.	This may be null
-	 * @param powerInnerData The data from the power to use to resolve variables. `power.system`
-	 * @param weaponInnerData The data from the weapon to use to resolve variables.	`item.system` This may be null
-	 * @param depth The number of times to recurse down the formula to replace variables, a safety net to stop infinite recursion.	Defaults to 1 which will produce 2 loops.	A depth of 0 will also prevent evaluation of custom effect variables (as that is an infinite hole)
-	 * @param returnDataInsteadOfFormula If set to true it will return a data object of replacement variables instead of the formula string
-	 * @return {String|{}|number} "0" if called with a depth of <0, A substituted formula string if called with returnDataInsteadOfFormula = false (the default) or an object of {variable = value} if called with returnDataInsteadOfFormula = true
+	 * @param formula The formula to examine and perform replacements on.
+	 * @param rollData Roll data from the actor or item to use to resolve variables.
+	 * @return {object} An object of {variable = value}. TODO: Is this not just getRollData?
 	 */
-	// DEVELOPER: Remember this call is recursive, if you change the method signature, make sure you update everywhere its used!
-	static commonReplace (formula, actorOrData, powerInnerData, weaponInnerData=null, depth = 2, returnDataInsteadOfFormula = false) {
-		if (depth < 0 ) return 0;
-		let newFormula = formula.toString(); // just in case integers somehow get passed
-		if (returnDataInsteadOfFormula) {
-			const result = {}
-			const variables = formula.match(this.variableRegex)
-			if (variables) {
-				variables.forEach(variable => {
-					// get the value for that variable - call this method with just the variable and with return data off
-					result[variable.substring(1)] = this.commonReplace(variable, actorOrData, powerInnerData, weaponInnerData, depth, false) // trim off the leading @
-				})
-			}
-			return result
-		}
-
-		const actorInnerData = actorOrData?.getRollData?.() ?? actorOrData?.system ?? actorOrData;
-		if (actorInnerData) {
-			newFormula = Roll.replaceFormulaData(newFormula, actorInnerData);
-			if(powerInnerData) {
-				newFormula = newFormula.replaceAll("@powerMod", !!(actorInnerData.abilities[powerInnerData.attack?.ability])? actorInnerData.abilities[powerInnerData.attack.ability].mod : "");
-			}
-
-			newFormula = newFormula.replaceAll("@strMod", actorInnerData.abilities["str"].mod);
-			newFormula = newFormula.replaceAll("@conMod", actorInnerData.abilities["con"].mod);
-			newFormula = newFormula.replaceAll("@dexMod", actorInnerData.abilities["dex"].mod);
-			newFormula = newFormula.replaceAll("@intMod", actorInnerData.abilities["int"].mod);
-			newFormula = newFormula.replaceAll("@wisMod", actorInnerData.abilities["wis"].mod);
-			newFormula = newFormula.replaceAll("@chaMod", actorInnerData.abilities["cha"].mod);
-
-			newFormula = newFormula.replaceAll("@lvhalf", Math.floor(actorInnerData.details.level/2));
-			newFormula = newFormula.replaceAll("@lv", actorInnerData.details.level);
-			newFormula = newFormula.replaceAll("@tier", actorInnerData.details.tier);
-
-			newFormula = newFormula.replaceAll("@atkMod", actorInnerData.modifiers.attack.value);
-			newFormula = newFormula.replaceAll("@dmgMod", actorInnerData.modifiers.damage.value);
-
-			newFormula = newFormula.replaceAll("@heroic", actorInnerData.details.level < 11 ? 1 : 0);
-			newFormula = newFormula.replaceAll("@paragon", actorInnerData.details.level >= 11 && actorInnerData.details.level < 21 ? 1 : 0);
-			newFormula = newFormula.replaceAll("@epic", actorInnerData.details.level >= 21 ? 1 : 0);
-
-			newFormula = newFormula.replaceAll("@heroicOrParagon", actorInnerData.details.level < 21 ? 1 : 0);
-			newFormula = newFormula.replaceAll("@paragonOrEpic", actorInnerData.details.level >= 11 ? 1 : 0);
-
-			newFormula = newFormula.replaceAll("@bloodied",	actorInnerData.details.isBloodied ? 1 : 0);
-			
-			newFormula = newFormula.replaceAll("@sneak",	CONFIG.DND4E.SNEAKSCALE[actorInnerData.details.tier]);
-			
-			newFormula = newFormula.replaceAll("@enhArmour", actorInnerData.defences.ac.enhance || 0);
-			newFormula = newFormula.replaceAll("@enhNAD", Math.min(actorInnerData.defences.fort.enhance || 0, actorInnerData.defences.ref.enhance || 0, actorInnerData.defences.wil.enhance || 0));
-
-			newFormula = newFormula.replaceAll("@charaID", actorInnerData.id || 0);
-			newFormula = newFormula.replaceAll("@charaUID", actorInnerData.uuid || 0);
-			
-			//targets @scale plus some #
-			newFormula = newFormula.replace(/@scale(\d*)/g,	(match, number) => {return this.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, number-1)});
-
-		}
-		else {
-			console.log("An actor data object without a .data property was passed to common replace. Probably passed actor.system by mistake!.	Replacing: " + formula)
-		}
-
-		newFormula = newFormula.replaceAll("@powerLevel", powerInnerData?.level ? powerInnerData.level : 0)
-		let enhValue = weaponInnerData?.enhance||0;
-		
-		if(weaponInnerData) {
-			//Using inherent enhancements?
-			if(game.settings.get("dnd4e", "inhEnh")) {
-				//If our enhancement is lower than the inherent level, adjust it upward
-				enhValue = Math.max(weaponInnerData?.enhance||0,Helper.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, 1));
-				console.log(`Checked inherent atk/dmg enhancement of +${Helper.findKeyScale(actorInnerData.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${weaponInnerData?.enhance}`);
-			}
-			
-			newFormula =	newFormula.replaceAll("@itemLevel", weaponInnerData.level ? weaponInnerData.level : 0)
-
-			if (powerInnerData.weaponType === "implement") {
-				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponInnerData.damageFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
-			}
-			else {
-				newFormula = newFormula.replaceAll("@wepAttack", this.bracketed(this.commonReplace(weaponInnerData.attackForm, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepDamage", this.bracketed(this.commonReplace(weaponInnerData.damageForm, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
-				newFormula = newFormula.replaceAll("@wepCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageForm, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
-			}
-
-			newFormula = newFormula.replaceAll("@impCritBonus", this.bracketed(this.commonReplace(weaponInnerData.critDamageFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
-
-			newFormula = newFormula.replaceAll("@impAttackO", this.bracketed(this.commonReplace(weaponInnerData.attackFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0 ));
-			newFormula = newFormula.replaceAll("@impDamageO", this.bracketed(this.commonReplace(weaponInnerData.damageFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0 ));
-
-			newFormula = newFormula.replaceAll("@impAttack", this.bracketed(weaponInnerData.proficientI ? this.commonReplace(weaponInnerData.attackFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0 : 0));
-			newFormula = newFormula.replaceAll("@impDamage", this.bracketed(weaponInnerData.proficientI ? this.commonReplace(weaponInnerData.damageFormImp, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0 : 0));
-
-			newFormula = newFormula.replaceAll("@profBonusO",weaponInnerData.profBonus || 0);
-			newFormula = newFormula.replaceAll("@profImpBonusO", weaponInnerData.profImpBonus || 0);
-			
-			newFormula = newFormula.replaceAll("@profImpBonus", weaponInnerData.proficientI ? weaponInnerData.profImpBonus || 0 : 0);
-			newFormula = newFormula.replaceAll("@profBonus", weaponInnerData.proficient ? weaponInnerData.profBonus || 0 : 0);
-
-			//newFormula = newFormula.replaceAll("@enhanceImp", weaponInnerData.proficientI ? this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
-			newFormula = newFormula.replaceAll("@enhanceImp", (weaponInnerData.type === 'implement' || weaponInnerData.properties.imp) ? this.bracketed(this.commonReplace(enhValue, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0) : 0);
-			//newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(weaponInnerData.enhance, actorData, powerInnerData, weaponInnerData, depth-1) || 0));
-			newFormula = newFormula.replaceAll("@enhance", this.bracketed(this.commonReplace(enhValue, actorOrData, powerInnerData, weaponInnerData, depth-1) || 0));
-
-			newFormula = this.replaceData (newFormula, weaponInnerData);
-			
-			
-			//deprecated, kept for legacy purposes and because it's really handy for High Crit Weapons!
-			// make sure to keep the dice formula same as main.	Definite candidate for a future refactor.
-			if(newFormula.includes("@wepDice")) {
-				let parts = weaponInnerData.damageDice.parts;
-				let indexStart = newFormula.indexOf("@wepDice")+8;
-				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
-
-				let weaponNum = newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
-				weaponNum = eval(weaponNum.replaceAll(/[a-z]/gi, ''));
-
-				if(typeof(weaponNum) !== "number") weaponNum = 1;
-
-				let dice = "";
-				for(let i = 0; i< parts.length; i++) {
-					if(!parts[i][0] || !parts[i][1]) continue;
-
-					let quantity = this.commonReplace(parts[i][0], actorOrData, powerInnerData, weaponInnerData, depth-1);
-					let r = new Roll(`${quantity}`);
-
-					if(r.isDeterministic){
-						r.evaluateSync();
-						quantity = r.total;
-					}
-
-					if(weaponInnerData.properties.bru) {
-						dice += `(${quantity}*${weaponNum})d${parts[i][1]}rr<=${weaponInnerData.brutalNum || 1}`;
-					}
-					else{
-						dice += `(${quantity}*${weaponNum})d${parts[i][1]}`;
-					}
-					if (i < parts.length - 1) dice += '+';
-				}
-				const possibleDice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1)
-				dice = possibleDice !== 0 ? possibleDice : dice //there probably shouldn't be any formula left, because @wepDice is a formula contents under our command.	So if we had hit the bottom of the recursion tree, just try the original
-				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
-				newFormula = newFormula.replaceAll("@wepDice", dice);
-			}
-			
-			// New method to handle base power dice from dropdown
-			// Includes handling of:
-			//	-	weapon based damage
-			//	-	flat damage
-			//	-	dice damage
-			// make sure to keep the weapon dice formula same as above.	Definite candidate for a future refactor.
-			if(newFormula.includes("@powBase")) {
-				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorOrData, powerInnerData, weaponInnerData, depth-1);
-				let r = new Roll(`${quantity}`);
-
-				//Just to help keep the rolls cleaner, look for Deterministic elements to remove
-				if(r.isDeterministic){
-					r.evaluateSync();
-					quantity = r.total;
-				}
-
-				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
-				
-				if(quantity === "") quantity = 1;
-				
-				let dice = "";
-				
-				// Handle Weapon Type Damage
-				if(diceType.includes("weapon")){
-					let parts = weaponInnerData.damageDice.parts;
-					for(let i = 0; i< parts.length; i++) {
-
-						if(!parts[i][0] || !parts[i][1]) continue;
-
-						let weaponDiceQuantity = this.commonReplace(`(${quantity}) * (${parts[i][0]})`, actorOrData, powerInnerData, weaponInnerData, depth-1);
-						let r2 = new Roll(`${weaponDiceQuantity}`);
-	
-						if(r2.isDeterministic){
-							r2.evaluateSync();
-							weaponDiceQuantity = r2.total;
-						}
-						if(weaponInnerData.properties.bru) {
-							dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2]}rr<=${weaponInnerData.brutalNum || 1}`;
-						}
-						else{
-							dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2] || ``}`;// added a null check to i2 hotfix
-						}
-
-						if (i < parts.length - 1) dice += '+';
-					}
-				}
-				// Handle Flat Type Damage
-				else if(diceType.includes("flat")) {
-					dice += `${quantity}`;
-				}
-				// Handle Dice Type Damage
-				else{
-					dice += `${quantity}${diceType}`;
-				}
-
-				dice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1);
-				newFormula = newFormula.replaceAll("@powBase", dice);
-			}
-
-			if(newFormula.includes("@wepMax")) {
-				let parts = weaponInnerData.damageDice.parts;
-				let dice = "";
-				for(let i = 0; i< parts.length; i++) {
-					if(!parts[i][0] || !parts[i][1]) continue;
-					dice += `(${parts[i][0]} * ${parts[i][1]})`
-					if (i < parts.length - 1) dice += '+';
-				}
-				dice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1)
-				let r = new Roll(`${dice}`)
-				if(dice){
-					r.evaluateSync({maximize: true});
-					newFormula = newFormula.replaceAll("@wepMax", r.result);
-				} else {
-					newFormula = newFormula.replaceAll("@wepMax", dice);
-				}
-			}
-			
-			// New method to handle base power dice from dropdown for critical hits
-			// Includes handling of:
-			//	-	weapon based damage
-			//	-	flat damage
-			//	-	dice damage
-			if(newFormula.includes("@powMax")) {
-				let dice = "";
-				let quantity = powerInnerData.hit.baseQuantity;
-				quantity = this.commonReplace(quantity, actorOrData, powerInnerData, weaponInnerData, 0)
-				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
-				let rQuantity = new Roll(`${quantity}`)
-				// rQuantity.evaluate({maximize: true, async: false});
-				rQuantity.evaluateSync({maximize: true});
-
-				//check if is valid number
-				if(this._isNumber(rQuantity.total)){
-					quantity = rQuantity.total;
-				} else {
-					quantity = 1;
-				}
-				
-
-				// Handle Weapon Type Damage
-				if(diceType.includes("weapon")){
-					let parts = weaponInnerData.damageDice.parts;
-						for(let i = 0; i< parts.length; i++) {
-							if(!parts[i][0] || !parts[i][1]) continue;
-							dice += `(${quantity} * ${parts[i][0]} * ${parts[i][1]})`
-							if (i < parts.length - 1) dice += '+';
-						}
-				}
-				// Handle Flat Type Damage
-				else if(diceType.includes("flat")) {
-					dice += `${quantity}`;
-				}
-				// Handle Dice Type Damage
-				else{
-					let diceValue = diceType.match(/\d+/g).join('');
-					dice += `${quantity} * ${diceValue}`;
-				}
-				dice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1)
-				newFormula = newFormula.replaceAll("@powMax", dice);
-			}
-		}
-		else {
-			// if there is no weapon, then itemLevel becomes power level
-			newFormula = newFormula.replaceAll("@itemLevel", powerInnerData?.level ? powerInnerData.level : 0)
-
-			//if no weapon is in use replace the weapon keys with nothing.
-			newFormula = newFormula.replaceAll("@wepAttack", "0");
-			newFormula = newFormula.replaceAll("@wepDamage", "0");
-			newFormula = newFormula.replaceAll("@wepCritBonus", "0");
-			
-			newFormula = newFormula.replaceAll("@wepDiceNum", "0");
-			newFormula = newFormula.replaceAll("@wepDiceDamage", "0");
-			
-			newFormula = newFormula.replaceAll("@impAttackO", "0" );
-			newFormula = newFormula.replaceAll("@impDamageO", "0");
-
-			newFormula = newFormula.replaceAll("@impAttack", "0");
-			newFormula = newFormula.replaceAll("@impDamage", "0");
-
-			newFormula = newFormula.replaceAll("@profBonusO", "0");
-			newFormula = newFormula.replaceAll("@profImpBonusO", "0");
-			
-			newFormula = newFormula.replaceAll("@profImpBonus", "0");
-			newFormula = newFormula.replaceAll("@profBonus", "0");
-			newFormula = newFormula.replaceAll("@enhanceImp", "0");
-			newFormula = newFormula.replaceAll("@enhance", "0");
-
-			if(newFormula.includes("@wepDice")) {
-				let indexStart = newFormula.indexOf("@wepDice")+8;
-				let indexEnd = newFormula.substring(indexStart).indexOf(")")+1 + indexStart
-
-				let weaponNum = newFormula.substring(indexStart).match(/\(([^)]+)\)/)[1]
-				weaponNum = eval(weaponNum.replaceAll(/[a-z]/gi, ''));
-
-				if(typeof(weaponNum) !== "number") weaponNum = 1;
-
-				newFormula = newFormula.slice(0, indexStart) + newFormula.slice(indexEnd, newFormula.length);
-				newFormula = newFormula.replaceAll("@wepDice", "");
-			}
-
-			if(newFormula.includes("@powBase")) {
-				let quantity = this.commonReplace(powerInnerData.hit.baseQuantity, actorOrData, powerInnerData, weaponInnerData, depth-1);
-				let diceType = powerInnerData.hit.baseDiceType;
-
-				let r = new Roll(`${quantity}`);
-				if(r.isDeterministic){
-					r.evaluateSync();
-					quantity = r.total;
-				}
-				
-				if(diceType == "weapon"){
-					newFormula = newFormula.replaceAll("@powBase", '0');
-				} else {
-					if(quantity === "") quantity = 1;
-				
-					let dice = "";
-					
-					// Handle Flat Type Damage
-					if(diceType.includes("flat")) {
-						dice += `${quantity}`;
-					}
-					// Handle Dice Type Damage
-					else{
-						dice += `${quantity}${diceType}`;
-					}
-	
-					dice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1)
-					newFormula = newFormula.replaceAll("@powBase", dice);
-				}
-
-			}
-
-
-			if(newFormula.includes("@powMax")) {
-				let dice = "";
-				let quantity = powerInnerData.hit.baseQuantity;
-				quantity = this.commonReplace(quantity, actorOrData, powerInnerData, weaponInnerData, 0)
-				let diceType = powerInnerData.hit.baseDiceType.toLowerCase();
-				let rQuantity = new Roll(`${quantity}`)
-				rQuantity.evaluateSync({maximize: true});
-				
-				if(this._isNumber(rQuantity.total)) {
-					quantity = rQuantity.total;
-				} else {
-					quantity = 1;
-				}
-				
-				// Handle Weapon Type Damage
-				if(diceType.includes("weapon") && weaponInnerData){
-					let parts = weaponInnerData.damageDice.parts;
-						for(let i = 0; i< parts.length; i++) {
-							if(!parts[i][0] || !parts[i][1]) continue;
-							dice += `(${quantity} * ${parts[i][0]} * ${parts[i][1]})`
-							if (i < parts.length - 1) dice += '+';
-						}
-				}
-				// Handle Flat Type Damage
-				else if(diceType.includes("flat")) {
-					dice += `${quantity}`;
-				}
-				// Handle Dice Type Damage
-				else{
-					let diceValue = diceType.match(/\d+/g)?.join('');
-					dice += `${quantity} * ${diceValue}`;
-				}
-				dice = this.commonReplace(dice, actorOrData, powerInnerData, weaponInnerData, depth-1)
-				newFormula = newFormula.replaceAll("@powMax", dice);
-			}			
-		}
-
-		// this is done at the bottom, because I don't want to be iterating the entire actor effects collection unless I have to
-		// as this could get unnecessarily expensive quickly.
-		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula
-		// having got to the bottom of common replace, check to see if there are any more @variables left.	If there aren't, then don't bother going any further
-		let maybeEffects = actorOrData?.effects;
-		let maybeActor = actorOrData;
-		if (maybeActor && !maybeEffects) maybeActor = fromUuidSync(maybeActor.uuid);
-		if (maybeActor?.effects && depth > 0 && newFormula.includes('@')) {
-			const debug = game.settings.get("dnd4e", "debugEffectBonus") ? `D&D4e |` : ""
-			if (debug) {
-				console.log(`${debug} Substituting '${formula}', end of processing produced '${newFormula}' which still contains an @variable.	Searching active effects for a suitable variable`)
-			}
-			const resultObject = {}
-			const effects = maybeActor.getActiveEffects().filter((effect) => effect?.disabled === false);
-			effects.forEach((effect) => {
-				effect.changes.forEach((change => {
-					if (this.variableRegex.test(change.key)) {
-						if (debug) {
-							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.name}.	Value: ${change.value}`)
-						}
-						const changeValueReplaced = this.commonReplace(change.value, actorOrData, powerInnerData, weaponInnerData, 0) // set depth to avoid infinite recursion
-						if (!resultObject[change.key]) {
-							resultObject[change.key] = changeValueReplaced
-							if (debug) {
-								console.log(`${debug} Effect: ${effect.name}.	Computed Value: ${change.value} was the first match to ${change.key} `)
-							}
-						}
-						else {
-							if (debug) {
-								console.log(`${debug} Effect: ${effect.name}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`)
-							}
-							if(this._isNumber(resultObject[change.key]) && this._isNumber(changeValueReplaced)){
-								resultObject[change.key] = Number(resultObject[change.key]) + Number(changeValueReplaced)
-							} else {
-								resultObject[change.key] = `${resultObject[change.key]} + ${changeValueReplaced}`
-							}
-						}
-					}
-				}))
+	static getDataObject(formula, rollData) {
+		const result = {}
+		const variables = formula.match(this.variableRegex)
+		if (variables) {
+			variables.forEach(variable => {
+				// get the value for that variable - call this method with just the variable and with return data off
+				result[variable.substring(1)] = Roll.replaceFormulaData(variable, rollData) // trim off the leading @
 			})
-
-			if (debug) {
-				console.log(`${debug} Discovered custom variable values in effects to substitute into formula (${newFormula}): ${JSON.stringify(resultObject)}`)
-			}
-			for (const [key, value] of Object.entries(resultObject)) {
-				newFormula = newFormula.replaceAll(key, value);
-			}
 		}
-
-		//Temporary, this should be moved into an enrichers class in the future
-		const regexTextPattern = /\[\[\/text\s(.*?)\]\]/g;
-		newFormula = newFormula.replace(regexTextPattern, (text, r) => {
-			let roll = new Roll(`${r}`);
-
-			if(roll.isDeterministic){
-				roll.evaluateSync();
-				return roll.total;
-			}
-			return `[[${r}]]`;
-		});
-
-		return newFormula;
+		return result
 	}
 
 	/**
@@ -1073,8 +641,8 @@ export class Helper {
 			return roll.roll().catch(err => {
 				let msg = context ? `${game.i18n.localize(errorMessageKey)} (in ${context}) : ${rollString}` : `${game.i18n.localize(errorMessageKey)} : ${rollString}`
 				ui.notifications.error(msg);
-				console.log(msg)
-				console.log(err)
+				Helper.debugLog(msg)
+				Helper.debugLog(err)
 				// return new Roll("0").roll({async : true});
 				return new Roll("0").roll();
 			});
@@ -1088,7 +656,7 @@ export class Helper {
 	static _areaValue(chatData, actorData){
 		if(chatData.area) {
 			try{
-				let areaForm = this.commonReplace(`${chatData.area}`, actorData);
+				let areaForm = Roll.replaceFormulaData(`${chatData.area}`, actorData);
 				return	Roll.safeEval(areaForm);
 			} catch (e) {
 				return	chatData.area;
@@ -1208,8 +776,7 @@ export class Helper {
 		if(chatData.attack.isAttack) {
 			let attackForm = chatData.attack.formula;
 			attackForm = chatData.attack.formula.replaceAll('@powerMod',`@${chatData.attack?.ability}Mod`);
-			const weapon = Helper.getWeaponUse(chatData, actorData);
-			const attackValues = this.commonReplace(attackForm, actorData, chatData, weapon?.system);
+			const attackValues = Roll.replaceFormulaData(attackForm, actorData.getRollData());
 			if(!(attackTotal == undefined)){
 				//if does not start with a number sign add one
 				attackTotal = attackTotal.toString();
@@ -1270,7 +837,7 @@ export class Helper {
 		}
 
 		if(actorData){
-			powerDetail = this.commonReplace(powerDetail, actorData);
+			powerDetail = Roll.replaceFormulaData(powerDetail, actorData.getRollData());
 		}
 		
 		return powerDetail;
@@ -1308,7 +875,7 @@ export class Helper {
 	static async endEffects(actor, targetArray){
 		const effects = [];
 		for(let e of actor.effects){
-			if(targetArray.includes(e.flags.dnd4e?.effectData?.durationType)){
+			if(targetArray.includes(e.system.durationType)){
 				effects.push(e.id);
 			}
 		}
@@ -1359,24 +926,25 @@ export class Helper {
 	}
 
 	static async solidifyEffectActorData(effect, parentActor){
-		console.log(effect)
-		console.log(parentActor)
+		Helper.debugLog(effect)
+		Helper.debugLog(parentActor)
 
 		//dots
-		for(const dot of effect.flags.dnd4e.dots){
+		for(const dot of effect.system.dots){
 			// dot.amount = await this.parseSolidify(dot.amount, parentActor);
 			dot.amount = dot.amount.toString().replace(/\$solidify\((.*?)\)/g, (match, value) => {
-				return Helper.commonReplace(value, parentActor);
+				return Roll.replaceFormulaData(value, parentActor.getRollData());
 			});
 		}
 
 		//changes
-		for(const change of effect.changes){
+		for(const change of effect.system.changes){
 			// change.value = this.parseSolidify(change.value, parentActor);
 			change.value = change.value.replace(/\$solidify\((.*?)\)/g, (match, value) => {
-				return Helper.commonReplace(value, parentActor);
+				foundry.utils.logCompatibilityWarning("Use of $solidify() in Active Effect values is deprecated since 0.8.0; use regular rollData instead.")
+                return Roll.replaceFormulaData(value, parentActor.getRollData());
 			});
-			console.log(change.value);
+			Helper.debugLog(change.value);
 		}
 
 	}
@@ -1393,48 +961,13 @@ export class Helper {
 		const combat = game.combat;
 		for(let effect of effectMap){
 			let e = effect.toObject(); // This is to avoid editing the source effect
-			if(e.flags.dnd4e.effectData.powerEffectTypes === condition){
+			if(e.system.powerEffectType === condition){
 				for(let t of tokenTarget){
 					// let effectData = e.data;
 					// e.sourceName = parent.name;
 					e.origin = parent.uuid;
 					this.solidifyEffectActorData(e, parent);
-					const duration = e.duration;
 					const flags = e.flags;
-					duration.combat = combat?.id || "None Combat";
-					duration.startRound = combat?.round || 0;
-					/*Removing the initial timing calc after 0.6.11 since it's now redundant with the effect's derived data routine
-
-					flags.dnd4e.effectData.startTurnInit =	combat?.turns[combat?.turn]?.initiative || 0;
-
-					const userTokenId = this.getTokenIdForLinkedActor(parent);
-					const userInit = this.getInitiativeByToken(userTokenId);
-					const targetInit = t ? this.getInitiativeByToken(t.id) : userInit;
-					const currentInit = this.getCurrentTurnInitiative();
-
-					if(flags.dnd4e.effectData.durationType === "endOfTargetTurn" || flags.dnd4e.effectData.durationType === "startOfTargetTurn"){
-						flags.dnd4e.effectData.durationRound = combat? currentInit > targetInit ? combat.round : combat.round + 1 : 0;
-						flags.dnd4e.effectData.durationTurnInit = t ? targetInit : userInit;						
-					}
-					else if(flags.dnd4e.effectData.durationType === "endOfUserTurn" || flags.dnd4e.effectData.durationType === "startOfUserTurn" ){
-						flags.dnd4e.effectData.durationRound = combat? currentInit > userInit ? combat.round : combat.round + 1 : 0;
-						flags.dnd4e.effectData.durationTurnInit = userInit;
-					}
-					else if(flags.dnd4e.effectData.durationType === "endOfUserCurrent") {
-						flags.dnd4e.effectData.durationRound = combat? combat.round : 0;
-						flags.dnd4e.effectData.durationTurnInit = combat? currentInit : 0;
-					}
-					else if(flags.dnd4e.effectData.durationType === "custom" && (duration?.rounds || duration?.turns)){
-						flags.dnd4e.effectData.durationRound = duration.startRound + (duration?.rounds || 0);
-						let initCount = duration?.turns || 0;
-						for (const [i, turn] of combat.turns.entries()) {
-							if (turn.initiative == currentInit){
-								initCount += i;
-							}
-						}
-						initCount = Math.min(initCount,this.duration?.turns,combat.turns.length);
-						flags.dnd4e.effectData.durationTurnInit = combat.turns[initCount].initiative;
-					}*/
 
 					const newEffectData = {
 						name: e.name,
@@ -1444,19 +977,14 @@ export class Helper {
 						origin: e.origin,
 						sourceName: parent.name,
 						system: e.system,
-						//"duration": duration, //Not too sure why this fails, but it does
-						"duration": {startRound: duration?.startRound, rounds: duration.rounds, turns: duration.turns},
-						rounds: duration.rounds,
-						turns: duration.turns,
-						startRound: duration.startRound,
 						statuses: e.statuses,
 						tint: e.tint,
 						"flags": flags,
-						changes: e.changes,
-						changesID: e.uuid
+						changesID: e.uuid,
+                        showIcon: e.showIcon
 					};
 
-					if(parent && newEffectData.flags.dnd4e.effectData.saveDC) {
+					if(parent && newEffectData.system.saveDC) {
 						let dcBonus = 0;
 						const dcParts = []
 						const rollData = parent.getRollData();
@@ -1465,7 +993,7 @@ export class Helper {
 							const key = dcParts[i].slice(1);
 							dcBonus += rollData[key];
 						}
-						newEffectData.flags.dnd4e.effectData.saveDC = String(Number(newEffectData.flags.dnd4e.effectData.saveDC) + dcBonus);
+						newEffectData.system.saveDC = String(Number(newEffectData.system.saveDC) + dcBonus);
 					}
 
 					if(e.statuses[0] && game.settings.get("dnd4e","markAutomation")){
@@ -1512,7 +1040,7 @@ export class Helper {
 						});
 					}
 					
-					console.log(`Effect setup fired for ${e.name} on ${actor.name}.`);
+					Helper.debugLog(`Effect setup fired for ${e.name} on ${actor.name}.`);
 				}
 			}
 		}
@@ -1570,7 +1098,7 @@ export class Helper {
 		//First check for an assigned character (but player must be active!)
 		game.users.forEach(function (player) {
 			if(player.active && player.character?.id === doc.id){
-				//console.log(`Player found for ${doc.name}: ${player.id}`);
+				//debugLog(`Player found for ${doc.name}: ${player.id}`);
 				found = (idOnly ? player.id : player );
 				return;
 			}
@@ -1585,7 +1113,7 @@ export class Helper {
 				if (1 !== 0){
 					const ownerData = game.users?.get(owner[0]);
 					if(!ownerData?.isGM && ownerData?.active && owner[1] === 3){
-						//console.log(`Owner of ${doc.name}: ${ownerData.name}`);
+						//debugLog(`Owner of ${doc.name}: ${ownerData.name}`);
 						found = (idOnly ? owner : ownerData);
 					}
 				}
@@ -1594,7 +1122,7 @@ export class Helper {
 		if(found) return found;
 
 		// If we have no valid player, fall back to first GM
-		//console.log(`No valid owner found for ${doc.name}, using GM fallback`);
+		//debugLog(`No valid owner found for ${doc.name}, using GM fallback`);
 		const firstGM = game.users.find(u => u.isGM && u.active);
 		return ( idOnly ? firstGM.id : firstGM );
 	}
@@ -1611,10 +1139,10 @@ export class Helper {
 		for (let v of values){
 			if (v === 0) continue;
 			if ( v < 0 ){
-				//console.log(`negative: ${v}`)
+				//debugLog(`negative: ${v}`)
 				negatives.push(v);
 			} else {
-				//console.log(`positive: ${v}`)
+				//debugLog(`positive: ${v}`)
 				positives.push(v);
 			}
 		}
@@ -1644,7 +1172,7 @@ export class Helper {
 	}
 
 	static hasEffects(power, effects) {
-		const foundEffects = power.item.effects.contents.filter(e => effects.includes(e.flags.dnd4e.effectData.powerEffectTypes));
+		const foundEffects = power.item.effects.contents.filter(e => effects.includes(e.system.powerEffectType));
 		return foundEffects.length > 0;
 	}
 	
@@ -1683,6 +1211,18 @@ export class Helper {
 		}
 		return `${result}`;
 	}
+
+    /**
+	 * Wrapper for findKeyScale(level, CONFIG.DND4E.SCALE.basic) for use in dice formulas.
+	 *
+     * @param {number} level Level to scale from, as we don't have access to any rollData in here. Default 1.
+	 * @param {number} offset Offset value to increase the input to adjust the scale. Default 0.
+	 * @returns {result} New set of matching disposition
+	 */
+
+    static scaleFn(level = 1, offset = 1) {
+        return Helper.findKeyScale(level, CONFIG.DND4E.SCALE.basic, offset - 1)
+    }
 	
 	/**
 	 * Helper function to convert an initiative with decimal points to a human-friendly round number with tooltip.
@@ -2098,53 +1638,25 @@ export class Helper {
 		return false;
 	}
 
-	static getTokensInTemplate(templateDoc, wallsBlock = false) {
-		const scene = templateDoc.parent;
-		let {size} = scene.grid;
-		if (!templateDoc.object.shape) {
-			templateDoc.object._refreshShape();
-		}
-		let shape = templateDoc.object?.shape;
-		if (!shape) return;
-		let tokens = new Set();
-		let sceneTokens = scene.tokens;
-		for (let token of sceneTokens) {
-			let {width, height, x: tokX, y: tokY} = token;
-			let startX = width >= 1 ? 0.5 : width / 2;
-			let startY = height >= 1 ? 0.5 : height / 2;
-			for (let x = startX; x < width; x++) {
-				for (let y = startY; y < width; y++) {
-					let curr = {
-						x: tokX + x * size - templateDoc.x,
-						y: tokY + y * size - templateDoc.y
-					};
-					let contains = shape.contains(curr.x, curr.y);
-					let isOn = shape.getBounds().pointIsOn(curr);
-					if (contains && !isOn) {
-						if (wallsBlock) {
-							let collisionCheck;
-							const originPoint = new PIXI.Point(templateDoc.x, templateDoc.y);
-							const targetPoint = new PIXI.Point(tokX + x * size, tokY + y * size);
-							collisionCheck = CONFIG.Canvas.polygonBackends.move.testCollision(originPoint, targetPoint, { source: templateDoc, mode: "any", type: "move" });
-							if (collisionCheck)
-								continue;
-						}
-						tokens.add(token.object);
-						continue;
-					}
-				}
-			}
-		}
-		return tokens;
-	}
+    /* -------------------------------------------- */
+
+    /** 
+     * @param {String} msg  Text to print to the console
+    */
+
+    static debugLog(msg) {
+        if (game.settings.get("dnd4e", "debugLogging")) {
+            console.log(msg);
+        }
+    }
 }
 
 export async function handleApplyEffectToToken(data){
 	if(!game.user.isGM){
 		return;
 	}
-	console.log(data)
-	console.log(game.scenes.get(data.scene))
+	Helper.debugLog(data)
+	Helper.debugLog(game.scenes.get(data.scene))
 	const effectData = data.effectData;
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
 	await actor.newActiveEffectSocket(effectData);
@@ -2160,7 +1672,7 @@ export async function handleDeleteEffectToToken(data){
 }
 
 export async function handlePromptEoTSaves(data) {
-	//console.log('handler reached');
+	//debugLog('handler reached');
 	if (game.userId !== data?.targetUser) return;
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
 	

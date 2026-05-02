@@ -245,13 +245,13 @@ export class MultiAttackRoll extends Roll {
    *
    * @param {object} messageData          The data object to use when creating the message
    * @param {options} [options]           Additional options which modify the created message.
-   * @param {string} [options.rollMode]   The template roll mode to use for the message from CONFIG.Dice.rollModes
+   * @param {string} [options.messageMode]   The template message mode to use for the message from CONFIG.ChatMessage.modes
    * @param {boolean} [options.create=true]   Whether to automatically create the chat message, or only return the
    *                                          prepared chatData object.
    * @returns {Promise<ChatMessage|object>} A promise which resolves to the created ChatMessage document if create is
    *                                        true, or the Object of prepared chatData otherwise.
    */
-   async toMessage(messageData={}, {rollMode, create=true}={}) {
+   async toMessage(messageData={}, {messageMode, create=true}={}) {
 
     // Perform the roll, if it has not yet been rolled
     // if ( !this._evaluated ) await this.evaluate({async: true});
@@ -260,7 +260,7 @@ export class MultiAttackRoll extends Roll {
     // Prepare chat data
     messageData = foundry.utils.mergeObject({
       user: game.user.id,
-      type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+      style: CONST.CHAT_MESSAGE_STYLES.ROLL,
       content: String(this.total),
       sound: CONFIG.sounds.dice,
       flags: {dnd4e:{ [`multi-attack-roll`]: this}},
@@ -282,9 +282,9 @@ export class MultiAttackRoll extends Roll {
     const msg = new cls(messageData);
 
     // Either create or return the data
-    if ( create ) return cls.create(msg.toObject(), { rollMode });
+    if ( create ) return cls.create(msg.toObject(), { messageMode });
     else {
-      if ( rollMode ) msg.applyRollMode(rollMode);
+      if ( messageMode ) msg.applyRollMode(messageMode);
       return msg.toObject();
     }
   }

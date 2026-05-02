@@ -281,6 +281,10 @@
       <input type="checkbox" name="system.effectType.{{type}}" {{checked (lookup ../system.effectType type)}}/> {{ name }}
     </label>
     {{/each}}
+    {{#if system.effectType.aura}}
+        <label>{{ localize "DND4E.AuraSize" }}</label>
+        <input type="text" name="system.auraSize" value="{{system.auraSize}}" placeholder="{{ localize 'DND4E.AuraSize' }}" />
+    {{/if}}
   </fieldset>
   
   {{#unless system.hit.isDamage}} <!--Don't repeat this section if damage has already been added -->

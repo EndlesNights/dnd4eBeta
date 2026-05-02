@@ -1,3 +1,4 @@
+import FormulaField from "../fields/formula-field.js";
 import MappingField from "../fields/mapping-field.js";
 import ActivatedEffectTemplate from "./templates/activated-effect.js";
 import ItemDescriptionTemplate from "./templates/item-description.js";
@@ -33,7 +34,7 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
         initialKeys: CONFIG.DND4E.weaponProperties,
         initialKeysOnly: true
       }),
-      proficient: new BooleanField({initial: true}),
+      proficient: new StringField({initial: "auto"}),
       proficientI: new BooleanField({initial: false}),
       profBonus: new NumberField({initial: 0, integer: true}),
       profImpBonus: new NumberField({initial: 0, integer: true}),
@@ -77,14 +78,24 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
         initialKeys: CONFIG.DND4E.implement,
         initialKeysOnly: true
       }),
-      attackForm: new StringField({initial: "@profBonus+@enhance"}),
-      attackFormImp: new StringField({initial: "@profImpBonus+@enhance"}),
-      damageForm: new StringField({initial: "@enhance"}),
-      damageFormImp: new StringField({initial: "@enhance"}),
-      critDamageForm: new StringField({initial: "(@enhance)d6"}),
-      critDamageFormImp: new StringField({initial: "(@enhance)d6"}),
+      attackForm: new FormulaField({initial: "@profBonus+@enhance"}),
+      attackFormImp: new FormulaField({initial: "@profImpBonus+@enhance"}),
+      damageForm: new FormulaField({initial: "@enhance"}),
+      damageFormImp: new FormulaField({initial: "@enhance"}),
+      critDamageForm: new FormulaField({initial: "(@enhance)d6"}),
+      critDamageFormImp: new FormulaField({initial: "(@enhance)d6"}),
       critRange: new NumberField({initial: 20, integer: true, max: 21, min: 0}),
       critRangeImp: new NumberField({initial: 20, integer: true, max: 21, min: 0})
     }
+  }
+
+  /* -------------------------------------------- */
+  /*  Data Migration                              */
+  /* -------------------------------------------- */
+
+  /** @inheritdoc */
+  static migrateData(source){
+    if (typeof source.proficient === "boolean") source.proficient = "auto";
+    return super.migrateData(source);
   }
 }
