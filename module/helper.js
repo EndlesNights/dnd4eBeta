@@ -928,22 +928,33 @@ export class Helper {
 	static async solidifyEffectActorData(effect, parentActor){
 		Helper.debugLog(effect)
 		Helper.debugLog(parentActor)
+		const regex = /\$solidify\((.*?)\)/g
 
 		//dots
 		for(const dot of effect.system.dots){
-			// dot.amount = await this.parseSolidify(dot.amount, parentActor);
-			dot.amount = dot.amount.toString().replace(/\$solidify\((.*?)\)/g, (match, value) => {
-				return Roll.replaceFormulaData(value, parentActor.getRollData());
-			});
+			if(regex.test(dot.amount)) {    
+				foundry.utils.logCompatibilityWarning("Use of $solidify() in Active Effect values is deprecated since 0.8.0; manage this behavior via the \"Use Source Actor Data\" setting on the Active Effect.")
+				// dot.amount = await this.parseSolidify(dot.amount, parentActor);
+				dot.amount = dot.amount.toString().replace(/\$solidify\((.*?)\)/g, (match, value) => {
+					return Roll.replaceFormulaData(value, parentActor.getRollData());
+				});
+			} else if (typeof dot.amount === "string" && effect.system.useSourceActorData) {
+				dot.amount = Roll.replaceFormulaData(dot.amount, parentActor.getRollData());
+			}
 		}
 
 		//changes
 		for(const change of effect.system.changes){
-			// change.value = this.parseSolidify(change.value, parentActor);
-			change.value = change.value.replace(/\$solidify\((.*?)\)/g, (match, value) => {
-                return Roll.replaceFormulaData(value, parentActor.getRollData());
-			});
-			Helper.debugLog(change.value);
+			if(regex.test(change.value)) {
+				foundry.utils.logCompatibilityWarning("Use of $solidify() in Active Effect values is deprecated since 0.8.0; manage this behavior via the \"Use Source Actor Data\" setting on the Active Effect.")
+				// change.value = this.parseSolidify(change.value, parentActor);
+				change.value = change.value.replace(/\$solidify\((.*?)\)/g, (match, value) => {
+					return Roll.replaceFormulaData(value, parentActor.getRollData());
+				});
+				Helper.debugLog(change.value);
+			} else if (typeof change.value === "string" && effect.system.useSourceActorData) {
+				change.value = Roll.replaceFormulaData(change.value, parentActor.getRollData());
+			}
 		}
 
 	}
@@ -980,7 +991,7 @@ export class Helper {
 						tint: e.tint,
 						"flags": flags,
 						changesID: e.uuid,
-                        showIcon: e.showIcon
+						showIcon: e.showIcon
 					};
 
 					if(parent && newEffectData.system.saveDC) {
@@ -1211,17 +1222,17 @@ export class Helper {
 		return `${result}`;
 	}
 
-    /**
+	/**
 	 * Wrapper for findKeyScale(level, CONFIG.DND4E.SCALE.basic) for use in dice formulas.
 	 *
-     * @param {number} level Level to scale from, as we don't have access to any rollData in here. Default 1.
+	 * @param {number} level Level to scale from, as we don't have access to any rollData in here. Default 1.
 	 * @param {number} offset Offset value to increase the input to adjust the scale. Default 0.
 	 * @returns {result} New set of matching disposition
 	 */
 
-    static scaleFn(level = 1, offset = 1) {
-        return Helper.findKeyScale(level, CONFIG.DND4E.SCALE.basic, offset - 1)
-    }
+	static scaleFn(level = 1, offset = 1) {
+		return Helper.findKeyScale(level, CONFIG.DND4E.SCALE.basic, offset - 1)
+	}
 	
 	/**
 	 * Helper function to convert an initiative with decimal points to a human-friendly round number with tooltip.
@@ -1637,17 +1648,17 @@ export class Helper {
 		return false;
 	}
 
-    /* -------------------------------------------- */
+	/* -------------------------------------------- */
 
-    /** 
-     * @param {String} msg  Text to print to the console
-    */
+	/** 
+	 * @param {String} msg  Text to print to the console
+	*/
 
-    static debugLog(msg) {
-        if (game.settings.get("dnd4e", "debugLogging")) {
-            console.log(msg);
-        }
-    }
+	static debugLog(msg) {
+		if (game.settings.get("dnd4e", "debugLogging")) {
+			console.log(msg);
+		}
+	}
 }
 
 export async function handleApplyEffectToToken(data){

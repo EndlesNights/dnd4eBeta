@@ -26,7 +26,7 @@
 				if(context.parent.system?.keywordsCustom) data.system.keywordsCustom = context.parent.system?.keywordsCustom;
 
 				if(['equipment','weapon'].includes(context?.parent?.type)){
-					foundry.utils.setProperty(data, "flags.dnd4e.effectData.equippedRec", true);
+					data.system.equippedRec = true;
 				}
 			}
 		} catch(e){
@@ -164,7 +164,6 @@
 			}
 			
 			updates.transfer = false;
-			updates.equippedRec = false;
 		}
 
 		if(data.statuses?.length && data.description){
@@ -249,7 +248,7 @@
 			//types of items that can be equipped
 			const validTypes = ["weapon", "equipment", "tool", "loot", "backpack"];
 			if(validTypes.includes(this.parent.type) && this.parent.system.equipped === false){
-				return this.flags.dnd4e?.effectData?.equippedRec || false;
+				return this.system.equippedRec || false;
 			}
 			return this.areEffectsSuppressed;
 		}
@@ -371,12 +370,19 @@
 		}
 		delete flags.effectData?.durationType;
 
-        if (flags.effectData?.powerEffectTypes) {
-            source.system.powerEffectType = flags.effectData.powerEffectTypes;
-        }
-        delete flags.effectData?.durationType;
+		if (flags.effectData?.powerEffectTypes) {
+			source.system.powerEffectType = flags.effectData.powerEffectTypes;
+		}
+		delete flags.effectData?.powerEffectType;
+		
 
-        if (flags.effectData != null && !flags.effectData) delete flags.effectData;
+		if (flags.effectData?.equippedRec) {
+			source.system.equippedRec = flags.effectData.equippedRec;
+		}
+		delete flags.effectData?.equippedRec;
+
+
+		if (("effectData" in flags) && !flags.effectData) delete flags.effectData;
 
 		if (flags.keywords?.length) {
 			let keywords = []

@@ -1020,6 +1020,8 @@
 "DND4E.Sleep": "Sleep",
 "DND4E.Slots": "Slots",
 "DND4E.Source": "Source",
+"DND4E.SourceActorData": "Use Source Actor Data",
+"DND4E.SourceActorDataHint": "If checked, the source actor's roll data will be used for change values instead of the target's.",
 "DND4E.SourceName": "Source Name",
 "DND4E.Special": "Special",
 "DND4E.SpecialRequirements": "Special Requirements",

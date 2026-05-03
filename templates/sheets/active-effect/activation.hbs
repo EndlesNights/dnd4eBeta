@@ -87,9 +87,18 @@
   <div class="form-group">
     <label>{{localize 'DND4E.EffectWhenEquipped'}}?</label>
     <div class="form-fields">
-      <input type="checkbox" name="flags.dnd4e.effectData.equippedRec" data-dtype="Boolean" {{checked document.flags.dnd4e.effectData.equippedRec}}/>
+      <input type="checkbox" name="system.equippedRec" data-dtype="Boolean" {{checked document.system.equippedRec}}/>
     </div>
   </div>
   {{formGroup fields.transfer value=source.transfer rootId=rootId}}
+  {{#unless source.transfer}}
+  <div class="form-group">
+    <label>{{localize 'DND4E.SourceActorData'}}?</label>
+    <div class="form-fields">
+      <input type="checkbox" name="system.useSourceActorData" data-dtype="Boolean" {{checked document.system.useSourceActorData}}/>
+    </div>
+    <p class="hint">{{localize 'DND4E.SourceActorDataHint'}}</p>
+  </div>
+  {{/unless}}
   {{/if}}
 </section>
