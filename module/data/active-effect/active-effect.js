@@ -1,4 +1,4 @@
-const { ArrayField, NumberField, SchemaField, SetField, StringField } = foundry.data.fields;
+const { ArrayField, BooleanField, NumberField, SchemaField, SetField, StringField } = foundry.data.fields;
 
 /**
  * Data structure for a standard actor trait.
@@ -47,11 +47,14 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
       durationType: new StringField({initial: ""}),
       powerEffectType: new StringField({initial: "misc"}),
       dots: new ArrayField(new SchemaField({
+        // TODO: Make FormulaField when "$solidify()" is fully deprecated.
         amount: new StringField({initial: "0"}),
         types: new SetField(new StringField({initial: ""}))
       })),
+      equippedRec: new BooleanField({initial: false}),
       keywords: new SetField(new StringField({ choices: keywords })),
       keywordsCustom: new StringField({initial: ""}),
+      useSourceActorData: new BooleanField({initial: true}),
       saveDC: new NumberField()
     };
   }

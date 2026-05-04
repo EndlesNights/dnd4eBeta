@@ -153,6 +153,16 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 
 	/* ----------------------------------------- */
 
+	/** @inheritDoc */
+	_onChangeForm(formConfig, event) {
+		super._onChangeForm(formConfig, event);
+		if(event.target?.name === "transfer") {
+			this._refresh(event);
+		}
+	}
+
+	/* ----------------------------------------- */
+
 	/**
 	* Handling for mouse clicks on DOT control buttons - adapted from _onEffectControl
 	* Delegate responsibility out to action-specific handlers depending on the button action.

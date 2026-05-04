@@ -2062,7 +2062,8 @@ export default class Item4e extends Item {
 			ownership: { [game.user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER },
 			flags: {
 				["dnd4e"]: {
-					origin: this.uuid,
+					item: this,
+                    origin: this.uuid
 				},
 			},
 		};
