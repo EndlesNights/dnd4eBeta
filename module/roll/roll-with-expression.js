@@ -351,7 +351,7 @@ export class RollWithOriginalExpression extends Roll {
                             }
                         }
                         // replace the expression variable with the span and mouseover tags
-                        activeExpression = activeExpression.replace(variable, `<span class="roll-expression" id="exp${spanId}"</span>`)
+                        activeExpression = activeExpression.replace(variable, `<span class="roll-expression" id="exp${spanId}">${variable}</span>`)
 
                         // find the value
                         const indexOfReplacement = activeFormula.indexOf(replacementStr)
