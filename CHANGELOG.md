@@ -1,10 +1,37 @@
 # Changelog
 
+## Version 0.8.0 BETA
+Our first v14-compatible release! Note that while this release seems stable and complete, it could still have undetected issues that might break your game. We appreciate testing, but please treat this as a beta release; we don't recommend using it in your live game environment. Please report any errors on the [GitHub issues page](https://github.com/EndlesNights/dnd4eBeta/).
+### Player-Facing Changes
+- **Compatibility with Foundry v14**
+- New "Apply Active Effect (4e)" region behavior. Foundry core has an Apply Active Effect region behavior, but it's very barebones. Our system-specific version offers filtering options for disposition, creature origin, and creature type, so that the effects are only applied to tokens who fit the behavior's criteria. (SagaTympana)
+- New "Damaging Region" region behavior. This Region Behavior can be given a damage roll and a set of damage types, and it can be subscribed to any of Foundry's region events. Additionally, it features the same filtering conditions as the Apply Active Effect (4e) behavior. When the region receives a subscribed event, the damage will be rolled against the token relevant to the event, if it fits the criteria. This damage field can include rollData, but only when the region is placed by an ability. We don't currently provide any means of configuring region behaviors on abilities, but the module Region Pre-Configurator does allow this. (SagaTympana)
+- New "Item Powers" feature. Equippable items have a new area on their Effects tab that allows powers stored in the sidebar or a compendium (preferably a compendium) to be dragged and dropped onto it. When the item is equipped or unequipped, the powers will be added to or removed from the actor equipping the item. This allows more automatic handling of items that grant item powers. (SagaTympana)
+- Due to modernising our variable substitutions, some formula functions/variables no longer work. (SagaTympana)
+  - `$solidify()` has been replaced with a "Use Source Actor Data" toggle for the entire effect. Solidify will continue to work for now, but for better results with v14 effects you should use the new setting instead.
+  - The `@scaleX` variable has been replaced with a function, `scale()`. Going forward, `@scaleX` should be replaced with `scale(@lvl, X)`. This change is handled automatically for existing fields.
+  - The` @wepDice(X)` pattern is also no longer viable, and this has no replacement. It's automatically replaced with "0" for existing fields.
+- Fixed an issue where skills without an associated ability score would break their totals. (SagaTympana)
+- Fixed broken links in wepaons lists for compendium classes (SagaTympana)
+- Fixed broken description tab for Traps/Hazards (Trazards?) and gave them the new `source` field (Fox)
+- Added Snappy Trappy, the example hazard, to our family of example characters (Fox)
+### Under the hood/dev stuff
+- Measured templates are dead, long live measured templates. Templates no longer exist as a separate thing; they are now just scene regions. This should honestly be largely invisible to the user, but any developer who was relying on hooks like createMeasuredTemplate should switch to createRegion instead. (SagaTympana)
+- AE overhaul. Our AEs now have their own system-specific data model, and all the flags we were using before have been migrated over to the new pattern. There wasn't any kind of central repository of those flags, so I'm 100% sure I've missed or forgotten about one or two. Pretty much ALL of our special duration handling is gone, replaced with the new core combat event expiry stuff. (SagaTympana)
+- Converted click event listeners on sheets into more modern data actions (sheet extension like F4EA will need udpating!) (SagaTympana)
+- Removed `Helper.commonReplace` in favour of using `rollData` with the core function `Roll.replaceFormulaData`. All of the `@properties` we had been checking for in that function have been moved into `rollData` directly, so that we can make Foundry do all the work for us of handling them in formulae. (SagaTympana)
+- Introduced formula field validation and stole D&D5e's concept of a "formula field" to prevent users from inputting anything that would break things. This resulted in the lost variables/functins mentoned in user-facing updates. (SagaTympana)
+- Added a setting to enable/disable debug logging and replaced all of our console.log calls with calls to this function (SagaTympana)
+- Refactored Trait Selector things, namely languages, proficiencies, and senses. These should be handled gracefully by a data migration. (SagaTympana)
+- Swapped localization functions to Foundry's new _loc global (SagaTympana)
+- Replaced Helper.replaceData with Roll.replaceFormulaData (SagaTympana)
+- Code standardization with eslint (SagaTympana)
+
 ## Version 0.7.14
 - Fixed a bug where damage could prevent turn passing (SagaTympana)
 
 ## Version 0.7.13
-- Fixed a bug where damage resistance worked incorrectly agianst ongoing damage (SagaTympana)
+- Fixed a bug where damage resistance worked incorrectly against ongoing damage (SagaTympana)
 - Fixed a bug where some roll expressions failed to display in chat cards (SagaTympana)
 - Fixed some broken labels and missing definitions (SagaTympana & Fox)
 - In power config, made the charge/opportunity attack roll options fully independent of the "basic attack" setting, for the sake of RBAs (Fox)
