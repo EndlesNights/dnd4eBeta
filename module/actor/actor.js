@@ -177,6 +177,9 @@ export class Actor4e extends Actor {
 	/** @inheritdoc */
 	getRollData() {
 		const data = super.getRollData();
+
+		data.name = this.name;
+
 		data.strMod = data?.abilities?.str.mod || 0;
 		data.conMod = data?.abilities?.con.mod || 0;
 		data.dexMod = data?.abilities?.dex.mod || 0;
