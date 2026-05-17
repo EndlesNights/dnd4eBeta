@@ -40,12 +40,7 @@
           "value": null,
           "units": ""
         },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
+        "target": "[object Object]",
         "range": {
           "value": null,
           "long": null,
@@ -53,7 +48,7 @@
         },
         "uses": {
           "value": 0,
-          "max": 0,
+          "max": "0",
           "per": "",
           "autoDestroy": false
         },
@@ -93,7 +88,7 @@
           "isDamage": false,
           "isHealing": false,
           "healSurge": "",
-          "baseQuantity": 1,
+          "baseQuantity": "1",
           "baseDiceType": "Base Weapon Damage",
           "detail": "",
           "formula": "",
@@ -102,7 +97,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -134,7 +130,11 @@
         "keywordsCustom": "",
         "attackBonus": 1,
         "formula": "",
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "rangePower": "",
+        "area": "0",
+        "auraSize": ""
       },
       "ownership": {
         "default": 0
@@ -142,12 +142,12 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328424,
+        "modifiedTime": 1778918328424,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.3TeDT0vh7PR7uMg4"
@@ -227,7 +227,7 @@
           "author": "",
           "autoanimationHook": ""
         },
-        "level": null,
+        "level": "",
         "weaponType": "militaryM",
         "weaponHand": "hMain",
         "properties": {
@@ -250,11 +250,11 @@
           "mou": false,
           "sto": false
         },
-        "proficient": true,
+        "proficient": "auto",
         "proficientI": false,
         "profBonus": 3,
-        "profImpBonus": "0",
-        "enhance": "1",
+        "profImpBonus": 0,
+        "enhance": 1,
         "isRanged": false,
         "damageDice": {
           "parts": [
@@ -317,8 +317,8 @@
           "whip": false
         },
         "implementGroup": {},
-        "attackForm": "@profBonus+@enhance",
-        "attackFormImp": "@profImpBonus+@enhanceImp",
+        "attackForm": "@profBonus + @enhance",
+        "attackFormImp": "@profImpBonus + @enhanceImp",
         "damageForm": "@enhance",
         "damageFormImp": "@enhanceImp",
         "critDamageForm": "(@enhance)d6",
@@ -334,20 +334,23 @@
         "weaponBaseType": "longsword",
         "damageTypeWeapon": false,
         "implement": {},
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "weaponBaseTypeCustom": "",
+        "damageTypeOverride": false
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Item.SgoVruenJ4OaoMEs",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328424,
+        "modifiedTime": 1778918328424,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.FZLiWbOk56Fv7igc"
@@ -389,12 +392,7 @@
           "value": null,
           "units": ""
         },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
+        "target": "[object Object]",
         "range": {
           "value": null,
           "long": null,
@@ -409,7 +407,7 @@
         "consume": {
           "type": "attribute",
           "target": "details.surges.value",
-          "amount": 1
+          "amount": "1"
         },
         "macro": {
           "type": "script",
@@ -442,7 +440,7 @@
           "isDamage": false,
           "isHealing": true,
           "healSurge": "",
-          "baseQuantity": 1,
+          "baseQuantity": "1",
           "baseDiceType": "Base Weapon Damage",
           "detail": "",
           "formula": "",
@@ -451,7 +449,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -474,7 +473,7 @@
           "parts": []
         },
         "damageType": {},
-        "level": null,
+        "level": "",
         "consumableType": "potion",
         "autoGenChatPowerCard": false,
         "useType": "item",
@@ -490,7 +489,11 @@
         "formula": "",
         "postEffect": false,
         "effectHTML": false,
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "rangePower": "",
+        "area": "0",
+        "auraSize": ""
       },
       "ownership": {
         "default": 0
@@ -498,12 +501,12 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328424,
+        "modifiedTime": 1778918328424,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.umRuMzu4UZsPmzED"
@@ -580,7 +583,7 @@
           "author": "",
           "autoanimationHook": ""
         },
-        "level": null,
+        "level": "",
         "armour": {
           "type": "armour",
           "subtype": "heavy",
@@ -605,7 +608,7 @@
         },
         "strength": 0,
         "stealth": false,
-        "proficient": true,
+        "proficient": "auto",
         "hp": {
           "value": 0,
           "max": 0,
@@ -613,20 +616,24 @@
           "conditions": ""
         },
         "armourBaseType": "scale",
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "armourBaseTypeCustom": "",
+        "shieldBaseType": "",
+        "shieldBaseTypeCustom": ""
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Item.x1LzB35lX9P9c6uQ",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328424,
+        "modifiedTime": 1778918328424,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.B2NQZA3FuPrhx6MK"
@@ -703,10 +710,10 @@
           "author": "",
           "autoanimationHook": ""
         },
-        "level": null,
+        "level": "",
         "armour": {
           "type": "armour",
-          "subtype": "cloth",
+          "subtype": "light",
           "enhance": 0,
           "ac": 0,
           "fort": 0,
@@ -728,7 +735,7 @@
         },
         "strength": 0,
         "stealth": false,
-        "proficient": true,
+        "proficient": "auto",
         "hp": {
           "value": 0,
           "max": 0,
@@ -736,20 +743,24 @@
           "conditions": ""
         },
         "armourBaseType": "cloth",
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "armourBaseTypeCustom": "",
+        "shieldBaseType": "",
+        "shieldBaseTypeCustom": ""
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_armour.WLgMmkXD3u1t8fmQ",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328425,
+        "modifiedTime": 1778918328425,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.urjclj0AuoQI4A9W"
@@ -826,7 +837,7 @@
           "author": "",
           "autoanimationHook": ""
         },
-        "level": null,
+        "level": "",
         "armour": {
           "type": "arms",
           "subtype": "light",
@@ -851,7 +862,7 @@
         },
         "strength": 0,
         "stealth": false,
-        "proficient": true,
+        "proficient": "auto",
         "hp": {
           "value": 0,
           "max": 0,
@@ -859,20 +870,24 @@
           "conditions": ""
         },
         "shieldBaseType": "light",
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "armourBaseType": "",
+        "armourBaseTypeCustom": "",
+        "shieldBaseTypeCustom": ""
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Item.ef0wIbskohM5ls9N",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328425,
+        "modifiedTime": 1778918328425,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.FIITd03hcfP20HJv"
@@ -927,7 +942,7 @@
         },
         "uses": {
           "value": 0,
-          "max": 0,
+          "max": "0",
           "per": null
         },
         "consume": {
@@ -963,20 +978,21 @@
           "si": 0,
           "rs": 0
         },
-        "category": "other"
+        "category": "other",
+        "itemPowers": []
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_equipment.r6LM6SgGBoRLfMbh",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328425,
+        "modifiedTime": 1778918328425,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.xgthiFfyQfFHMo0B"
@@ -1031,7 +1047,7 @@
         },
         "uses": {
           "value": 0,
-          "max": 0,
+          "max": "0",
           "per": null
         },
         "consume": {
@@ -1048,20 +1064,21 @@
           "autoanimationHook": ""
         },
         "level": "",
-        "category": "other"
+        "category": "other",
+        "itemPowers": []
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_equipment.aIl2E6n3Cx5BDkyv",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328425,
+        "modifiedTime": 1778918328425,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.IuClpFmLwpLovkW2"
@@ -1116,7 +1133,7 @@
         },
         "uses": {
           "value": 0,
-          "max": 0,
+          "max": "0",
           "per": null
         },
         "consume": {
@@ -1133,20 +1150,21 @@
           "autoanimationHook": ""
         },
         "level": "",
-        "category": "other"
+        "category": "other",
+        "itemPowers": []
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_equipment.wlmvgm5P1PDWWSbL",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328426,
+        "modifiedTime": 1778918328426,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.gq0QutBQqoUcppZ7"
@@ -1201,7 +1219,7 @@
         },
         "uses": {
           "value": 0,
-          "max": 0,
+          "max": "0",
           "per": null
         },
         "consume": {
@@ -1237,20 +1255,21 @@
           "si": 0,
           "rs": 0
         },
-        "category": "other"
+        "category": "other",
+        "itemPowers": []
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_equipment.aRYM2uBNXzG7HpWq",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328426,
+        "modifiedTime": 1778918328426,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.6mHQi6T6qQ6KpHwc"
@@ -1292,12 +1311,7 @@
           "value": null,
           "units": ""
         },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
+        "target": "[object Object]",
         "range": {
           "value": null,
           "long": null,
@@ -1305,14 +1319,14 @@
         },
         "uses": {
           "value": 1,
-          "max": 1,
+          "max": "1",
           "per": "charges",
           "autoDestroy": false
         },
         "consume": {
           "type": "",
           "target": "",
-          "amount": 0
+          "amount": "0"
         },
         "macro": {
           "type": "script",
@@ -1345,7 +1359,7 @@
           "isDamage": false,
           "isHealing": false,
           "healSurge": "",
-          "baseQuantity": 1,
+          "baseQuantity": "1",
           "baseDiceType": "Base Weapon Damage",
           "detail": "",
           "formula": "",
@@ -1354,7 +1368,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -1393,20 +1408,24 @@
           "dc": null,
           "scaling": "spell"
         },
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "rangePower": "",
+        "area": "0",
+        "auraSize": ""
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Item.moJw9OqRkxwnOmjy",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328426,
+        "modifiedTime": 1778918328426,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.3lkWen2KaTqhtBqQ"
@@ -1448,12 +1467,7 @@
           "value": null,
           "units": ""
         },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
+        "target": "[object Object]",
         "range": {
           "value": null,
           "long": null,
@@ -1461,7 +1475,7 @@
         },
         "uses": {
           "value": 0,
-          "max": 0,
+          "max": "0",
           "per": "",
           "autoDestroy": false
         },
@@ -1501,7 +1515,7 @@
           "isDamage": false,
           "isHealing": false,
           "healSurge": "",
-          "baseQuantity": 1,
+          "baseQuantity": "1",
           "baseDiceType": "Base Weapon Damage",
           "detail": "",
           "formula": "",
@@ -1510,7 +1524,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -1540,20 +1555,24 @@
         },
         "effectType": {},
         "keywordsCustom": "",
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "rangePower": "",
+        "area": "0",
+        "auraSize": ""
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_equipment.2aw2aQyyMF0dAOiy",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328426,
+        "modifiedTime": 1778918328426,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.X6PCNupZJY89U5QL"
@@ -1595,12 +1614,7 @@
           "value": null,
           "units": ""
         },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
+        "target": "[object Object]",
         "range": {
           "value": null,
           "long": null,
@@ -1608,7 +1622,7 @@
         },
         "uses": {
           "value": 1,
-          "max": 1,
+          "max": "1",
           "per": "charges",
           "autoDestroy": false
         },
@@ -1648,7 +1662,7 @@
           "isDamage": false,
           "isHealing": false,
           "healSurge": "",
-          "baseQuantity": 1,
+          "baseQuantity": "1",
           "baseDiceType": "Base Weapon Damage",
           "detail": "",
           "formula": "",
@@ -1657,7 +1671,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -1687,20 +1702,24 @@
         },
         "effectType": {},
         "keywordsCustom": "",
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "rangePower": "",
+        "area": "0",
+        "auraSize": ""
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_equipment.CwKjqOO2uAh9G9xR",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328426,
+        "modifiedTime": 1778918328426,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.KZGTIl9Iwtxr9RnK"
@@ -1742,12 +1761,7 @@
           "value": null,
           "units": ""
         },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
+        "target": "[object Object]",
         "range": {
           "value": null,
           "long": null,
@@ -1755,7 +1769,7 @@
         },
         "uses": {
           "value": 1,
-          "max": 1,
+          "max": "1",
           "per": "charges",
           "autoDestroy": false
         },
@@ -1795,7 +1809,7 @@
           "isDamage": false,
           "isHealing": false,
           "healSurge": "",
-          "baseQuantity": 1,
+          "baseQuantity": "1",
           "baseDiceType": "Base Weapon Damage",
           "detail": "",
           "formula": "",
@@ -1804,7 +1818,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -1834,20 +1849,24 @@
         },
         "effectType": {},
         "keywordsCustom": "",
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "rangePower": "",
+        "area": "0",
+        "auraSize": ""
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_equipment.CwKjqOO2uAh9G9xR",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328427,
+        "modifiedTime": 1778918328427,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.bZR7tTqPD6nY06wD"
@@ -1902,7 +1921,7 @@
         },
         "uses": {
           "value": 0,
-          "max": 0,
+          "max": "0",
           "per": null
         },
         "consume": {
@@ -1938,20 +1957,21 @@
           "si": 0,
           "rs": 0
         },
-        "category": "other"
+        "category": "other",
+        "itemPowers": []
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_equipment.wck75YMimkAtLYVo",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328427,
+        "modifiedTime": 1778918328427,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.WUo1lOAm7tCgwacg"
@@ -2036,7 +2056,7 @@
           "author": "",
           "autoanimationHook": ""
         },
-        "level": null,
+        "level": "",
         "weaponType": "militaryM",
         "weaponHand": "hOff",
         "properties": {
@@ -2057,7 +2077,7 @@
           "two": false,
           "ver": false
         },
-        "proficient": true,
+        "proficient": "auto",
         "proficientI": false,
         "profBonus": 3,
         "profImpBonus": 0,
@@ -2124,8 +2144,8 @@
           "whip": false
         },
         "implementGroup": {},
-        "attackForm": "@profBonus+@enhance",
-        "attackFormImp": "@profImpBonus+@enhanceImp",
+        "attackForm": "@profBonus + @enhance",
+        "attackFormImp": "@profImpBonus + @enhanceImp",
         "damageForm": "@enhance",
         "damageFormImp": "@enhanceImp",
         "critDamageForm": "(@enhance)d6",
@@ -2141,20 +2161,23 @@
         "weaponBaseType": "shortsword",
         "damageTypeWeapon": false,
         "implement": {},
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "weaponBaseTypeCustom": "",
+        "damageTypeOverride": false
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_weapons.0ve1rWSNIJudKsY5",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328427,
+        "modifiedTime": 1778918328427,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.2jh86qh85EZLO4CP"
@@ -2221,7 +2244,7 @@
         "consume": {
           "type": "ammo",
           "target": "3TeDT0vh7PR7uMg4",
-          "amount": 1
+          "amount": "1"
         },
         "armour": {
           "value": 10
@@ -2240,7 +2263,7 @@
           "author": "",
           "autoanimationHook": ""
         },
-        "level": null,
+        "level": "",
         "weaponType": "militaryR",
         "weaponHand": "hTwo",
         "properties": {
@@ -2261,7 +2284,7 @@
           "two": false,
           "ver": false
         },
-        "proficient": true,
+        "proficient": "auto",
         "proficientI": false,
         "profBonus": 2,
         "profImpBonus": 0,
@@ -2328,8 +2351,8 @@
           "whip": false
         },
         "implementGroup": {},
-        "attackForm": "@profBonus+@enhance",
-        "attackFormImp": "@profImpBonus+@enhanceImp",
+        "attackForm": "@profBonus + @enhance",
+        "attackFormImp": "@profImpBonus + @enhanceImp",
         "damageForm": "@enhance",
         "damageFormImp": "@enhanceImp",
         "critDamageForm": "(@enhance)d6",
@@ -2345,20 +2368,23 @@
         "weaponBaseType": "shortbow",
         "damageTypeWeapon": false,
         "implement": {},
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "weaponBaseTypeCustom": "",
+        "damageTypeOverride": false
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_weapons.hQtHcoCVuhkkG7d0",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328427,
+        "modifiedTime": 1778918328427,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.38pvadKY3P6rcGQq"
@@ -2438,7 +2464,7 @@
           "author": "",
           "autoanimationHook": ""
         },
-        "level": null,
+        "level": "",
         "weaponType": "implement",
         "weaponHand": "hMain",
         "properties": {
@@ -2461,11 +2487,11 @@
           "mou": false,
           "sto": false
         },
-        "proficient": true,
+        "proficient": "auto",
         "proficientI": true,
         "profBonus": 0,
-        "profImpBonus": "1",
-        "enhance": "1",
+        "profImpBonus": 1,
+        "enhance": 1,
         "isRanged": false,
         "damageDice": {
           "parts": []
@@ -2518,8 +2544,8 @@
           "whip": false
         },
         "implementGroup": {},
-        "attackForm": "@profBonus+@enhance",
-        "attackFormImp": "@profImpBonus+@enhanceImp",
+        "attackForm": "@profBonus + @enhance",
+        "attackFormImp": "@profImpBonus + @enhanceImp",
         "damageForm": "@enhance",
         "damageFormImp": "@enhanceImp",
         "critDamageForm": "(@enhance)d6",
@@ -2539,20 +2565,23 @@
         },
         "weaponBaseType": "",
         "damageTypeWeapon": false,
-        "category": "other"
+        "category": "other",
+        "itemPowers": [],
+        "weaponBaseTypeCustom": "",
+        "damageTypeOverride": false
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_equipment.Os7d0ol0QEeRYdBU",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328428,
+        "modifiedTime": 1778918328428,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.qDPND3OKGfG1OpsW"
@@ -2606,11 +2635,11 @@
           "_stats": {
             "compendiumSource": null,
             "duplicateSource": null,
-            "coreVersion": "14.360",
+            "coreVersion": "14.361",
             "systemId": "dnd4e",
-            "systemVersion": "0.5.9",
-            "createdTime": 1776986482649,
-            "modifiedTime": 1776986485326,
+            "systemVersion": "0.8.0",
+            "createdTime": 1778918328429,
+            "modifiedTime": 1778918328429,
             "lastModifiedBy": "dnd4ebuilder0000",
             "exportSource": null
           },
@@ -2623,15 +2652,24 @@
                 "key": "system.skills.blu.race",
                 "value": 2,
                 "priority": null,
-                "type": "upgrade"
+                "type": "upgrade",
+                "phase": "initial"
               },
               {
                 "key": "system.skills.stl.race",
                 "value": 2,
                 "priority": null,
-                "type": "upgrade"
+                "type": "upgrade",
+                "phase": "initial"
               }
-            ]
+            ],
+            "durationType": "",
+            "powerEffectType": "misc",
+            "dots": [],
+            "equippedRec": false,
+            "keywords": [],
+            "keywordsCustom": "",
+            "useSourceActorData": true
           },
           "description": "",
           "statuses": [],
@@ -2670,11 +2708,11 @@
           "_stats": {
             "compendiumSource": null,
             "duplicateSource": null,
-            "coreVersion": "14.360",
+            "coreVersion": "14.361",
             "systemId": "dnd4e",
-            "systemVersion": "0.5.9",
-            "createdTime": 1776986488340,
-            "modifiedTime": 1776986490730,
+            "systemVersion": "0.8.0",
+            "createdTime": 1778918328429,
+            "modifiedTime": 1778918328429,
             "lastModifiedBy": "dnd4ebuilder0000",
             "exportSource": null
           },
@@ -2686,9 +2724,17 @@
                 "key": "system.resistances.fire.res",
                 "value": "5 + @lvhalf",
                 "priority": null,
-                "type": "upgrade"
+                "type": "upgrade",
+                "phase": "initial"
               }
-            ]
+            ],
+            "durationType": "",
+            "powerEffectType": "misc",
+            "dots": [],
+            "equippedRec": false,
+            "keywords": [],
+            "keywordsCustom": "",
+            "useSourceActorData": true
           },
           "sort": 0,
           "start": null,
@@ -2720,7 +2766,7 @@
           "autoanimationHook": ""
         },
         "featureType": "race",
-        "level": null,
+        "level": "",
         "requirements": "",
         "featureSource": "Tiefling",
         "featureGroup": "",
@@ -2764,14 +2810,14 @@
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.srd_races.y257KtPJ1TEVFIzc",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328429,
+        "modifiedTime": 1778918328429,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.dfRIvEuRJOZdTYUP"
@@ -2828,11 +2874,11 @@
           "_stats": {
             "compendiumSource": null,
             "duplicateSource": null,
-            "coreVersion": "14.360",
+            "coreVersion": "14.361",
             "systemId": "dnd4e",
-            "systemVersion": "0.5.9",
-            "createdTime": 1776986507777,
-            "modifiedTime": 1776986510141,
+            "systemVersion": "0.8.0",
+            "createdTime": 1778918328430,
+            "modifiedTime": 1778918328430,
             "lastModifiedBy": "dnd4ebuilder0000",
             "exportSource": null
           },
@@ -2844,9 +2890,17 @@
                 "key": "weapon.attack.one.untyped",
                 "value": 1,
                 "priority": null,
-                "type": "add"
+                "type": "add",
+                "phase": "initial"
               }
-            ]
+            ],
+            "durationType": "",
+            "powerEffectType": "misc",
+            "dots": [],
+            "equippedRec": false,
+            "keywords": [],
+            "keywordsCustom": "",
+            "useSourceActorData": true
           },
           "sort": 0,
           "start": {
@@ -2885,7 +2939,7 @@
           "autoanimationHook": ""
         },
         "featureType": "class",
-        "level": null,
+        "level": "",
         "requirements": "",
         "featureSource": "Fighter",
         "featureGroup": "",
@@ -2944,14 +2998,14 @@
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Item.bFsVnvGz0xNjwTUd",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328430,
+        "modifiedTime": 1778918328430,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.s4tL5afYct4PJbn3"
@@ -2991,11 +3045,11 @@
           "_stats": {
             "compendiumSource": null,
             "duplicateSource": null,
-            "coreVersion": "14.360",
+            "coreVersion": "14.361",
             "systemId": "dnd4e",
-            "systemVersion": "0.5.9",
-            "createdTime": 1776986518663,
-            "modifiedTime": 1776986521017,
+            "systemVersion": "0.8.0",
+            "createdTime": 1778918328431,
+            "modifiedTime": 1778918328431,
             "lastModifiedBy": "dnd4ebuilder0000",
             "exportSource": null
           },
@@ -3007,33 +3061,45 @@
                 "key": "system.attributes.hp.starting",
                 "value": 15,
                 "priority": null,
-                "type": "override"
+                "type": "override",
+                "phase": "initial"
               },
               {
                 "key": "system.attributes.hp.perlevel",
                 "value": 6,
                 "priority": null,
-                "type": "override"
+                "type": "override",
+                "phase": "initial"
               },
               {
                 "key": "system.details.surges.max",
                 "value": "9+@conMod",
                 "priority": null,
-                "type": "override"
+                "type": "override",
+                "phase": "initial"
               },
               {
                 "key": "system.attributes.hp.autototal",
                 "value": true,
                 "priority": null,
-                "type": "override"
+                "type": "override",
+                "phase": "initial"
               },
               {
                 "key": "system.defences.fort.untyped",
                 "value": 2,
                 "priority": null,
-                "type": "add"
+                "type": "add",
+                "phase": "initial"
               }
-            ]
+            ],
+            "durationType": "",
+            "powerEffectType": "misc",
+            "dots": [],
+            "equippedRec": false,
+            "keywords": [],
+            "keywordsCustom": "",
+            "useSourceActorData": true
           },
           "sort": 0,
           "start": {
@@ -3072,7 +3138,7 @@
           "autoanimationHook": ""
         },
         "featureType": "class",
-        "level": null,
+        "level": "",
         "requirements": "",
         "featureSource": "Fighter",
         "featureGroup": "",
@@ -3131,14 +3197,14 @@
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Item.emOJRrgVW8p7n18c",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328431,
+        "modifiedTime": 1778918328431,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.WtXxm9qGDb5P6QF8"
@@ -3195,11 +3261,11 @@
           "_stats": {
             "compendiumSource": null,
             "duplicateSource": null,
-            "coreVersion": "14.360",
+            "coreVersion": "14.361",
             "systemId": "dnd4e",
-            "systemVersion": "0.5.9",
-            "createdTime": 1776986535018,
-            "modifiedTime": 1776986538299,
+            "systemVersion": "0.8.0",
+            "createdTime": 1778918328432,
+            "modifiedTime": 1778918328432,
             "lastModifiedBy": "dnd4ebuilder0000",
             "exportSource": null
           },
@@ -3211,15 +3277,24 @@
                 "key": "power.attack.fire.feat",
                 "value": 1,
                 "priority": null,
-                "type": "upgrade"
+                "type": "upgrade",
+                "phase": "initial"
               },
               {
                 "key": "power.damage.fire.feat",
                 "value": 2,
                 "priority": null,
-                "type": "upgrade"
+                "type": "upgrade",
+                "phase": "initial"
               }
-            ]
+            ],
+            "durationType": "",
+            "powerEffectType": "misc",
+            "dots": [],
+            "equippedRec": false,
+            "keywords": [],
+            "keywordsCustom": "",
+            "useSourceActorData": true
           },
           "sort": 0,
           "start": {
@@ -3258,7 +3333,7 @@
           "autoanimationHook": ""
         },
         "featureType": "feat",
-        "level": null,
+        "level": "",
         "requirements": "Tiefling",
         "featureSource": "",
         "featureGroup": "",
@@ -3306,14 +3381,14 @@
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Item.FBHWeKmJiqhtTFy2",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328432,
+        "modifiedTime": 1778918328432,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.rTSs8dIn7JiJcciP"
@@ -3341,7 +3416,7 @@
           "autoanimationHook": ""
         },
         "featureType": "feat",
-        "level": null,
+        "level": "",
         "requirements": "",
         "featureSource": "",
         "featureGroup": "",
@@ -3435,11 +3510,11 @@
           "_stats": {
             "compendiumSource": null,
             "duplicateSource": null,
-            "coreVersion": "14.360",
+            "coreVersion": "14.361",
             "systemId": "dnd4e",
-            "systemVersion": "0.5.9",
-            "createdTime": 1776986544687,
-            "modifiedTime": 1776986546725,
+            "systemVersion": "0.8.0",
+            "createdTime": 1778918328433,
+            "modifiedTime": 1778918328433,
             "lastModifiedBy": "dnd4ebuilder0000",
             "exportSource": null
           },
@@ -3451,9 +3526,17 @@
                 "key": "system.skillTraining.untrained.feat",
                 "value": 2,
                 "priority": null,
-                "type": "upgrade"
+                "type": "upgrade",
+                "phase": "initial"
               }
-            ]
+            ],
+            "durationType": "",
+            "powerEffectType": "misc",
+            "dots": [],
+            "equippedRec": false,
+            "keywords": [],
+            "keywordsCustom": "",
+            "useSourceActorData": true
           },
           "sort": 0,
           "start": {
@@ -3476,14 +3559,14 @@
       },
       "flags": {},
       "_stats": {
-        "compendiumSource": "Actor.F14YjjqasLMvk3ik.Item.MX3CLN3luwWujrfY",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328433,
+        "modifiedTime": 1778918328433,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.AbAYuhIPIBTEihGZ"
@@ -3540,11 +3623,11 @@
           "_stats": {
             "compendiumSource": null,
             "duplicateSource": null,
-            "coreVersion": "14.360",
+            "coreVersion": "14.361",
             "systemId": "dnd4e",
-            "systemVersion": "0.5.9",
-            "createdTime": 1776986556931,
-            "modifiedTime": 1776986560590,
+            "systemVersion": "0.8.0",
+            "createdTime": 1778918328434,
+            "modifiedTime": 1778918328434,
             "lastModifiedBy": "dnd4ebuilder0000",
             "exportSource": null
           },
@@ -3556,15 +3639,24 @@
                 "key": "system.movement.run.feat",
                 "value": 2,
                 "priority": null,
-                "type": "upgrade"
+                "type": "upgrade",
+                "phase": "initial"
               },
               {
                 "key": "system.movement.charge.feat",
                 "value": 2,
                 "priority": null,
-                "type": "upgrade"
+                "type": "upgrade",
+                "phase": "initial"
               }
-            ]
+            ],
+            "durationType": "",
+            "powerEffectType": "misc",
+            "dots": [],
+            "equippedRec": false,
+            "keywords": [],
+            "keywordsCustom": "",
+            "useSourceActorData": true
           },
           "sort": 0,
           "start": {
@@ -3603,7 +3695,7 @@
           "autoanimationHook": ""
         },
         "featureType": "feat",
-        "level": null,
+        "level": "",
         "requirements": "Con 13",
         "featureSource": "",
         "featureGroup": "",
@@ -3651,14 +3743,14 @@
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Item.kxLc8XMaNUQ3cZDS",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328434,
+        "modifiedTime": 1778918328434,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.eDn8uB6SAOxpnE0f"
@@ -3715,11 +3807,11 @@
           "_stats": {
             "compendiumSource": null,
             "duplicateSource": null,
-            "coreVersion": "14.360",
+            "coreVersion": "14.361",
             "systemId": "dnd4e",
-            "systemVersion": "0.5.9",
-            "createdTime": 1776986565902,
-            "modifiedTime": 1776986568286,
+            "systemVersion": "0.8.0",
+            "createdTime": 1778918328435,
+            "modifiedTime": 1778918328435,
             "lastModifiedBy": "dnd4ebuilder0000",
             "exportSource": null
           },
@@ -3731,9 +3823,17 @@
                 "key": "system.attributes.hp.untyped",
                 "value": "@details.tier * 5",
                 "priority": null,
-                "type": "add"
+                "type": "add",
+                "phase": "initial"
               }
-            ]
+            ],
+            "durationType": "",
+            "powerEffectType": "misc",
+            "dots": [],
+            "equippedRec": false,
+            "keywords": [],
+            "keywordsCustom": "",
+            "useSourceActorData": true
           },
           "sort": 0,
           "start": {
@@ -3772,7 +3872,7 @@
           "autoanimationHook": ""
         },
         "featureType": "feat",
-        "level": null,
+        "level": "",
         "requirements": "",
         "featureSource": "",
         "featureGroup": "",
@@ -3820,14 +3920,14 @@
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Item.G2zIJb0tbc12PfFK",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328435,
+        "modifiedTime": 1778918328435,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.0DrttX0BweIQFHXW"
@@ -3873,13 +3973,13 @@
         },
         "uses": {
           "value": 0,
-          "max": 0,
+          "max": "0",
           "per": null
         },
         "consume": {
           "type": "attribute",
           "target": "ritualcomp.rh",
-          "amount": 30
+          "amount": "30"
         },
         "macro": {
           "type": "script",
@@ -3897,22 +3997,23 @@
         "category": "exploration",
         "market": "50gp",
         "castTime": {
-          "value": 10,
+          "value": "10",
           "units": "minute"
-        }
+        },
+        "autoCard": true
       },
       "ownership": {
         "default": 0
       },
       "_stats": {
-        "compendiumSource": "Item.xbbM9s9joyku4A7i",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.9",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328435,
+        "modifiedTime": 1778918328435,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_id": "vvTOjJSPvDvm2oik",
@@ -3976,7 +4077,27 @@
           "_id": "ITHl26Owv21S10Rf",
           "type": "base",
           "system": {
-            "changes": []
+            "changes": [],
+            "durationType": "saveEnd",
+            "powerEffectType": "hit",
+            "dots": [
+              {
+                "amount": "5",
+                "types": [
+                  "fire"
+                ]
+              }
+            ],
+            "saveDC": 10,
+            "equippedRec": false,
+            "keywords": [
+              "fire",
+              "fire",
+              "fire",
+              "fire"
+            ],
+            "keywordsCustom": "",
+            "useSourceActorData": true
           },
           "description": "",
           "tint": "#ffffff",
@@ -3985,12 +4106,12 @@
           "_stats": {
             "compendiumSource": null,
             "duplicateSource": null,
-            "coreVersion": "14.359",
+            "coreVersion": "14.361",
             "systemId": "dnd4e",
-            "systemVersion": "0.5.14",
-            "createdTime": null,
-            "modifiedTime": null,
-            "lastModifiedBy": null,
+            "systemVersion": "0.8.0",
+            "createdTime": 1778918328436,
+            "modifiedTime": 1778918328436,
+            "lastModifiedBy": "dnd4ebuilder0000",
             "exportSource": null
           },
           "start": null,
@@ -4003,13 +4124,13 @@
       "sort": 1100000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Item.UpWkpOwzbGnZKNXx",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.360",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": 1776986385146,
-        "modifiedTime": 1776986386328,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328436,
+        "modifiedTime": 1778918328436,
         "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
@@ -4092,7 +4213,8 @@
         },
         "miss": {
           "detail": "Half Damage and no ongoing damage",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -4146,7 +4268,7 @@
         },
         "rangeTextShort": "",
         "rangeText": "",
-        "rangePower": 10,
+        "rangePower": "10",
         "area": "1",
         "rechargeRoll": "",
         "rechargeCondition": "",
@@ -4204,7 +4326,8 @@
         "type": "encounter",
         "effectHTML": false,
         "chatFlavor": "Eternity of being a punching bag has given Steve a fiery temper.",
-        "category": "other"
+        "category": "other",
+        "auraSize": ""
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.qZz2hee9S7DIFkkm"
     },
@@ -4218,14 +4341,14 @@
       "sort": 100000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.example_powers.ONy4VrAvuUYUelhR",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328436,
+        "modifiedTime": 1778918328436,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -4288,7 +4411,7 @@
           "def": "ac",
           "defBonus": 0,
           "detail": "",
-          "formula": "@wepAttack+@powerMod+@lvhalf",
+          "formula": "@wepAttack + @powerMod + @lvhalf",
           "damageType": {},
           "effectType": {}
         },
@@ -4298,7 +4421,7 @@
           "isDamage": true,
           "isHealing": false,
           "healSurge": "",
-          "baseQuantity": "1+@epic",
+          "baseQuantity": "1 + @epic",
           "baseDiceType": "weapon",
           "detail": "1[W] + Strength modifier damage.",
           "formula": "@powBase + @powerMod + @wepDamage",
@@ -4307,7 +4430,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -4361,8 +4485,8 @@
         },
         "rangeTextShort": "",
         "rangeText": "",
-        "rangePower": null,
-        "area": 0,
+        "rangePower": "",
+        "area": "0",
         "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
@@ -4419,7 +4543,8 @@
         "isBasic": false,
         "chatFlavor": "",
         "effectHTML": false,
-        "category": "other"
+        "category": "other",
+        "auraSize": ""
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.ksO5wMnCDjfMhfYF"
     },
@@ -4433,14 +4558,14 @@
       "sort": 200000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.example_powers.Item.FrhMZJlrA5r76yFG",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328437,
+        "modifiedTime": 1778918328437,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -4503,7 +4628,7 @@
           "def": "ac",
           "defBonus": 0,
           "detail": "",
-          "formula": "@wepAttack+@powerMod+@lvhalf",
+          "formula": "@wepAttack + @powerMod + @lvhalf",
           "damageType": {},
           "effectType": {}
         },
@@ -4513,7 +4638,7 @@
           "isDamage": true,
           "isHealing": false,
           "healSurge": "",
-          "baseQuantity": "1+@epic",
+          "baseQuantity": "1 + @epic",
           "baseDiceType": "weapon",
           "detail": "1[W] + Dexterity modifier damage.",
           "formula": "@powBase + @powerMod + @wepDamage",
@@ -4522,7 +4647,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -4576,8 +4702,8 @@
         },
         "rangeTextShort": "",
         "rangeText": "",
-        "rangePower": null,
-        "area": 0,
+        "rangePower": "",
+        "area": "0",
         "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
@@ -4634,7 +4760,8 @@
         "isBasic": false,
         "chatFlavor": "",
         "effectHTML": false,
-        "category": "other"
+        "category": "other",
+        "auraSize": ""
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.EXVlG8BPZIRE0T6t"
     },
@@ -4648,14 +4775,14 @@
       "sort": 600000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Item.uJMfSwvXTEMiC03r",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328437,
+        "modifiedTime": 1778918328437,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -4718,7 +4845,7 @@
           "def": "ac",
           "defBonus": 0,
           "detail": "",
-          "formula": "@wepAttack+@powerMod+@lvhalf",
+          "formula": "@wepAttack + @powerMod + @lvhalf",
           "damageType": {},
           "effectType": {}
         },
@@ -4737,7 +4864,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -4791,8 +4919,8 @@
         },
         "rangeTextShort": "",
         "rangeText": "",
-        "rangePower": null,
-        "area": 0,
+        "rangePower": "",
+        "area": "0",
         "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
@@ -4848,7 +4976,8 @@
         "keywordsCustom": "",
         "effectHTML": false,
         "chatFlavor": "",
-        "category": "other"
+        "category": "other",
+        "auraSize": ""
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.aeENMlpG6SCgpjtQ"
     },
@@ -4862,14 +4991,14 @@
       "sort": 700000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Item.cWe2mbmhvhVVYC3T",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328437,
+        "modifiedTime": 1778918328437,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -4932,7 +5061,7 @@
           "def": "ac",
           "defBonus": 0,
           "detail": "",
-          "formula": "@wepAttack+@powerMod+@lvhalf",
+          "formula": "@wepAttack + @powerMod + @lvhalf",
           "damageType": {},
           "effectType": {}
         },
@@ -4951,7 +5080,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -5005,8 +5135,8 @@
         },
         "rangeTextShort": "",
         "rangeText": "",
-        "rangePower": null,
-        "area": 0,
+        "rangePower": "",
+        "area": "0",
         "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
@@ -5062,7 +5192,8 @@
         "keywordsCustom": "",
         "chatFlavor": "",
         "effectHTML": false,
-        "category": "other"
+        "category": "other",
+        "auraSize": ""
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.thRofjDtRYyBIzWV"
     },
@@ -5076,14 +5207,14 @@
       "sort": 800000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.example_powers.Item.Fbl5nYLm0WTsJJh3",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328438,
+        "modifiedTime": 1778918328438,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -5146,7 +5277,7 @@
           "def": "ac",
           "defBonus": 0,
           "detail": "",
-          "formula": "@wepAttack+@powerMod+@lvhalf+2",
+          "formula": "@wepAttack + @powerMod + @lvhalf + 2",
           "damageType": {},
           "effectType": {}
         },
@@ -5165,7 +5296,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -5219,8 +5351,8 @@
         },
         "rangeTextShort": "",
         "rangeText": "",
-        "rangePower": null,
-        "area": 0,
+        "rangePower": "",
+        "area": "0",
         "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
@@ -5277,7 +5409,8 @@
         "chatFlavor": "",
         "effectHTML": false,
         "category": "other",
-        "container": null
+        "container": null,
+        "auraSize": ""
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.LXI4xfcU3UptXmgi"
     },
@@ -5291,14 +5424,14 @@
       "sort": 500000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.example_powers.Item.PIBXjGUToJZ6wSLD",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328438,
+        "modifiedTime": 1778918328438,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -5361,7 +5494,7 @@
           "def": "ac",
           "defBonus": 0,
           "detail": "",
-          "formula": "@wepAttack+@powerMod+@lvhalf",
+          "formula": "@wepAttack + @powerMod + @lvhalf",
           "damageType": {},
           "effectType": {}
         },
@@ -5380,7 +5513,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -5434,8 +5568,8 @@
         },
         "rangeTextShort": "",
         "rangeText": "",
-        "rangePower": null,
-        "area": 0,
+        "rangePower": "",
+        "area": "0",
         "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
@@ -5491,7 +5625,8 @@
         "keywordsCustom": "",
         "chatFlavor": "",
         "effectHTML": false,
-        "category": "other"
+        "category": "other",
+        "auraSize": ""
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.Ykv7gdP3OoVVzcpq"
     },
@@ -5505,14 +5640,14 @@
       "sort": 450000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Item.ofwCoL5GjIFoQfkq",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328438,
+        "modifiedTime": 1778918328438,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -5575,7 +5710,7 @@
           "def": "ac",
           "defBonus": 0,
           "detail": "",
-          "formula": "@wepAttack+@powerMod+@lvhalf",
+          "formula": "@wepAttack + @powerMod + @lvhalf",
           "damageType": {},
           "effectType": {}
         },
@@ -5594,7 +5729,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": "You channel your rage and gain a <strong>+1</strong> power bonus to your next attack roll against a target that hit you since your last turn. If the attack hits and deals damage, increase the damage by <strong>@chaMod</strong> (Charisma Modifier) as bonus damage."
@@ -5648,8 +5784,8 @@
         },
         "rangeTextShort": "",
         "rangeText": "",
-        "rangePower": null,
-        "area": 0,
+        "rangePower": "",
+        "area": "0",
         "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
@@ -5705,7 +5841,8 @@
         "keywordsCustom": "",
         "chatFlavor": "",
         "effectHTML": false,
-        "category": "other"
+        "category": "other",
+        "auraSize": ""
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.giWKnVFCkGThKdPW"
     },
@@ -5719,14 +5856,14 @@
       "sort": 900000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.example_powers.Item.CPDhYRVIW4MuyS0l",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328439,
+        "modifiedTime": 1778918328439,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -5789,7 +5926,7 @@
           "def": "ac",
           "defBonus": 0,
           "detail": "",
-          "formula": "@wepAttack+@powerMod+@lvhalf",
+          "formula": "@wepAttack + @powerMod + @lvhalf",
           "damageType": {},
           "effectType": {}
         },
@@ -5808,7 +5945,8 @@
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": "Until the end of the encounter, and while you are bloodied you gain regeneration [[2 + @conMod]] (2 + Constitution Mod)"
@@ -5862,8 +6000,8 @@
         },
         "rangeTextShort": "",
         "rangeText": "",
-        "rangePower": null,
-        "area": 0,
+        "rangePower": "",
+        "area": "0",
         "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
@@ -5919,7 +6057,8 @@
         "keywordsCustom": "",
         "chatFlavor": "",
         "effectHTML": false,
-        "category": "other"
+        "category": "other",
+        "auraSize": ""
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.VfrQH1TIV4pujpAM"
     },
@@ -5933,14 +6072,14 @@
       "sort": 1050000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Compendium.dnd4e.example_powers.Item.KfgywDABkm2soezh",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328439,
+        "modifiedTime": 1778918328439,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -6003,7 +6142,7 @@
           "def": "ac",
           "defBonus": 0,
           "detail": "",
-          "formula": "@wepAttack+@powerMod+@lvhalf",
+          "formula": "@wepAttack + @powerMod + @lvhalf",
           "damageType": {},
           "effectType": {}
         },
@@ -6022,7 +6161,8 @@
         },
         "miss": {
           "detail": "Until the end of the encounter, you gain a <strong>+1</strong> bonus to attacks, and <strong>+2</strong> bonus to damage rolls against the target.",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -6076,8 +6216,8 @@
         },
         "rangeTextShort": "",
         "rangeText": "",
-        "rangePower": null,
-        "area": 0,
+        "rangePower": "",
+        "area": "0",
         "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
@@ -6133,7 +6273,8 @@
         "keywordsCustom": "",
         "chatFlavor": "",
         "effectHTML": false,
-        "category": "other"
+        "category": "other",
+        "auraSize": ""
       },
       "_key": "!actors.items!iK3UnA8rC1xbJ1Ap.Lnog00oX4y1hhD89"
     },
@@ -6160,7 +6301,7 @@
           "autoanimationHook": ""
         },
         "featureType": "race",
-        "level": null,
+        "level": "",
         "requirements": "",
         "featureSource": "Tiefling",
         "featureGroup": "",
@@ -6251,9 +6392,17 @@
                 "key": "system.modifiers.attack.untyped",
                 "value": 1,
                 "priority": null,
-                "type": "add"
+                "type": "add",
+                "phase": "initial"
               }
-            ]
+            ],
+            "durationType": "",
+            "powerEffectType": "misc",
+            "dots": [],
+            "equippedRec": false,
+            "keywords": [],
+            "keywordsCustom": "",
+            "useSourceActorData": true
           },
           "description": "<p>[[+1]] bonus to attack rolls made against bloodied targets.</p>",
           "tint": "#ffffff",
@@ -6263,11 +6412,11 @@
           "_stats": {
             "compendiumSource": null,
             "duplicateSource": null,
-            "coreVersion": "14.360",
+            "coreVersion": "14.361",
             "systemId": "dnd4e",
-            "systemVersion": "0.5.14",
-            "createdTime": 1776986498622,
-            "modifiedTime": 1776986501047,
+            "systemVersion": "0.8.0",
+            "createdTime": 1778918328440,
+            "modifiedTime": 1778918328440,
             "lastModifiedBy": "dnd4ebuilder0000",
             "exportSource": null
           },
@@ -6286,12 +6435,12 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328440,
+        "modifiedTime": 1778918328440,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "img": "icons/skills/wounds/blood-drip-droplet-red.webp",
@@ -6358,14 +6507,16 @@
       "weight": "Large fellow with a bit of a bear gut.",
       "alignment": "",
       "deity": "",
-      "level": "2",
+      "level": 2,
       "tier": 1,
       "exp": 432,
       "bloodied": 0,
       "surgeValue": 0,
       "surgeBon": {
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
@@ -6385,7 +6536,9 @@
       },
       "surgeEnv": {
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
@@ -6396,7 +6549,9 @@
       },
       "saves": {
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
@@ -6408,25 +6563,28 @@
       "class": "Fighter",
       "paragon": "",
       "epic": "",
-      "secondwind": false,
-      "secondwindEffect": {},
       "deathsaves": 3,
       "deathsavefail": 0,
       "deathsaveCrit": 20,
       "deathsavebon": {
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "value": 0
+        "value": 0,
+        "custom": ""
       },
       "secondwindbon": {
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "value": 0,
         "feat": 0,
@@ -6448,9 +6606,9 @@
         "value": [],
         "custom": ""
       },
-      "temp": "",
-      "party": "",
-      "ethos": ""
+      "isBloodied": false,
+      "secondWind": false,
+      "secondWindEffect": {}
     },
     "languages": {
       "spoken": {
@@ -6469,15 +6627,39 @@
       }
     },
     "senses": {
-      "vision": {
-        "value": [],
-        "custom": ""
-      },
       "special": {
-        "value": [],
         "custom": "",
         "lv": {
-          "value": true
+          "value": true,
+          "range": ""
+        },
+        "aa": {
+          "value": false,
+          "range": ""
+        },
+        "bs": {
+          "value": false,
+          "range": ""
+        },
+        "bv": {
+          "value": false,
+          "range": ""
+        },
+        "dv": {
+          "value": false,
+          "range": ""
+        },
+        "nv": {
+          "value": false,
+          "range": ""
+        },
+        "tr": {
+          "value": false,
+          "range": ""
+        },
+        "ts": {
+          "value": false,
+          "range": ""
         }
       },
       "notes": ""
@@ -6486,32 +6668,80 @@
       "str": {
         "value": 16,
         "chat": "@name uses @label.",
-        "mod": 3
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       },
       "con": {
         "value": 14,
         "chat": "@name uses @label.",
-        "mod": 2
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       },
       "dex": {
         "value": 12,
         "chat": "@name uses @label.",
-        "mod": 1
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       },
       "int": {
         "value": 10,
         "chat": "@name uses @label.",
-        "mod": -1
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       },
       "wis": {
         "value": 14,
         "chat": "@name uses @label.",
-        "mod": 2
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       },
       "cha": {
         "value": 12,
         "chat": "@name uses @label.",
-        "mod": 1
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       }
     },
     "attributes": {
@@ -6538,7 +6768,9 @@
         "value": 0,
         "ability": "dex",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
@@ -6569,14 +6801,15 @@
         "enhance": 0,
         "shield": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "temp": 0,
-        "light": false,
+        "light": "auto",
         "altability": "",
         "condition": "Conditional Bonuses.",
-        "chat": "@name defends with armour.",
-        "base": 10
+        "chat": "@name defends with armour."
       },
       "fort": {
         "value": 10,
@@ -6591,12 +6824,15 @@
         "enhance": 0,
         "shield": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "temp": 0,
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with fortitude.",
-        "base": 10
+        "light": "auto",
+        "altability": ""
       },
       "ref": {
         "value": 10,
@@ -6611,12 +6847,15 @@
         "enhance": 0,
         "shield": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "temp": 0,
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with reflexes.",
-        "base": 10
+        "light": "auto",
+        "altability": ""
       },
       "wil": {
         "value": 10,
@@ -6631,12 +6870,15 @@
         "enhance": 0,
         "shield": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "temp": 0,
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with willpower.",
-        "base": 10
+        "light": "auto",
+        "altability": ""
       }
     },
     "modifiers": {
@@ -6649,7 +6891,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "damage": {
@@ -6661,7 +6905,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "skills": {
@@ -6673,7 +6919,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "defences": {
@@ -6685,7 +6933,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       }
     },
@@ -6700,7 +6950,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "dex",
         "armourCheck": true,
@@ -6716,7 +6968,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "int",
         "armourCheck": false,
@@ -6732,7 +6986,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "str",
         "armourCheck": true,
@@ -6748,7 +7004,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "cha",
         "armourCheck": false,
@@ -6764,7 +7022,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "cha",
         "armourCheck": false,
@@ -6780,7 +7040,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
@@ -6796,7 +7058,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "con",
         "armourCheck": true,
@@ -6812,7 +7076,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
@@ -6828,7 +7094,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "int",
         "armourCheck": false,
@@ -6844,7 +7112,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
@@ -6860,7 +7130,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "cha",
         "armourCheck": false,
@@ -6876,7 +7148,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
@@ -6892,7 +7166,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
@@ -6908,7 +7184,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "int",
         "armourCheck": false,
@@ -6924,7 +7202,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "dex",
         "armourCheck": true,
@@ -6940,7 +7220,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "cha",
         "armourCheck": false,
@@ -6956,7 +7238,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "dex",
         "armourCheck": true,
@@ -6971,11 +7255,14 @@
         "untyped": 0,
         "training": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
-        "chat": "@name uses @label."
+        "chat": "@name uses @label.",
+        "race": 0
       }
     },
     "skillTraining": {
@@ -7014,7 +7301,9 @@
         "untyped": 0,
         "skill": "prc",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "pasins": {
@@ -7026,7 +7315,9 @@
         "untyped": 0,
         "skill": "ins",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       }
     },
@@ -7038,14 +7329,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "physical": {
         "value": 0,
@@ -7054,14 +7341,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "ongoing": {
         "value": 0,
@@ -7070,14 +7353,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "acid": {
         "value": 0,
@@ -7086,14 +7365,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "cold": {
         "value": 0,
@@ -7102,14 +7377,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "fire": {
         "value": 0,
@@ -7120,17 +7391,11 @@
         "bonus": [
           {
             "name": "",
-            "value": "-1",
+            "value": "- 1",
             "active": false,
             "note": ""
           }
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+        ]
       },
       "force": {
         "value": 0,
@@ -7139,14 +7404,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "lightning": {
         "value": 0,
@@ -7155,14 +7416,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "necrotic": {
         "value": 0,
@@ -7171,14 +7428,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "poison": {
         "value": 0,
@@ -7187,14 +7440,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "psychic": {
         "value": 0,
@@ -7203,14 +7452,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "radiant": {
         "value": 0,
@@ -7219,14 +7464,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "thunder": {
         "value": 0,
@@ -7235,14 +7476,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       }
     },
     "untypedResistances": {
@@ -7259,7 +7496,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "comAdv": {
@@ -7270,7 +7509,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "charge": {
@@ -7281,7 +7522,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "conceal": {
@@ -7292,7 +7535,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "concealTotal": {
@@ -7303,7 +7548,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "cover": {
@@ -7314,7 +7561,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "coverSup": {
@@ -7325,7 +7574,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "longRange": {
@@ -7336,7 +7587,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "marked": {
@@ -7347,7 +7600,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "prone": {
@@ -7358,7 +7613,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "restrained": {
@@ -7369,7 +7626,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "running": {
@@ -7380,7 +7639,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "squeez": {
@@ -7391,7 +7652,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       }
     },
@@ -7416,7 +7679,9 @@
         "base": 6,
         "armour": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
@@ -7429,107 +7694,159 @@
         "value": 0,
         "formula": "@base + @armour",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
       "charge": {
         "value": 0,
         "formula": "@base + @armour",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
       "run": {
         "value": 0,
         "formula": "2",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "misc": 0,
-        "temp": null
+        "temp": null,
+        "traits": ""
       },
       "climb": {
         "value": 0,
         "formula": "0",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
       "shift": {
         "value": 0,
         "formula": "1",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
       "swim": {
         "value": 0,
         "formula": "0",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
-      "notes": ""
+      "notes": "",
+      "burrow": {
+        "value": 0,
+        "formula": "",
+        "bonus": [],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0,
+        "traits": ""
+      },
+      "fly": {
+        "value": 0,
+        "formula": "",
+        "bonus": [],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0,
+        "traits": ""
+      },
+      "teleport": {
+        "value": 0,
+        "formula": "",
+        "bonus": [],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0,
+        "traits": ""
+      },
+      "custom": "",
+      "ignoredDifficultTerrain": []
     },
     "resources": {
       "primary": {
-        "value": null,
-        "max": null,
+        "value": "",
+        "max": "",
         "sr": false,
         "lr": false,
-        "label": "",
-        "show": false
+        "label": ""
       },
       "secondary": {
-        "value": null,
-        "max": null,
+        "value": "",
+        "max": "",
         "sr": false,
         "lr": false,
-        "label": "",
-        "show": false
+        "label": ""
       },
       "tertiary": {
-        "value": null,
-        "max": null,
+        "value": "",
+        "max": "",
         "sr": false,
         "lr": false,
-        "label": "",
-        "show": false
+        "label": ""
       }
     },
     "magicItemUse": {
@@ -7544,23 +7861,14 @@
       "max": null,
       "formulaNorm": "@abilities.str.value * 10",
       "formulaHeavy": "@abilities.str.value * 20",
-      "formulaMax": "@abilities.str.value  * 50"
-    },
-    "defences[[object Object]]": {
-      "base": 10
-    },
-    "skills[[object Object]]": {
-      "base": 0
+      "formulaMax": "@abilities.str.value * 50",
+      "encumbered": false
     },
     "powerGroupTypes": "usage",
     "powerSortTypes": "none",
     "featureSortTypes": "name",
-    "showAll": {
-      "powers": false,
-      "inventory": false,
-      "features": false
-    },
-    "ritualSortTypes": "name"
+    "ritualSortTypes": "name",
+    "inventorySortTypes": "level"
   },
   "ownership": {
     "default": 0
@@ -7571,11 +7879,11 @@
     "displayName": 30,
     "width": 1,
     "height": 1,
-    "lockRotation": false,
+    "lockRotation": true,
     "rotation": 0,
     "actorLink": true,
     "disposition": 1,
-    "displayBars": 0,
+    "displayBars": 30,
     "bar1": {
       "attribute": "attributes.hp"
     },
@@ -7659,19 +7967,13 @@
   },
   "_stats": {
     "duplicateSource": null,
-    "coreVersion": "14.360",
+    "coreVersion": "14.361",
     "systemId": "dnd4e",
     "systemVersion": "0.8.0",
-    "createdTime": 1733179260757,
-    "modifiedTime": 1776986319470,
+    "createdTime": 1778918328423,
+    "modifiedTime": 1778918328423,
     "lastModifiedBy": "dnd4ebuilder0000",
-    "exportSource": {
-      "worldId": "4e",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd4e",
-      "systemVersion": "0.5.9"
-    }
+    "exportSource": null
   },
   "_id": "iK3UnA8rC1xbJ1Ap",
   "sort": 200000,

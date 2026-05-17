@@ -1,762 +1,11 @@
 {
-  "name": "Badger",
-  "type": "NPC",
-  "img": "icons/creatures/mammals/wolf-shadow-black.webp",
-  "items": [
-    {
-      "_id": "iTekLaBn2vKhviW3",
-      "name": "Bite",
-      "type": "power",
-      "img": "icons/creatures/abilities/mouth-teeth-sharp.webp",
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "14.361",
-        "systemId": "dnd4e",
-        "systemVersion": "0.8.0",
-        "createdTime": 1778918328421,
-        "modifiedTime": 1778918328421,
-        "lastModifiedBy": "dnd4ebuilder0000",
-        "exportSource": null
-      },
-      "ownership": {
-        "default": 0
-      },
-      "system": {
-        "description": {
-          "value": "<p><em>Arg! It's got my leg! Get it off! Get it off!</em></p>",
-          "chat": "",
-          "unidentified": "",
-          "gm": ""
-        },
-        "descriptionGM": {
-          "value": ""
-        },
-        "source": "",
-        "activation": {
-          "type": "",
-          "cost": 0,
-          "condition": ""
-        },
-        "duration": {
-          "value": null,
-          "units": ""
-        },
-        "target": "One creature",
-        "range": {
-          "value": null,
-          "long": null,
-          "units": ""
-        },
-        "uses": {
-          "value": null,
-          "max": "",
-          "per": ""
-        },
-        "consume": {
-          "type": "",
-          "target": "",
-          "amount": null
-        },
-        "macro": {
-          "type": "script",
-          "scope": "global",
-          "launchOrder": "off",
-          "command": "",
-          "author": "",
-          "autoanimationHook": ""
-        },
-        "attack": {
-          "shareAttackRoll": false,
-          "isAttack": true,
-          "isBasic": true,
-          "isCharge": false,
-          "isOpp": false,
-          "canCharge": false,
-          "canOpp": false,
-          "ability": "form",
-          "abilityBonus": 0,
-          "def": "ac",
-          "defBonus": 0,
-          "detail": "",
-          "formula": "7",
-          "damageType": {},
-          "effectType": {}
-        },
-        "hit": {
-          "shareDamageRoll": false,
-          "damageBonusNull": false,
-          "isDamage": true,
-          "isHealing": false,
-          "healSurge": "",
-          "baseQuantity": "1",
-          "baseDiceType": "weapon",
-          "detail": "1d6 + 5 Damage",
-          "formula": "1d6 + 5",
-          "critFormula": "1 * 6 + 5",
-          "healFormula": ""
-        },
-        "miss": {
-          "detail": "",
-          "formula": "",
-          "halfDamage": false
-        },
-        "effect": {
-          "detail": ""
-        },
-        "damage": {
-          "parts": []
-        },
-        "damageCrit": {
-          "parts": []
-        },
-        "damageImp": {
-          "parts": []
-        },
-        "damageCritImp": {
-          "parts": []
-        },
-        "damageType": {
-          "physical": true,
-          "damage": false,
-          "acid": false,
-          "cold": false,
-          "fire": false,
-          "force": false,
-          "lightning": false,
-          "necrotic": false,
-          "poison": false,
-          "psychic": false,
-          "radiant": false,
-          "thunder": false
-        },
-        "keyWords": [
-          ""
-        ],
-        "level": "",
-        "powersource": "",
-        "secondPowersource": "",
-        "powersourceName": "",
-        "subName": "Basic Attack",
-        "prepared": true,
-        "powerType": "inherent",
-        "powerSubtype": "attack",
-        "useType": "atwill",
-        "actionType": "standard",
-        "requirements": "",
-        "weaponType": "none",
-        "weaponUse": "none",
-        "rangeType": "melee",
-        "autoTarget": {
-          "mode": "none",
-          "includeSelf": true
-        },
-        "rangeTextShort": "Melee",
-        "rangeText": "Melee",
-        "rangePower": "0",
-        "area": "0",
-        "rechargeRoll": "",
-        "rechargeCondition": "",
-        "damageShare": false,
-        "postEffect": true,
-        "postSpecial": true,
-        "autoGenChatPowerCard": true,
-        "sustain": {
-          "actionType": "",
-          "detail": ""
-        },
-        "trigger": "",
-        "requirement": "",
-        "special": "",
-        "specialAdd": {
-          "parts": []
-        },
-        "effectType": {
-          "augmentable": false,
-          "aura": false,
-          "beast": false,
-          "beastForm": false,
-          "channelDiv": false,
-          "charm": false,
-          "conjuration": false,
-          "disease": false,
-          "elemental": false,
-          "enchantment": false,
-          "evocation": false,
-          "fear": false,
-          "fullDis": false,
-          "gaze": false,
-          "healing": false,
-          "illusion": false,
-          "invigorating": false,
-          "mount": false,
-          "necro": false,
-          "nether": false,
-          "poison": false,
-          "polymorph": false,
-          "rage": false,
-          "rattling": false,
-          "reliable": false,
-          "runic": false,
-          "sleep": false,
-          "spirit": false,
-          "stance": false,
-          "summoning": false,
-          "teleportation": false,
-          "transmutation": false,
-          "zone": false,
-          "shadow": false
-        },
-        "keywordsCustom": "",
-        "keywords": [],
-        "chatFlavor": "",
-        "effectHTML": false,
-        "category": "other",
-        "auraSize": ""
-      },
-      "_key": "!actors.items!n1LXn8qhWKAwCErL.iTekLaBn2vKhviW3"
-    },
-    {
-      "_id": "blY52ZuPbtGqlyGb",
-      "name": "Rage",
-      "type": "power",
-      "img": "icons/svg/aura.svg",
-      "effects": [],
-      "folder": null,
-      "sort": 100000,
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "14.361",
-        "systemId": "dnd4e",
-        "systemVersion": "0.8.0",
-        "createdTime": 1778918328421,
-        "modifiedTime": 1778918328421,
-        "lastModifiedBy": "dnd4ebuilder0000",
-        "exportSource": null
-      },
-      "ownership": {
-        "default": 0
-      },
-      "system": {
-        "description": {
-          "value": "<p><em>The badger flies into a berserk rage, clawing and biting madly until either it or its opponent is dead.&nbsp;</em></p>",
-          "chat": "",
-          "unidentified": "",
-          "gm": ""
-        },
-        "descriptionGM": {
-          "value": ""
-        },
-        "source": "",
-        "activation": {
-          "type": "",
-          "cost": 0,
-          "condition": ""
-        },
-        "duration": {
-          "value": null,
-          "units": ""
-        },
-        "target": "",
-        "range": {
-          "value": null,
-          "long": null,
-          "units": ""
-        },
-        "uses": {
-          "value": 1,
-          "max": "1",
-          "per": "enc"
-        },
-        "consume": {
-          "type": "",
-          "target": "",
-          "amount": null
-        },
-        "macro": {
-          "type": "script",
-          "scope": "global",
-          "launchOrder": "off",
-          "command": "",
-          "author": "",
-          "autoanimationHook": ""
-        },
-        "attack": {
-          "shareAttackRoll": false,
-          "isAttack": false,
-          "isBasic": false,
-          "isCharge": false,
-          "isOpp": false,
-          "canCharge": false,
-          "canOpp": false,
-          "ability": "form",
-          "abilityBonus": 0,
-          "def": "ac",
-          "defBonus": 0,
-          "detail": "",
-          "formula": "@wepAttack + @powerMod + @lvhalf",
-          "damageType": {},
-          "effectType": {}
-        },
-        "hit": {
-          "shareDamageRoll": false,
-          "damageBonusNull": false,
-          "isDamage": false,
-          "isHealing": false,
-          "healSurge": "",
-          "baseQuantity": "1",
-          "baseDiceType": "Base Weapon Damage",
-          "detail": "",
-          "formula": "@powBase + @powMod + @wepDamage",
-          "critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
-          "healFormula": ""
-        },
-        "miss": {
-          "detail": "",
-          "formula": "",
-          "halfDamage": false
-        },
-        "effect": {
-          "detail": "The badger makes a bite attack against the damaging enemy, and then must continue to attack that creature every round until death."
-        },
-        "damage": {
-          "parts": []
-        },
-        "damageCrit": {
-          "parts": []
-        },
-        "damageImp": {
-          "parts": []
-        },
-        "damageCritImp": {
-          "parts": []
-        },
-        "damageType": {},
-        "keyWords": [
-          ""
-        ],
-        "level": "",
-        "powersource": "",
-        "secondPowersource": "",
-        "powersourceName": "",
-        "subName": "",
-        "prepared": true,
-        "powerType": "inherent",
-        "powerSubtype": "attack",
-        "useType": "encounter",
-        "actionType": "free",
-        "requirements": "",
-        "weaponType": "none",
-        "weaponUse": "none",
-        "rangeType": "personal",
-        "autoTarget": {
-          "mode": "none",
-          "includeSelf": true
-        },
-        "rangeTextShort": "The damaging enemy",
-        "rangeText": "The damaging enemy",
-        "rangePower": "1",
-        "area": "0",
-        "rechargeRoll": "",
-        "rechargeCondition": "",
-        "damageShare": false,
-        "postEffect": true,
-        "postSpecial": true,
-        "autoGenChatPowerCard": true,
-        "sustain": {
-          "actionType": "",
-          "detail": ""
-        },
-        "trigger": "On taking damage",
-        "requirement": "",
-        "special": "",
-        "specialAdd": {
-          "parts": []
-        },
-        "effectType": {
-          "augmentable": false,
-          "aura": false,
-          "beast": false,
-          "beastForm": false,
-          "channelDiv": false,
-          "charm": false,
-          "conjuration": false,
-          "disease": false,
-          "elemental": false,
-          "enchantment": false,
-          "evocation": false,
-          "fear": false,
-          "fullDis": false,
-          "gaze": false,
-          "healing": false,
-          "illusion": false,
-          "invigorating": false,
-          "mount": false,
-          "necro": false,
-          "nether": false,
-          "poison": false,
-          "polymorph": false,
-          "rage": false,
-          "rattling": false,
-          "reliable": false,
-          "runic": false,
-          "sleep": false,
-          "spirit": false,
-          "stance": false,
-          "summoning": false,
-          "teleportation": false,
-          "transmutation": false,
-          "zone": false,
-          "shadow": false
-        },
-        "keywordsCustom": "",
-        "keywords": [],
-        "chatFlavor": "",
-        "effectHTML": false,
-        "category": "other",
-        "container": null,
-        "auraSize": ""
-      },
-      "_key": "!actors.items!n1LXn8qhWKAwCErL.blY52ZuPbtGqlyGb"
-    },
-    {
-      "name": "Monster Knowledge (med)",
-      "type": "feature",
-      "img": "icons/svg/book.svg",
-      "system": {
-        "description": {
-          "value": "<h1>Badger</h1>\n<p><b>Role: </b>level 2 Tiny  brute</p>\n<p><b>Type: </b>natural beast</p>\n<p><b>Typical Alignment:</b> Neutral</p>\n<p>Ask your DM for typical temperament</p>",
-          "chat": "",
-          "unidentified": "",
-          "gm": ""
-        },
-        "descriptionGM": {
-          "value": ""
-        },
-        "source": "",
-        "macro": {
-          "type": "script",
-          "scope": "global",
-          "launchOrder": "off",
-          "command": "",
-          "author": "",
-          "autoanimationHook": ""
-        },
-        "featureType": "other",
-        "level": "",
-        "requirements": "",
-        "featureSource": "",
-        "featureGroup": "",
-        "auraSize": "",
-        "effectType": {},
-        "damageType": {},
-        "keywordsCustom": "",
-        "activation": {
-          "type": "",
-          "cost": 0,
-          "condition": ""
-        },
-        "duration": {
-          "value": null,
-          "units": ""
-        },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
-        "range": {
-          "value": null,
-          "long": null,
-          "units": ""
-        },
-        "uses": {
-          "value": 0,
-          "max": 0,
-          "per": null
-        },
-        "consume": {
-          "type": "",
-          "target": null,
-          "amount": null
-        },
-        "category": "other"
-      },
-      "_id": "5893lXTphVotsLpt",
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "ownership": {
-        "default": 0
-      },
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "14.361",
-        "systemId": "dnd4e",
-        "systemVersion": "0.8.0",
-        "createdTime": 1778918328421,
-        "modifiedTime": 1778918328421,
-        "lastModifiedBy": "dnd4ebuilder0000",
-        "exportSource": null
-      },
-      "_key": "!actors.items!n1LXn8qhWKAwCErL.5893lXTphVotsLpt"
-    },
-    {
-      "name": "Monster Knowledge (hard)",
-      "type": "feature",
-      "img": "icons/svg/book.svg",
-      "system": {
-        "description": {
-          "value": "<h1>Badger</h1><p><strong>Role: </strong>level 2 Tiny brute</p><p><strong>Type: </strong>natural beast</p><p><strong>Typical Alignment:</strong> Neutral</p><p>Ask your DM for typical temperament</p><h2>Powers</h2><p><strong>Bite</strong><br>Standard, Basic, Melee, 7 vs AC</p><p><strong>Rage</strong><br>Free, Encounter, (when taking damage); The badger makes a bite attack against the damaging enemy, and then must continue to attack that creature every round until death.</p>",
-          "chat": "",
-          "unidentified": "",
-          "gm": ""
-        },
-        "descriptionGM": {
-          "value": ""
-        },
-        "source": "",
-        "macro": {
-          "type": "script",
-          "scope": "global",
-          "launchOrder": "off",
-          "command": "",
-          "author": "",
-          "autoanimationHook": ""
-        },
-        "featureType": "other",
-        "level": "",
-        "requirements": "",
-        "featureSource": "",
-        "featureGroup": "",
-        "auraSize": "",
-        "effectType": {},
-        "damageType": {},
-        "keywordsCustom": "",
-        "activation": {
-          "type": "",
-          "cost": 0,
-          "condition": ""
-        },
-        "duration": {
-          "value": null,
-          "units": ""
-        },
-        "target": {
-          "value": null,
-          "width": null,
-          "units": "",
-          "type": ""
-        },
-        "range": {
-          "value": null,
-          "long": null,
-          "units": ""
-        },
-        "uses": {
-          "value": 0,
-          "max": 0,
-          "per": null
-        },
-        "consume": {
-          "type": "",
-          "target": null,
-          "amount": null
-        },
-        "category": "other"
-      },
-      "_id": "pg85XAO58kzYqrI0",
-      "effects": [],
-      "folder": null,
-      "sort": 0,
-      "ownership": {
-        "default": 0
-      },
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "14.361",
-        "systemId": "dnd4e",
-        "systemVersion": "0.8.0",
-        "createdTime": 1778918328422,
-        "modifiedTime": 1778918328422,
-        "lastModifiedBy": "dnd4ebuilder0000",
-        "exportSource": null
-      },
-      "_key": "!actors.items!n1LXn8qhWKAwCErL.pg85XAO58kzYqrI0"
-    }
-  ],
-  "effects": [],
-  "folder": null,
-  "flags": {
-    "dnd4eBeta": {
-      "sheetDisplay": {
-        "features": {
-          "sortBy": {
-            "value": ""
-          }
-        },
-        "powers": {
-          "groupBy": {
-            "value": ""
-          },
-          "sortBy": {
-            "value": ""
-          }
-        }
-      }
-    },
-    "dnd4e": {
-      "sheetDisplay": {
-        "features": {
-          "sortBy": {
-            "value": ""
-          }
-        },
-        "powers": {
-          "groupBy": {
-            "value": ""
-          },
-          "sortBy": {
-            "value": ""
-          }
-        }
-      }
-    }
-  },
+  "name": "Snappy Trappy",
+  "type": "Hazard",
+  "img": "icons/environment/traps/trap-jaw-green.webp",
   "system": {
-    "biography": "<p>The badger is a furry animal with a squat, powerful body. Its fur is mostly black with a while stripe running down its nose and face. Its strong forelimbs are armed with long claws for digging.</p>\n<p>An adult badger is 2 to 3 feet long (0.75 - 1m) and weighs 25 to 35 pounds. (10 - 15Kg)</p>",
-    "details": {
-      "size": "tiny",
-      "origin": "natural",
-      "type": "beast",
-      "other": "",
-      "race": "",
-      "age": "",
-      "gender": "",
-      "height": "",
-      "weight": "",
-      "alignment": "Neutral",
-      "deity": "",
-      "level": 2,
-      "tier": 1,
-      "exp": 125,
-      "bloodied": 22,
-      "surgeValue": 0,
-      "surgeBon": {
-        "bonus": [
-          {
-            "active": false
-          }
-        ],
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0,
-        "value": 0
-      },
-      "surges": {
-        "value": 1,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0,
-        "max": 1
-      },
-      "surgeEnv": {
-        "bonus": [
-          {
-            "active": false
-          }
-        ],
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0,
-        "value": 0
-      },
-      "saves": {
-        "bonus": [],
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0,
-        "value": 0
-      },
-      "role": {
-        "primary": "brute",
-        "secondary": "standard",
-        "leader": false
-      },
-      "isBloodied": false,
-      "source": "Example Creature Compendium",
-      "controller": ""
-    },
-    "languages": {
-      "spoken": {
-        "value": [],
-        "custom": ""
-      },
-      "script": {
-        "value": [],
-        "custom": ""
-      }
-    },
-    "senses": {
-      "special": {
-        "custom": "",
-        "lv": {
-          "value": false,
-          "range": ""
-        },
-        "dv": {
-          "value": true,
-          "range": ""
-        },
-        "aa": {
-          "value": false,
-          "range": ""
-        },
-        "bs": {
-          "value": false,
-          "range": ""
-        },
-        "bv": {
-          "value": false,
-          "range": ""
-        },
-        "nv": {
-          "value": false,
-          "range": ""
-        },
-        "tr": {
-          "value": false,
-          "range": ""
-        },
-        "ts": {
-          "value": false,
-          "range": ""
-        }
-      },
-      "notes": ""
-    },
     "abilities": {
       "str": {
-        "value": 14,
+        "value": 10,
         "chat": "@name uses @label.",
         "check": {
           "feat": 0,
@@ -769,7 +18,7 @@
         }
       },
       "con": {
-        "value": 14,
+        "value": 10,
         "chat": "@name uses @label.",
         "check": {
           "feat": 0,
@@ -782,7 +31,7 @@
         }
       },
       "dex": {
-        "value": 13,
+        "value": 10,
         "chat": "@name uses @label.",
         "check": {
           "feat": 0,
@@ -795,7 +44,7 @@
         }
       },
       "int": {
-        "value": 2,
+        "value": 10,
         "chat": "@name uses @label.",
         "check": {
           "feat": 0,
@@ -808,7 +57,7 @@
         }
       },
       "wis": {
-        "value": 12,
+        "value": 10,
         "chat": "@name uses @label.",
         "check": {
           "feat": 0,
@@ -821,7 +70,7 @@
         }
       },
       "cha": {
-        "value": 8,
+        "value": 10,
         "chat": "@name uses @label.",
         "check": {
           "feat": 0,
@@ -836,9 +85,9 @@
     },
     "attributes": {
       "hp": {
-        "value": 44,
+        "value": 10,
         "min": 0,
-        "max": 44,
+        "max": 10,
         "starting": 0,
         "perlevel": 0,
         "feat": 0,
@@ -848,23 +97,29 @@
         "untyped": 0,
         "misc": 0,
         "autototal": false,
-        "temprest": false
+        "temprest": false,
+        "none": false
       },
       "temphp": {
         "value": 0,
         "max": 10
       },
       "init": {
-        "value": 3,
-        "ability": "dex",
-        "bonus": [],
+        "value": 0,
+        "ability": "",
+        "bonus": [
+          {
+            "active": false
+          }
+        ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
         "notes": "",
-        "base": 0
+        "base": 0,
+        "none": true
       }
     },
     "actionpoints": {
@@ -876,7 +131,7 @@
     },
     "defences": {
       "ac": {
-        "value": 13,
+        "value": 10,
         "ability": "",
         "armour": 0,
         "class": 0,
@@ -897,10 +152,11 @@
         "altability": "",
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with armour.",
-        "base": 13
+        "base": 10,
+        "none": false
       },
       "fort": {
-        "value": 13,
+        "value": 10,
         "ability": "",
         "armour": 0,
         "class": 0,
@@ -913,18 +169,22 @@
         "shield": 0,
         "bonus": [
           {
-            "active": false
+            "name": "",
+            "value": "30",
+            "active": false,
+            "note": ""
           }
         ],
         "temp": 0,
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with fortitude.",
-        "base": 13,
+        "base": 10,
+        "none": true,
         "light": "auto",
         "altability": ""
       },
       "ref": {
-        "value": 12,
+        "value": 10,
         "ability": "",
         "armour": 0,
         "class": 0,
@@ -937,13 +197,17 @@
         "shield": 0,
         "bonus": [
           {
-            "active": false
+            "name": "",
+            "value": "30",
+            "active": false,
+            "note": ""
           }
         ],
         "temp": 0,
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with reflexes.",
-        "base": 12,
+        "base": 10,
+        "none": false,
         "light": "auto",
         "altability": ""
       },
@@ -968,6 +232,7 @@
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with willpower.",
         "base": 10,
+        "none": true,
         "light": "auto",
         "altability": ""
       }
@@ -1025,7 +290,10 @@
         "untyped": 0,
         "bonus": [
           {
-            "active": false
+            "name": "",
+            "value": "20",
+            "active": false,
+            "note": ""
           }
         ]
       }
@@ -1412,6 +680,72 @@
         ]
       }
     },
+    "details": {
+      "level": 1,
+      "tier": 1,
+      "exp": 1000,
+      "bloodied": 0,
+      "surgeValue": 0,
+      "surgeBon": {
+        "bonus": [
+          {
+            "active": false
+          }
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "value": 0
+      },
+      "surges": {
+        "value": 0,
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "max": 0
+      },
+      "surgeEnv": {
+        "bonus": [
+          {
+            "active": false
+          }
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "value": 0
+      },
+      "saves": {
+        "bonus": [
+          {
+            "active": false
+          }
+        ],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "value": 0
+      },
+      "detection": "Perception DC 20",
+      "countermeasures": "<ul><li><p><strong>Disable:</strong> Thievery DC 18. <em>Success:</em> The trap is disabled. <em>Failure:</em> The trap attacks the creature atempting the check.</p></li></ul>",
+      "role": {
+        "primary": "trap",
+        "secondary": "standard",
+        "tertiary": "lurker"
+      },
+      "size": "med",
+      "notes": "",
+      "isBloodied": false,
+      "source": "Example Creature Compendium"
+    },
     "resistances": {
       "damage": {
         "value": 0,
@@ -1747,24 +1081,10 @@
       }
     },
     "marker": null,
-    "currency": {
-      "ad": 0,
-      "pp": 0,
-      "gp": 0,
-      "sp": 0,
-      "cp": 0
-    },
-    "ritualcomp": {
-      "ar": 0,
-      "ms": 0,
-      "rh": 0,
-      "si": 0,
-      "rs": 0
-    },
     "movement": {
       "base": {
-        "value": 4,
-        "base": 4,
+        "value": 0,
+        "base": 0,
         "armour": 0,
         "bonus": [
           {
@@ -1780,7 +1100,7 @@
       },
       "walk": {
         "value": 0,
-        "formula": "@base + @armour",
+        "formula": "@base",
         "bonus": [
           {
             "active": false
@@ -1796,7 +1116,7 @@
       },
       "charge": {
         "value": 0,
-        "formula": "@base + @armour",
+        "formula": "@base",
         "bonus": [
           {
             "active": false
@@ -1812,7 +1132,7 @@
       },
       "run": {
         "value": 0,
-        "formula": "2",
+        "formula": "@base + 2",
         "bonus": [
           {
             "active": false
@@ -1828,7 +1148,7 @@
       },
       "climb": {
         "value": 0,
-        "formula": "",
+        "formula": "@base / 2",
         "bonus": [
           {
             "active": false
@@ -1860,7 +1180,7 @@
       },
       "swim": {
         "value": 0,
-        "formula": "",
+        "formula": "@base / 2",
         "bonus": [
           {
             "active": false
@@ -1875,10 +1195,11 @@
         "traits": ""
       },
       "notes": "",
+      "none": true,
       "custom": "",
       "burrow": {
-        "formula": "2",
         "value": 0,
+        "formula": "",
         "bonus": [],
         "feat": 0,
         "item": 0,
@@ -1914,84 +1235,89 @@
       },
       "ignoredDifficultTerrain": []
     },
-    "advancedCals": true,
-    "featureSortTypes": "name",
-    "powerGroupTypes": "usage",
-    "powerSortTypes": "actionType",
+    "description": "<p>This steel jaw trap is anchored to the ground with a driven stake, Once armed, it snaps shut around the first thing to place weight on  its pressure pad.</p>",
+    "advancedCals": false,
+    "powerGroupTypes": "actionMod",
+    "powerSortTypes": "useType",
     "ritualSortTypes": "level",
+    "featureSortTypes": "level",
     "inventorySortTypes": "level"
   },
-  "ownership": {
-    "default": 0
-  },
   "prototypeToken": {
-    "actorLink": false,
-    "displayBars": 30,
-    "flags": {},
-    "name": "Badger",
+    "name": "Snappy trappy",
     "displayName": 30,
+    "actorLink": false,
+    "appendNumber": true,
+    "prependAdjective": false,
     "width": 1,
     "height": 1,
+    "texture": {
+      "src": "icons/environment/traps/trap-jaw-green.webp",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "scaleX": 1,
+      "scaleY": 1,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
     "lockRotation": true,
     "rotation": 0,
     "alpha": 1,
+    "disposition": -1,
+    "displayBars": 30,
+    "bar1": {
+      "attribute": "attributes.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
     "light": {
+      "negative": false,
+      "priority": 0,
       "alpha": 0.5,
       "angle": 360,
       "bright": 0,
+      "color": null,
       "coloration": 1,
       "dim": 0,
+      "attenuation": 0.5,
       "luminosity": 0.5,
       "saturation": 0,
       "contrast": 0,
       "shadows": 0,
       "animation": {
+        "type": null,
         "speed": 5,
         "intensity": 5,
-        "reverse": false,
-        "type": null
+        "reverse": false
       },
       "darkness": {
         "min": 0,
         "max": 1
-      },
-      "color": null,
-      "attenuation": 0.5,
-      "negative": false,
-      "priority": 0
-    },
-    "disposition": -1,
-    "bar1": {
-      "attribute": "attributes.hp"
-    },
-    "bar2": {
-      "attribute": "attributes.temphp"
-    },
-    "randomImg": false,
-    "texture": {
-      "src": "icons/creatures/mammals/wolf-shadow-black.webp",
-      "tint": "#ffffff",
-      "scaleX": 1,
-      "scaleY": 1,
-      "anchorX": 0.5,
-      "anchorY": 0.5,
-      "fit": "contain",
-      "alphaThreshold": 0.75
+      }
     },
     "sight": {
-      "angle": 360,
       "enabled": true,
       "range": 0,
-      "brightness": 1,
+      "angle": 360,
       "visionMode": "basic",
+      "color": null,
       "attenuation": 0.1,
+      "brightness": 0,
       "saturation": 0,
-      "contrast": 0,
-      "color": null
+      "contrast": 0
     },
-    "appendNumber": true,
-    "prependAdjective": false,
-    "detectionModes": {},
+    "detectionModes": {
+      "basicSight": {
+        "range": 0,
+        "enabled": true
+      },
+      "lightPerception": {
+        "range": null,
+        "enabled": true
+      }
+    },
     "occludable": {
       "radius": 0
     },
@@ -2001,12 +1327,42 @@
         "ring": null,
         "background": null
       },
-      "effects": 1,
+      "effects": 0,
       "subject": {
         "scale": 1,
         "texture": null
       }
     },
+    "flags": {
+      "lightmask": {
+        "rotation": 180,
+        "shape": "circle",
+        "sides": 3,
+        "points": 5,
+        "ellipseMinor": 1
+      },
+      "Rideable": {
+        "issetRideableFlag": true,
+        "MaxRiderFlag": null,
+        "CustomRidingheightFlag": null,
+        "UseRidingHeightFlag": true,
+        "RidersScaleFlag": 1,
+        "RiderPositioningFlag": "RowPlacement",
+        "RiderOffsetFlag": [
+          0,
+          0
+        ],
+        "RiderRotOffsetFlag": 0,
+        "GrapplePlacementFlag": "Following",
+        "TokenFormFlag": "TokenFormCircle",
+        "InsideMovementFlag": false,
+        "SpawnRidersFlag": "",
+        "CanbePilotedFlag": false,
+        "CheckPilotedCollisionFlag": false,
+        "PilotedbyDefaultFlag": false
+      }
+    },
+    "randomImg": false,
     "turnMarker": {
       "mode": 1,
       "animation": null,
@@ -2016,17 +1372,251 @@
     "movementAction": null,
     "depth": 1
   },
+  "items": [
+    {
+      "name": "Snap Shut",
+      "type": "power",
+      "system": {
+        "description": {
+          "value": "",
+          "chat": "",
+          "unidentified": "",
+          "gm": ""
+        },
+        "descriptionGM": {
+          "value": ""
+        },
+        "source": "",
+        "activation": {
+          "type": "",
+          "cost": 0,
+          "condition": ""
+        },
+        "duration": {
+          "value": null,
+          "units": ""
+        },
+        "target": "The triggering creature",
+        "range": {
+          "value": null,
+          "long": null,
+          "units": ""
+        },
+        "uses": {
+          "value": 1,
+          "max": "1",
+          "per": "enc"
+        },
+        "consume": {
+          "type": "",
+          "target": "",
+          "amount": null
+        },
+        "macro": {
+          "type": "script",
+          "scope": "global",
+          "launchOrder": "off",
+          "command": "",
+          "author": "",
+          "autoanimationHook": ""
+        },
+        "attack": {
+          "shareAttackRoll": false,
+          "isAttack": true,
+          "isBasic": true,
+          "isCharge": false,
+          "isOpp": false,
+          "canCharge": false,
+          "canOpp": false,
+          "ability": "form",
+          "abilityBonus": 0,
+          "def": "ref",
+          "defBonus": 0,
+          "detail": "",
+          "formula": "+ 12"
+        },
+        "hit": {
+          "shareDamageRoll": false,
+          "damageBonusNull": false,
+          "isDamage": true,
+          "isHealing": false,
+          "healSurge": "",
+          "baseQuantity": "1",
+          "baseDiceType": "d10",
+          "detail": "1d10 damage, and the target is restrained.",
+          "formula": "@powBase + @powerMod + @wepDamage",
+          "critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
+          "healFormula": ""
+        },
+        "miss": {
+          "detail": "",
+          "formula": "",
+          "halfDamage": false
+        },
+        "effect": {
+          "detail": ""
+        },
+        "damage": {
+          "parts": []
+        },
+        "damageCrit": {
+          "parts": []
+        },
+        "damageCritImp": {
+          "parts": []
+        },
+        "damageType": {
+          "damage": false,
+          "acid": false,
+          "cold": false,
+          "fire": false,
+          "force": false,
+          "lightning": false,
+          "necrotic": false,
+          "physical": true,
+          "poison": false,
+          "psychic": false,
+          "radiant": false,
+          "thunder": false
+        },
+        "keyWords": [
+          ""
+        ],
+        "level": "",
+        "powersource": "",
+        "secondPowersource": "",
+        "powersourceName": "",
+        "subName": "",
+        "prepared": true,
+        "powerType": "inherent",
+        "powerSubtype": "attack",
+        "useType": "encounter",
+        "actionType": "interrupt",
+        "requirements": "",
+        "weaponType": "none",
+        "weaponUse": "default",
+        "rangeType": "melee",
+        "autoTarget": {
+          "mode": "none",
+          "includeSelf": true
+        },
+        "rangeTextShort": "",
+        "rangeText": "",
+        "rangePower": "0",
+        "area": "0",
+        "rechargeRoll": "",
+        "rechargeCondition": "",
+        "damageShare": false,
+        "postEffect": true,
+        "postSpecial": true,
+        "autoGenChatPowerCard": true,
+        "sustain": {
+          "actionType": "",
+          "detail": ""
+        },
+        "trigger": "A creature moves into the trap's square",
+        "requirement": "",
+        "special": "",
+        "specialAdd": {
+          "parts": []
+        },
+        "effectType": {
+          "augmentable": false,
+          "aura": false,
+          "beast": false,
+          "beastForm": false,
+          "channelDiv": false,
+          "charm": false,
+          "conjuration": false,
+          "disease": false,
+          "elemental": false,
+          "enchantment": false,
+          "evocation": false,
+          "fear": false,
+          "fullDis": false,
+          "gaze": false,
+          "healing": false,
+          "illusion": false,
+          "invigorating": false,
+          "mount": false,
+          "necro": false,
+          "nether": false,
+          "poison": false,
+          "polymorph": false,
+          "rage": false,
+          "rattling": false,
+          "reliable": false,
+          "runic": false,
+          "shadow": false,
+          "sleep": false,
+          "spirit": false,
+          "stance": false,
+          "summoning": false,
+          "teleportation": false,
+          "transmutation": false,
+          "zone": false
+        },
+        "keywordsCustom": "",
+        "effectHTML": false,
+        "chatFlavor": "",
+        "auraSize": ""
+      },
+      "_id": "YuR4IeaZNc25YiwG",
+      "img": "modules/fox-4e-content-pack/images/NPC-Icons/white/Attack-Melee-Basic.svg",
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "dnd4e",
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328420,
+        "modifiedTime": 1778918328420,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "exportSource": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0
+      },
+      "_key": "!actors.items!uZ520HCSucLMwcr6.YuR4IeaZNc25YiwG"
+    }
+  ],
+  "effects": [],
+  "folder": null,
+  "flags": {
+    "dnd4e": {
+      "sheetDisplay": {
+        "powers": {
+          "groupBy": {
+            "value": ""
+          },
+          "sortBy": {
+            "value": ""
+          }
+        }
+      }
+    },
+    "core": {
+      "sheetClass": ""
+    }
+  },
   "_stats": {
-    "duplicateSource": null,
     "coreVersion": "14.361",
     "systemId": "dnd4e",
     "systemVersion": "0.8.0",
-    "createdTime": 1778918328420,
-    "modifiedTime": 1778918328420,
+    "createdTime": 1778918328419,
+    "modifiedTime": 1778918328419,
     "lastModifiedBy": "dnd4ebuilder0000",
-    "exportSource": null
+    "exportSource": null,
+    "duplicateSource": null
   },
-  "_id": "n1LXn8qhWKAwCErL",
-  "sort": 300000,
-  "_key": "!actors!n1LXn8qhWKAwCErL"
+  "_id": "uZ520HCSucLMwcr6",
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_key": "!actors!uZ520HCSucLMwcr6"
 }
