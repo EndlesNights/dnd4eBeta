@@ -2229,7 +2229,7 @@ DND4E.script = {
 };
 preLocalize("script", { sort: true });
 
-//use @level to derive value
+//use @lv to derive value
 DND4E.SCALE = {
 	basic: {
 		1: 1,

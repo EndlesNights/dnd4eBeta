@@ -29,9 +29,9 @@ export default class FormulaField extends foundry.data.fields.StringField {
 				value = value.replace(wepDiceRegex, "0");
 			}
 			if (value.includes("@scale")) {
-				// Convert @scaleX to scale(@level, X).
-				value = value.replace(/@scale(\d*)/gm, "(scale(@level, $1))");
-				value = value.replace(/@scale/gm, "(scale(@level))");
+				// Convert @scaleX to scale(@lv, X).
+				value = value.replace(/@scale(\d*)/gm, "(scale(@lv, $1))");
+				value = value.replace(/@scale/gm, "(scale(@lv))");
 			}
 			const operatorRegex = /\s*([+\-*/])\s*/g;
 			value = value.replace(operatorRegex, " $1 ");
