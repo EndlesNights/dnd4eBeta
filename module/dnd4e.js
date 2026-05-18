@@ -87,8 +87,10 @@ Hooks.once("init", async function() {
 	// Define custom Entity classes
 	CONFIG.DND4E = DND4E;
 
-	foundry.applications.apps.DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4e", ActiveEffectConfig4e, { makeDefault: true });
-	// DocumentSheetConfig.registerSheet(Actor4e, "dnd4e", ActiveEffectConfig4e, {makeDefault :true});
+	foundry.applications.apps.DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4e", ActiveEffectConfig4e, {
+		makeDefault: true,
+		label: _loc("SHEET.ActiveEffect"),
+	});
 	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
 	CONFIG.ActiveEffect.legacyTransferral = false;
 	CONFIG.Item.collection = Items4e;
