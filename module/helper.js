@@ -934,6 +934,16 @@ export class Helper {
 				for (let t of tokenTarget) {
 					// let effectData = e.data;
 					// e.sourceName = parent.name;
+
+					// Perform data replacement on effect description; target values can be accessed with @target.[normal property path].
+					let description = e.description ? e.description : "";
+					if (typeof description === "string") {
+						const rollData = parent?.getRollData();
+						const targetData = t.actor?.getRollData();
+						if (rollData && targetData) rollData.target = targetData;
+						description = Roll.replaceFormulaData(description, rollData);
+					}
+
 					e.origin = parent.uuid;
 					this.solidifyEffectActorData(e, parent);
 					const flags = e.flags;
@@ -941,7 +951,7 @@ export class Helper {
 					const newEffectData = {
 						name: e.name,
 						type: e.type,
-						description: e.description ? e.description : "",
+						description: description,
 						img: e.img,
 						origin: e.origin,
 						sourceName: parent.name,
