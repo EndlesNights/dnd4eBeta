@@ -961,7 +961,8 @@ export class Helper {
 					// Perform data replacement on effect description; target values can be accessed with @target.[normal property path].
 					let description = e.description ? e.description : "";
 					if (typeof description === "string") {
-						const rollData = parent?.getRollData();
+						const sourceItem = fromUuidSync(e.origin);
+						const rollData = sourceItem?.getRollData() ?? parent?.getRollData();
 						const targetData = t.actor?.getRollData();
 						if (rollData && targetData) rollData.target = targetData;
 						rollData.effect = { name: e.name };
