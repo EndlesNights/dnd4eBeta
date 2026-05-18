@@ -1093,7 +1093,8 @@ export default class Item4e extends Item {
 		if (this.effects.size) {
 			for (const e of this.effects) {
 				if (e.description) {
-					e.descriptionToolTip = `<div class="effect-tooltip" >${e.description}</div>`;
+					const enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(e.description, { rollData: this.getRollData() });
+					e.descriptionToolTip = `<div class="effect-tooltip" >${enrichedDescription}</div>`;
 				}
 			}
 		}
