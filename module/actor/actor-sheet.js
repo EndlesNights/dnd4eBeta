@@ -906,7 +906,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			let quantity = 0;
 			switch (consume.type) {
 				case "attribute":
-					consumed = foundry.utils.getProperty(actor.system, consume.target);
+					consumed = foundry.utils.getProperty(actor, consume.target);
 					quantity = consumed || 0;
 					break;
 				case "resource":
