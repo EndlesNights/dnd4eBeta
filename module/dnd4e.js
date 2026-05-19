@@ -31,6 +31,8 @@ import { default as DifficultTerrainRegionBehaviorType } from "./regionBehaviors
 import { default as TerrainData4e } from "./regionBehaviors/terrain-data.js";
 import { default as DifficultTerrainConfig } from "./apps/regionBehaviors/difficult-terrain-config.js";
 
+import * as lookup from "./enrichers/lookup.js";
+
 import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handlePromptEoTSaves, performPreLocalization } from "./helper.js";
 
 // Import Helpers
@@ -261,6 +263,12 @@ Hooks.once("init", async function() {
 	CONFIG.Token.movement.costAggregator = (results, distance, segment) => {
 		return Math.max(...results.map(i => i.cost));
 	};
+
+	// Enrichers
+	// Register enrichers
+	CONFIG.TextEditor.enrichers = [
+		lookup,
+	];
 });
 
 /* --------------------------------------------- */
