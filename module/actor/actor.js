@@ -2332,8 +2332,9 @@ export class Actor4e extends Actor {
 			const uses = parseInt(itemData.uses.value || 0);
 			if (uses <= 0) ui.notifications.warn(_loc("DND4E.ItemNoUses", { name: item.name }));
 			
-			await item.update({ "system.uses.value": Math.max(parseInt(item.system.uses.value || 0) - 1, 0) });
-			// item.update({"system.uses.value": Math.max(parseInt(item.system.uses.value || 0) - 1, 0)})
+			if (!!game.combat || !["round", "turn"].includes(item.system.uses.per)) {
+				await item.update({ "system.uses.value": Math.max(parseInt(item.system.uses.value || 0) - 1, 0) });
+			}
 		}
 
 		if (fastForward) {
