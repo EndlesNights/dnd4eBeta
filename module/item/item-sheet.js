@@ -431,8 +431,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		context.item = itemData;
 		context.system = itemData.system;
 
+		const rollData = this.item?.getRollData();
+
 		const descriptionText = context.system.description.value || "";
 		context.descriptionHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText, {
+			rollData,
 			secrets: context.item.isOwner,
 			async: true,
 			relativeTo: this.item,
@@ -440,6 +443,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		const descriptionTextGM = context.system.description.gm || "";
 		context.descriptionHTMLGM = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionTextGM, {
+			rollData,
 			secrets: context.item.isOwner,
 			async: true,
 			relativeTo: this.item,
