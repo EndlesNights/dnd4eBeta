@@ -1,4 +1,26 @@
-<h3 class="form-header">{{ localize "DND4E.ItemEquipmentDetails" }}</h3>
+{{!-- Equipment Status --}}
+<fieldset name="equipment-status" class="equipment-status form-group stacked">
+  <legend>{{ localize "DND4E.ItemEquipmentStatus" }}</legend>  
+  <div class="form-group">
+    <label>{{localize "DND4E.Proficient"}} </label>
+    <select name="system.proficient">
+      {{selectOptions config.proficiency selected=system.proficient}}
+    </select>
+  </div>
+  <label class="checkbox small">
+    <input type="checkbox" name="system.equipped" {{checked system.equipped}}>
+    {{ localize "DND4E.Equipped" }}
+  </label>
+  <label class="checkbox small">
+    <input type="checkbox" name="system.identified" {{checked system.identified}}>
+    {{ localize "DND4E.Identified" }}
+  </label>
+  <label class="checkbox small">
+    <input type="checkbox" name="system.attuned" {{checked system.attuned}}>
+    {{ localize "DND4E.Attuned" }}
+  </label>
+</fieldset>
+
 {{!-- Equipment Type --}}
 <div class="form-group uses-per">
   <label>{{ localize "DND4E.ItemEquipmentType" }}</label>
@@ -45,29 +67,6 @@
 </div>
 {{/if}}
 {{/if}}
-
-{{!-- Equipment Status --}}
-<div class="form-group stacked">
-  <label>{{ localize "DND4E.ItemEquipmentStatus" }}</label>
-  <div class="form-group">
-    <label>{{localize "DND4E.Proficient"}} </label>
-    <select name="system.proficient">
-      {{selectOptions config.proficiency selected=system.proficient}}
-    </select>
-  </div>
-  <label class="checkbox">
-    <input type="checkbox" name="system.equipped" {{checked system.equipped}}>
-    {{ localize "DND4E.Equipped" }}
-  </label>
-  <label class="checkbox">
-    <input type="checkbox" name="system.identified" {{checked system.identified}}>
-    {{ localize "DND4E.Identified" }}
-  </label>
-  <label class="checkbox">
-    <input type="checkbox" name="system.attuned" {{checked system.attuned}}>
-    {{ localize "DND4E.Attuned" }}
-  </label>
-</div>
 
 {{#if hasBaseProps}}
 {{!-- Base Properties --}}

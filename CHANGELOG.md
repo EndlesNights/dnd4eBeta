@@ -1,5 +1,13 @@
 # Changelog
 
+## Version 0.8.1 BETA
+* Migration of `@scale` variables has been fixed (SagaTympana)
+* Enhanced Active Effects, including adding an enricher for descriptions. Will be documented in the Manual compendium sooner or later, but for now please check out the PR for usage details. (SagaTympana)
+* Per-round and per-turn power usage is no longer tracked outside of combat (SagaTympana)
+* Fixed handling of attribute consumption targets (SagaTympana)
+* Updated item text description enrichment (SagaTympana)
+* Normalised the item status section between weapons and equipment (Fox)
+
 ## Version 0.8.0 BETA
 Our first v14-compatible release! Note that while this release seems stable and complete, it could still have undetected issues that might break your game. We appreciate testing, but please treat this as a beta release; we don't recommend using it in your live game environment. Please report any errors on the [GitHub issues page](https://github.com/EndlesNights/dnd4eBeta/).
 ### Player-Facing Changes

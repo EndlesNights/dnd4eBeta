@@ -431,27 +431,25 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		context.item = itemData;
 		context.system = itemData.system;
 
-		const description = context.system.description;
-		const weaponUse = this.actor ? Helper.getWeaponUse(itemData.system, this.actor) : null;
-		const itemActor = this.item.actor || null;
-		const descriptionText = description.value ? Roll.replaceFormulaData(description.value, this.item.getRollData()) : "";
-		context.descriptionHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText || description, {
+		const rollData = this.item?.getRollData();
+
+		const descriptionText = context.system.description.value || "";
+		context.descriptionHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText, {
+			rollData,
 			secrets: context.item.isOwner,
 			async: true,
 			relativeTo: this.item,
 		});
 
-		const descriptionGM = context.system.description.gm || "";
-		const descriptionTextGM = context.system.description.gm ? Roll.replaceFormulaData(descriptionGM, this.item.getRollData()) : "";
-
-		context.descriptionHTMLGM = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionTextGM || descriptionGM, {
+		const descriptionTextGM = context.system.description.gm || "";
+		context.descriptionHTMLGM = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionTextGM, {
+			rollData,
 			secrets: context.item.isOwner,
 			async: true,
 			relativeTo: this.item,
-			// icon: "fa-regular fa-note-medical"
 		});
 
-		if (context.system.description.gm) {
+		if (descriptionTextGM) {
 			context.system.description.gmNotes = true;
 		}
 
