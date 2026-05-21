@@ -15,6 +15,29 @@ export class Helper {
 	}
 
 	/**
+     * Helper function to perform synchronous evaluation of a user-input formula
+     * User-input formulas may throw if blank or otherwise contain invalid terms.
+     * @param {string} formula                      The roll formula. May be blank or otherwise invalid.
+     * @param {object} [rollData]                   The roll data for parsing.
+     * @param {object} [options]                    Options for this method to forward.
+     * @param {boolean} [options.strict=false]      Forwarded to {@linkcode Roll.evaluateSync}.
+     * @param {boolean} [options.allowStrings=true] Forwarded to {@linkcode Roll.evaluateSync}.
+     * @param {string} [options.contextName]        Helpful string put into the error message.
+     * @returns {number} Returns the total, or 0 if it failed to evaluate.
+     */
+	static evaluateFormula(formula, rollData = {}, { strict = false, allowStrings = true, contextName = "unknown" } = {}) {
+		let result = 0;
+		try {
+			const evaluatedResult = new Roll(formula || "0", rollData).evaluateSync({ strict, allowStrings }).total;
+			result = evaluatedResult;
+		}
+		catch (e) {
+			console.error(`Failed to evaluate formula ${formula} in ${contextName}`, e);
+		}
+		return result;
+	}
+
+	/**
 	 * Returns true if the variable is defined and is not an empty string.
 	 * @param str the object to check, could be a string, could be any other object
 	 * @returns {boolean} if the object is defined (non null) and is not the empty string.
@@ -934,6 +957,18 @@ export class Helper {
 				for (let t of tokenTarget) {
 					// let effectData = e.data;
 					// e.sourceName = parent.name;
+
+					// Perform data replacement on effect description; target values can be accessed with @target.[normal property path].
+					let description = e.description ? e.description : "";
+					if (typeof description === "string") {
+						const sourceItem = fromUuidSync(e.origin);
+						const rollData = sourceItem?.getRollData() ?? parent?.getRollData();
+						const targetData = t.actor?.getRollData();
+						if (rollData && targetData) rollData.target = targetData;
+						rollData.effect = { name: e.name };
+						description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(description, { rollData: rollData });
+					}
+
 					e.origin = parent.uuid;
 					this.solidifyEffectActorData(e, parent);
 					const flags = e.flags;
@@ -941,7 +976,7 @@ export class Helper {
 					const newEffectData = {
 						name: e.name,
 						type: e.type,
-						description: e.description ? e.description : "",
+						description: description,
 						img: e.img,
 						origin: e.origin,
 						sourceName: parent.name,

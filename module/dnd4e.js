@@ -31,6 +31,8 @@ import { default as DifficultTerrainRegionBehaviorType } from "./regionBehaviors
 import { default as TerrainData4e } from "./regionBehaviors/terrain-data.js";
 import { default as DifficultTerrainConfig } from "./apps/regionBehaviors/difficult-terrain-config.js";
 
+import * as lookup from "./enrichers/lookup.js";
+
 import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handlePromptEoTSaves, performPreLocalization } from "./helper.js";
 
 // Import Helpers
@@ -87,8 +89,10 @@ Hooks.once("init", async function() {
 	// Define custom Entity classes
 	CONFIG.DND4E = DND4E;
 
-	foundry.applications.apps.DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4e", ActiveEffectConfig4e, { makeDefault: true });
-	// DocumentSheetConfig.registerSheet(Actor4e, "dnd4e", ActiveEffectConfig4e, {makeDefault :true});
+	foundry.applications.apps.DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4e", ActiveEffectConfig4e, {
+		makeDefault: true,
+		label: _loc("SHEET.ActiveEffect"),
+	});
 	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
 	CONFIG.ActiveEffect.legacyTransferral = false;
 	CONFIG.Item.collection = Items4e;
@@ -259,6 +263,12 @@ Hooks.once("init", async function() {
 	CONFIG.Token.movement.costAggregator = (results, distance, segment) => {
 		return Math.max(...results.map(i => i.cost));
 	};
+
+	// Enrichers
+	// Register enrichers
+	CONFIG.TextEditor.enrichers = [
+		lookup,
+	];
 });
 
 /* --------------------------------------------- */

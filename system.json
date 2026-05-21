@@ -5,7 +5,7 @@
 	"version": "0.8.0",
 	"compatibility":{
 		"minimum": "14",
-		"verified": "14.359",
+		"verified": "14.361",
 		"maximum": "14"
 	},
 	"authors": [
@@ -167,8 +167,8 @@
 	},
 	"primaryTokenAttribute": "attributes.hp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
-	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.7.14.zip",
+	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/v14-beta/system.json",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.8.0.zip",
 	"flags": {
 		"needsMigrationVersion": "0.7.1",
 		"compatibleMigrationVersion": "0.2.50",
