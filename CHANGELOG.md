@@ -2,7 +2,7 @@
 
 ## Version 0.8.1 BETA
 * Migration of `@scale` variables has been fixed (SagaTympana)
-* Enhanced Active Effects, including adding an enricher for descriptions. Will be documented in the comendium sooner or later, but for now please check out the PR for usage details. (SagaTympana)
+* Enhanced Active Effects, including adding an enricher for descriptions. Will be documented in the Manual compendium sooner or later, but for now please check out the PR for usage details. (SagaTympana)
 * Per-round and per-turn power usage is no longer tracked outside of combat (SagaTympana)
 * Fixed handling of attribute consumption targets (SagaTympana)
 * Updated item text description enrichment (SagaTympana)
