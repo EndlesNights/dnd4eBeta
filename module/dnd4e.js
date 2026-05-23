@@ -344,6 +344,9 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
 		console.error(`Inititiave display mask failed in chat message. ${e}`);
 	}
 
+	//Item listeners
+	Item4e.chatListeners(html);
+	chat.chatMessageListener(html);
 });
 
 Hooks.on("getChatMessageContextOptions", chat.addChatMessageContextOptions);
@@ -360,11 +363,7 @@ Hooks.on("renderChatLog", (app, element, context) => {
 		}
 	} catch(e) {
 		console.error(`Failed to update chat log theme. ${e}`);
-	}
-	
-	//Item listeners
-	Item4e.chatListeners(element);
-	chat.chatMessageListener(element);	
+	}	
 });
 
 // Also activate buttons on popout messages

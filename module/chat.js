@@ -218,15 +218,25 @@ export function chatMessageListener(html) {
 	});
 	
 	//html.on('mouseenter', '.target', this.hoverTokenActorName.bind(this)).on('mouseleave', '.target', this.hoverTokenActorName.bind(this));
-	html.addEventListener("mouseenter", (event) => {
-		if (!event.target) return;
-		const el = event.target.closest(".target");
-		if (el) this.hoverTokenActorName.call(this, event);
+	html.querySelectorAll(".target").forEach((el) => {
+		const targetElement = el.querySelector(".target");
+		if (targetElement) {
+			targetElement.addEventListener("mouseenter", (event) => {
+				if (!event.target) return;
+				const el = event.target.closest(".target");
+				if (el) this.hoverTokenActorName.call(this, event);
+			});
+		}
 	});
-	html.addEventListener("mouseleave", (event) => {
-		if (!event.target) return;
-		const el = event.target.closest(".target");
-		if (el) this.hoverTokenActorName.call(this, event);
+	html.querySelectorAll(".target").forEach((el) => {
+		const targetElement = el.querySelector(".target");
+		if (targetElement) {
+			targetElement.addEventListener("mouseleave", (event) => {
+				if (!event.target) return;
+				const el = event.target.closest(".target");
+				if (el) this.hoverTokenActorName.call(this, event);
+			});
+		}
 	});
 
 	html.querySelectorAll(".description.collapsible").forEach((el) => {
@@ -255,7 +265,7 @@ export const clickTokenActorName = function(event) {
 	return canvas.animatePan(token.center);
 };
 
-//When hover over chat messages with "Target" from attack rolls, will highlight the token who's have is being hovered
+//When hover over chat messages with "Target" from attack rolls, will highlight the token whose name is being hovered
 export const hoverTokenActorName = function(event) {
 	event.preventDefault();
 
