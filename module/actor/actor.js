@@ -1964,7 +1964,7 @@ export class Actor4e extends Actor {
 			options.formulaInnerData = Roll.replaceFormulaData(options.save, rollData);
 		}
 		
-		await Helper.applySaveEffects([parts], rollData, this, this.effects.get(options.effectId), "save");
+		await Helper.applySaveEffects([parts], rollData, this, this.effects.get(options.effectId), "save", options);
 
 		const rollConfig = foundry.utils.mergeObject({
 			parts,

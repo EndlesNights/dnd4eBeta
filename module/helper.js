@@ -1,3 +1,5 @@
+import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
+
 export class Helper {
 
 	static async executeMacro(item) {
@@ -161,7 +163,7 @@ export class Helper {
 		return new RegExp(/@([a-z.0-9_-]+)/gi);
 	}
 
-	static async applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType, extraDamage = []) {
+	static async applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType, extraDamage = [], options = {}) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
 		if (actorData.effects) {
 			const powerInnerData = powerData.system;
@@ -386,14 +388,14 @@ export class Helper {
 				}
 
 				//await this._applyEffectsInternal(arrayOfParts, rollData, powerData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage);
-				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage);
+				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage, options);
 			}
 		}
 	}
 
 	// A pared down version of applyEffects suitable for determining bonuses to saving throws against effects or the DCs of effects. Only needs to know
 	// about effect keywords and statuses inflicted by the effect. effectType can be `save` or `saveDC`.
-	static async applySaveEffects(arrayOfParts, rollData, actorData, effectData, effectType) {
+	static async applySaveEffects(arrayOfParts, rollData, actorData, effectData, effectType, options = {}) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
 		if (actorData.effects) {
 			if (debug) {
@@ -416,7 +418,7 @@ export class Helper {
 			
 			// No global bonuses to save DCs
 			if (effectType === "save") {
-				//Dummy up some extra effects to represent global atk/damage bonuses
+				//Dummy up some extra effects to represent global save bonuses
 				const globalMods = actorData.system.details.saves;
 				if (globalMods.value) {
 					for (const [key, value] of Object.entries(globalMods)) {
@@ -459,7 +461,7 @@ export class Helper {
 				if (effectData?.system.dots.length) {
 					suitableKeywords.push("ongoing");
 					effectData.system.dots.forEach((d) => {
-						d.typesArray.forEach((t) => {
+						d.types.forEach((t) => {
 							suitableKeywords.push(t);
 							// Since game text describes this as "untyped" let's allow users to use that language in effect keys.
 							if (t === "physical") suitableKeywords.push("untyped");
@@ -474,13 +476,12 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				//await this._applyEffectsInternal(arrayOfParts, rollData, powerData, effectsToProcess, suitableKeywords, actorData, effectType, debug);
-				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug);
+				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug, null, options);
 			}
 		}
 	}
 
-	static async _applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage = []) {
+	static async _applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage = [], options = {}) {
 		// filter out to just the relevant effects by keyword
 		const matchingEffects = effectsToProcess.filter((effect) => {
 			const keyParts = effect.key.split(".");
@@ -500,7 +501,6 @@ export class Helper {
 			matchingEffects.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`));
 		}
 
-		const newParts = {};
 		for (const effect of matchingEffects) {
 			const keyParts = effect.key.split(".");
 			if (keyParts.length >= 4) {
@@ -523,53 +523,17 @@ export class Helper {
 					});
 				}
 				else if (bonusType === "untyped") {
-					if (newParts["untypedEffectBonus"]) {
-						newParts["untypedEffectBonus"] = newParts["untypedEffectBonus"] + effectValue;
-						if (debug) {
-							console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Additional untyped Bonus.	They Stack.`);
-						}
-					}
-					else {
-						newParts["untypedEffectBonus"] = effectValue;
-						if (debug) {
-							console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: First untyped Bonus`);
-						}
-					}
+					if ("untyped" in options.bonuses) options.bonuses.untyped += effectValue;
 				}
 				else {
 					const key = `${bonusType}EffectBonus`;
-					if (newParts[key]) {
-						if (newParts[key] < effectValue) {
-							newParts[key] = effectValue;
-							if (debug) {
-								console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue}: Is greater than existing ${bonusType}, replacing`);
-							}
-						}
-						else {
-							if (debug) {
-								console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : Is not greater than existing ${bonusType}, discarding`);
-							}
-						}
-					}
-					else {
-						newParts[key] = effectValue;
-						if (debug) {
-							console.log(`${debug} ${effect.name} : ${effect.key} => ${effect.value} = ${effectValue} : First ${bonusType} Bonus`);
-						}
-					}
+					if (options.bonuses?.typed[bonusType]) options.bonuses.typed[bonusType].push(effectValue);
 				}
 			}
 			else {
 				ui.notifications.warn(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`);
 				Helper.debugLog(`Tried to process a bonus effect that had too few .'s in it: ${effect.key}: ${effect.value}`);
 			}
-		}
-		
-		for (const [key, value] of Object.entries(newParts)) {
-			for (const parts of arrayOfParts) {
-				parts.push("@" + key);
-			}
-			rollData[key] = value;
 		}
 	}
 
@@ -992,11 +956,10 @@ export class Helper {
 						let dcBonus = 0;
 						const dcParts = [];
 						const rollData = parent.getRollData();
-						await Helper.applySaveEffects([dcParts], rollData, parent, newEffectData, "saveDC");
-						for (let i = 0; i < dcParts.length; i++) {
-							const key = dcParts[i].slice(1);
-							dcBonus += rollData[key];
-						}
+						let options = { bonuses: foundry.utils.deepClone(RollWithOriginalExpression.DEFAULT_OPTIONS.bonuses) };
+						await Helper.applySaveEffects([dcParts], rollData, parent, newEffectData, "saveDC", options);
+						const bonusRoll = await new RollWithOriginalExpression("0", null, options).evaluate();
+						dcBonus += bonusRoll?.total;
 						newEffectData.system.saveDC = String(Number(newEffectData.system.saveDC) + dcBonus);
 					}
 

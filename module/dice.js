@@ -199,10 +199,12 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
 				targetBonuses.forEach(bonus => total += data.commonAttackBonuses[bonus.substring(1)].value);
-				allRollsParts.push(parts.concat([total]));
+				const partsToPush = total ? parts.concat([total]) : parts;
+				allRollsParts.push(partsToPush);
 			}
 			else {
-				allRollsParts.push(parts.concat(targetBonuses));
+				const partsToPush = targetBonuses.length ? parts.concat(targetBonuses) : parts;
+				allRollsParts.push(partsToPush);
 			}
 		}
 		

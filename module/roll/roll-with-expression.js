@@ -41,7 +41,69 @@ export class RollWithOriginalExpression extends Roll {
      */
 	constructor (formula, data = {}, options = {}) {
 		super(formula, data, foundry.utils.mergeObject({ expression: formula, originalFormula: formula }, options));
+		foundry.utils.mergeObject(this.options, this.constructor.DEFAULT_OPTIONS, {
+			insertKeys: true,
+			insertValues: true,
+			overwrite: false,
+		});
 		this.expression = options.expression ? options.expression : formula;
+	}
+
+	/* -------------------------------------------------- */
+
+	static DEFAULT_OPTIONS = Object.freeze({
+		bonuses: {
+			typed: {
+				feat: [],
+				item: [],
+				power: [],
+				race: [],
+			},
+			untyped: 0,
+		},
+	});
+
+	/* -------------------------------------------- */
+
+	/** @override */
+	async evaluate(options = {}) {
+		this.processBonuses();
+		return super.evaluate(options);
+	}
+
+	/* -------------------------------------------- */
+
+	processBonuses() {
+		for (const [type, bonuses] of Object.entries(this.options.bonuses.typed)) {
+			if (bonuses.length) {
+				const bonus = bonuses.reduce((acc, curr) => acc + parseInt(curr), 0);
+				const bonusString = String(bonus);
+				const bonusPath = `${type}EffectBonus`;
+				this._formula += ` + (${bonus})`;
+				this.expression += ` + @${bonusPath}`;
+				this.options.expressionArr?.push(`@${bonusPath}`);
+				this.options.parts?.push(bonusString);
+				if (this.options?.formulaInnerData) this.options.formulaInnerData[bonusPath] = bonusString;
+				const operatorTerm = new foundry.dice.terms.OperatorTerm({ operator: "+" });
+				const parentheticalTerm = new foundry.dice.terms.ParentheticalTerm({ term: bonusString });
+				this.terms.push(operatorTerm);
+				this.terms.push(parentheticalTerm);
+			}
+		}
+		if (this.options.bonuses.untyped) {
+			const bonus = this.options.bonuses.untyped;
+			const bonusString = String(bonus);
+			this._formula += ` + (${bonus})`;
+			this.expression += " + @untypedEffectBonus";
+			this.options.expressionArr?.push("@untypedEffectBonus");
+			this.options.parts?.push(bonusString);
+			if (this.options?.formulaInnerData) this.options.formulaInnerData.untypedEffectBonus = bonusString;
+			const operatorTerm = new foundry.dice.terms.OperatorTerm({ operator: "+" });
+			const parentheticalTerm = new foundry.dice.terms.ParentheticalTerm({ term: bonusString });
+			this.terms.push(operatorTerm);
+			this.terms.push(parentheticalTerm);
+		}
+		this.options.expression = this.expression;
 	}
 
 	/**
