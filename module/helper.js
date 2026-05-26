@@ -387,15 +387,14 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				//await this._applyEffectsInternal(arrayOfParts, rollData, powerData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage);
-				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage, options);
+				await this._applyEffectsInternal(effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage, options);
 			}
 		}
 	}
 
 	// A pared down version of applyEffects suitable for determining bonuses to saving throws against effects or the DCs of effects. Only needs to know
 	// about effect keywords and statuses inflicted by the effect. effectType can be `save` or `saveDC`.
-	static async applySaveEffects(arrayOfParts, rollData, actorData, effectData, effectType, options = {}) {
+	static async applySaveEffects(rollData, actorData, effectData, effectType, options = {}) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
 		if (actorData.effects) {
 			if (debug) {
@@ -476,12 +475,12 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				await this._applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug, null, options);
+				await this._applyEffectsInternal(effectsToProcess, suitableKeywords, actorData, effectType, debug, null, options);
 			}
 		}
 	}
 
-	static async _applyEffectsInternal(arrayOfParts, rollData, effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage = [], options = {}) {
+	static async _applyEffectsInternal(effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage = [], options = {}) {
 		// filter out to just the relevant effects by keyword
 		const matchingEffects = effectsToProcess.filter((effect) => {
 			const keyParts = effect.key.split(".");
@@ -522,12 +521,8 @@ export class Helper {
 						}
 					});
 				}
-				else if (bonusType === "untyped") {
-					if ("untyped" in options.bonuses) options.bonuses.untyped += effectValue;
-				}
 				else {
-					const key = `${bonusType}EffectBonus`;
-					if (options.bonuses?.typed[bonusType]) options.bonuses.typed[bonusType].push(effectValue);
+					if (("bonuses" in options) && (bonusType in options.bonuses)) options.bonuses[bonusType].push(effectValue);
 				}
 			}
 			else {
@@ -954,10 +949,9 @@ export class Helper {
 
 					if (parent && newEffectData.system.saveDC) {
 						let dcBonus = 0;
-						const dcParts = [];
 						const rollData = parent.getRollData();
 						let options = { bonuses: foundry.utils.deepClone(RollWithOriginalExpression.DEFAULT_OPTIONS.bonuses) };
-						await Helper.applySaveEffects([dcParts], rollData, parent, newEffectData, "saveDC", options);
+						await Helper.applySaveEffects(rollData, parent, newEffectData, "saveDC", options);
 						const bonusRoll = await new RollWithOriginalExpression("0", null, options).evaluate();
 						dcBonus += bonusRoll?.total;
 						newEffectData.system.saveDC = String(Number(newEffectData.system.saveDC) + dcBonus);
