@@ -1,6 +1,7 @@
 import { d20Roll, damageRoll } from "../dice.js";
 import { DND4E } from "../config.js";
 import { Helper } from "../helper.js";
+import { RollWithOriginalExpression } from "../roll/roll-with-expression.js";
 import { SaveThrowDialog } from "../apps/save-throw.js";
 
 /**
@@ -1946,6 +1947,7 @@ export class Actor4e extends Actor {
 
 	async rollSave(event, options) {
 		//let message = `${_loc("DND4E.RollSave")} ${options.dc || 10}`;
+		options.bonuses = foundry.utils.deepClone(RollWithOriginalExpression.DEFAULT_OPTIONS.bonuses);
 		
 		let message = `(${_loc("DND4E.AbbreviationDC")} ${options.dc || 10})`;
 		if (options.effectSave) {
@@ -1977,6 +1979,7 @@ export class Actor4e extends Actor {
 			messageData: { "flags.dnd4e.roll": { type: "save", itemId: this.id } },
 			fastForward: true,
 			messageMode: options.messageMode,
+			options,
 		});
 		rollConfig.event = event;
 		
