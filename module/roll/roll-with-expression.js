@@ -62,20 +62,16 @@ export class RollWithOriginalExpression extends Roll4e {
 
 	/** @override */
 	processBonuses() {
+		super.processBonuses();
 		for (const [type, bonuses] of Object.entries(this.options.bonuses)) {
 			if (bonuses.length) {
 				const bonus = type == "untyped" ? bonuses.reduce((acc, curr) => acc + parseInt(curr), 0) : bonuses.reduce((max, curr) => Math.max(max, parseInt(curr)), -Infinity);
 				const bonusString = String(bonus);
 				const bonusPath = `${type}EffectBonus`;
-				this._formula += ` + (${bonus})`;
 				this.expression += ` + @${bonusPath}`;
 				this.options.expressionArr.push(`@${bonusPath}`);
 				this.options.parts.push(bonusString);
 				this.options.formulaInnerData[bonusPath] = bonusString;
-				const operatorTerm = new foundry.dice.terms.OperatorTerm({ operator: "+" });
-				const parentheticalTerm = new foundry.dice.terms.ParentheticalTerm({ term: bonusString });
-				this.terms.push(operatorTerm);
-				this.terms.push(parentheticalTerm);
 			}
 		}
 		this.options.expression = this.expression;
