@@ -3,6 +3,7 @@ import { DND4E } from "../config.js";
 import { Helper } from "../helper.js";
 import { RollWithOriginalExpression } from "../roll/roll-with-expression.js";
 import { SaveThrowDialog } from "../apps/save-throw.js";
+import Roll4e from "../dice/Roll.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -1947,7 +1948,7 @@ export class Actor4e extends Actor {
 
 	async rollSave(event, options) {
 		//let message = `${_loc("DND4E.RollSave")} ${options.dc || 10}`;
-		options.bonuses = foundry.utils.deepClone(RollWithOriginalExpression.DEFAULT_OPTIONS.bonuses);
+		options.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
 		
 		let message = `(${_loc("DND4E.AbbreviationDC")} ${options.dc || 10})`;
 		if (options.effectSave) {

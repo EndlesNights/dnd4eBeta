@@ -137,7 +137,7 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 
 // Get the bonus for an attack roll 
 export function getAttackRollBonus({ parts = [], partsExpressionReplacements = [], data = {}, options = {} }) {
-	const roll = new MultiAttackRoll(parts.filterJoin(" + "), data, {});
+	const roll = new MultiAttackRoll(parts.filterJoin(" + "), data, options);
 	if (roll.isDeterministic) {
 		roll.evaluateSync();
 		return roll.total;

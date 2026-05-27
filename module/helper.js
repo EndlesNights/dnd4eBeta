@@ -1,4 +1,5 @@
 import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
+import Roll4e from "./dice/Roll.js";
 
 export class Helper {
 
@@ -950,7 +951,7 @@ export class Helper {
 					if (parent && newEffectData.system.saveDC) {
 						let dcBonus = 0;
 						const rollData = parent.getRollData();
-						let options = { bonuses: foundry.utils.deepClone(RollWithOriginalExpression.DEFAULT_OPTIONS.bonuses) };
+						let options = { bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 						await Helper.applySaveEffects(rollData, parent, newEffectData, "saveDC", options);
 						const bonusRoll = await new RollWithOriginalExpression("0", null, options).evaluate();
 						dcBonus += bonusRoll?.total;
