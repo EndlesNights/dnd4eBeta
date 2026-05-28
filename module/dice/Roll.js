@@ -20,9 +20,6 @@ export default class Roll4e extends Roll {
 			race: [],
 			untyped: [],
 		},
-		expressionArr: [],
-		formulaInnerData: {},
-		parts: [],
 	});
 
 	/* -------------------------------------------- */
