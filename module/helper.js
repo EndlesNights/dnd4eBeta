@@ -953,7 +953,7 @@ export class Helper {
 						const rollData = parent.getRollData();
 						let options = { bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 						await Helper.applySaveEffects(rollData, parent, newEffectData, "saveDC", options);
-						const bonusRoll = await new RollWithOriginalExpression("0", null, options).evaluate();
+						const bonusRoll = await new Roll4e("0", null, options).evaluate();
 						dcBonus += bonusRoll?.total;
 						newEffectData.system.saveDC = String(Number(newEffectData.system.saveDC) + dcBonus);
 					}
