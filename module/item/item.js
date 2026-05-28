@@ -1049,6 +1049,7 @@ export default class Item4e extends Item {
 	 */
 	async roll({ configureDialog = true, messageMode = null, createMessage = true, variance = {} } = {}) {
 		//console.debug(variance);
+		const rollData = this.getRollData({ variance });
 
 		if (["both", "pre", "sub"].includes(this.system.macro?.launchOrder)) {
 			await Helper.executeMacro(this);
@@ -1062,7 +1063,12 @@ export default class Item4e extends Item {
 					attackBonus = await this.getAttackBonus({ variance: variance });
 				}
 				let cardString = Helper._preparePowerCardData(await this.getChatData({}, variance), CONFIG, this.actor, attackBonus);
-				return Roll.replaceFormulaData(cardString, this.getRollData());
+				const enrichedCardString = await foundry.applications.ux.TextEditor.implementation.enrichHTML(cardString, {
+					async: true,
+					relativeTo: this.actor,
+					rollData: rollData,
+				});
+				return enrichedCardString;
 			} else {
 				return null;
 			}
@@ -1093,7 +1099,7 @@ export default class Item4e extends Item {
 		if (this.effects.size) {
 			for (const e of this.effects) {
 				if (e.description) {
-					const enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(e.description, { rollData: { ...this.getRollData(), ...{ effect: { name: e.name } } } });
+					const enrichedDescription = await foundry.applications.ux.TextEditor.implementation.enrichHTML(e.description, { rollData: { ...rollData, ...{ effect: { name: e.name } } } });
 					e.descriptionToolTip = `<div class="effect-tooltip" >${enrichedDescription}</div>`;
 				}
 			}
@@ -1194,9 +1200,13 @@ export default class Item4e extends Item {
 
 		const cardData = await (async () => {
 			if (((this.type === "power") || (this.type === "consumable")) && this.system.autoGenChatPowerCard) {
-				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
 				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor);
-				return Roll.replaceFormulaData(cardString, this.getRollData());
+				const enrichedCardString = await foundry.applications.ux.TextEditor.implementation.enrichHTML(cardString, {
+					async: true,
+					relativeTo: this.actor,
+					rollData: this.getRollData(),
+				});
+				return enrichedCardString;
 			} else {
 				return null;
 			}
