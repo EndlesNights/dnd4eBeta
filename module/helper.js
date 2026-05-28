@@ -817,10 +817,6 @@ export class Helper {
 		if ((chatData.sustain?.actionType !== "none") && chatData.sustain?.actionType) {
 			powerDetail += `<p class="sustain alt-highlight"><strong>${_loc("DND4E.Sustain")} ${CONFIG.DND4E.abilityActivationTypes[chatData.sustain.actionType].label}:</strong> ${chatData.sustain.detail}</p>`;
 		}
-
-		if (actorData) {
-			powerDetail = Roll.replaceFormulaData(powerDetail, actorData.getRollData());
-		}
 		
 		return powerDetail;
 	}

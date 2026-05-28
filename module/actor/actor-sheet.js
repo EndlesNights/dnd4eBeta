@@ -362,6 +362,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				i.detailsText = await foundry.applications.ux.TextEditor.implementation.enrichHTML(detailsText, {
 					async: true,
 					relativeTo: actor,
+					rollData: item.getRollData(),
 				});
 			}
 			i.collapsed = !this.#expandedItemIds.has(i._id); 
