@@ -1740,7 +1740,14 @@ export class Actor4e extends Actor {
 		} catch(e) {
 			console.error(`Failed conditional bonus calc. (${e})`);
 		}
-		
+	}
+
+	get isCharacter() {
+		return this.type === "Player Character";
+	}
+
+	get isNPC() {
+		return this.type === "NPC";
 	}
 	
 	/**
@@ -2291,7 +2298,7 @@ export class Actor4e extends Actor {
 	/** @override */
 	async createEmbeddedDocuments(embeddedName, data = [], context = {}) {
 		if (embeddedName === "Item") {
-			if (!this.isPC) {
+			if (!this.isCharacter) {
 				data.forEach(datum => {
 					let t = datum.type;
 					let initial = {};
