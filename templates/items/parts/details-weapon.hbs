@@ -4,11 +4,11 @@
   <div class="form-group">
     <label>{{localize "DND4E.Proficient"}} </label>
     <select name="system.proficient{{#if (eq system.weaponType 'implement')}}I{{/if}}">
-	  {{#if (eq system.weaponType 'implement')}}
-        {{selectOptions config.proficiency selected=system.proficientI}}
-	  {{else}}
-	    {{selectOptions config.proficiency selected=system.proficient}}
-	  {{/if}}
+      {{#if (eq system.weaponType 'implement')}}
+      {{selectOptions config.proficiency selected=system.proficientI}}
+      {{else}}
+      {{selectOptions config.proficiency selected=system.proficient}}
+      {{/if}}
     </select>
   </div>
   {{#unless (eq system.weaponType 'implement')}}{{#if system.properties.imp}}
@@ -170,11 +170,11 @@
     {{#each system.damageDice.parts as |part i| }}
     <li class="damage-part flexrow" data-damage-part="{{i}}">
       <label>{{ localize "DND4E.DiceNumber"}}</label>
-      <input type="text" name="system.damageDice.parts.{{i}}.0" value="{{lookup this '0'}}">
+      <input type="text" name="system.damageDice.parts.{{i}}.numDice" value="{{lookup this 'numDice'}}">
       <label>{{ localize 'DND4E.DiceSize'}}</label>
-      <input type="text" name="system.damageDice.parts.{{i}}.1" value="{{lookup this '1'}}">
+      <input type="text" name="system.damageDice.parts.{{i}}.numFaces" value="{{lookup this 'numFaces'}}">
       <label>{{ localize 'DND4E.DiceExtra'}}</label>
-      <input type="text" name="system.damageDice.parts.{{i}}.2" value="{{lookup this '2'}}">
+      <input type="text" name="system.damageDice.parts.{{i}}.modifier" value="{{lookup this 'modifier'}}">
       <a class="damage-control" data-action="deleteDice"><i class="fas fa-minus"></i></a>
     </li>
     {{/each}}
@@ -224,16 +224,11 @@
   <ol class="damage-parts form-group">
     {{#each system.damage.parts as |part i| }}
     <li class="damage-part flexrow" data-damage-part="{{i}}">
-      <input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this '0'}}" placeholder="{{ localize 'DND4EUI.DamageFormPlaceholder' }}">
-      <select name="system.damage.parts.{{i}}.1">
-        <option value=""{{#if (eq (lookup part "1") "")}}selected{{/if}}>&nbsp;</option>
-        {{#each ../config.damageTypes as |name type|}}
-        {{#unless (or (eq type "ongoing") (eq type "damage"))}}
-        <option value="{{type}}"{{#if (eq (lookup part "1") type)}}selected{{/if}}>{{name}}</option>
-        {{/unless}}
-        {{/each}}
-        {{selectOptions ../config.healingTypes selected=(lookup part "1") localize=true}}
-      </select>
+      <input type="text" name="system.damage.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4EUI.DamageFormPlaceholder' }}">
+      <multi-select name="system.damage.parts.{{i}}.type" class="inline">
+        {{selectOptions ../damageTypeOptions selected=part.type}}
+        {{selectOptions ../config.healingTypes selected=part.type localize=true}}	
+      </multi-select>
       <a class="damage-control" data-action="deleteDamage"><i class="fas fa-minus"></i></a>
     </li>
     {{/each}}
@@ -255,16 +250,11 @@
   <ol class="damage-parts form-group">
     {{#each system.damageCrit.parts as |part i| }}
     <li class="damage-part flexrow" data-damage-part="{{i}}">
-      <input type="text" name="system.damageCrit.parts.{{i}}.0" value="{{lookup this '0'}}" placeholder="{{ localize 'DND4EUI.DamageFormPlaceholder'}}">
-      <select name="system.damageCrit.parts.{{i}}.1">
-        <option value=""{{#if (eq (lookup part "1") "")}}selected{{/if}}>&nbsp;</option>
-        {{#each ../config.damageTypes as |name type|}}
-        {{#unless (or (eq type "ongoing") (eq type "damage"))}}
-        <option value="{{type}}"{{#if (eq (lookup part "1") type)}}selected{{/if}}>{{name}}</option>
-        {{/unless}}
-        {{/each}}
-        {{selectOptions ../config.healingTypes selected=(lookup part "1") localize=true}}
-      </select>
+      <input type="text" name="system.damageCrit.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4EUI.DamageFormPlaceholder'}}">
+      <multi-select name="system.damageCrit.parts.{{i}}.type" class="inline">
+        {{selectOptions ../damageTypeOptions selected=part.type}}
+        {{selectOptions ../config.healingTypes selected=part.type localize=true}}	
+      </multi-select>
       <a class="damage-control" data-action="deleteCriticalDamage"><i class="fas fa-minus"></i></a>
     </li>
     {{/each}}
@@ -292,16 +282,11 @@
   <ol class="damage-parts form-group">
     {{#each system.damageImp.parts as |part i| }}
     <li class="damage-part flexrow" data-damage-part="{{i}}">
-      <input type="text" name="system.damageImp.parts.{{i}}.0" value="{{lookup this '0'}}" placeholder="{{ localize 'DND4EUI.DamageFormPlaceholder'}}">
-      <select name="system.damageImp.parts.{{i}}.1">
-        <option value=""{{#if (eq (lookup part "1") "")}}selected{{/if}}>&nbsp;</option>
-        {{#each ../config.damageTypes as |name type|}}
-        {{#unless (or (eq type "ongoing") (eq type "damage"))}}
-        <option value="{{type}}"{{#if (eq (lookup part "1") type)}}selected{{/if}}>{{name}}</option>
-        {{/unless}}
-        {{/each}}
-        {{selectOptions ../config.healingTypes selected=(lookup part "1") localize=true}}
-      </select>
+      <input type="text" name="system.damageImp.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4EUI.DamageFormPlaceholder'}}">
+      <multi-select name="system.damageImp.parts.{{i}}.type" class="inline">
+        {{selectOptions ../damageTypeOptions selected=part.type}}
+        {{selectOptions ../config.healingTypes selected=part.type localize=true}}	
+      </multi-select>
       <a class="damage-control" data-action="deleteDamageImp"><i class="fas fa-minus"></i></a>
     </li>
     {{/each}}
@@ -324,16 +309,11 @@
   <ol class="damage-parts form-group">
     {{#each system.damageCritImp.parts as |part i| }}
     <li class="damage-part flexrow" data-damage-part="{{i}}">
-      <input type="text" name="system.damageCritImp.parts.{{i}}.0" value="{{lookup this '0'}}" placeholder="{{ localize 'DND4EUI.DamageFormPlaceholder'}}">
-      <select name="system.damageCritImp.parts.{{i}}.1">
-        <option value=""{{#if (eq (lookup part "1") "")}}selected{{/if}}>&nbsp;</option>
-        {{#each ../config.damageTypes as |name type|}}
-        {{#unless (or (eq type "ongoing") (eq type "damage"))}}
-        <option value="{{type}}"{{#if (eq (lookup part "1") type)}}selected{{/if}}>{{name}}</option>
-        {{/unless}}
-        {{/each}}
-        {{selectOptions ../config.healingTypes selected=(lookup part "1") localize=true}}
-      </select>
+      <input type="text" name="system.damageCritImp.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4EUI.DamageFormPlaceholder'}}">
+      <multi-select name="system.damageCritImp.parts.{{i}}.type" class="inline">
+        {{selectOptions ../damageTypeOptions selected=part.type}}
+        {{selectOptions ../config.healingTypes selected=part.type localize=true}}	
+      </multi-select>
       <a class="damage-control" data-action="deleteCriticalDamageImp"><i class="fas fa-minus"></i></a>
     </li>
     {{/each}}

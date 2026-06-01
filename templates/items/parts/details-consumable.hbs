@@ -239,15 +239,10 @@
   <ol class="damage-parts form-group">
     {{#each system.damage.parts as |part i| }}
     <li class="damage-part flexrow" data-damage-part="{{i}}">
-      <input type="text" name="system.damage.parts.{{i}}.0" value="{{lookup this '0'}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}">
-      <select name="system.damage.parts.{{i}}.1">
-        <option value=""{{#if (eq (lookup part 1) "")}} selected{{/if}}></option>
-        {{#each ../config.damageTypes as |name type|}}
-        {{#unless (or (eq type "ongoing") (eq type damage))}}
-        <option value="{{type}}"{{#if (eq (lookup part "1") type)}} selected{{/if}}>{{name}}</option>
-        {{/unless}}
-        {{/each}}
-      </select>
+      <input type="text" name="system.damage.parts.{{i}}.formula" value="{{lookup this 'formula'}}" placeholder="{{ localize 'DND4E.FormulaDamageExample' }}">
+      <multi-select name="system.damage.parts.{{i}}.type" class="inline">
+        {{selectOptions ../damageTypeOptions selected=part.type}}			
+      </multi-select>
       <a class="damage-control" data-action="deleteDamage"><i class="fas fa-minus"></i></a>
     </li>
     {{/each}}
