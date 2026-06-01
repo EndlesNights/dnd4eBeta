@@ -73,6 +73,10 @@ export class RollWithOriginalExpression extends Roll4e {
 				this.options.expressionArr.push(`@${bonusPath}`);
 				this.options.parts.push(bonusString);
 				this.options.formulaInnerData[bonusPath] = bonusString;
+				const operatorTerm = new foundry.dice.terms.OperatorTerm({ operator: "+" });
+				const parentheticalTerm = new foundry.dice.terms.ParentheticalTerm({ term: bonusString, options: { flavor: this.options.flavor } });
+				this.terms.push(operatorTerm);
+				this.terms.push(parentheticalTerm);
 			}
 		}
 		this.options.expression = this.expression;
