@@ -2780,7 +2780,7 @@ export default class Item4e extends Item {
 						weaponDiceQuantity = r2.total;
 					}
 					if (weaponData.properties.bru) {
-						dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i].modifier}rr<=${weaponData.brutalNum || 1}`;
+						dice += `${weaponDiceQuantity}d${parts[i].numFaces}${parts[i].modifier}rr<=${weaponData.brutalNum || 1}`;
 					}
 					else {
 						dice += `${weaponDiceQuantity}d${parts[i].numFaces}${parts[i].modifier || ""}`;// added a null check to i2 hotfix
