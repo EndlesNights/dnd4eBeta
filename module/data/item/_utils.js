@@ -1,6 +1,7 @@
 /*
 * Utility function to migrate a damage part from a string array to an object.
 * @param {Array} part       The damage part to migrate
+* @return {object} part     The migrated part
 */
 export function processPart(part) {
 	if (!Array.isArray(part)) return part;
