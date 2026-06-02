@@ -360,7 +360,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				}
 				let detailsText = Helper._preparePowerCardData(i.chatData, CONFIG, actorData, attackBonus);
 				i.detailsText = await foundry.applications.ux.TextEditor.implementation.enrichHTML(detailsText, {
-					async: true,
 					relativeTo: actor,
 					rollData: item.getRollData(),
 				});
@@ -453,7 +452,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	
 			context.biographyHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.biography, {
 				secrets: isOwner,
-				async: true,
 				relativeTo: actor,
 			});
 		}

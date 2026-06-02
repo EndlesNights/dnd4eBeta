@@ -437,7 +437,6 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		context.descriptionHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionText, {
 			rollData,
 			secrets: context.item.isOwner,
-			async: true,
 			relativeTo: this.item,
 		});
 
@@ -445,7 +444,6 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		context.descriptionHTMLGM = await foundry.applications.ux.TextEditor.implementation.enrichHTML(descriptionTextGM, {
 			rollData,
 			secrets: context.item.isOwner,
-			async: true,
 			relativeTo: this.item,
 		});
 
@@ -455,7 +453,6 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		context.effectDetailHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.effect?.detail, {
 			secrets: context.item.isOwner,
-			async: true,
 			relativeTo: this.item,
 		});
 
