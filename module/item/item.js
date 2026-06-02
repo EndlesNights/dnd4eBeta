@@ -2410,7 +2410,7 @@ export default class Item4e extends Item {
 		const parts = itemData.damage.parts.map(d => d[0]);
 		const partsExpressionReplacement = itemData.damage.parts.map(part => { return { target: part[0], value: "@wep2ndryDamage" };});
 
-		const options = { formulaInnerData: {} };
+		const options = { formulaInnerData: {}, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 		const formulaHelper = (formula) => {
 			// store the values that were used to sub in any formulas
 			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData(), this.getRollData()));
