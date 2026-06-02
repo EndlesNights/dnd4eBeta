@@ -758,7 +758,7 @@ export class Helper {
 		if (chatData.attack.isAttack) {
 			let attackForm = chatData.attack.formula;
 			attackForm = chatData.attack.formula.replaceAll("@powerMod", `@${chatData.attack?.ability}Mod`);
-			const attackValues = Roll.replaceFormulaData(attackForm, actorData.getRollData());
+			const attackValues = Roll.replaceFormulaData(attackForm, actorData);
 			if (!(attackTotal == undefined)) {
 				//if does not start with a number sign add one
 				attackTotal = attackTotal.toString();

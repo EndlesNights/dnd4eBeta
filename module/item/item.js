@@ -584,6 +584,7 @@ export default class Item4e extends Item {
 		// Get the Item's data
 		const itemData = this;
 		const system = itemData.system;
+		const actorData = this.actor.getRollData();
 		const C = CONFIG.DND4E;
 		const labels = {};
 		// Feature Items
@@ -929,12 +930,7 @@ export default class Item4e extends Item {
 					if (isArea) {
 						let areaString = system.area || "";
 						if (this.actor && areaString) {
-							try {
-								areaString = Roll.replaceFormulaData(areaString, this.actor.getRollData());
-								if (!Helper._isNumber(areaString)) areaString = Roll.safeEval(areaString);
-							} catch(e) {
-								console.error("Could not evaluate area formula. This is probably due to an unknown key in the formula.");
-							}
+							areaString = Helper.evaluateFormula(areaString, actorData);
 						}
 						rangeString += ` ${areaString}`;
 					}
@@ -944,12 +940,7 @@ export default class Item4e extends Item {
 					if (isRange) {
 						let rangeValue = system.rangePower || "";
 						if (this.actor && rangeValue) {
-							try {
-								rangeValue = Roll.replaceFormulaData(rangeValue, this.actor.getRollData());
-								if (!Helper._isNumber(rangeValue)) rangeValue = Roll.safeEval(rangeValue);
-							} catch(e) {
-								console.error("Could not evaluate range formula. This is probably due to an unknown key in the formula.");
-							}
+							rangeValue = Helper.evaluateFormula(rangeValue, actorData);
 						}
 						rangeString += ` ${rangeValue}`;
 					}
@@ -957,12 +948,7 @@ export default class Item4e extends Item {
 					if (isRange && system.range?.long && !isArea) {
 						let longRangeValue = system.range.long;
 						if (this.actor) {
-							try {
-								longRangeValue = Roll.replaceFormulaData(longRangeValue, this.actor.getRollData());
-								if (!Helper._isNumber(longRangeValue)) longRangeValue = Roll.safeEval(longRangeValue);
-							} catch(e) {
-								console.error("Could not evaluate long range formula. This is probably due to an unknown key in the formula.");
-							}
+							longRangeValue = Helper.evaluateFormula(longRangeValue, actorData);
 						}
 						rangeString += `/${longRangeValue}`;
 					}
@@ -1059,14 +1045,15 @@ export default class Item4e extends Item {
 			if (((this.type === "power") || (this.type === "consumable")) && this.system.autoGenChatPowerCard) {
 				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
 				let attackBonus = null;
+				const rollData = this.getRollData({ variance });
 				if (this.hasAttack) {
 					attackBonus = await this.getAttackBonus({ variance: variance });
 				}
-				let cardString = Helper._preparePowerCardData(await this.getChatData({}, variance), CONFIG, this.actor, attackBonus);
+				let cardString = Helper._preparePowerCardData(await this.getChatData({}, variance), CONFIG, rollData, attackBonus);
 				const enrichedCardString = await foundry.applications.ux.TextEditor.implementation.enrichHTML(cardString, {
 					async: true,
 					relativeTo: this.actor,
-					rollData: rollData,
+					rollData,
 				});
 				return enrichedCardString;
 			} else {
@@ -1197,14 +1184,16 @@ export default class Item4e extends Item {
 	 * @return {Promise}
 	 */
 	async toChat() {
+		const rollData = this.getRollData();
+		const chatData = await this.getChatData();
 
 		const cardData = await (async () => {
 			if (((this.type === "power") || (this.type === "consumable")) && this.system.autoGenChatPowerCard) {
-				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, this.actor);
+				let cardString = Helper._preparePowerCardData(await this.getChatData(), CONFIG, rollData);
 				const enrichedCardString = await foundry.applications.ux.TextEditor.implementation.enrichHTML(cardString, {
 					async: true,
 					relativeTo: this.actor,
-					rollData: this.getRollData(),
+					rollData,
 				});
 				return enrichedCardString;
 			} else {
@@ -1218,7 +1207,7 @@ export default class Item4e extends Item {
 			actor: this.actor,
 			tokenId: token ? token.uuid : null,
 			item: this,
-			system: await this.getChatData(),
+			system: chatData,
 			labels: this.labels,
 			hasAttack: this.hasAttack,
 			isHealing: this.isHealing,
@@ -1251,7 +1240,7 @@ export default class Item4e extends Item {
 		}
 
 		// Basic chat message data
-		const chatData = {
+		const chatConfig = {
 			user: game.user.id,
 			style: CONST.CHAT_MESSAGE_STYLES.OTHER,
 			content: html,
@@ -1266,7 +1255,7 @@ export default class Item4e extends Item {
 		};
 
 		// Create the chat message
-		ChatMessage.create(chatData);
+		ChatMessage.create(chatConfig);
 	}
 
 	/* -------------------------------------------- */
