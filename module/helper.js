@@ -26,6 +26,7 @@ export class Helper {
      * @returns {number} Returns the total, or 0 if it failed to evaluate.
      */
 	static evaluateFormula(formula, rollData = {}, { strict = false, allowStrings = true, contextName = "unknown" } = {}) {
+		if (typeof formula === "number") return formula;
 		let result = 0;
 		try {
 			const evaluatedResult = new Roll(formula || "0", rollData).evaluateSync({ strict, allowStrings }).total;
@@ -635,14 +636,10 @@ export class Helper {
 		}
 	}
 
-	static _areaValue(chatData, actorData) {
-		if (chatData.area) {
-			try {
-				let areaForm = Roll.replaceFormulaData(`${chatData.area}`, actorData);
-				return	Roll.safeEval(areaForm);
-			} catch (e) {
-				return	chatData.area;
-			}
+	static _rangeValue(range, actorData) {
+		if (range) {
+			const areaForm = Helper.evaluateFormula(`${range}`, actorData, { strict: true, contextName: "areaValue" });
+			return areaForm;
 		} else {
 			return	0;
 		}
@@ -699,23 +696,23 @@ export class Helper {
 
 		if (chatData.rangeType === "weapon") {
 			powerDetail += ` <span class="range-type weapon">${CONFIG.DND4E.weaponType[chatData.weaponType]}</span>`;
-			if (chatData.rangePower) powerDetail += ` <span class="range-value">${chatData.rangePower}</span>`;
+			if (chatData.rangePower) powerDetail += ` <span class="range-value">${this._rangeValue(chatData.rangePower ?? null, actorData)}</span>`;
 		}
 		else if (chatData.rangeType === "melee") {
-			powerDetail += ` <span class="range-type melee">${_loc("DND4E.Melee")}</span> <span class="range-size">${chatData.rangePower}</span>`;
+			powerDetail += ` <span class="range-type melee">${_loc("DND4E.Melee")}</span> <span class="range-size">${this._rangeValue(chatData.rangePower ?? null, actorData)}</span>`;
 		}
 		else if (chatData.rangeType === "reach") {
-			powerDetail += ` <span class="range-type reach">${_loc("DND4E.rangeReach")}</span> <span class="range-size">${chatData.rangePower}</span>`;
+			powerDetail += ` <span class="range-type reach">${_loc("DND4E.rangeReach")}</span> <span class="range-size">${this._rangeValue(chatData.rangePower ?? null, actorData)}</span>`;
 		}
 		else if (chatData.rangeType === "range") {
-			powerDetail += ` <span class="range-type ranged">${_loc("DND4E.rangeRanged")}</span> <span class="range-size">${chatData.rangePower}</span>`;
-			if (chatData.range?.long) powerDetail += `/<span class="range-long">${chatData.range.long}</span>`;
+			powerDetail += ` <span class="range-type ranged">${_loc("DND4E.rangeRanged")}</span> <span class="range-size">${this._rangeValue(chatData.rangePower ?? null, actorData)}</span>`;
+			if (chatData.range?.long) powerDetail += `/<span class="range-long">${this._rangeValue(chatData.range.long ?? null, actorData)}</span>`;
 		}
 		else if (["closeBurst", "closeBlast"].includes(chatData.rangeType)) {
-			powerDetail += ` <span class="range-type close">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span>`;
+			powerDetail += ` <span class="range-type close">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${this._rangeValue(chatData.area ?? null, actorData)}</span>`;
 		}
 		else if (["rangeBurst", "rangeBlast", "wall"].includes(chatData.rangeType)) {
-			powerDetail += ` <span class="range-type area">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${this._areaValue(chatData, actorData)}</span> <span class="label-within">${_loc("DND4E.RangeWithin")}</span> <span class="range-within">${chatData.rangePower}</span>`;
+			powerDetail += ` <span class="range-type area">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span> <span class="range-size">${this._rangeValue(chatData.area ?? null, actorData)}</span> <span class="label-within">${_loc("DND4E.RangeWithin")}</span> <span class="range-within">${chatData.rangePower}</span>`;
 		}
 		else if (chatData.rangeType === "personal") {
 			powerDetail += ` <span class="range-type personal">${CONFIG.DND4E.rangeType[chatData.rangeType].label}</span>`;

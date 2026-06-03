@@ -1153,7 +1153,7 @@ export class Actor4e extends Actor {
 								val = b.value;
 							}		
 							else {
-								val = Roll.safeEval(Roll.replaceFormulaData(b.value, system));
+								val = Helper.evaluateFormula(b.value, system, { strict: true, contextName: "prepareDerivedDataResistancesWeaknesses" });
 							}
 							vulnManual += Math.min(val, 0);
 							resManual += Math.max(val, 0);
