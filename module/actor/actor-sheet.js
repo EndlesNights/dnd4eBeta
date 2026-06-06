@@ -319,7 +319,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		const actor = this.actor;
-		const actorData = actor.system;
+		const actorData = actor.getRollData();
 		actorData.details.isBloodied = actor.system.details.isBloodied;
 
 		const isOwner = this.actor.isOwner;
@@ -358,10 +358,10 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				if (item.hasAttack) {
 					attackBonus = await item.getAttackBonus();
 				}
-				let detailsText = Helper._preparePowerCardData(i.chatData, CONFIG, actor, attackBonus);
+				let detailsText = Helper._preparePowerCardData(i.chatData, CONFIG, actorData, attackBonus);
 				i.detailsText = await foundry.applications.ux.TextEditor.implementation.enrichHTML(detailsText, {
-					async: true,
 					relativeTo: actor,
+					rollData: item.getRollData(),
 				});
 			}
 			i.collapsed = !this.#expandedItemIds.has(i._id); 
@@ -452,7 +452,6 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	
 			context.biographyHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(context.system.biography, {
 				secrets: isOwner,
-				async: true,
 				relativeTo: actor,
 			});
 		}

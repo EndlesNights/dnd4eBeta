@@ -69,9 +69,8 @@ TokenBarHooks.generateItemTooltip = async (actor, item) => {
 		if (item.hasAttack) {
 			attackBonus = await item.getAttackBonus();
 		}
-		let detailsText = Helper._preparePowerCardData(chatdata, CONFIG, actor, attackBonus);
+		let detailsText = Helper._preparePowerCardData(chatdata, CONFIG, actor.getRollData(), attackBonus);
 		const enrichedDetailsText = await foundry.applications.ux.TextEditor.implementation.enrichHTML(detailsText, {
-			async: true,
 			relativeTo: actor,
 		});
 		return enrichedDetailsText;

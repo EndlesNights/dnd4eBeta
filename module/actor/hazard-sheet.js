@@ -51,19 +51,16 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 		
 		hazardData.descHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.description, {
 			secrets: context.owner,
-			async: true,
 			relativeTo: this.actor,
 		});
 		
 		hazardData.countersHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.details.countermeasures, {
 			secrets: context.owner,
-			async: true,
 			relativeTo: this.actor,
 		});
 		
 		hazardData.notesHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.details.notes, {
 			secrets: context.owner,
-			async: true,
 			relativeTo: this.actor,
 		});
 		
