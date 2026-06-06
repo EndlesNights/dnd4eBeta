@@ -1,7 +1,8 @@
 import { d20Roll, damageRoll, getAttackRollBonus } from "../dice.js";
-import AbilityUseDialog from "../apps/ability-use-dialog.js";
 import { DND4E } from "../config.js";
 import { Helper } from "../helper.js";
+import AbilityUseDialog from "../apps/ability-use-dialog.js";
+import Roll4e from "../dice/Roll.js";
 
 /**
  * Override and extend the basic :class:`Item` implementation
@@ -1589,6 +1590,7 @@ export default class Item4e extends Item {
 	async rollAttack(options = {}) {
 		const itemData = this.system;
 		const actorData = this.actor;
+		options.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
 		// itemData.weaponUse = 2nd dropdown - default/none/weapon
 		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...
 		// find details on the weapon being used, if any.   This is null if no weapon is being used.
@@ -1700,7 +1702,7 @@ export default class Item4e extends Item {
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
 		}
 		
-		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack");
+		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack", null, options);
 
 		// Compose roll options
 		const rollConfig = {
@@ -1756,6 +1758,8 @@ export default class Item4e extends Item {
 
 	async getAttackBonus(options = {}) {
 		if (!this.hasAttack) return;
+
+		options.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
 
 		const itemData = this.system;
 		const actorData = this.actor;
@@ -1819,7 +1823,7 @@ export default class Item4e extends Item {
 			};
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
 		}
-		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack");
+		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack", null, options);
 
 		// Compose roll options
 		const rollConfig = {
@@ -2104,7 +2108,7 @@ export default class Item4e extends Item {
 			}
 
 		};
-		const options = { formulaInnerData: {}, divisors: { normal: { value: 1, reason: [] }, miss: { value: 1, reason: [] }, crit: { value: 1, reason: [] } } };
+		const options = { formulaInnerData: {}, divisors: { normal: { value: 1, reason: [] }, miss: { value: 1, reason: [] }, crit: { value: 1, reason: [] } }, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 		const secondaryPartsHelper = (formula, damageType) => {
 			// store the values that were used to sub in any formulas
 			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, rollData));
@@ -2240,7 +2244,7 @@ export default class Item4e extends Item {
 		const effectDamageParts = [];
 		const extraDamageParts = [];
 		if (!this.system?.hit?.damageBonusNull) {
-			await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse, "damage", extraDamageParts);
+			await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse, "damage", extraDamageParts, options);
 			effectDamageParts.forEach(part => {
 				const value = rollData[part.substring(1)];
 				damageFormula += `+ ${value}`;
@@ -2406,7 +2410,7 @@ export default class Item4e extends Item {
 		const parts = itemData.damage.parts.map(d => d[0]);
 		const partsExpressionReplacement = itemData.damage.parts.map(part => { return { target: part[0], value: "@wep2ndryDamage" };});
 
-		const options = { formulaInnerData: {} };
+		const options = { formulaInnerData: {}, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 		const formulaHelper = (formula) => {
 			// store the values that were used to sub in any formulas
 			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData(), this.getRollData()));

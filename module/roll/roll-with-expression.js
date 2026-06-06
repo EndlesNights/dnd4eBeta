@@ -1,4 +1,5 @@
 import { Helper } from "../helper.js";
+import Roll4e from "../dice/Roll.js";
 
 /**
  * Roll that will also have a roll for the expression used to build the row, and highlighting for how elements correspond to formula numbers.
@@ -14,7 +15,7 @@ import { Helper } from "../helper.js";
  *
  * It is highly recommended to use the static member {@link createRoll} method to create new instances of this class as that manages a lot of the constructor arguments for you.
  */
-export class RollWithOriginalExpression extends Roll {
+export class RollWithOriginalExpression extends Roll4e {
 
 	/**
      * Has an enhanced Options object with 2 additional properties:
@@ -41,7 +42,39 @@ export class RollWithOriginalExpression extends Roll {
      */
 	constructor (formula, data = {}, options = {}) {
 		super(formula, data, foundry.utils.mergeObject({ expression: formula, originalFormula: formula }, options));
+		foundry.utils.mergeObject(this.options, this.constructor.DEFAULT_OPTIONS, {
+			insertKeys: true,
+			insertValues: true,
+			overwrite: false,
+		});
 		this.expression = options.expression ? options.expression : formula;
+	}
+
+	/* -------------------------------------------------- */
+
+	static DEFAULT_OPTIONS = Object.freeze({
+		expressionArr: [],
+		formulaInnerData: {},
+		parts: [],
+	});
+
+	/* -------------------------------------------- */
+
+	/** @override */
+	processBonuses() {
+		super.processBonuses();
+		for (const [type, bonuses] of Object.entries(this.options.bonuses)) {
+			if (bonuses.length) {
+				const bonus = type == "untyped" ? bonuses.reduce((acc, curr) => acc + parseInt(curr), 0) : bonuses.reduce((max, curr) => Math.max(max, parseInt(curr)), -Infinity);
+				const bonusString = String(bonus);
+				const bonusPath = `${type}EffectBonus`;
+				this.expression += ` + @${bonusPath}`;
+				this.options.expressionArr.push(`@${bonusPath}`);
+				this.options.parts.push(bonusString);
+				this.options.formulaInnerData[bonusPath] = bonusString;
+			}
+		}
+		this.options.expression = this.expression;
 	}
 
 	/**

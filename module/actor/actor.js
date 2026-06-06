@@ -1,7 +1,9 @@
 import { d20Roll, damageRoll } from "../dice.js";
 import { DND4E } from "../config.js";
 import { Helper } from "../helper.js";
+import { RollWithOriginalExpression } from "../roll/roll-with-expression.js";
 import { SaveThrowDialog } from "../apps/save-throw.js";
+import Roll4e from "../dice/Roll.js";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -1946,6 +1948,7 @@ export class Actor4e extends Actor {
 
 	async rollSave(event, options) {
 		//let message = `${_loc("DND4E.RollSave")} ${options.dc || 10}`;
+		options.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
 		
 		let message = `(${_loc("DND4E.AbbreviationDC")} ${options.dc || 10})`;
 		if (options.effectSave) {
@@ -1964,7 +1967,7 @@ export class Actor4e extends Actor {
 			options.formulaInnerData = Roll.replaceFormulaData(options.save, rollData);
 		}
 		
-		await Helper.applySaveEffects([parts], rollData, this, this.effects.get(options.effectId), "save");
+		await Helper.applySaveEffects(rollData, this, this.effects.get(options.effectId), "save", options);
 
 		const rollConfig = foundry.utils.mergeObject({
 			parts,
@@ -1977,6 +1980,7 @@ export class Actor4e extends Actor {
 			messageData: { "flags.dnd4e.roll": { type: "save", itemId: this.id } },
 			fastForward: true,
 			messageMode: options.messageMode,
+			options,
 		});
 		rollConfig.event = event;
 		

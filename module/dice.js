@@ -137,7 +137,7 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 
 // Get the bonus for an attack roll 
 export function getAttackRollBonus({ parts = [], partsExpressionReplacements = [], data = {}, options = {} }) {
-	const roll = new MultiAttackRoll(parts.filterJoin(" + "), data, {});
+	const roll = new MultiAttackRoll(parts.filterJoin(" + "), data, options);
 	if (roll.isDeterministic) {
 		roll.evaluateSync();
 		return roll.total;
@@ -199,10 +199,12 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
 				targetBonuses.forEach(bonus => total += data.commonAttackBonuses[bonus.substring(1)].value);
-				allRollsParts.push(parts.concat([total]));
+				const partsToPush = total ? parts.concat([total]) : parts;
+				allRollsParts.push(partsToPush);
 			}
 			else {
-				allRollsParts.push(parts.concat(targetBonuses));
+				const partsToPush = targetBonuses.length ? parts.concat(targetBonuses) : parts;
+				allRollsParts.push(partsToPush);
 			}
 		}
 		
