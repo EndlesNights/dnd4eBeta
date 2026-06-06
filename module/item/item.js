@@ -2402,9 +2402,9 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData: {}, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 		const formulaHelper = (formula) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData(), this.getRollData()));
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData(), rollData));
 			// convert formula and type into a single string of "substituted formula [type]"
-			return Roll.replaceFormulaData(formula, this.getRollData());
+			return Roll.replaceFormulaData(formula, rollData);
 		};
 
 		//Add power healing into parts
@@ -2709,12 +2709,12 @@ export default class Item4e extends Item {
 			}
 
 			if (weaponData.properties.bru) {
-				dice += `(${quantity * weaponNum})d${parts[i].numFaces}rr<=${weaponData.brutalNum || 1}`;
+				dice += `${quantity * weaponNum}d${parts[i].numFaces}rr<=${weaponData.brutalNum || 1}`;
 			}
 			else {
-				dice += `(${quantity * weaponNum})d${parts[i].numFaces}`;
+				dice += `${quantity * weaponNum}d${parts[i].numFaces}`;
 			}
-			if (i < parts.length - 1) dice += "+";
+			if (i < parts.length - 1) dice += " + ";
 		}
 		const possibleDice = Roll.replaceFormulaData(dice, this.actor?.getRollData(), { recursive: true });
 		dice = possibleDice !== 0 ? possibleDice : dice; //there probably shouldn't be any formula left, because @wepDice is a formula contents under our command.	So if we had hit the bottom of the recursion tree, just try the original
@@ -2732,7 +2732,7 @@ export default class Item4e extends Item {
 		for (let i = 0; i < parts.length; i++) {
 			if (!parts[i].numDice || !parts[i].numFaces) continue;
 			dice += `(${parts[i].numDice} * ${parts[i].numFaces})`;
-			if (i < parts.length - 1) dice += "+";
+			if (i < parts.length - 1) dice += " + ";
 		}
 		dice = Roll.replaceFormulaData(dice, this.actor?.getRollData(), { recursive: true });
 		let r = new Roll(`${dice}`);
@@ -2786,7 +2786,7 @@ export default class Item4e extends Item {
 						dice += `${weaponDiceQuantity}d${parts[i].numFaces}${parts[i].modifier || ""}`;// added a null check to i2 hotfix
 					}
 
-					if (i < parts.length - 1) dice += "+";
+					if (i < parts.length - 1) dice += " + ";
 				}
 			} else {
 				return "0";
