@@ -916,7 +916,7 @@ export class Helper {
 					if (typeof description === "string") {
 						const sourceItem = fromUuidSync(e.origin);
 						const rollData = sourceItem?.getRollData() ?? parent?.getRollData();
-						const targetData = t.actor?.getRollData();
+						const targetData = t?.actor?.getRollData();
 						if (rollData && targetData) rollData.target = targetData;
 						rollData.effect = { name: e.name };
 						description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(description, { rollData: rollData });
