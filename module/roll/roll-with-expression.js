@@ -53,6 +53,7 @@ export class RollWithOriginalExpression extends Roll4e {
 	/* -------------------------------------------------- */
 
 	static DEFAULT_OPTIONS = Object.freeze({
+		...Roll4e.DEFAULT_OPTIONS,
 		expressionArr: [],
 		formulaInnerData: {},
 		parts: [],
