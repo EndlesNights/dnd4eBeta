@@ -4,11 +4,11 @@
   <div class="form-group">
     <label>{{localize "DND4E.Proficient"}} </label>
     <select name="system.proficient{{#if (eq system.weaponType 'implement')}}I{{/if}}">
-	  {{#if (eq system.weaponType 'implement')}}
-        {{selectOptions config.proficiency selected=system.proficientI}}
-	  {{else}}
-	    {{selectOptions config.proficiency selected=system.proficient}}
-	  {{/if}}
+      {{#if (eq system.weaponType 'implement')}}
+      {{selectOptions config.proficiency selected=system.proficientI}}
+      {{else}}
+      {{selectOptions config.proficiency selected=system.proficient}}
+      {{/if}}
     </select>
   </div>
   {{#unless (eq system.weaponType 'implement')}}{{#if system.properties.imp}}
