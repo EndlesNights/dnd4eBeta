@@ -1108,7 +1108,7 @@ export default class Item4e extends Item {
 			templateType = this.type;
 			templateData.abilityCheck = Helper.byString(this.system.attribute.replace(".mod", ".label").replace(".total", ".label"), this.actor?.system);
 		}
-		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
+		const template = `systems/dnd4e/templates/chat/${templateType}-card.hbs`;
 		let html = await foundry.applications.handlebars.renderTemplate(template, templateData);
 		
 		if (["power", "consumable"].includes(templateData.item.type)) {
@@ -1221,7 +1221,7 @@ export default class Item4e extends Item {
 			templateType = this.type;
 			templateData.abilityCheck = Helper.byString(this.system.attribute.replace(".mod", ".label").replace(".total", ".label"), this.actor?.system);
 		}
-		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
+		const template = `systems/dnd4e/templates/chat/${templateType}-card.hbs`;
 		let html = await foundry.applications.handlebars.renderTemplate(template, templateData);
 		
 		if (["power", "consumable"].includes(templateData.item.type)) {

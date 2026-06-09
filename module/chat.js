@@ -1,3 +1,4 @@
+import { handleRoll } from "./enrichers/check.js";
 import { Helper } from "./helper.js";
 import { MultiAttackRoll } from "./roll/multi-attack-roll.js";
 
@@ -237,6 +238,10 @@ export function chatMessageListener(html) {
 				if (el) this.hoverTokenActorName.call(this, event);
 			});
 		}
+	});
+
+	html.querySelectorAll("[data-action=\"checkRequest\"]").forEach((el) => {
+		el.addEventListener("click", handleRoll);
 	});
 
 	html.querySelectorAll(".description.collapsible").forEach((el) => {

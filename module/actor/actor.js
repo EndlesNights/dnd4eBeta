@@ -1812,17 +1812,19 @@ export class Actor4e extends Actor {
 		let flavText = this.system.skills[skillId].chat.replace("@name", this.name);
 		flavText = flavText.replace("@label", this.system.skills[skillId].label);
 		
-		// Reliable Talent applies to any skill check we have full or better proficiency in
-		//const reliableTalent = (skl.value >= 1 && this.getFlag("dnd4e", "reliableTalent"));
-		// Roll and return
-		
-		return d20Roll(foundry.utils.mergeObject(options, {
+		const rollConfig = foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
 			title: _loc("DND4E.SkillPromptTitle", { skill: CONFIG.DND4E.skills[skillId]?.label }),
 			speaker: ChatMessage.getSpeaker({ actor: this }),
 			flavor: flavText,
-		}));
+			critical: 21,
+			fumble: 0,
+			targetValue: Number(options.dc),
+		}, { overwrite: false });
+
+		// Roll and return
+		return d20Roll(rollConfig);
 	}	
   
 	/**
@@ -1842,17 +1844,22 @@ export class Actor4e extends Actor {
 		
 		let flavText = this.system.abilities[abilityId].chat.replace("@name", this.name);
 		flavText = flavText.replace("@label", this.system.abilities[abilityId].label);
-		
-		// Roll and return
-		return d20Roll(foundry.utils.mergeObject(options, {
+
+		const rollConfig = foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
 			title: _loc("DND4E.AbilityPromptTitle", { ability: CONFIG.DND4E.abilities[label] }),
 			speaker: ChatMessage.getSpeaker({ actor: this }),
 			flavor: flavText,
+			critical: 21,
+			fumble: 0,
+			targetValue: Number(options.dc),
 			// flavor: "Flowery Text Here. MORE AND MORE AND \r\n MORE S MORE " + _loc("DND4E.AbilityPromptTitle", {ability: CONFIG.DND4E.abilities[label]}),
 			// halflingLucky: feats.halflingLucky
-		}));
+		}, { overwrite: false });
+		
+		// Roll and return
+		return d20Roll(rollConfig);
 	}
 	
 	rollDef(defId, options = {}) {
@@ -2878,7 +2885,7 @@ export class Actor4e extends Actor {
 					};
 					
 					const html = await foundry.applications.handlebars.renderTemplate(
-						"systems/dnd4e/templates/chat/ongoing-damage.html", chatData, 
+						"systems/dnd4e/templates/chat/ongoing-damage.hbs", chatData, 
 					);
 										
 					await ChatMessage.create({
