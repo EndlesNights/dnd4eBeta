@@ -22,6 +22,7 @@ export function enricher(match, options) {
 	parsedConfig._input = match[0];
 	parsedConfig.type = type;
 
+	// TODO: Attack and damage rolls probably also will go in here, thus the switch statement that currently leads to only one place.
 	switch (type) {
 		case "ability":
 		case "skill":
