@@ -241,6 +241,7 @@ export function chatMessageListener(html) {
 	});
 
 	html.querySelectorAll("[data-action=\"checkRequest\"]").forEach((el) => {
+		if (game.user.isGM || !el.dataset.hideDc) el.dataset.displayChallenge = true;
 		el.addEventListener("click", handleRoll);
 	});
 

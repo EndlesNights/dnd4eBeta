@@ -40,7 +40,7 @@ export function enricher(match, options) {
  * @returns {HTMLElement|null}         An HTML link if the enricher could be built, otherwise null.
  */
 export async function enrichCheck(parsedConfig, label, options) {
-	const rollType = parsedConfig.type;
+	const { dc, format, hideDC, type: rollType } = parsedConfig;
 	let toRoll;
 	if (rollType === "skill") {
 		toRoll = parsedConfig.skill?.replaceAll("/", "|").split("|") ?? [];
@@ -50,8 +50,9 @@ export async function enrichCheck(parsedConfig, label, options) {
 	const linkConfig = {
 		rollType,
 		skillOrAbility: toRoll,
-		dc: parsedConfig.dc,
-		format: parsedConfig.format,
+		dc,
+		format,
+		hideDC,
 	};
 
 	const longSkills = Object.fromEntries(Array.from(Object.entries(CONFIG.DND4E.skills)).map((arr) => [arr[1].label.toLowerCase(), arr[0]]));
@@ -302,13 +303,12 @@ function createCheckRequestButtons(dataset) {
  * @returns {object}
  */
 function createRequestButton(dataset) {
-	const displayChallenge = game.user.isGM || !dataset.hideDC;
 	const baseDataset = { ...dataset };
 	baseDataset.type = "check";
 	return {
-		buttonLabel: formatCheckLabel(dataset),
+		buttonLabel: formatCheckLabel({ ...dataset, hideDC: false }),
 		hiddenLabel: formatCheckLabel({ ...dataset, hideDC: true }),
-		dataset: { ...baseDataset, action: "checkRequest", visibility: "all", displayChallenge },
+		dataset: { ...baseDataset, action: "checkRequest", visibility: "all" },
 	};
 }
 
