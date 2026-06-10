@@ -363,6 +363,11 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 					relativeTo: actor,
 					rollData: item.getRollData(),
 				});
+			} else if (item.system.description.value) {
+				i.chatData.description.value = await foundry.applications.ux.TextEditor.implementation.enrichHTML(i.chatData.description.value, {
+					relativeTo: actor,
+					rollData: item.getRollData(),
+				});
 			}
 			i.collapsed = !this.#expandedItemIds.has(i._id); 
 		}
