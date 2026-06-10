@@ -1977,7 +1977,7 @@ export default class Item4e extends Item {
 		const shapes = Array.fromRange(shapeCount).map(() => {
 			const shapeData = { type, gridBased: true, x: 0, y: 0 };
 			for (const [key, path] of Object.entries(shapeProperties)) {
-				shapeData[key] = Roll.evaluateFormula(this.system[path], this.actor?.getRollData(), { strict: true, contextName: "templateData" }) * canvas.dimensions.distancePixels;
+				shapeData[key] = Helper.evaluateFormula(this.system[path], this.actor?.getRollData(), { strict: true, contextName: "templateData" }) * canvas.dimensions.distancePixels;
 			}
 
 			// Special case
