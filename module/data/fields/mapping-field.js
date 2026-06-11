@@ -34,9 +34,9 @@ export default class MappingField extends foundry.data.fields.TypedObjectField {
 		super(model, options, context);
 
 		/**
-     * The embedded DataField definition which is contained in this field.
-     * @type {DataField}
-     */
+		 * The embedded DataField definition which is contained in this field.
+		 * @type {DataField}
+		 */
 		this.model = this.element;
 	}
 

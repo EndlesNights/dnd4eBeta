@@ -5,6 +5,7 @@ import AttackAndDamageTemplate from "./templates/attack-damage.js";
 import ItemDescriptionTemplate from "./templates/item-description.js";
 import ItemMacroTemplate from "./templates/item-macro.js";
 import PhysicalItemTemplate from "./templates/physical-item.js";
+import { processPart } from "./_utils.js";
 
 const { BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
@@ -56,5 +57,29 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
 			}),
 			keywordsCustom: new StringField({ initial: "" }),
 		};
+	}
+
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	static migrateData(source) {
+		if (source.damage?.parts.length) {
+			for (let partIndex = 0; partIndex < source.damage.parts.length; partIndex++) {
+				source.damage.parts[partIndex] = processPart(source.damage.parts[partIndex]);
+			}
+		}
+		if (source.damageCrit?.parts.length) {
+			for (let partIndex = 0; partIndex < source.damageCrit.parts.length; partIndex++) {
+				source.damageCrit.parts[partIndex] = processPart(source.damageCrit.parts[partIndex]);
+			}
+		}
+		if (source.damageCritImp?.parts.length) {
+			for (let partIndex = 0; partIndex < source.damageCritImp.parts.length; partIndex++) {
+				source.damageCritImp.parts[partIndex] = processPart(source.damageCritImp.parts[partIndex]);
+			}
+		}
+		return super.migrateData(source);
 	}
 }

@@ -428,8 +428,8 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage = false) {
 	roll.terms.forEach(e => {
 		if (typeof e.total === "number") {
 			if (e.flavor) {
-				Helper.debugLog(`Damage type found: ${e.options.flavor}`);
-				damageDealt.push([e.total, e.options.flavor]);
+				Helper.debugLog(`Damage type found: ${e.flavor}`);
+				damageDealt.push([e.total, e.flavor]);
 				rollTotalRemain -= e.total;
 			}
 		}

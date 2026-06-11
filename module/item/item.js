@@ -75,8 +75,8 @@ export default class Item4e extends Item {
 			if (system.damage.parts?.length > 0) {
 				Helper.debugLog("DnD4e: Updating an obsolete consumable that somehow still had a parts roll");
 				// ok so need to fix it
-				if (system.damage.parts.map(d => d[1]).includes("healing") && !changed.system.hit?.healFormula) {
-					foundry.utils.setProperty(changed, "system.hit.healFormula", system.damage.parts[0][0]);
+				if (system.damage.parts.map(d => [...d.type].join(",")).includes("healing") && !changed.system.hit?.healFormula) {
+					foundry.utils.setProperty(changed, "system.hit.healFormula", system.damage.parts[0].formula);
 					foundry.utils.setProperty(changed, "system.hit.isHealing", true);
 				}
 				foundry.utils.setProperty(changed, "system.damage.parts", []);
@@ -139,7 +139,7 @@ export default class Item4e extends Item {
 		this._onCreationName(data);
 
 		if (!this.isEmbedded) return;
-		const isNPC = this.parent.type === "NPC";
+		const isNPC = this.parent.isNPC;
 		let updates;
 		switch (data.type) {
 			case "equipment":
@@ -750,8 +750,8 @@ export default class Item4e extends Item {
 		else if (itemData.type === "consumable") {
 			// does it have an old damage expression
 			if (system.damage.parts?.length > 0) {
-				if (system.damage.parts.map(d => d[1]).includes("healing") && !system.hit?.healFormula) {
-					system.hit.healFormula = system.damage.parts[0][0];
+				if (system.damage.parts.map(d => [...d.type].join(",")).includes("healing") && !system.hit?.healFormula) {
+					system.hit.healFormula = system.damage.parts[0].formula;
 					system.hit.isHealing = true;
 					system.damage.parts = [];
 					system.oldConsumableNeedsUpdate = true;
@@ -2103,9 +2103,9 @@ export default class Item4e extends Item {
 			// convert formula and type into a single string of "substituted formula [type]"
 			return returnDamageRollAndOptionalType(Roll.replaceFormulaData(formula, rollData), damageType);
 		};
-		const parts = itemData.damage.parts.map(d => secondaryPartsHelper(d[0], d[1]));
-		const partsMiss = itemData.damage.parts.map(d => secondaryPartsHelper(d[0], d[1]));
-		const partsCrit = itemData.damageCrit.parts.map(d => secondaryPartsHelper(d[0], d[1]));
+		const parts = itemData.damage.parts.map(d => secondaryPartsHelper(d.formula, [...d.type].join(",")));
+		const partsMiss = itemData.damage.parts.map(d => secondaryPartsHelper(d.formula, [...d.type].join(",")));
+		const partsCrit = itemData.damageCrit.parts.map(d => secondaryPartsHelper(d.formula, [...d.type].join(",")));
 
 		// store the original expression formula that produced those formula
 		const partsExpressionReplacement = parts.map(part => { return { target: part, value: "@pow2ndryDamage" };});
@@ -2153,10 +2153,10 @@ export default class Item4e extends Item {
 			//Add seconadary weapons damage into parts
 			const secondaryDamageExpressionHelper = (oldParts, expressionParts, newPartsArr) => {
 				const newParts = newPartsArr.map(d => {
-					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(d[0], rollData));
-					const formula = Roll.replaceFormulaData(d[0], rollData);
-					if (d.length >= 2) {
-						return returnDamageRollAndOptionalType(formula, d[1]);
+					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(d.formula, rollData));
+					const formula = Roll.replaceFormulaData(d.formula, rollData);
+					if (d.type.size) {
+						return returnDamageRollAndOptionalType(formula, [...d.type].join(","));
 					}
 					else {
 						return formula;
@@ -2194,10 +2194,10 @@ export default class Item4e extends Item {
 		// Adjust damage from versatile usage
 		if (weaponUse) {
 			if (weaponUse.system.properties["ver"] && (weaponUse.system.weaponHand === "hTwo")) {
-				damageFormula += "+ 1";
-				critDamageFormula += "+ 1";
-				damageFormulaExpression += "+ @versatile";
-				critDamageFormulaExpression += "+ @versatile";
+				damageFormula += " + 1";
+				critDamageFormula += " + 1";
+				damageFormulaExpression += " + @versatile";
+				critDamageFormulaExpression += " + @versatile";
 				options.formulaInnerData.versatile = 1;
 			}
 			if (weaponUse.system.properties["hic"]) {
@@ -2254,7 +2254,7 @@ export default class Item4e extends Item {
 				partsMiss.push("@ammo");
 			}
 
-			rollData["ammo"] = this._ammo.system.damage.parts.map(p => p[0]).join("+");
+			rollData["ammo"] = this._ammo.system.damage.parts.map(p => p.formula).join("+");
 			flavor += ` [${this._ammo.name}]`;
 			delete this._ammo;
 		}
@@ -2269,7 +2269,7 @@ export default class Item4e extends Item {
 					partsMiss.push("@ammoW");
 				}
 
-				rollData["ammoW"] = weaponUse._ammo.system.damage.parts.map(p => p[0]).join("+");
+				rollData["ammoW"] = weaponUse._ammo.system.damage.parts.map(p => p.formula).join(" + ");
 				flavor += ` [${weaponUse._ammo.name}]`;
 				delete weaponUse._ammo;
 			}
@@ -2327,6 +2327,7 @@ export default class Item4e extends Item {
 		}
 
 		const primaryDamageStr = primaryDamage ? `[${primaryDamage}]` : "";
+		if (primaryDamage) options.flavor = primaryDamage;
 		parts.unshift(`(${damageFormula})${primaryDamageStr}`);
 		partsCrit.unshift(`(${critDamageFormula})${primaryDamageStr}`);
 		partsMiss.unshift(`(${missDamageFormula})${primaryDamageStr}`);
@@ -2401,9 +2402,9 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData: {}, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 		const formulaHelper = (formula) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData(), this.getRollData()));
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, Helper.getDataObject(formula, actorData.getRollData(), rollData));
 			// convert formula and type into a single string of "substituted formula [type]"
-			return Roll.replaceFormulaData(formula, this.getRollData());
+			return Roll.replaceFormulaData(formula, rollData);
 		};
 
 		//Add power healing into parts
@@ -2444,7 +2445,7 @@ export default class Item4e extends Item {
 		// Ammunition Damage from power
 		if (this._ammo) {
 			parts.push("@ammo");
-			rollData["ammo"] = this._ammo.system.damage.parts.map(p => p[0]).join("+");
+			rollData["ammo"] = this._ammo.system.damage.parts.map(p => p.formula).join(" + ");
 			flavor += ` [${this._ammo.name}]`;
 			delete this._ammo;
 		}
@@ -2453,7 +2454,7 @@ export default class Item4e extends Item {
 		if (weaponUse) {
 			if (weaponUse._ammo) {
 				parts.push("@ammoW");
-				rollData["ammoW"] = weaponUse._ammo.system.damage.parts.map(p => p[0]).join("+");
+				rollData["ammoW"] = weaponUse._ammo.system.damage.parts.map(p => p.formula).join(" + ");
 				flavor += ` [${weaponUse._ammo.name}]`;
 				delete weaponUse._ammo;
 			}
@@ -2697,9 +2698,9 @@ export default class Item4e extends Item {
 
 		let dice = "";
 		for (let i = 0; i < parts.length; i++) {
-			if (!parts[i][0] || !parts[i][1]) continue;
+			if (!parts[i].numDice || !parts[i].numFaces) continue;
 
-			let quantity = Roll.replaceFormulaData(parts[i][0], this.actor?.getRollData(), { recursive: true });
+			let quantity = Roll.replaceFormulaData(parts[i].numDice, this.actor?.getRollData(), { recursive: true });
 			let r = new Roll(`${quantity}`);
 
 			if (r.isDeterministic) {
@@ -2708,12 +2709,12 @@ export default class Item4e extends Item {
 			}
 
 			if (weaponData.properties.bru) {
-				dice += `(${quantity}*${weaponNum})d${parts[i][1]}rr<=${weaponData.brutalNum || 1}`;
+				dice += `${quantity * weaponNum}d${parts[i].numFaces}rr<=${weaponData.brutalNum || 1}`;
 			}
 			else {
-				dice += `(${quantity}*${weaponNum})d${parts[i][1]}`;
+				dice += `${quantity * weaponNum}d${parts[i].numFaces}`;
 			}
-			if (i < parts.length - 1) dice += "+";
+			if (i < parts.length - 1) dice += " + ";
 		}
 		const possibleDice = Roll.replaceFormulaData(dice, this.actor?.getRollData(), { recursive: true });
 		dice = possibleDice !== 0 ? possibleDice : dice; //there probably shouldn't be any formula left, because @wepDice is a formula contents under our command.	So if we had hit the bottom of the recursion tree, just try the original
@@ -2729,15 +2730,15 @@ export default class Item4e extends Item {
 		let parts = weaponData.damageDice.parts;
 		let dice = "";
 		for (let i = 0; i < parts.length; i++) {
-			if (!parts[i][0] || !parts[i][1]) continue;
-			dice += `(${parts[i][0]} * ${parts[i][1]})`;
-			if (i < parts.length - 1) dice += "+";
+			if (!parts[i].numDice || !parts[i].numFaces) continue;
+			dice += `(${parts[i].numDice} * ${parts[i].numFaces})`;
+			if (i < parts.length - 1) dice += " + ";
 		}
 		dice = Roll.replaceFormulaData(dice, this.actor?.getRollData(), { recursive: true });
 		let r = new Roll(`${dice}`);
 		if (dice) {
 			r.evaluateSync({ maximize: true });
-			return r.result;
+			return r.total;
 		} else {
 			return dice;
 		}
@@ -2769,9 +2770,9 @@ export default class Item4e extends Item {
 				let parts = weaponData.damageDice.parts;
 				for (let i = 0; i < parts.length; i++) {
 
-					if (!parts[i][0] || !parts[i][1]) continue;
+					if (!parts[i].numDice || !parts[i].numFaces) continue;
 
-					let weaponDiceQuantity = Roll.replaceFormulaData(`(${quantity}) * (${parts[i][0]})`, this.actor?.getRollData(), { recursive: true });
+					let weaponDiceQuantity = Roll.replaceFormulaData(`(${quantity}) * (${parts[i].numDice})`, this.actor?.getRollData(), { recursive: true });
 					let r2 = new Roll(`${weaponDiceQuantity}`);
 
 					if (r2.isDeterministic) {
@@ -2779,13 +2780,13 @@ export default class Item4e extends Item {
 						weaponDiceQuantity = r2.total;
 					}
 					if (weaponData.properties.bru) {
-						dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2]}rr<=${weaponData.brutalNum || 1}`;
+						dice += `${weaponDiceQuantity}d${parts[i].numFaces}${parts[i].modifier}rr<=${weaponData.brutalNum || 1}`;
 					}
 					else {
-						dice += `${weaponDiceQuantity}d${parts[i][1]}${parts[i][2] || ""}`;// added a null check to i2 hotfix
+						dice += `${weaponDiceQuantity}d${parts[i].numFaces}${parts[i].modifier || ""}`;// added a null check to i2 hotfix
 					}
 
-					if (i < parts.length - 1) dice += "+";
+					if (i < parts.length - 1) dice += " + ";
 				}
 			} else {
 				return "0";
@@ -2828,8 +2829,8 @@ export default class Item4e extends Item {
 			if (weaponData) {
 				let parts = weaponData.damageDice.parts;
 				for (let i = 0; i < parts.length; i++) {
-					if (!parts[i][0] || !parts[i][1]) continue;
-					dice += `(${quantity} * ${parts[i][0]} * ${parts[i][1]})`;
+					if (!parts[i].numDice || !parts[i].numFaces) continue;
+					dice += `(${quantity} * ${parts[i].numDice} * ${parts[i].numFaces})`;
 					if (i < parts.length - 1) dice += "+";
 				}
 			} else {
@@ -2846,7 +2847,13 @@ export default class Item4e extends Item {
 			dice += `${quantity} * ${diceValue}`;
 		}
 		dice = Roll.replaceFormulaData(dice, this.actor?.getRollData(), { recursive: true });
-		return dice;
+		let r = new Roll(`${dice}`);
+		if (dice) {
+			r.evaluateSync({ maximize: true });
+			return r.total;
+		} else {
+			return dice;
+		}
 	}
 
 	/**
