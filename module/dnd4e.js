@@ -472,12 +472,12 @@ Hooks.on("createRegion", async (regionDoc) => {
 				targets.add(targetToken.id);
 				break;
 			case "allies":
-				if (targetToken.document.disposition === disposition) {
+				if (targetToken.disposition === disposition) {
 					targets.add(targetToken.id);
 				}
 				break;
 			case "enemies":
-				if (targetToken.document.disposition === -1 * disposition) {
+				if (targetToken.disposition === -1 * disposition) {
 					targets.add(targetToken.id);
 				}
 				break;
