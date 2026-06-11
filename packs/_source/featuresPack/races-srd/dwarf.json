@@ -5,29 +5,12 @@
   "effects": [
     {
       "_id": "jPUvz9QgQAXX2MH2",
-      "changes": [
-        {
-          "key": "system.skills.dun.race",
-          "mode": 4,
-          "value": "2",
-          "priority": null
-        },
-        {
-          "key": "system.skills.end.race",
-          "mode": 4,
-          "value": "2",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.i2NcqdymUkeCMmBr",
       "transfer": true,
@@ -47,11 +30,11 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.360",
         "systemId": "dnd4e",
         "systemVersion": "0.5.5",
-        "createdTime": null,
-        "modifiedTime": 1730442885673,
+        "createdTime": 1776987027156,
+        "modifiedTime": 1776987029997,
         "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
@@ -59,29 +42,36 @@
       },
       "img": "icons/skills/social/theft-pickpocket-bribery-brown.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.skills.dun.race",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade"
+          },
+          {
+            "key": "system.skills.end.race",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!nwbpWXs919OzW74W.jPUvz9QgQAXX2MH2"
     },
     {
       "_id": "7QId0MhPUanK6Nep",
-      "changes": [
-        {
-          "key": "system.movement.base.base",
-          "mode": 5,
-          "value": "5",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.9PmyZASo811YrcxS",
       "transfer": true,
@@ -95,33 +85,42 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.360",
         "systemId": null,
         "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "createdTime": 1776987028278,
+        "modifiedTime": 1776987030889,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
         "exportSource": null
       },
       "img": "icons/skills/movement/feet-bladed-boots-fire.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.movement.base.base",
+            "value": 5,
+            "priority": null,
+            "type": "override"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!nwbpWXs919OzW74W.7QId0MhPUanK6Nep"
     },
     {
       "name": "Dwarven Weapon Proficiency",
       "origin": "Compendium.dnd4e.featuresPack.Item.nwbpWXs919OzW74W",
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "disabled": false,
       "flags": {
@@ -136,39 +135,43 @@
         }
       },
       "_id": "lXFzoW5GNbhDzXxE",
-      "changes": [
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "throwinghammer",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "warhammer",
-          "priority": null
-        }
-      ],
       "description": "<p>You gain proficiency with the @UUID[Compendium.dnd4e.equipmentPack.Item.mrQq7VReo4sRAQmZ]{Throwing Hammer} and the @UUID[Compendium.dnd4e.equipmentPack.Item.yRUWjn2ooggvBe39]{Warhammer}.</p>",
       "transfer": true,
       "statuses": [],
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.360",
         "systemId": null,
         "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "createdTime": 1776987028747,
+        "modifiedTime": 1776987031398,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
         "exportSource": null
       },
       "img": "icons/skills/trades/smithing-anvil-silver-red.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "throwinghammer",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "warhammer",
+            "priority": null,
+            "type": "add"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!nwbpWXs919OzW74W.lXFzoW5GNbhDzXxE"
     }
   ],
@@ -240,7 +243,7 @@
   "_stats": {
     "systemId": "dnd4e",
     "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "coreVersion": "14.359",
     "createdTime": 1686094304125,
     "modifiedTime": 1745817871227,
     "lastModifiedBy": "dnd4ebuilder0000",

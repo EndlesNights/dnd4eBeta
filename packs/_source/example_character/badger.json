@@ -15,12 +15,12 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "13.348",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.5",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328421,
+        "modifiedTime": 1778918328421,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -96,13 +96,14 @@
           "baseQuantity": "1",
           "baseDiceType": "weapon",
           "detail": "1d6 + 5 Damage",
-          "formula": "1d6+5",
-          "critFormula": "1*6+5",
+          "formula": "1d6 + 5",
+          "critFormula": "1 * 6 + 5",
           "healFormula": ""
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": ""
@@ -156,9 +157,9 @@
         },
         "rangeTextShort": "Melee",
         "rangeText": "Melee",
-        "rangePower": 0,
-        "area": 0,
-        "rechargeRoll": null,
+        "rangePower": "0",
+        "area": "0",
+        "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
         "postEffect": true,
@@ -214,7 +215,8 @@
         "keywords": [],
         "chatFlavor": "",
         "effectHTML": false,
-        "category": "other"
+        "category": "other",
+        "auraSize": ""
       },
       "_key": "!actors.items!n1LXn8qhWKAwCErL.iTekLaBn2vKhviW3"
     },
@@ -228,14 +230,14 @@
       "sort": 100000,
       "flags": {},
       "_stats": {
-        "compendiumSource": "Actor.UmSJ4HoqnPHDS28w.Item.blY52ZuPbtGqlyGb",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "13.348",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.5",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328421,
+        "modifiedTime": 1778918328421,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "ownership": {
@@ -295,10 +297,10 @@
           "canOpp": false,
           "ability": "form",
           "abilityBonus": 0,
-          "def": null,
+          "def": "ac",
           "defBonus": 0,
           "detail": "",
-          "formula": null,
+          "formula": "@wepAttack + @powerMod + @lvhalf",
           "damageType": {},
           "effectType": {}
         },
@@ -308,16 +310,17 @@
           "isDamage": false,
           "isHealing": false,
           "healSurge": "",
-          "baseQuantity": 1,
+          "baseQuantity": "1",
           "baseDiceType": "Base Weapon Damage",
           "detail": "",
-          "formula": null,
-          "critFormula": null,
+          "formula": "@powBase + @powMod + @wepDamage",
+          "critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
           "healFormula": ""
         },
         "miss": {
           "detail": "",
-          "formula": ""
+          "formula": "",
+          "halfDamage": false
         },
         "effect": {
           "detail": "The badger makes a bite attack against the damaging enemy, and then must continue to attack that creature every round until death."
@@ -358,9 +361,9 @@
         },
         "rangeTextShort": "The damaging enemy",
         "rangeText": "The damaging enemy",
-        "rangePower": 1,
-        "area": 0,
-        "rechargeRoll": null,
+        "rangePower": "1",
+        "area": "0",
+        "rechargeRoll": "",
         "rechargeCondition": "",
         "damageShare": false,
         "postEffect": true,
@@ -417,7 +420,8 @@
         "chatFlavor": "",
         "effectHTML": false,
         "category": "other",
-        "container": null
+        "container": null,
+        "auraSize": ""
       },
       "_key": "!actors.items!n1LXn8qhWKAwCErL.blY52ZuPbtGqlyGb"
     },
@@ -427,7 +431,7 @@
       "img": "icons/svg/book.svg",
       "system": {
         "description": {
-          "value": "<h1>Badger</h1>\n<p><b>Role: </b>level 2 Tiny  brute</p>\n<p><b>Type: </b>natural beast</p>\n<p><b>Typical Alignment:</b> Neutral</p>\n<p>Ask your DM for typical temperament</p>\n",
+          "value": "<h1>Badger</h1>\n<p><b>Role: </b>level 2 Tiny  brute</p>\n<p><b>Type: </b>natural beast</p>\n<p><b>Typical Alignment:</b> Neutral</p>\n<p>Ask your DM for typical temperament</p>",
           "chat": "",
           "unidentified": "",
           "gm": ""
@@ -445,7 +449,7 @@
           "autoanimationHook": ""
         },
         "featureType": "other",
-        "level": null,
+        "level": "",
         "requirements": "",
         "featureSource": "",
         "featureGroup": "",
@@ -494,14 +498,14 @@
       },
       "flags": {},
       "_stats": {
-        "compendiumSource": "Actor.5GyGd3HmvJuMIok3.Item.A5gGH9SxHqnwdfJK",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "13.348",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.5",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328421,
+        "modifiedTime": 1778918328421,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!n1LXn8qhWKAwCErL.5893lXTphVotsLpt"
@@ -530,7 +534,7 @@
           "autoanimationHook": ""
         },
         "featureType": "other",
-        "level": null,
+        "level": "",
         "requirements": "",
         "featureSource": "",
         "featureGroup": "",
@@ -579,14 +583,14 @@
       },
       "flags": {},
       "_stats": {
-        "compendiumSource": "Actor.5GyGd3HmvJuMIok3.Item.vk3flHY7a5n4jphH",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "13.348",
+        "coreVersion": "14.361",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.5",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.0",
+        "createdTime": 1778918328422,
+        "modifiedTime": 1778918328422,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "_key": "!actors.items!n1LXn8qhWKAwCErL.pg85XAO58kzYqrI0"
@@ -631,7 +635,7 @@
     }
   },
   "system": {
-    "biography": "<p>The badger is a furry animal with a squat, powerful body.&nbsp; It's fur is mostly black with a while stripe running down its nose and face. Its strong forelimbs are armed with long claws for digging.</p>\n<p>An adult badger is 2 to 3 feet long (0.75 - 1m) and weighs 25 to 35 pounds. (10 - 15Kg)</p>",
+    "biography": "<p>The badger is a furry animal with a squat, powerful body. Its fur is mostly black with a while stripe running down its nose and face. Its strong forelimbs are armed with long claws for digging.</p>\n<p>An adult badger is 2 to 3 feet long (0.75 - 1m) and weighs 25 to 35 pounds. (10 - 15Kg)</p>",
     "details": {
       "size": "tiny",
       "origin": "natural",
@@ -651,7 +655,9 @@
       "surgeValue": 0,
       "surgeBon": {
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
@@ -671,7 +677,9 @@
       },
       "surgeEnv": {
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
@@ -694,46 +702,9 @@
         "secondary": "standard",
         "leader": false
       },
-      "class": "",
-      "paragon": "",
-      "epic": "",
-      "secondwind": false,
-      "secondwindEffect": {},
-      "deathsaves": 3,
-      "deathsavefail": 0,
-      "deathsaveCrit": 20,
-      "deathsavebon": {
-        "bonus": [
-          {}
-        ],
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0,
-        "value": 0
-      },
-      "secondwindbon": {
-        "bonus": [
-          {}
-        ],
-        "value": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0,
-        "custom": ""
-      },
-      "weaponProf": {
-        "value": [],
-        "custom": ""
-      },
-      "armourProf": {
-        "value": [],
-        "custom": ""
-      },
-      "equipment": ""
+      "isBloodied": false,
+      "source": "Example Creature Compendium",
+      "controller": ""
     },
     "languages": {
       "spoken": {
@@ -746,45 +717,121 @@
       }
     },
     "senses": {
-      "vision": {
-        "value": [],
-        "custom": null
-      },
       "special": {
-        "value": [
-          [
-            "dv",
-            ""
-          ]
-        ],
-        "custom": ""
+        "custom": "",
+        "lv": {
+          "value": false,
+          "range": ""
+        },
+        "dv": {
+          "value": true,
+          "range": ""
+        },
+        "aa": {
+          "value": false,
+          "range": ""
+        },
+        "bs": {
+          "value": false,
+          "range": ""
+        },
+        "bv": {
+          "value": false,
+          "range": ""
+        },
+        "nv": {
+          "value": false,
+          "range": ""
+        },
+        "tr": {
+          "value": false,
+          "range": ""
+        },
+        "ts": {
+          "value": false,
+          "range": ""
+        }
       },
       "notes": ""
     },
     "abilities": {
       "str": {
         "value": 14,
-        "chat": "@name uses @label."
+        "chat": "@name uses @label.",
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       },
       "con": {
         "value": 14,
-        "chat": "@name uses @label."
+        "chat": "@name uses @label.",
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       },
       "dex": {
         "value": 13,
-        "chat": "@name uses @label."
+        "chat": "@name uses @label.",
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       },
       "int": {
         "value": 2,
-        "chat": "@name uses @label."
+        "chat": "@name uses @label.",
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       },
       "wis": {
         "value": 12,
-        "chat": "@name uses @label."
+        "chat": "@name uses @label.",
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       },
       "cha": {
         "value": 8,
-        "chat": "@name uses @label."
+        "chat": "@name uses @label.",
+        "check": {
+          "feat": 0,
+          "item": 0,
+          "power": 0,
+          "race": 0,
+          "untyped": 0,
+          "value": 0,
+          "bonus": []
+        }
       }
     },
     "attributes": {
@@ -841,10 +888,12 @@
         "enhance": 0,
         "shield": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "temp": 0,
-        "light": false,
+        "light": "auto",
         "altability": "",
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with armour.",
@@ -863,12 +912,16 @@
         "enhance": 0,
         "shield": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "temp": 0,
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with fortitude.",
-        "base": 13
+        "base": 13,
+        "light": "auto",
+        "altability": ""
       },
       "ref": {
         "value": 12,
@@ -883,12 +936,16 @@
         "enhance": 0,
         "shield": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "temp": 0,
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with reflexes.",
-        "base": 12
+        "base": 12,
+        "light": "auto",
+        "altability": ""
       },
       "wil": {
         "value": 10,
@@ -903,12 +960,16 @@
         "enhance": 0,
         "shield": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "temp": 0,
         "condition": "Conditional Bonuses.",
         "chat": "@name defends with willpower.",
-        "base": 10
+        "base": 10,
+        "light": "auto",
+        "altability": ""
       }
     },
     "modifiers": {
@@ -921,7 +982,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "damage": {
@@ -933,7 +996,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "skills": {
@@ -945,7 +1010,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "defences": {
@@ -957,7 +1024,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       }
     },
@@ -972,7 +1041,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "dex",
         "armourCheck": true,
@@ -988,7 +1059,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "int",
         "armourCheck": false,
@@ -1004,7 +1077,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "str",
         "armourCheck": true,
@@ -1020,7 +1095,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "cha",
         "armourCheck": false,
@@ -1036,7 +1113,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "cha",
         "armourCheck": false,
@@ -1052,7 +1131,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
@@ -1068,7 +1149,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "con",
         "armourCheck": true,
@@ -1084,7 +1167,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
@@ -1100,7 +1185,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "int",
         "armourCheck": false,
@@ -1116,7 +1203,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
@@ -1132,7 +1221,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "cha",
         "armourCheck": false,
@@ -1148,7 +1239,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
@@ -1164,7 +1257,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
@@ -1180,7 +1275,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "int",
         "armourCheck": false,
@@ -1196,7 +1293,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "dex",
         "armourCheck": true,
@@ -1212,7 +1311,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "cha",
         "armourCheck": false,
@@ -1228,7 +1329,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "dex",
         "armourCheck": true,
@@ -1243,11 +1346,14 @@
         "untyped": 0,
         "training": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "ability": "wis",
         "armourCheck": false,
-        "chat": "@name uses @label."
+        "chat": "@name uses @label.",
+        "race": 0
       }
     },
     "skillTraining": {
@@ -1286,7 +1392,9 @@
         "untyped": 0,
         "skill": "prc",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "pasins": {
@@ -1298,7 +1406,9 @@
         "untyped": 0,
         "skill": "ins",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       }
     },
@@ -1310,14 +1420,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "physical": {
         "value": 0,
@@ -1326,14 +1432,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "ongoing": {
         "value": 0,
@@ -1342,14 +1444,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "acid": {
         "value": 0,
@@ -1358,14 +1456,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "cold": {
         "value": 0,
@@ -1374,14 +1468,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "fire": {
         "value": 0,
@@ -1390,14 +1480,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "force": {
         "value": 0,
@@ -1406,14 +1492,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "lightning": {
         "value": 0,
@@ -1422,14 +1504,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "necrotic": {
         "value": 0,
@@ -1438,14 +1516,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "poison": {
         "value": 0,
@@ -1454,14 +1528,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "psychic": {
         "value": 0,
@@ -1470,14 +1540,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "radiant": {
         "value": 0,
@@ -1486,14 +1552,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       },
       "thunder": {
         "value": 0,
@@ -1502,14 +1564,10 @@
         "armour": 0,
         "immune": false,
         "bonus": [
-          {}
-        ],
-        "temp": 0,
-        "feat": 0,
-        "item": 0,
-        "power": 0,
-        "race": 0,
-        "untyped": 0
+          {
+            "active": false
+          }
+        ]
       }
     },
     "untypedResistances": {
@@ -1526,7 +1584,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "comAdv": {
@@ -1537,7 +1597,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "charge": {
@@ -1548,7 +1610,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "conceal": {
@@ -1559,7 +1623,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "concealTotal": {
@@ -1570,7 +1636,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "cover": {
@@ -1581,7 +1649,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "coverSup": {
@@ -1592,7 +1662,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "longRange": {
@@ -1603,7 +1675,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "marked": {
@@ -1614,7 +1688,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "prone": {
@@ -1625,7 +1701,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "restrained": {
@@ -1636,7 +1714,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "running": {
@@ -1647,7 +1727,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       },
       "squeez": {
@@ -1658,7 +1740,9 @@
         "race": 0,
         "untyped": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ]
       }
     },
@@ -1683,7 +1767,9 @@
         "base": 4,
         "armour": 0,
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
@@ -1696,139 +1782,157 @@
         "value": 0,
         "formula": "@base + @armour",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
       "charge": {
         "value": 0,
         "formula": "@base + @armour",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
       "run": {
         "value": 0,
         "formula": "2",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "misc": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
       "climb": {
         "value": 0,
         "formula": "",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
       "shift": {
         "value": 0,
         "formula": "1",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
       "swim": {
         "value": 0,
         "formula": "",
         "bonus": [
-          {}
+          {
+            "active": false
+          }
         ],
         "feat": 0,
         "item": 0,
         "power": 0,
         "race": 0,
         "untyped": 0,
-        "temp": 0
+        "temp": 0,
+        "traits": ""
       },
       "notes": "",
       "custom": "",
       "burrow": {
-        "formula": "2"
-      }
+        "formula": "2",
+        "value": 0,
+        "bonus": [],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0,
+        "traits": ""
+      },
+      "fly": {
+        "value": 0,
+        "formula": "",
+        "bonus": [],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0,
+        "traits": ""
+      },
+      "teleport": {
+        "value": 0,
+        "formula": "",
+        "bonus": [],
+        "feat": 0,
+        "item": 0,
+        "power": 0,
+        "race": 0,
+        "untyped": 0,
+        "temp": 0,
+        "traits": ""
+      },
+      "ignoredDifficultTerrain": []
     },
     "advancedCals": true,
-    "magicItemUse": {
-      "perDay": 1,
-      "bonusValue": 0,
-      "milestone": 0,
-      "dailyuse": 1,
-      "encounteruse": false
-    },
-    "resources": {
-      "primary": {
-        "value": 0,
-        "max": 0,
-        "sr": 0,
-        "lr": 0
-      },
-      "secondary": {
-        "value": 0,
-        "max": 0,
-        "sr": 0,
-        "lr": 0
-      },
-      "tertiary": {
-        "value": 0,
-        "max": 0,
-        "sr": 0,
-        "lr": 0
-      }
-    },
-    "encumbrance": {
-      "value": null,
-      "max": null,
-      "formulaNorm": "@abilities.str.value * 10",
-      "formulaHeavy": "@abilities.str.value * 20",
-      "formulaMax": "@abilities.str.value * 50"
-    },
-    "name": "Badger",
     "featureSortTypes": "name",
     "powerGroupTypes": "usage",
-    "powerSortTypes": "actionType"
+    "powerSortTypes": "actionType",
+    "ritualSortTypes": "level",
+    "inventorySortTypes": "level"
   },
   "ownership": {
     "default": 0
   },
   "prototypeToken": {
     "actorLink": false,
-    "displayBars": 40,
+    "displayBars": 30,
     "flags": {},
     "name": "Badger",
     "displayName": 30,
     "width": 1,
     "height": 1,
-    "lockRotation": false,
+    "lockRotation": true,
     "rotation": 0,
     "alpha": 1,
     "light": {
@@ -1869,9 +1973,6 @@
       "tint": "#ffffff",
       "scaleX": 1,
       "scaleY": 1,
-      "offsetX": 0,
-      "offsetY": 0,
-      "rotation": 0,
       "anchorX": 0.5,
       "anchorY": 0.5,
       "fit": "contain",
@@ -1890,7 +1991,7 @@
     },
     "appendNumber": true,
     "prependAdjective": false,
-    "detectionModes": [],
+    "detectionModes": {},
     "occludable": {
       "radius": 0
     },
@@ -1912,23 +2013,18 @@
       "src": null,
       "disposition": false
     },
-    "movementAction": null
+    "movementAction": null,
+    "depth": 1
   },
   "_stats": {
     "duplicateSource": null,
-    "coreVersion": "13.350",
+    "coreVersion": "14.361",
     "systemId": "dnd4e",
-    "systemVersion": "0.7.0",
-    "createdTime": 1730440963063,
-    "modifiedTime": 1760845760971,
+    "systemVersion": "0.8.0",
+    "createdTime": 1778918328420,
+    "modifiedTime": 1778918328420,
     "lastModifiedBy": "dnd4ebuilder0000",
-    "exportSource": {
-      "worldId": "module-test",
-      "uuid": null,
-      "coreVersion": "12.331",
-      "systemId": "dnd4e",
-      "systemVersion": "0.5.5"
-    }
+    "exportSource": null
   },
   "_id": "n1LXn8qhWKAwCErL",
   "sort": 300000,

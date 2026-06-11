@@ -5,12 +5,12 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 	
 	/** @inheritDoc */
 	_getWaypointStyle(waypoint) {
-		if ( !waypoint.explicit && waypoint.next && waypoint.previous && waypoint.actionConfig.visualize
+		if (!waypoint.explicit && waypoint.next && waypoint.previous && waypoint.actionConfig.visualize
 		&& waypoint.next.actionConfig.visualize && (waypoint.action === waypoint.next.action)
-		&& (waypoint.unreachable || !waypoint.next.unreachable) ) return { radius: 0 };
+		&& (waypoint.unreachable || !waypoint.next.unreachable)) return { radius: 0 };
 		const user = game.users.get(waypoint.userId);
 		const scale = canvas.dimensions.uiScale;
-		const style = {radius: 6 * scale, color: user?.color ?? 0x000000, alpha: waypoint.explicit ? 1 : 0.5};
+		const style = { radius: 6 * scale, color: user?.color ?? 0x000000, alpha: waypoint.explicit ? 1 : 0.5 };
 		return this.#getSpeedBasedStyle(waypoint, style);
 	}
 
@@ -20,48 +20,48 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 	_getWaypointLabelContext(waypoint, state) {
 		const { index, elevation, explicit, next, previous, ray } = waypoint;
 		state.hasElevation ||= (elevation !== 0);
-		if ( !previous ) {
+		if (!previous) {
 			state.previousElevation = elevation;
 			return;
 		}
-		if ( !explicit && next && waypoint.actionConfig.visualize && next.actionConfig.visualize
-		&& (waypoint.action === next.action) && (waypoint.unreachable || !waypoint.next.unreachable) ) return;
-		if ( (ray.distance === 0) && (elevation === previous.elevation) ) return;
+		if (!explicit && next && waypoint.actionConfig.visualize && next.actionConfig.visualize
+		&& (waypoint.action === next.action) && (waypoint.unreachable || !waypoint.next.unreachable)) return;
+		if ((ray.distance === 0) && (elevation === previous.elevation)) return;
 
 		// Prepare data structure
 		const context = {
-		action: waypoint.actionConfig,
-		cssClass: [
-			waypoint.hidden ? "secret" : "",
-			waypoint.next ? "" : "last",
-			explicit ? "" : "nonexplicit"
-		].filterJoin(" "),
-		secret: waypoint.hidden,
-		units: canvas.grid.units,
-		uiScale: canvas.dimensions.uiScale,
-		position: { x: ray.B.x, y: ray.B.y + (next ? 0 : 0.5 * this.token.h) + (16 * canvas.dimensions.uiScale) }
+			action: waypoint.actionConfig,
+			cssClass: [
+				waypoint.hidden ? "secret" : "",
+				waypoint.next ? "" : "last",
+				explicit ? "" : "nonexplicit",
+			].filterJoin(" "),
+			secret: waypoint.hidden,
+			units: canvas.grid.units,
+			uiScale: canvas.dimensions.uiScale,
+			position: { x: ray.B.x, y: ray.B.y + (next ? 0 : 0.5 * this.token.h) + (16 * canvas.dimensions.uiScale) },
 		};
 
 		// Difficult Terrain
-		if (waypoint.terrain?.difficultTerrain) context.terrain = { difficult: true, icon: CONFIG.DND4E.difficultTerrain.img }
+		if (waypoint.terrain?.difficultTerrain) context.terrain = { difficult: true, icon: CONFIG.DND4E.difficultTerrain.img };
 
 		// Segment Distance
 		context.distance = { total: waypoint.measurement.distance.toNearest(0.01).toLocaleString(game.i18n.lang) };
-		if ( index >= 2 ) context.distance.delta = waypoint.measurement.backward.distance.toNearest(0.01).signedString();
+		if (index >= 2) context.distance.delta = waypoint.measurement.backward.distance.toNearest(0.01).signedString();
 
 		// Segment Cost
 		const cost = waypoint.measurement.cost;
 		const deltaCost = waypoint.cost;
 		context.cost = {
-		total: Number.isFinite(cost) ? cost.toNearest(0.01).toLocaleString(game.i18n.lang) : "∞",
-		units: canvas.grid.units
+			total: Number.isFinite(cost) ? cost.toNearest(0.01).toLocaleString(game.i18n.lang) : "∞",
+			units: canvas.grid.units,
 		};
-		if ( index >= 2 ) context.cost.delta = Number.isFinite(deltaCost) ? deltaCost.toNearest(0.01).signedString() : "∞";
+		if (index >= 2) context.cost.delta = Number.isFinite(deltaCost) ? deltaCost.toNearest(0.01).signedString() : "∞";
 
 		// Elevation
 		const deltaElevation = elevation - state.previousElevation;
 		context.elevation = { total: elevation, icon: "fa-solid fa-arrows-up-down", hidden: !state.hasElevation };
-		if ( deltaElevation !== 0 ) context.elevation.delta = deltaElevation.signedString();
+		if (deltaElevation !== 0) context.elevation.delta = deltaElevation.signedString();
 		state.previousElevation = elevation;
 
 		return context;
@@ -93,16 +93,16 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 	 */
 	#getSpeedBasedStyle(waypoint, style) {
 		// If movement automation disabled, or if showing a different client's measurement, use default style
-		const noAutomation = false//game.settings.get("dnd5e", "disableMovementAutomation");
+		const noAutomation = false;//game.settings.get("dnd5e", "disableMovementAutomation");
 		const isSameClient = game.user.id in this.token._plannedMovement;
-		if ( noAutomation || !isSameClient || CONFIG.Token.movement.actions[waypoint.action]?.teleport ) return style;
+		if (noAutomation || !isSameClient || CONFIG.Token.movement.actions[waypoint.action]?.teleport) return style;
 
 		// Get actor's movement speed for currently selected token movement action
 		const movement = this.token.actor?.system.movement;
-		if ( !movement ) return style;
+		if (!movement) return style;
 		let currActionSpeed, runBonus;
 		
-		if ( waypoint.action === 'walk' && this.token?.actor?.statuses.has('prone') ) {
+		if ((waypoint.action === "walk") && this.token?.actor?.statuses.has("prone")) {
 			runBonus = 0;
 			currActionSpeed = (movement.walk.value + runBonus) / 2;
 		}
@@ -110,12 +110,12 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 			currActionSpeed = movement[waypoint.action]?.value ?? 0;
 
 			// If current action can fall back to walk, treat "max" speed as maximum between current & walk
-			if ( CONFIG.DND4E.movementTypes[waypoint.action]?.walkFallback
-				|| !CONFIG.DND4E.movementTypes[waypoint.action] ) {
+			if (CONFIG.DND4E.movementTypes[waypoint.action]?.walkFallback
+				|| !CONFIG.DND4E.movementTypes[waypoint.action]) {
 				currActionSpeed = Math.max(currActionSpeed, movement.walk.value);
 			}
 
-            runBonus = ['shift', 'teleport'].includes(waypoint.action) || this.token?.actor?.statuses.has('prone') ? 0 : movement.run.value;
+			runBonus = ["shift", "teleport"].includes(waypoint.action) || this.token?.actor?.statuses.has("prone") ? 0 : movement.run.value;
 		}
 
 		let runSpeed = currActionSpeed + runBonus;
@@ -123,10 +123,10 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 		// Color `walk` if <= max speed, else `run` if <= max speed + run bonus, else `doubleWalk` if <= 2 * max speed, else if <= 2 * run speed `doubleRun`, else `cannotReach`
 		const { walk, run, doubleWalk, doubleRun, cannotReach } = CONFIG.DND4E.tokenRulerColors;
 		const increment = (waypoint.measurement.cost - .1);
-		if ( increment <= currActionSpeed ) style.color = walk;
-		else if ( runBonus && increment <= runSpeed ) style.color = run;
-		else if ( increment <= 2 * currActionSpeed ) style.color = doubleWalk;
-		else if ( runBonus && increment <= 2 * runSpeed ) style.color = doubleRun;
+		if (increment <= currActionSpeed) style.color = walk;
+		else if (runBonus && (increment <= runSpeed)) style.color = run;
+		else if (increment <= 2 * currActionSpeed) style.color = doubleWalk;
+		else if (runBonus && (increment <= 2 * runSpeed)) style.color = doubleRun;
 		else style.color = cannotReach;
 		return style;
 	}

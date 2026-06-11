@@ -2,11 +2,11 @@
 	"id": "dnd4e",
 	"title": "DnD 4th Edition",
 	"description": "An implementation of Dungeons & Dragons 4th Edition game system for Foundry Virtual Tabletop.",
-	"version": "0.7.14",
+	"version": "0.8.2",
 	"compatibility":{
-		"minimum": "13",
-		"verified": "13.351",
-		"maximum": "13"
+		"minimum": "14",
+		"verified": "14.363",
+		"maximum": "14"
 	},
 	"authors": [
 		{
@@ -160,13 +160,15 @@
 			"weapon": {}
 		},
 		"RegionBehavior" : {
-		  "difficultTerrain" :{}
+			"applyActiveEffect4e": {},
+			"damagingRegion": {},
+			"difficultTerrain" :{}
 		}
 	},
 	"primaryTokenAttribute": "attributes.hp",
 	"url": "https://github.com/EndlesNights/dnd4eBeta",
-	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/main/system.json",
-	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.7.14.zip",
+	"manifest": "https://raw.githubusercontent.com/EndlesNights/dnd4eBeta/v14-beta/system.json",
+	"download": "https://github.com/EndlesNights/dnd4eBeta/archive/0.8.2.zip",
 	"flags": {
 		"needsMigrationVersion": "0.7.1",
 		"compatibleMigrationVersion": "0.2.50",

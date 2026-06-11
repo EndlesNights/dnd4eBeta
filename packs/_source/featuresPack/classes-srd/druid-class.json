@@ -5,95 +5,12 @@
   "effects": [
     {
       "_id": "SwQsHGW8zNGDfCCa",
-      "changes": [
-        {
-          "key": "system.attributes.hp.starting",
-          "mode": 5,
-          "value": "12",
-          "priority": null
-        },
-        {
-          "key": "system.attributes.hp.perlevel",
-          "mode": 5,
-          "value": "5",
-          "priority": null
-        },
-        {
-          "key": "system.details.surges.max",
-          "mode": 2,
-          "value": "7+@conMod",
-          "priority": null
-        },
-        {
-          "key": "system.attributes.hp.autototal",
-          "mode": 5,
-          "value": "true",
-          "priority": null
-        },
-        {
-          "key": "system.defences.ref.value",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        },
-        {
-          "key": "system.defences.wil.value",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "cloth",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "leather",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "hide",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "simpleM",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "simpleR",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "staff",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "totem",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.smDU7JRg9X2a59DF",
       "transfer": true,
@@ -113,20 +30,104 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.360",
         "systemId": null,
         "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "createdTime": 1776986980491,
+        "modifiedTime": 1776986981198,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
         "exportSource": null
       },
       "img": "icons/magic/nature/tree-spirit-green.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.attributes.hp.starting",
+            "value": 12,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.attributes.hp.perlevel",
+            "value": 5,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.details.surges.max",
+            "value": "7+@conMod",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.attributes.hp.autototal",
+            "value": true,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.defences.ref.value",
+            "value": 1,
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.defences.wil.value",
+            "value": 1,
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "cloth",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "leather",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "hide",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "simpleM",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "simpleR",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "staff",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "totem",
+            "priority": null,
+            "type": "add"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!IZLYgOajhu1giJpV.SwQsHGW8zNGDfCCa"
     }
   ],
@@ -134,7 +135,7 @@
   "flags": {},
   "system": {
     "description": {
-      "value": "<p><strong>Role:</strong>&nbsp;Controller. Your beast form gives you access to powers that provide control at close range, while your humanoid form allows you to hinder your opponents from a distance. Depending on your choice of class features and powers, you might lean toward either leader or striker as a secondary role.</p>\n<p><strong>Power Source:</strong>&nbsp;: Primal. You have gained your powers through a careful study of and communion with the natural world.</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Wisdom</li>\n<li>Dexterity</li>\n<li>Constitution</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.kVD04UqK9Yx6GeRA]{Hide armor}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li>@Compendium[dnd4e.srd_rules.dPvpP94RTDqwOlW3]{Simple Melee Weapons}</li>\n<li>@Compendium[dnd4e.srd_rules.XKgEgbttyURcvqns]{Simple Ranged Weapons}</li>\n</ul>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813;\"><strong style=\"box-sizing: border-box; user-select: text;\">Implements:</strong></p>\n<ul style=\"box-sizing: border-box; user-select: text; color: #191813;\">\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.vu6lVEBahrmh5L3O]{Staff}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">Totems</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+1 Reflex</li>\n<li>+1 Will</li>\n</ul>\n<p><strong>Hit Points at 1st Level:</strong><strong>: [[12]] + Con Score</strong></p>\n<p><strong>Hit Points&nbsp;</strong><strong>per Level Gained: [[5]]</strong></p>\n<p><strong>Base&nbsp;</strong><strong>Healing</strong><strong>&nbsp;Surges per Day: [[7]] + Con Mod</strong></p>\n<p><strong>Skill Training;&nbsp;</strong>Nature, choose three more from the following list:</p>\n<ul>\n<li>Arcana (Int)</li>\n<li>Athletics (Str)</li>\n<li>Diplomacy (Cha)</li>\n<li>Endurance (Con)</li>\n<li>Heal (Wis)</li>\n<li>History (Int)</li>\n<li>Insight (Wis)</li>\n<li>Perception (Wis)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>Balance of Nature</li>\n<li>Ritual Casting</li>\n<li>Wild Shape</li>\n</ul>\n<p><strong>Choose one of the following Primal Aspect Features:</strong></p>\n<ul>\n<li>Primal Guardian</li>\n<li>Primal Predator</li>\n</ul>",
+      "value": "<p><strong>Role:</strong> Controller. Your beast form gives you access to powers that provide control at close range, while your humanoid form allows you to hinder your opponents from a distance. Depending on your choice of class features and powers, you might lean toward either leader or striker as a secondary role.</p><p><strong>Power Source:</strong> : Primal. You have gained your powers through a careful study of and communion with the natural world.</p><p><strong>Key Abilities:</strong></p><ul><li><p>Wisdom</p></li><li><p>Dexterity</p></li><li><p>Constitution</p></li></ul><p><strong>Armour Proficiencies:</strong></p><ul><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.kVD04UqK9Yx6GeRA]{Hide armor}</p></li></ul><p><strong>Weapon Proficiencies:</strong></p><ul><li><p>@UUID[Compendium.dnd4e.srd_rules.JournalEntry.p9xY7n4f0uabD02e.JournalEntryPage.kjW9S8gIQ0LBMF53]{Simple Melee Weapons}</p></li><li><p>@UUID[Compendium.dnd4e.srd_rules.JournalEntry.p9xY7n4f0uabD02e.JournalEntryPage.G50MDDGV8v1NRT9u]{Simple Ranged Weapons}</p></li></ul><p><strong>Implements:</strong></p><ul><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.vu6lVEBahrmh5L3O]{Staff}</p></li><li><p>Totems</p></li></ul><p><strong>Bonus to Defences:</strong></p><ul><li><p>+1 Reflex</p></li><li><p>+1 Will</p></li></ul><p><strong>Hit Points at 1st Level:: [[12]] + Con Score</strong></p><p><strong>Hit Points per Level Gained: [[5]]</strong></p><p><strong>Base Healing Surges per Day: [[7]] + Con Mod</strong></p><p><strong>Skill Training; </strong>Nature, choose three more from the following list:</p><ul><li><p>Arcana (Int)</p></li><li><p>Athletics (Str)</p></li><li><p>Diplomacy (Cha)</p></li><li><p>Endurance (Con)</p></li><li><p>Heal (Wis)</p></li><li><p>History (Int)</p></li><li><p>Insight (Wis)</p></li><li><p>Perception (Wis)</p></li></ul><p><strong>Class Features:</strong></p><ul><li><p>Balance of Nature</p></li><li><p>Ritual Casting</p></li><li><p>Wild Shape</p></li></ul><p><strong>Choose one of the following Primal Aspect Features:</strong></p><ul><li><p>Primal Guardian</p></li><li><p>Primal Predator</p></li></ul>",
       "chat": "",
       "unidentified": "",
       "gm": ""
@@ -157,8 +158,55 @@
     "featureSource": "Druid",
     "featureGroup": "",
     "auraSize": "",
-    "effectType": {},
-    "damageType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
     "keywordsCustom": "",
     "class": "",
     "hitFistLevel": 12,
@@ -182,10 +230,10 @@
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "systemVersion": "0.8.0",
+    "coreVersion": "14.361",
     "createdTime": 1686094206558,
-    "modifiedTime": 1745817871227,
+    "modifiedTime": 1778705586029,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

@@ -5,137 +5,12 @@
   "effects": [
     {
       "_id": "GAWU265IINIAlRXa",
-      "changes": [
-        {
-          "key": "system.attributes.hp.starting",
-          "mode": 5,
-          "value": "15",
-          "priority": null
-        },
-        {
-          "key": "system.attributes.hp.perlevel",
-          "mode": 5,
-          "value": "6",
-          "priority": null
-        },
-        {
-          "key": "system.details.surges.max",
-          "mode": 2,
-          "value": "10+@conMod",
-          "priority": null
-        },
-        {
-          "key": "system.attributes.hp.autototal",
-          "mode": 5,
-          "value": "true",
-          "priority": null
-        },
-        {
-          "key": "system.defences.fort.value",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        },
-        {
-          "key": "system.defences.ref.value",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        },
-        {
-          "key": "system.defences.wil.value",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "cloth",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "leather",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "hide",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "chain",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "scale",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "plate",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "light",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "heavy",
-          "priority": null
-        },
-        {
-          "key": "",
-          "mode": 2,
-          "value": "",
-          "priority": null
-        },
-        {
-          "key": "",
-          "mode": 2,
-          "value": "",
-          "priority": null
-        },
-        {
-          "key": "",
-          "mode": 2,
-          "value": "",
-          "priority": null
-        },
-        {
-          "key": "",
-          "mode": 2,
-          "value": "",
-          "priority": null
-        },
-        {
-          "key": "",
-          "mode": 2,
-          "value": "",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.ap32VdG8IElY3YWv",
       "transfer": true,
@@ -155,20 +30,146 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.360",
         "systemId": null,
         "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "createdTime": 1776986987840,
+        "modifiedTime": 1776986988382,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
         "exportSource": null
       },
       "img": "icons/magic/holy/barrier-shield-winged-blue.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.attributes.hp.starting",
+            "value": 15,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.attributes.hp.perlevel",
+            "value": 6,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.details.surges.max",
+            "value": "10+@conMod",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.attributes.hp.autototal",
+            "value": true,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.defences.fort.value",
+            "value": 1,
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.defences.ref.value",
+            "value": 1,
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.defences.wil.value",
+            "value": 1,
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "cloth",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "leather",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "hide",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "chain",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "scale",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "plate",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "light",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "heavy",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "",
+            "value": "",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "",
+            "value": "",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "",
+            "value": "",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "",
+            "value": "",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "",
+            "value": "",
+            "priority": null,
+            "type": "add"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!FUJq9BE2yaNauHf2.GAWU265IINIAlRXa"
     }
   ],
@@ -176,7 +177,7 @@
   "flags": {},
   "system": {
     "description": {
-      "value": "<p><strong>Role:</strong> Defender. You are extremely durable, with high hit points and the ability to wear the heaviest armor. You can issue bold challenges to foes and compel them to fight you rather than your allies</p>\n<p><strong>Power Source:</strong>&nbsp; Divine. You are a divine warrior, a crusader and protector of your faith.</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Strength</li>\n<li>Charisma</li>\n<li>Wisdom</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.kVD04UqK9Yx6GeRA]{Hide armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.LEPCRMtCimzvXr25]{Chainmail}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.cCQ2LmmlBGYPf2KB]{Scale armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.FSZe1mCaGtv0dhFu]{Plate armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.7OaRnh5zUoThmChj]{Light Shield}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.bWxWgBpsJHWeTeIU]{Heavy Shield}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li>@Compendium[dnd4e.srd_rules.4vItzLTePIjC1MbI]{Simple Melee Weapons}</li>\n<li>@Compendium[dnd4e.srd_rules.oRfaQkmDSxWMx5Ln]{Military Melee Weapons}</li>\n<li>@Compendium[dnd4e.srd_rules.XKgEgbttyURcvqns]{Simple Ranged Weapons}</li>\n</ul>\n<p><strong>Implements:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.NZq50Sq6slOAaX29]{Holy Symbol}</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+1 Fortitude</li>\n<li>+1 Reflex</li>\n<li>+1 Will</li>\n</ul>\n<p><strong>Hit Points at 1st Level</strong><strong>:</strong> [[15]] + Con Score</p>\n<p><strong>Hit Points&nbsp;</strong><strong>per Level Gained:</strong> [[6]]</p>\n<p><strong>Base&nbsp;</strong><strong>Healing</strong><strong> Surges per Day:</strong> [[10]] + Con Mod</p>\n<p><strong style=\"box-sizing: border-box; user-select: text; color: #191813;\">Skill Training: </strong><span style=\"color: #191813;\">Religion, choose three more from the following list:</span></p>\n<ul>\n<li style=\"box-sizing: border-box; user-select: text;\">Diplomacy(Cha)</li>\n<li>Endurance (Con)</li>\n<li>Healing (Wis)</li>\n<li>History (Int)</li>\n<li>Insight (Wis)</li>\n<li>Intimidate (Cha)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>Channel Divinity</li>\n<li>Divine Challenge</li>\n<li>Lay on Hands</li>\n</ul>",
+      "value": "<p><strong>Role:</strong> Defender. You are extremely durable, with high hit points and the ability to wear the heaviest armor. You can issue bold challenges to foes and compel them to fight you rather than your allies</p><p><strong>Power Source:</strong>  Divine. You are a divine warrior, a crusader and protector of your faith.</p><p><strong>Key Abilities:</strong></p><ul><li><p>Strength</p></li><li><p>Charisma</p></li><li><p>Wisdom</p></li></ul><p><strong>Armour Proficiencies:</strong></p><ul><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.kVD04UqK9Yx6GeRA]{Hide armor}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.LEPCRMtCimzvXr25]{Chainmail}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.cCQ2LmmlBGYPf2KB]{Scale armor}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.FSZe1mCaGtv0dhFu]{Plate armor}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.7OaRnh5zUoThmChj]{Light Shield}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.bWxWgBpsJHWeTeIU]{Heavy Shield}</p></li></ul><p><strong>Weapon Proficiencies:</strong></p><ul><li><p>@UUID[Compendium.dnd4e.srd_rules.JournalEntry.p9xY7n4f0uabD02e.JournalEntryPage.kjW9S8gIQ0LBMF53]{Simple Melee Weapons}</p></li><li><p>@UUID[Compendium.dnd4e.srd_rules.JournalEntry.p9xY7n4f0uabD02e.JournalEntryPage.ezGAD5rtV5TLGhDQ]{Military Melee Weapons}</p></li><li><p>@UUID[Compendium.dnd4e.srd_rules.JournalEntry.p9xY7n4f0uabD02e.JournalEntryPage.G50MDDGV8v1NRT9u]{Simple Ranged Weapons}</p></li></ul><p><strong>Implements:</strong></p><ul><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.NZq50Sq6slOAaX29]{Holy Symbol}</p></li></ul><p><strong>Bonus to Defences:</strong></p><ul><li><p>+1 Fortitude</p></li><li><p>+1 Reflex</p></li><li><p>+1 Will</p></li></ul><p><strong>Hit Points at 1st Level:</strong> [[15]] + Con Score</p><p><strong>Hit Points per Level Gained:</strong> [[6]]</p><p><strong>Base Healing Surges per Day:</strong> [[10]] + Con Mod</p><p><span style=\"box-sizing: border-box; user-select: text; color: rgb(25, 24, 19)\">Skill Training: </span><span style=\"color: rgb(25, 24, 19)\">Religion, choose three more from the following list:</span></p><ul><li style=\"box-sizing: border-box; user-select: text;\"><p>Diplomacy(Cha)</p></li><li><p>Endurance (Con)</p></li><li><p>Healing (Wis)</p></li><li><p>History (Int)</p></li><li><p>Insight (Wis)</p></li><li><p>Intimidate (Cha)</p></li></ul><p><strong>Class Features:</strong></p><ul><li><p>Channel Divinity</p></li><li><p>Divine Challenge</p></li><li><p>Lay on Hands</p></li></ul>",
       "chat": "",
       "unidentified": "",
       "gm": ""
@@ -199,8 +200,55 @@
     "featureSource": "Paladin",
     "featureGroup": "",
     "auraSize": "",
-    "effectType": {},
-    "damageType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
     "keywordsCustom": "",
     "class": "",
     "hitFistLevel": 15,
@@ -224,10 +272,10 @@
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "systemVersion": "0.8.0",
+    "coreVersion": "14.361",
     "createdTime": 1686094208169,
-    "modifiedTime": 1745817871227,
+    "modifiedTime": 1778705637862,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

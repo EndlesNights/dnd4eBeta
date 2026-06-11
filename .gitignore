@@ -9,3 +9,6 @@ packs/*
 !packs/_source/
 
 dnd4e.lock
+
+foundry-config.yaml
+foundry

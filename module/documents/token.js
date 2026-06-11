@@ -25,14 +25,14 @@ export default class TokenDocument4e extends TokenDocument {
 	 * Set up the system's movement action customization.
 	 */
 	static registerMovementActions() {
-		for ( const type of Object.keys(CONFIG.DND4E.movementTypes) ) {
+		for (const type of Object.keys(CONFIG.DND4E.movementTypes)) {
 			const actionConfig = CONFIG.Token.movement.actions[type];
-			if ( !actionConfig ) continue;
+			if (!actionConfig) continue;
 			actionConfig.getAnimationOptions = token => {
-				if (type === 'teleport') return { duration: 0 };
-				if (token?.actor?.statuses.has('prone')) return { movementSpeed: CONFIG.Token.movement.defaultSpeed / 2 };
+				if (type === "teleport") return { duration: 0 };
+				if (token?.actor?.statuses.has("prone")) return { movementSpeed: CONFIG.Token.movement.defaultSpeed / 2 };
 				const actorMovement = token?.actor?.system.movement ?? {};
-				if ( !(type in actorMovement) || actorMovement[type]?.value ) return {};
+				if (!(type in actorMovement) || actorMovement[type]?.value) return {};
 				return { movementSpeed: CONFIG.Token.movement.defaultSpeed / 2 };
 			};
 			actionConfig.getCostFunction = (...args) => this.getMovementActionCostFunction(type, ...args);
@@ -54,9 +54,9 @@ export default class TokenDocument4e extends TokenDocument {
 		const walkFallback = CONFIG.DND4E.movementTypes[type]?.walkFallback;
 		const hasMovement = actorMovement !== undefined;
 		const speed = actorMovement?.[type].value;
-		return !["Player Character","NPC"].includes(actor?.type) || !hasMovement || speed || (!speed && !walkFallback)
-		? cost => cost
-		: (cost, _from, _to, distance) => cost + distance;
+		return !["Player Character", "NPC"].includes(actor?.type) || !hasMovement || speed || (!speed && !walkFallback)
+			? cost => cost
+			: (cost, _from, _to, distance) => cost + distance;
 	}
 
 	/* -------------------------------------------- */
@@ -69,7 +69,7 @@ export default class TokenDocument4e extends TokenDocument {
 	 */
 	getRingColors() {
 		const colors = {};
-		if ( this.hasStatusEffect(CONFIG.specialStatusEffects.DEFEATED) ) {
+		if (this.hasStatusEffect(CONFIG.specialStatusEffects.DEFEATED)) {
 			colors.ring = CONFIG.DND4E.tokenRingColors.defeated;
 		}
 		return colors;
@@ -84,8 +84,8 @@ export default class TokenDocument4e extends TokenDocument {
 	getRingEffects() {
 		const e = foundry.canvas.placeables.tokens.TokenRing.effects;
 		const effects = [];
-		if ( this.hasStatusEffect(CONFIG.specialStatusEffects.INVISIBLE) ) effects.push(e.INVISIBILITY);
-		else if ( this === game.combat?.combatant?.token ) effects.push(e.RING_GRADIENT);
+		if (this.hasStatusEffect(CONFIG.specialStatusEffects.INVISIBLE)) effects.push(e.INVISIBILITY);
+		else if (this === game.combat?.combatant?.token) effects.push(e.RING_GRADIENT);
 		return effects;
 	}
 
@@ -96,12 +96,12 @@ export default class TokenDocument4e extends TokenDocument {
 	 * @param {string} type     The key to determine the type of flashing.
 	 */
 	flashRing(type, pct, isDamage) {
-		if ( !this.rendered ) return;
+		if (!this.rendered) return;
 		const color = CONFIG.DND4E.tokenRingColors[type];
-		if ( !color ) return;
+		if (!color) return;
 		const options = {};
 		options.duration = 500 + pct * 2000;
-		if ( isDamage ) {
+		if (isDamage) {
 			options.easing = foundry.canvas.placeables.tokens.TokenRing.easeTwoPeaks;
 		}
 		else {

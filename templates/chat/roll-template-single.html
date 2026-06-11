@@ -1,34 +1,34 @@
 <div class="dice-roll" data-action="expandRoll">
-	{{#if flavor}}
-	<div class="dice-flavor">{{flavor}}</div>
-	{{/if}}
-	<div class="dice-result">
+  {{#if flavor}}
+  <div class="dice-flavor">{{flavor}}</div>
+  {{/if}}
+  <div class="dice-result">
 		
-		{{#if attackRoll}}
-			<div class="target">
-			<a class="flavor-text target" data-target-id="{{attackRoll.targetID}}"><strong>{{localize 'DND4E.Target'}}:</strong> {{attackRoll.target}}</a> <span class="mod-vs-def">(<span class="attack-mod">{{attackRoll.modtext}}</span> {{localize 'DND4E.VS'}} <span class="vs-def">{{attackRoll.deftext}}</span>)</span>
-			</div>
-			<div class="flavor-text hit-prediction {{attackRoll.critstate}} {{attackRoll.hitstate}}">{{attackRoll.hittext}}</div>
-		{{/if}}
+    {{#if attackRoll}}
+    <div class="target">
+      <a class="flavor-text target" data-target-id="{{attackRoll.targetID}}"><strong>{{localize 'DND4E.Target'}}:</strong> {{attackRoll.target}}</a> <span class="mod-vs-def">(<span class="attack-mod">{{attackRoll.modtext}}</span> {{localize 'DND4E.VS'}} <span class="vs-def">{{attackRoll.deftext}}</span>)</span>
+    </div>
+    <div class="flavor-text hit-prediction {{attackRoll.critstate}} {{attackRoll.hitstate}}">{{attackRoll.hittext}}</div>
+    {{/if}}
 		
-		{{#unless attackRoll.immune}}
-		<div class="dice-container">
-				<div class="dice-formula">{{{formula}}}</div>
-				<div class="dice-tooltip dice-formula">{{{expression}}}</div>
-				{{{tooltip}}}
-				<h4 class="dice-total {{attackRoll.critstate}}">{{total}}{{#if divisorString}} {{divisorString}}{{/if}}</h4>
-		</div>
-		{{/unless}}
-	</div>
+    {{#unless attackRoll.immune}}
+    <div class="dice-container">
+      <div class="dice-formula">{{{formula}}}</div>
+      <div class="dice-tooltip dice-formula">{{{expression}}}</div>
+      {{{tooltip}}}
+      <h4 class="dice-total {{attackRoll.critstate}}">{{total}}{{#if divisorString}} {{divisorString}}{{/if}}</h4>
+    </div>
+    {{/unless}}
+  </div>
 </div>
 <div class="chatDamageButtons">
-	{{#if hitTypeDamage}}
-	<button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="Damage"><i class="fas fa-user-minus"></i>{{ localize "DND4E.ChatContextDamage" }}</button>
-	<button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="HalfDamage"><i class="fas fa-user-shield"></i>{{ localize "DND4E.ChatContextHalfDamage" }}</button>
-	{{else if hitTypeHealing}}
-	<button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="Heal"><i class="fas fa-user-plus fa-fw"></i>{{ localize "DND4E.ChatContextHealing" }}</button>
-	<button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="TempHeal"><i class="fas fa-user-clock fa-fw"></i>{{ localize "DND4E.ChatContextTempHp" }}</button>
-	{{/if}}
+  {{#if hitTypeDamage}}
+  <button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="Damage"><i class="fas fa-user-minus"></i>{{ localize "DND4E.ChatContextDamage" }}</button>
+  <button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="HalfDamage"><i class="fas fa-user-shield"></i>{{ localize "DND4E.ChatContextHalfDamage" }}</button>
+  {{else if hitTypeHealing}}
+  <button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="Heal"><i class="fas fa-user-plus fa-fw"></i>{{ localize "DND4E.ChatContextHealing" }}</button>
+  <button class="chat-damage-button" data-tooltip="{{ localize 'DND4E.ChatContextButtonTitle' }}" data-action="TempHeal"><i class="fas fa-user-clock fa-fw"></i>{{ localize "DND4E.ChatContextTempHp" }}</button>
+  {{/if}}
 </div>
 <script>
 	function mouseEnter(id) {

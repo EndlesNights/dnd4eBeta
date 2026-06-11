@@ -1,0 +1,33 @@
+<section class="tab {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+  <div class="desc-main">
+    <h4 class="group-header">{{localize 'DND4E.Sheet.Description'}}</h4>
+    <prose-mirror toggled name="system.description" {{disabled (not editable)}} value="{{system.description}}">
+      {{{descHTML}}}
+    </prose-mirror>
+	
+    <h4 class="group-header">{{localize 'DND4E.Hazard.Counter'}}</h4>
+    <prose-mirror toggled name="system.details.countermeasures" {{disabled (not editable)}} value="{{system.details.countermeasures}}">
+      {{{countersHTML}}}
+    </prose-mirror>
+	
+    <h4 class="group-header">{{localize 'DND4E.Notes'}}</h4>
+    <prose-mirror toggled name="system.details.notes" {{disabled (not editable)}} value="{{system.details.notes}}">
+      {{{notesHTML}}}
+    </prose-mirror>
+  </div>
+	
+  {{#unless isCharacter}}
+  <div class="npc-details footer">
+    {{#if (eq system.details.role.secondary 'companion')}}
+    <div class="npc-controller flexrow">
+      <label>{{localize 'DND4E.ControllingActor'}}:</label>
+      <input name="system.details.controller" type="text" value="{{system.details.controller}}" placeholder="{{localize 'DND4E.ControllingActor'}}" data-tooltip="{{localize 'DND4E.ControllingActor'}}">
+    </div>
+    {{/if}}
+    <div class="npc-source flexrow">
+      <label>{{localize 'DND4E.Source'}}:</label>
+      <input name="system.details.source" type="text" value="{{system.details.source}}" data-tooltip="{{localize 'DND4E.Source'}}" placeholder="{{localize 'DND4E.Source'}}">
+    </div>
+  </div>
+  {{/unless}}
+</section>

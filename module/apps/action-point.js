@@ -1,37 +1,37 @@
-import DocumentSheet4e from "./DocumentSheet4e.js"
+import DocumentSheet4e from "./DocumentSheet4e.js";
 
 export class ActionPointDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "action-point",
-		classes: ["dnd4e","action-point","standard-form","default"],
+		classes: ["dnd4e", "action-point", "standard-form", "default"],
 		form: {
 			closeOnSubmit: true,
-			handler: this.#onSubmit
+			handler: this.#onSubmit,
 		},
 		position: {
 			width: 500,
-			height: "auto"
+			height: "auto",
 		},
 		window: {
 			contentClasses: ["standard-form"],
-			resizable: true
+			resizable: true,
 		},
-		tag: "form"
-	}
+		tag: "form",
+	};
 	
 	get title() {
-		return `${this.document.name} - ${game.i18n.localize("DND4E.ActionPoint")}`;
+		return `${this.document.name} - ${_loc("DND4E.ActionPoint")}`;
 	}
 
 	static PARTS = {
 		actionPoint: {
-			template: "systems/dnd4e/templates/apps/action-point.hbs"
+			template: "systems/dnd4e/templates/apps/action-point.hbs",
 		},
 		footer: {
 			template: "templates/generic/form-footer.hbs",
-		}
-	}
+		},
+	};
 
 	/** @override */
 	async _prepareContext(options) {
@@ -41,8 +41,8 @@ export class ActionPointDialog extends DocumentSheet4e {
 			system: this.document.system,
 			extra: extra,
 			buttons: [
-				{ type: "submit", label: "DND4E.ActionPointUse" }
-			]
+				{ type: "submit", label: "DND4E.ActionPointUse" },
+			],
 		});
 		return context;
 	}

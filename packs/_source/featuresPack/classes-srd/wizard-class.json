@@ -5,83 +5,12 @@
   "effects": [
     {
       "_id": "FfU7lTlZ7RbrcqDo",
-      "changes": [
-        {
-          "key": "system.attributes.hp.starting",
-          "mode": 5,
-          "value": "10",
-          "priority": null
-        },
-        {
-          "key": "system.attributes.hp.perlevel",
-          "mode": 5,
-          "value": "4",
-          "priority": null
-        },
-        {
-          "key": "system.details.surges.max",
-          "mode": 2,
-          "value": "6+@conMod",
-          "priority": null
-        },
-        {
-          "key": "system.attributes.hp.autototal",
-          "mode": 5,
-          "value": "true",
-          "priority": null
-        },
-        {
-          "key": "system.defences.wil.value",
-          "mode": 2,
-          "value": "2",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "cloth",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "dagger",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "quaterstaff",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "orb",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "staff",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "wand",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.udqNtqOeYVp8qu5W",
       "transfer": true,
@@ -101,20 +30,92 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.360",
         "systemId": null,
         "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "createdTime": 1776987006262,
+        "modifiedTime": 1776987006704,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
         "exportSource": null
       },
       "img": "icons/weapons/wands/wand-carved-pink.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.attributes.hp.starting",
+            "value": 10,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.attributes.hp.perlevel",
+            "value": 4,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.details.surges.max",
+            "value": "6+@conMod",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.attributes.hp.autototal",
+            "value": true,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.defences.wil.value",
+            "value": 2,
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "cloth",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "dagger",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "quaterstaff",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "orb",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "staff",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "wand",
+            "priority": null,
+            "type": "add"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!hzKIVXbkZBsejWCA.FfU7lTlZ7RbrcqDo"
     }
   ],
@@ -122,7 +123,7 @@
   "flags": {},
   "system": {
     "description": {
-      "value": "<p><strong>Role:</strong> Controller. You exert control through magical effects that cover large areas&mdash;sometimes hindering foes, sometimes consuming them with fire</p>\n<p><strong>Power Source: </strong>Arcane. You channel arcane forces through extensive study, hidden knowledge, and intricate preparation. To you, magic is an art form, an expressive and powerful method by which you seek to control the world around you.</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Intelligence</li>\n<li>Wisdom</li>\n<li>Dexterity</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.4JEjuSyMmf6FxmGS]{Dagger}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.VBEmZHSsHPmHxcXS]{Quarterstaff}</li>\n</ul>\n<p style=\"box-sizing: border-box; user-select: text; color: #191813;\"><strong style=\"box-sizing: border-box; user-select: text;\">Implements:</strong></p>\n<ul style=\"box-sizing: border-box; user-select: text; color: #191813;\">\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.3YQgnHBtAKH1o28c]{Orb}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.vu6lVEBahrmh5L3O]{Staff}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@UUID[Compendium.dnd4e.equipmentPack.Item.BGZ4QKJlyb1ebEXv]{Wand}</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+2 Will</li>\n</ul>\n<p><strong>Hit Points at 1st Level:</strong>&nbsp;[[10]] + Con Score</p>\n<p><strong>Hit Points&nbsp;</strong><strong>per Level Gained:</strong> [[4]]</p>\n<p><strong>Base&nbsp;</strong><strong>Healing</strong><strong>&nbsp;Surges per Day:</strong> [[6]] + Con Mod</p>\n<p><strong>Skill Training: </strong>Arcana, choose three more from the following list:</p>\n<ul>\n<li>Diplomacy (Cha)</li>\n<li>Dungeoneering (Wis)</li>\n<li>History (Int)</li>\n<li>Insight (Wis)</li>\n<li>Nature (Int)</li>\n<li>Religion (Int)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>Cantrips</li>\n<li>Ritual Casting</li>\n<li>Spellbook</li>\n</ul>\n<p><strong>Choose one of the following&nbsp;Arcane Implement Mastery</strong><strong>:</strong></p>\n<ul>\n<li>Orb of Imposition</li>\n<li>Staff of Defense</li>\n<li>Wand of Accuracy</li>\n</ul>",
+      "value": "<p><strong>Role:</strong> Controller. You exert control through magical effects that cover large areas—sometimes hindering foes, sometimes consuming them with fire</p><p><strong>Power Source: </strong>Arcane. You channel arcane forces through extensive study, hidden knowledge, and intricate preparation. To you, magic is an art form, an expressive and powerful method by which you seek to control the world around you.</p><p><strong>Key Abilities:</strong></p><ul><li><p>Intelligence</p></li><li><p>Wisdom</p></li><li><p>Dexterity</p></li></ul><p><strong>Armour Proficiencies:</strong></p><ul><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</p></li></ul><p><strong>Weapon Proficiencies:</strong></p><ul><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.4JEjuSyMmf6FxmGS]{Dagger}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.VBEmZHSsHPmHxcXS]{Quarterstaff}</p></li></ul><p><strong>Implements:</strong></p><ul><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.3YQgnHBtAKH1o28c]{Orb}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.vu6lVEBahrmh5L3O]{Staff}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.BGZ4QKJlyb1ebEXv]{Wand}</p></li></ul><p><strong>Bonus to Defences:</strong></p><ul><li><p>+2 Will</p></li></ul><p><strong>Hit Points at 1st Level:</strong> [[10]] + Con Score</p><p><strong>Hit Points per Level Gained:</strong> [[4]]</p><p><strong>Base Healing Surges per Day:</strong> [[6]] + Con Mod</p><p><strong>Skill Training: </strong>Arcana, choose three more from the following list:</p><ul><li><p>Diplomacy (Cha)</p></li><li><p>Dungeoneering (Wis)</p></li><li><p>History (Int)</p></li><li><p>Insight (Wis)</p></li><li><p>Nature (Int)</p></li><li><p>Religion (Int)</p></li></ul><p><strong>Class Features:</strong></p><ul><li><p>Cantrips</p></li><li><p>Ritual Casting</p></li><li><p>Spellbook</p></li></ul><p><strong>Choose one of the following Arcane Implement Mastery:</strong></p><ul><li><p>Orb of Imposition</p></li><li><p>Staff of Defense</p></li><li><p>Wand of Accuracy</p></li></ul>",
       "chat": "",
       "unidentified": "",
       "gm": ""
@@ -145,8 +146,55 @@
     "featureSource": "Wizard",
     "featureGroup": "",
     "auraSize": "",
-    "effectType": {},
-    "damageType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
     "keywordsCustom": "",
     "class": "",
     "hitFistLevel": 10,
@@ -170,10 +218,10 @@
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "systemVersion": "0.8.0",
+    "coreVersion": "14.361",
     "createdTime": 1686094212318,
-    "modifiedTime": 1745817871227,
+    "modifiedTime": 1778705857538,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

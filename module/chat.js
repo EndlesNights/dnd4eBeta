@@ -1,37 +1,37 @@
 import { Helper } from "./helper.js";
-import {MultiAttackRoll} from "./roll/multi-attack-roll.js";
+import { MultiAttackRoll } from "./roll/multi-attack-roll.js";
 
 /**
  * Highlight critical success or failure on d20 rolls, or recharge rolls
  */
 export const highlightCriticalSuccessFailure = function(message, html, data) {
 
-	if ( !message.isRoll || !message.isContentVisible ) return;
+	if (!message.isRoll || !message.isContentVisible) return;
 	let i = 0;
-	for(const roll of message.rolls){
-		if ( !roll.dice.length ) continue;
+	for (const roll of message.rolls) {
+		if (!roll.dice.length) continue;
 		const d = roll.dice[0];
 
 		// Ensure it is an un-modified d20 roll, or is part of a recharge roll
-		const isD20 = (d.faces === 20) && ( d.values.length === 1 );
-		if ( !isD20 && !d.options.recharge) return;
+		const isD20 = (d.faces === 20) && (d.values.length === 1);
+		if (!isD20 && !d.options.recharge) return;
 		const isModifiedRoll = ("success" in d.results[0]) || d.options.marginSuccess || d.options.marginFailure;
-		if ( isModifiedRoll ) return;
+		if (isModifiedRoll) return;
 
 		// Highlight successes and failures
 		const critical = d.options.critical || 20;
-		const fumble = typeof(d.options.fumble) === 'number' ? d.options.fumble : 1;
-		if ( d.total >= critical ) {
-			html.querySelectorAll(`.dice-total`)[i].classList.add("critical");
+		const fumble = typeof (d.options.fumble) === "number" ? d.options.fumble : 1;
+		if (d.total >= critical) {
+			html.querySelectorAll(".dice-total")[i].classList.add("critical");
 		}
-		else if ( d.total <= fumble ){ 
-			html.querySelectorAll(`.dice-total`)[i].classList.add("fumble");
+		else if (d.total <= fumble) { 
+			html.querySelectorAll(".dice-total")[i].classList.add("fumble");
 		}
-		else if ( d.options.target ) {
-			if ( roll.total >= d.options.target ){
-				html.querySelectorAll(`.dice-total`)[i].classList.add("success");
+		else if (d.options.target) {
+			if (roll.total >= d.options.target) {
+				html.querySelectorAll(".dice-total")[i].classList.add("success");
 			} else {
-				html.querySelectorAll(`.dice-total`)[i].classList.add("failure");
+				html.querySelectorAll(".dice-total")[i].classList.add("failure");
 			}
 		}
 
@@ -46,37 +46,37 @@ export const highlightCriticalSuccessFailure = function(message, html, data) {
  */
 export const displayChatActionButtons = function(message, html, data) {
 	const chatCard = html.querySelector(".DND4E.chat-card");
-	if ( chatCard ) {
+	if (chatCard) {
 		const flavor = html.querySelector(".flavor-text");
-		if ( flavor?.textContent === html.querySelector(".item-name")?.textContent ) flavor.remove();
+		if (flavor?.textContent === html.querySelector(".item-name")?.textContent) flavor.remove();
 
 		// If the user is the message author or the actor owner, proceed
 		let actor = game.actors.get(data.message.speaker.actor);
-		if ( actor && actor.owner ) return;
-		else if ( game.user.isGM || (data.author.id === game.user.id)) return;
+		if (actor && actor.owner) return;
+		else if (game.user.isGM || (data.author.id === game.user.id)) return;
 
 		// Otherwise conceal action buttons except for saving throw
 		const buttons = chatCard.querySelectorAll("button[data-action]");
 		buttons.forEach((btn) => {
-			if ( btn.dataset.action === "save" ) return;
-			btn.style.display = "none"
+			if (btn.dataset.action === "save") return;
+			btn.style.display = "none";
 		});
 	}
 };
 
 export const displayDamageOptionButtons = function(message, html, data) {
-	if ( !message.isRoll || !message.isContentVisible ) return;
+	if (!message.isRoll || !message.isContentVisible) return;
 
 	// Highlight rolls where the first part is a d20 roll
 	const roll = message.rolls[0];
-	if ( !roll.dice.length ) return;
+	if (!roll.dice.length) return;
 	const d = roll.dice[0];
-	const isD20 = (d.faces === 20) && ( d.values.length === 1 );
-	if ( !isD20 && !d.options.recharge) return;
+	const isD20 = (d.faces === 20) && (d.values.length === 1);
+	if (!isD20 && !d.options.recharge) return;
 	const buttons = html.querySelectorAll(".chatDamageButtons");
 	buttons.forEach((button) => {
-		button.style.display = "none"
-	})
+		button.style.display = "none";
+	});
 };
 
 /* -------------------------------------------- */
@@ -94,7 +94,7 @@ export const addChatMessageContextOptions = function(html, options) {
 
 	let isAttackRoll = li => {
 		const message = game.messages.get(li.dataset.messageId);
-		return message.isRoll && message.isContentVisible && li.querySelector('.hit-prediction');
+		return message.isRoll && message.isContentVisible && li.querySelector(".hit-prediction");
 	};
 	
 	let canApplyDamage = li => {
@@ -104,99 +104,99 @@ export const addChatMessageContextOptions = function(html, options) {
 
 	// function canApplyEffect(li, type){
 	let canApplyEffect = (li, type) => {
-		if(!canvas.tokens.controlled.length) return false;
+		if (!canvas.tokens.controlled.length) return false;
 		const message = game.messages.get(li.dataset.messageId);
-		if(!message.isContentVisible) return false;
+		if (!message.isContentVisible) return false;
 
-		const itemID = li.querySelector('[data-item-id]')?.dataset.itemId;
+		const itemID = li.querySelector("[data-item-id]")?.dataset.itemId;
 
-		if(!itemID) return false;
+		if (!itemID) return false;
 		
-		const actorID = li.querySelector('[data-actor-id]')?.dataset.actorId;
-		const tokenUUID = li.querySelector('[data-token-id]')?.dataset.tokenId.split(".");
+		const actorID = li.querySelector("[data-actor-id]")?.dataset.actorId;
+		const tokenUUID = li.querySelector("[data-token-id]")?.dataset.tokenId.split(".");
 
 		const actor = tokenUUID ? game.scenes.get(tokenUUID[1])?.tokens.get(tokenUUID[3])?.actor : game.actors.get(actorID);
-		if(!actor) return false;
+		if (!actor) return false;
 
 		const item = actor.items.get(itemID);
-		if(!item) return false;
+		if (!item) return false;
 
-		if(!item.effects.size) return false;
+		if (!item.effects.size) return false;
 
-		for(const effect of item.effects){
-			if(effect.flags.dnd4e.effectData.powerEffectTypes === type) return true;
+		for (const effect of item.effects) {
+			if (effect.system.powerEffectType === type) return true;
 		}
 
 		return false;
-	}
+	};
 
 	options.push(
 		// Token Selection Right-Click Options
 		{
-			name: game.i18n.localize("DND4E.SeleteAllTargets"),
-			icon: '<i class="fa-regular fa-users"></i>',
+			name: _loc("DND4E.SeleteAllTargets"),
+			icon: "<i class=\"fa-regular fa-users\"></i>",
 			condition: isAttackRoll,
-			callback: li => selectTargetTokens(li, "all")
+			callback: li => selectTargetTokens(li, "all"),
 		},
 		{
-			name: game.i18n.localize("DND4E.SeleteHitTargets"),
-			icon: '<i class="fa-solid fa-users"></i>',
+			name: _loc("DND4E.SeleteHitTargets"),
+			icon: "<i class=\"fa-solid fa-users\"></i>",
 			condition: isAttackRoll,
-			callback: li => selectTargetTokens(li, "hit")
+			callback: li => selectTargetTokens(li, "hit"),
 		},
 		{
-			name: game.i18n.localize("DND4E.SeleteMissedTargets"),
-			icon: '<i class="fa-light fa-users"></i>',
+			name: _loc("DND4E.SeleteMissedTargets"),
+			icon: "<i class=\"fa-light fa-users\"></i>",
 			condition: isAttackRoll,
-			callback: li => selectTargetTokens(li, "miss")
+			callback: li => selectTargetTokens(li, "miss"),
 		},
 
 		// Damage Right-Click Options
 		{
-			name: game.i18n.localize("DND4E.ChatContextDamage"),
-			icon: '<i class="fas fa-user-minus"></i>',
+			name: _loc("DND4E.ChatContextDamage"),
+			icon: "<i class=\"fas fa-user-minus\"></i>",
 			condition: canApplyDamage,
-			callback: li => applyChatCardDamage(li, 1)
+			callback: li => applyChatCardDamage(li, 1),
 		},
 		{
-			name: game.i18n.localize("DND4E.ChatContextHealing"),
-			icon: '<i class="fas fa-user-plus"></i>',
+			name: _loc("DND4E.ChatContextHealing"),
+			icon: "<i class=\"fas fa-user-plus\"></i>",
 			condition: canApplyDamage,
-			callback: li => applyChatCardDamage(li, -1)
+			callback: li => applyChatCardDamage(li, -1),
 		},
 		{
-			name: game.i18n.localize("DND4E.ChatContextTempHp"),
-			icon: '<i class="fas fa-user-clock fa-fw"></i>',
+			name: _loc("DND4E.ChatContextTempHp"),
+			icon: "<i class=\"fas fa-user-clock fa-fw\"></i>",
 			condition: canApplyDamage,
-			callback: li => applyChatCardTempHp(li)
+			callback: li => applyChatCardTempHp(li),
 		},
 		{
-			name: game.i18n.localize("DND4E.ChatContextDoubleDamage"),
-			icon: '<i class="fas fa-user-injured"></i>',
+			name: _loc("DND4E.ChatContextDoubleDamage"),
+			icon: "<i class=\"fas fa-user-injured\"></i>",
 			condition: canApplyDamage,
-			callback: li => applyChatCardDamage(li, 2)
+			callback: li => applyChatCardDamage(li, 2),
 		},
 		{
-			name: game.i18n.localize("DND4E.ChatContextHalfDamage"),
-			icon: '<i class="fas fa-user-shield"></i>',
+			name: _loc("DND4E.ChatContextHalfDamage"),
+			icon: "<i class=\"fas fa-user-shield\"></i>",
 			condition: canApplyDamage,
-			callback: li => applyChatCardDamage(li, 0.5)
+			callback: li => applyChatCardDamage(li, 0.5),
 		},
 		{
-			name: game.i18n.localize("DND4E.ChatContextTrueDamage"),
-			icon: '<i class="fa-light fa-user-shield"></i>',
+			name: _loc("DND4E.ChatContextTrueDamage"),
+			icon: "<i class=\"fa-light fa-user-shield\"></i>",
 			condition: canApplyDamage,
-			callback: li => applyChatCardDamage(li, 1, true)
+			callback: li => applyChatCardDamage(li, 1, true),
 		},
 	);
 
 	// Apply Power Effects to Select Tokens
-	for(const [effectType, l] of Object.entries(game.dnd4e.config.powerEffectTypes)){
+	for (const [effectType, l] of Object.entries(game.dnd4e.config.powerEffectTypes)) {
 		options.push({
-			name: game.i18n.localize(`DND4E.ChatContextEffect${effectType}`),
-			icon: '<i class="fa-regular fas fa-bolt"></i>',
+			name: _loc(`DND4E.ChatContextEffect${effectType}`),
+			icon: "<i class=\"fa-regular fas fa-bolt\"></i>",
 			condition: li => canApplyEffect(li, effectType),
-			callback: li => applyEffectToSelectTokens(li, effectType)
+			callback: li => applyEffectToSelectTokens(li, effectType),
 		});
 	}
 	return options;
@@ -218,15 +218,25 @@ export function chatMessageListener(html) {
 	});
 	
 	//html.on('mouseenter', '.target', this.hoverTokenActorName.bind(this)).on('mouseleave', '.target', this.hoverTokenActorName.bind(this));
-	html.addEventListener("mouseenter", (event) => {
-		if (!event.target) return;
-		const el = event.target.closest(".target");
-		if (el) this.hoverTokenActorName.call(this, event);
+	html.querySelectorAll(".target").forEach((el) => {
+		const targetElement = el.querySelector(".target");
+		if (targetElement) {
+			targetElement.addEventListener("mouseenter", (event) => {
+				if (!event.target) return;
+				const el = event.target.closest(".target");
+				if (el) this.hoverTokenActorName.call(this, event);
+			});
+		}
 	});
-	html.addEventListener("mouseleave", (event) => {
-		if (!event.target) return;
-		const el = event.target.closest(".target");
-		if (el) this.hoverTokenActorName.call(this, event);
+	html.querySelectorAll(".target").forEach((el) => {
+		const targetElement = el.querySelector(".target");
+		if (targetElement) {
+			targetElement.addEventListener("mouseleave", (event) => {
+				if (!event.target) return;
+				const el = event.target.closest(".target");
+				if (el) this.hoverTokenActorName.call(this, event);
+			});
+		}
 	});
 
 	html.querySelectorAll(".description.collapsible").forEach((el) => {
@@ -236,47 +246,47 @@ export function chatMessageListener(html) {
 }
 
 //When clicking on the name of a taget in a chat messages from attack rolls, will select and pan to the highlighted token
-export const clickTokenActorName = function(event){
-		event.preventDefault();
-
-		const tokenID = event.currentTarget.getAttribute('data-target-id') || event.currentTarget.getAttribute('target-id'); //second one was for legasy where improper typing is used, will get rid of in a month or so
-		if(!tokenID) return;
-
-		const token = canvas.tokens.get(tokenID);
-
-		if(!token) return console.log(`Token ID: ${tokenID} does not exist in this scene.`);
-		if ( !token.actor?.testUserPermission(game.user, "OBSERVER") ) return;
-
-		if(!event.shiftKey){
-			canvas.tokens.selectObjects();
-		}
-
-		token.control({releaseOthers: false});
-		return canvas.animatePan(token.center);
-}
-
-//When hover over chat messages with "Target" from attack rolls, will highlight the token who's have is being hovered
-export const hoverTokenActorName = function(event){
+export const clickTokenActorName = function(event) {
 	event.preventDefault();
 
-	if ( !canvas.ready ) return;
+	const tokenID = event.currentTarget.getAttribute("data-target-id") || event.currentTarget.getAttribute("target-id"); //second one was for legasy where improper typing is used, will get rid of in a month or so
+	if (!tokenID) return;
 
-	if(event.type === "mouseenter"){
-		const tokenID = event.currentTarget.getAttribute('data-target-id') || event.currentTarget.getAttribute('target-id'); //second one was for legasy where improper typing is used, will get rid of in a month or so
+	const token = canvas.tokens.get(tokenID);
+
+	if (!token) return console.log(`Token ID: ${tokenID} does not exist in this scene.`);
+	if (!token.actor?.testUserPermission(game.user, "OBSERVER")) return;
+
+	if (!event.shiftKey) {
+		canvas.tokens.selectObjects();
+	}
+
+	token.control({ releaseOthers: false });
+	return canvas.animatePan(token.center);
+};
+
+//When hover over chat messages with "Target" from attack rolls, will highlight the token whose name is being hovered
+export const hoverTokenActorName = function(event) {
+	event.preventDefault();
+
+	if (!canvas.ready) return;
+
+	if (event.type === "mouseenter") {
+		const tokenID = event.currentTarget.getAttribute("data-target-id") || event.currentTarget.getAttribute("target-id"); //second one was for legasy where improper typing is used, will get rid of in a month or so
 		const token = canvas.tokens.get(tokenID);
-		if ( token?.isVisible ) {
-		  if ( !token.controlled ) token._onHoverIn(event, {hoverOutOthers: true});
-		  event.currentTarget._highlighted = token;
+		if (token?.isVisible) {
+			if (!token.controlled) token._onHoverIn(event, { hoverOutOthers: true });
+			event.currentTarget._highlighted = token;
 		}
-	} else if(event.type === "mouseleave"){
+	} else if (event.type === "mouseleave") {
 		return event.currentTarget._highlighted?._onHoverOut(event);
 	}
-}
+};
 
 export const clickRollMessageDamageButtons = function(event) {
 	event.preventDefault();
 	if (canvas.tokens.controlled.length < 1) {
-		ui.notifications.error(game.i18n.localize("DND4E.NeedTokenSelected"))
+		ui.notifications.error(_loc("DND4E.NeedTokenSelected"));
 	}
 
 	// Extract card data
@@ -289,19 +299,18 @@ export const clickRollMessageDamageButtons = function(event) {
 
 	// Apply
 	if (action === "Damage") {
-		applyChatCardDamageInner(roll, 1 / divisor, false)
+		applyChatCardDamageInner(roll, 1 / divisor, false);
 	}
 	else if (action === "HalfDamage") {
-		applyChatCardDamageInner(roll, 0.5, false)
+		applyChatCardDamageInner(roll, 0.5, false);
 	}
 	else if (action === "Heal") {
-		applyChatCardDamageInner(roll, -1, false)
+		applyChatCardDamageInner(roll, -1, false);
 	}
 	else if (action === "TempHeal") {
-		applyChatCardTempHpInner(roll)
+		applyChatCardTempHpInner(roll);
 	}
-}
-
+};
 
 /* -------------------------------------------- */
 /**
@@ -310,21 +319,21 @@ export const clickRollMessageDamageButtons = function(event) {
  * @param {string} effectType   The Effect Type that is being applied so it can pass through to the apply effect
  * @return {Promise}
  */
-function applyEffectToSelectTokens(li, effectType){
-	const itemID = li.querySelector('[data-item-id]')?.dataset.itemId;
+function applyEffectToSelectTokens(li, effectType) {
+	const itemID = li.querySelector("[data-item-id]")?.dataset.itemId;
 
-	if(!itemID) return false;
+	if (!itemID) return false;
 	
-	const actorID = li.querySelector('[data-actor-id]')?.dataset.actorId;
-	const tokenUUID = li.querySelector('[data-token-id]')?.dataset.tokenId.split(".");
+	const actorID = li.querySelector("[data-actor-id]")?.dataset.actorId;
+	const tokenUUID = li.querySelector("[data-token-id]")?.dataset.tokenId.split(".");
 
 	const actor = tokenUUID ? game.scenes.get(tokenUUID[1])?.tokens.get(tokenUUID[3])?.actor : game.actors.get(actorID);
-	if(!actor) return;
+	if (!actor) return;
 
 	const item = actor.items.get(itemID);
-	if(!item) return;
+	if (!item) return;
 
-	const effectTargets = canvas.tokens.controlled // Array
+	const effectTargets = canvas.tokens.controlled; // Array
 
 	Helper.applyEffectsToTokens(item.effects, effectTargets, effectType, actor);
 }
@@ -336,31 +345,31 @@ function applyEffectToSelectTokens(li, effectType){
  * @param {string} targetType   Target Type between "hit", "miss", and "all". But I just use else for all soooo what ever
  * @return {Promise}
  */
-function selectTargetTokens(li, targetType){
+function selectTargetTokens(li, targetType) {
 	const message = game.messages.get(li.dataset.messageId);
 
-	if(!event.shiftKey){
+	if (!event.shiftKey) {
 		canvas.tokens.selectObjects();
 	}
 
-	if(targetType === "hit"){
-		console.log("hit")
-		for(const roll of message.rolls){
-			if(['hit','critical'].includes(roll.options.multirollData.hitstate)){
-				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
+	if (targetType === "hit") {
+		Helper.debugLog("hit");
+		for (const roll of message.rolls) {
+			if (["hit", "critical"].includes(roll.options.multirollData.hitstate)) {
+				canvas.tokens.get(roll.options.multirollData.targetID).control({ releaseOthers: false });
 			}
 		}
 	}
-	else if(targetType === "miss"){
-		console.log("miss")
-		for(const roll of message.rolls){
-			if(['miss','fumble','immune'].includes(roll.options.multirollData.hitstate)){
-				canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
+	else if (targetType === "miss") {
+		Helper.debugLog("miss");
+		for (const roll of message.rolls) {
+			if (["miss", "fumble", "immune"].includes(roll.options.multirollData.hitstate)) {
+				canvas.tokens.get(roll.options.multirollData.targetID).control({ releaseOthers: false });
 			}
 		}
 	} else {
-		for(const roll of message.rolls){
-			canvas.tokens.get(roll.options.multirollData.targetID).control({releaseOthers: false});
+		for (const roll of message.rolls) {
+			canvas.tokens.get(roll.options.multirollData.targetID).control({ releaseOthers: false });
 		}
 	}
 }
@@ -376,13 +385,13 @@ function selectTargetTokens(li, targetType){
  * @param {Boolean} trueDamage	Bypass damage resistance or not (default false)
  * @return {Promise}
  */
-function applyChatCardDamage(li, multiplier, trueDamage=false) {
+function applyChatCardDamage(li, multiplier, trueDamage = false) {
 	const message = game.messages.get(li.dataset.messageId);
 	const roll = message.rolls[0];
 	applyChatCardDamageInner(roll, multiplier, trueDamage);
 }
 
-function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
+function applyChatCardDamageInner(roll, multiplier, trueDamage = false) {
 	let damageDealt = [];
 	let rollTotalRemain = roll.total;
 	let surgeAmount = 0; //how many healing surges spent
@@ -390,26 +399,26 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 
 	//count surges used, shouldn't be more than 1, but you never know....
 	// flavor can be null
-	if(multiplier < 0 ){
+	if (multiplier < 0) {
 		roll.terms.forEach(e => {
-			if(e.flavor?.includes("surgeValue")){
+			if (e.flavor?.includes("surgeValue")) {
 				surgeValueAmount++;
 			}
-			else if(e.flavor?.includes("surgeCost")){
+			else if (e.flavor?.includes("surgeCost")) {
 				surgeAmount++;
 			}
-			else if(e.flavor?.includes("surge")){
+			else if (e.flavor?.includes("surge")) {
 				surgeAmount++;
 				surgeValueAmount++;
 			}
 		});
 	}
 
-	if(multiplier < 0 || trueDamage){
+	if ((multiplier < 0) || trueDamage) {
 		return Promise.all(canvas.tokens.controlled.map(t => {
 			const a = t.actor;
-			console.log( multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealt: ${roll.total}`)
-			return a.applyDamage(roll.total, multiplier, {surgeAmount, surgeValueAmount});
+			Helper.debugLog(multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealt: ${roll.total}`);
+			return a.applyDamage(roll.total, multiplier, { surgeAmount, surgeValueAmount });
 		}));
 	}
 
@@ -417,23 +426,23 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage=false) {
 	//there can be multiple different term types, the most common are Die (e.g. 2d10), operator (e.g. +) or numeric (e.g. 10).
 	//They all have a total property which is a numeric in the case of dice and numeric.  See https://foundryvtt.com/api/classes/foundry.dice.terms.RollTerm.html
 	roll.terms.forEach(e => {
-		if(typeof e.total === "number"){
-			if(e.flavor){
-				//console.log(`Damage type found: ${e.options.flavor}`);
-				damageDealt.push([e.total,e.options.flavor]);
+		if (typeof e.total === "number") {
+			if (e.flavor) {
+				Helper.debugLog(`Damage type found: ${e.options.flavor}`);
+				damageDealt.push([e.total, e.options.flavor]);
 				rollTotalRemain -= e.total;
 			}
 		}
 	});
 
 	//evenly split up the untyped damage into typed damage
-	if(rollTotalRemain){
+	if (rollTotalRemain) {
 		const length = damageDealt.length;
-		if(length === 0){
-			damageDealt.push([rollTotalRemain, 'physical'])
+		if (length === 0) {
+			damageDealt.push([rollTotalRemain, "physical"]);
 		} else {
-			for(let i = 0; i < length; i++){
-				damageDealt[i][0] += 0|rollTotalRemain/length+(i<rollTotalRemain%length);
+			for (let i = 0; i < length; i++) {
+				damageDealt[i][0] += 0 | rollTotalRemain / length + (i < rollTotalRemain % length);
 			}
 		}
 	}
@@ -459,14 +468,14 @@ function applyChatCardTempHp(li) {
 	applyChatCardTempHpInner(roll);
 }
 
-function applyChatCardTempHpInner(roll){
+function applyChatCardTempHpInner(roll) {
 	return Promise.all(canvas.tokens.controlled.map(t => {
 		const a = t.actor;
-		return a.applyTempHpChange(roll.total)
+		return a.applyTempHpChange(roll.total);
 	}));
 }
 
-export function _onClickDiceRoll(event){
+export function _onClickDiceRoll(event) {
 	event.preventDefault();
 
 	// Toggle the message flag
@@ -476,17 +485,19 @@ export function _onClickDiceRoll(event){
 
 	// Expand or collapse tooltips
 	const tooltips = roll.querySelectorAll(".dice-tooltip");
-	for ( let tip of tooltips ) {
-		if ( message._rollExpanded ) $(tip).slideDown(200);
+	for (let tip of tooltips) {
+		if (message._rollExpanded) $(tip).slideDown(200);
 		else $(tip).slideUp(200);
 		tip.classList.toggle("expanded", message._rollExpanded);
 	}
 }
 
-  /* -------------------------------------------- */
+/* -------------------------------------------- */
 
 Hooks.on("renderChatMessageHTML", (message, html) => {
-	//updateApplyEffectsTooltips(html);
+	const NO_VALUE = false;
+	const NO_OPTIONS = null;
+	updateApplyEffectsTooltips(NO_VALUE, NO_OPTIONS, html);
 
 	const spans = html.querySelectorAll("span.roll-expression");
 	spans.forEach(el => {
@@ -500,24 +511,23 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 			el.classList.toggle("roll-highlight");
 			otherEl?.classList.toggle("roll-highlight");
 		});
-	})
+	});
 
 	html.querySelectorAll(".dice-roll").forEach(el => el.addEventListener("click", _onClickDiceRoll.bind(this)));
 });
 
 //Function for changing the tooltip of the apply effect button of power cards based on the applyEffectsToSelection functions
-export function updateApplyEffectsTooltips(html={}) {
+export function updateApplyEffectsTooltips(value, options, html = {}) {
 
-	const settingValue = game.settings.get("dnd4e", "applyEffectsToSelection");
+	const settingValue = value == null ? game.settings.get("dnd4e", "applyEffectsToSelection") : value;
 	// True -> Selected
 	// False -> Targeted
 	const targetKey = settingValue ? "DND4E.EffectsApplyTokensSelected" : "DND4E.EffectsApplyTokensTargeted";
 
-	const localizedTarget = game.i18n.localize(targetKey);
-	const baseText = game.i18n.localize("DND4E.EffectsApplyTokens");
-	const finalTooltip = baseText.replace("{target}", localizedTarget);
+	const localizedTarget = _loc(targetKey);
+	const finalTooltip = _loc("DND4E.EffectsApplyTokens", { target: localizedTarget });
 
-	if(html){
+	if (html) {
 		html.querySelectorAll("*[data-action=\"applyEffect\"]").forEach(el => el.setAttribute("data-tooltip", finalTooltip));
 	} else {
 		document.querySelectorAll("[data-action=\"applyEffect\"").forEach(el => el.setAttribute("data-tooltip", finalTooltip));

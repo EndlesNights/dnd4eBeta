@@ -1,12 +1,13 @@
 <div class="dice-roll">
-    {{#each multirollData as |roll|}}
-        <div class="dice-result">
-            <a class="flavor-text target" data-target-id="{{roll.target}}"><strong>{{localize 'DND4E.Target'}}</strong>: {{roll.target}}</a>
-            <div class="dice-flavor">{{roll.flavor}}</div> <span class="mod-vs-def">(<span class="attack-mod">{{attackRoll.modText}}</span> {{localize 'DND4E.VS'}} <span class="vs-def">{{attackRoll.defText}}</span>)</span>
-			</div>
-			<div class="flavor-text hit-prediction {{attackRoll.critstate}} {{attackRoll.hitstate}}">{{attackRoll.hittext}}</div>
-        </div>
-    {{/each}}
+  {{#each multirollData as |roll|}}
+  <div class="dice-result">
+    <a class="flavor-text target" data-target-id="{{roll.target}}"><strong>{{localize 'DND4E.Target'}}</strong>: {{roll.target}}</a>
+    <div class="dice-flavor">{{roll.flavor}}</div>
+    <span class="mod-vs-def">(<span class="attack-mod">{{attackRoll.modText}}</span> {{localize 'DND4E.VS'}} <span class="vs-def">{{attackRoll.defText}}</span>)</span>
+  </div>
+  <div class="flavor-text hit-prediction {{attackRoll.critstate}} {{attackRoll.hitstate}}">{{attackRoll.hittext}}</div>
+</div>
+{{/each}}
 </div>
 
 <script>

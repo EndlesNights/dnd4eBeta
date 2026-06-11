@@ -22,15 +22,15 @@ export const preloadHandlebarsTemplates = async function() {
 		"systems/dnd4e/templates/items/parts/details-weapon.hbs",
 		"systems/dnd4e/templates/items/parts/details-backpack.hbs",
 
-		"systems/dnd4e/templates/items/parts/target-effects.hbs"
+		"systems/dnd4e/templates/items/parts/target-effects.hbs",
 	];
 
 	const paths = {};
-  for ( const path of partials ) {
-    paths[path.replace(".hbs", ".html")] = path;
-    paths[`dnd4e.${path.split("/").pop().replace(".hbs", "")}`] = path;
-  }
+	for (const path of partials) {
+		paths[path.replace(".hbs", ".html")] = path;
+		paths[`dnd4e.${path.split("/").pop().replace(".hbs", "")}`] = path;
+	}
 	
 	// Load the template parts
-  return foundry.applications.handlebars.loadTemplates(paths);
+	return foundry.applications.handlebars.loadTemplates(paths);
 };

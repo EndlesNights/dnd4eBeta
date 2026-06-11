@@ -1,17 +1,17 @@
 import { AttributeBonusDialog } from "./attribute-bonuses.js";
-import DocumentSheet4e from "./DocumentSheet4e.js"
+import DocumentSheet4e from "./DocumentSheet4e.js";
 
 export class MovementDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "movement-dialog",
-		classes: ["dnd4e","movement-dialog","standard-form","default"],
+		classes: ["dnd4e", "movement-dialog", "standard-form", "default"],
 		form: {
 			closeOnSubmit: false,
-			handler: MovementDialog.#onSubmit
+			handler: MovementDialog.#onSubmit,
 		},
 		actions: {
-			movementBonusClicked: MovementDialog._onMovementBonus
+			movementBonusClicked: MovementDialog._onMovementBonus,
 		},
 		position: {
 			width: 500,
@@ -19,23 +19,23 @@ export class MovementDialog extends DocumentSheet4e {
 		},
 		window: {
 			contentClasses: ["standard-form"],
-			resizable: true
+			resizable: true,
 		},
-		tag: "form"
-	}
+		tag: "form",
+	};
 
 	get title() {
-		return `${this.document.name} - ${game.i18n.localize("DND4E.SpeedAndMove")}`;
+		return `${this.document.name} - ${_loc("DND4E.SpeedAndMove")}`;
 	}
 
 	static PARTS = {
 		MovementDialog: {
-			template: "systems/dnd4e/templates/apps/movement-dialog.hbs"
+			template: "systems/dnd4e/templates/apps/movement-dialog.hbs",
 		},
 		footer: {
 			template: "templates/generic/form-footer.hbs",
-		}
-	}
+		},
+	};
 
 	/** @override */
 	async _prepareContext(options) {
@@ -45,8 +45,8 @@ export class MovementDialog extends DocumentSheet4e {
 		return {
 			...context,
 			buttons: [
-				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
-			]
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" },
+			],
 		};
 	}
 
@@ -63,7 +63,7 @@ export class MovementDialog extends DocumentSheet4e {
 		console.debug(target.parentElement.dataset);
 		console.debug(target.parentElement);
 		console.debug(this.document.system.movement[moveName]);
-		const options = {document: this.document, target: targetString, label: `${game.i18n.format('DND4E.MovementBonus',{mode: moveName})}` };
+		const options = { document: this.document, target: targetString, label: `${_loc("DND4E.MovementBonus", { mode: moveName })}` };
 		new AttributeBonusDialog(options).render(true);
 	}
 }

@@ -1,157 +1,157 @@
 <div id="movement-dialog" class="dialogue-content" onsubmit="event.preventDefault();">
-	<fieldset class="movement-base move-table">
-		<legend>{{localize 'DND4E.Movement.SpeedType' mode=(localize 'DND4E.Movement.Base')}}</legend>
-		<div class="flexrow">
-			<div class="speed-base flexcol">
-				<header class="speed-header flexrow">
-					<div class="move-value" data-tooltip="{{localize 'DND4EUI.SpeedConfigTip' penalty=system.movement.base.armour}}">{{localize 'DND4E.Movement.Speed'}} <i class="fa-solid fa-circle-question"></i></div>
-					<div class="move-base">{{localize 'DND4E.Movement.Base'}}</div>
-					<div class="move-bonus">{{localize 'DND4E.Bonus'}}</div>
-					<div class="move-temp">{{localize 'DND4E.Temp'}}</div>
-				</header>
+  <fieldset class="movement-base move-table">
+    <legend>{{localize 'DND4E.Movement.SpeedType' mode=(localize 'DND4E.Movement.Base')}}</legend>
+    <div class="flexrow">
+      <div class="speed-base flexcol">
+        <header class="speed-header flexrow">
+          <div class="move-value" data-tooltip="{{localize 'DND4EUI.SpeedConfigTip' penalty=system.movement.base.armour}}">{{localize 'DND4E.Movement.Speed'}} <i class="fa-solid fa-circle-question"></i></div>
+          <div class="move-base">{{localize 'DND4E.Movement.Base'}}</div>
+          <div class="move-bonus">{{localize 'DND4E.Bonus'}}</div>
+          <div class="move-temp">{{localize 'DND4E.Temp'}}</div>
+        </header>
 				
-				<div class="speed-body form-group base" data-movement="base">
-					<span class="move-value">{{system.movement.base.value}}</span>
-					<input class="move-base" type="text" name="system.movement.base.base" value="{{system.movement.base.base}}" data-tooltip="{{localize 'DND4E.Movement.SpeedType' mode=(localize 'DND4E.Movement.Base')}}" data-dtype="Number" onClick="this.select();" placeholder="0" />
-					<a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Base')}}">{{system.movement.base.bonusValue}}</a>
-					<input class="move-temp" type="text" name="system.movement.base.temp" value="{{system.movement.base.temp}}" data-tooltip="{{localize 'DND4E.Movement.SpeedType' mode=(localize 'DND4E.Movement.Base')}}" data-dtype="Number" onClick="this.select();" placeholder="0" />
-				</div>
-			</div>
+        <div class="speed-body form-group base" data-movement="base">
+          <span class="move-value">{{system.movement.base.value}}</span>
+          <input class="move-base" type="text" name="system.movement.base.base" value="{{system.movement.base.base}}" data-tooltip="{{localize 'DND4E.Movement.SpeedType' mode=(localize 'DND4E.Movement.Base')}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+          <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Base')}}">{{system.movement.base.bonusValue}}</a>
+          <input class="move-temp" type="text" name="system.movement.base.temp" value="{{system.movement.base.temp}}" data-tooltip="{{localize 'DND4E.Movement.SpeedType' mode=(localize 'DND4E.Movement.Base')}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+        </div>
+      </div>
 			
-			<div class="sep"></div>
+      <div class="sep"></div>
 			
-			<div class="armour-penalty flexcol">
-				<header class="speed-header flexrow">
-					<div class="move-armour">{{localize 'DND4E.ArmourPenalty'}}</div>
-				</header>
-				<div class="form-group speed-body armour">
-					<span class="move-armour">{{system.movement.base.armour}}</span>
-				</div>
-			</div>
-		</div>
-	</fieldset>
+      <div class="armour-penalty flexcol">
+        <header class="speed-header flexrow">
+          <div class="move-armour">{{localize 'DND4E.ArmourPenalty'}}</div>
+        </header>
+        <div class="form-group speed-body armour">
+          <span class="move-armour">{{system.movement.base.armour}}</span>
+        </div>
+      </div>
+    </div>
+  </fieldset>
 	
-	<fieldset class="movement-standard move-table">
-		<legend>{{localize "DND4E.Movement.Standard"}}</legend>
-		<header class="speed-header flexrow">
-			<div class="move-name">{{localize 'DND4E.Action'}}</div>
-			<div class="move-value" data-tooltip="{{localize 'DND4EUI.SpeedConfigTip' penalty=system.movement.base.armour}}">{{localize 'DND4E.Movement.Speed'}} <i class="fa-solid fa-circle-question"></i></div>
-			<div class="move-base">{{localize 'DND4E.Movement.Base'}}</div>
-			<div class="move-traits">{{localize 'DND4E.Movement.Traits'}}</div>
-			<div class="move-bonus">{{localize 'DND4E.Bonus'}}</div>
-			<div class="move-temp">{{localize 'DND4E.Temp'}}</div>
-		</header>
+  <fieldset class="movement-standard move-table">
+    <legend>{{localize "DND4E.Movement.Standard"}}</legend>
+    <header class="speed-header flexrow">
+      <div class="move-name">{{localize 'DND4E.Action'}}</div>
+      <div class="move-value" data-tooltip="{{localize 'DND4EUI.SpeedConfigTip' penalty=system.movement.base.armour}}">{{localize 'DND4E.Movement.Speed'}} <i class="fa-solid fa-circle-question"></i></div>
+      <div class="move-base">{{localize 'DND4E.Movement.Base'}}</div>
+      <div class="move-traits">{{localize 'DND4E.Movement.Traits'}}</div>
+      <div class="move-bonus">{{localize 'DND4E.Bonus'}}</div>
+      <div class="move-temp">{{localize 'DND4E.Temp'}}</div>
+    </header>
 		
-		<div class="speed-body form-group walk" data-movement="walk">
-			<span class="move-name">{{localize 'DND4E.Movement.Walk'}}</span>
-			<span class="move-value">{{system.movement.walk.value}}</span>
-			<input class="move-base" type="text" name="system.movement.walk.formula" value="{{system.movement.walk.formula}}" onClick="this.select();" placeholder="@base + @armour" />
-			<input class="move-traits" type="text" name="system.movement.walk.traits" value="{{system.movement.walk.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" />
-			<a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Walk')}}">{{system.movement.walk.bonusValue}}</a>
-			<input class="move-temp" type="text" name="system.movement.walk.temp" value="{{system.movement.walk.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0" />
-		</div>
+    <div class="speed-body form-group walk" data-movement="walk">
+      <span class="move-name">{{localize 'DND4E.Movement.Walk'}}</span>
+      <span class="move-value">{{system.movement.walk.value}}</span>
+      <input class="move-base" type="text" name="system.movement.walk.formula" value="{{system.movement.walk.formula}}" onClick="this.select();" placeholder="@base + @armour">
+      <input class="move-traits" type="text" name="system.movement.walk.traits" value="{{system.movement.walk.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}">
+      <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Walk')}}">{{system.movement.walk.bonusValue}}</a>
+      <input class="move-temp" type="text" name="system.movement.walk.temp" value="{{system.movement.walk.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+    </div>
 
-		<div class="speed-body form-group run" data-movement="run">
-			<span class="move-name">{{localize 'DND4E.Movement.Run'}}</span>
-			<span class="move-value">{{numberFormat system.movement.run.value
-            sign=true}}</span>
-			<input class="move-base" type="text" name="system.movement.run.formula" value="{{system.movement.run.formula}}" onClick="this.select();" placeholder="2" />
-			<input class="move-traits" type="text" name="system.movement.run.traits" value="{{system.movement.run.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" />
-			<a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Run')}}">{{system.movement.run.bonusValue}}</a>
-			<input class="move-temp" type="text" name="system.movement.run.temp" value="{{system.movement.run.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0" />
-		</div>
+    <div class="speed-body form-group run" data-movement="run">
+      <span class="move-name">{{localize 'DND4E.Movement.Run'}}</span>
+      <span class="move-value">{{numberFormat system.movement.run.value
+        sign=true}}</span>
+      <input class="move-base" type="text" name="system.movement.run.formula" value="{{system.movement.run.formula}}" onClick="this.select();" placeholder="2">
+      <input class="move-traits" type="text" name="system.movement.run.traits" value="{{system.movement.run.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}">
+      <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Run')}}">{{system.movement.run.bonusValue}}</a>
+      <input class="move-temp" type="text" name="system.movement.run.temp" value="{{system.movement.run.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+    </div>
 
-		<div class="speed-body form-group charge" data-movement="charge">
-			<span class="move-name">{{localize 'DND4E.Movement.Charge'}}</span>
-			<span class="move-value">{{system.movement.charge.value}}</span>
-			<input class="move-base" type="text" name="system.movement.charge.formula" value="{{system.movement.charge.formula}}" onClick="this.select();" placeholder="@base + @armour" />
-			<input class="move-traits" type="text" name="system.movement.charge.traits" value="{{system.movement.charge.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" />
-			<a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Charge')}}">{{system.movement.charge.bonusValue}}</a>
-			<input class="move-temp" type="text" name="system.movement.charge.temp" value="{{system.movement.charge.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0" />
-		</div>
+    <div class="speed-body form-group charge" data-movement="charge">
+      <span class="move-name">{{localize 'DND4E.Movement.Charge'}}</span>
+      <span class="move-value">{{system.movement.charge.value}}</span>
+      <input class="move-base" type="text" name="system.movement.charge.formula" value="{{system.movement.charge.formula}}" onClick="this.select();" placeholder="@base + @armour">
+      <input class="move-traits" type="text" name="system.movement.charge.traits" value="{{system.movement.charge.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}">
+      <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Charge')}}">{{system.movement.charge.bonusValue}}</a>
+      <input class="move-temp" type="text" name="system.movement.charge.temp" value="{{system.movement.charge.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+    </div>
 
-		<div class="speed-body form-group shift" data-movement="shift">
-			<span class="move-name">{{localize 'DND4E.Movement.Shift'}}</span>
-			<span class="move-value">{{system.movement.shift.value}}</span>
-			<input class="move-base" type="text" name="system.movement.shift.formula" value="{{system.movement.shift.formula}}" onClick="this.select();" placeholder="1" />
-			<input class="move-traits" type="text" name="system.movement.shift.traits" value="{{system.movement.shift.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" />
-			<a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Shift')}}">{{system.movement.shift.bonusValue}}</a>
-			<input class="move-temp" type="text" name="system.movement.shift.temp" value="{{system.movement.shift.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0" />
-		</div>
-	</fieldset>
+    <div class="speed-body form-group shift" data-movement="shift">
+      <span class="move-name">{{localize 'DND4E.Movement.Shift'}}</span>
+      <span class="move-value">{{system.movement.shift.value}}</span>
+      <input class="move-base" type="text" name="system.movement.shift.formula" value="{{system.movement.shift.formula}}" onClick="this.select();" placeholder="1">
+      <input class="move-traits" type="text" name="system.movement.shift.traits" value="{{system.movement.shift.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}">
+      <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Shift')}}">{{system.movement.shift.bonusValue}}</a>
+      <input class="move-temp" type="text" name="system.movement.shift.temp" value="{{system.movement.shift.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+    </div>
+  </fieldset>
 
-	<fieldset class="movement-special move-table">
-		<legend>{{localize "DND4E.Movement.Special"}}</legend>
-		<header class="speed-header flexrow">
-			<div class="move-name">{{localize 'DND4E.Movement.Mode'}}</div>
-			<div class="move-value" data-tooltip="{{localize 'DND4EUI.SpeedConfigTip' penalty=system.movement.base.armour}}">{{localize 'DND4E.Movement.Speed'}} <i class="fa-solid fa-circle-question"></i></div>
-			<div class="move-base">{{localize 'DND4E.Movement.Base'}}</div>
-			<div class="move-traits">{{localize 'DND4E.Movement.Traits'}}</div>
-			<div class="move-bonus">{{localize 'DND4E.Bonus'}}</div>
-			<div class="move-temp">{{localize 'DND4E.Temp'}}</div>
-		</header>
+  <fieldset class="movement-special move-table">
+    <legend>{{localize "DND4E.Movement.Special"}}</legend>
+    <header class="speed-header flexrow">
+      <div class="move-name">{{localize 'DND4E.Movement.Mode'}}</div>
+      <div class="move-value" data-tooltip="{{localize 'DND4EUI.SpeedConfigTip' penalty=system.movement.base.armour}}">{{localize 'DND4E.Movement.Speed'}} <i class="fa-solid fa-circle-question"></i></div>
+      <div class="move-base">{{localize 'DND4E.Movement.Base'}}</div>
+      <div class="move-traits">{{localize 'DND4E.Movement.Traits'}}</div>
+      <div class="move-bonus">{{localize 'DND4E.Bonus'}}</div>
+      <div class="move-temp">{{localize 'DND4E.Temp'}}</div>
+    </header>
 		
-		<div class="speed-body form-group burrow" data-movement="burrow">
-			<span class="move-name">{{localize 'DND4E.Movement.Burrow'}}</span>
-			<span class="move-value">{{system.movement.burrow.value}}</span>
-			<input class="move-base" type="text" name="system.movement.burrow.formula" value="{{system.movement.burrow.formula}}" onClick="this.select();" placeholder="0" />
-			<input class="move-traits" type="text" name="system.movement.burrow.traits" value="{{system.movement.burrow.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" />
-			<a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Burrow')}}">{{system.movement.burrow.bonusValue}}</a>
-			<input class="move-temp" type="text" name="system.movement.burrow.temp" value="{{system.movement.burrow.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0" />
-		</div>
+    <div class="speed-body form-group burrow" data-movement="burrow">
+      <span class="move-name">{{localize 'DND4E.Movement.Burrow'}}</span>
+      <span class="move-value">{{system.movement.burrow.value}}</span>
+      <input class="move-base" type="text" name="system.movement.burrow.formula" value="{{system.movement.burrow.formula}}" onClick="this.select();" placeholder="0">
+      <input class="move-traits" type="text" name="system.movement.burrow.traits" value="{{system.movement.burrow.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}">
+      <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Burrow')}}">{{system.movement.burrow.bonusValue}}</a>
+      <input class="move-temp" type="text" name="system.movement.burrow.temp" value="{{system.movement.burrow.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+    </div>
 
-		<div class="speed-body form-group climb" data-movement="climb">
-			<span class="move-name">{{localize 'DND4E.Movement.Climb'}}</span>
-			<span class="move-value">{{system.movement.climb.value}}</span>
-			<input class="move-base" type="text" name="system.movement.climb.formula" value="{{system.movement.climb.formula}}" onClick="this.select();" placeholder="0" />
-			<input class="move-traits" type="text" name="system.movement.climb.traits" value="{{system.movement.climb.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" />
-			<a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Climb')}}">{{system.movement.climb.bonusValue}}</a>
-			<input class="move-temp" type="text" name="system.movement.climb.temp" value="{{system.movement.climb.temp}}" data-tooltip="{{localize 'DND4E.Movement.SpeedType' mode=(localize 'DND4E.Movement.Climb')}}" data-dtype="Number" onClick="this.select();" placeholder="0" />
-		</div>
+    <div class="speed-body form-group climb" data-movement="climb">
+      <span class="move-name">{{localize 'DND4E.Movement.Climb'}}</span>
+      <span class="move-value">{{system.movement.climb.value}}</span>
+      <input class="move-base" type="text" name="system.movement.climb.formula" value="{{system.movement.climb.formula}}" onClick="this.select();" placeholder="0">
+      <input class="move-traits" type="text" name="system.movement.climb.traits" value="{{system.movement.climb.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}">
+      <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Climb')}}">{{system.movement.climb.bonusValue}}</a>
+      <input class="move-temp" type="text" name="system.movement.climb.temp" value="{{system.movement.climb.temp}}" data-tooltip="{{localize 'DND4E.Movement.SpeedType' mode=(localize 'DND4E.Movement.Climb')}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+    </div>
 
-		<div class="speed-body form-group fly" data-movement="fly">
-			<span class="move-name">{{localize 'DND4E.Movement.Fly'}}</span>
-			<span class="move-value">{{system.movement.fly.value}}</span>
-			<input class="move-base" type="text" name="system.movement.fly.formula" value="{{system.movement.fly.formula}}" onClick="this.select();" placeholder="0" />
-			<input class="move-traits" type="text" name="system.movement.fly.traits" value="{{system.movement.fly.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" />
-			<a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Fly')}}">{{system.movement.fly.bonusValue}}</a>
-			<input class="move-temp" type="text" name="system.movement.fly.temp" value="{{system.movement.fly.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0" />
-		</div>
+    <div class="speed-body form-group fly" data-movement="fly">
+      <span class="move-name">{{localize 'DND4E.Movement.Fly'}}</span>
+      <span class="move-value">{{system.movement.fly.value}}</span>
+      <input class="move-base" type="text" name="system.movement.fly.formula" value="{{system.movement.fly.formula}}" onClick="this.select();" placeholder="0">
+      <input class="move-traits" type="text" name="system.movement.fly.traits" value="{{system.movement.fly.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}">
+      <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Fly')}}">{{system.movement.fly.bonusValue}}</a>
+      <input class="move-temp" type="text" name="system.movement.fly.temp" value="{{system.movement.fly.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+    </div>
 
-		<div class="speed-body form-group swim" data-movement="swim">
-			<span class="move-name">{{localize 'DND4E.Movement.Swim'}}:</span>
-			<span class="move-value">{{system.movement.swim.value}}</span>
-			<input class="move-base" type="text" name="system.movement.swim.formula" value="{{system.movement.swim.formula}}" onClick="this.select();" placeholder="0" />
-			<input class="move-traits" type="text" name="system.movement.swim.traits" value="{{system.movement.swim.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" />
-			<a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Swim')}}">{{system.movement.swim.bonusValue}}</a>
-			<input class="move-temp" type="text" name="system.movement.swim.temp" value="{{system.movement.swim.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-		</div>
+    <div class="speed-body form-group swim" data-movement="swim">
+      <span class="move-name">{{localize 'DND4E.Movement.Swim'}}:</span>
+      <span class="move-value">{{system.movement.swim.value}}</span>
+      <input class="move-base" type="text" name="system.movement.swim.formula" value="{{system.movement.swim.formula}}" onClick="this.select();" placeholder="0">
+      <input class="move-traits" type="text" name="system.movement.swim.traits" value="{{system.movement.swim.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}">
+      <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Swim')}}">{{system.movement.swim.bonusValue}}</a>
+      <input class="move-temp" type="text" name="system.movement.swim.temp" value="{{system.movement.swim.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+    </div>
 
-		<div class="speed-body form-group teleport" data-movement="teleport">
-			<span class="move-name">{{localize 'DND4E.Movement.Teleport'}}</span>
-			<span class="move-value">{{system.movement.teleport.value}}</span>
-			<input class="move-base" type="text" name="system.movement.teleport.formula" value="{{system.movement.teleport.formula}}" onClick="this.select();" placeholder="0" />
-			<input class="move-traits" type="text" name="system.movement.teleport.traits" value="{{system.movement.teleport.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" />
-			<a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Teleport')}}">{{system.movement.teleport.bonusValue}}</a>
-			<input class="move-temp" type="text" name="system.movement.teleport.temp" value="{{system.movement.teleport.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0"/>
-		</div>
+    <div class="speed-body form-group teleport" data-movement="teleport">
+      <span class="move-name">{{localize 'DND4E.Movement.Teleport'}}</span>
+      <span class="move-value">{{system.movement.teleport.value}}</span>
+      <input class="move-base" type="text" name="system.movement.teleport.formula" value="{{system.movement.teleport.formula}}" onClick="this.select();" placeholder="0">
+      <input class="move-traits" type="text" name="system.movement.teleport.traits" value="{{system.movement.teleport.traits}}" onClick="this.select();" placeholder="{{localize 'DND4E.Movement.TraitsPlaceholder'}}" data-tooltip="{{localize 'DND4E.Movement.TraitsPlaceholder'}}">
+      <a class="move-bonus" data-action="movementBonusClicked" data-target="system.details" data-tooltip="{{localize 'DND4E.Movement.Bonus' mode=(localize 'DND4E.Movement.Teleport')}}">{{system.movement.teleport.bonusValue}}</a>
+      <input class="move-temp" type="text" name="system.movement.teleport.temp" value="{{system.movement.teleport.temp}}" data-dtype="Number" onClick="this.select();" placeholder="0">
+    </div>
 
-		<div class="form-group vertical">
-			<label>{{ localize "DND4E.Other" }}</label>
-			<input type="text" name="system.movement.custom" value="{{system.movement.custom}}" data-dtype="String"/>
-		</div>
-	</fieldset>
+    <div class="form-group vertical">
+      <label>{{ localize "DND4E.Other" }}</label>
+      <input type="text" name="system.movement.custom" value="{{system.movement.custom}}" data-dtype="String">
+    </div>
+  </fieldset>
 	
-	<fieldset class="form-group vertical">
-		<legend>{{localize "DND4E.IgnoredDifficultTerrain"}}</legend>
-		<multi-select class="inline" name="system.movement.ignoredDifficultTerrain">
-			{{selectOptions config.ignoredDifficultTerrainTypes selected=system.movement.ignoredDifficultTerrain}}
-		</multi-select>
-	</fieldset>
+  <fieldset class="form-group vertical">
+    <legend>{{localize "DND4E.IgnoredDifficultTerrain"}}</legend>
+    <multi-select class="inline" name="system.movement.ignoredDifficultTerrain">
+      {{selectOptions config.ignoredDifficultTerrainTypes selected=system.movement.ignoredDifficultTerrain}}
+    </multi-select>
+  </fieldset>
 	
-	<div class="form-group vertical">
-		<label>{{localize 'DND4E.Notes'}}</label>
-		<textarea type="text" name="system.movement.notes" value="{{system.movement.notes}}" data-dtype="String" placeholder="{{localize 'DND4E.Notes'}}" contentEditable>{{system.movement.notes}}</textarea>
-	</div>
+  <div class="form-group vertical">
+    <label>{{localize 'DND4E.Notes'}}</label>
+    <textarea type="text" name="system.movement.notes" value="{{system.movement.notes}}" data-dtype="String" placeholder="{{localize 'DND4E.Notes'}}" contentEditable>{{system.movement.notes}}</textarea>
+  </div>
 	
 </div>

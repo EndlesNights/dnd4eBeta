@@ -1,4 +1,4 @@
-import ActorSheet4e from "./actor-sheet.js"
+import ActorSheet4e from "./actor-sheet.js";
 
 export default class ActorSheet4eHazard extends ActorSheet4e {
 
@@ -6,8 +6,8 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 		classes: ["Hazard"],
 		position: {
 			width: 510,
-			height: 680
-		}
+			height: 680,
+		},
 	};
 
 	static PARTS = {
@@ -21,26 +21,27 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 				".section--sidebar",
 				".section--tabs-content",
 				".section--skills",
-				".tab.active"
+				".tab.active",
 			],
 			templates: [
+				"systems/dnd4e/templates/actors/tabs/description.hbs",
 				"systems/dnd4e/templates/actors/tabs/powers.hbs",
 				"systems/dnd4e/templates/actors/tabs/effects.hbs",
-				"templates/generic/tab-navigation.hbs"
-			]
-		}
-	}
+				"templates/generic/tab-navigation.hbs",
+			],
+		},
+	};
 
 	static TABS = {
 		sheet: {
 			tabs: [
-				{id: "description", label: "DND4E.Sheet.Description"},
-				{id: "powers", label: "DND4E.Sheet.Powers"},
-				{id: "effects", label: "DND4E.Sheet.Effects"}
+				{ id: "description", label: "DND4E.Sheet.Description" },
+				{ id: "powers", label: "DND4E.Sheet.Powers" },
+				{ id: "effects", label: "DND4E.Sheet.Effects" },
 			],
-			initial: "powers"
-		}
-	}
+			initial: "powers",
+		},
+	};
 
 	/** @override */
 	async _prepareContext(options) {
@@ -50,23 +51,20 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 		
 		hazardData.descHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.description, {
 			secrets: context.owner,
-			async: true,
-			relativeTo: this.actor
+			relativeTo: this.actor,
 		});
 		
 		hazardData.countersHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.details.countermeasures, {
 			secrets: context.owner,
-			async: true,
-			relativeTo: this.actor
+			relativeTo: this.actor,
 		});
 		
 		hazardData.notesHTML = await CONFIG.ux.TextEditor.enrichHTML(context.system.details.notes, {
 			secrets: context.owner,
-			async: true,
-			relativeTo: this.actor
+			relativeTo: this.actor,
 		});
 		
-		let combinedData = {...context,...hazardData};		
+		let combinedData = { ...context, ...hazardData };		
 		return combinedData;
 	}
 }

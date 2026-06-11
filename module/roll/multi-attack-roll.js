@@ -1,27 +1,28 @@
 import { DND4E } from "../config.js";
+import Roll4e from "../dice/Roll.js";
 
 /**
  * An extension of the default Foundry Roll class for handling multiattack rolls and displaying them in a single chat message
  */
-import {RollWithOriginalExpression} from "./roll-with-expression.js";
+import { RollWithOriginalExpression } from "./roll-with-expression.js";
 
-export class MultiAttackRoll extends Roll {
-    constructor (formula, data={}, options={}) {
-        super(formula, data, options);
-        this.rollArray = [];
-        this._multirollData = [];
-    }
+export class MultiAttackRoll extends Roll4e {
+	constructor (formula, data = {}, options = {}) {
+		super(formula, data, options);
+		this.rollArray = [];
+		this._multirollData = [];
+	}
 
-    /**
+	/**
      * Custom chat template to handle multiroll attacks
      */
-    static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-multiattack.html";
+	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-multiattack.html";
 
-    get multirollData() {
-        return this._multirollData;
-    }
+	get multirollData() {
+		return this._multirollData;
+	}
 
-    /**
+	/**
      * Adds a new roll to this multiroll expression.  This API is identical to {@link RollWithOriginalExpression#createRoll}
      *
      * Worked example:
@@ -51,193 +52,192 @@ export class MultiAttackRoll extends Roll {
      * @return {RollWithOriginalExpression} new a new Roll
      *
      */
-    async addNewRoll(parts, expressionPartsReplacements, data, options) {
-        const roll = await RollWithOriginalExpression.createRoll(parts, expressionPartsReplacements, data, options).roll();
-        this.rollArray.push(roll);
-        return roll;
-    }
+	async addNewRoll(parts, expressionPartsReplacements, data, options) {
+		const roll = await RollWithOriginalExpression.createRoll(parts, expressionPartsReplacements, data, options).roll();
+		this.rollArray.push(roll);
+		return roll;
+	}
 
-
-    /**
+	/**
      * Populate data structure for each of the multiroll components
      * @param {Object} targDataArray
      * @param {Array} critStateArray
      */
-    populateMultirollData(targDataArray, critStateArray) {
-        for (let [i, r] of this.rollArray.entries()){
-            let parts = r.dice.map(d => d.getTooltipData());
-            let targName = targDataArray.targNameArray[i];
-            let targDefVal = targDataArray.targDefValArray[i];
-            let critState = critStateArray[i];
+	populateMultirollData(targDataArray, critStateArray) {
+		for (let [i, r] of this.rollArray.entries()) {
+			let parts = r.dice.map(d => d.getTooltipData());
+			let targName = targDataArray.targNameArray[i];
+			let targDefVal = targDataArray.targDefValArray[i];
+			let critState = critStateArray[i];
 			let vsDef = targDataArray.targDefArray[i];
 			let atkMod = targDataArray.targAtkModArray[i];
 
-            let hitState = "";
-            let hitText = "";
-            let defText = CONFIG.DND4E.defensives[vsDef].abbreviation
+			let hitState = "";
+			let hitText = "";
+			let defText = CONFIG.DND4E.defensives[vsDef].abbreviation;
 
-	        if(game.settings.get("dnd4e", "automationCombat") && targDefVal !== undefined) {
-                if (critState === "immune"){
-                    hitText = game.i18n.localize("DND4E.Immune");
-                    targDataArray.targetMissed.push(targDataArray.targets[i]);
-					hitState = 'immune';
-				} else if (critState === "critical"){
-                    hitText = game.i18n.localize("DND4E.AttackRollHitCrit");
-                    targDataArray.targetHit.push(targDataArray.targets[i]);
-					hitState = 'critical';
-                } else if (critState === "fumble"){
-                    hitText = game.i18n.localize("DND4E.AttackRollMissCrit");
-                    targDataArray.targetMissed.push(targDataArray.targets[i]);
-					hitState = 'fumble';
-                } else if (r._total >= targDefVal){
-                    hitText = game.i18n.localize("DND4E.AttackRollHit");
-                    targDataArray.targetHit.push(targDataArray.targets[i]);
-					hitState = 'hit';
-                } else {
-                    hitText = game.i18n.localize("DND4E.AttackRollMiss");
-                    targDataArray.targetMissed.push(targDataArray.targets[i]);
-					hitState = 'miss';
-                }
-            }
+			if (game.settings.get("dnd4e", "automationCombat") && (targDefVal !== undefined)) {
+				if (critState === "immune") {
+					hitText = _loc("DND4E.Immune");
+					targDataArray.targetMissed.push(targDataArray.targets[i]);
+					hitState = "immune";
+				} else if (critState === "critical") {
+					hitText = _loc("DND4E.AttackRollHitCrit");
+					targDataArray.targetHit.push(targDataArray.targets[i]);
+					hitState = "critical";
+				} else if (critState === "fumble") {
+					hitText = _loc("DND4E.AttackRollMissCrit");
+					targDataArray.targetMissed.push(targDataArray.targets[i]);
+					hitState = "fumble";
+				} else if (r._total >= targDefVal) {
+					hitText = _loc("DND4E.AttackRollHit");
+					targDataArray.targetHit.push(targDataArray.targets[i]);
+					hitState = "hit";
+				} else {
+					hitText = _loc("DND4E.AttackRollMiss");
+					targDataArray.targetMissed.push(targDataArray.targets[i]);
+					hitState = "miss";
+				}
+			}
 
-            let showDefenceFor = [];
-            switch (game.settings.get("dnd4e", "showDefences")) {
-                case 'pcs':
-                    showDefenceFor.push('Player Character');
-                    break;
-                case 'npcs':
-                    showDefenceFor.push('NPC');
-                    showDefenceFor.push('Hazard');
-                    break;
-                case 'all':
-                    showDefenceFor.push('Player Character');
-                    showDefenceFor.push('NPC');
-                    showDefenceFor.push('Hazard');
-                    break;
-                default:
+			let showDefenceFor = [];
+			switch (game.settings.get("dnd4e", "showDefences")) {
+				case "pcs":
+					showDefenceFor.push("Player Character");
+					break;
+				case "npcs":
+					showDefenceFor.push("NPC");
+					showDefenceFor.push("Hazard");
+					break;
+				case "all":
+					showDefenceFor.push("Player Character");
+					showDefenceFor.push("NPC");
+					showDefenceFor.push("Hazard");
+					break;
+				default:
                     //Do nothing
-            }
-            if (showDefenceFor.includes(targDataArray.targets[i].actor?.type) && critState !== "immune") {
-                defText += ` ${targDefVal}`;
-            }
+			}
+			if (showDefenceFor.includes(targDataArray.targets[i].actor?.type) && (critState !== "immune")) {
+				defText += ` ${targDefVal}`;
+			}
 
-            const chatData = r.getChatData(false);
+			const chatData = r.getChatData(false);
 
-            this._multirollData.push({
-                formula : chatData.formula,
-                expression: chatData.expression,
-                total : r._total,
-                parts : parts,
-                tooltip : '',
-                target : targName,
-                targetID: targDataArray.targets[i].id,
-                hitstate : hitState,
-                critstate : critState,
-                hittext : hitText,
+			this._multirollData.push({
+				formula: chatData.formula,
+				expression: chatData.expression,
+				total: r._total,
+				parts: parts,
+				tooltip: "",
+				target: targName,
+				targetID: targDataArray.targets[i].id,
+				hitstate: hitState,
+				critstate: critState,
+				hittext: hitText,
 				def: vsDef,
 				mod: atkMod,
 				deftext: defText,
-				modtext: CONFIG.DND4E.abilityScores[atkMod]?.labelShort || '',
+				modtext: CONFIG.DND4E.abilityScores[atkMod]?.labelShort || "",
 				immune: targDataArray?.targImmArray[i] || false,
-            });
-        };
-    }
+			});
+		}
+	}
 
-    /**
+	/**
      * Render a Roll instance to HTML
      * @param {object} [chatOptions]      An object configuring the behavior of the resulting chat message.
      * @return {Promise<string>}          The rendered HTML template as a string
      *
      * Modified to include multirollData attribute and handle multirollData dice tooltips
      */
-    async render(chatOptions={}) {
-        chatOptions = foundry.utils.mergeObject({
-            user: game.user.id,
-            flavor: null,
-            template: this.constructor.CHAT_TEMPLATE,
-            blind: false
-        }, chatOptions);
-        const isPrivate = chatOptions.isPrivate;
+	async render(chatOptions = {}) {
+		chatOptions = foundry.utils.mergeObject({
+			user: game.user.id,
+			flavor: null,
+			template: this.constructor.CHAT_TEMPLATE,
+			blind: false,
+		}, chatOptions);
+		const isPrivate = chatOptions.isPrivate;
 
-        // Execute the roll, if needed
-        if (!this._evaluated) await this.evaluate();
+		// Execute the roll, if needed
+		if (!this._evaluated) await this.evaluate();
 
-        for (let roll of this._multirollData) {
-            let parts = roll.parts;
-            roll.tooltip = await foundry.applications.handlebars.renderTemplate(this.constructor.TOOLTIP_TEMPLATE, { parts });
-        };
+		for (let roll of this._multirollData) {
+			let parts = roll.parts;
+			roll.tooltip = await foundry.applications.handlebars.renderTemplate(this.constructor.TOOLTIP_TEMPLATE, { parts });
+		}
 
-        // Define chat data
-        const chatData = {
-            formula: isPrivate ? ["???"] : this._formula,
-            multirollData: isPrivate? ["???"] : this._multirollData,
-            flavor: isPrivate ? null : chatOptions.flavor,
-            user: chatOptions.user,
-            tooltip: isPrivate ? "" : await this.getTooltip(),
-            total: isPrivate ? "?" : Math.round(this.total * 100) / 100
-        };
+		// Define chat data
+		const chatData = {
+			formula: isPrivate ? ["???"] : this._formula,
+			multirollData: isPrivate ? ["???"] : this._multirollData,
+			flavor: isPrivate ? null : chatOptions.flavor,
+			user: chatOptions.user,
+			tooltip: isPrivate ? "" : await this.getTooltip(),
+			total: isPrivate ? "?" : Math.round(this.total * 100) / 100,
+		};
 
-        // Render the roll display template
-        return foundry.applications.handlebars.renderTemplate(chatOptions.template, chatData);
-    }
+		// Render the roll display template
+		return foundry.applications.handlebars.renderTemplate(chatOptions.template, chatData);
+	}
 
-    /**
+	/**
      * Modified from base to include _multirollData attribute
      * @returns {object}
      */
-    toJSON() {
-        return {
-            class: this.constructor.name,
-            options: this.options,
-            dice: this._dice,
-            formula: this._formula,
-            multirollData: this._multirollData,
-            terms: this.terms,
-            total: this.total,
-            evaluated: this._evaluated
-        }
-    }
+	toJSON() {
+		return {
+			class: this.constructor.name,
+			options: this.options,
+			dice: this._dice,
+			formula: this._formula,
+			multirollData: this._multirollData,
+			terms: this.terms,
+			total: this.total,
+			evaluated: this._evaluated,
+		};
+	}
 
-    /**
+	/**
      * Modified from base to handle multirollData attribute
      * @param {object} data
      * @returns
      */
-    static fromData(data) {
+	static fromData(data) {
 
-        // Create the Roll instance
-        const roll = new this(data.formula, data.data, data.options);
+		// Create the Roll instance
+		const roll = new this(data.formula, data.data, data.options);
 
-        // Expand terms
-        roll.terms = []
-        data.multirollData.forEach(multiTerm => {
-            multiTerm.parts.forEach(diceTerm => {
-                let dt = DiceTerm.fromData(diceTerm)
-                if(dt.class === "DicePool" ) dt.class = "PoolTerm"; // backwards compatibility incase?
-                dt.results = diceTerm.rolls.map( t => {
-                    return {
-                        result: t.result,
-                        "active": true,
-                        "indexThrow": 0
-                    }
-                })
-                roll.terms.push(dt)
-            });
-        });
+		// Expand terms
+		roll.terms = [];
+		data.multirollData.forEach(multiTerm => {
+			multiTerm.parts.forEach(diceTerm => {
+				let dt = foundry.dice.terms.DiceTerm.fromData(diceTerm);
+				if (dt.class === "DicePool") dt.class = "PoolTerm"; // backwards compatibility incase?
+				dt.results = diceTerm.rolls.map(t => {
+					return {
+						result: t.result,
+						active: true,
+						indexThrow: 0,
+					};
+				});
+				roll.terms.push(dt);
+			});
+		});
 
-        // Repopulate evaluated state
-        if ( data.evaluated ?? true ) {
-            roll._total = data.total;
-            roll._dice = (data.dice || []).map(t => DiceTerm.fromData(t));
-            roll._multirollData = data.multirollData;
-            roll._evaluated = true;
-        }
-        return roll;
-    }
+		// Repopulate evaluated state
+		if (data.evaluated ?? true) {
+			roll._total = data.total;
+			roll._dice = (data.dice || []).map(t => foundry.dice.terms.DiceTerm.fromData(t));
+			roll._multirollData = data.multirollData;
+			roll._evaluated = true;
+		}
+		return roll;
+	}
 
-  /* -------------------------------------------- */
+	/* -------------------------------------------- */
 
-  /**
+	/**
    * @Override
    *  
    * Transform a Roll instance into a ChatMessage, displaying the roll result.
@@ -245,47 +245,47 @@ export class MultiAttackRoll extends Roll {
    *
    * @param {object} messageData          The data object to use when creating the message
    * @param {options} [options]           Additional options which modify the created message.
-   * @param {string} [options.rollMode]   The template roll mode to use for the message from CONFIG.Dice.rollModes
+   * @param {string} [options.messageMode]   The template message mode to use for the message from CONFIG.ChatMessage.modes
    * @param {boolean} [options.create=true]   Whether to automatically create the chat message, or only return the
    *                                          prepared chatData object.
    * @returns {Promise<ChatMessage|object>} A promise which resolves to the created ChatMessage document if create is
    *                                        true, or the Object of prepared chatData otherwise.
    */
-   async toMessage(messageData={}, {rollMode, create=true}={}) {
+	async toMessage(messageData = {}, { messageMode, create = true } = {}) {
 
-    // Perform the roll, if it has not yet been rolled
-    // if ( !this._evaluated ) await this.evaluate({async: true});
-    if ( !this._evaluated ) await this.evaluate();
+		// Perform the roll, if it has not yet been rolled
+		// if ( !this._evaluated ) await this.evaluate({async: true});
+		if (!this._evaluated) await this.evaluate();
 
-    // Prepare chat data
-    messageData = foundry.utils.mergeObject({
-      user: game.user.id,
-      type: CONST.CHAT_MESSAGE_STYLES.ROLL,
-      content: String(this.total),
-      sound: CONFIG.sounds.dice,
-      flags: {dnd4e:{ [`multi-attack-roll`]: this}},
-    }, messageData);
+		// Prepare chat data
+		messageData = foundry.utils.mergeObject({
+			user: game.user.id,
+			style: CONST.CHAT_MESSAGE_STYLES.ROLL,
+			content: String(this.total),
+			sound: CONFIG.sounds.dice,
+			flags: { dnd4e: { ["multi-attack-roll"]: this } },
+		}, messageData);
 
-    let i = 0;
-    for(const r of this.rollArray){
-        r.options.multirollData = this.multirollData[i];
-        i++;
-    }
+		let i = 0;
+		for (const r of this.rollArray) {
+			r.options.multirollData = this.multirollData[i];
+			i++;
+		}
 
-    messageData.rolls = this.rollArray;
+		messageData.rolls = this.rollArray;
 
-    // const msg = await ChatMessage.create(messageData);
-    // return msg;
+		// const msg = await ChatMessage.create(messageData);
+		// return msg;
 
-    // Either create the message or just return the chat data
-    const cls = getDocumentClass("ChatMessage");
-    const msg = new cls(messageData);
+		// Either create the message or just return the chat data
+		const cls = getDocumentClass("ChatMessage");
+		const msg = new cls(messageData);
 
-    // Either create or return the data
-    if ( create ) return cls.create(msg.toObject(), { rollMode });
-    else {
-      if ( rollMode ) msg.applyRollMode(rollMode);
-      return msg.toObject();
-    }
-  }
+		// Either create or return the data
+		if (create) return cls.create(msg.toObject(), { messageMode });
+		else {
+			if (messageMode) msg.applyRollMode(messageMode);
+			return msg.toObject();
+		}
+	}
 }

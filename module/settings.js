@@ -3,9 +3,9 @@ import { updateApplyEffectsTooltips } from "./chat.js";
 
 export const registerSystemSettings = function() {
 
-/*************************/
-/**  INTERNAL SETTINGS  **/
-/*************************/
+	/*************************/
+	/**  INTERNAL SETTINGS  **/
+	/*************************/
 
 	// Track the system version upon which point a migration was last applied
 	game.settings.register("dnd4e", "systemMigrationVersion", {
@@ -13,16 +13,15 @@ export const registerSystemSettings = function() {
 		scope: "world",
 		config: false,
 		type: String,
-		default: ""
+		default: "",
 	});
 
-
-/*************************/
-/**     HOUSE RULES     **/
-/*************************/
+	/*************************/
+	/**     HOUSE RULES     **/
+	/*************************/
 
 	// Resistances/vulnerabilities damage rule setting
-	 game.settings.register("dnd4e", "damageCalcRules", {
+	game.settings.register("dnd4e", "damageCalcRules", {
 		name: "SETTINGS.4eDamageCalcN",
 		hint: "SETTINGS.4eDamageCalcL",
 		scope: "world",
@@ -30,13 +29,13 @@ export const registerSystemSettings = function() {
 		default: "errata",
 		type: String,
 		choices: {
-			"errata": "SETTINGS.4eDamageCalcErrata",
-			"phb": "SETTINGS.4eDamageCalcPHB",
+			errata: "SETTINGS.4eDamageCalcErrata",
+			phb: "SETTINGS.4eDamageCalcPHB",
 		},
 	});
 
 	// Combined damage type rule setting
-	 game.settings.register("dnd4e", "compoundDamageTypes", {
+	game.settings.register("dnd4e", "compoundDamageTypes", {
 		name: "SETTINGS.4eCompoundDamageTypesN",
 		hint: "SETTINGS.4eCompoundDamageTypesL",
 		scope: "world",
@@ -44,8 +43,8 @@ export const registerSystemSettings = function() {
 		default: "disjoint",
 		type: String,
 		choices: {
-			"allInclusive": "SETTINGS.4eCompoundDamageAllInclusive",
-			"disjoint": "SETTINGS.4eCompoundDamageDisjoint",
+			allInclusive: "SETTINGS.4eCompoundDamageAllInclusive",
+			disjoint: "SETTINGS.4eCompoundDamageDisjoint",
 		},
 	});
 	
@@ -58,9 +57,9 @@ export const registerSystemSettings = function() {
 		default: "system",
 		type: String,
 		choices: {
-			"system": "SETTINGS.4eInitTBSys",
-			"dex": "SETTINGS.4eInitTBDex",
-			"random": "SETTINGS.4eInitTBRand"
+			system: "SETTINGS.4eInitTBSys",
+			dex: "SETTINGS.4eInitTBDex",
+			random: "SETTINGS.4eInitTBRand",
 		},
 	});
 
@@ -71,7 +70,7 @@ export const registerSystemSettings = function() {
 		scope: "world",
 		config: true,
 		default: true,
-		type: Boolean
+		type: Boolean,
 	});
 	
 	// Allows the ability to turn off half levels for: Ability, Defense, Skills and Initiative score values. Somewhat common house rule.
@@ -81,7 +80,7 @@ export const registerSystemSettings = function() {
 		scope: "world",
 		config: true,
 		default: false,
-		type: Boolean
+		type: Boolean,
 	});
 
 	// Inherent enhancement bonuses to PC's attack, damage and defences.
@@ -91,7 +90,7 @@ export const registerSystemSettings = function() {
 		scope: "world",
 		config: true,
 		default: false,
-		type: Boolean
+		type: Boolean,
 	});
 
 	// Determines when Death Saving Throws are reset
@@ -106,7 +105,7 @@ export const registerSystemSettings = function() {
 			0: "DND4E.RestShort",
 			1: "DND4E.RestLong",
 			2: "DND4E.RestLongH",
-		}
+		},
 	});
 
 	// Disable XP bar for session-based or story-based advancement.
@@ -124,25 +123,23 @@ export const registerSystemSettings = function() {
 		name: "SETTINGS.4eCustomSkillsN",
 		label: "SETTINGS.4eCustomSkillsL",
 		hint: "SETTINGS.4eCustomSkillsH",
-		icon: 'fas fa-cog',
+		icon: "fas fa-cog",
 		type: CustomSkillConfig,
 		restricted: true,
 	});
 
 	// Anchor for custom skills input
-	game.settings.register("dnd4e", "custom-skills",{
+	game.settings.register("dnd4e", "custom-skills", {
 		name: "Custom Skills",
 		scope: "world",
 		config: false,
 		type: Object,
-		default: []
+		default: [],
 	});
-	
 
-
-/*************************/
-/** DEFAULT BEHAVIOURS  **/
-/*************************/
+	/*************************/
+	/** DEFAULT BEHAVIOURS  **/
+	/*************************/
 	
 	// Is Advanced Math Option for NPCs true for new actors
 	game.settings.register("dnd4e", "npcMathOptions", {
@@ -151,58 +148,56 @@ export const registerSystemSettings = function() {
 		scope: "world",
 		config: true,
 		default: false,
-		type: Boolean
+		type: Boolean,
 	});
 	
 	// Is Auto Generate Power Card Details true for new powers
-	 game.settings.register("dnd4e", "powerAutoGenerateLableOption", {
-		name: "SETTINGS.4ePowerAutoGenerateLableOptionN",
-		hint: "SETTINGS.4ePowerAutoGenerateLableOptionL",
+	game.settings.register("dnd4e", "powerAutoGenerateLabelOption", {
+		name: "SETTINGS.4ePowerAutoGenerateLabelOptionN",
+		hint: "SETTINGS.4ePowerAutoGenerateLabelOptionL",
 		scope: "client",
 		config: true,
 		default: true,
 		type: Boolean,
 		onChange: s => {
 			ui.chat.render();
-		}
+		},
 	});
 
 	// Use fast-forward on rolls by default
-	game.settings.register("dnd4e", "fastFowardSettings",{
+	game.settings.register("dnd4e", "fastFowardSettings", {
 		name: "SETTINGS.4eFastFowardSettingsN",
 		hint: "SETTINGS.4eFastFowardSettingsL",
 		scope: "client",
 		config: true,
 		default: false,
-		type: Boolean
+		type: Boolean,
 	});
 	
 	// Apply effects by selecting or targeting
-	game.settings.register("dnd4e", "applyEffectsToSelection",{
+	game.settings.register("dnd4e", "applyEffectsToSelection", {
 		name: "SETTINGS.4eApplyEffectsToSelectionN",
 		hint: "SETTINGS.4eApplyEffectsToSelectionL",
 		scope: "client",
 		config: true,
 		default: false,
 		type: Boolean,
-		onChange: updateApplyEffectsTooltips
+		onChange: updateApplyEffectsTooltips,
 	});
 
 	// Confirm deletion of items from sheets
-	game.settings.register("dnd4e", "itemDeleteConfirmation",{
+	game.settings.register("dnd4e", "itemDeleteConfirmation", {
 		name: "SETTINGS.4eItemDeleteConfirmationN",
 		hint: "SETTINGS.4eItemDeleteConfirmationL",
 		scope: "client",
 		config: true,
 		default: true,
-		type: Boolean
+		type: Boolean,
 	});
 
-
-
-/*************************/
-/**   DISPLAY OPTIONS   **/
-/*************************/
+	/*************************/
+	/**   DISPLAY OPTIONS   **/
+	/*************************/
 
 	// Light/Dark Chat Mode
 	game.settings.register("dnd4e", "chatScheme", {
@@ -213,13 +208,13 @@ export const registerSystemSettings = function() {
 		default: "auto",
 		type: String,
 		choices: {
-			"light": `SETTINGS.UI.FIELDS.colorScheme.choices.light`,
-			"dark": `SETTINGS.UI.FIELDS.colorScheme.choices.dark`,
-			"auto": `SETTINGS.4eChatSchemeAuto`
+			light: "SETTINGS.UI.FIELDS.colorScheme.choices.light",
+			dark: "SETTINGS.UI.FIELDS.colorScheme.choices.dark",
+			auto: "SETTINGS.4eChatSchemeAuto",
 		},
 		onChange: s => {
 			ui.chat.render();
-		}
+		},
 	});
 
 	// Collapse Item Card descriptions by default
@@ -232,11 +227,11 @@ export const registerSystemSettings = function() {
 		type: Boolean,
 		onChange: s => {
 			ui.chat.render();
-		}
+		},
 	});
 	
 	// Prefer stat name or attack bonus in chat card display
-	game.settings.register("dnd4e", "cardAtkDisplay",{
+	game.settings.register("dnd4e", "cardAtkDisplay", {
 		name: "SETTINGS.4eCardAtkDisplayN",
 		hint: "SETTINGS.4eCardAtkDisplayL",
 		scope: "client",
@@ -244,34 +239,34 @@ export const registerSystemSettings = function() {
 		default: "stat",
 		type: String,
 		choices: {
-			"bonus": "SETTINGS.4eCardAtkDisplayBonus",
-			"stat": "SETTINGS.4eCardAtkDisplayStat",
-			"both": "SETTINGS.4eCardAtkDisplayBoth"
-		}
+			bonus: "SETTINGS.4eCardAtkDisplayBonus",
+			stat: "SETTINGS.4eCardAtkDisplayStat",
+			both: "SETTINGS.4eCardAtkDisplayBoth",
+		},
 	});
 
 	// Show the roll expression formula when making d20 rolls
-	game.settings.register("dnd4e", "showRollExpression",{
+	game.settings.register("dnd4e", "showRollExpression", {
 		name: "SETTINGS.4eShowRollExpressionN",
 		hint: "SETTINGS.4eShowRollExpressionL",
 		scope: "client",
 		config: true,
 		default: true,
-		type: Boolean
+		type: Boolean,
 	});
 
 	// Collapse bonuses down when making rolls
-	game.settings.register("dnd4e", "collapseSituationalBonus",{
+	game.settings.register("dnd4e", "collapseSituationalBonus", {
 		name: "SETTINGS.4eCollapseSituationalBonusN",
 		hint: "SETTINGS.4eCollapseSituationalBonusL",
 		scope: "client",
 		config: true,
 		default: false,
-		type: Boolean
+		type: Boolean,
 	});
 	
 	// Privacy of ongoing damage reminders/reports
-	game.settings.register("dnd4e", "autoDoTsPublic",{
+	game.settings.register("dnd4e", "autoDoTsPublic", {
 		name: "SETTINGS.4eAutoDoTsPublicN",
 		hint: "SETTINGS.4eAutoDoTsPublicL",
 		scope: "world",
@@ -279,20 +274,18 @@ export const registerSystemSettings = function() {
 		default: "all",
 		type: String,
 		choices: {
-			"all": "SETTINGS.4eAutoDoTsPublicAll",
-			"none": "SETTINGS.4eAutoDoTsPublicNone",
-			"pcs": "SETTINGS.4eAutoDoTsPublicPCs"
-		}
+			all: "SETTINGS.4eAutoDoTsPublicAll",
+			none: "SETTINGS.4eAutoDoTsPublicNone",
+			pcs: "SETTINGS.4eAutoDoTsPublicPCs",
+		},
 	});
 
-
-
-/*************************/
-/** AUTOMATION SETTINGS **/
-/*************************/
+	/*************************/
+	/** AUTOMATION SETTINGS **/
+	/*************************/
 
 	// Automatically roll attack against targeted tokens and report presumed result.
-	game.settings.register("dnd4e", "automationCombat",{
+	game.settings.register("dnd4e", "automationCombat", {
 		name: "SETTINGS.4eAutomationCombatN",
 		hint: "SETTINGS.4eAutomationCombatL",
 		scope: "client",
@@ -301,11 +294,11 @@ export const registerSystemSettings = function() {
 		type: Boolean,
 		onChange: s => {
 			ui.chat.render();
-		}
+		},
 	});
 
 	// Show defence values in attack roll chat cards
-	game.settings.register("dnd4e", "showDefences",{
+	game.settings.register("dnd4e", "showDefences", {
 		name: "SETTINGS.4eShowDefencesN",
 		hint: "SETTINGS.4eShowDefencesL",
 		scope: "client",
@@ -313,11 +306,11 @@ export const registerSystemSettings = function() {
 		default: "none",
 		type: String,
 		choices: {
-			"none": "SETTINGS.4eShowDefencesNone",
-			"pcs": "SETTINGS.4eShowDefencesPCs",
-			"npcs": "SETTINGS.4eShowDefencesNPCs",
-			"all": "SETTINGS.4eShowDefencesAll"
-		}
+			none: "SETTINGS.4eShowDefencesNone",
+			pcs: "SETTINGS.4eShowDefencesPCs",
+			npcs: "SETTINGS.4eShowDefencesNPCs",
+			all: "SETTINGS.4eShowDefencesAll",
+		},
 	});
 
 	// Automatically apply effects to targets upen using powers or attacking
@@ -327,31 +320,31 @@ export const registerSystemSettings = function() {
 		scope: "world",
 		config: true,
 		default: true,
-		type: Boolean
+		type: Boolean,
 	});
 
 	// Automate universal marking effects
-	game.settings.register("dnd4e", "markAutomation",{
+	game.settings.register("dnd4e", "markAutomation", {
 		name: "SETTINGS.4eMarkAutomationN",
 		hint: "SETTINGS.4eMarkAutomationL",
 		scope: "client",
 		config: true,
 		default: true,
-		type: Boolean
+		type: Boolean,
 	});
 	
 	// Prompt end-of-turn saves for applied effects
-	game.settings.register("dnd4e", "saveReminders",{
+	game.settings.register("dnd4e", "saveReminders", {
 		name: "SETTINGS.4eSaveRemindersN",
 		hint: "SETTINGS.4eSaveRemindersL",
 		scope: "client",
 		config: true,
 		default: true,
-		type: Boolean
+		type: Boolean,
 	});
 	
 	// Apply or remind about ongoing damage effects
-	game.settings.register("dnd4e", "autoDoTs",{
+	game.settings.register("dnd4e", "autoDoTs", {
 		name: "SETTINGS.4eAutoDoTsN",
 		hint: "SETTINGS.4eAutoDoTsL",
 		scope: "client",
@@ -359,49 +352,55 @@ export const registerSystemSettings = function() {
 		default: "apply",
 		type: String,
 		choices: {
-			"none": "DND4E.None",
-			"apply": "SETTINGS.4eAutoDoTsApply",
-			"notify": "SETTINGS.4eAutoDoTsNotify"
-		}
+			none: "DND4E.None",
+			apply: "SETTINGS.4eAutoDoTsApply",
+			notify: "SETTINGS.4eAutoDoTsNotify",
+		},
 	});
 
+	/*************************/
+	/** DEVELOPER SETTINGS  **/
+	/*************************/
 
-
-/*************************/
-/** DEVELOPER SETTINGS  **/
-/*************************/
+	// Enable/disable debug logging
+	game.settings.register("dnd4e", "debugLogging", {
+		name: "SETTINGS.4eDebugLoggingN",
+		hint: "SETTINGS.4eDebugLoggingL",
+		scope: "client",
+		config: true,
+		default: false,
+		type: Boolean,
+	});	
 
 	// Debug power attack/damage effect bonuses
-	game.settings.register("dnd4e", "debugEffectBonus",{
+	game.settings.register("dnd4e", "debugEffectBonus", {
 		name: "SETTINGS.4eDebugPowerEffectsN",
 		hint: "SETTINGS.4eDebugPowerEffectsL",
 		scope: "client",
 		config: true,
 		default: false,
-		type: Boolean
+		type: Boolean,
 	});
 
-
-
-/*************************/
-/**      KEYBINDS       **/
-/*************************/
+	/*************************/
+	/**      KEYBINDS       **/
+	/*************************/
 	
 	// Show player keybind
 	game.keybindings.register("dnd4e", "permShowPlayer", {
-		name: game.i18n.localize("SETTINGS.4epermShowPlayerN"),
-		hint: game.i18n.localize("SETTINGS.4epermShowPlayerL"),
+		name: _loc("SETTINGS.4epermShowPlayerN"),
+		hint: _loc("SETTINGS.4epermShowPlayerL"),
 		editable: [
 			{
-				key: "AltLeft"
-			}
+				key: "AltLeft",
+			},
 		],
 		precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL,
 	});
 
 	// game.keybindings.register("dnd4e", "fastFowardKeyBind", {
-	// 	name: game.i18n.localize("SETTINGS.4eFastFowardKeyBindN"),
-	// 	hint: game.i18n.localize("SETTINGS.4eFastFowardKeyBindL"),
+	// 	name: _loc("SETTINGS.4eFastFowardKeyBindN"),
+	// 	hint: _loc("SETTINGS.4eFastFowardKeyBindL"),
 	// 	editable: [
 	// 		{
 	// 			key: "Alt"

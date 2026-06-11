@@ -1,9 +1,9 @@
-import DocumentSheet4e from "./DocumentSheet4e.js"
+import DocumentSheet4e from "./DocumentSheet4e.js";
 
 export class ShortRestDialog extends DocumentSheet4e {
 	static DEFAULT_OPTIONS = {
 		id: "short-rest",
-		classes: ["dnd4e","actor-rest","standard-form","default"],
+		classes: ["dnd4e", "actor-rest", "standard-form", "default"],
 		form: {
 			handler: ShortRestDialog.#onSubmit,
 			closeOnSubmit: true,
@@ -14,34 +14,34 @@ export class ShortRestDialog extends DocumentSheet4e {
 		},
 		window: {
 			contentClasses: ["standard-form"],
-			resizable: true
+			resizable: true,
 		},
-		tag: "form"
-	}
+		tag: "form",
+	};
 	
 	get title() {
-		return `${this.document.name} - ${game.i18n.localize("DND4E.ShortRest")}`;
+		return `${this.document.name} - ${_loc("DND4E.ShortRest")}`;
 	}
 
 	static PARTS = {
 		ShortRestDialog: {
-			template: "systems/dnd4e/templates/apps/short-rest.hbs"
+			template: "systems/dnd4e/templates/apps/short-rest.hbs",
 		},
 		footer: {
 			template: "templates/generic/form-footer.hbs",
-		}
-	}
+		},
+	};
 
 	/** @override */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
-        foundry.utils.mergeObject(context, {
+		foundry.utils.mergeObject(context, {
 			system: this.document.system,
 			buttons: [
-				{ type: "submit", label: "DND4E.ShortRestTake" }
-			]
+				{ type: "submit", label: "DND4E.ShortRestTake" },
+			],
 		});
-        return context;
+		return context;
 	}
 	
 	static async #onSubmit(event, form, formData) {
@@ -49,7 +49,7 @@ export class ShortRestDialog extends DocumentSheet4e {
 
 		this.document.shortRest(event, {
 			...this.options,
-			...restOptions
+			...restOptions,
 		});
 	}  
 }

@@ -5,95 +5,12 @@
   "effects": [
     {
       "_id": "1p6p0WuIhmuyPC8A",
-      "changes": [
-        {
-          "key": "system.attributes.hp.starting",
-          "mode": 5,
-          "value": "12",
-          "priority": null
-        },
-        {
-          "key": "system.attributes.hp.perlevel",
-          "mode": 5,
-          "value": "5",
-          "priority": null
-        },
-        {
-          "key": "system.details.surges.max",
-          "mode": 2,
-          "value": "6+@conMod",
-          "priority": null
-        },
-        {
-          "key": "system.attributes.hp.autototal",
-          "mode": 5,
-          "value": "true",
-          "priority": null
-        },
-        {
-          "key": "system.defences.fort.value",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        },
-        {
-          "key": "system.defences.ref.value",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "cloth",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "leather",
-          "priority": null
-        },
-        {
-          "key": "system.details.armourProf.value",
-          "mode": 2,
-          "value": "hide",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "simpleM",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "militaryM",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "simpleR",
-          "priority": null
-        },
-        {
-          "key": "system.details.weaponProf.value",
-          "mode": 2,
-          "value": "militaryR",
-          "priority": null
-        }
-      ],
       "disabled": false,
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "origin": "Item.QNJ5gAjk4WGupWTm",
       "transfer": true,
@@ -113,20 +30,104 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "13.348",
+        "coreVersion": "14.360",
         "systemId": null,
         "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "createdTime": 1776986991854,
+        "modifiedTime": 1776986992443,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
         "exportSource": null
       },
       "img": "icons/skills/ranged/arrow-flying-poisoned-green.webp",
       "type": "base",
-      "system": {},
+      "system": {
+        "changes": [
+          {
+            "key": "system.attributes.hp.starting",
+            "value": 12,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.attributes.hp.perlevel",
+            "value": 5,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.details.surges.max",
+            "value": "6+@conMod",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.attributes.hp.autototal",
+            "value": true,
+            "priority": null,
+            "type": "override"
+          },
+          {
+            "key": "system.defences.fort.value",
+            "value": 1,
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.defences.ref.value",
+            "value": 1,
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "cloth",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "leather",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.armourProf.value",
+            "value": "hide",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "simpleM",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "militaryM",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "simpleR",
+            "priority": null,
+            "type": "add"
+          },
+          {
+            "key": "system.details.weaponProf.value",
+            "value": "militaryR",
+            "priority": null,
+            "type": "add"
+          }
+        ]
+      },
       "sort": 0,
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!KQO8QzAn5PqncsfV.1p6p0WuIhmuyPC8A"
     }
   ],
@@ -134,7 +135,7 @@
   "flags": {},
   "system": {
     "description": {
-      "value": "<p><strong>Role:</strong> Striker. You concentrate on either ranged attacks or two-weapon melee fighting to deal a lot of damage to one enemy at a time. Your attacks rely on speed and mobility, since you prefer to use hit-andrun tactics whenever possible.</p>\n<p><strong>Power Source: </strong>Martial. Your talents depend on extensive training and practice, inner confidence, and natural proficiency</p>\n<p><strong>Key Abilities:</strong></p>\n<ul>\n<li>Strength</li>\n<li>Dexterity</li>\n<li>Wisdom</li>\n</ul>\n<p><strong>Armour Proficiencies:</strong></p>\n<ul>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</li>\n<li>@UUID[Compendium.dnd4e.equipmentPack.Item.kVD04UqK9Yx6GeRA]{Hide armor}</li>\n</ul>\n<p><strong>Weapon Proficiencies:</strong></p>\n<ul>\n<li style=\"box-sizing: border-box; user-select: text;\">@Compendium[dnd4e.srd_rules.4vItzLTePIjC1MbI]{Simple Melee Weapons}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@Compendium[dnd4e.srd_rules.oRfaQkmDSxWMx5Ln]{Military Melee Weapons}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@Compendium[dnd4e.srd_rules.XKgEgbttyURcvqns]{Simple Ranged Weapons}</li>\n<li style=\"box-sizing: border-box; user-select: text;\">@Compendium[dnd4e.srd_rules.xttyKhBLZaMknOGm]{Military Ranged Weapons}</li>\n</ul>\n<p><strong>Bonus to Defences:</strong></p>\n<ul>\n<li>+1 Fortitude</li>\n<li>+1 Reflex</li>\n</ul>\n<p><strong>Hit Points at 1st Level</strong><strong>:</strong> [[12]] + Con Score</p>\n<p><strong>Hit Points&nbsp;</strong><strong>per Level Gained:</strong> [[5]]</p>\n<p><strong>Base&nbsp;</strong><strong>Healing</strong><strong> Surges per Day:</strong> [[6]] + Con Mod</p>\n<p><strong>Skill Training:</strong>&nbsp;Dungeoneering or Nature, choose four more from the following list:</p>\n<ul>\n<li>Acrobatics (Dex)</li>\n<li>Athletics (Str)</li>\n<li>Endurance (Con)</li>\n<li>Healing (Wis)</li>\n<li>Perception (Wis)</li>\n<li>Stealth (Dex)</li>\n</ul>\n<p><strong>Class Features:</strong></p>\n<ul>\n<li>Hunter&rsquo;s Quarry</li>\n<li>Prime Shot</li>\n</ul>\n<p><strong>Choose one of the following&nbsp;Fighting Style:</strong></p>\n<ul>\n<li>Archer Fighting Style</li>\n<li>Two-Blade Righting Style</li>\n</ul>",
+      "value": "<p><strong>Role:</strong> Striker. You concentrate on either ranged attacks or two-weapon melee fighting to deal a lot of damage to one enemy at a time. Your attacks rely on speed and mobility, since you prefer to use hit-andrun tactics whenever possible.</p><p><strong>Power Source: </strong>Martial. Your talents depend on extensive training and practice, inner confidence, and natural proficiency</p><p><strong>Key Abilities:</strong></p><ul><li><p>Strength</p></li><li><p>Dexterity</p></li><li><p>Wisdom</p></li></ul><p><strong>Armour Proficiencies:</strong></p><ul><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.GwsMGFG3ogxFrvmJ]{Cloth armor (basic clothing)}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.lnYMh2YvKedWTpCt]{Leather armor}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.kVD04UqK9Yx6GeRA]{Hide armor}</p></li></ul><p><strong>Weapon Proficiencies:</strong></p><ul><li style=\"box-sizing: border-box; user-select: text;\"><p>@UUID[Compendium.dnd4e.srd_rules.JournalEntry.p9xY7n4f0uabD02e.JournalEntryPage.kjW9S8gIQ0LBMF53]{Simple Melee Weapons}</p></li><li style=\"box-sizing: border-box; user-select: text;\"><p>@UUID[Compendium.dnd4e.srd_rules.JournalEntry.p9xY7n4f0uabD02e.JournalEntryPage.ezGAD5rtV5TLGhDQ]{Military Melee Weapons}</p></li><li style=\"box-sizing: border-box; user-select: text;\"><p>@UUID[Compendium.dnd4e.srd_rules.JournalEntry.p9xY7n4f0uabD02e.JournalEntryPage.G50MDDGV8v1NRT9u]{Simple Ranged Weapons}</p></li><li style=\"box-sizing: border-box; user-select: text;\"><p>@UUID[Compendium.dnd4e.srd_rules.JournalEntry.p9xY7n4f0uabD02e.JournalEntryPage.X6ukbUgTQolHx7PO]{Military Ranged Weapons}</p></li></ul><p><strong>Bonus to Defences:</strong></p><ul><li><p>+1 Fortitude</p></li><li><p>+1 Reflex</p></li></ul><p><strong>Hit Points at 1st Level:</strong> [[12]] + Con Score</p><p><strong>Hit Points per Level Gained:</strong> [[5]]</p><p><strong>Base Healing Surges per Day:</strong> [[6]] + Con Mod</p><p><strong>Skill Training:</strong> Dungeoneering or Nature, choose four more from the following list:</p><ul><li><p>Acrobatics (Dex)</p></li><li><p>Athletics (Str)</p></li><li><p>Endurance (Con)</p></li><li><p>Healing (Wis)</p></li><li><p>Perception (Wis)</p></li><li><p>Stealth (Dex)</p></li></ul><p><strong>Class Features:</strong></p><ul><li><p>Hunter's Quarry</p></li><li><p>Prime Shot</p></li></ul><p><strong>Choose one of the following Fighting Style:</strong></p><ul><li><p>Archer Fighting Style</p></li><li><p>Two-Blade Righting Style</p></li></ul>",
       "chat": "",
       "unidentified": "",
       "gm": ""
@@ -157,8 +158,55 @@
     "featureSource": "Ranger",
     "featureGroup": "",
     "auraSize": "",
-    "effectType": {},
-    "damageType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
     "keywordsCustom": "",
     "class": "",
     "hitFistLevel": 12,
@@ -182,10 +230,10 @@
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
+    "systemVersion": "0.8.0",
+    "coreVersion": "14.361",
     "createdTime": 1686094209234,
-    "modifiedTime": 1745817871227,
+    "modifiedTime": 1778705663999,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

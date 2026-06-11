@@ -1,4 +1,5 @@
-import {Helper} from "../helper.js";
+import { Helper } from "../helper.js";
+import Roll4e from "../dice/Roll.js";
 
 /**
  * Roll that will also have a roll for the expression used to build the row, and highlighting for how elements correspond to formula numbers.
@@ -14,9 +15,9 @@ import {Helper} from "../helper.js";
  *
  * It is highly recommended to use the static member {@link createRoll} method to create new instances of this class as that manages a lot of the constructor arguments for you.
  */
-export class RollWithOriginalExpression extends Roll {
+export class RollWithOriginalExpression extends Roll4e {
 
-    /**
+	/**
      * Has an enhanced Options object with 2 additional properties:
      * expression:  the original formula expression string, to handle cases where some variables have been replaced before it even gets here.
      * e.g. most 4E attack formula replace the base weapon formula before it even gets to the dice, so @wepAtk is already 3 + 1.  If this is not supplied it is defaulted to the formula.
@@ -39,12 +40,45 @@ export class RollWithOriginalExpression extends Roll {
      * const bracketFormula = formulaParts.map(x => `(${x})`).join("+") = (3 + 1)+@bonus
      * new RollWithOriginalExpression(bracketFormula, {"bonus" : "1d6"}, {expressionArr: ["@wepAtk + @enhance", "@bonus"], formulaInnerData: {wepAtk: 3, enhance: 1}})
      */
-    constructor (formula, data={}, options={}) {
-        super(formula, data, foundry.utils.mergeObject({expression : formula, originalFormula: formula}, options));
-        this.expression = options.expression ? options.expression : formula;
-    }
+	constructor (formula, data = {}, options = {}) {
+		super(formula, data, foundry.utils.mergeObject({ expression: formula, originalFormula: formula }, options));
+		foundry.utils.mergeObject(this.options, this.constructor.DEFAULT_OPTIONS, {
+			insertKeys: true,
+			insertValues: true,
+			overwrite: false,
+		});
+		this.expression = options.expression ? options.expression : formula;
+	}
 
-    /**
+	/* -------------------------------------------------- */
+
+	static DEFAULT_OPTIONS = Object.freeze({
+		...Roll4e.DEFAULT_OPTIONS,
+		expressionArr: [],
+		formulaInnerData: {},
+		parts: [],
+	});
+
+	/* -------------------------------------------- */
+
+	/** @override */
+	processBonuses() {
+		super.processBonuses();
+		for (const [type, bonuses] of Object.entries(this.options.bonuses)) {
+			if (bonuses.length) {
+				const bonus = type == "untyped" ? bonuses.reduce((acc, curr) => acc + parseInt(curr), 0) : bonuses.reduce((max, curr) => Math.max(max, parseInt(curr)), -Infinity);
+				const bonusString = String(bonus);
+				const bonusPath = `${type}EffectBonus`;
+				this.expression += ` + @${bonusPath}`;
+				this.options.expressionArr.push(`@${bonusPath}`);
+				this.options.parts.push(bonusString);
+				this.options.formulaInnerData[bonusPath] = bonusString;
+			}
+		}
+		this.options.expression = this.expression;
+	}
+
+	/**
      * Convenience method for creating a RollWithOriginalExpression.
      *
      * Worked example:
@@ -74,17 +108,17 @@ export class RollWithOriginalExpression extends Roll {
      * @return {RollWithOriginalExpression} new a new Roll
      *
      */
-    static createRoll(parts, expressionPartsReplacements, data = {}, options = {}) {
-        // filter out empty entries
-        let tempExpression =  parts.filter(part => !!part)
+	static createRoll(parts, expressionPartsReplacements, data = {}, options = {}) {
+		// filter out empty entries
+		let tempExpression = parts.filter(part => !!part);
 
-        // do not surround with more brackets if they haven't asked for highlighting as it looks gash
-        if (game.settings.get("dnd4e", "showRollExpression")) {
-            // regex -> english = look for (ANYTHING)[ANYTHING] - basically it must start with a term in brackets and end with a term in square brackets.
-            // The bracketed term and the square bracketed term can only be separated by 0 or more spaces
-            const regex = new RegExp('\\(.+\\)[ ]*\\[.+\\]')
-            tempExpression = tempExpression.map(part => {
-                /*
+		// do not surround with more brackets if they haven't asked for highlighting as it looks gash
+		if (game.settings.get("dnd4e", "showRollExpression")) {
+			// regex -> english = look for (ANYTHING)[ANYTHING] - basically it must start with a term in brackets and end with a term in square brackets.
+			// The bracketed term and the square bracketed term can only be separated by 0 or more spaces
+			const regex = new RegExp("\\(.+\\)[ ]*\\[.+\\]");
+			tempExpression = tempExpression.map(part => {
+				/*
                  This is for damage rolls primarily, where we rely on the roll flavour to give us damage types
                  and from damage types work out resistances. - e.g. (1d6 + 5)[fire]
                  However Foundry's formula parser does not like flavour inside brackets.  e.g. ((1d6 + 5)[fire])
@@ -97,93 +131,93 @@ export class RollWithOriginalExpression extends Roll {
 
                   There are probably edge-cases here that I am not covering, but worst that happens is the highlighting looks a little weird / doesn't work.
                  */
-                const trimmedPart = ("" + part).trim() // remember part may be a number.  Very occasionally not everything is a string!
-                if (trimmedPart.indexOf("(") === 0 && trimmedPart.indexOf(']') === trimmedPart.length - 1) {
-                    if (regex.test(trimmedPart)) {
-                        return part
-                    }
-                }
-                return `(${part})`
-            })
-        }
-        let expression = tempExpression.join(" + ")
-        options.parts = parts
-        options.expressionArr = this._createExpression(parts, expressionPartsReplacements)
-        options.expression = options.expressionArr.join(" + ")
-        return new RollWithOriginalExpression(expression, data, options)
-    }
+				const trimmedPart = ("" + part).trim(); // remember part may be a number.  Very occasionally not everything is a string!
+				if ((trimmedPart.indexOf("(") === 0) && (trimmedPart.indexOf("]") === trimmedPart.length - 1)) {
+					if (regex.test(trimmedPart)) {
+						return part;
+					}
+				}
+				return `(${part})`;
+			});
+		}
+		let expression = tempExpression.join(" + ");
+		options.parts = parts;
+		options.expressionArr = this._createExpression(parts, expressionPartsReplacements);
+		options.expression = options.expressionArr.join(" + ");
+		return new RollWithOriginalExpression(expression, data, options);
+	}
 
-    static _createExpression(parts, expressionParts) {
-        const result = [...parts]
-        //n^2, but simple and n will always be small
-        for(let i = 0; i<result.length; i++) {
-            const toReplace = result[i]
-            expressionParts.forEach(element => {
-                if (element.target === toReplace) {
-                    result[i] = element.value
-                }
-            })
-        }
+	static _createExpression(parts, expressionParts) {
+		const result = [...parts];
+		//n^2, but simple and n will always be small
+		for (let i = 0; i < result.length; i++) {
+			const toReplace = result[i];
+			expressionParts.forEach(element => {
+				if (element.target === toReplace) {
+					result[i] = element.value;
+				}
+			});
+		}
 
-        return result
-    }
+		return result;
+	}
 
-    /**
+	/**
      * Custom chat template to handle displaying the expression attacks
      */
-    static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-single.html";
+	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-single.html";
 
-    async render(chatOptions={}) {
-        chatOptions = foundry.utils.mergeObject({
-            user: game.user.id,
-            flavor: null,
-            template: this.constructor.CHAT_TEMPLATE,
-            blind: false
-        }, chatOptions);
-        const isPrivate = chatOptions.isPrivate;
+	async render(chatOptions = {}) {
+		chatOptions = foundry.utils.mergeObject({
+			user: game.user.id,
+			flavor: null,
+			template: this.constructor.CHAT_TEMPLATE,
+			blind: false,
+		}, chatOptions);
+		const isPrivate = chatOptions.isPrivate;
 
-        // Execute the roll, if needed
-        // if ( !this._evaluated ) await this.evaluate({async: true});
-        if ( !this._evaluated ) await this.evaluate();
+		// Execute the roll, if needed
+		// if ( !this._evaluated ) await this.evaluate({async: true});
+		if (!this._evaluated) await this.evaluate();
 
-        let formulaData = this.getChatData(isPrivate);
-        const divisor = this.options.divisors?.[this.options.hitType].value || 1;
-        let divisorString = "";
-        if (divisor != 1) {
-            const divisorReasons = this.options.divisors[this.options.hitType].reason.join(", ");
-            divisorString = `/ ${divisor}[${divisorReasons}]`;
-        }
+		let formulaData = this.getChatData(isPrivate);
+		const divisor = this.options.divisors?.[this.options.hitType].value || 1;
+		let divisorString = "";
+		if (divisor != 1) {
+			const divisorReasons = this.options.divisors[this.options.hitType].reason.join(", ");
+			divisorString = `/ ${divisor}[${divisorReasons}]`;
+		}
 
-        // Define chat data
-        const chatData = {
-            formula: isPrivate ? "???" : formulaData.formula,
-            flavor: isPrivate ? null : chatOptions.flavor,
-            user: chatOptions.user,
-            tooltip: isPrivate ? "" : await this.getTooltip(),
-            total: isPrivate ? "?" : Math.round(this.total * 100) / 100,
-            expression: isPrivate? "???" : formulaData.expression,
-            hitTypeDamage: this.options?.hitTypeDamage,
-            hitTypeHealing: this.options?.hitTypeHealing,
-            attackRoll: this.options?.multirollData,
-            divisorString: divisorString
-        };
-        // Render the roll display template
-        return foundry.applications.handlebars.renderTemplate(chatOptions.template, chatData);
-    }
+		// Define chat data
+		const chatData = {
+			formula: isPrivate ? "???" : formulaData.formula,
+			flavor: isPrivate ? null : chatOptions.flavor,
+			user: chatOptions.user,
+			tooltip: isPrivate ? "" : await this.getTooltip(),
+			total: isPrivate ? "?" : Math.round(this.total * 100) / 100,
+			expression: isPrivate ? "???" : formulaData.expression,
+			hitTypeDamage: this.options?.hitTypeDamage,
+			hitTypeHealing: this.options?.hitTypeHealing,
+			attackRoll: this.options?.multirollData,
+			divisorString: divisorString,
+		};
+		// Render the roll display template
+		return foundry.applications.handlebars.renderTemplate(chatOptions.template, chatData);
+	}
 
-   getChatData(isPrivate = false) {
-       if (!isPrivate && game.settings.get("dnd4e", "showRollExpression")) {
-           return this.surroundFormulaWithExpressionSpanTags(this._formula, this.options.expressionArr)
-       }
-       else {
-           return {
-               formula : this._formula,
-               expression : ""
-           }
-       }
-   }
+	getChatData(isPrivate = false) {
+		if (!isPrivate && game.settings.get("dnd4e", "showRollExpression")) {
+			return this.surroundFormulaWithExpressionSpanTags(this._formula, this.options.expressionArr);
+		}
+		else {
+			return {
+				formula: this._formula,
+				expression: "",
+			};
+		}
+	}
 
-    /**
+	/**
      * Written by @Draconas
      * In order to highlight the bits of the formula when you mouse over them,
      * I need to crack the formula string open and surround the bits that match to expressions with <span> tags
@@ -199,102 +233,102 @@ export class RollWithOriginalExpression extends Roll {
      * @param expressionParts the array of individual parts of the expression that created the formula
      * @return {{expression: string, formula: string}}
      */
-    surroundFormulaWithExpressionSpanTags(formula, expressionParts) {
-        try {
-            const tag = foundry.utils.randomID(16)// + "." // a random id prefix for the spans so we can refer to them by id in a chat log with many rolls
+	surroundFormulaWithExpressionSpanTags(formula, expressionParts) {
+		try {
+			const tag = foundry.utils.randomID(16);// + "." // a random id prefix for the spans so we can refer to them by id in a chat log with many rolls
 
-            let newFormula = "" //the formula to return
-            let newExpression = "" // the expression to return
+			let newFormula = ""; //the formula to return
+			let newExpression = ""; // the expression to return
 
-            let openBracket = 0; //current number of unclosed ( we have encountered
-            let expressionIdx = 0; // the index of which part of the expression array is being processed
-            let workingFormula = "" // the piece of the formula string we are actively processing
-            for (let i = 0; i < formula.length; i++) {
-                const char = formula.charAt(i)
-                if (char === '(') {
-                    if (openBracket === 0) {
-                        // this is a new outer-most bracket, and therefore corresponds to the active part of the expression array
-                        // set up a new set of wrapped spans and re-initalise all the active variables
+			let openBracket = 0; //current number of unclosed ( we have encountered
+			let expressionIdx = 0; // the index of which part of the expression array is being processed
+			let workingFormula = ""; // the piece of the formula string we are actively processing
+			for (let i = 0; i < formula.length; i++) {
+				const char = formula.charAt(i);
+				if (char === "(") {
+					if (openBracket === 0) {
+						// this is a new outer-most bracket, and therefore corresponds to the active part of the expression array
+						// set up a new set of wrapped spans and re-initalise all the active variables
 
-                        newFormula += workingFormula // append any existing formula to the one we will return
-                        workingFormula = "" // reset the working formula - diliberately not including the bracket that corresponding to expression parts
-                    }
-                    else {
-                        workingFormula += char // this was an inner bracket, so is part of the formula, include it
-                    }
-                    openBracket++
-                    continue
-                }
-                if (char === ')') {
-                    openBracket--
-                    if (openBracket === 0) {
-                        const spanId = `${tag}${expressionIdx}`
-                        // this is an outer most bracket, so corresponds  to the active part of the expression array
-                        // it is time to append the formula and expression we have been actively working on to the return results, wrapping them in the appropreate spans.
-                        // call the secondary replacer for if the expression was itself multiple variables (e.g. the inital formula)
-                        const formData = this.replaceInnerVariables(workingFormula, expressionParts[expressionIdx], spanId)
+						newFormula += workingFormula; // append any existing formula to the one we will return
+						workingFormula = ""; // reset the working formula - diliberately not including the bracket that corresponding to expression parts
+					}
+					else {
+						workingFormula += char; // this was an inner bracket, so is part of the formula, include it
+					}
+					openBracket++;
+					continue;
+				}
+				if (char === ")") {
+					openBracket--;
+					if (openBracket === 0) {
+						const spanId = `${tag}${expressionIdx}`;
+						// this is an outer most bracket, so corresponds  to the active part of the expression array
+						// it is time to append the formula and expression we have been actively working on to the return results, wrapping them in the appropreate spans.
+						// call the secondary replacer for if the expression was itself multiple variables (e.g. the inital formula)
+						const formData = this.replaceInnerVariables(workingFormula, expressionParts[expressionIdx], spanId);
 
-                        // check to see if this was a synthetic bracket or a bracket around a damage type term that functioned like a synthetic bracket for us
-                        formData.formula = this.includeOuterBracketsIfFormulaIsFlavoured(formula, i, formData.formula)
+						// check to see if this was a synthetic bracket or a bracket around a damage type term that functioned like a synthetic bracket for us
+						formData.formula = this.includeOuterBracketsIfFormulaIsFlavoured(formula, i, formData.formula);
 
-                        // if the helper has done a load of work to the expression and formula, just use that
-                        if (formData.changed) {
-                            newFormula += formData.formula
-                            newExpression += formData.expression
-                        }
-                        else {
-                            // otherwise wrap our active strings in appropreate spans and set them
-                            newFormula += `<span class="roll-formula" id="form${spanId}">`
-                            newFormula += formData.formula
-                            newFormula += `</span>`
+						// if the helper has done a load of work to the expression and formula, just use that
+						if (formData.changed) {
+							newFormula += formData.formula;
+							newExpression += formData.expression;
+						}
+						else {
+							// otherwise wrap our active strings in appropreate spans and set them
+							newFormula += `<span class="roll-formula" id="form${spanId}">`;
+							newFormula += formData.formula;
+							newFormula += "</span>";
 
-                            newExpression += `<span class="roll-expression" id="exp${spanId}">`
-                            newExpression += formData.expression
-                            newExpression += `</span>`
-                        }
-                        // reset things because we have completed a part of this formula
-                        newExpression += " + "
-                        workingFormula = '' // note we are not including the ) for a synthetic bracket that only denotes expression-parts
-                        expressionIdx++
-                    }
-                    else {
-                        workingFormula += char // append the ) as it is part of a formula
-                    }
-                    continue
-                }
-                workingFormula += char // its a non bracket, append it to the current working substring
-            }
-            return {
-                formula: newFormula + workingFormula, // return the new formula
-                expression: newExpression.substring(0, newExpression.length - 3) // trim a trailing " + " off the end
-            }
-        }
-        catch (e) {
-            // do not allow errors to propagate here, as they will kill the chat / flow
-            // they are probably old chat messages
-            console.log(e)
-            return {
-                formula: formula,
-                expression: this.expression ? this.expression : formula
-            }
-        }
-    }
+							newExpression += `<span class="roll-expression" id="exp${spanId}">`;
+							newExpression += formData.expression;
+							newExpression += "</span>";
+						}
+						// reset things because we have completed a part of this formula
+						newExpression += " + ";
+						workingFormula = ""; // note we are not including the ) for a synthetic bracket that only denotes expression-parts
+						expressionIdx++;
+					}
+					else {
+						workingFormula += char; // append the ) as it is part of a formula
+					}
+					continue;
+				}
+				workingFormula += char; // its a non bracket, append it to the current working substring
+			}
+			return {
+				formula: newFormula + workingFormula, // return the new formula
+				expression: newExpression.substring(0, newExpression.length - 3), // trim a trailing " + " off the end
+			};
+		}
+		catch (e) {
+			// do not allow errors to propagate here, as they will kill the chat / flow
+			// they are probably old chat messages
+			console.log(e);
+			return {
+				formula: formula,
+				expression: this.expression ? this.expression : formula,
+			};
+		}
+	}
 
-    /**
+	/**
      * Out brackets should be included iff the next term is a [flavour] term.  Otherwise they were purely synthetic
      * @param fullFormula The full formula expression
      * @param currentIndex The index we are currently processing (the index of the closing bracket)
      * @param currentWorkingFormula The piece of the formula that is currently being processed for display
      * @return {string} A new currentWorkingFormula which will be bracketed if it's a flavour part, and not otherwise.
      */
-    includeOuterBracketsIfFormulaIsFlavoured(fullFormula, currentIndex, currentWorkingFormula) {
-        if (currentIndex < fullFormula.length && fullFormula.charAt(currentIndex + 1) === '[') {
-            return '(' + currentWorkingFormula + ')'
-        }
-        return currentWorkingFormula
-    }
+	includeOuterBracketsIfFormulaIsFlavoured(fullFormula, currentIndex, currentWorkingFormula) {
+		if ((currentIndex < fullFormula.length) && (fullFormula.charAt(currentIndex + 1) === "[")) {
+			return "(" + currentWorkingFormula + ")";
+		}
+		return currentWorkingFormula;
+	}
 
-    /**
+	/**
      * Deals with an inner string that may contain several variables.
      *
      * This is not an exact science, and after several attempts I concluded there is no way to do this perfectly without replacing huge chunks of code.
@@ -318,76 +352,76 @@ export class RollWithOriginalExpression extends Roll {
      * @param mainIndex The main span index id that is is being used in the outer loop
      * @return {expression, formula, changed: boolean} the new expression string, the new formula string and whether any changes were performed
      */
-    replaceInnerVariables(formula, expression, mainIndex) {
+	replaceInnerVariables(formula, expression, mainIndex) {
 
-        // expression may be a number - do not try to call string methods on a number
-        // Check that there is at least 1 variable.
-        // edge cases checking here:
-        // expression = "12 + @bonus" <-- perform a substitution around @bonus
-        if ((("" + expression).match(/@/g) || []).length > 0) {
-            try {
-                const regex = Helper.variableRegex
-                let newFormula = ""
-                // I need to remove the things I have <span>ed such that they do not trigger later matches - e.g. @wepAttack = (2 + 1) @bonus = 1, the @bonus will match the trailing part of @wepAttack!
-                let activeFormula = formula
-                let activeExpression = expression
-                const vars = expression.match(regex)
-                // if the entire expression is just a variable - e.g. "@bonus" then don't bother faffing about here, the top level replacer will solve it
-                // edge case check:
-                // expression = "@bonus" <-- don't substitute
-                if (!(vars.length === 1 && vars[0] === expression)) {
-                    for (let innerIndex = 0; innerIndex < vars.length; innerIndex++) {
-                        const variable = vars[innerIndex]
-                        const spanId = mainIndex + "-" + innerIndex
-                        if (!this.options.formulaInnerData) {
-                            throw `D&D4e | Roll did not have formulaInnerData set in its options, so cannot substitute and will fall back to expression parts level replacement`
-                        }
-                        let replacementStr = this.options.formulaInnerData[variable.substring(1)]
-                        if (!replacementStr) {
-                            // may be a complex replacement: e.g. details.level
-                            replacementStr = Helper.replaceData(variable, this.options.formulaInnerData)
-                            if (!replacementStr) {
-                                throw `D&D4e | Unable to find a value for variable '${variable}' that was part of the formula expression.  It was not added to the rolls data object`
-                            }
-                        }
-                        // replace the expression variable with the span and mouseover tags
-                        activeExpression = activeExpression.replace(variable, `<span class="roll-expression" id="exp${spanId}">${variable}</span>`)
+		// expression may be a number - do not try to call string methods on a number
+		// Check that there is at least 1 variable.
+		// edge cases checking here:
+		// expression = "12 + @bonus" <-- perform a substitution around @bonus
+		if ((("" + expression).match(/@/g) || []).length > 0) {
+			try {
+				const regex = Helper.variableRegex;
+				let newFormula = "";
+				// I need to remove the things I have <span>ed such that they do not trigger later matches - e.g. @wepAttack = (2 + 1) @bonus = 1, the @bonus will match the trailing part of @wepAttack!
+				let activeFormula = formula;
+				let activeExpression = expression;
+				const vars = expression.match(regex);
+				// if the entire expression is just a variable - e.g. "@bonus" then don't bother faffing about here, the top level replacer will solve it
+				// edge case check:
+				// expression = "@bonus" <-- don't substitute
+				if (!((vars.length === 1) && (vars[0] === expression))) {
+					for (let innerIndex = 0; innerIndex < vars.length; innerIndex++) {
+						const variable = vars[innerIndex];
+						const spanId = mainIndex + "-" + innerIndex;
+						if (!this.options.formulaInnerData) {
+							throw "D&D4e | Roll did not have formulaInnerData set in its options, so cannot substitute and will fall back to expression parts level replacement";
+						}
+						let replacementStr = this.options.formulaInnerData[variable.substring(1)];
+						if (!replacementStr) {
+							// may be a complex replacement: e.g. details.level
+							replacementStr = Roll.replaceFormulaData(variable, this.options.formulaInnerData);
+							if (!replacementStr) {
+								throw `D&D4e | Unable to find a value for variable '${variable}' that was part of the formula expression.  It was not added to the rolls data object`;
+							}
+						}
+						// replace the expression variable with the span and mouseover tags
+						activeExpression = activeExpression.replace(variable, `<span class="roll-expression" id="exp${spanId}">${variable}</span>`);
 
-                        // find the value
-                        const indexOfReplacement = activeFormula.indexOf(replacementStr)
-                        if (indexOfReplacement === -1) {
-                            // could not find, error out and fall back to default
-                            throw `D&D4e | Unable to find the variable value '${replacementStr}' for variable '${variable}' in remaining part '${activeFormula}' of formula ${formula}`
-                        }
+						// find the value
+						const indexOfReplacement = activeFormula.indexOf(replacementStr);
+						if (indexOfReplacement === -1) {
+							// could not find, error out and fall back to default
+							throw `D&D4e | Unable to find the variable value '${replacementStr}' for variable '${variable}' in remaining part '${activeFormula}' of formula ${formula}`;
+						}
 
-                        // add in everything prior to the variable
-                        newFormula += activeFormula.substring(0, indexOfReplacement)
-                        // add in the variable span-et-ised
-                        newFormula += `<span class="roll-formula" id="form${spanId}">${replacementStr}</span>`
+						// add in everything prior to the variable
+						newFormula += activeFormula.substring(0, indexOfReplacement);
+						// add in the variable span-et-ised
+						newFormula += `<span class="roll-formula" id="form${spanId}">${replacementStr}</span>`;
 
-                        // remove everything up to the end of the replacement from our working string
-                        // if the replacement is just a number javascript makes it a number and refuses to length it so force it back to a string
-                        activeFormula = activeFormula.substring(indexOfReplacement + ("" + replacementStr).length)
-                    }
-                    // get the rest
-                    newFormula += activeFormula
+						// remove everything up to the end of the replacement from our working string
+						// if the replacement is just a number javascript makes it a number and refuses to length it so force it back to a string
+						activeFormula = activeFormula.substring(indexOfReplacement + ("" + replacementStr).length);
+					}
+					// get the rest
+					newFormula += activeFormula;
 
-                    return {
-                        formula: newFormula,
-                        expression: activeExpression,
-                        changed: true
-                    }
-                }
-            }
-            catch (e) {
-                // if we encountered an error, log it, but carry on with the more generic fallback
-                console.log(e)
-            }
-        }
-        return {
-            formula: formula,
-            expression: expression,
-            changed: false
-        }
-    }
+					return {
+						formula: newFormula,
+						expression: activeExpression,
+						changed: true,
+					};
+				}
+			}
+			catch (e) {
+				// if we encountered an error, log it, but carry on with the more generic fallback
+				console.log(e);
+			}
+		}
+		return {
+			formula: formula,
+			expression: expression,
+			changed: false,
+		};
+	}
 }

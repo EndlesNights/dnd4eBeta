@@ -12,8 +12,8 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 	 * @param {boolean} targeted    Is the token targeted or not?
 	 */
 	static onTargetToken(user, token, targeted) {
-		if ( !targeted ) return;
-		if ( !token.hasDynamicRing ) return;
+		if (!targeted) return;
+		if (!token.hasDynamicRing) return;
 		const color = Color.from(user.color);
 		token.ring.flashColor(color, { duration: 500, easing: token.ring.constructor.easeTwoPeaks });
 	}
@@ -22,7 +22,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 
 	/** @inheritDoc */
 	_drawBar(number, bar, data) {
-		if ( data.attribute === "attributes.hp" ) return this._drawHPBar(number, bar, data);
+		if (data.attribute === "attributes.hp") return this._drawHPBar(number, bar, data);
 		return super._drawBar(number, bar, data);
 	}
 
@@ -38,7 +38,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 	_drawHPBar(number, bar, data) {
 
 		// Extract health data
-		let {value, max} = this.document.actor.system.attributes.hp;
+		let { value, max } = this.document.actor.system.attributes.hp;
 		let temp = this.document.actor.system.attributes.temphp.value;
 		temp = Number(temp || 0);
 
@@ -48,7 +48,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 
 		function getHPColor(current, max) {
 			const pct = Math.clamp(current, 0, max) / max;
-			return Color.fromRGB([(1-(pct/2)), pct, 0]);
+			return Color.fromRGB([(1 - (pct / 2)), pct, 0]);
 		}
 		const hpColor = getHPColor(value, max);
 
@@ -68,17 +68,17 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 		bar.beginFill(blk, 0.5).lineStyle(bs, blk, 1.0).drawRoundedRect(0, 0, bw, bh, 3 * s);
 
 		// Health bar
-		if ( value >= 0 ) {
+		if (value >= 0) {
 			bar.beginFill(hpColor, 1.0).lineStyle(bs, blk, 1.0).drawRoundedRect(0, 0, colorPct * bw, bh, 2 * s);
 		} else {
 			let bloodied = this.document.actor.system.details.bloodied;
 			const dyingPct = Math.clamp(Math.abs(value), 0, bloodied) / bloodied;
-			const dyingColor = Color.fromRGB([(1-(dyingPct/(1.5))), 0, 0])
+			const dyingColor = Color.fromRGB([(1 - (dyingPct / (1.5))), 0, 0]);
 			bar.beginFill(dyingColor, 1.0).lineStyle(bs, blk, 1.0).drawRoundedRect(0, 0, dyingPct * bw, bh, 2 * s);
 		}
 
 		// Temporary hit points
-		if ( temp > 0 ) {
+		if (temp > 0) {
 			bar.beginFill(c.temp, 1.0).lineStyle(0).drawRoundedRect(bs1, bs1, (tempPct * bw) - (2 * bs1), bh - (2 * bs1), s);
 		}
 
@@ -92,8 +92,8 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 	/** @inheritDoc */
 	_onApplyStatusEffect(statusId, active) {
 		const applicableEffects = [CONFIG.specialStatusEffects.DEFEATED, CONFIG.specialStatusEffects.INVISIBLE];
-		if ( applicableEffects.includes(statusId) && this.hasDynamicRing ) {
-			this.renderFlags.set({refreshRingVisuals: true});
+		if (applicableEffects.includes(statusId) && this.hasDynamicRing) {
+			this.renderFlags.set({ refreshRingVisuals: true });
 		}
 		super._onApplyStatusEffect(statusId, active);
 	}
@@ -102,7 +102,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 
 	/** @inheritDoc */
 	_configureFilterEffect(statusId, active) {
-		if ( (statusId === CONFIG.specialStatusEffects.INVISIBLE) && this.hasDynamicRing ) active = false;
+		if ((statusId === CONFIG.specialStatusEffects.INVISIBLE) && this.hasDynamicRing) active = false;
 		return super._configureFilterEffect(statusId, active);
 	}
 

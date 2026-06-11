@@ -1,15 +1,15 @@
-import DocumentSheet4e from "./DocumentSheet4e.js"
+import DocumentSheet4e from "./DocumentSheet4e.js";
 
 export default class HPOptions extends DocumentSheet4e {
 
-  /** @override */
+	/** @override */
 	static DEFAULT_OPTIONS = {
 		id: "hp-options",
-		classes: ["dnd4e","standard-form","default"],
+		classes: ["dnd4e", "standard-form", "default"],
 		form: {
 			closeOnSubmit: false,
 			submitOnClose: false,
-			handler: HPOptions.#onSubmit
+			handler: HPOptions.#onSubmit,
 		},
 		position: {
 			width: 340,
@@ -17,34 +17,34 @@ export default class HPOptions extends DocumentSheet4e {
 		},
 		window: {
 			contentClasses: ["standard-form"],
-			resizable: true
+			resizable: true,
 		},
 		tag: "form",
-	}
+	};
 
 	get title() {
-		return `${this.document.name} - ${game.i18n.localize("DND4E.HPOptions")}`;
+		return `${this.document.name} - ${_loc("DND4E.HPOptions")}`;
 	}
 
 	static PARTS = {
 		HPOptions: {
-			template: "systems/dnd4e/templates/apps/hp-options.hbs"
+			template: "systems/dnd4e/templates/apps/hp-options.hbs",
 		},
 		footer: {
 			template: "templates/generic/form-footer.hbs",
-		}
-	}
+		},
+	};
 	
 	/** @override */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
-        foundry.utils.mergeObject(context, {
+		foundry.utils.mergeObject(context, {
 			system: this.document.system,
 			buttons: [
-				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" }
-			]
+				{ type: "submit", icon: "fa-solid fa-save", label: "DND4E.Save" },
+			],
 		});
-        return context;
+		return context;
 	}
 	
 	/* -------------------------------------------- */

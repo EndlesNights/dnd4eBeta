@@ -1,13 +1,13 @@
-import DocumentSheet4e from "./DocumentSheet4e.js"
+import DocumentSheet4e from "./DocumentSheet4e.js";
 
 export class LongRestDialog extends DocumentSheet4e {
 
 	static DEFAULT_OPTIONS = {
 		id: "long-rest",
-		classes: ["dnd4e","actor-rest","standard-form","default"],
+		classes: ["dnd4e", "actor-rest", "standard-form", "default"],
 		form: {
 			closeOnSubmit: true,
-			handler: LongRestDialog.#onSubmit
+			handler: LongRestDialog.#onSubmit,
 		},
 		position: {
 			width: 500,
@@ -15,40 +15,40 @@ export class LongRestDialog extends DocumentSheet4e {
 		},
 		window: {
 			contentClasses: ["standard-form"],
-			resizable: true
+			resizable: true,
 		},
-		tag: "form"
-	}
+		tag: "form",
+	};
 	
 	get title() {
-		return `${this.document.name} - ${game.i18n.localize("DND4E.LongRest")}`;
+		return `${this.document.name} - ${_loc("DND4E.LongRest")}`;
 	}
 
 	static PARTS = {
 		LongRestDialog: {
-			template: "systems/dnd4e/templates/apps/long-rest.hbs"
+			template: "systems/dnd4e/templates/apps/long-rest.hbs",
 		},
 		footer: {
 			template: "templates/generic/form-footer.hbs",
-		}
-	}
+		},
+	};
 
 	/** @override */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
-        foundry.utils.mergeObject(context, {
+		foundry.utils.mergeObject(context, {
 			system: this.document.system,
 			buttons: [
-				{ type: "submit", label: "DND4E.LongRestTake" }
-			]
+				{ type: "submit", label: "DND4E.LongRestTake" },
+			],
 		});
-        return context;
+		return context;
 	}
 	
 	static async #onSubmit(event, form, formData) {
 		this.document.longRest(event, {
 			...this.options,
-			...{envi: formData.object.envi}
+			...{ envi: formData.object.envi },
 		});
 	}
 

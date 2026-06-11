@@ -3,10 +3,21 @@
     "build": "npm run build:db",
     "build:db": "node ./utils/packs.mjs package pack",
     "build:json": "node ./utils/packs.mjs package unpack",
-    "build:clean": "node ./utils/packs.mjs package clean"
+    "build:clean": "node ./utils/packs.mjs package clean",
+    "createSymlinks": "node ./utils/create-symlinks.mjs",
+    "lint": "eslint module/**/* templates/**/*",
+    "lint:fix": "eslint --fix module/**/* templates/**/*"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.4",
     "@foundryvtt/foundryvtt-cli": "^3.0.0",
+    "@html-eslint/eslint-plugin": "^0.60.0",
+    "@html-eslint/parser": "^0.60.0",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint": "^9.39.4",
+    "eslint-plugin-jsdoc": "^51.4.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.3",
     "yargs": "^18.0.0"
   }
 }

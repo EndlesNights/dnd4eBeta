@@ -1,12 +1,12 @@
 <header class="sheet-header flexrow item-{{item.type}}">
   <div class="image-frame">
-    <img class="profile" src="{{item.img}}" data-tooltip="{{item.name}}" data-action="editImage" data-edit="img" height="100" width="100" />
+    <img class="profile" src="{{item.img}}" alt="{{item.name}}" data-tooltip="{{item.name}}" data-action="editImage" data-edit="img" height="100" width="100">
     <a class="hover-icon item-art" data-tooltip="{{localize 'DND4EUI.ShowImage'}}" data-action="showImage"><i class="fas fa-image fa-fw"></i></a>
   </div>
   
   <div class="header-details flexrow">
     <h1 class="charname">
-      <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4E.ItemName' }}"/>
+      <input name="name" type="text" value="{{item.name}}" placeholder="{{ localize 'DND4E.ItemName' }}">
     </h1>
 
     <div class="item-subtitle">
@@ -14,34 +14,35 @@
       {{#if itemStatus}}<span class="item-status">{{itemStatus}}</span>  {{/if}}
     </div>
 
-    <ul class="summary flexrow">{{log this}}
+    <ul class="summary flexrow">
+      {{log this}}
       {{#if this.summaryLabel}}
-        <li>
-          <label>{{summaryLabel}}</label>
-        </li>
+      <li>
+        <label>{{summaryLabel}}</label>
+      </li>
       {{/if}}
       {{#if (eq this.itemType "power")}}
-        <li>
-          <input type="text" name="system.subName" value="{{system.subName}}" placeholder="{{ localize 'DND4E.SubName' }}"/>
-        </li>
+      <li>
+        <input type="text" name="system.subName" value="{{system.subName}}" placeholder="{{ localize 'DND4E.SubName' }}">
+      </li>
       {{/if}}
       {{#if (eq this.itemType "ritual")}}
-        <li>
-          {{localize 'DND4E.Ritual'}}
-        </li>
+      <li>
+        {{localize 'DND4E.Ritual'}}
+      </li>
       {{/if}}
       {{#if this.showLevel}}
-        <li>
-          <input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4E.Level' }}"/>
-        </li>
+      <li>
+        <input type="number" name="system.level" value="{{system.level}}" placeholder="{{ localize 'DND4E.Level' }}">
+      </li>
       {{/if}}
       {{#if this.showRarity}}
-        <li>
-          <input type="text" name="system.rarity" value="{{system.rarity}}" placeholder="{{ localize 'DND4E.Rarity' }}"/>
-        </li>
+      <li>
+        <input type="text" name="system.rarity" value="{{system.rarity}}" placeholder="{{ localize 'DND4E.Rarity' }}">
+      </li>
       {{/if}}
       <li>
-        <input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4E.Source' }}"/>
+        <input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4E.Source' }}">
       </li>
     </ul>
   </div>
