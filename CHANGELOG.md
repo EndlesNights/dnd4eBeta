@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.8.2
+After a testing period with only minor issues, this release will move the 0.8 branch to STABLE. Thank you to everybody who helped hunt the bugs!
+* Fixed a bug preventing self-targeting effects from being created (SagaTympana)
+* Fixed a bug preventing template auto targeting dependent on creature disposition (SagaTympana)
+* Numerous under-the-hood improvements to data availability and text enrichment, as well as some formatting fixes (SagaTympana)
+* Laying the groundwork for expanded bonus handling; this should create a path to things we currently have no way to model, like "target grants bonus to attackers" and similar effects (SagaTympana)
+
 ## Version 0.8.1 BETA
 * Migration of `@scale` variables has been fixed (SagaTympana)
 * Enhanced Active Effects, including adding an enricher for descriptions. Will be documented in the Manual compendium sooner or later, but for now please check out the PR for usage details. (SagaTympana)
