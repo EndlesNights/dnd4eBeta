@@ -360,7 +360,7 @@
 "DND4E.DefenceAC": "Armor Class",
 "DND4E.DefenceACShort": "Armor Class",
 "DND4E.DefenceACAltMod": "Alternative Mod",
-"DND4E.DefenceACLightCheck": "Using light or no armour",
+"DND4E.DefenceACLightCheck": "Using light or no armor",
 "DND4E.DefenceFort": "Fortitude Defense",
 "DND4E.DefenceFortShort": "Fortitude",
 "DND4E.DefencePromptText": "What type of {defences} check?",
@@ -708,7 +708,7 @@
 "DND4E.ModifierPlural": "Modifiers",
 "DND4E.ModifierAbilities": "Global Ability Check Modifier",
 "DND4E.ModifierAttack": "Global Attack Modifier",
-"DND4E.ModifierAttackNote": "Note: Equipped armour not marked proficient",
+"DND4E.ModifierAttackNote": "Note: Equipped armor not marked proficient",
 "DND4E.ModifierDamage": "Global Damage Modifier",
 "DND4E.ModifierDefences": "Global Defence Modifier",
 "DND4E.ModifierSkills": "Global Skill Check Modifier",
@@ -1572,6 +1572,18 @@
 	},
 	"teleport": {
 		"label": "Teleport"
+	}
+},
+
+"EDITOR.DND4E.Inline": {
+	"CheckShort": "{check}",
+	"CheckLong": "{check} check",
+	"DC": "DC {dc} {check}",
+    "DCFlavor": "{check} check (DC {dc})",
+	"RequestRoll": "Request Roll",
+	"RollRequest": "Roll Request",
+	"Warning": {
+		"NoActor": "No selected or assigned actor could be found to execute this roll."
 	}
 },
 

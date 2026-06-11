@@ -1575,6 +1575,18 @@
 	}
 },
 
+"EDITOR.DND4E.Inline": {
+	"CheckShort": "{check}",
+	"CheckLong": "{check} check",
+	"DC": "DC {dc} {check}",
+    "DCFlavor": "{check} check (DC {dc})",
+	"RequestRoll": "Request Roll",
+	"RollRequest": "Roll Request",
+	"Warning": {
+		"NoActor": "No selected or assigned actor could be found to execute this roll."
+	}
+},
+
 "EFFECT.DurationEndInit": "Effect End Time",
 "EFFECT.DurationSeconds": "Seconds",
 "EFFECT.DurationSecsTip": "Reference only; this setting is not used by the system for automatic expiry.<br />However, it may be used by other modules.",

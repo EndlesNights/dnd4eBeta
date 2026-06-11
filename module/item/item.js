@@ -1039,18 +1039,13 @@ export default class Item4e extends Item {
 		}
 		const cardData = await (async () => {
 			if (((this.type === "power") || (this.type === "consumable")) && this.system.autoGenChatPowerCard) {
-				let weaponUse = Helper.getWeaponUse(this.system, this.actor);
 				let attackBonus = null;
 				const rollData = this.getRollData({ variance });
 				if (this.hasAttack) {
 					attackBonus = await this.getAttackBonus({ variance: variance });
 				}
 				let cardString = Helper._preparePowerCardData(await this.getChatData({}, variance), CONFIG, rollData, attackBonus);
-				const enrichedCardString = await foundry.applications.ux.TextEditor.implementation.enrichHTML(cardString, {
-					relativeTo: this.actor,
-					rollData,
-				});
-				return enrichedCardString;
+				return cardString;
 			} else {
 				return null;
 			}
@@ -1108,7 +1103,7 @@ export default class Item4e extends Item {
 			templateType = this.type;
 			templateData.abilityCheck = Helper.byString(this.system.attribute.replace(".mod", ".label").replace(".total", ".label"), this.actor?.system);
 		}
-		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
+		const template = `systems/dnd4e/templates/chat/${templateType}-card.hbs`;
 		let html = await foundry.applications.handlebars.renderTemplate(template, templateData);
 		
 		if (["power", "consumable"].includes(templateData.item.type)) {
@@ -1221,7 +1216,7 @@ export default class Item4e extends Item {
 			templateType = this.type;
 			templateData.abilityCheck = Helper.byString(this.system.attribute.replace(".mod", ".label").replace(".total", ".label"), this.actor?.system);
 		}
-		const template = `systems/dnd4e/templates/chat/${templateType}-card.html`;
+		const template = `systems/dnd4e/templates/chat/${templateType}-card.hbs`;
 		let html = await foundry.applications.handlebars.renderTemplate(template, templateData);
 		
 		if (["power", "consumable"].includes(templateData.item.type)) {
@@ -1402,11 +1397,7 @@ export default class Item4e extends Item {
 		const data = foundry.utils.duplicate(this.system);
 		const labels = this.labels;
 			
-		const description = data.description.value || "";
 		htmlOptions.rollData = this.getRollData();
-
-		// Rich text description
-		data.description.value = await foundry.applications.ux.TextEditor.implementation.enrichHTML(description, htmlOptions);
 
 		// Item type specific properties
 		const props = [];

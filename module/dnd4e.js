@@ -31,9 +31,10 @@ import { default as DifficultTerrainRegionBehaviorType } from "./regionBehaviors
 import { default as TerrainData4e } from "./regionBehaviors/terrain-data.js";
 import { default as DifficultTerrainConfig } from "./apps/regionBehaviors/difficult-terrain-config.js";
 
+import * as check from "./enrichers/check.js";
 import * as lookup from "./enrichers/lookup.js";
 
-import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handlePromptEoTSaves, performPreLocalization } from "./helper.js";
+import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handlePromptEoTSaves, performPreLocalization, registerHandlebarsHelpers } from "./helper.js";
 
 // Import Helpers
 import * as chat from "./chat.js";
@@ -247,6 +248,7 @@ Hooks.once("init", async function() {
 	var head = document.getElementsByTagName("HEAD")[0];
 
 	// Preload Handlebars Templates
+	registerHandlebarsHelpers();
 	preloadHandlebarsTemplates();
 
 	// setup methods that allow for easy integration with token hud
@@ -267,6 +269,7 @@ Hooks.once("init", async function() {
 	// Enrichers
 	// Register enrichers
 	CONFIG.TextEditor.enrichers = [
+		check,
 		lookup,
 	];
 });
