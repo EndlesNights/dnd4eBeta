@@ -1684,7 +1684,7 @@ export default class Item4e extends Item {
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
 		}
 		
-		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack", null, options);
+		await Helper.applyEffects(rollData, actorData, this, weaponUse, "attack", null, null, options);
 
 		// Compose roll options
 		const rollConfig = {
@@ -1805,7 +1805,7 @@ export default class Item4e extends Item {
 			};
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
 		}
-		await Helper.applyEffects([parts], rollData, actorData, this, weaponUse, "attack", null, options);
+		await Helper.applyEffects(rollData, actorData, this, weaponUse, "attack", null, null, options);
 
 		// Compose roll options
 		const rollConfig = {
@@ -2218,22 +2218,9 @@ export default class Item4e extends Item {
 			}
 		}
 
-		// Originally these were a separate part, but then they were not part of the primary damage type
-		// which they should be.  So now appending them to the main expression.
-		const effectDamageParts = [];
 		const extraDamageParts = [];
 		if (!this.system?.hit?.damageBonusNull) {
-			await Helper.applyEffects([effectDamageParts], rollData, actorData, this, weaponUse, "damage", extraDamageParts, options);
-			effectDamageParts.forEach(part => {
-				const value = rollData[part.substring(1)];
-				damageFormula += `+ ${value}`;
-				missDamageFormula += `+ ${value}`;
-				critDamageFormula += `+ ${value}`;
-				damageFormulaExpression += `+ ${part}`;
-				missDamageFormulaExpression += `+ ${part}`;
-				critDamageFormulaExpression += `+ ${part}`;
-				options.formulaInnerData[part.substring(1)] = value;
-			});
+			await Helper.applyEffects(rollData, actorData, this, weaponUse, "damage", extraDamageParts, null, options);
 		}
 
 		// Ammunition Damage from power

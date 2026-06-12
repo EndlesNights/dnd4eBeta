@@ -47,7 +47,9 @@ export default class Roll4e extends Roll {
 				const bonusString = String(bonus);
 				this._formula += ` + (${bonus})`;
 				const operatorTerm = new foundry.dice.terms.OperatorTerm({ operator: "+" });
-				const parentheticalTerm = new foundry.dice.terms.ParentheticalTerm({ term: bonusString });
+				const options = {};
+				if (this.terms[0]?.flavor) options.flavor = this.terms[0].flavor;
+				const parentheticalTerm = new foundry.dice.terms.ParentheticalTerm({ term: bonusString, options });
 				this.terms.push(operatorTerm);
 				this.terms.push(parentheticalTerm);
 			}
