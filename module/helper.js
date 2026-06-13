@@ -1,5 +1,8 @@
 import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
+import { Actor4e } from "./actor/actor.js";
 import Roll4e from "./dice/Roll.js";
+import TokenDocument4e from "./documents/token.js";
+import Item4e from "./item/item.js";
 
 export class Helper {
 
@@ -1604,6 +1607,17 @@ export class Helper {
 		return false;
 	}
 
+	/**
+     * Convenience method to get the unique actors of an array of tokens.
+     * @param {(Token4e | TokenDocument4e)[]} [tokens] Defaults to canvas.tokens.controlled.
+     * @returns {Set<Actor4e>}    The set of actors of the controlled tokens.
+     */
+	static tokensToActors(tokens) {
+		tokens ??= canvas?.tokens?.controlled ?? [];
+		const actors = tokens.map(token => token.actor).filter(_ => _);
+		return new Set(actors);
+	}
+
 	/* -------------------------------------------- */
 
 	/** 
@@ -1795,6 +1809,24 @@ function groupedSelectOptions(choices, options) {
 }
 
 /* -------------------------------------------- */
+
+/**
+ * A helper that converts the provided object into a series of `data-` entries.
+ * @param {object} object   Object to convert into dataset entries.
+ * @param {object} options  Handlebars options.
+ * @returns {string}
+ */
+function dataset(object, options) {
+	const entries = [];
+	for (let [key, value] of Object.entries(object ?? {})) {
+		if (value === undefined) continue;
+		key = key.replace(/[A-Z]+(?![a-z])|[A-Z]/g, (a, b) => (b ? "-" : "") + a.toLowerCase());
+		entries.push(`data-${key}="${Handlebars.escapeExpression(value)}"`);
+	}
+	return new Handlebars.SafeString(entries.join(" "));
+}
+
+/* -------------------------------------------- */
 	
 /**
 	 * Register custom Handlebars helpers used by 4e.
@@ -1805,6 +1837,7 @@ export function registerHandlebarsHelpers() {
 		"DND4E-groupedSelectOptions": groupedSelectOptions,
 		"DND4E-numberFormat": (context, options) => formatNumber(context, options.hash),
 		"DND4E-textFormat": formatText,
+		"DND4E-dataset": dataset,
 	});
 }
 	

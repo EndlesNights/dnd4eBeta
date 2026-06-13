@@ -49,7 +49,7 @@
 	--color-label:var(--color-text-secondary);
 	--color-text-good:green;
 	--color-text-bad:red;
-    --color-text-special:#4d9ac0;
+	--color-text-special:#4d9ac0;
 	--input-box-shadow:none;
 	
 	.ability-usage--atwill{
@@ -109,15 +109,15 @@
 }
 
 .region-behavior-config i.difficult-terrain-icon{
-    content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
-    height:1em;
+	content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
+	height:1em;
 }
 .region-config i.difficult-terrain-icon{
-    content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
-    filter:var(--white-svg-filter);
-    height:1em;
-    position:relative;
-    top:2px;
+	content:url('/systems/dnd4e/icons/ui/difficultTerrain.svg');
+	filter:var(--white-svg-filter);
+	height:1em;
+	position:relative;
+	top:2px;
 }
 
 .dnd4e{
@@ -2401,9 +2401,9 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 				align-items:center;
 				
 				& label,input[type="text"]{
-                    flex-basis:fit-content;
-                    flex-grow:0;
-                    padding:0 1em;
+					flex-basis:fit-content;
+					flex-grow:0;
+					padding:0 1em;
 				}
 				& label{
 					font-weight:bold;
@@ -3723,9 +3723,19 @@ input[type="text"].dice-count{
 		.damage-taken.healing{
 			color:var(--color-text-good);
 		}
-        .damage-taken.temphp{
-            color:var(--color-text-special)
-        }
+		.damage-taken.temphp{
+			color:var(--color-text-special)
+		}
+	}
+	.hidden-dc {
+		display: contents;
+	}
+	.visible-dc {
+		display: none;
+	}
+	[data-display-challenge] {
+		.hidden-dc { display: none; }
+		.visible-dc { display: contents; }
 	}
 }
 

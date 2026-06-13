@@ -1,5 +1,6 @@
 import FormulaField from "../../fields/formula-field.js";
 import MappingField from "../../fields/mapping-field.js";
+import DamagePartsField from "../fields/damage-parts-field.js";
 
 const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
@@ -49,13 +50,13 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
 				detail: new StringField({ initial: "" }),
 			}),
 			damage: new SchemaField({
-				parts: new ArrayField(new ArrayField(new StringField(), { min: 2, max: 2, initial: ["", ""] }), { initial: [] }),
+				parts: new ArrayField(new DamagePartsField(), { initial: [] }),
 			}),
 			damageCrit: new SchemaField({
-				parts: new ArrayField(new ArrayField(new StringField(), { min: 2, max: 2, initial: ["", ""] }), { initial: [] }),
+				parts: new ArrayField(new DamagePartsField(), { initial: [] }),
 			}),
 			damageCritImp: new SchemaField({
-				parts: new ArrayField(new ArrayField(new StringField(), { min: 2, max: 2, initial: ["", ""] }), { initial: [] }),
+				parts: new ArrayField(new DamagePartsField(), { initial: [] }),
 			}),
 			damageType: new MappingField(new BooleanField({ initial: false }), {
 				initialKeys: CONFIG.DND4E.damageTypes,

@@ -1,3 +1,4 @@
+import { handleRoll } from "./enrichers/check.js";
 import { Helper } from "./helper.js";
 import { MultiAttackRoll } from "./roll/multi-attack-roll.js";
 
@@ -239,6 +240,11 @@ export function chatMessageListener(html) {
 		}
 	});
 
+	html.querySelectorAll("[data-action=\"checkRequest\"]").forEach((el) => {
+		if (game.user.isGM || !el.dataset.hideDc) el.dataset.displayChallenge = true;
+		el.addEventListener("click", handleRoll);
+	});
+
 	html.querySelectorAll(".description.collapsible").forEach((el) => {
 		el.classList.add("collapsed");
 		el.querySelector(".details").style.height = "0";
@@ -428,8 +434,8 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage = false) {
 	roll.terms.forEach(e => {
 		if (typeof e.total === "number") {
 			if (e.flavor) {
-				Helper.debugLog(`Damage type found: ${e.options.flavor}`);
-				damageDealt.push([e.total, e.options.flavor]);
+				Helper.debugLog(`Damage type found: ${e.flavor}`);
+				damageDealt.push([e.total, e.flavor]);
 				rollTotalRemain -= e.total;
 			}
 		}

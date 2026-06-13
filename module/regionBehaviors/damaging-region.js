@@ -100,7 +100,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 		};
     
 		const html = await foundry.applications.handlebars.renderTemplate(
-			"systems/dnd4e/templates/chat/ongoing-damage.html", chatData, 
+			"systems/dnd4e/templates/chat/ongoing-damage.hbs", chatData, 
 		);
                         
 		await ChatMessage.create({

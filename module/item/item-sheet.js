@@ -271,6 +271,9 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				surgeCost: "DND4E.HealingSurgeCost",
 				surgeValue: "DND4E.HealingSurgeValue",
 			};
+			context.damageTypeOptions = { ...CONFIG.DND4E.damageTypes };
+			delete context.damageTypeOptions.damage;
+			delete context.damageTypeOptions.ongoing;
 		}
 
 		if (itemData.type === "ritual") {
@@ -295,6 +298,9 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		if (itemData.type === "consumable") {
 			context.effectsPowers = this._prepareEffectPowersCategories(this.item.effects);
 			context.summaryLabel = CONFIG.DND4E.consumableTypes[itemData.system.consumableType]?.label;
+			context.damageTypeOptions = { ...CONFIG.DND4E.damageTypes };
+			delete context.damageTypeOptions.damage;
+			delete context.damageTypeOptions.ongoing;
 		}
 
 		if (itemData.type === "equipment") {
@@ -1063,20 +1069,20 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		// Handle Damage Array
 		const damage = formData.system?.damage;
-		if (damage) damage.parts = Object.values(damage?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+		if (damage) damage.parts = Object.values(damage?.parts || {}).map(d => [d.formula || "", d.type || ""]);
 		const damageCrit = formData.system?.damageCrit;
-		if (damageCrit) damageCrit.parts = Object.values(damageCrit?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+		if (damageCrit) damageCrit.parts = Object.values(damageCrit?.parts || {}).map(d => [d.formula || "", d.type || ""]);
 
 		const damageImp = formData.system?.damageImp;
-		if (damageImp) damageImp.parts = Object.values(damageImp?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+		if (damageImp) damageImp.parts = Object.values(damageImp?.parts || {}).map(d => [d.formula || "", d.type || ""]);
 		const damageCritImp = formData.system?.damageCritImp;
-		if (damageCritImp) damageCritImp.parts = Object.values(damageCritImp?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
+		if (damageCritImp) damageCritImp.parts = Object.values(damageCritImp?.parts || {}).map(d => [d.formula || "", d.type || ""]);
 		
 		const damageRes = formData.system.armour?.damageRes;
 		if (damageRes) damageRes.parts = Object.values(damageRes?.parts || {}).map(d => [d[0] || "", d[1] || ""]);
 	
 		const damageDice = formData.system?.damageDice;
-		if (damageDice) damageDice.parts = Object.values(damageDice?.parts || {}).map(d => [d[0] || "", d[1] || "", d[2] || ""]);
+		if (damageDice) damageDice.parts = Object.values(damageDice?.parts || {}).map(d => [d.numDice || "", d.numFaces || "", d.modifier || ""]);
 
 		const special = formData.system?.specialAdd;
 		if (special) special.parts = Object.values(special?.parts || {}).map(d => [d || ""]);
@@ -1141,7 +1147,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		if (action === "addDamage") {
 			await this.submit(event); // Submit any unsaved changes
 			const damage = this.item.system.damage;
-			return this.item.update({ "system.damage.parts": damage.parts.concat([["", ""]]) });
+			return this.item.update({ "system.damage.parts": damage.parts.concat([{ formula: "", type: "" }]) });
 		}
 
 		// Remove a damage component
@@ -1157,7 +1163,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		if (action === "addCriticalDamage") {
 			await this.submit(event); // Submit any unsaved changes
 			const damageCrit = this.item.system.damageCrit;
-			return this.item.update({ "system.damageCrit.parts": damageCrit.parts.concat([["", ""]]) });
+			return this.item.update({ "system.damageCrit.parts": damageCrit.parts.concat([{ formula: "", type: "" }]) });
 		}
 
 		// Remove a critical damage component
@@ -1173,7 +1179,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		if (action === "addDamageImp") {
 			await this.submit(event); // Submit any unsaved changes
 			const damageImp = this.item.system.damageImp;
-			return this.item.update({ "system.damageImp.parts": damageImp.parts.concat([["", ""]]) });
+			return this.item.update({ "system.damageImp.parts": damageImp.parts.concat([{ formula: "", type: "" }]) });
 		}
 
 		// Remove a implement damage component
@@ -1189,7 +1195,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		if (action === "addCriticalDamageImp") {
 			await this.submit(event); // Submit any unsaved changes
 			const damageCritImp = this.item.system.damageCritImp;
-			return this.item.update({ "system.damageCritImp.parts": damageCritImp.parts.concat([["", ""]]) });
+			return this.item.update({ "system.damageCritImp.parts": damageCritImp.parts.concat([{ formula: "", type: "" }]) });
 		}
 
 		// Remove a implement critical damage component
@@ -1204,7 +1210,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		if (action === "addDamageRes") {
 			await this.submit(event); // Submit any unsaved changes
 			const damageRes = this.item.system.armour.damageRes;
-			return this.item.update({ "system.armour.damageRes.parts": damageRes.parts.concat([["", ""]]) });
+			return this.item.update({ "system.armour.damageRes.parts": damageRes.parts.concat([{ formula: "", type: "" }]) });
 		}
 
 		// Remove a damage res
@@ -1219,7 +1225,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		if (action === "addDice") {
 			await this.submit(event); // Submit any unsaved changes
 			const damageDice = foundry.utils.duplicate(this.item.system.damageDice);
-			return this.item.update({ "system.damageDice.parts": damageDice.parts.concat([["", "", ""]]) });
+			return this.item.update({ "system.damageDice.parts": damageDice.parts.concat([{ numDice: "", numFaces: "", modifier: "" }]) });
 		}
 
 		if (action === "deleteDice") {

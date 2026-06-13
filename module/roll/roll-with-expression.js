@@ -165,7 +165,7 @@ export class RollWithOriginalExpression extends Roll4e {
 	/**
      * Custom chat template to handle displaying the expression attacks
      */
-	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-single.html";
+	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-single.hbs";
 
 	async render(chatOptions = {}) {
 		chatOptions = foundry.utils.mergeObject({
