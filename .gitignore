@@ -11,4 +11,4 @@ packs/*
 dnd4e.lock
 
 foundry-config.yaml
-foundry
+foundry/*
