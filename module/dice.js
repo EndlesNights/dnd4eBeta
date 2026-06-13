@@ -1,5 +1,6 @@
 import { Helper } from "./helper.js";
 import { MultiAttackRoll } from "./roll/multi-attack-roll.js";
+import Roll4e from "./dice/Roll.js";
 import RollDialog from "./apps/dice/roll-dialog.js";
 import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
 
@@ -348,7 +349,11 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 		const rollExpression = allRollsParts[rollExpressionIdx];
 		let subroll;
 		try {
-			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, options);
+			let targetOptions = foundry.utils.deepClone(options);
+			const targetActor = targets[rollExpressionIdx]?.document.actor;
+			const IS_TARGET = true;
+			if (targetActor) await Helper.applyEffects(data, targetActor, item, weaponUse, "attack", null, IS_TARGET, targetOptions);
+			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
 		catch(err) {
 			// let the user know what is going on if the roll doesn't evaluate.
@@ -362,20 +367,24 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			const attackedDef = targetData.targDefArray[rollExpressionIdx];
 			let targName = targets[rollExpressionIdx].name;
 			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.value;
-			const defParts = [];
-			await Helper.applyEffects([defParts], data, targets[rollExpressionIdx].actor, item, weaponUse, "defence");
-			for (let i = 0; i < defParts.length; i++) {
-				const key = defParts[i].slice(1);
-				const undecoratedKey = key.slice(0, -11);
-				// Any global typed bonus to this defence is already accounted for.
-				let currentBonus = 0;
-				if (undecoratedKey !== "untyped") {
-					const thisDefenceBonus = targets[rollExpressionIdx].document.actor.system.defences[attackedDef][undecoratedKey];
-					const globalDefenceBonus = targets[rollExpressionIdx].document.actor.system.modifiers.defences[undecoratedKey];
-					currentBonus = Math.max(thisDefenceBonus, globalDefenceBonus);
+			let defOptions = { bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
+			await Helper.applyEffects(data, targets[rollExpressionIdx].actor, item, weaponUse, "defence", null, null, defOptions);
+
+			let bonusesTotal = 0;
+			for (const [type, bonuses] of Object.entries(defOptions.bonuses)) {
+				if (bonuses.length) {
+					bonuses.push(actor.system.defences[attackedDef][type]);
+					const bonus = type == "untyped" ? bonuses.reduce((acc, curr) => acc + parseInt(curr), 0) : bonuses.reduce((max, curr) => Math.max(max, parseInt(curr)), -Infinity);
+					let currentBonus = 0;
+					if (type !== "untyped") {
+						const thisDefenceBonus = targets[rollExpressionIdx].document.actor.system.defences[attackedDef][type];
+						const globalDefenceBonus = targets[rollExpressionIdx].document.actor.system.modifiers.defences[type];
+						currentBonus = Math.max(thisDefenceBonus, globalDefenceBonus);
+					}
+					bonusesTotal += Math.max((bonus - currentBonus), 0);
 				}
-				targDefVal += Math.max(data[key] - currentBonus, 0);
 			}
+			targDefVal += bonusesTotal;
 			const meleeRange = weaponUse?.system.properties.rch ? 2 : 1;
 			const dist = Helper.computeDistance(actor, targets[rollExpressionIdx]);
 			const isThrown = (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) && (dist > meleeRange);

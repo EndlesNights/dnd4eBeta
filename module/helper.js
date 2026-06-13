@@ -168,39 +168,49 @@ export class Helper {
 		return new RegExp(/@([a-z.0-9_-]+)/gi);
 	}
 
-	static async applyEffects(arrayOfParts, rollData, actorData, powerData, weaponData = null, effectType, extraDamage = [], options = {}) {
+	static async applyEffects(rollData, actor, power, weapon = null, effectType, extraDamage = [], target = false, options = {}) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
-		if (actorData.effects) {
-			const powerInnerData = powerData.system;
-			const weaponInnerData = weaponData?.system;
+		const actorEffects = [...actor.allApplicableEffects()];
+		if (actorEffects.length) {
+			const powerInnerData = power.system;
+			const weaponInnerData = weapon?.system;
 			let enhValue = weaponInnerData?.enhance || 0;
 			if (debug) {
-				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.	Supplied Weapon: ${weaponData?.name}`);
+				console.log(`${debug} Debugging ${effectType} effects for ${power.name}.	Supplied Weapon: ${weapon?.name}`);
 			}
 			
 			//Using inherent enhancements?
 			if (game.settings.get("dnd4e", "inhEnh")) {
 				//If our enhancement is lower than the inherent level, adjust it upward
-				enhValue = Math.max(weaponInnerData?.enhance || 0, Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
-				Helper.debugLog(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actorData.system.details.level, CONFIG.DND4E.SCALE.basic, 1)}' for this level against weapon value of +${weaponInnerData?.enhance})`);
+				enhValue = Math.max(weaponInnerData?.enhance || 0, Helper.findKeyScale(actor.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
+				Helper.debugLog(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actor.system.details.level, CONFIG.DND4E.SCALE.basic, 1)}' for this level against weapon value of +${weaponInnerData?.enhance})`);
 			}
 
 			const effectsToProcess = [];
-			const effects = actorData.getActiveEffects().filter((effect) => effect.disabled === false);
-			effects.forEach((effect) => {
+			const effectTargets = [];
+			if (target) {
+				effectTargets.push("grants");
+			} else {
+				effectTargets.push("power");
+				if (weaponInnerData) effectTargets.push("weapon");
+			}
+			actorEffects.forEach((effect) => {
 				effect.changes.forEach((change => {
-					if (change.key.startsWith(`power.${effectType}`) || (weaponInnerData && change.key.startsWith(`weapon.${effectType}`))) {
-						effectsToProcess.push({
-							name: effect.name,
-							key: change.key,
-							value: change.value,
-						});
+					for (const effectTarget of effectTargets) {
+						if (change.key.startsWith(`${effectTarget}.${effectType}`)) {
+							effectsToProcess.push({
+								name: effect.name,
+								key: change.key,
+								value: change.value,
+							});
+							break;
+						}
 					}
 				}));
 			});
 			
 			//Dummy up some extra effects to represent global atk/damage bonuses
-			const globalMods = actorData.system.modifiers;
+			const globalMods = actor.system.modifiers;
 			if (globalMods[effectType]?.value) {
 				for (const [key, value] of Object.entries(globalMods[effectType])) {
 					//No way to sort bonus array types, so we'll combine them with untyped before checks.
@@ -392,22 +402,22 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				await this._applyEffectsInternal(effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage, options);
+				await this._applyEffectsInternal(effectsToProcess, suitableKeywords, actor, effectType, debug, extraDamage, options);
 			}
 		}
 	}
 
 	// A pared down version of applyEffects suitable for determining bonuses to saving throws against effects or the DCs of effects. Only needs to know
 	// about effect keywords and statuses inflicted by the effect. effectType can be `save` or `saveDC`.
-	static async applySaveEffects(rollData, actorData, effectData, effectType, options = {}) {
+	static async applySaveEffects(rollData, actor, effectData, effectType, options = {}) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
-		if (actorData.effects) {
+		if (actor.effects) {
 			if (debug) {
 				Helper.debugLog(`${debug} Debugging ${effectType} effects for ${effectData?.name}.`);
 			}
 
 			const effectsToProcess = [];
-			const effects = actorData.getActiveEffects().filter((effect) => effect.disabled === false);
+			const effects = actor.getActiveEffects().filter((effect) => effect.disabled === false);
 			effects.forEach((effect) => {
 				effect.changes.forEach((change => {
 					if (change.key.startsWith(`effect.${effectType}`)) {
@@ -423,7 +433,7 @@ export class Helper {
 			// No global bonuses to save DCs
 			if (effectType === "save") {
 				//Dummy up some extra effects to represent global save bonuses
-				const globalMods = actorData.system.details.saves;
+				const globalMods = actor.system.details.saves;
 				if (globalMods.value) {
 					for (const [key, value] of Object.entries(globalMods)) {
 						//No way to sort bonus array types, so we'll combine them with untyped before checks.
@@ -480,12 +490,12 @@ export class Helper {
 					console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 				}
 
-				await this._applyEffectsInternal(effectsToProcess, suitableKeywords, actorData, effectType, debug, null, options);
+				await this._applyEffectsInternal(effectsToProcess, suitableKeywords, actor, effectType, debug, null, options);
 			}
 		}
 	}
 
-	static async _applyEffectsInternal(effectsToProcess, suitableKeywords, actorData, effectType, debug, extraDamage = [], options = {}) {
+	static async _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, effectType, debug, extraDamage = [], options = {}) {
 		// filter out to just the relevant effects by keyword
 		const matchingEffects = effectsToProcess.filter((effect) => {
 			const keyParts = effect.key.split(".");
@@ -509,7 +519,7 @@ export class Helper {
 			const keyParts = effect.key.split(".");
 			if (keyParts.length >= 4) {
 				const bonusType = keyParts[keyParts.length - 1];
-				const effectValueString = Roll.replaceFormulaData(String(effect.value), actorData.getRollData());
+				const effectValueString = Roll.replaceFormulaData(String(effect.value), actor.getRollData());
 				const effectDice = await this.rollWithErrorHandling(effectValueString, { context: effect.key });
 				const effectValue = effectDice.total;
 				if (bonusType === "roll") {
