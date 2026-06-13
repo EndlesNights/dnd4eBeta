@@ -1,0 +1,61 @@
+{
+  "name": "Text Enrichers and Roll Prompts",
+  "_id": "1oLE5t1qrUyMtBjf",
+  "pages": [
+    {
+      "sort": 100000,
+      "name": "Text Enrichers and Roll Prompts",
+      "type": "text",
+      "_id": "nJ0rEkbeyYkxuoqR",
+      "system": {},
+      "title": {
+        "show": false,
+        "level": 1
+      },
+      "image": {},
+      "text": {
+        "format": 1,
+        "content": "<p>As of version 0.8.0, 4e includes system-specific enrichers that will work in many text fields in the game—including powers and item descriptions, effect descriptions—as well as typed directly into chat messages. The basis of this system was lifted with gratitude from <a href=\"https://foundryvtt.com/packages/draw-steel\">the Draw Steel system</a>, and some of the info here is adapted from their wiki.</p>\n<p>⚠️<em><strong>Beware of using copy-and-pasting the examples here!</strong> Since enrichers work in journals, we have had to insert invisible characters to preserve the source code display. If you must copy and paste the examples, be sure to delete and replace the square brackets.</em></p>\n<h2>Lookup</h2>\n<p>The <code>[[lookup]]</code> enricher allows dynamic display of actor, item, and effect data as plain text, as well as allow. It supports both text and numerical values, and uses roll data syntax. This works much the same as the existing use of <code>[​[@variables]]</code> in fields like power descriptions, but with some additional parameters and functionality. It can also be used in some areas where variables don't work, such as effect descriptions.</p>\n<h3>Examples</h3>\n<ul>\n    <li>\n        <p><code>[​[lookup @name]]</code> Prints the actor's name.</p>\n    </li>\n    <li>\n        <p><code>[​[lookup @name]]{This character}</code> Prints the actor's name, with a fallback to \"This Character\" if the lookup fails to evaluate for some reason.</p>\n    </li>\n    <li>\n        <p><code>[​[lookup @item.name]]</code> Prints the item's name (Requires the context of an item or an effect on an item, e.g. the description)</p>\n    </li>\n    <li>\n        <p><code>[​[lookup @effect.name]]</code> Prints the effect's name (Requires the context of an Active Effect, e.g. the description)</p>\n    </li>\n    <li>\n        <p><code>[​[lookup @name lowercase]]</code> Prints the actor's name, but lowercase. Valid options are `capitalize`, `lowercase`, and `uppercase`.</p>\n    </li>\n    <li>\n        <p><code>[​[lookup @name style=uppercase]]</code> The style property can be defined explicitly.</p>\n    </li>\n    <li>\n        <p><code>[​[lookup @dexMod+3 evaluate]]</code> Evaluates the lookup value as a formula. Non-deterministic values like dice are treated as 0.</p>\n    </li>\n    <li>\n        <p><code>[​[lookup formula=@dexMod+3 evaluate=true]]</code> The formula and evaluate parameters can be defined explicitly.</p>\n    </li>\n    <li>\n        <p><code>[​[lookup formula=\"@dexMod + 3\" evaluate=true]]</code> You must use quotes for formulae with spaces</p>\n    </li>\n</ul>\n<h2>Roll Prompts</h2>\n<p>The <code>[[/skill]]</code> and <code>[[/ability]]</code> enrichers allow you to prompt a skill or ability check directly from the text.</p>\n<ul>\n    <li>\n        <p>Skills and abilities can use their abbreviations or their full names (non case-sensitive):<br><code>[​[/skill ath]]</code><br><code>[​[/ability Dexterity]]</code></p>\n    </li>\n    <li>\n        <p>Multiple skills or abilities can be passed in, separated by spaces:<br><code>[​[/skill arc rel]]<br></code> <br>or identified explicitly and separated by slashes:<br><code>[​[/ability ability=str/dex]]</code></p>\n    </li>\n    <li>\n        <p>A DC can be passed in, either as a bare number or identified explicitly:<br><code>[​[/skill his 10]]</code><br><code>[​[/ability strength dc=15]]</code></p>\n    </li>\n    <li>\n        <p>Format can be long or short (must be identified explicitly, but defaults to short if not specified):<br><code>[​[/ability int]]</code> produces \"Intelligence\"<br><code>[​[/skill dun format=long]]</code> produces \"Dungeoneering check\"</p>\n    </li>\n</ul>"
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "category": null,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.363",
+        "systemId": "dnd4e",
+        "systemVersion": "0.8.2",
+        "createdTime": 1781333508048,
+        "modifiedTime": 1781336129303,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!journal.pages!1oLE5t1qrUyMtBjf.nJ0rEkbeyYkxuoqR"
+    }
+  ],
+  "folder": null,
+  "categories": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "dnd4e",
+    "systemVersion": "0.8.2",
+    "createdTime": 1781333486918,
+    "modifiedTime": 1781333486919,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!journal!1oLE5t1qrUyMtBjf"
+}
