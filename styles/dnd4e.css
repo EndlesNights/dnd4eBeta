@@ -3529,7 +3529,6 @@ input[type="text"].dice-count{
 	
 	span{
 		display:block;
-		line-height:28px;
 		text-align:center;
 		border:1px solid #ccc;
 	}
