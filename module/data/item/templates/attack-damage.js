@@ -32,7 +32,7 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
 			baseQuantity: new FormulaField({ initial: "1", deterministic: true }),
 			baseDiceType: new StringField({ initial: "Base Weapon Damage" }),
 			detail: new StringField({ initial: "1[W] + Strength modifier damage." }),
-			formula: new FormulaField({ initial: "@powBase + @powMod + @wepDamage" }),
+			formula: new FormulaField({ initial: "@powBase + @powerMod + @wepDamage" }),
 			critFormula: new FormulaField({ initial: "@powMax + @powerMod + @wepDamage + @wepCritBonus" }),
 			healFormula: new FormulaField({ initial: "" }),
 		};

@@ -313,7 +313,7 @@
           "baseQuantity": "1",
           "baseDiceType": "Base Weapon Damage",
           "detail": "",
-          "formula": "@powBase + @powMod + @wepDamage",
+          "formula": "@powBase + @powerMod + @wepDamage",
           "critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
           "healFormula": ""
         },
