@@ -31,7 +31,7 @@ import { default as DifficultTerrainRegionBehaviorType } from "./regionBehaviors
 import { default as TerrainData4e } from "./regionBehaviors/terrain-data.js";
 import { default as DifficultTerrainConfig } from "./apps/regionBehaviors/difficult-terrain-config.js";
 
-import * as check from "./enrichers/check.js";
+import * as roll from "./enrichers/roll.js";
 import * as lookup from "./enrichers/lookup.js";
 
 import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handlePromptEoTSaves, performPreLocalization, registerHandlebarsHelpers } from "./helper.js";
@@ -47,6 +47,7 @@ import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
 import { TokenBarHooks } from "./hooks.js";
 import { customSKillSetUp } from "./skills/custom-skills.js";
 import Items4e from "./collection/item-collection.js";
+import { default as ChatMessage4e } from "./documents/chat-message.js";
 import Combatant4e from "./combatant.js";
 import Roll4e from "./dice/Roll.js";
 import ActiveEffectData from "./data/active-effect/active-effect.js";
@@ -99,6 +100,7 @@ Hooks.once("init", async function() {
 	CONFIG.Item.collection = Items4e;
 	CONFIG.Actor.documentClass = Actor4e;
 	CONFIG.Item.documentClass = Item4e;
+	CONFIG.ChatMessage.documentClass = ChatMessage4e;
 	CONFIG.Combatant.documentClass = Combatant4e;
 	CONFIG.Combat.documentClass = Combat4e;
 
@@ -269,7 +271,7 @@ Hooks.once("init", async function() {
 	// Enrichers
 	// Register enrichers
 	CONFIG.TextEditor.enrichers = [
-		check,
+		roll,
 		lookup,
 	];
 });
@@ -452,11 +454,10 @@ Hooks.on("renderCombatTracker", (app, html, context) => {
 Hooks.on("createRegion", async (regionDoc) => {
 	if (!regionDoc.testUserPermission(game.user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER)) return;
 	const originUuid = regionDoc.getFlag("dnd4e", "origin");
+	const actorUuid = regionDoc.getFlag("dnd4e", "actorUuid");
 	// Item may be deleted from the actor when we get here, so get the item data from the template if we have to
 	const flagDocument = await fromUuid(originUuid) || regionDoc.getFlag("dnd4e", "item");
 	if (!flagDocument || (flagDocument.system.autoTarget.mode === "none")) return;
-	// If we just have the template flag's item data because the item was deleted, we'll need to work backward from the item uuid to get the actor
-	const actorUuid = flagDocument?.actor?.uuid || originUuid.split(".Item")[0];
 	if (!actorUuid) return;
 	const token = Helper.tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;

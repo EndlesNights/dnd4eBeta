@@ -91,7 +91,7 @@ export class Helper {
 	 * @returns {Item4e|null} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
 	 */
 	static getWeaponUse(itemData, actor) {
-		if ((itemData.weaponUse === "none") || ((itemData.weaponType === "none") && (actor.itemTypes.weapon.length === 0))) return null;
+		if (!itemData || (itemData.weaponUse === "none") || ((itemData.weaponType === "none") && (actor.itemTypes.weapon.length === 0))) return null;
 		let weaponUse = itemData.weaponUse ? actor.items.get(itemData.weaponUse) : null;
 		//If default weapon is in use, find a sutable weapon
 		if ((itemData.weaponUse === "default") || (itemData.weaponUse === "defaultOH")) {
@@ -168,22 +168,21 @@ export class Helper {
 		return new RegExp(/@([a-z.0-9_-]+)/gi);
 	}
 
-	static async applyEffects(rollData, actor, power, weapon = null, effectType, extraDamage = [], target = false, options = {}) {
+	static async applyEffects(rollData, actor, powerData = {}, weaponData = null, effectType, extraDamage = [], target = false, options = {}) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
+		if (!actor) return;
 		const actorEffects = [...actor.allApplicableEffects()];
 		if (actorEffects.length) {
-			const powerInnerData = power.system;
-			const weaponInnerData = weapon?.system;
-			let enhValue = weaponInnerData?.enhance || 0;
+			let enhValue = weaponData?.enhance || 0;
 			if (debug) {
-				console.log(`${debug} Debugging ${effectType} effects for ${power.name}.	Supplied Weapon: ${weapon?.name}`);
+				console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.	Supplied Weapon: ${weaponData?.name}`);
 			}
 			
 			//Using inherent enhancements?
 			if (game.settings.get("dnd4e", "inhEnh")) {
 				//If our enhancement is lower than the inherent level, adjust it upward
-				enhValue = Math.max(weaponInnerData?.enhance || 0, Helper.findKeyScale(actor.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
-				Helper.debugLog(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actor.system.details.level, CONFIG.DND4E.SCALE.basic, 1)}' for this level against weapon value of +${weaponInnerData?.enhance})`);
+				enhValue = Math.max(weaponData?.enhance || 0, Helper.findKeyScale(actor.system.details.level, CONFIG.DND4E.SCALE.basic, 1));
+				Helper.debugLog(`Checked inherent atk/dmg enhancement of +'${Helper.findKeyScale(actor.system.details.level, CONFIG.DND4E.SCALE.basic, 1)}' for this level against weapon value of +${weaponData?.enhance})`);
 			}
 
 			const effectsToProcess = [];
@@ -192,7 +191,7 @@ export class Helper {
 				effectTargets.push("grants");
 			} else {
 				effectTargets.push("power");
-				if (weaponInnerData) effectTargets.push("weapon");
+				if (weaponData) effectTargets.push("weapon");
 			}
 			actorEffects.forEach((effect) => {
 				effect.changes.forEach((change => {
@@ -232,28 +231,28 @@ export class Helper {
 				}
 
 				const suitableKeywords = ["global"];
-				this._addKeywords(suitableKeywords, powerInnerData.damageType);
-				this._addKeywords(suitableKeywords, powerInnerData.effectType);
-				if (weaponInnerData) {
-					this._addKeywords(suitableKeywords, weaponInnerData.weaponGroup);
-					this._addKeywords(suitableKeywords, weaponInnerData.properties);
-					this._addKeywords(suitableKeywords, weaponInnerData.damageType);
-					this._addKeywords(suitableKeywords, weaponInnerData.implement); // implement group for implement powers.	Bad naming of property, sorry -Drac
-					if (weaponInnerData.weaponBaseType) {
-						suitableKeywords.push(weaponInnerData.weaponBaseType);
+				this._addKeywords(suitableKeywords, powerData.damageType);
+				this._addKeywords(suitableKeywords, powerData.effectType);
+				if (weaponData) {
+					this._addKeywords(suitableKeywords, weaponData.weaponGroup);
+					this._addKeywords(suitableKeywords, weaponData.properties);
+					this._addKeywords(suitableKeywords, weaponData.damageType);
+					this._addKeywords(suitableKeywords, weaponData.implement); // implement group for implement powers.	Bad naming of property, sorry -Drac
+					if (weaponData.weaponBaseType) {
+						suitableKeywords.push(weaponData.weaponBaseType);
 					}
 				}
 
-				if (powerInnerData.powersource) {
-					suitableKeywords.push(powerInnerData.powersource);
+				if (powerData.powersource) {
+					suitableKeywords.push(powerData.powersource);
 				}
-				if (powerInnerData.secondPowersource) {
-					suitableKeywords.push(powerInnerData.secondPowersource);
+				if (powerData.secondPowersource) {
+					suitableKeywords.push(powerData.secondPowersource);
 				}
-				if (powerInnerData.weaponType) {
+				if (powerData.weaponType) {
 					//Tool-based keywords like implement and weapon belong to the power, so in most cases we do not need to check the weapon to know which ones to use. Melee/ranged weapons and "any" are the exceptions, so we check the equipped weapon just for those.
 					
-					switch (powerInnerData.weaponType) {
+					switch (powerData.weaponType) {
 						case "none": break;
 						case "implement":
 							suitableKeywords.push("usesImplement");
@@ -269,10 +268,10 @@ export class Helper {
 							suitableKeywords.push("rangedWeapon");
 							break;
 						default:
-							if (weaponInnerData) {
-								if (weaponInnerData.WeaponType === "implement") {
+							if (weaponData) {
+								if (weaponData.WeaponType === "implement") {
 									suitableKeywords.push("usesImplement");
-								} else if (weaponInnerData.isRanged) {
+								} else if (weaponData.isRanged) {
 									suitableKeywords.push("weapon");
 									suitableKeywords.push("rangedWeapon");
 									suitableKeywords.push("ranged");
@@ -286,29 +285,29 @@ export class Helper {
 					}
 					
 					//Check for proficiency with tool
-					switch (powerInnerData.weaponType) {
+					switch (powerData.weaponType) {
 						case "none": break;
 						case "implement":
-							if (weaponInnerData) {
-								if (weaponInnerData.proficientI) suitableKeywords.push("proficient");
+							if (weaponData) {
+								if (weaponData.proficientI) suitableKeywords.push("proficient");
 							}
 							break;
 						case "any":
-							if (weaponInnerData) {
-								if (weaponInnerData.WeaponType === "implement") {
-									if (weaponInnerData.proficientI) suitableKeywords.push("proficient");
+							if (weaponData) {
+								if (weaponData.WeaponType === "implement") {
+									if (weaponData.proficientI) suitableKeywords.push("proficient");
 								}
 							}
 							break;
 						default:
-							if (weaponInnerData) {
-								if (weaponInnerData.proficient) suitableKeywords.push("proficient");
+							if (weaponData) {
+								if (weaponData.proficient) suitableKeywords.push("proficient");
 							}
 					}
 				}
 				
-				if (powerInnerData.rangeType) {
-					switch (powerInnerData.rangeType) {
+				if (powerData.rangeType) {
+					switch (powerData.rangeType) {
 						case "closeBurst":
 							suitableKeywords.push("close");
 							suitableKeywords.push("burst");
@@ -344,10 +343,10 @@ export class Helper {
 				}
 				
 				//Special case for detecting one-handed weapons
-				if (weaponInnerData) {
-					if (!weaponInnerData.properties.two) { //Skip if it's tagged two-handed
+				if (weaponData) {
+					if (!weaponData.properties.two) { //Skip if it's tagged two-handed
 						//Make sure it's some kind of weapon
-						const wpnGroupValues = Object.values(weaponInnerData.weaponGroup);
+						const wpnGroupValues = Object.values(weaponData.weaponGroup);
 						const isWeapon = wpnGroupValues.some(function(element) {
 							return element;
 						});
@@ -357,8 +356,8 @@ export class Helper {
 					}
 				}
 				
-				if (powerInnerData.attack?.def) {
-					switch (powerInnerData.attack.def) {
+				if (powerData.attack?.def) {
+					switch (powerData.attack.def) {
 						case "ac":
 							suitableKeywords.push("vsAC");
 							break;
@@ -374,24 +373,24 @@ export class Helper {
 					}
 				}
 				
-				if (powerInnerData.attack?.isBasic) {
+				if (powerData.attack?.isBasic) {
 					suitableKeywords.push("basic");
 					if (suitableKeywords.includes("melee")) suitableKeywords.push("mBasic");
 					if (suitableKeywords.includes("ranged")) suitableKeywords.push("rBasic");
 				}
 				
-				if (powerInnerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
-				if (powerInnerData.attack?.isOpp || rollData?.isOpp) suitableKeywords.push("opp");				
-				if (powerInnerData.attack?.def) suitableKeywords.push(`vs${powerInnerData.attack.def.capitalize()}`);
-				if (powerInnerData.attack?.ability) suitableKeywords.push(`uses${powerInnerData.attack.ability.capitalize()}`);
+				if (powerData.attack?.isCharge || rollData?.isCharge) suitableKeywords.push("charge");
+				if (powerData.attack?.isOpp || rollData?.isOpp) suitableKeywords.push("opp");				
+				if (powerData.attack?.def) suitableKeywords.push(`vs${powerData.attack.def.capitalize()}`);
+				if (powerData.attack?.ability) suitableKeywords.push(`uses${powerData.attack.ability.capitalize()}`);
 				
-				if (powerInnerData?.keywordsCustom) {
-					const customKeys = powerInnerData.keywordsCustom.split(";");
+				if (powerData?.keywordsCustom) {
+					const customKeys = powerData.keywordsCustom.split(";");
 					customKeys.forEach((item) => suitableKeywords.push(item));
 				}
 
 				// Can be done with already with a global bonus of some multiple of @bloodied, but useful for defence bonuses like the Deva's Astral Majesty
-				if (rollData?.details.isBloodied) {
+				if (rollData?.details?.isBloodied) {
 					suitableKeywords.push("bloodied");
 				}
 
@@ -762,7 +761,7 @@ export class Helper {
 				} else {
 					powerDetail += `<p class="attack"><strong>${_loc("DND4E.Attack")}</strong>: ${_loc("DND4E.Attack")}`;
 				}
-				powerDetail += ` ${_loc("DND4E.VS")} ${CONFIG.DND4E.defensives[chatData.attack.def].abbreviation}</p>`;
+				powerDetail += ` ${_loc("DND4E.VS")} ${CONFIG.DND4E.defensives[chatData.attack.def].labelShort}</p>`;
 			}
 		}
 

@@ -1,4 +1,4 @@
-import { handleRoll } from "./enrichers/check.js";
+import { handleRoll } from "./enrichers/roll.js";
 import { Helper } from "./helper.js";
 import { MultiAttackRoll } from "./roll/multi-attack-roll.js";
 
