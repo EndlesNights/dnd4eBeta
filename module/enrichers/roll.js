@@ -214,8 +214,6 @@ export async function enrichAttack(parsedConfig, label, options) {
 	const defString = CONFIG.DND4E.defensives[def]?.labelShort;
 
 	label ??= defString ? `${attackString} ${_loc("DND4E.VS")} ${defString}` : attackString;
-	//const flavor = formatCheckFlavor(partConfig);
-	//partConfig.flavor = flavor;
 
 	const rollAttackLink = createLink(label,
 		{ ...linkConfig, type: "attack" },
@@ -345,6 +343,7 @@ async function rollAttack(config, event) {
 		if (weaponData) flavor += `<br />${weaponData.name}`;
 	} else if (!flavor) {
 		flavor = _loc("DND4E.AttackRoll");
+		if (def) flavor += ` ${_loc("DND4E.VS")} ${CONFIG.DND4E.defensives[def]?.labelShort}`;
 	}
 
 	// Compose roll options
