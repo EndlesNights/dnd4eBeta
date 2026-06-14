@@ -137,7 +137,7 @@ export class MultiAttackRoll extends Roll4e {
 				def: vsDef,
 				mod: atkMod,
 				deftext: defText,
-				modtext: CONFIG.DND4E.abilityScores[atkMod]?.labelShort || "",
+				modtext: CONFIG.DND4E.abilityScores[atkMod]?.labelShort || _loc("DND4E.Attack"),
 				immune: targDataArray?.targImmArray[i] || false,
 			});
 		}

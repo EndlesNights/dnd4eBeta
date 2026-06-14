@@ -345,6 +345,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	};
 	const critStateArray = [];
 
+	const itemData = item?.getRollData({ variance: options.variance }).item;
+	const weaponData = weaponUse?.getRollData().item;
 	for (let rollExpressionIdx = 0; rollExpressionIdx < allRollsParts.length; rollExpressionIdx++) {
 		const rollExpression = allRollsParts[rollExpressionIdx];
 		let subroll;
@@ -352,7 +354,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			let targetOptions = foundry.utils.deepClone(options);
 			const targetActor = targets[rollExpressionIdx]?.document.actor;
 			const IS_TARGET = true;
-			if (targetActor) await Helper.applyEffects(data, targetActor, item, weaponUse, "attack", null, IS_TARGET, targetOptions);
+			if (targetActor) await Helper.applyEffects(data, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
 		catch(err) {
@@ -368,7 +370,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			let targName = targets[rollExpressionIdx].name;
 			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.value;
 			let defOptions = { bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
-			await Helper.applyEffects(data, targets[rollExpressionIdx].actor, item, weaponUse, "defence", null, null, defOptions);
+			await Helper.applyEffects(data, targets[rollExpressionIdx].actor, itemData, weaponData, "defence", null, null, defOptions);
 
 			let bonusesTotal = 0;
 			for (const [type, bonuses] of Object.entries(defOptions.bonuses)) {
@@ -428,7 +430,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 		roll.populateMultirollData(targetData, critStateArray);			
 		Hooks.callAll("dnd4e.rollAttack", data.item, targetData, speaker);
 	
-		if (game.settings.get("dnd4e", "autoApplyEffects")) {
+		if (options.powerEffects && game.settings.get("dnd4e", "autoApplyEffects")) {
 			if (targetData.targetHit.length) {
 				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", attacker);
 				Helper.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hitOrMiss", attacker);

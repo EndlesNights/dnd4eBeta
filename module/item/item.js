@@ -1142,6 +1142,8 @@ export default class Item4e extends Item {
 	
 		// In case the Item was destroyed or tweaked in the process of rolling - embed the item data in the chat message
 		chatData.flags["dnd4e.itemData"] = templateData.item;
+		chatData.flags["dnd4e.itemUuid"] = templateData.item.uuid;
+		chatData.flags["dnd4e.actorUuid"] = templateData.actor.uuid;
 		
 		// Embed variance in the chat message, so buttons can be aware of it
 		if (variance) {
@@ -1570,7 +1572,7 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll|null>}   A Promise which resolves to the created Roll instance
 	 */
 	async rollAttack(options = {}) {
-		const itemData = this.system;
+		const itemData = this.getRollData({ variance: options.variance }).item;
 		const actorData = this.actor;
 		options.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
 		// itemData.weaponUse = 2nd dropdown - default/none/weapon
@@ -1579,6 +1581,7 @@ export default class Item4e extends Item {
 		
 		//console.debug(options);
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
+		const weaponData = weaponUse?.getRollData().item;
 
 		if (Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
 			ui.notifications.error(_loc("DND4E.LackRequiredWeapon"));
@@ -1684,7 +1687,7 @@ export default class Item4e extends Item {
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
 		}
 		
-		await Helper.applyEffects(rollData, actorData, this, weaponUse, "attack", null, null, options);
+		await Helper.applyEffects(rollData, actorData, itemData, weaponData, "attack", null, null, options);
 
 		// Compose roll options
 		const rollConfig = {
@@ -1743,9 +1746,10 @@ export default class Item4e extends Item {
 
 		options.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
 
-		const itemData = this.system;
+		const itemData = this.getRollData({ variance: options.variance }).item;
 		const actorData = this.actor;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
+		const weaponData = weaponUse?.getRollData().item;
 
 		if (Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
 			return;
@@ -1805,7 +1809,7 @@ export default class Item4e extends Item {
 			};
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
 		}
-		await Helper.applyEffects(rollData, actorData, this, weaponUse, "attack", null, null, options);
+		await Helper.applyEffects(rollData, actorData, itemData, weaponData, "attack", null, null, options);
 
 		// Compose roll options
 		const rollConfig = {
@@ -2037,6 +2041,7 @@ export default class Item4e extends Item {
 				["dnd4e"]: {
 					item: this,
 					origin: this.uuid,
+					actorUuid: this.actor.uuid,
 				},
 			},
 		};
@@ -2053,10 +2058,11 @@ export default class Item4e extends Item {
 	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	async rollDamage({ event, spellLevel = null, fastForward = undefined, variance = {} } = {}) {
-		const itemData = this.system;
+		const itemData = this.getRollData({ variance }).item;
 		const actorData = this.actor;
 		const actorInnerData = this.actor?.system;
 		const weaponUse = Helper.getWeaponUse(itemData, this.actor);
+		const weaponData = weaponUse?.getRollData().item;
 
 		if (Helper.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
 			ui.notifications.error(_loc("DND4E.LackRequiredWeapon"));
@@ -2220,7 +2226,7 @@ export default class Item4e extends Item {
 
 		const extraDamageParts = [];
 		if (!this.system?.hit?.damageBonusNull) {
-			await Helper.applyEffects(rollData, actorData, this, weaponUse, "damage", extraDamageParts, null, options);
+			await Helper.applyEffects(rollData, actorData, itemData, weaponData, "damage", extraDamageParts, null, options);
 		}
 
 		// Ammunition Damage from power
@@ -2846,6 +2852,7 @@ export default class Item4e extends Item {
 		data.item = super.getRollData();
 		data.item.name = this.name;
 		data.item.flags = foundry.utils.duplicate(this.flags);
+		data.item.uuid = this.uuid;
 
 		// Include an ability score modifier if one exists
 		const abl = this.abilityMod;
