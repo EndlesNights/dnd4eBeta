@@ -1,13 +1,16 @@
-import { Helper } from "../helper.js";
 import { createLink, parseConfig, addDataset } from "./utils.js";
 
+import { d20Roll } from "../dice.js";
+import { Helper } from "../helper.js";
+import Roll4e from "../dice/Roll.js";
+
 /** @type {TextEditorEnricherConfig["id"]} */
-export const id = "DND4E.check";
+export const id = "DND4E.roll";
 
 /* -------------------------------------------------- */
 
 /** @type {TextEditorEnricherConfig["pattern"]} */
-export const pattern = new RegExp("\\[\\[/(?<type>skill|ability)(?<config> .*?)?]](?!])(?:{(?<label>[^}]+)})?", "gi");
+export const pattern = new RegExp("\\[\\[/(?<type>skill|ability|attack|damage)(?<config> .*?)?]](?!])(?:{(?<label>[^}]+)})?", "gi");
 
 /* -------------------------------------------------- */
 
@@ -27,6 +30,8 @@ export function enricher(match, options) {
 		case "ability":
 		case "skill":
 			return enrichCheck(parsedConfig, label, options);
+		case "attack":
+			return enrichAttack(parsedConfig, label, options);
 	}
 }
 
@@ -117,6 +122,7 @@ export async function enrichCheck(parsedConfig, label, options) {
 			{ icon: "fa-dice-d20" },
 		);
 	}
+	rollCheckLink.dataset.tooltip = formatTooltip({ ...linkConfig, type: "check" });
 
 	if (game.user.isGM) {
 		// foundry checks if the returned html element is enriched-content and wraps if it's not.
@@ -129,6 +135,95 @@ export async function enrichCheck(parsedConfig, label, options) {
 		return wrapper;
 	}
 	else return rollCheckLink;
+}
+
+/* -------------------------------------------------- */
+
+/**
+ * Enrich an attack link.
+ * @param {ParsedConfig} parsedConfig      Configuration data.
+ * @param {string} [label]             Optional label to replace default text.
+ * @param {EnrichmentOptions} options  Options provided to customize text enrichment.
+ * @returns {HTMLElement|null}         An HTML link if the enricher could be built, otherwise null.
+ */
+export async function enrichAttack(parsedConfig, label, options) {
+	let { formula, ability, def, title, flavor } = parsedConfig;
+
+	const replacedFormula = (typeof formula === "string") ? Roll.replaceFormulaData(formula, options.rollData, { recursive: true }) : formula;
+
+	const longAbilities = Object.fromEntries(Array.from(Object.entries(CONFIG.DND4E.abilities)).map((arr) => [arr[1].toLowerCase(), arr[0]]));
+	const longDefenses = Object.fromEntries(Array.from(Object.entries(CONFIG.DND4E.defensives)).map((arr) => [arr[1].labelShort.toLowerCase(), arr[0]]));
+	delete longDefenses.ac;
+	longDefenses["armor class"] = "ac";
+	ability = ability?.toLowerCase();
+	if (ability in longAbilities) {
+		ability = longAbilities[ability];
+	}
+	def = def?.toLowerCase();
+	if (def in longDefenses) {
+		def = longDefenses[def];
+	}
+
+	for (const value of parsedConfig.values) {
+		const normalizedValue = value.toLowerCase();
+		if (!ability && (normalizedValue in CONFIG.DND4E.abilities)) {
+			ability = normalizedValue;
+		}
+		if (!ability && (normalizedValue in longAbilities)) {
+			ability = longAbilities[normalizedValue];
+		}
+		if (!def && (normalizedValue in CONFIG.DND4E.defensives)) {
+			def = normalizedValue;
+		}
+		if (!def && (normalizedValue in longDefenses)) {
+			def = longDefenses[normalizedValue];
+		}
+	}	
+
+	const linkConfig = {
+		formula,
+		replacedFormula,
+		ability,
+		def,
+		title,
+		flavor,
+		itemUuid: options.rollData?.item?.uuid,
+		actorUuid: options.rollData?.charaUID,
+		messageId: options.rollData?.messageId,
+	};
+
+	let item = (options.rollData?.item?.uuid) && fromUuidSync(options.rollData?.item?.uuid);
+	if (!item && options.rollData?.messageId) {
+		const itemData = game.messages.get(options.rollData?.messageId).flags?.dnd4e?.item;
+		if (itemData) {
+			item = new CONFIG.Item.documentClass(itemData, { parent: fromUuidSync(options.rollData?.charaUID) });
+			item.prepareData();
+		}
+	}
+	const evaluatedFormula = await item?.getAttackBonus() || Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true });
+	let attackString;		
+	if (evaluatedFormula && (game.settings.get("dnd4e", "cardAtkDisplay") == "bonus")) {
+		attackString = `+${evaluatedFormula}`;
+	} else if (ability && evaluatedFormula && (game.settings.get("dnd4e", "cardAtkDisplay") == "both")) {
+		attackString = `${CONFIG.DND4E.abilities[ability]} (+${evaluatedFormula})`;
+	} else if (ability) {
+		attackString = `${CONFIG.DND4E.abilities[ability]}`;
+	} else {
+		attackString = evaluatedFormula ? `+${evaluatedFormula}` : formula;
+	}
+	const defString = CONFIG.DND4E.defensives[def]?.labelShort;
+
+	label ??= defString ? `${attackString} ${_loc("DND4E.VS")} ${defString}` : attackString;
+	//const flavor = formatCheckFlavor(partConfig);
+	//partConfig.flavor = flavor;
+
+	const rollAttackLink = createLink(label,
+		{ ...linkConfig, type: "attack" },
+		{ icon: "fa-dice-d20" },
+	);
+	rollAttackLink.dataset.tooltip = formatTooltip({ ...linkConfig, type: "attack" });
+
+	return rollAttackLink;
 }
 
 /* -------------------------------------------- */
@@ -161,7 +256,8 @@ export async function handleRoll(event, target) {
 	window.getSelection().empty();
 	try {
 		switch (dataset.type) {
-			case "check": return await rollCheck(dataset, event);
+			case "attack": return rollAttack(dataset, event);
+			case "check": return rollCheck(dataset, event);
 		}
 	} finally {
 		link.disabled = false;
@@ -194,6 +290,85 @@ async function rollCheck(config, event) {
 			await actor.rollAbility(skillOrAbility, { targetValue: dc, flavor });
 		}
 	}
+}
+
+/* -------------------------------------------------- */
+
+/**
+ * Helper function that constructs the attack roll.
+ * @param {object} config
+ * @param {PointerEvent} event
+ */
+async function rollAttack(config, event) {
+	const { formula, resolvedFormula, ability, def, title, itemUuid, actorUuid, messageId } = config;
+	let flavor = config.flavor;
+	if (!formula) throw new Error("Attack enricher must provide a formula");
+
+	const parts = [resolvedFormula];
+	const partsExpressionReplacements = [{ value: formula, target: resolvedFormula }];
+
+	let actor = fromUuidSync(actorUuid);
+	if (!actor) {
+		const actors = Helper.tokensToActors();
+		if (actors.size > 1) {
+			ui.notifications.warn("EDITOR.DND4E.Inline.Warning.TooManyActors", { localize: true });
+			return;
+		}
+		if (actors.size) {		
+			actor = Array.from(actors)[0];
+		}
+	}
+
+	let item = fromUuidSync(itemUuid);
+	if (!item && messageId) {
+		const itemData = game.messages.get(messageId).flags?.dnd4e?.item;
+		if (itemData) {
+			item = new CONFIG.Item.documentClass(itemData, { parent: actor });
+			item.prepareData();
+		}
+	}
+
+	const rollData = item?.getRollData() || actor?.getRollData() || {};
+
+	const options = {};
+	options.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
+	options.rollData = { ...rollData, isAttackRoll: true, commonAttackBonuses: rollData?.commonAttackBonuses ?? {} };
+	if (ability && options.rollData.item?.attack) options.rollData.item.attack.ability = ability;
+	options.attackedDef = def;
+
+	const powerData = rollData.item;
+	const weaponData = Helper.getWeaponUse(rollData.item, actor)?.getRollData().item;
+	Helper.applyEffects(rollData, actor, powerData, weaponData, "attack", null, null, options);
+
+	if (!flavor && item) {
+		flavor = `${_loc("DND4E.AttackRoll")}: ${item.name}`;
+		if (weaponData) flavor += `<br />${weaponData.name}`;
+	} else if (!flavor) {
+		flavor = _loc("DND4E.AttackRoll");
+	}
+
+	// Compose roll options
+	const rollConfig = {
+		parts,
+		partsExpressionReplacements,
+		actor,
+		item: item,
+		data: options.rollData,
+		title: title ?? _loc("DND4E.AttackRoll"),
+		flavor,
+		event: options.event,
+		speaker: ChatMessage.getSpeaker({ actor }),
+		dialogOptions: {
+			width: 400,
+			top: options.event ? options.event.clientY - 80 : null,
+			left: window.innerWidth - 710,
+		},
+		isAttackRoll: true,
+		messageData: { "flags.dnd4e.roll": { type: "attack" } },
+		options,
+	};
+
+	return d20Roll(rollConfig);
 }
 
 /* -------------------------------------------------- */
@@ -238,6 +413,29 @@ function formatCheckLabel(config) {
 	label = _loc(`EDITOR.DND4E.Inline.Check${longSuffix}`, { check: label });
 
 	return label;
+}
+
+/* -------------------------------------------------- */
+
+/**
+ * Create a tooltip for a roll message.
+ * @param {object} config  Configuration data.
+ * @returns {string}
+ */
+function formatTooltip(config) {
+	let label;
+	if (config.type === "check") {
+		if (config.rollType === "skill") {
+			label = CONFIG.DND4E.skills[config.skillOrAbility]?.label;
+		} else if (config.rollType === "ability") {
+			label = CONFIG.DND4E.abilities[config.skillOrAbility];
+		}
+		label = _loc("EDITOR.DND4E.Inline.CheckLong", { check: label });
+	} else if (config.type === "attack") {
+		label = _loc("DND4E.Attack");
+	}
+
+	return _loc("DND4E.RollThing", { thing: label });
 }
 
 /* -------------------------------------------------- */
@@ -322,6 +520,7 @@ export async function onRender(element) {
 	for (const link of element.querySelectorAll("a")) {
 		link.addEventListener("click", (ev) => {
 			switch (link.dataset.type) {
+				case "attack":
 				case "check":
 					return handleRoll(link, ev.target);
 				case "requestCheck":
