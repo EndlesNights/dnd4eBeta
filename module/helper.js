@@ -168,6 +168,17 @@ export class Helper {
 		return new RegExp(/@([a-z.0-9_-]+)/gi);
 	}
 
+	/**
+	 * Applies custom bonuses from active effects
+	 * @param {object} rollData The data object of the roll being performed
+	 * @param {Actor4e} actor The actor whose active effects should be checked
+     * @param {CharacterData} powerData Roll data for the power being used
+     * @param {CharacterData} weaponData Roll data for the weapon being used
+     * @param {string} effectType What type of thing the compiled bonuses should be applied to: "attack", "damage", or "defence"
+     * @param {Array} extraDamage An array that extra damage dice terms are added to
+     * @param {boolean} target Whether or not the provided actor is the target of the power in use
+     * @param {object} options An object containing the bonuses that can be applied; item, feat, race, etc.
+	 */
 	static async applyEffects(rollData, actor, powerData = {}, weaponData = null, effectType, extraDamage = [], target = false, options = {}) {
 		const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
 		if (!actor) return;
