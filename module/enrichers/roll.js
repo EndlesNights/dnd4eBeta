@@ -336,7 +336,7 @@ async function rollAttack(config, event) {
 
 	const powerData = rollData.item;
 	const weaponData = Helper.getWeaponUse(rollData.item, actor)?.getRollData().item;
-	Helper.applyEffects(rollData, actor, powerData, weaponData, "attack", null, null, options);
+	await Helper.applyEffects(rollData, actor, powerData, weaponData, "attack", null, null, options);
 
 	if (!flavor && item) {
 		flavor = `${_loc("DND4E.AttackRoll")}: ${item.name}`;
