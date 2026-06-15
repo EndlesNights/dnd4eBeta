@@ -203,7 +203,7 @@ export async function enrichAttack(parsedConfig, label, options) {
 			item.prepareData();
 		}
 	}
-	const evaluatedFormula = await item?.getAttackBonus() || Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true });
+	const evaluatedFormula = await item?.getAttackBonus() || Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true, suppressError: true });
 	let attackString;		
 	if (evaluatedFormula && (game.settings.get("dnd4e", "cardAtkDisplay") == "bonus")) {
 		attackString = `+${evaluatedFormula}`;
@@ -277,7 +277,7 @@ export async function enrichDamageHealing(parsedConfig, label, options) {
 			item.prepareData();
 		}
 	}
-	const evaluatedFormula = Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true }) || replacedFormula;
+	const evaluatedFormula = Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true, suppressError: true }) || replacedFormula;
 	const typedFormula = damageType.length ? `(${evaluatedFormula})[${damageType.join(",")}]` : evaluatedFormula;
 	const formatter = game.i18n.getListFormatter();
 	let damageString = evaluatedFormula;
@@ -463,7 +463,7 @@ async function rollAttack(config, event) {
  */
 async function rollDamageHealing(config, event) {
 	let { type, formula, replacedFormula, typedFormula, damageType, title, itemUuid, actorUuid, messageId } = config;
-	damageType = damageType.split(",");
+	damageType = damageType?.split(",") || [];
 	let flavor = config.flavor;
 	if (!formula) throw new Error("Attack enricher must provide a formula");
 
