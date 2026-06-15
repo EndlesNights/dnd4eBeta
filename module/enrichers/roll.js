@@ -1,6 +1,6 @@
 import { createLink, parseConfig, addDataset } from "./utils.js";
 
-import { d20Roll } from "../dice.js";
+import { d20Roll, damageRoll } from "../dice.js";
 import { Helper } from "../helper.js";
 import Roll4e from "../dice/Roll.js";
 
@@ -10,7 +10,7 @@ export const id = "DND4E.roll";
 /* -------------------------------------------------- */
 
 /** @type {TextEditorEnricherConfig["pattern"]} */
-export const pattern = new RegExp("\\[\\[/(?<type>skill|ability|attack|damage)(?<config> .*?)?]](?!])(?:{(?<label>[^}]+)})?", "gi");
+export const pattern = new RegExp("\\[\\[/(?<type>skill|ability|attack|damage|healing)(?<config> .*?)?]](?!])(?:{(?<label>[^}]+)})?", "gi");
 
 /* -------------------------------------------------- */
 
@@ -32,6 +32,9 @@ export function enricher(match, options) {
 			return enrichCheck(parsedConfig, label, options);
 		case "attack":
 			return enrichAttack(parsedConfig, label, options);
+		case "damage":
+		case "healing":
+			return enrichDamageHealing(parsedConfig, label, options);
 	}
 }
 
@@ -224,6 +227,85 @@ export async function enrichAttack(parsedConfig, label, options) {
 	return rollAttackLink;
 }
 
+/* -------------------------------------------------- */
+
+/**
+ * Enrich a damage or healing link.
+ * @param {ParsedConfig} parsedConfig      Configuration data.
+ * @param {string} [label]             Optional label to replace default text.
+ * @param {EnrichmentOptions} options  Options provided to customize text enrichment.
+ * @returns {HTMLElement|null}         An HTML link if the enricher could be built, otherwise null.
+ */
+export async function enrichDamageHealing(parsedConfig, label, options) {
+	let { type, formula, damageType, healingType, title, flavor } = parsedConfig;
+	damageType = damageType || "";
+	healingType = healingType || "healing";
+
+	const replacedFormula = (typeof formula === "string") ? Roll.replaceFormulaData(formula, options.rollData, { recursive: true }) : formula;
+
+	const damageTypes = { ...CONFIG.DND4E.damageTypes };
+	const healingTypes = CONFIG.DND4E.healingTypes;
+	delete damageTypes.damage;
+	delete damageTypes.ongoing;
+	if (type === "damage") damageType = damageType.split(",").map((t) => t.toLowerCase().trim()).filter((t) => (t in damageTypes));
+	if (type === "healing") damageType = healingType.split(",").map((t) => t.toLowerCase().trim()).filter((t) => (t in healingTypes));
+
+	for (const value of parsedConfig.values) {
+		const normalizedValue = value.toLowerCase();
+		if ((type === "damage") && (normalizedValue in damageTypes)) damageType.push(normalizedValue);
+		if ((type === "healing") && (normalizedValue in healingTypes)) damageType.push(normalizedValue);
+	}
+
+	damageType = [...new Set(damageType)];
+
+	const linkConfig = {
+		type,
+		formula,
+		replacedFormula,
+		title,
+		flavor,
+		itemUuid: options.rollData?.item?.uuid,
+		actorUuid: options.rollData?.charaUID,
+		messageId: options.rollData?.messageId,
+	};
+
+	let item = (options.rollData?.item?.uuid) && fromUuidSync(options.rollData?.item?.uuid);
+	if (!item && options.rollData?.messageId) {
+		const itemData = game.messages.get(options.rollData?.messageId).flags?.dnd4e?.item;
+		if (itemData) {
+			item = new CONFIG.Item.documentClass(itemData, { parent: fromUuidSync(options.rollData?.charaUID) });
+			item.prepareData();
+		}
+	}
+	const evaluatedFormula = Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true }) || replacedFormula;
+	const typedFormula = damageType.length ? `(${evaluatedFormula})[${damageType.join(",")}]` : evaluatedFormula;
+	const formatter = game.i18n.getListFormatter();
+	let damageString = evaluatedFormula;
+	if (type === "damage") {
+		const typeString = damageType.length ? _loc("DND4E.TypeDamage", { type: formatter.format(damageType) }) : _loc("DND4E.Damage");
+		damageString = `${damageString} ${typeString}`;
+	} else if (type === "healing") {
+		let localizedHealingTypes = [];
+		if (damageType.includes("healing")) {
+			localizedHealingTypes.push(_loc("DND4E.Healing"));
+		}
+		if (damageType.includes("temphp")) {
+			localizedHealingTypes.push(_loc("DND4E.TempHPTip"));
+		}
+		damageString = `${damageString} ${formatter.format(localizedHealingTypes)}`;
+	}
+
+	label ??= damageString;
+
+	const rollDamageLink = createLink(label,
+		{ ...linkConfig, damageType: damageType.join(","), typedFormula, type },
+		{ icon: "fa-dice-d20" },
+	);
+	rollDamageLink.dataset.tooltip = formatTooltip({ ...linkConfig, type });
+
+	return rollDamageLink;
+}
+
 /* -------------------------------------------- */
 
 /**
@@ -256,6 +338,8 @@ export async function handleRoll(event, target) {
 		switch (dataset.type) {
 			case "attack": return rollAttack(dataset, event);
 			case "check": return rollCheck(dataset, event);
+			case "damage":
+			case "healing": return rollDamageHealing(dataset, event);
 		}
 	} finally {
 		link.disabled = false;
@@ -373,6 +457,93 @@ async function rollAttack(config, event) {
 /* -------------------------------------------------- */
 
 /**
+ * Helper function that constructs the attack roll.
+ * @param {object} config
+ * @param {PointerEvent} event
+ */
+async function rollDamageHealing(config, event) {
+	let { type, formula, replacedFormula, typedFormula, damageType, title, itemUuid, actorUuid, messageId } = config;
+	damageType = damageType.split(",");
+	let flavor = config.flavor;
+	if (!formula) throw new Error("Attack enricher must provide a formula");
+
+	const parts = [typedFormula];
+	const partsExpressionReplacements = [{ value: formula, target: replacedFormula }];
+
+	let actor = fromUuidSync(actorUuid);
+	if (!actor) {
+		const actors = Helper.tokensToActors();
+		if (actors.size > 1) {
+			ui.notifications.warn("EDITOR.DND4E.Inline.Warning.TooManyActors", { localize: true });
+			return;
+		}
+		if (actors.size) {		
+			actor = Array.from(actors)[0];
+		}
+	}
+
+	let item = fromUuidSync(itemUuid);
+	if (!item && messageId) {
+		const itemData = game.messages.get(messageId).flags?.dnd4e?.item;
+		if (itemData) {
+			item = new CONFIG.Item.documentClass(itemData, { parent: actor });
+			item.prepareData();
+		}
+	}
+
+	const rollData = item?.getRollData() || actor?.getRollData() || {};
+
+	const options = { formulaInnerData: {}, divisors: { normal: { value: 1, reason: [] }, miss: { value: 1, reason: [] }, crit: { value: 1, reason: [] } }, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
+	options.rollData = { ...rollData, isAttackRoll: false };
+
+	const powerData = rollData.item;
+	const weaponData = Helper.getWeaponUse(rollData.item, actor)?.getRollData().item;
+	let extraDamageParts = [];
+	await Helper.applyEffects(rollData, actor, powerData, weaponData, "damage", extraDamageParts, null, options);
+	// Extra damage
+	if (extraDamageParts.length) {
+		for (const part of extraDamageParts) {
+			parts.push(part);
+			partsExpressionReplacements.unshift({ target: part, value: "@extraDamage" });
+		}
+	}
+
+	const formatter = game.i18n.getListFormatter();
+	const damageString = type === "damage" ? "DND4E.DamageRoll" : (type === "healing" ? "DND4E.HealingRoll" : "");
+	if (!flavor && item) {
+		flavor = `${item.name} - ${_loc(damageString)}`;
+		if (damageType.length) flavor += ` (${formatter.format(damageType)})`;
+		if (weaponData) flavor += ` with ${weaponData.name}`;
+	} else if (!flavor) {
+		flavor = _loc(damageString);
+	}
+
+	// Compose roll options
+	const rollConfig = {
+		parts,
+		partsExpressionReplacements,
+		actor,
+		data: options.rollData,
+		title: title ?? _loc(damageString),
+		flavor,
+		event: options.event,
+		speaker: ChatMessage.getSpeaker({ actor }),
+		dialogOptions: {
+			width: 400,
+			top: options.event ? options.event.clientY - 80 : null,
+			left: window.innerWidth - 710,
+		},
+		messageData: { "flags.dnd4e.roll": { type: "damage" } },
+		healingRoll: type === "healing",
+		options,
+	};
+
+	return damageRoll(rollConfig);
+}
+
+/* -------------------------------------------------- */
+
+/**
  * Create a test request chat message.
  * @param {HTMLAnchorElement} link
  * @param {PointerEvent} event
@@ -423,15 +594,24 @@ function formatCheckLabel(config) {
  */
 function formatTooltip(config) {
 	let label;
-	if (config.type === "check") {
-		if (config.rollType === "skill") {
-			label = CONFIG.DND4E.skills[config.skillOrAbility]?.label;
-		} else if (config.rollType === "ability") {
-			label = CONFIG.DND4E.abilities[config.skillOrAbility];
-		}
-		label = _loc("EDITOR.DND4E.Inline.CheckLong", { check: label });
-	} else if (config.type === "attack") {
-		label = _loc("DND4E.Attack");
+	switch (config.type) {
+		case "check":
+			if (config.rollType === "skill") {
+				label = CONFIG.DND4E.skills[config.skillOrAbility]?.label;
+			} else if (config.rollType === "ability") {
+				label = CONFIG.DND4E.abilities[config.skillOrAbility];
+			}
+			label = _loc("EDITOR.DND4E.Inline.CheckLong", { check: label });
+			break;
+		case "attack":
+			label = _loc("DND4E.Attack");
+			break;
+		case "damage":
+			label = _loc("DND4E.Damage");
+			break;
+		case "healing":
+			label = _loc("DND4E.Healing");
+			break;
 	}
 
 	return _loc("DND4E.RollThing", { thing: label });
@@ -519,8 +699,9 @@ export async function onRender(element) {
 	for (const link of element.querySelectorAll("a")) {
 		link.addEventListener("click", (ev) => {
 			switch (link.dataset.type) {
-				case "attack":
 				case "check":
+				case "attack":
+				case "damage":
 					return handleRoll(link, ev.target);
 				case "requestCheck":
 					return requestCheck(link, ev);

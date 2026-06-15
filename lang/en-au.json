@@ -1110,6 +1110,7 @@
 "DND4E.Trigger": "Trigger",
 "DND4E.Turn": "Turn",
 "DND4E.Type": "Type",
+"DND4E.TypeDamage": "{type} damage",
 "DND4E.Unequipped": "Not Equipped",
 "DND4E.Unlimited": "Unlimited",
 "DND4E.UntypedImm": "Condition & Special Immunities",
