@@ -382,12 +382,12 @@ async function rollCheck(config, event) {
  * @param {PointerEvent} event
  */
 async function rollAttack(config, event) {
-	const { formula, resolvedFormula, ability, def, title, itemUuid, actorUuid, messageId } = config;
+	const { formula, replacedFormula, ability, def, title, itemUuid, actorUuid, messageId } = config;
 	let flavor = config.flavor;
 	if (!formula) throw new Error("Attack enricher must provide a formula");
 
-	const parts = [resolvedFormula];
-	const partsExpressionReplacements = [{ value: formula, target: resolvedFormula }];
+	const parts = [replacedFormula];
+	const partsExpressionReplacements = [{ value: formula, target: replacedFormula }];
 
 	let actor = fromUuidSync(actorUuid);
 	if (!actor) {
