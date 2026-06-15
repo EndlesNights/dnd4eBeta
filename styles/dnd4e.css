@@ -3661,12 +3661,12 @@ input[type="text"].dice-count{
 		.dice-tooltip{ 
 			transition:grid-template-rows 250ms ease;
 		}
-		.dice-total.success{
+		.dice-total:is(.success,.hit){
 			color:var(--color-text-good);
 			background:var(--button-background-color);
 			border:1px solid #006c00;
 		}
-		.dice-total.failure{
+		.dice-total:is(.failure,.miss){
 			color:var(--color-text-bad);
 			background:var(--button-background-color);
 			border:1px solid #6e0000;
@@ -3686,13 +3686,12 @@ input[type="text"].dice-count{
 			border-radius:3px;
 			box-shadow:0 0 2px #fff inset;
 		}
-		.hit-prediction.fumble,
-		.dice-roll .hit-prediction.miss{
+		.hit-prediction:is(.miss,.fumble),
+		.dice-roll .hit-prediction:is(.miss,.fumble){
 			color:var(--color-text-bad);
 		}
-		.hit-prediction.critical,
-		.hit-prediction.hit{
-			color:var(--color-text-good)
+		.hit-prediction:is(.critical,.hit){
+			color:var(--color-text-good);
 		}
 		&.expanded{
 			.dice-tooltip{
