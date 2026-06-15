@@ -152,8 +152,6 @@ export async function enrichCheck(parsedConfig, label, options) {
 export async function enrichAttack(parsedConfig, label, options) {
 	let { formula, ability, def, title, flavor } = parsedConfig;
 
-	const replacedFormula = (typeof formula === "string") ? Roll.replaceFormulaData(formula, options.rollData, { recursive: true }) : formula;
-
 	const longAbilities = Object.fromEntries(Array.from(Object.entries(CONFIG.DND4E.abilities)).map((arr) => [arr[1].toLowerCase(), arr[0]]));
 	const longDefenses = Object.fromEntries(Array.from(Object.entries(CONFIG.DND4E.defensives)).map((arr) => [arr[1].labelShort.toLowerCase(), arr[0]]));
 	delete longDefenses.ac;
@@ -167,21 +165,24 @@ export async function enrichAttack(parsedConfig, label, options) {
 		def = longDefenses[def];
 	}
 
+	const formulaParts = [];
 	for (const value of parsedConfig.values) {
 		const normalizedValue = value.toLowerCase();
 		if (!ability && (normalizedValue in CONFIG.DND4E.abilities)) {
 			ability = normalizedValue;
-		}
-		if (!ability && (normalizedValue in longAbilities)) {
+		} else if (!ability && (normalizedValue in longAbilities)) {
 			ability = longAbilities[normalizedValue];
-		}
-		if (!def && (normalizedValue in CONFIG.DND4E.defensives)) {
+		} else if (!def && (normalizedValue in CONFIG.DND4E.defensives)) {
 			def = normalizedValue;
-		}
-		if (!def && (normalizedValue in longDefenses)) {
+		} else if (!def && (normalizedValue in longDefenses)) {
 			def = longDefenses[normalizedValue];
+		} else {
+			formulaParts.push(normalizedValue);
 		}
-	}	
+	}
+
+	formula = formula || formulaParts.join(" ");
+	const replacedFormula = (typeof formula === "string") ? Roll.replaceFormulaData(formula, options.rollData, { recursive: true }) : formula;
 
 	const linkConfig = {
 		formula,
@@ -203,7 +204,7 @@ export async function enrichAttack(parsedConfig, label, options) {
 			item.prepareData();
 		}
 	}
-	const evaluatedFormula = await item?.getAttackBonus() || Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true });
+	const evaluatedFormula = await item?.getAttackBonus() || Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true, suppressError: true });
 	let attackString;		
 	if (evaluatedFormula && (game.settings.get("dnd4e", "cardAtkDisplay") == "bonus")) {
 		attackString = `+${evaluatedFormula}`;
@@ -241,8 +242,6 @@ export async function enrichDamageHealing(parsedConfig, label, options) {
 	damageType = damageType || "";
 	healingType = healingType || "healing";
 
-	const replacedFormula = (typeof formula === "string") ? Roll.replaceFormulaData(formula, options.rollData, { recursive: true }) : formula;
-
 	const damageTypes = { ...CONFIG.DND4E.damageTypes };
 	const healingTypes = CONFIG.DND4E.healingTypes;
 	delete damageTypes.damage;
@@ -250,11 +249,17 @@ export async function enrichDamageHealing(parsedConfig, label, options) {
 	if (type === "damage") damageType = damageType.split(",").map((t) => t.toLowerCase().trim()).filter((t) => (t in damageTypes));
 	if (type === "healing") damageType = healingType.split(",").map((t) => t.toLowerCase().trim()).filter((t) => (t in healingTypes));
 
+	const formulaParts = [];
 	for (const value of parsedConfig.values) {
 		const normalizedValue = value.toLowerCase();
 		if ((type === "damage") && (normalizedValue in damageTypes)) damageType.push(normalizedValue);
-		if ((type === "healing") && (normalizedValue in healingTypes)) damageType.push(normalizedValue);
+		else if ((type === "healing") && (normalizedValue in healingTypes)) damageType.push(normalizedValue);
+		else formulaParts.push(normalizedValue);
 	}
+
+	formula = formula || formulaParts.join(" ");
+
+	const replacedFormula = (typeof formula === "string") ? Roll.replaceFormulaData(formula, options.rollData, { recursive: true }) : formula;
 
 	damageType = [...new Set(damageType)];
 
@@ -277,7 +282,7 @@ export async function enrichDamageHealing(parsedConfig, label, options) {
 			item.prepareData();
 		}
 	}
-	const evaluatedFormula = Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true }) || replacedFormula;
+	const evaluatedFormula = Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true, suppressError: true }) || replacedFormula;
 	const typedFormula = damageType.length ? `(${evaluatedFormula})[${damageType.join(",")}]` : evaluatedFormula;
 	const formatter = game.i18n.getListFormatter();
 	let damageString = evaluatedFormula;
@@ -382,12 +387,12 @@ async function rollCheck(config, event) {
  * @param {PointerEvent} event
  */
 async function rollAttack(config, event) {
-	const { formula, resolvedFormula, ability, def, title, itemUuid, actorUuid, messageId } = config;
+	const { formula, replacedFormula, ability, def, title, itemUuid, actorUuid, messageId } = config;
 	let flavor = config.flavor;
 	if (!formula) throw new Error("Attack enricher must provide a formula");
 
-	const parts = [resolvedFormula];
-	const partsExpressionReplacements = [{ value: formula, target: resolvedFormula }];
+	const parts = [replacedFormula];
+	const partsExpressionReplacements = [{ value: formula, target: replacedFormula }];
 
 	let actor = fromUuidSync(actorUuid);
 	if (!actor) {
@@ -419,7 +424,7 @@ async function rollAttack(config, event) {
 	options.attackedDef = def;
 
 	const powerData = rollData.item;
-	const weaponData = Helper.getWeaponUse(rollData.item, actor)?.getRollData().item;
+	const weaponData = Helper.getWeaponUse(powerData, actor)?.getRollData().item;
 	await Helper.applyEffects(rollData, actor, powerData, weaponData, "attack", null, null, options);
 
 	if (!flavor && item) {
@@ -463,7 +468,7 @@ async function rollAttack(config, event) {
  */
 async function rollDamageHealing(config, event) {
 	let { type, formula, replacedFormula, typedFormula, damageType, title, itemUuid, actorUuid, messageId } = config;
-	damageType = damageType.split(",");
+	damageType = damageType?.split(",") || [];
 	let flavor = config.flavor;
 	if (!formula) throw new Error("Attack enricher must provide a formula");
 
@@ -497,7 +502,7 @@ async function rollDamageHealing(config, event) {
 	options.rollData = { ...rollData, isAttackRoll: false };
 
 	const powerData = rollData.item;
-	const weaponData = Helper.getWeaponUse(rollData.item, actor)?.getRollData().item;
+	const weaponData = Helper.getWeaponUse(powerData, actor)?.getRollData().item;
 	let extraDamageParts = [];
 	await Helper.applyEffects(rollData, actor, powerData, weaponData, "damage", extraDamageParts, null, options);
 	// Extra damage

@@ -23,15 +23,16 @@ export class Helper {
 	/**
      * Helper function to perform synchronous evaluation of a user-input formula
      * User-input formulas may throw if blank or otherwise contain invalid terms.
-     * @param {string} formula                      The roll formula. May be blank or otherwise invalid.
-     * @param {object} [rollData]                   The roll data for parsing.
-     * @param {object} [options]                    Options for this method to forward.
-     * @param {boolean} [options.strict=false]      Forwarded to {@linkcode Roll.evaluateSync}.
-     * @param {boolean} [options.allowStrings=true] Forwarded to {@linkcode Roll.evaluateSync}.
-     * @param {string} [options.contextName]        Helpful string put into the error message.
+     * @param {string} formula                         The roll formula. May be blank or otherwise invalid.
+     * @param {object} [rollData]                      The roll data for parsing.
+     * @param {object} [options]                       Options for this method to forward.
+     * @param {boolean} [options.strict=false]         Forwarded to {@linkcode Roll.evaluateSync}.
+     * @param {boolean} [options.suppressError=false]  Whether or not to suppress the error message.
+     * @param {boolean} [options.allowStrings=true]    Forwarded to {@linkcode Roll.evaluateSync}.
+     * @param {string} [options.contextName]           Helpful string put into the error message.
      * @returns {number} Returns the total, or 0 if it failed to evaluate.
      */
-	static evaluateFormula(formula, rollData = {}, { strict = false, allowStrings = true, contextName = "unknown" } = {}) {
+	static evaluateFormula(formula, rollData = {}, { strict = false, suppressError = false, allowStrings = true, contextName = "unknown" } = {}) {
 		if (typeof formula === "number") return formula;
 		let result = 0;
 		try {
@@ -39,7 +40,7 @@ export class Helper {
 			result = evaluatedResult;
 		}
 		catch (e) {
-			console.error(`Failed to evaluate formula ${formula} in ${contextName}`, e);
+			if (!suppressError) console.error(`Failed to evaluate formula ${formula} in ${contextName}`, e);
 		}
 		return result;
 	}
@@ -86,8 +87,8 @@ export class Helper {
 	/**
 	 * Find A suitable weapon to use with the power.
 	 * Either the specified weapon, or a weapon that matches the itemData.weaponType category if itemData.weaponUse is set to default
-	 * @param itemData The Power being used
-	 * @param actor The actor that owns the power
+	 * @param {CharacterData} itemData The Power being used
+	 * @param {Actor} actor The actor that owns the power
 	 * @returns {Item4e|null} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
 	 */
 	static getWeaponUse(itemData, actor) {
