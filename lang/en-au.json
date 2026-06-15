@@ -1585,7 +1585,8 @@
 	"RequestRoll": "Request Roll",
 	"RollRequest": "Roll Request",
 	"Warning": {
-		"NoActor": "No selected or assigned actor could be found to execute this roll."
+		"NoActor": "No selected or assigned actor could be found to execute this roll.",
+        "TooManyActors": "Only a single selected or assigned actor is valid for executing this roll."
 	}
 },
 
@@ -1799,8 +1800,8 @@
 "SETTINGS.4eAutoDoTsPublicAll": "All creatures",
 "SETTINGS.4eAutoDoTsPublicNone": "No creatures",
 "SETTINGS.4eAutoDoTsPublicPCs": "Player characters only",
-"SETTINGS.4eAutomationCombatN": "Basic Combat Automation",
-"SETTINGS.4eAutomationCombatL": "Determine whether the Attack Roll hits or misses.",
+"SETTINGS.4eAutomationCombatN": "Attack rolls display Hit/Miss",
+"SETTINGS.4eAutomationCombatL": "When somebody rolls an attack with a defined target, the chat output indicates whether the result is expected to hit or miss (also when it is a critical hit/miss).",
 "SETTINGS.4eAutoSpellTemplateL": "When a spell is cast, defaults to begin the process to create the corresponding Measured Template if any (requires TRUSTED or higher player role)",
 "SETTINGS.4eAutoSpellTemplateN": "Always place Spell Template",
 "SETTINGS.4eCardAtkDisplayL": "When an attack has an associated ability score, how should the auto power card show the name and attack bonus value?",
