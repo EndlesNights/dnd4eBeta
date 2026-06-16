@@ -534,7 +534,7 @@ async function rollDamageHealing(config, event) {
 		flavor = _loc(damageString);
 	}
 
-	if (damageType) {
+	if (damageType.length) {
 		for (let i = 0; i < parts.length; i++) {
 			parts[i] = `(${parts[i]})[${damageType.join(",")}]`;
 		}
