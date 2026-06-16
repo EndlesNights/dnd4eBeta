@@ -206,7 +206,7 @@ export class Helper {
 				if (weaponData) effectTargets.push("weapon");
 			}
 			actorEffects.forEach((effect) => {
-				effect.changes.forEach((change => {
+				effect.system.changes.forEach((change => {
 					for (const effectTarget of effectTargets) {
 						if (change.key.startsWith(`${effectTarget}.${effectType}`)) {
 							effectsToProcess.push({
@@ -430,7 +430,7 @@ export class Helper {
 			const effectsToProcess = [];
 			const effects = actor.getActiveEffects().filter((effect) => effect.disabled === false);
 			effects.forEach((effect) => {
-				effect.changes.forEach((change => {
+				effect.system.changes.forEach((change => {
 					if (change.key.startsWith(`effect.${effectType}`)) {
 						effectsToProcess.push({
 							name: effect.name,
@@ -981,14 +981,14 @@ export class Helper {
 						
 						if (hasMark) {
 							// If the effect already has `system.marker` assume it's for a reason
-							if (!e.changes.some(c => c.key === "system.marker")) {
+							if (!e.system.changes.some(c => c.key === "system.marker")) {
 								const changeData = {
 									key: "system.marker",
 									mode: 5,
 									value: e.origin,
 									priority: null,
 								};							
-								newEffectData.changes.push(changeData);
+								newEffectData.system.changes.push(changeData);
 							}
 							
 							if (t?.actor?.allApplicableEffects) {
