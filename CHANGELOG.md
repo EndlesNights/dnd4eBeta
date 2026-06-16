@@ -1,5 +1,17 @@
 # Changelog
 
+## Version 0.8.3
+SagaTympana has been hard at work on some exciting new features for us to enjoy! They are all properly documented, so please check the included Manual & Help compendium, or the GitHub wiki, for all the details. Enjoy!
+### 🎉New Features
+* New enrichers to call for skill and ability checks directly from item cards, chat messages and journals. Players can use them to trigger checks included in a power or feature; GMs can request a specific check with DC already assigned. (SagaTympana)
+* New enrichers to call for attacks and damage rolls directly from item cards, chat messages and journals. Perfect for conditional damage riders, secondary/followup attack rolls, and damage rolled outside of a specific power. (SagaTympana)
+* New `grants` scope usable by "Custom 4e Modifiers" in Active Effects. Use this scope create a bonus that's granted to *incoming* attacks, rather than outgoing. (SagaTympana)
+### Other Updates
+* The "Basic Comnbat Automation" setting has been renamed to "Attack rolls display Hit/Miss", to better clarify its scope as we add more and more automation. (FoxLee)
+* Documentation of new features in compendium and wiki (FoxLee)
+* Under the Hood improvements including a refactor of damage parts (SagaTympana)
+* Minor styling fixes, including restoring hit prediction colours (FoxLee)
+
 ## Version 0.8.2
 After a testing period with only minor issues, this release will move the 0.8 branch to STABLE. Thank you to everybody who helped hunt the bugs!
 * Fixed a bug preventing self-targeting effects from being created (SagaTympana)
