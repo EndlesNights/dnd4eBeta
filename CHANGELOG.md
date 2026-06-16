@@ -7,7 +7,7 @@ SagaTympana has been hard at work on some exciting new features for us to enjoy!
 * New enrichers to call for attacks and damage rolls directly from item cards, chat messages and journals. Perfect for conditional damage riders, secondary/followup attack rolls, and damage rolled outside of a specific power. (SagaTympana)
 * New `grants` scope usable by "Custom 4e Modifiers" in Active Effects. Use this scope create a bonus that's granted to *incoming* attacks, rather than outgoing. (SagaTympana)
 ### Other Updates
-* The "Basic Comnbat Automation" setting has been renamed to "Attack rolls display Hit/Miss", to better clarify its scope as we add more and more automation. (FoxLee)
+* The "Basic Combat Automation" setting has been renamed to "Attack rolls display Hit/Miss", to better clarify its scope as we add more and more automation. (FoxLee)
 * Documentation of new features in compendium and wiki (FoxLee)
 * Under the Hood improvements including a refactor of damage parts (SagaTympana)
 * Minor styling fixes, including restoring hit prediction colours (FoxLee)
