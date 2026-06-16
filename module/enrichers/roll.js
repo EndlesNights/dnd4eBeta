@@ -518,7 +518,7 @@ async function rollDamageHealing(config, event) {
 			partsExpressionReplacement.unshift({ target: part, value: "@extraDamage" });
 			if (partsCrit) {
 				let critDamage = new Roll("part").evaluateSync({ maximize: true });
-				partsCrit.push(critDamage);
+				partsCrit.push(critDamage.total);
 				partsCritExpressionReplacement.unshift({ target: critDamage, value: "@extraDamage" });
 			}
 		}
