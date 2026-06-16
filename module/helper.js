@@ -1007,7 +1007,7 @@ export class Helper {
 					}
 
 					if (actor.isOwner || game.user.isGM) {
-						await actor.newActiveEffect(newEffectData);
+						await actor.createEmbeddedDocuments("ActiveEffect", [newEffectData]);
 					} else {
 						game.socket.emit("system.dnd4e", {
 							actorID: actor.id,
