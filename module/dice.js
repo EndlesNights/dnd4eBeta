@@ -555,14 +555,14 @@ export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionR
 		buttons.push({
 			action: "normal",
 			// icon: "fa-solid fa-dice-d20",
-			label: _loc(allowCritical ? "DND4E.Normal" : "DND4E.Roll"),
+			label: _loc((partsCrit?.length || partsMiss?.length) ? "DND4E.Normal" : "DND4E.Roll"),
 			type: "submit",
 		});
-		if (data?.item?.miss?.halfDamage || data?.item?.miss?.formula) {
+		if (partsMiss?.length) {
 			buttons.push({
 				action: "miss",
 				// icon: "fa-solid fa-dice-d20",
-				label: _loc(allowCritical ? "DND4E.Miss" : "DND4E.Roll"),
+				label: _loc("DND4E.Miss"),
 				type: "submit",
 			});
 		}
