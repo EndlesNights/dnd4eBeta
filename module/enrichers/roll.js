@@ -538,7 +538,7 @@ async function rollDamageHealing(config, event) {
 		for (let i = 0; i < parts.length; i++) {
 			parts[i] = `(${parts[i]})[${damageType.join(",")}]`;
 		}
-		for (let i = 0; i < partsCrit.length; i++) {
+		for (let i = 0; i < partsCrit?.length; i++) {
 			partsCrit[i] = `(${partsCrit[i]})[${damageType.join(",")}]`;
 		}  
 	}
