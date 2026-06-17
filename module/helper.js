@@ -577,7 +577,7 @@ export class Helper {
 	 */
 	static getDataObject(formula, rollData) {
 		const result = {};
-		const variables = formula.match(this.variableRegex);
+		const variables = formula?.match(this.variableRegex);
 		if (variables) {
 			variables.forEach(variable => {
 				// get the value for that variable - call this method with just the variable and with return data off
