@@ -563,6 +563,7 @@ async function rollDamageHealing(config, event) {
 		messageData: { "flags.dnd4e.roll": { type: "damage" } },
 		healingRoll: type === "healing",
 		options,
+		allowCritical: !!partsCrit?.length,
 	};
 
 	return damageRoll(rollConfig);
