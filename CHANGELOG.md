@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.8.4 Hotfix
+* Fixed a socket issue that stopped player powers from applying effects to creatures they didn't control (SagaTympana)
+* The `damage` enricher can now use `critFormula` to specify critical damange in addition to normal damage (SagaTympana)
+* Fixed an oversight in the damage roll dialogue, where a button for critical damage would appear even with no crit formula available, which would make the form unusable if clicked (SagaTympana)
+* Fixed a CSS bug where some lines in item cards lacked their correct colouration (SagaTympana)
+
 ## Version 0.8.3
 SagaTympana has been hard at work on some exciting new features for us to enjoy! They are all properly documented, so please check the included Manual & Help compendium, or the GitHub wiki, for all the details. Enjoy!
 ### 🎉New Features
