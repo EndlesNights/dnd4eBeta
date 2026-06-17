@@ -167,7 +167,7 @@ export async function enrichAttack(parsedConfig, label, options) {
 
 	const formulaParts = [];
 	for (const value of parsedConfig.values) {
-		const normalizedValue = value.toLowerCase();
+		const normalizedValue = value.includes("@") ? value : value.toLowerCase();
 		if (!ability && (normalizedValue in CONFIG.DND4E.abilities)) {
 			ability = normalizedValue;
 		} else if (!ability && (normalizedValue in longAbilities)) {
@@ -238,7 +238,7 @@ export async function enrichAttack(parsedConfig, label, options) {
  * @returns {HTMLElement|null}         An HTML link if the enricher could be built, otherwise null.
  */
 export async function enrichDamageHealing(parsedConfig, label, options) {
-	let { type, formula, damageType, healingType, title, flavor } = parsedConfig;
+	let { type, formula, critFormula, damageType, healingType, title, flavor } = parsedConfig;
 	damageType = damageType || "";
 	healingType = healingType || "healing";
 
@@ -251,7 +251,7 @@ export async function enrichDamageHealing(parsedConfig, label, options) {
 
 	const formulaParts = [];
 	for (const value of parsedConfig.values) {
-		const normalizedValue = value.toLowerCase();
+		const normalizedValue = value.includes("@") ? value : value.toLowerCase();
 		if ((type === "damage") && (normalizedValue in damageTypes)) damageType.push(normalizedValue);
 		else if ((type === "healing") && (normalizedValue in healingTypes)) damageType.push(normalizedValue);
 		else formulaParts.push(normalizedValue);
@@ -260,13 +260,16 @@ export async function enrichDamageHealing(parsedConfig, label, options) {
 	formula = formula || formulaParts.join(" ");
 
 	const replacedFormula = (typeof formula === "string") ? Roll.replaceFormulaData(formula, options.rollData, { recursive: true }) : formula;
+	const replacedCritFormula = (typeof critFormula === "string") ? Roll.replaceFormulaData(critFormula, options.rollData, { recursive: true }) : critFormula;
 
 	damageType = [...new Set(damageType)];
 
 	const linkConfig = {
 		type,
 		formula,
+		critFormula,
 		replacedFormula,
+		replacedCritFormula,
 		title,
 		flavor,
 		itemUuid: options.rollData?.item?.uuid,
@@ -303,7 +306,7 @@ export async function enrichDamageHealing(parsedConfig, label, options) {
 	label ??= damageString;
 
 	const rollDamageLink = createLink(label,
-		{ ...linkConfig, damageType: damageType.join(","), typedFormula, type },
+		{ ...linkConfig, damageType: damageType.join(","), type },
 		{ icon: "fa-dice-d20" },
 	);
 	rollDamageLink.dataset.tooltip = formatTooltip({ ...linkConfig, type });
@@ -422,6 +425,7 @@ async function rollAttack(config, event) {
 	options.rollData = { ...rollData, isAttackRoll: true, commonAttackBonuses: rollData?.commonAttackBonuses ?? {} };
 	if (ability && options.rollData.item?.attack) options.rollData.item.attack.ability = ability;
 	options.attackedDef = def;
+	options.formulaInnerData = { ...Helper.getDataObject(formula, rollData) };
 
 	const powerData = rollData.item;
 	const weaponData = Helper.getWeaponUse(powerData, actor)?.getRollData().item;
@@ -467,13 +471,15 @@ async function rollAttack(config, event) {
  * @param {PointerEvent} event
  */
 async function rollDamageHealing(config, event) {
-	let { type, formula, replacedFormula, typedFormula, damageType, title, itemUuid, actorUuid, messageId } = config;
+	let { type, formula, replacedFormula, critFormula, replacedCritFormula, damageType, title, itemUuid, actorUuid, messageId } = config;
 	damageType = damageType?.split(",") || [];
 	let flavor = config.flavor;
 	if (!formula) throw new Error("Attack enricher must provide a formula");
 
-	const parts = [typedFormula];
-	const partsExpressionReplacements = [{ value: formula, target: replacedFormula }];
+	const parts = [formula];
+	const partsExpressionReplacement = [{ value: formula, target: replacedFormula }];
+	const partsCrit = critFormula ? [critFormula] : null;
+	const partsCritExpressionReplacement = critFormula ? [{ value: critFormula, target: replacedCritFormula }] : null;
 
 	let actor = fromUuidSync(actorUuid);
 	if (!actor) {
@@ -498,7 +504,7 @@ async function rollDamageHealing(config, event) {
 
 	const rollData = item?.getRollData() || actor?.getRollData() || {};
 
-	const options = { formulaInnerData: {}, divisors: { normal: { value: 1, reason: [] }, miss: { value: 1, reason: [] }, crit: { value: 1, reason: [] } }, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
+	const options = { formulaInnerData: { ...Helper.getDataObject(formula, rollData), ...Helper.getDataObject(critFormula, rollData) }, divisors: { normal: { value: 1, reason: [] }, miss: { value: 1, reason: [] }, crit: { value: 1, reason: [] } }, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 	options.rollData = { ...rollData, isAttackRoll: false };
 
 	const powerData = rollData.item;
@@ -509,7 +515,12 @@ async function rollDamageHealing(config, event) {
 	if (extraDamageParts.length) {
 		for (const part of extraDamageParts) {
 			parts.push(part);
-			partsExpressionReplacements.unshift({ target: part, value: "@extraDamage" });
+			partsExpressionReplacement.unshift({ target: part, value: "@extraDamage" });
+			if (partsCrit) {
+				let critDamage = new Roll("part").evaluateSync({ maximize: true });
+				partsCrit.push(critDamage.total);
+				partsCritExpressionReplacement.unshift({ target: critDamage, value: "@extraDamage" });
+			}
 		}
 	}
 
@@ -523,10 +534,21 @@ async function rollDamageHealing(config, event) {
 		flavor = _loc(damageString);
 	}
 
+	if (damageType.length) {
+		for (let i = 0; i < parts.length; i++) {
+			parts[i] = `(${parts[i]})[${damageType.join(",")}]`;
+		}
+		for (let i = 0; i < partsCrit.length; i++) {
+			partsCrit[i] = `(${partsCrit[i]})[${damageType.join(",")}]`;
+		}  
+	}
+
 	// Compose roll options
 	const rollConfig = {
 		parts,
-		partsExpressionReplacements,
+		partsExpressionReplacement,
+		partsCrit,
+		partsCritExpressionReplacement,
 		actor,
 		data: options.rollData,
 		title: title ?? _loc(damageString),
