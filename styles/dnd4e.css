@@ -3516,7 +3516,7 @@ input[type="text"].dice-count{
 	}
 	.item-description,
 	.item-details .alt,
-	.item-details .alt-highlight:nth-child(even) {
+	.item-details .alt-highlight:nth-child(odd of .alt-highlight) {
 		background:var(--gradient-4e);
 	}
 }
