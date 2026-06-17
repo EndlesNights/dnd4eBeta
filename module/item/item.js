@@ -2214,12 +2214,12 @@ export default class Item4e extends Item {
 				// parts.push("@dmg");
 				// partsCrit.push("@dmg");
 				// rollData["dmg"] = actorBonus.damage;
-				damageFormula += `+ ${actorBonus.damage}`;
-				missDamageFormula += `+ ${actorBonus.damage}`;
-				critDamageFormula += `+ ${actorBonus.damage}`;
-				damageFormulaExpression += "+ @actorBonusDamage";
-				missDamageFormulaExpression += "+ @actorBonusDamage";
-				critDamageFormulaExpression += "+ @actorBonusDamage";
+				if (damageFormula) damageFormula += `+ ${actorBonus.damage}`;
+				if (missDamageFormula) missDamageFormula += `+ ${actorBonus.damage}`;
+				if (critDamageFormula) critDamageFormula += `+ ${actorBonus.damage}`;
+				if (damageFormulaExpression) damageFormulaExpression += "+ @actorBonusDamage";
+				if (missDamageFormulaExpression) missDamageFormulaExpression += "+ @actorBonusDamage";
+				if (critDamageFormulaExpression) critDamageFormulaExpression += "+ @actorBonusDamage";
 				options.formulaInnerData.actorBonusDamage = actorBonus.damage;
 			}
 		}
@@ -2312,12 +2312,12 @@ export default class Item4e extends Item {
 
 		const primaryDamageStr = primaryDamage ? `[${primaryDamage}]` : "";
 		if (primaryDamage) options.flavor = primaryDamage;
-		parts.unshift(`(${damageFormula})${primaryDamageStr}`);
-		partsCrit.unshift(`(${critDamageFormula})${primaryDamageStr}`);
-		partsMiss.unshift(`(${missDamageFormula})${primaryDamageStr}`);
-		partsExpressionReplacement.unshift({ target: parts[0], value: damageFormulaExpression });
-		partsCritExpressionReplacement.unshift({ target: partsCrit[0], value: critDamageFormulaExpression });
-		partsMissExpressionReplacement.unshift({ target: partsMiss[0], value: missDamageFormulaExpression });
+		if (damageFormula) parts.unshift(`(${damageFormula})${primaryDamageStr}`);
+		if (critDamageFormula) partsCrit.unshift(`(${critDamageFormula})${primaryDamageStr}`);
+		if (missDamageFormula) partsMiss.unshift(`(${missDamageFormula})${primaryDamageStr}`);
+		if (damageFormulaExpression) partsExpressionReplacement.unshift({ target: parts[0], value: damageFormulaExpression });
+		if (critDamageFormulaExpression) partsCritExpressionReplacement.unshift({ target: partsCrit[0], value: critDamageFormulaExpression });
+		if (missDamageFormulaExpression) partsMissExpressionReplacement.unshift({ target: partsMiss[0], value: missDamageFormulaExpression });
 		
 		const speaker = ChatMessage.getSpeaker({ actor: this.actor });
 
@@ -2346,6 +2346,7 @@ export default class Item4e extends Item {
 			fastForward,
 			isCharge: variance?.isCharge || false,
 			isOpp: variance?.isOpp || false,
+			allowCritical: !!partsCrit?.length,
 		});
 	}
 

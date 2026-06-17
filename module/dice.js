@@ -544,7 +544,7 @@ export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionR
 		});
 	}
 	else {
-		if (allowCritical) {
+		if (allowCritical && partsCrit?.length) {
 			buttons.push({
 				action: "crit",
 				// icon: "fa-solid fa-dice-d20",
