@@ -561,7 +561,7 @@ async function rollDamageHealing(config, event) {
 			left: window.innerWidth - 710,
 		},
 		messageData: { "flags.dnd4e.roll": { type: "damage" } },
-		healingRoll: type === "healing",
+		healingRoll: ["healing", "temphp"].includes(type),
 		options,
 		allowCritical: !!partsCrit?.length,
 	};
