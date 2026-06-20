@@ -1687,6 +1687,16 @@ export async function handleAutoDoTs(data) {
 	await actor.autoDoTsSocket(data.tokenID);
 }
 
+export async function handleRefreshSaveEffects(data) {
+	if (!game.user.isGM) return;
+	ActiveEffect.registry.refresh("save", { effect: data.effectID });
+}
+
+export async function handleRefreshDayEndEffects(data) {
+	if (!game.user.isGM) return;
+	ActiveEffect.registry.refresh("dayEnd", { actor: data.actorID });
+}
+
 /* "Contains" Handlebars Helper: checks if a value exists in an array.
 *
 *	@param {String} lunch The value to find

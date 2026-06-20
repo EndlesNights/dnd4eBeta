@@ -34,7 +34,7 @@ import { default as DifficultTerrainConfig } from "./apps/regionBehaviors/diffic
 import * as roll from "./enrichers/roll.js";
 import * as lookup from "./enrichers/lookup.js";
 
-import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handlePromptEoTSaves, performPreLocalization, registerHandlebarsHelpers } from "./helper.js";
+import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handleRefreshSaveEffects, handleRefreshDayEndEffects, handlePromptEoTSaves, performPreLocalization, registerHandlebarsHelpers } from "./helper.js";
 
 // Import Helpers
 import * as chat from "./chat.js";
@@ -301,6 +301,8 @@ Hooks.once("ready", function() {
 		else if (data.operation === "deleteTokenEffect") handleDeleteEffectToToken(data);
 		else if (data.operation === "promptEoTSaves") handlePromptEoTSaves(data);
 		else if (data.operation === "autoDoTs") handleAutoDoTs(data);
+		else if (data.operation === "refreshSaveEffects") handleRefreshSaveEffects(data);
+		else if (data.operation === "refreshDayEndEffects") handleRefreshDayEndEffects(data);
 		else ItemSheet4e._handleShareItem(data);
 	});
 

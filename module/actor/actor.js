@@ -2008,7 +2008,14 @@ export class Actor4e extends Actor {
 		/* Changed the roll comparison to DC from rollConfig.critical, to fix discrepancy 
 		between success/fail and effect removal when the actor has a save bonus  */
 		if (options.effectSave && (r.total >= saveDC)) {
-			ActiveEffect.registry.refresh("save", { effect: options.effectId });
+			if (game.user.isGM) {
+				ActiveEffect.registry.refresh("save", { effect: options.effectId });
+			} else {
+				await game.socket.emit("system.dnd4e", {
+					operation: "refreshSaveEffects",
+					effectID: options.effectId,
+				});
+			}
 		}
 	}
 
@@ -2202,7 +2209,14 @@ export class Actor4e extends Actor {
 			}
 		}
 
-		ActiveEffect.registry.refresh("dayEnd", { actor: this.uuid });
+		if (game.user.isGM) {
+			ActiveEffect.registry.refresh("dayEnd", { actor: this.uuid });
+		} else {
+			await game.socket.emit("system.dnd4e", {
+				operation: "refreshDayEndEffects",
+				actorID: this.uuid,
+			});
+		}
 		await this.update(updateData);
 	}
 

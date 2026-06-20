@@ -778,18 +778,24 @@ DND4E.durationType = {
 	saveEnd: {
 		label: "DND4E.DurationSaveEnd",
 		duration: {
+			value: 0,
+			units: "seconds",
 			expiry: "save",
 		},
 	},
 	endOfEncounter: {
 		label: "DND4E.DurationEndOfEnc",
 		duration: {
+			value: 0,
+			units: "seconds",
 			expiry: "combatEnd",
 		},
 	},
 	endOfDay: { //Extended Rest
 		label: "DND4E.DurationEndOfDay",
 		duration: {
+			value: 0,
+			units: "seconds",
 			expiry: "dayEnd",
 		},
 	},
