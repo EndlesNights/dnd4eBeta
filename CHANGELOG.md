@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.8.5 Hotfix
+* Fixed a bug where automatic EoT effect saves would fail for non-GMs (SagaTympana)
+* Improved enricher-based heals (@SagaTympana)
+
 ## Version 0.8.4 Hotfix
 * Fixed a socket issue that stopped player powers from applying effects to creatures they didn't control (SagaTympana)
 * The `damage` enricher can now use `critFormula` to specify critical damange in addition to normal damage (SagaTympana)
