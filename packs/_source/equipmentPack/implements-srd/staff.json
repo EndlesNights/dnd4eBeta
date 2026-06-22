@@ -89,7 +89,9 @@
       "thv": false,
       "tlg": false,
       "two": false,
-      "ver": false
+      "ver": false,
+      "mou": false,
+      "sto": false
     },
     "proficient": true,
     "proficientI": true,
@@ -172,17 +174,18 @@
       "tome": false,
       "totem": false,
       "wand": false
-    }
+    },
+    "weaponBaseType": "quarterstaff"
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.10",
-    "coreVersion": "13.348",
+    "systemVersion": "0.8.5",
+    "coreVersion": "14.364",
     "createdTime": 1686094274461,
-    "modifiedTime": 1688160139773,
+    "modifiedTime": 1782166049486,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
