@@ -415,10 +415,10 @@ export default class Item4e extends Item {
 	 */
 	get isActorImplementProficient() {
 		if (!this.actor) return false;
-		if (this.actor?.type === "npc") return true; // Assume the NPC is proficient with all their stuff.
-		if (this.actor?.type !== "character") return false;
+		if (this.actor?.isNPC) return true; // Assume the NPC is proficient with all their stuff.
+		if (!(this.actor?.isCharacter)) return false;
 		if (this.type !== "weapon") return false;
-		if (this.system.weaponType === "implement") return this.isActorProficient();
+		if (this.system.weaponType === "implement") return this.isActorProficient;
 		return this.system.proficientI;        
 	}
 
