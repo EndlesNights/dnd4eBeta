@@ -14,7 +14,7 @@ export default class Item4e extends Item {
 		await super._preUpdate(changed, options, user);
 
 		if (foundry.utils.hasProperty(changed, "system.equipped") && (changed.system.equipped !== this.system.equipped)) {
-			if (changed.system.equipped && this.system.itemPowers) {
+			if (this.actor && changed.system.equipped && this.system.itemPowers) {
 				const powerIds = [];
 				for (const powerId of this.system.itemPowers) {
 					const powerData = (await fromUuid(powerId)).toObject();
@@ -39,13 +39,13 @@ export default class Item4e extends Item {
 		if (foundry.utils.hasProperty(changed, "system.itemPowers")) {
 			const changedPowerSourceIds = this.system.itemPowers.symmetricDifference(new Set(changed.system.itemPowers));
 			if (this.system.itemPowers.intersection(changedPowerSourceIds).size) {
-				const powerIdsToDelete = Array.from(this.actor?.items).filter(i => (i.getFlag("dnd4e", "originItem") === this.uuid) && changedPowerSourceIds.has(i.getFlag("dnd4e", "sourceId"))).map(i => i.id);
+				const powerIdsToDelete = Array.from(this.actor?.items || []).filter(i => (i.getFlag("dnd4e", "originItem") === this.uuid) && changedPowerSourceIds.has(i.getFlag("dnd4e", "sourceId"))).map(i => i.id);
 				for (const powerId of powerIdsToDelete) {
 					const powerToDelete = this.actor?.items.get(powerId);
 					await powerToDelete.setFlag("dnd4e", "deletingFromOrigin", true);
 				}
 				await this.actor?.deleteEmbeddedDocuments("Item", powerIdsToDelete);
-			} else if (this.system.equipped) {
+			} else if (this.actor && this.system.equipped) {
 				const powerIds = [];
 				for (const powerId of changedPowerSourceIds) {
 					const powerData = (await fromUuid(powerId)).toObject();
