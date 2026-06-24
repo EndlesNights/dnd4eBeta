@@ -1954,6 +1954,11 @@ export default class Item4e extends Item {
 
 		/** @type {TokenDocument4e} */
 		const tokenInfo = this.actor?.token ?? this.actor?.getActiveTokens(true, true)[0];
+		if (!tokenInfo) {
+			const msg = "This item's actor does not have a token on the scene.";
+			ui.notifications.error(msg, { console: false });
+			throw new Error(msg);
+		}
 		const isAura = this.system.effectType.aura;
 		const areaType = isAura ? "aura" : this.system.rangeType;
 
