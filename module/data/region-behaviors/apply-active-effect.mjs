@@ -3,11 +3,7 @@
 const { DocumentUUIDField, NumberField, SetField, StringField } = foundry.data.fields;
 
 /**
- * @typedef ApplyActiveEffectRegionBehaviorSystemData
- * @property {Set<string>} effects       UUIDs of effects to apply.
- * @property {Set<number>} dispositions  If not empty, only apply effects to tokens with these dispositions.
- * @property {Set<string>} origins       If not empty, only apply effects to tokens with these creature origins.
- * @property {Set<string>} types         If not empty, only apply effects to tokens with these creature types.
+ * @import { ApplyActiveEffectRegionBehaviorSystemData } from "./_types.mjs";
  */
 
 /**

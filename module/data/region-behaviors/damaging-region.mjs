@@ -1,16 +1,11 @@
 // Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
 
 const { NumberField, SetField, StringField } = foundry.data.fields;
-import FormulaField from "../data/fields/formula-field.js";
-import { Helper } from "../helper.js";
+import FormulaField from "../fields/formula-field.js";
+import { Helper } from "../../helper.js";
 
 /**
- * @typedef DamagingRegionRegionBehaviorSystemData
- * @property {String} damage             Damage to be dealt to tokens within the region.
- * @property {Set<string>} damageTypes   Damage types this region behavior should deal.
- * @property {Set<number>} dispositions  If not empty, only apply effects to tokens with these dispositions.
- * @property {Set<string>} origins       If not empty, only apply effects to tokens with these creature origins.
- * @property {Set<string>} types         If not empty, only apply effects to tokens with these creature types.
+ * @import { DamagingRegionRegionBehaviorSystemData } from "./_types.mjs";
  */
 
 /**

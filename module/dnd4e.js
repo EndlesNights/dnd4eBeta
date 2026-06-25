@@ -16,10 +16,8 @@ import { preloadHandlebarsTemplates } from "./templates.js";
 import * as canvas from "./canvas/_module.mjs";
 import * as documents from "./documents/_module.mjs";
 
-import { default as ApplyActiveEffect4eRegionBehaviorType } from "./regionBehaviors/apply-active-effect.js";
-import { default as DamagingRegionRegionBehaviorType } from "./regionBehaviors/damaging-region.js";
-import { default as DifficultTerrainRegionBehaviorType } from "./regionBehaviors/difficult-terrain.js";
-import { default as TerrainData4e } from "./regionBehaviors/terrain-data.js";
+import { ApplyActiveEffect4eRegionBehaviorType, DamagingRegionRegionBehaviorType, DifficultTerrainRegionBehaviorType } from "./data/region-behaviors/_module.mjs";
+import { TerrainData4e } from "./data/_module.mjs";
 
 import * as roll from "./enrichers/roll.js";
 import * as lookup from "./enrichers/lookup.js";
