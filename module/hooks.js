@@ -1,6 +1,5 @@
-import { Actor4e } from "./actor/actor.js";
+import { Actor4e, Item4e } from "./documents/_module.mjs";
 import { Helper } from "./helper.js";
-import Item4e from "./item/item.js";
 
 /**
  * These methods are all called by https://github.com/Drental/fvtt-tokenactionhud, their method signature should not be changed without a code change there.

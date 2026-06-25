@@ -9,27 +9,17 @@ import { DND4E } from "./config.js";
 import { registerSystemSettings } from "./settings.js";
 
 // import Sheets
-import ActorSheet4e from "./actor/actor-sheet.js";
-import ActorSheet4eHazard from "./actor/hazard-sheet.js";
-import ActorSheet4eNPC from "./actor/npc-sheet.js";
-import ItemSheet4e from "./item/item-sheet.js";
+import * as applications from "./applications/_module.mjs";
 import { preloadHandlebarsTemplates } from "./templates.js";
 
-import Combat4e from "./combat.js";
-
 // Import Documents
-import { default as Token4e } from "./canvas/token.js";
-import { default as TokenDocument4e } from "./documents/token.js";
-import { default as TokenRuler4e } from "./canvas/ruler.js";
-import { Actor4e } from "./actor/actor.js";
-import Item4e from "./item/item.js";
-import ItemDirectory4e from "./apps/item/item-directory.js";
+import * as canvas from "./canvas/_module.mjs";
+import * as documents from "./documents/_module.mjs";
 
 import { default as ApplyActiveEffect4eRegionBehaviorType } from "./regionBehaviors/apply-active-effect.js";
 import { default as DamagingRegionRegionBehaviorType } from "./regionBehaviors/damaging-region.js";
 import { default as DifficultTerrainRegionBehaviorType } from "./regionBehaviors/difficult-terrain.js";
 import { default as TerrainData4e } from "./regionBehaviors/terrain-data.js";
-import { default as DifficultTerrainConfig } from "./apps/regionBehaviors/difficult-terrain-config.js";
 
 import * as roll from "./enrichers/roll.js";
 import * as lookup from "./enrichers/lookup.js";
@@ -40,15 +30,10 @@ import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToT
 import * as chat from "./chat.js";
 import * as macros from "./macros.js";
 import * as migrations from "./migration.js";
-import ActiveEffect4e from "./effects/effects.js";
-import ActiveEffectConfig4e from "./effects/effects-config.js";
 import { MultiAttackRoll } from "./roll/multi-attack-roll.js";
 import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
 import { TokenBarHooks } from "./hooks.js";
 import { customSKillSetUp } from "./skills/custom-skills.js";
-import Items4e from "./collection/item-collection.js";
-import { default as ChatMessage4e } from "./documents/chat-message.js";
-import Combatant4e from "./combatant.js";
 import Roll4e from "./dice/Roll.js";
 import ActiveEffectData from "./data/active-effect/active-effect.js";
 import CharacterData from "./data/actor/character.js";
@@ -71,6 +56,8 @@ import WeaponData from "./data/item/weapon.js";
 Hooks.once("init", async function() {
 	console.log(`D&D4e | Initializing Dungeons & Dragons 4th Edition System\n${DND4E.ASCII}`);
 
+	const { Actor4e, Item4e } = documents;
+	const ActiveEffectConfig4e = applications.sheets.ActiveEffectConfig4e;
 	game.dnd4e = {
 		apps: {
 			ActiveEffectConfig4e,
@@ -95,14 +82,17 @@ Hooks.once("init", async function() {
 		makeDefault: true,
 		label: _loc("SHEET.ActiveEffect"),
 	});
-	CONFIG.ActiveEffect.documentClass = ActiveEffect4e;
+
 	CONFIG.ActiveEffect.legacyTransferral = false;
-	CONFIG.Item.collection = Items4e;
-	CONFIG.Actor.documentClass = Actor4e;
-	CONFIG.Item.documentClass = Item4e;
-	CONFIG.ChatMessage.documentClass = ChatMessage4e;
-	CONFIG.Combatant.documentClass = Combatant4e;
-	CONFIG.Combat.documentClass = Combat4e;
+	CONFIG.Item.collection = documents.collections.Items4e;
+
+	CONFIG.ActiveEffect.documentClass = documents.ActiveEffect4e;
+	CONFIG.Actor.documentClass = documents.Actor4e;
+	CONFIG.Item.documentClass = documents.Item4e;
+	CONFIG.ChatMessage.documentClass = documents.ChatMessage4e;
+	CONFIG.Combatant.documentClass = documents.Combatant4e;
+	CONFIG.Combat.documentClass = documents.Combat4e;
+	CONFIG.Token.documentClass = documents.TokenDocument4e;
 
 	CONFIG.statusEffects = Object.entries(CONFIG.DND4E.statusEffect).reduce((arr, [id, data]) => {
 		const newEffect = {
@@ -123,12 +113,12 @@ Hooks.once("init", async function() {
 	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
 	CONFIG.Dice.functions.scale = Helper.scaleFn;
 	
-	CONFIG.ui.items = ItemDirectory4e;
+	CONFIG.ui.items = applications.sidebar.tabs.ItemDirectory4e;
 
-	CONFIG.Token.objectClass = Token4e;
-	CONFIG.Token.documentClass = TokenDocument4e;
+	CONFIG.Token.objectClass = canvas.placeables.Token4e;
+
 	CONFIG.Token.movement.TerrainData = TerrainData4e;
-	CONFIG.Token.rulerClass = TokenRuler4e;
+	CONFIG.Token.rulerClass = canvas.placeables.tokens.TokenRuler4e;
 
 	CONFIG.Token.movement.actions.charge = {
 		label: "DND4E.TOKEN.MOVEMENT.ACTIONS.charge.label",
@@ -207,17 +197,17 @@ Hooks.once("init", async function() {
 	CONFIG.Combat.initiative.formula = "1d20 + @attributes.init.value";
 	// Register sheet application classes
 	foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
-	foundry.documents.collections.Actors.registerSheet("dnd4e", ActorSheet4e, {
+	foundry.documents.collections.Actors.registerSheet("dnd4e", applications.sheets.ActorSheet4e, {
 		types: ["Player Character"],
 		label: _loc("SHEET.Character.Basic"),
 		makeDefault: true,
 	});
-	foundry.documents.collections.Actors.registerSheet("dnd4e", ActorSheet4eNPC, {
+	foundry.documents.collections.Actors.registerSheet("dnd4e", applications.sheets.ActorSheet4eNPC, {
 		types: ["NPC"],
 		label: _loc("SHEET.NPC"),
 		makeDefault: true,
 	});
-	foundry.documents.collections.Actors.registerSheet("dnd4e", ActorSheet4eHazard, {
+	foundry.documents.collections.Actors.registerSheet("dnd4e", applications.sheets.ActorSheet4eHazard, {
 		types: ["Hazard"],
 		label: _loc("SHEET.Hazard"),
 		makeDefault: true,
@@ -226,14 +216,14 @@ Hooks.once("init", async function() {
 	foundry.applications.apps.DocumentSheetConfig.unregisterSheet(RegionBehavior, "core", foundry.applications.sheets.RegionBehaviorConfig, {
 		types: ["difficultTerrain"],
 	});
-	foundry.applications.apps.DocumentSheetConfig.registerSheet(RegionBehavior, "dnd4e", DifficultTerrainConfig, {
+	foundry.applications.apps.DocumentSheetConfig.registerSheet(RegionBehavior, "dnd4e", applications.sheets.DifficultTerrainConfig, {
 		label: "DND4E.difficultTerrain.Label",
 		types: ["difficultTerrain"],
 	});
 	
 	// Setup Item Sheet
 	foundry.documents.collections.Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
-	foundry.documents.collections.Items.registerSheet("dnd4e", ItemSheet4e, {
+	foundry.documents.collections.Items.registerSheet("dnd4e", applications.sheets.ItemSheet4e, {
 		makeDefault: true,
 		label: _loc("SHEET.Item"),
 		types: ["weapon", "equipment", "consumable", "tool", "loot", "ritual", "power", "feature", "backpack"],
@@ -261,7 +251,7 @@ Hooks.once("init", async function() {
 	customSKillSetUp();
 
 	// Set up token movement actions
-	TokenDocument4e.registerMovementActions();
+	documents.TokenDocument4e.registerMovementActions();
 	
 	// Custom movement cost aggregator
 	CONFIG.Token.movement.costAggregator = (results, distance, segment) => {
@@ -303,7 +293,7 @@ Hooks.once("ready", function() {
 		else if (data.operation === "autoDoTs") handleAutoDoTs(data);
 		else if (data.operation === "refreshSaveEffects") handleRefreshSaveEffects(data);
 		else if (data.operation === "refreshDayEndEffects") handleRefreshDayEndEffects(data);
-		else ItemSheet4e._handleShareItem(data);
+		else applications.sheets.ItemSheet4e._handleShareItem(data);
 	});
 
 	// Determine whether a system migration is required and feasible
@@ -352,7 +342,7 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
 	}
 
 	//Item listeners
-	Item4e.chatListeners(html);
+	documents.Item4e.chatListeners(html);
 	chat.chatMessageListener(html);
 });
 
@@ -375,7 +365,7 @@ Hooks.on("renderChatLog", (app, element, context) => {
 
 // Also activate buttons on popout messages
 Hooks.on("renderChatPopout", (app, html, data) => {
-	Item4e.chatListeners(html);
+	documents.Item4e.chatListeners(html);
 	chat.chatMessageListener(html);
 });
 
@@ -492,7 +482,7 @@ Hooks.on("createRegion", async (regionDoc) => {
 	canvas.tokens.setTargets(targets);
 });
 
-Hooks.on("targetToken", Token4e.onTargetToken);
+Hooks.on("targetToken", canvas.placeables.Token4e.onTargetToken);
 
 // TODO: Remove when Foundry bug is fixed
 Hooks.on("deleteCombat", combat => {

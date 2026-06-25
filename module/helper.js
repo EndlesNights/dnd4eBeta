@@ -1,8 +1,7 @@
 import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
-import { Actor4e } from "./actor/actor.js";
+import * as canvas from "./canvas/_module.mjs";
+import { ActiveEffect4e, Actor4e, Item4e, TokenDocument4e } from "./documents/_module.mjs";
 import Roll4e from "./dice/Roll.js";
-import TokenDocument4e from "./documents/token.js";
-import Item4e from "./item/item.js";
 
 export class Helper {
 
@@ -88,7 +87,7 @@ export class Helper {
 	 * Find A suitable weapon to use with the power.
 	 * Either the specified weapon, or a weapon that matches the itemData.weaponType category if itemData.weaponUse is set to default
 	 * @param {CharacterData} itemData The Power being used
-	 * @param {Actor} actor The actor that owns the power
+	 * @param {Actor4e} actor The actor that owns the power
 	 * @returns {Item4e|null} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
 	 */
 	static getWeaponUse(itemData, actor) {
@@ -1033,7 +1032,7 @@ export class Helper {
 	 * Apply All / Ally / Enemy effects to the selection
 	 *
 	 * @param {EmbeddedCollection} effects The powers effects
-	 * @param {Actor} actor The source actor
+	 * @param {Actor4e} actor The source actor
 	 * @param {Set} selection the Tokens to apply to
 	 */
 	static async applyAllXEffectsToTokens(effects, actor, selection) {
@@ -1236,7 +1235,7 @@ export class Helper {
 	}
 
 	static tokensForActor(actor) {
-		if (!(actor instanceof Actor))
+		if (!(actor instanceof Actor4e))
 			return undefined;
 		if (actor.token)
 			return [actor.token.object];
@@ -1257,25 +1256,25 @@ export class Helper {
 	static getToken(tokenRef) {
 		if (!tokenRef)
 			return undefined;
-		if (tokenRef instanceof foundry.canvas.placeables.Token)
+		if (tokenRef instanceof canvas.placeables.Token4e)
 			return tokenRef;
-		if (tokenRef instanceof TokenDocument)
+		if (tokenRef instanceof TokenDocument4e)
 			return tokenRef.object ?? undefined;
 		let entity = tokenRef;
 		if (typeof tokenRef === "string") {
 			entity = fromUuidSync(tokenRef);
 		}
-		if (entity instanceof foundry.canvas.placeables.Token)
+		if (entity instanceof canvas.placeables.Token4e)
 			return entity;
-		if (entity instanceof TokenDocument)
+		if (entity instanceof TokenDocument4e)
 			return entity.object ?? undefined;
-		if (entity instanceof Actor)
+		if (entity instanceof Actor4e)
 			return this.tokenForActor(entity);
-		if ((entity instanceof Item) && (entity.parent instanceof Actor))
+		if ((entity instanceof Item4e) && (entity.parent instanceof Actor4e))
 			return this.tokenForActor(entity.parent);
-		if ((entity instanceof ActiveEffect) && (entity.parent instanceof Actor))
+		if ((entity instanceof ActiveEffect4e) && (entity.parent instanceof Actor4e))
 			return this.tokenForActor(entity.parent);
-		if ((entity instanceof ActiveEffect) && (entity.parent instanceof Item))
+		if ((entity instanceof ActiveEffect4e) && (entity.parent instanceof Item4e))
 			return this.tokenForActor(entity.parent?.parent);
 		return undefined;
 	}
@@ -1293,13 +1292,13 @@ export class Helper {
 			return entity;
 		if (entity.object instanceof foundry.canvas.placeables.PlaceableObject)
 			return entity.object;
-		if (entity instanceof Actor)
+		if (entity instanceof Actor4e)
 			return this.tokenForActor(entity);
-		if ((entity instanceof Item) && (entity.parent instanceof Actor))
+		if ((entity instanceof Item4e) && (entity.parent instanceof Actor4e))
 			return this.tokenForActor(entity.parent);
-		if ((entity instanceof ActiveEffect) && (entity.parent instanceof Actor))
+		if ((entity instanceof ActiveEffect4e) && (entity.parent instanceof Actor4e))
 			return this.tokenForActor(entity.parent);
-		if ((entity instanceof ActiveEffect) && (entity.parent instanceof Item))
+		if ((entity instanceof ActiveEffect4e) && (entity.parent instanceof Item4e))
 			return this.tokenForActor(entity.parent?.parent);
 		return undefined;
 	}
@@ -1467,7 +1466,7 @@ export class Helper {
 		if (!canvas || !canvas.scene)
 			return [];
 		try {
-			if (!(token instanceof foundry.canvas.placeables.Token)) {
+			if (!(token instanceof canvas.placeables.Token4e)) {
 				throw new Error("find nearby token is not of type token or the token uuid is invalid");
 			}
 			let relative = options.relative ?? true;
