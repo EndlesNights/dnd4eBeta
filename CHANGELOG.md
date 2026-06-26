@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.8.6
+* Sustain action text in power cards now uses short labels (SagaTympana)
+* Fixed some potential issues with powers attached to items when no actor is available (SagaTympana)
+* Fixed an issue with proficiency checks for implements (SagaTympana)
+* Added base items to SRD implements (SagaTympana)
+* Added an explicit error message when trying to place a template without a token (SagaTympana)
+
 ## Version 0.8.5 Hotfix
 * Fixed a bug where automatic EoT effect saves would fail for non-GMs (SagaTympana)
 * Improved enricher-based heals (@SagaTympana)
