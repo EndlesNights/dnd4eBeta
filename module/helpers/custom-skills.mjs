@@ -1,4 +1,4 @@
-export function customSKillSetUp() {
+export default function customSkillSetup() {
 	CONFIG.DND4E.coreSkills = foundry.utils.deepClone(CONFIG.DND4E.skills); 
 
 	const customSkillsArray = game.settings.get("dnd4e", "custom-skills");

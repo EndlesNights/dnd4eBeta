@@ -16,7 +16,6 @@ import * as rolls from "./rolls/_module.mjs";
 import * as compatibility from "./compatibility/_module.mjs";
 import * as utils from "./utils/utils.mjs";
 import * as helpers from "./helpers/_module.mjs";
-import { customSKillSetUp } from "./skills/custom-skills.mjs";
 
 globalThis.dnd4e = {
 	applications,
@@ -203,7 +202,7 @@ Hooks.once("init", async function() {
 	utils.registerHandlebarsHelpers();
 	helpers.templates.preloadHandlebarsTemplates();
 
-	customSKillSetUp();
+	helpers.customSkillSetup();
 
 	// Set up token movement actions
 	documents.TokenDocument4e.registerMovementActions();
