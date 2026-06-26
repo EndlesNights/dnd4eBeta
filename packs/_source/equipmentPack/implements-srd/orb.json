@@ -89,10 +89,12 @@
       "thv": false,
       "tlg": false,
       "two": false,
-      "ver": false
+      "ver": false,
+      "mou": false,
+      "sto": false
     },
     "proficient": false,
-    "proficientI": true,
+    "proficientI": false,
     "profBonus": 0,
     "profImpBonus": 0,
     "enhance": 0,
@@ -166,17 +168,18 @@
       "tome": false,
       "totem": false,
       "wand": false
-    }
+    },
+    "weaponBaseType": "orb"
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.10",
-    "coreVersion": "13.348",
+    "systemVersion": "0.8.5",
+    "coreVersion": "14.364",
     "createdTime": 1686094256746,
-    "modifiedTime": 1688160146276,
+    "modifiedTime": 1782166033290,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
