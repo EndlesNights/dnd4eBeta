@@ -19,19 +19,19 @@ import * as helpers from "./helpers.mjs";
 import * as chat from "./chat.mjs";
 import * as macros from "./macros.mjs";
 import * as migrations from "./migration.mjs";
-import { TokenBarHooks } from "./hooks.mjs";
+import * as compatibility from "./compatibility/_module.mjs";
 import { customSKillSetUp } from "./skills/custom-skills.mjs";
 
 globalThis.dnd4e = {
 	applications,
 	canvas,
+	compatibility,
 	data,
 	documents,
 	helpers,
 	macros,
 	migrations,
 	rolls,
-	tokenBarHooks: TokenBarHooks,
 	CONFIG: DND4E,
 };
 
@@ -41,9 +41,6 @@ globalThis.dnd4e = {
 
 Hooks.once("init", async function() {
 	console.log(`D&D4e | Initializing Dungeons & Dragons 4th Edition System\n${DND4E.ASCII}`);
-
-	// Deprecated in favor of DND4E.helpers; remove eventually
-	game.helper = helpers;
 	
 	// Define custom Entity classes
 	CONFIG.DND4E = DND4E;
@@ -72,7 +69,7 @@ Hooks.once("init", async function() {
 		arr.push(newEffect);
 		return arr;
 	}, []);
-	
+
 	CONFIG.ActiveEffect.expiryAction = "delete";
 	CONFIG.ActiveEffect.expiryEvents.dayEnd = "DND4E.DurationEndOfDay";
 	CONFIG.ActiveEffect.expiryEvents.save = "DND4E.DurationSaveEnd";

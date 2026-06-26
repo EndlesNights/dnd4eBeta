@@ -1,5 +1,5 @@
-import { Actor4e, Item4e } from "./documents/_module.mjs";
-import * as helpers from "./helpers.mjs";
+import { Actor4e, Item4e } from "../documents/_module.mjs";
+import * as helpers from "../helpers.mjs";
 
 /**
  * These methods are all called by https://github.com/Drental/fvtt-tokenactionhud, their method signature should not be changed without a code change there.
@@ -46,7 +46,7 @@ TokenBarHooks.actionPoint = (actor, event) => actor.sheet._onActionPointDialog(e
 
 //v3 hook - get all the powers back grouped by sheet selection
 TokenBarHooks.powersBySheetGroup = (actor) => {
-	const allPowers = actor.items.filter((item) => item.type === "power");
+	const allPowers = actor.itemTypes.power;
 	const powersByGroup = actor.sheet._generatePowerGroups();
 	for (let p of allPowers) {
 		powersByGroup[actor.sheet._groupPowers(p, powersByGroup)].items.push(p);
