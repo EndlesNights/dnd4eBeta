@@ -1366,7 +1366,7 @@ export function getToken(tokenRef) {
 /**
  * Returns a placeable object from a given entity
  * @param {any} tokenRef                            Entity to get placeable for
- * @returns {PlaceableObject}                       Highest priority token relevant to the given entity, or undefined if none
+ * @returns {foundry.canvas.placeables.PlaceableObject}                       Highest priority token relevant to the given entity, or undefined if none
  */
 export function getPlaceable(tokenRef) {
 	if (!tokenRef)
@@ -1864,7 +1864,7 @@ export async function handleRefreshSaveEffects(data) {
 /**
  * Socket handler for expiring end of day effects
  * @param {object} data
- * @param {Scene} data.effectId
+ * @param {Scene} data.actorId
  * @returns {Promise}
  */
 export async function handleRefreshDayEndEffects(data) {

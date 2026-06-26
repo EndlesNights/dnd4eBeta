@@ -51,6 +51,7 @@ export default defineConfig([
 				ProseMirror: "readonly",
 				RegionBehavior: "readonly",
 				Roll: "readonly",
+				Scene: "readonly",
 				TokenDocument: "readonly",
 				WallDocument: "readonly",
 				// global namespaces
