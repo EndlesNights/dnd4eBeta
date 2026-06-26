@@ -1,5 +1,5 @@
 import { handleRoll } from "./applications/ux/enrichers/roll.mjs";
-import { Helper } from "./helper.mjs";
+import * as helpers from "./helpers.mjs";
 
 /**
  * Highlight critical success or failure on d20 rolls, or recharge rolls
@@ -191,7 +191,7 @@ export const addChatMessageContextOptions = function(html, options) {
 	);
 
 	// Apply Power Effects to Select Tokens
-	for (const [effectType, l] of Object.entries(game.dnd4e.config.powerEffectTypes)) {
+	for (const [effectType, l] of Object.entries(CONFIG.DND4E.powerEffectTypes)) {
 		options.push({
 			name: _loc(`DND4E.ChatContextEffect${effectType}`),
 			icon: "<i class=\"fa-regular fas fa-bolt\"></i>",
@@ -340,7 +340,7 @@ function applyEffectToSelectTokens(li, effectType) {
 
 	const effectTargets = canvas.tokens.controlled; // Array
 
-	Helper.applyEffectsToTokens(item.effects, effectTargets, effectType, actor);
+	helpers.applyEffectsToTokens(item.effects, effectTargets, effectType, actor);
 }
 
 /* -------------------------------------------- */
@@ -358,7 +358,7 @@ function selectTargetTokens(li, targetType) {
 	}
 
 	if (targetType === "hit") {
-		Helper.debugLog("hit");
+		helpers.debugLog("hit");
 		for (const roll of message.rolls) {
 			if (["hit", "critical"].includes(roll.options.multirollData.hitstate)) {
 				canvas.tokens.get(roll.options.multirollData.targetID).control({ releaseOthers: false });
@@ -366,7 +366,7 @@ function selectTargetTokens(li, targetType) {
 		}
 	}
 	else if (targetType === "miss") {
-		Helper.debugLog("miss");
+		helpers.debugLog("miss");
 		for (const roll of message.rolls) {
 			if (["miss", "fumble", "immune"].includes(roll.options.multirollData.hitstate)) {
 				canvas.tokens.get(roll.options.multirollData.targetID).control({ releaseOthers: false });
@@ -422,7 +422,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage = false) {
 	if ((multiplier < 0) || trueDamage) {
 		return Promise.all(canvas.tokens.controlled.map(t => {
 			const a = t.actor;
-			Helper.debugLog(multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealt: ${roll.total}`);
+			helpers.debugLog(multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealt: ${roll.total}`);
 			return a.applyDamage(roll.total, multiplier, { surgeAmount, surgeValueAmount });
 		}));
 	}
@@ -433,7 +433,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage = false) {
 	roll.terms.forEach(e => {
 		if (typeof e.total === "number") {
 			if (e.flavor) {
-				Helper.debugLog(`Damage type found: ${e.flavor}`);
+				helpers.debugLog(`Damage type found: ${e.flavor}`);
 				damageDealt.push([e.total, e.flavor]);
 				rollTotalRemain -= e.total;
 			}

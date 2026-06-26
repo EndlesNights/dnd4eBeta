@@ -1,4 +1,4 @@
-import { Helper } from "../../helper.mjs";
+import * as helpers from "../../helpers.mjs";
 import DocumentSheet4e from "../sheets/DocumentSheet4e.mjs";
 
 export default class AttributeBonusDialog extends DocumentSheet4e {
@@ -42,7 +42,7 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 	/** @override */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
-		const system = Helper.byString(this.options.target, this.document);
+		const system = helpers.byString(this.options.target, this.document);
 		foundry.utils.mergeObject(context, {
 			bonusData: system.bonus,
 			system: system,
@@ -79,7 +79,7 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 			updateData[`${this.options.target}.ability`] = bonus.system?.ability;
 		}
 		else if (this.options?.secondWind) {
-			Helper.debugLog(bonus["custom"]);
+			helpers.debugLog(bonus["custom"]);
 			updateData[`${this.options.target}.custom`] = bonus.system?.custom;
 		} else {
 			//this.position.height = Math.max(1, count) * 76 + 91;
@@ -91,7 +91,7 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 	static #onBonusAdd(event, target) {
 		if (!this.isEditable) return;
 		event.preventDefault();
-		const bonusData = Helper.byString(this.options.target, this.document).bonus;
+		const bonusData = helpers.byString(this.options.target, this.document).bonus;
 		const newBonus = [{}];
 		//this.position.height += 76;
 		return this.document.update({ [`${this.options.target}.bonus`]: bonusData.concat(newBonus) });
@@ -101,7 +101,7 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 		if (!this.isEditable) return;
 		event.preventDefault();
 		const div = target.closest(".bonus-part");
-		const bonus = foundry.utils.duplicate(Helper.byString(this.options.target, this.document).bonus);
+		const bonus = foundry.utils.duplicate(helpers.byString(this.options.target, this.document).bonus);
 		bonus.splice(Number(div.dataset.bonusPart), 1);
 		//this.position.height -= 76;
 		return this.document.update({ [`${this.options.target}.bonus`]: bonus });

@@ -1,5 +1,5 @@
 import DocumentSheet4e from "../sheets/DocumentSheet4e.mjs";
-import { Helper } from "../../helper.mjs";
+import * as helpers from "../../helpers.mjs";
 
 export default class HealMenuDialog extends DocumentSheet4e {
 
@@ -126,7 +126,7 @@ export default class HealMenuDialog extends DocumentSheet4e {
 
 		console.debug(JSON.stringify(healData));
 
-		let roll = await Helper.rollWithErrorHandling(healData.bonus, { errorMessageKey: "DND4E.InvalidHealingBonus" });
+		let roll = await helpers.rollWithErrorHandling(healData.bonus, { errorMessageKey: "DND4E.InvalidHealingBonus" });
 		
 		const surgeValue = healData["gain-healing-surge-value"] ? this.document.system.details.surgeValue : 0;
 		let healTotal = this.document.system.details.surges.value > 0 ? surgeValue + roll.total : roll.total;

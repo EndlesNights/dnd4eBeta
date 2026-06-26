@@ -1,5 +1,5 @@
-import { Helper } from "../helper.mjs";
-import Roll4e from "../dice/Roll.mjs";
+import * as helpers from "../helpers.mjs";
+import Roll4e from "./roll.mjs";
 
 /**
  * Roll that will also have a roll for the expression used to build the row, and highlighting for how elements correspond to formula numbers.
@@ -15,7 +15,7 @@ import Roll4e from "../dice/Roll.mjs";
  *
  * It is highly recommended to use the static member {@link createRoll} method to create new instances of this class as that manages a lot of the constructor arguments for you.
  */
-export class RollWithOriginalExpression extends Roll4e {
+export default class RollWithOriginalExpression extends Roll4e {
 
 	/**
      * Has an enhanced Options object with 2 additional properties:
@@ -83,7 +83,7 @@ export class RollWithOriginalExpression extends Roll4e {
      *
      * Worked example:
      * Attack roll: which is 1d20 + @wepAttack+@powerMod+@lvhalf+@bonus   {wepAttack: "3 + 1", powerMod: 5, lvhalf: 1, bonus: "1d6" }
-     * by the time this formula reaches out code it has become a parts array like so ["3 + 1 + 5 + 1", "@bonus"]  This is because item-document.js calls Helper.commonReplace on the attack formula and performs all the substitutions required
+     * by the time this formula reaches out code it has become a parts array like so ["3 + 1 + 5 + 1", "@bonus"]  This is because item-document.js calls helpers.commonReplace on the attack formula and performs all the substitutions required
      * the @bonus gets added as a new part by the roll helper in dice.js to capture the situational bonus added by the user
      * In order to get a nice expression with highlighting we need to call this method with the following parameters:
      * parts: ["3 + 1 + 5 + 1", "@bonus"]
@@ -360,7 +360,7 @@ export class RollWithOriginalExpression extends Roll4e {
 		// expression = "12 + @bonus" <-- perform a substitution around @bonus
 		if ((("" + expression).match(/@/g) || []).length > 0) {
 			try {
-				const regex = Helper.variableRegex;
+				const regex = helpers.variableRegex;
 				let newFormula = "";
 				// I need to remove the things I have <span>ed such that they do not trigger later matches - e.g. @wepAttack = (2 + 1) @bonus = 1, the @bonus will match the trailing part of @wepAttack!
 				let activeFormula = formula;

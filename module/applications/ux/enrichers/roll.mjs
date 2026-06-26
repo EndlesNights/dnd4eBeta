@@ -1,8 +1,8 @@
 import { createLink, parseConfig, addDataset } from "./utils.mjs";
 
 import { d20Roll, damageRoll } from "../../../dice.mjs";
-import { Helper } from "../../../helper.mjs";
-import Roll4e from "../../../dice/Roll.mjs";
+import * as helpers from "../../../helpers.mjs";
+import Roll4e from "../../../rolls/roll.mjs";
 
 /** @type {TextEditorEnricherConfig["id"]} */
 export const id = "DND4E.roll";
@@ -204,7 +204,7 @@ async function enrichAttack(parsedConfig, label, options) {
 			item.prepareData();
 		}
 	}
-	const evaluatedFormula = await item?.getAttackBonus() || Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true, suppressError: true });
+	const evaluatedFormula = await item?.getAttackBonus() || helpers.evaluateFormula(replacedFormula, options.rollData, { strict: true, suppressError: true });
 	let attackString;		
 	if (evaluatedFormula && (game.settings.get("dnd4e", "cardAtkDisplay") == "bonus")) {
 		attackString = `+${evaluatedFormula}`;
@@ -285,7 +285,7 @@ async function enrichDamageHealing(parsedConfig, label, options) {
 			item.prepareData();
 		}
 	}
-	const evaluatedFormula = Helper.evaluateFormula(replacedFormula, options.rollData, { strict: true, suppressError: true }) || replacedFormula;
+	const evaluatedFormula = helpers.evaluateFormula(replacedFormula, options.rollData, { strict: true, suppressError: true }) || replacedFormula;
 	const typedFormula = damageType.length ? `(${evaluatedFormula})[${damageType.join(",")}]` : evaluatedFormula;
 	const formatter = game.i18n.getListFormatter();
 	let damageString = evaluatedFormula;
@@ -366,7 +366,7 @@ async function rollCheck(config, event) {
 
 	if (!skillOrAbility) throw new Error("Check enricher must provide an ability or skill");
 
-	const actors = Helper.tokensToActors();
+	const actors = helpers.tokensToActors();
 
 	if (!actors.size) {
 		ui.notifications.warn("EDITOR.DND4E.Inline.Warning.NoActor", { localize: true });
@@ -399,7 +399,7 @@ async function rollAttack(config, event) {
 
 	let actor = fromUuidSync(actorUuid);
 	if (!actor) {
-		const actors = Helper.tokensToActors();
+		const actors = helpers.tokensToActors();
 		if (actors.size > 1) {
 			ui.notifications.warn("EDITOR.DND4E.Inline.Warning.TooManyActors", { localize: true });
 			return;
@@ -425,11 +425,11 @@ async function rollAttack(config, event) {
 	options.rollData = { ...rollData, isAttackRoll: true, commonAttackBonuses: rollData?.commonAttackBonuses ?? {} };
 	if (ability && options.rollData.item?.attack) options.rollData.item.attack.ability = ability;
 	options.attackedDef = def;
-	options.formulaInnerData = { ...Helper.getDataObject(formula, rollData) };
+	options.formulaInnerData = { ...helpers.getDataObject(formula, rollData) };
 
 	const powerData = rollData.item;
-	const weaponData = Helper.getWeaponUse(powerData, actor)?.getRollData().item;
-	await Helper.applyEffects(rollData, actor, powerData, weaponData, "attack", null, null, options);
+	const weaponData = helpers.getWeaponUse(powerData, actor)?.getRollData().item;
+	await helpers.applyEffects(rollData, actor, powerData, weaponData, "attack", null, null, options);
 
 	if (!flavor && item) {
 		flavor = `${_loc("DND4E.AttackRoll")}: ${item.name}`;
@@ -483,7 +483,7 @@ async function rollDamageHealing(config, event) {
 
 	let actor = fromUuidSync(actorUuid);
 	if (!actor) {
-		const actors = Helper.tokensToActors();
+		const actors = helpers.tokensToActors();
 		if (actors.size > 1) {
 			ui.notifications.warn("EDITOR.DND4E.Inline.Warning.TooManyActors", { localize: true });
 			return;
@@ -504,13 +504,13 @@ async function rollDamageHealing(config, event) {
 
 	const rollData = item?.getRollData() || actor?.getRollData() || {};
 
-	const options = { formulaInnerData: { ...Helper.getDataObject(formula, rollData), ...Helper.getDataObject(critFormula, rollData) }, divisors: { normal: { value: 1, reason: [] }, miss: { value: 1, reason: [] }, crit: { value: 1, reason: [] } }, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
+	const options = { formulaInnerData: { ...helpers.getDataObject(formula, rollData), ...helpers.getDataObject(critFormula, rollData) }, divisors: { normal: { value: 1, reason: [] }, miss: { value: 1, reason: [] }, crit: { value: 1, reason: [] } }, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 	options.rollData = { ...rollData, isAttackRoll: false };
 
 	const powerData = rollData.item;
-	const weaponData = Helper.getWeaponUse(powerData, actor)?.getRollData().item;
+	const weaponData = helpers.getWeaponUse(powerData, actor)?.getRollData().item;
 	let extraDamageParts = [];
-	await Helper.applyEffects(rollData, actor, powerData, weaponData, "damage", extraDamageParts, null, options);
+	await helpers.applyEffects(rollData, actor, powerData, weaponData, "damage", extraDamageParts, null, options);
 	// Extra damage
 	if (extraDamageParts.length) {
 		for (const part of extraDamageParts) {

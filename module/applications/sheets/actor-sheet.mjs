@@ -1,7 +1,7 @@
 import { DND4E } from "../../config.mjs";
 
 import { ActiveEffect4e, Item4e } from "../../documents/_module.mjs";
-import { Helper } from "../../helper.mjs";
+import * as helpers from "../../helpers.mjs";
 
 import * as apps from "../apps/_module.mjs";
 
@@ -343,7 +343,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 				if (item.hasAttack) {
 					attackBonus = await item.getAttackBonus();
 				}
-				let detailsText = Helper._preparePowerCardData(i.chatData, CONFIG, actorData, attackBonus);
+				let detailsText = helpers._preparePowerCardData(i.chatData, CONFIG, actorData, attackBonus);
 				i.detailsText = await foundry.applications.ux.TextEditor.implementation.enrichHTML(detailsText, {
 					relativeTo: actor,
 					rollData: item.getRollData(),
@@ -364,7 +364,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (context.isCombatant) {
 			context.skills = this._prepareSkills();
 			
-			if (Object.entries(game.dnd4e.config.coreSkills).length != Object.entries(context.skills).length) {
+			if (Object.entries(CONFIG.DND4E.coreSkills).length != Object.entries(context.skills).length) {
 				const skillNames = Object.keys(context.skills);
 
 				// Sort the skill names based on the label property
@@ -1240,7 +1240,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			}
 		}
 		
-		Helper.debugLog(itemData);
+		helpers.debugLog(itemData);
 		return this.actor.createEmbeddedDocuments("Item", [itemData]);
 	}
 
@@ -1453,7 +1453,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static #onSecondWind(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const isFF = Helper.isRollFastForwarded(event);
+		const isFF = helpers.isRollFastForwarded(event);
 		if (isFF) {
 			return this.actor.secondWind(event, { isFF });
 		}
@@ -1465,7 +1465,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static #onActionPointDialog(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const isFF = Helper.isRollFastForwarded(event);
+		const isFF = helpers.isRollFastForwarded(event);
 		if (isFF) {
 			return this.actor.actionPoint(event, { isFF });
 		}
@@ -1486,7 +1486,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static #onShortRest(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const isFF = Helper.isRollFastForwarded(event);
+		const isFF = helpers.isRollFastForwarded(event);
 		if (isFF) {
 			return this.actor.shortRest(event, { isFF });
 		}
@@ -1502,7 +1502,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static #onLongRest(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const isFF = Helper.isRollFastForwarded(event);
+		const isFF = helpers.isRollFastForwarded(event);
 		if (isFF) {
 			return this.actor.longRest(event, { isFF });
 		}
@@ -1512,7 +1512,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static #onDeathSave(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const isFF = Helper.isRollFastForwarded(event);
+		const isFF = helpers.isRollFastForwarded(event);
 		if (isFF) {
 			return this.actor.rollDeathSave(event, { isFF });
 		}
@@ -1528,7 +1528,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	static #onSavingThrow(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		const isFF = Helper.isRollFastForwarded(event);
+		const isFF = helpers.isRollFastForwarded(event);
 		if (isFF) {
 			return this.actor.rollSave(event, { isFF });
 		}
@@ -1585,7 +1585,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		console.debug(variance);
 
 		if (item.type === "power") {
-			const fastForward = Helper.isRollFastForwarded(event);
+			const fastForward = helpers.isRollFastForwarded(event);
 			return this.actor.usePower(item, {
 				configureDialog: !fastForward, 
 				fastForward: fastForward,
@@ -1628,7 +1628,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		const effectId = target.closest(".item").dataset.effectId;
 		const effect = this.actor.effects.get(effectId);	
 		const saveDC = effect.system.saveDC || 10;
-		const isFF = Helper.isRollFastForwarded(event);
+		const isFF = helpers.isRollFastForwarded(event);
 		
 		if (isFF) {
 			return this.actor.rollSave(event, { isFF, effectSave: true, dc: saveDC, effectId: effectId });
@@ -2131,8 +2131,8 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			return sourceId && (sourceId === droppedSourceId) && (i.type === "consumable") && (i.name === itemData.name);
 		});
 		if (!similarItem) return null;
-		Helper.debugLog(similarItem.system.quantity);
-		Helper.debugLog(itemData.system.quantity);
+		helpers.debugLog(similarItem.system.quantity);
+		helpers.debugLog(itemData.system.quantity);
 		return similarItem.update({
 			"system.quantity": similarItem.system.quantity + Math.max(itemData.system.quantity, 1),
 		});

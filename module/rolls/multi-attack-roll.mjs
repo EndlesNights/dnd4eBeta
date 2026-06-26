@@ -1,12 +1,12 @@
 import { DND4E } from "../config.mjs";
-import Roll4e from "../dice/Roll.mjs";
+import Roll4e from "./roll.mjs";
 
 /**
  * An extension of the default Foundry Roll class for handling multiattack rolls and displaying them in a single chat message
  */
-import { RollWithOriginalExpression } from "./roll-with-expression.js";
+import RollWithOriginalExpression from "./roll-with-expression.mjs";
 
-export class MultiAttackRoll extends Roll4e {
+export default class MultiAttackRoll extends Roll4e {
 	constructor (formula, data = {}, options = {}) {
 		super(formula, data, options);
 		this.rollArray = [];

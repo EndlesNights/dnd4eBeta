@@ -1,8 +1,8 @@
 import { d20Roll, damageRoll } from "../dice.mjs";
 import { DND4E } from "../config.mjs";
-import { Helper } from "../helper.mjs";
+import * as helpers from "../helpers.mjs";
 import { SaveThrowDialog } from "../applications/apps/_module.mjs";
-import Roll4e from "../dice/Roll.mjs";
+import Roll4e from "../rolls/roll.mjs";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
@@ -220,7 +220,7 @@ export default class Actor4e extends Actor {
 			const enabledEffects = effects.filter((effect) => effect?.disabled === false);
 			enabledEffects.forEach((effect) => {
 				effect.changes.forEach((change => {
-					if (Helper.variableRegex.test(change.key)) {
+					if (helpers.variableRegex.test(change.key)) {
 						if (debug) {
 							console.log(`${debug} Found custom variable ${change.key} in effect ${effect.name}.	Value: ${change.value}`);
 						}
@@ -235,7 +235,7 @@ export default class Actor4e extends Actor {
 							if (debug) {
 								console.log(`${debug} Effect: ${effect.name}. Computed Value: ${change.value} was an additional match to ${change.key} adding to previous`);
 							}
-							if (Helper._isNumber(resultObject[change.key]) && Helper._isNumber(changeValueReplaced)) {
+							if (helpers._isNumber(resultObject[change.key]) && helpers._isNumber(changeValueReplaced)) {
 								resultObject[change.key] = Number(resultObject[change.key]) + Number(changeValueReplaced);
 							} else {
 								resultObject[change.key] = `${resultObject[change.key]} + ${changeValueReplaced}`;
@@ -388,12 +388,12 @@ export default class Actor4e extends Actor {
 		
 			if (!((system.details.surgeBon.bonus.length === 1) && jQuery.isEmptyObject(system.details.surgeBon.bonus[0]))) {
 				for (const b of system.details.surgeBon.bonus) {
-					if (b.active && Helper._isNumber(b.value)) {
+					if (b.active && helpers._isNumber(b.value)) {
 						system.details.surgeBon.value += parseInt(b.value);
 					}
 					else if (b.active) {
 						let val = Roll.replaceFormulaData(b.value, system);
-						if (Helper._isNumber(val)) {
+						if (helpers._isNumber(val)) {
 							system.details.surgeBon.value += parseInt(val);
 						}
 					}
@@ -415,12 +415,12 @@ export default class Actor4e extends Actor {
 			if (isNaN(parseInt(system.details.secondwindbon?.absolute))) { //All logic only required if there is no usable absolute value
 				if (!((system.details.secondwindbon.bonus.length === 1) && jQuery.isEmptyObject(system.details.secondwindbon.bonus[0]))) {
 					for (const b of system.details.secondwindbon.bonus) {
-						if (b.active && Helper._isNumber(b.value)) {
+						if (b.active && helpers._isNumber(b.value)) {
 							system.details.secondwindbon.value += parseInt(b.value);
 						}
 						else if (b.active) {
 							let val = Roll.replaceFormulaData(b.value, system);
-							if (Helper._isNumber(val)) {
+							if (helpers._isNumber(val)) {
 								system.details.secondwindbon.value += parseInt(val);
 							}
 						}
@@ -452,12 +452,12 @@ export default class Actor4e extends Actor {
 			
 				if (!((system.details.surgeEnv.bonus.length === 1) && jQuery.isEmptyObject(system.details.surgeEnv.bonus[0]))) {
 					for (const b of system.details.surgeEnv.bonus) {
-						if (b.active && Helper._isNumber(b.value)) {
+						if (b.active && helpers._isNumber(b.value)) {
 							system.details.surgeEnv.value += parseInt(b.value);
 						}
 						else if (b.active) {
 							let val = Roll.replaceFormulaData(b.value, system);
-							if (Helper._isNumber(val)) {
+							if (helpers._isNumber(val)) {
 								system.details.surgeEnv.value += parseInt(val);
 							}
 						}
@@ -504,12 +504,12 @@ export default class Actor4e extends Actor {
 			let bonusValue = 0;
 			if (!((system.details.saves.bonus.length === 1) && jQuery.isEmptyObject(system.details.saves.bonus[0]))) {
 				for (const b of system.details.saves.bonus) {
-					if (b.active && Helper._isNumber(b.value)) {
+					if (b.active && helpers._isNumber(b.value)) {
 						bonusValue += parseInt(b.value);
 					}
 					else if (b.active) {
 						let val = Roll.replaceFormulaData(b.value, system);
-						if (Helper._isNumber(val)) {
+						if (helpers._isNumber(val)) {
 							bonusValue += parseInt(val);
 						}
 					}
@@ -535,12 +535,12 @@ export default class Actor4e extends Actor {
 	
 			if (!((system.details.deathsavebon.bonus.length === 1) && jQuery.isEmptyObject(system.details.deathsavebon.bonus[0]))) {
 				for (const b of system.details.deathsavebon.bonus) {
-					if (b.active && Helper._isNumber(b.value)) {
+					if (b.active && helpers._isNumber(b.value)) {
 						system.details.deathsavebon.value += parseInt(b.value);
 					}
 					else if (b.active) {
 						let val = Roll.replaceFormulaData(b.value, system);
-						if (Helper._isNumber(val)) {
+						if (helpers._isNumber(val)) {
 							system.details.deathsavebon.value += parseInt(val);
 						}
 					}
@@ -566,12 +566,12 @@ export default class Actor4e extends Actor {
 			let modifierBonusValue = 0;
 			if (!((mod.bonus.length === 1) && jQuery.isEmptyObject(mod.bonus[0]))) {
 				for (const b of mod.bonus) {
-					if (b.active && Helper._isNumber(b.value)) {
+					if (b.active && helpers._isNumber(b.value)) {
 						modifierBonusValue += parseInt(b.value);
 					}
 					else if (b.active) {
 						let val = Roll.replaceFormulaData(b.value, system);
-						if (Helper._isNumber(val)) {
+						if (helpers._isNumber(val)) {
 							modifierBonusValue += parseInt(val);
 						}
 					}
@@ -631,12 +631,12 @@ export default class Actor4e extends Actor {
 
 				if (!((system.attributes.init.bonus.length === 1) && jQuery.isEmptyObject(system.attributes.init.bonus[0]))) {
 					for (const b of system.attributes.init.bonus) {
-						if (b.active && Helper._isNumber(b.value)) {
+						if (b.active && helpers._isNumber(b.value)) {
 							initBonusValue += parseInt(b.value);
 						}
 						else if (b.active) {
 							let val = Roll.replaceFormulaData(b.value, system);
-							if (Helper._isNumber(val)) {
+							if (helpers._isNumber(val)) {
 								initBonusValue += parseInt(val);
 							}
 						}
@@ -671,12 +671,12 @@ export default class Actor4e extends Actor {
 		let baseMoveBonusValue = system.movement.base.bonusValue || 0;
 		if (!((system.movement.base.bonus.length === 1) && jQuery.isEmptyObject(system.movement.base.bonus[0]))) {
 			for (const b of system.movement.base.bonus) {
-				if (b.active && Helper._isNumber(b.value)) {
+				if (b.active && helpers._isNumber(b.value)) {
 					baseMoveBonusValue += parseInt(b.value);
 				}
 				else if (b.active) {
 					let val = Roll.replaceFormulaData(b.value, system);
-					if (Helper._isNumber(val)) {
+					if (helpers._isNumber(val)) {
 						baseMoveBonusValue += parseInt(val);
 					}
 				}
@@ -686,12 +686,12 @@ export default class Actor4e extends Actor {
 		let walkBonusValue = system.movement.walk.bonusValue || 0;
 		if (!((system.movement.walk.bonus.length === 1) && jQuery.isEmptyObject(system.movement.walk.bonus[0]))) {
 			for (const b of system.movement.walk.bonus) {
-				if (b.active && Helper._isNumber(b.value)) {
+				if (b.active && helpers._isNumber(b.value)) {
 					walkBonusValue += parseInt(b.value);
 				}
 				else if (b.active) {
 					let val = Roll.replaceFormulaData(b.value, system);
-					if (Helper._isNumber(val)) {
+					if (helpers._isNumber(val)) {
 						walkBonusValue += parseInt(val);
 					}
 				}
@@ -701,12 +701,12 @@ export default class Actor4e extends Actor {
 		let runBonusValue = system.movement.run.bonusValue || 0;
 		if (!((system.movement.run.bonus.length === 1) && jQuery.isEmptyObject(system.movement.run.bonus[0]))) {
 			for (const b of system.movement.run.bonus) {
-				if (b.active && Helper._isNumber(b.value)) {
+				if (b.active && helpers._isNumber(b.value)) {
 					runBonusValue += parseInt(b.value);
 				}
 				else if (b.active) {
 					let val = Roll.replaceFormulaData(b.value, system);
-					if (Helper._isNumber(val)) {
+					if (helpers._isNumber(val)) {
 						runBonusValue += parseInt(val);
 					}
 				}
@@ -716,12 +716,12 @@ export default class Actor4e extends Actor {
 		let chargeBonusValue = system.movement.charge.bonusValue || 0;
 		if (!((system.movement.charge.bonus.length === 1) && jQuery.isEmptyObject(system.movement.charge.bonus[0]))) {
 			for (const b of system.movement.charge.bonus) {
-				if (b.active && Helper._isNumber(b.value)) {
+				if (b.active && helpers._isNumber(b.value)) {
 					chargeBonusValue += parseInt(b.value);
 				}
 				else if (b.active) {
 					let val = Roll.replaceFormulaData(b.value, system);
-					if (Helper._isNumber(val)) {
+					if (helpers._isNumber(val)) {
 						chargeBonusValue += parseInt(val);
 					}
 				}
@@ -731,12 +731,12 @@ export default class Actor4e extends Actor {
 		let shiftBonusValue = system.movement.shift.bonusValue || 0;
 		if (!((system.movement.shift.bonus.length === 1) && jQuery.isEmptyObject(system.movement.shift.bonus[0]))) {
 			for (const b of system.movement.shift.bonus) {
-				if (b.active && Helper._isNumber(b.value)) {
+				if (b.active && helpers._isNumber(b.value)) {
 					shiftBonusValue += parseInt(b.value);
 				}
 				else if (b.active) {
 					let val = Roll.replaceFormulaData(b.value, system);
-					if (Helper._isNumber(val)) {
+					if (helpers._isNumber(val)) {
 						shiftBonusValue += parseInt(val);
 					}
 				}
@@ -746,12 +746,12 @@ export default class Actor4e extends Actor {
 		let burrowBonusValue = system.movement.burrow.bonusValue || 0;
 		if (!((system.movement.burrow.bonus.length === 1) && jQuery.isEmptyObject(system.movement.burrow.bonus[0]))) {
 			for (const b of system.movement.burrow.bonus) {
-				if (b.active && Helper._isNumber(b.value)) {
+				if (b.active && helpers._isNumber(b.value)) {
 					burrowBonusValue += parseInt(b.value);
 				}
 				else if (b.active) {
 					let val = Roll.replaceFormulaData(b.value, system);
-					if (Helper._isNumber(val)) {
+					if (helpers._isNumber(val)) {
 						burrowBonusValue += parseInt(val);
 					}
 				}
@@ -761,12 +761,12 @@ export default class Actor4e extends Actor {
 		let climbBonusValue = system.movement.climb.bonusValue || 0;
 		if (!((system.movement.climb.bonus.length === 1) && jQuery.isEmptyObject(system.movement.climb.bonus[0]))) {
 			for (const b of system.movement.climb.bonus) {
-				if (b.active && Helper._isNumber(b.value)) {
+				if (b.active && helpers._isNumber(b.value)) {
 					climbBonusValue += parseInt(b.value);
 				}
 				else if (b.active) {
 					let val = Roll.replaceFormulaData(b.value, system);
-					if (Helper._isNumber(val)) {
+					if (helpers._isNumber(val)) {
 						climbBonusValue += parseInt(val);
 					}
 				}
@@ -776,12 +776,12 @@ export default class Actor4e extends Actor {
 		let flyBonusValue = system.movement.fly.bonusValue || 0;
 		if (!((system.movement.fly.bonus.length === 1) && jQuery.isEmptyObject(system.movement.fly.bonus[0]))) {
 			for (const b of system.movement.fly.bonus) {
-				if (b.active && Helper._isNumber(b.value)) {
+				if (b.active && helpers._isNumber(b.value)) {
 					flyBonusValue += parseInt(b.value);
 				}
 				else if (b.active) {
 					let val = Roll.replaceFormulaData(b.value, system);
-					if (Helper._isNumber(val)) {
+					if (helpers._isNumber(val)) {
 						flyBonusValue += parseInt(val);
 					}
 				}
@@ -791,12 +791,12 @@ export default class Actor4e extends Actor {
 		let swimBonusValue = system.movement.swim.bonusValue || 0;
 		if (!((system.movement.swim.bonus.length === 1) && jQuery.isEmptyObject(system.movement.swim.bonus[0]))) {
 			for (const b of system.movement.swim.bonus) {
-				if (b.active && Helper._isNumber(b.value)) {
+				if (b.active && helpers._isNumber(b.value)) {
 					swimBonusValue += parseInt(b.value);
 				}
 				else if (b.active) {
 					let val = Roll.replaceFormulaData(b.value, system);
-					if (Helper._isNumber(val)) {
+					if (helpers._isNumber(val)) {
 						swimBonusValue += parseInt(val);
 					}
 				}
@@ -806,12 +806,12 @@ export default class Actor4e extends Actor {
 		let teleportBonusValue = system.movement.teleport.bonusValue || 0;
 		if (!((system.movement.teleport.bonus.length === 1) && jQuery.isEmptyObject(system.movement.teleport.bonus[0]))) {
 			for (const b of system.movement.teleport.bonus) {
-				if (b.active && Helper._isNumber(b.value)) {
+				if (b.active && helpers._isNumber(b.value)) {
 					teleportBonusValue += parseInt(b.value);
 				}
 				else if (b.active) {
 					let val = Roll.replaceFormulaData(b.value, system);
-					if (Helper._isNumber(val)) {
+					if (helpers._isNumber(val)) {
 						teleportBonusValue += parseInt(val);
 					}
 				}
@@ -1055,12 +1055,12 @@ export default class Actor4e extends Actor {
 
 				if (!((abl.check.bonus.length === 1) && jQuery.isEmptyObject(abl.check.bonus[0]))) {
 					for (const b of abl.check.bonus) {
-						if (b.active && Helper._isNumber(b.value)) {
+						if (b.active && helpers._isNumber(b.value)) {
 							ablBonusValue += parseInt(b.value);
 						}
 						else if (b.active) {
 							let val = Roll.replaceFormulaData(b.value, system);
-							if (Helper._isNumber(val)) {
+							if (helpers._isNumber(val)) {
 								ablBonusValue += parseInt(val);
 							}
 						}
@@ -1112,12 +1112,12 @@ export default class Actor4e extends Actor {
 			let passiveBonusValue = 0;
 			if (!((pas.bonus.length === 1) && jQuery.isEmptyObject(pas.bonus[0]))) {
 				for (const b of pas.bonus) {
-					if (b.active && Helper._isNumber(b.value)) {
+					if (b.active && helpers._isNumber(b.value)) {
 						passiveBonusValue += parseInt(b.value);
 					}
 					else if (b.active) {
 						let val = Roll.replaceFormulaData(b.value, system);
-						if (Helper._isNumber(val)) {
+						if (helpers._isNumber(val)) {
 							passiveBonusValue += parseInt(val);
 						}
 					}
@@ -1150,11 +1150,11 @@ export default class Actor4e extends Actor {
 
 							if (!b.active) continue;
 							let val;
-							if (Helper._isNumber(b.value)) {
+							if (helpers._isNumber(b.value)) {
 								val = b.value;
 							}		
 							else {
-								val = Helper.evaluateFormula(b.value, system, { strict: true, contextName: "prepareDerivedDataResistancesWeaknesses" });
+								val = helpers.evaluateFormula(b.value, system, { strict: true, contextName: "prepareDerivedDataResistancesWeaknesses" });
 							}
 							vulnManual += Math.min(val, 0);
 							resManual += Math.max(val, 0);
@@ -1259,12 +1259,12 @@ export default class Actor4e extends Actor {
 				let defBonusValue = 0;
 				if (!((def.bonus.length === 1) && jQuery.isEmptyObject(def.bonus[0]))) {
 					for (const b of def.bonus) {
-						if (b.active && Helper._isNumber(b.value)) {
+						if (b.active && helpers._isNumber(b.value)) {
 							defBonusValue += parseInt(b.value);
 						}
 						else if (b.active) {
 							let val = Roll.replaceFormulaData(b.value, data);
-							if (Helper._isNumber(val)) {
+							if (helpers._isNumber(val)) {
 								defBonusValue += parseInt(val);
 							}
 						}
@@ -1288,7 +1288,7 @@ export default class Actor4e extends Actor {
 						}
 					}
 					else if (((i.system.armour.type === "armour") && (id === "ac")) || ((i.system.armour.type === "neck") && ["fort", "ref", "wil"].includes(id))) {
-						Helper.debugLog(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
+						helpers.debugLog(`${id}: Checked item defence enhancement of +${i.system.armour.enhance} against existing value of +${def.enhance}`);
 						def.enhance = Math.max(def.enhance, i.system.armour.enhance);
 					}
 					def.armour += i.system.armour[id];
@@ -1297,8 +1297,8 @@ export default class Actor4e extends Actor {
 				//Using inherent enhancements?
 				if (game.settings.get("dnd4e", "inhEnh")) {
 					//If our enhancement is lower than the inherent level, adjust it upward
-					const enhFloor = Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 3);
-					//console.debug(`${id}: Checked inherent defence enhancement of +${Helper.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against existing value of +${def.enhance}`);
+					const enhFloor = helpers.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 3);
+					//console.debug(`${id}: Checked inherent defence enhancement of +${helpers.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against existing value of +${def.enhance}`);
 					def.enhance = Math.max(def.enhance, enhFloor);
 				}
 
@@ -1378,12 +1378,12 @@ export default class Actor4e extends Actor {
 					let defBonusValue = 0;
 					if (!((def.bonus.length === 1) && jQuery.isEmptyObject(def.bonus[0]))) {
 						for (const b of def.bonus) {
-							if (b.active && Helper._isNumber(b.value)) {
+							if (b.active && helpers._isNumber(b.value)) {
 								defBonusValue += parseInt(b.value);
 							}
 							else if (b.active) {
 								let val = Roll.replaceFormulaData(b.value, data);
-								if (Helper._isNumber(val)) {
+								if (helpers._isNumber(val)) {
 									defBonusValue += parseInt(val);
 								}
 							}
@@ -1455,12 +1455,12 @@ export default class Actor4e extends Actor {
 
 				if (!((skl.bonus.length === 1) && jQuery.isEmptyObject(skl.bonus[0]))) {
 					for (const b of skl.bonus) {
-						if (b.active && Helper._isNumber(b.value)) {
+						if (b.active && helpers._isNumber(b.value)) {
 							sklBonusValue += parseInt(b.value);
 						}
 						else if (b.active) {
 							let val = Roll.replaceFormulaData(b.value, system);
-							if (Helper._isNumber(val)) {
+							if (helpers._isNumber(val)) {
 								sklBonusValue += parseInt(val);
 							}
 						}
@@ -1567,12 +1567,12 @@ export default class Actor4e extends Actor {
 				let sklArmourPenalty = 0;
 				if (!((skl.bonus.length === 1) && jQuery.isEmptyObject(skl.bonus[0]))) {
 					for (const b of skl.bonus) {
-						if (b.active && Helper._isNumber(b.value)) {
+						if (b.active && helpers._isNumber(b.value)) {
 							sklBonusValue += parseInt(b.value);
 						}
 						else if (b.active) {
 							let val = Roll.replaceFormulaData(b.value, system);
-							if (Helper._isNumber(val)) {
+							if (helpers._isNumber(val)) {
 								sklBonusValue += parseInt(val);
 							}
 						}
@@ -1706,12 +1706,12 @@ export default class Actor4e extends Actor {
 
 					if (!((condition.bonus.length === 1) && jQuery.isEmptyObject(condition.bonus[0]))) {
 						for (const b of condition.bonus) {
-							if (b.active && Helper._isNumber(b.value)) {
+							if (b.active && helpers._isNumber(b.value)) {
 								bonusValue += parseInt(b.value);
 							}
 							else if (b.active) {
 								let val = Roll.replaceFormulaData(b.value, system);
-								if (Helper._isNumber(val)) {
+								if (helpers._isNumber(val)) {
 									bonusValue += parseInt(val);
 								}
 							}
@@ -1980,7 +1980,7 @@ export default class Actor4e extends Actor {
 			options.formulaInnerData = Roll.replaceFormulaData(options.save, rollData);
 		}
 		
-		await Helper.applySaveEffects(rollData, this, this.effects.get(options.effectId), "save", options);
+		await helpers.applySaveEffects(rollData, this, this.effects.get(options.effectId), "save", options);
 
 		const rollConfig = foundry.utils.mergeObject({
 			parts,
@@ -2062,8 +2062,8 @@ export default class Actor4e extends Actor {
 				content: _loc("DND4E.DeathSaveCriticalSuccess", { name: this.name }),
 			});
 		}
-		Helper.debugLog(roll.total);
-		Helper.debugLog(rollConfig.critical);
+		helpers.debugLog(roll.total);
+		helpers.debugLog(rollConfig.critical);
 		await this.update(updateData);
 	}
 
@@ -2094,9 +2094,9 @@ export default class Actor4e extends Actor {
 					}
 				}
 				healamount += this.system.details.surgeValue + (r.total || 0);
-				Helper.debugLog(`surgeValue:${this.system.details.surgeValue}`);
-				Helper.debugLog(`total:${r.total}`);
-				Helper.debugLog(`healamount:${healamount}`);
+				helpers.debugLog(`surgeValue:${this.system.details.surgeValue}`);
+				helpers.debugLog(`total:${r.total}`);
+				helpers.debugLog(`healamount:${healamount}`);
 			}
 
 			if (healamount) {
@@ -2115,15 +2115,15 @@ export default class Actor4e extends Actor {
 		
 		updateData["system.actionpoints.encounteruse"] = false;
 		
-		Helper.rechargeItems(this, ["enc", "round", "turn"]);
-		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn", "startOfTargetTurn", "startOfUserTurn", "endOfEncounter", "endOfUserCurrent"]);
+		helpers.rechargeItems(this, ["enc", "round", "turn"]);
+		helpers.endEffects(this, ["endOfTargetTurn", "endOfUserTurn", "startOfTargetTurn", "startOfUserTurn", "endOfEncounter", "endOfUserCurrent"]);
 		
 		if (this.type === "Player Character") {
 			updateData["system.details.secondwind"] = false;
 			updateData["system.magicItemUse.encounteruse"] = false;
 			
-			Helper.debugLog(updateData["system.attributes.hp.value"]);
-			Helper.debugLog(this.system.attributes.hp.value);
+			helpers.debugLog(updateData["system.attributes.hp.value"]);
+			helpers.debugLog(this.system.attributes.hp.value);
 			
 			ChatMessage.create({
 				user: game.user.id,
@@ -2184,8 +2184,8 @@ export default class Actor4e extends Actor {
 		updateData["system.actionpoints.value"] = 1;
 		updateData["system.actionpoints.encounteruse"] = false;
 		
-		Helper.rechargeItems(this, ["enc", "day", "round", "turn"]);
-		Helper.endEffects(this, ["endOfTargetTurn", "endOfUserTurn", "startOfTargetTurn", "startOfUserTurn", "endOfEncounter", "endOfDay", "endOfUserCurrent"]);
+		helpers.rechargeItems(this, ["enc", "day", "round", "turn"]);
+		helpers.endEffects(this, ["endOfTargetTurn", "endOfUserTurn", "startOfTargetTurn", "startOfUserTurn", "endOfEncounter", "endOfDay", "endOfUserCurrent"]);
 
 		if (this.type === "Player Character") {
 			updateData["system.magicItemUse.milestone"] = 0;
@@ -2227,7 +2227,7 @@ export default class Actor4e extends Actor {
 	 * @param {object} options		Options which can hold addtional bonuses
 	 */
 	async secondWind(event, options) {
-		let r = await Helper.rollWithErrorHandling(options.bonus, { errorMessageKey: "DND4E.InvalidHealingBonus" });
+		let r = await helpers.rollWithErrorHandling(options.bonus, { errorMessageKey: "DND4E.InvalidHealingBonus" });
 
 		const updateData = {};
 		if (this.system.attributes.hp.value <= 0) {
@@ -2282,7 +2282,7 @@ export default class Actor4e extends Actor {
 		if (!this.system.details.secondwindEffect) return;
 
 		const secondwindEffect = new CONFIG.ActiveEffect.documentClass(this.system.details.secondwindEffect);
-		await Helper.applyEffectsToTokens([secondwindEffect], [null], "self", this);
+		await helpers.applyEffectsToTokens([secondwindEffect], [null], "self", this);
 	}
 
 	async actionPoint(event, options) {
@@ -2401,7 +2401,7 @@ export default class Actor4e extends Actor {
 				weight += (e == "ad" ? v / 500 : v / 50);
 			}
 		}
-		Helper.debugLog(game.settings.get("dnd4e", "currencyWeight"));
+		helpers.debugLog(game.settings.get("dnd4e", "currencyWeight"));
 		//Weight Ritual Components
 		for (let [e, v] of Object.entries(actorData.ritualcomp)) {
 			// weight += v/100 * 2.205;
@@ -2466,17 +2466,17 @@ export default class Actor4e extends Actor {
 		let totalDamage = 0;
 		const actorRes = this.system.resistances;
 		const isDamageImmune = actorRes["damage"].immune;
-		const resAll = isOngoing ? Helper.sumExtremes([actorRes["damage"].value, actorRes["ongoing"].value]) : actorRes["damage"].value;
+		const resAll = isOngoing ? helpers.sumExtremes([actorRes["damage"].value, actorRes["ongoing"].value]) : actorRes["damage"].value;
 		if (isOngoing) typesSet.delete("ongoing");
 
 		let isImmuneAll = true; //starts as true, but as soon as one false it can not be changed back to true
 		let lowestRes = Infinity; // will attempt to replace this with the lowest resistance / highest vulnerability
 
 		for (let dt of typesSet) {
-			const currentRes = Helper.sumExtremes([resAll, actorRes[dt]?.value || 0]);
+			const currentRes = helpers.sumExtremes([resAll, actorRes[dt]?.value || 0]);
 			if (currentRes !== 0) { //if has resistances or vulnerability
 				isImmuneAll = false;
-				Helper.debugLog(`Modifier found: ${dt} ${actorRes[dt].value}`);
+				helpers.debugLog(`Modifier found: ${dt} ${actorRes[dt].value}`);
 				if (currentRes < lowestRes) {
 					lowestRes = currentRes;
 				}
@@ -2550,7 +2550,7 @@ export default class Actor4e extends Actor {
 		}
 
 		if (this.statuses.has("insubstantial")) totalDamage = Math.floor(totalDamage / 2);
-		Helper.debugLog(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`);
+		helpers.debugLog(`TotalDamage: ${totalDamage}, Multiplier: ${multiplier}`);
 		return totalDamage;
 	}
 
@@ -2623,7 +2623,7 @@ export default class Actor4e extends Actor {
 		}
 
 		if (this.statuses.has("insubstantial")) totalDamage = Math.floor(totalDamage / 2);
-		Helper.debugLog(`Total Damage: ${totalDamage}`);
+		helpers.debugLog(`Total Damage: ${totalDamage}`);
 		return totalDamage;
 	}
 
@@ -2697,7 +2697,7 @@ export default class Actor4e extends Actor {
 		}
 
 		const hp = this.system.attributes.hp;
-		Helper.debugLog(hp);
+		helpers.debugLog(hp);
 
 		// calculate existing temp hp
 		const tmp = parseInt(this.system.attributes.temphp.value) || 0;
@@ -2745,7 +2745,7 @@ export default class Actor4e extends Actor {
 	}
 
 	async promptEoTSavesSocket() {
-		Helper.debugLog("socket reached");
+		helpers.debugLog("socket reached");
 		const saveReminders = game.settings.get("dnd4e", "saveReminders");
 		if (!saveReminders) return;
 		
@@ -2757,7 +2757,7 @@ export default class Actor4e extends Actor {
 		}
 		
 		if (toSave.length) {
-			const isFF = Helper.isRollFastForwarded(event);
+			const isFF = helpers.isRollFastForwarded(event);
 			for (let i of toSave) {
 				if (isFF) {
 					let save = await this.rollSave(event, { effectSave: true, effectId: i });
@@ -2770,7 +2770,7 @@ export default class Actor4e extends Actor {
 	}
 
 	async autoDoTsSocket(tokenId) {
-		Helper.debugLog(tokenId);
+		helpers.debugLog(tokenId);
 		const autoDoTs = game.settings.get("dnd4e", "autoDoTs");
 		if (autoDoTs != "none") {
 			let applicableDoTs = {};
@@ -2826,7 +2826,7 @@ export default class Actor4e extends Actor {
 					//console.debug(this.calcDamageInner([[dot.amount,dot.type]]));
 					let dmgImpact = "neutral";
 					
-					let chatRecipients = [Helper.firstOwner(this)];
+					let chatRecipients = [helpers.firstOwner(this)];
 					switch (game.settings.get("dnd4e", "autoDoTsPublic")) {
 						case "all":
 							chatRecipients = null;
@@ -2869,7 +2869,7 @@ export default class Actor4e extends Actor {
 					);
 										
 					await ChatMessage.create({
-						user: Helper.firstOwner(this),
+						user: helpers.firstOwner(this),
 						speaker: { actor: this, alias: this.isToken ? this.token.name : this.name },
 						content: html,
 						flavor: `${dot.type == "healing" ? _loc ("EFFECT.statusRegen") : _loc ("DND4E.OngoingDamage")}: ${dot.effectName}`,

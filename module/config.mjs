@@ -1,4 +1,4 @@
-import { preLocalize } from "./helper.mjs";
+import { preLocalize } from "./helpers.mjs";
 
 // Namespace D&D4e Configuration Values
 export const DND4E = {};

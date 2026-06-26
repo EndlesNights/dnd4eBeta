@@ -1,4 +1,4 @@
-import { Helper } from "./helper.mjs";
+import * as helpers from "./helpers.mjs";
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
@@ -16,7 +16,7 @@ export async function create4eMacro(dropData, slot) {
 
 	if (dropData.type === "Item") {
 		const itemData = await Item.implementation.fromDropData(dropData);
-		Helper.debugLog(itemData);
+		helpers.debugLog(itemData);
 		if (!itemData) {
 			ui.notifications.warn("MACRO.4eUnownedWarn", { localize: true });
 			return null;
@@ -24,7 +24,7 @@ export async function create4eMacro(dropData, slot) {
 		foundry.utils.mergeObject(macroData, {
 			name: itemData.name,
 			img: itemData.img,
-			command: `game.dnd4e.rollItemMacro("${itemData.name}")`,
+			command: `DND4E.macros.rollItemMacro("${itemData.name}")`,
 			flags: { "dnd4e.itemMacro": true },
 		});
 	}
@@ -37,7 +37,7 @@ export async function create4eMacro(dropData, slot) {
 		foundry.utils.mergeObject(macroData, {
 			name: effectData.name,
 			img: effectData.icon,
-			command: `game.dnd4e.toggleEffect("${effectData.name}")`,
+			command: `DND4E.macros.toggleEffect("${effectData.name}")`,
 			flags: { "dnd4e.effectMacro": true },
 		});
 	}
@@ -97,7 +97,7 @@ export function toggleEffect(effectName, type = "DOCUMENT.ActiveEffect") {
 	const collection = Array.from(actor.allApplicableEffects());
 
 	const documents = collection.filter(i => i.name === effectName);
-	Helper.debugLog(effectName);
+	helpers.debugLog(effectName);
 	if (documents.length === 1) {
 		const effect = documents[0];
 		return effect?.update({ disabled: !effect.disabled });
@@ -107,5 +107,4 @@ export function toggleEffect(effectName, type = "DOCUMENT.ActiveEffect") {
 	} else {
 		return ui.notifications.warn(_loc("MACRO.4eMissingTargetWarn", { actor: actor.name, type: _loc(type), name: effectName }));
 	}
-
 }

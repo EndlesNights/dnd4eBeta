@@ -8,22 +8,32 @@
 import { DND4E } from "./config.mjs";
 import { registerSystemSettings } from "./settings.mjs";
 import * as applications from "./applications/_module.mjs";
-import { preloadHandlebarsTemplates } from "./templates.js";
+import { preloadHandlebarsTemplates } from "./templates.mjs";
 import * as canvas from "./canvas/_module.mjs";
-import * as documents from "./documents/_module.mjs";
 import * as data from "./data/_module.mjs";
-
-import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handleRefreshSaveEffects, handleRefreshDayEndEffects, handlePromptEoTSaves, performPreLocalization, registerHandlebarsHelpers } from "./helper.mjs";
+import * as documents from "./documents/_module.mjs";
+import * as rolls from "./rolls/_module.mjs";
 
 // Import Helpers
+import * as helpers from "./helpers.mjs";
 import * as chat from "./chat.mjs";
 import * as macros from "./macros.mjs";
 import * as migrations from "./migration.mjs";
-import { MultiAttackRoll } from "./roll/multi-attack-roll.js";
-import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
 import { TokenBarHooks } from "./hooks.mjs";
 import { customSKillSetUp } from "./skills/custom-skills.mjs";
-import Roll4e from "./dice/Roll.mjs";
+
+globalThis.dnd4e = {
+	applications,
+	canvas,
+	data,
+	documents,
+	helpers,
+	macros,
+	migrations,
+	rolls,
+	tokenBarHooks: TokenBarHooks,
+	CONFIG: DND4E,
+};
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -32,29 +42,13 @@ import Roll4e from "./dice/Roll.mjs";
 Hooks.once("init", async function() {
 	console.log(`D&D4e | Initializing Dungeons & Dragons 4th Edition System\n${DND4E.ASCII}`);
 
-	const { Actor4e, Item4e } = documents;
-	const ActiveEffectConfig4e = applications.sheets.ActiveEffectConfig4e;
-	game.dnd4e = {
-		apps: {
-			ActiveEffectConfig4e,
-		},
-		config: DND4E,
-		entities: {
-			Actor4e,
-			Item4e,
-		},
-		macros: macros,
-		migrations: migrations,
-		rollItemMacro: macros.rollItemMacro,
-		toggleEffect: macros.toggleEffect,
-	};
-
-	game.helper = Helper;
+	// Deprecated in favor of DND4E.helpers; remove eventually
+	game.helper = helpers;
 	
 	// Define custom Entity classes
 	CONFIG.DND4E = DND4E;
 
-	foundry.applications.apps.DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4e", ActiveEffectConfig4e, {
+	foundry.applications.apps.DocumentSheetConfig.registerSheet(ActiveEffect, "dnd4e", applications.sheets.ActiveEffectConfig4e, {
 		makeDefault: true,
 		label: _loc("SHEET.ActiveEffect"),
 	});
@@ -84,10 +78,8 @@ Hooks.once("init", async function() {
 	CONFIG.ActiveEffect.expiryEvents.save = "DND4E.DurationSaveEnd";
 
 	// define custom roll extensions
-	CONFIG.Dice.rolls = [Roll4e];
-	CONFIG.Dice.rolls.push(MultiAttackRoll);
-	CONFIG.Dice.rolls.push(RollWithOriginalExpression);
-	CONFIG.Dice.functions.scale = Helper.scaleFn;
+	CONFIG.Dice.rolls = [rolls.Roll4e, rolls.RollWithOriginalExpression, rolls.MultiAttackRoll];
+	CONFIG.Dice.functions.scale = helpers.scaleFn;
 	
 	CONFIG.ui.items = applications.sidebar.tabs.ItemDirectory4e;
 
@@ -216,13 +208,8 @@ Hooks.once("init", async function() {
 	var head = document.getElementsByTagName("HEAD")[0];
 
 	// Preload Handlebars Templates
-	registerHandlebarsHelpers();
+	helpers.registerHandlebarsHelpers();
 	preloadHandlebarsTemplates();
-
-	// setup methods that allow for easy integration with token hud
-	game.dnd4e.tokenBarHooks = TokenBarHooks;
-	//legacy, remove after some time when its reasonable for people to have updated token bar
-	game.dnd4e.quickSave = (actor) => game.dnd4e.tokenBarHooks.quickSave(actor, null);
 
 	customSKillSetUp();
 
@@ -248,7 +235,7 @@ Hooks.once("init", async function() {
  * Perform one-time pre-localization and sorting of some configuration objects
  */
 Hooks.once("i18nInit", function() {
-	performPreLocalization(CONFIG.DND4E);
+	helpers.performPreLocalization(CONFIG.DND4E);
 });
 
 Hooks.once("ready", function() {
@@ -263,12 +250,12 @@ Hooks.once("ready", function() {
 
 	// Add socket listener for applying activeEffects on targets that users do not own
 	game.socket.on("system.dnd4e", (data) => {
-		if (data.operation === "applyTokenEffect") handleApplyEffectToToken(data);
-		else if (data.operation === "deleteTokenEffect") handleDeleteEffectToToken(data);
-		else if (data.operation === "promptEoTSaves") handlePromptEoTSaves(data);
-		else if (data.operation === "autoDoTs") handleAutoDoTs(data);
-		else if (data.operation === "refreshSaveEffects") handleRefreshSaveEffects(data);
-		else if (data.operation === "refreshDayEndEffects") handleRefreshDayEndEffects(data);
+		if (data.operation === "applyTokenEffect") helpers.handleApplyEffectToToken(data);
+		else if (data.operation === "deleteTokenEffect") helpers.handleDeleteEffectToToken(data);
+		else if (data.operation === "promptEoTSaves") helpers.handlePromptEoTSaves(data);
+		else if (data.operation === "autoDoTs") helpers.handleAutoDoTs(data);
+		else if (data.operation === "refreshSaveEffects") helpers.handleRefreshSaveEffects(data);
+		else if (data.operation === "refreshDayEndEffects") helpers.handleRefreshDayEndEffects(data);
 		else applications.sheets.ItemSheet4e._handleShareItem(data);
 	});
 
@@ -309,7 +296,7 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
 	try {
 		if ((message.flags.core?.initiativeRoll === true) || (message.flags?.dnd4e?.roll?.type == "init")) {
 			if (html) {
-				const insertPart = Helper.initTooltip(message.content);
+				const insertPart = helpers.initTooltip(message.content);
 				html.innerHTML = html.innerHTML.replace(/(<h4 class="dice-total">)[0-9|.]+(<\/h4>)/g, `$1${insertPart}$2`);
 			}
 		}
@@ -410,7 +397,7 @@ Hooks.on("renderCombatTracker", (app, html, context) => {
 		html.querySelectorAll(".token-initiative").forEach((el) => {
 			let combatant = app.viewed.combatants.get(el.parentElement.dataset.combatantId);
 			if (combatant?.initiative) {
-				const insertPart = Helper.initTooltip(combatant.initiative);
+				const insertPart = helpers.initTooltip(combatant.initiative);
 				el.innerHTML = insertPart;
 			}
 		});
@@ -427,7 +414,7 @@ Hooks.on("createRegion", async (regionDoc) => {
 	const flagDocument = await fromUuid(originUuid) || regionDoc.getFlag("dnd4e", "item");
 	if (!flagDocument || (flagDocument.system.autoTarget.mode === "none")) return;
 	if (!actorUuid) return;
-	const token = Helper.tokenForActor(await fromUuid(actorUuid));
+	const token = helpers.tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;
 	let tokens = new Set();
 	for (const token of canvas.scene.tokens) {

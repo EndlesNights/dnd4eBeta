@@ -1,4 +1,4 @@
-import { Helper } from "../helper.mjs";
+import * as helpers from "../helpers.mjs";
 
 export default class Combat4e extends Combat {
 	async nextTurn() {
@@ -7,16 +7,16 @@ export default class Combat4e extends Combat {
 		
 		//t current turn
 		for (let t of this.turns) {
-			Helper.rechargeItems(t.token?.actor, ["turn"]);
+			helpers.rechargeItems(t.token?.actor, ["turn"]);
 		}
 		
 		// Signal the current actor to check end-of-turn saves
-		Helper.debugLog("Begin autosaves phase");
+		helpers.debugLog("Begin autosaves phase");
 		const currentActor = await this.turns[currentTurn]?.token.actor;
 
 		if (currentActor) {
-			Helper.debugLog(`Checking for owner of ${currentActor.name}`);
-			const targetUser = Helper.firstOwner(currentActor);
+			helpers.debugLog(`Checking for owner of ${currentActor.name}`);
+			const targetUser = helpers.firstOwner(currentActor);
 			
 			//Work out which user makes the save; "game.user" is whoever ended the turn
 			//If game.user is a non-GM with ownership of this actor, it's them
@@ -37,17 +37,17 @@ export default class Combat4e extends Combat {
 		}
 		
 		// After EoT durations are resolved, collect ongoing damage instances from effects
-		Helper.debugLog("Begin ongoing damage phase");
+		helpers.debugLog("Begin ongoing damage phase");
 		const nextCombatant = await this.turns[nextTurn]?.token.actor || null;
 		
 		if (nextCombatant) {
 			//Triggers for the beginning of the next turn
-			Helper.rechargeItems(nextCombatant, ["round"]);
+			helpers.rechargeItems(nextCombatant, ["round"]);
 		}
 
 		if (nextCombatant) {
-			Helper.debugLog(`Checking for owner of ${nextCombatant.name}`);
-			const nextTargetUser = Helper.firstOwner(nextCombatant);
+			helpers.debugLog(`Checking for owner of ${nextCombatant.name}`);
+			const nextTargetUser = helpers.firstOwner(nextCombatant);
 			if (game.user.isGM) {
 				await nextCombatant.autoDoTsSocket(this.turns[nextTurn].tokenId);
 			} else {

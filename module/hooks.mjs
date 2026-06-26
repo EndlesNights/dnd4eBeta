@@ -1,5 +1,5 @@
 import { Actor4e, Item4e } from "./documents/_module.mjs";
-import { Helper } from "./helper.mjs";
+import * as helpers from "./helpers.mjs";
 
 /**
  * These methods are all called by https://github.com/Drental/fvtt-tokenactionhud, their method signature should not be changed without a code change there.
@@ -28,7 +28,7 @@ TokenBarHooks.healDialog = (actor, event) => actor.sheet._onHealMenuDialog(event
 TokenBarHooks.rechargePower = (actor, power, event) => actor.sheet._onItemRecharge(event);
 
 TokenBarHooks.rollPower = (actor, power, event) => {
-	const fastForward = Helper.isRollFastForwarded(event);
+	const fastForward = helpers.isRollFastForwarded(event);
 	return actor.usePower(power, { configureDialog: !fastForward, fastForward: fastForward });
 };
 
@@ -68,7 +68,7 @@ TokenBarHooks.generateItemTooltip = async (actor, item) => {
 		if (item.hasAttack) {
 			attackBonus = await item.getAttackBonus();
 		}
-		let detailsText = Helper._preparePowerCardData(chatdata, CONFIG, actor.getRollData(), attackBonus);
+		let detailsText = helpers._preparePowerCardData(chatdata, CONFIG, actor.getRollData(), attackBonus);
 		const enrichedDetailsText = await foundry.applications.ux.TextEditor.implementation.enrichHTML(detailsText, {
 			relativeTo: actor,
 		});
