@@ -1,12 +1,12 @@
 // Adapted from the Foundry Virtual Tabletop - Draw Steel Game System licensed under the MIT license
 
-import { Helper } from "../../../helper.js";
-import { parseConfig } from "../utils.mjs";
+import { Helper } from "../../../helper.mjs";
+import { parseConfig } from "./utils.mjs";
 
 /**
  * @import { TextEditorEnricher, TextEditorEnricherConfig } from "@client/config.mjs";
  * @import HTMLEnrichedContentElement from "@client/applications/elements/enriched-content.mjs";
- * @import { ParsedConfig } from "../utils.mjs";
+ * @import { ParsedConfig } from "./utils.mjs";
  */
 
 /** @type {TextEditorEnricherConfig["id"]} */

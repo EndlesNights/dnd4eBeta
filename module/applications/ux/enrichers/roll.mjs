@@ -1,7 +1,7 @@
-import { createLink, parseConfig, addDataset } from "../utils.mjs";
+import { createLink, parseConfig, addDataset } from "./utils.mjs";
 
-import { d20Roll, damageRoll } from "../../../dice.js";
-import { Helper } from "../../../helper.js";
+import { d20Roll, damageRoll } from "../../../dice.mjs";
+import { Helper } from "../../../helper.mjs";
 import Roll4e from "../../../dice/Roll.mjs";
 
 /** @type {TextEditorEnricherConfig["id"]} */

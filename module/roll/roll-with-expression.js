@@ -1,4 +1,4 @@
-import { Helper } from "../helper.js";
+import { Helper } from "../helper.mjs";
 import Roll4e from "../dice/Roll.mjs";
 
 /**

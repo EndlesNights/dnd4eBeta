@@ -1,5 +1,5 @@
 import { handleRoll } from "./applications/ux/enrichers/roll.mjs";
-import { Helper } from "./helper.js";
+import { Helper } from "./helper.mjs";
 
 /**
  * Highlight critical success or failure on d20 rolls, or recharge rolls

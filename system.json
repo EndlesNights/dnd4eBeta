@@ -28,7 +28,7 @@
 		  }
 	],
 	"esmodules": [
-		"module/dnd4e.js"
+		"module/dnd4e.mjs"
 	],
 	"styles": [
 		"styles/dnd4e.css"

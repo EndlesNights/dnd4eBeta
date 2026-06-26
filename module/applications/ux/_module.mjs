@@ -1,2 +1,2 @@
 export * as enrichers from "./enrichers/_module.mjs";
-export * as utils from "./utils.mjs";
+export * as utils from "./enrichers/utils.mjs";

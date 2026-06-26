@@ -1,6 +1,6 @@
-import { d20Roll, damageRoll, getAttackRollBonus } from "../dice.js";
-import { DND4E } from "../config.js";
-import { Helper } from "../helper.js";
+import { d20Roll, damageRoll, getAttackRollBonus } from "../dice.mjs";
+import { DND4E } from "../config.mjs";
+import { Helper } from "../helper.mjs";
 import Actor4e from "../documents/actor.mjs";
 import AbilityUseDialog from "../applications/apps/ability-use-dialog.mjs";
 import Roll4e from "../dice/Roll.mjs";

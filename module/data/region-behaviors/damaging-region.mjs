@@ -2,7 +2,7 @@
 
 const { NumberField, SetField, StringField } = foundry.data.fields;
 import { FormulaField } from "../fields/_module.mjs";
-import { Helper } from "../../helper.js";
+import { Helper } from "../../helper.mjs";
 
 /**
  * @import { DamagingRegionRegionBehaviorSystemData } from "./_types.mjs";

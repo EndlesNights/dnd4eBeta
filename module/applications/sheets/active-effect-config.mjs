@@ -1,6 +1,6 @@
 import ActiveEffect4e from "../../documents/active-effect.mjs";
-import { DND4E } from "../../config.js";
-import { Helper } from "../../helper.js";
+import { DND4E } from "../../config.mjs";
+import { Helper } from "../../helper.mjs";
 
 export default class ActiveEffectConfig4e extends foundry.applications.sheets.ActiveEffectConfig {
 

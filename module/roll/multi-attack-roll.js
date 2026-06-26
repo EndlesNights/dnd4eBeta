@@ -1,4 +1,4 @@
-import { DND4E } from "../config.js";
+import { DND4E } from "../config.mjs";
 import Roll4e from "../dice/Roll.mjs";
 
 /**

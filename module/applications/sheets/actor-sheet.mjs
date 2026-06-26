@@ -1,7 +1,7 @@
-import { DND4E } from "../../config.js";
+import { DND4E } from "../../config.mjs";
 
 import { ActiveEffect4e, Item4e } from "../../documents/_module.mjs";
-import { Helper } from "../../helper.js";
+import { Helper } from "../../helper.mjs";
 
 import * as apps from "../apps/_module.mjs";
 

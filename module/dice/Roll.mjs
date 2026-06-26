@@ -1,4 +1,4 @@
-import { Helper } from "../helper.js";
+import { Helper } from "../helper.mjs";
 
 export default class Roll4e extends Roll {
 	constructor (formula, data = {}, options = {}) {

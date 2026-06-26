@@ -1,5 +1,5 @@
 import DocumentSheet4e from "../sheets/DocumentSheet4e.mjs";
-import { Helper } from "../../helper.js";
+import { Helper } from "../../helper.mjs";
 
 export default class HealMenuDialog extends DocumentSheet4e {
 

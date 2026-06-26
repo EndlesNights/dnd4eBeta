@@ -1,7 +1,7 @@
 import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
-import * as canvas from "./canvas/_module.mjs";
 import { ActiveEffect4e, Actor4e, Item4e, TokenDocument4e } from "./documents/_module.mjs";
 import Roll4e from "./dice/Roll.mjs";
+import Token4e from "./canvas/placeables/token.mjs";
 
 export class Helper {
 
@@ -1256,7 +1256,7 @@ export class Helper {
 	static getToken(tokenRef) {
 		if (!tokenRef)
 			return undefined;
-		if (tokenRef instanceof canvas.placeables.Token4e)
+		if (tokenRef instanceof Token4e)
 			return tokenRef;
 		if (tokenRef instanceof TokenDocument4e)
 			return tokenRef.object ?? undefined;
@@ -1264,7 +1264,7 @@ export class Helper {
 		if (typeof tokenRef === "string") {
 			entity = fromUuidSync(tokenRef);
 		}
-		if (entity instanceof canvas.placeables.Token4e)
+		if (entity instanceof Token4e)
 			return entity;
 		if (entity instanceof TokenDocument4e)
 			return entity.object ?? undefined;
@@ -1466,7 +1466,7 @@ export class Helper {
 		if (!canvas || !canvas.scene)
 			return [];
 		try {
-			if (!(token instanceof canvas.placeables.Token4e)) {
+			if (!(token instanceof Token4e)) {
 				throw new Error("find nearby token is not of type token or the token uuid is invalid");
 			}
 			let relative = options.relative ?? true;

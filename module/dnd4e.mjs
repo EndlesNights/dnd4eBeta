@@ -5,24 +5,24 @@
  */
 
 // Import Modules
-import { DND4E } from "./config.js";
-import { registerSystemSettings } from "./settings.js";
+import { DND4E } from "./config.mjs";
+import { registerSystemSettings } from "./settings.mjs";
 import * as applications from "./applications/_module.mjs";
 import { preloadHandlebarsTemplates } from "./templates.js";
 import * as canvas from "./canvas/_module.mjs";
 import * as documents from "./documents/_module.mjs";
 import * as data from "./data/_module.mjs";
 
-import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handleRefreshSaveEffects, handleRefreshDayEndEffects, handlePromptEoTSaves, performPreLocalization, registerHandlebarsHelpers } from "./helper.js";
+import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handleRefreshSaveEffects, handleRefreshDayEndEffects, handlePromptEoTSaves, performPreLocalization, registerHandlebarsHelpers } from "./helper.mjs";
 
 // Import Helpers
-import * as chat from "./chat.js";
-import * as macros from "./macros.js";
-import * as migrations from "./migration.js";
+import * as chat from "./chat.mjs";
+import * as macros from "./macros.mjs";
+import * as migrations from "./migration.mjs";
 import { MultiAttackRoll } from "./roll/multi-attack-roll.js";
 import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
-import { TokenBarHooks } from "./hooks.js";
-import { customSKillSetUp } from "./skills/custom-skills.js";
+import { TokenBarHooks } from "./hooks.mjs";
+import { customSKillSetUp } from "./skills/custom-skills.mjs";
 import Roll4e from "./dice/Roll.mjs";
 
 /* -------------------------------------------- */

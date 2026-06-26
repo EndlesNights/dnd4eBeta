@@ -1,4 +1,4 @@
-import { Helper } from "../../helper.js";
+import { Helper } from "../../helper.mjs";
 import DocumentSheet4e from "../sheets/DocumentSheet4e.mjs";
 
 export default class AttributeBonusDialog extends DocumentSheet4e {

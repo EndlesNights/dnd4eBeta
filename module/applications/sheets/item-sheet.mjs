@@ -1,6 +1,6 @@
 // import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import ActiveEffect4e from "../../documents/active-effect.mjs";
-import { Helper } from "../../helper.js";
+import { Helper } from "../../helper.mjs";
 import Item4e from "../../documents/item.mjs";
 
 /**
