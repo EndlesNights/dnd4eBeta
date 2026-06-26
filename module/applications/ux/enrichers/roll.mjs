@@ -1,8 +1,8 @@
-import { createLink, parseConfig, addDataset } from "./utils.js";
+import { createLink, parseConfig, addDataset } from "../utils.mjs";
 
-import { d20Roll, damageRoll } from "../dice.js";
-import { Helper } from "../helper.js";
-import Roll4e from "../dice/Roll.js";
+import { d20Roll, damageRoll } from "../../../dice.js";
+import { Helper } from "../../../helper.js";
+import Roll4e from "../../../dice/Roll.mjs";
 
 /** @type {TextEditorEnricherConfig["id"]} */
 export const id = "DND4E.roll";
@@ -149,7 +149,7 @@ export async function enrichCheck(parsedConfig, label, options) {
  * @param {EnrichmentOptions} options  Options provided to customize text enrichment.
  * @returns {HTMLElement|null}         An HTML link if the enricher could be built, otherwise null.
  */
-export async function enrichAttack(parsedConfig, label, options) {
+async function enrichAttack(parsedConfig, label, options) {
 	let { formula, ability, def, title, flavor } = parsedConfig;
 
 	const longAbilities = Object.fromEntries(Array.from(Object.entries(CONFIG.DND4E.abilities)).map((arr) => [arr[1].toLowerCase(), arr[0]]));
@@ -237,7 +237,7 @@ export async function enrichAttack(parsedConfig, label, options) {
  * @param {EnrichmentOptions} options  Options provided to customize text enrichment.
  * @returns {HTMLElement|null}         An HTML link if the enricher could be built, otherwise null.
  */
-export async function enrichDamageHealing(parsedConfig, label, options) {
+async function enrichDamageHealing(parsedConfig, label, options) {
 	let { type, formula, critFormula, damageType, healingType, title, flavor } = parsedConfig;
 	damageType = damageType || "";
 	healingType = healingType || "healing";

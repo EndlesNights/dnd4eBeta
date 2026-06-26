@@ -13,9 +13,6 @@ import * as canvas from "./canvas/_module.mjs";
 import * as documents from "./documents/_module.mjs";
 import * as data from "./data/_module.mjs";
 
-import * as roll from "./enrichers/roll.js";
-import * as lookup from "./enrichers/lookup.js";
-
 import { Helper, handleApplyEffectToToken, handleAutoDoTs, handleDeleteEffectToToken, handleRefreshSaveEffects, handleRefreshDayEndEffects, handlePromptEoTSaves, performPreLocalization, registerHandlebarsHelpers } from "./helper.js";
 
 // Import Helpers
@@ -26,7 +23,7 @@ import { MultiAttackRoll } from "./roll/multi-attack-roll.js";
 import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
 import { TokenBarHooks } from "./hooks.js";
 import { customSKillSetUp } from "./skills/custom-skills.js";
-import Roll4e from "./dice/Roll.js";
+import Roll4e from "./dice/Roll.mjs";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -240,8 +237,8 @@ Hooks.once("init", async function() {
 	// Enrichers
 	// Register enrichers
 	CONFIG.TextEditor.enrichers = [
-		roll,
-		lookup,
+		applications.ux.enrichers.roll,
+		applications.ux.enrichers.lookup,
 	];
 });
 

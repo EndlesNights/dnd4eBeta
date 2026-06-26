@@ -3,7 +3,7 @@ import { DND4E } from "../config.js";
 import { Helper } from "../helper.js";
 import Actor4e from "../documents/actor.mjs";
 import AbilityUseDialog from "../applications/apps/ability-use-dialog.mjs";
-import Roll4e from "../dice/Roll.js";
+import Roll4e from "../dice/Roll.mjs";
 
 /**
  * Override and extend the basic :class:`Item` implementation

@@ -1,5 +1,5 @@
 import { Helper } from "../helper.js";
-import Roll4e from "../dice/Roll.js";
+import Roll4e from "../dice/Roll.mjs";
 
 /**
  * Roll that will also have a roll for the expression used to build the row, and highlighting for how elements correspond to formula numbers.

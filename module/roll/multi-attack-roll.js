@@ -1,5 +1,5 @@
 import { DND4E } from "../config.js";
-import Roll4e from "../dice/Roll.js";
+import Roll4e from "../dice/Roll.mjs";
 
 /**
  * An extension of the default Foundry Roll class for handling multiattack rolls and displaying them in a single chat message

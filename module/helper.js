@@ -1,7 +1,7 @@
 import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
 import * as canvas from "./canvas/_module.mjs";
 import { ActiveEffect4e, Actor4e, Item4e, TokenDocument4e } from "./documents/_module.mjs";
-import Roll4e from "./dice/Roll.js";
+import Roll4e from "./dice/Roll.mjs";
 
 export class Helper {
 

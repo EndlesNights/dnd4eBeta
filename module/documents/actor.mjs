@@ -2,7 +2,7 @@ import { d20Roll, damageRoll } from "../dice.js";
 import { DND4E } from "../config.js";
 import { Helper } from "../helper.js";
 import { SaveThrowDialog } from "../applications/apps/_module.mjs";
-import Roll4e from "../dice/Roll.js";
+import Roll4e from "../dice/Roll.mjs";
 
 /**
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.

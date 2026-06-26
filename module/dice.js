@@ -1,6 +1,6 @@
 import { Helper } from "./helper.js";
 import { MultiAttackRoll } from "./roll/multi-attack-roll.js";
-import Roll4e from "./dice/Roll.js";
+import Roll4e from "./dice/Roll.mjs";
 import { RollDialog } from "./applications/apps/dice/_module.mjs";
 import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
 
