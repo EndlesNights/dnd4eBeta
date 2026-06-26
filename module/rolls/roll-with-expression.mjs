@@ -1,4 +1,4 @@
-import * as helpers from "../helpers.mjs";
+import * as utils from "../utils/utils.mjs";
 import Roll4e from "./roll.mjs";
 
 /**
@@ -83,7 +83,7 @@ export default class RollWithOriginalExpression extends Roll4e {
      *
      * Worked example:
      * Attack roll: which is 1d20 + @wepAttack+@powerMod+@lvhalf+@bonus   {wepAttack: "3 + 1", powerMod: 5, lvhalf: 1, bonus: "1d6" }
-     * by the time this formula reaches out code it has become a parts array like so ["3 + 1 + 5 + 1", "@bonus"]  This is because item-document.js calls helpers.commonReplace on the attack formula and performs all the substitutions required
+     * by the time this formula reaches out code it has become a parts array like so ["3 + 1 + 5 + 1", "@bonus"]  This is because item-document.js calls utils.commonReplace on the attack formula and performs all the substitutions required
      * the @bonus gets added as a new part by the roll helper in dice.js to capture the situational bonus added by the user
      * In order to get a nice expression with highlighting we need to call this method with the following parameters:
      * parts: ["3 + 1 + 5 + 1", "@bonus"]
@@ -360,7 +360,7 @@ export default class RollWithOriginalExpression extends Roll4e {
 		// expression = "12 + @bonus" <-- perform a substitution around @bonus
 		if ((("" + expression).match(/@/g) || []).length > 0) {
 			try {
-				const regex = helpers.variableRegex;
+				const regex = utils.variableRegex;
 				let newFormula = "";
 				// I need to remove the things I have <span>ed such that they do not trigger later matches - e.g. @wepAttack = (2 + 1) @bonus = 1, the @bonus will match the trailing part of @wepAttack!
 				let activeFormula = formula;

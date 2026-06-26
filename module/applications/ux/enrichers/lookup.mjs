@@ -1,6 +1,6 @@
 // Adapted from the Foundry Virtual Tabletop - Draw Steel Game System licensed under the MIT license
 
-import * as helpers from "../../../helpers.mjs";
+import * as utils from "../../../utils/utils.mjs";
 import { parseConfig } from "./utils.mjs";
 
 /**
@@ -46,7 +46,7 @@ export async function enricher(match, options) {
 	let value;
 	if (parsedConfig.evaluate) {
 		const replacedFormula = Roll.replaceFormulaData(parsedConfig.formula, data);
-		value = (replacedFormula.includes("@")) ? fallback : helpers.evaluateFormula(replacedFormula, data, { contextName: "lookup" });
+		value = (replacedFormula.includes("@")) ? fallback : utils.evaluateFormula(replacedFormula, data, { contextName: "lookup" });
 	} else {
 		value = foundry.utils.getProperty(data, parsedConfig.formula.substring(1)) ?? fallback;
 

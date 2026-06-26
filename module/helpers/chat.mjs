@@ -1,5 +1,5 @@
-import { handleRoll } from "./applications/ux/enrichers/roll.mjs";
-import * as helpers from "./helpers.mjs";
+import { handleRoll } from "../applications/ux/enrichers/roll.mjs";
+import * as utils from "../utils/utils.mjs";
 
 /**
  * Highlight critical success or failure on d20 rolls, or recharge rolls
@@ -340,7 +340,7 @@ function applyEffectToSelectTokens(li, effectType) {
 
 	const effectTargets = canvas.tokens.controlled; // Array
 
-	helpers.applyEffectsToTokens(item.effects, effectTargets, effectType, actor);
+	utils.applyEffectsToTokens(item.effects, effectTargets, effectType, actor);
 }
 
 /* -------------------------------------------- */
@@ -358,7 +358,7 @@ function selectTargetTokens(li, targetType) {
 	}
 
 	if (targetType === "hit") {
-		helpers.debugLog("hit");
+		utils.debugLog("hit");
 		for (const roll of message.rolls) {
 			if (["hit", "critical"].includes(roll.options.multirollData.hitstate)) {
 				canvas.tokens.get(roll.options.multirollData.targetID).control({ releaseOthers: false });
@@ -366,7 +366,7 @@ function selectTargetTokens(li, targetType) {
 		}
 	}
 	else if (targetType === "miss") {
-		helpers.debugLog("miss");
+		utils.debugLog("miss");
 		for (const roll of message.rolls) {
 			if (["miss", "fumble", "immune"].includes(roll.options.multirollData.hitstate)) {
 				canvas.tokens.get(roll.options.multirollData.targetID).control({ releaseOthers: false });
@@ -422,7 +422,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage = false) {
 	if ((multiplier < 0) || trueDamage) {
 		return Promise.all(canvas.tokens.controlled.map(t => {
 			const a = t.actor;
-			helpers.debugLog(multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealt: ${roll.total}`);
+			utils.debugLog(multiplier < 0 ? `Amount Healed for: ${roll.total}` : `True Damage Dealt: ${roll.total}`);
 			return a.applyDamage(roll.total, multiplier, { surgeAmount, surgeValueAmount });
 		}));
 	}
@@ -433,7 +433,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage = false) {
 	roll.terms.forEach(e => {
 		if (typeof e.total === "number") {
 			if (e.flavor) {
-				helpers.debugLog(`Damage type found: ${e.flavor}`);
+				utils.debugLog(`Damage type found: ${e.flavor}`);
 				damageDealt.push([e.total, e.flavor]);
 				rollTotalRemain -= e.total;
 			}

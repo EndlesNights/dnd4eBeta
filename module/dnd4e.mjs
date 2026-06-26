@@ -6,20 +6,16 @@
 
 // Import Modules
 import { DND4E } from "./config.mjs";
-import { registerSystemSettings } from "./settings.mjs";
 import * as applications from "./applications/_module.mjs";
-import { preloadHandlebarsTemplates } from "./templates.mjs";
 import * as canvas from "./canvas/_module.mjs";
 import * as data from "./data/_module.mjs";
 import * as documents from "./documents/_module.mjs";
 import * as rolls from "./rolls/_module.mjs";
 
 // Import Helpers
-import * as helpers from "./helpers.mjs";
-import * as chat from "./chat.mjs";
-import * as macros from "./macros.mjs";
-import * as migrations from "./migration.mjs";
 import * as compatibility from "./compatibility/_module.mjs";
+import * as utils from "./utils/utils.mjs";
+import * as helpers from "./helpers/_module.mjs";
 import { customSKillSetUp } from "./skills/custom-skills.mjs";
 
 globalThis.dnd4e = {
@@ -29,9 +25,8 @@ globalThis.dnd4e = {
 	data,
 	documents,
 	helpers,
-	macros,
-	migrations,
 	rolls,
+	utils,
 	CONFIG: DND4E,
 };
 
@@ -76,7 +71,7 @@ Hooks.once("init", async function() {
 
 	// define custom roll extensions
 	CONFIG.Dice.rolls = [rolls.Roll4e, rolls.RollWithOriginalExpression, rolls.MultiAttackRoll];
-	CONFIG.Dice.functions.scale = helpers.scaleFn;
+	CONFIG.Dice.functions.scale = utils.scaleFn;
 	
 	CONFIG.ui.items = applications.sidebar.tabs.ItemDirectory4e;
 
@@ -157,7 +152,7 @@ Hooks.once("init", async function() {
 	CONFIG.RegionBehavior.typeLabels.difficultTerrain = "DND4E.difficultTerrain.Label";
 	CONFIG.RegionBehavior.typeIcons.difficultTerrain = "difficult-terrain-icon";
 
-	registerSystemSettings();
+	helpers.settings.registerSystemSettings();
 
 	CONFIG.Combat.initiative.formula = "1d20 + @attributes.init.value";
 	// Register sheet application classes
@@ -205,8 +200,8 @@ Hooks.once("init", async function() {
 	var head = document.getElementsByTagName("HEAD")[0];
 
 	// Preload Handlebars Templates
-	helpers.registerHandlebarsHelpers();
-	preloadHandlebarsTemplates();
+	utils.registerHandlebarsHelpers();
+	helpers.templates.preloadHandlebarsTemplates();
 
 	customSKillSetUp();
 
@@ -232,7 +227,7 @@ Hooks.once("init", async function() {
  * Perform one-time pre-localization and sorting of some configuration objects
  */
 Hooks.once("i18nInit", function() {
-	helpers.performPreLocalization(CONFIG.DND4E);
+	utils.performPreLocalization(CONFIG.DND4E);
 });
 
 Hooks.once("ready", function() {
@@ -240,19 +235,19 @@ Hooks.once("ready", function() {
 	// Hooks.on("hotbarDrop", (bar, data, slot) => macros.create4eMacro(data, slot));
 	Hooks.on("hotbarDrop", (bar, data, slot) => {
 		if (["Item", "ActiveEffect"].includes(data.type)) {
-			macros.create4eMacro(data, slot);
+			helpers.macros.create4eMacro(data, slot);
 			return false;
 		}
 	});
 
 	// Add socket listener for applying activeEffects on targets that users do not own
 	game.socket.on("system.dnd4e", (data) => {
-		if (data.operation === "applyTokenEffect") helpers.handleApplyEffectToToken(data);
-		else if (data.operation === "deleteTokenEffect") helpers.handleDeleteEffectToToken(data);
-		else if (data.operation === "promptEoTSaves") helpers.handlePromptEoTSaves(data);
-		else if (data.operation === "autoDoTs") helpers.handleAutoDoTs(data);
-		else if (data.operation === "refreshSaveEffects") helpers.handleRefreshSaveEffects(data);
-		else if (data.operation === "refreshDayEndEffects") helpers.handleRefreshDayEndEffects(data);
+		if (data.operation === "applyTokenEffect") utils.handleApplyEffectToToken(data);
+		else if (data.operation === "deleteTokenEffect") utils.handleDeleteEffectToToken(data);
+		else if (data.operation === "promptEoTSaves") utils.handlePromptEoTSaves(data);
+		else if (data.operation === "autoDoTs") utils.handleAutoDoTs(data);
+		else if (data.operation === "refreshSaveEffects") utils.handleRefreshSaveEffects(data);
+		else if (data.operation === "refreshDayEndEffects") utils.handleRefreshDayEndEffects(data);
 		else applications.sheets.ItemSheet4e._handleShareItem(data);
 	});
 
@@ -269,7 +264,7 @@ Hooks.once("ready", function() {
 		ui.notifications.error(_loc("MIGRATION.4eVersionTooOldWarning"), { permanent: true });
 	}
 
-	migrations.migrateWorld();
+	data.migration.migrateWorld();
 });
 
 /* -------------------------------------------- */
@@ -278,13 +273,13 @@ Hooks.once("ready", function() {
 
 Hooks.on("renderChatMessageHTML", (message, html, data) => {
 	// Display action buttons
-	chat.displayChatActionButtons(message, html, data);
+	helpers.chat.displayChatActionButtons(message, html, data);
 
 	// Highlight critical success or failure die
-	chat.highlightCriticalSuccessFailure(message, html, data);
+	helpers.chat.highlightCriticalSuccessFailure(message, html, data);
 
 	// hide damage buttons on d20 rolls
-	chat.displayDamageOptionButtons(message, html, data);
+	helpers.chat.displayDamageOptionButtons(message, html, data);
 
 	// Optionally collapse the content
 	if (game.settings.get("dnd4e", "autoCollapseItemCards")) html.querySelectorAll(".card-content").forEach(el => el.style.display = "none");	
@@ -293,7 +288,7 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
 	try {
 		if ((message.flags.core?.initiativeRoll === true) || (message.flags?.dnd4e?.roll?.type == "init")) {
 			if (html) {
-				const insertPart = helpers.initTooltip(message.content);
+				const insertPart = utils.initTooltip(message.content);
 				html.innerHTML = html.innerHTML.replace(/(<h4 class="dice-total">)[0-9|.]+(<\/h4>)/g, `$1${insertPart}$2`);
 			}
 		}
@@ -303,10 +298,10 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
 
 	//Item listeners
 	documents.Item4e.chatListeners(html);
-	chat.chatMessageListener(html);
+	helpers.chat.chatMessageListener(html);
 });
 
-Hooks.on("getChatMessageContextOptions", chat.addChatMessageContextOptions);
+Hooks.on("getChatMessageContextOptions", helpers.chat.addChatMessageContextOptions);
 
 Hooks.on("renderChatLog", (app, element, context) => {
 	// Revert Foundy's bizarre decision to force light theme in chat
@@ -326,7 +321,7 @@ Hooks.on("renderChatLog", (app, element, context) => {
 // Also activate buttons on popout messages
 Hooks.on("renderChatPopout", (app, html, data) => {
 	documents.Item4e.chatListeners(html);
-	chat.chatMessageListener(html);
+	helpers.chat.chatMessageListener(html);
 });
 
 Hooks.on("renderTokenHUD", (app, html, data) => {
@@ -394,7 +389,7 @@ Hooks.on("renderCombatTracker", (app, html, context) => {
 		html.querySelectorAll(".token-initiative").forEach((el) => {
 			let combatant = app.viewed.combatants.get(el.parentElement.dataset.combatantId);
 			if (combatant?.initiative) {
-				const insertPart = helpers.initTooltip(combatant.initiative);
+				const insertPart = utils.initTooltip(combatant.initiative);
 				el.innerHTML = insertPart;
 			}
 		});
@@ -411,7 +406,7 @@ Hooks.on("createRegion", async (regionDoc) => {
 	const flagDocument = await fromUuid(originUuid) || regionDoc.getFlag("dnd4e", "item");
 	if (!flagDocument || (flagDocument.system.autoTarget.mode === "none")) return;
 	if (!actorUuid) return;
-	const token = helpers.tokenForActor(await fromUuid(actorUuid));
+	const token = utils.tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;
 	let tokens = new Set();
 	for (const token of canvas.scene.tokens) {

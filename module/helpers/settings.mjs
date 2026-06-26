@@ -1,5 +1,5 @@
-import CustomSkillConfig from "./applications/apps/custom-skill-config.mjs";
-import { updateApplyEffectsTooltips } from "./chat.mjs";
+import CustomSkillConfig from "../applications/apps/custom-skill-config.mjs";
+import { updateApplyEffectsTooltips } from "../helpers/chat.mjs";
 
 export const registerSystemSettings = function() {
 

@@ -1,6 +1,6 @@
-import { ActiveEffect4e, Actor4e, Item4e, TokenDocument4e } from "./documents/_module.mjs";
-import Roll4e from "./rolls/roll.mjs";
-import Token4e from "./canvas/placeables/token.mjs";
+import { ActiveEffect4e, Actor4e, Item4e, TokenDocument4e } from "../documents/_module.mjs";
+import Roll4e from "../rolls/roll.mjs";
+import Token4e from "../canvas/placeables/token.mjs";
 
 export async function executeMacro(item) {
 	const macro = new Macro ({
@@ -17,17 +17,17 @@ export async function executeMacro(item) {
 }
 
 /**
-     * Helper function to perform synchronous evaluation of a user-input formula
-     * User-input formulas may throw if blank or otherwise contain invalid terms.
-     * @param {string} formula                         The roll formula. May be blank or otherwise invalid.
-     * @param {object} [rollData]                      The roll data for parsing.
-     * @param {object} [options]                       Options for this method to forward.
-     * @param {boolean} [options.strict=false]         Forwarded to {@linkcode Roll.evaluateSync}.
-     * @param {boolean} [options.suppressError=false]  Whether or not to suppress the error message.
-     * @param {boolean} [options.allowStrings=true]    Forwarded to {@linkcode Roll.evaluateSync}.
-     * @param {string} [options.contextName]           Helpful string put into the error message.
-     * @returns {number} Returns the total, or 0 if it failed to evaluate.
-     */
+ * Helper function to perform synchronous evaluation of a user-input formula
+ * User-input formulas may throw if blank or otherwise contain invalid terms.
+ * @param {string} formula                         The roll formula. May be blank or otherwise invalid.
+ * @param {object} [rollData]                      The roll data for parsing.
+ * @param {object} [options]                       Options for this method to forward.
+ * @param {boolean} [options.strict=false]         Forwarded to {@linkcode Roll.evaluateSync}.
+ * @param {boolean} [options.suppressError=false]  Whether or not to suppress the error message.
+ * @param {boolean} [options.allowStrings=true]    Forwarded to {@linkcode Roll.evaluateSync}.
+ * @param {string} [options.contextName]           Helpful string put into the error message.
+ * @returns {number} Returns the total, or 0 if it failed to evaluate.
+ */
 export function evaluateFormula(formula, rollData = {}, { strict = false, suppressError = false, allowStrings = true, contextName = "unknown" } = {}) {
 	if (typeof formula === "number") return formula;
 	let result = 0;
@@ -42,20 +42,20 @@ export function evaluateFormula(formula, rollData = {}, { strict = false, suppre
 }
 
 /**
-	 * Returns true if the variable is defined and is not an empty string.
-	 * @param str the object to check, could be a string, could be any other object
-	 * @returns {boolean} if the object is defined (non null) and is not the empty string.
-	 */
+ * Returns true if the variable is defined and is not an empty string.
+ * @param {string} str the object to check, could be a string, could be any other object
+ * @returns {boolean} if the object is defined (non null) and is not the empty string.
+ */
 export function isNonEmpty(str) {
 	return str && (str !== "");
 }
 
 /* -------------------------------------------- */
 /**
-	* Refrence a nested object by string.
-	* s is the string that holds the targeted nested adress
-	* o is the root objet, defaulting to object.data
-	*/
+* Refrence a nested object by string.
+* @param {string} s the string that holds the targeted nested adress
+* @param {object} o the root object, defaulting to object.data
+*/
 export function byString(s, o) {
 	s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
 	s = s.replace(/^\./, ""); // strip a leading dot
@@ -72,21 +72,21 @@ export function byString(s, o) {
 }
 
 /**
-	 * Surrounds the given object in brackets
-	 * @param str The object
-	 * @return {string} "({str})"
-	 */
+ * Surrounds the given object in brackets
+ * @param {string} str The object
+ * @return {string} "({str})"
+ */
 export function bracketed (str) {
 	return `(${str})`;
 }
 
 /**
-	 * Find A suitable weapon to use with the power.
-	 * Either the specified weapon, or a weapon that matches the itemData.weaponType category if itemData.weaponUse is set to default
-	 * @param {CharacterData} itemData The Power being used
-	 * @param {Actor4e} actor The actor that owns the power
-	 * @returns {Item4e|null} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
-	 */
+ * Find A suitable weapon to use with the power.
+ * Either the specified weapon, or a weapon that matches the itemData.weaponType category if itemData.weaponUse is set to default
+ * @param {CharacterData} itemData The Power being used
+ * @param {Actor4e} actor The actor that owns the power
+ * @returns {Item4e|null} The weapon details or null if either no suitable weapon is found or itemData.weaponUse is set to none.
+ */
 export function getWeaponUse(itemData, actor) {
 	if (!itemData || (itemData.weaponUse === "none") || ((itemData.weaponType === "none") && (actor.itemTypes.weapon.length === 0))) return null;
 	let weaponUse = itemData.weaponUse ? actor.items.get(itemData.weaponUse) : null;
@@ -150,11 +150,11 @@ export function getWeaponUse(itemData, actor) {
 }
 
 /**
-	 * Returns true if we should error out because the power needs a weapon equipped and the character doesn't have one
-	 * @param itemData The data object of the Power being used
-	 * @param weaponUse The details of the weapon being used for the power from getWeaponUse
-	 * @returns {boolean} True if the character lacks a suitable weapon to use the power
-	 */
+ * Returns true if we should error out because the power needs a weapon equipped and the character doesn't have one
+ * @param itemData The data object of the Power being used
+ * @param weaponUse The details of the weapon being used for the power from getWeaponUse
+ * @returns {boolean} True if the character lacks a suitable weapon to use the power
+ */
 export function lacksRequiredWeaponEquipped(itemData, weaponUse) {
 	// a power needs a weapon equipped to roll attack if a weapon type has been specified that is not None or Implement And weaponUse is not none.
 	const powerNeedsAWeapon = itemData.weaponType && !["none", "implement", "any"].includes(itemData.weaponType) && (itemData.weaponUse !== "none");
@@ -412,8 +412,15 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 	}
 }
 
-// A pared down version of applyEffects suitable for determining bonuses to saving throws against effects or the DCs of effects. Only needs to know
-// about effect keywords and statuses inflicted by the effect. effectType can be `save` or `saveDC`.
+/** 
+ * A pared down version of applyEffects suitable for determining bonuses to saving throws against effects or the DCs of effects. Only needs to know
+ * about effect keywords and statuses inflicted by the effect. effectType can be `save` or `saveDC`.
+ * @param {object} rollData The data object of the roll being performed
+ * @param {Actor4e} actor The actor whose active effects should be checked
+ * @param {object} effectData Data object for the active effect in question
+ * @param {string} effectType What type of thing the compiled bonuses should be applied to: "attack", "damage", or "defence"
+ * @param {object} options An object containing the bonuses that can be applied; item, feat, race, etc.
+ */
 export async function applySaveEffects(rollData, actor, effectData, effectType, options = {}) {
 	const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
 	if (actor.effects) {
@@ -500,7 +507,7 @@ export async function applySaveEffects(rollData, actor, effectData, effectType, 
 	}
 }
 
-export async function _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, effectType, debug, extraDamage = [], options = {}) {
+async function _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, effectType, debug, extraDamage = [], options = {}) {
 	// filter out to just the relevant effects by keyword
 	const matchingEffects = effectsToProcess.filter((effect) => {
 		const keyParts = effect.key.split(".");
@@ -552,7 +559,7 @@ export async function _applyEffectsInternal(effectsToProcess, suitableKeywords, 
 	}
 }
 
-export function _addKeywords(suitableKeywords, keywordsActive) {
+function _addKeywords(suitableKeywords, keywordsActive) {
 	if (keywordsActive) {
 		for (const [key, value] of Object.entries(keywordsActive)) {
 			if (value === true) {
@@ -563,12 +570,12 @@ export function _addKeywords(suitableKeywords, keywordsActive) {
 }
 
 /**
-	 * Perform replacement of @variables in the formula involving a power.	This is a recursive function with 2 modes of operation!
-	 *
-	 * @param formula The formula to examine and perform replacements on.
-	 * @param rollData Roll data from the actor or item to use to resolve variables.
-	 * @return {object} An object of {variable = value}. TODO: Is this not just getRollData?
-	 */
+ * Perform replacement of @variables in the formula involving a power.	This is a recursive function with 2 modes of operation!
+ *
+ * @param formula The formula to examine and perform replacements on.
+ * @param rollData Roll data from the actor or item to use to resolve variables.
+ * @return {object} An object of {variable = value}.
+ */
 export function getDataObject(formula, rollData) {
 	const result = {};
 	const variables = formula?.match(variableRegex);
@@ -582,16 +589,16 @@ export function getDataObject(formula, rollData) {
 }
 
 /**
-	 * Create and evaluate a roll based on the given roll expression string.	If no expression has been provided, evaluate a roll of 0.
-	 * In the event that the string fails to evaluate, display an error and return a roll of 0.
-	 *
-	 * Note this uses the async roll API so returns a Promise<Roll>
-	 *
-	 * @param {String} rollString				The roll expression.
-	 * @param {String} errorMessageKey			The key that will be localised for the error message if the roll fails.
-	 * @param {String} context				Context on the source of the roll string / where it is being used
-	 * @returns {Promise<Roll>}					The evaluated Roll instance as a promise
-	 */
+ * Create and evaluate a roll based on the given roll expression string.	If no expression has been provided, evaluate a roll of 0.
+ * In the event that the string fails to evaluate, display an error and return a roll of 0.
+ *
+ * Note this uses the async roll API so returns a Promise<Roll>
+ *
+ * @param {String} rollString				The roll expression.
+ * @param {String} errorMessageKey			The key that will be localised for the error message if the roll fails.
+ * @param {String} context				    Context on the source of the roll string / where it is being used
+ * @returns {Promise<Roll>}					The evaluated Roll instance as a promise
+ */
 export async function rollWithErrorHandling(rollString, { errorMessageKey = "DND4E.InvalidRollExpression", context = "" }) {
 	if (!errorMessageKey) {
 		errorMessageKey = "DND4E.InvalidRollExpression";
@@ -614,7 +621,7 @@ export async function rollWithErrorHandling(rollString, { errorMessageKey = "DND
 	}
 }
 
-export function _rangeValue(range, actorData) {
+function _rangeValue(range, actorData) {
 	if (range) {
 		const areaForm = evaluateFormula(`${range}`, actorData, { strict: true, contextName: "areaValue" });
 		return areaForm;
@@ -623,7 +630,14 @@ export function _rangeValue(range, actorData) {
 	}
 }
 
-export function _preparePowerCardData(chatData, CONFIG, actorData = null, attackTotal = null) {
+/**
+ * Creates HTML-formatted text for use in power cards
+ * @param {object} chatData				    Output of item.getChatData() for the power
+ * @param {CharacterData|null} actorData	Roll data for the actor the power is on
+ * @param {number|string|null} attackTotal  Total attack bonus for th power
+ * @returns {string}					    Formatted power card text
+ */
+export function preparePowerCardData(chatData, actorData = null, attackTotal = null) {
 		
 	let powerDetail = "<div class=\"basics\">"; //Open the white section between flavour and effects
 		
@@ -796,6 +810,11 @@ export function _preparePowerCardData(chatData, CONFIG, actorData = null, attack
 	return powerDetail;
 }
 
+/**
+ * Trims a string of <p> tags
+ * @param {string} string           String to be trimmed
+ * @returns {string}                Trimmed string
+ */
 export function paragraphTrim(string) {
 	// Check if the string starts with <p>
 	if (string.startsWith("<p>")) {
@@ -808,10 +827,21 @@ export function paragraphTrim(string) {
 	}
 	return string;
 }
-export function _isNumber(str) {
+
+/**
+ * Tests a string and returns whether or not it's a number
+ * @param {string} str              String to test
+ * @returns {boolean}               Whether or not the string is a number
+ */
+export function isNumber(str) {
 	return /^-?\d+$/.test(str);
 }
 
+/**
+ * Recharges an actor's item that have one of an array of valid recharge types
+ * @param {Actor4e} actor                   Actor whose items to recharge
+ * @param {string[]} targetArray            Array of recharge types to recharge
+ */
 export async function rechargeItems(actor, targetArray) {
 
 	const items = actor.items.filter(item => targetArray.includes(item.system.uses?.per));
@@ -825,6 +855,11 @@ export async function rechargeItems(actor, targetArray) {
 	if (updateItems) await actor.updateEmbeddedDocuments("Item", updateItems);
 }
 
+/**
+ * Ends an actor's effects that have one of an array of valid expiries
+ * @param {*} actor                         Actor whose effects to end
+ * @param {string[]} targetArray            Array of effect expiries
+ */
 export async function endEffects(actor, targetArray) {
 	const effects = [];
 	for (let e of actor.effects) {
@@ -835,6 +870,11 @@ export async function endEffects(actor, targetArray) {
 	if (effects) await actor.deleteEmbeddedDocuments("ActiveEffect", effects);
 }
 
+/**
+ * Returns combat initiative for a given token
+ * @param {string} id                       Token id
+ * @returns {number}                        Token's initiative
+ */
 export function getInitiativeByToken(id) {
 	if (!game.combat) return 0;
 	for (let t of game.combat.turns) {
@@ -846,6 +886,11 @@ export function getInitiativeByToken(id) {
 	return game.combat.turns[game.combat.turn]?.initiative || -1;
 }
 
+/**
+ * Returns the token id of a linked actor
+ * @param {Actor4e} actor                   Actor to get the token for
+ * @returns {string}                        Token id for the actor
+ */
 export function getTokenIdForLinkedActor(actor) {
 	if (actor.token?.id) {
 		return actor.token.id;
@@ -874,10 +919,19 @@ export function getTokenIdForLinkedActor(actor) {
 	}
 }
 
+/**
+ * Returns the current initiative of an active combat
+ * @returns {number}                        Current initiative
+ */
 export function getCurrentTurnInitiative() {
 	return game.combat ? game.combat.turns[game.combat.turn]?.initiative : 0;
 }
 
+/**
+ * Converts actor roll data into actual values to be used in the passed in effect
+ * @param {ActiveEffect4e} effect            Active effect to convert values for
+ * @param {Actor4e} parentActor              Actor whose roll data to use
+ */
 export async function solidifyEffectActorData(effect, parentActor) {
 	debugLog(effect);
 	debugLog(parentActor);
@@ -919,8 +973,14 @@ export async function solidifyEffectActorData(effect, parentActor) {
 // 	return newVal;
 // }
 
+/**
+ * 
+ * @param {EmbeddedCollection<ActiveEffect4e>} effectMap    Collection of effects to apply
+ * @param {Token4e[]} tokenTarget                           Array of tokens to apply effects to  
+ * @param {string} condition                                Effect application condition ("hit", "miss", etc.)
+ * @param {Actor4e} parent                                  Actor originating the effects
+ */
 export async function applyEffectsToTokens(effectMap, tokenTarget, condition, parent) {
-
 	const combat = game.combat;
 	for (let effect of effectMap) {
 		let e = effect.toObject(); // This is to avoid editing the source effect
@@ -1019,48 +1079,57 @@ export async function applyEffectsToTokens(effectMap, tokenTarget, condition, pa
 	}
 }
 
+/**
+ * Applies effects to all current user targets
+ * @param {EmbeddedCollection<ActiveEffect4e>} effects          Collection of effects to apply
+ * @param {Actor4e} actor                                       Actor originating the effects
+ */
 export async function applyEffectsToTargets(effects, actor) {
 	applyAllXEffectsToTokens(effects, actor, game.user.targets);
 }
 
 /**
-	 * Apply All / Ally / Enemy effects to the selection
-	 *
-	 * @param {EmbeddedCollection} effects The powers effects
-	 * @param {Actor4e} actor The source actor
-	 * @param {Set} selection the Tokens to apply to
-	 */
+ * Apply All / Ally / Enemy effects to the selection
+ * @param {EmbeddedCollection<ActiveEffect4e>} effects The powers effects
+ * @param {Actor4e} actor The source actor
+ * @param {Set<Token4e} selection the Tokens to apply to
+ */
 export async function applyAllXEffectsToTokens(effects, actor, selection) {
 	if (selection?.size) {
 		await applyEffectsToTokens(effects, selection, "all", actor);
 		const parentDisposition = actor.token?.disposition || actor.prototypeToken.disposition || null;
-		await applyEffectsToTokens(effects, filterActorSetByDisposition(selection, parentDisposition), "allies", actor);
-		await applyEffectsToTokens(effects, filterActorSetByDisposition(selection, parentDisposition, false), "enemies", actor);
+		await applyEffectsToTokens(effects, filterTokenSetByDisposition(selection, parentDisposition), "allies", actor);
+		await applyEffectsToTokens(effects, filterTokenSetByDisposition(selection, parentDisposition, false), "enemies", actor);
 	}
 }
 
 /**
-	 * Determine if a fastForward key was held during the given click event.
-	 *
-	 * @param {Event} event A click event
-	 * @returns {boolean} if the click was done while holding down a fastForward key
-	 */
+ * Determine if a fastForward key was held during the given click event.
+ * @param {Event} event A click event
+ * @returns {boolean} if the click was done while holding down a fastForward key
+ */
 export function isUsingFastForwardKey(event) {
 	return event && (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey);
 }
 
+/**
+ * Determine if a roll should be fast forwarded.
+ * @param {Event} event A click event
+ * @returns {boolean} Whether or not the roll should be fast forwarded
+ */
 export function isRollFastForwarded(event) {
 	const isModKeyPressed = isUsingFastForwardKey(event);
 	return game.settings.get("dnd4e", "fastFowardSettings") ? !isModKeyPressed : isModKeyPressed;
 }
 	
 /**
-	/* Function to determine the owner of a document - 
-	/* favouring players and falling back to a GM
-	/* (pinched from the 5e system for use in the combat loop)
-	/* Returns the player object, or the player's ID if 
-	/* called with idOnly set to "true"
-	/**/
+ * Function to determine the owner of a document - 
+ * favouring players and falling back to a GM
+ * (pinched from the 5e system for use in the combat loop)
+ * @param {Document} doc                Document to check ownership of
+ * @param {boolean} idOnly              Whether or not to just return user id
+ * @returns {User|string}               The user object, or the user's ID if called with idOnly set to "true"
+ */
 export function firstOwner(doc, idOnly = false) {
 	// null docs could mean an empty lookup, null docs are not owned by anyone
 	if (!doc) return false;
@@ -1101,11 +1170,13 @@ export function firstOwner(doc, idOnly = false) {
 }
 	
 /**
-	 * Function to return the sum of the highest positive value 
-	 * and the lowest negative value in a given set.
-	 * Intended for getting the correct value from multiple 
-	 * resistances and vulnerabilities.
-	 */
+ * Function to return the sum of the highest positive value 
+ * and the lowest negative value in a given set.
+ * Intended for getting the correct value from multiple 
+ * resistances and vulnerabilities.
+ * @param {number[]} values                 Array of values
+ * @returns {number}                        Highest positive value minus lowest negative value
+ */
 export function sumExtremes(values = []) {
 	if (!values.length) return;
 	let negatives = [0], positives = [0];
@@ -1123,15 +1194,13 @@ export function sumExtremes(values = []) {
 }
 
 /**
-	 * Determine if a fastForward key was held during the given click event.
-	 *
-	 * @param {actorSet} set Actors
-	 * @param {disposition} string disposition value to keep
-	 * @param {same} boolean match based on same or diffrent disposition
-	 * @returns {set} New set of matching disposition
-	 */
-
-export function filterActorSetByDisposition(actorSet, disposition, same = true) {
+ * Filters a set of tokens and returns only the ones matching a certain disposition
+ * @param {Set<Token4e>} actorSet Actors
+ * @param {string} disposition disposition value to keep
+ * @param {boolean} same match based on same or diffrent disposition
+ * @returns {Set<Token4e>} New set of actors matching disposition
+ */
+export function filterTokenSetByDisposition(actorSet, disposition, same = true) {
 	if (disposition === null) {
 		return [];
 	}
@@ -1144,19 +1213,25 @@ export function filterActorSetByDisposition(actorSet, disposition, same = true) 
 	return filteredSet;
 }
 
-export function hasEffects(power, effects) {
-	const foundEffects = power.item.effects.contents.filter(e => effects.includes(e.system.powerEffectType));
+/**
+ * Returns whether or not a power has effects matching the given effect types
+ * @param {Item4e} power                The power to check
+ * @param {string[]} effectTypes        Array of power effect types to check
+ * @returns {boolean}                   Whether or not any matching effects were found
+ */
+export function hasEffects(power, effectTypes) {
+	const foundEffects = power.item.effects.contents.filter(e => effectTypes.includes(e.system.powerEffectType));
 	return foundEffects.length > 0;
 }
 	
 /**
-	 * Use to find the value in a given scale as stored using JavaScript Object Notation.
-	 *
-	 * @param {number} input an input value as a number, usely a character or item level
-	 * @param {object} scale an scale in object format, with keys being the miniume level required for each step
-	 * @param {number} offsetNumber offset value to increase the input to adjust the scale. default value to zero
-	 * @returns {result} New set of matching disposition
-	 */
+ * Use to find the value in a given scale as stored using JavaScript Object Notation.
+ *
+ * @param {number} input an input value as a number, usely a character or item level
+ * @param {object} scale an scale in object format, with keys being the miniume level required for each step
+ * @param {number} offsetNumber offset value to increase the input to adjust the scale. default value to zero
+ * @returns {result} New set of matching disposition
+ */
 export function findKeyScale(input, scale, offsetNumber = 0) {
 	input -= offsetNumber;
 	let result = 0;
@@ -1186,22 +1261,21 @@ export function findKeyScale(input, scale, offsetNumber = 0) {
 }
 
 /**
-	 * Wrapper for findKeyScale(level, CONFIG.DND4E.SCALE.basic) for use in dice formulas.
-	 *
-	 * @param {number} level Level to scale from, as we don't have access to any rollData in here. Default 1.
-	 * @param {number} offset Offset value to increase the input to adjust the scale. Default 0.
-	 * @returns {result} New set of matching disposition
-	 */
-
+ * Wrapper for findKeyScale(level, CONFIG.DND4E.SCALE.basic) for use in dice formulas.
+ *
+ * @param {number} level Level to scale from, as we don't have access to any rollData in here. Default 1.
+ * @param {number} offset Offset value to increase the input to adjust the scale. Default 0.
+ * @returns {result} New set of matching disposition
+ */
 export function scaleFn(level = 1, offset = 1) {
 	return findKeyScale(level, CONFIG.DND4E.SCALE.basic, offset - 1);
 }
 	
 /**
-	 * Helper function to convert an initiative with decimal points to a human-friendly round number with tooltip.
-	 * @param {string} initiative			The roll result
-	 * @returns {string|void}
-	 */
+ * Helper function to convert an initiative with decimal points to a human-friendly round number with tooltip.
+ * @param {string} initiative			The roll result
+ * @returns {string|void}
+ */
 export function initTooltip(init = null) {
 	if (!init) return "";
 		
@@ -1229,6 +1303,11 @@ export function initTooltip(init = null) {
 	}
 }
 
+/**
+ * Returns an actor's tokens, prioritizing controlled tokens
+ * @param {Actor4e} actor                   Actor to get tokens for
+ * @returns {Token4e[]|undefined}           Array of tokens that belong to the actor, prioritizing controlled tokens, or undefined if empty
+ */
 export function tokensForActor(actor) {
 	if (!(actor instanceof Actor4e))
 		return undefined;
@@ -1241,6 +1320,11 @@ export function tokensForActor(actor) {
 	return controlled.length ? controlled : tokens;
 }
 
+/**
+ * Returns an actor's first token
+ * @param {Actor4e} actor                   Actor to get token for
+ * @returns {Token4e|undefined}             First token belonging to the actor, or undefined if none
+ */
 export function tokenForActor(actor) {
 	const tokens = tokensForActor(actor);
 	if (!tokens)
@@ -1248,6 +1332,11 @@ export function tokenForActor(actor) {
 	return tokens[0];
 }
 
+/**
+ * Returns a token for a given entity
+ * @param {Token4e|ActiveEffect4e|Actor4e|Item4e|TokenDocument4e} tokenRef      Entity to get a token for
+ * @returns {Token4e|undefined}                                                 Highest priority token relevant to the given entity, or undefined if none
+ */
 export function getToken(tokenRef) {
 	if (!tokenRef)
 		return undefined;
@@ -1274,6 +1363,11 @@ export function getToken(tokenRef) {
 	return undefined;
 }
 
+/**
+ * Returns a placeable object from a given entity
+ * @param {any} tokenRef                            Entity to get placeable for
+ * @returns {PlaceableObject}                       Highest priority token relevant to the given entity, or undefined if none
+ */
 export function getPlaceable(tokenRef) {
 	if (!tokenRef)
 		return undefined;
@@ -1298,6 +1392,12 @@ export function getPlaceable(tokenRef) {
 	return undefined;
 }
 
+/**
+ * Measure total distance from segments
+ * @param {Ray[]} segments              Array of segments
+ * @param {object} options              Options object
+ * @returns {number}                    Diagonal rule-aware total distance
+ */
 export function measureDistances(segments, options = {}) {
 	let isGridless = canvas?.grid?.constructor.name === "GridlessGrid";
 	if (!isGridless || !options.gridSpaces || !canvas?.grid) {
@@ -1360,10 +1460,14 @@ export function measureDistances(segments, options = {}) {
 }
 
 /** takes two tokens of any size and calculates the distance between them
-	*** gets the shortest distance betwen two tokens taking into account both tokens size
-	*** if wallblocking is set then wall are checked
-	**/
-export function computeDistance(t1 /*Token*/, t2 /*Token*/, wallsBlock = false) {
+ * gets the shortest distance betwen two tokens taking into account both tokens size
+ * if wallblocking is set then wall are checked
+ * @param {Token4e} t1                  First token
+ * @param {Token4e} t2                  Second token
+ * @param {boolean} [wallsBlock=false]  Whether or not walls should stop the distance measurement
+ * @returns {number}                    Distance between the tokens, obeys diagonal rule
+ */
+export function computeDistance(t1, t2, wallsBlock = false) {
 	if (!canvas || !canvas.scene)
 		return -1;
 	if (!canvas.grid || !canvas.dimensions)
@@ -1431,6 +1535,11 @@ export function computeDistance(t1 /*Token*/, t2 /*Token*/, wallsBlock = false) 
 	return Math.max(distance, 0);
 }
 
+/**
+ * Returns whether or not a token is a valid target.
+ * @param {Token4e} target          Token to check
+ * @returns {boolean}               Whether or not the token is valid target
+ */
 export function isValidTarget(target /*Token*/) {
 	if (!target.actor)
 		return false; // Tokens without actors are not valid targets
@@ -1443,6 +1552,11 @@ export function isValidTarget(target /*Token*/) {
 	return true;
 }
 
+/**
+ * Converts disposition string to numeric disposition
+ * @param {string|number} disposition       Localized disposition or numeric disposition
+ * @returns                                 Numeric disposition
+ */
 export function mapTokenString(disposition /*string | number*/) {
 	if (typeof disposition === "number") return disposition;
 	if (disposition.toLocaleLowerCase().trim() === _loc("TOKEN.DISPOSITION.FRIENDLY")?.toLocaleLowerCase()) return 1;
@@ -1454,7 +1568,17 @@ export function mapTokenString(disposition /*string | number*/) {
 	throw new Error(`findNearby ${disposition} is invalid. Disposition must be one of "${validStrings}"`);
 }
 
-export function findNearby(disposition, token /*Token | uuuidString */, distance, options = { maxSize: undefined, includeToken: false, relative: true }) {
+/**
+ * Finds all tokens within range of a given token that match the given criteria
+ * @param {string|string[]|number|number[]} disposition         Disposition or array of dispositions to check against
+ * @param {Token4e|string} token                                Token to get tokens near to, or its uuid
+ * @param {number} distance                                     Range within which to check for tokens
+ * @param {number|undefined} options.maxSize                    Maximum size to check, or undefined to ignore
+ * @param {boolean} options.includeToken                        Whether or not to include the given token in the returned array
+ * @param {boolean} options.relative                            Whether or not the disposition should be checked relative to the given token
+ * @returns {Token4e[]}                                         Array of tokens that match the criteria
+ */
+export function findNearby(disposition, token, distance, options = { maxSize: undefined, includeToken: false, relative: true }) {
 	token = getToken(token);
 	if (!token)
 		return [];
@@ -1504,7 +1628,14 @@ export function findNearby(disposition, token /*Token | uuuidString */, distance
 	}
 }
 
-// Measures distance between an arbitrary point and a token
+/**
+ * Measures distance between an arbitrary point and a token
+ * @param {object} point                Point
+ * @param {number} point.x              Point x coordinate
+ * @param {number} point.y              Point y coordinate 
+ * @param {Token4e} token               Token
+ * @returns {number|undefined}          Distance between token and point, or undefined if invalid
+ */
 export function distancePointToken({ x, y }, token) {
 	if (!canvas || !canvas.scene)
 		return undefined;
@@ -1535,6 +1666,12 @@ export function distancePointToken({ x, y }, token) {
 	return distance;
 }
 
+/**
+ * Computes the flanking status between an attacking token and its target
+ * @param {Token4e} token                   Attacking token
+ * @param {Token4e} target                  Target token
+ * @returns {boolean}                       Whether or not the attacker is flanking the target
+ */
 export function computeFlankingStatus(token, target) {
 	if (!canvas)
 		return false;
@@ -1623,10 +1760,10 @@ export function computeFlankingStatus(token, target) {
 }
 
 /**
-     * Convenience method to get the unique actors of an array of tokens.
-     * @param {(Token4e | TokenDocument4e)[]} [tokens] Defaults to canvas.tokens.controlled.
-     * @returns {Set<Actor4e>}    The set of actors of the controlled tokens.
-     */
+ * Convenience method to get the unique actors of an array of tokens.
+ * @param {(Token4e | TokenDocument4e)[]} [tokens] Defaults to canvas.tokens.controlled.
+ * @returns {Set<Actor4e>}    The set of actors of the controlled tokens.
+ */
 export function tokensToActors(tokens) {
 	tokens ??= canvas?.tokens?.controlled ?? [];
 	const actors = tokens.map(token => token.actor).filter(_ => _);
@@ -1636,15 +1773,23 @@ export function tokensToActors(tokens) {
 /* -------------------------------------------- */
 
 /** 
-	 * @param {String} msg  Text to print to the console
-	*/
-
+ * @param {String} msg  Text to print to the console
+ */
 export function debugLog(msg) {
 	if (game.settings.get("dnd4e", "debugLogging")) {
 		console.log(msg);
 	}
 }
 
+/**
+ * Socket handler to apply effect to a token
+ * @param {object} data 
+ * @param {Scene} data.scene
+ * @param {string} data.tokenId
+ * @param {string} data.actorId
+ * @param {object} data.effectData
+ * @returns {Promise}
+ */
 export async function handleApplyEffectToToken(data) {
 	if (!game.user.isGM) {
 		return;
@@ -1656,6 +1801,15 @@ export async function handleApplyEffectToToken(data) {
 	await actor.newActiveEffectSocket(effectData);
 }
 
+/**
+ * Socket handler to delete effects on a token
+ * @param {object} data
+ * @param {Scene} data.scene
+ * @param {string} data.tokenId
+ * @param {string} data.actorId
+ * @param {string[]} data.toDelete          Array of effect ids to delete
+ * @returns {Promise}
+ */
 export async function handleDeleteEffectToToken(data) {
 	if (!game.user.isGM) {
 		return;
@@ -1665,6 +1819,14 @@ export async function handleDeleteEffectToToken(data) {
 	await actor.deleteActiveEffectSocket(data.toDelete);
 }
 
+/**
+ * Socket handler to prompt end of turn saving throws
+ * @param {object} data
+ * @param {Scene} data.scene
+ * @param {string} data.tokenId
+ * @param {string} data.actorId
+ * @returns {Promise}
+ */
 export async function handlePromptEoTSaves(data) {
 	//debugLog('handler reached');
 	if (game.userId !== data?.targetUser) return;
@@ -1673,6 +1835,14 @@ export async function handlePromptEoTSaves(data) {
 	await actor.promptEoTSavesSocket();
 }
 
+/**
+ * Socket handler for ongoing damage
+ * @param {object} data
+ * @param {Scene} data.scene
+ * @param {string} data.tokenId
+ * @param {string} data.actorId
+ * @returns {Promise}
+ */
 export async function handleAutoDoTs(data) {
 	if (!game.user.isGM) return;
 	const actor = data.tokenID ? game.scenes.get(data.scene).tokens.get(data.tokenID).actor : game.actors.get(data.actorID);
@@ -1680,11 +1850,23 @@ export async function handleAutoDoTs(data) {
 	await actor.autoDoTsSocket(data.tokenID);
 }
 
+/**
+ * Socket handler for expiring saving throw effects
+ * @param {object} data
+ * @param {Scene} data.effectId
+ * @returns {Promise}
+ */
 export async function handleRefreshSaveEffects(data) {
 	if (!game.user.isGM) return;
 	ActiveEffect.registry.refresh("save", { effect: data.effectID });
 }
 
+/**
+ * Socket handler for expiring end of day effects
+ * @param {object} data
+ * @param {Scene} data.effectId
+ * @returns {Promise}
+ */
 export async function handleRefreshDayEndEffects(data) {
 	if (!game.user.isGM) return;
 	ActiveEffect.registry.refresh("dayEnd", { actor: data.actorID });
@@ -1853,8 +2035,8 @@ function dataset(object, options) {
 /* -------------------------------------------- */
 	
 /**
-	 * Register custom Handlebars helpers used by 4e.
-	 */
+ * Register custom Handlebars helpers used by 4e.
+ */
 export function registerHandlebarsHelpers() {
 	Handlebars.registerHelper({
 		getProperty: foundry.utils.getProperty,
@@ -1882,10 +2064,10 @@ const _preLocalizationRegistrations = {};
  * @param {object} [options={}]
  * @param {string} [options.key]					If each entry in the config enum is an object,
  *																				localize and sort using this property.
-	* @param {string[]} [options.keys=[]]		Array of localization keys. First key listed will be used for sorting
-	*																				if multiple are provided.
-	* @param {boolean} [options.sort=false]	Sort this config enum, using the key if set.
-	*/
+ * @param {string[]} [options.keys=[]]		Array of localization keys. First key listed will be used for sorting
+ *																				if multiple are provided.
+ * @param {boolean} [options.sort=false]	Sort this config enum, using the key if set.
+ */
 export function preLocalize(configKeyPath, { key, keys = [], sort = false } = {}) {
 	if (key) keys.unshift(key);
 	_preLocalizationRegistrations[configKeyPath] = { keys, sort };

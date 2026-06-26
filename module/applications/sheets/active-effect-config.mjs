@@ -1,6 +1,6 @@
 import ActiveEffect4e from "../../documents/active-effect.mjs";
 import { DND4E } from "../../config.mjs";
-import * as helpers from "../../helpers.mjs";
+import * as utils from "../../utils/utils.mjs";
 
 export default class ActiveEffectConfig4e extends foundry.applications.sheets.ActiveEffectConfig {
 
@@ -284,7 +284,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			}
 			if ((scope == "copyIcon") || (scope == "copyAll")) {
 				effectUpdates.img = statuses[statusIndex].img;
-				helpers.debugLog(effectUpdates);
+				utils.debugLog(effectUpdates);
 			}
 			if ((scope == "copyDesc") || (scope == "copyAll")) {
 				effectUpdates.description = _loc(statuses[statusIndex].description);
@@ -304,7 +304,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			
 		} catch(err) {
 			ui.notifications.error(_loc("ERROR.4eCopyStatusDetails"));
-			helpers.debugLog(err);
+			utils.debugLog(err);
 		}
 	}
 

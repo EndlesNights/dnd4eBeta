@@ -1,6 +1,7 @@
 // import {onManageActiveEffect, prepareActiveEffectCategories} from "../effects.js";
 import ActiveEffect4e from "../../documents/active-effect.mjs";
-import * as helpers from "../../helpers.mjs";
+import * as utils from "../../utils/utils.mjs";
+import * as macros from "../../helpers/macros.mjs";
 import Item4e from "../../documents/item.mjs";
 
 /**
@@ -387,7 +388,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				if (itemData.system.weaponType == "melee") autoKeys.melee = { label: _loc("DND4E.Melee") };
 				else if (itemData.system.weaponType == "ranged") autoKeys.ranged = { label: _loc("DND4E.rangeRanged") };
 				else {
-					const weaponUse = (context.document?.parent ? helpers.getWeaponUse(itemData.system, context.document.parent) : null);
+					const weaponUse = (context.document?.parent ? utils.getWeaponUse(itemData.system, context.document.parent) : null);
 					if (weaponUse != null) {
 						if (weaponUse.system.isRanged) autoKeys.ranged = { label: _loc("DND4E.rangeRanged") };
 						else autoKeys.melee = { label: _loc("DND4E.Melee") };
@@ -535,7 +536,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		const effect = li.dataset.effectId ? this.item.effects.get(li.dataset.effectId) : null;
 		switch (target.dataset.action) {
 			case "createPowerEffect":
-				helpers.debugLog(this);
+				utils.debugLog(this);
 				this.item.createEmbeddedDocuments("ActiveEffect", [{
 					name: _loc("DND4E.EffectNew"),
 					img: this.item.img || "icons/svg/aura.svg",
@@ -1129,7 +1130,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	static async #onExecuteMacro() {
 		await this.submit({ preventClose: true });
-		return helpers.executeMacro(this.document);
+		return macros.executeMacro(this.document);
 	}
 	
 	/* -------------------------------------------- */

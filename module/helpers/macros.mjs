@@ -1,4 +1,5 @@
-import * as helpers from "./helpers.mjs";
+import Item4e from "../documents/item.mjs";
+import * as utils from "../utils/utils.mjs";
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
@@ -16,7 +17,7 @@ export async function create4eMacro(dropData, slot) {
 
 	if (dropData.type === "Item") {
 		const itemData = await Item.implementation.fromDropData(dropData);
-		helpers.debugLog(itemData);
+		utils.debugLog(itemData);
 		if (!itemData) {
 			ui.notifications.warn("MACRO.4eUnownedWarn", { localize: true });
 			return null;
@@ -97,7 +98,7 @@ export function toggleEffect(effectName, type = "DOCUMENT.ActiveEffect") {
 	const collection = Array.from(actor.allApplicableEffects());
 
 	const documents = collection.filter(i => i.name === effectName);
-	helpers.debugLog(effectName);
+	utils.debugLog(effectName);
 	if (documents.length === 1) {
 		const effect = documents[0];
 		return effect?.update({ disabled: !effect.disabled });
@@ -107,4 +108,23 @@ export function toggleEffect(effectName, type = "DOCUMENT.ActiveEffect") {
 	} else {
 		return ui.notifications.warn(_loc("MACRO.4eMissingTargetWarn", { actor: actor.name, type: _loc(type), name: effectName }));
 	}
+}
+
+/**
+ * Execute a macro with item variables
+ * @param {Item4e} item
+ * @return {Promise}
+ */
+export async function executeMacro(item) {
+	const macro = new Macro ({
+		name: item.name,
+		type: item.system.macro.type,
+		scope: item.system.macro.scope,
+		command: item.system.macro.command, //cmd,
+		author: game.user.id,
+	});
+	macro.item = item;
+	macro.actor = item.actor;
+	macro.launch = item.system.macro.launchOrder;
+	return macro.execute();
 }

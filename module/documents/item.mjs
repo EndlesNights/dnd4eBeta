@@ -1,6 +1,7 @@
-import { d20Roll, damageRoll, getAttackRollBonus } from "../dice.mjs";
+import { d20Roll, damageRoll, getAttackRollBonus } from "../helpers/dice.mjs";
 import { DND4E } from "../config.mjs";
-import * as helpers from "../helpers.mjs";
+import * as utils from "../utils/utils.mjs";
+import * as macros from "../helpers/macros.mjs";
 import Actor4e from "../documents/actor.mjs";
 import AbilityUseDialog from "../applications/apps/ability-use-dialog.mjs";
 import Roll4e from "../rolls/roll.mjs";
@@ -74,7 +75,7 @@ export default class Item4e extends Item {
 			const system = this.system;
 			// does it have an old damage expression
 			if (system.damage.parts?.length > 0) {
-				helpers.debugLog("DnD4e: Updating an obsolete consumable that somehow still had a parts roll");
+				utils.debugLog("DnD4e: Updating an obsolete consumable that somehow still had a parts roll");
 				// ok so need to fix it
 				if (system.damage.parts.map(d => [...d.type].join(",")).includes("healing") && !changed.system.hit?.healFormula) {
 					foundry.utils.setProperty(changed, "system.hit.healFormula", system.damage.parts[0].formula);
@@ -84,7 +85,7 @@ export default class Item4e extends Item {
 				// non healing damage expressions didn't work anyway
 			}
 			if (system.oldConsumableNeedsUpdate === true) {
-				helpers.debugLog("DnD4e: Updating an obsolete consumable");
+				utils.debugLog("DnD4e: Updating an obsolete consumable");
 				foundry.utils.setProperty(changed, "system.damage.parts", []);
 				foundry.utils.setProperty(changed, "system.hit.healFormula", system.hit.healFormula);
 				foundry.utils.setProperty(changed, "system.hit.isHealing", system.hit.isHealing);
@@ -95,7 +96,7 @@ export default class Item4e extends Item {
 		if (this.system.type === "ritual") {
 			const system = this.system;
 			if (system.oldRitualNeedsUpdating === true) {
-				helpers.debugLog("DnD4e: Updating an obsolete ritual");
+				utils.debugLog("DnD4e: Updating an obsolete ritual");
 				foundry.utils.setProperty(changed, "system.formula", "@attribute");
 				delete system.oldRitualNeedsUpdating;
 			}
@@ -127,7 +128,7 @@ export default class Item4e extends Item {
 		// If this is an owned item and the max is not numeric, we need to calculate it
 		if (this.isOwned && !Number.isNumeric(max)) {
 			if (this.actor?.system === undefined) return null;
-			max = helpers.evaluateFormula(max, this.actor?.getRollData(), { strict: true, contextName: "preparedMaxUses" });
+			max = utils.evaluateFormula(max, this.actor?.getRollData(), { strict: true, contextName: "preparedMaxUses" });
 			if (!max) return null;
 		}
 		return Math.round(Number(max));
@@ -151,7 +152,7 @@ export default class Item4e extends Item {
 				break;
 		}
 		if (updates) {
-			helpers.debugLog(updates);
+			utils.debugLog(updates);
 			return this.updateSource(updates);
 		} 
 	}
@@ -719,7 +720,7 @@ export default class Item4e extends Item {
 				} else if (["melee", "ranged", "meleeRanged"].includes(system?.weaponType)) {
 					labels.toolType = _loc("DND4E.Weapon");
 				} else if (system?.weaponType === "any") {
-					const weaponUse = (itemData.actor ? helpers.getWeaponUse(system, itemData.actor) : null);
+					const weaponUse = (itemData.actor ? utils.getWeaponUse(system, itemData.actor) : null);
 					if (weaponUse != null) {
 						if (weaponUse.system?.weaponType === "implement") {
 							labels.toolType = _loc("DND4E.WeaponPropertiesImp");
@@ -897,7 +898,7 @@ export default class Item4e extends Item {
 			if (["power", "consumable"].includes(itemData.type) && system?.rangeType) {
 				let rangeString = "";
 				if (system?.rangeType === "weapon") {
-					const weaponUse = (itemData.actor ? helpers.getWeaponUse(system, itemData.actor) : null);
+					const weaponUse = (itemData.actor ? utils.getWeaponUse(system, itemData.actor) : null);
 					if (weaponUse != null) {
 						if (weaponUse.isRanged) {
 							rangeString = `${_loc("DND4E.Ranged")} ${weaponUse.system.range.value}/${weaponUse.system.range.value}`;
@@ -927,7 +928,7 @@ export default class Item4e extends Item {
 					if (isArea) {
 						let areaString = system.area || "";
 						if (this.actor && areaString) {
-							areaString = helpers.evaluateFormula(areaString, actorData, { strict: true, contextName: "areaString" });
+							areaString = utils.evaluateFormula(areaString, actorData, { strict: true, contextName: "areaString" });
 						}
 						rangeString += ` ${areaString}`;
 					}
@@ -937,7 +938,7 @@ export default class Item4e extends Item {
 					if (isRange) {
 						let rangeValue = system.rangePower || "";
 						if (this.actor && rangeValue) {
-							rangeValue = helpers.evaluateFormula(rangeValue, actorData, { strict: true, contextName: "rangeValue" });
+							rangeValue = utils.evaluateFormula(rangeValue, actorData, { strict: true, contextName: "rangeValue" });
 						}
 						rangeString += ` ${rangeValue}`;
 					}
@@ -945,7 +946,7 @@ export default class Item4e extends Item {
 					if (isRange && system.range?.long && !isArea) {
 						let longRangeValue = system.range.long;
 						if (this.actor) {
-							longRangeValue = helpers.evaluateFormula(longRangeValue, actorData, { strict: true, contextName: "longRangeValue" });
+							longRangeValue = utils.evaluateFormula(longRangeValue, actorData, { strict: true, contextName: "longRangeValue" });
 						}
 						rangeString += `/${longRangeValue}`;
 					}
@@ -978,7 +979,7 @@ export default class Item4e extends Item {
 
 	getDamageType() {
 		if ((this.type == "power") && this.actor) {
-			const weapon = helpers.getWeaponUse(this.system, this.actor);
+			const weapon = utils.getWeaponUse(this.system, this.actor);
 			if (weapon && weapon.system.damageTypeOverride) {
 				this.system.damageTypeOverride = true;
 				this.system.weaponDamageType = weapon.system.damageType;
@@ -1035,7 +1036,7 @@ export default class Item4e extends Item {
 		const rollData = this.getRollData({ variance });
 
 		if (["both", "pre", "sub"].includes(this.system.macro?.launchOrder)) {
-			await helpers.executeMacro(this);
+			await macros.executeMacro(this);
 			if (this.system.macro.launchOrder === "sub") return;
 		}
 		const cardData = await (async () => {
@@ -1045,7 +1046,7 @@ export default class Item4e extends Item {
 				if (this.hasAttack) {
 					attackBonus = await this.getAttackBonus({ variance: variance });
 				}
-				let cardString = helpers._preparePowerCardData(await this.getChatData({}, variance), CONFIG, rollData, attackBonus);
+				let cardString = utils.preparePowerCardData(await this.getChatData({}, variance), rollData, attackBonus);
 				return cardString;
 			} else {
 				return null;
@@ -1102,7 +1103,7 @@ export default class Item4e extends Item {
 		let templateType = "item";
 		if (["tool", "ritual"].includes(this.type)) {
 			templateType = this.type;
-			templateData.abilityCheck = helpers.byString(this.system.attribute.replace(".mod", ".label").replace(".total", ".label"), this.actor?.system);
+			templateData.abilityCheck = utils.byString(this.system.attribute.replace(".mod", ".label").replace(".total", ".label"), this.actor?.system);
 		}
 		const template = `systems/dnd4e/templates/chat/${templateType}-card.hbs`;
 		let html = await foundry.applications.handlebars.renderTemplate(template, templateData);
@@ -1112,11 +1113,11 @@ export default class Item4e extends Item {
 			if (game.settings.get("dnd4e", "autoApplyEffects")) {
 				if (typeof this.parent === "string") {
 					const attacker = await fromUuid(this.parent);
-					helpers.applyEffectsToTokens(this.effects, [attacker.token], "self", attacker);
-					helpers.applyEffectsToTargets(this.effects, attacker);
+					utils.applyEffectsToTokens(this.effects, [attacker.token], "self", attacker);
+					utils.applyEffectsToTargets(this.effects, attacker);
 				} else {
-					helpers.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
-					helpers.applyEffectsToTargets(this.effects, this.parent);
+					utils.applyEffectsToTokens(this.effects, [this.parent.token], "self", this.parent);
+					utils.applyEffectsToTargets(this.effects, this.parent);
 				}
 			}
 		}
@@ -1166,7 +1167,7 @@ export default class Item4e extends Item {
 			ChatMessage.create(chatData);
 
 			if (["both", "post"].includes(this.system.macro?.launchOrder)) {
-				await helpers.executeMacro(this);
+				await macros.executeMacro(this);
 			}
 		}
 		else return chatData;
@@ -1182,7 +1183,7 @@ export default class Item4e extends Item {
 
 		const cardData = await (async () => {
 			if (((this.type === "power") || (this.type === "consumable")) && this.system.autoGenChatPowerCard) {
-				let cardString = helpers._preparePowerCardData(await this.getChatData(), CONFIG, rollData);
+				let cardString = utils.preparePowerCardData(await this.getChatData(), rollData);
 				const enrichedCardString = await foundry.applications.ux.TextEditor.implementation.enrichHTML(cardString, {
 					relativeTo: this.actor,
 					rollData,
@@ -1217,7 +1218,7 @@ export default class Item4e extends Item {
 		let templateType = "item";
 		if (["tool", "ritual"].includes(this.type)) {
 			templateType = this.type;
-			templateData.abilityCheck = helpers.byString(this.system.attribute.replace(".mod", ".label").replace(".total", ".label"), this.actor?.system);
+			templateData.abilityCheck = utils.byString(this.system.attribute.replace(".mod", ".label").replace(".total", ".label"), this.actor?.system);
 		}
 		const template = `systems/dnd4e/templates/chat/${templateType}-card.hbs`;
 		let html = await foundry.applications.handlebars.renderTemplate(template, templateData);
@@ -1581,10 +1582,10 @@ export default class Item4e extends Item {
 		// find details on the weapon being used, if any.   This is null if no weapon is being used.
 		
 		//console.debug(options);
-		const weaponUse = helpers.getWeaponUse(itemData, this.actor);
+		const weaponUse = utils.getWeaponUse(itemData, this.actor);
 		const weaponData = weaponUse?.getRollData().item;
 
-		if (helpers.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
+		if (utils.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
 			ui.notifications.error(_loc("DND4E.LackRequiredWeapon"));
 			return null;
 		}
@@ -1627,12 +1628,12 @@ export default class Item4e extends Item {
 			parts.push(Roll.replaceFormulaData(itemData.attack.formula, rollData));
 			partsExpressionReplacements.push({ value: itemData.attack.formula, target: parts[0] });
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = helpers.getDataObject(itemData.attack.formula, actorData.getRollData());
+			options.formulaInnerData = utils.getDataObject(itemData.attack.formula, actorData.getRollData());
 		}
 
 		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
 			if (consumable?.type === "ammo") {
-				if (helpers.isNonEmpty(consumable.target) && helpers.isNonEmpty(consumable.amount))
+				if (utils.isNonEmpty(consumable.target) && utils.isNonEmpty(consumable.amount))
 				{
 					const ammo = this.actor?.items.get(consumable.target);
 					if (ammo) {
@@ -1654,11 +1655,11 @@ export default class Item4e extends Item {
 					}
 				}
 				else {
-					if (!helpers.isNonEmpty(consumable.target)) {
+					if (!utils.isNonEmpty(consumable.target)) {
 						ui.notifications.warn(_loc("The {resourceType} requires ammunition, but the type ('{target}') was empty",
 							{ resourceType, target: consumable.target, quantity: consumable.amount }));
 					}
-					if (!helpers.isNonEmpty(consumable.quantity)) {
+					if (!utils.isNonEmpty(consumable.quantity)) {
 						ui.notifications.warn(_loc("The {resourceType} requires ammunition, but the quantity ('{quantity}') was empty",
 							{ resourceType, target: consumable.target, quantity: consumable.amount }));
 					}
@@ -1688,7 +1689,7 @@ export default class Item4e extends Item {
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
 		}
 		
-		await helpers.applyEffects(rollData, actorData, itemData, weaponData, "attack", null, null, options);
+		await utils.applyEffects(rollData, actorData, itemData, weaponData, "attack", null, null, options);
 
 		// Compose roll options
 		const rollConfig = {
@@ -1749,10 +1750,10 @@ export default class Item4e extends Item {
 
 		const itemData = this.getRollData({ variance: options.variance }).item;
 		const actorData = this.actor;
-		const weaponUse = helpers.getWeaponUse(itemData, this.actor);
+		const weaponUse = utils.getWeaponUse(itemData, this.actor);
 		const weaponData = weaponUse?.getRollData().item;
 
-		if (helpers.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
+		if (utils.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
 			return;
 		}
 
@@ -1770,12 +1771,12 @@ export default class Item4e extends Item {
 			parts.push(Roll.replaceFormulaData(itemData.attack.formula, rollData));
 			partsExpressionReplacements.push({ value: itemData.attack.formula, target: parts[0] });
 			// add the substitutions that were used in the expression to the data object for later
-			options.formulaInnerData = helpers.getDataObject(itemData.attack.formula, actorData.getRollData());
+			options.formulaInnerData = utils.getDataObject(itemData.attack.formula, actorData.getRollData());
 		}
 
 		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
 			if (consumable?.type === "ammo") {
-				if (helpers.isNonEmpty(consumable.target) && helpers.isNonEmpty(consumable.amount))
+				if (utils.isNonEmpty(consumable.target) && utils.isNonEmpty(consumable.amount))
 				{
 					const ammo = this.actor?.items.get(consumable.target);
 					if (ammo) {
@@ -1810,7 +1811,7 @@ export default class Item4e extends Item {
 			};
 			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
 		}
-		await helpers.applyEffects(rollData, actorData, itemData, weaponData, "attack", null, null, options);
+		await utils.applyEffects(rollData, actorData, itemData, weaponData, "attack", null, null, options);
 
 		// Compose roll options
 		const rollConfig = {
@@ -1837,40 +1838,40 @@ export default class Item4e extends Item {
 		let rangeData = {};
 		let area;
 		if (this.system.area) {
-			const areaForm = helpers.evaluateFormula(String(this.system.area), this.actor?.getRollData(), { strict: true, contextName: "rangeData" });
+			const areaForm = utils.evaluateFormula(String(this.system.area), this.actor?.getRollData(), { strict: true, contextName: "rangeData" });
 			area = areaForm ?? this.system.area;
 		} else {
 			area = 0;
 		}
 
 		if (this.system.rangeType === "range") {
-			rangeData.rangeText = `${C.rangeType.range.label} ${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
+			rangeData.rangeText = `${C.rangeType.range.label} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
 			rangeData.rangeTextShort = C.rangeType.range.abbr;
-			rangeData.rangeTextBlock = `${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
+			rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
 			if (this.system.range.long) {
-				rangeData.rangeText += `/${helpers.evaluateFormula(this.system.range.long, actorData, { strict: true, contextName: "rangeText" })}`;
-				rangeData.rangeTextBlock += `/${helpers.evaluateFormula(this.system.range.long, actorData, { strict: true, contextName: "rangeText" })}`;
+				rangeData.rangeText += `/${utils.evaluateFormula(this.system.range.long, actorData, { strict: true, contextName: "rangeText" })}`;
+				rangeData.rangeTextBlock += `/${utils.evaluateFormula(this.system.range.long, actorData, { strict: true, contextName: "rangeText" })}`;
 			}
 		} else if (this.system.rangeType === "closeBurst") {
 			rangeData.rangeText = `${C.rangeType.closeBurst.label} ${area}`;
 			rangeData.rangeTextShort = C.rangeType.closeBurst.abbr;
 			rangeData.rangeTextBlock = `${area}`;
 		} else if (this.system.rangeType === "rangeBurst") {
-			rangeData.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${_loc("DND4E.RangeWithin")} ${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
+			rangeData.rangeText = `${C.rangeType.rangeBurst.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
 			rangeData.rangeTextShort = C.rangeType.rangeBurst.abbr;
-			rangeData.rangeTextBlock = `${area}(${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
 		} else if (this.system.rangeType === "closeBlast") {
 			rangeData.rangeText = `${C.rangeType.closeBlast.label} ${area}`;
 			rangeData.rangeTextShort = C.rangeType.closeBlast.abbr;
 			rangeData.rangeTextBlock = `${area}`;
 		} else if (this.system.rangeType === "rangeBlast") {
-			rangeData.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${_loc("DND4E.RangeWithin")} ${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
+			rangeData.rangeText = `${C.rangeType.rangeBlast.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
 			rangeData.rangeTextShort = C.rangeType.rangeBlast.abbr;
-			rangeData.rangeTextBlock = `${area}(${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
 		} else if (this.system.rangeType === "wall") {
-			rangeData.rangeText = `${C.rangeType.wall.label} ${area} ${_loc("DND4E.RangeWithin")} ${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
+			rangeData.rangeText = `${C.rangeType.wall.label} ${area} ${_loc("DND4E.RangeWithin")} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
 			rangeData.rangeTextShort = C.rangeType.wall.abbr;
-			rangeData.rangeTextBlock = `${area}(${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
+			rangeData.rangeTextBlock = `${area}(${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })})`;
 		} else if (this.system.rangeType === "personal") {
 			rangeData.rangeText = C.rangeType.personal.label;
 			rangeData.rangeTextShort = C.rangeType.personal.abbr;
@@ -1885,22 +1886,22 @@ export default class Item4e extends Item {
 			if ((Roll.replaceFormulaData(this.system.rangePower, actorData) === undefined) || (Roll.replaceFormulaData(this.system.rangePower, actorData) === null)) {
 				rangeData.rangeText = C.rangeType.melee.label;
 			} else {
-				rangeData.rangeText = `${C.rangeType.melee.label} ${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
-				rangeData.rangeTextBlock = `${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
+				rangeData.rangeText = `${C.rangeType.melee.label} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
+				rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
 			}
 		} else if (this.system.rangeType === "reach") {
-			rangeData.rangeText = `${C.rangeType.reach.label} ${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
+			rangeData.rangeText = `${C.rangeType.reach.label} ${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeText" })}`;
 			rangeData.rangeTextShort = C.rangeType.reach.abbr;
-			rangeData.rangeTextBlock = `${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
+			rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
 			
 		} else if (this.system.rangeType === "weapon") {
 
 			try {
-				const weaponUse = helpers.getWeaponUse(this.system, this.actor);
+				const weaponUse = utils.getWeaponUse(this.system, this.actor);
 				if (weaponUse.system.isRanged && (this.system.weaponType !== "melee")) {
 					rangeData.rangeText = `${_loc("DND4E.rangeWeaponRanged")} - ${weaponUse.name}`;
 					rangeData.rangeTextShort = _loc("DND4E.rangeWeaponRangedAbbr");
-					rangeData.rangeTextBlock = `${helpers.evaluateFormula(weaponUse.system.range.value, actorData, { strict: true, context: "rangeTextBlock" })}/${helpers.evaluateFormula(weaponUse.system.range.long, actorData, { strict: true, context: "rangeTextBlock" })}`;
+					rangeData.rangeTextBlock = `${utils.evaluateFormula(weaponUse.system.range.value, actorData, { strict: true, context: "rangeTextBlock" })}/${utils.evaluateFormula(weaponUse.system.range.long, actorData, { strict: true, context: "rangeTextBlock" })}`;
 				} else {
 					rangeData.rangeText = `${_loc("DND4E.rangeWeaponMelee")} - ${weaponUse.name}`;
 					rangeData.rangeTextShort = _loc("DND4E.rangeWeaponMeleeAbbr");
@@ -1908,19 +1909,19 @@ export default class Item4e extends Item {
 					if (!this.system.rangePower) {
 						rangeData.rangeTextBlock = (weaponUse.system.properties.rch ? "2" : "");
 					} else {
-						rangeData.rangeTextBlock = `${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
+						rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
 					}
 				}
 
 			} catch {
 				rangeData.rangeText = "Weapon";
 				rangeData.rangeTextShort = this.system.weaponType === "ranged" ? _loc ("DND4E.rangeWeaponRangedAbbr") : _loc("DND4E.rangeWeaponMeleeAbbr");
-				rangeData.rangeTextBlock = `${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
+				rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
 
 				if (!this.system.rangePower) {
 					rangeData.rangeTextBlock = "";
 				} else {
-					rangeData.rangeTextBlock = `${helpers.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
+					rangeData.rangeTextBlock = `${utils.evaluateFormula(this.system.rangePower, actorData, { strict: true, context: "rangeTextBlock" })}`;
 				}
 			}
 
@@ -1978,7 +1979,7 @@ export default class Item4e extends Item {
 		const shapes = Array.fromRange(shapeCount).map(() => {
 			const shapeData = { type, gridBased: true, x: 0, y: 0 };
 			for (const [key, path] of Object.entries(shapeProperties)) {
-				shapeData[key] = helpers.evaluateFormula(this.system[path], this.actor?.getRollData(), { strict: true, contextName: "templateData" }) * canvas.dimensions.distancePixels;
+				shapeData[key] = utils.evaluateFormula(this.system[path], this.actor?.getRollData(), { strict: true, contextName: "templateData" }) * canvas.dimensions.distancePixels;
 			}
 
 			// Special case
@@ -2067,10 +2068,10 @@ export default class Item4e extends Item {
 		const itemData = this.getRollData({ variance }).item;
 		const actorData = this.actor;
 		const actorInnerData = this.actor?.system;
-		const weaponUse = helpers.getWeaponUse(itemData, this.actor);
+		const weaponUse = utils.getWeaponUse(itemData, this.actor);
 		const weaponData = weaponUse?.getRollData().item;
 
-		if (helpers.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
+		if (utils.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
 			ui.notifications.error(_loc("DND4E.LackRequiredWeapon"));
 			return null;
 		}
@@ -2102,7 +2103,7 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData: {}, divisors: { normal: { value: 1, reason: [] }, miss: { value: 1, reason: [] }, crit: { value: 1, reason: [] } }, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 		const secondaryPartsHelper = (formula, damageType) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, helpers.getDataObject(formula, rollData));
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, utils.getDataObject(formula, rollData));
 			// convert formula and type into a single string of "substituted formula [type]"
 			return returnDamageRollAndOptionalType(Roll.replaceFormulaData(formula, rollData), damageType);
 		};
@@ -2140,7 +2141,7 @@ export default class Item4e extends Item {
 		if (itemData.hit?.formula) {
 			const formulaHelper = (formula) => {
 				// store the values that were used to sub in any formulas
-				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, helpers.getDataObject(formula, rollData));
+				options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, utils.getDataObject(formula, rollData));
 				// convert formula and type into a single string of "substituted formula [type]"
 				return Roll.replaceFormulaData(formula, rollData);
 			};
@@ -2156,7 +2157,7 @@ export default class Item4e extends Item {
 			//Add seconadary weapons damage into parts
 			const secondaryDamageExpressionHelper = (oldParts, expressionParts, newPartsArr) => {
 				const newParts = newPartsArr.map(d => {
-					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, helpers.getDataObject(d.formula, rollData));
+					options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, utils.getDataObject(d.formula, rollData));
 					const formula = Roll.replaceFormulaData(d.formula, rollData);
 					if (d.type.size) {
 						return returnDamageRollAndOptionalType(formula, [...d.type].join(","));
@@ -2211,7 +2212,7 @@ export default class Item4e extends Item {
 			}
 		}
 	
-		if (this.system?.hit?.damageBonusNull) helpers.debugLog("Ignoring damage bonuses due to power config.");
+		if (this.system?.hit?.damageBonusNull) utils.debugLog("Ignoring damage bonuses due to power config.");
 	
 		// Define Roll Data
 		if (!this.system?.hit?.damageBonusNull) {
@@ -2232,7 +2233,7 @@ export default class Item4e extends Item {
 
 		const extraDamageParts = [];
 		if (!this.system?.hit?.damageBonusNull) {
-			await helpers.applyEffects(rollData, actorData, itemData, weaponData, "damage", extraDamageParts, null, options);
+			await utils.applyEffects(rollData, actorData, itemData, weaponData, "damage", extraDamageParts, null, options);
 		}
 
 		// Ammunition Damage from power
@@ -2309,11 +2310,11 @@ export default class Item4e extends Item {
 		}
 
 		if (missDamageFormula.includes("@damageFormula")) {
-			missDamageFormula = missDamageFormula.replace("@damageFormula", helpers.bracketed(damageFormula));
+			missDamageFormula = missDamageFormula.replace("@damageFormula", utils.bracketed(damageFormula));
 		}
 
 		if (missDamageFormula.includes("@halfDamageFormula")) {
-			missDamageFormula = missDamageFormula.replace("@halfDamageFormula", helpers.bracketed(`${damageFormula}/2`));
+			missDamageFormula = missDamageFormula.replace("@halfDamageFormula", utils.bracketed(`${damageFormula}/2`));
 		}
 
 		const primaryDamageStr = primaryDamage ? `[${primaryDamage}]` : "";
@@ -2365,9 +2366,9 @@ export default class Item4e extends Item {
 		const itemData = this.system;
 		const actorData = this.actor;
 		const actorInnerData = this.actor?.system;
-		const weaponUse = helpers.getWeaponUse(itemData, this.actor);
+		const weaponUse = utils.getWeaponUse(itemData, this.actor);
 
-		if (helpers.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
+		if (utils.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
 			ui.notifications.error(_loc("DND4E.LackRequiredWeapon"));
 			return null;
 		}
@@ -2393,7 +2394,7 @@ export default class Item4e extends Item {
 		const options = { formulaInnerData: {}, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 		const formulaHelper = (formula) => {
 			// store the values that were used to sub in any formulas
-			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, helpers.getDataObject(formula, actorData.getRollData(), rollData));
+			options.formulaInnerData = foundry.utils.mergeObject(options.formulaInnerData, utils.getDataObject(formula, actorData.getRollData(), rollData));
 			// convert formula and type into a single string of "substituted formula [type]"
 			return Roll.replaceFormulaData(formula, rollData);
 		};
@@ -2633,9 +2634,9 @@ export default class Item4e extends Item {
 		const parts = ["@" + rollType];
 
 		if (this.system.formula) {
-			rollData[rollType] = Roll.replaceFormulaData(this.system.formula.replace("@attribute", helpers.byString(this.system.attribute, this.actor?.system)), this.getRollData());
+			rollData[rollType] = Roll.replaceFormulaData(this.system.formula.replace("@attribute", utils.byString(this.system.attribute, this.actor?.system)), this.getRollData());
 		} else {
-			rollData[rollType] = `1d20 + ${helpers.byString(this.system.attribute, this.actor?.system)}`; 
+			rollData[rollType] = `1d20 + ${utils.byString(this.system.attribute, this.actor?.system)}`; 
 			if (this.system.bonus) {
 				//if does not srtart with a number sign add one
 				let trimmedbonus = this.system.bonus.toString().trim();
@@ -2645,10 +2646,10 @@ export default class Item4e extends Item {
 				rollData[rollType] += `${trimmedbonus}`;
 			}
 		}
-		helpers.debugLog(rollData[rollType]);
+		utils.debugLog(rollData[rollType]);
 		const title = `${this.name} - ${_loc(titleKey)}`;
 
-		const label = helpers.byString(this.system.attribute.replace(".mod", ".label").replace(".total", ".label"), this.actor?.system);
+		const label = utils.byString(this.system.attribute.replace(".mod", ".label").replace(".total", ".label"), this.actor?.system);
 
 		const flavour = this.system.description.chat ? `${this.system.description.chat} (${label} check)` : `${this.name} - ${_loc(titleKey)}  (${label} check)`;
 		// Compose the roll data
@@ -2676,7 +2677,7 @@ export default class Item4e extends Item {
 	getWepDice(weaponNum) {
 		if (!["power", "weapon"].includes(this.type)) return 0;
 
-		const weaponData = this.type === "weapon" ? this.system : (this.type == "power" ? helpers.getWeaponUse(this.system, this.actor)?.system : null);
+		const weaponData = this.type === "weapon" ? this.system : (this.type == "power" ? utils.getWeaponUse(this.system, this.actor)?.system : null);
 		if (!weaponData) return 0;
 
 		let parts = weaponData.damageDice.parts;
@@ -2715,7 +2716,7 @@ export default class Item4e extends Item {
 	getWepMax() {
 		if (!["power", "weapon"].includes(this.type)) return 0;
 
-		const weaponData = this.type === "weapon" ? this.system : (this.type == "power" ? helpers.getWeaponUse(this.system, this.actor)?.system : null);
+		const weaponData = this.type === "weapon" ? this.system : (this.type == "power" ? utils.getWeaponUse(this.system, this.actor)?.system : null);
 		if (!weaponData) return 0;
 
 		let parts = weaponData.damageDice.parts;
@@ -2756,7 +2757,7 @@ export default class Item4e extends Item {
 		
 		// Handle Weapon Type Damage
 		if (diceType.includes("weapon")) {
-			const weaponData = helpers.getWeaponUse(this.system, this.actor)?.system;
+			const weaponData = utils.getWeaponUse(this.system, this.actor)?.system;
 			if (weaponData) {
 				let parts = weaponData.damageDice.parts;
 				for (let i = 0; i < parts.length; i++) {
@@ -2807,7 +2808,7 @@ export default class Item4e extends Item {
 		rQuantity.evaluateSync({ maximize: true });
 
 		//check if is valid number
-		if (helpers._isNumber(rQuantity.total)) {
+		if (utils.isNumber(rQuantity.total)) {
 			quantity = rQuantity.total;
 		} else {
 			quantity = 1;
@@ -2816,7 +2817,7 @@ export default class Item4e extends Item {
 		let dice = "";
 		// Handle Weapon Type Damage
 		if (diceType.includes("weapon")) {
-			const weaponData = helpers.getWeaponUse(powerData, this.actor)?.system;
+			const weaponData = utils.getWeaponUse(powerData, this.actor)?.system;
 			if (weaponData) {
 				let parts = weaponData.damageDice.parts;
 				for (let i = 0; i < parts.length; i++) {
@@ -2877,7 +2878,7 @@ export default class Item4e extends Item {
 		}
 
 		// Weapon/Implement properties:
-		const weapon = this.type === "weapon" ? this : (this.type == "power" ? helpers.getWeaponUse(this.system, this.actor) : null);
+		const weapon = this.type === "weapon" ? this : (this.type == "power" ? utils.getWeaponUse(this.system, this.actor) : null);
 		const weaponData = weapon ? weapon.system : null;
 		if (weaponData) {
 			let enhValue = weaponData.enhance || 0;
@@ -2885,12 +2886,12 @@ export default class Item4e extends Item {
 			//Using inherent enhancements?
 			if (game.settings.get("dnd4e", "inhEnh")) {
 				//If our enhancement is lower than the inherent level, adjust it upward
-				enhValue = Math.max(enhValue, helpers.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1));
-				console.log(`Checked inherent atk/dmg enhancement of +${helpers.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${enhValue}`);
+				enhValue = Math.max(enhValue, utils.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1));
+				console.log(`Checked inherent atk/dmg enhancement of +${utils.findKeyScale(data.details.level, CONFIG.DND4E.SCALE.basic, 1)} for this level against weapon value of +${enhValue}`);
 			}
 
-			data.enhanceImp = ((weaponData.type === "implement") || weaponData.properties.imp) ? helpers.bracketed(Roll.replaceFormulaData(String(enhValue), data, { recursive: true }) || 0) : 0;
-			data.enhance = helpers.bracketed(Roll.replaceFormulaData(String(enhValue), data, { recursive: true }) || 0);
+			data.enhanceImp = ((weaponData.type === "implement") || weaponData.properties.imp) ? utils.bracketed(Roll.replaceFormulaData(String(enhValue), data, { recursive: true }) || 0) : 0;
+			data.enhance = utils.bracketed(Roll.replaceFormulaData(String(enhValue), data, { recursive: true }) || 0);
 			
 			data.itemLevel = weaponData.level || 0;
 
@@ -2901,23 +2902,23 @@ export default class Item4e extends Item {
 			data.profBonus = weapon.isActorProficient ? weaponData.profBonus || 0 : 0;
 
 			if (weaponData.weaponType === "implement") {
-				data.wepAttack = helpers.bracketed(Roll.replaceFormulaData(weaponData.attackFormImp, data, { recursive: true }) || 0);
-				data.wepDamage = helpers.bracketed(Roll.replaceFormulaData(weaponData.damageFormImp, data, { recursive: true }) || 0);
-				data.wepCritBonus = helpers.bracketed(Roll.replaceFormulaData(weaponData.critDamageFormImp, data, { recursive: true }) || 0);
+				data.wepAttack = utils.bracketed(Roll.replaceFormulaData(weaponData.attackFormImp, data, { recursive: true }) || 0);
+				data.wepDamage = utils.bracketed(Roll.replaceFormulaData(weaponData.damageFormImp, data, { recursive: true }) || 0);
+				data.wepCritBonus = utils.bracketed(Roll.replaceFormulaData(weaponData.critDamageFormImp, data, { recursive: true }) || 0);
 			}
 			else {
-				data.wepAttack = helpers.bracketed(Roll.replaceFormulaData(weaponData.attackForm, data, { recursive: true }) || 0);
-				data.wepDamage = helpers.bracketed(Roll.replaceFormulaData(weaponData.damageForm, data, { recursive: true }) || 0);
-				data.wepCritBonus = helpers.bracketed(Roll.replaceFormulaData(weaponData.critDamageForm, data, { recursive: true }) || 0);
+				data.wepAttack = utils.bracketed(Roll.replaceFormulaData(weaponData.attackForm, data, { recursive: true }) || 0);
+				data.wepDamage = utils.bracketed(Roll.replaceFormulaData(weaponData.damageForm, data, { recursive: true }) || 0);
+				data.wepCritBonus = utils.bracketed(Roll.replaceFormulaData(weaponData.critDamageForm, data, { recursive: true }) || 0);
 			}
 
-			data.impCritBonus = helpers.bracketed(Roll.replaceFormulaData(weaponData.critDamageFormImp, data, { recursive: true }) || 0);
+			data.impCritBonus = utils.bracketed(Roll.replaceFormulaData(weaponData.critDamageFormImp, data, { recursive: true }) || 0);
 
-			data.impAttackO = helpers.bracketed(Roll.replaceFormulaData(weaponData.attackFormImp, data, { recursive: true }) || 0);
-			data.impDamageO = helpers.bracketed(Roll.replaceFormulaData(weaponData.damageFormImp, data, { recursive: true }) || 0);
+			data.impAttackO = utils.bracketed(Roll.replaceFormulaData(weaponData.attackFormImp, data, { recursive: true }) || 0);
+			data.impDamageO = utils.bracketed(Roll.replaceFormulaData(weaponData.damageFormImp, data, { recursive: true }) || 0);
 
-			data.impAttack = helpers.bracketed(weapon.isActorImplementProficient ? Roll.replaceFormulaData(weaponData.attackFormImp, data, { recursive: true }) || 0 : 0);
-			data.impDamage = helpers.bracketed(weapon.isActorImplementProficient ? Roll.replaceFormulaData(weaponData.damageFormImp, data, { recursive: true }) || 0 : 0);			
+			data.impAttack = utils.bracketed(weapon.isActorImplementProficient ? Roll.replaceFormulaData(weaponData.attackFormImp, data, { recursive: true }) || 0 : 0);
+			data.impDamage = utils.bracketed(weapon.isActorImplementProficient ? Roll.replaceFormulaData(weaponData.damageFormImp, data, { recursive: true }) || 0 : 0);			
 		} else {
 			data.profBonusO = 0;
 			data.profImpBonusO = 0;
@@ -3058,7 +3059,7 @@ export default class Item4e extends Item {
 		}
 
 		// Attack and Damage Rolls
-		helpers.debugLog(action);
+		utils.debugLog(action);
 		let effectTargets = game.user.targets; // Set
 		if (game.settings.get("dnd4e", "applyEffectsToSelection")) {
 			effectTargets = new Set(canvas.tokens.controlled); // Array, convert to set
@@ -3091,12 +3092,12 @@ export default class Item4e extends Item {
 			}
 			const targets = game.settings.get("dnd4e", "applyEffectsToSelection") ? canvas.tokens.controlled : game.user.targets;
 			// Use optional chaining to avoid hard-crashing if flags are missing.
-			helpers.applyEffectsToTokens([effect], targets, effect.system.powerEffectType, actor);
+			utils.applyEffectsToTokens([effect], targets, effect.system.powerEffectType, actor);
 		} 
-		else if (action === "effect") helpers.applyAllXEffectsToTokens(item.effects, actor, effectTargets);
-		else if (action === "hitEffect") helpers.applyEffectsToTokens(item.effects, effectTargets, "hit", actor);
-		else if (action === "missEffect") helpers.applyEffectsToTokens(item.effects, effectTargets, "miss", actor);
-		else if (action === "hitOrMissEffect") helpers.applyEffectsToTokens(item.effects, effectTargets, "hitOrMiss", actor);
+		else if (action === "effect") utils.applyAllXEffectsToTokens(item.effects, actor, effectTargets);
+		else if (action === "hitEffect") utils.applyEffectsToTokens(item.effects, effectTargets, "hit", actor);
+		else if (action === "missEffect") utils.applyEffectsToTokens(item.effects, effectTargets, "miss", actor);
+		else if (action === "hitOrMissEffect") utils.applyEffectsToTokens(item.effects, effectTargets, "hitOrMiss", actor);
 
 		// Saving Throws for card targets
 		else if (action === "save") {

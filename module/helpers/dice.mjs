@@ -1,8 +1,8 @@
-import * as helpers from "./helpers.mjs";
-import MultiAttackRoll from "./rolls/multi-attack-roll.mjs";
-import Roll4e from "./rolls/roll.mjs";
-import { RollDialog } from "./applications/apps/dice/_module.mjs";
-import RollWithOriginalExpression from "./rolls/roll-with-expression.mjs";
+import * as utils from "../utils/utils.mjs";
+import MultiAttackRoll from "../rolls/multi-attack-roll.mjs";
+import Roll4e from "../rolls/roll.mjs";
+import { RollDialog } from "../applications/apps/dice/_module.mjs";
+import RollWithOriginalExpression from "../rolls/roll-with-expression.mjs";
 
 /**
  * A standardized helper function for managing core 4e "d20 rolls"
@@ -62,7 +62,7 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 		for (let targ = 0; targ < numTargets; targ++) {
 			const targName = targetArr[targ].name;
 			targDataArray.targNameArray.push(targName);
-			const targetDist = helpers.computeDistance(actor, targetArr[targ]);
+			const targetDist = utils.computeDistance(actor, targetArr[targ]);
 			//console.debug(data);
 			let meleeVsProne = false;
 			if (targetArr[targ].actor.statuses.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
@@ -82,7 +82,7 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 				longRange = true;
 			}
 			let isFlanking = false;
-			if (helpers.computeFlankingStatus(helpers.tokenForActor(actor), targetArr[targ])) {
+			if (utils.computeFlankingStatus(utils.tokenForActor(actor), targetArr[targ])) {
 				isFlanking = true;
 			}
 			targDataArray.targets.push({
@@ -259,7 +259,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				//Target conditions
 				if (targetStatus.filter(element => ["blinded", "dazed", "dominated", "helpless", "restrained", "stunned", "surprised", "squeezing", "running", "grantingCA"].includes(element)).length) hasComAdv = true;
 				
-				const targetDist = helpers.computeDistance(actor, theTargets[targetIndex]);
+				const targetDist = utils.computeDistance(actor, theTargets[targetIndex]);
 				if (targetStatus.includes("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
 					let isThrown = false;
 					if (item?.system.rangeType === "weapon") {
@@ -276,7 +276,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 					}
 				}
 
-				if (helpers.computeFlankingStatus(helpers.tokenForActor(actor), theTargets[targetIndex])) {
+				if (utils.computeFlankingStatus(utils.tokenForActor(actor), theTargets[targetIndex])) {
 					hasComAdv = true;
 				}
 
@@ -354,7 +354,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			let targetOptions = foundry.utils.deepClone(options);
 			const targetActor = targets[rollExpressionIdx]?.document.actor;
 			const IS_TARGET = true;
-			if (targetActor) await helpers.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
+			if (targetActor) await utils.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
 		catch(err) {
@@ -370,7 +370,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			let targName = targets[rollExpressionIdx].name;
 			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.value;
 			let defOptions = { bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
-			await helpers.applyEffects({ ...data, ...options.variance }, targets[rollExpressionIdx].actor, itemData, weaponData, "defence", null, null, defOptions);
+			await utils.applyEffects({ ...data, ...options.variance }, targets[rollExpressionIdx].actor, itemData, weaponData, "defence", null, null, defOptions);
 
 			let bonusesTotal = 0;
 			for (const [type, bonuses] of Object.entries(defOptions.bonuses)) {
@@ -388,7 +388,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			}
 			targDefVal += bonusesTotal;
 			const meleeRange = weaponUse?.system.properties.rch ? 2 : 1;
-			const dist = helpers.computeDistance(actor, targets[rollExpressionIdx]);
+			const dist = utils.computeDistance(actor, targets[rollExpressionIdx]);
 			const isThrown = (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) && (dist > meleeRange);
 			if (targets[rollExpressionIdx].document.actor.statuses.has("prone") && ((item?.system.rangeType === "range") || ((item?.system.rangeType === "weapon") && ((weaponUse?.system.weaponType.slice(-1) === "R") || isThrown))) && (dist > 1)) {
 				const proneDefenseBonusVsRanged = 2; // TODO Make this configurable somehow?
@@ -432,14 +432,14 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	
 		if (options.powerEffects && game.settings.get("dnd4e", "autoApplyEffects")) {
 			if (targetData.targetHit.length) {
-				helpers.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", attacker);
-				helpers.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hitOrMiss", attacker);
-				helpers.applyEffectsToTokens(options.powerEffects, [attacker], "selfHit", attacker);
+				utils.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hit", attacker);
+				utils.applyEffectsToTokens(options.powerEffects, targetData.targetHit, "hitOrMiss", attacker);
+				utils.applyEffectsToTokens(options.powerEffects, [attacker], "selfHit", attacker);
 			}
 			if (targetData.targetMissed.length) {
-				helpers.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", attacker);
-				helpers.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "hitOrMiss", attacker);
-				helpers.applyEffectsToTokens(options.powerEffects, [attacker], "selfMiss", attacker);
+				utils.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "miss", attacker);
+				utils.applyEffectsToTokens(options.powerEffects, targetData.targetMissed, "hitOrMiss", attacker);
+				utils.applyEffectsToTokens(options.powerEffects, [attacker], "selfMiss", attacker);
 			}
 		}
 	}
@@ -447,7 +447,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	// Move this so that it only gets called when attacks are made, not all d20 rolls?
 	if (options.powerEffects && game.settings.get("dnd4e", "autoApplyEffects")) {
 		// Always apply these effects after the attack, even if the player forgot to select targets
-		helpers.applyEffectsToTokens(options.powerEffects, [attacker], "selfAfterAttack", attacker);
+		utils.applyEffectsToTokens(options.powerEffects, [attacker], "selfAfterAttack", attacker);
 	}
 
 	// Convert the roll to a chat message and return the roll
@@ -643,8 +643,8 @@ function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, messageMode
 
 	// Determine whether the roll can be fast-forward, make explicit comparison here as it might be set as false, so no falsey checks
 	if ((fastForward === null) || (fastForward === undefined)) {
-		// rollConfig.fastForward = helpers.isUsingFastForwardKey(event);
-		rollConfig.fastForward = helpers.isRollFastForwarded(event);
+		// rollConfig.fastForward = utils.isUsingFastForwardKey(event);
+		rollConfig.fastForward = utils.isRollFastForwarded(event);
 		if (rollConfig.options?.fastForward) {
 			rollConfig.fastForward = rollConfig.options.fastForward;
 		}

@@ -2,7 +2,7 @@
 
 const { NumberField, SetField, StringField } = foundry.data.fields;
 import { FormulaField } from "../fields/_module.mjs";
-import * as helpers from "../../helpers.mjs";
+import * as utils from "../../utils/utils.mjs";
 
 /**
  * @import { DamagingRegionRegionBehaviorSystemData } from "./_types.mjs";
@@ -99,7 +99,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 		);
                         
 		await ChatMessage.create({
-			user: helpers.firstOwner(actor),
+			user: utils.firstOwner(actor),
 			speaker: { actor: actor, alias: token.name },
 			content: html,
 			flavor: `${["healing", "temphp"].includes(damageTypes) ? _loc ("DND4E.Healing") : _loc ("DND4E.Damage")}: ${this.parent.name}`,
