@@ -1,8 +1,6 @@
-import ActivatedEffectTemplate from "./templates/activated-effect.js";
-import ItemDescriptionTemplate from "./templates/item-description.js";
-import ItemMacroTemplate from "./templates/item-macro.js";
+import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 
-const { NumberField, SchemaField, StringField, BooleanField } = foundry.data.fields;
+const { SchemaField, StringField, BooleanField } = foundry.data.fields;
 
 export default class RitualData extends foundry.abstract.TypeDataModel {
 	static defineSchema() {

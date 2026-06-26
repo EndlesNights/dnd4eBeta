@@ -1,13 +1,6 @@
-import AttributesField from "./templates/attributes.js";
-import BonusField from "./fields/bonus-field.js";
-import Dnd4eBonusesField from "./fields/dnd4e-bonuses-field.js";
-import FormulaField from "../fields/formula-field.js";
-import SimpleTraitField from "./fields/simple-trait-field.js";
-import CombatantTemplate from "./templates/combatant.js";
-import CreatureTemplate from "./templates/creature.js";
-import DetailsField from "./templates/details.js";
-import SpeedTemplate from "./templates/speed.js";
-import WealthTemplate from "./templates/wealth.js";
+import { BonusField, Dnd4eBonusesField, SimpleTraitField } from "./fields/_module.mjs";
+import FormulaField from "../fields/formula-field.mjs";
+import { AttributesField, CombatantTemplate, CreatureTemplate, DetailsField, SpeedTemplate, WealthTemplate } from "./templates/_module.mjs";
 
 const { BooleanField, NumberField, ObjectField, StringField, SchemaField } = foundry.data.fields;
 

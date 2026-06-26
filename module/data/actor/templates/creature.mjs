@@ -1,6 +1,6 @@
-import SimpleTraitField from "../fields/simple-trait-field.js";
-import DetailsField from "./details.js";
-import SensesTemplate from "./senses.js";
+import SimpleTraitField from "../fields/simple-trait-field.mjs";
+import DetailsField from "./details.mjs";
+import SensesTemplate from "./senses.mjs";
 
 const { HTMLField, SchemaField } = foundry.data.fields;
 

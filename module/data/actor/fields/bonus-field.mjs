@@ -1,4 +1,4 @@
-import FormulaField from "../../fields/formula-field.js";
+import FormulaField from "../../fields/formula-field.mjs";
 
 const { ArrayField, BooleanField, SchemaField, StringField } = foundry.data.fields;
 

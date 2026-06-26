@@ -1,5 +1,3 @@
-import BonusField from "../fields/bonus-field.js";
-
 const { BooleanField, SchemaField, StringField } = foundry.data.fields;
 
 export default class SensesTemplate extends foundry.abstract.DataModel {

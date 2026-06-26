@@ -7,17 +7,11 @@
 // Import Modules
 import { DND4E } from "./config.js";
 import { registerSystemSettings } from "./settings.js";
-
-// import Sheets
 import * as applications from "./applications/_module.mjs";
 import { preloadHandlebarsTemplates } from "./templates.js";
-
-// Import Documents
 import * as canvas from "./canvas/_module.mjs";
 import * as documents from "./documents/_module.mjs";
-
-import { ApplyActiveEffect4eRegionBehaviorType, DamagingRegionRegionBehaviorType, DifficultTerrainRegionBehaviorType } from "./data/region-behaviors/_module.mjs";
-import { TerrainData4e } from "./data/_module.mjs";
+import * as data from "./data/_module.mjs";
 
 import * as roll from "./enrichers/roll.js";
 import * as lookup from "./enrichers/lookup.js";
@@ -33,19 +27,6 @@ import { RollWithOriginalExpression } from "./roll/roll-with-expression.js";
 import { TokenBarHooks } from "./hooks.js";
 import { customSKillSetUp } from "./skills/custom-skills.js";
 import Roll4e from "./dice/Roll.js";
-import ActiveEffectData from "./data/active-effect/active-effect.js";
-import CharacterData from "./data/actor/character.js";
-import NPCData from "./data/actor/npc.js";
-import HazardData from "./data/actor/hazard.js";
-import BackpackData from "./data/item/backpack.js";
-import ConsumableData from "./data/item/consumable.js";
-import EquipmentData from "./data/item/equipment.js";
-import FeatureData from "./data/item/feature.js";
-import LootData from "./data/item/loot.js";
-import PowerData from "./data/item/power.js";
-import RitualData from "./data/item/ritual.js";
-import ToolData from "./data/item/tool.js";
-import WeaponData from "./data/item/weapon.js";
 
 /* -------------------------------------------- */
 /*  Foundry VTT Initialization                  */
@@ -115,7 +96,7 @@ Hooks.once("init", async function() {
 
 	CONFIG.Token.objectClass = canvas.placeables.Token4e;
 
-	CONFIG.Token.movement.TerrainData = TerrainData4e;
+	CONFIG.Token.movement.TerrainData = data.TerrainData4e;
 	CONFIG.Token.rulerClass = canvas.placeables.tokens.TokenRuler4e;
 
 	CONFIG.Token.movement.actions.charge = {
@@ -160,28 +141,28 @@ Hooks.once("init", async function() {
 
 	// System data types
 	CONFIG.ActiveEffect.dataModels = {
-		base: ActiveEffectData,
+		base: data.activeEffect.ActiveEffectData,
 	};
 	CONFIG.Actor.dataModels = {
-		"Player Character": CharacterData,
-		NPC: NPCData,
-		Hazard: HazardData,
+		"Player Character": data.actor.CharacterData,
+		NPC: data.actor.NPCData,
+		Hazard: data.actor.HazardData,
 	};
 	CONFIG.Item.dataModels = {
-		backpack: BackpackData,
-		consumable: ConsumableData,
-		equipment: EquipmentData,
-		feature: FeatureData,
-		loot: LootData,
-		power: PowerData,
-		ritual: RitualData,
-		tool: ToolData,
-		weapon: WeaponData,
+		backpack: data.item.BackpackData,
+		consumable: data.item.ConsumableData,
+		equipment: data.item.EquipmentData,
+		feature: data.item.FeatureData,
+		loot: data.item.LootData,
+		power: data.item.PowerData,
+		ritual: data.item.RitualData,
+		tool: data.item.ToolData,
+		weapon: data.item.WeaponData,
 	};
 
-	CONFIG.RegionBehavior.dataModels.applyActiveEffect4e = ApplyActiveEffect4eRegionBehaviorType;
-	CONFIG.RegionBehavior.dataModels.damagingRegion = DamagingRegionRegionBehaviorType;
-	CONFIG.RegionBehavior.dataModels.difficultTerrain = DifficultTerrainRegionBehaviorType;
+	CONFIG.RegionBehavior.dataModels.applyActiveEffect4e = data.regionBehavior.ApplyActiveEffect4eRegionBehaviorType;
+	CONFIG.RegionBehavior.dataModels.damagingRegion = data.regionBehavior.DamagingRegionRegionBehaviorType;
+	CONFIG.RegionBehavior.dataModels.difficultTerrain = data.regionBehavior.DifficultTerrainRegionBehaviorType;
 
 	CONFIG.RegionBehavior.typeLabels.applyActiveEffect4e = "DND4E.applyActiveEffect4e.Label";
 	CONFIG.RegionBehavior.typeIcons.applyActiveEffect4e = "fa-solid fa-person-rays";

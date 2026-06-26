@@ -1,6 +1,6 @@
-import FormulaField from "../../fields/formula-field.js";
+import FormulaField from "../../fields/formula-field.mjs";
 
-const { BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
+const { NumberField, SchemaField, StringField } = foundry.data.fields;
 
 export default class ActivatedEffectTemplate extends foundry.abstract.DataModel {
 	static defineSchema() {

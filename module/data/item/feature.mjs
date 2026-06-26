@@ -1,6 +1,5 @@
-import MappingField from "../fields/mapping-field.js";
-import ItemDescriptionTemplate from "./templates/item-description.js";
-import ItemMacroTemplate from "./templates/item-macro.js";
+import MappingField from "../fields/mapping-field.mjs";
+import { ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 
 const { BooleanField, StringField } = foundry.data.fields;
 

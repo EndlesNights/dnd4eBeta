@@ -1,11 +1,7 @@
-import FormulaField from "../fields/formula-field.js";
-import MappingField from "../fields/mapping-field.js";
-import ActivatedEffectTemplate from "./templates/activated-effect.js";
-import DamagePartsField from "./fields/damage-parts-field.js";
-import ItemDescriptionTemplate from "./templates/item-description.js";
-import ItemMacroTemplate from "./templates/item-macro.js";
-import PhysicalItemTemplate from "./templates/physical-item.js";
-import { processPart } from "./_utils.js";
+import DamagePartsField from "./fields/damage-parts-field.mjs";
+import { FormulaField, MappingField } from "../fields/_module.mjs";
+import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate, PhysicalItemTemplate } from "./templates/_module.mjs";
+import { processPart } from "./_utils.mjs";
 
 const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 

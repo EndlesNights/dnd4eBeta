@@ -1,9 +1,8 @@
-import MappingField from "../../fields/mapping-field.js";
-import BonusField from "../fields/bonus-field.js";
-import Dnd4eBonusesField from "../fields/dnd4e-bonuses-field.js";
-import SpeedTemplate from "./speed.js";
-import DetailsField from "./details.js";
-import AttributesField from "./attributes.js";
+import { BonusField, Dnd4eBonusesField } from "../fields/_module.mjs";
+import MappingField from "../../fields/mapping-field.mjs";
+import SpeedTemplate from "./speed.mjs";
+import DetailsField from "./details.mjs";
+import AttributesField from "./attributes.mjs";
 
 const { ArrayField, BooleanField, DocumentUUIDField, NumberField, SchemaField, StringField } = foundry.data.fields;
 

@@ -1,5 +1,4 @@
-import BonusField from "../fields/bonus-field.js";
-import Dnd4eBonusesField from "../fields/dnd4e-bonuses-field.js";
+import { BonusField, Dnd4eBonusesField } from "../fields/_module.mjs";
 
 const { BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 

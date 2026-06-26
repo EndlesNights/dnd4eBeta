@@ -1,10 +1,6 @@
-import FormulaField from "../fields/formula-field.js";
-import MappingField from "../fields/mapping-field.js";
-import ActivatedEffectTemplate from "./templates/activated-effect.js";
-import AttackAndDamageTemplate from "./templates/attack-damage.js";
-import ItemDescriptionTemplate from "./templates/item-description.js";
-import ItemMacroTemplate from "./templates/item-macro.js";
-import { processPart } from "./_utils.js";
+import { FormulaField, MappingField } from "../fields/_module.mjs";
+import { ActivatedEffectTemplate, AttackAndDamageTemplate, ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
+import { processPart } from "./_utils.mjs";
 
 const { ArrayField, BooleanField, SchemaField, SetField, StringField } = foundry.data.fields;
 

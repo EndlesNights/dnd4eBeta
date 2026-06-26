@@ -1,5 +1,5 @@
 const { SchemaField, SetField, StringField } = foundry.data.fields;
-import FormulaField from "../../fields/formula-field.js";
+import FormulaField from "../../fields/formula-field.mjs";
 
 export default class DamagePartsField extends SchemaField {
 	constructor(fields = {}, { initialValue = [], ...options } = {}) {

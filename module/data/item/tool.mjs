@@ -1,7 +1,4 @@
-import ActivatedEffectTemplate from "./templates/activated-effect.js";
-import ItemDescriptionTemplate from "./templates/item-description.js";
-import ItemMacroTemplate from "./templates/item-macro.js";
-import PhysicalItemTemplate from "./templates/physical-item.js";
+import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate, PhysicalItemTemplate } from "./templates/_module.mjs";
 
 const { StringField } = foundry.data.fields;
 

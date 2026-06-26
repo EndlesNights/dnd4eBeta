@@ -1,7 +1,7 @@
 // Adapted from the Foundry Virtual Tabletop - Dungeons & Dragons Fifth Edition Game System licensed under the MIT license
 
 const { NumberField, SetField, StringField } = foundry.data.fields;
-import FormulaField from "../fields/formula-field.js";
+import { FormulaField } from "../fields/_module.mjs";
 import { Helper } from "../../helper.js";
 
 /**

@@ -1,6 +1,5 @@
-import FormulaField from "../../fields/formula-field.js";
-import MappingField from "../../fields/mapping-field.js";
-import DamagePartsField from "../fields/damage-parts-field.js";
+import { FormulaField, MappingField } from "../../fields/_module.mjs";
+import DamagePartsField from "../fields/damage-parts-field.mjs";
 
 const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 

@@ -1,8 +1,5 @@
-import WealthTemplate from "../actor/templates/wealth.js";
-import ActivatedEffectTemplate from "./templates/activated-effect.js";
-import ItemDescriptionTemplate from "./templates/item-description.js";
-import ItemMacroTemplate from "./templates/item-macro.js";
-import PhysicalItemTemplate from "./templates/physical-item.js";
+import WealthTemplate from "../actor/templates/wealth.mjs";
+import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate, PhysicalItemTemplate } from "./templates/_module.mjs";
 
 const { BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
