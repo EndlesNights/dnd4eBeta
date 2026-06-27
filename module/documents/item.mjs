@@ -2,9 +2,12 @@ import { d20Roll, damageRoll, getAttackRollBonus } from "../helpers/dice.mjs";
 import { DND4E } from "../config.mjs";
 import * as utils from "../utils/utils.mjs";
 import * as macros from "../helpers/macros.mjs";
-import Actor4e from "../documents/actor.mjs";
 import AbilityUseDialog from "../applications/apps/ability-use-dialog.mjs";
 import Roll4e from "../rolls/roll.mjs";
+
+/**
+ * @import Actor4e from "../documents/actor.mjs";
+ */
 
 /**
  * Override and extend the basic :class:`Item` implementation
@@ -3169,7 +3172,7 @@ export default class Item4e extends Item {
 	/**
 	 * Get the Actor which is the author of a chat card
 	 * @param {HTMLElement} card    The chat card being used
-	 * @return {Array.<Actor4e>}      An Array of Actor entities, if any
+	 * @return {Array<Actor4e>}      An Array of Actor entities, if any
 	 * @private
 	 */
 	static _getChatCardTargets(card) {

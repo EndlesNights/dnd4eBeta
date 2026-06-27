@@ -1,7 +1,7 @@
-import { d20Roll, damageRoll } from "../helpers/dice.mjs";
+import { d20Roll } from "../helpers/dice.mjs";
 import { DND4E } from "../config.mjs";
 import * as utils from "../utils/utils.mjs";
-import { SaveThrowDialog } from "../applications/apps/_module.mjs";
+import SaveThrowDialog from "../applications/apps/save-throw.mjs";
 import Roll4e from "../rolls/roll.mjs";
 
 /**

@@ -2,20 +2,6 @@ import { ActiveEffect4e, Actor4e, Item4e, TokenDocument4e } from "../documents/_
 import Roll4e from "../rolls/roll.mjs";
 import Token4e from "../canvas/placeables/token.mjs";
 
-export async function executeMacro(item) {
-	const macro = new Macro ({
-		name: item.name,
-		type: item.system.macro.type,
-		scope: item.system.macro.scope,
-		command: item.system.macro.command, //cmd,
-		author: game.user.id,
-	});
-	macro.item = item;
-	macro.actor = item.actor;
-	macro.launch = item.system.macro.launchOrder;
-	return macro.execute();
-}
-
 /**
  * Helper function to perform synchronous evaluation of a user-input formula
  * User-input formulas may throw if blank or otherwise contain invalid terms.
