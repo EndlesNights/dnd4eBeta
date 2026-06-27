@@ -193,6 +193,7 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 							name: effect.name,
 							key: change.key,
 							value: change.value,
+							itemUuid: effect.item.uuid,
 						});
 						break;
 					}
@@ -233,6 +234,7 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 				if (weaponData.weaponBaseType) {
 					suitableKeywords.push(weaponData.weaponBaseType);
 				}
+				options.weaponUuid = weaponData.uuid;
 			}
 
 			if (powerData.powersource) {
@@ -500,6 +502,13 @@ async function _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, 
 		if ((keyParts.length >= 4) && (keyParts[1] === effectType)) {
 			const keywords = keyParts.slice(2, -1);
 			for (const keyword of keywords) {
+				if (keyword === "self") {
+					if (options.weaponUuid === effect.itemUuid) {
+						continue;
+					} else {
+						return false;
+					}
+				} 
 				if (!suitableKeywords.includes(keyword)) {
 					return false;
 				}
