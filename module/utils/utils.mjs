@@ -193,7 +193,7 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 							name: effect.name,
 							key: change.key,
 							value: change.value,
-							itemUuid: effect.item.uuid,
+							itemUuid: effect.item?.uuid,
 						});
 						break;
 					}
