@@ -509,7 +509,7 @@ async function _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, 
 						return false;
 					}
 				} 
-				if (!suitableKeywords.includes(keyword)) {
+				if (!(new Set(suitableKeywords).intersection(new Set(keyword.split(",")))).size) {
 					return false;
 				}
 			}
