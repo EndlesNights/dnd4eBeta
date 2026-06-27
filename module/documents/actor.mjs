@@ -213,7 +213,7 @@ export default class Actor4e extends Actor {
 		// as this could get unnecessarily expensive quickly.
 		// Depth > 0 check is here to prevent an infinite recursion situation as this will call to common replace in case the variable uses a formula
 		// having got to the bottom of common replace, check to see if there are any more @variables left.	If there aren't, then don't bother going any further
-		let effects = Array.from(this.allApplicableEffects());
+		let effects = Array.from(this.appliedEffects);
 		if (effects.length) {
 			const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
 			const resultObject = {};

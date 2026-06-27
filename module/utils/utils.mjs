@@ -163,7 +163,7 @@ export const variableRegex = new RegExp(/@([a-z.0-9_-]+)/gi);
 export async function applyEffects(rollData, actor, powerData = {}, weaponData = null, effectType, extraDamage = [], target = false, options = {}) {
 	const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
 	if (!actor) return;
-	const actorEffects = [...actor.allApplicableEffects()];
+	const actorEffects = actor.appliedEffects;
 	if (actorEffects.length) {
 		let enhValue = weaponData?.enhance || 0;
 		if (debug) {
