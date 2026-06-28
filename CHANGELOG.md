@@ -1,8 +1,8 @@
 # Changelog
 
 ## Version 0.8.7
-* New `self` attribute for custom 4e effects, used to select for attacks using an effect's specific parent item (please see docs for details). (SagaTympana)
-* New "OR" behaviour for custom 4e effect keys, used to create compound conditons where only one attribute must match (please see docs for details). (SagaTympana)
+* New `self` attribute for custom 4e effects, used to select for attacks using an effect's specific parent item; see docs for details (SagaTympana)
+* New "OR" behaviour for custom 4e effect keys, used to create compound conditons where only one attribute must match; see docs for details (SagaTympana)
 * Fixed a bug reported on Discord, where Active Effects would still apply custom modifiers even when deactivated (SagaTympana)
 * Fixed a bug where powers added through sheet buttons would have the wrong category under certain sort conditions (SagaTympana)
 * Under the hood, reorganised file structure/namespaces to mirror Foundry defaults (@SagaTympana)
