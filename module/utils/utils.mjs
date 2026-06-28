@@ -1033,7 +1033,7 @@ export async function applyEffectsToTokens(effectMap, tokenTarget, condition, pa
 						if (!e.system.changes.some(c => c.key === "system.marker")) {
 							const changeData = {
 								key: "system.marker",
-								mode: 5,
+								type: "override",
 								value: e.origin,
 								priority: null,
 							};							
