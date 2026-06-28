@@ -1199,6 +1199,9 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		else if (this.document.system.powerGroupTypes === "type") {
 			itemData.system.powerType = type;
 		}
+		else if (this.document.system.powerGroupTypes === "powerSubtype") {
+			itemData.system.powerSubtype = type;
+		}
 		else if (this.document.system.powerGroupTypes === "usage") {
 			itemData.system.useType = type;
 			if (["encounter", "daily", "recharge", "item"].includes(type)) {
