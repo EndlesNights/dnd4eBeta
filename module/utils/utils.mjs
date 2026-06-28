@@ -203,7 +203,7 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 			
 		//Dummy up some extra effects to represent global atk/damage bonuses
 		const globalMods = actor.system.modifiers;
-		if (globalMods[effectType]?.value) {
+		if (!target && globalMods[effectType]?.value) {
 			for (const [key, value] of Object.entries(globalMods[effectType])) {
 				//No way to sort bonus array types, so we'll combine them with untyped before checks.
 				const adjValue = (key == "untyped" ? value + globalMods[effectType].bonusValue : value);
@@ -215,7 +215,7 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 					});
 				}
 			}
-		}			
+		}
 			
 		if (effectsToProcess.length > 0) {
 			if (debug) {
