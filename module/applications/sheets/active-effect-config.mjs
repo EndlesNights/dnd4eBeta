@@ -345,6 +345,13 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 			for (const [key, value] of Object.entries(durationConfig)) {
 				submitData[`duration.${key}`] = value;
 			}
+		} else {
+			const noDuration = {
+				value: null,
+				units: "seconds",
+				expiry: null,
+			};
+			submitData.duration = noDuration;
 		}
 		// CHANGES FROM CORE END HERE
 
