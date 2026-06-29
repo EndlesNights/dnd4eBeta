@@ -322,13 +322,13 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 		submitData.statuses = Array.from(Object.values(submitData.statuses || {})).filter(x => x);
 		// The form throws an error if it's updated while there is an unselected status condition row. 
 		// I can't find a way to catch it, so instead I'm just trimming - Fox
-		
+
 		if (submitData.conditionLab) {
 			// This doesn't like merging directly, seemingly because of the hyphens in the property name. 
 			//	Storing it in a separate property and updating manually seems to work. - Fox
 			submitData.flags["condition-lab-triggler"] = submitData.conditionLab;
 		}
-		
+
 		submitData.system.dots = Array.from(Object.values(submitData.system.dots || {}));
 		if (submitData.system.dots.length) {
 			for (let [i, dot] of submitData.system.dots.entries()) {
@@ -336,15 +336,22 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 				submitData.system.dots[i].types = new Set(Array.from(dot.types).sort());
 			}
 		}
-		
+
 		submitData.system.keywords = Array.from(Object.values(submitData.system.keywords || {})).filter(x => x);
-        
+
 		const durationType = submitData.system.durationType;
 		if (durationType) {
 			const durationConfig = CONFIG.DND4E.durationType[durationType].duration;
 			for (const [key, value] of Object.entries(durationConfig)) {
 				submitData[`duration.${key}`] = value;
 			}
+		} else {
+			const noDuration = {
+				value: null,
+				units: "seconds",
+				expiry: null,
+			};
+			submitData.duration = noDuration;
 		}
 		// CHANGES FROM CORE END HERE
 
