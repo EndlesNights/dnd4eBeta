@@ -2,6 +2,7 @@
 import ActiveEffect4e from "../../documents/active-effect.mjs";
 import * as utils from "../../utils/utils.mjs";
 import * as macros from "../../helpers/macros.mjs";
+import SourceConfig from "../apps/source-config.mjs";
 import Item4e from "../../documents/item.mjs";
 
 /**
@@ -66,6 +67,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			editItem: ItemSheet4e.#onItemControl,
 			deleteItem: ItemSheet4e.#onItemControl,
 			convertCurrency: ItemSheet4e.#onConvertCurrency,
+			configureSource: ItemSheet4e.#onConfigureSource,
 		},
 	};
 
@@ -202,6 +204,22 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/* -------------------------------------------- */
 
+	/**
+     * Render an application in the same workspace as this one.
+     * @param {ApplicationV2} app        The application to render.
+     * @param {RenderOptions} [options]  Options passed to render.
+     * @returns {Promise<ApplicationV2>}
+     */
+	_renderChild(app, options = {}) {
+		if (this.parent) return this.parent.renderChild(app, options);
+		if (this.window?.windowId) return app.render({
+			force: true, window: { detached: true, windowId: this.window.windowId }, ...options,
+		});
+		return app.render({ force: true, ...options });
+	}
+
+	/* -------------------------------------------- */
+
 	async _onFirstRender(context, options) {
 		await super._onFirstRender(context, options);
 		if (!this.tabGroups.sheet) {
@@ -215,6 +233,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/** @override */
 	async _onRender(context, options) {
 		await super._onRender(context, options);
+		this._renderSource();
 
 		this.#dragDrop.forEach((d) => d.bind(this.element));
 
@@ -251,6 +270,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		context.showLevel = true;
 		context.showRarity = true;
+		context.sourceLabel = this.document.system.source.label;
 
 		// Potential consumption targets
 		context.abilityConsumptionTargets = this._getItemConsumptionTargets(itemData);
@@ -616,6 +636,19 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			content: `<p>${_loc("DND4E.CurrencyConvertHint")}</p>`,
 		});
 		if (shouldConvert) return this.convertCurrency();
+	}
+
+	/* -------------------------------------------- */
+
+	/**
+   * Handle opening a configuration application.
+   * @this {ItemSheet4e}
+   * @param {Event} event         Triggering click event.
+   * @param {HTMLElement} target  Button that was clicked.
+   * @returns {any}
+   */
+	static #onConfigureSource(event, target) {
+		return this._renderChild(new SourceConfig({ document: this.item, keyPath: "system.source" }));
 	}
 
 	async shareItem() {

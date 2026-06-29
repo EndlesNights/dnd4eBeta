@@ -1,10 +1,15 @@
 import { FormulaField, MappingField } from "../fields/_module.mjs";
+import SourceField from "./fields/source-field.mjs";
 import { ActivatedEffectTemplate, AttackAndDamageTemplate, ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.mjs";
 import { processPart } from "./_utils.mjs";
 
 const { ArrayField, BooleanField, SchemaField, SetField, StringField } = foundry.data.fields;
 
 export default class PowerData extends foundry.abstract.TypeDataModel {
+	/* -------------------------------------------- */
+	/** @override */
+	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
+
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),
@@ -83,6 +88,7 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
 				source.damageCritImp.parts[partIndex] = processPart(source.damageCritImp.parts[partIndex]);
 			}
 		}
+		ItemDescriptionTemplate.migrateSource(source);
 		return super.migrateData(source);
 	}
 }

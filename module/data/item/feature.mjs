@@ -4,6 +4,10 @@ import { ItemDescriptionTemplate, ItemMacroTemplate } from "./templates/_module.
 const { BooleanField, StringField } = foundry.data.fields;
 
 export default class FeatureData extends foundry.abstract.TypeDataModel {
+	/* -------------------------------------------- */
+	/** @override */
+	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
+
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),
@@ -24,5 +28,15 @@ export default class FeatureData extends foundry.abstract.TypeDataModel {
 			}),
 			keywordsCustom: new StringField({ initial: "" }),
 		};
+	}
+
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	static migrateData(source) {
+		ItemDescriptionTemplate.migrateSource(source);
+		return super.migrateData(source);
 	}
 }

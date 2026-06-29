@@ -4,6 +4,10 @@ import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate, Ph
 const { BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
 export default class BackpackData extends foundry.abstract.TypeDataModel {
+	/* -------------------------------------------- */
+	/** @override */
+	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
+
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),
@@ -19,5 +23,15 @@ export default class BackpackData extends foundry.abstract.TypeDataModel {
 			}),
       
 		};
+	}
+
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	static migrateData(source) {
+		ItemDescriptionTemplate.migrateSource(source);
+		return super.migrateData(source);
 	}
 }

@@ -32,20 +32,4 @@ export default class IdentifierField extends foundry.data.fields.StringField {
 			throw new Error(_loc("DND4E.IdentifierError"));
 		}
 	}
-
-	/* -------------------------------------------- */
-	/*  Form Field Integration                      */
-	/* -------------------------------------------- */
-
-	/** @override */
-	_toInput(config) {
-		if (this.types?.length) config.types ??= this.types;
-		if (foundry.utils.getType(config.types) === "string") config.types = config.types.split(",");
-		const input = document.createElement("identifier-input");
-		input.name = config.name;
-		foundry.applications.fields.setInputAttributes(input, config);
-		input.setAttribute("value", config.value ?? "");
-		if (config.types?.length) input.setAttribute("types", config.types.join(","));
-		return input;
-	}
 }

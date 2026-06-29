@@ -6,6 +6,10 @@ import { processPart } from "./_utils.mjs";
 const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
 export default class WeaponData extends foundry.abstract.TypeDataModel {
+	/* -------------------------------------------- */
+	/** @override */
+	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
+
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),
@@ -127,6 +131,7 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
 				};
 			}
 		}
+		ItemDescriptionTemplate.migrateSource(source);
 		return super.migrateData(source);
 	}
 }
