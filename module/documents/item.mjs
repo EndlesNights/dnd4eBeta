@@ -235,7 +235,7 @@ export default class Item4e extends Item {
 	 * @param {object} data	The source data from which to migrate, mutated here
 	 */
 	static #migrateIdentifier(data) {
-		if (!("identifier" in data.system)) {
+		if (data.name && !("identifier" in data.system)) {
 			data.system.identifier = utils.formatIdentifier(data.name);
 		}
 	}
