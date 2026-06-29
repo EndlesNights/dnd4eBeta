@@ -233,7 +233,6 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/** @override */
 	async _onRender(context, options) {
 		await super._onRender(context, options);
-		this._renderSource();
 
 		this.#dragDrop.forEach((d) => d.bind(this.element));
 
