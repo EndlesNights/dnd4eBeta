@@ -572,6 +572,8 @@
 "DND4E.HPTotalAuto": "Total Hit Points (Auto Calculated)",
 "DND4E.HTwo": "Two Handed",
 "DND4E.Identified": "Identified",
+"DND4E.Identifier": "Identifier",
+"DND4E.IdentifierError": "An identifier can only contain letters (a-z), numbers (0-9), dashes (-), and underscores (_).",
 "DND4E.IgnoredDifficultTerrain": "Terrain Walk",
 "DND4E.Illusion": "Illusion",
 "DND4E.Immune": "Immune",
@@ -1555,6 +1557,36 @@
 	"Skills": "Skills"
 },
 
+"DND4E.SOURCE": {
+	"FIELDS": {
+		"source": {
+			"label": "Source",
+			"book": {
+				"label": "Book"
+			},
+			"custom": {
+				"label": "Custom Label"
+			},
+			"page": {
+				"label": "Page/Section"
+			},
+			"revision": {
+				"label": "Revision"
+			},
+			"uuid": {
+				"label": "Original Source"
+			}
+		}
+	},
+	"Action": {
+		"Configure": "Configure Source"
+	},
+	"Display": {
+		"Full": "{book} {page}",
+		"Page": "pg. {page}"
+	}
+},
+
 "DND4E.Tier": {
 	"Epic": "Epic",
 	"EpicDestiny": "Epic Destiny",
@@ -1581,12 +1613,12 @@
 	"CheckShort": "{check}",
 	"CheckLong": "{check} check",
 	"DC": "DC {dc} {check}",
-    "DCFlavor": "{check} check (DC {dc})",
+	"DCFlavor": "{check} check (DC {dc})",
 	"RequestRoll": "Request Roll",
 	"RollRequest": "Roll Request",
 	"Warning": {
 		"NoActor": "No selected or assigned actor could be found to execute this roll.",
-        "TooManyActors": "Only a single selected or assigned actor is valid for executing this roll."
+		"TooManyActors": "Only a single selected or assigned actor is valid for executing this roll."
 	}
 },
 
@@ -1717,7 +1749,7 @@
 	"AttackDetailsTextHint": "Only required for powers with special attack text. If provided, the power card's attack field will use this string instead of the normal pattern (e.g. \"Str vs AC\" or \"+12 vs AC\") selected in system config.",
 	"AttackVersus": "Attack versus",
 	"AttributeKey": "Attribute Key",
-    "Auto": "Auto",
+	"Auto": "Auto",
 	"AutoCardTip": "<strong>ON:</strong> The chat card will be generated from the provided Details, with styling applied automatically. If no flavour text is provided, the Description text will be used in its place.<br /><strong>OFF:</strong> The chat card will only use the Description text. Styling is up to the user.",
 	"AutoFromConfig": "Automatic (from Config)",
 	"AutoFromConfigTip": "These keywords have been inferred from the power's settings. If something looks wrong, the config may need updating!",

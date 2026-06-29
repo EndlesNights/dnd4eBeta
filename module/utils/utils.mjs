@@ -208,9 +208,11 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 				effectsToProcess.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`));
 			}
 
+			suitableKeywords.push(powerData.identifier);
 			_addKeywords(suitableKeywords, powerData.damageType);
 			_addKeywords(suitableKeywords, powerData.effectType);
 			if (weaponData) {
+				suitableKeywords.push(weaponData.identifier);
 				_addKeywords(suitableKeywords, weaponData.weaponGroup);
 				_addKeywords(suitableKeywords, weaponData.properties);
 				_addKeywords(suitableKeywords, weaponData.damageType);
@@ -1953,7 +1955,31 @@ export function formatNumber(value, options) {
 export function formatText(value) {
 	return new Handlebars.SafeString(value?.replaceAll("\n", "<br>") ?? "");
 }
-	
+
+/* -------------------------------------------- */
+
+/**
+ * Create a valid identifier from the provided string.
+ * @param {string} input
+ * @returns {string}
+ */
+export function formatIdentifier(input) {
+	input = input.replaceAll(/(\w+)([\\|/])(\w+)/g, "$1-$3");
+	return input.slugify({ strict: true });
+}
+
+/* -------------------------------------------- */
+
+/**
+ * Returns an item's identifier, or creates one if one doesn't exist.
+ * @param {Item4e} item 
+ * @returns {string}
+ */
+export function createIdentifier(item) {
+	if (item.system?.identifier) return item.system.identifier;
+	return formatIdentifier(item.name);
+}
+
 /* -------------------------------------------- */
 
 /**

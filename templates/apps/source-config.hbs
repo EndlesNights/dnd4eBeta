@@ -1,0 +1,25 @@
+<fieldset>
+  <legend>{{ localize "DND4E.SOURCE.FIELDS.source.label" }}</legend>
+  <div class="form-group">
+    <label>{{ localize "DND4E.SOURCE.FIELDS.source.book.label" }}</label>
+    <div class="form-fields">
+      <input type="text" name="system.source.book" value="{{ source.book }}"
+        placeholder="{{ data.bookPlaceholder }}">
+    </div>
+  </div>
+  {{ formField fields.page value=source.page }}
+  {{ formField fields.custom value=source.custom }}
+  <hr>
+  {{#if identifier}}
+  {{ formField identifier.field value=identifier.value placeholder=identifier.placeholder localize=true }}
+  {{/if}}
+  {{ formField fields.revision value=source.revision }}
+  {{#if sourceAnchor}}
+  <div class="form-group">
+    <label>{{ localize "DND4E.SOURCE.FIELDS.source.uuid.label" }}</label>
+    <div class="source-uuid form-fields">
+      {{{ sourceAnchor }}}
+    </div>
+  </div>
+  {{/if}}
+</fieldset>

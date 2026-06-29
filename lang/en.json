@@ -572,6 +572,8 @@
 "DND4E.HPTotalAuto": "Total Hit Points (Auto Calculated)",
 "DND4E.HTwo": "Two Handed",
 "DND4E.Identified": "Identified",
+"DND4E.Identifier": "Identifier",
+"DND4E.IdentifierError": "An identifier can only contain letters (a-z), numbers (0-9), dashes (-), and underscores (_).",
 "DND4E.IgnoredDifficultTerrain": "Terrain Walk",
 "DND4E.Illusion": "Illusion",
 "DND4E.Immune": "Immune",
@@ -1555,6 +1557,36 @@
 	"Skills": "Skills"
 },
 
+"DND4E.SOURCE": {
+	"FIELDS": {
+		"source": {
+			"label": "Source",
+			"book": {
+				"label": "Book"
+			},
+			"custom": {
+				"label": "Custom Label"
+			},
+			"page": {
+				"label": "Page/Section"
+			},
+			"revision": {
+				"label": "Revision"
+			},
+			"uuid": {
+				"label": "Original Source"
+			}
+		}
+	},
+	"Action": {
+		"Configure": "Configure Source"
+	},
+	"Display": {
+		"Full": "{book} {page}",
+		"Page": "pg. {page}"
+	}
+},
+
 "DND4E.Tier": {
 	"Epic": "Epic",
 	"EpicDestiny": "Epic Destiny",
@@ -1581,12 +1613,12 @@
 	"CheckShort": "{check}",
 	"CheckLong": "{check} check",
 	"DC": "DC {dc} {check}",
-    "DCFlavor": "{check} check (DC {dc})",
+	"DCFlavor": "{check} check (DC {dc})",
 	"RequestRoll": "Request Roll",
 	"RollRequest": "Roll Request",
 	"Warning": {
 		"NoActor": "No selected or assigned actor could be found to execute this roll.",
-        "TooManyActors": "Only a single selected or assigned actor is valid for executing this roll."
+		"TooManyActors": "Only a single selected or assigned actor is valid for executing this roll."
 	}
 },
 

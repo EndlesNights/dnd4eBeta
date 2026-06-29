@@ -42,7 +42,12 @@
       </li>
       {{/if}}
       <li>
-        <input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'DND4E.Source' }}">
+        <div class="source-book">
+          <button type="button" class="icon fa-solid fa-cog" data-action="configureSource"
+            data-config="source" data-tooltip aria-label="{{ localize 'DND4E.SOURCE.Action.Configure' }}">
+          </button>
+        </div>
+        <label>{{sourceLabel}}</label>
       </li>
     </ul>
   </div>

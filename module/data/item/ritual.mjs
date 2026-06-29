@@ -3,6 +3,10 @@ import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate } f
 const { SchemaField, StringField, BooleanField } = foundry.data.fields;
 
 export default class RitualData extends foundry.abstract.TypeDataModel {
+	/* -------------------------------------------- */
+	/** @override */
+	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
+
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),
@@ -20,5 +24,15 @@ export default class RitualData extends foundry.abstract.TypeDataModel {
 			formula: new StringField({ initial: "" }),
 			category: new StringField({ initial: "other" }),
 		};
+	}
+
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	static migrateData(source) {
+		ItemDescriptionTemplate.migrateSource(source);
+		return super.migrateData(source);
 	}
 }

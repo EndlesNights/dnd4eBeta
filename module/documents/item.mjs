@@ -4,6 +4,7 @@ import * as utils from "../utils/utils.mjs";
 import * as macros from "../helpers/macros.mjs";
 import AbilityUseDialog from "../applications/apps/ability-use-dialog.mjs";
 import Roll4e from "../rolls/roll.mjs";
+import SourceField from "../data/item/fields/source-field.mjs";
 
 /**
  * @import Actor4e from "../documents/actor.mjs";
@@ -142,6 +143,7 @@ export default class Item4e extends Item {
 		await super._preCreate(data, options, user);
 		
 		this._onCreationName(data);
+		this.updateSource({ "system.identifier": utils.createIdentifier(this) });
 
 		if (!this.isEmbedded) return;
 		const isNPC = this.parent.isNPC;
@@ -165,6 +167,7 @@ export default class Item4e extends Item {
 	static migrateData(data) {
 		super.migrateData(data);
 		this.#migrateOldFeatures(data);
+		this.#migrateIdentifier(data);
 		return data;
 	}
 
@@ -228,6 +231,18 @@ export default class Item4e extends Item {
 	/* -------------------------------------------- */
 
 	/**
+	 * Add an identifer if one doesn't already exist
+	 * @param {object} data	The source data from which to migrate, mutated here
+	 */
+	static #migrateIdentifier(data) {
+		if (data.name && !("identifier" in data.system)) {
+			data.system.identifier = utils.formatIdentifier(data.name);
+		}
+	}
+
+	/* -------------------------------------------- */
+
+	/**
 	 * Pre-creation logic for setting up name of Items.
 	 *
 	 * @param {object} data       Data for the newly created item.
@@ -252,7 +267,6 @@ export default class Item4e extends Item {
 		if (count) newName += ` (${count + 1})`;
 		updates["name"] = newName;
 		this.updateSource(updates);
-		
 	}
 
 	/**
@@ -570,6 +584,10 @@ export default class Item4e extends Item {
 		} catch(e) {
 			console.error("System or item error: Failed to gather keywords correctly."); return { system: {}, custom: {}, string: "" };		
 		}
+	}
+
+	get identifier() {
+		return this.system.identifier || utils.createIdentifier(this);
 	}
 
 	/* -------------------------------------------- */
@@ -970,13 +988,12 @@ export default class Item4e extends Item {
 		}
 
 		itemData.system.isOnCooldown = this.isOnCooldown();
-		
 	}
 
-	// /** @inheritdoc */
-	// prepareDerivedData() {
-
-	// }
+	/** @inheritdoc */
+	prepareDerivedData() {
+		SourceField.prepareData.call(this.system.source);
+	}
 
 	/* -------------------------------------------- */
 

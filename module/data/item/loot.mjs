@@ -3,6 +3,10 @@ import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate, Ph
 const { StringField } = foundry.data.fields;
 
 export default class LootData extends foundry.abstract.TypeDataModel {
+	/* -------------------------------------------- */
+	/** @override */
+	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
+
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),
@@ -11,5 +15,15 @@ export default class LootData extends foundry.abstract.TypeDataModel {
 			...ItemMacroTemplate.defineSchema(),
 			level: new StringField({ initial: "" }),
 		};
+	}
+
+	/* -------------------------------------------- */
+	/*  Data Migration                              */
+	/* -------------------------------------------- */
+
+	/** @inheritdoc */
+	static migrateData(source) {
+		ItemDescriptionTemplate.migrateSource(source);
+		return super.migrateData(source);
 	}
 }

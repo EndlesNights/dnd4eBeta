@@ -5,6 +5,10 @@ import { processPart } from "./_utils.mjs";
 const { BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
 export default class ConsumableData extends foundry.abstract.TypeDataModel {
+	/* -------------------------------------------- */
+	/** @override */
+	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
+
 	static defineSchema() {
 		const { attack, hit, ...attackAndDamageSchema } = AttackAndDamageTemplate.defineSchema();
 		return {
@@ -75,6 +79,7 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
 				source.damageCritImp.parts[partIndex] = processPart(source.damageCritImp.parts[partIndex]);
 			}
 		}
+		ItemDescriptionTemplate.migrateSource(source);
 		return super.migrateData(source);
 	}
 }

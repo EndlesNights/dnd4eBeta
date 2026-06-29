@@ -16,5 +16,6 @@ export { default as MovementDialog } from "./movement-dialog.mjs";
 export { default as SaveThrowDialog } from "./save-throw.mjs";
 export { default as SecondWindDialog } from "./second-wind.mjs";
 export { default as ShortRestDialog } from "./short-rest.mjs";
+export { default as SourceConfig } from "./source-config.mjs";
 export { default as TraitSelectorValues } from "./trait-selector-sense.mjs";
 export { default as TraitSelector } from "./trait-selector.mjs";

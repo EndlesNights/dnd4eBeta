@@ -3,6 +3,10 @@ import { ActivatedEffectTemplate, ItemDescriptionTemplate, ItemMacroTemplate, Ph
 const { ArrayField, BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
 export default class EquipmentData extends foundry.abstract.TypeDataModel {
+	/* -------------------------------------------- */
+	/** @override */
+	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
+
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),
@@ -58,6 +62,7 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
 			delete source.armour.subType;
 		}
 		if (source.armour?.subtype === "cloth") source.armour.subtype = "light";
+		ItemDescriptionTemplate.migrateSource(source);
 		return super.migrateData(source);
 	}
 }
