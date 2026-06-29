@@ -983,7 +983,7 @@ export default class Item4e extends Item {
 	getDamageType() {
 		if ((this.type == "power") && this.actor) {
 			const weapon = utils.getWeaponUse(this.system, this.actor);
-			if (weapon && weapon.system.damageTypeOverride) {
+			if (weapon && this.system.weaponDamageType && (!Array.from(Object.entries(this.system.damageType)).filter((d) => d[1]).length || weapon.system.damageTypeOverride)) {
 				this.system.damageTypeOverride = true;
 				this.system.weaponDamageType = weapon.system.damageType;
 				this.system.weaponSourceName = weapon.name;
