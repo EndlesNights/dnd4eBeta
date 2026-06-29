@@ -163,6 +163,8 @@ export const variableRegex = new RegExp(/@([a-z.0-9_-]+)/gi);
 export async function applyEffects(rollData, actor, powerData = {}, weaponData = null, effectType, extraDamage = [], target = false, options = {}) {
 	const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
 	if (!actor) return;
+	const suitableKeywords = ["global"];
+	const effectsToProcess = [];
 	const actorEffects = actor.appliedEffects;
 	if (actorEffects.length) {
 		let enhValue = weaponData?.enhance || 0;
@@ -177,7 +179,6 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 			debugLog(`Checked inherent atk/dmg enhancement of +'${findKeyScale(actor.system.details.level, CONFIG.DND4E.SCALE.basic, 1)}' for this level against weapon value of +${weaponData?.enhance})`);
 		}
 
-		const effectsToProcess = [];
 		const effectTargets = [];
 		if (target) {
 			effectTargets.push("grants");
@@ -201,29 +202,12 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 			}));
 		});
 			
-		//Dummy up some extra effects to represent global atk/damage bonuses
-		const globalMods = actor.system.modifiers;
-		if (globalMods[effectType]?.value) {
-			for (const [key, value] of Object.entries(globalMods[effectType])) {
-				//No way to sort bonus array types, so we'll combine them with untyped before checks.
-				const adjValue = (key == "untyped" ? value + globalMods[effectType].bonusValue : value);
-				if (!["value", "bonus", "warn", "bonusValue", "label"].includes(key) && (adjValue != 0)) {
-					effectsToProcess.push({
-						name: `Global ${effectType} modifier`,
-						key: `modifiers.${effectType}.global.${key}`,
-						value: adjValue,
-					});
-				}
-			}
-		}			
-			
 		if (effectsToProcess.length > 0) {
 			if (debug) {
 				console.log(`${debug} Found the following possible active effects`);
 				effectsToProcess.forEach((effect) => console.log(`${debug} ${effect.name} : ${effect.key} = ${effect.value}`));
 			}
 
-			const suitableKeywords = ["global"];
 			_addKeywords(suitableKeywords, powerData.damageType);
 			_addKeywords(suitableKeywords, powerData.effectType);
 			if (weaponData) {
@@ -394,10 +378,24 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 				console.debug(suitableKeywords.sort());
 				console.debug(`${debug} ${suitableKeywords.join(", ")}`);
 			}
-
-			await _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, effectType, debug, extraDamage, options);
 		}
 	}
+	//Dummy up some extra effects to represent global atk/damage bonuses
+	const globalMods = actor.system.modifiers;
+	if (!target && globalMods[effectType]?.value) {
+		for (const [key, value] of Object.entries(globalMods[effectType])) {
+			//No way to sort bonus array types, so we'll combine them with untyped before checks.
+			const adjValue = (key == "untyped" ? value + globalMods[effectType].bonusValue : value);
+			if (!["value", "bonus", "warn", "bonusValue", "label"].includes(key) && (adjValue != 0)) {
+				effectsToProcess.push({
+					name: `Global ${effectType} modifier`,
+					key: `modifiers.${effectType}.global.${key}`,
+					value: adjValue,
+				});
+			}
+		}
+	}
+	if (effectsToProcess.length) await _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, effectType, debug, extraDamage, options);
 }
 
 /** 
