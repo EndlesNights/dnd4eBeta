@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 0.8.8
+* New configuration dialogue for item source, allowing users to define book/page reference in more detail and assign a unique identifier for powers/features/equipment/etc (SagaTympana)
+* Improved item sheets to accommodate the new source field, and fixed a few bugs along the way (Fox)
+* Docmented use of new `identifier` attribute in AE modifier keys (Fox)
+* Powers with no damage type set (even physical) now inherit their damage type from the weapon/implement, regardless of override settings (SagaTympana)
+* Fixed a bug that made global modifiers apply to the wrong actors, or not apply at all on actors with no Active Effects (SagaTympana)
+* Fixed a bug that prevented getting scene tokens; should resolve issues with auto-targeting, among other things (SagaTympana)
+* Fixed a bug where AE duration wasn't updated properly when changed to have no duration (SagaTympana)
+* Fixed a bug preventing AE changes to `marker` property (SagaTympana)
+
 ## Version 0.8.7
 * New `self` attribute for custom 4e effects, used to select for attacks using an effect's specific parent item; see docs for details (SagaTympana)
 * New "OR" behaviour for custom 4e effect keys, used to create compound conditions where only one attribute must match; see docs for details (SagaTympana)
