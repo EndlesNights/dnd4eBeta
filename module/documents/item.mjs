@@ -523,7 +523,7 @@ export default class Item4e extends Item {
 	 * @type {boolean}
 	 */
 	get hasAreaTarget() {
-		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.system.rangeType) || (this.system.effectType?.aura && this.system.auraSize);
+		return ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(this.system.rangeType) || !!(this.system.effectType?.aura && this.system.auraSize);
 	}
 
 	/* -------------------------------------------- */
