@@ -2587,8 +2587,19 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
                 display:flex;
                 justify-content:space-between;
                 flex-direction:column;
-                gap:2px;
+                gap:3px;
 				
+				ul{
+					display:flex;
+					gap:4px;
+					
+					li{
+						margin:0;
+					}
+				}
+				label{
+					color:var(--color-label);
+				}				
 				h1{
 					font-size:1.8em;
 					--input-height:1.3em;
@@ -2598,19 +2609,25 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 					height:fit-content;
 				}
 				.item-level{
-					flex:5em 0 0;
+					flex:6em 0 0;
+					
+					label{
+						padding-right:0.5em;
+					}
 				}
 				.auto-type{
-					text-align:right;
+					color:var(--color-label);
+					padding:5px 8px;
 				}
 			}
 			.info{
-				flex:0 0 80px;
+				flex:0 0 90px;
 				height:100%;
 				margin:0 0.5em 0 0;
 				text-align:right;
 				text-transform:uppercase;
 				font-size:0.8em;
+				color:var(--color-label);
 				
 				.item-type{
 					font-size:1.5em;
@@ -3385,10 +3402,17 @@ input[type="text"].dice-count{
 }
 .dnd4e:is(.standard-form,.default).source-config .window-content{
 	gap:1em;
+	
 	& .source-fields{
 		gap:0.5em;
-		& .form-group label{
-			max-width:110px;
+		& .form-group{
+			label{
+				max-width:110px;
+			}
+			.object-link-field a.content-link{
+				padding:4px;
+				border-radius:4px;
+			}
 		}
 	}
 }
