@@ -17,7 +17,8 @@
       {{/if}}
       {{#if this.showLevel}}
       <li class="item-level">
-        <input type="number" name="system.level" value="{{system.level}}" data-tooltip="{{ localize 'DND4E.Level' }}" placeholder="{{ localize 'DND4E.Level' }}">
+		<label>{{ localize 'DND4E.Level' }}</label> 
+        <input type="number" name="system.level" value="{{system.level}}" data-tooltip="{{ localize 'DND4E.Level' }}" placeholder="1">
       </li>
       {{/if}}
       {{#if this.showRarity}}
@@ -31,12 +32,12 @@
     </ul>
 	</div>
 
-    <div class="info">
+    <div class="info flexcol">
       <span class="item-type">{{itemTypeLabel}}</span>
       {{#if itemStatus}}<span class="item-status">{{itemStatus}}</span>{{/if}}
       <div class="source-book">
         <button type="button" data-action="configureSource" data-config="source" data-tooltip aria-label="{{ localize 'DND4E.SOURCE.Action.Configure' }}">
-		  <i class="icon fa-solid fa-cog"></i> {{sourceLabel}}
+		  <i class="icon fa-solid fa-cog"></i> {{#if sourceLabel}}{{sourceLabel}}{{else}}{{ localize "DND4E.SOURCE.FIELDS.source.label" }}{{/if}}
         </button>
       </div>
     </div>
