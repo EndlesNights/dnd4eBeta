@@ -1576,7 +1576,8 @@
 				"label": "Revision"
 			},
 			"uuid": {
-				"label": "Original Source"
+				"label": "Original Item",
+				"info": "The compendium item that this item was based on (automatically filled by Foundry)"
 			}
 		}
 	},
