@@ -1565,8 +1565,10 @@
 				"label": "Book"
 			},
 			"custom": {
-				"label": "Custom Label"
+				"label": "Custom Label",
+				"placeholder": "Leave blank for default display"
 			},
+			"identity": "Identity",
 			"page": {
 				"label": "Page/Section"
 			},
@@ -1574,7 +1576,8 @@
 				"label": "Revision"
 			},
 			"uuid": {
-				"label": "Original Source"
+				"label": "Original Item",
+				"info": "The compendium item that this item was based on (automatically filled by Foundry)"
 			}
 		}
 	},
@@ -1583,7 +1586,7 @@
 	},
 	"Display": {
 		"Full": "{book} {page}",
-		"Page": "pg. {page}"
+		"Page": "pg.{page}"
 	}
 },
 

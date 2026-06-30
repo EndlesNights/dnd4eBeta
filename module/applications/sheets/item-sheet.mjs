@@ -298,6 +298,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 		if (itemData.type === "ritual") {
 			let attributeOptions = {};
+			context.summaryLabel = CONFIG.DND4E.ritualTypes[itemData.system.category]?.label;
 			for (const [key, value] of Object.entries(CONFIG.DND4E.abilityScores)) {
 				attributeOptions[key] = {
 					value: "abilities." + key + ".check.total",
@@ -311,7 +312,6 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 				};
 			}
 			context.attributeOptions = attributeOptions;
-			context.showLevel = false;
 			context.showRarity = false;
 		}
 
@@ -977,7 +977,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		const labels = this.item.labels || {};
 		
 		if (item?.type === "weapon") {
-			props.push(CONFIG.DND4E.weaponTypes[item.system.weaponType]);
+			props.push(`<li class="weapon-summary">${CONFIG.DND4E.weaponTypes[item.system.weaponType]}</li>`);
 			const shortType = item.system.weaponType.substring(0, 3) || "";
 			
 			if (item.system.enhance != 0) {				
