@@ -408,7 +408,7 @@ Hooks.on("createRegion", async (regionDoc) => {
 	const token = utils.tokenForActor(await fromUuid(actorUuid));
 	if (!token) return;
 	let tokens = new Set();
-	for (const token of canvas.scene.tokens) {
+	for (const token of game.canvas.scene.tokens) {
 		if (token.testInsideRegion(regionDoc)) tokens.add(token);
 	}
 	if (!tokens.size) return;
@@ -433,7 +433,7 @@ Hooks.on("createRegion", async (regionDoc) => {
 				break;
 		}
 	}
-	canvas.tokens.setTargets(targets);
+	game.canvas.tokens.setTargets(targets);
 });
 
 Hooks.on("targetToken", canvas.placeables.Token4e.onTargetToken);
