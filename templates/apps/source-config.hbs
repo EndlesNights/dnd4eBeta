@@ -21,8 +21,8 @@
     {{ formField fields.revision value=source.revision }}
   {{#if sourceAnchor}}
     <div class="form-group">
-      <label>{{ localize "DND4E.SOURCE.FIELDS.source.uuid.label" }}</label>
-      <div class="source-uuid form-fields">
+      <label>{{ localize "DND4E.SOURCE.FIELDS.source.uuid.label" }} <i data-tooltip="{{localize 'DND4E.SOURCE.FIELDS.source.uuid.info'}}" class="fa-solid fa-circle-question"></i></label>
+      <div class="source-uuid form-fields object-link-field">
         {{{ sourceAnchor }}}
       </div>
     </div>
