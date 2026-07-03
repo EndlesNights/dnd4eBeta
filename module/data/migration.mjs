@@ -2,8 +2,13 @@
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @returns {Promise}      A Promise which resolves once the migration is completed
  */
-export const migrateWorld = async function() {
+export const migrateWorld = async function(migrationVersion) {
 	const version = game.system.version;
+	migrationVersion = migrationVersion || game.settings.get("dnd4e", "systemMigrationVersion");
+	// Update these versions whenever we make data model changes that require immediately saving the changes to the DB.
+	const migrateActiveEffects = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
+	const migrateActors = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
+	const migrateItems = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
 	ui.notifications.info(_loc("MIGRATION.4eBegin", { version }), { permanent: true });
 
 	const migrationData = await getMigrationData();
@@ -12,9 +17,18 @@ export const migrateWorld = async function() {
 	for (let a of game.actors) {
 		try {
 			const updateData = migrateActorData(a.toObject(), migrationData);
+			if (!foundry.utils.isEmpty(updateData) || migrateActors) console.log(`Migrating Actor document ${a.name}`);
 			if (!foundry.utils.isEmpty(updateData)) {
-				console.log(`Migrating Actor document ${a.name}`);
 				await a.update(updateData, { enforceTypes: false });
+			}
+			if (migrateActors) {
+				await a.update({ system: _replace(a.system?.toObject()) });
+			}
+			if (migrateActiveEffects) {
+				for (let e of a.effects) {
+					console.log(`Migrating Active Effect ${e.name} of Actor ${a.name}`);
+					await e.update({ system: _replace(e.system?.toObject()) });
+				}
 			}
 		} catch(err) {
 			err.message = `Failed dnd4e system migration for Actor ${a.name}: ${err.message}`;
@@ -25,10 +39,19 @@ export const migrateWorld = async function() {
 		for (let i of a.items) {
 			try {
 				const updatedItem = migrateItemData(i.toObject(), migrationData);
+				if (!foundry.utils.isEmpty(updatedItem) || migrateItems) console.log(`Migrating Item ${i.name} of Actor ${a.name}`);
 				if (!foundry.utils.isEmpty(updatedItem)) {
-					console.log(`Migrating Item ${i.name} of Actor ${a.name}`);
-					const diff = foundry.utils.getProperty(updatedItem, "flags.dnd4e.-=migrateType") !== null;
+					const diff = foundry.utils.getProperty(updatedItem, "flags.dnd4e.migrateType") !== null;
 					await i.update(updatedItem, { enforceTypes: false, diff });
+				}
+				if (migrateItems) {
+					await i.update({ system: _replace(i.system?.toObject()) });
+				}
+				if (migrateActiveEffects) {
+					for (let e of i.effects) {
+						console.log(`Migrating Active Effect ${e.name} of Item ${i.name} of Actor ${a.name}`);
+						await e.update({ system: _replace(e.system?.toObject()) });
+					}
 				}
 			} catch(err) {
 				err.message = `Failed dnd4e system migration for Item ${i.name} of Actor ${a.name}: ${err.message}`;
@@ -41,10 +64,19 @@ export const migrateWorld = async function() {
 	for (let i of game.items) {
 		try {
 			const updateData = migrateItemData(i.toObject(), migrationData);
+			if (!foundry.utils.isEmpty(updateData) || migrateItems) console.log(`Migrating Item document ${i.name}`);
 			if (!foundry.utils.isEmpty(updateData)) {
-				console.log(`Migrating Item document ${i.name}`);
-				const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.-=migrateType") !== null;
+				const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.migrateType") !== null;
 				await i.update(updateData, { enforceTypes: false, diff });
+			}
+			if (migrateItems) {
+				await i.update({ system: _replace(i.system?.toObject()) });
+			}
+			if (migrateActiveEffects) {
+				for (let e of i.effects) {
+					console.log(`Migrating Active Effect ${e.name} of Item ${i.name}`);
+					await e.update({ system: _replace(e.system?.toObject()) });
+				}
 			}
 		} catch(err) {
 			err.message = `Failed dnd4e system migration for Item ${i.name}: ${err.message}`;
@@ -72,8 +104,8 @@ export const migrateWorld = async function() {
 	// Migrate World Compendium Packs
 	for (let p of game.packs) {
 		if (p.metadata.package !== "world") continue;
-		if (!["Actor", "Item", "Scene"].includes(p.documentName)) continue;
-		await migrateCompendium(p);
+		if (!["ActiveEffect", "Actor", "Item", "Scene"].includes(p.documentName)) continue;
+		await migrateCompendium(p, migrateActiveEffects, migrateActors, migrateItems);
 	}
 
 	// Set the migration as complete
@@ -89,7 +121,7 @@ export const migrateWorld = async function() {
  * @param {CompendiumCollection} pack  Pack to be migrated.
  * @returns {Promise}
  */
-export const migrateCompendium = async function(pack) {
+export const migrateCompendium = async function(pack, migrateActiveEffects, migrateActors, migrateItems) {
 	const documentName = pack.documentName;
 	if (!["Actor", "Item", "Scene"].includes(documentName)) return;
 
@@ -121,8 +153,11 @@ export const migrateCompendium = async function(pack) {
 
 			// Save the entry, if data was changed
 			if (foundry.utils.isEmpty(updateData)) continue;
-			const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.-=migrateType") !== null;
+			const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.migrateType") !== null;
 			await doc.update(updateData, { diff });
+			if (((documentName === "ActiveEffect") && migrateActiveEffects)
+                || ((documentName === "Actor") && migrateActors)
+                || ((documentName === "Item") && migrateItems)) await doc.update({ system: _replace(doc.system?.toObject()) });
 			console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
 		}
 
@@ -185,7 +220,6 @@ export const migrateItemData = function(item) {
 	_migrateFeature(item, updateData);
 	_migrateRitualCategory(item, updateData);
 	_migrateFlavourText(item, updateData);
-
 	// Always do this last, as it clobbers `system` updates
 	_migrateType(item, updateData);
 	return updateData;
@@ -201,37 +235,48 @@ export const migrateItemData = function(item) {
  * @returns {Object}                The updateData to apply
  */
 export const migrateSceneData = function(scene, migrationData) {
-	const tokens = scene.tokens.map(token => {
+	const migratedTokens = [];
+	const tokens = scene.tokens.forEach(token => {
+		let hasMigrations = false;
 		const t = token.toObject();
 		const update = {};
 		// _migrateTokenImage(t, update);
 		if (Object.keys(update).length) foundry.utils.mergeObject(t, update);
 		if (!t.actorId || t.actorLink) {
-			t.actorData = {};
+			if (t.actorData) {
+				t.actorData = _del;
+				hasMigrations = true;
+			}
 		}
 		else if (!game.actors.has(t.actorId)) {
 			t.actorId = null;
-			t.actorData = {};
+			t.actorData = _del;
+			hasMigrations = true;
 		}
 		else if (!t.actorLink) {
 			const actorData = foundry.utils.duplicate(t.delta);
-			actorData.type = token.actor?.type;
-			const update = migrateActorData(actorData, migrationData);
-			["items", "effects"].forEach(embeddedName => {
-				if (!update[embeddedName]?.length) return;
-				const updates = new Map(update[embeddedName].map(u => [u._id, u]));
-				t.actorData[embeddedName].forEach(original => {
-					const update = updates.get(original._id);
-					if (update) foundry.utils.mergeObject(original, update);
+			if (actorData) {
+				actorData.type = token.actor?.type;
+				const update = migrateActorData(actorData, migrationData);
+				["items", "effects"].forEach(embeddedName => {
+					if (!update[embeddedName]?.length) return;
+					const updates = new Map(update[embeddedName].map(u => [u._id, u]));
+					t.actorData[embeddedName].forEach(original => {
+						const update = updates.get(original._id);
+						if (update) foundry.utils.mergeObject(original, update);
+					});
+					delete update[embeddedName];
 				});
-				delete update[embeddedName];
-			});
 
-			foundry.utils.mergeObject(t.delta, update);
+				if (Object.keys(update).length) {
+					foundry.utils.mergeObject(t.delta, update);
+					hasMigrations = true;
+				}
+			}
 		}
-		return t;
+		if (hasMigrations) migratedTokens.push(t);
 	});
-	return { tokens };
+	return migratedTokens.length ? { tokens } : null;
 };
 
 /* -------------------------------------------- */
@@ -265,7 +310,7 @@ function _migrateActorTempHP(actorData, updateData) {
 	if (!ad) return updateData;
 
 	const old = ad?.attributes?.hp?.temphp;
-	const hasOld = (old !== undefined) && (ad.attributes["hp-=temphp"] !== undefined);
+	const hasOld = (old !== undefined) && (ad.attributes["hp.temphp"] !== undefined);
 	if (hasOld) {
 		// If new data is not present, migrate the old data
 		if ((old !== undefined) && (ad.attributes?.temphp?.value !== old) && (typeof old === "number")) {
@@ -277,11 +322,11 @@ function _migrateActorTempHP(actorData, updateData) {
 
 		// Remove the old attribute
 		if (ad.attributes.hp.temphp !== undefined) {
-			updateData["system.attributes.-=temphp"] = null;
+			updateData["system.attributes.temphp"] = _del;
 		}
 
-		if (ad.attributes["hp-=temphp"] !== undefined) {
-			updateData["system.attributes.-=hp-=temphp"] = null;
+		if (ad.attributes["hp.temphp"] !== undefined) {
+			updateData["system.attributes.hp.temphp"] = _del;
 		}
 	}
 	return updateData;
@@ -340,29 +385,33 @@ function _migrateActorSkills(actorData, updateData) {
 		}
 	}
 
-	updateData["system.skillTraining"] = {
-		untrained: {
-			value: 0,
-			feat: 0,
-			item: 0,
-			power: 0,
-			untyped: 0,
-		},
-		trained: {
-			value: 5,
-			feat: 0,
-			item: 0,
-			power: 0,
-			untyped: 0,
-		},
-		expertise: {
-			value: 8,
-			feat: 0,
-			item: 0,
-			power: 0,
-			untyped: 0,
-		},
-	};
+	if ((foundry.utils.getType(actorData?.system?.skillTraining?.untrained) !== "Object")
+        || (foundry.utils.getType(actorData?.system?.skillTraining?.trained) !== "Object")
+        || (foundry.utils.getType(actorData?.system?.skillTraining?.expertise) !== "Object")) {
+		updateData["system.skillTraining"] = {
+			untrained: {
+				value: 0,
+				feat: 0,
+				item: 0,
+				power: 0,
+				untyped: 0,
+			},
+			trained: {
+				value: 5,
+				feat: 0,
+				item: 0,
+				power: 0,
+				untyped: 0,
+			},
+			expertise: {
+				value: 8,
+				feat: 0,
+				item: 0,
+				power: 0,
+				untyped: 0,
+			},
+		};
+	}
 
 	return updateData;
 }
@@ -606,11 +655,11 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
  * @private
  */
 function _migrateImplmentKey(itemData, updateData) {
-	if ((itemData.type !== "weapon") && (itemData.system.implementGroup != undefined)) return;
+	if ((itemData.type !== "weapon") || (itemData.system.implementGroup === undefined)) return;
 
 	const implementData = itemData.system.implementGroup;
 
-	updateData["system.-=implementGroup"] = null;
+	updateData["system.implementGroup"] = _del;
 	updateData["system.implement"] = implementData;
 
 	return updateData;
@@ -777,14 +826,20 @@ function _migratePowerBasicAndGlobal(itemData, updateData) {
 		updateData["system.attack.isBasic"] = false;
 	}
 	if (itemData?.system?.attack?.formula) {
-		updateData["system.attack.formula"] = itemData.system.attack.formula.replace(/(@atkMod *\+* *)|( *\+* *@atkMod)/g, "");
+		const newFormula = itemData.system.attack.formula.replace(/(@atkMod *\+* *)|( *\+* *@atkMod)/g, "");
+		if (itemData?.system?.attack?.formula !== newFormula) updateData["system.attack.formula"] = newFormula;
 	}
 	if (itemData?.system?.hit?.formula) {
-		updateData["system.hit.formula"] = itemData.system.hit.formula.replace(/ *\+* *@dmgMod/g, "");
-		updateData["system.hit.critFormula"] = itemData.system.hit.critFormula.replace(/(@dmgMod *\+* *)|( *\+* *@dmgMod)/g, "");
+		const newFormula = itemData.system.hit.formula.replace(/ *\+* *@dmgMod/g, "");
+		if (itemData.system.hit.formula !== newFormula) updateData["system.hit.formula"] = itemData.system.hit.formula.replace(/ *\+* *@dmgMod/g, "");
+	}
+	if (itemData?.system?.hit?.critFormula) {
+		const newFormula = itemData.system.hit.critFormula.replace(/(@dmgMod *\+* *)|( *\+* *@dmgMod)/g, "");
+		if (itemData.system.hit.critFormula !== newFormula) updateData["system.hit.critFormula"] = newFormula;
 	}
 	if (itemData?.system?.miss?.formula) {
-		updateData["system.miss.formula"] = itemData.system.miss.formula.replace(/(@dmgMod *\+* *)|( *\+* *@dmgMod)/g, "");
+		const newFormula = itemData.system.miss.formula;
+		if (itemData.system.miss.formula !== newFormula) updateData["system.miss.formula"] = newFormula;
 	}
 	
 	return updateData;
@@ -868,7 +923,7 @@ function _migrateActorSwim(actorData, updateData) {
 function _migrateFeature(itemData, updateData) {
 	const sourceType = itemData.type;
 	
-	if (sourceType == "feature") {
+	if (sourceType === "feature") {
 		if (!["activation", "duration", "target", "range", "uses", "consume"].some(i => itemData.system[i])) return updateData;
 		//Catch any features that were migrated early during beta/testing
 		updateData["system.activation"] = null;
@@ -930,7 +985,7 @@ function _migrateFeature(itemData, updateData) {
  * @private
  */
 function _migrateRitualCategory(itemData, updateData) {	
-	if (!itemData.type === "ritual") return;
+	if ((itemData.type !== "ritual") || itemData.system.category) return;
 	
 	updateData["system.category"] = "other";
 	//console.debug(CONFIG.DND4E.ritualTypes);
@@ -955,7 +1010,7 @@ function _migrateType(documentData, updateData) {
 	const newUpdateData = foundry.utils.mergeObject(documentData, updateData, { inplace: false });
 	foundry.utils.mergeObject(updateData, newUpdateData);
 	updateData["==system"] = updateData.system;
-	foundry.utils.setProperty(updateData, "flags.dnd4e.-=migrateType", null);
+	foundry.utils.setProperty(updateData, "flags.dnd4e.migrateType", _del);
 	delete updateData.system;
 	return updateData;
 }
@@ -969,7 +1024,7 @@ function _migrateType(documentData, updateData) {
 */
 function _migrateHazardSpeed(actorData, updateData) {
 	
-	if (actorData?.type != "Hazard") return;
+	if (actorData?.type !== "Hazard") return;
 	console.debug(actorData.system.movement);
 	const moveTemplate = { base: {}, walk: {}, run: {}, charge: {}, climb: {}, swim: {}, shift: {} };
 	
@@ -979,7 +1034,7 @@ function _migrateHazardSpeed(actorData, updateData) {
 	for (const [m, mode] of Object.entries(movement)) {
 		console.debug(m);
 		console.debug(mode);	
-		if (["notes", "custom", "none"].includes(m)) continue;
+		if (["notes", "custom", "none", "ignoredDifficultTerrain"].includes(m)) continue;
 		
 		if (mode?.bonus == undefined) {			
 			updateData[`system.movement.${m}`] = {
@@ -1024,7 +1079,7 @@ function _migrateActorMarker(actorData, updateData) {
 	if (!["Player Character", "NPC", "Hazard"].includes(actorData?.type)) return;
 	const system = actorData.system;
 	
-	if (system?.marker == undefined) updateData["system.marker"] = null;
+	if (system?.marker === undefined) updateData["system.marker"] = null;
 	return updateData;
 }
 
@@ -1055,5 +1110,8 @@ function _migrateFeatureKeywords(itemData, updateData) {
  * @private
  */
 function _migrateFlavourText(itemData, updateData) {
-	if (itemData.system?.chatFlavor) updateData["system.description.chat"] = itemData.system.chatFlavor;
+	if (itemData.system?.chatFlavor) {
+		updateData["system.description.chat"] = itemData.system.chatFlavor;
+		updateData["system.chatFlavor"] = _del;
+	}
 }

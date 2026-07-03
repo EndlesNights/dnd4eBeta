@@ -263,7 +263,7 @@ Hooks.once("ready", function() {
 		ui.notifications.error(_loc("MIGRATION.4eVersionTooOldWarning"), { permanent: true });
 	}
 
-	data.migration.migrateWorld();
+	data.migration.migrateWorld(cv);
 });
 
 /* -------------------------------------------- */
