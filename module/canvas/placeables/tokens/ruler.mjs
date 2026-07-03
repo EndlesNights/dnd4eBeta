@@ -16,7 +16,7 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	_getWaypointLabelContext(waypoint, state) {
 		const { index, elevation, explicit, next, previous, ray } = waypoint;
 		state.hasElevation ||= (elevation !== 0);
@@ -69,7 +69,7 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	_getSegmentStyle(waypoint) {
 		const style = super._getSegmentStyle(waypoint);
 		return this.#getSpeedBasedStyle(waypoint, style);
@@ -77,7 +77,7 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	_getGridHighlightStyle(waypoint, offset) {
 		const style = super._getGridHighlightStyle(waypoint, offset);
 		return this.#getSpeedBasedStyle(waypoint, style);
@@ -88,8 +88,8 @@ export default class TokenRuler4e extends foundry.canvas.placeables.tokens.Token
 	/**
 	 * Modify segment or grid-highlighting style based on movement speed
 	 * @param {TokenRulerWaypoint} waypoint The waypoint
-	 * @param {object} style                The default styling of the segment/grid-highlight
-	 * @returns {object} The adjusted style, or existing style if no adjustment is necessary
+	 * @param {Object} style                The default styling of the segment/grid-highlight
+	 * @returns {Object} The adjusted style, or existing style if no adjustment is necessary
 	 */
 	#getSpeedBasedStyle(waypoint, style) {
 		// If movement automation disabled, or if showing a different client's measurement, use default style

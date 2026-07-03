@@ -43,7 +43,7 @@ export default class ActorSheet4eHazard extends ActorSheet4e {
 		},
 	};
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		//console.debug(coreData);

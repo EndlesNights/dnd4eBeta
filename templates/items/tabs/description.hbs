@@ -23,9 +23,11 @@
       <label>{{ localize 'DND4E.Price' }} <span class="unit">({{ localize 'DND4E.GP' }})</span></label>
       <input type="text" name="system.market" value="{{system.market}}" data-dtype="Number">
     </div>
-	{{/if}}
+    {{/if}}
 	
-	{{#unless (eq this.itemType "power")}}{{#unless (eq this.itemType "feature")}}<hr />{{/unless}}{{/unless}}
+    {{#unless (eq this.itemType "power")}}{{#unless (eq this.itemType "feature")}}
+    <hr>
+    {{/unless}}{{/unless}}
 
     <ul class="properties-list tags">
       {{#each itemProperties}}

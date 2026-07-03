@@ -48,6 +48,7 @@ export default class RollDialog extends foundry.applications.api.HandlebarsAppli
 		return new Promise((resolve) => new RollDialog({ dialogData, rollConfig, callbackFn, buttons, resolve, ...args }).render({ force: true }));
 	}
 
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		foundry.utils.mergeObject(context, {
@@ -59,11 +60,13 @@ export default class RollDialog extends foundry.applications.api.HandlebarsAppli
 		return context;
 	}
 
+	/** @inheritDoc */
 	async _onRender(context, options) {
 		await super._onRender(context, options);
 		this.#showTab(this.currentTab);
 	}
 
+	/** @inheritDoc */
 	_onClose(options) {
 		super._onClose(options);
 		if (!this.#isResolved) this.#callback(false);

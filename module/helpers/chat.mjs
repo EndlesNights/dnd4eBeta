@@ -1,4 +1,5 @@
 import { handleRoll } from "../applications/ux/enrichers/roll.mjs";
+import Roll4e from "../rolls/roll.mjs";
 import * as utils from "../utils/utils.mjs";
 
 /**
@@ -88,7 +89,7 @@ export const displayDamageOptionButtons = function(message, html, data) {
  * @param {HTMLElement} html    The Chat Message being rendered
  * @param {Array} options       The Array of Context Menu options
  *
- * @return {Array}              The extended options Array including new context choices
+ * @returns {Array}              The extended options Array including new context choices
  */
 export const addChatMessageContextOptions = function(html, options) {
 
@@ -202,6 +203,10 @@ export const addChatMessageContextOptions = function(html, options) {
 	return options;
 };
 
+/**
+ * Sets up event listeners on a chat card.
+ * @param {HTMLElement} html 
+ */
 export function chatMessageListener(html) {
 	//html.on('click', '.chat-damage-button', this.clickRollMessageDamageButtons.bind(this));
 	html.addEventListener("click", (event) => {
@@ -322,7 +327,7 @@ export const clickRollMessageDamageButtons = function(event) {
  *
  * @param {HTMLElement} li    	The list item clicked, the power card chat message in this case
  * @param {string} effectType   The Effect Type that is being applied so it can pass through to the apply effect
- * @return {Promise}
+ * @returns {Promise}
  */
 function applyEffectToSelectTokens(li, effectType) {
 	const itemID = li.querySelector("[data-item-id]")?.dataset.itemId;
@@ -348,7 +353,7 @@ function applyEffectToSelectTokens(li, effectType) {
  *
  * @param {HTMLElement} li    	The list item clicked
  * @param {string} targetType   Target Type between "hit", "miss", and "all". But I just use else for all soooo what ever
- * @return {Promise}
+ * @returns {Promise}
  */
 function selectTargetTokens(li, targetType) {
 	const message = game.messages.get(li.dataset.messageId);
@@ -388,7 +393,7 @@ function selectTargetTokens(li, targetType) {
  * @param {HTMLElement} li    	The list item clicked
  * @param {Number} multiplier   A damage multiplier to apply to the rolled damage.
  * @param {Boolean} trueDamage	Bypass damage resistance or not (default false)
- * @return {Promise}
+ * @returns {Promise}
  */
 function applyChatCardDamage(li, multiplier, trueDamage = false) {
 	const message = game.messages.get(li.dataset.messageId);
@@ -396,6 +401,13 @@ function applyChatCardDamage(li, multiplier, trueDamage = false) {
 	applyChatCardDamageInner(roll, multiplier, trueDamage);
 }
 
+/**
+ * Applies damage from a chat card roll.
+ * @param {Roll4e} roll 
+ * @param {number} multiplier 
+ * @param {boolean} trueDamage 
+ * @returns 
+ */
 function applyChatCardDamageInner(roll, multiplier, trueDamage = false) {
 	let damageDealt = [];
 	let rollTotalRemain = roll.total;
@@ -465,7 +477,7 @@ function applyChatCardDamageInner(roll, multiplier, trueDamage = false) {
  * Gaining temp HP separated from main damage calculation as that set of functions was relatively complex already,
  * so making them more complex to deal with additions of temp HP and the logic behind it seemed like a bad plan from a maintenance perspective
  * @param {HTMLElement} roll  The chat entry which contains the roll data
- * @return {Promise}
+ * @returns {Promise}
  */
 function applyChatCardTempHp(li) {
 	const message = game.messages.get(li.dataset.messageId);
@@ -473,13 +485,21 @@ function applyChatCardTempHp(li) {
 	applyChatCardTempHpInner(roll);
 }
 
+/**
+ * Applies temporary HP from a chat card roll.
+ * @param {Roll4e} roll 
+ */
 function applyChatCardTempHpInner(roll) {
 	return Promise.all(canvas.tokens.controlled.map(t => {
 		const a = t.actor;
-		return a.applyTempHpChange(roll.total);
+		a.applyTempHpChange(roll.total);
 	}));
 }
 
+/**
+ * Handler to expand or collapse a chat card's die roll.
+ * @param {MouseEvent} event 
+ */
 export function _onClickDiceRoll(event) {
 	event.preventDefault();
 
@@ -521,8 +541,12 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 	html.querySelectorAll(".dice-roll").forEach(el => el.addEventListener("click", _onClickDiceRoll.bind(this)));
 });
 
-//Function for changing the tooltip of the apply effect button of power cards based on the applyEffectsToSelection functions
-export function updateApplyEffectsTooltips(value, options, html = {}) {
+/**
+ * Function for changing the tooltip of the apply effect button of power cards based on the applyEffectsToSelection functions.
+ * @param {boolean} value 
+ * @param {Object} html 
+ */
+export function updateApplyEffectsTooltips(value, html = {}) {
 
 	const settingValue = value == null ? game.settings.get("dnd4e", "applyEffectsToSelection") : value;
 	// True -> Selected

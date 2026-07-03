@@ -4,7 +4,7 @@ import DocumentSheet4e from "../sheets/DocumentSheet4e.mjs";
  * Application for configuring the source data on actors and items.
  */
 export default class SourceConfig extends DocumentSheet4e {
-	/** @override */
+	/** @inheritDoc */
 	static DEFAULT_OPTIONS = {
 		classes: ["dnd4e", "source-config", "standard-form", "default"],
 		sheetConfig: false,
@@ -18,7 +18,7 @@ export default class SourceConfig extends DocumentSheet4e {
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	static PARTS = {
 		source: {
 			template: "systems/dnd4e/templates/apps/source-config.hbs",
@@ -32,7 +32,7 @@ export default class SourceConfig extends DocumentSheet4e {
 	/*  Properties                                  */
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	get title() {
 		return _loc("DND4E.SOURCE.Action.Configure");
 	}

@@ -7,9 +7,10 @@ const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foun
 
 export default class WeaponData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
-	/** @override */
+	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
 
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),

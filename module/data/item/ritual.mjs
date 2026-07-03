@@ -4,9 +4,10 @@ const { SchemaField, StringField, BooleanField } = foundry.data.fields;
 
 export default class RitualData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
-	/** @override */
+	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
 
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),

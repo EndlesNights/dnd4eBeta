@@ -300,7 +300,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		const actor = this.actor;
@@ -990,7 +990,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	/**
    * Determine whether an Owned Item will be shown based on the current set of filters
-   * @return {boolean}
+   * @returns {boolean}
    * @private
    */
 	_filterItems(items, filters) {
@@ -1729,7 +1729,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	/**
    * Convert all carried currency to the highest possible denomination to reduce the number of raw coins being
    * carried by an Actor.
-   * @return {Promise<Actor4e>}
+   * @returns {Promise<Actor4e>}
    */
 	convertCurrency() {
 		const curr = foundry.utils.duplicate(this.actor.system.currency);
@@ -1812,7 +1812,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	setPosition(options = {}) {
 		const position = super.setPosition(options);
 		// const sheetBody = this.element.find(".sheet-body");
@@ -2026,7 +2026,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	/**
 	 * Handle dropping of an item reference or item data onto an Actor Sheet
 	 * @param {DragEvent} event            The concluding DragEvent which contains drop data
-	 * @param {object} data                The data transfer extracted from the event
+	 * @param {Object} data                The data transfer extracted from the event
 	 * @returns {Promise<Item[]|boolean>}  The created or updated Item instances, or false if the drop was not permitted.
 	 * @protected
 	 */
@@ -2044,7 +2044,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		// return super._onDropItem(event, data);
 	}
 
-	/** @override */
+	/** @inheritDoc */
 	async _onDropFolder(event, data) {
 		// return super._onDropFolder(event, data);
 		
@@ -2088,7 +2088,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	/**
 	 * Handles dropping of a single item onto this character sheet.
-	 * @param {object} itemData					The item data to create.
+	 * @param {Object} itemData					The item data to create.
 	 * @returns {Promise<object|boolean>}		The item data to create after processing, or false if the item should not be
 	 * 											created or creation has been otherwise handled.
 	 * @protected
@@ -2108,7 +2108,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	/**
 	 * Reset certain pieces of data stored on items when they are dropped onto the actor.
-	 * @param {object} itemData    The item data requested for creation. **Will be mutated.**
+	 * @param {Object} itemData    The item data requested for creation. **Will be mutated.**
 	 */
 	_onDropResetData(itemData) {
 		if (!itemData.system) return;
@@ -2122,7 +2122,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 
 	/**
 	 * Stack identical consumables when a new one is dropped rather than creating a duplicate item.
-	 * @param {object} itemData         The item data requested for creation.
+	 * @param {Object} itemData         The item data requested for creation.
 	 * @returns {Promise<Item4e>|null}  If a duplicate was found, returns the adjusted item stack.
 	 */
 	_onDropStackConsumables(itemData) {

@@ -2,7 +2,7 @@ export default class DocumentSheet4e extends foundry.applications.api.Handlebars
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	async _onRender(context, options) {
 		await super._onRender(context, options);
 

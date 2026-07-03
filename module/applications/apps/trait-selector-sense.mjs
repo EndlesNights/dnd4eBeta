@@ -28,25 +28,27 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 		main: { template: "systems/dnd4e/templates/apps/trait-selector-values.hbs" },
 		footer: { template: "templates/generic/form-footer.hbs" },
 	};
-  
+
 	/* -------------------------------------------- */
 
 	/**
-   * Return a reference to the target attribute
-   * @type {String}
-   */
+     * Returns a reference to the target attribute
+     * @type {string}
+     */
 	get attribute() {
 		return this.options.name;
 	}
 
+	/** @inheritDoc */
 	get title() {
 		// const name = this.options.name.substring(this.options.name.lastIndexOf(".") + 1);
 		// return `${this.object.name} - ${super.title} - ${name}`;
 		return `${this.document.name} - ${this.options.window.title}`;
 	}
+
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 	
@@ -77,7 +79,7 @@ export default class TraitSelectorValues extends foundry.applications.api.Handle
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	_processFormData(event, form, formData) {
 		const updateData = {};
 

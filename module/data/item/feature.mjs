@@ -5,9 +5,10 @@ const { BooleanField, StringField } = foundry.data.fields;
 
 export default class FeatureData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
-	/** @override */
+	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
 
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),

@@ -57,7 +57,7 @@ export async function create4eMacro(dropData, slot) {
  * Create a Macro from an Item drop.
  * Get an existing item macro if one exists, otherwise create a new one.
  * @param {string} itemName
- * @return {Promise}
+ * @returns {Promise}
  */
 export function rollItemMacro(itemName, type = "DOCUMENT.Item") {
 	const speaker = ChatMessage.getSpeaker();
@@ -113,7 +113,7 @@ export function toggleEffect(effectName, type = "DOCUMENT.ActiveEffect") {
 /**
  * Execute a macro with item variables
  * @param {Item4e} item
- * @return {Promise}
+ * @returns {Promise}
  */
 export async function executeMacro(item) {
 	const macro = new Macro ({

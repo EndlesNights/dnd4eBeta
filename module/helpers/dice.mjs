@@ -3,6 +3,8 @@ import MultiAttackRoll from "../rolls/multi-attack-roll.mjs";
 import Roll4e from "../rolls/roll.mjs";
 import { RollDialog } from "../applications/apps/dice/_module.mjs";
 import RollWithOriginalExpression from "../rolls/roll-with-expression.mjs";
+import Item4e from "../documents/item.mjs";
+import Actor4e from "../documents/actor.mjs";
 
 /**
  * A standardized helper function for managing core 4e "d20 rolls"
@@ -29,7 +31,7 @@ import RollWithOriginalExpression from "../rolls/roll-with-expression.mjs";
  * @param {boolean} isAttackRoll   Is the roll for an attack?
  * @param {Object} options         {Roll} Options
  *
- * @return {Promise}              A Promise which resolves once the roll workflow has completed
+ * @returns {Promise}              A Promise which resolves once the roll workflow has completed
  */
 export async function d20Roll({ parts = [], partsExpressionReplacements = [], item = null, weaponUse = null, data = {}, event = {}, messageMode = null, template = null, title = null, speaker = null,
 	flavor = null, fastForward = null, onClose, dialogOptions, critical = 20, fumble = 1, targetValue = null, actor,
@@ -136,8 +138,15 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 	return RollDialog.asPromise({ dialogData, rollConfig, buttons, window: { title }, callbackFn: performD20RollAndCreateMessage });
 }
 
-// Get the bonus for an attack roll 
-export function getAttackRollBonus({ parts = [], partsExpressionReplacements = [], data = {}, options = {} }) {
+/**
+ * Gets the bonus for an attack roll.
+ * @param {Object} options
+ * @param {string[]} options.parts
+ * @param {Object} options.data
+ * @param {Object} options.options
+ * @returns {number|string}
+ */
+export function getAttackRollBonus({ parts = [], data = {}, options = {} }) {
 	const roll = new MultiAttackRoll(parts.filterJoin(" + "), data, options);
 	if (roll.isDeterministic) {
 		roll.evaluateSync();
@@ -147,6 +156,28 @@ export function getAttackRollBonus({ parts = [], partsExpressionReplacements = [
 	return roll.formula;
 }
 
+/**
+ * Rolls a d20 roll and prints it to chat.
+ * @param {Object} form 
+ * @param {Object} options
+ * @param {string[]} options.parts
+ * @param {Object[]} options.partsExpressionReplacement
+ * @param {Item4e} options.item
+ * @param {Item4e} options.weaponUse
+ * @param {Object} options.data
+ * @param {Object} options.speaker
+ * @param {string} options.messageMode
+ * @param {string} options.flavor
+ * @param {number} options.critical
+ * @param {number} options.fumble
+ * @param {number} options.targetValue
+ * @param {Actor4e} options.actor
+ * @param {boolean} options.isAttackRoll
+ * @param {Object} options.options
+ * @param {Set<string>} options.userStatus
+ * @param {boolean} options.fastForward
+ * @returns 
+ */
 async function performD20RollAndCreateMessage(form, { parts, partsExpressionReplacements, item, weaponUse, data, speaker, messageMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, options, userStatus, fastForward }) {
 	/*
 	 coming in the parts[] is in one of the following states:
@@ -494,7 +525,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
  * @param {boolean} healingRoll   If the roll is a healing roll rather than a damage roll.
  * @param {Object } options		  The Roll Options
  *
- * @return {Promise}              A Promise which resolves once the roll workflow has completed
+ * @returns {Promise}              A Promise which resolves once the roll workflow has completed
  */
 export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionReplacement = [], partsCritExpressionReplacement = [], partsMissExpressionReplacement = [], actor,
 	data, event = {}, messageMode = null, template, title, speaker, flavor, allowCritical = true,
@@ -570,6 +601,25 @@ export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionR
 	return RollDialog.asPromise({ dialogData, rollConfig, buttons, ...dialogConfig, callbackFn: performDamageRollAndCreateChatMessage });
 }
 
+/**
+ * Rolls a damage roll and prints it to chat.
+ * @param {Object} form 
+ * @param {Object} options
+ * @param {string[]} options.parts
+ * @param {string[]} options.partsCrit
+ * @param {string[]} options.partsMiss
+ * @param {Object} options.data
+ * @param {string} options.hitType
+ * @param {string} options.flavor
+ * @param {string} options.messageMode
+ * @param {Object[]} options.partsExpressionReplacement
+ * @param {Object[]} options.partsCritExpressionReplacement
+ * @param {Object[]} options.partsMissExpressionReplacement
+ * @param {Object} options.speaker
+ * @param {Object} options.options
+ * @param {boolean} options.fastForward
+ * @returns 
+ */
 async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, partsMiss, data, hitType, flavor, messageMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options, fastForward }) {
 	manageBonusInParts(parts, form, data);
 	manageBonusInParts(partsCrit, form, data);
@@ -632,8 +682,18 @@ async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, p
 	return roll;
 }
 
-// General helper functions for both attack and damage rolls
-
+/**
+ * General helper functions for both attack and damage rolls
+ * @param {Object} rollConfig 
+ * @param {string[]} parts 
+ * @param {MouseEvent} event
+ * @param {string} messageMode 
+ * @param {string} title 
+ * @param {Object} speaker 
+ * @param {string} flavor 
+ * @param {boolean} fastForward 
+ * @returns 
+ */
 function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, messageMode, title, speaker, flavor, fastForward) {
 	// Handle input arguments
 	rollConfig.flavor = flavor || title;

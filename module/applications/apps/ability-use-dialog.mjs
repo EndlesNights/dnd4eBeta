@@ -25,7 +25,7 @@ export default class AbilityUseDialog extends foundry.applications.api.Dialog {
    * A constructor function which displays the Spell Cast Dialog app for a given Actor and Item.
    * Returns a Promise which resolves to the dialog FormData once the workflow has been completed.
    * @param {Item4e} item
-   * @return {Promise}
+   * @returns {Promise}
    */
 	static async create(item) {
 		if (!item.isOwned) throw new Error("You cannot display an ability usage dialog for an unowned item");
@@ -130,6 +130,7 @@ export default class AbilityUseDialog extends foundry.applications.api.Dialog {
 
 	/* -------------------------------------------- */
 
+	/** @inheritDoc */
 	static _handleSubmit(formData, item) {
 
 	}

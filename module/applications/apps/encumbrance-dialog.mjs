@@ -19,6 +19,7 @@ export default class EncumbranceDialog extends DocumentSheet4e {
 		tag: "form",
 	};
 
+	/** @inheritDoc */
 	get title() {
 		return `${this.document.name} - ${_loc("DND4E.Encumbrance")}`;
 	}
@@ -32,7 +33,7 @@ export default class EncumbranceDialog extends DocumentSheet4e {
 		},
 	};
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		foundry.utils.mergeObject(context, {
@@ -44,6 +45,7 @@ export default class EncumbranceDialog extends DocumentSheet4e {
 		return context;
 	}
 
+	/** @inheritDoc */
 	async _updateObject(event, formData) {
 		const updateData = {};
 		for (let system in formData) { updateData[`${system}`] = formData[`${system}`];}

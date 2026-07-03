@@ -1,13 +1,14 @@
 import { ActiveEffect4e, Actor4e, Item4e, TokenDocument4e } from "../documents/_module.mjs";
 import Roll4e from "../rolls/roll.mjs";
 import Token4e from "../canvas/placeables/token.mjs";
+import CharacterData from "../data/actor/character.mjs";
 
 /**
  * Helper function to perform synchronous evaluation of a user-input formula
  * User-input formulas may throw if blank or otherwise contain invalid terms.
  * @param {string} formula                         The roll formula. May be blank or otherwise invalid.
- * @param {object} [rollData]                      The roll data for parsing.
- * @param {object} [options]                       Options for this method to forward.
+ * @param {Object} [rollData]                      The roll data for parsing.
+ * @param {Object} [options]                       Options for this method to forward.
  * @param {boolean} [options.strict=false]         Forwarded to {@linkcode Roll.evaluateSync}.
  * @param {boolean} [options.suppressError=false]  Whether or not to suppress the error message.
  * @param {boolean} [options.allowStrings=true]    Forwarded to {@linkcode Roll.evaluateSync}.
@@ -40,7 +41,7 @@ export function isNonEmpty(str) {
 /**
 * Refrence a nested object by string.
 * @param {string} s the string that holds the targeted nested adress
-* @param {object} o the root object, defaulting to object.data
+* @param {Object} o the root object, defaulting to object.data
 */
 export function byString(s, o) {
 	s = s.replace(/\[(\w+)\]/g, ".$1"); // convert indexes to properties
@@ -60,7 +61,7 @@ export function byString(s, o) {
 /**
  * Surrounds the given object in brackets
  * @param {string} str The object
- * @return {string} "({str})"
+ * @returns {string} "({str})"
  */
 export function bracketed (str) {
 	return `(${str})`;
@@ -151,14 +152,14 @@ export const variableRegex = new RegExp(/@([a-z.0-9_-]+)/gi);
 
 /**
  * Applies custom bonuses from active effects
- * @param {object} rollData The data object of the roll being performed
+ * @param {Object} rollData The data object of the roll being performed
  * @param {Actor4e} actor The actor whose active effects should be checked
  * @param {CharacterData} powerData Roll data for the power being used
  * @param {CharacterData} weaponData Roll data for the weapon being used
  * @param {string} effectType What type of thing the compiled bonuses should be applied to: "attack", "damage", or "defence"
  * @param {Array} extraDamage An array that extra damage dice terms are added to
  * @param {boolean} target Whether or not the provided actor is the target of the power in use
- * @param {object} options An object containing the bonuses that can be applied; item, feat, race, etc.
+ * @param {Object} options An object containing the bonuses that can be applied; item, feat, race, etc.
  */
 export async function applyEffects(rollData, actor, powerData = {}, weaponData = null, effectType, extraDamage = [], target = false, options = {}) {
 	const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
@@ -403,11 +404,11 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 /** 
  * A pared down version of applyEffects suitable for determining bonuses to saving throws against effects or the DCs of effects. Only needs to know
  * about effect keywords and statuses inflicted by the effect. effectType can be `save` or `saveDC`.
- * @param {object} rollData The data object of the roll being performed
+ * @param {Object} rollData The data object of the roll being performed
  * @param {Actor4e} actor The actor whose active effects should be checked
- * @param {object} effectData Data object for the active effect in question
+ * @param {Object} effectData Data object for the active effect in question
  * @param {string} effectType What type of thing the compiled bonuses should be applied to: "attack", "damage", or "defence"
- * @param {object} options An object containing the bonuses that can be applied; item, feat, race, etc.
+ * @param {Object} options An object containing the bonuses that can be applied; item, feat, race, etc.
  */
 export async function applySaveEffects(rollData, actor, effectData, effectType, options = {}) {
 	const debug = game.settings.get("dnd4e", "debugEffectBonus") ? "D&D4e |" : "";
@@ -495,6 +496,16 @@ export async function applySaveEffects(rollData, actor, effectData, effectType, 
 	}
 }
 
+/**
+ * Internal function to apply effects to a bonuses object.
+ * @param {Object[]} effectsToProcess 
+ * @param {string[]} suitableKeywords 
+ * @param {Actor4e} actor 
+ * @param {string} effectType 
+ * @param {boolean} debug 
+ * @param {string[]} extraDamage 
+ * @param {Object} options 
+ */
 async function _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, effectType, debug, extraDamage = [], options = {}) {
 	// filter out to just the relevant effects by keyword
 	const matchingEffects = effectsToProcess.filter((effect) => {
@@ -554,6 +565,11 @@ async function _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, 
 	}
 }
 
+/**
+ * Adds keywords to an array.
+ * @param {string[]} suitableKeywords Array of keywords to add to.
+ * @param {Object} keywordsActive Keywords to add.
+ */
 function _addKeywords(suitableKeywords, keywordsActive) {
 	if (keywordsActive) {
 		for (const [key, value] of Object.entries(keywordsActive)) {
@@ -567,9 +583,9 @@ function _addKeywords(suitableKeywords, keywordsActive) {
 /**
  * Perform replacement of @variables in the formula involving a power.	This is a recursive function with 2 modes of operation!
  *
- * @param formula The formula to examine and perform replacements on.
- * @param rollData Roll data from the actor or item to use to resolve variables.
- * @return {object} An object of {variable = value}.
+ * @param {string} formula The formula to examine and perform replacements on.
+ * @param {CharacterData} rollData Roll data from the actor or item to use to resolve variables.
+ * @returns {Object} An object of {variable = value}.
  */
 export function getDataObject(formula, rollData) {
 	const result = {};
@@ -616,6 +632,12 @@ export async function rollWithErrorHandling(rollString, { errorMessageKey = "DND
 	}
 }
 
+/**
+ * Evaluates a power's range formula.
+ * @param {string|number} range 
+ * @param {CharacterData} actorData 
+ * @returns {number}
+ */
 function _rangeValue(range, actorData) {
 	if (range) {
 		const areaForm = evaluateFormula(`${range}`, actorData, { strict: true, contextName: "areaValue" });
@@ -627,7 +649,7 @@ function _rangeValue(range, actorData) {
 
 /**
  * Creates HTML-formatted text for use in power cards
- * @param {object} chatData				    Output of item.getChatData() for the power
+ * @param {Object} chatData				    Output of item.getChatData() for the power
  * @param {CharacterData|null} actorData	Roll data for the actor the power is on
  * @param {number|string|null} attackTotal  Total attack bonus for th power
  * @returns {string}					    Formatted power card text
@@ -1109,7 +1131,7 @@ export function isUsingFastForwardKey(event) {
 
 /**
  * Determine if a roll should be fast forwarded.
- * @param {Event} event A click event
+ * @param {MouseEvent} event A click event
  * @returns {boolean} Whether or not the roll should be fast forwarded
  */
 export function isRollFastForwarded(event) {
@@ -1223,7 +1245,7 @@ export function hasEffects(power, effectTypes) {
  * Use to find the value in a given scale as stored using JavaScript Object Notation.
  *
  * @param {number} input an input value as a number, usely a character or item level
- * @param {object} scale an scale in object format, with keys being the miniume level required for each step
+ * @param {Object} scale an scale in object format, with keys being the miniume level required for each step
  * @param {number} offsetNumber offset value to increase the input to adjust the scale. default value to zero
  * @returns {result} New set of matching disposition
  */
@@ -1390,7 +1412,7 @@ export function getPlaceable(tokenRef) {
 /**
  * Measure total distance from segments
  * @param {Ray[]} segments              Array of segments
- * @param {object} options              Options object
+ * @param {Object} options              Options object
  * @returns {number}                    Diagonal rule-aware total distance
  */
 export function measureDistances(segments, options = {}) {
@@ -1625,7 +1647,7 @@ export function findNearby(disposition, token, distance, options = { maxSize: un
 
 /**
  * Measures distance between an arbitrary point and a token
- * @param {object} point                Point
+ * @param {Object} point                Point
  * @param {number} point.x              Point x coordinate
  * @param {number} point.y              Point y coordinate 
  * @param {Token4e} token               Token
@@ -1778,11 +1800,11 @@ export function debugLog(msg) {
 
 /**
  * Socket handler to apply effect to a token
- * @param {object} data 
+ * @param {Object} data 
  * @param {Scene} data.scene
  * @param {string} data.tokenId
  * @param {string} data.actorId
- * @param {object} data.effectData
+ * @param {Object} data.effectData
  * @returns {Promise}
  */
 export async function handleApplyEffectToToken(data) {
@@ -1798,7 +1820,7 @@ export async function handleApplyEffectToToken(data) {
 
 /**
  * Socket handler to delete effects on a token
- * @param {object} data
+ * @param {Object} data
  * @param {Scene} data.scene
  * @param {string} data.tokenId
  * @param {string} data.actorId
@@ -1816,7 +1838,7 @@ export async function handleDeleteEffectToToken(data) {
 
 /**
  * Socket handler to prompt end of turn saving throws
- * @param {object} data
+ * @param {Object} data
  * @param {Scene} data.scene
  * @param {string} data.tokenId
  * @param {string} data.actorId
@@ -1832,7 +1854,7 @@ export async function handlePromptEoTSaves(data) {
 
 /**
  * Socket handler for ongoing damage
- * @param {object} data
+ * @param {Object} data
  * @param {Scene} data.scene
  * @param {string} data.tokenId
  * @param {string} data.actorId
@@ -1847,7 +1869,7 @@ export async function handleAutoDoTs(data) {
 
 /**
  * Socket handler for expiring saving throw effects
- * @param {object} data
+ * @param {Object} data
  * @param {Scene} data.effectId
  * @returns {Promise}
  */
@@ -1858,7 +1880,7 @@ export async function handleRefreshSaveEffects(data) {
 
 /**
  * Socket handler for expiring end of day effects
- * @param {object} data
+ * @param {Object} data
  * @param {Scene} data.actorId
  * @returns {Promise}
  */
@@ -1937,7 +1959,7 @@ Handlebars.registerHelper("applyEffectsToSelection", function() {
 /**
  * A helper for using Intl.NumberFormat within handlebars.
  * @param {number} value		The value to format.
- * @param {object} options	Options forwarded to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat}
+ * @param {Object} options	Options forwarded to {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat}
  * @returns {string}
  */
 export function formatNumber(value, options) {
@@ -1987,7 +2009,7 @@ export function createIdentifier(item) {
  * in <optgroup> based on the provided categories.
  *
  * @param {SelectChoices} choices					Choices to format.
- * @param {object} [options]
+ * @param {Object} [options]
  * @param {boolean} [options.localize]		 Should the label be localized?
  * @param {string} [options.blank]				 Name for the empty option, if one should be added.
  * @param {string} [options.labelAttr]		 Attribute pointing to label string.
@@ -2037,8 +2059,8 @@ function groupedSelectOptions(choices, options) {
 
 /**
  * A helper that converts the provided object into a series of `data-` entries.
- * @param {object} object   Object to convert into dataset entries.
- * @param {object} options  Handlebars options.
+ * @param {Object} object   Object to convert into dataset entries.
+ * @param {Object} options  Handlebars options.
  * @returns {string}
  */
 function dataset(object, options) {
@@ -2072,7 +2094,7 @@ export function registerHandlebarsHelpers() {
 	
 /**
  * Storage for pre-localization configuration.
- * @type {object}
+ * @type {Object}
  * @private
  */
 const _preLocalizationRegistrations = {};
@@ -2080,7 +2102,7 @@ const _preLocalizationRegistrations = {};
 /**
  * Mark the provided config key to be pre-localized during the init stage.
  * @param {string} configKeyPath					Key path within `CONFIG.DND4E` to localize.
- * @param {object} [options={}]
+ * @param {Object} [options={}]
  * @param {string} [options.key]					If each entry in the config enum is an object,
  *																				localize and sort using this property.
  * @param {string[]} [options.keys=[]]		Array of localization keys. First key listed will be used for sorting
@@ -2096,7 +2118,7 @@ export function preLocalize(configKeyPath, { key, keys = [], sort = false } = {}
 
 /**
  * Execute previously defined pre-localization tasks on the provided config object.
- * @param {object} config	The `CONFIG.DND4E` object to localize and sort. *Will be mutated.*
+ * @param {Object} config	The `CONFIG.DND4E` object to localize and sort. *Will be mutated.*
  */
 export function performPreLocalization(config) {
 	for (const [keyPath, settings] of Object.entries(_preLocalizationRegistrations)) {
@@ -2117,9 +2139,9 @@ export function performPreLocalization(config) {
 
 /**
  * Sort the provided object by its values or by an inner sortKey.
- * @param {object} obj                 The object to sort.
+ * @param {Object} obj                 The object to sort.
  * @param {string|Function} [sortKey]  An inner key upon which to sort or sorting function.
- * @returns {object}                   A copy of the original object that has been sorted.
+ * @returns {Object}                   A copy of the original object that has been sorted.
  */
 export function sortObjectEntries(obj, sortKey) {
 	let sorted = Object.entries(obj);
@@ -2134,7 +2156,7 @@ export function sortObjectEntries(obj, sortKey) {
 
 /**
  * Localize the values of a configuration object by translating them in-place.
- * @param {object} obj			 The configuration object to localize.
+ * @param {Object} obj			 The configuration object to localize.
  * @param {string[]} [keys]	List of inner keys that should be localized if this is an object.
  * @private
  */
@@ -2180,7 +2202,7 @@ const _attributeLabelCache = new Map();
 /**
  * Convert an attribute path to a human-readable label.
  * @param {string} attr							The attribute path.
- * @param {object} [options]
+ * @param {Object} [options]
  * @param {Actor5e} [options.actor]	An optional reference actor.
  * @returns {string|void}
  */

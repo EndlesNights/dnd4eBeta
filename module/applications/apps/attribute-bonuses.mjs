@@ -25,7 +25,8 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 		},
 		tag: "form",
 	};
-	
+
+	/** @inheritDoc */
 	get title() {		
 		return `${this.document.name} - ${this.options.label}`;
 	}
@@ -38,8 +39,8 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 			template: "templates/generic/form-footer.hbs",
 		},
 	};
-	
-	/** @override */
+
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		const system = utils.byString(this.options.target, this.document);
@@ -55,6 +56,11 @@ export default class AttributeBonusDialog extends DocumentSheet4e {
 		return context;
 	}
 	
+	/**
+     * @param {Event} event
+     * @param {Object} form
+     * @param {Object} formData
+     */
 	static async #onSubmit(event, form, formData) {
 		const bonus = foundry.utils.expandObject(formData.object);
 		const updateData = {};

@@ -230,7 +230,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	async _onRender(context, options) {
 		await super._onRender(context, options);
 
@@ -248,7 +248,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		const itemData = this.item.toObject(false);
@@ -519,7 +519,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/**
 	 * Prepare the data structure for Power Effects which can then be transfered as active effectst to other actors.
 	 * @param {PowerEffect[]} powerEffects    The array of Active Effect instances to prepare sheet data for
-	 * @returns {object}                  Data for rendering
+	 * @returns {Object}                  Data for rendering
 	 */
 	_prepareEffectPowersCategories(effectPowers) {
 		const categories = {};
@@ -614,7 +614,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/**
 	* Convert all carried currency to the highest possible denomination to reduce the number of raw coins being
 	* carried by an Actor.
-	* @return {Promise<Actor4e>}
+	* @returns {Promise<Actor4e>}
 	*/
 	convertCurrency() {
 		const curr = foundry.utils.duplicate(this.document.system.currency);
@@ -751,7 +751,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/**
 	 * Get the valid item consumption targets which exist on the actor
 	 * @param {Object} item         Item data for the item being displayed
-	 * @return {{string: string}}   An object of potential consumption targets
+	 * @returns {{string: string}}   An object of potential consumption targets
 	 * @private
 	 */
 	_getItemConsumptionTargets(item) {
@@ -889,7 +889,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/**
 	* Get the valid weapons targets which exist on the actor
 	* @param {Object} weapon         weapon data for the weapon items being displayed
-	* @return {{string: string}}   An object of potential consumption targets
+	* @returns {{string: string}}   An object of potential consumption targets
 	* @private
 	*/
 	_getItemsWeaponUseTargets(weapon) {
@@ -952,7 +952,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/**
 	 * Get the text item status which is shown beneath the Item type in the top-right corner of the sheet
-	 * @return {string}
+	 * @returns {string}
 	 * @private
 	 */
 	_getItemStatus(item) {
@@ -968,7 +968,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/**
 	 * Get the Array of item properties which are used in the small sidebar of the description tab
-	 * @return {Array}
+	 * @returns {Array}
 	 * @private
 	 */
 	_getItemProperties(item) {
@@ -1094,7 +1094,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/* -------------------------------------------- */
 
 	// TODO: What's up with this
-	/** @override */
+	/** @inheritDoc */
 	_updateObject(event, formData) {
 
 		// TODO: This can be removed once 0.7.x is release channel
@@ -1171,7 +1171,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	 * Add or remove a damage part from the damage formula
 	 * @param {Event} event     		The original click event
 	 * @param {HTMLElement} target	The target of the event
-	 * @return {Promise}
+	 * @returns {Promise}
 	 * @this {ItemSheet4e}
 	 */
 	static async #onDamageControl(event, target) {
@@ -1274,7 +1274,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	 * Add or remove a damage part from the damage formula
 	 * @param {Event} event     		The original click event
 	 * @param {HTMLElement} target	The target of the event
-	 * @return {Promise}
+	 * @returns {Promise}
 	 * @this {ItemSheet4e}
 	 */
 	static async #onOneTextControl(event, target) {
@@ -1364,7 +1364,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 		 * @memberof hookEvents
 		 * @param {Item4e} item                  The Item4e
 		 * @param {ItemSheet4e} sheet            The ItemSheet4e application
-		 * @param {object} data                  The data that has been dropped onto the sheet
+		 * @param {Object} data                  The data that has been dropped onto the sheet
 		 * @returns {boolean}                    Explicitly return `false` to prevent normal drop handling.
 		 */
 		const allowed = Hooks.call("dnd4e.dropItemSheetData", item, this, data);
@@ -1386,7 +1386,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/**
 	 * Handle the dropping of ActiveEffect data onto an Item Sheet
 	 * @param {DragEvent} event                  The concluding DragEvent which contains drop data
-	 * @param {object} data                      The data transfer extracted from the event
+	 * @param {Object} data                      The data transfer extracted from the event
 	 * @returns {Promise<ActiveEffect|boolean>}  The created ActiveEffect object or false if it couldn't be created.
 	 * @protected
 	 */
@@ -1405,7 +1405,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/**
 	 * Handle the dropping of Folder data onto the Container sheet.
 	 * @param {DragEvent} event							The concluding DragEvent which contains the drop data.
-	 * @param {object} data									The data transfer extracted from the event.
+	 * @param {Object} data									The data transfer extracted from the event.
 	 * @returns {Promise<Item4e[]>}					The created Item objects.
 	 */
 	async _onDropFolder(event, data) {
@@ -1448,7 +1448,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	/**
 	 * Handle the dropping of Item data onto an Item Sheet.
 	 * @param {DragEvent} event							The concluding DragEvent which contains the drop data.
-	 * @param {object} data									The data transfer extracted from the event.
+	 * @param {Object} data									The data transfer extracted from the event.
 	 * @returns {Promise<Item4e[]|boolean>}	The created Item objects or `false` if it couldn't be created.
 	 * @protected
 	 */

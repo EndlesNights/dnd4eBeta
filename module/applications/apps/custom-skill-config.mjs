@@ -75,6 +75,7 @@ export default class CustomSkillConfig extends foundry.applications.api.Handleba
 		this.close();
 	}
 
+	/** @inheritDoc */
 	_onChangeForm(formConfig, event) {
 		super._onChangeForm(formConfig, event);
 		const target = event.target;
@@ -89,14 +90,18 @@ export default class CustomSkillConfig extends foundry.applications.api.Handleba
 	}
 
 	/**
-	 * @this {CustomSkillConfig}
-	 */
+     * @param {Event} event
+     * @param {Object} form
+     * @param {Object} formData
+     * @this {CustomSkillConfig}
+     */
 	static async #onSubmit(event, form, formData) {
 		const validSkills = this.#customSkills.filter(i => i.id.trim().length && i.label.trim().length);
 		await game.settings.set("dnd4e", "custom-skills", validSkills);
-		if (this.#needsReload) await foundry.applications.settings.reloadConfirm({ world: true });
+		if (this.#needsReload) await foundry.applications.settings.SettingsConfig.reloadConfirm({ world: true });
 	}
 
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		context.customSkills = this.#customSkills;

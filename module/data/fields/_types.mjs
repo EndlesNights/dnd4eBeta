@@ -13,8 +13,8 @@
  * @callback MappingFieldInitialValueBuilder
  * @param {string} key       The key within the object where this new value is being generated.
  * @param {*} initial        The generic initial data provided by the contained model.
- * @param {object} existing  Any existing mapping data.
- * @returns {object}         Value to use as default for this key.
+ * @param {Object} existing  Any existing mapping data.
+ * @returns {Object}         Value to use as default for this key.
  */
 
 /**

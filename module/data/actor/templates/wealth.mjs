@@ -2,6 +2,7 @@ import MappingField from "../../fields/mapping-field.mjs";
 const { NumberField } = foundry.data.fields;
 
 export default class WealthTemplate extends foundry.abstract.DataModel {
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			currency: new MappingField(new NumberField({

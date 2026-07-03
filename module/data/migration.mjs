@@ -1,6 +1,6 @@
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
- * @return {Promise}      A Promise which resolves once the migration is completed
+ * @returns {Promise}      A Promise which resolves once the migration is completed
  */
 export const migrateWorld = async function() {
 	const version = game.system.version;
@@ -145,8 +145,8 @@ export const migrateCompendium = async function(pack) {
 /**
  * Migrate a single Actor entity to incorporate latest data model changes
  * Return an Object of updateData to be applied
- * @param {object} actor    The actor data object to update
- * @return {Object}         The updateData to apply
+ * @param {Object} actor    The actor data object to update
+ * @returns {Object}         The updateData to apply
  */
 export const migrateActorData = function(actor, migrationData) {
 	const updateData = {};
@@ -172,8 +172,8 @@ export const migrateActorData = function(actor, migrationData) {
 /**
  * Migrate a single Item entity to incorporate latest data model changes
  *
- * @param {object} item  Item data to migrate
- * @return {object}      The updateData to apply
+ * @param {Object} item  Item data to migrate
+ * @returns {Object}      The updateData to apply
  */
 export const migrateItemData = function(item) {
 	const updateData = {};
@@ -196,9 +196,9 @@ export const migrateItemData = function(item) {
 /**
  * Migrate a single Scene document to incorporate changes to the data model of its actor data overrides
  * Return an Object of updateData to be applied
- * @param {object} scene            The Scene data to Update
- * @param {object} [migrationData]  Additional data to perform the migration
- * @returns {object}                The updateData to apply
+ * @param {Object} scene            The Scene data to Update
+ * @param {Object} [migrationData]  Additional data to perform the migration
+ * @returns {Object}                The updateData to apply
  */
 export const migrateSceneData = function(scene, migrationData) {
 	const tokens = scene.tokens.map(token => {
@@ -255,9 +255,9 @@ export const getMigrationData = async function() {
 
 /**
  * Migrate the actor temphp from attributes.hp to attributes.temphp object
- * @param {object} actorData   Actor data being migrated.
- * @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} actorData   Actor data being migrated.
+ * @param {Object} updateData  Existing updates being applied to actor. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateActorTempHP(actorData, updateData) {
@@ -289,9 +289,9 @@ function _migrateActorTempHP(actorData, updateData) {
 
 /**
  * Migrate the actor adding in object keys for proficiencies
- * @param {object} actorData   Actor data being migrated.
- * @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} actorData   Actor data being migrated.
+ * @param {Object} updateData  Existing updates being applied to actor. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateActorAddProfKeys(actorData, updateData) {
@@ -322,9 +322,9 @@ function _migrateActorAddProfKeys(actorData, updateData) {
 
 /**
  * Migrate the actor adding missing keys for skill training to move the out of the "value" key. v0.4.33
- * @param {object} actorData   Actor data being migrated.
- * @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} actorData   Actor data being migrated.
+ * @param {Object} updateData  Existing updates being applied to actor. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateActorSkills(actorData, updateData) {
@@ -369,9 +369,9 @@ function _migrateActorSkills(actorData, updateData) {
 
 /**
  * Migrate the actor adding missing keys for Feats, Item and Power bonus keys. v0.4.33
- * @param {object} actorData   Actor data being migrated.
- * @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} actorData   Actor data being migrated.
+ * @param {Object} updateData  Existing updates being applied to actor. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
@@ -600,9 +600,9 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
 
 /**
  * Migrate any data from the key "implementGroup" to the key of "implment"
- * @param {object} itemData   Item data being migrated.
- * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} itemData   Item data being migrated.
+ * @param {Object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateImplmentKey(itemData, updateData) {
@@ -618,9 +618,9 @@ function _migrateImplmentKey(itemData, updateData) {
 
 /**
  * Migrate backpack/Container items data to include new keys
- * @param {object} itemData   Item data being migrated.
- * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} itemData   Item data being migrated.
+ * @param {Object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateContainerItems(itemData, updateData) {
@@ -649,9 +649,9 @@ function _migrateContainerItems(itemData, updateData) {
 
 /**
  * Migrate all items data to include new object keys for a GM Description, which will not be visable to normal players
- * @param {object} itemData   Item data being migrated.
- * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} itemData   Item data being migrated.
+ * @param {Object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateItemsGMDescriptions(itemData, updateData) {
@@ -693,8 +693,8 @@ export async function purgeFlags(pack) {
 
 /**
  * Purge the data model of any inner objects which have been flagged as _deprecated.
- * @param {object} data   The data to clean.
- * @returns {object}      Cleaned data.
+ * @param {Object} data   The data to clean.
+ * @returns {Object}      Cleaned data.
  * @private
  */
 export function removeDeprecatedObjects(data) {
@@ -712,9 +712,9 @@ export function removeDeprecatedObjects(data) {
 
 /**
  * Migrate the actor adding missing keys for defences and resistances (v0.4.6)
- * @param {object} actorData   Actor data being migrated.
- * @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} actorData   Actor data being migrated.
+ * @param {Object} updateData  Existing updates being applied to actor. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateActorDefAndRes(actorData, updateData) {
@@ -745,9 +745,9 @@ function _migrateActorDefAndRes(actorData, updateData) {
 
 /**
  * Migrate neck items from three identical base NADS values to one enhancment value. (v0.4.6)
- * @param {object} itemData   Item data being migrated.
- * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} itemData   Item data being migrated.
+ * @param {Object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
 */
 function _migrateNeckGearEnhance(itemData, updateData) {
@@ -765,9 +765,9 @@ function _migrateNeckGearEnhance(itemData, updateData) {
 
 /**
  * Migrate powers without "isBasic" toggle or manual atkMod/dmgMod usage (v0.5.5)
- * @param {object} itemData   Item data being migrated.
- * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} itemData   Item data being migrated.
+ * @param {Object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
 */
 function _migratePowerBasicAndGlobal(itemData, updateData) {
@@ -792,9 +792,9 @@ function _migratePowerBasicAndGlobal(itemData, updateData) {
 
 /**
 * Migrate the actor adding missing keys for global skill and defence modifiers (v0.5.5)
-* @param {object} actorData   Actor data being migrated.
-* @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
-* @returns {object}           Modified version of update data.
+* @param {Object} actorData   Actor data being migrated.
+* @param {Object} updateData  Existing updates being applied to actor. *Will be mutated.*
+* @returns {Object}           Modified version of update data.
 * @private
 */
 function _migrateActorGlobalMods(actorData, updateData) {
@@ -832,9 +832,9 @@ function _migrateActorGlobalMods(actorData, updateData) {
 
 /**
 * Migrate actors missing keys for swim speed (v0.5.12)
-* @param {object} actorData   Actor data being migrated.
-* @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
-* @returns {object}           Modified version of update data.
+* @param {Object} actorData   Actor data being migrated.
+* @param {Object} updateData  Existing updates being applied to actor. *Will be mutated.*
+* @returns {Object}           Modified version of update data.
 * @private
 */
 function _migrateActorSwim(actorData, updateData) {
@@ -860,9 +860,9 @@ function _migrateActorSwim(actorData, updateData) {
 
 /**
  * Migrate featlike items to new "features" type
- * @param {object} itemData   Item data being migrated.
- * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} itemData   Item data being migrated.
+ * @param {Object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateFeature(itemData, updateData) {
@@ -924,9 +924,9 @@ function _migrateFeature(itemData, updateData) {
 
 /**
  * Migrate ritual category text to select text
- * @param {object} itemData   Item data being migrated.
- * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} itemData   Item data being migrated.
+ * @param {Object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateRitualCategory(itemData, updateData) {	
@@ -946,9 +946,9 @@ function _migrateRitualCategory(itemData, updateData) {
 
 /**
  * Migrate any document flagged with `flags.dnd4e.migrateType`
- * @param {object} documentData	Document data being migrated
- * @param {object} updateData		Existing updated being applied to document. *Will be mutated.*
- * @returns {object} 						Modified version of update data.
+ * @param {Object} documentData	Document data being migrated
+ * @param {Object} updateData		Existing updated being applied to document. *Will be mutated.*
+ * @returns {Object} 						Modified version of update data.
  */
 function _migrateType(documentData, updateData) {
 	if (!foundry.utils.getProperty(documentData, "flags.dnd4e.migrateType")) return;
@@ -962,9 +962,9 @@ function _migrateType(documentData, updateData) {
 
 /**
 * Migrate hazards without movement
-* @param {object} actorData   Actor data being migrated.
-* @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
-* @returns {object}           Modified version of update data.
+* @param {Object} actorData   Actor data being migrated.
+* @param {Object} updateData  Existing updates being applied to actor. *Will be mutated.*
+* @returns {Object}           Modified version of update data.
 * @private
 */
 function _migrateHazardSpeed(actorData, updateData) {
@@ -1014,9 +1014,9 @@ function _migrateHazardSpeed(actorData, updateData) {
 
 /**
 * Migrate actors missing marker key (v0.6.13)
-* @param {object} actorData   Actor data being migrated.
-* @param {object} updateData  Existing updates being applied to actor. *Will be mutated.*
-* @returns {object}           Modified version of update data.
+* @param {Object} actorData   Actor data being migrated.
+* @param {Object} updateData  Existing updates being applied to actor. *Will be mutated.*
+* @returns {Object}           Modified version of update data.
 * @private
 */
 function _migrateActorMarker(actorData, updateData) {
@@ -1030,9 +1030,9 @@ function _migrateActorMarker(actorData, updateData) {
 
 /**
  * Add keywords & customKeywords properties to features
- * @param {object} itemData   Item data being migrated.
- * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} itemData   Item data being migrated.
+ * @param {Object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateFeatureKeywords(itemData, updateData) {
@@ -1049,9 +1049,9 @@ function _migrateFeatureKeywords(itemData, updateData) {
 
 /**
  * Move `chatFlavor` field to `description.chat`
- * @param {object} itemData   Item data being migrated.
- * @param {object} updateData  Existing updates being applied to item. *Will be mutated.*
- * @returns {object}           Modified version of update data.
+ * @param {Object} itemData   Item data being migrated.
+ * @param {Object} updateData  Existing updates being applied to item. *Will be mutated.*
+ * @returns {Object}           Modified version of update data.
  * @private
  */
 function _migrateFlavourText(itemData, updateData) {

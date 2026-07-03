@@ -175,7 +175,7 @@ export default class Item4e extends Item {
 
 	/**
 	 * Migrate source data from old feat-types to feature type
-	 * @param {object} data	The source data from which to migrate, mutated here
+	 * @param {Object} data	The source data from which to migrate, mutated here
 	 */
 	static #migrateOldFeatures(data) {
 		const sourceType = data.type;
@@ -232,7 +232,7 @@ export default class Item4e extends Item {
 
 	/**
 	 * Add an identifer if one doesn't already exist
-	 * @param {object} data	The source data from which to migrate, mutated here
+	 * @param {Object} data	The source data from which to migrate, mutated here
 	 */
 	static #migrateIdentifier(data) {
 		if (data.name && !("identifier" in data.system)) {
@@ -245,7 +245,7 @@ export default class Item4e extends Item {
 	/**
 	 * Pre-creation logic for setting up name of Items.
 	 *
-	 * @param {object} data       Data for the newly created item.
+	 * @param {Object} data       Data for the newly created item.
 	 */ 
 	_onCreationName(data) {
 		if (data.system) return;
@@ -288,9 +288,9 @@ export default class Item4e extends Item {
 	/**
 	 * Pre-creation logic for the automatic configuration of owned equipment type Items.
 	 *
-	 * @param {object} data       Data for the newly created item.
+	 * @param {Object} data       Data for the newly created item.
 	 * @param {boolean} isNPC     Is this actor an NPC?
-	 * @returns {object}          Updates to apply to the item data.
+	 * @returns {Object}          Updates to apply to the item data.
 	 * @private
 	 */
 	_onCreateOwnedEquipment(data, isNPC) {
@@ -305,9 +305,9 @@ export default class Item4e extends Item {
 
 	/**
 	 * Pre-creation logic for the automatic configuration of owned weapon type Items.
-	 * @param {object} data       Data for the newly created item.
+	 * @param {Object} data       Data for the newly created item.
 	 * @param {boolean} isNPC     Is this actor an NPC?
-	 * @returns {object}          Updates to apply to the item data.
+	 * @returns {Object}          Updates to apply to the item data.
 	 * @private
 	 */
 
@@ -490,7 +490,7 @@ export default class Item4e extends Item {
 
 	/**
 	 * Does the item provide an amount of healing instead of conventional damage?
-	 * @return {boolean}
+	 * @returns {boolean}
 	 */
 	get isHealing() {
 		return (this.system.actionType === "heal") && this.system.damage.parts.length;
@@ -1049,7 +1049,7 @@ export default class Item4e extends Item {
 	 * @param {string} [messageMode]             The roll display mode with which to display (or not) the card
 	 * @param {boolean} [createMessage]       Whether to automatically create a chat message (if true) or simply return
 	 *                                        the prepared chat message data (if false).
-	 * @return {Promise}
+	 * @returns {Promise}
 	 */
 	async roll({ configureDialog = true, messageMode = null, createMessage = true, variance = {} } = {}) {
 		//console.debug(variance);
@@ -1195,7 +1195,7 @@ export default class Item4e extends Item {
 
 	/**
 	 * Post the item to chat without triggering macros, effect transfer, resource consumption etc., 
-	 * @return {Promise}
+	 * @returns {Promise}
 	 */
 	async toChat() {
 		const rollData = this.getRollData();
@@ -1283,7 +1283,7 @@ export default class Item4e extends Item {
 	 *
 	 * @param {boolean} isCard      Is the item card being played?
 	 * @param {boolean} isAttack    Is an attack roll being made?
-	 * @return {Promise<boolean>}   Can the item card or attack roll be allowed to proceed?
+	 * @returns {Promise<boolean>}   Can the item card or attack roll be allowed to proceed?
 	 * @private
 	 */
 	async _handleResourceConsumption({ isCard = false, isAttack = false } = {}, itemData) {
@@ -1361,7 +1361,7 @@ export default class Item4e extends Item {
 	/**
 	 * Additional rolling steps when rolling a feat-type item
 	 * @private
-	 * @return {boolean} whether the roll should be prevented
+	 * @returns {boolean} whether the roll should be prevented
 	 */
 	async _rollFeature(configureDialog) {
 		if (this.type !== "feature") throw new Error("Wrong Item type");
@@ -1415,7 +1415,7 @@ export default class Item4e extends Item {
 	/**
 	 * Prepare an object of chat data used to display a card for the Item in the chat log
 	 * @param {Object} htmlOptions    Options used by the TextEditor.enrichHTML function
-	 * @return {Object}               An object of chat data to render
+	 * @returns {Object}               An object of chat data to render
 	 */
 	async getChatData(htmlOptions = {}, variance = {}) {
 		const data = foundry.utils.duplicate(this.system);
@@ -1552,7 +1552,7 @@ export default class Item4e extends Item {
 
 	/**
 	 * Render a chat card for Spell type data
-	 * @return {Object}
+	 * @returns {Object}
 	 * @private
 	 */
 	_spellChatData(data, labels, props) {
@@ -1590,8 +1590,8 @@ export default class Item4e extends Item {
 	 * Place an attack roll using an item (weapon, feat, power, or equipment)
 	 * Rely upon the d20Roll logic for the core implementation
 	 *
-	 * @param {object} options        Roll options which are configured and provided to the d20Roll function
-	 * @return {Promise<Roll|null>}   A Promise which resolves to the created Roll instance
+	 * @param {Object} options        Roll options which are configured and provided to the d20Roll function
+	 * @returns {Promise<Roll|null>}   A Promise which resolves to the created Roll instance
 	 */
 	async rollAttack(options = {}) {
 		const itemData = this.getRollData({ variance: options.variance }).item;
@@ -2082,7 +2082,7 @@ export default class Item4e extends Item {
 	 * Place a damage roll using an item (weapon, feat, spell, or equipment)
 	 * Rely upon the damageRoll logic for the core implementation
 	 *
-	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
+	 * @returns {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	async rollDamage({ event, spellLevel = null, fastForward = undefined, variance = {} } = {}) {
 		const itemData = this.getRollData({ variance }).item;
@@ -2380,7 +2380,7 @@ export default class Item4e extends Item {
 	/* -------------------------------------------- */
 	/**
 	 *
-	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
+	 * @returns {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollHealing({ event, spellLevel = null, fastForward = undefined } = {}) {
 		const itemData = this.system;
@@ -2508,7 +2508,7 @@ export default class Item4e extends Item {
 	 * Place an attack roll using an item (weapon, feat, spell, or equipment)
 	 * Rely upon the d20Roll logic for the core implementation
 	 *
-	 * @return {Promise.<Roll>}   A Promise which resolves to the created Roll instance
+	 * @returns {Promise.<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	async rollFormula(options = {}) {
 		if (!this.system.formula) {
@@ -2537,7 +2537,7 @@ export default class Item4e extends Item {
 	/**
 	 * Use a consumable item, deducting from the quantity or charges of the item.
 	 * @param {boolean} configureDialog   Whether to show a configuration dialog
-	 * @return {boolean}                  Whether further execution should be prevented
+	 * @returns {boolean}                  Whether further execution should be prevented
 	 * @private
 	 */
 	async _rollConsumable(configureDialog) {
@@ -2604,7 +2604,7 @@ export default class Item4e extends Item {
 
 	/**
 	 * Perform an ability recharge test for an item which uses the d6 recharge mechanic
-	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
+	 * @returns {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	async rollRecharge() {
 		const data = this.system;
@@ -2631,7 +2631,7 @@ export default class Item4e extends Item {
 	/**
 	 * Roll a Tool Check. Rely upon the d20Roll logic for the core implementation
 	 * @param {Object} options   Roll configuration options provided to the d20Roll function
-	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
+	 * @returns {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollToolCheck(options = {}) {
 		return this.rollToolOrRitualCheck("tool", "DND4E.ToolCheck", options);
@@ -2640,7 +2640,7 @@ export default class Item4e extends Item {
 	/**
 	 * Roll a Ritual Check. Rely upon the d20Roll logic for the core implementation
 	 * @param {Object} options   Roll configuration options provided to the d20Roll function
-	 * @return {Promise<Roll>}   A Promise which resolves to the created Roll instance
+	 * @returns {Promise<Roll>}   A Promise which resolves to the created Roll instance
 	 */
 	rollRitualCheck(options = {}) {
 		return this.rollToolOrRitualCheck("ritual", "DND4E.RitualCheck", options);
@@ -3163,7 +3163,7 @@ export default class Item4e extends Item {
 	/**
 	 * Get the Actor which is the author of a chat card
 	 * @param {HTMLElement} card    The chat card being used
-	 * @return {Actor4e|null}         The Actor entity or null
+	 * @returns {Actor4e|null}         The Actor entity or null
 	 * @private
 	 */
 	static _getChatCardActor(card) {
@@ -3189,7 +3189,7 @@ export default class Item4e extends Item {
 	/**
 	 * Get the Actor which is the author of a chat card
 	 * @param {HTMLElement} card    The chat card being used
-	 * @return {Array<Actor4e>}      An Array of Actor entities, if any
+	 * @returns {Array<Actor4e>}      An Array of Actor entities, if any
 	 * @private
 	 */
 	static _getChatCardTargets(card) {
@@ -3418,8 +3418,8 @@ export default class Item4e extends Item {
 
 	/**
 	 * Trigger a render on all sheets for items within which this item is contained.
-	 * @param {object} [options={}]
-	 * @param {object} [options.rendering]        Additional rendering options.
+	 * @param {Object} [options={}]
+	 * @param {Object} [options.rendering]        Additional rendering options.
 	 * @param {string} [options.formerContainer]  UUID of the former container if this item was moved.
 	 * @protected
 	 */
@@ -3495,12 +3495,12 @@ export default class Item4e extends Item {
 	 * Prepare creation data for the provided items and any items contained within them. The data created by this method
 	 * can be passed to `createDocuments` with `keepId` always set to true to maintain links to container contents.
 	 * @param {Item4e[]} items								Items to create.
-	 * @param {object} [context={}]							Context for the item's creation.
+	 * @param {Object} [context={}]							Context for the item's creation.
 	 * @param {Item4e} [context.container]					Container in which to create the item.
 	 * @param {boolean} [context.keepId=false]				Should IDs be maintained?
 	 * @param {Function} [context.transformAll]				Method called on provided items and their contents.
 	 * @param {Function} [context.transformFirst]			Method called only on provided items.
-	 * @returns {Promise<object[]>}							Data for items to be created.
+	 * @returns {Promise<Object[]>}							Data for items to be created.
 	 */
 	static async createWithContents(items, { container, keepId = false, transformAll, transformFirst } = {}) {
 		let depth = 0;

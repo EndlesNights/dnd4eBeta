@@ -4,9 +4,10 @@ const { ArrayField, BooleanField, NumberField, StringField, SchemaField } = foun
 
 export default class EquipmentData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
-	/** @override */
+	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
 
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),

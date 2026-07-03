@@ -18,7 +18,8 @@ export default class ShortRestDialog extends DocumentSheet4e {
 		},
 		tag: "form",
 	};
-	
+
+	/** @inheritDoc */
 	get title() {
 		return `${this.document.name} - ${_loc("DND4E.ShortRest")}`;
 	}
@@ -32,7 +33,7 @@ export default class ShortRestDialog extends DocumentSheet4e {
 		},
 	};
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		foundry.utils.mergeObject(context, {
@@ -44,6 +45,11 @@ export default class ShortRestDialog extends DocumentSheet4e {
 		return context;
 	}
 	
+	/**
+     * @param {Event} event
+     * @param {Object} form
+     * @param {Object} formData
+     */
 	static async #onSubmit(event, form, formData) {
 		const restOptions = foundry.utils.expandObject(formData.object);
 

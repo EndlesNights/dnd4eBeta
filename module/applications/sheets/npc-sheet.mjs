@@ -55,6 +55,7 @@ export default class ActorSheet4eNPC extends ActorSheet4e {
 		},
 	};
 
+	/** @inheritDoc */
 	_configureRenderOptions(options) {
 		super._configureRenderOptions(options);
 		if (this.document.limited) {

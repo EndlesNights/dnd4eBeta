@@ -49,7 +49,7 @@ export default class Actor4e extends Actor {
 		}
 	}
 
-	/** @override */
+	/** @inheritDoc */
 	async update(data, options = {}) {
 		if (!data) { return super.update(data, options); }
 		
@@ -125,7 +125,7 @@ export default class Actor4e extends Actor {
 
 	/**
 	 * Flash ring & display changes to health as scrolling combat text.
-	 * @param {object} changes          Object of changes to hit points.
+	 * @param {Object} changes          Object of changes to hit points.
 	 * @param {number} changes.hp       Changes to `hp.value`.
 	 * @param {number} changes.temp     The change to `hp.temp`.
 	 * @param {number} changes.total    The total change to hit points.
@@ -1758,7 +1758,7 @@ export default class Actor4e extends Actor {
    * @param {number} value        The target attribute value
    * @param {boolean} isDelta     Whether the number represents a relative change (true) or an absolute change (false)
    * @param {boolean} isBar       Whether the new value is part of an attribute bar, or just a direct value
-   * @return {Promise}
+   * @returns {Promise}
    */
 	async modifyTokenAttribute(attribute, value, isDelta = false, isBar = true) {
 		if ((attribute === "attributes.hp") && isDelta) {
@@ -1799,7 +1799,7 @@ export default class Actor4e extends Actor {
    * Prompt the user for input regarding Advantage/Disadvantage and any Situational Bonus
    * @param {string} skillId      The skill id (e.g. "ins")
    * @param {Object} options      Options which configure how the skill check is rolled
-   * @return {Promise.<Roll>}   A Promise which resolves to the created Roll instance
+   * @returns {Promise.<Roll>}   A Promise which resolves to the created Roll instance
    */
 	rollSkill(skillId, options = {}) {
 		const skl = this.system.skills[skillId];
@@ -1831,7 +1831,7 @@ export default class Actor4e extends Actor {
    * Prompt the user for input regarding Advantage/Disadvantage and any Situational Bonus
    * @param {String} abilityId    The ability ID (e.g. "str")
    * @param {Object} options      Options which configure how ability tests are rolled
-   * @return {Promise<Roll>}      A Promise which resolves to the created Roll instance
+   * @returns {Promise<Roll>}      A Promise which resolves to the created Roll instance
    */
 	rollAbility(abilityId, options = {}) {
 		const label = abilityId; //CONFIG.DND4E.abilities[abilityId];
@@ -2224,7 +2224,7 @@ export default class Actor4e extends Actor {
 	/**
 	 * Appying Second Wind effect to actor.
 	 * @param {MouseEvent} event	The originating click event
-	 * @param {object} options		Options which can hold addtional bonuses
+	 * @param {Object} options		Options which can hold addtional bonuses
 	 */
 	async secondWind(event, options) {
 		let r = await utils.rollWithErrorHandling(options.bonus, { errorMessageKey: "DND4E.InvalidHealingBonus" });
@@ -2319,7 +2319,7 @@ export default class Actor4e extends Actor {
 		return this.createEmbeddedDocuments("Item", [itemData], options);
 	}
 
-	/** @override */
+	/** @inheritDoc */
 	async createEmbeddedDocuments(embeddedName, data = [], context = {}) {
 		if (embeddedName === "Item") {
 			if (!this.isCharacter) {

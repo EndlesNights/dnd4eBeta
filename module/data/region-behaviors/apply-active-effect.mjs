@@ -13,12 +13,12 @@ const { DocumentUUIDField, NumberField, SetField, StringField } = foundry.data.f
  */
 export default class ApplyActiveEffect4eRegionBehaviorType extends foundry.data.regionBehaviors.RegionBehaviorType {
 
-	/** @override */
+	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.RegionBehaviors.ApplyActiveEffect"];
 
 	/* ---------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	static defineSchema() {
 		const dispositions = { ...foundry.applications.sheets.TokenConfig.TOKEN_DISPOSITIONS };
 		delete dispositions[CONST.TOKEN_DISPOSITIONS.SECRET];
@@ -105,7 +105,7 @@ export default class ApplyActiveEffect4eRegionBehaviorType extends foundry.data.
 
 	/* ---------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	static events = {
 		[CONST.REGION_EVENTS.TOKEN_ENTER]: this.#onTokenEnter,
 		[CONST.REGION_EVENTS.TOKEN_EXIT]: this.#onTokenExit,

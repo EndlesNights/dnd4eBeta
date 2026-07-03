@@ -1,3 +1,6 @@
+/**
+ * Adds custom skills to CONFIG.DND4E.skills.
+ */
 export default function customSkillSetup() {
 	CONFIG.DND4E.coreSkills = foundry.utils.deepClone(CONFIG.DND4E.skills); 
 

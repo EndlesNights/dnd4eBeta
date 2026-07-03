@@ -35,19 +35,21 @@ export default class TraitSelector extends foundry.applications.api.HandlebarsAp
 	/* -------------------------------------------- */
 
 	/**
-   * Return a reference to the target attribute
-   * @type {String}
-   */
+     * Returns a reference to the target attribute.
+     * @type {string}
+     */
 	get attribute() {
 		return this.options.name;
 	}
 
+	/** @inheritDoc */
 	get title() {
 		return `${this.document.name} - ${this.options.window.title}`;
 	}
+
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 
@@ -96,7 +98,7 @@ export default class TraitSelector extends foundry.applications.api.HandlebarsAp
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	_processFormData(event, form, formData) {
 		const updateData = {};
 
@@ -128,6 +130,11 @@ export default class TraitSelector extends foundry.applications.api.HandlebarsAp
 
 	/* -------------------------------------------- */
 
+	/**
+     * 
+     * @param {Event} event 
+     * @param {HTMLElement} target 
+     */
 	static #onToggle(event, target) {
 		event.preventDefault();
 		event.stopPropagation();

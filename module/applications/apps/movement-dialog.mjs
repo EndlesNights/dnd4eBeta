@@ -24,6 +24,7 @@ export default class MovementDialog extends DocumentSheet4e {
 		tag: "form",
 	};
 
+	/** @inheritDoc */
 	get title() {
 		return `${this.document.name} - ${_loc("DND4E.SpeedAndMove")}`;
 	}
@@ -37,7 +38,7 @@ export default class MovementDialog extends DocumentSheet4e {
 		},
 	};
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		context.config = CONFIG.DND4E;
@@ -50,6 +51,11 @@ export default class MovementDialog extends DocumentSheet4e {
 		};
 	}
 
+	/**
+     * @param {Event} event
+     * @param {Object} form
+     * @param {Object} formData
+     */
 	static async #onSubmit(event, form, formData) {
 		const updateData = foundry.utils.expandObject(formData.object);
 		this.document.update(updateData);

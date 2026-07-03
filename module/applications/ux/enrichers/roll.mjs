@@ -319,7 +319,7 @@ async function enrichDamageHealing(parsedConfig, label, options) {
 /**
  * Create the combined dataset for the target button and any parent groups.
  * @param {HTMLElement} target  Button that was clicked.
- * @returns {object}
+ * @returns {Object}
  */
 function getRollActionDataset(target) {
 	return {
@@ -358,7 +358,7 @@ export async function handleRoll(event, target) {
 
 /**
  * Helper function that constructs the check roll.
- * @param {object} config
+ * @param {Object} config
  * @param {PointerEvent} event
  */
 async function rollCheck(config, event) {
@@ -386,7 +386,7 @@ async function rollCheck(config, event) {
 
 /**
  * Helper function that constructs the attack roll.
- * @param {object} config
+ * @param {Object} config
  * @param {PointerEvent} event
  */
 async function rollAttack(config, event) {
@@ -467,7 +467,7 @@ async function rollAttack(config, event) {
 
 /**
  * Helper function that constructs the attack roll.
- * @param {object} config
+ * @param {Object} config
  * @param {PointerEvent} event
  */
 async function rollDamageHealing(config, event) {
@@ -593,7 +593,7 @@ async function requestCheck(link, event) {
 
 /**
  * Create a label for a roll message.
- * @param {object} config  Configuration data.
+ * @param {Object} config  Configuration data.
  * @returns {string}
  */
 function formatCheckLabel(config) {
@@ -617,7 +617,7 @@ function formatCheckLabel(config) {
 
 /**
  * Create a tooltip for a roll message.
- * @param {object} config  Configuration data.
+ * @param {Object} config  Configuration data.
  * @returns {string}
  */
 function formatTooltip(config) {
@@ -649,7 +649,7 @@ function formatTooltip(config) {
 
 /**
  * Create a label for a roll message.
- * @param {object} config  Configuration data.
+ * @param {Object} config  Configuration data.
  * @returns {string}
  */
 function formatCheckFlavor(config) {
@@ -674,8 +674,8 @@ function formatCheckFlavor(config) {
 
 /**
  * Create the buttons for a check requested in chat.
- * @param {object} dataset
- * @returns {object[]}
+ * @param {Object} dataset
+ * @returns {Object[]}
  */
 function createCheckRequestButtons(dataset) {
 	const skillsOrAbilities = dataset.skillOrAbility.split(",");
@@ -704,8 +704,8 @@ function createCheckRequestButtons(dataset) {
 
 /**
  * Create a button for a chat request.
- * @param {object} dataset
- * @returns {object}
+ * @param {Object} dataset
+ * @returns {Object}
  */
 function createRequestButton(dataset) {
 	const baseDataset = { ...dataset };

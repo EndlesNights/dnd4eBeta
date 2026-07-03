@@ -5,6 +5,7 @@ import SensesTemplate from "./senses.mjs";
 const { HTMLField, SchemaField } = foundry.data.fields;
 
 export default class CreatureTemplate extends foundry.abstract.DataModel {
+	/** @inheritDoc */
 	static defineSchema() {
 		const sensesSchema = SensesTemplate.defineSchema();
 		return {

@@ -3,6 +3,7 @@ import { BonusField, Dnd4eBonusesField } from "../fields/_module.mjs";
 const { BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
 export default class AttributesField {
+	/** Getter for attribute data. */
 	static get common() {
 		const numberConfig = { required: true, nullable: false, integer: true };
 		return {

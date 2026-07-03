@@ -1,6 +1,6 @@
 export default class ChatMessage4e extends ChatMessage {
 
-	/** @override */
+	/** @inheritDoc */
 	getRollData() {
 		const itemUuid = this.flags?.dnd4e?.itemUuid;
 		const itemData = this.flags?.dnd4e?.itemData;

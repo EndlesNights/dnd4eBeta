@@ -3,6 +3,7 @@ import { BonusField, Dnd4eBonusesField } from "../fields/_module.mjs";
 const { BooleanField, NumberField, StringField } = foundry.data.fields;
 
 export default class DetailsField {
+	/** Getter for creature data. */
 	static get creature() {
 		return {
 			size: new StringField({ initial: "med" }, { label: "DND4E.Size" }),
@@ -19,6 +20,7 @@ export default class DetailsField {
 		};
 	}
 
+	/** Getter for combatant data. */
 	static get combatant() {
 		const numberConfig = { required: true, nullable: false, integer: true };
 		return {

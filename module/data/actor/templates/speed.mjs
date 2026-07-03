@@ -22,6 +22,7 @@ class MovementField extends SchemaField {
 }
 
 export default class SpeedTemplate extends foundry.abstract.DataModel {
+	/** Getter for moveoment data. */
 	static get common() {
 		const numberConfig = { required: true, nullable: true, min: 0, step: 0.1, initial: 0 };
 		return {
@@ -46,6 +47,8 @@ export default class SpeedTemplate extends foundry.abstract.DataModel {
 			notes: new StringField({ initial: "" }),
 		};
 	}
+
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			movement: new SchemaField(this.common, { label: "DND4E.Movement" }),
