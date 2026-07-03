@@ -676,6 +676,7 @@
 "DND4E.LaunchOrderPre": "Pre-Item-Use",
 "DND4E.LaunchOrderPost": "Post-Item-Use",
 "DND4E.LaunchOrderSub": "Substitute-Item-Use",
+"DND4E.LaunchOrderHookComBon": "Hook: Evaluate Common Attack Bonuses",
 "DND4E.Level": "Level",
 "DND4E.LevelScaling": "Level Scaling",
 "DND4E.LimitedUses": "Limited Uses",
