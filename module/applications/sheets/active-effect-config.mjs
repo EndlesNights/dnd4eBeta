@@ -246,9 +246,9 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 	* Handle adding a new status to the statuses array - adapted from _addEffectChange
 	*/
 	async _addEffectStatus() {
-		const i = this.document.statuses.size;
+		const i = this.document._source.statuses.size;
 		return this.submit({ preventClose: true, updateData: {
-			statuses: [...this.document.statuses, "none"],
+			statuses: [...this.document._source.statuses, "none"],
 		} });
 	}
 
