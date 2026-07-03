@@ -120,7 +120,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 
 	}
 
-	/** @override */
+	/** @inheritDoc */
 	isExpiryEvent(event, context) {
 		const expiry = this.duration.expiry;
 		if (event !== expiry) return false;
@@ -199,6 +199,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 		return false;
 	}
 
+	/** @inheritDoc */
 	_prepareDuration() {
 		const duration = super._prepareDuration();
 		const durationType = this.system.durationType;
@@ -211,7 +212,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 	/* -------------------------------------------- */
 
 	/**
-	 * @override
+	 * @inheritDoc
 	 * Format a number of rounds and turns into a human-readable duration label
 	 * @param {number} rounds   The number of rounds
 	 * @param {number} turns    The number of turns
@@ -225,6 +226,10 @@ export default class ActiveEffect4e extends ActiveEffect {
 		return CONFIG.DND4E.durationType[durationType].label;
 	}
 
+	/**
+     * Gets whether or not the effect can be ended on a save.
+     * @returns {boolean}
+     */
 	_getIsSave() {
 		return this.system.durationType === "saveEnd";
 	}
@@ -234,7 +239,7 @@ export default class ActiveEffect4e extends ActiveEffect {
 	/**
 	 * Prepare the data structure for Active Effects which are currently applied to an Actor or Item.
 	 * @param {ActiveEffect[]} effects    The array of Active Effect instances to prepare sheet data for
-	 * @returns {object}                  Data for rendering
+	 * @returns {Object}                  Data for rendering
 	 */
 	static prepareActiveEffectCategories(effects) {
 		// Define effect header categories

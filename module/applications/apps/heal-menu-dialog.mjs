@@ -3,7 +3,7 @@ import * as utils from "../../utils/utils.mjs";
 
 export default class HealMenuDialog extends DocumentSheet4e {
 
-	/** @override */
+	/** @inheritDoc */
 	static DEFAULT_OPTIONS = {
 		id: "heal-menu-dialog",
 		classes: ["dnd4e", "standard-form", "default"],
@@ -30,6 +30,7 @@ export default class HealMenuDialog extends DocumentSheet4e {
 		},
 	};
 
+	/** @inheritDoc */
 	get title() {
 		return `${this.document.name} - ${_loc("DND4E.Healing")}`;
 	}
@@ -43,7 +44,7 @@ export default class HealMenuDialog extends DocumentSheet4e {
 		},
 	};
 
-	/** @override */
+	/** @inheritDoc */
 	_prepareContext(options) {
 		const hpMax = this.document.system.attributes.hp.value === this.document.system.attributes.hp.max;
 		const surgeValue = this.document.system.details.surgeValue;
@@ -59,6 +60,7 @@ export default class HealMenuDialog extends DocumentSheet4e {
 		};
 	}
 
+	/** @inheritDoc */
 	_onRender(context, options) {
 		if (!this.document.testUserPermission(game.user, this.options.editPermission)) return;
 		HealMenuDialog.#setButtonEnabledState();
@@ -117,7 +119,11 @@ export default class HealMenuDialog extends DocumentSheet4e {
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/**
+     * @param {Event} event
+     * @param {Object} form
+     * @param {Object} formData
+     */
 	static async #onSubmit(event, form, formData) {
 		const updateData = {};
 		const healData = foundry.utils.expandObject(formData.object);

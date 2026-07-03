@@ -7,7 +7,7 @@
 /**
  * Parse an enricher string into a configuration object.
  * @param {string} match  Matched configuration string.
- * @param {object} [options={}]
+ * @param {Object} [options={}]
  * @param {boolean} [options.multiple=false]  Support splitting configuration by "&" into multiple sub-configurations.
  *                                            If set to `true` then an array of configs will be returned.
  * @returns {ParsedConfig[] | ParsedConfig} Array if Multiple is true, else object.
@@ -32,8 +32,8 @@ export function parseConfig(match = "", { multiple = false } = {}) {
 /**
  * Create a link.
  * @param {HTMLElement|string} label                           Label to display.
- * @param {object} [dataset={}]                    Data that will be added to the link for the rolling method.
- * @param {object} [options={}]
+ * @param {Object} [dataset={}]                    Data that will be added to the link for the rolling method.
+ * @param {Object} [options={}]
  * @param {boolean} [options.classes="roll-link"]  Class to add to the link.
  * @param {string} [options.tag="a"]               Tag to use for the main link.
  * @param {string} [options.icon]                  An icon to stick at the start of the link.
@@ -56,7 +56,7 @@ export function createLink(label, dataset = {}, { classes = "roll-link", tag = "
 /**
  * Add a dataset object to the provided element.
  * @param {HTMLElement} element  Element to modify.
- * @param {object} dataset       Data properties to add.
+ * @param {Object} dataset       Data properties to add.
  * @private
  */
 export function addDataset(element, dataset) {

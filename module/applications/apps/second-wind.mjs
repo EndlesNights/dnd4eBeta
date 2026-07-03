@@ -19,7 +19,8 @@ export default class SecondWindDialog extends DocumentSheet4e {
 		},
 		tag: "form",
 	};
-	
+
+	/** @inheritDoc */
 	get title() {
 		return `${this.document.name} - ${_loc("DND4E.SecondWind")}`;
 	}
@@ -33,7 +34,7 @@ export default class SecondWindDialog extends DocumentSheet4e {
 		},
 	};
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		const extra = this.document.system.details.secondwindbon.custom.split(";");
@@ -47,10 +48,14 @@ export default class SecondWindDialog extends DocumentSheet4e {
 		return context;
 	}
 
+	/** @inheritDoc */
 	_onRender(context, options) {
 		this._setButtonEnabledState();
 	}
 
+	/**
+     * Enables the second wind button.
+     */
 	_setButtonEnabledState() {
 		let swButtonEnabled = true;
 		let swButtonText = _loc("DND4E.SecondWind");
@@ -60,6 +65,12 @@ export default class SecondWindDialog extends DocumentSheet4e {
 			swButtonText = _loc("DND4E.HealingMenuOutOfSurges");
 		}
 
+		/**
+         * Helper function to set the enabled state of a button.
+         * @param {string} buttonId 
+         * @param {boolean} enabled 
+         * @param {string} text 
+         */
 		function setButtonEnabled(buttonId, enabled, text) {
 			const button = document.getElementsByName(buttonId)[0];
 			button.innerHTML = text;
@@ -73,6 +84,11 @@ export default class SecondWindDialog extends DocumentSheet4e {
 		setButtonEnabled("secondWindButton", swButtonEnabled, swButtonText);
 	}
 
+	/**
+     * @param {Event} event
+     * @param {Object} form
+     * @param {Object} formData
+     */
 	static async #onSubmit(event, form, formData) {
 		const secondWindData = foundry.utils.expandObject(formData.object);
 

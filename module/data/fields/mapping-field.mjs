@@ -57,7 +57,7 @@ export default class MappingField extends foundry.data.fields.TypedObjectField {
 	/**
    * Get the initial value for the provided key.
    * @param {string} key       Key within the object being built.
-   * @param {object} [object]  Any existing mapping data.
+   * @param {Object} [object]  Any existing mapping data.
    * @returns {*}              Initial value based on provided field type.
    */
 	_getInitialValueForKey(key, object) {
@@ -67,7 +67,7 @@ export default class MappingField extends foundry.data.fields.TypedObjectField {
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	initialize(value, model, options = {}) {
 		if (!value) return value;
 		const obj = {};

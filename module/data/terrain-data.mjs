@@ -17,7 +17,7 @@ export default class TerrainData4e extends foundry.data.TerrainData {
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	static resolveTerrainEffects(effects) {
 		let data = super.resolveTerrainEffects(effects);
 		if (!effects.some(e => e.name === "difficultTerrain")) return data;
@@ -31,7 +31,7 @@ export default class TerrainData4e extends foundry.data.TerrainData {
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	equals(other) {
 		if (!(other instanceof TerrainData4e)) return false;
 		return (this.difficulty === other.difficulty)

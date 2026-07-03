@@ -5,6 +5,7 @@ import { AttributesField, CombatantTemplate, CreatureTemplate, DetailsField, Spe
 const { BooleanField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
 export default class NPCData extends foundry.abstract.TypeDataModel {
+	/** @inheritDoc */
 	static defineSchema() {
 		const { details: creatureDetails, ...creatureSchema } = CreatureTemplate.defineSchema();
 		const { details: combatantDetails, defences, ...combatantSchema } = CombatantTemplate.defineSchema();

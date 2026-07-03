@@ -1,6 +1,7 @@
 const { BooleanField, DocumentUUIDField, ForeignDocumentField, NumberField, SetField, StringField } = foundry.data.fields;
 
 export default class PhysicalItemTemplate extends foundry.abstract.DataModel {
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			quantity: new NumberField({ min: 0, initial: 1, integer: true }),

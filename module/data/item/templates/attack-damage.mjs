@@ -4,6 +4,7 @@ import DamagePartsField from "../fields/damage-parts-field.mjs";
 const { ArrayField, BooleanField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
 export default class AttackAndDamageTemplate extends foundry.abstract.DataModel {
+	/** Getter for attack template. */
 	static get attack() {
 		return {
 			shareAttackRoll: new BooleanField({ initial: false }),
@@ -21,6 +22,8 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
 			formula: new FormulaField({ initial: "@wepAttack + @powerMod + @lvhalf" }),
 		};
 	}
+
+	/** Getter for damage template. */
 	static get damage() {
 		return {
 			shareDamageRoll: new BooleanField({ initial: true }),
@@ -36,6 +39,8 @@ export default class AttackAndDamageTemplate extends foundry.abstract.DataModel 
 			healFormula: new FormulaField({ initial: "" }),
 		};
 	}
+    
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			attack: new SchemaField(this.attack),

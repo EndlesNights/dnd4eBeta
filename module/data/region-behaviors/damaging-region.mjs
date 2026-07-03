@@ -15,12 +15,12 @@ import * as utils from "../../utils/utils.mjs";
  */
 export default class DamagingRegionRegionBehaviorType extends foundry.data.regionBehaviors.RegionBehaviorType {
 
-	/** @override */
+	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.RegionBehaviors.DamagingRegion"];
 
 	/* ---------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	static defineSchema() {
 		const dispositions = { ...foundry.applications.sheets.TokenConfig.TOKEN_DISPOSITIONS };
 		delete dispositions[CONST.TOKEN_DISPOSITIONS.SECRET];
@@ -41,7 +41,7 @@ export default class DamagingRegionRegionBehaviorType extends foundry.data.regio
 	/*  Methods                                 */
 	/* ---------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	async _handleRegionEvent(event) {
 		if (!this.damage) return;
 

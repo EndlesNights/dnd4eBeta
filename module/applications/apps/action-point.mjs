@@ -19,7 +19,8 @@ export default class ActionPointDialog extends DocumentSheet4e {
 		},
 		tag: "form",
 	};
-	
+
+	/** @inheritDoc */
 	get title() {
 		return `${this.document.name} - ${_loc("DND4E.ActionPoint")}`;
 	}
@@ -33,7 +34,7 @@ export default class ActionPointDialog extends DocumentSheet4e {
 		},
 	};
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		const extra = this.document.system.actionpoints.custom !== "" ? this.document.system.actionpoints.custom.split("\n") : "";
@@ -47,6 +48,11 @@ export default class ActionPointDialog extends DocumentSheet4e {
 		return context;
 	}
 
+	/**
+     * @param {Event} event
+     * @param {Object} form
+     * @param {Object} formData
+     */
 	static async #onSubmit(event, form, formData) {
 		const options = this.options;
 		this.document.actionPoint(event, options);

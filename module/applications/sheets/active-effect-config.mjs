@@ -146,6 +146,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 
 	/* ----------------------------------------- */
 
+	/** @inheritDoc */
 	async _onRender(context, options) {
 		await super._onRender(context, options);
 		this.element.querySelectorAll(".refreshes").forEach(el => el.addEventListener("change", this._refresh.bind(this)));
@@ -310,6 +311,7 @@ export default class ActiveEffectConfig4e extends foundry.applications.sheets.Ac
 
 	/* ----------------------------------------- */
 
+	/** @inheritDoc */
 	_prepareSubmitData(event, form, formData, updateData) {
 		const submitData = this._processFormData(event, form, formData);
 		if (updateData) {

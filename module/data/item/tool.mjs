@@ -4,9 +4,10 @@ const { StringField } = foundry.data.fields;
 
 export default class ToolData extends foundry.abstract.TypeDataModel {
 	/* -------------------------------------------- */
-	/** @override */
+	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.SOURCE"];
 
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			...ItemDescriptionTemplate.defineSchema(),

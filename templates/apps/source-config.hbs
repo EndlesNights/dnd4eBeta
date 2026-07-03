@@ -6,7 +6,7 @@
       <label>{{ localize "DND4E.SOURCE.FIELDS.source.book.label" }}</label>
       <div class="form-fields">
         <input type="text" name="system.source.book" value="{{ source.book }}"
-        placeholder="{{ data.bookPlaceholder }}">
+          placeholder="{{ data.bookPlaceholder }}">
       </div>
     </div>
     {{ formField fields.page value=source.page }}
@@ -15,18 +15,18 @@
 
   <fieldset>
     <legend>{{ localize "DND4E.SOURCE.FIELDS.source.identity" }}</legend>
-  {{#if identifier}}
+    {{#if identifier}}
     {{ formField identifier.field value=identifier.value placeholder=identifier.placeholder localize=true }}
-  {{/if}}
+    {{/if}}
     {{ formField fields.revision value=source.revision }}
-  {{#if sourceAnchor}}
+    {{#if sourceAnchor}}
     <div class="form-group">
       <label>{{ localize "DND4E.SOURCE.FIELDS.source.uuid.label" }} <i data-tooltip="{{localize 'DND4E.SOURCE.FIELDS.source.uuid.info'}}" class="fa-solid fa-circle-question"></i></label>
       <div class="source-uuid form-fields object-link-field">
         {{{ sourceAnchor }}}
       </div>
     </div>
-  {{/if}}
+    {{/if}}
   </fieldset>
 
 </div>

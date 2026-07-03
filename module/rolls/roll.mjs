@@ -22,7 +22,7 @@ export default class Roll4e extends Roll {
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	async evaluate(options = {}) {
 		this.processBonuses();
 		return super.evaluate(options);
@@ -30,7 +30,7 @@ export default class Roll4e extends Roll {
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	evaluateSync(options = {}) {
 		this.processBonuses();
 		return super.evaluateSync(options);
@@ -38,6 +38,9 @@ export default class Roll4e extends Roll {
 
 	/* -------------------------------------------- */
 
+	/**
+     * Processes this roll's bonuses and adds them to its formula, obeying type and stacking rules.
+     */
 	processBonuses() {
 		for (const [type, bonuses] of Object.entries(this.options.bonuses)) {
 			if (bonuses.length) {

@@ -1,6 +1,7 @@
 const { SchemaField, StringField } = foundry.data.fields;
 
 export default class ItemMacroTemplate extends foundry.abstract.DataModel {
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			macro: new SchemaField({

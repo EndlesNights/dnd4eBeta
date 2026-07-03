@@ -20,6 +20,7 @@ export default class DeathSaveDialog extends DocumentSheet4e {
 		tag: "form",
 	};
 
+	/** @inheritDoc */
 	get title() {
 		return `${this.document.name} - ${_loc("DND4E.DeathSaveLongform")}`;
 	}
@@ -33,7 +34,7 @@ export default class DeathSaveDialog extends DocumentSheet4e {
 		},
 	};
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		foundry.utils.mergeObject(context, {
@@ -46,6 +47,11 @@ export default class DeathSaveDialog extends DocumentSheet4e {
 		return context;
 	}
 
+	/**
+     * @param {Event} event
+     * @param {Object} form
+     * @param {Object} formData
+     */
 	static async #onSubmit(event, form, formData) {
 		const saveData = foundry.utils.expandObject(formData.object);
 		saveData.messageMode = Object.keys(CONFIG.ChatMessage.modes)[saveData.messageMode];

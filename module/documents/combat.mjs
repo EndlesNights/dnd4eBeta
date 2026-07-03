@@ -1,6 +1,7 @@
 import * as utils from "../utils/utils.mjs";
 
 export default class Combat4e extends Combat {
+	/** @inheritDoc */
 	async nextTurn() {
 		const currentTurn = this.turn;	
 		const nextTurn = currentTurn + 1 < this.turns.length ? currentTurn + 1 : 0;

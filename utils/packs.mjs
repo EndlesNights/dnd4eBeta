@@ -55,8 +55,8 @@ function packageCommand() {
 
 /**
  * Removes unwanted flags, permissions, and other data from entries before extracting or compiling.
- * @param {object} data                           Data for a single entry to clean.
- * @param {object} [options={}]
+ * @param {Object} data                           Data for a single entry to clean.
+ * @param {Object} [options={}]
  * @param {boolean} [options.clearSourceId=true]  Should the core sourceId flag be deleted.
  * @param {number} [options.ownership=0]          Value to reset default ownership to.
  */

@@ -29,6 +29,7 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 		tag: "form",
 	};
 
+	/** @inheritDoc */
 	get title() {
 		return `${this.document.name} - ${_loc("DND4E.SavingThrow")}`;
 	}
@@ -42,7 +43,7 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 		},
 	};
 
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		const saveOptions = this.saveOptions;
@@ -75,6 +76,7 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 		return context;
 	}
 	
+	/** @inheritDoc */
 	async _onRender(context, options) {
 		await super._onRender(context, options);
 		this.element.querySelector("[name='saveAgainst']")?.addEventListener("change", this._onChooseEffect.bind(this));
@@ -97,6 +99,11 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 		return promise;
 	}
 
+	/**
+     * @param {Event} event
+     * @param {Object} form
+     * @param {Object} formData
+     */
 	static #onSubmit(event, form, formData) {
 		const saveData = foundry.utils.expandObject(formData.object);
 		saveData.messageMode = Object.keys(CONFIG.ChatMessage.modes)[saveData.messageMode];

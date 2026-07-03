@@ -1,6 +1,7 @@
 const { BooleanField, SchemaField, StringField } = foundry.data.fields;
 
 export default class SensesTemplate extends foundry.abstract.DataModel {
+	/** Getter for sense data. */
 	static get common() {
 		return {
 			special: new SchemaField({
@@ -41,6 +42,8 @@ export default class SensesTemplate extends foundry.abstract.DataModel {
 			notes: new StringField({ initial: "" }),
 		};
 	}
+
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			senses: new SchemaField(this.common, { label: "DND4E.Senses" }),

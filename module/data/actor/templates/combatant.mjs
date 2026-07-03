@@ -7,6 +7,7 @@ import AttributesField from "./attributes.mjs";
 const { ArrayField, BooleanField, DocumentUUIDField, NumberField, SchemaField, StringField } = foundry.data.fields;
 
 export default class CombatantTemplate extends SpeedTemplate {
+	/** Getter for defence data. */
 	static get defences() {
 		const numberConfig = { required: true, nullable: false, integer: true };
 		return {
@@ -25,6 +26,7 @@ export default class CombatantTemplate extends SpeedTemplate {
 		};
 	}
 
+	/** @inheritDoc */
 	static defineSchema() {
 		const numberConfig = { required: true, nullable: false, integer: true };
 		return {
@@ -129,8 +131,8 @@ export default class CombatantTemplate extends SpeedTemplate {
 	/**
    * Populate the proper initial chat for the defences.
    * @param {string} key      Key for which the initial data will be created.
-   * @param {object} initial  The initial defence object created by the data model.
-   * @returns {object}        Initial defence object with the chat defined.
+   * @param {Object} initial  The initial defence object created by the data model.
+   * @returns {Object}        Initial defence object with the chat defined.
    * @private
    */
 	static _initialDefencesValue(key, initial) {
@@ -143,8 +145,8 @@ export default class CombatantTemplate extends SpeedTemplate {
 	/**
    * Populate the proper initial abilities & armourCheck for the skills.
    * @param {string} key      Key for which the initial data will be created.
-   * @param {object} initial  The initial skill object created by the data model.
-   * @returns {object}        Initial skill object with the ability defined.
+   * @param {Object} initial  The initial skill object created by the data model.
+   * @returns {Object}        Initial skill object with the ability defined.
    * @private
    */
 	static _initialSkillValue(key, initial) {
@@ -160,8 +162,8 @@ export default class CombatantTemplate extends SpeedTemplate {
 	/**
    * Populate the proper initial value for the common attack bonuses.
    * @param {string} key      Key for which the initial data will be created.
-   * @param {object} initial  The initial CAB object created by the data model.
-   * @returns {object}        Initial CAB object with the value defined.
+   * @param {Object} initial  The initial CAB object created by the data model.
+   * @returns {Object}        Initial CAB object with the value defined.
    * @private
    */
 	static _initialCabValue(key, initial) {

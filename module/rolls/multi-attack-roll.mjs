@@ -18,6 +18,9 @@ export default class MultiAttackRoll extends Roll4e {
      */
 	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-multiattack.hbs";
 
+	/**
+     * @returns {Object[]}
+     */
 	get multirollData() {
 		return this._multirollData;
 	}
@@ -49,7 +52,7 @@ export default class MultiAttackRoll extends Roll4e {
      * you must set the 'formulaInnerData' property of this to be an object of {name: value} where name is the variable name without the @ and value is the exact value it was substituted for.
      * If this is not supplied highlighting will be at the level of the parts array - mousing over a part of the parts array will highlight all of that part in the expression and result display.
      * Please note that this object is serialised and deserialised to JSON and stored with rolls, it is therefore advisable to keep this as small as possible and not to simply copy the entire contents of the data object.
-     * @return {RollWithOriginalExpression} new a new Roll
+     * @returns {RollWithOriginalExpression} new a new Roll
      *
      */
 	async addNewRoll(parts, expressionPartsReplacements, data, options) {
@@ -145,8 +148,8 @@ export default class MultiAttackRoll extends Roll4e {
 
 	/**
      * Render a Roll instance to HTML
-     * @param {object} [chatOptions]      An object configuring the behavior of the resulting chat message.
-     * @return {Promise<string>}          The rendered HTML template as a string
+     * @param {Object} [chatOptions]      An object configuring the behavior of the resulting chat message.
+     * @returns {Promise<string>}          The rendered HTML template as a string
      *
      * Modified to include multirollData attribute and handle multirollData dice tooltips
      */
@@ -183,7 +186,7 @@ export default class MultiAttackRoll extends Roll4e {
 
 	/**
      * Modified from base to include _multirollData attribute
-     * @returns {object}
+     * @returns {Object}
      */
 	toJSON() {
 		return {
@@ -200,7 +203,7 @@ export default class MultiAttackRoll extends Roll4e {
 
 	/**
      * Modified from base to handle multirollData attribute
-     * @param {object} data
+     * @param {Object} data
      * @returns
      */
 	static fromData(data) {
@@ -243,7 +246,7 @@ export default class MultiAttackRoll extends Roll4e {
    * Transform a Roll instance into a ChatMessage, displaying the roll result.
    * This function can either create the ChatMessage directly, or return the data object that will be used to create.
    *
-   * @param {object} messageData          The data object to use when creating the message
+   * @param {Object} messageData          The data object to use when creating the message
    * @param {options} [options]           Additional options which modify the created message.
    * @param {string} [options.messageMode]   The template message mode to use for the message from CONFIG.ChatMessage.modes
    * @param {boolean} [options.create=true]   Whether to automatically create the chat message, or only return the

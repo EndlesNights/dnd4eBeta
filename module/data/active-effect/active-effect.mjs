@@ -3,7 +3,7 @@ const { ArrayField, BooleanField, NumberField, SchemaField, SetField, StringFiel
 /**
  * Data structure for a standard actor trait.
  *
- * @typedef {object} DOT
+ * @typedef {Object} DOT
  * @property {String} amount               Amount of damage this DOT does per turn.
  * @property {Set<String>} types           Damage types of this DOT's damage.
  */
@@ -28,12 +28,12 @@ export default class ActiveEffectData extends foundry.data.ActiveEffectTypeDataM
 	/*  Model Configuration                         */
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.Effect"];
 
 	/* -------------------------------------------- */
 
-	/** @override
+	/** @inheritDoc
    * @returns {ActiveEffectSystemData}
   */
 	static defineSchema() {

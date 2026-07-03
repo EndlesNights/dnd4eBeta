@@ -20,7 +20,7 @@ export default class IdentifierField extends foundry.data.fields.StringField {
 	/*  Field Validation                            */
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	_validateType(value) {
 		const IDENTIFIER_REGEX = /^([a-zA-Z0-9_-]+)$/i;
 		if (this.allowType) {

@@ -13,12 +13,12 @@ const { BooleanField, NumberField, SetField, StringField } = foundry.data.fields
  */
 export default class DifficultTerrainRegionBehaviorType extends foundry.data.regionBehaviors.RegionBehaviorType {
 
-	/** @override */
+	/** @inheritDoc */
 	static LOCALIZATION_PREFIXES = ["DND4E.RegionBehaviors.DifficultTerrain"];
 
 	/* ---------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	static defineSchema() {
 		const dispositions = { ...foundry.applications.sheets.TokenConfig.TOKEN_DISPOSITIONS };
 		delete dispositions[CONST.TOKEN_DISPOSITIONS.SECRET];
@@ -64,7 +64,7 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 
 	/* ---------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	static events = {
 		[CONST.REGION_EVENTS.BEHAVIOR_VIEWED]: this.#onBehaviorViewed,
 		[CONST.REGION_EVENTS.BEHAVIOR_UNVIEWED]: this.#onBehaviorUnviewed,
@@ -82,7 +82,7 @@ export default class DifficultTerrainRegionBehaviorType extends foundry.data.reg
 
 	/* ---------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	_getTerrainEffects(token, segment) {
 		const ignoredTypes = token.actor?.system.movement?.ignoredDifficultTerrain;
 		if ((segment.action === "blink") || this.ignoredDispositions.has(token.disposition) || ignoredTypes.has("all")

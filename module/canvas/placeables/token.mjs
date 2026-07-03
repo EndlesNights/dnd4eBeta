@@ -32,7 +32,7 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 	 * Specialized drawing function for HP bars.
 	 * @param {number} number      The Bar number
 	 * @param {PIXI.Graphics} bar  The Bar container
-	 * @param {object} data        Resource data for this bar
+	 * @param {Object} data        Resource data for this bar
 	 * @private
 	 */
 	_drawHPBar(number, bar, data) {
@@ -46,6 +46,12 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 		const tempPct = Math.clamp(temp, 0, max) / max;
 		const colorPct = Math.clamp(value, 0, max) / max;
 
+		/**
+         * Helper function to get the color the HP bar should be.
+         * @param {number} current 
+         * @param {number} max 
+         * @returns 
+         */
 		function getHPColor(current, max) {
 			const pct = Math.clamp(current, 0, max) / max;
 			return Color.fromRGB([(1 - (pct / 2)), pct, 0]);
@@ -108,14 +114,14 @@ export default class Token4e extends foundry.canvas.placeables.Token {
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	getRingColors() {
 		return this.document.getRingColors();
 	}
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	getRingEffects() {
 		return this.document.getRingEffects();
 	}

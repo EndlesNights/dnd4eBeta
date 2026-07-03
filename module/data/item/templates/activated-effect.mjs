@@ -3,6 +3,7 @@ import FormulaField from "../../fields/formula-field.mjs";
 const { NumberField, SchemaField, StringField } = foundry.data.fields;
 
 export default class ActivatedEffectTemplate extends foundry.abstract.DataModel {
+	/** @inheritDoc */
 	static defineSchema() {
 		return {
 			activation: new SchemaField({

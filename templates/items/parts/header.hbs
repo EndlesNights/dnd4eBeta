@@ -9,35 +9,35 @@
       <h1 class="item-name">
         <input name="name" type="text" value="{{item.name}}" data-tooltip="{{ localize 'DND4E.ItemName' }} placeholder="{{ localize 'DND4E.ItemName' }}">
       </h1>
-    <ul class="summary flexrow">
-      {{#if (eq this.itemType "power")}}
-      <li>
-        <input type="text" name="system.subName" value="{{system.subName}}" data-tooltip="{{ localize 'DND4E.SubName' }}" placeholder="{{ localize 'DND4E.SubName' }}">
-      </li>
-      {{/if}}
-      {{#if this.showLevel}}
-      <li class="item-level">
-		<label>{{ localize 'DND4E.Level' }}</label> 
-        <input type="number" name="system.level" value="{{system.level}}" data-tooltip="{{ localize 'DND4E.Level' }}" placeholder="1">
-      </li>
-      {{/if}}
-      {{#if this.showRarity}}
-      <li class="item-rarity">
-        <input type="text" name="system.rarity" value="{{system.rarity}}" data-tooltip="{{ localize 'DND4E.Rarity' }}" placeholder="{{ localize 'DND4E.Rarity' }}">
-      </li>
-      {{/if}}
-      {{#if this.summaryLabel}}
-      <li class="auto-type">{{summaryLabel}}</li>
-      {{/if}}
-    </ul>
-	</div>
+      <ul class="summary flexrow">
+        {{#if (eq this.itemType "power")}}
+        <li>
+          <input type="text" name="system.subName" value="{{system.subName}}" data-tooltip="{{ localize 'DND4E.SubName' }}" placeholder="{{ localize 'DND4E.SubName' }}">
+        </li>
+        {{/if}}
+        {{#if this.showLevel}}
+        <li class="item-level">
+          <label>{{ localize 'DND4E.Level' }}</label> 
+          <input type="number" name="system.level" value="{{system.level}}" data-tooltip="{{ localize 'DND4E.Level' }}" placeholder="1">
+        </li>
+        {{/if}}
+        {{#if this.showRarity}}
+        <li class="item-rarity">
+          <input type="text" name="system.rarity" value="{{system.rarity}}" data-tooltip="{{ localize 'DND4E.Rarity' }}" placeholder="{{ localize 'DND4E.Rarity' }}">
+        </li>
+        {{/if}}
+        {{#if this.summaryLabel}}
+        <li class="auto-type">{{summaryLabel}}</li>
+        {{/if}}
+      </ul>
+    </div>
 
     <div class="info flexcol">
       <span class="item-type">{{itemTypeLabel}}</span>
       {{#if itemStatus}}<span class="item-status">{{itemStatus}}</span>{{/if}}
       <div class="source-book">
         <button type="button" data-action="configureSource" data-config="source" data-tooltip aria-label="{{ localize 'DND4E.SOURCE.Action.Configure' }}">
-		  <i class="icon fa-solid fa-cog"></i> {{#if sourceLabel}}{{sourceLabel}}{{else}}{{ localize "DND4E.SOURCE.FIELDS.source.label" }}{{/if}}
+          <i class="icon fa-solid fa-cog"></i> {{#if sourceLabel}}{{sourceLabel}}{{else}}{{ localize "DND4E.SOURCE.FIELDS.source.label" }}{{/if}}
         </button>
       </div>
     </div>

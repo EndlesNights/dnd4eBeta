@@ -26,7 +26,7 @@ export default class ItemDescriptionTemplate extends foundry.abstract.DataModel 
 
 	/**
 	 * Convert source string into custom object.
-	 * @param {object} source  The candidate source data from which the model will be constructed.
+	 * @param {Object} source  The candidate source data from which the model will be constructed.
 	 */
 	static migrateSource(source) {
 		if (("source" in source) && (foundry.utils.getType(source.source) !== "Object")) {

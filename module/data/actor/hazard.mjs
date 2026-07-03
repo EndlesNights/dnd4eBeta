@@ -5,6 +5,7 @@ import { AttributesField, CombatantTemplate, DetailsField, SpeedTemplate } from 
 const { BooleanField, HTMLField, NumberField, StringField, SchemaField } = foundry.data.fields;
 
 export default class HazardData extends foundry.abstract.TypeDataModel {
+	/** @inheritDoc */
 	static defineSchema() {
 		const numberConfig = { required: true, nullable: false, integer: true };
 		const { details: combatantDetails, defences, ...combatantSchema } = CombatantTemplate.defineSchema();

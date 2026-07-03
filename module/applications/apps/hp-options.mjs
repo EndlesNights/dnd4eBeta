@@ -2,7 +2,7 @@ import DocumentSheet4e from "../sheets/DocumentSheet4e.mjs";
 
 export default class HPOptions extends DocumentSheet4e {
 
-	/** @override */
+	/** @inheritDoc */
 	static DEFAULT_OPTIONS = {
 		id: "hp-options",
 		classes: ["dnd4e", "standard-form", "default"],
@@ -22,6 +22,7 @@ export default class HPOptions extends DocumentSheet4e {
 		tag: "form",
 	};
 
+	/** @inheritDoc */
 	get title() {
 		return `${this.document.name} - ${_loc("DND4E.HPOptions")}`;
 	}
@@ -35,7 +36,7 @@ export default class HPOptions extends DocumentSheet4e {
 		},
 	};
 	
-	/** @override */
+	/** @inheritDoc */
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
 		foundry.utils.mergeObject(context, {
@@ -49,7 +50,11 @@ export default class HPOptions extends DocumentSheet4e {
 	
 	/* -------------------------------------------- */
 
-	/** @override */
+	/**
+     * @param {Event} event
+     * @param {Object} form
+     * @param {Object} formData
+     */
 	static #onSubmit(event, form, formData) {
 		const updateData = foundry.utils.expandObject(formData.object);
 		this.document.update(updateData);

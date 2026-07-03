@@ -61,7 +61,7 @@ export default class RollWithOriginalExpression extends Roll4e {
 
 	/* -------------------------------------------- */
 
-	/** @override */
+	/** @inheritDoc */
 	processBonuses() {
 		super.processBonuses();
 		for (const [type, bonuses] of Object.entries(this.options.bonuses)) {
@@ -105,7 +105,7 @@ export default class RollWithOriginalExpression extends Roll4e {
      * you must set the 'formulaInnerData' property of this to be an object of {name: value} where name is the variable name without the @ and value is the exact value it was substituted for.
      * If this is not supplied highlighting will be at the level of the parts array - mousing over a part of the parts array will highlight all of that part in the expression and result display.
      * Please note that this object is serialised and deserialised to JSON and stored with rolls, it is therefore advisable to keep this as small as possible and not to simply copy the entire contents of the data object.
-     * @return {RollWithOriginalExpression} new a new Roll
+     * @returns {RollWithOriginalExpression} new a new Roll
      *
      */
 	static createRoll(parts, expressionPartsReplacements, data = {}, options = {}) {
@@ -147,6 +147,12 @@ export default class RollWithOriginalExpression extends Roll4e {
 		return new RollWithOriginalExpression(expression, data, options);
 	}
 
+	/**
+     * 
+     * @param {string[]} parts 
+     * @param {string[]} expressionParts 
+     * @returns {string[]}
+     */
 	static _createExpression(parts, expressionParts) {
 		const result = [...parts];
 		//n^2, but simple and n will always be small
@@ -167,6 +173,7 @@ export default class RollWithOriginalExpression extends Roll4e {
      */
 	static CHAT_TEMPLATE = "systems/dnd4e/templates/chat/roll-template-single.hbs";
 
+	/** @inheritDoc */
 	async render(chatOptions = {}) {
 		chatOptions = foundry.utils.mergeObject({
 			user: game.user.id,
@@ -205,6 +212,11 @@ export default class RollWithOriginalExpression extends Roll4e {
 		return foundry.applications.handlebars.renderTemplate(chatOptions.template, chatData);
 	}
 
+	/**
+	 * Prepare an object of chat data used to display this roll in a chat card.
+	 * @param {bolean} isPrivate=false    Whether or no the troll is private.
+	 * @returns {Object}                   An object of chat data to render
+	 */
 	getChatData(isPrivate = false) {
 		if (!isPrivate && game.settings.get("dnd4e", "showRollExpression")) {
 			return this.surroundFormulaWithExpressionSpanTags(this._formula, this.options.expressionArr);
@@ -231,7 +243,7 @@ export default class RollWithOriginalExpression extends Roll4e {
      *
      * @param formula {string} the formula to be worked on
      * @param expressionParts the array of individual parts of the expression that created the formula
-     * @return {{expression: string, formula: string}}
+     * @returns {{expression: string, formula: string}}
      */
 	surroundFormulaWithExpressionSpanTags(formula, expressionParts) {
 		try {
@@ -319,7 +331,7 @@ export default class RollWithOriginalExpression extends Roll4e {
      * @param fullFormula The full formula expression
      * @param currentIndex The index we are currently processing (the index of the closing bracket)
      * @param currentWorkingFormula The piece of the formula that is currently being processed for display
-     * @return {string} A new currentWorkingFormula which will be bracketed if it's a flavour part, and not otherwise.
+     * @returns {string} A new currentWorkingFormula which will be bracketed if it's a flavour part, and not otherwise.
      */
 	includeOuterBracketsIfFormulaIsFlavoured(fullFormula, currentIndex, currentWorkingFormula) {
 		if ((currentIndex < fullFormula.length) && (fullFormula.charAt(currentIndex + 1) === "[")) {
@@ -350,7 +362,7 @@ export default class RollWithOriginalExpression extends Roll4e {
      * @param formula the formula string
      * @param expression the expression string (aka with @variables)
      * @param mainIndex The main span index id that is is being used in the outer loop
-     * @return {expression, formula, changed: boolean} the new expression string, the new formula string and whether any changes were performed
+     * @returns {expression, formula, changed: boolean} the new expression string, the new formula string and whether any changes were performed
      */
 	replaceInnerVariables(formula, expression, mainIndex) {
 
