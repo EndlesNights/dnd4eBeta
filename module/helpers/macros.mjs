@@ -116,7 +116,7 @@ export function toggleEffect(effectName, type = "DOCUMENT.ActiveEffect") {
  * @returns {Promise}
  */
 export async function executeMacro(item) {
-	const macro = new Macro ({
+	const macro = new Macro({
 		name: item.name,
 		type: item.system.macro.type,
 		scope: item.system.macro.scope,
