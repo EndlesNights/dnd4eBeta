@@ -238,7 +238,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	let allRollsParts = [];
 	const numberOfTargets = Math.max(1, game.user.targets.size);
 	//console.debug(data);
-	let targetDefArray = [], targetAtkModArray = [];
+	let targetDefArray = [], targetAtkModArray = [], targetBonusArray = [];
 	
 	if (isAttackRoll && (form !== null)) {
 		const individualAttack = (form.querySelector("#multibonus-toggle")?.value === "true");
@@ -368,10 +368,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			}
 			else {
 				allRollsParts.push(parts.concat(Object.entries(targetBonuses).filter((bon) => bon[1].shouldApply).map((bon) => `@${bon[0]}`)));
-				// populate the common attack bonuses into data
-				Object.keys(targetBonuses).forEach(function(key, index) {
-					data[key] = targetBonuses[key].value;
-				});
+				targetBonusArray.push(targetBonuses);
 			}
 		}
 		
@@ -424,12 +421,10 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			const targetActor = targets[rollExpressionIdx]?.document.actor;
 			const IS_TARGET = true;
 			if (targetActor) await utils.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
-			if (!fastForward) {
-				// populate the common attack bonuses into data
-				Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
-					data[key] = targDataArray?.targets[rollExpressionIdx].targetBonuses[key].value;
-				});
-			}
+			// populate the common attack bonuses into data
+			Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
+				data[key] = targDataArray?.targets[rollExpressionIdx].targetBonuses[key].value || targetBonusArray[rollExpressionIdx][key].value;
+			});
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
 		catch(err) {
