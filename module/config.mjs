@@ -80,11 +80,13 @@ DND4E.macroType = {
 preLocalize("macroType", { keys: ["label"] });
 
 DND4E.macroLaunchOrder = {
-	both: { label: "DND4E.LaunchOrderBoth" },
 	off: { label: "DND4E.LaunchOrderOff" },
+	both: { label: "DND4E.LaunchOrderBoth" },
 	pre: { label: "DND4E.LaunchOrderPre" },
 	post: { label: "DND4E.LaunchOrderPost" },
 	sub: { label: "DND4E.LaunchOrderSub" },
+	comBon: { label: "DND4E.LaunchOrderHookComBon" },
+	preAttack: { label: "DND4E.LaunchOrderHookPreAttack" },
 };
 preLocalize("macroLaunchOrder", { keys: ["label"] });
 

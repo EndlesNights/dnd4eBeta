@@ -73,55 +73,44 @@
 						
               {{!-- Try to infer already active bonuses --}}
 					
-              {{#if (eq b 'charge')}}{{#if ../../data.item.attack.isCharge}}checked="true" disabled{{/if}}{{#if ../../isCharge}}checked="true" disabled{{/if}}{{/if}}
+              {{#if (eq b 'charge')}}{{#if ../../data.item.attack.isCharge}}checked="true" disabled{{/if}}{{#if t.targetBonuses.charge.shouldApply}}checked="true" disabled{{/if}}{{/if}}
 					
-						{{#if (eq b 'marked')}}{{#if ../../targetData.ignoringMark}}checked="true"{{/if}}{{/if}}
+						{{#if (eq b 'marked')}}{{#if t.targetBonuses.ignoringMark.shouldApply}}checked="true"{{/if}}{{/if}}
 					 
-						{{#if (eq b 'prone')}}{{#if (contains 'prone'../../userStatus)}}checked="true"{{/if}}{{/if}}
-						{{#if (eq b 'restrained')}}{{#if (contains 'restrained'../../userStatus)}}checked="true"{{/if}}{{/if}}
-						{{#if (eq b 'squeez')}}{{#if (contains 'squeezing'../../userStatus)}}checked="true"{{/if}}{{/if}}
-						{{#if (eq b 'running')}}{{#if (contains 'running'../../userStatus)}}checked="true"{{/if}}{{/if}}
+						{{#if (eq b 'prone')}}{{#if t.targetBonuses.prone.shouldApply}}checked="true"{{/if}}{{/if}}
+						{{#if (eq b 'restrained')}}{{#if t.targetBonuses.restrained.shouldApply}}checked="true"{{/if}}{{/if}}
+						{{#if (eq b 'squeez')}}{{#if t.targetBonuses.squeez.shouldApply}}checked="true"{{/if}}{{/if}}
+						{{#if (eq b 'running')}}{{#if t.targetBonuses.running.shouldApply}}checked="true"{{/if}}{{/if}}
 						
 						{{!-- Only if targets are provided --}}
 							{{#if ../../targetData.hasTarget}}
 								
 								{{#if (eq b 'bloodied')}}
-									{{#if (contains 'bloodied' t.status)}}checked="true"{{/if}}
+									{{#if t.targetBonuses.bloodied.shouldApply}}checked="true"{{/if}}
 								{{/if}}
 
 								{{#if (eq b 'comAdv')}}
-									{{#if (contains 'dazed' t.status)}}checked="true"{{/if}}
-									{{#if (contains 'blinded' t.status)}}checked="true"{{/if}}
-									{{#if (contains 'dominated' t.status)}}checked="true"{{/if}}
-									{{#if (contains 'helpless' t.status)}}checked="true"{{/if}}
-									{{#if (contains 'restrained' t.status)}}checked="true"{{/if}}
-									{{#if (contains 'stunned' t.status)}}checked="true"{{/if}}
-									{{#if (contains 'surprised' t.status)}}checked="true"{{/if}}
-									{{#if (contains 'squeezing' t.status)}}checked="true"{{/if}}
-									{{#if (contains 'running' t.status)}}checked="true"{{/if}}
-									{{#if (contains 'grantingCA' t.status)}}checked="true"{{/if}}
-									{{#if t.meleeVsProne}}checked="true"{{/if}}
-									{{#if t.isFlanking}}checked="true"{{/if}}
+									{{#if t.targetBonuses.comAdv.shouldApply}}checked="true"{{/if}}
 								{{/if}}
 								
 								{{#if (eq b 'conceal')}}
-									{{#if (contains 'conceal' t.status)}}checked="true"{{/if}}
+									{{#if t.targetBonuses.conceal.shouldApply}}checked="true"{{/if}}
 								{{/if}}
 								
 								{{#if (eq b 'concealTotal')}}
-									{{#if (contains 'concealTotal' t.status)}}checked="true"{{/if}}
+									{{#if t.targetBonuses.concealTotal.shouldApply}}checked="true"{{/if}}
 								{{/if}}
 								
 								{{#if (eq b 'cover')}}
-									{{#if (contains 'cover' t.status)}}checked="true"{{/if}}
+									{{#if t.targetBonuses.cover.shouldApply}}checked="true"{{/if}}
 								{{/if}}
 								
 								{{#if (eq b 'coverSup')}}
-									{{#if (contains 'coverSup' t.status)}}checked="true"{{/if}}
+									{{#if t.targetBonuses.coverSup.shouldApply}}checked="true"{{/if}}
 								{{/if}}
 
 								{{#if (eq b 'longRange')}}
-									{{#if t.longRange}}checked="true"{{/if}}
+									{{#if t.targetBonuses.longRange.shouldApply}}checked="true"{{/if}}
 								{{/if}}
 									
 							{{/if}}
@@ -130,7 +119,7 @@
 					{{!-- End already active --}}
 					
 						value="{{../checked}}"/> 
-            <span class="label">{{ localize a.label}} ({{a.value}})</span>
+            <span class="label">{{ localize a.label}} ({{ lookup (lookup t.targetBonuses b) "value"}})</span>
           </label>
         </div>
         {{/each}}

@@ -55,20 +55,39 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 	};
 	
 	if (actor && game.user.targets.size) {
+		const userBonuses = Object.keys(CONFIG.DND4E.commonAttackBonuses).reduce((bonuses, bonus) => {
+			bonuses[bonus] = {
+				shouldApply: false,
+				value: actor.system.commonAttackBonuses[bonus].value,
+			};
+			return bonuses;
+		}, {});
 		const numTargets = game.user.targets.size;
 		const targetArr = Array.from(game.user.targets);
 		targDataArray.hasTarget = true;
 		if (game.settings.get("dnd4e", "markAutomation") && actor.system?.marker) {
 			targDataArray.ignoringMark = !targetArr.some(t => (t.actor.uuid === data.marker));
+			userBonuses.ignoringMark.shouldApply = true;
 		}
+		// User conditions
+		if (userStatus.has("prone")) userBonuses.prone.shouldApply = true;
+		if (userStatus.has("restrained")) userBonuses.restrained.shouldApply = true;
+		if (userStatus.has("running")) userBonuses.running.shouldApply = true;
+		if (userStatus.has("squeezing")) userBonuses.squeez.shouldApply = true;
+		if (userStatus.has("comAdv")) userBonuses.comAdv.shouldApply = true;
+		if (isCharge) userBonuses.charge.shouldApply = true;
 		for (let targ = 0; targ < numTargets; targ++) {
+			const targetBonuses = foundry.utils.deepClone(userBonuses);
 			const targName = targetArr[targ].name;
 			targDataArray.targNameArray.push(targName);
+			const targetStatus = Array.from(targetArr[targ].actor.statuses);
+				
+			//Target conditions
+			if (targetStatus.filter(element => ["blinded", "dazed", "dominated", "helpless", "restrained", "stunned", "surprised", "squeezing", "running", "grantingCA"].includes(element)).length) targetBonuses.comAdv.shouldApply = true;
 			const targetDist = utils.computeDistance(actor, targetArr[targ]);
 			//console.debug(data);
-			let meleeVsProne = false;
 			if (targetArr[targ].actor.statuses.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
-				meleeVsProne = true;
+				let meleeVsProne = true;
 				if (item?.system.rangeType === "weapon") {
 					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
 						const meleeRange = weaponUse.system.properties.rch ? 2 : 1;
@@ -78,24 +97,36 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 						}
 					}
 				}
+				if (meleeVsProne) targetBonuses.comAdv.shouldApply = true;
 			}
-			let longRange = false;
 			if (((item?.system.rangeType === "range") && item?.system.range.long && (targetDist > item?.system.rangePower)) || ((item?.system.rangeType === "weapon") && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range.value))) {
-				longRange = true;
+				targetBonuses.longRange.shouldApply = true;
 			}
-			let isFlanking = false;
 			if (utils.computeFlankingStatus(utils.tokenForActor(actor), targetArr[targ])) {
-				isFlanking = true;
+				targetBonuses.comAdv.shouldApply = true;
 			}
+			if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
+			if (targetStatus.includes("concealed")) targetBonuses.conceal.shouldApply = true;	
+			if (targetStatus.includes("concealedTotal")) targetBonuses.concealTotal.shouldApply = true;
+			if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
+			if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;
+            
+			const attacker = utils.tokenForActor(actor);
+			const target = targetArr[targ];
+			for (const actorItem of [...actor.items]) {
+				if (actorItem.system.macro.launchOrder === "comBon") {
+					const func = new Function("source", "item", "attacker", "target", "bonuses", actorItem.system.macro.command);
+					func(actorItem, item, attacker, target, targetBonuses);
+				}
+			}
+			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, targetBonuses);
 			targDataArray.targets.push({
 				name: targetArr[targ].name,
 				status: targetArr[targ].actor.statuses,
 				attackMod: data?.item?.attack?.ability || "",
 				attackDef: options.attackedDef || "ac",
 				immune: targetArr[targ].actor.system.defences[options.attackedDef]?.none || false,
-				meleeVsProne: meleeVsProne,
-				longRange: longRange,
-				isFlanking: isFlanking,
+				targetBonuses,
 			});
 		}
 	} else {
@@ -135,6 +166,7 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 		label: _loc("DND4E.Roll"),
 		type: "submit",
 	}];
+	rollConfig.targDataArray = targDataArray;
 	return RollDialog.asPromise({ dialogData, rollConfig, buttons, window: { title }, callbackFn: performD20RollAndCreateMessage });
 }
 
@@ -161,7 +193,7 @@ export function getAttackRollBonus({ parts = [], data = {}, options = {} }) {
  * @param {Object} form 
  * @param {Object} options
  * @param {string[]} options.parts
- * @param {Object[]} options.partsExpressionReplacement
+ * @param {Object[]} options.partsExpressionReplacements
  * @param {Item4e} options.item
  * @param {Item4e} options.weaponUse
  * @param {Object} options.data
@@ -175,10 +207,11 @@ export function getAttackRollBonus({ parts = [], data = {}, options = {} }) {
  * @param {boolean} options.isAttackRoll
  * @param {Object} options.options
  * @param {Set<string>} options.userStatus
+ * @param {Object[]} options.targDataArray
  * @param {boolean} options.fastForward
  * @returns 
  */
-async function performD20RollAndCreateMessage(form, { parts, partsExpressionReplacements, item, weaponUse, data, speaker, messageMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, options, userStatus, fastForward }) {
+async function performD20RollAndCreateMessage(form, { parts, partsExpressionReplacements, item, weaponUse, data, speaker, messageMode, flavor, critical, fumble, targetValue, actor, isAttackRoll, options, userStatus, targDataArray, fastForward }) {
 	/*
 	 coming in the parts[] is in one of the following states:
 	 - Empty
@@ -205,13 +238,9 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	let allRollsParts = [];
 	const numberOfTargets = Math.max(1, game.user.targets.size);
 	//console.debug(data);
-	let targetDefArray = [], targetAtkModArray = [];
+	let targetDefArray = [], targetAtkModArray = [], targetBonusArray = [];
 	
 	if (isAttackRoll && (form !== null)) {
-		// populate the common attack bonuses into data
-		Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
-			data[key] = data.commonAttackBonuses[key].value;
-		});
 		const individualAttack = (form.querySelector("#multibonus-toggle")?.value === "true");
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
 			const targetBonuses = [];
@@ -230,7 +259,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			}
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
-				targetBonuses.forEach(bonus => total += data.commonAttackBonuses[bonus.substring(1)].value);
+				targetBonuses.forEach(bonus => total += targDataArray.targets[targetIndex].targetBonuses[bonus.substring(1)].value);
 				const partsToPush = total ? parts.concat([total]) : parts;
 				allRollsParts.push(partsToPush);
 			}
@@ -259,31 +288,33 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	else if (isAttackRoll && fastForward) {
 		// Logic to infer common bonuses based on user and target status under fast-forward conditions
 		const theTargets = Array.from(game.user.targets);
-		
-		// populate the common attack bonuses into data
-		Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
-			data[key] = data.commonAttackBonuses[key].value;
-		});
 				
 		let hasComAdv = false;
-		const userStatBonuses = [];
+		const userStatBonuses = Object.keys(CONFIG.DND4E.commonAttackBonuses).reduce((bonuses, bonus) => {
+			bonuses[bonus] = {
+				shouldApply: false,
+				value: data.commonAttackBonuses[bonus].value,
+			};
+			return bonuses;
+		}, {});
+
 		// User conditions
-		if (userStatus.has("prone")) userStatBonuses.push("@prone");
-		if (userStatus.has("restrained")) userStatBonuses.push("@restrained");
-		if (userStatus.has("running")) userStatBonuses.push("@running");
-		if (userStatus.has("squeezing")) userStatBonuses.push("@squeez");
+		if (userStatus.has("prone")) userStatBonuses.prone.shouldApply = true;
+		if (userStatus.has("restrained")) userStatBonuses.restrained.shouldApply = true;
+		if (userStatus.has("running")) userStatBonuses.running.shouldApply = true;
+		if (userStatus.has("squeezing")) userStatBonuses.squeez.shouldApply = true;
 		if (userStatus.has("comAdv")) hasComAdv = true;
-		if (options?.variance?.isCharge) userStatBonuses.push("@charge");
+		if (options?.variance?.isCharge) userStatBonuses.charge.shouldApply = true;
 		
 		if (game.settings.get("dnd4e", "markAutomation") && data?.marker) {
-			if (!theTargets.some(t => (t.actor.uuid === data.marker))) userStatBonuses.push("@marked");
+			if (!theTargets.some(t => (t.actor.uuid === data.marker))) userStatBonuses.marked.shouldApply = true;
 		}
 				
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
 
 			targetDefArray.push(data.item.attack.def); targetAtkModArray.push(data.item.attack.ability);
 			
-			const targetBonuses = userStatBonuses;
+			const targetBonuses = foundry.utils.deepClone(userStatBonuses);
 			if (theTargets.length > 0) {
 				const targetStatus = Array.from(theTargets[targetIndex].actor.statuses);
 				
@@ -312,28 +343,32 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				}
 
 				if (((item?.system.rangeType === "range") && item?.system.range.long && (targetDist > item?.system.rangePower)) || ((item?.system.rangeType === "weapon") && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range.value))) {
-					targetBonuses.push("@longRange");
+					targetBonuses.longRange.shouldApply = true;
 				}
 
-				if (targetStatus.includes("bloodied")) targetBonuses.push("@bloodied");
-
-				if (targetStatus.includes("concealed")) targetBonuses.push("@conceal");		
-				
-				if (targetStatus.includes("concealedTotal")) targetBonuses.push("@concealTotal");
-				
-				if (targetStatus.includes("cover")) targetBonuses.push("@cover");		
-				
-				if (targetStatus.includes("coverSup")) targetBonuses.push("@coverSup");
-					
+				if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
+				if (targetStatus.includes("concealed")) targetBonuses.conceal.shouldApply = true;	
+				if (targetStatus.includes("concealedTotal")) targetBonuses.concealTotal.shouldApply = true;
+				if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
+				if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;
 			}
-			if (hasComAdv) targetBonuses.push("@comAdv");
+			if (hasComAdv) targetBonuses.comAdv.shouldApply = true;
+			const attacker = utils.tokenForActor(actor);
+			const target = theTargets[targetIndex];
+			for (const actorItem of [...actor.items]) {
+				if (actorItem.system.macro.launchOrder === "comBon") {
+					const func = new Function("source", "item", "attacker", "target", "bonuses", actorItem.system.macro.command);
+					func(actorItem, item, attacker, target, targetBonuses);
+				}
+			}
+			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, targetBonuses);
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
-				let total = 0;
-				targetBonuses.forEach(bonus => total += data.commonAttackBonuses[bonus.substring(1)].value);
+				const total = Object.values(targetBonuses).filter((bon) => bon.shouldApply).map((bon) => bon.value).reduce((acc, curr) => acc + curr);
 				allRollsParts.push(parts.concat([total]));
 			}
 			else {
-				allRollsParts.push(parts.concat(targetBonuses));
+				allRollsParts.push(parts.concat(Object.entries(targetBonuses).filter((bon) => bon[1].shouldApply).map((bon) => `@${bon[0]}`)));
+				targetBonusArray.push(targetBonuses);
 			}
 		}
 		
@@ -386,6 +421,22 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			const targetActor = targets[rollExpressionIdx]?.document.actor;
 			const IS_TARGET = true;
 			if (targetActor) await utils.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
+			// populate the common attack bonuses into data
+			const commonAttackBonuses = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses : (targetBonusArray ? targetBonusArray[rollExpressionIdx] : null);
+			if (commonAttackBonuses) {
+				Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
+					data[key] = commonAttackBonuses[key].value;
+				});
+			}
+			const attacker = utils.tokenForActor(actor);
+			const target = targets[rollExpressionIdx];
+			for (const actorItem of [...actor.items]) {
+				if (actorItem.system.macro.launchOrder === "preAttack") {
+					const func = new Function("source", "item", "attacker", "target", "rollConfig", actorItem.system.macro.command);
+					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
+				}
+			}
+			Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
 		catch(err) {
@@ -503,7 +554,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
  * @param {Array} parts           The dice roll component parts
  * @param {Array} partsCrit       The dice roll component parts for a criticalhit
  * @param {Array} partsMiss      The dice roll component parts for a miss
- * @param {Array} partsExpressionReplacement  Optional Array of replacement values for the parts array to create a formula to display where bonuses came from.
+ * @param {Array} partsExpressionReplacements  Optional Array of replacement values for the parts array to create a formula to display where bonuses came from.
  *                                 Each element should be in the form of { target: 'Text To Replace', value: 'text to replace with' }
  * @param {Array} partsCritExpressionReplacement  Optional Array of replacement values for the parts array to create a formula to display where bonuses came from.
  *                                 Each element should be in the form of { target: 'Text To Replace', value: 'text to replace with' }
@@ -527,12 +578,12 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
  *
  * @returns {Promise}              A Promise which resolves once the roll workflow has completed
  */
-export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionReplacement = [], partsCritExpressionReplacement = [], partsMissExpressionReplacement = [], actor,
+export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionReplacements = [], partsCritExpressionReplacement = [], partsMissExpressionReplacement = [], actor,
 	data, event = {}, messageMode = null, template, title, speaker, flavor, allowCritical = true,
 	critical = false, fastForward = null, onClose, dialogOptions, healingRoll, options }) {
 									
 	// First configure the Roll
-	const rollConfig = { parts, partsCrit, partsMiss, data, flavor, messageMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: "normal", fastForward, options };
+	const rollConfig = { parts, partsCrit, partsMiss, data, flavor, messageMode, partsExpressionReplacements, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: "normal", fastForward, options };
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, messageMode, title, speaker, flavor, fastForward);
@@ -612,7 +663,7 @@ export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionR
  * @param {string} options.hitType
  * @param {string} options.flavor
  * @param {string} options.messageMode
- * @param {Object[]} options.partsExpressionReplacement
+ * @param {Object[]} options.partsExpressionReplacements
  * @param {Object[]} options.partsCritExpressionReplacement
  * @param {Object[]} options.partsMissExpressionReplacement
  * @param {Object} options.speaker
@@ -620,7 +671,7 @@ export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionR
  * @param {boolean} options.fastForward
  * @returns 
  */
-async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, partsMiss, data, hitType, flavor, messageMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options, fastForward }) {
+async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, partsMiss, data, hitType, flavor, messageMode, partsExpressionReplacements, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options, fastForward }) {
 	manageBonusInParts(parts, form, data);
 	manageBonusInParts(partsCrit, form, data);
 	manageBonusInParts(partsMiss, form, data);
@@ -642,13 +693,13 @@ async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, p
 	let roll;
 	if (hitType === "immune") {
 		options.hitTypeDamage = false;
-		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacements, data, options);
 		flavor = `${flavor} (${_loc("DND4E.Immune")})`;
 	}
 	else if (hitType === "normal") {
 		options.hitTypeDamage = true;
 		options.hitType = hitType;
-		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacements, data, options);
 	}
 	else if (hitType === "crit") {
 		options.hitTypeDamage = true;
@@ -664,10 +715,10 @@ async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, p
 	}
 	else if (hitType === "heal") {
 		options.hitTypeHealing = true;
-		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacements, data, options);
 		flavor = `${flavor} (${_loc("DND4E.Healing")})`;
 	} else {
-		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacements, data, options);
 	}
 
 	if (form?.flavor.value) {
