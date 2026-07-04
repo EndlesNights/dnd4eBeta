@@ -800,14 +800,14 @@ export function preparePowerCardData(chatData, actorData = null, attackTotal = n
 			}
 			powerDetail += ` ${_loc("DND4E.VS")} ${CONFIG.DND4E.defensives[chatData.attack.def].labelShort}</p>`;
 		}
-	}
 
-	if (chatData.hit.detail) {
-		powerDetail += `<p class="hit alt-highlight"><strong>${_loc("DND4E.Hit")}:</strong> ${chatData.hit.detail}</p>`;
-	}
+		if (chatData.hit.detail) {
+			powerDetail += `<p class="hit alt-highlight"><strong>${_loc("DND4E.Hit")}:</strong> ${chatData.hit.detail}</p>`;
+		}
 
-	if (chatData.miss.detail) {
-		powerDetail += `<p class="miss alt-highlight"><strong>${_loc("DND4E.Miss")}:</strong> ${chatData.miss.detail}</p>`;
+		if (chatData.miss.detail) {
+			powerDetail += `<p class="miss alt-highlight"><strong>${_loc("DND4E.Miss")}:</strong> ${chatData.miss.detail}</p>`;
+		}
 	}
 
 	if (chatData.postEffect && chatData.effect.detail) {
