@@ -422,18 +422,21 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			const IS_TARGET = true;
 			if (targetActor) await utils.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
 			// populate the common attack bonuses into data
-			Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
-				data[key] = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses[key].value : (targetBonusArray ? targetBonusArray[rollExpressionIdx][key].value : null);
-			});
+			const commonAttackBonuses = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses : (targetBonusArray ? targetBonusArray[rollExpressionIdx] : null);
+			if (commonAttackBonuses) {
+				Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
+					data[key] = commonAttackBonuses[key].value;
+				});
+			}
 			const attacker = utils.tokenForActor(actor);
 			const target = targets[rollExpressionIdx];
 			for (const actorItem of [...actor.items]) {
 				if (actorItem.system.macro.launchOrder === "preAttack") {
 					const func = new Function("source", "item", "attacker", "target", "rollConfig", actorItem.system.macro.command);
-					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, targetOptions });
+					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, targetOptions, commonAttackBonuses });
 				}
 			}
-			Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, targetOptions });
+			Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, targetOptions, commonAttackBonuses });
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
 		catch(err) {
