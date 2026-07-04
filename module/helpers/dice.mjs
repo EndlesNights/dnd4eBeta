@@ -57,8 +57,8 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 	if (actor && game.user.targets.size) {
 		const userBonuses = Object.keys(CONFIG.DND4E.commonAttackBonuses).reduce((bonuses, bonus) => {
 			bonuses[bonus] = {
-				value: false,
-				bonus: actor.system.commonAttackBonuses[bonus].value,
+				shouldApply: false,
+				value: actor.system.commonAttackBonuses[bonus].value,
 			};
 			return bonuses;
 		}, {});
@@ -67,15 +67,15 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 		targDataArray.hasTarget = true;
 		if (game.settings.get("dnd4e", "markAutomation") && actor.system?.marker) {
 			targDataArray.ignoringMark = !targetArr.some(t => (t.actor.uuid === data.marker));
-			userBonuses.ignoringMark.value = true;
+			userBonuses.ignoringMark.shouldApply = true;
 		}
 		// User conditions
-		if (userStatus.has("prone")) userBonuses.prone.value = true;
-		if (userStatus.has("restrained")) userBonuses.restrained.value = true;
-		if (userStatus.has("running")) userBonuses.running.value = true;
-		if (userStatus.has("squeezing")) userBonuses.squeez.value = true;
-		if (userStatus.has("comAdv")) userBonuses.comAdv.value = true;
-		if (isCharge) userBonuses.charge.value = true;
+		if (userStatus.has("prone")) userBonuses.prone.shouldApply = true;
+		if (userStatus.has("restrained")) userBonuses.restrained.shouldApply = true;
+		if (userStatus.has("running")) userBonuses.running.shouldApply = true;
+		if (userStatus.has("squeezing")) userBonuses.squeez.shouldApply = true;
+		if (userStatus.has("comAdv")) userBonuses.comAdv.shouldApply = true;
+		if (isCharge) userBonuses.charge.shouldApply = true;
 		for (let targ = 0; targ < numTargets; targ++) {
 			const targetBonuses = foundry.utils.deepClone(userBonuses);
 			const targName = targetArr[targ].name;
@@ -83,7 +83,7 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 			const targetStatus = Array.from(targetArr[targ].actor.statuses);
 				
 			//Target conditions
-			if (targetStatus.filter(element => ["blinded", "dazed", "dominated", "helpless", "restrained", "stunned", "surprised", "squeezing", "running", "grantingCA"].includes(element)).length) targetBonuses.comAdv.value = true;
+			if (targetStatus.filter(element => ["blinded", "dazed", "dominated", "helpless", "restrained", "stunned", "surprised", "squeezing", "running", "grantingCA"].includes(element)).length) targetBonuses.comAdv.shouldApply = true;
 			const targetDist = utils.computeDistance(actor, targetArr[targ]);
 			//console.debug(data);
 			if (targetArr[targ].actor.statuses.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
@@ -97,19 +97,19 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 						}
 					}
 				}
-				if (meleeVsProne) targetBonuses.comAdv = true;
+				if (meleeVsProne) targetBonuses.comAdv.shouldApply = true;
 			}
 			if (((item?.system.rangeType === "range") && item?.system.range.long && (targetDist > item?.system.rangePower)) || ((item?.system.rangeType === "weapon") && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range.value))) {
-				targetBonuses.longRange.value = true;
+				targetBonuses.longRange.shouldApply = true;
 			}
 			if (utils.computeFlankingStatus(utils.tokenForActor(actor), targetArr[targ])) {
-				targetBonuses.comAdv.value = true;
+				targetBonuses.comAdv.shouldApply = true;
 			}
-			if (targetStatus.includes("bloodied")) targetBonuses.bloodied.value = true;
-			if (targetStatus.includes("concealed")) targetBonuses.conceal.value = true;	
-			if (targetStatus.includes("concealedTotal")) targetBonuses.concealTotal.value = true;
-			if (targetStatus.includes("cover")) targetBonuses.cover.value = true;		
-			if (targetStatus.includes("coverSup")) targetBonuses.coverSup.value = true;
+			if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
+			if (targetStatus.includes("concealed")) targetBonuses.conceal.shouldApply = true;	
+			if (targetStatus.includes("concealedTotal")) targetBonuses.concealTotal.shouldApply = true;
+			if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
+			if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;
             
 			const attacker = utils.tokenForActor(actor);
 			const target = targetArr[targ];
@@ -259,7 +259,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			}
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
-				targetBonuses.forEach(bonus => total += targDataArray.targets[targetIndex].targetBonuses[bonus.substring(1)].bonus);
+				targetBonuses.forEach(bonus => total += targDataArray.targets[targetIndex].targetBonuses[bonus.substring(1)].value);
 				const partsToPush = total ? parts.concat([total]) : parts;
 				allRollsParts.push(partsToPush);
 			}
@@ -292,22 +292,22 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 		let hasComAdv = false;
 		const userStatBonuses = Object.keys(CONFIG.DND4E.commonAttackBonuses).reduce((bonuses, bonus) => {
 			bonuses[bonus] = {
-				value: false,
-				bonus: data.commonAttackBonuses[bonus].value,
+				shouldApply: false,
+				value: data.commonAttackBonuses[bonus].value,
 			};
 			return bonuses;
 		}, {});
 
 		// User conditions
-		if (userStatus.has("prone")) userStatBonuses.prone.value = true;
-		if (userStatus.has("restrained")) userStatBonuses.restrained.value = true;
-		if (userStatus.has("running")) userStatBonuses.running.value = true;
-		if (userStatus.has("squeezing")) userStatBonuses.squeez.value = true;
+		if (userStatus.has("prone")) userStatBonuses.prone.shouldApply = true;
+		if (userStatus.has("restrained")) userStatBonuses.restrained.shouldApply = true;
+		if (userStatus.has("running")) userStatBonuses.running.shouldApply = true;
+		if (userStatus.has("squeezing")) userStatBonuses.squeez.shouldApply = true;
 		if (userStatus.has("comAdv")) hasComAdv = true;
-		if (options?.variance?.isCharge) userStatBonuses.charge.value = true;
+		if (options?.variance?.isCharge) userStatBonuses.charge.shouldApply = true;
 		
 		if (game.settings.get("dnd4e", "markAutomation") && data?.marker) {
-			if (!theTargets.some(t => (t.actor.uuid === data.marker))) userStatBonuses.marked.value = true;
+			if (!theTargets.some(t => (t.actor.uuid === data.marker))) userStatBonuses.marked.shouldApply = true;
 		}
 				
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
@@ -343,16 +343,16 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 				}
 
 				if (((item?.system.rangeType === "range") && item?.system.range.long && (targetDist > item?.system.rangePower)) || ((item?.system.rangeType === "weapon") && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range.value))) {
-					targetBonuses.longRange.value = true;
+					targetBonuses.longRange.shouldApply = true;
 				}
 
-				if (targetStatus.includes("bloodied")) targetBonuses.bloodied.value = true;
-				if (targetStatus.includes("concealed")) targetBonuses.conceal.value = true;	
-				if (targetStatus.includes("concealedTotal")) targetBonuses.concealTotal.value = true;
-				if (targetStatus.includes("cover")) targetBonuses.cover.value = true;		
-				if (targetStatus.includes("coverSup")) targetBonuses.coverSup.value = true;
+				if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
+				if (targetStatus.includes("concealed")) targetBonuses.conceal.shouldApply = true;	
+				if (targetStatus.includes("concealedTotal")) targetBonuses.concealTotal.shouldApply = true;
+				if (targetStatus.includes("cover")) targetBonuses.cover.shouldApply = true;		
+				if (targetStatus.includes("coverSup")) targetBonuses.coverSup.shouldApply = true;
 			}
-			if (hasComAdv) targetBonuses.comAdv.value = true;
+			if (hasComAdv) targetBonuses.comAdv.shouldApply = true;
 			const attacker = utils.tokenForActor(actor);
 			const target = theTargets[targetIndex];
 			for (const actorItem of [...actor.items]) {
@@ -363,14 +363,14 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			}
 			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, targetBonuses);
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
-				const total = Object.values(targetBonuses).filter((bon) => bon.value).map((bon) => bon.bonus).reduce((acc, curr) => acc + curr);
+				const total = Object.values(targetBonuses).filter((bon) => bon.shouldApply).map((bon) => bon.value).reduce((acc, curr) => acc + curr);
 				allRollsParts.push(parts.concat([total]));
 			}
 			else {
-				allRollsParts.push(parts.concat(Object.entries(targetBonuses).filter((bon) => bon[1].value).map((bon) => `@${bon[0]}`)));
+				allRollsParts.push(parts.concat(Object.entries(targetBonuses).filter((bon) => bon[1].shouldApply).map((bon) => `@${bon[0]}`)));
 				// populate the common attack bonuses into data
 				Object.keys(targetBonuses).forEach(function(key, index) {
-					data[key] = targetBonuses[key].bonus;
+					data[key] = targetBonuses[key].value;
 				});
 			}
 		}
@@ -424,10 +424,12 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			const targetActor = targets[rollExpressionIdx]?.document.actor;
 			const IS_TARGET = true;
 			if (targetActor) await utils.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
-			// populate the common attack bonuses into data
-			Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
-				data[key] = targDataArray.targets[rollExpressionIdx].targetBonuses[key].bonus;
-			});
+			if (!fastForward) {
+				// populate the common attack bonuses into data
+				Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
+					data[key] = targDataArray?.targets[rollExpressionIdx].targetBonuses[key].value;
+				});
+			}
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
 		catch(err) {
