@@ -115,8 +115,8 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 			const target = targetArr[targ];
 			for (const actorItem of [...actor.items]) {
 				if (actorItem.system.macro.launchOrder === "comBon") {
-					const func = new Function("item", "attacker", "target", "bonuses", actorItem.system.macro.command);
-					func(item, attacker, target, targetBonuses);
+					const func = new Function("source", "item", "attacker", "target", "bonuses", actorItem.system.macro.command);
+					func(actorItem, item, attacker, target, targetBonuses);
 				}
 			}
 			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, targetBonuses);
@@ -357,8 +357,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			const target = theTargets[targetIndex];
 			for (const actorItem of [...actor.items]) {
 				if (actorItem.system.macro.launchOrder === "comBon") {
-					const func = new Function("item", "attacker", "target", "bonuses", actorItem.system.macro.command);
-					func(item, attacker, target, targetBonuses);
+					const func = new Function("source", "item", "attacker", "target", "bonuses", actorItem.system.macro.command);
+					func(actorItem, item, attacker, target, targetBonuses);
 				}
 			}
 			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, targetBonuses);
