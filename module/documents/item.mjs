@@ -2132,7 +2132,7 @@ export default class Item4e extends Item {
 		const partsCrit = itemData.damageCrit.parts.map(d => secondaryPartsHelper(d.formula, [...d.type].join(",")));
 
 		// store the original expression formula that produced those formula
-		const partsExpressionReplacement = parts.map(part => { return { target: part, value: "@pow2ndryDamage" };});
+		const partsExpressionReplacements = parts.map(part => { return { target: part, value: "@pow2ndryDamage" };});
 		const partsMissExpressionReplacement = partsMiss.map(part => { return { target: part, value: "@pow2ndryDamage" };});
 		const partsCritExpressionReplacement = partsCrit.map(part => { return { target: part, value: "@pow2ndryCritDamage" };});
 
@@ -2193,14 +2193,14 @@ export default class Item4e extends Item {
 			//I really want to factor this, but they are annoyingly different enough to make it too headache inducing
 			if (weaponUse) {
 				if (itemData.hit.formula.includes("@wepDamage") && weaponUse.system.damage.parts.length) {
-					secondaryDamageExpressionHelper(parts, partsExpressionReplacement, weaponUse.system.damage.parts);
+					secondaryDamageExpressionHelper(parts, partsExpressionReplacements, weaponUse.system.damage.parts);
 				}
 				if (itemData.hit.critFormula.includes("@wepCritBonus") && weaponUse.system.damageCrit.parts.length) {
 					secondaryDamageExpressionHelper(partsCrit, partsCritExpressionReplacement, weaponUse.system.damageCrit.parts);
 				}
 
 				if (itemData.hit.formula.includes("@impDamage") && weaponUse.isActorImplementProficient && weaponUse.system.damageImp.parts.length) {
-					secondaryDamageExpressionHelper(parts, partsExpressionReplacement, weaponUse.system.damageImp.parts);
+					secondaryDamageExpressionHelper(parts, partsExpressionReplacements, weaponUse.system.damageImp.parts);
 				}
 				if (itemData.hit.critFormula.includes("@impCritBonus") && weaponUse.isActorImplementProficient && weaponUse.system.damageCritImp.parts.length) {
 					secondaryDamageExpressionHelper(partsCrit, partsCritExpressionReplacement, weaponUse.system.damageCritImp.parts);
@@ -2292,7 +2292,7 @@ export default class Item4e extends Item {
 		if (extraDamageParts.length) {
 			for (const part of extraDamageParts) {
 				parts.push(part);
-				partsExpressionReplacement.unshift({ target: part, value: "@extraDamage" });
+				partsExpressionReplacements.unshift({ target: part, value: "@extraDamage" });
 
 				if (critDamageFormula) {
 					const maxRoll = await new Roll(part).evaluate({ maximize: true });
@@ -2342,7 +2342,7 @@ export default class Item4e extends Item {
 		if (damageFormula) parts.unshift(`(${damageFormula})${primaryDamageStr}`);
 		if (critDamageFormula) partsCrit.unshift(`(${critDamageFormula})${primaryDamageStr}`);
 		if (missDamageFormula) partsMiss.unshift(`(${missDamageFormula})${primaryDamageStr}`);
-		if (damageFormulaExpression) partsExpressionReplacement.unshift({ target: parts[0], value: damageFormulaExpression });
+		if (damageFormulaExpression) partsExpressionReplacements.unshift({ target: parts[0], value: damageFormulaExpression });
 		if (critDamageFormulaExpression) partsCritExpressionReplacement.unshift({ target: partsCrit[0], value: critDamageFormulaExpression });
 		if (missDamageFormulaExpression) partsMissExpressionReplacement.unshift({ target: partsMiss[0], value: missDamageFormulaExpression });
 		
@@ -2355,7 +2355,7 @@ export default class Item4e extends Item {
 			parts,
 			partsCrit,
 			partsMiss,
-			partsExpressionReplacement,
+			partsExpressionReplacements,
 			partsCritExpressionReplacement,
 			partsMissExpressionReplacement,
 			actor: this.actor,
@@ -2409,7 +2409,7 @@ export default class Item4e extends Item {
 
 		// Define Roll parts
 		const parts = itemData.damage.parts.map(d => d[0]);
-		const partsExpressionReplacement = itemData.damage.parts.map(part => { return { target: part[0], value: "@wep2ndryDamage" };});
+		const partsExpressionReplacements = itemData.damage.parts.map(part => { return { target: part[0], value: "@wep2ndryDamage" };});
 
 		const options = { formulaInnerData: {}, bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
 		const formulaHelper = (formula) => {
@@ -2429,12 +2429,12 @@ export default class Item4e extends Item {
 		if (weaponUse) {
 			if (itemData.hit.healFormula.includes("@wepDamage") && weaponUse.system.damage.parts.length) {
 				Array.prototype.push.apply(parts, weaponUse.system.damage.parts.map(d => formulaHelper(d[0])));
-				Array.prototype.push.apply(partsExpressionReplacement, weaponUse.system.damage.parts.map(part => { return { target: part[0], value: "@wep2ndryDamage" };}));
+				Array.prototype.push.apply(partsExpressionReplacements, weaponUse.system.damage.parts.map(part => { return { target: part[0], value: "@wep2ndryDamage" };}));
 			}
 			
 			if (itemData.hit.healFormula.includes("@impDamage") && weaponUse.isActorImplementProficient && weaponUse.system.damageImp.parts.length) {
 				Array.prototype.push.apply(parts, weaponUse.system.damageImp.parts.map(d => formulaHelper(d[0])));
-				Array.prototype.push.apply(partsExpressionReplacement, weaponUse.system.damageImp.parts.map(part => { return { target: part[0], value: "@wep2ndryDamage" };}));
+				Array.prototype.push.apply(partsExpressionReplacements, weaponUse.system.damageImp.parts.map(part => { return { target: part[0], value: "@wep2ndryDamage" };}));
 			}
 		}
 
@@ -2443,7 +2443,7 @@ export default class Item4e extends Item {
 			if (weaponUse.system.properties["ver"] && (weaponUse.system.weaponHand === "hTwo")) {
 				parts.push("1");
 				messageData["flags.dnd4e.roll"].versatile = true;
-				partsExpressionReplacement.push({ target: "1", value: "@versatile" });
+				partsExpressionReplacements.push({ target: "1", value: "@versatile" });
 			}
 		}
 	
@@ -2484,7 +2484,7 @@ export default class Item4e extends Item {
 		return damageRoll({
 			event,
 			parts,
-			partsExpressionReplacement,
+			partsExpressionReplacements,
 			actor: this.actor,
 			data: rollData,
 			title,

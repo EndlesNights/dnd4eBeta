@@ -477,7 +477,7 @@ async function rollDamageHealing(config, event) {
 	if (!formula) throw new Error("Attack enricher must provide a formula");
 
 	const parts = [formula];
-	const partsExpressionReplacement = [{ value: formula, target: replacedFormula }];
+	const partsExpressionReplacements = [{ value: formula, target: replacedFormula }];
 	const partsCrit = critFormula ? [critFormula] : null;
 	const partsCritExpressionReplacement = critFormula ? [{ value: critFormula, target: replacedCritFormula }] : null;
 
@@ -515,7 +515,7 @@ async function rollDamageHealing(config, event) {
 	if (extraDamageParts.length) {
 		for (const part of extraDamageParts) {
 			parts.push(part);
-			partsExpressionReplacement.unshift({ target: part, value: "@extraDamage" });
+			partsExpressionReplacements.unshift({ target: part, value: "@extraDamage" });
 			if (partsCrit) {
 				let critDamage = new Roll("part").evaluateSync({ maximize: true });
 				partsCrit.push(critDamage.total);
@@ -546,7 +546,7 @@ async function rollDamageHealing(config, event) {
 	// Compose roll options
 	const rollConfig = {
 		parts,
-		partsExpressionReplacement,
+		partsExpressionReplacements,
 		partsCrit,
 		partsCritExpressionReplacement,
 		actor,

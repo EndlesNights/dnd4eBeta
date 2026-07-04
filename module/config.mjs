@@ -86,6 +86,7 @@ DND4E.macroLaunchOrder = {
 	post: { label: "DND4E.LaunchOrderPost" },
 	sub: { label: "DND4E.LaunchOrderSub" },
 	comBon: { label: "DND4E.LaunchOrderHookComBon" },
+	preAttack: { label: "DND4E.LaunchOrderHookPreAttack" },
 };
 preLocalize("macroLaunchOrder", { keys: ["label"] });
 

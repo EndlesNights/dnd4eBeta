@@ -193,7 +193,7 @@ export function getAttackRollBonus({ parts = [], data = {}, options = {} }) {
  * @param {Object} form 
  * @param {Object} options
  * @param {string[]} options.parts
- * @param {Object[]} options.partsExpressionReplacement
+ * @param {Object[]} options.partsExpressionReplacements
  * @param {Item4e} options.item
  * @param {Item4e} options.weaponUse
  * @param {Object} options.data
@@ -425,6 +425,15 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
 				data[key] = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses[key].value : (targetBonusArray ? targetBonusArray[rollExpressionIdx][key].value : null);
 			});
+			const attacker = utils.tokenForActor(actor);
+			const target = targets[rollExpressionIdx];
+			for (const actorItem of [...actor.items]) {
+				if (actorItem.system.macro.launchOrder === "preAttack") {
+					const func = new Function("source", "item", "attacker", "target", "rollConfig", actorItem.system.macro.command);
+					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, targetOptions });
+				}
+			}
+			Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, targetOptions });
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
 		catch(err) {
@@ -542,7 +551,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
  * @param {Array} parts           The dice roll component parts
  * @param {Array} partsCrit       The dice roll component parts for a criticalhit
  * @param {Array} partsMiss      The dice roll component parts for a miss
- * @param {Array} partsExpressionReplacement  Optional Array of replacement values for the parts array to create a formula to display where bonuses came from.
+ * @param {Array} partsExpressionReplacements  Optional Array of replacement values for the parts array to create a formula to display where bonuses came from.
  *                                 Each element should be in the form of { target: 'Text To Replace', value: 'text to replace with' }
  * @param {Array} partsCritExpressionReplacement  Optional Array of replacement values for the parts array to create a formula to display where bonuses came from.
  *                                 Each element should be in the form of { target: 'Text To Replace', value: 'text to replace with' }
@@ -566,12 +575,12 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
  *
  * @returns {Promise}              A Promise which resolves once the roll workflow has completed
  */
-export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionReplacement = [], partsCritExpressionReplacement = [], partsMissExpressionReplacement = [], actor,
+export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionReplacements = [], partsCritExpressionReplacement = [], partsMissExpressionReplacement = [], actor,
 	data, event = {}, messageMode = null, template, title, speaker, flavor, allowCritical = true,
 	critical = false, fastForward = null, onClose, dialogOptions, healingRoll, options }) {
 									
 	// First configure the Roll
-	const rollConfig = { parts, partsCrit, partsMiss, data, flavor, messageMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: "normal", fastForward, options };
+	const rollConfig = { parts, partsCrit, partsMiss, data, flavor, messageMode, partsExpressionReplacements, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, hitType: "normal", fastForward, options };
 
 	// handle input arguments
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, messageMode, title, speaker, flavor, fastForward);
@@ -651,7 +660,7 @@ export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionR
  * @param {string} options.hitType
  * @param {string} options.flavor
  * @param {string} options.messageMode
- * @param {Object[]} options.partsExpressionReplacement
+ * @param {Object[]} options.partsExpressionReplacements
  * @param {Object[]} options.partsCritExpressionReplacement
  * @param {Object[]} options.partsMissExpressionReplacement
  * @param {Object} options.speaker
@@ -659,7 +668,7 @@ export async function damageRoll({ parts, partsCrit, partsMiss, partsExpressionR
  * @param {boolean} options.fastForward
  * @returns 
  */
-async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, partsMiss, data, hitType, flavor, messageMode, partsExpressionReplacement, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options, fastForward }) {
+async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, partsMiss, data, hitType, flavor, messageMode, partsExpressionReplacements, partsCritExpressionReplacement, partsMissExpressionReplacement, speaker, options, fastForward }) {
 	manageBonusInParts(parts, form, data);
 	manageBonusInParts(partsCrit, form, data);
 	manageBonusInParts(partsMiss, form, data);
@@ -681,13 +690,13 @@ async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, p
 	let roll;
 	if (hitType === "immune") {
 		options.hitTypeDamage = false;
-		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacements, data, options);
 		flavor = `${flavor} (${_loc("DND4E.Immune")})`;
 	}
 	else if (hitType === "normal") {
 		options.hitTypeDamage = true;
 		options.hitType = hitType;
-		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacements, data, options);
 	}
 	else if (hitType === "crit") {
 		options.hitTypeDamage = true;
@@ -703,10 +712,10 @@ async function performDamageRollAndCreateChatMessage(form, { parts, partsCrit, p
 	}
 	else if (hitType === "heal") {
 		options.hitTypeHealing = true;
-		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacements, data, options);
 		flavor = `${flavor} (${_loc("DND4E.Healing")})`;
 	} else {
-		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacement, data, options);
+		roll = RollWithOriginalExpression.createRoll(parts, partsExpressionReplacements, data, options);
 	}
 
 	if (form?.flavor.value) {
