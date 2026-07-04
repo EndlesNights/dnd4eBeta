@@ -423,7 +423,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			if (targetActor) await utils.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "attack", null, IS_TARGET, targetOptions);
 			// populate the common attack bonuses into data
 			Object.keys(data.commonAttackBonuses).forEach(function(key, index) {
-				data[key] = targDataArray?.targets[rollExpressionIdx].targetBonuses[key].value || targetBonusArray[rollExpressionIdx][key].value;
+				data[key] = targDataArray ? targDataArray.targets[rollExpressionIdx].targetBonuses[key].value : (targetBonusArray ? targetBonusArray[rollExpressionIdx][key].value : null);
 			});
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
