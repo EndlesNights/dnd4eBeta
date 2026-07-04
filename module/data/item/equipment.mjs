@@ -64,6 +64,7 @@ export default class EquipmentData extends foundry.abstract.TypeDataModel {
 		}
 		if (source.armour?.subtype === "cloth") source.armour.subtype = "light";
 		ItemDescriptionTemplate.migrateSource(source);
+		ItemMacroTemplate.migrateMacro(source);
 		return super.migrateData(source);
 	}
 }

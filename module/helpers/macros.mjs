@@ -115,16 +115,16 @@ export function toggleEffect(effectName, type = "DOCUMENT.ActiveEffect") {
  * @param {Item4e} item
  * @returns {Promise}
  */
-export async function executeMacro(item) {
+export async function executeMacro(item, macroData) {
 	const macro = new Macro({
 		name: item.name,
-		type: item.system.macro.type,
-		scope: item.system.macro.scope,
-		command: item.system.macro.command, //cmd,
+		type: macroData.type,
+		scope: macroData.scope,
+		command: macroData.command, //cmd,
 		author: game.user.id,
 	});
 	macro.item = item;
 	macro.actor = item.actor;
-	macro.launch = item.system.macro.launchOrder;
+	macro.launch = macroData.launchOrder;
 	return macro.execute();
 }

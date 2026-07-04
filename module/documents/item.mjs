@@ -1055,9 +1055,13 @@ export default class Item4e extends Item {
 		//console.debug(variance);
 		const rollData = this.getRollData({ variance });
 
-		if (["both", "pre", "sub"].includes(this.system.macro?.launchOrder)) {
-			await macros.executeMacro(this);
-			if (this.system.macro.launchOrder === "sub") return;
+		const subMacro = this.system.macros.find((m) => m.enabled && (m.launchOrder === "sub"));
+		if (subMacro) {
+			await macros.executeMacro(this, subMacro);
+			return;
+		}
+		for (const macro of this.system.macros.filter((m) => m.enabled && ["both", "pre"].includes(m.launchOrder))) {
+			await macros.executeMacro(this, macro);
 		}
 		const cardData = await (async () => {
 			if (((this.type === "power") || (this.type === "consumable")) && this.system.autoGenChatPowerCard) {
@@ -1186,8 +1190,8 @@ export default class Item4e extends Item {
 
 			ChatMessage.create(chatData);
 
-			if (["both", "post"].includes(this.system.macro?.launchOrder)) {
-				await macros.executeMacro(this);
+			for (const macro of this.system.macros.filter((m) => m.enabled && ["both", "post"].includes(m.launchOrder))) {
+				await macros.executeMacro(this, macro);
 			}
 		}
 		else return chatData;
