@@ -433,10 +433,10 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			for (const actorItem of [...actor.items]) {
 				if (actorItem.system.macro.launchOrder === "preAttack") {
 					const func = new Function("source", "item", "attacker", "target", "rollConfig", actorItem.system.macro.command);
-					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, targetOptions, commonAttackBonuses });
+					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 				}
 			}
-			Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, targetOptions, commonAttackBonuses });
+			Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
 		catch(err) {
