@@ -2,8 +2,13 @@
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @returns {Promise}      A Promise which resolves once the migration is completed
  */
-export const migrateWorld = async function() {
+export const migrateWorld = async function(migrationVersion) {
 	const version = game.system.version;
+	migrationVersion = migrationVersion || game.settings.get("dnd4e", "systemMigrationVersion");
+	// Update these versions whenever we make data model changes that require immediately saving the changes to the DB.
+	const migrateActiveEffects = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
+	const migrateActors = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
+	const migrateItems = foundry.utils.isNewerVersion("0.8.9", migrationVersion);
 	ui.notifications.info(_loc("MIGRATION.4eBegin", { version }), { permanent: true });
 
 	const migrationData = await getMigrationData();
@@ -12,9 +17,18 @@ export const migrateWorld = async function() {
 	for (let a of game.actors) {
 		try {
 			const updateData = migrateActorData(a.toObject(), migrationData);
+			if (!foundry.utils.isEmpty(updateData) || migrateActors) console.log(`Migrating Actor document ${a.name}`);
 			if (!foundry.utils.isEmpty(updateData)) {
-				console.log(`Migrating Actor document ${a.name}`);
 				await a.update(updateData, { enforceTypes: false });
+			}
+			if (migrateActors) {
+				await a.update({ system: _replace(a.system?.toObject()) });
+			}
+			if (migrateActiveEffects) {
+				for (let e of a.effects) {
+					console.log(`Migrating Active Effect ${e.name} of Actor ${a.name}`);
+					await e.update({ system: _replace(e.system?.toObject()) });
+				}
 			}
 		} catch(err) {
 			err.message = `Failed dnd4e system migration for Actor ${a.name}: ${err.message}`;
@@ -25,10 +39,19 @@ export const migrateWorld = async function() {
 		for (let i of a.items) {
 			try {
 				const updatedItem = migrateItemData(i.toObject(), migrationData);
+				if (!foundry.utils.isEmpty(updatedItem) || migrateItems) console.log(`Migrating Item ${i.name} of Actor ${a.name}`);
 				if (!foundry.utils.isEmpty(updatedItem)) {
-					console.log(`Migrating Item ${i.name} of Actor ${a.name}`);
-					const diff = foundry.utils.getProperty(updatedItem, "flags.dnd4e.-=migrateType") !== null;
+					const diff = foundry.utils.getProperty(updatedItem, "flags.dnd4e.migrateType") !== null;
 					await i.update(updatedItem, { enforceTypes: false, diff });
+				}
+				if (migrateItems) {
+					await i.update({ system: _replace(i.system?.toObject()) });
+				}
+				if (migrateActiveEffects) {
+					for (let e of i.effects) {
+						console.log(`Migrating Active Effect ${e.name} of Item ${i.name} of Actor ${a.name}`);
+						await e.update({ system: _replace(e.system?.toObject()) });
+					}
 				}
 			} catch(err) {
 				err.message = `Failed dnd4e system migration for Item ${i.name} of Actor ${a.name}: ${err.message}`;
@@ -41,10 +64,19 @@ export const migrateWorld = async function() {
 	for (let i of game.items) {
 		try {
 			const updateData = migrateItemData(i.toObject(), migrationData);
+			if (!foundry.utils.isEmpty(updateData) || migrateItems) console.log(`Migrating Item document ${i.name}`);
 			if (!foundry.utils.isEmpty(updateData)) {
-				console.log(`Migrating Item document ${i.name}`);
-				const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.-=migrateType") !== null;
+				const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.migrateType") !== null;
 				await i.update(updateData, { enforceTypes: false, diff });
+			}
+			if (migrateItems) {
+				await i.update({ system: _replace(i.system?.toObject()) });
+			}
+			if (migrateActiveEffects) {
+				for (let e of i.effects) {
+					console.log(`Migrating Active Effect ${e.name} of Item ${i.name}`);
+					await e.update({ system: _replace(e.system?.toObject()) });
+				}
 			}
 		} catch(err) {
 			err.message = `Failed dnd4e system migration for Item ${i.name}: ${err.message}`;
@@ -72,8 +104,8 @@ export const migrateWorld = async function() {
 	// Migrate World Compendium Packs
 	for (let p of game.packs) {
 		if (p.metadata.package !== "world") continue;
-		if (!["Actor", "Item", "Scene"].includes(p.documentName)) continue;
-		await migrateCompendium(p);
+		if (!["ActiveEffect", "Actor", "Item", "Scene"].includes(p.documentName)) continue;
+		await migrateCompendium(p, migrateActiveEffects, migrateActors, migrateItems);
 	}
 
 	// Set the migration as complete
@@ -89,7 +121,7 @@ export const migrateWorld = async function() {
  * @param {CompendiumCollection} pack  Pack to be migrated.
  * @returns {Promise}
  */
-export const migrateCompendium = async function(pack) {
+export const migrateCompendium = async function(pack, migrateActiveEffects, migrateActors, migrateItems) {
 	const documentName = pack.documentName;
 	if (!["Actor", "Item", "Scene"].includes(documentName)) return;
 
@@ -121,8 +153,11 @@ export const migrateCompendium = async function(pack) {
 
 			// Save the entry, if data was changed
 			if (foundry.utils.isEmpty(updateData)) continue;
-			const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.-=migrateType") !== null;
+			const diff = foundry.utils.getProperty(updateData, "flags.dnd4e.migrateType") !== null;
 			await doc.update(updateData, { diff });
+			if (((documentName === "ActiveEffect") && migrateActiveEffects)
+                || ((documentName === "Actor") && migrateActors)
+                || ((documentName === "Item") && migrateItems)) await doc.update({ system: _replace(doc.system?.toObject()) });
 			console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
 		}
 
@@ -185,7 +220,6 @@ export const migrateItemData = function(item) {
 	_migrateFeature(item, updateData);
 	_migrateRitualCategory(item, updateData);
 	_migrateFlavourText(item, updateData);
-
 	// Always do this last, as it clobbers `system` updates
 	_migrateType(item, updateData);
 	return updateData;
@@ -201,37 +235,48 @@ export const migrateItemData = function(item) {
  * @returns {Object}                The updateData to apply
  */
 export const migrateSceneData = function(scene, migrationData) {
-	const tokens = scene.tokens.map(token => {
+	const migratedTokens = [];
+	const tokens = scene.tokens.forEach(token => {
+		let hasMigrations = false;
 		const t = token.toObject();
 		const update = {};
 		// _migrateTokenImage(t, update);
 		if (Object.keys(update).length) foundry.utils.mergeObject(t, update);
 		if (!t.actorId || t.actorLink) {
-			t.actorData = {};
+			if (t.actorData) {
+				t.actorData = _del;
+				hasMigrations = true;
+			}
 		}
 		else if (!game.actors.has(t.actorId)) {
 			t.actorId = null;
-			t.actorData = {};
+			t.actorData = _del;
+			hasMigrations = true;
 		}
 		else if (!t.actorLink) {
 			const actorData = foundry.utils.duplicate(t.delta);
-			actorData.type = token.actor?.type;
-			const update = migrateActorData(actorData, migrationData);
-			["items", "effects"].forEach(embeddedName => {
-				if (!update[embeddedName]?.length) return;
-				const updates = new Map(update[embeddedName].map(u => [u._id, u]));
-				t.actorData[embeddedName].forEach(original => {
-					const update = updates.get(original._id);
-					if (update) foundry.utils.mergeObject(original, update);
+			if (actorData) {
+				actorData.type = token.actor?.type;
+				const update = migrateActorData(actorData, migrationData);
+				["items", "effects"].forEach(embeddedName => {
+					if (!update[embeddedName]?.length) return;
+					const updates = new Map(update[embeddedName].map(u => [u._id, u]));
+					t.actorData[embeddedName].forEach(original => {
+						const update = updates.get(original._id);
+						if (update) foundry.utils.mergeObject(original, update);
+					});
+					delete update[embeddedName];
 				});
-				delete update[embeddedName];
-			});
 
-			foundry.utils.mergeObject(t.delta, update);
+				if (Object.keys(update).length) {
+					foundry.utils.mergeObject(t.delta, update);
+					hasMigrations = true;
+				}
+			}
 		}
-		return t;
+		if (hasMigrations) migratedTokens.push(t);
 	});
-	return { tokens };
+	return migratedTokens.length ? { tokens } : null;
 };
 
 /* -------------------------------------------- */
@@ -265,7 +310,7 @@ function _migrateActorTempHP(actorData, updateData) {
 	if (!ad) return updateData;
 
 	const old = ad?.attributes?.hp?.temphp;
-	const hasOld = (old !== undefined) && (ad.attributes["hp-=temphp"] !== undefined);
+	const hasOld = (old !== undefined) && (ad.attributes["hp.temphp"] !== undefined);
 	if (hasOld) {
 		// If new data is not present, migrate the old data
 		if ((old !== undefined) && (ad.attributes?.temphp?.value !== old) && (typeof old === "number")) {
@@ -277,11 +322,11 @@ function _migrateActorTempHP(actorData, updateData) {
 
 		// Remove the old attribute
 		if (ad.attributes.hp.temphp !== undefined) {
-			updateData["system.attributes.-=temphp"] = null;
+			updateData["system.attributes.temphp"] = _del;
 		}
 
-		if (ad.attributes["hp-=temphp"] !== undefined) {
-			updateData["system.attributes.-=hp-=temphp"] = null;
+		if (ad.attributes["hp.temphp"] !== undefined) {
+			updateData["system.attributes.hp.temphp"] = _del;
 		}
 	}
 	return updateData;
@@ -298,19 +343,19 @@ function _migrateActorAddProfKeys(actorData, updateData) {
 	if (["Hazard", "NPC"].includes(actorData?.type)) return;
 	if (!actorData?.system?.details) return;
 
-	if (actorData.system.details.armourProf == undefined) {
+	if (actorData.system.details.armourProf === undefined) {
 		updateData["system.details.armourProf"] = {
 			value: [],
 			custom: "",
 		};
 	}
-	if (actorData.system.details.weaponProf == undefined) {
+	if (actorData.system.details.weaponProf === undefined) {
 		updateData["system.details.weaponProf"] = {
 			value: [],
 			custom: "",
 		};
 	}
-	if (actorData.system.details.implementProf == undefined) { //v0.6.15
+	if (actorData.system.details.implementProf === undefined) { //v0.6.15
 		updateData["system.details.implementProf"] = {
 			value: [],
 			custom: "",
@@ -334,35 +379,39 @@ function _migrateActorSkills(actorData, updateData) {
 	if (!skills) return;
 
 	for (const [id, skl] of Object.entries(skills)) {
-		if ((skl.training == undefined) || skl.value) {
+		if ((skl.training === undefined) || skl.value) {
 			updateData[`system.skills.${id}.training`] = skl.value || 0;
 			updateData[`system.skills.${id}.value`] = 0;
 		}
 	}
 
-	updateData["system.skillTraining"] = {
-		untrained: {
-			value: 0,
-			feat: 0,
-			item: 0,
-			power: 0,
-			untyped: 0,
-		},
-		trained: {
-			value: 5,
-			feat: 0,
-			item: 0,
-			power: 0,
-			untyped: 0,
-		},
-		expertise: {
-			value: 8,
-			feat: 0,
-			item: 0,
-			power: 0,
-			untyped: 0,
-		},
-	};
+	if ((foundry.utils.getType(actorData?.system?.skillTraining?.untrained) !== "Object")
+        || (foundry.utils.getType(actorData?.system?.skillTraining?.trained) !== "Object")
+        || (foundry.utils.getType(actorData?.system?.skillTraining?.expertise) !== "Object")) {
+		updateData["system.skillTraining"] = {
+			untrained: {
+				value: 0,
+				feat: 0,
+				item: 0,
+				power: 0,
+				untyped: 0,
+			},
+			trained: {
+				value: 5,
+				feat: 0,
+				item: 0,
+				power: 0,
+				untyped: 0,
+			},
+			expertise: {
+				value: 8,
+				feat: 0,
+				item: 0,
+				power: 0,
+				untyped: 0,
+			},
+		};
+	}
 
 	return updateData;
 }
@@ -379,16 +428,16 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
 
 	if (skills) {
 		for (const [id, skl] of Object.entries(skills)) {
-			if (skl.feat == undefined) {
+			if (skl.feat === undefined) {
 				updateData[`system.skills.${id}.feat`] = 0;
 			}
-			if (skl.item == undefined) {
+			if (skl.item === undefined) {
 				updateData[`system.skills.${id}.item`] = 0;
 			}
-			if (skl.power == undefined) {
+			if (skl.power === undefined) {
 				updateData[`system.skills.${id}.power`] = 0;
 			}
-			if (skl.untyped == undefined) {
+			if (skl.untyped === undefined) {
 				updateData[`system.skills.${id}.untyped`] = 0;
 			}
 		}
@@ -397,16 +446,16 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
 	const defences = actorData?.system?.defences;
 	if (defences) {
 		for (const [id, def] of Object.entries(defences)) {
-			if (def.feat == undefined) {
+			if (def.feat === undefined) {
 				updateData[`system.defences.${id}.feat`] = 0;
 			}
-			if (def.item == undefined) {
+			if (def.item === undefined) {
 				updateData[`system.defences.${id}.item`] = 0;
 			}
-			if (def.power == undefined) {
+			if (def.power === undefined) {
 				updateData[`system.defences.${id}.power`] = 0;
 			}
-			if (def.untyped == undefined) {
+			if (def.untyped === undefined) {
 				updateData[`system.defences.${id}.untyped`] = 0;
 			}
 		}
@@ -414,32 +463,32 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
 
 	const hp = actorData?.system?.attributes?.hp;
 	if (hp) {
-		if (hp.feat == undefined) {
+		if (hp.feat === undefined) {
 			updateData["system.attributes.hp.feat"] = 0;
 		}
-		if (hp.item == undefined) {
+		if (hp.item === undefined) {
 			updateData["system.attributes.hp.item"] = 0;
 		}
-		if (hp.power == undefined) {
+		if (hp.power === undefined) {
 			updateData["system.attributes.hp.power"] = 0;
 		}
-		if (hp.untyped == undefined) {
+		if (hp.untyped === undefined) {
 			updateData["system.attributes.hp.untyped"] = 0;
 		}
 	}
 
 	const init = actorData?.system?.attributes?.init;
 	if (init) {
-		if (init.feat == undefined) {
+		if (init.feat === undefined) {
 			updateData["system.attributes.init.feat"] = 0;
 		}
-		if (init.item == undefined) {
+		if (init.item === undefined) {
 			updateData["system.attributes.init.item"] = 0;
 		}
-		if (init.power == undefined) {
+		if (init.power === undefined) {
 			updateData["system.attributes.init.power"] = 0;
 		}
-		if (init.untyped == undefined) {
+		if (init.untyped === undefined) {
 			updateData["system.attributes.init.untyped"] = 0;
 		}
 	}
@@ -447,19 +496,19 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
 	const modifiers = actorData?.system?.modifiers;
 	if (modifiers) {
 		for (const [id, mod] of Object.entries(modifiers)) {
-			if (mod.feat == undefined) {
+			if (mod.feat === undefined) {
 				updateData[`system.modifiers.${id}.feat`] = 0;
 			}
-			if (mod.item == undefined) {
+			if (mod.item === undefined) {
 				updateData[`system.modifiers.${id}.item`] = 0;
 			}
-			if (mod.power == undefined) {
+			if (mod.power === undefined) {
 				updateData[`system.modifiers.${id}.power`] = 0;
 			}
-			if (mod.untyped == undefined) {
+			if (mod.untyped === undefined) {
 				updateData[`system.modifiers.${id}.untyped`] = 0;
 			}
-			if (mod.bonus == undefined) {
+			if (mod.bonus === undefined) {
 				updateData[`system.modifiers.${id}.bonus`] = [];
 			}
 		}
@@ -468,16 +517,16 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
 	const movement = actorData?.system?.details?.movement;
 	if (movement) {
 		for (const [id, mov] of Object.entries(movement)) {
-			if (mov.feat == undefined) {
+			if (mov.feat === undefined) {
 				updateData[`system.details.movement.${id}.feat`] = 0;
 			}
-			if (mov.item == undefined) {
+			if (mov.item === undefined) {
 				updateData[`system.details.movement.${id}.item`] = 0;
 			}
-			if (mov.power == undefined) {
+			if (mov.power === undefined) {
 				updateData[`system.details.movement.${id}.power`] = 0;
 			}
-			if (mov.untyped == undefined) {
+			if (mov.untyped === undefined) {
 				updateData[`system.details.movement.${id}.untyped`] = 0;
 			}
 		}
@@ -485,94 +534,94 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
 
 	const deathsavebon = actorData?.system?.details?.deathsavebon;
 	if (deathsavebon) {
-		if (deathsavebon.feat == undefined) {
+		if (deathsavebon.feat === undefined) {
 			updateData["system.details.deathsavebon.feat"] = 0;
 		}
-		if (deathsavebon.item == undefined) {
+		if (deathsavebon.item === undefined) {
 			updateData["system.details.deathsavebon.item"] = 0;
 		}
-		if (deathsavebon.power == undefined) {
+		if (deathsavebon.power === undefined) {
 			updateData["system.details.deathsavebon.power"] = 0;
 		}
-		if (deathsavebon.untyped == undefined) {
+		if (deathsavebon.untyped === undefined) {
 			updateData["system.details.deathsavebon.untyped"] = 0;
 		}
 	}
 
 	const saves = actorData?.system?.details?.saves;
 	if (saves) {
-		if (saves.feat == undefined) {
+		if (saves.feat === undefined) {
 			updateData["system.details.saves.feat"] = 0;
 		}
-		if (saves.item == undefined) {
+		if (saves.item === undefined) {
 			updateData["system.details.saves.item"] = 0;
 		}
-		if (saves.power == undefined) {
+		if (saves.power === undefined) {
 			updateData["system.details.saves.power"] = 0;
 		}
-		if (saves.untyped == undefined) {
+		if (saves.untyped === undefined) {
 			updateData["system.details.saves.untyped"] = 0;
 		}
 	}
 
 	const surgeBon = actorData?.system?.details?.surgeBon;
 	if (surgeBon) {
-		if (surgeBon.feat == undefined) {
+		if (surgeBon.feat === undefined) {
 			updateData["system.details.surgeBon.feat"] = 0;
 		}
-		if (surgeBon.item == undefined) {
+		if (surgeBon.item === undefined) {
 			updateData["system.details.surgeBon.item"] = 0;
 		}
-		if (surgeBon.power == undefined) {
+		if (surgeBon.power === undefined) {
 			updateData["system.details.surgeBon.power"] = 0;
 		}
-		if (surgeBon.untyped == undefined) {
+		if (surgeBon.untyped === undefined) {
 			updateData["system.details.surgeBon.untyped"] = 0;
 		}
 	}
 
 	const surges = actorData?.system?.details?.surges;
 	if (surges) {
-		if (surges.feat == undefined) {
+		if (surges.feat === undefined) {
 			updateData["system.details.surges.feat"] = 0;
 		}
-		if (surges.item == undefined) {
+		if (surges.item === undefined) {
 			updateData["system.details.surges.item"] = 0;
 		}
-		if (surges.power == undefined) {
+		if (surges.power === undefined) {
 			updateData["system.details.surges.power"] = 0;
 		}
-		if (surges.untyped == undefined) {
+		if (surges.untyped === undefined) {
 			updateData["system.details.surges.untyped"] = 0;
 		}
 	}
 	const surgeEnv = actorData?.system?.details?.surgeEnv;
 	if (surgeEnv) {
-		if (surgeEnv.feat == undefined) {
+		if (surgeEnv.feat === undefined) {
 			updateData["system.details.surgeEnv.feat"] = 0;
 		}
-		if (surgeEnv.item == undefined) {
+		if (surgeEnv.item === undefined) {
 			updateData["system.details.surgeEnv.item"] = 0;
 		}
-		if (surgeEnv.power == undefined) {
+		if (surgeEnv.power === undefined) {
 			updateData["system.details.surgeEnv.power"] = 0;
 		}
-		if (surgeEnv.untyped == undefined) {
+		if (surgeEnv.untyped === undefined) {
 			updateData["system.details.surgeEnv.untyped"] = 0;
 		}
 	}
 	const secondwindbon = actorData?.system?.details?.secondwindbon;
 	if (secondwindbon) {
-		if (secondwindbon.feat == undefined) {
+		if (secondwindbon.feat === undefined) {
 			updateData["system.details.secondwindbon.feat"] = 0;
 		}
-		if (secondwindbon.item == undefined) {
+		if (secondwindbon.item === undefined) {
 			updateData["system.details.secondwindbon.item"] = 0;
 		}
-		if (secondwindbon.power == undefined) {
+		if (secondwindbon.power === undefined) {
 			updateData["system.details.secondwindbon.power"] = 0;
 		}
-		if (secondwindbon.untyped == undefined) {
+		if (secondwindbon.untyped === undefined) {
 			updateData["system.details.secondwindbon.untyped"] = 0;
 		}
 	}
@@ -580,16 +629,16 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
 	const passive = actorData?.system?.passive;
 	if (passive) {
 		for (const [id, pasv] of Object.entries(passive)) {
-			if (pasv.feat == undefined) {
+			if (pasv.feat === undefined) {
 				updateData[`system.passive.${id}.feat`] = 0;
 			}
-			if (pasv.item == undefined) {
+			if (pasv.item === undefined) {
 				updateData[`system.passive.${id}.item`] = 0;
 			}
-			if (pasv.power == undefined) {
+			if (pasv.power === undefined) {
 				updateData[`system.passive.${id}.power`] = 0;
 			}
-			if (pasv.untyped == undefined) {
+			if (pasv.untyped === undefined) {
 				updateData[`system.passive.${id}.untyped`] = 0;
 			}
 		}
@@ -606,11 +655,11 @@ function _migrateActorFeatItemPowerBonusSources(actorData, updateData) {
  * @private
  */
 function _migrateImplmentKey(itemData, updateData) {
-	if ((itemData.type !== "weapon") && (itemData.system.implementGroup != undefined)) return;
+	if ((itemData.type !== "weapon") || (itemData.system.implementGroup === undefined)) return;
 
 	const implementData = itemData.system.implementGroup;
 
-	updateData["system.-=implementGroup"] = null;
+	updateData["system.implementGroup"] = _del;
 	updateData["system.implement"] = implementData;
 
 	return updateData;
@@ -722,7 +771,7 @@ function _migrateActorDefAndRes(actorData, updateData) {
 	const defences = actorData?.system?.defences;
 	if (defences) {
 		for (const [id, def] of Object.entries(defences)) {
-			if (def.shield == undefined) {
+			if (def.shield === undefined) {
 				updateData[`system.defences.${id}.shield`] = 0;
 			}
 		}
@@ -731,10 +780,10 @@ function _migrateActorDefAndRes(actorData, updateData) {
 	const resistances = actorData?.system?.resistances;
 	if (resistances) {
 		for (const [id, res] of Object.entries(resistances)) {
-			if (res.res == undefined) {
+			if (res.res === undefined) {
 				updateData[`system.resistances.${id}.res`] = 0;
 			}
-			if (res.vuln == undefined) {
+			if (res.vuln === undefined) {
 				updateData[`system.resistances.${id}.vuln`] = 0;
 			}
 		}
@@ -773,18 +822,24 @@ function _migrateNeckGearEnhance(itemData, updateData) {
 function _migratePowerBasicAndGlobal(itemData, updateData) {
 	if (itemData.type !== "power") return;
 		
-	if (itemData.system?.attack?.isBasic == undefined) {
+	if (itemData.system?.attack?.isBasic === undefined) {
 		updateData["system.attack.isBasic"] = false;
 	}
 	if (itemData?.system?.attack?.formula) {
-		updateData["system.attack.formula"] = itemData.system.attack.formula.replace(/(@atkMod *\+* *)|( *\+* *@atkMod)/g, "");
+		const newFormula = itemData.system.attack.formula.replace(/(@atkMod *\+* *)|( *\+* *@atkMod)/g, "");
+		if (itemData?.system?.attack?.formula !== newFormula) updateData["system.attack.formula"] = newFormula;
 	}
 	if (itemData?.system?.hit?.formula) {
-		updateData["system.hit.formula"] = itemData.system.hit.formula.replace(/ *\+* *@dmgMod/g, "");
-		updateData["system.hit.critFormula"] = itemData.system.hit.critFormula.replace(/(@dmgMod *\+* *)|( *\+* *@dmgMod)/g, "");
+		const newFormula = itemData.system.hit.formula.replace(/ *\+* *@dmgMod/g, "");
+		if (itemData.system.hit.formula !== newFormula) updateData["system.hit.formula"] = itemData.system.hit.formula.replace(/ *\+* *@dmgMod/g, "");
+	}
+	if (itemData?.system?.hit?.critFormula) {
+		const newFormula = itemData.system.hit.critFormula.replace(/(@dmgMod *\+* *)|( *\+* *@dmgMod)/g, "");
+		if (itemData.system.hit.critFormula !== newFormula) updateData["system.hit.critFormula"] = newFormula;
 	}
 	if (itemData?.system?.miss?.formula) {
-		updateData["system.miss.formula"] = itemData.system.miss.formula.replace(/(@dmgMod *\+* *)|( *\+* *@dmgMod)/g, "");
+		const newFormula = itemData.system.miss.formula;
+		if (itemData.system.miss.formula !== newFormula) updateData["system.miss.formula"] = newFormula;
 	}
 	
 	return updateData;
@@ -801,7 +856,7 @@ function _migrateActorGlobalMods(actorData, updateData) {
 	
 	const modifiers = actorData?.system?.modifiers;
 	
-	if (modifiers?.skills == undefined) {
+	if (modifiers?.skills === undefined) {
 		updateData["system.modifiers.skills"] = {
 			value: 0,
 			class: 0,
@@ -814,7 +869,7 @@ function _migrateActorGlobalMods(actorData, updateData) {
 		};
 	}
 	
-	if (modifiers?.defences == undefined) {
+	if (modifiers?.defences === undefined) {
 		updateData["system.modifiers.defences"] = {
 			value: 0,
 			class: 0,
@@ -842,7 +897,7 @@ function _migrateActorSwim(actorData, updateData) {
 	if (actorData?.type === "Hazard") return;
 	const movement = actorData?.system?.movement;
 	
-	if (movement?.swim == undefined) {
+	if (movement?.swim === undefined) {
 		updateData["system.movement.swim"] = {
 			value: 0,
 			formula: "(@base + @armour)/2",
@@ -868,7 +923,7 @@ function _migrateActorSwim(actorData, updateData) {
 function _migrateFeature(itemData, updateData) {
 	const sourceType = itemData.type;
 	
-	if (sourceType == "feature") {
+	if (sourceType === "feature") {
 		if (!["activation", "duration", "target", "range", "uses", "consume"].some(i => itemData.system[i])) return updateData;
 		//Catch any features that were migrated early during beta/testing
 		updateData["system.activation"] = null;
@@ -930,7 +985,7 @@ function _migrateFeature(itemData, updateData) {
  * @private
  */
 function _migrateRitualCategory(itemData, updateData) {	
-	if (!itemData.type === "ritual") return;
+	if ((itemData.type !== "ritual") || itemData.system.category) return;
 	
 	updateData["system.category"] = "other";
 	//console.debug(CONFIG.DND4E.ritualTypes);
@@ -955,7 +1010,7 @@ function _migrateType(documentData, updateData) {
 	const newUpdateData = foundry.utils.mergeObject(documentData, updateData, { inplace: false });
 	foundry.utils.mergeObject(updateData, newUpdateData);
 	updateData["==system"] = updateData.system;
-	foundry.utils.setProperty(updateData, "flags.dnd4e.-=migrateType", null);
+	foundry.utils.setProperty(updateData, "flags.dnd4e.migrateType", _del);
 	delete updateData.system;
 	return updateData;
 }
@@ -969,7 +1024,7 @@ function _migrateType(documentData, updateData) {
 */
 function _migrateHazardSpeed(actorData, updateData) {
 	
-	if (actorData?.type != "Hazard") return;
+	if (actorData?.type !== "Hazard") return;
 	console.debug(actorData.system.movement);
 	const moveTemplate = { base: {}, walk: {}, run: {}, charge: {}, climb: {}, swim: {}, shift: {} };
 	
@@ -979,9 +1034,9 @@ function _migrateHazardSpeed(actorData, updateData) {
 	for (const [m, mode] of Object.entries(movement)) {
 		console.debug(m);
 		console.debug(mode);	
-		if (["notes", "custom", "none"].includes(m)) continue;
+		if (["notes", "custom", "none", "ignoredDifficultTerrain"].includes(m)) continue;
 		
-		if (mode?.bonus == undefined) {			
+		if (mode?.bonus === undefined) {			
 			updateData[`system.movement.${m}`] = {
 				value: mode.value || 0,
 				bonus: [{}],
@@ -1024,7 +1079,7 @@ function _migrateActorMarker(actorData, updateData) {
 	if (!["Player Character", "NPC", "Hazard"].includes(actorData?.type)) return;
 	const system = actorData.system;
 	
-	if (system?.marker == undefined) updateData["system.marker"] = null;
+	if (system?.marker === undefined) updateData["system.marker"] = null;
 	return updateData;
 }
 
@@ -1040,9 +1095,9 @@ function _migrateFeatureKeywords(itemData, updateData) {
 	
 	if (sourceType == "feature") {
 		//Add new properties from 0.6.13
-		if (itemData.system?.effectType == undefined) updateData["system.effectType"] = {};
-		if (itemData.system?.damageType == undefined) updateData["system.damageType"] = {};
-		if (itemData.system?.customKeywords == undefined) updateData["system.customKeywords"] = "";
+		if (itemData.system?.effectType === undefined) updateData["system.effectType"] = {};
+		if (itemData.system?.damageType === undefined) updateData["system.damageType"] = {};
+		if (itemData.system?.customKeywords === undefined) updateData["system.customKeywords"] = "";
 		return updateData;
 	}	
 }
@@ -1055,5 +1110,8 @@ function _migrateFeatureKeywords(itemData, updateData) {
  * @private
  */
 function _migrateFlavourText(itemData, updateData) {
-	if (itemData.system?.chatFlavor) updateData["system.description.chat"] = itemData.system.chatFlavor;
+	if (itemData.system?.chatFlavor) {
+		updateData["system.description.chat"] = itemData.system.chatFlavor;
+		updateData["system.chatFlavor"] = _del;
+	}
 }
