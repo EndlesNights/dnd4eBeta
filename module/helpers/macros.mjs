@@ -116,6 +116,9 @@ export function toggleEffect(effectName, type = "DOCUMENT.ActiveEffect") {
  * @returns {Promise}
  */
 export async function executeMacro(item, macroData) {
+	// The system shouldn't be calling this function on disabled macros, but just in case.
+	if (!macroData.enabled) return;
+
 	const macro = new Macro({
 		name: item.name,
 		type: macroData.type,
