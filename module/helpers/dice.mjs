@@ -252,9 +252,9 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 						let bonusName = v.name.split(".")[1];
 						if (v.checked) {
 							targetBonuses.push(`@${bonusName}`);
-							targDataArray.targets[targetIndex].targetBonuses[bonusName].shouldApply = true;
 						}
-                        targDataArray.targets[targetIndex].targetBonuses[bonusName].shouldApply = v.checked;
+						targDataArray.targets[targetIndex].targetBonuses[bonusName].shouldApply = v.checked;
+					}
 				}
 				if (!individualAttack && (k > 21)) {
 					break;
