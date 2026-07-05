@@ -245,13 +245,16 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 		for (let targetIndex = 0; targetIndex < numberOfTargets; targetIndex++) {
 			const targetBonuses = [];
 			for (let [k, v] of Object.entries(form)) {
-				if (v.checked) {
+				if (v.checked !== undefined) {
 					let tabIndex = v.name.split(".")[0];
 					if ((individualAttack && (parseInt(tabIndex) === targetIndex)) // check if Individual Attack Bonuses
 					|| !individualAttack) { //otherwise just use Unified Attack Bonuses
 						let bonusName = v.name.split(".")[1];
-						targetBonuses.push(`@${bonusName}`);
-					}
+						if (v.checked) {
+							targetBonuses.push(`@${bonusName}`);
+							targDataArray.targets[targetIndex].targetBonuses[bonusName].shouldApply = true;
+						}
+                        targDataArray.targets[targetIndex].targetBonuses[bonusName].shouldApply = v.checked;
 				}
 				if (!individualAttack && (k > 21)) {
 					break;
