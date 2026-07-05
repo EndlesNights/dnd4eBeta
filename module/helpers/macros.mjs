@@ -113,6 +113,7 @@ export function toggleEffect(effectName, type = "DOCUMENT.ActiveEffect") {
 /**
  * Execute a macro with item variables
  * @param {Item4e} item
+ * @param {Object} macroData
  * @returns {Promise}
  */
 export async function executeMacro(item, macroData) {
