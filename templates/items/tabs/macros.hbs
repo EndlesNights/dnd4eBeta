@@ -1,52 +1,79 @@
 <section class="tab scrollable {{tab.id}}{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
-  <div class="form-group">
-    <label>{{ localize "Scope" }}</label>
-    <select name="system.macro.scope" disabled>
-      {{selectOptions config.macroScope selected=system.macro.scope labelAttr="label"}}
-    </select>
+	{{log system.macros}}
+	{{#each system.macros as |macro i|}}
+	{{log macro}}{{log i}}
+    <fieldset class="macro form-group vertical" data-macro-number="{{@index}}">
+      <legend>{{localize 'Macro'}} {{@index}} ({{#with (lookup ../config.macroLaunchOrder macro.launchOrder)}}{{label}}{{/with}})</legend>
+      
+      <div class="form-group loose">
+      
+        <div class="form-group loose">
+          <label>{{localize "DND4E.MACROS.ACTIVATION.Label"}}</label>
+          <select name="system.macros.{{@index}}.launchOrder">
+            {{selectOptions ../config.macroLaunchOrder selected=macro.launchOrder labelAttr="label"}}
+          </select>
+        </div>
+
+        {{#unless (eq macro.launchOrder "comBon")}}
+        {{#unless (eq macro.launchOrder "preAttack")}}
+        <div class="form-group loose">
+          <label>{{ localize "Type" }}</label>
+          <select name="system.macros.{{@index}}.type" class="macro-type">
+            {{selectOptions ../config.macroType selected=macro.type labelAttr="label"}}
+          </select>
+        </div>
+        {{/unless}}
+        {{/unless}}
+
+        <label class="checkbox right">
+          <input class="checkbox" type="checkbox" name="system.macros.{{@index}}.enabled" data-dtype="Boolean" {{checked macro.enabled}}> 
+          <span class="label">{{localize "DND4E.Active"}}</span>
+        </label>
+        <a class="macro-control macro-delete right" data-action="deleteMacro" data-tooltip="{{localize 'DND4EUI.Delete'}}"><i class="fas fa-trash"></i></a>
+        
+      </div>
+      
+      <div class="form-group loose">
+      
+        {{!--<div class="form-group loose">
+          <label>{{ localize "Scope" }}</label>
+          <select name="system.macros.{{@index}}.scope" disabled>
+            {{selectOptions ../config.macroScope selected=macro.scope labelAttr="label"}}
+          </select>
+        </div>--}}
+        
+        {{#if autoanimationsActive}}
+        {{#unless (eq macro.launchOrder "comBon")}}
+        {{#unless (eq macro.launchOrder "preAttack")}}
+        <div class="form-group loose">
+          <label>Autoanimation Hook</label>
+          <select name="system.macros.{{@index}}.autoanimationHook">
+            <option value=""{{#if (eq macro.autoanimationHook "")}}selected{{/if}}>Automatic</option>
+            {{selectOptions ../config.autoanimationHook selected=macro.autoanimationHook localize=true}}
+          </select>
+        </div>
+        {{/unless}}
+        {{/unless}}
+        {{/if}}
+        
+      </div>
+      
+      <div class="form-group stacked macro-text">
+          <code-mirror name="system.macros.{{@index}}.command" language="{{editorLanguage}}">
+            {{~ macro.command ~}}
+          </code-mirror>
+      </div>
+      
+    <div class="form-group flexrow">
+      <button class="execute" data-action="executeMacro" type="button" data-macro-index="{{@index}}"><i class="fas fa-dice-d20"></i> {{ localize "MACRO.Execute" }}</button>
+    </div>
+	
+    </fieldset>
+	{{/each}}
+  
+  <div class="form-group right">
+    <a class="macro-control macro-add label" data-action="addMacro">{{localize "DND4EUI.AddNew"}}</a>
   </div>
-
-  <div class="form-group">
-    <label>{{ localize "Type" }}</label>
-    <select name="system.macro.type">
-      {{selectOptions config.macroType selected=system.macro.type labelAttr="label"}}
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Launch Order</label>
-    <select name="system.macro.launchOrder">
-      {{selectOptions config.macroLaunchOrder selected=system.macro.launchOrder labelAttr="label"}}
-    </select>
-  </div>
-
-  {{#if autoanimationsActive}}
-  <div class="form-group">
-    <label>Autoanimation Hook</label>
-    <select name="system.macro.autoanimationHook">
-      <option value=""{{#if (eq system.macro.autoanimationHoo "")}}selected{{/if}}>Automatic</option>
-      {{selectOptions config.autoanimationHook selected=system.macro.autoanimationHook localize=true}}
-    </select>
-  </div>
-  {{/if}}
-
-  <!--<div class="form-group stacked ">
-    <label></label>
-    </div>-->
-
-  <div class="form-group stacked macro-text">
-    {{!-- 
-    <textarea name="system.macro.command">{{system.macro.command}}</textarea>
-    --}}
-    <code-mirror name="system.macro.command" language="{{editorLanguage}}">
-      {{~ system.macro.command ~}}
-    </code-mirror>
-  </div>
-
-  <footer class="sheet-footer flexrow">
-    <!-- <button type="submit"><i class="fas fa-save"></i> {{ localize "MACRO.Save" }}</button> -->
-    <button class="execute" data-action="executeMacro" type="button"><i class="fas fa-dice-d20"></i> {{ localize "MACRO.Execute" }}</button>
-  </footer>
 
 </section>
