@@ -34,6 +34,7 @@ export default class RitualData extends foundry.abstract.TypeDataModel {
 	/** @inheritdoc */
 	static migrateData(source) {
 		ItemDescriptionTemplate.migrateSource(source);
+		ItemMacroTemplate.migrateMacro(source);
 		return super.migrateData(source);
 	}
 }

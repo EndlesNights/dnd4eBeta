@@ -90,6 +90,7 @@ export default class PowerData extends foundry.abstract.TypeDataModel {
 			}
 		}
 		ItemDescriptionTemplate.migrateSource(source);
+		ItemMacroTemplate.migrateMacro(source);
 		return super.migrateData(source);
 	}
 }

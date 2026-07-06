@@ -113,18 +113,22 @@ export function toggleEffect(effectName, type = "DOCUMENT.ActiveEffect") {
 /**
  * Execute a macro with item variables
  * @param {Item4e} item
+ * @param {Object} macroData
  * @returns {Promise}
  */
-export async function executeMacro(item) {
+export async function executeMacro(item, macroData) {
+	// The system shouldn't be calling this function on disabled macros, but just in case.
+	if (!macroData.enabled) return;
+
 	const macro = new Macro({
 		name: item.name,
-		type: item.system.macro.type,
-		scope: item.system.macro.scope,
-		command: item.system.macro.command, //cmd,
+		type: macroData.type,
+		scope: macroData.scope,
+		command: macroData.command, //cmd,
 		author: game.user.id,
 	});
 	macro.item = item;
 	macro.actor = item.actor;
-	macro.launch = item.system.macro.launchOrder;
+	macro.launch = macroData.launchOrder;
 	return macro.execute();
 }

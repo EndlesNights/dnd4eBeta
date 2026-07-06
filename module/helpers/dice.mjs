@@ -114,8 +114,8 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 			const attacker = utils.tokenForActor(actor);
 			const target = targetArr[targ];
 			for (const actorItem of [...actor.items]) {
-				if (actorItem.system.macro.launchOrder === "comBon") {
-					const func = new Function("source", "item", "attacker", "target", "bonuses", actorItem.system.macro.command);
+				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBon"))) {
+					const func = new Function("source", "item", "attacker", "target", "bonuses", macro.command);
 					func(actorItem, item, attacker, target, targetBonuses);
 				}
 			}
@@ -359,8 +359,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			const attacker = utils.tokenForActor(actor);
 			const target = theTargets[targetIndex];
 			for (const actorItem of [...actor.items]) {
-				if (actorItem.system.macro.launchOrder === "comBon") {
-					const func = new Function("source", "item", "attacker", "target", "bonuses", actorItem.system.macro.command);
+				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBon"))) {
+					const func = new Function("source", "item", "attacker", "target", "bonuses", macro.command);
 					func(actorItem, item, attacker, target, targetBonuses);
 				}
 			}
@@ -434,8 +434,8 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			const attacker = utils.tokenForActor(actor);
 			const target = targets[rollExpressionIdx];
 			for (const actorItem of [...actor.items]) {
-				if (actorItem.system.macro.launchOrder === "preAttack") {
-					const func = new Function("source", "item", "attacker", "target", "rollConfig", actorItem.system.macro.command);
+				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttack"))) {
+					const func = new Function("source", "item", "attacker", "target", "rollConfig", macro.command);
 					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 				}
 			}

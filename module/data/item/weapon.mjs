@@ -133,6 +133,7 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
 			}
 		}
 		ItemDescriptionTemplate.migrateSource(source);
+		ItemMacroTemplate.migrateMacro(source);
 		return super.migrateData(source);
 	}
 }

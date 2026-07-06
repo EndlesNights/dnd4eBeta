@@ -29,6 +29,7 @@ export default class ToolData extends foundry.abstract.TypeDataModel {
 	/** @inheritdoc */
 	static migrateData(source) {
 		ItemDescriptionTemplate.migrateSource(source);
+		ItemMacroTemplate.migrateMacro(source);
 		return super.migrateData(source);
 	}
 }
