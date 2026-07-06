@@ -62,6 +62,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			editPowerEffect: ItemSheet4e.#onPowerEffectControl,
 			deletePowerEffect: ItemSheet4e.#onPowerEffectControl,
 			manageActiveEffect: ItemSheet4e.#onManageActiveEffect,
+			addMacro: ItemSheet4e.#onMacroControl,
+			deleteMacro: ItemSheet4e.#onMacroControl,
 			// Container actions
 			itemRoll: ItemSheet4e.#onItemRoll,
 			editItem: ItemSheet4e.#onItemControl,
@@ -490,7 +492,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			if (tab?.condition && !tab.condition(this.document)) delete context.tabs[key];
 		}
 
-		context.editorLang = this.document.system.macro.type === "script" ? "javascript" : "";
+		context.editorLang = this.document.system.macro?.type === "script" ? "javascript" : "";
 		
 		return context;
 	}
@@ -649,6 +651,8 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	static #onConfigureSource(event, target) {
 		return this._renderChild(new SourceConfig({ document: this.item, keyPath: "system.source" }));
 	}
+  
+
 
 	async shareItem() {
 		let changeBack = false;
@@ -1160,9 +1164,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/* -------------------------------------------- */
 
-	static async #onExecuteMacro() {
+	static async #onExecuteMacro(event, target){
 		await this.submit({ preventClose: true });
-		return macros.executeMacro(this.document);
+    const macroIndex = event.target.getAttribute("data-macro-index");
+		return macros.executeMacro(this.document,this.document.system.macros[macroIndex]);
 	}
 	
 	/* -------------------------------------------- */
@@ -1530,4 +1535,42 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/* -------------------------------------------- */
 
+	/**
+	 * Add or remove a macro
+	 * @param {Event} event     		The original click event
+	 * @param {HTMLElement} target	The target of the event
+	 * @returns {Promise}
+	 * @this {ItemSheet4e}
+	 */
+	static async #onMacroControl(event, target) {
+		const action = target.dataset.action;
+		// Add new damage component
+		if (action === "addMacro") {
+			await this.submit(event); // Submit any unsaved changes
+			const macros = this.item.system.macros;
+			return this.item.update({ "system.macros": macros.concat([{
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }])});
+		}
+
+		// Remove a damage component
+		if (action === "deleteMacro") {
+			await this.submit(event); // Submit any unsaved changes
+			const macro = target.closest(".macro");
+      const index = macro.getAttribute("data-macro-number");
+      const macros = foundry.utils.duplicate(this.item.system.macros);
+			macros.splice(macro.getAttribute("data-macro-number"), 1);
+			return this.item.update({ "system.macros": macros });
+		}
+	
+	}
+
+	/* -------------------------------------------- */
+  
 }

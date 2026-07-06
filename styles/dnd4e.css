@@ -175,6 +175,11 @@
 		padding:0.5em;
 		gap:0;
 	}
+	.sheet-footer{
+		bottom:0px;
+    margin-top:auto;
+		position:sticky;
+	}
 }
 .themed.theme-dark,
 .themed.theme-dark :is(.application,.app).dnd4e:is(.default,.standard-form):not(.themed),
@@ -943,6 +948,10 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	}
 	.right{
 		margin-left:auto;
+    text-align:right;
+    flex-basis:fit-content;
+    width:fit-content;
+    flex-grow:0;
 	}
 	table{
 		margin:0;
@@ -2858,12 +2867,6 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		text-align:right;
 		opacity:0.75;
 	}
-	.macro-text{
-		height:calc(100% - 132px);
-	}
-	.macro-text textarea{
-		height:100%;
-	}
 	.item-damage .dmg-base-qty{
 		flex: 0.5 0 0;
 	}
@@ -2874,6 +2877,9 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		max-height:76px;
 		line-height:22px;
 	}
+  .macro-type{
+    min-width:6em;
+  }
 }
 .sheet.default .item-consumable .form-group :is(.display-effect,.effect-html){
 	text-align:right;
@@ -2990,10 +2996,6 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 			position:relative;
 			/*grid-template-columns: 12fr 7fr 7fr 4fr 1rem;*/
 		}
-	}
-	.sheet-footer{
-		bottom:0px;
-		position:sticky;
 	}
 }
 
@@ -3314,7 +3316,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 	min-height:10em;
 	resize:vertical;
 }
-.bonus-add:before{
+:is(.bonus-add,.macro-add):before{
 	content:'+';
 	display:inline-block;
 	font-weight:bold;
@@ -3829,6 +3831,11 @@ input[type="text"].dice-count{
 		.hidden-dc { display: none; }
 		.visible-dc { display: contents; }
 	}
+}
+
+/* FOUNDRY WHY YOU KILL CODEMIRROR CARET?! */
+.ͼ4 .cm-line{
+    caret-color:var(--color-text-emphatic) !important;
 }
 
 @media (prefers-reduced-transparency){
