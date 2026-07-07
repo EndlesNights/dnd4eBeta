@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 0.8.9
+* It's now possible for items to contain more than one macro! You add and remove them from the Macros tab, and assign different types/activation triggers to each one. The tab UI has been updated accordingly. (SagaTympana & Fox)
+* Added new hooks for macro activation: Common Attack Bonus Evaluation, and Pre Attack Roll. Use them to mess with attack rolls more powerfully than ever before! :p (SagaTympana)
+* Aura Effects compatibility: status conditions will now display correctly for Auras. (SagaTympana)
+* Updated auto-generated power cards to omit hit/miss text if the power doesn't have an attack (SagaTympana)
+* Fixed a bug where common attack bonuses toggled during the roll dialogue would not persist through to the roll (SagaTympana)
+* Fixed an oversight where "other" would appear twice in power type/subtype (SagaTympana)
+* The version migration process has been updated to be much more efficient going forward (SagaTympana)
+* Internal code documentation updated (SagaTympana)
+
 ## Version 0.8.8
 * New configuration dialogue for item source, allowing users to define book/page reference in more detail and assign a unique identifier for powers/features/equipment/etc (SagaTympana)
 * Improved item sheets to accommodate the new source field, and fixed a few bugs along the way (Fox)
