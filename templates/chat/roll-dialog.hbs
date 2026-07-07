@@ -71,9 +71,9 @@
           <label class="checkbox">
             <input type="checkbox" class="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean" 
 						
-              {{!-- Try to infer already active bonuses --}}
+          {{!-- Try to infer already active bonuses --}}
 					
-              {{#if (eq b 'charge')}}{{#if ../../data.item.attack.isCharge}}checked="true" disabled{{/if}}{{#if t.targetBonuses.charge.shouldApply}}checked="true" disabled{{/if}}{{/if}}
+            {{#if (eq b 'charge')}}{{#if ../../data.item.attack.isCharge}}checked="true" disabled{{/if}}{{#if t.targetBonuses.charge.shouldApply}}checked="true" disabled{{/if}}{{/if}}
 					
 						{{#if (eq b 'marked')}}{{#if t.targetBonuses.ignoringMark.shouldApply}}checked="true"{{/if}}{{/if}}
 					 
@@ -119,7 +119,7 @@
 					{{!-- End already active --}}
 					
 						value="{{../checked}}"/> 
-            <span class="label">{{ localize a.label}} ({{ lookup (lookup t.targetBonuses b) "value"}})</span>
+            <span class="label">{{ localize a.label}} ({{#if ../targetData.hasTarget}}{{ lookup (lookup t.targetBonuses b) "value"}}{{else}}{{ lookup (lookup ../../data.commonAttackBonuses b) "value"}}{{/if}})</span>
           </label>
         </div>
         {{/each}}
