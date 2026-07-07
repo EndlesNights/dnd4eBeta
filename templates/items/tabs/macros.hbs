@@ -3,9 +3,8 @@
 	{{log system.macros}}
 	{{#each system.macros as |macro i|}}
 	{{log macro}}{{log i}}
-    <fieldset class="macro form-group vertical" data-macro-number="{{@index}}">
-      <legend>{{localize 'Macro'}} {{@index}} ({{#with (lookup ../config.macroLaunchOrder macro.launchOrder)}}{{label}}{{/with}})</legend>
-      
+    <fieldset class="macro form-group vertical collapsed" data-macro-number="{{@index}}">
+      <legend class="macro-expand-toggle" data-action="expandMacro">{{localize 'Macro'}} {{@index}} ({{#with (lookup ../config.macroLaunchOrder macro.launchOrder)}}{{label}}{{/with}})</legend>
       <div class="form-group loose">
       
         <div class="form-group loose">
@@ -59,8 +58,8 @@
         
       </div>
       
-      <div class="form-group stacked macro-text">
-          <code-mirror name="system.macros.{{@index}}.command" language="{{editorLanguage}}">
+      <div class="form-group stacked macro-text" tabindex="0">
+          <code-mirror name="system.macros.{{@index}}.command" language="{{editorLanguage}}" tabindex="0">
             {{~ macro.command ~}}
           </code-mirror>
       </div>
