@@ -2887,7 +2887,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
         content:"\f107";
       }
       &:first-child{
-        flex-basis:100%;
+        flex-basis:calc(100% - 2em);
       }
       &:not(.collapsed){
         flex:100% 100 0;
