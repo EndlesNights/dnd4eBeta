@@ -253,7 +253,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 						if (v.checked) {
 							targetBonuses.push(`@${bonusName}`);
 						}
-						targDataArray.targets[targetIndex].targetBonuses[bonusName].shouldApply = v.checked;
+						if (targDataArray.hasTarget) targDataArray.targets[targetIndex].targetBonuses[bonusName].shouldApply = v.checked;
 					}
 				}
 				if (!individualAttack && (k > 21)) {
@@ -262,7 +262,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			}
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				let total = 0;
-				targetBonuses.forEach(bonus => total += targDataArray.targets[targetIndex].targetBonuses[bonus.substring(1)].value);
+				if (targDataArray.hasTarget) targetBonuses.forEach(bonus => total += targDataArray.targets[targetIndex]?.targetBonuses[bonus.substring(1)].value);
 				const partsToPush = total ? parts.concat([total]) : parts;
 				allRollsParts.push(partsToPush);
 			}
