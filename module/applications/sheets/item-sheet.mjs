@@ -64,6 +64,7 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			manageActiveEffect: ItemSheet4e.#onManageActiveEffect,
 			addMacro: ItemSheet4e.#onMacroControl,
 			deleteMacro: ItemSheet4e.#onMacroControl,
+			expandMacro: ItemSheet4e.#onMacroControl,
 			// Container actions
 			itemRoll: ItemSheet4e.#onItemRoll,
 			editItem: ItemSheet4e.#onItemControl,
@@ -1568,6 +1569,11 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			macros.splice(macro.getAttribute("data-macro-number"), 1);
 			return this.item.update({ "system.macros": macros });
 		}
+    
+		// Expand macro text
+		if (action === "expandMacro") {
+      target.parentElement.classList.toggle("collapsed");
+    }
 	
 	}
 
