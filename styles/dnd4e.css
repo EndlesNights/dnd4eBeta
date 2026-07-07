@@ -2772,7 +2772,7 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		&.two-input input.source-name{
 			flex-basis:20%;
 		}
-		}
+  }
 	span.sep{
 		flex:0 0 8px;
 	}
@@ -2877,8 +2877,38 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		max-height:76px;
 		line-height:22px;
 	}
-  .macro-type{
-    min-width:6em;
+  .tab.macros{
+    .macro{
+      flex:fit-content 0 100;
+      
+      & .macro-expand-toggle::after{
+        padding:0.5em;
+        font-family:var(--fa-family-classic);
+        content:"\f107";
+      }
+      &:first-child{
+        flex-basis:100%;
+      }
+      &:not(.collapsed){
+        flex:100% 100 0;
+        flex-shrink:0;
+        max-height:100%;
+        
+        & .macro-expand-toggle::after{
+          content:"\f106";
+        }
+      }
+    }
+    .macro-type{
+      min-width:6em;
+    }
+    .macro-text{
+      flex:1em 100 0;
+      min-height:2em;
+      code-mirror{
+        min-height:100%;
+      }
+    }
   }
 }
 .sheet.default .item-consumable .form-group :is(.display-effect,.effect-html){
