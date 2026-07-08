@@ -54,7 +54,7 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 		targets: [],
 	};
 	
-	if (actor && game.user.targets.size) {
+	if (actor) {
 		const userBonuses = Object.keys(CONFIG.DND4E.commonAttackBonuses).reduce((bonuses, bonus) => {
 			bonuses[bonus] = {
 				shouldApply: false,
@@ -62,9 +62,9 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 			};
 			return bonuses;
 		}, {});
-		const numTargets = game.user.targets.size;
+		const numTargets = Math.max(1, game.user.targets.size);
 		const targetArr = Array.from(game.user.targets);
-		targDataArray.hasTarget = true;
+		targDataArray.hasTarget = !!targetArr.length;
 		if (game.settings.get("dnd4e", "markAutomation") && actor.system?.marker) {
 			targDataArray.ignoringMark = !targetArr.some(t => (t.actor.uuid === data.marker));
 			userBonuses.ignoringMark.shouldApply = true;
@@ -78,15 +78,15 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 		if (isCharge) userBonuses.charge.shouldApply = true;
 		for (let targ = 0; targ < numTargets; targ++) {
 			const targetBonuses = foundry.utils.deepClone(userBonuses);
-			const targName = targetArr[targ].name;
+			const targName = targetArr[targ]?.name || "";
 			targDataArray.targNameArray.push(targName);
-			const targetStatus = Array.from(targetArr[targ].actor.statuses);
+			const targetStatus = Array.from(targetArr[targ]?.actor.statuses || []);
 				
 			//Target conditions
 			if (targetStatus.filter(element => ["blinded", "dazed", "dominated", "helpless", "restrained", "stunned", "surprised", "squeezing", "running", "grantingCA"].includes(element)).length) targetBonuses.comAdv.shouldApply = true;
-			const targetDist = utils.computeDistance(actor, targetArr[targ]);
+			const targetDist = targetArr[targ] ? utils.computeDistance(actor, targetArr[targ]) : 0;
 			//console.debug(data);
-			if (targetArr[targ].actor.statuses.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
+			if (targetArr[targ]?.actor.statuses.has("prone") && (["melee", "touch", "reach"].includes(item?.system.rangeType) || ((item?.system.rangeType === "weapon") && (weaponUse?.system.weaponType.slice(-1) === "M")))) {
 				let meleeVsProne = true;
 				if (item?.system.rangeType === "weapon") {
 					if (weaponUse?.system.properties.thv || weaponUse?.system.properties.tlg) {
@@ -102,7 +102,7 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 			if (((item?.system.rangeType === "range") && item?.system.range.long && (targetDist > item?.system.rangePower)) || ((item?.system.rangeType === "weapon") && weaponUse?.system.range.long && (targetDist > weaponUse?.system.range.value))) {
 				targetBonuses.longRange.shouldApply = true;
 			}
-			if (utils.computeFlankingStatus(utils.tokenForActor(actor), targetArr[targ])) {
+			if (targetArr[targ] && utils.computeFlankingStatus(utils.tokenForActor(actor), targetArr[targ])) {
 				targetBonuses.comAdv.shouldApply = true;
 			}
 			if (targetStatus.includes("bloodied")) targetBonuses.bloodied.shouldApply = true;
@@ -121,11 +121,11 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 			}
 			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, targetBonuses);
 			targDataArray.targets.push({
-				name: targetArr[targ].name,
-				status: targetArr[targ].actor.statuses,
+				name: targetArr[targ]?.name || "",
+				status: targetArr[targ]?.actor.statuses || [],
 				attackMod: data?.item?.attack?.ability || "",
 				attackDef: options.attackedDef || "ac",
-				immune: targetArr[targ].actor.system.defences[options.attackedDef]?.none || false,
+				immune: targetArr[targ]?.actor.system.defences[options.attackedDef]?.none || false,
 				targetBonuses,
 			});
 		}
