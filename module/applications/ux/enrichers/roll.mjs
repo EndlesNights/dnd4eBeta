@@ -456,7 +456,7 @@ async function rollAttack(config, event) {
 			left: window.innerWidth - 710,
 		},
 		isAttackRoll: true,
-		messageData: { "flags.dnd4e.roll": { type: "attack" } },
+		messageData: { "options.flags.dnd4e.roll": { type: "attack" } },
 		options,
 	};
 
@@ -560,7 +560,7 @@ async function rollDamageHealing(config, event) {
 			top: options.event ? options.event.clientY - 80 : null,
 			left: window.innerWidth - 710,
 		},
-		messageData: { "flags.dnd4e.roll": { type: "damage" } },
+		messageData: { "options.flags.dnd4e.roll": { type: "damage" } },
 		healingRoll: ["healing", "temphp"].includes(type),
 		options,
 		allowCritical: !!partsCrit?.length,

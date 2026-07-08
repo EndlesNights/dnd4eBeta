@@ -1820,6 +1820,7 @@ export default class Actor4e extends Actor {
 			critical: 21,
 			fumble: 0,
 			targetValue: Number(options.dc),
+			messageData: { "options.flags.dnd4e.roll": { type: "skill", actorId: this.id } },
 		}, { overwrite: false });
 
 		// Roll and return
@@ -1853,6 +1854,7 @@ export default class Actor4e extends Actor {
 			critical: 21,
 			fumble: 0,
 			targetValue: Number(options.dc),
+			messageData: { "options.flags.dnd4e.roll": { type: "ability", actorId: this.id } },
 			// flavor: "Flowery Text Here. MORE AND MORE AND \r\n MORE S MORE " + _loc("DND4E.AbilityPromptTitle", {ability: CONFIG.DND4E.abilities[label]}),
 			// halflingLucky: feats.halflingLucky
 		}, { overwrite: false });
@@ -1949,7 +1951,7 @@ export default class Actor4e extends Actor {
 			title: _loc("DND4E.InitiativeRoll"),
 			speaker: ChatMessage.getSpeaker({ actor: this }),
 			flavor: isReroll ? `${this.name} ${_loc("DND4E.RollsInitReroll")}!` : `${this.name} ${_loc("DND4E.RollsInit")}!`,
-			"options.flags.dnd4e.roll.type": "init",
+			messageData: { "options.flags.dnd4e.roll": { type: "initiative", actorId: this.id } },
 		});
 	
 		const initRoll = await d20Roll(rollConfig);
@@ -1990,7 +1992,7 @@ export default class Actor4e extends Actor {
 			title: "",
 			flavor: message,
 			speaker: ChatMessage.getSpeaker({ actor: this }),
-			messageData: { "flags.dnd4e.roll": { type: "save", itemId: this.id } },
+			messageData: { "options.flags.dnd4e.roll": { type: "save", actorId: this.id } },
 			fastForward: true,
 			messageMode: options.messageMode,
 			options,
@@ -2032,7 +2034,7 @@ export default class Actor4e extends Actor {
 			title: "",
 			flavor: _loc("DND4E.RollDeathSave"),
 			speaker: ChatMessage.getSpeaker({ actor: this }),
-			messageData: { "flags.dnd4e.roll": { type: "save", itemId: this.id } },
+			messageData: { "options.flags.dnd4e.roll": { type: "save", actorId: this.id, isDeathSave: true } },
 			fastForward: true,
 			messageMode: options.messageMode,
 		});

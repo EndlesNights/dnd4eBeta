@@ -1735,7 +1735,7 @@ export default class Item4e extends Item {
 			isAttackRoll: true,
 			isCharge: options?.variance?.isCharge || false,
 			isOpp: options?.variance?.isOpp || false,
-			messageData: { "flags.dnd4e.roll": { type: "attack", itemId: this.id } },
+			messageData: { "options.flags.dnd4e.roll": { type: "attack", itemId: this.id } },
 			options,
 		};
 		
@@ -2104,7 +2104,7 @@ export default class Item4e extends Item {
 			ui.notifications.error("You may not make a Damage Roll with this Item.");
 			return null;
 		}
-		const messageData = { "flags.dnd4e.roll": { type: "damage", itemId: this.id } };
+		const messageData = { "options.flags.dnd4e.roll": { type: "damage", itemId: this.id } };
 
 		// Get roll data
 		const rollData = this.getRollData({ variance: variance });
@@ -2401,7 +2401,7 @@ export default class Item4e extends Item {
 			ui.notifications.error("You may not make a Healing Roll with this Item.");
 			return null;
 		}
-		const messageData = { "flags.dnd4e.roll": { type: "healing", itemId: this.id } };
+		const messageData = { "options.flags.dnd4e.roll": { type: "healing", itemId: this.id } };
 
 		// Get roll data
 		const rollData = this.getRollData();
@@ -2446,7 +2446,7 @@ export default class Item4e extends Item {
 		if (weaponUse) {
 			if (weaponUse.system.properties["ver"] && (weaponUse.system.weaponHand === "hTwo")) {
 				parts.push("1");
-				messageData["flags.dnd4e.roll"].versatile = true;
+				messageData["options.flags.dnd4e.roll"].versatile = true;
 				partsExpressionReplacements.push({ target: "1", value: "@versatile" });
 			}
 		}
@@ -2531,7 +2531,7 @@ export default class Item4e extends Item {
 			speaker: ChatMessage.getSpeaker({ actor: this.actor }),
 			flavor: this.system.description.chat || title,
 			messageMode: game.settings.get("core", "messageMode"),
-			messageData: { "flags.dnd4e.roll": { type: "other", itemId: this.id } },
+			messageData: { "options.flags.dnd4e.roll": { type: "other", itemId: this.id } },
 		});
 		return roll;
 	}
@@ -2688,7 +2688,7 @@ export default class Item4e extends Item {
 				top: options.event ? options.event.clientY - 80 : null,
 				left: window.innerWidth - 710,
 			},
-			messageData: { "flags.dnd4e.roll": { type: rollType, itemId: this.id } },
+			messageData: { "options.flags.dnd4e.roll": { type: rollType, itemId: this.id } },
 		}, options);
 
 		rollConfig.event = options.event;
