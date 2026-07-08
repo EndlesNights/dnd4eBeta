@@ -520,9 +520,8 @@ export function _onClickDiceRoll(event) {
 /* -------------------------------------------- */
 
 Hooks.on("renderChatMessageHTML", (message, html) => {
-	const NO_VALUE = false;
-	const NO_OPTIONS = null;
-	updateApplyEffectsTooltips(NO_VALUE, NO_OPTIONS, html);
+	const NO_VALUE = null;
+	updateApplyEffectsTooltips(NO_VALUE, html);
 
 	const spans = html.querySelectorAll("span.roll-expression");
 	spans.forEach(el => {
@@ -546,7 +545,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
  * @param {boolean} value 
  * @param {Object} html 
  */
-export function updateApplyEffectsTooltips(value, html = {}) {
+export function updateApplyEffectsTooltips(value, html) {
 
 	const settingValue = value == null ? game.settings.get("dnd4e", "applyEffectsToSelection") : value;
 	// True -> Selected
@@ -556,7 +555,7 @@ export function updateApplyEffectsTooltips(value, html = {}) {
 	const localizedTarget = _loc(targetKey);
 	const finalTooltip = _loc("DND4E.EffectsApplyTokens", { target: localizedTarget });
 
-	if (html) {
+	if (foundry.utils.getType(html) === "HTMLElement") {
 		html.querySelectorAll("*[data-action=\"applyEffect\"]").forEach(el => el.setAttribute("data-tooltip", finalTooltip));
 	} else {
 		document.querySelectorAll("[data-action=\"applyEffect\"").forEach(el => el.setAttribute("data-tooltip", finalTooltip));
