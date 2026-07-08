@@ -652,8 +652,6 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 	static #onConfigureSource(event, target) {
 		return this._renderChild(new SourceConfig({ document: this.item, keyPath: "system.source" }));
 	}
-  
-
 
 	async shareItem() {
 		let changeBack = false;
@@ -1165,10 +1163,10 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 
 	/* -------------------------------------------- */
 
-	static async #onExecuteMacro(event, target){
+	static async #onExecuteMacro(event, target) {
 		await this.submit({ preventClose: true });
-    const macroIndex = event.target.getAttribute("data-macro-index");
-		return macros.executeMacro(this.document,this.document.system.macros[macroIndex]);
+		const macroIndex = event.target.getAttribute("data-macro-index");
+		return macros.executeMacro(this.document, this.document.system.macros[macroIndex]);
 	}
 	
 	/* -------------------------------------------- */
@@ -1550,30 +1548,30 @@ export default class ItemSheet4e extends foundry.applications.api.HandlebarsAppl
 			await this.submit(event); // Submit any unsaved changes
 			const macros = this.item.system.macros;
 			return this.item.update({ "system.macros": macros.concat([{
-        "type": "script",
-        "scope": "global",
-        "launchOrder": "off",
-        "command": "",
-        "author": "",
-        "autoanimationHook": "",
-        "enabled": true
-      }])});
+				type: "script",
+				scope: "global",
+				launchOrder: "off",
+				command: "",
+				author: "",
+				autoanimationHook: "",
+				enabled: true,
+			}]) });
 		}
 
 		// Remove a damage component
 		if (action === "deleteMacro") {
 			await this.submit(event); // Submit any unsaved changes
 			const macro = target.closest(".macro");
-      const index = macro.getAttribute("data-macro-number");
-      const macros = foundry.utils.duplicate(this.item.system.macros);
+			const index = macro.getAttribute("data-macro-number");
+			const macros = foundry.utils.duplicate(this.item.system.macros);
 			macros.splice(macro.getAttribute("data-macro-number"), 1);
 			return this.item.update({ "system.macros": macros });
 		}
     
 		// Expand macro text
 		if (action === "expandMacro") {
-      target.parentElement.classList.toggle("collapsed");
-    }
+			target.parentElement.classList.toggle("collapsed");
+		}
 	
 	}
 

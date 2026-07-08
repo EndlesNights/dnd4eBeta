@@ -71,9 +71,9 @@
           <label class="checkbox">
             <input type="checkbox" class="checkbox" name="{{n}}.{{b}}" data-dtype="Boolean" 
 
-				{{!-- Try to infer already active bonuses --}}
+              {{!-- Try to infer already active bonuses --}}
 
-				{{#if (eq b 'charge')}}{{#if ../../data.item.attack.isCharge}}checked="true" disabled{{/if}}{{#if t.targetBonuses.charge.shouldApply}}checked="true" disabled{{/if}}{{/if}}
+              {{#if (eq b 'charge')}}{{#if ../../data.item.attack.isCharge}}checked="true" disabled{{/if}}{{#if t.targetBonuses.charge.shouldApply}}checked="true" disabled{{/if}}{{/if}}
 
 				{{#if (eq b 'marked')}}{{#if t.targetBonuses.ignoringMark.shouldApply}}checked="true"{{/if}}{{/if}}
 
