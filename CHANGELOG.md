@@ -1,11 +1,12 @@
 # Changelog
 
 ## Version 0.8.9
-* It's now possible for items to contain more than one macro! You add and remove them from the Macros tab, and assign different types/activation triggers to each one. The tab UI has been updated accordingly. (SagaTympana & Fox)
-* Added new hooks for macro activation: Common Attack Bonus Evaluation, and Pre Attack Roll. Use them to mess with attack rolls more powerfully than ever before! :p (SagaTympana)
+* It's now possible for items to contain more than one macro! You can add and remove them from the Macros tab, and assign different types/activation triggers to each one. The tab UI has been updated accordingly. (SagaTympana & Fox)
+* System hooks are now available for macro activation! With mor ein the works, we currently have `Common Attack Bonus Evaluation`, `Pre Attack Roll`, and `Defence Evaluation`. Use them to mess with to-hit rolls more powerfully than ever before! :p (SagaTympana)
 * Aura Effects compatibility: status conditions will now display correctly for Auras. (SagaTympana)
 * Updated auto-generated power cards to omit hit/miss text if the power doesn't have an attack (SagaTympana)
 * Fixed a bug where common attack bonuses toggled during the roll dialogue would not persist through to the roll (SagaTympana)
+* Fixed a bug with the attack roll dialogue, where common attack bonus values didn't display unless a target was selected (SagaTympana)
 * Fixed an oversight where "other" would appear twice in power type/subtype (SagaTympana)
 * The version migration process has been updated to be much more efficient going forward (SagaTympana)
 * Internal code documentation updated (SagaTympana)
