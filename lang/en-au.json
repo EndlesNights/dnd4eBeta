@@ -1393,16 +1393,23 @@
 },
 
 "DND4E.MACROS": {
-  "ACTIVATION": {
-    "Label": "Activation",
-    "Both": "Before AND After Item Use",
-    "Manual": "Manual",
-    "Pre": "Before Item Use",
-    "Post": "After Item Use",
-    "Sub": "Replace Item Use",
-    "HookComBon": "Hook: Evaluate Common Attack Bonuses",
-    "HookPreAttack": "Hook: Pre Attack Roll"
-  }
+    "ACTIVATION": {
+        "Label": "Activation",
+        "Both": "Before AND After Item Use",
+        "Manual": "Manual",
+        "Pre": "Before Item Use",
+        "Post": "After Item Use",
+        "Sub": "Replace Item Use",
+        "HookComBon": {
+        "Attacker": "Hook: Evaluate Common Attack Bonuses - Attacker",
+            "Target": "Hook: Evaluate Common Attack Bonuses - Target"
+        },
+        "HookPreAttack": {
+            "Attacker": "Hook: Pre Attack Roll - Attacker",
+            "Target": "Hook: Pre Attack Roll - Target"
+        },
+        "HookEvalDef": "Hook: Evaluate Target Defence"
+    }
 },
 
 "DND4E.Movement":{

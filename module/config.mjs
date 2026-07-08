@@ -85,8 +85,11 @@ DND4E.macroLaunchOrder = {
 	post: { label: "DND4E.MACROS.ACTIVATION.Post" },
 	both: { label: "DND4E.MACROS.ACTIVATION.Both" },
 	sub: { label: "DND4E.MACROS.ACTIVATION.Sub" },
-	comBon: { label: "DND4E.MACROS.ACTIVATION.HookComBon" },
-	preAttack: { label: "DND4E.MACROS.ACTIVATION.HookPreAttack" },
+	comBonAttacker: { label: "DND4E.MACROS.ACTIVATION.HookComBon.Attacker" },
+	comBonTarget: { label: "DND4E.MACROS.ACTIVATION.HookComBon.Target" },
+	preAttackAttacker: { label: "DND4E.MACROS.ACTIVATION.HookPreAttack.Attacker" },
+	preAttackTarget: { label: "DND4E.MACROS.ACTIVATION.HookPreAttack.Target" },
+	evalDef: { label: "DND4E.MACROS.ACTIVATION.HookEvalDef" },
 };
 preLocalize("macroLaunchOrder", { keys: ["label"] });
 

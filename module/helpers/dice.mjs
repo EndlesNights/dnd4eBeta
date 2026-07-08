@@ -114,12 +114,18 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 			const attacker = utils.tokenForActor(actor);
 			const target = targetArr[targ];
 			for (const actorItem of [...actor.items]) {
-				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBon"))) {
-					const func = new Function("source", "item", "attacker", "target", "bonuses", macro.command);
-					func(actorItem, item, attacker, target, targetBonuses);
+				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonAttacker"))) {
+					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
+					func(actorItem, item, attacker, target, { bonuses: targetBonuses });
 				}
 			}
-			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, targetBonuses);
+			for (const actorItem of [...target.actor.items]) {
+				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonTarget"))) {
+					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
+					func(actorItem, item, attacker, target, { bonuses: targetBonuses });
+				}
+			}
+			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, { bonuses: targetBonuses });
 			targDataArray.targets.push({
 				name: targetArr[targ]?.name || "",
 				status: targetArr[targ]?.actor.statuses || [],
@@ -359,12 +365,18 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 			const attacker = utils.tokenForActor(actor);
 			const target = theTargets[targetIndex];
 			for (const actorItem of [...actor.items]) {
-				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBon"))) {
-					const func = new Function("source", "item", "attacker", "target", "bonuses", macro.command);
-					func(actorItem, item, attacker, target, targetBonuses);
+				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonAttacker"))) {
+					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
+					func(actorItem, item, attacker, target, { bonuses: targetBonuses });
 				}
 			}
-			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, targetBonuses);
+			for (const actorItem of [...target.actor.items]) {
+				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonTarget"))) {
+					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
+					func(actorItem, item, attacker, target, { bonuses: targetBonuses });
+				}
+			}
+			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, { bonuses: targetBonuses });
 			if (game.settings.get("dnd4e", "collapseSituationalBonus")) {
 				const total = Object.values(targetBonuses).filter((bon) => bon.shouldApply).map((bon) => bon.value).reduce((acc, curr) => acc + curr);
 				allRollsParts.push(parts.concat([total]));
@@ -419,6 +431,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	for (let rollExpressionIdx = 0; rollExpressionIdx < allRollsParts.length; rollExpressionIdx++) {
 		const rollExpression = allRollsParts[rollExpressionIdx];
 		let subroll;
+		const attacker = utils.tokenForActor(actor);
 		try {
 			let targetOptions = foundry.utils.deepClone(options);
 			const targetActor = targets[rollExpressionIdx]?.document.actor;
@@ -431,11 +444,16 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 					data[key] = commonAttackBonuses[key].value;
 				});
 			}
-			const attacker = utils.tokenForActor(actor);
 			const target = targets[rollExpressionIdx];
 			for (const actorItem of [...actor.items]) {
-				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttack"))) {
-					const func = new Function("source", "item", "attacker", "target", "rollConfig", macro.command);
+				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttackAttacker"))) {
+					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
+					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
+				}
+			}
+			for (const actorItem of [...target.actor.items]) {
+				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttackTarget"))) {
+					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
 					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 				}
 			}
@@ -452,15 +470,24 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 
 		if (isAttackRoll && (targets.length > rollExpressionIdx)) {
 			const attackedDef = targetData.targDefArray[rollExpressionIdx];
-			let targName = targets[rollExpressionIdx].name;
-			let targDefVal = targets[rollExpressionIdx].document.actor.system.defences[attackedDef]?.value;
+			const target = targets[rollExpressionIdx];
+			let targName = target.name;
+			let targDefVal = target.document.actor.system.defences[attackedDef]?.value;
 			let defOptions = { bonuses: foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses) };
-			await utils.applyEffects({ ...data, ...options.variance }, targets[rollExpressionIdx].actor, itemData, weaponData, "defence", null, null, defOptions);
+            
+			const targetActor = target.actor;
+			await utils.applyEffects({ ...data, ...options.variance }, targetActor, itemData, weaponData, "defence", null, null, defOptions);
+			for (const actorItem of [...targetActor.items]) {
+				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "evalDef"))) {
+					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
+					func(actorItem, item, attacker, target, { defence: attackedDef, bonuses: defOptions.bonuses });
+				}
+			}
+			Hooks.callAll("dnd4e.evaluateTargetDefence", item, attacker, target, { defence: attackedDef, bonuses: defOptions.bonuses });
 
 			let bonusesTotal = 0;
 			for (const [type, bonuses] of Object.entries(defOptions.bonuses)) {
 				if (bonuses.length) {
-					bonuses.push(actor.system.defences[attackedDef][type]);
 					const bonus = type == "untyped" ? bonuses.reduce((acc, curr) => acc + parseInt(curr), 0) : bonuses.reduce((max, curr) => Math.max(max, parseInt(curr)), -Infinity);
 					let currentBonus = 0;
 					if (type !== "untyped") {
