@@ -7,6 +7,8 @@
 * Updated auto-generated power cards to omit hit/miss text if the power doesn't have an attack (SagaTympana)
 * Fixed a bug where common attack bonuses toggled during the roll dialogue would not persist through to the roll (SagaTympana)
 * Fixed a bug with the attack roll dialogue, where common attack bonus values didn't display unless a target was selected (SagaTympana)
+* Fixed a bug in the chat card effects panel, where the apply effect tooltip was not correctly reporting the setting for targeted vs. selected tokens in some circumstances, and changing this setting would sometimes produce an error. (SagaTympana)
+* Standardised roll type flags to improve module compatibility (SagaTympana)
 * Fixed an oversight where "other" would appear twice in power type/subtype (SagaTympana)
 * The version migration process has been updated to be much more efficient going forward (SagaTympana)
 * Internal code documentation updated (SagaTympana)
