@@ -54,7 +54,7 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 		targets: [],
 	};
 	
-	if (actor) {
+	if (actor && isAttackRoll) {
 		const userBonuses = Object.keys(CONFIG.DND4E.commonAttackBonuses).reduce((bonuses, bonus) => {
 			bonuses[bonus] = {
 				shouldApply: false,
@@ -119,10 +119,12 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 					func(actorItem, item, attacker, target, { bonuses: targetBonuses });
 				}
 			}
-			for (const actorItem of [...target.actor.items]) {
-				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonTarget"))) {
-					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
-					func(actorItem, item, attacker, target, { bonuses: targetBonuses });
+			if (target?.actor) {
+				for (const actorItem of [...target.actor.items]) {
+					for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonTarget"))) {
+						const func = new Function("source", "item", "attacker", "target", "config", macro.command);
+						func(actorItem, item, attacker, target, { bonuses: targetBonuses });
+					}
 				}
 			}
 			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, { bonuses: targetBonuses });
@@ -370,10 +372,12 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 					func(actorItem, item, attacker, target, { bonuses: targetBonuses });
 				}
 			}
-			for (const actorItem of [...target.actor.items]) {
-				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonTarget"))) {
-					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
-					func(actorItem, item, attacker, target, { bonuses: targetBonuses });
+			if (target?.actor) {
+				for (const actorItem of [...target.actor.items]) {
+					for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "comBonTarget"))) {
+						const func = new Function("source", "item", "attacker", "target", "config", macro.command);
+						func(actorItem, item, attacker, target, { bonuses: targetBonuses });
+					}
 				}
 			}
 			Hooks.callAll("dnd4e.evaluateCommonAttackBonuses", item, attacker, target, { bonuses: targetBonuses });
@@ -444,20 +448,24 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 					data[key] = commonAttackBonuses[key].value;
 				});
 			}
-			const target = targets[rollExpressionIdx];
-			for (const actorItem of [...actor.items]) {
-				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttackAttacker"))) {
-					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
-					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
+			if (isAttackRoll) {
+				const target = targets[rollExpressionIdx];
+				for (const actorItem of [...actor.items]) {
+					for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttackAttacker"))) {
+						const func = new Function("source", "item", "attacker", "target", "config", macro.command);
+						func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
+					}
 				}
-			}
-			for (const actorItem of [...target.actor.items]) {
-				for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttackTarget"))) {
-					const func = new Function("source", "item", "attacker", "target", "config", macro.command);
-					func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
+				if (target?.actor) {
+					for (const actorItem of [...target.actor.items]) {
+						for (const macro of actorItem.system.macros.filter((m) => m.enabled && (m.launchOrder === "preAttackTarget"))) {
+							const func = new Function("source", "item", "attacker", "target", "config", macro.command);
+							func(actorItem, item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
+						}
+					}
 				}
+				Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 			}
-			Hooks.callAll("dnd4e.preAttackRoll", item, attacker, target, { rollExpression, partsExpressionReplacements, commonAttackBonuses, targetOptions });
 			subroll = await roll.addNewRoll(rollExpression, partsExpressionReplacements, data, targetOptions);
 		}
 		catch(err) {
