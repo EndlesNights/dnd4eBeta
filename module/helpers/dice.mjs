@@ -12,6 +12,7 @@ import Actor4e from "../documents/actor.mjs";
  * Holding SHIFT, ALT, or CTRL when the attack is rolled will "fast-forward".
  * This chooses the default options of a normal attack with no bonus
  *
+ * @param {Object} form
  * @param {Array} parts            The dice roll component parts, excluding the initial d20
  * @param {Array} partsExpressionReplacements  Optional Array of replacement values for the parts array to create a formula to display where bonuses came from.
  *                                 Each element should be in the form of { target: 'Text To Replace', value: 'text to replace with' }
@@ -33,7 +34,7 @@ import Actor4e from "../documents/actor.mjs";
  *
  * @returns {Promise}              A Promise which resolves once the roll workflow has completed
  */
-export async function d20Roll({ parts = [], partsExpressionReplacements = [], item = null, weaponUse = null, data = {}, event = {}, messageMode = null, template = null, title = null, speaker = null,
+export async function d20Roll(form, { parts = [], partsExpressionReplacements = [], item = null, weaponUse = null, data = {}, event = {}, messageMode = null, template = null, title = null, speaker = null,
 	flavor = null, fastForward = null, onClose, dialogOptions, critical = 20, fumble = 1, targetValue = null, actor,
 	isAttackRoll = false, options = {} } = {}) {
 	critical = critical || 20; //ensure that critical always has a value
@@ -45,7 +46,7 @@ export async function d20Roll({ parts = [], partsExpressionReplacements = [], it
 	mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, messageMode, title, speaker, flavor, fastForward);
 	// If fast-forward requested, perform the roll without a dialog
 	if (rollConfig.fastForward) {
-		return performD20RollAndCreateMessage(null, rollConfig);
+		return performD20RollAndCreateMessage(form, rollConfig);
 	}
 
 	// Render modal dialog
@@ -397,7 +398,7 @@ async function performD20RollAndCreateMessage(form, { parts, partsExpressionRepl
 	}
 
 	// if the form updated the roll flavor
-	if (form?.flavor.value) {
+	if (form?.flavor?.value) {
 		flavor = form.flavor.value || flavor;
 	}
 
@@ -810,7 +811,7 @@ function mergeInputArgumentsIntoRollConfig(rollConfig, parts, event, messageMode
  */
 function manageBonusInParts(parts, form, data) {
 	if (form !== null) {
-		if (form.bonus.value) {
+		if (form.bonus?.value) {
 			// remove double +
 			let trimmed = form.bonus.value.trim();
 			if (trimmed.startsWith("+")) {

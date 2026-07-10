@@ -1460,7 +1460,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (isFF) {
 			return this.actor.secondWind(event, { isFF });
 		}
-		new apps.SecondWindDialog(this.actor).render(true);		
+		new apps.SecondWindDialog({ document: this.actor }).render(true);		
 	}
 	
 	/* -------------------------------------------- */
@@ -1472,13 +1472,13 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (isFF) {
 			return this.actor.actionPoint(event, { isFF });
 		}
-		new apps.ActionPointDialog(this.actor).render(true);
+		new apps.ActionPointDialog({ document: this.actor }).render(true);
 	}
 
 	static #onActionPointExtraDialog(event, target) {
 		if (!this.actor.isOwner) return;
 		event.preventDefault();
-		new apps.ActionPointExtraDialog(this.actor).render(true);
+		new apps.ActionPointExtraDialog({ document: this.actor }).render(true);
 	}
 
 	/**
@@ -1493,7 +1493,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (isFF) {
 			return this.actor.shortRest(event, { isFF });
 		}
-		new apps.ShortRestDialog(this.actor).render(true);
+		new apps.ShortRestDialog({ document: this.actor }).render(true);
 	}
 	
 	/* -------------------------------------------- */
@@ -1509,7 +1509,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (isFF) {
 			return this.actor.longRest(event, { isFF });
 		}
-		new apps.LongRestDialog(this.actor).render(true);
+		new apps.LongRestDialog({ document: this.actor }).render(true);
 	}
 
 	static #onDeathSave(event, target) {
@@ -1519,7 +1519,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 		if (isFF) {
 			return this.actor.rollDeathSave(event, { isFF });
 		}
-		new apps.DeathSaveDialog(this.actor).render(true);
+		new apps.DeathSaveDialog({ document: this.actor }).render(true);
 	}
 
 	static #onrollInitiative(event, target) {

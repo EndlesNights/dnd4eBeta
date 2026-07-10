@@ -1824,7 +1824,7 @@ export default class Actor4e extends Actor {
 		}, { overwrite: false });
 
 		// Roll and return
-		return d20Roll(rollConfig);
+		return d20Roll(null, rollConfig);
 	}	
   
 	/**
@@ -1860,7 +1860,7 @@ export default class Actor4e extends Actor {
 		}, { overwrite: false });
 		
 		// Roll and return
-		return d20Roll(rollConfig);
+		return d20Roll(null, rollConfig);
 	}
 	
 	rollDef(defId, options = {}) {
@@ -1883,7 +1883,7 @@ export default class Actor4e extends Actor {
 		flavText = flavText.replace("@title", this.system.defences[defId].title);
 		
 		// Roll and return
-		return d20Roll(foundry.utils.mergeObject(options, {
+		return d20Roll(null, foundry.utils.mergeObject(options, {
 			parts: parts,
 			data: data,
 			title: _loc("DND4E.DefencePromptTitle", { defences: CONFIG.DND4E.defensives[label].label }),
@@ -1954,14 +1954,19 @@ export default class Actor4e extends Actor {
 			messageData: { "options.flags.dnd4e.roll": { type: "initiative", actorId: this.id } },
 		});
 	
-		const initRoll = await d20Roll(rollConfig);
+		const initRoll = await d20Roll(null, rollConfig);
 
 		if (combatants[0])
 			game.combat.combatants.get(combatants[0]).update({ initiative: initRoll.total });
 		return combat;
 	}
 
-	async rollSave(event, options) {
+	/**
+     * @param {Event} event 
+     * @param {Object} form 
+     * @param {Object} options 
+     */
+	async rollSave(event, form, options) {
 		//let message = `${_loc("DND4E.RollSave")} ${options.dc || 10}`;
 		options.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
 		
@@ -2004,7 +2009,7 @@ export default class Actor4e extends Actor {
 		rollConfig.targetValue = Number(options.dc);
 		
 		const saveDC = options.dc || 10;
-		const r = await d20Roll(rollConfig);
+		const r = await d20Roll(form, rollConfig);
 
 		/* Changed the roll comparison to DC from rollConfig.critical, to fix discrepancy 
 		between success/fail and effect removal when the actor has a save bonus  */
@@ -2020,7 +2025,7 @@ export default class Actor4e extends Actor {
 		}
 	}
 
-	async rollDeathSave(event, options) {
+	async rollDeathSave(event, form, options) {
 		const updateData = {};
 		
 		const parts = [this.system.details.deathsavebon.value];
@@ -2041,7 +2046,7 @@ export default class Actor4e extends Actor {
 		rollConfig.event = event;
 		rollConfig.critical = this.system.details.deathsaveCrit || 20;
 		rollConfig.fumble = 9 - options.save - this.system.details.deathsavebon.value;
-		const roll = await d20Roll(rollConfig);
+		const roll = await d20Roll(form, rollConfig);
 		
 		if (roll.total < 10)
 		{

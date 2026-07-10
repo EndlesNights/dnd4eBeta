@@ -79,8 +79,8 @@ export default class RollDialog extends foundry.applications.api.HandlebarsAppli
 	}
 
 	/**
-   * @this {RollDialog}
-   */
+     * @this {RollDialog}
+     */
 	static async onSubmit(event, form, formData) {
 		const buttonAction = event.submitter?.dataset?.action ?? "normal";
 		this.rollConfig.hitType = buttonAction;

@@ -18,6 +18,10 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 			closeOnSubmit: true,
 			handler: SaveThrowDialog.#onSubmit,
 		},
+		actions: {
+			minus: SaveThrowDialog.#onMinus,
+			plus: SaveThrowDialog.#onPlus,
+		},
 		position: {
 			width: 500,
 			height: "auto",
@@ -64,7 +68,7 @@ export default class SaveThrowDialog extends DocumentSheet4e {
 		
 		foundry.utils.mergeObject(context, {
 			system: actor.system,
-			messageModes: Object.keys(CONFIG.ChatMessage.modes).map(key => CONFIG.ChatMessage.modes[key].label),
+			messageModes: CONFIG.ChatMessage.modes,
 			effectName: (saveOptions.effectSave ? saveEffect.name : null),
 			effectId: saveOptions?.effectId,
 			saveDC: saveOptions.saveDC,
@@ -106,15 +110,36 @@ export default class SaveThrowDialog extends DocumentSheet4e {
      */
 	static #onSubmit(event, form, formData) {
 		const saveData = foundry.utils.expandObject(formData.object);
-		saveData.messageMode = Object.keys(CONFIG.ChatMessage.modes)[saveData.messageMode];
 		if (saveData.saveAgainst) {
 			saveData.effectSave = true;
 			saveData.effectId = saveData.saveAgainst;
 		}
 
-		this.document.rollSave(event, {
+		this.document.rollSave(event, form, {
 			...this.options,
 			...saveData,
 		});
+	}
+
+	/**
+     * @param {Event} event 
+     * @param {HTMLElement} target 
+     */
+	static #onMinus(event, target) {
+		const input = this.element.querySelector("#d20");
+		const currentValue = Number(input.value) || 0;
+		if (event.ctrlKey) input.value = currentValue - 2;
+		else input.value = currentValue - 1;
+	}
+
+	/**
+     * @param {Event} event 
+     * @param {HTMLElement} target 
+     */
+	static #onPlus(event, target) {
+		const input = this.element.querySelector("#d20");
+		const currentValue = Number(input.value) || 0;
+		if (event.ctrlKey) input.value = currentValue + 2;
+		else input.value = currentValue + 1;
 	}
 }

@@ -3235,6 +3235,51 @@ body.theme-light .dnd4e:is(.application,.app):is(.default,.standard-form):not(.t
 		width:fit-content;
 	}
 }
+.save-throw{
+	h2{
+		font-family:var(--font-body);
+		font-size:1.2em;
+		font-weight:700;
+		text-decoration:none;
+		margin-top:0.4em;
+		margin-bottom:unset;
+		border-bottom:var(--border-faint);
+	}
+	.roll-times{
+		align-items:center;
+		flex-wrap:nowrap;
+	}
+	.roll-times .label{
+		flex:100%;
+		line-height:1;
+	}
+	.roll-times .buttons{
+		justify-content:flex-end;
+		align-items:center;
+		flex-wrap:nowrap;
+		flex:unset;
+		width:fit-content;
+	}
+	.roll-times .buttons :is(.button,input){
+		flex:2.5em 0 0;
+	}
+	.roll-times .buttons input{
+		height:2.2em;
+	}
+	.target-detail{
+		background:var(--color-bg-btn-minor-active);
+		padding:0.3em;
+		.form-group.stacked {
+			gap: 0;
+		}
+	}
+	.form-group {
+		margin-bottom: 0.25rem;
+		&.roll-times .label {
+			max-width: unset;
+		}
+	}
+}
 .custom-skill-config .custom-skill-control{
 	margin:0 5px;
 	flex:0;

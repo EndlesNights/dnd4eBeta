@@ -460,7 +460,7 @@ async function rollAttack(config, event) {
 		options,
 	};
 
-	return d20Roll(rollConfig);
+	return d20Roll(null, rollConfig);
 }
 
 /* -------------------------------------------------- */
