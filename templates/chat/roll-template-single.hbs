@@ -1,4 +1,4 @@
-<div class="dice-roll" data-action="expandRoll">
+<div class="dice-roll">
   {{#if flavor}}
   <div class="dice-flavor">{{flavor}}</div>
   {{/if}}
@@ -12,7 +12,7 @@
     {{/if}}
 		
     {{#unless attackRoll.immune}}
-    <div class="dice-container">
+    <div class="dice-container" data-action="expandRoll">
       <div class="dice-formula">{{{formula}}}</div>
       <div class="dice-tooltip dice-formula">{{{expression}}}</div>
       {{{tooltip}}}
