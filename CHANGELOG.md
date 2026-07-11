@@ -1,17 +1,38 @@
 # Changelog
 
 ## Version 0.8.9
-* It's now possible for items to contain more than one macro! You can add and remove them from the Macros tab, and assign different types/activation triggers to each one. The tab UI has been updated accordingly. (SagaTympana & Fox)
-* System hooks are now available for macro activation! With mor ein the works, we currently have `Common Attack Bonus Evaluation`, `Pre Attack Roll`, and `Defence Evaluation`. Use them to mess with to-hit rolls more powerfully than ever before! :p (SagaTympana)
-* Aura Effects compatibility: status conditions will now display correctly for Auras. (SagaTympana)
-* Updated auto-generated power cards to omit hit/miss text if the power doesn't have an attack (SagaTympana)
-* Fixed a bug where common attack bonuses toggled during the roll dialogue would not persist through to the roll (SagaTympana)
-* Fixed a bug with the attack roll dialogue, where common attack bonus values didn't display unless a target was selected (SagaTympana)
-* Fixed a bug in the chat card effects panel, where the apply effect tooltip was not correctly reporting the setting for targeted vs. selected tokens in some circumstances, and changing this setting would sometimes produce an error. (SagaTympana)
-* Standardised roll type flags to improve module compatibility (SagaTympana)
-* Fixed an oversight where "other" would appear twice in power type/subtype (SagaTympana)
-* The version migration process has been updated to be much more efficient going forward (SagaTympana)
-* Internal code documentation updated (SagaTympana)
+An unexpected bumper update with tons of bugfixes and new features to enjoy!
+### Big consumables/ammunition update (Fox)
+- Exposed many hidden fields for consumables: Miss damage, Added Damage arrays, chat flavour/display text fields, and rich text description.
+- The `equipped` setting is now labelled differently based on the consumable type:
+  - Ammuntion: "Loaded"
+  - Trinkets and Wondrous Items: "Equipped"
+  - Other types: "Readied". (This has no specific system meaning, so it can be used generically for characters who use something like a potion bandolier to keep some consumables more accessible than others.)
+- Amended consumables so "uses per" defaults to "none". Most consumables are depleted based on quantity rather than charges, and this section will now be hidden for ammunition, so it's more efficient to use a blank default.
+- Updated actor sheet so items no longer display as unavailable based on limited uses when `uses.per` is blank.
+- Substantially improved `ammunition` type consumables:
+  - As per system rules, ammunition can now specify an enhancement bonus, which overrides weapon enhancement if > 0
+  - A weapon's ammunition consumption can now be set to `auto` instead of a specfic item. Auto setting will select the first "equipped" ammunition in the character's inventory when making an attack (or calculating attack values). This should make it easy to prioritise a specialised ammunition and fall back to a generic one, without needing to open weapon config.
+  - Ammunition now has arrays for damage to add to Normal hits, Crits, and Misses while it is in use. This replaces the previous behaviour of one shared value between hit and crit, and adding miss damage based on whether the attack has a miss formula. This should allow for more system-accurate ammunition behaviour.
+  - When configuring Ammunition, the consumables sheet is now streamlined to only show relevant fields.
+### Other New Features/Enhancements
+  * It's now possible for items to contain more than one macro! You can add and remove them from the Macros tab, and assign different types/activation triggers to each one. The tab UI has been updated accordingly. (SagaTympana & Fox)
+  * System hooks are now available for macro activation! With more in the works, we currently have `Common Attack Bonus Evaluation`, `Pre Attack Roll`, and `Defence Evaluation`. Use them to mess with to-hit rolls more powerfully than ever before! :p (SagaTympana)
+  * Save and death save dialogues now offer the option to roll multiple d20s (as in 5e "advantage") just like attack/skill rolls (SagaTympana)
+### Other Bugfixes (SagaTympana)
+  * Aura Effects compatibility: status conditions will now display correctly for Auras.
+  * Updated auto-generated power cards to omit hit/miss text if the power doesn't have an attack
+  * Automatically placed regions are now visible to everyone by default
+  * Fixed a bug where common attack bonuses toggled during the roll dialogue would not persist through to the roll
+  * Fixed a bug with the attack roll dialogue, where common attack bonus values didn't display unless a target was selected 
+  * Fixed a bug in the chat card effects panel, where the apply effect tooltip was not correctly reporting the setting for targeted vs. selected tokens in some circumstances, and changing this setting would sometimes produce an error.
+  * Fixed an oversight where "other" would appear twice in power type/subtype
+  * Restored the former system behaviour of selecting a target token when its name is clicked in a chat card (was replaced with collapsing/expanding the roll). Now the expand/collapse behaviour will only happen when the roll container is clicked.
+### Under the Hood Changes (SagaTympana)
+  * Standardised roll type flags to improve module compatibility
+  * The version migration process has been updated to be much more efficient going forward
+  * Internal code documentation updated
+  * Added a utility to determine a token's flanked status
 
 ## Version 0.8.8
 * New configuration dialogue for item source, allowing users to define book/page reference in more detail and assign a unique identifier for powers/features/equipment/etc (SagaTympana)
