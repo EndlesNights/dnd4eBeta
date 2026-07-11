@@ -9,6 +9,10 @@ export default class DeathSaveDialog extends DocumentSheet4e {
 			closeOnSubmit: true,
 			handler: DeathSaveDialog.#onSubmit,
 		},
+		actions: {
+			minus: DeathSaveDialog.#onMinus,
+			plus: DeathSaveDialog.#onPlus,
+		},
 		position: {
 			width: 500,
 			height: "auto",
@@ -39,7 +43,7 @@ export default class DeathSaveDialog extends DocumentSheet4e {
 		const context = await super._prepareContext(options);
 		foundry.utils.mergeObject(context, {
 			data: this.document.system,
-			messageModes: Object.keys(CONFIG.ChatMessage.modes).map(key => CONFIG.ChatMessage.modes[key].label),
+			messageModes: CONFIG.ChatMessage.modes,
 			buttons: [
 				{ type: "submit", icon: "fa-solid fa-dice-d20", label: "DND4E.DeathSave" },
 			],
@@ -54,12 +58,32 @@ export default class DeathSaveDialog extends DocumentSheet4e {
      */
 	static async #onSubmit(event, form, formData) {
 		const saveData = foundry.utils.expandObject(formData.object);
-		saveData.messageMode = Object.keys(CONFIG.ChatMessage.modes)[saveData.messageMode];
 
-		this.document.rollDeathSave(event, {
+		this.document.rollDeathSave(event, form, {
 			...this.options,
 			...saveData,
 		});
 	}
 
+	/**
+     * @param {Event} event 
+     * @param {HTMLElement} target 
+     */
+	static #onMinus(event, target) {
+		const input = this.element.querySelector("#d20");
+		const currentValue = Number(input.value) || 0;
+		if (event.ctrlKey) input.value = currentValue - 2;
+		else input.value = currentValue - 1;
+	}
+
+	/**
+     * @param {Event} event 
+     * @param {HTMLElement} target 
+     */
+	static #onPlus(event, target) {
+		const input = this.element.querySelector("#d20");
+		const currentValue = Number(input.value) || 0;
+		if (event.ctrlKey) input.value = currentValue + 2;
+		else input.value = currentValue + 1;
+	}
 }

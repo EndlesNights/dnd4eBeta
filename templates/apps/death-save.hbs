@@ -1,19 +1,32 @@
-<div id="death-save" class="dialogue-content" onsubmit="event.preventDefault();">
+<div id="death-save" class="dialogue-content save-throw" onsubmit="event.preventDefault();">
 	
   <div class="form-title">
     <h1 class="form-title">{{localize 'DND4E.DeathSave'}}</h1>
     <p>{{localize 'DND4E.DeathSaveTip'}}</p>
 		
-    <fieldset>
+    <fieldset class="form-group vertical">
       <div class="form-group">
         <label>{{localize 'DND4E.RollSituationalBonus'}}</label>
         <input type="text" name="save" value="" placeholder="">
       </div>
 
+      <div class="form-group roll-times flexrow">
+        <label class="label">{{localize 'DND4E.RollTimes'}}</label>
+        <span class="buttons flexrow">
+          <button type="button" class="button hollow circle" data-quantity="minus" data-field="quantity" data-action="minus">
+            <i class="fa fa-minus" aria-hidden="true"></i>
+          </button>
+          <input class="dice-count" id="d20" type="text" name="d20" value="1" onClick="this.select();">
+          <button type="button" class="button hollow circle" data-quantity="plus" data-field="quantity" data-action="plus">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
+        </span>
+      </div>
+
       <div class="form-group">
         <label>{{ localize "DND4E.RollMode" }}</label>
         <select name="messageMode">
-          {{selectOptions messageModes selected=messageMode localize=true}}
+          {{selectOptions messageModes selected=messageMode.value labelAttr="label" localize=true}}
         </select>
       </div>
     </fieldset>

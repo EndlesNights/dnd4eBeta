@@ -1752,7 +1752,7 @@ export default class Item4e extends Item {
 			rollConfig.critical = itemData.weaponType === "implement" ? weaponUse.system.critRangeImp : weaponUse.system.critRange;
 		}
 		// Invoke the d20 roll helper
-		const roll = await d20Roll(rollConfig);
+		const roll = await d20Roll(null, rollConfig);
 		if (roll === false) return null;
 
 		// Handle resource consumption if the attack roll was made
@@ -2693,7 +2693,7 @@ export default class Item4e extends Item {
 
 		rollConfig.event = options.event;
 		// Call the roll helper utility
-		return d20Roll(rollConfig);
+		return d20Roll(null, rollConfig);
 	}
 
 	/* -------------------------------------------- */
