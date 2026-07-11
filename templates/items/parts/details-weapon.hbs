@@ -150,7 +150,7 @@
     <select class="consume-type" name="system.consume.type">
       {{selectOptions config.abilityConsumptionTypes selected=system.consume.type labelAttr="label"}}
     </select>
-    <select class="conusme-target" name="system.consume.target">
+    <select class="consume-target" name="system.consume.target">
       {{selectOptions abilityConsumptionTargets selected=system.consume.target}}
     </select>
     <input type="text" name="system.consume.amount" value="{{system.consume.amount}}" data-dtype="Number">
@@ -164,7 +164,7 @@
 {{#unless (eq system.weaponType "implement")}}
 <fieldset class="weapon-damage">
   <legend>{{ localize 'DND4E.DiceWeapon' }}</legend>
-  <label class="damage-header" for="damage-parts">{{ localize 'DND4E.DiceWeaponTip' }}<a class="damage-control" data-action="addDice"><i class="fas fa-plus"></i></a></label>
+  <label class="damage-header hint" for="damage-parts">{{ localize 'DND4E.DiceWeaponTip' }}<a class="damage-control" data-action="addDice"><i class="fas fa-plus"></i></a></label>
 
   <ol class="damage-parts form-group" name="damage-parts">
     {{#each system.damageDice.parts as |part i| }}
@@ -219,7 +219,7 @@
   
 <fieldset class="weapon-damage" name="extra-damage">
   <legend>{{ localize 'DND4EUI.SecondaryDamageForm' }}</legend>
-  <label>{{ localize 'DND4EUI.SecondaryDamageTip' }}
+  <label class="hint">{{ localize 'DND4EUI.SecondaryDamageTip' }}
     <a class="damage-control" data-action="addDamage"><i class="fas fa-plus"></i></a></label>
   <ol class="damage-parts form-group">
     {{#each system.damage.parts as |part i| }}
@@ -243,7 +243,7 @@
 
 <fieldset name="extra-damage-crit">
   <legend class="damage-header">{{ localize 'DND4EUI.SecondaryCritForm' }}</legend>
-  <label class="damage-header">
+  <label class="damage-header hint">
     {{ localize 'DND4EUI.SecondaryCritTip' }} 
     <a class="damage-control" data-action="addCriticalDamage"><i class="fas fa-plus"></i></a>
   </label>
