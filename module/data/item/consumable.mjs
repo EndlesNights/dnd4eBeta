@@ -27,7 +27,7 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
 				autoDestroy: new BooleanField({ initial: false }),
 				max: new StringField({ initial: "1" }),
 				value: new NumberField({ initial: 1, min: 0, integer: true }),
-				per: new StringField({ initial: "charges" }),
+				per: new StringField({ initial: "" }),
 			}),
 			target: new StringField({ initial: "" }),
 			rangeType: new StringField({ initial: "" }),
@@ -56,6 +56,7 @@ export default class ConsumableData extends foundry.abstract.TypeDataModel {
 				initialKeysOnly: true,
 			}),
 			keywordsCustom: new StringField({ initial: "" }),
+			enhance: new NumberField({ initial: 0, integer: true })
 		};
 	}
 
