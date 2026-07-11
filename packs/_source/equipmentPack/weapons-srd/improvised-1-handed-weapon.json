@@ -15,17 +15,21 @@
     "description": {
       "value": "",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB p.219",
+    "source": {
+      "custom": "PHB p.219",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 5,
     "price": 0,
     "attuned": false,
-    "equipped": false,
+    "equipped": true,
     "rarity": "",
     "identified": true,
     "container": null,
@@ -46,8 +50,7 @@
     },
     "range": {
       "value": 5,
-      "long": 10,
-      "units": ""
+      "long": 10
     },
     "uses": {
       "value": 0,
@@ -68,15 +71,7 @@
       "dt": null,
       "conditions": ""
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
-    "level": null,
+    "level": "",
     "weaponType": "improvM",
     "weaponHand": "hMain",
     "properties": {
@@ -95,9 +90,11 @@
       "thv": false,
       "tlg": false,
       "two": false,
-      "ver": false
+      "ver": false,
+      "mou": false,
+      "sto": false
     },
-    "proficient": false,
+    "proficient": "auto",
     "proficientI": false,
     "profBonus": 0,
     "profImpBonus": 0,
@@ -105,11 +102,11 @@
     "isRanged": false,
     "damageDice": {
       "parts": [
-        [
-          "1",
-          "4",
-          ""
-        ]
+        {
+          "numDice": "1",
+          "numFaces": "4",
+          "modifier": ""
+        }
       ]
     },
     "damage": {
@@ -159,9 +156,8 @@
       "unarm": false,
       "whip": false
     },
-    "implementGroup": {},
-    "attackForm": "@profBonus+@enhance",
-    "attackFormImp": "@profImpBonus+@enhanceImp",
+    "attackForm": "@profBonus + @enhance",
+    "attackFormImp": "@profImpBonus + @enhanceImp",
     "damageForm": "@enhance",
     "damageFormImp": "@enhanceImp",
     "critDamageForm": "(@enhance)d6",
@@ -169,18 +165,41 @@
     "critRange": 20,
     "critRangeImp": 20,
     "weaponBaseType": "",
-    "damageTypeWeapon": false,
-    "chatFlavor": ""
+    "identifier": "improvised-1-handed-weapon",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "weaponBaseTypeCustom": "",
+    "damageTypeOverride": false,
+    "implement": {
+      "holyS": false,
+      "ki": false,
+      "orb": false,
+      "rod": false,
+      "staff": false,
+      "tome": false,
+      "totem": false,
+      "wand": false
+    }
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094359033,
-    "modifiedTime": 1686094359033,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186446,
+    "modifiedTime": 1783763186446,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
