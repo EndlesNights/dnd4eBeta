@@ -643,12 +643,11 @@ export default class Item4e extends Item {
 			try {
 			
 				if (system?.armour?.enhance) {
-					let enhString = `${_loc("DND4E.Enhancement")} +${system.armour.enhance}`;
-					//The strings below begin with a non-breaking space character. Don't delete it unless you want to break the text wrapping!
+					let enhString = `${_loc("DND4E.Enhancement")}<br />+${system.armour.enhance}`;
 					if (system.armour.type === "armour") {
-						enhString += `&nbsp;${_loc("DND4E.DefAC")}`;
+						enhString += ` ${_loc("DND4E.DefAC")}`;
 					} else {
-						enhString += `&nbsp;${_loc("DND4E.DefFort")}/${_loc("DND4E.DefRef")}/${_loc("DND4E.DefWil")}`;
+						enhString += ` ${_loc("DND4E.DefFort")}/${_loc("DND4E.DefRef")}/${_loc("DND4E.DefWil")}`;
 					}
 					labels.enh = enhString;
 				}
@@ -673,7 +672,10 @@ export default class Item4e extends Item {
 		
 		// Weapons
 		else if (itemData.type === "weapon") {
-			try {
+			try {			
+        if (system.enhance != 0) {				
+          labels.enh = `${_loc("DND4E.Enhancement")}<br />+${system.enhance} ${_loc("DND4E.RollsAtkDmg")}`;
+        }
 				for (const [key, value] of Object.entries(system?.properties)) {
 					if (value && !((key == "imp") && (system.weaponType == "implement"))) {
 						const newKey = `props${key}`;
@@ -766,6 +768,47 @@ export default class Item4e extends Item {
 				} catch(e) {
 					console.error("Failed to get the category name for this ritual, probably due to an un-migrated item. Manually setting the category should fix this.");
 				}
+			}      
+      if (system.consume?.amount && system.consume?.type) {
+        let resourceLabel;
+        if (["ritualcomp", "currency"].includes(system.consume.type)) {
+          const resourceTarget = system.consume.target.split(".")[2];
+          if (system.consume?.type === "ritualcomp") {
+            resourceLabel = DND4E.ritualComponents[resourceTarget];
+          } else if (system.consume?.type === "currency") {
+            resourceLabel = DND4E.currencies[resourceTarget];
+          }
+        }
+        else if (system.consume?.type === "attribute") {
+          const resourceTarget = system.consume.target.split(".")[1];
+
+          if (DND4E.ritualComponents[resourceTarget]) {
+            resourceLabel = DND4E.ritualComponents[resourceTarget];
+          }
+          else if (DND4E.currencyConversion[resourceTarget]) {
+            resourceLabel = DND4E.currencies[resourceTarget];
+          }
+          else if (resourceTarget === "hp") {
+            resourceLabel = _loc("DND4E.HP");
+          }
+          else if (resourceTarget === "surges") {
+            resourceLabel = _loc("DND4E.HealingSurges");
+          }
+        }
+        if (resourceLabel) {
+          labels.component = `<strong>${_loc("DND4E.Component")}:</strong> ${resourceLabel} (${system.consume.amount})`;
+        }
+      }
+			// Duration Label
+			let dur = system.duration || {};
+			if (["inst", "perm"].includes(dur.units)) dur.value = null;
+			labels.duration = dur.value ? `<strong>${_loc("DND4E.Duration")}:</strong> ${[dur.value, C.timePeriods[dur.units]].filterJoin(" ")}` : null;
+
+			// CastTime Label
+			if (system.castTime) {
+				let castTime = system.castTime || {};
+				if (["inst", "perm"].includes(castTime.units)) castTime.value = null;
+				labels.castTime = `<strong>${_loc("DND4E.CastTime")}:</strong> ${[castTime.value, C.timePeriods[castTime.units]].filterJoin(" ")}`;
 			}
 		}
 
@@ -782,10 +825,13 @@ export default class Item4e extends Item {
 				}
 				// non healing damage expressions didn't work anyway
 			}
+			if (system.consumableType == 'ammo' && system?.enhance) {				
+				labels.enh = `${_loc("DND4E.Enhancement")}<br />+${system.enhance} ${_loc("DND4E.RollsAtkDmg")}`;
+			}
 		}	
 		
 		// Activated Items other than powers/features
-		if (!["power", "feature"].includes(itemData.type) && ("activation" in system)) {
+		if (!["power", "feature"].includes(itemData.type) && system?.consumableType != 'ammo' && ("activation" in system)) {
 			// Ability Activation Label
 			let act = system.activation || {};
 			if (act) labels.activation = [act.cost, C.abilityActivationTypes[act.type]].filterJoin(" ");
@@ -807,19 +853,6 @@ export default class Item4e extends Item {
 			}
 			labels.range = [rng.value, rng.long ? `/ ${rng.long}` : null, C.distanceUnits[rng.units]].filterJoin(" ");
 
-			// Duration Label
-			let dur = system.duration || {};
-			if (["inst", "perm"].includes(dur.units)) dur.value = null;
-
-			labels.duration = dur.value ? `<strong>${_loc("DND4E.Duration")}:</strong> ${[dur.value, C.timePeriods[dur.units]].filterJoin(" ")}` : null;
-
-			// CastTime Label
-			if (system.castTime) {
-				let castTime = system.castTime || {};
-				if (["inst", "perm"].includes(castTime.units)) castTime.value = null;
-				labels.castTime = `<strong>${_loc("DND4E.CastTime")}:</strong> ${[castTime.value, C.timePeriods[castTime.units]].filterJoin(" ")}`;
-			}
-
 			// Attribute Label
 			if (system.attribute) {
 				const attribute = system.attribute.split(".")[1];
@@ -828,40 +861,6 @@ export default class Item4e extends Item {
 				}
 				else if (DND4E.skills[attribute]) {
 					labels.attribute = `<strong>${_loc("DND4E.Skill")}:</strong> ${DND4E.skills[attribute]?.label}`;
-				}
-			}
-
-			//Component type + cost Label
-			if (itemData.type === "ritual") {
-				if (system.consume?.amount && system.consume?.type) {
-					let resourceLabel;
-					if (["ritualcomp", "currency"].includes(system.consume.type)) {
-						const resourceTarget = system.consume.target.split(".")[2];
-						if (system.consume?.type === "ritualcomp") {
-							resourceLabel = DND4E.ritualComponents[resourceTarget];
-						} else if (system.consume?.type === "currency") {
-							resourceLabel = DND4E.currencies[resourceTarget];
-						}
-					}
-					else if (system.consume?.type === "attribute") {
-						const resourceTarget = system.consume.target.split(".")[1];
-
-						if (DND4E.ritualComponents[resourceTarget]) {
-							resourceLabel = DND4E.ritualComponents[resourceTarget];
-						}
-						else if (DND4E.currencyConversion[resourceTarget]) {
-							resourceLabel = DND4E.currencies[resourceTarget];
-						}
-						else if (resourceTarget === "hp") {
-							resourceLabel = _loc("DND4E.HP");
-						}
-						else if (resourceTarget === "surges") {
-							resourceLabel = _loc("DND4E.HealingSurges");
-						}
-					}
-					if (resourceLabel) {
-						labels.component = `<strong>${_loc("DND4E.Component")}:</strong> ${resourceLabel} (${system.consume.amount})`;
-					}
 				}
 			}
 
@@ -909,75 +908,77 @@ export default class Item4e extends Item {
 		}
 		
 		// Range, action
-		try {
-			//Action
-			if (system?.actionType) {
-				labels.action = C.abilityActivationTypes[system.actionType].label;
-			}
-			
-			//Range
-			if (["power", "consumable"].includes(itemData.type) && system?.rangeType) {
-				let rangeString = "";
-				if (system?.rangeType === "weapon") {
-					const weaponUse = (itemData.actor ? utils.getWeaponUse(system, itemData.actor) : null);
-					if (weaponUse != null) {
-						if (weaponUse.isRanged) {
-							rangeString = `${_loc("DND4E.Ranged")} ${weaponUse.system.range.value}/${weaponUse.system.range.value}`;
-						} else {
-							rangeString = _loc("DND4E.Melee");
-							if (weaponUse.system.properties.rch) {
-								rangeString += " 2";
-							} else {
-								rangeString += " 1";
-							}							
-						}
-					} else {
-						if (system?.weaponType === "melee") {
-							rangeString = _loc("DND4E.WeaponMelee");
-						} else if (system?.weaponType === "ranged") {
-							rangeString = _loc("DND4E.WeaponRanged");
-						} else {
-							rangeString = C.rangeType.weapon.label;
-						}
-					}
-				} else {
-					const isRange = !["personal", "closeBurst", "closeBlast", "", "touch"].includes(itemData.system.rangeType);
-					const isArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(itemData.system.rangeType);
-					
-					rangeString += C.rangeType[system.rangeType].label;
-					
-					if (isArea) {
-						let areaString = system.area || "";
-						if (this.actor && areaString) {
-							areaString = utils.evaluateFormula(areaString, actorData, { strict: true, contextName: "areaString" });
-						}
-						rangeString += ` ${areaString}`;
-					}
-					
-					if (isArea && isRange) rangeString += ` ${_loc("DND4E.RangeWithin")}`;
-					
-					if (isRange) {
-						let rangeValue = system.rangePower || "";
-						if (this.actor && rangeValue) {
-							rangeValue = utils.evaluateFormula(rangeValue, actorData, { strict: true, contextName: "rangeValue" });
-						}
-						rangeString += ` ${rangeValue}`;
-					}
-					
-					if (isRange && system.range?.long && !isArea) {
-						let longRangeValue = system.range.long;
-						if (this.actor) {
-							longRangeValue = utils.evaluateFormula(longRangeValue, actorData, { strict: true, contextName: "longRangeValue" });
-						}
-						rangeString += `/${longRangeValue}`;
-					}
-				}
-				if (rangeString != "") labels.range = rangeString;
-			}
-		} catch(e) {
-			console.error(`Item labels failed for ${itemData.type}: ${itemData.name}. Item data has been dumped to debug. ${e}`);
-			console.debug(itemData);
-		}
+		if (system?.consumableType != 'ammo') {
+      try {
+        //Action
+        if (system?.actionType) {
+          labels.action = C.abilityActivationTypes[system.actionType].label;
+        }
+        
+        //Range
+        if (["power", "consumable"].includes(itemData.type) && system?.rangeType) {
+          let rangeString = "";
+          if (system?.rangeType === "weapon") {
+            const weaponUse = (itemData.actor ? utils.getWeaponUse(system, itemData.actor) : null);
+            if (weaponUse != null) {
+              if (weaponUse.isRanged) {
+                rangeString = `${_loc("DND4E.Ranged")} ${weaponUse.system.range.value}/${weaponUse.system.range.value}`;
+              } else {
+                rangeString = _loc("DND4E.Melee");
+                if (weaponUse.system.properties.rch) {
+                  rangeString += " 2";
+                } else {
+                  rangeString += " 1";
+                }							
+              }
+            } else {
+              if (system?.weaponType === "melee") {
+                rangeString = _loc("DND4E.WeaponMelee");
+              } else if (system?.weaponType === "ranged") {
+                rangeString = _loc("DND4E.WeaponRanged");
+              } else {
+                rangeString = C.rangeType.weapon.label;
+              }
+            }
+          } else {
+            const isRange = !["personal", "closeBurst", "closeBlast", "", "touch"].includes(itemData.system.rangeType);
+            const isArea = ["closeBurst", "closeBlast", "rangeBurst", "rangeBlast", "wall"].includes(itemData.system.rangeType);
+            
+            rangeString += C.rangeType[system.rangeType].label;
+            
+            if (isArea) {
+              let areaString = system.area || "";
+              if (this.actor && areaString) {
+                areaString = utils.evaluateFormula(areaString, actorData, { strict: true, contextName: "areaString" });
+              }
+              rangeString += ` ${areaString}`;
+            }
+            
+            if (isArea && isRange) rangeString += ` ${_loc("DND4E.RangeWithin")}`;
+            
+            if (isRange) {
+              let rangeValue = system.rangePower || "";
+              if (this.actor && rangeValue) {
+                rangeValue = utils.evaluateFormula(rangeValue, actorData, { strict: true, contextName: "rangeValue" });
+              }
+              rangeString += ` ${rangeValue}`;
+            }
+            
+            if (isRange && system.range?.long && !isArea) {
+              let longRangeValue = system.range.long;
+              if (this.actor) {
+                longRangeValue = utils.evaluateFormula(longRangeValue, actorData, { strict: true, contextName: "longRangeValue" });
+              }
+              rangeString += `/${longRangeValue}`;
+            }
+          }
+          if (rangeString != "") labels.range = rangeString;
+        }
+      } catch(e) {
+        console.error(`Item labels failed for ${itemData.type}: ${itemData.name}. Item data has been dumped to debug. ${e}`);
+        console.debug(itemData);
+      }
+    }
 
 		// Assign labels
 		this.labels = labels;
@@ -1113,8 +1114,9 @@ export default class Item4e extends Item {
 		if (this.type === "feat") {
 			let configured = await this._rollFeature(configureDialog);
 			if ( configured === false ) return;
-		}
-		else*/ if (this.type === "consumable") {
+		}*/
+		//else 
+    if (this.type === "consumable") {
 			let configured = await this._rollConsumable(configureDialog);
 			if (configured === false) return;
 		}
@@ -1321,6 +1323,9 @@ export default class Item4e extends Item {
 				quantity = consumed || 0;
 				break;
 			case "ammo":
+        consumed = utils.getAmmoUse(itemData, actor);
+				quantity = consumed ? consumed.system.quantity : 0;
+				break;
 			case "material":
 				consumed = actor.items.get(consume.target);
 				quantity = consumed ? consumed.system.quantity : 0;
@@ -1601,13 +1606,14 @@ export default class Item4e extends Item {
 		const itemData = this.getRollData({ variance: options.variance }).item;
 		const actorData = this.actor;
 		options.bonuses = foundry.utils.deepClone(Roll4e.DEFAULT_OPTIONS.bonuses);
-		// itemData.weaponUse = 2nd dropdown - default/none/weapon
-		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...
 		// find details on the weapon being used, if any.   This is null if no weapon is being used.
-		
+		// itemData.weaponUse = 2nd dropdown - default/none/weapon
+		// itemData.weaponType = first dropdown: melee/ranged/implement/none etc...		
 		//console.debug(options);
 		const weaponUse = utils.getWeaponUse(itemData, this.actor);
 		const weaponData = weaponUse?.getRollData().item;
+		const weaponAmmo = weaponUse ? utils.getAmmoUse(weaponData, this.actor) : null;
+		const powerAmmo = utils.getAmmoUse(itemData, this.actor) || null;
 
 		if (utils.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
 			ui.notifications.error(_loc("DND4E.LackRequiredWeapon"));
@@ -1615,7 +1621,7 @@ export default class Item4e extends Item {
 		}
 
 		if (!this.hasAttack) {
-			ui.notifications.error("You may not place an Attack Roll with this Item.");
+			ui.notifications.error("DND4EUI.NOTIFICATIONS.cantAttack");
 			return null;
 		}
 
@@ -1655,11 +1661,11 @@ export default class Item4e extends Item {
 			options.formulaInnerData = utils.getDataObject(itemData.attack.formula, actorData.getRollData());
 		}
 
-		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
+		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, ammo, consumable, resourceType) => {
 			if (consumable?.type === "ammo") {
 				if (utils.isNonEmpty(consumable.target) && utils.isNonEmpty(consumable.amount))
 				{
-					const ammo = this.actor?.items.get(consumable.target);
+					//const ammo = this.actor?.items.get(consumable.target);
 					if (ammo) {
 						const ammoCount = ammo.system.quantity;
 						if (ammoCount && (ammoCount - consumable.amount >= 0)) {
@@ -1669,22 +1675,22 @@ export default class Item4e extends Item {
 							}
 						}
 						else {
-							ui.notifications.warn(_loc("The {resourceType} requires {quantity} of '{target}' but the character only has {ammoCount}",
+							ui.notifications.warn(_loc("DND4EUI.NOTIFICATIONS.ammoInsufficient",
 								{ resourceType, ammoCount, target: ammo.name, quantity: consumable.amount }));
 						}
 					}
 					else {
-						ui.notifications.warn(_loc("The {resourceType} requires a ammunition but none could be found on the character",
+						ui.notifications.warn(_loc("DND4EUI.NOTIFICATIONS.ammoMissing",
 							{ resourceType, target: consumable.target }));
 					}
 				}
 				else {
 					if (!utils.isNonEmpty(consumable.target)) {
-						ui.notifications.warn(_loc("The {resourceType} requires ammunition, but the type ('{target}') was empty",
+						ui.notifications.warn(_loc("DND4EUI.NOTIFICATIONS.ammoUntyped",
 							{ resourceType, target: consumable.target, quantity: consumable.amount }));
 					}
 					if (!utils.isNonEmpty(consumable.quantity)) {
-						ui.notifications.warn(_loc("The {resourceType} requires ammunition, but the quantity ('{quantity}') was empty",
+						ui.notifications.warn(_loc("DND4EUI.NOTIFICATIONS.ammoUncounted",
 							{ resourceType, target: consumable.target, quantity: consumable.amount }));
 					}
 				}
@@ -1693,24 +1699,24 @@ export default class Item4e extends Item {
 
 		// Ammunition Bonus from power.
 		delete this._ammo;
-		const powerHasAmmoWithBonus = (ammo, ammoBonus) => {
+		const powerHasAmmoWithBonus = (powerAmmo, ammoBonus) => {
 			parts.push("@ammo");
 			rollData["ammo"] = ammoBonus;
 			title += ` [${ammo.name}]`;
-			this._ammo = ammo;
+			this._ammo = powerAmmo;
 		};
-		handlePowerAndWeaponAmmoBonuses(powerHasAmmoWithBonus, itemData.consume, "power");
+		handlePowerAndWeaponAmmoBonuses(powerHasAmmoWithBonus, powerAmmo, itemData.consume, "power");
 	
 		// Ammunition Bonus from weapon.
-		if (weaponUse) {
+		if (weaponAmmo) {
 			delete weaponUse._ammo;
-			const weaponHasAmmoWithBonus = (ammo, ammoBonus) => {
+			const weaponHasAmmoWithBonus = (weaponAmmo, ammoBonus) => {
 				if (parts[parts.length - 1] !== "@ammo") parts.push("@ammo");
 				rollData["ammo"] ? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
 				title += ` [${ammo.name}]`;
-				weaponUse._ammo = ammo;
+				weaponUse._ammo = weaponAmmo;
 			};
-			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
+			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponAmmo, weaponUse.system.consume, "weapon used by the power");
 		}
 		
 		await utils.applyEffects(rollData, actorData, itemData, weaponData, "attack", null, null, options);
@@ -1777,9 +1783,10 @@ export default class Item4e extends Item {
 		const weaponUse = utils.getWeaponUse(itemData, this.actor);
 		const weaponData = weaponUse?.getRollData().item;
 
-		if (utils.lacksRequiredWeaponEquipped(itemData, weaponUse)) {
-			return;
-		}
+		if (utils.lacksRequiredWeaponEquipped(itemData, weaponUse)) return;
+    
+		const powerAmmo = utils.getAmmoUse(itemData, this.actor) || null;
+		const weaponAmmo = weaponUse ? utils.getAmmoUse(weaponData, this.actor) : null;
 
 		const rollData = this.getRollData(options);
 
@@ -1798,42 +1805,41 @@ export default class Item4e extends Item {
 			options.formulaInnerData = utils.getDataObject(itemData.attack.formula, actorData.getRollData());
 		}
 
-		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, consumable, resourceType) => {
-			if (consumable?.type === "ammo") {
-				if (utils.isNonEmpty(consumable.target) && utils.isNonEmpty(consumable.amount))
+		const handlePowerAndWeaponAmmoBonuses = (onHasBonus, ammo, consumable, resourceType) => {
+			if (ammo) {
+        //console.debug(ammo);
+				if (utils.isNonEmpty(ammo.id) && utils.isNonEmpty(consumable.amount))
 				{
-					const ammo = this.actor?.items.get(consumable.target);
-					if (ammo) {
-						const ammoCount = ammo.system.quantity;
-						if (ammoCount && (ammoCount - consumable.amount >= 0)) {
-							let ammoBonus = ammo.system.attackBonus;
-							if (ammoBonus) {
-								onHasBonus(ammo, ammoBonus);
-							}
-						}
-					}
+          //const ammo = this.actor?.items.get(consumable.target);
+          const ammoCount = ammo.system.quantity;
+          if (ammoCount && (ammoCount - consumable.amount >= 0)) {
+            let ammoBonus = ammo.system.attack.formula;
+            if (ammoBonus) {
+              onHasBonus(ammo, ammoBonus);
+            }
+          }
 				}
 			}
 		};
 
 		// Ammunition Bonus from power.
 		delete this._ammo;
-		const powerHasAmmoWithBonus = (ammo, ammoBonus) => {
+		const powerHasAmmoWithBonus = (powerAmmo, ammoBonus) => {
 			parts.push("@ammo");
 			rollData["ammo"] = ammoBonus;
 			this._ammo = ammo;
 		};
-		handlePowerAndWeaponAmmoBonuses(powerHasAmmoWithBonus, itemData.consume, "power");
+		handlePowerAndWeaponAmmoBonuses(powerHasAmmoWithBonus, powerAmmo, itemData.consume, "power");
 	
 		// Ammunition Bonus from weapon.
 		if (weaponUse) {
 			delete weaponUse._ammo;
-			const weaponHasAmmoWithBonus = (ammo, ammoBonus) => {
+			const weaponHasAmmoWithBonus = (weaponAmmo, ammoBonus) => {
 				if (parts[parts.length - 1] !== "@ammo") parts.push("@ammo");
 				rollData["ammo"] ? rollData["ammo"] += ammoBonus : rollData["ammo"] = ammoBonus;
 				weaponUse._ammo = ammo;
 			};
-			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponUse.system.consume, "weapon used by the power");
+			handlePowerAndWeaponAmmoBonuses(weaponHasAmmoWithBonus, weaponAmmo, weaponUse.system.consume, "weapon used by the power");
 		}
 		await utils.applyEffects(rollData, actorData, itemData, weaponData, "attack", null, null, options);
 
@@ -2099,12 +2105,15 @@ export default class Item4e extends Item {
 			ui.notifications.error(_loc("DND4E.LackRequiredWeapon"));
 			return null;
 		}
+    
+		const weaponAmmo = weaponUse ? utils.getAmmoUse(weaponData, actorData) : null;
+		const powerAmmo = utils.getAmmoUse(itemData, actorData);
 
 		if (!this.hasDamage) {
-			ui.notifications.error("You may not make a Damage Roll with this Item.");
+			ui.notifications.error(_loc("DND4EUI.NOTIFICATIONS.cantAttack"));
 			return null;
 		}
-		const messageData = { "options.flags.dnd4e.roll": { type: "damage", itemId: this.id } };
+		const messageData = { "flags.dnd4e.roll": { type: "damage", itemId: this.id } };
 
 		// Get roll data
 		const rollData = this.getRollData({ variance: variance });
@@ -2261,31 +2270,42 @@ export default class Item4e extends Item {
 		}
 
 		// Ammunition Damage from power
-		if (this._ammo) {
-			parts.push("@ammo");
-			partsCrit.push("@ammo");
-
-			if (!missDamageFormula.includes("@damageFormula") && !missDamageFormula.includes("@halfDamageFormula")) {
-				partsMiss.push("@ammo");
+		if (powerAmmo) {
+      if(powerAmmo.system?.damage.parts.length > 0){
+        parts.push("@powAmmo");
+        rollData["powAmmo"] = powerAmmo.system.damage.parts.map(p => p.formula).join("+");
+      }
+      if(powerAmmo.system?.damageCrit.parts.length > 0){
+        partsCrit.push("@powAmmoC");
+        rollData["powAmmoC"] = powerAmmo.system.damageCrit.parts.map(p => p.formula).join("+");
+      }
+			if (powerAmmo.system?.damageMiss.parts.length > 0) {
+				partsMiss.push("@powAmmoM");
+        rollData["powAmmoM"] = powerAmmo.system.damageMiss.parts.map(p => p.formula).join("+");
 			}
-
-			rollData["ammo"] = this._ammo.system.damage.parts.map(p => p.formula).join("+");
-			flavor += ` [${this._ammo.name}]`;
+			flavor += ` [${ammo.name}]`;
 			delete this._ammo;
 		}
 	
 		// Ammunition Damage from weapon
 		if (weaponUse) {
-			if (weaponUse._ammo) {
-				parts.push("@ammoW");
-				partsCrit.push("@ammoW");
-
-				if (!missDamageFormula.includes("@damageFormula") && !missDamageFormula.includes("@halfDamageFormula")) {
-					partsMiss.push("@ammoW");
-				}
-
-				rollData["ammoW"] = weaponUse._ammo.system.damage.parts.map(p => p.formula).join(" + ");
-				flavor += ` [${weaponUse._ammo.name}]`;
+      console.debug(weaponUse?._ammo);
+			if (weaponAmmo) {
+        console.debug(weaponAmmo);
+        if(weaponAmmo.system?.damage.parts.length > 0){
+          parts.push("@ammo");
+          rollData["ammo"] = weaponAmmo.system.damage.parts.map(p => p.formula).join("+");
+        }
+        if(weaponAmmo.system?.damageCrit.parts.length > 0){
+          partsCrit.push("@ammoC");
+          rollData["ammoC"] = weaponAmmo.system.damageCrit.parts.map(p => p.formula).join("+");
+        }
+        if (weaponAmmo.system?.damageMiss.parts.length > 0) {
+          partsMiss.push("@ammoM");
+          rollData["ammoM"] = weaponAmmo.system.damageMiss.parts.map(p => p.formula).join("+");
+        }
+        
+				flavor += ` [${weaponAmmo.name}]`;
 				delete weaponUse._ammo;
 			}
 			title += ` with ${weaponUse.name}`;
@@ -2401,7 +2421,7 @@ export default class Item4e extends Item {
 			ui.notifications.error("You may not make a Healing Roll with this Item.");
 			return null;
 		}
-		const messageData = { "options.flags.dnd4e.roll": { type: "healing", itemId: this.id } };
+		const messageData = { "flags.dnd4e.roll": { type: "healing", itemId: this.id } };
 
 		// Get roll data
 		const rollData = this.getRollData();
@@ -2904,8 +2924,14 @@ export default class Item4e extends Item {
 		// Weapon/Implement properties:
 		const weapon = this.type === "weapon" ? this : (this.type == "power" ? utils.getWeaponUse(this.system, this.actor) : null);
 		const weaponData = weapon ? weapon.system : null;
+    const ammo = weaponData ? utils.getAmmoUse(weaponData, this.actor) : utils.getAmmoUse(this.system, this.actor);
+		const ammoData = ammo ? ammo.system : null;
+    
 		if (weaponData) {
 			let enhValue = weaponData.enhance || 0;
+      
+      //Ammo enhancement should override weapon enhancement, if it has one
+      if(ammoData && ammoData?.enhance > 0 ) enhValue = ammoData.enhance;
 			
 			//Using inherent enhancements?
 			if (game.settings.get("dnd4e", "inhEnh")) {
