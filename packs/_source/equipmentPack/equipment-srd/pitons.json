@@ -9,12 +9,16 @@
     "description": {
       "value": "<p>Part of climbing kit. Can be hammered into a surface to work as a hand or foot hold. Or rope can be looped around to hold a heavy weight.</p>",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.222",
+    "source": {
+      "custom": "PHB pg.222",
+      "revision": 1
+    },
     "quantity": 10,
     "weight": 0.5,
     "price": 0.05,
@@ -45,7 +49,7 @@
     },
     "uses": {
       "value": 0,
-      "max": 0,
+      "max": "0",
       "per": null
     },
     "consume": {
@@ -53,25 +57,30 @@
       "target": null,
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
-    "level": ""
+    "level": "",
+    "identifier": "pitons",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": []
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094260453,
-    "modifiedTime": 1686094260453,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186440,
+    "modifiedTime": 1783763186440,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

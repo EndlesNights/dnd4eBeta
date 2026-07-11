@@ -9,12 +9,16 @@
     "description": {
       "value": "<p>A small light hammer.</p>",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.222",
+    "source": {
+      "custom": "PHB pg.222",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 2,
     "price": 0.5,
@@ -45,7 +49,7 @@
     },
     "uses": {
       "value": 0,
-      "max": 0,
+      "max": "0",
       "per": null
     },
     "consume": {
@@ -53,25 +57,30 @@
       "target": null,
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
-    "level": ""
+    "level": "",
+    "identifier": "hammer",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": []
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094251518,
-    "modifiedTime": 1686094251518,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186439,
+    "modifiedTime": 1783763186439,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

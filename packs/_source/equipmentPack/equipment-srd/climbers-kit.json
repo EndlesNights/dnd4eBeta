@@ -7,14 +7,18 @@
   "flags": {},
   "system": {
     "description": {
-      "value": "<p>Allows one to easily climb steep hard surfaces safley.</p>\n<p>Contains the following items.</p>\n<ul>\n<li>@Compendium[dnd4e.srd_equipment.kFz1leVNhApkjcHJ]{Grappling hook}</li>\n<li>@Compendium[dnd4e.srd_equipment.Wb30nEVfHyquzitq]{Hammer}</li>\n<li>@Compendium[dnd4e.srd_equipment.27nr8BfkN7jvMx7M]{Pitons}</li>\n</ul>",
+      "value": "<p>Allows one to easily climb steep hard surfaces safley.</p><p>Contains the following items.</p><ul><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.qjKxWNKXfgINSji5]{Grappling hook}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.dFnwX4OYf1wbkl5O]{Hammer}</p></li><li><p>@UUID[Compendium.dnd4e.equipmentPack.Item.UgCn9OLEpYlAd605]{Pitons}</p></li></ul>",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.222",
+    "source": {
+      "custom": "PHB pg.222",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 11,
     "price": 2,
@@ -45,7 +49,7 @@
     },
     "uses": {
       "value": 0,
-      "max": 0,
+      "max": "0",
       "per": null
     },
     "consume": {
@@ -53,29 +57,34 @@
       "target": null,
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
     "level": "",
     "attribute": "skills.ath.total",
     "chatFlavor": "",
     "formula": "",
-    "bonus": "2"
+    "bonus": "2",
+    "identifier": "climbers-kit",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": []
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094239675,
-    "modifiedTime": 1686094239675,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186438,
+    "modifiedTime": 1783763186438,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
