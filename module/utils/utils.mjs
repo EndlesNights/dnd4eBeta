@@ -137,6 +137,27 @@ export function getWeaponUse(itemData, actor) {
 }
 
 /**
+ * Determine ammo use for a given weapon or power.
+ * Either the specified ammunition, or a consumable that matches the consumableType.ammo category if itemData.consume.target is set to auto
+ * @param {CharacterData} itemData The weapon/power being used
+ * @param {Actor4e} actor The actor that owns the weapon/power
+ * @returns {Item4e|null} The ammo details, or null if either no suitable ammo is found or itemData.consume.target is set to none.
+ */
+export function getAmmoUse(itemData, actor) {
+	if (!itemData || itemData.consume?.type !== "ammo" || itemData.consume?.target === "none") return null;
+	let ammoUse = null;
+	//If ammo is automatic, find a suitable consumable
+	if (itemData.consume.target === "auto") {
+		return actor.itemTypes.consumable.find((i) =>	{
+			if (i.system.consumableType === "ammo" && i.system.equipped) return i;
+		}, {});
+	} else {
+    ammoUse = actor?.items.get(itemData.consume.target);
+  }
+	return ammoUse;
+}
+
+/**
  * Returns true if we should error out because the power needs a weapon equipped and the character doesn't have one
  * @param itemData The data object of the Power being used
  * @param weaponUse The details of the weapon being used for the power from getWeaponUse
@@ -167,12 +188,17 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 	const suitableKeywords = ["global"];
 	const effectsToProcess = [];
 	const actorEffects = actor.appliedEffects;
+  //console.debug(powerData);
+  const ammo = weaponData ? getAmmoUse(weaponData, actor) : getAmmoUse(powerData, actor);
+  
 	if (actorEffects.length) {
-		let enhValue = weaponData?.enhance || 0;
 		if (debug) {
 			console.log(`${debug} Debugging ${effectType} effects for ${powerData.name}.	Supplied Weapon: ${weaponData?.name}`);
 		}
-			
+    
+		let enhValue = weaponData?.enhance || 0;
+    //Ammo enhancement should override weapon enhancement, if it has one
+    if(ammo && ammo?.system?.enhance > 0) enhValue = ammo.system.enhance;
 		//Using inherent enhancements?
 		if (game.settings.get("dnd4e", "inhEnh")) {
 			//If our enhancement is lower than the inherent level, adjust it upward
@@ -211,7 +237,7 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 
 			suitableKeywords.push(powerData.identifier);
 			_addKeywords(suitableKeywords, powerData.damageType);
-			_addKeywords(suitableKeywords, powerData.effectType);
+			_addKeywords(suitableKeywords, powerData.effectType);      
 			if (weaponData) {
 				suitableKeywords.push(weaponData.identifier);
 				_addKeywords(suitableKeywords, weaponData.weaponGroup);
@@ -223,7 +249,11 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 				}
 				options.weaponUuid = weaponData.uuid;
 			}
-
+      if (ammoData) {
+        options.ammoUuid = ammoData.uuid;
+				_addKeywords(suitableKeywords, ammoData.damageType);
+        _addKeywords(suitableKeywords, ammoData.effectType);
+      }
 			if (powerData.powersource) {
 				suitableKeywords.push(powerData.powersource);
 			}
@@ -514,7 +544,7 @@ async function _applyEffectsInternal(effectsToProcess, suitableKeywords, actor, 
 			const keywords = keyParts.slice(2, -1);
 			for (const keyword of keywords) {
 				if (keyword === "self") {
-					if (options.weaponUuid === effect.itemUuid) {
+					if ([options.weaponUuid,options.ammoUuid].includes(effect.itemUuid)) {
 						continue;
 					} else {
 						return false;
