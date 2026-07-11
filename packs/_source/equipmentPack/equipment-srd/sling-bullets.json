@@ -9,12 +9,16 @@
     "description": {
       "value": "<p>Simple arrows made with shafts of wood and simple iron heads, the primary ammunition that is shot from bows.</p>",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg. 222",
+    "source": {
+      "custom": "PHB pg. 222",
+      "revision": 1
+    },
     "quantity": 20,
     "weight": 0.25,
     "price": 0.05,
@@ -32,20 +36,15 @@
       "value": null,
       "units": ""
     },
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": ""
-    },
+    "target": "[object Object]",
     "range": {
-      "value": null,
+      "value": "",
       "long": null,
       "units": ""
     },
     "uses": {
       "value": 0,
-      "max": 0,
+      "max": "0",
       "per": "",
       "autoDestroy": false
     },
@@ -53,14 +52,6 @@
       "type": "",
       "target": "",
       "amount": null
-    },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
     },
     "attack": {
       "shareAttackRoll": false,
@@ -75,14 +66,12 @@
       "def": "ac",
       "defBonus": 0,
       "detail": "",
-      "formula": "",
-      "damageType": {},
-      "effectType": {}
+      "formula": ""
     },
     "hit": {
       "shareDamageRoll": false,
       "damageBonusNull": false,
-      "isDamage": false,
+      "isDamage": true,
       "isHealing": false,
       "healSurge": "",
       "baseQuantity": "1",
@@ -94,7 +83,8 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
       "detail": ""
@@ -105,37 +95,101 @@
     "damageCrit": {
       "parts": []
     },
-    "damageImp": {
-      "parts": []
-    },
     "damageCritImp": {
       "parts": []
     },
-    "damageType": {},
+    "damageType": {
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false,
+      "damage": false,
+      "ongoing": false
+    },
     "level": "",
     "consumableType": "ammo",
     "autoGenChatPowerCard": false,
     "useType": "item",
-    "actionType": "",
-    "rangeType": "",
+    "actionType": "none",
+    "rangeType": "melee",
     "autoTarget": {
       "mode": "none",
       "includeSelf": true
     },
-    "effectType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
     "keywordsCustom": "",
-    "attackBonus": null,
-    "formula": ""
+    "identifier": "sling-bullets",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "rangePower": "",
+    "area": "0",
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    },
+    "enhance": 0
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094269735,
-    "modifiedTime": 1686094269735,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186440,
+    "modifiedTime": 1783763186440,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

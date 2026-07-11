@@ -2,19 +2,71 @@
   "name": "Tanglefoot Bomb (lvl 2)",
   "type": "consumable",
   "img": "icons/sundries/survival/cuffs-shackles-ball.webp",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Immobilised",
+      "img": "systems/dnd4e/icons/statusEffects/immobilized.svg",
+      "origin": "Item.Y02giVtd6KiepdCK",
+      "system": {
+        "durationType": "endOfUserTurn",
+        "powerEffectType": "hit",
+        "changes": [],
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
+      },
+      "disabled": false,
+      "transfer": false,
+      "_id": "sEqnwgx6S8HUtdu5",
+      "type": "base",
+      "start": null,
+      "duration": {
+        "value": 1,
+        "units": "rounds",
+        "expiry": "turnEnd",
+        "expired": false
+      },
+      "description": "<p>The creature cannot move except by teleportation. It can still be pushed, pulled, or slid.</p>",
+      "tint": "#ffffff",
+      "statuses": [
+        "immobilized"
+      ],
+      "showIcon": 1,
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dnd4e",
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763186450,
+        "modifiedTime": 1783763186450,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!6TgPCWcY1zI4Kbns.sEqnwgx6S8HUtdu5"
+    }
+  ],
   "folder": "PIKifUmTjsyxJmS3",
   "flags": {},
   "system": {
     "description": {
-      "value": "<p><em>A combination of sticky gel and springy wires&nbsp; entangle the legs of this grenades victim</em></p>",
-      "chat": "",
-      "unidentified": ""
+      "value": "<p><em>A combination of sticky gel and springy wires entangle the legs of this grenade's victim.</em></p>",
+      "chat": "A combination of sticky gel and springy wires entangle the legs of this grenade's victim.",
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "AV p. 30",
+    "source": {
+      "custom": "AV p. 30",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 0,
     "price": 25,
@@ -34,28 +86,20 @@
     },
     "target": "",
     "range": {
-      "value": null,
-      "long": null,
+      "value": "5",
+      "long": "10",
       "units": ""
     },
     "uses": {
       "value": 1,
       "max": "1",
       "per": "charges",
-      "autoDestroy": false
+      "autoDestroy": true
     },
     "consume": {
       "type": "",
       "target": "",
       "amount": null
-    },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
     },
     "attack": {
       "shareAttackRoll": false,
@@ -70,9 +114,7 @@
       "def": "ref",
       "defBonus": 0,
       "detail": "",
-      "formula": "5",
-      "damageType": {},
-      "effectType": {}
+      "formula": "5"
     },
     "hit": {
       "shareDamageRoll": false,
@@ -80,7 +122,7 @@
       "isDamage": false,
       "isHealing": false,
       "healSurge": "",
-      "baseQuantity": 1,
+      "baseQuantity": "1",
       "baseDiceType": "Base Weapon Damage",
       "detail": "The target is immobilized until the end of your next turn, at which point the creature is then slowed until the end of <b>its</b> next turn.",
       "formula": "",
@@ -89,10 +131,11 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
-      "detail": "(The Range is 5/10)"
+      "detail": ""
     },
     "damage": {
       "parts": []
@@ -100,14 +143,23 @@
     "damageCrit": {
       "parts": []
     },
-    "damageImp": {
-      "parts": []
-    },
     "damageCritImp": {
       "parts": []
     },
-    "damageType": {},
-    "level": 2,
+    "damageType": {
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "level": "2",
     "consumableType": "alchemical",
     "autoGenChatPowerCard": true,
     "useType": "item",
@@ -117,22 +169,73 @@
       "mode": "none",
       "includeSelf": true
     },
-    "effectType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
     "keywordsCustom": "",
-    "formula": "",
-    "postEffect": false,
-    "effectHTML": false,
-    "rangePower": 5
+    "rangePower": "5",
+    "identifier": "tanglefoot-bomb-lvl-2",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "area": "0",
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    },
+    "enhance": 0
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686093642679,
-    "modifiedTime": 1686093642679,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186450,
+    "modifiedTime": 1783763186450,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

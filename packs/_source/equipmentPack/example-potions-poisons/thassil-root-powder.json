@@ -7,14 +7,18 @@
   "flags": {},
   "system": {
     "description": {
-      "value": "<p><em>This blue powder rapidly dissolves in water is is almost completely flavourless.</em></p>\n<p>&nbsp;</p>\n<p>Thassil Root can be delivered only by way of food or drink. It makes its first attack [[2d6]] minutes after its victim consumes it.</p>\n<p>All saving throws against this poison are made with a -2 penalty.</p>",
-      "chat": "",
-      "unidentified": ""
+      "value": "<p><em>This blue powder rapidly dissolves in water is is almost completely flavourless.</em></p><p>Thassil Root can be delivered only by way of food or drink. It makes its first attack [[2d6]] minutes after its victim consumes it.</p><p>All saving throws against this poison are made with a -2 penalty.</p>",
+      "chat": "This blue powder rapidly dissolves in water is is almost completely flavourless.",
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "DMG p. 51",
+    "source": {
+      "custom": "DMG p. 51",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 0,
     "price": 250,
@@ -34,7 +38,7 @@
     },
     "target": "",
     "range": {
-      "value": null,
+      "value": "",
       "long": null,
       "units": ""
     },
@@ -49,14 +53,6 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
     "attack": {
       "shareAttackRoll": false,
       "isAttack": true,
@@ -70,9 +66,7 @@
       "def": "fort",
       "defBonus": 0,
       "detail": "",
-      "formula": "8",
-      "damageType": {},
-      "effectType": {}
+      "formula": "8"
     },
     "hit": {
       "shareDamageRoll": false,
@@ -80,7 +74,7 @@
       "isDamage": false,
       "isHealing": false,
       "healSurge": "",
-      "baseQuantity": 1,
+      "baseQuantity": "1",
       "baseDiceType": "Base Weapon Damage",
       "detail": "Target is slowed (save ends).",
       "formula": "",
@@ -89,10 +83,11 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
-      "detail": "<p><strong>First Failed Saving Throw:&nbsp;</strong>The target is immobilized instead of slowed (save ends).<br /><strong>Second Failed Saving Throw:&nbsp;</strong>The target is unconscious for 1d4 hours.</p>"
+      "detail": "<p>Thassil Root can be delivered only by way of food or drink. It makes its first attack [[2d6]] minutes after its victim consumes it.</p>\n<p>All saving throws against this poison are made with a -2 penalty.</p> <p><strong>First Failed Saving Throw:</strong> The target is immobilized instead of slowed (save ends).<br /><strong>Second Failed Saving Throw:</strong> The target is unconscious for 1d4 hours.</p>"
     },
     "damage": {
       "parts": []
@@ -100,39 +95,99 @@
     "damageCrit": {
       "parts": []
     },
-    "damageImp": {
-      "parts": []
-    },
     "damageCritImp": {
       "parts": []
     },
-    "damageType": {},
-    "level": 5,
+    "damageType": {
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "level": "5",
     "consumableType": "poison",
-    "autoGenChatPowerCard": true,
+    "autoGenChatPowerCard": false,
     "useType": "item",
     "actionType": "none",
-    "rangeType": "personal",
+    "rangeType": "special",
     "autoTarget": {
       "mode": "none",
       "includeSelf": true
     },
-    "effectType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
     "keywordsCustom": "",
-    "formula": "",
-    "postEffect": true,
-    "effectHTML": true,
-    "rangePower": null
+    "rangePower": "",
+    "identifier": "thassil-root-powder",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "area": "0",
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    },
+    "enhance": 0
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686093924525,
-    "modifiedTime": 1686093924525,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186443,
+    "modifiedTime": 1783763186443,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

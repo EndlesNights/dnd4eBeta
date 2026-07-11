@@ -9,17 +9,21 @@
     "description": {
       "value": "<p>An elegant piece of worked metal meant to represent a divine being, and used by their followers as an implement to focus and cast their divine blessings.</p>",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.222",
+    "source": {
+      "custom": "PHB pg.222",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 1,
     "price": 10,
     "attuned": false,
-    "equipped": false,
+    "equipped": true,
     "rarity": "Common",
     "identified": true,
     "container": null,
@@ -40,12 +44,11 @@
     },
     "range": {
       "value": 5,
-      "long": 10,
-      "units": ""
+      "long": 10
     },
     "uses": {
       "value": 0,
-      "max": 0,
+      "max": "0",
       "per": ""
     },
     "consume": {
@@ -62,17 +65,9 @@
       "dt": null,
       "conditions": ""
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
     "level": "",
     "weaponType": "implement",
-    "weaponHand": "hMain",
+    "weaponHand": "hNone",
     "properties": {
       "amm": false,
       "bru": false,
@@ -93,7 +88,7 @@
       "mou": false,
       "sto": false
     },
-    "proficient": false,
+    "proficient": "auto",
     "proficientI": false,
     "profBonus": 0,
     "profImpBonus": 0,
@@ -149,27 +144,50 @@
       "unarm": false,
       "whip": false
     },
-    "implementGroup": {},
-    "attackForm": "@profBonus+@enhance",
-    "attackFormImp": "@profImpBonus+@enhanceImp",
+    "attackForm": "@profBonus + @enhance",
+    "attackFormImp": "@profImpBonus + @enhanceImp",
     "damageForm": "@enhance",
     "damageFormImp": "@enhanceImp",
     "critDamageForm": "(@enhance)d6",
     "critDamageFormImp": "(@enhanceImp)d6",
     "critRange": 20,
     "critRangeImp": 20,
-    "chatFlavor": "",
-    "weaponBaseType": "holyS"
+    "weaponBaseType": "holyS",
+    "identifier": "holy-symbol",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "weaponBaseTypeCustom": "",
+    "damageTypeOverride": false,
+    "implement": {
+      "holyS": true,
+      "ki": false,
+      "orb": false,
+      "rod": false,
+      "staff": false,
+      "tome": false,
+      "totem": false,
+      "wand": false
+    }
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.8.5",
+    "systemVersion": "0.8.9",
     "coreVersion": "14.364",
-    "createdTime": 1686094252870,
-    "modifiedTime": 1782166028687,
+    "createdTime": 1783763186443,
+    "modifiedTime": 1783763186443,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

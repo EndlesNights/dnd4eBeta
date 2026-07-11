@@ -47,11 +47,11 @@
       "description": "<p>You gain a +1 bonus to attack rolls with attacks made with a one-handed weapon.</p>",
       "statuses": [],
       "_stats": {
-        "coreVersion": "14.360",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.5",
-        "createdTime": 1776986930584,
-        "modifiedTime": 1776986932631,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176908,
+        "modifiedTime": 1783763176908,
         "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
@@ -65,9 +65,17 @@
             "key": "weapon.attack.one.untyped",
             "value": 1,
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           }
-        ]
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "sort": 0,
       "start": null,
@@ -88,17 +96,12 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.76",
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
+    "source": {
+      "custom": "PHB pg.76",
+      "revision": 1
     },
     "featureType": "class",
-    "level": null,
+    "level": "",
     "requirements": "",
     "featureSource": "Fighter",
     "featureGroup": "",
@@ -106,32 +109,28 @@
     "effectType": {},
     "damageType": {},
     "keywordsCustom": "",
-    "class": "",
-    "hitFistLevel": 10,
-    "hitPerLevel": 5,
-    "surgePerDay": 5,
-    "skills": "<i class=\"fas fa-edit\"></i>",
-    "def": {
-      "ac": 0,
-      "fort": 0,
-      "ref": 0,
-      "wil": 0
-    },
-    "proficiencies": {
-      "weapons": [],
-      "armour": []
-    },
-    "category": "other"
+    "identifier": "combat-weapon-talent-one-handed",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ]
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "14.359",
-    "createdTime": 1686094093866,
-    "modifiedTime": 1745817871227,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763176908,
+    "modifiedTime": 1783763176908,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

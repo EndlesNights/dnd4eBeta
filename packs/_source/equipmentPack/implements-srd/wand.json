@@ -9,17 +9,21 @@
     "description": {
       "value": "<p>A light and slender piece of wood that is used as a magical implement for focusing and casting spells.</p>",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.222",
+    "source": {
+      "custom": "PHB pg.222",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 0.1,
     "price": 7,
     "attuned": false,
-    "equipped": false,
+    "equipped": true,
     "rarity": "Common",
     "identified": true,
     "container": null,
@@ -40,8 +44,7 @@
     },
     "range": {
       "value": 5,
-      "long": 10,
-      "units": ""
+      "long": 10
     },
     "uses": {
       "value": 0,
@@ -61,14 +64,6 @@
       "max": 0,
       "dt": null,
       "conditions": ""
-    },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
     },
     "level": "",
     "weaponType": "implement",
@@ -93,7 +88,7 @@
       "mou": false,
       "sto": false
     },
-    "proficient": false,
+    "proficient": "auto",
     "proficientI": false,
     "profBonus": 0,
     "profImpBonus": 0,
@@ -149,16 +144,14 @@
       "unarm": false,
       "whip": false
     },
-    "implementGroup": {},
-    "attackForm": "@profBonus+@enhance",
-    "attackFormImp": "@profImpBonus+@enhanceImp",
+    "attackForm": "@profBonus + @enhance",
+    "attackFormImp": "@profImpBonus + @enhanceImp",
     "damageForm": "@enhance",
     "damageFormImp": "@enhanceImp",
     "critDamageForm": "(@enhance)d6",
     "critDamageFormImp": "(@enhanceImp)d6",
     "critRange": 20,
     "critRangeImp": 20,
-    "chatFlavor": "",
     "implement": {
       "holyS": false,
       "ki": false,
@@ -169,17 +162,32 @@
       "totem": false,
       "wand": true
     },
-    "weaponBaseType": "wand"
+    "weaponBaseType": "wand",
+    "identifier": "wand",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "weaponBaseTypeCustom": "",
+    "damageTypeOverride": false
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.8.5",
+    "systemVersion": "0.8.9",
     "coreVersion": "14.364",
-    "createdTime": 1686094281567,
-    "modifiedTime": 1782166065914,
+    "createdTime": 1783763186444,
+    "modifiedTime": 1783763186444,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

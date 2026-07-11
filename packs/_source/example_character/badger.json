@@ -15,11 +15,11 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.361",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.8.0",
-        "createdTime": 1778918328421,
-        "modifiedTime": 1778918328421,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763223431,
+        "modifiedTime": 1783763223431,
         "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
@@ -36,7 +36,10 @@
         "descriptionGM": {
           "value": ""
         },
-        "source": "",
+        "source": {
+          "custom": "",
+          "revision": 1
+        },
         "activation": {
           "type": "",
           "cost": 0,
@@ -216,7 +219,22 @@
         "chatFlavor": "",
         "effectHTML": false,
         "category": "other",
-        "auraSize": ""
+        "auraSize": "",
+        "identifier": "bite",
+        "macros": [
+          {
+            "type": "script",
+            "scope": "global",
+            "launchOrder": "off",
+            "command": "",
+            "author": "",
+            "autoanimationHook": "",
+            "enabled": true
+          }
+        ],
+        "damageMiss": {
+          "parts": []
+        }
       },
       "_key": "!actors.items!n1LXn8qhWKAwCErL.iTekLaBn2vKhviW3"
     },
@@ -232,11 +250,11 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.361",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.8.0",
-        "createdTime": 1778918328421,
-        "modifiedTime": 1778918328421,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763223432,
+        "modifiedTime": 1783763223432,
         "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
@@ -253,7 +271,10 @@
         "descriptionGM": {
           "value": ""
         },
-        "source": "",
+        "source": {
+          "custom": "",
+          "revision": 1
+        },
         "activation": {
           "type": "",
           "cost": 0,
@@ -421,7 +442,22 @@
         "effectHTML": false,
         "category": "other",
         "container": null,
-        "auraSize": ""
+        "auraSize": "",
+        "identifier": "rage",
+        "macros": [
+          {
+            "type": "script",
+            "scope": "global",
+            "launchOrder": "off",
+            "command": "",
+            "author": "",
+            "autoanimationHook": "",
+            "enabled": true
+          }
+        ],
+        "damageMiss": {
+          "parts": []
+        }
       },
       "_key": "!actors.items!n1LXn8qhWKAwCErL.blY52ZuPbtGqlyGb"
     },
@@ -439,7 +475,10 @@
         "descriptionGM": {
           "value": ""
         },
-        "source": "",
+        "source": {
+          "custom": "",
+          "revision": 1
+        },
         "macro": {
           "type": "script",
           "scope": "global",
@@ -487,7 +526,19 @@
           "target": null,
           "amount": null
         },
-        "category": "other"
+        "category": "other",
+        "identifier": "monster-knowledge-med",
+        "macros": [
+          {
+            "type": "script",
+            "scope": "global",
+            "launchOrder": "off",
+            "command": "",
+            "author": "",
+            "autoanimationHook": "",
+            "enabled": true
+          }
+        ]
       },
       "_id": "5893lXTphVotsLpt",
       "effects": [],
@@ -500,11 +551,11 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.361",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.8.0",
-        "createdTime": 1778918328421,
-        "modifiedTime": 1778918328421,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763223432,
+        "modifiedTime": 1783763223432,
         "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
@@ -524,7 +575,10 @@
         "descriptionGM": {
           "value": ""
         },
-        "source": "",
+        "source": {
+          "custom": "",
+          "revision": 1
+        },
         "macro": {
           "type": "script",
           "scope": "global",
@@ -572,7 +626,19 @@
           "target": null,
           "amount": null
         },
-        "category": "other"
+        "category": "other",
+        "identifier": "monster-knowledge-hard",
+        "macros": [
+          {
+            "type": "script",
+            "scope": "global",
+            "launchOrder": "off",
+            "command": "",
+            "author": "",
+            "autoanimationHook": "",
+            "enabled": true
+          }
+        ]
       },
       "_id": "pg85XAO58kzYqrI0",
       "effects": [],
@@ -585,11 +651,11 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.361",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.8.0",
-        "createdTime": 1778918328422,
-        "modifiedTime": 1778918328422,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763223432,
+        "modifiedTime": 1783763223432,
         "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
@@ -2018,11 +2084,11 @@
   },
   "_stats": {
     "duplicateSource": null,
-    "coreVersion": "14.361",
+    "coreVersion": "14.364",
     "systemId": "dnd4e",
-    "systemVersion": "0.8.0",
-    "createdTime": 1778918328420,
-    "modifiedTime": 1778918328420,
+    "systemVersion": "0.8.9",
+    "createdTime": 1783763223431,
+    "modifiedTime": 1783763223431,
     "lastModifiedBy": "dnd4ebuilder0000",
     "exportSource": null
   },

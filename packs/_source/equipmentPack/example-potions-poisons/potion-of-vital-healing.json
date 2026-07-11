@@ -7,14 +7,18 @@
   "flags": {},
   "system": {
     "description": {
-      "value": "<p><em>This foul smelling potion will quickly heal&nbsp;</em><em>serious injury and even help curtail other minor afflictions.</em></p>\n<p>&nbsp;</p>\n<p><em style=\"box-sizing: border-box; user-select: text; color: #191813;\"><span style=\"box-sizing: border-box; user-select: text; font-style: normal;\">Minor Action:&nbsp;</span></em><span style=\"box-sizing: border-box; user-select: text; color: #191813;\"><span style=\"box-sizing: border-box; user-select: text;\">Drink this potion and spend a healing surge. You do not regain hit points as normal. Instead,&nbsp;</span><em style=\"box-sizing: border-box; user-select: text; font-family: var(--font-primary); font-size: var(--font-size-14);\"><span style=\"box-sizing: border-box; user-select: text; font-style: normal;\">regain <strong>25 </strong></span><span style=\"box-sizing: border-box; user-select: text; font-style: normal;\">hit points a</span></em></span><span style=\"box-sizing: border-box; user-select: text; color: #191813; font-family: var(--font-primary); font-size: var(--font-size-14);\">nd make a saving throw against each effect on you that a save can end.</span></p>",
-      "chat": "",
-      "unidentified": ""
+      "value": "<p><em>This foul smelling potion will quickly heal serious injury and even help curtail other minor afflictions.</em></p><p><strong>Minor Action:</strong> Drink this potion and spend a healing surge. You do not regain hit points as normal. Instead, regain 25 hit points and make a saving throw against each effect on you that a save can end.</p>",
+      "chat": "This foul smelling potion will quickly heal serious injury and even help curtail other minor afflictions.",
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB p. 255",
+    "source": {
+      "custom": "PHB p. 255",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 0,
     "price": 1000,
@@ -32,14 +36,9 @@
       "value": null,
       "units": ""
     },
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": ""
-    },
+    "target": "",
     "range": {
-      "value": null,
+      "value": "",
       "long": null,
       "units": ""
     },
@@ -47,20 +46,12 @@
       "value": 1,
       "max": "1",
       "per": "charges",
-      "autoDestroy": false
+      "autoDestroy": true
     },
     "consume": {
-      "type": "attribute",
+      "type": "",
       "target": "",
-      "amount": 4
-    },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
+      "amount": "4"
     },
     "attack": {
       "shareAttackRoll": false,
@@ -75,17 +66,15 @@
       "def": "ac",
       "defBonus": 0,
       "detail": "",
-      "formula": "",
-      "damageType": {},
-      "effectType": {}
+      "formula": ""
     },
     "hit": {
       "shareDamageRoll": false,
       "damageBonusNull": false,
       "isDamage": false,
       "isHealing": true,
-      "healSurge": "",
-      "baseQuantity": 1,
+      "healSurge": "surgeCost",
+      "baseQuantity": "1",
       "baseDiceType": "Base Weapon Damage",
       "detail": "",
       "formula": "",
@@ -94,10 +83,11 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
-      "detail": ""
+      "detail": "Drink this potion and spend a healing surge. You do not regain hit points as normal. Instead, regain 25 hit points and make a saving throw against each effect on you that a save can end."
     },
     "damage": {
       "parts": []
@@ -105,39 +95,99 @@
     "damageCrit": {
       "parts": []
     },
-    "damageImp": {
-      "parts": []
-    },
     "damageCritImp": {
       "parts": []
     },
-    "damageType": {},
-    "level": 15,
+    "damageType": {
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "level": "15",
     "consumableType": "potion",
     "autoGenChatPowerCard": false,
     "useType": "item",
     "actionType": "minor",
-    "rangeType": "",
+    "rangeType": "personal",
     "autoTarget": {
       "mode": "none",
       "includeSelf": true
     },
-    "effectType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
     "keywordsCustom": "",
-    "attackBonus": null,
-    "formula": "",
-    "postEffect": false,
-    "effectHTML": false
+    "identifier": "potion-of-vital-healing",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "rangePower": "",
+    "area": "0",
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    },
+    "enhance": 0
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686093922767,
-    "modifiedTime": 1686093922767,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186442,
+    "modifiedTime": 1783763186442,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

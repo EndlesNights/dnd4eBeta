@@ -7,7 +7,7 @@
   "flags": {},
   "system": {
     "description": {
-      "value": "<p>When ever you attack an target, regardless if it is a hit or a miss, you may choose to mark that target. While a target is mark, it takes a &ndash;2 penalty to attack rolls until the end of your next turn. If a marked enemy that is adjacent to you shifts, or makes an attack that does not include you as a target, you may make a @Compendium[dnd4e.example_powers.ONy4VrAvuUYUelhR]{Basic Attack (Melee)} against that target as part of an immediate interrupt.</p>",
+      "value": "<p>When ever you attack an target, regardless if it is a hit or a miss, you may choose to mark that target. While a target is mark, it takes a –2 penalty to attack rolls until the end of your next turn. If a marked enemy that is adjacent to you shifts, or makes an attack that does not include you as a target, you may make a @UUID[Compendium.dnd4e.example_powers.Item.3sPbAZBvQCrYAByQ]{Melee Basic Attack} against that target as part of an immediate interrupt.</p>",
       "chat": "",
       "unidentified": "",
       "gm": ""
@@ -15,50 +15,88 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.76",
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
+    "source": {
+      "custom": "PHB pg.76",
+      "revision": 1
     },
     "featureType": "class",
-    "level": null,
+    "level": "",
     "requirements": "",
     "featureSource": "Fighter",
     "featureGroup": "",
     "auraSize": "",
-    "effectType": {},
-    "damageType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
+    "damageType": {
+      "damage": false,
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
     "keywordsCustom": "",
-    "class": "",
-    "hitFistLevel": 10,
-    "hitPerLevel": 5,
-    "surgePerDay": 5,
-    "skills": "<i class=\"fas fa-edit\"></i>",
-    "def": {
-      "ac": 0,
-      "fort": 0,
-      "ref": 0,
-      "wil": 0
-    },
-    "proficiencies": {
-      "weapons": [],
-      "armour": []
-    },
-    "category": "other"
+    "identifier": "fighter-challenge",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ]
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "13.348",
-    "createdTime": 1686094096249,
-    "modifiedTime": 1745817871227,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763176906,
+    "modifiedTime": 1783763176906,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

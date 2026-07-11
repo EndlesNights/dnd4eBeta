@@ -13,19 +13,23 @@
   },
   "system": {
     "description": {
-      "value": "<p><span style=\"color: #191813;\">Minimum Enhancement Bonus: +6</span></p>",
+      "value": "<p>Minimum Enhancement Bonus: +6</p>",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB p.2.14",
+    "source": {
+      "custom": "PHB p.2.14",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 50,
     "price": null,
     "attuned": false,
-    "equipped": false,
+    "equipped": true,
     "rarity": "",
     "identified": true,
     "container": null,
@@ -59,15 +63,7 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
-    "level": null,
+    "level": "",
     "armour": {
       "type": "armour",
       "subtype": "heavy",
@@ -83,8 +79,7 @@
       "skillCheckValue": -2,
       "damageRes": {
         "parts": []
-      },
-      "value": 10
+      }
     },
     "speed": {
       "value": null,
@@ -92,24 +87,34 @@
     },
     "strength": 0,
     "stealth": false,
-    "proficient": true,
-    "hp": {
-      "value": 0,
-      "max": 0,
-      "dt": null,
-      "conditions": ""
-    },
-    "armourBaseType": "plate"
+    "proficient": "auto",
+    "armourBaseType": "plate",
+    "identifier": "godplate-armor",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "armourBaseTypeCustom": "",
+    "shieldBaseType": "",
+    "shieldBaseTypeCustom": ""
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094164992,
-    "modifiedTime": 1686094164992,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186436,
+    "modifiedTime": 1783763186436,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

@@ -15,17 +15,21 @@
     "description": {
       "value": "",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB p.214",
+    "source": {
+      "custom": "PHB p.214",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 4,
     "price": 1,
     "attuned": false,
-    "equipped": false,
+    "equipped": true,
     "rarity": "",
     "identified": true,
     "container": null,
@@ -59,18 +63,10 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
-    "level": null,
+    "level": "",
     "armour": {
       "type": "armour",
-      "subtype": "cloth",
+      "subtype": "light",
       "enhance": 0,
       "ac": 0,
       "fort": 0,
@@ -83,8 +79,7 @@
       "skillCheckValue": 0,
       "damageRes": {
         "parts": []
-      },
-      "value": 10
+      }
     },
     "speed": {
       "value": null,
@@ -92,25 +87,34 @@
     },
     "strength": 0,
     "stealth": false,
-    "proficient": true,
-    "hp": {
-      "value": 0,
-      "max": 0,
-      "dt": null,
-      "conditions": ""
-    },
+    "proficient": "auto",
     "armourBaseType": "cloth",
-    "armourBaseTypeCustom": ""
+    "armourBaseTypeCustom": "",
+    "identifier": "cloth-armor-basic-clothing",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "shieldBaseType": "",
+    "shieldBaseTypeCustom": ""
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094155132,
-    "modifiedTime": 1686094155132,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186435,
+    "modifiedTime": 1783763186435,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

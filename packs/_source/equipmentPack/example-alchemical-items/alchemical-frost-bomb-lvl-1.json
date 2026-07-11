@@ -8,13 +8,17 @@
   "system": {
     "description": {
       "value": "<p><em>The contents of the flask rapidly chill when exposed to the environment, freezing whatever they are in contact with.&nbsp; </em></p>",
-      "chat": "",
-      "unidentified": ""
+      "chat": "The contents of the flask rapidly chill when exposed to the environment, freezing whatever they are in contact with.",
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "AV p. 24",
+    "source": {
+      "custom": "AV p. 24",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 0,
     "price": 20,
@@ -32,30 +36,22 @@
       "value": null,
       "units": ""
     },
-    "target": "",
+    "target": "One creature",
     "range": {
-      "value": null,
-      "long": null,
+      "value": "5",
+      "long": "10",
       "units": ""
     },
     "uses": {
       "value": 1,
       "max": "1",
       "per": "charges",
-      "autoDestroy": false
+      "autoDestroy": true
     },
     "consume": {
       "type": "",
       "target": "",
       "amount": null
-    },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
     },
     "attack": {
       "shareAttackRoll": false,
@@ -70,9 +66,7 @@
       "def": "ref",
       "defBonus": 0,
       "detail": "",
-      "formula": "4",
-      "damageType": {},
-      "effectType": {}
+      "formula": "4"
     },
     "hit": {
       "shareDamageRoll": false,
@@ -80,7 +74,7 @@
       "isDamage": true,
       "isHealing": false,
       "healSurge": "",
-      "baseQuantity": 1,
+      "baseQuantity": "1",
       "baseDiceType": "Base Weapon Damage",
       "detail": "1d10 cold damage and is slowed until the end of your next turn",
       "formula": "1d10",
@@ -89,18 +83,16 @@
     },
     "miss": {
       "detail": "Half damage and not slowed",
-      "formula": ""
+      "formula": "",
+      "halfDamage": true
     },
     "effect": {
-      "detail": "(The range is 5/10)"
+      "detail": ""
     },
     "damage": {
       "parts": []
     },
     "damageCrit": {
-      "parts": []
-    },
-    "damageImp": {
       "parts": []
     },
     "damageCritImp": {
@@ -118,9 +110,10 @@
       "poison": false,
       "psychic": false,
       "radiant": false,
-      "thunder": false
+      "thunder": false,
+      "ongoing": false
     },
-    "level": 1,
+    "level": "1",
     "consumableType": "alchemical",
     "autoGenChatPowerCard": true,
     "useType": "item",
@@ -130,22 +123,73 @@
       "mode": "none",
       "includeSelf": true
     },
-    "effectType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
     "keywordsCustom": "",
-    "formula": "",
-    "postEffect": false,
-    "effectHTML": false,
-    "rangePower": 5
+    "rangePower": "5",
+    "identifier": "alchemical-frost-bomb-lvl-1",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "area": "0",
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    },
+    "enhance": 0
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686093637397,
-    "modifiedTime": 1686093637397,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186442,
+    "modifiedTime": 1783763186442,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

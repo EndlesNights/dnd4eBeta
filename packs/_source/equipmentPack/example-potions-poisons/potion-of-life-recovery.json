@@ -7,14 +7,18 @@
   "flags": {},
   "system": {
     "description": {
-      "value": "<p><em>This fabled potion not only smells awful, and taste awful but will heals mortally wounded.</em></p>\n<p>&nbsp;</p>\n<p><span style=\"color: #191813;\">Standard Action.&nbsp;</span><span style=\"color: #191813;\">If this potion is administered to a character who died since the end of your last turn, that character is restored to life at <strong>50</strong> hit points.</span></p>\n<p><span style=\"color: #191813;\">Minor Action: If consumed by a living creature, this potion instead functions as a @Compendium[dnd4e.example_potions.X37mnx1VHwQMWGRG]{Potion of Rejuvenation}.</span></p>",
-      "chat": "",
-      "unidentified": ""
+      "value": "<p><em>This fabled potion not only smells awful, and taste awful but will heals mortally wounded.</em></p><p><strong>Standard Action:</strong> If this potion is administered to a character who died since the end of your last turn, that character is restored to life at 50 hit points.</p><p><strong>Minor Action:</strong> If consumed by a living creature, this potion instead functions as a Potion of Rejuvenation.</p>",
+      "chat": "This fabled potion not only smells awful, and taste awful but will heals mortally wounded.",
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB p. 255",
+    "source": {
+      "custom": "PHB p. 255",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 0,
     "price": 125000,
@@ -32,14 +36,9 @@
       "value": null,
       "units": ""
     },
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": ""
-    },
+    "target": "",
     "range": {
-      "value": null,
+      "value": "",
       "long": null,
       "units": ""
     },
@@ -54,14 +53,6 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
     "attack": {
       "shareAttackRoll": false,
       "isAttack": false,
@@ -75,9 +66,7 @@
       "def": "ac",
       "defBonus": 0,
       "detail": "",
-      "formula": "",
-      "damageType": {},
-      "effectType": {}
+      "formula": ""
     },
     "hit": {
       "shareDamageRoll": false,
@@ -85,7 +74,7 @@
       "isDamage": false,
       "isHealing": true,
       "healSurge": "",
-      "baseQuantity": 1,
+      "baseQuantity": "1",
       "baseDiceType": "Base Weapon Damage",
       "detail": "",
       "formula": "",
@@ -94,7 +83,8 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
       "detail": ""
@@ -105,39 +95,99 @@
     "damageCrit": {
       "parts": []
     },
-    "damageImp": {
-      "parts": []
-    },
     "damageCritImp": {
       "parts": []
     },
-    "damageType": {},
-    "level": 30,
+    "damageType": {
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "level": "30",
     "consumableType": "potion",
     "autoGenChatPowerCard": false,
     "useType": "item",
     "actionType": "standard",
-    "rangeType": "",
+    "rangeType": "melee",
     "autoTarget": {
       "mode": "none",
       "includeSelf": true
     },
-    "effectType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
     "keywordsCustom": "",
-    "attackBonus": null,
-    "formula": "",
-    "postEffect": false,
-    "effectHTML": false
+    "identifier": "potion-of-life-recovery",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "rangePower": "",
+    "area": "0",
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    },
+    "enhance": 0
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686093919874,
-    "modifiedTime": 1686093919874,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186442,
+    "modifiedTime": 1783763186442,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

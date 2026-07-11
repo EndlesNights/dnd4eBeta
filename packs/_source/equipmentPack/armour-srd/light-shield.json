@@ -15,17 +15,21 @@
     "description": {
       "value": "",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB p.2.14",
+    "source": {
+      "custom": "PHB p.2.14",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 6,
     "price": 5,
     "attuned": false,
-    "equipped": false,
+    "equipped": true,
     "rarity": "",
     "identified": true,
     "container": null,
@@ -59,15 +63,7 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
-    "level": null,
+    "level": "",
     "armour": {
       "type": "arms",
       "subtype": "light",
@@ -83,8 +79,7 @@
       "skillCheckValue": 0,
       "damageRes": {
         "parts": []
-      },
-      "value": 10
+      }
     },
     "speed": {
       "value": null,
@@ -92,24 +87,34 @@
     },
     "strength": 0,
     "stealth": false,
-    "proficient": true,
-    "hp": {
-      "value": 0,
-      "max": 0,
-      "dt": null,
-      "conditions": ""
-    },
-    "shieldBaseType": "light"
+    "proficient": "auto",
+    "shieldBaseType": "light",
+    "identifier": "light-shield",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "armourBaseType": "",
+    "armourBaseTypeCustom": "",
+    "shieldBaseTypeCustom": ""
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094168577,
-    "modifiedTime": 1686094168577,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186437,
+    "modifiedTime": 1783763186437,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

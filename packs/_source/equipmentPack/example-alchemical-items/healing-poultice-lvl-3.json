@@ -8,13 +8,17 @@
   "system": {
     "description": {
       "value": "<p><em>A collection of herbs to aid natural healing.</em></p>\n<p>&nbsp;</p>\n<p>Use before you or an ally takes a short rest. The target of the healing poultice regains an additional 2 hit points when they spend a healing surge at the end of the short rest.</p>",
-      "chat": "",
-      "unidentified": ""
+      "chat": "A collection of herbs to aid natural healing.",
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "",
+    "source": {
+      "custom": "",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 0,
     "price": 30,
@@ -34,7 +38,7 @@
     },
     "target": "",
     "range": {
-      "value": null,
+      "value": "",
       "long": null,
       "units": ""
     },
@@ -42,20 +46,12 @@
       "value": 1,
       "max": "1",
       "per": "charges",
-      "autoDestroy": false
+      "autoDestroy": true
     },
     "consume": {
       "type": "",
       "target": "",
       "amount": null
-    },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
     },
     "attack": {
       "shareAttackRoll": false,
@@ -70,9 +66,7 @@
       "def": "ac",
       "defBonus": 0,
       "detail": "",
-      "formula": "",
-      "damageType": {},
-      "effectType": {}
+      "formula": ""
     },
     "hit": {
       "shareDamageRoll": false,
@@ -80,7 +74,7 @@
       "isDamage": false,
       "isHealing": false,
       "healSurge": "",
-      "baseQuantity": 1,
+      "baseQuantity": "1",
       "baseDiceType": "Base Weapon Damage",
       "detail": "",
       "formula": "",
@@ -89,10 +83,11 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
-      "detail": ""
+      "detail": "Use before you or an ally takes a short rest. The target of the healing poultice regains an additional 2 hit points when they spend a healing surge at the end of the short rest."
     },
     "damage": {
       "parts": []
@@ -100,38 +95,99 @@
     "damageCrit": {
       "parts": []
     },
-    "damageImp": {
-      "parts": []
-    },
     "damageCritImp": {
       "parts": []
     },
-    "damageType": {},
-    "level": 3,
+    "damageType": {
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "level": "3",
     "consumableType": "potion",
     "autoGenChatPowerCard": false,
     "useType": "item",
     "actionType": "none",
-    "rangeType": "",
+    "rangeType": "special",
     "autoTarget": {
       "mode": "none",
       "includeSelf": true
     },
-    "effectType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
     "keywordsCustom": "",
-    "formula": "",
-    "postEffect": false,
-    "effectHTML": false
+    "identifier": "healing-poultice-lvl-3",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "rangePower": "",
+    "area": "0",
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    },
+    "enhance": 0
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686093640205,
-    "modifiedTime": 1686093640205,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186442,
+    "modifiedTime": 1783763186442,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

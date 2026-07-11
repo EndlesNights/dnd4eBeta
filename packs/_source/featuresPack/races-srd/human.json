@@ -30,11 +30,11 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "14.360",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.5",
-        "createdTime": 1776987077930,
-        "modifiedTime": 1776987078677,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176920,
+        "modifiedTime": 1783763176920,
         "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
@@ -48,21 +48,31 @@
             "key": "system.defences.fort.race",
             "value": 1,
             "priority": null,
-            "type": "upgrade"
+            "type": "upgrade",
+            "phase": "initial"
           },
           {
             "key": "system.defences.ref.race",
             "value": 1,
             "priority": null,
-            "type": "upgrade"
+            "type": "upgrade",
+            "phase": "initial"
           },
           {
             "key": "system.defences.wil.race",
             "value": 1,
             "priority": null,
-            "type": "upgrade"
+            "type": "upgrade",
+            "phase": "initial"
           }
-        ]
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "sort": 0,
       "start": null,
@@ -83,17 +93,12 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.46",
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
+    "source": {
+      "custom": "PHB pg.46",
+      "revision": 1
     },
     "featureType": "race",
-    "level": null,
+    "level": "",
     "requirements": "",
     "featureSource": "Human",
     "featureGroup": "",
@@ -101,47 +106,28 @@
     "effectType": {},
     "damageType": {},
     "keywordsCustom": "",
-    "activation": {
-      "type": "",
-      "cost": 0,
-      "condition": ""
-    },
-    "duration": {
-      "value": null,
-      "units": ""
-    },
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": ""
-    },
-    "range": {
-      "value": null,
-      "long": null,
-      "units": ""
-    },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
-    "consume": {
-      "type": "",
-      "target": null,
-      "amount": null
-    },
-    "category": "other"
+    "identifier": "human",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ]
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "14.359",
-    "createdTime": 1686094312946,
-    "modifiedTime": 1745817871227,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763176919,
+    "modifiedTime": 1783763176919,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

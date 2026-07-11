@@ -8,11 +8,11 @@
   "sort": 200000,
   "flags": {},
   "_stats": {
-    "coreVersion": "13.348",
+    "coreVersion": "14.364",
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "createdTime": null,
-    "modifiedTime": 1745816275190,
+    "systemVersion": "0.8.9",
+    "createdTime": 1783763194490,
+    "modifiedTime": 1783763194490,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
@@ -30,7 +30,10 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "Martial Power, pg. 7",
+    "source": {
+      "custom": "Martial Power, pg. 7",
+      "revision": 1
+    },
     "activation": {
       "type": "",
       "cost": 0,
@@ -56,14 +59,6 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
     "attack": {
       "shareAttackRoll": false,
       "isAttack": true,
@@ -77,9 +72,7 @@
       "def": "ac",
       "defBonus": 0,
       "detail": "",
-      "formula": "@wepAttack+@powerMod+@lvhalf",
-      "damageType": {},
-      "effectType": {}
+      "formula": "@wepAttack + @powerMod + @lvhalf"
     },
     "hit": {
       "shareDamageRoll": false,
@@ -96,7 +89,8 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
       "detail": ""
@@ -105,9 +99,6 @@
       "parts": []
     },
     "damageCrit": {
-      "parts": []
-    },
-    "damageImp": {
       "parts": []
     },
     "damageCritImp": {
@@ -134,7 +125,7 @@
     "powersource": "martial",
     "secondPowersource": "",
     "powersourceName": "",
-    "subName": "Fighter",
+    "subName": "Fighter Attack 1",
     "prepared": true,
     "powerType": "class",
     "powerSubtype": "attack",
@@ -150,8 +141,8 @@
     },
     "rangeTextShort": "",
     "rangeText": "",
-    "rangePower": null,
-    "area": 0,
+    "rangePower": "",
+    "area": "0",
     "rechargeRoll": "",
     "rechargeCondition": "",
     "damageShare": false,
@@ -207,7 +198,22 @@
     "keywordsCustom": "",
     "chatFlavor": "",
     "effectHTML": false,
-    "category": "other"
+    "identifier": "dual-wielding-strike-secondary",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    }
   },
   "_key": "!items!cWe2mbmhvhVVYC3T"
 }

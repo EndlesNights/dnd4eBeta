@@ -13,14 +13,18 @@
   },
   "system": {
     "description": {
-      "value": "<p>Elegent cloth designed to signify wealth and status in society.</p>",
+      "value": "<p>Elegent clothes designed to signify wealth and status in society.</p>",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.222",
+    "source": {
+      "custom": "PHB pg.222",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 6,
     "price": 30,
@@ -51,7 +55,7 @@
     },
     "uses": {
       "value": 0,
-      "max": 0,
+      "max": "0",
       "per": ""
     },
     "consume": {
@@ -59,19 +63,11 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
     "level": "",
     "armour": {
       "type": "armour",
-      "subtype": "cloth",
-      "enhance": 0,
+      "subtype": "light",
+      "enhance": null,
       "ac": 0,
       "fort": 0,
       "ref": 0,
@@ -83,8 +79,7 @@
       "skillCheckValue": 0,
       "damageRes": {
         "parts": []
-      },
-      "value": 10
+      }
     },
     "speed": {
       "value": null,
@@ -92,23 +87,34 @@
     },
     "strength": 0,
     "stealth": false,
-    "proficient": true,
-    "hp": {
-      "value": 0,
-      "max": 0,
-      "dt": null,
-      "conditions": ""
-    }
+    "proficient": "auto",
+    "identifier": "fine-clothing",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "armourBaseType": "cloth",
+    "armourBaseTypeCustom": "",
+    "shieldBaseType": "",
+    "shieldBaseTypeCustom": ""
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094243891,
-    "modifiedTime": 1686094243891,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186438,
+    "modifiedTime": 1783763186438,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

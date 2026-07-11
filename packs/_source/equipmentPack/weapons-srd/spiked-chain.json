@@ -14,17 +14,21 @@
     "description": {
       "value": "",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB p.218",
+    "source": {
+      "custom": "PHB p.218",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 10,
     "price": 30,
     "attuned": false,
-    "equipped": false,
+    "equipped": true,
     "rarity": "",
     "identified": true,
     "container": null,
@@ -45,8 +49,7 @@
     },
     "range": {
       "value": 5,
-      "long": 10,
-      "units": ""
+      "long": 10
     },
     "uses": {
       "value": 0,
@@ -67,15 +70,7 @@
       "dt": null,
       "conditions": ""
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
-    "level": null,
+    "level": "",
     "weaponType": "superiorM",
     "weaponHand": "hTwo",
     "properties": {
@@ -94,9 +89,11 @@
       "thv": false,
       "tlg": false,
       "two": true,
-      "ver": false
+      "ver": false,
+      "mou": false,
+      "sto": false
     },
-    "proficient": true,
+    "proficient": "auto",
     "proficientI": false,
     "profBonus": 3,
     "profImpBonus": 0,
@@ -104,28 +101,24 @@
     "isRanged": false,
     "damageDice": {
       "parts": [
-        [
-          "2",
-          "4",
-          ""
-        ]
+        {
+          "numDice": "2",
+          "numFaces": "4",
+          "modifier": ""
+        }
       ]
     },
     "damage": {
-      "parts": [],
-      "versatile": ""
+      "parts": []
     },
     "damageCrit": {
-      "parts": [],
-      "versatile": ""
+      "parts": []
     },
     "damageImp": {
-      "parts": [],
-      "versatile": ""
+      "parts": []
     },
     "damageCritImp": {
-      "parts": [],
-      "versatile": ""
+      "parts": []
     },
     "damageType": {
       "physical": true,
@@ -162,38 +155,50 @@
       "garrote": false,
       "whip": false
     },
-    "implementGroup": {},
-    "attackForm": "@profBonus+@enhance",
-    "attackFormImp": "@profImpBonus+@enhanceImp",
+    "attackForm": "@profBonus + @enhance",
+    "attackFormImp": "@profImpBonus + @enhanceImp",
     "damageForm": "@enhance",
     "damageFormImp": "@enhanceImp",
     "critDamageForm": "(@enhance)d6",
     "critDamageFormImp": "(@enhanceImp)d6",
     "critRange": 20,
     "critRangeImp": 20,
-    "ability": null,
-    "actionType": null,
-    "attackBonus": 0,
-    "chatFlavor": "",
-    "critical": null,
-    "formula": "",
-    "save": {
-      "ability": "",
-      "dc": null,
-      "scaling": "spell"
-    },
     "weaponBaseType": "spikeChain",
-    "damageTypeWeapon": false
+    "identifier": "spiked-chain",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "weaponBaseTypeCustom": "",
+    "damageTypeOverride": false,
+    "implement": {
+      "holyS": false,
+      "ki": false,
+      "orb": false,
+      "rod": false,
+      "staff": false,
+      "tome": false,
+      "totem": false,
+      "wand": false
+    }
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094385987,
-    "modifiedTime": 1686094385987,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186448,
+    "modifiedTime": 1783763186448,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

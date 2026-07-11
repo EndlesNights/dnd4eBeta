@@ -44,9 +44,9 @@
         }
       },
       "duration": {
-        "value": null,
+        "value": 0,
         "units": "seconds",
-        "expiry": null,
+        "expiry": "save",
         "expired": false
       },
       "disabled": false,
@@ -56,7 +56,25 @@
       "_id": "ITHl26Owv21S10Rf",
       "type": "base",
       "system": {
-        "changes": []
+        "changes": [],
+        "durationType": "saveEnd",
+        "powerEffectType": "hit",
+        "dots": [
+          {
+            "amount": "5",
+            "types": [
+              "fire"
+            ]
+          }
+        ],
+        "saveDC": 10,
+        "equippedRec": false,
+        "keywords": [
+          "fire",
+          "fire"
+        ],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "description": "",
       "tint": "#ffffff",
@@ -65,11 +83,11 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.360",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": 1776986599634,
-        "modifiedTime": 1776986602288,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763194493,
+        "modifiedTime": 1783763194493,
         "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
@@ -83,11 +101,11 @@
   "sort": 1300000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.360",
+    "coreVersion": "14.364",
     "systemId": "dnd4e",
-    "systemVersion": "0.8.0",
-    "createdTime": 1776986353176,
-    "modifiedTime": 1776986354159,
+    "systemVersion": "0.8.9",
+    "createdTime": 1783763194493,
+    "modifiedTime": 1783763194493,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
@@ -97,15 +115,18 @@
   },
   "system": {
     "description": {
-      "value": "<p>This power is totally homebrew, it demonstrates implement area effect powers, and how to use an effect that gives a conditional bonus.&nbsp; (It is effected by @Compendium[dnd4e.example_feats.i8wF69SvMbVUeD9M]{Flames of the 9 Hells})</p>\n<p>Also that this text description will not show, as a flavour text was explicitly specified.</p>",
-      "chat": "",
+      "value": "<p>This power is totally homebrew, it demonstrates implement area effect powers, and how to use an effect that gives a conditional bonus. (It is effected by @Compendium[dnd4e.example_feats.i8wF69SvMbVUeD9M]{Flames of the 9 Hells})</p><p>Also that this text description will not show, as a flavour text was explicitly specified.</p>",
+      "chat": "Eternity of being a punching bag has given Steve a fiery temper.",
       "unidentified": "",
       "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "Homebrew",
+    "source": {
+      "custom": "Homebrew",
+      "revision": 1
+    },
     "activation": {
       "type": "",
       "cost": 0,
@@ -131,14 +152,6 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
     "attack": {
       "shareAttackRoll": false,
       "isAttack": true,
@@ -152,9 +165,7 @@
       "def": "ac",
       "defBonus": 0,
       "detail": "",
-      "formula": "@wepAttack + @powerMod + @lvhalf",
-      "damageType": {},
-      "effectType": {}
+      "formula": "@wepAttack + @powerMod + @lvhalf"
     },
     "hit": {
       "shareDamageRoll": false,
@@ -164,14 +175,15 @@
       "healSurge": "",
       "baseQuantity": "1",
       "baseDiceType": "d8",
-      "detail": "1d8 + @intMod Fire damage and the target takes ongoing 5 Fire Damage (save ends).",
+      "detail": "1d8 + @intMod Fire damage and ongoing 5 Fire Damage (save ends).",
       "formula": "@powBase + @powerMod + @wepDamage",
       "critFormula": "@powMax + @powerMod + @wepDamage + @wepCritBonus",
       "healFormula": ""
     },
     "miss": {
       "detail": "Half Damage and no ongoing damage",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
       "detail": ""
@@ -180,9 +192,6 @@
       "parts": []
     },
     "damageCrit": {
-      "parts": []
-    },
-    "damageImp": {
       "parts": []
     },
     "damageCritImp": {
@@ -209,7 +218,7 @@
     "powersource": "arcane",
     "secondPowersource": "",
     "powersourceName": "",
-    "subName": "",
+    "subName": "Tiefling Racial Attack 1",
     "prepared": true,
     "powerType": "race",
     "powerSubtype": "attack",
@@ -225,7 +234,7 @@
     },
     "rangeTextShort": "",
     "rangeText": "",
-    "rangePower": 10,
+    "rangePower": "10",
     "area": "1",
     "rechargeRoll": "",
     "rechargeCondition": "",
@@ -280,10 +289,24 @@
       "shadow": false
     },
     "keywordsCustom": "",
-    "type": "encounter",
     "effectHTML": false,
     "chatFlavor": "Eternity of being a punching bag has given Steve a fiery temper.",
-    "category": "other"
+    "identifier": "fiery-wrath",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    }
   },
   "_key": "!items!bSUhfYLTUAJjz9Fi"
 }

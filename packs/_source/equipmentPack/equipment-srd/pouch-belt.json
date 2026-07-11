@@ -9,12 +9,16 @@
     "description": {
       "value": "<p>A small, but easily accessible pouch perfect for storing items that you use regularly or need in a quick pinch. It is a minor action to retrieve items stored within belt pouches.</p>",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.222",
+    "source": {
+      "custom": "PHB pg.222",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 0.5,
     "price": 1,
@@ -45,21 +49,13 @@
     },
     "uses": {
       "value": 0,
-      "max": 0,
+      "max": "0",
       "per": null
     },
     "consume": {
       "type": "",
       "target": null,
       "amount": null
-    },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
     },
     "level": "",
     "capacity": {
@@ -80,17 +76,30 @@
       "rh": 0,
       "si": 0,
       "rs": 0
-    }
+    },
+    "identifier": "pouch-belt",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": []
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686094261809,
-    "modifiedTime": 1686094261809,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186440,
+    "modifiedTime": 1783763186440,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

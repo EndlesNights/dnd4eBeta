@@ -1,0 +1,145 @@
+{
+  "name": "Master of None",
+  "type": "feature",
+  "system": {
+    "description": {
+      "value": "<p>Jack of all trades, master of none. You gain a +2 feat bonus to untrained skill.</p>",
+      "chat": "",
+      "unidentified": "",
+      "gm": ""
+    },
+    "descriptionGM": {
+      "value": ""
+    },
+    "source": {
+      "custom": "",
+      "revision": 1
+    },
+    "featureType": "feat",
+    "level": "",
+    "requirements": "",
+    "featureSource": "",
+    "featureGroup": "",
+    "auraSize": "",
+    "effectType": {},
+    "damageType": {},
+    "keywordsCustom": "",
+    "identifier": "master-of-none",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ]
+  },
+  "_id": "hzWV9WD9gjqAlpqW",
+  "img": "icons/skills/social/diplomacy-writing-letter.webp",
+  "effects": [
+    {
+      "name": "Master of None",
+      "origin": "Actor.F14YjjqasLMvk3ik.Item.MX3CLN3luwWujrfY",
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "disabled": false,
+      "flags": {
+        "dnd4e": {
+          "effectData": {
+            "durationTurnInit": null,
+            "startTurnInit": null
+          }
+        },
+        "ActiveAuras": {
+          "isAura": false,
+          "aura": "None",
+          "nameOverride": "",
+          "radius": "",
+          "alignment": "",
+          "type": "",
+          "customCheck": "",
+          "ignoreSelf": false,
+          "height": false,
+          "hidden": false,
+          "displayTemp": false,
+          "hostile": false,
+          "onlyOnce": false,
+          "wallsBlock": "system",
+          "statuses": []
+        }
+      },
+      "_id": "QjlQ9LuwaNwOcKec",
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "dnd4e",
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176936,
+        "modifiedTime": 1783763176936,
+        "lastModifiedBy": "dnd4ebuilder0000",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/skills/social/diplomacy-writing-letter.webp",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.skillTraining.untrained.feat",
+            "value": 2,
+            "priority": null,
+            "type": "upgrade",
+            "phase": "initial"
+          }
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
+      },
+      "sort": 0,
+      "start": {
+        "combat": null,
+        "round": null,
+        "time": 0,
+        "turn": null,
+        "combatant": null,
+        "initiative": null
+      },
+      "showIcon": 1,
+      "folder": null,
+      "_key": "!items.effects!hzWV9WD9gjqAlpqW.QjlQ9LuwaNwOcKec"
+    }
+  ],
+  "folder": "3WBJGLs24aDlvlbA",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "dnd4e",
+    "systemVersion": "0.8.9",
+    "createdTime": 1783763176936,
+    "modifiedTime": 1783763176936,
+    "lastModifiedBy": "dnd4ebuilder0000",
+    "exportSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_key": "!items!hzWV9WD9gjqAlpqW"
+}

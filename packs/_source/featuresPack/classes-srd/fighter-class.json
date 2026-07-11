@@ -30,11 +30,11 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "14.360",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": 1776986984200,
-        "modifiedTime": 1776986984858,
+        "coreVersion": "14.364",
+        "systemId": "dnd4e",
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176912,
+        "modifiedTime": 1783763176912,
         "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
@@ -48,99 +48,122 @@
             "key": "system.attributes.hp.starting",
             "value": 15,
             "priority": null,
-            "type": "override"
+            "type": "override",
+            "phase": "initial"
           },
           {
             "key": "system.attributes.hp.perlevel",
             "value": 6,
             "priority": null,
-            "type": "override"
+            "type": "override",
+            "phase": "initial"
           },
           {
             "key": "system.details.surges.max",
             "value": "9+@conMod",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.attributes.hp.autototal",
             "value": true,
             "priority": null,
-            "type": "override"
+            "type": "override",
+            "phase": "initial"
           },
           {
             "key": "system.defences.fort.value",
             "value": 2,
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.armourProf.value",
             "value": "cloth",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.armourProf.value",
             "value": "leather",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.armourProf.value",
             "value": "hide",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.armourProf.value",
             "value": "chain",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.armourProf.value",
             "value": "scale",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.armourProf.value",
             "value": "light",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.armourProf.value",
             "value": "heavy",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.weaponProf.value",
             "value": "simpleM",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.weaponProf.value",
             "value": "militaryM",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.weaponProf.value",
             "value": "simpleR",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.weaponProf.value",
             "value": "militaryR",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           }
-        ]
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "sort": 0,
       "start": null,
@@ -161,17 +184,12 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.75",
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
+    "source": {
+      "custom": "PHB pg.75",
+      "revision": 1
     },
     "featureType": "class",
-    "level": null,
+    "level": "",
     "requirements": "",
     "featureSource": "Fighter",
     "featureGroup": "",
@@ -226,32 +244,28 @@
       "thunder": false
     },
     "keywordsCustom": "",
-    "class": "",
-    "hitFistLevel": 15,
-    "hitPerLevel": 6,
-    "surgePerDay": 9,
-    "skills": "<i class=\"fas fa-edit\"></i>",
-    "def": {
-      "ac": 0,
-      "fort": 0,
-      "ref": 0,
-      "wil": 0
-    },
-    "proficiencies": {
-      "weapons": [],
-      "armour": []
-    },
-    "category": "other"
+    "identifier": "fighter-class",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ]
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.8.0",
-    "coreVersion": "14.361",
-    "createdTime": 1686094207414,
-    "modifiedTime": 1778705613627,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763176911,
+    "modifiedTime": 1783763176911,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
