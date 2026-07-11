@@ -262,8 +262,10 @@
 "DND4E.ConsumableAmmunition": "Ammunition",
 "DND4E.ConsumableFood": "Food",
 "DND4E.ConsumableLastChargeWarn": "This is the last charge of this unit and consuming it will also reduce the item's quantity by 1",
+"DND4E.ConsumableLoaded": "Loaded",
 "DND4E.ConsumablePoison": "Poison",
 "DND4E.ConsumablePotion": "Potion",
+"DND4E.ConsumablePrepared": "Prepared",
 "DND4E.ConsumableScroll": "Scroll",
 "DND4E.ConsumableTrinket": "Trinket",
 "DND4E.ConsumableUnitWarn": "units remaining",
@@ -1393,23 +1395,16 @@
 },
 
 "DND4E.MACROS": {
-    "ACTIVATION": {
-        "Label": "Activation",
-        "Both": "Before AND After Item Use",
-        "Manual": "Manual",
-        "Pre": "Before Item Use",
-        "Post": "After Item Use",
-        "Sub": "Replace Item Use",
-        "HookComBon": {
-        "Attacker": "Hook: Evaluate Common Attack Bonuses - Attacker",
-            "Target": "Hook: Evaluate Common Attack Bonuses - Target"
-        },
-        "HookPreAttack": {
-            "Attacker": "Hook: Pre Attack Roll - Attacker",
-            "Target": "Hook: Pre Attack Roll - Target"
-        },
-        "HookEvalDef": "Hook: Evaluate Target Defence"
-    }
+  "ACTIVATION": {
+    "Label": "Activation",
+    "Both": "Before AND After Item Use",
+    "Manual": "Manual",
+    "Pre": "Before Item Use",
+    "Post": "After Item Use",
+    "Sub": "Replace Item Use",
+    "HookComBon": "Hook: Evaluate Common Attack Bonuses",
+    "HookPreAttack": "Hook: Pre Attack Roll"
+  }
 },
 
 "DND4E.Movement":{
@@ -1714,7 +1709,7 @@
 "EFFECTDESC.defUp": "The creature has a temporary bonus to one or more defences.",
 "EFFECTDESC.defDown": "The creature has a temporary penalty to one or more defences.",
 "EFFECTDESC.regen": "At the start of the creature's turn, if it has at least 1 hit point, it regains the specified number of hit points.",
-"EFFECTDESC.ammoCount": "The creature is using special ammunitionor equipment.",
+"EFFECTDESC.ammoCount": "The creature is using special ammunition or equipment.",
 "EFFECTDESC.curse": "The creature is subject to a Warlock's Curse.",
 "EFFECTDESC.oath": "The creature is subject to an Oath of Enmity.",
 "EFFECTDESC.huntermark": "The creature is subject to a Hunter's Mark.",
@@ -1817,10 +1812,12 @@
 	"RollVariants": "Variant Roll Modes",
 	"RollVariantsTip": "Adds extra context menu options to roll this attack in a special way. When rolled this way, the attack will gain the specified property and activate any associated bonuses/penalties.",
 	"SearchFor": "Search for {term}",
-	"SecondaryCritForm": "Secondary Critical Damage Rolls",
-	"SecondaryCritTip": "Extra damage added here will be included when rolling critical damage",
-	"SecondaryDamageForm": "Secondary Damage Rolls",
-	"SecondaryDamageTip": "Extra damage added here will be included when rolling normal damage",
+	"SecondaryCritForm": "Added Critical Damage Rolls",
+	"SecondaryCritTip": "Included as additional/extra damage when rolling critical damage",
+	"SecondaryDamageForm": "Added Damage Rolls",
+	"SecondaryDamageTip": "Included as additional/extra when rolling normal damage",
+	"SecondaryMissForm": "Added Miss Damage Rolls",
+	"SecondaryMissTip": "Included as additional/extra damage when rolling miss damage",
 	"ShowImage": "Show image",
 	"SortBy": "Sort By",
 	"SpecialFields": "Special Field(s)",
@@ -1832,6 +1829,14 @@
 	"TriggerText": "Trigger Text",
 	"UnknownCondition.Label": "Unknown value",
 	"UnknownCondition.Tip": "No match was found for this id in the current status conditions configuration.",
+  "NOTIFICATIONS": {
+    "ammoInsufficient": "The {resourceType} requires {quantity} of '{target}' but the character only has {ammoCount}",
+    "ammoMissing": "The {resourceType} requires ammunition, but none could be found on the character",
+    "ammoUncounted": "The {resourceType} requires ammunition, but the quantity ('{quantity}') was empty",
+    "ammoUntyped": "The {resourceType} requires ammunition, but the type ('{target}') was empty",
+    "cantRoll": "You may not make an Attack Roll with this Item.",
+    "cantDamage": "You may not make a Damage Roll with this Item."
+  },
 	"Yes": "Yes"
 },
 
