@@ -9,17 +9,21 @@
     "description": {
       "value": "<p>Good for walking, casting spells, and bonking skulls</p>",
       "chat": "",
-      "unidentified": ""
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.222",
+    "source": {
+      "custom": "PHB pg.222",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 4,
     "price": 5,
     "attuned": false,
-    "equipped": false,
+    "equipped": true,
     "rarity": "",
     "identified": true,
     "container": null,
@@ -40,8 +44,7 @@
     },
     "range": {
       "value": 5,
-      "long": 10,
-      "units": ""
+      "long": 10
     },
     "uses": {
       "value": 0,
@@ -61,14 +64,6 @@
       "max": 0,
       "dt": null,
       "conditions": ""
-    },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
     },
     "level": "",
     "weaponType": "simpleM",
@@ -93,7 +88,7 @@
       "mou": false,
       "sto": false
     },
-    "proficient": true,
+    "proficient": "auto",
     "proficientI": true,
     "profBonus": 2,
     "profImpBonus": 0,
@@ -101,11 +96,11 @@
     "isRanged": false,
     "damageDice": {
       "parts": [
-        [
-          "1",
-          "8",
-          ""
-        ]
+        {
+          "numDice": "1",
+          "numFaces": "8",
+          "modifier": ""
+        }
       ]
     },
     "damage": {
@@ -155,16 +150,14 @@
       "unarm": false,
       "whip": false
     },
-    "implementGroup": {},
-    "attackForm": "@profBonus+@enhance",
-    "attackFormImp": "@profImpBonus+@enhanceImp",
+    "attackForm": "@profBonus + @enhance",
+    "attackFormImp": "@profImpBonus + @enhanceImp",
     "damageForm": "@enhance",
     "damageFormImp": "@enhanceImp",
     "critDamageForm": "(@enhance)d6",
     "critDamageFormImp": "(@enhanceImp)d6",
     "critRange": 20,
     "critRangeImp": 20,
-    "chatFlavor": "",
     "implement": {
       "holyS": false,
       "ki": false,
@@ -175,17 +168,32 @@
       "totem": false,
       "wand": false
     },
-    "weaponBaseType": "quarterstaff"
+    "weaponBaseType": "quarterstaff",
+    "identifier": "staff",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "weaponBaseTypeCustom": "",
+    "damageTypeOverride": false
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.8.5",
+    "systemVersion": "0.8.9",
     "coreVersion": "14.364",
-    "createdTime": 1686094274461,
-    "modifiedTime": 1782166049486,
+    "createdTime": 1783763186443,
+    "modifiedTime": 1783763186443,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
