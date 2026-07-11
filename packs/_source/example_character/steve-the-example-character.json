@@ -456,12 +456,7 @@
           "detail": ""
         },
         "damage": {
-          "parts": [
-            [
-              "4d4",
-              "healing"
-            ]
-          ]
+          "parts": []
         },
         "damageCrit": {
           "parts": []
