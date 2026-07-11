@@ -298,7 +298,7 @@
 {{!--Secondary Damage Instances --}}
 <fieldset>
   <legend>{{ localize 'DND4EUI.SecondaryDamageForm' }}</legend>
-  <label class="damage-header">{{ localize 'DND4EUI.SecondaryDamageTip' }} <a class="damage-control" data-action="addDamage"><i class="fas fa-plus"></i></a></label>
+  <label class="damage-header hint">{{ localize 'DND4EUI.SecondaryDamageTip' }} <a class="damage-control" data-action="addDamage"><i class="fas fa-plus"></i></a></label>
   <ol class="damage-parts form-group">
     {{#each system.damage.parts as |part i| }}
     <li class="damage-part flexrow" data-damage-part="{{i}}">
@@ -321,7 +321,7 @@
 {{!-- Secondary Critical Damage --}}
 <fieldset>
   <legend>{{ localize 'DND4EUI.SecondaryCritForm' }}</legend>
-  <label class="damage-header">{{ localize 'DND4EUI.SecondaryCritTip' }} <a class="damage-control" data-action="addCriticalDamage"><i class="fas fa-plus"></i></a></label>
+  <label class="damage-header hint">{{ localize 'DND4EUI.SecondaryCritTip' }} <a class="damage-control" data-action="addCriticalDamage"><i class="fas fa-plus"></i></a></label>
   <ol class="damage-parts form-group">
     {{#each system.damageCrit.parts as |part i| }}
     <li class="damage-part flexrow" data-damage-part="{{i}}">
@@ -491,7 +491,7 @@
   </div>
 </div>
 
-{{#if system.attack.isAttack}}	
+{{#if system.attack.isAttack}}
 {{!-- Attack Text --}}
 <div class="form-group">
   <label>{{ localize "DND4EUI.AttackDetailsText" }} <i data-tooltip="{{ localize 'DND4EUI.AttackDetailsTextHint' }}" class="fa-solid fa-circle-question"></i></label>
@@ -515,7 +515,7 @@
 <fieldset>
   <legend>{{ localize "DND4EUI.EffectDetailsText" }}</legend>
   <div class="form-group right">
-    <label class="label long">{{ localize "DND4EUI.EffectHTMLInput" }} <span class="label-hint">({{ localize "DND4EUI.EffectHTMLTip" }})</span></label>
+    <label class="label long">{{ localize "DND4EUI.EffectHTMLInput" }} <span class="label-hint hint">({{ localize "DND4EUI.EffectHTMLTip" }})</span></label>
     <input type="checkbox" name="system.effectHTML" data-dtype="Boolean" {{checked system.effectHTML}} {{ localize "DND4EUI.EffectHTMLInput" }}></span>
   </div>
   {{#if system.effectHTML}}
