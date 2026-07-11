@@ -1777,6 +1777,18 @@ export function computeFlankingStatus(token, target) {
 }
 
 /**
+ * Computes the flanked status for a token
+ * @param {Token4e} token                   Token to check
+ * @returns {boolean}                       Whether or not the token is flanked
+ */
+export function computeFlankedStatus(token) {
+	for (const potentialAttacker of findNearby(-1, token, (canvas?.dimensions?.distance ?? 1))) {
+		if (computeFlankingStatus(potentialAttacker, token)) return true;
+	}
+	return false;
+}
+
+/**
  * Convenience method to get the unique actors of an array of tokens.
  * @param {(Token4e | TokenDocument4e)[]} [tokens] Defaults to canvas.tokens.controlled.
  * @returns {Set<Actor4e>}    The set of actors of the controlled tokens.
