@@ -2066,7 +2066,7 @@ export default class Item4e extends Item {
 			highlightMode: "coverage",
 			displayMeasurements: true,
 			restriction: { enabled: true },
-			visibility: CONST.REGION_VISIBILITY.OBSERVER,
+			visibility: CONST.REGION_VISIBILITY.ALWAYS,
 			ownership: { [game.user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER },
 			flags: {
 				["dnd4e"]: {
