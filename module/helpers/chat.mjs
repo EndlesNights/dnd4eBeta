@@ -259,7 +259,7 @@ export function chatMessageListener(html) {
 export const clickTokenActorName = function(event) {
 	event.preventDefault();
 
-	const tokenID = event.currentTarget.getAttribute("data-target-id") || event.currentTarget.getAttribute("target-id"); //second one was for legasy where improper typing is used, will get rid of in a month or so
+	const tokenID = event.target.getAttribute("data-target-id");
 	if (!tokenID) return;
 
 	const token = canvas.tokens.get(tokenID);
@@ -272,7 +272,6 @@ export const clickTokenActorName = function(event) {
 	}
 
 	token.control({ releaseOthers: false });
-	return canvas.animatePan(token.center);
 };
 
 //When hover over chat messages with "Target" from attack rolls, will highlight the token whose name is being hovered
@@ -537,7 +536,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 		});
 	});
 
-	html.querySelectorAll(".dice-roll").forEach(el => el.addEventListener("click", _onClickDiceRoll.bind(this)));
+	html.querySelectorAll("[data-action='expandRoll']").forEach(el => el.addEventListener("click", _onClickDiceRoll.bind(this)));
 });
 
 /**
