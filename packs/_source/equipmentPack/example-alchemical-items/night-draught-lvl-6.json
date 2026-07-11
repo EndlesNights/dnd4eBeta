@@ -8,13 +8,17 @@
   "system": {
     "description": {
       "value": "<p><em>This poison is odorless and tasteless, making it a favourite of thieves and assassins everywhere.</em></p>\n<p>&nbsp;</p>\n<p>You apply the night draught to an item of food or drink you are holding or that is adjacent to you. A creature that consumes the food or drink is subject to it's attack 1 minute later.</p>",
-      "chat": "",
-      "unidentified": ""
+      "chat": "This poison is odorless and tasteless, making it a favourite of thieves and assassins everywhere.",
+      "unidentified": "",
+      "gm": ""
     },
     "descriptionGM": {
       "value": ""
     },
-    "source": "AV p. 28",
+    "source": {
+      "custom": "AV p. 28",
+      "revision": 1
+    },
     "quantity": 1,
     "weight": 0,
     "price": 150,
@@ -42,20 +46,12 @@
       "value": 1,
       "max": "1",
       "per": "charges",
-      "autoDestroy": false
+      "autoDestroy": true
     },
     "consume": {
       "type": "",
       "target": "",
       "amount": null
-    },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
     },
     "attack": {
       "shareAttackRoll": false,
@@ -70,9 +66,7 @@
       "def": "fort",
       "defBonus": 0,
       "detail": "",
-      "formula": "12",
-      "damageType": {},
-      "effectType": {}
+      "formula": "12"
     },
     "hit": {
       "shareDamageRoll": false,
@@ -80,7 +74,7 @@
       "isDamage": false,
       "isHealing": false,
       "healSurge": "",
-      "baseQuantity": 1,
+      "baseQuantity": "1",
       "baseDiceType": "Base Weapon Damage",
       "detail": "The creature falls unconscious for 1 hour, or until it is subject to an attack or to violent motion.",
       "formula": "",
@@ -89,10 +83,11 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
-      "detail": ""
+      "detail": "You apply the night draught to an item of food or drink you are holding or that is adjacent to you. A creature that consumes the food or drink is subject to it's attack 1 minute later."
     },
     "damage": {
       "parts": []
@@ -100,14 +95,23 @@
     "damageCrit": {
       "parts": []
     },
-    "damageImp": {
-      "parts": []
-    },
     "damageCritImp": {
       "parts": []
     },
-    "damageType": {},
-    "level": 6,
+    "damageType": {
+      "acid": false,
+      "cold": false,
+      "fire": false,
+      "force": false,
+      "lightning": false,
+      "necrotic": false,
+      "physical": false,
+      "poison": false,
+      "psychic": false,
+      "radiant": false,
+      "thunder": false
+    },
+    "level": "6",
     "consumableType": "poison",
     "autoGenChatPowerCard": true,
     "useType": "item",
@@ -117,22 +121,73 @@
       "mode": "none",
       "includeSelf": true
     },
-    "effectType": {},
+    "effectType": {
+      "augmentable": false,
+      "aura": false,
+      "beast": false,
+      "beastForm": false,
+      "channelDiv": false,
+      "charm": false,
+      "conjuration": false,
+      "disease": false,
+      "elemental": false,
+      "enchantment": false,
+      "evocation": false,
+      "fear": false,
+      "fullDis": false,
+      "gaze": false,
+      "healing": false,
+      "illusion": false,
+      "invigorating": false,
+      "mount": false,
+      "necro": false,
+      "nether": false,
+      "poison": false,
+      "polymorph": false,
+      "rage": false,
+      "rattling": false,
+      "reliable": false,
+      "runic": false,
+      "shadow": false,
+      "sleep": false,
+      "spirit": false,
+      "stance": false,
+      "summoning": false,
+      "teleportation": false,
+      "transmutation": false,
+      "zone": false
+    },
     "keywordsCustom": "",
-    "formula": "",
-    "postEffect": false,
-    "effectHTML": false,
-    "rangePower": null
+    "rangePower": "",
+    "identifier": "night-draught-lvl-6",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "itemPowers": [],
+    "area": "0",
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    },
+    "enhance": 0
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.4.2",
-    "coreVersion": "13.348",
-    "createdTime": 1686093641488,
-    "modifiedTime": 1686093641488,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763186442,
+    "modifiedTime": 1783763186442,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
