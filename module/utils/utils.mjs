@@ -249,10 +249,10 @@ export async function applyEffects(rollData, actor, powerData = {}, weaponData =
 				}
 				options.weaponUuid = weaponData.uuid;
 			}
-      if (ammoData) {
-        options.ammoUuid = ammoData.uuid;
-				_addKeywords(suitableKeywords, ammoData.damageType);
-        _addKeywords(suitableKeywords, ammoData.effectType);
+      if (ammo) {
+        options.ammoUuid = ammo.uuid;
+				_addKeywords(suitableKeywords, ammo.system.damageType);
+        _addKeywords(suitableKeywords, ammo.system.effectType);
       }
 			if (powerData.powersource) {
 				suitableKeywords.push(powerData.powersource);
