@@ -8,11 +8,11 @@
   "sort": 900000,
   "flags": {},
   "_stats": {
-    "coreVersion": "13.348",
+    "coreVersion": "14.364",
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "createdTime": null,
-    "modifiedTime": 1745816275190,
+    "systemVersion": "0.8.9",
+    "createdTime": 1783763194491,
+    "modifiedTime": 1783763194491,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
@@ -30,7 +30,10 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.48",
+    "source": {
+      "custom": "PHB pg.48",
+      "revision": 1
+    },
     "activation": {
       "type": "",
       "cost": 0,
@@ -56,14 +59,6 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
     "attack": {
       "shareAttackRoll": false,
       "isAttack": false,
@@ -77,9 +72,7 @@
       "def": "ac",
       "defBonus": 0,
       "detail": "",
-      "formula": "@wepAttack+@powerMod+@lvhalf",
-      "damageType": {},
-      "effectType": {}
+      "formula": "@wepAttack + @powerMod + @lvhalf"
     },
     "hit": {
       "shareDamageRoll": false,
@@ -96,18 +89,16 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
-      "detail": "You channel your rage and gain a <strong>+1</strong> power bonus to your next attack roll against a target that hit you since your last turn. If the attack hits and deals damage, increase the damage by <strong>@chaMod</strong> (Charisma Modifier) as bonus damage."
+      "detail": "You channel your rage and gain a <strong>+1</strong> power bonus to your next attack roll against a target that hit you since your last turn. If the attack hits and deals damage, increase the damage by <strong>[[@chaMod]]</strong> (Charisma Modifier) as bonus damage."
     },
     "damage": {
       "parts": []
     },
     "damageCrit": {
-      "parts": []
-    },
-    "damageImp": {
       "parts": []
     },
     "damageCritImp": {
@@ -134,7 +125,7 @@
     "powersource": "",
     "secondPowersource": "",
     "powersourceName": "",
-    "subName": "Teifling Racial",
+    "subName": "Teifling Racial Utility Feature",
     "prepared": true,
     "powerType": "race",
     "powerSubtype": "utility",
@@ -150,8 +141,8 @@
     },
     "rangeTextShort": "",
     "rangeText": "",
-    "rangePower": null,
-    "area": 0,
+    "rangePower": "",
+    "area": "0",
     "rechargeRoll": "",
     "rechargeCondition": "",
     "damageShare": false,
@@ -207,7 +198,22 @@
     "keywordsCustom": "",
     "chatFlavor": "",
     "effectHTML": false,
-    "category": "other"
+    "identifier": "infernal-rage",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    }
   },
   "_key": "!items!fJ0tTECdtHp6YdMS"
 }

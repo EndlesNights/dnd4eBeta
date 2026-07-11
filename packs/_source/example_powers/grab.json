@@ -48,7 +48,14 @@
       "_id": "RL11xRnS29CPuXDh",
       "type": "base",
       "system": {
-        "changes": []
+        "changes": [],
+        "durationType": "endOfUserTurn",
+        "powerEffectType": "hit",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "description": "<ul><li>The creature is immobilised.</li><li>The creature can attempt to escape as a move action.</li><li>The grab ends immediately if the grabber is subjected to an effect that prevents it from taking actions, or if the creature ends up outside the range of the grabbing power or effect.</li></ul>",
       "tint": "#ffffff",
@@ -59,12 +66,12 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.359",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.14",
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763194494,
+        "modifiedTime": 1783763194494,
+        "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
       "showIcon": 2,
@@ -77,11 +84,11 @@
   "sort": 800000,
   "flags": {},
   "_stats": {
-    "coreVersion": "14.360",
+    "coreVersion": "14.364",
     "systemId": "dnd4e",
-    "systemVersion": "0.8.0",
-    "createdTime": 1776986362211,
-    "modifiedTime": 1776986363320,
+    "systemVersion": "0.8.9",
+    "createdTime": 1783763194493,
+    "modifiedTime": 1783763194493,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
@@ -99,7 +106,10 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg. 290",
+    "source": {
+      "custom": "PHB pg. 290",
+      "revision": 1
+    },
     "activation": {
       "type": "",
       "cost": 0,
@@ -125,14 +135,6 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
     "attack": {
       "shareAttackRoll": false,
       "isAttack": true,
@@ -146,9 +148,7 @@
       "def": "ref",
       "defBonus": 0,
       "detail": "",
-      "formula": "@powerMod+@lvhalf",
-      "damageType": {},
-      "effectType": {}
+      "formula": "@powerMod + @lvhalf"
     },
     "hit": {
       "shareDamageRoll": false,
@@ -165,7 +165,8 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
       "detail": "<p>If you are affected by a condition that prevents you from taking opportunity actions, you immediately let go of a grabbed enemy.&nbsp;</p>\n<p>If you move away from the creature you&rsquo;re grabbing, you let go and the grab ends. If a pull, a push, or a slide moves you or the creature you&rsquo;re grabbing out of your reach, the grab ends.</p>\n<p>You can end a grab as a free action.</p>"
@@ -174,9 +175,6 @@
       "parts": []
     },
     "damageCrit": {
-      "parts": []
-    },
-    "damageImp": {
       "parts": []
     },
     "damageCritImp": {
@@ -203,7 +201,7 @@
     "powersource": "",
     "secondPowersource": "",
     "powersourceName": "",
-    "subName": "None",
+    "subName": "Generic Attack",
     "prepared": true,
     "powerType": "inherent",
     "powerSubtype": "attack",
@@ -219,8 +217,8 @@
     },
     "rangeTextShort": "",
     "rangeText": "",
-    "rangePower": null,
-    "area": 0,
+    "rangePower": "",
+    "area": "0",
     "rechargeRoll": "",
     "rechargeCondition": "",
     "damageShare": false,
@@ -276,7 +274,22 @@
     "keywordsCustom": "",
     "chatFlavor": "",
     "effectHTML": true,
-    "category": "other"
+    "identifier": "grab",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    }
   },
   "_key": "!items!B4KJ0ewlrw0I3BUS"
 }

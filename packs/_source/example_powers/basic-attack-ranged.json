@@ -8,11 +8,11 @@
   "sort": 1800000,
   "flags": {},
   "_stats": {
-    "coreVersion": "13.348",
+    "coreVersion": "14.364",
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "createdTime": null,
-    "modifiedTime": 1745816275190,
+    "systemVersion": "0.8.9",
+    "createdTime": 1783763194489,
+    "modifiedTime": 1783763194489,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
@@ -30,7 +30,10 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg. 287",
+    "source": {
+      "custom": "PHB pg. 287",
+      "revision": 1
+    },
     "activation": {
       "type": "",
       "cost": 0,
@@ -56,14 +59,6 @@
       "target": "",
       "amount": null
     },
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
-    },
     "attack": {
       "shareAttackRoll": false,
       "isAttack": true,
@@ -77,9 +72,7 @@
       "def": "ac",
       "defBonus": 0,
       "detail": "",
-      "formula": "@wepAttack+@powerMod+@lvhalf",
-      "damageType": {},
-      "effectType": {}
+      "formula": "@wepAttack + @powerMod + @lvhalf"
     },
     "hit": {
       "shareDamageRoll": false,
@@ -87,7 +80,7 @@
       "isDamage": true,
       "isHealing": false,
       "healSurge": "",
-      "baseQuantity": "1+@epic",
+      "baseQuantity": "1 + @epic",
       "baseDiceType": "weapon",
       "detail": "1[W] + Dexterity modifier damage.",
       "formula": "@powBase + @powerMod + @wepDamage",
@@ -96,7 +89,8 @@
     },
     "miss": {
       "detail": "",
-      "formula": ""
+      "formula": "",
+      "halfDamage": false
     },
     "effect": {
       "detail": ""
@@ -105,9 +99,6 @@
       "parts": []
     },
     "damageCrit": {
-      "parts": []
-    },
-    "damageImp": {
       "parts": []
     },
     "damageCritImp": {
@@ -134,7 +125,7 @@
     "powersource": "martial",
     "secondPowersource": "",
     "powersourceName": "",
-    "subName": "None",
+    "subName": "Basic Attack",
     "prepared": true,
     "powerType": "inherent",
     "powerSubtype": "attack",
@@ -150,8 +141,8 @@
     },
     "rangeTextShort": "",
     "rangeText": "",
-    "rangePower": null,
-    "area": 0,
+    "rangePower": "",
+    "area": "0",
     "rechargeRoll": "",
     "rechargeCondition": "",
     "damageShare": false,
@@ -205,10 +196,24 @@
       "shadow": false
     },
     "keywordsCustom": "",
-    "isBasic": false,
     "chatFlavor": "",
     "effectHTML": false,
-    "category": "other"
+    "identifier": "basic-attack-ranged",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ],
+    "auraSize": "",
+    "damageMiss": {
+      "parts": []
+    }
   },
   "_key": "!items!FrhMZJlrA5r76yFG"
 }
