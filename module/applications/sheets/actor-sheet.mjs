@@ -582,7 +582,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 			this._checkItemAvailable(i);
 			i.hasUses = item.system.uses && (item.system.preparedMaxUses > 0) && (item.system.uses.per != "");
 			i.isDepleted = i.hasUses && (item.system.uses.value === 0);
-			i.isUnavailable = i.isDepleted || i.system.notAvailable || (["weapon", "equipment"].includes(item.type) && !item.system.equipped);
+			i.isUnavailable = i.isDepleted || i.system.notAvailable || (["weapon", "equipment","consumable"].includes(item.type) && !item.system?.equipped);
 			inventory[i.type].items.push(i);
 		}
 
@@ -878,7 +878,7 @@ export default class ActorSheet4e extends foundry.applications.api.HandlebarsApp
 	};
 
 	_checkItemAvailable(itemData) {
-		if ((!itemData.system.uses.value && itemData.system.preparedMaxUses) || ((itemData.type === "power") && !itemData.system.prepared)) {
+		if ((!itemData.system.uses.value && itemData.system.preparedMaxUses && itemData.system.uses.per) || ((itemData.type === "power") && !itemData.system.prepared)) {
 			itemData.system.notAvailable = true;
 		}
 		
