@@ -19,6 +19,7 @@ An unexpected bumper update with tons of bugfixes and new features to enjoy!
   * It's now possible for items to contain more than one macro! You can add and remove them from the Macros tab, and assign different types/activation triggers to each one. The tab UI has been updated accordingly. (SagaTympana & Fox)
   * System hooks are now available for macro activation! With more in the works, we currently have `Common Attack Bonus Evaluation`, `Pre Attack Roll`, and `Defence Evaluation`. Use them to mess with to-hit rolls more powerfully than ever before! :p (SagaTympana)
   * Save and death save dialogues now offer the option to roll multiple d20s (as in 5e "advantage") just like attack/skill rolls (SagaTympana)
+  * System compendia have been update to match current system standards (SagaTympana & Fox)
 ### Other Bugfixes (SagaTympana)
   * Aura Effects compatibility: status conditions will now display correctly for Auras.
   * Updated auto-generated power cards to omit hit/miss text if the power doesn't have an attack
