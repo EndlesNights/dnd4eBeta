@@ -47,11 +47,11 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "14.360",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": 1776987049554,
-        "modifiedTime": 1776987052319,
+        "coreVersion": "14.364",
+        "systemId": "dnd4e",
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176934,
+        "modifiedTime": 1783763176934,
         "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
@@ -65,15 +65,24 @@
             "key": "system.skills.nat.race",
             "value": 2,
             "priority": null,
-            "type": "upgrade"
+            "type": "upgrade",
+            "phase": "initial"
           },
           {
             "key": "system.skills.prc.race",
             "value": 2,
             "priority": null,
-            "type": "upgrade"
+            "type": "upgrade",
+            "phase": "initial"
           }
-        ]
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "sort": 0,
       "start": null,
@@ -102,11 +111,11 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "14.360",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": 1776987049892,
-        "modifiedTime": 1776987052018,
+        "coreVersion": "14.364",
+        "systemId": "dnd4e",
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176934,
+        "modifiedTime": 1783763176934,
         "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
@@ -120,9 +129,17 @@
             "key": "system.movement.base.base",
             "value": 7,
             "priority": null,
-            "type": "override"
+            "type": "override",
+            "phase": "initial"
           }
-        ]
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "sort": 0,
       "start": null,
@@ -157,11 +174,11 @@
       "statuses": [],
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "14.360",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": 1776987050158,
-        "modifiedTime": 1776987051304,
+        "coreVersion": "14.364",
+        "systemId": "dnd4e",
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176934,
+        "modifiedTime": 1783763176934,
         "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
@@ -175,15 +192,24 @@
             "key": "system.details.weaponProf.value",
             "value": "shortbow",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           },
           {
             "key": "system.details.weaponProf.value",
             "value": "longbow",
             "priority": null,
-            "type": "add"
+            "type": "add",
+            "phase": "initial"
           }
-        ]
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "sort": 0,
       "start": null,
@@ -204,17 +230,12 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg. 40",
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
+    "source": {
+      "custom": "PHB pg. 40",
+      "revision": 1
     },
     "featureType": "race",
-    "level": null,
+    "level": "",
     "requirements": "",
     "featureSource": "Elf",
     "featureGroup": "",
@@ -222,47 +243,28 @@
     "effectType": {},
     "damageType": {},
     "keywordsCustom": "",
-    "activation": {
-      "type": "",
-      "cost": 0,
-      "condition": ""
-    },
-    "duration": {
-      "value": null,
-      "units": ""
-    },
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": ""
-    },
-    "range": {
-      "value": null,
-      "long": null,
-      "units": ""
-    },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
-    "consume": {
-      "type": "",
-      "target": null,
-      "amount": null
-    },
-    "category": "other"
+    "identifier": "elf",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ]
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "14.359",
-    "createdTime": 1686094306369,
-    "modifiedTime": 1745817871227,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763176934,
+    "modifiedTime": 1783763176934,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

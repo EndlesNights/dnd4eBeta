@@ -30,11 +30,11 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "14.360",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.5",
-        "createdTime": 1776987058536,
-        "modifiedTime": 1776987059979,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176924,
+        "modifiedTime": 1783763176924,
         "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
@@ -48,15 +48,24 @@
             "key": "system.skills.arc.race",
             "value": 2,
             "priority": null,
-            "type": "upgrade"
+            "type": "upgrade",
+            "phase": "initial"
           },
           {
             "key": "system.skills.stl.race",
             "value": 2,
             "priority": null,
-            "type": "upgrade"
+            "type": "upgrade",
+            "phase": "initial"
           }
-        ]
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "sort": 0,
       "start": null,
@@ -85,11 +94,11 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "14.360",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": 1776987058852,
-        "modifiedTime": 1776987059665,
+        "coreVersion": "14.364",
+        "systemId": "dnd4e",
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176924,
+        "modifiedTime": 1783763176924,
         "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
@@ -103,9 +112,17 @@
             "key": "system.movement.base.base",
             "value": 5,
             "priority": null,
-            "type": "override"
+            "type": "override",
+            "phase": "initial"
           }
-        ]
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "sort": 0,
       "start": null,
@@ -126,17 +143,12 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB2 pg.10",
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
+    "source": {
+      "custom": "PHB2 pg.10",
+      "revision": 1
     },
     "featureType": "race",
-    "level": null,
+    "level": "",
     "requirements": "",
     "featureSource": "Gnome",
     "featureGroup": "",
@@ -144,47 +156,28 @@
     "effectType": {},
     "damageType": {},
     "keywordsCustom": "",
-    "activation": {
-      "type": "",
-      "cost": 0,
-      "condition": ""
-    },
-    "duration": {
-      "value": null,
-      "units": ""
-    },
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": ""
-    },
-    "range": {
-      "value": null,
-      "long": null,
-      "units": ""
-    },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
-    "consume": {
-      "type": "",
-      "target": null,
-      "amount": null
-    },
-    "category": "other"
+    "identifier": "gnome",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ]
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "14.359",
-    "createdTime": 1686094307658,
-    "modifiedTime": 1745817871227,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763176924,
+    "modifiedTime": 1783763176924,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

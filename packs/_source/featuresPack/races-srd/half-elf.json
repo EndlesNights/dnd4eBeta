@@ -30,11 +30,11 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "14.360",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.5.5",
-        "createdTime": 1776987063262,
-        "modifiedTime": 1776987063979,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176918,
+        "modifiedTime": 1783763176918,
         "lastModifiedBy": "dnd4ebuilder0000",
         "compendiumSource": null,
         "duplicateSource": null,
@@ -48,15 +48,24 @@
             "key": "system.skills.dip.race",
             "value": 2,
             "priority": null,
-            "type": "upgrade"
+            "type": "upgrade",
+            "phase": "initial"
           },
           {
             "key": "system.skills.ins.race",
             "value": 2,
             "priority": null,
-            "type": "upgrade"
+            "type": "upgrade",
+            "phase": "initial"
           }
-        ]
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
       "sort": 0,
       "start": null,
@@ -77,17 +86,12 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.40",
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
+    "source": {
+      "custom": "PHB pg.40",
+      "revision": 1
     },
     "featureType": "race",
-    "level": null,
+    "level": "",
     "requirements": "",
     "featureSource": "Half-Elf",
     "featureGroup": "",
@@ -95,47 +99,28 @@
     "effectType": {},
     "damageType": {},
     "keywordsCustom": "",
-    "activation": {
-      "type": "",
-      "cost": 0,
-      "condition": ""
-    },
-    "duration": {
-      "value": null,
-      "units": ""
-    },
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": ""
-    },
-    "range": {
-      "value": null,
-      "long": null,
-      "units": ""
-    },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
-    "consume": {
-      "type": "",
-      "target": null,
-      "amount": null
-    },
-    "category": "other"
+    "identifier": "half-elf",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ]
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.5.14",
-    "coreVersion": "14.359",
-    "createdTime": 1686094308969,
-    "modifiedTime": 1745817871227,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763176918,
+    "modifiedTime": 1783763176918,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null

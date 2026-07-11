@@ -53,21 +53,28 @@
             "phase": "initial",
             "priority": null
           }
-        ]
+        ],
+        "durationType": "",
+        "powerEffectType": "misc",
+        "dots": [],
+        "equippedRec": false,
+        "keywords": [],
+        "keywordsCustom": "",
+        "useSourceActorData": true
       },
-      "description": "<p>[[+1]] bonus to attack rolls made against bloodied targets.</p>",
+      "description": "<p>+1 bonus to attack rolls made against bloodied targets.</p>",
       "tint": "#ffffff",
       "transfer": true,
       "statuses": [],
       "sort": 0,
       "_stats": {
-        "compendiumSource": "Actor.c47kggIezZJvadnl.Item.RRi8y9Jm72Mqxcr7.ActiveEffect.kL9gLMBj86D901ff",
+        "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "14.360",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.8.0",
-        "createdTime": 1776987088831,
-        "modifiedTime": 1776987193103,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763176920,
+        "modifiedTime": 1783763176920,
         "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null
       },
@@ -89,17 +96,12 @@
     "descriptionGM": {
       "value": ""
     },
-    "source": "PHB pg.48",
-    "macro": {
-      "type": "script",
-      "scope": "global",
-      "launchOrder": "off",
-      "command": "",
-      "author": "",
-      "autoanimationHook": ""
+    "source": {
+      "custom": "PHB pg.48",
+      "revision": 1
     },
     "featureType": "race",
-    "level": null,
+    "level": "",
     "requirements": "",
     "featureSource": "Tiefling",
     "featureGroup": "",
@@ -154,50 +156,28 @@
       "thunder": false
     },
     "keywordsCustom": "",
-    "activation": {
-      "type": "",
-      "cost": 0,
-      "condition": ""
-    },
-    "duration": {
-      "value": null,
-      "units": ""
-    },
-    "target": {
-      "value": null,
-      "width": null,
-      "units": "",
-      "type": ""
-    },
-    "range": {
-      "value": null,
-      "long": null,
-      "units": ""
-    },
-    "uses": {
-      "value": 0,
-      "max": 0,
-      "per": null
-    },
-    "consume": {
-      "type": "",
-      "target": null,
-      "amount": null
-    },
-    "tooltip": "Create Feature",
-    "type": "feature",
-    "subtype": "race",
-    "category": "other"
+    "identifier": "blood-hunter",
+    "macros": [
+      {
+        "type": "script",
+        "scope": "global",
+        "launchOrder": "off",
+        "command": "",
+        "author": "",
+        "autoanimationHook": "",
+        "enabled": true
+      }
+    ]
   },
   "ownership": {
     "default": 0
   },
   "_stats": {
     "systemId": "dnd4e",
-    "systemVersion": "0.8.0",
-    "coreVersion": "14.360",
-    "createdTime": 1686094125284,
-    "modifiedTime": 1776987205841,
+    "systemVersion": "0.8.9",
+    "coreVersion": "14.364",
+    "createdTime": 1783763176920,
+    "modifiedTime": 1783763176920,
     "lastModifiedBy": "dnd4ebuilder0000",
     "duplicateSource": null,
     "exportSource": null
