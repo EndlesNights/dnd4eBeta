@@ -1386,7 +1386,10 @@
         "descriptionGM": {
           "value": ""
         },
-        "source": "",
+        "source": {
+          "custom": "",
+          "revision": 1
+        },
         "activation": {
           "type": "",
           "cost": 0,
@@ -1559,7 +1562,22 @@
         "keywordsCustom": "",
         "effectHTML": false,
         "chatFlavor": "",
-        "auraSize": ""
+        "auraSize": "",
+        "identifier": "snap-shut",
+        "macros": [
+          {
+            "type": "script",
+            "scope": "global",
+            "launchOrder": "off",
+            "command": "",
+            "author": "",
+            "autoanimationHook": "",
+            "enabled": true
+          }
+        ],
+        "damageMiss": {
+          "parts": []
+        }
       },
       "_id": "YuR4IeaZNc25YiwG",
       "img": "modules/fox-4e-content-pack/images/NPC-Icons/white/Attack-Melee-Basic.svg",
@@ -1568,11 +1586,11 @@
       "sort": 0,
       "flags": {},
       "_stats": {
-        "coreVersion": "14.361",
+        "coreVersion": "14.364",
         "systemId": "dnd4e",
-        "systemVersion": "0.8.0",
-        "createdTime": 1778918328420,
-        "modifiedTime": 1778918328420,
+        "systemVersion": "0.8.9",
+        "createdTime": 1783763223430,
+        "modifiedTime": 1783763223430,
         "lastModifiedBy": "dnd4ebuilder0000",
         "exportSource": null,
         "compendiumSource": null,
@@ -1604,11 +1622,11 @@
     }
   },
   "_stats": {
-    "coreVersion": "14.361",
+    "coreVersion": "14.364",
     "systemId": "dnd4e",
-    "systemVersion": "0.8.0",
-    "createdTime": 1778918328419,
-    "modifiedTime": 1778918328419,
+    "systemVersion": "0.8.9",
+    "createdTime": 1783763223429,
+    "modifiedTime": 1783763223429,
     "lastModifiedBy": "dnd4ebuilder0000",
     "exportSource": null,
     "duplicateSource": null
