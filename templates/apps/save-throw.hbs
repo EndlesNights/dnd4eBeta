@@ -14,7 +14,7 @@
     {{#if savableEffects.length}}
     <div class="form-group">
       <label>{{ localize "DND4E.SaveAgainst" }}</label>
-      <select name="saveAgainst" class="refreshes">
+      <select name="saveAgainst">
         {{selectOptions savableEffects selected=effectId localise=true valueAttr="id" labelAttr="name"}}
       </select>
     </div>
@@ -28,7 +28,7 @@
 
     <div class="form-group">
       <label>{{localize 'DND4E.SaveSituational'}}?</label>
-      <input type="text" name="bonus" value="" placeholder="">
+      <input type="text" name="save" value="" placeholder="">
     </div>
 
     <div class="form-group roll-times flexrow">
