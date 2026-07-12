@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 0.8.10 hotfix
+* Fixed a bug where improperly formed `@scale` objects failed migration in a game-breaking way (SagaTympana)
+* Fixed a bug where attacking a marked target broke the attack roll (SagaTympana)
+* Fixed a bug where save DCs didn't propagate to EoT auto saves (Fox)
+* Saving throws now report situational bonuses in `@bonus` in the chat card (SagaTympana)
+* Fixed macro pass localization that was accidentally dropped from 0.8.9 (SagaTympana)
+
 ## Version 0.8.9
 An unexpected bumper update with tons of bugfixes and new features to enjoy!
 ### Big consumables/ammunition update (Fox)
